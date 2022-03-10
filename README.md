@@ -36,6 +36,7 @@ Electron requires a Chromium instance in order to run. This can mean massive per
 - [ ] Debug experience
 - [ ] Code symbols navigator
 - [ ] File information sidebar
+
 ...more to come
 
 ## Contributing
