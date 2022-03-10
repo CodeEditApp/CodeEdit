@@ -18,26 +18,26 @@ Electron requires a Chromium instance in order to run. This can mean massive per
 
 ## Todo
 
-[x] Design a concept
-[x] Start a boilerplate app
-[x] Set up a Github repository to allow the community to get involved
-[x] Start a [discord server](https://discord.gg/ANUVc6TF) for community collaboration
-[ ] Develop the underlying text editor complete with syntax heighlighting
-[ ] Project navigator - Manage and edit files within a project
-[ ] Source control navigator
-[ ] Find in document
-[ ] Find in project
-[ ] Open file search bar overlay
-[ ] Commands overlay
-[ ] Statusbar
-[ ] Tabs
-[ ] Split editors
-[ ] Extension manager
-[ ] Project preferences
-[ ] Application preferences
-[ ] Debug experience
-[ ] Code symbols navigator
-[ ] File information sidebar
+- [x] Design a concept
+- [x] Start a boilerplate app
+- [x] Set up a Github repository to allow the community to get involved
+- [x] Start a [discord server](https://discord.gg/ANUVc6TF) for community collaboration
+- [ ] Develop the underlying text editor complete with syntax heighlighting
+- [ ] Project navigator - Manage and edit files within a project
+- [ ] Source control navigator
+- [ ] Find in document
+- [ ] Find in project
+- [ ] Open file search bar overlay
+- [ ] Commands overlay
+- [ ] Statusbar
+- [ ] Tabs
+- [ ] Split editors
+- [ ] Extension manager
+- [ ] Project preferences
+- [ ] Application preferences
+- [ ] Debug experience
+- [ ] Code symbols navigator
+- [ ] File information sidebar
 ...more to come
 
 ## Contributing
