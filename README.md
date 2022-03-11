@@ -6,9 +6,9 @@
 
 Developers that use a Mac shouldn't be forced to use an app from the other guys. Yes, these other editors have growing communities and infrastructure around extensions, and have seen incredible adoption that satisfies the needs of most developers. However, comparable editors are built on Electron. This is a huge limitation because it cannot utilize all system resources to it's fullest potential.
 
-Xcode offers this native experience and it feels right at home on the Mac but it only supports projects written in languages like Swift. There are other languages out there, and those working on those projects deserve that same macOS-native experience as they get in Xcode.
-
 Electron requires a Chromium instance in order to run. This can mean massive performance losses and high RAM usage even for small apps built on it. Additionally, the overall code footprint is much larger and animations are slower. More frames are lost and things like window resizing feels laggy. Native apps are smooth as butter and better utilize all system resources for better performance and better reliability. For more information on this, we'll point you to [a fantastic article](https://www.remotion.com/blog/why-remotion-is-a-native-macos-app-not-electron) by the nice folks at Remotion.
+
+Xcode offers this native experience and it feels right at home on the Mac but it only supports projects written in languages like Swift. There are other languages out there, and those working on those projects deserve that same macOS-native experience as they get in Xcode.
 
 This lead to the creation of [this concept](https://www.figma.com/proto/qj6raZbQsZpGO0NAVi4qsv/CodeEdit-Concept?node-id=1%3A870). We'd like to take this concept and make it a reality. 
 
