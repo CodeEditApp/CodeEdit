@@ -8,7 +8,7 @@ Our goal is to develop an app that looks and feels like it was designed and deve
 
 ## Motivation
 
-I am a UI designer and developer focusing on web based applications (Javascript/React). I've been playing around with Swift/SwiftUI and I am really impressed with it and with Xcode and how it felt to use it compared to other mainstream editors. Thinking about this lead me to create [this concept](https://www.figma.com/proto/qj6raZbQsZpGO0NAVi4qsv/CodeEdit-Concept). Developers that use a Mac shouldn't be forced to use an app from the other guys. 
+I am a UI designer and developer focusing on web based applications (Javascript/React). I've been playing around with Swift/SwiftUI and I am really impressed with it and with Xcode and how it felt to use it compared to other mainstream editors. Thinking about this lead me to create [this concept](https://www.figma.com/proto/qj6raZbQsZpGO0NAVi4qsv/CodeEdit-Concept?node-id=1%3A870). Developers that use a Mac shouldn't be forced to use an app from the other guys. 
 
 Yes, there are other editors that already have a growing community and infrastructure around extensions, and has seen incredible adoption that satisfies the needs of most developers. That said, most are built on Electron. This is a huge limitation because it cannot utilize all system resources to it's fullest potential.
 
