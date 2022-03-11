@@ -35,6 +35,7 @@ Our goal is to develop an app that looks and feels like it was designed and deve
 - [ ] Application preferences
 - [ ] Debug experience
 - [ ] Code symbols navigator
+- [ ] Integrated terminal
 - [ ] File information sidebar
 
 ...more to come
