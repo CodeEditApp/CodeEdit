@@ -16,7 +16,7 @@ This lead to the creation of [this concept](https://www.figma.com/proto/qj6raZbQ
 
 Our goal is to develop an app that looks and feels like it was designed and developed by Apple. We think there is room to really streamline the developer experience. Something that Xcode has done. We want to offer users an IDE experience while staying lightweight. To gain maximum adoption, CodeEdit should be open source, free to use, and supported by the community. 
 
-## Todo
+## To do
 
 - [x] Design a concept
 - [x] Start a boilerplate app
