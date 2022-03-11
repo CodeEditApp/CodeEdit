@@ -1,6 +1,6 @@
 # CodeEdit macOS App
 
-![github-cover](https://user-images.githubusercontent.com/806104/157908436-a0d16b3f-8bfa-4f7b-ba92-ca1a273f7dff.png)
+![github-cover](https://user-images.githubusercontent.com/806104/157921972-022b758f-eb9d-4436-881a-d94c883d5685.png)
 
 ## Motivation
 
