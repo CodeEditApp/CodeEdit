@@ -41,7 +41,7 @@ Our goal is to develop an app that looks and feels like it was designed and deve
 - [ ] Integrated terminal
 - [ ] File information sidebar
 
-...more to come
+...more to come!
 
 ## Contributing
 
