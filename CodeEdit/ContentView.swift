@@ -6,6 +6,29 @@
 //
 
 import SwiftUI
+import UniformTypeIdentifiers
+
+struct TextFile: FileDocument {
+    
+    static var readableContentTypes = [UTType.plainText]
+    var text = ""
+    
+    init(initialText: String = "") {
+        self.text = initialText
+    }
+    
+    init(configuration: ReadConfiguration) throws {
+        if let data = configuration.file.regularFileContents {
+            text = String(decoding: data, as: UTF8.self)
+        }
+    }
+    
+    func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
+        let data = Data(text.utf8)
+        return FileWrapper(regularFileWithContents: data)
+    }
+    
+}
 
 struct MainContentView: View {
     var body: some View {
@@ -20,61 +43,36 @@ struct MainContentView: View {
 }
 
 struct ContentView: View {
-    @State private var queryString = ""
-    
-    private let items = ["One", "Two", "Three", "Four", "Five"]
-    @State private var selection: String? = "home"
+    @Binding var document: TextFile
 
     var body: some View {
         NavigationView {
-            VStack {
-                List(selection: $selection) {
-                    NavigationLink(
-                        destination: MainContentView()
-                            .navigationTitle("Home")
-                            .navigationSubtitle("Dashboard"),
-                        label: {
-                            Image(systemName: "house")
-                                .foregroundColor(.secondary)
-                            Text("Home")
-                        }
-                    ).id("home")
-                    Section(header: Text("Items")) {
-                        ForEach(items, id: \.self) { item in
-                            NavigationLink(
-                                destination: Text("Item \(item)")
-                                    .navigationTitle("Item \(item)"),
-                                label: {
-                                    Image(systemName: "folder")
-                                        .foregroundColor(.secondary)
-                                    Text("Item \(item)")
-                                }
-                            )
-                        }
-                    }
-                }
-                .listStyle(SidebarListStyle())
+            List {
+                Text("Folder 1")
+                Text("Folder 2")
+                Text("Folder 3")
             }
-
-            .toolbar {
-            ToolbarItem(placement: .automatic) {
-                    Button(action: toggleSidebar, label: {
-                        Image(systemName: "sidebar.leading")
-                    }).help("Show/Hide Sidebar")
-                }
-                ToolbarItem(placement: .navigation) {
-                    Button(action: toggleSidebar, label: {
-                        Image(systemName: "chevron.left")
-                    }).help("Back")
-                }
-                ToolbarItem(placement: .navigation) {
-                    Button(action: toggleSidebar, label: {
-                        Image(systemName: "chevron.right")
-                    }).disabled(true).help("Fordward")
-                }
-
-            }
+            .listStyle(SidebarListStyle())
             
+            TextEditor(text: $document.text)
+        }
+        .toolbar {
+            ToolbarItem(placement: .automatic) {
+                Button(action: toggleSidebar, label: {
+                    Image(systemName: "sidebar.leading")
+                }).help("Show/Hide Sidebar")
+            }
+            ToolbarItem(placement: .navigation) {
+                Button(action: toggleSidebar, label: {
+                    Image(systemName: "chevron.left")
+                }).help("Back")
+            }
+            ToolbarItem(placement: .navigation) {
+                Button(action: toggleSidebar, label: {
+                    Image(systemName: "chevron.right")
+                }).disabled(true).help("Fordward")
+            }
+
         }
         
         
@@ -89,6 +87,6 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView(document: .constant(TextFile()))
     }
 }
