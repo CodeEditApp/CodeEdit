@@ -61,7 +61,7 @@ struct ContentView: View {
                         
                         // TODO: additional project initialization
                     } else {
-                        self.appDelegate.closeFirstWindow()
+                        NSApplication.shared.keyWindow?.close()
                     }
                 }
             }

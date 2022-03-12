@@ -14,12 +14,6 @@ class CodeEditorAppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         }
     }
     
-    func closeFirstWindow() {
-        if let window = NSApplication.shared.windows.first {
-            window.close()
-        }
-    }
-    
     func newProjectURL() -> URL? {
         let dialog = NSOpenPanel()
 
