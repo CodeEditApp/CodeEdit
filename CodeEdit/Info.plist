@@ -9,7 +9,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>codeeditor</string>
+				<string>codeedit</string>
 			</array>
 		</dict>
 	</array>
