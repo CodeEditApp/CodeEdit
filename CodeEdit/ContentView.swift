@@ -38,7 +38,7 @@ struct ContentView: View {
         if dialog.runModal() == NSApplication.ModalResponse.OK {
             if let result = dialog.url {
                 do {
-                    workspace = try Workspace(url: result)
+                    workspace = try Workspace(folderURL: result)
                 } catch {
                     alertTitle = "Unable to Open Folder"
                     alertMsg = error.localizedDescription
@@ -49,53 +49,57 @@ struct ContentView: View {
         }
     }
     
-    func openFileEditor(path: URL) {
-        // TODO: I can't seem to figure this one out
+    func openFileEditor(_ url: URL) {
+        // TODO: Create and load a `CodeFile` instance from the file URL
+        // ^ I can't seem to figure this one out
+        print("Opening file \(url.path)")
+    }
+    
+    var sidebar: some View {
+        List {
+            if let workspace = workspace {
+                Section(header: Text(workspace.directoryURL.lastPathComponent)) {
+                    OutlineGroup(workspace.fileItems, children: \.children) { item in
+                        if item.children == nil {
+                            Button(action: { openFileEditor(item.url) }) {
+                                Label(item.url.lastPathComponent, systemImage: item.systemImage)
+                                    .accentColor(.secondary)
+                                    .font(.callout)
+                            }
+                            .buttonStyle(.plain)
+                        } else {
+                            Label(item.url.lastPathComponent, systemImage: item.systemImage)
+                                .accentColor(.secondary)
+                                .font(.callout)
+                        }
+                    }
+                }
+            } else {
+                Button(action: openFolderDialog) {
+                    HStack {
+                        Spacer()
+                        
+                        Text("Open Folder")
+                            .foregroundColor(.primary)
+                        
+                        Spacer()
+                    }
+                }
+                .buttonStyle(.plain)
+                .padding(.vertical, 10.0)
+                .background {
+                    RoundedRectangle(cornerRadius: 10.0)
+                        .foregroundColor(.blue)
+                }
+            }
+        }
+        .frame(minWidth: 250)
+        .listStyle(.sidebar)
     }
 
     var body: some View {
         NavigationView {
-            List {
-                if let workspace = workspace {
-                    Section(header: Text(workspace.directoryURL.lastPathComponent)) {
-                        ForEach(workspace.directoryContents, id: \.absoluteURL) { url in
-                            let fileManager = FileManager.default
-                            let filePath = url.path
-                            var isDir: ObjCBool = false
-                            
-                            if fileManager.fileExists(atPath: filePath, isDirectory: &isDir) {
-                                if isDir.boolValue {
-                                    Label(url.lastPathComponent, systemImage: "folder.fill")
-                                } else {
-                                    Button(action: { openFileEditor(path: url) }) {
-                                        Label(url.lastPathComponent, systemImage: "doc.fill")
-                                    }
-                                    .buttonStyle(.plain)
-                                }
-                            }
-                        }
-                    }
-                } else {
-                    Button(action: openFolderDialog) {
-                        HStack {
-                            Spacer()
-                            
-                            Text("Open Folder")
-                                .foregroundColor(.primary)
-                            
-                            Spacer()
-                        }
-                    }
-                    .buttonStyle(.plain)
-                    .padding(.vertical, 10.0)
-                    .background {
-                        RoundedRectangle(cornerRadius: 10.0)
-                            .foregroundColor(.blue)
-                    }
-                }
-            }
-            .listStyle(SidebarListStyle())
-            
+            sidebar
             TextEditor(text: $currentDocument.text)
         }
         .toolbar {
@@ -122,6 +126,7 @@ struct ContentView: View {
             }
         }, message: { Text(alertMsg) })
     }
+    
     private func toggleSidebar() {
         #if os(iOS)
         #else
