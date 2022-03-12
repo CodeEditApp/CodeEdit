@@ -7,21 +7,9 @@
 
 import SwiftUI
 
-struct MainContentView: View {
-    var body: some View {
-        VStack(alignment: .center) {
-            HStack {
-                Text("CodeEdit")
-                    .font(.title)
-            }.padding()
-           
-        }
-    }
-}
-
 struct ContentView: View {
     @State var workspace: Workspace?
-    @Binding var currentDocument: CodeFile
+    @State var selectedId: UUID?
     
     @State private var showingAlert = false
     @State private var alertTitle = ""
@@ -32,16 +20,24 @@ struct ContentView: View {
 
     var body: some View {
         NavigationView {
-            sidebar
-            
-            TextEditor(text: $currentDocument.text)
+            if workspace != nil {
+                sidebar
+                    .frame(minWidth: 250)
+                    .toolbar {
+                        ToolbarItem(placement: .primaryAction) {
+                            Button(action: toggleSidebar) {
+                                Image(systemName: "sidebar.leading")
+                            }
+                            .help("Show/Hide Sidebar")
+                        }
+                    }
+                
+                Text("Open file from sidebar")
+            } else {
+                EmptyView()
+            }
         }
         .toolbar {
-            ToolbarItem(placement: .automatic) {
-                Button(action: toggleSidebar, label: {
-                    Image(systemName: "sidebar.leading")
-                }).help("Show/Hide Sidebar")
-            }
             ToolbarItem(placement: .navigation) {
                 Button(action: {}) {
                     Image(systemName: "chevron.left")
@@ -58,13 +54,28 @@ struct ContentView: View {
         }
         .frame(minWidth: 800, minHeight: 600)
         .onOpenURL { url in
-            path = url.path
+            do {
+                self.workspace = try Workspace(folderURL: url)
+            } catch {
+                self.alertTitle = "Unable to Open Folder"
+                self.alertMsg = error.localizedDescription
+                self.showingAlert = true
+                print(error.localizedDescription)
+            }
         }
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-                if path == "" {
+                if self.workspace == nil {
                     if let url = self.appDelegate.newProjectURL() {
-                        self.path = url.path
+                        do {
+                            self.workspace = try Workspace(folderURL: url)
+                        } catch {
+                            self.alertTitle = "Unable to Open Folder"
+                            self.alertMsg = error.localizedDescription
+                            self.showingAlert = true
+                            print(error.localizedDescription)
+                            NSApplication.shared.keyWindow?.close()
+                        }
                         
                         // TODO: additional project initialization
                     } else {
@@ -73,7 +84,6 @@ struct ContentView: View {
                 }
             }
         }
-        // This alert system could probably be improved
         .alert(alertTitle, isPresented: $showingAlert, actions: {
             Button(action: { showingAlert = false }) {
                 Text("OK")
@@ -82,30 +92,22 @@ struct ContentView: View {
     }
     
     var sidebar: some View {
-        if let workspace = workspace {
-            Section(header: Text(workspace.directoryURL.lastPathComponent)) {
-                OutlineGroup(workspace.fileItems, children: \.children) { item in
+        List {
+            Section(header: Text(workspace!.directoryURL.lastPathComponent)) {
+                OutlineGroup(workspace!.fileItems, children: \.children) { item in
                     if item.children == nil {
-                        Button(action: { openFileEditor(item.url) }) {
+                        NavigationLink(tag: item.id, selection: $selectedId) {
+                            WorkspaceEditorView(item: item)
+                        } label: {
                             Label(item.url.lastPathComponent, systemImage: item.systemImage)
                                 .accentColor(.secondary)
                                 .font(.callout)
                         }
-                        .buttonStyle(.plain)
                     } else {
                         Label(item.url.lastPathComponent, systemImage: item.systemImage)
                             .accentColor(.secondary)
                             .font(.callout)
                     }
-                }
-            }
-            .frame(minWidth: 250)
-            .toolbar {
-                ToolbarItem(placement: .primaryAction) {
-                    Button(action: toggleSidebar) {
-                        Image(systemName: "sidebar.leading")
-                    }
-                    .help("Show/Hide Sidebar")
                 }
             }
         }
@@ -121,7 +123,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(currentDocument: .constant(CodeFile(initialText: "Hello, World!")))
+        ContentView()
     }
 }
 

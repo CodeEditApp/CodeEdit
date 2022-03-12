@@ -19,16 +19,19 @@ struct CodeEditApp: App {
         .commands {
             SidebarCommands()
         }
+            .windowToolbarStyle(.unified)
+            .handlesExternalEvents(matching: ["open"])
+        
         DocumentGroup(newDocument: CodeFile()) { file in
-            ContentView(workspace: nil, currentDocument: file.$document)
+            EditorView(text: file.$document.text)
                 .environmentObject(appDelegate)
+                .navigationTitle(file.fileURL?.lastPathComponent ?? "Unknown")
         }
         .commands {
             SidebarCommands()
         }
-            .windowStyle(.hiddenTitleBar)
-            .windowToolbarStyle(.unified)
-            .handlesExternalEvents(matching: ["open"])
+            .handlesExternalEvents(matching: ["openFile"])
+        
         Settings {
             SettingsView()
         }

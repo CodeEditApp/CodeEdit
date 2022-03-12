@@ -7,14 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0468438527DC76E300F8E88E /* CodeEditorAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0468438427DC76E200F8E88E /* CodeEditorAppDelegate.swift */; };
-		04F2BF0F27DBB28E0024EAB1 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F2BF0E27DBB28E0024EAB1 /* SettingsView.swift */; };
-		04F2BF1227DBB3C10024EAB1 /* GeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F2BF1127DBB3C10024EAB1 /* GeneralSettingsView.swift */; };
-		348313FA27DC8B0A0016D42C /* Workspace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 348313F927DC8B0A0016D42C /* Workspace.swift */; };
-		348313FC27DC8C070016D42C /* CodeFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 348313FB27DC8C070016D42C /* CodeFile.swift */; };
-		349D101927DCE91F0009AF22 /* FileItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349D101827DCE91F0009AF22 /* FileItem.swift */; };
-		B658FB3027DA9E0F00EA4DBD /* CodeEditApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B658FB2F27DA9E0F00EA4DBD /* CodeEditApp.swift */; };
-		B658FB3227DA9E0F00EA4DBD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B658FB3127DA9E0F00EA4DBD /* ContentView.swift */; };
+		0439FEF527DD104500528317 /* WorkspaceEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0439FEF427DD104500528317 /* WorkspaceEditorView.swift */; };
+		04540D5B27DD08C300E91B77 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F2BF0E27DBB28E0024EAB1 /* SettingsView.swift */; };
+		04540D5C27DD08C300E91B77 /* GeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F2BF1127DBB3C10024EAB1 /* GeneralSettingsView.swift */; };
+		04540D5D27DD08C300E91B77 /* CodeEditApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B658FB2F27DA9E0F00EA4DBD /* CodeEditApp.swift */; };
+		04540D5E27DD08C300E91B77 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B658FB3127DA9E0F00EA4DBD /* ContentView.swift */; };
+		04540D5F27DD08C300E91B77 /* EditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043DF9C127DD045800CA0FC3 /* EditorView.swift */; };
+		04540D6027DD08C300E91B77 /* Workspace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 348313F927DC8B0A0016D42C /* Workspace.swift */; };
+		04540D6127DD08C300E91B77 /* CodeFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 348313FB27DC8C070016D42C /* CodeFile.swift */; };
+		04540D6227DD08C300E91B77 /* FileItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349D101827DCE91F0009AF22 /* FileItem.swift */; };
+		04540D6327DD08C300E91B77 /* CodeEditorAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0468438427DC76E200F8E88E /* CodeEditorAppDelegate.swift */; };
 		B658FB3427DA9E1000EA4DBD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3327DA9E1000EA4DBD /* Assets.xcassets */; };
 		B658FB3727DA9E1000EA4DBD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3627DA9E1000EA4DBD /* Preview Assets.xcassets */; };
 		B658FB4227DA9E1000EA4DBD /* CodeEditTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B658FB4127DA9E1000EA4DBD /* CodeEditTests.swift */; };
@@ -40,6 +42,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0439FEF427DD104500528317 /* WorkspaceEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceEditorView.swift; sourceTree = "<group>"; };
+		043DF9C127DD045800CA0FC3 /* EditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorView.swift; sourceTree = "<group>"; };
 		0468438427DC76E200F8E88E /* CodeEditorAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorAppDelegate.swift; sourceTree = "<group>"; };
 		04F2BF0E27DBB28E0024EAB1 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		04F2BF1127DBB3C10024EAB1 /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
@@ -84,16 +88,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-        348313F827DC8AF70016D42C /* Models */ = {
-            isa = PBXGroup;
-            children = (
-                348313F927DC8B0A0016D42C /* Workspace.swift */,
-                348313FB27DC8C070016D42C /* CodeFile.swift */,
-                349D101827DCE91F0009AF22 /* FileItem.swift */,
-            );
-            path = Models;
-            sourceTree = "<group>";
-        };
+		0439FEF327DD100800528317 /* Editor */ = {
+			isa = PBXGroup;
+			children = (
+				043DF9C127DD045800CA0FC3 /* EditorView.swift */,
+				0439FEF427DD104500528317 /* WorkspaceEditorView.swift */,
+			);
+			path = Editor;
+			sourceTree = "<group>";
+		};
 		04F2BF1027DBB3AF0024EAB1 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -101,6 +104,16 @@
 				04F2BF1127DBB3C10024EAB1 /* GeneralSettingsView.swift */,
 			);
 			path = Settings;
+			sourceTree = "<group>";
+		};
+		348313F827DC8AF70016D42C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				348313F927DC8B0A0016D42C /* Workspace.swift */,
+				348313FB27DC8C070016D42C /* CodeFile.swift */,
+				349D101827DCE91F0009AF22 /* FileItem.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		B658FB2327DA9E0F00EA4DBD = {
@@ -126,6 +139,7 @@
 		B658FB2E27DA9E0F00EA4DBD /* CodeEdit */ = {
 			isa = PBXGroup;
 			children = (
+				0439FEF327DD100800528317 /* Editor */,
 				04F2BF1027DBB3AF0024EAB1 /* Settings */,
 				B658FB2F27DA9E0F00EA4DBD /* CodeEditApp.swift */,
 				B658FB3127DA9E0F00EA4DBD /* ContentView.swift */,
@@ -293,14 +307,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-                348313FC27DC8C070016D42C /* CodeFile.swift in Sources */,
-                349D101927DCE91F0009AF22 /* FileItem.swift in Sources */,
-                348313FA27DC8B0A0016D42C /* Workspace.swift in Sources */,
-				04F2BF0F27DBB28E0024EAB1 /* SettingsView.swift in Sources */,
-				0468438527DC76E300F8E88E /* CodeEditorAppDelegate.swift in Sources */,
-				B658FB3227DA9E0F00EA4DBD /* ContentView.swift in Sources */,
-				04F2BF1227DBB3C10024EAB1 /* GeneralSettingsView.swift in Sources */,
-				B658FB3027DA9E0F00EA4DBD /* CodeEditApp.swift in Sources */,
+				04540D5B27DD08C300E91B77 /* SettingsView.swift in Sources */,
+				04540D5C27DD08C300E91B77 /* GeneralSettingsView.swift in Sources */,
+				04540D5D27DD08C300E91B77 /* CodeEditApp.swift in Sources */,
+				04540D5E27DD08C300E91B77 /* ContentView.swift in Sources */,
+				04540D5F27DD08C300E91B77 /* EditorView.swift in Sources */,
+				04540D6027DD08C300E91B77 /* Workspace.swift in Sources */,
+				04540D6127DD08C300E91B77 /* CodeFile.swift in Sources */,
+				04540D6227DD08C300E91B77 /* FileItem.swift in Sources */,
+				04540D6327DD08C300E91B77 /* CodeEditorAppDelegate.swift in Sources */,
+				0439FEF527DD104500528317 /* WorkspaceEditorView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -458,12 +474,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = CodeEdit/CodeEdit.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"CodeEdit/Preview Content\"";
-				DEVELOPMENT_TEAM = 6M253KWXRJ;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -488,12 +504,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = CodeEdit/CodeEdit.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"CodeEdit/Preview Content\"";
-				DEVELOPMENT_TEAM = 6M253KWXRJ;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
