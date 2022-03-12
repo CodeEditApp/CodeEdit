@@ -43,18 +43,59 @@ struct MainContentView: View {
 }
 
 struct ContentView: View {
-    @Binding var document: CodeFile
+    @State var workspaceDirectoryURL: URL?
+    
+    var currentDocument: Binding<CodeFile>?
+    
+    func openFolderDialog() {
+        let dialog = NSOpenPanel()
+        
+        dialog.title = "Select a Folder to Open"
+        dialog.allowsMultipleSelection = false
+        dialog.canChooseFiles = false
+        dialog.canChooseDirectories = true
+        
+        if dialog.runModal() == NSApplication.ModalResponse.OK {
+            if let result = dialog.url {
+                workspaceDirectoryURL = result
+                print("Openned directory: \(result.path)")
+            }
+        }
+    }
 
     var body: some View {
         NavigationView {
             List {
-                Text("Folder 1")
-                Text("Folder 2")
-                Text("Folder 3")
+                if let folderURL = workspaceDirectoryURL {
+                    Section(header: Text(folderURL.lastPathComponent)) {
+                        Text("Folder 1")
+                        Text("Folder 2")
+                        Text("Folder 3")
+                    }
+                } else {
+                    Button(action: openFolderDialog) {
+                        HStack {
+                            Spacer()
+                            
+                            Text("Open Folder")
+                                .foregroundColor(.primary)
+                            
+                            Spacer()
+                        }
+                    }
+                    .buttonStyle(.borderless)
+                    .padding(.vertical, 8.0)
+                    .background {
+                        RoundedRectangle(cornerRadius: 10.0)
+                            .foregroundColor(.blue)
+                    }
+                }
             }
             .listStyle(SidebarListStyle())
             
-            TextEditor(text: $document.text)
+            if currentDocument != nil {
+                TextEditor(text: currentDocument!.text)
+            }
         }
         .toolbar {
             ToolbarItem(placement: .automatic) {
@@ -74,8 +115,6 @@ struct ContentView: View {
             }
 
         }
-        
-        
     }
     private func toggleSidebar() {
         #if os(iOS)
@@ -87,6 +126,6 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(document: .constant(CodeFile()))
+        ContentView()
     }
 }
