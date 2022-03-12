@@ -21,12 +21,11 @@ struct MainContentView: View {
 
 struct ContentView: View {
     @State var workspace: Workspace?
+    @Binding var currentDocument: CodeFile
     
-    @State var showingAlert = false
-    @State var alertTitle = ""
-    @State var alertMsg = ""
-    
-    var currentDocument: Binding<CodeFile>?
+    @State private var showingAlert = false
+    @State private var alertTitle = ""
+    @State private var alertMsg = ""
     
     func openFolderDialog() {
         let dialog = NSOpenPanel()
@@ -49,6 +48,10 @@ struct ContentView: View {
             }
         }
     }
+    
+    func openFileEditor(path: URL) {
+        // TODO: I can't seem to figure this one out
+    }
 
     var body: some View {
         NavigationView {
@@ -56,7 +59,20 @@ struct ContentView: View {
                 if let workspace = workspace {
                     Section(header: Text(workspace.directoryURL.lastPathComponent)) {
                         ForEach(workspace.directoryContents, id: \.absoluteURL) { url in
-                            Text(url.lastPathComponent)
+                            let fileManager = FileManager.default
+                            let filePath = url.path
+                            var isDir: ObjCBool = false
+                            
+                            if fileManager.fileExists(atPath: filePath, isDirectory: &isDir) {
+                                if isDir.boolValue {
+                                    Label(url.lastPathComponent, systemImage: "folder.fill")
+                                } else {
+                                    Button(action: { openFileEditor(path: url) }) {
+                                        Label(url.lastPathComponent, systemImage: "doc.fill")
+                                    }
+                                    .buttonStyle(.plain)
+                                }
+                            }
                         }
                     }
                 } else {
@@ -80,9 +96,7 @@ struct ContentView: View {
             }
             .listStyle(SidebarListStyle())
             
-            if currentDocument != nil {
-                TextEditor(text: currentDocument!.text)
-            }
+            TextEditor(text: $currentDocument.text)
         }
         .toolbar {
             ToolbarItem(placement: .automatic) {
@@ -118,6 +132,6 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView(currentDocument: .constant(CodeFile(initialText: "Hello, World!")))
     }
 }
