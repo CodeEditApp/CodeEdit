@@ -15,7 +15,15 @@ struct CodeEditApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(appDelegate)
-        }.commands {
+        }
+        .commands {
+            SidebarCommands()
+        }
+        DocumentGroup(newDocument: CodeFile()) { file in
+            ContentView(workspace: nil, currentDocument: file.$document)
+                .environmentObject(appDelegate)
+        }
+        .commands {
             SidebarCommands()
         }
             .windowStyle(.hiddenTitleBar)

@@ -20,21 +20,28 @@ struct MainContentView: View {
 }
 
 struct ContentView: View {
+    @State var workspace: Workspace?
+    @Binding var currentDocument: CodeFile
+    
+    @State private var showingAlert = false
+    @State private var alertTitle = ""
+    @State private var alertMsg = ""
+    
     @EnvironmentObject var appDelegate: CodeEditorAppDelegate
     @SceneStorage("ContentView.path") private var path: String = ""
-    
-    @State private var queryString = ""
-    
-    private let items = ["One", "Two", "Three", "Four", "Five"]
-    @State private var selection: String? = "home"
 
     var body: some View {
         NavigationView {
             sidebar
             
-            Text("Location: \(path)")
+            TextEditor(text: $currentDocument.text)
         }
         .toolbar {
+            ToolbarItem(placement: .automatic) {
+                Button(action: toggleSidebar, label: {
+                    Image(systemName: "sidebar.leading")
+                }).help("Show/Hide Sidebar")
+            }
             ToolbarItem(placement: .navigation) {
                 Button(action: {}) {
                     Image(systemName: "chevron.left")
@@ -66,44 +73,40 @@ struct ContentView: View {
                 }
             }
         }
+        // This alert system could probably be improved
+        .alert(alertTitle, isPresented: $showingAlert, actions: {
+            Button(action: { showingAlert = false }) {
+                Text("OK")
+            }
+        }, message: { Text(alertMsg) })
     }
     
     var sidebar: some View {
-        VStack {
-            List(selection: $selection) {
-                NavigationLink(
-                    destination: MainContentView()
-                        .navigationTitle("Home")
-                        .navigationSubtitle("Dashboard"),
-                    label: {
-                        Image(systemName: "house")
-                            .foregroundColor(.secondary)
-                        Text("Home")
-                    }
-                ).id("home")
-                Section(header: Text("Items")) {
-                    ForEach(items, id: \.self) { item in
-                        NavigationLink(
-                            destination: Text("Item \(item)")
-                                .navigationTitle("Item \(item)"),
-                            label: {
-                                Image(systemName: "folder")
-                                    .foregroundColor(.secondary)
-                                Text("Item \(item)")
-                            }
-                        )
+        if let workspace = workspace {
+            Section(header: Text(workspace.directoryURL.lastPathComponent)) {
+                OutlineGroup(workspace.fileItems, children: \.children) { item in
+                    if item.children == nil {
+                        Button(action: { openFileEditor(item.url) }) {
+                            Label(item.url.lastPathComponent, systemImage: item.systemImage)
+                                .accentColor(.secondary)
+                                .font(.callout)
+                        }
+                        .buttonStyle(.plain)
+                    } else {
+                        Label(item.url.lastPathComponent, systemImage: item.systemImage)
+                            .accentColor(.secondary)
+                            .font(.callout)
                     }
                 }
             }
-            .listStyle(SidebarListStyle())
-        }
-        .frame(minWidth: 250)
-        .toolbar {
-            ToolbarItem(placement: .primaryAction) {
-                Button(action: toggleSidebar) {
-                    Image(systemName: "sidebar.leading")
+            .frame(minWidth: 250)
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                    Button(action: toggleSidebar) {
+                        Image(systemName: "sidebar.leading")
+                    }
+                    .help("Show/Hide Sidebar")
                 }
-                .help("Show/Hide Sidebar")
             }
         }
     }
@@ -118,6 +121,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView(currentDocument: .constant(CodeFile(initialText: "Hello, World!")))
     }
 }
+
