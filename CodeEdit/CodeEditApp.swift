@@ -11,7 +11,7 @@ import SwiftUI
 struct CodeEditApp: App {
     var body: some Scene {
         DocumentGroup(newDocument: CodeFile()) { file in
-            ContentView(workspaceDirectoryURL: nil, currentDocument: file.$document)
+            ContentView(workspace: nil, currentDocument: file.$document)
         }.commands {
             SidebarCommands()
         }

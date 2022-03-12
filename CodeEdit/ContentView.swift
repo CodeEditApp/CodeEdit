@@ -6,29 +6,6 @@
 //
 
 import SwiftUI
-import UniformTypeIdentifiers
-
-struct CodeFile: FileDocument {
-    
-    static var readableContentTypes = [UTType.sourceCode]
-    var text = ""
-    
-    init(initialText: String = "") {
-        self.text = initialText
-    }
-    
-    init(configuration: ReadConfiguration) throws {
-        if let data = configuration.file.regularFileContents {
-            text = String(decoding: data, as: UTF8.self)
-        }
-    }
-    
-    func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
-        let data = Data(text.utf8)
-        return FileWrapper(regularFileWithContents: data)
-    }
-    
-}
 
 struct MainContentView: View {
     var body: some View {
@@ -43,7 +20,11 @@ struct MainContentView: View {
 }
 
 struct ContentView: View {
-    @State var workspaceDirectoryURL: URL?
+    @State var workspace: Workspace?
+    
+    @State var showingAlert = false
+    @State var alertTitle = ""
+    @State var alertMsg = ""
     
     var currentDocument: Binding<CodeFile>?
     
@@ -57,8 +38,14 @@ struct ContentView: View {
         
         if dialog.runModal() == NSApplication.ModalResponse.OK {
             if let result = dialog.url {
-                workspaceDirectoryURL = result
-                print("Openned directory: \(result.path)")
+                do {
+                    workspace = try Workspace(url: result)
+                } catch {
+                    alertTitle = "Unable to Open Folder"
+                    alertMsg = error.localizedDescription
+                    showingAlert = true
+                    print(error.localizedDescription)
+                }
             }
         }
     }
@@ -66,11 +53,11 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             List {
-                if let folderURL = workspaceDirectoryURL {
-                    Section(header: Text(folderURL.lastPathComponent)) {
-                        Text("Folder 1")
-                        Text("Folder 2")
-                        Text("Folder 3")
+                if let workspace = workspace {
+                    Section(header: Text(workspace.directoryURL.lastPathComponent)) {
+                        ForEach(workspace.directoryContents, id: \.absoluteURL) { url in
+                            Text(url.lastPathComponent)
+                        }
                     }
                 } else {
                     Button(action: openFolderDialog) {
@@ -83,8 +70,8 @@ struct ContentView: View {
                             Spacer()
                         }
                     }
-                    .buttonStyle(.borderless)
-                    .padding(.vertical, 8.0)
+                    .buttonStyle(.plain)
+                    .padding(.vertical, 10.0)
                     .background {
                         RoundedRectangle(cornerRadius: 10.0)
                             .foregroundColor(.blue)
@@ -113,8 +100,13 @@ struct ContentView: View {
                     Image(systemName: "chevron.right")
                 }).disabled(true).help("Fordward")
             }
-
         }
+        // This alert system could probably be improved
+        .alert(alertTitle, isPresented: $showingAlert, actions: {
+            Button(action: { showingAlert = false }) {
+                Text("OK")
+            }
+        }, message: { Text(alertMsg) })
     }
     private func toggleSidebar() {
         #if os(iOS)
