@@ -20,65 +20,113 @@ struct MainContentView: View {
 }
 
 struct ContentView: View {
-    @State private var queryString = ""
+    @State var workspace: Workspace?
+    @Binding var currentDocument: CodeFile
     
-    private let items = ["One", "Two", "Three", "Four", "Five"]
-    @State private var selection: String? = "home"
-
-    var body: some View {
-        NavigationView {
-            VStack {
-                List(selection: $selection) {
-                    NavigationLink(
-                        destination: MainContentView()
-                            .navigationTitle("Home")
-                            .navigationSubtitle("Dashboard"),
-                        label: {
-                            Image(systemName: "house")
-                                .foregroundColor(.secondary)
-                            Text("Home")
-                        }
-                    ).id("home")
-                    Section(header: Text("Items")) {
-                        ForEach(items, id: \.self) { item in
-                            NavigationLink(
-                                destination: Text("Item \(item)")
-                                    .navigationTitle("Item \(item)"),
-                                label: {
-                                    Image(systemName: "folder")
-                                        .foregroundColor(.secondary)
-                                    Text("Item \(item)")
-                                }
-                            )
+    @State private var showingAlert = false
+    @State private var alertTitle = ""
+    @State private var alertMsg = ""
+    
+    func openFolderDialog() {
+        let dialog = NSOpenPanel()
+        
+        dialog.title = "Select a Folder to Open"
+        dialog.allowsMultipleSelection = false
+        dialog.canChooseFiles = false
+        dialog.canChooseDirectories = true
+        
+        if dialog.runModal() == NSApplication.ModalResponse.OK {
+            if let result = dialog.url {
+                do {
+                    workspace = try Workspace(folderURL: result)
+                } catch {
+                    alertTitle = "Unable to Open Folder"
+                    alertMsg = error.localizedDescription
+                    showingAlert = true
+                    print(error.localizedDescription)
+                }
+            }
+        }
+    }
+    
+    func openFileEditor(_ url: URL) {
+        // TODO: Create and load a `CodeFile` instance from the file URL
+        // ^ I can't seem to figure this one out
+        print("Opening file \(url.path)")
+    }
+    
+    var sidebar: some View {
+        List {
+            if let workspace = workspace {
+                Section(header: Text(workspace.directoryURL.lastPathComponent)) {
+                    OutlineGroup(workspace.fileItems, children: \.children) { item in
+                        if item.children == nil {
+                            Button(action: { openFileEditor(item.url) }) {
+                                Label(item.url.lastPathComponent, systemImage: item.systemImage)
+                                    .accentColor(.secondary)
+                                    .font(.callout)
+                            }
+                            .buttonStyle(.plain)
+                        } else {
+                            Label(item.url.lastPathComponent, systemImage: item.systemImage)
+                                .accentColor(.secondary)
+                                .font(.callout)
                         }
                     }
                 }
-                .listStyle(SidebarListStyle())
+            } else {
+                Button(action: openFolderDialog) {
+                    HStack {
+                        Spacer()
+                        
+                        Text("Open Folder")
+                            .foregroundColor(.primary)
+                        
+                        Spacer()
+                    }
+                }
+                .buttonStyle(.plain)
+                .padding(.vertical, 10.0)
+                .background {
+                    RoundedRectangle(cornerRadius: 10.0)
+                        .foregroundColor(.blue)
+                }
             }
-
-            .toolbar {
-            ToolbarItem(placement: .automatic) {
-                    Button(action: toggleSidebar, label: {
-                        Image(systemName: "sidebar.leading")
-                    }).help("Show/Hide Sidebar")
-                }
-                ToolbarItem(placement: .navigation) {
-                    Button(action: toggleSidebar, label: {
-                        Image(systemName: "chevron.left")
-                    }).help("Back")
-                }
-                ToolbarItem(placement: .navigation) {
-                    Button(action: toggleSidebar, label: {
-                        Image(systemName: "chevron.right")
-                    }).disabled(true).help("Fordward")
-                }
-
-            }
-            
         }
-        
-        
+        .frame(minWidth: 250)
+        .listStyle(.sidebar)
     }
+
+    var body: some View {
+        NavigationView {
+            sidebar
+            TextEditor(text: $currentDocument.text)
+        }
+        .toolbar {
+            ToolbarItem(placement: .automatic) {
+                Button(action: toggleSidebar, label: {
+                    Image(systemName: "sidebar.leading")
+                }).help("Show/Hide Sidebar")
+            }
+            ToolbarItem(placement: .navigation) {
+                Button(action: toggleSidebar, label: {
+                    Image(systemName: "chevron.left")
+                }).help("Back")
+            }
+            ToolbarItem(placement: .navigation) {
+                Button(action: toggleSidebar, label: {
+                    Image(systemName: "chevron.right")
+                }).disabled(true).help("Fordward")
+            }
+        }
+        // This alert system could probably be improved
+        .alert(alertTitle, isPresented: $showingAlert, actions: {
+            Button(action: { showingAlert = false }) {
+                Text("OK")
+            }
+        }, message: { Text(alertMsg) })
+    }
+    
     private func toggleSidebar() {
         #if os(iOS)
         #else
@@ -89,6 +137,6 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView(currentDocument: .constant(CodeFile(initialText: "Hello, World!")))
     }
 }

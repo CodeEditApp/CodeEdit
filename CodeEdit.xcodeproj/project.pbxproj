@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		348313FA27DC8B0A0016D42C /* Workspace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 348313F927DC8B0A0016D42C /* Workspace.swift */; };
+		348313FC27DC8C070016D42C /* CodeFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 348313FB27DC8C070016D42C /* CodeFile.swift */; };
+		349D101927DCE91F0009AF22 /* FileItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349D101827DCE91F0009AF22 /* FileItem.swift */; };
 		B658FB3027DA9E0F00EA4DBD /* CodeEditApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B658FB2F27DA9E0F00EA4DBD /* CodeEditApp.swift */; };
 		B658FB3227DA9E0F00EA4DBD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B658FB3127DA9E0F00EA4DBD /* ContentView.swift */; };
 		B658FB3427DA9E1000EA4DBD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3327DA9E1000EA4DBD /* Assets.xcassets */; };
@@ -34,6 +37,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		348313F927DC8B0A0016D42C /* Workspace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Workspace.swift; sourceTree = "<group>"; };
+		348313FB27DC8C070016D42C /* CodeFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeFile.swift; sourceTree = "<group>"; };
+		349D101827DCE91F0009AF22 /* FileItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileItem.swift; sourceTree = "<group>"; };
 		B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodeEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B658FB2F27DA9E0F00EA4DBD /* CodeEditApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditApp.swift; sourceTree = "<group>"; };
 		B658FB3127DA9E0F00EA4DBD /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -72,6 +78,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		348313F827DC8AF70016D42C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				348313F927DC8B0A0016D42C /* Workspace.swift */,
+				348313FB27DC8C070016D42C /* CodeFile.swift */,
+				349D101827DCE91F0009AF22 /* FileItem.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		B658FB2327DA9E0F00EA4DBD = {
 			isa = PBXGroup;
 			children = (
@@ -97,6 +113,7 @@
 			children = (
 				B658FB2F27DA9E0F00EA4DBD /* CodeEditApp.swift */,
 				B658FB3127DA9E0F00EA4DBD /* ContentView.swift */,
+				348313F827DC8AF70016D42C /* Models */,
 				B658FB3327DA9E1000EA4DBD /* Assets.xcassets */,
 				B658FB3827DA9E1000EA4DBD /* CodeEdit.entitlements */,
 				B658FB3527DA9E1000EA4DBD /* Preview Content */,
@@ -259,6 +276,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				348313FC27DC8C070016D42C /* CodeFile.swift in Sources */,
+				349D101927DCE91F0009AF22 /* FileItem.swift in Sources */,
+				348313FA27DC8B0A0016D42C /* Workspace.swift in Sources */,
 				B658FB3227DA9E0F00EA4DBD /* ContentView.swift in Sources */,
 				B658FB3027DA9E0F00EA4DBD /* CodeEditApp.swift in Sources */,
 			);
@@ -422,7 +442,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"CodeEdit/Preview Content\"";
-				DEVELOPMENT_TEAM = 9VS2VKC5LQ;
+				DEVELOPMENT_TEAM = U29V6K83J6;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -449,7 +469,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"CodeEdit/Preview Content\"";
-				DEVELOPMENT_TEAM = 9VS2VKC5LQ;
+				DEVELOPMENT_TEAM = U29V6K83J6;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
