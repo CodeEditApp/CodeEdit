@@ -8,9 +8,9 @@
 import SwiftUI
 import UniformTypeIdentifiers
 
-struct TextFile: FileDocument {
+struct CodeFile: FileDocument {
     
-    static var readableContentTypes = [UTType.plainText]
+    static var readableContentTypes = [UTType.sourceCode]
     var text = ""
     
     init(initialText: String = "") {
@@ -43,7 +43,7 @@ struct MainContentView: View {
 }
 
 struct ContentView: View {
-    @Binding var document: TextFile
+    @Binding var document: CodeFile
 
     var body: some View {
         NavigationView {
@@ -87,6 +87,6 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(document: .constant(TextFile()))
+        ContentView(document: .constant(CodeFile()))
     }
 }

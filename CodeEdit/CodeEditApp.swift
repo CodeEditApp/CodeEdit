@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct CodeEditApp: App {
     var body: some Scene {
-        DocumentGroup(newDocument: TextFile()) { file in
+        DocumentGroup(newDocument: CodeFile()) { file in
             ContentView(document: file.$document)
         }.commands {
             SidebarCommands()
