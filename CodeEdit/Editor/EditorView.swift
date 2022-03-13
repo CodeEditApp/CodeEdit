@@ -16,9 +16,3 @@ struct EditorView: View {
             .font(.callout.monospaced())
     }
 }
-
-struct EditorView_Previews: PreviewProvider {
-    static var previews: some View {
-        EditorView(text: .constant("Hello, world!"))
-    }
-}

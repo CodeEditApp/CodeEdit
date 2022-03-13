@@ -6,7 +6,7 @@
 	<array>
 		<dict>
 			<key>CFBundleTypeName</key>
-			<string>Workspace Folder</string>
+			<string>Workspace</string>
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
 			<key>LSHandlerRank</key>
@@ -15,10 +15,12 @@
 			<array>
 				<string>public.folder</string>
 			</array>
+			<key>NSDocumentClass</key>
+			<string>Workspace</string>
 		</dict>
 		<dict>
 			<key>CFBundleTypeName</key>
-			<string>Source Code</string>
+			<string>Source code</string>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>LSHandlerRank</key>
@@ -27,6 +29,8 @@
 			<array>
 				<string>public.source-code</string>
 			</array>
+			<key>NSDocumentClass</key>
+			<string>CodeFile</string>
 		</dict>
 	</array>
 	<key>CFBundleURLTypes</key>

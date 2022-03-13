@@ -6,14 +6,16 @@
 //
 
 import Foundation
+import AppKit
+import SwiftUI
 
-struct Workspace {
+@objc(Workspace)
+class Workspace: NSDocument, ObservableObject {
     
     static let ignoredFilesAndFolders = [
         ".DS_Store"
     ]
     
-    var directoryURL: URL
     var fileItems: [FileItem] = []
     
     private func getFileItems(url: URL) throws -> [FileItem] {
@@ -43,9 +45,28 @@ struct Workspace {
         return items
     }
     
-    init(folderURL: URL) throws {
-        directoryURL = folderURL
-        fileItems = try getFileItems(url: folderURL)
+    // MARK: - NSDocument
+    
+    override class var autosavesInPlace: Bool {
+        return true
+    }
+    
+    override func makeWindowControllers() {
+        let contentView = WorkspaceView(workspace: self)
+        let window = NSWindow(
+            contentRect: NSRect(x: 0, y: 0, width: 800, height: 600),
+            styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
+            backing: .buffered, defer: false)
+        window.center()
+        window.contentView = NSHostingView(rootView: contentView)
+        window.toolbar = NSToolbar()
+        window.toolbarStyle = .unified
+        let windowController = NSWindowController(window: window)
+        self.addWindowController(windowController)
+    }
+    
+    override func read(from url: URL, ofType typeName: String) throws {
+        fileItems = try getFileItems(url: url)
     }
     
 }
