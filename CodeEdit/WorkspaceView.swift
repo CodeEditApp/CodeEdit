@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct WorkspaceView: View {
+    var windowController: NSWindowController
     @ObservedObject var workspace: Workspace
     
     @State var selectedId: UUID?
@@ -59,6 +60,9 @@ struct WorkspaceView: View {
                     if item.children == nil, let file = item.file {
                         NavigationLink(tag: item.id, selection: $selectedId) {
                             CodeFileEditor(file: file)
+                                .onAppear {
+                                    self.windowController.document = file
+                                }
                         } label: {
                             Label(item.url.lastPathComponent, systemImage: item.systemImage)
                                 .accentColor(.secondary)
