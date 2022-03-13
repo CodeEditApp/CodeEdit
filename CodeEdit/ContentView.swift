@@ -7,124 +7,112 @@
 
 import SwiftUI
 
-struct MainContentView: View {
-    var body: some View {
-        VStack(alignment: .center) {
-            HStack {
-                Text("CodeEdit")
-                    .font(.title)
-            }.padding()
-           
-        }
-    }
-}
-
 struct ContentView: View {
     @State var workspace: Workspace?
-    @Binding var currentDocument: CodeFile
+    @State var selectedId: UUID?
+    @State var urlInit = false
     
     @State private var showingAlert = false
     @State private var alertTitle = ""
     @State private var alertMsg = ""
     
-    func openFolderDialog() {
-        let dialog = NSOpenPanel()
-        
-        dialog.title = "Select a Folder to Open"
-        dialog.allowsMultipleSelection = false
-        dialog.canChooseFiles = false
-        dialog.canChooseDirectories = true
-        
-        if dialog.runModal() == NSApplication.ModalResponse.OK {
-            if let result = dialog.url {
-                do {
-                    workspace = try Workspace(folderURL: result)
-                } catch {
-                    alertTitle = "Unable to Open Folder"
-                    alertMsg = error.localizedDescription
-                    showingAlert = true
-                    print(error.localizedDescription)
-                }
-            }
-        }
-    }
-    
-    func openFileEditor(_ url: URL) {
-        // TODO: Create and load a `CodeFile` instance from the file URL
-        // ^ I can't seem to figure this one out
-        print("Opening file \(url.path)")
-    }
-    
-    var sidebar: some View {
-        List {
-            if let workspace = workspace {
-                Section(header: Text(workspace.directoryURL.lastPathComponent)) {
-                    OutlineGroup(workspace.fileItems, children: \.children) { item in
-                        if item.children == nil {
-                            Button(action: { openFileEditor(item.url) }) {
-                                Label(item.url.lastPathComponent, systemImage: item.systemImage)
-                                    .accentColor(.secondary)
-                                    .font(.callout)
-                            }
-                            .buttonStyle(.plain)
-                        } else {
-                            Label(item.url.lastPathComponent, systemImage: item.systemImage)
-                                .accentColor(.secondary)
-                                .font(.callout)
-                        }
-                    }
-                }
-            } else {
-                Button(action: openFolderDialog) {
-                    HStack {
-                        Spacer()
-                        
-                        Text("Open Folder")
-                            .foregroundColor(.primary)
-                        
-                        Spacer()
-                    }
-                }
-                .buttonStyle(.plain)
-                .padding(.vertical, 10.0)
-                .background {
-                    RoundedRectangle(cornerRadius: 10.0)
-                        .foregroundColor(.blue)
-                }
-            }
-        }
-        .frame(minWidth: 250)
-        .listStyle(.sidebar)
-    }
+    @EnvironmentObject var appDelegate: CodeEditorAppDelegate
+    @SceneStorage("ContentView.path") private var path: String = ""
 
     var body: some View {
         NavigationView {
-            sidebar
-            TextEditor(text: $currentDocument.text)
+            if workspace != nil {
+                sidebar
+                    .frame(minWidth: 250)
+                    .toolbar {
+                        ToolbarItem(placement: .primaryAction) {
+                            Button(action: toggleSidebar) {
+                                Image(systemName: "sidebar.leading")
+                            }
+                            .help("Show/Hide Sidebar")
+                        }
+                    }
+                
+                Text("Open file from sidebar")
+            } else {
+                EmptyView()
+            }
         }
         .toolbar {
-            ToolbarItem(placement: .automatic) {
-                Button(action: toggleSidebar, label: {
-                    Image(systemName: "sidebar.leading")
-                }).help("Show/Hide Sidebar")
-            }
             ToolbarItem(placement: .navigation) {
-                Button(action: toggleSidebar, label: {
+                Button(action: {}) {
                     Image(systemName: "chevron.left")
-                }).help("Back")
+                }
+                .help("Back")
             }
             ToolbarItem(placement: .navigation) {
-                Button(action: toggleSidebar, label: {
+                Button(action: {}){
                     Image(systemName: "chevron.right")
-                }).disabled(true).help("Fordward")
+                }
+                .disabled(true)
+                .help("Forward")
             }
         }
-        // This alert system could probably be improved
+        .frame(minWidth: 800, minHeight: 600)
+        .onOpenURL { url in
+            urlInit = true
+            do {
+                self.workspace = try Workspace(folderURL: url)
+            } catch {
+                self.alertTitle = "Unable to Open Workspace"
+                self.alertMsg = error.localizedDescription
+                self.showingAlert = true
+                print(error.localizedDescription)
+            }
+        }
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+                if !self.urlInit {
+                    if let url = self.appDelegate.newProjectURL() {
+                        do {
+                            self.workspace = try Workspace(folderURL: url)
+                        } catch {
+                            self.alertTitle = "Unable to Open Folder"
+                            self.alertMsg = error.localizedDescription
+                            self.showingAlert = true
+                            print(error.localizedDescription)
+                            NSApplication.shared.keyWindow?.close()
+                        }
+                        
+                        // TODO: additional project initialization
+                    } else {
+                        NSApplication.shared.keyWindow?.close()
+                    }
+                }
+            }
+        }
         .alert(alertTitle, isPresented: $showingAlert, actions: {
             Button(action: { showingAlert = false }) {
                 Text("OK")
             }
         }, message: { Text(alertMsg) })
+    }
+    
+    var sidebar: some View {
+        List {
+            Section(header: Text(workspace!.directoryURL.lastPathComponent)) {
+                OutlineGroup(workspace!.fileItems, children: \.children) { item in
+                    if item.children == nil {
+                        NavigationLink(tag: item.id, selection: $selectedId) {
+                            WorkspaceEditorView(item: item)
+                        } label: {
+                            Label(item.url.lastPathComponent, systemImage: item.systemImage)
+                                .accentColor(.secondary)
+                                .font(.callout)
+                        }
+                    } else {
+                        Label(item.url.lastPathComponent, systemImage: item.systemImage)
+                            .accentColor(.secondary)
+                            .font(.callout)
+                    }
+                }
+            }
+        }
     }
     
     private func toggleSidebar() {
@@ -137,6 +125,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(currentDocument: .constant(CodeFile(initialText: "Hello, World!")))
+        ContentView()
     }
 }
+
