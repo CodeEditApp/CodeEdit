@@ -20,7 +20,6 @@ struct CodeEditApp: App {
             SidebarCommands()
         }
             .windowToolbarStyle(.unified)
-            .handlesExternalEvents(matching: ["open"])
         
         DocumentGroup(newDocument: CodeFile()) { file in
             EditorView(text: file.$document.text)
@@ -30,7 +29,6 @@ struct CodeEditApp: App {
         .commands {
             SidebarCommands()
         }
-            .handlesExternalEvents(matching: ["openFile"])
         
         Settings {
             SettingsView()

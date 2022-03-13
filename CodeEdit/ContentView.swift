@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @State var workspace: Workspace?
     @State var selectedId: UUID?
+    @State var urlInit = false
     
     @State private var showingAlert = false
     @State private var alertTitle = ""
@@ -54,10 +55,11 @@ struct ContentView: View {
         }
         .frame(minWidth: 800, minHeight: 600)
         .onOpenURL { url in
+            urlInit = true
             do {
                 self.workspace = try Workspace(folderURL: url)
             } catch {
-                self.alertTitle = "Unable to Open Folder"
+                self.alertTitle = "Unable to Open Workspace"
                 self.alertMsg = error.localizedDescription
                 self.showingAlert = true
                 print(error.localizedDescription)
@@ -65,7 +67,7 @@ struct ContentView: View {
         }
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-                if self.workspace == nil {
+                if !self.urlInit {
                     if let url = self.appDelegate.newProjectURL() {
                         do {
                             self.workspace = try Workspace(folderURL: url)

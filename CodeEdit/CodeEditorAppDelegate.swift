@@ -17,7 +17,7 @@ class CodeEditorAppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     func newProjectURL() -> URL? {
         let dialog = NSOpenPanel()
 
-        dialog.title = "Open Folder"
+        dialog.title = "Open Workspace"
         dialog.showsResizeIndicator = true
         dialog.showsHiddenFiles = false
         dialog.canChooseFiles = false
