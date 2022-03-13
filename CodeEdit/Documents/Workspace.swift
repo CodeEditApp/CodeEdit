@@ -30,14 +30,19 @@ class Workspace: NSDocument, ObservableObject {
             
             if FileManager.default.fileExists(atPath: url.path, isDirectory: &isDir) {
                 var subItems: [FileItem]? = nil
+                var file: CodeFile? = nil
                 
                 if isDir.boolValue {
                     // TODO: Possibly optimize to loading avoid cache dirs and/or large folders
                     // Recursively fetch subdirectories and files if the path points to a directory
                     subItems = try getFileItems(url: url)
+                } else {
+                    do {
+                        file = try .init(contentsOf: url, ofType: "public.source-code")
+                    } catch {}
                 }
                 
-                let newFileItem = FileItem(url: url, children: subItems)
+                let newFileItem = FileItem(url: url, file: file, children: subItems)
                 items.append(newFileItem)
             }
         }
@@ -67,6 +72,10 @@ class Workspace: NSDocument, ObservableObject {
     
     override func read(from url: URL, ofType typeName: String) throws {
         fileItems = try getFileItems(url: url)
+    }
+    
+    override func write(to url: URL, ofType typeName: String) throws {
+        
     }
     
 }

@@ -10,6 +10,7 @@ import Foundation
 struct FileItem: Hashable, Identifiable {
     var id: UUID = UUID()
     var url: URL
+    var file: CodeFile?
     var children: [FileItem]? = nil
     var systemImage: String {
         switch children {

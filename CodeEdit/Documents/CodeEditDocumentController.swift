@@ -22,6 +22,8 @@ class CodeEditDocumentController: NSDocumentController {
         dialog.begin { result in
             if result ==  NSApplication.ModalResponse.OK, let url = dialog.url {
                 self.openDocument(withContentsOf: url, display: true) { document, documentWasAlreadyOpen, err in
+                    // TODO: handle errors
+                    
                     print(document, documentWasAlreadyOpen, err)
                 }
             }

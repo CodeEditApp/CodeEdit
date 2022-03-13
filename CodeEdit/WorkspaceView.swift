@@ -56,9 +56,9 @@ struct WorkspaceView: View {
         List {
             Section(header: Text(workspace.fileURL?.lastPathComponent ?? "Not saved")) {
                 OutlineGroup(workspace.fileItems, children: \.children) { item in
-                    if item.children == nil {
+                    if item.children == nil, let file = item.file {
                         NavigationLink(tag: item.id, selection: $selectedId) {
-                            WorkspaceEditorView(item: item)
+                            CodeFileEditor(file: file)
                         } label: {
                             Label(item.url.lastPathComponent, systemImage: item.systemImage)
                                 .accentColor(.secondary)
