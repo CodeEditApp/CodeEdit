@@ -21,6 +21,22 @@ struct ContentView: View {
     
     @EnvironmentObject var appDelegate: CodeEditorAppDelegate
     @SceneStorage("ContentView.path") private var path: String = ""
+    
+    func closeFileTab(item: FileItem) {
+        if let idx = openFileItems.firstIndex(of: item) {
+            let closedFileItem = openFileItems.remove(at: idx)
+            
+            if closedFileItem.id == selectedId {
+                if openFileItems.isEmpty {
+                    selectedId = nil
+                } else if idx == 0 {
+                    selectedId = openFileItems.first?.id
+                } else {
+                    selectedId = openFileItems[idx - 1].id
+                }
+            }
+        }
+    }
 
     var body: some View {
         NavigationView {
@@ -49,11 +65,16 @@ struct ContentView: View {
                                     
                                     ForEach(openFileItems, id: \.id) { item in
                                         Button(action: { selectedId = item.id }) {
-                                            FileTabRow(fileItem: item)
-                                                .frame(height: tabBarHeight)
+                                            FileTabRow(fileItem: item, closeAction: {
+                                                withAnimation {
+                                                    closeFileTab(item: item)
+                                                }
+                                            })
+                                            .frame(height: tabBarHeight)
                                         }
                                         .buttonStyle(.plain)
                                         .background(selectedId == item.id ? Color.accentColor : nil)
+                                        .animation(.easeOut(duration: 0.2), value: openFileItems)
                                         
                                         Divider()
                                     }
@@ -139,7 +160,9 @@ struct ContentView: View {
                     if item.children == nil {
                         // TODO: Add selection indicator
                         Button(action: {
-                            if !openFileItems.contains(item) { openFileItems.append(item) }
+                            withAnimation {
+                                if !openFileItems.contains(item) { openFileItems.append(item) }
+                            }
                             selectedId = item.id
                         }) {
                             Label(item.url.lastPathComponent, systemImage: item.systemImage)
