@@ -15,8 +15,9 @@ struct Workspace {
     
     var directoryURL: URL
     var fileItems: [FileItem] = []
+    var flattenedFileItems: [FileItem] = []
     
-    private func loadFiles(fromURL url: URL) throws -> [FileItem] {
+    private mutating func loadFiles(fromURL url: URL) throws -> [FileItem] {
         let directoryContents = try FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: nil)
         var items: [FileItem] = []
         
@@ -37,6 +38,7 @@ struct Workspace {
                 
                 let newFileItem = FileItem(url: itemURL, children: subItems)
                 items.append(newFileItem)
+                flattenedFileItems.append(newFileItem)
             }
         }
         
@@ -44,7 +46,7 @@ struct Workspace {
     }
     
     func getFileItem(id: UUID) -> FileItem? {
-        return fileItems.first(where: { $0.id == id })
+        return flattenedFileItems.first(where: { $0.id == id })
     }
     
     init(folderURL: URL) throws {
