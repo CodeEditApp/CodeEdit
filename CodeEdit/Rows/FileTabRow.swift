@@ -14,7 +14,6 @@ struct FileTabRow: View {
         Label(fileItem.url.lastPathComponent, systemImage: fileItem.systemImage)
             .font(.headline.weight(.regular))
             .padding(.horizontal, 28.0)
-            .padding(.vertical, 9.0)
     }
 }
 

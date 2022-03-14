@@ -17,6 +17,8 @@ struct ContentView: View {
     @State private var alertTitle = ""
     @State private var alertMsg = ""
     
+    var tabBarHeight = 30.0
+    
     @EnvironmentObject var appDelegate: CodeEditorAppDelegate
     @SceneStorage("ContentView.path") private var path: String = ""
 
@@ -34,32 +36,35 @@ struct ContentView: View {
                         }
                     }
                 
-                // TODO: Fix editor issue
                 if openFileItems.isEmpty {
                     Text("Open file from sidebar")
                 } else {
                     VStack {
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(alignment: .center, spacing: 0.0) {
-                                Divider()
-                                
-                                ForEach(openFileItems, id: \.id) { item in
-                                    Button(action: { selectedId = item.id }) {
-                                        FileTabRow(fileItem: item)
-                                    }
-                                    .buttonStyle(.plain)
-                                    .background(selectedId == item.id ? Color.accentColor : nil)
-                                    
+                        VStack(spacing: 0.0) {
+                            Divider()
+                            
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                HStack(alignment: .center, spacing: 0.0) {
                                     Divider()
+                                    
+                                    ForEach(openFileItems, id: \.id) { item in
+                                        Button(action: { selectedId = item.id }) {
+                                            FileTabRow(fileItem: item)
+                                                .frame(height: tabBarHeight)
+                                        }
+                                        .buttonStyle(.plain)
+                                        .background(selectedId == item.id ? Color.accentColor : nil)
+                                        
+                                        Divider()
+                                    }
+                                    
+                                    Spacer()
                                 }
-                                
-                                Spacer()
                             }
+                            .frame(maxHeight: tabBarHeight)
+                            
+                            Divider()
                         }
-                        .padding(.top, 5.0)
-                        .frame(maxHeight: 30)
-                        
-                        Divider()
                         
                         if let selectedId = selectedId {
                             if let selectedItem = workspace.getFileItem(id: selectedId) {
