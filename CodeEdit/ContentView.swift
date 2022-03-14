@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @State var workspace: Workspace?
     @State var selectedId: UUID?
+    @State var openFileItems: [FileItem] = []
     @State var urlInit = false
     
     @State private var showingAlert = false
@@ -21,7 +22,7 @@ struct ContentView: View {
 
     var body: some View {
         NavigationView {
-            if workspace != nil {
+            if let workspace = workspace {
                 sidebar
                     .frame(minWidth: 250)
                     .toolbar {
@@ -33,7 +34,36 @@ struct ContentView: View {
                         }
                     }
                 
-                Text("Open file from sidebar")
+                VStack {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(alignment: .center) {
+                            ForEach(openFileItems, id: \.id) { item in
+                                Button(action: { selectedId = item.id }) {
+                                    Label(item.url.lastPathComponent, systemImage: item.systemImage)
+                                        .font(.headline)
+                                        .padding(.horizontal, 15.0)
+                                        .padding(.vertical, 8.0)
+                                }
+                                .buttonStyle(.plain)
+                            }
+                            
+                            Spacer()
+                        }
+                    }
+                    .frame(maxHeight: 30)
+                    
+                    Divider()
+                    
+                    if openFileItems.isEmpty {
+                        Text("Open file from sidebar")
+                    } else {
+                        if let selectedId = selectedId {
+                            if let selectedItem = workspace.getFileItem(id: selectedId) {
+                                WorkspaceEditorView(item: selectedItem)
+                            }
+                        }
+                    }
+                }
             } else {
                 EmptyView()
             }
@@ -98,9 +128,18 @@ struct ContentView: View {
             Section(header: Text(workspace!.directoryURL.lastPathComponent)) {
                 OutlineGroup(workspace!.fileItems, children: \.children) { item in
                     if item.children == nil {
-                        NavigationLink(tag: item.id, selection: $selectedId) {
-                            WorkspaceEditorView(item: item)
-                        } label: {
+//                        NavigationLink(tag: item.id, selection: $selectedId) {
+//                            WorkspaceEditorView(item: item)
+//                        } label: {
+//                            Label(item.url.lastPathComponent, systemImage: item.systemImage)
+//                                .accentColor(.secondary)
+//                                .font(.callout)
+//                        }
+                        
+                        Button(action: {
+                            if !openFileItems.contains(item) { openFileItems.append(item) }
+                            selectedId = item.id
+                        }) {
                             Label(item.url.lastPathComponent, systemImage: item.systemImage)
                                 .accentColor(.secondary)
                                 .font(.callout)
@@ -125,7 +164,11 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView(openFileItems: [
+            FileItem(url: URL(string: "code.swift")!),
+            FileItem(url: URL(string: "program.py")!),
+            FileItem(url: URL(string: "index.html")!)
+        ])
     }
 }
 
