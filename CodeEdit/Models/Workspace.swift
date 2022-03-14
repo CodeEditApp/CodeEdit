@@ -54,4 +54,11 @@ struct Workspace {
         fileItems = try loadFiles(fromURL: folderURL)
     }
     
+    /// Meant for generating previews. Use `init(folderURL:)` for normal use.
+    init(folderURL: URL, fileItems: [FileItem]) {
+        directoryURL = folderURL
+        self.fileItems = fileItems
+        self.flattenedFileItems = fileItems
+    }
+    
 }

@@ -56,36 +56,7 @@ struct ContentView: View {
                     Text("Open file from sidebar")
                 } else {
                     VStack {
-                        VStack(spacing: 0.0) {
-                            Divider()
-                            
-                            ScrollView(.horizontal, showsIndicators: false) {
-                                HStack(alignment: .center, spacing: 0.0) {
-                                    Divider()
-                                    
-                                    ForEach(openFileItems, id: \.id) { item in
-                                        Button(action: { selectedId = item.id }) {
-                                            FileTabRow(fileItem: item, closeAction: {
-                                                withAnimation {
-                                                    closeFileTab(item: item)
-                                                }
-                                            })
-                                            .frame(height: tabBarHeight)
-                                        }
-                                        .buttonStyle(.plain)
-                                        .background(selectedId == item.id ? Color.accentColor : nil)
-                                        .animation(.easeOut(duration: 0.2), value: openFileItems)
-                                        
-                                        Divider()
-                                    }
-                                    
-                                    Spacer()
-                                }
-                            }
-                            .frame(maxHeight: tabBarHeight)
-                            
-                            Divider()
-                        }
+                        tabBar
                         
                         if let selectedId = selectedId {
                             if let selectedItem = workspace.getFileItem(id: selectedId) {
@@ -151,6 +122,39 @@ struct ContentView: View {
                 Text("OK")
             }
         }, message: { Text(alertMsg) })
+    }
+    
+    var tabBar: some View {
+        VStack(spacing: 0.0) {
+            Divider()
+            
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(alignment: .center, spacing: 0.0) {
+                    Divider()
+                    
+                    ForEach(openFileItems, id: \.id) { item in
+                        Button(action: { selectedId = item.id }) {
+                            FileTabRow(fileItem: item, closeAction: {
+                                withAnimation {
+                                    closeFileTab(item: item)
+                                }
+                            })
+                            .frame(height: tabBarHeight)
+                        }
+                        .buttonStyle(.plain)
+                        .background(selectedId == item.id ? Color.accentColor : nil)
+                        .animation(.easeOut(duration: 0.2), value: openFileItems)
+                        
+                        Divider()
+                    }
+                    
+                    Spacer()
+                }
+            }
+            .frame(maxHeight: tabBarHeight)
+            
+            Divider()
+        }
     }
     
     var sidebar: some View {
