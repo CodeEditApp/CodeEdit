@@ -22,14 +22,14 @@ Our goal is to develop an app that looks and feels like it was designed and deve
 - [x] Start a boilerplate app
 - [x] Set up a Github repository to allow the community to get involved
 - [x] Start a [discord server](https://discord.gg/ANUVc6TF) for community collaboration
-- [ ] Develop the underlying text editor complete with syntax heighlighting
+- [ ] Develop the underlying text editor complete with syntax highlighting
 - [ ] Project navigator - Manage and edit files within a project
 - [ ] Source control navigator
 - [ ] Find in document
 - [ ] Find in project
 - [ ] Open file search bar overlay
 - [ ] Commands overlay
-- [ ] Statusbar
+- [ ] Status bar
 - [ ] Tabs
 - [ ] Split editors
 - [ ] Extension insfrastructure

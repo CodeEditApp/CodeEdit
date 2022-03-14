@@ -19,9 +19,6 @@
 		04540D6327DD08C300E91B77 /* CodeEditorAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0468438427DC76E200F8E88E /* CodeEditorAppDelegate.swift */; };
 		B658FB3427DA9E1000EA4DBD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3327DA9E1000EA4DBD /* Assets.xcassets */; };
 		B658FB3727DA9E1000EA4DBD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3627DA9E1000EA4DBD /* Preview Assets.xcassets */; };
-		B658FB4227DA9E1000EA4DBD /* CodeEditTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B658FB4127DA9E1000EA4DBD /* CodeEditTests.swift */; };
-		B658FB4C27DA9E1000EA4DBD /* CodeEditUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B658FB4B27DA9E1000EA4DBD /* CodeEditUITests.swift */; };
-		B658FB4E27DA9E1000EA4DBD /* CodeEditUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B658FB4D27DA9E1000EA4DBD /* CodeEditUITestsLaunchTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,10 +54,7 @@
 		B658FB3627DA9E1000EA4DBD /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		B658FB3827DA9E1000EA4DBD /* CodeEdit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CodeEdit.entitlements; sourceTree = "<group>"; };
 		B658FB3D27DA9E1000EA4DBD /* CodeEditTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CodeEditTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		B658FB4127DA9E1000EA4DBD /* CodeEditTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditTests.swift; sourceTree = "<group>"; };
 		B658FB4727DA9E1000EA4DBD /* CodeEditUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CodeEditUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		B658FB4B27DA9E1000EA4DBD /* CodeEditUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditUITests.swift; sourceTree = "<group>"; };
-		B658FB4D27DA9E1000EA4DBD /* CodeEditUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditUITestsLaunchTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,8 +114,6 @@
 			isa = PBXGroup;
 			children = (
 				B658FB2E27DA9E0F00EA4DBD /* CodeEdit */,
-				B658FB4027DA9E1000EA4DBD /* CodeEditTests */,
-				B658FB4A27DA9E1000EA4DBD /* CodeEditUITests */,
 				B658FB2D27DA9E0F00EA4DBD /* Products */,
 			);
 			sourceTree = "<group>";
@@ -158,23 +150,6 @@
 				B658FB3627DA9E1000EA4DBD /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
-			sourceTree = "<group>";
-		};
-		B658FB4027DA9E1000EA4DBD /* CodeEditTests */ = {
-			isa = PBXGroup;
-			children = (
-				B658FB4127DA9E1000EA4DBD /* CodeEditTests.swift */,
-			);
-			path = CodeEditTests;
-			sourceTree = "<group>";
-		};
-		B658FB4A27DA9E1000EA4DBD /* CodeEditUITests */ = {
-			isa = PBXGroup;
-			children = (
-				B658FB4B27DA9E1000EA4DBD /* CodeEditUITests.swift */,
-				B658FB4D27DA9E1000EA4DBD /* CodeEditUITestsLaunchTests.swift */,
-			);
-			path = CodeEditUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -324,7 +299,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B658FB4227DA9E1000EA4DBD /* CodeEditTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -332,8 +306,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B658FB4E27DA9E1000EA4DBD /* CodeEditUITestsLaunchTests.swift in Sources */,
-				B658FB4C27DA9E1000EA4DBD /* CodeEditUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
