@@ -34,29 +34,33 @@ struct ContentView: View {
                         }
                     }
                 
-                VStack {
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(alignment: .center) {
-                            ForEach(openFileItems, id: \.id) { item in
-                                Button(action: { selectedId = item.id }) {
-                                    Label(item.url.lastPathComponent, systemImage: item.systemImage)
-                                        .font(.headline)
-                                        .padding(.horizontal, 15.0)
-                                        .padding(.vertical, 8.0)
+                // TODO: Fix editor issue
+                if openFileItems.isEmpty {
+                    Text("Open file from sidebar")
+                } else {
+                    VStack {
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack(alignment: .center, spacing: 0.0) {
+                                Divider()
+                                
+                                ForEach(openFileItems, id: \.id) { item in
+                                    Button(action: { selectedId = item.id }) {
+                                        FileTabRow(fileItem: item)
+                                    }
+                                    .buttonStyle(.plain)
+                                    .background(selectedId == item.id ? Color.accentColor : nil)
+                                    
+                                    Divider()
                                 }
-                                .buttonStyle(.plain)
+                                
+                                Spacer()
                             }
-                            
-                            Spacer()
                         }
-                    }
-                    .frame(maxHeight: 30)
-                    
-                    Divider()
-                    
-                    if openFileItems.isEmpty {
-                        Text("Open file from sidebar")
-                    } else {
+                        .padding(.top, 5.0)
+                        .frame(maxHeight: 30)
+                        
+                        Divider()
+                        
                         if let selectedId = selectedId {
                             if let selectedItem = workspace.getFileItem(id: selectedId) {
                                 WorkspaceEditorView(item: selectedItem)
@@ -128,14 +132,7 @@ struct ContentView: View {
             Section(header: Text(workspace!.directoryURL.lastPathComponent)) {
                 OutlineGroup(workspace!.fileItems, children: \.children) { item in
                     if item.children == nil {
-//                        NavigationLink(tag: item.id, selection: $selectedId) {
-//                            WorkspaceEditorView(item: item)
-//                        } label: {
-//                            Label(item.url.lastPathComponent, systemImage: item.systemImage)
-//                                .accentColor(.secondary)
-//                                .font(.callout)
-//                        }
-                        
+                        // TODO: Add selection indicator
                         Button(action: {
                             if !openFileItems.contains(item) { openFileItems.append(item) }
                             selectedId = item.id
@@ -144,6 +141,7 @@ struct ContentView: View {
                                 .accentColor(.secondary)
                                 .font(.callout)
                         }
+                        .buttonStyle(.plain)
                     } else {
                         Label(item.url.lastPathComponent, systemImage: item.systemImage)
                             .accentColor(.secondary)
@@ -164,11 +162,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(openFileItems: [
-            FileItem(url: URL(string: "code.swift")!),
-            FileItem(url: URL(string: "program.py")!),
-            FileItem(url: URL(string: "index.html")!)
-        ])
+        ContentView()
     }
 }
 
