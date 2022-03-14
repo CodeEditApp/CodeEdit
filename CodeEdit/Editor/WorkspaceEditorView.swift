@@ -24,11 +24,11 @@ struct WorkspaceEditorView: View {
     var body: some View {
         EditorView(text: $text)
             .navigationTitle(item.url.lastPathComponent)
-            .onAppear(perform: { initText(item: self.item) })
-            .onChange(of: item, perform: { newItem in
+            .onAppear { initText(item: self.item) }
+            .onChange(of: item) { newItem in
                 self.initialized = false
                 initText(item: newItem)
-            })
+            }
             .onChange(of: text) { newValue in
                 // TODO: save using Cmd-S shortcut or autosave
                 if initialized {
