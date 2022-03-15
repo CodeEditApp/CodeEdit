@@ -17,7 +17,7 @@ struct ContentView: View {
     @State private var alertTitle = ""
     @State private var alertMsg = ""
     
-    var tabBarHeight = 30.0
+    var tabBarHeight = 27.5
     
     @EnvironmentObject var appDelegate: CodeEditorAppDelegate
     @SceneStorage("ContentView.path") private var path: String = ""
@@ -135,6 +135,7 @@ struct ContentView: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(alignment: .center, spacing: 0.0) {
                     Divider()
+                        .frame(height: 13.0)
                     
                     ForEach(openFileItems, id: \.id) { item in
                         Button(action: { selectedId = item.id }) {
@@ -146,10 +147,11 @@ struct ContentView: View {
                             .frame(height: tabBarHeight)
                         }
                         .buttonStyle(.plain)
-                        .background(selectedId == item.id ? Color.accentColor : nil)
+                        .background(selectedId == item.id ? Color.accentColor.opacity(0.3) : nil)
                         .animation(.easeOut(duration: 0.2), value: openFileItems)
                         
                         Divider()
+                            .frame(height: 13.0)
                     }
                     
                     Spacer()

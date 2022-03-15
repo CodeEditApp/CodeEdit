@@ -14,8 +14,10 @@ struct FileTabRow: View {
     var body: some View {
         ZStack {
             Label(fileItem.url.lastPathComponent, systemImage: fileItem.systemImage)
-                .font(.headline.weight(.regular))
+                .font(.callout)
                 .padding(.horizontal, 28.0)
+                .padding(.top, 2.0)
+                .lineLimit(1)
             
             HStack {
                 Spacer()
@@ -26,6 +28,7 @@ struct FileTabRow: View {
                 .buttonStyle(.plain)
                 .foregroundColor(.secondary)
                 .padding(.trailing, 7.0)
+                .padding(.top, 2.0)
             }
         }
     }
