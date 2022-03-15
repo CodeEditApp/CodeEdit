@@ -55,13 +55,20 @@ struct ContentView: View {
                 if openFileItems.isEmpty {
                     Text("Open file from sidebar")
                 } else {
-                    VStack {
-                        tabBar
-                        
+                    ZStack {
                         if let selectedId = selectedId {
                             if let selectedItem = workspace.getFileItem(id: selectedId) {
+                                // FIXME: editor hidden behind tab bar
                                 WorkspaceEditorView(item: selectedItem)
                             }
+                        }
+                        
+                        VStack {
+                            tabBar
+                                .frame(maxHeight: tabBarHeight)
+                                .background(BlurView(material: .titlebar, blendingMode: .withinWindow))
+                            
+                            Spacer()
                         }
                     }
                 }
@@ -151,7 +158,6 @@ struct ContentView: View {
                     Spacer()
                 }
             }
-            .frame(maxHeight: tabBarHeight)
             
             Divider()
         }
