@@ -8,39 +8,43 @@
 import SwiftUI
 
 struct FileTabRow: View {
-    let fileItem: FileItem
-    let closeAction: () -> Void
+    @State var mouseHovering = false
+    
+    var fileItem: FileItem
+    var isSelected: Bool
+    var closeAction: () -> Void
     
     var body: some View {
-        ZStack {
-            HStack(alignment: .center) {
-                Image(systemName: fileItem.systemImage)
-                    .resizable()
-                    .frame(width: 16.0, height: 16.0)
-                
-                Text(fileItem.url.lastPathComponent)
-                    .font(.system(size: 11.0))
-                    .lineLimit(1)
-            }
-            .padding(.horizontal, 28.0)
-            
+        let showingCloseButton = mouseHovering || isSelected
+        
+        ZStack(alignment: .center) {
             HStack {
-                Spacer()
-                
                 Button(action: closeAction) {
-                    Image(systemName: "xmark")
+                    Image(systemName: showingCloseButton ? "xmark.square.fill" : fileItem.systemImage)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: showingCloseButton ? 12.0 : 16.0)
                 }
+                .offset(x: showingCloseButton ? 10.0 : 8.0)
                 .buttonStyle(.plain)
-                .foregroundColor(.secondary)
-                .padding(.trailing, 7.0)
+                
+                Spacer()
             }
+            
+            Text(fileItem.url.lastPathComponent)
+                .font(.system(size: 11.0))
+                .padding(.horizontal, 64.0)
+                .lineLimit(1)
+        }
+        .onHover { hover in
+            mouseHovering = hover
         }
     }
 }
 
 struct FileTabRow_Previews: PreviewProvider {
     static var previews: some View {
-        FileTabRow(fileItem: FileItem(url: URL(string: "Code.swift")!), closeAction: {})
-            .frame(width: 160.0)
+        FileTabRow(fileItem: FileItem(url: URL(string: "Code.swift")!), isSelected: false, closeAction: {})
+            .frame(width: 160.0, height: 28.0)
     }
 }

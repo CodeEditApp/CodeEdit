@@ -144,7 +144,7 @@ struct ContentView: View {
                         
                         HStack(spacing: 0.0) {
                             Button(action: { selectedId = item.id }) {
-                                FileTabRow(fileItem: item, closeAction: {
+                                FileTabRow(fileItem: item, isSelected: isActive, closeAction: {
                                     withAnimation {
                                         closeFileTab(item: item)
                                     }
@@ -161,7 +161,7 @@ struct ContentView: View {
                             Divider()
                                 .foregroundColor(.primary.opacity(0.25))
                         }
-                        .animation(.easeOut(duration: 0.15), value: openFileItems)
+                        .animation(.easeOut(duration: 0.2), value: openFileItems)
                     }
                     
                     Spacer()
@@ -169,6 +169,8 @@ struct ContentView: View {
             }
             
             Divider()
+                .foregroundColor(.black)
+                .frame(height: 1.0)
         }
     }
     
