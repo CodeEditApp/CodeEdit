@@ -23,18 +23,16 @@ struct ContentView: View {
     @SceneStorage("ContentView.path") private var path: String = ""
     
     func closeFileTab(item: FileItem) {
-        if let idx = openFileItems.firstIndex(of: item) {
-            let closedFileItem = openFileItems.remove(at: idx)
-            
-            if closedFileItem.id == selectedId {
-                if openFileItems.isEmpty {
-                    selectedId = nil
-                } else if idx == 0 {
-                    selectedId = openFileItems.first?.id
-                } else {
-                    selectedId = openFileItems[idx - 1].id
-                }
-            }
+        guard let idx = openFileItems.firstIndex(of: item) else { return }
+        let closedFileItem = openFileItems.remove(at: idx)
+        guard closedFileItem.id == selectedId else { return }
+        
+        if openFileItems.isEmpty {
+            selectedId = nil
+        } else if idx == 0 {
+            selectedId = openFileItems.first?.id
+        } else {
+            selectedId = openFileItems[idx - 1].id
         }
     }
 
@@ -58,7 +56,6 @@ struct ContentView: View {
                     ZStack {
                         if let selectedId = selectedId {
                             if let selectedItem = workspace.getFileItem(id: selectedId) {
-                                // FIXME: editor hidden behind tab bar
                                 WorkspaceEditorView(item: selectedItem)
                             }
                         }
