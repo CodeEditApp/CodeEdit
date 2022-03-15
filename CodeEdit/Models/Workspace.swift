@@ -38,7 +38,7 @@ struct Workspace {
                 
                 let newFileItem = FileItem(url: itemURL, children: subItems)
                 items.append(newFileItem)
-                if !isDir.boolValue { flattenedFileItems[newFileItem.id] = newFileItem }
+                flattenedFileItems[newFileItem.id] = newFileItem
             }
         }
         

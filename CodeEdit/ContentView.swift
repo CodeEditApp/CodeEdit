@@ -17,7 +17,7 @@ struct ContentView: View {
     @State private var alertTitle = ""
     @State private var alertMsg = ""
     
-    var tabBarHeight = 27.5
+    var tabBarHeight = 28.0
     
     @EnvironmentObject var appDelegate: CodeEditorAppDelegate
     @SceneStorage("ContentView.path") private var path: String = ""
@@ -63,7 +63,9 @@ struct ContentView: View {
                         VStack {
                             tabBar
                                 .frame(maxHeight: tabBarHeight)
-                                .background(BlurView(material: .titlebar, blendingMode: .withinWindow))
+                                .background {
+                                    BlurView(material: .titlebar, blendingMode: .withinWindow)
+                                }
                             
                             Spacer()
                         }
@@ -135,23 +137,31 @@ struct ContentView: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(alignment: .center, spacing: 0.0) {
                     Divider()
-                        .frame(height: 13.0)
+                        .foregroundColor(.primary.opacity(0.25))
                     
                     ForEach(openFileItems, id: \.id) { item in
-                        Button(action: { selectedId = item.id }) {
-                            FileTabRow(fileItem: item, closeAction: {
-                                withAnimation {
-                                    closeFileTab(item: item)
-                                }
-                            })
-                            .frame(height: tabBarHeight)
-                        }
-                        .buttonStyle(.plain)
-                        .background(selectedId == item.id ? Color.accentColor.opacity(0.3) : nil)
-                        .animation(.easeOut(duration: 0.2), value: openFileItems)
+                        let isActive = selectedId == item.id
                         
-                        Divider()
-                            .frame(height: 13.0)
+                        HStack(spacing: 0.0) {
+                            Button(action: { selectedId = item.id }) {
+                                FileTabRow(fileItem: item, closeAction: {
+                                    withAnimation {
+                                        closeFileTab(item: item)
+                                    }
+                                })
+                                .frame(height: tabBarHeight)
+                                .foregroundColor(.primary.opacity(isActive ? 0.9 : 0.55))
+                            }
+                            .buttonStyle(.plain)
+                            .background {
+                                (isActive ? Color(red: 0.219, green: 0.219, blue: 0.219) : Color(red: 0.113, green: 0.113, blue: 0.113))
+                                    .opacity(0.85)
+                            }
+                            
+                            Divider()
+                                .foregroundColor(.primary.opacity(0.25))
+                        }
+                        .animation(.easeOut(duration: 0.15), value: openFileItems)
                     }
                     
                     Spacer()
