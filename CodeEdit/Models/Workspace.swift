@@ -15,7 +15,7 @@ struct Workspace {
     
     var directoryURL: URL
     var fileItems: [FileItem] = []
-    var flattenedFileItems: [FileItem] = []
+    var flattenedFileItems: [UUID: FileItem] = [:]
     
     private mutating func loadFiles(fromURL url: URL) throws -> [FileItem] {
         let directoryContents = try FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: nil)
@@ -38,7 +38,7 @@ struct Workspace {
                 
                 let newFileItem = FileItem(url: itemURL, children: subItems)
                 items.append(newFileItem)
-                flattenedFileItems.append(newFileItem)
+                if !isDir.boolValue { flattenedFileItems[newFileItem.id] = newFileItem }
             }
         }
         
@@ -46,19 +46,12 @@ struct Workspace {
     }
     
     func getFileItem(id: UUID) -> FileItem? {
-        return flattenedFileItems.first(where: { $0.id == id })
+        return flattenedFileItems[id]
     }
     
     init(folderURL: URL) throws {
         directoryURL = folderURL
         fileItems = try loadFiles(fromURL: folderURL)
-    }
-    
-    /// Meant for generating previews. Use `init(folderURL:)` for normal use.
-    init(folderURL: URL, fileItems: [FileItem]) {
-        directoryURL = folderURL
-        self.fileItems = fileItems
-        self.flattenedFileItems = fileItems
     }
     
 }
