@@ -22,11 +22,11 @@ struct FileItem: Hashable, Identifiable {
 
 	var fileIcon: String {
 		switch fileType {
-		case "json":
+		case "json", "js":
 			return "curlybraces"
 		case "css":
 			return "number"
-		case "js":
+		case "jsx":
 			return "atom"
 		case "swift":
 			return "swift"
