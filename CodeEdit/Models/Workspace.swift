@@ -15,37 +15,43 @@ struct Workspace {
     
     var directoryURL: URL
     var fileItems: [FileItem] = []
+    var flattenedFileItems: [UUID: FileItem] = [:]
     
-    private func getFileItems(url: URL) throws -> [FileItem] {
+    private mutating func loadFiles(fromURL url: URL) throws -> [FileItem] {
         let directoryContents = try FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: nil)
         var items: [FileItem] = []
         
-        for url in directoryContents {
+        for itemURL in directoryContents {
             // Skip file if it is in ignore list
-            guard !Workspace.ignoredFilesAndFolders.contains(url.lastPathComponent) else { continue }
+            guard !Workspace.ignoredFilesAndFolders.contains(itemURL.lastPathComponent) else { continue }
             
             var isDir: ObjCBool = false
             
-            if FileManager.default.fileExists(atPath: url.path, isDirectory: &isDir) {
+            if FileManager.default.fileExists(atPath: itemURL.path, isDirectory: &isDir) {
                 var subItems: [FileItem]? = nil
                 
                 if isDir.boolValue {
                     // TODO: Possibly optimize to loading avoid cache dirs and/or large folders
                     // Recursively fetch subdirectories and files if the path points to a directory
-                    subItems = try getFileItems(url: url)
+                    subItems = try loadFiles(fromURL: itemURL)
                 }
                 
-                let newFileItem = FileItem(url: url, children: subItems)
+                let newFileItem = FileItem(url: itemURL, children: subItems)
                 items.append(newFileItem)
+                flattenedFileItems[newFileItem.id] = newFileItem
             }
         }
         
         return items
     }
     
+    func getFileItem(id: UUID) -> FileItem? {
+        return flattenedFileItems[id]
+    }
+    
     init(folderURL: URL) throws {
         directoryURL = folderURL
-        fileItems = try getFileItems(url: folderURL)
+        fileItems = try loadFiles(fromURL: folderURL)
     }
     
 }
