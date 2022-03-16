@@ -44,7 +44,7 @@ struct ContentView: View {
                     .toolbar {
                         ToolbarItem(placement: .primaryAction) {
                             Button(action: toggleSidebar) {
-                                Image(systemName: "sidebar.leading")
+                                Image(systemName: "sidebar.leading").imageScale(.large)
                             }
                             .help("Show/Hide Sidebar")
                         }
@@ -78,13 +78,13 @@ struct ContentView: View {
         .toolbar {
             ToolbarItem(placement: .navigation) {
                 Button(action: {}) {
-                    Image(systemName: "chevron.left")
+                    Image(systemName: "chevron.left").imageScale(.large)
                 }
                 .help("Back")
             }
             ToolbarItem(placement: .navigation) {
                 Button(action: {}){
-                    Image(systemName: "chevron.right")
+                    Image(systemName: "chevron.right").imageScale(.large)
                 }
                 .disabled(true)
                 .help("Forward")

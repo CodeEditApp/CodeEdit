@@ -14,19 +14,19 @@ struct FileItem: Hashable, Identifiable {
     var systemImage: String {
         switch children {
         case nil:
-            return fileImage
+            return fileIcon
         case .some(let children):
             return children.isEmpty ? "folder" : "folder.fill"
         }
     }
 
-	var fileImage: String {
+	var fileIcon: String {
 		switch fileType {
-		case "json":
+		case "json", "js":
 			return "curlybraces"
 		case "css":
 			return "number"
-		case "js":
+		case "jsx":
 			return "atom"
 		case "swift":
 			return "swift"
@@ -39,7 +39,7 @@ struct FileItem: Hashable, Identifiable {
 		case "svg":
 			return "square.fill.on.circle.fill"
 		default:
-			return "doc.plaintext"
+			return "doc"
 		}
 	}
 
