@@ -19,7 +19,7 @@ struct CodeEditApp: App {
         .commands {
             SidebarCommands()
         }
-            .windowToolbarStyle(.unified)
+        .windowToolbarStyle(UnifiedCompactWindowToolbarStyle())
         
         DocumentGroup(newDocument: CodeFile()) { file in
             EditorView(text: file.$document.text)
