@@ -11,13 +11,9 @@ struct EditorView: View {
     @Binding var text: String
     
     var body: some View {
-        ScrollView {
-            TextEditor(text: $text)
-                .disableAutocorrection(true)
-                .font(.callout.monospaced())
-                .fixedSize(horizontal: false, vertical: true)
-                .padding(.top, 31.0)
-        }
+        TextEditor(text: $text)
+            .disableAutocorrection(true)
+            .font(.callout.monospaced())
     }
 }
 

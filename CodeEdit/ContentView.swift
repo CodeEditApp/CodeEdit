@@ -63,9 +63,7 @@ struct ContentView: View {
                         VStack {
                             tabBar
                                 .frame(maxHeight: tabBarHeight)
-                                .background {
-                                    BlurView(material: .titlebar, blendingMode: .withinWindow)
-                                }
+                                .background(Material.bar)
                             
                             Spacer()
                         }
@@ -132,34 +130,25 @@ struct ContentView: View {
     
     var tabBar: some View {
         VStack(spacing: 0.0) {
-            Divider()
-            
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(alignment: .center, spacing: 0.0) {
-                    Divider()
-                        .foregroundColor(.primary.opacity(0.25))
-                    
                     ForEach(openFileItems, id: \.id) { item in
                         let isActive = selectedId == item.id
                         
                         HStack(spacing: 0.0) {
                             Button(action: { selectedId = item.id }) {
-                                FileTabRow(fileItem: item, isSelected: isActive, closeAction: {
+                                FileTabRow(fileItem: item, isSelected: isActive) {
                                     withAnimation {
                                         closeFileTab(item: item)
                                     }
-                                })
+                                }
                                 .frame(height: tabBarHeight)
-                                .foregroundColor(.primary.opacity(isActive ? 0.9 : 0.55))
+                                .foregroundColor(isActive ? .primary : .gray)
                             }
                             .buttonStyle(.plain)
-                            .background {
-                                (isActive ? Color(red: 0.219, green: 0.219, blue: 0.219) : Color(red: 0.113, green: 0.113, blue: 0.113))
-                                    .opacity(0.85)
-                            }
+                            .background(isActive ? Material.regular : Material.bar)
                             
                             Divider()
-                                .foregroundColor(.primary.opacity(0.25))
                         }
                         .animation(.easeOut(duration: 0.2), value: openFileItems)
                     }
@@ -169,7 +158,7 @@ struct ContentView: View {
             }
             
             Divider()
-                .foregroundColor(.black)
+                .foregroundColor(.gray)
                 .frame(height: 1.0)
         }
     }

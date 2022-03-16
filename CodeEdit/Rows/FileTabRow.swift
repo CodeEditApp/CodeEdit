@@ -23,7 +23,7 @@ struct FileTabRow: View {
                     Image(systemName: showingCloseButton ? "xmark.square.fill" : fileItem.systemImage)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(width: showingCloseButton ? 12.0 : 16.0)
+                        .frame(width: 12.0)
                 }
                 .offset(x: showingCloseButton ? 10.0 : 8.0)
                 .buttonStyle(.plain)

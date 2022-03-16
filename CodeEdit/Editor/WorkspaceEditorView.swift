@@ -22,7 +22,16 @@ struct WorkspaceEditorView: View {
     }
     
     var body: some View {
-        EditorView(text: $text)
+        GeometryReader { proxy in
+            ScrollView {
+                EditorView(text: $text)
+                    .frame(minHeight: proxy.size.height + 30.0)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.top, 30.0)
+                    .padding(.bottom, 200.0)
+                    .background(Color(nsColor: NSColor.textBackgroundColor))
+            }
+        }
             .navigationTitle(item.url.lastPathComponent)
             .onAppear { initText(item: self.item) }
             .onChange(of: item) { newItem in
