@@ -38,6 +38,16 @@ struct FileItem: Hashable, Identifiable {
 			return "photo"
 		case "svg":
 			return "square.fill.on.circle.fill"
+		case "entitlements":
+			return "checkmark.seal"
+		case "md", "txt", "rtf", "plist":
+			return "doc.plaintext"
+		case "html", "py", "sh":
+			return "chevron.left.forwardslash.chevron.right"
+		case "LICENSE":
+			return "key.fill"
+		case "java":
+			return "cup.and.saucer"
 		default:
 			return "doc"
 		}
