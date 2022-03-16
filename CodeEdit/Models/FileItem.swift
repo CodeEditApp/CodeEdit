@@ -39,7 +39,7 @@ struct FileItem: Hashable, Identifiable {
 		case "svg":
 			return "square.fill.on.circle.fill"
 		default:
-			return "doc.plaintext"
+			return "doc"
 		}
 	}
 
