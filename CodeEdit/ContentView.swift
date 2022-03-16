@@ -200,18 +200,12 @@ struct ContentView: View {
             Section(header: Text(directoryURL.lastPathComponent)) {
                 OutlineGroup(workspaceClient.getFiles(), children: \.children) { item in
                     if item.children == nil {
-                        // TODO: Add selection indicator
-                        Button(action: {
+                        SidebarItem(item: item, selectedId: $selectedId) { item in
                             withAnimation {
                                 if !openFileItems.contains(item) { openFileItems.append(item) }
                             }
                             selectedId = item.id
-                        }) {
-                            Label(item.url.lastPathComponent, systemImage: item.systemImage)
-                                .accentColor(.secondary)
-                                .font(.callout)
                         }
-                        .buttonStyle(.plain)
                     } else {
                         Label(item.url.lastPathComponent, systemImage: item.systemImage)
                             .accentColor(.secondary)
