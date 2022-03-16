@@ -17,27 +17,21 @@ struct FileTabRow: View {
     var body: some View {
         let showingCloseButton = mouseHovering || isSelected
         
-        ZStack(alignment: .center) {
-            HStack {
-                Button(action: closeAction) {
-                    Image(systemName: showingCloseButton ? "xmark.square.fill" : fileItem.systemImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: showingCloseButton ? 12.0 : 10.0)
-                }
-                .offset(x: showingCloseButton ? 10.0 : 8.0)
-                .buttonStyle(.plain)
-                
-                Spacer()
+        HStack {
+            Button(action: closeAction) {
+                Image(systemName: showingCloseButton ? "xmark.square.fill" : fileItem.systemImage)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 12, height: 12)
             }
+            .buttonStyle(.plain)
             
-            HStack {
-                Text(fileItem.url.lastPathComponent)
-                    .font(.system(size: 11.0))
-                    .padding(.horizontal, 64.0)
-                    .lineLimit(1)
-            }
+            Text(fileItem.url.lastPathComponent)
+                .font(.system(size: 11.0))
+                .lineLimit(1)
+                .padding(.leading, 3)
         }
+        .padding(.horizontal)
         .onHover { hover in
             mouseHovering = hover
             DispatchQueue.main.async {
