@@ -13,12 +13,11 @@
 		04540D5D27DD08C300E91B77 /* CodeEditApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B658FB2F27DA9E0F00EA4DBD /* CodeEditApp.swift */; };
 		04540D5E27DD08C300E91B77 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B658FB3127DA9E0F00EA4DBD /* ContentView.swift */; };
 		04540D5F27DD08C300E91B77 /* EditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043DF9C127DD045800CA0FC3 /* EditorView.swift */; };
-		04540D6027DD08C300E91B77 /* Workspace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 348313F927DC8B0A0016D42C /* Workspace.swift */; };
 		04540D6127DD08C300E91B77 /* CodeFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 348313FB27DC8C070016D42C /* CodeFile.swift */; };
-		04540D6227DD08C300E91B77 /* FileItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349D101827DCE91F0009AF22 /* FileItem.swift */; };
 		04540D6327DD08C300E91B77 /* CodeEditorAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0468438427DC76E200F8E88E /* CodeEditorAppDelegate.swift */; };
 		345F667527DF6C180069BD69 /* FileTabRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 345F667427DF6C180069BD69 /* FileTabRow.swift */; };
 		34EE19BE27E0469C00F152CE /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34EE19BD27E0469C00F152CE /* BlurView.swift */; };
+		5C403B8F27E20F8000788241 /* WorkspaceClient in Frameworks */ = {isa = PBXBuildFile; productRef = 5C403B8E27E20F8000788241 /* WorkspaceClient */; };
 		B658FB3427DA9E1000EA4DBD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3327DA9E1000EA4DBD /* Assets.xcassets */; };
 		B658FB3727DA9E1000EA4DBD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3627DA9E1000EA4DBD /* Preview Assets.xcassets */; };
 		D7211D4327E066CE008F2ED7 /* Localized+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7211D4227E066CE008F2ED7 /* Localized+Ex.swift */; };
@@ -49,9 +48,7 @@
 		04F2BF0E27DBB28E0024EAB1 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		04F2BF1127DBB3C10024EAB1 /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
 		345F667427DF6C180069BD69 /* FileTabRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTabRow.swift; sourceTree = "<group>"; };
-		348313F927DC8B0A0016D42C /* Workspace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Workspace.swift; sourceTree = "<group>"; };
 		348313FB27DC8C070016D42C /* CodeFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeFile.swift; sourceTree = "<group>"; };
-		349D101827DCE91F0009AF22 /* FileItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileItem.swift; sourceTree = "<group>"; };
 		34EE19BD27E0469C00F152CE /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
 		B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodeEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B658FB2F27DA9E0F00EA4DBD /* CodeEditApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditApp.swift; sourceTree = "<group>"; };
@@ -71,6 +68,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5C403B8F27E20F8000788241 /* WorkspaceClient in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -120,9 +118,7 @@
 		348313F827DC8AF70016D42C /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				348313F927DC8B0A0016D42C /* Workspace.swift */,
 				348313FB27DC8C070016D42C /* CodeFile.swift */,
-				349D101827DCE91F0009AF22 /* FileItem.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -135,11 +131,19 @@
 			path = CustomViews;
 			sourceTree = "<group>";
 		};
+		5C403B8D27E20F8000788241 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		B658FB2327DA9E0F00EA4DBD = {
 			isa = PBXGroup;
 			children = (
 				B658FB2E27DA9E0F00EA4DBD /* CodeEdit */,
 				B658FB2D27DA9E0F00EA4DBD /* Products */,
+				5C403B8D27E20F8000788241 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -205,6 +209,9 @@
 			dependencies = (
 			);
 			name = CodeEdit;
+			packageProductDependencies = (
+				5C403B8E27E20F8000788241 /* WorkspaceClient */,
+			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
 			productType = "com.apple.product-type.application";
@@ -328,10 +335,8 @@
 				04540D5F27DD08C300E91B77 /* EditorView.swift in Sources */,
 				34EE19BE27E0469C00F152CE /* BlurView.swift in Sources */,
 				D7211D4327E066CE008F2ED7 /* Localized+Ex.swift in Sources */,
-				04540D6027DD08C300E91B77 /* Workspace.swift in Sources */,
 				04540D6127DD08C300E91B77 /* CodeFile.swift in Sources */,
 				345F667527DF6C180069BD69 /* FileTabRow.swift in Sources */,
-				04540D6227DD08C300E91B77 /* FileItem.swift in Sources */,
 				04540D6327DD08C300E91B77 /* CodeEditorAppDelegate.swift in Sources */,
 				0439FEF527DD104500528317 /* WorkspaceEditorView.swift in Sources */,
 			);
@@ -692,6 +697,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		5C403B8E27E20F8000788241 /* WorkspaceClient */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = WorkspaceClient;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B658FB2427DA9E0F00EA4DBD /* Project object */;
 }
