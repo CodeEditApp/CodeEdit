@@ -30,7 +30,7 @@ Our goal is to develop an app that looks and feels like it was designed and deve
 - [ ] Open file search bar overlay
 - [ ] Commands overlay
 - [ ] Status bar
-- [ ] Tabs
+- [x] Tabs
 - [ ] Split editors
 - [ ] Extension insfrastructure
 - [ ] Extension manager
