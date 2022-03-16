@@ -63,7 +63,7 @@ struct ContentView: View {
                         VStack {
                             tabBar
                                 .frame(maxHeight: tabBarHeight)
-                                .background(Material.bar)
+                                .background(Material.regular)
                             
                             Spacer()
                         }
@@ -146,7 +146,7 @@ struct ContentView: View {
                                 .foregroundColor(isActive ? .primary : .gray)
                             }
                             .buttonStyle(.plain)
-                            .background(isActive ? Material.regular : Material.bar)
+                            .background(isActive ? Material.bar : Material.regular)
                             
                             Divider()
                         }
