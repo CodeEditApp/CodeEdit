@@ -40,6 +40,13 @@ struct FileTabRow: View {
         }
         .onHover { hover in
             mouseHovering = hover
+            DispatchQueue.main.async {
+                if hover {
+                    NSCursor.arrow.push()
+                } else {
+                    NSCursor.pop()
+                }
+            }
         }
     }
 }

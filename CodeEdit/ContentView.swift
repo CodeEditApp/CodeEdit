@@ -131,26 +131,34 @@ struct ContentView: View {
     var tabBar: some View {
         VStack(spacing: 0.0) {
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(alignment: .center, spacing: 0.0) {
-                    ForEach(openFileItems, id: \.id) { item in
-                        let isActive = selectedId == item.id
-                        
-                        Button(action: { selectedId = item.id }) {
-                            HStack(spacing: 0.0) {
-                                FileTabRow(fileItem: item, isSelected: isActive) {
-                                    withAnimation {
-                                        closeFileTab(item: item)
+                ScrollViewReader { value in
+                    HStack(alignment: .center, spacing: 0.0) {
+                        ForEach(openFileItems, id: \.id) { item in
+                            let isActive = selectedId == item.id
+                            
+                            Button(action: { selectedId = item.id }) {
+                                HStack(spacing: 0.0) {
+                                    FileTabRow(fileItem: item, isSelected: isActive) {
+                                        withAnimation {
+                                            closeFileTab(item: item)
+                                        }
                                     }
+                                    
+                                    Divider()
                                 }
-                                
-                                Divider()
+                                .frame(height: tabBarHeight)
+                                .foregroundColor(isActive ? .primary : .gray)
+                                .background(isActive ? Material.bar : Material.regular)
+                                .animation(.easeOut(duration: 0.2), value: openFileItems)
                             }
-                            .frame(height: tabBarHeight)
-                            .foregroundColor(isActive ? .primary : .gray)
-                            .background(isActive ? Material.bar : Material.regular)
-                            .animation(.easeOut(duration: 0.2), value: openFileItems)
+                            .buttonStyle(.plain)
+                            .id(item.id)
                         }
-                        .buttonStyle(.plain)
+                    }
+                    .onChange(of: selectedId) { newValue in
+                        withAnimation {
+                            value.scrollTo(newValue)
+                        }
                     }
                 }
             }
