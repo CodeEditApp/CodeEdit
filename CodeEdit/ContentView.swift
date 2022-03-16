@@ -135,25 +135,23 @@ struct ContentView: View {
                     ForEach(openFileItems, id: \.id) { item in
                         let isActive = selectedId == item.id
                         
-                        HStack(spacing: 0.0) {
-                            Button(action: { selectedId = item.id }) {
+                        Button(action: { selectedId = item.id }) {
+                            HStack(spacing: 0.0) {
                                 FileTabRow(fileItem: item, isSelected: isActive) {
                                     withAnimation {
                                         closeFileTab(item: item)
                                     }
                                 }
-                                .frame(height: tabBarHeight)
-                                .foregroundColor(isActive ? .primary : .gray)
+                                
+                                Divider()
                             }
-                            .buttonStyle(.plain)
+                            .frame(height: tabBarHeight)
+                            .foregroundColor(isActive ? .primary : .gray)
                             .background(isActive ? Material.bar : Material.regular)
-                            
-                            Divider()
+                            .animation(.easeOut(duration: 0.2), value: openFileItems)
                         }
-                        .animation(.easeOut(duration: 0.2), value: openFileItems)
+                        .buttonStyle(.plain)
                     }
-                    
-                    Spacer()
                 }
             }
             

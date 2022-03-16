@@ -23,7 +23,7 @@ struct FileTabRow: View {
                     Image(systemName: showingCloseButton ? "xmark.square.fill" : fileItem.systemImage)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(width: 12.0)
+                        .frame(width: showingCloseButton ? 12.0 : 10.0)
                 }
                 .offset(x: showingCloseButton ? 10.0 : 8.0)
                 .buttonStyle(.plain)
@@ -31,10 +31,12 @@ struct FileTabRow: View {
                 Spacer()
             }
             
-            Text(fileItem.url.lastPathComponent)
-                .font(.system(size: 11.0))
-                .padding(.horizontal, 64.0)
-                .lineLimit(1)
+            HStack {
+                Text(fileItem.url.lastPathComponent)
+                    .font(.system(size: 11.0))
+                    .padding(.horizontal, 64.0)
+                    .lineLimit(1)
+            }
         }
         .onHover { hover in
             mouseHovering = hover
