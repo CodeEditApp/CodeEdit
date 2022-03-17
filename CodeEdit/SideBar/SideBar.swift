@@ -15,17 +15,27 @@ struct SideBar: View {
 	@Binding var openFileItems: [WorkspaceClient.FileItem]
 	@Binding var selectedId: UUID?
 
-    var body: some View {
+	@State private var selection: Int = 0
+
+	var body: some View {
 		List {
-			Section(header: Text(directoryURL.lastPathComponent)) {
-				ForEach(workspaceClient.getFiles()) { item in // Instead of OutlineGroup
-					SideBarItem(item: item,
-								directoryURL: directoryURL,
-								workspaceClient: workspaceClient,
-								openFileItems: $openFileItems,
-								selectedId: $selectedId)
+			switch selection {
+			case 0:
+				Section(header: Text(directoryURL.lastPathComponent)) {
+					ForEach(workspaceClient.getFiles()) { item in // Instead of OutlineGroup
+						SideBarItem(item: item,
+									directoryURL: directoryURL,
+									workspaceClient: workspaceClient,
+									openFileItems: $openFileItems,
+									selectedId: $selectedId)
+					}
 				}
+			default: EmptyView()
 			}
 		}
-    }
+		.safeAreaInset(edge: .top) {
+			SideBarToolbar(selection: $selection)
+				.padding(.bottom, -8)
+		}
+	}
 }
