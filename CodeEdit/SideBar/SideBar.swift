@@ -23,7 +23,6 @@ struct SideBar: View {
 								workspace: workspace,
                                 windowController: windowController)
 				}
-			default: EmptyView()
 			}
 		}
 		.safeAreaInset(edge: .top) {
