@@ -20,7 +20,6 @@ struct SideBarItem: View {
 
 	var body: some View {
 		if item.children == nil {
-			// TODO: Add selection indicator
 			sidebarFileItem(item)
 				.id(item.id)
 		} else {
