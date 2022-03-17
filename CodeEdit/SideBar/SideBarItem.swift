@@ -12,10 +12,8 @@ struct SideBarItem: View {
 
 	var item: WorkspaceClient.FileItem
 
-	var directoryURL: URL
-	var workspaceClient: WorkspaceClient
-	@Binding var openFileItems: [WorkspaceClient.FileItem]
-	@Binding var selectedId: UUID?
+    @ObservedObject var workspace: WorkspaceDocument
+    var windowController: NSWindowController
 	@State var isExpanded: Bool = false
 
 	var body: some View {
@@ -29,17 +27,17 @@ struct SideBarItem: View {
 	}
 
 	func sidebarFileItem(_ item: WorkspaceClient.FileItem) -> some View {
-		NavigationLink(tag: item.id, selection: $selectedId) {
-			WorkspaceEditorView(item: item)
-				.overlay(alignment: .top) {
-					TabBar(openFileItems: $openFileItems, selectedId: $selectedId)
+        NavigationLink(tag: item.id, selection: $workspace.selectedId) {
+            WorkspaceEditorView(workspace: workspace, item: item, windowController: windowController)
+                .safeAreaInset(edge: .top) {
+                    TabBar(windowController: windowController, workspace: workspace)
 				}
-				.onAppear { selectItem(item) }
 		} label: {
 			Label(item.url.lastPathComponent, systemImage: item.systemImage)
-				.foregroundColor(.secondary)
+                .accentColor(.secondary)
 				.font(.callout)
 		}
+        .buttonStyle(.plain)
 	}
 
 	func sidebarFolderItem(_ item: WorkspaceClient.FileItem) -> some View {
@@ -47,10 +45,8 @@ struct SideBarItem: View {
 			if isExpanded { // Only load when expanded -> Improves performance massively
 				ForEach(item.children!) { child in
 					SideBarItem(item: child,
-								directoryURL: directoryURL,
-								workspaceClient: workspaceClient,
-								openFileItems: $openFileItems,
-								selectedId: $selectedId)
+								workspace: workspace,
+                                windowController: windowController)
 				}
 			}
 		} label: {
@@ -58,12 +54,5 @@ struct SideBarItem: View {
 				.accentColor(.secondary)
 				.font(.callout)
 		}
-	}
-
-	func selectItem(_ item: WorkspaceClient.FileItem) {
-		withAnimation {
-			if !openFileItems.contains(item) { openFileItems.append(item) }
-		}
-		selectedId = item.id
 	}
 }

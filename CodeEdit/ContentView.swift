@@ -8,7 +8,7 @@
 import SwiftUI
 import WorkspaceClient
 
-struct ContentView: View {
+struct WorkspaceView: View {
     @State private var directoryURL: URL?
     @State private var workspaceClient: WorkspaceClient?
 
@@ -21,12 +21,9 @@ struct ContentView: View {
     @State private var alertTitle = ""
     @State private var alertMsg = ""
     
-    @EnvironmentObject var appDelegate: CodeEditorAppDelegate
-    @SceneStorage("ContentView.path") private var path: String = ""
-    
-    private let ignoredFilesAndDirectory = [
-        ".DS_Store",
-    ]
+    var tabBarHeight = 28.0
+
+    private var path: String = ""
     
     func closeFileTab(item: WorkspaceClient.FileItem) {
         guard let idx = openFileItems.firstIndex(of: item) else { return }
@@ -45,10 +42,7 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             if let workspaceClient = workspaceClient, let directoryURL = directoryURL {
-				SideBar(directoryURL: directoryURL,
-						workspaceClient: workspaceClient,
-						openFileItems: $openFileItems,
-						selectedId: $selectedId)
+                sidebar(workspaceClient: workspaceClient, directoryURL: directoryURL)
                     .frame(minWidth: 250)
                     .toolbar {
                         ToolbarItem(placement: .primaryAction) {
@@ -70,8 +64,10 @@ struct ContentView: View {
                         }
 
                         VStack {
-                            TabBar(openFileItems: $openFileItems, selectedId: $selectedId)
-
+                            tabBar
+                                .frame(maxHeight: tabBarHeight)
+                                .background(Material.regular)
+                            
                             Spacer()
                         }
                     }
@@ -112,37 +108,82 @@ struct ContentView: View {
                 print(error.localizedDescription)
             }
         }
-        .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-                if !self.urlInit {
-                    if let url = self.appDelegate.newProjectURL() {
-                        do {
-                            self.directoryURL = url
-                            self.workspaceClient = try .default(
-                                fileManager: .default,
-                                folderURL: url,
-                                ignoredFilesAndFolders: ignoredFilesAndDirectory
-                            )
-                        } catch {
-                            self.alertTitle = "Unable to Open Folder"
-                            self.alertMsg = error.localizedDescription
-                            self.showingAlert = true
-                            print(error.localizedDescription)
-                            NSApplication.shared.keyWindow?.close()
-                        }
-                        
-                        // TODO: additional project initialization
-                    } else {
-                        NSApplication.shared.keyWindow?.close()
-                    }
-                }
-            }
-        }
         .alert(alertTitle, isPresented: $showingAlert, actions: {
             Button(action: { showingAlert = false }) {
                 Text("OK")
             }
         }, message: { Text(alertMsg) })
+    }
+    
+    var tabBar: some View {
+        VStack(spacing: 0.0) {
+            ScrollView(.horizontal, showsIndicators: false) {
+                ScrollViewReader { value in
+                    HStack(alignment: .center, spacing: 0.0) {
+                        ForEach(openFileItems, id: \.id) { item in
+                            let isActive = selectedId == item.id
+                            
+                            Button(action: { selectedId = item.id }) {
+                                HStack(spacing: 0.0) {
+                                    FileTabRow(fileItem: item, isSelected: isActive) {
+                                        withAnimation {
+                                            closeFileTab(item: item)
+                                        }
+                                    }
+                                    
+                                    Divider()
+                                }
+                                .frame(height: tabBarHeight)
+                                .foregroundColor(isActive ? .primary : .gray)
+                                .background(isActive ? Material.bar : Material.regular)
+                                .animation(.easeOut(duration: 0.2), value: openFileItems)
+                            }
+                            .buttonStyle(.plain)
+                            .id(item.id)
+                        }
+                    }
+                    .onChange(of: selectedId) { newValue in
+                        withAnimation {
+                            value.scrollTo(newValue)
+                        }
+                    }
+                }
+            }
+            
+            Divider()
+                .foregroundColor(.gray)
+                .frame(height: 1.0)
+        }
+    }
+    
+    func sidebar(
+        workspaceClient: WorkspaceClient,
+        directoryURL: URL
+    ) -> some View {
+        List {
+            Section(header: Text(directoryURL.lastPathComponent)) {
+                OutlineGroup(workspaceClient.getFiles(), children: \.children) { item in
+                    if item.children == nil {
+                        // TODO: Add selection indicator
+                        Button(action: {
+                            withAnimation {
+                                if !openFileItems.contains(item) { openFileItems.append(item) }
+                            }
+                            selectedId = item.id
+                        }) {
+                            Label(item.url.lastPathComponent, systemImage: item.systemImage)
+                                .accentColor(.secondary)
+                                .font(.callout)
+                        }
+                        .buttonStyle(.plain)
+                    } else {
+                        Label(item.url.lastPathComponent, systemImage: item.systemImage)
+                            .accentColor(.secondary)
+                            .font(.callout)
+                    }
+                }
+            }
+        }
     }
     
     private func toggleSidebar() {
@@ -155,7 +196,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        WorkspaceView()
     }
 }
 

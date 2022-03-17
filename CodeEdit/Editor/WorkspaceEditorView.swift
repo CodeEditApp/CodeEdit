@@ -9,34 +9,19 @@ import SwiftUI
 import WorkspaceClient
 
 struct WorkspaceEditorView: View {
-    @State var text: String = ""
-    @State var initialized = false
+    @ObservedObject var workspace: WorkspaceDocument
     var item: WorkspaceClient.FileItem
-    
-    func initText(item: WorkspaceClient.FileItem) {
-        do {
-            self.text = try String(contentsOf: item.url)
-            self.initialized = true
-        } catch let e {
-            print("Failed to open \(e)")
-        }
-    }
+    var windowController: NSWindowController
     
     var body: some View {
-        EditorView(text: $text)
-            .navigationTitle(item.url.lastPathComponent)
-            .onAppear { initText(item: self.item) }
-            .onChange(of: item) { newItem in
-                self.initialized = false
-                initText(item: newItem)
+        ScrollView(.vertical, showsIndicators: true) {
+            if let file = workspace.openedCodeFiles[item] {
+                CodeFileEditor(file: file)
+            } else {
+                Text("File cannot be opened")
             }
-            .onChange(of: text) { newValue in
-                // TODO: save using Cmd-S shortcut or autosave
-                if initialized {
-                    do {
-                        try newValue.write(to: item.url, atomically: true, encoding: .utf8)
-                    } catch {}
-                }
-            }
+        }
+            .background(Color(nsColor: NSColor.textBackgroundColor))
+            .onAppear { workspace.openFile(item: item) }
     }
 }

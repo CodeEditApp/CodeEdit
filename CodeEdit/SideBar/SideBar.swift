@@ -10,27 +10,19 @@ import WorkspaceClient
 
 struct SideBar: View {
 
-	var directoryURL: URL
-	var workspaceClient: WorkspaceClient
-	@Binding var openFileItems: [WorkspaceClient.FileItem]
-	@Binding var selectedId: UUID?
+    @ObservedObject var workspace: WorkspaceDocument
+    var windowController: NSWindowController
 
 	@State private var selection: Int = 0
 
 	var body: some View {
 		List {
-			switch selection {
-			case 0:
-				Section(header: Text(directoryURL.lastPathComponent)) {
-					ForEach(workspaceClient.getFiles()) { item in // Instead of OutlineGroup
-						SideBarItem(item: item,
-									directoryURL: directoryURL,
-									workspaceClient: workspaceClient,
-									openFileItems: $openFileItems,
-									selectedId: $selectedId)
-					}
+            Section(header: Text(workspace.fileURL?.lastPathComponent ?? "Unknown")) {
+                ForEach(workspace.workspaceClient?.getFiles() ?? []) { item in // Instead of OutlineGroup
+					SideBarItem(item: item,
+								workspace: workspace,
+                                windowController: windowController)
 				}
-			default: EmptyView()
 			}
 		}
 		.safeAreaInset(edge: .top) {
