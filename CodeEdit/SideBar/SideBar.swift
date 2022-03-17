@@ -17,12 +17,16 @@ struct SideBar: View {
 
 	var body: some View {
 		List {
-            Section(header: Text(workspace.fileURL?.lastPathComponent ?? "Unknown")) {
-                ForEach(workspace.workspaceClient?.getFiles() ?? []) { item in // Instead of OutlineGroup
-					SideBarItem(item: item,
-								workspace: workspace,
-                                windowController: windowController)
+			switch selection {
+			case 0:
+				Section(header: Text(workspace.fileURL?.lastPathComponent ?? "Unknown")) {
+					ForEach(workspace.workspaceClient?.getFiles() ?? []) { item in // Instead of OutlineGroup
+						SideBarItem(item: item,
+									workspace: workspace,
+									windowController: windowController)
+					}
 				}
+			default: EmptyView()
 			}
 		}
 		.safeAreaInset(edge: .top) {
