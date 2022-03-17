@@ -45,4 +45,4 @@ Our goal is to develop an app that looks and feels like it was designed and deve
 
 ## Contributing
 
-Feel free to join and collaborate on our [Discord server](https://discord.gg/ANUVc6TF).
+Feel free to join and collaborate on our [Discord server](https://discord.gg/vChUXVf9Em).
