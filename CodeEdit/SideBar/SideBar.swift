@@ -13,7 +13,9 @@ struct SideBar: View {
     @ObservedObject var workspace: WorkspaceDocument
     var windowController: NSWindowController
 
-    var body: some View {
+	@State private var selection: Int = 0
+
+	var body: some View {
 		List {
             Section(header: Text(workspace.fileURL?.lastPathComponent ?? "Unknown")) {
                 ForEach(workspace.workspaceClient?.getFiles() ?? []) { item in // Instead of OutlineGroup
@@ -21,7 +23,12 @@ struct SideBar: View {
 								workspace: workspace,
                                 windowController: windowController)
 				}
+			default: EmptyView()
 			}
 		}
-    }
+		.safeAreaInset(edge: .top) {
+			SideBarToolbar(selection: $selection)
+				.padding(.bottom, -8)
+		}
+	}
 }
