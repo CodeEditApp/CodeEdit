@@ -7,34 +7,11 @@
 
 import SwiftUI
 
-// MARK: - Data
-
-enum Appearances: String, CaseIterable, Hashable {
-    case system
-    case light
-    case dark
-    
-    func applyAppearance() {
-        switch self {
-        case .system:
-            NSApp.appearance = nil
-            break
-        case .dark:
-            NSApp.appearance = .init(named: .darkAqua)
-            break
-        case .light:
-            NSApp.appearance = .init(named: .aqua)
-            break
-        }
-    }
-    
-    static let appearanceStorageKey = "appearance"
-}
-
 // MARK: - View
 
 struct GeneralSettingsView: View {
-    @AppStorage(Appearances.appearanceStorageKey) var appearance: Appearances = Appearances.system
+    @AppStorage(Appearances.storageKey) var appearance: Appearances = Appearances.default
+    @AppStorage(ReopenBehavior.storageKey) var reopenBehavior: ReopenBehavior = ReopenBehavior.default
     
     var body: some View {
         Form {
@@ -49,6 +26,13 @@ struct GeneralSettingsView: View {
             }
             .onChange(of: appearance) { tag in
                 tag.applyAppearance()
+            }
+            
+            Picker("Reopen Behavior", selection: $reopenBehavior) {
+                Text("Open Panel")
+                    .tag(ReopenBehavior.openPanel)
+                Text("New Document")
+                    .tag(ReopenBehavior.newDocument)
             }
         }
         .padding()
