@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  WorkspaceView.swift
 //  CodeEdit
 //
 //  Created by Austin Condiff on 3/10/22.
@@ -9,8 +9,14 @@ import SwiftUI
 import WorkspaceClient
 
 struct WorkspaceView: View {
-    @State private var directoryURL: URL?
-    @State private var workspaceClient: WorkspaceClient?
+    init(windowController: NSWindowController, workspace: WorkspaceDocument) {
+        self.windowController = windowController
+        self.workspace = workspace
+    }
+    
+    var windowController: NSWindowController
+    @ObservedObject var workspace: WorkspaceDocument
+    
     @State var selectedId: UUID?
     @State var openFileItems: [WorkspaceClient.FileItem] = []
     @State var urlInit = false
@@ -39,17 +45,9 @@ struct WorkspaceView: View {
 
     var body: some View {
         NavigationView {
-            if let workspaceClient = workspaceClient, let directoryURL = directoryURL {
-                sidebar(workspaceClient: workspaceClient, directoryURL: directoryURL)
+            if let workspaceClient = workspace.workspaceClient {
+                sidebar(workspaceClient: workspaceClient)
                     .frame(minWidth: 250)
-                    .toolbar {
-                        ToolbarItem(placement: .primaryAction) {
-                            Button(action: toggleSidebar) {
-                                Image(systemName: "sidebar.leading").imageScale(.large)
-                            }
-                            .help("Show/Hide Sidebar")
-                        }
-                    }
                 
                 if openFileItems.isEmpty {
                     Text("Open file from sidebar")
@@ -74,38 +72,7 @@ struct WorkspaceView: View {
                 EmptyView()
             }
         }
-        .toolbar {
-            ToolbarItem(placement: .navigation) {
-                Button(action: {}) {
-                    Image(systemName: "chevron.left").imageScale(.large)
-                }
-                .help("Back")
-            }
-            ToolbarItem(placement: .navigation) {
-                Button(action: {}){
-                    Image(systemName: "chevron.right").imageScale(.large)
-                }
-                .disabled(true)
-                .help("Forward")
-            }
-        }
         .frame(minWidth: 800, minHeight: 600)
-        .onOpenURL { url in
-            urlInit = true
-            do {
-                self.workspaceClient = try .default(
-                    fileManager: .default,
-                    folderURL: url,
-                    ignoredFilesAndFolders: ignoredFilesAndDirectory
-                )
-                self.directoryURL = url
-            } catch {
-                self.alertTitle = "Unable to Open Workspace"
-                self.alertMsg = error.localizedDescription
-                self.showingAlert = true
-                print(error.localizedDescription)
-            }
-        }
         .alert(alertTitle, isPresented: $showingAlert, actions: {
             Button(action: { showingAlert = false }) {
                 Text("OK")
@@ -155,11 +122,10 @@ struct WorkspaceView: View {
     }
     
     func sidebar(
-        workspaceClient: WorkspaceClient,
-        directoryURL: URL
+        workspaceClient: WorkspaceClient
     ) -> some View {
         List {
-            Section(header: Text(directoryURL.lastPathComponent)) {
+            Section(header: Text(workspace.fileURL?.lastPathComponent ?? "Unknown Workspace")) {
                 OutlineGroup(workspaceClient.getFiles(), children: \.children) { item in
                     if item.children == nil {
                         // TODO: Add selection indicator
@@ -183,18 +149,11 @@ struct WorkspaceView: View {
             }
         }
     }
-    
-    private func toggleSidebar() {
-        #if os(iOS)
-        #else
-        NSApp.keyWindow?.firstResponder?.tryToPerform(#selector(NSSplitViewController.toggleSidebar(_:)), with: nil)
-        #endif
-    }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        WorkspaceView()
+        WorkspaceView(windowController: NSWindowController(), workspace: .init())
     }
 }
 

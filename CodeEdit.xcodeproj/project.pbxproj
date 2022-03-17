@@ -8,13 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		0439FEF527DD104500528317 /* WorkspaceEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0439FEF427DD104500528317 /* WorkspaceEditorView.swift */; };
+		043C321427E31FF6006AE443 /* CodeEditDocumentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043C321327E31FF6006AE443 /* CodeEditDocumentController.swift */; };
+		043C321627E3201F006AE443 /* WorkspaceDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043C321527E3201F006AE443 /* WorkspaceDocument.swift */; };
+		043C321827E32246006AE443 /* CodeFileEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043C321727E32246006AE443 /* CodeFileEditor.swift */; };
+		043C321A27E32295006AE443 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 043C321927E32295006AE443 /* MainMenu.xib */; };
 		04540D5B27DD08C300E91B77 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F2BF0E27DBB28E0024EAB1 /* SettingsView.swift */; };
 		04540D5C27DD08C300E91B77 /* GeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F2BF1127DBB3C10024EAB1 /* GeneralSettingsView.swift */; };
-		04540D5D27DD08C300E91B77 /* CodeEditApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B658FB2F27DA9E0F00EA4DBD /* CodeEditApp.swift */; };
-		04540D5E27DD08C300E91B77 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B658FB3127DA9E0F00EA4DBD /* ContentView.swift */; };
+		04540D5E27DD08C300E91B77 /* WorkspaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B658FB3127DA9E0F00EA4DBD /* WorkspaceView.swift */; };
 		04540D5F27DD08C300E91B77 /* EditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043DF9C127DD045800CA0FC3 /* EditorView.swift */; };
 		04540D6127DD08C300E91B77 /* CodeFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 348313FB27DC8C070016D42C /* CodeFile.swift */; };
-		04540D6327DD08C300E91B77 /* CodeEditorAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0468438427DC76E200F8E88E /* CodeEditorAppDelegate.swift */; };
+		04540D6327DD08C300E91B77 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0468438427DC76E200F8E88E /* AppDelegate.swift */; };
 		345F667527DF6C180069BD69 /* FileTabRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 345F667427DF6C180069BD69 /* FileTabRow.swift */; };
 		34EE19BE27E0469C00F152CE /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34EE19BD27E0469C00F152CE /* BlurView.swift */; };
 		5C403B8F27E20F8000788241 /* WorkspaceClient in Frameworks */ = {isa = PBXBuildFile; productRef = 5C403B8E27E20F8000788241 /* WorkspaceClient */; };
@@ -43,16 +46,19 @@
 
 /* Begin PBXFileReference section */
 		0439FEF427DD104500528317 /* WorkspaceEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceEditorView.swift; sourceTree = "<group>"; };
+		043C321327E31FF6006AE443 /* CodeEditDocumentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditDocumentController.swift; sourceTree = "<group>"; };
+		043C321527E3201F006AE443 /* WorkspaceDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceDocument.swift; sourceTree = "<group>"; };
+		043C321727E32246006AE443 /* CodeFileEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeFileEditor.swift; sourceTree = "<group>"; };
+		043C321927E32295006AE443 /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		043DF9C127DD045800CA0FC3 /* EditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorView.swift; sourceTree = "<group>"; };
-		0468438427DC76E200F8E88E /* CodeEditorAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorAppDelegate.swift; sourceTree = "<group>"; };
+		0468438427DC76E200F8E88E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		04F2BF0E27DBB28E0024EAB1 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		04F2BF1127DBB3C10024EAB1 /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
 		345F667427DF6C180069BD69 /* FileTabRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTabRow.swift; sourceTree = "<group>"; };
 		348313FB27DC8C070016D42C /* CodeFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeFile.swift; sourceTree = "<group>"; };
 		34EE19BD27E0469C00F152CE /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
 		B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodeEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		B658FB2F27DA9E0F00EA4DBD /* CodeEditApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditApp.swift; sourceTree = "<group>"; };
-		B658FB3127DA9E0F00EA4DBD /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		B658FB3127DA9E0F00EA4DBD /* WorkspaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceView.swift; sourceTree = "<group>"; };
 		B658FB3327DA9E1000EA4DBD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B658FB3627DA9E1000EA4DBD /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		B658FB3827DA9E1000EA4DBD /* CodeEdit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CodeEdit.entitlements; sourceTree = "<group>"; };
@@ -94,8 +100,19 @@
 			children = (
 				043DF9C127DD045800CA0FC3 /* EditorView.swift */,
 				0439FEF427DD104500528317 /* WorkspaceEditorView.swift */,
+				043C321727E32246006AE443 /* CodeFileEditor.swift */,
 			);
 			path = Editor;
+			sourceTree = "<group>";
+		};
+		043C321227E31FE8006AE443 /* Documents */ = {
+			isa = PBXGroup;
+			children = (
+				348313FB27DC8C070016D42C /* CodeFile.swift */,
+				043C321327E31FF6006AE443 /* CodeEditDocumentController.swift */,
+				043C321527E3201F006AE443 /* WorkspaceDocument.swift */,
+			);
+			path = Documents;
 			sourceTree = "<group>";
 		};
 		04F2BF1027DBB3AF0024EAB1 /* Settings */ = {
@@ -113,14 +130,6 @@
 				345F667427DF6C180069BD69 /* FileTabRow.swift */,
 			);
 			path = Rows;
-			sourceTree = "<group>";
-		};
-		348313F827DC8AF70016D42C /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				348313FB27DC8C070016D42C /* CodeFile.swift */,
-			);
-			path = Models;
 			sourceTree = "<group>";
 		};
 		34EE19BC27E0467F00F152CE /* CustomViews */ = {
@@ -160,18 +169,18 @@
 		B658FB2E27DA9E0F00EA4DBD /* CodeEdit */ = {
 			isa = PBXGroup;
 			children = (
-				0468438427DC76E200F8E88E /* CodeEditorAppDelegate.swift */,
-				B658FB2F27DA9E0F00EA4DBD /* CodeEditApp.swift */,
-				B658FB3127DA9E0F00EA4DBD /* ContentView.swift */,
+				043C321227E31FE8006AE443 /* Documents */,
+				0468438427DC76E200F8E88E /* AppDelegate.swift */,
+				B658FB3127DA9E0F00EA4DBD /* WorkspaceView.swift */,
 				345F667327DF6BCC0069BD69 /* Rows */,
 				0439FEF327DD100800528317 /* Editor */,
 				04F2BF1027DBB3AF0024EAB1 /* Settings */,
 				34EE19BC27E0467F00F152CE /* CustomViews */,
-				348313F827DC8AF70016D42C /* Models */,
 				D7211D4427E066D4008F2ED7 /* Localization */,
 				B658FB3327DA9E1000EA4DBD /* Assets.xcassets */,
 				B658FB3827DA9E1000EA4DBD /* CodeEdit.entitlements */,
 				B658FB3527DA9E1000EA4DBD /* Preview Content */,
+				043C321927E32295006AE443 /* MainMenu.xib */,
 			);
 			path = CodeEdit;
 			sourceTree = "<group>";
@@ -304,6 +313,7 @@
 				B658FB3727DA9E1000EA4DBD /* Preview Assets.xcassets in Resources */,
 				D7211D4727E06BFE008F2ED7 /* Localizable.strings in Resources */,
 				B658FB3427DA9E1000EA4DBD /* Assets.xcassets in Resources */,
+				043C321A27E32295006AE443 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -330,14 +340,16 @@
 			files = (
 				04540D5B27DD08C300E91B77 /* SettingsView.swift in Sources */,
 				04540D5C27DD08C300E91B77 /* GeneralSettingsView.swift in Sources */,
-				04540D5D27DD08C300E91B77 /* CodeEditApp.swift in Sources */,
-				04540D5E27DD08C300E91B77 /* ContentView.swift in Sources */,
+				043C321427E31FF6006AE443 /* CodeEditDocumentController.swift in Sources */,
+				04540D5E27DD08C300E91B77 /* WorkspaceView.swift in Sources */,
 				04540D5F27DD08C300E91B77 /* EditorView.swift in Sources */,
 				34EE19BE27E0469C00F152CE /* BlurView.swift in Sources */,
 				D7211D4327E066CE008F2ED7 /* Localized+Ex.swift in Sources */,
 				04540D6127DD08C300E91B77 /* CodeFile.swift in Sources */,
+				043C321627E3201F006AE443 /* WorkspaceDocument.swift in Sources */,
 				345F667527DF6C180069BD69 /* FileTabRow.swift in Sources */,
-				04540D6327DD08C300E91B77 /* CodeEditorAppDelegate.swift in Sources */,
+				043C321827E32246006AE443 /* CodeFileEditor.swift in Sources */,
+				04540D6327DD08C300E91B77 /* AppDelegate.swift in Sources */,
 				0439FEF527DD104500528317 /* WorkspaceEditorView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -518,6 +530,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CodeEdit/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSPrincipalClass = CodeEdit.CodeEditApplication;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -548,6 +561,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CodeEdit/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSPrincipalClass = CodeEdit.CodeEditApplication;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
