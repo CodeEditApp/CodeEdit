@@ -11,11 +11,10 @@ import WorkspaceClient
 struct WorkspaceView: View {
     @State private var directoryURL: URL?
     @State private var workspaceClient: WorkspaceClient?
-
 	// TODO: Create a ViewModel to hold selectedId, openFileItems, ... to pass it to subviews as an EnvironmentObject (less boilerplate parameters)
-    @State var selectedId: UUID?
-    @State var openFileItems: [WorkspaceClient.FileItem] = []
-    @State var urlInit = false
+    @State private var selectedId: WorkspaceClient.FileId?
+    @State private var openFileItems: [WorkspaceClient.FileItem] = []
+    @State private var urlInit = false
     
     @State private var showingAlert = false
     @State private var alertTitle = ""
@@ -52,7 +51,6 @@ struct WorkspaceView: View {
                             .help("Show/Hide Sidebar")
                         }
                     }
-                
                 if openFileItems.isEmpty {
                     Text("Open file from sidebar")
                 } else {

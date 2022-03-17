@@ -9,16 +9,23 @@ import Foundation
 import AppKit
 import SwiftUI
 import WorkspaceClient
+import Combine
 
 @objc(WorkspaceDocument)
 class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     
     @Published var workspaceClient: WorkspaceClient?
-    @Published var selectedId: UUID?
+    @Published var selectedId: String?
     @Published var openFileItems: [WorkspaceClient.FileItem] = []
 	@Published var sortFoldersOnTop: Bool = true
-    
+    @Published var fileItems: [WorkspaceClient.FileItem] = []
     var openedCodeFiles: [WorkspaceClient.FileItem : CodeFile] = [:]
+    private var cancellable: AnyCancellable?
+    
+    deinit {
+        cancellable?.cancel()
+        cancellable = nil
+    }
     
     func closeFileTab(item: WorkspaceClient.FileItem) {
         defer {
@@ -81,16 +88,43 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         window.contentView = NSHostingView(rootView: contentView)
         self.addWindowController(windowController)
     }
-    
+
     override func read(from url: URL, ofType typeName: String) throws {
         self.workspaceClient = try .default(
             fileManager: .default,
             folderURL: url,
             ignoredFilesAndFolders: ignoredFilesAndDirectory
         )
+        cancellable = workspaceClient?
+            .getFiles
+            .sink { [weak self] files in
+                guard let self = self else { return }
+
+//                defer {
+//                    // this sorts the array alphabetically
+//                    self.fileItems = self.fileItems.sorted()
+//                }
+                
+                guard !self.fileItems.isEmpty else {
+                    self.fileItems = files
+                    return
+                }
+                
+                // Instead of rebuilding the array we want to
+                // calculate the difference between the last iteration
+                // and now. If the index of the file exists in the array
+                // it means we need to remove the element, otherwise we need to append
+                // it.
+                let diff = files.difference(from: self.fileItems)
+                diff.forEach { newFile in
+                    if let index = self.fileItems.firstIndex(of: newFile) {
+                        self.fileItems.remove(at: index)
+                    } else {
+                        self.fileItems.append(newFile)
+                    }
+                }
+            }
     }
     
-    override func write(to url: URL, ofType typeName: String) throws {
-        
-    }
+    override func write(to url: URL, ofType typeName: String) throws {}
 }
