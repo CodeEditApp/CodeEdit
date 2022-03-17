@@ -10,7 +10,6 @@ import WorkspaceClient
 
 struct TabBarItem: View {
 	var item: WorkspaceClient.FileItem
-
     var windowController: NSWindowController
     @ObservedObject var workspace: WorkspaceDocument
 
