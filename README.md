@@ -60,3 +60,7 @@ After forking and pulling down the code, make sure you open the workspace and no
 
 Find issues from the [Issues tab](https://github.com/mchakravarty/CodeEditorView/issues) or from the To Do column in our [project](https://github.com/mchakravarty/CodeEditorView/projects/2).
 If you find an issue you want to work on, please indicate it in the issue and/or attach a draft PR once available.
+
+# License
+
+Licensed under the [MIT license](https://github.com/CodeEditApp/CodeEdit/blob/main/LICENSE.md).
