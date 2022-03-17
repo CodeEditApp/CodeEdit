@@ -11,6 +11,8 @@ import WorkspaceClient
 struct WorkspaceView: View {
     @State private var directoryURL: URL?
     @State private var workspaceClient: WorkspaceClient?
+
+	// TODO: Create a ViewModel to hold selectedId, openFileItems, ... to pass it to subviews as an EnvironmentObject (less boilerplate parameters)
     @State var selectedId: UUID?
     @State var openFileItems: [WorkspaceClient.FileItem] = []
     @State var urlInit = false
@@ -60,7 +62,7 @@ struct WorkspaceView: View {
                                 WorkspaceEditorView(item: selectedItem)
                             }
                         }
-                        
+
                         VStack {
                             tabBar
                                 .frame(maxHeight: tabBarHeight)
