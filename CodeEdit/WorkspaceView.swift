@@ -17,10 +17,6 @@ struct WorkspaceView: View {
     var windowController: NSWindowController
     @ObservedObject var workspace: WorkspaceDocument
     
-    @State var selectedId: UUID?
-    @State var openFileItems: [WorkspaceClient.FileItem] = []
-    @State var urlInit = false
-    
     @State private var showingAlert = false
     @State private var alertTitle = ""
     @State private var alertMsg = ""
@@ -28,20 +24,6 @@ struct WorkspaceView: View {
     var tabBarHeight = 28.0
 
     private var path: String = ""
-    
-    func closeFileTab(item: WorkspaceClient.FileItem) {
-        guard let idx = openFileItems.firstIndex(of: item) else { return }
-        let closedFileItem = openFileItems.remove(at: idx)
-        guard closedFileItem.id == selectedId else { return }
-        
-        if openFileItems.isEmpty {
-            selectedId = nil
-        } else if idx == 0 {
-            selectedId = openFileItems.first?.id
-        } else {
-            selectedId = openFileItems[idx - 1].id
-        }
-    }
 
     var body: some View {
         NavigationView {
@@ -49,24 +31,16 @@ struct WorkspaceView: View {
                 sidebar(workspaceClient: workspaceClient)
                     .frame(minWidth: 250)
                 
-                if openFileItems.isEmpty {
-                    Text("Open file from sidebar")
-                } else {
-                    ZStack {
-                        if let selectedId = selectedId {
-                            if let selectedItem = try? workspaceClient.getFileItem(selectedId) {
-                                WorkspaceEditorView(item: selectedItem)
-                            }
-                        }
-                        
-                        VStack {
+                if !workspace.openFileItems.isEmpty, let selectedId = workspace.selectedId,
+                   let selectedItem = try? workspaceClient.getFileItem(selectedId) {
+                    WorkspaceEditorView(workspace: workspace, item: selectedItem, windowController: windowController)
+                        .safeAreaInset(edge: .top) {
                             tabBar
                                 .frame(maxHeight: tabBarHeight)
                                 .background(Material.regular)
-                            
-                            Spacer()
                         }
-                    }
+                } else {
+                    Text("Open file from sidebar")
                 }
             } else {
                 EmptyView()
@@ -78,13 +52,22 @@ struct WorkspaceView: View {
                 Text("OK")
             }
         }, message: { Text(alertMsg) })
+        .onChange(of: self.workspace.selectedId) { n in
+            if n == nil {
+                self.windowController.window?.subtitle = ""
+            }
+            guard let item = self.workspace.openFileItems.first(where: { item in
+                return item.id == self.workspace.selectedId
+            }) else { return }
+            self.windowController.window?.subtitle = item.url.lastPathComponent
+        }
     }
     
     func tabRow(item: WorkspaceClient.FileItem, isActive: Bool) -> some View {
         HStack(spacing: 0.0) {
             FileTabRow(fileItem: item, isSelected: isActive) {
                 withAnimation {
-                    closeFileTab(item: item)
+                    workspace.closeFileTab(item: item)
                 }
             }
             
@@ -99,10 +82,10 @@ struct WorkspaceView: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 ScrollViewReader { value in
                     HStack(alignment: .center, spacing: 0.0) {
-                        ForEach(openFileItems, id: \.id) { item in
-                            let isActive = selectedId == item.id
+                        ForEach(workspace.openFileItems, id: \.id) { item in
+                            let isActive = workspace.selectedId == item.id
                             
-                            Button(action: { selectedId = item.id }) {
+                            Button(action: { workspace.selectedId = item.id }) {
                                 if isActive {
                                     tabRow(item: item, isActive: isActive)
                                         .background(Material.bar)
@@ -111,12 +94,12 @@ struct WorkspaceView: View {
                                 }
                                 
                             }
-                            .animation(.easeOut(duration: 0.2), value: openFileItems)
+                            .animation(.easeOut(duration: 0.2), value: workspace.openFileItems)
                             .buttonStyle(.plain)
                             .id(item.id)
                         }
                     }
-                    .onChange(of: selectedId) { newValue in
+                    .onChange(of: workspace.selectedId) { newValue in
                         withAnimation {
                             value.scrollTo(newValue)
                         }
@@ -139,10 +122,7 @@ struct WorkspaceView: View {
                     if item.children == nil {
                         // TODO: Add selection indicator
                         Button(action: {
-                            withAnimation {
-                                if !openFileItems.contains(item) { openFileItems.append(item) }
-                            }
-                            selectedId = item.id
+                            workspace.openFile(item: item)
                         }) {
                             Label(item.url.lastPathComponent, systemImage: item.systemImage)
                                 .accentColor(.secondary)
