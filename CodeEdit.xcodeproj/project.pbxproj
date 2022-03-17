@@ -19,6 +19,8 @@
 		04540D6127DD08C300E91B77 /* CodeFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 348313FB27DC8C070016D42C /* CodeFile.swift */; };
 		04540D6327DD08C300E91B77 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0468438427DC76E200F8E88E /* AppDelegate.swift */; };
 		04660F6127E3A68A00477777 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 04660F6027E3A68A00477777 /* Info.plist */; };
+		04660F6427E3ACAF00477777 /* Appearances.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04660F6327E3ACAF00477777 /* Appearances.swift */; };
+		04660F6627E3ACEF00477777 /* ReopenBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04660F6527E3ACEF00477777 /* ReopenBehavior.swift */; };
 		287776E727E3413200D46668 /* SideBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287776E627E3413200D46668 /* SideBar.swift */; };
 		287776E927E34BC700D46668 /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287776E827E34BC700D46668 /* TabBar.swift */; };
 		287776ED27E350D800D46668 /* SideBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287776EC27E350D800D46668 /* SideBarItem.swift */; };
@@ -58,6 +60,8 @@
 		043C321927E32295006AE443 /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		043DF9C127DD045800CA0FC3 /* EditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorView.swift; sourceTree = "<group>"; };
 		04660F6027E3A68A00477777 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		04660F6327E3ACAF00477777 /* Appearances.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Appearances.swift; sourceTree = "<group>"; };
+		04660F6527E3ACEF00477777 /* ReopenBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReopenBehavior.swift; sourceTree = "<group>"; };
 		0468438427DC76E200F8E88E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		04F2BF0E27DBB28E0024EAB1 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		04F2BF1127DBB3C10024EAB1 /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
@@ -127,9 +131,19 @@
 			path = Documents;
 			sourceTree = "<group>";
 		};
+		04660F6227E3ACA300477777 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				04660F6327E3ACAF00477777 /* Appearances.swift */,
+				04660F6527E3ACEF00477777 /* ReopenBehavior.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		04F2BF1027DBB3AF0024EAB1 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				04660F6227E3ACA300477777 /* Models */,
 				04F2BF0E27DBB28E0024EAB1 /* SettingsView.swift */,
 				04F2BF1127DBB3C10024EAB1 /* GeneralSettingsView.swift */,
 			);
@@ -376,6 +390,7 @@
 				04540D5B27DD08C300E91B77 /* SettingsView.swift in Sources */,
 				04540D5C27DD08C300E91B77 /* GeneralSettingsView.swift in Sources */,
 				043C321427E31FF6006AE443 /* CodeEditDocumentController.swift in Sources */,
+				04660F6427E3ACAF00477777 /* Appearances.swift in Sources */,
 				04540D5E27DD08C300E91B77 /* WorkspaceView.swift in Sources */,
 				04540D5F27DD08C300E91B77 /* EditorView.swift in Sources */,
 				34EE19BE27E0469C00F152CE /* BlurView.swift in Sources */,
@@ -386,6 +401,7 @@
 				287776E727E3413200D46668 /* SideBar.swift in Sources */,
 				287776ED27E350D800D46668 /* SideBarItem.swift in Sources */,
 				04540D6127DD08C300E91B77 /* CodeFile.swift in Sources */,
+				04660F6627E3ACEF00477777 /* ReopenBehavior.swift in Sources */,
 				043C321627E3201F006AE443 /* WorkspaceDocument.swift in Sources */,
 				28B0A19827E385C300B73177 /* SideBarToolbar.swift in Sources */,
 				345F667527DF6C180069BD69 /* FileTabRow.swift in Sources */,
