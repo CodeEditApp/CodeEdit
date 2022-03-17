@@ -42,6 +42,11 @@ struct WorkspaceView: View {
                 Text("OK")
             }
         }, message: { Text(alertMsg) })
+        .onChange(of: workspace.selectedId) { newValue in
+            if newValue == nil {
+                windowController.window?.subtitle = ""
+            }
+        }
     }
 }
 
