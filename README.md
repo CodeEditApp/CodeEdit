@@ -45,4 +45,9 @@ Our goal is to develop an app that looks and feels like it was designed and deve
 
 ## Contributing
 
-Feel free to join and collaborate on our [Discord server](https://discord.gg/ANUVc6TF).
+Feel free to join and collaborate on our [Discord server](https://discord.gg/vChUXVf9Em).
+
+After forking and pulling down the code, make sure you open the workspace and not the project.
+
+Find issues from the [Issues tab](https://github.com/mchakravarty/CodeEditorView/issues) or from the To Do column in our [project](https://github.com/mchakravarty/CodeEditorView/projects/2).
+If you find an issue you want to work on, please indicate it in the issue and/or attach a draft PR once available.
