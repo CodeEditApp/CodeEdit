@@ -14,7 +14,16 @@ This lead to the creation of [this concept](https://www.figma.com/proto/qj6raZbQ
 
 ## Mission
 
-Our goal is to develop an app that looks and feels like it was designed and developed by Apple. We think there is room to really streamline the developer experience. Something that Xcode has done. We want to offer users an IDE experience while staying lightweight. To gain maximum adoption, CodeEdit should be open source, free to use, and supported by the community. 
+We think there is room to really streamline the developer experience. Something that Xcode has done. We want to offer users an IDE experience while staying lightweight. To gain maximum adoption, CodeEdit should be open source, free to use, and supported by the community. 
+
+Our goal is to develop an app that looks and feels like it was designed and developed by Apple and to closely stick to their design standards and development patterns even down to the application icon and naming strategy.
+
+![codeedit-icon-equation](https://user-images.githubusercontent.com/806104/158899043-8a56e431-6705-40aa-93a6-3c909f20218c.png)
+
+We'd like to keep our application light as TextEdit, but provide an experience like Xcode. 
+
+It might sound crazy, but it is our hope that at some point Apple adopts this project or at least feels like they could.
+
 
 ## To do
 
@@ -51,3 +60,7 @@ After forking and pulling down the code, make sure you open the workspace and no
 
 Find issues from the [Issues tab](https://github.com/mchakravarty/CodeEditorView/issues) or from the To Do column in our [project](https://github.com/mchakravarty/CodeEditorView/projects/2).
 If you find an issue you want to work on, please indicate it in the issue and/or attach a draft PR once available.
+
+## License
+
+Licensed under the [MIT license](https://github.com/CodeEditApp/CodeEdit/blob/main/LICENSE.md).
