@@ -41,12 +41,10 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         do {
             let codeFile = try CodeFile(for: item.url, withContentsOf: item.url, ofType: "public.source-code")
             
-            withAnimation {
-                if !openFileItems.contains(item) {
-                    openFileItems.append(item)
-                    
-                    openedCodeFiles[item] = codeFile
-                }
+            if !openFileItems.contains(item) {
+                openFileItems.append(item)
+                
+                openedCodeFiles[item] = codeFile
             }
             selectedId = item.id
         } catch let e {

@@ -9,36 +9,45 @@ import SwiftUI
 import WorkspaceClient
 
 struct TabBar: View {
-
-	@Binding var openFileItems: [WorkspaceClient.FileItem]
-	@Binding var selectedId: UUID?
+    var windowController: NSWindowController
+    @ObservedObject var workspace: WorkspaceDocument
 
 	var tabBarHeight = 28.0
 
     var body: some View {
-		VStack(spacing: 0.0) {
-			Divider()
-			ScrollView(.horizontal, showsIndicators: false) {
-				HStack(alignment: .center, spacing: 0.0) {
-					Divider()
-						.foregroundColor(.primary.opacity(0.25))
-					ForEach(openFileItems, id: \.id) { item in
-						TabBarItem(item: item,
-								   selectedId: $selectedId,
-								   openFileItems: $openFileItems,
-								   tabBarHeight: tabBarHeight)
-					}
-					Spacer()
-				}
-			}
-			Divider()
-				.foregroundColor(.black)
-				.frame(height: 1.0)
-		}
-		.frame(maxHeight: tabBarHeight)
-		.background {
-			BlurView(material: .titlebar, blendingMode: .withinWindow)
-		}
+        VStack(spacing: 0.0) {
+            ScrollView(.horizontal, showsIndicators: false) {
+                ScrollViewReader { value in
+                    HStack(alignment: .center, spacing: 0.0) {
+                        ForEach(workspace.openFileItems, id: \.id) { item in
+                            let isActive = workspace.selectedId == item.id
+                            
+                            Button(action: { workspace.selectedId = item.id }) {
+                                if isActive {
+                                    TabBarItem(item: item, windowController: windowController, workspace: workspace)
+                                        .background(Material.bar)
+                                } else {
+                                    TabBarItem(item: item, windowController: windowController, workspace: workspace)
+                                }
+                            }
+                            .animation(.easeOut(duration: 0.2), value: workspace.openFileItems)
+                            .buttonStyle(.plain)
+                            .id(item.id)
+                        }
+                    }
+                    .onChange(of: workspace.selectedId) { newValue in
+                        withAnimation {
+                            value.scrollTo(newValue)
+                        }
+                    }
+                }
+            }
+            
+            Divider()
+                .foregroundColor(.gray)
+                .frame(height: 1.0)
+        }
+        .background(Material.regular)
     }
 
 	

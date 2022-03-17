@@ -10,20 +10,16 @@ import WorkspaceClient
 
 struct SideBar: View {
 
-	var directoryURL: URL
-	var workspaceClient: WorkspaceClient
-	@Binding var openFileItems: [WorkspaceClient.FileItem]
-	@Binding var selectedId: UUID?
+    @ObservedObject var workspace: WorkspaceDocument
+    var windowController: NSWindowController
 
     var body: some View {
 		List {
-			Section(header: Text(directoryURL.lastPathComponent)) {
-				ForEach(workspaceClient.getFiles()) { item in // Instead of OutlineGroup
+            Section(header: Text(workspace.fileURL?.lastPathComponent ?? "Unknown")) {
+                ForEach(workspace.workspaceClient?.getFiles() ?? []) { item in // Instead of OutlineGroup
 					SideBarItem(item: item,
-								directoryURL: directoryURL,
-								workspaceClient: workspaceClient,
-								openFileItems: $openFileItems,
-								selectedId: $selectedId)
+								workspace: workspace,
+                                windowController: windowController)
 				}
 			}
 		}

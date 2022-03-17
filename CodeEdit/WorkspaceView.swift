@@ -27,21 +27,11 @@ struct WorkspaceView: View {
 
     var body: some View {
         NavigationView {
-            if let workspaceClient = workspace.workspaceClient {
-                sidebar(workspaceClient: workspaceClient)
+            if workspace.workspaceClient != nil {
+                SideBar(workspace: workspace, windowController: windowController)
                     .frame(minWidth: 250)
                 
-                if !workspace.openFileItems.isEmpty, let selectedId = workspace.selectedId,
-                   let selectedItem = try? workspaceClient.getFileItem(selectedId) {
-                    WorkspaceEditorView(workspace: workspace, item: selectedItem, windowController: windowController)
-                        .safeAreaInset(edge: .top) {
-                            tabBar
-                                .frame(maxHeight: tabBarHeight)
-                                .background(Material.regular)
-                        }
-                } else {
-                    Text("Open file from sidebar")
-                }
+                Text("Open file from sidebar")
             } else {
                 EmptyView()
             }
@@ -60,82 +50,6 @@ struct WorkspaceView: View {
                 return item.id == self.workspace.selectedId
             }) else { return }
             self.windowController.window?.subtitle = item.url.lastPathComponent
-        }
-    }
-    
-    func tabRow(item: WorkspaceClient.FileItem, isActive: Bool) -> some View {
-        HStack(spacing: 0.0) {
-            FileTabRow(fileItem: item, isSelected: isActive) {
-                withAnimation {
-                    workspace.closeFileTab(item: item)
-                }
-            }
-            
-            Divider()
-        }
-        .frame(height: tabBarHeight)
-        .foregroundColor(isActive ? .primary : .gray)
-    }
-    
-    var tabBar: some View {
-        VStack(spacing: 0.0) {
-            ScrollView(.horizontal, showsIndicators: false) {
-                ScrollViewReader { value in
-                    HStack(alignment: .center, spacing: 0.0) {
-                        ForEach(workspace.openFileItems, id: \.id) { item in
-                            let isActive = workspace.selectedId == item.id
-                            
-                            Button(action: { workspace.selectedId = item.id }) {
-                                if isActive {
-                                    tabRow(item: item, isActive: isActive)
-                                        .background(Material.bar)
-                                } else {
-                                    tabRow(item: item, isActive: isActive)
-                                }
-                                
-                            }
-                            .animation(.easeOut(duration: 0.2), value: workspace.openFileItems)
-                            .buttonStyle(.plain)
-                            .id(item.id)
-                        }
-                    }
-                    .onChange(of: workspace.selectedId) { newValue in
-                        withAnimation {
-                            value.scrollTo(newValue)
-                        }
-                    }
-                }
-            }
-            
-            Divider()
-                .foregroundColor(.gray)
-                .frame(height: 1.0)
-        }
-    }
-    
-    func sidebar(
-        workspaceClient: WorkspaceClient
-    ) -> some View {
-        List {
-            Section(header: Text(workspace.fileURL?.lastPathComponent ?? "Unknown Workspace")) {
-                OutlineGroup(workspaceClient.getFiles(), children: \.children) { item in
-                    if item.children == nil {
-                        // TODO: Add selection indicator
-                        Button(action: {
-                            workspace.openFile(item: item)
-                        }) {
-                            Label(item.url.lastPathComponent, systemImage: item.systemImage)
-                                .accentColor(.secondary)
-                                .font(.callout)
-                        }
-                        .buttonStyle(.plain)
-                    } else {
-                        Label(item.url.lastPathComponent, systemImage: item.systemImage)
-                            .accentColor(.secondary)
-                            .font(.callout)
-                    }
-                }
-            }
         }
     }
 }

@@ -14,11 +14,14 @@ struct WorkspaceEditorView: View {
     var windowController: NSWindowController
     
     var body: some View {
-        if let file = workspace.openedCodeFiles[item] {
-            ScrollView(.vertical, showsIndicators: true) {
+        ScrollView(.vertical, showsIndicators: true) {
+            if let file = workspace.openedCodeFiles[item] {
                 CodeFileEditor(file: file)
+            } else {
+                Text("File cannot be opened")
             }
-                .background(Color(nsColor: NSColor.textBackgroundColor))
         }
+            .background(Color(nsColor: NSColor.textBackgroundColor))
+            .onAppear { workspace.openFile(item: item) }
     }
 }
