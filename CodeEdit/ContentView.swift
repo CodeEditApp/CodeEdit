@@ -11,6 +11,8 @@ import WorkspaceClient
 struct ContentView: View {
     @State private var directoryURL: URL?
     @State private var workspaceClient: WorkspaceClient?
+
+	// TODO: Create a ViewModel to hold selectedId, openFileItems, ... to pass it to subviews as an EnvironmentObject (less boilerplate parameters)
     @State var selectedId: UUID?
     @State var openFileItems: [WorkspaceClient.FileItem] = []
     @State var urlInit = false
@@ -18,8 +20,6 @@ struct ContentView: View {
     @State private var showingAlert = false
     @State private var alertTitle = ""
     @State private var alertMsg = ""
-    
-    var tabBarHeight = 28.0
     
     @EnvironmentObject var appDelegate: CodeEditorAppDelegate
     @SceneStorage("ContentView.path") private var path: String = ""
@@ -45,7 +45,10 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             if let workspaceClient = workspaceClient, let directoryURL = directoryURL {
-                sidebar(workspaceClient: workspaceClient, directoryURL: directoryURL)
+				SideBar(directoryURL: directoryURL,
+						workspaceClient: workspaceClient,
+						openFileItems: $openFileItems,
+						selectedId: $selectedId)
                     .frame(minWidth: 250)
                     .toolbar {
                         ToolbarItem(placement: .primaryAction) {
@@ -65,14 +68,10 @@ struct ContentView: View {
                                 WorkspaceEditorView(item: selectedItem)
                             }
                         }
-                        
+
                         VStack {
-                            tabBar
-                                .frame(maxHeight: tabBarHeight)
-                                .background {
-                                    BlurView(material: .titlebar, blendingMode: .withinWindow)
-                                }
-                            
+                            TabBar(openFileItems: $openFileItems, selectedId: $selectedId)
+
                             Spacer()
                         }
                     }
@@ -144,82 +143,6 @@ struct ContentView: View {
                 Text("OK")
             }
         }, message: { Text(alertMsg) })
-    }
-    
-    var tabBar: some View {
-        VStack(spacing: 0.0) {
-            Divider()
-            
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(alignment: .center, spacing: 0.0) {
-                    Divider()
-                        .foregroundColor(.primary.opacity(0.25))
-                    
-                    ForEach(openFileItems, id: \.id) { item in
-                        let isActive = selectedId == item.id
-                        
-                        HStack(spacing: 0.0) {
-                            Button {
-                                selectedId = item.id
-                            } label: {
-                                FileTabRow(fileItem: item, isSelected: isActive, closeAction: {
-                                    withAnimation {
-                                        closeFileTab(item: item)
-                                    }
-                                })
-                                .frame(height: tabBarHeight)
-                                .foregroundColor(.primary.opacity(isActive ? 0.9 : 0.55))
-                            }
-                            .buttonStyle(.plain)
-                            .background {
-                                (isActive ? Color(red: 0.219, green: 0.219, blue: 0.219) : Color(red: 0.113, green: 0.113, blue: 0.113))
-                                    .opacity(0.85)
-                            }
-                            
-                            Divider()
-                                .foregroundColor(.primary.opacity(0.25))
-                        }
-                        .animation(.easeOut(duration: 0.2), value: openFileItems)
-                    }
-                    
-                    Spacer()
-                }
-            }
-            
-            Divider()
-                .foregroundColor(.black)
-                .frame(height: 1.0)
-        }
-    }
-    
-    func sidebar(
-        workspaceClient: WorkspaceClient,
-        directoryURL: URL
-    ) -> some View {
-        List {
-            Section(header: Text(directoryURL.lastPathComponent)) {
-                OutlineGroup(workspaceClient.getFiles(), children: \.children) { item in
-                    if item.children == nil {
-                        // TODO: Add selection indicator
-                        Button(action: {
-                            withAnimation {
-                                if !openFileItems.contains(item) { openFileItems.append(item) }
-                            }
-                            selectedId = item.id
-                        }) {
-                            Label(item.url.lastPathComponent, systemImage: item.systemImage)
-                                .accentColor(.secondary)
-                                .font(.callout)
-                        }
-                        .buttonStyle(.plain)
-                    } else {
-                        Label(item.url.lastPathComponent, systemImage: item.systemImage)
-                            .accentColor(.secondary)
-                            .font(.callout)
-                    }
-                }
-            }
-        }
     }
     
     private func toggleSidebar() {
