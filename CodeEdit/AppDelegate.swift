@@ -57,4 +57,16 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         
         window.makeKeyAndOrderFront(sender)
     }
+    
+    func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
+        if !flag {
+            CodeEditDocumentController.shared.openDocument(self)
+        }
+        
+        return true
+    }
+    
+    func applicationShouldOpenUntitledFile(_ sender: NSApplication) -> Bool {
+        return false
+    }
 }

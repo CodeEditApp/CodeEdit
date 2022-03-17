@@ -47,6 +47,8 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
                 openedCodeFiles[item] = codeFile
             }
             selectedId = item.id
+            
+            self.windowControllers.first?.window?.subtitle = item.url.lastPathComponent
         } catch let e {
             Swift.print(e)
         }
