@@ -16,6 +16,7 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     @Published var workspaceClient: WorkspaceClient?
     @Published var selectedId: UUID?
     @Published var openFileItems: [WorkspaceClient.FileItem] = []
+	@Published var sortFoldersOnTop: Bool = true
     
     var openedCodeFiles: [WorkspaceClient.FileItem : CodeFile] = [:]
     

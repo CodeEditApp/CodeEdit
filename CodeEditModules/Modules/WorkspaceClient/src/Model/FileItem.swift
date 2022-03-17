@@ -20,6 +20,9 @@ public extension WorkspaceClient {
                 return children.isEmpty ? "folder" : "folder.fill"
             }
         }
+		public var fileName: String {
+			url.lastPathComponent
+		}
         
         public var fileIcon: String {
             switch fileType {
