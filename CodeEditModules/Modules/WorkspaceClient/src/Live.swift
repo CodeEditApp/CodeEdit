@@ -47,6 +47,7 @@ public extension WorkspaceClient {
         fileItems = try loadFiles(fromURL: folderURL)
         
         return Self(
+			folderURL: { folderURL },
             getFiles: { fileItems },
             getFileItem: { id in
                 guard let item = flattenedFileItems[id] else {
