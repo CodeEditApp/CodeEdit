@@ -6,15 +6,30 @@ let package = Package(
     name: "CodeEditModules",
     defaultLocalization: "en",
     platforms: [
-        .macOS(.v10_15),
+        .macOS(.v11),
     ],
     products: [
         .library(
             name: "WorkspaceClient",
             targets: ["WorkspaceClient"]
         ),
+        .library(
+            name: "CodeFile",
+            targets: ["CodeFile"]
+        ),
     ],
-    dependencies: [],
+    dependencies: [
+        .package(
+            name: "CodeEditor",
+            url: "https://github.com/ZeeZide/CodeEditor.git",
+            from: "1.2.0"
+        ),
+        .package(
+            name: "SnapshotTesting",
+            url: "https://github.com/pointfreeco/swift-snapshot-testing.git",
+            from: "1.9.0"
+        ),
+    ],
     targets: [
         .target(
             name: "WorkspaceClient",
@@ -26,6 +41,21 @@ let package = Package(
                 "WorkspaceClient",
             ],
             path: "Modules/WorkspaceClient/Tests"
+        ),
+        .target(
+            name: "CodeFile",
+            dependencies: [
+                "CodeEditor",
+            ],
+            path: "Modules/CodeFile/src"
+        ),
+        .testTarget(
+            name: "CodeFileTests",
+            dependencies: [
+                "CodeFile",
+                "SnapshotTesting",
+            ],
+            path: "Modules/CodeFile/Tests"
         ),
     ]
 )

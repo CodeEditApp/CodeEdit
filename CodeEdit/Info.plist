@@ -30,7 +30,7 @@
 				<string>public.source-code</string>
 			</array>
 			<key>NSDocumentClass</key>
-			<string>CodeFile</string>
+			<string>CodeFileDocument</string>
 		</dict>
 	</array>
 	<key>CFBundleURLTypes</key>

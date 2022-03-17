@@ -7,6 +7,7 @@
 
 import SwiftUI
 import WorkspaceClient
+import CodeFile
 
 struct SideBarItem: View {
 
@@ -25,16 +26,23 @@ struct SideBarItem: View {
 		}
 	}
 
-	func sidebarFileItem(_ item: WorkspaceClient.FileItem) -> some View {
+    func sidebarFileItem(_ item: WorkspaceClient.FileItem) -> some View {
         NavigationLink(tag: item.id, selection: $workspace.selectedId) {
-            WorkspaceEditorView(workspace: workspace, item: item, windowController: windowController)
-                .safeAreaInset(edge: .top) {
-					VStack(spacing: 0) {
-						TabBar(windowController: windowController, workspace: workspace)
-						BreadcrumbsView(item, workspace: workspace)
-					}
-				}
-		} label: {
+            ZStack {
+                if let codeFile = workspace.openedCodeFiles[item] {
+                    CodeFileView(codeFile: codeFile)
+                        .safeAreaInset(edge: .top, spacing: 0) {
+                            VStack(spacing: 0) {
+                                TabBar(windowController: windowController, workspace: workspace)
+                                BreadcrumbsView(item, workspace: workspace)
+                            }
+                        }
+                } else {
+                    Text("File cannot be opened")
+                }
+            }
+            .onAppear { workspace.openFile(item: item) }
+        } label: {
 			Label(item.url.lastPathComponent, systemImage: item.systemImage)
 				.accentColor(item.iconColor)
 				.font(.callout)

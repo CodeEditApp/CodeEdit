@@ -8,9 +8,7 @@
 import Cocoa
 
 class CodeEditDocumentController: NSDocumentController {
-    override func openDocument(_ sender: Any?) {
-        print("Opening")
-        
+    override func openDocument(_ sender: Any?) {        
         let dialog = NSOpenPanel()
 
         dialog.title = "Open Workspace or File"

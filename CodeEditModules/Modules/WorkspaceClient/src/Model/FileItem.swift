@@ -22,10 +22,11 @@ public extension WorkspaceClient {
                 return children.isEmpty ? "folder" : "folder.fill"
             }
         }
-		public var fileName: String {
-			url.lastPathComponent
-		}
-        
+
+        public var fileName: String {
+            url.lastPathComponent
+        }
+
         public var fileIcon: String {
             switch fileType {
             case "json", "js":
@@ -88,13 +89,14 @@ public extension WorkspaceClient {
         ) {
             self.url = url
             self.children = children
-            self.id = url.relativePath
+            id = url.relativePath
         }
-        
-        public static func ==(lhs: FileItem, rhs: FileItem) -> Bool {
+
+        public static func == (lhs: FileItem, rhs: FileItem) -> Bool {
             return lhs.id == rhs.id
         }
-        public static func <(lhs: FileItem, rhs: FileItem) -> Bool {
+
+        public static func < (lhs: FileItem, rhs: FileItem) -> Bool {
             return lhs.url.lastPathComponent < rhs.url.lastPathComponent
         }
     }

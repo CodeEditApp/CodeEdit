@@ -7,10 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0439FEF527DD104500528317 /* WorkspaceEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0439FEF427DD104500528317 /* WorkspaceEditorView.swift */; };
 		043C321427E31FF6006AE443 /* CodeEditDocumentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043C321327E31FF6006AE443 /* CodeEditDocumentController.swift */; };
 		043C321627E3201F006AE443 /* WorkspaceDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043C321527E3201F006AE443 /* WorkspaceDocument.swift */; };
-		043C321827E32246006AE443 /* CodeFileEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043C321727E32246006AE443 /* CodeFileEditor.swift */; };
 		043C321A27E32295006AE443 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 043C321927E32295006AE443 /* MainMenu.xib */; };
 		04540D5B27DD08C300E91B77 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F2BF0E27DBB28E0024EAB1 /* SettingsView.swift */; };
 		04540D5C27DD08C300E91B77 /* GeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F2BF1127DBB3C10024EAB1 /* GeneralSettingsView.swift */; };
@@ -31,6 +29,7 @@
 		345F667527DF6C180069BD69 /* FileTabRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 345F667427DF6C180069BD69 /* FileTabRow.swift */; };
 		34EE19BE27E0469C00F152CE /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34EE19BD27E0469C00F152CE /* BlurView.swift */; };
 		5C403B8F27E20F8000788241 /* WorkspaceClient in Frameworks */ = {isa = PBXBuildFile; productRef = 5C403B8E27E20F8000788241 /* WorkspaceClient */; };
+		5CF38A5E27E48E6C0096A0F7 /* CodeFile in Frameworks */ = {isa = PBXBuildFile; productRef = 5CF38A5D27E48E6C0096A0F7 /* CodeFile */; };
 		B658FB3427DA9E1000EA4DBD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3327DA9E1000EA4DBD /* Assets.xcassets */; };
 		B658FB3727DA9E1000EA4DBD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3627DA9E1000EA4DBD /* Preview Assets.xcassets */; };
 		D7211D4327E066CE008F2ED7 /* Localized+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7211D4227E066CE008F2ED7 /* Localized+Ex.swift */; };
@@ -55,12 +54,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0439FEF427DD104500528317 /* WorkspaceEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceEditorView.swift; sourceTree = "<group>"; };
 		043C321327E31FF6006AE443 /* CodeEditDocumentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditDocumentController.swift; sourceTree = "<group>"; };
 		043C321527E3201F006AE443 /* WorkspaceDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceDocument.swift; sourceTree = "<group>"; };
-		043C321727E32246006AE443 /* CodeFileEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeFileEditor.swift; sourceTree = "<group>"; };
 		043C321927E32295006AE443 /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
-		043DF9C127DD045800CA0FC3 /* EditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorView.swift; sourceTree = "<group>"; };
 		04660F6027E3A68A00477777 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		04660F6327E3ACAF00477777 /* Appearances.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Appearances.swift; sourceTree = "<group>"; };
 		04660F6527E3ACEF00477777 /* ReopenBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReopenBehavior.swift; sourceTree = "<group>"; };
@@ -76,7 +72,6 @@
 		28B0A19727E385C300B73177 /* SideBarToolbarTop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBarToolbarTop.swift; sourceTree = "<group>"; };
 		28FFE1BE27E3A441001939DB /* SideBarToolbarBottom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBarToolbarBottom.swift; sourceTree = "<group>"; };
 		345F667427DF6C180069BD69 /* FileTabRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTabRow.swift; sourceTree = "<group>"; };
-		348313FB27DC8C070016D42C /* CodeFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeFile.swift; sourceTree = "<group>"; };
 		34EE19BD27E0469C00F152CE /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
 		B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodeEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B658FB3127DA9E0F00EA4DBD /* WorkspaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceView.swift; sourceTree = "<group>"; };
@@ -96,6 +91,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5C403B8F27E20F8000788241 /* WorkspaceClient in Frameworks */,
+				5CF38A5E27E48E6C0096A0F7 /* CodeFile in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -116,20 +112,9 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0439FEF327DD100800528317 /* Editor */ = {
-			isa = PBXGroup;
-			children = (
-				043DF9C127DD045800CA0FC3 /* EditorView.swift */,
-				0439FEF427DD104500528317 /* WorkspaceEditorView.swift */,
-				043C321727E32246006AE443 /* CodeFileEditor.swift */,
-			);
-			path = Editor;
-			sourceTree = "<group>";
-		};
 		043C321227E31FE8006AE443 /* Documents */ = {
 			isa = PBXGroup;
 			children = (
-				348313FB27DC8C070016D42C /* CodeFile.swift */,
 				043C321327E31FF6006AE443 /* CodeEditDocumentController.swift */,
 				043C321527E3201F006AE443 /* WorkspaceDocument.swift */,
 			);
@@ -237,7 +222,6 @@
 				287776EA27E350A100D46668 /* SideBar */,
 				287776EB27E350BA00D46668 /* TabBar */,
 				345F667327DF6BCC0069BD69 /* Rows */,
-				0439FEF327DD100800528317 /* Editor */,
 				04F2BF1027DBB3AF0024EAB1 /* Settings */,
 				34EE19BC27E0467F00F152CE /* CustomViews */,
 				D7211D4427E066D4008F2ED7 /* Localization */,
@@ -284,6 +268,7 @@
 			name = CodeEdit;
 			packageProductDependencies = (
 				5C403B8E27E20F8000788241 /* WorkspaceClient */,
+				5CF38A5D27E48E6C0096A0F7 /* CodeFile */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -409,7 +394,6 @@
 				043C321427E31FF6006AE443 /* CodeEditDocumentController.swift in Sources */,
 				04660F6427E3ACAF00477777 /* Appearances.swift in Sources */,
 				04540D5E27DD08C300E91B77 /* WorkspaceView.swift in Sources */,
-				04540D5F27DD08C300E91B77 /* EditorView.swift in Sources */,
 				34EE19BE27E0469C00F152CE /* BlurView.swift in Sources */,
 				D7211D4327E066CE008F2ED7 /* Localized+Ex.swift in Sources */,
 				287776E927E34BC700D46668 /* TabBar.swift in Sources */,
@@ -417,7 +401,6 @@
 				287776EF27E3515300D46668 /* TabBarItem.swift in Sources */,
 				287776E727E3413200D46668 /* SideBar.swift in Sources */,
 				287776ED27E350D800D46668 /* SideBarItem.swift in Sources */,
-				04540D6127DD08C300E91B77 /* CodeFile.swift in Sources */,
 				04660F6627E3ACEF00477777 /* ReopenBehavior.swift in Sources */,
 				043C321627E3201F006AE443 /* WorkspaceDocument.swift in Sources */,
 				28B0A19827E385C300B73177 /* SideBarToolbarTop.swift in Sources */,
@@ -790,6 +773,10 @@
 		5C403B8E27E20F8000788241 /* WorkspaceClient */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = WorkspaceClient;
+		};
+		5CF38A5D27E48E6C0096A0F7 /* CodeFile */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CodeFile;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
