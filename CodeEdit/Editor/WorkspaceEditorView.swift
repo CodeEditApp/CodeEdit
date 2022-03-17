@@ -6,13 +6,14 @@
 //
 
 import SwiftUI
+import WorkspaceClient
 
 struct WorkspaceEditorView: View {
     @State var text: String = ""
     @State var initialized = false
-    var item: FileItem
+    var item: WorkspaceClient.FileItem
     
-    func initText(item: FileItem) {
+    func initText(item: WorkspaceClient.FileItem) {
         do {
             self.text = try String(contentsOf: item.url)
             self.initialized = true

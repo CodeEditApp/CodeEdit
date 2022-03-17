@@ -6,11 +6,13 @@
 //
 
 import SwiftUI
+import WorkspaceClient
 
 struct ContentView: View {
-    @State var workspace: Workspace?
+    @State private var directoryURL: URL?
+    @State private var workspaceClient: WorkspaceClient?
     @State var selectedId: UUID?
-    @State var openFileItems: [FileItem] = []
+    @State var openFileItems: [WorkspaceClient.FileItem] = []
     @State var urlInit = false
     
     @State private var showingAlert = false
@@ -22,7 +24,11 @@ struct ContentView: View {
     @EnvironmentObject var appDelegate: CodeEditorAppDelegate
     @SceneStorage("ContentView.path") private var path: String = ""
     
-    func closeFileTab(item: FileItem) {
+    private let ignoredFilesAndDirectory = [
+        ".DS_Store",
+    ]
+    
+    func closeFileTab(item: WorkspaceClient.FileItem) {
         guard let idx = openFileItems.firstIndex(of: item) else { return }
         let closedFileItem = openFileItems.remove(at: idx)
         guard closedFileItem.id == selectedId else { return }
@@ -38,8 +44,8 @@ struct ContentView: View {
 
     var body: some View {
         NavigationView {
-            if let workspace = workspace {
-                sidebar
+            if let workspaceClient = workspaceClient, let directoryURL = directoryURL {
+                sidebar(workspaceClient: workspaceClient, directoryURL: directoryURL)
                     .frame(minWidth: 250)
                     .toolbar {
                         ToolbarItem(placement: .primaryAction) {
@@ -55,7 +61,7 @@ struct ContentView: View {
                 } else {
                     ZStack {
                         if let selectedId = selectedId {
-                            if let selectedItem = workspace.getFileItem(id: selectedId) {
+                            if let selectedItem = try? workspaceClient.getFileItem(selectedId) {
                                 WorkspaceEditorView(item: selectedItem)
                             }
                         }
@@ -92,7 +98,12 @@ struct ContentView: View {
         .onOpenURL { url in
             urlInit = true
             do {
-                self.workspace = try Workspace(folderURL: url)
+                self.workspaceClient = try .default(
+                    fileManager: .default,
+                    folderURL: url,
+                    ignoredFilesAndFolders: ignoredFilesAndDirectory
+                )
+                self.directoryURL = url
             } catch {
                 self.alertTitle = "Unable to Open Workspace"
                 self.alertMsg = error.localizedDescription
@@ -105,7 +116,12 @@ struct ContentView: View {
                 if !self.urlInit {
                     if let url = self.appDelegate.newProjectURL() {
                         do {
-                            self.workspace = try Workspace(folderURL: url)
+                            self.directoryURL = url
+                            self.workspaceClient = try .default(
+                                fileManager: .default,
+                                folderURL: url,
+                                ignoredFilesAndFolders: ignoredFilesAndDirectory
+                            )
                         } catch {
                             self.alertTitle = "Unable to Open Folder"
                             self.alertMsg = error.localizedDescription
@@ -169,10 +185,13 @@ struct ContentView: View {
         }
     }
     
-    var sidebar: some View {
+    func sidebar(
+        workspaceClient: WorkspaceClient,
+        directoryURL: URL
+    ) -> some View {
         List {
-            Section(header: Text(workspace!.directoryURL.lastPathComponent)) {
-                OutlineGroup(workspace!.fileItems, children: \.children) { item in
+            Section(header: Text(directoryURL.lastPathComponent)) {
+                OutlineGroup(workspaceClient.getFiles(), children: \.children) { item in
                     if item.children == nil {
                         // TODO: Add selection indicator
                         Button(action: {
