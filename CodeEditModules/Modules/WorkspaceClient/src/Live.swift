@@ -82,15 +82,14 @@ public extension WorkspaceClient {
         }
 
         return Self(
-			folderURL: { folderURL },
-			getFiles: subject
-				.handleEvents(receiveSubscription: { _ in
-					startListeningToDirectory()
-				}, receiveCancel: {
-					stopListeningToDirectory()
-				})
-				.receive(on: RunLoop.main)
-				.eraseToAnyPublisher(),
+            getFiles: subject
+                .handleEvents(receiveSubscription: { _ in
+                    startListeningToDirectory()
+                }, receiveCancel: {
+                    stopListeningToDirectory()
+                })
+                .receive(on: RunLoop.main)
+                .eraseToAnyPublisher(),
             getFileItem: { id in
                 guard let item = flattenedFileItems[id] else {
                     throw WorkspaceClientError.fileNotExist
