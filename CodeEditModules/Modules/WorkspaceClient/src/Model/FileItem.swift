@@ -8,15 +8,16 @@
 import Foundation
 
 public extension WorkspaceClient {
-    struct FileItem: Hashable, Identifiable {
-        public var id: UUID = UUID()
+    struct FileItem: Hashable, Identifiable, Comparable {
+        // TODO: use a phantom type instead of a String
+        public var id: String
         public var url: URL
-        public var children: [FileItem]? = nil
+        public var children: [FileItem]?
         public var systemImage: String {
             switch children {
             case nil:
                 return fileIcon
-            case .some(let children):
+            case let .some(children):
                 return children.isEmpty ? "folder" : "folder.fill"
             }
         }
@@ -56,17 +57,33 @@ public extension WorkspaceClient {
                 return "doc"
             }
         }
-        
+
         private var fileType: String {
             url.lastPathComponent.components(separatedBy: ".").last ?? ""
         }
-        
+
         public init(
             url: URL,
             children: [FileItem]? = nil
         ) {
             self.url = url
             self.children = children
+            self.id = url.relativePath
         }
+        
+        public static func ==(lhs: FileItem, rhs: FileItem) -> Bool {
+            return lhs.id == rhs.id
+        }
+        public static func <(lhs: FileItem, rhs: FileItem) -> Bool {
+            return lhs.url.lastPathComponent < rhs.url.lastPathComponent
+        }
+    }
+}
+
+public extension Array where Element: Hashable {
+    func difference(from other: [Element]) -> [Element] {
+        let thisSet = Set(self)
+        let otherSet = Set(other)
+        return Array(thisSet.symmetricDifference(otherSet))
     }
 }

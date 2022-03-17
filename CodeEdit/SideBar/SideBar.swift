@@ -9,25 +9,25 @@ import SwiftUI
 import WorkspaceClient
 
 struct SideBar: View {
-
     @ObservedObject var workspace: WorkspaceDocument
     var windowController: NSWindowController
-
 	@State private var selection: Int = 0
-
+    
 	var body: some View {
 		List {
-			switch selection {
-			case 0:
-				Section(header: Text(workspace.fileURL?.lastPathComponent ?? "Unknown")) {
-					ForEach(files.sortItems(foldersOnTop: workspace.sortFoldersOnTop)) { item in // Instead of OutlineGroup
-						SideBarItem(item: item,
-									workspace: workspace,
-									windowController: windowController)
-					}
-				}
-			default: EmptyView()
-			}
+            switch selection {
+            case 0:
+                Section(header: Text(workspace.fileURL?.lastPathComponent ?? "Unknown")) {
+                    ForEach(workspace.fileItems.sortItems(foldersOnTop: workspace.sortFoldersOnTop)) { item in // Instead of OutlineGroup
+                        SideBarItem(
+                            item: item,
+                            workspace: workspace,
+                            windowController: windowController
+                        )
+                    }
+                }
+            default: EmptyView()
+            }
 		}
 		.safeAreaInset(edge: .top) {
 			SideBarToolbarTop(selection: $selection)
@@ -36,9 +36,5 @@ struct SideBar: View {
 		.safeAreaInset(edge: .bottom) {
 			SideBarToolbarBottom(workspace: workspace)
 		}
-	}
-
-	private var files: [WorkspaceClient.FileItem] {
-		workspace.workspaceClient?.getFiles() ?? []
 	}
 }

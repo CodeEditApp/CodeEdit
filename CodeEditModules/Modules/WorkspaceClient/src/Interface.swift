@@ -4,26 +4,28 @@
 //
 //  Created by Marco Carnevali on 16/03/22.
 //
+
+import Combine
 import Foundation
 
 public struct WorkspaceClient {
 
 	public var folderURL: () -> URL?
     
-    public var getFiles: () -> [FileItem]
+    public var getFiles: AnyPublisher<[FileItem], Never>
     
-    public var getFileItem: (_ id: UUID) throws -> FileItem
+    public var getFileItem: (_ id: String) throws -> FileItem
     
     public init(
 		folderURL: @escaping () -> URL?,
-        getFiles: @escaping () -> [FileItem],
-        getFileItem: @escaping (_ id: UUID) throws -> FileItem
+		getFiles: AnyPublisher<[FileItem], Never>,
+        getFileItem: @escaping (_ id: String) throws -> FileItem
     ) {
 		self.folderURL = folderURL
         self.getFiles = getFiles
         self.getFileItem = getFileItem
     }
-    
+
     enum WorkspaceClientError: Error {
         case fileNotExist
     }

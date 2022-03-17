@@ -11,7 +11,6 @@ import WorkspaceClient
 struct SideBarItem: View {
 
 	var item: WorkspaceClient.FileItem
-
     @ObservedObject var workspace: WorkspaceDocument
     var windowController: NSWindowController
 	@State var isExpanded: Bool = false

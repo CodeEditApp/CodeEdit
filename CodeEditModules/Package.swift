@@ -12,7 +12,7 @@ let package = Package(
         .library(
             name: "WorkspaceClient",
             targets: ["WorkspaceClient"]
-        )
+        ),
     ],
     dependencies: [],
     targets: [
