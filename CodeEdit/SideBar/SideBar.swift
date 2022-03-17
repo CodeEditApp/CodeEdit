@@ -20,7 +20,7 @@ struct SideBar: View {
 			switch selection {
 			case 0:
 				Section(header: Text(workspace.fileURL?.lastPathComponent ?? "Unknown")) {
-					ForEach(files.sortItems(foldersOnTop: workspace.sortFoldersOnTop)) { item in // Instead of OutlineGroup
+					ForEach(workspace.workspaceClient?.getFiles() ?? []) { item in // Instead of OutlineGroup
 						SideBarItem(item: item,
 									workspace: workspace,
 									windowController: windowController)
@@ -30,16 +30,8 @@ struct SideBar: View {
 			}
 		}
 		.safeAreaInset(edge: .top) {
-			SideBarToolbarTop(selection: $selection)
+			SideBarToolbar(selection: $selection)
 				.padding(.bottom, -8)
 		}
-		.safeAreaInset(edge: .bottom) {
-//			Toggle("Folders on top", isOn: $workspace.sortFoldersOnTop)
-			SideBarToolbarBottom(workspace: workspace)
-		}
-	}
-
-	private var files: [WorkspaceClient.FileItem] {
-		workspace.workspaceClient?.getFiles() ?? []
 	}
 }
