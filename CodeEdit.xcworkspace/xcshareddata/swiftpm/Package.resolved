@@ -1,0 +1,34 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "CodeEditor",
+        "repositoryURL": "https://github.com/ZeeZide/CodeEditor.git",
+        "state": {
+          "branch": null,
+          "revision": "5856fac22b0a2174dbdea212784567c8c9cd1129",
+          "version": "1.2.0"
+        }
+      },
+      {
+        "package": "Highlightr",
+        "repositoryURL": "https://github.com/raspu/Highlightr",
+        "state": {
+          "branch": null,
+          "revision": "93199b9e434f04bda956a613af8f571933f9f037",
+          "version": "2.1.2"
+        }
+      },
+      {
+        "package": "SnapshotTesting",
+        "repositoryURL": "https://github.com/pointfreeco/swift-snapshot-testing.git",
+        "state": {
+          "branch": null,
+          "revision": "f8a9c997c3c1dab4e216a8ec9014e23144cbab37",
+          "version": "1.9.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

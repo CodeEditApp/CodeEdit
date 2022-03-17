@@ -7,6 +7,7 @@
 
 import SwiftUI
 import WorkspaceClient
+import CodeEditorView
 
 struct WorkspaceView: View {
     @State private var directoryURL: URL?
@@ -57,7 +58,8 @@ struct WorkspaceView: View {
                     ZStack {
                         if let selectedId = selectedId {
                             if let selectedItem = try? workspaceClient.getFileItem(selectedId) {
-                                WorkspaceEditorView(item: selectedItem)
+                                CodeEditorView(fileURL: selectedItem.url)
+                                    .padding(.top, 31.0)
                             }
                         }
 

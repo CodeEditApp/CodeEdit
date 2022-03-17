@@ -13,8 +13,8 @@ struct SideBar: View {
     var windowController: NSWindowController
 	@State private var selection: Int = 0
     
-	var body: some View {
-		List {
+    var body: some View {
+        List {
             switch selection {
             case 0:
                 Section(header: Text(workspace.fileURL?.lastPathComponent ?? "Unknown")) {
@@ -28,13 +28,13 @@ struct SideBar: View {
                 }
             default: EmptyView()
             }
-		}
-		.safeAreaInset(edge: .top) {
-			SideBarToolbarTop(selection: $selection)
-				.padding(.bottom, -8)
-		}
-		.safeAreaInset(edge: .bottom) {
-			SideBarToolbarBottom(workspace: workspace)
-		}
-	}
+        }
+        .safeAreaInset(edge: .top) {
+            SideBarToolbarTop(selection: $selection)
+                .padding(.bottom, -8)
+        }
+        .safeAreaInset(edge: .bottom) {
+            SideBarToolbarBottom(workspace: workspace)
+        }
+    }
 }

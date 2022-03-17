@@ -10,6 +10,7 @@ import AppKit
 import SwiftUI
 import WorkspaceClient
 import Combine
+import CodeFile
 
 @objc(WorkspaceDocument)
 class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
@@ -19,13 +20,13 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     @Published var openFileItems: [WorkspaceClient.FileItem] = []
 	@Published var sortFoldersOnTop: Bool = true
     @Published var fileItems: [WorkspaceClient.FileItem] = []
-    var openedCodeFiles: [WorkspaceClient.FileItem : CodeFile] = [:]
+
+    var openedCodeFiles: [WorkspaceClient.FileItem : CodeFileDocument] = [:]
 	var folderURL: URL?
-    private var cancellable: AnyCancellable?
+    private var cancellables = Set<AnyCancellable>()
     
     deinit {
-        cancellable?.cancel()
-        cancellable = nil
+        cancellables.forEach { $0.cancel() }
     }
     
     func closeFileTab(item: WorkspaceClient.FileItem) {
@@ -48,7 +49,7 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     
     func openFile(item: WorkspaceClient.FileItem) {
         do {
-            let codeFile = try CodeFile(for: item.url, withContentsOf: item.url, ofType: "public.source-code")
+            let codeFile = try CodeFileDocument(for: item.url, withContentsOf: item.url, ofType: "public.source-code")
             
             if !openFileItems.contains(item) {
                 openFileItems.append(item)
@@ -97,15 +98,10 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
             folderURL: url,
             ignoredFilesAndFolders: ignoredFilesAndDirectory
         )
-        cancellable = workspaceClient?
+        workspaceClient?
             .getFiles
             .sink { [weak self] files in
                 guard let self = self else { return }
-
-//                defer {
-//                    // this sorts the array alphabetically
-//                    self.fileItems = self.fileItems.sorted()
-//                }
                 
                 guard !self.fileItems.isEmpty else {
                     self.fileItems = files
@@ -126,6 +122,7 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
                     }
                 }
             }
+            .store(in: &cancellables)
     }
     
     override func write(to url: URL, ofType typeName: String) throws {}
