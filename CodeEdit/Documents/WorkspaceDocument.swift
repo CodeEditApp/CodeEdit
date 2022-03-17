@@ -31,6 +31,9 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         window.center()
         window.toolbar = NSToolbar()
         window.toolbarStyle = .unifiedCompact
+        window.titlebarSeparatorStyle = .none
+        window.titlebarAppearsTransparent = true
+        
         window.toolbar?.displayMode = .iconOnly
         window.toolbar?.insertItem(withItemIdentifier: .toggleSidebar, at: 0)
         let windowController = NSWindowController(window: window)

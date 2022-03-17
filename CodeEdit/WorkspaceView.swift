@@ -80,6 +80,20 @@ struct WorkspaceView: View {
         }, message: { Text(alertMsg) })
     }
     
+    func tabRow(item: WorkspaceClient.FileItem, isActive: Bool) -> some View {
+        HStack(spacing: 0.0) {
+            FileTabRow(fileItem: item, isSelected: isActive) {
+                withAnimation {
+                    closeFileTab(item: item)
+                }
+            }
+            
+            Divider()
+        }
+        .frame(height: tabBarHeight)
+        .foregroundColor(isActive ? .primary : .gray)
+    }
+    
     var tabBar: some View {
         VStack(spacing: 0.0) {
             ScrollView(.horizontal, showsIndicators: false) {
@@ -89,20 +103,15 @@ struct WorkspaceView: View {
                             let isActive = selectedId == item.id
                             
                             Button(action: { selectedId = item.id }) {
-                                HStack(spacing: 0.0) {
-                                    FileTabRow(fileItem: item, isSelected: isActive) {
-                                        withAnimation {
-                                            closeFileTab(item: item)
-                                        }
-                                    }
-                                    
-                                    Divider()
+                                if isActive {
+                                    tabRow(item: item, isActive: isActive)
+                                        .background(Material.bar)
+                                } else {
+                                    tabRow(item: item, isActive: isActive)
                                 }
-                                .frame(height: tabBarHeight)
-                                .foregroundColor(isActive ? .primary : .gray)
-                                .background(isActive ? Material.bar : Material.regular)
-                                .animation(.easeOut(duration: 0.2), value: openFileItems)
+                                
                             }
+                            .animation(.easeOut(duration: 0.2), value: openFileItems)
                             .buttonStyle(.plain)
                             .id(item.id)
                         }
