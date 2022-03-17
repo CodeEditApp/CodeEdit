@@ -42,14 +42,10 @@ struct WorkspaceView: View {
                 Text("OK")
             }
         }, message: { Text(alertMsg) })
-        .onChange(of: self.workspace.selectedId) { n in
-            if n == nil {
-                self.windowController.window?.subtitle = ""
+        .onChange(of: workspace.selectedId) { newValue in
+            if newValue == nil {
+                windowController.window?.subtitle = ""
             }
-            guard let item = self.workspace.openFileItems.first(where: { item in
-                return item.id == self.workspace.selectedId
-            }) else { return }
-            self.windowController.window?.subtitle = item.url.lastPathComponent
         }
     }
 }

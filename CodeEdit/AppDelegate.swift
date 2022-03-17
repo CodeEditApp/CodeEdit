@@ -30,7 +30,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     }
     
     func applicationDidFinishLaunching(_ notification: Notification) {
-        if let appearanceString = UserDefaults.standard.string(forKey: Appearances.appearanceStorageKey) {
+        if let appearanceString = UserDefaults.standard.string(forKey: Appearances.storageKey) {
             Appearances(rawValue: appearanceString)?.applyAppearance()
         }
     }
@@ -56,5 +56,26 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         window.contentView = NSHostingView(rootView: contentView)
         
         window.makeKeyAndOrderFront(sender)
+    }
+    
+    func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
+        if flag {
+            return false
+        }
+        
+        let behavior = ReopenBehavior(rawValue: UserDefaults.standard.string(forKey: ReopenBehavior.storageKey) ?? ReopenBehavior.openPanel.rawValue) ?? ReopenBehavior.openPanel
+        
+        switch behavior {
+        case .openPanel:
+            CodeEditDocumentController.shared.openDocument(self)
+        case .newDocument:
+            CodeEditDocumentController.shared.newDocument(self)
+        }
+        
+        return false
+    }
+    
+    func applicationShouldOpenUntitledFile(_ sender: NSApplication) -> Bool {
+        return false
     }
 }
