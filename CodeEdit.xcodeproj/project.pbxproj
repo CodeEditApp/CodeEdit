@@ -18,11 +18,11 @@
 		04540D5F27DD08C300E91B77 /* EditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043DF9C127DD045800CA0FC3 /* EditorView.swift */; };
 		04540D6127DD08C300E91B77 /* CodeFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 348313FB27DC8C070016D42C /* CodeFile.swift */; };
 		04540D6327DD08C300E91B77 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0468438427DC76E200F8E88E /* AppDelegate.swift */; };
-        287776E727E3413200D46668 /* SideBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287776E627E3413200D46668 /* SideBar.swift */; };
-        287776E927E34BC700D46668 /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287776E827E34BC700D46668 /* TabBar.swift */; };
-        287776ED27E350D800D46668 /* SideBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287776EC27E350D800D46668 /* SideBarItem.swift */; };
-        287776EF27E3515300D46668 /* TabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287776EE27E3515300D46668 /* TabBarItem.swift */; };
-        28B0A19827E385C300B73177 /* SideBarToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B0A19727E385C300B73177 /* SideBarToolbar.swift */; };
+		287776E727E3413200D46668 /* SideBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287776E627E3413200D46668 /* SideBar.swift */; };
+		287776E927E34BC700D46668 /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287776E827E34BC700D46668 /* TabBar.swift */; };
+		287776ED27E350D800D46668 /* SideBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287776EC27E350D800D46668 /* SideBarItem.swift */; };
+		287776EF27E3515300D46668 /* TabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287776EE27E3515300D46668 /* TabBarItem.swift */; };
+		28B0A19827E385C300B73177 /* SideBarToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B0A19727E385C300B73177 /* SideBarToolbar.swift */; };
 		345F667527DF6C180069BD69 /* FileTabRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 345F667427DF6C180069BD69 /* FileTabRow.swift */; };
 		34EE19BE27E0469C00F152CE /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34EE19BD27E0469C00F152CE /* BlurView.swift */; };
 		5C403B8F27E20F8000788241 /* WorkspaceClient in Frameworks */ = {isa = PBXBuildFile; productRef = 5C403B8E27E20F8000788241 /* WorkspaceClient */; };
@@ -30,6 +30,9 @@
 		B658FB3727DA9E1000EA4DBD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3627DA9E1000EA4DBD /* Preview Assets.xcassets */; };
 		D7211D4327E066CE008F2ED7 /* Localized+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7211D4227E066CE008F2ED7 /* Localized+Ex.swift */; };
 		D7211D4727E06BFE008F2ED7 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D7211D4927E06BFE008F2ED7 /* Localizable.strings */; };
+		D7EF9A9827E3531000C13FD8 /* command.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7EF9A9727E3531000C13FD8 /* command.swift */; };
+		D7EF9AA027E353D100C13FD8 /* ArgumentParser in Frameworks */ = {isa = PBXBuildFile; productRef = D7EF9A9F27E353D100C13FD8 /* ArgumentParser */; };
+		D7EF9AA527E3656900C13FD8 /* Commands in Frameworks */ = {isa = PBXBuildFile; productRef = D7EF9AA427E3656900C13FD8 /* Commands */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +80,8 @@
 		D7211D4227E066CE008F2ED7 /* Localized+Ex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Localized+Ex.swift"; sourceTree = "<group>"; };
 		D7211D4827E06BFE008F2ED7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		D7211D4A27E06C01008F2ED7 /* sr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sr; path = sr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		D7EF9A9527E3531000C13FD8 /* CodeEditCLI */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CodeEditCLI; sourceTree = BUILT_PRODUCTS_DIR; };
+		D7EF9A9727E3531000C13FD8 /* command.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = command.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +104,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D7EF9A9227E3531000C13FD8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D7EF9AA527E3656900C13FD8 /* Commands in Frameworks */,
+				D7EF9AA027E353D100C13FD8 /* ArgumentParser in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -180,6 +194,7 @@
 			isa = PBXGroup;
 			children = (
 				B658FB2E27DA9E0F00EA4DBD /* CodeEdit */,
+				D7EF9A9627E3531000C13FD8 /* CodeEditCLI */,
 				B658FB2D27DA9E0F00EA4DBD /* Products */,
 				5C403B8D27E20F8000788241 /* Frameworks */,
 			);
@@ -191,6 +206,7 @@
 				B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */,
 				B658FB3D27DA9E1000EA4DBD /* CodeEditTests.xctest */,
 				B658FB4727DA9E1000EA4DBD /* CodeEditUITests.xctest */,
+				D7EF9A9527E3531000C13FD8 /* CodeEditCLI */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -201,8 +217,8 @@
 				043C321227E31FE8006AE443 /* Documents */,
 				0468438427DC76E200F8E88E /* AppDelegate.swift */,
 				B658FB3127DA9E0F00EA4DBD /* WorkspaceView.swift */,
-                287776EA27E350A100D46668 /* SideBar */,
-                287776EB27E350BA00D46668 /* TabBar */,
+				287776EA27E350A100D46668 /* SideBar */,
+				287776EB27E350BA00D46668 /* TabBar */,
 				345F667327DF6BCC0069BD69 /* Rows */,
 				0439FEF327DD100800528317 /* Editor */,
 				04F2BF1027DBB3AF0024EAB1 /* Settings */,
@@ -231,6 +247,14 @@
 				D7211D4927E06BFE008F2ED7 /* Localizable.strings */,
 			);
 			path = Localization;
+			sourceTree = "<group>";
+		};
+		D7EF9A9627E3531000C13FD8 /* CodeEditCLI */ = {
+			isa = PBXGroup;
+			children = (
+				D7EF9A9727E3531000C13FD8 /* command.swift */,
+			);
+			path = CodeEditCLI;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -292,6 +316,27 @@
 			productReference = B658FB4727DA9E1000EA4DBD /* CodeEditUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		D7EF9A9427E3531000C13FD8 /* CodeEditCLI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D7EF9A9B27E3531000C13FD8 /* Build configuration list for PBXNativeTarget "CodeEditCLI" */;
+			buildPhases = (
+				D7EF9A9127E3531000C13FD8 /* Sources */,
+				D7EF9A9227E3531000C13FD8 /* Frameworks */,
+				D7EF9A9327E3531000C13FD8 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CodeEditCLI;
+			packageProductDependencies = (
+				D7EF9A9F27E353D100C13FD8 /* ArgumentParser */,
+				D7EF9AA427E3656900C13FD8 /* Commands */,
+			);
+			productName = CodeEditCLI;
+			productReference = D7EF9A9527E3531000C13FD8 /* CodeEditCLI */;
+			productType = "com.apple.product-type.tool";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -299,7 +344,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1310;
+				LastSwiftUpdateCheck = 1320;
 				LastUpgradeCheck = 1330;
 				TargetAttributes = {
 					B658FB2B27DA9E0F00EA4DBD = {
@@ -313,6 +358,9 @@
 						CreatedOnToolsVersion = 13.1;
 						TestTargetID = B658FB2B27DA9E0F00EA4DBD;
 					};
+					D7EF9A9427E3531000C13FD8 = {
+						CreatedOnToolsVersion = 13.2.1;
+					};
 				};
 			};
 			buildConfigurationList = B658FB2727DA9E0F00EA4DBD /* Build configuration list for PBXProject "CodeEdit" */;
@@ -325,6 +373,10 @@
 				sr,
 			);
 			mainGroup = B658FB2327DA9E0F00EA4DBD;
+			packageReferences = (
+				D7EF9A9C27E3532200C13FD8 /* XCRemoteSwiftPackageReference "swift-argument-parser" */,
+				D7EF9AA127E3656200C13FD8 /* XCRemoteSwiftPackageReference "swift-commands" */,
+			);
 			productRefGroup = B658FB2D27DA9E0F00EA4DBD /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -332,6 +384,7 @@
 				B658FB2B27DA9E0F00EA4DBD /* CodeEdit */,
 				B658FB3C27DA9E1000EA4DBD /* CodeEditTests */,
 				B658FB4627DA9E1000EA4DBD /* CodeEditUITests */,
+				D7EF9A9427E3531000C13FD8 /* CodeEditCLI */,
 			);
 		};
 /* End PBXProject section */
@@ -376,14 +429,14 @@
 				04540D5F27DD08C300E91B77 /* EditorView.swift in Sources */,
 				34EE19BE27E0469C00F152CE /* BlurView.swift in Sources */,
 				D7211D4327E066CE008F2ED7 /* Localized+Ex.swift in Sources */,
-                287776E927E34BC700D46668 /* TabBar.swift in Sources */,
-                04540D6327DD08C300E91B77 /* CodeEditorAppDelegate.swift in Sources */,
-                287776EF27E3515300D46668 /* TabBarItem.swift in Sources */,
-                287776E727E3413200D46668 /* SideBar.swift in Sources */,
+				287776E927E34BC700D46668 /* TabBar.swift in Sources */,
+				04540D6327DD08C300E91B77 /* AppDelegate.swift in Sources */,
+				287776EF27E3515300D46668 /* TabBarItem.swift in Sources */,
+				287776E727E3413200D46668 /* SideBar.swift in Sources */,
 				287776ED27E350D800D46668 /* SideBarItem.swift in Sources */,
 				04540D6127DD08C300E91B77 /* CodeFile.swift in Sources */,
 				043C321627E3201F006AE443 /* WorkspaceDocument.swift in Sources */,
-                28B0A19827E385C300B73177 /* SideBarToolbar.swift in Sources */,
+				28B0A19827E385C300B73177 /* SideBarToolbar.swift in Sources */,
 				345F667527DF6C180069BD69 /* FileTabRow.swift in Sources */,
 				043C321827E32246006AE443 /* CodeFileEditor.swift in Sources */,
 				04540D6327DD08C300E91B77 /* AppDelegate.swift in Sources */,
@@ -402,6 +455,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D7EF9A9127E3531000C13FD8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D7EF9A9827E3531000C13FD8 /* command.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -708,6 +769,26 @@
 			};
 			name = Release;
 		};
+		D7EF9A9927E3531000C13FD8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				MACOSX_DEPLOYMENT_TARGET = 12.1;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		D7EF9A9A27E3531000C13FD8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				MACOSX_DEPLOYMENT_TARGET = 12.1;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -747,12 +828,50 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		D7EF9A9B27E3531000C13FD8 /* Build configuration list for PBXNativeTarget "CodeEditCLI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D7EF9A9927E3531000C13FD8 /* Debug */,
+				D7EF9A9A27E3531000C13FD8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D7EF9A9C27E3532200C13FD8 /* XCRemoteSwiftPackageReference "swift-argument-parser" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-argument-parser.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+		D7EF9AA127E3656200C13FD8 /* XCRemoteSwiftPackageReference "swift-commands" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/qiuzhifei/swift-commands";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.6.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		5C403B8E27E20F8000788241 /* WorkspaceClient */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = WorkspaceClient;
+		};
+		D7EF9A9F27E353D100C13FD8 /* ArgumentParser */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D7EF9A9C27E3532200C13FD8 /* XCRemoteSwiftPackageReference "swift-argument-parser" */;
+			productName = ArgumentParser;
+		};
+		D7EF9AA427E3656900C13FD8 /* Commands */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D7EF9AA127E3656200C13FD8 /* XCRemoteSwiftPackageReference "swift-commands" */;
+			productName = Commands;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
