@@ -19,14 +19,28 @@ struct FileTabRow: View {
         let showingCloseButton = mouseHovering || isSelected
         
         HStack {
-            Button(action: closeAction) {
-                Image(systemName: showingCloseButton ? "xmark.square.fill" : fileItem.systemImage)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 12, height: 12)
+            ZStack {
+                if isSelected {
+                    // Create a hidden button, if the tab is selected
+                    // and hide the button in the ZStack.
+                    Button(action: closeAction) {
+                        Text("").hidden()
+                    }
+                    .frame(width: 0, height: 0)
+                    .padding(0)
+                    .opacity(0)
+                    .keyboardShortcut("w", modifiers: [.command])
+                }
+
+                Button(action: closeAction) {
+                    Image(systemName: showingCloseButton ? "xmark.square.fill" : fileItem.systemImage)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 12, height: 12)
+                }
+                .buttonStyle(.plain)
             }
-            .buttonStyle(.plain)
-            
+
             Text(fileItem.url.lastPathComponent)
                 .font(.system(size: 11.0))
                 .lineLimit(1)
