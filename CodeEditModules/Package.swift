@@ -6,7 +6,7 @@ let package = Package(
     name: "CodeEditModules",
     defaultLocalization: "en",
     platforms: [
-        .macOS(.v11),
+        .macOS(.v11)
     ],
     products: [
         .library(
@@ -29,7 +29,7 @@ let package = Package(
             name: "SnapshotTesting",
             url: "https://github.com/pointfreeco/swift-snapshot-testing.git",
             from: "1.9.0"
-        ),
+        )
     ],
     targets: [
         .target(
@@ -39,21 +39,21 @@ let package = Package(
         .testTarget(
             name: "WorkspaceClientTests",
             dependencies: [
-                "WorkspaceClient",
+                "WorkspaceClient"
             ],
             path: "Modules/WorkspaceClient/Tests"
         ),
         .target(
             name: "CodeFile",
             dependencies: [
-                "CodeEditor",
+                "CodeEditor"
             ],
             path: "Modules/CodeFile/src"
         ),
         .testTarget(
             name: "CodeFileTests",
             dependencies: [
-                "CodeFile",
+                "CodeFile"
             ],
             path: "Modules/CodeFile/Tests"
         ),
@@ -65,9 +65,9 @@ let package = Package(
             name: "WelcomeModuleTests",
             dependencies: [
                 "WelcomeModule",
-                "SnapshotTesting",
+                "SnapshotTesting"
             ],
             path: "Modules/WelcomeModule/Tests"
-        ),
+        )
     ]
 )
