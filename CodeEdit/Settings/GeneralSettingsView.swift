@@ -13,7 +13,7 @@ struct GeneralSettingsView: View {
     @AppStorage(Appearances.storageKey) var appearance: Appearances = Appearances.default
     @AppStorage(ReopenBehavior.storageKey) var reopenBehavior: ReopenBehavior = ReopenBehavior.default
 	@AppStorage(FileIconStyle.storageKey) var fileIconStyle: FileIconStyle = FileIconStyle.default
-    
+
     var body: some View {
         Form {
 			Picker("Appearance".localized(), selection: $appearance) {
@@ -35,7 +35,7 @@ struct GeneralSettingsView: View {
 				Text("Monochrome".localized())
 					.tag(FileIconStyle.monochrome)
 			}
-            
+
 			Picker("Reopen Behavior".localized(), selection: $reopenBehavior) {
                 Text("Welcome Screen".localized())
                     .tag(ReopenBehavior.welcome)
@@ -47,7 +47,6 @@ struct GeneralSettingsView: View {
             }
         }
         .padding()
-        
     }
 }
 
