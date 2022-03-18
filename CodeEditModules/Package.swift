@@ -53,7 +53,6 @@ let package = Package(
             name: "CodeFileTests",
             dependencies: [
                 "CodeFile",
-                "SnapshotTesting",
             ],
             path: "Modules/CodeFile/Tests"
         ),
