@@ -13,9 +13,9 @@ import WelcomeModule
 struct WelcomeView: View {
     @State var isHovering: Bool = false
     @AppStorage(ReopenBehavior.storageKey) var behavior: ReopenBehavior = .welcome
-    
+
     var dismissWindow: () -> Void
-    
+
     private var dismissButton: some View {
         Image(systemName: "xmark")
             .frame(width: 16, height: 16)
@@ -35,7 +35,7 @@ struct WelcomeView: View {
     var body: some View {
         VStack(spacing: 8) {
             HStack(alignment: .center) {
-                if (isHovering) {
+                if isHovering {
                     dismissButton
                 }
                 Spacer()
@@ -82,7 +82,7 @@ struct WelcomeView: View {
                 }
             }
             Spacer()
-            if (isHovering) {
+            if isHovering {
                 HStack {
                     Toggle("Show this window when CodeEdit launches", isOn: .init(get: {
                         return self.behavior == .welcome

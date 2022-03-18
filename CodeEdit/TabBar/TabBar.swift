@@ -11,9 +11,9 @@ import WorkspaceClient
 struct TabBar: View {
     var windowController: NSWindowController
     @ObservedObject var workspace: WorkspaceDocument
-    
+
     var tabBarHeight = 28.0
-    
+
     var body: some View {
         VStack(spacing: 0.0) {
             ScrollView(.horizontal, showsIndicators: false) {
@@ -21,7 +21,7 @@ struct TabBar: View {
                     HStack(alignment: .center, spacing: 0.0) {
                         ForEach(workspace.openFileItems, id: \.id) { item in
                             let isActive = workspace.selectedId == item.id
-                            
+
                             Button(
                                 action: { workspace.selectedId = item.id },
                                 label: {
@@ -49,14 +49,14 @@ struct TabBar: View {
                     }
                 }
             }
-            
+
             Divider()
                 .foregroundColor(.gray)
                 .frame(height: 1.0)
         }
         .background(Material.regular)
     }
-    
+
     func getTabId(fileName: String) -> KeyEquivalent {
         for counter in 0..<9 {
             if workspace.openFileItems.count > counter,
@@ -66,7 +66,7 @@ struct TabBar: View {
                 )
             }
         }
-        
+
         return "0"
     }
 }
