@@ -31,7 +31,8 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     
     func closeFileTab(item: WorkspaceClient.FileItem) {
         defer {
-            openedCodeFiles.removeValue(forKey: item)
+            let file = openedCodeFiles.removeValue(forKey: item)
+            file?.save(self)
         }
         
         guard let idx = openFileItems.firstIndex(of: item) else { return }
@@ -40,6 +41,7 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         
         if openFileItems.isEmpty {
             selectedId = nil
+            self.windowControllers.first?.document = self
         } else if idx == 0 {
             selectedId = openFileItems.first?.id
         } else {
@@ -69,7 +71,11 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     ]
     
     override class var autosavesInPlace: Bool {
-        return true
+        return false
+    }
+    
+    override var isDocumentEdited: Bool {
+        return false
     }
         
     override func makeWindowControllers() {
@@ -85,7 +91,8 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         
         window.toolbar?.displayMode = .iconOnly
         window.toolbar?.insertItem(withItemIdentifier: .toggleSidebar, at: 0)
-        let windowController = NSWindowController(window: window)
+        let windowController = CodeEditWindowController(window: window)
+        windowController.workspace = self
         let contentView = WorkspaceView(windowController: windowController, workspace: self)
         window.contentView = NSHostingView(rootView: contentView)
         self.addWindowController(windowController)
