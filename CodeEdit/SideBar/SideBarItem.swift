@@ -36,10 +36,9 @@ struct SideBarItem: View {
 				}
 		} label: {
 			Label(item.url.lastPathComponent, systemImage: item.systemImage)
-                .accentColor(.secondary)
+				.tint(.accentColor)
 				.font(.callout)
 		}
-        .buttonStyle(.plain)
 	}
 
 	func sidebarFolderItem(_ item: WorkspaceClient.FileItem) -> some View {
