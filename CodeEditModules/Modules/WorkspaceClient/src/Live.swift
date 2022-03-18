@@ -9,6 +9,7 @@ import Combine
 import Foundation
 
 public extension WorkspaceClient {
+    // swiftlint:disable:next function_body_length
     static func `default`(
         fileManager: FileManager,
         folderURL: URL,
