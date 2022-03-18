@@ -9,9 +9,9 @@ import SwiftUI
 
 struct BreadcrumbsComponent: View {
 	
-	let title: String
-	let image: String
-	let color: Color
+	private let title: String
+	private let image: String
+	private let color: Color
 	
 	init(_ title: String, systemImage image: String, color: Color = .secondary) {
 		self.title = title
