@@ -34,6 +34,9 @@
 		B658FB3727DA9E1000EA4DBD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3627DA9E1000EA4DBD /* Preview Assets.xcassets */; };
 		D7211D4327E066CE008F2ED7 /* Localized+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7211D4227E066CE008F2ED7 /* Localized+Ex.swift */; };
 		D7211D4727E06BFE008F2ED7 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D7211D4927E06BFE008F2ED7 /* Localizable.strings */; };
+		D72E1A8327E3B0D400EB11B9 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72E1A8227E3B0D400EB11B9 /* WelcomeView.swift */; };
+		D72E1A8527E4226A00EB11B9 /* RecentProjectItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72E1A8427E4226A00EB11B9 /* RecentProjectItem.swift */; };
+		D72E1A8727E4242900EB11B9 /* RecentProjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72E1A8627E4242900EB11B9 /* RecentProjectsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +86,9 @@
 		D7211D4227E066CE008F2ED7 /* Localized+Ex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Localized+Ex.swift"; sourceTree = "<group>"; };
 		D7211D4827E06BFE008F2ED7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		D7211D4A27E06C01008F2ED7 /* sr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sr; path = sr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		D72E1A8227E3B0D400EB11B9 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
+		D72E1A8427E4226A00EB11B9 /* RecentProjectItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentProjectItem.swift; sourceTree = "<group>"; };
+		D72E1A8627E4242900EB11B9 /* RecentProjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentProjectsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -215,6 +221,7 @@
 			isa = PBXGroup;
 			children = (
 				04660F6027E3A68A00477777 /* Info.plist */,
+				D72E1A8127E3B0A300EB11B9 /* Welcome */,
 				043C321227E31FE8006AE443 /* Documents */,
 				0468438427DC76E200F8E88E /* AppDelegate.swift */,
 				B658FB3127DA9E0F00EA4DBD /* WorkspaceView.swift */,
@@ -248,6 +255,16 @@
 				D7211D4927E06BFE008F2ED7 /* Localizable.strings */,
 			);
 			path = Localization;
+			sourceTree = "<group>";
+		};
+		D72E1A8127E3B0A300EB11B9 /* Welcome */ = {
+			isa = PBXGroup;
+			children = (
+				D72E1A8227E3B0D400EB11B9 /* WelcomeView.swift */,
+				D72E1A8427E4226A00EB11B9 /* RecentProjectItem.swift */,
+				D72E1A8627E4242900EB11B9 /* RecentProjectsView.swift */,
+			);
+			path = Welcome;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -399,15 +416,19 @@
 				287776E927E34BC700D46668 /* TabBar.swift in Sources */,
 				286620A527E4AB6900E18C2B /* BreadcrumbsComponent.swift in Sources */,
 				287776EF27E3515300D46668 /* TabBarItem.swift in Sources */,
+				D72E1A8727E4242900EB11B9 /* RecentProjectsView.swift in Sources */,
 				287776E727E3413200D46668 /* SideBar.swift in Sources */,
 				287776ED27E350D800D46668 /* SideBarItem.swift in Sources */,
 				04660F6627E3ACEF00477777 /* ReopenBehavior.swift in Sources */,
+				04540D6127DD08C300E91B77 /* CodeFile.swift in Sources */,
+				D72E1A8327E3B0D400EB11B9 /* WelcomeView.swift in Sources */,
 				043C321627E3201F006AE443 /* WorkspaceDocument.swift in Sources */,
 				28B0A19827E385C300B73177 /* SideBarToolbarTop.swift in Sources */,
 				345F667527DF6C180069BD69 /* FileTabRow.swift in Sources */,
 				043C321827E32246006AE443 /* CodeFileEditor.swift in Sources */,
 				0439FEF527DD104500528317 /* WorkspaceEditorView.swift in Sources */,
 				28FFE1BF27E3A441001939DB /* SideBarToolbarBottom.swift in Sources */,
+				D72E1A8527E4226A00EB11B9 /* RecentProjectItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
