@@ -6,13 +6,16 @@
 //
 
 import SwiftUI
+import CodeFile
+import CodeEditor
 
 // MARK: - View
 
 struct GeneralSettingsView: View {
-    @AppStorage(Appearances.storageKey) var appearance: Appearances = Appearances.default
-    @AppStorage(ReopenBehavior.storageKey) var reopenBehavior: ReopenBehavior = ReopenBehavior.default
-	@AppStorage(FileIconStyle.storageKey) var fileIconStyle: FileIconStyle = FileIconStyle.default
+    @AppStorage(Appearances.storageKey) var appearance: Appearances = .default
+    @AppStorage(ReopenBehavior.storageKey) var reopenBehavior: ReopenBehavior = .default
+	@AppStorage(FileIconStyle.storageKey) var fileIconStyle: FileIconStyle = .default
+	@AppStorage(CodeEditorTheme.storageKey) var editorTheme: CodeEditor.ThemeName = .atelierSavannaAuto
     
     var body: some View {
         Form {
@@ -42,6 +45,22 @@ struct GeneralSettingsView: View {
 				Text("New Document".localized())
                     .tag(ReopenBehavior.newDocument)
             }
+
+			Picker("Editor Theme".localized(), selection: $editorTheme) {
+				Text("Atelier Savanna (Auto)")
+					.tag(CodeEditor.ThemeName.atelierSavannaAuto)
+				Text("Atelier Savanna Dark")
+					.tag(CodeEditor.ThemeName.atelierSavannaDark)
+				Text("Atelier Savanna Light")
+					.tag(CodeEditor.ThemeName.atelierSavannaLight)
+				// TODO: Pojoaque does not seem to work (does not change from previous selection)
+//				Text("Pojoaque")
+//					.tag(CodeEditor.ThemeName.pojoaque)
+				Text("Agate")
+					.tag(CodeEditor.ThemeName.agate)
+				Text("Ocean")
+					.tag(CodeEditor.ThemeName.ocean)
+			}
         }
         .padding()
         
