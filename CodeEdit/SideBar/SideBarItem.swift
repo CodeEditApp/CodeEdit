@@ -39,7 +39,6 @@ struct SideBarItem: View {
 				.tint(.accentColor)
 				.font(.callout)
 		}
-        .buttonStyle(.plain)
 	}
 
 	func sidebarFolderItem(_ item: WorkspaceClient.FileItem) -> some View {
