@@ -25,6 +25,7 @@
 		287776EF27E3515300D46668 /* TabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287776EE27E3515300D46668 /* TabBarItem.swift */; };
 		28B0A19827E385C300B73177 /* SideBarToolbarTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B0A19727E385C300B73177 /* SideBarToolbarTop.swift */; };
 		28FFE1BF27E3A441001939DB /* SideBarToolbarBottom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FFE1BE27E3A441001939DB /* SideBarToolbarBottom.swift */; };
+		2B7A583527E4BA0100D25D4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0468438427DC76E200F8E88E /* AppDelegate.swift */; };
 		345F667527DF6C180069BD69 /* FileTabRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 345F667427DF6C180069BD69 /* FileTabRow.swift */; };
 		34EE19BE27E0469C00F152CE /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34EE19BD27E0469C00F152CE /* BlurView.swift */; };
 		5C403B8F27E20F8000788241 /* WorkspaceClient in Frameworks */ = {isa = PBXBuildFile; productRef = 5C403B8E27E20F8000788241 /* WorkspaceClient */; };
@@ -387,6 +388,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B7A583527E4BA0100D25D4E /* AppDelegate.swift in Sources */,
 				04540D5B27DD08C300E91B77 /* SettingsView.swift in Sources */,
 				04540D5C27DD08C300E91B77 /* GeneralSettingsView.swift in Sources */,
 				043C321427E31FF6006AE443 /* CodeEditDocumentController.swift in Sources */,
