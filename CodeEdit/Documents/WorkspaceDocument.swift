@@ -21,7 +21,7 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
 	@Published var sortFoldersOnTop: Bool = true
     @Published var fileItems: [WorkspaceClient.FileItem] = []
 
-    var openedCodeFiles: [WorkspaceClient.FileItem : CodeFileDocument] = [:]
+    var openedCodeFiles: [WorkspaceClient.FileItem: CodeFileDocument] = [:]
 	var folderURL: URL?
     private var cancellables = Set<AnyCancellable>()
     
@@ -37,7 +37,7 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         guard let idx = openFileItems.firstIndex(of: item) else { return }
         let closedFileItem = openFileItems.remove(at: idx)
         guard closedFileItem.id == selectedId else { return }
-        
+
         if openFileItems.isEmpty {
             selectedId = nil
         } else if idx == 0 {
@@ -49,29 +49,33 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     
     func openFile(item: WorkspaceClient.FileItem) {
         do {
-            let codeFile = try CodeFileDocument(for: item.url, withContentsOf: item.url, ofType: "public.source-code")
-            
+            let codeFile = try CodeFileDocument(
+                for: item.url,
+                withContentsOf: item.url,
+                ofType: "public.source-code"
+            )
+
             if !openFileItems.contains(item) {
                 openFileItems.append(item)
-                
+
                 openedCodeFiles[item] = codeFile
             }
             selectedId = item.id
-            
+
             self.windowControllers.first?.window?.subtitle = item.url.lastPathComponent
-        } catch let e {
-            Swift.print(e)
+        } catch let err {
+            Swift.print(err)
         }
     }
-    
+
     private let ignoredFilesAndDirectory = [
-        ".DS_Store",
+        ".DS_Store"
     ]
-    
+
     override class var autosavesInPlace: Bool {
         return true
     }
-        
+
     override func makeWindowControllers() {
         let window = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 800, height: 600),
@@ -82,7 +86,6 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         window.toolbarStyle = .unifiedCompact
         window.titlebarSeparatorStyle = .none
         window.titlebarAppearsTransparent = true
-        
         window.toolbar?.displayMode = .iconOnly
         window.toolbar?.insertItem(withItemIdentifier: .toggleSidebar, at: 0)
         let windowController = NSWindowController(window: window)
@@ -102,12 +105,12 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
             .getFiles
             .sink { [weak self] files in
                 guard let self = self else { return }
-                
+
                 guard !self.fileItems.isEmpty else {
                     self.fileItems = files
                     return
                 }
-                
+
                 // Instead of rebuilding the array we want to
                 // calculate the difference between the last iteration
                 // and now. If the index of the file exists in the array
@@ -124,6 +127,6 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
             }
             .store(in: &cancellables)
     }
-    
+
     override func write(to url: URL, ofType typeName: String) throws {}
 }
