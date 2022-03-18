@@ -35,7 +35,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         }
         let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 780, height: 500), styleMask: [.borderless], backing: .buffered, defer: false)
         window.center()
-        let contentView = WelcomeView()
+        let contentView = WelcomeWindowView()
         window.isMovableByWindowBackground = true
         window.contentView = NSHostingView(rootView: contentView)
         window.isOpaque = false
