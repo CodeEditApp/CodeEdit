@@ -8,14 +8,15 @@
 import SwiftUI
 
 struct WelcomeActionView: View {
-    var iconName: String
-    var title: String
-    var subtitle: String
+    let iconName: String
+    let title: String
+    let subtitle: String
+    
     var body: some View {
         HStack(spacing: 15) {
             Image(systemName: iconName)
                 .aspectRatio(contentMode: .fit)
-                .foregroundColor(.primary)
+                .foregroundColor(.accentColor)
                 .font(.system(size: 24, weight: .light))
                 .frame(width: 24)
             VStack(alignment: .leading) {
@@ -27,6 +28,7 @@ struct WelcomeActionView: View {
             }
             Spacer()
         }
+        .contentShape(Rectangle())
     }
 }
 

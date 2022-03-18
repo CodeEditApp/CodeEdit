@@ -20,12 +20,16 @@ struct RecentProjectItem: View {
                 .frame(width: 24)
             VStack(alignment: .leading) {
                 Text(projectName).font(.system(size: 16, weight: .semibold))
+                    .lineLimit(1)
                 Text(projectPath)
+                    .lineLimit(1)
+                    .truncationMode(.head)
             }
             Spacer()
         }
-        .padding(.horizontal, 10)
+        .padding(10)
         .background(isSelected ? Color.accentColor : .clear)
+        .contentShape(Rectangle())
         .cornerRadius(4)
     }
 }

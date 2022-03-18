@@ -14,13 +14,9 @@ struct WelcomeWindowView: View {
             WelcomeView {
                 windowController.window?.close()
             }
-            RecentProjectsView()
+            RecentProjectsView {
+                windowController.window?.close()
+            }
         }
     }
 }
-
-//struct WelcomeWindowView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        WelcomeWindowView()
-//    }
-//}

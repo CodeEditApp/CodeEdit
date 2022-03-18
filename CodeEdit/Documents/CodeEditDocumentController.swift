@@ -8,7 +8,17 @@
 import Cocoa
 
 class CodeEditDocumentController: NSDocumentController {
-    override func openDocument(_ sender: Any?) {        
+    override func openDocument(_ sender: Any?) {
+        self.openDocument { document, documentWasAlreadyOpen, err in
+            // TODO: handle errors
+            
+            print(document, documentWasAlreadyOpen, err)
+        }
+    }
+}
+
+extension NSDocumentController {
+    func openDocument(completionHandler: @escaping (NSDocument?, Bool, Error?) -> Void) {
         let dialog = NSOpenPanel()
 
         dialog.title = "Open Workspace or File"
@@ -20,6 +30,7 @@ class CodeEditDocumentController: NSDocumentController {
         dialog.begin { result in
             if result ==  NSApplication.ModalResponse.OK, let url = dialog.url {
                 self.openDocument(withContentsOf: url, display: true) { document, documentWasAlreadyOpen, error in
+                    completionHandler(document, documentWasAlreadyOpen, error)
                     // TODO: handle errors
                     if let error = error {
                         print("Error: \(error.localizedDescription)")
@@ -33,26 +44,6 @@ class CodeEditDocumentController: NSDocumentController {
                     
                     print("Document:", document)
                     print("Was already open?", documentWasAlreadyOpen)
-                }
-            }
-        }
-    }
-}
-
-extension NSDocumentController {
-    func openDocument(completionHandler: @escaping (NSDocument?, Bool, Error?) -> Void) {
-        let dialog = NSOpenPanel()
-        dialog.title = "Open Workspace or File"
-        dialog.showsResizeIndicator = true
-        dialog.showsHiddenFiles = false
-        dialog.canChooseFiles = true
-        dialog.canChooseDirectories = true
-        
-        dialog.begin { result in
-            if result ==  NSApplication.ModalResponse.OK, let url = dialog.url {
-                self.openDocument(withContentsOf: url, display: true) { document, documentWasAlreadyOpen, err in
-                    // TODO: handle errors
-                    completionHandler(document, documentWasAlreadyOpen, err)
                 }
             }
         }
