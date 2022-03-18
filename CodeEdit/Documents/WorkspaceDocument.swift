@@ -80,7 +80,7 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         window.center()
         window.toolbar = NSToolbar()
         window.toolbarStyle = .unifiedCompact
-        window.titlebarSeparatorStyle = .none
+        window.titlebarSeparatorStyle = .line
         
         window.toolbar?.displayMode = .iconOnly
         window.toolbar?.insertItem(withItemIdentifier: .toggleSidebar, at: 0)
