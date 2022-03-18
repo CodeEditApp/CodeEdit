@@ -12,7 +12,7 @@ import WelcomeModule
 
 struct WelcomeView: View {
     @State var isHovering: Bool = false
-    @AppStorage("showWelcomeWindowWhenLaunch") var showWelcomeWindowWhenLaunch: Bool = true
+    @AppStorage(ReopenBehavior.storageKey) var behavior: ReopenBehavior = .welcome
     
     var dismissWindow: () -> Void
     
@@ -58,7 +58,8 @@ struct WelcomeView: View {
                         subtitle: "Create a new file"
                     )
                         .onTapGesture {
-                            // TODO: open a new empty editor
+                            CodeEditDocumentController.shared.newDocument(nil)
+                            dismissWindow()
                         }
                     WelcomeActionView(
                         iconName: "plus.square.on.square",
@@ -83,7 +84,11 @@ struct WelcomeView: View {
             Spacer()
             if (isHovering) {
                 HStack {
-                    Toggle("Show this window when CodeEdit launches", isOn: $showWelcomeWindowWhenLaunch)
+                    Toggle("Show this window when CodeEdit launches", isOn: .init(get: {
+                        return self.behavior == .welcome
+                    }, set: { new in
+                        self.behavior = new ? .welcome : .openPanel
+                    }))
                         .toggleStyle(.checkbox)
                     Spacer()
                 }
