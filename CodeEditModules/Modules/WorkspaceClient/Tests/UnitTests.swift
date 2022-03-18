@@ -13,12 +13,17 @@ final class WorkspaceClientUnitTests: XCTestCase {
     let typeOfExtensions = ["json", "txt", "swift", "js", "py", "md"]
 
     func testListFile() throws {
-        let directory = try FileManager.default.url(for: .developerApplicationDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+        let directory = try FileManager.default.url(
+            for: .developerApplicationDirectory,
+            in: .userDomainMask,
+            appropriateFor: nil,
+            create: true
+        )
             .appendingPathComponent("CodeEdit", isDirectory: true)
             .appendingPathComponent("WorkspaceClientTests", isDirectory: true)
         try? FileManager.default.removeItem(at: directory)
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-        
+
         var cancellable: AnyCancellable?
         let expectation = expectation(description: "wait for files")
         let randomCount = Int.random(in: 1 ... 100)
@@ -52,12 +57,17 @@ final class WorkspaceClientUnitTests: XCTestCase {
     }
 
     func testDirectoryChanges() throws {
-        let directory = try FileManager.default.url(for: .developerApplicationDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+        let directory = try FileManager.default.url(
+            for: .developerApplicationDirectory,
+            in: .userDomainMask,
+            appropriateFor: nil,
+            create: true
+        )
             .appendingPathComponent("CodeEdit", isDirectory: true)
             .appendingPathComponent("WorkspaceClientTests", isDirectory: true)
         try? FileManager.default.removeItem(at: directory)
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-        
+
         var cancellable: AnyCancellable?
         let expectation = expectation(description: "wait for files")
         expectation.expectedFulfillmentCount = 2
