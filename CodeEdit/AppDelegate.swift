@@ -33,6 +33,19 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         if let appearanceString = UserDefaults.standard.string(forKey: Appearances.storageKey) {
             Appearances(rawValue: appearanceString)?.applyAppearance()
         }
+        let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 780, height: 500), styleMask: [.borderless], backing: .buffered, defer: false)
+        let windowController = NSWindowController(window: window)
+        window.center()
+        let contentView = WelcomeWindowView(windowController: windowController)
+        window.isMovableByWindowBackground = true
+        window.contentView = NSHostingView(rootView: contentView)
+        window.isOpaque = false
+        window.backgroundColor = .clear
+        window.contentView?.wantsLayer = true
+        window.contentView?.layer?.masksToBounds = true
+        window.contentView?.layer?.cornerRadius = 10
+        window.hasShadow = true
+        window.makeKeyAndOrderFront(self)
     }
     
     func applicationWillTerminate(_ aNotification: Notification) {
