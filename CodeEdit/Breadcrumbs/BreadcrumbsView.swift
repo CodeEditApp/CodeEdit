@@ -34,7 +34,7 @@ struct BreadcrumbsView: View {
 					BreadcrumbsComponent(folder, systemImage: "folder.fill")
 					chevron
 				}
-				BreadcrumbsComponent(fileName, systemImage: fileImage, color: .accentColor)
+				BreadcrumbsComponent(fileName, systemImage: fileImage, color: file.iconColor)
 			}
 			.padding(.leading, 12)
 		}

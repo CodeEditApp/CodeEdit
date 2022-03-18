@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 public extension WorkspaceClient {
     struct FileItem: Hashable, Identifiable, Comparable {
@@ -45,7 +46,9 @@ public extension WorkspaceClient {
                 return "square.fill.on.circle.fill"
             case "entitlements":
                 return "checkmark.seal"
-            case "md", "txt", "rtf", "plist":
+			case "plist":
+				return "tablecells"
+            case "md", "txt", "rtf":
                 return "doc.plaintext"
             case "html", "py", "sh":
                 return "chevron.left.forwardslash.chevron.right"
@@ -57,6 +60,23 @@ public extension WorkspaceClient {
                 return "doc"
             }
         }
+
+		public var iconColor: Color {
+			switch fileType {
+			case "swift", "html":
+				return .orange
+			case "java":
+				return .red
+			case "js", "entitlements", "json", "LICENSE":
+				return .yellow
+			case "css", "ts", "jsx", "md", "py":
+				return .blue
+			case "sh":
+				return .green
+			default:
+				return .blue
+			}
+		}
 
         private var fileType: String {
             url.lastPathComponent.components(separatedBy: ".").last ?? ""
