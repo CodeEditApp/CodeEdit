@@ -18,18 +18,23 @@ struct BreadcrumbsView: View {
 	@State private var fileName: String = ""
 	@State private var fileImage: String = "doc"
 
+	init(_ file: WorkspaceClient.FileItem, workspace: WorkspaceDocument) {
+		self.file = file
+		self.workspace = workspace
+	}
+
     var body: some View {
 		ZStack(alignment: .leading) {
 			Rectangle()
 				.foregroundStyle(Color(nsColor: .controlBackgroundColor))
 			HStack {
-				breadcrumbLabel(projectName, systemImage: "square.dashed.inset.filled", color: .accentColor)
-				spacer
+				BreadcrumbsComponent(projectName, systemImage: "square.dashed.inset.filled", color: .accentColor)
+				chevron
 				ForEach(folders, id:\.self) { folder in
-					breadcrumbLabel(folder, systemImage: "folder.fill")
-					spacer
+					BreadcrumbsComponent(folder, systemImage: "folder.fill")
+					chevron
 				}
-				breadcrumbLabel(fileName, systemImage: fileImage, color: .accentColor)
+				BreadcrumbsComponent(fileName, systemImage: fileImage, color: .accentColor)
 			}
 			.padding(.leading, 12)
 		}
@@ -42,20 +47,7 @@ struct BreadcrumbsView: View {
 		}
     }
 
-	private func breadcrumbLabel(_ title: String, systemImage: String, color: Color = .secondary) -> some View {
-		HStack {
-			Image(systemName: systemImage)
-				.resizable()
-				.aspectRatio(contentMode: .fit)
-				.frame(width: 12)
-				.foregroundStyle(color)
-			Text(title)
-				.foregroundStyle(.primary)
-				.font(.system(size: 11))
-		}
-	}
-
-	private var spacer: some View {
+	private var chevron: some View {
 		Image(systemName: "chevron.compact.right")
 			.foregroundStyle(.secondary)
 			.imageScale(.large)
@@ -71,15 +63,16 @@ struct BreadcrumbsView: View {
 		self.fileName = file.fileName
 		self.fileImage = file.systemImage
 	}
+
 }
 
 struct BreadcrumbsView_Previews: PreviewProvider {
     static var previews: some View {
-		BreadcrumbsView(workspace: .init(), file: .init(url: .init(fileURLWithPath: "", isDirectory: false)))
+		BreadcrumbsView(.init(url: .init(fileURLWithPath: "", isDirectory: false)), workspace: .init())
 			.previewLayout(.fixed(width: 500, height: 29))
 			.preferredColorScheme(.dark)
 
-		BreadcrumbsView(workspace: .init(), file: .init(url: .init(fileURLWithPath: "", isDirectory: false)))
+		BreadcrumbsView(.init(url: .init(fileURLWithPath: "", isDirectory: false)), workspace: .init())
 			.previewLayout(.fixed(width: 500, height: 29))
 			.preferredColorScheme(.light)
     }
