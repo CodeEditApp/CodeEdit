@@ -10,14 +10,14 @@ import WorkspaceClient
 
 struct FileTabRow: View {
     @State var mouseHovering = false
-    
+
     var fileItem: WorkspaceClient.FileItem
     var isSelected: Bool
     var closeAction: () -> Void
-    
+
     var body: some View {
         let showingCloseButton = mouseHovering || isSelected
-        
+
         HStack {
             ZStack {
                 if isSelected {
