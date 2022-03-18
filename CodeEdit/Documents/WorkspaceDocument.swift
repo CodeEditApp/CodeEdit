@@ -14,7 +14,6 @@ import CodeFile
 
 @objc(WorkspaceDocument)
 class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
-    
     @Published var workspaceClient: WorkspaceClient?
     @Published var selectedId: String?
     @Published var openFileItems: [WorkspaceClient.FileItem] = []
@@ -24,16 +23,16 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var openedCodeFiles: [WorkspaceClient.FileItem: CodeFileDocument] = [:]
 	var folderURL: URL?
     private var cancellables = Set<AnyCancellable>()
-    
+
     deinit {
         cancellables.forEach { $0.cancel() }
     }
-    
+
     func closeFileTab(item: WorkspaceClient.FileItem) {
         defer {
             openedCodeFiles.removeValue(forKey: item)
         }
-        
+
         guard let idx = openFileItems.firstIndex(of: item) else { return }
         let closedFileItem = openFileItems.remove(at: idx)
         guard closedFileItem.id == selectedId else { return }
@@ -46,7 +45,7 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
             selectedId = openFileItems[idx - 1].id
         }
     }
-    
+
     func openFile(item: WorkspaceClient.FileItem) {
         do {
             let codeFile = try CodeFileDocument(
@@ -80,7 +79,8 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         let window = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 800, height: 600),
             styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
-            backing: .buffered, defer: false)
+            backing: .buffered, defer: false
+        )
         window.center()
         window.toolbar = NSToolbar()
         window.toolbarStyle = .unifiedCompact
