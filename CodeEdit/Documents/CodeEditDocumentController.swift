@@ -11,7 +11,12 @@ class CodeEditDocumentController: NSDocumentController {
     override func openDocument(_ sender: Any?) {
         self.openDocument { document, documentWasAlreadyOpen in
             // TODO: handle errors
-            
+
+            guard let document = document else {
+                print("Failed to unwrap document")
+                return
+            }
+
             print(document, documentWasAlreadyOpen)
         }
     }
@@ -40,7 +45,9 @@ extension NSDocumentController {
                         print("Error: Failed to get document")
                         return
                     }
-                    var recentProjectPaths: [String] = UserDefaults.standard.array(forKey: "recentProjectPaths") as? [String] ?? []
+                    var recentProjectPaths: [String] = UserDefaults.standard.array(
+                        forKey: "recentProjectPaths"
+                    ) as? [String] ?? []
                     if let containedIndex = recentProjectPaths.firstIndex(of: url.path) {
                         recentProjectPaths.move(fromOffsets: IndexSet(integer: containedIndex), toOffset: 0)
                     } else {
