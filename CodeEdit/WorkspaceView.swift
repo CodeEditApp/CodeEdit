@@ -29,7 +29,7 @@ struct WorkspaceView: View {
             if workspace.workspaceClient != nil {
                 SideBar(workspace: workspace, windowController: windowController)
                     .frame(minWidth: 250)
-                
+
                 Text("Open file from sidebar")
             } else {
                 EmptyView()
