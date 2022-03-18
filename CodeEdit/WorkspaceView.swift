@@ -13,17 +13,16 @@ struct WorkspaceView: View {
         self.windowController = windowController
         self.workspace = workspace
     }
-    
+
     var windowController: NSWindowController
+    var tabBarHeight = 28.0
+    private var path: String = ""
+
     @ObservedObject var workspace: WorkspaceDocument
-    
+
     @State private var showingAlert = false
     @State private var alertTitle = ""
     @State private var alertMsg = ""
-    
-    var tabBarHeight = 28.0
-
-    private var path: String = ""
 
     var body: some View {
         NavigationView {
@@ -38,9 +37,10 @@ struct WorkspaceView: View {
         }
         .frame(minWidth: 800, minHeight: 600)
         .alert(alertTitle, isPresented: $showingAlert, actions: {
-            Button(action: { showingAlert = false }) {
-                Text("OK")
-            }
+            Button(
+                action: { showingAlert = false },
+                label: { Text("OK") }
+            )
         }, message: { Text(alertMsg) })
         .onChange(of: workspace.selectedId) { newValue in
             if newValue == nil {
@@ -55,4 +55,3 @@ struct ContentView_Previews: PreviewProvider {
         WorkspaceView(windowController: NSWindowController(), workspace: .init())
     }
 }
-
