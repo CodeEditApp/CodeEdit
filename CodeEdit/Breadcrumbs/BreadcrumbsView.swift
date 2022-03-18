@@ -11,7 +11,7 @@ import WorkspaceClient
 struct BreadcrumbsView: View {
 
 	@ObservedObject var workspace: WorkspaceDocument
-	var file: WorkspaceClient.FileItem
+	let file: WorkspaceClient.FileItem
 
 	@State private var projectName: String = ""
 	@State private var folders: [String] = []
@@ -23,7 +23,7 @@ struct BreadcrumbsView: View {
 		self.workspace = workspace
 	}
 
-    var body: some View {
+	var body: some View {
 		ZStack(alignment: .leading) {
 			Rectangle()
 				.foregroundStyle(Color(nsColor: .controlBackgroundColor))
@@ -45,7 +45,7 @@ struct BreadcrumbsView: View {
 		.onAppear {
 			fileInfo()
 		}
-    }
+	}
 
 	private var chevron: some View {
 		Image(systemName: "chevron.compact.right")
@@ -54,8 +54,9 @@ struct BreadcrumbsView: View {
 	}
 
 	private func fileInfo() {
-		guard let projName = workspace.workspaceClient?.folderURL()?.lastPathComponent else { return }
-		var components = file.url.pathComponents.split(separator: projName).last!
+		
+		guard let projName = workspace.folderURL?.lastPathComponent,
+			  var components = file.url.pathComponents.split(separator: projName).last else { return }
 		components.removeLast()
 
 		self.projectName = projName
@@ -67,7 +68,7 @@ struct BreadcrumbsView: View {
 }
 
 struct BreadcrumbsView_Previews: PreviewProvider {
-    static var previews: some View {
+	static var previews: some View {
 		BreadcrumbsView(.init(url: .init(fileURLWithPath: "", isDirectory: false)), workspace: .init())
 			.previewLayout(.fixed(width: 500, height: 29))
 			.preferredColorScheme(.dark)
@@ -75,5 +76,5 @@ struct BreadcrumbsView_Previews: PreviewProvider {
 		BreadcrumbsView(.init(url: .init(fileURLWithPath: "", isDirectory: false)), workspace: .init())
 			.previewLayout(.fixed(width: 500, height: 29))
 			.preferredColorScheme(.light)
-    }
+	}
 }

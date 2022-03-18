@@ -8,18 +8,18 @@
 import SwiftUI
 
 struct BreadcrumbsComponent: View {
-
-	var title: String
-	var image: String
-	var color: Color
-
+	
+	let title: String
+	let image: String
+	let color: Color
+	
 	init(_ title: String, systemImage image: String, color: Color = .secondary) {
 		self.title = title
 		self.image = image
 		self.color = color
 	}
-
-    var body: some View {
+	
+	var body: some View {
 		HStack {
 			Image(systemName: image)
 				.resizable()
@@ -30,6 +30,6 @@ struct BreadcrumbsComponent: View {
 				.foregroundStyle(.primary)
 				.font(.system(size: 11))
 		}
-    }
+	}
 }
 
