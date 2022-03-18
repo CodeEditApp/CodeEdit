@@ -12,6 +12,7 @@ import SwiftUI
 struct GeneralSettingsView: View {
     @AppStorage(Appearances.storageKey) var appearance: Appearances = Appearances.default
     @AppStorage(ReopenBehavior.storageKey) var reopenBehavior: ReopenBehavior = ReopenBehavior.default
+	@AppStorage(FileIconStyle.storageKey) var fileIconStyle: FileIconStyle = FileIconStyle.default
     
     var body: some View {
         Form {
@@ -27,6 +28,13 @@ struct GeneralSettingsView: View {
             .onChange(of: appearance) { tag in
                 tag.applyAppearance()
             }
+
+			Picker("File Icon Style", selection: $fileIconStyle) {
+				Text("Color")
+					.tag(FileIconStyle.color)
+				Text("Monochrome")
+					.tag(FileIconStyle.monochrome)
+			}
             
             Picker("Reopen Behavior", selection: $reopenBehavior) {
                 Text("Open Panel")

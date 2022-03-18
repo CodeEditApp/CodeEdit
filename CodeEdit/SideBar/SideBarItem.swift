@@ -11,6 +11,8 @@ import CodeFile
 
 struct SideBarItem: View {
 
+	@AppStorage(FileIconStyle.storageKey) var iconStyle: FileIconStyle = .default
+
 	var item: WorkspaceClient.FileItem
     @ObservedObject var workspace: WorkspaceDocument
     var windowController: NSWindowController
@@ -44,7 +46,7 @@ struct SideBarItem: View {
             .onAppear { workspace.openFile(item: item) }
         } label: {
 			Label(item.url.lastPathComponent, systemImage: item.systemImage)
-				.accentColor(item.iconColor)
+				.accentColor(iconStyle == .color ? item.iconColor : .secondary)
 				.font(.callout)
 		}
 	}
