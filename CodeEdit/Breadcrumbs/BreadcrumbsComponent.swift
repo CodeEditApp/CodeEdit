@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct BreadcrumbsComponent: View {
+
+	@AppStorage(FileIconStyle.storageKey) var iconStyle: FileIconStyle = .default
 	
 	private let title: String
 	private let image: String
@@ -25,7 +27,7 @@ struct BreadcrumbsComponent: View {
 				.resizable()
 				.aspectRatio(contentMode: .fit)
 				.frame(width: 12)
-				.foregroundStyle(color)
+				.foregroundStyle(iconStyle == .color ? color : .secondary)
 			Text(title)
 				.foregroundStyle(.primary)
 				.font(.system(size: 11))
