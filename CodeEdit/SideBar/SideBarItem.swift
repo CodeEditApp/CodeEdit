@@ -29,7 +29,10 @@ struct SideBarItem: View {
         NavigationLink(tag: item.id, selection: $workspace.selectedId) {
             WorkspaceEditorView(workspace: workspace, item: item, windowController: windowController)
                 .safeAreaInset(edge: .top) {
-                    TabBar(windowController: windowController, workspace: workspace)
+					VStack(spacing: 0) {
+						TabBar(windowController: windowController, workspace: workspace)
+						BreadcrumbsView(item, workspace: workspace)
+					}
 				}
 		} label: {
 			Label(item.url.lastPathComponent, systemImage: item.systemImage)

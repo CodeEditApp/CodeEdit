@@ -19,6 +19,8 @@
 		04540D6127DD08C300E91B77 /* CodeFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 348313FB27DC8C070016D42C /* CodeFile.swift */; };
 		04660F6427E3ACAF00477777 /* Appearances.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04660F6327E3ACAF00477777 /* Appearances.swift */; };
 		04660F6627E3ACEF00477777 /* ReopenBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04660F6527E3ACEF00477777 /* ReopenBehavior.swift */; };
+		286620A527E4AB6900E18C2B /* BreadcrumbsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286620A427E4AB6900E18C2B /* BreadcrumbsComponent.swift */; };
+		2875A46D27E3BE5B007805F8 /* BreadcrumbsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2875A46C27E3BE5B007805F8 /* BreadcrumbsView.swift */; };
 		287776E727E3413200D46668 /* SideBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287776E627E3413200D46668 /* SideBar.swift */; };
 		287776E927E34BC700D46668 /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287776E827E34BC700D46668 /* TabBar.swift */; };
 		287776ED27E350D800D46668 /* SideBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287776EC27E350D800D46668 /* SideBarItem.swift */; };
@@ -65,6 +67,8 @@
 		0468438427DC76E200F8E88E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		04F2BF0E27DBB28E0024EAB1 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		04F2BF1127DBB3C10024EAB1 /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
+		286620A427E4AB6900E18C2B /* BreadcrumbsComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreadcrumbsComponent.swift; sourceTree = "<group>"; };
+		2875A46C27E3BE5B007805F8 /* BreadcrumbsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreadcrumbsView.swift; sourceTree = "<group>"; };
 		287776E627E3413200D46668 /* SideBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBar.swift; sourceTree = "<group>"; };
 		287776E827E34BC700D46668 /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
 		287776EC27E350D800D46668 /* SideBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBarItem.swift; sourceTree = "<group>"; };
@@ -151,6 +155,15 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
+		2875A46E27E3BE63007805F8 /* Breadcrumbs */ = {
+			isa = PBXGroup;
+			children = (
+				2875A46C27E3BE5B007805F8 /* BreadcrumbsView.swift */,
+				286620A427E4AB6900E18C2B /* BreadcrumbsComponent.swift */,
+			);
+			path = Breadcrumbs;
+			sourceTree = "<group>";
+		};
 		287776EA27E350A100D46668 /* SideBar */ = {
 			isa = PBXGroup;
 			children = (
@@ -220,6 +233,7 @@
 				043C321227E31FE8006AE443 /* Documents */,
 				0468438427DC76E200F8E88E /* AppDelegate.swift */,
 				B658FB3127DA9E0F00EA4DBD /* WorkspaceView.swift */,
+				2875A46E27E3BE63007805F8 /* Breadcrumbs */,
 				287776EA27E350A100D46668 /* SideBar */,
 				287776EB27E350BA00D46668 /* TabBar */,
 				345F667327DF6BCC0069BD69 /* Rows */,
@@ -389,6 +403,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B7A583527E4BA0100D25D4E /* AppDelegate.swift in Sources */,
+				2875A46D27E3BE5B007805F8 /* BreadcrumbsView.swift in Sources */,
 				04540D5B27DD08C300E91B77 /* SettingsView.swift in Sources */,
 				04540D5C27DD08C300E91B77 /* GeneralSettingsView.swift in Sources */,
 				043C321427E31FF6006AE443 /* CodeEditDocumentController.swift in Sources */,
@@ -398,6 +413,7 @@
 				34EE19BE27E0469C00F152CE /* BlurView.swift in Sources */,
 				D7211D4327E066CE008F2ED7 /* Localized+Ex.swift in Sources */,
 				287776E927E34BC700D46668 /* TabBar.swift in Sources */,
+				286620A527E4AB6900E18C2B /* BreadcrumbsComponent.swift in Sources */,
 				287776EF27E3515300D46668 /* TabBarItem.swift in Sources */,
 				287776E727E3413200D46668 /* SideBar.swift in Sources */,
 				287776ED27E350D800D46668 /* SideBarItem.swift in Sources */,

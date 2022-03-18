@@ -20,6 +20,7 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
 	@Published var sortFoldersOnTop: Bool = true
     @Published var fileItems: [WorkspaceClient.FileItem] = []
     var openedCodeFiles: [WorkspaceClient.FileItem : CodeFile] = [:]
+	var folderURL: URL?
     private var cancellable: AnyCancellable?
     
     deinit {
@@ -90,6 +91,7 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     }
 
     override func read(from url: URL, ofType typeName: String) throws {
+		self.folderURL = url
         self.workspaceClient = try .default(
             fileManager: .default,
             folderURL: url,
