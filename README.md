@@ -30,7 +30,7 @@ It might sound crazy, but it is our hope that at some point Apple adopts this pr
 - [x] Design a concept
 - [x] Start a boilerplate app
 - [x] Set up a Github repository to allow the community to get involved
-- [x] Start a [discord server](https://discord.gg/ANUVc6TF) for community collaboration
+- [x] Start a [discord server](https://discord.gg/vChUXVf9Em) for community collaboration
 - [ ] Develop the underlying text editor complete with syntax highlighting
 - [ ] Project navigator - Manage and edit files within a project
 - [ ] Source control navigator
