@@ -12,7 +12,8 @@ import SwiftUI
 /// CodeFileView is just a wrapper of the `CodeEditor` dependency
 public struct CodeFileView: View {
     @ObservedObject public var codeFile: CodeFileDocument
-
+    @Environment(\.colorScheme) private var colorScheme
+    
     public init(codeFile: CodeFileDocument) {
         self.codeFile = codeFile
     }
@@ -21,7 +22,7 @@ public struct CodeFileView: View {
         CodeEditor(
             source: $codeFile.content,
             language: codeFile.fileLanguage(),
-            theme: .atelierSavannaLight,
+            theme: colorScheme == .light ? .atelierSavannaLight : .atelierSavannaDark,
             indentStyle: .system
         )
     }
