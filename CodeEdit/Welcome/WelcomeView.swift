@@ -73,7 +73,7 @@ struct WelcomeView: View {
                         subtitle: "Open an existing project or file on your Mac"
                     )
                         .onTapGesture {
-                            CodeEditDocumentController.shared.openDocument { _, _, _ in
+                            CodeEditDocumentController.shared.openDocument { _, _ in
                                 dismissWindow()
                             }
                         }
@@ -82,7 +82,7 @@ struct WelcomeView: View {
             Spacer()
             if (isHovering) {
                 HStack {
-                    Toggle("Show this window then Xcode launches", isOn: $showWelcomeWindowWhenLaunch)
+                    Toggle("Show this window when CodeEdit launches", isOn: $showWelcomeWindowWhenLaunch)
                         .toggleStyle(.checkbox)
                     Spacer()
                 }
