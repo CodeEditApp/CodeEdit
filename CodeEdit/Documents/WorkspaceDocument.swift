@@ -81,7 +81,6 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         window.toolbar = NSToolbar()
         window.toolbarStyle = .unifiedCompact
         window.titlebarSeparatorStyle = .none
-        window.titlebarAppearsTransparent = true
         
         window.toolbar?.displayMode = .iconOnly
         window.toolbar?.insertItem(withItemIdentifier: .toggleSidebar, at: 0)
