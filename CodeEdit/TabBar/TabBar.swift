@@ -51,6 +51,7 @@ struct TabBar: View {
                 .foregroundColor(.gray)
                 .frame(height: 1.0)
         }
+        .background(Material.regular)
     }
 
     func getTabId(fileName: String) -> KeyEquivalent {
