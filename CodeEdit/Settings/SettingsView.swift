@@ -12,7 +12,7 @@ struct SettingsView: View {
         TabView {
             GeneralSettingsView()
                 .tabItem {
-                    Label("General", systemImage: "gearshape")
+					Label("General".localized(), systemImage: "gearshape")
                 }
         }
         .padding()

@@ -16,30 +16,30 @@ struct GeneralSettingsView: View {
     
     var body: some View {
         Form {
-            Picker("Appearance", selection: $appearance) {
-                Text("System")
+			Picker("Appearance".localized(), selection: $appearance) {
+				Text("System".localized())
                     .tag(Appearances.system)
                 Divider()
-                Text("Light")
+				Text("Light".localized())
                     .tag(Appearances.light)
-                Text("Dark")
+				Text("Dark".localized())
                     .tag(Appearances.dark)
             }
             .onChange(of: appearance) { tag in
                 tag.applyAppearance()
             }
 
-			Picker("File Icon Style", selection: $fileIconStyle) {
-				Text("Color")
+			Picker("File Icon Style".localized(), selection: $fileIconStyle) {
+				Text("Color".localized())
 					.tag(FileIconStyle.color)
-				Text("Monochrome")
+				Text("Monochrome".localized())
 					.tag(FileIconStyle.monochrome)
 			}
             
-            Picker("Reopen Behavior", selection: $reopenBehavior) {
-                Text("Open Panel")
+			Picker("Reopen Behavior".localized(), selection: $reopenBehavior) {
+				Text("Open Panel".localized())
                     .tag(ReopenBehavior.openPanel)
-                Text("New Document")
+				Text("New Document".localized())
                     .tag(ReopenBehavior.newDocument)
             }
         }
