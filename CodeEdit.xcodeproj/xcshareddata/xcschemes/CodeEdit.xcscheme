@@ -28,6 +28,26 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "CodeFileTests"
+               BuildableName = "CodeFileTests"
+               BlueprintName = "CodeFileTests"
+               ReferencedContainer = "container:CodeEditModules">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "WorkspaceClientTests"
+               BuildableName = "WorkspaceClientTests"
+               BlueprintName = "WorkspaceClientTests"
+               ReferencedContainer = "container:CodeEditModules">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
