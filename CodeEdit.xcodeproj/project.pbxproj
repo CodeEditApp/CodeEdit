@@ -17,7 +17,6 @@
 		04540D5E27DD08C300E91B77 /* WorkspaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B658FB3127DA9E0F00EA4DBD /* WorkspaceView.swift */; };
 		04540D5F27DD08C300E91B77 /* EditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043DF9C127DD045800CA0FC3 /* EditorView.swift */; };
 		04540D6127DD08C300E91B77 /* CodeFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 348313FB27DC8C070016D42C /* CodeFile.swift */; };
-		04540D6327DD08C300E91B77 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0468438427DC76E200F8E88E /* AppDelegate.swift */; };
 		04660F6427E3ACAF00477777 /* Appearances.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04660F6327E3ACAF00477777 /* Appearances.swift */; };
 		04660F6627E3ACEF00477777 /* ReopenBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04660F6527E3ACEF00477777 /* ReopenBehavior.swift */; };
 		287776E727E3413200D46668 /* SideBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287776E627E3413200D46668 /* SideBar.swift */; };
@@ -397,7 +396,6 @@
 				34EE19BE27E0469C00F152CE /* BlurView.swift in Sources */,
 				D7211D4327E066CE008F2ED7 /* Localized+Ex.swift in Sources */,
 				287776E927E34BC700D46668 /* TabBar.swift in Sources */,
-				04540D6327DD08C300E91B77 /* AppDelegate.swift in Sources */,
 				287776EF27E3515300D46668 /* TabBarItem.swift in Sources */,
 				287776E727E3413200D46668 /* SideBar.swift in Sources */,
 				287776ED27E350D800D46668 /* SideBarItem.swift in Sources */,
@@ -407,7 +405,6 @@
 				28B0A19827E385C300B73177 /* SideBarToolbarTop.swift in Sources */,
 				345F667527DF6C180069BD69 /* FileTabRow.swift in Sources */,
 				043C321827E32246006AE443 /* CodeFileEditor.swift in Sources */,
-				04540D6327DD08C300E91B77 /* AppDelegate.swift in Sources */,
 				0439FEF527DD104500528317 /* WorkspaceEditorView.swift in Sources */,
 				28FFE1BF27E3A441001939DB /* SideBarToolbarBottom.swift in Sources */,
 			);
