@@ -11,7 +11,8 @@ import Foundation
 
 struct WelcomeView: View {
     @State var isHovering: Bool = false
-    @State var showWelcomeWindowWhenLaunch: Bool = true
+    @AppStorage("showWelcomeWindowWhenLaunch") var showWelcomeWindowWhenLaunch: Bool = true
+    
     var dismissWindow: () -> Void
     
     var dismissButton: some View {
@@ -41,51 +42,34 @@ struct WelcomeView: View {
                 .font(.system(size: 16))
             Spacer().frame(height: 20)
             HStack {
-                VStack(alignment: .leading) {
-                    HStack(spacing: 15) {
-                        Image(systemName: "plus.square")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .foregroundColor(.accentColor)
-                            .frame(width: 24)
-                        VStack(alignment: .leading) {
-                            Text("Create a new file")
-                                .bold()
-                                .font(.system(size: 16))
-                            Text("Create a new file")
-                                .font(.system(size: 14))
+                VStack(alignment: .leading, spacing: 15) {
+                    WelcomeActionView(
+                        iconName: "plus.square",
+                        title: "Create a new file",
+                        subtitle: "Create a new file"
+                    )
+                        .onTapGesture {
+                            // TODO: open a new empty editor
                         }
-                    }
-                    HStack(spacing: 15) {
-                        Image(systemName: "plus.square.on.square")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .foregroundColor(.accentColor)
-                            .frame(width: 24)
-                        VStack(alignment: .leading) {
-                            Text("Clone an exisiting project")
-                                .bold()
-                                .font(.system(size: 16))
-                            Text("Start working on something from a Git repository")
-                                .font(.system(size: 14))
+                    WelcomeActionView(
+                        iconName: "plus.square.on.square",
+                        title: "Clone an exisiting project",
+                        subtitle: "Start working on something from a Git repository"
+                    )
+                        .onTapGesture {
+                            // TODO: clone a Git repository
                         }
-                    }
-                    HStack(spacing: 15) {
-                        Image(systemName: "folder")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .foregroundColor(.accentColor)
-                            .frame(width: 24)
-                        VStack(alignment: .leading) {
-                            Text("Open a project or file")
-                                .bold()
-                                .font(.system(size: 16))
-                            Text("Open an existing project or file on your Mac")
-                                .font(.system(size: 14))
+                    WelcomeActionView(
+                        iconName: "folder",
+                        title: "Open a project or file",
+                        subtitle: "Open an existing project or file on your Mac"
+                    )
+                        .onTapGesture {
+                            CodeEditDocumentController.shared.openDocument { _, _, _ in
+                                dismissWindow()
+                            }
                         }
-                    }
                 }
-                Spacer()
             }
             Spacer()
             if (isHovering) {

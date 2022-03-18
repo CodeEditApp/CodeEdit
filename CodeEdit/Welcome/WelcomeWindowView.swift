@@ -8,18 +8,19 @@
 import SwiftUI
 
 struct WelcomeWindowView: View {
+    var windowController: NSWindowController
     var body: some View {
         HStack(spacing: 0) {
             WelcomeView {
-                print("dismiss")
+                windowController.window?.close()
             }
             RecentProjectsView()
         }
     }
 }
 
-struct WelcomeWindowView_Previews: PreviewProvider {
-    static var previews: some View {
-        WelcomeWindowView()
-    }
-}
+//struct WelcomeWindowView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        WelcomeWindowView()
+//    }
+//}

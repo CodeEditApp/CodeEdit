@@ -38,6 +38,7 @@
 		D72E1A8527E4226A00EB11B9 /* RecentProjectItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72E1A8427E4226A00EB11B9 /* RecentProjectItem.swift */; };
 		D72E1A8727E4242900EB11B9 /* RecentProjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72E1A8627E4242900EB11B9 /* RecentProjectsView.swift */; };
 		D72E1A8927E44D7C00EB11B9 /* WelcomeWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72E1A8827E44D7C00EB11B9 /* WelcomeWindowView.swift */; };
+		D72E1A8D27E48E6B00EB11B9 /* WelcomeActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72E1A8C27E48E6B00EB11B9 /* WelcomeActionView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,6 +92,7 @@
 		D72E1A8427E4226A00EB11B9 /* RecentProjectItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentProjectItem.swift; sourceTree = "<group>"; };
 		D72E1A8627E4242900EB11B9 /* RecentProjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentProjectsView.swift; sourceTree = "<group>"; };
 		D72E1A8827E44D7C00EB11B9 /* WelcomeWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeWindowView.swift; sourceTree = "<group>"; };
+		D72E1A8C27E48E6B00EB11B9 /* WelcomeActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeActionView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -266,6 +268,7 @@
 				D72E1A8427E4226A00EB11B9 /* RecentProjectItem.swift */,
 				D72E1A8627E4242900EB11B9 /* RecentProjectsView.swift */,
 				D72E1A8827E44D7C00EB11B9 /* WelcomeWindowView.swift */,
+				D72E1A8C27E48E6B00EB11B9 /* WelcomeActionView.swift */,
 			);
 			path = Welcome;
 			sourceTree = "<group>";
@@ -424,6 +427,7 @@
 				287776E727E3413200D46668 /* SideBar.swift in Sources */,
 				287776ED27E350D800D46668 /* SideBarItem.swift in Sources */,
 				04660F6627E3ACEF00477777 /* ReopenBehavior.swift in Sources */,
+				D72E1A8D27E48E6B00EB11B9 /* WelcomeActionView.swift in Sources */,
 				04540D6127DD08C300E91B77 /* CodeFile.swift in Sources */,
 				D72E1A8327E3B0D400EB11B9 /* WelcomeView.swift in Sources */,
 				043C321627E3201F006AE443 /* WorkspaceDocument.swift in Sources */,
