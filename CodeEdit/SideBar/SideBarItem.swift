@@ -43,17 +43,15 @@ struct SideBarItem: View {
 
 	func sidebarFolderItem(_ item: WorkspaceClient.FileItem) -> some View {
 		DisclosureGroup(isExpanded: $isExpanded) {
-			if isExpanded { // Only load when expanded -> Improves performance massively
 				ForEach(item.children!.sortItems(foldersOnTop: workspace.sortFoldersOnTop)) { child in
 					SideBarItem(item: child,
 								workspace: workspace,
                                 windowController: windowController)
 				}
-			}
 		} label: {
 			Label(item.url.lastPathComponent, systemImage: item.systemImage)
 				.accentColor(.secondary)
 				.font(.callout)
-		}
+        }
 	}
 }
