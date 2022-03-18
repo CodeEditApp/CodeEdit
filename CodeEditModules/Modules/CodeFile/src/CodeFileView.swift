@@ -13,7 +13,7 @@ import SwiftUI
 public struct CodeFileView: View {
     @ObservedObject public var codeFile: CodeFileDocument
     @Environment(\.colorScheme) private var colorScheme
-    
+
     public init(codeFile: CodeFileDocument) {
         self.codeFile = codeFile
     }
