@@ -33,11 +33,14 @@ struct SideBarToolbarTop: View {
 	}
 
 	func icon(systemImage: String, title: String, id: Int) -> some View {
-		Button { selection = id } label: {
+		Button {
+			selection = id
+		} label: {
 			Image(systemName: systemImage)
 				.help(title)
 				.symbolVariant(id == selection ? .fill : .none)
-				.foregroundColor(id == selection ? .blue : .secondary)
+				.foregroundColor(id == selection ? .accentColor : .secondary)
+				.frame(width: 16, alignment: .center)
 		}
 		.buttonStyle(.plain)
 	}
