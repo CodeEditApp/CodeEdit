@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import WelcomeModule
 
 struct RecentProjectsView: View {
     @State var recentProjectPaths: [String] = UserDefaults.standard.array(forKey: "recentProjectPaths") as? [String] ?? []
@@ -49,7 +50,7 @@ struct RecentProjectsView: View {
         }
         .frame(width: 300)
         .padding(10)
-        .background(Color(red: 70 / 255, green: 70 / 255, blue: 70 / 255))
+        .background(Color(nsColor: .windowBackgroundColor))
         .onAppear {
             recentProjectPaths = UserDefaults.standard.array(forKey: "recentProjectPaths") as? [String] ?? []
         }

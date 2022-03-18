@@ -44,6 +44,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         window.contentView?.wantsLayer = true
         window.contentView?.layer?.masksToBounds = true
         window.contentView?.layer?.cornerRadius = 10
+        window.hasShadow = true
         window.makeKeyAndOrderFront(self)
     }
     

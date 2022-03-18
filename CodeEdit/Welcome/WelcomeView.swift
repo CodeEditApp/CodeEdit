@@ -8,6 +8,7 @@
 import SwiftUI
 import AppKit
 import Foundation
+import WelcomeModule
 
 struct WelcomeView: View {
     @State var isHovering: Bool = false
@@ -91,7 +92,7 @@ struct WelcomeView: View {
         .frame(width: 480)
         .padding(.vertical, 24)
         .padding(.horizontal, 32)
-        .background(Color(red: 48 / 255, green: 48 / 255, blue: 48 / 255))
+        .background(Color(nsColor: .controlBackgroundColor))
         .onHover { isHovering in
             self.isHovering = isHovering
         }
