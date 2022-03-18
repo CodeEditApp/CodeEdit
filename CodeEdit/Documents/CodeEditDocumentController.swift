@@ -21,10 +21,20 @@ class CodeEditDocumentController: NSDocumentController {
 
         dialog.begin { result in
             if result ==  NSApplication.ModalResponse.OK, let url = dialog.url {
-                self.openDocument(withContentsOf: url, display: true) { document, documentWasAlreadyOpen, err in
+                self.openDocument(withContentsOf: url, display: true) { document, documentWasAlreadyOpen, error in
                     // TODO: handle errors
+                    if let error = error {
+                        print("Error: \(error.localizedDescription)")
+                        return
+                    }
+
+                    guard let document = document else {
+                        print("Error: Failed to get document")
+                        return
+                    }
                     
-                    print(document, documentWasAlreadyOpen, err)
+                    print("Document:", document)
+                    print("Was already open?", documentWasAlreadyOpen)
                 }
             }
         }

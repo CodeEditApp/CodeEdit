@@ -117,7 +117,7 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
                 // it.
                 let diff = files.difference(from: self.fileItems)
                 diff.forEach { newFile in
-                    if let index = self.fileItems.firstIndex(of: newFile) {
+                    if let index = self.fileItems.firstIndex(of: newFile) {
                         self.fileItems.remove(at: index)
                     } else {
                         self.fileItems.append(newFile)
