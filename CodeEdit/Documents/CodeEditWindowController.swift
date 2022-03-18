@@ -6,6 +6,7 @@
 //
 
 import Cocoa
+import CodeFile
 
 class CodeEditWindowController: NSWindowController {
     
@@ -17,13 +18,16 @@ class CodeEditWindowController: NSWindowController {
         // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
     }
     
-    @IBAction func saveDocument(_ sender: Any) {
-        guard let id = workspace?.selectedId else { return }
+    private func getSelectedCodeFile() -> CodeFileDocument? {
+        guard let id = workspace?.selectedId else { return nil }
         guard let item = workspace?.openFileItems.first(where: { item in
             return item.id == id
-        }) else { return }
-        guard let file = workspace?.openedCodeFiles[item] else { return }
-        file.save(sender)
+        }) else { return nil }
+        guard let file = workspace?.openedCodeFiles[item] else { return nil }
+        return file
     }
-
+    
+    @IBAction func saveDocument(_ sender: Any) {
+        getSelectedCodeFile()?.save(sender)
+    }
 }
