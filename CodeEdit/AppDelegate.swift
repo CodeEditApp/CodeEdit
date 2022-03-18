@@ -51,6 +51,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         window.toolbar = NSToolbar()
         window.title = "Settings"
         window.toolbarStyle = .unifiedCompact
+        let _ = NSWindowController(window: window)
         let contentView = SettingsView()
         window.contentView = NSHostingView(rootView: contentView)
         
