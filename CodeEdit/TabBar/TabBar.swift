@@ -11,9 +11,9 @@ import WorkspaceClient
 struct TabBar: View {
     var windowController: NSWindowController
     @ObservedObject var workspace: WorkspaceDocument
-
+    
     var tabBarHeight = 28.0
-
+    
     var body: some View {
         VStack(spacing: 0.0) {
             ScrollView(.horizontal, showsIndicators: false) {
@@ -22,14 +22,17 @@ struct TabBar: View {
                         ForEach(workspace.openFileItems, id: \.id) { item in
                             let isActive = workspace.selectedId == item.id
                             
-                            Button(action: { workspace.selectedId = item.id }) {
-                                if isActive {
-                                    TabBarItem(item: item, windowController: windowController, workspace: workspace)
-                                        .background(Material.bar)
-                                } else {
-                                    TabBarItem(item: item, windowController: windowController, workspace: workspace)
+                            Button(
+                                action: { workspace.selectedId = item.id },
+                                label: {
+                                    if isActive {
+                                        TabBarItem(item: item, windowController: windowController, workspace: workspace)
+                                            .background(Material.bar)
+                                    } else {
+                                        TabBarItem(item: item, windowController: windowController, workspace: workspace)
+                                    }
                                 }
-                            }
+                            )
                             .animation(.easeOut(duration: 0.2), value: workspace.openFileItems)
                             .buttonStyle(.plain)
                             .id(item.id)
@@ -53,7 +56,7 @@ struct TabBar: View {
         }
         .background(Material.regular)
     }
-
+    
     func getTabId(fileName: String) -> KeyEquivalent {
         for counter in 0..<9 {
             if workspace.openFileItems.count > counter,
@@ -63,7 +66,7 @@ struct TabBar: View {
                 )
             }
         }
-
+        
         return "0"
     }
 }
