@@ -36,7 +36,7 @@ struct SideBarItem: View {
 				}
 		} label: {
 			Label(item.url.lastPathComponent, systemImage: item.systemImage)
-				.tint(.accentColor)
+				.accentColor(item.iconColor)
 				.font(.callout)
 		}
 	}
