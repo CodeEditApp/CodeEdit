@@ -31,7 +31,7 @@ struct SideBarItem: View {
                 .safeAreaInset(edge: .top) {
 					VStack(spacing: 0) {
 						TabBar(windowController: windowController, workspace: workspace)
-						BreadcrumbsView(workspace: workspace)
+						BreadcrumbsView(workspace: workspace, file: item)
 					}
 				}
 		} label: {
