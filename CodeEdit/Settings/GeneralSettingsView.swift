@@ -40,6 +40,9 @@ struct GeneralSettingsView: View {
 			}
             
 			Picker("Reopen Behavior".localized(), selection: $reopenBehavior) {
+                Text("Welcome Screen".localized())
+                    .tag(ReopenBehavior.welcome)
+                Divider()
 				Text("Open Panel".localized())
                     .tag(ReopenBehavior.openPanel)
 				Text("New Document".localized())
