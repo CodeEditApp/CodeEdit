@@ -62,7 +62,13 @@ struct FileTabRow: View {
 
 struct FileTabRow_Previews: PreviewProvider {
     static var previews: some View {
-        FileTabRow(fileItem: WorkspaceClient.FileItem(url: URL(string: "Code.swift")!), isSelected: false, closeAction: {})
-            .frame(width: 160.0, height: 28.0)
+        FileTabRow(
+            fileItem: WorkspaceClient.FileItem(
+                url: URL(string: "Code.swift")!
+            ),
+            isSelected: false,
+            closeAction: {}
+        )
+        .frame(width: 160.0, height: 28.0)
     }
 }
