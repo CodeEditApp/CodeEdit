@@ -28,9 +28,15 @@ struct BreadcrumbsView: View {
 			Rectangle()
 				.foregroundStyle(Color(nsColor: .controlBackgroundColor))
 			HStack {
-				BreadcrumbsComponent(projectName, systemImage: "square.dashed.inset.filled", color: .accentColor)
-				chevron
-				ForEach(folders, id:\.self) { folder in
+				BreadcrumbsComponent(
+                    projectName,
+                    systemImage: "square.dashed.inset.filled",
+                    color: .accentColor
+                )
+
+                chevron
+
+                ForEach(folders, id: \.self) { folder in
 					BreadcrumbsComponent(folder, systemImage: "folder.fill")
 					chevron
 				}
