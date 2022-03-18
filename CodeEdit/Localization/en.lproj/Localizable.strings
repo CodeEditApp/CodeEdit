@@ -1,1 +1,20 @@
 "Hello, world!"="Hello, world!";
+
+// Settings - General Tab
+"General"="General";
+
+// Settings - File Icon Style
+"File Icon Style"="File Icon Style";
+"Color"="Color";
+"Monochrome"="Monochrome";
+
+// Settings - Appearance
+"Appearance"="Appearance";
+"System"="System";
+"Light"="Light";
+"Dark"="Dark";
+
+// Settings Reopen Behavior
+"Reopen Behavior"="Reopen Behavior";
+"Open Panel"="Open Panel";
+"New Document"="New Document";
