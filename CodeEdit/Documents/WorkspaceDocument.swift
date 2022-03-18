@@ -133,4 +133,12 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     }
     
     override func write(to url: URL, ofType typeName: String) throws {}
+    
+    override func close() {
+        selectedId = nil
+        openFileItems.forEach { item in
+            openedCodeFiles[item]?.save(self)
+        }
+        super.close()
+    }
 }
