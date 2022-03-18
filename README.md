@@ -56,10 +56,13 @@ It might sound crazy, but it is our hope that at some point Apple adopts this pr
 
 Feel free to join and collaborate on our [Discord server](https://discord.gg/vChUXVf9Em).
 
-After forking and pulling down the code, make sure you open the workspace and not the project.
+After forking and pulling down the code, make sure you open the `CodeEdit.xcworkspace` and not the `CodeEdit.xcodeproj`.
 
-Find issues from the [Issues tab](https://github.com/mchakravarty/CodeEditorView/issues) or from the To Do column in our [project](https://github.com/mchakravarty/CodeEditorView/projects/2).
-If you find an issue you want to work on, please indicate it in the issue and/or attach a draft PR once available.
+<img width="960" alt="Open CodeEdit.xcworkspace in Xcode" src="https://user-images.githubusercontent.com/9460130/158924759-42a61d23-4961-4bfb-8d44-930ec2427f0f.png">
+
+
+Find issues from the [Issues tab](https://github.com/CodeEditApp/CodeEdit/issues) or from the To Do column in our [project](https://github.com/CodeEditApp/CodeEdit/projects/1).
+If you find an issue you want to work on, please indicate it in the issue and/or attach a draft PR once available. A moderator will then assign the Issue and/or PR to you.
 
 ## License
 
