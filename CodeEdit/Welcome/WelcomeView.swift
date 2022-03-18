@@ -15,12 +15,20 @@ struct WelcomeView: View {
     
     var dismissWindow: () -> Void
     
-    var dismissButton: some View {
+    private var dismissButton: some View {
         Image(systemName: "xmark")
             .frame(width: 16, height: 16)
             .onTapGesture {
                 dismissWindow()
             }
+    }
+    
+    private var appVersion: String {
+        return Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
+    }
+    
+    private var appBuild: String {
+        return Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? ""
     }
     
     var body: some View {
@@ -31,13 +39,13 @@ struct WelcomeView: View {
                 }
                 Spacer()
             }.frame(height: 20)
-            Image("appicon")
+            Image(nsImage: NSApp.applicationIconImage)
                 .resizable()
                 .frame(width: 128, height: 128)
             Text("Welcome to CodeEdit")
                 .bold()
                 .font(.system(size: 28))
-            Text("Version \(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String)(\(NSApplication.version()))")
+            Text("Version \(appVersion)(\(appBuild))")
                 .foregroundColor(.gray)
                 .font(.system(size: 16))
             Spacer().frame(height: 20)
