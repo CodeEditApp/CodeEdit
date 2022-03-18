@@ -23,15 +23,15 @@ struct WelcomeView: View {
                 dismissWindow()
             }
     }
-    
+
     private var appVersion: String {
         return Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
     }
-    
+
     private var appBuild: String {
         return Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? ""
     }
-    
+
     var body: some View {
         VStack(spacing: 8) {
             HStack(alignment: .center) {
@@ -107,7 +107,7 @@ struct WelcomeView: View {
 struct WelcomeView_Previews: PreviewProvider {
     static var previews: some View {
         WelcomeView() {
-            
+
         }
         .frame(width: 780, height: 600)
     }
