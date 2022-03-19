@@ -41,7 +41,7 @@ struct SideBarItem: View {
                             }
                         }
                 } else {
-                    Text("File cannot be opened")
+                    Text("CodeEdit cannot open this file because its file type is not supported.")
                 }
             }
             .onAppear { workspace.openFile(item: item) }
