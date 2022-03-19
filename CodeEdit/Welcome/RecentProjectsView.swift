@@ -10,8 +10,8 @@ import WelcomeModule
 import WorkspaceClient
 
 struct RecentProjectsView: View {
-    @State var recentProjectPaths: [String] = UserDefaults.standard.array(forKey: "recentProjectPaths") as? [String]
-        ?? []
+    @State var recentProjectPaths: [String] = UserDefaults.standard.array(forKey: "recentProjectPaths") as?
+                                              [String] ?? []
     @State var selectedProjectPath: String? = ""
 
     let dismissWindow: () -> Void
