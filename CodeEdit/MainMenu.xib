@@ -643,7 +643,7 @@
                             <menuItem title="Welcome to CodeEdit" keyEquivalent="0" id="ftv-uF-z1D" userLabel="Welcome to CodeEdit">
                                 <modifierMask key="keyEquivalentModifierMask" shift="YES" command="YES"/>
                                 <connections>
-                                    <action selector="openWelcome:" target="-2" id="IBg-TC-7Yz"/>
+                                    <action selector="openWelcome:" target="-1" id="nj3-Ce-f7P"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="eu3-7i-yIM"/>
