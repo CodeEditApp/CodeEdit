@@ -8,12 +8,10 @@
 import SwiftUI
 
 public struct RecentProjectItem: View {
-    @Binding public var isSelected: Bool
     var projectName: String = ""
     var projectPath: String = ""
-
-    public init(isSelected: Binding<Bool>, projectName: String, projectPath: String) {
-        self._isSelected = isSelected
+    
+    public init(projectName: String, projectPath: String) {
         self.projectName = projectName
         self.projectPath = projectPath
     }
@@ -34,7 +32,6 @@ public struct RecentProjectItem: View {
             Spacer()
         }
         .padding(10)
-        .background(isSelected ? Color.accentColor : .clear)
         .contentShape(Rectangle())
         .cornerRadius(8)
     }
@@ -42,9 +39,7 @@ public struct RecentProjectItem: View {
 
 struct RecentProjectItem_Previews: PreviewProvider {
     static var previews: some View {
-        RecentProjectItem(isSelected: .constant(false), projectName: "CodeEdit", projectPath: "/repos/CodeEdit")
-            .frame(width: 300)
-        RecentProjectItem(isSelected: .constant(true), projectName: "CodeEdit", projectPath: "/repos/CodeEdit")
+        RecentProjectItem(projectName: "CodeEdit", projectPath: "/repos/CodeEdit")
             .frame(width: 300)
     }
 }
