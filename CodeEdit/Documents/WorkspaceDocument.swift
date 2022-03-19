@@ -76,7 +76,7 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     override class var autosavesInPlace: Bool {
         return false
     }
-    
+
     override var isDocumentEdited: Bool {
         return false
     }
@@ -135,7 +135,7 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     }
 
     override func write(to url: URL, ofType typeName: String) throws {}
-    
+
     override func close() {
         selectedId = nil
         openFileItems.forEach { item in

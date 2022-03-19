@@ -89,7 +89,7 @@ struct WelcomeView: View {
                     }
                 }
                 Spacer()
-                if (isHovering) {
+                if isHovering {
                     HStack {
                         Toggle("Show this window when CodeEdit launches", isOn: .init(get: {
                             return self.behavior == .welcome
@@ -109,22 +109,19 @@ struct WelcomeView: View {
                 self.isHovering = isHovering
             }
 
-            if (isHovering) {
+            if isHovering {
                 HStack(alignment: .center) {
                     dismissButton
                     Spacer()
                 }.padding(13).transition(AnyTransition.opacity.animation(.easeInOut(duration: 0.25)))
             }
-            
         }
     }
 }
 
 struct WelcomeView_Previews: PreviewProvider {
     static var previews: some View {
-        WelcomeView() {
-
-        }
-        .frame(width: 800, height: 460)
+        WelcomeView(dismissWindow: {})
+            .frame(width: 800, height: 460)
     }
 }
