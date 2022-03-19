@@ -9,8 +9,8 @@ import SwiftUI
 import WelcomeModule
 
 struct RecentProjectsView: View {
-    @State var recentProjectPaths: [String] = UserDefaults.standard.array(forKey: "recentProjectPaths") as?
-                                              [String] ?? []
+    @State var recentProjectPaths: [String] = UserDefaults.standard.array(forKey: "recentProjectPaths") as? [String]
+        ?? []
     @State var selectedProjectPath: String? = ""
 
     let dismissWindow: () -> Void
@@ -23,7 +23,7 @@ struct RecentProjectsView: View {
             Spacer()
         }
     }
-    
+
     private func openDocument(path: String) {
         do {
             let document = try WorkspaceDocument(contentsOf: URL(fileURLWithPath: path), ofType: "")
@@ -34,21 +34,24 @@ struct RecentProjectsView: View {
             print(error)
         }
     }
-    
+
     var body: some View {
         VStack(alignment: recentProjectPaths.count > 0 ? .leading : .center, spacing: 10) {
-            if (recentProjectPaths.count > 0) {
+            if recentProjectPaths.count > 0 {
                 List(recentProjectPaths, id: \.self, selection: $selectedProjectPath) { projectPath in
                     ZStack {
-                        RecentProjectItem(projectName: String(projectPath.split(separator: "/").last ?? ""), projectPath: projectPath)
-                            .frame(width: 300)
-                            .gesture(TapGesture(count: 2).modifiers(.all).onEnded {
-                                openDocument(path: projectPath)
-                            })
-                            .simultaneousGesture(TapGesture().onEnded {
-                                selectedProjectPath = projectPath
-                            })
-                            .keyboardShortcut(.defaultAction)
+                        RecentProjectItem(
+                            projectName: String(projectPath.split(separator: "/").last ?? ""),
+                            projectPath: projectPath
+                        )
+                        .frame(width: 300)
+                        .gesture(TapGesture(count: 2).modifiers(.all).onEnded {
+                            openDocument(path: projectPath)
+                        })
+                        .simultaneousGesture(TapGesture().onEnded {
+                            selectedProjectPath = projectPath
+                        })
+                        .keyboardShortcut(.defaultAction)
                         Button("") {
                             if let selectedProjectPath = selectedProjectPath {
                                 openDocument(path: selectedProjectPath)

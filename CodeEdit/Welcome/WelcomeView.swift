@@ -105,10 +105,10 @@ struct WelcomeView: View {
                     Spacer()
                 }.padding(13).transition(AnyTransition.opacity.animation(.easeInOut(duration: 0.25)))
             }
-            if (isHovering) {
+            if isHovering {
                 VStack {
                     Spacer()
-                    HStack() {
+                    HStack {
                         Spacer()
                         Toggle("Show this window when CodeEdit launches", isOn: .init(get: {
                             return self.behavior == .welcome

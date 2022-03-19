@@ -19,7 +19,7 @@ final class CodeFileUnitTests: XCTestCase {
         hosting.frame = CGRect(x: 0, y: 0, width: 300, height: 60)
         assertSnapshot(matching: hosting, as: .image)
     }
-    
+
     func testRecentProjectItemDarkSnapshot() throws {
         let view = RecentProjectItem(projectName: "Project Name", projectPath: "Project Path")
             .preferredColorScheme(.dark)
@@ -27,7 +27,7 @@ final class CodeFileUnitTests: XCTestCase {
         hosting.frame = CGRect(x: 0, y: 0, width: 300, height: 60)
         assertSnapshot(matching: hosting, as: .image)
     }
-    
+
     func testWelcomeActionViewLightSnapshot() throws {
         let view = WelcomeActionView(
             iconName: "plus.square",
@@ -38,7 +38,7 @@ final class CodeFileUnitTests: XCTestCase {
         hosting.frame = CGRect(x: 0, y: 0, width: 300, height: 60)
         assertSnapshot(matching: hosting, as: .image)
     }
-    
+
     func testWelcomeActionViewDarkSnapshot() throws {
         let view = WelcomeActionView(
             iconName: "plus.square",

@@ -10,7 +10,7 @@ import SwiftUI
 public struct RecentProjectItem: View {
     var projectName: String = ""
     var projectPath: String = ""
-    
+
     public init(projectName: String, projectPath: String) {
         self.projectName = projectName
         self.projectPath = projectPath
