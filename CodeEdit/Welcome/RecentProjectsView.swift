@@ -10,7 +10,7 @@ import WelcomeModule
 
 struct RecentProjectsView: View {
     @State var recentProjectPaths: [String] = UserDefaults.standard.array(forKey: "recentProjectPaths") as? [String] ?? []
-    @State var selectedProjectPath = ""
+    @State var selectedProjectPath: String = ""
     let dismissWindow: () -> Void
     
     private var emptyView: some View {
@@ -50,7 +50,7 @@ struct RecentProjectsView: View {
         }
         .frame(width: 300)
         .padding(10)
-        .background(Color(nsColor: .windowBackgroundColor))
+        .background(BlurView(material: NSVisualEffectView.Material.underWindowBackground, blendingMode: NSVisualEffectView.BlendingMode.behindWindow))
         .onAppear {
             recentProjectPaths = UserDefaults.standard.array(forKey: "recentProjectPaths") as? [String] ?? []
         }
