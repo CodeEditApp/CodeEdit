@@ -27,10 +27,10 @@ public struct WelcomeActionView: View {
                 .frame(width: 24)
             VStack(alignment: .leading) {
                 Text(title)
-                    .fontWeight(.medium)
-                    .font(Font.custom("SF Pro", size: 14))
+                    .bold()
+                    .font(.system(size: 13))
                 Text(subtitle)
-                    .font(Font.custom("SF Pro", size: 12))
+                    .font(.system(size: 12))
             }
             Spacer()
         }

@@ -25,13 +25,9 @@ public struct RecentProjectItem: View {
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 24)
             VStack(alignment: .leading) {
-                Text(projectName)
-                    .font(Font.custom("SF Pro", size: 16))
-                    .fontWeight(.medium)
+                Text(projectName).font(.system(size: 16, weight: .semibold))
                     .lineLimit(1)
                 Text(projectPath)
-                    .font(Font.custom("SF Pro", size: 13))
-                    .foregroundColor(.secondary)
                     .lineLimit(1)
                     .truncationMode(.head)
             }

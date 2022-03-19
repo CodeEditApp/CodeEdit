@@ -52,10 +52,10 @@ struct WelcomeView: View {
                     .resizable()
                     .frame(width: 128, height: 128)
                 Text("Welcome to CodeEdit")
-                    .font(Font.custom("SF Pro", size: 36))
+                    .font(.system(size: 38))
                 Text("Version \(appVersion)(\(appBuild))")
                     .foregroundColor(.secondary)
-                    .font(Font.custom("SF Pro", size: 14))
+                    .font(.system(size: 13))
                 Spacer().frame(height: 20)
                 HStack {
                     VStack(alignment: .leading, spacing: 15) {
