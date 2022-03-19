@@ -6,7 +6,7 @@ let package = Package(
     name: "CodeEditModules",
     defaultLocalization: "en",
     platforms: [
-        .macOS(.v11)
+        .macOS(.v12)
     ],
     products: [
         .library(
