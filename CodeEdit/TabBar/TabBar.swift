@@ -21,15 +21,18 @@ struct TabBar: View {
                     HStack(alignment: .center, spacing: 0.0) {
                         ForEach(workspace.openFileItems, id: \.id) { item in
                             let isActive = workspace.selectedId == item.id
-                            
-                            Button(action: { workspace.selectedId = item.id }) {
-                                if isActive {
-                                    TabBarItem(item: item, windowController: windowController, workspace: workspace)
-                                        .background(Material.bar)
-                                } else {
-                                    TabBarItem(item: item, windowController: windowController, workspace: workspace)
+
+                            Button(
+                                action: { workspace.selectedId = item.id },
+                                label: {
+                                    if isActive {
+                                        TabBarItem(item: item, windowController: windowController, workspace: workspace)
+                                            .background(Material.bar)
+                                    } else {
+                                        TabBarItem(item: item, windowController: windowController, workspace: workspace)
+                                    }
                                 }
-                            }
+                            )
                             .animation(.easeOut(duration: 0.2), value: workspace.openFileItems)
                             .buttonStyle(.plain)
                             .id(item.id)
@@ -44,7 +47,7 @@ struct TabBar: View {
                     }
                 }
             }
-            
+
             Divider()
                 .foregroundColor(.gray)
                 .frame(height: 1.0)
@@ -53,45 +56,15 @@ struct TabBar: View {
     }
 
     func getTabId(fileName: String) -> KeyEquivalent {
-        var tabID = 0
-
-        for i in 0..<10 {
-            if workspace.openFileItems.count > i,
-               workspace.openFileItems[i].fileName == fileName {
-                tabID = i + 1
+        for counter in 0..<9 {
+            if workspace.openFileItems.count > counter,
+               workspace.openFileItems[counter].fileName == fileName {
+                return KeyEquivalent.init(
+                    Character.init("\(counter + 1)")
+                )
             }
         }
 
-        switch tabID {
-        case 1:
-            return "1"
-
-        case 2:
-            return "2"
-
-        case 3:
-            return "3"
-
-        case 4:
-            return "4"
-
-        case 5:
-            return "5"
-
-        case 6:
-            return "6"
-
-        case 7:
-            return "7"
-
-        case 8:
-            return "8"
-
-        case 9:
-            return "9"
-
-        default:
-            return "0"
-        }
+        return "0"
     }
 }

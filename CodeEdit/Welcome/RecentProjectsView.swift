@@ -11,8 +11,9 @@ import WelcomeModule
 struct RecentProjectsView: View {
     @State var recentProjectPaths: [String] = UserDefaults.standard.array(forKey: "recentProjectPaths") as? [String] ?? []
     @State var selectedProjectPath: String = ""
+
     let dismissWindow: () -> Void
-    
+
     private var emptyView: some View {
         VStack {
             Spacer()
@@ -21,17 +22,24 @@ struct RecentProjectsView: View {
             Spacer()
         }
     }
-    
+
     var body: some View {
         VStack(alignment: recentProjectPaths.count > 0 ? .leading : .center, spacing: 10) {
-            if (recentProjectPaths.count > 0) {
+            if recentProjectPaths.count > 0 {
                 ScrollView {
                     ForEach(recentProjectPaths, id: \.self) { projectPath in
-                        RecentProjectItem(isSelected: .constant(selectedProjectPath == projectPath), projectName: String(projectPath.split(separator: "/").last ?? ""), projectPath: projectPath)
+                        RecentProjectItem(
+                            isSelected: .constant(selectedProjectPath == projectPath),
+                            projectName: String(projectPath.split(separator: "/").last ?? ""),
+                            projectPath: projectPath
+                        )
                             .frame(width: 300)
                             .gesture(TapGesture(count: 2).onEnded {
                                 do {
-                                    let document = try WorkspaceDocument(contentsOf: URL(fileURLWithPath: projectPath), ofType: "")
+                                    let document = try WorkspaceDocument(
+                                        contentsOf: URL(fileURLWithPath: projectPath),
+                                        ofType: ""
+                                    )
                                     document.makeWindowControllers()
                                     document.showWindows()
                                     dismissWindow()
@@ -60,7 +68,7 @@ struct RecentProjectsView: View {
 struct RecentProjectsView_Previews: PreviewProvider {
     static var previews: some View {
         RecentProjectsView {
-            
+
         }
     }
 }

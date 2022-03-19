@@ -17,7 +17,7 @@ struct WelcomeView: View {
     @AppStorage(ReopenBehavior.storageKey) var behavior: ReopenBehavior = .welcome
 
     var dismissWindow: () -> Void
-    
+
     private var dismissButton: some View {
         Button(action: dismissWindow, label: {
             Circle()
@@ -35,15 +35,15 @@ struct WelcomeView: View {
             isHoveringClose = hover
         }
     }
-    
+
     private var appVersion: String {
         return Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
     }
-    
+
     private var appBuild: String {
         return Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? ""
     }
-    
+
     var body: some View {
         ZStack(alignment: .topLeading) {
             VStack(spacing: 8) {
@@ -108,6 +108,7 @@ struct WelcomeView: View {
             .onHover { isHovering in
                 self.isHovering = isHovering
             }
+
             if (isHovering) {
                 HStack(alignment: .center) {
                     dismissButton
@@ -122,7 +123,7 @@ struct WelcomeView: View {
 struct WelcomeView_Previews: PreviewProvider {
     static var previews: some View {
         WelcomeView() {
-            
+
         }
         .frame(width: 800, height: 460)
     }

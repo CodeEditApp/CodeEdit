@@ -47,7 +47,7 @@ public extension WorkspaceClient {
                 return "square.fill.on.circle.fill"
             case "entitlements":
                 return "checkmark.seal"
-			case "plist":
+            case "plist":
 				return "tablecells"
             case "md", "txt", "rtf":
                 return "doc.plaintext"
