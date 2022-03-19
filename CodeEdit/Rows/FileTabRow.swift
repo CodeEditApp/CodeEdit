@@ -33,7 +33,6 @@ struct FileTabRow: View {
                     .opacity(0)
                     .keyboardShortcut("w", modifiers: [.command])
                 }
-                
                 Button(action: closeAction, label: {
                     Rectangle()
                         .fill(isHoveringClose
@@ -53,7 +52,6 @@ struct FileTabRow: View {
                 .onHover { hover in
                     isHoveringClose = hover
                 }
-
             }
             Image(systemName: fileItem.systemImage)
                 .resizable()
