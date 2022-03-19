@@ -61,8 +61,8 @@ struct WelcomeView: View {
                     VStack(alignment: .leading, spacing: 15) {
                         WelcomeActionView(
                             iconName: "plus.square",
-                            title: "Create a new file",
-                            subtitle: "Create a new file"
+                            title: "Create a new file".localized(),
+                            subtitle: "Create a new file".localized()
                         )
                             .onTapGesture {
                                 CodeEditDocumentController.shared.newDocument(nil)
@@ -70,16 +70,16 @@ struct WelcomeView: View {
                             }
                         WelcomeActionView(
                             iconName: "plus.square.on.square",
-                            title: "Clone an exisiting project",
-                            subtitle: "Start working on something from a Git repository"
+                            title: "Clone an exisiting project".localized(),
+                            subtitle: "Start working on something from a Git repository".localized()
                         )
                             .onTapGesture {
                                 // TODO: clone a Git repository
                             }
                         WelcomeActionView(
                             iconName: "folder",
-                            title: "Open a project or file",
-                            subtitle: "Open an existing project or file on your Mac"
+                            title: "Open a project or file".localized(),
+                            subtitle: "Open an existing project or file on your Mac".localized()
                         )
                             .onTapGesture {
                                 CodeEditDocumentController.shared.openDocument { _, _ in
