@@ -41,4 +41,4 @@
 "Open an existing project or file on your Mac"="Откройте существующий проект или файл на вашем Mac";
 
 //Editor Screen
-"CodeEditor cannot open this file type." = "CodeEditor не может открыть этот тип файла.";
+"CodeEdit cannot open this file because its file type is not supported." = "CodeEdit не может открыть этот файл, потому что его тип не поддерживается";
