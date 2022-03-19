@@ -24,9 +24,7 @@ struct CustomDivider: View {
 struct TabBar: View {
     var windowController: NSWindowController
     @ObservedObject var workspace: WorkspaceDocument
-    
     var tabBarHeight = 28.0
-
     var body: some View {
         VStack(spacing: 0.0) {
             ScrollView(.horizontal, showsIndicators: false) {
@@ -64,7 +62,6 @@ struct TabBar: View {
         }
         .background(BlurView(material: NSVisualEffectView.Material.windowBackground,
                              blendingMode: NSVisualEffectView.BlendingMode.withinWindow))
-        
     }
 
     func getTabId(fileName: String) -> KeyEquivalent {

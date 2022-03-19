@@ -10,16 +10,12 @@ import WorkspaceClient
 
 struct FileTabRow: View {
     @State var isHoveringClose: Bool = false
-    
     var fileItem: WorkspaceClient.FileItem
     var isSelected: Bool
     var isHovering: Bool
-
     var closeAction: () -> Void
-    
     var body: some View {
         let showingCloseButton = isHovering
-
         HStack(alignment: .center, spacing: 5) {
             ZStack {
                 if isSelected {
@@ -63,7 +59,6 @@ struct FileTabRow: View {
         }
         .padding(.leading, 4)
         .padding(.trailing, 28)
-        
     }
 }
 
