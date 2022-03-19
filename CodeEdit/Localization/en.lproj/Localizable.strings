@@ -14,8 +14,28 @@
 "Light"="Light";
 "Dark"="Dark";
 
-// Settings Reopen Behavior
+// Settings - Reopen Behavior
 "Reopen Behavior"="Reopen Behavior";
 "Welcome Screen"="Welcome Screen";
 "Open Panel"="Open Panel";
 "New Document"="New Document";
+
+// Settings - Editor Theme
+"Editor Theme"="Editor Theme";
+
+// Welcome Screen
+"Welcome to CodeEdit"="Welcome to CodeEdit";
+"Version %@ (%@)"="Version %@ (%@)";
+"No Recent Projects"="No Recent Projects";
+
+// Welcome Screen - New File
+"Create a new file"="Create a new file";
+"Clone an exisiting project"="Clone an exisiting project";
+
+// Welcome Screen - SCM
+"Start working on something from a Git repository"="Start working on something from a Git repository";
+"Open a project or file"="Open a project or file";
+
+// Welcome Screen - Workspaces
+"Open an existing project or file on your Mac"="Open an existing project or file on your Mac";
+"Show this window when CodeEdit launches"="Show this window when CodeEdit launches";
