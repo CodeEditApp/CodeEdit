@@ -36,6 +36,7 @@ struct SideBarItem: View {
                         .safeAreaInset(edge: .top, spacing: 0) {
                             VStack(spacing: 0) {
                                 TabBar(windowController: windowController, workspace: workspace)
+                                CustomDivider()
                                 BreadcrumbsView(item, workspace: workspace)
                             }
                         }

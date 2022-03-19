@@ -9,16 +9,18 @@ import SwiftUI
 import WorkspaceClient
 
 struct FileTabRow: View {
-    @State var mouseHovering = false
-
+    @State var isHoveringClose: Bool = false
+    
     var fileItem: WorkspaceClient.FileItem
     var isSelected: Bool
+    var isHovering: Bool
+
     var closeAction: () -> Void
-
+    
     var body: some View {
-        let showingCloseButton = mouseHovering || isSelected
+        let showingCloseButton = isHovering
 
-        HStack {
+        HStack(alignment: .center, spacing: 5) {
             ZStack {
                 if isSelected {
                     // Create a hidden button, if the tab is selected
@@ -31,32 +33,37 @@ struct FileTabRow: View {
                     .opacity(0)
                     .keyboardShortcut("w", modifiers: [.command])
                 }
-
-                Button(action: closeAction) {
-                    Image(systemName: showingCloseButton ? "xmark.square.fill" : fileItem.systemImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 12, height: 12)
+                
+                Button(action: closeAction, label: {
+                    Rectangle()
+                        .fill(isHoveringClose ? Color(nsColor: .secondaryLabelColor).opacity(0.28) : Color(.clear))
+                    .frame(width: 16, height: 16)
+                    .cornerRadius(2)
+                    .overlay(
+                        Image(systemName: "xmark")
+                            .font(.system(size: 9.5, weight: .medium, design: .rounded))
+                            .foregroundColor(.secondary)
+                    )
+                })
+                .buttonStyle(PlainButtonStyle())
+                .accessibilityLabel(Text("Close"))
+                .opacity(showingCloseButton ? 1 : 0)
+                .onHover { hover in
+                    isHoveringClose = hover
                 }
-                .buttonStyle(.plain)
-            }
 
+            }
+            Image(systemName: fileItem.systemImage)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 12, height: 12)
             Text(fileItem.url.lastPathComponent)
                 .font(.system(size: 11.0))
                 .lineLimit(1)
-                .padding(.leading, 3)
         }
-        .padding(.horizontal)
-        .onHover { hover in
-            mouseHovering = hover
-            DispatchQueue.main.async {
-                if hover {
-                    NSCursor.arrow.push()
-                } else {
-                    NSCursor.pop()
-                }
-            }
-        }
+        .padding(.leading, 4)
+        .padding(.trailing, 28)
+        
     }
 }
 
@@ -67,6 +74,7 @@ struct FileTabRow_Previews: PreviewProvider {
                 url: URL(string: "Code.swift")!
             ),
             isSelected: false,
+            isHovering: false,
             closeAction: {}
         )
         .frame(width: 160.0, height: 28.0)
