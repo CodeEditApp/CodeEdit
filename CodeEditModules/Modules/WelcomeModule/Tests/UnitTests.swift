@@ -27,7 +27,7 @@ final class WelcomeModuleUnitTests: XCTestCase {
         hosting.frame = CGRect(x: 0, y: 0, width: 300, height: 60)
         assertSnapshot(matching: hosting, as: .image)
     }
-    
+
     func testRecentJSFileLightSnapshot() throws {
         let view = RecentProjectItem(projectPath: "Project Path/test.js")
             .preferredColorScheme(.light)
@@ -35,7 +35,7 @@ final class WelcomeModuleUnitTests: XCTestCase {
         hosting.frame = CGRect(x: 0, y: 0, width: 300, height: 60)
         assertSnapshot(matching: hosting, as: .image)
     }
-    
+
     func testRecentJSFileDarkSnapshot() throws {
         let view = RecentProjectItem(projectPath: "Project Path/test.js")
             .preferredColorScheme(.dark)
@@ -51,7 +51,7 @@ final class WelcomeModuleUnitTests: XCTestCase {
             subtitle: "Create a new file"
         ).preferredColorScheme(.light)
         let hosting = NSHostingView(rootView: view)
-        hosting.frame = CGRect(x: 0, y: 0, width: 320, height: 60)
+        hosting.frame = CGRect(x: 0, y: 0, width: 300, height: 60)
         assertSnapshot(matching: hosting, as: .image)
     }
 
@@ -62,7 +62,7 @@ final class WelcomeModuleUnitTests: XCTestCase {
             subtitle: "Create a new file"
         ).preferredColorScheme(.dark)
         let hosting = NSHostingView(rootView: view)
-        hosting.frame = CGRect(x: 0, y: 0, width: 320, height: 60)
+        hosting.frame = CGRect(x: 0, y: 0, width: 300, height: 60)
         assertSnapshot(matching: hosting, as: .image)
     }
 }
