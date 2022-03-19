@@ -6,6 +6,10 @@ Feel free to join and collaborate on our [Discord Server](https://discord.gg/vCh
 
 Tap the **"Fork"** button on the top of the site. After forking clone the forked repository to your Mac.
 
+## Explore Issues
+
+Find issues from the Issues tab or from the To Do column in our project. If you find an issue you want to work on, please indicate it in the issue and/or attach a draft PR once available. A moderator will then assign the Issue and/or PR to you.
+
 ## Open the Workspace
 
 Inside the CodeEdit folder you just cloned to your Mac, make sure you open the `CodeEdit.xcworkspace` file with Xcode.
