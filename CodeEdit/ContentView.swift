@@ -169,7 +169,6 @@ struct WorkspaceView: View {
                                         Section(header: Text(directoryURL.lastPathComponent)) {
                                             OutlineGroup(workspaceClient.getFiles(), children: \.children) { item in
                                                 if item.children == nil {
-                                                    // TODO: Add selection indicator
                                                     Button(
                                                         action: {
                                                             withAnimation {
