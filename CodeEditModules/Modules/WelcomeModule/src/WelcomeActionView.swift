@@ -19,18 +19,18 @@ public struct WelcomeActionView: View {
     }
     
     public var body: some View {
-        HStack(spacing: 15) {
+        HStack(spacing: 16) {
             Image(systemName: iconName)
                 .aspectRatio(contentMode: .fit)
                 .foregroundColor(.accentColor)
-                .font(.system(size: 24, weight: .light))
+                .font(.system(size: 30, weight: .light))
                 .frame(width: 24)
             VStack(alignment: .leading) {
                 Text(title)
                     .bold()
-                    .font(.system(size: 16))
+                    .font(.system(size: 13))
                 Text(subtitle)
-                    .font(.system(size: 14))
+                    .font(.system(size: 12))
             }
             Spacer()
         }
