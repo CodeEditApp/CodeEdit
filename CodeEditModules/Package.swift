@@ -68,7 +68,7 @@ let package = Package(
             name: "WelcomeModuleTests",
             dependencies: [
                 "WelcomeModule",
-                "SnapshotTesting",
+                "SnapshotTesting"
             ],
             path: "Modules/WelcomeModule/Tests"
         )
