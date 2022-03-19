@@ -9,7 +9,8 @@ import SwiftUI
 import WelcomeModule
 
 struct RecentProjectsView: View {
-    @State var recentProjectPaths: [String] = UserDefaults.standard.array(forKey: "recentProjectPaths") as? [String] ?? []
+    @State var recentProjectPaths: [String] = UserDefaults.standard.array(forKey: "recentProjectPaths") as?
+                                              [String] ?? []
     @State var selectedProjectPath: String = ""
 
     let dismissWindow: () -> Void
@@ -58,7 +59,8 @@ struct RecentProjectsView: View {
         }
         .frame(width: 300)
         .padding(10)
-        .background(BlurView(material: NSVisualEffectView.Material.underWindowBackground, blendingMode: NSVisualEffectView.BlendingMode.behindWindow))
+        .background(BlurView(material: NSVisualEffectView.Material.underWindowBackground,
+                             blendingMode: NSVisualEffectView.BlendingMode.behindWindow))
         .onAppear {
             recentProjectPaths = UserDefaults.standard.array(forKey: "recentProjectPaths") as? [String] ?? []
         }

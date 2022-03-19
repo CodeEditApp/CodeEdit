@@ -11,7 +11,7 @@ public struct WelcomeActionView: View {
     var iconName: String
     var title: LocalizedStringKey
     var subtitle: LocalizedStringKey
-    
+
     public init(iconName: String, title: LocalizedStringKey, subtitle: LocalizedStringKey) {
         self.iconName = iconName
         self.title = title
