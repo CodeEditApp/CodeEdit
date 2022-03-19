@@ -32,6 +32,7 @@
 		5CF38A5E27E48E6C0096A0F7 /* CodeFile in Frameworks */ = {isa = PBXBuildFile; productRef = 5CF38A5D27E48E6C0096A0F7 /* CodeFile */; };
 		B658FB3427DA9E1000EA4DBD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3327DA9E1000EA4DBD /* Assets.xcassets */; };
 		B658FB3727DA9E1000EA4DBD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3627DA9E1000EA4DBD /* Preview Assets.xcassets */; };
+		B65E614627E6765D00255275 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = B65E614527E6765D00255275 /* Introspect */; };
 		D70F5E2C27E4E8CF004EE4B9 /* WelcomeModule in Frameworks */ = {isa = PBXBuildFile; productRef = D70F5E2B27E4E8CF004EE4B9 /* WelcomeModule */; };
 		D7211D4327E066CE008F2ED7 /* Localized+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7211D4227E066CE008F2ED7 /* Localized+Ex.swift */; };
 		D7211D4727E06BFE008F2ED7 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D7211D4927E06BFE008F2ED7 /* Localizable.strings */; };
@@ -70,6 +71,7 @@
 		04ADA0CA27E5D41F00BF00B2 /* be */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = be; path = be.lproj/Localizable.strings; sourceTree = "<group>"; };
 		04F2BF0E27DBB28E0024EAB1 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		04F2BF1127DBB3C10024EAB1 /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
+		20F8067027E65A5200EB7827 /* af */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = af; path = af.lproj/Localizable.strings; sourceTree = "<group>"; };
 		2805D9E827E5ED180032BC56 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		286620A427E4AB6900E18C2B /* BreadcrumbsComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreadcrumbsComponent.swift; sourceTree = "<group>"; };
 		2875A46C27E3BE5B007805F8 /* BreadcrumbsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreadcrumbsView.swift; sourceTree = "<group>"; };
@@ -103,6 +105,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5C403B8F27E20F8000788241 /* WorkspaceClient in Frameworks */,
+				B65E614627E6765D00255275 /* Introspect in Frameworks */,
 				D70F5E2C27E4E8CF004EE4B9 /* WelcomeModule in Frameworks */,
 				5CF38A5E27E48E6C0096A0F7 /* CodeFile in Frameworks */,
 			);
@@ -298,6 +301,7 @@
 				5C403B8E27E20F8000788241 /* WorkspaceClient */,
 				5CF38A5D27E48E6C0096A0F7 /* CodeFile */,
 				D70F5E2B27E4E8CF004EE4B9 /* WelcomeModule */,
+				B65E614527E6765D00255275 /* Introspect */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -373,8 +377,12 @@
 				ru,
 				be,
 				de,
+				af,
 			);
 			mainGroup = B658FB2327DA9E0F00EA4DBD;
+			packageReferences = (
+				B65E614427E6765D00255275 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
+			);
 			productRefGroup = B658FB2D27DA9E0F00EA4DBD /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -523,6 +531,7 @@
 				04ADA0C827E5D29000BF00B2 /* ru */,
 				04ADA0CA27E5D41F00BF00B2 /* be */,
 				2805D9E827E5ED180032BC56 /* de */,
+				20F8067027E65A5200EB7827 /* af */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -846,6 +855,17 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		B65E614427E6765D00255275 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/siteline/SwiftUI-Introspect";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.4;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
 		5C403B8E27E20F8000788241 /* WorkspaceClient */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -854,6 +874,11 @@
 		5CF38A5D27E48E6C0096A0F7 /* CodeFile */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = CodeFile;
+		};
+		B65E614527E6765D00255275 /* Introspect */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B65E614427E6765D00255275 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
+			productName = Introspect;
 		};
 		D70F5E2B27E4E8CF004EE4B9 /* WelcomeModule */ = {
 			isa = XCSwiftPackageProductDependency;
