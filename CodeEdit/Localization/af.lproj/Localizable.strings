@@ -41,4 +41,4 @@
 "Show this window when CodeEdit launches"="Wys hierdie venster wanneer CodeEdit begin";
 
 //Editor Screen
-"CodeEditor can currently not open this file type." = "CodeEditor kan tans nie hierdie lêertipe oopmaak nie.";
+"CodeEditor cannot open this file type." = "CodeEditor kan nie hierdie lêertipe oopmaak nie.";

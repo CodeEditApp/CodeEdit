@@ -40,7 +40,7 @@ struct SideBarItem: View {
                             }
                         }
                 } else {
-                    Text("CodeEditor can currently not open this file type.")
+                    Text("CodeEditor cannot open this file type.")
                 }
             }
             .onAppear { workspace.openFile(item: item) }
