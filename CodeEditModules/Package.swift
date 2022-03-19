@@ -65,7 +65,8 @@ let package = Package(
             name: "WelcomeModuleTests",
             dependencies: [
                 "WelcomeModule",
-                "SnapshotTesting"
+                "SnapshotTesting",
+                "WorkspaceClient"
             ],
             path: "Modules/WelcomeModule/Tests"
         )

@@ -40,18 +40,14 @@ struct RecentProjectsView: View {
             if recentProjectPaths.count > 0 {
                 List(recentProjectPaths, id: \.self, selection: $selectedProjectPath) { projectPath in
                     ZStack {
-                        RecentProjectItem(
-                            projectName: String(projectPath.split(separator: "/").last ?? ""),
-                            projectPath: projectPath
-                        )
-                        .frame(width: 300)
-                        .gesture(TapGesture(count: 2).modifiers(.all).onEnded {
-                            openDocument(path: projectPath)
-                        })
-                        .simultaneousGesture(TapGesture().onEnded {
-                            selectedProjectPath = projectPath
-                        })
-                        .keyboardShortcut(.defaultAction)
+                        RecentProjectItem(projectPath: projectPath)
+                            .frame(width: 300)
+                            .gesture(TapGesture(count: 2).onEnded {
+                                openDocument(path: projectPath)
+                            })
+                            .simultaneousGesture(TapGesture().onEnded {
+                                selectedProjectPath = projectPath
+                            })
                         Button("") {
                             if let selectedProjectPath = selectedProjectPath {
                                 openDocument(path: selectedProjectPath)
