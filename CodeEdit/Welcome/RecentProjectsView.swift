@@ -7,6 +7,7 @@
 
 import SwiftUI
 import WelcomeModule
+import WorkspaceClient
 
 struct RecentProjectsView: View {
     @State var recentProjectPaths: [String] = UserDefaults.standard.array(forKey: "recentProjectPaths") as? [String]
@@ -26,10 +27,19 @@ struct RecentProjectsView: View {
 
     private func openDocument(path: String) {
         do {
-            let document = try WorkspaceDocument(contentsOf: URL(fileURLWithPath: path), ofType: "")
-            document.makeWindowControllers()
-            document.showWindows()
-            dismissWindow()
+            var isDir: ObjCBool = false
+            if FileManager.default.fileExists(atPath: path, isDirectory: &isDir) {
+                if isDir.boolValue {
+                    let document = try WorkspaceDocument(contentsOf: URL(fileURLWithPath: path), ofType: "")
+                    document.makeWindowControllers()
+                    document.showWindows()
+                    dismissWindow()
+                } else {
+                    CodeEditDocumentController.shared.openDocument(withContentsOf: URL(fileURLWithPath: path), display: true) { _, _, _ in
+                        dismissWindow()
+                    }
+                }
+            }
         } catch {
             print(error)
         }
