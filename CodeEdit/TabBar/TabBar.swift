@@ -56,13 +56,11 @@ struct TabBar: View {
     }
 
     func getTabId(fileName: String) -> KeyEquivalent {
-        for counter in 0..<9 {
-            if workspace.openFileItems.count > counter,
-               workspace.openFileItems[counter].fileName == fileName {
-                return KeyEquivalent.init(
-                    Character.init("\(counter + 1)")
-                )
-            }
+        for counter in 0..<9 where workspace.openFileItems.count > counter &&
+        workspace.openFileItems[counter].fileName == fileName {
+            return KeyEquivalent.init(
+                Character.init("\(counter + 1)")
+            )
         }
 
         return "0"
