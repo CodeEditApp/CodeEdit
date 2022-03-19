@@ -17,18 +17,24 @@ let package = Package(
             name: "CodeFile",
             targets: ["CodeFile"]
         ),
-        .library(name: "WelcomeModule", targets: ["WelcomeModule"])
+        .library(
+             name: "WelcomeModule",
+             targets: ["WelcomeModule"]
+         ),
+         .library(
+             name: "CodeEditor",
+             targets: ["CodeEditor"]
+         )
     ],
     dependencies: [
-        .package(
-            name: "CodeEditor",
-            url: "https://github.com/ZeeZide/CodeEditor.git",
-            from: "1.2.0"
-        ),
         .package(
             name: "SnapshotTesting",
             url: "https://github.com/pointfreeco/swift-snapshot-testing.git",
             from: "1.9.0"
+        ),
+        .package(
+            url: "https://github.com/raspu/Highlightr",
+            from: "2.1.2"
         )
     ],
     targets: [
@@ -68,6 +74,13 @@ let package = Package(
                 "SnapshotTesting"
             ],
             path: "Modules/WelcomeModule/Tests"
+        ),
+        .target(
+            name: "CodeEditor",
+            dependencies: [
+                "Highlightr"
+            ],
+            path: "Modules/CodeEditor"
         )
     ]
 )
