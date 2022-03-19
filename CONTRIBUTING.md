@@ -35,7 +35,9 @@ The `PR` should include follwing information:
 * If there is a related issue please add a **reference to the issue**
 * If your PR is still in progress mark it as **Draft**.
 
-Once you submitted the `PR` GitHub will run a couple of actions which run tests and `SwiftLint` (this can take a couple of minutes). Should a test fail it will not be merged until tests succeed.
+> Please resolve all `Violation` warnings in Xcode (except: _TODO:_ warnings). Otherwise the swiftlint check on GitHub will fail.
 
-Make sure to resolve all conflicts otherwise the `PR` cannot be merged.
+Once you submitted the `PR` GitHub will run a couple of actions which run tests and `SwiftLint` (this can take a couple of minutes). Should a test fail it cannot be merged until tests succeed.
+
+Make sure to resolve all merge-conflicts otherwise the `PR` cannot be merged.
  
