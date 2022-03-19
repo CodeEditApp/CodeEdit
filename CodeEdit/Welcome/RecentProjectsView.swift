@@ -16,7 +16,7 @@ struct RecentProjectsView: View {
     private var emptyView: some View {
         VStack {
             Spacer()
-            Text("No Recent Projects")
+            Text("No Recent Projects".localized())
                 .font(.system(size: 20))
             Spacer()
         }
