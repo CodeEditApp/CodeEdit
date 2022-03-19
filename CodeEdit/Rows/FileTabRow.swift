@@ -10,12 +10,16 @@ import WorkspaceClient
 
 struct FileTabRow: View {
     @State var isHoveringClose: Bool = false
+    
     var fileItem: WorkspaceClient.FileItem
     var isSelected: Bool
     var isHovering: Bool
+
     var closeAction: () -> Void
+    
     var body: some View {
         let showingCloseButton = isHovering
+
         HStack(alignment: .center, spacing: 5) {
             ZStack {
                 if isSelected {
@@ -29,6 +33,7 @@ struct FileTabRow: View {
                     .opacity(0)
                     .keyboardShortcut("w", modifiers: [.command])
                 }
+                
                 Button(action: closeAction, label: {
                     Rectangle()
                         .fill(isHoveringClose
@@ -48,6 +53,7 @@ struct FileTabRow: View {
                 .onHover { hover in
                     isHoveringClose = hover
                 }
+
             }
             Image(systemName: fileItem.systemImage)
                 .resizable()
@@ -59,6 +65,7 @@ struct FileTabRow: View {
         }
         .padding(.leading, 4)
         .padding(.trailing, 28)
+        
     }
 }
 

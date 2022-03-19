@@ -10,6 +10,7 @@ import WorkspaceClient
 
 struct TabBarItem: View {
     @State var isHovering: Bool = false
+
 	var item: WorkspaceClient.FileItem
     var windowController: NSWindowController
     @ObservedObject var workspace: WorkspaceDocument
