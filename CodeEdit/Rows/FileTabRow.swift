@@ -33,10 +33,11 @@ struct FileTabRow: View {
                     .opacity(0)
                     .keyboardShortcut("w", modifiers: [.command])
                 }
-                
                 Button(action: closeAction, label: {
                     Rectangle()
-                        .fill(isHoveringClose ? Color(nsColor: .secondaryLabelColor).opacity(0.28) : Color(.clear))
+                        .fill(isHoveringClose
+                              ? Color(nsColor: .secondaryLabelColor).opacity(0.28)
+                              : Color(.clear))
                     .frame(width: 16, height: 16)
                     .cornerRadius(2)
                     .overlay(
@@ -51,7 +52,6 @@ struct FileTabRow: View {
                 .onHover { hover in
                     isHoveringClose = hover
                 }
-
             }
             Image(systemName: fileItem.systemImage)
                 .resizable()
