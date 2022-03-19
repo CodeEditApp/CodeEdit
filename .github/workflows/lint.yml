@@ -12,6 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+      - name: Remove TODOs
+        run: exec ./.github/scripts/remove_todos.sh
       - name: GitHub Action for SwiftLint
         uses: norio-nomura/action-swiftlint@3.2.1
       - name: GitHub Action for SwiftLint with --strict
