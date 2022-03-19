@@ -39,3 +39,6 @@
 // Welcome Screen - Workspaces
 "Open an existing project or file on your Mac"="Vorhandenes Projekt oder Datei auf Mac öffnen";
 "Show this window when CodeEdit launches"="Zeigen wenn CodeEdit geöffnet wird";
+
+//Editor Screen
+"CodeEditor can currently not open this file type." = "CodeEditor kann diesen Dateityp derzeit nicht öffnen.";

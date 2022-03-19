@@ -1,0 +1,44 @@
+"Hello, world!"="Hi, wereld!";
+
+// Settings - General Tab
+"General"="Algemeen";
+
+// Settings - File Icon Style
+"File Icon Style"="Lêer-ikoonstyl";
+"Color"="Kleur";
+"Monochrome"="Monochroom";
+
+// Settings - Appearance
+"Appearance"="Voorkoms";
+"System"="Stelsel";
+"Light"="Lig";
+"Dark"="Donker";
+
+// Settings - Reopen Behavior
+"Reopen Behavior"="Heropen Gedrag";
+"Welcome Screen"="Welkom Skerm";
+"Open Panel"="Maak Paneel Oop";
+"New Document"="Nuwe Dokument";
+
+// Settings - Editor Theme
+"Editor Theme"="Redakteur Tema";
+
+// Welcome Screen
+"Welcome to CodeEdit"="Welkom tot CodeEdit";
+"Version %@ (%@)"="Weergawe %@ (%@)";
+"No Recent Projects"="Geen Onlangse Projekte Nie";
+
+// Welcome Screen - New File
+"Create a new file"="Skep 'n nuwe lêer";
+"Clone an exisiting project"="Kloon 'n bestaande projek";
+
+// Welcome Screen - SCM
+"Start working on something from a Git repository"="Begin werk aan iets vanaf 'n Git-bewaarplek";
+"Open a project or file"="Maak 'n projek of lêer oop";
+
+// Welcome Screen - Workspaces
+"Open an existing project or file on your Mac"="Maak 'n bestaande projek of lêer op jou Mac oop";
+"Show this window when CodeEdit launches"="Wys hierdie venster wanneer CodeEdit begin";
+
+//Editor Screen
+"CodeEditor can currently not open this file type." = "CodeEditor kan tans nie hierdie lêertipe oopmaak nie.";
