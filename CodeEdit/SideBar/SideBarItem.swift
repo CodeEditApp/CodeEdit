@@ -8,6 +8,7 @@
 import SwiftUI
 import WorkspaceClient
 import CodeFile
+import StatusBar
 
 struct SideBarItem: View {
 
@@ -40,6 +41,9 @@ struct SideBarItem: View {
                                 BreadcrumbsView(item, workspace: workspace)
                             }
                         }
+						.safeAreaInset(edge: .bottom) {
+							StatusBarView(errors: 0, warnings: 0)
+						}
                 } else {
                     Text("CodeEdit cannot open this file because its file type is not supported.")
                 }
