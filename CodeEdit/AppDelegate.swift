@@ -47,9 +47,16 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     }
 
     @IBAction func openPreferences(_ sender: Any) {
+        if let window = NSApp.windows.filter({ window in
+            return (window.contentView as? NSHostingView<SettingsView>) != nil
+        }).first {
+            window.makeKeyAndOrderFront(self)
+            return
+        }
+
         let window = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 500, height: 400),
-            styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
+            styleMask: [.titled, .closable],
             backing: .buffered, defer: false)
         window.center()
         window.toolbar = NSToolbar()

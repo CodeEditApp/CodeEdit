@@ -2,6 +2,40 @@
 
 ![github-cover](https://user-images.githubusercontent.com/806104/157921972-022b758f-eb9d-4436-881a-d94c883d5685.png)
 
+
+| :warning: | **CodeEdit is currently in development and we do not yet offer a download.** <br> We will post a link here when we have an alpha release ready for testing. Until then, we welcome contributors to help bring this project to life. | &nbsp;&nbsp;&nbsp;&nbsp;[CONTRIBUTE](https://github.com/CodeEditApp/CodeEdit#contributing)&nbsp;&nbsp;&nbsp;&nbsp; |
+| - |:-| - |
+
+## To do
+
+- [x] Design a concept
+- [x] Start a boilerplate app
+- [x] Set up a Github repository to allow the community to get involved
+- [x] Start a [discord server](https://discord.gg/vChUXVf9Em) for community collaboration
+- [x] Project navigator - Manage and edit files within a project
+- [x] Source control navigator
+- [x] Welcome screen
+- [x] Text editor
+- [x] Syntax highlighting
+- [ ] Find in document
+- [ ] Find in project
+- [ ] Open file search bar overlay
+- [ ] Commands overlay
+- [x] Breadcrumb bar
+- [ ] Status bar
+- [x] Tabs
+- [ ] Split editors
+- [ ] Extension insfrastructure
+- [ ] Extension manager
+- [ ] Project preferences
+- [ ] Application preferences
+- [ ] Debug experience
+- [ ] Code symbols navigator
+- [ ] Integrated terminal
+- [ ] File information sidebar
+
+...more to come!
+
 ## Motivation
 
 Developers that use a Mac shouldn't be forced to use an app from the other guys. Yes, these other editors have growing communities and infrastructure around extensions, and have seen incredible adoption that satisfies the needs of most developers. However, comparable editors are built on Electron. This is a huge limitation because it cannot utilize all system resources to it's fullest potential.
@@ -24,33 +58,6 @@ We'd like to keep our application light as TextEdit, but provide an experience l
 
 It might sound crazy, but it is our hope that at some point Apple adopts this project or at least feels like they could.
 
-
-## To do
-
-- [x] Design a concept
-- [x] Start a boilerplate app
-- [x] Set up a Github repository to allow the community to get involved
-- [x] Start a [discord server](https://discord.gg/vChUXVf9Em) for community collaboration
-- [ ] Develop the underlying text editor complete with syntax highlighting
-- [ ] Project navigator - Manage and edit files within a project
-- [ ] Source control navigator
-- [ ] Find in document
-- [ ] Find in project
-- [ ] Open file search bar overlay
-- [ ] Commands overlay
-- [ ] Status bar
-- [x] Tabs
-- [ ] Split editors
-- [ ] Extension insfrastructure
-- [ ] Extension manager
-- [ ] Project preferences
-- [ ] Application preferences
-- [ ] Debug experience
-- [ ] Code symbols navigator
-- [ ] Integrated terminal
-- [ ] File information sidebar
-
-...more to come!
 
 ## Contributing
 
