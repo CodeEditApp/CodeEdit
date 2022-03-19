@@ -16,7 +16,7 @@
 - [x] Source control navigator
 - [x] Welcome screen
 - [x] Text editor
-- [x] syntax highlighting
+- [x] Syntax highlighting
 - [ ] Find in document
 - [ ] Find in project
 - [ ] Open file search bar overlay
