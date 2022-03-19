@@ -137,7 +137,9 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     override func close() {
         selectedId = nil
         openFileItems.forEach { item in
-            openedCodeFiles[item]?.save(self)
+            do {
+                try openedCodeFiles[item]?.write(to: item.url, ofType: "public.source-code")
+            } catch {}
         }
         super.close()
     }
