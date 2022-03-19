@@ -1,0 +1,41 @@
+"Hello, world!"="Вітанне, мір!";
+
+// Settings - General Tab
+"General"="Асноўныя";
+
+// Settings - File Icon Style
+"File Icon Style"="Стыль абразкоў";
+"Color"="Каляровыя";
+"Monochrome"="Манахромныя";
+
+// Settings - Appearance
+"Appearance"="Афармленне";
+"System"="Сістэмнае";
+"Light"="Светлае";
+"Dark"="Цёмнае";
+
+// Settings - Reopen Behavior
+"Reopen Behavior"="Дзеянне пры запуску";
+"Welcome Screen"="Экран вітання";
+"Open Panel"="Панэль адкрыцця файлаў/працоўных асяроддзяў";
+"New Document"="Новы дакумент";
+
+// Settings - Editor Theme
+"Editor Theme"="Тэма рэдактара";
+
+// Welcome Screen
+"Welcome to CodeEdit"="Вітаем у CodeEdit";
+"Version %@ (%@)"="Версія %@ (%@)";
+"No Recent Projects"="Няма нядаўніх праектаў";
+"Show this window when CodeEdit launches"="Паказваць гэтае акно, калі CodeEdit запускаецца";
+
+// Welcome Screen - New File
+"Create a new file"="Стварыць новы файл";
+
+// Welcome Screen - SCM
+"Clone an exisiting project"="Кланаваць існуючы праект";
+"Start working on something from a Git repository"="Пачніце працаваць над чым-небудзь з Git-рэпазітара";
+
+// Welcome Screen - Workspaces
+"Open a project or file"="Адкрыйце праект або файл";
+"Open an existing project or file on your Mac"="Адкрыйце існуючы праект або файл на вашым Mac";
