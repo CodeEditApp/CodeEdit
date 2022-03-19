@@ -286,8 +286,8 @@
 				B658FB2827DA9E0F00EA4DBD /* Sources */,
 				B658FB2927DA9E0F00EA4DBD /* Frameworks */,
 				B658FB2A27DA9E0F00EA4DBD /* Resources */,
-				2BA119D327E5274D00A996FF /* ShellScript */,
-				04ADA0CC27E6043B00BF00B2 /* ShellScript */,
+				2BA119D327E5274D00A996FF /* SwiftLint Run Script */,
+				04ADA0CC27E6043B00BF00B2 /* TODO/FIXME Run Script */,
 			);
 			buildRules = (
 			);
@@ -415,7 +415,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		04ADA0CC27E6043B00BF00B2 /* ShellScript */ = {
+		04ADA0CC27E6043B00BF00B2 /* TODO/FIXME Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -424,6 +424,7 @@
 			);
 			inputPaths = (
 			);
+			name = "TODO/FIXME Run Script";
 			outputFileListPaths = (
 			);
 			outputPaths = (
@@ -432,7 +433,7 @@
 			shellPath = /bin/sh;
 			shellScript = "TAGS=\"TODO:|FIXME:\"\necho \"searching ${SRCROOT} for ${TAGS}\"\nfind \"${SRCROOT}\" \\( -name \"*.swift\" \\) -print0 | xargs -0 egrep --with-filename --line-number --only-matching \"($TAGS).*\\$\" | perl -p -e \"s/($TAGS)/ warning: \\$1/\"\n";
 		};
-		2BA119D327E5274D00A996FF /* ShellScript */ = {
+		2BA119D327E5274D00A996FF /* SwiftLint Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -441,6 +442,7 @@
 			);
 			inputPaths = (
 			);
+			name = "SwiftLint Run Script";
 			outputFileListPaths = (
 			);
 			outputPaths = (
