@@ -24,7 +24,11 @@ struct TabBarItem: View {
             }
             Divider()
         }
-        .background(Color(nsColor: .secondaryLabelColor).opacity(!isActive && isHovering ? 0.11 : 0).animation(.easeInOut(duration: 0.15)))
+        .background(
+            Color(nsColor: .secondaryLabelColor)
+                .opacity(!isActive && isHovering ? 0.11 : 0)
+                .animation(.easeInOut(duration: 0.15))
+        )
         .frame(height: tabBarHeight)
         .foregroundColor(isActive ? .primary : .secondary)
         .onHover { hover in
