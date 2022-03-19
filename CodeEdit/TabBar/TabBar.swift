@@ -37,11 +37,23 @@ struct TabBar: View {
                                 action: { workspace.selectedId = item.id },
                                 label: {
                                     if isActive {
-                                        TabBarItem(item: item, windowController: windowController, workspace: workspace)
-                                            .background(BlurView(material: NSVisualEffectView.Material.titlebar,
-                                                                 blendingMode: NSVisualEffectView.BlendingMode.withinWindow))
+                                        TabBarItem(
+                                            item: item,
+                                            windowController: windowController,
+                                            workspace: workspace
+                                        )
+                                        .background(
+                                            BlurView(
+                                                material: NSVisualEffectView.Material.titlebar,
+                                                blendingMode: NSVisualEffectView.BlendingMode.withinWindow
+                                            )
+                                        )
                                     } else {
-                                        TabBarItem(item: item, windowController: windowController, workspace: workspace)
+                                        TabBarItem(
+                                            item: item,
+                                            windowController: windowController,
+                                            workspace: workspace
+                                        )
                                     }
                                 }
                             )
