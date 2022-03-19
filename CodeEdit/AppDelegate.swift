@@ -34,7 +34,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
             Appearances(rawValue: appearanceString)?.applyAppearance()
         }
         
-        handleOpen()
+        DispatchQueue.main.async {
+            if NSApp.windows.isEmpty {
+                self.handleOpen()
+            }
+        }
     }
     
     func applicationWillTerminate(_ aNotification: Notification) {
