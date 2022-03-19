@@ -8,19 +8,18 @@
 import SwiftUI
 
 struct BreadcrumbsComponent: View {
-
 	@AppStorage(FileIconStyle.storageKey) var iconStyle: FileIconStyle = .default
-	
+
 	private let title: String
 	private let image: String
 	private let color: Color
-	
-	init(_ title: String, systemImage image: String, color: Color = .secondary) {
+
+    init(_ title: String, systemImage image: String, color: Color = .secondary) {
 		self.title = title
 		self.image = image
 		self.color = color
 	}
-	
+
 	var body: some View {
 		HStack {
 			Image(systemName: image)
@@ -34,4 +33,3 @@ struct BreadcrumbsComponent: View {
 		}
 	}
 }
-

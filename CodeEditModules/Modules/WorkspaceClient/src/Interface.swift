@@ -16,6 +16,8 @@ public struct WorkspaceClient {
 
     public var getFileItem: (_ id: String) throws -> FileItem
 
+    // For some strange reason, swiftlint thinks this is wrong?
+    // swiftlint:disable vertical_parameter_alignment
     public init(
 		folderURL: @escaping () -> URL?,
         getFiles: AnyPublisher<[FileItem], Never>,
@@ -25,6 +27,7 @@ public struct WorkspaceClient {
         self.getFiles = getFiles
         self.getFileItem = getFileItem
     }
+    // swiftlint:enable vertical_parameter_alignment
 
     enum WorkspaceClientError: Error {
         case fileNotExist

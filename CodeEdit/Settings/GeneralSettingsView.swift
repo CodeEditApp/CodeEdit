@@ -14,9 +14,8 @@ import CodeEditor
 struct GeneralSettingsView: View {
     @AppStorage(Appearances.storageKey) var appearance: Appearances = .default
     @AppStorage(ReopenBehavior.storageKey) var reopenBehavior: ReopenBehavior = .default
-	@AppStorage(FileIconStyle.storageKey) var fileIconStyle: FileIconStyle = .default
-	@AppStorage(CodeEditorTheme.storageKey) var editorTheme: CodeEditor.ThemeName = .atelierSavannaAuto
-    
+	  @AppStorage(FileIconStyle.storageKey) var fileIconStyle: FileIconStyle = .default
+	  @AppStorage(CodeEditorTheme.storageKey) var editorTheme: CodeEditor.ThemeName = .atelierSavannaAuto
     var body: some View {
         Form {
 			Picker("Appearance".localized(), selection: $appearance) {
@@ -38,7 +37,7 @@ struct GeneralSettingsView: View {
 				Text("Monochrome".localized())
 					.tag(FileIconStyle.monochrome)
 			}
-            
+
 			Picker("Reopen Behavior".localized(), selection: $reopenBehavior) {
                 Text("Welcome Screen".localized())
                     .tag(ReopenBehavior.welcome)
@@ -66,7 +65,6 @@ struct GeneralSettingsView: View {
 			}
         }
         .padding()
-        
     }
 }
 

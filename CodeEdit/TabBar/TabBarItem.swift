@@ -17,14 +17,14 @@ struct TabBarItem: View {
 
     var body: some View {
         let isActive = item.id == workspace.selectedId
-        
+
         HStack(spacing: 0.0) {
             FileTabRow(fileItem: item, isSelected: isActive) {
                 withAnimation {
                     workspace.closeFileTab(item: item)
                 }
             }
-            
+
             Divider()
         }
         .frame(height: tabBarHeight)

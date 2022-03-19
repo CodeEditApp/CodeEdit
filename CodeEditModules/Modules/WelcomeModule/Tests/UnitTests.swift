@@ -13,19 +13,27 @@ import XCTest
 
 final class CodeFileUnitTests: XCTestCase {
     func testRecentProjectItemNormalSnapshot() throws {
-        let view = RecentProjectItem(isSelected: .constant(false), projectName: "Project Name", projectPath: "Project Path")
+        let view = RecentProjectItem(
+            isSelected: .constant(false),
+            projectName: "Project Name",
+            projectPath: "Project Path"
+        )
         let hosting = NSHostingView(rootView: view)
         hosting.frame = CGRect(x: 0, y: 0, width: 300, height: 60)
         assertSnapshot(matching: hosting, as: .image)
     }
-    
+
     func testRecentProjectItemSelectedSnapshot() throws {
-        let view = RecentProjectItem(isSelected: .constant(true), projectName: "Project Name", projectPath: "Project Path")
+        let view = RecentProjectItem(
+            isSelected: .constant(true),
+            projectName: "Project Name",
+            projectPath: "Project Path"
+        )
         let hosting = NSHostingView(rootView: view)
         hosting.frame = CGRect(x: 0, y: 0, width: 300, height: 60)
         assertSnapshot(matching: hosting, as: .image)
     }
-    
+
     func testWelcomeActionViewSnapshot() throws {
         let view = WelcomeActionView(
             iconName: "plus.square",
@@ -37,4 +45,3 @@ final class CodeFileUnitTests: XCTestCase {
         assertSnapshot(matching: hosting, as: .image)
     }
 }
-

@@ -12,13 +12,15 @@ struct SideBar: View {
     @ObservedObject var workspace: WorkspaceDocument
     var windowController: NSWindowController
 	@State private var selection: Int = 0
-    
+
     var body: some View {
         List {
             switch selection {
             case 0:
                 Section(header: Text(workspace.fileURL?.lastPathComponent ?? "Unknown")) {
-                    ForEach(workspace.fileItems.sortItems(foldersOnTop: workspace.sortFoldersOnTop)) { item in // Instead of OutlineGroup
+                    ForEach(
+                        workspace.fileItems.sortItems(foldersOnTop: workspace.sortFoldersOnTop)
+                    ) { item in // Instead of OutlineGroup
                         SideBarItem(
                             item: item,
                             workspace: workspace,

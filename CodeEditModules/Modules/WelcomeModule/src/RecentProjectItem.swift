@@ -11,13 +11,13 @@ public struct RecentProjectItem: View {
     @Binding public var isSelected: Bool
     var projectName: String = ""
     var projectPath: String = ""
-    
+
     public init(isSelected: Binding<Bool>, projectName: String, projectPath: String) {
         self._isSelected = isSelected
         self.projectName = projectName
         self.projectPath = projectPath
     }
-    
+
     public var body: some View {
         HStack(spacing: 15) {
             Image(systemName: "folder")

@@ -17,7 +17,7 @@ public struct WelcomeActionView: View {
         self.title = title
         self.subtitle = subtitle
     }
-    
+
     public var body: some View {
         HStack(spacing: 16) {
             Image(systemName: iconName)
