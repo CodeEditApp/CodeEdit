@@ -27,7 +27,7 @@
 			<string>Default</string>
 			<key>LSItemContentTypes</key>
 			<array>
-				<string>public.source-code</string>
+				<string>public.item</string>
 			</array>
 			<key>NSDocumentClass</key>
 			<string>CodeFileDocument</string>
