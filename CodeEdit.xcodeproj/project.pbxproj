@@ -16,6 +16,7 @@
 		04660F6427E3ACAF00477777 /* Appearances.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04660F6327E3ACAF00477777 /* Appearances.swift */; };
 		04660F6627E3ACEF00477777 /* ReopenBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04660F6527E3ACEF00477777 /* ReopenBehavior.swift */; };
 		04660F6A27E51E5C00477777 /* CodeEditWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04660F6927E51E5C00477777 /* CodeEditWindowController.swift */; };
+		2074890327E5FFD60039CF4A /* CodeEditor in Frameworks */ = {isa = PBXBuildFile; productRef = 2074890227E5FFD60039CF4A /* CodeEditor */; };
 		286620A527E4AB6900E18C2B /* BreadcrumbsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286620A427E4AB6900E18C2B /* BreadcrumbsComponent.swift */; };
 		2875A46D27E3BE5B007805F8 /* BreadcrumbsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2875A46C27E3BE5B007805F8 /* BreadcrumbsView.swift */; };
 		287776E727E3413200D46668 /* SideBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287776E627E3413200D46668 /* SideBar.swift */; };
@@ -70,6 +71,7 @@
 		04ADA0CA27E5D41F00BF00B2 /* be */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = be; path = be.lproj/Localizable.strings; sourceTree = "<group>"; };
 		04F2BF0E27DBB28E0024EAB1 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		04F2BF1127DBB3C10024EAB1 /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
+		2074890127E5FEF30039CF4A /* CodeEditor */ = {isa = PBXFileReference; lastKnownFileType = folder; name = CodeEditor; path = CodeEditModules/Modules/CodeEditor; sourceTree = "<group>"; };
 		2805D9E827E5ED180032BC56 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		286620A427E4AB6900E18C2B /* BreadcrumbsComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreadcrumbsComponent.swift; sourceTree = "<group>"; };
 		2875A46C27E3BE5B007805F8 /* BreadcrumbsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreadcrumbsView.swift; sourceTree = "<group>"; };
@@ -102,6 +104,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2074890327E5FFD60039CF4A /* CodeEditor in Frameworks */,
 				5C403B8F27E20F8000788241 /* WorkspaceClient in Frameworks */,
 				D70F5E2C27E4E8CF004EE4B9 /* WelcomeModule in Frameworks */,
 				5CF38A5E27E48E6C0096A0F7 /* CodeFile in Frameworks */,
@@ -203,6 +206,7 @@
 		5C403B8D27E20F8000788241 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2074890127E5FEF30039CF4A /* CodeEditor */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -297,6 +301,7 @@
 				5C403B8E27E20F8000788241 /* WorkspaceClient */,
 				5CF38A5D27E48E6C0096A0F7 /* CodeFile */,
 				D70F5E2B27E4E8CF004EE4B9 /* WelcomeModule */,
+				2074890227E5FFD60039CF4A /* CodeEditor */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -827,6 +832,10 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		2074890227E5FFD60039CF4A /* CodeEditor */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CodeEditor;
+		};
 		5C403B8E27E20F8000788241 /* WorkspaceClient */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = WorkspaceClient;

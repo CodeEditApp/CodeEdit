@@ -62,6 +62,14 @@ struct GeneralSettingsView: View {
 					.tag(CodeEditor.ThemeName.agate)
 				Text("Ocean")
 					.tag(CodeEditor.ThemeName.ocean)
+                Text("Xcode")
+                    .tag(CodeEditor.ThemeName.xcode)
+                Text("Github")
+                    .tag(CodeEditor.ThemeName.github)
+                Text("Google Code")
+                    .tag(CodeEditor.ThemeName.googlecode)
+                Text("Visual Studio")
+                    .tag(CodeEditor.ThemeName.vs)
 			}
         }
         .padding()
