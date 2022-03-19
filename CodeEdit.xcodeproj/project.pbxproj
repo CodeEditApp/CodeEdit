@@ -15,6 +15,7 @@
 		04540D5E27DD08C300E91B77 /* WorkspaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B658FB3127DA9E0F00EA4DBD /* WorkspaceView.swift */; };
 		04660F6427E3ACAF00477777 /* Appearances.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04660F6327E3ACAF00477777 /* Appearances.swift */; };
 		04660F6627E3ACEF00477777 /* ReopenBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04660F6527E3ACEF00477777 /* ReopenBehavior.swift */; };
+		04660F6A27E51E5C00477777 /* CodeEditWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04660F6927E51E5C00477777 /* CodeEditWindowController.swift */; };
 		286620A527E4AB6900E18C2B /* BreadcrumbsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286620A427E4AB6900E18C2B /* BreadcrumbsComponent.swift */; };
 		2875A46D27E3BE5B007805F8 /* BreadcrumbsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2875A46C27E3BE5B007805F8 /* BreadcrumbsView.swift */; };
 		287776E727E3413200D46668 /* SideBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287776E627E3413200D46668 /* SideBar.swift */; };
@@ -63,9 +64,13 @@
 		04660F6027E3A68A00477777 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		04660F6327E3ACAF00477777 /* Appearances.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Appearances.swift; sourceTree = "<group>"; };
 		04660F6527E3ACEF00477777 /* ReopenBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReopenBehavior.swift; sourceTree = "<group>"; };
+		04660F6927E51E5C00477777 /* CodeEditWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditWindowController.swift; sourceTree = "<group>"; };
 		0468438427DC76E200F8E88E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		04ADA0C827E5D29000BF00B2 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		04ADA0CA27E5D41F00BF00B2 /* be */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = be; path = be.lproj/Localizable.strings; sourceTree = "<group>"; };
 		04F2BF0E27DBB28E0024EAB1 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		04F2BF1127DBB3C10024EAB1 /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
+		2805D9E827E5ED180032BC56 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		286620A427E4AB6900E18C2B /* BreadcrumbsComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreadcrumbsComponent.swift; sourceTree = "<group>"; };
 		2875A46C27E3BE5B007805F8 /* BreadcrumbsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreadcrumbsView.swift; sourceTree = "<group>"; };
 		287776E627E3413200D46668 /* SideBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBar.swift; sourceTree = "<group>"; };
@@ -125,6 +130,7 @@
 			children = (
 				043C321327E31FF6006AE443 /* CodeEditDocumentController.swift */,
 				043C321527E3201F006AE443 /* WorkspaceDocument.swift */,
+				04660F6927E51E5C00477777 /* CodeEditWindowController.swift */,
 			);
 			path = Documents;
 			sourceTree = "<group>";
@@ -363,6 +369,9 @@
 				en,
 				Base,
 				sr,
+				ru,
+				be,
+				de,
 			);
 			mainGroup = B658FB2327DA9E0F00EA4DBD;
 			productRefGroup = B658FB2D27DA9E0F00EA4DBD /* Products */;
@@ -443,6 +452,7 @@
 				286620A527E4AB6900E18C2B /* BreadcrumbsComponent.swift in Sources */,
 				287776EF27E3515300D46668 /* TabBarItem.swift in Sources */,
 				D72E1A8727E4242900EB11B9 /* RecentProjectsView.swift in Sources */,
+				04660F6A27E51E5C00477777 /* CodeEditWindowController.swift in Sources */,
 				287776E727E3413200D46668 /* SideBar.swift in Sources */,
 				287776ED27E350D800D46668 /* SideBarItem.swift in Sources */,
 				289978ED27E4E97E00BB0357 /* FileIconStyle.swift in Sources */,
@@ -490,6 +500,9 @@
 			children = (
 				D7211D4827E06BFE008F2ED7 /* en */,
 				D7211D4A27E06C01008F2ED7 /* sr */,
+				04ADA0C827E5D29000BF00B2 /* ru */,
+				04ADA0CA27E5D41F00BF00B2 /* be */,
+				2805D9E827E5ED180032BC56 /* de */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";

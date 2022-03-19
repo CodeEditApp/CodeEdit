@@ -42,10 +42,8 @@ struct TabBar: View {
                             )
                         }
                     }
-                    .onChange(of: workspace.selectedId) { newValue in
-                        withAnimation {
-                            value.scrollTo(newValue)
-                        }
+                    .onAppear {
+                        value.scrollTo(self.workspace.selectedId)
                     }
                 }
             }

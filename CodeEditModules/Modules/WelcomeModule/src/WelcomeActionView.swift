@@ -9,28 +9,28 @@ import SwiftUI
 
 public struct WelcomeActionView: View {
     var iconName: String
-    var title: String
-    var subtitle: String
-
-    public init(iconName: String, title: String, subtitle: String) {
+    var title: LocalizedStringKey
+    var subtitle: LocalizedStringKey
+    
+    public init(iconName: String, title: LocalizedStringKey, subtitle: LocalizedStringKey) {
         self.iconName = iconName
         self.title = title
         self.subtitle = subtitle
     }
 
     public var body: some View {
-        HStack(spacing: 15) {
+        HStack(spacing: 16) {
             Image(systemName: iconName)
                 .aspectRatio(contentMode: .fit)
                 .foregroundColor(.accentColor)
-                .font(.system(size: 24, weight: .light))
+                .font(.system(size: 30, weight: .light))
                 .frame(width: 24)
             VStack(alignment: .leading) {
                 Text(title)
                     .bold()
-                    .font(.system(size: 16))
+                    .font(.system(size: 13))
                 Text(subtitle)
-                    .font(.system(size: 14))
+                    .font(.system(size: 12))
             }
             Spacer()
         }

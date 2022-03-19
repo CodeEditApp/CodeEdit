@@ -13,7 +13,8 @@ import SwiftUI
 public struct CodeFileView: View {
     @ObservedObject public var codeFile: CodeFileDocument
     @Environment(\.colorScheme) private var colorScheme
-
+	  @AppStorage(CodeEditorTheme.storageKey) var theme: CodeEditor.ThemeName = .atelierSavannaAuto
+  
     public init(codeFile: CodeFileDocument) {
         self.codeFile = codeFile
     }
@@ -22,8 +23,15 @@ public struct CodeFileView: View {
         CodeEditor(
             source: $codeFile.content,
             language: codeFile.fileLanguage(),
-            theme: colorScheme == .light ? .atelierSavannaLight : .atelierSavannaDark,
+            theme: getTheme(),
             indentStyle: .system
         )
     }
+
+	private func getTheme() -> CodeEditor.ThemeName {
+		if theme == .atelierSavannaAuto {
+			return colorScheme == .light ? .atelierSavannaLight : .atelierSavannaDark
+		}
+		return theme
+	}
 }

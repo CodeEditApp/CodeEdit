@@ -9,17 +9,15 @@ import SwiftUI
 import WelcomeModule
 
 struct RecentProjectsView: View {
-    @State var recentProjectPaths: [String] = UserDefaults.standard.array(
-        forKey: "recentProjectPaths"
-    ) as? [String] ?? []
+    @State var recentProjectPaths: [String] = UserDefaults.standard.array(forKey: "recentProjectPaths") as? [String] ?? []
+    @State var selectedProjectPath: String = ""
 
-    @State var selectedProjectPath = ""
     let dismissWindow: () -> Void
 
     private var emptyView: some View {
         VStack {
             Spacer()
-            Text("No Recent Projects")
+            Text("No Recent Projects".localized())
                 .font(.system(size: 20))
             Spacer()
         }
@@ -60,7 +58,7 @@ struct RecentProjectsView: View {
         }
         .frame(width: 300)
         .padding(10)
-        .background(Color(nsColor: .windowBackgroundColor))
+        .background(BlurView(material: NSVisualEffectView.Material.underWindowBackground, blendingMode: NSVisualEffectView.BlendingMode.behindWindow))
         .onAppear {
             recentProjectPaths = UserDefaults.standard.array(forKey: "recentProjectPaths") as? [String] ?? []
         }
