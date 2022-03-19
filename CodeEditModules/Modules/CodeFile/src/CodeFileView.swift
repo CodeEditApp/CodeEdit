@@ -13,8 +13,8 @@ import SwiftUI
 public struct CodeFileView: View {
     @ObservedObject public var codeFile: CodeFileDocument
     @Environment(\.colorScheme) private var colorScheme
-	  @AppStorage(CodeEditorTheme.storageKey) var theme: CodeEditor.ThemeName = .atelierSavannaAuto
-  
+    @AppStorage(CodeEditorTheme.storageKey) var theme: CodeEditor.ThemeName = .atelierSavannaAuto
+
     public init(codeFile: CodeFileDocument) {
         self.codeFile = codeFile
     }
