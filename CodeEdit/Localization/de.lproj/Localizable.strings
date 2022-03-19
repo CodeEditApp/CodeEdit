@@ -1,0 +1,41 @@
+"Hello, world!"="Hallo, Welt!";
+
+// Settings - General Tab
+"General"="Allgemein";
+
+// Settings - File Icon Style
+"File Icon Style"="Datei Icon";
+"Color"="Farbig";
+"Monochrome"="Monochrom";
+
+// Settings - Appearance
+"Appearance"="Erscheinungsbild";
+"System"="System";
+"Light"="Hell";
+"Dark"="Dunkel";
+
+// Settings - Reopen Behavior
+"Reopen Behavior"="Bei App Start";
+"Welcome Screen"="Willkommen Dialog";
+"Open Panel"="Öffnen Dialog";
+"New Document"="Neues Dokument";
+
+// Settings - Editor Theme
+"Editor Theme"="Editor Theme";
+
+// Welcome Screen
+"Welcome to CodeEdit"="Willkommen zu CodeEdit";
+"Version %@ (%@)"="Version %@ (%@)";
+"No Recent Projects"="Keine aktuellen Projekte";
+
+// Welcome Screen - New File
+"Create a new file"="Neue Datei";
+"Clone an existing project"="Vorhandenes Projekt klonen";
+
+// Welcome Screen - SCM
+"Start working on something from a Git repository"="Arbeite an einem Projekt von einem Git-Repository";
+"Open a project or file"="Öffne Projekt oder Datei";
+
+// Welcome Screen - Workspaces
+"Open an existing project or file on your Mac"="Vorhandenes Projekt oder Datei auf Mac öffnen";
+"Show this window when CodeEdit launches"="Zeigen wenn CodeEdit geöffnet wird";
