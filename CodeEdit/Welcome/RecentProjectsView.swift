@@ -35,7 +35,9 @@ struct RecentProjectsView: View {
                     document.showWindows()
                     dismissWindow()
                 } else {
-                    CodeEditDocumentController.shared.openDocument(withContentsOf: URL(fileURLWithPath: path), display: true) { _, _, _ in
+                    CodeEditDocumentController.shared.openDocument(
+                        withContentsOf: URL(fileURLWithPath: path), display: true
+                    ) { _, _, _ in
                         dismissWindow()
                     }
                 }
