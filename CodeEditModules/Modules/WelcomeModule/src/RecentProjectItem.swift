@@ -9,31 +9,29 @@ import SwiftUI
 import WorkspaceClient
 
 public struct RecentProjectItem: View {
-    var fileItem: WorkspaceClient.FileItem
+    let projectPath: String
 
     public init(projectPath: String) {
-        self.fileItem = WorkspaceClient.FileItem(url: URL(fileURLWithPath: projectPath), children: [])
+        self.projectPath = projectPath
     }
 
     public var body: some View {
-        HStack(spacing: 15) {
-            Image(systemName: fileItem.fileIcon)
+        HStack(spacing: 8) {
+            Image(nsImage: NSWorkspace.shared.icon(forFile: projectPath))
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 24)
+                .frame(width: 32, height: 32)
             VStack(alignment: .leading) {
-                Text(fileItem.fileName).font(.system(size: 14, weight: .semibold))
+                Text(projectPath.components(separatedBy: "/").last ?? "").font(.system(size: 13))
                     .lineLimit(1)
-                Text(fileItem.url.path)
-                    .font(.system(size: 13))
+                Text(projectPath)
+                    .font(.system(size: 11))
                     .lineLimit(1)
                     .truncationMode(.head)
-            }
+            }.padding(.trailing, 15)
             Spacer()
         }
-        .padding(8)
         .contentShape(Rectangle())
-        .cornerRadius(8)
     }
 }
 
