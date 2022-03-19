@@ -4,10 +4,22 @@
 //
 //  Created by Ziyuan Zhao on 2022/3/18.
 //
-
+import Introspect
 import SwiftUI
 import WelcomeModule
 import WorkspaceClient
+
+extension List {
+  /// List on macOS uses an opaque background with no option for
+  /// removing/changing it. listRowBackground() doesn't work either.
+  /// This workaround works because List is backed by NSTableView.
+  func removeBackground() -> some View {
+    return introspectTableView { tableView in
+      tableView.backgroundColor = .clear
+      tableView.enclosingScrollView!.drawsBackground = false
+    }
+  }
+}
 
 struct RecentProjectsView: View {
     @State var recentProjectPaths: [String] = UserDefaults.standard.array(forKey: "recentProjectPaths") as?
@@ -68,7 +80,7 @@ struct RecentProjectsView: View {
                         .buttonStyle(.borderless)
                         .keyboardShortcut(.defaultAction)
                     }
-                }
+                }.removeBackground()
             } else {
                 emptyView
             }
