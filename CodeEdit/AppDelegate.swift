@@ -98,4 +98,15 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
             CodeEditDocumentController.shared.newDocument(self)
         }
     }
+    
+    func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
+        CodeEditDocumentController.shared.documents.flatMap { doc in
+            return doc.windowControllers
+        }.forEach { (wc : NSWindowController) in
+            if let wc = wc as? CodeEditWindowController {
+                wc.workspace?.close()
+            }
+        }
+        return .terminateNow
+    }
 }
