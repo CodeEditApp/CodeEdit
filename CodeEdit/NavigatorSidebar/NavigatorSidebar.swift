@@ -14,20 +14,24 @@ struct NavigatorSidebar: View {
 	@State private var selection: Int = 0
 
     var body: some View {
-        List {
+        ZStack {
             switch selection {
             case 0:
-                Section(header: Text(workspace.fileURL?.lastPathComponent ?? "Unknown")) {
-                    ForEach(
-                        workspace.fileItems.sortItems(foldersOnTop: workspace.sortFoldersOnTop)
-                    ) { item in // Instead of OutlineGroup
-                        NavigatorSidebarItem(
-                            item: item,
-                            workspace: workspace,
-                            windowController: windowController
-                        )
+                List {
+                    Section(header: Text(workspace.fileURL?.lastPathComponent ?? "Unknown")) {
+                        ForEach(
+                            workspace.fileItems.sortItems(foldersOnTop: workspace.sortFoldersOnTop)
+                        ) { item in // Instead of OutlineGroup
+                            NavigatorSidebarItem(
+                                item: item,
+                                workspace: workspace,
+                                windowController: windowController
+                            )
+                        }
                     }
                 }
+            case 2:
+                SidebarSearch(workspace: workspace, windowController: windowController)
             default: EmptyView()
             }
         }

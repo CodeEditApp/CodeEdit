@@ -42,6 +42,8 @@
 		B673FDAD27E8296A00795864 /* PressActionsModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B673FDAC27E8296A00795864 /* PressActionsModifier.swift */; };
 		B6EE989027E8879A00CDD8AB /* InspectorSidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EE988F27E8879A00CDD8AB /* InspectorSidebar.swift */; };
 		B6EE989227E887C600CDD8AB /* InspectorSidebarToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EE989127E887C600CDD8AB /* InspectorSidebarToolbar.swift */; };
+		D7012EE827E757850001E1EF /* SidebarSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7012EE727E757850001E1EF /* SidebarSearch.swift */; };
+		D7012EEA27E75CC70001E1EF /* SearchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7012EE927E75CC70001E1EF /* SearchManager.swift */; };
 		D70F5E2C27E4E8CF004EE4B9 /* WelcomeModule in Frameworks */ = {isa = PBXBuildFile; productRef = D70F5E2B27E4E8CF004EE4B9 /* WelcomeModule */; };
 		D7211D4327E066CE008F2ED7 /* Localized+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7211D4227E066CE008F2ED7 /* Localized+Ex.swift */; };
 		D7211D4727E06BFE008F2ED7 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D7211D4927E06BFE008F2ED7 /* Localizable.strings */; };
@@ -111,6 +113,8 @@
 		B673FDAC27E8296A00795864 /* PressActionsModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PressActionsModifier.swift; sourceTree = "<group>"; };
 		B6EE988F27E8879A00CDD8AB /* InspectorSidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorSidebar.swift; sourceTree = "<group>"; };
 		B6EE989127E887C600CDD8AB /* InspectorSidebarToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorSidebarToolbar.swift; sourceTree = "<group>"; };
+		D7012EE727E757850001E1EF /* SidebarSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarSearch.swift; sourceTree = "<group>"; };
+		D7012EE927E75CC70001E1EF /* SearchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchManager.swift; sourceTree = "<group>"; };
 		D7211D4227E066CE008F2ED7 /* Localized+Ex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Localized+Ex.swift"; sourceTree = "<group>"; };
 		D7211D4827E06BFE008F2ED7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		D7211D4A27E06C01008F2ED7 /* sr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sr; path = sr.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -208,6 +212,11 @@
 				287776EC27E350D800D46668 /* NavigatorSidebarItem.swift */,
 				28B0A19727E385C300B73177 /* NavigatorSidebarToolbarTop.swift */,
 				28FFE1BE27E3A441001939DB /* NavigatorSidebarToolbarBottom.swift */,
+				D7012EE627E757660001E1EF /* Search */,
+				287776E627E3413200D46668 /* SideBar.swift */,
+				287776EC27E350D800D46668 /* SideBarItem.swift */,
+				28B0A19727E385C300B73177 /* SideBarToolbarTop.swift */,
+				28FFE1BE27E3A441001939DB /* SideBarToolbarBottom.swift */,
 			);
 			path = NavigatorSidebar;
 			sourceTree = "<group>";
@@ -295,6 +304,15 @@
 				B6EE989127E887C600CDD8AB /* InspectorSidebarToolbar.swift */,
 			);
 			path = InspectorSidebar;
+			sourceTree = "<group>";
+		};
+		D7012EE627E757660001E1EF /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				D7012EE727E757850001E1EF /* SidebarSearch.swift */,
+				D7012EE927E75CC70001E1EF /* SearchManager.swift */,
+			);
+			path = Search;
 			sourceTree = "<group>";
 		};
 		D7211D4427E066D4008F2ED7 /* Localization */ = {
@@ -514,6 +532,7 @@
 				2B7A583527E4BA0100D25D4E /* AppDelegate.swift in Sources */,
 				2875A46D27E3BE5B007805F8 /* BreadcrumbsView.swift in Sources */,
 				0485EB1D27E7338100138301 /* QuickOpenItem.swift in Sources */,
+				D7012EE827E757850001E1EF /* SidebarSearch.swift in Sources */,
 				04540D5B27DD08C300E91B77 /* SettingsView.swift in Sources */,
 				D72E1A8927E44D7C00EB11B9 /* WelcomeWindowView.swift in Sources */,
 				04540D5C27DD08C300E91B77 /* GeneralSettingsView.swift in Sources */,
@@ -524,6 +543,7 @@
 				04540D5E27DD08C300E91B77 /* WorkspaceView.swift in Sources */,
 				34EE19BE27E0469C00F152CE /* BlurView.swift in Sources */,
 				D7211D4327E066CE008F2ED7 /* Localized+Ex.swift in Sources */,
+				D7012EEA27E75CC70001E1EF /* SearchManager.swift in Sources */,
 				287776E927E34BC700D46668 /* TabBar.swift in Sources */,
 				0485EB1F27E7458B00138301 /* WorkspaceCodeFileView.swift in Sources */,
 				0485EB1927E70F4900138301 /* QuickOpenView.swift in Sources */,
