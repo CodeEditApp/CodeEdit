@@ -60,7 +60,7 @@ struct BreadcrumbsView: View {
 	}
 
 	private func fileInfo() {
-		guard let projName = workspace.folderURL?.lastPathComponent,
+		guard let projName = workspace.fileURL?.lastPathComponent,
 			  var components = file.url.pathComponents.split(separator: projName).last else { return }
 		components.removeLast()
 
