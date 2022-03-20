@@ -8,6 +8,7 @@
 import SwiftUI
 import CodeFile
 import WorkspaceClient
+import StatusBar
 
 struct WorkspaceCodeFileView: View {
     var codeFile: CodeFileDocument
@@ -23,6 +24,9 @@ struct WorkspaceCodeFileView: View {
                     CustomDivider()
                     BreadcrumbsView(item, workspace: workspace)
                 }
+            }
+            .safeAreaInset(edge: .bottom) {
+                StatusBarView()
             }
     }
 }

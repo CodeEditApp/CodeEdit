@@ -8,7 +8,6 @@
 import SwiftUI
 import WorkspaceClient
 import CodeFile
-import StatusBar
 
 struct SideBarItem: View {
 
