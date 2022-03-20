@@ -42,9 +42,9 @@ class CodeEditWindowController: NSWindowController {
                 return
             }
 
-            let panel = NSPanel(
+            let panel = QuickOpenPanel(
                 contentRect: NSRect(x: 0, y: 0, width: 500, height: 48),
-                styleMask: [.fullSizeContentView, .titled],
+                styleMask: [.fullSizeContentView, .titled, .resizable],
                 backing: .buffered, defer: false)
             let contentView = QuickOpenView(workspace: workspace)
             panel.center()

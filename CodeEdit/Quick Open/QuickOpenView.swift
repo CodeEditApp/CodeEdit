@@ -11,19 +11,27 @@ struct QuickOpenView: View {
     @ObservedObject var workspace: WorkspaceDocument
 
     var body: some View {
-        VStack {
-            HStack(alignment: .center, spacing: 0) {
-                Image(systemName: "doc.text.magnifyingglass")
-                    .imageScale(.large)
-                    .padding(.horizontal)
-                TextField("Open Quickly", text: $workspace.openQuicklyQuery)
-                    .font(.system(size: 22, weight: .light, design: .default))
-                    .textFieldStyle(.plain)
+        VStack(spacing: 0.0) {
+            VStack {
+                HStack(alignment: .center, spacing: 0) {
+                    Image(systemName: "doc.text.magnifyingglass")
+                        .imageScale(.large)
+                        .padding(.horizontal)
+                    TextField("Open Quickly", text: $workspace.openQuicklyQuery)
+                        .font(.system(size: 22, weight: .light, design: .default))
+                        .textFieldStyle(.plain)
+                }
+                    .padding(.vertical)
+                    .foregroundColor(.primary.opacity(0.85))
             }
-                .foregroundColor(.primary.opacity(0.8))
+            Divider()
+            List(0..<100) { item in
+                Text("Item \(item)")
+            }
+                .removeBackground()
         }
-            .frame(maxHeight: .infinity)
-            .background(BlurView(material: .hudWindow, blendingMode: .behindWindow))
+            .frame(minWidth: 500, minHeight: 400, maxHeight: .infinity)
+            .background(BlurView(material: .popover, blendingMode: .behindWindow))
             .edgesIgnoringSafeArea(.vertical)
     }
 }
