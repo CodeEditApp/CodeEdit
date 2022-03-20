@@ -19,7 +19,8 @@ struct QuickOpenView: View {
                 HStack(alignment: .center, spacing: 0) {
                     Image(systemName: "doc.text.magnifyingglass")
                         .imageScale(.large)
-                        .padding(.horizontal)
+                        .padding(.horizontal, 20)
+                        .offset(x: 2, y: 0)
                     TextField("Open Quickly", text: $state.openQuicklyQuery)
                         .font(.system(size: 22, weight: .light, design: .default))
                         .textFieldStyle(.plain)
