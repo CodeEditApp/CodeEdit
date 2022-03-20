@@ -11,22 +11,30 @@ import WorkspaceClient
 import StatusBar
 
 struct WorkspaceCodeFileView: View {
-    var codeFile: CodeFileDocument
     var windowController: NSWindowController
-    var workspace: WorkspaceDocument
-    var item: WorkspaceClient.FileItem
+    @ObservedObject var workspace: WorkspaceDocument
 
-    var body: some View {
-        CodeFileView(codeFile: codeFile)
-            .safeAreaInset(edge: .top, spacing: 0) {
-                VStack(spacing: 0) {
-                    TabBar(windowController: windowController, workspace: workspace)
-                    CustomDivider()
-                    BreadcrumbsView(item, workspace: workspace)
-                }
+    @ViewBuilder var body: some View {
+        if let item = workspace.openFileItems.first(where: { file in
+            return file.id == workspace.selectedId
+        }) {
+            if let codeFile = workspace.openedCodeFiles[item] {
+                CodeFileView(codeFile: codeFile)
+                    .safeAreaInset(edge: .top, spacing: 0) {
+                        VStack(spacing: 0) {
+                            TabBar(windowController: windowController, workspace: workspace)
+                            CustomDivider()
+                            BreadcrumbsView(item, workspace: workspace)
+                        }
+                    }
+                    .safeAreaInset(edge: .bottom) {
+                        StatusBarView()
+                    }
+            } else {
+                Text("CodeEdit cannot open this file because its file type is not supported.")
             }
-            .safeAreaInset(edge: .bottom) {
-                StatusBarView()
-            }
+        } else {
+            Text("Open file from sidebar")
+        }
     }
 }
