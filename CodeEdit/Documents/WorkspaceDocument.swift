@@ -157,24 +157,34 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
             return
         }
 
-        if let url = fileURL {
-            let enumerator = FileManager.default.enumerator(at: url,
-                                                            includingPropertiesForKeys: [
-                                                                .isRegularFileKey
-                                                            ],
-                                                            options: [
-                                                                .skipsHiddenFiles,
-                                                                .skipsPackageDescendants
-                                                            ])
-            if let filePaths = enumerator?.allObjects as? [URL] {
-                openQuicklyFiles = filePaths.filter {
-                    $0.lastPathComponent.lowercased().contains(openQuicklyQuery.lowercased())
-                }.map { url in
-                    WorkspaceClient.FileItem(url: url, children: nil)
+        DispatchQueue(label: "austincondiff.CodeEdit.quickOpen.searchFiles").async {
+            if let url = self.fileURL {
+                let enumerator = FileManager.default.enumerator(at: url,
+                                                                includingPropertiesForKeys: [
+                                                                    .isRegularFileKey
+                                                                ],
+                                                                options: [
+                                                                    .skipsHiddenFiles,
+                                                                    .skipsPackageDescendants,
+                                                                ])
+                if let filePaths = enumerator?.allObjects as? [URL] {
+                    let files = filePaths.filter { url in
+                        let state1 = url.lastPathComponent.lowercased().contains(self.openQuicklyQuery.lowercased())
+                        do {
+                            let values = try url.resourceValues(forKeys: [.isRegularFileKey])
+                            return state1 && (values.isRegularFile ?? false)
+                        } catch {
+                            return false
+                        }
+                    }.map { url in
+                        WorkspaceClient.FileItem(url: url, children: nil)
+                    }
+                    DispatchQueue.main.async {
+                        self.openQuicklyFiles = files
+                        self.isShowingOpenQuicklyFiles = !self.openQuicklyFiles.isEmpty
+                    }
                 }
             }
         }
-
-        self.isShowingOpenQuicklyFiles = !openQuicklyFiles.isEmpty
     }
 }
