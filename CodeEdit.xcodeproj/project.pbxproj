@@ -94,6 +94,7 @@
 		28FFE1BE27E3A441001939DB /* SideBarToolbarBottom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBarToolbarBottom.swift; sourceTree = "<group>"; };
 		345F667427DF6C180069BD69 /* FileTabRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTabRow.swift; sourceTree = "<group>"; };
 		34EE19BD27E0469C00F152CE /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
+		5E3C6A3427E72AE000A7CA0D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodeEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B658FB3127DA9E0F00EA4DBD /* WorkspaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceView.swift; sourceTree = "<group>"; };
 		B658FB3327DA9E1000EA4DBD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -404,6 +405,7 @@
 				be,
 				de,
 				af,
+				fr,
 			);
 			mainGroup = B658FB2327DA9E0F00EA4DBD;
 			packageReferences = (
@@ -562,6 +564,7 @@
 				04ADA0CA27E5D41F00BF00B2 /* be */,
 				2805D9E827E5ED180032BC56 /* de */,
 				20F8067027E65A5200EB7827 /* af */,
+				5E3C6A3427E72AE000A7CA0D /* fr */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
