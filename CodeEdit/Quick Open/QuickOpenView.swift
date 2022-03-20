@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct QuickOpenView: View {
-    @ObservedObject var workspace: WorkspaceDocument
+    @ObservedObject var state: WorkspaceDocument.QuickOpenState
     var onClose: () -> Void
 
     var body: some View {
@@ -18,14 +18,14 @@ struct QuickOpenView: View {
                     Image(systemName: "doc.text.magnifyingglass")
                         .imageScale(.large)
                         .padding(.horizontal)
-                    TextField("Open Quickly", text: $workspace.openQuicklyQuery)
+                    TextField("Open Quickly", text: $state.openQuicklyQuery)
                         .font(.system(size: 22, weight: .light, design: .default))
                         .textFieldStyle(.plain)
                         .onReceive(
-                            workspace.$openQuicklyQuery
+                            state.$openQuicklyQuery
                                 .debounce(for: .seconds(0.4), scheduler: DispatchQueue.main)
                         ) { _ in
-                            workspace.fetchOpenQuickly()
+                            state.fetchOpenQuickly()
                         }
                 }
                     .frame(height: 28)
@@ -35,20 +35,20 @@ struct QuickOpenView: View {
             }
             Divider()
             NavigationView {
-                List(workspace.openQuicklyFiles, id: \.id) { file in
+                List(state.openQuicklyFiles, id: \.id) { file in
                     NavigationLink {
                         Text(file.url.lastPathComponent)
                     } label: {
-                        QuickOpenItem(baseDirectory: workspace.fileURL!, fileItem: file)
+                        QuickOpenItem(baseDirectory: state.workspace.fileURL!, fileItem: file)
                     }
                     .onTapGesture(count: 2) {
-                        workspace.openFile(item: file)
+                        state.workspace.openFile(item: file)
                         self.onClose()
                     }
                 }
                     .removeBackground()
                     .frame(minWidth: 250, maxWidth: 250)
-                if workspace.openQuicklyFiles.isEmpty {
+                if state.openQuicklyFiles.isEmpty {
                     EmptyView()
                 } else {
                     Text("Select a file to preview")
@@ -65,6 +65,6 @@ struct QuickOpenView: View {
 
 struct QuickOpenView_Previews: PreviewProvider {
     static var previews: some View {
-        QuickOpenView(workspace: .init(), onClose: {})
+        QuickOpenView(state: .init(.init()), onClose: {})
     }
 }

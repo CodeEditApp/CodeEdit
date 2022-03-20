@@ -32,11 +32,15 @@ struct WorkspaceView: View {
 
                 if let item = workspace.openFileItems.first(where: { file in
                     return file.id == workspace.selectedId
-                }), let codeFile = workspace.openedCodeFiles[item] {
-                    WorkspaceCodeFileView(codeFile: codeFile,
-                                          windowController: windowController,
-                                          workspace: workspace,
-                                          item: item)
+                }) {
+                    if let codeFile = workspace.openedCodeFiles[item] {
+                        WorkspaceCodeFileView(codeFile: codeFile,
+                                              windowController: windowController,
+                                              workspace: workspace,
+                                              item: item)
+                    } else {
+                        Text("CodeEdit cannot open this file because its file type is not supported.")
+                    }
                 } else {
                     Text("Open file from sidebar")
                 }

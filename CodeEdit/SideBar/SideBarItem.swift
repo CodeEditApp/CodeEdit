@@ -29,15 +29,21 @@ struct SideBarItem: View {
 	}
 
     func sidebarFileItem(_ item: WorkspaceClient.FileItem) -> some View {
-        NavigationLink(tag: item.id, selection: $workspace.selectedId) {
+        NavigationLink {
             ZStack {
-                if let codeFile = workspace.openedCodeFiles[item] {
-                    WorkspaceCodeFileView(codeFile: codeFile,
-                                          windowController: windowController,
-                                          workspace: workspace,
-                                          item: item)
+                if let item = workspace.openFileItems.first(where: { file in
+                    return file.id == workspace.selectedId
+                }) {
+                    if let codeFile = workspace.openedCodeFiles[item] {
+                        WorkspaceCodeFileView(codeFile: codeFile,
+                                              windowController: windowController,
+                                              workspace: workspace,
+                                              item: item)
+                    } else {
+                        Text("CodeEdit cannot open this file because its file type is not supported.")
+                    }
                 } else {
-                    Text("CodeEdit cannot open this file because its file type is not supported.")
+                    Text("Open file from sidebar")
                 }
             }
             .onAppear { workspace.openFile(item: item) }

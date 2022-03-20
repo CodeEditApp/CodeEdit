@@ -34,7 +34,7 @@ class CodeEditWindowController: NSWindowController {
     }
 
     @IBAction func openQuickly(_ sender: Any) {
-        if let workspace = workspace {
+        if let workspace = workspace, let state = workspace.quickOpenState {
             if let window = window?.childWindows?.filter({ window in
                 return (window.contentView as? NSHostingView<QuickOpenView>) != nil
             }).first {
@@ -46,7 +46,7 @@ class CodeEditWindowController: NSWindowController {
                 contentRect: NSRect(x: 0, y: 0, width: 500, height: 48),
                 styleMask: [.fullSizeContentView, .titled, .resizable],
                 backing: .buffered, defer: false)
-            let contentView = QuickOpenView(workspace: workspace) {
+            let contentView = QuickOpenView(state: state) {
                 self.window?.removeChildWindow(panel)
                 panel.close()
             }
