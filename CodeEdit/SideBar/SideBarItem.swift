@@ -32,14 +32,10 @@ struct SideBarItem: View {
         NavigationLink(tag: item.id, selection: $workspace.selectedId) {
             ZStack {
                 if let codeFile = workspace.openedCodeFiles[item] {
-                    CodeFileView(codeFile: codeFile)
-                        .safeAreaInset(edge: .top, spacing: 0) {
-                            VStack(spacing: 0) {
-                                TabBar(windowController: windowController, workspace: workspace)
-                                CustomDivider()
-                                BreadcrumbsView(item, workspace: workspace)
-                            }
-                        }
+                    WorkspaceCodeFileView(codeFile: codeFile,
+                                          windowController: windowController,
+                                          workspace: workspace,
+                                          item: item)
                 } else {
                     Text("CodeEdit cannot open this file because its file type is not supported.")
                 }

@@ -19,6 +19,7 @@
 		0485EB1927E70F4900138301 /* QuickOpenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0485EB1827E70F4900138301 /* QuickOpenView.swift */; };
 		0485EB1B27E71BF400138301 /* QuickOpenPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0485EB1A27E71BF400138301 /* QuickOpenPanel.swift */; };
 		0485EB1D27E7338100138301 /* QuickOpenItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0485EB1C27E7338100138301 /* QuickOpenItem.swift */; };
+		0485EB1F27E7458B00138301 /* WorkspaceCodeFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0485EB1E27E7458B00138301 /* WorkspaceCodeFileView.swift */; };
 		286620A527E4AB6900E18C2B /* BreadcrumbsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286620A427E4AB6900E18C2B /* BreadcrumbsComponent.swift */; };
 		2875A46D27E3BE5B007805F8 /* BreadcrumbsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2875A46C27E3BE5B007805F8 /* BreadcrumbsView.swift */; };
 		287776E727E3413200D46668 /* SideBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287776E627E3413200D46668 /* SideBar.swift */; };
@@ -73,6 +74,7 @@
 		0485EB1827E70F4900138301 /* QuickOpenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickOpenView.swift; sourceTree = "<group>"; };
 		0485EB1A27E71BF400138301 /* QuickOpenPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickOpenPanel.swift; sourceTree = "<group>"; };
 		0485EB1C27E7338100138301 /* QuickOpenItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickOpenItem.swift; sourceTree = "<group>"; };
+		0485EB1E27E7458B00138301 /* WorkspaceCodeFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceCodeFileView.swift; sourceTree = "<group>"; };
 		04ADA0C827E5D29000BF00B2 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		04ADA0CA27E5D41F00BF00B2 /* be */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = be; path = be.lproj/Localizable.strings; sourceTree = "<group>"; };
 		04F2BF0E27DBB28E0024EAB1 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -140,6 +142,7 @@
 				043C321327E31FF6006AE443 /* CodeEditDocumentController.swift */,
 				043C321527E3201F006AE443 /* WorkspaceDocument.swift */,
 				04660F6927E51E5C00477777 /* CodeEditWindowController.swift */,
+				0485EB1E27E7458B00138301 /* WorkspaceCodeFileView.swift */,
 			);
 			path = Documents;
 			sourceTree = "<group>";
@@ -496,6 +499,7 @@
 				34EE19BE27E0469C00F152CE /* BlurView.swift in Sources */,
 				D7211D4327E066CE008F2ED7 /* Localized+Ex.swift in Sources */,
 				287776E927E34BC700D46668 /* TabBar.swift in Sources */,
+				0485EB1F27E7458B00138301 /* WorkspaceCodeFileView.swift in Sources */,
 				0485EB1927E70F4900138301 /* QuickOpenView.swift in Sources */,
 				286620A527E4AB6900E18C2B /* BreadcrumbsComponent.swift in Sources */,
 				287776EF27E3515300D46668 /* TabBarItem.swift in Sources */,

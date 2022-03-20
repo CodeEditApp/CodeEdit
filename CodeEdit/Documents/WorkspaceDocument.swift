@@ -33,6 +33,7 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     }
 
     func closeFileTab(item: WorkspaceClient.FileItem) {
+        Swift.print(item)
         defer {
             let file = openedCodeFiles.removeValue(forKey: item)
             file?.save(self)
@@ -40,11 +41,10 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
 
         guard let idx = openFileItems.firstIndex(of: item) else { return }
         let closedFileItem = openFileItems.remove(at: idx)
-        guard closedFileItem.id == selectedId else { return }
+        guard closedFileItem.id == item.id else { return }
 
         if openFileItems.isEmpty {
             selectedId = nil
-            self.windowControllers.first?.document = self
         } else if idx == 0 {
             selectedId = openFileItems.first?.id
         } else {

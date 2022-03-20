@@ -30,7 +30,16 @@ struct WorkspaceView: View {
                 SideBar(workspace: workspace, windowController: windowController)
                     .frame(minWidth: 250)
 
-                Text("Open file from sidebar")
+                if let item = workspace.openFileItems.first(where: { file in
+                    return file.id == workspace.selectedId
+                }), let codeFile = workspace.openedCodeFiles[item] {
+                    WorkspaceCodeFileView(codeFile: codeFile,
+                                          windowController: windowController,
+                                          workspace: workspace,
+                                          item: item)
+                } else {
+                    Text("Open file from sidebar")
+                }
             } else {
                 EmptyView()
             }
