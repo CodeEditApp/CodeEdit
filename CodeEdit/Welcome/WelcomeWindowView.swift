@@ -18,5 +18,6 @@ struct WelcomeWindowView: View {
                 windowController.window?.close()
             }
         }
+        .edgesIgnoringSafeArea(.top)
     }
 }
