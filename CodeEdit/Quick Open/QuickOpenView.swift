@@ -39,7 +39,7 @@ struct QuickOpenView: View {
                     NavigationLink {
                         Text(file.url.lastPathComponent)
                     } label: {
-                        QuickOpenItem(fileItem: file)
+                        QuickOpenItem(baseDirectory: workspace.fileURL!, fileItem: file)
                     }
                     .onTapGesture(count: 2) {
                         workspace.openFile(item: file)

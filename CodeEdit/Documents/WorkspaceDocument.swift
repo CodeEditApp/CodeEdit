@@ -33,7 +33,6 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     }
 
     func closeFileTab(item: WorkspaceClient.FileItem) {
-        Swift.print(item)
         defer {
             let file = openedCodeFiles.removeValue(forKey: item)
             file?.save(self)
@@ -165,7 +164,7 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
                                                                 ],
                                                                 options: [
                                                                     .skipsHiddenFiles,
-                                                                    .skipsPackageDescendants,
+                                                                    .skipsPackageDescendants
                                                                 ])
                 if let filePaths = enumerator?.allObjects as? [URL] {
                     let files = filePaths.filter { url in

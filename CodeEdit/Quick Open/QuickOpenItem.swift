@@ -9,6 +9,7 @@ import SwiftUI
 import WorkspaceClient
 
 public struct QuickOpenItem: View {
+    let baseDirectory: URL
     let fileItem: WorkspaceClient.FileItem
 
     public var body: some View {
@@ -20,6 +21,10 @@ public struct QuickOpenItem: View {
             VStack(alignment: .leading) {
                 Text(fileItem.url.lastPathComponent).font(.system(size: 13))
                     .lineLimit(1)
+                Text(fileItem.url.path.replacingOccurrences(of: baseDirectory.path, with: ""))
+                    .font(.system(size: 11))
+                    .lineLimit(1)
+                    .truncationMode(.tail)
             }.padding(.trailing, 15)
             Spacer()
         }
