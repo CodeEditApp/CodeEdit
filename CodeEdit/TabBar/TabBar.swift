@@ -8,12 +8,23 @@
 import SwiftUI
 import WorkspaceClient
 
+struct CustomDivider: View {
+    @Environment(\.colorScheme) var colorScheme
+    let height: CGFloat = 1
+
+    var body: some View {
+        Group {
+            Rectangle()
+        }
+        .frame(height: height)
+        .foregroundColor(colorScheme == .dark ? Color(nsColor: .black) : Color(nsColor: .separatorColor))
+    }
+}
+
 struct TabBar: View {
     var windowController: NSWindowController
     @ObservedObject var workspace: WorkspaceDocument
-
     var tabBarHeight = 28.0
-
     var body: some View {
         VStack(spacing: 0.0) {
             ScrollView(.horizontal, showsIndicators: false) {
@@ -26,10 +37,23 @@ struct TabBar: View {
                                 action: { workspace.selectedId = item.id },
                                 label: {
                                     if isActive {
-                                        TabBarItem(item: item, windowController: windowController, workspace: workspace)
-                                            .background(Material.bar)
+                                        TabBarItem(
+                                            item: item,
+                                            windowController: windowController,
+                                            workspace: workspace
+                                        )
+                                        .background(
+                                            BlurView(
+                                                material: NSVisualEffectView.Material.titlebar,
+                                                blendingMode: NSVisualEffectView.BlendingMode.withinWindow
+                                            )
+                                        )
                                     } else {
-                                        TabBarItem(item: item, windowController: windowController, workspace: workspace)
+                                        TabBarItem(
+                                            item: item,
+                                            windowController: windowController,
+                                            workspace: workspace
+                                        )
                                     }
                                 }
                             )
@@ -47,12 +71,9 @@ struct TabBar: View {
                     }
                 }
             }
-
-            Divider()
-                .foregroundColor(.gray)
-                .frame(height: 1.0)
         }
-        .background(Material.regular)
+        .background(BlurView(material: NSVisualEffectView.Material.windowBackground,
+                             blendingMode: NSVisualEffectView.BlendingMode.withinWindow))
     }
 
     func getTabId(fileName: String) -> KeyEquivalent {

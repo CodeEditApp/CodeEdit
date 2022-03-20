@@ -37,6 +37,7 @@ struct SideBarItem: View {
                         .safeAreaInset(edge: .top, spacing: 0) {
                             VStack(spacing: 0) {
                                 TabBar(windowController: windowController, workspace: workspace)
+                                CustomDivider()
                                 BreadcrumbsView(item, workspace: workspace)
                             }
                         }
@@ -44,7 +45,7 @@ struct SideBarItem: View {
 							StatusBarView(errors: 0, warnings: 0)
 						}
                 } else {
-                    Text("File cannot be opened")
+                    Text("CodeEdit cannot open this file because its file type is not supported.")
                 }
             }
             .onAppear { workspace.openFile(item: item) }

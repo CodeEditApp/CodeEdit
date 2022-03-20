@@ -39,3 +39,6 @@
 // Welcome Screen - Workspaces
 "Open an existing project or file on your Mac"="Open an existing project or file on your Mac";
 "Show this window when CodeEdit launches"="Show this window when CodeEdit launches";
+
+//Editor Screen
+"CodeEdit cannot open this file because its file type is not supported." = "CodeEdit cannot open this file because its file type is not supported.";
