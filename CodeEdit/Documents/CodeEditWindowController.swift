@@ -6,7 +6,9 @@
 //
 
 import Cocoa
+import SwiftUI
 import CodeFile
+import Overlays
 
 class CodeEditWindowController: NSWindowController {
 
@@ -30,5 +32,24 @@ class CodeEditWindowController: NSWindowController {
 
     @IBAction func saveDocument(_ sender: Any) {
         getSelectedCodeFile()?.save(sender)
+    }
+
+    @IBAction func openQuickly(_ sender: Any) {
+        if let workspace = workspace, let state = workspace.quickOpenState {
+            if let window = window?.childWindows?.filter({ window in
+                return (window.contentView as? NSHostingView<QuickOpenView>) != nil
+            }).first {
+                window.close()
+                return
+            }
+
+            let panel = OverlayPanel()
+            let contentView = QuickOpenView(state: state) {
+                panel.close()
+            }
+            panel.contentView = NSHostingView(rootView: contentView)
+            window?.addChildWindow(panel, ordered: .above)
+            panel.makeKeyAndOrderFront(self)
+        }
     }
 }

@@ -43,22 +43,10 @@ struct SideBarItem: View {
 	}
 
     func sidebarFileItem(_ item: WorkspaceClient.FileItem) -> some View {
-        NavigationLink(tag: item.id, selection: $workspace.selectedId) {
-            ZStack {
-                if let codeFile = workspace.openedCodeFiles[item] {
-                    CodeFileView(codeFile: codeFile)
-                        .safeAreaInset(edge: .top, spacing: 0) {
-                            VStack(spacing: 0) {
-                                TabBar(windowController: windowController, workspace: workspace)
-                                TabBarDivider()
-                                BreadcrumbsView(item, workspace: workspace)
-                            }
-                        }
-                } else {
-                    Text("CodeEdit cannot open this file because its file type is not supported.")
-                }
-            }
-            .onAppear { workspace.openFile(item: item) }
+        NavigationLink {
+            WorkspaceCodeFileView(windowController: windowController,
+                                  workspace: workspace)
+                .onAppear { workspace.openFile(item: item) }
         } label: {
 			Label(item.url.lastPathComponent, systemImage: item.systemImage)
 				.accentColor(iconStyle == .color ? item.iconColor : .secondary)

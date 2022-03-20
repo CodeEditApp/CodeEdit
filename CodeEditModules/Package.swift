@@ -17,7 +17,18 @@ let package = Package(
             name: "CodeFile",
             targets: ["CodeFile"]
         ),
-        .library(name: "WelcomeModule", targets: ["WelcomeModule"])
+        .library(
+			name: "WelcomeModule",
+			targets: ["WelcomeModule"]
+		),
+		.library(
+			name: "StatusBar",
+			targets: ["StatusBar"]
+		),
+        .library(
+            name: "Overlays",
+            targets: ["Overlays"]
+        )
     ],
     dependencies: [
         .package(
@@ -71,6 +82,14 @@ let package = Package(
                 "SnapshotTesting"
             ],
             path: "Modules/WelcomeModule/Tests"
+        ),
+		.target(
+			name: "StatusBar",
+			path: "Modules/StatusBar/src"
+		),
+        .target(
+            name: "Overlays",
+            path: "Modules/Overlays/src"
         )
     ]
 )

@@ -8,6 +8,19 @@
 import SwiftUI
 import WorkspaceClient
 
+struct CustomDivider: View {
+    @Environment(\.colorScheme) var colorScheme
+    let height: CGFloat = 1
+
+    var body: some View {
+        Group {
+            Rectangle()
+        }
+        .frame(height: height)
+        .foregroundColor(colorScheme == .dark ? Color(nsColor: .black) : Color(nsColor: .separatorColor))
+    }
+}
+
 struct TabBar: View {
     @Environment(\.colorScheme) var colorScheme
     var windowController: NSWindowController
