@@ -35,14 +35,16 @@ extension NSDocumentController {
         dialog.begin { result in
             if result ==  NSApplication.ModalResponse.OK, let url = dialog.url {
                 self.openDocument(withContentsOf: url, display: true) { document, documentWasAlreadyOpen, error in
-                    // TODO: handle errors
                     if let error = error {
-                        print("Error: \(error.localizedDescription)")
+                        NSAlert(error: error).runModal()
                         return
                     }
 
                     guard let document = document else {
-                        print("Error: Failed to get document")
+                        let alert = NSAlert()
+                        alert.messageText = NSLocalizedString("Failed to get document",
+                                                              comment: "Failed to get document")
+                        alert.runModal()
                         return
                     }
                     var recentProjectPaths: [String] = UserDefaults.standard.array(

@@ -59,6 +59,9 @@ let package = Package(
         ),
         .target(
             name: "WelcomeModule",
+            dependencies: [
+                "WorkspaceClient"
+            ],
             path: "Modules/WelcomeModule/src"
         ),
         .testTarget(
