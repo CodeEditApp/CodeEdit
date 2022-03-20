@@ -20,18 +20,6 @@ public struct CodeFileView: View {
     }
 
     public var body: some View {
-        CodeEditor(
-            source: $codeFile.content,
-            language: codeFile.fileLanguage(),
-            theme: getTheme(),
-            indentStyle: .system
-        )
+        ThemedCodeView($codeFile.content, language: codeFile.fileLanguage())
     }
-
-	private func getTheme() -> CodeEditor.ThemeName {
-		if theme == .atelierSavannaAuto {
-			return colorScheme == .light ? .atelierSavannaLight : .atelierSavannaDark
-		}
-		return theme
-	}
 }

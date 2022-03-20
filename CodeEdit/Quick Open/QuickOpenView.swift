@@ -6,9 +6,11 @@
 //
 
 import SwiftUI
+import WorkspaceClient
 
 struct QuickOpenView: View {
     @ObservedObject var state: WorkspaceDocument.QuickOpenState
+    @State var selectedItem: WorkspaceClient.FileItem?
     var onClose: () -> Void
 
     var body: some View {
@@ -36,14 +38,17 @@ struct QuickOpenView: View {
             Divider()
             NavigationView {
                 List(state.openQuicklyFiles, id: \.id) { file in
-                    NavigationLink {
-                        Text(file.url.lastPathComponent)
+                    NavigationLink(tag: file, selection: $selectedItem) {
+                        QuickOpenPreviewView(item: file)
                     } label: {
                         QuickOpenItem(baseDirectory: state.workspace.fileURL!, fileItem: file)
                     }
                     .onTapGesture(count: 2) {
                         state.workspace.openFile(item: file)
                         self.onClose()
+                    }
+                    .onTapGesture(count: 1) {
+                        self.selectedItem = file
                     }
                 }
                     .removeBackground()
