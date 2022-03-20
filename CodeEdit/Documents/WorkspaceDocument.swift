@@ -21,6 +21,8 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     @Published var fileItems: [WorkspaceClient.FileItem] = []
 
     @Published var openQuicklyQuery: String = ""
+    @Published var openQuicklyFiles: [WorkspaceClient.FileItem] = []
+    @Published var isShowingOpenQuicklyFiles: Bool = false
 
     var openedCodeFiles: [WorkspaceClient.FileItem: CodeFileDocument] = [:]
 	var folderURL: URL?
@@ -146,5 +148,33 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
             } catch {}
         }
         super.close()
+    }
+
+    func fetchOpenQuickly() {
+        if openQuicklyQuery == "" {
+            openQuicklyFiles = []
+            self.isShowingOpenQuicklyFiles = !openQuicklyFiles.isEmpty
+            return
+        }
+
+        if let url = fileURL {
+            let enumerator = FileManager.default.enumerator(at: url,
+                                                            includingPropertiesForKeys: [
+                                                                .isRegularFileKey
+                                                            ],
+                                                            options: [
+                                                                .skipsHiddenFiles,
+                                                                .skipsPackageDescendants
+                                                            ])
+            if let filePaths = enumerator?.allObjects as? [URL] {
+                openQuicklyFiles = filePaths.filter {
+                    $0.lastPathComponent.lowercased().contains(openQuicklyQuery.lowercased())
+                }.map { url in
+                    WorkspaceClient.FileItem(url: url, children: nil)
+                }
+            }
+        }
+
+        self.isShowingOpenQuicklyFiles = !openQuicklyFiles.isEmpty
     }
 }
