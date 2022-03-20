@@ -16,6 +16,28 @@ public struct StatusBarView: View {
 	}
 
     public var body: some View {
+		VStack(spacing: 0) {
+			bar
+			if model.isExpanded {
+				terminal
+			}
+		}
+		// removes weird light gray bar above when in light mode 
+		.padding(.top, -8) // (comment out to make it look normal in preview)
+    }
+
+	private var dragGesture: some Gesture {
+		DragGesture()
+			.onChanged { value in
+				let newHeight = max(0, min(height - value.translation.height, 350))
+				if newHeight-1 > height || newHeight+1 < height {
+					height = newHeight
+				}
+				model.isExpanded = height < 1 ? false : true
+			}
+	}
+
+	private var bar: some View {
 		ZStack {
 			Rectangle()
 				.foregroundStyle(.bar)
@@ -39,9 +61,23 @@ public struct StatusBarView: View {
 			Divider()
 		}
 		.frame(height: 32)
-		// removes weird light gray bar above when in light mode 
-		.padding(.top, -8) // (comment out to make it look normal in preview)
-    }
+		.gesture(dragGesture)
+		.onHover { hovering in
+			if hovering {
+				NSCursor.resizeUpDown.push()
+			} else {
+				NSCursor.pop()
+			}
+		}
+	}
+
+	@State private var height: Double = 300
+
+	private var terminal: some View {
+		Rectangle()
+			.foregroundColor(Color(red: 0.163, green: 0.163, blue: 0.188, opacity: 1.000))
+			.frame(minHeight: 0, idealHeight: height, maxHeight: height)
+	}
 
 	private func labelButton(_ text: String, image: String) -> some View {
 		Button {
@@ -55,6 +91,13 @@ public struct StatusBarView: View {
 		}
 		.buttonStyle(.borderless)
 		.foregroundStyle(.primary)
+		.onHover { hovering in
+			if hovering {
+				NSCursor.pointingHand.push()
+			} else {
+				NSCursor.pop()
+			}
+		}
 	}
 
 	private var branchPicker: some View {
@@ -68,6 +111,13 @@ public struct StatusBarView: View {
 		}
 		.menuStyle(.borderlessButton)
 		.fixedSize()
+		.onHover { hovering in
+			if hovering {
+				NSCursor.pointingHand.push()
+			} else {
+				NSCursor.pop()
+			}
+		}
 	}
 
 	private var reloadButton: some View {
@@ -95,6 +145,13 @@ public struct StatusBarView: View {
 		}
 		.buttonStyle(.borderless)
 		.foregroundStyle(.primary)
+		.onHover { hovering in
+			if hovering {
+				NSCursor.pointingHand.push()
+			} else {
+				NSCursor.pop()
+			}
+		}
 	}
 
 	// Temporary
@@ -106,6 +163,13 @@ public struct StatusBarView: View {
 	private var cursorLocationLabel: some View {
 		Text("Ln \(model.currentLine), Col \(model.currentCol)")
 			.foregroundStyle(.primary)
+			.onHover { hovering in
+				if hovering {
+					NSCursor.pointingHand.push()
+				} else {
+					NSCursor.pop()
+				}
+			}
 	}
 
 	private var indentSelector: some View {
@@ -114,6 +178,13 @@ public struct StatusBarView: View {
 		}
 		.menuStyle(.borderlessButton)
 		.fixedSize()
+		.onHover { hovering in
+			if hovering {
+				NSCursor.pointingHand.push()
+			} else {
+				NSCursor.pop()
+			}
+		}
 	}
 
 	private var encodingSelector: some View {
@@ -122,6 +193,13 @@ public struct StatusBarView: View {
 		}
 			.menuStyle(.borderlessButton)
 			.fixedSize()
+			.onHover { hovering in
+				if hovering {
+					NSCursor.pointingHand.push()
+				} else {
+					NSCursor.pop()
+				}
+			}
 	}
 
 	private var lineEndSelector: some View {
@@ -130,11 +208,21 @@ public struct StatusBarView: View {
 		}
 			.menuStyle(.borderlessButton)
 			.fixedSize()
+			.onHover { hovering in
+				if hovering {
+					NSCursor.pointingHand.push()
+				} else {
+					NSCursor.pop()
+				}
+			}
 	}
 
 	private var expandButton: some View {
 		Button {
 			model.isExpanded.toggle()
+			if model.isExpanded && height < 1 {
+				height = 300
+			}
 			// Show/hide terminal window
 		} label: {
 			Image(systemName: "rectangle.bottomthird.inset.filled")
@@ -142,13 +230,23 @@ public struct StatusBarView: View {
 		}
 		.tint(model.isExpanded ? .accentColor : .primary)
 		.buttonStyle(.borderless)
+		.onHover { hovering in
+			if hovering {
+				NSCursor.pointingHand.push()
+			} else {
+				NSCursor.pop()
+			}
+		}
 	}
 }
 
 struct SwiftUIView_Previews: PreviewProvider {
     static var previews: some View {
-		StatusBarView()
-			.previewLayout(.fixed(width: 1336, height: 32))
-			.preferredColorScheme(.light)
+		ZStack(alignment: .bottom) {
+			Color.white
+			StatusBarView()
+				.previewLayout(.fixed(width: 1.336, height: 500.0))
+				.preferredColorScheme(.light)
+		}
     }
 }
