@@ -34,22 +34,24 @@ class CodeEditWindowController: NSWindowController {
     }
 
     @IBAction func openQuickly(_ sender: Any) {
-        if let window = NSApp.windows.filter({ window in
-            return (window.contentView as? NSHostingView<QuickOpenView>) != nil
-        }).first {
-            window.close()
-            return
-        }
+        if let workspace = workspace {
+            if let window = NSApp.windows.filter({ window in
+                return (window.contentView as? NSHostingView<QuickOpenView>) != nil
+            }).first {
+                window.close()
+                return
+            }
 
-        let panel = NSPanel(
-            contentRect: NSRect(x: 0, y: 0, width: 500, height: 48),
-            styleMask: [.fullSizeContentView, .titled],
-            backing: .buffered, defer: false)
-        let contentView = QuickOpenView()
-        panel.center()
-        panel.titlebarAppearsTransparent = true
-        panel.isMovableByWindowBackground = true
-        panel.contentView = NSHostingView(rootView: contentView)
-        window?.addChildWindow(panel, ordered: .above)
+            let panel = NSPanel(
+                contentRect: NSRect(x: 0, y: 0, width: 500, height: 48),
+                styleMask: [.fullSizeContentView, .titled],
+                backing: .buffered, defer: false)
+            let contentView = QuickOpenView(workspace: workspace)
+            panel.center()
+            panel.titlebarAppearsTransparent = true
+            panel.isMovableByWindowBackground = true
+            panel.contentView = NSHostingView(rootView: contentView)
+            window?.addChildWindow(panel, ordered: .above)
+        }
     }
 }

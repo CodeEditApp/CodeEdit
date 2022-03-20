@@ -84,9 +84,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         }
         return .terminateNow
     }
-    
+
     // MARK: - Open windows
-    
+
     @IBAction func openPreferences(_ sender: Any) {
         if let window = NSApp.windows.filter({ window in
             return (window.contentView as? NSHostingView<SettingsView>) != nil

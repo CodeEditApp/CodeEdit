@@ -20,6 +20,8 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
 	@Published var sortFoldersOnTop: Bool = true
     @Published var fileItems: [WorkspaceClient.FileItem] = []
 
+    @Published var openQuicklyQuery: String = ""
+
     var openedCodeFiles: [WorkspaceClient.FileItem: CodeFileDocument] = [:]
 	var folderURL: URL?
     private var cancellables = Set<AnyCancellable>()
