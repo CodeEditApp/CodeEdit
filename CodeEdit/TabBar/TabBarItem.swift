@@ -62,27 +62,33 @@ struct TabBarItem: View {
         .buttonStyle(.plain)
         .id(item.id)
         .keyboardShortcut(
-            workspace.getTabId(fileName: item.fileName),
+            workspace.getTabKeyEquivalent(item: item),
             modifiers: [.command]
         )
         .contextMenu {
             Button("Close Tab") {
-                
+                withAnimation {
+                    workspace.closeFileTab(item: item)
+                }
             }
             Button("Close Other Tab") {
-                
+                withAnimation {
+                    workspace.closeFileTab(where: { $0.id != item.id })
+                }
             }
             Button("Close Tabs to the Right") {
-                
+                withAnimation {
+                    workspace.closeFileTabs(after: item)
+                }
             }
         }
     }
 }
 
-extension WorkspaceDocument {
-    func getTabId(fileName: String) -> KeyEquivalent {
+fileprivate extension WorkspaceDocument {
+    func getTabKeyEquivalent(item: WorkspaceClient.FileItem) -> KeyEquivalent {
         for counter in 0..<9 where self.openFileItems.count > counter &&
-        self.openFileItems[counter].fileName == fileName {
+        self.openFileItems[counter].fileName == item.fileName {
             return KeyEquivalent.init(
                 Character.init("\(counter + 1)")
             )
