@@ -39,11 +39,13 @@ public struct StatusBarView: View {
 			Divider()
 		}
 		.frame(height: 32)
-		.padding(.top, -8) // removes weird light gray bar above when in light mode
+		.padding(.top, -8) // removes weird light gray bar above when in light mode (comment out to make it look normal in preview)
     }
 
 	private func labelButton(_ text: String, image: String) -> some View {
-		Button {} label: {
+		Button {
+			// show errors/warnings
+		} label: {
 			HStack(spacing: 4) {
 				Image(systemName: image)
 					.font(.headline)
@@ -59,6 +61,7 @@ public struct StatusBarView: View {
 			ForEach(model.branches.indices, id: \.self) { branch in
 				Button { model.selectedBranch = branch } label: {
 					Text(model.branches[branch])
+					// checkout branch
 				}
 			}
 		}
@@ -67,6 +70,7 @@ public struct StatusBarView: View {
 	}
 
 	private var reloadButton: some View {
+		// Temporary
 		Button {
 			model.isReloading = true
 			// Just for looks for now. In future we'll call a function like
@@ -92,6 +96,7 @@ public struct StatusBarView: View {
 		.foregroundStyle(.primary)
 	}
 
+	// Temporary
 	private var animation: Animation {
 		// 10x speed when not reloading to make invisible ccw spin go fast in case button is pressed multiple times.
 		.linear.speed(model.isReloading ? 0.5 : 10)
@@ -103,19 +108,25 @@ public struct StatusBarView: View {
 	}
 
 	private var indentSelector: some View {
-		Menu("2 Spaces") {}
+		Menu("2 Spaces") {
+			// 2 spaces, 4 spaces, ...
+		}
 		.menuStyle(.borderlessButton)
 		.fixedSize()
 	}
 
 	private var encodingSelector: some View {
-		Menu("UTF 8") {}
+		Menu("UTF 8") {
+			// UTF 8, ASCII, ...
+		}
 			.menuStyle(.borderlessButton)
 			.fixedSize()
 	}
 
 	private var lineEndSelector: some View {
-		Menu("LF") {}
+		Menu("LF") {
+			// LF, CRLF
+		}
 			.menuStyle(.borderlessButton)
 			.fixedSize()
 	}
@@ -123,6 +134,7 @@ public struct StatusBarView: View {
 	private var expandButton: some View {
 		Button {
 			model.isExpanded.toggle()
+			// Show/hide terminal window
 		} label: {
 			Image(systemName: "rectangle.bottomthird.inset.filled")
 				.imageScale(.large)

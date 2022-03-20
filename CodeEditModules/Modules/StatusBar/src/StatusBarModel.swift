@@ -23,5 +23,7 @@ public class StatusBarModel: ObservableObject {
 
 	@Published public var isExpanded: Bool = false // Implementation missing
 
+	// TODO: Add @Published vars for indentation, encoding, linebreak
+
 	public init() {}
 }
