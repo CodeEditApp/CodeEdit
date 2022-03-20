@@ -10,9 +10,7 @@ import WorkspaceClient
 import Combine
 
 class SearchManager: ObservableObject {
-
-    @Published var searchResult: [WorkspaceClient.FileItem: [String]] = [:]
-
+    @Published var searchResult: [WorkspaceClient.FileItem: [AttributedString]] = [:]
     private var cancellables = Set<AnyCancellable>()
 
     func search(_ text: String, workspaceClient: WorkspaceClient?) {
@@ -25,14 +23,45 @@ class SearchManager: ObservableObject {
                     let data = try? String(contentsOf: fileItem.url)
                     data?.split(separator: "\n").forEach { line in
                         if line.contains(text) {
-                            var lines = self.searchResult[fileItem] ?? []
-                            lines.append(String(line))
-                            self.searchResult[fileItem] = lines
+                            line.ranges(of: text).forEach { range in
+                                var attributedString = AttributedString()
+                                attributedString.append(
+                                    AttributedString(String(line[line.startIndex..<range.lowerBound]))
+                                )
+                                var searchedString = AttributedString(String(line[range]))
+                                searchedString.font = .system(size: 12, weight: .bold)
+                                searchedString.foregroundColor = .labelColor
+                                attributedString.append(searchedString)
+                                attributedString.append(
+                                    AttributedString(String(line[range.upperBound..<line.endIndex]))
+                                )
+                                var lines = self.searchResult[fileItem] ?? []
+                                lines.append(attributedString)
+                                self.searchResult[fileItem] = lines
+                            }
                         }
                     }
                 }
                 print(self.searchResult)
             }
             .store(in: &cancellables)
+    }
+}
+
+extension StringProtocol where Index == String.Index {
+    func ranges<T: StringProtocol>(
+        of substring: T,
+        options: String.CompareOptions = [],
+        locale: Locale? = nil
+    ) -> [Range<Index>] {
+        var ranges: [Range<Index>] = []
+        while let result = range(
+            of: substring,
+            options: options,
+            range: (ranges.last?.upperBound ?? startIndex)..<endIndex,
+            locale: locale) {
+            ranges.append(result)
+        }
+        return ranges
     }
 }

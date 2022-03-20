@@ -11,12 +11,10 @@ import Combine
 
 struct SidebarSearch: View {
     @ObservedObject var workspace: WorkspaceDocument
-    var windowController: NSWindowController
-
-    @State private var searchText: String = ""
     @ObservedObject var searchManger: SearchManager = SearchManager()
-
+    @State private var searchText: String = ""
     @State var selectedResult: String?
+    var windowController: NSWindowController
 
     var body: some View {
         VStack {
