@@ -6,20 +6,6 @@
 	<array>
 		<dict>
 			<key>CFBundleTypeName</key>
-			<string>Workspace Folder</string>
-			<key>CFBundleTypeRole</key>
-			<string>Viewer</string>
-			<key>LSHandlerRank</key>
-			<string>Default</string>
-			<key>LSItemContentTypes</key>
-			<array>
-				<string>public.folder</string>
-			</array>
-			<key>NSDocumentClass</key>
-			<string>WorkspaceDocument</string>
-		</dict>
-		<dict>
-			<key>CFBundleTypeName</key>
 			<string>Source Code</string>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
@@ -31,6 +17,20 @@
 			</array>
 			<key>NSDocumentClass</key>
 			<string>CodeFileDocument</string>
+		</dict>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>Workspace Folder</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Default</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>public.folder</string>
+			</array>
+			<key>NSDocumentClass</key>
+			<string>WorkspaceDocument</string>
 		</dict>
 	</array>
 	<key>CFBundleURLTypes</key>
