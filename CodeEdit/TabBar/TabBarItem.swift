@@ -10,15 +10,15 @@ import WorkspaceClient
 
 struct TabBarItem: View {
     @State var isHovering: Bool = false
-	var item: WorkspaceClient.FileItem
+    var item: WorkspaceClient.FileItem
     var windowController: NSWindowController
     @ObservedObject var workspace: WorkspaceDocument
     var tabBarHeight: Double = 28.0
-    
+
     var isActive: Bool {
         item.id == workspace.selectedId
     }
-    
+
     @ViewBuilder
     var content: some View {
         HStack(spacing: 0.0) {
@@ -47,17 +47,19 @@ struct TabBarItem: View {
             }
         }
     }
-    
+
     var body: some View {
-        Button(action: { workspace.selectedId = item.id }) {
-            content
-                .background(
-                    isActive ? AnyView(BlurView(
-                        material: NSVisualEffectView.Material.titlebar,
-                        blendingMode: NSVisualEffectView.BlendingMode.withinWindow
-                    )) : AnyView(EmptyView())
-                )
-        }
+        Button(
+            action: { workspace.selectedId = item.id },
+            label: {
+                content
+                    .background(
+                        isActive ? AnyView(BlurView(
+                            material: NSVisualEffectView.Material.titlebar,
+                            blendingMode: NSVisualEffectView.BlendingMode.withinWindow
+                        )) : AnyView(EmptyView())
+                    )
+            })
         .animation(.easeOut(duration: 0.2), value: workspace.openFileItems)
         .buttonStyle(.plain)
         .id(item.id)
