@@ -30,7 +30,8 @@ struct WorkspaceView: View {
                 SideBar(workspace: workspace, windowController: windowController)
                     .frame(minWidth: 250)
 
-                Text("Open file from sidebar")
+                WorkspaceCodeFileView(windowController: windowController,
+                                      workspace: workspace)
             } else {
                 EmptyView()
             }

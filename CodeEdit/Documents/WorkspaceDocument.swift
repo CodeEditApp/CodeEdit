@@ -14,14 +14,16 @@ import CodeFile
 
 @objc(WorkspaceDocument)
 class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
-    @Published var workspaceClient: WorkspaceClient?
+    var workspaceClient: WorkspaceClient?
+
     @Published var selectedId: String?
     @Published var openFileItems: [WorkspaceClient.FileItem] = []
 	@Published var sortFoldersOnTop: Bool = true
     @Published var fileItems: [WorkspaceClient.FileItem] = []
 
+    var quickOpenState: QuickOpenState?
+
     var openedCodeFiles: [WorkspaceClient.FileItem: CodeFileDocument] = [:]
-	var folderURL: URL?
     private var cancellables = Set<AnyCancellable>()
 
     deinit {
@@ -36,11 +38,10 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
 
         guard let idx = openFileItems.firstIndex(of: item) else { return }
         let closedFileItem = openFileItems.remove(at: idx)
-        guard closedFileItem.id == selectedId else { return }
+        guard closedFileItem.id == item.id else { return }
 
         if openFileItems.isEmpty {
             selectedId = nil
-            self.windowControllers.first?.document = self
         } else if idx == 0 {
             selectedId = openFileItems.first?.id
         } else {
@@ -101,12 +102,12 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     }
 
     override func read(from url: URL, ofType typeName: String) throws {
-		self.folderURL = url
         self.workspaceClient = try .default(
             fileManager: .default,
             folderURL: url,
             ignoredFilesAndFolders: ignoredFilesAndDirectory
         )
+        self.quickOpenState = .init(self)
         workspaceClient?
             .getFiles
             .sink { [weak self] files in
@@ -144,5 +145,60 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
             } catch {}
         }
         super.close()
+    }
+}
+
+// MARK: - Quick Open
+
+extension WorkspaceDocument {
+
+    class QuickOpenState: ObservableObject {
+        init(_ workspace: WorkspaceDocument) {
+            self.workspace = workspace
+        }
+
+        var workspace: WorkspaceDocument
+
+        @Published var openQuicklyQuery: String = ""
+        @Published var openQuicklyFiles: [WorkspaceClient.FileItem] = []
+        @Published var isShowingOpenQuicklyFiles: Bool = false
+
+        func fetchOpenQuickly() {
+            if openQuicklyQuery == "" {
+                openQuicklyFiles = []
+                self.isShowingOpenQuicklyFiles = !openQuicklyFiles.isEmpty
+                return
+            }
+
+            DispatchQueue(label: "austincondiff.CodeEdit.quickOpen.searchFiles").async {
+                if let url = self.workspace.fileURL {
+                    let enumerator = FileManager.default.enumerator(at: url,
+                                                                    includingPropertiesForKeys: [
+                                                                        .isRegularFileKey
+                                                                    ],
+                                                                    options: [
+                                                                        .skipsHiddenFiles,
+                                                                        .skipsPackageDescendants
+                                                                    ])
+                    if let filePaths = enumerator?.allObjects as? [URL] {
+                        let files = filePaths.filter { url in
+                            let state1 = url.lastPathComponent.lowercased().contains(self.openQuicklyQuery.lowercased())
+                            do {
+                                let values = try url.resourceValues(forKeys: [.isRegularFileKey])
+                                return state1 && (values.isRegularFile ?? false)
+                            } catch {
+                                return false
+                            }
+                        }.map { url in
+                            WorkspaceClient.FileItem(url: url, children: nil)
+                        }
+                        DispatchQueue.main.async {
+                            self.openQuicklyFiles = files
+                            self.isShowingOpenQuicklyFiles = !self.openQuicklyFiles.isEmpty
+                        }
+                    }
+                }
+            }
+        }
     }
 }

@@ -46,6 +46,47 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         return true
     }
 
+    func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
+        if flag {
+            return false
+        }
+
+        handleOpen()
+
+        return false
+    }
+
+    func applicationShouldOpenUntitledFile(_ sender: NSApplication) -> Bool {
+        return false
+    }
+
+    func handleOpen() {
+        let behavior = ReopenBehavior(rawValue: UserDefaults.standard.string(forKey: ReopenBehavior.storageKey)
+                                      ?? ReopenBehavior.default.rawValue) ?? ReopenBehavior.default
+
+        switch behavior {
+        case .welcome:
+            openWelcome(self)
+        case .openPanel:
+            CodeEditDocumentController.shared.openDocument(self)
+        case .newDocument:
+            CodeEditDocumentController.shared.newDocument(self)
+        }
+    }
+
+    func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
+        CodeEditDocumentController.shared.documents.flatMap { doc in
+            return doc.windowControllers
+        }.forEach { windowContoller in
+            if let windowContoller = windowContoller as? CodeEditWindowController {
+                windowContoller.workspace?.close()
+            }
+        }
+        return .terminateNow
+    }
+
+    // MARK: - Open windows
+
     @IBAction func openPreferences(_ sender: Any) {
         if let window = NSApp.windows.filter({ window in
             return (window.contentView as? NSHostingView<SettingsView>) != nil
@@ -85,44 +126,5 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         window.isMovableByWindowBackground = true
         window.contentView = NSHostingView(rootView: contentView)
         window.makeKeyAndOrderFront(self)
-    }
-
-    func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
-        if flag {
-            return false
-        }
-
-        handleOpen()
-
-        return false
-    }
-
-    func applicationShouldOpenUntitledFile(_ sender: NSApplication) -> Bool {
-        return false
-    }
-
-    func handleOpen() {
-        let behavior = ReopenBehavior(rawValue: UserDefaults.standard.string(forKey: ReopenBehavior.storageKey)
-                                      ?? ReopenBehavior.default.rawValue) ?? ReopenBehavior.default
-
-        switch behavior {
-        case .welcome:
-            openWelcome(self)
-        case .openPanel:
-            CodeEditDocumentController.shared.openDocument(self)
-        case .newDocument:
-            CodeEditDocumentController.shared.newDocument(self)
-        }
-    }
-
-    func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
-        CodeEditDocumentController.shared.documents.flatMap { doc in
-            return doc.windowControllers
-        }.forEach { windowContoller in
-            if let windowContoller = windowContoller as? CodeEditWindowController {
-                windowContoller.workspace?.close()
-            }
-        }
-        return .terminateNow
     }
 }

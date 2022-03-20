@@ -24,7 +24,11 @@ let package = Package(
 		.library(
 			name: "StatusBar",
 			targets: ["StatusBar"]
-		)
+		),
+        .library(
+            name: "Overlays",
+            targets: ["Overlays"]
+        )
     ],
     dependencies: [
         .package(
@@ -82,6 +86,10 @@ let package = Package(
 		.target(
 			name: "StatusBar",
 			path: "Modules/StatusBar/src"
-		)
+		),
+        .target(
+            name: "Overlays",
+            path: "Modules/Overlays/src"
+        )
     ]
 )
