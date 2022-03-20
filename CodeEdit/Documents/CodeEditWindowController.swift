@@ -8,6 +8,7 @@
 import Cocoa
 import SwiftUI
 import CodeFile
+import Overlays
 
 class CodeEditWindowController: NSWindowController {
 
@@ -42,17 +43,10 @@ class CodeEditWindowController: NSWindowController {
                 return
             }
 
-            let panel = QuickOpenPanel(
-                contentRect: NSRect(x: 0, y: 0, width: 500, height: 48),
-                styleMask: [.fullSizeContentView, .titled, .resizable],
-                backing: .buffered, defer: false)
+            let panel = OverlayPanel()
             let contentView = QuickOpenView(state: state) {
-                self.window?.removeChildWindow(panel)
                 panel.close()
             }
-            panel.center()
-            panel.titlebarAppearsTransparent = true
-            panel.isMovableByWindowBackground = true
             panel.contentView = NSHostingView(rootView: contentView)
             window?.addChildWindow(panel, ordered: .above)
             panel.makeKeyAndOrderFront(self)
