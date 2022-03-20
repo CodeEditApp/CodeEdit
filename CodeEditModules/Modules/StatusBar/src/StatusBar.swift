@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@available(macOS 12, *)
 public struct StatusBarView: View {
 
 	@ObservedObject private var model: StatusBarModel
@@ -29,7 +30,7 @@ public struct StatusBarView: View {
 	private var dragGesture: some Gesture {
 		DragGesture()
 			.onChanged { value in
-				let newHeight = max(0, min(height - value.translation.height, 350))
+				let newHeight = max(0, min(height - value.translation.height, 500))
 				if newHeight-1 > height || newHeight+1 < height {
 					height = newHeight
 				}
@@ -240,6 +241,7 @@ public struct StatusBarView: View {
 	}
 }
 
+@available(macOS 12, *)
 struct SwiftUIView_Previews: PreviewProvider {
     static var previews: some View {
 		ZStack(alignment: .bottom) {
