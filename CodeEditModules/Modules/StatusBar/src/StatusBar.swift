@@ -39,7 +39,8 @@ public struct StatusBarView: View {
 			Divider()
 		}
 		.frame(height: 32)
-		.padding(.top, -8) // removes weird light gray bar above when in light mode (comment out to make it look normal in preview)
+		// removes weird light gray bar above when in light mode 
+		.padding(.top, -8) // (comment out to make it look normal in preview)
     }
 
 	private func labelButton(_ text: String, image: String) -> some View {
