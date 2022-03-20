@@ -46,40 +46,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         return true
     }
 
-    @IBAction func openPreferences(_ sender: Any) {
-        if let window = NSApp.windows.filter({ window in
-            return (window.contentView as? NSHostingView<SettingsView>) != nil
-        }).first {
-            window.makeKeyAndOrderFront(self)
-            return
-        }
-
-        let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 500, height: 400),
-            styleMask: [.titled, .closable],
-            backing: .buffered, defer: false)
-        window.center()
-        window.toolbar = NSToolbar()
-        window.title = "Settings"
-        window.toolbarStyle = .unifiedCompact
-        _ = NSWindowController(window: window)
-        let contentView = SettingsView()
-        window.contentView = NSHostingView(rootView: contentView)
-        window.makeKeyAndOrderFront(sender)
-    }
-
-    @IBAction func openWelcome(_ sender: Any) {
-        let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 800, height: 460),
-                              styleMask: [.titled, .fullSizeContentView], backing: .buffered, defer: false)
-        let windowController = NSWindowController(window: window)
-        window.center()
-        let contentView = WelcomeWindowView(windowController: windowController).edgesIgnoringSafeArea(.top)
-        window.titlebarAppearsTransparent = true
-        window.isMovableByWindowBackground = true
-        window.contentView = NSHostingView(rootView: contentView)
-        window.makeKeyAndOrderFront(self)
-    }
-
     func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
         if flag {
             return false
@@ -117,5 +83,41 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
             }
         }
         return .terminateNow
+    }
+    
+    // MARK: - Open windows
+    
+    @IBAction func openPreferences(_ sender: Any) {
+        if let window = NSApp.windows.filter({ window in
+            return (window.contentView as? NSHostingView<SettingsView>) != nil
+        }).first {
+            window.makeKeyAndOrderFront(self)
+            return
+        }
+
+        let window = NSWindow(
+            contentRect: NSRect(x: 0, y: 0, width: 500, height: 400),
+            styleMask: [.titled, .closable],
+            backing: .buffered, defer: false)
+        window.center()
+        window.toolbar = NSToolbar()
+        window.title = "Settings"
+        window.toolbarStyle = .unifiedCompact
+        _ = NSWindowController(window: window)
+        let contentView = SettingsView()
+        window.contentView = NSHostingView(rootView: contentView)
+        window.makeKeyAndOrderFront(sender)
+    }
+
+    @IBAction func openWelcome(_ sender: Any) {
+        let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 800, height: 460),
+                              styleMask: [.titled, .fullSizeContentView], backing: .buffered, defer: false)
+        let windowController = NSWindowController(window: window)
+        window.center()
+        let contentView = WelcomeWindowView(windowController: windowController).edgesIgnoringSafeArea(.top)
+        window.titlebarAppearsTransparent = true
+        window.isMovableByWindowBackground = true
+        window.contentView = NSHostingView(rootView: contentView)
+        window.makeKeyAndOrderFront(self)
     }
 }
