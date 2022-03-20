@@ -50,6 +50,6 @@ class CodeEditWindowController: NSWindowController {
         panel.titlebarAppearsTransparent = true
         panel.isMovableByWindowBackground = true
         panel.contentView = NSHostingView(rootView: contentView)
-        panel.makeKeyAndOrderFront(sender)
+        window?.addChildWindow(panel, ordered: .above)
     }
 }
