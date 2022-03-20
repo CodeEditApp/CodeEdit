@@ -26,10 +26,10 @@
 		28B0A19827E385C300B73177 /* SideBarToolbarTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B0A19727E385C300B73177 /* SideBarToolbarTop.swift */; };
 		28FFE1BF27E3A441001939DB /* SideBarToolbarBottom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FFE1BE27E3A441001939DB /* SideBarToolbarBottom.swift */; };
 		2B7A583527E4BA0100D25D4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0468438427DC76E200F8E88E /* AppDelegate.swift */; };
-		345F667527DF6C180069BD69 /* FileTabRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 345F667427DF6C180069BD69 /* FileTabRow.swift */; };
 		34EE19BE27E0469C00F152CE /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34EE19BD27E0469C00F152CE /* BlurView.swift */; };
 		5C403B8F27E20F8000788241 /* WorkspaceClient in Frameworks */ = {isa = PBXBuildFile; productRef = 5C403B8E27E20F8000788241 /* WorkspaceClient */; };
 		5CF38A5E27E48E6C0096A0F7 /* CodeFile in Frameworks */ = {isa = PBXBuildFile; productRef = 5CF38A5D27E48E6C0096A0F7 /* CodeFile */; };
+		B658C07827E71F910063DB7A /* PressActionsModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B658C07727E71F910063DB7A /* PressActionsModifier.swift */; };
 		B658FB3427DA9E1000EA4DBD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3327DA9E1000EA4DBD /* Assets.xcassets */; };
 		B658FB3727DA9E1000EA4DBD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3627DA9E1000EA4DBD /* Preview Assets.xcassets */; };
 		B65E614627E6765D00255275 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = B65E614527E6765D00255275 /* Introspect */; };
@@ -82,8 +82,8 @@
 		289978EC27E4E97E00BB0357 /* FileIconStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileIconStyle.swift; sourceTree = "<group>"; };
 		28B0A19727E385C300B73177 /* SideBarToolbarTop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBarToolbarTop.swift; sourceTree = "<group>"; };
 		28FFE1BE27E3A441001939DB /* SideBarToolbarBottom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBarToolbarBottom.swift; sourceTree = "<group>"; };
-		345F667427DF6C180069BD69 /* FileTabRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTabRow.swift; sourceTree = "<group>"; };
 		34EE19BD27E0469C00F152CE /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
+		B658C07727E71F910063DB7A /* PressActionsModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PressActionsModifier.swift; path = ../../../../Downloads/HandlePressReleaseEventsDemo/HandlePressReleaseEventsDemo/PressActionsModifier.swift; sourceTree = "<group>"; };
 		B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodeEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B658FB3127DA9E0F00EA4DBD /* WorkspaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceView.swift; sourceTree = "<group>"; };
 		B658FB3327DA9E1000EA4DBD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -187,14 +187,6 @@
 			path = TabBar;
 			sourceTree = "<group>";
 		};
-		345F667327DF6BCC0069BD69 /* Rows */ = {
-			isa = PBXGroup;
-			children = (
-				345F667427DF6C180069BD69 /* FileTabRow.swift */,
-			);
-			path = Rows;
-			sourceTree = "<group>";
-		};
 		34EE19BC27E0467F00F152CE /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
@@ -237,10 +229,10 @@
 				043C321227E31FE8006AE443 /* Documents */,
 				0468438427DC76E200F8E88E /* AppDelegate.swift */,
 				B658FB3127DA9E0F00EA4DBD /* WorkspaceView.swift */,
+				B658C07727E71F910063DB7A /* PressActionsModifier.swift */,
 				2875A46E27E3BE63007805F8 /* Breadcrumbs */,
 				287776EA27E350A100D46668 /* SideBar */,
 				287776EB27E350BA00D46668 /* TabBar */,
-				345F667327DF6BCC0069BD69 /* Rows */,
 				04F2BF1027DBB3AF0024EAB1 /* Settings */,
 				34EE19BC27E0467F00F152CE /* CustomViews */,
 				D7211D4427E066D4008F2ED7 /* Localization */,
@@ -477,6 +469,7 @@
 				34EE19BE27E0469C00F152CE /* BlurView.swift in Sources */,
 				D7211D4327E066CE008F2ED7 /* Localized+Ex.swift in Sources */,
 				287776E927E34BC700D46668 /* TabBar.swift in Sources */,
+				B658C07827E71F910063DB7A /* PressActionsModifier.swift in Sources */,
 				286620A527E4AB6900E18C2B /* BreadcrumbsComponent.swift in Sources */,
 				287776EF27E3515300D46668 /* TabBarItem.swift in Sources */,
 				D72E1A8727E4242900EB11B9 /* RecentProjectsView.swift in Sources */,
@@ -488,7 +481,6 @@
 				D72E1A8327E3B0D400EB11B9 /* WelcomeView.swift in Sources */,
 				043C321627E3201F006AE443 /* WorkspaceDocument.swift in Sources */,
 				28B0A19827E385C300B73177 /* SideBarToolbarTop.swift in Sources */,
-				345F667527DF6C180069BD69 /* FileTabRow.swift in Sources */,
 				28FFE1BF27E3A441001939DB /* SideBarToolbarBottom.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -9,6 +9,20 @@ import SwiftUI
 import WorkspaceClient
 import CodeFile
 
+struct TabBarDivider: View {
+    @Environment(\.colorScheme) var colorScheme
+    let height: CGFloat = 1
+
+    var body: some View {
+        Group {
+            Rectangle()
+        }
+        .frame(height: height)
+        .foregroundColor(colorScheme == .dark ? Color(nsColor: .black) : Color(nsColor: .separatorColor))
+    }
+}
+
+
 struct SideBarItem: View {
 
 	@AppStorage(FileIconStyle.storageKey) var iconStyle: FileIconStyle = .default
@@ -36,7 +50,7 @@ struct SideBarItem: View {
                         .safeAreaInset(edge: .top, spacing: 0) {
                             VStack(spacing: 0) {
                                 TabBar(windowController: windowController, workspace: workspace)
-                                CustomDivider()
+                                TabBarDivider()
                                 BreadcrumbsView(item, workspace: workspace)
                             }
                         }
