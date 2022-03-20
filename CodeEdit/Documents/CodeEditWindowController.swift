@@ -52,6 +52,7 @@ class CodeEditWindowController: NSWindowController {
             panel.isMovableByWindowBackground = true
             panel.contentView = NSHostingView(rootView: contentView)
             window?.addChildWindow(panel, ordered: .above)
+            panel.makeKeyAndOrderFront(self)
         }
     }
 }
