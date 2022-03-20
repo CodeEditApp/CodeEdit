@@ -19,7 +19,7 @@ struct QuickOpenPreviewView: View {
     var body: some View {
         VStack {
             if loaded {
-                ThemedCodeView($content, language: .init(url: item.url))
+                ThemedCodeView($content, language: .init(url: item.url), editable: false)
             } else if let error = error {
                 Text(error)
             } else {
