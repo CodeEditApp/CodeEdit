@@ -9,21 +9,11 @@ import SwiftUI
 
 public struct StatusBarView: View {
 
-	public init(errors: Int, warnings: Int) {
-		self.errors = errors
-		self.warnings = warnings
+	@ObservedObject private var model: StatusBarModel
+
+	public init() {
+		self.model = .init()
 	}
-
-	private var errors: Int
-	private var warnings: Int
-	private var branches: [String] = ["master", "new-feature"]
-
-	// TODO: Create a View Model for this
-	@State private var selectedBranch: Int = 0
-	@State private var isExpanded: Bool = false
-	@State private var reloading: Bool = false
-	@State private var line: Int = 1
-	@State private var col: Int = 1
 
     public var body: some View {
 		ZStack {
@@ -31,8 +21,8 @@ public struct StatusBarView: View {
 				.foregroundStyle(.bar)
 			HStack(spacing: 14) {
 				HStack(spacing: 8) {
-				labelButton(errors.formatted(), image: "xmark.octagon")
-				labelButton(warnings.formatted(), image: "exclamationmark.triangle")
+					labelButton(model.errorCount.formatted(), image: "xmark.octagon")
+					labelButton(model.warningCount.formatted(), image: "exclamationmark.triangle")
 				}
 				branchPicker
 				reloadButton
@@ -49,7 +39,7 @@ public struct StatusBarView: View {
 			Divider()
 		}
 		.frame(height: 32)
-		.padding(.top, -8)
+		.padding(.top, -8) // removes weird light gray bar above when in light mode
     }
 
 	private func labelButton(_ text: String, image: String) -> some View {
@@ -65,10 +55,10 @@ public struct StatusBarView: View {
 	}
 
 	private var branchPicker: some View {
-		Menu(branches[selectedBranch]) {
-			ForEach(branches.indices, id: \.self) { branch in
-				Button { selectedBranch = branch } label: {
-					Text(branches[branch])
+		Menu(model.branches[model.selectedBranch]) {
+			ForEach(model.branches.indices, id: \.self) { branch in
+				Button { model.selectedBranch = branch } label: {
+					Text(model.branches[branch])
 				}
 			}
 		}
@@ -78,23 +68,23 @@ public struct StatusBarView: View {
 
 	private var reloadButton: some View {
 		Button {
-			reloading = true
+			model.isReloading = true
 			// Just for looks for now. In future we'll call a function like
 			// `reloadFileStatus()` here which will set/unset `reloading`
 			DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-				self.reloading = false
+				self.model.isReloading = false
 			}
 		} label: {
 			Image(systemName: "arrow.triangle.2.circlepath")
 				.imageScale(.large)
-				.rotationEffect(.degrees(reloading ? 360 : 0))
-				.animation(animation, value: reloading)
-				.opacity(reloading ? 1 : 0)
+				.rotationEffect(.degrees(model.isReloading ? 360 : 0))
+				.animation(animation, value: model.isReloading)
+				.opacity(model.isReloading ? 1 : 0)
 			// A bit of a hacky solution to prevent spinning counterclockwise once `reloading` changes to `false`
 				.overlay {
 					Image(systemName: "arrow.triangle.2.circlepath")
 						.imageScale(.large)
-						.opacity(reloading ? 0 : 1)
+						.opacity(model.isReloading ? 0 : 1)
 				}
 
 		}
@@ -104,11 +94,11 @@ public struct StatusBarView: View {
 
 	private var animation: Animation {
 		// 10x speed when not reloading to make invisible ccw spin go fast in case button is pressed multiple times.
-		.linear.speed(reloading ? 0.5 : 10)
+		.linear.speed(model.isReloading ? 0.5 : 10)
 	}
 
 	private var cursorLocationLabel: some View {
-		Text("Ln \(line), Col \(col)")
+		Text("Ln \(model.currentLine), Col \(model.currentCol)")
 			.foregroundStyle(.primary)
 	}
 
@@ -132,19 +122,19 @@ public struct StatusBarView: View {
 
 	private var expandButton: some View {
 		Button {
-			isExpanded.toggle()
+			model.isExpanded.toggle()
 		} label: {
 			Image(systemName: "rectangle.bottomthird.inset.filled")
 				.imageScale(.large)
 		}
-		.tint(isExpanded ? .accentColor : .secondary)
+		.tint(model.isExpanded ? .accentColor : .primary)
 		.buttonStyle(.borderless)
 	}
 }
 
 struct SwiftUIView_Previews: PreviewProvider {
     static var previews: some View {
-		StatusBarView(errors: 0, warnings: 0)
+		StatusBarView()
 			.previewLayout(.fixed(width: 1336, height: 32))
 			.preferredColorScheme(.light)
     }

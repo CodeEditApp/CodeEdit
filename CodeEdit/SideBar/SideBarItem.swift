@@ -42,7 +42,7 @@ struct SideBarItem: View {
                             }
                         }
 						.safeAreaInset(edge: .bottom) {
-							StatusBarView(errors: 0, warnings: 0)
+							StatusBarView()
 						}
                 } else {
                     Text("CodeEdit cannot open this file because its file type is not supported.")
