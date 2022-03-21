@@ -36,14 +36,13 @@ class CodeEditWindowController: NSWindowController {
 
     @IBAction func openQuickly(_ sender: Any) {
         if let workspace = workspace, let state = workspace.quickOpenState {
-            if let window = window?.childWindows?.filter({ window in
-                return (window.contentView as? NSHostingView<QuickOpenView>) != nil
-            }).first {
-                window.close()
-                return
-            }
             if let quickOpenPanel = quickOpenPanel {
-                quickOpenPanel.makeKeyAndOrderFront(self)
+                if quickOpenPanel.isKeyWindow {
+                    quickOpenPanel.close()
+                    return
+                } else {
+                    quickOpenPanel.makeKeyAndOrderFront(self)
+                }
             } else {
                 let panel = OverlayPanel()
                 self.quickOpenPanel = panel
