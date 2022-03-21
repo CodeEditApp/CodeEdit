@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SideBarToolbarTop: View {
+struct NavigatorSidebarToolbarTop: View {
 	@Binding var selection: Int
 
 	var body: some View {
@@ -46,8 +46,8 @@ struct SideBarToolbarTop: View {
 	}
 }
 
-struct SideBarToolbar_Previews: PreviewProvider {
+struct NavigatorSidebarToolbar_Previews: PreviewProvider {
 	static var previews: some View {
-		SideBarToolbarTop(selection: .constant(0))
+        NavigatorSidebarToolbarTop(selection: .constant(0))
 	}
 }

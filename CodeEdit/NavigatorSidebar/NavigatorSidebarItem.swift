@@ -9,7 +9,7 @@ import SwiftUI
 import WorkspaceClient
 import CodeFile
 
-struct SideBarItem: View {
+struct NavigatorSidebarItem: View {
 	@AppStorage(FileIconStyle.storageKey) var iconStyle: FileIconStyle = .default
 
 	var item: WorkspaceClient.FileItem
@@ -43,7 +43,7 @@ struct SideBarItem: View {
 		DisclosureGroup(isExpanded: $isExpanded) {
 			if isExpanded { // Only load when expanded -> Improves performance massively
 				ForEach(item.children!.sortItems(foldersOnTop: workspace.sortFoldersOnTop)) { child in
-					SideBarItem(item: child,
+                    NavigatorSidebarItem(item: child,
 								workspace: workspace,
                                 windowController: windowController)
 				}

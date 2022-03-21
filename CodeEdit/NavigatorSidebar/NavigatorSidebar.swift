@@ -8,7 +8,7 @@
 import SwiftUI
 import WorkspaceClient
 
-struct SideBar: View {
+struct NavigatorSidebar: View {
     @ObservedObject var workspace: WorkspaceDocument
     var windowController: NSWindowController
 	@State private var selection: Int = 0
@@ -21,7 +21,7 @@ struct SideBar: View {
                     ForEach(
                         workspace.fileItems.sortItems(foldersOnTop: workspace.sortFoldersOnTop)
                     ) { item in // Instead of OutlineGroup
-                        SideBarItem(
+                        NavigatorSidebarItem(
                             item: item,
                             workspace: workspace,
                             windowController: windowController
@@ -32,11 +32,11 @@ struct SideBar: View {
             }
         }
         .safeAreaInset(edge: .top) {
-            SideBarToolbarTop(selection: $selection)
+            NavigatorSidebarToolbarTop(selection: $selection)
                 .padding(.bottom, -8)
         }
         .safeAreaInset(edge: .bottom) {
-            SideBarToolbarBottom(workspace: workspace)
+            NavigatorSidebarToolbarBottom(workspace: workspace)
         }
     }
 }
