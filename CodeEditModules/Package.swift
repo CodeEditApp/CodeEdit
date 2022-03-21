@@ -36,9 +36,9 @@ let package = Package(
     ],
     dependencies: [
         .package(
-            name: "CodeEditor",
-            url: "https://github.com/ZeeZide/CodeEditor.git",
-            from: "1.2.0"
+            name: "Highlightr",
+            url: "https://github.com/raspu/Highlightr.git",
+            from: "2.1.2"
         ),
         .package(
             name: "SnapshotTesting",
@@ -61,7 +61,7 @@ let package = Package(
         .target(
             name: "CodeFile",
             dependencies: [
-                "CodeEditor"
+                "Highlightr"
             ],
             path: "Modules/CodeFile/src"
         ),

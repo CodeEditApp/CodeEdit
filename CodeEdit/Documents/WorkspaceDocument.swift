@@ -87,7 +87,7 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
                 openedCodeFiles[item] = codeFile
             }
             selectedId = item.id
-
+            Swift.print("Opening file for item: ", item.url)
             self.windowControllers.first?.window?.subtitle = item.url.lastPathComponent
         } catch let err {
             Swift.print(err)
