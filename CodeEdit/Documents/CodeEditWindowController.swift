@@ -13,7 +13,7 @@ import Overlays
 class CodeEditWindowController: NSWindowController {
 
     var workspace: WorkspaceDocument?
-
+    var quickOpenPanel: OverlayPanel?
     override func windowDidLoad() {
         super.windowDidLoad()
 
@@ -42,14 +42,18 @@ class CodeEditWindowController: NSWindowController {
                 window.close()
                 return
             }
-
-            let panel = OverlayPanel()
-            let contentView = QuickOpenView(state: state) {
-                panel.close()
-            }
-            panel.contentView = NSHostingView(rootView: contentView)
-            window?.addChildWindow(panel, ordered: .above)
-            panel.makeKeyAndOrderFront(self)
+            if let quickOpenPanel = quickOpenPanel {
+                quickOpenPanel.makeKeyAndOrderFront(self)
+            } else {
+                let panel = OverlayPanel()
+                self.quickOpenPanel = panel
+                let contentView = QuickOpenView(state: state) {
+                    panel.close()
+                }
+                panel.contentView = NSHostingView(rootView: contentView)
+                window?.addChildWindow(panel, ordered: .above)
+                panel.makeKeyAndOrderFront(self)
+            }  
         }
     }
 }
