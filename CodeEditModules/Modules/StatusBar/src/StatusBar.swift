@@ -15,6 +15,12 @@ public struct StatusBarView: View {
 
 	private var toolbarFont: Font = .system(size: 11)
     private let gitClient: GitClient
+	private let maxHeight: Double = 500
+	private let standardHeight: Double = 300
+	private let minHeight: Double = 100
+
+	@State private var currentHeight: Double = 0
+	@State private var isDragging: Bool = false
 
     public init(gitClient: GitClient) {
 		self.model = .init()
@@ -25,9 +31,7 @@ public struct StatusBarView: View {
 	public var body: some View {
 		VStack(spacing: 0) {
 			bar
-//			if model.isExpanded {
-				terminal
-//			}
+			terminal
 		}
 		// removes weird light gray bar above when in light mode
 		.padding(.top, -8) // (comment out to make it look normal in preview)
@@ -36,11 +40,22 @@ public struct StatusBarView: View {
 	private var dragGesture: some Gesture {
 		DragGesture()
 			.onChanged { value in
-				let newHeight = max(0, min(height - value.translation.height, 500))
-				if newHeight-1 > height || newHeight+1 < height {
-					height = newHeight
+				isDragging = true
+				var newHeight = max(0, min(currentHeight - value.translation.height, 500))
+				if newHeight-0.5 > currentHeight || newHeight+0.5 < currentHeight {
+					if newHeight < minHeight { // simulate the snapping/resistance after reaching minimal height
+						if newHeight > minHeight / 2 {
+							newHeight = minHeight
+						} else {
+							newHeight = 0
+						}
+					}
+					currentHeight = newHeight
 				}
-				model.isExpanded = height < 1 ? false : true
+				model.isExpanded = currentHeight < 1 ? false : true
+			}
+			.onEnded { _ in
+				isDragging = false
 			}
 	}
 
@@ -69,21 +84,15 @@ public struct StatusBarView: View {
 		}
 		.frame(height: 32)
 		.gesture(dragGesture)
-		.onHover { hovering in
-			if hovering {
-				NSCursor.resizeUpDown.push()
-			} else {
-				NSCursor.pop()
-			}
-		}
+		.onHover { isHovering($0, cursor: .resizeUpDown) }
 	}
-
-	@State private var height: Double = 300
 
 	private var terminal: some View {
 		Rectangle()
 			.foregroundColor(Color(red: 0.163, green: 0.163, blue: 0.188, opacity: 1.000))
-			.frame(minHeight: 0, idealHeight: model.isExpanded ? height : 0, maxHeight: model.isExpanded ? height : 0)
+			.frame(minHeight: 0,
+				   idealHeight: model.isExpanded ? currentHeight : 0,
+				   maxHeight: model.isExpanded ? currentHeight : 0)
 	}
 
 	private func labelButton(_ text: String, image: String) -> some View {
@@ -99,13 +108,7 @@ public struct StatusBarView: View {
 		}
 		.buttonStyle(.borderless)
 		.foregroundStyle(.primary)
-		.onHover { hovering in
-			if hovering {
-				NSCursor.pointingHand.push()
-			} else {
-				NSCursor.pop()
-			}
-		}
+		.onHover { isHovering($0) }
 	}
 
 	private var branchPicker: some View {
@@ -138,13 +141,7 @@ public struct StatusBarView: View {
 		}
 		.menuStyle(.borderlessButton)
 		.fixedSize()
-		.onHover { hovering in
-			if hovering {
-				NSCursor.pointingHand.push()
-			} else {
-				NSCursor.pop()
-			}
-		}
+		.onHover { isHovering($0) }
 	}
 
 	private var reloadButton: some View {
@@ -172,13 +169,7 @@ public struct StatusBarView: View {
 		}
 		.buttonStyle(.borderless)
 		.foregroundStyle(.primary)
-		.onHover { hovering in
-			if hovering {
-				NSCursor.pointingHand.push()
-			} else {
-				NSCursor.pop()
-			}
-		}
+		.onHover { isHovering($0) }
 	}
 
 	// Temporary
@@ -191,13 +182,8 @@ public struct StatusBarView: View {
 		Text("Ln \(model.currentLine), Col \(model.currentCol)")
 			.font(toolbarFont)
 			.foregroundStyle(.primary)
-			.onHover { hovering in
-				if hovering {
-					NSCursor.pointingHand.push()
-				} else {
-					NSCursor.pop()
-				}
-			}
+			.lineLimit(1)
+			.onHover { isHovering($0) }
 	}
 
 	private var indentSelector: some View {
@@ -209,13 +195,7 @@ public struct StatusBarView: View {
 		}
 		.menuStyle(.borderlessButton)
 		.fixedSize()
-		.onHover { hovering in
-			if hovering {
-				NSCursor.pointingHand.push()
-			} else {
-				NSCursor.pop()
-			}
-		}
+		.onHover { isHovering($0) }
 	}
 
 	private var encodingSelector: some View {
@@ -227,13 +207,7 @@ public struct StatusBarView: View {
 		}
 		.menuStyle(.borderlessButton)
 		.fixedSize()
-		.onHover { hovering in
-			if hovering {
-				NSCursor.pointingHand.push()
-			} else {
-				NSCursor.pop()
-			}
-		}
+		.onHover { isHovering($0) }
 	}
 
 	private var lineEndSelector: some View {
@@ -245,21 +219,15 @@ public struct StatusBarView: View {
 		}
 		.menuStyle(.borderlessButton)
 		.fixedSize()
-		.onHover { hovering in
-			if hovering {
-				NSCursor.pointingHand.push()
-			} else {
-				NSCursor.pop()
-			}
-		}
+		.onHover { isHovering($0) }
 	}
 
 	private var expandButton: some View {
 		Button {
 			withAnimation {
 				model.isExpanded.toggle()
-				if model.isExpanded && height < 1 {
-					height = 300
+				if model.isExpanded && currentHeight < 1 {
+					currentHeight = 300
 				}
 			}
 			// Show/hide terminal window
@@ -268,13 +236,18 @@ public struct StatusBarView: View {
 				.imageScale(.medium)
 		}
 		.tint(model.isExpanded ? .accentColor : .primary)
+		.keyboardShortcut("Y", modifiers: [.command, .shift])
 		.buttonStyle(.borderless)
-		.onHover { hovering in
-			if hovering {
-				NSCursor.pointingHand.push()
-			} else {
-				NSCursor.pop()
-			}
+		.onHover { isHovering($0) }
+	}
+
+	private func isHovering(_ active: Bool, cursor: NSCursor = .arrow) {
+		if isDragging { return }
+		print("Change Cursor")
+		if active {
+			cursor.push()
+		} else {
+			NSCursor.pop()
 		}
 	}
 }
