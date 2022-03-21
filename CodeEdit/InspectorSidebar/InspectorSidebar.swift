@@ -11,7 +11,7 @@ import WorkspaceClient
 struct InspectorSidebar: View {
     @ObservedObject var workspace: WorkspaceDocument
     var windowController: NSWindowController
-	@State private var selection: Int = 0
+    @State private var selection: Int = 0
 
     var body: some View {
         VStack {
