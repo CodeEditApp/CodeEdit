@@ -18,11 +18,13 @@ struct QuickOpenView: View {
             VStack {
                 HStack(alignment: .center, spacing: 0) {
                     Image(systemName: "doc.text.magnifyingglass")
-                        .imageScale(.large)
-                        .padding(.horizontal, 20)
-                        .offset(x: 2, y: 0)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 20, height: 20)
+                        .padding(.trailing, 12)
+                        .offset(x: 0, y: 1)
                     TextField("Open Quickly", text: $state.openQuicklyQuery)
-                        .font(.system(size: 22, weight: .light, design: .default))
+                        .font(.system(size: 20, weight: .light, design: .default))
                         .textFieldStyle(.plain)
                         .onReceive(
                             state.$openQuicklyQuery
@@ -31,8 +33,7 @@ struct QuickOpenView: View {
                             state.fetchOpenQuickly()
                         }
                 }
-                    .frame(height: 28)
-                    .padding(.vertical)
+                    .padding(16)
                     .foregroundColor(.primary.opacity(0.85))
                     .background(BlurView(material: .sidebar, blendingMode: .behindWindow))
             }
@@ -64,8 +65,8 @@ struct QuickOpenView: View {
             .background(BlurView(material: .sidebar, blendingMode: .behindWindow))
             .edgesIgnoringSafeArea(.vertical)
             .frame(minWidth: 600,
-               minHeight: 400,
-               maxHeight: .infinity)
+               minHeight: self.state.isShowingOpenQuicklyFiles ? 400 : 28,
+               maxHeight: self.state.isShowingOpenQuicklyFiles ? .infinity : 28)
     }
 }
 

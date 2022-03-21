@@ -188,8 +188,10 @@ extension WorkspaceDocument {
 
         func fetchOpenQuickly() {
             if openQuicklyQuery == "" {
-                openQuicklyFiles = []
-                self.isShowingOpenQuicklyFiles = !openQuicklyFiles.isEmpty
+                withAnimation {
+                    openQuicklyFiles = []
+                    self.isShowingOpenQuicklyFiles = !openQuicklyFiles.isEmpty
+                }
                 return
             }
 
@@ -216,8 +218,10 @@ extension WorkspaceDocument {
                             WorkspaceClient.FileItem(url: url, children: nil)
                         }
                         DispatchQueue.main.async {
-                            self.openQuicklyFiles = files
-                            self.isShowingOpenQuicklyFiles = !self.openQuicklyFiles.isEmpty
+                            withAnimation {
+                                self.openQuicklyFiles = files
+                                self.isShowingOpenQuicklyFiles = !self.openQuicklyFiles.isEmpty
+                            }
                         }
                     }
                 }
