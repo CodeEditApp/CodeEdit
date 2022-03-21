@@ -146,11 +146,7 @@ public struct StatusBarView: View {
 		.menuStyle(.borderlessButton)
 		.fixedSize()
 		.onHover { hovering in
-			if hovering {
-				NSCursor.pointingHand.push()
-			} else {
-				NSCursor.pop()
-			}
+			checkIfHovering(isHovering: Bool)
 		}
 	}
 
