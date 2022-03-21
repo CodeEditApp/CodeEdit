@@ -12,20 +12,22 @@ public struct StatusBarView: View {
 
 	@ObservedObject private var model: StatusBarModel
 
+	private var toolbarFont: Font = .system(size: 11)
+
 	public init() {
 		self.model = .init()
 	}
 
-    public var body: some View {
+	public var body: some View {
 		VStack(spacing: 0) {
 			bar
-			if model.isExpanded {
+//			if model.isExpanded {
 				terminal
-			}
+//			}
 		}
-		// removes weird light gray bar above when in light mode 
+		// removes weird light gray bar above when in light mode
 		.padding(.top, -8) // (comment out to make it look normal in preview)
-    }
+	}
 
 	private var dragGesture: some Gesture {
 		DragGesture()
@@ -42,8 +44,8 @@ public struct StatusBarView: View {
 		ZStack {
 			Rectangle()
 				.foregroundStyle(.bar)
-			HStack(spacing: 14) {
-				HStack(spacing: 8) {
+			HStack(spacing: 15) {
+				HStack(spacing: 5) {
 					labelButton(model.errorCount.formatted(), image: "xmark.octagon")
 					labelButton(model.warningCount.formatted(), image: "exclamationmark.triangle")
 				}
@@ -77,17 +79,18 @@ public struct StatusBarView: View {
 	private var terminal: some View {
 		Rectangle()
 			.foregroundColor(Color(red: 0.163, green: 0.163, blue: 0.188, opacity: 1.000))
-			.frame(minHeight: 0, idealHeight: height, maxHeight: height)
+			.frame(minHeight: 0, idealHeight: model.isExpanded ? height : 0, maxHeight: model.isExpanded ? height : 0)
 	}
 
 	private func labelButton(_ text: String, image: String) -> some View {
 		Button {
 			// show errors/warnings
 		} label: {
-			HStack(spacing: 4) {
+			HStack(spacing: 2) {
 				Image(systemName: image)
-					.font(.headline)
+					.font(.callout.bold())
 				Text(text)
+					.font(toolbarFont)
 			}
 		}
 		.buttonStyle(.borderless)
@@ -102,13 +105,16 @@ public struct StatusBarView: View {
 	}
 
 	private var branchPicker: some View {
-		Menu(model.branches[model.selectedBranch]) {
+		Menu {
 			ForEach(model.branches.indices, id: \.self) { branch in
 				Button { model.selectedBranch = branch } label: {
 					Text(model.branches[branch])
 					// checkout branch
 				}
 			}
+		} label: {
+			Text(model.branches[model.selectedBranch])
+				.font(toolbarFont)
 		}
 		.menuStyle(.borderlessButton)
 		.fixedSize()
@@ -132,14 +138,14 @@ public struct StatusBarView: View {
 			}
 		} label: {
 			Image(systemName: "arrow.triangle.2.circlepath")
-				.imageScale(.large)
+				.imageScale(.medium)
 				.rotationEffect(.degrees(model.isReloading ? 360 : 0))
 				.animation(animation, value: model.isReloading)
 				.opacity(model.isReloading ? 1 : 0)
 			// A bit of a hacky solution to prevent spinning counterclockwise once `reloading` changes to `false`
 				.overlay {
 					Image(systemName: "arrow.triangle.2.circlepath")
-						.imageScale(.large)
+						.imageScale(.medium)
 						.opacity(model.isReloading ? 0 : 1)
 				}
 
@@ -163,6 +169,7 @@ public struct StatusBarView: View {
 
 	private var cursorLocationLabel: some View {
 		Text("Ln \(model.currentLine), Col \(model.currentCol)")
+			.font(toolbarFont)
 			.foregroundStyle(.primary)
 			.onHover { hovering in
 				if hovering {
@@ -174,8 +181,11 @@ public struct StatusBarView: View {
 	}
 
 	private var indentSelector: some View {
-		Menu("2 Spaces") {
+		Menu {
 			// 2 spaces, 4 spaces, ...
+		} label: {
+			Text("2 Spaces")
+				.font(toolbarFont)
 		}
 		.menuStyle(.borderlessButton)
 		.fixedSize()
@@ -189,45 +199,53 @@ public struct StatusBarView: View {
 	}
 
 	private var encodingSelector: some View {
-		Menu("UTF 8") {
+		Menu {
 			// UTF 8, ASCII, ...
+		} label: {
+			Text("UTF 8")
+				.font(toolbarFont)
 		}
-			.menuStyle(.borderlessButton)
-			.fixedSize()
-			.onHover { hovering in
-				if hovering {
-					NSCursor.pointingHand.push()
-				} else {
-					NSCursor.pop()
-				}
+		.menuStyle(.borderlessButton)
+		.fixedSize()
+		.onHover { hovering in
+			if hovering {
+				NSCursor.pointingHand.push()
+			} else {
+				NSCursor.pop()
 			}
+		}
 	}
 
 	private var lineEndSelector: some View {
-		Menu("LF") {
+		Menu {
 			// LF, CRLF
+		} label: {
+			Text("LF")
+				.font(toolbarFont)
 		}
-			.menuStyle(.borderlessButton)
-			.fixedSize()
-			.onHover { hovering in
-				if hovering {
-					NSCursor.pointingHand.push()
-				} else {
-					NSCursor.pop()
-				}
+		.menuStyle(.borderlessButton)
+		.fixedSize()
+		.onHover { hovering in
+			if hovering {
+				NSCursor.pointingHand.push()
+			} else {
+				NSCursor.pop()
 			}
+		}
 	}
 
 	private var expandButton: some View {
 		Button {
-			model.isExpanded.toggle()
-			if model.isExpanded && height < 1 {
-				height = 300
+			withAnimation {
+				model.isExpanded.toggle()
+				if model.isExpanded && height < 1 {
+					height = 300
+				}
 			}
 			// Show/hide terminal window
 		} label: {
 			Image(systemName: "rectangle.bottomthird.inset.filled")
-				.imageScale(.large)
+				.imageScale(.medium)
 		}
 		.tint(model.isExpanded ? .accentColor : .primary)
 		.buttonStyle(.borderless)
@@ -243,12 +261,12 @@ public struct StatusBarView: View {
 
 @available(macOS 12, *)
 struct SwiftUIView_Previews: PreviewProvider {
-    static var previews: some View {
+	static var previews: some View {
 		ZStack(alignment: .bottom) {
 			Color.white
 			StatusBarView()
 				.previewLayout(.fixed(width: 1.336, height: 500.0))
 				.preferredColorScheme(.light)
 		}
-    }
+	}
 }
