@@ -188,15 +188,13 @@ extension WorkspaceDocument {
 
         func fetchOpenQuickly() {
             if openQuicklyQuery == "" {
-                withAnimation {
-                    openQuicklyFiles = []
-                    self.isShowingOpenQuicklyFiles = !openQuicklyFiles.isEmpty
-                }
+                openQuicklyFiles = []
+                self.isShowingOpenQuicklyFiles = !openQuicklyFiles.isEmpty
                 return
             }
 
-            DispatchQueue(label: "austincondiff.CodeEdit.quickOpen.searchFiles").async {
-                if let url = self.workspace.fileURL {
+            DispatchQueue(label: "austincondiff.CodeEdit.quickOpen.searchFiles").async { [weak self] in
+                if let self = self, let url = self.workspace.fileURL {
                     let enumerator = FileManager.default.enumerator(at: url,
                                                                     includingPropertiesForKeys: [
                                                                         .isRegularFileKey
@@ -218,10 +216,8 @@ extension WorkspaceDocument {
                             WorkspaceClient.FileItem(url: url, children: nil)
                         }
                         DispatchQueue.main.async {
-                            withAnimation {
-                                self.openQuicklyFiles = files
-                                self.isShowingOpenQuicklyFiles = !self.openQuicklyFiles.isEmpty
-                            }
+                            self.openQuicklyFiles = files
+                            self.isShowingOpenQuicklyFiles = !self.openQuicklyFiles.isEmpty
                         }
                     }
                 }
