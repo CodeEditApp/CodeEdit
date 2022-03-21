@@ -38,6 +38,8 @@
 		<dict>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>austincondiff.CodeEdit.url</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>codeedit</string>

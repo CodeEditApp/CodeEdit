@@ -27,6 +27,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         _ = CodeEditDocumentController.shared
         let nib = NSNib(nibNamed: NSNib.Name("MainMenu"), bundle: Bundle.main)
         nib?.instantiate(withOwner: NSApplication.shared, topLevelObjects: nil)
+        NSApplication.shared.mainMenu?.items.first { $0.title == "CodeEdit" }?.submenu?.items.first { $0.title == "Preferences" }?.action = #selector(openPreferences(_:))
     }
     
     func applicationDidFinishLaunching(_ notification: Notification) {
@@ -89,27 +90,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     
     // MARK: - Open windows
     
-    //    @IBAction func openPreferences(_ sender: Any) {
-    //        if let window = NSApp.windows.filter({ window in
-    //            return (window.contentView as? NSHostingView<SettingsView>) != nil
-    //        }).first {
-    //            window.makeKeyAndOrderFront(self)
-    //            return
-    //        }
-    //
-    //        let window = NSWindow(
-    //            contentRect: NSRect(x: 0, y: 0, width: 500, height: 400),
-    //            styleMask: [.titled, .closable],
-    //            backing: .buffered, defer: false)
-    //        window.center()
-    //        window.toolbar = NSToolbar()
-    //        window.title = "Settings"
-    //        window.toolbarStyle = .unifiedCompact
-    //        _ = NSWindowController(window: window)
-    //        let contentView = SettingsView()
-    //        window.contentView = NSHostingView(rootView: contentView)
-    //        window.makeKeyAndOrderFront(sender)
-    //    }
+    @objc func openPreferences(_ sender: Any) {
+        NSApp.sendAction(Selector(("showPreferencesWindow:")), to: nil, from: nil)
+    }
+    
     
     @IBAction func openWelcome(_ sender: Any) {
         if let window = NSApp.windows.filter({ window in
