@@ -35,9 +35,6 @@ struct WorkspaceView: View {
                                     workspace: workspace)
               .frame(maxWidth: .infinity, maxHeight: .infinity)
                   InspectorSidebar(workspace: workspace, windowController: windowController)
-                  .toolbar {
-                      RightToolBarItems(showInspector: $showInspector)
-                  }
                   .frame(minWidth: 250, maxWidth: .infinity, maxHeight: .infinity)
                 }
             } else {
@@ -54,18 +51,6 @@ struct WorkspaceView: View {
         .onChange(of: workspace.selectedId) { newValue in
             if newValue == nil {
                 windowController.window?.subtitle = ""
-            }
-        }
-    }
-}
-
-struct RightToolBarItems: ToolbarContent {
-    @Binding var showInspector: Bool
-    var body: some ToolbarContent {
-        ToolbarItem(content: { Spacer() } )
-        ToolbarItem(placement: .primaryAction) {
-            Button(action: { showInspector.toggle() }) {
-                Label("Toggle Inspector", systemImage: "sidebar.right")
             }
         }
     }

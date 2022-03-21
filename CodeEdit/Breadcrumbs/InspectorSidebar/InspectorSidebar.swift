@@ -17,11 +17,11 @@ struct InspectorSidebar: View {
         VStack {
             switch selection {
                 case 0:
-                    Text("File Inspector")
+                Text("File Inspector")
                 case 1:
-                    Text("History Inspector")
+                Text("History Inspector")
                 case 2:
-                    Text("Quick Help Inspector")
+                Text("Quick Help Inspector")
                 default: EmptyView()
             }
         }
