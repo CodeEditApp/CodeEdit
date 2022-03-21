@@ -11,11 +11,10 @@ import Foundation
 import WelcomeModule
 
 struct WelcomeView: View {
+    @Environment(\.colorScheme) var colorScheme
     @State var isHovering: Bool = false
     @State var isHoveringClose: Bool = false
-
     @AppStorage(ReopenBehavior.storageKey) var behavior: ReopenBehavior = .welcome
-
     var dismissWindow: () -> Void
 
     private var dismissButton: some View {
@@ -94,7 +93,7 @@ struct WelcomeView: View {
             .padding(.top, 20)
             .padding(.horizontal, 56)
             .padding(.bottom, 16)
-            .background(Color(nsColor: .windowBackgroundColor))
+            .background(Color(nsColor: colorScheme == .dark ? .windowBackgroundColor : .white))
             .onHover { isHovering in
                 self.isHovering = isHovering
             }

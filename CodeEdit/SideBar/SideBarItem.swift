@@ -10,7 +10,6 @@ import WorkspaceClient
 import CodeFile
 
 struct SideBarItem: View {
-
 	@AppStorage(FileIconStyle.storageKey) var iconStyle: FileIconStyle = .default
 
 	var item: WorkspaceClient.FileItem

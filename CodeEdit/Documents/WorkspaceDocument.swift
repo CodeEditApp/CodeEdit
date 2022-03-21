@@ -21,8 +21,11 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
 	@Published var sortFoldersOnTop: Bool = true
     @Published var fileItems: [WorkspaceClient.FileItem] = []
 
+    var selected: WorkspaceClient.FileItem? {
+        guard let selectedId = selectedId else { return nil }
+        return fileItems.first(where: { $0.id == selectedId })
+    }
     var quickOpenState: QuickOpenState?
-
     var openedCodeFiles: [WorkspaceClient.FileItem: CodeFileDocument] = [:]
     private var cancellables = Set<AnyCancellable>()
 
@@ -47,6 +50,26 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         } else {
             selectedId = openFileItems[idx - 1].id
         }
+    }
+    func closeFileTabs<Items>(items: Items) where Items: Collection, Items.Element == WorkspaceClient.FileItem {
+        // TODO: Could potentially be optimized
+        for item in items {
+            closeFileTab(item: item)
+        }
+    }
+
+    func closeFileTab(where predicate: (WorkspaceClient.FileItem) -> Bool) {
+        closeFileTabs(items: openFileItems.filter(predicate))
+    }
+
+    func closeFileTabs(after item: WorkspaceClient.FileItem) {
+        guard let startIdx = openFileItems.firstIndex(where: { $0.id == item.id }) else {
+            assert(false, "Expected file item to be present in openFileItems")
+            return
+        }
+
+        let range = openFileItems[(startIdx+1)...]
+        closeFileTabs(items: range)
     }
 
     func openFile(item: WorkspaceClient.FileItem) {
