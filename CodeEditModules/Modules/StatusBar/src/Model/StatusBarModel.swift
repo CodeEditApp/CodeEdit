@@ -5,7 +5,8 @@
 //  Created by Lukas Pistrol on 20.03.22.
 //
 
-import Foundation
+import SwiftUI
+import GitClient
 
 public class StatusBarModel: ObservableObject {
 
@@ -23,7 +24,21 @@ public class StatusBarModel: ObservableObject {
 
 	@Published public var isExpanded: Bool = false // Implementation missing
 
+	@Published public var currentHeight: Double = 0
+	@Published public var isDragging: Bool = false
+
+	private (set) var toolbarFont: Font = .system(size: 11)
+
+	private (set) var gitClient: GitClient
+
+	private (set) var maxHeight: Double = 500
+	private (set) var standardHeight: Double = 300
+	private (set) var minHeight: Double = 100
+
 	// TODO: Add @Published vars for indentation, encoding, linebreak
 
-	public init() {}
+	public init(gitClient: GitClient) {
+		self.gitClient = gitClient
+		self.selectedBranch = gitClient.getCurrentBranchName()
+	}
 }
