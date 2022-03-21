@@ -28,6 +28,10 @@ let package = Package(
         .library(
             name: "Overlays",
             targets: ["Overlays"]
+        ),
+        .library(
+            name: "GitClient",
+            targets: ["GitClient"]
         )
     ],
     dependencies: [
@@ -85,11 +89,19 @@ let package = Package(
         ),
 		.target(
 			name: "StatusBar",
+            dependencies: [
+                "GitClient"
+            ],
 			path: "Modules/StatusBar/src"
 		),
         .target(
             name: "Overlays",
             path: "Modules/Overlays/src"
+        ),
+        .target(
+            name: "GitClient",
+            path: "Modules/GitClient/src"
         )
+
     ]
 )
