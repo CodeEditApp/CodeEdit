@@ -23,15 +23,23 @@ struct WorkspaceView: View {
     @State private var showingAlert = false
     @State private var alertTitle = ""
     @State private var alertMsg = ""
+    @State var showInspector = true
 
     var body: some View {
         NavigationView {
             if workspace.workspaceClient != nil {
-                SideBar(workspace: workspace, windowController: windowController)
+                NavigatorSidebar(workspace: workspace, windowController: windowController)
                     .frame(minWidth: 250)
-
-                WorkspaceCodeFileView(windowController: windowController,
-                                      workspace: workspace)
+                HSplitView {
+                    WorkspaceCodeFileView(windowController: windowController,
+                                    workspace: workspace)
+              .frame(maxWidth: .infinity, maxHeight: .infinity)
+                  InspectorSidebar(workspace: workspace, windowController: windowController)
+                  .toolbar {
+                      RightToolBarItems(showInspector: $showInspector)
+                  }
+                  .frame(minWidth: 250, maxWidth: .infinity, maxHeight: .infinity)
+                }
             } else {
                 EmptyView()
             }
@@ -46,6 +54,18 @@ struct WorkspaceView: View {
         .onChange(of: workspace.selectedId) { newValue in
             if newValue == nil {
                 windowController.window?.subtitle = ""
+            }
+        }
+    }
+}
+
+struct RightToolBarItems: ToolbarContent {
+    @Binding var showInspector: Bool
+    var body: some ToolbarContent {
+        ToolbarItem(content: { Spacer() } )
+        ToolbarItem(placement: .primaryAction) {
+            Button(action: { showInspector.toggle() }) {
+                Label("Toggle Inspector", systemImage: "sidebar.right")
             }
         }
     }
