@@ -100,6 +100,7 @@
 		5E3C6A3427E72AE000A7CA0D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		70F2E28327E848720002BA81 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		7A4D129627E8E7BD00D4AE07 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
+		85D7EE9527E928B900CB9F10 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodeEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B658FB3127DA9E0F00EA4DBD /* WorkspaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceView.swift; sourceTree = "<group>"; };
 		B658FB3327DA9E1000EA4DBD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -421,6 +422,7 @@
 				ja,
 				"zh-Hans",
 				it,
+				tr,
 			);
 			mainGroup = B658FB2327DA9E0F00EA4DBD;
 			packageReferences = (
@@ -585,6 +587,7 @@
 				12F71F7127E833A000095416 /* ja */,
 				70F2E28327E848720002BA81 /* zh-Hans */,
 				7A4D129627E8E7BD00D4AE07 /* it */,
+				85D7EE9527E928B900CB9F10 /* tr */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
