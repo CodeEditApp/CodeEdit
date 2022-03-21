@@ -1,0 +1,44 @@
+"Hello, world!"="Merhaba, dünya!";
+
+// Settings - General Tab
+"General"="Genel";
+
+// Settings - File Icon Style
+"File Icon Style"="Dosya Simge Stili";
+"Color"="Renk";
+"Monochrome"="Tek Renkli";
+
+// Settings - Appearance
+"Appearance"="Görünüm";
+"System"="Sistem";
+"Light"="Açık";
+"Dark"="Koyu";
+
+// Settings - Reopen Behavior
+"Reopen Behavior"="Davranışı Yeniden Aç";
+"Welcome Screen"="Karşılama Ekranı";
+"Open Panel"="Paneli Aç";
+"New Document"="Yeni Doküman";
+
+// Settings - Editor Theme
+"Editor Theme"="Editör Teması";
+
+// Welcome Screen
+"Welcome to CodeEdit"="CodeEdit'e Hoş geldiniz";
+"Version %@ (%@)"="Versiyon %@ (%@)";
+"No Recent Projects"="Son açılan proje yok";
+
+// Welcome Screen - New File
+"Create a new file"="Yeni dosya oluştur";
+"Clone an exisiting project"="Varolan projeden klonla";
+
+// Welcome Screen - SCM
+"Start working on something from a Git repository"="Git deposu üzerinden çalışmaya başlayın";
+"Open a project or file"="Proje yada Dosya açın";
+
+// Welcome Screen - Workspaces
+"Open an existing project or file on your Mac"="Mac bilgisayarınızdan varolan bir Proje yada Dosya açın";
+"Show this window when CodeEdit launches"="CodeEdit başlatıldığında bu ekranı göster";
+
+//Editor Screen
+"CodeEdit cannot open this file because its file type is not supported." = "Dosya türü desteklenmediği için CodeEdit bu dosyayı açamadı.";
