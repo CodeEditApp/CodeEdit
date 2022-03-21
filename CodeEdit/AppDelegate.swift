@@ -23,11 +23,14 @@ class CodeEditApplication: NSApplication {
 
 
 class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
+    private(set) var menu: NSMenu! = nil
+    
     func applicationWillFinishLaunching(_ notification: Notification) {
         _ = CodeEditDocumentController.shared
         let nib = NSNib(nibNamed: NSNib.Name("MainMenu"), bundle: Bundle.main)
         nib?.instantiate(withOwner: NSApplication.shared, topLevelObjects: nil)
         NSApplication.shared.mainMenu?.items.first { $0.title == "CodeEdit" }?.submenu?.items.first { $0.title == "Preferences" }?.action = #selector(openPreferences(_:))
+        menu = NSApplication.shared.mainMenu
     }
     
     func applicationDidFinishLaunching(_ notification: Notification) {
@@ -92,6 +95,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     
     @objc func openPreferences(_ sender: Any) {
         NSApp.sendAction(Selector(("showPreferencesWindow:")), to: nil, from: nil)
+        NSApplication.shared.mainMenu = menu
     }
     
     
