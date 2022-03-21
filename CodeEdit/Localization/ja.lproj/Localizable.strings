@@ -1,0 +1,44 @@
+"Hello, world!"="こんにちは";
+
+// Settings - General Tab
+"General"="一般";
+
+// Settings - File Icon Style
+"File Icon Style"="ファイルアイコンのスタイル";
+"Color"="カラー";
+"Monochrome"="モノクロ";
+
+// Settings - Appearance
+"Appearance"="外観";
+"System"="システム";
+"Light"="ライト";
+"Dark"="ダーク";
+
+// Settings - Reopen Behavior
+"Reopen Behavior"="再開時の扱い";
+"Welcome Screen"="ウェルカムスクリーン";
+"Open Panel"="オープンパネル";
+"New Document"="新しいドキュメント";
+
+// Settings - Editor Theme
+"Editor Theme"="エディタのテーマ";
+
+// Welcome Screen
+"Welcome to CodeEdit"="Welcome to CodeEdit";
+"Version %@ (%@)"="バージョン %@ (%@)";
+"No Recent Projects"="最近のプロジェクトはありません";
+
+// Welcome Screen - New File
+"Create a new file"="新しいファイルを作る";
+"Clone an exisiting project"="既存プロジェクトをクローン";
+
+// Welcome Screen - SCM
+"Start working on something from a Git repository"="Gitリポジトリから作業を開始する";
+"Open a project or file"="プロジェクトまたはファイルを開く";
+
+// Welcome Screen - Workspaces
+"Open an existing project or file on your Mac"="Macで既存のプロジェクトまたはファイルを開く";
+"Show this window when CodeEdit launches"="CodeEditの起動時にこのウィンドウを表示する";
+
+//Editor Screen
+"CodeEdit cannot open this file because its file type is not supported." = "CodeEditはこのファイルを開くことができません。";
