@@ -30,6 +30,7 @@ struct GeneralSettingsView: View {
             .onChange(of: appearance) { tag in
                 tag.applyAppearance()
             }
+            .fixedSize()
 
 			Picker("File Icon Style".localized(), selection: $fileIconStyle) {
 				Text("Color".localized())
@@ -37,6 +38,7 @@ struct GeneralSettingsView: View {
 				Text("Monochrome".localized())
 					.tag(FileIconStyle.monochrome)
 			}
+            .fixedSize()
 
 			Picker("Reopen Behavior".localized(), selection: $reopenBehavior) {
                 Text("Welcome Screen".localized())
@@ -47,6 +49,7 @@ struct GeneralSettingsView: View {
 				Text("New Document".localized())
                     .tag(ReopenBehavior.newDocument)
             }
+            .fixedSize()
 
 			Picker("Editor Theme".localized(), selection: $editorTheme) {
 				Text("Atelier Savanna (Auto)")
@@ -63,7 +66,9 @@ struct GeneralSettingsView: View {
 				Text("Ocean")
 					.tag(CodeEditor.ThemeName.ocean)
 			}
+            .fixedSize()
         }
+        .frame(width: 450)
         .padding()
     }
 }

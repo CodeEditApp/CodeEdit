@@ -15,8 +15,6 @@ struct SettingsView: View {
 					Label("General".localized(), systemImage: "gearshape")
                 }
         }
-        .padding()
-        .frame(width: 450, height: 250)
     }
 }
 

@@ -21,7 +21,7 @@ class CodeEditApplication: NSApplication {
 
 }
 
-@NSApplicationMain
+
 class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     func applicationWillFinishLaunching(_ notification: Notification) {
         _ = CodeEditDocumentController.shared
@@ -87,27 +87,27 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 
     // MARK: - Open windows
 
-    @IBAction func openPreferences(_ sender: Any) {
-        if let window = NSApp.windows.filter({ window in
-            return (window.contentView as? NSHostingView<SettingsView>) != nil
-        }).first {
-            window.makeKeyAndOrderFront(self)
-            return
-        }
-
-        let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 500, height: 400),
-            styleMask: [.titled, .closable],
-            backing: .buffered, defer: false)
-        window.center()
-        window.toolbar = NSToolbar()
-        window.title = "Settings"
-        window.toolbarStyle = .unifiedCompact
-        _ = NSWindowController(window: window)
-        let contentView = SettingsView()
-        window.contentView = NSHostingView(rootView: contentView)
-        window.makeKeyAndOrderFront(sender)
-    }
+//    @IBAction func openPreferences(_ sender: Any) {
+//        if let window = NSApp.windows.filter({ window in
+//            return (window.contentView as? NSHostingView<SettingsView>) != nil
+//        }).first {
+//            window.makeKeyAndOrderFront(self)
+//            return
+//        }
+//
+//        let window = NSWindow(
+//            contentRect: NSRect(x: 0, y: 0, width: 500, height: 400),
+//            styleMask: [.titled, .closable],
+//            backing: .buffered, defer: false)
+//        window.center()
+//        window.toolbar = NSToolbar()
+//        window.title = "Settings"
+//        window.toolbarStyle = .unifiedCompact
+//        _ = NSWindowController(window: window)
+//        let contentView = SettingsView()
+//        window.contentView = NSHostingView(rootView: contentView)
+//        window.makeKeyAndOrderFront(sender)
+//    }
 
     @IBAction func openWelcome(_ sender: Any) {
         if let window = NSApp.windows.filter({ window in

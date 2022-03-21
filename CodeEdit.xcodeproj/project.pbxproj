@@ -35,6 +35,7 @@
 		34EE19BE27E0469C00F152CE /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34EE19BD27E0469C00F152CE /* BlurView.swift */; };
 		5C403B8F27E20F8000788241 /* WorkspaceClient in Frameworks */ = {isa = PBXBuildFile; productRef = 5C403B8E27E20F8000788241 /* WorkspaceClient */; };
 		5CF38A5E27E48E6C0096A0F7 /* CodeFile in Frameworks */ = {isa = PBXBuildFile; productRef = 5CF38A5D27E48E6C0096A0F7 /* CodeFile */; };
+		90571F6027E89210006E606C /* CodeEdit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90571F5F27E89210006E606C /* CodeEdit.swift */; };
 		B658FB3427DA9E1000EA4DBD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3327DA9E1000EA4DBD /* Assets.xcassets */; };
 		B658FB3727DA9E1000EA4DBD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3627DA9E1000EA4DBD /* Preview Assets.xcassets */; };
 		B65E614627E6765D00255275 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = B65E614527E6765D00255275 /* Introspect */; };
@@ -96,6 +97,7 @@
 		34EE19BD27E0469C00F152CE /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
 		5E3C6A3427E72AE000A7CA0D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		70F2E28327E848720002BA81 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		90571F5F27E89210006E606C /* CodeEdit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEdit.swift; sourceTree = "<group>"; };
 		B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodeEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B658FB3127DA9E0F00EA4DBD /* WorkspaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceView.swift; sourceTree = "<group>"; };
 		B658FB3327DA9E1000EA4DBD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -267,6 +269,7 @@
 				B658FB3827DA9E1000EA4DBD /* CodeEdit.entitlements */,
 				B658FB3527DA9E1000EA4DBD /* Preview Content */,
 				043C321927E32295006AE443 /* MainMenu.xib */,
+				90571F5F27E89210006E606C /* CodeEdit.swift */,
 			);
 			path = CodeEdit;
 			sourceTree = "<group>";
@@ -492,6 +495,7 @@
 			files = (
 				2B7A583527E4BA0100D25D4E /* AppDelegate.swift in Sources */,
 				2875A46D27E3BE5B007805F8 /* BreadcrumbsView.swift in Sources */,
+				90571F6027E89210006E606C /* CodeEdit.swift in Sources */,
 				0485EB1D27E7338100138301 /* QuickOpenItem.swift in Sources */,
 				04540D5B27DD08C300E91B77 /* SettingsView.swift in Sources */,
 				D72E1A8927E44D7C00EB11B9 /* WelcomeWindowView.swift in Sources */,
@@ -693,12 +697,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconDev;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = CodeEdit/CodeEdit.entitlements;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"CodeEdit/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 44BN78992X;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -724,12 +728,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconDev;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = CodeEdit/CodeEdit.entitlements;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"CodeEdit/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 44BN78992X;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
