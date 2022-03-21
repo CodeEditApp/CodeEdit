@@ -31,7 +31,7 @@ struct NavigatorSidebar: View {
                     }
                 }
             case 2:
-                SidebarSearch(workspace: workspace, windowController: windowController)
+                SidebarSearch(state: workspace.searchState ?? .init(workspace))
             default: EmptyView()
             }
         }

@@ -10,11 +10,9 @@ import WorkspaceClient
 import Combine
 
 struct SidebarSearch: View {
-    @ObservedObject var workspace: WorkspaceDocument
-    @ObservedObject var searchManger: SearchManager = SearchManager()
+    @ObservedObject var state: WorkspaceDocument.SearchState
     @State private var searchText: String = ""
-    @State var selectedResult: String?
-    var windowController: NSWindowController
+    @State var selectedResult: AttributedString?
 
     var body: some View {
         VStack {
@@ -27,6 +25,10 @@ struct SidebarSearch: View {
                     if searchText.count > 0 {
                         Image(systemName: "xmark.circle.fill")
                             .foregroundColor(Color(nsColor: .secondaryLabelColor))
+                            .onTapGesture {
+                                searchText = ""
+                                state.search(searchText)
+                            }
                     }
                 }
                 .padding(.vertical, 2)
@@ -38,13 +40,22 @@ struct SidebarSearch: View {
             }
             .padding(.vertical, 4)
             .padding(.horizontal, 8)
+            Divider()
+            HStack(alignment: .center) {
+                Text(
+"\(Array(state.searchResult.values).flatMap {$0}.count) results in \(Array(state.searchResult.keys).count) files")
+                    .font(.system(size: 10))
+//                    .foregroundColor(Color(nsColor: ))
+            }
+            Divider()
             List(selection: $selectedResult) {
-                ForEach(Array(searchManger.searchResult.keys), id: \.url) { fileItem in
+                ForEach(Array(state.searchResult.keys), id: \.self) { fileURL in
                     Section {
-                        ForEach(searchManger.searchResult[fileItem] ?? [], id: \.self) { line in
+                        ForEach(state.searchResult[fileURL] ?? [], id: \.self) { line in
                             HStack(alignment: .top) {
                                 Image(systemName: "text.alignleft")
                                     .font(.system(size: 12))
+                                    .padding(.top, 2)
                                 Text(line)
                                     .lineLimit(Int.max)
                                     .foregroundColor(Color(nsColor: .secondaryLabelColor))
@@ -55,11 +66,12 @@ struct SidebarSearch: View {
                         }
                     } header: {
                         HStack(alignment: .center) {
-                            Image(systemName: fileItem.fileIcon)
-                                .font(.system(size: 13))
-                            Text(fileItem.fileName)
+//                            Image(nsImage: NSWorkspace.shared.icon(forFile: fileURL.path))
+//                                .frame(width: 13, height: 13)
+                            Text(fileURL.lastPathComponent)
                                 .font(.system(size: 13, weight: .semibold))
                                 .foregroundColor(Color(nsColor: NSColor.headerTextColor))
+                            Text(fileURL.path.replacingOccurrences(of: state.workspace.fileURL?.path ?? "", with: ""))
                         }
                         .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
                     }
@@ -67,7 +79,7 @@ struct SidebarSearch: View {
             }
         }
         .onSubmit {
-            searchManger.search(searchText, workspaceClient: workspace.workspaceClient)
+            state.search(searchText)
         }
     }
 }

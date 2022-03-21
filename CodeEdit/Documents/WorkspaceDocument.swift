@@ -26,6 +26,7 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         guard let selectedId = selectedId else { return nil }
         return fileItems.first(where: { $0.id == selectedId })
     }
+    var searchState: SearchState?
     var quickOpenState: QuickOpenState?
     var openedCodeFiles: [WorkspaceClient.FileItem: CodeFileDocument] = [:]
     private var cancellables = Set<AnyCancellable>()
@@ -132,6 +133,7 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
             ignoredFilesAndFolders: ignoredFilesAndDirectory
         )
         directoryURL = url
+        self.searchState = .init(self)
         self.quickOpenState = .init(self)
         workspaceClient?
             .getFiles
@@ -170,6 +172,59 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
             } catch {}
         }
         super.close()
+    }
+}
+
+// MARK: - Search
+
+extension WorkspaceDocument {
+    class SearchState: ObservableObject {
+
+        var workspace: WorkspaceDocument
+        @Published var searchResult: [URL: [AttributedString]] = [:]
+
+        init(_ workspace: WorkspaceDocument) {
+            self.workspace = workspace
+        }
+
+        func search(_ text: String) {
+            if let url = self.workspace.fileURL {
+                let enumerator = FileManager.default.enumerator(at: url,
+                                                                includingPropertiesForKeys: [
+                                                                    .isRegularFileKey
+                                                                ],
+                                                                options: [
+                                                                    .skipsHiddenFiles,
+                                                                    .skipsPackageDescendants
+                                                                ])
+                if let filePaths = enumerator?.allObjects as? [URL] {
+                    filePaths.forEach { fileURL in
+                        let data = try? String(contentsOf: fileURL)
+                        data?.split(separator: "\n").forEach { line in
+                            let noSpaceLine = line.trimmingCharacters(in: .whitespaces)
+                            if noSpaceLine.contains(text) {
+                                noSpaceLine.ranges(of: text).forEach { range in
+                                    var attributedString = AttributedString()
+                                    attributedString.append(
+                                        AttributedString(String(noSpaceLine[noSpaceLine.startIndex..<range.lowerBound]))
+                                    )
+                                    var searchedString = AttributedString(String(noSpaceLine[range]))
+                                    searchedString.font = .system(size: 12, weight: .bold)
+                                    searchedString.foregroundColor = .labelColor
+                                    attributedString.append(searchedString)
+                                    attributedString.append(
+                                        AttributedString(String(noSpaceLine[range.upperBound..<noSpaceLine.endIndex]))
+                                    )
+                                    var lines = self.searchResult[fileURL] ?? []
+                                    lines.append(attributedString)
+                                    self.searchResult[fileURL] = lines
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
