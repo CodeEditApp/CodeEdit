@@ -15,6 +15,7 @@ import CodeFile
 @objc(WorkspaceDocument)
 class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var workspaceClient: WorkspaceClient?
+    var directoryURL: URL?
 
     @Published var selectedId: String?
     @Published var openFileItems: [WorkspaceClient.FileItem] = []
@@ -130,6 +131,7 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
             folderURL: url,
             ignoredFilesAndFolders: ignoredFilesAndDirectory
         )
+        directoryURL = url
         self.quickOpenState = .init(self)
         workspaceClient?
             .getFiles

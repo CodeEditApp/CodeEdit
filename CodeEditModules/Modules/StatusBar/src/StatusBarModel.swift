@@ -14,7 +14,7 @@ public class StatusBarModel: ObservableObject {
 	@Published public var warningCount: Int = 0 // Implementation missing
 
 	@Published public var branches: [String] = ["main"] // Implementation missing
-	@Published public var selectedBranch: Int = 0 // Implementation missing
+	@Published public var selectedBranch: String = "" // Implementation missing
 
 	@Published public var isReloading: Bool = false // Implementation missing
 

@@ -35,6 +35,7 @@
 		34EE19BE27E0469C00F152CE /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34EE19BD27E0469C00F152CE /* BlurView.swift */; };
 		5C403B8F27E20F8000788241 /* WorkspaceClient in Frameworks */ = {isa = PBXBuildFile; productRef = 5C403B8E27E20F8000788241 /* WorkspaceClient */; };
 		5CF38A5E27E48E6C0096A0F7 /* CodeFile in Frameworks */ = {isa = PBXBuildFile; productRef = 5CF38A5D27E48E6C0096A0F7 /* CodeFile */; };
+		5CFA753B27E896B60002F01B /* GitClient in Frameworks */ = {isa = PBXBuildFile; productRef = 5CFA753A27E896B60002F01B /* GitClient */; };
 		B658FB3427DA9E1000EA4DBD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3327DA9E1000EA4DBD /* Assets.xcassets */; };
 		B658FB3727DA9E1000EA4DBD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3627DA9E1000EA4DBD /* Preview Assets.xcassets */; };
 		B65E614627E6765D00255275 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = B65E614527E6765D00255275 /* Introspect */; };
@@ -125,6 +126,7 @@
 				0485EB2527E7B9C800138301 /* Overlays in Frameworks */,
 				B65E614627E6765D00255275 /* Introspect in Frameworks */,
 				D70F5E2C27E4E8CF004EE4B9 /* WelcomeModule in Frameworks */,
+				5CFA753B27E896B60002F01B /* GitClient in Frameworks */,
 				28CE5EA027E6493D0065D29C /* StatusBar in Frameworks */,
 				5CF38A5E27E48E6C0096A0F7 /* CodeFile in Frameworks */,
 			);
@@ -337,6 +339,7 @@
 				B65E614527E6765D00255275 /* Introspect */,
 				28CE5E9F27E6493D0065D29C /* StatusBar */,
 				0485EB2427E7B9C800138301 /* Overlays */,
+				5CFA753A27E896B60002F01B /* GitClient */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -929,6 +932,10 @@
 		5CF38A5D27E48E6C0096A0F7 /* CodeFile */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = CodeFile;
+		};
+		5CFA753A27E896B60002F01B /* GitClient */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GitClient;
 		};
 		B65E614527E6765D00255275 /* Introspect */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import GitClient
 
 @available(macOS 12, *)
 public struct StatusBarView: View {
@@ -13,9 +14,12 @@ public struct StatusBarView: View {
 	@ObservedObject private var model: StatusBarModel
 
 	private var toolbarFont: Font = .system(size: 11)
+    private let gitClient: GitClient
 
-	public init() {
+    public init(gitClient: GitClient) {
 		self.model = .init()
+        self.gitClient = gitClient
+        model.selectedBranch = gitClient.getCurrentBranchName()
 	}
 
 	public var body: some View {
@@ -105,15 +109,31 @@ public struct StatusBarView: View {
 	}
 
 	private var branchPicker: some View {
-		Menu {
-			ForEach(model.branches.indices, id: \.self) { branch in
-				Button { model.selectedBranch = branch } label: {
-					Text(model.branches[branch])
+        Menu {
+            ForEach(gitClient.getBranches(), id: \.self) { branch in
+                Button {
+                    do {
+                        guard model.selectedBranch != branch else { return }
+                        try gitClient.checkoutBranch(branch)
+                        model.selectedBranch = branch
+                    } catch {
+                        guard let error = error as? GitClient.GitClientError else { return }
+                        switch error {
+                        case let .outputError(message):
+                            let alert = NSAlert()
+                            alert.messageText = message
+                            alert.alertStyle = .critical
+                            alert.addButton(withTitle: "Ok")
+                            alert.runModal()
+                        }
+                    }
+                } label: {
+					Text(branch)
 					// checkout branch
 				}
 			}
 		} label: {
-			Text(model.branches[model.selectedBranch])
+            Text(model.selectedBranch)
 				.font(toolbarFont)
 		}
 		.menuStyle(.borderlessButton)
@@ -128,9 +148,9 @@ public struct StatusBarView: View {
 	}
 
 	private var reloadButton: some View {
-		// Temporary
 		Button {
 			model.isReloading = true
+            gitClient.pull()
 			// Just for looks for now. In future we'll call a function like
 			// `reloadFileStatus()` here which will set/unset `reloading`
 			DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -264,7 +284,7 @@ struct SwiftUIView_Previews: PreviewProvider {
 	static var previews: some View {
 		ZStack(alignment: .bottom) {
 			Color.white
-			StatusBarView()
+            StatusBarView(gitClient: .default(directoryURL: URL(fileURLWithPath: "")))
 				.previewLayout(.fixed(width: 1.336, height: 500.0))
 				.preferredColorScheme(.light)
 		}
