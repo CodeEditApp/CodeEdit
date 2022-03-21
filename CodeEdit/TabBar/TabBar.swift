@@ -8,7 +8,7 @@
 import SwiftUI
 import WorkspaceClient
 
-struct CustomDivider: View {
+struct TabBarDivider: View {
     @Environment(\.colorScheme) var colorScheme
     let height: CGFloat = 1
 

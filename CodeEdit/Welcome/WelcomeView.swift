@@ -12,12 +12,9 @@ import WelcomeModule
 
 struct WelcomeView: View {
     @Environment(\.colorScheme) var colorScheme
-    
     @State var isHovering: Bool = false
     @State var isHoveringClose: Bool = false
-
     @AppStorage(ReopenBehavior.storageKey) var behavior: ReopenBehavior = .welcome
-
     var dismissWindow: () -> Void
 
     private var dismissButton: some View {

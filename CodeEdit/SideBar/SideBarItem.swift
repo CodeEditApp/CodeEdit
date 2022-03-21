@@ -9,22 +9,7 @@ import SwiftUI
 import WorkspaceClient
 import CodeFile
 
-struct TabBarDivider: View {
-    @Environment(\.colorScheme) var colorScheme
-    let height: CGFloat = 1
-
-    var body: some View {
-        Group {
-            Rectangle()
-        }
-        .frame(height: height)
-        .foregroundColor(colorScheme == .dark ? Color(nsColor: .black) : Color(nsColor: .separatorColor))
-    }
-}
-
-
 struct SideBarItem: View {
-
 	@AppStorage(FileIconStyle.storageKey) var iconStyle: FileIconStyle = .default
 
 	var item: WorkspaceClient.FileItem

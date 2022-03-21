@@ -17,7 +17,6 @@ struct BlurView: NSViewRepresentable {
         visualEffectView.material = material
         visualEffectView.blendingMode = blendingMode
         visualEffectView.state = NSVisualEffectView.State.followsWindowActiveState
-        
         return visualEffectView
     }
 

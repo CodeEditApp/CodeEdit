@@ -29,22 +29,18 @@ struct TabBarItem: View {
     @State var isHovering: Bool = false
     @State var isHoveringClose: Bool = false
     @State var isPressingClose: Bool = false
-    
     var item: WorkspaceClient.FileItem
     var windowController: NSWindowController
-    
     func closeAction () {
-        withAnimation() {
+        withAnimation {
             workspace.closeFileTab(item: item)
         }
     }
-
     @ObservedObject var workspace: WorkspaceDocument
     var tabBarHeight: Double = 28.0
     var isActive: Bool {
         item.id == workspace.selectedId
     }
-    
     @ViewBuilder
     var content: some View {
         HStack(spacing: 0.0) {
@@ -71,16 +67,8 @@ struct TabBarItem: View {
                     .buttonStyle(PlainButtonStyle())
                     .foregroundColor(isPressingClose ? .primary : .secondary)
                     .background(colorScheme == .dark
-                        ? isPressingClose
-                            ? Color(nsColor: .white).opacity(0.32)
-                            : isHoveringClose
-                                    ? Color(nsColor: .white).opacity(0.18)
-                                    : Color(.clear)
-                        : isPressingClose
-                                ? Color(nsColor: .black).opacity(0.29)
-                                : isHoveringClose
-                                        ? Color(nsColor: .black).opacity(0.11)
-                                        : Color(.clear)
+                        ? Color(nsColor: .white).opacity(isPressingClose ? 0.32 : isHoveringClose ? 0.18 : 0)
+                        : Color(nsColor: .black).opacity(isPressingClose ? 0.29 : isHoveringClose ? 0.11 : 0)
                     )
                     .cornerRadius(2)
                     .accessibilityLabel(Text("Close"))
@@ -93,6 +81,7 @@ struct TabBarItem: View {
                         isPressingClose = false
                     }
                     .opacity(isHovering ? 1 : 0)
+                    .animation(.easeInOut(duration: 0.15), value: isHovering)
                 }
                 Image(systemName: item.systemImage)
                     .resizable()
@@ -109,10 +98,10 @@ struct TabBarItem: View {
                 Color(nsColor: isActive ? .clear : .black)
                     .opacity(
                         colorScheme == .dark
-                            ? isHovering ? 0.15 : isActive ? 0 : 0.45
-                            : isHovering ? 0.15 : isActive ? 0 : 0.05
+                            ? isHovering ? 0.15 : 0.45
+                            : isHovering ? 0.15 : 0.05
                     )
-                    .animation(.easeInOut(duration: 0.15))
+                    .animation(.easeInOut(duration: 0.15), value: isHovering)
             )
             TabDivider()
         }
@@ -129,7 +118,6 @@ struct TabBarItem: View {
             }
         }
     }
-    
     var body: some View {
         Button(
             action: { workspace.selectedId = item.id },
@@ -139,7 +127,6 @@ struct TabBarItem: View {
             material: NSVisualEffectView.Material.titlebar,
             blendingMode: NSVisualEffectView.BlendingMode.withinWindow
         ))
-        .animation(.easeOut(duration: 0.2), value: workspace.openFileItems)
         .buttonStyle(.plain)
         .id(item.id)
         .keyboardShortcut(

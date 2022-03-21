@@ -25,7 +25,6 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         guard let selectedId = selectedId else { return nil }
         return fileItems.first(where: { $0.id == selectedId })
     }
-    
     var quickOpenState: QuickOpenState?
     var openedCodeFiles: [WorkspaceClient.FileItem: CodeFileDocument] = [:]
     private var cancellables = Set<AnyCancellable>()
@@ -52,7 +51,6 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
             selectedId = openFileItems[idx - 1].id
         }
     }
-    
     func closeFileTabs<Items>(items: Items) where Items: Collection, Items.Element == WorkspaceClient.FileItem {
         // TODO: Could potentially be optimized
         for item in items {
