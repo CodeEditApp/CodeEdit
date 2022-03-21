@@ -18,9 +18,7 @@ class CodeEditApplication: NSApplication {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
 }
-
 
 class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     private(set) var menu: NSMenu! = nil
@@ -29,7 +27,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         _ = CodeEditDocumentController.shared
         let nib = NSNib(nibNamed: NSNib.Name("MainMenu"), bundle: Bundle.main)
         nib?.instantiate(withOwner: NSApplication.shared, topLevelObjects: nil)
-        NSApplication.shared.mainMenu?.items.first { $0.title == "CodeEdit" }?.submenu?.items.first { $0.title == "Preferences" }?.action = #selector(openPreferences(_:))
+        NSApplication.shared.mainMenu?.items
+            .first { $0.title == "CodeEdit" }?.submenu?.items
+            .first { $0.title == "Preferences" }?.action = #selector(openPreferences(_:))
         menu = NSApplication.shared.mainMenu
     }
     
@@ -97,7 +97,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         NSApp.sendAction(Selector(("showPreferencesWindow:")), to: nil, from: nil)
         NSApplication.shared.mainMenu = menu
     }
-    
     
     @IBAction func openWelcome(_ sender: Any) {
         if let window = NSApp.windows.filter({ window in
