@@ -28,7 +28,9 @@ struct WorkspaceCodeFileView: View {
                         }
                     }
                     .safeAreaInset(edge: .bottom) {
-                        StatusBarView()
+                        if let url = workspace.directoryURL {
+                            StatusBarView(gitClient: .default(directoryURL: url))
+                        }
                     }
             } else {
                 Text("CodeEdit cannot open this file because its file type is not supported.")
