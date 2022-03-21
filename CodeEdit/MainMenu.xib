@@ -85,6 +85,11 @@
                                     </items>
                                 </menu>
                             </menuItem>
+                            <menuItem title="Open Quickly..." keyEquivalent="O" id="cNn-Qi-KMS">
+                                <connections>
+                                    <action selector="openQuickly:" target="-1" id="8Et-dD-Cju"/>
+                                </connections>
+                            </menuItem>
                             <menuItem isSeparatorItem="YES" id="m54-Is-iLE"/>
                             <menuItem title="Close" keyEquivalent="w" id="DVo-aG-piG">
                                 <connections>

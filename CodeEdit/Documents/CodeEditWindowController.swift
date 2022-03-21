@@ -6,12 +6,14 @@
 //
 
 import Cocoa
+import SwiftUI
 import CodeFile
+import Overlays
 
 class CodeEditWindowController: NSWindowController {
 
     var workspace: WorkspaceDocument?
-
+    var quickOpenPanel: OverlayPanel?
     override func windowDidLoad() {
         super.windowDidLoad()
 
@@ -30,5 +32,27 @@ class CodeEditWindowController: NSWindowController {
 
     @IBAction func saveDocument(_ sender: Any) {
         getSelectedCodeFile()?.save(sender)
+    }
+
+    @IBAction func openQuickly(_ sender: Any) {
+        if let workspace = workspace, let state = workspace.quickOpenState {
+            if let quickOpenPanel = quickOpenPanel {
+                if quickOpenPanel.isKeyWindow {
+                    quickOpenPanel.close()
+                    return
+                } else {
+                    quickOpenPanel.makeKeyAndOrderFront(self)
+                }
+            } else {
+                let panel = OverlayPanel()
+                self.quickOpenPanel = panel
+                let contentView = QuickOpenView(state: state) {
+                    panel.close()
+                }
+                panel.contentView = NSHostingView(rootView: contentView)
+                window?.addChildWindow(panel, ordered: .above)
+                panel.makeKeyAndOrderFront(self)
+            }
+        }
     }
 }

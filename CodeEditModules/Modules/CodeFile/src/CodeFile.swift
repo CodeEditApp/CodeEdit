@@ -58,7 +58,7 @@ public final class CodeFileDocument: NSDocument, ObservableObject {
     }
 }
 
-private extension CodeEditor.Language {
+public extension CodeEditor.Language {
     init(url: URL) {
         var value = url.pathExtension
         switch value {
