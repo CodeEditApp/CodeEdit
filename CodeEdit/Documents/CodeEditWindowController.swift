@@ -53,7 +53,7 @@ class CodeEditWindowController: NSWindowController {
                 panel.contentView = NSHostingView(rootView: contentView)
                 window?.addChildWindow(panel, ordered: .above)
                 panel.makeKeyAndOrderFront(self)
-            }  
+            }
         }
     }
 }
