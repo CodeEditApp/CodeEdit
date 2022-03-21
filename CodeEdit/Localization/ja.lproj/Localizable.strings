@@ -4,12 +4,12 @@
 "General"="一般";
 
 // Settings - File Icon Style
-"File Icon Style"="File Icon Style";
-"Color"="Color";
-"Monochrome"="Monochrome";
+"File Icon Style"="ファイルアイコンのスタイル";
+"Color"="カラー";
+"Monochrome"="モノクロ";
 
 // Settings - Appearance
-"Appearance"="Appearance";
+"Appearance"="外観";
 "System"="システム";
 "Light"="ライト";
 "Dark"="ダーク";
