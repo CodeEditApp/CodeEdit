@@ -16,25 +16,34 @@ struct QuickOpenView: View {
     var body: some View {
         VStack(spacing: 0.0) {
             VStack {
-                HStack(alignment: .center, spacing: 0) {
-                    Image(systemName: "doc.text.magnifyingglass")
-                        .imageScale(.large)
-                        .padding(.horizontal, 20)
-                        .offset(x: 2, y: 0)
-                    TextField("Open Quickly", text: $state.openQuicklyQuery)
-                        .font(.system(size: 22, weight: .light, design: .default))
-                        .textFieldStyle(.plain)
-                        .onReceive(
-                            state.$openQuicklyQuery
-                                .debounce(for: .seconds(0.4), scheduler: DispatchQueue.main)
-                        ) { _ in
-                            state.fetchOpenQuickly()
-                        }
+                ZStack {
+                    Button("") {
+                        self.onClose()
+                    }
+                    .foregroundColor(.clear)
+                    .frame(width: 0, height: 0)
+                    .background(.clear)
+                    .keyboardShortcut(KeyEquivalent.escape, modifiers: [])
+                    HStack(alignment: .center, spacing: 0) {
+                        Image(systemName: "doc.text.magnifyingglass")
+                            .imageScale(.large)
+                            .padding(.horizontal, 20)
+                            .offset(x: 2, y: 0)
+                        TextField("Open Quickly", text: $state.openQuicklyQuery)
+                            .font(.system(size: 22, weight: .light, design: .default))
+                            .textFieldStyle(.plain)
+                            .onReceive(
+                                state.$openQuicklyQuery
+                                    .debounce(for: .seconds(0.4), scheduler: DispatchQueue.main)
+                            ) { _ in
+                                state.fetchOpenQuickly()
+                            }
+                    }
+                        .frame(height: 28)
+                        .padding(.vertical)
+                        .foregroundColor(.primary.opacity(0.85))
+                        .background(BlurView(material: .sidebar, blendingMode: .behindWindow))
                 }
-                    .frame(height: 28)
-                    .padding(.vertical)
-                    .foregroundColor(.primary.opacity(0.85))
-                    .background(BlurView(material: .sidebar, blendingMode: .behindWindow))
             }
             Divider()
             NavigationView {
