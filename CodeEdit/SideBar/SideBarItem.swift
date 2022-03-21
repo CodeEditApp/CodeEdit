@@ -35,7 +35,32 @@ struct SideBarItem: View {
         } label: {
 			Label(item.url.lastPathComponent, systemImage: item.systemImage)
 				.accentColor(iconStyle == .color ? item.iconColor : .secondary)
-				.font(.callout)
+				.font(.callout).contextMenu{
+                    Button("Show in Finder", action: {
+                        
+                    })
+                    Divider()
+                    Button("Open in Tab", action: {
+                        
+                    })
+                    Button("Open in New Window", action: {
+                        
+                    })
+                    Divider()
+                    Button("Show File Inspector", action: {
+                        
+                    })
+                    Divider()
+                    Button("New File", action: {
+                        
+                    })
+                    Button("Add files to folder", action: {
+                        
+                    })
+                    Button("Delete", action: {
+                        
+                    })
+                }
 		}
 	}
 
@@ -51,7 +76,32 @@ struct SideBarItem: View {
 		} label: {
 			Label(item.url.lastPathComponent, systemImage: item.systemImage)
 				.accentColor(.secondary)
-				.font(.callout)
+				.font(.callout).contextMenu{
+                    Button("Show in Finder", action: {
+                        
+                    })
+                    Divider()
+                    Button("Open in Tab", action: {
+                        
+                    })
+                    Button("Open in New Window", action: {
+                        
+                    })
+                    Divider()
+                    Button("Show File Inspector", action: {
+                        
+                    })
+                    Divider()
+                    Button("New File", action: {
+                        
+                    })
+                    Button("Add files to folder", action: {
+                        
+                    })
+                    Button("Delete", action: {
+                        
+                    })
+                }
 		}
 	}
 }
