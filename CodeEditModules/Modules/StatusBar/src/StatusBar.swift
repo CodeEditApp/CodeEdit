@@ -8,6 +8,13 @@
 import SwiftUI
 import GitClient
 
+func checkIfHovering(isHovering: Bool) {
+    switch isHovering {
+    case true: NSCursor.pointingHand.push()
+    case false: NSCursor.pop()
+    }
+}
+
 @available(macOS 12, *)
 public struct StatusBarView: View {
 
@@ -173,11 +180,7 @@ public struct StatusBarView: View {
 		.buttonStyle(.borderless)
 		.foregroundStyle(.primary)
 		.onHover { hovering in
-			if hovering {
-				NSCursor.pointingHand.push()
-			} else {
-				NSCursor.pop()
-			}
+			checkIfHovering(isHovering: hovering)
 		}
 	}
 
@@ -192,11 +195,7 @@ public struct StatusBarView: View {
 			.font(toolbarFont)
 			.foregroundStyle(.primary)
 			.onHover { hovering in
-				if hovering {
-					NSCursor.pointingHand.push()
-				} else {
-					NSCursor.pop()
-				}
+                checkIfHovering(isHovering: hovering)
 			}
 	}
 
@@ -210,11 +209,7 @@ public struct StatusBarView: View {
 		.menuStyle(.borderlessButton)
 		.fixedSize()
 		.onHover { hovering in
-			if hovering {
-				NSCursor.pointingHand.push()
-			} else {
-				NSCursor.pop()
-			}
+			checkIfHovering(isHovering: hovering)
 		}
 	}
 
@@ -228,11 +223,7 @@ public struct StatusBarView: View {
 		.menuStyle(.borderlessButton)
 		.fixedSize()
 		.onHover { hovering in
-			if hovering {
-				NSCursor.pointingHand.push()
-			} else {
-				NSCursor.pop()
-			}
+			checkIfHovering(isHovering: hovering)
 		}
 	}
 
@@ -246,11 +237,7 @@ public struct StatusBarView: View {
 		.menuStyle(.borderlessButton)
 		.fixedSize()
 		.onHover { hovering in
-			if hovering {
-				NSCursor.pointingHand.push()
-			} else {
-				NSCursor.pop()
-			}
+			checkIfHovering(isHovering: hovering)
 		}
 	}
 
@@ -270,11 +257,7 @@ public struct StatusBarView: View {
 		.tint(model.isExpanded ? .accentColor : .primary)
 		.buttonStyle(.borderless)
 		.onHover { hovering in
-			if hovering {
-				NSCursor.pointingHand.push()
-			} else {
-				NSCursor.pop()
-			}
+			checkIfHovering(isHovering: hovering)
 		}
 	}
 }
