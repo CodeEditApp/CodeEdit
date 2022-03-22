@@ -2,15 +2,6 @@
   "object": {
     "pins": [
       {
-        "package": "CodeEditor",
-        "repositoryURL": "https://github.com/ZeeZide/CodeEditor.git",
-        "state": {
-          "branch": null,
-          "revision": "5856fac22b0a2174dbdea212784567c8c9cd1129",
-          "version": "1.2.0"
-        }
-      },
-      {
         "package": "Highlightr",
         "repositoryURL": "https://github.com/raspu/Highlightr",
         "state": {

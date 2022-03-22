@@ -31,11 +31,17 @@ struct WorkspaceView: View {
                 NavigatorSidebar(workspace: workspace, windowController: windowController)
                     .frame(minWidth: 250)
                 HSplitView {
-                    WorkspaceCodeFileView(windowController: windowController,
-                                    workspace: workspace)
-              .frame(maxWidth: .infinity, maxHeight: .infinity)
-                  InspectorSidebar(workspace: workspace, windowController: windowController)
-                  .frame(minWidth: 250, maxWidth: .infinity, maxHeight: .infinity)
+                    WorkspaceCodeFileView(
+                        windowController: windowController,
+                        workspace: workspace
+                    )
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+
+                    InspectorSidebar(
+                        workspace: workspace,
+                        windowController: windowController
+                    )
+                    .frame(minWidth: 250, maxWidth: .infinity, maxHeight: .infinity)
                 }
             } else {
                 EmptyView()
@@ -56,7 +62,7 @@ struct WorkspaceView: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
+struct WorkspaceView_Previews: PreviewProvider {
     static var previews: some View {
         WorkspaceView(windowController: NSWindowController(), workspace: .init())
     }
