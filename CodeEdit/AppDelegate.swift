@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import Preferences
+import Cocoa
 
 class CodeEditApplication: NSApplication {
     let strongDelegate = AppDelegate()
@@ -87,26 +89,26 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 
     // MARK: - Open windows
 
-    @IBAction func openPreferences(_ sender: Any) {
-        if let window = NSApp.windows.filter({ window in
-            return (window.contentView as? NSHostingView<SettingsView>) != nil
-        }).first {
-            window.makeKeyAndOrderFront(self)
-            return
-        }
+    private lazy var preferencesWindowController = PreferencesWindowController(
+        panes: [
+            Preferences.Pane(
+                identifier: Preferences.PaneIdentifier.general,
+                title: "General",
+                toolbarIcon: NSImage(systemSymbolName: "gearshape", accessibilityDescription: "")!) {
+                    GeneralSettingsView()
+                },
 
-        let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 500, height: 400),
-            styleMask: [.titled, .closable],
-            backing: .buffered, defer: false)
-        window.center()
-        window.toolbar = NSToolbar()
-        window.title = "Settings"
-        window.toolbarStyle = .unifiedCompact
-        _ = NSWindowController(window: window)
-        let contentView = SettingsView()
-        window.contentView = NSHostingView(rootView: contentView)
-        window.makeKeyAndOrderFront(sender)
+            Preferences.Pane(
+                identifier: Preferences.PaneIdentifier.theme,
+                title: "Theme",
+                toolbarIcon: NSImage(systemSymbolName: "paintbrush", accessibilityDescription: "")!) {
+                    GeneralSettingsView()
+                }
+        ]
+    )
+
+    @IBAction func openPreferences(_ sender: Any) {
+        preferencesWindowController.show()
     }
 
     @IBAction func openWelcome(_ sender: Any) {
