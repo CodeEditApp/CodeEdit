@@ -53,8 +53,6 @@ struct NavigatorSidebarItem: View {
             Label(item.url.lastPathComponent, systemImage: item.systemImage)
                 .accentColor(.secondary)
                 .font(.callout)
-                // If we put the contextmenu on the DisclosureGroup,
-                // We can not click sub items.
                 .contextMenu { contextMenuContent(true) }
         }
     }
