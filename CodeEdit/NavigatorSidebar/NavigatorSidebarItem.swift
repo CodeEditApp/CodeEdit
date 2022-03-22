@@ -105,8 +105,8 @@ struct NavigatorSidebarItem: View {
         }
         Button("Find in Selected Groups...", action: {
         }).disabled(isFolder ? false : true)
+        Divider()
         Menu("Source Control") {
-            Divider()
             Button("Commit Selected File", action: {
             })
             Divider()
