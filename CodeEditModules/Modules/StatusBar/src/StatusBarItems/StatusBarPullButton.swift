@@ -39,9 +39,10 @@ internal struct StatusBarPullButton: View {
 				}
 
 		}
-		.buttonStyle(.borderless)
+		.buttonStyle(.plain)
 		.foregroundStyle(.primary)
 		.onHover { isHovering($0) }
+		.disabled(model.selectedBranch == nil)
 	}
 
 	// Temporary
