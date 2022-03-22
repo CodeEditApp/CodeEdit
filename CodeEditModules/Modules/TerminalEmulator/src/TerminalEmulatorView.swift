@@ -17,10 +17,12 @@ import SwiftTerm
 ///
 public struct TerminalEmulatorView: NSViewRepresentable {
 
-	private var terminal: LocalProcessTerminalView
+	private let terminal: LocalProcessTerminalView
+	private var font: NSFont
 
-	public init() {
-		terminal = .init(frame: .zero)
+	public init(font: NSFont = .monospacedSystemFont(ofSize: 12, weight: .medium)) {
+		self.terminal = .init(frame: .zero)
+		self.font = font
 	}
 
 	/// Returns a string of a shell path to use
@@ -40,7 +42,7 @@ public struct TerminalEmulatorView: NSViewRepresentable {
 	///	return String(cString: pwd.pw_shell)
 	/// ```
 	private func getShell() -> String {
-		return "/bin/bash" // can be changed to "/bin/zsh"
+		"/bin/bash" // can be changed to "/bin/zsh"
 	}
 
 	public func makeNSView(context: Context) -> LocalProcessTerminalView {
@@ -51,7 +53,7 @@ public struct TerminalEmulatorView: NSViewRepresentable {
 		let shellIdiom = "-" + NSString(string: shell).lastPathComponent
 
 		terminal.startProcess(executable: shell, execName: shellIdiom)
-		terminal.font = NSFont.monospacedSystemFont(ofSize: 12, weight: .medium)
+		terminal.font = font
 
 		terminal.configureNativeColors()
 		return terminal
@@ -59,10 +61,11 @@ public struct TerminalEmulatorView: NSViewRepresentable {
 
 	public func updateNSView(_ view: LocalProcessTerminalView, context: Context) {
 		view.configureNativeColors()
+		view.font = font
 	}
 
 	public func makeCoordinator() -> Coordinator {
-		return Coordinator()
+		Coordinator()
 	}
 
 	public class Coordinator: NSObject, LocalProcessTerminalViewDelegate {
