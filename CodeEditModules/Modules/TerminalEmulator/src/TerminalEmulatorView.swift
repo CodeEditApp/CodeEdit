@@ -54,6 +54,11 @@ public struct TerminalEmulatorView: NSViewRepresentable {
 		let shellIdiom = "-" + NSString(string: shell).lastPathComponent
 
 		// changes working directory to project root
+
+		// TODO: Get rid of FileManager shared instance to prevent problems
+		// using shared instance of FileManager might lead to problems when using
+		// multiple workspaces. This works for now but most probably will need
+		// to be changed later on
 		FileManager.default.changeCurrentDirectoryPath(url.path)
 		terminal.startProcess(executable: shell, execName: shellIdiom)
 		terminal.font = font
