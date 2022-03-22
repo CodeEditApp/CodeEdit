@@ -29,6 +29,15 @@
         }
       },
       {
+        "package": "SwiftTerm",
+        "repositoryURL": "https://github.com/migueldeicaza/SwiftTerm.git",
+        "state": {
+          "branch": null,
+          "revision": "70a3af884c24dff9f1beeda04e889b5591f04f3c",
+          "version": "1.0.7"
+        }
+      },
+      {
         "package": "Introspect",
         "repositoryURL": "https://github.com/siteline/SwiftUI-Introspect",
         "state": {
