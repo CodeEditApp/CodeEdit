@@ -27,22 +27,24 @@ struct BreadcrumbsView: View {
 		ZStack(alignment: .leading) {
 			Rectangle()
 				.foregroundStyle(Color(nsColor: .controlBackgroundColor))
-			HStack {
-				BreadcrumbsComponent(
-                    projectName,
-                    systemImage: "square.dashed.inset.filled",
-                    color: .accentColor
-                )
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack {
+                    BreadcrumbsComponent(
+                        projectName,
+                        systemImage: "square.dashed.inset.filled",
+                        color: .accentColor
+                    )
 
-                chevron
+                    chevron
 
-                ForEach(folders, id: \.self) { folder in
-					BreadcrumbsComponent(folder, systemImage: "folder.fill")
-					chevron
-				}
-				BreadcrumbsComponent(fileName, systemImage: fileImage, color: file.iconColor)
-			}
-			.padding(.leading, 12)
+                    ForEach(folders, id: \.self) { folder in
+                        BreadcrumbsComponent(folder, systemImage: "folder.fill")
+                        chevron
+                    }
+                    BreadcrumbsComponent(fileName, systemImage: fileImage, color: file.iconColor)
+                }
+                .padding(.horizontal, 12)
+            }
 		}
 		.frame(height: 29)
 		.overlay(alignment: .bottom) {
