@@ -50,6 +50,9 @@
 		D72E1A8727E4242900EB11B9 /* RecentProjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72E1A8627E4242900EB11B9 /* RecentProjectsView.swift */; };
 		D72E1A8927E44D7C00EB11B9 /* WelcomeWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72E1A8827E44D7C00EB11B9 /* WelcomeWindowView.swift */; };
 		D7E201AE27E8B3C000CB86D0 /* String+Ranges.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201AD27E8B3C000CB86D0 /* String+Ranges.swift */; };
+		D7E201B027E8C07300CB86D0 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201AF27E8C07300CB86D0 /* SearchBar.swift */; };
+		D7E201B227E8D50000CB86D0 /* SearchModeSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201B127E8D50000CB86D0 /* SearchModeSelector.swift */; };
+		D7E201B427E9989900CB86D0 /* FindResultList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201B327E9989900CB86D0 /* FindResultList.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -121,6 +124,9 @@
 		D72E1A8627E4242900EB11B9 /* RecentProjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentProjectsView.swift; sourceTree = "<group>"; };
 		D72E1A8827E44D7C00EB11B9 /* WelcomeWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeWindowView.swift; sourceTree = "<group>"; };
 		D7E201AD27E8B3C000CB86D0 /* String+Ranges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ranges.swift"; sourceTree = "<group>"; };
+		D7E201AF27E8C07300CB86D0 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
+		D7E201B127E8D50000CB86D0 /* SearchModeSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchModeSelector.swift; sourceTree = "<group>"; };
+		D7E201B327E9989900CB86D0 /* FindResultList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindResultList.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -311,6 +317,9 @@
 			isa = PBXGroup;
 			children = (
 				D7012EE727E757850001E1EF /* SidebarSearch.swift */,
+				D7E201AF27E8C07300CB86D0 /* SearchBar.swift */,
+				D7E201B127E8D50000CB86D0 /* SearchModeSelector.swift */,
+				D7E201B327E9989900CB86D0 /* FindResultList.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -535,6 +544,7 @@
 				D7012EE827E757850001E1EF /* SidebarSearch.swift in Sources */,
 				D7E201AE27E8B3C000CB86D0 /* String+Ranges.swift in Sources */,
 				04540D5B27DD08C300E91B77 /* SettingsView.swift in Sources */,
+				D7E201B027E8C07300CB86D0 /* SearchBar.swift in Sources */,
 				D72E1A8927E44D7C00EB11B9 /* WelcomeWindowView.swift in Sources */,
 				04540D5C27DD08C300E91B77 /* GeneralSettingsView.swift in Sources */,
 				B6EE989227E887C600CDD8AB /* InspectorSidebarToolbar.swift in Sources */,
@@ -544,6 +554,7 @@
 				04540D5E27DD08C300E91B77 /* WorkspaceView.swift in Sources */,
 				34EE19BE27E0469C00F152CE /* BlurView.swift in Sources */,
 				D7211D4327E066CE008F2ED7 /* Localized+Ex.swift in Sources */,
+				D7E201B227E8D50000CB86D0 /* SearchModeSelector.swift in Sources */,
 				287776E927E34BC700D46668 /* TabBar.swift in Sources */,
 				0485EB1F27E7458B00138301 /* WorkspaceCodeFileView.swift in Sources */,
 				0485EB1927E70F4900138301 /* QuickOpenView.swift in Sources */,
@@ -554,6 +565,9 @@
 				287776E727E3413200D46668 /* NavigatorSidebar.swift in Sources */,
 				287776ED27E350D800D46668 /* NavigatorSidebarItem.swift in Sources */,
 				B6EE989027E8879A00CDD8AB /* InspectorSidebar.swift in Sources */,
+				D7E201B427E9989900CB86D0 /* FindResultList.swift in Sources */,
+				287776E727E3413200D46668 /* SideBar.swift in Sources */,
+				287776ED27E350D800D46668 /* SideBarItem.swift in Sources */,
 				289978ED27E4E97E00BB0357 /* FileIconStyle.swift in Sources */,
 				04660F6627E3ACEF00477777 /* ReopenBehavior.swift in Sources */,
 				D72E1A8327E3B0D400EB11B9 /* WelcomeView.swift in Sources */,
