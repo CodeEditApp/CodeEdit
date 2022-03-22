@@ -93,3 +93,4 @@ iOSInjectionProject/
 # System files
 
 .DS_Store
+CodeEdit.xcworkspace/xcshareddata/swiftpm/Package.resolved
