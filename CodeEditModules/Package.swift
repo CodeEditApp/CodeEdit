@@ -32,6 +32,10 @@ let package = Package(
         .library(
             name: "GitClient",
             targets: ["GitClient"]
+        ),
+        .library(
+            name: "Search",
+            targets: ["Search"]
         )
     ],
     dependencies: [
@@ -101,7 +105,13 @@ let package = Package(
         .target(
             name: "GitClient",
             path: "Modules/GitClient/src"
+        ),
+        .target(
+            name: "Search",
+            dependencies: [
+                "WorkspaceClient"
+            ],
+            path: "Modules/Search/src"
         )
-
     ]
 )
