@@ -92,13 +92,10 @@ struct NavigatorSidebarItem: View {
         }
         Group {
             Divider()
-            Button("New Group") {
+            Button("New Folder") {
                 item.addFolder(folderName: "Test Folder")
             }
-            Button("New Group without Folder") {
-                // New Group without Folder
-            }
-            Button("New Group from Selection") {
+            Button("New Folder from Selection") {
                 // New Group from Selection
             }
             Divider()
