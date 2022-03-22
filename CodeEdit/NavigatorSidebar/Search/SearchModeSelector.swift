@@ -6,9 +6,9 @@
 //
 
 import SwiftUI
+import Search
 
 struct SearchModeSelector: View {
-
     @State var selectedMode: [SearchModeModel] = [
         .Find,
         .Text,

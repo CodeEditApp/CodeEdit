@@ -7,6 +7,7 @@
 
 import SwiftUI
 import WorkspaceClient
+import Search
 
 struct SearchResultFileItem: View {
     @ObservedObject var state: WorkspaceDocument.SearchState
@@ -31,7 +32,7 @@ struct SearchResultFileItem: View {
     var body: some View {
         DisclosureGroup(isExpanded: $isExpanded) {
             ForEach(results, id: \.lineContent) { (result: SearchResultModel) in
-                HStack(alignment: .top) {
+                HStack(alignment: .top, spacing: 4) {
                     Image(systemName: "text.alignleft")
                         .font(.system(size: 12))
                         .padding(.top, 2)
@@ -41,15 +42,17 @@ struct SearchResultFileItem: View {
                         .font(.system(size: 12, weight: .light))
                     Spacer()
                 }
-                .padding(.leading, 15)
             }
         } label: {
             HStack {
                 Image(systemName: fileItem.fileIcon)
                 Text(fileItem.fileName)
-                    .font(.system(size: 13, weight: .semibold))
                     .foregroundColor(Color(nsColor: NSColor.headerTextColor))
+                    .font(.system(size: 13, weight: .semibold)) +
+                Text("  ") +
                 Text(fileItem.url.path.replacingOccurrences(of: state.workspace.fileURL?.path ?? "", with: ""))
+                    .foregroundColor(.secondary)
+                    .font(.system(size: 12, weight: .light))
                 Spacer()
             }
         }

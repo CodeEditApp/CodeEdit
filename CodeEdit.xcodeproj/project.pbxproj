@@ -53,9 +53,8 @@
 		D7E201B027E8C07300CB86D0 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201AF27E8C07300CB86D0 /* SearchBar.swift */; };
 		D7E201B227E8D50000CB86D0 /* SearchModeSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201B127E8D50000CB86D0 /* SearchModeSelector.swift */; };
 		D7E201B427E9989900CB86D0 /* SearchResultList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201B327E9989900CB86D0 /* SearchResultList.swift */; };
-		D7E201BB27E9ECD600CB86D0 /* SearchResultModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201BA27E9ECD600CB86D0 /* SearchResultModel.swift */; };
 		D7E201BD27EA00E200CB86D0 /* SearchResultFileItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201BC27EA00E200CB86D0 /* SearchResultFileItem.swift */; };
-		D7E201BF27EA1ACD00CB86D0 /* FindModeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201BE27EA1ACD00CB86D0 /* FindModeModel.swift */; };
+		D7F72DEB27EA3574000C3064 /* Search in Frameworks */ = {isa = PBXBuildFile; productRef = D7F72DEA27EA3574000C3064 /* Search */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -130,9 +129,7 @@
 		D7E201AF27E8C07300CB86D0 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		D7E201B127E8D50000CB86D0 /* SearchModeSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchModeSelector.swift; sourceTree = "<group>"; };
 		D7E201B327E9989900CB86D0 /* SearchResultList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultList.swift; sourceTree = "<group>"; };
-		D7E201BA27E9ECD600CB86D0 /* SearchResultModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultModel.swift; sourceTree = "<group>"; };
 		D7E201BC27EA00E200CB86D0 /* SearchResultFileItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultFileItem.swift; sourceTree = "<group>"; };
-		D7E201BE27EA1ACD00CB86D0 /* FindModeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindModeModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,6 +141,7 @@
 				0485EB2527E7B9C800138301 /* Overlays in Frameworks */,
 				B65E614627E6765D00255275 /* Introspect in Frameworks */,
 				D70F5E2C27E4E8CF004EE4B9 /* WelcomeModule in Frameworks */,
+				D7F72DEB27EA3574000C3064 /* Search in Frameworks */,
 				5CFA753B27E896B60002F01B /* GitClient in Frameworks */,
 				28CE5EA027E6493D0065D29C /* StatusBar in Frameworks */,
 				5CF38A5E27E48E6C0096A0F7 /* CodeFile in Frameworks */,
@@ -318,7 +316,6 @@
 		D7012EE627E757660001E1EF /* Search */ = {
 			isa = PBXGroup;
 			children = (
-				D7E201B527E9EA8A00CB86D0 /* Model */,
 				D7012EE727E757850001E1EF /* SidebarSearch.swift */,
 				D7E201AF27E8C07300CB86D0 /* SearchBar.swift */,
 				D7E201B127E8D50000CB86D0 /* SearchModeSelector.swift */,
@@ -347,15 +344,6 @@
 			path = Welcome;
 			sourceTree = "<group>";
 		};
-		D7E201B527E9EA8A00CB86D0 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				D7E201BA27E9ECD600CB86D0 /* SearchResultModel.swift */,
-				D7E201BE27EA1ACD00CB86D0 /* FindModeModel.swift */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -382,6 +370,7 @@
 				28CE5E9F27E6493D0065D29C /* StatusBar */,
 				0485EB2427E7B9C800138301 /* Overlays */,
 				5CFA753A27E896B60002F01B /* GitClient */,
+				D7F72DEA27EA3574000C3064 /* Search */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -554,7 +543,6 @@
 				2B7A583527E4BA0100D25D4E /* AppDelegate.swift in Sources */,
 				2875A46D27E3BE5B007805F8 /* BreadcrumbsView.swift in Sources */,
 				0485EB1D27E7338100138301 /* QuickOpenItem.swift in Sources */,
-				D7E201BB27E9ECD600CB86D0 /* SearchResultModel.swift in Sources */,
 				D7012EE827E757850001E1EF /* SidebarSearch.swift in Sources */,
 				D7E201AE27E8B3C000CB86D0 /* String+Ranges.swift in Sources */,
 				04540D5B27DD08C300E91B77 /* SettingsView.swift in Sources */,
@@ -581,7 +569,6 @@
 				287776ED27E350D800D46668 /* NavigatorSidebarItem.swift in Sources */,
 				B6EE989027E8879A00CDD8AB /* InspectorSidebar.swift in Sources */,
 				D7E201B427E9989900CB86D0 /* SearchResultList.swift in Sources */,
-				D7E201BF27EA1ACD00CB86D0 /* FindModeModel.swift in Sources */,
 				D7E201B427E9989900CB86D0 /* SearchResultList.swift in Sources */,
 				287776E727E3413200D46668 /* NavigatorSidebar.swift in Sources */,
 				287776ED27E350D800D46668 /* NavigatorSidebarItem.swift in Sources */,
@@ -1002,6 +989,10 @@
 		D70F5E2B27E4E8CF004EE4B9 /* WelcomeModule */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = WelcomeModule;
+		};
+		D7F72DEA27EA3574000C3064 /* Search */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Search;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -11,6 +11,7 @@ import SwiftUI
 import WorkspaceClient
 import Combine
 import CodeFile
+import Search
 
 @objc(WorkspaceDocument)
 class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
@@ -179,7 +180,6 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
 
 extension WorkspaceDocument {
     class SearchState: ObservableObject {
-
         var workspace: WorkspaceDocument
         @Published var searchResult: [SearchResultModel] = []
 

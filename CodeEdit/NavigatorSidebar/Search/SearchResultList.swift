@@ -7,6 +7,7 @@
 
 import SwiftUI
 import WorkspaceClient
+import Search
 
 struct SearchResultList: View {
     @ObservedObject var state: WorkspaceDocument.SearchState

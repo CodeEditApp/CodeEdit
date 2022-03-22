@@ -7,7 +7,7 @@
 
 import SwiftUI
 import WorkspaceClient
-import Combine
+import Search
 
 struct SidebarSearch: View {
     @ObservedObject var state: WorkspaceDocument.SearchState
@@ -16,6 +16,7 @@ struct SidebarSearch: View {
     private var foundFilesCount: Int {
         state.searchResult.filter {!$0.hasKeywordInfo}.count
     }
+
     private var foundResultsCount: Int {
         state.searchResult.filter {$0.hasKeywordInfo}.count
     }
@@ -27,7 +28,6 @@ struct SidebarSearch: View {
                 SearchBar(state: state, title: "", text: $searchText)
                 HStack {
                     Spacer()
-
                 }
             }
             .padding(.horizontal, 10)
