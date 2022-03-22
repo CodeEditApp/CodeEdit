@@ -13,14 +13,21 @@ struct SidebarSearch: View {
     @ObservedObject var state: WorkspaceDocument.SearchState
     @State private var searchText: String = ""
 
+    private var foundFilesCount: Int {
+        state.searchResult.filter {!$0.hasKeywordInfo}.count
+    }
+    private var foundResultsCount: Int {
+        state.searchResult.filter {$0.hasKeywordInfo}.count
+    }
+
     var body: some View {
         VStack {
             VStack {
                 SearchModeSelector()
-                SearchBar(title: "", text: $searchText)
+                SearchBar(state: state, title: "", text: $searchText)
                 HStack {
                     Spacer()
-                    
+
                 }
             }
             .padding(.horizontal, 10)
@@ -28,12 +35,11 @@ struct SidebarSearch: View {
             Divider()
             HStack(alignment: .center) {
                 Text(
-"\(Array(state.searchResult.values).flatMap {$0}.count) results in \(Array(state.searchResult.keys).count) files")
+                    "\(foundResultsCount) results in \(foundFilesCount) files")
                     .font(.system(size: 10))
-//                    .foregroundColor(Color(nsColor: ))
             }
             Divider()
-            FindResultList(state: state)
+            SearchResultList(state: state)
         }
         .onSubmit {
             state.search(searchText)

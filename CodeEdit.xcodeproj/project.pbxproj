@@ -43,7 +43,6 @@
 		B6EE989027E8879A00CDD8AB /* InspectorSidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EE988F27E8879A00CDD8AB /* InspectorSidebar.swift */; };
 		B6EE989227E887C600CDD8AB /* InspectorSidebarToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EE989127E887C600CDD8AB /* InspectorSidebarToolbar.swift */; };
 		D7012EE827E757850001E1EF /* SidebarSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7012EE727E757850001E1EF /* SidebarSearch.swift */; };
-		D7012EE827E757850001E1EF /* SidebarFind.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7012EE727E757850001E1EF /* SidebarFind.swift */; };
 		D70F5E2C27E4E8CF004EE4B9 /* WelcomeModule in Frameworks */ = {isa = PBXBuildFile; productRef = D70F5E2B27E4E8CF004EE4B9 /* WelcomeModule */; };
 		D7211D4327E066CE008F2ED7 /* Localized+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7211D4227E066CE008F2ED7 /* Localized+Ex.swift */; };
 		D7211D4727E06BFE008F2ED7 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D7211D4927E06BFE008F2ED7 /* Localizable.strings */; };
@@ -121,7 +120,6 @@
 		B6EE988F27E8879A00CDD8AB /* InspectorSidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorSidebar.swift; sourceTree = "<group>"; };
 		B6EE989127E887C600CDD8AB /* InspectorSidebarToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorSidebarToolbar.swift; sourceTree = "<group>"; };
 		D7012EE727E757850001E1EF /* SidebarSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarSearch.swift; sourceTree = "<group>"; };
-		D7012EE727E757850001E1EF /* SidebarFind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarFind.swift; sourceTree = "<group>"; };
 		D7211D4227E066CE008F2ED7 /* Localized+Ex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Localized+Ex.swift"; sourceTree = "<group>"; };
 		D7211D4827E06BFE008F2ED7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		D7211D4A27E06C01008F2ED7 /* sr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sr; path = sr.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -223,15 +221,11 @@
 		287776EA27E350A100D46668 /* NavigatorSidebar */ = {
 			isa = PBXGroup;
 			children = (
+				D7012EE627E757660001E1EF /* Search */,
 				287776E627E3413200D46668 /* NavigatorSidebar.swift */,
 				287776EC27E350D800D46668 /* NavigatorSidebarItem.swift */,
 				28B0A19727E385C300B73177 /* NavigatorSidebarToolbarTop.swift */,
 				28FFE1BE27E3A441001939DB /* NavigatorSidebarToolbarBottom.swift */,
-				D7012EE627E757660001E1EF /* Search */,
-				287776E627E3413200D46668 /* SideBar.swift */,
-				287776EC27E350D800D46668 /* SideBarItem.swift */,
-				28B0A19727E385C300B73177 /* SideBarToolbarTop.swift */,
-				28FFE1BE27E3A441001939DB /* SideBarToolbarBottom.swift */,
 			);
 			path = NavigatorSidebar;
 			sourceTree = "<group>";
@@ -325,7 +319,7 @@
 			isa = PBXGroup;
 			children = (
 				D7E201B527E9EA8A00CB86D0 /* Model */,
-				D7012EE727E757850001E1EF /* SidebarFind.swift */,
+				D7012EE727E757850001E1EF /* SidebarSearch.swift */,
 				D7E201AF27E8C07300CB86D0 /* SearchBar.swift */,
 				D7E201B127E8D50000CB86D0 /* SearchModeSelector.swift */,
 				D7E201B327E9989900CB86D0 /* SearchResultList.swift */,
@@ -561,7 +555,7 @@
 				2875A46D27E3BE5B007805F8 /* BreadcrumbsView.swift in Sources */,
 				0485EB1D27E7338100138301 /* QuickOpenItem.swift in Sources */,
 				D7E201BB27E9ECD600CB86D0 /* SearchResultModel.swift in Sources */,
-				D7012EE827E757850001E1EF /* SidebarFind.swift in Sources */,
+				D7012EE827E757850001E1EF /* SidebarSearch.swift in Sources */,
 				D7E201AE27E8B3C000CB86D0 /* String+Ranges.swift in Sources */,
 				04540D5B27DD08C300E91B77 /* SettingsView.swift in Sources */,
 				D7E201B027E8C07300CB86D0 /* SearchBar.swift in Sources */,
@@ -586,11 +580,11 @@
 				287776E727E3413200D46668 /* NavigatorSidebar.swift in Sources */,
 				287776ED27E350D800D46668 /* NavigatorSidebarItem.swift in Sources */,
 				B6EE989027E8879A00CDD8AB /* InspectorSidebar.swift in Sources */,
-				D7E201B427E9989900CB86D0 /* FindResultList.swift in Sources */,
+				D7E201B427E9989900CB86D0 /* SearchResultList.swift in Sources */,
 				D7E201BF27EA1ACD00CB86D0 /* FindModeModel.swift in Sources */,
 				D7E201B427E9989900CB86D0 /* SearchResultList.swift in Sources */,
-				287776E727E3413200D46668 /* SideBar.swift in Sources */,
-				287776ED27E350D800D46668 /* SideBarItem.swift in Sources */,
+				287776E727E3413200D46668 /* NavigatorSidebar.swift in Sources */,
+				287776ED27E350D800D46668 /* NavigatorSidebarItem.swift in Sources */,
 				289978ED27E4E97E00BB0357 /* FileIconStyle.swift in Sources */,
 				04660F6627E3ACEF00477777 /* ReopenBehavior.swift in Sources */,
 				D72E1A8327E3B0D400EB11B9 /* WelcomeView.swift in Sources */,
