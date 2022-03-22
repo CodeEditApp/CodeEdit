@@ -103,6 +103,7 @@
 		289978EC27E4E97E00BB0357 /* FileIconStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileIconStyle.swift; sourceTree = "<group>"; };
 		28B0A19727E385C300B73177 /* NavigatorSidebarToolbarTop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigatorSidebarToolbarTop.swift; sourceTree = "<group>"; };
 		28FFE1BE27E3A441001939DB /* NavigatorSidebarToolbarBottom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigatorSidebarToolbarBottom.swift; sourceTree = "<group>"; };
+		2B7C962F27EA5D4000DF58C5 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
 		2B772A4C27EA6AF800AFCD7E /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		34EE19BD27E0469C00F152CE /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
 		5E3C6A3427E72AE000A7CA0D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -453,6 +454,7 @@
 				"zh-Hans",
 				it,
 				tr,
+				nl,
 				"pt-BR",
 			);
 			mainGroup = B658FB2327DA9E0F00EA4DBD;
@@ -628,6 +630,7 @@
 				70F2E28327E848720002BA81 /* zh-Hans */,
 				7A4D129627E8E7BD00D4AE07 /* it */,
 				85D7EE9527E928B900CB9F10 /* tr */,
+				2B7C962F27EA5D4000DF58C5 /* nl */,
 				2B772A4C27EA6AF800AFCD7E /* pt-BR */,
 			);
 			name = Localizable.strings;

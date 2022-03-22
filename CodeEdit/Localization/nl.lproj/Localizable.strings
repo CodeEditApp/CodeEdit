@@ -1,0 +1,44 @@
+"Hello, world!"="Hallo, Wereld!";
+
+// Settings - General Tab
+"General"="Algemeen";
+
+// Settings - File Icon Style
+"File Icon Style"="Bestandspictogramstijl";
+"Color"="Kleur";
+"Monochrome"="Monochroom";
+
+// Settings - Appearance
+"Appearance"="Uiterlijk";
+"System"="Systeem";
+"Light"="Licht";
+"Dark"="Donker";
+
+// Settings - Reopen Behavior
+"Reopen Behavior"="Heropen gedrag";
+"Welcome Screen"="Welkomst scherm";
+"Open Panel"="Open paneel";
+"New Document"="Nieuw document";
+
+// Settings - Editor Theme
+"Editor Theme"="Editor thema";
+
+// Welcome Screen
+"Welcome to CodeEdit"="Welkom bij CodeEdit";
+"Version %@ (%@)"="Versie %@ (%@)";
+"No Recent Projects"="Geen recente projecten";
+
+// Welcome Screen - New File
+"Create a new file"="Een nieuw bestand maken";
+"Clone an exisiting project"="Een bestaand project klonen";
+
+// Welcome Screen - SCM
+"Start working on something from a Git repository"="Begin met werken aan iets uit een Git-repository";
+"Open a project or file"="Open een project of bestand";
+
+// Welcome Screen - Workspaces
+"Open an existing project or file on your Mac"="Open een bestaand project of bestand op je Mac";
+"Show this window when CodeEdit launches"="Dit venster weergeven wanneer CodeEdit wordt gestart";
+
+//Editor Screen
+"CodeEdit cannot open this file because its file type is not supported." = "CodeEdit kan dit bestand niet openen omdat het bestandstype niet wordt ondersteund.";
