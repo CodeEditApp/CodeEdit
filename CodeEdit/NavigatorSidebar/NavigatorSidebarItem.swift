@@ -21,11 +21,11 @@ struct NavigatorSidebarItem: View {
         if item.children == nil {
             sidebarFileItem(item)
                 .id(item.id)
-                .contextMenu {contextMenuContent(false)}
+                .contextMenu { contextMenuContent(false) }
         } else {
             sidebarFolderItem(item)
                 .id(item.id)
-                .contextMenu {contextMenuContent(true)}
+                .contextMenu { contextMenuContent(true) }
         }
     }
 
@@ -57,6 +57,7 @@ struct NavigatorSidebarItem: View {
         }
     }
 
+    // TODO: Some implementations still need to be done
     /// maximum number of views in a container is exceeded (in SwiftUI). The max = 10
     @ViewBuilder
     private func contextMenuContent(_ isFolder: Bool) -> some View {
@@ -66,12 +67,15 @@ struct NavigatorSidebarItem: View {
         Group {
             Divider()
             Button("Open in Tab", action: {
+                // Open a new tab
             })
             Button("Open in New Window", action: {
+                // Open a new window
             })
             Divider()
         }
         Button("Show File Inspector", action: {
+            // Show File Inspector
         })
         Group {
             Divider()
@@ -79,6 +83,7 @@ struct NavigatorSidebarItem: View {
                 item.addFile(fileName: "randomFile.txt")
             })
             Button("Add files to folder", action: {
+                // Add Files to Folder
             })
             Divider()
         }
@@ -91,15 +96,19 @@ struct NavigatorSidebarItem: View {
                 item.addFolder(folderName: "Test Folder")
             })
             Button("New Group without Folder", action: {
+                // New Group without Folder
             })
             Button("New Group from Selection", action: {
+                // New Group from Selection
             })
             Divider()
         }
         Group {
             Button("Sort by Name", action: {
+                // Sort folder items by name
             }).disabled(isFolder ? false : true)
             Button("Sort by Type", action: {
+                // Sort folder items by file type
             }).disabled(isFolder ? false : true)
             Divider()
         }
@@ -108,14 +117,18 @@ struct NavigatorSidebarItem: View {
         Divider()
         Menu("Source Control") {
             Button("Commit Selected File", action: {
+                // Commit selected file
             })
             Divider()
             Button("Discard Changes in Selected File", action: {
+                // Discard changes made to the selected file
             })
             Divider()
             Button("Add", action: {
+                // Add file to git
             })
             Button("Mark as Resolved", action: {
+                // Mark file as resolved
             })
         }
     }
