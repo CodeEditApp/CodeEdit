@@ -15,17 +15,18 @@ import Preferences
 struct GeneralSettingsView: View {
     @AppStorage(Appearances.storageKey) var appearance: Appearances = .default
     @AppStorage(ReopenBehavior.storageKey) var reopenBehavior: ReopenBehavior = .default
-	  @AppStorage(FileIconStyle.storageKey) var fileIconStyle: FileIconStyle = .default
-	  @AppStorage(CodeEditorTheme.storageKey) var editorTheme: CodeEditor.ThemeName = .atelierSavannaAuto
+    @AppStorage(FileIconStyle.storageKey) var fileIconStyle: FileIconStyle = .default
+    @AppStorage(CodeEditorTheme.storageKey) var editorTheme: CodeEditor.ThemeName = .atelierSavannaAuto
+
     var body: some View {
         Form {
-			Picker("Appearance".localized(), selection: $appearance) {
-				Text("System".localized())
+            Picker("Appearance".localized(), selection: $appearance) {
+                Text("System".localized())
                     .tag(Appearances.system)
                 Divider()
-				Text("Light".localized())
+                Text("Light".localized())
                     .tag(Appearances.light)
-				Text("Dark".localized())
+                Text("Dark".localized())
                     .tag(Appearances.dark)
             }
             .onChange(of: appearance) { tag in
@@ -33,42 +34,42 @@ struct GeneralSettingsView: View {
             }
             .fixedSize()
 
-			Picker("File Icon Style".localized(), selection: $fileIconStyle) {
-				Text("Color".localized())
-					.tag(FileIconStyle.color)
-				Text("Monochrome".localized())
-					.tag(FileIconStyle.monochrome)
-			}
+            Picker("File Icon Style".localized(), selection: $fileIconStyle) {
+                Text("Color".localized())
+                    .tag(FileIconStyle.color)
+                Text("Monochrome".localized())
+                    .tag(FileIconStyle.monochrome)
+            }
             .fixedSize()
 
-			Picker("Reopen Behavior".localized(), selection: $reopenBehavior) {
+            Picker("Reopen Behavior".localized(), selection: $reopenBehavior) {
                 Text("Welcome Screen".localized())
                     .tag(ReopenBehavior.welcome)
                 Divider()
-				Text("Open Panel".localized())
+                Text("Open Panel".localized())
                     .tag(ReopenBehavior.openPanel)
-				Text("New Document".localized())
+                Text("New Document".localized())
                     .tag(ReopenBehavior.newDocument)
             }
             .fixedSize()
 
-			Picker("Editor Theme".localized(), selection: $editorTheme) {
+            Picker("Editor Theme".localized(), selection: $editorTheme) {
                 Text("pojoaque")
                     .tag(CodeEditor.ThemeName.default)
-				Text("Atelier Savanna (Auto)")
-					.tag(CodeEditor.ThemeName.atelierSavannaAuto)
-				Text("Atelier Savanna Dark")
-					.tag(CodeEditor.ThemeName.atelierSavannaDark)
-				Text("Atelier Savanna Light")
-					.tag(CodeEditor.ThemeName.atelierSavannaLight)
-				// TODO: Pojoaque does not seem to work (does not change from previous selection)
-//				Text("Pojoaque")
-//					.tag(CodeEditor.ThemeName.pojoaque)
-				Text("Agate")
-					.tag(CodeEditor.ThemeName.agate)
-				Text("Ocean")
-					.tag(CodeEditor.ThemeName.ocean)
-			}
+                Text("Atelier Savanna (Auto)")
+                    .tag(CodeEditor.ThemeName.atelierSavannaAuto)
+                Text("Atelier Savanna Dark")
+                    .tag(CodeEditor.ThemeName.atelierSavannaDark)
+                Text("Atelier Savanna Light")
+                    .tag(CodeEditor.ThemeName.atelierSavannaLight)
+                // TODO: Pojoaque does not seem to work (does not change from previous selection)
+                //				Text("Pojoaque")
+                //					.tag(CodeEditor.ThemeName.pojoaque)
+                Text("Agate")
+                    .tag(CodeEditor.ThemeName.agate)
+                Text("Ocean")
+                    .tag(CodeEditor.ThemeName.ocean)
+            }
             .fixedSize()
         }
         .frame(width: 500)
