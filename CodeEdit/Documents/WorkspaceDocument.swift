@@ -195,8 +195,8 @@ extension WorkspaceDocument {
                 return
             }
 
-            DispatchQueue(label: "austincondiff.CodeEdit.quickOpen.searchFiles").async {
-                if let url = self.workspace.fileURL {
+            DispatchQueue(label: "austincondiff.CodeEdit.quickOpen.searchFiles").async { [weak self] in
+                if let self = self, let url = self.workspace.fileURL {
                     let enumerator = FileManager.default.enumerator(at: url,
                                                                     includingPropertiesForKeys: [
                                                                         .isRegularFileKey
