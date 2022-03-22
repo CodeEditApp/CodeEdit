@@ -14,6 +14,7 @@ public extension WorkspaceClient {
         public var id: String
         public var url: URL
         public var children: [FileItem]?
+        public let fileManger = FileManager.default
         public var systemImage: String {
             switch children {
             case nil:
@@ -48,7 +49,7 @@ public extension WorkspaceClient {
             case "entitlements":
                 return "checkmark.seal"
             case "plist":
-				return "tablecells"
+                return "tablecells"
             case "md", "txt", "rtf":
                 return "doc.plaintext"
             case "html", "py", "sh":
@@ -62,22 +63,22 @@ public extension WorkspaceClient {
             }
         }
 
-		public var iconColor: Color {
-			switch fileType {
-			case "swift", "html":
-				return .orange
-			case "java":
-				return .red
-			case "js", "entitlements", "json", "LICENSE":
-				return .yellow
-			case "css", "ts", "jsx", "md", "py":
-				return .blue
-			case "sh":
-				return .green
-			default:
-				return .blue
-			}
-		}
+        public var iconColor: Color {
+            switch fileType {
+            case "swift", "html":
+                return .orange
+            case "java":
+                return .red
+            case "js", "entitlements", "json", "LICENSE":
+                return .yellow
+            case "css", "ts", "jsx", "md", "py":
+                return .blue
+            case "sh":
+                return .green
+            default:
+                return .blue
+            }
+        }
 
         private var fileType: String {
             url.lastPathComponent.components(separatedBy: ".").last ?? ""
@@ -98,6 +99,45 @@ public extension WorkspaceClient {
 
         public static func < (lhs: FileItem, rhs: FileItem) -> Bool {
             return lhs.url.lastPathComponent < rhs.url.lastPathComponent
+        }
+
+        /// Allows the user to view the file or folder in the finder application
+        public func showInFinder() {
+            NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: url.path)
+        }
+
+        /// This function allows creation of folders in the main directory or sub-folders
+        public func addFolder(folderName: String) {
+            let folderUrl = url.appendingPathComponent(folderName)
+            do {
+                try fileManger.createDirectory(at: folderUrl, withIntermediateDirectories: true, attributes: [:])
+            } catch {
+                fatalError(error.localizedDescription)
+            }
+        }
+
+        /// This function allows creating files in the selected folder or project main directory
+        public func addFile(fileName: String) {
+            do {
+                let fileUrl = url.appendingPathComponent(fileName)
+                fileManger.createFile(
+                    atPath: fileUrl.path,
+                    contents: nil,
+                    attributes: [FileAttributeKey.creationDate: Date()])
+            } catch {
+                fatalError(error.localizedDescription)
+            }
+        }
+
+        /// This function deletes the item or folder from the current project
+        public func delete() {
+            if fileManger.fileExists(atPath: url.path) {
+                do {
+                    try fileManger.removeItem(at: url)
+                } catch {
+                    fatalError(error.localizedDescription)
+                }
+            }
         }
     }
 }

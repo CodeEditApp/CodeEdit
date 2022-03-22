@@ -12,187 +12,23 @@ import CodeFile
 
 struct NavigatorSidebarItem: View {
     @AppStorage(FileIconStyle.storageKey) var iconStyle: FileIconStyle = .default
-    
     var item: WorkspaceClient.FileItem
     @ObservedObject var workspace: WorkspaceDocument
     var windowController: NSWindowController
     @State var isExpanded: Bool = false
-    
-    let fileManger = FileManager.default
-    
-    // maximum number of views in a container is exceeded (in SwiftUI). The max = 10
+
     var body: some View {
         if item.children == nil {
             sidebarFileItem(item)
                 .id(item.id)
-                .contextMenu{
-                    Button("Show in Finder", action: {
-                        showInFinder()
-                    })
-                    
-                    Group{
-                        Divider()
-                        
-                        Button("Open in Tab", action: {
-                            print("Open in Tab")
-                        })
-                        
-                        Button("Open in New Window", action: {
-                            print("Open in New Window")
-                        })
-                        
-                        Divider()
-                    }
-                    
-                    Button("Show File Inspector", action: {
-                        print("Show File Inspector")
-                    })
-                    
-                    Group{
-                        Divider()
-                        
-                        Button("New File", action: {
-                            addFile(fileName: "randomFile.txt")
-                        })
-                        
-                        Button("Add files to folder", action: {
-                            print("Add files to folder")
-                        })
-                        
-                        Divider()
-                    }
-                    
-                    Button("Delete", action: {
-                        deleteItem()
-                    })
-                    
-                    Group{
-                        Divider()
-                        
-                        Button("New Group", action: {
-                            addFolder(folderName: "Test Folder")
-                        })
-                        
-                        Button("New Group without Folder", action: {
-                            print("New Group without Folder")
-                        })
-                        
-                        Button("New Group from Selection", action: {
-                            print("New Group from Selection")
-                        })
-                        
-                        Divider()
-                    }
-                    
-                    Menu("Source Control"){
-                        Button("Commit Selected File", action: {
-                            print("Commit Selected File")
-                        })
-                        
-                        Divider()
-                        
-                        Button("Discard Changes in Selected File", action: {
-                            print("Discard Changes in Selected File")
-                        })
-                        
-                        Divider()
-                        
-                        Button("Add", action: {
-                            print("Add")
-                        })
-                        
-                        Button("Mark as Resolved", action: {
-                            print("Mark as Resolved")
-                        })
-                    }
-                }
+                .contextMenu {contextMenuContent(false)}
         } else {
             sidebarFolderItem(item)
                 .id(item.id)
-                .contextMenu{
-                    Button("Show in Finder", action: {
-                        showInFinder()
-                    })
-                    
-                    Group{
-                        Divider()
-                        
-                        Button("Open in Tab", action: {
-                            print("Open in Tab")
-                        })
-                        
-                        Button("Open in New Window", action: {
-                            print("Open in New Window")
-                        })
-                        
-                        Divider()
-                    }
-                    
-                    Button("Show File Inspector", action: {
-                        print("Show File Inspector")
-                    })
-                    
-                    Group{
-                        Divider()
-                        
-                        Button("New File", action: {
-                            addFile(fileName: "randomFile.txt")
-                        })
-                        
-                        Button("Add files to folder", action: {
-                            print("Add files to folder")
-                        })
-                        
-                        Divider()
-                    }
-                    
-                    Button("Delete", action: {
-                        deleteItem()
-                    })
-                    
-                    Group{
-                        Divider()
-                        
-                        Button("New Group", action: {
-                            addFolder(folderName: "Test Folder")
-                        })
-                        
-                        Button("New Group without Folder", action: {
-                            print("New Group without Folder")
-                        })
-                        
-                        Button("New Group from Selection", action: {
-                            print("New Group from Selection")
-                        })
-                        
-                        Divider()
-                    }
-                    
-                    Menu("Source Control"){
-                        Button("Commit Selected File", action: {
-                            print("Commit Selected File")
-                        })
-                        
-                        Divider()
-                        
-                        Button("Discard Changes in Selected File", action: {
-                            print("Discard Changes in Selected File")
-                        })
-                        
-                        Divider()
-                        
-                        Button("Add", action: {
-                            print("Add")
-                        })
-                        
-                        Button("Mark as Resolved", action: {
-                            print("Mark as Resolved")
-                        })
-                    }
-                }
+                .contextMenu {contextMenuContent(true)}
         }
     }
-    
+
     func sidebarFileItem(_ item: WorkspaceClient.FileItem) -> some View {
         NavigationLink {
             WorkspaceCodeFileView(windowController: windowController,
@@ -204,7 +40,7 @@ struct NavigatorSidebarItem: View {
                 .font(.callout)
         }
     }
-    
+
     func sidebarFolderItem(_ item: WorkspaceClient.FileItem) -> some View {
         DisclosureGroup(isExpanded: $isExpanded) {
             if isExpanded { // Only load when expanded -> Improves performance massively
@@ -220,38 +56,67 @@ struct NavigatorSidebarItem: View {
                 .font(.callout)
         }
     }
-    
-    func showInFinder(){
-        NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: item.url.path)
-    }
-    
-    func addFolder(folderName: String){
-        let folderUrl = item.url.appendingPathComponent(folderName)
-        
-        do {
-            try fileManger.createDirectory(at: folderUrl, withIntermediateDirectories: true, attributes: [:])
-        } catch {
-            print(error)
+
+    /// maximum number of views in a container is exceeded (in SwiftUI). The max = 10
+    @ViewBuilder
+    private func contextMenuContent(_ isFolder: Bool) -> some View {
+        Button("Show in Finder", action: {
+            item.showInFinder()
+        })
+        Group {
+            Divider()
+            Button("Open in Tab", action: {
+            })
+            Button("Open in New Window", action: {
+            })
+            Divider()
         }
-    }
-    
-    func addFile(fileName: String){
-        do {
-            let fileUrl = item.url.appendingPathComponent(fileName)
-            
-            fileManger.createFile(atPath: fileUrl.path, contents: nil, attributes: [FileAttributeKey.creationDate: Date()])
-        } catch {
-            print(error)
+        Button("Show File Inspector", action: {
+        })
+        Group {
+            Divider()
+            Button("New File", action: {
+                item.addFile(fileName: "randomFile.txt")
+            })
+            Button("Add files to folder", action: {
+            })
+            Divider()
         }
-    }
-    
-    func deleteItem(){
-        if fileManger.fileExists(atPath: item.url.path){
-            do {
-                try fileManger.removeItem(at: item.url)
-            } catch {
-                print(error)
-            }
+        Button("Delete", action: {
+            item.delete()
+        })
+        Group {
+            Divider()
+            Button("New Group", action: {
+                item.addFolder(folderName: "Test Folder")
+            })
+            Button("New Group without Folder", action: {
+            })
+            Button("New Group from Selection", action: {
+            })
+            Divider()
+        }
+        Group {
+            Button("Sort by Name", action: {
+            }).disabled(isFolder ? false : true)
+            Button("Sort by Type", action: {
+            }).disabled(isFolder ? false : true)
+            Divider()
+        }
+        Button("Find in Selected Groups...", action: {
+        }).disabled(isFolder ? false : true)
+        Menu("Source Control") {
+            Divider()
+            Button("Commit Selected File", action: {
+            })
+            Divider()
+            Button("Discard Changes in Selected File", action: {
+            })
+            Divider()
+            Button("Add", action: {
+            })
+            Button("Mark as Resolved", action: {
+            })
         }
     }
 }
