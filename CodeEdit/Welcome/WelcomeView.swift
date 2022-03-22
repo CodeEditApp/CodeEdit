@@ -68,22 +68,22 @@ struct WelcomeView: View {
                                 dismissWindow()
                             }
                         WelcomeActionView(
+                            iconName: "folder",
+                            title: "Open a file or folder".localized(),
+                            subtitle: "Open an existing file or folder on your Mac".localized()
+                        )
+                            .onTapGesture {
+                                CodeEditDocumentController.shared.openDocument { _, _ in
+                                    dismissWindow()
+                                }
+                            }
+                        WelcomeActionView(
                             iconName: "plus.square.on.square",
                             title: "Clone an exisiting project".localized(),
                             subtitle: "Start working on something from a Git repository".localized()
                         )
                             .onTapGesture {
                                 // TODO: clone a Git repository
-                            }
-                        WelcomeActionView(
-                            iconName: "folder",
-                            title: "Open a project or file".localized(),
-                            subtitle: "Open an existing project or file on your Mac".localized()
-                        )
-                            .onTapGesture {
-                                CodeEditDocumentController.shared.openDocument { _, _ in
-                                    dismissWindow()
-                                }
                             }
                     }
                 }
