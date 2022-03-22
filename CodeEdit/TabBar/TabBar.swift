@@ -41,6 +41,7 @@ struct TabBar: View {
                                     windowController: windowController,
                                     workspace: workspace
                                 )
+                                .animation(nil, value: UUID())
                             }
                         }
                         .onAppear {
