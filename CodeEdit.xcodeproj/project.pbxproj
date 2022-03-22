@@ -43,6 +43,7 @@
 		B6EE989027E8879A00CDD8AB /* InspectorSidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EE988F27E8879A00CDD8AB /* InspectorSidebar.swift */; };
 		B6EE989227E887C600CDD8AB /* InspectorSidebarToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EE989127E887C600CDD8AB /* InspectorSidebarToolbar.swift */; };
 		D7012EE827E757850001E1EF /* SidebarSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7012EE727E757850001E1EF /* SidebarSearch.swift */; };
+		D7012EE827E757850001E1EF /* SidebarFind.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7012EE727E757850001E1EF /* SidebarFind.swift */; };
 		D70F5E2C27E4E8CF004EE4B9 /* WelcomeModule in Frameworks */ = {isa = PBXBuildFile; productRef = D70F5E2B27E4E8CF004EE4B9 /* WelcomeModule */; };
 		D7211D4327E066CE008F2ED7 /* Localized+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7211D4227E066CE008F2ED7 /* Localized+Ex.swift */; };
 		D7211D4727E06BFE008F2ED7 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D7211D4927E06BFE008F2ED7 /* Localizable.strings */; };
@@ -52,7 +53,10 @@
 		D7E201AE27E8B3C000CB86D0 /* String+Ranges.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201AD27E8B3C000CB86D0 /* String+Ranges.swift */; };
 		D7E201B027E8C07300CB86D0 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201AF27E8C07300CB86D0 /* SearchBar.swift */; };
 		D7E201B227E8D50000CB86D0 /* SearchModeSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201B127E8D50000CB86D0 /* SearchModeSelector.swift */; };
-		D7E201B427E9989900CB86D0 /* FindResultList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201B327E9989900CB86D0 /* FindResultList.swift */; };
+		D7E201B427E9989900CB86D0 /* SearchResultList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201B327E9989900CB86D0 /* SearchResultList.swift */; };
+		D7E201BB27E9ECD600CB86D0 /* SearchResultModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201BA27E9ECD600CB86D0 /* SearchResultModel.swift */; };
+		D7E201BD27EA00E200CB86D0 /* SearchResultFileItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201BC27EA00E200CB86D0 /* SearchResultFileItem.swift */; };
+		D7E201BF27EA1ACD00CB86D0 /* FindModeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201BE27EA1ACD00CB86D0 /* FindModeModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -117,6 +121,7 @@
 		B6EE988F27E8879A00CDD8AB /* InspectorSidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorSidebar.swift; sourceTree = "<group>"; };
 		B6EE989127E887C600CDD8AB /* InspectorSidebarToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorSidebarToolbar.swift; sourceTree = "<group>"; };
 		D7012EE727E757850001E1EF /* SidebarSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarSearch.swift; sourceTree = "<group>"; };
+		D7012EE727E757850001E1EF /* SidebarFind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarFind.swift; sourceTree = "<group>"; };
 		D7211D4227E066CE008F2ED7 /* Localized+Ex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Localized+Ex.swift"; sourceTree = "<group>"; };
 		D7211D4827E06BFE008F2ED7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		D7211D4A27E06C01008F2ED7 /* sr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sr; path = sr.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -126,7 +131,10 @@
 		D7E201AD27E8B3C000CB86D0 /* String+Ranges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ranges.swift"; sourceTree = "<group>"; };
 		D7E201AF27E8C07300CB86D0 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		D7E201B127E8D50000CB86D0 /* SearchModeSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchModeSelector.swift; sourceTree = "<group>"; };
-		D7E201B327E9989900CB86D0 /* FindResultList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindResultList.swift; sourceTree = "<group>"; };
+		D7E201B327E9989900CB86D0 /* SearchResultList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultList.swift; sourceTree = "<group>"; };
+		D7E201BA27E9ECD600CB86D0 /* SearchResultModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultModel.swift; sourceTree = "<group>"; };
+		D7E201BC27EA00E200CB86D0 /* SearchResultFileItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultFileItem.swift; sourceTree = "<group>"; };
+		D7E201BE27EA1ACD00CB86D0 /* FindModeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindModeModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -316,10 +324,12 @@
 		D7012EE627E757660001E1EF /* Search */ = {
 			isa = PBXGroup;
 			children = (
-				D7012EE727E757850001E1EF /* SidebarSearch.swift */,
+				D7E201B527E9EA8A00CB86D0 /* Model */,
+				D7012EE727E757850001E1EF /* SidebarFind.swift */,
 				D7E201AF27E8C07300CB86D0 /* SearchBar.swift */,
 				D7E201B127E8D50000CB86D0 /* SearchModeSelector.swift */,
-				D7E201B327E9989900CB86D0 /* FindResultList.swift */,
+				D7E201B327E9989900CB86D0 /* SearchResultList.swift */,
+				D7E201BC27EA00E200CB86D0 /* SearchResultFileItem.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -341,6 +351,15 @@
 				D72E1A8827E44D7C00EB11B9 /* WelcomeWindowView.swift */,
 			);
 			path = Welcome;
+			sourceTree = "<group>";
+		};
+		D7E201B527E9EA8A00CB86D0 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				D7E201BA27E9ECD600CB86D0 /* SearchResultModel.swift */,
+				D7E201BE27EA1ACD00CB86D0 /* FindModeModel.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -541,7 +560,8 @@
 				2B7A583527E4BA0100D25D4E /* AppDelegate.swift in Sources */,
 				2875A46D27E3BE5B007805F8 /* BreadcrumbsView.swift in Sources */,
 				0485EB1D27E7338100138301 /* QuickOpenItem.swift in Sources */,
-				D7012EE827E757850001E1EF /* SidebarSearch.swift in Sources */,
+				D7E201BB27E9ECD600CB86D0 /* SearchResultModel.swift in Sources */,
+				D7012EE827E757850001E1EF /* SidebarFind.swift in Sources */,
 				D7E201AE27E8B3C000CB86D0 /* String+Ranges.swift in Sources */,
 				04540D5B27DD08C300E91B77 /* SettingsView.swift in Sources */,
 				D7E201B027E8C07300CB86D0 /* SearchBar.swift in Sources */,
@@ -558,6 +578,7 @@
 				287776E927E34BC700D46668 /* TabBar.swift in Sources */,
 				0485EB1F27E7458B00138301 /* WorkspaceCodeFileView.swift in Sources */,
 				0485EB1927E70F4900138301 /* QuickOpenView.swift in Sources */,
+				D7E201BD27EA00E200CB86D0 /* SearchResultFileItem.swift in Sources */,
 				286620A527E4AB6900E18C2B /* BreadcrumbsComponent.swift in Sources */,
 				287776EF27E3515300D46668 /* TabBarItem.swift in Sources */,
 				D72E1A8727E4242900EB11B9 /* RecentProjectsView.swift in Sources */,
@@ -566,6 +587,8 @@
 				287776ED27E350D800D46668 /* NavigatorSidebarItem.swift in Sources */,
 				B6EE989027E8879A00CDD8AB /* InspectorSidebar.swift in Sources */,
 				D7E201B427E9989900CB86D0 /* FindResultList.swift in Sources */,
+				D7E201BF27EA1ACD00CB86D0 /* FindModeModel.swift in Sources */,
+				D7E201B427E9989900CB86D0 /* SearchResultList.swift in Sources */,
 				287776E727E3413200D46668 /* SideBar.swift in Sources */,
 				287776ED27E350D800D46668 /* SideBarItem.swift in Sources */,
 				289978ED27E4E97E00BB0357 /* FileIconStyle.swift in Sources */,

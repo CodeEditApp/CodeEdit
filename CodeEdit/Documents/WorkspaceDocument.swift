@@ -181,13 +181,14 @@ extension WorkspaceDocument {
     class SearchState: ObservableObject {
 
         var workspace: WorkspaceDocument
-        @Published var searchResult: [WorkspaceClient.FileItem: [AttributedString]] = [:]
+        @Published var searchResult: [SearchResultModel] = []
 
         init(_ workspace: WorkspaceDocument) {
             self.workspace = workspace
         }
 
         func search(_ text: String) {
+            self.searchResult = []
             if let url = self.workspace.fileURL {
                 let enumerator = FileManager.default.enumerator(at: url,
                                                                 includingPropertiesForKeys: [
@@ -201,28 +202,35 @@ extension WorkspaceDocument {
                     filePaths.map { url in
                         WorkspaceClient.FileItem(url: url, children: nil)
                     }.forEach { fileItem in
-                        let data = try? String(contentsOf: fileItem.url)
-                        data?.split(separator: "\n").forEach { line in
-                            let noSpaceLine = line.trimmingCharacters(in: .whitespaces)
-                            if noSpaceLine.contains(text) {
-                                noSpaceLine.ranges(of: text).forEach { range in
-                                    var attributedString = AttributedString()
-                                    attributedString.append(
-                                        AttributedString(String(noSpaceLine[noSpaceLine.startIndex..<range.lowerBound]))
-                                    )
-                                    var searchedString = AttributedString(String(noSpaceLine[range]))
-                                    searchedString.font = .system(size: 12, weight: .bold)
-                                    searchedString.foregroundColor = .labelColor
-                                    attributedString.append(searchedString)
-                                    attributedString.append(
-                                        AttributedString(String(noSpaceLine[range.upperBound..<noSpaceLine.endIndex]))
-                                    )
-                                    var lines = self.searchResult[fileItem] ?? []
-                                    lines.append(attributedString)
-                                    self.searchResult[fileItem] = lines
+                        var fileAddedFlag = true
+                        do {
+                            let data = try Data(contentsOf: fileItem.url)
+                            data.withUnsafeBytes {
+                                $0.split(separator: UInt8(ascii: "\n"))
+                                    .map { String(decoding: UnsafeRawBufferPointer(rebasing: $0), as: UTF8.self) }
+                            }.enumerated().forEach { (index: Int, line: String) in
+                                let noSpaceLine = line.trimmingCharacters(in: .whitespaces)
+                                if noSpaceLine.contains(text) {
+                                    if fileAddedFlag {
+                                        searchResult.append(SearchResultModel(
+                                            file: fileItem,
+                                            lineNumber: nil,
+                                            lineContent: nil,
+                                            keywordRange: nil)
+                                        )
+                                        fileAddedFlag = false
+                                    }
+                                    noSpaceLine.ranges(of: text).forEach { range in
+                                        searchResult.append(SearchResultModel(
+                                            file: fileItem,
+                                            lineNumber: index,
+                                            lineContent: noSpaceLine,
+                                            keywordRange: range)
+                                        )
+                                    }
                                 }
                             }
-                        }
+                        } catch {}
                     }
                 }
             }

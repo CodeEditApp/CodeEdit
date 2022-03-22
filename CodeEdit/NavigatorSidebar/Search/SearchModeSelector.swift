@@ -7,75 +7,22 @@
 
 import SwiftUI
 
-struct SearchMode {
-    let title: String
-    let children: [SearchMode]
-    let needSelectionHightlight: Bool
-    
-    static let Containing = SearchMode(title: "Containing", children: [], needSelectionHightlight: false)
-    static let MatchingWord = SearchMode(title: "Matching Word", children: [], needSelectionHightlight: true)
-    static let StartingWith = SearchMode(title: "Starting With", children: [], needSelectionHightlight: true)
-    static let EndingWith = SearchMode(title: "Ending With", children: [], needSelectionHightlight: true)
-
-    static let Text = SearchMode(title: "Text", children: [.Containing, .MatchingWord, .StartingWith, .EndingWith], needSelectionHightlight: false)
-    static let References = SearchMode(title: "References", children: [.Containing, .MatchingWord, .StartingWith, .EndingWith], needSelectionHightlight: true)
-    static let Definitions = SearchMode(title: "Definitions", children: [.Containing, .MatchingWord, .StartingWith, .EndingWith], needSelectionHightlight: true)
-    static let RegularExpression = SearchMode(title: "Regular Expression", children: [], needSelectionHightlight: true)
-    static let CallHierarchy = SearchMode(title: "Call Hierarchy", children: [], needSelectionHightlight: true)
-    
-    static let Find = SearchMode(title: "Find", children: [.Text, .References, .Definitions, .RegularExpression, .CallHierarchy], needSelectionHightlight: false)
-    static let Replace = SearchMode(title: "Replace", children: [.Text, .RegularExpression], needSelectionHightlight: true)
-    
-    static let Search = SearchMode(title: "", children: [.Find, .Replace], needSelectionHightlight: false)
-    
-    static let TextMatchingModes: [SearchMode] = [.Containing, .MatchingWord, .StartingWith, .EndingWith]
-    static let FindModes: [SearchMode] = [.Text, .References, .Definitions, .RegularExpression, .CallHierarchy]
-    static let ReplaceModes: [SearchMode] = [.Text, .RegularExpression]
-    static let SearchModes: [SearchMode] = [.Find, .Replace]
-    
-    static func getAllModes(_ index: Int, currentSelected: [SearchMode]) -> [SearchMode] {
-        switch index {
-        case 0:
-            return SearchModes
-        case 1:
-            if let searchMode = currentSelected.first {
-                if searchMode == SearchMode.Find {
-                    return FindModes
-                } else if searchMode == searchMode {
-                    return ReplaceModes
-                }
-            } else {
-                return []
-            }
-        case 2:
-            return TextMatchingModes
-        default:
-            return []
-        }
-        return []
-    }
-}
-
-extension SearchMode: Equatable {
-    static func ==(lhs: SearchMode, rhs: SearchMode) -> Bool {
-        return lhs.title == rhs.title && lhs.children == rhs.children && lhs.needSelectionHightlight == rhs.needSelectionHightlight
-    }
-}
-
 struct SearchModeSelector: View {
-    
-    @State var selectedMode: [SearchMode] = [
+
+    @State var selectedMode: [SearchModeModel] = [
         .Find,
         .Text,
         .Containing
     ]
-    
-    private func getMenuList(_ index: Int) -> [SearchMode] {
-        return index == 0 ? SearchMode.SearchModes : selectedMode[index - 1].children
+
+    private func getMenuList(_ index: Int) -> [SearchModeModel] {
+        return index == 0 ? SearchModeModel.SearchModes : selectedMode[index - 1].children
     }
-    
-    private func onSelectMenuItem(_ index: Int, searchMode: SearchMode) {
-        var newSelectedMode: [SearchMode] = []
+
+    // TODO: improve this function and remove swiftlint comment
+    // swiftlint:disable:next cyclomatic_complexity
+    private func onSelectMenuItem(_ index: Int, searchMode: SearchModeModel) {
+        var newSelectedMode: [SearchModeModel] = []
         switch index {
         case 0:
             newSelectedMode.append(searchMode)
@@ -85,7 +32,7 @@ struct SearchModeSelector: View {
                 } else {
                     newSelectedMode.append(secondMode)
                     if let thirdMode = secondMode.children.first, let selectedThirdMode = selectedMode.third {
-                        if (secondMode.children.contains(selectedThirdMode)) {
+                        if secondMode.children.contains(selectedThirdMode) {
                             newSelectedMode.append(selectedThirdMode)
                         } else {
                             newSelectedMode.append(thirdMode)
@@ -107,7 +54,7 @@ struct SearchModeSelector: View {
             }
             self.selectedMode = newSelectedMode
         case 2:
-            if let firstMode = selectedMode.first, let secondMode = selectedMode.second  {
+            if let firstMode = selectedMode.first, let secondMode = selectedMode.second {
                 newSelectedMode.append(contentsOf: [firstMode, secondMode, searchMode])
             }
             self.selectedMode = newSelectedMode
@@ -115,18 +62,18 @@ struct SearchModeSelector: View {
             return
         }
     }
-    
+
     private var chevron: some View {
         Image(systemName: "chevron.compact.right")
             .foregroundStyle(.secondary)
             .imageScale(.large)
     }
-    
+
     var body: some View {
         HStack(spacing: 0) {
             ForEach(0..<selectedMode.count, id: \.self) { index in
                 Menu {
-                    ForEach(getMenuList(index), id: \.title) { searchMode in
+                    ForEach(getMenuList(index), id: \.title) { (searchMode: SearchModeModel) in
                         Button(searchMode.title) {
                             onSelectMenuItem(index, searchMode: searchMode)
                         }
@@ -152,7 +99,7 @@ extension Array {
     var second: Element? {
         return self.count > 1 ? self[1] : nil
     }
-    
+
     var third: Element? {
         return self.count > 2 ? self[2] : nil
     }
