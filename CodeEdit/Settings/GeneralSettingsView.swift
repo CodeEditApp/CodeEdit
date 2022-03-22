@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CodeFile
+import TerminalEmulator
 
 // MARK: - View
 
@@ -15,6 +16,7 @@ struct GeneralSettingsView: View {
     @AppStorage(ReopenBehavior.storageKey) var reopenBehavior: ReopenBehavior = .default
     @AppStorage(FileIconStyle.storageKey) var fileIconStyle: FileIconStyle = .default
     @AppStorage(CodeFileView.Theme.storageKey) var editorTheme: CodeFileView.Theme = .atelierSavannaAuto
+	@AppStorage(TerminalShellType.storageKey) var shellType: TerminalShellType = .default
 
     var body: some View {
         Form {
@@ -62,6 +64,15 @@ struct GeneralSettingsView: View {
 					.tag(CodeFileView.Theme.agate)
 				Text("Ocean")
 					.tag(CodeFileView.Theme.ocean)
+			}
+
+			Picker("Terminal Shell".localized(), selection: $shellType) {
+				Text("System Default".localized())
+					.tag(TerminalShellType.auto)
+				Text("ZSH")
+					.tag(TerminalShellType.zsh)
+				Text("Bash")
+					.tag(TerminalShellType.bash)
 			}
         }
         .padding()

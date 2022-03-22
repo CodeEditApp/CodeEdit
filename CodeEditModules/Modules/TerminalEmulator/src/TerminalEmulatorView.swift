@@ -17,6 +17,8 @@ import SwiftTerm
 ///
 public struct TerminalEmulatorView: NSViewRepresentable {
 
+	@AppStorage(TerminalShellType.storageKey) var shellType: TerminalShellType = .default
+
 	private var terminal: LocalProcessTerminalView
 	private var font: NSFont
 	private var url: URL
@@ -44,7 +46,28 @@ public struct TerminalEmulatorView: NSViewRepresentable {
 	///	return String(cString: pwd.pw_shell)
 	/// ```
 	private func getShell() -> String {
-		"/bin/bash" // can be changed to "/bin/zsh"
+		switch shellType {
+		case .auto:
+			return autoDetectDefaultShell()
+		case .bash:
+			return "/bin/bash"
+		case .zsh:
+			return "/bin/zsh"
+		}
+	}
+
+	private func autoDetectDefaultShell() -> String {
+		let bufsize = sysconf(_SC_GETPW_R_SIZE_MAX)
+		guard bufsize != -1 else { return "/bin/bash" }
+		let buffer = UnsafeMutablePointer<Int8>.allocate(capacity: bufsize)
+		defer {
+			buffer.deallocate()
+		}
+		var pwd = passwd()
+		var result: UnsafeMutablePointer<passwd>? = UnsafeMutablePointer<passwd>.allocate(capacity: 1)
+
+		if getpwuid_r(getuid(), &pwd, buffer, bufsize, &result) != 0 { return "/bin/bash" }
+		return String(cString: pwd.pw_shell)
 	}
 
 	public func makeNSView(context: Context) -> LocalProcessTerminalView {
