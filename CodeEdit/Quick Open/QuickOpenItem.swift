@@ -18,7 +18,7 @@ public struct QuickOpenItem: View {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 32, height: 32)
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 0) {
                 Text(fileItem.url.lastPathComponent).font(.system(size: 13))
                     .lineLimit(1)
                 Text(fileItem.url.path.replacingOccurrences(of: baseDirectory.path, with: ""))
@@ -28,6 +28,5 @@ public struct QuickOpenItem: View {
             }.padding(.trailing, 15)
             Spacer()
         }
-        .contentShape(Rectangle())
     }
 }

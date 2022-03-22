@@ -41,6 +41,7 @@ class CodeEditWindowController: NSWindowController {
                     quickOpenPanel.close()
                     return
                 } else {
+                    window?.addChildWindow(quickOpenPanel, ordered: .above)
                     quickOpenPanel.makeKeyAndOrderFront(self)
                 }
             } else {

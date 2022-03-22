@@ -11,6 +11,7 @@ import SwiftUI
 import WorkspaceClient
 import Combine
 import CodeFile
+import Search
 
 @objc(WorkspaceDocument)
 class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
@@ -26,6 +27,7 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         guard let selectedId = selectedId else { return nil }
         return fileItems.first(where: { $0.id == selectedId })
     }
+    var searchState: SearchState?
     var quickOpenState: QuickOpenState?
     var openedCodeFiles: [WorkspaceClient.FileItem: CodeFileDocument] = [:]
     private var cancellables = Set<AnyCancellable>()
@@ -87,7 +89,7 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
                 openedCodeFiles[item] = codeFile
             }
             selectedId = item.id
-
+            Swift.print("Opening file for item: ", item.url)
             self.windowControllers.first?.window?.subtitle = item.url.lastPathComponent
         } catch let err {
             Swift.print(err)
@@ -132,6 +134,7 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
             ignoredFilesAndFolders: ignoredFilesAndDirectory
         )
         directoryURL = url
+        self.searchState = .init(self)
         self.quickOpenState = .init(self)
         workspaceClient?
             .getFiles
@@ -173,6 +176,68 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     }
 }
 
+// MARK: - Search
+
+extension WorkspaceDocument {
+    class SearchState: ObservableObject {
+        var workspace: WorkspaceDocument
+        @Published var searchResult: [SearchResultModel] = []
+
+        init(_ workspace: WorkspaceDocument) {
+            self.workspace = workspace
+        }
+
+        func search(_ text: String) {
+            self.searchResult = []
+            if let url = self.workspace.fileURL {
+                let enumerator = FileManager.default.enumerator(at: url,
+                                                                includingPropertiesForKeys: [
+                                                                    .isRegularFileKey
+                                                                ],
+                                                                options: [
+                                                                    .skipsHiddenFiles,
+                                                                    .skipsPackageDescendants
+                                                                ])
+                if let filePaths = enumerator?.allObjects as? [URL] {
+                    filePaths.map { url in
+                        WorkspaceClient.FileItem(url: url, children: nil)
+                    }.forEach { fileItem in
+                        var fileAddedFlag = true
+                        do {
+                            let data = try Data(contentsOf: fileItem.url)
+                            data.withUnsafeBytes {
+                                $0.split(separator: UInt8(ascii: "\n"))
+                                    .map { String(decoding: UnsafeRawBufferPointer(rebasing: $0), as: UTF8.self) }
+                            }.enumerated().forEach { (index: Int, line: String) in
+                                let noSpaceLine = line.trimmingCharacters(in: .whitespaces)
+                                if noSpaceLine.contains(text) {
+                                    if fileAddedFlag {
+                                        searchResult.append(SearchResultModel(
+                                            file: fileItem,
+                                            lineNumber: nil,
+                                            lineContent: nil,
+                                            keywordRange: nil)
+                                        )
+                                        fileAddedFlag = false
+                                    }
+                                    noSpaceLine.ranges(of: text).forEach { range in
+                                        searchResult.append(SearchResultModel(
+                                            file: fileItem,
+                                            lineNumber: index,
+                                            lineContent: noSpaceLine,
+                                            keywordRange: range)
+                                        )
+                                    }
+                                }
+                            }
+                        } catch {}
+                    }
+                }
+            }
+        }
+    }
+}
+
 // MARK: - Quick Open
 
 extension WorkspaceDocument {
@@ -195,8 +260,8 @@ extension WorkspaceDocument {
                 return
             }
 
-            DispatchQueue(label: "austincondiff.CodeEdit.quickOpen.searchFiles").async {
-                if let url = self.workspace.fileURL {
+            DispatchQueue(label: "austincondiff.CodeEdit.quickOpen.searchFiles").async { [weak self] in
+                if let self = self, let url = self.workspace.fileURL {
                     let enumerator = FileManager.default.enumerator(at: url,
                                                                     includingPropertiesForKeys: [
                                                                         .isRegularFileKey

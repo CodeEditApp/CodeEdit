@@ -16,6 +16,9 @@ struct WorkspaceCodeFileView: View {
 
     @ViewBuilder var body: some View {
         if let item = workspace.openFileItems.first(where: { file in
+            if file.id == workspace.selectedId {
+                print("Item loaded is: ", file.url)
+            }
             return file.id == workspace.selectedId
         }) {
             if let codeFile = workspace.openedCodeFiles[item] {
