@@ -29,7 +29,7 @@ struct WorkspaceCodeFileView: View {
                     }
                     .safeAreaInset(edge: .bottom) {
                         if let url = workspace.directoryURL {
-                            StatusBarView(gitClient: .default(directoryURL: url))
+							StatusBarView(workspaceURL: url)
                         }
                     }
             } else {

@@ -17,10 +17,12 @@ import SwiftTerm
 ///
 public struct TerminalEmulatorView: NSViewRepresentable {
 
-	private let terminal: LocalProcessTerminalView
+	private var terminal: LocalProcessTerminalView
 	private var font: NSFont
+	private var url: URL
 
-	public init(font: NSFont = .monospacedSystemFont(ofSize: 12, weight: .medium)) {
+	public init(url: URL, font: NSFont = .monospacedSystemFont(ofSize: 12, weight: .medium)) {
+		self.url = url
 		self.terminal = .init(frame: .zero)
 		self.font = font
 	}
@@ -47,14 +49,15 @@ public struct TerminalEmulatorView: NSViewRepresentable {
 
 	public func makeNSView(context: Context) -> LocalProcessTerminalView {
 		terminal.processDelegate = context.coordinator
-		terminal.feed(text: "Hello World")
 
 		let shell = getShell()
 		let shellIdiom = "-" + NSString(string: shell).lastPathComponent
 
+		// changes working directory to project root
+		FileManager.default.changeCurrentDirectoryPath(url.path)
 		terminal.startProcess(executable: shell, execName: shellIdiom)
 		terminal.font = font
-
+		terminal.feed(text: "")
 		terminal.configureNativeColors()
 		return terminal
 	}

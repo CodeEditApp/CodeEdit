@@ -48,6 +48,8 @@ public class StatusBarModel: ObservableObject {
 	/// A GitClient instance
 	private (set) var gitClient: GitClient
 
+	private (set) var workspaceURL: URL
+
 	/// The maximum height of the drawer
 	private (set) var maxHeight: Double = 500
 
@@ -61,8 +63,9 @@ public class StatusBarModel: ObservableObject {
 
 	/// Initialize with a GitClient
 	/// - Parameter gitClient: a GitClient
-	public init(gitClient: GitClient) {
-		self.gitClient = gitClient
+	public init(workspaceURL: URL) {
+		self.workspaceURL = workspaceURL
+		self.gitClient = GitClient.default(directoryURL: workspaceURL)
 		self.selectedBranch = gitClient.getCurrentBranchName()
 	}
 }
