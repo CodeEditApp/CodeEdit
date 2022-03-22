@@ -5,21 +5,43 @@
 //  Created by Marco Carnevali on 17/03/22.
 //
 
-import CodeEditor
+import Highlightr
 import Foundation
 import SwiftUI
 
 /// CodeFileView is just a wrapper of the `CodeEditor` dependency
 public struct CodeFileView: View {
-    @ObservedObject public var codeFile: CodeFileDocument
+    @ObservedObject private var codeFile: CodeFileDocument
+    @AppStorage(Theme.storageKey) var theme: Theme = .atelierSavannaAuto
     @Environment(\.colorScheme) private var colorScheme
-    @AppStorage(CodeEditorTheme.storageKey) var theme: CodeEditor.ThemeName = .atelierSavannaAuto
+    private let editable: Bool
 
-    public init(codeFile: CodeFileDocument) {
+    public init(codeFile: CodeFileDocument, editable: Bool = true) {
         self.codeFile = codeFile
+        self.editable = editable
     }
 
     public var body: some View {
-        ThemedCodeView($codeFile.content, language: codeFile.fileLanguage())
+        CodeEditor(
+            content: $codeFile.content,
+            language: getLanguage(),
+            theme: $theme
+        )
+        .disabled(!editable)
+    }
+
+    private func getLanguage() -> CodeEditor.Language? {
+        if let url = codeFile.fileURL {
+            return .init(url: url)
+        } else {
+            return .plaintext
+        }
+    }
+
+    private func getTheme() -> Theme {
+        if theme == .atelierSavannaAuto {
+            return colorScheme == .light ? .atelierSavannaLight : .atelierSavannaDark
+        }
+        return theme
     }
 }
