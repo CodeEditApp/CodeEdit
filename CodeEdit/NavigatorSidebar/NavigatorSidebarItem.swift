@@ -25,7 +25,6 @@ struct NavigatorSidebarItem: View {
         } else {
             sidebarFolderItem(item)
                 .id(item.id)
-                .contextMenu { contextMenuContent(true) }
         }
     }
 
@@ -54,6 +53,7 @@ struct NavigatorSidebarItem: View {
             Label(item.url.lastPathComponent, systemImage: item.systemImage)
                 .accentColor(.secondary)
                 .font(.callout)
+                .contextMenu { contextMenuContent(true) }
         }
     }
 
