@@ -61,75 +61,75 @@ struct NavigatorSidebarItem: View {
     /// maximum number of views in a container is exceeded (in SwiftUI). The max = 10
     @ViewBuilder
     private func contextMenuContent(_ isFolder: Bool) -> some View {
-        Button("Show in Finder", action: {
+        Button("Show in Finder") {
             item.showInFinder()
-        })
+        }
         Group {
             Divider()
-            Button("Open in Tab", action: {
+            Button("Open in Tab") {
                 // Open a new tab
-            })
-            Button("Open in New Window", action: {
+            }
+            Button("Open in New Window") {
                 // Open a new window
-            })
+            }
             Divider()
         }
-        Button("Show File Inspector", action: {
+        Button("Show File Inspector") {
             // Show File Inspector
-        })
+        }
         Group {
             Divider()
-            Button("New File", action: {
+            Button("New File") {
                 item.addFile(fileName: "randomFile.txt")
-            })
-            Button("Add files to folder", action: {
+            }
+            Button("Add files to folder") {
                 // Add Files to Folder
-            })
+            }
             Divider()
         }
-        Button("Delete", action: {
+        Button("Delete") {
             item.delete()
-        })
+        }
         Group {
             Divider()
-            Button("New Group", action: {
+            Button("New Group") {
                 item.addFolder(folderName: "Test Folder")
-            })
-            Button("New Group without Folder", action: {
+            }
+            Button("New Group without Folder") {
                 // New Group without Folder
-            })
-            Button("New Group from Selection", action: {
+            }
+            Button("New Group from Selection") {
                 // New Group from Selection
-            })
+            }
             Divider()
         }
         Group {
-            Button("Sort by Name", action: {
+            Button("Sort by Name") {
                 // Sort folder items by name
-            }).disabled(isFolder ? false : true)
-            Button("Sort by Type", action: {
+            }.disabled(isFolder ? false : true)
+            Button("Sort by Type") {
                 // Sort folder items by file type
-            }).disabled(isFolder ? false : true)
+            }.disabled(isFolder ? false : true)
             Divider()
         }
-        Button("Find in Selected Groups...", action: {
-        }).disabled(isFolder ? false : true)
+        Button("Find in Selected Groups...") {
+        }.disabled(isFolder ? false : true)
         Divider()
         Menu("Source Control") {
-            Button("Commit Selected File", action: {
+            Button("Commit Selected File") {
                 // Commit selected file
-            })
+            }
             Divider()
-            Button("Discard Changes in Selected File", action: {
+            Button("Discard Changes in Selected File") {
                 // Discard changes made to the selected file
-            })
+            }
             Divider()
-            Button("Add", action: {
+            Button("Add") {
                 // Add file to git
-            })
-            Button("Mark as Resolved", action: {
+            }
+            Button("Mark as Resolved") {
                 // Mark file as resolved
-            })
+            }
         }
     }
 }
