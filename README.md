@@ -19,10 +19,10 @@
 - [x] Syntax highlighting
 - [ ] Find in document
 - [ ] Find in project
-- [ ] Open file search bar overlay
+- [x] Open file search bar overlay
 - [ ] Commands overlay
 - [x] Breadcrumb bar
-- [ ] Status bar
+- [x] Status bar
 - [x] Tabs
 - [ ] Split editors
 - [ ] Extension insfrastructure

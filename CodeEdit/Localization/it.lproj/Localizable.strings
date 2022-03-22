@@ -33,7 +33,7 @@
 "Clone an exisiting project"="Clona un progetto esistente";
 
 // Welcome Screen - SCM
-"Start working on something from a Git repository"="Inizia a lavorare su una repository di Git";
+"Start working on something from a Git repository"="Inizia a lavorare su qualcosa da un repository Git";
 "Open a project or file"="Apri un progetto o un file";
 
 // Welcome Screen - Workspaces
