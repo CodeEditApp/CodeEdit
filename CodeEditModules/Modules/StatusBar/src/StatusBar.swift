@@ -8,11 +8,22 @@
 import SwiftUI
 import GitClient
 
+/// # StatusBarView
+///
+/// A View that lives on the bottom of the window and offers information
+/// about compilation errors/warnings, git,  cursor position in text,
+/// indentation width (in spaces), text encoding and linebreak
+///
+/// Additionally it offers a togglable/resizable drawer which can
+/// host a terminal or additional debug information
+///
 @available(macOS 12, *)
 public struct StatusBarView: View {
 
 	@ObservedObject private var model: StatusBarModel
 
+	/// Initialize with GitClient
+	/// - Parameter gitClient: a GitClient
     public init(gitClient: GitClient) {
 		self.model = .init(gitClient: gitClient)
 	}
@@ -26,6 +37,7 @@ public struct StatusBarView: View {
 		.padding(.top, -8) // (comment out to make it look normal in preview)
 	}
 
+	/// The actual status bar
 	private var bar: some View {
 		ZStack {
 			Rectangle()
@@ -54,6 +66,7 @@ public struct StatusBarView: View {
 		.onHover { isHovering($0, isDragging: model.isDragging, cursor: .resizeUpDown) }
 	}
 
+	/// A drag gesture to resize the drawer beneath the status bar
 	private var dragGesture: some Gesture {
 		DragGesture()
 			.onChanged { value in
