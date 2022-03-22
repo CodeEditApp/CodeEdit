@@ -102,13 +102,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                 identifier: Preferences.PaneIdentifier.theme,
                 title: "Theme",
                 toolbarIcon: NSImage(systemSymbolName: "paintbrush", accessibilityDescription: "")!) {
-                    GeneralSettingsView()
+                    ThemeSettingsView()
                 }
         ]
     )
 
     @IBAction func openPreferences(_ sender: Any) {
         preferencesWindowController.show()
+        preferencesWindowController.window?.center()
     }
 
     @IBAction func openWelcome(_ sender: Any) {

@@ -38,6 +38,8 @@
 		903D6F3827E9E8C300EC4943 /* Preferences in Frameworks */ = {isa = PBXBuildFile; productRef = 903D6F3727E9E8C300EC4943 /* Preferences */; };
 		903D6F3A27E9E8F900EC4943 /* PaneIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 903D6F3927E9E8F900EC4943 /* PaneIdentifier.swift */; };
 		90626F8327E9EDA1008926FE /* ThemeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90626F8227E9EDA1008926FE /* ThemeSettingsView.swift */; };
+		90626F8527E9EFE4008926FE /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90626F8427E9EFE4008926FE /* Theme.swift */; };
+		90626F8827E9F2D8008926FE /* Color+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90626F8727E9F2D8008926FE /* Color+Hex.swift */; };
 		B658FB3427DA9E1000EA4DBD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3327DA9E1000EA4DBD /* Assets.xcassets */; };
 		B658FB3727DA9E1000EA4DBD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3627DA9E1000EA4DBD /* Preview Assets.xcassets */; };
 		B65E614627E6765D00255275 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = B65E614527E6765D00255275 /* Introspect */; };
@@ -104,6 +106,8 @@
 		85D7EE9527E928B900CB9F10 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		903D6F3927E9E8F900EC4943 /* PaneIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaneIdentifier.swift; sourceTree = "<group>"; };
 		90626F8227E9EDA1008926FE /* ThemeSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeSettingsView.swift; sourceTree = "<group>"; };
+		90626F8427E9EFE4008926FE /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		90626F8727E9F2D8008926FE /* Color+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Hex.swift"; sourceTree = "<group>"; };
 		B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodeEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B658FB3127DA9E0F00EA4DBD /* WorkspaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceView.swift; sourceTree = "<group>"; };
 		B658FB3327DA9E1000EA4DBD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -173,6 +177,7 @@
 				04660F6527E3ACEF00477777 /* ReopenBehavior.swift */,
 				289978EC27E4E97E00BB0357 /* FileIconStyle.swift */,
 				903D6F3927E9E8F900EC4943 /* PaneIdentifier.swift */,
+				90626F8427E9EFE4008926FE /* Theme.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -241,6 +246,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		90626F8627E9F2CD008926FE /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				90626F8727E9F2D8008926FE /* Color+Hex.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
 		B658FB2327DA9E0F00EA4DBD = {
 			isa = PBXGroup;
 			children = (
@@ -263,6 +276,7 @@
 		B658FB2E27DA9E0F00EA4DBD /* CodeEdit */ = {
 			isa = PBXGroup;
 			children = (
+				90626F8627E9F2CD008926FE /* Extension */,
 				B6EE988E27E8877C00CDD8AB /* InspectorSidebar */,
 				0485EB1727E7016400138301 /* Quick Open */,
 				04660F6027E3A68A00477777 /* Info.plist */,
@@ -538,11 +552,13 @@
 				287776EF27E3515300D46668 /* TabBarItem.swift in Sources */,
 				D72E1A8727E4242900EB11B9 /* RecentProjectsView.swift in Sources */,
 				04660F6A27E51E5C00477777 /* CodeEditWindowController.swift in Sources */,
+				90626F8827E9F2D8008926FE /* Color+Hex.swift in Sources */,
 				287776E727E3413200D46668 /* NavigatorSidebar.swift in Sources */,
 				287776ED27E350D800D46668 /* NavigatorSidebarItem.swift in Sources */,
 				90626F8327E9EDA1008926FE /* ThemeSettingsView.swift in Sources */,
 				B6EE989027E8879A00CDD8AB /* InspectorSidebar.swift in Sources */,
 				289978ED27E4E97E00BB0357 /* FileIconStyle.swift in Sources */,
+				90626F8527E9EFE4008926FE /* Theme.swift in Sources */,
 				04660F6627E3ACEF00477777 /* ReopenBehavior.swift in Sources */,
 				D72E1A8327E3B0D400EB11B9 /* WelcomeView.swift in Sources */,
 				043C321627E3201F006AE443 /* WorkspaceDocument.swift in Sources */,

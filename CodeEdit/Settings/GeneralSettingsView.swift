@@ -53,6 +53,8 @@ struct GeneralSettingsView: View {
             .fixedSize()
 
 			Picker("Editor Theme".localized(), selection: $editorTheme) {
+                Text("pojoaque")
+                    .tag(CodeEditor.ThemeName.default)
 				Text("Atelier Savanna (Auto)")
 					.tag(CodeEditor.ThemeName.atelierSavannaAuto)
 				Text("Atelier Savanna Dark")
