@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import WorkspaceClient
 
 struct FindResultList: View {
     @ObservedObject var state: WorkspaceDocument.SearchState
@@ -13,9 +14,9 @@ struct FindResultList: View {
     
     var body: some View {
         List(selection: $selectedResult) {
-            ForEach(Array(state.searchResult.keys), id: \.self) { fileURL in
+            ForEach(Array(state.searchResult.keys), id: \.self) { (file: WorkspaceClient.FileItem) in
                 Section {
-                    ForEach(state.searchResult[fileURL] ?? [], id: \.self) { line in
+                    ForEach(state.searchResult[file] ?? [], id: \.self) { line in
                         HStack(alignment: .top) {
                             Image(systemName: "text.alignleft")
                                 .font(.system(size: 12))
@@ -27,15 +28,18 @@ struct FindResultList: View {
                         }
                         .padding(.leading, 15)
                         .tag(line)
+                        .onTapGesture {
+                            state.workspace.openFile(item: file)
+                        }
                     }
                 } header: {
                     HStack(alignment: .center) {
 //                            Image(nsImage: NSWorkspace.shared.icon(forFile: fileURL.path))
 //                                .frame(width: 13, height: 13)
-                        Text(fileURL.lastPathComponent)
+                        Text(file.url.lastPathComponent)
                             .font(.system(size: 13, weight: .semibold))
                             .foregroundColor(Color(nsColor: NSColor.headerTextColor))
-                        Text(fileURL.path.replacingOccurrences(of: state.workspace.fileURL?.path ?? "", with: ""))
+                        Text(file.url.path.replacingOccurrences(of: state.workspace.fileURL?.path ?? "", with: ""))
                     }
                     .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
                 }

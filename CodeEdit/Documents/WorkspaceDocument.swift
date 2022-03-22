@@ -181,7 +181,7 @@ extension WorkspaceDocument {
     class SearchState: ObservableObject {
 
         var workspace: WorkspaceDocument
-        @Published var searchResult: [URL: [AttributedString]] = [:]
+        @Published var searchResult: [WorkspaceClient.FileItem: [AttributedString]] = [:]
 
         init(_ workspace: WorkspaceDocument) {
             self.workspace = workspace
@@ -198,8 +198,10 @@ extension WorkspaceDocument {
                                                                     .skipsPackageDescendants
                                                                 ])
                 if let filePaths = enumerator?.allObjects as? [URL] {
-                    filePaths.forEach { fileURL in
-                        let data = try? String(contentsOf: fileURL)
+                    filePaths.map { url in
+                        WorkspaceClient.FileItem(url: url, children: nil)
+                    }.forEach { fileItem in
+                        let data = try? String(contentsOf: fileItem.url)
                         data?.split(separator: "\n").forEach { line in
                             let noSpaceLine = line.trimmingCharacters(in: .whitespaces)
                             if noSpaceLine.contains(text) {
@@ -215,9 +217,9 @@ extension WorkspaceDocument {
                                     attributedString.append(
                                         AttributedString(String(noSpaceLine[range.upperBound..<noSpaceLine.endIndex]))
                                     )
-                                    var lines = self.searchResult[fileURL] ?? []
+                                    var lines = self.searchResult[fileItem] ?? []
                                     lines.append(attributedString)
-                                    self.searchResult[fileURL] = lines
+                                    self.searchResult[fileItem] = lines
                                 }
                             }
                         }
