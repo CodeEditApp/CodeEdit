@@ -16,11 +16,12 @@ import SwiftTerm
 /// for use in SwiftUI.
 ///
 public struct TerminalEmulatorView: NSViewRepresentable {
-
+	@Environment(\.colorScheme) var colorScheme
 	@AppStorage(TerminalShellType.storageKey) var shellType: TerminalShellType = .default
 	@AppStorage(TerminalFont.storageKey) var terminalFontSelection: TerminalFont = .default
 	@AppStorage(TerminalFontName.storageKey) var terminalFontName: String = TerminalFontName.default
 	@AppStorage(TerminalFontSize.storageKey) var terminalFontSize: Int = TerminalFontSize.default
+	@AppStorage(AnsiColors.storageKey) var ansiColors: AnsiColors = .default
 
 	private var terminal: LocalProcessTerminalView
 	private var font: NSFont {
@@ -93,13 +94,14 @@ public struct TerminalEmulatorView: NSViewRepresentable {
 		FileManager.default.changeCurrentDirectoryPath(url.path)
 		terminal.startProcess(executable: shell, execName: shellIdiom)
 		terminal.font = font
-		terminal.feed(text: "")
 		terminal.configureNativeColors()
+		terminal.installColors(self.appearanceColors)
 		return terminal
 	}
 
 	public func updateNSView(_ view: LocalProcessTerminalView, context: Context) {
 		view.configureNativeColors()
+		view.installColors(self.appearanceColors)
 		view.font = font
 	}
 
@@ -117,5 +119,38 @@ public struct TerminalEmulatorView: NSViewRepresentable {
 		public func setTerminalTitle(source: LocalProcessTerminalView, title: String) {}
 
 		public func processTerminated(source: TerminalView, exitCode: Int32?) {}
+	}
+
+	private var appearanceColors: [SwiftTerm.Color] {
+		print(colorScheme)
+		if colorScheme == .dark {
+			return colors
+		}
+		var col = colors
+		col.move(fromOffsets: .init(integersIn: 0...7), toOffset: 16)
+		return col
+	}
+
+	private var colors: [SwiftTerm.Color] {
+		let components = ansiColors.allColors.map { $0.components ?? [0, 0, 0, 1] }
+		return components.map { SwiftTerm.Color(dRed: $0[0], green: $0[1], blue: $0[2]) }
+	}
+}
+
+extension SwiftTerm.Color {
+	/// 0.0-1.0
+	convenience init(dRed red: Double, green: Double, blue: Double) {
+		let multiplier: Double = 65535
+		self.init(red: UInt16(red * multiplier),
+				  green: UInt16(green * multiplier),
+				  blue: UInt16(blue * multiplier))
+	}
+
+	/// 0-255
+	convenience init(iRed red: UInt8, green: UInt8, blue: UInt8) {
+		let divisor: Double = 255
+		self.init(dRed: Double(red) / divisor,
+				  green: Double(green) / divisor,
+				  blue: Double(blue) / divisor)
 	}
 }
