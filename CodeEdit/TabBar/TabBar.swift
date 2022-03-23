@@ -41,6 +41,7 @@ struct TabBar: View {
                                     windowController: windowController,
                                     workspace: workspace
                                 )
+                                    .transition(.opacity)
                                     .animation(.easeOut(duration: 0.05), value: UUID())
                             }
                         }
