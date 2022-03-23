@@ -34,19 +34,20 @@ struct TabBar: View {
                     .frame(height: 28)
                 ScrollView(.horizontal, showsIndicators: false) {
                     ScrollViewReader { value in
-                        HStack(alignment: .center, spacing: -1) {
+                        LazyHStack(alignment: .center, spacing: -1) {
                             ForEach(workspace.openFileItems, id: \.id) { item in
                                 TabBarItem(
                                     item: item,
                                     windowController: windowController,
                                     workspace: workspace
                                 )
-                                .animation(nil, value: UUID())
+                                    .animation(.easeOut(duration: 0.05), value: UUID())
                             }
                         }
                         .onAppear {
                             value.scrollTo(self.workspace.selectedId)
                         }
+                        .frame(height: 28)
                     }
                 }
                 .padding(.leading, -1)
