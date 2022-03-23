@@ -7,7 +7,6 @@
 
 import SwiftUI
 import CodeFile
-import TerminalEmulator
 
 // MARK: - View
 
@@ -15,7 +14,6 @@ struct GeneralSettingsView: View {
     @AppStorage(Appearances.storageKey) var appearance: Appearances = .default
     @AppStorage(ReopenBehavior.storageKey) var reopenBehavior: ReopenBehavior = .default
     @AppStorage(FileIconStyle.storageKey) var fileIconStyle: FileIconStyle = .default
-	@AppStorage(TerminalShellType.storageKey) var shellType: TerminalShellType = .default
 
     var body: some View {
         Form {
@@ -50,16 +48,6 @@ struct GeneralSettingsView: View {
 				Text("New Document".localized())
                     .tag(ReopenBehavior.newDocument)
             }
-            .fixedSize()
-
-			Picker("Terminal Shell".localized(), selection: $shellType) {
-				Text("System Default".localized())
-					.tag(TerminalShellType.auto)
-				Text("ZSH")
-					.tag(TerminalShellType.zsh)
-				Text("Bash")
-					.tag(TerminalShellType.bash)
-			}
             .fixedSize()
 
             Spacer()

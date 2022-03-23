@@ -108,14 +108,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                 title: "Execution",
                 toolbarIcon: NSImage(systemSymbolName: "arrowtriangle.forward", accessibilityDescription: nil)!
             ) {
-                GeneralSettingsView()
+                ExecutionSettingsView()
             },
             Preferences.Pane(
                 identifier: Preferences.PaneIdentifier.extension,
-                title: "Extension",
+                title: "Extensions",
                 toolbarIcon: NSImage(systemSymbolName: "shippingbox", accessibilityDescription: nil)!
             ) {
-                GeneralSettingsView()
+                ExtensionsSettingsView()
             },
         ]
     )
