@@ -143,6 +143,8 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
                     }
                 }
             }
+        } catch {
+            Swift.print(".codeedit/selection.json is not found")
         }
 
         workspaceClient?
@@ -347,7 +349,7 @@ struct WorkspaceSelectionState: Codable {
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        selectedId = try container.decode(String.self, forKey: .selectedId)
+        selectedId = try container.decode(String?.self, forKey: .selectedId)
         openFileItems = try container.decode([WorkspaceClient.FileItem].self, forKey: .openFileItems)
     }
 
