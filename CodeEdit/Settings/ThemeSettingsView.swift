@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CodeFile
+import Preferences
 
 struct ThemeSettingsView: View {
     @AppStorage(CodeFileView.Theme.storageKey) var editorTheme: CodeFileView.Theme = .atelierSavannaAuto
@@ -58,12 +59,12 @@ struct ThemeSettingsView: View {
     }
 
     struct BackGroundView: View {
-        @StateObject var model = SettingsViewObject.shared
+        @StateObject var model = KeyModel.shared
         let selected: Bool
 
         var body: some View {
             if selected {
-                if model.isKeyWindow {
+                if model.key {
                     Color.accentColor.opacity(0.8).cornerRadius(5)
                 } else {
                     Color.gray.opacity(0.3).cornerRadius(5)

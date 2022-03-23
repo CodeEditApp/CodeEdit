@@ -11,15 +11,6 @@
         }
       },
       {
-        "package": "Preferences",
-        "repositoryURL": "https://github.com/sindresorhus/Preferences",
-        "state": {
-          "branch": "main",
-          "revision": "ffeaaad1def45d0625720dc1adae3789cd9c167d",
-          "version": null
-        }
-      },
-      {
         "package": "SnapshotTesting",
         "repositoryURL": "https://github.com/pointfreeco/swift-snapshot-testing.git",
         "state": {
