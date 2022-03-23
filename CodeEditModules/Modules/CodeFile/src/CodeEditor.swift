@@ -37,6 +37,16 @@ struct CodeEditor: NSViewRepresentable {
                 scrollView: scrollView
             )
         )
+
+        if let highlightr = highlightr,
+           let string = highlightr.highlight(
+            content.wrappedValue,
+            as: language?.rawValue,
+            fastRender: true
+           ) {
+            textView.textStorage?.append(string)
+        }
+
         textView.autoresizingMask = .width
         textView.maxSize = NSSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)
         textView.minSize = NSSize(width: 0, height: scrollView.contentSize.height)
