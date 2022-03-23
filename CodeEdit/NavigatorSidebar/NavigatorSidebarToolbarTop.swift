@@ -11,7 +11,7 @@ struct NavigatorSidebarToolbarTop: View {
 	@Binding var selection: Int
 
 	var body: some View {
-		HStack(spacing: 10) {
+		HStack(spacing: 2) {
 			icon(systemImage: "folder", title: "Project", id: 0)
 			icon(systemImage: "globe", title: "Version Control", id: 1)
 			icon(systemImage: "magnifyingglass", title: "Search", id: 2)
@@ -40,7 +40,8 @@ struct NavigatorSidebarToolbarTop: View {
 				.help(title)
 				.symbolVariant(id == selection ? .fill : .none)
 				.foregroundColor(id == selection ? .accentColor : .secondary)
-				.frame(width: 16, alignment: .center)
+				.frame(width: 25, height: 25, alignment: .center)
+				.contentShape(Rectangle())
 		}
 		.buttonStyle(.plain)
 	}
