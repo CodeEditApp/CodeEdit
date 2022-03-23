@@ -32,7 +32,8 @@ struct NavigatorSidebar: View {
                 }
             case 2:
                 SidebarSearch(state: workspace.searchState ?? .init(workspace))
-            default: EmptyView()
+            default:
+				VStack { Spacer() }
             }
         }
         .safeAreaInset(edge: .top) {

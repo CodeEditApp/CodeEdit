@@ -103,7 +103,7 @@ public extension WorkspaceClient {
 
         /// Allows the user to view the file or folder in the finder application
         public func showInFinder() {
-            NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: url.path)
+            NSWorkspace.shared.activateFileViewerSelecting([url])
         }
 
         /// This function allows creation of folders in the main directory or sub-folders

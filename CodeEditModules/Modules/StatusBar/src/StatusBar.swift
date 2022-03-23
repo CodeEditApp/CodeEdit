@@ -47,8 +47,10 @@ public struct StatusBarView: View {
 					StatusBarLabelButton(model: model, title: model.errorCount.formatted(), image: "xmark.octagon")
 					StatusBarLabelButton(model: model, title: model.warningCount.formatted(), image: "exclamationmark.triangle")
 				}
-				StatusBarBranchPicker(model: model)
-				StatusBarPullButton(model: model)
+				if model.selectedBranch != nil {
+					StatusBarBranchPicker(model: model)
+					StatusBarPullButton(model: model)
+				}
 				Spacer()
 				StatusBarCursorLocationLabel(model: model)
 				StatusBarIndentSelector(model: model)
