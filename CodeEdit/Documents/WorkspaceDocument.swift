@@ -16,20 +16,12 @@ import Search
 @objc(WorkspaceDocument)
 class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var workspaceClient: WorkspaceClient?
-    var directoryURL: URL?
 
-    @Published var selectedId: String?
-    @Published var openFileItems: [WorkspaceClient.FileItem] = []
-	@Published var sortFoldersOnTop: Bool = true
-    @Published var fileItems: [WorkspaceClient.FileItem] = []
+    @Published var sortFoldersOnTop: Bool = true
+    @Published var selectionState: SelectionState = .init()
 
-    var selected: WorkspaceClient.FileItem? {
-        guard let selectedId = selectedId else { return nil }
-        return fileItems.first(where: { $0.id == selectedId })
-    }
     var searchState: SearchState?
     var quickOpenState: QuickOpenState?
-    var openedCodeFiles: [WorkspaceClient.FileItem: CodeFileDocument] = [:]
     private var cancellables = Set<AnyCancellable>()
 
     deinit {
@@ -38,20 +30,20 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
 
     func closeFileTab(item: WorkspaceClient.FileItem) {
         defer {
-            let file = openedCodeFiles.removeValue(forKey: item)
+            let file = selectionState.openedCodeFiles.removeValue(forKey: item)
             file?.save(self)
         }
 
-        guard let idx = openFileItems.firstIndex(of: item) else { return }
-        let closedFileItem = openFileItems.remove(at: idx)
+        guard let idx = selectionState.openFileItems.firstIndex(of: item) else { return }
+        let closedFileItem = selectionState.openFileItems.remove(at: idx)
         guard closedFileItem.id == item.id else { return }
 
-        if openFileItems.isEmpty {
-            selectedId = nil
+        if selectionState.openFileItems.isEmpty {
+            selectionState.selectedId = nil
         } else if idx == 0 {
-            selectedId = openFileItems.first?.id
+            selectionState.selectedId = selectionState.openFileItems.first?.id
         } else {
-            selectedId = openFileItems[idx - 1].id
+            selectionState.selectedId = selectionState.openFileItems[idx - 1].id
         }
     }
     func closeFileTabs<Items>(items: Items) where Items: Collection, Items.Element == WorkspaceClient.FileItem {
@@ -62,16 +54,16 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     }
 
     func closeFileTab(where predicate: (WorkspaceClient.FileItem) -> Bool) {
-        closeFileTabs(items: openFileItems.filter(predicate))
+        closeFileTabs(items: selectionState.openFileItems.filter(predicate))
     }
 
     func closeFileTabs(after item: WorkspaceClient.FileItem) {
-        guard let startIdx = openFileItems.firstIndex(where: { $0.id == item.id }) else {
+        guard let startIdx = selectionState.openFileItems.firstIndex(where: { $0.id == item.id }) else {
             assert(false, "Expected file item to be present in openFileItems")
             return
         }
 
-        let range = openFileItems[(startIdx+1)...]
+        let range = selectionState.openFileItems[(startIdx+1)...]
         closeFileTabs(items: range)
     }
 
@@ -83,12 +75,12 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
                 ofType: "public.source-code"
             )
 
-            if !openFileItems.contains(item) {
-                openFileItems.append(item)
+            if !selectionState.openFileItems.contains(item) {
+                selectionState.openFileItems.append(item)
 
-                openedCodeFiles[item] = codeFile
+                selectionState.openedCodeFiles[item] = codeFile
             }
-            selectedId = item.id
+            selectionState.selectedId = item.id
             Swift.print("Opening file for item: ", item.url)
             self.windowControllers.first?.window?.subtitle = item.url.lastPathComponent
         } catch let err {
@@ -133,7 +125,6 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
             folderURL: url,
             ignoredFilesAndFolders: ignoredFilesAndDirectory
         )
-        directoryURL = url
         self.searchState = .init(self)
         self.quickOpenState = .init(self)
         workspaceClient?
@@ -141,8 +132,8 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
             .sink { [weak self] files in
                 guard let self = self else { return }
 
-                guard !self.fileItems.isEmpty else {
-                    self.fileItems = files
+                guard !self.selectionState.fileItems.isEmpty else {
+                    self.selectionState.fileItems = files
                     return
                 }
 
@@ -151,12 +142,12 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
                 // and now. If the index of the file exists in the array
                 // it means we need to remove the element, otherwise we need to append
                 // it.
-                let diff = files.difference(from: self.fileItems)
+                let diff = files.difference(from: self.selectionState.fileItems)
                 diff.forEach { newFile in
-                    if let index = self.fileItems.firstIndex(of: newFile) {
-                        self.fileItems.remove(at: index)
+                    if let index = self.selectionState.fileItems.firstIndex(of: newFile) {
+                        self.selectionState.fileItems.remove(at: index)
                     } else {
-                        self.fileItems.append(newFile)
+                        self.selectionState.fileItems.append(newFile)
                     }
                 }
             }
@@ -166,10 +157,10 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     override func write(to url: URL, ofType typeName: String) throws {}
 
     override func close() {
-        selectedId = nil
-        openFileItems.forEach { item in
+        selectionState.selectedId = nil
+        selectionState.openFileItems.forEach { item in
             do {
-                try openedCodeFiles[item]?.write(to: item.url, ofType: "public.source-code")
+                try selectionState.openedCodeFiles[item]?.write(to: item.url, ofType: "public.source-code")
             } catch {}
         }
         super.close()
@@ -291,4 +282,23 @@ extension WorkspaceDocument {
             }
         }
     }
+}
+
+// MARK: - Selection
+
+extension WorkspaceDocument {
+
+    struct SelectionState {
+
+        var selectedId: String?
+        var openFileItems: [WorkspaceClient.FileItem] = []
+        var fileItems: [WorkspaceClient.FileItem] = []
+
+        var selected: WorkspaceClient.FileItem? {
+            guard let selectedId = selectedId else { return nil }
+            return fileItems.first(where: { $0.id == selectedId })
+        }
+        var openedCodeFiles: [WorkspaceClient.FileItem: CodeFileDocument] = [:]
+    }
+
 }
