@@ -18,7 +18,7 @@
 - [x] Text editor
 - [x] Syntax highlighting
 - [ ] Find in document
-- [ ] Find in project
+- [x] Find in project
 - [x] Open file search bar overlay
 - [ ] Commands overlay
 - [x] Breadcrumb bar
@@ -28,10 +28,10 @@
 - [ ] Extension insfrastructure
 - [ ] Extension manager
 - [ ] Project preferences
-- [ ] Application preferences
+- [x] Application preferences
 - [ ] Debug experience
 - [ ] Code symbols navigator
-- [ ] Integrated terminal
+- [x] Integrated terminal
 - [ ] File information sidebar
 
 ...more to come!
