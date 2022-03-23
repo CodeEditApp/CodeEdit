@@ -11,7 +11,7 @@ import WorkspaceClient
 struct BreadcrumbsView: View {
 
 	@ObservedObject var workspace: WorkspaceDocument
-	let file: WorkspaceClient.FileItem
+    let file: WorkspaceClient.FileItem
 
 	@State private var projectName: String = ""
 	@State private var folders: [String] = []
@@ -51,8 +51,11 @@ struct BreadcrumbsView: View {
 			Divider()
 		}
 		.onAppear {
-			fileInfo()
+            fileInfo(self.file)
 		}
+        .onChange(of: file) { newFile in
+            fileInfo(newFile)
+        }
 	}
 
 	private var chevron: some View {
@@ -61,7 +64,7 @@ struct BreadcrumbsView: View {
 			.imageScale(.large)
 	}
 
-	private func fileInfo() {
+    private func fileInfo(_ file: WorkspaceClient.FileItem) {
 		guard let projName = workspace.fileURL?.lastPathComponent,
 			  var components = file.url.pathComponents.split(separator: projName).last else { return }
 		components.removeLast()
@@ -71,7 +74,6 @@ struct BreadcrumbsView: View {
 		self.fileName = file.fileName
 		self.fileImage = file.systemImage
 	}
-
 }
 
 struct BreadcrumbsView_Previews: PreviewProvider {
