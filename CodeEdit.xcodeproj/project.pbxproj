@@ -36,6 +36,7 @@
 		5C403B8F27E20F8000788241 /* WorkspaceClient in Frameworks */ = {isa = PBXBuildFile; productRef = 5C403B8E27E20F8000788241 /* WorkspaceClient */; };
 		5CF38A5E27E48E6C0096A0F7 /* CodeFile in Frameworks */ = {isa = PBXBuildFile; productRef = 5CF38A5D27E48E6C0096A0F7 /* CodeFile */; };
 		5CFA753B27E896B60002F01B /* GitClient in Frameworks */ = {isa = PBXBuildFile; productRef = 5CFA753A27E896B60002F01B /* GitClient */; };
+		B342298B27EB34D400A45192 /* GitCloneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B342298A27EB34D400A45192 /* GitCloneView.swift */; };
 		B658FB3427DA9E1000EA4DBD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3327DA9E1000EA4DBD /* Assets.xcassets */; };
 		B658FB3727DA9E1000EA4DBD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3627DA9E1000EA4DBD /* Preview Assets.xcassets */; };
 		B65E614627E6765D00255275 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = B65E614527E6765D00255275 /* Introspect */; };
@@ -103,13 +104,14 @@
 		289978EC27E4E97E00BB0357 /* FileIconStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileIconStyle.swift; sourceTree = "<group>"; };
 		28B0A19727E385C300B73177 /* NavigatorSidebarToolbarTop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigatorSidebarToolbarTop.swift; sourceTree = "<group>"; };
 		28FFE1BE27E3A441001939DB /* NavigatorSidebarToolbarBottom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigatorSidebarToolbarBottom.swift; sourceTree = "<group>"; };
-		2B7C962F27EA5D4000DF58C5 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
 		2B772A4C27EA6AF800AFCD7E /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		2B7C962F27EA5D4000DF58C5 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
 		34EE19BD27E0469C00F152CE /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
 		5E3C6A3427E72AE000A7CA0D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		70F2E28327E848720002BA81 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		7A4D129627E8E7BD00D4AE07 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
 		85D7EE9527E928B900CB9F10 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		B342298A27EB34D400A45192 /* GitCloneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitCloneView.swift; sourceTree = "<group>"; };
 		B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodeEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B658FB3127DA9E0F00EA4DBD /* WorkspaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceView.swift; sourceTree = "<group>"; };
 		B658FB3327DA9E1000EA4DBD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -254,6 +256,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		B342298927EB34A000A45192 /* GitClone */ = {
+			isa = PBXGroup;
+			children = (
+				B342298A27EB34D400A45192 /* GitCloneView.swift */,
+			);
+			path = GitClone;
+			sourceTree = "<group>";
+		};
 		B658FB2327DA9E0F00EA4DBD = {
 			isa = PBXGroup;
 			children = (
@@ -276,6 +286,7 @@
 		B658FB2E27DA9E0F00EA4DBD /* CodeEdit */ = {
 			isa = PBXGroup;
 			children = (
+				B342298927EB34A000A45192 /* GitClone */,
 				B6EE988E27E8877C00CDD8AB /* InspectorSidebar */,
 				0485EB1727E7016400138301 /* Quick Open */,
 				04660F6027E3A68A00477777 /* Info.plist */,
@@ -573,6 +584,7 @@
 				287776ED27E350D800D46668 /* NavigatorSidebarItem.swift in Sources */,
 				B6EE989027E8879A00CDD8AB /* InspectorSidebar.swift in Sources */,
 				D7E201B427E9989900CB86D0 /* SearchResultList.swift in Sources */,
+				B342298B27EB34D400A45192 /* GitCloneView.swift in Sources */,
 				D7E201B427E9989900CB86D0 /* SearchResultList.swift in Sources */,
 				287776E727E3413200D46668 /* NavigatorSidebar.swift in Sources */,
 				287776ED27E350D800D46668 /* NavigatorSidebarItem.swift in Sources */,

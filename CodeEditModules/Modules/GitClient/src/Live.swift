@@ -40,12 +40,19 @@ public extension GitClient {
                 throw GitClientError.outputError(output)
             }
         }
+        func cloneRepository(url: String) throws {
+            let output = shell("git clone \(url)")
+            if output.contains("fatal") {
+                throw GitClientError.outputError(output)
+            }
+        }
 
         return GitClient(
             getCurrentBranchName: getCurrentBranchName,
             getBranches: getBranches,
             checkoutBranch: checkoutBranch(name:),
-            pull: { _ = shell("git pull") }
+            pull: { _ = shell("git pull") },
+            cloneRepository: cloneRepository(url:)
         )
     }
 }
