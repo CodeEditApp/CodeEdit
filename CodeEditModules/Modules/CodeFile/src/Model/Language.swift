@@ -84,6 +84,7 @@ extension CodeEditor {
         case haxe
         case hsp
         case htmlbars
+        case html
         case http
         case hy
         case inform7
