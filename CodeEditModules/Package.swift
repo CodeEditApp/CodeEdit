@@ -34,9 +34,17 @@ let package = Package(
             targets: ["GitClient"]
         ),
         .library(
+          name: "TerminalEmulator",
+          targets: ["TerminalEmulator"]
+        ),
+        .library(
             name: "Search",
             targets: ["Search"]
-        )
+        ),
+		.library(
+			name: "FontPicker",
+			targets: ["FontPicker"]
+		)
     ],
     dependencies: [
         .package(
@@ -48,7 +56,12 @@ let package = Package(
             name: "SnapshotTesting",
             url: "https://github.com/pointfreeco/swift-snapshot-testing.git",
             from: "1.9.0"
-        )
+        ),
+		.package(
+			name: "SwiftTerm",
+			url: "https://github.com/migueldeicaza/SwiftTerm.git",
+			from: "1.0.7"
+		)
     ],
     targets: [
         .target(
@@ -94,7 +107,8 @@ let package = Package(
 		.target(
 			name: "StatusBar",
             dependencies: [
-                "GitClient"
+                "GitClient",
+				"TerminalEmulator"
             ],
 			path: "Modules/StatusBar/src"
 		),
@@ -107,11 +121,20 @@ let package = Package(
             path: "Modules/GitClient/src"
         ),
         .target(
+          name: "TerminalEmulator",
+          dependencies: ["SwiftTerm"],
+          path: "Modules/TerminalEmulator/src"
+        ),
+        .target(
             name: "Search",
             dependencies: [
                 "WorkspaceClient"
             ],
             path: "Modules/Search/src"
-        )
+        ),
+		.target(
+			name: "FontPicker",
+			path: "Modules/FontPicker/src"
+		)
     ]
 )

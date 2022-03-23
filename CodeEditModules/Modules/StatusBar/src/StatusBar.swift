@@ -24,8 +24,8 @@ public struct StatusBarView: View {
 
 	/// Initialize with GitClient
 	/// - Parameter gitClient: a GitClient
-    public init(gitClient: GitClient) {
-		self.model = .init(gitClient: gitClient)
+	public init(workspaceURL: URL) {
+		self.model = .init(workspaceURL: workspaceURL)
 	}
 
 	public var body: some View {
@@ -47,8 +47,10 @@ public struct StatusBarView: View {
 					StatusBarLabelButton(model: model, title: model.errorCount.formatted(), image: "xmark.octagon")
 					StatusBarLabelButton(model: model, title: model.warningCount.formatted(), image: "exclamationmark.triangle")
 				}
-				StatusBarBranchPicker(model: model)
-				StatusBarPullButton(model: model)
+				if model.selectedBranch != nil {
+					StatusBarBranchPicker(model: model)
+					StatusBarPullButton(model: model)
+				}
 				Spacer()
 				StatusBarCursorLocationLabel(model: model)
 				StatusBarIndentSelector(model: model)
@@ -95,7 +97,7 @@ struct SwiftUIView_Previews: PreviewProvider {
 	static var previews: some View {
 		ZStack(alignment: .bottom) {
 			Color.white
-            StatusBarView(gitClient: .default(directoryURL: URL(fileURLWithPath: "")))
+			StatusBarView(workspaceURL: URL(fileURLWithPath: ""))
 				.previewLayout(.fixed(width: 1.336, height: 500.0))
 				.preferredColorScheme(.light)
 		}

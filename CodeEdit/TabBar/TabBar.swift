@@ -35,7 +35,7 @@ struct TabBar: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     ScrollViewReader { value in
                         LazyHStack(alignment: .center, spacing: -1) {
-                            ForEach(workspace.openFileItems, id: \.id) { item in
+                            ForEach(workspace.selectionState.openFileItems, id: \.id) { item in
                                 TabBarItem(
                                     item: item,
                                     windowController: windowController,
@@ -45,7 +45,7 @@ struct TabBar: View {
                             }
                         }
                         .onAppear {
-                            value.scrollTo(self.workspace.selectedId)
+                            value.scrollTo(self.workspace.selectionState.selectedId)
                         }
                         .frame(height: 28)
                     }

@@ -20,7 +20,7 @@ struct NavigatorSidebar: View {
                 List {
                     Section(header: Text(workspace.fileURL?.lastPathComponent ?? "Unknown")) {
                         ForEach(
-                            workspace.fileItems.sortItems(foldersOnTop: workspace.sortFoldersOnTop)
+                            workspace.selectionState.fileItems.sortItems(foldersOnTop: workspace.sortFoldersOnTop)
                         ) { item in // Instead of OutlineGroup
                             NavigatorSidebarItem(
                                 item: item,
@@ -32,7 +32,8 @@ struct NavigatorSidebar: View {
                 }
             case 2:
                 SidebarSearch(state: workspace.searchState ?? .init(workspace))
-            default: EmptyView()
+            default:
+				VStack { Spacer() }
             }
         }
         .safeAreaInset(edge: .top) {

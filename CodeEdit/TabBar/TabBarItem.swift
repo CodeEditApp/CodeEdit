@@ -39,7 +39,7 @@ struct TabBarItem: View {
     @ObservedObject var workspace: WorkspaceDocument
     var tabBarHeight: Double = 28.0
     var isActive: Bool {
-        item.id == workspace.selectedId
+        item.id == workspace.selectionState.selectedId
     }
     @ViewBuilder
     var content: some View {
@@ -120,7 +120,7 @@ struct TabBarItem: View {
     }
     var body: some View {
         Button(
-            action: { workspace.selectedId = item.id },
+            action: { workspace.selectionState.selectedId = item.id },
             label: { content }
         )
         .background(BlurView(
@@ -155,8 +155,8 @@ struct TabBarItem: View {
 
 fileprivate extension WorkspaceDocument {
     func getTabKeyEquivalent(item: WorkspaceClient.FileItem) -> KeyEquivalent {
-        for counter in 0..<9 where self.openFileItems.count > counter &&
-        self.openFileItems[counter].fileName == item.fileName {
+        for counter in 0..<9 where self.selectionState.openFileItems.count > counter &&
+        self.selectionState.openFileItems[counter].fileName == item.fileName {
             return KeyEquivalent.init(
                 Character.init("\(counter + 1)")
             )
