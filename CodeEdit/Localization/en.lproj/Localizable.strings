@@ -23,6 +23,10 @@
 // Settings - Editor Theme
 "Editor Theme"="Editor Theme";
 
+// Settings - Terminal Shell Type
+"Terminal Shell"="Terminal Shell";
+"System Default"="System Default";
+
 // Welcome Screen
 "Welcome to CodeEdit"="Welcome to CodeEdit";
 "Version %@ (%@)"="Version %@ (%@)";

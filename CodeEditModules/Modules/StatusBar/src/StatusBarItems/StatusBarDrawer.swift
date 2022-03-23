@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import TerminalEmulator
 
 internal struct StatusBarDrawer: View {
 
@@ -16,8 +17,7 @@ internal struct StatusBarDrawer: View {
 	}
 
 	internal var body: some View {
-		Rectangle()
-			.foregroundColor(Color(red: 0.163, green: 0.163, blue: 0.188, opacity: 1.000))
+		TerminalEmulatorView(url: model.workspaceURL)
 			.frame(minHeight: 0,
 				   idealHeight: model.isExpanded ? model.currentHeight : 0,
 				   maxHeight: model.isExpanded ? model.currentHeight : 0)

@@ -24,8 +24,8 @@ public struct StatusBarView: View {
 
 	/// Initialize with GitClient
 	/// - Parameter gitClient: a GitClient
-    public init(gitClient: GitClient) {
-		self.model = .init(gitClient: gitClient)
+	public init(workspaceURL: URL) {
+		self.model = .init(workspaceURL: workspaceURL)
 	}
 
 	public var body: some View {
@@ -97,7 +97,7 @@ struct SwiftUIView_Previews: PreviewProvider {
 	static var previews: some View {
 		ZStack(alignment: .bottom) {
 			Color.white
-            StatusBarView(gitClient: .default(directoryURL: URL(fileURLWithPath: "")))
+			StatusBarView(workspaceURL: URL(fileURLWithPath: ""))
 				.previewLayout(.fixed(width: 1.336, height: 500.0))
 				.preferredColorScheme(.light)
 		}
