@@ -22,7 +22,7 @@ public class StatusBarModel: ObservableObject {
 	@Published public var warningCount: Int = 0 // Implementation missing
 
 	/// The selected branch from the GitClient
-	@Published public var selectedBranch: String = ""
+	@Published public var selectedBranch: String?
 
 	/// State of pulling from git
 	@Published public var isReloading: Bool = false // Implementation missing
@@ -63,6 +63,10 @@ public class StatusBarModel: ObservableObject {
 	/// - Parameter gitClient: a GitClient
 	public init(gitClient: GitClient) {
 		self.gitClient = gitClient
-		self.selectedBranch = gitClient.getCurrentBranchName()
+		if gitClient.getCurrentBranchName().contains("fatal: not a git repository") {
+			self.selectedBranch = nil
+		} else {
+			self.selectedBranch = gitClient.getCurrentBranchName()
+		}
 	}
 }
