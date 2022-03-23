@@ -18,7 +18,7 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var workspaceClient: WorkspaceClient?
 
     @Published var sortFoldersOnTop: Bool = true
-    @Published var selectionState: SelectionState = .init()
+    @Published var selectionState: WorkspaceSelectionState = .init()
 
     var searchState: SearchState?
     var quickOpenState: QuickOpenState?
@@ -157,6 +157,29 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     override func write(to url: URL, ofType typeName: String) throws {}
 
     override func close() {
+        // TODO: save
+        if let projectDir = fileURL?.appendingPathComponent(".codeedit", isDirectory: true) {
+            do {
+                if !FileManager.default.fileExists(atPath: projectDir.path) {
+                    do {
+                        try FileManager.default.createDirectory(at: projectDir,
+                                                                withIntermediateDirectories: false,
+                                                                attributes: [:])
+                    }
+                }
+                let selectionStateFile = projectDir.appendingPathComponent("selection.json", isDirectory: false)
+                let data = try JSONEncoder().encode(selectionState)
+                if FileManager.default.fileExists(atPath: selectionStateFile.path) {
+                    do {
+                        try FileManager.default.removeItem(at: selectionStateFile)
+                    }
+                }
+                try data.write(to: selectionStateFile)
+            } catch let error {
+                Swift.print(error)
+            }
+        }
+
         selectionState.selectedId = nil
         selectionState.openFileItems.forEach { item in
             do {
@@ -286,19 +309,34 @@ extension WorkspaceDocument {
 
 // MARK: - Selection
 
-extension WorkspaceDocument {
+struct WorkspaceSelectionState: Codable {
 
-    struct SelectionState {
+    var selectedId: String?
+    var openFileItems: [WorkspaceClient.FileItem] = []
+    var fileItems: [WorkspaceClient.FileItem] = []
 
-        var selectedId: String?
-        var openFileItems: [WorkspaceClient.FileItem] = []
-        var fileItems: [WorkspaceClient.FileItem] = []
+    var selected: WorkspaceClient.FileItem? {
+        guard let selectedId = selectedId else { return nil }
+        return fileItems.first(where: { $0.id == selectedId })
+    }
+    var openedCodeFiles: [WorkspaceClient.FileItem: CodeFileDocument] = [:]
 
-        var selected: WorkspaceClient.FileItem? {
-            guard let selectedId = selectedId else { return nil }
-            return fileItems.first(where: { $0.id == selectedId })
-        }
-        var openedCodeFiles: [WorkspaceClient.FileItem: CodeFileDocument] = [:]
+    enum CodingKeys: String, CodingKey {
+        case selectedId, openFileItems
     }
 
+    init() {
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        selectedId = try container.decode(String.self, forKey: .selectedId)
+        openFileItems = try container.decode([WorkspaceClient.FileItem].self, forKey: .openFileItems)
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(selectedId, forKey: .selectedId)
+        try container.encode(openFileItems, forKey: .openFileItems)
+    }
 }

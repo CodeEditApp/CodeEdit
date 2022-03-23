@@ -9,12 +9,12 @@ import Foundation
 import SwiftUI
 
 public extension WorkspaceClient {
-    struct FileItem: Hashable, Identifiable, Comparable {
+    struct FileItem: Hashable, Identifiable, Comparable, Codable {
         // TODO: use a phantom type instead of a String
         public var id: String
         public var url: URL
         public var children: [FileItem]?
-        public let fileManger = FileManager.default
+        public static let fileManger = FileManager.default
         public var systemImage: String {
             switch children {
             case nil:
@@ -110,7 +110,9 @@ public extension WorkspaceClient {
         public func addFolder(folderName: String) {
             let folderUrl = url.appendingPathComponent(folderName)
             do {
-                try fileManger.createDirectory(at: folderUrl, withIntermediateDirectories: true, attributes: [:])
+                try FileItem.fileManger.createDirectory(at: folderUrl,
+                                                        withIntermediateDirectories: true,
+                                                        attributes: [:])
             } catch {
                 fatalError(error.localizedDescription)
             }
@@ -120,7 +122,7 @@ public extension WorkspaceClient {
         public func addFile(fileName: String) {
             do {
                 let fileUrl = url.appendingPathComponent(fileName)
-                fileManger.createFile(
+                FileItem.fileManger.createFile(
                     atPath: fileUrl.path,
                     contents: nil,
                     attributes: [FileAttributeKey.creationDate: Date()])
@@ -131,9 +133,9 @@ public extension WorkspaceClient {
 
         /// This function deletes the item or folder from the current project
         public func delete() {
-            if fileManger.fileExists(atPath: url.path) {
+            if FileItem.fileManger.fileExists(atPath: url.path) {
                 do {
-                    try fileManger.removeItem(at: url)
+                    try FileItem.fileManger.removeItem(at: url)
                 } catch {
                     fatalError(error.localizedDescription)
                 }
