@@ -37,8 +37,7 @@ struct Themes: Identifiable {
         NSApp.effectiveAppearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua
     }
 
-    func selected() -> Bool {
-        @AppStorage(CodeFileView.Theme.storageKey) var editorTheme: CodeFileView.Theme = .atelierSavannaAuto
+    func selected(_ editorTheme: CodeFileView.Theme) -> Bool {
         return editorTheme == self.theme
     }
 }

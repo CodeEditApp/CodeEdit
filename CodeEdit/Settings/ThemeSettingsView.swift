@@ -15,6 +15,7 @@ struct ThemeSettingsView: View {
     let gridRule = [GridItem](repeating: GridItem(.flexible(), alignment: .top), count: 5)
 
     @State var keyWindow = true
+    @State var refresh = UUID()
 
     var body: some View {
         ScrollView {
@@ -22,7 +23,7 @@ struct ThemeSettingsView: View {
                 ForEach(Themes.all) { themeItem in
                     VStack {
                         VStack {
-                            if themeItem.selected() {
+                            if themeItem.selected(editorTheme) {
                                 themeItem.image
                                     .resizable()
                                     .frame(width: 116, height: 62)
@@ -47,10 +48,12 @@ struct ThemeSettingsView: View {
                                 .font(.system(size: 11))
                         }
                         .padding(5)
-                        .background(BackGroundView(selected: themeItem.selected()))
+                        .background(BackGroundView(selected: themeItem.selected(editorTheme)))
+                        .onTapGesture {
+                            editorTheme = themeItem.theme
+                        }
                     }
                     .padding()
-
                 }
             }
         }
