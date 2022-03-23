@@ -31,17 +31,11 @@ struct WorkspaceView: View {
                 NavigatorSidebar(workspace: workspace, windowController: windowController)
                     .frame(minWidth: 250)
                 HSplitView {
-                    WorkspaceCodeFileView(
-                        windowController: windowController,
-                        workspace: workspace
-                    )
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-
-                    InspectorSidebar(
-                        workspace: workspace,
-                        windowController: windowController
-                    )
-                    .frame(minWidth: 250, maxWidth: .infinity, maxHeight: .infinity)
+                    WorkspaceCodeFileView(windowController: windowController,
+                                          workspace: workspace)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    InspectorSidebar(workspace: workspace, windowController: windowController)
+                        .frame(minWidth: 250, maxWidth: .infinity, maxHeight: .infinity)
                 }
             } else {
                 EmptyView()
