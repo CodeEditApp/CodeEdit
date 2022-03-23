@@ -15,7 +15,6 @@ struct GeneralSettingsView: View {
     @AppStorage(Appearances.storageKey) var appearance: Appearances = .default
     @AppStorage(ReopenBehavior.storageKey) var reopenBehavior: ReopenBehavior = .default
     @AppStorage(FileIconStyle.storageKey) var fileIconStyle: FileIconStyle = .default
-    @AppStorage(CodeFileView.Theme.storageKey) var editorTheme: CodeFileView.Theme = .atelierSavannaAuto
 	@AppStorage(TerminalShellType.storageKey) var shellType: TerminalShellType = .default
 
     var body: some View {
@@ -51,20 +50,6 @@ struct GeneralSettingsView: View {
 				Text("New Document".localized())
                     .tag(ReopenBehavior.newDocument)
             }
-            .fixedSize()
-
-			Picker("Editor Theme".localized(), selection: $editorTheme) {
-				Text("Atelier Savanna (Auto)")
-                    .tag(CodeFileView.Theme.atelierSavannaAuto)
-				Text("Atelier Savanna Dark")
-                    .tag(CodeFileView.Theme.atelierSavannaDark)
-				Text("Atelier Savanna Light")
-                    .tag(CodeFileView.Theme.atelierSavannaLight)
-				Text("Agate")
-					.tag(CodeFileView.Theme.agate)
-				Text("Ocean")
-					.tag(CodeFileView.Theme.ocean)
-			}
             .fixedSize()
 
 			Picker("Terminal Shell".localized(), selection: $shellType) {

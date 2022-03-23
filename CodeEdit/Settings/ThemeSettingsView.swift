@@ -6,9 +6,14 @@
 //
 
 import SwiftUI
+import CodeFile
 
 struct ThemeSettingsView: View {
+    @AppStorage(CodeFileView.Theme.storageKey) var editorTheme: CodeFileView.Theme = .atelierSavannaAuto
+
     let gridRule = [GridItem](repeating: GridItem(.flexible(), alignment: .top), count: 5)
+
+    @State var keyWindow = true
 
     var body: some View {
         ScrollView {
@@ -16,24 +21,57 @@ struct ThemeSettingsView: View {
                 ForEach(Themes.all) { themeItem in
                     VStack {
                         VStack {
-                            themeItem.image
-                                .resizable()
-                                .frame(width: 116, height: 62)
-                                .scaledToFit()
-                                .border(Color.secondary, width: 1.5)
-                                .cornerRadius(3)
+                            if themeItem.selected() {
+                                themeItem.image
+                                    .resizable()
+                                    .frame(width: 116, height: 62)
+                                    .scaledToFit()
+                                    .cornerRadius(3)
+                            } else {
+                                themeItem.image
+                                    .resizable()
+                                    .frame(width: 116, height: 62)
+                                    .scaledToFit()
+                                    .overlay {
+                                        RoundedRectangle(cornerRadius: 3)
+                                            .stroke(lineWidth: 1.5)
+                                            .foregroundColor(Color.gray.opacity(0.5))
+                                    }
+                                    .clipShape(RoundedRectangle(cornerRadius: 3))
+                            }
 
                             Text(themeItem.name)
+                                .lineLimit(1)
                                 .multilineTextAlignment(.center)
+                                .font(.system(size: 11))
                         }
-                        .padding()
+                        .padding(5)
+                        .background(BackGroundView(selected: themeItem.selected()))
                     }
                     .padding()
+
                 }
             }
         }
         .frame(width: 820, height: 450)
         .padding()
+    }
+
+    struct BackGroundView: View {
+        @StateObject var model = SettingsViewObject.shared
+        let selected: Bool
+
+        var body: some View {
+            if selected {
+                if model.isKeyWindow {
+                    Color.accentColor.opacity(0.8).cornerRadius(5)
+                } else {
+                    Color.gray.opacity(0.3).cornerRadius(5)
+                }
+            } else {
+                Color.clear
+            }
+        }
     }
 }
 

@@ -123,6 +123,19 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     @IBAction func openPreferences(_ sender: Any) {
         preferencesWindowController.show()
         preferencesWindowController.window?.center()
+        SettingsViewObject.shared.isKeyWindow = true
+        SettingsViewObject.shared.isFirst = true
+
+        Task {
+            let keyWindowNotifications =
+            NotificationCenter.default.notifications(named: NSWindow.didBecomeKeyNotification,
+                                                     object: preferencesWindowController.window)
+
+            for await keyWindowNotification in keyWindowNotifications {
+                print("Yes")
+                SettingsViewObject.shared.isKeyWindow = true
+            }
+        }
     }
 
     @IBAction func openWelcome(_ sender: Any) {

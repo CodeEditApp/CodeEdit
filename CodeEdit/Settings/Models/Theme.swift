@@ -11,7 +11,7 @@ import CodeFile
 /// This is sturct for ThemeSettingsView
 struct Themes: Identifiable {
     static let all: [Themes] = [
-        .init(name: "Atelier Savanna (Auto)", theme: .atelierSavannaAuto,
+        .init(name: "Atelier Savanna Auto", theme: .atelierSavannaAuto,
               image: isDarkMode() ? "Atelier Savanna Dark" : "Atelier Savanna Light"),
         .init(name: "Atelier Savanna Dark", theme: .atelierSavannaDark, image: "Atelier Savanna Dark"),
         .init(name: "Atelier Savanna Light", theme: .atelierSavannaLight, image: "Atelier Savanna Light"),
@@ -35,5 +35,10 @@ struct Themes: Identifiable {
     /// Tell the appearence
     static func isDarkMode() -> Bool {
         NSApp.effectiveAppearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua
+    }
+
+    func selected() -> Bool {
+        @AppStorage(CodeFileView.Theme.storageKey) var editorTheme: CodeFileView.Theme = .atelierSavannaAuto
+        return editorTheme == self.theme
     }
 }
