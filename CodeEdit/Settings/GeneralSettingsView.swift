@@ -32,6 +32,7 @@ struct GeneralSettingsView: View {
             .onChange(of: appearance) { tag in
                 tag.applyAppearance()
             }
+            .fixedSize()
 
 			Picker("File Icon Style".localized(), selection: $fileIconStyle) {
 				Text("Color".localized())
@@ -39,6 +40,7 @@ struct GeneralSettingsView: View {
 				Text("Monochrome".localized())
 					.tag(FileIconStyle.monochrome)
 			}
+            .fixedSize()
 
 			Picker("Reopen Behavior".localized(), selection: $reopenBehavior) {
                 Text("Welcome Screen".localized())
@@ -49,6 +51,7 @@ struct GeneralSettingsView: View {
 				Text("New Document".localized())
                     .tag(ReopenBehavior.newDocument)
             }
+            .fixedSize()
 
 			Picker("Editor Theme".localized(), selection: $editorTheme) {
 				Text("Atelier Savanna (Auto)")
@@ -57,14 +60,12 @@ struct GeneralSettingsView: View {
                     .tag(CodeFileView.Theme.atelierSavannaDark)
 				Text("Atelier Savanna Light")
                     .tag(CodeFileView.Theme.atelierSavannaLight)
-				// TODO: Pojoaque does not seem to work (does not change from previous selection)
-//				Text("Pojoaque")
-//					.tag(CodeEditor.ThemeName.pojoaque)
 				Text("Agate")
 					.tag(CodeFileView.Theme.agate)
 				Text("Ocean")
 					.tag(CodeFileView.Theme.ocean)
 			}
+            .fixedSize()
 
 			Picker("Terminal Shell".localized(), selection: $shellType) {
 				Text("System Default".localized())
@@ -74,7 +75,11 @@ struct GeneralSettingsView: View {
 				Text("Bash")
 					.tag(TerminalShellType.bash)
 			}
+            .fixedSize()
+
+            Spacer()
         }
+        .frame(width: 820, height: 450)
         .padding()
     }
 }

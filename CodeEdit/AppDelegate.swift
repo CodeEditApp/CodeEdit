@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Preferences
 
 class CodeEditApplication: NSApplication {
     let strongDelegate = AppDelegate()
@@ -86,27 +87,42 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     }
 
     // MARK: - Open windows
+    private lazy var preferencesWindowController = PreferencesWindowController(
+        panes: [
+            Preferences.Pane(
+                identifier: Preferences.PaneIdentifier.general,
+                title: "General",
+                toolbarIcon: NSImage(systemSymbolName: "gearshape", accessibilityDescription: nil)!
+            ) {
+                GeneralSettingsView()
+            },
+            Preferences.Pane(
+                identifier: Preferences.PaneIdentifier.theme,
+                title: "Theme",
+                toolbarIcon: NSImage(systemSymbolName: "paintbrush", accessibilityDescription: nil)!
+            ) {
+                ThemeSettingsView()
+            },
+            Preferences.Pane(
+                identifier: Preferences.PaneIdentifier.execution,
+                title: "Execution",
+                toolbarIcon: NSImage(systemSymbolName: "arrowtriangle.forward", accessibilityDescription: nil)!
+            ) {
+                GeneralSettingsView()
+            },
+            Preferences.Pane(
+                identifier: Preferences.PaneIdentifier.extension,
+                title: "Extension",
+                toolbarIcon: NSImage(systemSymbolName: "shippingbox", accessibilityDescription: nil)!
+            ) {
+                GeneralSettingsView()
+            },
+        ]
+    )
 
     @IBAction func openPreferences(_ sender: Any) {
-        if let window = NSApp.windows.filter({ window in
-            return (window.contentView as? NSHostingView<SettingsView>) != nil
-        }).first {
-            window.makeKeyAndOrderFront(self)
-            return
-        }
-
-        let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 500, height: 400),
-            styleMask: [.titled, .closable],
-            backing: .buffered, defer: false)
-        window.center()
-        window.toolbar = NSToolbar()
-        window.title = "Settings"
-        window.toolbarStyle = .unifiedCompact
-        _ = NSWindowController(window: window)
-        let contentView = SettingsView()
-        window.contentView = NSHostingView(rootView: contentView)
-        window.makeKeyAndOrderFront(sender)
+        preferencesWindowController.show()
+        preferencesWindowController.window?.center()
     }
 
     @IBAction func openWelcome(_ sender: Any) {
