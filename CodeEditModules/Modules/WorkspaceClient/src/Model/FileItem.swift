@@ -120,15 +120,11 @@ public extension WorkspaceClient {
 
         /// This function allows creating files in the selected folder or project main directory
         public func addFile(fileName: String) {
-            do {
-                let fileUrl = url.appendingPathComponent(fileName)
-                FileItem.fileManger.createFile(
-                    atPath: fileUrl.path,
-                    contents: nil,
-                    attributes: [FileAttributeKey.creationDate: Date()])
-            } catch {
-                fatalError(error.localizedDescription)
-            }
+            let fileUrl = url.appendingPathComponent(fileName)
+            FileItem.fileManger.createFile(
+                atPath: fileUrl.path,
+                contents: nil,
+                attributes: [FileAttributeKey.creationDate: Date()])
         }
 
         /// This function deletes the item or folder from the current project

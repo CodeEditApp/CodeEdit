@@ -127,6 +127,24 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         )
         self.searchState = .init(self)
         self.quickOpenState = .init(self)
+
+        // Initialize Workspace
+        do {
+            if let projectDir = fileURL?.appendingPathComponent(".codeedit", isDirectory: true),
+               FileManager.default.fileExists(atPath: projectDir.path) {
+                let selectionStateFile = projectDir.appendingPathComponent("selection.json", isDirectory: false)
+
+                if FileManager.default.fileExists(atPath: selectionStateFile.path) {
+                    let state = try JSONDecoder().decode(WorkspaceSelectionState.self,
+                                                         from: Data(contentsOf: selectionStateFile))
+                    self.selectionState.fileItems = state.fileItems
+                    state.openFileItems.forEach { item in
+                        self.openFile(item: item)
+                    }
+                }
+            }
+        }
+
         workspaceClient?
             .getFiles
             .sink { [weak self] files in
@@ -157,7 +175,6 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     override func write(to url: URL, ofType typeName: String) throws {}
 
     override func close() {
-        // TODO: save
         if let projectDir = fileURL?.appendingPathComponent(".codeedit", isDirectory: true) {
             do {
                 if !FileManager.default.fileExists(atPath: projectDir.path) {
