@@ -38,7 +38,6 @@
 		90626FA927EB3017008926FE /* PreferencesIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90626FA827EB3017008926FE /* PreferencesIdentifier.swift */; };
 		90626FAB27EB3254008926FE /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90626FAA27EB3254008926FE /* Theme.swift */; };
 		90626FB027EB3789008926FE /* ThemeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90626FAF27EB3789008926FE /* ThemeSettingsView.swift */; };
-		90626FB227EB4400008926FE /* SettingsViewObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90626FB127EB4400008926FE /* SettingsViewObject.swift */; };
 		90626FC327EB5D3F008926FE /* Preferences in Frameworks */ = {isa = PBXBuildFile; productRef = 90626FC227EB5D3F008926FE /* Preferences */; };
 		90626FC527EB5EDD008926FE /* ExecutionSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90626FC427EB5EDD008926FE /* ExecutionSettingsView.swift */; };
 		90626FC727EB5F31008926FE /* ExtensionsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90626FC627EB5F31008926FE /* ExtensionsSettingsView.swift */; };
@@ -118,7 +117,6 @@
 		90626FA827EB3017008926FE /* PreferencesIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesIdentifier.swift; sourceTree = "<group>"; };
 		90626FAA27EB3254008926FE /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		90626FAF27EB3789008926FE /* ThemeSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeSettingsView.swift; sourceTree = "<group>"; };
-		90626FB127EB4400008926FE /* SettingsViewObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewObject.swift; sourceTree = "<group>"; };
 		90626FC427EB5EDD008926FE /* ExecutionSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecutionSettingsView.swift; sourceTree = "<group>"; };
 		90626FC627EB5F31008926FE /* ExtensionsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionsSettingsView.swift; sourceTree = "<group>"; };
 		B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodeEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -219,7 +217,6 @@
 				04660F6227E3ACA300477777 /* Models */,
 				04F2BF1127DBB3C10024EAB1 /* GeneralSettingsView.swift */,
 				90626FAF27EB3789008926FE /* ThemeSettingsView.swift */,
-				90626FB127EB4400008926FE /* SettingsViewObject.swift */,
 				90626FC427EB5EDD008926FE /* ExecutionSettingsView.swift */,
 				90626FC627EB5F31008926FE /* ExtensionsSettingsView.swift */,
 			);
@@ -578,7 +575,6 @@
 				90626FB027EB3789008926FE /* ThemeSettingsView.swift in Sources */,
 				D7012EE827E757850001E1EF /* SidebarSearch.swift in Sources */,
 				D7E201AE27E8B3C000CB86D0 /* String+Ranges.swift in Sources */,
-				90626FB227EB4400008926FE /* SettingsViewObject.swift in Sources */,
 				D7E201B027E8C07300CB86D0 /* SearchBar.swift in Sources */,
 				D72E1A8927E44D7C00EB11B9 /* WelcomeWindowView.swift in Sources */,
 				04540D5C27DD08C300E91B77 /* GeneralSettingsView.swift in Sources */,
