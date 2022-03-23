@@ -40,7 +40,11 @@ let package = Package(
         .library(
             name: "Search",
             targets: ["Search"]
-        )
+        ),
+		.library(
+			name: "FontPicker",
+			targets: ["FontPicker"]
+		)
     ],
     dependencies: [
         .package(
@@ -127,6 +131,10 @@ let package = Package(
                 "WorkspaceClient"
             ],
             path: "Modules/Search/src"
-        )
+        ),
+		.target(
+			name: "FontPicker",
+			path: "Modules/FontPicker/src"
+		)
     ]
 )

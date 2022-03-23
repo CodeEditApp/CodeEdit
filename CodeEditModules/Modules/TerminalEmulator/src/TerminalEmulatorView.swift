@@ -18,15 +18,23 @@ import SwiftTerm
 public struct TerminalEmulatorView: NSViewRepresentable {
 
 	@AppStorage(TerminalShellType.storageKey) var shellType: TerminalShellType = .default
+	@AppStorage(TerminalFont.storageKey) var terminalFontSelection: TerminalFont = .default
+	@AppStorage(TerminalFontName.storageKey) var terminalFontName: String = TerminalFontName.default
+	@AppStorage(TerminalFontSize.storageKey) var terminalFontSize: Int = TerminalFontSize.default
 
 	private var terminal: LocalProcessTerminalView
-	private var font: NSFont
+	private var font: NSFont {
+		if terminalFontSelection == .systemFont {
+			return .monospacedSystemFont(ofSize: 11, weight: .medium)
+		}
+		return NSFont(name: terminalFontName, size: CGFloat(terminalFontSize)) ??
+			.monospacedSystemFont(ofSize: 11, weight: .medium)
+	}
 	private var url: URL
 
-	public init(url: URL, font: NSFont = .monospacedSystemFont(ofSize: 12, weight: .medium)) {
+	public init(url: URL) {
 		self.url = url
 		self.terminal = .init(frame: .zero)
-		self.font = font
 	}
 
 	/// Returns a string of a shell path to use
