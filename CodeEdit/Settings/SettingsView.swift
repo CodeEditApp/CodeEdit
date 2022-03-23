@@ -14,9 +14,13 @@ struct SettingsView: View {
                 .tabItem {
 					Label("General".localized(), systemImage: "gearshape")
                 }
+			TerminalSettingsView()
+				.tabItem {
+					Label("Terminal".localized(), systemImage: "chevron.left.forwardslash.chevron.right")
+				}
         }
         .padding()
-        .frame(width: 450, height: 250)
+		.frame(width: 450, height: 200)
     }
 }
 
