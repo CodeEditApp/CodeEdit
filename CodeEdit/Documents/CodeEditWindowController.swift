@@ -22,11 +22,11 @@ class CodeEditWindowController: NSWindowController {
     }
 
     private func getSelectedCodeFile() -> CodeFileDocument? {
-        guard let id = workspace?.selectedId else { return nil }
-        guard let item = workspace?.openFileItems.first(where: { item in
+        guard let id = workspace?.selectionState.selectedId else { return nil }
+        guard let item = workspace?.selectionState.openFileItems.first(where: { item in
             return item.id == id
         }) else { return nil }
-        guard let file = workspace?.openedCodeFiles[item] else { return nil }
+        guard let file = workspace?.selectionState.openedCodeFiles[item] else { return nil }
         return file
     }
 

@@ -30,31 +30,20 @@ struct WorkspaceView: View {
             if workspace.workspaceClient != nil {
                 NavigatorSidebar(workspace: workspace, windowController: windowController)
                     .frame(minWidth: 250)
-                HSplitView {
-                    WorkspaceCodeFileView(
-                        windowController: windowController,
-                        workspace: workspace
-                    )
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-
-                    InspectorSidebar(
-                        workspace: workspace,
-                        windowController: windowController
-                    )
-                    .frame(minWidth: 250, maxWidth: .infinity, maxHeight: .infinity)
-                }
+                WorkspaceCodeFileView(windowController: windowController,
+                                      workspace: workspace)
             } else {
                 EmptyView()
             }
         }
-        .frame(minWidth: 800, minHeight: 600)
+        .frame(minWidth: 1000, minHeight: 600)
         .alert(alertTitle, isPresented: $showingAlert, actions: {
             Button(
                 action: { showingAlert = false },
                 label: { Text("OK") }
             )
         }, message: { Text(alertMsg) })
-        .onChange(of: workspace.selectedId) { newValue in
+        .onChange(of: workspace.selectionState.selectedId) { newValue in
             if newValue == nil {
                 windowController.window?.subtitle = ""
             }
