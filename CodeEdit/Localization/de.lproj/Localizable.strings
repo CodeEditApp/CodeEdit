@@ -23,9 +23,17 @@
 // Settings - Editor Theme
 "Editor Theme"="Editor Theme";
 
+// Settings - Terminal Tab
+"Terminal"="Terminal";
+
 // Settings - Terminal Shell Type
 "Terminal Shell"="Terminal Shell";
 "System Default"="System Standard";
+
+// Settings - Terminal Font
+"Terminal Font"="Terminal Schriftart";
+"System Font"="System Schriftart";
+"Custom"="Benutzerdefiniert";
 
 // Welcome Screen
 "Welcome to CodeEdit"="Willkommen zu CodeEdit";

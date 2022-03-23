@@ -16,7 +16,7 @@ struct SettingsView: View {
                 }
 			TerminalSettingsView()
 				.tabItem {
-					Label("Terminal", systemImage: "chevron.left.forwardslash.chevron.right")
+					Label("Terminal".localized(), systemImage: "chevron.left.forwardslash.chevron.right")
 				}
         }
         .padding()

@@ -27,9 +27,9 @@ struct TerminalSettingsView: View {
 			}
 
 			Picker("Terminal Font".localized(), selection: $terminalFontSelection) {
-				Text("System Font")
+				Text("System Font".localized())
 					.tag(TerminalFont.systemFont)
-				Text("Custom")
+				Text("Custom".localized())
 					.tag(TerminalFont.custom)
 			}
 			if terminalFontSelection == .custom {
