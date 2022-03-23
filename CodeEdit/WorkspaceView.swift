@@ -56,7 +56,7 @@ struct WorkspaceView: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
+struct WorkspaceView_Previews: PreviewProvider {
     static var previews: some View {
         WorkspaceView(windowController: NSWindowController(), workspace: .init())
     }

@@ -18,6 +18,7 @@ internal struct StatusBarBranchPicker: View {
 
 	internal var body: some View {
 		Menu {
+
 			ForEach(model.gitClient.getBranches(), id: \.self) { branch in
 				Button {
 					do {
@@ -41,10 +42,12 @@ internal struct StatusBarBranchPicker: View {
 				}
 			}
 		} label: {
-			Text(model.selectedBranch)
+			Text(model.selectedBranch ?? "No Git Repository")
 				.font(model.toolbarFont)
 		}
 		.menuStyle(.borderlessButton)
+        .fixedSize(horizontal: false, vertical: true)
 		.onHover { isHovering($0) }
+		.disabled(model.selectedBranch == nil)
 	}
 }

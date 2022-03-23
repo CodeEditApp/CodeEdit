@@ -8,7 +8,6 @@
 import SwiftUI
 import WorkspaceClient
 import CodeFile
-import CodeEditor
 
 struct QuickOpenPreviewView: View {
     var item: WorkspaceClient.FileItem
@@ -18,8 +17,12 @@ struct QuickOpenPreviewView: View {
 
     var body: some View {
         VStack {
-            if loaded {
-                ThemedCodeView($content, language: .init(url: item.url), editable: false)
+            if let codeFile = try? CodeFileDocument(
+                for: item.url,
+                withContentsOf: item.url,
+                ofType: "public.source-code"
+            ), loaded {
+                CodeFileView(codeFile: codeFile, editable: false)
             } else if let error = error {
                 Text(error)
             } else {
