@@ -11,6 +11,15 @@
         }
       },
       {
+        "package": "Preferences",
+        "repositoryURL": "https://github.com/underthestars-zhy/Preferences",
+        "state": {
+          "branch": "main",
+          "revision": "3bdbafbad722aa6fc43211fcb01e634b31978f47",
+          "version": null
+        }
+      },
+      {
         "package": "SnapshotTesting",
         "repositoryURL": "https://github.com/pointfreeco/swift-snapshot-testing.git",
         "state": {
