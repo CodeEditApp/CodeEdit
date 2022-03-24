@@ -21,13 +21,14 @@
 		0485EB1F27E7458B00138301 /* WorkspaceCodeFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0485EB1E27E7458B00138301 /* WorkspaceCodeFileView.swift */; };
 		0485EB2327E7791400138301 /* QuickOpenPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0485EB2227E7791400138301 /* QuickOpenPreviewView.swift */; };
 		0485EB2527E7B9C800138301 /* Overlays in Frameworks */ = {isa = PBXBuildFile; productRef = 0485EB2427E7B9C800138301 /* Overlays */; };
+		2813F93827ECC4AA00E305E4 /* SearchResultList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201B327E9989900CB86D0 /* SearchResultList.swift */; };
+		2813F93927ECC4C300E305E4 /* NavigatorSidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287776E627E3413200D46668 /* NavigatorSidebar.swift */; };
+		2813F93A27ECC4CC00E305E4 /* NavigatorSidebarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287776EC27E350D800D46668 /* NavigatorSidebarItem.swift */; };
 		2859B93F27EB50050069BE88 /* FontPicker in Frameworks */ = {isa = PBXBuildFile; productRef = 2859B93E27EB50050069BE88 /* FontPicker */; };
 		2859B94127EB5BC00069BE88 /* TerminalSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859B94027EB5BC00069BE88 /* TerminalSettingsView.swift */; };
 		286620A527E4AB6900E18C2B /* BreadcrumbsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286620A427E4AB6900E18C2B /* BreadcrumbsComponent.swift */; };
 		2875A46D27E3BE5B007805F8 /* BreadcrumbsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2875A46C27E3BE5B007805F8 /* BreadcrumbsView.swift */; };
-		287776E727E3413200D46668 /* NavigatorSidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287776E627E3413200D46668 /* NavigatorSidebar.swift */; };
 		287776E927E34BC700D46668 /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287776E827E34BC700D46668 /* TabBar.swift */; };
-		287776ED27E350D800D46668 /* NavigatorSidebarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287776EC27E350D800D46668 /* NavigatorSidebarItem.swift */; };
 		287776EF27E3515300D46668 /* TabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287776EE27E3515300D46668 /* TabBarItem.swift */; };
 		289978ED27E4E97E00BB0357 /* FileIconStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289978EC27E4E97E00BB0357 /* FileIconStyle.swift */; };
 		28B0A19827E385C300B73177 /* NavigatorSidebarToolbarTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B0A19727E385C300B73177 /* NavigatorSidebarToolbarTop.swift */; };
@@ -54,7 +55,6 @@
 		D7E201AE27E8B3C000CB86D0 /* String+Ranges.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201AD27E8B3C000CB86D0 /* String+Ranges.swift */; };
 		D7E201B027E8C07300CB86D0 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201AF27E8C07300CB86D0 /* SearchBar.swift */; };
 		D7E201B227E8D50000CB86D0 /* SearchModeSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201B127E8D50000CB86D0 /* SearchModeSelector.swift */; };
-		D7E201B427E9989900CB86D0 /* SearchResultList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201B327E9989900CB86D0 /* SearchResultList.swift */; };
 		D7E201BD27EA00E200CB86D0 /* SearchResultFileItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201BC27EA00E200CB86D0 /* SearchResultFileItem.swift */; };
 		D7F72DEB27EA3574000C3064 /* Search in Frameworks */ = {isa = PBXBuildFile; productRef = D7F72DEA27EA3574000C3064 /* Search */; };
 /* End PBXBuildFile section */
@@ -550,6 +550,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2813F93A27ECC4CC00E305E4 /* NavigatorSidebarItem.swift in Sources */,
+				2813F93927ECC4C300E305E4 /* NavigatorSidebar.swift in Sources */,
+				2813F93827ECC4AA00E305E4 /* SearchResultList.swift in Sources */,
 				2B7A583527E4BA0100D25D4E /* AppDelegate.swift in Sources */,
 				2875A46D27E3BE5B007805F8 /* BreadcrumbsView.swift in Sources */,
 				0485EB1D27E7338100138301 /* QuickOpenItem.swift in Sources */,
@@ -576,13 +579,7 @@
 				287776EF27E3515300D46668 /* TabBarItem.swift in Sources */,
 				D72E1A8727E4242900EB11B9 /* RecentProjectsView.swift in Sources */,
 				04660F6A27E51E5C00477777 /* CodeEditWindowController.swift in Sources */,
-				287776E727E3413200D46668 /* NavigatorSidebar.swift in Sources */,
-				287776ED27E350D800D46668 /* NavigatorSidebarItem.swift in Sources */,
 				B6EE989027E8879A00CDD8AB /* InspectorSidebar.swift in Sources */,
-				D7E201B427E9989900CB86D0 /* SearchResultList.swift in Sources */,
-				D7E201B427E9989900CB86D0 /* SearchResultList.swift in Sources */,
-				287776E727E3413200D46668 /* NavigatorSidebar.swift in Sources */,
-				287776ED27E350D800D46668 /* NavigatorSidebarItem.swift in Sources */,
 				289978ED27E4E97E00BB0357 /* FileIconStyle.swift in Sources */,
 				04660F6627E3ACEF00477777 /* ReopenBehavior.swift in Sources */,
 				D72E1A8327E3B0D400EB11B9 /* WelcomeView.swift in Sources */,
