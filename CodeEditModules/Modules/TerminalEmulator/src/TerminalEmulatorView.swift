@@ -123,10 +123,15 @@ public struct TerminalEmulatorView: NSViewRepresentable {
 	}
 
 	public func updateNSView(_ view: LocalProcessTerminalView, context: Context) {
-		if view.font != font { // Fixes Memory leak
+		print("Update view")
+		// if view.font != font { // Fixes Memory leak
+		// TODO: Fix memory leak
+		// for some reason setting the font here causes a memory leak.
+		// I'll leave it for now since the colors won't change
+		// without setting the font which is weird
 			view.font = font
-		}
-		view.configureNativeColors()
+		// }
+//		view.configureNativeColors()
 		view.installColors(self.appearanceColors)
 		TerminalEmulatorView.lastTerminal = view
 	}
