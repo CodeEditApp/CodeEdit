@@ -21,7 +21,6 @@ public struct TerminalEmulatorView: NSViewRepresentable {
 	@AppStorage(TerminalFont.storageKey) var terminalFontSelection: TerminalFont = .default
 	@AppStorage(TerminalFontName.storageKey) var terminalFontName: String = TerminalFontName.default
 	@AppStorage(TerminalFontSize.storageKey) var terminalFontSize: Int = TerminalFontSize.default
-	@AppStorage(AnsiColors.storageKey) var ansiColors: AnsiColors = .default
 
 	private var terminal: LocalProcessTerminalView
 	private var font: NSFont {
@@ -132,8 +131,12 @@ public struct TerminalEmulatorView: NSViewRepresentable {
 	}
 
 	private var colors: [SwiftTerm.Color] {
-		let components = ansiColors.allColors.map { $0.components ?? [0, 0, 0, 1] }
-		return components.map { SwiftTerm.Color(dRed: $0[0], green: $0[1], blue: $0[2]) }
+        guard let ansiColors = UserDefaults.standard.value(forKey: AnsiColors.storageKey) as? [Int] else {
+            print("failed")
+            return AnsiColors().mappedColors.map { SwiftTerm.Color(hex: $0) }
+        }
+        print("success")
+        return ansiColors.map { SwiftTerm.Color(hex: $0) }
 	}
 }
 
@@ -153,4 +156,11 @@ extension SwiftTerm.Color {
 				  green: Double(green) / divisor,
 				  blue: Double(blue) / divisor)
 	}
+
+    convenience init(hex: Int) {
+        let red = UInt8((hex >> 16) & 0xFF)
+        let green = UInt8((hex >> 8) & 0xFF)
+        let blue = UInt8(hex & 0xFF)
+        self.init(iRed: red, green: green, blue: blue)
+    }
 }

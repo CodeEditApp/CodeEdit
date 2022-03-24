@@ -14,7 +14,8 @@ struct TerminalSettingsView: View {
 	@AppStorage(TerminalFont.storageKey) var terminalFontSelection: TerminalFont = .default
 	@AppStorage(TerminalFontName.storageKey) var terminalFontName: String = TerminalFontName.default
 	@AppStorage(TerminalFontSize.storageKey) var terminalFontSize: Int = TerminalFontSize.default
-	@AppStorage(AnsiColors.storageKey) var colors: AnsiColors = AnsiColors.default
+
+    @StateObject private var colors = AnsiColors()
 
     var body: some View {
 		Form {
@@ -42,25 +43,25 @@ struct TerminalSettingsView: View {
 			Section {
 				VStack(alignment: .leading, spacing: 0) {
 					HStack(spacing: 0) {
-						ansiColorPicker($colors.black)
-						ansiColorPicker($colors.red)
-						ansiColorPicker($colors.green)
-						ansiColorPicker($colors.yellow)
-						ansiColorPicker($colors.blue)
-						ansiColorPicker($colors.magenta)
-						ansiColorPicker($colors.cyan)
-						ansiColorPicker($colors.white)
+                        ansiColorPicker($colors.colors[0])
+						ansiColorPicker($colors.colors[1])
+						ansiColorPicker($colors.colors[2])
+						ansiColorPicker($colors.colors[3])
+						ansiColorPicker($colors.colors[4])
+						ansiColorPicker($colors.colors[5])
+						ansiColorPicker($colors.colors[6])
+						ansiColorPicker($colors.colors[7])
 						Text("Normal").padding(.leading, 4)
 					}
 					HStack(spacing: 0) {
-						ansiColorPicker($colors.brightBlack)
-						ansiColorPicker($colors.brightRed)
-						ansiColorPicker($colors.brightGreen)
-						ansiColorPicker($colors.brightYellow)
-						ansiColorPicker($colors.brightBlue)
-						ansiColorPicker($colors.brightMagenta)
-						ansiColorPicker($colors.brightCyan)
-						ansiColorPicker($colors.brightWhite)
+						ansiColorPicker($colors.colors[8])
+						ansiColorPicker($colors.colors[9])
+						ansiColorPicker($colors.colors[10])
+						ansiColorPicker($colors.colors[11])
+						ansiColorPicker($colors.colors[12])
+						ansiColorPicker($colors.colors[13])
+						ansiColorPicker($colors.colors[14])
+						ansiColorPicker($colors.colors[15])
 						Text("Bright").padding(.leading, 4)
 					}
 				}
@@ -69,7 +70,7 @@ struct TerminalSettingsView: View {
 		.padding()
     }
 
-	private func ansiColorPicker(_ color: Binding<CGColor>) -> some View {
+	private func ansiColorPicker(_ color: Binding<Color>) -> some View {
 		ColorPicker(selection: color, supportsOpacity: false) { }
 			.labelsHidden()
 	}
