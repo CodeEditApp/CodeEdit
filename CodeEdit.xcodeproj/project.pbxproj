@@ -36,7 +36,7 @@
 		5C403B8F27E20F8000788241 /* WorkspaceClient in Frameworks */ = {isa = PBXBuildFile; productRef = 5C403B8E27E20F8000788241 /* WorkspaceClient */; };
 		5CF38A5E27E48E6C0096A0F7 /* CodeFile in Frameworks */ = {isa = PBXBuildFile; productRef = 5CF38A5D27E48E6C0096A0F7 /* CodeFile */; };
 		5CFA753B27E896B60002F01B /* GitClient in Frameworks */ = {isa = PBXBuildFile; productRef = 5CFA753A27E896B60002F01B /* GitClient */; };
-		B342298B27EB34D400A45192 /* GitCloneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B342298A27EB34D400A45192 /* GitCloneView.swift */; };
+		B34B213227ECDC3A006033A9 /* GitClone in Frameworks */ = {isa = PBXBuildFile; productRef = B34B213127ECDC3A006033A9 /* GitClone */; };
 		B658FB3427DA9E1000EA4DBD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3327DA9E1000EA4DBD /* Assets.xcassets */; };
 		B658FB3727DA9E1000EA4DBD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3627DA9E1000EA4DBD /* Preview Assets.xcassets */; };
 		B65E614627E6765D00255275 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = B65E614527E6765D00255275 /* Introspect */; };
@@ -111,7 +111,6 @@
 		70F2E28327E848720002BA81 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		7A4D129627E8E7BD00D4AE07 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
 		85D7EE9527E928B900CB9F10 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
-		B342298A27EB34D400A45192 /* GitCloneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitCloneView.swift; sourceTree = "<group>"; };
 		B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodeEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B658FB3127DA9E0F00EA4DBD /* WorkspaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceView.swift; sourceTree = "<group>"; };
 		B658FB3327DA9E1000EA4DBD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -146,6 +145,7 @@
 				B65E614627E6765D00255275 /* Introspect in Frameworks */,
 				D70F5E2C27E4E8CF004EE4B9 /* WelcomeModule in Frameworks */,
 				D7F72DEB27EA3574000C3064 /* Search in Frameworks */,
+				B34B213227ECDC3A006033A9 /* GitClone in Frameworks */,
 				5CFA753B27E896B60002F01B /* GitClient in Frameworks */,
 				28CE5EA027E6493D0065D29C /* StatusBar in Frameworks */,
 				5CF38A5E27E48E6C0096A0F7 /* CodeFile in Frameworks */,
@@ -256,14 +256,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		B342298927EB34A000A45192 /* GitClone */ = {
-			isa = PBXGroup;
-			children = (
-				B342298A27EB34D400A45192 /* GitCloneView.swift */,
-			);
-			path = GitClone;
-			sourceTree = "<group>";
-		};
 		B658FB2327DA9E0F00EA4DBD = {
 			isa = PBXGroup;
 			children = (
@@ -286,7 +278,6 @@
 		B658FB2E27DA9E0F00EA4DBD /* CodeEdit */ = {
 			isa = PBXGroup;
 			children = (
-				B342298927EB34A000A45192 /* GitClone */,
 				B6EE988E27E8877C00CDD8AB /* InspectorSidebar */,
 				0485EB1727E7016400138301 /* Quick Open */,
 				04660F6027E3A68A00477777 /* Info.plist */,
@@ -384,6 +375,7 @@
 				0485EB2427E7B9C800138301 /* Overlays */,
 				5CFA753A27E896B60002F01B /* GitClient */,
 				D7F72DEA27EA3574000C3064 /* Search */,
+				B34B213127ECDC3A006033A9 /* GitClone */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -584,7 +576,6 @@
 				287776ED27E350D800D46668 /* NavigatorSidebarItem.swift in Sources */,
 				B6EE989027E8879A00CDD8AB /* InspectorSidebar.swift in Sources */,
 				D7E201B427E9989900CB86D0 /* SearchResultList.swift in Sources */,
-				B342298B27EB34D400A45192 /* GitCloneView.swift in Sources */,
 				D7E201B427E9989900CB86D0 /* SearchResultList.swift in Sources */,
 				287776E727E3413200D46668 /* NavigatorSidebar.swift in Sources */,
 				287776ED27E350D800D46668 /* NavigatorSidebarItem.swift in Sources */,
@@ -998,6 +989,10 @@
 		5CFA753A27E896B60002F01B /* GitClient */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = GitClient;
+		};
+		B34B213127ECDC3A006033A9 /* GitClone */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GitClone;
 		};
 		B65E614527E6765D00255275 /* Introspect */ = {
 			isa = XCSwiftPackageProductDependency;

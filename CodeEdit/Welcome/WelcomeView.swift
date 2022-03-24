@@ -9,6 +9,7 @@ import SwiftUI
 import AppKit
 import Foundation
 import WelcomeModule
+import GitClone
 
 struct WelcomeView: View {
     @Environment(\.colorScheme) var colorScheme

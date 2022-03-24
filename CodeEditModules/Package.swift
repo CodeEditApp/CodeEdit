@@ -40,6 +40,10 @@ let package = Package(
         .library(
             name: "Search",
             targets: ["Search"]
+        ),
+        .library(
+            name: "GitClone",
+            targets: ["GitClone"]
         )
     ],
     dependencies: [
@@ -127,6 +131,11 @@ let package = Package(
                 "WorkspaceClient"
             ],
             path: "Modules/Search/src"
+        ),
+        .target(
+            name: "GitClone",
+//            dependencies: ["GitClient"],
+            path: "Modules/GitClone/src"
         )
     ]
 )

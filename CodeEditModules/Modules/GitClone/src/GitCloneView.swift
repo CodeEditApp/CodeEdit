@@ -9,21 +9,21 @@ import SwiftUI
 import GitClient
 import Foundation
 
-struct GitCloneView: View {
+public struct GitCloneView: View {
     var windowController: NSWindowController
     @State private var repoUrl = ""
     @State private var repoPath = "~/"
-    // TODO: localize
-    @State private var alertText = "Url cannot be empty"
-    @State private var alertInfo = "You need to provide a valid git url"
-    var body: some View {
+    public init(windowController: NSWindowController) {
+        self.windowController = windowController
+    }
+    public var body: some View {
         VStack(spacing: 8) {
             Text("Clone existing repository")
                 .padding(.top, 10)
             HStack(spacing: 8) {
                 TextField("Select target folder", text: $repoPath)
                 Button("Browse") {
-                    getPath()
+                    getPath(modifiable: &repoPath)
                 }
             }
                 .padding(.top, 20)
@@ -36,12 +36,13 @@ struct GitCloneView: View {
                 Button("Clone") {
                     do {
                         if repoUrl == "" {
-                            showAlert(alertMsg: alertText, infoText: alertInfo)
+                            showAlert(alertMsg: "Url cannot be empty",
+                                      infoText: "You must specify a repository to clone.")
                         }
                         let dirUrl = URL(string: repoPath)
                         try GitClient.default(directoryURL: dirUrl!).cloneRepository(repoUrl)
                         windowController.window?.close()
-                        CodeEditDocumentController.shared.openDocument(self)
+                        NSDocumentController.shared.openDocument(repoPath)
                     } catch {
                         guard let error = error as? GitClient.GitClientError else { return }
                         switch error {
@@ -62,7 +63,7 @@ struct GitCloneView: View {
 }
 
 extension GitCloneView {
-    func getPath() {
+    func getPath(modifiable: inout String) {
         let dialog = NSOpenPanel()
         dialog.showsResizeIndicator    = true
         dialog.showsHiddenFiles        = false
@@ -76,7 +77,7 @@ extension GitCloneView {
                 let path: String = result!.path
                 // path contains the directory path e.g
                 // /Users/ourcodeworld/Desktop/folder
-                repoPath = path
+                modifiable = path
             }
         } else {
             // User clicked on "Cancel"
