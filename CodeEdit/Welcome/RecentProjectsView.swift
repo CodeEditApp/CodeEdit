@@ -60,8 +60,8 @@ struct RecentProjectsView: View {
     }
 
     var body: some View {
-        VStack(alignment: recentProjectPaths.count > 0 ? .leading : .center, spacing: 10) {
-            if recentProjectPaths.count > 0 {
+        VStack(alignment: !recentProjectPaths.isEmpty ? .leading : .center, spacing: 10) {
+            if !recentProjectPaths.isEmpty {
                 List(recentProjectPaths, id: \.self, selection: $selectedProjectPath) { projectPath in
                     ZStack {
                         RecentProjectItem(projectPath: projectPath)

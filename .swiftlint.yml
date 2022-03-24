@@ -1,3 +1,13 @@
 disabled_rules:
   - todo
+  - fixme
   - trailing_comma
+
+identifier_name:
+  excluded:
+    - id
+    - vc
+    
+opt_in_rules:
+  - empty_count
+  - contains_over_first_not_nil

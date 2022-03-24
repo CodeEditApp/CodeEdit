@@ -65,11 +65,14 @@ struct BreadcrumbsView: View {
 	}
 
     private func fileInfo(_ file: WorkspaceClient.FileItem) {
-		guard let projName = workspace.fileURL?.lastPathComponent,
-			  var components = file.url.pathComponents.split(separator: projName).last else { return }
-		components.removeLast()
+		guard let projURL = workspace.fileURL else { return }
+		let components = file.url.path
+			.replacingOccurrences(of: projURL.path, with: "")
+			.split(separator: "/")
+			.map { String($0) }
+			.dropLast()
 
-		self.projectName = projName
+		self.projectName = projURL.lastPathComponent
 		self.folders = Array(components)
 		self.fileName = file.fileName
 		self.fileImage = file.systemImage
