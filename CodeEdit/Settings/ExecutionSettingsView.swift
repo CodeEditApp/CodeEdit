@@ -7,9 +7,15 @@
 
 import SwiftUI
 import TerminalEmulator
+import FontPicker
 
 struct ExecutionSettingsView: View {
     @AppStorage(TerminalShellType.storageKey) var shellType: TerminalShellType = .default
+    @AppStorage(TerminalFont.storageKey) var terminalFontSelection: TerminalFont = .default
+    @AppStorage(TerminalFontName.storageKey) var terminalFontName: String = TerminalFontName.default
+    @AppStorage(TerminalFontSize.storageKey) var terminalFontSize: Int = TerminalFontSize.default
+
+    @State var customFont  = false
 
     var body: some View {
         VStack {
@@ -23,7 +29,16 @@ struct ExecutionSettingsView: View {
             }
             .fixedSize()
 
+            HStack {
+                Toggle("Custom Terminal Font:", isOn: $customFont)
+                FontPicker("\(terminalFontName) \(terminalFontSize)",
+                           name: $terminalFontName, size: $terminalFontSize)
+            }
+
             Spacer()
+        }
+        .onAppear {
+            customFont = terminalFontSelection == .custom
         }
         .frame(width: 820, height: 450)
         .padding()
