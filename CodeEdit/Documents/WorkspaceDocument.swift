@@ -141,6 +141,7 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
                     state.openFileItems.forEach { item in
                         self.openFile(item: item)
                     }
+                    self.selectionState.selectedId = state.selectedId
                 }
             }
         } catch {

@@ -49,8 +49,6 @@ struct GeneralSettingsView: View {
                     .tag(ReopenBehavior.newDocument)
             }
             .fixedSize()
-
-            Spacer()
         }
         .frame(width: 820, height: 450)
         .padding()
