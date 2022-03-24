@@ -394,7 +394,7 @@
 				B658FB2927DA9E0F00EA4DBD /* Frameworks */,
 				B658FB2A27DA9E0F00EA4DBD /* Resources */,
 				2BA119D327E5274D00A996FF /* SwiftLint Run Script */,
-				04ADA0CC27E6043B00BF00B2 /* TODO/FIXME Run Script */,
+				04ADA0CC27E6043B00BF00B2 /* Add TODO/FIXME as warnings | Run Script */,
 			);
 			buildRules = (
 			);
@@ -540,7 +540,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		04ADA0CC27E6043B00BF00B2 /* TODO/FIXME Run Script */ = {
+		04ADA0CC27E6043B00BF00B2 /* Add TODO/FIXME as warnings | Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -549,7 +549,7 @@
 			);
 			inputPaths = (
 			);
-			name = "TODO/FIXME Run Script";
+			name = "Add TODO/FIXME as warnings | Run Script";
 			outputFileListPaths = (
 			);
 			outputPaths = (
