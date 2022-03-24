@@ -25,7 +25,7 @@ public struct StatusBarView: View {
 	/// Initialize with GitClient
 	/// - Parameter gitClient: a GitClient
 	public init(workspaceURL: URL) {
-		self.model = .init(workspaceURL: workspaceURL)
+		self.model = .shared ?? .init(workspaceURL: workspaceURL)
 	}
 
 	public var body: some View {

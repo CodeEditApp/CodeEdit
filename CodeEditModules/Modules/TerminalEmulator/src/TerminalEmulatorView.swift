@@ -24,19 +24,24 @@ public struct TerminalEmulatorView: NSViewRepresentable {
 
 	@StateObject private var ansiColors: AnsiColors = .shared
 
-	private var terminal: LocalProcessTerminalView
+	// TODO: Persist this to not get a new terminal each time you switch file
+	private static var lastTerminal: LocalProcessTerminalView?
+	@State internal var terminal: LocalProcessTerminalView
+
+	private let systemFont: NSFont = .monospacedSystemFont(ofSize: 11, weight: .medium)
+
 	private var font: NSFont {
 		if terminalFontSelection == .systemFont {
-			return .monospacedSystemFont(ofSize: 11, weight: .medium)
+			return systemFont
 		}
-		return NSFont(name: terminalFontName, size: CGFloat(terminalFontSize)) ??
-			.monospacedSystemFont(ofSize: 11, weight: .medium)
+		return NSFont(name: terminalFontName, size: CGFloat(terminalFontSize)) ?? systemFont
 	}
+
 	private var url: URL
 
 	public init(url: URL) {
 		self.url = url
-		self.terminal = .init(frame: .zero)
+		self._terminal = State(initialValue: TerminalEmulatorView.lastTerminal ?? .init(frame: .zero))
 	}
 
 	/// Returns a string of a shell path to use
@@ -66,6 +71,7 @@ public struct TerminalEmulatorView: NSViewRepresentable {
 		}
 	}
 
+	/// Gets the default shell from the current user and returns the string of the shell path.
 	private func autoDetectDefaultShell() -> String {
 		let bufsize = sysconf(_SC_GETPW_R_SIZE_MAX)
 		guard bufsize != -1 else { return "/bin/bash" }
@@ -80,6 +86,22 @@ public struct TerminalEmulatorView: NSViewRepresentable {
 		return String(cString: pwd.pw_shell)
 	}
 
+	/// Returns a reorderd array of ANSI colors depending on the app's color scheme (light/drak)
+	private var appearanceColors: [SwiftTerm.Color] {
+		if colorScheme == .dark {
+			return colors
+		}
+		var col = colors
+		col.move(fromOffsets: .init(integersIn: 0...7), toOffset: 16)
+		return col
+	}
+
+	/// Returns the mapped array of `SwiftTerm.Color` objects of ANSI Colors
+	private var colors: [SwiftTerm.Color] {
+		return ansiColors.mappedColors.map { SwiftTerm.Color(hex: $0) }
+	}
+
+	/// Inherited from NSViewRepresentable.makeNSView(context:).
 	public func makeNSView(context: Context) -> LocalProcessTerminalView {
 		terminal.processDelegate = context.coordinator
 
@@ -87,7 +109,6 @@ public struct TerminalEmulatorView: NSViewRepresentable {
 		let shellIdiom = "-" + NSString(string: shell).lastPathComponent
 
 		// changes working directory to project root
-
 		// TODO: Get rid of FileManager shared instance to prevent problems
 		// using shared instance of FileManager might lead to problems when using
 		// multiple workspaces. This works for now but most probably will need
@@ -97,67 +118,20 @@ public struct TerminalEmulatorView: NSViewRepresentable {
 		terminal.font = font
 		terminal.configureNativeColors()
 		terminal.installColors(self.appearanceColors)
+		TerminalEmulatorView.lastTerminal = terminal
 		return terminal
 	}
 
 	public func updateNSView(_ view: LocalProcessTerminalView, context: Context) {
+		if view.font != font { // Fixes Memory leak
+			view.font = font
+		}
 		view.configureNativeColors()
 		view.installColors(self.appearanceColors)
-		view.font = font
+		TerminalEmulatorView.lastTerminal = view
 	}
 
 	public func makeCoordinator() -> Coordinator {
 		Coordinator()
 	}
-
-	public class Coordinator: NSObject, LocalProcessTerminalViewDelegate {
-		public override init() {}
-
-		public func hostCurrentDirectoryUpdate(source: TerminalView, directory: String?) {}
-
-		public func sizeChanged(source: LocalProcessTerminalView, newCols: Int, newRows: Int) {}
-
-		public func setTerminalTitle(source: LocalProcessTerminalView, title: String) {}
-
-		public func processTerminated(source: TerminalView, exitCode: Int32?) {}
-	}
-
-	private var appearanceColors: [SwiftTerm.Color] {
-		print(colorScheme)
-		if colorScheme == .dark {
-			return colors
-		}
-		var col = colors
-		col.move(fromOffsets: .init(integersIn: 0...7), toOffset: 16)
-		return col
-	}
-
-	private var colors: [SwiftTerm.Color] {
-		return ansiColors.mappedColors.map { SwiftTerm.Color(hex: $0) }
-	}
-}
-
-extension SwiftTerm.Color {
-	/// 0.0-1.0
-	convenience init(dRed red: Double, green: Double, blue: Double) {
-		let multiplier: Double = 65535
-		self.init(red: UInt16(red * multiplier),
-				  green: UInt16(green * multiplier),
-				  blue: UInt16(blue * multiplier))
-	}
-
-	/// 0-255
-	convenience init(iRed red: UInt8, green: UInt8, blue: UInt8) {
-		let divisor: Double = 255
-		self.init(dRed: Double(red) / divisor,
-				  green: Double(green) / divisor,
-				  blue: Double(blue) / divisor)
-	}
-
-    convenience init(hex: Int) {
-        let red = UInt8((hex >> 16) & 0xFF)
-        let green = UInt8((hex >> 8) & 0xFF)
-        let blue = UInt8(hex & 0xFF)
-        self.init(iRed: red, green: green, blue: blue)
-    }
 }
