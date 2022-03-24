@@ -10,6 +10,7 @@ import SwiftUI
 public class AnsiColors: ObservableObject {
     //    public static let `default` =
     public static let storageKey: String = "ANSIColors"
+	public static let shared: AnsiColors = .init()
 
     public init() {
         guard let loadColors = UserDefaults.standard.object(forKey: Self.storageKey) as? [Int] else {

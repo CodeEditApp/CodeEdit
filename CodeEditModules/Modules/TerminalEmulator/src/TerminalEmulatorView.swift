@@ -22,6 +22,8 @@ public struct TerminalEmulatorView: NSViewRepresentable {
 	@AppStorage(TerminalFontName.storageKey) var terminalFontName: String = TerminalFontName.default
 	@AppStorage(TerminalFontSize.storageKey) var terminalFontSize: Int = TerminalFontSize.default
 
+	@StateObject private var ansiColors: AnsiColors = .shared
+
 	private var terminal: LocalProcessTerminalView
 	private var font: NSFont {
 		if terminalFontSelection == .systemFont {
@@ -131,12 +133,7 @@ public struct TerminalEmulatorView: NSViewRepresentable {
 	}
 
 	private var colors: [SwiftTerm.Color] {
-        guard let ansiColors = UserDefaults.standard.value(forKey: AnsiColors.storageKey) as? [Int] else {
-            print("failed")
-            return AnsiColors().mappedColors.map { SwiftTerm.Color(hex: $0) }
-        }
-        print("success")
-        return ansiColors.map { SwiftTerm.Color(hex: $0) }
+		return ansiColors.mappedColors.map { SwiftTerm.Color(hex: $0) }
 	}
 }
 

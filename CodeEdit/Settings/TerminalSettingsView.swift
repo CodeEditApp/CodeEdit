@@ -15,7 +15,7 @@ struct TerminalSettingsView: View {
 	@AppStorage(TerminalFontName.storageKey) var terminalFontName: String = TerminalFontName.default
 	@AppStorage(TerminalFontSize.storageKey) var terminalFontSize: Int = TerminalFontSize.default
 
-    @StateObject private var colors = AnsiColors()
+	@StateObject private var colors = AnsiColors.shared
 
     var body: some View {
 		Form {
