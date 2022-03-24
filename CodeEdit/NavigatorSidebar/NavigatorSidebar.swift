@@ -19,6 +19,10 @@ struct NavigatorSidebar: View {
 			case 0:
 				ScrollView {
 					VStack(alignment: .leading, spacing: 0) {
+						Text(workspace.workspaceClient?.folderURL()?.lastPathComponent ?? "Empty")
+							.font(.callout.bold())
+							.foregroundColor(.secondary)
+							.padding(.bottom, 4)
 						ForEach(workspace.selectionState.fileItems.sortItems(foldersOnTop: workspace.sortFoldersOnTop)) { item in
 							NavigatorSidebarItem(
 								item: item,
@@ -28,7 +32,7 @@ struct NavigatorSidebar: View {
 						}
 
 					}
-					.padding()
+					.padding(10)
 				}
 			case 2:
 				SidebarSearch(state: workspace.searchState ?? .init(workspace))

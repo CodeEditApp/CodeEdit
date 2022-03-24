@@ -87,16 +87,23 @@ struct NavigatorSidebarItem: View {
 			.frame(height: 22, alignment: .center)
 			.padding(.leading, indentLevel * 16)
 			.contextMenu { contextMenuContent(true) }
-			if isExpanded { // Only load when expanded -> Improves performance massively
-				VStack(alignment: .leading, spacing: 0) {
-					ForEach(item.children!.sortItems(foldersOnTop: workspace.sortFoldersOnTop)) { child in
-						NavigatorSidebarItem(item: child,
-									   workspace: workspace,
-									   windowController: windowController,
-									   indentLevel: indentLevel + 1)
+			ZStack {
+				if isExpanded { // Only load when expanded -> Improves performance massively
+					VStack(alignment: .leading, spacing: 0) {
+						ForEach(item.children!.sortItems(foldersOnTop: workspace.sortFoldersOnTop)) { child in
+							NavigatorSidebarItem(item: child,
+												 workspace: workspace,
+												 windowController: windowController,
+												 indentLevel: indentLevel + 1)
+
+						}
 					}
+					.transition(
+						.move(edge: .top)
+					)
 				}
 			}
+			.clipped()
 		}
 	}
 
