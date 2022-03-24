@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15505" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15505"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="GeneralPreferenceViewController" customModule="PreferencesExample" customModuleProvider="target">
+            <connections>
+                <outlet property="view" destination="c22-O7-iKe" id="ZQe-UH-LCX"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView translatesAutoresizingMaskIntoConstraints="NO" id="c22-O7-iKe">
+            <rect key="frame" x="0.0" y="0.0" width="510" height="394"/>
+            <subviews>
+                <gridView xPlacement="center" yPlacement="center" rowAlignment="none" rowSpacing="8" columnSpacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="lkV-Y2-eOl">
+                    <rect key="frame" x="30" y="20" width="450" height="354"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="3Ab-aZ-SDF" secondAttribute="bottom" constant="108" id="1Br-Ce-zfQ"/>
+                        <constraint firstAttribute="width" constant="450" id="5HG-su-XZq"/>
+                        <constraint firstItem="pog-Yc-oS8" firstAttribute="baseline" secondItem="AeJ-us-BJO" secondAttribute="firstBaseline" id="7DH-jt-TiI"/>
+                        <constraint firstItem="pog-Yc-oS8" firstAttribute="baseline" secondItem="AeJ-us-BJO" secondAttribute="baseline" id="DqO-ct-qne"/>
+                        <constraint firstItem="dJi-EK-ORe" firstAttribute="top" secondItem="AeJ-us-BJO" secondAttribute="bottom" constant="9" id="P3Y-Dv-37C"/>
+                        <constraint firstItem="pP4-VT-r7d" firstAttribute="baseline" secondItem="3Ab-aZ-SDF" secondAttribute="baseline" id="XEA-Iv-NFb"/>
+                        <constraint firstItem="pP4-VT-r7d" firstAttribute="top" secondItem="OIF-KF-O5m" secondAttribute="bottom" constant="40" id="mYC-DB-FZ3"/>
+                        <constraint firstItem="pog-Yc-oS8" firstAttribute="top" secondItem="pP4-VT-r7d" secondAttribute="bottom" constant="68" id="q20-68-bCY"/>
+                    </constraints>
+                    <rows>
+                        <gridRow id="ukr-az-gqc"/>
+                        <gridRow yPlacement="top" id="gSl-iE-cwq"/>
+                        <gridRow yPlacement="center" height="20" id="Vxw-AW-fH6"/>
+                        <gridRow id="3rI-5v-nj2"/>
+                        <gridRow id="vzh-lB-BGH"/>
+                        <gridRow yPlacement="top" id="Vkn-wS-gZk"/>
+                        <gridRow id="ktD-ti-fYg"/>
+                        <gridRow yPlacement="top" id="CET-fh-UKQ"/>
+                        <gridRow yPlacement="center" height="25" id="Tvj-zX-YeH"/>
+                        <gridRow id="VRC-hO-9ih"/>
+                        <gridRow id="XUV-T9-ss0"/>
+                    </rows>
+                    <columns>
+                        <gridColumn xPlacement="trailing" id="GGj-JC-w4E"/>
+                        <gridColumn xPlacement="leading" id="cs9-fm-l2F"/>
+                    </columns>
+                    <gridCells>
+                        <gridCell row="ukr-az-gqc" column="GGj-JC-w4E" id="sRb-hw-f4U">
+                            <textField key="contentView" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Vt6-jC-8Jo">
+                                <rect key="frame" x="37" y="338" width="68" height="16"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="Auto save:" id="uKy-ok-dDi">
+                                    <font key="font" usesAppearanceFont="YES"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                        </gridCell>
+                        <gridCell row="ukr-az-gqc" column="cs9-fm-l2F" id="jPa-TM-cRP">
+                            <button key="contentView" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="eIh-jy-wRw">
+                                <rect key="frame" x="111" y="337" width="163" height="18"/>
+                                <buttonCell key="cell" type="check" title="Auto Save while editing" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="dB2-6s-xY8">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                            </button>
+                        </gridCell>
+                        <gridCell row="gSl-iE-cwq" column="GGj-JC-w4E" id="IXl-mV-waK"/>
+                        <gridCell row="gSl-iE-cwq" column="cs9-fm-l2F" id="yFx-k0-cPt">
+                            <textField key="contentView" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="c2E-pX-Fuo">
+                                <rect key="frame" x="111" y="288" width="341" height="42"/>
+                                <textFieldCell key="cell" selectable="YES" id="D9h-tf-tnk">
+                                    <font key="font" metaFont="message" size="11"/>
+                                    <string key="title">A macOS feature that regularly saves your files and allows you to access previous versions. Auto Save greatly reduce the chance of losing your work in the event of a system error.</string>
+                                    <color key="textColor" name="systemGrayColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                        </gridCell>
+                        <gridCell row="Vxw-AW-fH6" column="GGj-JC-w4E" headOfMergedCell="YUZ-t2-HaZ" xPlacement="fill" id="YUZ-t2-HaZ">
+                            <box key="contentView" verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="0at-6J-tiq">
+                                <rect key="frame" x="0.0" y="223" width="450" height="5"/>
+                            </box>
+                        </gridCell>
+                        <gridCell row="Vxw-AW-fH6" column="cs9-fm-l2F" headOfMergedCell="YUZ-t2-HaZ" id="Nj4-9X-TOs"/>
+                        <gridCell row="3rI-5v-nj2" column="GGj-JC-w4E" id="H7l-rR-qvn">
+                            <textField key="contentView" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="pCC-xo-gKS">
+                                <rect key="frame" x="11" y="191" width="94" height="16"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="Bitmap import:" id="zw7-G3-qks">
+                                    <font key="font" usesAppearanceFont="YES"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                        </gridCell>
+                        <gridCell row="3rI-5v-nj2" column="cs9-fm-l2F" id="dEO-dF-qf0">
+                            <button key="contentView" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="uFJ-3w-B8K">
+                                <rect key="frame" x="111" y="190" width="235" height="18"/>
+                                <buttonCell key="cell" type="check" title="Scale down images to fit Artboards" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="Mw9-dm-8vN">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                            </button>
+                        </gridCell>
+                        <gridCell row="vzh-lB-BGH" column="GGj-JC-w4E" id="G8A-0S-xHB">
+                            <textField key="contentView" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="OIF-KF-O5m">
+                                <rect key="frame" x="14" y="167" width="91" height="16"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="Vector import:" id="7aF-tg-6Qj">
+                                    <font key="font" usesAppearanceFont="YES"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                        </gridCell>
+                        <gridCell row="vzh-lB-BGH" column="cs9-fm-l2F" id="oqN-sN-jXV">
+                            <button key="contentView" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zrp-jv-5Hq">
+                                <rect key="frame" x="111" y="166" width="270" height="18"/>
+                                <buttonCell key="cell" type="check" title="Insert PDF and EPS files as bitmap layers" bezelStyle="regularSquare" imagePosition="left" inset="2" id="x5i-CI-gSv">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                            </button>
+                        </gridCell>
+                        <gridCell row="Vkn-wS-gZk" column="GGj-JC-w4E" id="jrh-3C-izu"/>
+                        <gridCell row="Vkn-wS-gZk" column="cs9-fm-l2F" id="52E-jw-bp4">
+                            <textField key="contentView" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="rtd-pr-fG2">
+                                <rect key="frame" x="111" y="145" width="300" height="14"/>
+                                <textFieldCell key="cell" selectable="YES" title="Holding down the Option key reverses these behaviours." id="Z13-dJ-JBv">
+                                    <font key="font" metaFont="message" size="11"/>
+                                    <color key="textColor" name="systemGrayColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                        </gridCell>
+                        <gridCell row="ktD-ti-fYg" column="GGj-JC-w4E" id="LBW-7i-fKd">
+                            <textField key="contentView" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="pP4-VT-r7d">
+                                <rect key="frame" x="0.0" y="111" width="105" height="16"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="Artboard export:" id="s9c-vd-E8g">
+                                    <font key="font" usesAppearanceFont="YES"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                        </gridCell>
+                        <gridCell row="ktD-ti-fYg" column="cs9-fm-l2F" id="eJz-N1-yND">
+                            <popUpButton key="contentView" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="3Ab-aZ-SDF">
+                                <rect key="frame" x="111" y="105" width="110" height="26"/>
+                                <popUpButtonCell key="cell" type="push" title="Left to right" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="hGF-9Y-ejC" id="H3d-6S-qhu">
+                                    <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                    <menu key="menu" id="o2h-Pc-QGF">
+                                        <items>
+                                            <menuItem title="Left to right" state="on" id="hGF-9Y-ejC"/>
+                                            <menuItem title="Item 2" id="wLM-Tq-M7I"/>
+                                            <menuItem title="Item 3" id="Y6q-Nz-S6o"/>
+                                        </items>
+                                    </menu>
+                                </popUpButtonCell>
+                            </popUpButton>
+                        </gridCell>
+                        <gridCell row="CET-fh-UKQ" column="GGj-JC-w4E" id="gCi-gx-c1E"/>
+                        <gridCell row="CET-fh-UKQ" column="cs9-fm-l2F" id="SfW-h3-H3I">
+                            <textField key="contentView" verticalHuggingPriority="750" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="GrH-Fc-hHA">
+                                <rect key="frame" x="111" y="87" width="322" height="13"/>
+                                <textFieldCell key="cell" selectable="YES" title="Select how artboards will be ordered when exporting to PDF." id="QqU-Xz-7dB">
+                                    <font key="font" metaFont="message" size="11"/>
+                                    <color key="textColor" name="systemGrayColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                        </gridCell>
+                        <gridCell row="Tvj-zX-YeH" column="GGj-JC-w4E" headOfMergedCell="rNE-cv-S52" xPlacement="fill" id="rNE-cv-S52">
+                            <box key="contentView" verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="MlU-Y7-mOi">
+                                <rect key="frame" x="0.0" y="64" width="450" height="5"/>
+                            </box>
+                        </gridCell>
+                        <gridCell row="Tvj-zX-YeH" column="cs9-fm-l2F" headOfMergedCell="rNE-cv-S52" id="nYW-Px-IA6"/>
+                        <gridCell row="VRC-hO-9ih" column="GGj-JC-w4E" id="i7L-lY-3Bg">
+                            <textField key="contentView" horizontalHuggingPriority="251" verticalHuggingPriority="750" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="pog-Yc-oS8">
+                                <rect key="frame" x="-2" y="28" width="107" height="15"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="Button to switch:" id="PZ6-Ug-5uU">
+                                    <font key="font" usesAppearanceFont="YES"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                        </gridCell>
+                        <gridCell row="VRC-hO-9ih" column="cs9-fm-l2F" id="UzW-zn-TH6">
+                            <button key="contentView" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="AeJ-us-BJO">
+                                <rect key="frame" x="107" y="18" width="185" height="32"/>
+                                <buttonCell key="cell" type="push" title="Switch Preference Style" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="pPv-HR-smI">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="switchStyle:" target="-1" id="mbG-7D-LUH"/>
+                                </connections>
+                            </button>
+                        </gridCell>
+                        <gridCell row="XUV-T9-ss0" column="GGj-JC-w4E" id="rlE-X1-Ygk"/>
+                        <gridCell row="XUV-T9-ss0" column="cs9-fm-l2F" id="uRY-go-gLe">
+                            <textField key="contentView" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="dJi-EK-ORe">
+                                <rect key="frame" x="111" y="1" width="173" height="15"/>
+                                <textFieldCell key="cell" selectable="YES" title="Click this button to switch style." id="NOF-sJ-b0B">
+                                    <font key="font" metaFont="message" size="11"/>
+                                    <color key="textColor" name="systemGrayColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                        </gridCell>
+                    </gridCells>
+                </gridView>
+            </subviews>
+            <constraints>
+                <constraint firstItem="lkV-Y2-eOl" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="c22-O7-iKe" secondAttribute="leading" priority="750" constant="30" id="F1e-Dt-RW9"/>
+                <constraint firstItem="lkV-Y2-eOl" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="20" id="N7H-hp-bhb"/>
+                <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="lkV-Y2-eOl" secondAttribute="trailing" priority="750" constant="30" id="Ses-fe-Clv"/>
+                <constraint firstAttribute="bottom" secondItem="lkV-Y2-eOl" secondAttribute="bottom" priority="750" constant="20" id="bsa-Ju-YOT"/>
+                <constraint firstItem="lkV-Y2-eOl" firstAttribute="centerX" secondItem="c22-O7-iKe" secondAttribute="centerX" id="rdL-1S-HXy"/>
+            </constraints>
+            <point key="canvasLocation" x="110" y="382"/>
+        </customView>
+    </objects>
+</document>
