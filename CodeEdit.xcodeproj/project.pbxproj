@@ -40,9 +40,9 @@
 		90626FA927EB3017008926FE /* PreferencesIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90626FA827EB3017008926FE /* PreferencesIdentifier.swift */; };
 		90626FAB27EB3254008926FE /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90626FAA27EB3254008926FE /* Theme.swift */; };
 		90626FB027EB3789008926FE /* ThemeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90626FAF27EB3789008926FE /* ThemeSettingsView.swift */; };
-		90626FC327EB5D3F008926FE /* Preferences in Frameworks */ = {isa = PBXBuildFile; productRef = 90626FC227EB5D3F008926FE /* Preferences */; };
 		90626FC527EB5EDD008926FE /* ExecutionSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90626FC427EB5EDD008926FE /* ExecutionSettingsView.swift */; };
 		90626FC727EB5F31008926FE /* ExtensionsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90626FC627EB5F31008926FE /* ExtensionsSettingsView.swift */; };
+		908165D427EC88050079F5D9 /* Preferences in Frameworks */ = {isa = PBXBuildFile; productRef = 908165D327EC88050079F5D9 /* Preferences */; };
 		B658FB3427DA9E1000EA4DBD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3327DA9E1000EA4DBD /* Assets.xcassets */; };
 		B658FB3727DA9E1000EA4DBD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3627DA9E1000EA4DBD /* Preview Assets.xcassets */; };
 		B65E614627E6765D00255275 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = B65E614527E6765D00255275 /* Introspect */; };
@@ -122,6 +122,7 @@
 		90626FAF27EB3789008926FE /* ThemeSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeSettingsView.swift; sourceTree = "<group>"; };
 		90626FC427EB5EDD008926FE /* ExecutionSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecutionSettingsView.swift; sourceTree = "<group>"; };
 		90626FC627EB5F31008926FE /* ExtensionsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionsSettingsView.swift; sourceTree = "<group>"; };
+		908165D527EC88070079F5D9 /* Preferences */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Preferences; sourceTree = "<group>"; };
 		B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodeEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B658FB3127DA9E0F00EA4DBD /* WorkspaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceView.swift; sourceTree = "<group>"; };
 		B658FB3327DA9E1000EA4DBD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -152,7 +153,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5C403B8F27E20F8000788241 /* WorkspaceClient in Frameworks */,
-				90626FC327EB5D3F008926FE /* Preferences in Frameworks */,
+				908165D427EC88050079F5D9 /* Preferences in Frameworks */,
 				0485EB2527E7B9C800138301 /* Overlays in Frameworks */,
 				B65E614627E6765D00255275 /* Introspect in Frameworks */,
 				D70F5E2C27E4E8CF004EE4B9 /* WelcomeModule in Frameworks */,
@@ -276,8 +277,16 @@
 		90626FBD27EB5BD1008926FE /* Packages */ = {
 			isa = PBXGroup;
 			children = (
+				908165D527EC88070079F5D9 /* Preferences */,
 			);
 			name = Packages;
+			sourceTree = "<group>";
+		};
+		908165CE27EC83C00079F5D9 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Packages;
 			sourceTree = "<group>";
 		};
 		B658FB2327DA9E0F00EA4DBD = {
@@ -303,6 +312,7 @@
 		B658FB2E27DA9E0F00EA4DBD /* CodeEdit */ = {
 			isa = PBXGroup;
 			children = (
+				908165CE27EC83C00079F5D9 /* Packages */,
 				B6EE988E27E8877C00CDD8AB /* InspectorSidebar */,
 				0485EB1727E7016400138301 /* Quick Open */,
 				04660F6027E3A68A00477777 /* Info.plist */,
@@ -400,8 +410,8 @@
 				0485EB2427E7B9C800138301 /* Overlays */,
 				5CFA753A27E896B60002F01B /* GitClient */,
 				D7F72DEA27EA3574000C3064 /* Search */,
-				90626FC227EB5D3F008926FE /* Preferences */,
 				2859B93E27EB50050069BE88 /* FontPicker */,
+				908165D327EC88050079F5D9 /* Preferences */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -489,7 +499,6 @@
 			mainGroup = B658FB2327DA9E0F00EA4DBD;
 			packageReferences = (
 				B65E614427E6765D00255275 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
-				90626FC127EB5D3F008926FE /* XCRemoteSwiftPackageReference "Preferences" */,
 			);
 			productRefGroup = B658FB2D27DA9E0F00EA4DBD /* Products */;
 			projectDirPath = "";
@@ -991,14 +1000,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		90626FC127EB5D3F008926FE /* XCRemoteSwiftPackageReference "Preferences" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/underthestars-zhy/Preferences";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
 		B65E614427E6765D00255275 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/siteline/SwiftUI-Introspect";
@@ -1034,9 +1035,8 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = GitClient;
 		};
-		90626FC227EB5D3F008926FE /* Preferences */ = {
+		908165D327EC88050079F5D9 /* Preferences */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 90626FC127EB5D3F008926FE /* XCRemoteSwiftPackageReference "Preferences" */;
 			productName = Preferences;
 		};
 		B65E614527E6765D00255275 /* Introspect */ = {

@@ -8,6 +8,7 @@
 import SwiftUI
 import CodeFile
 import Preferences
+import SwiftUIKeyPress
 
 struct ThemeSettingsView: View {
     @AppStorage(CodeFileView.Theme.storageKey) var editorTheme: CodeFileView.Theme = .atelierSavannaAuto
@@ -16,6 +17,8 @@ struct ThemeSettingsView: View {
 
     @State var keyWindow = true
     @State var refresh = UUID()
+
+    @StateObject var model = KeyModel.shared
 
     var body: some View {
         ScrollView {
@@ -59,6 +62,15 @@ struct ThemeSettingsView: View {
         }
         .frame(width: 820, height: 450)
         .padding()
+        .onChange(of: model.event) { newValue in
+            if let event = newValue {
+                if event.keyCode == 124 {
+                    Themes.next()
+                } else if event.keyCode == 123 {
+                    Themes.back()
+                }
+            }
+        }
     }
 
     struct BackGroundView: View {

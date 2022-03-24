@@ -40,4 +40,38 @@ struct Themes: Identifiable {
     func selected(_ editorTheme: CodeFileView.Theme) -> Bool {
         return editorTheme == self.theme
     }
+
+    static func next() {
+        @AppStorage(CodeFileView.Theme.storageKey) var editorTheme: CodeFileView.Theme = .atelierSavannaAuto
+        if let firstIndex = Self.all.firstIndex(where: { theme in
+            theme.theme == editorTheme
+        }) {
+            let index: Int
+
+            if firstIndex + 1 >= Self.all.count {
+                index = 0
+            } else {
+                index = firstIndex + 1
+            }
+
+            editorTheme = Self.all[index].theme
+        }
+    }
+
+    static func back() {
+        @AppStorage(CodeFileView.Theme.storageKey) var editorTheme: CodeFileView.Theme = .atelierSavannaAuto
+        if let firstIndex = Self.all.firstIndex(where: { theme in
+            theme.theme == editorTheme
+        }) {
+            let index: Int
+
+            if firstIndex - 1 < 0 {
+                index = Self.all.endIndex - 1
+            } else {
+                index = firstIndex - 1
+            }
+
+            editorTheme = Self.all[index].theme
+        }
+    }
 }
