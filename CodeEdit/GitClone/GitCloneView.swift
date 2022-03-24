@@ -37,17 +37,17 @@ struct GitCloneView: View {
                     do {
                         if repoUrl == "" {
                             showAlert(alertMsg: alertText, infoText: alertInfo)
-                            return
                         }
                         let dirUrl = URL(string: repoPath)
-                        // TODO: check for git errors also.
-                        // For example if the response contains `fatal` etc.
                         try GitClient.default(directoryURL: dirUrl!).cloneRepository(repoUrl)
                         windowController.window?.close()
                         CodeEditDocumentController.shared.openDocument(self)
-
-                    } catch let error {
-                        print(error)
+                    } catch {
+                        guard let error = error as? GitClient.GitClientError else { return }
+                        switch error {
+                        case let .outputError(message):
+                            showAlert(alertMsg: "Error", infoText: message)
+                        }
                     }
                 }
                 Button("Cancel") {
