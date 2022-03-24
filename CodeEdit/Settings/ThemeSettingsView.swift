@@ -8,7 +8,6 @@
 import SwiftUI
 import CodeFile
 import Preferences
-import SwiftUIKeyPress
 
 struct ThemeSettingsView: View {
     @AppStorage(CodeFileView.Theme.storageKey) var editorTheme: CodeFileView.Theme = .atelierSavannaAuto
