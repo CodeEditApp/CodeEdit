@@ -39,11 +39,12 @@ struct GitCloneView: View {
                             showAlert(alertMsg: alertText, infoText: alertInfo)
                             return
                         }
-                        let fileUrl = URL(string: repoPath)
+                        let dirUrl = URL(string: repoPath)
                         // TODO: check for git errors also.
                         // For example if the response contains `fatal` etc.
-                        try GitClient.default(directoryURL: fileUrl!).cloneRepository(repoUrl)
+                        try GitClient.default(directoryURL: dirUrl!).cloneRepository(repoUrl)
                         windowController.window?.close()
+                        CodeEditDocumentController.shared.openDocument(self)
 
                     } catch let error {
                         print(error)
@@ -65,8 +66,8 @@ extension GitCloneView {
         let dialog = NSOpenPanel()
         dialog.showsResizeIndicator    = true
         dialog.showsHiddenFiles        = false
-        dialog.canChooseFiles = false
-        dialog.canChooseDirectories = true
+        dialog.canChooseFiles          = false
+        dialog.canChooseDirectories    = true
 
         if dialog.runModal() ==  NSApplication.ModalResponse.OK {
             let result = dialog.url
