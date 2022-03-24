@@ -1,6 +1,5 @@
 disabled_rules:
   - todo
-  - fixme
   - trailing_comma
 
 identifier_name:
