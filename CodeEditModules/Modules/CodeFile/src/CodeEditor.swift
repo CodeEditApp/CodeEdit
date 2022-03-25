@@ -14,13 +14,13 @@ import Combine
 struct CodeEditor: NSViewRepresentable {
     @State private var isCurrentlyUpdatingView: ReferenceTypeBool = .init(value: false)
     private var content: Binding<String>
-    private let language: Language?
+    private let language: CodeLanguage?
     private let theme: Binding<CodeFileView.Theme>
     private let highlightr = Highlightr()
 
     init(
         content: Binding<String>,
-        language: Language?,
+        language: CodeLanguage?,
         theme: Binding<CodeFileView.Theme>
     ) {
         self.content = content
@@ -41,7 +41,7 @@ struct CodeEditor: NSViewRepresentable {
         if let highlightr = highlightr,
            let string = highlightr.highlight(
             content.wrappedValue,
-            as: language?.rawValue,
+            as: language?.name,
             fastRender: true
            ) {
             textView.textStorage?.append(string)
@@ -112,7 +112,7 @@ struct CodeEditor: NSViewRepresentable {
 
         if content.wrappedValue != textView.string {
             if let textStorage = textView.textStorage as? CodeAttributedString {
-                textStorage.language = language?.rawValue
+                textStorage.language = language?.name
                 textStorage.replaceCharacters(
                     in: NSRange(location: 0, length: textStorage.length),
                     with: content.wrappedValue
@@ -123,7 +123,7 @@ struct CodeEditor: NSViewRepresentable {
         }
     }
 
-    private func buildTextStorage(language: Language?, scrollView: NSScrollView) -> NSTextContainer {
+    private func buildTextStorage(language: CodeLanguage?, scrollView: NSScrollView) -> NSTextContainer {
         // highlightr wrapper that enables real-time highlighting
         let textStorage: CodeAttributedString
         if let highlightr = highlightr {
@@ -131,7 +131,7 @@ struct CodeEditor: NSViewRepresentable {
         } else {
             textStorage = CodeAttributedString()
         }
-        textStorage.language = language?.rawValue
+        textStorage.language = language?.name
         let layoutManager = NSLayoutManager()
         textStorage.addLayoutManager(layoutManager)
         let textContainer = NSTextContainer(containerSize: scrollView.frame.size)
