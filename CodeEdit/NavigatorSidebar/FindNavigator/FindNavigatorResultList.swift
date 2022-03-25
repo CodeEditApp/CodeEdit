@@ -9,7 +9,7 @@ import SwiftUI
 import WorkspaceClient
 import Search
 
-struct SearchResultList: View {
+struct FindNavigatorResultList: View {
     @ObservedObject var state: WorkspaceDocument.SearchState
     @State var selectedResult: SearchResultModel?
 
@@ -24,7 +24,7 @@ struct SearchResultList: View {
     var body: some View {
         List(selection: $selectedResult) {
             ForEach(foundFiles, id: \.self) { (foundFile: SearchResultModel) in
-                SearchResultFileItem(
+                FindNavigatorResultFileItem(
                     state: state,
                     fileItem: foundFile.file, results: getResultWith(foundFile.file)) {
                         state.workspace.openFile(item: foundFile.file)
