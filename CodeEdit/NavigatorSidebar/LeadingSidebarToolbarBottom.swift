@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct LeadingSidebarToolbarBottom: View {
+	@Environment(\.controlActiveState) var activeState
 
 	@ObservedObject var workspace: WorkspaceDocument
 
@@ -37,6 +38,7 @@ struct LeadingSidebarToolbarBottom: View {
 		.menuStyle(.borderlessButton)
 		.menuIndicator(.hidden)
 		.frame(maxWidth: 30)
+		.opacity(activeState == .inactive ? 0.45 : 1)
 	}
 
 	private var sortButton: some View {
@@ -51,5 +53,6 @@ struct LeadingSidebarToolbarBottom: View {
 		}
 		.menuStyle(.borderlessButton)
 		.frame(maxWidth: 30)
+		.opacity(activeState == .inactive ? 0.45 : 1)
 	}
 }

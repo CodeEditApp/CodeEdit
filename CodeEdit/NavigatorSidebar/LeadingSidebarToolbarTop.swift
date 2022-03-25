@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct LeadingSidebarToolbarTop: View {
+	@Environment(\.controlActiveState) var activeState
+
 	@Binding var selection: Int
 
 	var body: some View {
@@ -42,6 +44,7 @@ struct LeadingSidebarToolbarTop: View {
 				.foregroundColor(id == selection ? .accentColor : .secondary)
 				.frame(width: 25, height: 25, alignment: .center)
 				.contentShape(Rectangle())
+				.opacity(activeState == .inactive ? 0.45 : 1)
 		}
 		.buttonStyle(.plain)
 	}
