@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct NavigatorSidebarToolbarBottom: View {
+struct LeadingSidebarToolbarBottom: View {
 
 	@ObservedObject var workspace: WorkspaceDocument
 
