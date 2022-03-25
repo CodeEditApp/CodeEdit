@@ -88,22 +88,18 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     }
 
     func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
-        let controllers = NSApp.windows
-            .map { $0.windowController as? CodeEditWindowController }
-            .filter { $0 != nil }
-            .map { $0! }
-
-        let projects: [String] = controllers
-            .map { controller in
-                return controller.workspace?.fileURL?.path
+        let projects: [String] = CodeEditDocumentController.shared.documents
+            .map { doc in
+                return (doc as? WorkspaceDocument)?.fileURL?.path
             }
             .filter { $0 != nil }
             .map { $0! }
 
         UserDefaults.standard.set(projects, forKey: AppDelegate.recoverWorkspacesKey)
 
-        controllers.forEach { windowContoller in
-            windowContoller.workspace?.close()
+        CodeEditDocumentController.shared.documents.forEach { doc in
+            doc.close()
+            CodeEditDocumentController.shared.removeDocument(doc)
         }
         return .terminateNow
     }
