@@ -30,7 +30,7 @@ struct BreadcrumbsMenu: View {
 	}
 
 	private func menuItem(_ item: WorkspaceClient.FileItem) -> some View {
-		if let children = item.children, !children.isEmpty {
+		if let children = item.children?.sortItems(foldersOnTop: true), !children.isEmpty {
 			// Folder
 			return AnyView(
 				Menu {
@@ -55,7 +55,7 @@ struct BreadcrumbsMenu: View {
 
 	var body: some View {
 		Menu {
-			if let siblings = parentFileItem?.children {
+			if let siblings = parentFileItem?.children?.sortItems(foldersOnTop: true) {
 				ForEach(siblings, id: \.self) { item in
 					menuItem(item)
 				}
