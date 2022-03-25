@@ -12,7 +12,7 @@ class LineGutter: NSRulerView {
         didSet {
             DispatchQueue.main.async {
                 let newThickness = self.calculateRuleThickness()
-                if fabs(self.ruleThickness - newThickness) > 1 {
+                if abs(self.ruleThickness - newThickness) > 1 {
                     self.ruleThickness = CGFloat(ceil(newThickness))
                     self.needsDisplay = true
                 }
