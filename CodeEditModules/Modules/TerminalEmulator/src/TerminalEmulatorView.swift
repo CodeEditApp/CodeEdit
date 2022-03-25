@@ -144,6 +144,7 @@ public struct TerminalEmulatorView: NSViewRepresentable {
 		if TerminalEmulatorView.lastTerminal != nil {
 			TerminalEmulatorView.lastTerminal = view
 		}
+		view.getTerminal().softReset()
 	}
 
 	public func makeCoordinator() -> Coordinator {
