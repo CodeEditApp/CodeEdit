@@ -32,12 +32,11 @@ public struct GitCloneView: View {
             HStack(spacing: 8) {
                 TextField("Git Repository URL", text: $repoUrl)
                     .lineLimit(1)
-                    .foregroundColor(.black)
                 Button("Clone") {
                     do {
                         if repoUrl == "" {
                             showAlert(alertMsg: "Url cannot be empty",
-                                      infoText: "You must specify a repository to clone.")
+                                      infoText: "You must specify a repository to clone")
                         }
                         let dirUrl = URL(string: repoPath)
                         try GitClient.default(directoryURL: dirUrl!).cloneRepository(repoUrl)

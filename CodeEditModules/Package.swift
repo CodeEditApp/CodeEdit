@@ -134,7 +134,7 @@ let package = Package(
         ),
         .target(
             name: "GitClone",
-//            dependencies: ["GitClient"],
+            dependencies: ["GitClient"],
             path: "Modules/GitClone/src"
         )
     ]
