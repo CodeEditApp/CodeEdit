@@ -25,6 +25,7 @@ struct ProjectNavigator: View {
 					item: item,
 					workspace: workspace,
 					windowController: windowController,
+					shouldloadChildren: .constant(true), // First level of children should always be loaded
 					selectedId: $selection
 				)
 			}

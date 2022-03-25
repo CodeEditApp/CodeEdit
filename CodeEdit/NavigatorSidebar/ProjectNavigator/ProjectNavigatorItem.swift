@@ -15,12 +15,28 @@ struct ProjectNavigatorItem: View {
 	@Environment(\.colorScheme) var colorScheme
 	@AppStorage(FileIconStyle.storageKey) var iconStyle: FileIconStyle = .default
 
+	/// The `FileItem` for this view
 	var item: WorkspaceClient.FileItem
+
+	/// The current ``WorkspaceDocument``
 	@ObservedObject var workspace: WorkspaceDocument
+
+	/// The current `NSWindowController`
 	var windowController: NSWindowController
+
+	/// If ``item`` is a folder, load one level of children if expanded
+	/// This fixes animation glitches when unfolding a folder while
+	/// maintaining performance.
+	///
+	/// This will be set to true once a parent folder expands
+	@Binding var shouldloadChildren: Bool
+
+	/// The current selected ``item`` in the list
 	@Binding var selectedId: WorkspaceClient.FileItem.ID?
-	@State var isExpanded: Bool = false
-	var indentLevel: Double = 0
+
+	/// Tracks the `DisclosureGroup`s `isExpanded` property in order
+	/// to set ``shouldloadChildren`` for its child items
+	@State private var isExpanded: Bool = false
 
 	var body: some View {
 		if item.children == nil {
@@ -38,66 +54,47 @@ struct ProjectNavigatorItem: View {
 				.resizable()
 				.aspectRatio(contentMode: .fit)
 				.frame(width: 12, height: 12, alignment: .center)
-				.foregroundColor(
-					selectionIconColor
-				)
+				.foregroundColor(iconColor)
 			Text(item.url.lastPathComponent)
 				.font(.subheadline)
 				.frame(maxWidth: .infinity, alignment: .leading)
 				.contentShape(Rectangle())
 		}
-		.padding(.leading, indentLevel * 16 + 15.5)
 		.listRowInsets(.init())
 		.contextMenu { contextMenuContent(false) }
 	}
 
 	@ViewBuilder
 	func sidebarFolderItem(_ item: WorkspaceClient.FileItem) -> some View {
-		HStack(spacing: 0) {
-			Image(systemName: "chevron.forward")
-				.imageScale(.small)
-				.font(.callout.bold())
-				.rotationEffect(.degrees(isExpanded ? 90 : 0))
-				.padding(.horizontal, 4)
-				.foregroundColor(.secondary)
-				.contentShape(Rectangle())
-				.onTapGesture {
-					withAnimation(.default.speed(1.2)) {
-						isExpanded.toggle()
-					}
+		DisclosureGroup(isExpanded: $isExpanded) {
+			if shouldloadChildren { // Only load when expanded -> Improves performance massively
+				ForEach(item.children!.sortItems(foldersOnTop: workspace.sortFoldersOnTop)) { child in
+					ProjectNavigatorItem(
+						item: child,
+						workspace: workspace,
+						windowController: windowController,
+						shouldloadChildren: $isExpanded,
+						selectedId: $selectedId
+					)
 				}
+			}
+		} label: {
 			HStack {
 				Image(systemName: item.systemImage)
 					.resizable()
 					.aspectRatio(contentMode: .fit)
 					.frame(width: 12, height: 12, alignment: .center)
-					.foregroundColor(folderColor)
+					.foregroundColor(.secondary)
 				Text(item.url.lastPathComponent)
 					.font(.subheadline)
 					.frame(maxWidth: .infinity, alignment: .leading)
 					.contentShape(Rectangle())
 			}
 		}
-		.padding(.leading, indentLevel * 16)
-		.contextMenu { contextMenuContent(true) }
-		if isExpanded { // Only load when expanded -> Improves performance massively
-			ForEach(item.children!.sortItems(foldersOnTop: workspace.sortFoldersOnTop)) { child in
-				ProjectNavigatorItem(item: child,
-									 workspace: workspace,
-									 windowController: windowController,
-									 selectedId: $selectedId,
-									 indentLevel: indentLevel + 1
-				)
-			}
-		}
 	}
 
-	private var selectionIconColor: Color {
+	private var iconColor: Color {
 		return iconStyle == .color ? item.iconColor : .secondary
-	}
-
-	private var folderColor: Color {
-		.secondary
 	}
 
 	// TODO: Some implementations still need to be done
