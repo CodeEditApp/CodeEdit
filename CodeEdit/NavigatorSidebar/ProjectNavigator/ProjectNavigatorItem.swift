@@ -92,6 +92,7 @@ struct ProjectNavigatorItem: View {
 					.frame(maxWidth: .infinity, alignment: .leading)
 					.contentShape(Rectangle())
 			}
+			.contextMenu { contextMenuContent(true) }
 		}
 	}
 
