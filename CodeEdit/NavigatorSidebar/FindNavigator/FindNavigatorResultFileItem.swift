@@ -9,7 +9,7 @@ import SwiftUI
 import WorkspaceClient
 import Search
 
-struct SearchResultFileItem: View {
+struct FindNavigatorResultFileItem: View {
     @ObservedObject var state: WorkspaceDocument.SearchState
     @State var isExpanded: Bool = true
     var fileItem: WorkspaceClient.FileItem

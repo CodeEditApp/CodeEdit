@@ -28,7 +28,7 @@ struct WorkspaceView: View {
     var body: some View {
         NavigationView {
             if workspace.workspaceClient != nil {
-                NavigatorSidebar(workspace: workspace, windowController: windowController)
+				LeadingSidebar(workspace: workspace, windowController: windowController)
                     .frame(minWidth: 250)
                 WorkspaceCodeFileView(windowController: windowController,
                                       workspace: workspace)
