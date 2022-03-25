@@ -17,9 +17,9 @@ struct LeadingSidebar: View {
 		ZStack {
 			switch selection {
 			case 0:
-				NavigatorSidebar(workspace: workspace, windowController: windowController)
+				ProjectNavigator(workspace: workspace, windowController: windowController)
 			case 2:
-				SidebarSearch(state: workspace.searchState ?? .init(workspace))
+				FindNavigator(state: workspace.searchState ?? .init(workspace))
 			default:
 				VStack { Spacer() }
 			}

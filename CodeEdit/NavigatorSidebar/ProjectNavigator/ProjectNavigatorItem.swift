@@ -10,7 +10,7 @@ import SwiftUI
 import WorkspaceClient
 import CodeFile
 
-struct NavigatorSidebarItem: View {
+struct ProjectNavigatorItem: View {
 	@Environment(\.controlActiveState) var activeState
 	@Environment(\.colorScheme) var colorScheme
 	@AppStorage(FileIconStyle.storageKey) var iconStyle: FileIconStyle = .default
@@ -103,7 +103,7 @@ struct NavigatorSidebarItem: View {
 				if isExpanded { // Only load when expanded -> Improves performance massively
 					VStack(alignment: .leading, spacing: 0) {
 						ForEach(item.children!.sortItems(foldersOnTop: workspace.sortFoldersOnTop)) { child in
-							NavigatorSidebarItem(item: child,
+							ProjectNavigatorItem(item: child,
 												 workspace: workspace,
 												 windowController: windowController,
 												 indentLevel: indentLevel + 1)

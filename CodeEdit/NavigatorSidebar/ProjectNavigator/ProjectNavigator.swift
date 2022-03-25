@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct NavigatorSidebar: View {
+struct ProjectNavigator: View {
 	@ObservedObject var workspace: WorkspaceDocument
 	var windowController: NSWindowController
 
@@ -19,7 +19,7 @@ struct NavigatorSidebar: View {
 					.foregroundColor(.secondary)
 					.padding(.bottom, 4)
 				ForEach(workspace.selectionState.fileItems.sortItems(foldersOnTop: workspace.sortFoldersOnTop)) { item in
-					NavigatorSidebarItem(
+					ProjectNavigatorItem(
 						item: item,
 						workspace: workspace,
 						windowController: windowController
