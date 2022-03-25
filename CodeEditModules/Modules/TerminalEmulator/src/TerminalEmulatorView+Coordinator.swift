@@ -24,7 +24,7 @@ public extension TerminalEmulatorView {
 				return
 			}
 			source.feed(text: "Exit code: \(exitCode)\n\r\n")
-			source.feed(text: "To restart please close and reopen this file")
+			source.feed(text: "To open a new session close and reopen the terminal drawer")
 			TerminalEmulatorView.lastTerminal = nil
 		}
 	}
