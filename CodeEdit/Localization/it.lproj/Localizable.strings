@@ -23,6 +23,18 @@
 // Settings - Editor Theme
 "Editor Theme"="Tema dell'editor";
 
+// Settings - Terminal Tab
+"Terminal"="Terminale";
+
+// Settings - Terminal Shell Type
+"Terminal Shell"="Shell del Terminale";
+"System Default"="Default di Sistema";
+
+// Settings - Terminal Font
+"Terminal Font"="Font del Terminale";
+"System Font"="Font di Sistema";
+"Custom"="Personalizzato";
+
 // Welcome Screen
 "Welcome to CodeEdit"="Benvenuto in CodeEdit";
 "Version %@ (%@)"="Versione %@ (%@)";
