@@ -17,6 +17,7 @@ internal struct StatusBarDrawer: View {
 	}
 
 	internal var body: some View {
+//		Rectangle()
 		TerminalEmulatorView(url: model.workspaceURL)
 			.frame(minHeight: 0,
 				   idealHeight: model.isExpanded ? model.currentHeight : 0,
