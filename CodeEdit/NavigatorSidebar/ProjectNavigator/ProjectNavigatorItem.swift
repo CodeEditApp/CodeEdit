@@ -14,16 +14,18 @@ struct ProjectNavigatorItem: View {
 	@Environment(\.controlActiveState) var activeState
 	@Environment(\.colorScheme) var colorScheme
 	@AppStorage(FileIconStyle.storageKey) var iconStyle: FileIconStyle = .default
+
 	var item: WorkspaceClient.FileItem
 	@ObservedObject var workspace: WorkspaceDocument
 	var windowController: NSWindowController
+	@Binding var selectedId: WorkspaceClient.FileItem.ID?
 	@State var isExpanded: Bool = false
 	var indentLevel: Double = 0
 
 	var body: some View {
 		if item.children == nil {
 			sidebarFileItem(item)
-				.id(item.id)
+				.id(item)
 		} else {
 			sidebarFolderItem(item)
 				.id(item.id)
@@ -31,124 +33,71 @@ struct ProjectNavigatorItem: View {
 	}
 
 	func sidebarFileItem(_ item: WorkspaceClient.FileItem) -> some View {
-		Button {
-			workspace.openFile(item: item)
-		} label: {
+		HStack {
+			Image(systemName: item.systemImage)
+				.resizable()
+				.aspectRatio(contentMode: .fit)
+				.frame(width: 12, height: 12, alignment: .center)
+				.foregroundColor(
+					selectionIconColor
+				)
+			Text(item.url.lastPathComponent)
+				.font(.subheadline)
+				.frame(maxWidth: .infinity, alignment: .leading)
+				.contentShape(Rectangle())
+		}
+		.padding(.leading, indentLevel * 16 + 15.5)
+		.listRowInsets(.init())
+		.contextMenu { contextMenuContent(false) }
+	}
+
+	@ViewBuilder
+	func sidebarFolderItem(_ item: WorkspaceClient.FileItem) -> some View {
+		HStack(spacing: 0) {
+			Image(systemName: "chevron.forward")
+				.imageScale(.small)
+				.font(.callout.bold())
+				.rotationEffect(.degrees(isExpanded ? 90 : 0))
+				.padding(.horizontal, 4)
+				.foregroundColor(.secondary)
+				.contentShape(Rectangle())
+				.onTapGesture {
+					withAnimation(.default.speed(1.2)) {
+						isExpanded.toggle()
+					}
+				}
 			HStack {
 				Image(systemName: item.systemImage)
 					.resizable()
 					.aspectRatio(contentMode: .fit)
 					.frame(width: 12, height: 12, alignment: .center)
-					.foregroundColor(
-						selectionIconColor
-					)
+					.foregroundColor(folderColor)
 				Text(item.url.lastPathComponent)
-					.foregroundColor(selectionForegroundColor)
 					.font(.subheadline)
 					.frame(maxWidth: .infinity, alignment: .leading)
 					.contentShape(Rectangle())
 			}
-			.frame(maxWidth: .infinity, alignment: .leading)
-			.padding(.leading, indentLevel * 16 + 12)
 		}
-		.buttonStyle(.plain)
-		.frame(height: 20, alignment: .center)
-		.padding(.horizontal, 4)
-		.background {
-			RoundedRectangle(cornerRadius: 5)
-				.foregroundColor(
-					selectionBackgroundColor
+		.padding(.leading, indentLevel * 16)
+		.contextMenu { contextMenuContent(true) }
+		if isExpanded { // Only load when expanded -> Improves performance massively
+			ForEach(item.children!.sortItems(foldersOnTop: workspace.sortFoldersOnTop)) { child in
+				ProjectNavigatorItem(item: child,
+									 workspace: workspace,
+									 windowController: windowController,
+									 selectedId: $selectedId,
+									 indentLevel: indentLevel + 1
 				)
-		}
-		.contextMenu { contextMenuContent(false) }
-	}
-
-	func sidebarFolderItem(_ item: WorkspaceClient.FileItem) -> some View {
-		VStack(alignment: .leading, spacing: 0) {
-			HStack(spacing: 0) {
-				Image(systemName: "chevron.forward")
-					.imageScale(.small)
-					.font(.callout.bold())
-					.rotationEffect(.degrees(isExpanded ? 90 : 0))
-					.padding(4)
-					.foregroundColor(.secondary)
-					.contentShape(Rectangle())
-					.onTapGesture {
-						withAnimation(.default.speed(1.2)) {
-							isExpanded.toggle()
-						}
-					}
-				HStack {
-					Image(systemName: item.systemImage)
-						.resizable()
-						.aspectRatio(contentMode: .fit)
-						.frame(width: 12, height: 12, alignment: .center)
-						.foregroundColor(folderColor)
-					Text(item.url.lastPathComponent)
-						.foregroundColor(.primary)
-						.font(.callout)
-						.frame(maxWidth: .infinity, alignment: .leading)
-						.contentShape(Rectangle())
-						.onTapGesture(count: 2) {
-							withAnimation(.default.speed(1.2)) {
-								isExpanded.toggle()
-							}
-						}
-				}
 			}
-			.frame(height: 20, alignment: .center)
-			.padding(.leading, indentLevel * 16)
-			.contextMenu { contextMenuContent(true) }
-			ZStack {
-				if isExpanded { // Only load when expanded -> Improves performance massively
-					VStack(alignment: .leading, spacing: 0) {
-						ForEach(item.children!.sortItems(foldersOnTop: workspace.sortFoldersOnTop)) { child in
-							ProjectNavigatorItem(item: child,
-												 workspace: workspace,
-												 windowController: windowController,
-												 indentLevel: indentLevel + 1)
-
-						}
-					}
-					.transition(
-						.move(edge: .top)
-					)
-				}
-			}
-			.clipped()
 		}
-	}
-
-	private var selectionForegroundColor: Color {
-		if workspace.selectionState.selectedId != item.id { return .primary }
-		if activeState == .inactive { return .primary }
-		return .white
 	}
 
 	private var selectionIconColor: Color {
-		if workspace.selectionState.selectedId == item.id {
-			return activeState == .inactive ? item.iconColor : .white
-		}
-		if iconStyle == .color { return item.iconColor }
-		return .secondary
-	}
-
-	private var selectionBackgroundColor: Color {
-		if workspace.selectionState.selectedId != item.id { return .clear }
-		if activeState == .inactive { return unfocusedColor }
-		return focusedColor
-	}
-
-	private var focusedColor: Color {
-		.accentColor.opacity(0.75)
-	}
-
-	private var unfocusedColor: Color {
-		colorScheme == .light ? .black.opacity(0.11) : .white.opacity(0.12)
+		return iconStyle == .color ? item.iconColor : .secondary
 	}
 
 	private var folderColor: Color {
-		Color(nsColor: .secondaryLabelColor).opacity(0.75)
+		.secondary
 	}
 
 	// TODO: Some implementations still need to be done
