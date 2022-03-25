@@ -9,11 +9,12 @@ import Foundation
 import SwiftUI
 
 public extension WorkspaceClient {
-    struct FileItem: Hashable, Identifiable, Comparable, Codable {
+    class FileItem: Hashable, Identifiable, Comparable, Codable {
         // TODO: use a phantom type instead of a String
         public var id: String
         public var url: URL
-        public var children: [FileItem]?
+		public var children: [FileItem]?
+		public var parent: FileItem?
         public static let fileManger = FileManager.default
         public var systemImage: String {
             switch children {
@@ -149,6 +150,10 @@ public extension WorkspaceClient {
                 }
             }
         }
+
+		public func hash(into hasher: inout Hasher) {
+			hasher.combine(id)
+		}
     }
 }
 

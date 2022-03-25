@@ -17,6 +17,9 @@ struct BreadcrumbsView: View {
     @State
     private var projectName: String = ""
 
+	@State
+	private var fileItems: [WorkspaceClient.FileItem] = []
+
     @State
     private var folders: [String] = []
 
@@ -37,19 +40,16 @@ struct BreadcrumbsView: View {
                 .foregroundStyle(Color(nsColor: .controlBackgroundColor))
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
-                    BreadcrumbsComponent(
-                        projectName,
-                        systemImage: "square.dashed.inset.filled",
-                        color: .accentColor
-                    )
-
-                    chevron
-
-                    ForEach(folders, id: \.self) { folder in
-                        BreadcrumbsComponent(folder, systemImage: "folder.fill")
-                        chevron
-                    }
-                    BreadcrumbsComponent(fileName, systemImage: fileImage, color: file.iconColor)
+					ForEach(fileItems, id: \.self) { fileItem in
+						if fileItem.parent != nil {
+							chevron
+						}
+						BreadcrumbsMenu(workspace,
+										title: fileItem.fileName,
+										systemImage: fileItem.parent == nil ?  "square.dashed.inset.filled" : fileItem.systemImage,
+										color: fileItem.parent == nil ? .accentColor : file.iconColor,
+										parentFileItem: fileItem.parent)
+					}
                 }
                 .padding(.horizontal, 12)
             }
@@ -73,7 +73,13 @@ struct BreadcrumbsView: View {
     }
 
     private func fileInfo(_ file: WorkspaceClient.FileItem) {
-        guard let projURL = workspace.fileURL else { return }
+  		self.fileItems = []
+		var currentFile: WorkspaceClient.FileItem? = file
+		while currentFile != nil {
+			self.fileItems.insert(currentFile!, at: 0)
+			currentFile = currentFile!.parent
+		}      
+		guard let projURL = workspace.fileURL else { return }
         let components = file.url.path
             .replacingOccurrences(of: projURL.path, with: "")
             .split(separator: "/")
