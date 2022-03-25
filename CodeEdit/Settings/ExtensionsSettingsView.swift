@@ -12,8 +12,8 @@ struct ExtensionsSettingsView: View {
         VStack {
             Spacer()
         }
-        .frame(width: 820, height: 450)
         .padding()
+        .frame(width: 820, height: 450)
     }
 }
 

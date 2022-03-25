@@ -8,6 +8,7 @@
 import SwiftUI
 import TerminalEmulator
 import FontPicker
+import Preferences
 
 struct ExecutionSettingsView: View {
     @AppStorage(TerminalShellType.storageKey) var shellType: TerminalShellType = .default
@@ -18,21 +19,26 @@ struct ExecutionSettingsView: View {
     @State var customFont  = false
 
     var body: some View {
-        VStack {
-            Picker("Terminal Shell".localized(), selection: $shellType) {
-                Text("System Default".localized())
-                    .tag(TerminalShellType.auto)
-                Text("ZSH")
-                    .tag(TerminalShellType.zsh)
-                Text("Bash")
-                    .tag(TerminalShellType.bash)
-            }
-            .fixedSize()
+        VStack(alignment: .center) {
+            Preferences.Container(contentWidth: 450) {
+                Preferences.Section(title: "Terminal Shell:") {
+                    Picker("", selection: $shellType) {
+                        Text("System Default".localized())
+                            .tag(TerminalShellType.auto)
+                        Text("ZSH")
+                            .tag(TerminalShellType.zsh)
+                        Text("Bash")
+                            .tag(TerminalShellType.bash)
+                    }
+                    .fixedSize()
+                }
 
-            HStack {
-                Toggle("Custom Terminal Font:", isOn: $customFont)
-                FontPicker("\(terminalFontName) \(terminalFontSize)",
-                           name: $terminalFontName, size: $terminalFontSize)
+                Preferences.Section(title: "Custom Terminal Font:") {
+                    Toggle(isOn: $customFont) {
+                        FontPicker("\(terminalFontName) \(terminalFontSize)",
+                                   name: $terminalFontName, size: $terminalFontSize)
+                    }
+                }
             }
 
             Spacer()
@@ -40,8 +46,8 @@ struct ExecutionSettingsView: View {
         .onAppear {
             customFont = terminalFontSelection == .custom
         }
-        .frame(width: 820, height: 450)
         .padding()
+        .frame(width: 820, height: 450)
     }
 }
 

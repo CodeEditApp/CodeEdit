@@ -59,8 +59,8 @@ struct ThemeSettingsView: View {
                 }
             }
         }
-        .frame(width: 820, height: 450)
         .padding()
+        .frame(width: 820, height: 450)
         .onChange(of: model.event) { newValue in
             if let event = newValue {
                 if event.keyCode == 124 {
@@ -79,9 +79,9 @@ struct ThemeSettingsView: View {
         var body: some View {
             if selected {
                 if model.key {
-                    Color.accentColor.opacity(0.8).cornerRadius(5)
+                    Color.focusedColor.cornerRadius(5)
                 } else {
-                    Color.gray.opacity(0.3).cornerRadius(5)
+                    Color.unfocusedColor.cornerRadius(5)
                 }
             } else {
                 Color.clear
