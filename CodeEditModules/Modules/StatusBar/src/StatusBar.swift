@@ -31,7 +31,10 @@ public struct StatusBarView: View {
 	public var body: some View {
 		VStack(spacing: 0) {
 			bar
-			StatusBarDrawer(model: model)
+			if model.isExpanded {
+				StatusBarDrawer(model: model)
+					.transition(.move(edge: .bottom))
+			}
 		}
 		// removes weird light gray bar above when in light mode
 		.padding(.top, -8) // (comment out to make it look normal in preview)
@@ -62,6 +65,11 @@ public struct StatusBarView: View {
 		}
 		.overlay(alignment: .top) {
 			Divider()
+		}
+		.overlay(alignment: .bottom) {
+			if model.isExpanded {
+				Divider()
+			}
 		}
 		.frame(height: 32)
 		.gesture(dragGesture)

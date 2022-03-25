@@ -25,7 +25,7 @@ public struct TerminalEmulatorView: NSViewRepresentable {
 	@StateObject private var ansiColors: AnsiColors = .shared
 
 	// TODO: Persist this to not get a new terminal each time you switch file
-	private static var lastTerminal: LocalProcessTerminalView?
+	internal static var lastTerminal: LocalProcessTerminalView?
 	@State internal var terminal: LocalProcessTerminalView
 
 	private let systemFont: NSFont = .monospacedSystemFont(ofSize: 11, weight: .medium)
@@ -104,36 +104,46 @@ public struct TerminalEmulatorView: NSViewRepresentable {
 	/// Inherited from NSViewRepresentable.makeNSView(context:).
 	public func makeNSView(context: Context) -> LocalProcessTerminalView {
 		terminal.processDelegate = context.coordinator
-
-		let shell = getShell()
-		let shellIdiom = "-" + NSString(string: shell).lastPathComponent
-
-		// changes working directory to project root
-		// TODO: Get rid of FileManager shared instance to prevent problems
-		// using shared instance of FileManager might lead to problems when using
-		// multiple workspaces. This works for now but most probably will need
-		// to be changed later on
-		FileManager.default.changeCurrentDirectoryPath(url.path)
-		terminal.startProcess(executable: shell, execName: shellIdiom)
-		terminal.font = font
-		terminal.configureNativeColors()
-		terminal.installColors(self.appearanceColors)
-		TerminalEmulatorView.lastTerminal = terminal
+		setupSession()
 		return terminal
+	}
+
+	public func setupSession() {
+		if TerminalEmulatorView.lastTerminal == nil {
+			let shell = getShell()
+			let shellIdiom = "-" + NSString(string: shell).lastPathComponent
+
+			// changes working directory to project root
+			// TODO: Get rid of FileManager shared instance to prevent problems
+			// using shared instance of FileManager might lead to problems when using
+			// multiple workspaces. This works for now but most probably will need
+			// to be changed later on
+			FileManager.default.changeCurrentDirectoryPath(url.path)
+			terminal.startProcess(executable: shell, execName: shellIdiom)
+			terminal.font = font
+			terminal.configureNativeColors()
+			terminal.installColors(self.appearanceColors)
+		}
+		TerminalEmulatorView.lastTerminal = terminal
 	}
 
 	public func updateNSView(_ view: LocalProcessTerminalView, context: Context) {
 		print("Update view")
-		// if view.font != font { // Fixes Memory leak
-		// TODO: Fix memory leak
-		// for some reason setting the font here causes a memory leak.
-		// I'll leave it for now since the colors won't change
-		// without setting the font which is weird
-			view.font = font
-		// }
-//		view.configureNativeColors()
+//		if exited {
+//			setupSession()
+//		}
+//		// if view.font != font { // Fixes Memory leak
+//		// TODO: Fix memory leak
+//		// for some reason setting the font here causes a memory leak.
+//		// I'll leave it for now since the colors won't change
+//		// without setting the font which is weird
+//			view.font = font
+//		// }
+		view.configureNativeColors()
 		view.installColors(self.appearanceColors)
-		TerminalEmulatorView.lastTerminal = view
+		if TerminalEmulatorView.lastTerminal != nil {
+			TerminalEmulatorView.lastTerminal = view
+		}
 	}
 
 	public func makeCoordinator() -> Coordinator {
