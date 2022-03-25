@@ -23,6 +23,18 @@
 // Settings - Editor Theme
 "Editor Theme"="编辑器主题";
 
+// Settings - Terminal Tab
+"Terminal"="终端";
+
+// Settings - Terminal Shell Type
+"Terminal Shell"="终端 Shell";
+"System Default"="系统默认";
+
+// Settings - Terminal Font
+"Terminal Font"="终端字体";
+"System Font"="系统字体";
+"Custom"="自定义";
+
 // Welcome Screen
 "Welcome to CodeEdit"="欢迎使用 CodeEdit";
 "Version %@ (%@)"="版本 %@ (%@)";
