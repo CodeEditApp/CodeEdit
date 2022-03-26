@@ -21,6 +21,7 @@
 		0485EB1F27E7458B00138301 /* WorkspaceCodeFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0485EB1E27E7458B00138301 /* WorkspaceCodeFileView.swift */; };
 		0485EB2327E7791400138301 /* QuickOpenPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0485EB2227E7791400138301 /* QuickOpenPreviewView.swift */; };
 		0485EB2527E7B9C800138301 /* Overlays in Frameworks */ = {isa = PBXBuildFile; productRef = 0485EB2427E7B9C800138301 /* Overlays */; };
+		2806CBD427EE9FC0003E5523 /* ProjectNavigatorContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2806CBD327EE9FC0003E5523 /* ProjectNavigatorContextMenu.swift */; };
 		2813F93827ECC4AA00E305E4 /* FindNavigatorResultList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201B327E9989900CB86D0 /* FindNavigatorResultList.swift */; };
 		2813F93927ECC4C300E305E4 /* LeadingSidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287776E627E3413200D46668 /* LeadingSidebar.swift */; };
 		2813F93A27ECC4CC00E305E4 /* ProjectNavigatorItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287776EC27E350D800D46668 /* ProjectNavigatorItem.swift */; };
@@ -97,6 +98,7 @@
 		12F71F7127E833A000095416 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		20F8067027E65A5200EB7827 /* af */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = af; path = af.lproj/Localizable.strings; sourceTree = "<group>"; };
 		2805D9E827E5ED180032BC56 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		2806CBD327EE9FC0003E5523 /* ProjectNavigatorContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectNavigatorContextMenu.swift; sourceTree = "<group>"; };
 		2859B94027EB5BC00069BE88 /* TerminalSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TerminalSettingsView.swift; sourceTree = "<group>"; };
 		286471AA27ED51FD0039369D /* ProjectNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectNavigator.swift; sourceTree = "<group>"; };
 		286620A427E4AB6900E18C2B /* BreadcrumbsComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreadcrumbsComponent.swift; sourceTree = "<group>"; };
@@ -221,6 +223,7 @@
 			children = (
 				286471AA27ED51FD0039369D /* ProjectNavigator.swift */,
 				287776EC27E350D800D46668 /* ProjectNavigatorItem.swift */,
+				2806CBD327EE9FC0003E5523 /* ProjectNavigatorContextMenu.swift */,
 			);
 			path = ProjectNavigator;
 			sourceTree = "<group>";
@@ -562,6 +565,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2813F93A27ECC4CC00E305E4 /* ProjectNavigatorItem.swift in Sources */,
+				2806CBD427EE9FC0003E5523 /* ProjectNavigatorContextMenu.swift in Sources */,
 				2813F93927ECC4C300E305E4 /* LeadingSidebar.swift in Sources */,
 				2813F93827ECC4AA00E305E4 /* FindNavigatorResultList.swift in Sources */,
 				2B7A583527E4BA0100D25D4E /* AppDelegate.swift in Sources */,
