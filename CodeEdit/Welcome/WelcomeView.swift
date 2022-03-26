@@ -42,6 +42,27 @@ struct WelcomeView: View {
     private var appBuild: String {
         return Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? ""
     }
+    
+    private var macOsVersion: String {
+        let osVersion = ProcessInfo.processInfo.operatingSystemVersion
+        return "\(osVersion.majorVersion).\(osVersion.minorVersion).\(osVersion.patchVersion)"
+    }
+    
+    private var xCodeVersion: String {
+        guard let url = NSWorkspace.shared.urlForApplication(withBundleIdentifier: "com.apple.dt.Xcode"),
+              let bundle = Bundle(url: url) else {
+            print("Xcode is not installed")
+            exit(1)
+        }
+        
+        guard let infoDict = bundle.infoDictionary,
+              let version = infoDict["CFBundleShortVersionString"] as? String else {
+            print("No version found in Info.plist")
+            exit(1)
+        }
+        
+        return version
+    }
 
     var body: some View {
         ZStack(alignment: .topLeading) {
@@ -55,6 +76,22 @@ struct WelcomeView: View {
                 Text("Version \(appVersion) (\(appBuild))")
                     .foregroundColor(.secondary)
                     .font(.system(size: 13))
+                    .onHover { inside in
+                        if inside {
+                            NSCursor.pointingHand.push()
+                        } else {
+                            NSCursor.pop()
+                        }
+                    }
+                    .onTapGesture {
+                        let pasteboard = NSPasteboard.general
+                        pasteboard.clearContents()
+                        pasteboard.setString(
+                            "CodeEdit: \(appVersion) (\(appBuild))\n" +
+                            "MacOS: \(macOsVersion)\n" +
+                            "Xcode: \(xCodeVersion)"
+                            , forType: .string)
+                    }
                 Spacer().frame(height: 20)
                 HStack {
                     VStack(alignment: .leading, spacing: 15) {
