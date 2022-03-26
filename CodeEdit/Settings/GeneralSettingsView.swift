@@ -16,82 +16,13 @@ struct GeneralSettingsView: View {
     @AppStorage(ReopenBehavior.storageKey) var reopenBehavior: ReopenBehavior = .default
     @AppStorage(FileIconStyle.storageKey) var fileIconStyle: FileIconStyle = .default
 
-    @StateObject var model = KeyModel.shared
-
     @State var refresh = UUID()
 
     var body: some View {
         VStack {
             Preferences.Container(contentWidth: 450) {
-                Preferences.Section(title: "Appearance: ") {
-                    HStack {
-                        ZStack(alignment: .center) {
-                            if model.key {
-                                Color.focusedColor.opacity(appearance == .system || appearance == .default ? 1 : 0)
-                                    .frame(width: 67 + 3, height: 46 + 3)
-                                    .cornerRadius(5)
-                            } else {
-                                Color.unfocusedColor.opacity(appearance == .system || appearance == .default ? 1 : 0)
-                                    .frame(width: 67 + 3, height: 46 + 3)
-                                    .cornerRadius(5)
-                            }
-
-                            Image("Auto")
-                                .resizable()
-                                .frame(width: 67, height: 46)
-                                .scaledToFit()
-                                .cornerRadius(5)
-                                .onTapGesture {
-                                    appearance = .system
-                                }
-                        }
-                        .padding(.trailing)
-
-                        ZStack(alignment: .center) {
-                            if model.key {
-                                Color.focusedColor.opacity(appearance == .light ? 1 : 0)
-                                    .frame(width: 67 + 3, height: 46 + 3)
-                                    .cornerRadius(5)
-                            } else {
-                                Color.unfocusedColor.opacity(appearance == .light ? 1 : 0)
-                                    .frame(width: 67 + 3, height: 46 + 3)
-                                    .cornerRadius(5)
-                            }
-
-                            Image("Light")
-                                .resizable()
-                                .frame(width: 67, height: 46)
-                                .scaledToFit()
-                                .cornerRadius(5)
-                                .onTapGesture {
-                                    appearance = .light
-                                }
-                        }
-                        .padding(.trailing)
-
-                        ZStack(alignment: .center) {
-                            if model.key {
-                                Color.focusedColor.opacity(appearance == .dark ? 1 : 0)
-                                    .frame(width: 67 + 3, height: 46 + 3)
-                                    .cornerRadius(5)
-                            } else {
-                                Color.unfocusedColor.opacity(appearance == .dark ? 1 : 0)
-                                    .frame(width: 67 + 3, height: 46 + 3)
-                                    .cornerRadius(5)
-                            }
-
-                            Image("Dark")
-                                .resizable()
-                                .frame(width: 67, height: 46)
-                                .scaledToFit()
-                                .cornerRadius(5)
-                                .onTapGesture {
-                                    appearance = .dark
-                                }
-                        }
-                        .padding(.trailing)
-                    }
-                    .id(refresh)
+                Preferences.Section(title: "Appearance") {
+                    AppearenceChangeView(refresh: refresh)
                 }
 
                 Preferences.Section(title: "File Icon Style:") {
@@ -126,6 +57,83 @@ struct GeneralSettingsView: View {
         }
         .padding()
         .frame(width: 820, height: 450)
+    }
+
+    struct AppearenceChangeView: View {
+        let refresh: UUID
+        @StateObject var model = KeyModel.shared
+        @AppStorage(Appearances.storageKey) var appearance: Appearances = .default
+
+        var body: some View {
+            HStack {
+                ZStack(alignment: .center) {
+                    if model.key {
+                        Color.focusedColor.opacity(appearance == .system || appearance == .default ? 1 : 0)
+                            .frame(width: 67 + 3, height: 46 + 3)
+                            .cornerRadius(5)
+                    } else {
+                        Color.unfocusedColor.opacity(appearance == .system || appearance == .default ? 1 : 0)
+                            .frame(width: 67 + 3, height: 46 + 3)
+                            .cornerRadius(5)
+                    }
+
+                    Image("Auto")
+                        .resizable()
+                        .frame(width: 67, height: 46)
+                        .scaledToFit()
+                        .cornerRadius(5)
+                        .onTapGesture {
+                            appearance = .system
+                        }
+                }
+                .padding(.trailing)
+
+                ZStack(alignment: .center) {
+                    if model.key {
+                        Color.focusedColor.opacity(appearance == .light ? 1 : 0)
+                            .frame(width: 67 + 3, height: 46 + 3)
+                            .cornerRadius(5)
+                    } else {
+                        Color.unfocusedColor.opacity(appearance == .light ? 1 : 0)
+                            .frame(width: 67 + 3, height: 46 + 3)
+                            .cornerRadius(5)
+                    }
+
+                    Image("Light")
+                        .resizable()
+                        .frame(width: 67, height: 46)
+                        .scaledToFit()
+                        .cornerRadius(5)
+                        .onTapGesture {
+                            appearance = .light
+                        }
+                }
+                .padding(.trailing)
+
+                ZStack(alignment: .center) {
+                    if model.key {
+                        Color.focusedColor.opacity(appearance == .dark ? 1 : 0)
+                            .frame(width: 67 + 3, height: 46 + 3)
+                            .cornerRadius(5)
+                    } else {
+                        Color.unfocusedColor.opacity(appearance == .dark ? 1 : 0)
+                            .frame(width: 67 + 3, height: 46 + 3)
+                            .cornerRadius(5)
+                    }
+
+                    Image("Dark")
+                        .resizable()
+                        .frame(width: 67, height: 46)
+                        .scaledToFit()
+                        .cornerRadius(5)
+                        .onTapGesture {
+                            appearance = .dark
+                        }
+                }
+                .padding(.trailing)
+            }
+            .id(refresh)
+        }
     }
 }
 
