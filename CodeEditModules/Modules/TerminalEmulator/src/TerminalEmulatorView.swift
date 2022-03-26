@@ -108,6 +108,7 @@ public struct TerminalEmulatorView: NSViewRepresentable {
 	}
 
 	public func setupSession() {
+		terminal.getTerminal().silentLog = true
 		if TerminalEmulatorView.lastTerminal == nil {
 			let shell = getShell()
 			let shellIdiom = "-" + NSString(string: shell).lastPathComponent

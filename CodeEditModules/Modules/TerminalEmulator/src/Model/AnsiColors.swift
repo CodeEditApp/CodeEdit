@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// Wrapper for storing `Color` objects as 24-bit integer in UserDefaults
 public class AnsiColors: ObservableObject {
     //    public static let `default` =
     public static let storageKey: String = "ANSIColors"
@@ -17,7 +18,6 @@ public class AnsiColors: ObservableObject {
 			resetDefault()
             return
         }
-        print("loaded")
         self.mappedColors = loadColors
     }
 
@@ -44,7 +44,6 @@ public class AnsiColors: ObservableObject {
     @Published public var mappedColors: [Int] = [] {
         didSet {
             UserDefaults.standard.set(mappedColors, forKey: AnsiColors.storageKey)
-            print("saved")
         }
     }
 
