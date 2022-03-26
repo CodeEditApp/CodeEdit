@@ -79,6 +79,9 @@ struct TerminalSettingsView: View {
 					}
 				}
 			}
+			Button("Restore Defaults") {
+				AnsiColors.shared.resetDefault()
+			}
 		}
 		.padding()
     }
