@@ -104,6 +104,8 @@ struct RecentProjectsView: View {
                             .contextMenu {
                                 contextMenuShowInFinder(projectPath: projectPath)
                                 contextMenuCopy(path: projectPath)
+                                    .keyboardShortcut(.init("C", modifiers: [.command, .shift]))
+
                                 Divider()
                                 contextMenuDelete(projectPath: projectPath)
                                     .keyboardShortcut(.init(.delete))
@@ -115,6 +117,14 @@ struct RecentProjectsView: View {
                             }
                             .buttonStyle(.borderless)
                             .keyboardShortcut(.init(.delete))
+
+                            Button("") {
+                                let pasteboard = NSPasteboard.general
+                                pasteboard.declareTypes([.string], owner: nil)
+                                pasteboard.setString(projectPath, forType: .string)
+                            }
+                            .buttonStyle(.borderless)
+                            .keyboardShortcut(.init("C", modifiers: [.command, .shift]))
                         }
 
                         Button("") {
