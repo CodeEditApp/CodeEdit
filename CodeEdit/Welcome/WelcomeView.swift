@@ -89,8 +89,7 @@ struct WelcomeView: View {
                         pasteboard.setString(
                             "CodeEdit: \(appVersion) (\(appBuild))\n" +
                             "MacOS: \(macOsVersion)\n" +
-                            "Xcode: \(xCodeVersion)"
-                            , forType: .string)
+                            "Xcode: \(xCodeVersion)", forType: .string)
                     }
                 Spacer().frame(height: 20)
                 HStack {
