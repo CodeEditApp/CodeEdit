@@ -38,10 +38,10 @@ struct RecentProjectsView: View {
     }
 
     private func openDocument(path: String) {
-        if FileManager.default.fileExists(atPath: path) {
-            CodeEditDocumentController.shared.openDocument(
-                withContentsOf: URL(fileURLWithPath: path), display: true
-            ) { _, _, _ in
+        CodeEditDocumentController.shared.openDocument(
+            withContentsOf: URL(fileURLWithPath: path), display: true
+        ) { doc, _, _ in
+            if doc != nil {
                 dismissWindow()
             }
         }
