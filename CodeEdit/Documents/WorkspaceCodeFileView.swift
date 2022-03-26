@@ -14,7 +14,8 @@ struct WorkspaceCodeFileView: View {
     var windowController: NSWindowController
     @ObservedObject var workspace: WorkspaceDocument
 
-    @ViewBuilder var codeView: some View {
+    @ViewBuilder
+	var codeView: some View {
         if let item = workspace.selectionState.openFileItems.first(where: { file in
             if file.id == workspace.selectionState.selectedId {
                 print("Item loaded is: ", file.url)
@@ -30,11 +31,6 @@ struct WorkspaceCodeFileView: View {
                             BreadcrumbsView(item, workspace: workspace)
                         }
                     }
-                    .safeAreaInset(edge: .bottom) {
-                        if let url = workspace.fileURL {
-							StatusBarView(workspaceURL: url)
-                        }
-                    }
             } else {
                 Text("CodeEdit cannot open this file because its file type is not supported.")
             }
@@ -44,12 +40,7 @@ struct WorkspaceCodeFileView: View {
     }
 
     var body: some View {
-        HSplitView {
-            codeView
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-
-            InspectorSidebar(workspace: workspace, windowController: windowController)
-                .frame(minWidth: 250, maxWidth: 250, maxHeight: .infinity)
-        }
+		codeView
+			.frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }

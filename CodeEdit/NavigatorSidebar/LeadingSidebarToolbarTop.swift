@@ -7,7 +7,9 @@
 
 import SwiftUI
 
-struct NavigatorSidebarToolbarTop: View {
+struct LeadingSidebarToolbarTop: View {
+	@Environment(\.controlActiveState) var activeState
+
 	@Binding var selection: Int
 
 	var body: some View {
@@ -42,6 +44,7 @@ struct NavigatorSidebarToolbarTop: View {
 				.foregroundColor(id == selection ? .accentColor : .secondary)
 				.frame(width: 25, height: 25, alignment: .center)
 				.contentShape(Rectangle())
+				.opacity(activeState == .inactive ? 0.45 : 1)
 		}
 		.buttonStyle(.plain)
 	}
@@ -49,6 +52,6 @@ struct NavigatorSidebarToolbarTop: View {
 
 struct NavigatorSidebarToolbar_Previews: PreviewProvider {
 	static var previews: some View {
-        NavigatorSidebarToolbarTop(selection: .constant(0))
+        LeadingSidebarToolbarTop(selection: .constant(0))
 	}
 }
