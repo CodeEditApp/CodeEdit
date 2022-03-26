@@ -14,6 +14,7 @@ struct TerminalSettingsView: View {
 	@AppStorage(TerminalFont.storageKey) var terminalFontSelection: TerminalFont = .default
 	@AppStorage(TerminalFontName.storageKey) var terminalFontName: String = TerminalFontName.default
 	@AppStorage(TerminalFontSize.storageKey) var terminalFontSize: Int = TerminalFontSize.default
+	@AppStorage(TerminalColorScheme.storageKey) var terminalColorSchmeme: TerminalColorScheme = .default
 
 	@StateObject private var colors = AnsiColors.shared
 
@@ -22,15 +23,27 @@ struct TerminalSettingsView: View {
 			Picker("Terminal Shell".localized(), selection: $shellType) {
 				Text("System Default".localized())
 					.tag(TerminalShellType.auto)
+				Divider()
 				Text("ZSH")
 					.tag(TerminalShellType.zsh)
 				Text("Bash")
 					.tag(TerminalShellType.bash)
 			}
 
+			Picker("Terminal Appearance", selection: $terminalColorSchmeme) {
+				Text("App Default")
+					.tag(TerminalColorScheme.auto)
+				Divider()
+				Text("Light")
+					.tag(TerminalColorScheme.light)
+				Text("Dark")
+					.tag(TerminalColorScheme.dark)
+			}
+
 			Picker("Terminal Font".localized(), selection: $terminalFontSelection) {
 				Text("System Font".localized())
 					.tag(TerminalFont.systemFont)
+				Divider()
 				Text("Custom".localized())
 					.tag(TerminalFont.custom)
 			}
