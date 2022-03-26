@@ -38,24 +38,12 @@ struct RecentProjectsView: View {
     }
 
     private func openDocument(path: String) {
-        do {
-            var isDir: ObjCBool = false
-            if FileManager.default.fileExists(atPath: path, isDirectory: &isDir) {
-                if isDir.boolValue {
-                    let document = try WorkspaceDocument(contentsOf: URL(fileURLWithPath: path), ofType: "")
-                    document.makeWindowControllers()
-                    document.showWindows()
-                    dismissWindow()
-                } else {
-                    CodeEditDocumentController.shared.openDocument(
-                        withContentsOf: URL(fileURLWithPath: path), display: true
-                    ) { _, _, _ in
-                        dismissWindow()
-                    }
-                }
+        CodeEditDocumentController.shared.openDocument(
+            withContentsOf: URL(fileURLWithPath: path), display: true
+        ) { doc, _, _ in
+            if doc != nil {
+                dismissWindow()
             }
-        } catch {
-            print(error)
         }
     }
 

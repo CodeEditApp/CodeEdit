@@ -34,6 +34,19 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 
         DispatchQueue.main.async {
             if NSApp.windows.isEmpty {
+                if let projects = UserDefaults.standard.array(forKey: AppDelegate.recoverWorkspacesKey) as? [String],
+                   !projects.isEmpty {
+                    projects.forEach { path in
+                        let url = URL(fileURLWithPath: path)
+                        CodeEditDocumentController.shared.reopenDocument(for: url,
+                                                                        withContentsOf: url,
+                                                                        display: true) { document, _, _ in
+                            document?.windowControllers.first?.synchronizeWindowTitleWithDocumentName()
+                        }
+                    }
+                    return
+                }
+
                 self.handleOpen()
             }
         }
@@ -75,12 +88,18 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     }
 
     func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
-        CodeEditDocumentController.shared.documents.flatMap { doc in
-            return doc.windowControllers
-        }.forEach { windowContoller in
-            if let windowContoller = windowContoller as? CodeEditWindowController {
-                windowContoller.workspace?.close()
+        let projects: [String] = CodeEditDocumentController.shared.documents
+            .map { doc in
+                return (doc as? WorkspaceDocument)?.fileURL?.path
             }
+            .filter { $0 != nil }
+            .map { $0! }
+
+        UserDefaults.standard.set(projects, forKey: AppDelegate.recoverWorkspacesKey)
+
+        CodeEditDocumentController.shared.documents.forEach { doc in
+            doc.close()
+            CodeEditDocumentController.shared.removeDocument(doc)
         }
         return .terminateNow
     }
@@ -127,4 +146,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         window.contentView = NSHostingView(rootView: contentView)
         window.makeKeyAndOrderFront(self)
     }
+}
+
+extension AppDelegate {
+    static let recoverWorkspacesKey = "recover.workspaces"
 }

@@ -204,8 +204,10 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         selectionState.openFileItems.forEach { item in
             do {
                 try selectionState.openedCodeFiles[item]?.write(to: item.url, ofType: "public.source-code")
+                selectionState.openedCodeFiles[item]?.close()
             } catch {}
         }
+        selectionState.openedCodeFiles.removeAll()
         super.close()
     }
 }
