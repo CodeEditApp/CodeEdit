@@ -11,21 +11,16 @@ struct CEColorPicker<T: Hashable>: View {
     @Binding var selection: T
 
     let colors: [Color]
+    let name: String
 
     var body: some View {
         Picker("", selection: $selection) {
-//            ForEach(colors, id: \.hex) { color in
-//                HStack {
-//
-//
-//                    Text("Blue")
-//                }
-//            }
+            HStack {
+                Image(nsImage: .init(named: .init("ColorPickerDefault"))?.tint(color: .green) ?? NSImage())
 
-            Rectangle()
-                .foregroundColor(.green)
-                .frame(width: 23, height: 11)
-                .padding()
+                Text(name)
+            }
+            .padding(.trailing)
         }
         .fixedSize()
     }

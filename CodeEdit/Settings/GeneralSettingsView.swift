@@ -21,7 +21,7 @@ struct GeneralSettingsView: View {
     var body: some View {
         VStack {
             Preferences.Container(contentWidth: 450) {
-                Preferences.Section(title: "Appearance") {
+                Preferences.Section(title: "Appearance:") {
                     AppearenceChangeView(refresh: refresh)
                 }
 

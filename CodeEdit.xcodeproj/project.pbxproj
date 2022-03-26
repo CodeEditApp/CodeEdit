@@ -25,7 +25,6 @@
 		2813F93927ECC4C300E305E4 /* LeadingSidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287776E627E3413200D46668 /* LeadingSidebar.swift */; };
 		2813F93A27ECC4CC00E305E4 /* ProjectNavigatorItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287776EC27E350D800D46668 /* ProjectNavigatorItem.swift */; };
 		2859B93F27EB50050069BE88 /* FontPicker in Frameworks */ = {isa = PBXBuildFile; productRef = 2859B93E27EB50050069BE88 /* FontPicker */; };
-		2859B94127EB5BC00069BE88 /* TerminalSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2859B94027EB5BC00069BE88 /* TerminalSettingsView.swift */; };
 		286471AB27ED51FD0039369D /* ProjectNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286471AA27ED51FD0039369D /* ProjectNavigator.swift */; };
 		286620A527E4AB6900E18C2B /* BreadcrumbsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286620A427E4AB6900E18C2B /* BreadcrumbsComponent.swift */; };
 		2875A46D27E3BE5B007805F8 /* BreadcrumbsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2875A46C27E3BE5B007805F8 /* BreadcrumbsView.swift */; };
@@ -46,6 +45,7 @@
 		90626FC527EB5EDD008926FE /* ExecutionSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90626FC427EB5EDD008926FE /* ExecutionSettingsView.swift */; };
 		90626FC727EB5F31008926FE /* ExtensionsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90626FC627EB5F31008926FE /* ExtensionsSettingsView.swift */; };
 		907A4F9427EEDAF200EC87A1 /* CEColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 907A4F9327EEDAF200EC87A1 /* CEColorPicker.swift */; };
+		907A4F9C27EEED1600EC87A1 /* NSImage+TintColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 907A4F9B27EEED1600EC87A1 /* NSImage+TintColor.swift */; };
 		908165E227EC8F000079F5D9 /* Preferences in Frameworks */ = {isa = PBXBuildFile; productRef = 908165E127EC8F000079F5D9 /* Preferences */; };
 		90BBEF2727EDCF1B004BF43C /* Preferences in Frameworks */ = {isa = PBXBuildFile; productRef = 90BBEF2627EDCF1B004BF43C /* Preferences */; };
 		90BBEF2A27EDD9AC004BF43C /* Color+Focused.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90BBEF2927EDD9AC004BF43C /* Color+Focused.swift */; };
@@ -107,7 +107,6 @@
 		20F8067027E65A5200EB7827 /* af */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = af; path = af.lproj/Localizable.strings; sourceTree = "<group>"; };
 		2805D9E827E5ED180032BC56 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		2806CBD327EE9FC0003E5523 /* ProjectNavigatorContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectNavigatorContextMenu.swift; sourceTree = "<group>"; };
-		2859B94027EB5BC00069BE88 /* TerminalSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TerminalSettingsView.swift; sourceTree = "<group>"; };
 		286471AA27ED51FD0039369D /* ProjectNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectNavigator.swift; sourceTree = "<group>"; };
 		286620A427E4AB6900E18C2B /* BreadcrumbsComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreadcrumbsComponent.swift; sourceTree = "<group>"; };
 		2875A46C27E3BE5B007805F8 /* BreadcrumbsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreadcrumbsView.swift; sourceTree = "<group>"; };
@@ -131,6 +130,7 @@
 		90626FC427EB5EDD008926FE /* ExecutionSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecutionSettingsView.swift; sourceTree = "<group>"; };
 		90626FC627EB5F31008926FE /* ExtensionsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionsSettingsView.swift; sourceTree = "<group>"; };
 		907A4F9327EEDAF200EC87A1 /* CEColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CEColorPicker.swift; sourceTree = "<group>"; };
+		907A4F9B27EEED1600EC87A1 /* NSImage+TintColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSImage+TintColor.swift"; sourceTree = "<group>"; };
 		90BBEF2927EDD9AC004BF43C /* Color+Focused.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Focused.swift"; sourceTree = "<group>"; };
 		90BBEF2C27EED686004BF43C /* ColorChoose.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorChoose.swift; sourceTree = "<group>"; };
 		B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodeEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -235,7 +235,6 @@
 				90626FAF27EB3789008926FE /* ThemeSettingsView.swift */,
 				90626FC427EB5EDD008926FE /* ExecutionSettingsView.swift */,
 				90626FC627EB5F31008926FE /* ExtensionsSettingsView.swift */,
-				2859B94027EB5BC00069BE88 /* TerminalSettingsView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -299,6 +298,7 @@
 			isa = PBXGroup;
 			children = (
 				90BBEF2927EDD9AC004BF43C /* Color+Focused.swift */,
+				907A4F9B27EEED1600EC87A1 /* NSImage+TintColor.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -627,10 +627,10 @@
 				D72E1A8927E44D7C00EB11B9 /* WelcomeWindowView.swift in Sources */,
 				04540D5C27DD08C300E91B77 /* GeneralSettingsView.swift in Sources */,
 				B6EE989227E887C600CDD8AB /* InspectorSidebarToolbar.swift in Sources */,
+				907A4F9C27EEED1600EC87A1 /* NSImage+TintColor.swift in Sources */,
 				B673FDAD27E8296A00795864 /* PressActionsModifier.swift in Sources */,
 				043C321427E31FF6006AE443 /* CodeEditDocumentController.swift in Sources */,
 				04660F6427E3ACAF00477777 /* Appearances.swift in Sources */,
-				2859B94127EB5BC00069BE88 /* TerminalSettingsView.swift in Sources */,
 				04540D5E27DD08C300E91B77 /* WorkspaceView.swift in Sources */,
 				34EE19BE27E0469C00F152CE /* BlurView.swift in Sources */,
 				90BBEF2D27EED686004BF43C /* ColorChoose.swift in Sources */,

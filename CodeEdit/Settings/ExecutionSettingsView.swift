@@ -21,9 +21,11 @@ struct ExecutionSettingsView: View {
     @StateObject private var colors = AnsiColors.shared
     @State var terminalColor: Color = .gray
 
+    @Environment(\.colorScheme) var colorScheme
+
     var body: some View {
         VStack(alignment: .center) {
-            Preferences.Container(contentWidth: 450) {
+            Preferences.Container(contentWidth: 500) {
                 Preferences.Section(title: "Terminal Shell:") {
                     Picker("", selection: $shellType) {
                         Text("System Default".localized())
@@ -36,7 +38,7 @@ struct ExecutionSettingsView: View {
                     .fixedSize()
                 }
 
-                Preferences.Section(title: "Custom Terminal Font:") {
+                Preferences.Section(title: "Terminal Font:") {
                     Toggle(isOn: $customFont) {
                         FontPicker("\(terminalFontName) \(terminalFontSize)",
                                    name: $terminalFontName, size: $terminalFontSize)
@@ -44,7 +46,29 @@ struct ExecutionSettingsView: View {
                 }
 
                 Preferences.Section(title: "Terminal Color:") {
-                    CEColorPicker(selection: $terminalColor, colors: [.blue])
+                    if colorScheme == .dark {
+                        HStack(spacing: 0) {
+                            ansiColorPicker($colors.colors[0])
+                            ansiColorPicker($colors.colors[1])
+                            ansiColorPicker($colors.colors[2])
+                            ansiColorPicker($colors.colors[3])
+                            ansiColorPicker($colors.colors[4])
+                            ansiColorPicker($colors.colors[5])
+                            ansiColorPicker($colors.colors[6])
+                            ansiColorPicker($colors.colors[7])
+                        }
+                    } else {
+                        HStack(spacing: 0) {
+                            ansiColorPicker($colors.colors[8])
+                            ansiColorPicker($colors.colors[9])
+                            ansiColorPicker($colors.colors[10])
+                            ansiColorPicker($colors.colors[11])
+                            ansiColorPicker($colors.colors[12])
+                            ansiColorPicker($colors.colors[13])
+                            ansiColorPicker($colors.colors[14])
+                            ansiColorPicker($colors.colors[15])
+                        }
+                    }
                 }
             }
 
@@ -55,5 +79,10 @@ struct ExecutionSettingsView: View {
         }
         .padding()
         .frame(width: 820, height: 450)
+    }
+
+    private func ansiColorPicker(_ color: Binding<Color>) -> some View {
+        ColorPicker(selection: color, supportsOpacity: false) { }
+            .labelsHidden()
     }
 }
