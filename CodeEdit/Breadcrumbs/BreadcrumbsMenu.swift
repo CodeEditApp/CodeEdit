@@ -9,10 +9,19 @@ import SwiftUI
 import WorkspaceClient
 
 struct BreadcrumbsMenu: View {
+    /// The current `WorkspaceDocument`
     @ObservedObject var workspace: WorkspaceDocument
+
+    /// The parent of `FileItem` for this view
     private var parentFileItem: WorkspaceClient.FileItem?
+
+    /// File name
     private let title: String
+
+    /// File icon
     private let image: String
+
+    /// File icon's color
     private let color: Color
 
     init(

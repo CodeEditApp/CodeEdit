@@ -13,8 +13,8 @@ public extension WorkspaceClient {
         // TODO: use a phantom type instead of a String
         public var id: String
         public var url: URL
-		public var children: [FileItem]?
-		public var parent: FileItem?
+        public var children: [FileItem]?
+        public var parent: FileItem?
         public static let fileManger = FileManager.default
         public var systemImage: String {
             switch children {
@@ -151,9 +151,9 @@ public extension WorkspaceClient {
             }
         }
 
-		public func hash(into hasher: inout Hasher) {
-			hasher.combine(id)
-		}
+        public func hash(into hasher: inout Hasher) {
+            hasher.combine(id)
+        }
     }
 }
 

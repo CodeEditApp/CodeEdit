@@ -37,9 +37,9 @@ public extension WorkspaceClient {
                     }
 
                     let newFileItem = FileItem(url: itemURL, children: subItems)
-					subItems?.forEach {
-						$0.parent = newFileItem
-					}
+                    subItems?.forEach {
+                        $0.parent = newFileItem
+                    }
                     items.append(newFileItem)
                     flattenedFileItems[newFileItem.id] = newFileItem
                 }
@@ -48,11 +48,11 @@ public extension WorkspaceClient {
         }
         // initial load
         let fileItems = try loadFiles(fromURL: folderURL)
-		// workspace fileItem
-		let workspaceItem = FileItem(url: folderURL, children: fileItems)
-		fileItems.forEach { item in
-			item.parent = workspaceItem
-		}
+        // workspace fileItem
+        let workspaceItem = FileItem(url: folderURL, children: fileItems)
+        fileItems.forEach { item in
+            item.parent = workspaceItem
+        }
         // By using `CurrentValueSubject` we can define a starting value.
         // The value passed during init it's going to be send as soon as the
         // consumer subscribes to the publisher.

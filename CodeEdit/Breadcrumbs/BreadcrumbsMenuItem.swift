@@ -9,9 +9,11 @@ import SwiftUI
 import WorkspaceClient
 
 struct BreadcrumbsMenuItem: View {
+    /// Current `WorkspaceDocument`
     @ObservedObject var workspace: WorkspaceDocument
+
+    /// The `FileItem` for this view
     var fileItem: WorkspaceClient.FileItem
-    @State var shouldLoadChildren: Bool = false
 
     var body: some View {
         if let children = fileItem.children?.sortItems(foldersOnTop: true), !children.isEmpty {
