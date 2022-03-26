@@ -45,9 +45,11 @@
 		90626FB027EB3789008926FE /* ThemeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90626FAF27EB3789008926FE /* ThemeSettingsView.swift */; };
 		90626FC527EB5EDD008926FE /* ExecutionSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90626FC427EB5EDD008926FE /* ExecutionSettingsView.swift */; };
 		90626FC727EB5F31008926FE /* ExtensionsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90626FC627EB5F31008926FE /* ExtensionsSettingsView.swift */; };
+		907A4F9427EEDAF200EC87A1 /* CEColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 907A4F9327EEDAF200EC87A1 /* CEColorPicker.swift */; };
 		908165E227EC8F000079F5D9 /* Preferences in Frameworks */ = {isa = PBXBuildFile; productRef = 908165E127EC8F000079F5D9 /* Preferences */; };
 		90BBEF2727EDCF1B004BF43C /* Preferences in Frameworks */ = {isa = PBXBuildFile; productRef = 90BBEF2627EDCF1B004BF43C /* Preferences */; };
 		90BBEF2A27EDD9AC004BF43C /* Color+Focused.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90BBEF2927EDD9AC004BF43C /* Color+Focused.swift */; };
+		90BBEF2D27EED686004BF43C /* ColorChoose.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90BBEF2C27EED686004BF43C /* ColorChoose.swift */; };
 		B658FB3427DA9E1000EA4DBD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3327DA9E1000EA4DBD /* Assets.xcassets */; };
 		B658FB3727DA9E1000EA4DBD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3627DA9E1000EA4DBD /* Preview Assets.xcassets */; };
 		B65E614627E6765D00255275 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = B65E614527E6765D00255275 /* Introspect */; };
@@ -128,7 +130,9 @@
 		90626FAF27EB3789008926FE /* ThemeSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeSettingsView.swift; sourceTree = "<group>"; };
 		90626FC427EB5EDD008926FE /* ExecutionSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecutionSettingsView.swift; sourceTree = "<group>"; };
 		90626FC627EB5F31008926FE /* ExtensionsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionsSettingsView.swift; sourceTree = "<group>"; };
+		907A4F9327EEDAF200EC87A1 /* CEColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CEColorPicker.swift; sourceTree = "<group>"; };
 		90BBEF2927EDD9AC004BF43C /* Color+Focused.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Focused.swift"; sourceTree = "<group>"; };
+		90BBEF2C27EED686004BF43C /* ColorChoose.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorChoose.swift; sourceTree = "<group>"; };
 		B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodeEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B658FB3127DA9E0F00EA4DBD /* WorkspaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceView.swift; sourceTree = "<group>"; };
 		B658FB3327DA9E1000EA4DBD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -299,6 +303,15 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		90BBEF2B27EED67E004BF43C /* Elements */ = {
+			isa = PBXGroup;
+			children = (
+				90BBEF2C27EED686004BF43C /* ColorChoose.swift */,
+				907A4F9327EEDAF200EC87A1 /* CEColorPicker.swift */,
+			);
+			path = Elements;
+			sourceTree = "<group>";
+		};
 		B658FB2327DA9E0F00EA4DBD = {
 			isa = PBXGroup;
 			children = (
@@ -321,6 +334,7 @@
 		B658FB2E27DA9E0F00EA4DBD /* CodeEdit */ = {
 			isa = PBXGroup;
 			children = (
+				90BBEF2B27EED67E004BF43C /* Elements */,
 				90BBEF2827EDD9A2004BF43C /* Extensions */,
 				B6EE988E27E8877C00CDD8AB /* InspectorSidebar */,
 				0485EB1727E7016400138301 /* Quick Open */,
@@ -603,13 +617,12 @@
 				0485EB1D27E7338100138301 /* QuickOpenItem.swift in Sources */,
 				90626FC727EB5F31008926FE /* ExtensionsSettingsView.swift in Sources */,
 				90626FB027EB3789008926FE /* ThemeSettingsView.swift in Sources */,
-				D7012EE827E757850001E1EF /* SidebarSearch.swift in Sources */,
+				D7012EE827E757850001E1EF /* FindNavigator.swift in Sources */,
 				D7E201AE27E8B3C000CB86D0 /* String+Ranges.swift in Sources */,
-				D7E201B027E8C07300CB86D0 /* SearchBar.swift in Sources */,
+				D7E201B027E8C07300CB86D0 /* FindNavigatorSearchBar.swift in Sources */,
 				90BBEF2A27EDD9AC004BF43C /* Color+Focused.swift in Sources */,
 				D7012EE827E757850001E1EF /* FindNavigator.swift in Sources */,
 				D7E201AE27E8B3C000CB86D0 /* String+Ranges.swift in Sources */,
-				04540D5B27DD08C300E91B77 /* SettingsView.swift in Sources */,
 				D7E201B027E8C07300CB86D0 /* FindNavigatorSearchBar.swift in Sources */,
 				D72E1A8927E44D7C00EB11B9 /* WelcomeWindowView.swift in Sources */,
 				04540D5C27DD08C300E91B77 /* GeneralSettingsView.swift in Sources */,
@@ -620,13 +633,15 @@
 				2859B94127EB5BC00069BE88 /* TerminalSettingsView.swift in Sources */,
 				04540D5E27DD08C300E91B77 /* WorkspaceView.swift in Sources */,
 				34EE19BE27E0469C00F152CE /* BlurView.swift in Sources */,
+				90BBEF2D27EED686004BF43C /* ColorChoose.swift in Sources */,
 				D7211D4327E066CE008F2ED7 /* Localized+Ex.swift in Sources */,
 				D7E201B227E8D50000CB86D0 /* FindNavigatorModeSelector.swift in Sources */,
 				287776E927E34BC700D46668 /* TabBar.swift in Sources */,
+				907A4F9427EEDAF200EC87A1 /* CEColorPicker.swift in Sources */,
 				90626FAB27EB3254008926FE /* Theme.swift in Sources */,
 				0485EB1F27E7458B00138301 /* WorkspaceCodeFileView.swift in Sources */,
 				0485EB1927E70F4900138301 /* QuickOpenView.swift in Sources */,
-				D7E201BD27EA00E200CB86D0 /* SearchResultFileItem.swift in Sources */,
+				D7E201BD27EA00E200CB86D0 /* FindNavigatorResultFileItem.swift in Sources */,
 				90626FC527EB5EDD008926FE /* ExecutionSettingsView.swift in Sources */,
 				286471AB27ED51FD0039369D /* ProjectNavigator.swift in Sources */,
 				D7E201BD27EA00E200CB86D0 /* FindNavigatorResultFileItem.swift in Sources */,

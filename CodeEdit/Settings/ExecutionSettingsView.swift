@@ -18,6 +18,9 @@ struct ExecutionSettingsView: View {
 
     @State var customFont  = false
 
+    @StateObject private var colors = AnsiColors.shared
+    @State var terminalColor: Color = .gray
+
     var body: some View {
         VStack(alignment: .center) {
             Preferences.Container(contentWidth: 450) {
@@ -39,6 +42,10 @@ struct ExecutionSettingsView: View {
                                    name: $terminalFontName, size: $terminalFontSize)
                     }
                 }
+
+                Preferences.Section(title: "Terminal Color:") {
+                    CEColorPicker(selection: $terminalColor, colors: [.blue])
+                }
             }
 
             Spacer()
@@ -48,11 +55,5 @@ struct ExecutionSettingsView: View {
         }
         .padding()
         .frame(width: 820, height: 450)
-    }
-}
-
-struct ExecutionSettingsView_Previews: PreviewProvider {
-    static var previews: some View {
-        ExecutionSettingsView()
     }
 }

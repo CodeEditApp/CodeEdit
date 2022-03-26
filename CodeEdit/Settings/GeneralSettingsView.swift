@@ -26,13 +26,15 @@ struct GeneralSettingsView: View {
                 }
 
                 Preferences.Section(title: "File Icon Style:") {
-                    Picker("", selection: $fileIconStyle) {
-                        Text("Color".localized())
-                            .tag(FileIconStyle.color)
-                        Text("Monochrome".localized())
-                            .tag(FileIconStyle.monochrome)
+                    HStack {
+                        ColorChoose(selected: $fileIconStyle, selection: .color, colors: [
+                            .red, .orange, .yellow, .blue, .green, .purple, .red
+                        ])
+
+                        ColorChoose(selected: $fileIconStyle, selection: .monochrome, colors: [
+                            .gray
+                        ])
                     }
-                    .fixedSize()
                 }
 
                 Preferences.Section(title: "Reopen Behavior:") {
