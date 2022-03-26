@@ -41,7 +41,7 @@ public extension GitClient {
             }
         }
         func cloneRepository(url: String) throws {
-            let output = shell("git clone \(url)")
+            let output = shell("git clone \(url) .")
             if output.contains("fatal") {
                 throw GitClientError.outputError(output)
             }

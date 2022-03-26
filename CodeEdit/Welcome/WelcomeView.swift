@@ -84,11 +84,12 @@ struct WelcomeView: View {
                             subtitle: "Start working on something from a Git repository".localized()
                         )
                             .onTapGesture {
-                                let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 800, height: 460),
+                                let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 600, height: 230),
                                 styleMask: [.titled, .fullSizeContentView],
                                                       backing: .buffered, defer: false)
                                 let windowController = NSWindowController(window: window)
                                 window.center()
+                                window.title = "Clone an existing repository"
                                 let contentView = GitCloneView(windowController: windowController)
                                 window.contentView = NSHostingView(rootView: contentView)
                                 window.makeKeyAndOrderFront(self)
