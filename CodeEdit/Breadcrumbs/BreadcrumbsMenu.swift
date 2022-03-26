@@ -54,16 +54,20 @@ struct BreadcrumbsMenu: View {
 	}
 
 	var body: some View {
-		Menu {
-			if let siblings = parentFileItem?.children?.sortItems(foldersOnTop: true) {
-				ForEach(siblings, id: \.self) { item in
-					menuItem(item)
-				}
-			}
-		} label: {
+		// Unable to set image's color in Menu, so using this tricky way.
+		ZStack {
 			BreadcrumbsComponent(self.title, systemImage: self.image, color: self.color)
+			Menu {
+				if let siblings = parentFileItem?.children?.sortItems(foldersOnTop: true) {
+					ForEach(siblings, id: \.self) { item in
+						menuItem(item)
+					}
+				}
+			} label: {
+				EmptyView()
+			}
+			.menuIndicator(.hidden)
+			.menuStyle(.borderlessButton)
 		}
-		.menuIndicator(.hidden)
-		.menuStyle(.borderlessButton)
 	}
 }
