@@ -90,7 +90,8 @@ public struct TerminalEmulatorView: NSViewRepresentable {
 		return ansiColors.mappedColors.map { SwiftTerm.Color(hex: $0) }
 	}
 
-	/// returns a `NSAppearance` based on the user setting of the terminal appearance, `nil` if app default is not overriden
+	/// returns a `NSAppearance` based on the user setting of the terminal appearance,
+	/// `nil` if app default is not overriden
 	private var colorAppearance: NSAppearance? {
 		switch terminalColorSchmeme {
 		case .auto: return nil
