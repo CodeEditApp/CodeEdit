@@ -99,7 +99,6 @@ struct RecentProjectsView: View {
 
                         if selectedProjectPath == projectPath {
                             Button("") {
-                                print("Should delete")
                                 deleteFromRecent(item: projectPath)
                             }
                             .buttonStyle(.borderless)
