@@ -59,6 +59,16 @@ struct RecentProjectsView: View {
         }
     }
 
+    func contextMenuCopy(path: String) -> some View {
+        Group {
+            Button("Copy Path".localized()) {
+                let pasteboard = NSPasteboard.general
+                pasteboard.declareTypes([.string], owner: nil)
+                pasteboard.setString(path, forType: .string)
+            }
+        }
+    }
+
     func contextMenuDelete(projectPath: String) -> some View {
         Group {
             Button("Remove from Recent Projects".localized()) {
@@ -93,6 +103,8 @@ struct RecentProjectsView: View {
                             })
                             .contextMenu {
                                 contextMenuShowInFinder(projectPath: projectPath)
+                                contextMenuCopy(path: projectPath)
+                                Divider()
                                 contextMenuDelete(projectPath: projectPath)
                                     .keyboardShortcut(.init(.delete))
                             }
