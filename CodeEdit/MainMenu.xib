@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="19529" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="20037" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="19529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="20037"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication"/>
@@ -645,7 +645,7 @@
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="13H-7T-5bk"/>
-                            <menuItem title="Welcome to CodeEdit" keyEquivalent="0" id="ftv-uF-z1D" userLabel="Welcome to CodeEdit">
+                            <menuItem title="Welcome to CodeEdit" keyEquivalent="1" id="ftv-uF-z1D" userLabel="Welcome to CodeEdit">
                                 <modifierMask key="keyEquivalentModifierMask" shift="YES" command="YES"/>
                                 <connections>
                                     <action selector="openWelcome:" target="-1" id="nj3-Ce-f7P"/>

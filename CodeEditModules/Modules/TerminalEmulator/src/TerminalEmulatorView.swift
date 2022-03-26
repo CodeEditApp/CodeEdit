@@ -16,17 +16,31 @@ import SwiftTerm
 /// for use in SwiftUI.
 ///
 public struct TerminalEmulatorView: NSViewRepresentable {
-
+	@Environment(\.colorScheme) var colorScheme
 	@AppStorage(TerminalShellType.storageKey) var shellType: TerminalShellType = .default
+	@AppStorage(TerminalFont.storageKey) var terminalFontSelection: TerminalFont = .default
+	@AppStorage(TerminalFontName.storageKey) var terminalFontName: String = TerminalFontName.default
+	@AppStorage(TerminalFontSize.storageKey) var terminalFontSize: Int = TerminalFontSize.default
 
-	private var terminal: LocalProcessTerminalView
-	private var font: NSFont
+	@StateObject private var ansiColors: AnsiColors = .shared
+
+	internal static var lastTerminal: LocalProcessTerminalView?
+	@State internal var terminal: LocalProcessTerminalView
+
+	private let systemFont: NSFont = .monospacedSystemFont(ofSize: 11, weight: .medium)
+
+	private var font: NSFont {
+		if terminalFontSelection == .systemFont {
+			return systemFont
+		}
+		return NSFont(name: terminalFontName, size: CGFloat(terminalFontSize)) ?? systemFont
+	}
+
 	private var url: URL
 
-	public init(url: URL, font: NSFont = .monospacedSystemFont(ofSize: 12, weight: .medium)) {
+	public init(url: URL) {
 		self.url = url
-		self.terminal = .init(frame: .zero)
-		self.font = font
+		self._terminal = State(initialValue: TerminalEmulatorView.lastTerminal ?? .init(frame: .zero))
 	}
 
 	/// Returns a string of a shell path to use
@@ -56,6 +70,7 @@ public struct TerminalEmulatorView: NSViewRepresentable {
 		}
 	}
 
+	/// Gets the default shell from the current user and returns the string of the shell path.
 	private func autoDetectDefaultShell() -> String {
 		let bufsize = sysconf(_SC_GETPW_R_SIZE_MAX)
 		guard bufsize != -1 else { return "/bin/bash" }
@@ -70,44 +85,51 @@ public struct TerminalEmulatorView: NSViewRepresentable {
 		return String(cString: pwd.pw_shell)
 	}
 
+	/// Returns the mapped array of `SwiftTerm.Color` objects of ANSI Colors
+	private var colors: [SwiftTerm.Color] {
+		return ansiColors.mappedColors.map { SwiftTerm.Color(hex: $0) }
+	}
+
+	/// Inherited from NSViewRepresentable.makeNSView(context:).
 	public func makeNSView(context: Context) -> LocalProcessTerminalView {
 		terminal.processDelegate = context.coordinator
-
-		let shell = getShell()
-		let shellIdiom = "-" + NSString(string: shell).lastPathComponent
-
-		// changes working directory to project root
-
-		// TODO: Get rid of FileManager shared instance to prevent problems
-		// using shared instance of FileManager might lead to problems when using
-		// multiple workspaces. This works for now but most probably will need
-		// to be changed later on
-		FileManager.default.changeCurrentDirectoryPath(url.path)
-		terminal.startProcess(executable: shell, execName: shellIdiom)
-		terminal.font = font
-		terminal.feed(text: "")
-		terminal.configureNativeColors()
+		setupSession()
 		return terminal
 	}
 
+	public func setupSession() {
+		if TerminalEmulatorView.lastTerminal == nil {
+			let shell = getShell()
+			let shellIdiom = "-" + NSString(string: shell).lastPathComponent
+
+			// changes working directory to project root
+			// TODO: Get rid of FileManager shared instance to prevent problems
+			// using shared instance of FileManager might lead to problems when using
+			// multiple workspaces. This works for now but most probably will need
+			// to be changed later on
+			FileManager.default.changeCurrentDirectoryPath(url.path)
+			terminal.startProcess(executable: shell, execName: shellIdiom)
+			terminal.font = font
+			terminal.configureNativeColors()
+			terminal.installColors(self.colors)
+		}
+		TerminalEmulatorView.lastTerminal = terminal
+	}
+
 	public func updateNSView(_ view: LocalProcessTerminalView, context: Context) {
+		if view.font != font { // Fixes Memory leak
+			view.font = font
+		}
 		view.configureNativeColors()
-		view.font = font
+		view.installColors(self.colors)
+		if TerminalEmulatorView.lastTerminal != nil {
+			TerminalEmulatorView.lastTerminal = view
+		}
+		view.getTerminal().softReset()
+		view.feed(text: "") // send empty character to force colors to be redrawn
 	}
 
 	public func makeCoordinator() -> Coordinator {
 		Coordinator()
-	}
-
-	public class Coordinator: NSObject, LocalProcessTerminalViewDelegate {
-		public override init() {}
-
-		public func hostCurrentDirectoryUpdate(source: TerminalView, directory: String?) {}
-
-		public func sizeChanged(source: LocalProcessTerminalView, newCols: Int, newRows: Int) {}
-
-		public func setTerminalTitle(source: LocalProcessTerminalView, title: String) {}
-
-		public func processTerminated(source: TerminalView, exitCode: Int32?) {}
 	}
 }

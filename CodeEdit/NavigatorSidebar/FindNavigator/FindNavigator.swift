@@ -9,7 +9,7 @@ import SwiftUI
 import WorkspaceClient
 import Search
 
-struct SidebarSearch: View {
+struct FindNavigator: View {
     @ObservedObject var state: WorkspaceDocument.SearchState
     @State private var searchText: String = ""
 
@@ -24,8 +24,8 @@ struct SidebarSearch: View {
     var body: some View {
         VStack {
             VStack {
-                SearchModeSelector()
-                SearchBar(state: state, title: "", text: $searchText)
+                FindNavigatorModeSelector()
+                FindNavigatorSearchBar(state: state, title: "", text: $searchText)
                 HStack {
                     Spacer()
                 }
@@ -39,7 +39,7 @@ struct SidebarSearch: View {
                     .font(.system(size: 10))
             }
             Divider()
-            SearchResultList(state: state)
+            FindNavigatorResultList(state: state)
         }
         .onSubmit {
             state.search(searchText)

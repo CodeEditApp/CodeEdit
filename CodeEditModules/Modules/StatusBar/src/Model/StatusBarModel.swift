@@ -48,6 +48,7 @@ public class StatusBarModel: ObservableObject {
 	/// A GitClient instance
 	private (set) var gitClient: GitClient
 
+	/// The base URL of the workspace
 	private (set) var workspaceURL: URL
 
 	/// The maximum height of the drawer
@@ -62,8 +63,8 @@ public class StatusBarModel: ObservableObject {
 	// TODO: Add @Published vars for indentation, encoding, linebreak
 
 	/// Initialize with a GitClient
-	/// - Parameter gitClient: a GitClient
-
+	/// - Parameter workspaceURL: the current workspace URL
+	///
 	public init(workspaceURL: URL) {
 		self.workspaceURL = workspaceURL
 		self.gitClient = GitClient.default(directoryURL: workspaceURL)
@@ -72,5 +73,9 @@ public class StatusBarModel: ObservableObject {
 		} else {
 			self.selectedBranch = gitClient.getCurrentBranchName()
 		}
+		StatusBarModel.shared = self
 	}
+
+	/// shared instance that persists though session
+	public static var shared: StatusBarModel?
 }

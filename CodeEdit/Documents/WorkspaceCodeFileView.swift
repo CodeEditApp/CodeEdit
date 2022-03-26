@@ -14,14 +14,15 @@ struct WorkspaceCodeFileView: View {
     var windowController: NSWindowController
     @ObservedObject var workspace: WorkspaceDocument
 
-    @ViewBuilder var body: some View {
-        if let item = workspace.openFileItems.first(where: { file in
-            if file.id == workspace.selectedId {
+    @ViewBuilder
+	var codeView: some View {
+        if let item = workspace.selectionState.openFileItems.first(where: { file in
+            if file.id == workspace.selectionState.selectedId {
                 print("Item loaded is: ", file.url)
             }
-            return file.id == workspace.selectedId
+            return file.id == workspace.selectionState.selectedId
         }) {
-            if let codeFile = workspace.openedCodeFiles[item] {
+            if let codeFile = workspace.selectionState.openedCodeFiles[item] {
                 CodeFileView(codeFile: codeFile)
                     .safeAreaInset(edge: .top, spacing: 0) {
                         VStack(spacing: 0) {
@@ -30,16 +31,16 @@ struct WorkspaceCodeFileView: View {
                             BreadcrumbsView(item, workspace: workspace)
                         }
                     }
-                    .safeAreaInset(edge: .bottom) {
-                        if let url = workspace.directoryURL {
-							StatusBarView(workspaceURL: url)
-                        }
-                    }
             } else {
                 Text("CodeEdit cannot open this file because its file type is not supported.")
             }
         } else {
             Text("Open file from sidebar")
         }
+    }
+
+    var body: some View {
+		codeView
+			.frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }

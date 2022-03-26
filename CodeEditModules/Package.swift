@@ -44,7 +44,11 @@ let package = Package(
         .library(
             name: "GitClone",
             targets: ["GitClone"]
-        )
+        ),
+		.library(
+			name: "FontPicker",
+			targets: ["FontPicker"]
+		)
     ],
     dependencies: [
         .package(
@@ -136,6 +140,10 @@ let package = Package(
             name: "GitClone",
             dependencies: ["GitClient"],
             path: "Modules/GitClone/src"
-        )
+        ),
+		.target(
+			name: "FontPicker",
+			path: "Modules/FontPicker/src"
+		)
     ]
 )

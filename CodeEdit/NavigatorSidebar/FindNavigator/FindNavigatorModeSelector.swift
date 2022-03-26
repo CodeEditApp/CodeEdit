@@ -8,7 +8,7 @@
 import SwiftUI
 import Search
 
-struct SearchModeSelector: View {
+struct FindNavigatorModeSelector: View {
     @State var selectedMode: [SearchModeModel] = [
         .Find,
         .Text,
@@ -115,6 +115,6 @@ extension View {
 
 struct SearchModeSelector_Previews: PreviewProvider {
     static var previews: some View {
-        SearchModeSelector()
+        FindNavigatorModeSelector()
     }
 }

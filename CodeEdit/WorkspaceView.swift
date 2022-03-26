@@ -7,6 +7,7 @@
 
 import SwiftUI
 import WorkspaceClient
+import StatusBar
 
 struct WorkspaceView: View {
     init(windowController: NSWindowController, workspace: WorkspaceDocument) {
@@ -28,32 +29,43 @@ struct WorkspaceView: View {
     var body: some View {
         NavigationView {
             if workspace.workspaceClient != nil {
-                NavigatorSidebar(workspace: workspace, windowController: windowController)
-                    .frame(minWidth: 250)
-                HSplitView {
-                    WorkspaceCodeFileView(windowController: windowController,
-                                          workspace: workspace)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    InspectorSidebar(workspace: workspace, windowController: windowController)
-                        .frame(minWidth: 250, maxWidth: .infinity, maxHeight: .infinity)
-                }
+				content
             } else {
                 EmptyView()
             }
         }
-        .frame(minWidth: 800, minHeight: 600)
+        .frame(minWidth: 1000, minHeight: 600)
         .alert(alertTitle, isPresented: $showingAlert, actions: {
             Button(
                 action: { showingAlert = false },
                 label: { Text("OK") }
             )
         }, message: { Text(alertMsg) })
-        .onChange(of: workspace.selectedId) { newValue in
+        .onChange(of: workspace.selectionState.selectedId) { newValue in
             if newValue == nil {
                 windowController.window?.subtitle = ""
             }
         }
     }
+
+	@ViewBuilder
+	private var content: some View {
+		LeadingSidebar(workspace: workspace, windowController: windowController)
+			.frame(minWidth: 250)
+		HSplitView {
+			ZStack {
+				WorkspaceCodeFileView(windowController: windowController,
+									  workspace: workspace)
+			}
+			.safeAreaInset(edge: .bottom) {
+				if let url = workspace.fileURL {
+					StatusBarView(workspaceURL: url)
+				}
+			}
+			InspectorSidebar(workspace: workspace, windowController: windowController)
+				.frame(minWidth: 250, maxWidth: 250, maxHeight: .infinity)
+		}
+	}
 }
 
 struct WorkspaceView_Previews: PreviewProvider {
