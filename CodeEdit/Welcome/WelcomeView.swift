@@ -42,25 +42,25 @@ struct WelcomeView: View {
     private var appBuild: String {
         return Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? ""
     }
-    
+
     private var macOsVersion: String {
         let osVersion = ProcessInfo.processInfo.operatingSystemVersion
         return "\(osVersion.majorVersion).\(osVersion.minorVersion).\(osVersion.patchVersion)"
     }
-    
+
     private var xCodeVersion: String {
         guard let url = NSWorkspace.shared.urlForApplication(withBundleIdentifier: "com.apple.dt.Xcode"),
               let bundle = Bundle(url: url) else {
             print("Xcode is not installed")
-            exit(1)
+            return ""
         }
-        
+
         guard let infoDict = bundle.infoDictionary,
               let version = infoDict["CFBundleShortVersionString"] as? String else {
             print("No version found in Info.plist")
-            exit(1)
+            return "Not found."
         }
-        
+
         return version
     }
 
