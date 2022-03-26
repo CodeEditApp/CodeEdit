@@ -9,41 +9,41 @@ import SwiftUI
 import WorkspaceClient
 
 struct BreadcrumbsMenu: View {
-	@ObservedObject var workspace: WorkspaceDocument
-	private var parentFileItem: WorkspaceClient.FileItem?
-	private let title: String
-	private let image: String
-	private let color: Color
+    @ObservedObject var workspace: WorkspaceDocument
+    private var parentFileItem: WorkspaceClient.FileItem?
+    private let title: String
+    private let image: String
+    private let color: Color
 
-	init(
-		_ workspace: WorkspaceDocument,
-		title: String,
-		systemImage image: String,
-		color: Color = .secondary,
-		parentFileItem: WorkspaceClient.FileItem? = nil
-	) {
-		self.workspace = workspace
-		self.title = title
-		self.image = image
-		self.color = color
-		self.parentFileItem = parentFileItem
-	}
+    init(
+        _ workspace: WorkspaceDocument,
+        title: String,
+        systemImage image: String,
+        color: Color = .secondary,
+        parentFileItem: WorkspaceClient.FileItem? = nil
+    ) {
+        self.workspace = workspace
+        self.title = title
+        self.image = image
+        self.color = color
+        self.parentFileItem = parentFileItem
+    }
 
-	var body: some View {
-		// Unable to set image's color in Menu, so using this tricky way.
-		ZStack {
-			BreadcrumbsComponent(self.title, systemImage: self.image, color: self.color)
-			Menu {
-				if let siblings = parentFileItem?.children?.sortItems(foldersOnTop: true) {
-					ForEach(siblings, id: \.self) { item in
-						BreadcrumbsMenuItem(workspace: workspace, fileItem: item)
-					}
-				}
-			} label: {
-				EmptyView()
-			}
-			.menuIndicator(.hidden)
-			.menuStyle(.borderlessButton)
-		}
-	}
+    var body: some View {
+        // Unable to set image's color in Menu, so using this tricky way.
+        ZStack {
+            BreadcrumbsComponent(self.title, systemImage: self.image, color: self.color)
+            Menu {
+                if let siblings = parentFileItem?.children?.sortItems(foldersOnTop: true) {
+                    ForEach(siblings, id: \.self) { item in
+                        BreadcrumbsMenuItem(workspace: workspace, fileItem: item)
+                    }
+                }
+            } label: {
+                EmptyView()
+            }
+            .menuIndicator(.hidden)
+            .menuStyle(.borderlessButton)
+        }
+    }
 }

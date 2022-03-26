@@ -9,26 +9,27 @@ import SwiftUI
 import WorkspaceClient
 
 struct BreadcrumbsMenuItem: View {
-	@ObservedObject var workspace: WorkspaceDocument
-	var fileItem: WorkspaceClient.FileItem
+    @ObservedObject var workspace: WorkspaceDocument
+    var fileItem: WorkspaceClient.FileItem
+    @State var shouldLoadChildren: Bool = false
 
     var body: some View {
-		if let children = fileItem.children?.sortItems(foldersOnTop: true), !children.isEmpty {
-			// Folder
-			Menu {
-				ForEach(children, id: \.self) { child in
-					BreadcrumbsMenuItem(workspace: workspace, fileItem: child)
-				}
-			} label: {
-				BreadcrumbsComponent(fileItem.fileName, systemImage: fileItem.fileIcon, color: fileItem.iconColor)
-			}
-		} else {
-			// File
-			Button {
-				workspace.openFile(item: fileItem)
-			} label: {
-				BreadcrumbsComponent(fileItem.fileName, systemImage: fileItem.fileIcon, color: fileItem.iconColor)
-			}
-		}
+        if let children = fileItem.children?.sortItems(foldersOnTop: true), !children.isEmpty {
+            // Folder
+            Menu {
+                ForEach(children, id: \.self) { child in
+                    BreadcrumbsMenuItem(workspace: workspace, fileItem: child)
+                }
+            } label: {
+                BreadcrumbsComponent(fileItem.fileName, systemImage: "folder.fill", color: .secondary)
+            }
+        } else {
+            // File
+            Button {
+                workspace.openFile(item: fileItem)
+            } label: {
+                BreadcrumbsComponent(fileItem.fileName, systemImage: fileItem.fileIcon, color: fileItem.iconColor)
+            }
+        }
     }
 }

@@ -12,6 +12,7 @@ struct BreadcrumbsView: View {
     @ObservedObject
     var workspace: WorkspaceDocument
 
+<<<<<<< HEAD
     let file: WorkspaceClient.FileItem
 
     @State
@@ -34,22 +35,45 @@ struct BreadcrumbsView: View {
         self.workspace = workspace
     }
 
+=======
+    @ObservedObject var workspace: WorkspaceDocument
+    let file: WorkspaceClient.FileItem
+
+    @State private var projectName: String = ""
+    @State private var fileItems: [WorkspaceClient.FileItem] = []
+    @State private var folders: [String] = []
+    @State private var fileName: String = ""
+    @State private var fileImage: String = "doc"
+
+    init(_ file: WorkspaceClient.FileItem, workspace: WorkspaceDocument) {
+        self.file = file
+        self.workspace = workspace
+    }
+
+>>>>>>> 5ed6842 (Adjust indent)
     var body: some View {
         ZStack(alignment: .leading) {
             Rectangle()
                 .foregroundStyle(Color(nsColor: .controlBackgroundColor))
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
-					ForEach(fileItems, id: \.self) { fileItem in
-						if fileItem.parent != nil {
-							chevron
-						}
-						BreadcrumbsMenu(workspace,
-										title: fileItem.fileName,
-										systemImage: fileItem.parent == nil ?  "square.dashed.inset.filled" : fileItem.systemImage,
-										color: fileItem.parent == nil ? .accentColor : file.iconColor,
-										parentFileItem: fileItem.parent)
-					}
+                    ForEach(fileItems, id: \.self) { fileItem in
+                        if fileItem.parent != nil {
+                            chevron
+                        }
+                        let color = fileItem.parent == nil
+                            ? .accentColor
+                            : fileItem.children?.isEmpty ?? true
+                                ? fileItem.iconColor
+                                : .secondary
+                        BreadcrumbsMenu(workspace,
+                                        title: fileItem.fileName,
+                                        systemImage: fileItem.parent == nil
+                                            ? "square.dashed.inset.filled"
+                                            : fileItem.systemImage,
+                                        color: color,
+                                        parentFileItem: fileItem.parent)
+                    }
                 }
                 .padding(.horizontal, 12)
             }
