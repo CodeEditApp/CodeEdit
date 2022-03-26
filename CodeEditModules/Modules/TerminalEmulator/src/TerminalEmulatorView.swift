@@ -24,7 +24,6 @@ public struct TerminalEmulatorView: NSViewRepresentable {
 
 	@StateObject private var ansiColors: AnsiColors = .shared
 
-	// TODO: Persist this to not get a new terminal each time you switch file
 	internal static var lastTerminal: LocalProcessTerminalView?
 	@State internal var terminal: LocalProcessTerminalView
 
@@ -86,16 +85,6 @@ public struct TerminalEmulatorView: NSViewRepresentable {
 		return String(cString: pwd.pw_shell)
 	}
 
-	/// Returns a reorderd array of ANSI colors depending on the app's color scheme (light/drak)
-	private var appearanceColors: [SwiftTerm.Color] {
-		if colorScheme == .dark {
-			return colors
-		}
-		var col = colors
-		col.move(fromOffsets: .init(integersIn: 0...7), toOffset: 16)
-		return col
-	}
-
 	/// Returns the mapped array of `SwiftTerm.Color` objects of ANSI Colors
 	private var colors: [SwiftTerm.Color] {
 		return ansiColors.mappedColors.map { SwiftTerm.Color(hex: $0) }
@@ -122,7 +111,7 @@ public struct TerminalEmulatorView: NSViewRepresentable {
 			terminal.startProcess(executable: shell, execName: shellIdiom)
 			terminal.font = font
 			terminal.configureNativeColors()
-			terminal.installColors(self.appearanceColors)
+			terminal.installColors(self.colors)
 		}
 		TerminalEmulatorView.lastTerminal = terminal
 	}
@@ -132,7 +121,7 @@ public struct TerminalEmulatorView: NSViewRepresentable {
 			view.font = font
 		}
 		view.configureNativeColors()
-		view.installColors(self.appearanceColors)
+		view.installColors(self.colors)
 		if TerminalEmulatorView.lastTerminal != nil {
 			TerminalEmulatorView.lastTerminal = view
 		}

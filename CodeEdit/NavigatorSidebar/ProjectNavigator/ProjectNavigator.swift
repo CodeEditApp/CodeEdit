@@ -8,29 +8,37 @@
 import SwiftUI
 import WorkspaceClient
 
+/// # Project Navigator - Sidebar
+///
+/// A list that functions as a project navigator, showing collapsable folders
+/// and files.
+///
+/// When selecting a file it will open in the editor.
+///
 struct ProjectNavigator: View {
 	@ObservedObject var workspace: WorkspaceDocument
 	var windowController: NSWindowController
 
+	/// The `ID` of the currently selected file/folder. If none is selected this is `nil`
 	@State private var selection: WorkspaceClient.FileItem.ID?
 
     var body: some View {
 		List(selection: $selection) {
-			Text(workspace.workspaceClient?.folderURL()?.lastPathComponent ?? "Empty")
-				.font(.callout.bold())
-				.foregroundColor(.secondary)
-				.padding(.bottom, 4)
-			ForEach(workspace.selectionState.fileItems.sortItems(foldersOnTop: workspace.sortFoldersOnTop)) { item in
-				ProjectNavigatorItem(
-					item: item,
-					workspace: workspace,
-					windowController: windowController,
-					shouldloadChildren: .constant(true), // First level of children should always be loaded
-					selectedId: $selection
-				)
+			Section {
+				ForEach(workspace.selectionState.fileItems.sortItems(foldersOnTop: workspace.sortFoldersOnTop)) { item in
+					ProjectNavigatorItem(
+						item: item,
+						workspace: workspace,
+						windowController: windowController,
+						shouldloadChildren: .constant(true), // First level of children should always be loaded
+						selectedId: $selection
+					)
+				}
+			} header: {
+				Text(projectName)
+					.padding(.vertical, 8)
 			}
 		}
-		.environment(\.defaultMinListRowHeight, 8)
 		.listRowInsets(.init())
 		.onChange(of: selection) { newValue in
 			guard let id = newValue,
@@ -43,4 +51,9 @@ struct ProjectNavigator: View {
 			selection = newValue
 		}
     }
+
+	/// The name of the project (name of the selected top-level folder)
+	private var projectName: String {
+		workspace.workspaceClient?.folderURL()?.lastPathComponent ?? "Project"
+	}
 }
