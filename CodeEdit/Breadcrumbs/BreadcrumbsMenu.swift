@@ -29,30 +29,6 @@ struct BreadcrumbsMenu: View {
 		self.parentFileItem = parentFileItem
 	}
 
-	private func menuItem(_ item: WorkspaceClient.FileItem) -> some View {
-		if let children = item.children?.sortItems(foldersOnTop: true), !children.isEmpty {
-			// Folder
-			return AnyView(
-				Menu {
-					ForEach(children) { item in
-						menuItem(item)
-					}
-				} label: {
-					BreadcrumbsComponent(item.fileName, systemImage: "folder.fill")
-				}
-				.menuIndicator(.hidden)
-				.menuStyle(.borderlessButton)
-			)
-		} else {
-			// File
-			return AnyView(Button {
-				workspace.openFile(item: item)
-			} label: {
-				BreadcrumbsComponent(item.fileName, systemImage: item.fileIcon, color: item.iconColor)
-			})
-		}
-	}
-
 	var body: some View {
 		// Unable to set image's color in Menu, so using this tricky way.
 		ZStack {
@@ -60,7 +36,7 @@ struct BreadcrumbsMenu: View {
 			Menu {
 				if let siblings = parentFileItem?.children?.sortItems(foldersOnTop: true) {
 					ForEach(siblings, id: \.self) { item in
-						menuItem(item)
+						BreadcrumbsMenuItem(workspace: workspace, fileItem: item)
 					}
 				}
 			} label: {

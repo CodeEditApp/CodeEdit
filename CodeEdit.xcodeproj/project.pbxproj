@@ -54,6 +54,7 @@
 		D72E1A8327E3B0D400EB11B9 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72E1A8227E3B0D400EB11B9 /* WelcomeView.swift */; };
 		D72E1A8727E4242900EB11B9 /* RecentProjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72E1A8627E4242900EB11B9 /* RecentProjectsView.swift */; };
 		D72E1A8927E44D7C00EB11B9 /* WelcomeWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72E1A8827E44D7C00EB11B9 /* WelcomeWindowView.swift */; };
+		D76D11CA27EF191C009FE61F /* BreadcrumbsMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76D11C927EF191C009FE61F /* BreadcrumbsMenuItem.swift */; };
 		D7ACE43C27ECCA2F0059FAF2 /* BreadcrumbsMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7ACE43B27ECCA2F0059FAF2 /* BreadcrumbsMenu.swift */; };
 		D7E201AE27E8B3C000CB86D0 /* String+Ranges.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201AD27E8B3C000CB86D0 /* String+Ranges.swift */; };
 		D7E201B027E8C07300CB86D0 /* FindNavigatorSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201AF27E8C07300CB86D0 /* FindNavigatorSearchBar.swift */; };
@@ -123,6 +124,7 @@
 		D72E1A8227E3B0D400EB11B9 /* WelcomeView.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; tabWidth = 4; };
 		D72E1A8627E4242900EB11B9 /* RecentProjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentProjectsView.swift; sourceTree = "<group>"; };
 		D72E1A8827E44D7C00EB11B9 /* WelcomeWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeWindowView.swift; sourceTree = "<group>"; };
+		D76D11C927EF191C009FE61F /* BreadcrumbsMenuItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreadcrumbsMenuItem.swift; sourceTree = "<group>"; };
 		D7ACE43B27ECCA2F0059FAF2 /* BreadcrumbsMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreadcrumbsMenu.swift; sourceTree = "<group>"; };
 		D7E201AD27E8B3C000CB86D0 /* String+Ranges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ranges.swift"; sourceTree = "<group>"; };
 		D7E201AF27E8C07300CB86D0 /* FindNavigatorSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindNavigatorSearchBar.swift; sourceTree = "<group>"; };
@@ -224,6 +226,7 @@
 				2875A46C27E3BE5B007805F8 /* BreadcrumbsView.swift */,
 				286620A427E4AB6900E18C2B /* BreadcrumbsComponent.swift */,
 				D7ACE43B27ECCA2F0059FAF2 /* BreadcrumbsMenu.swift */,
+				D76D11C927EF191C009FE61F /* BreadcrumbsMenuItem.swift */,
 			);
 			path = Breadcrumbs;
 			sourceTree = "<group>";
@@ -561,6 +564,7 @@
 				B6EE989227E887C600CDD8AB /* InspectorSidebarToolbar.swift in Sources */,
 				B673FDAD27E8296A00795864 /* PressActionsModifier.swift in Sources */,
 				043C321427E31FF6006AE443 /* CodeEditDocumentController.swift in Sources */,
+				D76D11CA27EF191C009FE61F /* BreadcrumbsMenuItem.swift in Sources */,
 				04660F6427E3ACAF00477777 /* Appearances.swift in Sources */,
 				2859B94127EB5BC00069BE88 /* TerminalSettingsView.swift in Sources */,
 				04540D5E27DD08C300E91B77 /* WorkspaceView.swift in Sources */,
