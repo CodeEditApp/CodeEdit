@@ -70,7 +70,7 @@ public extension WorkspaceClient {
             case "java":
                 return .red
             case "js", "entitlements", "json", "LICENSE":
-                return .yellow
+                return Color("SidebarYellow")
             case "css", "ts", "jsx", "md", "py":
                 return .blue
             case "sh":
