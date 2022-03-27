@@ -107,7 +107,7 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
             backing: .buffered, defer: false
         )
         window.center()
-        window.toolbar = NSToolbar()
+        window.toolbar = NSToolbar(identifier: UUID().uuidString)
         window.toolbarStyle = .unifiedCompact
         window.titlebarSeparatorStyle = .line
         window.toolbar?.displayMode = .iconOnly
@@ -204,8 +204,10 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         selectionState.openFileItems.forEach { item in
             do {
                 try selectionState.openedCodeFiles[item]?.write(to: item.url, ofType: "public.source-code")
+                selectionState.openedCodeFiles[item]?.close()
             } catch {}
         }
+        selectionState.openedCodeFiles.removeAll()
         super.close()
     }
 }

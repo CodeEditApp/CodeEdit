@@ -44,6 +44,10 @@
 "Create a new file"="Create a new file";
 "Clone an exisiting project"="Clone an exisiting project";
 
+// Welcome Screen - Open File
+"Open a file or folder"="Open a file or folder";
+"Open an existing file or folder on your Mac"="Open an existing file or folder on your Mac";
+
 // Welcome Screen - SCM
 "Start working on something from a Git repository"="Start working on something from a Git repository";
 "Open a project or file"="Open a project or file";
@@ -53,4 +57,18 @@
 "Show this window when CodeEdit launches"="Show this window when CodeEdit launches";
 
 //Editor Screen
+"Open file from sidebar"="Open file from sidebar";
 "CodeEdit cannot open this file because its file type is not supported." = "CodeEdit cannot open this file because its file type is not supported.";
+
+// Inspector Sidebar
+"File Inspector"="File Inspector";
+"History Inspector"="History Inspector";
+"Quick Help Inspector"="Quick Help Inspector";
+
+// Project Navigator Item
+"Add File"="Add File";
+"Not implemented yet"="Not implemented yet";
+
+// Leading Sidebar Toolbar
+"Alphabetically"="Alphabetically";
+"Folders on top"="Folders on top";

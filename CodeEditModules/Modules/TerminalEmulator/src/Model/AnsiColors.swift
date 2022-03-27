@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// Wrapper for storing `Color` objects as 24-bit integer in UserDefaults
 public class AnsiColors: ObservableObject {
     //    public static let `default` =
     public static let storageKey: String = "ANSIColors"
@@ -14,32 +15,35 @@ public class AnsiColors: ObservableObject {
 
     public init() {
         guard let loadColors = UserDefaults.standard.object(forKey: Self.storageKey) as? [Int] else {
-            colors.append(Color(red: 0.000, green: 0.000, blue: 0.000))
-            colors.append(Color(red: 0.600, green: 0.000, blue: 0.000))
-            colors.append(Color(red: 0.000, green: 0.651, blue: 0.004))
-            colors.append(Color(red: 0.600, green: 0.600, blue: 0.000))
-            colors.append(Color(red: 0.000, green: 0.031, blue: 0.702))
-            colors.append(Color(red: 0.702, green: 0.020, blue: 0.702))
-            colors.append(Color(red: 0.000, green: 0.647, blue: 0.702))
-            colors.append(Color(red: 0.749, green: 0.749, blue: 0.749))
-            colors.append(Color(red: 0.400, green: 0.400, blue: 0.400))
-            colors.append(Color(red: 0.902, green: 0.000, blue: 0.004))
-            colors.append(Color(red: 0.004, green: 0.851, blue: 0.000))
-            colors.append(Color(red: 0.902, green: 0.898, blue: 0.012))
-            colors.append(Color(red: 0.000, green: 0.063, blue: 1.000))
-            colors.append(Color(red: 0.902, green: 0.035, blue: 0.902))
-            colors.append(Color(red: 0.008, green: 0.902, blue: 0.898))
-            colors.append(Color(red: 0.902, green: 0.902, blue: 0.902))
+			resetDefault()
             return
         }
-        print("loaded")
         self.mappedColors = loadColors
     }
+
+	public func resetDefault() {
+		colors.removeAll()
+		colors.append(Color(red: 0.000, green: 0.000, blue: 0.000))
+		colors.append(Color(red: 0.600, green: 0.000, blue: 0.000))
+		colors.append(Color(red: 0.000, green: 0.651, blue: 0.004))
+		colors.append(Color(red: 0.600, green: 0.600, blue: 0.000))
+		colors.append(Color(red: 0.000, green: 0.031, blue: 0.702))
+		colors.append(Color(red: 0.702, green: 0.020, blue: 0.702))
+		colors.append(Color(red: 0.000, green: 0.647, blue: 0.702))
+		colors.append(Color(red: 0.749, green: 0.749, blue: 0.749))
+		colors.append(Color(red: 0.400, green: 0.400, blue: 0.400))
+		colors.append(Color(red: 0.902, green: 0.000, blue: 0.004))
+		colors.append(Color(red: 0.004, green: 0.851, blue: 0.000))
+		colors.append(Color(red: 0.902, green: 0.898, blue: 0.012))
+		colors.append(Color(red: 0.000, green: 0.063, blue: 1.000))
+		colors.append(Color(red: 0.902, green: 0.035, blue: 0.902))
+		colors.append(Color(red: 0.008, green: 0.902, blue: 0.898))
+		colors.append(Color(red: 0.902, green: 0.902, blue: 0.902))
+	}
 
     @Published public var mappedColors: [Int] = [] {
         didSet {
             UserDefaults.standard.set(mappedColors, forKey: AnsiColors.storageKey)
-            print("saved")
         }
     }
 
