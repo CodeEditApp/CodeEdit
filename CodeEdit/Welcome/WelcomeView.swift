@@ -44,24 +44,28 @@ struct WelcomeView: View {
     }
 
     private var macOsVersion: String {
-        let osVersion = ProcessInfo.processInfo.operatingSystemVersion
-        return "\(osVersion.majorVersion).\(osVersion.minorVersion).\(osVersion.patchVersion)"
+        var osSeperated = ProcessInfo.processInfo.operatingSystemVersionString.components(separatedBy: " ")
+        if osSeperated.count > 1 {
+            osSeperated.remove(at: 0) // localized string (Version, Versie)
+            osSeperated.remove(at: 1) // (Build
+        }
+
+        return "\(osSeperated[0]) (\(osSeperated[1])"
     }
 
-    private var xCodeVersion: String {
+    private var xcodeVersion: String? {
         guard let url = NSWorkspace.shared.urlForApplication(withBundleIdentifier: "com.apple.dt.Xcode"),
-              let bundle = Bundle(url: url) else {
-            print("Xcode is not installed")
-            return ""
+              let bundle = Bundle(url: url),
+              let infoDict = bundle.infoDictionary,
+              let version = infoDict["CFBundleShortVersionString"] as? String,
+              let buildURL = URL(string: "\(url)Contents/version.plist"),
+              let buildDict = try? NSDictionary(contentsOf: buildURL, error: ()),
+              let build = buildDict["ProductBuildVersion"]
+        else {
+            return nil
         }
 
-        guard let infoDict = bundle.infoDictionary,
-              let version = infoDict["CFBundleShortVersionString"] as? String else {
-            print("No version found in Info.plist")
-            return "Not found."
-        }
-
-        return version
+        return "\(version) (\(build))"
     }
 
     var body: some View {
@@ -84,12 +88,16 @@ struct WelcomeView: View {
                         }
                     }
                     .onTapGesture {
+                        var copyString = "CodeEdit: \(appVersion) (\(appBuild))\n" +
+                        "MacOS: \(macOsVersion)\n"
+
+                        if let xcodeVersion = xcodeVersion {
+                            copyString.append("Xcode: \(xcodeVersion)")
+                        }
+
                         let pasteboard = NSPasteboard.general
                         pasteboard.clearContents()
-                        pasteboard.setString(
-                            "CodeEdit: \(appVersion) (\(appBuild))\n" +
-                            "MacOS: \(macOsVersion)\n" +
-                            "Xcode: \(xCodeVersion)", forType: .string)
+                        pasteboard.setString(copyString, forType: .string)
                     }
                 Spacer().frame(height: 20)
                 HStack {
@@ -99,28 +107,28 @@ struct WelcomeView: View {
                             title: "Create a new file".localized(),
                             subtitle: "Create a new file".localized()
                         )
-                            .onTapGesture {
-                                CodeEditDocumentController.shared.newDocument(nil)
-                                dismissWindow()
-                            }
+                        .onTapGesture {
+                            CodeEditDocumentController.shared.newDocument(nil)
+                            dismissWindow()
+                        }
                         WelcomeActionView(
                             iconName: "folder",
                             title: "Open a file or folder".localized(),
                             subtitle: "Open an existing file or folder on your Mac".localized()
                         )
-                            .onTapGesture {
-                                CodeEditDocumentController.shared.openDocument { _, _ in
-                                    dismissWindow()
-                                }
+                        .onTapGesture {
+                            CodeEditDocumentController.shared.openDocument { _, _ in
+                                dismissWindow()
                             }
+                        }
                         WelcomeActionView(
                             iconName: "plus.square.on.square",
                             title: "Clone an exisiting project".localized(),
                             subtitle: "Start working on something from a Git repository".localized()
                         )
-                            .onTapGesture {
-                                // TODO: clone a Git repository
-                            }
+                        .onTapGesture {
+                            // TODO: clone a Git repository
+                        }
                     }
                 }
                 Spacer()
@@ -150,7 +158,7 @@ struct WelcomeView: View {
                         }, set: { new in
                             self.behavior = new ? .welcome : .openPanel
                         }))
-                            .toggleStyle(.checkbox)
+                        .toggleStyle(.checkbox)
                         Spacer()
                     }
                 }
