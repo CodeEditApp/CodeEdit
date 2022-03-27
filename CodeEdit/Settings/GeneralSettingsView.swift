@@ -67,6 +67,7 @@ struct GeneralSettingsView: View {
 
             HStack {
                 Stepper("Default Tab Width".localized(), value: $defaultTabWidth, in: 2...8)
+                    .onChange(of: defaultTabWidth) { CodeEditorTextView.tabWidth = $0 }
                 Text(String(defaultTabWidth))
             }
         }
