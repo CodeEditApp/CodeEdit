@@ -33,8 +33,11 @@ public struct GitCloneView: View {
                         // Parsing repo name
                         let repoURL = URL(string: repoUrlStr)
                         var repoName = repoURL!.lastPathComponent
-                        // Strip .git from name
-                        repoName.removeLast(4)
+                        // Strip .git from name if it has it.
+                        // Cloning repository without .git also works
+                        if repoName.contains(".git") {
+                            repoName.removeLast(4)
+                        }
                         getPath(modifiable: &repoPath, saveName: repoName)
                         let dirUrl = URL(string: repoPath)
                         var isDir: ObjCBool = true
@@ -46,8 +49,8 @@ public struct GitCloneView: View {
                                                                 withIntermediateDirectories: true,
                                                                 attributes: nil)
                         try GitClient.default(directoryURL: dirUrl!).cloneRepository(repoUrlStr)
+                        // TODO: Maybe add possibility to checkout to certain branch straight after cloning
                         windowController.window?.close()
-//                        NSDocumentController.shared.openDocument(repoPath)
                     } catch {
                         guard let error = error as? GitClient.GitClientError else {
                             return showAlert(alertMsg: "Error", infoText: error.localizedDescription)
