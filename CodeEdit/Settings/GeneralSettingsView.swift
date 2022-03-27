@@ -79,7 +79,7 @@ struct GeneralSettingsView: View {
                             .cornerRadius(5)
                     }
 
-                    Image("Auto")
+                    Image("Settings Image - Auto")
                         .resizable()
                         .frame(width: 67, height: 46)
                         .scaledToFit()
@@ -101,7 +101,7 @@ struct GeneralSettingsView: View {
                             .cornerRadius(5)
                     }
 
-                    Image("Light")
+                    Image("Settings Image - Light")
                         .resizable()
                         .frame(width: 67, height: 46)
                         .scaledToFit()
@@ -123,7 +123,7 @@ struct GeneralSettingsView: View {
                             .cornerRadius(5)
                     }
 
-                    Image("Dark")
+                    Image("Settings Image - Dark")
                         .resizable()
                         .frame(width: 67, height: 46)
                         .scaledToFit()

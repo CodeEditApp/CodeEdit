@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Light.jpg",
+      "filename" : "Settings Image - Dark.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Light-1.jpg",
+      "filename" : "Settings Image - Dark-1.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Light-2.jpg",
+      "filename" : "Settings Image - Dark-2.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
