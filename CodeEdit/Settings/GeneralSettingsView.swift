@@ -15,7 +15,7 @@ struct GeneralSettingsView: View {
     @AppStorage(ReopenBehavior.storageKey) var reopenBehavior: ReopenBehavior = .default
     @AppStorage(FileIconStyle.storageKey) var fileIconStyle: FileIconStyle = .default
     @AppStorage(CodeFileView.Theme.storageKey) var editorTheme: CodeFileView.Theme = .atelierSavannaAuto
-    @AppStorage("defaultTabWidth") var defaultTabWidth: Int = 4
+    @AppStorage(TabWidth.storageKey) var defaultTabWidth: TabWidth = .default
 
     var body: some View {
         Form {
@@ -65,11 +65,13 @@ struct GeneralSettingsView: View {
 					.tag(CodeFileView.Theme.ocean)
 			}
 
-            HStack {
-                Stepper("Default Tab Width".localized(), value: $defaultTabWidth, in: 2...8)
-                    .onChange(of: defaultTabWidth) { CodeEditorTextView.tabWidth = $0 }
-                Text(String(defaultTabWidth))
+            Picker("Default Tab Width".localized(), selection: $defaultTabWidth) {
+                ForEach(TabWidth.allCases) { tabWidth in
+                    Text(String(format: NSLocalizedString("%d spaces", comment: ""), tabWidth.rawValue))
+                        .tag(tabWidth)
+                }
             }
+            .onChange(of: defaultTabWidth) { CodeEditorTextView.tabWidth = $0.rawValue }
         }
         .padding()
     }
