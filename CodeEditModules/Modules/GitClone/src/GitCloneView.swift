@@ -11,13 +11,13 @@ import Foundation
 import ShellClient
 
 public struct GitCloneView: View {
-    var windowController: NSWindowController
     var shellClient: ShellClient
+    @Binding var isPresented: Bool
     @State private var repoUrlStr = ""
     @State private var repoPath = "~/"
-    public init(windowController: NSWindowController, shellClient: ShellClient) {
-        self.windowController = windowController
+    public init(shellClient: ShellClient, isPresented: Binding<Bool>) {
         self.shellClient = shellClient
+        self._isPresented = isPresented
     }
     public var body: some View {
         VStack(spacing: 8) {
@@ -42,7 +42,7 @@ public struct GitCloneView: View {
                         .frame(width: 300)
                     HStack {
                         Button("Cancel") {
-                            windowController.window?.close()
+                            isPresented = false
                         }
                         Button("Clone") {
                             do {
@@ -72,7 +72,7 @@ public struct GitCloneView: View {
                                 try GitClient.default(directoryURL: dirUrl!,
                                                       shellClient: shellClient).cloneRepository(repoUrlStr)
                                 // TODO: Maybe add possibility to checkout to certain branch straight after cloning
-                                windowController.window?.close()
+                                isPresented = false
                             } catch {
                                 guard let error = error as? GitClient.GitClientError else {
                                     return showAlert(alertMsg: "Error", infoText: error.localizedDescription)
