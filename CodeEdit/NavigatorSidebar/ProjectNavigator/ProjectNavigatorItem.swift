@@ -15,13 +15,15 @@ import CodeFile
 /// Displays a File or Folder in the ``ProjectNavigator``.
 ///
 struct ProjectNavigatorItem: View {
-	@AppStorage(FileIconStyle.storageKey) var iconStyle: FileIconStyle = .default
+	@AppStorage(FileIconStyle.storageKey)
+    var iconStyle: FileIconStyle = .default
 
 	/// The `FileItem` for this view
 	var item: WorkspaceClient.FileItem
 
 	/// The current ``WorkspaceDocument``
-	@ObservedObject var workspace: WorkspaceDocument
+	@ObservedObject
+    var workspace: WorkspaceDocument
 
 	/// The current `NSWindowController`
 	var windowController: NSWindowController
@@ -31,14 +33,17 @@ struct ProjectNavigatorItem: View {
 	/// maintaining performance.
 	///
 	/// This will be set to true once a parent folder expands
-	@Binding var shouldloadChildren: Bool
+	@Binding
+    var shouldloadChildren: Bool
 
 	/// The current selected ``item`` in the list
-	@Binding var selectedId: WorkspaceClient.FileItem.ID?
+	@Binding
+    var selectedId: WorkspaceClient.FileItem.ID?
 
 	/// Tracks the `DisclosureGroup`s `isExpanded` property in order
 	/// to set ``shouldloadChildren`` for its child items
-	@State private var isExpanded: Bool = false
+	@State
+    private var isExpanded: Bool = false
 
 	var body: some View {
 		if item.children == nil {

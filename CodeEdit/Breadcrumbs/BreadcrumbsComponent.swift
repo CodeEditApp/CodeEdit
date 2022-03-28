@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct BreadcrumbsComponent: View {
-	@AppStorage(FileIconStyle.storageKey) var iconStyle: FileIconStyle = .default
+	@AppStorage(FileIconStyle.storageKey)
+    var iconStyle: FileIconStyle = .default
 
 	private let title: String
 	private let image: String

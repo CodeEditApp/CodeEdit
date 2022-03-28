@@ -41,7 +41,8 @@ public class AnsiColors: ObservableObject {
 		colors.append(Color(red: 0.902, green: 0.902, blue: 0.902))
 	}
 
-    @Published public var mappedColors: [Int] = [] {
+    @Published
+    public var mappedColors: [Int] = [] {
         didSet {
             UserDefaults.standard.set(mappedColors, forKey: AnsiColors.storageKey)
         }

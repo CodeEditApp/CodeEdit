@@ -9,8 +9,8 @@ import SwiftUI
 
 @available(macOS 12, *)
 internal struct StatusBarEncodingSelector: View {
-
-	@ObservedObject private var model: StatusBarModel
+	@ObservedObject
+    private var model: StatusBarModel
 
 	internal init(model: StatusBarModel) {
 		self.model = model

@@ -10,13 +10,23 @@ import TerminalEmulator
 import FontPicker
 
 struct TerminalSettingsView: View {
-	@AppStorage(TerminalShellType.storageKey) var shellType: TerminalShellType = .default
-	@AppStorage(TerminalFont.storageKey) var terminalFontSelection: TerminalFont = .default
-	@AppStorage(TerminalFontName.storageKey) var terminalFontName: String = TerminalFontName.default
-	@AppStorage(TerminalFontSize.storageKey) var terminalFontSize: Int = TerminalFontSize.default
-	@AppStorage(TerminalColorScheme.storageKey) var terminalColorSchmeme: TerminalColorScheme = .default
+    @AppStorage(TerminalShellType.storageKey)
+    var shellType: TerminalShellType = .default
 
-	@StateObject private var colors = AnsiColors.shared
+    @AppStorage(TerminalFont.storageKey)
+    var terminalFontSelection: TerminalFont = .default
+
+    @AppStorage(TerminalFontName.storageKey)
+    var terminalFontName: String = TerminalFontName.default
+
+    @AppStorage(TerminalFontSize.storageKey)
+    var terminalFontSize: Int = TerminalFontSize.default
+
+    @AppStorage(TerminalColorScheme.storageKey)
+    var terminalColorSchmeme: TerminalColorScheme = .default
+
+    @StateObject
+    private var colors = AnsiColors.shared
 
     var body: some View {
 		Form {

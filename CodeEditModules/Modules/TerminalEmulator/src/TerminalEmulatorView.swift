@@ -16,16 +16,28 @@ import SwiftTerm
 /// for use in SwiftUI.
 ///
 public struct TerminalEmulatorView: NSViewRepresentable {
-	@AppStorage(TerminalShellType.storageKey) var shellType: TerminalShellType = .default
-	@AppStorage(TerminalFont.storageKey) var terminalFontSelection: TerminalFont = .default
-	@AppStorage(TerminalFontName.storageKey) var terminalFontName: String = TerminalFontName.default
-	@AppStorage(TerminalFontSize.storageKey) var terminalFontSize: Int = TerminalFontSize.default
-	@AppStorage(TerminalColorScheme.storageKey) var terminalColorSchmeme: TerminalColorScheme = .default
+	@AppStorage(TerminalShellType.storageKey)
+    var shellType: TerminalShellType = .default
 
-	@StateObject private var ansiColors: AnsiColors = .shared
+    @AppStorage(TerminalFont.storageKey)
+    var terminalFontSelection: TerminalFont = .default
+
+	@AppStorage(TerminalFontName.storageKey)
+    var terminalFontName: String = TerminalFontName.default
+
+	@AppStorage(TerminalFontSize.storageKey)
+    var terminalFontSize: Int = TerminalFontSize.default
+
+	@AppStorage(TerminalColorScheme.storageKey)
+    var terminalColorSchmeme: TerminalColorScheme = .default
+
+	@StateObject
+    private var ansiColors: AnsiColors = .shared
 
 	internal static var lastTerminal: LocalProcessTerminalView?
-	@State internal var terminal: LocalProcessTerminalView
+
+    @State
+    internal var terminal: LocalProcessTerminalView
 
 	private let systemFont: NSFont = .monospacedSystemFont(ofSize: 11, weight: .medium)
 

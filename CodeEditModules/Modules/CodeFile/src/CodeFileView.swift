@@ -11,9 +11,15 @@ import SwiftUI
 
 /// CodeFileView is just a wrapper of the `CodeEditor` dependency
 public struct CodeFileView: View {
-    @ObservedObject private var codeFile: CodeFileDocument
-    @AppStorage(Theme.storageKey) var theme: Theme = .atelierSavannaAuto
-    @Environment(\.colorScheme) private var colorScheme
+    @ObservedObject
+    private var codeFile: CodeFileDocument
+
+    @AppStorage(Theme.storageKey)
+    var theme: Theme = .atelierSavannaAuto
+
+    @Environment(\.colorScheme)
+    private var colorScheme
+
     private let editable: Bool
 
     public init(codeFile: CodeFileDocument, editable: Bool = true) {

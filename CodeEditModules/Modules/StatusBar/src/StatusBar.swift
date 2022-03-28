@@ -19,8 +19,8 @@ import GitClient
 ///
 @available(macOS 12, *)
 public struct StatusBarView: View {
-
-	@ObservedObject private var model: StatusBarModel
+	@ObservedObject
+    private var model: StatusBarModel
 
 	/// Initialize with GitClient
 	/// - Parameter gitClient: a GitClient

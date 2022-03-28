@@ -9,9 +9,13 @@ import SwiftUI
 import WorkspaceClient
 
 struct LeadingSidebar: View {
-	@ObservedObject var workspace: WorkspaceDocument
-	var windowController: NSWindowController
-	@State private var selection: Int = 0
+    @ObservedObject
+    var workspace: WorkspaceDocument
+
+    var windowController: NSWindowController
+
+    @State
+    private var selection: Int = 0
 
 	var body: some View {
 		ZStack {

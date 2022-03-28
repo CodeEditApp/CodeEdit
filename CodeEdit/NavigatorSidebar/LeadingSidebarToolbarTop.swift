@@ -8,16 +8,18 @@
 import SwiftUI
 
 struct LeadingSidebarToolbarTop: View {
-	@Environment(\.controlActiveState) var activeState
+    @Environment(\.controlActiveState)
+    var activeState
 
-	@Binding var selection: Int
+    @Binding
+    var selection: Int
 
-	var body: some View {
-		HStack(spacing: 2) {
-			icon(systemImage: "folder", title: "Project", id: 0)
-			icon(systemImage: "globe", title: "Version Control", id: 1)
-			icon(systemImage: "magnifyingglass", title: "Search", id: 2)
-			icon(systemImage: "shippingbox", title: "...", id: 3)
+    var body: some View {
+        HStack(spacing: 2) {
+            icon(systemImage: "folder", title: "Project", id: 0)
+            icon(systemImage: "globe", title: "Version Control", id: 1)
+            icon(systemImage: "magnifyingglass", title: "Search", id: 2)
+            icon(systemImage: "shippingbox", title: "...", id: 3)
 			icon(systemImage: "play", title: "...", id: 4)
 			icon(systemImage: "exclamationmark.triangle", title: "...", id: 5)
 			icon(systemImage: "curlybraces.square", title: "...", id: 6)

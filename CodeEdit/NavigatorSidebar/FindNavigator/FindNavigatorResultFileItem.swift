@@ -10,8 +10,12 @@ import WorkspaceClient
 import Search
 
 struct FindNavigatorResultFileItem: View {
-    @ObservedObject var state: WorkspaceDocument.SearchState
-    @State var isExpanded: Bool = true
+    @ObservedObject
+    var state: WorkspaceDocument.SearchState
+
+    @State
+    var isExpanded: Bool = true
+
     var fileItem: WorkspaceClient.FileItem
     var results: [SearchResultModel]
     var jumpToFile: () -> Void

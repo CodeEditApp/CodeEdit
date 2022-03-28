@@ -9,11 +9,34 @@ import SwiftUI
 
 @available(macOS 12, *)
 internal struct StatusBarPullButton: View {
-    @ObservedObject private var model: StatusBarModel
+	@ObservedObject
+    private var model: StatusBarModel
 
-    internal init(model: StatusBarModel) {
-        self.model = model
-    }
+	internal init(model: StatusBarModel) {
+		self.model = model
+	}
+
+	internal var body: some View {
+		Button {
+			model.isReloading = true
+			model.gitClient.pull()
+			// Just for looks for now. In future we'll call a function like
+			// `reloadFileStatus()` here which will set/unset `reloading`
+			DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+				self.model.isReloading = false
+			}
+		} label: {
+			Image(systemName: "arrow.triangle.2.circlepath")
+				.imageScale(.medium)
+				.rotationEffect(.degrees(model.isReloading ? 360 : 0))
+				.animation(animation, value: model.isReloading)
+				.opacity(model.isReloading ? 1 : 0)
+			// A bit of a hacky solution to prevent spinning counterclockwise once `reloading` changes to `false`
+				.overlay {
+					Image(systemName: "arrow.triangle.2.circlepath")
+						.imageScale(.medium)
+						.opacity(model.isReloading ? 0 : 1)
+				}
 
     internal var body: some View {
         Button {

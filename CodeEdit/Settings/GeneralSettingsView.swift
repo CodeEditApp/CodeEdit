@@ -11,11 +11,20 @@ import CodeFile
 // MARK: - View
 
 struct GeneralSettingsView: View {
-    @AppStorage(Appearances.storageKey) var appearance: Appearances = .default
-    @AppStorage(ReopenBehavior.storageKey) var reopenBehavior: ReopenBehavior = .default
-    @AppStorage(FileIconStyle.storageKey) var fileIconStyle: FileIconStyle = .default
-    @AppStorage(CodeFileView.Theme.storageKey) var editorTheme: CodeFileView.Theme = .atelierSavannaAuto
-    @AppStorage("defaultTabWidth") var defaultTabWidth: Int = 4
+    @AppStorage(Appearances.storageKey)
+    var appearance: Appearances = .default
+
+    @AppStorage(ReopenBehavior.storageKey)
+    var reopenBehavior: ReopenBehavior = .default
+
+    @AppStorage(FileIconStyle.storageKey)
+    var fileIconStyle: FileIconStyle = .default
+
+    @AppStorage(CodeFileView.Theme.storageKey)
+    var editorTheme: CodeFileView.Theme = .atelierSavannaAuto
+
+    @AppStorage("defaultTabWidth")
+    var defaultTabWidth: Int = 4
 
     var body: some View {
         Form {

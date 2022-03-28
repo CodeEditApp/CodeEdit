@@ -9,19 +9,27 @@ import SwiftUI
 import WorkspaceClient
 
 struct BreadcrumbsView: View {
+    @ObservedObject
+    var workspace: WorkspaceDocument
 
-	@ObservedObject var workspace: WorkspaceDocument
     let file: WorkspaceClient.FileItem
 
-	@State private var projectName: String = ""
-	@State private var folders: [String] = []
-	@State private var fileName: String = ""
-	@State private var fileImage: String = "doc"
+    @State
+    private var projectName: String = ""
 
-	init(_ file: WorkspaceClient.FileItem, workspace: WorkspaceDocument) {
-		self.file = file
-		self.workspace = workspace
-	}
+    @State
+    private var folders: [String] = []
+
+    @State
+    private var fileName: String = ""
+
+    @State
+    private var fileImage: String = "doc"
+
+    init(_ file: WorkspaceClient.FileItem, workspace: WorkspaceDocument) {
+        self.file = file
+        self.workspace = workspace
+    }
 
 	var body: some View {
 		ZStack(alignment: .leading) {
