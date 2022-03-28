@@ -53,18 +53,19 @@ struct WorkspaceView: View {
 		LeadingSidebar(workspace: workspace, windowController: windowController)
 			.frame(minWidth: 250)
 		HSplitView {
-			ZStack {
-				WorkspaceCodeFileView(windowController: windowController,
-									  workspace: workspace)
-			}
-			.safeAreaInset(edge: .bottom) {
-				if let url = workspace.fileURL {
-					StatusBarView(workspaceURL: url)
-				}
-			}
-			InspectorSidebar(workspace: workspace, windowController: windowController)
-				.frame(minWidth: 250, maxWidth: 250, maxHeight: .infinity)
-		}
+            ZStack {
+                WorkspaceCodeFileView(windowController: windowController, workspace: workspace)
+                    .frame(minWidth: 150, maxHeight: .infinity)
+            }
+            .safeAreaInset(edge: .bottom) {
+                if let url = workspace.fileURL {
+                    StatusBarView(workspaceURL: url)
+                }
+            }
+            .layoutPriority(1)
+            InspectorSidebar(workspace: workspace, windowController: windowController)
+                .frame(minWidth: 150, idealWidth: 200, maxHeight: .infinity)
+        }
 	}
 }
 
