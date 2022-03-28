@@ -41,7 +41,7 @@ struct CodeEditor: NSViewRepresentable {
         if let highlightr = highlightr,
            let string = highlightr.highlight(
             content.wrappedValue,
-            as: language?.name,
+            as: language?.id.rawValue,
             fastRender: true
            ) {
             textView.textStorage?.append(string)
@@ -112,7 +112,7 @@ struct CodeEditor: NSViewRepresentable {
 
         if content.wrappedValue != textView.string {
             if let textStorage = textView.textStorage as? CodeAttributedString {
-                textStorage.language = language?.name
+                textStorage.language = language?.id.rawValue
                 textStorage.replaceCharacters(
                     in: NSRange(location: 0, length: textStorage.length),
                     with: content.wrappedValue
@@ -131,7 +131,7 @@ struct CodeEditor: NSViewRepresentable {
         } else {
             textStorage = CodeAttributedString()
         }
-        textStorage.language = language?.name
+        textStorage.language = language?.id.rawValue
         let layoutManager = NSLayoutManager()
         textStorage.addLayoutManager(layoutManager)
         let textContainer = NSTextContainer(containerSize: scrollView.frame.size)
