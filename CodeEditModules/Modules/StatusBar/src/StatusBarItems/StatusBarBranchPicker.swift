@@ -9,12 +9,12 @@ import GitClient
 import SwiftUI
 
 internal struct StatusBarBranchPicker: View {
-	@ObservedObject
+    @ObservedObject
     private var model: StatusBarModel
 
-	internal init(model: StatusBarModel) {
-		self.model = model
-	}
+    internal init(model: StatusBarModel) {
+        self.model = model
+    }
 
     internal var body: some View {
         Menu {

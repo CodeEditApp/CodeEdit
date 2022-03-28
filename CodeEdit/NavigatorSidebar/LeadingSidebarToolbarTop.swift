@@ -20,40 +20,40 @@ struct LeadingSidebarToolbarTop: View {
             icon(systemImage: "globe", title: "Version Control", id: 1)
             icon(systemImage: "magnifyingglass", title: "Search", id: 2)
             icon(systemImage: "shippingbox", title: "...", id: 3)
-			icon(systemImage: "play", title: "...", id: 4)
-			icon(systemImage: "exclamationmark.triangle", title: "...", id: 5)
-			icon(systemImage: "curlybraces.square", title: "...", id: 6)
-			icon(systemImage: "puzzlepiece.extension", title: "...", id: 7)
-			icon(systemImage: "square.grid.2x2", title: "...", id: 8)
-		}
-		.frame(height: 29, alignment: .center)
-		.frame(maxWidth: .infinity)
-		.overlay(alignment: .top) {
-			Divider()
-		}
-		.overlay(alignment: .bottom) {
-			Divider()
-		}
-	}
+            icon(systemImage: "play", title: "...", id: 4)
+            icon(systemImage: "exclamationmark.triangle", title: "...", id: 5)
+            icon(systemImage: "curlybraces.square", title: "...", id: 6)
+            icon(systemImage: "puzzlepiece.extension", title: "...", id: 7)
+            icon(systemImage: "square.grid.2x2", title: "...", id: 8)
+        }
+        .frame(height: 29, alignment: .center)
+        .frame(maxWidth: .infinity)
+        .overlay(alignment: .top) {
+            Divider()
+        }
+        .overlay(alignment: .bottom) {
+            Divider()
+        }
+    }
 
-	func icon(systemImage: String, title: String, id: Int) -> some View {
-		Button {
-			selection = id
-		} label: {
-			Image(systemName: systemImage)
-				.help(title)
-				.symbolVariant(id == selection ? .fill : .none)
-				.foregroundColor(id == selection ? .accentColor : .secondary)
-				.frame(width: 25, height: 25, alignment: .center)
-				.contentShape(Rectangle())
-				.opacity(activeState == .inactive ? 0.45 : 1)
-		}
-		.buttonStyle(.plain)
-	}
+    func icon(systemImage: String, title: String, id: Int) -> some View {
+        Button {
+            selection = id
+        } label: {
+            Image(systemName: systemImage)
+                .help(title)
+                .symbolVariant(id == selection ? .fill : .none)
+                .foregroundColor(id == selection ? .accentColor : .secondary)
+                .frame(width: 25, height: 25, alignment: .center)
+                .contentShape(Rectangle())
+                .opacity(activeState == .inactive ? 0.45 : 1)
+        }
+        .buttonStyle(.plain)
+    }
 }
 
 struct NavigatorSidebarToolbar_Previews: PreviewProvider {
-	static var previews: some View {
+    static var previews: some View {
         LeadingSidebarToolbarTop(selection: .constant(0))
-	}
+    }
 }

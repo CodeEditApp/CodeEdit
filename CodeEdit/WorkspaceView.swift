@@ -37,7 +37,7 @@ struct WorkspaceView: View {
     var body: some View {
         NavigationView {
             if workspace.workspaceClient != nil {
-				content
+                content
             } else {
                 EmptyView()
             }
@@ -56,11 +56,11 @@ struct WorkspaceView: View {
         }
     }
 
-	@ViewBuilder
-	private var content: some View {
-		LeadingSidebar(workspace: workspace, windowController: windowController)
-			.frame(minWidth: 250)
-		HSplitView {
+    @ViewBuilder
+    private var content: some View {
+        LeadingSidebar(workspace: workspace, windowController: windowController)
+            .frame(minWidth: 250)
+        HSplitView {
             ZStack {
                 WorkspaceCodeFileView(windowController: windowController, workspace: workspace)
                     .frame(minWidth: 500, maxHeight: .infinity)
@@ -74,7 +74,7 @@ struct WorkspaceView: View {
             InspectorSidebar(workspace: workspace, windowController: windowController)
                 .frame(minWidth: 260, idealWidth: 300, maxHeight: .infinity)
         }
-	}
+    }
 }
 
 struct WorkspaceView_Previews: PreviewProvider {

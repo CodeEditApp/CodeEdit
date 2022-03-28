@@ -9,22 +9,22 @@ import SwiftUI
 
 @available(macOS 12, *)
 internal struct StatusBarEncodingSelector: View {
-	@ObservedObject
+    @ObservedObject
     private var model: StatusBarModel
 
-	internal init(model: StatusBarModel) {
-		self.model = model
-	}
+    internal init(model: StatusBarModel) {
+        self.model = model
+    }
 
-	internal var body: some View {
-		Menu {
-			// UTF 8, ASCII, ...
-		} label: {
-			Text("UTF 8")
-				.font(model.toolbarFont)
-		}
-		.menuStyle(.borderlessButton)
-		.fixedSize()
-		.onHover { isHovering($0) }
-	}
+    internal var body: some View {
+        Menu {
+            // UTF 8, ASCII, ...
+        } label: {
+            Text("UTF 8")
+                .font(model.toolbarFont)
+        }
+        .menuStyle(.borderlessButton)
+        .fixedSize()
+        .onHover { isHovering($0) }
+    }
 }

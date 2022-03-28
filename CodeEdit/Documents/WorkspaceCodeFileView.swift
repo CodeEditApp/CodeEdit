@@ -15,7 +15,7 @@ struct WorkspaceCodeFileView: View {
     @ObservedObject var workspace: WorkspaceDocument
 
     @ViewBuilder
-	var codeView: some View {
+    var codeView: some View {
         if let item = workspace.selectionState.openFileItems.first(where: { file in
             if file.id == workspace.selectionState.selectedId {
                 print("Item loaded is: ", file.url)
@@ -40,7 +40,7 @@ struct WorkspaceCodeFileView: View {
     }
 
     var body: some View {
-		codeView
-			.frame(maxWidth: .infinity, maxHeight: .infinity)
+        codeView
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }

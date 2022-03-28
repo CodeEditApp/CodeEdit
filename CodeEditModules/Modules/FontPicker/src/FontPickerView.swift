@@ -8,16 +8,16 @@
 import SwiftUI
 
 class FontPickerDelegate {
-	var parent: FontPicker
+    var parent: FontPicker
 
-	init(_ parent: FontPicker) {
-		self.parent = parent
-	}
+    init(_ parent: FontPicker) {
+        self.parent = parent
+    }
 
-	@objc
-	func changeFont(_ id: Any) {
-		parent.fontSelected()
-	}
+    @objc
+    func changeFont(_ id: Any) {
+        parent.fontSelected()
+    }
 
 }
 
@@ -43,44 +43,44 @@ public struct FontPicker: View {
         }
     }
 
-	public init(_ label: String, name: Binding<String>, size: Binding<Int>) {
-		self.labelString = label
-		self._fontName = name
-		self._fontSize = size
-	}
+    public init(_ label: String, name: Binding<String>, size: Binding<Int>) {
+        self.labelString = label
+        self._fontName = name
+        self._fontSize = size
+    }
 
-	public var body: some View {
-		HStack {
-			Text(labelString)
-				.lineLimit(1)
-				.truncationMode(.middle)
+    public var body: some View {
+        HStack {
+            Text(labelString)
+                .lineLimit(1)
+                .truncationMode(.middle)
 
-			Button {
-				if NSFontPanel.shared.isVisible {
-					NSFontPanel.shared.orderOut(nil)
-					return
-				}
+            Button {
+                if NSFontPanel.shared.isVisible {
+                    NSFontPanel.shared.orderOut(nil)
+                    return
+                }
 
-				self.fontPickerDelegate = FontPickerDelegate(self)
-				NSFontManager.shared.target = self.fontPickerDelegate
-				NSFontPanel.shared.setPanelFont(self.font, isMultiple: false)
-				NSFontPanel.shared.orderBack(nil)
-			} label: {
-				Image(systemName: "textformat")
-					.imageScale(.large)
-			}
-			.fixedSize()
-		}
-	}
+                self.fontPickerDelegate = FontPickerDelegate(self)
+                NSFontManager.shared.target = self.fontPickerDelegate
+                NSFontPanel.shared.setPanelFont(self.font, isMultiple: false)
+                NSFontPanel.shared.orderBack(nil)
+            } label: {
+                Image(systemName: "textformat")
+                    .imageScale(.large)
+            }
+            .fixedSize()
+        }
+    }
 
-	mutating
-	func fontSelected() {
-		self.font = NSFontPanel.shared.convert(self.font)
-	}
+    mutating
+    func fontSelected() {
+        self.font = NSFontPanel.shared.convert(self.font)
+    }
 }
 
 struct FontPicker_Previews: PreviewProvider {
-	static var previews: some View {
-		FontPicker("font", name: .constant("Test"), size: .constant(11))
-	}
+    static var previews: some View {
+        FontPicker("font", name: .constant("Test"), size: .constant(11))
+    }
 }
