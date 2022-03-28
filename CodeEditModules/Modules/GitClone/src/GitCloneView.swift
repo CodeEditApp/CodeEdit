@@ -21,54 +21,76 @@ public struct GitCloneView: View {
     }
     public var body: some View {
         VStack(spacing: 8) {
-            HStack(spacing: 8) {
-                TextField("Git Repository URL", text: $repoUrlStr)
-                    .lineLimit(1)
-                    .padding(.top, 15)
-                    .padding(.bottom, 15)
-                Button("Clone") {
-                    do {
-                        if repoUrlStr == "" {
-                            showAlert(alertMsg: "Url cannot be empty",
-                                      infoText: "You must specify a repository to clone")
-                            return
-                        }
-                        // Parsing repo name
-                        let repoURL = URL(string: repoUrlStr)
-                        var repoName = repoURL!.lastPathComponent
-                        // Strip .git from name if it has it.
-                        // Cloning repository without .git also works
-                        if repoName.contains(".git") {
-                            repoName.removeLast(4)
-                        }
-                        getPath(modifiable: &repoPath, saveName: repoName)
-                        let dirUrl = URL(string: repoPath)
-                        var isDir: ObjCBool = true
-                        if FileManager.default.fileExists(atPath: repoPath, isDirectory: &isDir) {
-                            showAlert(alertMsg: "Error", infoText: "Directory already exists")
-                            return
-                        }
-                        try FileManager.default.createDirectory(atPath: repoPath,
-                                                                withIntermediateDirectories: true,
-                                                                attributes: nil)
-                        try GitClient.default(directoryURL: dirUrl!,
-                                              shellClient: shellClient).cloneRepository(repoUrlStr)
-                        // TODO: Maybe add possibility to checkout to certain branch straight after cloning
-                        windowController.window?.close()
-                    } catch {
-                        guard let error = error as? GitClient.GitClientError else {
-                            return showAlert(alertMsg: "Error", infoText: error.localizedDescription)
-                        }
-                        switch error {
-                        case let .outputError(message):
-                            showAlert(alertMsg: "Error", infoText: message)
-                        case .notGitRepository:
-                            showAlert(alertMsg: "Error", infoText: "Not git repository")
-                        }
+            HStack {
+                Image(nsImage: NSApp.applicationIconImage)
+                    .resizable()
+                    .frame(width: 64, height: 64)
+                    .padding(.bottom, 50)
+                VStack(alignment: .leading) {
+                    Text("Clone an existing repository")
+                        .bold()
+                        .padding(.bottom, 2)
+                    Text("Enter a git repository URL:")
+                        .font(.system(size: 11))
+                        .foregroundColor(.secondary)
+                        .alignmentGuide(.trailing) { context in
+                        context[.trailing]
                     }
-                }
-                Button("Cancel") {
-                    windowController.window?.close()
+                    TextField("Git Repository URL", text: $repoUrlStr)
+                        .lineLimit(1)
+                        .padding(.bottom, 15)
+                        .frame(width: 300)
+                    HStack {
+                        Button("Cancel") {
+                            windowController.window?.close()
+                        }
+                        Button("Clone") {
+                            do {
+                                if repoUrlStr == "" {
+                                    showAlert(alertMsg: "Url cannot be empty",
+                                              infoText: "You must specify a repository to clone")
+                                    return
+                                }
+                                // Parsing repo name
+                                let repoURL = URL(string: repoUrlStr)
+                                var repoName = repoURL!.lastPathComponent
+                                // Strip .git from name if it has it.
+                                // Cloning repository without .git also works
+                                if repoName.contains(".git") {
+                                    repoName.removeLast(4)
+                                }
+                                getPath(modifiable: &repoPath, saveName: repoName)
+                                let dirUrl = URL(string: repoPath)
+                                var isDir: ObjCBool = true
+                                if FileManager.default.fileExists(atPath: repoPath, isDirectory: &isDir) {
+                                    showAlert(alertMsg: "Error", infoText: "Directory already exists")
+                                    return
+                                }
+                                try FileManager.default.createDirectory(atPath: repoPath,
+                                                                        withIntermediateDirectories: true,
+                                                                        attributes: nil)
+                                try GitClient.default(directoryURL: dirUrl!,
+                                                      shellClient: shellClient).cloneRepository(repoUrlStr)
+                                // TODO: Maybe add possibility to checkout to certain branch straight after cloning
+                                windowController.window?.close()
+                            } catch {
+                                guard let error = error as? GitClient.GitClientError else {
+                                    return showAlert(alertMsg: "Error", infoText: error.localizedDescription)
+                                }
+                                switch error {
+                                case let .outputError(message):
+                                    showAlert(alertMsg: "Error", infoText: message)
+                                case .notGitRepository:
+                                    showAlert(alertMsg: "Error", infoText: "Not git repository")
+                                }
+                            }
+                        }
+                        .keyboardShortcut(.defaultAction)
+                    }
+                    .offset(x: 185)
+                    .alignmentGuide(.leading) { context in
+                        context[.leading]
+                    }
                 }
             }
             .padding(.top, 20)
