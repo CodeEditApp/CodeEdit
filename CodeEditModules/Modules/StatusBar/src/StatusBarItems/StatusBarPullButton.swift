@@ -9,12 +9,12 @@ import SwiftUI
 
 @available(macOS 12, *)
 internal struct StatusBarPullButton: View {
-	@ObservedObject
+    @ObservedObject
     private var model: StatusBarModel
 
-	internal init(model: StatusBarModel) {
-		self.model = model
-	}
+    internal init(model: StatusBarModel) {
+        self.model = model
+    }
 
     internal var body: some View {
         Button {

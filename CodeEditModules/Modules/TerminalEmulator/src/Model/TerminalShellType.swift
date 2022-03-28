@@ -8,10 +8,10 @@
 import Foundation
 
 public enum TerminalShellType: String, CaseIterable, Hashable {
-	case bash
-	case zsh
-	case auto
+    case bash
+    case zsh
+    case auto
 
-	static public let `default` = TerminalShellType.auto
-	static public let storageKey = "terminalShellType"
+    static public let `default` = TerminalShellType.auto
+    static public let storageKey = "terminalShellType"
 }

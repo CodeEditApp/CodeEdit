@@ -9,23 +9,23 @@ import SwiftUI
 import SwiftTerm
 
 public extension TerminalEmulatorView {
-	class Coordinator: NSObject, LocalProcessTerminalViewDelegate {
+    class Coordinator: NSObject, LocalProcessTerminalViewDelegate {
 
-		public override init() {}
+        public override init() {}
 
-		public func hostCurrentDirectoryUpdate(source: TerminalView, directory: String?) {}
+        public func hostCurrentDirectoryUpdate(source: TerminalView, directory: String?) {}
 
-		public func sizeChanged(source: LocalProcessTerminalView, newCols: Int, newRows: Int) {}
+        public func sizeChanged(source: LocalProcessTerminalView, newCols: Int, newRows: Int) {}
 
-		public func setTerminalTitle(source: LocalProcessTerminalView, title: String) {}
+        public func setTerminalTitle(source: LocalProcessTerminalView, title: String) {}
 
-		public func processTerminated(source: TerminalView, exitCode: Int32?) {
-			guard let exitCode = exitCode else {
-				return
-			}
-			source.feed(text: "Exit code: \(exitCode)\n\r\n")
-			source.feed(text: "To open a new session close and reopen the terminal drawer")
-			TerminalEmulatorView.lastTerminal = nil
-		}
-	}
+        public func processTerminated(source: TerminalView, exitCode: Int32?) {
+            guard let exitCode = exitCode else {
+                return
+            }
+            source.feed(text: "Exit code: \(exitCode)\n\r\n")
+            source.feed(text: "To open a new session close and reopen the terminal drawer")
+            TerminalEmulatorView.lastTerminal = nil
+        }
+    }
 }

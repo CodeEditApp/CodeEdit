@@ -9,22 +9,22 @@ import SwiftUI
 
 @available(macOS 12, *)
 internal struct StatusBarLineEndSelector: View {
-	@ObservedObject
+    @ObservedObject
     private var model: StatusBarModel
 
-	internal init(model: StatusBarModel) {
-		self.model = model
-	}
+    internal init(model: StatusBarModel) {
+        self.model = model
+    }
 
-	internal var body: some View {
-		Menu {
-			// LF, CRLF
-		} label: {
-			Text("LF")
-				.font(model.toolbarFont)
-		}
-		.menuStyle(.borderlessButton)
-		.fixedSize()
-		.onHover { isHovering($0) }
-	}
+    internal var body: some View {
+        Menu {
+            // LF, CRLF
+        } label: {
+            Text("LF")
+                .font(model.toolbarFont)
+        }
+        .menuStyle(.borderlessButton)
+        .fixedSize()
+        .onHover { isHovering($0) }
+    }
 }

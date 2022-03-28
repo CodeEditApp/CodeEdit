@@ -10,7 +10,7 @@ import Foundation
 
 public extension WorkspaceClient {
     static var empty = Self(
-		folderURL: { nil },
+        folderURL: { nil },
         getFiles: CurrentValueSubject<[FileItem], Never>([]).eraseToAnyPublisher(),
         getFileItem: { _ in throw WorkspaceClientError.fileNotExist }
     )

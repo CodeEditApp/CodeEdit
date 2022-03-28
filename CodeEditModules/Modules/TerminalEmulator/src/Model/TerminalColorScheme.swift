@@ -8,10 +8,10 @@
 import Foundation
 
 public enum TerminalColorScheme: String, CaseIterable, Hashable {
-	case auto
-	case light
-	case dark
+    case auto
+    case light
+    case dark
 
-	static public let `default` = TerminalColorScheme.auto
-	static public let storageKey = "terminalColorScheme"
+    static public let `default` = TerminalColorScheme.auto
+    static public let storageKey = "terminalColorScheme"
 }
