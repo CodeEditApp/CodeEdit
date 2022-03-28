@@ -55,7 +55,7 @@ struct WorkspaceView: View {
 		HSplitView {
             ZStack {
                 WorkspaceCodeFileView(windowController: windowController, workspace: workspace)
-                    .frame(minWidth: 150, maxHeight: .infinity)
+                    .frame(minWidth: 500, maxHeight: .infinity)
             }
             .safeAreaInset(edge: .bottom) {
                 if let url = workspace.fileURL {
