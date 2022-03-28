@@ -64,7 +64,7 @@ struct WorkspaceView: View {
             }
             .layoutPriority(1)
             InspectorSidebar(workspace: workspace, windowController: windowController)
-                .frame(minWidth: 150, idealWidth: 200, maxHeight: .infinity)
+                .frame(minWidth: 260, idealWidth: 300, maxHeight: .infinity)
         }
 	}
 }
