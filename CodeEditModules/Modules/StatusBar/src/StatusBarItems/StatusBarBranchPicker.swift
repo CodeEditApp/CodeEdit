@@ -16,9 +16,6 @@ internal struct StatusBarBranchPicker: View {
 		self.model = model
 	}
 
-	internal var body: some View {
-		Menu {
-
     internal var body: some View {
         Menu {
             ForEach((try? model.gitClient.getBranches()) ?? [], id: \.self) { branch in

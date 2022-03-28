@@ -50,43 +50,6 @@ public class StatusBarModel: ObservableObject {
 	@Published
     public var isDragging: Bool = false
 
-	/// Returns the font for status bar items to use
-	private (set) var toolbarFont: Font = .system(size: 11)
-
-	/// A GitClient instance
-	private (set) var gitClient: GitClient
-
-	/// The base URL of the workspace
-	private (set) var workspaceURL: URL
-
-	/// The maximum height of the drawer
-	private (set) var maxHeight: Double = 500
-
-	/// The default height of the drawer
-	private (set) var standardHeight: Double = 300
-
-	/// The minimum height of the drawe
-	private (set) var minHeight: Double = 100
-
-	// TODO: Add @Published vars for indentation, encoding, linebreak
-
-	/// Initialize with a GitClient
-	/// - Parameter workspaceURL: the current workspace URL
-	///
-	public init(workspaceURL: URL) {
-		self.workspaceURL = workspaceURL
-		self.gitClient = GitClient.default(directoryURL: workspaceURL)
-		if gitClient.getCurrentBranchName().contains("fatal: not a git repository") {
-			self.selectedBranch = nil
-		} else {
-			self.selectedBranch = gitClient.getCurrentBranchName()
-		}
-		StatusBarModel.shared = self
-	}
-
-	/// shared instance that persists though session
-	public static var shared: StatusBarModel?
-
     /// Returns the font for status bar items to use
     private(set) var toolbarFont: Font = .system(size: 11)
 
