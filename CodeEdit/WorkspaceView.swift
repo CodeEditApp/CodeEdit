@@ -7,6 +7,7 @@
 
 import SwiftUI
 import WorkspaceClient
+import StatusBar
 
 struct WorkspaceView: View {
     init(windowController: NSWindowController, workspace: WorkspaceDocument) {
@@ -28,10 +29,7 @@ struct WorkspaceView: View {
     var body: some View {
         NavigationView {
             if workspace.workspaceClient != nil {
-                NavigatorSidebar(workspace: workspace, windowController: windowController)
-                    .frame(minWidth: 250)
-                WorkspaceCodeFileView(windowController: windowController,
-                                      workspace: workspace)
+				content
             } else {
                 EmptyView()
             }
@@ -49,6 +47,25 @@ struct WorkspaceView: View {
             }
         }
     }
+
+	@ViewBuilder
+	private var content: some View {
+		LeadingSidebar(workspace: workspace, windowController: windowController)
+			.frame(minWidth: 250)
+		HSplitView {
+			ZStack {
+				WorkspaceCodeFileView(windowController: windowController,
+									  workspace: workspace)
+			}
+			.safeAreaInset(edge: .bottom) {
+				if let url = workspace.fileURL {
+					StatusBarView(workspaceURL: url)
+				}
+			}
+			InspectorSidebar(workspace: workspace, windowController: windowController)
+				.frame(minWidth: 250, maxWidth: 250, maxHeight: .infinity)
+		}
+	}
 }
 
 struct WorkspaceView_Previews: PreviewProvider {

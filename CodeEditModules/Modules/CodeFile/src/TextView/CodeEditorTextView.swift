@@ -48,7 +48,10 @@ class CodeEditorTextView: NSTextView {
         // get line before newline
         let currentLine = self.currentLine
         let prefix = currentLine.prefix {
-            guard let scalar = $0.unicodeScalars.first else { return false }
+            guard let scalar = $0.unicodeScalars.first else {
+                return false
+            }
+
             return CharacterSet.whitespaces.contains(scalar)
         }
 
