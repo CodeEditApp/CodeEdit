@@ -32,21 +32,7 @@ struct BreadcrumbsView: View {
                         if fileItem.parent != nil {
                             chevron
                         }
-                        /// If current `fileItem` has no parent, it's the workspace root directory
-                        /// else if current `fileItem` has no children, it's the opened file
-                        /// else it's a folder
-                        let color = fileItem.parent == nil
-                        ? .accentColor
-                        : fileItem.children?.isEmpty ?? true
-                        ? fileItem.iconColor
-                        : .secondary
-                        BreadcrumbsMenu(workspace,
-                                        title: fileItem.fileName,
-                                        systemImage: fileItem.parent == nil
-                                        ? "square.dashed.inset.filled"
-                                        : fileItem.systemImage,
-                                        color: color,
-                                        parentFileItem: fileItem.parent)
+                        BreadcrumbsComponent(workspace, fileItem: fileItem)
                     }
                 }
                 .padding(.horizontal, 12)
@@ -73,7 +59,6 @@ struct BreadcrumbsView: View {
     private func fileInfo(_ file: WorkspaceClient.FileItem) {
         self.fileItems = []
         var currentFile: WorkspaceClient.FileItem? = file
-        /// Traverse from bottom to top until `currentFile` has no parent.
         while currentFile != nil {
             self.fileItems.insert(currentFile!, at: 0)
             currentFile = currentFile!.parent
