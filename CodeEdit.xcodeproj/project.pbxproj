@@ -275,7 +275,9 @@
 				B658FB2D27DA9E0F00EA4DBD /* Products */,
 				5C403B8D27E20F8000788241 /* Frameworks */,
 			);
+			indentWidth = 4;
 			sourceTree = "<group>";
+			tabWidth = 4;
 		};
 		B658FB2D27DA9E0F00EA4DBD /* Products */ = {
 			isa = PBXGroup;

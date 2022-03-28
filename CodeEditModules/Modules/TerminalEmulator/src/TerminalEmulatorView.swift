@@ -16,11 +16,11 @@ import SwiftTerm
 /// for use in SwiftUI.
 ///
 public struct TerminalEmulatorView: NSViewRepresentable {
-	@Environment(\.colorScheme) var colorScheme
 	@AppStorage(TerminalShellType.storageKey) var shellType: TerminalShellType = .default
 	@AppStorage(TerminalFont.storageKey) var terminalFontSelection: TerminalFont = .default
 	@AppStorage(TerminalFontName.storageKey) var terminalFontName: String = TerminalFontName.default
 	@AppStorage(TerminalFontSize.storageKey) var terminalFontSize: Int = TerminalFontSize.default
+	@AppStorage(TerminalColorScheme.storageKey) var terminalColorSchmeme: TerminalColorScheme = .default
 
 	@StateObject private var ansiColors: AnsiColors = .shared
 
@@ -90,6 +90,16 @@ public struct TerminalEmulatorView: NSViewRepresentable {
 		return ansiColors.mappedColors.map { SwiftTerm.Color(hex: $0) }
 	}
 
+	/// returns a `NSAppearance` based on the user setting of the terminal appearance,
+	/// `nil` if app default is not overriden
+	private var colorAppearance: NSAppearance? {
+		switch terminalColorSchmeme {
+		case .auto: return nil
+		case .light: return .init(named: .aqua)
+		case .dark: return .init(named: .darkAqua)
+		}
+	}
+
 	/// Inherited from NSViewRepresentable.makeNSView(context:).
 	public func makeNSView(context: Context) -> LocalProcessTerminalView {
 		terminal.processDelegate = context.coordinator
@@ -98,6 +108,7 @@ public struct TerminalEmulatorView: NSViewRepresentable {
 	}
 
 	public func setupSession() {
+		terminal.getTerminal().silentLog = true
 		if TerminalEmulatorView.lastTerminal == nil {
 			let shell = getShell()
 			let shellIdiom = "-" + NSString(string: shell).lastPathComponent
@@ -113,6 +124,7 @@ public struct TerminalEmulatorView: NSViewRepresentable {
 			terminal.configureNativeColors()
 			terminal.installColors(self.colors)
 		}
+		terminal.appearance = colorAppearance
 		TerminalEmulatorView.lastTerminal = terminal
 	}
 
@@ -122,6 +134,7 @@ public struct TerminalEmulatorView: NSViewRepresentable {
 		}
 		view.configureNativeColors()
 		view.installColors(self.colors)
+		view.appearance = colorAppearance
 		if TerminalEmulatorView.lastTerminal != nil {
 			TerminalEmulatorView.lastTerminal = view
 		}

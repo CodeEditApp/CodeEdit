@@ -1,58 +1,98 @@
 //
-//  Interface.swift
+//  Live.swift
 //  CodeFile
 //
 //  Created by Marco Carnevali on 21/03/22.
 //
 
 import Foundation
+import ShellClient
 
 public extension GitClient {
-    static func `default`(directoryURL: URL) -> GitClient {
-        func shell(_ command: String) -> String {
-            let command = "cd \(directoryURL.relativePath);\(command)"
-            let task = Process()
-            let pipe = Pipe()
-            task.standardOutput = pipe
-            task.standardError = pipe
-            task.arguments = ["-c", command]
-            task.executableURL = URL(fileURLWithPath: "/bin/zsh")
-            try? task.run()
-            let data = pipe.fileHandleForReading.readDataToEndOfFile()
-            return String(data: data, encoding: .utf8) ?? ""
-        }
-
-        func getBranches() -> [String] {
-            shell("git branch --format \"%(refname:short)\"")
+    // swiftlint:disable function_body_length
+    static func `default`(
+        directoryURL: URL,
+        shellClient: ShellClient
+    ) -> GitClient {
+        func getBranches() throws -> [String] {
+            try shellClient.run(
+                "cd \(directoryURL.relativePath);git branch --format \"%(refname:short)\""
+            )
                 .components(separatedBy: "\n")
                 .filter { $0 != "" }
         }
 
-        func getCurrentBranchName() -> String {
-            shell("git rev-parse --abbrev-ref HEAD")
+        func getCurrentBranchName() throws -> String {
+            let output = try shellClient.run(
+                "cd \(directoryURL.relativePath);git rev-parse --abbrev-ref HEAD"
+            )
                 .replacingOccurrences(of: "\n", with: "")
+            if output.contains("fatal: not a git repository") {
+                throw GitClientError.notGitRepository
+            }
+            return output
         }
 
         func checkoutBranch(name: String) throws {
-            guard getCurrentBranchName() != name else { return }
-            let output = shell("git checkout \(name)")
-            if !output.contains("Switched to branch") {
+            guard try getCurrentBranchName() != name else { return }
+            let output = try shellClient.run(
+                "cd \(directoryURL.relativePath);git checkout \(name)"
+            )
+            if output.contains("fatal: not a git repository") {
+                throw GitClientError.notGitRepository
+            } else if !output.contains("Switched to branch") {
                 throw GitClientError.outputError(output)
             }
         }
         func cloneRepository(url: String) throws {
-            let output = shell("git clone \(url) .")
+            let output = try shellClient.run("cd \(directoryURL.relativePath);git clone \(url) .")
             if output.contains("fatal") {
                 throw GitClientError.outputError(output)
             }
+        }
+
+        func getCommitHistory(entries: Int?) throws -> [Commit] {
+            var entriesString = ""
+            if let entries = entries { entriesString = "-n \(entries)" }
+            let dateFormatter = DateFormatter()
+            dateFormatter.locale = Locale.current
+            dateFormatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss Z"
+            return try shellClient.run(
+                "cd \(directoryURL.relativePath);git log --pretty=%h¦%s¦%aN¦%aD¦ \(entriesString)"
+            )
+                .split(separator: "\n")
+                .map { line -> Commit in
+                    let parameters = line.components(separatedBy: "¦")
+                    return Commit(
+                        hash: parameters[safe: 0] ?? "",
+                        message: parameters[safe: 1] ?? "",
+                        author: parameters[safe: 2] ?? "",
+                        date: dateFormatter.date(from: parameters[safe: 3] ?? "") ?? Date()
+                    )
+                }
         }
 
         return GitClient(
             getCurrentBranchName: getCurrentBranchName,
             getBranches: getBranches,
             checkoutBranch: checkoutBranch(name:),
-            pull: { _ = shell("git pull") },
-            cloneRepository: cloneRepository(url:)
+            pull: {
+                let output = try shellClient.run(
+                    "cd \(directoryURL.relativePath);git pull"
+                )
+                if output.contains("fatal: not a git repository") {
+                    throw GitClientError.notGitRepository
+                }
+            },
+            cloneRepository: cloneRepository(url:),
+            getCommitHistory: getCommitHistory(entries:)
         )
+    }
+}
+
+private extension Collection {
+    /// Returns the element at the specified index if it is within bounds, otherwise nil.
+    subscript (safe index: Index) -> Element? {
+        return indices.contains(index) ? self[index] : nil
     }
 }

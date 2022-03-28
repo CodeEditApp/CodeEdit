@@ -8,13 +8,16 @@
 import SwiftUI
 import GitClient
 import Foundation
+import ShellClient
 
 public struct GitCloneView: View {
     var windowController: NSWindowController
+    var shellClient: ShellClient
     @State private var repoUrlStr = ""
     @State private var repoPath = "~/"
-    public init(windowController: NSWindowController) {
+    public init(windowController: NSWindowController, shellClient: ShellClient) {
         self.windowController = windowController
+        self.shellClient = shellClient
     }
     public var body: some View {
         VStack(spacing: 8) {
@@ -48,7 +51,8 @@ public struct GitCloneView: View {
                         try FileManager.default.createDirectory(atPath: repoPath,
                                                                 withIntermediateDirectories: true,
                                                                 attributes: nil)
-                        try GitClient.default(directoryURL: dirUrl!).cloneRepository(repoUrlStr)
+                        try GitClient.default(directoryURL: dirUrl!,
+                                              shellClient: shellClient).cloneRepository(repoUrlStr)
                         // TODO: Maybe add possibility to checkout to certain branch straight after cloning
                         windowController.window?.close()
                     } catch {
@@ -58,6 +62,8 @@ public struct GitCloneView: View {
                         switch error {
                         case let .outputError(message):
                             showAlert(alertMsg: "Error", infoText: message)
+                        case .notGitRepository:
+                            showAlert(alertMsg: "Error", infoText: "Not git repository")
                         }
                     }
                 }
