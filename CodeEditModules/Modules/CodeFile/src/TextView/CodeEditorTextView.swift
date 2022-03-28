@@ -6,9 +6,11 @@
 //
 
 import Cocoa
+import SwiftUI
 
 public class CodeEditorTextView: NSTextView {
-    public static var tabWidth = UserDefaults.standard.value(forKey: "defaultTabWidth") as? Int ?? 4
+    @AppStorage(EditorTabWidth.storageKey)
+    public static var tabWidth: Int = EditorTabWidth.default
 
     init(
         textContainer container: NSTextContainer?
