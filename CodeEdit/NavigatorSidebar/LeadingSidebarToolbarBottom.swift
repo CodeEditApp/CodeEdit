@@ -8,9 +8,11 @@
 import SwiftUI
 
 struct LeadingSidebarToolbarBottom: View {
-	@Environment(\.controlActiveState) var activeState
+	@Environment(\.controlActiveState)
+    var activeState
 
-	@ObservedObject var workspace: WorkspaceDocument
+	@ObservedObject
+    var workspace: WorkspaceDocument
 
     var body: some View {
 		HStack(spacing: 10) {

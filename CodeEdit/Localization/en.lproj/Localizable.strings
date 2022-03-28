@@ -26,6 +26,9 @@
 // Settings - Editor Theme
 "Editor Theme"="Editor Theme";
 
+// Settings - Default Tab Width
+"Default Tab Width"="Default Tab Width";
+
 // Settings - Terminal Tab
 "Terminal"="Terminal";
 

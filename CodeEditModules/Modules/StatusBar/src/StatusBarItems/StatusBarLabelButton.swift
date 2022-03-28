@@ -9,8 +9,8 @@ import SwiftUI
 
 @available(macOS 12, *)
 internal struct StatusBarLabelButton: View {
-
-	@ObservedObject private var model: StatusBarModel
+	@ObservedObject
+    private var model: StatusBarModel
 
 	private var title: String
 	private var image: String

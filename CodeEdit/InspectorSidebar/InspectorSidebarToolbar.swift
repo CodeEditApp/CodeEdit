@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct InspectorSidebarToolbarTop: View {
-    @Binding var selection: Int
+    @Binding
+    var selection: Int
 
     var body: some View {
         HStack(spacing: 10) {

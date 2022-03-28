@@ -19,12 +19,20 @@ struct WorkspaceView: View {
     var tabBarHeight = 28.0
     private var path: String = ""
 
-    @ObservedObject var workspace: WorkspaceDocument
+    @ObservedObject
+    var workspace: WorkspaceDocument
 
-    @State private var showingAlert = false
-    @State private var alertTitle = ""
-    @State private var alertMsg = ""
-    @State var showInspector = true
+    @State
+    private var showingAlert = false
+
+    @State
+    private var alertTitle = ""
+
+    @State
+    private var alertMsg = ""
+
+    @State
+    var showInspector = true
 
     var body: some View {
         NavigationView {

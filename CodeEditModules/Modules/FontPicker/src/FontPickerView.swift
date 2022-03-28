@@ -22,21 +22,26 @@ class FontPickerDelegate {
 }
 
 public struct FontPicker: View {
-	let labelString: String
+    let labelString: String
 
-	@Binding var fontName: String
-	@Binding var fontSize: Int
-	@State var fontPickerDelegate: FontPickerDelegate?
+    @Binding
+    var fontName: String
 
-	private var font: NSFont {
-		get {
-			NSFont(name: fontName, size: CGFloat(fontSize)) ?? .systemFont(ofSize: CGFloat(fontSize))
-		}
-		set {
-			self.fontName = newValue.fontName
-			self.fontSize = Int(newValue.pointSize)
-		}
-	}
+    @Binding
+    var fontSize: Int
+
+    @State
+    var fontPickerDelegate: FontPickerDelegate?
+
+    private var font: NSFont {
+        get {
+            NSFont(name: fontName, size: CGFloat(fontSize)) ?? .systemFont(ofSize: CGFloat(fontSize))
+        }
+        set {
+            self.fontName = newValue.fontName
+            self.fontSize = Int(newValue.pointSize)
+        }
+    }
 
 	public init(_ label: String, name: Binding<String>, size: Binding<Int>) {
 		self.labelString = label

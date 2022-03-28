@@ -8,9 +8,13 @@
 import SwiftUI
 
 struct FindNavigatorSearchBar: View {
-    @ObservedObject var state: WorkspaceDocument.SearchState
+    @ObservedObject
+    var state: WorkspaceDocument.SearchState
+
     let title: String
-    @Binding var text: String
+
+    @Binding
+    var text: String
 
     var body: some View {
         HStack {

@@ -20,7 +20,8 @@ struct ProjectNavigator: View {
 	var windowController: NSWindowController
 
 	/// The `ID` of the currently selected file/folder. If none is selected this is `nil`
-	@State private var selection: WorkspaceClient.FileItem.ID?
+	@State
+    private var selection: WorkspaceClient.FileItem.ID?
 
     var body: some View {
 		List(selection: $selection) {

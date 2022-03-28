@@ -16,7 +16,8 @@ public enum CodeFileError: Error {
 
 @objc(CodeFileDocument)
 public final class CodeFileDocument: NSDocument, ObservableObject {
-    @Published var content = ""
+    @Published
+    var content = ""
 
     // MARK: - NSDocument
 

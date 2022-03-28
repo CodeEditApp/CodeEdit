@@ -9,7 +9,9 @@ import SwiftUI
 import WorkspaceClient
 
 struct TabBarDivider: View {
-    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.colorScheme)
+    var colorScheme
+
     let height: CGFloat = 1
 
     var body: some View {
@@ -22,10 +24,16 @@ struct TabBarDivider: View {
 }
 
 struct TabBar: View {
-    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.colorScheme)
+    var colorScheme
+
     var windowController: NSWindowController
-    @ObservedObject var workspace: WorkspaceDocument
+
+    @ObservedObject
+    var workspace: WorkspaceDocument
+
     var tabBarHeight = 28.0
+
     var body: some View {
         VStack(spacing: 0.0) {
             ZStack(alignment: .top) {

@@ -9,8 +9,8 @@ import SwiftUI
 import TerminalEmulator
 
 internal struct StatusBarDrawer: View {
-
-	@ObservedObject private var model: StatusBarModel
+	@ObservedObject
+    private var model: StatusBarModel
 
 	internal init(model: StatusBarModel) {
 		self.model = model
