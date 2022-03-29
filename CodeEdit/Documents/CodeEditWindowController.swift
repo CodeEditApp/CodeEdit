@@ -15,80 +15,67 @@ class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     var workspace: WorkspaceDocument?
     var quickOpenPanel: OverlayPanel?
 
+    private var splitViewController: NSSplitViewController! {
+        get { return contentViewController as? NSSplitViewController }
+        set { contentViewController = newValue }
+    }
+
     init(window: NSWindow, workspace: WorkspaceDocument) {
         super.init(window: window)
-        print("INIT")
         self.workspace = workspace
 
-        let splitVC = NSSplitViewController()
-
-        let sidebar = NSSplitViewItem(
-            sidebarWithViewController: NSHostingController(
-                rootView: NavigatorSidebar(workspace: workspace, windowController: self)
-            )
-        )
-        sidebar.minimumThickness = 260
-        splitVC.addSplitViewItem(sidebar)
-
-        let content = NSSplitViewItem(
-            viewController: NSHostingController(
-                rootView: WorkspaceView(windowController: self, workspace: workspace)
-            )
-        )
-        splitVC.addSplitViewItem(content)
-
-        let detail = NSSplitViewItem(
-            viewController: NSHostingController(
-                rootView: InspectorSidebar(workspace: workspace, windowController: self)
-            )
-        )
-        detail.collapseBehavior = .preferResizingSiblingsWithFixedSplitView
-
-        splitVC.splitView.setHoldingPriority(.dragThatCannotResizeWindow, forSubviewAt: 2)
-        splitVC.addSplitViewItem(detail)
-
-        self.splitViewController = splitVC
-
-        let toolbar = NSToolbar(identifier: UUID().uuidString)
-        toolbar.delegate = self
-        toolbar.displayMode = .labelOnly
-        window.toolbarStyle = .unifiedCompact
-        window.titlebarSeparatorStyle = .none
-        window.toolbar = toolbar
-
+        setupSplitView(with: workspace)
+        setupToolbar()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // Dangerous convenience alias so you can access the NSSplitViewController and manipulate it later on
-    private var splitViewController: NSSplitViewController! {
-        get { return contentViewController as? NSSplitViewController }
-        set { contentViewController = newValue }
+    private func setupSplitView(with workspace: WorkspaceDocument) {
+        let splitVC = NSSplitViewController()
+
+        let navigatorView = NavigatorSidebar(workspace: workspace, windowController: self)
+        let navigator = NSSplitViewItem(
+            sidebarWithViewController: NSHostingController(rootView: navigatorView)
+        )
+        navigator.minimumThickness = 260
+        splitVC.addSplitViewItem(navigator)
+
+        let workspaceView = WorkspaceView(windowController: self, workspace: workspace)
+        let mainContent = NSSplitViewItem(
+            viewController: NSHostingController(rootView: workspaceView)
+        )
+        splitVC.addSplitViewItem(mainContent)
+
+        let inspectorView = InspectorSidebar(workspace: workspace, windowController: self)
+        let inspector = NSSplitViewItem(
+            viewController: NSHostingController(rootView: inspectorView)
+        )
+        inspector.minimumThickness = 260
+        inspector.isCollapsed = true
+        inspector.collapseBehavior = .preferResizingSiblingsWithFixedSplitView
+        splitVC.addSplitViewItem(inspector)
+
+        self.splitViewController = splitVC
     }
 
-    @objc func toggleFirstPanel() {
-        guard let firstSplitView = splitViewController.splitViewItems.first else { return }
-        firstSplitView.animator().isCollapsed.toggle()
+    private func setupToolbar() {
+        let toolbar = NSToolbar(identifier: UUID().uuidString)
+        toolbar.delegate = self
+        toolbar.displayMode = .labelOnly
+        self.window?.toolbarStyle = .unifiedCompact
+        self.window?.titlebarSeparatorStyle = .none
+        self.window?.toolbar = toolbar
     }
 
-    @objc func toggleLastPanel() {
-        guard let lastSplitView = splitViewController.splitViewItems.last else { return }
-        lastSplitView.animator().isCollapsed.toggle()
-        if lastSplitView.animator().isCollapsed {
-            window?.toolbar?.removeItem(at: 3)
-        } else {
-            window?.toolbar?.insertItem(withItemIdentifier: .itemListTrackingSeparator, at: 3)
-        }
-    }
+    // MARK: - Toolbar
 
     func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
         return [
             .toggleFirstSidebarItem,
             .sidebarTrackingSeparator,
             .flexibleSpace,
-            .itemListTrackingSeparator,
             .flexibleSpace,
             .toggleLastSidebarItem
         ]
@@ -123,9 +110,9 @@ class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
             }
         case .toggleFirstSidebarItem:
             let toolbarItem = NSToolbarItem(itemIdentifier: NSToolbarItem.Identifier.toggleFirstSidebarItem)
-            toolbarItem.label = "Sidebar"
-            toolbarItem.paletteLabel = "Sidebar"
-            toolbarItem.toolTip = "Toggle Sidebar"
+            toolbarItem.label = "Navigator Sidebar"
+            toolbarItem.paletteLabel = " Navigator Sidebar"
+            toolbarItem.toolTip = "Hide or show the Navigator"
             toolbarItem.isBordered = true
             toolbarItem.target = self
             toolbarItem.action = #selector(self.toggleFirstPanel)
@@ -134,29 +121,20 @@ class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
                 accessibilityDescription: nil
             )?.withSymbolConfiguration(.init(scale: .large))
 
-            let menuItem = NSMenuItem()
-            menuItem.submenu = nil
-            menuItem.title = "Sidebar"
-
-            toolbarItem.menuFormRepresentation = menuItem
             return toolbarItem
         case .toggleLastSidebarItem:
             let toolbarItem = NSToolbarItem(itemIdentifier: NSToolbarItem.Identifier.toggleFirstSidebarItem)
-            toolbarItem.label = "Sidebar"
-            toolbarItem.paletteLabel = "Sidebar"
-            toolbarItem.toolTip = "Toggle Sidebar"
+            toolbarItem.label = "Inspector Sidebar"
+            toolbarItem.paletteLabel = "Inspector Sidebar"
+            toolbarItem.toolTip = "Hide or show the Inspectors"
+            toolbarItem.isBordered = true
             toolbarItem.target = self
             toolbarItem.action = #selector(self.toggleLastPanel)
             toolbarItem.image = NSImage(
                 systemSymbolName: "sidebar.trailing",
                 accessibilityDescription: nil
-            )?.withSymbolConfiguration(.init(scale: .small))
+            )?.withSymbolConfiguration(.init(scale: .large))
 
-            let menuItem = NSMenuItem()
-            menuItem.submenu = nil
-            menuItem.title = "Sidebar"
-
-            toolbarItem.menuFormRepresentation = menuItem
             return toolbarItem
         default:
             return NSToolbarItem(itemIdentifier: itemIdentifier)
@@ -165,9 +143,21 @@ class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
 
     override func windowDidLoad() {
         super.windowDidLoad()
+    }
 
-        // Implement this method to handle any initialization after your window controller's
-        // window has been loaded from its nib file.
+    @objc func toggleFirstPanel() {
+        guard let firstSplitView = splitViewController.splitViewItems.first else { return }
+        firstSplitView.animator().isCollapsed.toggle()
+    }
+
+    @objc func toggleLastPanel() {
+        guard let lastSplitView = splitViewController.splitViewItems.last else { return }
+        lastSplitView.animator().isCollapsed.toggle()
+        if lastSplitView.animator().isCollapsed {
+            window?.toolbar?.removeItem(at: 3)
+        } else {
+            window?.toolbar?.insertItem(withItemIdentifier: .itemListTrackingSeparator, at: 3)
+        }
     }
 
     private func getSelectedCodeFile() -> CodeFileDocument? {
