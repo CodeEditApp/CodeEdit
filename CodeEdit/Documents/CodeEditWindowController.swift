@@ -53,6 +53,7 @@ class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
             viewController: NSHostingController(rootView: inspectorView)
         )
         inspector.minimumThickness = 260
+        inspector.maximumThickness = 260
         inspector.isCollapsed = true
         inspector.collapseBehavior = .preferResizingSiblingsWithFixedSplitView
         splitVC.addSplitViewItem(inspector)
