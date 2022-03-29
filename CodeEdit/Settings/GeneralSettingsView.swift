@@ -12,7 +12,6 @@ import Preferences
 // MARK: - View
 
 struct GeneralSettingsView: View {
-<<<<<<< HEAD
     @AppStorage(Appearances.storageKey)
     var appearance: Appearances = .default
 
@@ -60,8 +59,8 @@ struct GeneralSettingsView: View {
                     .fixedSize()
                 }
 
-                HStack {
-                    Stepper("Default Tab Width".localized(), value: $defaultTabWidth, in: 2...8)
+                Preferences.Section(title: "Default Tab Width") {
+                    Stepper("", value: $defaultTabWidth, in: 2...8)
                     Text(String(defaultTabWidth))
                 }
             }
