@@ -34,6 +34,7 @@ internal struct StatusBarLabelButton: View {
         }
         .buttonStyle(.borderless)
         .foregroundStyle(.primary)
+        .fixedSize()
         .onHover { isHovering($0) }
     }
 

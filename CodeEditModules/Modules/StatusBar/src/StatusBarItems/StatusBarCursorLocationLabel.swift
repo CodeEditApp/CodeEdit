@@ -20,6 +20,7 @@ internal struct StatusBarCursorLocationLabel: View {
         Text("Ln \(model.currentLine), Col \(model.currentCol)")
             .font(model.toolbarFont)
             .foregroundStyle(.primary)
+            .fixedSize()
             .lineLimit(1)
             .onHover { isHovering($0) }
     }

@@ -47,7 +47,8 @@ internal struct StatusBarBranchPicker: View {
                 .font(model.toolbarFont)
         }
         .menuStyle(.borderlessButton)
-        .fixedSize(horizontal: false, vertical: true)
+        .frame(maxWidth: 150)
+        .fixedSize(horizontal: true, vertical: true)
         .onHover { isHovering($0) }
         .disabled(model.selectedBranch == nil)
     }
