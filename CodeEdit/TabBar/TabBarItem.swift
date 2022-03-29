@@ -101,6 +101,7 @@ struct TabBarItem: View {
                 Image(systemName: item.systemImage)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
+                    .foregroundColor(item.iconColor)
                     .frame(width: 12, height: 12)
                 Text(item.url.lastPathComponent)
                     .font(.system(size: 11.0))
