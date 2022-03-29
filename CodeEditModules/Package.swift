@@ -45,10 +45,10 @@ let package = Package(
             name: "GitClone",
             targets: ["GitClone"]
         ),
-		.library(
-			name: "FontPicker",
-			targets: ["FontPicker"]
-		),
+        .library(
+            name: "FontPicker",
+            targets: ["FontPicker"]
+        ),
         .library(
             name: "ShellClient",
             targets: ["ShellClient"]
@@ -117,6 +117,7 @@ let package = Package(
             dependencies: [
                 "GitClient",
                 "TerminalEmulator",
+                "CodeFile",
             ],
             path: "Modules/StatusBar/src"
         ),
@@ -159,10 +160,10 @@ let package = Package(
             ],
             path: "Modules/GitClone/src"
         ),
-		.target(
-			name: "FontPicker",
-			path: "Modules/FontPicker/src"
-		),
+        .target(
+            name: "FontPicker",
+            path: "Modules/FontPicker/src"
+        ),
         .target(
             name: "ShellClient",
             path: "Modules/ShellClient/src"

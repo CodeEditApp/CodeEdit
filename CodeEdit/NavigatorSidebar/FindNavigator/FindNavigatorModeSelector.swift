@@ -9,7 +9,8 @@ import SwiftUI
 import Search
 
 struct FindNavigatorModeSelector: View {
-    @State var selectedMode: [SearchModeModel] = [
+    @State
+    var selectedMode: [SearchModeModel] = [
         .Find,
         .Text,
         .Containing

@@ -19,22 +19,37 @@ struct WorkspaceView: View {
     var tabBarHeight = 28.0
     private var path: String = ""
 
-    @ObservedObject var workspace: WorkspaceDocument
+    @ObservedObject
+    var workspace: WorkspaceDocument
 
-    @State private var showingAlert = false
-    @State private var alertTitle = ""
-    @State private var alertMsg = ""
-    @State var showInspector = true
+    @State
+    private var showingAlert = false
+
+    @State
+    private var alertTitle = ""
+
+    @State
+    private var alertMsg = ""
+
+    @State
+    var showInspector = true
 
     var body: some View {
-        NavigationView {
+        ZStack {
             if workspace.workspaceClient != nil {
-				content
+                WorkspaceCodeFileView(windowController: windowController, workspace: workspace)
+                    .safeAreaInset(edge: .bottom) {
+                        if let url = workspace.fileURL {
+                            StatusBarView(workspaceURL: url)
+                        }
+                    }
+                    .overlay(alignment: .top) {
+                        Divider()
+                    }
             } else {
                 EmptyView()
             }
         }
-        .frame(minWidth: 1000, minHeight: 600)
         .alert(alertTitle, isPresented: $showingAlert, actions: {
             Button(
                 action: { showingAlert = false },
@@ -47,25 +62,6 @@ struct WorkspaceView: View {
             }
         }
     }
-
-	@ViewBuilder
-	private var content: some View {
-		LeadingSidebar(workspace: workspace, windowController: windowController)
-			.frame(minWidth: 250)
-		HSplitView {
-			ZStack {
-				WorkspaceCodeFileView(windowController: windowController,
-									  workspace: workspace)
-			}
-			.safeAreaInset(edge: .bottom) {
-				if let url = workspace.fileURL {
-					StatusBarView(workspaceURL: url)
-				}
-			}
-			InspectorSidebar(workspace: workspace, windowController: windowController)
-				.frame(minWidth: 250, maxWidth: 250, maxHeight: .infinity)
-		}
-	}
 }
 
 struct WorkspaceView_Previews: PreviewProvider {

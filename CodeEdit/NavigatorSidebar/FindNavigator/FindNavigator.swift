@@ -10,8 +10,11 @@ import WorkspaceClient
 import Search
 
 struct FindNavigator: View {
-    @ObservedObject var state: WorkspaceDocument.SearchState
-    @State private var searchText: String = ""
+    @ObservedObject
+    var state: WorkspaceDocument.SearchState
+
+    @State
+    private var searchText: String = ""
 
     private var foundFilesCount: Int {
         state.searchResult.filter {!$0.hasKeywordInfo}.count

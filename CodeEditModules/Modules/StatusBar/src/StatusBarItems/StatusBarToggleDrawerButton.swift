@@ -9,29 +9,29 @@ import SwiftUI
 
 @available(macOS 12, *)
 internal struct StatusBarToggleDrawerButton: View {
+    @ObservedObject
+    private var model: StatusBarModel
 
-	@ObservedObject private var model: StatusBarModel
+    internal init(model: StatusBarModel) {
+        self.model = model
+    }
 
-	internal init(model: StatusBarModel) {
-		self.model = model
-	}
-
-	internal var body: some View {
-		Button {
-			withAnimation {
-				model.isExpanded.toggle()
-				if model.isExpanded && model.currentHeight < 1 {
-					model.currentHeight = 300
-				}
-			}
-			// Show/hide terminal window
-		} label: {
-			Image(systemName: "rectangle.bottomthird.inset.filled")
-				.imageScale(.medium)
-		}
-		.tint(model.isExpanded ? .accentColor : .primary)
-		.keyboardShortcut("Y", modifiers: [.command, .shift])
-		.buttonStyle(.borderless)
-		.onHover { isHovering($0) }
-	}
+    internal var body: some View {
+        Button {
+            withAnimation {
+                model.isExpanded.toggle()
+                if model.isExpanded && model.currentHeight < 1 {
+                    model.currentHeight = 300
+                }
+            }
+            // Show/hide terminal window
+        } label: {
+            Image(systemName: "rectangle.bottomthird.inset.filled")
+                .imageScale(.medium)
+        }
+        .tint(model.isExpanded ? .accentColor : .primary)
+        .keyboardShortcut("Y", modifiers: [.command, .shift])
+        .buttonStyle(.borderless)
+        .onHover { isHovering($0) }
+    }
 }

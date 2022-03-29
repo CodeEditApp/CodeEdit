@@ -15,31 +15,40 @@ import SwiftUI
 public class StatusBarModel: ObservableObject {
     // TODO: Implement logic for updating values
     /// Returns number of errors during comilation
-    @Published public var errorCount: Int = 0 // Implementation missing
+    @Published
+    public var errorCount: Int = 0 // Implementation missing
 
     /// Returns number of warnings during comilation
-    @Published public var warningCount: Int = 0 // Implementation missing
+    @Published
+    public var warningCount: Int = 0 // Implementation missing
 
     /// The selected branch from the GitClient
-    @Published public var selectedBranch: String?
+    @Published
+    public var selectedBranch: String?
 
     /// State of pulling from git
-    @Published public var isReloading: Bool = false // Implementation missing
+    @Published
+    public var isReloading: Bool = false // Implementation missing
 
     /// Returns the current line of the cursor in an editing view
-    @Published public var currentLine: Int = 1 // Implementation missing
+    @Published
+    public var currentLine: Int = 1 // Implementation missing
 
     /// Returns the current column of the cursor in an editing view
-    @Published public var currentCol: Int = 1 // Implementation missing
+    @Published
+    public var currentCol: Int = 1 // Implementation missing
 
     /// Returns true when the drawer is visible
-    @Published public var isExpanded: Bool = false
+    @Published
+    public var isExpanded: Bool = false
 
     /// The current height of the drawer. Zero if hidden
-    @Published public var currentHeight: Double = 0
+    @Published
+    public var currentHeight: Double = 0
 
     /// Indicates whether the drawer is beeing resized or not
-    @Published public var isDragging: Bool = false
+    @Published
+    public var isDragging: Bool = false
 
     /// Returns the font for status bar items to use
     private(set) var toolbarFont: Font = .system(size: 11)

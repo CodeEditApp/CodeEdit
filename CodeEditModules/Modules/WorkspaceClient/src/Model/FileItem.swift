@@ -58,6 +58,12 @@ public extension WorkspaceClient {
                 return "key.fill"
             case "java":
                 return "cup.and.saucer"
+            case "h":
+                return "h.square"
+            case "m":
+                return "m.square"
+            case "vue":
+                return "v.square"
             default:
                 return "doc"
             }
@@ -75,6 +81,12 @@ public extension WorkspaceClient {
                 return .blue
             case "sh":
                 return .green
+            case "vue":
+                return Color(red: 0.255, green: 0.722, blue: 0.514, opacity: 1.000)
+            case "h":
+                return Color(red: 0.667, green: 0.031, blue: 0.133, opacity: 1.000)
+            case "m":
+                return Color(red: 0.271, green: 0.106, blue: 0.525, opacity: 1.000)
             default:
                 return .blue
             }

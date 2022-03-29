@@ -83,7 +83,7 @@ public extension WorkspaceClient {
         }
 
         return Self(
-			folderURL: { folderURL },
+            folderURL: { folderURL },
             getFiles: subject
                 .handleEvents(receiveSubscription: { _ in
                     startListeningToDirectory()

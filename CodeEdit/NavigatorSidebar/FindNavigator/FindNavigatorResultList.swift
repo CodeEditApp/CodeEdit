@@ -10,8 +10,11 @@ import WorkspaceClient
 import Search
 
 struct FindNavigatorResultList: View {
-    @ObservedObject var state: WorkspaceDocument.SearchState
-    @State var selectedResult: SearchResultModel?
+    @ObservedObject
+    var state: WorkspaceDocument.SearchState
+
+    @State
+    var selectedResult: SearchResultModel?
 
     private var foundFiles: [SearchResultModel] {
         return state.searchResult.filter {!$0.hasKeywordInfo}
@@ -30,7 +33,9 @@ struct FindNavigatorResultList: View {
                         state.workspace.openFile(item: foundFile.file)
                     }
             }
-        }.onChange(of: selectedResult) { newValue in
+        }
+        .listStyle(.sidebar)
+        .onChange(of: selectedResult) { newValue in
             if let file = newValue?.file {
                 state.workspace.openFile(item: file)
             }

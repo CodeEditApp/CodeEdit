@@ -6,9 +6,11 @@
 //
 
 import Cocoa
+import SwiftUI
 
-class CodeEditorTextView: NSTextView {
-    private let tabNumber = 4
+public class CodeEditorTextView: NSTextView {
+    @AppStorage(EditorTabWidth.storageKey)
+    private var tabWidth: Int = EditorTabWidth.default
 
     init(
         textContainer container: NSTextContainer?
@@ -44,7 +46,7 @@ class CodeEditorTextView: NSTextView {
         return String(string[string.lineRange(for: swiftSelectedRange)])
     }
 
-    override func insertNewline(_ sender: Any?) {
+    public override func insertNewline(_ sender: Any?) {
         // get line before newline
         let currentLine = self.currentLine
         let prefix = currentLine.prefix {
@@ -69,7 +71,7 @@ class CodeEditorTextView: NSTextView {
         "\"": "\"",
     ]
 
-    override func insertText(_ string: Any, replacementRange: NSRange) {
+    public override func insertText(_ string: Any, replacementRange: NSRange) {
         super.insertText(string, replacementRange: replacementRange)
         guard let string = string as? String,
               let end = autoPairs[string]
@@ -78,11 +80,11 @@ class CodeEditorTextView: NSTextView {
         super.moveBackward(self)
     }
 
-    override func insertTab(_ sender: Any?) {
+    public override func insertTab(_ sender: Any?) {
         super.insertText(
             String(
                 repeating: " ",
-                count: tabNumber
+                count: tabWidth
             ),
             replacementRange: selectedRange()
         )
