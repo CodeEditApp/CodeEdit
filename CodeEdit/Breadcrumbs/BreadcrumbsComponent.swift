@@ -62,7 +62,6 @@ struct BreadcrumbsComponent: View {
             Text(fileItem.fileName)
 				.foregroundStyle(.primary)
 				.font(.system(size: 11))
-                .fixedSize()
 		}
         .onTapGesture {
             if let siblings = fileItem.parent?.children?.sortItems(foldersOnTop: true), !siblings.isEmpty {

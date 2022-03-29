@@ -59,9 +59,9 @@ struct BreadcrumbsView: View {
     private func fileInfo(_ file: WorkspaceClient.FileItem) {
         self.fileItems = []
         var currentFile: WorkspaceClient.FileItem? = file
-        while currentFile != nil {
-            self.fileItems.insert(currentFile!, at: 0)
-            currentFile = currentFile!.parent
+        while let currentFileLoop = currentFile {
+            self.fileItems.insert(currentFileLoop, at: 0)
+            currentFile = currentFileLoop.parent
         }
     }
 }

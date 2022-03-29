@@ -13,7 +13,6 @@ public extension WorkspaceClient {
         case id
         case url
         case children
-        case parent
     }
 
     class FileItem: Hashable, Identifiable, Comparable, Codable {
@@ -158,10 +157,14 @@ public extension WorkspaceClient {
             }
         }
 
+        // MARK: Hashable
         public func hash(into hasher: inout Hasher) {
             hasher.combine(id)
+            hasher.combine(url)
+            hasher.combine(children)
         }
 
+        // MARK: Codable
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: FileItemCodingKeys.self)
             try container.encode(id, forKey: .id)
@@ -173,7 +176,7 @@ public extension WorkspaceClient {
             let values = try decoder.container(keyedBy: FileItemCodingKeys.self)
             id = try values.decode(String.self, forKey: .id)
             url = try values.decode(URL.self, forKey: .url)
-            children = try values.decode([FileItem].self, forKey: .children)
+            children = try values.decode([FileItem]?.self, forKey: .children)
         }
     }
 }
