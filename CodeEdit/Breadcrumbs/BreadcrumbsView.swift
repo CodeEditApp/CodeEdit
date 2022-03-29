@@ -13,9 +13,9 @@ struct BreadcrumbsView: View {
     var workspace: WorkspaceDocument
 
     let file: WorkspaceClient.FileItem
-	
+
     @State
-	private var fileItems: [WorkspaceClient.FileItem] = []
+    private var fileItems: [WorkspaceClient.FileItem] = []
 
     init(_ file: WorkspaceClient.FileItem, workspace: WorkspaceDocument) {
         self.file = file

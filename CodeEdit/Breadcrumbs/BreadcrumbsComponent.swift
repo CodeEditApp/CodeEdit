@@ -9,16 +9,16 @@ import SwiftUI
 import WorkspaceClient
 
 struct BreadcrumbsComponent: View {
-	@AppStorage(FileIconStyle.storageKey)
-	var iconStyle: FileIconStyle = .default
+    @AppStorage(FileIconStyle.storageKey)
+    var iconStyle: FileIconStyle = .default
 
     @ObservedObject
-	var workspace: WorkspaceDocument
+    var workspace: WorkspaceDocument
 
     private let fileItem: WorkspaceClient.FileItem
 
     @State
-	var position: NSPoint?
+    var position: NSPoint?
 
     init(_ workspace: WorkspaceDocument, fileItem: WorkspaceClient.FileItem) {
         self.workspace = workspace
@@ -40,7 +40,7 @@ struct BreadcrumbsComponent: View {
         : .secondary
     }
 
-	var body: some View {
+    var body: some View {
         HStack(alignment: .center) {
             /// Get location in window
             /// Can't use it outside `HStack` becuase it'll make the whole `BreadcrumsComponent` flexiable.
@@ -60,9 +60,9 @@ struct BreadcrumbsComponent: View {
                 }.frame(height: geometry.size.height)
             }
             Text(fileItem.fileName)
-				.foregroundStyle(.primary)
-				.font(.system(size: 11))
-		}
+                .foregroundStyle(.primary)
+                .font(.system(size: 11))
+        }
         .onTapGesture {
             if let siblings = fileItem.parent?.children?.sortItems(foldersOnTop: true), !siblings.isEmpty {
                 let menu = BreadcrumsMenu(siblings, workspace: workspace)
@@ -73,5 +73,5 @@ struct BreadcrumbsComponent: View {
                 }
             }
         }
-	}
+    }
 }
