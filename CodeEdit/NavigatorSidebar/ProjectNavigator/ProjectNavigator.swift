@@ -42,6 +42,7 @@ struct ProjectNavigator: View {
                     .padding(.vertical, 8)
             }
         }
+        .listStyle(.sidebar)
         .listRowInsets(.init())
         .onChange(of: selection) { newValue in
             guard let id = newValue,

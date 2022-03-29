@@ -35,14 +35,21 @@ struct WorkspaceView: View {
     var showInspector = true
 
     var body: some View {
-        NavigationView {
+        ZStack {
             if workspace.workspaceClient != nil {
-                content
+                WorkspaceCodeFileView(windowController: windowController, workspace: workspace)
+                    .safeAreaInset(edge: .bottom) {
+                        if let url = workspace.fileURL {
+                            StatusBarView(workspaceURL: url)
+                        }
+                    }
+                    .overlay(alignment: .top) {
+                        Divider()
+                    }
             } else {
                 EmptyView()
             }
         }
-        .frame(minWidth: 1000, minHeight: 600)
         .alert(alertTitle, isPresented: $showingAlert, actions: {
             Button(
                 action: { showingAlert = false },
@@ -53,27 +60,6 @@ struct WorkspaceView: View {
             if newValue == nil {
                 windowController.window?.subtitle = ""
             }
-        }
-    }
-
-    @ViewBuilder
-    private var content: some View {
-        NavigatorSidebar(workspace: workspace, windowController: windowController)
-        .frame(minWidth: 250)
-
-        HSplitView {
-            ZStack {
-                WorkspaceCodeFileView(windowController: windowController, workspace: workspace)
-                    .frame(minWidth: 500, maxHeight: .infinity)
-            }
-            .safeAreaInset(edge: .bottom) {
-                if let url = workspace.fileURL {
-                    StatusBarView(workspaceURL: url)
-                }
-            }
-            .layoutPriority(1)
-            InspectorSidebar(workspace: workspace, windowController: windowController)
-                .frame(minWidth: 260, idealWidth: 300, maxHeight: .infinity)
         }
     }
 }
