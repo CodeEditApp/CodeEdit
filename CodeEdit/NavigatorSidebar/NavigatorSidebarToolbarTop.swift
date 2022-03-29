@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct LeadingSidebarToolbarTop: View {
+struct NavigatorSidebarToolbarTop: View {
     @Environment(\.controlActiveState)
     var activeState
 
@@ -54,6 +54,6 @@ struct LeadingSidebarToolbarTop: View {
 
 struct NavigatorSidebarToolbar_Previews: PreviewProvider {
     static var previews: some View {
-        LeadingSidebarToolbarTop(selection: .constant(0))
+        NavigatorSidebarToolbarTop(selection: .constant(0))
     }
 }

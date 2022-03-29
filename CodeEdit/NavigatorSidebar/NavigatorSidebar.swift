@@ -8,7 +8,7 @@
 import SwiftUI
 import WorkspaceClient
 
-struct LeadingSidebar: View {
+struct NavigatorSidebar: View {
     @ObservedObject
     var workspace: WorkspaceDocument
 
@@ -29,11 +29,11 @@ struct LeadingSidebar: View {
             }
         }
         .safeAreaInset(edge: .top) {
-            LeadingSidebarToolbarTop(selection: $selection)
+            NavigatorSidebarToolbarTop(selection: $selection)
                 .padding(.bottom, -8)
         }
         .safeAreaInset(edge: .bottom) {
-            LeadingSidebarToolbarBottom(workspace: workspace)
+            NavigatorSidebarToolbarBottom(workspace: workspace)
         }
     }
 }

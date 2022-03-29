@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct LeadingSidebarToolbarBottom: View {
+struct NavigatorSidebarToolbarBottom: View {
     @Environment(\.controlActiveState)
     var activeState
 
