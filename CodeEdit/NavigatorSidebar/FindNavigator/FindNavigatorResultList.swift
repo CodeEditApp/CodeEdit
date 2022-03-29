@@ -35,7 +35,6 @@ struct FindNavigatorResultList: View {
             }
         }
         .listStyle(.sidebar)
-        .background(.clear)
         .onChange(of: selectedResult) { newValue in
             if let file = newValue?.file {
                 state.workspace.openFile(item: file)

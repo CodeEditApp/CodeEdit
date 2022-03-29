@@ -44,7 +44,6 @@ struct FindNavigator: View {
             Divider()
             FindNavigatorResultList(state: state)
         }
-        .background(.clear)
         .onSubmit {
             state.search(searchText)
         }
