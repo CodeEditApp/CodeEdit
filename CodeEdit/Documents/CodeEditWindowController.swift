@@ -39,6 +39,7 @@ class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
         let navigator = NSSplitViewItem(
             sidebarWithViewController: NSHostingController(rootView: navigatorView)
         )
+        navigator.titlebarSeparatorStyle = .none
         navigator.minimumThickness = 260
         splitVC.addSplitViewItem(navigator)
 
@@ -46,12 +47,14 @@ class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
         let mainContent = NSSplitViewItem(
             viewController: NSHostingController(rootView: workspaceView)
         )
+        mainContent.titlebarSeparatorStyle = .line
         splitVC.addSplitViewItem(mainContent)
 
         let inspectorView = InspectorSidebar(workspace: workspace, windowController: self)
         let inspector = NSSplitViewItem(
             viewController: NSHostingController(rootView: inspectorView)
         )
+        inspector.titlebarSeparatorStyle = .none
         inspector.minimumThickness = 260
         inspector.maximumThickness = 260
         inspector.isCollapsed = true
@@ -66,7 +69,7 @@ class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
         toolbar.delegate = self
         toolbar.displayMode = .labelOnly
         self.window?.toolbarStyle = .unifiedCompact
-        self.window?.titlebarSeparatorStyle = .none
+        self.window?.titlebarSeparatorStyle = .automatic
         self.window?.toolbar = toolbar
     }
 
