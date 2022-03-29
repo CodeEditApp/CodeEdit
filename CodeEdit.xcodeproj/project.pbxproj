@@ -54,6 +54,7 @@
 		D72E1A8327E3B0D400EB11B9 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72E1A8227E3B0D400EB11B9 /* WelcomeView.swift */; };
 		D72E1A8727E4242900EB11B9 /* RecentProjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72E1A8627E4242900EB11B9 /* RecentProjectsView.swift */; };
 		D72E1A8927E44D7C00EB11B9 /* WelcomeWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72E1A8827E44D7C00EB11B9 /* WelcomeWindowView.swift */; };
+		D76D11CC27F2F2B6009FE61F /* BreadcrumbsMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76D11CB27F2F2B6009FE61F /* BreadcrumbsMenu.swift */; };
 		D7E201AE27E8B3C000CB86D0 /* String+Ranges.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201AD27E8B3C000CB86D0 /* String+Ranges.swift */; };
 		D7E201B027E8C07300CB86D0 /* FindNavigatorSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201AF27E8C07300CB86D0 /* FindNavigatorSearchBar.swift */; };
 		D7E201B227E8D50000CB86D0 /* FindNavigatorModeSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201B127E8D50000CB86D0 /* FindNavigatorModeSelector.swift */; };
@@ -122,6 +123,7 @@
 		D72E1A8227E3B0D400EB11B9 /* WelcomeView.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; tabWidth = 4; };
 		D72E1A8627E4242900EB11B9 /* RecentProjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentProjectsView.swift; sourceTree = "<group>"; };
 		D72E1A8827E44D7C00EB11B9 /* WelcomeWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeWindowView.swift; sourceTree = "<group>"; };
+		D76D11CB27F2F2B6009FE61F /* BreadcrumbsMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreadcrumbsMenu.swift; sourceTree = "<group>"; };
 		D7E201AD27E8B3C000CB86D0 /* String+Ranges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ranges.swift"; sourceTree = "<group>"; };
 		D7E201AF27E8C07300CB86D0 /* FindNavigatorSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindNavigatorSearchBar.swift; sourceTree = "<group>"; };
 		D7E201B127E8D50000CB86D0 /* FindNavigatorModeSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindNavigatorModeSelector.swift; sourceTree = "<group>"; };
@@ -221,6 +223,7 @@
 			children = (
 				2875A46C27E3BE5B007805F8 /* BreadcrumbsView.swift */,
 				286620A427E4AB6900E18C2B /* BreadcrumbsComponent.swift */,
+				D76D11CB27F2F2B6009FE61F /* BreadcrumbsMenu.swift */,
 			);
 			path = Breadcrumbs;
 			sourceTree = "<group>";
@@ -574,6 +577,7 @@
 				D72E1A8727E4242900EB11B9 /* RecentProjectsView.swift in Sources */,
 				04660F6A27E51E5C00477777 /* CodeEditWindowController.swift in Sources */,
 				B6EE989027E8879A00CDD8AB /* InspectorSidebar.swift in Sources */,
+				D76D11CC27F2F2B6009FE61F /* BreadcrumbsMenu.swift in Sources */,
 				289978ED27E4E97E00BB0357 /* FileIconStyle.swift in Sources */,
 				04660F6627E3ACEF00477777 /* ReopenBehavior.swift in Sources */,
 				D72E1A8327E3B0D400EB11B9 /* WelcomeView.swift in Sources */,
