@@ -9,6 +9,9 @@ import SwiftUI
 import WorkspaceClient
 
 struct BreadcrumbsView: View {
+    @Environment(\.colorScheme)
+    private var colorScheme
+
     @ObservedObject
     var workspace: WorkspaceDocument
 

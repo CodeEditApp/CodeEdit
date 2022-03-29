@@ -8,21 +8,6 @@
 import SwiftUI
 import WorkspaceClient
 
-struct TabBarDivider: View {
-    @Environment(\.colorScheme)
-    var colorScheme
-
-    let height: CGFloat = 1
-
-    var body: some View {
-        Group {
-            Rectangle()
-        }
-        .frame(height: height)
-        .foregroundColor(colorScheme == .dark ? Color(nsColor: .black) : Color(nsColor: .separatorColor))
-    }
-}
-
 struct TabBar: View {
     @Environment(\.colorScheme)
     var colorScheme
@@ -38,7 +23,9 @@ struct TabBar: View {
         VStack(spacing: 0.0) {
             ZStack(alignment: .top) {
                 Rectangle()
-                    .fill(Color(nsColor: .black).opacity(colorScheme == .dark ? 0.45 : 0.05))
+                    .fill(
+                        Color(nsColor: .black).opacity(colorScheme == .dark ? 0.45 : 0.05)
+                    )
                     .frame(height: 28)
                 ScrollView(.horizontal, showsIndicators: false) {
                     ScrollViewReader { value in

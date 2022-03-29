@@ -18,14 +18,14 @@ struct NavigatorSidebar: View {
     private var selection: Int = 0
 
     var body: some View {
-        ZStack {
+        VStack {
             switch selection {
             case 0:
                 ProjectNavigator(workspace: workspace, windowController: windowController)
             case 2:
                 FindNavigator(state: workspace.searchState ?? .init(workspace))
             default:
-                VStack { Spacer() }
+                Spacer()
             }
         }
         .safeAreaInset(edge: .top) {

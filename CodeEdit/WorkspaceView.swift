@@ -43,9 +43,6 @@ struct WorkspaceView: View {
                             StatusBarView(workspaceURL: url)
                         }
                     }
-                    .overlay(alignment: .top) {
-                        Divider()
-                    }
             } else {
                 EmptyView()
             }
