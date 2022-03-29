@@ -58,8 +58,9 @@ struct WorkspaceView: View {
 
     @ViewBuilder
     private var content: some View {
-        LeadingSidebar(workspace: workspace, windowController: windowController)
-            .frame(minWidth: 250)
+        NavigatorSidebar(workspace: workspace, windowController: windowController)
+        .frame(minWidth: 250)
+
         HSplitView {
             ZStack {
                 WorkspaceCodeFileView(windowController: windowController, workspace: workspace)
