@@ -59,7 +59,10 @@ public struct GitCloneView: View {
                                 if repoName.contains(".git") {
                                     repoName.removeLast(4)
                                 }
-                                getPath(modifiable: &repoPath, saveName: repoName)
+                                let didChoose = getPath(modifiable: &repoPath, saveName: repoName)
+                                if didChoose == nil {
+                                    return
+                                }
                                 let dirUrl = URL(string: repoPath)
                                 var isDir: ObjCBool = true
                                 if FileManager.default.fileExists(atPath: repoPath, isDirectory: &isDir) {
@@ -86,6 +89,7 @@ public struct GitCloneView: View {
                             }
                         }
                         .keyboardShortcut(.defaultAction)
+                        .disabled(!isValid(url: repoUrlStr))
                     }
                     .offset(x: 185)
                     .alignmentGuide(.leading) { context in
@@ -101,7 +105,7 @@ public struct GitCloneView: View {
 }
 
 extension GitCloneView {
-    func getPath(modifiable: inout String, saveName: String) {
+    func getPath(modifiable: inout String, saveName: String) -> String? {
         let dialog = NSSavePanel()
         dialog.showsResizeIndicator    = true
         dialog.showsHiddenFiles        = false
@@ -119,12 +123,13 @@ extension GitCloneView {
                 // path contains the directory path e.g
                 // /Users/ourcodeworld/Desktop/folder
                 modifiable = path
+                return path
             }
         } else {
             // User clicked on "Cancel"
-            return
+            return nil
         }
-
+        return nil
     }
     func showAlert(alertMsg: String, infoText: String) {
         let alert = NSAlert()
@@ -133,5 +138,17 @@ extension GitCloneView {
         alert.addButton(withTitle: "OK")
         alert.alertStyle = .warning
         alert.runModal()
+    }
+    func isValid(url: String) -> Bool {
+        // Doing the same kind of check that Xcode does when cloning
+        let url = url.lowercased()
+        if url.starts(with: "http://") && url.count > 7 {
+            return true
+        } else if url.starts(with: "https://") && url.count > 8 {
+            return true
+        } else if url.starts(with: "git@") && url.count > 4 {
+            return true
+        }
+        return false
     }
 }
