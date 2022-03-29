@@ -42,13 +42,22 @@ struct NavigatorSidebarToolbarTop: View {
         } label: {
             Image(systemName: systemImage)
                 .help(title)
+        }
+        .buttonStyle(NavigatorToolbarButtonStyle(id: id, selection: selection, activeState: activeState))
+    }
+
+    struct NavigatorToolbarButtonStyle: ButtonStyle {
+        var id: Int
+        var selection: Int
+        var activeState: ControlActiveState
+        func makeBody(configuration: Configuration) -> some View {
+            configuration.label
                 .symbolVariant(id == selection ? .fill : .none)
-                .foregroundColor(id == selection ? .accentColor : .secondary)
+                .foregroundColor(id == selection ? .accentColor : configuration.isPressed ? .primary : .secondary)
                 .frame(width: 25, height: 25, alignment: .center)
                 .contentShape(Rectangle())
                 .opacity(activeState == .inactive ? 0.45 : 1)
         }
-        .buttonStyle(.plain)
     }
 }
 
