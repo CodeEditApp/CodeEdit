@@ -69,36 +69,13 @@ struct BreadcrumbsComponent: View {
                 .layoutPriority(1)
 		}
         .onTapGesture {
-            let menu = NSMenu()
             if let siblings = fileItem.parent?.children?.sortItems(foldersOnTop: true), !siblings.isEmpty {
-                siblings.forEach { item in
-                    let menuItem = NSMenuItem()
-                    menuItem.title = item.fileName
-                    var icon = item.fileIcon
-                    var color = item.iconColor
-                    menuItem.isEnabled = true
-                    menuItem.target = self.menuHelper
-                    if item.children != nil {
-                        let subMenu = NSMenu()
-                        menuItem.submenu = subMenu
-                        icon = "folder.fill"
-                        color = .secondary
-                    }
-                    let image = NSImage(
-                        systemSymbolName: icon,
-                        accessibilityDescription: icon
-                    )?.withSymbolConfiguration(.init(paletteColors: [NSColor(color)]))
-                    menuItem.image = image
-                    menuItem.representedObject = item
-                    menuItem.action = #selector(self.menuHelper.openFile)
-                    menu.addItem(menuItem)
+                let menu = BreadcrumsMenu(siblings, workspace: workspace)
+                if let position = position {
+                    menu.popUp(positioning: menu.item(withTitle: fileItem.fileName),
+                               at: position,
+                               in: NSApp.keyWindow?.contentView)
                 }
-            }
-            menu.autoenablesItems = false
-            if let position = position {
-                menu.popUp(positioning: menu.item(withTitle: fileItem.fileName),
-                           at: position,
-                           in: NSApp.keyWindow?.contentView)
             }
         }
 	}
