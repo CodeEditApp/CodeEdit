@@ -30,39 +30,32 @@ struct GeneralSettingsView: View {
     @State var refresh = UUID()
 
     var body: some View {
-        VStack {
-            Preferences.Container(contentWidth: 450) {
-                Preferences.Section(title: "Appearance:") {
-                    AppearenceChangeView(refresh: refresh)
-                }
+        Form {
+            AppearenceChangeView(refresh: refresh)
+                .formLabel(Text("Appearence:".localized()))
 
-                Preferences.Section(title: "File Icon Style:") {
-                    Picker("", selection: $fileIconStyle) {
-                        Text("Color".localized())
-                            .tag(FileIconStyle.color)
-                        Text("Monochrome".localized())
-                            .tag(FileIconStyle.monochrome)
-                    }
-                    .fixedSize()
-                }
+            Picker("File Icon Style:".localized(), selection: $fileIconStyle) {
+                Text("Color".localized())
+                    .tag(FileIconStyle.color)
+                Text("Monochrome".localized())
+                    .tag(FileIconStyle.monochrome)
+            }
+            .fixedSize()
 
-                Preferences.Section(title: "Reopen Behavior:") {
-                    Picker("", selection: $reopenBehavior) {
-                        Text("Welcome Screen".localized())
-                            .tag(ReopenBehavior.welcome)
-                        Divider()
-                        Text("Open Panel".localized())
-                            .tag(ReopenBehavior.openPanel)
-                        Text("New Document".localized())
-                            .tag(ReopenBehavior.newDocument)
-                    }
-                    .fixedSize()
-                }
+            Picker("Reopen Behavior:".localized(), selection: $reopenBehavior) {
+                Text("Welcome Screen".localized())
+                    .tag(ReopenBehavior.welcome)
+                Divider()
+                Text("Open Panel".localized())
+                    .tag(ReopenBehavior.openPanel)
+                Text("New Document".localized())
+                    .tag(ReopenBehavior.newDocument)
+            }
+            .fixedSize()
 
-                Preferences.Section(title: "Default Tab Width") {
-                    Stepper("", value: $defaultTabWidth, in: 2...8)
-                    Text(String(defaultTabWidth))
-                }
+            HStack {
+                Stepper("Default Tab Width:".localized(), value: $defaultTabWidth, in: 2...8)
+                Text(String(defaultTabWidth))
             }
 
             Spacer()
@@ -82,69 +75,81 @@ struct GeneralSettingsView: View {
 
         var body: some View {
             HStack {
-                ZStack(alignment: .center) {
-                    if model.key {
-                        Color.focusedColor.opacity(appearance == .system || appearance == .default ? 1 : 0)
-                            .frame(width: 67 + 3, height: 46 + 3)
+                VStack {
+                    ZStack(alignment: .center) {
+                        if model.key {
+                            Color.focusedColor.opacity(appearance == .system || appearance == .default ? 1 : 0)
+                                .frame(width: 67 + 3, height: 46 + 3)
+                                .cornerRadius(5)
+                        } else {
+                            Color.unfocusedColor.opacity(appearance == .system || appearance == .default ? 1 : 0)
+                                .frame(width: 67 + 3, height: 46 + 3)
+                                .cornerRadius(5)
+                        }
+
+                        Image("Settings Image - Auto")
+                            .resizable()
+                            .frame(width: 67, height: 46)
+                            .scaledToFit()
                             .cornerRadius(5)
-                    } else {
-                        Color.unfocusedColor.opacity(appearance == .system || appearance == .default ? 1 : 0)
-                            .frame(width: 67 + 3, height: 46 + 3)
-                            .cornerRadius(5)
+                            .onTapGesture {
+                                appearance = .system
+                            }
                     }
 
-                    Image("Settings Image - Auto")
-                        .resizable()
-                        .frame(width: 67, height: 46)
-                        .scaledToFit()
-                        .cornerRadius(5)
-                        .onTapGesture {
-                            appearance = .system
-                        }
+                    Text("Auto".localized())
                 }
                 .padding(.trailing)
 
-                ZStack(alignment: .center) {
-                    if model.key {
-                        Color.focusedColor.opacity(appearance == .light ? 1 : 0)
-                            .frame(width: 67 + 3, height: 46 + 3)
+                VStack {
+                    ZStack(alignment: .center) {
+                        if model.key {
+                            Color.focusedColor.opacity(appearance == .light ? 1 : 0)
+                                .frame(width: 67 + 3, height: 46 + 3)
+                                .cornerRadius(5)
+                        } else {
+                            Color.unfocusedColor.opacity(appearance == .light ? 1 : 0)
+                                .frame(width: 67 + 3, height: 46 + 3)
+                                .cornerRadius(5)
+                        }
+
+                        Image("Settings Image - Light")
+                            .resizable()
+                            .frame(width: 67, height: 46)
+                            .scaledToFit()
                             .cornerRadius(5)
-                    } else {
-                        Color.unfocusedColor.opacity(appearance == .light ? 1 : 0)
-                            .frame(width: 67 + 3, height: 46 + 3)
-                            .cornerRadius(5)
+                            .onTapGesture {
+                                appearance = .light
+                            }
                     }
 
-                    Image("Settings Image - Light")
-                        .resizable()
-                        .frame(width: 67, height: 46)
-                        .scaledToFit()
-                        .cornerRadius(5)
-                        .onTapGesture {
-                            appearance = .light
-                        }
+                    Text("Light".localized())
                 }
                 .padding(.trailing)
 
-                ZStack(alignment: .center) {
-                    if model.key {
-                        Color.focusedColor.opacity(appearance == .dark ? 1 : 0)
-                            .frame(width: 67 + 3, height: 46 + 3)
+                VStack {
+                    ZStack(alignment: .center) {
+                        if model.key {
+                            Color.focusedColor.opacity(appearance == .dark ? 1 : 0)
+                                .frame(width: 67 + 3, height: 46 + 3)
+                                .cornerRadius(5)
+                        } else {
+                            Color.unfocusedColor.opacity(appearance == .dark ? 1 : 0)
+                                .frame(width: 67 + 3, height: 46 + 3)
+                                .cornerRadius(5)
+                        }
+
+                        Image("Settings Image - Dark")
+                            .resizable()
+                            .frame(width: 67, height: 46)
+                            .scaledToFit()
                             .cornerRadius(5)
-                    } else {
-                        Color.unfocusedColor.opacity(appearance == .dark ? 1 : 0)
-                            .frame(width: 67 + 3, height: 46 + 3)
-                            .cornerRadius(5)
+                            .onTapGesture {
+                                appearance = .dark
+                            }
                     }
 
-                    Image("Settings Image - Dark")
-                        .resizable()
-                        .frame(width: 67, height: 46)
-                        .scaledToFit()
-                        .cornerRadius(5)
-                        .onTapGesture {
-                            appearance = .dark
-                        }
+                    Text("Dark".localized())
                 }
                 .padding(.trailing)
             }

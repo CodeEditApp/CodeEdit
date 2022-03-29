@@ -39,6 +39,7 @@ struct TerminalSettingsView: View {
                 Text("Bash")
                     .tag(TerminalShellType.bash)
             }
+            .fixedSize()
 
             Picker("Terminal Appearance", selection: $terminalColorSchmeme) {
                 Text("App Default")
@@ -49,6 +50,7 @@ struct TerminalSettingsView: View {
                 Text("Dark")
                     .tag(TerminalColorScheme.dark)
             }
+            .fixedSize()
 
             Picker("Terminal Font".localized(), selection: $terminalFontSelection) {
                 Text("System Font".localized())
@@ -57,6 +59,8 @@ struct TerminalSettingsView: View {
                 Text("Custom".localized())
                     .tag(TerminalFont.custom)
             }
+            .fixedSize()
+
             if terminalFontSelection == .custom {
                 HStack {
                     FontPicker(
@@ -66,7 +70,10 @@ struct TerminalSettingsView: View {
                     )
                 }
             }
+
             Divider()
+                .frame(width: 300)
+
             Section {
                 VStack(alignment: .leading, spacing: 0) {
                     HStack(spacing: 0) {
@@ -93,11 +100,15 @@ struct TerminalSettingsView: View {
                     }
                 }
             }
+
             Button("Restore Defaults") {
                 AnsiColors.shared.resetDefault()
             }
+
+            Spacer()
         }
         .padding()
+        .frame(width: 820, height: 450)
     }
 
     private func ansiColorPicker(_ color: Binding<Color>) -> some View {

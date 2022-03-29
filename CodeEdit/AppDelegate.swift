@@ -123,6 +123,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                 ThemeSettingsView()
             },
             Preferences.Pane(
+                identifier: Preferences.PaneIdentifier.terminal,
+                title: "Terminal",
+                toolbarIcon: NSImage(systemSymbolName: "terminal", accessibilityDescription: nil)!
+            ) {
+                TerminalSettingsView()
+            },
+            Preferences.Pane(
                 identifier: Preferences.PaneIdentifier.execution,
                 title: "Execution",
                 toolbarIcon: NSImage(systemSymbolName: "arrowtriangle.forward", accessibilityDescription: nil)!

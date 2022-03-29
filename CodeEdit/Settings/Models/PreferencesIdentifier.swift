@@ -9,7 +9,8 @@ import Preferences
 
 extension Preferences.PaneIdentifier {
     static let general = Self("general")
-    static let theme = Self("Theme")
+    static let theme = Self("theme")
+    static let terminal = Self("terminal")
     static let execution = Self("execution")
     static let `extension` = Self("extension")
 }
