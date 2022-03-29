@@ -77,12 +77,16 @@ public extension WorkspaceClient {
                 return .red
             case "js", "entitlements", "json", "LICENSE":
                 return Color("SidebarYellow")
-            case "css", "ts", "jsx", "md", "py", "h":
+            case "css", "ts", "jsx", "md", "py":
                 return .blue
-            case "sh", "vue":
+            case "sh":
                 return .green
+            case "vue":
+                return Color(red: 0.255, green: 0.722, blue: 0.514, opacity: 1.000)
+            case "h":
+                return Color(red: 0.667, green: 0.031, blue: 0.133, opacity: 1.000)
             case "m":
-                return .purple
+                return Color(red: 0.271, green: 0.106, blue: 0.525, opacity: 1.000)
             default:
                 return .blue
             }
