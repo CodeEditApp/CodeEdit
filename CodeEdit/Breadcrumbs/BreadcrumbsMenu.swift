@@ -1,5 +1,5 @@
 //
-//  BreadcrumbsMenuItem.swift
+//  BreadcrumbsMenu.swift
 //  CodeEdit
 //
 //  Created by Ziyuan Zhao on 2022/3/29.
@@ -29,6 +29,7 @@ class BreadcrumsMenu: NSMenu, NSMenuDelegate {
         fatalError("init(coder:) has not been implemented")
     }
 
+    /// Only when menu item is highlighted then generate its submenu
     func menu(_ menu: NSMenu, willHighlight item: NSMenuItem?) {
         if let highlightedItem = item, let submenuItems = highlightedItem.submenu?.items, submenuItems.isEmpty {
             if let highlightedFileItem = highlightedItem.representedObject as? WorkspaceClient.FileItem {

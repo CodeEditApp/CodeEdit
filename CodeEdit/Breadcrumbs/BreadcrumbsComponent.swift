@@ -19,15 +19,10 @@ struct BreadcrumbsComponent: View {
 
     @State
 	var position: NSPoint?
-	
-    private let menuHelper: BreadcrumbsMenuHelper
 
     init(_ workspace: WorkspaceDocument, fileItem: WorkspaceClient.FileItem) {
         self.workspace = workspace
         self.fileItem = fileItem
-        self.menuHelper = BreadcrumbsMenuHelper(onOpenFile: { fileItem in
-            workspace.openFile(item: fileItem)
-        })
     }
 
     private var image: String {
@@ -47,6 +42,8 @@ struct BreadcrumbsComponent: View {
 
 	var body: some View {
         HStack(alignment: .center) {
+            /// Get location in window
+            /// Can't use it outside `HStack` becuase it'll make the whole `BreadcrumsComponent` flexiable.
             GeometryReader { geometry in
                 HStack {
                     Image(systemName: image)
@@ -66,7 +63,6 @@ struct BreadcrumbsComponent: View {
 				.foregroundStyle(.primary)
 				.font(.system(size: 11))
                 .fixedSize()
-                .layoutPriority(1)
 		}
         .onTapGesture {
             if let siblings = fileItem.parent?.children?.sortItems(foldersOnTop: true), !siblings.isEmpty {
@@ -79,19 +75,4 @@ struct BreadcrumbsComponent: View {
             }
         }
 	}
-}
-
-class BreadcrumbsMenuHelper {
-
-    var onOpenFile: (WorkspaceClient.FileItem) -> Void
-
-    init(onOpenFile: @escaping (WorkspaceClient.FileItem) -> Void) {
-        self.onOpenFile = onOpenFile
-    }
-
-    @objc func openFile(_ sender: NSMenuItem) {
-        if let fileItem = sender.representedObject as? WorkspaceClient.FileItem {
-            self.onOpenFile(fileItem)
-        }
-    }
 }
