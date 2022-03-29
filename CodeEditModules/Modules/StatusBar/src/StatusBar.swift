@@ -47,7 +47,11 @@ public struct StatusBarView: View {
                 .foregroundStyle(.bar)
             HStack(spacing: 15) {
                 HStack(spacing: 5) {
-                    StatusBarLabelButton(model: model, title: model.errorCount.formatted(), image: "xmark.octagon")
+                    StatusBarLabelButton(
+                        model: model,
+                        title: model.errorCount.formatted(),
+                        image: "xmark.octagon"
+                    )
                     StatusBarLabelButton(
                         model: model,
                         title: model.warningCount.formatted(),
