@@ -31,6 +31,7 @@ struct InspectorSidebar: View {
         }
         .frame(
             minWidth: 250,
+            idealWidth: 260,
             minHeight: 0,
             maxHeight: .infinity,
             alignment: .center

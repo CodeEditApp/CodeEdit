@@ -107,15 +107,11 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
             backing: .buffered, defer: false
         )
         window.center()
-        window.toolbar = NSToolbar(identifier: UUID().uuidString)
-        window.toolbarStyle = .unifiedCompact
-        window.titlebarSeparatorStyle = .line
-        window.toolbar?.displayMode = .iconOnly
-        window.toolbar?.insertItem(withItemIdentifier: .toggleSidebar, at: 0)
-        let windowController = CodeEditWindowController(window: window)
-        windowController.workspace = self
-        let contentView = WorkspaceView(windowController: windowController, workspace: self)
-        window.contentView = NSHostingView(rootView: contentView)
+        window.minSize = .init(width: 1000, height: 600)
+        let windowController = CodeEditWindowController(
+            window: window,
+            workspace: self
+        )
         self.addWindowController(windowController)
     }
 
