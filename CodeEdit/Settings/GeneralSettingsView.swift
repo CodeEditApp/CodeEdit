@@ -23,8 +23,8 @@ struct GeneralSettingsView: View {
     @AppStorage(CodeFileView.Theme.storageKey)
     var editorTheme: CodeFileView.Theme = .atelierSavannaAuto
 
-    @AppStorage("defaultTabWidth")
-    var defaultTabWidth: Int = 4
+    @AppStorage(EditorTabWidth.storageKey)
+    var defaultTabWidth: Int = EditorTabWidth.default
 
     var body: some View {
         Form {
@@ -76,7 +76,6 @@ struct GeneralSettingsView: View {
 
             HStack {
                 Stepper("Default Tab Width".localized(), value: $defaultTabWidth, in: 2...8)
-                    .onChange(of: defaultTabWidth) { CodeEditorTextView.tabWidth = $0 }
                 Text(String(defaultTabWidth))
             }
         }
