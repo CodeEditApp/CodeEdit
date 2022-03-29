@@ -10,7 +10,7 @@ import SwiftUI
 
 public class CodeEditorTextView: NSTextView {
     @AppStorage(EditorTabWidth.storageKey)
-    public static var tabWidth: Int = EditorTabWidth.default
+    private var tabWidth: Int = EditorTabWidth.default
 
     init(
         textContainer container: NSTextContainer?
@@ -84,7 +84,7 @@ public class CodeEditorTextView: NSTextView {
         super.insertText(
             String(
                 repeating: " ",
-                count: Self.tabWidth
+                count: tabWidth
             ),
             replacementRange: selectedRange()
         )

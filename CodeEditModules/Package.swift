@@ -113,6 +113,7 @@ let package = Package(
             dependencies: [
                 "GitClient",
                 "TerminalEmulator",
+                "CodeFile",
             ],
             path: "Modules/StatusBar/src"
         ),
