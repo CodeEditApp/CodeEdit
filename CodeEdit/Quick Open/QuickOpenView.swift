@@ -9,8 +9,11 @@ import SwiftUI
 import WorkspaceClient
 
 struct QuickOpenView: View {
-    @ObservedObject var state: WorkspaceDocument.QuickOpenState
-    @State var selectedItem: WorkspaceClient.FileItem?
+    @ObservedObject
+    var state: WorkspaceDocument.QuickOpenState
+
+    @State
+    var selectedItem: WorkspaceClient.FileItem?
     var onClose: () -> Void
 
     var body: some View {

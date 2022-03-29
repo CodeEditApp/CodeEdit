@@ -11,10 +11,18 @@ import Foundation
 import WelcomeModule
 
 struct WelcomeView: View {
-    @Environment(\.colorScheme) var colorScheme
-    @State var isHovering: Bool = false
-    @State var isHoveringClose: Bool = false
-    @AppStorage(ReopenBehavior.storageKey) var behavior: ReopenBehavior = .welcome
+    @Environment(\.colorScheme)
+    var colorScheme
+
+    @State
+    var isHovering: Bool = false
+
+    @State
+    var isHoveringClose: Bool = false
+
+    @AppStorage(ReopenBehavior.storageKey)
+    var behavior: ReopenBehavior = .welcome
+
     var dismissWindow: () -> Void
 
     private var dismissButton: some View {
@@ -43,6 +51,31 @@ struct WelcomeView: View {
         return Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? ""
     }
 
+    private var macOsVersion: String {
+        var osSeperated = ProcessInfo.processInfo.operatingSystemVersionString.components(separatedBy: " ")
+        if osSeperated.count > 1 {
+            osSeperated.remove(at: 0) // localized string (Version, Versie)
+            osSeperated.remove(at: 1) // (Build
+        }
+
+        return "\(osSeperated[0]) (\(osSeperated[1])"
+    }
+
+    private var xcodeVersion: String? {
+        guard let url = NSWorkspace.shared.urlForApplication(withBundleIdentifier: "com.apple.dt.Xcode"),
+              let bundle = Bundle(url: url),
+              let infoDict = bundle.infoDictionary,
+              let version = infoDict["CFBundleShortVersionString"] as? String,
+              let buildURL = URL(string: "\(url)Contents/version.plist"),
+              let buildDict = try? NSDictionary(contentsOf: buildURL, error: ()),
+              let build = buildDict["ProductBuildVersion"]
+        else {
+            return nil
+        }
+
+        return "\(version) (\(build))"
+    }
+
     var body: some View {
         ZStack(alignment: .topLeading) {
             VStack(spacing: 8) {
@@ -55,6 +88,25 @@ struct WelcomeView: View {
                 Text("Version \(appVersion) (\(appBuild))")
                     .foregroundColor(.secondary)
                     .font(.system(size: 13))
+                    .onHover { inside in
+                        if inside {
+                            NSCursor.pointingHand.push()
+                        } else {
+                            NSCursor.pop()
+                        }
+                    }
+                    .onTapGesture {
+                        var copyString = "CodeEdit: \(appVersion) (\(appBuild))\n" +
+                        "MacOS: \(macOsVersion)\n"
+
+                        if let xcodeVersion = xcodeVersion {
+                            copyString.append("Xcode: \(xcodeVersion)")
+                        }
+
+                        let pasteboard = NSPasteboard.general
+                        pasteboard.clearContents()
+                        pasteboard.setString(copyString, forType: .string)
+                    }
                 Spacer().frame(height: 20)
                 HStack {
                     VStack(alignment: .leading, spacing: 15) {
@@ -63,28 +115,28 @@ struct WelcomeView: View {
                             title: "Create a new file".localized(),
                             subtitle: "Create a new file".localized()
                         )
-                            .onTapGesture {
-                                CodeEditDocumentController.shared.newDocument(nil)
-                                dismissWindow()
-                            }
+                        .onTapGesture {
+                            CodeEditDocumentController.shared.newDocument(nil)
+                            dismissWindow()
+                        }
                         WelcomeActionView(
                             iconName: "folder",
                             title: "Open a file or folder".localized(),
                             subtitle: "Open an existing file or folder on your Mac".localized()
                         )
-                            .onTapGesture {
-                                CodeEditDocumentController.shared.openDocument { _, _ in
-                                    dismissWindow()
-                                }
+                        .onTapGesture {
+                            CodeEditDocumentController.shared.openDocument { _, _ in
+                                dismissWindow()
                             }
+                        }
                         WelcomeActionView(
                             iconName: "plus.square.on.square",
                             title: "Clone an exisiting project".localized(),
                             subtitle: "Start working on something from a Git repository".localized()
                         )
-                            .onTapGesture {
-                                // TODO: clone a Git repository
-                            }
+                        .onTapGesture {
+                            // TODO: clone a Git repository
+                        }
                     }
                 }
                 Spacer()
@@ -114,7 +166,7 @@ struct WelcomeView: View {
                         }, set: { new in
                             self.behavior = new ? .welcome : .openPanel
                         }))
-                            .toggleStyle(.checkbox)
+                        .toggleStyle(.checkbox)
                         Spacer()
                     }
                 }

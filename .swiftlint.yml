@@ -6,7 +6,15 @@ identifier_name:
   excluded:
     - id
     - vc
-    
+
 opt_in_rules:
   - empty_count
   - contains_over_first_not_nil
+
+custom_rules:
+  spaces_over_tabs:
+    included: ".*\\.swift"
+    name: "Spaces over Tabs"
+    regex: "\t"
+    message: "Prefer spaces for indents over tabs. See Xcode setting: 'Text Editing' -> 'Indentation'"
+    severity: warning

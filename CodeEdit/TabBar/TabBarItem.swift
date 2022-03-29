@@ -9,7 +9,8 @@ import SwiftUI
 import WorkspaceClient
 
 struct TabDivider: View {
-    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.colorScheme)
+    var colorScheme
     let width: CGFloat = 1
 
     var body: some View {
@@ -25,22 +26,36 @@ struct TabDivider: View {
 }
 
 struct TabBarItem: View {
-    @Environment(\.colorScheme) var colorScheme
-    @State var isHovering: Bool = false
-    @State var isHoveringClose: Bool = false
-    @State var isPressingClose: Bool = false
+    @Environment(\.colorScheme)
+    var colorScheme
+
+    @State
+    var isHovering: Bool = false
+
+    @State
+    var isHoveringClose: Bool = false
+
+    @State
+    var isPressingClose: Bool = false
+
     var item: WorkspaceClient.FileItem
     var windowController: NSWindowController
+
     func closeAction () {
         withAnimation {
             workspace.closeFileTab(item: item)
         }
     }
-    @ObservedObject var workspace: WorkspaceDocument
+
+    @ObservedObject
+    var workspace: WorkspaceDocument
+
     var tabBarHeight: Double = 28.0
+
     var isActive: Bool {
         item.id == workspace.selectionState.selectedId
     }
+
     @ViewBuilder
     var content: some View {
         HStack(spacing: 0.0) {

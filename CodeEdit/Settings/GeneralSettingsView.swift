@@ -12,9 +12,21 @@ import Preferences
 // MARK: - View
 
 struct GeneralSettingsView: View {
-    @AppStorage(Appearances.storageKey) var appearance: Appearances = .default
-    @AppStorage(FileIconStyle.storageKey) var fileIconStyle: FileIconStyle = .default
-    @AppStorage(ReopenBehavior.storageKey) var reopenBehavior: ReopenBehavior = .default
+<<<<<<< HEAD
+    @AppStorage(Appearances.storageKey)
+    var appearance: Appearances = .default
+
+    @AppStorage(ReopenBehavior.storageKey)
+    var reopenBehavior: ReopenBehavior = .default
+
+    @AppStorage(FileIconStyle.storageKey)
+    var fileIconStyle: FileIconStyle = .default
+
+    @AppStorage(CodeFileView.Theme.storageKey)
+    var editorTheme: CodeFileView.Theme = .atelierSavannaAuto
+
+    @AppStorage(EditorTabWidth.storageKey)
+    var defaultTabWidth: Int = EditorTabWidth.default
 
     @State var refresh = UUID()
 
@@ -46,6 +58,11 @@ struct GeneralSettingsView: View {
                             .tag(ReopenBehavior.newDocument)
                     }
                     .fixedSize()
+                }
+
+                HStack {
+                    Stepper("Default Tab Width".localized(), value: $defaultTabWidth, in: 2...8)
+                    Text(String(defaultTabWidth))
                 }
             }
 

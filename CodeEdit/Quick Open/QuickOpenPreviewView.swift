@@ -11,9 +11,15 @@ import CodeFile
 
 struct QuickOpenPreviewView: View {
     var item: WorkspaceClient.FileItem
-    @State var content: String = ""
-    @State var loaded = false
-    @State var error: String?
+
+    @State
+    var content: String = ""
+
+    @State
+    var loaded = false
+
+    @State
+    var error: String?
 
     var body: some View {
         VStack {

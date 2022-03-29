@@ -8,9 +8,13 @@
 import SwiftUI
 
 struct FindNavigatorSearchBar: View {
-    @ObservedObject var state: WorkspaceDocument.SearchState
+    @ObservedObject
+    var state: WorkspaceDocument.SearchState
+
     let title: String
-    @Binding var text: String
+
+    @Binding
+    var text: String
 
     var body: some View {
         HStack {
@@ -46,10 +50,10 @@ struct SearchBar_Previews: PreviewProvider {
     static var previews: some View {
         HStack {
             FindNavigatorSearchBar(
-				state: .init(WorkspaceDocument.init()),
-				title: "placeholder",
-				text: .constant("value")
-			)
+                state: .init(WorkspaceDocument.init()),
+                title: "placeholder",
+                text: .constant("value")
+            )
         }
         .padding()
     }

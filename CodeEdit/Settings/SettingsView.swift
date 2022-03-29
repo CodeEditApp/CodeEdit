@@ -12,15 +12,15 @@ struct SettingsView: View {
         TabView {
             GeneralSettingsView()
                 .tabItem {
-					Label("General".localized(), systemImage: "gearshape")
+                    Label("General".localized(), systemImage: "gearshape")
                 }
-			TerminalSettingsView()
-				.tabItem {
-					Label("Terminal".localized(), systemImage: "chevron.left.forwardslash.chevron.right")
-				}
+            TerminalSettingsView()
+                .tabItem {
+                    Label("Terminal".localized(), systemImage: "chevron.left.forwardslash.chevron.right")
+                }
         }
         .padding()
-		.frame(width: 600, height: 300)
+        .frame(width: 600, height: 300)
     }
 }
 

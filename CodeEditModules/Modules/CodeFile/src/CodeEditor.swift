@@ -12,7 +12,9 @@ import Highlightr
 import Combine
 
 struct CodeEditor: NSViewRepresentable {
-    @State private var isCurrentlyUpdatingView: ReferenceTypeBool = .init(value: false)
+    @State
+    private var isCurrentlyUpdatingView: ReferenceTypeBool = .init(value: false)
+
     private var content: Binding<String>
     private let language: Language?
     private let theme: Binding<CodeFileView.Theme>

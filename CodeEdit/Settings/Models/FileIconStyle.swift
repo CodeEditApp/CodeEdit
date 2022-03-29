@@ -8,9 +8,9 @@
 import Foundation
 
 enum FileIconStyle: String, CaseIterable, Hashable {
-	case color
-	case monochrome
+    case color
+    case monochrome
 
-	static let `default` = FileIconStyle.color
-	static let storageKey = "fileIconStyle"
+    static let `default` = FileIconStyle.color
+    static let storageKey = "fileIconStyle"
 }
