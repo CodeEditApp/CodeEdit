@@ -14,6 +14,7 @@ import Preferences
 struct GeneralSettingsView: View {
     @AppStorage(Appearances.storageKey) var appearance: Appearances = .default
     @AppStorage(FileIconStyle.storageKey) var fileIconStyle: FileIconStyle = .default
+    @AppStorage(ReopenBehavior.storageKey) var reopenBehavior: ReopenBehavior = .default
 
     @State var refresh = UUID()
 
@@ -24,20 +25,27 @@ struct GeneralSettingsView: View {
                     AppearenceChangeView(refresh: refresh)
                 }
 
-                Preferences.Section(title: "Reopen Behavior:") {
-                    ReopenChangeView()
+                Preferences.Section(title: "File Icon Style:") {
+                    Picker("", selection: $fileIconStyle) {
+                        Text("Color".localized())
+                            .tag(FileIconStyle.color)
+                        Text("Monochrome".localized())
+                            .tag(FileIconStyle.monochrome)
+                    }
+                    .fixedSize()
                 }
 
-                Preferences.Section(title: "File Icon Style:") {
-                    HStack {
-                        ColorChoose(selected: $fileIconStyle, selection: .color, colors: [
-                            .red, .orange, .yellow, .blue, .green, .purple, .red
-                        ])
-
-                        ColorChoose(selected: $fileIconStyle, selection: .monochrome, colors: [
-                            .gray
-                        ])
+                Preferences.Section(title: "Reopen Behavior:") {
+                    Picker("", selection: $reopenBehavior) {
+                        Text("Welcome Screen".localized())
+                            .tag(ReopenBehavior.welcome)
+                        Divider()
+                        Text("Open Panel".localized())
+                            .tag(ReopenBehavior.openPanel)
+                        Text("New Document".localized())
+                            .tag(ReopenBehavior.newDocument)
                     }
+                    .fixedSize()
                 }
             }
 
@@ -49,82 +57,6 @@ struct GeneralSettingsView: View {
         }
         .padding()
         .frame(width: 820, height: 450)
-    }
-
-    struct ReopenChangeView: View {
-        @StateObject var model = KeyModel.shared
-        @AppStorage(ReopenBehavior.storageKey) var reopenBehavior: ReopenBehavior = .default
-        @AppStorage(Appearances.storageKey) var appearance: Appearances = .default
-
-        var body: some View {
-            HStack {
-                ZStack(alignment: .center) {
-                    if model.key {
-                        Color.focusedColor.opacity(reopenBehavior == .welcome ? 1 : 0)
-                            .frame(width: 67 + 3, height: 46 + 3)
-                            .cornerRadius(5)
-                    } else {
-                        Color.unfocusedColor.opacity(reopenBehavior == .welcome ? 1 : 0)
-                            .frame(width: 67 + 3, height: 46 + 3)
-                            .cornerRadius(5)
-                    }
-
-                    Image(Themes.isDarkMode() ? "welcome window dark" : "welcome window light")
-                        .resizable()
-                        .frame(width: 67, height: 46)
-                        .scaledToFit()
-                        .cornerRadius(5)
-                        .onTapGesture {
-                            reopenBehavior = .welcome
-                        }
-                }
-                .padding(.trailing)
-
-                ZStack(alignment: .center) {
-                    if model.key {
-                        Color.focusedColor.opacity(reopenBehavior == .openPanel ? 1 : 0)
-                            .frame(width: 67 + 3, height: 46 + 3)
-                            .cornerRadius(5)
-                    } else {
-                        Color.unfocusedColor.opacity(reopenBehavior == .openPanel ? 1 : 0)
-                            .frame(width: 67 + 3, height: 46 + 3)
-                            .cornerRadius(5)
-                    }
-
-                    Image(appearance == .light ? "open light" : "open dark")
-                        .resizable()
-                        .frame(width: 67, height: 46)
-                        .scaledToFit()
-                        .cornerRadius(5)
-                        .onTapGesture {
-                            reopenBehavior = .openPanel
-                        }
-                }
-                .padding(.trailing)
-
-                ZStack(alignment: .center) {
-                    if model.key {
-                        Color.focusedColor.opacity(reopenBehavior == .newDocument ? 1 : 0)
-                            .frame(width: 67 + 3, height: 46 + 3)
-                            .cornerRadius(5)
-                    } else {
-                        Color.unfocusedColor.opacity(reopenBehavior == .newDocument ? 1 : 0)
-                            .frame(width: 67 + 3, height: 46 + 3)
-                            .cornerRadius(5)
-                    }
-
-                    Image(appearance == .light ? "new light" : "new dark")
-                        .resizable()
-                        .frame(width: 67, height: 46)
-                        .scaledToFit()
-                        .cornerRadius(5)
-                        .onTapGesture {
-                            reopenBehavior = .newDocument
-                        }
-                }
-                .padding(.trailing)
-            }
-        }
     }
 
     struct AppearenceChangeView: View {
