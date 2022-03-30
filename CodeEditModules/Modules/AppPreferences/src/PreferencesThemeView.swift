@@ -11,6 +11,7 @@ import SwiftUI
 import Preferences
 import TerminalEmulator
 
+@available(macOS 12, *)
 public struct PreferencesThemeView: View {
 
     @AppStorage(CodeFileView.Theme.storageKey)
@@ -37,20 +38,126 @@ public struct PreferencesThemeView: View {
     public init() {}
 
     public var body: some View {
-        TabView {
-            editor
-                .padding()
-                .tabItem {
-                    Text("Editor")
-                }
-            terminal
-                .padding()
-                .tabItem {
-                    Text("Terminal")
-                }
+        VStack(spacing: 20) {
+            newEditor
+            HStack(alignment: .center) {
+                Toggle("Automatically change theme based on system appearance", isOn: .constant(true))
+                Spacer()
+                Button("Get More Themes...") {}
+                HelpButton {}
+            }
         }
-        .frame(width: 844)
-        .padding(30)
+        .frame(width: 812)
+        .padding()
+    }
+
+    private var newEditor: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack(spacing: 1) {
+                sidebar
+                settingsContent
+            }
+            .padding(1)
+            .background(Rectangle().foregroundColor(Color(NSColor.separatorColor)))
+            .frame(height: 468)
+        }
+    }
+
+    private var sidebar: some View {
+        VStack(spacing: 1) {
+            toolbar {
+                CustomSegmentedControl(.constant(0),
+                                       options: [
+                                        "Dark Mode",
+                                        "Light Mode"
+                                       ])
+            }
+            ScrollView {
+                let grid: [GridItem] = .init(
+                    repeating: .init(.fixed(128), spacing: 20, alignment: .center),
+                    count: 2
+                )
+                LazyVGrid(columns: grid,
+                          alignment: .center,
+                          spacing: 20) {
+                    ForEach(0..<10) { i in
+                        VStack {
+                            ThemePreviewIcon()
+                            Text("Civic")
+                        }
+                    }
+                }
+                          .padding(.vertical, 20)
+            }
+            .background(Color(NSColor.controlBackgroundColor))
+            toolbar {
+                sidebarBottomToolbar
+            }
+            .frame(height: 27)
+        }
+        .frame(width: 320)
+    }
+
+    private var sidebarBottomToolbar: some View {
+        HStack {
+            Button {} label: {
+                Image(systemName: "plus")
+            }
+            .buttonStyle(.plain)
+            Button {} label: {
+                Image(systemName: "minus")
+            }
+            .buttonStyle(.plain)
+            Spacer()
+            Button {} label: {
+                Image(systemName: "list.dash")
+            }
+            .buttonStyle(.plain)
+            Button {} label: {
+                Image(systemName: "square.grid.2x2")
+            }
+            .buttonStyle(.plain)
+        }
+    }
+
+    private var settingsContent: some View {
+        VStack(spacing: 1) {
+            toolbar {
+                CustomSegmentedControl(.constant(1),
+                                       options: [
+                                        "Preview",
+                                        "Editor",
+                                        "Terminal"
+                                       ])
+            }
+            Rectangle()
+                .foregroundColor(Color(NSColor.controlBackgroundColor))
+            toolbar {
+                HStack {
+                    Spacer()
+                    Button {} label: {
+                        Image(systemName: "info.circle")
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+        }
+    }
+
+    private func toolbar<T: View>(
+        height: Double = 27,
+        bgColor: Color = Color(NSColor.controlBackgroundColor),
+        @ViewBuilder content: @escaping () -> T
+    ) -> some View {
+        ZStack {
+            Rectangle()
+                .foregroundColor(bgColor)
+            HStack {
+                content()
+                    .padding(.horizontal, 8)
+            }
+        }
+        .frame(height: height)
     }
 
     private var editor: some View {
@@ -147,5 +254,51 @@ public struct PreferencesThemeView: View {
     private func ansiColorPicker(_ color: Binding<Color>) -> some View {
         ColorPicker(selection: color, supportsOpacity: false) { }
             .labelsHidden()
+    }
+}
+
+@available(macOS 12, *)
+struct PrefsThemes_Previews: PreviewProvider {
+    static var previews: some View {
+        PreferencesThemeView()
+            .preferredColorScheme(.light)
+    }
+}
+
+@available(macOS 12, *)
+struct CustomSegmentedControl: View {
+
+    init(_ selection: Binding<Int>, options: [String]) {
+        self._preselectedIndex = selection
+        self.options = options
+    }
+
+    @Binding var preselectedIndex: Int
+    var options: [String]
+    let color = Color.accentColor
+    var body: some View {
+        HStack(spacing: 0) {
+            ForEach(options.indices, id: \.self) { index in
+                Text(options[index])
+                    .font(.subheadline)
+                    .foregroundColor(preselectedIndex == index ? .white : .primary)
+                    .frame(height: 16)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 3)
+                    .background {
+                        Rectangle()
+                        .fill(color)
+                        .cornerRadius(5)
+                        .padding(2)
+                        .opacity(preselectedIndex == index ? 1 : 0.01)
+                    }
+                    .onTapGesture {
+                        withAnimation(.interactiveSpring()) {
+                            preselectedIndex = index
+                        }
+                    }
+            }
+        }
+        .frame(height: 20)
     }
 }
