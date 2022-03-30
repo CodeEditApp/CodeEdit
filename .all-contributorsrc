@@ -25,6 +25,17 @@
         "test",
         "code"
       ]
+    },
+    {
+      "login": "pkasila",
+      "name": "Pavel Kasila",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17158860?v=4",
+      "profile": "https://github.com/pkasila",
+      "contributions": [
+        "infra",
+        "test",
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
