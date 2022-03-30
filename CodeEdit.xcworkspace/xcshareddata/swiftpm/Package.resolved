@@ -14,9 +14,9 @@
         "package": "Preferences",
         "repositoryURL": "https://github.com/underthestars-zhy/Preferences.git",
         "state": {
-          "branch": "main",
+          "branch": null,
           "revision": "3bdbafbad722aa6fc43211fcb01e634b31978f47",
-          "version": null
+          "version": "3.0.0"
         }
       },
       {

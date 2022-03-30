@@ -20,8 +20,8 @@ public struct PreferencesTextEditingView: View {
             defaultTabWidth = Int($0) ?? defaultTabWidth
             if defaultTabWidth > 8 {
                 defaultTabWidth = 8
-            } else if defaultTabWidth < 0 {
-                defaultTabWidth = 0
+            } else if defaultTabWidth < 1 {
+                defaultTabWidth = 1
             }
         }
 
@@ -32,7 +32,7 @@ public struct PreferencesTextEditingView: View {
     public var body: some View {
         Form {
             HStack(spacing: 5) {
-                Stepper(value: $defaultTabWidth, in: 0...8, step: 1) {
+                Stepper(value: $defaultTabWidth, in: 1...8, step: 1) {
                     TextField("", text: tabStringBinding)
                         .frame(width: 50)
                         .multilineTextAlignment(.trailing)

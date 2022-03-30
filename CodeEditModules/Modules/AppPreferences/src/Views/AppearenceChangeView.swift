@@ -9,93 +9,59 @@ import SwiftUI
 import Preferences
 
 struct AppearenceChangeView: View {
-    @StateObject var model = KeyModel.shared
-
     @AppStorage(Appearances.storageKey)
     private var appearance: Appearances = .default
 
     var body: some View {
         HStack {
-            VStack {
-                ZStack(alignment: .center) {
-                    if model.key {
-                        Color.focusedColor.opacity(appearance == .system || appearance == .default ? 1 : 0)
-                            .frame(width: 67 + 3, height: 46 + 3)
-                            .cornerRadius(5)
-                    } else {
-                        Color.unfocusedColor.opacity(appearance == .system || appearance == .default ? 1 : 0)
-                            .frame(width: 67 + 3, height: 46 + 3)
-                            .cornerRadius(5)
-                    }
+            AppearenceItem(name: "Auto", image: "Settings Image - Auto", type: .system)
+                .padding(.trailing)
 
-                    Image("Settings Image - Auto", bundle: Bundle.module)
-                        .resizable()
-                        .frame(width: 67, height: 46)
-                        .scaledToFit()
-                        .cornerRadius(5)
-                        .onTapGesture {
-                            appearance = .system
-                        }
-                }
+            AppearenceItem(name: "Light", image: "Settings Image - Light", type: .light)
+                .padding(.trailing)
 
-                Text("Auto")
-            }
-            .padding(.trailing)
-
-            VStack {
-                ZStack(alignment: .center) {
-                    if model.key {
-                        Color.focusedColor.opacity(appearance == .light ? 1 : 0)
-                            .frame(width: 67 + 3, height: 46 + 3)
-                            .cornerRadius(5)
-                    } else {
-                        Color.unfocusedColor.opacity(appearance == .light ? 1 : 0)
-                            .frame(width: 67 + 3, height: 46 + 3)
-                            .cornerRadius(5)
-                    }
-
-                    Image("Settings Image - Light", bundle: Bundle.module)
-                        .resizable()
-                        .frame(width: 67, height: 46)
-                        .scaledToFit()
-                        .cornerRadius(5)
-                        .onTapGesture {
-                            appearance = .light
-                        }
-                }
-
-                Text("Light")
-            }
-            .padding(.trailing)
-
-            VStack {
-                ZStack(alignment: .center) {
-                    if model.key {
-                        Color.focusedColor.opacity(appearance == .dark ? 1 : 0)
-                            .frame(width: 67 + 3, height: 46 + 3)
-                            .cornerRadius(5)
-                    } else {
-                        Color.unfocusedColor.opacity(appearance == .dark ? 1 : 0)
-                            .frame(width: 67 + 3, height: 46 + 3)
-                            .cornerRadius(5)
-                    }
-
-                    Image("Settings Image - Dark", bundle: Bundle.module)
-                        .resizable()
-                        .frame(width: 67, height: 46)
-                        .scaledToFit()
-                        .cornerRadius(5)
-                        .onTapGesture {
-                            appearance = .dark
-                        }
-                }
-
-                Text("Dark")
-            }
-            .padding(.trailing)
+            AppearenceItem(name: "Dark", image: "Settings Image - Dark", type: .dark)
         }
         .onChange(of: appearance) { tag in
             tag.applyAppearance()
+        }
+    }
+
+    struct AppearenceItem: View {
+        @StateObject var model = KeyModel.shared
+
+        @AppStorage(Appearances.storageKey)
+        private var appearance: Appearances = .default
+
+        let name: String
+        let image: String
+        let type: Appearances
+
+        var body: some View {
+            VStack {
+                ZStack(alignment: .center) {
+                    if model.key {
+                        Color.focusedColor.opacity(appearance == type ? 1 : 0)
+                            .frame(width: 67 + 3, height: 46 + 3)
+                            .cornerRadius(5)
+                    } else {
+                        Color.unfocusedColor.opacity(appearance == type ? 1 : 0)
+                            .frame(width: 67 + 3, height: 46 + 3)
+                            .cornerRadius(5)
+                    }
+
+                    Image(image, bundle: Bundle.module)
+                        .resizable()
+                        .frame(width: 67, height: 46)
+                        .scaledToFit()
+                        .cornerRadius(5)
+                        .onTapGesture {
+                            appearance = type
+                        }
+                }
+
+                Text(name)
+            }
         }
     }
 }

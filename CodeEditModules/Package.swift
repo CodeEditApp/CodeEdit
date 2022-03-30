@@ -73,7 +73,7 @@ let package = Package(
         .package(
             name: "Preferences",
             url: "https://github.com/underthestars-zhy/Preferences.git",
-            branch: "main"
+            from: "3.0.0"
         )
     ],
     targets: [
