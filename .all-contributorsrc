@@ -103,6 +103,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "StefKors",
+      "name": "Stef Kors",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11800807?v=4",
+      "profile": "https://www.stefkors.com",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
