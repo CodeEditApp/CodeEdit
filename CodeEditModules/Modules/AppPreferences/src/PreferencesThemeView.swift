@@ -39,10 +39,12 @@ public struct PreferencesThemeView: View {
     public var body: some View {
         TabView {
             editor
+                .padding()
                 .tabItem {
                     Text("Editor")
                 }
             terminal
+                .padding()
                 .tabItem {
                     Text("Terminal")
                 }
