@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Settings Image - Auto~universal@1x.png",
+      "filename" : "Auto.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Settings Image - Auto~universal@2x.png",
+      "filename" : "Auto@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Settings Image - Auto~universal@3x.png",
+      "filename" : "Auto@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
