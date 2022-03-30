@@ -177,7 +177,7 @@ public class CodeEditorTextView: NSTextView {
         return menu
     }
 
-    /// This removes the fault menu items in the context menu based on their name..
+    /// This removes the default menu items in the context menu based on their name..
     ///
     /// The only problem currently is how well it would work with other languages.
     func removeMenus(_ menu: NSMenu) -> NSMenu {
