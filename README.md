@@ -10,31 +10,30 @@
 
 ## To do
 
-- [x] Design a concept
-- [x] Start a boilerplate app
-- [x] Set up a Github repository to allow the community to get involved
+- [x] Initial concept design
+- [x] Put starter app on GitHub
 - [x] Start a [Discord server](https://discord.gg/vChUXVf9Em) for community collaboration
+- [x] UI Framework - Navigator and Inspector Sidebars, Toolbar, Tabs, Breadcrumbs, Drawer, Statusbar
+- [x] Welcome screen
 - [x] Project navigator - Manage and edit files within a project
 - [x] Source control navigator
-- [x] Welcome screen
+- [x] Find navigator (find in project)
+- [ ] Issue navigator
+- [ ] Code symbols navigator
+- [ ] Debug navigator
+- [ ] Extension navigator
+- [ ] Extensions API
+- [ ] Extensions Store
 - [x] Text editor
+- [ ] Split editors
 - [x] Syntax highlighting
 - [ ] Find in document
-- [x] Find in project
-- [x] Open file search bar overlay
-- [ ] Commands overlay
-- [x] Breadcrumb bar
-- [x] Status bar
-- [x] Tabs
-- [ ] Split editors
-- [ ] Extension infrastructure
-- [ ] Extension manager
-- [ ] Project preferences
-- [x] Application preferences
-- [ ] Debug experience
-- [ ] Code symbols navigator
 - [x] Integrated terminal
-- [ ] File information sidebar
+- [x] Open quickly overlay
+- [ ] Commands overlay
+- [ ] Application Preferences
+- [ ] Project Preferences
+- [ ] File inspector
 
 ...more to come!
 
