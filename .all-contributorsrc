@@ -14,6 +14,17 @@
         "design",
         "code"
       ]
+    },
+    {
+      "login": "lukepistrol",
+      "name": "Lukas",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9460130?v=4",
+      "profile": "http://lukaspistrol.com",
+      "contributions": [
+        "infra",
+        "test",
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
