@@ -58,10 +58,27 @@ We'd like to keep our application light as TextEdit, but provide an experience l
 
 It might sound crazy, but it is our hope that at some point Apple adopts this project or at least feels like they could.
 
+## Community
+
+Join our growing community of the amazing contributors on [Discord](https://discord.gg/vChUXVf9Em).
 
 ## Contributing
 
 Read the [Contribution Guide](https://github.com/CodeEditApp/CodeEdit/blob/main/CONTRIBUTING.md)
+
+## Contributors
+
+
+
+## Sponsors
+
+Support CodeEdit's development by [becoming a sponsor](https://github.com/sponsors/CodeEditApp).
+
+## Backers
+
+Support CodeEdit's development by [becoming a backer](https://github.com/sponsors/CodeEditApp).
+
+<a href="https://github.com/dannydorazio" target="_blank"><img src="https://avatars.githubusercontent.com/u/21158275?v=4" width="64"></a>
 
 ## License
 
