@@ -1,15 +1,21 @@
 //
-//  TerminalSettingsView.swift
-//  CodeEdit
+//  File.swift
+//  
 //
-//  Created by Lukas Pistrol on 23.03.22.
+//  Created by Lukas Pistrol on 30.03.22.
 //
 
-import SwiftUI
-import TerminalEmulator
+import CodeFile
 import FontPicker
+import SwiftUI
+import Preferences
+import TerminalEmulator
 
-struct TerminalSettingsView: View {
+public struct PreferencesThemeView: View {
+
+    @AppStorage(CodeFileView.Theme.storageKey)
+    var editorTheme: CodeFileView.Theme = .atelierSavannaAuto
+
     @AppStorage(TerminalShellType.storageKey)
     var shellType: TerminalShellType = .default
 
@@ -28,10 +34,47 @@ struct TerminalSettingsView: View {
     @StateObject
     private var colors = AnsiColors.shared
 
-    var body: some View {
+    public init() {}
+
+    public var body: some View {
+        TabView {
+            editor
+                .padding()
+                .tabItem {
+                    Text("Editor")
+                }
+            terminal
+                .padding()
+                .tabItem {
+                    Text("Terminal")
+                }
+        }
+        .frame(width: 844)
+        .padding(30)
+    }
+
+    private var editor: some View {
         Form {
-            Picker("Terminal Shell".localized(), selection: $shellType) {
-                Text("System Default".localized())
+            Picker("Editor Theme", selection: $editorTheme) {
+                Text("Atelier Savanna (Auto)")
+                    .tag(CodeFileView.Theme.atelierSavannaAuto)
+                Text("Atelier Savanna Dark")
+                    .tag(CodeFileView.Theme.atelierSavannaDark)
+                Text("Atelier Savanna Light")
+                    .tag(CodeFileView.Theme.atelierSavannaLight)
+                Text("Agate")
+                    .tag(CodeFileView.Theme.agate)
+                Text("Ocean")
+                    .tag(CodeFileView.Theme.ocean)
+            }
+            .fixedSize()
+        }
+    }
+
+    private var terminal: some View {
+        Form {
+            Picker("Terminal Shell", selection: $shellType) {
+                Text("System Default")
                     .tag(TerminalShellType.auto)
                 Divider()
                 Text("ZSH")
@@ -39,6 +82,7 @@ struct TerminalSettingsView: View {
                 Text("Bash")
                     .tag(TerminalShellType.bash)
             }
+            .fixedSize()
 
             Picker("Terminal Appearance", selection: $terminalColorSchmeme) {
                 Text("App Default")
@@ -49,24 +93,25 @@ struct TerminalSettingsView: View {
                 Text("Dark")
                     .tag(TerminalColorScheme.dark)
             }
+            .fixedSize()
 
-            Picker("Terminal Font".localized(), selection: $terminalFontSelection) {
-                Text("System Font".localized())
+            Picker("Terminal Font", selection: $terminalFontSelection) {
+                Text("System Font")
                     .tag(TerminalFont.systemFont)
                 Divider()
-                Text("Custom".localized())
+                Text("Custom")
                     .tag(TerminalFont.custom)
             }
+            .fixedSize()
             if terminalFontSelection == .custom {
-                HStack {
-                    FontPicker(
-                        "\(terminalFontName) \(terminalFontSize)",
-                        name: $terminalFontName,
-                        size: $terminalFontSize
-                    )
-                }
+                FontPicker(
+                    "\(terminalFontName) \(terminalFontSize)",
+                    name: $terminalFontName,
+                    size: $terminalFontSize
+                )
             }
             Divider()
+                .frame(maxWidth: 400)
             Section {
                 VStack(alignment: .leading, spacing: 0) {
                     HStack(spacing: 0) {
@@ -97,17 +142,10 @@ struct TerminalSettingsView: View {
                 AnsiColors.shared.resetDefault()
             }
         }
-        .padding()
     }
 
     private func ansiColorPicker(_ color: Binding<Color>) -> some View {
         ColorPicker(selection: color, supportsOpacity: false) { }
             .labelsHidden()
-    }
-}
-
-struct TerminalSettingsView_Previews: PreviewProvider {
-    static var previews: some View {
-        TerminalSettingsView()
     }
 }

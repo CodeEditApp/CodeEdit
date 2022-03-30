@@ -9,6 +9,7 @@
 import SwiftUI
 import WorkspaceClient
 import CodeFile
+import AppPreferences
 
 /// # Project Navigator Item
 ///

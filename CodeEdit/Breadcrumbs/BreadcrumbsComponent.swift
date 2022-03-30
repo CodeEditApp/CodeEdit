@@ -7,6 +7,7 @@
 
 import SwiftUI
 import WorkspaceClient
+import AppPreferences
 
 struct BreadcrumbsComponent: View {
     @AppStorage(FileIconStyle.storageKey)
