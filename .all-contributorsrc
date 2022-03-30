@@ -76,6 +76,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "Jeehut",
+      "name": "Cihat Gündüz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6942160?v=4",
+      "profile": "https://twitch.tv/Jeehut",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
