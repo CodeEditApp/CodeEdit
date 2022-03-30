@@ -63,7 +63,7 @@ It might sound crazy, but it is our hope that at some point Apple adopts this pr
 
 ## Community
 
-Join our growing community of the amazing contributors on [Discord](https://discord.gg/vChUXVf9Em).
+Join our growing community of amazing contributors on [Discord](https://discord.gg/vChUXVf9Em).
 
 ## Contributing
 
