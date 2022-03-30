@@ -1,4 +1,4 @@
-name: Bug report
+name: 🐞 Bug report
 description: Something is not working as expected.
 title: 🐞 - YOUR_DESCRIPTION
 labels: bug
@@ -17,7 +17,7 @@ body:
       label: To Reproduce
       description: >-
         Steps to reproduce the behavior.
-      value: |
+      placeholder: |
         1. Go to '...'
         2. Click on '....'
         3. Scroll down to '....'
@@ -34,21 +34,27 @@ body:
   - type: input
     attributes:
       label: CodeEdit version
+      value: 1.0
     validations:
       required: true
+
   - type: input
     attributes:
       label: macOS version
+      value: 12.3
     validations:
       required: true
-  - type: input
-    attributes:
-      label: Commit hash
-    validations:
-      required: false
+
   - type: input
     attributes:
       label: Xcode version
+      value: 13.3
+    validations:
+      required: false
+      
+  - type: input
+    attributes:
+      label: Commit hash
     validations:
       required: false
       
