@@ -17,12 +17,8 @@ public struct PreferencesTextEditingView: View {
         Binding<String> {
             String(defaultTabWidth)
         } set: {
+            guard 0 < Int($0) ?? defaultTabWidth && Int($0) ?? defaultTabWidth <= 8 else { return }
             defaultTabWidth = Int($0) ?? defaultTabWidth
-            if defaultTabWidth > 8 {
-                defaultTabWidth = 8
-            } else if defaultTabWidth < 1 {
-                defaultTabWidth = 1
-            }
         }
 
     }
