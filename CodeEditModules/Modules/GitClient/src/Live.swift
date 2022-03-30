@@ -45,14 +45,15 @@ public extension GitClient {
             }
         }
 
-        func getCommitHistory(entries: Int?) throws -> [Commit] {
+        func getCommitHistory(entries: Int?, fileLocalPath: String?) throws -> [Commit] {
             var entriesString = ""
+            let fileLocalPath = fileLocalPath ?? ""
             if let entries = entries { entriesString = "-n \(entries)" }
             let dateFormatter = DateFormatter()
             dateFormatter.locale = Locale.current
             dateFormatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss Z"
             return try shellClient.run(
-                "cd \(directoryURL.relativePath);git log --pretty=%h¦%s¦%aN¦%aD¦ \(entriesString)"
+                "cd \(directoryURL.relativePath);git log --pretty=%h¦%s¦%aN¦%aD¦ \(fileLocalPath) \(entriesString)"
             )
                 .split(separator: "\n")
                 .map { line -> Commit in
@@ -78,7 +79,7 @@ public extension GitClient {
                     throw GitClientError.notGitRepository
                 }
             },
-            getCommitHistory: getCommitHistory(entries:)
+            getCommitHistory: getCommitHistory(entries:fileLocalPath:)
         )
     }
 }
