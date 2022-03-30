@@ -49,6 +49,10 @@ let package = Package(
             name: "ShellClient",
             targets: ["ShellClient"]
         ),
+        .library(
+            name: "AppPreferences",
+            targets: ["AppPreferences"]
+        ),
     ],
     dependencies: [
         .package(
@@ -65,6 +69,11 @@ let package = Package(
             name: "SwiftTerm",
             url: "https://github.com/migueldeicaza/SwiftTerm.git",
             from: "1.0.7"
+        ),
+        .package(
+            name: "Preferences",
+            url: "https://github.com/sindresorhus/Preferences.git",
+            from: "2.5.0"
         ),
     ],
     targets: [
@@ -156,5 +165,12 @@ let package = Package(
             name: "ShellClient",
             path: "Modules/ShellClient/src"
         ),
+        .target(
+            name: "AppPreferences",
+            dependencies: [
+                "Preferences",
+            ],
+            path: "Modules/AppPreferences/src"
+        )
     ]
 )
