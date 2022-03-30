@@ -4,6 +4,10 @@
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-15-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
+![GitHub branch checks state](https://img.shields.io/github/checks-status/CodeEditApp/CodeEdit/main)
+![GitHub Repo stars](https://img.shields.io/github/stars/CodeEditApp/CodeEdit)
+![GitHub forks](https://img.shields.io/github/forks/CodeEditApp/CodeEdit)
+![Discord](https://img.shields.io/discord/951544472238444645)
 
 | :warning: | **CodeEdit is currently in development and we do not yet offer a download.** <br> We will post a link here when we have an alpha release ready for testing. Until then, we welcome contributors to help bring this project to life. | &nbsp;&nbsp;&nbsp;&nbsp;[CONTRIBUTE](https://github.com/CodeEditApp/CodeEdit/blob/main/CONTRIBUTING.md)&nbsp;&nbsp;&nbsp;&nbsp; |
 | - |:-| - |
