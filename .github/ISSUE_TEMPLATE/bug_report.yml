@@ -1,7 +1,7 @@
-name: 🐛 Bug Report
+name: 🐞 Bug Report
 description: Create a report to help us improve
-title: "🐛 [BUG] - YOUR_DESCRIPTION"
-labels: [🐛 bug]
+title: "🐞 [BUG] - YOUR_DESCRIPTION"
+labels: [🐞 bug]
 body:
   - type: textarea
     attributes:
