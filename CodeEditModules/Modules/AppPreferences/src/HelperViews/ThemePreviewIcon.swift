@@ -37,6 +37,7 @@ struct ThemePreviewIcon: View {
             }
             .padding(1)
             .frame(width: 130, height: 88)
+            .shadow(color: Color(NSColor.shadowColor).opacity(0.1), radius: 8, x: 0, y: 2)
             .overlay {
                 RoundedRectangle(cornerRadius: 4)
                     .strokeBorder(lineWidth: 2)

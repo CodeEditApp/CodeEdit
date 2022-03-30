@@ -11,6 +11,7 @@ import SwiftUI
 import Preferences
 import TerminalEmulator
 
+// swiftlint:disable all
 @available(macOS 12, *)
 public struct PreferencesThemeView: View {
     @Environment(\.colorScheme)
@@ -135,8 +136,53 @@ public struct PreferencesThemeView: View {
                                         "Terminal"
                                        ])
             }
-            Rectangle()
-                .foregroundColor(Color(NSColor.controlBackgroundColor))
+            ZStack(alignment: .topLeading) {
+                Rectangle()
+                    .foregroundColor(Color(NSColor.controlBackgroundColor))
+                VStack(alignment: .leading, spacing: 0) {
+                    Toggle("Use theme background ", isOn: .constant(true))
+                        .padding(.bottom, 20)
+                    HStack(spacing: 0) {
+                        VStack(alignment: .leading, spacing: 10) {
+                            colorPicker(.constant(Color(hex: 0xffffff)), label: "Text")
+                            colorPicker(.constant(Color(hex: 0xffffff)), label: "Cursor")
+                            colorPicker(.constant(Color(hex: 0x636363)), label: "Invisibles")
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        VStack(alignment: .leading, spacing: 10) {
+                            colorPicker(.constant(Color(hex: 0x1e1e1e)), label: "Background")
+                            colorPicker(.constant(Color(hex: 0x303030)), label: "Current Line")
+                            colorPicker(.constant(Color(hex: 0x8b8b8b)), label: "Selection")
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                    .padding(.bottom, 20)
+                    Text("Syntax")
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundColor(.secondary)
+                        .padding(.bottom, 10)
+                    HStack(spacing: 0) {
+                        VStack(alignment: .leading, spacing: 10) {
+                            colorPicker(.constant(Color(hex: 0xef8bb6)), label: "Keywords")
+                            colorPicker(.constant(Color(hex: 0xc6a3f9)), label: "Commands")
+                            colorPicker(.constant(Color(hex: 0x93c7bc)), label: "Types")
+                            colorPicker(.constant(Color(hex: 0x93c7bc)), label: "Attributes")
+                            colorPicker(.constant(Color(hex: 0x70c1e2)), label: "Variables")
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        VStack(alignment: .leading, spacing: 10) {
+                            colorPicker(.constant(Color(hex: 0x70c1e2)), label: "Values")
+                            colorPicker(.constant(Color(hex: 0xd6c775)), label: "Numbers")
+                            colorPicker(.constant(Color(hex: 0xf0907f)), label: "Strings")
+                            colorPicker(.constant(Color(hex: 0x93c7bc)), label: "Characters")
+                            colorPicker(.constant(Color(hex: 0x97be71)), label: "Comments")
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                }
+                .padding(20)
+            }
+
             toolbar {
                 HStack {
                     Spacer()
@@ -253,6 +299,14 @@ public struct PreferencesThemeView: View {
             Button("Restore Defaults") {
                 AnsiColors.shared.resetDefault()
             }
+        }
+    }
+
+    private func colorPicker(_ color: Binding<Color>, label: String) -> some View {
+        HStack {
+            ColorPicker(selection: color, supportsOpacity: false) { }
+                .labelsHidden()
+            Text(label)
         }
     }
 
