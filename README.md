@@ -11,7 +11,7 @@
 - [x] Design a concept
 - [x] Start a boilerplate app
 - [x] Set up a Github repository to allow the community to get involved
-- [x] Start a [discord server](https://discord.gg/vChUXVf9Em) for community collaboration
+- [x] Start a [Discord server](https://discord.gg/vChUXVf9Em) for community collaboration
 - [x] Project navigator - Manage and edit files within a project
 - [x] Source control navigator
 - [x] Welcome screen
@@ -25,7 +25,7 @@
 - [x] Status bar
 - [x] Tabs
 - [ ] Split editors
-- [ ] Extension insfrastructure
+- [ ] Extension infrastructure
 - [ ] Extension manager
 - [ ] Project preferences
 - [x] Application preferences
