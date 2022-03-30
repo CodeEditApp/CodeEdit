@@ -139,6 +139,16 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "jasonplatts",
+      "name": "Jason Platts",
+      "avatar_url": "https://avatars.githubusercontent.com/u/48892071?v=4",
+      "profile": "https://github.com/jasonplatts",
+      "contributions": [
+        "infra",
+        "plugin"
+      ]
     }
   ],
   "contributorsPerLine": 7,
