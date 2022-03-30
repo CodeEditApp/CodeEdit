@@ -108,8 +108,7 @@ public class CodeEditorTextView: NSTextView {
         menu = helpMenu(menu)
         menu = codeMenu(menu)
         menu = gitMenu(menu)
-        menu = removeSubMenus(menu)
-        menu = removeTextMenu(menu)
+        menu = removeMenus(menu)
 
         return menu
     }
@@ -118,19 +117,19 @@ public class CodeEditorTextView: NSTextView {
         menu.insertItem(withTitle: "Jump To Definition",
                         action: nil,
                         keyEquivalent: "",
-                        at: 1)
+                        at: 0)
 
         menu.insertItem(withTitle: "Show Code Actions",
                         action: nil,
                         keyEquivalent: "",
-                        at: 2)
+                        at: 1)
 
         menu.insertItem(withTitle: "Show Quick Help",
                         action: nil,
                         keyEquivalent: "",
-                        at: 3)
+                        at: 2)
 
-        menu.insertItem(.separator(), at: 4)
+        menu.insertItem(.separator(), at: 3)
 
         return menu
     }
@@ -140,19 +139,19 @@ public class CodeEditorTextView: NSTextView {
         menu.insertItem(withTitle: "Refactor",
                         action: nil,
                         keyEquivalent: "",
-                        at: 5)
+                        at: 4)
 
         menu.insertItem(withTitle: "Find",
                         action: nil,
                         keyEquivalent: "",
-                        at: 6)
+                        at: 5)
 
         menu.insertItem(withTitle: "Navigate",
                         action: nil,
                         keyEquivalent: "",
-                        at: 7)
+                        at: 6)
 
-        menu.insertItem(.separator(), at: 8)
+        menu.insertItem(.separator(), at: 7)
 
         return menu
     }
@@ -161,81 +160,41 @@ public class CodeEditorTextView: NSTextView {
         menu.insertItem(withTitle: "Show Last Change For Line",
                         action: nil,
                         keyEquivalent: "",
-                        at: 9)
+                        at: 8)
 
         menu.insertItem(withTitle: "Create Code Snippet...",
                         action: nil,
                         keyEquivalent: "",
-                        at: 10)
+                        at: 9)
 
         menu.insertItem(withTitle: "Add Pull Request Discussion to Current Line",
                         action: nil,
                         keyEquivalent: "",
-                        at: 11)
+                        at: 10)
 
-        menu.insertItem(.separator(), at: 12)
-
-        return menu
-    }
-
-    func removeSubMenus(_ menu: NSMenu) -> NSMenu {
-        // remove unwanted "Font" menu and its submenus
-
-        if let substitutionsItem = menu.item(withTitle: "Substitutions") {
-            menu.removeItem(substitutionsItem)
-        }
-
-        if let transformationsItem = menu.item(withTitle: "Transformations") {
-            menu.removeItem(transformationsItem)
-        }
-
-        if let speechItem = menu.item(withTitle: "Speech") {
-            menu.removeItem(speechItem)
-        }
-
-        if let shareItem = menu.item(withTitle: "Share") {
-            menu.removeItem(shareItem)
-        }
-
-        if let searchGoogleItem = menu.item(withTitle: "Search With Google") {
-            menu.removeItem(searchGoogleItem)
-        }
-
-        if let fontMenuItem = menu.item(withTitle: "Font") {
-            menu.removeItem(fontMenuItem)
-        }
+        menu.insertItem(.separator(), at: 11)
 
         return menu
     }
 
-    func removeTextMenu(_ menu: NSMenu) -> NSMenu {
-
-        if let guessesItem = menu.item(withTitle: "No Guesses Found") {
-            menu.removeItem(guessesItem)
-        }
-
-        if let ignoreItem = menu.item(withTitle: "Ignore Spelling") {
-            menu.removeItem(ignoreItem)
-        }
-
-        if let learnItem = menu.item(withTitle: "Learn Spelling") {
-            menu.removeItem(learnItem)
-        }
-
-        if let lookUpItem = menu.item(withTitle: "Look Up") {
-            menu.removeItem(lookUpItem)
-        }
-
-        if let searchGoogleItem = menu.item(withTitle: "Search With Google") {
-            menu.removeItem(searchGoogleItem)
-        }
-
-        if let translateItem = menu.item(withTitle: "Translate") {
-            menu.removeItem(translateItem)
-        }
-
-        if let spellingGrammarItem = menu.item(withTitle: "Spelling and Grammar") {
-            menu.removeItem(spellingGrammarItem)
+    func removeMenus(_ menu: NSMenu) -> NSMenu {
+        for action in ["No Guesses Found",
+                       "Learn Spelling",
+                       "Ignore Spelling",
+                       "Search With Google",
+                       "Translate",
+                       "Spelling and Grammar",
+                       "Substitutions",
+                       "Transformations",
+                       "Speech",
+                       "Share",
+                       "Search With Google",
+                       "Font",
+                       "Services"] {
+            let index = menu.indexOfItem(withTitle: action)
+            if index > -1 {
+                menu.removeItem(at: index)
+            }
         }
 
         return menu
