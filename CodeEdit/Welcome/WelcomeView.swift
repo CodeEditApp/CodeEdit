@@ -9,6 +9,7 @@ import SwiftUI
 import AppKit
 import Foundation
 import WelcomeModule
+import AppPreferences
 
 struct WelcomeView: View {
     @Environment(\.colorScheme)

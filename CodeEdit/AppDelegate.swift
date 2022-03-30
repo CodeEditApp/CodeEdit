@@ -110,22 +110,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 
     @IBAction func openPreferences(_ sender: Any) {
         preferencesWindowController.show()
-//        if let window = NSApp.windows.filter({ window in
-//            return (window.contentView as? NSHostingView<SettingsView>) != nil
-//        }).first {
-//            window.makeKeyAndOrderFront(self)
-//            return
-//        }
-//
-//        let window = NSWindow(
-//            contentRect: NSRect(x: 0, y: 0, width: 500, height: 400),
-//            styleMask: [.titled, .closable],
-//            backing: .buffered, defer: false)
-//        window.center()
-//        window.title = "Settings"
-//        window.toolbarStyle = .preference
-//        window.windowController = preferencesWindowController
-//        window.makeKeyAndOrderFront(sender)
     }
 
     @IBAction func openWelcome(_ sender: Any) {
@@ -156,21 +140,21 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                 title: "General",
                 toolbarIcon: NSImage(systemSymbolName: "gearshape", accessibilityDescription: nil)!
             ) {
-                AppPreferencesView()
+                PreferencesGeneralView()
             },
             Preferences.Pane(
                 identifier: Preferences.PaneIdentifier("Accounts"),
                 title: "Accounts",
                 toolbarIcon: NSImage(systemSymbolName: "at", accessibilityDescription: nil)!
             ) {
-                AppPreferencesView()
+                PreferencesPlaceholderView()
             },
             Preferences.Pane(
                 identifier: Preferences.PaneIdentifier("Behaviors"),
                 title: "Behaviors",
                 toolbarIcon: NSImage(systemSymbolName: "flowchart", accessibilityDescription: nil)!
             ) {
-                AppPreferencesView()
+                PreferencesPlaceholderView()
             },
             Preferences.Pane(
                 identifier: Preferences.PaneIdentifier("Navigation"),
@@ -178,7 +162,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                 toolbarIcon: NSImage(systemSymbolName: "arrow.triangle.turn.up.right.diamond",
                                      accessibilityDescription: nil)!
             ) {
-                AppPreferencesView()
+                PreferencesPlaceholderView()
             },
             Preferences.Pane(
                 identifier: Preferences.PaneIdentifier("Themes"),
@@ -192,44 +176,45 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                 title: "Text Editing",
                 toolbarIcon: NSImage(systemSymbolName: "square.and.pencil", accessibilityDescription: nil)!
             ) {
-                AppPreferencesView()
+                PreferencesTextEditingView()
             },
             Preferences.Pane(
                 identifier: Preferences.PaneIdentifier("KeyBindings"),
                 title: "Key Bindings",
                 toolbarIcon: NSImage(systemSymbolName: "keyboard", accessibilityDescription: nil)!
             ) {
-                AppPreferencesView()
+                PreferencesPlaceholderView()
             },
             Preferences.Pane(
                 identifier: Preferences.PaneIdentifier("SourceControl"),
                 title: "Source Control",
                 toolbarIcon: NSImage(systemSymbolName: "square.stack", accessibilityDescription: nil)!
             ) {
-                AppPreferencesView()
+                PreferencesPlaceholderView()
             },
             Preferences.Pane(
                 identifier: Preferences.PaneIdentifier("Components"),
                 title: "Components",
                 toolbarIcon: NSImage(systemSymbolName: "puzzlepiece", accessibilityDescription: nil)!
             ) {
-                AppPreferencesView()
+                PreferencesPlaceholderView()
             },
             Preferences.Pane(
                 identifier: Preferences.PaneIdentifier("Locations"),
                 title: "Locations",
                 toolbarIcon: NSImage(systemSymbolName: "externaldrive", accessibilityDescription: nil)!
             ) {
-                AppPreferencesView()
+                PreferencesPlaceholderView()
             },
             Preferences.Pane(
                 identifier: Preferences.PaneIdentifier("Advanced"),
                 title: "Advanced",
                 toolbarIcon: NSImage(systemSymbolName: "gearshape.2", accessibilityDescription: nil)!
             ) {
-                AppPreferencesView()
+                PreferencesPlaceholderView()
             }
-        ]
+        ],
+        animated: false
     )
 }
 

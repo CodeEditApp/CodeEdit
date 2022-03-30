@@ -169,6 +169,9 @@ let package = Package(
             name: "AppPreferences",
             dependencies: [
                 "Preferences",
+                "CodeFile",
+                "FontPicker",
+                "TerminalEmulator",
             ],
             path: "Modules/AppPreferences/src"
         )
