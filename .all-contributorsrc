@@ -25,6 +25,17 @@
         "test",
         "code"
       ]
+    },
+    {
+      "login": "MarcoCarnevali",
+      "name": "Marco Carnevali",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9656572?v=4",
+      "profile": "https://github.com/MarcoCarnevali",
+      "contributions": [
+        "infra",
+        "test",
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
