@@ -1,9 +1,7 @@
 name: Bug report
 description: Something is not working as expected.
-about: Create a report to help us improve
 title: 🐞 - YOUR_DESCRIPTION
 labels: bug
-assignees: ''
 
 body:
   - type: textarea
