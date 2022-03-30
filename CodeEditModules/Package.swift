@@ -72,9 +72,9 @@ let package = Package(
         ),
         .package(
             name: "Preferences",
-            url: "https://github.com/sindresorhus/Preferences.git",
-            from: "2.5.0"
-        ),
+            url: "https://github.com/underthestars-zhy/Preferences.git",
+            branch: "main"
+        )
     ],
     targets: [
         .target(

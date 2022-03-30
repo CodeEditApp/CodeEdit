@@ -12,11 +12,11 @@
       },
       {
         "package": "Preferences",
-        "repositoryURL": "https://github.com/sindresorhus/Preferences.git",
+        "repositoryURL": "https://github.com/underthestars-zhy/Preferences.git",
         "state": {
-          "branch": null,
-          "revision": "ffeaaad1def45d0625720dc1adae3789cd9c167d",
-          "version": "2.5.0"
+          "branch": "main",
+          "revision": "3bdbafbad722aa6fc43211fcb01e634b31978f47",
+          "version": null
         }
       },
       {

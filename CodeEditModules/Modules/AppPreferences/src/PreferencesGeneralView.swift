@@ -9,10 +9,6 @@ import SwiftUI
 import Preferences
 
 public struct PreferencesGeneralView: View {
-
-    @AppStorage(Appearances.storageKey)
-    private var appearance: Appearances = .default
-
     @AppStorage(ReopenBehavior.storageKey)
     private var reopenBehavior: ReopenBehavior = .default
 
@@ -23,19 +19,8 @@ public struct PreferencesGeneralView: View {
 
     public var body: some View {
         Form {
-            Picker("Appearance:", selection: $appearance) {
-                Text("System")
-                    .tag(Appearances.system)
-                Divider()
-                Text("Light")
-                    .tag(Appearances.light)
-                Text("Dark")
-                    .tag(Appearances.dark)
-            }
-            .onChange(of: appearance) { tag in
-                tag.applyAppearance()
-            }
-            .fixedSize()
+            AppearenceChangeView()
+                .formLabel(Text("Appearence:"))
 
             Picker("File Icon Style:", selection: $fileIconStyle) {
                 Text("Color")
