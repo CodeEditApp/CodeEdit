@@ -13,6 +13,11 @@ import TerminalEmulator
 
 @available(macOS 12, *)
 public struct PreferencesThemeView: View {
+    @Environment(\.colorScheme)
+    var colorScheme
+
+    @AppStorage(Appearances.storageKey)
+    private var appearance: Appearances = .default
 
     @AppStorage(CodeFileView.Theme.storageKey)
     var editorTheme: CodeFileView.Theme = .atelierSavannaAuto
@@ -47,7 +52,7 @@ public struct PreferencesThemeView: View {
                 HelpButton {}
             }
         }
-        .frame(width: 812)
+        .frame(width: 872)
         .padding()
     }
 
@@ -63,6 +68,9 @@ public struct PreferencesThemeView: View {
         }
     }
 
+    @State
+    private var selectedTheme: Int = 0
+
     private var sidebar: some View {
         VStack(spacing: 1) {
             toolbar {
@@ -74,17 +82,14 @@ public struct PreferencesThemeView: View {
             }
             ScrollView {
                 let grid: [GridItem] = .init(
-                    repeating: .init(.fixed(128), spacing: 20, alignment: .center),
+                    repeating: .init(.fixed(130), spacing: 20, alignment: .center),
                     count: 2
                 )
                 LazyVGrid(columns: grid,
                           alignment: .center,
                           spacing: 20) {
-                    ForEach(0..<10) { i in
-                        VStack {
-                            ThemePreviewIcon()
-                            Text("Civic")
-                        }
+                    ForEach(0..<10) { id in
+                        ThemePreviewIcon(id, selection: $selectedTheme)
                     }
                 }
                           .padding(.vertical, 20)

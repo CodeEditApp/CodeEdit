@@ -12,19 +12,48 @@ struct ThemePreviewIcon: View {
     @Environment(\.colorScheme)
     private var colorScheme
 
-    var body: some View {
-        ZStack(alignment: .topLeading) {
-            RoundedRectangle(cornerRadius: 3)
-                .foregroundColor(Color(hex: colorScheme == .dark ? 0x4c4c4c : 0xbbbbbb))
+    init(_ id: Int, selection: Binding<Int>) {
+        self.id = id
+        self._selection = selection
+    }
 
-            HStack(spacing: 1) {
-                sidebar
-                content
+    var id: Int
+
+    @Binding
+    var selection: Int
+
+    var body: some View {
+        VStack {
+            ZStack(alignment: .topLeading) {
+                RoundedRectangle(cornerRadius: 3)
+                    .foregroundColor(Color(hex: colorScheme == .dark ? 0x4c4c4c : 0xbbbbbb))
+
+                HStack(spacing: 1) {
+                    sidebar
+                    content
+                }
+                .clipShape(RoundedRectangle(cornerRadius: 2))
+                .padding(1)
             }
-            .clipShape(RoundedRectangle(cornerRadius: 2))
             .padding(1)
+            .frame(width: 130, height: 88)
+            .overlay {
+                RoundedRectangle(cornerRadius: 4)
+                    .strokeBorder(lineWidth: 2)
+                    .foregroundColor(selection == id ? .accentColor : .clear)
+            }
+            Text("Civic")
+                .font(.subheadline)
+                .padding(.horizontal, 7)
+                .padding(.vertical, 2)
+                .foregroundColor(selection == id ? .white : .primary)
+                .background(Capsule().foregroundColor(selection == id ? .accentColor : .clear))
         }
-        .frame(width: 128, height: 86)
+        .onTapGesture {
+            withAnimation(.interactiveSpring()) {
+                self.selection = id
+            }
+        }
     }
 
     private var sidebar: some View {
@@ -233,11 +262,11 @@ struct ThemePreviewIcon: View {
 @available(macOS 12, *)
 struct ThemePreviewIcon_Previews: PreviewProvider {
     static var previews: some View {
-        ThemePreviewIcon()
+        ThemePreviewIcon(0, selection: .constant(0))
             .background(Color.white)
             .preferredColorScheme(.light)
 
-        ThemePreviewIcon()
+        ThemePreviewIcon(0, selection: .constant(1))
             .background(Color.white)
             .preferredColorScheme(.dark)
     }
