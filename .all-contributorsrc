@@ -58,6 +58,15 @@
         "test",
         "code"
       ]
+    },
+    {
+      "login": "nanashili",
+      "name": "Nanashi Li",
+      "avatar_url": "https://avatars.githubusercontent.com/u/63672227?v=4",
+      "profile": "https://github.com/nanashili",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
