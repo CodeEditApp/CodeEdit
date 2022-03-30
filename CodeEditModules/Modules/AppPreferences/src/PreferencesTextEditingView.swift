@@ -27,7 +27,7 @@ public struct PreferencesTextEditingView: View {
     public var body: some View {
         Form {
             HStack(spacing: 5) {
-                Stepper(value: $defaultTabWidth, in: 2...8, step: 1) {
+                Stepper(value: $defaultTabWidth, in: 0...8, step: 1) {
                     TextField("", text: tabStringBinding)
                         .frame(width: 50)
                         .multilineTextAlignment(.trailing)
