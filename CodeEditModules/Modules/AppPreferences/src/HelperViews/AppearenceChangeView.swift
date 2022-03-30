@@ -33,7 +33,7 @@ struct AppearenceChangeView: View {
         @AppStorage(Appearances.storageKey)
         private var appearance: Appearances = .default
 
-        let name: String
+        let name: LocalizedStringKey
         let image: String
         let type: Appearances
 
