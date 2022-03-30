@@ -11,7 +11,7 @@
 - [x] Design a concept
 - [x] Start a boilerplate app
 - [x] Set up a Github repository to allow the community to get involved
-- [x] Start a [discord server](https://discord.gg/vChUXVf9Em) for community collaboration
+- [x] Start a [Discord server](https://discord.gg/vChUXVf9Em) for community collaboration
 - [x] Project navigator - Manage and edit files within a project
 - [x] Source control navigator
 - [x] Welcome screen
@@ -25,7 +25,7 @@
 - [x] Status bar
 - [x] Tabs
 - [ ] Split editors
-- [ ] Extension insfrastructure
+- [ ] Extension infrastructure
 - [ ] Extension manager
 - [ ] Project preferences
 - [x] Application preferences
@@ -48,7 +48,7 @@ This lead to the creation of [this concept](https://www.figma.com/proto/qj6raZbQ
 
 ## Mission
 
-We think there is room to really streamline the developer experience. Something that Xcode has done for projects for Apple platorms. We want to offer users an IDE experience while staying lightweight. To gain maximum adoption, CodeEdit should be open source, free to use, and supported by the community. 
+We think there is room to really streamline the developer experience. Something that Xcode has done for projects for Apple platforms. We want to offer users an IDE experience while staying lightweight. To gain maximum adoption, CodeEdit should be open source, free to use, and supported by the community. 
 
 Our goal is to develop an app that looks and feels like it was designed and developed by Apple and to closely stick to their design standards and development patterns even down to the application icon and naming strategy.
 
