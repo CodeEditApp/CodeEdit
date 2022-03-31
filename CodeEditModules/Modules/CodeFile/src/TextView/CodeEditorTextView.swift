@@ -181,26 +181,39 @@ public class CodeEditorTextView: NSTextView {
     ///
     /// The only problem currently is how well it would work with other languages.
     func removeMenus(_ menu: NSMenu) -> NSMenu {
-        for action in ["No Guesses Found",
-                       "Learn Spelling",
-                       "Ignore Spelling",
-                       "Search With Google",
-                       "Translate",
-                       "Spelling and Grammar",
-                       "Substitutions",
-                       "Transformations",
-                       "Speech",
-                       "Share",
-                       "Search With Google",
-                       "Font",
-                       "Services"] {
-            let index = menu.indexOfItem(withTitle: action)
-            if index > -1 {
-                menu.removeItem(at: index)
+        let removeItemsContaining = [
+            // Learn Spelling
+            "_learnSpellingFromMenu:",
+
+            // Ignore Spelling
+            "_ignoreSpellingFromMenu:",
+
+            // Spelling suggestion
+            "_changeSpellingFromMenu:",
+
+            // Search with Google
+            "_searchWithGoogleFromMenu:",
+
+            // Share, Font, Spelling and Grammar, Substitutions, Transformations
+            // Speech, Layout Orientation
+            "submenuAction:",
+
+            // Lookup, Translate
+            "_rvMenuItemAction"
+        ]
+
+        for item in menu.items {
+            if let itemAction = item.action {
+                if removeItemsContaining.contains(String(describing: itemAction)) {
+                    // Get localized item name, and remove it.
+                    let index = menu.indexOfItem(withTitle: item.title)
+                    if index >= 0 {
+                        menu.removeItem(at: index)
+                    }
+                }
             }
         }
 
         return menu
     }
-
 }
