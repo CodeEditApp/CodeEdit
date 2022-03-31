@@ -76,7 +76,7 @@ public extension GitAccount {
                 if let nextURL = json["next"] as? String,
                     let parameterString = nextURL.components(separatedBy: "?").last {
                     completion(PaginatedResponse.success(values: repos,
-                                                         nextParameters: parameterString.tkk_queryParameters))
+                                                         nextParameters: parameterString.bitbucketQueryParameters))
                 } else {
                     completion(PaginatedResponse.success(values: repos, nextParameters: [String: String]()))
                 }
