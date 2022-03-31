@@ -33,7 +33,9 @@ body:
 
  - type: textarea
     attributes:
-      label: "Version information (click on the version number on the welcome screen):"
+      label: Description
+      description: >-
+        Version information (click on the version number on the welcome screen)
       value: |
         CodeEdit: [e.g. 1.0]
         Hash: [e.g. 87a5b3f4c18238c0d06cbfce595e1ca9b11cfd8e]
