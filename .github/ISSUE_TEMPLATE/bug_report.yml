@@ -31,26 +31,15 @@ body:
       description: >-
         A clear and concise description of what you expected to happen.
 
-  - type: input
+ - type: textarea
     attributes:
-      label: CodeEdit version
-    validations:
+      label: "Version information (click on the version number on the welcome screen):"
+      value: |
+        CodeEdit: [e.g. 1.0]
+        Hash: [e.g. 87a5b3f4c18238c0d06cbfce595e1ca9b11cfd8e]
+        MacOS: [e.g. 12.3.0]
+        Xcode: [e.g. 13.3]
       required: true
-  - type: input
-    attributes:
-      label: macOS version
-    validations:
-      required: true
-  - type: input
-    attributes:
-      label: Commit hash
-    validations:
-      required: false
-  - type: input
-    attributes:
-      label: Xcode version
-    validations:
-      required: false
       
   - type: textarea
     attributes:
