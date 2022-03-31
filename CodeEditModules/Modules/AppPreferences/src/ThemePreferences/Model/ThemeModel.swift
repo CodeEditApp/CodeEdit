@@ -19,7 +19,10 @@ public class ThemeModel: ObservableObject {
 
     @Published
     public var themes: [Theme] = [] {
-        didSet { try? saveThemes() }
+        didSet {
+            try? saveThemes()
+            objectWillChange.send()
+        }
     }
 
     @Published

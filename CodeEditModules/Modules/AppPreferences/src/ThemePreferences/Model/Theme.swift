@@ -33,6 +33,7 @@ public struct Theme: Identifiable, Codable, Equatable {
     public var characters: Attributes
     public var comments: Attributes
     public var metadata: Metadata
+    public var terminal: TerminalColors
 
     public init(
         text: Attributes,
@@ -51,7 +52,8 @@ public struct Theme: Identifiable, Codable, Equatable {
         strings: Attributes,
         characters: Attributes,
         comments: Attributes,
-        metadata: Metadata
+        metadata: Metadata,
+        terminal: TerminalColors
     ) {
         self.text = text
         self.insertionPoint = insertionPoint
@@ -70,6 +72,7 @@ public struct Theme: Identifiable, Codable, Equatable {
         self.characters = characters
         self.comments = comments
         self.metadata = metadata
+        self.terminal = terminal
     }
 }
 
@@ -88,6 +91,98 @@ public struct Attributes: Codable {
         set {
             self.color = newValue.hexString
         }
+    }
+}
+
+public struct TerminalColors: Codable {
+
+    public var text: Attributes
+    public var boldText: Attributes
+    public var cursor: Attributes
+    public var background: Attributes
+    public var selection: Attributes
+    public var black: Attributes
+    public var red: Attributes
+    public var green: Attributes
+    public var yellow: Attributes
+    public var blue: Attributes
+    public var magenta: Attributes
+    public var cyan: Attributes
+    public var white: Attributes
+    public var brightBlack: Attributes
+    public var brightRed: Attributes
+    public var brightGreen: Attributes
+    public var brightYellow: Attributes
+    public var brightBlue: Attributes
+    public var brightMagenta: Attributes
+    public var brightCyan: Attributes
+    public var brightWhite: Attributes
+
+    public var ansiColors: [String] {
+        [
+            black.color,
+            red.color,
+            green.color,
+            yellow.color,
+            blue.color,
+            magenta.color,
+            cyan.color,
+            white.color,
+            brightBlack.color,
+            brightRed.color,
+            brightGreen.color,
+            brightYellow.color,
+            brightBlue.color,
+            brightMagenta.color,
+            brightCyan.color,
+            brightWhite.color,
+        ]
+    }
+
+    init(
+        text: Attributes,
+        boldText: Attributes,
+        cursor: Attributes,
+        background: Attributes,
+        selection: Attributes,
+        black: Attributes,
+        red: Attributes,
+        green: Attributes,
+        yellow: Attributes,
+        blue: Attributes,
+        magenta: Attributes,
+        cyan: Attributes,
+        white: Attributes,
+        brightBlack: Attributes,
+        brightRed: Attributes,
+        brightGreen: Attributes,
+        brightYellow: Attributes,
+        brightBlue: Attributes,
+        brightMagenta: Attributes,
+        brightCyan: Attributes,
+        brightWhite: Attributes
+    ) {
+        self.text = text
+        self.boldText = boldText
+        self.cursor = cursor
+        self.background = background
+        self.selection = selection
+        self.black = black
+        self.red = red
+        self.green = green
+        self.yellow = yellow
+        self.blue = blue
+        self.magenta = magenta
+        self.cyan = cyan
+        self.white = white
+        self.brightBlack = brightBlack
+        self.brightRed = brightRed
+        self.brightGreen = brightGreen
+        self.brightYellow = brightYellow
+        self.brightBlue = brightBlue
+        self.brightMagenta = brightMagenta
+        self.brightCyan = brightCyan
+        self.brightWhite = brightWhite
     }
 }
 

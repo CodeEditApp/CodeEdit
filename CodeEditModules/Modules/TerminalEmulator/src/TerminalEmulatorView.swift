@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftTerm
+import AppPreferences
 
 /// # TerminalEmulatorView
 ///
@@ -32,7 +33,7 @@ public struct TerminalEmulatorView: NSViewRepresentable {
     var terminalColorSchmeme: TerminalColorScheme = .default
 
     @StateObject
-    private var ansiColors: AnsiColors = .shared
+    private var themeModel: ThemeModel = .shared
 
     internal static var lastTerminal: LocalProcessTerminalView?
 
@@ -99,7 +100,13 @@ public struct TerminalEmulatorView: NSViewRepresentable {
 
     /// Returns the mapped array of `SwiftTerm.Color` objects of ANSI Colors
     private var colors: [SwiftTerm.Color] {
-        return ansiColors.mappedColors.map { SwiftTerm.Color(hex: $0) }
+        if let selectedTheme = themeModel.selectedTheme,
+           let index = themeModel.themes.firstIndex(of: selectedTheme) {
+            return themeModel.themes[index].terminal.ansiColors.map { color in
+                SwiftTerm.Color(hex: color)
+            }
+        }
+        return []
     }
 
     /// returns a `NSAppearance` based on the user setting of the terminal appearance,

@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import TerminalEmulator
 import FontPicker
 
 struct TerminalThemeView: View {
@@ -26,7 +25,7 @@ struct TerminalThemeView: View {
     var terminalColorSchmeme: TerminalColorScheme = .default
 
     @StateObject
-    private var colors = AnsiColors.shared
+    private var themeModel: ThemeModel = .shared
 
     @State private var darkTerminal: Bool = false
 
@@ -107,36 +106,36 @@ struct TerminalThemeView: View {
 
     private var ansiColorSelector: some View {
         VStack(alignment: .leading, spacing: 5) {
-            Text("ANSI Colors")
-                .font(.system(size: 13, weight: .semibold))
-                .foregroundColor(.secondary)
-                .padding(.bottom, 5)
-            HStack(spacing: 5) {
-                PreferencesColorPicker($colors.colors[0])
-                PreferencesColorPicker($colors.colors[1])
-                PreferencesColorPicker($colors.colors[2])
-                PreferencesColorPicker($colors.colors[3])
-                PreferencesColorPicker($colors.colors[4])
-                PreferencesColorPicker($colors.colors[5])
-                PreferencesColorPicker($colors.colors[6])
-                PreferencesColorPicker($colors.colors[7])
-                Text("Normal").padding(.leading, 4)
+            if let selectedTheme = themeModel.selectedTheme,
+               let index = themeModel.themes.firstIndex(of: selectedTheme) {
+                Text("ANSI Colors")
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundColor(.secondary)
+                    .padding(.bottom, 5)
+                HStack(spacing: 5) {
+                    PreferencesColorPicker($themeModel.themes[index].terminal.black.swiftColor)
+                    PreferencesColorPicker($themeModel.themes[index].terminal.red.swiftColor)
+                    PreferencesColorPicker($themeModel.themes[index].terminal.green.swiftColor)
+                    PreferencesColorPicker($themeModel.themes[index].terminal.yellow.swiftColor)
+                    PreferencesColorPicker($themeModel.themes[index].terminal.blue.swiftColor)
+                    PreferencesColorPicker($themeModel.themes[index].terminal.magenta.swiftColor)
+                    PreferencesColorPicker($themeModel.themes[index].terminal.cyan.swiftColor)
+                    PreferencesColorPicker($themeModel.themes[index].terminal.white.swiftColor)
+                    Text("Normal").padding(.leading, 4)
+                }
+                HStack(spacing: 5) {
+                    PreferencesColorPicker($themeModel.themes[index].terminal.brightBlack.swiftColor)
+                    PreferencesColorPicker($themeModel.themes[index].terminal.brightRed.swiftColor)
+                    PreferencesColorPicker($themeModel.themes[index].terminal.brightGreen.swiftColor)
+                    PreferencesColorPicker($themeModel.themes[index].terminal.brightYellow.swiftColor)
+                    PreferencesColorPicker($themeModel.themes[index].terminal.brightBlue.swiftColor)
+                    PreferencesColorPicker($themeModel.themes[index].terminal.brightMagenta.swiftColor)
+                    PreferencesColorPicker($themeModel.themes[index].terminal.brightCyan.swiftColor)
+                    PreferencesColorPicker($themeModel.themes[index].terminal.brightWhite.swiftColor)
+                    Text("Bright").padding(.leading, 4)
+                }
+                .padding(.top, 5)
             }
-            HStack(spacing: 5) {
-                PreferencesColorPicker($colors.colors[8])
-                PreferencesColorPicker($colors.colors[9])
-                PreferencesColorPicker($colors.colors[10])
-                PreferencesColorPicker($colors.colors[11])
-                PreferencesColorPicker($colors.colors[12])
-                PreferencesColorPicker($colors.colors[13])
-                PreferencesColorPicker($colors.colors[14])
-                PreferencesColorPicker($colors.colors[15])
-                Text("Bright").padding(.leading, 4)
-            }
-            Button("Restore Defaults") {
-                AnsiColors.shared.resetDefault()
-            }
-            .padding(.top, 5)
         }
     }
 }

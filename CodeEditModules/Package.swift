@@ -147,7 +147,10 @@ let package = Package(
         ),
         .target(
             name: "TerminalEmulator",
-            dependencies: ["SwiftTerm"],
+            dependencies: [
+                "SwiftTerm",
+                "AppPreferences"
+            ],
             path: "Modules/TerminalEmulator/src"
         ),
         .target(
@@ -171,7 +174,6 @@ let package = Package(
                 "Preferences",
                 "CodeFile",
                 "FontPicker",
-                "TerminalEmulator",
             ],
             path: "Modules/AppPreferences/src",
             resources: [.copy("Modules/AppPreferences/resources")]

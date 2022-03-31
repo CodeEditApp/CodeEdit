@@ -9,7 +9,6 @@ import CodeFile
 import FontPicker
 import SwiftUI
 import Preferences
-import TerminalEmulator
 
 // swiftlint:disable all
 @available(macOS 12, *)
