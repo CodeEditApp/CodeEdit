@@ -12,7 +12,7 @@ import Foundation
 import FoundationNetworking
 #endif
 
-public protocol URLSession {
+public protocol GitURLSession {
     func dataTask(
         with request: URLRequest,
         completionHandler: @escaping (Data?, URLResponse?, Error?) -> Swift.Void) -> URLSessionDataTaskProtocol
@@ -38,7 +38,8 @@ public protocol URLSessionDataTaskProtocol {
 
 extension URLSessionDataTask: URLSessionDataTaskProtocol {}
 
-extension URLSession: URLSession {
+extension GitURLSession: URLSession {
+
     public func dataTask(
         with request: URLRequest,
         completionHandler: @escaping (Data?, URLResponse?, Error?) -> Swift.Void) -> URLSessionDataTaskProtocol {

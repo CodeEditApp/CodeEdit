@@ -15,21 +15,21 @@ import FoundationNetworking
 public protocol JSONPostRouter: Router {
 
     func postJSON<T>(
-        _ session: URLSession,
+        _ session: GitURLSession,
         expectedResultType: T.Type,
         completion: @escaping (_ json: T?, _ error: Error?) -> Void) -> URLSessionDataTaskProtocol?
 
     func post<T: Codable>(
-        _ session: URLSession,
+        _ session: GitURLSession,
         decoder: JSONDecoder,
         expectedResultType: T.Type,
         completion: @escaping (_ json: T?, _ error: Error?) -> Void) -> URLSessionDataTaskProtocol?
 
     #if !canImport(FoundationNetworking)
-    func postJSON<T>(_ session: URLSession, expectedResultType: T.Type) async throws -> T?
+    func postJSON<T>(_ session: GitURLSession, expectedResultType: T.Type) async throws -> T?
 
     func post<T: Codable>(
-        _ session: URLSession,
+        _ session: GitURLSession,
         decoder: JSONDecoder,
         expectedResultType: T.Type) async throws -> T
     #endif
@@ -37,7 +37,7 @@ public protocol JSONPostRouter: Router {
 
 public extension JSONPostRouter {
     func postJSON<T>(
-        _ session: URLSession = URLSession.shared,
+        _ session: GitURLSession = URLSession.shared,
         expectedResultType _: T.Type,
         completion: @escaping (_ json: T?, _ error: Error?) -> Void) -> URLSessionDataTaskProtocol? {
 
@@ -100,7 +100,7 @@ public extension JSONPostRouter {
 
     #if !canImport(FoundationNetworking)
     func postJSON<T>(
-        _ session: URLSession = URLSession.shared,
+        _ session: GitURLSession = URLSession.shared,
         expectedResultType _: T.Type) async throws -> T? {
 
         guard let request = request() else {
@@ -130,7 +130,7 @@ public extension JSONPostRouter {
     #endif
 
     func post<T: Codable>(
-        _ session: URLSession = URLSession.shared,
+        _ session: GitURLSession = URLSession.shared,
         decoder: JSONDecoder = JSONDecoder(),
         expectedResultType _: T.Type,
         completion: @escaping (_ json: T?, _ error: Error?) -> Void) -> URLSessionDataTaskProtocol? {
@@ -188,7 +188,7 @@ public extension JSONPostRouter {
 
     #if !canImport(FoundationNetworking)
     func post<T: Codable>(
-        _ session: URLSession,
+        _ session: GitURLSession,
         decoder: JSONDecoder = JSONDecoder(),
         expectedResultType _: T.Type) async throws -> T {
 

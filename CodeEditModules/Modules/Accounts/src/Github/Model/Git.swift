@@ -15,14 +15,14 @@ public extension GitAccount {
     /**
      Deletes a reference.
         - Parameters:
-            - session: URLSession, defaults to URLSession.shared()
+            - session: GitURLSession, defaults to URLSession.shared()
             - owner: The user or organization that owns the repositories.
             - repo: The repository on which the reference needs to be deleted.
             - ref: The reference to delete.
             - completion: Callback for the outcome of the deletion.
      */
     @discardableResult
-    func deleteReference(_ session: URLSession = URLSession.shared,
+    func deleteReference(_ session: GitURLSession = URLSession.shared,
                          owner: String,
                          repository: String,
                          ref: String,

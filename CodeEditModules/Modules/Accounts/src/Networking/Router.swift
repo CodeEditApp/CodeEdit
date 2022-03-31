@@ -70,18 +70,18 @@ public protocol Router {
     func request(_ urlComponents: URLComponents, parameters: [String: Any]) -> URLRequest?
 
     func loadJSON<T: Codable>(
-        _ session: URLSession,
+        _ session: GitURLSession,
         expectedResultType: T.Type,
         completion: @escaping (_ json: T?, _ error: Error?) -> Void) -> URLSessionDataTaskProtocol?
 
     func load<T: Codable>(
-        _ session: URLSession,
+        _ session: GitURLSession,
         dateDecodingStrategy: JSONDecoder.DateDecodingStrategy?,
         expectedResultType: T.Type,
         completion: @escaping (_ json: T?, _ error: Error?) -> Void) -> URLSessionDataTaskProtocol?
 
     func load<T: Codable>(
-        _ session: URLSession,
+        _ session: GitURLSession,
         decoder: JSONDecoder,
         expectedResultType: T.Type,
         completion: @escaping (_ json: T?, _ error: Error?) -> Void) -> URLSessionDataTaskProtocol?
@@ -197,14 +197,14 @@ public extension Router {
 
     @available(*, deprecated, message: "Plase use `load` method instead")
     func loadJSON<T: Codable>(
-        _ session: URLSession = URLSession.shared,
+        _ session: GitURLSession = URLSession.shared,
         expectedResultType: T.Type,
         completion: @escaping (_ json: T?, _ error: Error?) -> Void) -> URLSessionDataTaskProtocol? {
         return load(session, expectedResultType: expectedResultType, completion: completion)
     }
 
     func load<T: Codable>(
-        _ session: URLSession = URLSession.shared,
+        _ session: GitURLSession = URLSession.shared,
         dateDecodingStrategy: JSONDecoder.DateDecodingStrategy?,
         expectedResultType: T.Type,
         completion: @escaping (_ json: T?, _ error: Error?) -> Void) -> URLSessionDataTaskProtocol? {
@@ -219,7 +219,7 @@ public extension Router {
     }
 
     func load<T: Codable>(
-        _ session: URLSession = URLSession.shared,
+        _ session: GitURLSession = URLSession.shared,
         decoder: JSONDecoder = JSONDecoder(), expectedResultType _: T.Type,
         completion: @escaping (_ json: T?, _ error: Error?) -> Void) -> URLSessionDataTaskProtocol? {
 
@@ -268,7 +268,7 @@ public extension Router {
 
     #if !canImport(FoundationNetworking)
     func load<T: Codable>(
-        _ session: URLSession = URLSession.shared,
+        _ session: GitURLSession = URLSession.shared,
         decoder: JSONDecoder = JSONDecoder(),
         expectedResultType _: T.Type) async throws -> T {
 
@@ -297,7 +297,7 @@ public extension Router {
     }
 
     func load<T: Codable>(
-        _ session: URLSession = URLSession.shared,
+        _ session: GitURLSession = URLSession.shared,
         dateDecodingStrategy: JSONDecoder.DateDecodingStrategy?,
         expectedResultType: T.Type) async throws -> T {
 
@@ -312,7 +312,7 @@ public extension Router {
     #endif
 
     func load(
-        _ session: URLSession = URLSession.shared,
+        _ session: GitURLSession = URLSession.shared,
         completion: @escaping (_ error: Error?) -> Void) -> URLSessionDataTaskProtocol? {
 
         guard let request = request() else {

@@ -61,14 +61,14 @@ open class Issue: Codable {
 public extension GitAccount {
     /**
      Fetches the issues of the authenticated user
-     - parameter session: URLSession, defaults to URLSession.sharedSession()
+     - parameter session: GitURLSession, defaults to URLSession.sharedSession()
      - parameter state: Issue state. Defaults to open if not specified.
      - parameter page: Current page for issue pagination. `1` by default.
      - parameter perPage: Number of issues per page. `100` by default.
      - parameter completion: Callback for the outcome of the fetch.
      */
     @discardableResult
-    func myIssues(_ session: URLSession = URLSession.shared,
+    func myIssues(_ session: GitURLSession = URLSession.shared,
                   state: Openness = .open,
                   page: String = "1",
                   perPage: String = "100",
@@ -93,14 +93,14 @@ public extension GitAccount {
 
     /**
      Fetches an issue in a repository
-     - parameter session: URLSession, defaults to URLSession.sharedSession()
+     - parameter session: GitURLSession, defaults to URLSession.sharedSession()
      - parameter owner: The user or organization that owns the repository.
      - parameter repository: The name of the repository.
      - parameter number: The number of the issue.
      - parameter completion: Callback for the outcome of the fetch.
      */
     @discardableResult
-    func issue(_ session: URLSession = URLSession.shared,
+    func issue(_ session: GitURLSession = URLSession.shared,
                owner: String, repository: String,
                number: Int,
                completion: @escaping (
@@ -124,7 +124,7 @@ public extension GitAccount {
 
     /**
      Fetches all issues in a repository
-     - parameter session: URLSession, defaults to URLSession.sharedSession()
+     - parameter session: GitURLSession, defaults to URLSession.sharedSession()
      - parameter owner: The user or organization that owns the repository.
      - parameter repository: The name of the repository.
      - parameter state: Issue state. Defaults to open if not specified.
@@ -133,7 +133,7 @@ public extension GitAccount {
      - parameter completion: Callback for the outcome of the fetch.
      */
     @discardableResult
-    func issues(_ session: URLSession = URLSession.shared,
+    func issues(_ session: GitURLSession = URLSession.shared,
                 owner: String,
                 repository: String,
                 state: Openness = .open,
@@ -160,7 +160,7 @@ public extension GitAccount {
 
     /**
      Creates an issue in a repository.
-     - parameter session: URLSession, defaults to URLSession.sharedSession()
+     - parameter session: GitURLSession, defaults to URLSession.sharedSession()
      - parameter owner: The user or organization that owns the repository.
      - parameter repository: The name of the repository.
      - parameter title: The title of the issue.
@@ -173,7 +173,7 @@ public extension GitAccount {
      - parameter completion: Callback for the issue that is created.
      */
     @discardableResult
-    func postIssue(_ session: URLSession = URLSession.shared,
+    func postIssue(_ session: GitURLSession = URLSession.shared,
                    owner: String,
                    repository: String,
                    title: String,
@@ -205,7 +205,7 @@ public extension GitAccount {
 
     /**
      Edits an issue in a repository.
-     - parameter session: URLSession, defaults to URLSession.sharedSession()
+     - parameter session: GitURLSession, defaults to URLSession.sharedSession()
      - parameter owner: The user or organization that owns the repository.
      - parameter repository: The name of the repository.
      - parameter number: The number of the issue.
@@ -217,7 +217,7 @@ public extension GitAccount {
      - parameter completion: Callback for the issue that is created.
      */
     @discardableResult
-    func patchIssue(_ session: URLSession = URLSession.shared,
+    func patchIssue(_ session: GitURLSession = URLSession.shared,
                     owner: String,
                     repository: String,
                     number: Int,
@@ -246,14 +246,14 @@ public extension GitAccount {
 
     /// Posts a comment on an issue using the given body.
     /// - Parameters:
-    ///   - session: URLSession, defaults to URLSession.sharedSession()
+    ///   - session: GitURLSession, defaults to URLSession.sharedSession()
     ///   - owner: The user or organization that owns the repository.
     ///   - repository: The name of the repository.
     ///   - number: The number of the issue.
     ///   - body: The contents of the comment.
     ///   - completion: Callback for the comment that is created.
     @discardableResult
-    func commentIssue(_ session: URLSession = URLSession.shared,
+    func commentIssue(_ session: GitURLSession = URLSession.shared,
                       owner: String,
                       repository: String,
                       number: Int,
@@ -283,7 +283,7 @@ public extension GitAccount {
 
     /// Fetches all comments for an issue
     /// - Parameters:
-    /// - session: URLSession, defaults to URLSession.sharedSession()
+    /// - session: GitURLSession, defaults to URLSession.sharedSession()
     /// - owner: The user or organization that owns the repository.
     /// - repository: The name of the repository.
     /// - number: The number of the issue.
@@ -291,7 +291,7 @@ public extension GitAccount {
     /// - perPage: Number of comments per page. `100` by default.
     /// - completion: Callback for the outcome of the fetch.
     @discardableResult
-    func issueComments(_ session: URLSession = URLSession.shared,
+    func issueComments(_ session: GitURLSession = URLSession.shared,
                        owner: String,
                        repository: String,
                        number: Int,
@@ -319,7 +319,7 @@ public extension GitAccount {
 
     /// Edits a comment on an issue using the given body.
     /// - Parameters:
-    ///   - session: URLSession, defaults to URLSession.sharedSession()
+    ///   - session: GitURLSession, defaults to URLSession.sharedSession()
     ///   - owner: The user or organization that owns the repository.
     ///   - repository: The name of the repository.
     ///   - number: The number of the comment.
@@ -327,7 +327,7 @@ public extension GitAccount {
     ///   - completion: Callback for the comment that is created.
     @discardableResult
     func patchIssueComment(
-        _ session: URLSession = URLSession.shared,
+        _ session: GitURLSession = URLSession.shared,
         owner: String,
         repository: String,
         number: Int,

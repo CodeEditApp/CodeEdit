@@ -90,14 +90,14 @@ public extension GitAccount {
 
     /**
      Get a single pull request
-     - parameter session: URLSession, defaults to URLSession.shared
+     - parameter session: GitURLSession, defaults to URLSession.shared
      - parameter owner: The user or organization that owns the repositories.
      - parameter repository: The name of the repository.
      - parameter number: The number of the PR to fetch.
      - parameter completion: Callback for the outcome of the fetch.
      */
     @discardableResult
-    func pullRequest(_ session: URLSession = URLSession.shared,
+    func pullRequest(_ session: GitURLSession = URLSession.shared,
                      owner: String,
                      repository: String,
                      number: Int,
@@ -123,7 +123,7 @@ public extension GitAccount {
 
     /**
      Get a list of pull requests
-     - parameter session: URLSession, defaults to URLSession.shared
+     - parameter session: GitURLSession, defaults to URLSession.shared
      - parameter owner: The user or organization that owns the repositories.
      - parameter repository: The name of the repository.
      - parameter base: Filter pulls by base branch name.
@@ -133,7 +133,7 @@ public extension GitAccount {
      - parameter completion: Callback for the outcome of the fetch.
      */
     @discardableResult
-    func pullRequests(_ session: URLSession = URLSession.shared,
+    func pullRequests(_ session: GitURLSession = URLSession.shared,
                       owner: String,
                       repository: String,
                       base: String? = nil,

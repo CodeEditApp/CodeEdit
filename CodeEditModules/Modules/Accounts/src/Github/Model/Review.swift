@@ -43,7 +43,7 @@ public extension Review {
 public extension GitAccount {
 
     @discardableResult
-    func listReviews(_ session: URLSession = URLSession.shared,
+    func listReviews(_ session: GitURLSession = URLSession.shared,
                      owner: String,
                      repository: String,
                      pullRequestNumber: Int,

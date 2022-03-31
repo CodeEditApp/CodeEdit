@@ -10,10 +10,7 @@ import Foundation
 import FoundationNetworking
 #endif
 
-public let githubBaseURL = "https://api.github.com"
-public let githubWebURL = "https://github.com"
-
-public let errorDomain = "com.codeedit.models.accounts"
+public let errorDomain = "com.codeedit.models.accounts.github"
 
 public struct TokenConfiguration: Configuration {
     public var apiEndpoint: String
@@ -75,7 +72,7 @@ public struct OAuthConfiguration: Configuration {
     }
 
     public func authorize(
-        _ session: URLSession = URLSession.shared,
+        _ session: GitURLSession = URLSession.shared,
         code: String,
         completion: @escaping (_ config: TokenConfiguration) -> Void) {
 
@@ -101,7 +98,7 @@ public struct OAuthConfiguration: Configuration {
     }
 
     public func handleOpenURL(
-        _ session: URLSession = URLSession.shared,
+        _ session: GitURLSession = URLSession.shared,
         url: URL,
         completion: @escaping (_ config: TokenConfiguration) -> Void) {
 

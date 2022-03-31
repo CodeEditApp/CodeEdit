@@ -48,7 +48,7 @@ public extension GitAccount {
 
     /**
         Fetches the Repositories for a user or organization
-            - parameter session: URLSession, defaults to URLSession.shared
+            - parameter session: GitURLSession, defaults to URLSession.shared
             - parameter owner: The user or organization that owns the repositories. If `nil`,
                                fetches repositories for the authenticated user.
             - parameter page: Current page for repository pagination. `1` by default.
@@ -56,7 +56,7 @@ public extension GitAccount {
             - parameter completion: Callback for the outcome of the fetch.
      */
     @discardableResult
-    func repositories(_ session: URLSession = URLSession.shared,
+    func repositories(_ session: GitURLSession = URLSession.shared,
                       owner: String? = nil,
                       page: String = "1",
                       perPage: String = "100",
@@ -84,13 +84,13 @@ public extension GitAccount {
 
     /**
          Fetches a repository for a user or organization
-         - parameter session: Session, defaults to URLSession.shared
+         - parameter session: GitURLSession, defaults to URLSession.shared
          - parameter owner: The user or organization that owns the repositories.
          - parameter name: The name of the repository to fetch.
          - parameter completion: Callback for the outcome of the fetch.
      */
     @discardableResult
-    func repository(_ session: URLSession = URLSession.shared,
+    func repository(_ session: GitURLSession = URLSession.shared,
                     owner: String,
                     name: String,
                     completion: @escaping (

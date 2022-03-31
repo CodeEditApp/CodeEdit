@@ -52,14 +52,14 @@ public extension GitAccount {
 
     /**
      Fetches the gists of the authenticated user
-     - parameter session: tURLSession, defaults to URLSession.sharedSession()
+     - parameter session: GitURLSession, defaults to URLSession.sharedSession()
      - parameter page: Current page for gist pagination. `1` by default.
      - parameter perPage: Number of gists per page. `100` by default.
      - parameter completion: Callback for the outcome of the fetch.
      */
     @discardableResult
     func myGists(
-        _ session: URLSession = URLSession.shared,
+        _ session: GitURLSession = URLSession.shared,
         page: String = "1",
         perPage: String = "100",
         completion: @escaping (
@@ -84,7 +84,7 @@ public extension GitAccount {
 
     /**
      Fetches the gists of the specified user
-     - parameter session: tURLSession, defaults to URLSession.sharedSession()
+     - parameter session: GitURLSession, defaults to URLSession.sharedSession()
      - parameter owner: The username who owns the gists.
      - parameter page: Current page for gist pagination. `1` by default.
      - parameter perPage: Number of gists per page. `100` by default.
@@ -92,7 +92,7 @@ public extension GitAccount {
      */
     @discardableResult
     func gists(
-        _ session: URLSession = URLSession.shared,
+        _ session: GitURLSession = URLSession.shared,
         owner: String,
         page: String = "1",
         perPage: String = "100",
@@ -118,13 +118,13 @@ public extension GitAccount {
 
     /**
      Fetches an gist
-     - parameter session: URLSession, defaults to URLSession.sharedSession()
+     - parameter session: GitURLSession, defaults to URLSession.sharedSession()
      - parameter id: The id of the gist.
      - parameter completion: Callback for the outcome of the fetch.
      */
     @discardableResult
     func gist(
-        _ session: URLSession = URLSession.shared,
+        _ session: GitURLSession = URLSession.shared,
         id: String,
         completion: @escaping (
             _ response: Result<Gist, Error>) -> Void) -> URLSessionDataTaskProtocol? {
@@ -148,7 +148,7 @@ public extension GitAccount {
 
     /**
      Creates an gist with a single file.
-     - parameter session: URLSession, defaults to URLSession.sharedSession()
+     - parameter session: GitURLSession, defaults to URLSession.sharedSession()
      - parameter description: The description of the gist.
      - parameter filename: The name of the file in the gist.
      - parameter fileContent: The content of the file in the gist.
@@ -156,7 +156,7 @@ public extension GitAccount {
      - parameter completion: Callback for the gist that is created.
      */
     @discardableResult
-    func postGistFile(_ session: URLSession = URLSession.shared,
+    func postGistFile(_ session: GitURLSession = URLSession.shared,
                       description: String,
                       filename: String,
                       fileContent: String,
@@ -186,7 +186,7 @@ public extension GitAccount {
 
     /**
      Edits an gist with a single file.
-     - parameter session: URLSession, defaults to URLSession.sharedSession()
+     - parameter session: GitURLSession, defaults to URLSession.sharedSession()
      - parameter id: The of the gist to update.
      - parameter description: The description of the gist.
      - parameter filename: The name of the file in the gist.
@@ -194,7 +194,7 @@ public extension GitAccount {
      - parameter completion: Callback for the gist that is created.
      */
     @discardableResult
-    func patchGistFile(_ session: URLSession = URLSession.shared,
+    func patchGistFile(_ session: GitURLSession = URLSession.shared,
                        id: String,
                        description: String,
                        filename: String,

@@ -11,7 +11,7 @@ import FoundationNetworking
 #endif
 
 public extension GitAccount {
-    func postPublicKey(_ session: URLSession = URLSession.shared,
+    func postPublicKey(_ session: GitURLSession = URLSession.shared,
                        publicKey: String,
                        title: String,
                        completion: @escaping (

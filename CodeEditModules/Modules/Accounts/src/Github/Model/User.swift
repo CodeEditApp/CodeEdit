@@ -72,13 +72,13 @@ open class User: Codable {
 public extension GitAccount {
     /**
          Fetches a user or organization
-         - parameter session: URLSession, defaults to URLSession.shared
+         - parameter session: GitURLSession, defaults to URLSession.shared
          - parameter name: The name of the user or organization.
          - parameter completion: Callback for the outcome of the fetch.
      */
     @discardableResult
     func user(
-        _ session: URLSession = URLSession.shared,
+        _ session: GitURLSession = URLSession.shared,
         name: String,
         completion: @escaping (_ response: Result<User, Error>) -> Void) -> URLSessionDataTaskProtocol? {
 
@@ -100,12 +100,12 @@ public extension GitAccount {
 
     /**
          Fetches the authenticated user
-         - parameter session: URLSession, defaults to URLSession.shared
+         - parameter session: GitURLSession, defaults to URLSession.shared
          - parameter completion: Callback for the outcome of the fetch.
      */
     @discardableResult
     func me(
-        _ session: URLSession = URLSession.shared,
+        _ session: GitURLSession = URLSession.shared,
         completion: @escaping (_ response: Result<User, Error>) -> Void) -> URLSessionDataTaskProtocol? {
 
         let router = UserRouter.readAuthenticatedUser(configuration)
