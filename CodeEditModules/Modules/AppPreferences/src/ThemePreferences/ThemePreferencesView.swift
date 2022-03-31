@@ -69,7 +69,11 @@ public struct ThemePreferencesView: View {
                           alignment: .center,
                           spacing: 20) {
                     ForEach(themeModel.selectedAppearance == 0 ? themeModel.darkThemes : themeModel.lightThemes) { theme in
-                        ThemePreviewIcon(theme, selection: $themeModel.selectedTheme)
+                        ThemePreviewIcon(
+                            theme,
+                            selection: $themeModel.selectedTheme,
+                            colorScheme: themeModel.selectedAppearance == 0 ? .dark : .light
+                        )
                             .transition(.opacity)
                     }
                 }

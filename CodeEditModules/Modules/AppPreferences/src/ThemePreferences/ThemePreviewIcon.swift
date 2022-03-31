@@ -9,18 +9,18 @@ import SwiftUI
 
 @available(macOS 12, *)
 struct ThemePreviewIcon: View {
-    @Environment(\.colorScheme)
-    private var colorScheme
-
-    init(_ theme: Theme, selection: Binding<Theme?>) {
+    init(_ theme: Theme, selection: Binding<Theme?>, colorScheme: ColorScheme) {
         self.theme = theme
         self._selection = selection
+        self.colorScheme = colorScheme
     }
 
     var theme: Theme
 
     @Binding
     var selection: Theme?
+
+    var colorScheme: ColorScheme
 
     var body: some View {
         VStack {
@@ -263,10 +263,14 @@ struct ThemePreviewIcon: View {
  @available(macOS 12, *)
  struct ThemePreviewIcon_Previews: PreviewProvider {
     static var previews: some View {
-        ThemePreviewIcon(ThemeModel.shared.themes.first!, selection: .constant(ThemeModel.shared.themes.first))
+        ThemePreviewIcon(ThemeModel.shared.themes.first!,
+                         selection: .constant(ThemeModel.shared.themes.first),
+                         colorScheme: .light)
             .preferredColorScheme(.light)
 
-        ThemePreviewIcon(ThemeModel.shared.themes.last!, selection: .constant(nil))
+        ThemePreviewIcon(ThemeModel.shared.themes.last!,
+                         selection: .constant(nil),
+                         colorScheme: .dark)
             .preferredColorScheme(.dark)
     }
  }
