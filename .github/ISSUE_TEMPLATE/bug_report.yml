@@ -39,6 +39,7 @@ body:
         Hash: [e.g. 87a5b3f4c18238c0d06cbfce595e1ca9b11cfd8e]
         MacOS: [e.g. 12.3.0]
         Xcode: [e.g. 13.3]
+    validations:
       required: true
       
   - type: textarea
