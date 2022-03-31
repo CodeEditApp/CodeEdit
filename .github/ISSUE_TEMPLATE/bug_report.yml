@@ -1,4 +1,4 @@
-name: Bug report
+name: 🐞 Bug report
 description: Something is not working as expected.
 title: 🐞 - YOUR_DESCRIPTION
 labels: bug
@@ -17,7 +17,7 @@ body:
       label: To Reproduce
       description: >-
         Steps to reproduce the behavior.
-      value: |
+      placeholder: |
         1. Go to '...'
         2. Click on '....'
         3. Scroll down to '....'
