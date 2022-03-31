@@ -43,13 +43,14 @@ struct ThemePreviewIcon: View {
                     .strokeBorder(lineWidth: 2)
                     .foregroundColor(selection == theme ? .accentColor : .clear)
             }
-            Text(theme.metadata.name)
+            Text(theme.name)
                 .font(.subheadline)
                 .padding(.horizontal, 7)
                 .padding(.vertical, 2)
                 .foregroundColor(selection == theme ? .white : .primary)
                 .background(Capsule().foregroundColor(selection == theme ? .accentColor : .clear))
         }
+        .help(theme.metadataDescription)
         .onTapGesture {
             withAnimation(.interactiveSpring()) {
                 self.selection = theme
@@ -79,7 +80,7 @@ struct ThemePreviewIcon: View {
                 .foregroundColor(Color(hex: colorScheme == .dark ? 0x2b2b2b : 0xe0e0e0))
                 .frame(height: 10)
             Rectangle()
-                .foregroundColor(theme.background.swiftColor)
+                .foregroundColor(theme.editor.background.swiftColor)
                 .overlay(alignment: .topLeading) {
                     codeWindow
                 }
@@ -99,34 +100,34 @@ struct ThemePreviewIcon: View {
     }
 
     private var block1: some View {
-        codeStatement(theme.comments.color, length: 25)
+        codeStatement(theme.editor.comments.color, length: 25)
     }
 
     private var block2: some View {
         VStack(alignment: .leading, spacing: 1) {
             HStack(spacing: 1) {
-                codeStatement(theme.keywords.color, length: 6)
-                codeStatement(theme.variables.color, length: 6)
-                codeStatement(theme.text.color, length: 1)
-                codeStatement(theme.text.color, length: 1)
-                codeStatement(theme.values.color, length: 8)
-                codeStatement(theme.text.color, length: 1)
-                codeStatement(theme.values.color, length: 8)
-                codeStatement(theme.text.color, length: 1)
-                codeStatement(theme.keywords.color, length: 6)
-                codeStatement(theme.strings.color, length: 7)
+                codeStatement(theme.editor.keywords.color, length: 6)
+                codeStatement(theme.editor.variables.color, length: 6)
+                codeStatement(theme.editor.text.color, length: 1)
+                codeStatement(theme.editor.text.color, length: 1)
+                codeStatement(theme.editor.values.color, length: 8)
+                codeStatement(theme.editor.text.color, length: 1)
+                codeStatement(theme.editor.values.color, length: 8)
+                codeStatement(theme.editor.text.color, length: 1)
+                codeStatement(theme.editor.keywords.color, length: 6)
+                codeStatement(theme.editor.strings.color, length: 7)
             }
             HStack(spacing: 1) {
-                codeStatement(theme.keywords.color, length: 6)
-                codeStatement(theme.variables.color, length: 8)
-                codeStatement(theme.keywords.color, length: 6)
-                codeStatement(theme.strings.color, length: 12)
-                codeStatement(theme.text.color, length: 1)
+                codeStatement(theme.editor.keywords.color, length: 6)
+                codeStatement(theme.editor.variables.color, length: 8)
+                codeStatement(theme.editor.keywords.color, length: 6)
+                codeStatement(theme.editor.strings.color, length: 12)
+                codeStatement(theme.editor.text.color, length: 1)
             }
             HStack(spacing: 1) {
-                codeStatement(theme.keywords.color, length: 6)
-                codeStatement(theme.strings.color, length: 14)
-                codeStatement(theme.text.color, length: 1)
+                codeStatement(theme.editor.keywords.color, length: 6)
+                codeStatement(theme.editor.strings.color, length: 14)
+                codeStatement(theme.editor.text.color, length: 1)
             }
         }
     }
@@ -134,39 +135,39 @@ struct ThemePreviewIcon: View {
     private var block3: some View {
         VStack(alignment: .leading, spacing: 1) {
             HStack(spacing: 1) {
-                codeStatement(theme.keywords.color, length: 4)
-                codeStatement(theme.variables.color, length: 8)
-                codeStatement(theme.text.color, length: 1)
-                codeStatement(theme.text.color, length: 1)
+                codeStatement(theme.editor.keywords.color, length: 4)
+                codeStatement(theme.editor.variables.color, length: 8)
+                codeStatement(theme.editor.text.color, length: 1)
+                codeStatement(theme.editor.text.color, length: 1)
             }
             HStack(spacing: 1) {
                 codeSpace(3)
-                codeStatement(theme.text.color, length: 1)
+                codeStatement(theme.editor.text.color, length: 1)
             }
             HStack(spacing: 1) {
                 codeSpace(5)
-                codeStatement(theme.text.color, length: 3)
-                codeStatement(theme.numbers.color, length: 1)
-                codeStatement(theme.text.color, length: 1)
+                codeStatement(theme.editor.text.color, length: 3)
+                codeStatement(theme.editor.numbers.color, length: 1)
+                codeStatement(theme.editor.text.color, length: 1)
             }
             HStack(spacing: 1) {
                 codeSpace(5)
-                codeStatement(theme.text.color, length: 6)
-                codeStatement(theme.strings.color, length: 7)
-                codeStatement(theme.strings.color, length: 5)
-                codeStatement(theme.text.color, length: 1)
+                codeStatement(theme.editor.text.color, length: 6)
+                codeStatement(theme.editor.strings.color, length: 7)
+                codeStatement(theme.editor.strings.color, length: 5)
+                codeStatement(theme.editor.text.color, length: 1)
             }
             HStack(spacing: 1) {
                 codeSpace(5)
-                codeStatement(theme.text.color, length: 5)
-                codeStatement(theme.keywords.color, length: 5)
+                codeStatement(theme.editor.text.color, length: 5)
+                codeStatement(theme.editor.keywords.color, length: 5)
             }
             HStack(spacing: 1) {
                 codeSpace(3)
-                codeStatement(theme.text.color, length: 1)
+                codeStatement(theme.editor.text.color, length: 1)
             }
             HStack(spacing: 1) {
-                codeStatement(theme.text.color, length: 2)
+                codeStatement(theme.editor.text.color, length: 2)
             }
         }
     }
@@ -174,24 +175,24 @@ struct ThemePreviewIcon: View {
     private var block4: some View {
         VStack(alignment: .leading, spacing: 1) {
             HStack(spacing: 1) {
-                codeStatement(theme.keywords.color, length: 6)
-                codeStatement(theme.keywords.color, length: 7)
-                codeStatement(theme.commands.color, length: 8)
-                codeStatement(theme.values.color, length: 3)
-                codeStatement(theme.text.color, length: 2)
-                codeStatement(theme.text.color, length: 1)
+                codeStatement(theme.editor.keywords.color, length: 6)
+                codeStatement(theme.editor.keywords.color, length: 7)
+                codeStatement(theme.editor.commands.color, length: 8)
+                codeStatement(theme.editor.values.color, length: 3)
+                codeStatement(theme.editor.text.color, length: 2)
+                codeStatement(theme.editor.text.color, length: 1)
             }
             HStack(spacing: 1) {
                 codeSpace(3)
-                codeStatement(theme.keywords.color, length: 4)
-                codeStatement(theme.text.color, length: 1)
-                codeStatement(theme.variables.color, length: 5)
-                codeStatement(theme.text.color, length: 1)
-                codeStatement(theme.values.color, length: 8)
-                codeStatement(theme.text.color, length: 1)
-                codeStatement(theme.text.color, length: 1)
-                codeStatement(theme.types.color, length: 8)
-                codeStatement(theme.text.color, length: 2)
+                codeStatement(theme.editor.keywords.color, length: 4)
+                codeStatement(theme.editor.text.color, length: 1)
+                codeStatement(theme.editor.variables.color, length: 5)
+                codeStatement(theme.editor.text.color, length: 1)
+                codeStatement(theme.editor.values.color, length: 8)
+                codeStatement(theme.editor.text.color, length: 1)
+                codeStatement(theme.editor.text.color, length: 1)
+                codeStatement(theme.editor.types.color, length: 8)
+                codeStatement(theme.editor.text.color, length: 2)
             }
         }
     }
@@ -200,49 +201,49 @@ struct ThemePreviewIcon: View {
         VStack(alignment: .leading, spacing: 1) {
             HStack(spacing: 1) {
                 codeSpace(3)
-                codeStatement(theme.keywords.color, length: 4)
-                codeStatement(theme.variables.color, length: 10)
-                codeStatement(theme.text.color, length: 1)
-                codeStatement(theme.types.color, length: 11)
-                codeStatement(theme.text.color, length: 3)
-                codeStatement(theme.keywords.color, length: 2)
-                codeStatement(theme.text.color, length: 1)
+                codeStatement(theme.editor.keywords.color, length: 4)
+                codeStatement(theme.editor.variables.color, length: 10)
+                codeStatement(theme.editor.text.color, length: 1)
+                codeStatement(theme.editor.types.color, length: 11)
+                codeStatement(theme.editor.text.color, length: 3)
+                codeStatement(theme.editor.keywords.color, length: 2)
+                codeStatement(theme.editor.text.color, length: 1)
             }
             HStack(spacing: 1) {
                 codeSpace(5)
-                codeStatement(theme.attributes.color, length: 8)
-                codeStatement(theme.text.color, length: 2)
-                codeStatement(theme.variables.color, length: 5)
-                codeStatement(theme.text.color, length: 1)
-                codeStatement(theme.keywords.color, length: 2)
-                codeStatement(theme.text.color, length: 1)
+                codeStatement(theme.editor.attributes.color, length: 8)
+                codeStatement(theme.editor.text.color, length: 2)
+                codeStatement(theme.editor.variables.color, length: 5)
+                codeStatement(theme.editor.text.color, length: 1)
+                codeStatement(theme.editor.keywords.color, length: 2)
+                codeStatement(theme.editor.text.color, length: 1)
             }
             HStack(spacing: 1) {
                 codeSpace(7)
-                codeStatement(theme.keywords.color, length: 3)
-                codeStatement(theme.variables.color, length: 12)
-                codeStatement(theme.text.color, length: 1)
-                codeStatement(theme.text.color, length: 1)
+                codeStatement(theme.editor.keywords.color, length: 3)
+                codeStatement(theme.editor.variables.color, length: 12)
+                codeStatement(theme.editor.text.color, length: 1)
+                codeStatement(theme.editor.text.color, length: 1)
             }
             HStack(spacing: 1) {
                 codeSpace(9)
-                codeStatement(theme.text.color, length: 3)
-                codeStatement(theme.characters.color, length: 1)
-                codeStatement(theme.text.color, length: 1)
+                codeStatement(theme.editor.text.color, length: 3)
+                codeStatement(theme.editor.characters.color, length: 1)
+                codeStatement(theme.editor.text.color, length: 1)
             }
             HStack(spacing: 1) {
                 codeSpace(9)
-                codeStatement(theme.text.color, length: 1)
+                codeStatement(theme.editor.text.color, length: 1)
             }
             HStack(spacing: 1) {
                 codeSpace(9)
-                codeStatement(theme.text.color, length: 3)
-                codeStatement(theme.attributes.color, length: 5)
-                codeStatement(theme.text.color, length: 1)
-                codeStatement(theme.types.color, length: 6)
-                codeStatement(theme.text.color, length: 1)
-                codeStatement(theme.numbers.color, length: 1)
-                codeStatement(theme.text.color, length: 1)
+                codeStatement(theme.editor.text.color, length: 3)
+                codeStatement(theme.editor.attributes.color, length: 5)
+                codeStatement(theme.editor.text.color, length: 1)
+                codeStatement(theme.editor.types.color, length: 6)
+                codeStatement(theme.editor.text.color, length: 1)
+                codeStatement(theme.editor.numbers.color, length: 1)
+                codeStatement(theme.editor.text.color, length: 1)
             }
         }
     }

@@ -29,16 +29,20 @@ public class ThemeModel: ObservableObject {
     public var selectedTheme: Theme?
 
     public var darkThemes: [Theme] {
-        themes.filter { $0.metadata.darkTheme }
+        themes.filter { $0.darkTheme }
     }
 
     public var lightThemes: [Theme] {
-        themes.filter { !$0.metadata.darkTheme }
+        themes.filter { !$0.darkTheme }
     }
 
     init() {
-        try? loadThemes()
-        self.selectedTheme = themes.first
+        do {
+            try loadThemes()
+            self.selectedTheme = themes.first
+        } catch {
+            print(error)
+        }
     }
 
     private func load(from url: URL) throws {
@@ -78,7 +82,7 @@ public class ThemeModel: ObservableObject {
             let json = try JSONSerialization.jsonObject(with: data)
             let prettyJSON = try JSONSerialization.data(withJSONObject: json, options: [.prettyPrinted])
             try prettyJSON.write(
-                to: url.appendingPathComponent(theme.metadata.name).appendingPathExtension("json"),
+                to: url.appendingPathComponent(theme.name).appendingPathExtension("json"),
                 options: .atomic
             )
         }

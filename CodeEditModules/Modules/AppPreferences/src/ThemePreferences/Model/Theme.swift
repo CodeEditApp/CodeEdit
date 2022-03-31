@@ -10,68 +10,47 @@ import SwiftUI
 // MARK: - Theme
 public struct Theme: Identifiable, Codable, Equatable {
 
+    enum CodingKeys: String, CodingKey {
+        case author, license, distributionURL, name, darkTheme, editor, terminal, version
+        case metadataDescription = "description"
+    }
+
     public static func == (lhs: Theme, rhs: Theme) -> Bool {
         lhs.id == rhs.id
     }
 
-    public var id: String { metadata.name }
+    public var id: String { self.name }
 
-    public var text: Attributes
-    public var insertionPoint: Attributes
-    public var invisibles: Attributes
-    public var background: Attributes
-    public var lineHighlight: Attributes
-    public var selection: Attributes
-    public var keywords: Attributes
-    public var commands: Attributes
-    public var types: Attributes
-    public var attributes: Attributes
-    public var variables: Attributes
-    public var values: Attributes
-    public var numbers: Attributes
-    public var strings: Attributes
-    public var characters: Attributes
-    public var comments: Attributes
-    public var metadata: Metadata
+    public var author: String
+    public var license: String
+    public var metadataDescription: String
+    public var distributionURL: String
+    public var name: String
+    public var version: String
+    public var darkTheme: Bool
+
+    public var editor: EditorColors
     public var terminal: TerminalColors
 
     public init(
-        text: Attributes,
-        insertionPoint: Attributes,
-        invisibles: Attributes,
-        background: Attributes,
-        lineHighlight: Attributes,
-        selection: Attributes,
-        keywords: Attributes,
-        commands: Attributes,
-        types: Attributes,
-        attributes: Attributes,
-        variables: Attributes,
-        values: Attributes,
-        numbers: Attributes,
-        strings: Attributes,
-        characters: Attributes,
-        comments: Attributes,
-        metadata: Metadata,
-        terminal: TerminalColors
+        editor: EditorColors,
+        terminal: TerminalColors,
+        author: String,
+        license: String,
+        metadataDescription: String,
+        distributionURL: String,
+        name: String,
+        darkTheme: Bool,
+        version: String
     ) {
-        self.text = text
-        self.insertionPoint = insertionPoint
-        self.invisibles = invisibles
-        self.background = background
-        self.lineHighlight = lineHighlight
-        self.selection = selection
-        self.keywords = keywords
-        self.commands = commands
-        self.types = types
-        self.attributes = attributes
-        self.variables = variables
-        self.values = values
-        self.numbers = numbers
-        self.strings = strings
-        self.characters = characters
-        self.comments = comments
-        self.metadata = metadata
+        self.author = author
+        self.license = license
+        self.metadataDescription = metadataDescription
+        self.distributionURL = distributionURL
+        self.name = name
+        self.darkTheme = darkTheme
+        self.version = version
+        self.editor = editor
         self.terminal = terminal
     }
 }
@@ -91,6 +70,61 @@ public struct Attributes: Codable {
         set {
             self.color = newValue.hexString
         }
+    }
+}
+
+public struct EditorColors: Codable {
+    public var text: Attributes
+    public var insertionPoint: Attributes
+    public var invisibles: Attributes
+    public var background: Attributes
+    public var lineHighlight: Attributes
+    public var selection: Attributes
+    public var keywords: Attributes
+    public var commands: Attributes
+    public var types: Attributes
+    public var attributes: Attributes
+    public var variables: Attributes
+    public var values: Attributes
+    public var numbers: Attributes
+    public var strings: Attributes
+    public var characters: Attributes
+    public var comments: Attributes
+
+    public init(
+        text: Attributes,
+        insertionPoint: Attributes,
+        invisibles: Attributes,
+        background: Attributes,
+        lineHighlight: Attributes,
+        selection: Attributes,
+        keywords: Attributes,
+        commands: Attributes,
+        types: Attributes,
+        attributes: Attributes,
+        variables: Attributes,
+        values: Attributes,
+        numbers: Attributes,
+        strings: Attributes,
+        characters: Attributes,
+        comments: Attributes
+    ) {
+        self.text = text
+        self.insertionPoint = insertionPoint
+        self.invisibles = invisibles
+        self.background = background
+        self.lineHighlight = lineHighlight
+        self.selection = selection
+        self.keywords = keywords
+        self.commands = commands
+        self.types = types
+        self.attributes = attributes
+        self.variables = variables
+        self.values = values
+        self.numbers = numbers
+        self.strings = strings
+        self.characters = characters
+        self.comments = comments
     }
 }
 
@@ -183,37 +217,5 @@ public struct TerminalColors: Codable {
         self.brightMagenta = brightMagenta
         self.brightCyan = brightCyan
         self.brightWhite = brightWhite
-    }
-}
-
-// MARK: - Metadata
-public struct Metadata: Codable {
-    public var author, license, metadataDescription: String
-    public var distributionUrl: String
-    public var name: String
-    public var darkTheme: Bool
-
-    enum CodingKeys: String, CodingKey {
-        case author, license
-        case metadataDescription = "description"
-        case distributionUrl = "distributionURL"
-        case name
-        case darkTheme
-    }
-
-    public init(
-        author: String,
-        license: String,
-        metadataDescription: String,
-        distributionUrl: String,
-        name: String,
-        darkTheme: Bool
-    ) {
-        self.author = author
-        self.license = license
-        self.metadataDescription = metadataDescription
-        self.distributionUrl = distributionUrl
-        self.name = name
-        self.darkTheme = darkTheme
     }
 }

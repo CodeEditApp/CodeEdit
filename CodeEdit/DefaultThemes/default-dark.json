@@ -1,59 +1,60 @@
 {
-  "strings" : {
-    "color" : "#f0907f"
-  },
-  "comments" : {
-    "color" : "#97be71"
-  },
-  "numbers" : {
-    "color" : "#d6c775"
-  },
-  "metadata" : {
-    "darkTheme" : true,
-    "license" : "MIT",
-    "author" : "CodeEdit",
-    "description" : "CodeEdit default dark theme.",
-    "name" : "Default (Dark)",
-    "distributionURL" : "https:\/\/github.com\/CodeEditApp\/CodeEdit"
-  },
-  "commands" : {
-    "color" : "#c6a3f9"
-  },
-  "lineHighlight" : {
-    "color" : "#303030"
-  },
-  "values" : {
-    "color" : "#70c1e2"
-  },
-  "background" : {
-    "color" : "#1e1e1e"
-  },
-  "keywords" : {
-    "color" : "#ef8bb6"
-  },
-  "text" : {
-    "color" : "#DDDDDD"
-  },
-  "insertionPoint" : {
-    "color" : "#DDDDDD"
-  },
-  "selection" : {
-    "color" : "#8b8b8b"
-  },
-  "types" : {
-    "color" : "#93c7bc"
-  },
-  "variables" : {
-    "color" : "#70c1e2"
-  },
-  "attributes" : {
-    "color" : "#93c7bc"
-  },
-  "characters" : {
-    "color" : "#93c7bc"
-  },
-  "invisibles" : {
-    "color" : "#636363"
+  "darkTheme" : true,
+  "license" : "MIT",
+  "author" : "CodeEdit",
+  "description" : "CodeEdit default dark theme.",
+  "name" : "Default (Dark)",
+  "distributionURL" : "https:\/\/github.com\/CodeEditApp\/CodeEdit",
+  "version" : "0.0.1",
+  "editor" : {
+    "strings" : {
+      "color" : "#f0907f"
+    },
+    "comments" : {
+      "color" : "#97be71"
+    },
+    "numbers" : {
+      "color" : "#d6c775"
+    },
+    "commands" : {
+      "color" : "#c6a3f9"
+    },
+    "lineHighlight" : {
+      "color" : "#303030"
+    },
+    "values" : {
+      "color" : "#70c1e2"
+    },
+    "background" : {
+      "color" : "#1e1e1e"
+    },
+    "keywords" : {
+      "color" : "#ef8bb6"
+    },
+    "text" : {
+      "color" : "#DDDDDD"
+    },
+    "insertionPoint" : {
+      "color" : "#DDDDDD"
+    },
+    "selection" : {
+      "color" : "#8b8b8b"
+    },
+    "types" : {
+      "color" : "#93c7bc"
+    },
+    "variables" : {
+      "color" : "#70c1e2"
+    },
+    "attributes" : {
+      "color" : "#93c7bc"
+    },
+    "characters" : {
+      "color" : "#93c7bc"
+    },
+    "invisibles" : {
+      "color" : "#636363"
+    }
   },
   "terminal" : {
     "text" : {
