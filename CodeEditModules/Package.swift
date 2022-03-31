@@ -173,7 +173,8 @@ let package = Package(
                 "FontPicker",
                 "TerminalEmulator",
             ],
-            path: "Modules/AppPreferences/src"
+            path: "Modules/AppPreferences/src",
+            resources: [.copy("Modules/AppPreferences/resources")]
         )
     ]
 )

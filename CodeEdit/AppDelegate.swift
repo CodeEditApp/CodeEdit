@@ -169,7 +169,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                 title: "Themes",
                 toolbarIcon: NSImage(systemSymbolName: "paintbrush", accessibilityDescription: nil)!
             ) {
-                PreferencesThemeView()
+                ThemePreferencesView()
             },
             Preferences.Pane(
                 identifier: Preferences.PaneIdentifier("TextEditing"),

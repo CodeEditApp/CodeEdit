@@ -61,6 +61,14 @@ public class AnsiColors: ObservableObject {
 }
 
 public extension Color {
+
+    init(hex: String) {
+        let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
+        var int: UInt64 = 0
+        Scanner(string: hex).scanHexInt64(&int)
+        self.init(hex: Int(int))
+    }
+
     init(hex: Int) {
         let red = (hex >> 16) & 0xFF
         let green = (hex >> 8) & 0xFF
@@ -71,10 +79,16 @@ public extension Color {
     var hex: Int {
         guard let components = cgColor?.components, components.count >= 3 else { return 0 }
 
-        let red = Int(components[0] * 255) << 16
-        let green = Int(components[1] * 255) << 8
-        let blue = Int(components[2] * 255)
+        let red = lround((Double(components[0]) * 255.0)) << 16
+        let green = lround((Double(components[1]) * 255.0)) << 8
+        let blue = lround((Double(components[2]) * 255.0))
 
         return red | green | blue
+    }
+
+    var hexString: String {
+        let color = self.hex
+
+        return "#" + String(format: "%06x", color)
     }
 }
