@@ -51,7 +51,7 @@ public class ThemeModel: ObservableObject {
         var isDir: ObjCBool = false
 
         if !filemanager.fileExists(atPath: url.path, isDirectory: &isDir) {
-            try filemanager.createDirectory(at: url, withIntermediateDirectories: false)
+            try filemanager.createDirectory(at: url, withIntermediateDirectories: true)
         }
 
         let content = try filemanager.contentsOfDirectory(atPath: url.path).filter { $0.contains(".json") }
