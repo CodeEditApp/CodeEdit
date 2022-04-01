@@ -25,8 +25,8 @@ open class Gist: Codable {
     open var updatedAt: Date?
     open var description: String?
     open var comments: Int?
-    open var user: GithubUser?
-    open var owner: GithubUser?
+    open var user: User?
+    open var owner: User?
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -48,7 +48,7 @@ open class Gist: Codable {
     }
 }
 
-public extension GithubAccount {
+public extension GitAccount {
 
     /**
      Fetches the gists of the authenticated user

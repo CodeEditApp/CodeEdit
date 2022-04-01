@@ -16,7 +16,7 @@ public struct Review {
     public let id: Int
     public let state: State
     public let submittedAt: Date
-    public let user: GithubUser
+    public let user: User
 }
 
 extension Review: Codable {
@@ -40,7 +40,7 @@ public extension Review {
     }
 }
 
-public extension GithubAccount {
+public extension GitAccount {
 
     @discardableResult
     func listReviews(_ session: GitURLSession = URLSession.shared,

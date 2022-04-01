@@ -1,5 +1,5 @@
 //
-//  BitbucketUserRouter.swift
+//  UserRouter.swift
 //  
 //
 //  Created by Nanashi Li on 2022/03/31.
@@ -7,11 +7,11 @@
 
 import Foundation
 
-public enum BitbucketUserRouter: Router {
+public enum UserRouter: Router {
     case readAuthenticatedUser(Configuration)
     case readEmails(Configuration)
 
-    public var configuration: Configuration? {
+    public var configuration: Configuration {
         switch self {
         case .readAuthenticatedUser(let config): return config
         case .readEmails(let config): return config

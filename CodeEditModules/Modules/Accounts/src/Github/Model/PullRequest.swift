@@ -27,7 +27,8 @@ open class PullRequest: Codable {
     open var title: String?
     open var body: String?
 
-    open var assignee: GithubUser?
+    open var assignee: User?
+    open var milestone: Milestone?
 
     open var locked: Bool?
     open var createdAt: Date?
@@ -35,14 +36,15 @@ open class PullRequest: Codable {
     open var closedAt: Date?
     open var mergedAt: Date?
 
-    open var user: GithubUser?
+    open var user: User?
     open var number: Int
     open var state: Openness?
+    open var labels: [Label]?
 
     open var head: PullRequest.Branch?
     open var base: PullRequest.Branch?
 
-    open var requestedReviewers: [GithubUser]?
+    open var requestedReviewers: [User]?
     open var draft: Bool?
 
     enum CodingKeys: String, CodingKey {
@@ -61,8 +63,10 @@ open class PullRequest: Codable {
         case title
         case body
         case assignee
+        case milestone
         case locked
         case user
+        case labels
         case closedAt = "closed_at"
         case createdAt = "created_at"
         case updatedAt = "updated_at"
@@ -77,12 +81,12 @@ open class PullRequest: Codable {
         open var label: String?
         open var ref: String?
         open var sha: String?
-        open var user: GithubUser?
-        open var repo: GithubRepositories?
+        open var user: User?
+        open var repo: Repository?
     }
 }
 
-public extension GithubAccount {
+public extension GitAccount {
 
     /**
      Get a single pull request

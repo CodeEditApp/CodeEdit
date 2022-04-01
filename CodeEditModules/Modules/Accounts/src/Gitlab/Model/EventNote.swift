@@ -11,7 +11,7 @@ open class EventNote: Codable {
     open var id: Int?
     open var body: String?
     open var attachment: String?
-    open var author: GitlabUser?
+    open var author: User?
     open var createdAt: Date?
     open var system: Bool?
     open var upvote: Bool?
@@ -23,7 +23,7 @@ open class EventNote: Codable {
         id = json["id"] as? Int
         body = json["body"] as? String
         attachment = json["attachment"] as? String
-        author = GitlabUser(json["author"] as? [String: AnyObject] ?? [:])
+        author = User(json["author"] as? [String: AnyObject] ?? [:])
         createdAt = Time.rfc3339Date(json["created_at"] as? String)
         system = json["system"] as? Bool
         upvote = json["upvote"] as? Bool

@@ -23,21 +23,25 @@ open class Commit: Codable {
     open var stats: CommitStats?
     open var status: String?
 
-    enum CodingKeys: String, CodingKey {
-        case id
-        case shortID = "short_id"
-        case title
-        case authorName = "author_name"
-        case authorEmail = "author_email"
-        case committerName = "committer_name"
-        case committerEmail = "committer_email"
-        case createdAt = "created_at"
-        case message
-        case committedDate = "committed_date"
-        case authoredDate = "authored_date"
-        case parentIDs = "parent_ids"
-        case stats
-        case status
+    public init(_ json: [String: Any]) {
+        if let id = json["id"] as? String {
+            self.id = id
+            shortID = json["short_id"] as? String
+            title = json["title"] as? String
+            authorName = json["author_name"] as? String
+            authorEmail = json["author_email"] as? String
+            committerName = json["committer_name"] as? String
+            committerEmail = json["committer_email"] as? String
+            createdAt = Time.rfc3339Date(json["created_at"] as? String)
+            message = json["message"] as? String
+            committedDate = Time.rfc3339Date(json["committed_date"] as? String)
+            authoredDate = Time.rfc3339Date(json["authored_date"] as? String)
+            parentIDs = json["parent_ids"] as? [String]
+            stats = CommitStats(json["stats"] as? [String: AnyObject] ?? [:])
+            status = json["status"] as? String
+        } else {
+            id = "ERROR 404"
+        }
     }
 }
 
@@ -46,10 +50,10 @@ open class CommitStats: Codable {
     open var deletions: Int?
     open var total: Int?
 
-    enum CodingKeys: String, CodingKey {
-        case additions
-        case deletions
-        case total
+    public init(_ json: [String: Any]) {
+        additions = json["additions"] as? Int
+        deletions = json["deletions"] as? Int
+        total = json["total"] as? Int
     }
 }
 
@@ -63,25 +67,25 @@ open class CommitDiff: Codable {
     open var renamedFile: Bool?
     open var deletedFile: Bool?
 
-    enum CodingKeys: String, CodingKey {
-        case diff
-        case newPath = "new_path"
-        case oldPath = "old_path"
-        case aMode = "a_mode"
-        case bMode = "b_mode"
-        case newFile = "new_file"
-        case renamedFile = "renamed_file"
-        case deletedFile = "deleted_file"
+    public init(_ json: [String: Any]) {
+        diff = json["diff"] as? String
+        newPath = json["new_path"] as? String
+        oldPath = json["old_path"] as? String
+        aMode = json["a_mode"] as? String
+        bMode = json["b_mode"] as? String
+        newFile = json["new_file"] as? Bool
+        renamedFile = json["renamed_file"] as? Bool
+        deletedFile = json["deleted_file"] as? Bool
     }
 }
 
 open class CommitComment: Codable {
     open var note: String?
-    open var author: GitlabUser?
+    open var author: User?
 
-    enum CodingKeys: String, CodingKey {
-        case note
-        case author
+    public init(_ json: [String: Any]) {
+        note = json["note"] as? String
+        author = User(json["author"] as? [String: AnyObject] ?? [:])
     }
 }
 
@@ -91,7 +95,7 @@ open class CommitStatus: Codable {
     open var startedAt: Date?
     open var name: String?
     open var allowFailure: Bool?
-    open var author: GitlabUser?
+    open var author: User?
     open var statusDescription: String?
     open var sha: String?
     open var targetURL: URL?
@@ -99,23 +103,25 @@ open class CommitStatus: Codable {
     open var id: Int?
     open var ref: String?
 
-    enum CodingKeys: String, CodingKey {
-        case status
-        case createdAt = "created_at"
-        case startedAt = "started_at"
-        case name
-        case allowFailure = "allow_failure"
-        case author
-        case statusDescription = "description"
-        case sha
-        case targetURL = "target_url"
-        case finishedAt = "finished_at"
-        case id
-        case ref
+    public init(_ json: [String: Any]) {
+        status = json["status"] as? String
+        createdAt = Time.rfc3339Date(json["created_at"] as? String)
+        startedAt = Time.rfc3339Date(json["started_at"] as? String)
+        name = json["name"] as? String
+        allowFailure = json["allow_failure"] as? Bool
+        author = User(json["author"] as? [String: AnyObject] ?? [:])
+        statusDescription = json["description"] as? String
+        sha = json["sha"] as? String
+        if let urlString = json["target_url"] as? String, let urlFromString = URL(string: urlString) {
+            targetURL = urlFromString
+        }
+        finishedAt = Time.rfc3339Date(json["finished_at"] as? String)
+        id = json["id"] as? Int
+        ref = json["ref"] as? String
     }
 }
 
-public extension GitlabAccount {
+public extension GitAccount {
 
     /**
      Get a list of repository commits in a project.
@@ -125,33 +131,27 @@ public extension GitlabAccount {
      - parameter until: Only commits before or in this date will be returned in ISO 8601 format YYYY-MM-DDTHH:MM:SSZ.
      - parameter completion: Callback for the outcome of the fetch.
      */
-    func commits(_ session: GitURLSession = URLSession.shared,
-                 id: String,
-                 refName: String = "",
-                 since: String = "",
-                 until: String = "",
-                 completion: @escaping (
-                    _ response: Result<Commit, Error>) -> Void) -> URLSessionDataTaskProtocol? {
+    public func commits(_ session: GitURLSession = URLSession.shared,
+                        id: String,
+                        refName: String = "",
+                        since: String = "",
+                        until: String = "",
+                        completion: @escaping (
+                            _ response: Response<[Commit]>) -> Void) -> URLSessionDataTaskProtocol? {
 
-                        let router = CommitRouter.readCommits(self.configuration,
-                                                              id: id,
-                                                              refName: refName,
-                                                              since: since,
-                                                              until: until)
+        let router = CommitRouter.readCommits(self.configuration, id: id, refName: refName, since: since, until: until)
 
-                        return router.load(session,
-                                           dateDecodingStrategy: .formatted(Time.rfc3339DateFormatter),
-                                           expectedResultType: Commit.self) { json, error in
-
-                            if let error = error {
-                                completion(Result.failure(error))
-                            }
-
-                            if let json = json {
-                                completion(Result.success(json))
-                            }
-                        }
-                    }
+        return router.loadJSON(session, expectedResultType: [[String: Any]].self) { json, error in
+            if let error = error {
+                completion(Response.failure(error))
+            } else {
+                if let json = json {
+                    let commits = json.map { Commit($0) }
+                    completion(Response.success(commits))
+                }
+            }
+        }
+    }
 
     /**
      Get a specific commit in a project.
@@ -159,27 +159,25 @@ public extension GitlabAccount {
      - parameter sha: The commit hash or name of a repository branch or tag.
      - parameter completion: Callback for the outcome of the fetch.
      */
-    func commit(_ session: GitURLSession = URLSession.shared,
-                id: String,
-                sha: String,
-                completion: @escaping (
-                    _ response: Result<Commit, Error>) -> Void) -> URLSessionDataTaskProtocol? {
+    public func commit(_ session: GitURLSession = URLSession.shared,
+                       id: String,
+                       sha: String,
+                       completion: @escaping (
+                        _ response: Response<Commit>) -> Void) -> URLSessionDataTaskProtocol? {
 
-                        let router = CommitRouter.readCommit(self.configuration, id: id, sha: sha)
+        let router = CommitRouter.readCommit(self.configuration, id: id, sha: sha)
 
-                        return router.load(session,
-                                           dateDecodingStrategy: .formatted(Time.rfc3339DateFormatter),
-                                           expectedResultType: Commit.self) { json, error in
-
-                            if let error = error {
-                                completion(Result.failure(error))
-                            }
-
-                            if let json = json {
-                                completion(Result.success(json))
-                            }
-                        }
-                    }
+        return router.loadJSON(session, expectedResultType: [String: Any].self) { json, error in
+            if let error = error {
+                completion(Response.failure(error))
+            } else {
+                if let json = json {
+                    let commit = Commit(json)
+                    completion(Response.success(commit))
+                }
+            }
+        }
+    }
 
     /**
      Get a diff of a commit in a project.
@@ -187,27 +185,25 @@ public extension GitlabAccount {
      - parameter sha: The commit hash or name of a repository branch or tag.
      - parameter completion: Callback for the outcome of the fetch.
      */
-    func commitDiffs(_ session: GitURLSession = URLSession.shared,
-                     id: String,
-                     sha: String,
-                     completion: @escaping (
-                        _ response: Result<CommitDiff, Error>) -> Void) -> URLSessionDataTaskProtocol? {
+    public func commitDiffs(_ session: GitURLSession = URLSession.shared,
+                            id: String,
+                            sha: String,
+                            completion: @escaping (
+                                _ response: Response<[CommitDiff]>) -> Void) -> URLSessionDataTaskProtocol? {
 
-                            let router = CommitRouter.readCommitDiffs(self.configuration, id: id, sha: sha)
+        let router = CommitRouter.readCommitDiffs(self.configuration, id: id, sha: sha)
 
-                            return router.load(session,
-                                               dateDecodingStrategy: .formatted(Time.rfc3339DateFormatter),
-                                               expectedResultType: CommitDiff.self) { json, error in
-
-                                if let error = error {
-                                    completion(Result.failure(error))
-                                }
-
-                                if let json = json {
-                                    completion(Result.success(json))
-                                }
-                            }
-                        }
+        return router.loadJSON(session, expectedResultType: [[String: Any]].self) { json, error in
+            if let error = error {
+                completion(Response.failure(error))
+            } else {
+                if let json = json {
+                    let commitDiffs = json.map { CommitDiff($0) }
+                    completion(Response.success(commitDiffs))
+                }
+            }
+        }
+    }
 
     /**
      Get the comments of a commit in a project.
@@ -215,27 +211,25 @@ public extension GitlabAccount {
      - parameter sha: The commit hash or name of a repository branch or tag.
      - parameter completion: Callback for the outcome of the fetch.
      */
-    func commitComments(_ session: GitURLSession = URLSession.shared,
-                        id: String,
-                        sha: String,
-                        completion: @escaping (
-                            _ response: Result<CommitComment, Error>) -> Void) -> URLSessionDataTaskProtocol? {
+    public func commitComments(_ session: GitURLSession = URLSession.shared,
+                               id: String,
+                               sha: String,
+                               completion: @escaping (
+                                _ response: Response<[CommitComment]>) -> Void) -> URLSessionDataTaskProtocol? {
 
-                                let router = CommitRouter.readCommitComments(self.configuration, id: id, sha: sha)
+        let router = CommitRouter.readCommitComments(self.configuration, id: id, sha: sha)
 
-                                return router.load(session,
-                                                   dateDecodingStrategy: .formatted(Time.rfc3339DateFormatter),
-                                                   expectedResultType: CommitComment.self) { json, error in
-
-                                    if let error = error {
-                                        completion(Result.failure(error))
-                                    }
-
-                                    if let json = json {
-                                        completion(Result.success(json))
-                                    }
-                                }
-                            }
+        return router.loadJSON(session, expectedResultType: [[String: Any]].self) { json, error in
+            if let error = error {
+                completion(Response.failure(error))
+            } else {
+                if let json = json {
+                    let commitComments = json.map { CommitComment($0) }
+                    completion(Response.success(commitComments))
+                }
+            }
+        }
+    }
 
     /**
      Get the statuses of a commit in a project.
@@ -247,34 +241,31 @@ public extension GitlabAccount {
      - parameter all: Return all statuses, not only the latest ones. (Boolean value)
      - parameter completion: Callback for the outcome of the fetch.
      */
-    func commitStatuses(_ session: GitURLSession = URLSession.shared,
-                        id: String,
-                        sha: String,
-                        ref: String = "",
-                        stage: String = "",
-                        name: String = "",
-                        all: Bool = false,
-                        completion: @escaping (
-                            _ response: Result<CommitStatus, Error>) -> Void) -> URLSessionDataTaskProtocol? {
+    public func commitStatuses(_ session: GitURLSession = URLSession.shared,
+                               id: String,
+                               sha: String,
+                               ref: String = "",
+                               stage: String = "",
+                               name: String = "",
+                               all: Bool = false,
+                               completion: @escaping (
+                                _ response: Response<[CommitStatus]>) -> Void) -> URLSessionDataTaskProtocol? {
 
-                                let router = CommitRouter.readCommitStatuses(self.configuration, id: id,
-                                                                             sha: sha,
-                                                                             ref: ref,
-                                                                             stage: stage,
-                                                                             name: name,
-                                                                             all: all)
-
-                                return router.load(session,
-                                                   dateDecodingStrategy: .formatted(Time.rfc3339DateFormatter),
-                                                   expectedResultType: CommitStatus.self) { json, error in
-
-                                    if let error = error {
-                                        completion(Result.failure(error))
-                                    }
-
-                                    if let json = json {
-                                        completion(Result.success(json))
-                                    }
-                                }
-                            }
+        let router = CommitRouter.readCommitStatuses(self.configuration, id: id,
+                                                     sha: sha,
+                                                     ref: ref,
+                                                     stage: stage,
+                                                     name: name,
+                                                     all: all)
+        return router.loadJSON(session, expectedResultType: [[String: Any]].self) { json, error in
+            if let error = error {
+                completion(Response.failure(error))
+            } else {
+                if let json = json {
+                    let commitStatuses = json.map { CommitStatus($0) }
+                    completion(Response.success(commitStatuses))
+                }
+            }
+        }
+    }
 }

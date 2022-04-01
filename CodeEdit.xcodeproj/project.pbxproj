@@ -17,7 +17,6 @@
 		0485EB1F27E7458B00138301 /* WorkspaceCodeFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0485EB1E27E7458B00138301 /* WorkspaceCodeFileView.swift */; };
 		0485EB2327E7791400138301 /* QuickOpenPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0485EB2227E7791400138301 /* QuickOpenPreviewView.swift */; };
 		0485EB2527E7B9C800138301 /* Overlays in Frameworks */ = {isa = PBXBuildFile; productRef = 0485EB2427E7B9C800138301 /* Overlays */; };
-		20AA740C27F61F87006233C1 /* Accounts in Frameworks */ = {isa = PBXBuildFile; productRef = 20AA740B27F61F87006233C1 /* Accounts */; };
 		2803257127F3CF1F009C7DC2 /* AppPreferences in Frameworks */ = {isa = PBXBuildFile; productRef = 2803257027F3CF1F009C7DC2 /* AppPreferences */; };
 		2806CBD427EE9FC0003E5523 /* ProjectNavigatorContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2806CBD327EE9FC0003E5523 /* ProjectNavigatorContextMenu.swift */; };
 		2813F93827ECC4AA00E305E4 /* FindNavigatorResultList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201B327E9989900CB86D0 /* FindNavigatorResultList.swift */; };
@@ -135,7 +134,6 @@
 				D7F72DEB27EA3574000C3064 /* Search in Frameworks */,
 				5CFA753B27E896B60002F01B /* GitClient in Frameworks */,
 				28CE5EA027E6493D0065D29C /* StatusBar in Frameworks */,
-				20AA740C27F61F87006233C1 /* Accounts in Frameworks */,
 				5CF38A5E27E48E6C0096A0F7 /* CodeFile in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -357,7 +355,6 @@
 				D7F72DEA27EA3574000C3064 /* Search */,
 				2859B93E27EB50050069BE88 /* FontPicker */,
 				2803257027F3CF1F009C7DC2 /* AppPreferences */,
-				20AA740B27F61F87006233C1 /* Accounts */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -926,10 +923,6 @@
 		0485EB2427E7B9C800138301 /* Overlays */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Overlays;
-		};
-		20AA740B27F61F87006233C1 /* Accounts */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Accounts;
 		};
 		2803257027F3CF1F009C7DC2 /* AppPreferences */ = {
 			isa = XCSwiftPackageProductDependency;

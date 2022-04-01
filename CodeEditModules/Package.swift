@@ -53,10 +53,6 @@ let package = Package(
             name: "AppPreferences",
             targets: ["AppPreferences"]
         ),
-        .library(
-            name: "Accounts",
-            targets: ["Accounts"]
-        ),
     ],
     dependencies: [
         .package(
@@ -178,10 +174,6 @@ let package = Package(
                 "TerminalEmulator",
             ],
             path: "Modules/AppPreferences/src"
-        ),
-        .target(
-            name: "Accounts",
-            path: "Modules/Accounts/src"
-        ),
+        )
     ]
 )

@@ -7,11 +7,12 @@
 
 import Foundation
 
-public struct GitlabTokenConfiguration: Configuration {
+public let errorDomain = "com.codeedit.models.accounts.gitlab"
 
-    public var apiEndpoint: String?
+public struct TokenConfiguration: Configuration {
+    public var apiEndpoint: String
     public var accessToken: String?
-    public let errorDomain: String? = "com.codeedit.models.accounts.gitlab"
+    public let errorDomain = errorDomain
 
     public init(_ token: String? = nil, url: String = gitlabBaseURL) {
         apiEndpoint = url
@@ -20,9 +21,9 @@ public struct GitlabTokenConfiguration: Configuration {
 }
 
 public struct PrivateTokenConfiguration: Configuration {
-    public var apiEndpoint: String?
+    public var apiEndpoint: String
     public var accessToken: String?
-    public let errorDomain: String? = "com.codeedit.models.accounts.gitlab"
+    public let errorDomain = errorDomain
 
     public init(_ token: String? = nil, url: String = gitlabBaseURL) {
         apiEndpoint = url

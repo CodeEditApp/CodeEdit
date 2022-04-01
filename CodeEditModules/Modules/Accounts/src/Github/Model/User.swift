@@ -1,5 +1,5 @@
 //
-//  GithubUser.swift
+//  User.swift
 //  
 //
 //  Created by Nanashi Li on 2022/03/31.
@@ -10,7 +10,7 @@ import Foundation
 import FoundationNetworking
 #endif
 
-open class GithubUser: Codable {
+open class User: Codable {
     open internal(set) var id: Int = -1
     open var login: String?
     open var avatarURL: String?
@@ -36,6 +36,7 @@ open class GithubUser: Codable {
     open var numberOfPrivateGists: Int?
     open var numberOfOwnPrivateRepos: Int?
     open var twoFactorAuthenticationEnabled: Bool?
+    open var subscriptionPlan: Plan?
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -58,15 +59,17 @@ open class GithubUser: Codable {
         case reposURL = "repos_url"
         case eventsURL = "events_url"
         case receivedEventsURL = "received_events_url"
+        case twitterUsername = "twitter_username"
         case createdAt = "created_at"
         case updatedAt = "updated_at"
         case numberOfPrivateGists = "private_gists"
         case numberOfOwnPrivateRepos = "owned_private_repos"
         case twoFactorAuthenticationEnabled = "two_factor_authentication"
+        case subscriptionPlan = "plan"
     }
 }
 
-public extension GithubAccount {
+public extension GitAccount {
     /**
          Fetches a user or organization
          - parameter session: GitURLSession, defaults to URLSession.shared
@@ -77,14 +80,14 @@ public extension GithubAccount {
     func user(
         _ session: GitURLSession = URLSession.shared,
         name: String,
-        completion: @escaping (_ response: Result<GithubUser, Error>) -> Void) -> URLSessionDataTaskProtocol? {
+        completion: @escaping (_ response: Result<User, Error>) -> Void) -> URLSessionDataTaskProtocol? {
 
-        let router = GithubUserRouter.readUser(name, configuration)
+        let router = UserRouter.readUser(name, configuration)
 
         return router.load(
             session,
             dateDecodingStrategy: .formatted(Time.rfc3339DateFormatter),
-            expectedResultType: GithubUser.self) { user, error in
+            expectedResultType: User.self) { user, error in
             if let error = error {
                 completion(.failure(error))
             } else {
@@ -103,14 +106,14 @@ public extension GithubAccount {
     @discardableResult
     func me(
         _ session: GitURLSession = URLSession.shared,
-        completion: @escaping (_ response: Result<GithubUser, Error>) -> Void) -> URLSessionDataTaskProtocol? {
+        completion: @escaping (_ response: Result<User, Error>) -> Void) -> URLSessionDataTaskProtocol? {
 
-        let router = GithubUserRouter.readAuthenticatedUser(configuration)
+        let router = UserRouter.readAuthenticatedUser(configuration)
 
         return router.load(
             session,
             dateDecodingStrategy: .formatted(Time.rfc3339DateFormatter),
-            expectedResultType: GithubUser.self) { user, error in
+            expectedResultType: User.self) { user, error in
             if let error = error {
                 completion(.failure(error))
             } else {

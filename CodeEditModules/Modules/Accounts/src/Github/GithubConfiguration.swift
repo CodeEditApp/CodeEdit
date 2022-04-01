@@ -10,10 +10,12 @@ import Foundation
 import FoundationNetworking
 #endif
 
-public struct GithubTokenConfiguration: Configuration {
-    public var apiEndpoint: String?
+public let errorDomain = "com.codeedit.models.accounts.github"
+
+public struct TokenConfiguration: Configuration {
+    public var apiEndpoint: String
     public var accessToken: String?
-    public let errorDomain: String? = "com.codeedit.models.accounts.github"
+    public let errorDomain = errorDomain
     public let authorizationHeader: String? = "Basic"
 
     /// Custom `Accept` header for API previews.
@@ -35,13 +37,13 @@ public struct GithubTokenConfiguration: Configuration {
 }
 
 public struct OAuthConfiguration: Configuration {
-    public var apiEndpoint: String?
+    public var apiEndpoint: String
     public var accessToken: String?
     public let token: String
     public let secret: String
     public let scopes: [String]
     public let webEndpoint: String
-    public let errorDomain = "com.codeedit.models.accounts.github"
+    public let errorDomain = errorDomain
 
     /// Custom `Accept` header for API previews.
     ///
@@ -66,15 +68,15 @@ public struct OAuthConfiguration: Configuration {
     }
 
     public func authenticate() -> URL? {
-        return GithubOAuthRouter.authorize(self).URLRequest?.url
+        return OAuthRouter.authorize(self).URLRequest?.url
     }
 
     public func authorize(
         _ session: GitURLSession = URLSession.shared,
         code: String,
-        completion: @escaping (_ config: GithubTokenConfiguration) -> Void) {
+        completion: @escaping (_ config: TokenConfiguration) -> Void) {
 
-        let request = GithubOAuthRouter.accessToken(self, code).URLRequest
+        let request = OAuthRouter.accessToken(self, code).URLRequest
         if let request = request {
             let task = session.dataTask(with: request) { data, response, _ in
                 if let response = response as? HTTPURLResponse {
@@ -84,7 +86,7 @@ public struct OAuthConfiguration: Configuration {
                         if let data = data, let string = String(data: data, encoding: .utf8) {
                             let accessToken = self.accessTokenFromResponse(string)
                             if let accessToken = accessToken {
-                                let config = GithubTokenConfiguration(accessToken, url: self.apiEndpoint ?? "")
+                                let config = TokenConfiguration(accessToken, url: self.apiEndpoint)
                                 completion(config)
                             }
                         }
@@ -98,7 +100,7 @@ public struct OAuthConfiguration: Configuration {
     public func handleOpenURL(
         _ session: GitURLSession = URLSession.shared,
         url: URL,
-        completion: @escaping (_ config: GithubTokenConfiguration) -> Void) {
+        completion: @escaping (_ config: TokenConfiguration) -> Void) {
 
         if let code = url.URLParameters["code"] {
             authorize(session, code: code) { config in
@@ -116,11 +118,11 @@ public struct OAuthConfiguration: Configuration {
     }
 }
 
-enum GithubOAuthRouter: Router {
+enum OAuthRouter: Router {
     case authorize(OAuthConfiguration)
     case accessToken(OAuthConfiguration, String)
 
-    var configuration: Configuration? {
+    var configuration: Configuration {
         switch self {
         case let .authorize(config): return config
         case let .accessToken(config, _): return config

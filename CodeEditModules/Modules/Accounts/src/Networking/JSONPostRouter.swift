@@ -26,10 +26,8 @@ public protocol JSONPostRouter: Router {
         completion: @escaping (_ json: T?, _ error: Error?) -> Void) -> URLSessionDataTaskProtocol?
 
     #if !canImport(FoundationNetworking)
-    @available(macOS 12.0, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
     func postJSON<T>(_ session: GitURLSession, expectedResultType: T.Type) async throws -> T?
 
-    @available(macOS 12.0, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
     func post<T: Codable>(
         _ session: GitURLSession,
         decoder: JSONDecoder,
@@ -74,7 +72,7 @@ public extension JSONPostRouter {
                     }
 
                     let error = NSError(
-                        domain: self.configuration?.errorDomain ?? "",
+                        domain: self.configuration.errorDomain,
                         code: response.statusCode,
                         userInfo: userInfo)
 
@@ -101,13 +99,12 @@ public extension JSONPostRouter {
     }
 
     #if !canImport(FoundationNetworking)
-    @available(macOS 12.0, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
     func postJSON<T>(
         _ session: GitURLSession = URLSession.shared,
         expectedResultType _: T.Type) async throws -> T? {
 
         guard let request = request() else {
-            throw NSError(domain: configuration?.errorDomain ?? "", code: -876, userInfo: nil)
+            throw NSError(domain: configuration.errorDomain, code: -876, userInfo: nil)
         }
 
         let data = try JSONSerialization.data(withJSONObject: params, options: JSONSerialization.WritingOptions())
@@ -124,7 +121,7 @@ public extension JSONPostRouter {
                 } else if let string = String(data: responseTuple.0, encoding: String.Encoding.utf8) {
                     userInfo[errorKey] = string as Any?
                 }
-                throw NSError(domain: configuration?.errorDomain ?? "", code: response.statusCode, userInfo: userInfo)
+                throw NSError(domain: configuration.errorDomain, code: response.statusCode, userInfo: userInfo)
             }
         }
 
@@ -163,7 +160,7 @@ public extension JSONPostRouter {
                     userInfo[errorKey] = string as Any?
                 }
                 let error = NSError(
-                    domain: self.configuration?.errorDomain ?? "",
+                    domain: self.configuration.errorDomain,
                     code: response.statusCode,
                     userInfo: userInfo)
 
@@ -190,14 +187,13 @@ public extension JSONPostRouter {
     }
 
     #if !canImport(FoundationNetworking)
-    @available(macOS 12.0, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
     func post<T: Codable>(
         _ session: GitURLSession,
         decoder: JSONDecoder = JSONDecoder(),
         expectedResultType _: T.Type) async throws -> T {
 
         guard let request = request() else {
-            throw NSError(domain: configuration?.errorDomain ?? "", code: -876, userInfo: nil)
+            throw NSError(domain: configuration.errorDomain, code: -876, userInfo: nil)
         }
 
         let data = try JSONSerialization.data(withJSONObject: params, options: JSONSerialization.WritingOptions())
@@ -212,7 +208,7 @@ public extension JSONPostRouter {
             } else if let string = String(data: responseTuple.0, encoding: String.Encoding.utf8) {
                 userInfo[errorKey] = string as Any?
             }
-            throw NSError(domain: configuration?.errorDomain ?? "", code: response.statusCode, userInfo: userInfo)
+            throw NSError(domain: configuration.errorDomain, code: response.statusCode, userInfo: userInfo)
         }
 
         return try decoder.decode(T.self, from: responseTuple.0)

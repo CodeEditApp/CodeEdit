@@ -14,14 +14,13 @@ enum CommitRouter: Router {
     case readCommitComments(Configuration, id: String, sha: String)
     case readCommitStatuses(Configuration, id: String, sha: String, ref: String, stage: String, name: String, all: Bool)
 
-    var configuration: Configuration? {
+    var configuration: Configuration {
         switch self {
         case .readCommits(let config, nil, nil, nil, nil): return config
         case .readCommit(let config, nil, nil): return config
         case .readCommitDiffs(let config, nil, nil): return config
         case .readCommitComments(let config, nil, nil): return config
         case .readCommitStatuses(let config, nil, nil, nil, nil, nil, nil): return config
-        default: return nil
         }
     }
 
@@ -45,7 +44,6 @@ enum CommitRouter: Router {
             return [:]
         case .readCommitStatuses(nil, nil, nil, let ref, let stage, let name, let all):
             return ["ref": ref, "stage": stage, "name": name, "all": String(all)]
-        default: return [:]
         }
     }
 
@@ -61,7 +59,6 @@ enum CommitRouter: Router {
             return "project/\(id)/repository/commits/\(sha)/comments"
         case .readCommitStatuses(nil, let id, let sha, nil, nil, nil, nil):
             return "project/\(id)/repository/commits/\(sha)/statuses"
-        default: return ""
         }
     }
 }
