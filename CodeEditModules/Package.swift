@@ -6,7 +6,7 @@ let package = Package(
     name: "CodeEditModules",
     defaultLocalization: "en",
     platforms: [
-        .macOS(.v11),
+        .macOS(.v12),
     ],
     products: [
         .library(
@@ -56,6 +56,10 @@ let package = Package(
         .library(
             name: "Accounts",
             targets: ["Accounts"]
+        ),
+        .library(
+            name: "About",
+            targets: ["About"]
         ),
     ],
     dependencies: [
@@ -182,6 +186,10 @@ let package = Package(
         .target(
             name: "Accounts",
             path: "Modules/Accounts/src"
+        ),
+        .target(
+            name: "About",
+            path: "Modules/About/src"
         ),
     ]
 )
