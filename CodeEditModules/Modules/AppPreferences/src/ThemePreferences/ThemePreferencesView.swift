@@ -5,7 +5,6 @@
 //  Created by Lukas Pistrol on 30.03.22.
 //
 
-import CodeFile
 import FontPicker
 import SwiftUI
 import Preferences

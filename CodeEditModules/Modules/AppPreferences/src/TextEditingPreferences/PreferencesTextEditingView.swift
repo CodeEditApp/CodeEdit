@@ -6,20 +6,21 @@
 //
 
 import SwiftUI
-import CodeFile
 
 public struct PreferencesTextEditingView: View {
 
-    @AppStorage(EditorTabWidth.storageKey)
-    var defaultTabWidth: Int = EditorTabWidth.default
+    @StateObject
+    private var prefs: AppPreferencesModel = .shared
 
     public init() {}
 
     public var body: some View {
         Form {
             HStack {
-                Stepper("Default Tab Width:", value: $defaultTabWidth, in: 2...8)
-                Text(String(defaultTabWidth))
+                Stepper("Default Tab Width:",
+                        value: $prefs.preferences.textEditing.defaultTabWidth,
+                        in: 2...8)
+                Text(String(prefs.preferences.textEditing.defaultTabWidth))
             }
         }
         .frame(width: 844)

@@ -1,5 +1,5 @@
 {
-  "darkTheme" : true,
+  "type" : "dark",
   "license" : "MIT",
   "author" : "CodeEdit",
   "description" : "CodeEdit default dark theme.",

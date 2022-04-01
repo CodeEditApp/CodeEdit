@@ -29,11 +29,11 @@ public class ThemeModel: ObservableObject {
     public var selectedTheme: Theme?
 
     public var darkThemes: [Theme] {
-        themes.filter { $0.darkTheme }
+        themes.filter { $0.appearance == .dark }
     }
 
     public var lightThemes: [Theme] {
-        themes.filter { !$0.darkTheme }
+        themes.filter { $0.appearance == .light }
     }
 
     init() {

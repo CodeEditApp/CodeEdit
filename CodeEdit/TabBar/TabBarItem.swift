@@ -30,8 +30,8 @@ struct TabBarItem: View {
     @Environment(\.colorScheme)
     var colorScheme
 
-    @AppStorage(FileIconStyle.storageKey)
-    private var iconStyle: FileIconStyle = .default
+    @StateObject
+    private var prefs: AppPreferencesModel = .shared
 
     @State
     var isHovering: Bool = false
@@ -106,7 +106,7 @@ struct TabBarItem: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .foregroundColor(
-                        iconStyle == .color ? item.iconColor : .secondary
+                        prefs.preferences.general.fileIconStyle == .color ? item.iconColor : .secondary
                     )
                     .frame(width: 12, height: 12)
                 Text(item.url.lastPathComponent)

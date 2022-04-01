@@ -92,6 +92,7 @@ let package = Package(
             name: "CodeFile",
             dependencies: [
                 "Highlightr",
+                "AppPreferences"
             ],
             path: "Modules/CodeFile/src"
         ),
@@ -172,11 +173,9 @@ let package = Package(
             name: "AppPreferences",
             dependencies: [
                 "Preferences",
-                "CodeFile",
                 "FontPicker",
             ],
-            path: "Modules/AppPreferences/src",
-            resources: [.copy("Modules/AppPreferences/resources")]
+            path: "Modules/AppPreferences/src"
         )
     ]
 )
