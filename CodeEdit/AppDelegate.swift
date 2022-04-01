@@ -31,9 +31,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         AppPreferencesModel.shared.preferences.general.appAppearance.applyAppearance()
-//        if let appearanceString = UserDefaults.standard.string(forKey: Appearances.storageKey) {
-//            Appearances(rawValue: appearanceString)?.applyAppearance()
-//        }
 
         DispatchQueue.main.async {
             if NSApp.windows.isEmpty {
@@ -78,8 +75,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 
     func handleOpen() {
         let behavior = AppPreferencesModel.shared.preferences.general.reopenBehavior
-//        let behavior = ReopenBehavior(rawValue: UserDefaults.standard.string(forKey: ReopenBehavior.storageKey)
-//                                      ?? ReopenBehavior.default.rawValue) ?? ReopenBehavior.default
 
         switch behavior {
         case .welcome:
