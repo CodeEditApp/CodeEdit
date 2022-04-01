@@ -9,11 +9,18 @@ import Foundation
 import SwiftUI
 
 public extension WorkspaceClient {
-    struct FileItem: Hashable, Identifiable, Comparable, Codable {
+    enum FileItemCodingKeys: String, CodingKey {
+        case id
+        case url
+        case children
+    }
+
+    class FileItem: Hashable, Identifiable, Comparable, Codable {
         // TODO: use a phantom type instead of a String
         public var id: String
         public var url: URL
         public var children: [FileItem]?
+        public var parent: FileItem?
         public static let fileManger = FileManager.default
         public var systemImage: String {
             switch children {
@@ -38,7 +45,7 @@ public extension WorkspaceClient {
                 return "atom"
             case "swift":
                 return "swift"
-            case "env":
+            case "env", "example":
                 return "gearshape.fill"
             case "gitignore":
                 return "arrow.triangle.branch"
@@ -64,6 +71,14 @@ public extension WorkspaceClient {
                 return "m.square"
             case "vue":
                 return "v.square"
+            case "go":
+                return "g.square"
+            case "sum":
+                return "s.square"
+            case "mod":
+                return "m.square"
+            case "Makefile":
+                return "terminal"
             default:
                 return "doc"
             }
@@ -87,6 +102,12 @@ public extension WorkspaceClient {
                 return Color(red: 0.667, green: 0.031, blue: 0.133, opacity: 1.000)
             case "m":
                 return Color(red: 0.271, green: 0.106, blue: 0.525, opacity: 1.000)
+            case "go":
+                return Color(red: 0.02, green: 0.675, blue: 0.757, opacity: 1.0)
+            case "sum", "mod":
+                return Color(red: 0.925, green: 0.251, blue: 0.478, opacity: 1.0)
+            case "Makefile":
+                return Color(red: 0.937, green: 0.325, blue: 0.314, opacity: 1.0)
             default:
                 return .blue
             }
@@ -136,7 +157,8 @@ public extension WorkspaceClient {
             FileItem.fileManger.createFile(
                 atPath: fileUrl.path,
                 contents: nil,
-                attributes: [FileAttributeKey.creationDate: Date()])
+                attributes: [FileAttributeKey.creationDate: Date()]
+            )
         }
 
         /// This function deletes the item or folder from the current project
@@ -148,6 +170,30 @@ public extension WorkspaceClient {
                     fatalError(error.localizedDescription)
                 }
             }
+        }
+
+        // MARK: Hashable
+
+        public func hash(into hasher: inout Hasher) {
+            hasher.combine(id)
+            hasher.combine(url)
+            hasher.combine(children)
+        }
+
+        // MARK: Codable
+
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: FileItemCodingKeys.self)
+            try container.encode(id, forKey: .id)
+            try container.encode(url, forKey: .url)
+            try container.encode(children, forKey: .children)
+        }
+
+        public required init(from decoder: Decoder) throws {
+            let values = try decoder.container(keyedBy: FileItemCodingKeys.self)
+            id = try values.decode(String.self, forKey: .id)
+            url = try values.decode(URL.self, forKey: .url)
+            children = try values.decode([FileItem]?.self, forKey: .children)
         }
     }
 }

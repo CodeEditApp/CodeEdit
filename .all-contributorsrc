@@ -1,0 +1,160 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "austincondiff",
+      "name": "Austin Condiff",
+      "avatar_url": "https://avatars.githubusercontent.com/u/806104?v=4",
+      "profile": "http://www.austincondiff.com",
+      "contributions": [
+        "design",
+        "code"
+      ]
+    },
+    {
+      "login": "lukepistrol",
+      "name": "Lukas",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9460130?v=4",
+      "profile": "http://lukaspistrol.com",
+      "contributions": [
+        "infra",
+        "test",
+        "code"
+      ]
+    },
+    {
+      "login": "pkasila",
+      "name": "Pavel Kasila",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17158860?v=4",
+      "profile": "https://github.com/pkasila",
+      "contributions": [
+        "infra",
+        "test",
+        "code"
+      ]
+    },
+    {
+      "login": "MarcoCarnevali",
+      "name": "Marco Carnevali",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9656572?v=4",
+      "profile": "https://github.com/MarcoCarnevali",
+      "contributions": [
+        "infra",
+        "test",
+        "code"
+      ]
+    },
+    {
+      "login": "wdg",
+      "name": "Wesley De Groot",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1290461?v=4",
+      "profile": "https://wdg.codes",
+      "contributions": [
+        "infra",
+        "test",
+        "code"
+      ]
+    },
+    {
+      "login": "nanashili",
+      "name": "Nanashi Li",
+      "avatar_url": "https://avatars.githubusercontent.com/u/63672227?v=4",
+      "profile": "https://github.com/nanashili",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "RayZhao1998",
+      "name": "ninjiacoder",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22616933?v=4",
+      "profile": "https://ninjiacoder.me",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "Jeehut",
+      "name": "Cihat Gündüz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6942160?v=4",
+      "profile": "https://twitch.tv/Jeehut",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "MysteryCoder456",
+      "name": "Rehatbir Singh",
+      "avatar_url": "https://avatars.githubusercontent.com/u/43755491?v=4",
+      "profile": "https://github.com/MysteryCoder456",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "Angelk90",
+      "name": "Angelk90",
+      "avatar_url": "https://avatars.githubusercontent.com/u/20476002?v=4",
+      "profile": "https://github.com/Angelk90",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "StefKors",
+      "name": "Stef Kors",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11800807?v=4",
+      "profile": "https://www.stefkors.com",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "akring",
+      "name": "Chris Akring",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6525286?v=4",
+      "profile": "https://akringblog.com/",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "highjeans",
+      "name": "highjeans",
+      "avatar_url": "https://avatars.githubusercontent.com/u/77588045?v=4",
+      "profile": "https://github.com/highjeans",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "thecoolwinter",
+      "name": "Khan Winter",
+      "avatar_url": "https://avatars.githubusercontent.com/u/35942988?v=4",
+      "profile": "https://blog.windchillmedia.com",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "jasonplatts",
+      "name": "Jason Platts",
+      "avatar_url": "https://avatars.githubusercontent.com/u/48892071?v=4",
+      "profile": "https://github.com/jasonplatts",
+      "contributions": [
+        "infra",
+        "plugin"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "CodeEdit",
+  "projectOwner": "CodeEditApp",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}

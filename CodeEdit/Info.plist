@@ -44,5 +44,7 @@
 			</array>
 		</dict>
 	</array>
+	<key>GitHash</key>
+	<string>Placeholder</string>
 </dict>
 </plist>

@@ -10,6 +10,7 @@ import AppKit
 import Foundation
 import WelcomeModule
 import GitClone
+import AppPreferences
 
 struct WelcomeView: View {
     @Environment(\.colorScheme)
@@ -55,16 +56,20 @@ struct WelcomeView: View {
         return Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? ""
     }
 
+    /// Get the MacOS version & build
     private var macOsVersion: String {
-        var osSeperated = ProcessInfo.processInfo.operatingSystemVersionString.components(separatedBy: " ")
-        if osSeperated.count > 1 {
-            osSeperated.remove(at: 0) // localized string (Version, Versie)
-            osSeperated.remove(at: 1) // (Build
+        let url = URL(fileURLWithPath: "/System/Library/CoreServices/SystemVersion.plist")
+        guard let dict = NSDictionary(contentsOf: url),
+           let version = dict["ProductUserVisibleVersion"],
+           let build = dict["ProductBuildVersion"]
+        else {
+            return ProcessInfo.processInfo.operatingSystemVersionString
         }
 
-        return "\(osSeperated[0]) (\(osSeperated[1])"
+        return "\(version) (\(build))"
     }
 
+    /// Return the Xcode version and build (if installed)
     private var xcodeVersion: String? {
         guard let url = NSWorkspace.shared.urlForApplication(withBundleIdentifier: "com.apple.dt.Xcode"),
               let bundle = Bundle(url: url),
@@ -78,6 +83,34 @@ struct WelcomeView: View {
         }
 
         return "\(version) (\(build))"
+    }
+
+    /// Get the last commit hash.
+    private var getGitHash: String? {
+        if let hash = Bundle.main.infoDictionary?["GitHash"] as? String {
+            return hash
+        }
+
+        return nil
+    }
+
+    /// Get program and operating system information
+    private func copyInformation() {
+        var copyString = "CodeEdit: \(appVersion) (\(appBuild))\n"
+
+        if let hash = getGitHash {
+            copyString.append("Commit: \(hash)\n")
+        }
+
+        copyString.append("MacOS: \(macOsVersion)\n")
+
+        if let xcodeVersion = xcodeVersion {
+            copyString.append("Xcode: \(xcodeVersion)")
+        }
+
+        let pasteboard = NSPasteboard.general
+        pasteboard.clearContents()
+        pasteboard.setString(copyString, forType: .string)
     }
 
     var body: some View {
@@ -100,17 +133,9 @@ struct WelcomeView: View {
                         }
                     }
                     .onTapGesture {
-                        var copyString = "CodeEdit: \(appVersion) (\(appBuild))\n" +
-                        "MacOS: \(macOsVersion)\n"
-
-                        if let xcodeVersion = xcodeVersion {
-                            copyString.append("Xcode: \(xcodeVersion)")
-                        }
-
-                        let pasteboard = NSPasteboard.general
-                        pasteboard.clearContents()
-                        pasteboard.setString(copyString, forType: .string)
+                        copyInformation()
                     }
+
                 Spacer().frame(height: 20)
                 HStack {
                     VStack(alignment: .leading, spacing: 15) {

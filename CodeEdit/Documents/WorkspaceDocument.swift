@@ -134,7 +134,9 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
                     let state = try JSONDecoder().decode(WorkspaceSelectionState.self,
                                                          from: Data(contentsOf: selectionStateFile))
                     self.selectionState.fileItems = state.fileItems
-                    state.openFileItems.forEach { item in
+                    state.openFileItems
+                        .compactMap { try? workspaceClient?.getFileItem($0.id) }
+                        .forEach { item in
                         self.openFile(item: item)
                     }
                     self.selectionState.selectedId = state.selectedId

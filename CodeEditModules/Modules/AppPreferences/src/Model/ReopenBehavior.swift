@@ -7,11 +7,11 @@
 
 import Foundation
 
-enum ReopenBehavior: String, CaseIterable, Hashable {
+public enum ReopenBehavior: String, CaseIterable, Hashable {
     case welcome
     case openPanel
     case newDocument
 
-    static let `default` = ReopenBehavior.welcome
-    static let storageKey = "behavior"
+    public static let `default` = ReopenBehavior.welcome
+    public static let storageKey = "behavior"
 }

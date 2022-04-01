@@ -9,22 +9,16 @@ import SwiftUI
 import WorkspaceClient
 
 struct BreadcrumbsView: View {
+    @Environment(\.colorScheme)
+    private var colorScheme
+
     @ObservedObject
     var workspace: WorkspaceDocument
 
     let file: WorkspaceClient.FileItem
 
     @State
-    private var projectName: String = ""
-
-    @State
-    private var folders: [String] = []
-
-    @State
-    private var fileName: String = ""
-
-    @State
-    private var fileImage: String = "doc"
+    private var fileItems: [WorkspaceClient.FileItem] = []
 
     init(_ file: WorkspaceClient.FileItem, workspace: WorkspaceDocument) {
         self.file = file
@@ -37,19 +31,12 @@ struct BreadcrumbsView: View {
                 .foregroundStyle(Color(nsColor: .controlBackgroundColor))
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
-                    BreadcrumbsComponent(
-                        projectName,
-                        systemImage: "square.dashed.inset.filled",
-                        color: .accentColor
-                    )
-
-                    chevron
-
-                    ForEach(folders, id: \.self) { folder in
-                        BreadcrumbsComponent(folder, systemImage: "folder.fill")
-                        chevron
+                    ForEach(fileItems, id: \.self) { fileItem in
+                        if fileItem.parent != nil {
+                            chevron
+                        }
+                        BreadcrumbsComponent(workspace, fileItem: fileItem)
                     }
-                    BreadcrumbsComponent(fileName, systemImage: fileImage, color: file.iconColor)
                 }
                 .padding(.horizontal, 12)
             }
@@ -73,17 +60,12 @@ struct BreadcrumbsView: View {
     }
 
     private func fileInfo(_ file: WorkspaceClient.FileItem) {
-        guard let projURL = workspace.fileURL else { return }
-        let components = file.url.path
-            .replacingOccurrences(of: projURL.path, with: "")
-            .split(separator: "/")
-            .map { String($0) }
-            .dropLast()
-
-        self.projectName = projURL.lastPathComponent
-        self.folders = Array(components)
-        self.fileName = file.fileName
-        self.fileImage = file.systemImage
+        self.fileItems = []
+        var currentFile: WorkspaceClient.FileItem? = file
+        while let currentFileLoop = currentFile {
+            self.fileItems.insert(currentFileLoop, at: 0)
+            currentFile = currentFileLoop.parent
+        }
     }
 }
 

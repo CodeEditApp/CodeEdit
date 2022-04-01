@@ -3,11 +3,20 @@
     "pins": [
       {
         "package": "Highlightr",
-        "repositoryURL": "https://github.com/raspu/Highlightr.git",
+        "repositoryURL": "https://github.com/raspu/Highlightr",
         "state": {
           "branch": null,
           "revision": "93199b9e434f04bda956a613af8f571933f9f037",
           "version": "2.1.2"
+        }
+      },
+      {
+        "package": "Preferences",
+        "repositoryURL": "https://github.com/sindresorhus/Preferences.git",
+        "state": {
+          "branch": null,
+          "revision": "ffeaaad1def45d0625720dc1adae3789cd9c167d",
+          "version": "2.5.0"
         }
       },
       {

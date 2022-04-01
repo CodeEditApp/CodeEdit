@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-enum Appearances: String, CaseIterable, Hashable {
+public enum Appearances: String, CaseIterable, Hashable {
     case system
     case light
     case dark
 
-    func applyAppearance() {
+    public func applyAppearance() {
         switch self {
         case .system:
             NSApp.appearance = nil
@@ -25,6 +25,6 @@ enum Appearances: String, CaseIterable, Hashable {
         }
     }
 
-    static let `default` = Appearances.system
-    static let storageKey = "appearance"
+    public static let `default` = Appearances.system
+    public static let storageKey = "appearance"
 }
