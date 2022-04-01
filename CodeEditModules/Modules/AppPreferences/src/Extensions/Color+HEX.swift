@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  Color+HEX.swift
 //  
 //
 //  Created by Lukas Pistrol on 23.03.22.

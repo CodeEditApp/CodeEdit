@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  ThemeModel.swift
 //  
 //
 //  Created by Lukas Pistrol on 31.03.22.

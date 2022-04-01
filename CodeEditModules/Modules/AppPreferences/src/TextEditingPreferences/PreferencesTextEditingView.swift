@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  PreferencesTextEditingView.swift
 //  
 //
 //  Created by Lukas Pistrol on 30.03.22.
