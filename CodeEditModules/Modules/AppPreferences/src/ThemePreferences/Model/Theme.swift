@@ -7,7 +7,9 @@
 
 import SwiftUI
 
-// MARK: - Theme
+/// # Theme
+///
+/// The model structure of themes for the editor & terminal emulator
 public struct Theme: Identifiable, Codable, Equatable {
 
     enum CodingKeys: String, CodingKey {
@@ -20,17 +22,36 @@ public struct Theme: Identifiable, Codable, Equatable {
         lhs.id == rhs.id
     }
 
+    /// The `id` of the theme
     public var id: String { self.name }
 
+    /// The `author` of the theme
     public var author: String
+
+    /// The `licence` of the theme
     public var license: String
+
+    /// A short `description` of the theme
     public var metadataDescription: String
+
+    /// An URL for reference
     public var distributionURL: String
+
+    /// The `display name` of the theme
     public var name: String
+
+    /// The `version` of the theme
     public var version: String
+
+    /// The ``ThemeType`` of the theme
+    ///
+    /// Appears as `"type"` in the `preferences.json`
     public var appearance: ThemeType
 
+    /// Editor colors of the theme
     public var editor: EditorColors
+
+    /// Terminal colors of the theme
     public var terminal: TerminalColors
 
     public init(
@@ -57,6 +78,9 @@ public struct Theme: Identifiable, Codable, Equatable {
 }
 
 public extension Theme {
+    /// The type of the theme
+    /// - **dark**: this is a theme for dark system appearance
+    /// - **light**: this is a theme for light system appearance
     enum ThemeType: String, Codable {
         case dark
         case light
@@ -65,13 +89,20 @@ public extension Theme {
 
 // MARK: - Attributes
 public extension Theme {
+    /// Attributes of a certain field
+    ///
+    /// As of now it only includes the colors `hex` string and
+    /// an accessor for a `SwiftUI` `Color`.
     struct Attributes: Codable {
+
+        /// The 24-bit hex string of the color (e.g. #123456)
         public var color: String
 
         public init(color: String) {
             self.color = color
         }
 
+        /// The `SwiftUI` color
         public internal(set) var swiftColor: Color {
             get {
                 Color(hex: color)
@@ -84,6 +115,7 @@ public extension Theme {
 }
 
 public extension Theme {
+    /// The editor colors of the theme
     struct EditorColors: Codable {
         public var text: Attributes
         public var insertionPoint: Attributes
@@ -141,8 +173,8 @@ public extension Theme {
 }
 
 public extension Theme {
+    /// The terminal emulator colors of the theme
     struct TerminalColors: Codable {
-
         public var text: Attributes
         public var boldText: Attributes
         public var cursor: Attributes
