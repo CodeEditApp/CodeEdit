@@ -24,7 +24,6 @@ public class ThemeModel: ObservableObject {
     @Published
     var selectedAppearance: Int = 0
 
-
     /// The selected tab in the main section.
     /// - **0**: Preview
     /// - **1**: Editor
