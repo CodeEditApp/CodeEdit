@@ -8,10 +8,10 @@
 import Foundation
 
 public enum OAuthRouter: Router {
-    case authorize(OAuthConfiguration)
-    case accessToken(OAuthConfiguration, String)
+    case authorize(BitbucketOAuthConfiguration)
+    case accessToken(BitbucketOAuthConfiguration, String)
 
-    public var configuration: Configuration {
+    public var configuration: Configuration? {
         switch self {
         case .authorize(let config): return config
         case .accessToken(let config, _): return config

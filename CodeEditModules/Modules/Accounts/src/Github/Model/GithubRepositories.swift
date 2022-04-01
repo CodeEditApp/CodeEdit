@@ -10,9 +10,9 @@ import Foundation
 import FoundationNetworking
 #endif
 
-open class Repository: Codable {
+open class GithubRepositories: Codable {
     open private(set) var id: Int = -1
-    open private(set) var owner = User()
+    open private(set) var owner = GithubUser()
     open var name: String?
     open var fullName: String?
     open private(set) var isPrivate: Bool = false
@@ -44,7 +44,8 @@ open class Repository: Codable {
     }
 }
 
-public extension GitAccount {
+// swiftlint:disable line_length
+public extension GithubAccount {
 
     /**
         Fetches the Repositories for a user or organization
@@ -61,17 +62,13 @@ public extension GitAccount {
                       page: String = "1",
                       perPage: String = "100",
                       completion: @escaping (
-                        _ response: Result<[Repository], Error>) -> Void) -> URLSessionDataTaskProtocol? {
+                        _ response: Result<[GithubRepositories], Error>) -> Void) -> URLSessionDataTaskProtocol? {
 
         let router = (owner != nil)
-            ? RepositoryRouter.readRepositories(configuration, owner!, page, perPage)
-            : RepositoryRouter.readAuthenticatedRepositories(configuration, page, perPage)
+            ? GithubRepositoryRouter.readRepositories(configuration, owner!, page, perPage)
+            : GithubRepositoryRouter.readAuthenticatedRepositories(configuration, page, perPage)
 
-        return router.load(
-            session,
-            dateDecodingStrategy: .formatted(Time.rfc3339DateFormatter),
-            expectedResultType: [Repository].self) { repos, error in
-
+        return router.load(session, dateDecodingStrategy: .formatted(Time.rfc3339DateFormatter), expectedResultType: [GithubRepositories].self) { repos, error in
             if let error = error {
                 completion(.failure(error))
             }
@@ -94,15 +91,11 @@ public extension GitAccount {
                     owner: String,
                     name: String,
                     completion: @escaping (
-                        _ response: Result<Repository, Error>) -> Void) -> URLSessionDataTaskProtocol? {
+                        _ response: Result<GithubRepositories, Error>) -> Void) -> URLSessionDataTaskProtocol? {
 
-        let router = RepositoryRouter.readRepository(configuration, owner, name)
+        let router = GithubRepositoryRouter.readRepository(configuration, owner, name)
 
-        return router.load(
-            session,
-            dateDecodingStrategy: .formatted(Time.rfc3339DateFormatter),
-            expectedResultType: Repository.self) { repo, error in
-
+        return router.load(session, dateDecodingStrategy: .formatted(Time.rfc3339DateFormatter), expectedResultType: GithubRepositories.self) { repo, error in
             if let error = error {
                 completion(.failure(error))
             } else {

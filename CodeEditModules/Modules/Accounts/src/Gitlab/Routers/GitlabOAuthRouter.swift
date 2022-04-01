@@ -1,5 +1,5 @@
 //
-//  OAuthRouter.swift
+//  GitlabOAuthRouter.swift
 //  
 //
 //  Created by Nanashi Li on 2022/03/31.
@@ -7,11 +7,11 @@
 
 import Foundation
 
-enum OAuthRouter: Router {
-    case authorize(OAuthConfiguration, String)
-    case accessToken(OAuthConfiguration, String, String)
+enum GitlabOAuthRouter: Router {
+    case authorize(GitlabOAuthConfiguration, String)
+    case accessToken(GitlabOAuthConfiguration, String, String)
 
-    var configuration: Configuration {
+    var configuration: Configuration? {
         switch self {
         case .authorize(let config, _): return config
         case .accessToken(let config, _, _): return config

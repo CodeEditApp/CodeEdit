@@ -1,5 +1,5 @@
 //
-//  RepositoryRouter.swift
+//  GithubRepositoryRouter.swift
 //  
 //
 //  Created by Nanshi Li on 2022/03/31.
@@ -7,12 +7,12 @@
 
 import Foundation
 
-enum RepositoryRouter: Router {
+enum GithubRepositoryRouter: Router {
     case readRepositories(Configuration, String, String, String)
     case readAuthenticatedRepositories(Configuration, String, String)
     case readRepository(Configuration, String, String)
 
-    var configuration: Configuration {
+    var configuration: Configuration? {
         switch self {
         case let .readRepositories(config, _, _, _): return config
         case let .readAuthenticatedRepositories(config, _, _): return config
