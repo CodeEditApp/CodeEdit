@@ -19,7 +19,9 @@ public class AppPreferencesModel: ObservableObject {
     @Published
     public var preferences: AppPreferences! {
         didSet {
-            try? savePreferences()
+            // swiftlint:disable force_try
+            print("did change")
+            try! savePreferences()
             objectWillChange.send()
         }
     }

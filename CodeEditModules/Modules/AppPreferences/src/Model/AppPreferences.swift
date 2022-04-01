@@ -143,10 +143,10 @@ public extension AppPreferences {
         public var customFont: Bool = false
 
         /// The font size for the custom font
-        public var size: Int?
+        public var size: Int = 11
 
         /// The name of the custom font
-        public var name: String?
+        public var name: String = "SF-MonoMedium"
     }
 }
 

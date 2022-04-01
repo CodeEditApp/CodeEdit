@@ -9,29 +9,13 @@ import SwiftUI
 import FontPicker
 
 struct TerminalThemeView: View {
-    @AppStorage(TerminalShellType.storageKey)
-    var shellType: TerminalShellType = .default
-
-    @AppStorage(TerminalFont.storageKey)
-    var terminalFontSelection: TerminalFont = .custom
-
-    @AppStorage(TerminalFontName.storageKey)
-    var terminalFontName: String = TerminalFontName.default
-
-    @AppStorage(TerminalFontSize.storageKey)
-    var terminalFontSize: Int = TerminalFontSize.default
-
-    @AppStorage(TerminalColorScheme.storageKey)
-    var terminalColorSchmeme: TerminalColorScheme = .default
+    @StateObject
+    private var prefs: AppPreferencesModel = .shared
 
     @StateObject
     private var themeModel: ThemeModel = .shared
 
-    @State private var darkTerminal: Bool = false
-
-    init() {
-        self._darkTerminal = .init(initialValue: terminalColorSchmeme == .dark)
-    }
+    init() {}
 
     var body: some View {
         ZStack(alignment: .topLeading) {
@@ -46,18 +30,11 @@ struct TerminalThemeView: View {
             }
             .padding(20)
         }
-        .onChange(of: darkTerminal) { newValue in
-            if newValue {
-                terminalColorSchmeme = .dark
-            } else {
-                terminalColorSchmeme = .auto
-            }
-        }
     }
 
     private var topToggles: some View {
         VStack(alignment: .leading) {
-            Toggle("Use dark terminal appearance", isOn: $darkTerminal)
+            Toggle("Use dark terminal appearance", isOn: $prefs.preferences.terminal.darkAppearance)
         }
     }
 
@@ -67,14 +44,14 @@ struct TerminalThemeView: View {
                 .font(.system(size: 13, weight: .semibold))
                 .foregroundColor(.secondary)
                 .padding(.bottom, 5)
-            Picker("Terminal Shell", selection: $shellType) {
+            Picker("Terminal Shell", selection: $prefs.preferences.terminal.shell) {
                 Text("System Default")
-                    .tag(TerminalShellType.auto)
+                    .tag(AppPreferences.TerminalShell.system)
                 Divider()
                 Text("ZSH")
-                    .tag(TerminalShellType.zsh)
+                    .tag(AppPreferences.TerminalShell.zsh)
                 Text("Bash")
-                    .tag(TerminalShellType.bash)
+                    .tag(AppPreferences.TerminalShell.bash)
             }
             .fixedSize()
             .labelsHidden()
@@ -88,17 +65,19 @@ struct TerminalThemeView: View {
                 .foregroundColor(.secondary)
                 .padding(.bottom, 5)
             HStack {
-                Picker("Terminal Font", selection: $terminalFontSelection) {
+                Picker("Terminal Font", selection: $prefs.preferences.terminal.font.customFont) {
                     Text("System Font")
-                        .tag(TerminalFont.systemFont)
+                        .tag(false)
                     Text("Custom")
-                        .tag(TerminalFont.custom)
+                        .tag(true)
                 }
                 .fixedSize()
                 .labelsHidden()
-                if terminalFontSelection == .custom {
-                    FontPicker("\(terminalFontName) \(terminalFontSize)",
-                               name: $terminalFontName, size: $terminalFontSize)
+                if prefs.preferences.terminal.font.customFont {
+                    FontPicker(
+                        "\(prefs.preferences.terminal.font.name) \(prefs.preferences.terminal.font.size)",
+                        name: $prefs.preferences.terminal.font.name, size: $prefs.preferences.terminal.font.size
+                    )
                 }
             }
         }

@@ -12,6 +12,9 @@ struct EditorThemeView: View {
     @StateObject
     private var themeModel: ThemeModel = .shared
 
+    @StateObject
+    private var prefs: AppPreferencesModel = .shared
+
     var body: some View {
         ZStack(alignment: .topLeading) {
             Rectangle()
@@ -19,7 +22,7 @@ struct EditorThemeView: View {
             if let selectedTheme = themeModel.selectedTheme,
                let index = themeModel.themes.firstIndex(of: selectedTheme) {
                 VStack(alignment: .leading, spacing: 0) {
-                    Toggle("Use theme background ", isOn: .constant(true))
+                    Toggle("Use theme background ", isOn: $prefs.preferences.theme.useThemeBackground)
                         .padding(.bottom, 20)
                     HStack(spacing: 0) {
                         VStack(alignment: .leading, spacing: 10) {
