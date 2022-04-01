@@ -26,6 +26,10 @@ public class AppPreferencesModel: ObservableObject {
 
     private func loadPreferences() -> AppPreferences {
         if !filemanager.fileExists(atPath: baseURL.path) {
+            let codeEditURL = filemanager
+                .homeDirectoryForCurrentUser
+                .appendingPathComponent(".codeedit", isDirectory: true)
+            try? filemanager.createDirectory(at: codeEditURL, withIntermediateDirectories: false)
             return .init()
         }
 
