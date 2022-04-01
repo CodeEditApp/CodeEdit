@@ -8,9 +8,9 @@
 import Foundation
 
 public enum Visibility: String {
-    case public = "public"
-    case internal = "interal"
-    case private = "private"
+    case visbilityPublic = "public"
+    case visibilityInternal = "interal"
+    case visibilityPrivate = "private"
     case all = ""
 }
 
@@ -35,8 +35,8 @@ enum ProjectRouter: Router {
         perPage: String,
         archived: Bool,
         visibility: Visibility,
-        orderBy: OrderBy, s
-        ort: Sort,
+        orderBy: OrderBy,
+        sort: Sort,
         search: String,
         simple: Bool)
     case readVisibleProjects(
@@ -84,7 +84,7 @@ enum ProjectRouter: Router {
     case readProjectHooks(configuration: Configuration, id: String)
     case readProjectHook(configuration: Configuration, id: String, hookId: String)
 
-    var configuration: Configuration {
+    var configuration: Configuration? {
         switch self {
         case .readAuthenticatedProjects(let config, _, _, _, _, _, _, _, _): return config
         case .readVisibleProjects(let config, _, _, _, _, _, _, _, _): return config
@@ -165,12 +165,13 @@ enum ProjectRouter: Router {
                 "search": search,
                 "simple": String(simple)]
         case .readStarredProjects(
-            _, let page,
+            _,
+            let page,
             let perPage,
             let archived,
             let visibility,
-            let orderBy, l
-            et sort,
+            let orderBy,
+            let sort,
             let search,
             let simple):
             return [

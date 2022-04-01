@@ -24,7 +24,7 @@ enum ReviewsRouter: JSONPostRouter {
         }
     }
 
-    var configuration: Configuration {
+    var configuration: Configuration? {
         switch self {
         case let .listReviews(config, _, _, _):
             return config

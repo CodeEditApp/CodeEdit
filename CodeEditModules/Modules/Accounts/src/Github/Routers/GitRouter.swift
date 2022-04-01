@@ -10,7 +10,7 @@ import Foundation
 enum GitRouter: JSONPostRouter {
     case deleteReference(Configuration, String, String, String)
 
-    var configuration: Configuration {
+    var configuration: Configuration? {
         switch self {
         case let .deleteReference(config, _, _, _): return config
         }

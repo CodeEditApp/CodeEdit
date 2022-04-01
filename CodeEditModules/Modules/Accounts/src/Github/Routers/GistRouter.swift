@@ -32,7 +32,7 @@ enum GistRouter: JSONPostRouter {
         }
     }
 
-    var configuration: Configuration {
+    var configuration: Configuration? {
         switch self {
         case let .readAuthenticatedGists(config, _, _): return config
         case let .readGists(config, _, _, _): return config

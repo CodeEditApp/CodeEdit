@@ -16,23 +16,23 @@ open class Event: Codable {
     open var authorID: Int?
     open var data: EventData?
     open var targetTitle: String?
-    open var author: User?
+    open var author: GitlabUser?
     open var authorUsername: String?
     open var createdAt: Date?
     open var note: EventNote?
 
-    public init(_ json: [String: AnyObject]) {
-        title = json["title"] as? String
-        projectID = json["project_id"] as? Int
-        actionName = json["action_name"] as? String
-        targetID = json["target_id"] as? Int
-        targetType = json["target_title"] as? String
-        authorID = json["author_id"] as? Int
-        data = EventData(json["data"] as? [String: AnyObject] ?? [:])
-        targetTitle = json["target_title"] as? String
-        author = User(json["author"] as? [String: AnyObject] ?? [:])
-        authorUsername = json["author_username"] as? String
-        createdAt = Time.rfc3339Date(json["created_at"] as? String)
-        note = EventNote(json["note"] as? [String: AnyObject] ?? [:])
+    enum CodingKeys: String, CodingKey {
+        case title
+        case projectID = "project_id"
+        case actionName = "action_name"
+        case targetID = "target_id"
+        case targetType = "target_type"
+        case authorID = "author_id"
+        case data
+        case targetTitle = "target_title"
+        case author
+        case authorUsername = "author_username"
+        case createdAt = "created_at"
+        case note
     }
 }
