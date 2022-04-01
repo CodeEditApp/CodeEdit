@@ -54,7 +54,15 @@ public struct AboutView: View {
                 Spacer().frame(height: 20)
             }
         }
-        .background(Color(nsColor: colorScheme == .dark ? .windowBackgroundColor : .white))
+        .background(backgroundColor)
+    }
+
+    public var backgroundColor: Color? {
+        if #available(macOS 12.0, *) {
+            return Color(nsColor: colorScheme == .dark ? .windowBackgroundColor : .white)
+        } else {
+            return nil
+        }
     }
 
     public func showWindow(width: CGFloat, height: CGFloat) {
