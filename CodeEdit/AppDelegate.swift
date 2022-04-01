@@ -131,7 +131,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         window.contentView = NSHostingView(rootView: contentView)
         window.makeKeyAndOrderFront(self)
     }
-    
+
     @IBAction func openAbout(_ sender: Any) {
         AboutView().showWindow(width: 530, height: 220)
     }

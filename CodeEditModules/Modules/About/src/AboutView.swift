@@ -5,7 +5,7 @@ public struct AboutView: View {
     var colorScheme
 
     public init() {}
-    
+
     private var appVersion: String {
         return Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
     }
@@ -13,7 +13,7 @@ public struct AboutView: View {
     private var appBuild: String {
         return Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? ""
     }
-    
+
     public var body: some View {
         HStack(spacing: 0) {
             Spacer().frame(width: 32)
@@ -65,8 +65,7 @@ public struct AboutView: View {
 final class PlaceholderWindowController: NSWindowController {
     convenience init<T: View>(view: T, size: NSSize) {
         let hostingController = NSHostingController(rootView: view)
-        
-        //New window holding our SwiftUI view
+        // New window holding our SwiftUI view
         let window = NSWindow(contentViewController: hostingController)
         self.init(window: window)
         window.setContentSize(size)
@@ -75,30 +74,30 @@ final class PlaceholderWindowController: NSWindowController {
         window.alphaValue = 0.5
         window.styleMask.remove(.miniaturizable)
     }
-    
+
     override func showWindow(_ sender: Any?) {
         window?.center()
         window?.alphaValue = 0.0
-        
+
         super.showWindow(sender)
-        
+
         window?.animator().alphaValue = 1.0
-        
+
         // close the window when the escape key is pressed
         NSEvent.addLocalMonitorForEvents(matching: .keyDown) { event in
             guard event.keyCode == 53 else { return event }
-            
+
             self.closeAnimated()
-            
+
             return nil
         }
-        
+
         window?.collectionBehavior = [.transient, .ignoresCycle]
         window?.isMovableByWindowBackground = true
         window?.titlebarAppearsTransparent = true
         window?.titleVisibility = .hidden
     }
-    
+
     func closeAnimated() {
         NSAnimationContext.beginGrouping()
         NSAnimationContext.current.duration = 0.4
