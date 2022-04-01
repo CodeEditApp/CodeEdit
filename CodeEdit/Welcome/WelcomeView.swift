@@ -54,13 +54,15 @@ struct WelcomeView: View {
 
     /// Get the MacOS version & build
     private var macOsVersion: String {
-        var osSeperated = ProcessInfo.processInfo.operatingSystemVersionString.components(separatedBy: " ")
-        if osSeperated.count > 1 {
-            osSeperated.remove(at: 0) // localized string (Version, Versie)
-            osSeperated.remove(at: 1) // (Build
+        let url = URL(fileURLWithPath: "/System/Library/CoreServices/SystemVersion.plist")
+        guard let dict = NSDictionary(contentsOf: url),
+           let version = dict["ProductUserVisibleVersion"],
+           let build = dict["ProductBuildVersion"]
+        else {
+            return ProcessInfo.processInfo.operatingSystemVersionString
         }
 
-        return "\(osSeperated[0]) (\(osSeperated[1])"
+        return "\(version) (\(build))"
     }
 
     /// Return the Xcode version and build (if installed)
