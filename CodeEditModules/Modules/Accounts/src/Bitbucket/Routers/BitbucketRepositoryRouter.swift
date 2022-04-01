@@ -1,5 +1,5 @@
 //
-//  RepositoryRouter.swift
+//  BitbucketRepositoryRouter.swift
 //  
 //
 //  Created by Nanashi Li on 2022/03/31.
@@ -7,11 +7,11 @@
 
 import Foundation
 
-public enum RepositoryRouter: Router {
+public enum BitbucketRepositoryRouter: Router {
     case readRepositories(Configuration, String?, [String: String])
     case readRepository(Configuration, String, String)
 
-    public var configuration: Configuration {
+    public var configuration: Configuration? {
         switch self {
         case .readRepositories(let config, _, _): return config
         case .readRepository(let config, _, _): return config
@@ -26,10 +26,11 @@ public enum RepositoryRouter: Router {
         return .url
     }
 
+    // swiftlint:disable all
     public var params: [String: Any] {
         switch self {
         case .readRepositories(_, let userName, var nextParameters):
-            if let != nil userName {
+            if let _ = userName {
                 return nextParameters as [String: Any]
             } else {
                 nextParameters += ["role": "member"]

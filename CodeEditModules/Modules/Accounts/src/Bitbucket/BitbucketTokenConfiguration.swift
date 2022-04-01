@@ -1,5 +1,5 @@
 //
-//  TokenConfiguration.swift
+//  BitbucketTokenConfiguration.swift
 //  
 //
 //  Created by Nanashi Li on 2022/03/31.
@@ -7,12 +7,12 @@
 
 import Foundation
 
-public struct TokenConfiguration: Configuration {
-    public var apiEndpoint: String
+public struct BitbucketTokenConfiguration: Configuration {
+    public var apiEndpoint: String?
     public var accessToken: String?
     public var refreshToken: String?
     public var expirationDate: Date?
-    public let errorDomain = errorDomain
+    public let errorDomain = "com.codeedit.models.accounts.bitbucket"
 
     public init(json: [String: AnyObject], url: String = bitbucketBaseURL) {
         apiEndpoint = url

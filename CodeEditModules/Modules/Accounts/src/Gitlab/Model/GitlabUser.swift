@@ -1,5 +1,5 @@
 //
-//  User.swift
+//  GitlabUser.swift
 //  
 //
 //  Created by Nanashi Li on 2022/03/31.
@@ -7,8 +7,8 @@
 
 import Foundation
 
-open class User: Codable {
-    open let id: Int
+open class GitlabUser: Codable {
+    open var id: Int
     open var username: String?
     open var state: String?
     open var avatarURL: URL?
@@ -55,27 +55,29 @@ open class User: Codable {
     }
 }
 
-public extension GitAccount {
+public extension GitlabAccount {
 
     /**
      Fetches the currently logged in user
      - parameter completion: Callback for the outcome of the fetch.
      */
-    public func me(
+    func me(
         _ session: GitURLSession = URLSession.shared,
-        completion: @escaping (_ response: Response<User>) -> Void) -> URLSessionDataTaskProtocol? {
+        completion: @escaping (_ response: Result<GitlabUser, Error>) -> Void) -> URLSessionDataTaskProtocol? {
 
         let router = UserRouter.readAuthenticatedUser(self.configuration)
 
-        return router.loadJSON(session, expectedResultType: [String: Any].self) { json, error in
-            if let error = error {
-                completion(Response.failure(error))
-            } else {
-                if let json = json {
-                    let parsedUser = User(json)
-                    completion(Response.success(parsedUser))
+            return router.load(session,
+                               dateDecodingStrategy: .formatted(Time.rfc3339DateFormatter),
+                               expectedResultType: GitlabUser.self) { data, error in
+
+                if let error = error {
+                    completion(Result.failure(error))
+                }
+
+                if let data = data {
+                    completion(Result.success(data))
                 }
             }
-        }
     }
 }
