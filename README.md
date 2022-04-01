@@ -111,12 +111,17 @@ Read the [Contribution Guide](https://github.com/CodeEditApp/CodeEdit/blob/main/
 
 Support CodeEdit's development by [becoming a sponsor](https://github.com/sponsors/CodeEditApp).
 
+<a href="https://github.com/panascais" target="_blank"><img src="https://avatars.githubusercontent.com/u/19628635?s=200&v=4" width="128"></a>
+
 ## Backers
 
 Support CodeEdit's development by [becoming a backer](https://github.com/sponsors/CodeEditApp).
 
 <a href="https://github.com/dannydorazio" target="_blank"><img src="https://avatars.githubusercontent.com/u/21158275?v=4" width="64"></a>
-<a href="https://github.com/panascais" target="_blank"><img src="https://avatars.githubusercontent.com/u/19628635?s=200&v=4" width="64"></a>
+
+### Thanks to all of our other backers
+
+[@omrd](https://github.com/omrd)
 
 ## License
 
