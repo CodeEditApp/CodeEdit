@@ -100,6 +100,9 @@ public struct GitCloneView: View {
             .padding(.top, 20)
             .padding(.horizontal, 20)
             .padding(.bottom, 16)
+            .onAppear {
+                self.checkClipboard(textFieldText: &repoUrlStr)
+            }
         }
     }
 }
@@ -150,5 +153,12 @@ extension GitCloneView {
             return true
         }
         return false
+    }
+    func checkClipboard(textFieldText: inout String) {
+        if let url = NSPasteboard.general.pasteboardItems?.first?.string(forType: .string) {
+            if isValid(url: url) {
+                textFieldText = url
+            }
+        }
     }
 }
