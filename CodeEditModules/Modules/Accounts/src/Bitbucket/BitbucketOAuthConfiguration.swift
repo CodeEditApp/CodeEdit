@@ -1,5 +1,5 @@
 //
-//  OAuthConfiguration.swift
+//  BitbucketOAuthConfiguration.swift
 //  
 //
 //  Created by Nanashi Li on 2022/03/31.
@@ -7,16 +7,14 @@
 
 import Foundation
 
-public let errorDomain = "com.codeedit.models.accounts.bitbucket"
-
-public struct OAuthConfiguration: Configuration {
-    public var apiEndpoint: String
+public struct BitbucketOAuthConfiguration: Configuration {
+    public var apiEndpoint: String?
     public var accessToken: String?
     public let token: String
     public let secret: String
     public let scopes: [String]
     public let webEndpoint: String
-    public let errorDomain = errorDomain
+    public let errorDomain = "com.codeedit.models.accounts.bitbucket"
 
     public init(_ url: String = bitbucketBaseURL, webURL: String = bitbucketWebURL,
                 token: String, secret: String, scopes: [String]) {
@@ -46,7 +44,7 @@ public struct OAuthConfiguration: Configuration {
 
     public func authorize(_ session: GitURLSession,
                           code: String,
-                          completion: @escaping (_ config: TokenConfiguration) -> Void) {
+                          completion: @escaping (_ config: BitbucketTokenConfiguration) -> Void) {
 
         let request = OAuthRouter.accessToken(self, code).URLRequest
 
@@ -66,14 +64,14 @@ public struct OAuthConfiguration: Configuration {
         }
     }
 
-    private func configFromData(_ data: Data?) -> TokenConfiguration? {
+    private func configFromData(_ data: Data?) -> BitbucketTokenConfiguration? {
         guard let data = data else { return nil }
         do {
             guard let json = try JSONSerialization.jsonObject(with: data,
                                                               options: .allowFragments) as? [String: AnyObject] else {
                 return nil
             }
-            let config = TokenConfiguration(json: json)
+            let config = BitbucketTokenConfiguration(json: json)
             return config
         } catch {
             return nil
@@ -82,9 +80,9 @@ public struct OAuthConfiguration: Configuration {
 
     public func handleOpenURL(_ session: GitURLSession = URLSession.shared,
                               url: URL,
-                              completion: @escaping (_ config: TokenConfiguration) -> Void) {
+                              completion: @escaping (_ config: BitbucketTokenConfiguration) -> Void) {
 
-        let params = url.URLParameters()
+        let params = url.bitbucketURLParameters()
 
         if let code = params["code"] {
             authorize(session, code: code) { config in

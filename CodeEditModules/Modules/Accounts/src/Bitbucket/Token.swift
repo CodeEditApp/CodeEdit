@@ -7,14 +7,14 @@
 
 import Foundation
 
-public extension GitAccount {
+public extension BitbucketAccount {
 
-    public func refreshToken(
+    func refreshToken(
         _ session: GitURLSession,
-        oauthConfig: OAuthConfiguration,
+        oauthConfig: BitbucketOAuthConfiguration,
         refreshToken: String,
         completion: @escaping (
-            _ response: Response<TokenConfiguration>) -> Void) -> URLSessionDataTaskProtocol? {
+            _ response: Result<BitbucketTokenConfiguration, Error>) -> Void) -> URLSessionDataTaskProtocol? {
 
         let request = TokenRouter.refreshToken(oauthConfig, refreshToken).URLRequest
 
@@ -32,13 +32,13 @@ public extension GitAccount {
                         if response.statusCode != 200 {
                             let errorDescription = responseJSON["error_description"] as? String ?? ""
                             let error = NSError(
-                                domain: errorDomain,
+                                domain: "com.codeedit.models.accounts.bitbucket",
                                 code: response.statusCode,
                                 userInfo: [NSLocalizedDescriptionKey: errorDescription])
-                            completion(Response.failure(error))
+                            completion(Result.failure(error))
                         } else {
-                            let tokenConfig = TokenConfiguration(json: responseJSON)
-                            completion(Response.success(tokenConfig))
+                            let tokenConfig = BitbucketTokenConfiguration(json: responseJSON)
+                            completion(Result.success(tokenConfig))
                         }
                     }
                 }

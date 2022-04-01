@@ -21,7 +21,7 @@ public enum Time {
         formatter.locale = Locale(identifier: "en_US_POSIX")
         formatter.timeZone = TimeZone(secondsFromGMT: 0)
         return formatter
-    }
+    }()
 
     /**
      Parses RFC 3339 date strings into NSDate

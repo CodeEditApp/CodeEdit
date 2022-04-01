@@ -8,11 +8,13 @@
 import Foundation
 
 public enum TokenRouter: Router {
-    case refreshToken(OAuthConfiguration, String)
+    case refreshToken(BitbucketOAuthConfiguration, String)
+    case emptyToken(BitbucketOAuthConfiguration, String)
 
-    public var configuration: Configuration {
+    public var configuration: Configuration? {
         switch self {
         case .refreshToken(let config, nil): return config
+        default: return nil
         }
     }
 
@@ -28,6 +30,7 @@ public enum TokenRouter: Router {
         switch self {
         case .refreshToken(nil, let token):
             return ["refresh_token": token, "grant_type": "refresh_token"]
+        default: return ["": ""]
         }
     }
 
@@ -35,6 +38,7 @@ public enum TokenRouter: Router {
         switch self {
         case .refreshToken(nil, nil):
             return "site/oauth2/access_token"
+        default: return ""
         }
     }
 
@@ -44,6 +48,7 @@ public enum TokenRouter: Router {
             let url = URL(string: path, relativeTo: URL(string: config.webEndpoint)!)
             let components = URLComponents(url: url!, resolvingAgainstBaseURL: true)
             return request(components!, parameters: params)
+        default: return nil
         }
     }
 }

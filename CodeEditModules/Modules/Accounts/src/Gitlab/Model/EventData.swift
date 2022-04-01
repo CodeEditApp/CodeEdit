@@ -24,23 +24,21 @@ open class EventData: Codable {
     open var commits: [Commit]?
     open var totalCommitsCount: Int?
 
-    public init(_ json: [String: AnyObject]) {
-        objectKind = json["object_kind"] as? String
-        eventName = json["event_name"] as? String
-        before = json["before"] as? String
-        after = json["after"] as? String
-        ref = json["ref"] as? String
-        checkoutSha = json["checkout_sha"] as? String
-        message = json["message"] as? String
-        userID = json["user_id"] as? Int
-        userName = json["user_name"] as? String
-        userEmail = json["user_email"] as? String
-        if let urlString = json["user_avater"] as? String, let urlFromString = URL(string: urlString) {
-            userAvatar = urlFromString
-        }
-        projectID = json["project_id"] as? Int
-        project = Project(json["project"] as? [String: AnyObject] ?? [:])
-        commits =  (json["commits"] as? [[String: AnyObject]])?.map { Commit($0) }
-        totalCommitsCount = json["total_commits_count"] as? Int
+    enum CodingKeys: String, CodingKey {
+        case objectKind = "object_kind"
+        case eventName = "event_name"
+        case before
+        case after
+        case ref
+        case checkoutSha = "checkout_sha"
+        case message
+        case userID = "user_id"
+        case userName = "user_name"
+        case userEmail = "user_email"
+        case userAvatar = "user_avater"
+        case projectID = "project_id"
+        case project
+        case commits
+        case totalCommitsCount = "total_commits_count"
     }
 }

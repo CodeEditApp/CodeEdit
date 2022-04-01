@@ -10,7 +10,7 @@ import Foundation
 import FoundationNetworking
 #endif
 
-public extension GitAccount {
+public extension GithubAccount {
 
     /**
      Deletes a reference.

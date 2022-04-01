@@ -53,6 +53,10 @@ let package = Package(
             name: "AppPreferences",
             targets: ["AppPreferences"]
         ),
+        .library(
+            name: "Accounts",
+            targets: ["Accounts"]
+        ),
     ],
     dependencies: [
         .package(
@@ -176,6 +180,10 @@ let package = Package(
                 "FontPicker",
             ],
             path: "Modules/AppPreferences/src"
-        )
+        ),
+        .target(
+            name: "Accounts",
+            path: "Modules/Accounts/src"
+        ),
     ]
 )
