@@ -73,6 +73,11 @@ public struct ThemePreferencesView: View {
                             colorScheme: themeModel.selectedAppearance == 0 ? .dark : .light
                         )
                             .transition(.opacity)
+                            .contextMenu {
+                                Button("Reset Theme") {
+                                    themeModel.reset(theme)
+                                }
+                            }
                     }
                 }
                 .padding(.vertical, 20)

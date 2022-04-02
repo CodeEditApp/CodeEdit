@@ -38,14 +38,18 @@ public class ThemeModel: ObservableObject {
             // TODO: Don't overwrite themes
             // Instead save changed values to `preferences.json`
             // as overrides
-            try? saveThemes()
+            saveThemes()
             objectWillChange.send()
         }
     }
 
     /// The currently selected ``Theme``.
     @Published
-    public var selectedTheme: Theme?
+    public var selectedTheme: Theme? {
+        didSet {
+            AppPreferencesModel.shared.preferences.theme.selectedTheme = selectedTheme?.name
+        }
+    }
 
     /// Only themes where ``Theme/appearance`` == ``Theme/ThemeType/dark``
     public var darkThemes: [Theme] {
@@ -60,7 +64,6 @@ public class ThemeModel: ObservableObject {
     private init() {
         do {
             try loadThemes()
-            self.selectedTheme = themes.first
         } catch {
             print(error)
         }
@@ -68,12 +71,12 @@ public class ThemeModel: ObservableObject {
 
     /// Loads a theme from a given url and appends it to ``themes``.
     /// - Parameter url: The URL of the theme
-    private func load(from url: URL) throws {
+    private func load(from url: URL) throws -> Theme {
         // get the data from the provided file
         let json = try Data(contentsOf: url)
         // decode the json into ``Theme``
         let theme = try JSONDecoder().decode(Theme.self, from: json)
-        self.themes.append(theme)
+        return theme
     }
 
     /// Loads all available themes from `~/.codeedit/themes/`
@@ -99,27 +102,81 @@ public class ThemeModel: ObservableObject {
             guard let defaultUrl = Bundle.main.url(forResource: "default-dark", withExtension: "json") else {
                 return
             }
-            try load(from: defaultUrl)
+            self.themes.append(try load(from: defaultUrl))
             return
         }
 
+        let prefs = AppPreferencesModel.shared.preferences
         // load each theme from disk
         try content.forEach { file in
             let fileURL = url.appendingPathComponent(file)
-            try load(from: fileURL)
+            var theme = try load(from: fileURL)
+            guard let terminalColors = try theme.terminal.allProperties() as? [String: Theme.Attributes],
+                  let editorColors = try theme.editor.allProperties() as? [String: Theme.Attributes]
+            else {
+                print("error")
+                throw NSError()
+            }
+            if let overrides = prefs?.theme.overrides[theme.name]?["terminal"] {
+                terminalColors.forEach { (key, _) in
+                    if let attributes = overrides[key] {
+                        theme.terminal[key] = attributes
+                    }
+                }
+            }
+            if let overrides = prefs?.theme.overrides[theme.name]?["editor"] {
+                editorColors.forEach { (key, _) in
+                    if let attributes = overrides[key] {
+                        theme.editor[key] = attributes
+                    }
+                }
+            }
+            self.themes.append(theme)
+            self.selectedTheme = self.themes.first { $0.name == prefs?.theme.selectedTheme } ?? self.themes.first
+            print("loaded themes")
         }
     }
 
-    private func saveThemes() throws {
+    public func reset(_ theme: Theme) {
+        AppPreferencesModel.shared.preferences.theme.overrides[theme.name] = [:]
+        do {
+            try self.loadThemes()
+        } catch {
+            print(error)
+        }
+    }
+
+    private func saveThemes() {
         let url = baseURL.appendingPathComponent("themes")
-        try themes.forEach { theme in
-            let data = try JSONEncoder().encode(theme)
-            let json = try JSONSerialization.jsonObject(with: data)
-            let prettyJSON = try JSONSerialization.data(withJSONObject: json, options: [.prettyPrinted])
-            try prettyJSON.write(
-                to: url.appendingPathComponent(theme.name).appendingPathExtension("json"),
-                options: .atomic
-            )
+        themes.forEach { theme in
+            do {
+                let originalUrl = url.appendingPathComponent(theme.name).appendingPathExtension("json")
+                let originalData = try Data(contentsOf: originalUrl)
+                let originalTheme = try JSONDecoder().decode(Theme.self, from: originalData)
+                guard let terminalColors = try theme.terminal.allProperties() as? [String: Theme.Attributes],
+                      let editorColors = try theme.editor.allProperties() as? [String: Theme.Attributes],
+                      let oTermColors = try originalTheme.terminal.allProperties() as? [String: Theme.Attributes],
+                      let oEditColors = try originalTheme.editor.allProperties() as? [String: Theme.Attributes]
+                else {
+                    throw NSError()
+                }
+                var newAttr: [String: [String: Theme.Attributes]] = ["terminal": [:], "editor": [:]]
+                terminalColors.forEach { (key, value) in
+                    if value != oTermColors[key] {
+                        newAttr["terminal"]?[key] = value
+                    }
+                }
+
+                editorColors.forEach { (key, value) in
+                    if value != oEditColors[key] {
+                        newAttr["editor"]?[key] = value
+                    }
+                }
+                AppPreferencesModel.shared.preferences.theme.overrides[theme.name] = newAttr
+
+            } catch {
+                print(error)
+            }
         }
     }
 
@@ -129,5 +186,37 @@ public class ThemeModel: ObservableObject {
     /// The base folder url `~/.codeedit/`
     private var baseURL: URL {
         filemanager.homeDirectoryForCurrentUser.appendingPathComponent(".codeedit")
+    }
+}
+
+extension Theme: Loopable {}
+
+extension Theme.EditorColors: Loopable {}
+extension Theme.TerminalColors: Loopable {}
+extension Theme.Attributes: Loopable {}
+
+protocol Loopable {
+    func allProperties() throws -> [String: Any]
+}
+
+extension Loopable {
+    func allProperties() throws -> [String: Any] {
+        var result: [String: Any] = [:]
+
+        let mirror = Mirror(reflecting: self)
+
+        guard let style = mirror.displayStyle, style == .struct || style == .class else {
+            throw NSError()
+        }
+
+        for (property, value) in mirror.children {
+            guard let property = property else {
+                continue
+            }
+
+            result[property] = value
+        }
+
+        return result
     }
 }

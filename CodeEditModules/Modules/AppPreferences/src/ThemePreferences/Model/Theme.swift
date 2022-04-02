@@ -93,7 +93,7 @@ public extension Theme {
     ///
     /// As of now it only includes the colors `hex` string and
     /// an accessor for a `SwiftUI` `Color`.
-    struct Attributes: Codable {
+    struct Attributes: Codable, Equatable {
 
         /// The 24-bit hex string of the color (e.g. #123456)
         public var color: String
@@ -133,6 +133,51 @@ public extension Theme {
         public var strings: Attributes
         public var characters: Attributes
         public var comments: Attributes
+
+        subscript(key: String) -> Attributes {
+            get {
+                switch key {
+                case "text": return self.text
+                case "insertionPoint": return self.insertionPoint
+                case "invisibles": return self.invisibles
+                case "background": return self.background
+                case "lineHighlight": return self.lineHighlight
+                case "selection": return self.selection
+                case "keywords": return self.keywords
+                case "commands": return self.commands
+                case "types": return self.types
+                case "attributes": return self.attributes
+                case "variables": return self.variables
+                case "values": return self.values
+                case "numbers": return self.numbers
+                case "strings": return self.strings
+                case "characters": return self.characters
+                case "comments": return self.comments
+                default: fatalError("Invalid key")
+                }
+            }
+            set {
+                switch key {
+                case "text": self.text = newValue
+                case "insertionPoint": self.insertionPoint = newValue
+                case "invisibles": self.invisibles = newValue
+                case "background": self.background = newValue
+                case "lineHighlight": self.lineHighlight = newValue
+                case "selection": self.selection = newValue
+                case "keywords": self.keywords = newValue
+                case "commands": self.commands = newValue
+                case "types": self.types = newValue
+                case "attributes": self.attributes = newValue
+                case "variables": self.variables = newValue
+                case "values": self.values = newValue
+                case "numbers": self.numbers = newValue
+                case "strings": self.strings = newValue
+                case "characters": self.characters = newValue
+                case "comments": self.comments = newValue
+                default: fatalError("Invalid key")
+                }
+            }
+        }
 
         public init(
             text: Attributes,
@@ -216,6 +261,62 @@ public extension Theme {
                 brightCyan.color,
                 brightWhite.color,
             ]
+        }
+
+        // swiftlint:disable function_body_length
+        subscript(key: String) -> Attributes {
+            get {
+                switch key {
+                case "text": return self.text
+                case "boldText": return self.boldText
+                case "cursor": return self.cursor
+                case "background": return self.background
+                case "selection": return self.selection
+                case "black": return self.black
+                case "red": return self.red
+                case "green": return self.green
+                case "yellow": return self.yellow
+                case "blue": return self.blue
+                case "magenta": return self.magenta
+                case "cyan": return self.cyan
+                case "white": return self.white
+                case "brightBlack": return self.brightBlack
+                case "brightRed": return self.brightRed
+                case "brightGreen": return self.brightGreen
+                case "brightYellow": return self.brightYellow
+                case "brightBlue": return self.brightBlue
+                case "brightMagenta": return self.brightMagenta
+                case "brightCyan": return self.brightCyan
+                case "brightWhite": return self.brightWhite
+                default: fatalError("Invalid key")
+                }
+            }
+            set {
+                switch key {
+                case "text": self.text = newValue
+                case "boldText": self.boldText = newValue
+                case "cursor": self.cursor = newValue
+                case "background": self.background = newValue
+                case "selection": self.selection = newValue
+                case "black": self.black = newValue
+                case "red": self.red = newValue
+                case "green": self.green = newValue
+                case "yellow": self.yellow = newValue
+                case "blue": self.blue = newValue
+                case "magenta": self.magenta = newValue
+                case "cyan": self.cyan = newValue
+                case "white": self.white = newValue
+                case "brightBlack": self.brightBlack = newValue
+                case "brightRed": self.brightRed = newValue
+                case "brightGreen": self.brightGreen = newValue
+                case "brightYellow": self.brightYellow = newValue
+                case "brightBlue": self.brightBlue = newValue
+                case "brightMagenta": self.brightMagenta = newValue
+                case "brightCyan": self.brightCyan = newValue
+                case "brightWhite": self.brightWhite = newValue
+                default: fatalError("Invalid key")
+                }
+            }
         }
 
         init(

@@ -93,7 +93,7 @@ public extension AppPreferences {
 public extension AppPreferences {
 
     /// A dictionary containing the keys and associated ``Theme/Attributes`` of overridden properties
-    typealias ThemeOverrides = [String: Theme.Attributes]
+    typealias ThemeOverrides = [String: [String: Theme.Attributes]]
 
     /// The global settings for themes
     struct ThemePreferences: Codable {
@@ -109,9 +109,18 @@ public extension AppPreferences {
         /// ```json
         /// "overrides" : {
         ///   "DefaultDark" : {
-        ///     "background" : {
-        ///       "color" : "#123456"
+        ///     "editor" : {
+        ///       "background" : {
+        ///         "color" : "#123456"
+        ///       },
+        ///       ...
         ///     },
+        ///     "terminal" : {
+        ///       "blue" : {
+        ///         "color" : "#1100FF"
+        ///       },
+        ///       ...
+        ///     }
         ///     ...
         ///   },
         ///   ...
