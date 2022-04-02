@@ -181,6 +181,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                 PreferencesTextEditingView()
             },
             Preferences.Pane(
+                identifier: Preferences.PaneIdentifier("Terminal"),
+                title: "Terminal",
+                toolbarIcon: NSImage(systemSymbolName: "terminal", accessibilityDescription: nil)!
+            ) {
+                PreferencesTerminalView()
+            },
+            Preferences.Pane(
                 identifier: Preferences.PaneIdentifier("KeyBindings"),
                 title: "Key Bindings",
                 toolbarIcon: NSImage(systemSymbolName: "keyboard", accessibilityDescription: nil)!

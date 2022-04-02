@@ -21,11 +21,9 @@ struct TerminalThemeView: View {
         ZStack(alignment: .topLeading) {
             Rectangle()
                 .foregroundColor(Color(NSColor.controlBackgroundColor))
-            VStack(alignment: .leading, spacing: 14) {
+            VStack(alignment: .leading, spacing: 15) {
                 topToggles
-                shellSelector
-                fontSelector
-                Divider()
+                colorSelector
                 ansiColorSelector
             }
             .padding(20)
@@ -34,50 +32,35 @@ struct TerminalThemeView: View {
 
     private var topToggles: some View {
         VStack(alignment: .leading) {
-            Toggle("Use dark terminal appearance", isOn: $prefs.preferences.terminal.darkAppearance)
+            Toggle("Always use dark terminal appearance", isOn: $prefs.preferences.terminal.darkAppearance)
         }
     }
 
-    private var shellSelector: some View {
-        VStack(alignment: .leading, spacing: 5) {
-            Text("Terminal Shell")
+    private var colorSelector: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Text("Background & Text")
                 .font(.system(size: 13, weight: .semibold))
                 .foregroundColor(.secondary)
-                .padding(.bottom, 5)
-            Picker("Terminal Shell", selection: $prefs.preferences.terminal.shell) {
-                Text("System Default")
-                    .tag(AppPreferences.TerminalShell.system)
-                Divider()
-                Text("ZSH")
-                    .tag(AppPreferences.TerminalShell.zsh)
-                Text("Bash")
-                    .tag(AppPreferences.TerminalShell.bash)
-            }
-            .fixedSize()
-            .labelsHidden()
-        }
-    }
-
-    private var fontSelector: some View {
-        VStack(alignment: .leading, spacing: 5) {
-            Text("Font")
-                .font(.system(size: 13, weight: .semibold))
-                .foregroundColor(.secondary)
-                .padding(.bottom, 5)
-            HStack {
-                Picker("Terminal Font", selection: $prefs.preferences.terminal.font.customFont) {
-                    Text("System Font")
-                        .tag(false)
-                    Text("Custom")
-                        .tag(true)
-                }
-                .fixedSize()
-                .labelsHidden()
-                if prefs.preferences.terminal.font.customFont {
-                    FontPicker(
-                        "\(prefs.preferences.terminal.font.name) \(prefs.preferences.terminal.font.size)",
-                        name: $prefs.preferences.terminal.font.name, size: $prefs.preferences.terminal.font.size
-                    )
+                .padding(.bottom, 10)
+            HStack(alignment: .top, spacing: 0) {
+                if let selectedTheme = themeModel.selectedTheme,
+                   let index = themeModel.themes.firstIndex(of: selectedTheme) {
+                    VStack(alignment: .leading, spacing: 10) {
+                        PreferencesColorPicker($themeModel.themes[index].terminal.text.swiftColor,
+                                               label: "Text")
+                        PreferencesColorPicker($themeModel.themes[index].terminal.boldText.swiftColor,
+                                               label: "Bold Text")
+                        PreferencesColorPicker($themeModel.themes[index].terminal.cursor.swiftColor,
+                                               label: "Cursor")
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    VStack(alignment: .leading, spacing: 10) {
+                        PreferencesColorPicker($themeModel.themes[index].terminal.background.swiftColor,
+                                               label: "Background")
+                        PreferencesColorPicker($themeModel.themes[index].terminal.selection.swiftColor,
+                                               label: "Selection")
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
         }

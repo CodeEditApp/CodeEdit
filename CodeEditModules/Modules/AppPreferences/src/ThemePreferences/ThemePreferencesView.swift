@@ -24,7 +24,9 @@ public struct ThemePreferencesView: View {
         VStack(spacing: 20) {
             frame
             HStack(alignment: .center) {
-                Toggle("Automatically change theme based on system appearance", isOn: .constant(true))
+                Toggle("Automatically change theme based on system appearance", isOn: .constant(false))
+                    .disabled(true)
+                    .help("Not yet implemented")
                 Spacer()
                 Button("Get More Themes...") {}
                 HelpButton {}
