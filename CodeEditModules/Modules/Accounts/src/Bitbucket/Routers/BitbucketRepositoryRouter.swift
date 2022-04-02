@@ -26,11 +26,10 @@ public enum BitbucketRepositoryRouter: Router {
         return .url
     }
 
-    // swiftlint:disable all
     public var params: [String: Any] {
         switch self {
         case .readRepositories(_, let userName, var nextParameters):
-            if let _ = userName {
+            if userName != nil {
                 return nextParameters as [String: Any]
             } else {
                 nextParameters += ["role": "member"]
