@@ -86,6 +86,15 @@ public struct ThemePreferencesView: View {
                 Button(theme.name) { themeModel.selectedTheme = theme }
                     .buttonStyle(.plain)
                     .tag(theme)
+                    .contextMenu {
+                        Button("Reset Theme") {
+                            themeModel.reset(theme)
+                        }
+                        Divider()
+                        Button("Delete Theme", role: .destructive) {
+                            themeModel.delete(theme)
+                        }
+                    }
             }
         }
     }
@@ -127,6 +136,8 @@ public struct ThemePreferencesView: View {
             Button {} label: {
                 Image(systemName: "plus")
             }
+            .disabled(true)
+            .help("Not yet implemented")
             .buttonStyle(.plain)
             Button {
                 themeModel.delete(themeModel.selectedTheme!)
@@ -134,6 +145,7 @@ public struct ThemePreferencesView: View {
                 Image(systemName: "minus")
             }
             .disabled(themeModel.selectedTheme == nil)
+            .help("Delete selected theme")
             .buttonStyle(.plain)
             Divider()
             Button { try? themeModel.loadThemes() } label: {
