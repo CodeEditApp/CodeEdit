@@ -14,7 +14,6 @@ struct WelcomeWindowView: View {
             WelcomeView {
                 windowController.window?.close()
             }
-            // swiftlint:disable all
             RecentProjectsView {
                 windowController.window?.close()
             }
