@@ -95,7 +95,6 @@ class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
         ]
     }
 
-    // swiftlint:disable all
     func toolbar(
         _ toolbar: NSToolbar,
         itemForItemIdentifier itemIdentifier: NSToolbarItem.Identifier,
@@ -103,15 +102,15 @@ class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     ) -> NSToolbarItem? {
         switch itemIdentifier {
         case .itemListTrackingSeparator:
-            if ((splitViewController) != nil) {
+                guard let splitViewController = splitViewController else {
+                    return nil
+                }
+
                 return NSTrackingSeparatorToolbarItem(
                     identifier: .itemListTrackingSeparator,
                     splitView: splitViewController.splitView,
                     dividerIndex: 1
                 )
-            } else {
-                return nil
-            }
         case .toggleFirstSidebarItem:
             let toolbarItem = NSToolbarItem(itemIdentifier: NSToolbarItem.Identifier.toggleFirstSidebarItem)
             toolbarItem.label = "Navigator Sidebar"
