@@ -57,6 +57,10 @@ let package = Package(
             name: "Accounts",
             targets: ["Accounts"]
         ),
+        .library(
+            name: "About",
+            targets: ["About"]
+        ),
     ],
     dependencies: [
         .package(
@@ -184,6 +188,10 @@ let package = Package(
         .target(
             name: "Accounts",
             path: "Modules/Accounts/src"
+        ),
+        .target(
+            name: "About",
+            path: "Modules/About/src"
         ),
     ]
 )
