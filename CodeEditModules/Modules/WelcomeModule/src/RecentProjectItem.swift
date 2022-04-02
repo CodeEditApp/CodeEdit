@@ -8,6 +8,12 @@
 import SwiftUI
 import WorkspaceClient
 
+extension String {
+    func abbreviatingWithTildeInPath() -> String {
+        return (self as NSString).abbreviatingWithTildeInPath
+    }
+}
+
 public struct RecentProjectItem: View {
     let projectPath: String
 
@@ -24,7 +30,7 @@ public struct RecentProjectItem: View {
             VStack(alignment: .leading) {
                 Text(projectPath.components(separatedBy: "/").last ?? "").font(.system(size: 13))
                     .lineLimit(1)
-                Text(projectPath)
+                Text(projectPath.abbreviatingWithTildeInPath())
                     .font(.system(size: 11))
                     .lineLimit(1)
                     .truncationMode(.head)
