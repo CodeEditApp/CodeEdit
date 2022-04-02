@@ -90,6 +90,15 @@ struct RecentProjectsView: View {
         )
     }
 
+    /// Update recent projects.
+    func updateRecentProjects() {
+        recentProjectPaths = UserDefaults.standard.array(forKey: "recentProjectPaths") as? [String] ?? []
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
+            updateRecentProjects()
+        }
+    }
+
     var body: some View {
         VStack(alignment: !recentProjectPaths.isEmpty ? .leading : .center, spacing: 10) {
             if !recentProjectPaths.isEmpty {
@@ -146,7 +155,9 @@ struct RecentProjectsView: View {
         .background(BlurView(material: NSVisualEffectView.Material.underWindowBackground,
                              blendingMode: NSVisualEffectView.BlendingMode.behindWindow))
         .onAppear {
-            recentProjectPaths = UserDefaults.standard.array(forKey: "recentProjectPaths") as? [String] ?? []
+            // onAppear is called once, and therafter never again,
+            // since the window is never release from memory.
+            updateRecentProjects()
         }
     }
 }
