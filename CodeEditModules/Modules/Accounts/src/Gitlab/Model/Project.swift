@@ -13,7 +13,6 @@ public enum VisibilityLevel: Int {
     case `public` = 20
 }
 
-// swiftlint:disable all
 open class Project: Codable {
     public let id: Int
     public let owner: GitlabUser
