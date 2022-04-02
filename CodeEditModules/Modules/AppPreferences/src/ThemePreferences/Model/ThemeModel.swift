@@ -176,6 +176,7 @@ public class ThemeModel: ObservableObject {
             .appendingPathExtension("json")
         do {
             try filemanager.removeItem(at: url)
+            AppPreferencesModel.shared.preferences.theme.overrides.removeValue(forKey: theme.name)
             try self.loadThemes()
         } catch {
             print(error)
