@@ -21,8 +21,8 @@ struct WelcomeView: View {
     @State
     var isHoveringClose: Bool = false
 
-    @AppStorage(ReopenBehavior.storageKey)
-    var behavior: ReopenBehavior = .welcome
+    @StateObject
+    private var prefs: AppPreferencesModel = .shared
 
     var dismissWindow: () -> Void
 
@@ -187,9 +187,9 @@ struct WelcomeView: View {
                     HStack {
                         Spacer()
                         Toggle("Show this window when CodeEdit launches", isOn: .init(get: {
-                            return self.behavior == .welcome
+                            return prefs.preferences.general.reopenBehavior == .welcome
                         }, set: { new in
-                            self.behavior = new ? .welcome : .openPanel
+                            prefs.preferences.general.reopenBehavior = new ? .welcome : .openPanel
                         }))
                         .toggleStyle(.checkbox)
                         Spacer()

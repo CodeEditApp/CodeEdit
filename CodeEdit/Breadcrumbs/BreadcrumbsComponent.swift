@@ -10,8 +10,9 @@ import WorkspaceClient
 import AppPreferences
 
 struct BreadcrumbsComponent: View {
-    @AppStorage(FileIconStyle.storageKey)
-    var iconStyle: FileIconStyle = .default
+
+    @StateObject
+    private var prefs: AppPreferencesModel = .shared
 
     @ObservedObject
     var workspace: WorkspaceDocument
@@ -51,7 +52,7 @@ struct BreadcrumbsComponent: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 12)
-                        .foregroundStyle(iconStyle == .color ? color : .secondary)
+                        .foregroundStyle(prefs.preferences.general.fileIconStyle == .color ? color : .secondary)
                         .onAppear {
                             self.position = NSPoint(
                                 x: geometry.frame(in: .global).minX,

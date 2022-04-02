@@ -100,6 +100,7 @@ let package = Package(
             name: "CodeFile",
             dependencies: [
                 "Highlightr",
+                "AppPreferences"
             ],
             path: "Modules/CodeFile/src"
         ),
@@ -155,7 +156,10 @@ let package = Package(
         ),
         .target(
             name: "TerminalEmulator",
-            dependencies: ["SwiftTerm"],
+            dependencies: [
+                "SwiftTerm",
+                "AppPreferences"
+            ],
             path: "Modules/TerminalEmulator/src"
         ),
         .target(
@@ -177,9 +181,7 @@ let package = Package(
             name: "AppPreferences",
             dependencies: [
                 "Preferences",
-                "CodeFile",
                 "FontPicker",
-                "TerminalEmulator",
             ],
             path: "Modules/AppPreferences/src"
         ),
