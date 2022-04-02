@@ -5,6 +5,7 @@
 //  Created by Lukas Pistrol on 24.03.22.
 //
 
+import Foundation
 import SwiftTerm
 
 internal extension SwiftTerm.Color {
@@ -30,5 +31,13 @@ internal extension SwiftTerm.Color {
         let green = UInt8((hex >> 8) & 0xFF)
         let blue = UInt8(hex & 0xFF)
         self.init(iRed: red, green: green, blue: blue)
+    }
+
+    /// 0x000000 - 0xFFFFFF
+    convenience init(hex: String) {
+        let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
+        var int: UInt64 = 0
+        Scanner(string: hex).scanHexInt64(&int)
+        self.init(hex: Int(int))
     }
 }

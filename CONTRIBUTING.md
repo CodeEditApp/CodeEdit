@@ -45,7 +45,7 @@ brew install swiftlint
 ## Coding Style & Documentation
 
 In order to make code easily understandable documenting your code is required. Especially if you add functionality make sure that you:
-* If you are not familiar with documentation have a read [here](https://developer.apple.com/documentation/xcode/writing-symbol-documentation-in-your-source-files).
+* If you are not familiar with documentation have a read [here](https://developer.apple.com/documentation/xcode/writing-symbol-documentation-in-your-source-files) and [here](https://developer.apple.com/library/archive/documentation/Xcode/Reference/xcode_markup_formatting_ref/index.html#//apple_ref/doc/uid/TP40016497-CH2-SW1).
 * Also have a look at Swift's [API Design Guidelines](https://www.swift.org/documentation/api-design-guidelines/#conventions).
 * use describing variables.
   ```swift
@@ -91,7 +91,7 @@ The `PR` should include follwing information:
 * If there is a related issue please add a **reference to the issue**. If not create one beforehand an link it.
 * If your PR is still in progress mark it as **Draft**.
 
-### Checks and Tests
+### Checks, Tests & Documentation
 
 Request a review from one of our admins @austincondiff, @lukepistrol, @MarcoCarnevali, or maintainers @cstef, @jasonplatts, @linusS1, @pkasila, @RayZhao1998, @wdg.
 
@@ -100,4 +100,5 @@ Request a review from one of our admins @austincondiff, @lukepistrol, @MarcoCarn
 Once you submitted the `PR` GitHub will run a couple of actions which run tests and `SwiftLint` (this can take a couple of minutes). Should a test fail it cannot be merged until tests succeed.
 
 Make sure to resolve all merge-conflicts otherwise the `PR` cannot be merged.
- 
+
+> **Important**: make sure your code is well documented so others can interact with your code easily!

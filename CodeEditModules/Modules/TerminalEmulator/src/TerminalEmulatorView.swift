@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftTerm
+import AppPreferences
 
 /// # TerminalEmulatorView
 ///
@@ -16,23 +17,11 @@ import SwiftTerm
 /// for use in SwiftUI.
 ///
 public struct TerminalEmulatorView: NSViewRepresentable {
-    @AppStorage(TerminalShellType.storageKey)
-    var shellType: TerminalShellType = .default
-
-    @AppStorage(TerminalFont.storageKey)
-    var terminalFontSelection: TerminalFont = .default
-
-    @AppStorage(TerminalFontName.storageKey)
-    var terminalFontName: String = TerminalFontName.default
-
-    @AppStorage(TerminalFontSize.storageKey)
-    var terminalFontSize: Int = TerminalFontSize.default
-
-    @AppStorage(TerminalColorScheme.storageKey)
-    var terminalColorSchmeme: TerminalColorScheme = .default
+    @StateObject
+    private var prefs: AppPreferencesModel = .shared
 
     @StateObject
-    private var ansiColors: AnsiColors = .shared
+    private var themeModel: ThemeModel = .shared
 
     internal static var lastTerminal: LocalProcessTerminalView?
 
@@ -42,10 +31,13 @@ public struct TerminalEmulatorView: NSViewRepresentable {
     private let systemFont: NSFont = .monospacedSystemFont(ofSize: 11, weight: .medium)
 
     private var font: NSFont {
-        if terminalFontSelection == .systemFont {
+        if !prefs.preferences.terminal.font.customFont {
             return systemFont
         }
-        return NSFont(name: terminalFontName, size: CGFloat(terminalFontSize)) ?? systemFont
+        return NSFont(
+            name: prefs.preferences.terminal.font.name,
+            size: CGFloat(prefs.preferences.terminal.font.size)
+        ) ?? systemFont
     }
 
     private var url: URL
@@ -72,8 +64,8 @@ public struct TerminalEmulatorView: NSViewRepresentable {
     ///    return String(cString: pwd.pw_shell)
     /// ```
     private func getShell() -> String {
-        switch shellType {
-        case .auto:
+        switch prefs.preferences.terminal.shell {
+        case .system:
             return autoDetectDefaultShell()
         case .bash:
             return "/bin/bash"
@@ -99,17 +91,22 @@ public struct TerminalEmulatorView: NSViewRepresentable {
 
     /// Returns the mapped array of `SwiftTerm.Color` objects of ANSI Colors
     private var colors: [SwiftTerm.Color] {
-        return ansiColors.mappedColors.map { SwiftTerm.Color(hex: $0) }
+        if let selectedTheme = themeModel.selectedTheme,
+           let index = themeModel.themes.firstIndex(of: selectedTheme) {
+            return themeModel.themes[index].terminal.ansiColors.map { color in
+                SwiftTerm.Color(hex: color)
+            }
+        }
+        return []
     }
 
     /// returns a `NSAppearance` based on the user setting of the terminal appearance,
     /// `nil` if app default is not overriden
     private var colorAppearance: NSAppearance? {
-        switch terminalColorSchmeme {
-        case .auto: return nil
-        case .light: return .init(named: .aqua)
-        case .dark: return .init(named: .darkAqua)
+        if prefs.preferences.terminal.darkAppearance {
+            return .init(named: .darkAqua)
         }
+        return nil
     }
 
     /// Inherited from NSViewRepresentable.makeNSView(context:).

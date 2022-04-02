@@ -31,9 +31,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
-        if let appearanceString = UserDefaults.standard.string(forKey: Appearances.storageKey) {
-            Appearances(rawValue: appearanceString)?.applyAppearance()
-        }
+        AppPreferencesModel.shared.preferences.general.appAppearance.applyAppearance()
 
         DispatchQueue.main.async {
             if NSApp.windows.isEmpty {
@@ -77,8 +75,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     }
 
     func handleOpen() {
-        let behavior = ReopenBehavior(rawValue: UserDefaults.standard.string(forKey: ReopenBehavior.storageKey)
-                                      ?? ReopenBehavior.default.rawValue) ?? ReopenBehavior.default
+        let behavior = AppPreferencesModel.shared.preferences.general.reopenBehavior
 
         switch behavior {
         case .welcome:
@@ -174,7 +171,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                 title: "Themes",
                 toolbarIcon: NSImage(systemSymbolName: "paintbrush", accessibilityDescription: nil)!
             ) {
-                PreferencesThemeView()
+                ThemePreferencesView()
             },
             Preferences.Pane(
                 identifier: Preferences.PaneIdentifier("TextEditing"),
@@ -182,6 +179,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                 toolbarIcon: NSImage(systemSymbolName: "square.and.pencil", accessibilityDescription: nil)!
             ) {
                 PreferencesTextEditingView()
+            },
+            Preferences.Pane(
+                identifier: Preferences.PaneIdentifier("Terminal"),
+                title: "Terminal",
+                toolbarIcon: NSImage(systemSymbolName: "terminal", accessibilityDescription: nil)!
+            ) {
+                PreferencesTerminalView()
             },
             Preferences.Pane(
                 identifier: Preferences.PaneIdentifier("KeyBindings"),
