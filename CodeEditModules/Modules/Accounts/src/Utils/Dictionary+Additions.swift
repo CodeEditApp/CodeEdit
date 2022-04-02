@@ -7,11 +7,11 @@
 
 import Foundation
 
-// swiftlint:disable all
 internal func += <KeyType, ValueType> (
-    left: inout Dictionary<KeyType, ValueType>,
-    right: Dictionary<KeyType, ValueType>) {
-    for (k, v) in right {
-        left.updateValue(v, forKey: k)
+    left: inout [KeyType: ValueType],
+    right: [KeyType: ValueType]) {
+
+    for (key, val) in right {
+        left.updateValue(val, forKey: key)
     }
 }
