@@ -9,7 +9,6 @@ import FontPicker
 import SwiftUI
 import Preferences
 
-// swiftlint:disable all
 @available(macOS 12, *)
 public struct ThemePreferencesView: View {
     @Environment(\.colorScheme)
