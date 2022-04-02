@@ -117,11 +117,9 @@ public extension Router {
     /// Due to the complexity of the the urlQuery method we disabled lint for the this method
     /// only so that it doesn't complain... Note this level of complexity is needed to give us as
     /// much success rate as possible due to all git providers having different types of url schemes.
-
-    // swiftlint:disable all
+    // swiftlint:disable:next cyclomatic_complexity
     func urlQuery(_ parameters: [String: Any]) -> [URLQueryItem]? {
-
-        guard parameters.count > 0 else { return nil }
+        guard !parameters.isEmpty else { return nil }
 
         var components: [URLQueryItem] = []
 

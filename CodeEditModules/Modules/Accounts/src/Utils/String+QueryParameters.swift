@@ -7,9 +7,7 @@
 
 import Foundation
 
-// swiftlint:disable all
 extension String {
-
     var bitbucketQueryParameters: [String: String] {
         let parametersArray = components(separatedBy: "&")
         var parameters = [String: String]()

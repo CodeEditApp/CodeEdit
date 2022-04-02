@@ -10,7 +10,6 @@ import Foundation
 import FoundationNetworking
 #endif
 
-// swiftlint:disable all
 public extension GithubAccount {
     func postPublicKey(_ session: GitURLSession = URLSession.shared,
                        publicKey: String,
@@ -27,7 +26,7 @@ public extension GithubAccount {
             if let error = error {
                 completion(.failure(error))
             } else {
-                if let _ = json {
+                if json != nil {
                     completion(.success(publicKey))
                 }
             }
