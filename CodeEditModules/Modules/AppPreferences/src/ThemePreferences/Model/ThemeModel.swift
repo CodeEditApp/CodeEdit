@@ -104,7 +104,13 @@ public class ThemeModel: ObservableObject {
             guard let defaultUrl = Bundle.main.url(forResource: "default-dark", withExtension: "json") else {
                 return
             }
-            self.themes.append(try load(from: defaultUrl))
+            let json = try Data(contentsOf: defaultUrl)
+            let jsonObject = try JSONSerialization.jsonObject(with: json)
+            let prettyJSON = try JSONSerialization.data(withJSONObject: jsonObject,
+                                                        options: .prettyPrinted)
+
+            try prettyJSON.write(to: url.appendingPathComponent("Default (Dark).json"))
+
             return
         }
 

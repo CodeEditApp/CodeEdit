@@ -94,6 +94,7 @@ public struct ThemePreferencesView: View {
                         Button("Delete Theme", role: .destructive) {
                             themeModel.delete(theme)
                         }
+                        .disabled(themeModel.themes.count <= 1)
                     }
             }
         }
@@ -123,6 +124,7 @@ public struct ThemePreferencesView: View {
                         Button("Delete Theme", role: .destructive) {
                             themeModel.delete(theme)
                         }
+                        .disabled(themeModel.themes.count <= 1)
                     }
                 }
             }
@@ -144,7 +146,7 @@ public struct ThemePreferencesView: View {
             } label: {
                 Image(systemName: "minus")
             }
-            .disabled(themeModel.selectedTheme == nil)
+            .disabled(themeModel.selectedTheme == nil || themeModel.themes.count <= 1)
             .help("Delete selected theme")
             .buttonStyle(.plain)
             Divider()
