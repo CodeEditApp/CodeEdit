@@ -71,6 +71,7 @@ public class ThemeModel: ObservableObject {
 
     /// Loads a theme from a given url and appends it to ``themes``.
     /// - Parameter url: The URL of the theme
+    /// - Returns: A ``Theme``
     private func load(from url: URL) throws -> Theme {
         // get the data from the provided file
         let json = try Data(contentsOf: url)
@@ -83,6 +84,10 @@ public class ThemeModel: ObservableObject {
     ///
     /// If no themes are available, it will create a default theme and save
     /// it to the location mentioned above.
+    ///
+    /// When overrides are found in `~/.codeedit/.preferences.json`
+    /// they are applied to the loaded themes without altering the original
+    /// the files in `~/.codeedit/themes/`.
     public func loadThemes() throws {
         themes.removeAll()
         let url = baseURL.appendingPathComponent("themes")
@@ -137,6 +142,14 @@ public class ThemeModel: ObservableObject {
         }
     }
 
+    /// Removes all overrides of the given theme in
+    /// `~/.codeedit/preferences.json`
+    ///
+    /// After removing overrides, themes are reloaded
+    /// from `~/.codeedit/themes`. See ``loadThemes()``
+    /// for more information.
+    ///
+    /// - Parameter theme: The theme to reset
     public func reset(_ theme: Theme) {
         AppPreferencesModel.shared.preferences.theme.overrides[theme.name] = [:]
         do {
@@ -146,6 +159,13 @@ public class ThemeModel: ObservableObject {
         }
     }
 
+    /// Removes the given theme from `–/.codeedit/themes`
+    ///
+    /// After removing the theme, themes are reloaded
+    /// from `~/.codeedit/themes`. See ``loadThemes()``
+    /// for more information.
+    ///
+    /// - Parameter theme: The theme to delete
     public func delete(_ theme: Theme) {
         let url = baseURL
             .appendingPathComponent("themes")
@@ -159,6 +179,8 @@ public class ThemeModel: ObservableObject {
         }
     }
 
+    /// Saves changes on theme properties to `overrides`
+    /// in `~/.codeedit/preferences.json`.
     private func saveThemes() {
         let url = baseURL.appendingPathComponent("themes")
         themes.forEach { theme in
@@ -202,17 +224,29 @@ public class ThemeModel: ObservableObject {
     }
 }
 
-extension Theme: Loopable {}
-
-extension Theme.EditorColors: Loopable {}
-extension Theme.TerminalColors: Loopable {}
-extension Theme.Attributes: Loopable {}
-
+/// Loopable protocol implements a method that will return all child
+/// properties and their associated values of a `Type`
 protocol Loopable {
     func allProperties() throws -> [String: Any]
 }
 
 extension Loopable {
+
+    /// returns all child properties and their associated values of `self`
+    ///
+    /// **Example:**
+    /// ```swift
+    /// struct Author: Loopable {
+    ///   var name: String = "Steve"
+    ///   var books: Int = 4
+    /// }
+    ///
+    /// let author = Author()
+    /// print(author.allProperties())
+    ///
+    /// // returns
+    /// ["name": "Steve", "books": 4]
+    /// ```
     func allProperties() throws -> [String: Any] {
         var result: [String: Any] = [:]
 

@@ -10,7 +10,7 @@ import SwiftUI
 /// # Theme
 ///
 /// The model structure of themes for the editor & terminal emulator
-public struct Theme: Identifiable, Codable, Equatable, Hashable {
+public struct Theme: Identifiable, Codable, Equatable, Hashable, Loopable {
 
     enum CodingKeys: String, CodingKey {
         case author, license, distributionURL, name, editor, terminal, version
@@ -93,7 +93,7 @@ public extension Theme {
     ///
     /// As of now it only includes the colors `hex` string and
     /// an accessor for a `SwiftUI` `Color`.
-    struct Attributes: Codable, Equatable, Hashable {
+    struct Attributes: Codable, Equatable, Hashable, Loopable {
 
         /// The 24-bit hex string of the color (e.g. #123456)
         public var color: String
@@ -116,7 +116,7 @@ public extension Theme {
 
 public extension Theme {
     /// The editor colors of the theme
-    struct EditorColors: Codable, Hashable {
+    struct EditorColors: Codable, Hashable, Loopable {
         public var text: Attributes
         public var insertionPoint: Attributes
         public var invisibles: Attributes
@@ -134,6 +134,14 @@ public extension Theme {
         public var characters: Attributes
         public var comments: Attributes
 
+        /// Allows to look up properties by their name
+        ///
+        /// **Example:**
+        /// ```swift
+        /// editor["text"]
+        /// // equal to calling
+        /// editor.text
+        /// ```
         subscript(key: String) -> Attributes {
             get {
                 switch key {
@@ -219,7 +227,7 @@ public extension Theme {
 
 public extension Theme {
     /// The terminal emulator colors of the theme
-    struct TerminalColors: Codable, Hashable {
+    struct TerminalColors: Codable, Hashable, Loopable {
         public var text: Attributes
         public var boldText: Attributes
         public var cursor: Attributes
@@ -264,6 +272,14 @@ public extension Theme {
         }
 
         // swiftlint:disable function_body_length
+        /// Allows to look up properties by their name
+        ///
+        /// **Example:**
+        /// ```swift
+        /// terminal["text"]
+        /// // equal to calling
+        /// terminal.text
+        /// ```
         subscript(key: String) -> Attributes {
             get {
                 switch key {

@@ -93,6 +93,23 @@ public extension AppPreferences {
 public extension AppPreferences {
 
     /// A dictionary containing the keys and associated ``Theme/Attributes`` of overridden properties
+    ///
+    /// ```json
+    /// {
+    ///   "editor" : {
+    ///     "background" : {
+    ///       "color" : "#123456"
+    ///     },
+    ///     ...
+    ///   },
+    ///   "terminal" : {
+    ///     "blue" : {
+    ///       "color" : "#1100FF"
+    ///     },
+    ///     ...
+    ///   }
+    /// }
+    /// ```
     typealias ThemeOverrides = [String: [String: Theme.Attributes]]
 
     /// The global settings for themes
@@ -107,24 +124,27 @@ public extension AppPreferences {
         /// Dictionary of themes containing overrides
         ///
         /// ```json
-        /// "overrides" : {
-        ///   "DefaultDark" : {
-        ///     "editor" : {
-        ///       "background" : {
-        ///         "color" : "#123456"
+        /// {
+        ///   "overrides" : {
+        ///     "DefaultDark" : {
+        ///       "editor" : {
+        ///         "background" : {
+        ///           "color" : "#123456"
+        ///         },
+        ///         ...
         ///       },
+        ///       "terminal" : {
+        ///         "blue" : {
+        ///           "color" : "#1100FF"
+        ///         },
+        ///         ...
+        ///       }
         ///       ...
         ///     },
-        ///     "terminal" : {
-        ///       "blue" : {
-        ///         "color" : "#1100FF"
-        ///       },
-        ///       ...
-        ///     }
         ///     ...
         ///   },
         ///   ...
-        /// },
+        /// }
         /// ```
         public var overrides: [String: ThemeOverrides] = [:]
     }
