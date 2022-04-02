@@ -8,6 +8,7 @@
 import SwiftUI
 import AppPreferences
 import Preferences
+import About
 
 class CodeEditApplication: NSApplication {
     let strongDelegate = AppDelegate()
@@ -129,6 +130,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         window.isMovableByWindowBackground = true
         window.contentView = NSHostingView(rootView: contentView)
         window.makeKeyAndOrderFront(self)
+    }
+
+    @IBAction func openAbout(_ sender: Any) {
+        AboutView().showWindow(width: 530, height: 220)
     }
 
     // MARK: - Preferences
