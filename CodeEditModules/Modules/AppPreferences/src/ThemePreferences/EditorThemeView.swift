@@ -79,6 +79,10 @@ struct EditorThemeView: View {
                     }
                 }
                 .padding(20)
+            } else {
+                Text("Select a Theme")
+                    .foregroundColor(.secondary)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
             }
         }
     }

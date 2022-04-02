@@ -10,7 +10,7 @@ import SwiftUI
 /// # Theme
 ///
 /// The model structure of themes for the editor & terminal emulator
-public struct Theme: Identifiable, Codable, Equatable {
+public struct Theme: Identifiable, Codable, Equatable, Hashable {
 
     enum CodingKeys: String, CodingKey {
         case author, license, distributionURL, name, editor, terminal, version
@@ -81,7 +81,7 @@ public extension Theme {
     /// The type of the theme
     /// - **dark**: this is a theme for dark system appearance
     /// - **light**: this is a theme for light system appearance
-    enum ThemeType: String, Codable {
+    enum ThemeType: String, Codable, Hashable {
         case dark
         case light
     }
@@ -93,7 +93,7 @@ public extension Theme {
     ///
     /// As of now it only includes the colors `hex` string and
     /// an accessor for a `SwiftUI` `Color`.
-    struct Attributes: Codable, Equatable {
+    struct Attributes: Codable, Equatable, Hashable {
 
         /// The 24-bit hex string of the color (e.g. #123456)
         public var color: String
@@ -116,7 +116,7 @@ public extension Theme {
 
 public extension Theme {
     /// The editor colors of the theme
-    struct EditorColors: Codable {
+    struct EditorColors: Codable, Hashable {
         public var text: Attributes
         public var insertionPoint: Attributes
         public var invisibles: Attributes
@@ -219,7 +219,7 @@ public extension Theme {
 
 public extension Theme {
     /// The terminal emulator colors of the theme
-    struct TerminalColors: Codable {
+    struct TerminalColors: Codable, Hashable {
         public var text: Attributes
         public var boldText: Attributes
         public var cursor: Attributes

@@ -21,12 +21,18 @@ struct TerminalThemeView: View {
         ZStack(alignment: .topLeading) {
             Rectangle()
                 .foregroundColor(Color(NSColor.controlBackgroundColor))
-            VStack(alignment: .leading, spacing: 15) {
-                topToggles
-                colorSelector
-                ansiColorSelector
+            if themeModel.selectedTheme == nil {
+                Text("Select a Theme")
+                    .foregroundColor(.secondary)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+            } else {
+                VStack(alignment: .leading, spacing: 15) {
+                    topToggles
+                    colorSelector
+                    ansiColorSelector
+                }
+                .padding(20)
             }
-            .padding(20)
         }
     }
 

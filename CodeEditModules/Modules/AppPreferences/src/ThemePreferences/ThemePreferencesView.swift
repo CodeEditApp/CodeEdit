@@ -18,6 +18,9 @@ public struct ThemePreferencesView: View {
     @ObservedObject
     private var themeModel: ThemeModel = .shared
 
+    @State
+    private var listView: Bool = false
+
     public init() {}
 
     public var body: some View {
@@ -29,7 +32,11 @@ public struct ThemePreferencesView: View {
                     .help("Not yet implemented")
                 Spacer()
                 Button("Get More Themes...") {}
+                    .disabled(true)
+                    .help("Not yet implemented")
                 HelpButton {}
+                    .disabled(true)
+                    .help("Not yet implemented")
             }
         }
         .frame(width: 872)
@@ -60,41 +67,59 @@ public struct ThemePreferencesView: View {
                 ]
                 SegmentedControl($themeModel.selectedAppearance, options: options)
             }
-            ScrollView {
-                let grid: [GridItem] = .init(
-                    repeating: .init(.fixed(130), spacing: 20, alignment: .center),
-                    count: 2
-                )
-                LazyVGrid(columns: grid,
-                          alignment: .center,
-                          spacing: 20) {
-                    ForEach(themeModel.selectedAppearance == 0 ? themeModel.darkThemes : themeModel.lightThemes) { theme in
-                        ThemePreviewIcon(
-                            theme,
-                            selection: $themeModel.selectedTheme,
-                            colorScheme: themeModel.selectedAppearance == 0 ? .dark : .light
-                        )
-                            .transition(.opacity)
-                            .contextMenu {
-                                Button("Reset Theme") {
-                                    themeModel.reset(theme)
-                                }
-                                Divider()
-                                Button("Delete Theme", role: .destructive) {
-                                    themeModel.delete(theme)
-                                }
-                            }
-                    }
-                }
-                .padding(.vertical, 20)
+            if listView {
+                sidebarLisView
+            } else {
+                sidebarScrollView
             }
-            .background(Color(NSColor.controlBackgroundColor))
             toolbar {
                 sidebarBottomToolbar
             }
             .frame(height: 27)
         }
         .frame(width: 320)
+    }
+
+    private var sidebarLisView: some View {
+        List(selection: $themeModel.selectedTheme) {
+            ForEach(themeModel.selectedAppearance == 0 ? themeModel.darkThemes : themeModel.lightThemes) { theme in
+                Button(theme.name) { themeModel.selectedTheme = theme }
+                    .buttonStyle(.plain)
+                    .tag(theme)
+            }
+        }
+    }
+
+    private var sidebarScrollView: some View {
+        ScrollView {
+            let grid: [GridItem] = .init(
+                repeating: .init(.fixed(130), spacing: 20, alignment: .center),
+                count: 2
+            )
+            LazyVGrid(columns: grid,
+                      alignment: .center,
+                      spacing: 20) {
+                ForEach(themeModel.selectedAppearance == 0 ? themeModel.darkThemes : themeModel.lightThemes) { theme in
+                    ThemePreviewIcon(
+                        theme,
+                        selection: $themeModel.selectedTheme,
+                        colorScheme: themeModel.selectedAppearance == 0 ? .dark : .light
+                    )
+                    .transition(.opacity)
+                    .contextMenu {
+                        Button("Reset Theme") {
+                            themeModel.reset(theme)
+                        }
+                        Divider()
+                        Button("Delete Theme", role: .destructive) {
+                            themeModel.delete(theme)
+                        }
+                    }
+                }
+            }
+                      .padding(.vertical, 20)
+        }
+        .background(Color(NSColor.controlBackgroundColor))
     }
 
     private var sidebarBottomToolbar: some View {
@@ -116,12 +141,19 @@ public struct ThemePreferencesView: View {
             }
             .buttonStyle(.plain)
             Spacer()
-            Button {} label: {
+            Button {
+                listView = true
+            } label: {
                 Image(systemName: "list.dash")
+                    .foregroundColor(listView ? .accentColor : .primary)
             }
             .buttonStyle(.plain)
-            Button {} label: {
+            Button {
+                listView = false
+            } label: {
                 Image(systemName: "square.grid.2x2")
+                    .symbolVariant(listView ? .none : .fill)
+                    .foregroundColor(listView ? .primary : .accentColor)
             }
             .buttonStyle(.plain)
         }
