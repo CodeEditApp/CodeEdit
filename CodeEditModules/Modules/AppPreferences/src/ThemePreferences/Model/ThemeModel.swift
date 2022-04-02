@@ -29,15 +29,12 @@ public class ThemeModel: ObservableObject {
     /// - **1**: Editor
     /// - **2**: Terminal
     @Published
-    var selectedTab: Int = 2
+    var selectedTab: Int = 1
 
     /// An array of loaded ``Theme``.
     @Published
     public var themes: [Theme] = [] {
         didSet {
-            // TODO: Don't overwrite themes
-            // Instead save changed values to `preferences.json`
-            // as overrides
             saveThemes()
             objectWillChange.send()
         }

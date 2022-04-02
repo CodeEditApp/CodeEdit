@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FontPicker
 
 public struct PreferencesTextEditingView: View {
 
@@ -16,6 +17,7 @@ public struct PreferencesTextEditingView: View {
 
     public var body: some View {
         Form {
+            fontSelector
             HStack {
                 Stepper("Default Tab Width:",
                         value: $prefs.preferences.textEditing.defaultTabWidth,
@@ -25,5 +27,22 @@ public struct PreferencesTextEditingView: View {
         }
         .frame(width: 844)
         .padding(30)
+    }
+
+    @ViewBuilder
+    private var fontSelector: some View {
+        Picker("Font:", selection: $prefs.preferences.textEditing.font.customFont) {
+            Text("System Font")
+                .tag(false)
+            Text("Custom")
+                .tag(true)
+        }
+        .fixedSize()
+        if prefs.preferences.textEditing.font.customFont {
+            FontPicker(
+                "\(prefs.preferences.textEditing.font.name) \(prefs.preferences.textEditing.font.size)",
+                name: $prefs.preferences.textEditing.font.name, size: $prefs.preferences.textEditing.font.size
+            )
+        }
     }
 }

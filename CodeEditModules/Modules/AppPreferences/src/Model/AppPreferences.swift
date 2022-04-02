@@ -193,5 +193,19 @@ public extension AppPreferences {
     struct TextEditingPreferences: Codable {
         /// An integer indicating how many spaces a `tab` will generate
         public var defaultTabWidth: Int = 4
+
+        /// The font to use in editor.
+        public var font: EditorFont = .init()
+    }
+
+    struct EditorFont: Codable {
+        /// Indicates whether or not to use a custom font
+        public var customFont: Bool = false
+
+        /// The font size for the custom font
+        public var size: Int = 11
+
+        /// The name of the custom font
+        public var name: String = "SF-MonoMedium"
     }
 }
