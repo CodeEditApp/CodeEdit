@@ -79,6 +79,10 @@ public struct ThemePreferencesView: View {
                                 Button("Reset Theme") {
                                     themeModel.reset(theme)
                                 }
+                                Divider()
+                                Button("Delete Theme", role: .destructive) {
+                                    themeModel.delete(theme)
+                                }
                             }
                     }
                 }
@@ -99,9 +103,12 @@ public struct ThemePreferencesView: View {
                 Image(systemName: "plus")
             }
             .buttonStyle(.plain)
-            Button {} label: {
+            Button {
+                themeModel.delete(themeModel.selectedTheme!)
+            } label: {
                 Image(systemName: "minus")
             }
+            .disabled(themeModel.selectedTheme == nil)
             .buttonStyle(.plain)
             Divider()
             Button { try? themeModel.loadThemes() } label: {

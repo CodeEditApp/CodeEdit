@@ -146,6 +146,19 @@ public class ThemeModel: ObservableObject {
         }
     }
 
+    public func delete(_ theme: Theme) {
+        let url = baseURL
+            .appendingPathComponent("themes")
+            .appendingPathComponent(theme.name)
+            .appendingPathExtension("json")
+        do {
+            try filemanager.removeItem(at: url)
+            try self.loadThemes()
+        } catch {
+            print(error)
+        }
+    }
+
     private func saveThemes() {
         let url = baseURL.appendingPathComponent("themes")
         themes.forEach { theme in
