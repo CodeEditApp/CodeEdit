@@ -43,7 +43,7 @@ public struct PreferencesTerminalView: View {
     private var optionAsMetaToggle: some View {
         HStack {
             Toggle("Option as Meta", isOn: $prefs.preferences.terminal.optionAsMeta)
-            Text("Option key as Meta")
+            Text("Use \"Option\" key as \"Meta\"")
         }
     }
 
