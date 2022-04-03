@@ -213,7 +213,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                 title: "Locations",
                 toolbarIcon: NSImage(systemSymbolName: "externaldrive", accessibilityDescription: nil)!
             ) {
-                PreferencesPlaceholderView()
+                PreferencesLocationsView()
             },
             Preferences.Pane(
                 identifier: Preferences.PaneIdentifier("Advanced"),

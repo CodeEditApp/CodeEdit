@@ -16,17 +16,19 @@ public struct PreferencesTextEditingView: View {
     public init() {}
 
     public var body: some View {
-        Form {
-            fontSelector
-            HStack {
-                Stepper("Default Tab Width:",
-                        value: $prefs.preferences.textEditing.defaultTabWidth,
-                        in: 2...8)
-                Text(String(prefs.preferences.textEditing.defaultTabWidth))
+        PreferencesContent {
+            PreferencesSection("Default Tab Width") {
+                HStack {
+                    Stepper("Default Tab Width:",
+                            value: $prefs.preferences.textEditing.defaultTabWidth,
+                            in: 2...8)
+                    Text(String(prefs.preferences.textEditing.defaultTabWidth))
+                }
+            }
+            PreferencesSection("Font") {
+                fontSelector
             }
         }
-        .frame(width: 844)
-        .padding(30)
     }
 
     @ViewBuilder

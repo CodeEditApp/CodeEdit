@@ -16,41 +16,41 @@ public struct PreferencesGeneralView: View {
     public init() {}
 
     public var body: some View {
-        Form {
-            Picker("Appearance:", selection: $prefs.preferences.general.appAppearance) {
-                Text("System")
-                    .tag(AppPreferences.Appearances.system)
-                Divider()
-                Text("Light")
-                    .tag(AppPreferences.Appearances.light)
-                Text("Dark")
-                    .tag(AppPreferences.Appearances.dark)
+        PreferencesContent {
+            PreferencesSection("Appearance") {
+                Picker("Appearance:", selection: $prefs.preferences.general.appAppearance) {
+                    Text("System")
+                        .tag(AppPreferences.Appearances.system)
+                    Divider()
+                    Text("Light")
+                        .tag(AppPreferences.Appearances.light)
+                    Text("Dark")
+                        .tag(AppPreferences.Appearances.dark)
+                }
+                .onChange(of: prefs.preferences.general.appAppearance) { tag in
+                    tag.applyAppearance()
+                }
             }
-            .onChange(of: prefs.preferences.general.appAppearance) { tag in
-                tag.applyAppearance()
+            PreferencesSection("File Icon Style") {
+                Picker("File Icon Style:", selection: $prefs.preferences.general.fileIconStyle) {
+                    Text("Color")
+                        .tag(AppPreferences.FileIconStyle.color)
+                    Text("Monochrome")
+                        .tag(AppPreferences.FileIconStyle.monochrome)
+                }
+                .pickerStyle(.radioGroup)
             }
-            .fixedSize()
-
-            Picker("File Icon Style:", selection: $prefs.preferences.general.fileIconStyle) {
-                Text("Color")
-                    .tag(AppPreferences.FileIconStyle.color)
-                Text("Monochrome")
-                    .tag(AppPreferences.FileIconStyle.monochrome)
+            PreferencesSection("Reopen Behavior") {
+                Picker("Reopen Behavior:", selection: $prefs.preferences.general.reopenBehavior) {
+                    Text("Welcome Screen")
+                        .tag(AppPreferences.ReopenBehavior.welcome)
+                    Divider()
+                    Text("Open Panel")
+                        .tag(AppPreferences.ReopenBehavior.openPanel)
+                    Text("New Document")
+                        .tag(AppPreferences.ReopenBehavior.newDocument)
+                }
             }
-            .pickerStyle(.radioGroup)
-
-            Picker("Reopen Behavior:", selection: $prefs.preferences.general.reopenBehavior) {
-                Text("Welcome Screen")
-                    .tag(AppPreferences.ReopenBehavior.welcome)
-                Divider()
-                Text("Open Panel")
-                    .tag(AppPreferences.ReopenBehavior.openPanel)
-                Text("New Document")
-                    .tag(AppPreferences.ReopenBehavior.newDocument)
-            }
-            .fixedSize()
         }
-        .frame(width: 844)
-        .padding(30)
     }
 }

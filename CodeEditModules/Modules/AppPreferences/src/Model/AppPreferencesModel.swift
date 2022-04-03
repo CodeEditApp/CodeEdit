@@ -38,7 +38,7 @@ public class AppPreferencesModel: ObservableObject {
     /// Load and construct ``AppPreferences`` model from
     /// `~/.codeedit/preferences.json`
     private func loadPreferences() -> AppPreferences {
-        if !filemanager.fileExists(atPath: baseURL.path) {
+        if !filemanager.fileExists(atPath: preferencesURL.path) {
             let codeEditURL = filemanager
                 .homeDirectoryForCurrentUser
                 .appendingPathComponent(".codeedit", isDirectory: true)
@@ -46,7 +46,7 @@ public class AppPreferencesModel: ObservableObject {
             return .init()
         }
 
-        guard let json = try? Data(contentsOf: baseURL),
+        guard let json = try? Data(contentsOf: preferencesURL),
               let prefs = try? JSONDecoder().decode(AppPreferences.self, from: json)
         else {
             return .init()
@@ -60,19 +60,26 @@ public class AppPreferencesModel: ObservableObject {
         let data = try JSONEncoder().encode(preferences)
         let json = try JSONSerialization.jsonObject(with: data)
         let prettyJSON = try JSONSerialization.data(withJSONObject: json, options: [.prettyPrinted])
-        try prettyJSON.write(to: baseURL, options: .atomic)
+        try prettyJSON.write(to: preferencesURL, options: .atomic)
     }
 
     /// Default instance of the `FileManager`
     private let filemanager = FileManager.default
 
-    /// The URL of the `preferences.json` settings file.
+    /// The base URL of preferences.
     ///
-    /// `~/.codeedit/preferences.json`
-    private var baseURL: URL {
+    /// Points to `~/.codeedit/`
+    internal var baseURL: URL {
         return filemanager
             .homeDirectoryForCurrentUser
             .appendingPathComponent(".codeedit", isDirectory: true)
+    }
+
+    /// The URL of the `preferences.json` settings file.
+    ///
+    /// Points to `~/.codeedit/preferences.json`
+    private var preferencesURL: URL {
+        return baseURL
             .appendingPathComponent("preferences")
             .appendingPathExtension("json")
     }

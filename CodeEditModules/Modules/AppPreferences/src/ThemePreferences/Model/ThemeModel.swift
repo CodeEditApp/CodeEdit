@@ -87,7 +87,7 @@ public class ThemeModel: ObservableObject {
     /// the files in `~/.codeedit/themes/`.
     public func loadThemes() throws {
         themes.removeAll()
-        let url = baseURL.appendingPathComponent("themes")
+        let url = themesURL
 
         var isDir: ObjCBool = false
 
@@ -170,8 +170,7 @@ public class ThemeModel: ObservableObject {
     ///
     /// - Parameter theme: The theme to delete
     public func delete(_ theme: Theme) {
-        let url = baseURL
-            .appendingPathComponent("themes")
+        let url = themesURL
             .appendingPathComponent(theme.name)
             .appendingPathExtension("json")
         do {
@@ -186,7 +185,7 @@ public class ThemeModel: ObservableObject {
     /// Saves changes on theme properties to `overrides`
     /// in `~/.codeedit/preferences.json`.
     private func saveThemes() {
-        let url = baseURL.appendingPathComponent("themes")
+        let url = themesURL
         themes.forEach { theme in
             do {
                 let originalUrl = url.appendingPathComponent(theme.name).appendingPathExtension("json")
@@ -225,6 +224,11 @@ public class ThemeModel: ObservableObject {
     /// The base folder url `~/.codeedit/`
     private var baseURL: URL {
         filemanager.homeDirectoryForCurrentUser.appendingPathComponent(".codeedit")
+    }
+
+    /// The URL of the `themes` folder
+    internal var themesURL: URL {
+        baseURL.appendingPathComponent("themes", isDirectory: true)
     }
 }
 
