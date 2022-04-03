@@ -68,9 +68,11 @@ struct BreadcrumbsComponent: View {
         .onTapGesture {
             if let siblings = fileItem.parent?.children?.sortItems(foldersOnTop: true), !siblings.isEmpty {
                 let menu = BreadcrumsMenu(siblings, workspace: workspace)
-                if let position = position {
+                if let position = position,
+                   let windowHeight = NSApp.keyWindow?.contentView?.frame.height {
+                    let pos = NSPoint(x: position.x, y: windowHeight - 72) // 72 = offset from top to breadcrumbs bar
                     menu.popUp(positioning: menu.item(withTitle: fileItem.fileName),
-                               at: position,
+                               at: pos,
                                in: NSApp.keyWindow?.contentView)
                 }
             }
