@@ -86,8 +86,10 @@ public class ThemeModel: ObservableObject {
     /// they are applied to the loaded themes without altering the original
     /// the files in `~/.codeedit/themes/`.
     public func loadThemes() throws {
+        // remove all themes from memory
         themes.removeAll()
-        let url = baseURL.appendingPathComponent("themes")
+
+        let url = themesURL
 
         var isDir: ObjCBool = false
 
@@ -99,7 +101,8 @@ public class ThemeModel: ObservableObject {
         // get all filenames in themes folder that end with `.json`
         let content = try filemanager.contentsOfDirectory(atPath: url.path).filter { $0.contains(".json") }
 
-        // if the folder does not contain any themes create a default bundled theme and return
+        // if the folder does not contain any themes create a default bundled theme,
+        // write it to disk and return
         if content.isEmpty {
             guard let defaultUrl = Bundle.main.url(forResource: "default-dark", withExtension: "json") else {
                 return
@@ -119,12 +122,16 @@ public class ThemeModel: ObservableObject {
         try content.forEach { file in
             let fileURL = url.appendingPathComponent(file)
             var theme = try load(from: fileURL)
+
+            // get all properties of terminal and editor colors
             guard let terminalColors = try theme.terminal.allProperties() as? [String: Theme.Attributes],
                   let editorColors = try theme.editor.allProperties() as? [String: Theme.Attributes]
             else {
                 print("error")
                 throw NSError()
             }
+
+            // check if there are any overrides in `preferences.json`
             if let overrides = prefs?.theme.overrides[theme.name]?["terminal"] {
                 terminalColors.forEach { (key, _) in
                     if let attributes = overrides[key] {
@@ -139,9 +146,13 @@ public class ThemeModel: ObservableObject {
                     }
                 }
             }
+
+            // add the theme to themes array
             self.themes.append(theme)
+
+            // if there already is a selected theme in `preferences.json` select this theme
+            // otherwise take the first in the list
             self.selectedTheme = self.themes.first { $0.name == prefs?.theme.selectedTheme } ?? self.themes.first
-            print("loaded themes")
         }
     }
 
@@ -170,13 +181,17 @@ public class ThemeModel: ObservableObject {
     ///
     /// - Parameter theme: The theme to delete
     public func delete(_ theme: Theme) {
-        let url = baseURL
-            .appendingPathComponent("themes")
+        let url = themesURL
             .appendingPathComponent(theme.name)
             .appendingPathExtension("json")
         do {
+            // remove the theme from the list
             try filemanager.removeItem(at: url)
+
+            // remove from overrides in `preferences.json`
             AppPreferencesModel.shared.preferences.theme.overrides.removeValue(forKey: theme.name)
+
+            // reload themes
             try self.loadThemes()
         } catch {
             print(error)
@@ -186,12 +201,15 @@ public class ThemeModel: ObservableObject {
     /// Saves changes on theme properties to `overrides`
     /// in `~/.codeedit/preferences.json`.
     private func saveThemes() {
-        let url = baseURL.appendingPathComponent("themes")
+        let url = themesURL
         themes.forEach { theme in
             do {
+                // load the original theme from `~/.codeedit/themes/`
                 let originalUrl = url.appendingPathComponent(theme.name).appendingPathExtension("json")
                 let originalData = try Data(contentsOf: originalUrl)
                 let originalTheme = try JSONDecoder().decode(Theme.self, from: originalData)
+
+                // get properties of the current theme as well as the original
                 guard let terminalColors = try theme.terminal.allProperties() as? [String: Theme.Attributes],
                       let editorColors = try theme.editor.allProperties() as? [String: Theme.Attributes],
                       let oTermColors = try originalTheme.terminal.allProperties() as? [String: Theme.Attributes],
@@ -199,6 +217,9 @@ public class ThemeModel: ObservableObject {
                 else {
                     throw NSError()
                 }
+
+                // compare the properties and if there are differences, save to overrides
+                // in `preferences.json
                 var newAttr: [String: [String: Theme.Attributes]] = ["terminal": [:], "editor": [:]]
                 terminalColors.forEach { (key, value) in
                     if value != oTermColors[key] {
@@ -226,48 +247,9 @@ public class ThemeModel: ObservableObject {
     private var baseURL: URL {
         filemanager.homeDirectoryForCurrentUser.appendingPathComponent(".codeedit")
     }
-}
 
-/// Loopable protocol implements a method that will return all child
-/// properties and their associated values of a `Type`
-protocol Loopable {
-    func allProperties() throws -> [String: Any]
-}
-
-extension Loopable {
-
-    /// returns all child properties and their associated values of `self`
-    ///
-    /// **Example:**
-    /// ```swift
-    /// struct Author: Loopable {
-    ///   var name: String = "Steve"
-    ///   var books: Int = 4
-    /// }
-    ///
-    /// let author = Author()
-    /// print(author.allProperties())
-    ///
-    /// // returns
-    /// ["name": "Steve", "books": 4]
-    /// ```
-    func allProperties() throws -> [String: Any] {
-        var result: [String: Any] = [:]
-
-        let mirror = Mirror(reflecting: self)
-
-        guard let style = mirror.displayStyle, style == .struct || style == .class else {
-            throw NSError()
-        }
-
-        for (property, value) in mirror.children {
-            guard let property = property else {
-                continue
-            }
-
-            result[property] = value
-        }
-
-        return result
+    /// The URL of the `themes` folder
+    internal var themesURL: URL {
+        baseURL.appendingPathComponent("themes", isDirectory: true)
     }
 }

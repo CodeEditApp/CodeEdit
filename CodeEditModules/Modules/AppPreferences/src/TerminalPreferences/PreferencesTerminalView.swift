@@ -17,12 +17,14 @@ public struct PreferencesTerminalView: View {
     public init() {}
 
     public var body: some View {
-        Form {
-            shellSelector
-            fontSelector
+        PreferencesContent {
+            PreferencesSection("Shell") {
+                shellSelector
+            }
+            PreferencesSection("Font") {
+                fontSelector
+            }
         }
-        .frame(width: 844)
-        .padding(30)
     }
 
     private var shellSelector: some View {
@@ -35,7 +37,6 @@ public struct PreferencesTerminalView: View {
             Text("Bash")
                 .tag(AppPreferences.TerminalShell.bash)
         }
-        .fixedSize()
     }
 
     @ViewBuilder
@@ -46,7 +47,6 @@ public struct PreferencesTerminalView: View {
             Text("Custom")
                 .tag(true)
         }
-        .fixedSize()
         if prefs.preferences.terminal.font.customFont {
             FontPicker(
                 "\(prefs.preferences.terminal.font.name) \(prefs.preferences.terminal.font.size)",
