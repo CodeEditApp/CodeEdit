@@ -15,14 +15,27 @@ public struct PreferencesTextEditingView: View {
 
     public init() {}
 
+    /// only allows integer values in the range of `[1...8]`
+    private var numberFormat: NumberFormatter {
+        let formatter = NumberFormatter()
+        formatter.allowsFloats = false
+        formatter.minimum = 1
+        formatter.maximum = 8
+
+        return formatter
+    }
+
     public var body: some View {
         PreferencesContent {
             PreferencesSection("Default Tab Width") {
-                HStack {
+                HStack(spacing: 5) {
+                    TextField("", value: $prefs.preferences.textEditing.defaultTabWidth, formatter: numberFormat)
+                        .multilineTextAlignment(.trailing)
+                        .frame(width: 40)
                     Stepper("Default Tab Width:",
                             value: $prefs.preferences.textEditing.defaultTabWidth,
-                            in: 2...8)
-                    Text(String(prefs.preferences.textEditing.defaultTabWidth))
+                            in: 1...8)
+                    Text("spaces")
                 }
             }
             PreferencesSection("Font") {
