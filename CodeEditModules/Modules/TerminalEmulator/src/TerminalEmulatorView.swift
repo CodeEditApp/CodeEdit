@@ -100,6 +100,42 @@ public struct TerminalEmulatorView: NSViewRepresentable {
         return []
     }
 
+    /// Returns the `cursor` color of the selected theme
+    private var cursorColor: NSColor {
+        if let selectedTheme = themeModel.selectedTheme,
+           let index = themeModel.themes.firstIndex(of: selectedTheme) {
+            return NSColor(themeModel.themes[index].terminal.cursor.swiftColor)
+        }
+        return NSColor(.accentColor)
+    }
+
+    /// Returns the `selection` color of the selected theme
+    private var selectionColor: NSColor {
+        if let selectedTheme = themeModel.selectedTheme,
+           let index = themeModel.themes.firstIndex(of: selectedTheme) {
+            return NSColor(themeModel.themes[index].terminal.selection.swiftColor)
+        }
+        return NSColor(.accentColor)
+    }
+
+    /// Returns the `text` color of the selected theme
+    private var textColor: NSColor {
+        if let selectedTheme = themeModel.selectedTheme,
+           let index = themeModel.themes.firstIndex(of: selectedTheme) {
+            return NSColor(themeModel.themes[index].terminal.text.swiftColor)
+        }
+        return NSColor(.primary)
+    }
+
+    /// Returns the `background` color of the selected theme
+    private var backgroundColor: NSColor {
+        if let selectedTheme = themeModel.selectedTheme,
+           let index = themeModel.themes.firstIndex(of: selectedTheme) {
+            return NSColor(themeModel.themes[index].terminal.background.swiftColor)
+        }
+        return .windowBackgroundColor
+    }
+
     /// returns a `NSAppearance` based on the user setting of the terminal appearance,
     /// `nil` if app default is not overriden
     private var colorAppearance: NSAppearance? {
@@ -132,6 +168,10 @@ public struct TerminalEmulatorView: NSViewRepresentable {
             terminal.font = font
             terminal.configureNativeColors()
             terminal.installColors(self.colors)
+            terminal.caretColor = cursorColor
+            terminal.selectedTextBackgroundColor = selectionColor
+            terminal.nativeForegroundColor = textColor
+            terminal.nativeBackgroundColor = backgroundColor
         }
         terminal.appearance = colorAppearance
         TerminalEmulatorView.lastTerminal = terminal
@@ -143,6 +183,10 @@ public struct TerminalEmulatorView: NSViewRepresentable {
         }
         view.configureNativeColors()
         view.installColors(self.colors)
+        view.caretColor = cursorColor
+        view.selectedTextBackgroundColor = selectionColor
+        view.nativeForegroundColor = textColor
+        view.nativeBackgroundColor = backgroundColor
         view.appearance = colorAppearance
         if TerminalEmulatorView.lastTerminal != nil {
             TerminalEmulatorView.lastTerminal = view
