@@ -15,6 +15,7 @@ public struct PreferencesTextEditingView: View {
 
     public init() {}
 
+    /// only allows integer values in the range of `[1...8]`
     private var numberFormat: NumberFormatter {
         let formatter = NumberFormatter()
         formatter.allowsFloats = false
