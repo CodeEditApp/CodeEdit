@@ -29,6 +29,18 @@ public struct AppPreferences: Codable {
     /// The global settings for text editing
     public var textEditing: TextEditingPreferences = .init()
 
+    /// Default initializer
+    public init() {}
+
+    /// Explicit decoder init for setting default values when key is not present in `JSON`
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.general = try container.decodeIfPresent(GeneralPreferences.self, forKey: .general) ?? .init()
+        self.theme = try container.decodeIfPresent(ThemePreferences.self, forKey: .theme) ?? .init()
+        self.terminal = try container.decodeIfPresent(TerminalPreferences.self, forKey: .terminal) ?? .init()
+        self.textEditing = try container.decodeIfPresent(TextEditingPreferences.self, forKey: .textEditing) ?? .init()
+    }
+
 }
 
 public extension AppPreferences {
@@ -44,6 +56,18 @@ public extension AppPreferences {
 
         /// The reopen behavior of the app
         public var reopenBehavior: ReopenBehavior = .welcome
+
+        /// Default initializer
+        public init() {}
+
+        /// Explicit decoder init for setting default values when key is not present in `JSON`
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.appAppearance = try container.decodeIfPresent(Appearances.self, forKey: .appAppearance) ?? .system
+            self.fileIconStyle = try container.decodeIfPresent(FileIconStyle.self, forKey: .fileIconStyle) ?? .color
+            self.reopenBehavior = try container.decodeIfPresent(ReopenBehavior.self,
+                                                                forKey: .reopenBehavior) ?? .welcome
+        }
     }
 
     /// The appearance of the app
@@ -147,6 +171,17 @@ public extension AppPreferences {
         /// }
         /// ```
         public var overrides: [String: ThemeOverrides] = [:]
+
+        /// Default initializer
+        public init() {}
+
+        /// Explicit decoder init for setting default values when key is not present in `JSON`
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.selectedTheme = try container.decodeIfPresent(String.self, forKey: .selectedTheme)
+            self.useThemeBackground = try container.decodeIfPresent(Bool.self, forKey: .useThemeBackground) ?? false
+            self.overrides = try container.decodeIfPresent([String: ThemeOverrides].self, forKey: .overrides) ?? [:]
+        }
     }
 
 }
@@ -155,14 +190,30 @@ public extension AppPreferences {
 
     /// The global settings for the terminal emulator
     struct TerminalPreferences: Codable {
+
         /// If true terminal appearance will always be `dark`. Otherwise it adapts to the system setting.
         public var darkAppearance: Bool = false
+
+        /// If true, the terminal treats the `Option` key as the `Meta` key
+        public var optionAsMeta: Bool = false
 
         /// The selected shell to use.
         public var shell: TerminalShell = .system
 
         /// The font to use in terminal.
         public var font: TerminalFont = .init()
+
+        /// Default initializer
+        public init() {}
+
+        /// Explicit decoder init for setting default values when key is not present in `JSON`
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.darkAppearance = try container.decodeIfPresent(Bool.self, forKey: .darkAppearance) ?? false
+            self.optionAsMeta = try container.decodeIfPresent(Bool.self, forKey: .optionAsMeta) ?? false
+            self.shell = try container.decodeIfPresent(TerminalShell.self, forKey: .shell) ?? .system
+            self.font = try container.decodeIfPresent(TerminalFont.self, forKey: .font) ?? .init()
+        }
     }
 
     /// The shell options.
@@ -184,6 +235,17 @@ public extension AppPreferences {
 
         /// The name of the custom font
         public var name: String = "SF-MonoMedium"
+
+        /// Default initializer
+        public init() {}
+
+        /// Explicit decoder init for setting default values when key is not present in `JSON`
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.customFont = try container.decodeIfPresent(Bool.self, forKey: .customFont) ?? false
+            self.size = try container.decodeIfPresent(Int.self, forKey: .size) ?? 11
+            self.name = try container.decodeIfPresent(String.self, forKey: .name) ?? "SF-MonoMedium"
+        }
     }
 }
 
@@ -196,6 +258,16 @@ public extension AppPreferences {
 
         /// The font to use in editor.
         public var font: EditorFont = .init()
+
+        /// Default initializer
+        public init() {}
+
+        /// Explicit decoder init for setting default values when key is not present in `JSON`
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.defaultTabWidth = try container.decodeIfPresent(Int.self, forKey: .defaultTabWidth) ?? 4
+            self.font = try container.decodeIfPresent(EditorFont.self, forKey: .font) ?? .init()
+        }
     }
 
     struct EditorFont: Codable {
@@ -207,5 +279,16 @@ public extension AppPreferences {
 
         /// The name of the custom font
         public var name: String = "SF-MonoMedium"
+
+        /// Default initializer
+        public init() {}
+
+        /// Explicit decoder init for setting default values when key is not present in `JSON`
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.customFont = try container.decodeIfPresent(Bool.self, forKey: .customFont) ?? false
+            self.size = try container.decodeIfPresent(Int.self, forKey: .size) ?? 11
+            self.name = try container.decodeIfPresent(String.self, forKey: .name) ?? "SF-MonoMedium"
+        }
     }
 }

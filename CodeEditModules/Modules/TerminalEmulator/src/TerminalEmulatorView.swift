@@ -89,6 +89,11 @@ public struct TerminalEmulatorView: NSViewRepresentable {
         return String(cString: pwd.pw_shell)
     }
 
+    /// Returns true if the `option` key should be treated as the `meta` key.
+    private var optionAsMeta: Bool {
+        prefs.preferences.terminal.optionAsMeta
+    }
+
     /// Returns the mapped array of `SwiftTerm.Color` objects of ANSI Colors
     private var colors: [SwiftTerm.Color] {
         if let selectedTheme = themeModel.selectedTheme,
@@ -172,6 +177,7 @@ public struct TerminalEmulatorView: NSViewRepresentable {
             terminal.selectedTextBackgroundColor = selectionColor
             terminal.nativeForegroundColor = textColor
             terminal.nativeBackgroundColor = backgroundColor
+            terminal.optionAsMetaKey = optionAsMeta
         }
         terminal.appearance = colorAppearance
         TerminalEmulatorView.lastTerminal = terminal
@@ -187,6 +193,7 @@ public struct TerminalEmulatorView: NSViewRepresentable {
         view.selectedTextBackgroundColor = selectionColor
         view.nativeForegroundColor = textColor
         view.nativeBackgroundColor = backgroundColor
+        view.optionAsMetaKey = optionAsMeta
         view.appearance = colorAppearance
         if TerminalEmulatorView.lastTerminal != nil {
             TerminalEmulatorView.lastTerminal = view
