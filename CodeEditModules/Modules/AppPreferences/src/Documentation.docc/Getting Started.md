@@ -19,7 +19,7 @@ Since it is a `@StateObject` we can be sure to always get up-to-date information
 Toggle("Enable some Feature", value: $prefs.preferences.someFeature.isEnabled)
 ```
 
-## Creating a new Preference
+## Creating a New Preference
 
 When implementing a new feature, we might have some options in regards to this new feature we want to show the user in the apps Preferences Window.
 
