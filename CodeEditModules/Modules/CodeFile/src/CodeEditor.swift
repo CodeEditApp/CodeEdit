@@ -39,8 +39,7 @@ struct CodeEditor: NSViewRepresentable {
                 scrollView: scrollView
             )
         )
-        // Enable finding in document
-        textView.usesFindBar = true
+
         if let highlightr = highlightr,
            let string = highlightr.highlight(
             content.wrappedValue,
