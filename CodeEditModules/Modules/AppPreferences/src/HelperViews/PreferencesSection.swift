@@ -7,17 +7,18 @@
 
 import SwiftUI
 
-internal struct PreferencesContent<Content: View>: View {
+/// A view that wraps multiple ``PreferencesSection`` views and aligns them correctly.
+public struct PreferencesContent<Content: View>: View {
 
     private var width: Double
     private var content: Content
 
-    init(width: Double = 844, @ViewBuilder content: () -> Content) {
+    public init(width: Double = 844, @ViewBuilder content: () -> Content) {
         self.width = width
         self.content = content()
     }
 
-    var body: some View {
+    public var body: some View {
         VStack(alignment: .leading) {
             content
         }
@@ -26,19 +27,20 @@ internal struct PreferencesContent<Content: View>: View {
     }
 }
 
-internal struct PreferencesSection<Content: View>: View {
+/// A view that wraps controls and more and adds a right aligned label.
+public struct PreferencesSection<Content: View>: View {
 
     private var title: String
     private var width: Double
     private var content: Content
 
-    init(_ title: String, width: Double = 300, @ViewBuilder content: () -> Content) {
+    public init(_ title: String, width: Double = 300, @ViewBuilder content: () -> Content) {
         self.title = title
         self.width = width
         self.content = content()
     }
 
-    var body: some View {
+    public var body: some View {
         HStack(alignment: .firstTextBaseline) {
             Text("\(title):")
                 .frame(width: width, alignment: .trailing)

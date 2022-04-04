@@ -1,14 +1,14 @@
 //
-//  PreferencesGeneralView.swift
+//  GeneralPreferencesView.swift
 //  
 //
 //  Created by Lukas Pistrol on 30.03.22.
 //
 
 import SwiftUI
-import Preferences
 
-public struct PreferencesGeneralView: View {
+/// A view that implements the `General` preference section
+public struct GeneralPreferencesView: View {
 
     @StateObject
     private var prefs: AppPreferencesModel = .shared

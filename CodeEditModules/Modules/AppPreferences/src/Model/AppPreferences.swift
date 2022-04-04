@@ -13,8 +13,12 @@ import SwiftUI
 ///
 /// A `JSON` representation is persisted in `~/.codeedit/preference.json`.
 /// - Attention: Don't use `UserDefaults` for persisting user accessible settings.
-/// If a further setting is needed, extend the struct like ``GeneralPreferences``,
-/// ``ThemePreferences``,  or ``TerminalPreferences`` does.
+///  If a further setting is needed, extend the struct like ``GeneralPreferences``,
+///  ``ThemePreferences``,  or ``TerminalPreferences`` does.
+///
+/// - Note: Also make sure to implement the ``init(from:)`` initializer, decoding
+///  all properties with ``decodeIfPresent(_:forKey:)`` and providing a default
+///  value. Otherwise all settings get overridden.
 public struct AppPreferences: Codable {
 
     /// The general global setting
