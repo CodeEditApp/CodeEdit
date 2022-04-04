@@ -1,5 +1,5 @@
 //
-//  PreferencesTextEditingView.swift
+//  TextEditingPreferencesView.swift
 //  
 //
 //  Created by Lukas Pistrol on 30.03.22.
@@ -8,7 +8,8 @@
 import SwiftUI
 import FontPicker
 
-public struct PreferencesTextEditingView: View {
+/// A view that implements the `Text Editing` preference section
+public struct TextEditingPreferencesView: View {
 
     @StateObject
     private var prefs: AppPreferencesModel = .shared

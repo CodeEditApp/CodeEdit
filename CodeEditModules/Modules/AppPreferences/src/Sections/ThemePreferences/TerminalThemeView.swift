@@ -108,7 +108,7 @@ struct TerminalThemeView: View {
     }
 }
 
-struct TerminalThemeView_Previews: PreviewProvider {
+private struct TerminalThemeView_Previews: PreviewProvider {
     static var previews: some View {
         TerminalThemeView()
             .preferredColorScheme(.dark)
