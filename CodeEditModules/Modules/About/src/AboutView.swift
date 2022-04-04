@@ -1,8 +1,8 @@
 import SwiftUI
+import Acknowledgements
 
 public struct AboutView: View {
-    @Environment(\.colorScheme)
-    var colorScheme
+    @Environment(\.openURL) var openURL
 
     public init() {}
 
@@ -30,7 +30,7 @@ public struct AboutView: View {
                             .foregroundColor(.secondary)
                             .font(.system(size: 13, weight: .light))
                         Spacer().frame(height: 36)
-                        Text("Copyright (c) 2022 CodeEdit\n\nMIT License")
+                        Text("Copyright © 2022 CodeEdit\n\nMIT License")
                             .foregroundColor(.secondary)
                             .font(.system(size: 9, weight: .light))
                             .lineSpacing(0.2)
@@ -40,12 +40,16 @@ public struct AboutView: View {
                 Spacer()
                 HStack(spacing: 0) {
                     Spacer().frame(width: 6)
-                    Button(action: {}, label: {
+                    Button(action: {
+                        AcknowledgementsView().showWindow(width: 300, height: 400)
+                    }, label: {
                         Text("Acknowledgments")
                             .frame(width: 136, height: 20)
                     })
                     Spacer().frame(width: 12)
-                    Button(action: {}, label: {
+                    Button(action: {
+                        openURL(URL(string: "https://github.com/CodeEditApp/CodeEdit/blob/main/LICENSE.md")!)
+                    }, label: {
                         Text("License Agreement")
                             .frame(width: 136, height: 20)
                     })
@@ -53,15 +57,6 @@ public struct AboutView: View {
                 }.frame(maxWidth: .infinity)
                 Spacer().frame(height: 20)
             }
-        }
-        .background(backgroundColor)
-    }
-
-    public var backgroundColor: Color? {
-        if #available(macOS 12.0, *) {
-            return Color(nsColor: colorScheme == .dark ? .windowBackgroundColor : .white)
-        } else {
-            return nil
         }
     }
 

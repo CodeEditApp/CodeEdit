@@ -61,6 +61,10 @@ let package = Package(
             name: "About",
             targets: ["About"]
         ),
+        .library(
+            name: "Acknowledgements",
+            targets: ["Acknowledgements"]
+        ),
     ],
     dependencies: [
         .package(
@@ -191,7 +195,14 @@ let package = Package(
         ),
         .target(
             name: "About",
+            dependencies: [
+                "Acknowledgements",
+            ],
             path: "Modules/About/src"
         ),
+        .target(
+            name: "Acknowledgements",
+            path: "Modules/Acknowledgements/src"
+        )
     ]
 )
