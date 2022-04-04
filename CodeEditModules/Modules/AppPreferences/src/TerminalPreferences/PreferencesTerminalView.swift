@@ -20,6 +20,7 @@ public struct PreferencesTerminalView: View {
         PreferencesContent {
             PreferencesSection("Shell") {
                 shellSelector
+                optionAsMetaToggle
             }
             PreferencesSection("Font") {
                 fontSelector
@@ -36,6 +37,13 @@ public struct PreferencesTerminalView: View {
                 .tag(AppPreferences.TerminalShell.zsh)
             Text("Bash")
                 .tag(AppPreferences.TerminalShell.bash)
+        }
+    }
+
+    private var optionAsMetaToggle: some View {
+        HStack {
+            Toggle("Option as Meta", isOn: $prefs.preferences.terminal.optionAsMeta)
+            Text("Use \"Option\" key as \"Meta\"")
         }
     }
 
