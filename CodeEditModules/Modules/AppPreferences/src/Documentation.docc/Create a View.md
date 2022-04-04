@@ -4,7 +4,7 @@ Now that you followed the <doc:Getting-Started> guide it's time to create a view
 
 ## Add Option to existing Section
 
-In our exapmple we added `ourNewOption` in ``AppPreferences/AppPreferences/GeneralPreferences``.
+In our example we added `ourNewOption` in ``AppPreferences/AppPreferences/GeneralPreferences``.
 
 Now let's take a look at the ``AppPreferences/GeneralPreferencesView``.
 
