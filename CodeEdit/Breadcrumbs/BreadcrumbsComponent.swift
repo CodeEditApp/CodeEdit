@@ -44,27 +44,32 @@ struct BreadcrumbsComponent: View {
 
     var body: some View {
         HStack(alignment: .center) {
-            /// Get location in window
-            /// Can't use it outside `HStack` becuase it'll make the whole `BreadcrumsComponent` flexiable.
-            GeometryReader { geometry in
-                HStack {
-                    Image(systemName: image)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 12)
-                        .foregroundStyle(prefs.preferences.general.fileIconStyle == .color ? color : .secondary)
-                        .onAppear {
-                            self.position = NSPoint(
-                                x: geometry.frame(in: .global).minX,
-                                y: geometry.frame(in: .global).midY
-                            )
-                        }
-                }.frame(height: geometry.size.height)
+            HStack {
+                Image(systemName: image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 12)
+                    .foregroundStyle(prefs.preferences.general.fileIconStyle == .color ? color : .secondary)
             }
             Text(fileItem.fileName)
                 .foregroundStyle(.primary)
                 .font(.system(size: 11))
         }
+        /// Get location in window
+        .background(GeometryReader { (proxy: GeometryProxy) -> Color in
+            if position != NSPoint(
+                x: proxy.frame(in: .global).minX,
+                y: proxy.frame(in: .global).midY
+            ) {
+                DispatchQueue.main.async {
+                    position = NSPoint(
+                        x: proxy.frame(in: .global).minX,
+                        y: proxy.frame(in: .global).midY
+                    )
+                }
+            }
+            return Color.clear
+        })
         .onTapGesture {
             if let siblings = fileItem.parent?.children?.sortItems(foldersOnTop: true), !siblings.isEmpty {
                 let menu = BreadcrumsMenu(siblings, workspace: workspace)
