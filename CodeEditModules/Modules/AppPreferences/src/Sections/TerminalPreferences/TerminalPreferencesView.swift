@@ -1,5 +1,5 @@
 //
-//  PreferencesTerminalView.swift
+//  TerminalPreferencesView.swift
 //  
 //
 //  Created by Lukas Pistrol on 02.04.22.
@@ -9,7 +9,8 @@ import SwiftUI
 import Preferences
 import FontPicker
 
-public struct PreferencesTerminalView: View {
+/// A view that implements the `Terminal` preference section
+public struct TerminalPreferencesView: View {
 
     @StateObject
     private var prefs: AppPreferencesModel = .shared
