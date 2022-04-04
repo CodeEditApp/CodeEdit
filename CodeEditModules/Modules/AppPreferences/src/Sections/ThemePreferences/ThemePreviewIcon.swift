@@ -262,7 +262,7 @@ struct ThemePreviewIcon: View {
 }
 
  @available(macOS 12, *)
- struct ThemePreviewIcon_Previews: PreviewProvider {
+ private struct ThemePreviewIcon_Previews: PreviewProvider {
     static var previews: some View {
         ThemePreviewIcon(ThemeModel.shared.themes.first!,
                          selection: .constant(ThemeModel.shared.themes.first),

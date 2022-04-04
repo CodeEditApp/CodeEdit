@@ -142,7 +142,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                 title: "General",
                 toolbarIcon: NSImage(systemSymbolName: "gearshape", accessibilityDescription: nil)!
             ) {
-                PreferencesGeneralView()
+                GeneralPreferencesView()
             },
             Preferences.Pane(
                 identifier: Preferences.PaneIdentifier("Accounts"),
@@ -178,14 +178,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                 title: "Text Editing",
                 toolbarIcon: NSImage(systemSymbolName: "square.and.pencil", accessibilityDescription: nil)!
             ) {
-                PreferencesTextEditingView()
+                TextEditingPreferencesView()
             },
             Preferences.Pane(
                 identifier: Preferences.PaneIdentifier("Terminal"),
                 title: "Terminal",
                 toolbarIcon: NSImage(systemSymbolName: "terminal", accessibilityDescription: nil)!
             ) {
-                PreferencesTerminalView()
+                TerminalPreferencesView()
             },
             Preferences.Pane(
                 identifier: Preferences.PaneIdentifier("KeyBindings"),
@@ -213,7 +213,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                 title: "Locations",
                 toolbarIcon: NSImage(systemSymbolName: "externaldrive", accessibilityDescription: nil)!
             ) {
-                PreferencesLocationsView()
+                LocationsPreferencesView()
             },
             Preferences.Pane(
                 identifier: Preferences.PaneIdentifier("Advanced"),

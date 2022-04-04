@@ -1,5 +1,5 @@
 //
-//  PreferencesLocationsView.swift
+//  LocationsPreferencesView.swift
 //  
 //
 //  Created by Lukas Pistrol on 03.04.22.
@@ -8,7 +8,8 @@
 import SwiftUI
 import Preferences
 
-public struct PreferencesLocationsView: View {
+/// A view that implements the `Locations` preference section
+public struct LocationsPreferencesView: View {
 
     public init() {}
 
@@ -47,8 +48,8 @@ public struct PreferencesLocationsView: View {
     }
 }
 
-public struct LocationsPreferences_Previews: PreviewProvider {
+private struct LocationsPreferences_Previews: PreviewProvider {
     public static var previews: some View {
-        PreferencesLocationsView()
+        LocationsPreferencesView()
     }
 }
