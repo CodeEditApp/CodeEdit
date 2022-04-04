@@ -113,6 +113,9 @@ Support CodeEdit's development by [becoming a sponsor](https://github.com/sponso
 
 <a href="https://github.com/panascais" target="_blank"><img src="https://avatars.githubusercontent.com/u/19628635?s=200&v=4" width="128"></a>
 
+[![powered-by-vercel](https://user-images.githubusercontent.com/806104/161609938-2fe03e88-fd43-4ed4-a2d2-8d3e3fc4eec7.svg)](https://vercel.com/?utm_source=codeedit&utm_campaign=oss)
+
+
 ## Backers
 
 Support CodeEdit's development by [becoming a backer](https://github.com/sponsors/CodeEditApp).
