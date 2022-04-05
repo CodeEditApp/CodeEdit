@@ -9,15 +9,23 @@ import SwiftUI
 import WorkspaceClient
 import Design
 
-struct QuickOpenView: View {
-    @ObservedObject
-    var state: WorkspaceDocument.QuickOpenState
+public struct QuickOpenView: View {
+    @ObservedObject private var state: QuickOpenState
+    private let onClose: () -> Void
+    private let openFile: (WorkspaceClient.FileItem) -> Void
+    @State private var selectedItem: WorkspaceClient.FileItem?
 
-    @State
-    var selectedItem: WorkspaceClient.FileItem?
-    var onClose: () -> Void
+    public init(
+        state: QuickOpenState,
+        onClose: @escaping () -> Void,
+        openFile: @escaping (WorkspaceClient.FileItem) -> Void
+    ) {
+        self.state = state
+        self.onClose = onClose
+        self.openFile = openFile
+    }
 
-    var body: some View {
+    public var body: some View {
         VStack(spacing: 0.0) {
             VStack {
                 HStack(alignment: .center, spacing: 0) {
@@ -47,10 +55,10 @@ struct QuickOpenView: View {
                     NavigationLink(tag: file, selection: $selectedItem) {
                         QuickOpenPreviewView(item: file)
                     } label: {
-                        QuickOpenItem(baseDirectory: state.workspace.fileURL!, fileItem: file)
+                        QuickOpenItem(baseDirectory: state.fileURL, fileItem: file)
                     }
                     .onTapGesture(count: 2) {
-                        state.workspace.openFile(item: file)
+                        self.openFile(file)
                         self.onClose()
                     }
                     .onTapGesture(count: 1) {
@@ -76,6 +84,10 @@ struct QuickOpenView: View {
 
 struct QuickOpenView_Previews: PreviewProvider {
     static var previews: some View {
-        QuickOpenView(state: .init(.init()), onClose: {})
+        QuickOpenView(
+            state: .init(fileURL: .init(fileURLWithPath: "")),
+            onClose: {},
+            openFile: { _ in }
+        )
     }
 }

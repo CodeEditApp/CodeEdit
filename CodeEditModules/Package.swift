@@ -62,6 +62,10 @@ let package = Package(
             targets: ["About"]
         ),
         .library(
+            name: "QuickOpen",
+            targets: ["QuickOpen"]
+        ),
+        .library(
             name: "Design",
             targets: ["Design"]
         ),
@@ -201,6 +205,15 @@ let package = Package(
         .target(
             name: "About",
             path: "Modules/About/src"
+        ),
+        .target(
+            name: "QuickOpen",
+            dependencies: [
+                "WorkspaceClient",
+                "CodeFile",
+                "Design",
+            ],
+            path: "Modules/QuickOpen/src"
         ),
         .target(
             name: "Design",

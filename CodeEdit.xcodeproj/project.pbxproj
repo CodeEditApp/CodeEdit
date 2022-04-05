@@ -12,10 +12,7 @@
 		043C321A27E32295006AE443 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 043C321927E32295006AE443 /* MainMenu.xib */; };
 		04540D5E27DD08C300E91B77 /* WorkspaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B658FB3127DA9E0F00EA4DBD /* WorkspaceView.swift */; };
 		04660F6A27E51E5C00477777 /* CodeEditWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04660F6927E51E5C00477777 /* CodeEditWindowController.swift */; };
-		0485EB1927E70F4900138301 /* QuickOpenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0485EB1827E70F4900138301 /* QuickOpenView.swift */; };
-		0485EB1D27E7338100138301 /* QuickOpenItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0485EB1C27E7338100138301 /* QuickOpenItem.swift */; };
 		0485EB1F27E7458B00138301 /* WorkspaceCodeFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0485EB1E27E7458B00138301 /* WorkspaceCodeFileView.swift */; };
-		0485EB2327E7791400138301 /* QuickOpenPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0485EB2227E7791400138301 /* QuickOpenPreviewView.swift */; };
 		0485EB2527E7B9C800138301 /* Overlays in Frameworks */ = {isa = PBXBuildFile; productRef = 0485EB2427E7B9C800138301 /* Overlays */; };
 		20D2A95527F72E6800E7ECF6 /* Accounts in Frameworks */ = {isa = PBXBuildFile; productRef = 20D2A95427F72E6800E7ECF6 /* Accounts */; };
 		2803257127F3CF1F009C7DC2 /* AppPreferences in Frameworks */ = {isa = PBXBuildFile; productRef = 2803257027F3CF1F009C7DC2 /* AppPreferences */; };
@@ -36,6 +33,7 @@
 		2B7A583527E4BA0100D25D4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0468438427DC76E200F8E88E /* AppDelegate.swift */; };
 		5C403B8F27E20F8000788241 /* WorkspaceClient in Frameworks */ = {isa = PBXBuildFile; productRef = 5C403B8E27E20F8000788241 /* WorkspaceClient */; };
 		5CA8776327FC4FC8003F5CD5 /* Design in Frameworks */ = {isa = PBXBuildFile; productRef = 5CA8776227FC4FC8003F5CD5 /* Design */; };
+		5CA8776527FC6A95003F5CD5 /* QuickOpen in Frameworks */ = {isa = PBXBuildFile; productRef = 5CA8776427FC6A95003F5CD5 /* QuickOpen */; };
 		5CF38A5E27E48E6C0096A0F7 /* CodeFile in Frameworks */ = {isa = PBXBuildFile; productRef = 5CF38A5D27E48E6C0096A0F7 /* CodeFile */; };
 		5CFA753B27E896B60002F01B /* GitClient in Frameworks */ = {isa = PBXBuildFile; productRef = 5CFA753A27E896B60002F01B /* GitClient */; };
 		64B64EDE27F7B79400C400F1 /* About in Frameworks */ = {isa = PBXBuildFile; productRef = 64B64EDD27F7B79400C400F1 /* About */; };
@@ -83,10 +81,7 @@
 		04660F6027E3A68A00477777 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		04660F6927E51E5C00477777 /* CodeEditWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditWindowController.swift; sourceTree = "<group>"; };
 		0468438427DC76E200F8E88E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		0485EB1827E70F4900138301 /* QuickOpenView.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = QuickOpenView.swift; sourceTree = "<group>"; tabWidth = 4; };
-		0485EB1C27E7338100138301 /* QuickOpenItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickOpenItem.swift; sourceTree = "<group>"; };
 		0485EB1E27E7458B00138301 /* WorkspaceCodeFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceCodeFileView.swift; sourceTree = "<group>"; };
-		0485EB2227E7791400138301 /* QuickOpenPreviewView.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = QuickOpenPreviewView.swift; sourceTree = "<group>"; tabWidth = 4; };
 		28069DA327F5BCDD0016BC47 /* default-dark.json */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = text.json; path = "default-dark.json"; sourceTree = "<group>"; tabWidth = 2; };
 		2806CBD327EE9FC0003E5523 /* ProjectNavigatorContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectNavigatorContextMenu.swift; sourceTree = "<group>"; };
 		286471AA27ED51FD0039369D /* ProjectNavigator.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = ProjectNavigator.swift; sourceTree = "<group>"; tabWidth = 4; };
@@ -131,6 +126,7 @@
 				64B64EDE27F7B79400C400F1 /* About in Frameworks */,
 				5C403B8F27E20F8000788241 /* WorkspaceClient in Frameworks */,
 				2803257127F3CF1F009C7DC2 /* AppPreferences in Frameworks */,
+				5CA8776527FC6A95003F5CD5 /* QuickOpen in Frameworks */,
 				0485EB2527E7B9C800138301 /* Overlays in Frameworks */,
 				D70F5E2C27E4E8CF004EE4B9 /* WelcomeModule in Frameworks */,
 				2859B93F27EB50050069BE88 /* FontPicker in Frameworks */,
@@ -169,16 +165,6 @@
 				D7E201AD27E8B3C000CB86D0 /* String+Ranges.swift */,
 			);
 			path = Documents;
-			sourceTree = "<group>";
-		};
-		0485EB1727E7016400138301 /* Quick Open */ = {
-			isa = PBXGroup;
-			children = (
-				0485EB1827E70F4900138301 /* QuickOpenView.swift */,
-				0485EB1C27E7338100138301 /* QuickOpenItem.swift */,
-				0485EB2227E7791400138301 /* QuickOpenPreviewView.swift */,
-			);
-			path = "Quick Open";
 			sourceTree = "<group>";
 		};
 		28069DA527F5BD320016BC47 /* DefaultThemes */ = {
@@ -267,7 +253,6 @@
 				D7211D4427E066D4008F2ED7 /* Localization */,
 				287776EA27E350A100D46668 /* NavigatorSidebar */,
 				B658FB3527DA9E1000EA4DBD /* Preview Content */,
-				0485EB1727E7016400138301 /* Quick Open */,
 				287776EB27E350BA00D46668 /* TabBar */,
 				D72E1A8127E3B0A300EB11B9 /* Welcome */,
 				0468438427DC76E200F8E88E /* AppDelegate.swift */,
@@ -363,6 +348,7 @@
 				20D2A95427F72E6800E7ECF6 /* Accounts */,
 				64B64EDD27F7B79400C400F1 /* About */,
 				5CA8776227FC4FC8003F5CD5 /* Design */,
+				5CA8776427FC6A95003F5CD5 /* QuickOpen */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -564,7 +550,6 @@
 				2813F93827ECC4AA00E305E4 /* FindNavigatorResultList.swift in Sources */,
 				2B7A583527E4BA0100D25D4E /* AppDelegate.swift in Sources */,
 				2875A46D27E3BE5B007805F8 /* BreadcrumbsView.swift in Sources */,
-				0485EB1D27E7338100138301 /* QuickOpenItem.swift in Sources */,
 				D7012EE827E757850001E1EF /* FindNavigator.swift in Sources */,
 				D7E201AE27E8B3C000CB86D0 /* String+Ranges.swift in Sources */,
 				D7E201B027E8C07300CB86D0 /* FindNavigatorSearchBar.swift in Sources */,
@@ -577,7 +562,6 @@
 				D7E201B227E8D50000CB86D0 /* FindNavigatorModeSelector.swift in Sources */,
 				287776E927E34BC700D46668 /* TabBar.swift in Sources */,
 				0485EB1F27E7458B00138301 /* WorkspaceCodeFileView.swift in Sources */,
-				0485EB1927E70F4900138301 /* QuickOpenView.swift in Sources */,
 				286471AB27ED51FD0039369D /* ProjectNavigator.swift in Sources */,
 				D7E201BD27EA00E200CB86D0 /* FindNavigatorResultFileItem.swift in Sources */,
 				286620A527E4AB6900E18C2B /* BreadcrumbsComponent.swift in Sources */,
@@ -590,7 +574,6 @@
 				043C321627E3201F006AE443 /* WorkspaceDocument.swift in Sources */,
 				28B0A19827E385C300B73177 /* NavigatorSidebarToolbarTop.swift in Sources */,
 				28FFE1BF27E3A441001939DB /* NavigatorSidebarToolbarBottom.swift in Sources */,
-				0485EB2327E7791400138301 /* QuickOpenPreviewView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -983,6 +966,10 @@
 		5CA8776227FC4FC8003F5CD5 /* Design */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Design;
+		};
+		5CA8776427FC6A95003F5CD5 /* QuickOpen */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = QuickOpen;
 		};
 		5CF38A5D27E48E6C0096A0F7 /* CodeFile */ = {
 			isa = XCSwiftPackageProductDependency;
