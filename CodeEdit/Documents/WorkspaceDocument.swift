@@ -11,119 +11,352 @@ import SwiftUI
 import WorkspaceClient
 import Combine
 import CodeFile
+import Search
 
 @objc(WorkspaceDocument)
 class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
-    
-    @Published var workspaceClient: WorkspaceClient?
-    @Published var selectedId: String?
-    @Published var openFileItems: [WorkspaceClient.FileItem] = []
-	@Published var sortFoldersOnTop: Bool = true
-    @Published var fileItems: [WorkspaceClient.FileItem] = []
+    var workspaceClient: WorkspaceClient?
 
-    var openedCodeFiles: [WorkspaceClient.FileItem : CodeFileDocument] = [:]
-	var folderURL: URL?
+    @Published var sortFoldersOnTop: Bool = true
+    @Published var selectionState: WorkspaceSelectionState = .init()
+
+    var searchState: SearchState?
+    var quickOpenState: QuickOpenState?
     private var cancellables = Set<AnyCancellable>()
-    
+
     deinit {
         cancellables.forEach { $0.cancel() }
     }
-    
+
     func closeFileTab(item: WorkspaceClient.FileItem) {
         defer {
-            openedCodeFiles.removeValue(forKey: item)
+            let file = selectionState.openedCodeFiles.removeValue(forKey: item)
+            file?.save(self)
         }
-        
-        guard let idx = openFileItems.firstIndex(of: item) else { return }
-        let closedFileItem = openFileItems.remove(at: idx)
-        guard closedFileItem.id == selectedId else { return }
-        
-        if openFileItems.isEmpty {
-            selectedId = nil
+
+        guard let idx = selectionState.openFileItems.firstIndex(of: item) else { return }
+        let closedFileItem = selectionState.openFileItems.remove(at: idx)
+        guard closedFileItem.id == item.id else { return }
+
+        if selectionState.openFileItems.isEmpty {
+            selectionState.selectedId = nil
         } else if idx == 0 {
-            selectedId = openFileItems.first?.id
+            selectionState.selectedId = selectionState.openFileItems.first?.id
         } else {
-            selectedId = openFileItems[idx - 1].id
+            selectionState.selectedId = selectionState.openFileItems[idx - 1].id
         }
     }
-    
+    func closeFileTabs<Items>(items: Items) where Items: Collection, Items.Element == WorkspaceClient.FileItem {
+        // TODO: Could potentially be optimized
+        for item in items {
+            closeFileTab(item: item)
+        }
+    }
+
+    func closeFileTab(where predicate: (WorkspaceClient.FileItem) -> Bool) {
+        closeFileTabs(items: selectionState.openFileItems.filter(predicate))
+    }
+
+    func closeFileTabs(after item: WorkspaceClient.FileItem) {
+        guard let startIdx = selectionState.openFileItems.firstIndex(where: { $0.id == item.id }) else {
+            assert(false, "Expected file item to be present in openFileItems")
+            return
+        }
+
+        let range = selectionState.openFileItems[(startIdx+1)...]
+        closeFileTabs(items: range)
+    }
+
     func openFile(item: WorkspaceClient.FileItem) {
         do {
-            let codeFile = try CodeFileDocument(for: item.url, withContentsOf: item.url, ofType: "public.source-code")
-            
-            if !openFileItems.contains(item) {
-                openFileItems.append(item)
-                
-                openedCodeFiles[item] = codeFile
+            let codeFile = try CodeFileDocument(
+                for: item.url,
+                withContentsOf: item.url,
+                ofType: "public.source-code"
+            )
+
+            if !selectionState.openFileItems.contains(item) {
+                selectionState.openFileItems.append(item)
+
+                selectionState.openedCodeFiles[item] = codeFile
             }
-            selectedId = item.id
-            
+            selectionState.selectedId = item.id
+            Swift.print("Opening file for item: ", item.url)
             self.windowControllers.first?.window?.subtitle = item.url.lastPathComponent
-        } catch let e {
-            Swift.print(e)
+        } catch let err {
+            Swift.print(err)
         }
     }
-    
+
     private let ignoredFilesAndDirectory = [
-        ".DS_Store",
+        ".DS_Store"
     ]
-    
+
     override class var autosavesInPlace: Bool {
-        return true
+        return false
     }
-        
+
+    override var isDocumentEdited: Bool {
+        return false
+    }
+
     override func makeWindowControllers() {
         let window = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 800, height: 600),
             styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
-            backing: .buffered, defer: false)
+            backing: .buffered, defer: false
+        )
         window.center()
-        window.toolbar = NSToolbar()
-        window.toolbarStyle = .unifiedCompact
-        window.titlebarSeparatorStyle = .none
-        window.titlebarAppearsTransparent = true
-        
-        window.toolbar?.displayMode = .iconOnly
-        window.toolbar?.insertItem(withItemIdentifier: .toggleSidebar, at: 0)
-        let windowController = NSWindowController(window: window)
-        let contentView = WorkspaceView(windowController: windowController, workspace: self)
-        window.contentView = NSHostingView(rootView: contentView)
+        window.minSize = .init(width: 1000, height: 600)
+        let windowController = CodeEditWindowController(
+            window: window,
+            workspace: self
+        )
         self.addWindowController(windowController)
     }
 
     override func read(from url: URL, ofType typeName: String) throws {
-		self.folderURL = url
         self.workspaceClient = try .default(
             fileManager: .default,
             folderURL: url,
             ignoredFilesAndFolders: ignoredFilesAndDirectory
         )
+        self.searchState = .init(self)
+        self.quickOpenState = .init(self)
+
+        // Initialize Workspace
+        do {
+            if let projectDir = fileURL?.appendingPathComponent(".codeedit", isDirectory: true),
+               FileManager.default.fileExists(atPath: projectDir.path) {
+                let selectionStateFile = projectDir.appendingPathComponent("selection.json", isDirectory: false)
+
+                if FileManager.default.fileExists(atPath: selectionStateFile.path) {
+                    let state = try JSONDecoder().decode(WorkspaceSelectionState.self,
+                                                         from: Data(contentsOf: selectionStateFile))
+                    self.selectionState.fileItems = state.fileItems
+                    state.openFileItems
+                        .compactMap { try? workspaceClient?.getFileItem($0.id) }
+                        .forEach { item in
+                        self.openFile(item: item)
+                    }
+                    self.selectionState.selectedId = state.selectedId
+                }
+            }
+        } catch {
+            Swift.print(".codeedit/selection.json is not found")
+        }
+
         workspaceClient?
             .getFiles
             .sink { [weak self] files in
                 guard let self = self else { return }
-                
-                guard !self.fileItems.isEmpty else {
-                    self.fileItems = files
+
+                guard !self.selectionState.fileItems.isEmpty else {
+                    self.selectionState.fileItems = files
                     return
                 }
-                
+
                 // Instead of rebuilding the array we want to
                 // calculate the difference between the last iteration
                 // and now. If the index of the file exists in the array
                 // it means we need to remove the element, otherwise we need to append
                 // it.
-                let diff = files.difference(from: self.fileItems)
+                let diff = files.difference(from: self.selectionState.fileItems)
                 diff.forEach { newFile in
-                    if let index = self.fileItems.firstIndex(of: newFile) {
-                        self.fileItems.remove(at: index)
+                    if let index = self.selectionState.fileItems.firstIndex(of: newFile) {
+                        self.selectionState.fileItems.remove(at: index)
                     } else {
-                        self.fileItems.append(newFile)
+                        self.selectionState.fileItems.append(newFile)
                     }
                 }
             }
             .store(in: &cancellables)
     }
-    
+
     override func write(to url: URL, ofType typeName: String) throws {}
+
+    override func close() {
+        if let projectDir = fileURL?.appendingPathComponent(".codeedit", isDirectory: true) {
+            do {
+                if !FileManager.default.fileExists(atPath: projectDir.path) {
+                    do {
+                        try FileManager.default.createDirectory(at: projectDir,
+                                                                withIntermediateDirectories: false,
+                                                                attributes: [:])
+                    }
+                }
+                let selectionStateFile = projectDir.appendingPathComponent("selection.json", isDirectory: false)
+                let data = try JSONEncoder().encode(selectionState)
+                if FileManager.default.fileExists(atPath: selectionStateFile.path) {
+                    do {
+                        try FileManager.default.removeItem(at: selectionStateFile)
+                    }
+                }
+                try data.write(to: selectionStateFile)
+            } catch let error {
+                Swift.print(error)
+            }
+        }
+
+        selectionState.selectedId = nil
+        selectionState.openFileItems.forEach { item in
+            do {
+                try selectionState.openedCodeFiles[item]?.write(to: item.url, ofType: "public.source-code")
+                selectionState.openedCodeFiles[item]?.close()
+            } catch {}
+        }
+        selectionState.openedCodeFiles.removeAll()
+        super.close()
+    }
+}
+
+// MARK: - Search
+
+extension WorkspaceDocument {
+    class SearchState: ObservableObject {
+        var workspace: WorkspaceDocument
+        @Published var searchResult: [SearchResultModel] = []
+
+        init(_ workspace: WorkspaceDocument) {
+            self.workspace = workspace
+        }
+
+        func search(_ text: String) {
+            self.searchResult = []
+            if let url = self.workspace.fileURL {
+                let enumerator = FileManager.default.enumerator(at: url,
+                                                                includingPropertiesForKeys: [
+                                                                    .isRegularFileKey
+                                                                ],
+                                                                options: [
+                                                                    .skipsHiddenFiles,
+                                                                    .skipsPackageDescendants
+                                                                ])
+                if let filePaths = enumerator?.allObjects as? [URL] {
+                    filePaths.map { url in
+                        WorkspaceClient.FileItem(url: url, children: nil)
+                    }.forEach { fileItem in
+                        var fileAddedFlag = true
+                        do {
+                            let data = try Data(contentsOf: fileItem.url)
+                            data.withUnsafeBytes {
+                                $0.split(separator: UInt8(ascii: "\n"))
+                                    .map { String(decoding: UnsafeRawBufferPointer(rebasing: $0), as: UTF8.self) }
+                            }.enumerated().forEach { (index: Int, line: String) in
+                                let noSpaceLine = line.trimmingCharacters(in: .whitespaces)
+                                if noSpaceLine.contains(text) {
+                                    if fileAddedFlag {
+                                        searchResult.append(SearchResultModel(
+                                            file: fileItem,
+                                            lineNumber: nil,
+                                            lineContent: nil,
+                                            keywordRange: nil)
+                                        )
+                                        fileAddedFlag = false
+                                    }
+                                    noSpaceLine.ranges(of: text).forEach { range in
+                                        searchResult.append(SearchResultModel(
+                                            file: fileItem,
+                                            lineNumber: index,
+                                            lineContent: noSpaceLine,
+                                            keywordRange: range)
+                                        )
+                                    }
+                                }
+                            }
+                        } catch {}
+                    }
+                }
+            }
+        }
+    }
+}
+
+// MARK: - Quick Open
+
+extension WorkspaceDocument {
+
+    class QuickOpenState: ObservableObject {
+        init(_ workspace: WorkspaceDocument) {
+            self.workspace = workspace
+        }
+
+        var workspace: WorkspaceDocument
+
+        @Published var openQuicklyQuery: String = ""
+        @Published var openQuicklyFiles: [WorkspaceClient.FileItem] = []
+        @Published var isShowingOpenQuicklyFiles: Bool = false
+
+        func fetchOpenQuickly() {
+            if openQuicklyQuery == "" {
+                openQuicklyFiles = []
+                self.isShowingOpenQuicklyFiles = !openQuicklyFiles.isEmpty
+                return
+            }
+
+            DispatchQueue(label: "austincondiff.CodeEdit.quickOpen.searchFiles").async { [weak self] in
+                if let self = self, let url = self.workspace.fileURL {
+                    let enumerator = FileManager.default.enumerator(at: url,
+                                                                    includingPropertiesForKeys: [
+                                                                        .isRegularFileKey
+                                                                    ],
+                                                                    options: [
+                                                                        .skipsHiddenFiles,
+                                                                        .skipsPackageDescendants
+                                                                    ])
+                    if let filePaths = enumerator?.allObjects as? [URL] {
+                        let files = filePaths.filter { url in
+                            let state1 = url.lastPathComponent.lowercased().contains(self.openQuicklyQuery.lowercased())
+                            do {
+                                let values = try url.resourceValues(forKeys: [.isRegularFileKey])
+                                return state1 && (values.isRegularFile ?? false)
+                            } catch {
+                                return false
+                            }
+                        }.map { url in
+                            WorkspaceClient.FileItem(url: url, children: nil)
+                        }
+                        DispatchQueue.main.async {
+                            self.openQuicklyFiles = files
+                            self.isShowingOpenQuicklyFiles = !self.openQuicklyFiles.isEmpty
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// MARK: - Selection
+
+struct WorkspaceSelectionState: Codable {
+
+    var selectedId: String?
+    var openFileItems: [WorkspaceClient.FileItem] = []
+    var fileItems: [WorkspaceClient.FileItem] = []
+
+    var selected: WorkspaceClient.FileItem? {
+        guard let selectedId = selectedId else { return nil }
+        return fileItems.first(where: { $0.id == selectedId })
+    }
+    var openedCodeFiles: [WorkspaceClient.FileItem: CodeFileDocument] = [:]
+
+    enum CodingKeys: String, CodingKey {
+        case selectedId, openFileItems
+    }
+
+    init() {
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        selectedId = try container.decode(String?.self, forKey: .selectedId)
+        openFileItems = try container.decode([WorkspaceClient.FileItem].self, forKey: .openFileItems)
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(selectedId, forKey: .selectedId)
+        try container.encode(openFileItems, forKey: .openFileItems)
+    }
 }

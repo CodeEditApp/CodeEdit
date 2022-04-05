@@ -7,42 +7,53 @@
 
 import SwiftUI
 import WorkspaceClient
+import StatusBar
 
 struct WorkspaceView: View {
     init(windowController: NSWindowController, workspace: WorkspaceDocument) {
         self.windowController = windowController
         self.workspace = workspace
     }
-    
-    var windowController: NSWindowController
-    @ObservedObject var workspace: WorkspaceDocument
-    
-    @State private var showingAlert = false
-    @State private var alertTitle = ""
-    @State private var alertMsg = ""
-    
-    var tabBarHeight = 28.0
 
+    var windowController: NSWindowController
+    var tabBarHeight = 28.0
     private var path: String = ""
 
+    @ObservedObject
+    var workspace: WorkspaceDocument
+
+    @State
+    private var showingAlert = false
+
+    @State
+    private var alertTitle = ""
+
+    @State
+    private var alertMsg = ""
+
+    @State
+    var showInspector = true
+
     var body: some View {
-        NavigationView {
+        ZStack {
             if workspace.workspaceClient != nil {
-                SideBar(workspace: workspace, windowController: windowController)
-                    .frame(minWidth: 250)
-                
-                Text("Open file from sidebar")
+                WorkspaceCodeFileView(windowController: windowController, workspace: workspace)
+                    .safeAreaInset(edge: .bottom) {
+                        if let url = workspace.fileURL {
+                            StatusBarView(workspaceURL: url)
+                        }
+                    }
             } else {
                 EmptyView()
             }
         }
-        .frame(minWidth: 800, minHeight: 600)
         .alert(alertTitle, isPresented: $showingAlert, actions: {
-            Button(action: { showingAlert = false }) {
-                Text("OK")
-            }
+            Button(
+                action: { showingAlert = false },
+                label: { Text("OK") }
+            )
         }, message: { Text(alertMsg) })
-        .onChange(of: workspace.selectedId) { newValue in
+        .onChange(of: workspace.selectionState.selectedId) { newValue in
             if newValue == nil {
                 windowController.window?.subtitle = ""
             }
@@ -50,9 +61,8 @@ struct WorkspaceView: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
+struct WorkspaceView_Previews: PreviewProvider {
     static var previews: some View {
         WorkspaceView(windowController: NSWindowController(), workspace: .init())
     }
 }
-

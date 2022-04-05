@@ -6,7 +6,6 @@
 //
 
 import AppKit
-import CodeEditor
 import Foundation
 import SwiftUI
 
@@ -17,7 +16,8 @@ public enum CodeFileError: Error {
 
 @objc(CodeFileDocument)
 public final class CodeFileDocument: NSDocument, ObservableObject {
-    @Published var content = ""
+    @Published
+    var content = ""
 
     // MARK: - NSDocument
 
@@ -25,19 +25,11 @@ public final class CodeFileDocument: NSDocument, ObservableObject {
         return true
     }
 
-    public func fileLanguage() -> CodeEditor.Language {
-        if let fileURL = fileURL {
-            return .init(url: fileURL)
-        } else {
-            return .markdown
-        }
-    }
-
     override public func makeWindowControllers() {
         // Returns the Storyboard that contains your Document window.
         let contentView = CodeFileView(codeFile: self)
         let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 800, height: 600),
+            contentRect: NSRect(x: 0, y: 0, width: 1400, height: 600),
             styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
             backing: .buffered, defer: false
         )
@@ -55,17 +47,5 @@ public final class CodeFileDocument: NSDocument, ObservableObject {
     override public func read(from data: Data, ofType _: String) throws {
         guard let content = String(data: data, encoding: .utf8) else { throw CodeFileError.failedToDecode }
         self.content = content
-    }
-}
-
-private extension CodeEditor.Language {
-    init(url: URL) {
-        var value = url.pathExtension
-        switch value {
-        case "js": value = "javascript"
-        case "sh": value = "shell"
-        default: break
-        }
-        self.init(rawValue: value)
     }
 }

@@ -17,18 +17,71 @@ let package = Package(
             name: "CodeFile",
             targets: ["CodeFile"]
         ),
-        .library(name: "WelcomeModule", targets: ["WelcomeModule"])
+        .library(
+            name: "WelcomeModule",
+            targets: ["WelcomeModule"]
+        ),
+        .library(
+            name: "StatusBar",
+            targets: ["StatusBar"]
+        ),
+        .library(
+            name: "Overlays",
+            targets: ["Overlays"]
+        ),
+        .library(
+            name: "GitClient",
+            targets: ["GitClient"]
+        ),
+        .library(
+            name: "TerminalEmulator",
+            targets: ["TerminalEmulator"]
+        ),
+        .library(
+            name: "Search",
+            targets: ["Search"]
+        ),
+        .library(
+            name: "FontPicker",
+            targets: ["FontPicker"]
+        ),
+        .library(
+            name: "ShellClient",
+            targets: ["ShellClient"]
+        ),
+        .library(
+            name: "AppPreferences",
+            targets: ["AppPreferences"]
+        ),
+        .library(
+            name: "Accounts",
+            targets: ["Accounts"]
+        ),
+        .library(
+            name: "About",
+            targets: ["About"]
+        ),
     ],
     dependencies: [
         .package(
-            name: "CodeEditor",
-            url: "https://github.com/ZeeZide/CodeEditor.git",
-            from: "1.2.0"
+            name: "Highlightr",
+            url: "https://github.com/raspu/Highlightr.git",
+            from: "2.1.2"
         ),
         .package(
             name: "SnapshotTesting",
             url: "https://github.com/pointfreeco/swift-snapshot-testing.git",
             from: "1.9.0"
+        ),
+        .package(
+            name: "SwiftTerm",
+            url: "https://github.com/migueldeicaza/SwiftTerm.git",
+            from: "1.0.7"
+        ),
+        .package(
+            name: "Preferences",
+            url: "https://github.com/sindresorhus/Preferences.git",
+            from: "2.5.0"
         ),
     ],
     targets: [
@@ -46,7 +99,8 @@ let package = Package(
         .target(
             name: "CodeFile",
             dependencies: [
-                "CodeEditor",
+                "Highlightr",
+                "AppPreferences"
             ],
             path: "Modules/CodeFile/src"
         ),
@@ -59,6 +113,9 @@ let package = Package(
         ),
         .target(
             name: "WelcomeModule",
+            dependencies: [
+                "WorkspaceClient",
+            ],
             path: "Modules/WelcomeModule/src"
         ),
         .testTarget(
@@ -68,6 +125,73 @@ let package = Package(
                 "SnapshotTesting",
             ],
             path: "Modules/WelcomeModule/Tests"
+        ),
+        .target(
+            name: "StatusBar",
+            dependencies: [
+                "GitClient",
+                "TerminalEmulator",
+                "CodeFile",
+            ],
+            path: "Modules/StatusBar/src"
+        ),
+        .target(
+            name: "Overlays",
+            path: "Modules/Overlays/src"
+        ),
+        .target(
+            name: "GitClient",
+            dependencies: [
+                "ShellClient",
+            ],
+            path: "Modules/GitClient/src"
+        ),
+        .testTarget(
+            name: "GitClientTests",
+            dependencies: [
+                "GitClient",
+                "ShellClient",
+            ],
+            path: "Modules/GitClient/Tests"
+        ),
+        .target(
+            name: "TerminalEmulator",
+            dependencies: [
+                "SwiftTerm",
+                "AppPreferences"
+            ],
+            path: "Modules/TerminalEmulator/src"
+        ),
+        .target(
+            name: "Search",
+            dependencies: [
+                "WorkspaceClient",
+            ],
+            path: "Modules/Search/src"
+        ),
+        .target(
+            name: "FontPicker",
+            path: "Modules/FontPicker/src"
+        ),
+        .target(
+            name: "ShellClient",
+            path: "Modules/ShellClient/src"
+        ),
+        .target(
+            name: "AppPreferences",
+            dependencies: [
+                "Preferences",
+                "FontPicker",
+            ],
+            path: "Modules/AppPreferences/src"
+        ),
+        .target(
+            name: "Accounts",
+            path: "Modules/Accounts/src"
+        ),
+        .target(
+            name: "About",
+            path: "Modules/About/src"
         ),
     ]
 )

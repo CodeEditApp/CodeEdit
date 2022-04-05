@@ -6,45 +6,44 @@
 //
 
 import SwiftUI
+import WorkspaceClient
+
+extension String {
+    func abbreviatingWithTildeInPath() -> String {
+        return (self as NSString).abbreviatingWithTildeInPath
+    }
+}
 
 public struct RecentProjectItem: View {
-    @Binding public var isSelected: Bool
-    var projectName: String = ""
-    var projectPath: String = ""
-    
-    public init(isSelected: Binding<Bool>, projectName: String, projectPath: String) {
-        self._isSelected = isSelected
-        self.projectName = projectName
+    let projectPath: String
+
+    public init(projectPath: String) {
         self.projectPath = projectPath
     }
-    
+
     public var body: some View {
-        HStack(spacing: 15) {
-            Image(systemName: "folder")
+        HStack(spacing: 8) {
+            Image(nsImage: NSWorkspace.shared.icon(forFile: projectPath))
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 24)
+                .frame(width: 32, height: 32)
             VStack(alignment: .leading) {
-                Text(projectName).font(.system(size: 16, weight: .semibold))
+                Text(projectPath.components(separatedBy: "/").last ?? "").font(.system(size: 13))
                     .lineLimit(1)
-                Text(projectPath)
+                Text(projectPath.abbreviatingWithTildeInPath())
+                    .font(.system(size: 11))
                     .lineLimit(1)
                     .truncationMode(.head)
-            }
+            }.padding(.trailing, 15)
             Spacer()
         }
-        .padding(10)
-        .background(isSelected ? Color.accentColor : .clear)
         .contentShape(Rectangle())
-        .cornerRadius(8)
     }
 }
 
 struct RecentProjectItem_Previews: PreviewProvider {
     static var previews: some View {
-        RecentProjectItem(isSelected: .constant(false), projectName: "CodeEdit", projectPath: "/repos/CodeEdit")
-            .frame(width: 300)
-        RecentProjectItem(isSelected: .constant(true), projectName: "CodeEdit", projectPath: "/repos/CodeEdit")
+        RecentProjectItem(projectPath: "/repos/CodeEdit")
             .frame(width: 300)
     }
 }

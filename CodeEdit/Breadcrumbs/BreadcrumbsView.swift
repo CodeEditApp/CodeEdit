@@ -9,72 +9,74 @@ import SwiftUI
 import WorkspaceClient
 
 struct BreadcrumbsView: View {
+    @Environment(\.colorScheme)
+    private var colorScheme
 
-	@ObservedObject var workspace: WorkspaceDocument
-	let file: WorkspaceClient.FileItem
+    @ObservedObject
+    var workspace: WorkspaceDocument
 
-	@State private var projectName: String = ""
-	@State private var folders: [String] = []
-	@State private var fileName: String = ""
-	@State private var fileImage: String = "doc"
+    let file: WorkspaceClient.FileItem
 
-	init(_ file: WorkspaceClient.FileItem, workspace: WorkspaceDocument) {
-		self.file = file
-		self.workspace = workspace
-	}
+    @State
+    private var fileItems: [WorkspaceClient.FileItem] = []
 
-	var body: some View {
-		ZStack(alignment: .leading) {
-			Rectangle()
-				.foregroundStyle(Color(nsColor: .controlBackgroundColor))
-			HStack {
-				BreadcrumbsComponent(projectName, systemImage: "square.dashed.inset.filled", color: .accentColor)
-				chevron
-				ForEach(folders, id:\.self) { folder in
-					BreadcrumbsComponent(folder, systemImage: "folder.fill")
-					chevron
-				}
-				BreadcrumbsComponent(fileName, systemImage: fileImage, color: file.iconColor)
-			}
-			.padding(.leading, 12)
-		}
-		.frame(height: 29)
-		.overlay(alignment: .bottom) {
-			Divider()
-		}
-		.onAppear {
-			fileInfo()
-		}
-	}
+    init(_ file: WorkspaceClient.FileItem, workspace: WorkspaceDocument) {
+        self.file = file
+        self.workspace = workspace
+    }
 
-	private var chevron: some View {
-		Image(systemName: "chevron.compact.right")
-			.foregroundStyle(.secondary)
-			.imageScale(.large)
-	}
+    var body: some View {
+        ZStack(alignment: .leading) {
+            Rectangle()
+                .foregroundStyle(Color(nsColor: .controlBackgroundColor))
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack {
+                    ForEach(fileItems, id: \.self) { fileItem in
+                        if fileItem.parent != nil {
+                            chevron
+                        }
+                        BreadcrumbsComponent(workspace, fileItem: fileItem)
+                    }
+                }
+                .padding(.horizontal, 12)
+            }
+        }
+        .frame(height: 29)
+        .overlay(alignment: .bottom) {
+            Divider()
+        }
+        .onAppear {
+            fileInfo(self.file)
+        }
+        .onChange(of: file) { newFile in
+            fileInfo(newFile)
+        }
+    }
 
-	private func fileInfo() {
-		
-		guard let projName = workspace.folderURL?.lastPathComponent,
-			  var components = file.url.pathComponents.split(separator: projName).last else { return }
-		components.removeLast()
+    private var chevron: some View {
+        Image(systemName: "chevron.compact.right")
+            .foregroundStyle(.secondary)
+            .imageScale(.large)
+    }
 
-		self.projectName = projName
-		self.folders = Array(components)
-		self.fileName = file.fileName
-		self.fileImage = file.systemImage
-	}
-
+    private func fileInfo(_ file: WorkspaceClient.FileItem) {
+        self.fileItems = []
+        var currentFile: WorkspaceClient.FileItem? = file
+        while let currentFileLoop = currentFile {
+            self.fileItems.insert(currentFileLoop, at: 0)
+            currentFile = currentFileLoop.parent
+        }
+    }
 }
 
 struct BreadcrumbsView_Previews: PreviewProvider {
-	static var previews: some View {
-		BreadcrumbsView(.init(url: .init(fileURLWithPath: "", isDirectory: false)), workspace: .init())
-			.previewLayout(.fixed(width: 500, height: 29))
-			.preferredColorScheme(.dark)
+    static var previews: some View {
+        BreadcrumbsView(.init(url: .init(fileURLWithPath: "", isDirectory: false)), workspace: .init())
+            .previewLayout(.fixed(width: 500, height: 29))
+            .preferredColorScheme(.dark)
 
-		BreadcrumbsView(.init(url: .init(fileURLWithPath: "", isDirectory: false)), workspace: .init())
-			.previewLayout(.fixed(width: 500, height: 29))
-			.preferredColorScheme(.light)
-	}
+        BreadcrumbsView(.init(url: .init(fileURLWithPath: "", isDirectory: false)), workspace: .init())
+            .previewLayout(.fixed(width: 500, height: 29))
+            .preferredColorScheme(.light)
+    }
 }

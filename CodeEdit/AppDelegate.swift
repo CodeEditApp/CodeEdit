@@ -6,9 +6,11 @@
 //
 
 import SwiftUI
+import AppPreferences
+import Preferences
+import About
 
 class CodeEditApplication: NSApplication {
-
     let strongDelegate = AppDelegate()
 
     override init() {
@@ -24,78 +26,207 @@ class CodeEditApplication: NSApplication {
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
-    
     func applicationWillFinishLaunching(_ notification: Notification) {
         _ = CodeEditDocumentController.shared
     }
-    
+
     func applicationDidFinishLaunching(_ notification: Notification) {
-        if let appearanceString = UserDefaults.standard.string(forKey: Appearances.storageKey) {
-            Appearances(rawValue: appearanceString)?.applyAppearance()
+        AppPreferencesModel.shared.preferences.general.appAppearance.applyAppearance()
+
+        DispatchQueue.main.async {
+            if NSApp.windows.isEmpty {
+                if let projects = UserDefaults.standard.array(forKey: AppDelegate.recoverWorkspacesKey) as? [String],
+                   !projects.isEmpty {
+                    projects.forEach { path in
+                        let url = URL(fileURLWithPath: path)
+                        CodeEditDocumentController.shared.reopenDocument(for: url,
+                                                                        withContentsOf: url,
+                                                                        display: true) { document, _, _ in
+                            document?.windowControllers.first?.synchronizeWindowTitleWithDocumentName()
+                        }
+                    }
+                    return
+                }
+
+                self.handleOpen()
+            }
         }
-        
-        handleOpen()
     }
-    
+
     func applicationWillTerminate(_ aNotification: Notification) {
     }
 
     func applicationSupportsSecureRestorableState(_ app: NSApplication) -> Bool {
         return true
     }
-    
-    @IBAction func openPreferences(_ sender: Any) {
-        let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 500, height: 400),
-            styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
-            backing: .buffered, defer: false)
-        window.center()
-        window.toolbar = NSToolbar()
-        window.title = "Settings"
-        window.toolbarStyle = .unifiedCompact
-        let _ = NSWindowController(window: window)
-        let contentView = SettingsView()
-        window.contentView = NSHostingView(rootView: contentView)
-        
-        window.makeKeyAndOrderFront(sender)
-    }
-    
+
     func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
         if flag {
             return false
         }
-        
+
         handleOpen()
-        
+
         return false
     }
-    
+
     func applicationShouldOpenUntitledFile(_ sender: NSApplication) -> Bool {
         return false
     }
-    
+
     func handleOpen() {
-        let behavior = ReopenBehavior(rawValue: UserDefaults.standard.string(forKey: ReopenBehavior.storageKey) ?? ReopenBehavior.openPanel.rawValue) ?? ReopenBehavior.openPanel
-        
+        let behavior = AppPreferencesModel.shared.preferences.general.reopenBehavior
+
         switch behavior {
         case .welcome:
-            let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 780, height: 500), styleMask: [.borderless], backing: .buffered, defer: false)
-            let windowController = NSWindowController(window: window)
-            window.center()
-            let contentView = WelcomeWindowView(windowController: windowController)
-            window.isMovableByWindowBackground = true
-            window.contentView = NSHostingView(rootView: contentView)
-            window.isOpaque = false
-            window.backgroundColor = .clear
-            window.contentView?.wantsLayer = true
-            window.contentView?.layer?.masksToBounds = true
-            window.contentView?.layer?.cornerRadius = 10
-            window.hasShadow = true
-            window.makeKeyAndOrderFront(self)
+            openWelcome(self)
         case .openPanel:
             CodeEditDocumentController.shared.openDocument(self)
         case .newDocument:
             CodeEditDocumentController.shared.newDocument(self)
         }
     }
+
+    func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
+        let projects: [String] = CodeEditDocumentController.shared.documents
+            .map { doc in
+                return (doc as? WorkspaceDocument)?.fileURL?.path
+            }
+            .filter { $0 != nil }
+            .map { $0! }
+
+        UserDefaults.standard.set(projects, forKey: AppDelegate.recoverWorkspacesKey)
+
+        CodeEditDocumentController.shared.documents.forEach { doc in
+            doc.close()
+            CodeEditDocumentController.shared.removeDocument(doc)
+        }
+        return .terminateNow
+    }
+
+    // MARK: - Open windows
+
+    @IBAction func openPreferences(_ sender: Any) {
+        preferencesWindowController.show()
+    }
+
+    @IBAction func openWelcome(_ sender: Any) {
+        if let window = NSApp.windows.filter({ window in
+            return (window.contentView as? NSHostingView<WelcomeWindowView>) != nil
+        }).first {
+            window.makeKeyAndOrderFront(self)
+            return
+        }
+
+        let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 800, height: 460),
+                              styleMask: [.titled, .fullSizeContentView], backing: .buffered, defer: false)
+        let windowController = NSWindowController(window: window)
+        window.center()
+        let contentView = WelcomeWindowView(windowController: windowController)
+        window.titlebarAppearsTransparent = true
+        window.isMovableByWindowBackground = true
+        window.contentView = NSHostingView(rootView: contentView)
+        window.makeKeyAndOrderFront(self)
+    }
+
+    @IBAction func openAbout(_ sender: Any) {
+        AboutView().showWindow(width: 530, height: 220)
+    }
+
+    // MARK: - Preferences
+
+    private lazy var preferencesWindowController = PreferencesWindowController(
+        panes: [
+            Preferences.Pane(
+                identifier: Preferences.PaneIdentifier("GeneralSettings"),
+                title: "General",
+                toolbarIcon: NSImage(systemSymbolName: "gearshape", accessibilityDescription: nil)!
+            ) {
+                GeneralPreferencesView()
+            },
+            Preferences.Pane(
+                identifier: Preferences.PaneIdentifier("Accounts"),
+                title: "Accounts",
+                toolbarIcon: NSImage(systemSymbolName: "at", accessibilityDescription: nil)!
+            ) {
+                PreferencesPlaceholderView()
+            },
+            Preferences.Pane(
+                identifier: Preferences.PaneIdentifier("Behaviors"),
+                title: "Behaviors",
+                toolbarIcon: NSImage(systemSymbolName: "flowchart", accessibilityDescription: nil)!
+            ) {
+                PreferencesPlaceholderView()
+            },
+            Preferences.Pane(
+                identifier: Preferences.PaneIdentifier("Navigation"),
+                title: "Navigation",
+                toolbarIcon: NSImage(systemSymbolName: "arrow.triangle.turn.up.right.diamond",
+                                     accessibilityDescription: nil)!
+            ) {
+                PreferencesPlaceholderView()
+            },
+            Preferences.Pane(
+                identifier: Preferences.PaneIdentifier("Themes"),
+                title: "Themes",
+                toolbarIcon: NSImage(systemSymbolName: "paintbrush", accessibilityDescription: nil)!
+            ) {
+                ThemePreferencesView()
+            },
+            Preferences.Pane(
+                identifier: Preferences.PaneIdentifier("TextEditing"),
+                title: "Text Editing",
+                toolbarIcon: NSImage(systemSymbolName: "square.and.pencil", accessibilityDescription: nil)!
+            ) {
+                TextEditingPreferencesView()
+            },
+            Preferences.Pane(
+                identifier: Preferences.PaneIdentifier("Terminal"),
+                title: "Terminal",
+                toolbarIcon: NSImage(systemSymbolName: "terminal", accessibilityDescription: nil)!
+            ) {
+                TerminalPreferencesView()
+            },
+            Preferences.Pane(
+                identifier: Preferences.PaneIdentifier("KeyBindings"),
+                title: "Key Bindings",
+                toolbarIcon: NSImage(systemSymbolName: "keyboard", accessibilityDescription: nil)!
+            ) {
+                PreferencesPlaceholderView()
+            },
+            Preferences.Pane(
+                identifier: Preferences.PaneIdentifier("SourceControl"),
+                title: "Source Control",
+                toolbarIcon: NSImage(systemSymbolName: "square.stack", accessibilityDescription: nil)!
+            ) {
+                PreferencesPlaceholderView()
+            },
+            Preferences.Pane(
+                identifier: Preferences.PaneIdentifier("Components"),
+                title: "Components",
+                toolbarIcon: NSImage(systemSymbolName: "puzzlepiece", accessibilityDescription: nil)!
+            ) {
+                PreferencesPlaceholderView()
+            },
+            Preferences.Pane(
+                identifier: Preferences.PaneIdentifier("Locations"),
+                title: "Locations",
+                toolbarIcon: NSImage(systemSymbolName: "externaldrive", accessibilityDescription: nil)!
+            ) {
+                LocationsPreferencesView()
+            },
+            Preferences.Pane(
+                identifier: Preferences.PaneIdentifier("Advanced"),
+                title: "Advanced",
+                toolbarIcon: NSImage(systemSymbolName: "gearshape.2", accessibilityDescription: nil)!
+            ) {
+                PreferencesPlaceholderView()
+            }
+        ],
+        animated: false
+    )
+}
+
+extension AppDelegate {
+    static let recoverWorkspacesKey = "recover.workspaces"
 }

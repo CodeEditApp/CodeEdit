@@ -2,21 +2,21 @@
   "object": {
     "pins": [
       {
-        "package": "CodeEditor",
-        "repositoryURL": "https://github.com/ZeeZide/CodeEditor.git",
-        "state": {
-          "branch": null,
-          "revision": "5856fac22b0a2174dbdea212784567c8c9cd1129",
-          "version": "1.2.0"
-        }
-      },
-      {
         "package": "Highlightr",
-        "repositoryURL": "https://github.com/raspu/Highlightr",
+        "repositoryURL": "https://github.com/raspu/Highlightr.git",
         "state": {
           "branch": null,
           "revision": "93199b9e434f04bda956a613af8f571933f9f037",
           "version": "2.1.2"
+        }
+      },
+      {
+        "package": "Preferences",
+        "repositoryURL": "https://github.com/sindresorhus/Preferences.git",
+        "state": {
+          "branch": null,
+          "revision": "ffeaaad1def45d0625720dc1adae3789cd9c167d",
+          "version": "2.5.0"
         }
       },
       {
@@ -26,6 +26,24 @@
           "branch": null,
           "revision": "f8a9c997c3c1dab4e216a8ec9014e23144cbab37",
           "version": "1.9.0"
+        }
+      },
+      {
+        "package": "SwiftTerm",
+        "repositoryURL": "https://github.com/migueldeicaza/SwiftTerm.git",
+        "state": {
+          "branch": null,
+          "revision": "70a3af884c24dff9f1beeda04e889b5591f04f3c",
+          "version": "1.0.7"
+        }
+      },
+      {
+        "package": "Introspect",
+        "repositoryURL": "https://github.com/siteline/SwiftUI-Introspect",
+        "state": {
+          "branch": null,
+          "revision": "f2616860a41f9d9932da412a8978fec79c06fe24",
+          "version": "0.1.4"
         }
       }
     ]

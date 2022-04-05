@@ -11,8 +11,26 @@ class CodeEditDocumentController: NSDocumentController {
     override func openDocument(_ sender: Any?) {
         self.openDocument { document, documentWasAlreadyOpen in
             // TODO: handle errors
-            
+
+            guard let document = document else {
+                print("Failed to unwrap document")
+                return
+            }
+
             print(document, documentWasAlreadyOpen)
+        }
+    }
+
+    override func openDocument(withContentsOf url: URL,
+                               display displayDocument: Bool,
+                               completionHandler: @escaping (NSDocument?, Bool, Error?) -> Void) {
+        super.openDocument(withContentsOf: url, display: displayDocument) { document, documentWasAlreadyOpen, error in
+
+            if let document = document {
+                self.addDocument(document)
+            }
+
+            completionHandler(document, documentWasAlreadyOpen, error)
         }
     }
 }
@@ -30,17 +48,21 @@ extension NSDocumentController {
         dialog.begin { result in
             if result ==  NSApplication.ModalResponse.OK, let url = dialog.url {
                 self.openDocument(withContentsOf: url, display: true) { document, documentWasAlreadyOpen, error in
-                    // TODO: handle errors
                     if let error = error {
-                        print("Error: \(error.localizedDescription)")
+                        NSAlert(error: error).runModal()
                         return
                     }
 
                     guard let document = document else {
-                        print("Error: Failed to get document")
+                        let alert = NSAlert()
+                        alert.messageText = NSLocalizedString("Failed to get document",
+                                                              comment: "Failed to get document")
+                        alert.runModal()
                         return
                     }
-                    var recentProjectPaths: [String] = UserDefaults.standard.array(forKey: "recentProjectPaths") as? [String] ?? []
+                    var recentProjectPaths: [String] = UserDefaults.standard.array(
+                        forKey: "recentProjectPaths"
+                    ) as? [String] ?? []
                     if let containedIndex = recentProjectPaths.firstIndex(of: url.path) {
                         recentProjectPaths.move(fromOffsets: IndexSet(integer: containedIndex), toOffset: 0)
                     } else {
