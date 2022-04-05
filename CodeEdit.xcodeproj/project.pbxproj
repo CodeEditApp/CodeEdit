@@ -263,8 +263,8 @@
 		D72E1A8127E3B0A300EB11B9 /* Welcome */ = {
 			isa = PBXGroup;
 			children = (
-				D72E1A8227E3B0D400EB11B9 /* WelcomeView.swift */,
 				D72E1A8627E4242900EB11B9 /* RecentProjectsView.swift */,
+				D72E1A8227E3B0D400EB11B9 /* WelcomeView.swift */,
 				D72E1A8827E44D7C00EB11B9 /* WelcomeWindowView.swift */,
 			);
 			path = Welcome;

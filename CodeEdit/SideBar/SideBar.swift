@@ -23,7 +23,11 @@ struct SideBar: View {
                             item: item,
                             workspace: workspace,
                             windowController: windowController
-                        )
+                        ).onDrag {
+                            let result = NSItemProvider.init(contentsOf: item.url.absoluteURL)!
+                            print(result.debugDescription)
+                            return result
+                        }
                     }
                 }
             default: EmptyView()
