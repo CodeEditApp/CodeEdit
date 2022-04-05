@@ -35,7 +35,11 @@ struct ProjectNavigator: View {
                         windowController: windowController,
                         shouldloadChildren: .constant(true), // First level of children should always be loaded
                         selectedId: $selection
-                    )
+                    ).onDrag {
+                        let result = NSItemProvider.init(contentsOf: item.url.absoluteURL)!
+                        print(result.debugDescription)
+                        return result
+                    }
                 }
             } header: {
                 Text(projectName)
