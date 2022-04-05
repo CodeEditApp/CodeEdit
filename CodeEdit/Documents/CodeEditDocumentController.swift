@@ -29,7 +29,7 @@ class CodeEditDocumentController: NSDocumentController {
             if let document = document {
                 self.addDocument(document)
             }
-
+            self.updateRecent(url)
             completionHandler(document, documentWasAlreadyOpen, error)
         }
     }
@@ -60,20 +60,24 @@ extension NSDocumentController {
                         alert.runModal()
                         return
                     }
-                    var recentProjectPaths: [String] = UserDefaults.standard.array(
-                        forKey: "recentProjectPaths"
-                    ) as? [String] ?? []
-                    if let containedIndex = recentProjectPaths.firstIndex(of: url.path) {
-                        recentProjectPaths.move(fromOffsets: IndexSet(integer: containedIndex), toOffset: 0)
-                    } else {
-                        recentProjectPaths.insert(url.path, at: 0)
-                    }
-                    UserDefaults.standard.set(recentProjectPaths, forKey: "recentProjectPaths")
+                    self.updateRecent(url)
                     completionHandler(document, documentWasAlreadyOpen)
                     print("Document:", document)
                     print("Was already open?", documentWasAlreadyOpen)
                 }
             }
         }
+    }
+
+    func updateRecent(_ url: URL) {
+        var recentProjectPaths: [String] = UserDefaults.standard.array(
+            forKey: "recentProjectPaths"
+        ) as? [String] ?? []
+        if let containedIndex = recentProjectPaths.firstIndex(of: url.path) {
+            recentProjectPaths.move(fromOffsets: IndexSet(integer: containedIndex), toOffset: 0)
+        } else {
+            recentProjectPaths.insert(url.path, at: 0)
+        }
+        UserDefaults.standard.set(recentProjectPaths, forKey: "recentProjectPaths")
     }
 }
