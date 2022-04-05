@@ -7,6 +7,7 @@
 
 import SwiftUI
 import WorkspaceClient
+import Design
 
 struct QuickOpenView: View {
     @ObservedObject

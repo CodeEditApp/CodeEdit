@@ -61,6 +61,10 @@ let package = Package(
             name: "About",
             targets: ["About"]
         ),
+        .library(
+            name: "Design",
+            targets: ["Design"]
+        ),
     ],
     dependencies: [
         .package(
@@ -82,6 +86,11 @@ let package = Package(
             name: "Preferences",
             url: "https://github.com/sindresorhus/Preferences.git",
             from: "2.5.0"
+        ),
+        .package(
+            name: "Introspect",
+            url: "https://github.com/siteline/SwiftUI-Introspect",
+            from: "0.1.4"
         ),
     ],
     targets: [
@@ -192,6 +201,13 @@ let package = Package(
         .target(
             name: "About",
             path: "Modules/About/src"
+        ),
+        .target(
+            name: "Design",
+            dependencies: [
+                "Introspect",
+            ],
+            path: "Modules/Design/src"
         ),
     ]
 )

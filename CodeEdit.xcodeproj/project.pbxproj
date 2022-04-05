@@ -34,14 +34,13 @@
 		28CE5EA027E6493D0065D29C /* StatusBar in Frameworks */ = {isa = PBXBuildFile; productRef = 28CE5E9F27E6493D0065D29C /* StatusBar */; };
 		28FFE1BF27E3A441001939DB /* NavigatorSidebarToolbarBottom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FFE1BE27E3A441001939DB /* NavigatorSidebarToolbarBottom.swift */; };
 		2B7A583527E4BA0100D25D4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0468438427DC76E200F8E88E /* AppDelegate.swift */; };
-		34EE19BE27E0469C00F152CE /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34EE19BD27E0469C00F152CE /* BlurView.swift */; };
 		5C403B8F27E20F8000788241 /* WorkspaceClient in Frameworks */ = {isa = PBXBuildFile; productRef = 5C403B8E27E20F8000788241 /* WorkspaceClient */; };
+		5CA8776327FC4FC8003F5CD5 /* Design in Frameworks */ = {isa = PBXBuildFile; productRef = 5CA8776227FC4FC8003F5CD5 /* Design */; };
 		5CF38A5E27E48E6C0096A0F7 /* CodeFile in Frameworks */ = {isa = PBXBuildFile; productRef = 5CF38A5D27E48E6C0096A0F7 /* CodeFile */; };
 		5CFA753B27E896B60002F01B /* GitClient in Frameworks */ = {isa = PBXBuildFile; productRef = 5CFA753A27E896B60002F01B /* GitClient */; };
 		64B64EDE27F7B79400C400F1 /* About in Frameworks */ = {isa = PBXBuildFile; productRef = 64B64EDD27F7B79400C400F1 /* About */; };
 		B658FB3427DA9E1000EA4DBD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3327DA9E1000EA4DBD /* Assets.xcassets */; };
 		B658FB3727DA9E1000EA4DBD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3627DA9E1000EA4DBD /* Preview Assets.xcassets */; };
-		B65E614627E6765D00255275 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = B65E614527E6765D00255275 /* Introspect */; };
 		B673FDAD27E8296A00795864 /* PressActionsModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B673FDAC27E8296A00795864 /* PressActionsModifier.swift */; };
 		B6EE989027E8879A00CDD8AB /* InspectorSidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EE988F27E8879A00CDD8AB /* InspectorSidebar.swift */; };
 		B6EE989227E887C600CDD8AB /* InspectorSidebarToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EE989127E887C600CDD8AB /* InspectorSidebarToolbar.swift */; };
@@ -99,7 +98,6 @@
 		287776EE27E3515300D46668 /* TabBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarItem.swift; sourceTree = "<group>"; };
 		28B0A19727E385C300B73177 /* NavigatorSidebarToolbarTop.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = NavigatorSidebarToolbarTop.swift; sourceTree = "<group>"; tabWidth = 4; };
 		28FFE1BE27E3A441001939DB /* NavigatorSidebarToolbarBottom.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = NavigatorSidebarToolbarBottom.swift; sourceTree = "<group>"; tabWidth = 4; };
-		34EE19BD27E0469C00F152CE /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
 		B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodeEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B658FB3127DA9E0F00EA4DBD /* WorkspaceView.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceView.swift; sourceTree = "<group>"; tabWidth = 4; };
 		B658FB3327DA9E1000EA4DBD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -129,11 +127,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5CA8776327FC4FC8003F5CD5 /* Design in Frameworks */,
 				64B64EDE27F7B79400C400F1 /* About in Frameworks */,
 				5C403B8F27E20F8000788241 /* WorkspaceClient in Frameworks */,
 				2803257127F3CF1F009C7DC2 /* AppPreferences in Frameworks */,
 				0485EB2527E7B9C800138301 /* Overlays in Frameworks */,
-				B65E614627E6765D00255275 /* Introspect in Frameworks */,
 				D70F5E2C27E4E8CF004EE4B9 /* WelcomeModule in Frameworks */,
 				2859B93F27EB50050069BE88 /* FontPicker in Frameworks */,
 				D7F72DEB27EA3574000C3064 /* Search in Frameworks */,
@@ -232,14 +230,6 @@
 			path = TabBar;
 			sourceTree = "<group>";
 		};
-		34EE19BC27E0467F00F152CE /* CustomViews */ = {
-			isa = PBXGroup;
-			children = (
-				34EE19BD27E0469C00F152CE /* BlurView.swift */,
-			);
-			path = CustomViews;
-			sourceTree = "<group>";
-		};
 		5C403B8D27E20F8000788241 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -272,7 +262,6 @@
 			isa = PBXGroup;
 			children = (
 				2875A46E27E3BE63007805F8 /* Breadcrumbs */,
-				34EE19BC27E0467F00F152CE /* CustomViews */,
 				043C321227E31FE8006AE443 /* Documents */,
 				B6EE988E27E8877C00CDD8AB /* InspectorSidebar */,
 				D7211D4427E066D4008F2ED7 /* Localization */,
@@ -365,7 +354,6 @@
 				5C403B8E27E20F8000788241 /* WorkspaceClient */,
 				5CF38A5D27E48E6C0096A0F7 /* CodeFile */,
 				D70F5E2B27E4E8CF004EE4B9 /* WelcomeModule */,
-				B65E614527E6765D00255275 /* Introspect */,
 				28CE5E9F27E6493D0065D29C /* StatusBar */,
 				0485EB2427E7B9C800138301 /* Overlays */,
 				5CFA753A27E896B60002F01B /* GitClient */,
@@ -374,6 +362,7 @@
 				2803257027F3CF1F009C7DC2 /* AppPreferences */,
 				20D2A95427F72E6800E7ECF6 /* Accounts */,
 				64B64EDD27F7B79400C400F1 /* About */,
+				5CA8776227FC4FC8003F5CD5 /* Design */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -448,7 +437,6 @@
 			);
 			mainGroup = B658FB2327DA9E0F00EA4DBD;
 			packageReferences = (
-				B65E614427E6765D00255275 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 			);
 			productRefGroup = B658FB2D27DA9E0F00EA4DBD /* Products */;
 			projectDirPath = "";
@@ -585,7 +573,6 @@
 				B673FDAD27E8296A00795864 /* PressActionsModifier.swift in Sources */,
 				043C321427E31FF6006AE443 /* CodeEditDocumentController.swift in Sources */,
 				04540D5E27DD08C300E91B77 /* WorkspaceView.swift in Sources */,
-				34EE19BE27E0469C00F152CE /* BlurView.swift in Sources */,
 				D7211D4327E066CE008F2ED7 /* Localized+Ex.swift in Sources */,
 				D7E201B227E8D50000CB86D0 /* FindNavigatorModeSelector.swift in Sources */,
 				287776E927E34BC700D46668 /* TabBar.swift in Sources */,
@@ -968,17 +955,6 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		B65E614427E6765D00255275 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/siteline/SwiftUI-Introspect";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.1.4;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
 /* Begin XCSwiftPackageProductDependency section */
 		0485EB2427E7B9C800138301 /* Overlays */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -1004,6 +980,10 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = WorkspaceClient;
 		};
+		5CA8776227FC4FC8003F5CD5 /* Design */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Design;
+		};
 		5CF38A5D27E48E6C0096A0F7 /* CodeFile */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = CodeFile;
@@ -1015,11 +995,6 @@
 		64B64EDD27F7B79400C400F1 /* About */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = About;
-		};
-		B65E614527E6765D00255275 /* Introspect */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = B65E614427E6765D00255275 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
-			productName = Introspect;
 		};
 		D70F5E2B27E4E8CF004EE4B9 /* WelcomeModule */ = {
 			isa = XCSwiftPackageProductDependency;

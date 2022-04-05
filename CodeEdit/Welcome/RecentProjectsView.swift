@@ -4,22 +4,10 @@
 //
 //  Created by Ziyuan Zhao on 2022/3/18.
 //
-import Introspect
 import SwiftUI
 import WelcomeModule
 import WorkspaceClient
-
-extension List {
-    /// List on macOS uses an opaque background with no option for
-    /// removing/changing it. listRowBackground() doesn't work either.
-    /// This workaround works because List is backed by NSTableView.
-    func removeBackground() -> some View {
-        return introspectTableView { tableView in
-            tableView.backgroundColor = .clear
-            tableView.enclosingScrollView!.drawsBackground = false
-        }
-    }
-}
+import Design
 
 struct RecentProjectsView: View {
     @State
@@ -152,8 +140,12 @@ struct RecentProjectsView: View {
             }
         }
         .frame(width: 300)
-        .background(BlurView(material: NSVisualEffectView.Material.underWindowBackground,
-                             blendingMode: NSVisualEffectView.BlendingMode.behindWindow))
+        .background(
+            BlurView(
+                material: NSVisualEffectView.Material.underWindowBackground,
+                blendingMode: NSVisualEffectView.BlendingMode.behindWindow
+            )
+        )
         .onAppear {
             // onAppear is called once, and therafter never again,
             // since the window is never release from memory.
