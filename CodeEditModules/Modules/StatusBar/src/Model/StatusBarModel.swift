@@ -85,9 +85,5 @@ public class StatusBarModel: ObservableObject {
         } catch {
             selectedBranch = nil
         }
-        StatusBarModel.shared = self
     }
-
-    /// shared instance that persists though session
-    public static var shared: StatusBarModel?
 }

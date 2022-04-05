@@ -11,7 +11,13 @@ import SwiftTerm
 public extension TerminalEmulatorView {
     class Coordinator: NSObject, LocalProcessTerminalViewDelegate {
 
-        public override init() {}
+        @State
+        private var url: URL
+
+        public init(url: URL) {
+            self._url = .init(wrappedValue: url)
+            super.init()
+        }
 
         public func hostCurrentDirectoryUpdate(source: TerminalView, directory: String?) {}
 
@@ -25,7 +31,7 @@ public extension TerminalEmulatorView {
             }
             source.feed(text: "Exit code: \(exitCode)\n\r\n")
             source.feed(text: "To open a new session close and reopen the terminal drawer")
-            TerminalEmulatorView.lastTerminal = nil
+            TerminalEmulatorView.lastTerminal[url.path] = nil
         }
     }
 }

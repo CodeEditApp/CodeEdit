@@ -23,7 +23,7 @@ public struct TerminalEmulatorView: NSViewRepresentable {
     @StateObject
     private var themeModel: ThemeModel = .shared
 
-    internal static var lastTerminal: LocalProcessTerminalView?
+    internal static var lastTerminal: [String: LocalProcessTerminalView] = [:]
 
     @State
     internal var terminal: LocalProcessTerminalView
@@ -44,7 +44,7 @@ public struct TerminalEmulatorView: NSViewRepresentable {
 
     public init(url: URL) {
         self.url = url
-        self._terminal = State(initialValue: TerminalEmulatorView.lastTerminal ?? .init(frame: .zero))
+        self._terminal = State(initialValue: TerminalEmulatorView.lastTerminal[url.path] ?? .init(frame: .zero))
     }
 
     /// Returns a string of a shell path to use
@@ -159,7 +159,7 @@ public struct TerminalEmulatorView: NSViewRepresentable {
 
     public func setupSession() {
         terminal.getTerminal().silentLog = true
-        if TerminalEmulatorView.lastTerminal == nil {
+        if TerminalEmulatorView.lastTerminal[url.path] == nil {
             let shell = getShell()
             let shellIdiom = "-" + NSString(string: shell).lastPathComponent
 
@@ -180,7 +180,7 @@ public struct TerminalEmulatorView: NSViewRepresentable {
             terminal.optionAsMetaKey = optionAsMeta
         }
         terminal.appearance = colorAppearance
-        TerminalEmulatorView.lastTerminal = terminal
+        TerminalEmulatorView.lastTerminal[url.path] = terminal
     }
 
     public func updateNSView(_ view: LocalProcessTerminalView, context: Context) {
@@ -195,14 +195,14 @@ public struct TerminalEmulatorView: NSViewRepresentable {
         view.nativeBackgroundColor = backgroundColor
         view.optionAsMetaKey = optionAsMeta
         view.appearance = colorAppearance
-        if TerminalEmulatorView.lastTerminal != nil {
-            TerminalEmulatorView.lastTerminal = view
+        if TerminalEmulatorView.lastTerminal[url.path] != nil {
+            TerminalEmulatorView.lastTerminal[url.path] = view
         }
         view.getTerminal().softReset()
         view.feed(text: "") // send empty character to force colors to be redrawn
     }
 
     public func makeCoordinator() -> Coordinator {
-        Coordinator()
+        Coordinator(url: url)
     }
 }
