@@ -28,7 +28,7 @@ public final class QuickOpenState: ObservableObject {
         }
 
         queue.async { [weak self] in
-            guard let self = self else { return }
+            guard let self = self else { return }
             let enumerator = FileManager.default.enumerator(
                 at: self.fileURL,
                 includingPropertiesForKeys: [
