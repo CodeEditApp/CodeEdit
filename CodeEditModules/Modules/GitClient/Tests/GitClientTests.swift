@@ -10,6 +10,8 @@ import ShellClient
 import XCTest
 
 final class GitClientTests: XCTestCase {
+    // FIXME: Update GitClient.getCommitHistory implementation on date or this test case
+    // Currently this will fail on some non en_US locale like zh_CN
     func testHistory() throws {
         let shellClient: ShellClient = .always(
             "e5fe4bf¦Merge pull request #260 from lukepistrol/terminal-color-fix¦Luke¦Sat, 26 Mar 2022 03:28:12 +0100¦"
