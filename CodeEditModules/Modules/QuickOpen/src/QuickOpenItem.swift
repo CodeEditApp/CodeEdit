@@ -9,8 +9,16 @@ import SwiftUI
 import WorkspaceClient
 
 public struct QuickOpenItem: View {
-    let baseDirectory: URL
-    let fileItem: WorkspaceClient.FileItem
+    private let baseDirectory: URL
+    private let fileItem: WorkspaceClient.FileItem
+
+    public init(
+        baseDirectory: URL,
+        fileItem: WorkspaceClient.FileItem
+    ) {
+        self.baseDirectory = baseDirectory
+        self.fileItem = fileItem
+    }
 
     public var body: some View {
         HStack(spacing: 8) {
