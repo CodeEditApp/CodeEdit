@@ -1,4 +1,4 @@
-# ``FontPicker/FontPicker``
+# ``FontPicker``
 
 A package that implements a font picker for SwiftUI.
 
