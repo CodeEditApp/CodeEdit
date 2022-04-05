@@ -139,6 +139,11 @@ struct TabBarItem: View {
                 }
             }
         }
+        .onDrag {
+            let result = NSItemProvider.init(contentsOf: item.url.absoluteURL)!
+            print(result.debugDescription)
+            return result
+        }
     }
     var body: some View {
         Button(
