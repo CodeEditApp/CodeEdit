@@ -33,6 +33,10 @@ class CodeEditDocumentController: NSDocumentController {
             completionHandler(document, documentWasAlreadyOpen, error)
         }
     }
+
+    override func clearRecentDocuments(_ sender: Any?) {
+        UserDefaults.standard.set([], forKey: "recentProjectPaths")
+    }
 }
 
 extension NSDocumentController {
