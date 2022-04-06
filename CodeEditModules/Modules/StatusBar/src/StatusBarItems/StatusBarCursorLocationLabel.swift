@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-@available(macOS 12, *)
 internal struct StatusBarCursorLocationLabel: View {
     @ObservedObject
     private var model: StatusBarModel

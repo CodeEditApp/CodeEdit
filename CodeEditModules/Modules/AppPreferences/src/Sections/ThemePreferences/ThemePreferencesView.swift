@@ -10,7 +10,6 @@ import SwiftUI
 import Preferences
 
 /// A view that implements the `Theme` preference section
-@available(macOS 12, *)
 public struct ThemePreferencesView: View {
     @Environment(\.colorScheme)
     var colorScheme
@@ -220,7 +219,6 @@ public struct ThemePreferencesView: View {
     }
 }
 
-@available(macOS 12, *)
 private struct PrefsThemes_Previews: PreviewProvider {
     static var previews: some View {
         ThemePreferencesView()
