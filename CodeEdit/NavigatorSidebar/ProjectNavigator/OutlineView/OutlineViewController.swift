@@ -1,55 +1,15 @@
 //
-//  TableView.swift
+//  OutlineViewController.swift
 //  CodeEdit
 //
-//  Created by Lukas Pistrol on 05.04.22.
+//  Created by Lukas Pistrol on 07.04.22.
 //
 
 import SwiftUI
 import WorkspaceClient
 import AppPreferences
 
-class SidebarTableCellView: NSTableCellView {
-
-    var label: NSTextField!
-    var icon: NSImageView!
-
-    override init(frame frameRect: NSRect) {
-        super.init(frame: frameRect)
-
-        self.label = NSTextField(frame: .zero)
-        self.label.translatesAutoresizingMaskIntoConstraints = false
-        self.label.drawsBackground = false
-        self.label.isBordered = false
-        self.label.isEditable = false
-
-        self.addSubview(label)
-        self.textField = label
-
-        self.icon = NSImageView(frame: .init(origin: .zero, size: .zero))
-        self.icon.translatesAutoresizingMaskIntoConstraints = false
-        self.icon.symbolConfiguration = .init(pointSize: 13, weight: .regular, scale: .medium)
-        self.icon.imageScaling = .scaleProportionallyDown
-
-        self.addSubview(icon)
-        self.imageView = icon
-
-        self.icon.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0).isActive = true
-        self.icon.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        self.icon.widthAnchor.constraint(equalToConstant: 20).isActive = true
-        self.icon.heightAnchor.constraint(equalToConstant: 19).isActive = true
-
-        self.label.leadingAnchor.constraint(equalTo: icon.trailingAnchor, constant: 5).isActive = true
-        self.label.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError()
-    }
-
-}
-
-class SidebarOutlineViewController: NSViewController {
+class OutlineViewController: NSViewController {
 
     var scrollView: NSScrollView!
     var outlineView: NSOutlineView!
@@ -68,6 +28,8 @@ class SidebarOutlineViewController: NSViewController {
         self.outlineView.delegate = self
         self.outlineView.dataSource = self
         self.outlineView.headerView = nil
+        self.outlineView.menu = OutlineMenu()
+        self.outlineView.menu?.delegate = self
 
         let column = NSTableColumn(identifier: .init(rawValue: "Cell"))
         column.title = "Cell"
@@ -95,13 +57,27 @@ class SidebarOutlineViewController: NSViewController {
         outlineView.selectRowIndexes(.init(integer: row), byExtendingSelection: false)
     }
 
-    func reloadContent() {
+    private func reloadContent() {
         self.content = workspace?.selectionState.fileItems.sortItems(foldersOnTop: true) ?? []
         outlineView.reloadData()
     }
+
+    private func color(for item: WorkspaceClient.FileItem) -> NSColor {
+        if item.children == nil {
+            if iconColor == .color {
+                return NSColor(item.iconColor)
+            } else {
+                return .secondaryLabelColor
+            }
+        } else {
+            return .secondaryLabelColor
+        }
+    }
 }
 
-extension SidebarOutlineViewController: NSOutlineViewDataSource {
+// MARK: - NSOutlineViewDataSource
+
+extension OutlineViewController: NSOutlineViewDataSource {
     func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
         if let item = item as? WorkspaceClient.FileItem {
             return item.children?.count ?? 0
@@ -125,7 +101,9 @@ extension SidebarOutlineViewController: NSOutlineViewDataSource {
     }
 }
 
-extension SidebarOutlineViewController: NSOutlineViewDelegate {
+// MARK: - NSOutlineViewDelegate
+
+extension OutlineViewController: NSOutlineViewDelegate {
     func outlineView(_ outlineView: NSOutlineView,
                      shouldShowCellExpansionFor tableColumn: NSTableColumn?, item: Any) -> Bool {
         return true
@@ -141,7 +119,7 @@ extension SidebarOutlineViewController: NSOutlineViewDelegate {
 
         let frameRect = NSRect(x: 0, y: 0, width: tableColumn.width, height: 20)
 
-        let view = SidebarTableCellView(frame: frameRect)
+        let view = OutlineTableViewCell(frame: frameRect)
 
         if let item = item as? WorkspaceClient.FileItem {
             let image = NSImage(systemSymbolName: item.systemImage, accessibilityDescription: nil)!
@@ -163,44 +141,24 @@ extension SidebarOutlineViewController: NSOutlineViewDelegate {
 
         guard let item = outlineView.item(atRow: selectedIndex) as? WorkspaceClient.FileItem else { return }
 
-        workspace?.openFile(item: item)
-    }
-
-    private func color(for item: WorkspaceClient.FileItem) -> NSColor {
         if item.children == nil {
-            if iconColor == .color {
-                return NSColor(item.iconColor)
-            } else {
-                return .secondaryLabelColor
-            }
-        } else {
-            return .secondaryLabelColor
+            workspace?.openFile(item: item)
         }
     }
 }
 
-struct SidebarOutline: NSViewControllerRepresentable {
+extension OutlineViewController: NSMenuDelegate {
 
-    @StateObject
-    var workspace: WorkspaceDocument
+    func menuNeedsUpdate(_ menu: NSMenu) {
+        let row = outlineView.clickedRow
+        guard let menu = menu as? OutlineMenu else { return }
 
-    @StateObject
-    var prefs: AppPreferencesModel = .shared
-
-    typealias NSViewControllerType = SidebarOutlineViewController
-
-    func makeNSViewController(context: Context) -> SidebarOutlineViewController {
-        let controller = SidebarOutlineViewController()
-        controller.workspace = workspace
-        controller.iconColor = prefs.preferences.general.fileIconStyle
-
-        return controller
+        if row == -1 {
+            menu.item = nil
+        } else {
+            let item = content[row]
+            menu.item = item
+        }
+        menu.update()
     }
-
-    func updateNSViewController(_ nsViewController: SidebarOutlineViewController, context: Context) {
-        nsViewController.iconColor = prefs.preferences.general.fileIconStyle
-        nsViewController.updateSelection()
-        return
-    }
-
 }
