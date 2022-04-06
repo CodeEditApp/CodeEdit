@@ -128,8 +128,13 @@ let package = Package(
             name: "WelcomeModule",
             dependencies: [
                 "WorkspaceClient",
+                "Design",
+                "AppPreferences",
             ],
-            path: "Modules/WelcomeModule/src"
+            path: "Modules/WelcomeModule/src",
+            resources: [
+                .process("Resources"),
+            ]
         ),
         .testTarget(
             name: "WelcomeModuleTests",
