@@ -24,27 +24,26 @@ struct ProjectNavigator: View {
     private var selection: WorkspaceClient.FileItem.ID?
 
     var body: some View {
-        SidebarOutline(workspace: workspace)
-//        List(selection: $selection) {
-//            Section {
-//                ForEach(
-//                    workspace.selectionState.fileItems.sortItems(foldersOnTop: workspace.sortFoldersOnTop)
-//                ) { item in
-//                    ProjectNavigatorItem(
-//                        item: item,
-//                        workspace: workspace,
-//                        windowController: windowController,
-//                        shouldloadChildren: .constant(true), // First level of children should always be loaded
-//                        selectedId: $selection
-//                    )
-//                }
-//            } header: {
-//                Text(projectName)
-//                    .padding(.vertical, 8)
-//            }
-//        }
-//        .listStyle(.sidebar)
-//        .listRowInsets(.init())
+        List(selection: $selection) {
+            Section {
+                ForEach(
+                    workspace.selectionState.fileItems.sortItems(foldersOnTop: workspace.sortFoldersOnTop)
+                ) { item in
+                    ProjectNavigatorItem(
+                        item: item,
+                        workspace: workspace,
+                        windowController: windowController,
+                        shouldloadChildren: .constant(true), // First level of children should always be loaded
+                        selectedId: $selection
+                    )
+                }
+            } header: {
+                Text(projectName)
+                    .padding(.vertical, 8)
+            }
+        }
+        .listStyle(.sidebar)
+        .listRowInsets(.init())
         .onChange(of: selection) { newValue in
             guard let id = newValue,
                   let item = try? workspace.workspaceClient?.getFileItem(id),
