@@ -9,6 +9,7 @@ import SwiftUI
 import AppPreferences
 import Preferences
 import About
+import WelcomeModule
 
 class CodeEditApplication: NSApplication {
     let strongDelegate = AppDelegate()
@@ -122,7 +123,31 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                               styleMask: [.titled, .fullSizeContentView], backing: .buffered, defer: false)
         let windowController = NSWindowController(window: window)
         window.center()
-        let contentView = WelcomeWindowView(windowController: windowController)
+        let contentView = WelcomeWindowView(
+            openDocument: { url, opened in
+                if let url = url {
+                    CodeEditDocumentController.shared.openDocument(
+                        withContentsOf: url,
+                        display: true
+                    ) { doc, _, _ in
+                        if doc != nil {
+                            opened()
+                        }
+                    }
+
+                } else {
+                    CodeEditDocumentController.shared.openDocument { _, _ in
+                        opened()
+                    }
+                }
+            },
+            newDocument: {
+                CodeEditDocumentController.shared.newDocument(nil)
+            },
+            dismissWindow: {
+                windowController.window?.close()
+            }
+        )
         window.titlebarAppearsTransparent = true
         window.isMovableByWindowBackground = true
         window.contentView = NSHostingView(rootView: contentView)

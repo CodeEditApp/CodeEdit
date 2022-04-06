@@ -8,40 +8,26 @@
 import SwiftUI
 import AppKit
 import Foundation
-import WelcomeModule
 import AppPreferences
 
-struct WelcomeView: View {
-    @Environment(\.colorScheme)
-    var colorScheme
+public struct WelcomeView: View {
+    @Environment(\.colorScheme) var colorScheme
+    @State var isHovering: Bool = false
+    @State var isHoveringClose: Bool = false
+    @StateObject private var prefs: AppPreferencesModel = .shared
 
-    @State
-    var isHovering: Bool = false
+    private let openDocument: (URL?, @escaping () -> Void) -> Void
+    private let newDocument: () -> Void
+    private let dismissWindow: () -> Void
 
-    @State
-    var isHoveringClose: Bool = false
-
-    @StateObject
-    private var prefs: AppPreferencesModel = .shared
-
-    var dismissWindow: () -> Void
-
-    private var dismissButton: some View {
-        Button(action: dismissWindow, label: {
-            Circle()
-                .fill(isHoveringClose ? .secondary : Color(.clear))
-                .frame(width: 13, height: 13)
-                .overlay(
-                    Image(systemName: "xmark")
-                        .font(.system(size: 8.5, weight: .heavy, design: .rounded))
-                        .foregroundColor(isHoveringClose ? Color(nsColor: .windowBackgroundColor) : .secondary)
-                )
-        })
-        .buttonStyle(PlainButtonStyle())
-        .accessibilityLabel(Text("Close"))
-        .onHover { hover in
-            isHoveringClose = hover
-        }
+    public init(
+        openDocument: @escaping (URL?, @escaping () -> Void) -> Void,
+        newDocument: @escaping () -> Void,
+        dismissWindow: @escaping () -> Void
+    ) {
+        self.openDocument = openDocument
+        self.newDocument = newDocument
+        self.dismissWindow = dismissWindow
     }
 
     private var appVersion: String {
@@ -109,16 +95,22 @@ struct WelcomeView: View {
         pasteboard.setString(copyString, forType: .string)
     }
 
-    var body: some View {
+    public var body: some View {
         ZStack(alignment: .topLeading) {
             VStack(spacing: 8) {
                 Spacer().frame(height: 12)
                 Image(nsImage: NSApp.applicationIconImage)
                     .resizable()
                     .frame(width: 128, height: 128)
-                Text("Welcome to CodeEdit")
+                Text(NSLocalizedString("Welcome to CodeEdit", bundle: .module, comment: ""))
                     .font(.system(size: 38))
-                Text("Version \(appVersion) (\(appBuild))")
+                Text(
+                    String(
+                        format: NSLocalizedString("Version %@ (%@)", bundle: .module, comment: ""),
+                        appVersion,
+                        appBuild
+                    )
+                )
                     .foregroundColor(.secondary)
                     .font(.system(size: 13))
                     .onHover { inside in
@@ -137,27 +129,33 @@ struct WelcomeView: View {
                     VStack(alignment: .leading, spacing: 15) {
                         WelcomeActionView(
                             iconName: "plus.square",
-                            title: "Create a new file".localized(),
-                            subtitle: "Create a new file".localized()
+                            title: NSLocalizedString("Create a new file", bundle: .module, comment: ""),
+                            subtitle: NSLocalizedString("Create a new file", bundle: .module, comment: "")
                         )
                         .onTapGesture {
-                            CodeEditDocumentController.shared.newDocument(nil)
+                            newDocument()
                             dismissWindow()
                         }
                         WelcomeActionView(
                             iconName: "folder",
-                            title: "Open a file or folder".localized(),
-                            subtitle: "Open an existing file or folder on your Mac".localized()
+                            title: NSLocalizedString("Open a file or folder", bundle: .module, comment: ""),
+                            subtitle: NSLocalizedString(
+                                "Open an existing file or folder on your Mac",
+                                bundle: .module,
+                                comment: ""
+                            )
                         )
                         .onTapGesture {
-                            CodeEditDocumentController.shared.openDocument { _, _ in
-                                dismissWindow()
-                            }
+                            openDocument(nil, dismissWindow)
                         }
                         WelcomeActionView(
                             iconName: "plus.square.on.square",
-                            title: "Clone an exisiting project".localized(),
-                            subtitle: "Start working on something from a Git repository".localized()
+                            title: NSLocalizedString("Clone an exisiting project", bundle: .module, comment: ""),
+                            subtitle: NSLocalizedString(
+                                "Start working on something from a Git repository",
+                                bundle: .module,
+                                comment: ""
+                            )
                         )
                         .onTapGesture {
                             // TODO: clone a Git repository
@@ -170,7 +168,7 @@ struct WelcomeView: View {
             .padding(.top, 20)
             .padding(.horizontal, 56)
             .padding(.bottom, 16)
-            .background(Color(nsColor: colorScheme == .dark ? .windowBackgroundColor : .white))
+            .background(Color(colorScheme == .dark ? NSColor.windowBackgroundColor : .white))
             .onHover { isHovering in
                 self.isHovering = isHovering
             }
@@ -201,11 +199,36 @@ struct WelcomeView: View {
             }
         }
     }
+
+    private var dismissButton: some View {
+        Button(
+            action: dismissWindow,
+            label: {
+                Circle()
+                    .fill(isHoveringClose ? .secondary : Color(.clear))
+                    .frame(width: 13, height: 13)
+                    .overlay(
+                        Image(systemName: "xmark")
+                            .font(.system(size: 8.5, weight: .heavy, design: .rounded))
+                            .foregroundColor(isHoveringClose ? Color(NSColor.windowBackgroundColor) : .secondary)
+                    )
+            }
+        )
+        .buttonStyle(PlainButtonStyle())
+        .accessibilityLabel(Text("Close"))
+        .onHover { hover in
+            isHoveringClose = hover
+        }
+    }
 }
 
 struct WelcomeView_Previews: PreviewProvider {
     static var previews: some View {
-        WelcomeView(dismissWindow: {})
-            .frame(width: 800, height: 460)
+        WelcomeView(
+            openDocument: { _, _  in },
+            newDocument: {},
+            dismissWindow: {}
+        )
+        .frame(width: 800, height: 460)
     }
 }
