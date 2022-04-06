@@ -24,6 +24,8 @@ struct NavigatorSidebar: View {
                 ProjectNavigator(workspace: workspace, windowController: windowController)
             case 2:
                 FindNavigator(state: workspace.searchState ?? .init(workspace))
+            case 7:
+                ExtensionNavigator()
             default:
                 Spacer()
             }
