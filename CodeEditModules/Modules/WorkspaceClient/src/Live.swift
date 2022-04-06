@@ -36,7 +36,7 @@ public extension WorkspaceClient {
                         subItems = try loadFiles(fromURL: itemURL)
                     }
 
-                    let newFileItem = FileItem(url: itemURL, children: subItems)
+                    let newFileItem = FileItem(url: itemURL, children: subItems?.sortItems(foldersOnTop: true))
                     subItems?.forEach {
                         $0.parent = newFileItem
                     }

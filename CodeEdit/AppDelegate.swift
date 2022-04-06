@@ -124,7 +124,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         let windowController = NSWindowController(window: window)
         window.center()
         let contentView = WelcomeWindowView(
-            openDocument: { url, opened in
+            openDocument: { url, opened in
                 if let url = url {
                     CodeEditDocumentController.shared.openDocument(
                         withContentsOf: url,
