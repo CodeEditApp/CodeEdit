@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-@available(macOS 12, *)
 internal struct StatusBarToggleDrawerButton: View {
     @ObservedObject
     private var model: StatusBarModel

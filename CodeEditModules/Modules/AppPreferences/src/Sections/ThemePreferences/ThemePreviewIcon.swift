@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-@available(macOS 12, *)
 struct ThemePreviewIcon: View {
     init(_ theme: Theme, selection: Binding<Theme?>, colorScheme: ColorScheme) {
         self.theme = theme
@@ -261,7 +260,6 @@ struct ThemePreviewIcon: View {
     }
 }
 
- @available(macOS 12, *)
  private struct ThemePreviewIcon_Previews: PreviewProvider {
     static var previews: some View {
         ThemePreviewIcon(ThemeModel.shared.themes.first!,
