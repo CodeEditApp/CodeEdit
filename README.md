@@ -117,6 +117,9 @@ Support CodeEdit's development by [becoming a sponsor](https://github.com/sponso
 <a href="https://macstadium.com">
     <img src="https://uploads-ssl.webflow.com/5ac3c046c82724970fc60918/5c019d917bba312af7553b49_MacStadium-developerlogo.png" width="30%" />
 </a>
+
+[![gitbook-ar21](https://user-images.githubusercontent.com/806104/162128574-c745f38c-9d57-40ae-855a-2938bbdf777a.svg)](https://www.gitbook.com/)
+
 ## Backers
 
 Support CodeEdit's development by [becoming a backer](https://github.com/sponsors/CodeEditApp).
