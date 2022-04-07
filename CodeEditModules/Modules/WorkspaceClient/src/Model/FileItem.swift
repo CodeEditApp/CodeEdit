@@ -27,6 +27,9 @@ public extension WorkspaceClient {
             case nil:
                 return fileIcon
             case let .some(children):
+                if self.parent == nil {
+                    return "square.dashed.inset.filled"
+                }
                 return children.isEmpty ? "folder" : "folder.fill"
             }
         }

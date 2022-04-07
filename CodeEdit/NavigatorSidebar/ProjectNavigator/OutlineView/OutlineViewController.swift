@@ -36,6 +36,8 @@ class OutlineViewController: NSViewController {
         outlineView.addTableColumn(column)
 
         self.scrollView.documentView = outlineView
+        self.scrollView.automaticallyAdjustsContentInsets = false
+        self.scrollView.contentInsets = .init(top: 10, left: 0, bottom: 0, right: 0)
         reloadContent()
     }
 
@@ -58,8 +60,13 @@ class OutlineViewController: NSViewController {
     }
 
     private func reloadContent() {
-        self.content = workspace?.selectionState.fileItems.sortItems(foldersOnTop: true) ?? []
+        guard let folderURL = workspace?.workspaceClient?.folderURL() else { return }
+        let children = workspace?.selectionState.fileItems.sortItems(foldersOnTop: true)
+        let root = WorkspaceClient.FileItem(url: folderURL, children: children)
+        self.content = [root]
         outlineView.reloadData()
+        guard let item = outlineView.item(atRow: 0) else { return }
+        outlineView.expandItem(item)
     }
 
     private func color(for item: WorkspaceClient.FileItem) -> NSColor {
@@ -117,7 +124,7 @@ extension OutlineViewController: NSOutlineViewDelegate {
 
         guard let tableColumn = tableColumn else { return nil }
 
-        let frameRect = NSRect(x: 0, y: 0, width: tableColumn.width, height: 20)
+        let frameRect = NSRect(x: 0, y: 0, width: tableColumn.width, height: 17)
 
         let view = OutlineTableViewCell(frame: frameRect)
 
@@ -144,6 +151,10 @@ extension OutlineViewController: NSOutlineViewDelegate {
         if item.children == nil {
             workspace?.openFile(item: item)
         }
+    }
+
+    func outlineView(_ outlineView: NSOutlineView, heightOfRowByItem item: Any) -> CGFloat {
+        return 22
     }
 }
 

@@ -15,6 +15,8 @@ class OutlineTableViewCell: NSTableCellView {
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
 
+        let iconHeight = frameRect.height - 2
+
         self.label = NSTextField(frame: .zero)
         self.label.translatesAutoresizingMaskIntoConstraints = false
         self.label.drawsBackground = false
@@ -34,10 +36,10 @@ class OutlineTableViewCell: NSTableCellView {
 
         self.icon.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0).isActive = true
         self.icon.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        self.icon.widthAnchor.constraint(equalToConstant: 20).isActive = true
-        self.icon.heightAnchor.constraint(equalToConstant: 19).isActive = true
+        self.icon.widthAnchor.constraint(equalToConstant: iconHeight).isActive = true
+        self.icon.heightAnchor.constraint(equalToConstant: iconHeight).isActive = true
 
-        self.label.leadingAnchor.constraint(equalTo: icon.trailingAnchor, constant: 5).isActive = true
+        self.label.leadingAnchor.constraint(equalTo: icon.trailingAnchor, constant: 4).isActive = true
         self.label.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
     }
 
