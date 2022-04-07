@@ -36,6 +36,8 @@ class OutlineViewController: NSViewController {
         outlineView.addTableColumn(column)
 
         self.scrollView.documentView = outlineView
+        self.scrollView.contentView.automaticallyAdjustsContentInsets = false
+        self.scrollView.contentView.contentInsets = .init(top: 10, left: 0, bottom: 0, right: 0)
         reloadContent()
     }
 
