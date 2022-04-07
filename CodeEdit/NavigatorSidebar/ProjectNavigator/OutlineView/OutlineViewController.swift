@@ -62,7 +62,9 @@ class OutlineViewController: NSViewController {
               let item = try? workspace?.workspaceClient?.getFileItem(itemID) else { return }
 
         let row = outlineView.row(forItem: item)
-        print(item.fileName, row)
+        if row == -1 {
+            outlineView.deselectRow(outlineView.selectedRow)
+        }
         outlineView.selectRowIndexes(.init(integer: row), byExtendingSelection: false)
     }
 
@@ -83,12 +85,8 @@ class OutlineViewController: NSViewController {
     /// - Parameter item: The `FileItem` to get the color for
     /// - Returns: A `NSColor` for the given `FileItem`.
     private func color(for item: WorkspaceClient.FileItem) -> NSColor {
-        if item.children == nil {
-            if iconColor == .color {
-                return NSColor(item.iconColor)
-            } else {
-                return .secondaryLabelColor
-            }
+        if item.children == nil && iconColor == .color {
+            return NSColor(item.iconColor)
         } else {
             return .secondaryLabelColor
         }
@@ -168,6 +166,10 @@ extension OutlineViewController: NSOutlineViewDelegate {
 
     func outlineView(_ outlineView: NSOutlineView, heightOfRowByItem item: Any) -> CGFloat {
         return 22 // This can be changed to 20 to match Xcodes row height.
+    }
+
+    func outlineViewItemDidExpand(_ notification: Notification) {
+        updateSelection()
     }
 }
 
