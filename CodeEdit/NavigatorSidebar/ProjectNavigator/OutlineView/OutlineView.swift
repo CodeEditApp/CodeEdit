@@ -9,6 +9,7 @@ import SwiftUI
 import WorkspaceClient
 import AppPreferences
 
+/// Wraps an ``OutlineViewController`` inside a `NSViewControllerRepresentable`
 struct OutlineView: NSViewControllerRepresentable {
 
     @StateObject

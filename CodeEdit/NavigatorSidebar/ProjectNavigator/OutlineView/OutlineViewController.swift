@@ -9,6 +9,10 @@ import SwiftUI
 import WorkspaceClient
 import AppPreferences
 
+/// A `NSViewController` that handles the **ProjectNavigator** in the **NavigatorSideabr**.
+///
+/// Adds a ``outlineView`` inside a ``scrollView`` which shows the folder structure of the
+/// currently open project.
 class OutlineViewController: NSViewController {
 
     var scrollView: NSScrollView!
@@ -20,6 +24,7 @@ class OutlineViewController: NSViewController {
 
     var iconColor: AppPreferences.FileIconStyle = .color
 
+    /// Setup the ``scrollView`` and ``outlineView``
     override func loadView() {
         self.scrollView = NSScrollView()
         self.view = scrollView
@@ -49,8 +54,10 @@ class OutlineViewController: NSViewController {
         fatalError()
     }
 
+    /// Updates the selection of the ``outlineView`` whenever it changes.
+    ///
+    /// Most importantly when the `id` changes from an external view.
     func updateSelection() {
-        print("Update")
         guard let itemID = workspace?.selectionState.selectedId,
               let item = try? workspace?.workspaceClient?.getFileItem(itemID) else { return }
 
@@ -59,6 +66,9 @@ class OutlineViewController: NSViewController {
         outlineView.selectRowIndexes(.init(integer: row), byExtendingSelection: false)
     }
 
+    /// Get the folder structure and store it into ``content``.
+    ///
+    /// Also creates a top level item "root" which represents the projects root directory and automatically expands it.
     private func reloadContent() {
         guard let folderURL = workspace?.workspaceClient?.folderURL() else { return }
         let children = workspace?.selectionState.fileItems.sortItems(foldersOnTop: true)
@@ -69,6 +79,9 @@ class OutlineViewController: NSViewController {
         outlineView.expandItem(item)
     }
 
+    /// Get the appropriate color for the items icon depending on the users preferences.
+    /// - Parameter item: The `FileItem` to get the color for
+    /// - Returns: A `NSColor` for the given `FileItem`.
     private func color(for item: WorkspaceClient.FileItem) -> NSColor {
         if item.children == nil {
             if iconColor == .color {
@@ -154,12 +167,16 @@ extension OutlineViewController: NSOutlineViewDelegate {
     }
 
     func outlineView(_ outlineView: NSOutlineView, heightOfRowByItem item: Any) -> CGFloat {
-        return 22
+        return 22 // This can be changed to 20 to match Xcodes row height.
     }
 }
 
 extension OutlineViewController: NSMenuDelegate {
 
+    /// Once a menu gets requested by a `right click` setup the menu
+    ///
+    /// If the right click happened outside a row this will result in no menu being shown.
+    /// - Parameter menu: The menu that got requested
     func menuNeedsUpdate(_ menu: NSMenu) {
         let row = outlineView.clickedRow
         guard let menu = menu as? OutlineMenu else { return }

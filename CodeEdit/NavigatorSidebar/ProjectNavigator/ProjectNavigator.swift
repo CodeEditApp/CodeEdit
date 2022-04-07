@@ -22,9 +22,4 @@ struct ProjectNavigator: View {
     var body: some View {
         OutlineView(workspace: workspace)
     }
-
-    /// The name of the project (name of the selected top-level folder)
-    private var projectName: String {
-        workspace.workspaceClient?.folderURL()?.lastPathComponent ?? "Project"
-    }
 }

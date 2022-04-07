@@ -8,8 +8,10 @@
 import SwiftUI
 import WorkspaceClient
 
+/// A subclass of `NSMenu` implementing the contextual menu for the project navigator
 class OutlineMenu: NSMenu {
 
+    /// The item to show the contextual menu for
     var item: WorkspaceClient.FileItem?
 
     init() {
@@ -20,6 +22,12 @@ class OutlineMenu: NSMenu {
         fatalError("init(coder:) has not been implemented")
     }
 
+    /// Creates a `NSMenuItem` depending on the given arguments
+    /// - Parameters:
+    ///   - title: The title of the menu item
+    ///   - action: A `Selector` or `nil` of the action to perform.
+    ///   - key: A `keyEquivalent` of the menu item. Defaults to an empty `String`
+    /// - Returns: A `NSMenuItem` which has the target `self`
     private func menuItem(_ title: String, action: Selector?, key: String = "") -> NSMenuItem {
         let mItem = NSMenuItem(title: title, action: action, keyEquivalent: key)
         mItem.target = self
@@ -27,6 +35,8 @@ class OutlineMenu: NSMenu {
         return mItem
     }
 
+    /// Setup the menu and disables certain items when `isFile` is false
+    /// - Parameter isFile: A flag indicating that the item is a file instead of a directory
     private func setupMenu(isFile: Bool) {
         let showInFinder = menuItem("Show in Finder", action: #selector(showInFinder))
 
@@ -75,6 +85,7 @@ class OutlineMenu: NSMenu {
         self.setSubmenu(sourceControlMenu(), for: sourceControl)
     }
 
+    /// Submenu for **Open As** menu item.
     private func openAsMenu() -> NSMenu {
         let openAsMenu = NSMenu(title: "Open As")
         openAsMenu.addItem(withTitle: "Source Core", action: nil, keyEquivalent: "")
@@ -86,6 +97,7 @@ class OutlineMenu: NSMenu {
         return openAsMenu
     }
 
+    /// Submenu for **Source Control** menu item.
     private func sourceControlMenu() -> NSMenu {
         let sourceControlMenu = NSMenu(title: "Source Control")
         sourceControlMenu.addItem(withTitle: "Commit...", action: nil, keyEquivalent: "")
@@ -98,6 +110,7 @@ class OutlineMenu: NSMenu {
         return sourceControlMenu
     }
 
+    /// Updates the menu for the selected item and hides it if no item is provided.
     override func update() {
         self.removeAllItems()
         if let item = item {
@@ -105,6 +118,7 @@ class OutlineMenu: NSMenu {
         }
     }
 
+    /// Action that opens **Finder** at the items location.
     @objc
     private func showInFinder() {
         if let item = item {
@@ -112,6 +126,7 @@ class OutlineMenu: NSMenu {
         }
     }
 
+    /// Action that deletes the item.
     @objc
     private func delete() {
         if let item = item {
