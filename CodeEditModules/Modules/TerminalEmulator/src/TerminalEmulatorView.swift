@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftTerm
+import AppPreferences
 
 /// # TerminalEmulatorView
 ///
@@ -16,25 +17,13 @@ import SwiftTerm
 /// for use in SwiftUI.
 ///
 public struct TerminalEmulatorView: NSViewRepresentable {
-    @AppStorage(TerminalShellType.storageKey)
-    var shellType: TerminalShellType = .default
-
-    @AppStorage(TerminalFont.storageKey)
-    var terminalFontSelection: TerminalFont = .default
-
-    @AppStorage(TerminalFontName.storageKey)
-    var terminalFontName: String = TerminalFontName.default
-
-    @AppStorage(TerminalFontSize.storageKey)
-    var terminalFontSize: Int = TerminalFontSize.default
-
-    @AppStorage(TerminalColorScheme.storageKey)
-    var terminalColorSchmeme: TerminalColorScheme = .default
+    @StateObject
+    private var prefs: AppPreferencesModel = .shared
 
     @StateObject
-    private var ansiColors: AnsiColors = .shared
+    private var themeModel: ThemeModel = .shared
 
-    internal static var lastTerminal: LocalProcessTerminalView?
+    internal static var lastTerminal: [String: LocalProcessTerminalView] = [:]
 
     @State
     internal var terminal: LocalProcessTerminalView
@@ -42,17 +31,20 @@ public struct TerminalEmulatorView: NSViewRepresentable {
     private let systemFont: NSFont = .monospacedSystemFont(ofSize: 11, weight: .medium)
 
     private var font: NSFont {
-        if terminalFontSelection == .systemFont {
+        if !prefs.preferences.terminal.font.customFont {
             return systemFont
         }
-        return NSFont(name: terminalFontName, size: CGFloat(terminalFontSize)) ?? systemFont
+        return NSFont(
+            name: prefs.preferences.terminal.font.name,
+            size: CGFloat(prefs.preferences.terminal.font.size)
+        ) ?? systemFont
     }
 
     private var url: URL
 
     public init(url: URL) {
         self.url = url
-        self._terminal = State(initialValue: TerminalEmulatorView.lastTerminal ?? .init(frame: .zero))
+        self._terminal = State(initialValue: TerminalEmulatorView.lastTerminal[url.path] ?? .init(frame: .zero))
     }
 
     /// Returns a string of a shell path to use
@@ -72,8 +64,8 @@ public struct TerminalEmulatorView: NSViewRepresentable {
     ///    return String(cString: pwd.pw_shell)
     /// ```
     private func getShell() -> String {
-        switch shellType {
-        case .auto:
+        switch prefs.preferences.terminal.shell {
+        case .system:
             return autoDetectDefaultShell()
         case .bash:
             return "/bin/bash"
@@ -97,19 +89,65 @@ public struct TerminalEmulatorView: NSViewRepresentable {
         return String(cString: pwd.pw_shell)
     }
 
+    /// Returns true if the `option` key should be treated as the `meta` key.
+    private var optionAsMeta: Bool {
+        prefs.preferences.terminal.optionAsMeta
+    }
+
     /// Returns the mapped array of `SwiftTerm.Color` objects of ANSI Colors
     private var colors: [SwiftTerm.Color] {
-        return ansiColors.mappedColors.map { SwiftTerm.Color(hex: $0) }
+        if let selectedTheme = themeModel.selectedTheme,
+           let index = themeModel.themes.firstIndex(of: selectedTheme) {
+            return themeModel.themes[index].terminal.ansiColors.map { color in
+                SwiftTerm.Color(hex: color)
+            }
+        }
+        return []
+    }
+
+    /// Returns the `cursor` color of the selected theme
+    private var cursorColor: NSColor {
+        if let selectedTheme = themeModel.selectedTheme,
+           let index = themeModel.themes.firstIndex(of: selectedTheme) {
+            return NSColor(themeModel.themes[index].terminal.cursor.swiftColor)
+        }
+        return NSColor(.accentColor)
+    }
+
+    /// Returns the `selection` color of the selected theme
+    private var selectionColor: NSColor {
+        if let selectedTheme = themeModel.selectedTheme,
+           let index = themeModel.themes.firstIndex(of: selectedTheme) {
+            return NSColor(themeModel.themes[index].terminal.selection.swiftColor)
+        }
+        return NSColor(.accentColor)
+    }
+
+    /// Returns the `text` color of the selected theme
+    private var textColor: NSColor {
+        if let selectedTheme = themeModel.selectedTheme,
+           let index = themeModel.themes.firstIndex(of: selectedTheme) {
+            return NSColor(themeModel.themes[index].terminal.text.swiftColor)
+        }
+        return NSColor(.primary)
+    }
+
+    /// Returns the `background` color of the selected theme
+    private var backgroundColor: NSColor {
+        if let selectedTheme = themeModel.selectedTheme,
+           let index = themeModel.themes.firstIndex(of: selectedTheme) {
+            return NSColor(themeModel.themes[index].terminal.background.swiftColor)
+        }
+        return .windowBackgroundColor
     }
 
     /// returns a `NSAppearance` based on the user setting of the terminal appearance,
     /// `nil` if app default is not overriden
     private var colorAppearance: NSAppearance? {
-        switch terminalColorSchmeme {
-        case .auto: return nil
-        case .light: return .init(named: .aqua)
-        case .dark: return .init(named: .darkAqua)
+        if prefs.preferences.terminal.darkAppearance {
+            return .init(named: .darkAqua)
         }
+        return nil
     }
 
     /// Inherited from NSViewRepresentable.makeNSView(context:).
@@ -121,7 +159,7 @@ public struct TerminalEmulatorView: NSViewRepresentable {
 
     public func setupSession() {
         terminal.getTerminal().silentLog = true
-        if TerminalEmulatorView.lastTerminal == nil {
+        if TerminalEmulatorView.lastTerminal[url.path] == nil {
             let shell = getShell()
             let shellIdiom = "-" + NSString(string: shell).lastPathComponent
 
@@ -135,9 +173,14 @@ public struct TerminalEmulatorView: NSViewRepresentable {
             terminal.font = font
             terminal.configureNativeColors()
             terminal.installColors(self.colors)
+            terminal.caretColor = cursorColor
+            terminal.selectedTextBackgroundColor = selectionColor
+            terminal.nativeForegroundColor = textColor
+            terminal.nativeBackgroundColor = backgroundColor
+            terminal.optionAsMetaKey = optionAsMeta
         }
         terminal.appearance = colorAppearance
-        TerminalEmulatorView.lastTerminal = terminal
+        TerminalEmulatorView.lastTerminal[url.path] = terminal
     }
 
     public func updateNSView(_ view: LocalProcessTerminalView, context: Context) {
@@ -146,15 +189,20 @@ public struct TerminalEmulatorView: NSViewRepresentable {
         }
         view.configureNativeColors()
         view.installColors(self.colors)
+        view.caretColor = cursorColor
+        view.selectedTextBackgroundColor = selectionColor
+        view.nativeForegroundColor = textColor
+        view.nativeBackgroundColor = backgroundColor
+        view.optionAsMetaKey = optionAsMeta
         view.appearance = colorAppearance
-        if TerminalEmulatorView.lastTerminal != nil {
-            TerminalEmulatorView.lastTerminal = view
+        if TerminalEmulatorView.lastTerminal[url.path] != nil {
+            TerminalEmulatorView.lastTerminal[url.path] = view
         }
         view.getTerminal().softReset()
         view.feed(text: "") // send empty character to force colors to be redrawn
     }
 
     public func makeCoordinator() -> Coordinator {
-        Coordinator()
+        Coordinator(url: url)
     }
 }

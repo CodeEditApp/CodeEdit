@@ -41,27 +41,6 @@
 "System Font"="System Font";
 "Custom"="Custom";
 
-// Welcome Screen
-"Welcome to CodeEdit"="Welcome to CodeEdit";
-"Version %@ (%@)"="Version %@ (%@)";
-"No Recent Projects"="No Recent Projects";
-
-// Welcome Screen - New File
-"Create a new file"="Create a new file";
-"Clone an exisiting project"="Clone an exisiting project";
-
-// Welcome Screen - Open File
-"Open a file or folder"="Open a file or folder";
-"Open an existing file or folder on your Mac"="Open an existing file or folder on your Mac";
-
-// Welcome Screen - SCM
-"Start working on something from a Git repository"="Start working on something from a Git repository";
-"Open a project or file"="Open a project or file";
-
-// Welcome Screen - Workspaces
-"Open an existing project or file on your Mac"="Open an existing project or file on your Mac";
-"Show this window when CodeEdit launches"="Show this window when CodeEdit launches";
-
 //Editor Screen
 "Open file from sidebar"="Open file from sidebar";
 "CodeEdit cannot open this file because its file type is not supported." = "CodeEdit cannot open this file because its file type is not supported.";

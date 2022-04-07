@@ -9,8 +9,9 @@ import Cocoa
 import SwiftUI
 import CodeFile
 import Overlays
+import QuickOpen
 
-class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
+final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
 
     var workspace: WorkspaceDocument?
     var quickOpenPanel: OverlayPanel?
@@ -95,7 +96,6 @@ class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
         ]
     }
 
-    // swiftlint:disable all
     func toolbar(
         _ toolbar: NSToolbar,
         itemForItemIdentifier itemIdentifier: NSToolbarItem.Identifier,
@@ -103,15 +103,15 @@ class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     ) -> NSToolbarItem? {
         switch itemIdentifier {
         case .itemListTrackingSeparator:
-            if ((splitViewController) != nil) {
+                guard let splitViewController = splitViewController else {
+                    return nil
+                }
+
                 return NSTrackingSeparatorToolbarItem(
                     identifier: .itemListTrackingSeparator,
                     splitView: splitViewController.splitView,
                     dividerIndex: 1
                 )
-            } else {
-                return nil
-            }
         case .toggleFirstSidebarItem:
             let toolbarItem = NSToolbarItem(itemIdentifier: NSToolbarItem.Identifier.toggleFirstSidebarItem)
             toolbarItem.label = "Navigator Sidebar"
@@ -190,9 +190,11 @@ class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
             } else {
                 let panel = OverlayPanel()
                 self.quickOpenPanel = panel
-                let contentView = QuickOpenView(state: state) {
-                    panel.close()
-                }
+                let contentView = QuickOpenView(
+                    state: state,
+                    onClose: { panel.close() },
+                    openFile: workspace.openFile(item:)
+                )
                 panel.contentView = NSHostingView(rootView: contentView)
                 window?.addChildWindow(panel, ordered: .above)
                 panel.makeKeyAndOrderFront(self)

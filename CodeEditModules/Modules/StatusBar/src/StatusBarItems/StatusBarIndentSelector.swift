@@ -5,6 +5,7 @@
 //  Created by Lukas Pistrol on 22.03.22.
 //
 
+import AppPreferences
 import SwiftUI
 import CodeFile
 
@@ -13,8 +14,8 @@ internal struct StatusBarIndentSelector: View {
     @ObservedObject
     private var model: StatusBarModel
 
-    @AppStorage(EditorTabWidth.storageKey)
-    private var tabWidth: Int = EditorTabWidth.default
+    @StateObject
+    private var prefs: AppPreferencesModel = .shared
 
     internal init(model: StatusBarModel) {
         self.model = model
@@ -32,14 +33,14 @@ internal struct StatusBarIndentSelector: View {
 
             Divider()
 
-            Picker("Tab Width", selection: $tabWidth) {
+            Picker("Tab Width", selection: $prefs.preferences.textEditing.defaultTabWidth) {
                 ForEach(2..<9) { index in
                     Text("\(index) Spaces")
                         .tag(index)
                 }
             }
         } label: {
-            Text("\(tabWidth) Spaces")
+            Text("\(prefs.preferences.textEditing.defaultTabWidth) Spaces")
                 .font(model.toolbarFont)
         }
         .menuStyle(.borderlessButton)

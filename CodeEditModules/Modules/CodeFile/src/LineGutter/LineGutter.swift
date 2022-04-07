@@ -19,14 +19,13 @@ class LineGutter: NSRulerView {
             }
         }
     }
+
     private var lineIndices: [Int]? {
-        // swiftlint:disable:next implicit_getter
-        get {
             if _lineIndices == nil {
                 calculateLines()
             }
+
             return _lineIndices
-        }
     }
 
     private var textView: NSTextView? { clientView as? NSTextView }

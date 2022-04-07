@@ -21,6 +21,7 @@ class FontPickerDelegate {
 
 }
 
+/// A view that opens a `NSFontPanel` in order to choose a font installed on the system.
 public struct FontPicker: View {
     let labelString: String
 
@@ -66,8 +67,7 @@ public struct FontPicker: View {
                 NSFontPanel.shared.setPanelFont(self.font, isMultiple: false)
                 NSFontPanel.shared.orderBack(nil)
             } label: {
-                Image(systemName: "textformat")
-                    .imageScale(.large)
+                Text("Select...")
             }
             .fixedSize()
         }

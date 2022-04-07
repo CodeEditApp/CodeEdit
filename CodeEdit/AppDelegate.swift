@@ -8,6 +8,8 @@
 import SwiftUI
 import AppPreferences
 import Preferences
+import About
+import WelcomeModule
 
 class CodeEditApplication: NSApplication {
     let strongDelegate = AppDelegate()
@@ -30,9 +32,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
-        if let appearanceString = UserDefaults.standard.string(forKey: Appearances.storageKey) {
-            Appearances(rawValue: appearanceString)?.applyAppearance()
-        }
+        AppPreferencesModel.shared.preferences.general.appAppearance.applyAppearance()
 
         DispatchQueue.main.async {
             if NSApp.windows.isEmpty {
@@ -76,8 +76,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     }
 
     func handleOpen() {
-        let behavior = ReopenBehavior(rawValue: UserDefaults.standard.string(forKey: ReopenBehavior.storageKey)
-                                      ?? ReopenBehavior.default.rawValue) ?? ReopenBehavior.default
+        let behavior = AppPreferencesModel.shared.preferences.general.reopenBehavior
 
         switch behavior {
         case .welcome:
@@ -124,11 +123,39 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                               styleMask: [.titled, .fullSizeContentView], backing: .buffered, defer: false)
         let windowController = NSWindowController(window: window)
         window.center()
-        let contentView = WelcomeWindowView(windowController: windowController)
+        let contentView = WelcomeWindowView(
+            openDocument: { url, opened in
+                if let url = url {
+                    CodeEditDocumentController.shared.openDocument(
+                        withContentsOf: url,
+                        display: true
+                    ) { doc, _, _ in
+                        if doc != nil {
+                            opened()
+                        }
+                    }
+
+                } else {
+                    CodeEditDocumentController.shared.openDocument { _, _ in
+                        opened()
+                    }
+                }
+            },
+            newDocument: {
+                CodeEditDocumentController.shared.newDocument(nil)
+            },
+            dismissWindow: {
+                windowController.window?.close()
+            }
+        )
         window.titlebarAppearsTransparent = true
         window.isMovableByWindowBackground = true
         window.contentView = NSHostingView(rootView: contentView)
         window.makeKeyAndOrderFront(self)
+    }
+
+    @IBAction func openAbout(_ sender: Any) {
+        AboutView().showWindow(width: 530, height: 220)
     }
 
     // MARK: - Preferences
@@ -140,7 +167,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                 title: "General",
                 toolbarIcon: NSImage(systemSymbolName: "gearshape", accessibilityDescription: nil)!
             ) {
-                PreferencesGeneralView()
+                GeneralPreferencesView()
             },
             Preferences.Pane(
                 identifier: Preferences.PaneIdentifier("Accounts"),
@@ -169,14 +196,21 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                 title: "Themes",
                 toolbarIcon: NSImage(systemSymbolName: "paintbrush", accessibilityDescription: nil)!
             ) {
-                PreferencesThemeView()
+                ThemePreferencesView()
             },
             Preferences.Pane(
                 identifier: Preferences.PaneIdentifier("TextEditing"),
                 title: "Text Editing",
                 toolbarIcon: NSImage(systemSymbolName: "square.and.pencil", accessibilityDescription: nil)!
             ) {
-                PreferencesTextEditingView()
+                TextEditingPreferencesView()
+            },
+            Preferences.Pane(
+                identifier: Preferences.PaneIdentifier("Terminal"),
+                title: "Terminal",
+                toolbarIcon: NSImage(systemSymbolName: "terminal", accessibilityDescription: nil)!
+            ) {
+                TerminalPreferencesView()
             },
             Preferences.Pane(
                 identifier: Preferences.PaneIdentifier("KeyBindings"),
@@ -204,7 +238,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                 title: "Locations",
                 toolbarIcon: NSImage(systemSymbolName: "externaldrive", accessibilityDescription: nil)!
             ) {
-                PreferencesPlaceholderView()
+                LocationsPreferencesView()
             },
             Preferences.Pane(
                 identifier: Preferences.PaneIdentifier("Advanced"),

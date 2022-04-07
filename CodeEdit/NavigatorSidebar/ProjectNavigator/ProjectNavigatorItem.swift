@@ -16,8 +16,9 @@ import AppPreferences
 /// Displays a File or Folder in the ``ProjectNavigator``.
 ///
 struct ProjectNavigatorItem: View {
-    @AppStorage(FileIconStyle.storageKey)
-    var iconStyle: FileIconStyle = .default
+
+    @StateObject
+    private var prefs: AppPreferencesModel = .shared
 
     /// The `FileItem` for this view
     var item: WorkspaceClient.FileItem
@@ -93,6 +94,6 @@ struct ProjectNavigatorItem: View {
 
     /// Returns a color depending on the set icon color style in preferences
     private var iconColor: Color {
-        return iconStyle == .color ? item.iconColor : .secondary
+        return prefs.preferences.general.fileIconStyle == .color ? item.iconColor : .secondary
     }
 }

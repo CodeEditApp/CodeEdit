@@ -7,6 +7,7 @@
 
 import SwiftUI
 import WorkspaceClient
+import Design
 
 struct TabBar: View {
     @Environment(\.colorScheme)
@@ -46,7 +47,11 @@ struct TabBar: View {
                 .padding(.leading, -1)
             }
         }
-        .background(BlurView(material: NSVisualEffectView.Material.titlebar,
-                             blendingMode: NSVisualEffectView.BlendingMode.withinWindow))
+        .background(
+            BlurView(
+                material: NSVisualEffectView.Material.titlebar,
+                blendingMode: NSVisualEffectView.BlendingMode.withinWindow
+            )
+        )
     }
 }

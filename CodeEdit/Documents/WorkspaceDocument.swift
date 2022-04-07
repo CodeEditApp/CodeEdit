@@ -12,6 +12,7 @@ import WorkspaceClient
 import Combine
 import CodeFile
 import Search
+import QuickOpen
 
 @objc(WorkspaceDocument)
 class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
@@ -122,7 +123,7 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
             ignoredFilesAndFolders: ignoredFilesAndDirectory
         )
         self.searchState = .init(self)
-        self.quickOpenState = .init(self)
+        self.quickOpenState = .init(fileURL: url)
 
         // Initialize Workspace
         do {
@@ -265,61 +266,6 @@ extension WorkspaceDocument {
                                 }
                             }
                         } catch {}
-                    }
-                }
-            }
-        }
-    }
-}
-
-// MARK: - Quick Open
-
-extension WorkspaceDocument {
-
-    class QuickOpenState: ObservableObject {
-        init(_ workspace: WorkspaceDocument) {
-            self.workspace = workspace
-        }
-
-        var workspace: WorkspaceDocument
-
-        @Published var openQuicklyQuery: String = ""
-        @Published var openQuicklyFiles: [WorkspaceClient.FileItem] = []
-        @Published var isShowingOpenQuicklyFiles: Bool = false
-
-        func fetchOpenQuickly() {
-            if openQuicklyQuery == "" {
-                openQuicklyFiles = []
-                self.isShowingOpenQuicklyFiles = !openQuicklyFiles.isEmpty
-                return
-            }
-
-            DispatchQueue(label: "austincondiff.CodeEdit.quickOpen.searchFiles").async { [weak self] in
-                if let self = self, let url = self.workspace.fileURL {
-                    let enumerator = FileManager.default.enumerator(at: url,
-                                                                    includingPropertiesForKeys: [
-                                                                        .isRegularFileKey
-                                                                    ],
-                                                                    options: [
-                                                                        .skipsHiddenFiles,
-                                                                        .skipsPackageDescendants
-                                                                    ])
-                    if let filePaths = enumerator?.allObjects as? [URL] {
-                        let files = filePaths.filter { url in
-                            let state1 = url.lastPathComponent.lowercased().contains(self.openQuicklyQuery.lowercased())
-                            do {
-                                let values = try url.resourceValues(forKeys: [.isRegularFileKey])
-                                return state1 && (values.isRegularFile ?? false)
-                            } catch {
-                                return false
-                            }
-                        }.map { url in
-                            WorkspaceClient.FileItem(url: url, children: nil)
-                        }
-                        DispatchQueue.main.async {
-                            self.openQuicklyFiles = files
-                            self.isShowingOpenQuicklyFiles = !self.openQuicklyFiles.isEmpty
-                        }
                     }
                 }
             }

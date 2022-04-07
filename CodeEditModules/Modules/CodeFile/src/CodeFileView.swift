@@ -36,11 +36,11 @@ public struct CodeFileView: View {
         .disabled(!editable)
     }
 
-    private func getLanguage() -> CodeEditor.Language? {
+    private func getLanguage() -> CodeLanguage? {
         if let url = codeFile.fileURL {
-            return .init(url: url)
+            return .detectLanguageFromUrl(url: url)
         } else {
-            return .plaintext
+            return .default
         }
     }
 
