@@ -36,8 +36,6 @@ class OutlineViewController: NSViewController {
         outlineView.addTableColumn(column)
 
         self.scrollView.documentView = outlineView
-        self.scrollView.automaticallyAdjustsContentInsets = false
-        self.outlineView.setBoundsOrigin(.init(x: 0, y: -10))
         reloadContent()
     }
 
@@ -167,8 +165,11 @@ extension OutlineViewController: NSMenuDelegate {
         if row == -1 {
             menu.item = nil
         } else {
-            let item = content[row]
-            menu.item = item
+            if let item = outlineView.item(atRow: row) as? WorkspaceClient.FileItem {
+                menu.item = item
+            } else {
+                menu.item = nil
+            }
         }
         menu.update()
     }
