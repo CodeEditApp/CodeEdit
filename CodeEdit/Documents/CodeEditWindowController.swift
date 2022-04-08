@@ -9,8 +9,9 @@ import Cocoa
 import SwiftUI
 import CodeFile
 import Overlays
+import QuickOpen
 
-class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
+final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
 
     var workspace: WorkspaceDocument?
     var quickOpenPanel: OverlayPanel?
@@ -189,9 +190,11 @@ class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
             } else {
                 let panel = OverlayPanel()
                 self.quickOpenPanel = panel
-                let contentView = QuickOpenView(state: state) {
-                    panel.close()
-                }
+                let contentView = QuickOpenView(
+                    state: state,
+                    onClose: { panel.close() },
+                    openFile: workspace.openFile(item:)
+                )
                 panel.contentView = NSHostingView(rootView: contentView)
                 window?.addChildWindow(panel, ordered: .above)
                 panel.makeKeyAndOrderFront(self)

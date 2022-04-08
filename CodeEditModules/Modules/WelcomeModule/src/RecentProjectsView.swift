@@ -4,54 +4,38 @@
 //
 //  Created by Ziyuan Zhao on 2022/3/18.
 //
-import Introspect
 import SwiftUI
-import WelcomeModule
 import WorkspaceClient
+import Design
 
-extension List {
-    /// List on macOS uses an opaque background with no option for
-    /// removing/changing it. listRowBackground() doesn't work either.
-    /// This workaround works because List is backed by NSTableView.
-    func removeBackground() -> some View {
-        return introspectTableView { tableView in
-            tableView.backgroundColor = .clear
-            tableView.enclosingScrollView!.drawsBackground = false
-        }
+public struct RecentProjectsView: View {
+    @State private var recentProjectPaths: [String]
+    @State private var selectedProjectPath: String? = ""
+
+    private let openDocument: (URL?, @escaping () -> Void) -> Void
+    private let dismissWindow: () -> Void
+
+    public init(
+        openDocument: @escaping (URL?, @escaping () -> Void) -> Void,
+        dismissWindow: @escaping () -> Void
+    ) {
+        self.openDocument = openDocument
+        self.dismissWindow = dismissWindow
+        self.recentProjectPaths = UserDefaults.standard.array(forKey: "recentProjectPaths") as? [String] ?? []
     }
-}
-
-struct RecentProjectsView: View {
-    @State
-    var recentProjectPaths: [String] = UserDefaults.standard.array(forKey: "recentProjectPaths") as? [String] ?? []
-
-    @State
-    var selectedProjectPath: String? = ""
-
-    let dismissWindow: () -> Void
 
     private var emptyView: some View {
         VStack {
             Spacer()
-            Text("No Recent Projects".localized())
+            Text(NSLocalizedString("No Recent Projects", bundle: .module, comment: ""))
                 .font(.system(size: 20))
             Spacer()
         }
     }
 
-    private func openDocument(path: String) {
-        CodeEditDocumentController.shared.openDocument(
-            withContentsOf: URL(fileURLWithPath: path), display: true
-        ) { doc, _, _ in
-            if doc != nil {
-                dismissWindow()
-            }
-        }
-    }
-
     func contextMenuShowInFinder(projectPath: String) -> some View {
         Group {
-            Button("Show in Finder".localized()) {
+            Button(NSLocalizedString("Show in Finder", bundle: .module, comment: "")) {
                 guard let url = URL(string: "file://\(projectPath)") else {
                     return
                 }
@@ -63,7 +47,7 @@ struct RecentProjectsView: View {
 
     func contextMenuCopy(path: String) -> some View {
         Group {
-            Button("Copy Path".localized()) {
+            Button(NSLocalizedString("Copy Path", bundle: .module, comment: "")) {
                 let pasteboard = NSPasteboard.general
                 pasteboard.declareTypes([.string], owner: nil)
                 pasteboard.setString(path, forType: .string)
@@ -73,7 +57,7 @@ struct RecentProjectsView: View {
 
     func contextMenuDelete(projectPath: String) -> some View {
         Group {
-            Button("Remove from Recent Projects".localized()) {
+            Button(NSLocalizedString("Remove from Recent Projects", bundle: .module, comment: "")) {
                 deleteFromRecent(item: projectPath)
             }
         }
@@ -99,7 +83,7 @@ struct RecentProjectsView: View {
         }
     }
 
-    var body: some View {
+    public var body: some View {
         VStack(alignment: !recentProjectPaths.isEmpty ? .leading : .center, spacing: 10) {
             if !recentProjectPaths.isEmpty {
                 List(recentProjectPaths, id: \.self, selection: $selectedProjectPath) { projectPath in
@@ -107,7 +91,10 @@ struct RecentProjectsView: View {
                         RecentProjectItem(projectPath: projectPath)
                             .frame(width: 300)
                             .gesture(TapGesture(count: 2).onEnded {
-                                openDocument(path: projectPath)
+                                openDocument(
+                                    URL(fileURLWithPath: projectPath),
+                                    dismissWindow
+                                )
                             })
                             .simultaneousGesture(TapGesture().onEnded {
                                 selectedProjectPath = projectPath
@@ -140,7 +127,10 @@ struct RecentProjectsView: View {
 
                         Button("") {
                             if let selectedProjectPath = selectedProjectPath {
-                                openDocument(path: selectedProjectPath)
+                                openDocument(
+                                    URL(fileURLWithPath: selectedProjectPath),
+                                    dismissWindow
+                                )
                             }
                         }
                         .buttonStyle(.borderless)
@@ -152,8 +142,12 @@ struct RecentProjectsView: View {
             }
         }
         .frame(width: 300)
-        .background(BlurView(material: NSVisualEffectView.Material.underWindowBackground,
-                             blendingMode: NSVisualEffectView.BlendingMode.behindWindow))
+        .background(
+            BlurView(
+                material: NSVisualEffectView.Material.underWindowBackground,
+                blendingMode: NSVisualEffectView.BlendingMode.behindWindow
+            )
+        )
         .onAppear {
             // onAppear is called once, and therafter never again,
             // since the window is never release from memory.
@@ -164,8 +158,6 @@ struct RecentProjectsView: View {
 
 struct RecentProjectsView_Previews: PreviewProvider {
     static var previews: some View {
-        RecentProjectsView {
-
-        }
+        RecentProjectsView(openDocument: { _, _ in }, dismissWindow: {})
     }
 }

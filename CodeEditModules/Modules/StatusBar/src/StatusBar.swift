@@ -17,7 +17,6 @@ import GitClient
 /// Additionally it offers a togglable/resizable drawer which can
 /// host a terminal or additional debug information
 ///
-@available(macOS 12, *)
 public struct StatusBarView: View {
     @ObservedObject
     private var model: StatusBarModel
@@ -108,7 +107,6 @@ public struct StatusBarView: View {
     }
 }
 
-@available(macOS 12, *)
 struct SwiftUIView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack(alignment: .bottom) {

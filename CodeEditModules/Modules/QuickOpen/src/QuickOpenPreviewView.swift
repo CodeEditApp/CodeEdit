@@ -9,19 +9,20 @@ import SwiftUI
 import WorkspaceClient
 import CodeFile
 
-struct QuickOpenPreviewView: View {
-    var item: WorkspaceClient.FileItem
+public struct QuickOpenPreviewView: View {
+    private let queue = DispatchQueue(label: "austincondiff.CodeEdit.quickOpen.preview")
+    private let item: WorkspaceClient.FileItem
+    @State private var content: String = ""
+    @State private var loaded = false
+    @State private var error: String?
 
-    @State
-    var content: String = ""
+    public init(
+        item: WorkspaceClient.FileItem
+    ) {
+        self.item = item
+    }
 
-    @State
-    var loaded = false
-
-    @State
-    var error: String?
-
-    var body: some View {
+    public var body: some View {
         VStack {
             if let codeFile = try? CodeFileDocument(
                 for: item.url,
@@ -38,7 +39,7 @@ struct QuickOpenPreviewView: View {
         .onAppear {
             loaded = false
             error = nil
-            DispatchQueue(label: "austincondiff.CodeEdit.quickOpen.preview").async {
+            queue.async {
                 do {
                     let data = try String(contentsOf: item.url)
                     DispatchQueue.main.async {
