@@ -50,6 +50,7 @@ public extension WorkspaceClient {
         let fileItems = try loadFiles(fromURL: folderURL)
         // workspace fileItem
         let workspaceItem = FileItem(url: folderURL, children: fileItems)
+        flattenedFileItems[workspaceItem.id] = workspaceItem
         fileItems.forEach { item in
             item.parent = workspaceItem
         }

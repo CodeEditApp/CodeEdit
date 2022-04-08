@@ -14,7 +14,10 @@ class OutlineMenu: NSMenu {
     /// The item to show the contextual menu for
     var item: WorkspaceClient.FileItem?
 
-    init() {
+    var outlineView: NSOutlineView
+
+    init(sender: NSOutlineView) {
+        self.outlineView = sender
         super.init(title: "Options")
     }
 

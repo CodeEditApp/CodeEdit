@@ -15,10 +15,21 @@ import AppPreferences
 /// currently open project.
 class OutlineViewController: NSViewController {
 
+    typealias Item = WorkspaceClient.FileItem
+
     var scrollView: NSScrollView!
     var outlineView: NSOutlineView!
 
-    var content: [WorkspaceClient.FileItem] = []
+    /// Gets the folder structure
+    ///
+    /// Also creates a top level item "root" which represents the projects root directory and automatically expands it.
+    private var content: [Item] {
+        guard let folderURL = workspace?.workspaceClient?.folderURL() else { return [] }
+        let children = workspace?.selectionState.fileItems.sortItems(foldersOnTop: true)
+        guard let root = try? workspace?.workspaceClient?.getFileItem(folderURL.path) else { return [] }
+        root.children = children
+        return [root]
+    }
 
     var workspace: WorkspaceDocument?
 
@@ -30,10 +41,12 @@ class OutlineViewController: NSViewController {
         self.view = scrollView
 
         self.outlineView = NSOutlineView()
-        self.outlineView.delegate = self
         self.outlineView.dataSource = self
+        self.outlineView.delegate = self
+        self.outlineView.autosaveExpandedItems = true
+        self.outlineView.autosaveName = workspace?.workspaceClient?.folderURL()?.path ?? ""
         self.outlineView.headerView = nil
-        self.outlineView.menu = OutlineMenu()
+        self.outlineView.menu = OutlineMenu(sender: self.outlineView)
         self.outlineView.menu?.delegate = self
 
         let column = NSTableColumn(identifier: .init(rawValue: "Cell"))
@@ -43,7 +56,6 @@ class OutlineViewController: NSViewController {
         self.scrollView.documentView = outlineView
         self.scrollView.contentView.automaticallyAdjustsContentInsets = false
         self.scrollView.contentView.contentInsets = .init(top: 10, left: 0, bottom: 0, right: 0)
-        reloadContent()
     }
 
     init() {
@@ -68,43 +80,31 @@ class OutlineViewController: NSViewController {
         outlineView.selectRowIndexes(.init(integer: row), byExtendingSelection: false)
     }
 
-    /// Get the folder structure and store it into ``content``.
-    ///
-    /// Also creates a top level item "root" which represents the projects root directory and automatically expands it.
-    private func reloadContent() {
-        guard let folderURL = workspace?.workspaceClient?.folderURL() else { return }
-        let children = workspace?.selectionState.fileItems.sortItems(foldersOnTop: true)
-        let root = WorkspaceClient.FileItem(url: folderURL, children: children)
-        self.content = [root]
-        outlineView.reloadData()
-        guard let item = outlineView.item(atRow: 0) else { return }
-        outlineView.expandItem(item)
-    }
-
     /// Get the appropriate color for the items icon depending on the users preferences.
     /// - Parameter item: The `FileItem` to get the color for
     /// - Returns: A `NSColor` for the given `FileItem`.
-    private func color(for item: WorkspaceClient.FileItem) -> NSColor {
+    private func color(for item: Item) -> NSColor {
         if item.children == nil && iconColor == .color {
             return NSColor(item.iconColor)
         } else {
             return .secondaryLabelColor
         }
     }
+
 }
 
 // MARK: - NSOutlineViewDataSource
 
 extension OutlineViewController: NSOutlineViewDataSource {
     func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
-        if let item = item as? WorkspaceClient.FileItem {
+        if let item = item as? Item {
             return item.children?.count ?? 0
         }
         return content.count
     }
 
     func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
-        if let item = item as? WorkspaceClient.FileItem,
+        if let item = item as? Item,
            let children = item.children {
             return children[index]
         }
@@ -112,7 +112,7 @@ extension OutlineViewController: NSOutlineViewDataSource {
     }
 
     func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool {
-        if let item = item as? WorkspaceClient.FileItem {
+        if let item = item as? Item {
             return item.children != nil
         }
         return false
@@ -139,7 +139,7 @@ extension OutlineViewController: NSOutlineViewDelegate {
 
         let view = OutlineTableViewCell(frame: frameRect)
 
-        if let item = item as? WorkspaceClient.FileItem {
+        if let item = item as? Item {
             let image = NSImage(systemSymbolName: item.systemImage, accessibilityDescription: nil)!
             view.icon.image = image
             view.icon.contentTintColor = color(for: item)
@@ -157,7 +157,7 @@ extension OutlineViewController: NSOutlineViewDelegate {
 
         let selectedIndex = outlineView.selectedRow
 
-        guard let item = outlineView.item(atRow: selectedIndex) as? WorkspaceClient.FileItem else { return }
+        guard let item = outlineView.item(atRow: selectedIndex) as? Item else { return }
 
         if item.children == nil {
             workspace?.openFile(item: item)
@@ -170,6 +170,34 @@ extension OutlineViewController: NSOutlineViewDelegate {
 
     func outlineViewItemDidExpand(_ notification: Notification) {
         updateSelection()
+    }
+
+    func outlineViewItemDidCollapse(_ notification: Notification) {
+        updateSelection()
+    }
+
+    func outlineView(_ outlineView: NSOutlineView, itemForPersistentObject object: Any) -> Any? {
+        guard let id = object as? Item.ID,
+              let item = getItem(by: id, from: content) else { return nil }
+        return item
+    }
+
+    func outlineView(_ outlineView: NSOutlineView, persistentObjectForItem item: Any?) -> Any? {
+        guard let item = item as? Item else { return nil }
+        return item.id
+    }
+
+    /// Recursively gets an ``Item`` from an array of ``Item`` and their `children`
+    private func getItem(by id: Item.ID, from collection: [Item]) -> Item? {
+        guard let item = collection.first(where: { $0.id == id }) else {
+            for item in collection {
+                if let children = item.children {
+                    return getItem(by: id, from: children)
+                }
+            }
+            return nil
+        }
+        return item
     }
 }
 
@@ -186,7 +214,7 @@ extension OutlineViewController: NSMenuDelegate {
         if row == -1 {
             menu.item = nil
         } else {
-            if let item = outlineView.item(atRow: row) as? WorkspaceClient.FileItem {
+            if let item = outlineView.item(atRow: row) as? Item {
                 menu.item = item
             } else {
                 menu.item = nil
