@@ -9,7 +9,6 @@ import AppPreferences
 import SwiftUI
 import CodeFile
 
-@available(macOS 12, *)
 internal struct StatusBarIndentSelector: View {
     @ObservedObject
     private var model: StatusBarModel
