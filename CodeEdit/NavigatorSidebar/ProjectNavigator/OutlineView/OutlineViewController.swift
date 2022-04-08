@@ -173,9 +173,7 @@ extension OutlineViewController: NSOutlineViewDelegate {
         updateSelection()
     }
 
-    func outlineViewItemDidCollapse(_ notification: Notification) {
-        updateSelection()
-    }
+    func outlineViewItemDidCollapse(_ notification: Notification) {}
 
     func outlineView(_ outlineView: NSOutlineView, itemForPersistentObject object: Any) -> Any? {
         guard let id = object as? Item.ID,
@@ -196,7 +194,6 @@ extension OutlineViewController: NSOutlineViewDelegate {
             }
             return
         }
-        print("found \(item.fileName)")
         let row = outlineView.row(forItem: item)
         if row == -1 {
             outlineView.deselectRow(outlineView.selectedRow)
