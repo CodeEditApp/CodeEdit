@@ -16,8 +16,10 @@ public extension WorkspaceClient {
     }
 
     class FileItem: Hashable, Identifiable, Comparable, Codable {
-        // TODO: use a phantom type instead of a String
-        public var id: String
+
+        public typealias ID = String
+
+        public var id: ID
         public var url: URL
         public var children: [FileItem]?
         public var parent: FileItem?
@@ -27,6 +29,12 @@ public extension WorkspaceClient {
             case nil:
                 return fileIcon
             case let .some(children):
+                if self.parent == nil {
+                    return "square.dashed.inset.filled"
+                }
+                if self.fileName == ".codeedit" {
+                    return "folder.fill.badge.gearshape"
+                }
                 return children.isEmpty ? "folder" : "folder.fill"
             }
         }
