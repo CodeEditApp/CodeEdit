@@ -43,23 +43,23 @@ public extension WorkspaceClient {
             try container.encode(children, forKey: .children)
         }
 
-        /// The id of the `FileItem`.
+        /// The id of the ``WorkspaceClient/WorkspaceClient/FileItem``.
         ///
         /// This is equal to `url.relativePath`
         public var id: ID
 
-        /// Returns the URL of the `FileItem`
+        /// Returns the URL of the ``WorkspaceClient/WorkspaceClient/FileItem``
         public var url: URL
 
-        /// Returns the children of the current `FileItem`.
+        /// Returns the children of the current ``WorkspaceClient/WorkspaceClient/FileItem``.
         ///
-        /// If the current `FileItem` is a file this will be `nil`.
+        /// If the current ``WorkspaceClient/WorkspaceClient/FileItem`` is a file this will be `nil`.
         /// If it is an empty folder this will be an empty array.
         public var children: [FileItem]?
 
-        /// Returns a parent `FileItem`.
+        /// Returns a parent ``WorkspaceClient/WorkspaceClient/FileItem``.
         ///
-        /// If the item already is the top-level `FileItem` this returns `nil`.
+        /// If the item already is the top-level ``WorkspaceClient/WorkspaceClient/FileItem`` this returns `nil`.
         public var parent: FileItem?
 
         /// A boolean that is true if ``children`` is not `nil`
@@ -72,7 +72,7 @@ public extension WorkspaceClient {
             parent == nil
         }
 
-        /// Returns a string describing a SFSymbol for the current `FileItem`
+        /// Returns a string describing a SFSymbol for the current ``WorkspaceClient/WorkspaceClient/FileItem``
         ///
         /// Use it like this
         /// ```swift
