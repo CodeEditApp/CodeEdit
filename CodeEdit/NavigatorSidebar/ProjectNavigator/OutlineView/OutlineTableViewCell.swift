@@ -41,14 +41,14 @@ class OutlineTableViewCell: NSTableCellView {
 
         // Icon constraints
 
-        self.icon.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0).isActive = true
+        self.icon.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 2).isActive = true
         self.icon.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         self.icon.widthAnchor.constraint(equalToConstant: iconHeight).isActive = true
         self.icon.heightAnchor.constraint(equalToConstant: iconHeight).isActive = true
 
         // Label constraints
 
-        self.label.leadingAnchor.constraint(equalTo: icon.trailingAnchor, constant: 4).isActive = true
+        self.label.leadingAnchor.constraint(equalTo: icon.trailingAnchor, constant: 5).isActive = true
         self.label.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
     }
 

@@ -70,14 +70,13 @@ class OutlineViewController: NSViewController {
     ///
     /// Most importantly when the `id` changes from an external view.
     func updateSelection() {
-        guard let itemID = workspace?.selectionState.selectedId,
-              let item = try? workspace?.workspaceClient?.getFileItem(itemID) else { return }
-
-        let row = outlineView.row(forItem: item)
-        if row == -1 {
+        guard let itemID = workspace?.selectionState.selectedId else {
             outlineView.deselectRow(outlineView.selectedRow)
+            return
         }
-        outlineView.selectRowIndexes(.init(integer: row), byExtendingSelection: false)
+
+        select(by: itemID, from: content)
+
     }
 
     /// Get the appropriate color for the items icon depending on the users preferences.
@@ -178,7 +177,7 @@ extension OutlineViewController: NSOutlineViewDelegate {
 
     func outlineView(_ outlineView: NSOutlineView, itemForPersistentObject object: Any) -> Any? {
         guard let id = object as? Item.ID,
-              let item = getItem(by: id, from: content) else { return nil }
+              let item = try? workspace?.workspaceClient?.getFileItem(id) else { return nil }
         return item
     }
 
@@ -188,16 +187,19 @@ extension OutlineViewController: NSOutlineViewDelegate {
     }
 
     /// Recursively gets an ``Item`` from an array of ``Item`` and their `children`
-    private func getItem(by id: Item.ID, from collection: [Item]) -> Item? {
+    private func select(by id: Item.ID, from collection: [Item]) {
         guard let item = collection.first(where: { $0.id == id }) else {
             for item in collection {
-                if let children = item.children {
-                    return getItem(by: id, from: children)
-                }
+                select(by: id, from: item.children ?? [])
             }
-            return nil
+            return
         }
-        return item
+        print("found \(item.fileName)")
+        let row = outlineView.row(forItem: item)
+        if row == -1 {
+            outlineView.deselectRow(outlineView.selectedRow)
+        }
+        outlineView.selectRowIndexes(.init(integer: row), byExtendingSelection: false)
     }
 }
 
