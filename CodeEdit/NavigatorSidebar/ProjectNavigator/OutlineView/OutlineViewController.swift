@@ -56,6 +56,8 @@ class OutlineViewController: NSViewController {
         self.scrollView.documentView = outlineView
         self.scrollView.contentView.automaticallyAdjustsContentInsets = false
         self.scrollView.contentView.contentInsets = .init(top: 10, left: 0, bottom: 0, right: 0)
+
+        outlineView.expandItem(outlineView.item(atRow: 0))
     }
 
     init() {
