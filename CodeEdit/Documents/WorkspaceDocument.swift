@@ -19,6 +19,8 @@ import CEExtensionKit
 class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var workspaceClient: WorkspaceClient?
 
+    var extensionNavigatorData = ExtensionNavigatorData()
+
     @Published var sortFoldersOnTop: Bool = true
     @Published var selectionState: WorkspaceSelectionState = .init()
 

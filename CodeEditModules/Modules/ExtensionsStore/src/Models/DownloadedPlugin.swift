@@ -8,7 +8,9 @@
 import Foundation
 import GRDB
 
-public struct DownloadedPlugin: Codable, FetchableRecord, PersistableRecord {
+public struct DownloadedPlugin: Codable, FetchableRecord, PersistableRecord, TableRecord {
+    public static var databaseTableName = "downloadedplugin"
+
     public var id: Int64?
     public var plugin: UUID
     public var release: UUID

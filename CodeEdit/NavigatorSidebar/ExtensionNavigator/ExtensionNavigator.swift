@@ -6,19 +6,29 @@
 //
 
 import SwiftUI
+import Combine
+import ExtensionsStore
 
 struct ExtensionNavigator: View {
+    @ObservedObject var data: ExtensionNavigatorData
+    @State var showing = false
+
     var body: some View {
         List {
-            Text("Extensions")
+            ForEach(data.plugins) { plugin in
+                ExtensionNavigatorItem(plugin: plugin)
+            }
+
+            if !data.listFull {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle())
+                    .onAppear {
+                        data.fetch()
+                    }
+            }
         }
         .listStyle(.sidebar)
         .listRowInsets(.init())
-    }
-}
 
-struct ExtensionNavigator_Previews: PreviewProvider {
-    static var previews: some View {
-        ExtensionNavigator()
     }
 }

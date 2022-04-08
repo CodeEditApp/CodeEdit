@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct PluginRelease: Codable {
+public struct PluginRelease: Codable, Hashable, Identifiable {
     public var id: UUID
     public var externalID: String
     public var version: String
