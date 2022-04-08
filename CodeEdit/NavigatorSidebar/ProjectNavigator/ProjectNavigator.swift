@@ -18,7 +18,7 @@ import WorkspaceClient
 struct ProjectNavigator: View {
     @ObservedObject var workspace: WorkspaceDocument
     var windowController: NSWindowController
-
+    
     /// The `ID` of the currently selected file/folder. If none is selected this is `nil`
     @State
     private var selection: WorkspaceClient.FileItem.ID?
@@ -27,7 +27,8 @@ struct ProjectNavigator: View {
         List(selection: $selection) {
             Section {
                 ForEach(
-                    workspace.selectionState.fileItems.sortItems(foldersOnTop: workspace.sortFoldersOnTop)
+                    //workspace.selectionState.fileItems.sortItems(foldersOnTop: workspace.sortFoldersOnTop)
+                    workspace.selectionState.fileItems
                 ) { item in
                     ProjectNavigatorItem(
                         item: item,
@@ -35,11 +36,10 @@ struct ProjectNavigator: View {
                         windowController: windowController,
                         shouldloadChildren: .constant(true), // First level of children should always be loaded
                         selectedId: $selection
-                    ).onDrag {
-                        let result = NSItemProvider.init(contentsOf: item.url.absoluteURL)!
-                        print(result.debugDescription)
-                        return result
-                    }
+                    )
+                }
+                .onMove { source, destination in
+                    move(from: source, to: destination)
                 }
             } header: {
                 Text(projectName)
@@ -58,6 +58,14 @@ struct ProjectNavigator: View {
         .onChange(of: workspace.selectionState.selectedId) { newValue in
             selection = newValue
         }
+    }
+    
+    func move(from source: IndexSet, to destination: Int) {
+        workspace.selectionState.fileItems.forEach { fileItem in
+            
+        }
+        print("source: \(source) and dest: \(destination) and count is \(workspace.selectionState.fileItems)")
+        workspace.selectionState.fileItems.move(fromOffsets: source, toOffset: destination)
     }
 
     /// The name of the project (name of the selected top-level folder)

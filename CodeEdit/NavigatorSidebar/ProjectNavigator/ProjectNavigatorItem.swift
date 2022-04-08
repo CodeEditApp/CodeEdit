@@ -73,7 +73,10 @@ struct ProjectNavigatorItem: View {
     private func sidebarFolderItem(_ item: WorkspaceClient.FileItem) -> some View {
         DisclosureGroup(isExpanded: $isExpanded) {
             if shouldloadChildren { // Only load when parent is expanded -> Improves performance massively
-                ForEach(item.children!.sortItems(foldersOnTop: workspace.sortFoldersOnTop)) { child in
+                ForEach(
+                    //item.children!.sortItems(foldersOnTop: workspace.sortFoldersOnTop)
+                    item.children!
+                ) { child in
                     ProjectNavigatorItem(
                         item: child,
                         workspace: workspace,
@@ -81,6 +84,9 @@ struct ProjectNavigatorItem: View {
                         shouldloadChildren: $isExpanded,
                         selectedId: $selectedId
                     )
+                }
+                .onMove { source, dest in
+                    move(from: source, to: dest)
                 }
             }
         } label: {
@@ -90,6 +96,11 @@ struct ProjectNavigatorItem: View {
                     ProjectNavigatorContextMenu(item, isFolder: true)
                 }
         }
+    }
+    
+    private func move(from source: IndexSet, to destination: Int) {
+        print("source: \(source) dest: \(destination) and children: \(item.children)")
+        item.children?.move(fromOffsets: source, toOffset: destination)
     }
 
     /// Returns a color depending on the set icon color style in preferences
