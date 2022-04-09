@@ -14,21 +14,24 @@ struct ExtensionNavigator: View {
     @State var showing = false
 
     var body: some View {
-        List {
-            ForEach(data.plugins) { plugin in
-                ExtensionNavigatorItem(plugin: plugin)
-            }
+        VStack {
+            Text("Extensions")
+            List {
+                ForEach(data.plugins) { plugin in
+                    ExtensionNavigatorItem(plugin: plugin)
+                        .tag(plugin)
+                }
 
-            if !data.listFull {
-                ProgressView()
-                    .progressViewStyle(CircularProgressViewStyle())
-                    .onAppear {
-                        data.fetch()
-                    }
+                if !data.listFull {
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle())
+                        .onAppear {
+                            data.fetch()
+                        }
+                }
             }
+            .listStyle(.sidebar)
+            .listRowInsets(.init())
         }
-        .listStyle(.sidebar)
-        .listRowInsets(.init())
-
     }
 }

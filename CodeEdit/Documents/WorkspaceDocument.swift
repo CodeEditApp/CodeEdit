@@ -14,6 +14,7 @@ import CodeFile
 import Search
 import QuickOpen
 import CEExtensionKit
+import ExtensionsStore
 
 @objc(WorkspaceDocument)
 class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
@@ -177,6 +178,15 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
                 }
             }
             .store(in: &cancellables)
+
+        // initialize extensions
+        do {
+            try ExtensionsManager.shared?.load { extensionID in
+                return CodeEditAPI(extensionId: extensionID, workspace: self)
+            }
+        } catch let error {
+            Swift.print(error)
+        }
     }
 
     override func write(to url: URL, ofType typeName: String) throws {}

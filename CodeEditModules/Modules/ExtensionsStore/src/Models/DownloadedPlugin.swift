@@ -14,4 +14,5 @@ public struct DownloadedPlugin: Codable, FetchableRecord, PersistableRecord, Tab
     public var id: Int64?
     public var plugin: UUID
     public var release: UUID
+    public var loadable: Bool
 }

@@ -7,16 +7,25 @@
 
 import Foundation
 import Light_Swift_Untar
+import CEExtensionKit
 import GRDB
 
 @available(macOS 12.0, *)
 public class ExtensionsManager {
+    struct PluginWorkspaceKey: Hashable {
+        var releaseID: UUID
+        var workspace: URL
+    }
+
     public static let shared: ExtensionsManager? = {
         return try? ExtensionsManager()
     }()
 
     let dbQueue: DatabaseQueue
     let codeeditFolder: URL
+
+    var loadedBundles: [UUID: Bundle] = [:]
+    var loadedPlugins: [PluginWorkspaceKey: ExtensionInterface] = [:]
 
     init() throws {
         self.codeeditFolder = try FileManager.default
@@ -38,9 +47,41 @@ public class ExtensionsManager {
                 table.autoIncrementedPrimaryKey("id")
                 table.column("plugin", .text)
                 table.column("release", .text)
+                table.column("loadable", .boolean)
             }
         }
         try migrator.migrate(self.dbQueue)
+    }
+
+    public func load(_ apiInitializer: (String) -> ExtensionAPI) throws {
+        let plugins = try self.dbQueue.read { database in
+            try DownloadedPlugin.filter(Column("loadable") == true).fetchAll(database)
+        }
+
+        let extensionsFolder = codeeditFolder.appendingPathComponent("Extensions", isDirectory: true)
+
+        try plugins.forEach { plugin in
+            if loadedBundles.keys.contains(plugin.release) {
+                return
+            }
+
+            let bundlesURL = extensionsFolder.appendingPathComponent(plugin.release.uuidString,
+                                                                    isDirectory: true)
+
+            if let bundleURL = try FileManager.default.contentsOfDirectory(
+                at: bundlesURL,
+                includingPropertiesForKeys: nil,
+                options: .skipsPackageDescendants
+            ).first, bundleURL.pathExtension == "ceext", let bundle = Bundle(url: bundleURL), bundle.load() {
+                loadedBundles[plugin.release] = bundle
+                if let entry = bundle.principalClass as? ExtensionBuilder.Type {
+                    let api = apiInitializer(plugin.plugin.uuidString)
+
+                    let key = PluginWorkspaceKey(releaseID: plugin.release, workspace: api.workspaceURL)
+                    loadedPlugins[key] = entry.init().build(withAPI: api)
+                }
+            }
+        }
     }
 
     public func install(plugin: Plugin, release: PluginRelease) async throws {
@@ -88,7 +129,7 @@ public class ExtensionsManager {
         // save to db
 
         try await dbQueue.write { database in
-            try DownloadedPlugin(plugin: plugin.id, release: release.id)
+            try DownloadedPlugin(plugin: plugin.id, release: release.id, loadable: true)
                 .insert(database)
         }
     }

@@ -11,7 +11,6 @@
 		043C321627E3201F006AE443 /* WorkspaceDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043C321527E3201F006AE443 /* WorkspaceDocument.swift */; };
 		043C321A27E32295006AE443 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 043C321927E32295006AE443 /* MainMenu.xib */; };
 		04540D5E27DD08C300E91B77 /* WorkspaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B658FB3127DA9E0F00EA4DBD /* WorkspaceView.swift */; };
-		0463E50E27FCC0E900806D5C /* CEExtensionKit in Frameworks */ = {isa = PBXBuildFile; productRef = 0463E50D27FCC0E900806D5C /* CEExtensionKit */; };
 		0463E51127FCC1DF00806D5C /* CodeEditAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0463E51027FCC1DF00806D5C /* CodeEditAPI.swift */; };
 		0463E51327FCC1FB00806D5C /* CodeEditTargetsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0463E51227FCC1FB00806D5C /* CodeEditTargetsAPI.swift */; };
 		04660F6A27E51E5C00477777 /* CodeEditWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04660F6927E51E5C00477777 /* CodeEditWindowController.swift */; };
@@ -23,6 +22,8 @@
 		04C3254D27FF331B00C8DA2D /* ExtensionNavigatorItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C3254C27FF331B00C8DA2D /* ExtensionNavigatorItem.swift */; };
 		04C3254F2800AA4700C8DA2D /* ExtensionInstallationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C3254E2800AA4700C8DA2D /* ExtensionInstallationView.swift */; };
 		04C325512800AC7400C8DA2D /* ExtensionInstallationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C325502800AC7400C8DA2D /* ExtensionInstallationViewModel.swift */; };
+		04C325582801B43A00C8DA2D /* CEExtensionKit in Frameworks */ = {isa = PBXBuildFile; productRef = 04C325572801B43A00C8DA2D /* CEExtensionKit */; };
+		04C325592801B43A00C8DA2D /* CEExtensionKit in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 04C325572801B43A00C8DA2D /* CEExtensionKit */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		20D2A95527F72E6800E7ECF6 /* Accounts in Frameworks */ = {isa = PBXBuildFile; productRef = 20D2A95427F72E6800E7ECF6 /* Accounts */; };
 		2803257127F3CF1F009C7DC2 /* AppPreferences in Frameworks */ = {isa = PBXBuildFile; productRef = 2803257027F3CF1F009C7DC2 /* AppPreferences */; };
 		28069DA427F5BCF70016BC47 /* default-dark.json in Resources */ = {isa = PBXBuildFile; fileRef = 28069DA327F5BCDD0016BC47 /* default-dark.json */; };
@@ -82,6 +83,20 @@
 			remoteInfo = CodeEdit;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		04C3255A2801B43A00C8DA2D /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				04C325592801B43A00C8DA2D /* CEExtensionKit in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		043C321327E31FF6006AE443 /* CodeEditDocumentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditDocumentController.swift; sourceTree = "<group>"; };
@@ -144,13 +159,13 @@
 				5C403B8F27E20F8000788241 /* WorkspaceClient in Frameworks */,
 				2803257127F3CF1F009C7DC2 /* AppPreferences in Frameworks */,
 				5CA8776527FC6A95003F5CD5 /* QuickOpen in Frameworks */,
+				04C325582801B43A00C8DA2D /* CEExtensionKit in Frameworks */,
 				0485EB2527E7B9C800138301 /* Overlays in Frameworks */,
 				D70F5E2C27E4E8CF004EE4B9 /* WelcomeModule in Frameworks */,
 				2859B93F27EB50050069BE88 /* FontPicker in Frameworks */,
 				D7F72DEB27EA3574000C3064 /* Search in Frameworks */,
 				5CFA753B27E896B60002F01B /* GitClient in Frameworks */,
 				28CE5EA027E6493D0065D29C /* StatusBar in Frameworks */,
-				0463E50E27FCC0E900806D5C /* CEExtensionKit in Frameworks */,
 				20D2A95527F72E6800E7ECF6 /* Accounts in Frameworks */,
 				5CF38A5E27E48E6C0096A0F7 /* CodeFile in Frameworks */,
 			);
@@ -370,6 +385,7 @@
 				2B18499A27F8A7A0005119F0 /* Mark // swiftlint:disable:all as errors | Run Script */,
 				2BA119D327E5274D00A996FF /* SwiftLint Run Script */,
 				04ADA0CC27E6043B00BF00B2 /* Add TODO/FIXME as warnings | Run Script */,
+				04C3255A2801B43A00C8DA2D /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -390,8 +406,8 @@
 				64B64EDD27F7B79400C400F1 /* About */,
 				5CA8776227FC4FC8003F5CD5 /* Design */,
 				5CA8776427FC6A95003F5CD5 /* QuickOpen */,
-				0463E50D27FCC0E900806D5C /* CEExtensionKit */,
 				0483E34C27FCC46600354AC0 /* ExtensionsStore */,
+				04C325572801B43A00C8DA2D /* CEExtensionKit */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -1001,11 +1017,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		0463E50D27FCC0E900806D5C /* CEExtensionKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 0463E50C27FCC0E900806D5C /* XCRemoteSwiftPackageReference "CEExtensionKit" */;
-			productName = CEExtensionKit;
-		};
 		0483E34C27FCC46600354AC0 /* ExtensionsStore */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ExtensionsStore;
@@ -1013,6 +1024,11 @@
 		0485EB2427E7B9C800138301 /* Overlays */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Overlays;
+		};
+		04C325572801B43A00C8DA2D /* CEExtensionKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0463E50C27FCC0E900806D5C /* XCRemoteSwiftPackageReference "CEExtensionKit" */;
+			productName = CEExtensionKit;
 		};
 		20D2A95427F72E6800E7ECF6 /* Accounts */ = {
 			isa = XCSwiftPackageProductDependency;
