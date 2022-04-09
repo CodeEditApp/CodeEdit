@@ -32,9 +32,9 @@ struct ExtensionNavigatorItem: View {
                 Button {
                     self.showing = true
                 } label: {
-                    Label("INSTALL", systemImage: "square.and.arrow.down")
+                    Text("INSTALL")
                         .font(.callout.bold())
-                        .accentColor(Color.white)
+                        .foregroundColor(Color.white)
                         .padding(.vertical, 4)
                         .padding(.horizontal, 8)
                         .background(Color.accentColor)
@@ -50,9 +50,9 @@ struct ExtensionNavigatorItem: View {
                         print(error)
                     }
                 } label: {
-                    Label("UNINSTALL", systemImage: "trash")
+                    Text("UNINSTALL")
                         .font(.callout.bold())
-                        .accentColor(Color.white)
+                        .foregroundColor(Color.white)
                         .padding(.vertical, 4)
                         .padding(.horizontal, 8)
                         .background(Color.red)
