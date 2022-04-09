@@ -75,9 +75,14 @@ struct CodeEditor: NSViewRepresentable {
     }
 
     func updateNSView(_ scrollView: NSScrollView, context: Context) {
-        if let textView = scrollView.documentView as? CodeEditorTextView {
-            updateTextView(textView)
+        guard let textView = scrollView.documentView as? CodeEditorTextView else {
+            return
         }
+        if let rulerView = scrollView.verticalRulerView as? LineGutter,
+           content.wrappedValue != textView.string {
+            rulerView.invalidateLineIndices()
+        }
+        updateTextView(textView)
     }
 
     final class Coordinator: NSObject, NSTextViewDelegate {

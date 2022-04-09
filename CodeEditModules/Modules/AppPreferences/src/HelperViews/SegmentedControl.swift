@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-@available(macOS 12, *)
 struct SegmentedControl: View {
 
     init(_ selection: Binding<Int>, options: [String]) {

@@ -55,7 +55,7 @@ class BreadcrumbsMenuItem: NSMenuItem {
         self.fileItem = fileItem
         self.workspace = workspace
         super.init(title: fileItem.fileName, action: #selector(openFile), keyEquivalent: "")
-        var icon = fileItem.fileIcon
+        var icon = fileItem.systemImage
         var color = fileItem.iconColor
         self.isEnabled = true
         self.target = self

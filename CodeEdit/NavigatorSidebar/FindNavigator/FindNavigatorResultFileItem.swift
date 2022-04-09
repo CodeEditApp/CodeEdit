@@ -49,7 +49,7 @@ struct FindNavigatorResultFileItem: View {
             }
         } label: {
             HStack {
-                Image(systemName: fileItem.fileIcon)
+                Image(systemName: fileItem.systemImage)
                 Text(fileItem.fileName)
                     .foregroundColor(Color(nsColor: NSColor.headerTextColor))
                     .font(.system(size: 13, weight: .semibold)) +

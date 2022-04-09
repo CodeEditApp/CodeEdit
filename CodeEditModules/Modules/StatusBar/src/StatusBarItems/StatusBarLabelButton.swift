@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-@available(macOS 12, *)
 internal struct StatusBarLabelButton: View {
     @ObservedObject
     private var model: StatusBarModel

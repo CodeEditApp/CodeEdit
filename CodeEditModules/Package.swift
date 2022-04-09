@@ -6,7 +6,7 @@ let package = Package(
     name: "CodeEditModules",
     defaultLocalization: "en",
     platforms: [
-        .macOS(.v11),
+        .macOS(.v12),
     ],
     products: [
         .library(
@@ -146,8 +146,13 @@ let package = Package(
             name: "WelcomeModule",
             dependencies: [
                 "WorkspaceClient",
+                "Design",
+                "AppPreferences",
             ],
-            path: "Modules/WelcomeModule/src"
+            path: "Modules/WelcomeModule/src",
+            resources: [
+                .process("Resources"),
+            ]
         ),
         .testTarget(
             name: "WelcomeModuleTests",
