@@ -24,6 +24,8 @@
 		04C325512800AC7400C8DA2D /* ExtensionInstallationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C325502800AC7400C8DA2D /* ExtensionInstallationViewModel.swift */; };
 		04C325582801B43A00C8DA2D /* CEExtensionKit in Frameworks */ = {isa = PBXBuildFile; productRef = 04C325572801B43A00C8DA2D /* CEExtensionKit */; };
 		04C325592801B43A00C8DA2D /* CEExtensionKit in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 04C325572801B43A00C8DA2D /* CEExtensionKit */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		04C3255B2801F86400C8DA2D /* OutlineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285FEC6D27FE4B4A00E57D53 /* OutlineViewController.swift */; };
+		04C3255C2801F86900C8DA2D /* OutlineMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285FEC7127FE4EEF00E57D53 /* OutlineMenu.swift */; };
 		20D2A95527F72E6800E7ECF6 /* Accounts in Frameworks */ = {isa = PBXBuildFile; productRef = 20D2A95427F72E6800E7ECF6 /* Accounts */; };
 		2803257127F3CF1F009C7DC2 /* AppPreferences in Frameworks */ = {isa = PBXBuildFile; productRef = 2803257027F3CF1F009C7DC2 /* AppPreferences */; };
 		28069DA427F5BCF70016BC47 /* default-dark.json in Resources */ = {isa = PBXBuildFile; fileRef = 28069DA327F5BCDD0016BC47 /* default-dark.json */; };
@@ -31,9 +33,7 @@
 		2813F93927ECC4C300E305E4 /* NavigatorSidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287776E627E3413200D46668 /* NavigatorSidebar.swift */; };
 		2847019E27FDDF7600F87B6B /* OutlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2847019D27FDDF7600F87B6B /* OutlineView.swift */; };
 		2859B93F27EB50050069BE88 /* FontPicker in Frameworks */ = {isa = PBXBuildFile; productRef = 2859B93E27EB50050069BE88 /* FontPicker */; };
-		285FEC6E27FE4B4A00E57D53 /* OutlineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285FEC6D27FE4B4A00E57D53 /* OutlineViewController.swift */; };
 		285FEC7027FE4B9800E57D53 /* OutlineTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285FEC6F27FE4B9800E57D53 /* OutlineTableViewCell.swift */; };
-		285FEC7227FE4EEF00E57D53 /* OutlineMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285FEC7127FE4EEF00E57D53 /* OutlineMenu.swift */; };
 		286471AB27ED51FD0039369D /* ProjectNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286471AA27ED51FD0039369D /* ProjectNavigator.swift */; };
 		286620A527E4AB6900E18C2B /* BreadcrumbsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286620A427E4AB6900E18C2B /* BreadcrumbsComponent.swift */; };
 		2875A46D27E3BE5B007805F8 /* BreadcrumbsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2875A46C27E3BE5B007805F8 /* BreadcrumbsView.swift */; };
@@ -614,6 +614,7 @@
 				B6EE989227E887C600CDD8AB /* InspectorSidebarToolbar.swift in Sources */,
 				B673FDAD27E8296A00795864 /* PressActionsModifier.swift in Sources */,
 				043C321427E31FF6006AE443 /* CodeEditDocumentController.swift in Sources */,
+				04C3255C2801F86900C8DA2D /* OutlineMenu.swift in Sources */,
 				04540D5E27DD08C300E91B77 /* WorkspaceView.swift in Sources */,
 				D7211D4327E066CE008F2ED7 /* Localized+Ex.swift in Sources */,
 				D7E201B227E8D50000CB86D0 /* FindNavigatorModeSelector.swift in Sources */,
@@ -634,6 +635,7 @@
 				04C325512800AC7400C8DA2D /* ExtensionInstallationViewModel.swift in Sources */,
 				28B0A19827E385C300B73177 /* NavigatorSidebarToolbarTop.swift in Sources */,
 				0463E51127FCC1DF00806D5C /* CodeEditAPI.swift in Sources */,
+				04C3255B2801F86400C8DA2D /* OutlineViewController.swift in Sources */,
 				28FFE1BF27E3A441001939DB /* NavigatorSidebarToolbarBottom.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
