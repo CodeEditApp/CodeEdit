@@ -53,6 +53,14 @@ public class ExtensionsManager {
         try migrator.migrate(self.dbQueue)
     }
 
+    public func close(url: URL) {
+        loadedPlugins.filter { elem in
+            return elem.key.workspace == url
+        }.forEach { (key: PluginWorkspaceKey, _) in
+            loadedPlugins.removeValue(forKey: key)
+        }
+    }
+
     public func load(_ apiInitializer: (String) -> ExtensionAPI) throws {
         let plugins = try self.dbQueue.read { database in
             try DownloadedPlugin.filter(Column("loadable") == true).fetchAll(database)

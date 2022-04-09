@@ -52,6 +52,7 @@ struct ExtensionInstallationView: View {
                 } label: {
                     Text("Install")
                 }
+                .disabled(self.model.release == nil)
             }
         }
     }

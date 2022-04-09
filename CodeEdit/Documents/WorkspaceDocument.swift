@@ -222,6 +222,11 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
             } catch {}
         }
         selectionState.openedCodeFiles.removeAll()
+
+        if let url = self.fileURL {
+            ExtensionsManager.shared?.close(url: url)
+        }
+
         super.close()
     }
 }
