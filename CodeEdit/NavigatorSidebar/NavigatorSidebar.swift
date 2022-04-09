@@ -26,6 +26,7 @@ struct NavigatorSidebar: View {
                 FindNavigator(state: workspace.searchState ?? .init(workspace))
             case 7:
                 ExtensionNavigator(data: workspace.extensionNavigatorData)
+                    .environmentObject(workspace)
             default:
                 Spacer()
             }

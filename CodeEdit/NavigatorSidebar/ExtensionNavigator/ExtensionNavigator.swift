@@ -10,6 +10,7 @@ import Combine
 import ExtensionsStore
 
 struct ExtensionNavigator: View {
+    @EnvironmentObject var workspace: WorkspaceDocument
     @ObservedObject var data: ExtensionNavigatorData
     @State var showing = false
 
@@ -20,6 +21,7 @@ struct ExtensionNavigator: View {
                 ForEach(data.plugins) { plugin in
                     ExtensionNavigatorItem(plugin: plugin)
                         .tag(plugin)
+                        .environmentObject(workspace)
                 }
 
                 if !data.listFull {

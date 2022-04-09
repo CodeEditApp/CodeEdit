@@ -18,6 +18,7 @@ struct ExtensionNavigatorItem: View {
     @State var showing = false
     @State var reopenAlert = false
     @State var installed: Bool = false
+    @EnvironmentObject var document: WorkspaceDocument
 
     var body: some View {
         HStack {
@@ -75,7 +76,15 @@ struct ExtensionNavigatorItem: View {
                 .frame(width: 500, height: 400, alignment: .center)
         }
         .alert("Extension is installed", isPresented: $reopenAlert) {
-            Button("OK") {
+            Button("Reopen workspace") {
+                guard let url = document.fileURL else { return }
+                document.close()
+                CodeEditDocumentController.shared.reopenDocument(for: url,
+                                                                 withContentsOf: url,
+                                                                 display: true) { _, _, _ in
+                }
+            }
+            Button("Reopen later") {
                 self.reopenAlert = false
             }
         } message: {

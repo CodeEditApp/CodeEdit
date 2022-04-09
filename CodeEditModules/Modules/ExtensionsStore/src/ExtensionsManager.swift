@@ -172,6 +172,14 @@ public class ExtensionsManager {
         _ = try self.dbQueue.write { database in
             try entry.delete(database)
         }
+
+        loadedBundles.removeValue(forKey: entry.release)
+
+        loadedPlugins.filter { elem in
+            return elem.key.releaseID == entry.release
+        }.forEach { (key: PluginWorkspaceKey, _) in
+            loadedPlugins.removeValue(forKey: key)
+        }
     }
 
     public func isInstalled(plugin: Plugin) -> Bool {
