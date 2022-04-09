@@ -15,7 +15,7 @@ struct ExtensionNavigator: View {
 
     var body: some View {
         VStack {
-            Text("Extensions")
+            Divider() // TODO: fix this workaround because when switching tabs without this app carshes
             List {
                 ForEach(data.plugins) { plugin in
                     ExtensionNavigatorItem(plugin: plugin)
