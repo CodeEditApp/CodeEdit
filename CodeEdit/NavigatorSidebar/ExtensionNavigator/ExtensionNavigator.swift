@@ -25,11 +25,15 @@ struct ExtensionNavigator: View {
                 }
 
                 if !data.listFull {
-                    ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle())
-                        .onAppear {
-                            data.fetch()
-                        }
+                    HStack {
+                        Spacer()
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle())
+                            .onAppear {
+                                data.fetch()
+                            }
+                        Spacer()
+                    }
                 }
             }
             .listStyle(.sidebar)
