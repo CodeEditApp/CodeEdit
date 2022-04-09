@@ -23,6 +23,7 @@ public class ExtensionsManager {
 
     let dbQueue: DatabaseQueue
     let codeeditFolder: URL
+    let extensionsFolder: URL
 
     var loadedBundles: [UUID: Bundle] = [:]
     var loadedPlugins: [PluginWorkspaceKey: ExtensionInterface] = [:]
@@ -31,6 +32,7 @@ public class ExtensionsManager {
         self.codeeditFolder = try FileManager.default
             .url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
             .appendingPathComponent("CodeEdit", isDirectory: true)
+        self.extensionsFolder = codeeditFolder.appendingPathComponent("Extensions", isDirectory: true)
 
         try FileManager.default
             .createDirectory(at: self.codeeditFolder,
@@ -65,8 +67,6 @@ public class ExtensionsManager {
         let plugins = try self.dbQueue.read { database in
             try DownloadedPlugin.filter(Column("loadable") == true).fetchAll(database)
         }
-
-        let extensionsFolder = codeeditFolder.appendingPathComponent("Extensions", isDirectory: true)
 
         try plugins.forEach { plugin in
             if loadedBundles.keys.contains(plugin.release) {
@@ -139,6 +139,39 @@ public class ExtensionsManager {
         try await dbQueue.write { database in
             try DownloadedPlugin(plugin: plugin.id, release: release.id, loadable: true)
                 .insert(database)
+        }
+    }
+
+    public func remove(plugin: Plugin) throws {
+        guard let entry = (try self.dbQueue.read { database in
+            try DownloadedPlugin.filter(Column("plugin") == plugin.id).fetchOne(database)
+        }) else {
+            return
+        }
+
+        let manifestURL = extensionsFolder.appendingPathComponent("\(entry.plugin.uuidString).json")
+        if FileManager.default.fileExists(atPath: manifestURL.path) {
+            try FileManager.default.removeItem(at: manifestURL)
+        }
+
+        let bundleURL = extensionsFolder.appendingPathComponent("\(entry.release.uuidString)", isDirectory: true)
+        if FileManager.default.fileExists(atPath: bundleURL.path) {
+            try FileManager.default.removeItem(at: bundleURL)
+        }
+
+        _ = try self.dbQueue.write { database in
+            try entry.delete(database)
+        }
+    }
+
+    public func isInstalled(plugin: Plugin) -> Bool {
+        do {
+            let entry = try self.dbQueue.read { database in
+                try DownloadedPlugin.filter(Column("plugin") == plugin.id).fetchOne(database)
+            }
+            return entry != nil
+        } catch {
+            return false
         }
     }
 }
