@@ -63,32 +63,42 @@ public class ExtensionsManager {
         }
     }
 
+    private func getExtensionBuilder(id: UUID) throws -> ExtensionBuilder.Type? {
+        if loadedBundles.keys.contains(id) {
+            return loadedBundles[id]?.principalClass as? ExtensionBuilder.Type
+        }
+
+        guard let bundleURL = try FileManager.default.contentsOfDirectory(
+            at: extensionsFolder.appendingPathComponent(id.uuidString,
+                                                        isDirectory: true),
+            includingPropertiesForKeys: nil,
+            options: .skipsPackageDescendants
+        ).first else { return nil }
+
+        guard bundleURL.pathExtension == "ceext" else { return nil }
+        guard let bundle = Bundle(url: bundleURL) else { return nil }
+
+        guard bundle.load() else { return nil }
+
+        loadedBundles[id] = bundle
+
+        return bundle.principalClass as? ExtensionBuilder.Type
+    }
+
     public func load(_ apiInitializer: (String) -> ExtensionAPI) throws {
         let plugins = try self.dbQueue.read { database in
             try DownloadedPlugin.filter(Column("loadable") == true).fetchAll(database)
         }
 
         try plugins.forEach { plugin in
-            if loadedBundles.keys.contains(plugin.release) {
+            guard let builder = try getExtensionBuilder(id: plugin.release) else {
                 return
             }
 
-            let bundlesURL = extensionsFolder.appendingPathComponent(plugin.release.uuidString,
-                                                                    isDirectory: true)
+            let api = apiInitializer(plugin.plugin.uuidString)
 
-            if let bundleURL = try FileManager.default.contentsOfDirectory(
-                at: bundlesURL,
-                includingPropertiesForKeys: nil,
-                options: .skipsPackageDescendants
-            ).first, bundleURL.pathExtension == "ceext", let bundle = Bundle(url: bundleURL), bundle.load() {
-                loadedBundles[plugin.release] = bundle
-                if let entry = bundle.principalClass as? ExtensionBuilder.Type {
-                    let api = apiInitializer(plugin.plugin.uuidString)
-
-                    let key = PluginWorkspaceKey(releaseID: plugin.release, workspace: api.workspaceURL)
-                    loadedPlugins[key] = entry.init().build(withAPI: api)
-                }
-            }
+            let key = PluginWorkspaceKey(releaseID: plugin.release, workspace: api.workspaceURL)
+            loadedPlugins[key] = builder.init().build(withAPI: api)
         }
     }
 
