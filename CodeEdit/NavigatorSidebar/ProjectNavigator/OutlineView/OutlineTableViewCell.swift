@@ -33,7 +33,6 @@ class OutlineTableViewCell: NSTableCellView {
         self.icon = NSImageView(frame: .zero)
         self.icon.translatesAutoresizingMaskIntoConstraints = false
         self.icon.symbolConfiguration = .init(pointSize: fontSize, weight: .regular, scale: .medium)
-        // .init(textStyle: .callout, scale: .medium)
 
         self.addSubview(icon)
         self.imageView = icon
