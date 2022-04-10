@@ -22,10 +22,10 @@
 		04C3254D27FF331B00C8DA2D /* ExtensionNavigatorItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C3254C27FF331B00C8DA2D /* ExtensionNavigatorItem.swift */; };
 		04C3254F2800AA4700C8DA2D /* ExtensionInstallationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C3254E2800AA4700C8DA2D /* ExtensionInstallationView.swift */; };
 		04C325512800AC7400C8DA2D /* ExtensionInstallationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C325502800AC7400C8DA2D /* ExtensionInstallationViewModel.swift */; };
-		04C325582801B43A00C8DA2D /* CEExtensionKit in Frameworks */ = {isa = PBXBuildFile; productRef = 04C325572801B43A00C8DA2D /* CEExtensionKit */; };
-		04C325592801B43A00C8DA2D /* CEExtensionKit in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 04C325572801B43A00C8DA2D /* CEExtensionKit */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		04C3255B2801F86400C8DA2D /* OutlineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285FEC6D27FE4B4A00E57D53 /* OutlineViewController.swift */; };
 		04C3255C2801F86900C8DA2D /* OutlineMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285FEC7127FE4EEF00E57D53 /* OutlineMenu.swift */; };
+		04C3256B28034FC800C8DA2D /* CodeEditKit in Frameworks */ = {isa = PBXBuildFile; productRef = 04C3256A28034FC800C8DA2D /* CodeEditKit */; };
+		04C3256C28034FC800C8DA2D /* CodeEditKit in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 04C3256A28034FC800C8DA2D /* CodeEditKit */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		20D2A95527F72E6800E7ECF6 /* Accounts in Frameworks */ = {isa = PBXBuildFile; productRef = 20D2A95427F72E6800E7ECF6 /* Accounts */; };
 		2803257127F3CF1F009C7DC2 /* AppPreferences in Frameworks */ = {isa = PBXBuildFile; productRef = 2803257027F3CF1F009C7DC2 /* AppPreferences */; };
 		28069DA427F5BCF70016BC47 /* default-dark.json in Resources */ = {isa = PBXBuildFile; fileRef = 28069DA327F5BCDD0016BC47 /* default-dark.json */; };
@@ -90,7 +90,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				04C325592801B43A00C8DA2D /* CEExtensionKit in Embed Frameworks */,
+				04C3256C28034FC800C8DA2D /* CodeEditKit in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -154,10 +154,10 @@
 				0483E34D27FCC46600354AC0 /* ExtensionsStore in Frameworks */,
 				5CA8776327FC4FC8003F5CD5 /* Design in Frameworks */,
 				64B64EDE27F7B79400C400F1 /* About in Frameworks */,
+				04C3256B28034FC800C8DA2D /* CodeEditKit in Frameworks */,
 				5C403B8F27E20F8000788241 /* WorkspaceClient in Frameworks */,
 				2803257127F3CF1F009C7DC2 /* AppPreferences in Frameworks */,
 				5CA8776527FC6A95003F5CD5 /* QuickOpen in Frameworks */,
-				04C325582801B43A00C8DA2D /* CEExtensionKit in Frameworks */,
 				0485EB2527E7B9C800138301 /* Overlays in Frameworks */,
 				D70F5E2C27E4E8CF004EE4B9 /* WelcomeModule in Frameworks */,
 				2859B93F27EB50050069BE88 /* FontPicker in Frameworks */,
@@ -404,7 +404,7 @@
 				5CA8776227FC4FC8003F5CD5 /* Design */,
 				5CA8776427FC6A95003F5CD5 /* QuickOpen */,
 				0483E34C27FCC46600354AC0 /* ExtensionsStore */,
-				04C325572801B43A00C8DA2D /* CEExtensionKit */,
+				04C3256A28034FC800C8DA2D /* CodeEditKit */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -479,7 +479,7 @@
 			);
 			mainGroup = B658FB2327DA9E0F00EA4DBD;
 			packageReferences = (
-				0463E50C27FCC0E900806D5C /* XCRemoteSwiftPackageReference "CEExtensionKit" */,
+				04C3256728034F3D00C8DA2D /* XCRemoteSwiftPackageReference "CodeEditKit" */,
 			);
 			productRefGroup = B658FB2D27DA9E0F00EA4DBD /* Products */;
 			projectDirPath = "";
@@ -1002,9 +1002,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		0463E50C27FCC0E900806D5C /* XCRemoteSwiftPackageReference "CEExtensionKit" */ = {
+		04C3256728034F3D00C8DA2D /* XCRemoteSwiftPackageReference "CodeEditKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/pkasila/CEExtensionKit";
+			repositoryURL = "https://github.com/CodeEditApp/CodeEditKit";
 			requirement = {
 				branch = main;
 				kind = branch;
@@ -1021,10 +1021,10 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = Overlays;
 		};
-		04C325572801B43A00C8DA2D /* CEExtensionKit */ = {
+		04C3256A28034FC800C8DA2D /* CodeEditKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 0463E50C27FCC0E900806D5C /* XCRemoteSwiftPackageReference "CEExtensionKit" */;
-			productName = CEExtensionKit;
+			package = 04C3256728034F3D00C8DA2D /* XCRemoteSwiftPackageReference "CodeEditKit" */;
+			productName = CodeEditKit;
 		};
 		20D2A95427F72E6800E7ECF6 /* Accounts */ = {
 			isa = XCSwiftPackageProductDependency;

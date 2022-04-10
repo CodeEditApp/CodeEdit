@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CEExtensionKit
+import CodeEditKit
 
 class CodeEditAPI: ExtensionAPI {
      var extensionId: String

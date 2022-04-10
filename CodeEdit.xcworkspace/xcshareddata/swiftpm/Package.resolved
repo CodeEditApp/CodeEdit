@@ -2,11 +2,11 @@
   "object": {
     "pins": [
       {
-        "package": "CEExtensionKit",
-        "repositoryURL": "https://github.com/pkasila/CEExtensionKit",
+        "package": "CodeEditKit",
+        "repositoryURL": "https://github.com/CodeEditApp/CodeEditKit",
         "state": {
           "branch": "main",
-          "revision": "7ca796114784a9cbf42ade81342bb5f841daf5d0",
+          "revision": "2482e5870fd8082c908fabfdaaf245498cb3dd54",
           "version": null
         }
       },

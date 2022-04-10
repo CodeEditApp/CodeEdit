@@ -13,7 +13,7 @@ import Combine
 import CodeFile
 import Search
 import QuickOpen
-import CEExtensionKit
+import CodeEditKit
 import ExtensionsStore
 
 @objc(WorkspaceDocument)

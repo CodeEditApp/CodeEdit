@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CEExtensionKit
+import CodeEditKit
 
 public struct Plugin: Codable, Identifiable, Hashable {
     public var id: UUID

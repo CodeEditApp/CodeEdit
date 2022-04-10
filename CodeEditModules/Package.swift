@@ -101,8 +101,8 @@ let package = Package(
             from: "0.1.4"
         ),
         .package(
-            name: "CEExtensionKit",
-            url: "https://github.com/pkasila/CEExtensionKit",
+            name: "CodeEditKit",
+            url: "https://github.com/CodeEditApp/CodeEditKit",
             branch: "main"
         ),
         .package(
@@ -248,7 +248,7 @@ let package = Package(
         .target(
             name: "ExtensionsStore",
             dependencies: [
-                "CEExtensionKit",
+                "CodeEditKit",
                 "Light-Swift-Untar",
                 .productItem(name: "GRDB", package: "GRDB.swift", condition: nil)
             ],
