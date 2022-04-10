@@ -4,7 +4,8 @@
 
 # Related Issue
 
-<!--- REQUIRED: Tag all related issues (e.g. #23) -->
+<!--- REQUIRED: Tag all related issues (e.g. * #23) -->
+* #ISSUE_NUMBER
 
 # Checklist
 
