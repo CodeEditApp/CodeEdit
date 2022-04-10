@@ -10,6 +10,7 @@ import AppPreferences
 import Preferences
 import About
 import WelcomeModule
+import ExtensionsStore
 
 class CodeEditApplication: NSApplication {
     let strongDelegate = AppDelegate()
@@ -50,6 +51,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                 }
 
                 self.handleOpen()
+            }
+        }
+
+        DispatchQueue(label: "extensions.preload").async {
+            do {
+                try ExtensionsManager.shared?.preload()
+            } catch let error {
+                print(error)
             }
         }
     }

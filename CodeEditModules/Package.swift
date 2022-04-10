@@ -73,6 +73,10 @@ let package = Package(
             name: "Design",
             targets: ["Design"]
         ),
+        .library(
+            name: "ExtensionsStore",
+            targets: ["ExtensionsStore"]
+        ),
     ],
     dependencies: [
         .package(
@@ -99,6 +103,20 @@ let package = Package(
             name: "Introspect",
             url: "https://github.com/siteline/SwiftUI-Introspect",
             from: "0.1.4"
+        ),
+        .package(
+            name: "CodeEditKit",
+            url: "https://github.com/CodeEditApp/CodeEditKit",
+            branch: "main"
+        ),
+        .package(
+            name: "Light-Swift-Untar",
+            url: "https://github.com/Light-Untar/Light-Swift-Untar",
+            from: "1.0.4"
+        ),
+        .package(
+            url: "https://github.com/groue/GRDB.swift.git",
+            from: "5.22.2"
         ),
     ],
     targets: [
@@ -237,6 +255,15 @@ let package = Package(
         .target(
             name: "Acknowledgements",
             path: "Modules/Acknowledgements/src"
+        ),
+		.target(
+            name: "ExtensionsStore",
+            dependencies: [
+                "CodeEditKit",
+                "Light-Swift-Untar",
+                .productItem(name: "GRDB", package: "GRDB.swift", condition: nil)
+            ],
+            path: "Modules/ExtensionsStore/src"
         )
     ]
 )

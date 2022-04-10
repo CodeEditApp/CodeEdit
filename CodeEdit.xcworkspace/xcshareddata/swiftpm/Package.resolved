@@ -2,12 +2,39 @@
   "object": {
     "pins": [
       {
+        "package": "CodeEditKit",
+        "repositoryURL": "https://github.com/CodeEditApp/CodeEditKit",
+        "state": {
+          "branch": "main",
+          "revision": "2482e5870fd8082c908fabfdaaf245498cb3dd54",
+          "version": null
+        }
+      },
+      {
+        "package": "GRDB",
+        "repositoryURL": "https://github.com/groue/GRDB.swift.git",
+        "state": {
+          "branch": null,
+          "revision": "15c06e037430c8a2dc570f9199dd7bf8caa21195",
+          "version": "5.22.2"
+        }
+      },
+      {
         "package": "Highlightr",
         "repositoryURL": "https://github.com/raspu/Highlightr.git",
         "state": {
           "branch": null,
           "revision": "93199b9e434f04bda956a613af8f571933f9f037",
           "version": "2.1.2"
+        }
+      },
+      {
+        "package": "Light-Swift-Untar",
+        "repositoryURL": "https://github.com/Light-Untar/Light-Swift-Untar",
+        "state": {
+          "branch": null,
+          "revision": "fcff1f1b82373ea64b9565a364f63ffe7fdecf9f",
+          "version": "1.0.4"
         }
       },
       {

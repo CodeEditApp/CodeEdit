@@ -35,6 +35,13 @@ class OutlineViewController: NSViewController {
 
     var iconColor: AppPreferences.FileIconStyle = .color
 
+    var rowHeight: Double = 22 {
+        didSet {
+            outlineView.rowHeight = rowHeight
+            outlineView.reloadData()
+        }
+    }
+
     /// Setup the ``scrollView`` and ``outlineView``
     override func loadView() {
         self.scrollView = NSScrollView()
@@ -136,7 +143,7 @@ extension OutlineViewController: NSOutlineViewDelegate {
 
         guard let tableColumn = tableColumn else { return nil }
 
-        let frameRect = NSRect(x: 0, y: 0, width: tableColumn.width, height: 17)
+        let frameRect = NSRect(x: 0, y: 0, width: tableColumn.width, height: rowHeight)
 
         let view = OutlineTableViewCell(frame: frameRect)
 
@@ -166,7 +173,7 @@ extension OutlineViewController: NSOutlineViewDelegate {
     }
 
     func outlineView(_ outlineView: NSOutlineView, heightOfRowByItem item: Any) -> CGFloat {
-        return 22 // This can be changed to 20 to match Xcodes row height.
+        return rowHeight // This can be changed to 20 to match Xcodes row height.
     }
 
     func outlineViewItemDidExpand(_ notification: Notification) {
