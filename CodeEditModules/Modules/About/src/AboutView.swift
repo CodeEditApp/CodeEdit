@@ -4,6 +4,8 @@ import Acknowledgements
 public struct AboutView: View {
     @Environment(\.openURL) var openURL
 
+    @State var hoveringOnCommitHash = false
+
     public init() {}
 
     private var appVersion: String {
@@ -37,8 +39,13 @@ public struct AboutView: View {
                         Spacer().frame(height: 5)
                         HStack(spacing: 2.0) {
                             Text("Commit:")
-                            Text(commitHash)
-                            .textSelection(.enabled)
+                            Text(self.hoveringOnCommitHash ?
+                                    commitHash :
+                                    String(commitHash[...commitHash.index(commitHash.startIndex, offsetBy: 7)]))
+                                .textSelection(.enabled)
+                                .onHover { _ in
+                                    self.hoveringOnCommitHash.toggle()
+                                }
                         }.foregroundColor(.secondary)
                             .font(.system(size: 10, weight: .light))
                         Spacer().frame(height: 36)
