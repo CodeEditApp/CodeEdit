@@ -21,6 +21,7 @@ class FontPickerDelegate {
 
 }
 
+/// A view that opens a `NSFontPanel` in order to choose a font installed on the system.
 public struct FontPicker: View {
     let labelString: String
 

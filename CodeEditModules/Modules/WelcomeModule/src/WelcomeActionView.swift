@@ -9,10 +9,10 @@ import SwiftUI
 
 public struct WelcomeActionView: View {
     var iconName: String
-    var title: LocalizedStringKey
-    var subtitle: LocalizedStringKey
+    var title: String
+    var subtitle: String
 
-    public init(iconName: String, title: LocalizedStringKey, subtitle: LocalizedStringKey) {
+    public init(iconName: String, title: String, subtitle: String) {
         self.iconName = iconName
         self.title = title
         self.subtitle = subtitle

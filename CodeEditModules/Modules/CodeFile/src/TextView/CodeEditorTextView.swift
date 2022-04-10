@@ -28,6 +28,8 @@ public class CodeEditorTextView: NSTextView {
         isContinuousSpellCheckingEnabled = false
         isAutomaticQuoteSubstitutionEnabled = false
         isAutomaticDashSubstitutionEnabled = false
+        isIncrementalSearchingEnabled = true
+        usesFindBar = true
     }
 
     required init?(coder: NSCoder) {

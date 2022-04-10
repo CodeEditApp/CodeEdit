@@ -6,7 +6,7 @@ let package = Package(
     name: "CodeEditModules",
     defaultLocalization: "en",
     platforms: [
-        .macOS(.v11),
+        .macOS(.v12),
     ],
     products: [
         .library(
@@ -64,6 +64,14 @@ let package = Package(
         .library(
             name: "Acknowledgements",
             targets: ["Acknowledgements"]
+		),
+		.library(
+            name: "QuickOpen",
+            targets: ["QuickOpen"]
+        ),
+        .library(
+            name: "Design",
+            targets: ["Design"]
         ),
     ],
     dependencies: [
@@ -86,6 +94,11 @@ let package = Package(
             name: "Preferences",
             url: "https://github.com/sindresorhus/Preferences.git",
             from: "2.5.0"
+        ),
+        .package(
+            name: "Introspect",
+            url: "https://github.com/siteline/SwiftUI-Introspect",
+            from: "0.1.4"
         ),
     ],
     targets: [
@@ -119,8 +132,13 @@ let package = Package(
             name: "WelcomeModule",
             dependencies: [
                 "WorkspaceClient",
+                "Design",
+                "AppPreferences",
             ],
-            path: "Modules/WelcomeModule/src"
+            path: "Modules/WelcomeModule/src",
+            resources: [
+                .process("Resources"),
+            ]
         ),
         .testTarget(
             name: "WelcomeModuleTests",
@@ -201,6 +219,22 @@ let package = Package(
             path: "Modules/About/src"
         ),
         .target(
+            name: "QuickOpen",
+            dependencies: [
+                "WorkspaceClient",
+                "CodeFile",
+                "Design",
+            ],
+            path: "Modules/QuickOpen/src"
+        ),
+        .target(
+            name: "Design",
+            dependencies: [
+                "Introspect",
+            ],
+            path: "Modules/Design/src"
+        ),
+		.target(
             name: "Acknowledgements",
             path: "Modules/Acknowledgements/src"
         )
