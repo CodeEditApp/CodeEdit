@@ -38,36 +38,6 @@ It might sound crazy, but it is our hope that at some point Apple adopts this pr
 
 Join our growing community of amazing contributors on [Discord](https://discord.gg/vChUXVf9Em).
 
-## To do
-
-- [x] Initial concept design
-- [x] Put starter app on GitHub
-- [x] Start a [Discord server](https://discord.gg/vChUXVf9Em) for community collaboration
-- [x] UI Framework - Navigator and Inspector Sidebars, Toolbar, Tabs, Breadcrumbs, Drawer, Statusbar
-- [x] Welcome screen
-- [x] Project navigator - Manage and edit files within a project
-- [x] Source control navigator
-- [x] Find navigator (find in project)
-- [ ] Issue navigator
-- [ ] Code symbols navigator
-- [ ] Debug navigator
-- [ ] Extension navigator
-- [ ] Extensions API
-- [ ] Extensions Store
-- [x] Text editor
-- [ ] Split editors
-- [x] Syntax highlighting
-- [ ] Find in document
-- [x] Integrated terminal
-- [x] Open quickly overlay
-- [ ] Commands overlay
-- [ ] Application Preferences
-- [ ] Project Preferences
-- [ ] File inspector
-
-...more to come!
-
-
 ## Contributing
 
 Read the [Contribution Guide](https://github.com/CodeEditApp/CodeEdit/blob/main/CONTRIBUTING.md)
