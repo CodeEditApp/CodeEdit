@@ -55,6 +55,7 @@ class OutlineTableViewCell: NSTableCellView {
         fatalError()
     }
 
+    /// Returns the font size for the current row height. Defaults to `13.0`
     private var fontSize: Double {
         switch self.frame.height {
         case 20: return 11

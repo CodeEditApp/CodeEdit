@@ -35,6 +35,11 @@ struct OutlineView: NSViewControllerRepresentable {
         return
     }
 
+    /// Returns the row height depending on the `projectNavigatorSize` in `AppPreferences`.
+    ///
+    /// * `small`: 20
+    /// * `medium`: 22
+    /// * `large`: 24
     private var rowHeight: Double {
         switch prefs.preferences.general.projectNavigatorSize {
         case .small: return 20

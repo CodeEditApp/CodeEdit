@@ -61,6 +61,7 @@ public extension AppPreferences {
         /// The reopen behavior of the app
         public var reopenBehavior: ReopenBehavior = .welcome
 
+        /// The size of the project navigators rows.
         public var projectNavigatorSize: ProjectNavigatorSize = .medium
 
         /// Default initializer
@@ -120,6 +121,14 @@ public extension AppPreferences {
         case newDocument
     }
 
+    /// The size of the project navigators rows.
+    ///
+    /// To match Xcode's settings the row height should be:
+    /// * ``small``: `20pt` (fontSize: `11pt`)
+    /// * ``medium``: `22pt` (fontSize: `13pt`)
+    /// * ``small``: `24pt` (fontSize: `14pt`)
+    ///
+    /// - note: This should be implemented for all lists in a `NavigatorSidebar`
     enum ProjectNavigatorSize: String, Codable {
         case small
         case medium
