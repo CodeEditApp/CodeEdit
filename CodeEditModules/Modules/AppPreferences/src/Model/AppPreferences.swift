@@ -61,6 +61,8 @@ public extension AppPreferences {
         /// The reopen behavior of the app
         public var reopenBehavior: ReopenBehavior = .welcome
 
+        public var projectNavigatorSize: ProjectNavigatorSize = .medium
+
         /// Default initializer
         public init() {}
 
@@ -71,6 +73,8 @@ public extension AppPreferences {
             self.fileIconStyle = try container.decodeIfPresent(FileIconStyle.self, forKey: .fileIconStyle) ?? .color
             self.reopenBehavior = try container.decodeIfPresent(ReopenBehavior.self,
                                                                 forKey: .reopenBehavior) ?? .welcome
+            self.projectNavigatorSize = try container.decodeIfPresent(ProjectNavigatorSize.self,
+                                                                      forKey: .projectNavigatorSize) ?? .medium
         }
     }
 
@@ -114,6 +118,12 @@ public extension AppPreferences {
         case welcome
         case openPanel
         case newDocument
+    }
+
+    enum ProjectNavigatorSize: String, Codable {
+        case small
+        case medium
+        case large
     }
 
 }
