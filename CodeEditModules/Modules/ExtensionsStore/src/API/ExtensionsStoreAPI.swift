@@ -16,11 +16,15 @@ public enum ExtensionsStoreAPIError: Error {
 
 // TODO: add authorization
 
+/// Structure to work with Extensions Store API
 public struct ExtensionsStoreAPI {
 
     static let base = URL(string: "https://codeedit.pkasila.net/api/")!
     static let agent = Agent()
 
+    /// Lists plugins on the specified page
+    /// - Parameter page: page to be requested
+    /// - Returns: publisher with the page
     public static func plugins(page: Int) -> AnyPublisher<Page<Plugin>, Error> {
         var components = URLComponents(url: base.appendingPathComponent("plugins"), resolvingAgainstBaseURL: false)
         components?.queryItems = [
@@ -37,6 +41,9 @@ public struct ExtensionsStoreAPI {
             .eraseToAnyPublisher()
     }
 
+    /// Plugin by ID
+    /// - Parameter id: identifier of the plugin
+    /// - Returns: publisher with `Plugin`
     public static func plugin(id: UUID) -> AnyPublisher<Plugin, Error> {
         let request = URLRequest(url: base.appendingPathComponent("plugins/\(id.uuidString)"))
         return agent.run(request)
@@ -44,6 +51,11 @@ public struct ExtensionsStoreAPI {
             .eraseToAnyPublisher()
     }
 
+    /// Lists plugin's releases on the specified page
+    /// - Parameters:
+    ///   - id: plugin's ID
+    ///   - page: page to be requested
+    /// - Returns: publisher with the page
     public static func pluginReleases(id: UUID, page: Int) -> AnyPublisher<Page<PluginRelease>, Error> {
         var components = URLComponents(url: base.appendingPathComponent("plugins/\(id.uuidString)/releases"),
                                        resolvingAgainstBaseURL: false)
@@ -61,6 +73,9 @@ public struct ExtensionsStoreAPI {
             .eraseToAnyPublisher()
     }
 
+    /// Release by ID
+    /// - Parameter id: release's ID
+    /// - Returns: publisher with `PluginRelease`
     public static func release(id: UUID) -> AnyPublisher<PluginRelease, Error> {
         let request = URLRequest(url: base.appendingPathComponent("releases/\(id.uuidString)"))
         return agent.run(request)
