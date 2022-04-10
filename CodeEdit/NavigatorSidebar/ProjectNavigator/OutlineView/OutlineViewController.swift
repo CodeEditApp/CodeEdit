@@ -48,7 +48,7 @@ class OutlineViewController: NSViewController {
         self.outlineView.headerView = nil
         self.outlineView.menu = OutlineMenu(sender: self.outlineView)
         self.outlineView.menu?.delegate = self
-        self.outlineView.registerForDraggedTypes([.URL])
+        self.outlineView.registerForDraggedTypes([.fileURL])
 
         let column = NSTableColumn(identifier: .init(rawValue: "Cell"))
         column.title = "Cell"
@@ -129,15 +129,19 @@ extension OutlineViewController: NSOutlineViewDataSource {
     
     func outlineView(_ outlineView: NSOutlineView, validateDrop info: NSDraggingInfo, proposedItem item: Any?, proposedChildIndex index: Int) -> NSDragOperation {
         if let item = item as? Item {
-            return .move
+            print("index: \(index)")
+            return .link
         }
         return []
     }
     
     func outlineView(_ outlineView: NSOutlineView, acceptDrop info: NSDraggingInfo, item: Any?, childIndex index: Int) -> Bool {
-        print("Wants to drop items: \(item)")
-        guard let items = info.draggingPasteboard.pasteboardItems
-                else { return false }
+        guard let items = info.draggingPasteboard.pasteboardItems, items.count > 0 else { return false }
+        let movedItems = items.compactMap { $0.string(forType: .URL) }
+        print("movedItems is :\(movedItems)")
+        
+        print("Item should go into row: \(index)")
+        
         return false
     }
 }
