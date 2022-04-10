@@ -16,8 +16,6 @@ class OutlineTableViewCell: NSTableCellView {
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
 
-        let iconHeight = frameRect.height - 2
-
         // Create the label
 
         self.label = NSTextField(frame: .zero)
@@ -25,30 +23,30 @@ class OutlineTableViewCell: NSTableCellView {
         self.label.drawsBackground = false
         self.label.isBordered = false
         self.label.isEditable = false
+        self.label.font = .preferredFont(forTextStyle: .subheadline)
 
         self.addSubview(label)
         self.textField = label
 
         // Create the icon
 
-        self.icon = NSImageView(frame: .init(origin: .zero, size: .zero))
+        self.icon = NSImageView(frame: .zero)
         self.icon.translatesAutoresizingMaskIntoConstraints = false
-        self.icon.symbolConfiguration = .init(pointSize: 13, weight: .regular, scale: .medium)
-        self.icon.imageScaling = .scaleProportionallyDown
+        self.icon.symbolConfiguration = .init(textStyle: .callout, scale: .medium)
 
         self.addSubview(icon)
         self.imageView = icon
 
         // Icon constraints
 
-        self.icon.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 2).isActive = true
+        self.icon.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0).isActive = true
         self.icon.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        self.icon.widthAnchor.constraint(equalToConstant: iconHeight).isActive = true
-        self.icon.heightAnchor.constraint(equalToConstant: iconHeight).isActive = true
+        self.icon.widthAnchor.constraint(equalToConstant: 21).isActive = true
+        self.icon.heightAnchor.constraint(equalToConstant: frameRect.height).isActive = true
 
         // Label constraints
 
-        self.label.leadingAnchor.constraint(equalTo: icon.trailingAnchor, constant: 5).isActive = true
+        self.label.leadingAnchor.constraint(equalTo: icon.trailingAnchor, constant: 2).isActive = true
         self.label.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
     }
 
