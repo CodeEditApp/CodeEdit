@@ -30,12 +30,9 @@ class OutlineTableViewCell: NSTableCellView {
 
         // Create the icon
 
-        // TODO: Icon clips
-
-        self.icon = NSImageView(frame: .init(origin: .zero, size: .zero))
+        self.icon = NSImageView(frame: .zero)
         self.icon.translatesAutoresizingMaskIntoConstraints = false
         self.icon.symbolConfiguration = .init(textStyle: .subheadline, scale: .medium)
-        self.icon.imageAlignment = .alignCenter
 
         self.addSubview(icon)
         self.imageView = icon
@@ -44,7 +41,7 @@ class OutlineTableViewCell: NSTableCellView {
 
         self.icon.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0).isActive = true
         self.icon.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        self.icon.widthAnchor.constraint(equalToConstant: 20).isActive = true
+        self.icon.widthAnchor.constraint(equalToConstant: 21).isActive = true
         self.icon.heightAnchor.constraint(equalToConstant: frameRect.height).isActive = true
 
         // Label constraints
