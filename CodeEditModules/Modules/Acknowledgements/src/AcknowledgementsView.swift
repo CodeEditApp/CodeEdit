@@ -1,6 +1,6 @@
 //
 //  AcknowledgementsView.swift
-//  
+//
 //
 //  Created by Shivesh M M on 4/4/22.
 //
@@ -8,9 +8,10 @@
 import SwiftUI
 
 public struct AcknowledgementsView: View {
-    var acknowledgements: [Dependency] = []
+    var acknowledgements: [Dependency]
 
     public init() {
+        self.acknowledgements = []
         do {
             if let bundlePath = Bundle.main.path(forResource: "Package.resolved", ofType: nil) {
                 let jsonData = try String(contentsOfFile: bundlePath).data(using: .utf8)
@@ -27,10 +28,23 @@ public struct AcknowledgementsView: View {
         }
     }
 
+    init(_ dependencies: [Dependency]) {
+        self.acknowledgements = dependencies
+    }
+
     public var body: some View {
-        List(acknowledgements, id: \.name) { acknowledgement in
-            AcknowledgementRow(acknowledgement: acknowledgement)
-        }.padding(.vertical, 10.0)
+        VStack(alignment: .leading, spacing: 15) {
+            Text("Dependencies")
+                .font(.system(size: 18, weight: .semibold)).padding([.leading, .top], 10.0)
+            ScrollView {
+                VStack(alignment: .leading, spacing: 10) {
+                    ForEach(acknowledgements, id: \.name) { acknowledgement in
+                        AcknowledgementRow(acknowledgement: acknowledgement)
+                            .listRowBackground(Color.clear)
+                    }
+                }.padding(.horizontal, 15)
+            }
+        }
     }
 
     public func showWindow(width: CGFloat, height: CGFloat) {
@@ -50,11 +64,13 @@ struct AcknowledgementRow: View {
             Text(acknowledgement.version)
                 .font(.subheadline)
                 .foregroundColor(.secondary)
+                .padding(.leading, -5.0)
             Spacer()
-            Button(action: {openURL(acknowledgement.repositoryURL)}, label: {
-                Text("Link")
-                Image(systemName: "arrow.up.right")
-            })
+            Button(action: {
+                openURL(acknowledgement.repositoryURL)
+            }, label: {
+                Image(systemName: "arrow.right.circle.fill").foregroundColor(.secondary)
+            }).buttonStyle(.plain)
         }
     }
 }
@@ -91,7 +107,6 @@ final class PlaceholderWindowController: NSWindowController {
 
         window?.collectionBehavior = [.transient, .ignoresCycle]
         window?.isMovableByWindowBackground = true
-//        window?.titlebarAppearsTransparent = true
         window?.title = "Acknowledgements"
     }
 
@@ -108,6 +123,19 @@ final class PlaceholderWindowController: NSWindowController {
 
 struct Acknowledgements_Previews: PreviewProvider {
     static var previews: some View {
-        AcknowledgementsView()
+        AcknowledgementsView([
+            Dependency(name: "Hi", repositoryLink: "Test", version: "1.2.3"),
+            Dependency(name: "Hi", repositoryLink: "Test", version: "1.2.3"),
+            Dependency(name: "Hi", repositoryLink: "Test", version: "1.2.3"),
+            Dependency(name: "Hi", repositoryLink: "Test", version: "1.2.3"),
+            Dependency(name: "Hi", repositoryLink: "Test", version: "1.2.3")
+        ])
+        AcknowledgementsView([
+            Dependency(name: "Hi", repositoryLink: "Test", version: "1.2.3"),
+            Dependency(name: "Hi", repositoryLink: "Test", version: "1.2.3"),
+            Dependency(name: "Hi", repositoryLink: "Test", version: "1.2.3"),
+            Dependency(name: "Hi", repositoryLink: "Test", version: "1.2.3"),
+            Dependency(name: "Hi", repositoryLink: "Test", version: "1.2.3")
+        ]).preferredColorScheme(.light)
     }
 }

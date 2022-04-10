@@ -64,8 +64,8 @@ let package = Package(
         .library(
             name: "Acknowledgements",
             targets: ["Acknowledgements"]
-		),
-		.library(
+        ),
+        .library(
             name: "QuickOpen",
             targets: ["QuickOpen"]
         ),
@@ -214,7 +214,7 @@ let package = Package(
         .target(
             name: "About",
             dependencies: [
-                "Acknowledgements",
+                "Acknowledgements"
             ],
             path: "Modules/About/src"
         ),
@@ -234,7 +234,7 @@ let package = Package(
             ],
             path: "Modules/Design/src"
         ),
-		.target(
+        .target(
             name: "Acknowledgements",
             path: "Modules/Acknowledgements/src"
         )
