@@ -97,7 +97,6 @@ Support CodeEdit's development by [becoming a backer](https://github.com/sponsor
 
 [@ivanvorobei](https://github.com/ivanvorobei)
 [@albertorestifo](https://github.com/albertorestifo)
-[@imxeno](https://github.com/imxeno)
 
 ## License
 
