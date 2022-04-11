@@ -24,6 +24,7 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
 
     @Published var sortFoldersOnTop: Bool = true
     @Published var selectionState: WorkspaceSelectionState = .init()
+    @Published var fileOrderState: WorkspaceFileOrderState = .init()
 
     var searchState: SearchState?
     var quickOpenState: QuickOpenState?
@@ -136,7 +137,8 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
             if let projectDir = fileURL?.appendingPathComponent(".codeedit", isDirectory: true),
                FileManager.default.fileExists(atPath: projectDir.path) {
                 let selectionStateFile = projectDir.appendingPathComponent("selection.json", isDirectory: false)
-
+                let sideBarStateFile = projectDir.appendingPathComponent("file-order.json", isDirectory: false)
+                
                 if FileManager.default.fileExists(atPath: selectionStateFile.path) {
                     let state = try JSONDecoder().decode(WorkspaceSelectionState.self,
                                                          from: Data(contentsOf: selectionStateFile))
@@ -202,13 +204,25 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
                     }
                 }
                 let selectionStateFile = projectDir.appendingPathComponent("selection.json", isDirectory: false)
+                let sidebarOrderState = projectDir.appendingPathComponent("file-order.json", isDirectory: false)
+                
                 let data = try JSONEncoder().encode(selectionState)
+                let fileData = try JSONEncoder().encode(fileOrderState)
+                
                 if FileManager.default.fileExists(atPath: selectionStateFile.path) {
                     do {
                         try FileManager.default.removeItem(at: selectionStateFile)
                     }
                 }
                 try data.write(to: selectionStateFile)
+                
+                if FileManager.default.fileExists(atPath: sidebarOrderState.path) {
+                    do {
+                        try FileManager.default.removeItem(at: sidebarOrderState)
+                    }
+                }
+                try fileData.write(to: sidebarOrderState)
+                
             } catch let error {
                 Swift.print(error)
             }
@@ -324,6 +338,31 @@ struct WorkspaceSelectionState: Codable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(selectedId, forKey: .selectedId)
         try container.encode(openFileItems, forKey: .openFileItems)
+    }
+}
+
+// MARK: - Sidebar & Tabbar
+
+struct WorkspaceFileOrderState: Codable {
+    var sidebarFileItems: [WorkspaceClient.FileItem] = []
+    var tabbarFileItems: [WorkspaceClient.FileItem] = []
+    
+    enum CodingKeys: String, CodingKey {
+        case sidebarOrder, tabbarOrder
+    }
+    
+    init(){}
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        sidebarFileItems = try container.decode([WorkspaceClient.FileItem].self, forKey: .sidebarOrder)
+        tabbarFileItems = try container.decode([WorkspaceClient.FileItem].self, forKey: .tabbarOrder)
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(sidebarFileItems, forKey: .sidebarOrder)
+        try container.encode(tabbarFileItems, forKey: .tabbarOrder)
     }
 }
 

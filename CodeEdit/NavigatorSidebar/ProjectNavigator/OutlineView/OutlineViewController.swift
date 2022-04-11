@@ -135,21 +135,26 @@ extension OutlineViewController: NSOutlineViewDataSource {
     }
     
     func outlineView(_ outlineView: NSOutlineView, validateDrop info: NSDraggingInfo, proposedItem item: Any?, proposedChildIndex index: Int) -> NSDragOperation {
-        if let item = item as? Item {
-            print("index: \(index)")
+        if index != -1 {
+            outlineView.draggingDestinationFeedbackStyle = .regular
+        } else {
+            outlineView.draggingDestinationFeedbackStyle = .none
+        }
+        if let _ = item as? Item {
             return .link
         }
         return []
     }
     
     func outlineView(_ outlineView: NSOutlineView, acceptDrop info: NSDraggingInfo, item: Any?, childIndex index: Int) -> Bool {
-        guard let items = info.draggingPasteboard.pasteboardItems, items.count > 0 else { return false }
-        let movedItems = items.compactMap { $0.string(forType: .URL) }
-        print("movedItems is :\(movedItems)")
-        
-        print("Item should go into row: \(index)")
-        
-        return false
+        guard index != -1, let items = info.draggingPasteboard.pasteboardItems, items.count > 0, let movingItem = item as? Item, var itemChildren = movingItem.children else { return false }
+        print("itemChildren before: \(itemChildren)")
+        let fileNames = items.compactMap { $0.string(forType: .fileURL) }
+        var fileNameSet = Set(fileNames)
+        let movedItems = itemChildren.filter { !fileNameSet.insert($0.url.absoluteString).inserted }
+        itemChildren.insert(contentsOf: movedItems, at: index)
+        print("itemChildren after: \(itemChildren)")
+        return true
     }
 }
 
