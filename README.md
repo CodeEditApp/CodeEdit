@@ -81,25 +81,23 @@ Read the [Contribution Guide](https://github.com/CodeEditApp/CodeEdit/blob/main/
 
 Support CodeEdit's development by [becoming a sponsor](https://github.com/sponsors/CodeEditApp).
 
+<a href="https://vercel.com/?utm_source=codeedit&utm_campaign=oss" target="_blank"><img src="https://user-images.githubusercontent.com/806104/162766170-60f3b95a-ca30-4015-a3e3-a605df78b98a.png" width="128"></a>
+<a href="https://macstadium.com" target="_blank"><img src="https://user-images.githubusercontent.com/806104/162766594-eff7f985-31a9-48c5-9e58-139794fefa10.png" width="128"></a>
+<a href="https://www.gitbook.com/" target="_blank"><img src="https://user-images.githubusercontent.com/806104/162766464-c10dc9fc-088a-4945-a0e1-17bd42705b70.png" width="128"></a>
 <a href="https://github.com/panascais" target="_blank"><img src="https://avatars.githubusercontent.com/u/19628635?s=200&v=4" width="128"></a>
-
-[![powered-by-vercel](https://user-images.githubusercontent.com/806104/161609938-2fe03e88-fd43-4ed4-a2d2-8d3e3fc4eec7.svg)](https://vercel.com/?utm_source=codeedit&utm_campaign=oss)
-
-<a href="https://macstadium.com">
-    <img src="https://uploads-ssl.webflow.com/5ac3c046c82724970fc60918/5c019d917bba312af7553b49_MacStadium-developerlogo.png" width="30%" />
-</a>
-
-[![gitbook-ar21](https://user-images.githubusercontent.com/806104/162128574-c745f38c-9d57-40ae-855a-2938bbdf777a.svg)](https://www.gitbook.com/)
 
 ## Backers
 
 Support CodeEdit's development by [becoming a backer](https://github.com/sponsors/CodeEditApp).
 
 <a href="https://github.com/dannydorazio" target="_blank"><img src="https://avatars.githubusercontent.com/u/21158275?v=4" width="64"></a>
+<a href="https://github.com/omrd" target="_blank"><img src="https://avatars.githubusercontent.com/u/34616424?v=4" width="64"></a>
+<a href="https://github.com/sparrowcode" target="_blank"><img src="https://avatars.githubusercontent.com/u/98487302?s=200&v=4" width="64"></a>
+
 
 ### Thanks to all of our other backers
 
-[@omrd](https://github.com/omrd)
+[@ivanvorobei](https://github.com/ivanvorobei) [@albertorestifo](https://github.com/albertorestifo) 
 
 ## License
 
