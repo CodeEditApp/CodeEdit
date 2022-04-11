@@ -200,6 +200,7 @@ let package = Package(
             dependencies: [
                 "Preferences",
                 "FontPicker",
+                "Accounts"
             ],
             path: "Modules/AppPreferences/src"
         ),

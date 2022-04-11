@@ -32,11 +32,13 @@ public struct PreferencesSection<Content: View>: View {
 
     private var title: String
     private var width: Double
+    private var hideLabels: Bool
     private var content: Content
 
-    public init(_ title: String, width: Double = 300, @ViewBuilder content: () -> Content) {
+    public init(_ title: String, width: Double = 300, hideLabels: Bool = false, @ViewBuilder content: () -> Content) {
         self.title = title
         self.width = width
+        self.hideLabels = hideLabels
         self.content = content()
     }
 
@@ -44,12 +46,21 @@ public struct PreferencesSection<Content: View>: View {
         HStack(alignment: .firstTextBaseline) {
             Text("\(title):")
                 .frame(width: width, alignment: .trailing)
-            VStack(alignment: .leading) {
-                content
-                    .labelsHidden()
-                    .fixedSize()
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .frame(minHeight: 20)
+            if hideLabels {
+                VStack(alignment: .leading) {
+                    content
+                        .labelsHidden()
+                        .fixedSize()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .frame(minHeight: 20)
+                }
+            } else {
+                VStack(alignment: .leading) {
+                    content
+                        .fixedSize()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .frame(minHeight: 20)
+                }
             }
         }
     }
