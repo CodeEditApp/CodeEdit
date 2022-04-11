@@ -13,10 +13,14 @@ import Combine
 import CodeFile
 import Search
 import QuickOpen
+import CodeEditKit
+import ExtensionsStore
 
 @objc(WorkspaceDocument)
 class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var workspaceClient: WorkspaceClient?
+
+    var extensionNavigatorData = ExtensionNavigatorData()
 
     @Published var sortFoldersOnTop: Bool = true
     @Published var selectionState: WorkspaceSelectionState = .init()
@@ -24,6 +28,8 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var searchState: SearchState?
     var quickOpenState: QuickOpenState?
     private var cancellables = Set<AnyCancellable>()
+
+    @Published var targets: [Target] = []
 
     deinit {
         cancellables.forEach { $0.cancel() }
@@ -172,6 +178,15 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
                 }
             }
             .store(in: &cancellables)
+
+        // initialize extensions
+        do {
+            try ExtensionsManager.shared?.load { extensionID in
+                return CodeEditAPI(extensionId: extensionID, workspace: self)
+            }
+        } catch let error {
+            Swift.print(error)
+        }
     }
 
     override func write(to url: URL, ofType typeName: String) throws {}
@@ -207,6 +222,11 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
             } catch {}
         }
         selectionState.openedCodeFiles.removeAll()
+
+        if let url = self.fileURL {
+            ExtensionsManager.shared?.close(url: url)
+        }
+
         super.close()
     }
 }
@@ -304,5 +324,18 @@ struct WorkspaceSelectionState: Codable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(selectedId, forKey: .selectedId)
         try container.encode(openFileItems, forKey: .openFileItems)
+    }
+}
+
+// MARK: - Extensions
+extension WorkspaceDocument {
+    func target(didAdd target: Target) {
+        self.targets.append(target)
+    }
+    func target(didRemove target: Target) {
+        self.targets.removeAll { $0.id == target.id }
+    }
+    func targetDidClear() {
+        self.targets.removeAll()
     }
 }

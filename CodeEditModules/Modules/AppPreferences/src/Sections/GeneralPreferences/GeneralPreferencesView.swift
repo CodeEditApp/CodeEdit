@@ -51,6 +51,16 @@ public struct GeneralPreferencesView: View {
                         .tag(AppPreferences.ReopenBehavior.newDocument)
                 }
             }
+            PreferencesSection("Project Navigator Size") {
+                Picker("Project Navigator Size", selection: $prefs.preferences.general.projectNavigatorSize) {
+                    Text("Small")
+                        .tag(AppPreferences.ProjectNavigatorSize.small)
+                    Text("Medium")
+                        .tag(AppPreferences.ProjectNavigatorSize.medium)
+                    Text("Large")
+                        .tag(AppPreferences.ProjectNavigatorSize.large)
+                }
+            }
         }
     }
 }
