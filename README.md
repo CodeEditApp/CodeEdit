@@ -81,18 +81,10 @@ Read the [Contribution Guide](https://github.com/CodeEditApp/CodeEdit/blob/main/
 
 Support CodeEdit's development by [becoming a sponsor](https://github.com/sponsors/CodeEditApp).
 
-<a href="https://vercel.com/?utm_source=codeedit&utm_campaign=oss" target="_blank">
-  <img src="https://user-images.githubusercontent.com/806104/162766170-60f3b95a-ca30-4015-a3e3-a605df78b98a.png" alt="Vercel" width="128">
-</a>
-<a href="https://macstadium.com" target="_blank">
-  <img src="https://user-images.githubusercontent.com/806104/162766594-eff7f985-31a9-48c5-9e58-139794fefa10.png" alt="MacStadium" width="128">
-</a>
-<a href="https://www.gitbook.com/" target="_blank">
-  <img src="https://user-images.githubusercontent.com/806104/162766464-c10dc9fc-088a-4945-a0e1-17bd42705b70.png" alt="GitBook" width="128">
-</a>
-<a href="https://github.com/panascais" target="_blank">
-  <img src="https://avatars.githubusercontent.com/u/19628635?s=200&v=4" width="128">
-</a>
+<a title="Vercel" href="https://vercel.com/?utm_source=codeedit&utm_campaign=oss" target="_blank"><img src="https://user-images.githubusercontent.com/806104/162766170-60f3b95a-ca30-4015-a3e3-a605df78b98a.png" width="128"></a>
+<a title="MacStadium" href="https://macstadium.com" target="_blank"><img src="https://user-images.githubusercontent.com/806104/162766594-eff7f985-31a9-48c5-9e58-139794fefa10.png" width="128"></a>
+<a title="GitBook" href="https://www.gitbook.com/" target="_blank"><img src="https://user-images.githubusercontent.com/806104/162766464-c10dc9fc-088a-4945-a0e1-17bd42705b70.png" width="128"></a>
+<a title="panascais" href="https://github.com/panascais" target="_blank"><img src="https://avatars.githubusercontent.com/u/19628635?s=200&v=4" width="128"></a>
 
 ## Backers
 
