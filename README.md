@@ -1,9 +1,7 @@
 ![github-cover](https://user-images.githubusercontent.com/806104/157921972-022b758f-eb9d-4436-881a-d94c883d5685.png)
 
 # CodeEdit macOS App
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-15-orange.svg?style=flat-square)](#contributors-)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
 ![GitHub branch checks state](https://img.shields.io/github/checks-status/CodeEditApp/CodeEdit/main)
 ![GitHub Repo stars](https://img.shields.io/github/stars/CodeEditApp/CodeEdit)
 ![GitHub forks](https://img.shields.io/github/forks/CodeEditApp/CodeEdit)
