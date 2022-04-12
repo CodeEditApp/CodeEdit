@@ -8,11 +8,23 @@
 import GitClient
 import SwiftUI
 
+public enum StatusBarTab: String, CaseIterable, Identifiable {
+    case terminal
+    case debugger
+    case output
+
+    public var id: String { return self.rawValue }
+}
+
 /// # StatusBarModel
 ///
 /// A model class to host and manage data for the ``StatusBarView``
 ///
 public class StatusBarModel: ObservableObject {
+    /// Returns the current active tab
+    @Published
+    public var activeTab: StatusBarTab = .terminal
+
     // TODO: Implement logic for updating values
     /// Returns number of errors during comilation
     @Published
@@ -39,16 +51,24 @@ public class StatusBarModel: ObservableObject {
     public var currentCol: Int = 1 // Implementation missing
 
     /// Returns true when the drawer is visible
-    @Published
+    @AppStorage("statusbar.isExpanded")
     public var isExpanded: Bool = false
 
+    /// Returns true when the drawer is visible
+    @AppStorage("statusbar.isMaximized")
+    public var isMaximized: Bool = false
+
     /// The current height of the drawer. Zero if hidden
-    @Published
+    @AppStorage("statusbar.currentHeight")
     public var currentHeight: Double = 0
 
     /// Indicates whether the drawer is beeing resized or not
     @Published
     public var isDragging: Bool = false
+
+    /// Search value to filter in drawer
+    @Published
+    public var searchText = ""
 
     /// Returns the font for status bar items to use
     private(set) var toolbarFont: Font = .system(size: 11)
@@ -60,7 +80,8 @@ public class StatusBarModel: ObservableObject {
     private(set) var workspaceURL: URL
 
     /// The maximum height of the drawer
-    private(set) var maxHeight: Double = 500
+    /// when isMaximized is true the height gets set to maxHeight
+    private(set) var maxHeight: Double = 5000
 
     /// The default height of the drawer
     private(set) var standardHeight: Double = 300
@@ -85,5 +106,9 @@ public class StatusBarModel: ObservableObject {
         } catch {
             selectedBranch = nil
         }
+    }
+
+    public func setTab(_ tab: StatusBarTab) {
+        self.activeTab = tab
     }
 }

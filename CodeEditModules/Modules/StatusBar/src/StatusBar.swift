@@ -46,16 +46,31 @@ public struct StatusBarView: View {
                 .foregroundStyle(.bar)
             HStack(spacing: 15) {
                 HStack(spacing: 5) {
-                    StatusBarLabelButton(
-                        model: model,
-                        title: model.errorCount.formatted(),
-                        image: "xmark.octagon"
-                    )
-                    StatusBarLabelButton(
-                        model: model,
-                        title: model.warningCount.formatted(),
-                        image: "exclamationmark.triangle"
-                    )
+                    Image("custom.breakpoint")
+                        .foregroundColor(.accentColor)
+
+                    Divider()
+                        .frame(maxHeight: 12)
+                        .padding(.horizontal, 7)
+
+                    ForEach(StatusBarTab.allCases, id: \.id) { tab in
+                        if model.activeTab == tab {
+                            Button(action: {
+                                model.setTab(tab)
+                            }, label: {
+                                Text(tab.rawValue.capitalized)
+                            })
+                            .buttonStyle(.borderedProminent)
+                        } else {
+                            Button(action: {
+                                model.setTab(tab)
+                            }, label: {
+                                Text(tab.rawValue.capitalized)
+                            })
+                            .buttonStyle(.bordered)
+                        }
+                        // .buttonStyle(model.activeTab == tab ? BorderedProminentButtonStyle() : PlainButtonStyle())
+                    }
                 }
                 if model.selectedBranch != nil {
                     StatusBarBranchPicker(model: model)
