@@ -143,9 +143,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                     }
 
                 } else {
-                    CodeEditDocumentController.shared.openDocument { _, _ in
+                    windowController.window?.close()
+                    CodeEditDocumentController.shared.openDocument(onCompletion: { _, _ in
                         opened()
-                    }
+                    }, onCancel: {
+                        self.openWelcome(self)
+                    })
                 }
             },
             newDocument: {
