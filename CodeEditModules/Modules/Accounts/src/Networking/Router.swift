@@ -8,9 +8,6 @@
 // built for any other networking except those of git accounts
 
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 public enum HTTPMethod: String {
     case GET, POST, PUT, PATCH, DELETE
@@ -30,16 +27,16 @@ public struct HTTPHeader {
 }
 
 public protocol Configuration {
-    var apiEndpoint: String { get }
+    var apiEndpoint: String? { get }
     var accessToken: String? { get }
-    var accessTokenFieldName: String { get }
+    var accessTokenFieldName: String? { get }
     var authorizationHeader: String? { get }
-    var errorDomain: String { get }
+    var errorDomain: String? { get }
     var customHeaders: [HTTPHeader]? { get }
 }
 
 public extension Configuration {
-    var accessTokenFieldName: String {
+    var accessTokenFieldName: String? {
         return "access_token"
     }
 
@@ -47,7 +44,7 @@ public extension Configuration {
         return nil
     }
 
-    var errorDomain: String {
+    var errorDomain: String? {
         return "com.codeedit.models.accounts.networking"
     }
 
@@ -63,7 +60,7 @@ public protocol Router {
     var path: String { get }
     var encoding: HTTPEncoding { get }
     var params: [String: Any] { get }
-    var configuration: Configuration { get }
+    var configuration: Configuration? { get }
 
     func urlQuery(_ parameters: [String: Any]) -> [URLQueryItem]?
 
@@ -92,23 +89,23 @@ public protocol Router {
 public extension Router {
 
     func request() -> URLRequest? {
-        let url = URL(string: path, relativeTo: URL(string: configuration.apiEndpoint)!)
+        let url = URL(string: path, relativeTo: URL(string: configuration?.apiEndpoint ?? "")!)
 
         var parameters = encoding == .json ? [:] : params
 
-        if let accessToken = configuration.accessToken, configuration.authorizationHeader == nil {
-            parameters[configuration.accessTokenFieldName] = accessToken as Any?
+        if let accessToken = configuration?.accessToken, configuration?.authorizationHeader == nil {
+            parameters[configuration?.accessTokenFieldName ?? ""] = accessToken as Any?
         }
 
         let components = URLComponents(url: url!, resolvingAgainstBaseURL: true)
 
         var urlRequest = request(components!, parameters: parameters)
 
-        if let accessToken = configuration.accessToken, let tokenType = configuration.authorizationHeader {
+        if let accessToken = configuration?.accessToken, let tokenType = configuration?.authorizationHeader {
             urlRequest?.addValue("\(tokenType) \(accessToken)", forHTTPHeaderField: "Authorization")
         }
 
-        if let customHeaders = configuration.customHeaders {
+        if let customHeaders = configuration?.customHeaders {
             customHeaders.forEach { httpHeader in
                 urlRequest?.addValue(httpHeader.value, forHTTPHeaderField: httpHeader.headerField)
             }
@@ -120,11 +117,9 @@ public extension Router {
     /// Due to the complexity of the the urlQuery method we disabled lint for the this method
     /// only so that it doesn't complain... Note this level of complexity is needed to give us as
     /// much success rate as possible due to all git providers having different types of url schemes.
-
     // swiftlint:disable:next cyclomatic_complexity
     func urlQuery(_ parameters: [String: Any]) -> [URLQueryItem]? {
-
-        guard parameters.isEmpty > 0 else { return nil }
+        guard !parameters.isEmpty else { return nil }
 
         var components: [URLQueryItem] = []
 
@@ -172,7 +167,7 @@ public extension Router {
 
         switch encoding {
         case .url, .json:
-            var mutableURLRequest = URLRequest(url: url)
+            var mutableURLRequest = Foundation.URLRequest(url: url)
 
             mutableURLRequest.httpMethod = method.rawValue
 
@@ -183,7 +178,7 @@ public extension Router {
             /// clear the query items as they go into the body
             urlComponents.queryItems = nil
 
-            var mutableURLRequest = URLRequest(url: urlComponents.url!)
+            var mutableURLRequest = Foundation.URLRequest(url: urlComponents.url!)
 
             mutableURLRequest.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "content-type")
 
@@ -239,7 +234,7 @@ public extension Router {
                     }
 
                     let error = NSError(
-                        domain: self.configuration.errorDomain,
+                        domain: self.configuration?.errorDomain ?? "",
                         code: response.statusCode,
                         userInfo: userInfo)
 
@@ -266,14 +261,14 @@ public extension Router {
         return task
     }
 
-    #if !canImport(FoundationNetworking)
+    @available(macOS 12.0, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
     func load<T: Codable>(
         _ session: GitURLSession = URLSession.shared,
         decoder: JSONDecoder = JSONDecoder(),
         expectedResultType _: T.Type) async throws -> T {
 
         guard let request = request() else {
-            throw NSError(domain: configuration.errorDomain, code: -876, userInfo: nil)
+            throw NSError(domain: configuration?.errorDomain ?? "", code: -876, userInfo: nil)
         }
 
         let responseTuple = try await session.data(for: request, delegate: nil)
@@ -289,13 +284,14 @@ public extension Router {
 
                 }
 
-                throw NSError(domain: configuration.errorDomain, code: response.statusCode, userInfo: userInfo)
+                throw NSError(domain: configuration?.errorDomain ?? "", code: response.statusCode, userInfo: userInfo)
             }
         }
 
         return try decoder.decode(T.self, from: responseTuple.0)
     }
 
+    @available(macOS 12.0, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
     func load<T: Codable>(
         _ session: GitURLSession = URLSession.shared,
         dateDecodingStrategy: JSONDecoder.DateDecodingStrategy?,
@@ -309,7 +305,6 @@ public extension Router {
 
         return try await load(session, decoder: decoder, expectedResultType: expectedResultType)
     }
-    #endif
 
     func load(
         _ session: GitURLSession = URLSession.shared,
@@ -332,7 +327,7 @@ public extension Router {
                     }
 
                     let error = NSError(
-                        domain: self.configuration.errorDomain,
+                        domain: self.configuration?.errorDomain ?? "",
                         code: response.statusCode,
                         userInfo: userInfo)
 

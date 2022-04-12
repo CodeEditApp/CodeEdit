@@ -6,7 +6,7 @@ let package = Package(
     name: "CodeEditModules",
     defaultLocalization: "en",
     platforms: [
-        .macOS(.v11),
+        .macOS(.v12),
     ],
     products: [
         .library(
@@ -57,6 +57,26 @@ let package = Package(
             name: "AppPreferences",
             targets: ["AppPreferences"]
         ),
+        .library(
+            name: "Accounts",
+            targets: ["Accounts"]
+        ),
+        .library(
+            name: "About",
+            targets: ["About"]
+        ),
+        .library(
+            name: "QuickOpen",
+            targets: ["QuickOpen"]
+        ),
+        .library(
+            name: "Design",
+            targets: ["Design"]
+        ),
+        .library(
+            name: "ExtensionsStore",
+            targets: ["ExtensionsStore"]
+        ),
     ],
     dependencies: [
         .package(
@@ -79,6 +99,25 @@ let package = Package(
             url: "https://github.com/sindresorhus/Preferences.git",
             from: "2.5.0"
         ),
+        .package(
+            name: "Introspect",
+            url: "https://github.com/siteline/SwiftUI-Introspect",
+            from: "0.1.4"
+        ),
+        .package(
+            name: "CodeEditKit",
+            url: "https://github.com/CodeEditApp/CodeEditKit",
+            branch: "main"
+        ),
+        .package(
+            name: "Light-Swift-Untar",
+            url: "https://github.com/Light-Untar/Light-Swift-Untar",
+            from: "1.0.4"
+        ),
+        .package(
+            url: "https://github.com/groue/GRDB.swift.git",
+            from: "5.22.2"
+        ),
     ],
     targets: [
         .target(
@@ -96,6 +135,7 @@ let package = Package(
             name: "CodeFile",
             dependencies: [
                 "Highlightr",
+                "AppPreferences"
             ],
             path: "Modules/CodeFile/src"
         ),
@@ -110,8 +150,13 @@ let package = Package(
             name: "WelcomeModule",
             dependencies: [
                 "WorkspaceClient",
+                "Design",
+                "AppPreferences",
             ],
-            path: "Modules/WelcomeModule/src"
+            path: "Modules/WelcomeModule/src",
+            resources: [
+                .process("Resources"),
+            ]
         ),
         .testTarget(
             name: "WelcomeModuleTests",
@@ -151,7 +196,10 @@ let package = Package(
         ),
         .target(
             name: "TerminalEmulator",
-            dependencies: ["SwiftTerm"],
+            dependencies: [
+                "SwiftTerm",
+                "AppPreferences"
+            ],
             path: "Modules/TerminalEmulator/src"
         ),
         .target(
@@ -181,11 +229,42 @@ let package = Package(
             name: "AppPreferences",
             dependencies: [
                 "Preferences",
-                "CodeFile",
                 "FontPicker",
-                "TerminalEmulator",
             ],
             path: "Modules/AppPreferences/src"
-        )
+        ),
+        .target(
+            name: "Accounts",
+            path: "Modules/Accounts/src"
+        ),
+        .target(
+            name: "About",
+            path: "Modules/About/src"
+        ),
+        .target(
+            name: "QuickOpen",
+            dependencies: [
+                "WorkspaceClient",
+                "CodeFile",
+                "Design",
+            ],
+            path: "Modules/QuickOpen/src"
+        ),
+        .target(
+            name: "Design",
+            dependencies: [
+                "Introspect",
+            ],
+            path: "Modules/Design/src"
+        ),
+        .target(
+            name: "ExtensionsStore",
+            dependencies: [
+                "CodeEditKit",
+                "Light-Swift-Untar",
+                .productItem(name: "GRDB", package: "GRDB.swift", condition: nil)
+            ],
+            path: "Modules/ExtensionsStore/src"
+        ),
     ]
 )

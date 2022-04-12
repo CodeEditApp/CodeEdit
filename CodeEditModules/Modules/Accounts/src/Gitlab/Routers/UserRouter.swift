@@ -10,7 +10,7 @@ import Foundation
 enum UserRouter: Router {
     case readAuthenticatedUser(Configuration)
 
-    var configuration: Configuration {
+    var configuration: Configuration? {
         switch self {
         case .readAuthenticatedUser(let config): return config
         }

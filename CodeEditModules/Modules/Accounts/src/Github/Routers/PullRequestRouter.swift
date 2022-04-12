@@ -26,7 +26,7 @@ enum PullRequestRouter: JSONPostRouter {
         }
     }
 
-    var configuration: Configuration {
+    var configuration: Configuration? {
         switch self {
         case let .readPullRequest(config, _, _, _): return config
         case let .readPullRequests(config, _, _, _, _, _, _, _): return config

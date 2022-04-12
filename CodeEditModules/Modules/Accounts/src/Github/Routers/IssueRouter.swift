@@ -35,7 +35,7 @@ enum IssueRouter: JSONPostRouter {
         }
     }
 
-    var configuration: Configuration {
+    var configuration: Configuration? {
         switch self {
         case let .readAuthenticatedIssues(config, _, _, _): return config
         case let .readIssue(config, _, _, _): return config

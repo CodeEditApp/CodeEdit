@@ -22,79 +22,81 @@ open class ProjectHook: Codable {
     open var enableSSLVerification: Bool?
     open var createdAt: Date?
 
-    public init(_ json: [String: AnyObject]) {
-        if let id = json["id"] as? Int {
-            self.id = id
-            if let urlString = json["url"] as? String, let parsedURL = URL(string: urlString) {
-                url = parsedURL
-            }
-            projectID = json["project_id"] as? Int
-            pushEvents = json["push_events"] as? Bool
-            issuesEvents = json["issues_events"] as? Bool
-            mergeRequestsEvents = json["merge_requests_events"] as? Bool
-            tagPushEvents = json["tag_push_events"] as? Bool
-            noteEvents = json["note_events"] as? Bool
-            buildEvents = json["build_events"] as? Bool
-            pipelineEvents = json["pipeline_events"] as? Bool
-            wikiPageEvents = json["wiki_page_events"] as? Bool
-            enableSSLVerification = json["enable_ssl_verification"] as? Bool
-            createdAt = Time.rfc3339Date(json["created_at"] as? String)
-        }
+    enum CodingKeys: String, CodingKey {
+        case id
+        case url
+        case projectID = "project_id"
+        case pushEvents = "push_events"
+        case issuesEvents = "issues_events"
+        case mergeRequestsEvents = "merge_requests_events"
+        case tagPushEvents = "tag_push_events"
+        case noteEvents = "note_events"
+        case buildEvents = "build_events"
+        case pipelineEvents = "pipeline_events"
+        case wikiPageEvents = "wiki_page_events"
+        case enableSSLVerification = "enable_ssl_verification"
+        case createdAt = "created_at"
     }
 }
 
-public extension GitAccount {
+public extension GitlabAccount {
 
     /**
      Get a list of project hooks.
      - parameter id: The ID of the project or namespace/project name.
-                     Make sure that the namespace/project-name is URL-encoded, eg. "%2F" for "/".
+     Make sure that the namespace/project-name is URL-encoded, eg. "%2F" for "/".
      - parameter completion: Callback for the outcome of the fetch.
      */
-    public func projectHooks(_ session: GitURLSession = URLSession.shared,
-                             id: String,
-                             completion: @escaping (
-                                _ response: Response<[ProjectHook]>) -> Void) -> URLSessionDataTaskProtocol? {
+    func projectHooks(_ session: GitURLSession = URLSession.shared,
+                      id: String,
+                      completion: @escaping (
+                        _ response: Result<ProjectHook, Error>) -> Void) -> URLSessionDataTaskProtocol? {
 
-        let router = ProjectRouter.readProjectHooks(configuration: configuration, id: id)
+                            let router = ProjectRouter.readProjectHooks(configuration: configuration, id: id)
 
-        return router.loadJSON(session, expectedResultType: [[String: AnyObject]].self) { json, error in
-            if let error = error {
-                completion(Response.failure(error))
-            }
+                            return router.load(session,
+                                               dateDecodingStrategy: .formatted(Time.rfc3339DateFormatter),
+                                               expectedResultType: ProjectHook.self) { json, error in
 
-            if let json = json {
-                let hooks = json.map { ProjectHook($0) }
-                completion(Response.success(hooks))
-            }
-        }
-    }
+                                if let error = error {
+                                    completion(Result.failure(error))
+                                }
+
+                                if let json = json {
+                                    completion(Result.success(json))
+                                }
+                            }
+                        }
 
     /**
      Get a specific hook from a project.
      - parameter id: The ID of the project or namespace/project name.
-                     Make sure that the namespace/project-name is URL-encoded, eg. "%2F" for "/".
+     Make sure that the namespace/project-name is URL-encoded, eg. "%2F" for "/".
      - parameter hookId: The ID of the hook in the project
-                         (you can get the ID of a hook by searching for it with the **allProjectHooks** request).
+     (you can get the ID of a hook by searching for it with the **allProjectHooks** request).
      - parameter completion: Callback for the outcome of the fetch.
      */
-    public func projectHook(_ session: GitURLSession = URLSession.shared,
-                            id: String,
-                            hookId: String,
-                            completion: @escaping (
-                                _ response: Response<ProjectHook>) -> Void) -> URLSessionDataTaskProtocol? {
+    func projectHook(_ session: GitURLSession = URLSession.shared,
+                     id: String,
+                     hookId: String,
+                     completion: @escaping (
+                        _ response: Result<ProjectHook, Error>) -> Void) -> URLSessionDataTaskProtocol? {
 
-        let router = ProjectRouter.readProjectHook(configuration: configuration, id: id, hookId: hookId)
+                            let router = ProjectRouter.readProjectHook(configuration: configuration,
+                                                                       id: id,
+                                                                       hookId: hookId)
 
-        return router.loadJSON(session, expectedResultType: [String: AnyObject].self) { json, error in
-            if let error = error {
-                completion(Response.failure(error))
-            }
+                            return router.load(session,
+                                               dateDecodingStrategy: .formatted(Time.rfc3339DateFormatter),
+                                               expectedResultType: ProjectHook.self) { json, error in
 
-            if let json = json {
-                let hook = ProjectHook(json)
-                completion(Response.success(hook))
-            }
-        }
-    }
+                                if let error = error {
+                                    completion(Result.failure(error))
+                                }
+
+                                if let json = json {
+                                    completion(Result.success(json))
+                                }
+                            }
+                        }
 }

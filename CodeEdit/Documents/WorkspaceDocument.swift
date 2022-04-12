@@ -12,10 +12,15 @@ import WorkspaceClient
 import Combine
 import CodeFile
 import Search
+import QuickOpen
+import CodeEditKit
+import ExtensionsStore
 
 @objc(WorkspaceDocument)
 class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var workspaceClient: WorkspaceClient?
+
+    var extensionNavigatorData = ExtensionNavigatorData()
 
     @Published var sortFoldersOnTop: Bool = true
     @Published var selectionState: WorkspaceSelectionState = .init()
@@ -23,6 +28,8 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var searchState: SearchState?
     var quickOpenState: QuickOpenState?
     private var cancellables = Set<AnyCancellable>()
+
+    @Published var targets: [Target] = []
 
     deinit {
         cancellables.forEach { $0.cancel() }
@@ -122,7 +129,7 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
             ignoredFilesAndFolders: ignoredFilesAndDirectory
         )
         self.searchState = .init(self)
-        self.quickOpenState = .init(self)
+        self.quickOpenState = .init(fileURL: url)
 
         // Initialize Workspace
         do {
@@ -171,6 +178,15 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
                 }
             }
             .store(in: &cancellables)
+
+        // initialize extensions
+        do {
+            try ExtensionsManager.shared?.load { extensionID in
+                return CodeEditAPI(extensionId: extensionID, workspace: self)
+            }
+        } catch let error {
+            Swift.print(error)
+        }
     }
 
     override func write(to url: URL, ofType typeName: String) throws {}
@@ -206,6 +222,11 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
             } catch {}
         }
         selectionState.openedCodeFiles.removeAll()
+
+        if let url = self.fileURL {
+            ExtensionsManager.shared?.close(url: url)
+        }
+
         super.close()
     }
 }
@@ -272,61 +293,6 @@ extension WorkspaceDocument {
     }
 }
 
-// MARK: - Quick Open
-
-extension WorkspaceDocument {
-
-    class QuickOpenState: ObservableObject {
-        init(_ workspace: WorkspaceDocument) {
-            self.workspace = workspace
-        }
-
-        var workspace: WorkspaceDocument
-
-        @Published var openQuicklyQuery: String = ""
-        @Published var openQuicklyFiles: [WorkspaceClient.FileItem] = []
-        @Published var isShowingOpenQuicklyFiles: Bool = false
-
-        func fetchOpenQuickly() {
-            if openQuicklyQuery == "" {
-                openQuicklyFiles = []
-                self.isShowingOpenQuicklyFiles = !openQuicklyFiles.isEmpty
-                return
-            }
-
-            DispatchQueue(label: "austincondiff.CodeEdit.quickOpen.searchFiles").async { [weak self] in
-                if let self = self, let url = self.workspace.fileURL {
-                    let enumerator = FileManager.default.enumerator(at: url,
-                                                                    includingPropertiesForKeys: [
-                                                                        .isRegularFileKey
-                                                                    ],
-                                                                    options: [
-                                                                        .skipsHiddenFiles,
-                                                                        .skipsPackageDescendants
-                                                                    ])
-                    if let filePaths = enumerator?.allObjects as? [URL] {
-                        let files = filePaths.filter { url in
-                            let state1 = url.lastPathComponent.lowercased().contains(self.openQuicklyQuery.lowercased())
-                            do {
-                                let values = try url.resourceValues(forKeys: [.isRegularFileKey])
-                                return state1 && (values.isRegularFile ?? false)
-                            } catch {
-                                return false
-                            }
-                        }.map { url in
-                            WorkspaceClient.FileItem(url: url, children: nil)
-                        }
-                        DispatchQueue.main.async {
-                            self.openQuicklyFiles = files
-                            self.isShowingOpenQuicklyFiles = !self.openQuicklyFiles.isEmpty
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
 // MARK: - Selection
 
 struct WorkspaceSelectionState: Codable {
@@ -358,5 +324,18 @@ struct WorkspaceSelectionState: Codable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(selectedId, forKey: .selectedId)
         try container.encode(openFileItems, forKey: .openFileItems)
+    }
+}
+
+// MARK: - Extensions
+extension WorkspaceDocument {
+    func target(didAdd target: Target) {
+        self.targets.append(target)
+    }
+    func target(didRemove target: Target) {
+        self.targets.removeAll { $0.id == target.id }
+    }
+    func targetDidClear() {
+        self.targets.removeAll()
     }
 }

@@ -7,10 +7,12 @@
 
 import Cocoa
 import SwiftUI
+import AppPreferences
 
 public class CodeEditorTextView: NSTextView {
-    @AppStorage(EditorTabWidth.storageKey)
-    private var tabWidth: Int = EditorTabWidth.default
+
+    @StateObject
+    private var prefs: AppPreferencesModel = .shared
 
     init(
         textContainer container: NSTextContainer?
@@ -26,6 +28,8 @@ public class CodeEditorTextView: NSTextView {
         isContinuousSpellCheckingEnabled = false
         isAutomaticQuoteSubstitutionEnabled = false
         isAutomaticDashSubstitutionEnabled = false
+        isIncrementalSearchingEnabled = true
+        usesFindBar = true
     }
 
     required init?(coder: NSCoder) {
@@ -84,7 +88,7 @@ public class CodeEditorTextView: NSTextView {
         super.insertText(
             String(
                 repeating: " ",
-                count: tabWidth
+                count: prefs.preferences.textEditing.defaultTabWidth
             ),
             replacementRange: selectedRange()
         )
