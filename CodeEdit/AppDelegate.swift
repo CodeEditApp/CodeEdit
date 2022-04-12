@@ -54,12 +54,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
             }
         }
 
-        DispatchQueue(label: "extensions.preload").async {
-            do {
-                try ExtensionsManager.shared?.preload()
-            } catch let error {
-                print(error)
-            }
+        do {
+            try ExtensionsManager.shared?.preload()
+        } catch let error {
+            print(error)
         }
     }
 
