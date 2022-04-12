@@ -1,4 +1,4 @@
-![github-cover](https://user-images.githubusercontent.com/806104/157921972-022b758f-eb9d-4436-881a-d94c883d5685.png)
+<img width="1012" alt="github-cover" src="https://user-images.githubusercontent.com/806104/163065825-4a073889-5bdc-4ea5-84ca-b197dabb7d11.png">
 
 # CodeEdit macOS App
 [![All Contributors](https://img.shields.io/badge/all_contributors-15-orange.svg?style=flat-square)](#contributors-)
