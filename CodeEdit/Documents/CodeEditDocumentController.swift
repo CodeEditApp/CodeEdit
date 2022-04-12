@@ -9,7 +9,7 @@ import Cocoa
 
 class CodeEditDocumentController: NSDocumentController {
     override func openDocument(_ sender: Any?) {
-        self.openDocument { document, documentWasAlreadyOpen in
+        self.openDocument(completionHandler: { document, documentWasAlreadyOpen in
             // TODO: handle errors
 
             guard let document = document else {
@@ -18,7 +18,7 @@ class CodeEditDocumentController: NSDocumentController {
             }
 
             print(document, documentWasAlreadyOpen)
-        }
+        }, cancelHandler: {})
     }
 
     override func openDocument(withContentsOf url: URL,
@@ -41,7 +41,7 @@ class CodeEditDocumentController: NSDocumentController {
 }
 
 extension NSDocumentController {
-    func openDocument(completionHandler: @escaping (NSDocument?, Bool) -> Void) {
+    func openDocument(completionHandler: @escaping (NSDocument?, Bool) -> Void, cancelHandler: @escaping () -> Void) {
         let dialog = NSOpenPanel()
 
         dialog.title = "Open Workspace or File"
@@ -70,6 +70,9 @@ extension NSDocumentController {
                     print("Document:", document)
                     print("Was already open?", documentWasAlreadyOpen)
                 }
+            }
+            else if result == NSApplication.ModalResponse.cancel {
+                cancelHandler()
             }
         }
     }
