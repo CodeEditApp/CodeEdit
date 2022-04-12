@@ -70,8 +70,7 @@ extension NSDocumentController {
                     print("Document:", document)
                     print("Was already open?", documentWasAlreadyOpen)
                 }
-            }
-            else if result == NSApplication.ModalResponse.cancel {
+            } else if result == NSApplication.ModalResponse.cancel {
                 cancelHandler()
             }
         }
