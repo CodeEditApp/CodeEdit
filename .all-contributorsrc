@@ -168,6 +168,16 @@
         "code",
         "bug"
       ]
+    },
+    {
+      "login": "octree",
+      "name": "HZ.Liu",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7934444?v=4",
+      "profile": "https://github.com/octree",
+      "contributions": [
+        "code",
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
