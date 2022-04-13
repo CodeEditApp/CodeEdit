@@ -7,8 +7,13 @@
 
 import SwiftUI
 
+/// A view that creates a segmented control from an array of text labels.
 public struct SegmentedControl: View {
 
+    /// A view that creates a segmented control from an array of text labels.
+    /// - Parameters:
+    ///   - selection: The index of the current selected item.
+    ///   - options: the options to display as an array of strings.
     public init(_ selection: Binding<Int>, options: [String]) {
         self._preselectedIndex = selection
         self.options = options
