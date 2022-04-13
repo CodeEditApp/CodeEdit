@@ -7,6 +7,7 @@
 
 import SwiftUI
 import GitClient
+import Design
 
 /// # StatusBarView
 ///
@@ -53,24 +54,7 @@ public struct StatusBarView: View {
                         .frame(maxHeight: 12)
                         .padding(.horizontal, 7)
 
-                    ForEach(StatusBarTab.allCases, id: \.id) { tab in
-                        if model.activeTab == tab {
-                            Button(action: {
-                                model.setTab(tab)
-                            }, label: {
-                                Text(tab.rawValue.capitalized)
-                            })
-                            .buttonStyle(.borderedProminent)
-                        } else {
-                            Button(action: {
-                                model.setTab(tab)
-                            }, label: {
-                                Text(tab.rawValue.capitalized)
-                            })
-                            .buttonStyle(.bordered)
-                        }
-                        // .buttonStyle(model.activeTab == tab ? BorderedProminentButtonStyle() : PlainButtonStyle())
-                    }
+                    SegmentedControl($model.selectedTab, options: StatusBarTab.allOptions)
                 }
                 if model.selectedBranch != nil {
                     StatusBarBranchPicker(model: model)

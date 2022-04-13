@@ -14,6 +14,16 @@ public enum StatusBarTab: String, CaseIterable, Identifiable {
     case output
 
     public var id: String { return self.rawValue }
+    public static var allOptions: [String] {
+        return StatusBarTab.allCases.map { $0.rawValue.capitalized }
+    }
+}
+
+private enum StatusBarStorageKey: String {
+    case isExpanded
+    case isMaximized
+    case currentHeight
+    case selectedTab
 }
 
 /// # StatusBarModel
@@ -21,9 +31,12 @@ public enum StatusBarTab: String, CaseIterable, Identifiable {
 /// A model class to host and manage data for the ``StatusBarView``
 ///
 public class StatusBarModel: ObservableObject {
-    /// Returns the current active tab
-    @Published
-    public var activeTab: StatusBarTab = .terminal
+    /// The selected tab in the main section.
+    /// - **0**: Terminal
+    /// - **1**: Debugger
+    /// - **2**: Output
+    @AppStorage(StatusBarStorageKey.selectedTab.rawValue)
+    public var selectedTab: Int = 1
 
     // TODO: Implement logic for updating values
     /// Returns number of errors during comilation
@@ -51,15 +64,15 @@ public class StatusBarModel: ObservableObject {
     public var currentCol: Int = 1 // Implementation missing
 
     /// Returns true when the drawer is visible
-    @AppStorage("statusbar.isExpanded")
+    @AppStorage(StatusBarStorageKey.isExpanded.rawValue)
     public var isExpanded: Bool = false
 
     /// Returns true when the drawer is visible
-    @AppStorage("statusbar.isMaximized")
+    @AppStorage(StatusBarStorageKey.isMaximized.rawValue)
     public var isMaximized: Bool = false
 
     /// The current height of the drawer. Zero if hidden
-    @AppStorage("statusbar.currentHeight")
+    @AppStorage(StatusBarStorageKey.currentHeight.rawValue)
     public var currentHeight: Double = 0
 
     /// Indicates whether the drawer is beeing resized or not
@@ -106,9 +119,5 @@ public class StatusBarModel: ObservableObject {
         } catch {
             selectedBranch = nil
         }
-    }
-
-    public func setTab(_ tab: StatusBarTab) {
-        self.activeTab = tab
     }
 }
