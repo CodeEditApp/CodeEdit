@@ -59,7 +59,7 @@ public struct ThemePreferencesView: View {
 
     private var sidebar: some View {
         VStack(spacing: 1) {
-            toolbar {
+            PreferencesToolbar {
                 let options = [
                     "Dark Mode",
                     "Light Mode"
@@ -71,7 +71,7 @@ public struct ThemePreferencesView: View {
             } else {
                 sidebarScrollView
             }
-            toolbar {
+            PreferencesToolbar {
                 sidebarBottomToolbar
             }
             .frame(height: 27)
@@ -179,7 +179,7 @@ public struct ThemePreferencesView: View {
                 "Editor",
                 "Terminal"
             ]
-            toolbar {
+            PreferencesToolbar {
                 SegmentedControl($themeModel.selectedTab, options: options)
             }
             switch themeModel.selectedTab {
@@ -190,7 +190,7 @@ public struct ThemePreferencesView: View {
             default:
                 PreviewThemeView()
             }
-            toolbar {
+            PreferencesToolbar {
                 HStack {
                     Spacer()
                     Button {} label: {
@@ -200,22 +200,6 @@ public struct ThemePreferencesView: View {
                 }
             }
         }
-    }
-
-    private func toolbar<T: View>(
-        height: Double = 27,
-        bgColor: Color = Color(NSColor.controlBackgroundColor),
-        @ViewBuilder content: @escaping () -> T
-    ) -> some View {
-        ZStack {
-            Rectangle()
-                .foregroundColor(bgColor)
-            HStack {
-                content()
-                    .padding(.horizontal, 8)
-            }
-        }
-        .frame(height: height)
     }
 }
 

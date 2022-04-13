@@ -15,7 +15,7 @@ struct SourceControlGitView: View {
     private var prefs: AppPreferencesModel = .shared
 
     var body: some View {
-        PreferencesContent {
+        VStack {
             PreferencesSection("Author Name", hideLabels: false) {
                 TextField("Git Author Name", text: $prefs.preferences.sourceControl.git.authorName)
                     .frame(width: 280)
@@ -31,16 +31,7 @@ struct SourceControlGitView: View {
                      selection: $ignoredFileSelection) { ignoredFile in
                     IgnoredFileView(ignoredFile: ignoredFile)
                 }
-                .overlay(Group {
-                    Color(NSColor.controlBackgroundColor)
-                })
-                .overlay(Group {
-                    if prefs.preferences.sourceControl.git.ignoredFiles.isEmpty {
-                        Text("No Ignored Files")
-                    }
-                })
-                .frame(width: 280, height: 180)
-                toolbar {
+                PreferencesToolbar {
                     bottomToolbar
                 }.frame(width: 280, height: 27)
             }
@@ -56,7 +47,7 @@ struct SourceControlGitView: View {
                     .frame(width: 280, alignment: .leading)
             }
         }
-        .frame(width: 844, height: 350)
+        .frame(height: 230)
         .background(Color(NSColor.controlBackgroundColor))
     }
 
@@ -73,22 +64,6 @@ struct SourceControlGitView: View {
             .buttonStyle(.plain)
             Spacer()
         }
-    }
-
-    private func toolbar<T: View>(
-        height: Double = 27,
-        bgColor: Color = Color(NSColor.controlBackgroundColor),
-        @ViewBuilder content: @escaping () -> T
-    ) -> some View {
-        ZStack {
-            Rectangle()
-                .foregroundColor(bgColor)
-            HStack {
-                content()
-                    .padding(.horizontal, 8)
-            }
-        }
-        .frame(height: height)
     }
 }
 

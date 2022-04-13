@@ -15,45 +15,25 @@ public struct PreferenceSourceControlView: View {
 
     public init() {}
 
+    @State private var selectedSection: Int = 0
+
     public var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            sourceControlContent
+            VStack(spacing: 1) {
+                PreferencesToolbar {
+                    SegmentedControl($selectedSection, options: ["General", "Git"])
+                }
+                if selectedSection == 0 {
+                    SourceControlGeneralView(isChecked: true, branchName: "main")
+                }
+                if selectedSection == 1 {
+                    SourceControlGitView()
+                }
+            }
             .padding(1)
             .background(Rectangle().foregroundColor(Color(NSColor.separatorColor)))
-            .frame(height: 468)
-        }
-    }
-
-    private var sourceControlContent: some View {
-        VStack(spacing: 1) {
-            let options = [
-                "General",
-                "Git"
-            ]
-            toolbar {
-                SegmentedControl($sourceControlModel.selectedTab, options: options)
-            }
-            switch sourceControlModel.selectedTab {
-            case 1:
-                SourceControlGitView()
-            default:
-                SourceControlGeneralView(isChecked: true, branchName: "main")
-            }
-        }
-    }
-
-    private func toolbar<T: View>(
-        height: Double = 27,
-        bgColor: Color = Color(NSColor.controlBackgroundColor),
-        @ViewBuilder content: @escaping () -> T
-    ) -> some View {
-        ZStack {
-            Rectangle()
-                .foregroundColor(bgColor)
-            HStack {
-                content()
-                    .padding(.horizontal, 8)
-            }
+            .frame(width: 872)
+            .padding()
         }
         .frame(height: height)
     }

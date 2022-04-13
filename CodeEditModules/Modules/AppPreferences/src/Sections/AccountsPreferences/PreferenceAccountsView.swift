@@ -22,10 +22,9 @@ public struct PreferenceAccountsView: View {
     public init() {}
 
     public var body: some View {
-        PreferencesContent {
-            HStack(alignment: .top) {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack(spacing: 1) {
                 accountSelectionView
-                Divider().padding([.leading, .trailing], -8)
                 if prefs.preferences.accounts.sourceControlAccounts.gitAccount.isEmpty {
                     emptyView
                 } else if
@@ -35,31 +34,27 @@ public struct PreferenceAccountsView: View {
                     accountTypeView
                 }
             }
-            .background(Rectangle().foregroundColor(Color(NSColor.controlBackgroundColor)))
-            .frame(height: 468)
+            .padding(1)
+            .background(Rectangle().foregroundColor(Color(NSColor.separatorColor)))
+            .frame(width: 872, height: 468)
+            .padding()
         }
     }
 
     private var accountSelectionView: some View {
         VStack(alignment: .leading, spacing: 1) {
-            Text("Source Control Accounts")
-                .font(.system(size: 12))
-                .foregroundColor(Color.secondary)
-                .padding([.leading, .top], 10)
-                .padding(.bottom, 5)
-
-            Divider()
-
+            PreferencesToolbar {
+                Text("Source Control Accounts")
+                    .foregroundColor(.secondary)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
             List($prefs.preferences.accounts.sourceControlAccounts.gitAccount,
                  selection: $accountSelection) { gitAccount in
                 GitAccountItem(sourceControlAccount: gitAccount)
-            }.overlay(Group {
-                Color(NSColor.controlBackgroundColor)
-            })
+            }
+                 .listRowBackground(Color(NSColor.controlBackgroundColor))
 
-            Divider()
-
-            toolbar {
+            PreferencesToolbar {
                 sidebarBottomToolbar
             }.frame(height: 27)
         }
@@ -110,7 +105,8 @@ public struct PreferenceAccountsView: View {
             }
         }
         .padding(.trailing, 20)
-        .frame(width: 615)
+        .frame(maxWidth: .infinity)
+        .background(Color(NSColor.controlBackgroundColor))
     }
 
     private var sidebarBottomToolbar: some View {
@@ -139,30 +135,16 @@ public struct PreferenceAccountsView: View {
         VStack {
             Text("Click the add (+) button to create a new account")
         }
-        .frame(maxWidth: 615, maxHeight: .infinity)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color(NSColor.controlBackgroundColor))
     }
 
     private var selectAccount: some View {
         VStack {
             Text("Select an account from the list in the left panel")
         }
-        .frame(maxWidth: 615, maxHeight: .infinity)
-    }
-
-    private func toolbar<T: View>(
-        height: Double = 27,
-        bgColor: Color = Color(NSColor.controlBackgroundColor),
-        @ViewBuilder content: @escaping () -> T
-    ) -> some View {
-        ZStack {
-            Rectangle()
-                .foregroundColor(bgColor)
-            HStack {
-                content()
-                    .padding(.horizontal, 8)
-            }
-        }
-        .frame(height: height)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color(NSColor.controlBackgroundColor))
     }
 
     private func getSourceControlAccount(selectedAccountId: String) -> SourceControlAccounts? {

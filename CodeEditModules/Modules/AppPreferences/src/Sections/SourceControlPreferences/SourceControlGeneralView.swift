@@ -16,7 +16,7 @@ struct SourceControlGeneralView: View {
     private var prefs: AppPreferencesModel = .shared
 
     var body: some View {
-        PreferencesContent {
+        VStack {
 
             PreferencesSection("Source Control", hideLabels: false) {
                 Toggle("Enable Source Control", isOn: $prefs.preferences.sourceControl.general.enableSourceControl)
@@ -75,9 +75,8 @@ struct SourceControlGeneralView: View {
                     .font(.system(size: 12))
             }
         }
-        .frame(width: 844, height: 350)
+        .frame(height: 350)
         .background(Color(NSColor.controlBackgroundColor))
-
     }
 }
 
