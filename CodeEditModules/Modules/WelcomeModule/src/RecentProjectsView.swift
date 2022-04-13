@@ -6,7 +6,7 @@
 //
 import SwiftUI
 import WorkspaceClient
-import Design
+import CodeEditUI
 
 public struct RecentProjectsView: View {
     @State private var recentProjectPaths: [String]

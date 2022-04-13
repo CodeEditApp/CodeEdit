@@ -5,10 +5,9 @@
 //  Created by Lukas Pistrol on 30.03.22.
 //
 
-import FontPicker
 import SwiftUI
 import Preferences
-import Design
+import CodeEditUI
 
 /// A view that implements the `Theme` preference section
 public struct ThemePreferencesView: View {

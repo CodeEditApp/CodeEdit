@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import FontPicker
+import CodeEditUI
 
 /// A view that implements the `Text Editing` preference section
 public struct TextEditingPreferencesView: View {

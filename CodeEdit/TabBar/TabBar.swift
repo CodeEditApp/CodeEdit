@@ -7,7 +7,7 @@
 
 import SwiftUI
 import WorkspaceClient
-import Design
+import CodeEditUI
 
 struct TabBar: View {
     @Environment(\.colorScheme)
