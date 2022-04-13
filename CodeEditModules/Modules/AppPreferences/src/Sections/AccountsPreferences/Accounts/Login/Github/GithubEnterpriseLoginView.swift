@@ -29,20 +29,17 @@ struct GithubEnterpriseLoginView: View {
                 HStack {
                     Text("Server:")
                     TextField("https://example.com", text: $eneterpriseLink)
-                        .textContentType(.none)
                         .frame(width: 300)
                 }
                 HStack {
                     Text("Account:")
                     TextField("", text: $accountName)
-                        .textContentType(.none)
                         .frame(width: 300)
                 }
                 HStack {
                     Text("Token:")
                     SecureField("Enter your Personal Access Token",
                                 text: $accountToken)
-                    .textContentType(.none)
                     .frame(width: 300)
                 }
             }
