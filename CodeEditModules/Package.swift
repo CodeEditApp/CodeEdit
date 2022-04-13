@@ -77,6 +77,10 @@ let package = Package(
             name: "ExtensionsStore",
             targets: ["ExtensionsStore"]
         ),
+        .library(
+            name: "Breadcrumbs",
+            targets: ["Breadcrumbs"]
+        ),
     ],
     dependencies: [
         .package(
@@ -265,6 +269,14 @@ let package = Package(
                 .productItem(name: "GRDB", package: "GRDB.swift", condition: nil)
             ],
             path: "Modules/ExtensionsStore/src"
+        ),
+        .target(
+            name: "Breadcrumbs",
+            dependencies: [
+                "WorkspaceClient",
+                "AppPreferences",
+            ],
+            path: "Modules/Breadcrumbs/src"
         ),
     ]
 )

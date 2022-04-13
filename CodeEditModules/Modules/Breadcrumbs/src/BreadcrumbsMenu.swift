@@ -8,29 +8,36 @@
 import AppKit
 import WorkspaceClient
 
-class BreadcrumsMenu: NSMenu, NSMenuDelegate {
-
+public final class BreadcrumsMenu: NSMenu, NSMenuDelegate {
     let fileItems: [WorkspaceClient.FileItem]
-    let workspace: WorkspaceDocument
+    let tappedOpenFile: (WorkspaceClient.FileItem) -> Void
 
-    init(_ fileItems: [WorkspaceClient.FileItem], workspace: WorkspaceDocument) {
+    public init(
+        fileItems: [WorkspaceClient.FileItem],
+        tappedOpenFile: @escaping (WorkspaceClient.FileItem) -> Void
+    ) {
         self.fileItems = fileItems
-        self.workspace = workspace
+        self.tappedOpenFile = tappedOpenFile
         super.init(title: "")
-        self.delegate = self
+        delegate = self
         fileItems.forEach { item in
-            let menuItem = BreadcrumbsMenuItem(item, workspace: workspace)
+            let menuItem = BreadcrumbsMenuItem(
+                fileItem: item
+            ) { item in
+                tappedOpenFile(item)
+            }
             self.addItem(menuItem)
         }
-        self.autoenablesItems = false
+        autoenablesItems = false
     }
 
-    required init(coder: NSCoder) {
+    @available(*, unavailable)
+    required init(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     /// Only when menu item is highlighted then generate its submenu
-    func menu(_ menu: NSMenu, willHighlight item: NSMenuItem?) {
+    public func menu(_: NSMenu, willHighlight item: NSMenuItem?) {
         if let highlightedItem = item, let submenuItems = highlightedItem.submenu?.items, submenuItems.isEmpty {
             if let highlightedFileItem = highlightedItem.representedObject as? WorkspaceClient.FileItem {
                 highlightedItem.submenu = generateSubmenu(highlightedFileItem)
@@ -40,7 +47,10 @@ class BreadcrumsMenu: NSMenu, NSMenuDelegate {
 
     private func generateSubmenu(_ fileItem: WorkspaceClient.FileItem) -> BreadcrumsMenu? {
         if let children = fileItem.children {
-            let menu = BreadcrumsMenu(children, workspace: workspace)
+            let menu = BreadcrumsMenu(
+                fileItems: children,
+                tappedOpenFile: tappedOpenFile
+            )
             return menu
         }
         return nil
@@ -49,19 +59,23 @@ class BreadcrumsMenu: NSMenu, NSMenuDelegate {
 
 class BreadcrumbsMenuItem: NSMenuItem {
     let fileItem: WorkspaceClient.FileItem
-    var workspace: WorkspaceDocument
+    let tappedOpenFile: (WorkspaceClient.FileItem) -> Void
 
-    init(_ fileItem: WorkspaceClient.FileItem, workspace: WorkspaceDocument) {
+    init(
+        fileItem: WorkspaceClient.FileItem,
+        tappedOpenFile: @escaping (WorkspaceClient.FileItem) -> Void
+    ) {
         self.fileItem = fileItem
-        self.workspace = workspace
+        self.tappedOpenFile = tappedOpenFile
         super.init(title: fileItem.fileName, action: #selector(openFile), keyEquivalent: "")
+
         var icon = fileItem.systemImage
         var color = fileItem.iconColor
-        self.isEnabled = true
-        self.target = self
+        isEnabled = true
+        target = self
         if fileItem.children != nil {
             let subMenu = NSMenu()
-            self.submenu = subMenu
+            submenu = subMenu
             icon = "folder.fill"
             color = .secondary
         }
@@ -70,14 +84,15 @@ class BreadcrumbsMenuItem: NSMenuItem {
             accessibilityDescription: icon
         )?.withSymbolConfiguration(.init(paletteColors: [NSColor(color)]))
         self.image = image
-        self.representedObject = fileItem
+        representedObject = fileItem
     }
 
-    required init(coder: NSCoder) {
+    @available(*, unavailable)
+    required init(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     @objc func openFile() {
-        workspace.openFile(item: fileItem)
+        tappedOpenFile(fileItem)
     }
 }

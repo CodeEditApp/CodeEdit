@@ -54,12 +54,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
             }
         }
 
-        DispatchQueue(label: "extensions.preload").async {
-            do {
-                try ExtensionsManager.shared?.preload()
-            } catch let error {
-                print(error)
-            }
+        do {
+            try ExtensionsManager.shared?.preload()
+        } catch let error {
+            print(error)
         }
     }
 
@@ -145,9 +143,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                     }
 
                 } else {
-                    CodeEditDocumentController.shared.openDocument { _, _ in
+                    windowController.window?.close()
+                    CodeEditDocumentController.shared.openDocument(onCompletion: { _, _ in
                         opened()
-                    }
+                    }, onCancel: {
+                        self.openWelcome(self)
+                    })
                 }
             },
             newDocument: {

@@ -8,24 +8,22 @@
 import SwiftUI
 import WorkspaceClient
 
-struct BreadcrumbsView: View {
-    @Environment(\.colorScheme)
-    private var colorScheme
+public struct BreadcrumbsView: View {
+    @Environment(\.colorScheme) private var colorScheme
+    @State private var fileItems: [WorkspaceClient.FileItem] = []
 
-    @ObservedObject
-    var workspace: WorkspaceDocument
+    private let file: WorkspaceClient.FileItem
+    private let tappedOpenFile: (WorkspaceClient.FileItem) -> Void
 
-    let file: WorkspaceClient.FileItem
-
-    @State
-    private var fileItems: [WorkspaceClient.FileItem] = []
-
-    init(_ file: WorkspaceClient.FileItem, workspace: WorkspaceDocument) {
+    public init(
+        file: WorkspaceClient.FileItem,
+        tappedOpenFile: @escaping (WorkspaceClient.FileItem) -> Void
+    ) {
         self.file = file
-        self.workspace = workspace
+        self.tappedOpenFile = tappedOpenFile
     }
 
-    var body: some View {
+    public var body: some View {
         ZStack(alignment: .leading) {
             Rectangle()
                 .foregroundStyle(Color(nsColor: .controlBackgroundColor))
@@ -35,7 +33,7 @@ struct BreadcrumbsView: View {
                         if fileItem.parent != nil {
                             chevron
                         }
-                        BreadcrumbsComponent(workspace, fileItem: fileItem)
+                        BreadcrumbsComponent(fileItem: fileItem, tappedOpenFile: tappedOpenFile)
                     }
                 }
                 .padding(.horizontal, 12)
@@ -60,10 +58,10 @@ struct BreadcrumbsView: View {
     }
 
     private func fileInfo(_ file: WorkspaceClient.FileItem) {
-        self.fileItems = []
+        fileItems = []
         var currentFile: WorkspaceClient.FileItem? = file
         while let currentFileLoop = currentFile {
-            self.fileItems.insert(currentFileLoop, at: 0)
+            fileItems.insert(currentFileLoop, at: 0)
             currentFile = currentFileLoop.parent
         }
     }
@@ -71,11 +69,11 @@ struct BreadcrumbsView: View {
 
 struct BreadcrumbsView_Previews: PreviewProvider {
     static var previews: some View {
-        BreadcrumbsView(.init(url: .init(fileURLWithPath: "", isDirectory: false)), workspace: .init())
+        BreadcrumbsView(file: .init(url: .init(fileURLWithPath: ""))) { _ in }
             .previewLayout(.fixed(width: 500, height: 29))
             .preferredColorScheme(.dark)
 
-        BreadcrumbsView(.init(url: .init(fileURLWithPath: "", isDirectory: false)), workspace: .init())
+        BreadcrumbsView(file: .init(url: .init(fileURLWithPath: ""))) { _ in }
             .previewLayout(.fixed(width: 500, height: 29))
             .preferredColorScheme(.light)
     }

@@ -9,6 +9,7 @@ import SwiftUI
 import CodeFile
 import WorkspaceClient
 import StatusBar
+import Breadcrumbs
 
 struct WorkspaceCodeFileView: View {
     var windowController: NSWindowController
@@ -28,7 +29,7 @@ struct WorkspaceCodeFileView: View {
                         VStack(spacing: 0) {
                             TabBar(windowController: windowController, workspace: workspace)
                             Divider()
-                            BreadcrumbsView(item, workspace: workspace)
+                            BreadcrumbsView(file: item, tappedOpenFile: workspace.openFile(item:))
                         }
                     }
             } else {
