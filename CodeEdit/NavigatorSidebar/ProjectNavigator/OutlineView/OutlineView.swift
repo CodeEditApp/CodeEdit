@@ -30,8 +30,8 @@ struct OutlineView: NSViewControllerRepresentable {
 
     func updateNSViewController(_ nsViewController: OutlineViewController, context: Context) {
         nsViewController.iconColor = prefs.preferences.general.fileIconStyle
-        nsViewController.updateSelection()
         nsViewController.rowHeight = rowHeight
+        nsViewController.updateSelection()
         return
     }
 

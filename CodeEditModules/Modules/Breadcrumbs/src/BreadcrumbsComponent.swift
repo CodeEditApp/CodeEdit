@@ -5,26 +5,22 @@
 //  Created by Lukas Pistrol on 18.03.22.
 //
 
+import AppPreferences
 import SwiftUI
 import WorkspaceClient
-import AppPreferences
 
-struct BreadcrumbsComponent: View {
-
-    @StateObject
-    private var prefs: AppPreferencesModel = .shared
-
-    @ObservedObject
-    var workspace: WorkspaceDocument
-
+public struct BreadcrumbsComponent: View {
+    @StateObject private var prefs: AppPreferencesModel = .shared
+    @State var position: NSPoint?
     private let fileItem: WorkspaceClient.FileItem
+    private let tappedOpenFile: (WorkspaceClient.FileItem) -> Void
 
-    @State
-    var position: NSPoint?
-
-    init(_ workspace: WorkspaceDocument, fileItem: WorkspaceClient.FileItem) {
-        self.workspace = workspace
+    public init(
+        fileItem: WorkspaceClient.FileItem,
+        tappedOpenFile: @escaping (WorkspaceClient.FileItem) -> Void
+    ) {
         self.fileItem = fileItem
+        self.tappedOpenFile = tappedOpenFile
     }
 
     private var image: String {
@@ -42,7 +38,7 @@ struct BreadcrumbsComponent: View {
         : .secondary
     }
 
-    var body: some View {
+    public var body: some View {
         HStack(alignment: .center) {
             HStack {
                 Image(systemName: image)
@@ -72,7 +68,11 @@ struct BreadcrumbsComponent: View {
         })
         .onTapGesture {
             if let siblings = fileItem.parent?.children?.sortItems(foldersOnTop: true), !siblings.isEmpty {
-                let menu = BreadcrumsMenu(siblings, workspace: workspace)
+                let menu = BreadcrumsMenu(
+                    fileItems: siblings
+                ) { item in
+                    tappedOpenFile(item)
+                }
                 if let position = position,
                    let windowHeight = NSApp.keyWindow?.contentView?.frame.height {
                     let pos = NSPoint(x: position.x, y: windowHeight - 72) // 72 = offset from top to breadcrumbs bar

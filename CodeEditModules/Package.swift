@@ -73,6 +73,10 @@ let package = Package(
             name: "ExtensionsStore",
             targets: ["ExtensionsStore"]
         ),
+        .library(
+            name: "Breadcrumbs",
+            targets: ["Breadcrumbs"]
+        ),
     ],
     dependencies: [
         .package(
@@ -94,11 +98,6 @@ let package = Package(
             name: "Preferences",
             url: "https://github.com/sindresorhus/Preferences.git",
             from: "2.5.0"
-        ),
-        .package(
-            name: "Introspect",
-            url: "https://github.com/siteline/SwiftUI-Introspect",
-            from: "0.1.4"
         ),
         .package(
             name: "CodeEditKit",
@@ -217,6 +216,7 @@ let package = Package(
             name: "AppPreferences",
             dependencies: [
                 "Preferences",
+                "Design",
                 "FontPicker",
             ],
             path: "Modules/AppPreferences/src"
@@ -240,9 +240,6 @@ let package = Package(
         ),
         .target(
             name: "Design",
-            dependencies: [
-                "Introspect",
-            ],
             path: "Modules/Design/src"
         ),
         .target(
@@ -253,6 +250,14 @@ let package = Package(
                 .productItem(name: "GRDB", package: "GRDB.swift", condition: nil)
             ],
             path: "Modules/ExtensionsStore/src"
+        ),
+        .target(
+            name: "Breadcrumbs",
+            dependencies: [
+                "WorkspaceClient",
+                "AppPreferences",
+            ],
+            path: "Modules/Breadcrumbs/src"
         ),
     ]
 )
