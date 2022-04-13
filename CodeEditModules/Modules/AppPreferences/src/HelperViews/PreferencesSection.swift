@@ -35,7 +35,7 @@ public struct PreferencesSection<Content: View>: View {
     private var hideLabels: Bool
     private var content: Content
 
-    public init(_ title: String, width: Double = 300, hideLabels: Bool = false, @ViewBuilder content: () -> Content) {
+    public init(_ title: String, width: Double = 300, hideLabels: Bool = true, @ViewBuilder content: () -> Content) {
         self.title = title
         self.width = width
         self.hideLabels = hideLabels

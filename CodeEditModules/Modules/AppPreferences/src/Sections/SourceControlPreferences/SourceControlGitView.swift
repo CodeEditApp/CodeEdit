@@ -16,17 +16,17 @@ struct SourceControlGitView: View {
 
     var body: some View {
         PreferencesContent {
-            PreferencesSection("Author Name") {
+            PreferencesSection("Author Name", hideLabels: false) {
                 TextField("Git Author Name", text: $prefs.preferences.sourceControl.git.authorName)
                     .frame(width: 280)
             }
 
-            PreferencesSection("Author Email") {
+            PreferencesSection("Author Email", hideLabels: false) {
                 TextField("Git Email", text: $prefs.preferences.sourceControl.git.authorEmail)
                     .frame(width: 280)
             }
 
-            PreferencesSection("Ignored Files") {
+            PreferencesSection("Ignored Files", hideLabels: false) {
                 if prefs.preferences.sourceControl.git.ignoredFiles.isEmpty {
                     Text("No Ignored Files")
                         .background(Color(NSColor.textBackgroundColor))
@@ -43,7 +43,7 @@ struct SourceControlGitView: View {
                 }.frame(width: 280, height: 27)
             }
 
-            PreferencesSection("Options") {
+            PreferencesSection("Options", hideLabels: false) {
                 Toggle("Prefer to rebase when pulling",
                        isOn: $prefs.preferences.sourceControl.git.preferRebaseWhenPulling)
                     .toggleStyle(.checkbox)
