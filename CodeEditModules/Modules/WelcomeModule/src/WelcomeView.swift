@@ -202,7 +202,7 @@ public struct WelcomeView: View {
         }
         .sheet(isPresented: $showGitClone) {
             GitCloneView(shellClient: .live, isPresented: $showGitClone)
-            }
+        }
     }
 
     private var dismissButton: some View {
