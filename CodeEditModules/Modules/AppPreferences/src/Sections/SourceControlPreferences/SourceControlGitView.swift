@@ -30,7 +30,14 @@ struct SourceControlGitView: View {
                 List($prefs.preferences.sourceControl.git.ignoredFiles,
                      selection: $ignoredFileSelection) { ignoredFile in
                     IgnoredFileView(ignoredFile: ignoredFile)
-                }
+                }.overlay(Group {
+                    Color(NSColor.controlBackgroundColor)
+                })
+                .overlay(Group {
+                    if prefs.preferences.sourceControl.git.ignoredFiles.isEmpty {
+                        Text("No Ignored Files")
+                    }
+                }).frame(width: 280, height: 150)
                 PreferencesToolbar {
                     bottomToolbar
                 }.frame(width: 280, height: 27)
@@ -47,7 +54,7 @@ struct SourceControlGitView: View {
                     .frame(width: 280, alignment: .leading)
             }
         }
-        .frame(height: 230)
+        .frame(height: 350)
         .background(Color(NSColor.controlBackgroundColor))
     }
 

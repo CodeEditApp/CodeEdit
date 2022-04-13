@@ -35,7 +35,6 @@ public struct PreferenceSourceControlView: View {
             .frame(width: 872)
             .padding()
         }
-        .frame(height: height)
     }
 }
 
