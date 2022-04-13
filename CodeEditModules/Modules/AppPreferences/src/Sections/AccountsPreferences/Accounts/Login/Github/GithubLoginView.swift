@@ -28,14 +28,12 @@ struct GithubLoginView: View {
                 HStack {
                     Text("Account:")
                     TextField("Enter your username", text: $accountName)
-                        .textContentType(.none)
                         .frame(width: 300)
                 }
                 HStack {
                     Text("Token:")
                     SecureField("Enter your Personal Access Token",
                                 text: $accountToken)
-                    .textContentType(.none)
                     .frame(width: 300)
                 }
             }
@@ -72,6 +70,8 @@ struct GithubLoginView: View {
             .frame(maxWidth: .infinity)
             .padding(.bottom, 10)
             .padding(.top, 10)
+            .background(RoundedRectangle(cornerRadius: 4)
+                .stroke(Color("Stroke"), lineWidth: 1))
 
             HStack {
                 HStack {
