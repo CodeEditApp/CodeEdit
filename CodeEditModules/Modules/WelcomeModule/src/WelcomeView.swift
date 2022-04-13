@@ -9,9 +9,11 @@ import SwiftUI
 import AppKit
 import Foundation
 import AppPreferences
+import GitClone
 
 public struct WelcomeView: View {
     @Environment(\.colorScheme) var colorScheme
+    @State var showGitClone = false
     @State var isHovering: Bool = false
     @State var isHoveringClose: Bool = false
     @StateObject private var prefs: AppPreferencesModel = .shared
@@ -157,9 +159,9 @@ public struct WelcomeView: View {
                                 comment: ""
                             )
                         )
-                        .onTapGesture {
-                            // TODO: clone a Git repository
-                        }
+                            .onTapGesture {
+                                showGitClone = true
+                            }
                     }
                 }
                 Spacer()
@@ -197,6 +199,9 @@ public struct WelcomeView: View {
                 .padding(.bottom, 16)
                 .transition(AnyTransition.opacity.animation(.easeInOut(duration: 0.25)))
             }
+        }
+        .sheet(isPresented: $showGitClone) {
+            GitCloneView(shellClient: .live, isPresented: $showGitClone)
         }
     }
 

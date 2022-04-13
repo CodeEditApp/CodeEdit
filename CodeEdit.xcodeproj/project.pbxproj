@@ -47,6 +47,7 @@
 		5CAD1B972806B57D0059A74E /* Breadcrumbs in Frameworks */ = {isa = PBXBuildFile; productRef = 5CAD1B962806B57D0059A74E /* Breadcrumbs */; };
 		5CF38A5E27E48E6C0096A0F7 /* CodeFile in Frameworks */ = {isa = PBXBuildFile; productRef = 5CF38A5D27E48E6C0096A0F7 /* CodeFile */; };
 		5CFA753B27E896B60002F01B /* GitClient in Frameworks */ = {isa = PBXBuildFile; productRef = 5CFA753A27E896B60002F01B /* GitClient */; };
+		B34B213227ECDC3A006033A9 /* GitClone in Frameworks */ = {isa = PBXBuildFile; productRef = B34B213127ECDC3A006033A9 /* GitClone */; };
 		64B64EDE27F7B79400C400F1 /* About in Frameworks */ = {isa = PBXBuildFile; productRef = 64B64EDD27F7B79400C400F1 /* About */; };
 		B658FB3427DA9E1000EA4DBD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3327DA9E1000EA4DBD /* Assets.xcassets */; };
 		B658FB3727DA9E1000EA4DBD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3627DA9E1000EA4DBD /* Preview Assets.xcassets */; };
@@ -158,6 +159,7 @@
 				D70F5E2C27E4E8CF004EE4B9 /* WelcomeModule in Frameworks */,
 				2859B93F27EB50050069BE88 /* FontPicker in Frameworks */,
 				D7F72DEB27EA3574000C3064 /* Search in Frameworks */,
+				B34B213227ECDC3A006033A9 /* GitClone in Frameworks */,
 				5CFA753B27E896B60002F01B /* GitClient in Frameworks */,
 				28CE5EA027E6493D0065D29C /* StatusBar in Frameworks */,
 				20D2A95527F72E6800E7ECF6 /* Accounts in Frameworks */,
@@ -382,6 +384,7 @@
 				0485EB2427E7B9C800138301 /* Overlays */,
 				5CFA753A27E896B60002F01B /* GitClient */,
 				D7F72DEA27EA3574000C3064 /* Search */,
+				B34B213127ECDC3A006033A9 /* GitClone */,
 				2859B93E27EB50050069BE88 /* FontPicker */,
 				2803257027F3CF1F009C7DC2 /* AppPreferences */,
 				20D2A95427F72E6800E7ECF6 /* Accounts */,
@@ -1048,6 +1051,10 @@
 		5CFA753A27E896B60002F01B /* GitClient */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = GitClient;
+		};
+		B34B213127ECDC3A006033A9 /* GitClone */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GitClone;
 		};
 		64B64EDD27F7B79400C400F1 /* About */ = {
 			isa = XCSwiftPackageProductDependency;

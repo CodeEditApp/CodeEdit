@@ -42,6 +42,10 @@ let package = Package(
             targets: ["Search"]
         ),
         .library(
+            name: "GitClone",
+            targets: ["GitClone"]
+        ),
+        .library(
             name: "FontPicker",
             targets: ["FontPicker"]
         ),
@@ -203,6 +207,14 @@ let package = Package(
                 "WorkspaceClient",
             ],
             path: "Modules/Search/src"
+        ),
+        .target(
+            name: "GitClone",
+            dependencies: [
+                "GitClient",
+                "ShellClient"
+            ],
+            path: "Modules/GitClone/src"
         ),
         .target(
             name: "FontPicker",
