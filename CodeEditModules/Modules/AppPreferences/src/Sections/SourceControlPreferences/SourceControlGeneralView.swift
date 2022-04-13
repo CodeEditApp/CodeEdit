@@ -36,7 +36,7 @@ struct SourceControlGeneralView: View {
                            isOn: $prefs.preferences.sourceControl.general.selectFilesToCommit)
                         .toggleStyle(.checkbox)
                 }
-                .padding(.leading, 10)
+                .padding(.leading, 20)
             }
 
             PreferencesSection("Text Editing", hideLabels: false) {

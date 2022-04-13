@@ -25,7 +25,7 @@ public struct PreferenceAccountsView: View {
         PreferencesContent {
             HStack(alignment: .top) {
                 accountSelectionView
-                Divider().padding([.leading, .trailing], -10)
+                Divider().padding([.leading, .trailing], -8)
                 if prefs.preferences.accounts.sourceControlAccounts.gitAccount.isEmpty {
                     emptyView
                 } else if
@@ -48,18 +48,22 @@ public struct PreferenceAccountsView: View {
                 .padding([.leading, .top], 10)
                 .padding(.bottom, 5)
 
-            Divider().padding([.trailing, .leading], 10)
+            Divider()
 
             List($prefs.preferences.accounts.sourceControlAccounts.gitAccount,
                  selection: $accountSelection) { gitAccount in
                 GitAccountItem(sourceControlAccount: gitAccount)
-            }.listRowBackground(Color(NSColor.controlBackgroundColor))
+            }.overlay(Group {
+                Color(NSColor.controlBackgroundColor)
+            })
+
+            Divider()
 
             toolbar {
                 sidebarBottomToolbar
             }.frame(height: 27)
         }
-        .frame(width: 210)
+        .frame(width: 220)
     }
 
     private var accountTypeView: some View {
