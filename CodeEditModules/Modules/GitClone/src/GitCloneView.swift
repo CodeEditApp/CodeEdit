@@ -11,7 +11,7 @@ import Foundation
 import ShellClient
 
 public struct GitCloneView: View {
-    private var shellClient: ShellClient
+    private let shellClient: ShellClient
     @Binding private var isPresented: Bool
     @State private var repoUrlStr = ""
     @State private var repoPath = "~/"
