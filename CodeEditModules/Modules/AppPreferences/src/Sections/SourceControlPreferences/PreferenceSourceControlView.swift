@@ -6,21 +6,31 @@
 //
 
 import SwiftUI
+import CodeEditUI
 
 public struct PreferenceSourceControlView: View {
 
     public init() {}
 
+    @State private var selectedSection: Int = 0
+
     public var body: some View {
-        PreferencesContent {
-            TabView {
-                SourceControlGeneralView(isChecked: true, branchName: "main").tabItem {
-                    Text("General")
+        VStack(alignment: .leading, spacing: 16) {
+            VStack(spacing: 1) {
+                PreferencesToolbar {
+                    SegmentedControl($selectedSection, options: ["General", "Git"])
                 }
-                SourceControlGitView().tabItem {
-                    Text("Git")
+                if selectedSection == 0 {
+                    SourceControlGeneralView(isChecked: true, branchName: "main")
+                }
+                if selectedSection == 1 {
+                    SourceControlGitView()
                 }
             }
+            .padding(1)
+            .background(Rectangle().foregroundColor(Color(NSColor.separatorColor)))
+            .frame(width: 872)
+            .padding()
         }
     }
 }
