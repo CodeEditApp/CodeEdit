@@ -100,11 +100,6 @@ let package = Package(
             from: "2.5.0"
         ),
         .package(
-            name: "Introspect",
-            url: "https://github.com/siteline/SwiftUI-Introspect",
-            from: "0.1.4"
-        ),
-        .package(
             name: "CodeEditKit",
             url: "https://github.com/CodeEditApp/CodeEditKit",
             branch: "main"
@@ -221,6 +216,7 @@ let package = Package(
             name: "AppPreferences",
             dependencies: [
                 "Preferences",
+                "Design",
                 "FontPicker",
             ],
             path: "Modules/AppPreferences/src"
@@ -244,9 +240,6 @@ let package = Package(
         ),
         .target(
             name: "Design",
-            dependencies: [
-                "Introspect",
-            ],
             path: "Modules/Design/src"
         ),
         .target(

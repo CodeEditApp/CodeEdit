@@ -8,6 +8,7 @@
 import FontPicker
 import SwiftUI
 import Preferences
+import Design
 
 /// A view that implements the `Theme` preference section
 public struct ThemePreferencesView: View {

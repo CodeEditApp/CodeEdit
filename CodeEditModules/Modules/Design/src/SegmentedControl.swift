@@ -7,9 +7,14 @@
 
 import SwiftUI
 
-struct SegmentedControl: View {
+/// A view that creates a segmented control from an array of text labels.
+public struct SegmentedControl: View {
 
-    init(_ selection: Binding<Int>, options: [String]) {
+    /// A view that creates a segmented control from an array of text labels.
+    /// - Parameters:
+    ///   - selection: The index of the current selected item.
+    ///   - options: the options to display as an array of strings.
+    public init(_ selection: Binding<Int>, options: [String]) {
         self._preselectedIndex = selection
         self.options = options
     }
@@ -17,7 +22,7 @@ struct SegmentedControl: View {
     @Binding var preselectedIndex: Int
     var options: [String]
     let color = Color.accentColor
-    var body: some View {
+    public var body: some View {
         HStack(spacing: 0) {
             ForEach(options.indices, id: \.self) { index in
                 Text(options[index])
