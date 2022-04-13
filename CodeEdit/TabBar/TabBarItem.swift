@@ -8,7 +8,7 @@
 import SwiftUI
 import WorkspaceClient
 import AppPreferences
-import Design
+import CodeEditUI
 
 struct TabDivider: View {
     @Environment(\.colorScheme)

@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import FontPicker
 
 struct TerminalThemeView: View {
     @StateObject

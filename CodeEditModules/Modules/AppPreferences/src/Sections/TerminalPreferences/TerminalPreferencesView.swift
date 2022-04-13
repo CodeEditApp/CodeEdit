@@ -7,7 +7,7 @@
 
 import SwiftUI
 import Preferences
-import FontPicker
+import CodeEditUI
 
 /// A view that implements the `Terminal` preference section
 public struct TerminalPreferencesView: View {

@@ -7,7 +7,7 @@
 
 import SwiftUI
 import WorkspaceClient
-import Design
+import CodeEditUI
 
 public struct QuickOpenView: View {
     @ObservedObject private var state: QuickOpenState
