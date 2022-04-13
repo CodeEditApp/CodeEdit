@@ -136,7 +136,8 @@ public struct RecentProjectsView: View {
                         .buttonStyle(.borderless)
                         .keyboardShortcut(.defaultAction)
                     }
-                }.removeBackground()
+                }
+                .listStyle(.sidebar)
             } else {
                 emptyView
             }

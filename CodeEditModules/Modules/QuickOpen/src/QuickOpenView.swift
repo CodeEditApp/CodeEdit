@@ -65,8 +65,7 @@ public struct QuickOpenView: View {
                         self.selectedItem = file
                     }
                 }
-                    .removeBackground()
-                    .frame(minWidth: 250, maxWidth: 250)
+                .frame(minWidth: 250, maxWidth: 250)
                 if state.openQuicklyFiles.isEmpty {
                     EmptyView()
                 } else {

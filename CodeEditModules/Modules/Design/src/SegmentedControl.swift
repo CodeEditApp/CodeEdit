@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct SegmentedControl: View {
+public struct SegmentedControl: View {
 
-    init(_ selection: Binding<Int>, options: [String]) {
+    public init(_ selection: Binding<Int>, options: [String]) {
         self._preselectedIndex = selection
         self.options = options
     }
@@ -17,7 +17,7 @@ struct SegmentedControl: View {
     @Binding var preselectedIndex: Int
     var options: [String]
     let color = Color.accentColor
-    var body: some View {
+    public var body: some View {
         HStack(spacing: 0) {
             ForEach(options.indices, id: \.self) { index in
                 Text(options[index])
