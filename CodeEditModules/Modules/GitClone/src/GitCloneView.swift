@@ -11,8 +11,8 @@ import Foundation
 import ShellClient
 
 public struct GitCloneView: View {
-    var shellClient: ShellClient
-    @Binding var isPresented: Bool
+    private var shellClient: ShellClient
+    @Binding private var isPresented: Bool
     @State private var repoUrlStr = ""
     @State private var repoPath = "~/"
     public init(shellClient: ShellClient, isPresented: Binding<Bool>) {
@@ -53,17 +53,21 @@ public struct GitCloneView: View {
                                 }
                                 // Parsing repo name
                                 let repoURL = URL(string: repoUrlStr)
-                                var repoName = repoURL!.lastPathComponent
-                                // Strip .git from name if it has it.
-                                // Cloning repository without .git also works
-                                if repoName.contains(".git") {
-                                    repoName.removeLast(4)
-                                }
-                                let didChoose = getPath(modifiable: &repoPath, saveName: repoName)
-                                if didChoose == nil {
+                                if var repoName = repoURL?.lastPathComponent {
+                                    // Strip .git from name if it has it.
+                                    // Cloning repository without .git also works
+                                    if repoName.contains(".git") {
+                                        repoName.removeLast(4)
+                                    }
+                                    guard getPath(modifiable: &repoPath, saveName: repoName) != nil else {
+                                        return
+                                    }
+                                } else {
                                     return
                                 }
-                                let dirUrl = URL(string: repoPath)
+                                guard let dirUrl = URL(string: repoPath) else {
+                                    return
+                                }
                                 var isDir: ObjCBool = true
                                 if FileManager.default.fileExists(atPath: repoPath, isDirectory: &isDir) {
                                     showAlert(alertMsg: "Error", infoText: "Directory already exists")
@@ -72,7 +76,7 @@ public struct GitCloneView: View {
                                 try FileManager.default.createDirectory(atPath: repoPath,
                                                                         withIntermediateDirectories: true,
                                                                         attributes: nil)
-                                try GitClient.default(directoryURL: dirUrl!,
+                                try GitClient.default(directoryURL: dirUrl,
                                                       shellClient: shellClient).cloneRepository(repoUrlStr)
                                 // TODO: Maybe add possibility to checkout to certain branch straight after cloning
                                 isPresented = false
