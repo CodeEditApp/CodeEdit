@@ -27,20 +27,27 @@ struct SourceControlGitView: View {
             }
 
             PreferencesSection("Ignored Files", hideLabels: false) {
-                if prefs.preferences.sourceControl.git.ignoredFiles.isEmpty {
-                    Text("No Ignored Files")
-                        .background(Color(NSColor.textBackgroundColor))
-                } else {
+                VStack(spacing: 1) {
                     List($prefs.preferences.sourceControl.git.ignoredFiles,
                          selection: $ignoredFileSelection) { ignoredFile in
                         IgnoredFileView(ignoredFile: ignoredFile)
                     }
-                    .frame(width: 280, height: 180)
-                    .background(Color(NSColor.textBackgroundColor))
+                    .overlay(Group {
+                        Color(NSColor.controlBackgroundColor)
+                    })
+                    .overlay(Group {
+                        if prefs.preferences.sourceControl.git.ignoredFiles.isEmpty {
+                            Text("No Ignored Files")
+                        }
+                    })
+                    .frame(width: 280, height: 150)
+                    PreferencesToolbar {
+                        bottomToolbar
+                    }
+                    .frame(width: 280, height: 27)
                 }
-                PreferencesToolbar {
-                    bottomToolbar
-                }.frame(width: 280, height: 27)
+                .padding(1)
+                .background(Rectangle().foregroundColor(Color(NSColor.separatorColor)))
             }
 
             PreferencesSection("Options", hideLabels: false) {
@@ -54,7 +61,7 @@ struct SourceControlGitView: View {
                     .frame(width: 280, alignment: .leading)
             }
         }
-        .frame(height: 230)
+        .frame(height: 350)
         .background(Color(NSColor.controlBackgroundColor))
     }
 

@@ -51,8 +51,9 @@ public struct PreferenceAccountsView: View {
             List($prefs.preferences.accounts.sourceControlAccounts.gitAccount,
                  selection: $accountSelection) { gitAccount in
                 GitAccountItem(sourceControlAccount: gitAccount)
-            }
-                 .listRowBackground(Color(NSColor.controlBackgroundColor))
+            }.overlay(Group {
+                Color(NSColor.controlBackgroundColor)
+            })
 
             PreferencesToolbar {
                 sidebarBottomToolbar
