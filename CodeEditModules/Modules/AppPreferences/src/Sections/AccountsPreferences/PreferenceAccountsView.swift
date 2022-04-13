@@ -58,7 +58,7 @@ public struct PreferenceAccountsView: View {
                 sidebarBottomToolbar
             }.frame(height: 27)
         }
-        .frame(width: 210)
+        .frame(width: 220)
     }
 
     private var accountTypeView: some View {

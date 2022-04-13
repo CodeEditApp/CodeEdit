@@ -27,16 +27,9 @@ struct SourceControlGitView: View {
             }
 
             PreferencesSection("Ignored Files", hideLabels: false) {
-                if prefs.preferences.sourceControl.git.ignoredFiles.isEmpty {
-                    Text("No Ignored Files")
-                        .background(Color(NSColor.textBackgroundColor))
-                } else {
-                    List($prefs.preferences.sourceControl.git.ignoredFiles,
-                         selection: $ignoredFileSelection) { ignoredFile in
-                        IgnoredFileView(ignoredFile: ignoredFile)
-                    }
-                    .frame(width: 280, height: 180)
-                    .background(Color(NSColor.textBackgroundColor))
+                List($prefs.preferences.sourceControl.git.ignoredFiles,
+                     selection: $ignoredFileSelection) { ignoredFile in
+                    IgnoredFileView(ignoredFile: ignoredFile)
                 }
                 PreferencesToolbar {
                     bottomToolbar
