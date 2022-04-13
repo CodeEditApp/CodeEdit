@@ -73,7 +73,7 @@ public extension AppPreferences {
         /// The author email
         public var authorEmail: String = ""
         /// Indicates what files should be ignored when commiting
-        public var ignoredFiles: [String] = ["*~", ".DS_Store"]
+        public var ignoredFiles: [IgnoredFiles] = []
         /// Indicates whether we should rebase when pulling commits
         public var preferRebaseWhenPulling: Bool = false
         /// Indicates whether we should show commits per file log
@@ -85,8 +85,8 @@ public extension AppPreferences {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.authorName = try container.decodeIfPresent(String.self, forKey: .authorName) ?? ""
             self.authorEmail = try container.decodeIfPresent(String.self, forKey: .authorEmail) ?? ""
-            self.ignoredFiles = try container.decodeIfPresent([String].self,
-                                                              forKey: .ignoredFiles) ?? ["*~", ".DS_Store"]
+            self.ignoredFiles = try container.decodeIfPresent([IgnoredFiles].self,
+                                                              forKey: .ignoredFiles) ?? []
             self.preferRebaseWhenPulling = try container.decodeIfPresent(Bool.self,
                                                                          forKey: .preferRebaseWhenPulling) ?? false
             self.showMergeCommitsPerFileLog = try container.decodeIfPresent(Bool.self,

@@ -7,13 +7,7 @@
 
 import Foundation
 
-public struct IgnoredFiles: Codable, Hashable, Identifiable {
-    public var id: Int
+public struct IgnoredFiles: Codable, Identifiable, Hashable {
+    public var id: String
     public var name: String
-
-    init(id: Int, name: String) {
-        self.id = id
-        self.name = name
-    }
-
 }
