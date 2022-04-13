@@ -18,7 +18,7 @@ struct SourceControlGeneralView: View {
     var body: some View {
         PreferencesContent {
 
-            PreferencesSection("Source Control") {
+            PreferencesSection("Source Control", hideLabels: false) {
                 Toggle("Enable Source Control", isOn: $prefs.preferences.sourceControl.general.enableSourceControl)
                     .toggleStyle(.checkbox)
 
@@ -39,7 +39,7 @@ struct SourceControlGeneralView: View {
                 .padding(.leading, 10)
             }
 
-            PreferencesSection("Text Editing") {
+            PreferencesSection("Text Editing", hideLabels: false) {
                 Toggle("Show Source Control chnages",
                        isOn: $prefs.preferences.sourceControl.general.showSourceControlChanges)
                     .toggleStyle(.checkbox)
@@ -50,7 +50,7 @@ struct SourceControlGeneralView: View {
                     .padding(.leading, 20)
             }
 
-            PreferencesSection("Comparison View") {
+            PreferencesSection("Comparison View", hideLabels: false) {
                 Menu {
                     Button("Comparison") {}
                 } label: {
@@ -59,7 +59,7 @@ struct SourceControlGeneralView: View {
                 }.frame(maxWidth: 170)
             }
 
-            PreferencesSection("Source Control Navigator") {
+            PreferencesSection("Source Control Navigator", hideLabels: false) {
                 Menu {
                     Button("Control Navigator") {}
                 } label: {
@@ -68,7 +68,7 @@ struct SourceControlGeneralView: View {
                 }.frame(maxWidth: 170)
             }
 
-            PreferencesSection("Default Branch Name") {
+            PreferencesSection("Default Branch Name", hideLabels: false) {
                 TextField("Text", text: $branchName)
                     .frame(width: 170)
                 Text("Branch names cannot contain spaces, backslashes, or other symbols")
