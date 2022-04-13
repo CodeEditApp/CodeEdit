@@ -158,6 +158,16 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "lilingxi01",
+      "name": "Lingxi Li",
+      "avatar_url": "https://avatars.githubusercontent.com/u/36816148?v=4",
+      "profile": "https://lingxi.li",
+      "contributions": [
+        "code",
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
