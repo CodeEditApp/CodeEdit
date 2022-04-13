@@ -10,9 +10,6 @@ import CodeEditUI
 
 public struct PreferenceSourceControlView: View {
 
-    @ObservedObject
-    private var sourceControlModel: SourceControlModel = .shared
-
     public init() {}
 
     @State private var selectedSection: Int = 0

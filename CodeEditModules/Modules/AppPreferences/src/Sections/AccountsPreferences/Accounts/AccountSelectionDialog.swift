@@ -30,7 +30,7 @@ struct AccountSelectionDialog: View {
 
             List(gitProviders, selection: $providerSelection) {
                 AccountListItem(gitClientName: $0.name)
-            }
+            }.background(Color(NSColor.controlBackgroundColor))
 
             HStack {
                 Button("Cancel") {
@@ -88,4 +88,5 @@ struct AccountSelectionDialog: View {
         .padding(20)
         .frame(width: 400, height: 285)
     }
+
 }
