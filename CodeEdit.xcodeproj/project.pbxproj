@@ -26,7 +26,7 @@
 		04C3255C2801F86900C8DA2D /* OutlineMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285FEC7127FE4EEF00E57D53 /* OutlineMenu.swift */; };
 		04C3256B28034FC800C8DA2D /* CodeEditKit in Frameworks */ = {isa = PBXBuildFile; productRef = 04C3256A28034FC800C8DA2D /* CodeEditKit */; };
 		04C3256C28034FC800C8DA2D /* CodeEditKit in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 04C3256A28034FC800C8DA2D /* CodeEditKit */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		20D2A95527F72E6800E7ECF6 /* Accounts in Frameworks */ = {isa = PBXBuildFile; productRef = 20D2A95427F72E6800E7ECF6 /* Accounts */; };
+		20C4319A28058B9E00964DD5 /* GitAccounts in Frameworks */ = {isa = PBXBuildFile; productRef = 20C4319928058B9E00964DD5 /* GitAccounts */; };
 		2803257127F3CF1F009C7DC2 /* AppPreferences in Frameworks */ = {isa = PBXBuildFile; productRef = 2803257027F3CF1F009C7DC2 /* AppPreferences */; };
 		28069DA427F5BCF70016BC47 /* default-dark.json in Resources */ = {isa = PBXBuildFile; fileRef = 28069DA327F5BCDD0016BC47 /* default-dark.json */; };
 		2813F93827ECC4AA00E305E4 /* FindNavigatorResultList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201B327E9989900CB86D0 /* FindNavigatorResultList.swift */; };
@@ -151,6 +151,7 @@
 				5CA8776327FC4FC8003F5CD5 /* Design in Frameworks */,
 				64B64EDE27F7B79400C400F1 /* About in Frameworks */,
 				04C3256B28034FC800C8DA2D /* CodeEditKit in Frameworks */,
+				20C4319A28058B9E00964DD5 /* GitAccounts in Frameworks */,
 				5C403B8F27E20F8000788241 /* WorkspaceClient in Frameworks */,
 				5CAD1B972806B57D0059A74E /* Breadcrumbs in Frameworks */,
 				2803257127F3CF1F009C7DC2 /* AppPreferences in Frameworks */,
@@ -162,7 +163,6 @@
 				B34B213227ECDC3A006033A9 /* GitClone in Frameworks */,
 				5CFA753B27E896B60002F01B /* GitClient in Frameworks */,
 				28CE5EA027E6493D0065D29C /* StatusBar in Frameworks */,
-				20D2A95527F72E6800E7ECF6 /* Accounts in Frameworks */,
 				5CF38A5E27E48E6C0096A0F7 /* CodeFile in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -387,12 +387,12 @@
 				B34B213127ECDC3A006033A9 /* GitClone */,
 				2859B93E27EB50050069BE88 /* FontPicker */,
 				2803257027F3CF1F009C7DC2 /* AppPreferences */,
-				20D2A95427F72E6800E7ECF6 /* Accounts */,
 				64B64EDD27F7B79400C400F1 /* About */,
 				5CA8776227FC4FC8003F5CD5 /* Design */,
 				5CA8776427FC6A95003F5CD5 /* QuickOpen */,
 				0483E34C27FCC46600354AC0 /* ExtensionsStore */,
 				04C3256A28034FC800C8DA2D /* CodeEditKit */,
+				20C4319928058B9E00964DD5 /* GitAccounts */,
 				5CAD1B962806B57D0059A74E /* Breadcrumbs */,
 			);
 			productName = CodeEdit;
@@ -1012,9 +1012,9 @@
 			package = 04C3256728034F3D00C8DA2D /* XCRemoteSwiftPackageReference "CodeEditKit" */;
 			productName = CodeEditKit;
 		};
-		20D2A95427F72E6800E7ECF6 /* Accounts */ = {
+		20C4319928058B9E00964DD5 /* GitAccounts */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = Accounts;
+			productName = GitAccounts;
 		};
 		2803257027F3CF1F009C7DC2 /* AppPreferences */ = {
 			isa = XCSwiftPackageProductDependency;

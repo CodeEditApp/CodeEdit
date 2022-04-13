@@ -184,7 +184,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                 title: "Accounts",
                 toolbarIcon: NSImage(systemSymbolName: "at", accessibilityDescription: nil)!
             ) {
-                PreferencesPlaceholderView()
+                PreferenceAccountsView()
             },
             Preferences.Pane(
                 identifier: Preferences.PaneIdentifier("Behaviors"),
@@ -234,7 +234,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                 title: "Source Control",
                 toolbarIcon: NSImage(systemSymbolName: "square.stack", accessibilityDescription: nil)!
             ) {
-                PreferencesPlaceholderView()
+                PreferenceSourceControlView()
             },
             Preferences.Pane(
                 identifier: Preferences.PaneIdentifier("Components"),
