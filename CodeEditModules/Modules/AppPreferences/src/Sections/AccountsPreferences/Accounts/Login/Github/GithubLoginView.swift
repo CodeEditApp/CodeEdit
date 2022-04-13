@@ -105,7 +105,7 @@ struct GithubLoginView: View {
         let gitAccounts = prefs.preferences.accounts.sourceControlAccounts.gitAccount
 
         let config = GithubTokenConfiguration(accountToken)
-        GithubAccount(config).me() { response in
+        GithubAccount(config).me { response in
             switch response {
             case .success(let user):
                 print(user.login as Any)
