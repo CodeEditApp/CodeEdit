@@ -9,8 +9,8 @@ import SwiftUI
 
 struct GitAccountItem: View {
 
-    var gitClientName: String
-    var gitClientLink: String
+    @Binding
+    var sourceControlAccount: SourceControlAccounts
 
     var body: some View {
         HStack {
@@ -19,9 +19,9 @@ struct GitAccountItem: View {
                 .frame(width: 24.0, height: 24.0)
 
             VStack(alignment: .leading) {
-                Text(gitClientName)
+                Text(sourceControlAccount.gitProvider)
                     .font(.system(size: 12))
-                Text(gitClientLink)
+                Text(sourceControlAccount.gitProviderLink)
                     .font(.system(size: 10))
             }
         }

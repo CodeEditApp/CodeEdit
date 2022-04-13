@@ -12,16 +12,16 @@ public struct PreferenceSourceControlView: View {
     public init() {}
 
     public var body: some View {
-        TabView {
-            SourceControlGeneralView(isChecked: true, branchName: "main").tabItem {
-                Text("General")
-            }
-            SourceControlGitView().tabItem {
-                Text("Git")
+        PreferencesContent {
+            TabView {
+                SourceControlGeneralView(isChecked: true, branchName: "main").tabItem {
+                    Text("General")
+                }
+                SourceControlGitView().tabItem {
+                    Text("Git")
+                }
             }
         }
-        .frame(width: 844)
-        .padding(20)
     }
 }
 

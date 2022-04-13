@@ -54,8 +54,8 @@ let package = Package(
             targets: ["AppPreferences"]
         ),
         .library(
-            name: "Accounts",
-            targets: ["Accounts"]
+            name: "GitAccounts",
+            targets: ["GitAccounts"]
         ),
         .library(
             name: "About",
@@ -218,13 +218,13 @@ let package = Package(
             dependencies: [
                 "Preferences",
                 "FontPicker",
-                "Accounts"
+                "GitAccounts"
             ],
             path: "Modules/AppPreferences/src"
         ),
         .target(
-            name: "Accounts",
-            path: "Modules/Accounts/src"
+            name: "GitAccounts",
+            path: "Modules/GitAccounts/src"
         ),
         .target(
             name: "About",

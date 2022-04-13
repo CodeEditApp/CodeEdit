@@ -50,7 +50,6 @@ public struct AppPreferences: Codable {
         self.theme = try container.decodeIfPresent(ThemePreferences.self, forKey: .theme) ?? .init()
         self.terminal = try container.decodeIfPresent(TerminalPreferences.self, forKey: .terminal) ?? .init()
         self.textEditing = try container.decodeIfPresent(TextEditingPreferences.self, forKey: .textEditing) ?? .init()
-
         self.sourceControl = try container.decodeIfPresent(SourceControlPreferences.self,
                                                            forKey: .sourceControl) ?? .init()
     }

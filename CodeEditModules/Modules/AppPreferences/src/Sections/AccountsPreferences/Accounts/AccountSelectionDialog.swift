@@ -34,14 +34,14 @@ struct AccountSelectionDialog: View {
 
             HStack {
                 Button("Cancel") {
-                    dismissDialog = false
+                    dismissDialog.toggle()
                 }
                 Button("Continue") {
-                    dismissDialog = false
-                    openGitLogin = true
+                    dismissDialog.toggle()
+                    openGitLogin.toggle()
                 }
                 .sheet(isPresented: $openGitLogin, content: {
-                    GithubLoginView(dismissDialog: $openGitLogin, selectedGitProvider: $providerSelection)
+                    openAccountLoginDialog
                 })
                 .buttonStyle(.borderedProminent)
             }
@@ -51,4 +51,42 @@ struct AccountSelectionDialog: View {
         .padding(20)
         .frame(width: 400, height: 285)
     }
+
+    @ViewBuilder
+    private var openAccountLoginDialog: some View {
+        switch providerSelection {
+        case "bitbucketCloud":
+            implementationNeeded
+        case "bitbucketServer":
+            implementationNeeded
+        case "github":
+            GithubLoginView(dismissDialog: $openGitLogin)
+        case "githubEnterprise":
+            GithubEnterpriseLoginView(dismissDialog: $openGitLogin)
+        case "gitlab":
+            implementationNeeded
+        case "gitlabSelfHosted":
+            implementationNeeded
+        default:
+            implementationNeeded
+        }
+    }
+
+    private var implementationNeeded: some View {
+        VStack {
+            Text("This git client is currently not supported yet!")
+                .font(.system(size: 12))
+            HStack {
+                Button("Close") {
+                    openGitLogin.toggle()
+                }
+                .buttonStyle(.borderedProminent)
+            }
+            .frame(maxWidth: .infinity, alignment: .trailing)
+            .padding(.trailing, 20)
+        }
+        .padding(20)
+        .frame(width: 400, height: 285)
+    }
+
 }

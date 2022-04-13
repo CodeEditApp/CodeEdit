@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Accounts
+import GitAccounts
 
 struct GithubLoginView: View {
 
@@ -16,7 +16,9 @@ struct GithubLoginView: View {
     @Environment(\.openURL) var createToken
 
     @Binding var dismissDialog: Bool
-    @Binding var selectedGitProvider: Providers.ID?
+
+    @StateObject
+    private var prefs: AppPreferencesModel = .shared
 
     var body: some View {
         VStack {
@@ -83,13 +85,11 @@ struct GithubLoginView: View {
                         dismissDialog = false
                     }
                     if accountToken.isEmpty {
-                        Button("Sign In") {
-                            authenticateGithubAccount(selectedGitProvider!, githubToken: accountToken)
-                        }
+                        Button("Sign In") {}
                         .disabled(true)
                     } else {
                         Button("Sign In") {
-                            authenticateGithubAccount(selectedGitProvider!, githubToken: accountToken)
+                            loginGithub(gitAccountName: accountName)
                         }
                         .buttonStyle(.borderedProminent)
                     }
@@ -99,5 +99,35 @@ struct GithubLoginView: View {
         }
         .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
         .frame(width: 485, height: 280)
+    }
+
+    private func loginGithub(gitAccountName: String) {
+        let gitAccounts = prefs.preferences.accounts.sourceControlAccounts.gitAccount
+
+        let config = GithubTokenConfiguration(accountToken)
+        GithubAccount(config).me() { response in
+            switch response {
+            case .success(let user):
+                print(user.login as Any)
+                if gitAccounts.contains(where: { $0.id == gitAccountName.lowercased()}) {
+                    print("Account with the username already exists!")
+                } else {
+                    print(user)
+                    prefs.preferences.accounts.sourceControlAccounts.gitAccount.append(
+                        SourceControlAccounts(id: gitAccountName.lowercased(),
+                                              gitProvider: "GitHub",
+                                              gitProviderLink: "https://github.com",
+                                              gitProviderDescription: "GitHub",
+                                              gitAccountName: gitAccountName,
+                                              gitCloningProtocol: true,
+                                              gitSSHKey: "",
+                                              isTokenValid: true))
+
+                    dismissDialog = false
+                }
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
 }
