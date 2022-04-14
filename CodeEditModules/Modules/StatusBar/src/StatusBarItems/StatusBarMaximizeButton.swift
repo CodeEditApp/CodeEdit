@@ -16,14 +16,13 @@ internal struct StatusBarMaximizeButton: View {
     }
 
     internal var body: some View {
-        Button(action: toggleMaximize, label: {
+        Button {
+            model.isMaximized.toggle()
+        } label: {
             Image(systemName: "arrowtriangle.up.square")
                 .foregroundColor(model.isMaximized ? .accentColor : .primary)
-        }).buttonStyle(.plain)
-    }
-
-    internal func toggleMaximize() {
-        model.isMaximized.toggle()
+        }
+        .buttonStyle(.plain)
     }
 }
 

@@ -1,13 +1,13 @@
 //
-//  StatusBarClearButton.swift
-//  
+//  StatusBarSplitTerminalButton.swift
 //
-//  Created by Stef Kors on 12/04/2022.
+//
+//  Created by Stef Kors on 14/04/2022.
 //
 
 import SwiftUI
 
-internal struct StatusBarClearButton: View {
+internal struct StatusBarSplitTerminalButton: View {
     @ObservedObject
     private var model: StatusBarModel
 
@@ -17,18 +17,18 @@ internal struct StatusBarClearButton: View {
 
     internal var body: some View {
         Button {
-            // Clear terminal
+            // todo
         } label: {
-            Image(systemName: "trash")
+            Image(systemName: "square.split.2x1")
                 .foregroundColor(.secondary)
         }
         .buttonStyle(.plain)
     }
 }
 
-struct StatusBarClearButton_Previews: PreviewProvider {
+struct StatusBarSplitTerminalButton_Previews: PreviewProvider {
     static var previews: some View {
         let url = URL(string: "~/Developer")!
-        StatusBarClearButton(model: StatusBarModel(workspaceURL: url))
+        StatusBarSplitTerminalButton(model: StatusBarModel(workspaceURL: url))
     }
 }

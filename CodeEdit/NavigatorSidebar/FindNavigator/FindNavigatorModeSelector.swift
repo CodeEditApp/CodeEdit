@@ -82,7 +82,7 @@ struct FindNavigatorModeSelector: View {
                 } label: {
                     HStack(spacing: 2) {
                         if index > 0 {
-                            // chevron
+                            chevron
                         }
                         Text(selectedMode[index].title)
                             .foregroundColor(selectedMode[index].needSelectionHightlight ? Color.accentColor : .primary)

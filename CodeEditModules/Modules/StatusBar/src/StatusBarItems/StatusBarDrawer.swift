@@ -41,6 +41,7 @@ internal struct StatusBarDrawer: View {
                     Spacer()
                     StatusBarClearButton(model: model)
                     Divider()
+                    StatusBarSplitTerminalButton(model: model)
                     StatusBarMaximizeButton(model: model)
                 }
                 .padding(.all, 10)

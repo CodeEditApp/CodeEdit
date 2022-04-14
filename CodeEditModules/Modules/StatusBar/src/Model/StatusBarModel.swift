@@ -72,6 +72,10 @@ public class StatusBarModel: ObservableObject {
     @Published
     public var isDragging: Bool = false
 
+    /// Indicates whether the breakpoint is enabled or not
+    @Published
+    public var isBreakpointEnabled: Bool = true
+
     /// Search value to filter in drawer
     @Published
     public var searchText: String = ""

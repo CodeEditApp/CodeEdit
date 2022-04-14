@@ -47,13 +47,10 @@ public struct StatusBarView: View {
                 .foregroundStyle(.bar)
             HStack(spacing: 15) {
                 HStack(spacing: 5) {
-                    Image("custom.breakpoint")
-                        .foregroundColor(.accentColor)
-
+                    StatusBarBreakpointButton(model: model)
                     Divider()
                         .frame(maxHeight: 12)
                         .padding(.horizontal, 7)
-
                     SegmentedControl($model.selectedTab, options: StatusBarTab.allOptions)
                 }
                 if model.selectedBranch != nil {
