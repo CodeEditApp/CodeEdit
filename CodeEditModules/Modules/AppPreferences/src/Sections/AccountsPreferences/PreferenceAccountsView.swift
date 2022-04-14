@@ -58,7 +58,7 @@ public struct PreferenceAccountsView: View {
 
             PreferencesToolbar {
                 sidebarBottomToolbar
-            }.frame(height: 27)
+            }
         }
         .frame(width: 210)
     }
