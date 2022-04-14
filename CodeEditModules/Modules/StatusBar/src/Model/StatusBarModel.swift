@@ -19,13 +19,6 @@ public enum StatusBarTab: String, CaseIterable, Identifiable {
     }
 }
 
-private enum StatusBarStorageKey: String {
-    case isExpanded
-    case isMaximized
-    case currentHeight
-    case selectedTab
-}
-
 /// # StatusBarModel
 ///
 /// A model class to host and manage data for the ``StatusBarView``
@@ -35,7 +28,7 @@ public class StatusBarModel: ObservableObject {
     /// - **0**: Terminal
     /// - **1**: Debugger
     /// - **2**: Output
-    @AppStorage(StatusBarStorageKey.selectedTab.rawValue)
+    @Published
     public var selectedTab: Int = 1
 
     // TODO: Implement logic for updating values
@@ -64,15 +57,15 @@ public class StatusBarModel: ObservableObject {
     public var currentCol: Int = 1 // Implementation missing
 
     /// Returns true when the drawer is visible
-    @AppStorage(StatusBarStorageKey.isExpanded.rawValue)
+    @Published
     public var isExpanded: Bool = false
 
     /// Returns true when the drawer is visible
-    @AppStorage(StatusBarStorageKey.isMaximized.rawValue)
+    @Published
     public var isMaximized: Bool = false
 
     /// The current height of the drawer. Zero if hidden
-    @AppStorage(StatusBarStorageKey.currentHeight.rawValue)
+    @Published
     public var currentHeight: Double = 0
 
     /// Indicates whether the drawer is beeing resized or not
