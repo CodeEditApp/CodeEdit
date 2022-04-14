@@ -34,16 +34,24 @@ public struct PreferencesSection<Content: View>: View {
     private var width: Double
     private var hideLabels: Bool
     private var content: Content
+    private var align: VerticalAlignment
 
-    public init(_ title: String, width: Double = 300, hideLabels: Bool = true, @ViewBuilder content: () -> Content) {
+    public init(
+        _ title: String,
+        width: Double = 300,
+        hideLabels: Bool = true,
+        align: VerticalAlignment = .firstTextBaseline,
+        @ViewBuilder content: () -> Content
+    ) {
         self.title = title
         self.width = width
         self.hideLabels = hideLabels
+        self.align = align
         self.content = content()
     }
 
     public var body: some View {
-        HStack(alignment: .firstTextBaseline) {
+        HStack(alignment: align) {
             Text("\(title):")
                 .frame(width: width, alignment: .trailing)
             if hideLabels {

@@ -57,7 +57,7 @@ struct SourceControlGeneralView: View {
                 } label: {
                     Text("Local Revision on Left Side")
                         .font(.system(size: 11))
-                }.frame(maxWidth: 170)
+                }
             }
 
             PreferencesSection("Source Control Navigator", hideLabels: false) {
@@ -66,7 +66,7 @@ struct SourceControlGeneralView: View {
                 } label: {
                     Text("Sort by Name")
                         .font(.system(size: 11))
-                }.frame(maxWidth: 170)
+                }
             }
 
             PreferencesSection("Default Branch Name", hideLabels: false) {
@@ -74,6 +74,7 @@ struct SourceControlGeneralView: View {
                     .frame(width: 170)
                 Text("Branch names cannot contain spaces, backslashes, or other symbols")
                     .font(.system(size: 12))
+                    .foregroundColor(.secondary)
             }
         }
         .frame(height: 350)

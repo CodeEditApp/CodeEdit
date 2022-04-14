@@ -74,7 +74,6 @@ public struct ThemePreferencesView: View {
             PreferencesToolbar {
                 sidebarBottomToolbar
             }
-            .frame(height: 27)
         }
         .frame(width: 320)
     }
