@@ -12,6 +12,8 @@ import CodeEditUI
 /// A view that implements the `Terminal` preference section
 public struct TerminalPreferencesView: View {
 
+    private let inputWidth: Double = 150
+
     @StateObject
     private var prefs: AppPreferencesModel = .shared
 
@@ -39,7 +41,7 @@ public struct TerminalPreferencesView: View {
             Text("Bash")
                 .tag(AppPreferences.TerminalShell.bash)
         }
-        .frame(width: 150)
+        .frame(width: inputWidth)
     }
 
     private var optionAsMetaToggle: some View {
@@ -57,7 +59,7 @@ public struct TerminalPreferencesView: View {
             Text("Custom")
                 .tag(true)
         }
-        .frame(width: 150)
+        .frame(width: inputWidth)
         if prefs.preferences.terminal.font.customFont {
             FontPicker(
                 "\(prefs.preferences.terminal.font.name) \(prefs.preferences.terminal.font.size)",

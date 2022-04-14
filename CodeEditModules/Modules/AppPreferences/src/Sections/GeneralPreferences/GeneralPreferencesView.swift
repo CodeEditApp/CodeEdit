@@ -10,6 +10,8 @@ import SwiftUI
 /// A view that implements the `General` preference section
 public struct GeneralPreferencesView: View {
 
+    private let inputWidth: Double = 160
+
     @StateObject
     private var prefs: AppPreferencesModel = .shared
 
@@ -30,7 +32,7 @@ public struct GeneralPreferencesView: View {
                 .onChange(of: prefs.preferences.general.appAppearance) { tag in
                     tag.applyAppearance()
                 }
-                .frame(width: 160)
+                .frame(width: inputWidth)
             }
             PreferencesSection("File Icon Style") {
                 Picker("File Icon Style:", selection: $prefs.preferences.general.fileIconStyle) {
@@ -51,7 +53,7 @@ public struct GeneralPreferencesView: View {
                     Text("New Document")
                         .tag(AppPreferences.ReopenBehavior.newDocument)
                 }
-                .frame(width: 160)
+                .frame(width: inputWidth)
             }
             PreferencesSection("Project Navigator Size") {
                 Picker("Project Navigator Size", selection: $prefs.preferences.general.projectNavigatorSize) {
@@ -62,7 +64,7 @@ public struct GeneralPreferencesView: View {
                     Text("Large")
                         .tag(AppPreferences.ProjectNavigatorSize.large)
                 }
-                .frame(width: 160)
+                .frame(width: inputWidth)
             }
         }
     }

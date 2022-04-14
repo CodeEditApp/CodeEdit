@@ -10,6 +10,8 @@ import CodeEditUI
 
 struct SourceControlGeneralView: View {
 
+    private let inputWidth: Double = 200
+
     @State var isChecked: Bool
     @State var branchName: String
 
@@ -59,7 +61,7 @@ struct SourceControlGeneralView: View {
                     Text("Local Revision on Right Side")
                         .tag(AppPreferences.ComparisonView.localRight)
                 }
-                .frame(width: 200)
+                .frame(width: inputWidth)
             }
 
             PreferencesSection("Source Control Navigator", hideLabels: true) {
@@ -70,7 +72,7 @@ struct SourceControlGeneralView: View {
                     Text("Sort by Date")
                         .tag(AppPreferences.ControlNavigator.sortDate)
                 }
-                .frame(width: 200)
+                .frame(width: inputWidth)
             }
 
             PreferencesSection("Default Branch Name", hideLabels: false) {
