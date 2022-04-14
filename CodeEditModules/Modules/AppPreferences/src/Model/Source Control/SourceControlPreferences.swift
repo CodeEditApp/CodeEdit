@@ -40,9 +40,9 @@ public extension AppPreferences {
         /// Indicates whether or not we should include the upsteam
         public var includeUpstreamChanges: Bool = false
         /// The selected value of the comparison view
-        public var comparisonView: Int = 0
+        public var revisionComparisonLayout: RevisionComparisonLayout = .localLeft
         /// The selected value of the control navigator
-        public var controlNavigator: Int = 0
+        public var controlNavigatorOrder: ControlNavigatorOrder = .sortByName
         /// The name of the default branch
         public var defaultBranchName: String = "main"
         /// Default initializer
@@ -61,10 +61,28 @@ public extension AppPreferences {
                                                                           forKey: .showSourceControlChanges) ?? true
             self.includeUpstreamChanges = try container.decodeIfPresent(Bool.self,
                                                                         forKey: .includeUpstreamChanges) ?? true
-            self.comparisonView = try container.decodeIfPresent(Int.self, forKey: .comparisonView) ?? 0
-            self.controlNavigator = try container.decodeIfPresent(Int.self, forKey: .controlNavigator) ?? 0
+            self.revisionComparisonLayout = try container.decodeIfPresent(RevisionComparisonLayout.self,
+                                                                forKey: .revisionComparisonLayout) ?? .localLeft
+            self.controlNavigatorOrder = try container.decodeIfPresent(ControlNavigatorOrder.self,
+                                                                  forKey: .controlNavigatorOrder) ?? .sortByName
             self.defaultBranchName = try container.decodeIfPresent(String.self, forKey: .defaultBranchName) ?? "main"
         }
+    }
+
+    /// The style for comparison View
+    /// - **localLeft**: Local Revision on Left Side
+    /// - **localRight**: Local Revision on Right Side
+    enum RevisionComparisonLayout: String, Codable {
+        case localLeft
+        case localRight
+    }
+
+    /// The style for control Navigator
+    /// - **sortName**: They are sorted by Name
+    /// - **sortDate**: They are sorted by Date
+    enum ControlNavigatorOrder: String, Codable {
+        case sortByName
+        case sortByDate
     }
 
     struct SourceControlGit: Codable {
