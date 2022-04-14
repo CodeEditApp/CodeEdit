@@ -17,7 +17,6 @@
 		0483E34D27FCC46600354AC0 /* ExtensionsStore in Frameworks */ = {isa = PBXBuildFile; productRef = 0483E34C27FCC46600354AC0 /* ExtensionsStore */; };
 		0483E35027FDB17700354AC0 /* ExtensionNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0483E34F27FDB17700354AC0 /* ExtensionNavigator.swift */; };
 		0485EB1F27E7458B00138301 /* WorkspaceCodeFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0485EB1E27E7458B00138301 /* WorkspaceCodeFileView.swift */; };
-		0485EB2527E7B9C800138301 /* Overlays in Frameworks */ = {isa = PBXBuildFile; productRef = 0485EB2427E7B9C800138301 /* Overlays */; };
 		04C3254B27FF23B000C8DA2D /* ExtensionNavigatorData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C3254A27FF23B000C8DA2D /* ExtensionNavigatorData.swift */; };
 		04C3254D27FF331B00C8DA2D /* ExtensionNavigatorItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C3254C27FF331B00C8DA2D /* ExtensionNavigatorItem.swift */; };
 		04C3254F2800AA4700C8DA2D /* ExtensionInstallationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C3254E2800AA4700C8DA2D /* ExtensionInstallationView.swift */; };
@@ -26,13 +25,13 @@
 		04C3255C2801F86900C8DA2D /* OutlineMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285FEC7127FE4EEF00E57D53 /* OutlineMenu.swift */; };
 		04C3256B28034FC800C8DA2D /* CodeEditKit in Frameworks */ = {isa = PBXBuildFile; productRef = 04C3256A28034FC800C8DA2D /* CodeEditKit */; };
 		04C3256C28034FC800C8DA2D /* CodeEditKit in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 04C3256A28034FC800C8DA2D /* CodeEditKit */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		20D2A95527F72E6800E7ECF6 /* Accounts in Frameworks */ = {isa = PBXBuildFile; productRef = 20D2A95427F72E6800E7ECF6 /* Accounts */; };
+		20C4319A28058B9E00964DD5 /* GitAccounts in Frameworks */ = {isa = PBXBuildFile; productRef = 20C4319928058B9E00964DD5 /* GitAccounts */; };
 		2803257127F3CF1F009C7DC2 /* AppPreferences in Frameworks */ = {isa = PBXBuildFile; productRef = 2803257027F3CF1F009C7DC2 /* AppPreferences */; };
 		28069DA427F5BCF70016BC47 /* default-dark.json in Resources */ = {isa = PBXBuildFile; fileRef = 28069DA327F5BCDD0016BC47 /* default-dark.json */; };
+		28117FD0280768A500649353 /* CodeEditUI in Frameworks */ = {isa = PBXBuildFile; productRef = 28117FCF280768A500649353 /* CodeEditUI */; };
 		2813F93827ECC4AA00E305E4 /* FindNavigatorResultList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201B327E9989900CB86D0 /* FindNavigatorResultList.swift */; };
 		2813F93927ECC4C300E305E4 /* NavigatorSidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287776E627E3413200D46668 /* NavigatorSidebar.swift */; };
 		2847019E27FDDF7600F87B6B /* OutlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2847019D27FDDF7600F87B6B /* OutlineView.swift */; };
-		2859B93F27EB50050069BE88 /* FontPicker in Frameworks */ = {isa = PBXBuildFile; productRef = 2859B93E27EB50050069BE88 /* FontPicker */; };
 		285FEC7027FE4B9800E57D53 /* OutlineTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285FEC6F27FE4B9800E57D53 /* OutlineTableViewCell.swift */; };
 		286471AB27ED51FD0039369D /* ProjectNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286471AA27ED51FD0039369D /* ProjectNavigator.swift */; };
 		287776E927E34BC700D46668 /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287776E827E34BC700D46668 /* TabBar.swift */; };
@@ -42,13 +41,13 @@
 		28FFE1BF27E3A441001939DB /* NavigatorSidebarToolbarBottom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FFE1BE27E3A441001939DB /* NavigatorSidebarToolbarBottom.swift */; };
 		2B7A583527E4BA0100D25D4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0468438427DC76E200F8E88E /* AppDelegate.swift */; };
 		5C403B8F27E20F8000788241 /* WorkspaceClient in Frameworks */ = {isa = PBXBuildFile; productRef = 5C403B8E27E20F8000788241 /* WorkspaceClient */; };
-		5CA8776327FC4FC8003F5CD5 /* Design in Frameworks */ = {isa = PBXBuildFile; productRef = 5CA8776227FC4FC8003F5CD5 /* Design */; };
 		5CA8776527FC6A95003F5CD5 /* QuickOpen in Frameworks */ = {isa = PBXBuildFile; productRef = 5CA8776427FC6A95003F5CD5 /* QuickOpen */; };
 		5CAD1B972806B57D0059A74E /* Breadcrumbs in Frameworks */ = {isa = PBXBuildFile; productRef = 5CAD1B962806B57D0059A74E /* Breadcrumbs */; };
 		5CF38A5E27E48E6C0096A0F7 /* CodeFile in Frameworks */ = {isa = PBXBuildFile; productRef = 5CF38A5D27E48E6C0096A0F7 /* CodeFile */; };
 		5CFA753B27E896B60002F01B /* GitClient in Frameworks */ = {isa = PBXBuildFile; productRef = 5CFA753A27E896B60002F01B /* GitClient */; };
 		B34B213227ECDC3A006033A9 /* GitClone in Frameworks */ = {isa = PBXBuildFile; productRef = B34B213127ECDC3A006033A9 /* GitClone */; };
 		64B64EDE27F7B79400C400F1 /* About in Frameworks */ = {isa = PBXBuildFile; productRef = 64B64EDD27F7B79400C400F1 /* About */; };
+		B34B213227ECDC3A006033A9 /* GitClone in Frameworks */ = {isa = PBXBuildFile; productRef = B34B213127ECDC3A006033A9 /* GitClone */; };
 		B658FB3427DA9E1000EA4DBD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3327DA9E1000EA4DBD /* Assets.xcassets */; };
 		B658FB3727DA9E1000EA4DBD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3627DA9E1000EA4DBD /* Preview Assets.xcassets */; };
 		B673FDAD27E8296A00795864 /* PressActionsModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B673FDAC27E8296A00795864 /* PressActionsModifier.swift */; };
@@ -148,22 +147,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				0483E34D27FCC46600354AC0 /* ExtensionsStore in Frameworks */,
-				5CA8776327FC4FC8003F5CD5 /* Design in Frameworks */,
 				64B64EDE27F7B79400C400F1 /* About in Frameworks */,
 				04C3256B28034FC800C8DA2D /* CodeEditKit in Frameworks */,
+				20C4319A28058B9E00964DD5 /* GitAccounts in Frameworks */,
 				5C403B8F27E20F8000788241 /* WorkspaceClient in Frameworks */,
 				5CAD1B972806B57D0059A74E /* Breadcrumbs in Frameworks */,
 				2803257127F3CF1F009C7DC2 /* AppPreferences in Frameworks */,
 				5CA8776527FC6A95003F5CD5 /* QuickOpen in Frameworks */,
-				0485EB2527E7B9C800138301 /* Overlays in Frameworks */,
 				D70F5E2C27E4E8CF004EE4B9 /* WelcomeModule in Frameworks */,
-				2859B93F27EB50050069BE88 /* FontPicker in Frameworks */,
 				D7F72DEB27EA3574000C3064 /* Search in Frameworks */,
 				B34B213227ECDC3A006033A9 /* GitClone in Frameworks */,
 				5CFA753B27E896B60002F01B /* GitClient in Frameworks */,
 				28CE5EA027E6493D0065D29C /* StatusBar in Frameworks */,
-				20D2A95527F72E6800E7ECF6 /* Accounts in Frameworks */,
 				5CF38A5E27E48E6C0096A0F7 /* CodeFile in Frameworks */,
+				28117FD0280768A500649353 /* CodeEditUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -381,19 +378,17 @@
 				5CF38A5D27E48E6C0096A0F7 /* CodeFile */,
 				D70F5E2B27E4E8CF004EE4B9 /* WelcomeModule */,
 				28CE5E9F27E6493D0065D29C /* StatusBar */,
-				0485EB2427E7B9C800138301 /* Overlays */,
 				5CFA753A27E896B60002F01B /* GitClient */,
 				D7F72DEA27EA3574000C3064 /* Search */,
 				B34B213127ECDC3A006033A9 /* GitClone */,
-				2859B93E27EB50050069BE88 /* FontPicker */,
 				2803257027F3CF1F009C7DC2 /* AppPreferences */,
-				20D2A95427F72E6800E7ECF6 /* Accounts */,
 				64B64EDD27F7B79400C400F1 /* About */,
-				5CA8776227FC4FC8003F5CD5 /* Design */,
 				5CA8776427FC6A95003F5CD5 /* QuickOpen */,
 				0483E34C27FCC46600354AC0 /* ExtensionsStore */,
 				04C3256A28034FC800C8DA2D /* CodeEditKit */,
+				20C4319928058B9E00964DD5 /* GitAccounts */,
 				5CAD1B962806B57D0059A74E /* Breadcrumbs */,
+				28117FCF280768A500649353 /* CodeEditUI */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -1003,26 +998,22 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = ExtensionsStore;
 		};
-		0485EB2427E7B9C800138301 /* Overlays */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Overlays;
-		};
 		04C3256A28034FC800C8DA2D /* CodeEditKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 04C3256728034F3D00C8DA2D /* XCRemoteSwiftPackageReference "CodeEditKit" */;
 			productName = CodeEditKit;
 		};
-		20D2A95427F72E6800E7ECF6 /* Accounts */ = {
+		20C4319928058B9E00964DD5 /* GitAccounts */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = Accounts;
+			productName = GitAccounts;
 		};
 		2803257027F3CF1F009C7DC2 /* AppPreferences */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = AppPreferences;
 		};
-		2859B93E27EB50050069BE88 /* FontPicker */ = {
+		28117FCF280768A500649353 /* CodeEditUI */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = FontPicker;
+			productName = CodeEditUI;
 		};
 		28CE5E9F27E6493D0065D29C /* StatusBar */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -1031,10 +1022,6 @@
 		5C403B8E27E20F8000788241 /* WorkspaceClient */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = WorkspaceClient;
-		};
-		5CA8776227FC4FC8003F5CD5 /* Design */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Design;
 		};
 		5CA8776427FC6A95003F5CD5 /* QuickOpen */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -1059,6 +1046,10 @@
 		64B64EDD27F7B79400C400F1 /* About */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = About;
+		};
+		B34B213127ECDC3A006033A9 /* GitClone */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GitClone;
 		};
 		D70F5E2B27E4E8CF004EE4B9 /* WelcomeModule */ = {
 			isa = XCSwiftPackageProductDependency;

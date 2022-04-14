@@ -8,7 +8,7 @@
 import Cocoa
 import SwiftUI
 import CodeFile
-import Overlays
+import CodeEditUI
 import QuickOpen
 
 final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {

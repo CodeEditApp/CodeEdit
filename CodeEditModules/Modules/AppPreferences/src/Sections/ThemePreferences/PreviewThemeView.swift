@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditUI
 
 struct PreviewThemeView: View {
 
@@ -14,8 +15,7 @@ struct PreviewThemeView: View {
 
     var body: some View {
         ZStack(alignment: .topLeading) {
-            Rectangle()
-                .foregroundColor(Color(NSColor.controlBackgroundColor))
+            EffectView(material: .contentBackground)
             if themeModel.selectedTheme == nil {
                 Text("Select a Theme")
                     .foregroundColor(.secondary)

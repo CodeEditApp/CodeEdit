@@ -26,10 +26,6 @@ let package = Package(
             targets: ["StatusBar"]
         ),
         .library(
-            name: "Overlays",
-            targets: ["Overlays"]
-        ),
-        .library(
             name: "GitClient",
             targets: ["GitClient"]
         ),
@@ -46,10 +42,6 @@ let package = Package(
             targets: ["GitClone"]
         ),
         .library(
-            name: "FontPicker",
-            targets: ["FontPicker"]
-        ),
-        .library(
             name: "ShellClient",
             targets: ["ShellClient"]
         ),
@@ -58,8 +50,8 @@ let package = Package(
             targets: ["AppPreferences"]
         ),
         .library(
-            name: "Accounts",
-            targets: ["Accounts"]
+            name: "GitAccounts",
+            targets: ["GitAccounts"]
         ),
         .library(
             name: "About",
@@ -70,8 +62,8 @@ let package = Package(
             targets: ["QuickOpen"]
         ),
         .library(
-            name: "Design",
-            targets: ["Design"]
+            name: "CodeEditUI",
+            targets: ["CodeEditUI"]
         ),
         .library(
             name: "ExtensionsStore",
@@ -102,11 +94,6 @@ let package = Package(
             name: "Preferences",
             url: "https://github.com/sindresorhus/Preferences.git",
             from: "2.5.0"
-        ),
-        .package(
-            name: "Introspect",
-            url: "https://github.com/siteline/SwiftUI-Introspect",
-            from: "0.1.4"
         ),
         .package(
             name: "CodeEditKit",
@@ -154,7 +141,7 @@ let package = Package(
             name: "WelcomeModule",
             dependencies: [
                 "WorkspaceClient",
-                "Design",
+                "CodeEditUI",
                 "AppPreferences",
             ],
             path: "Modules/WelcomeModule/src",
@@ -178,10 +165,6 @@ let package = Package(
                 "CodeFile",
             ],
             path: "Modules/StatusBar/src"
-        ),
-        .target(
-            name: "Overlays",
-            path: "Modules/Overlays/src"
         ),
         .target(
             name: "GitClient",
@@ -222,10 +205,6 @@ let package = Package(
             path: "Modules/GitClone/src"
         ),
         .target(
-            name: "FontPicker",
-            path: "Modules/FontPicker/src"
-        ),
-        .target(
             name: "ShellClient",
             path: "Modules/ShellClient/src"
         ),
@@ -233,13 +212,14 @@ let package = Package(
             name: "AppPreferences",
             dependencies: [
                 "Preferences",
-                "FontPicker",
+                "CodeEditUI",
+                "GitAccounts"
             ],
             path: "Modules/AppPreferences/src"
         ),
         .target(
-            name: "Accounts",
-            path: "Modules/Accounts/src"
+            name: "GitAccounts",
+            path: "Modules/GitAccounts/src"
         ),
         .target(
             name: "About",
@@ -250,16 +230,13 @@ let package = Package(
             dependencies: [
                 "WorkspaceClient",
                 "CodeFile",
-                "Design",
+                "CodeEditUI",
             ],
             path: "Modules/QuickOpen/src"
         ),
         .target(
-            name: "Design",
-            dependencies: [
-                "Introspect",
-            ],
-            path: "Modules/Design/src"
+            name: "CodeEditUI",
+            path: "Modules/CodeEditUI/src"
         ),
         .target(
             name: "ExtensionsStore",
