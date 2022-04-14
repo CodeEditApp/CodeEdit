@@ -5,10 +5,9 @@
 //  Created by Lukas Pistrol on 30.03.22.
 //
 
-import FontPicker
 import SwiftUI
 import Preferences
-import Design
+import CodeEditUI
 
 /// A view that implements the `Theme` preference section
 public struct ThemePreferencesView: View {
@@ -60,7 +59,7 @@ public struct ThemePreferencesView: View {
 
     private var sidebar: some View {
         VStack(spacing: 1) {
-            toolbar {
+            PreferencesToolbar {
                 let options = [
                     "Dark Mode",
                     "Light Mode"
@@ -68,19 +67,18 @@ public struct ThemePreferencesView: View {
                 SegmentedControl($themeModel.selectedAppearance, options: options)
             }
             if listView {
-                sidebarLisView
+                sidebarListView
             } else {
                 sidebarScrollView
             }
-            toolbar {
+            PreferencesToolbar {
                 sidebarBottomToolbar
             }
-            .frame(height: 27)
         }
         .frame(width: 320)
     }
 
-    private var sidebarLisView: some View {
+    private var sidebarListView: some View {
         List(selection: $themeModel.selectedTheme) {
             ForEach(themeModel.selectedAppearance == 0 ? themeModel.darkThemes : themeModel.lightThemes) { theme in
                 Button(theme.name) { themeModel.selectedTheme = theme }
@@ -130,7 +128,7 @@ public struct ThemePreferencesView: View {
             }
                       .padding(.vertical, 20)
         }
-        .background(Color(NSColor.controlBackgroundColor))
+        .background(EffectView(material: .contentBackground))
     }
 
     private var sidebarBottomToolbar: some View {
@@ -180,7 +178,7 @@ public struct ThemePreferencesView: View {
                 "Editor",
                 "Terminal"
             ]
-            toolbar {
+            PreferencesToolbar {
                 SegmentedControl($themeModel.selectedTab, options: options)
             }
             switch themeModel.selectedTab {
@@ -191,7 +189,7 @@ public struct ThemePreferencesView: View {
             default:
                 PreviewThemeView()
             }
-            toolbar {
+            PreferencesToolbar {
                 HStack {
                     Spacer()
                     Button {} label: {
@@ -201,22 +199,6 @@ public struct ThemePreferencesView: View {
                 }
             }
         }
-    }
-
-    private func toolbar<T: View>(
-        height: Double = 27,
-        bgColor: Color = Color(NSColor.controlBackgroundColor),
-        @ViewBuilder content: @escaping () -> T
-    ) -> some View {
-        ZStack {
-            Rectangle()
-                .foregroundColor(bgColor)
-            HStack {
-                content()
-                    .padding(.horizontal, 8)
-            }
-        }
-        .frame(height: height)
     }
 }
 

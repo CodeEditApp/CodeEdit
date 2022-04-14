@@ -7,7 +7,7 @@
 
 import SwiftUI
 import WorkspaceClient
-import Design
+import CodeEditUI
 
 public struct QuickOpenView: View {
     @ObservedObject private var state: QuickOpenState
@@ -47,7 +47,7 @@ public struct QuickOpenView: View {
                 }
                     .padding(16)
                     .foregroundColor(.primary.opacity(0.85))
-                    .background(BlurView(material: .sidebar, blendingMode: .behindWindow))
+                    .background(EffectView(material: .sidebar, blendingMode: .behindWindow))
             }
             Divider()
             NavigationView {
@@ -73,7 +73,7 @@ public struct QuickOpenView: View {
                 }
             }
         }
-            .background(BlurView(material: .sidebar, blendingMode: .behindWindow))
+            .background(EffectView(material: .sidebar, blendingMode: .behindWindow))
             .edgesIgnoringSafeArea(.vertical)
             .frame(minWidth: 600,
                minHeight: self.state.isShowingOpenQuicklyFiles ? 400 : 28,

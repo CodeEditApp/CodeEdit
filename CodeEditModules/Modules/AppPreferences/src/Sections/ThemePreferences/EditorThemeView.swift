@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditUI
 
 struct EditorThemeView: View {
 
@@ -17,8 +18,7 @@ struct EditorThemeView: View {
 
     var body: some View {
         ZStack(alignment: .topLeading) {
-            Rectangle()
-                .foregroundColor(Color(NSColor.controlBackgroundColor))
+            EffectView(material: .contentBackground)
             if let selectedTheme = themeModel.selectedTheme,
                let index = themeModel.themes.firstIndex(of: selectedTheme) {
                 VStack(alignment: .leading, spacing: 0) {

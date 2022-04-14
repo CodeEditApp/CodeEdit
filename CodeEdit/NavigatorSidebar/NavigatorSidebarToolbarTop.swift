@@ -52,6 +52,7 @@ struct NavigatorSidebarToolbarTop: View {
         var activeState: ControlActiveState
         func makeBody(configuration: Configuration) -> some View {
             configuration.label
+                .font(.system(size: 12, weight: id == selection ? .semibold : .regular))
                 .symbolVariant(id == selection ? .fill : .none)
                 .foregroundColor(id == selection ? .accentColor : configuration.isPressed ? .primary : .secondary)
                 .frame(width: 25, height: 25, alignment: .center)

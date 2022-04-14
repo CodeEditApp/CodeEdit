@@ -26,10 +26,6 @@ let package = Package(
             targets: ["StatusBar"]
         ),
         .library(
-            name: "Overlays",
-            targets: ["Overlays"]
-        ),
-        .library(
             name: "GitClient",
             targets: ["GitClient"]
         ),
@@ -42,8 +38,8 @@ let package = Package(
             targets: ["Search"]
         ),
         .library(
-            name: "FontPicker",
-            targets: ["FontPicker"]
+            name: "GitClone",
+            targets: ["GitClone"]
         ),
         .library(
             name: "ShellClient",
@@ -54,8 +50,8 @@ let package = Package(
             targets: ["AppPreferences"]
         ),
         .library(
-            name: "Accounts",
-            targets: ["Accounts"]
+            name: "GitAccounts",
+            targets: ["GitAccounts"]
         ),
         .library(
             name: "About",
@@ -66,8 +62,8 @@ let package = Package(
             targets: ["QuickOpen"]
         ),
         .library(
-            name: "Design",
-            targets: ["Design"]
+            name: "CodeEditUI",
+            targets: ["CodeEditUI"]
         ),
         .library(
             name: "ExtensionsStore",
@@ -145,7 +141,7 @@ let package = Package(
             name: "WelcomeModule",
             dependencies: [
                 "WorkspaceClient",
-                "Design",
+                "CodeEditUI",
                 "AppPreferences",
             ],
             path: "Modules/WelcomeModule/src",
@@ -169,10 +165,6 @@ let package = Package(
                 "CodeFile",
             ],
             path: "Modules/StatusBar/src"
-        ),
-        .target(
-            name: "Overlays",
-            path: "Modules/Overlays/src"
         ),
         .target(
             name: "GitClient",
@@ -205,8 +197,12 @@ let package = Package(
             path: "Modules/Search/src"
         ),
         .target(
-            name: "FontPicker",
-            path: "Modules/FontPicker/src"
+            name: "GitClone",
+            dependencies: [
+                "GitClient",
+                "ShellClient"
+            ],
+            path: "Modules/GitClone/src"
         ),
         .target(
             name: "ShellClient",
@@ -216,14 +212,14 @@ let package = Package(
             name: "AppPreferences",
             dependencies: [
                 "Preferences",
-                "Design",
-                "FontPicker",
+                "CodeEditUI",
+                "GitAccounts"
             ],
             path: "Modules/AppPreferences/src"
         ),
         .target(
-            name: "Accounts",
-            path: "Modules/Accounts/src"
+            name: "GitAccounts",
+            path: "Modules/GitAccounts/src"
         ),
         .target(
             name: "About",
@@ -234,13 +230,13 @@ let package = Package(
             dependencies: [
                 "WorkspaceClient",
                 "CodeFile",
-                "Design",
+                "CodeEditUI",
             ],
             path: "Modules/QuickOpen/src"
         ),
         .target(
-            name: "Design",
-            path: "Modules/Design/src"
+            name: "CodeEditUI",
+            path: "Modules/CodeEditUI/src"
         ),
         .target(
             name: "ExtensionsStore",
