@@ -18,7 +18,7 @@ struct AccountSelectionDialog: View {
         Providers(name: "GitLab Self-Hosted", id: "gitlabSelfHosted")
     ]
 
-    @State var providerSelection: Providers.ID?
+    @State var providerSelection: Providers.ID? = "github"
     @State var openGitLogin = false
 
     @Binding var dismissDialog: Bool
@@ -30,7 +30,10 @@ struct AccountSelectionDialog: View {
 
             List(gitProviders, selection: $providerSelection) {
                 AccountListItem(gitClientName: $0.name)
-            }.background(Color(NSColor.controlBackgroundColor))
+            }
+            .background(Color(NSColor.controlBackgroundColor))
+            .padding(1)
+            .background(Rectangle().foregroundColor(Color(NSColor.separatorColor)))
 
             HStack {
                 Button("Cancel") {
@@ -46,7 +49,6 @@ struct AccountSelectionDialog: View {
                 .buttonStyle(.borderedProminent)
             }
             .frame(maxWidth: .infinity, alignment: .trailing)
-            .padding(.trailing, 20)
         }
         .padding(20)
         .frame(width: 400, height: 285)
