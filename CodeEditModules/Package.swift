@@ -73,6 +73,10 @@ let package = Package(
             name: "Breadcrumbs",
             targets: ["Breadcrumbs"]
         ),
+        .library(
+            name: "Feedback",
+            targets: ["Feedback"]
+        ),
     ],
     dependencies: [
         .package(
@@ -254,6 +258,14 @@ let package = Package(
                 "AppPreferences",
             ],
             path: "Modules/Breadcrumbs/src"
+        ),
+        .target(
+            name: "Feedback",
+            dependencies: [
+                "GitAccounts",
+                "CodeEditUI",
+            ],
+            path: "Modules/Feedback/src"
         ),
     ]
 )
