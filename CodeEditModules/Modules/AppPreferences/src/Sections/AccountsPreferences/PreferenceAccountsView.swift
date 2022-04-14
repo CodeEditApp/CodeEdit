@@ -11,10 +11,8 @@ import CodeEditUI
 // swiftlint:disable for_where
 public struct PreferenceAccountsView: View {
 
-    @State private var useHHTP = false
     @State private var openAccountDialog = false
-    @State var useHTTP = true
-    @State var useSSH = false
+    @State private var cloneUsing = false
     @State var accountSelection: SourceControlAccounts.ID?
 
     @StateObject
@@ -62,50 +60,54 @@ public struct PreferenceAccountsView: View {
 
     private var accountTypeView: some View {
         VStack(alignment: .leading, spacing: 1) {
-            Text(getSourceControlAccount(selectedAccountId: accountSelection ?? "")?.gitProvider ?? "")
-                .fontWeight(.medium)
-                .font(.system(size: 12))
-                .padding(.top, 10)
-                .padding(.bottom, 5)
-
-            Divider()
-
-            PreferencesSection("Account") {
-                Text(getSourceControlAccount(selectedAccountId: accountSelection ?? "")?.gitAccountName ?? "")
+            PreferencesToolbar {
+                Text(getSourceControlAccount(selectedAccountId: accountSelection ?? "")?.gitProvider ?? "")
                     .fontWeight(.medium)
-            }.padding(.top, 10)
+                    .font(.system(size: 12))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            VStack {
+                PreferencesSection("Account", width: 100) {
+                    Text(getSourceControlAccount(selectedAccountId: accountSelection ?? "")?.gitAccountName ?? "")
+                        .fontWeight(.medium)
+                }
 
-            PreferencesSection("Description") {
-                Text(getSourceControlAccount(selectedAccountId: accountSelection ?? "")?.gitProviderDescription ?? "")
-                    .fontWeight(.medium)
-            }.padding(.bottom, 10)
+                PreferencesSection("Description", width: 100) {
+                    let account = getSourceControlAccount(selectedAccountId: accountSelection ?? "")
+                    Text(account?.gitProviderDescription ?? "")
+                        .fontWeight(.medium)
+                }
 
-            Divider()
+                Divider()
+                    .padding(.bottom, 5)
 
-            PreferencesSection("Clone Using") {
-                Toggle("HTTPS", isOn: $useHTTP)
-                    .toggleStyle(.checkbox)
+                PreferencesSection("Clone Using", width: 100) {
+                    Picker("", selection: $cloneUsing) {
+                        Text("HTTPS")
+                            .tag(false) // temporary
+                        Text("SSH")
+                            .tag(true) // temporary
+                    }
+                    .pickerStyle(.radioGroup)
 
-                Toggle("SSH", isOn: $useSSH)
-                    .toggleStyle(.checkbox)
+                    Text("New repositories will be cloned from Bitbucket Cloud using HTTPS.")
+                        .lineLimit(2)
+                        .font(.system(size: 11))
+                        .foregroundColor(Color.secondary)
+                }
 
-                Text("New repositories will be cloned from Bitbucket Cloud using HTTPS.")
-                    .lineLimit(2)
-                    .font(.system(size: 9))
-                    .foregroundColor(Color.secondary)
-            }.padding(.top, 10)
-
-            PreferencesSection("SSH Key") {
-                Picker("", selection: $prefs.preferences.accounts.sourceControlAccounts.sshKey) {
-                    Text("None")
-                    Text("Create New...")
-                    Text("Choose...")
+                PreferencesSection("SSH Key", width: 100) {
+                    Picker("", selection: $prefs.preferences.accounts.sourceControlAccounts.sshKey) {
+                        Text("None")
+                        Text("Create New...")
+                        Text("Choose...")
+                    }
                 }
             }
+            .padding(.top, 10)
+            .frame(maxHeight: .infinity, alignment: .top)
+            .background(EffectView(material: .contentBackground))
         }
-        .padding(.trailing, 20)
-        .frame(maxWidth: .infinity)
-        .background(EffectView(material: .contentBackground))
     }
 
     private var sidebarBottomToolbar: some View {
@@ -167,5 +169,6 @@ public struct PreferenceAccountsView: View {
 struct PreferenceAccountsView_Previews: PreviewProvider {
     static var previews: some View {
         PreferenceAccountsView()
+            .preferredColorScheme(.dark)
     }
 }
