@@ -50,7 +50,6 @@ public struct PreferenceAccountsView: View {
             List($prefs.preferences.accounts.sourceControlAccounts.gitAccount,
                  selection: $accountSelection) { gitAccount in
                 GitAccountItem(sourceControlAccount: gitAccount)
-                    .tag(gitAccount.id)
             }
             PreferencesToolbar {
                 sidebarBottomToolbar
