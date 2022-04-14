@@ -42,7 +42,7 @@ public extension AppPreferences {
         /// The selected value of the comparison view
         public var comparisonView: ComparisonView = .localLeft
         /// The selected value of the control navigator
-        public var controlNavigator: ControlNavigator = .sortName
+        public var controlNavigator: ControlNavigator = .sortByName
         /// The name of the default branch
         public var defaultBranchName: String = "main"
         /// Default initializer
@@ -64,7 +64,7 @@ public extension AppPreferences {
             self.comparisonView = try container.decodeIfPresent(ComparisonView.self,
                                                                 forKey: .comparisonView) ?? .localLeft
             self.controlNavigator = try container.decodeIfPresent(ControlNavigator.self,
-                                                                  forKey: .controlNavigator) ?? .sortName
+                                                                  forKey: .controlNavigator) ?? .sortByName
             self.defaultBranchName = try container.decodeIfPresent(String.self, forKey: .defaultBranchName) ?? "main"
         }
     }
@@ -81,8 +81,8 @@ public extension AppPreferences {
     /// - **sortName**: They are sorted by Name
     /// - **sortDate**: They are sorted by Date
     enum ControlNavigator: String, Codable {
-        case sortName
-        case sortDate
+        case sortByName
+        case sortByDate
     }
 
     struct SourceControlGit: Codable {

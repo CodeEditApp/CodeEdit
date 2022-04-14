@@ -68,9 +68,9 @@ struct SourceControlGeneralView: View {
                 Picker("Source Control Navigator",
                        selection: $prefs.preferences.sourceControl.general.controlNavigator) {
                     Text("Sort by Name")
-                        .tag(AppPreferences.ControlNavigator.sortName)
+                        .tag(AppPreferences.ControlNavigator.sortByName)
                     Text("Sort by Date")
-                        .tag(AppPreferences.ControlNavigator.sortDate)
+                        .tag(AppPreferences.ControlNavigator.sortByDate)
                 }
                 .frame(width: inputWidth)
             }
