@@ -77,7 +77,7 @@ struct SourceControlGeneralView: View {
 
             PreferencesSection("Default Branch Name", hideLabels: false) {
                 TextField("main", text: $branchName)
-                    .frame(width: 200)
+                    .frame(width: inputWidth)
                 Text("Branch names cannot contain spaces, backslashes, or other symbols")
                     .font(.system(size: 12))
                     .foregroundColor(.secondary)
