@@ -7,7 +7,7 @@
 
 import Cocoa
 
-class LineGutter: NSRulerView {
+final class LineGutter: NSRulerView {
     private var _lineIndices: [Int]? {
         didSet {
             DispatchQueue.main.async {

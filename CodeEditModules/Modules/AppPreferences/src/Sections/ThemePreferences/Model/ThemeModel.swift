@@ -14,7 +14,7 @@ import SwiftUI
 /// @StateObject
 /// private var themeModel: ThemeModel = .shared
 /// ```
-public class ThemeModel: ObservableObject {
+public final class ThemeModel: ObservableObject {
 
     public static let shared: ThemeModel = .init()
 

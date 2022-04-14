@@ -12,7 +12,7 @@ import About
 import WelcomeModule
 import ExtensionsStore
 
-class CodeEditApplication: NSApplication {
+final class CodeEditApplication: NSApplication {
     let strongDelegate = AppDelegate()
 
     override init() {
@@ -27,7 +27,7 @@ class CodeEditApplication: NSApplication {
 }
 
 @NSApplicationMain
-class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
+final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     func applicationWillFinishLaunching(_ notification: Notification) {
         _ = CodeEditDocumentController.shared
     }
