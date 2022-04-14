@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditUI
 
 struct SourceControlGeneralView: View {
 
@@ -76,7 +77,7 @@ struct SourceControlGeneralView: View {
             }
         }
         .frame(height: 350)
-        .background(Color(NSColor.controlBackgroundColor))
+        .background(EffectView(material: .contentBackground))
     }
 }
 
