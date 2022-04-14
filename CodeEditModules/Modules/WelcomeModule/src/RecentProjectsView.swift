@@ -144,7 +144,7 @@ public struct RecentProjectsView: View {
         }
         .frame(width: 300)
         .background(
-            BlurView(
+            EffectView(
                 material: NSVisualEffectView.Material.underWindowBackground,
                 blendingMode: NSVisualEffectView.BlendingMode.behindWindow
             )

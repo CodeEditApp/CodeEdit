@@ -48,7 +48,7 @@ struct TabBar: View {
             }
         }
         .background(
-            BlurView(
+            EffectView(
                 material: NSVisualEffectView.Material.titlebar,
                 blendingMode: NSVisualEffectView.BlendingMode.withinWindow
             )

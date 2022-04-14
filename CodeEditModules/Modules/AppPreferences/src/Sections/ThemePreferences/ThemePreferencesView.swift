@@ -67,7 +67,7 @@ public struct ThemePreferencesView: View {
                 SegmentedControl($themeModel.selectedAppearance, options: options)
             }
             if listView {
-                sidebarLisView
+                sidebarListView
             } else {
                 sidebarScrollView
             }
@@ -79,7 +79,7 @@ public struct ThemePreferencesView: View {
         .frame(width: 320)
     }
 
-    private var sidebarLisView: some View {
+    private var sidebarListView: some View {
         List(selection: $themeModel.selectedTheme) {
             ForEach(themeModel.selectedAppearance == 0 ? themeModel.darkThemes : themeModel.lightThemes) { theme in
                 Button(theme.name) { themeModel.selectedTheme = theme }
@@ -129,7 +129,7 @@ public struct ThemePreferencesView: View {
             }
                       .padding(.vertical, 20)
         }
-        .background(Color(NSColor.controlBackgroundColor))
+        .background(EffectView(material: .contentBackground))
     }
 
     private var sidebarBottomToolbar: some View {

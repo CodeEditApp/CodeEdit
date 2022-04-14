@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditUI
 
 struct SourceControlGitView: View {
 
@@ -62,7 +63,7 @@ struct SourceControlGitView: View {
             }
         }
         .frame(height: 350)
-        .background(Color(NSColor.controlBackgroundColor))
+        .background(EffectView(material: .contentBackground))
     }
 
     private var bottomToolbar: some View {

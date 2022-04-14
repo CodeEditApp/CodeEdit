@@ -6,11 +6,11 @@
 //
 
 import SwiftUI
+import CodeEditUI
 
 struct PreferencesToolbar<T: View>: View {
 
     private var height: Double
-    private var bgColor: Color
     private var content: () -> T
 
     init(
@@ -19,14 +19,12 @@ struct PreferencesToolbar<T: View>: View {
         @ViewBuilder content: @escaping () -> T
     ) {
         self.height = height
-        self.bgColor = bgColor
         self.content = content
     }
 
     var body: some View {
         ZStack {
-            Rectangle()
-                .foregroundColor(bgColor)
+            EffectView(material: .contentBackground)
             HStack {
                 content()
                     .padding(.horizontal, 8)

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditUI
 
 // swiftlint:disable for_where
 public struct PreferenceAccountsView: View {
@@ -107,7 +108,7 @@ public struct PreferenceAccountsView: View {
         }
         .padding(.trailing, 20)
         .frame(maxWidth: .infinity)
-        .background(Color(NSColor.controlBackgroundColor))
+        .background(EffectView(material: .contentBackground))
     }
 
     private var sidebarBottomToolbar: some View {
@@ -137,7 +138,7 @@ public struct PreferenceAccountsView: View {
             Text("Click the add (+) button to create a new account")
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(NSColor.controlBackgroundColor))
+        .background(EffectView(material: .contentBackground))
     }
 
     private var selectAccount: some View {
@@ -145,7 +146,7 @@ public struct PreferenceAccountsView: View {
             Text("Select an account from the list in the left panel")
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(NSColor.controlBackgroundColor))
+        .background(EffectView(material: .contentBackground))
     }
 
     private func getSourceControlAccount(selectedAccountId: String) -> SourceControlAccounts? {

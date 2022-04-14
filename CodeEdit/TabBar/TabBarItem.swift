@@ -146,7 +146,7 @@ struct TabBarItem: View {
             action: { workspace.selectionState.selectedId = item.id },
             label: { content }
         )
-        .background(BlurView(
+        .background(EffectView(
             material: NSVisualEffectView.Material.titlebar,
             blendingMode: NSVisualEffectView.BlendingMode.withinWindow
         ))
