@@ -31,7 +31,9 @@ public struct SegmentedControl: View {
             ForEach(options.indices, id: \.self) { index in
                 Text(options[index])
                     .font(.subheadline)
-                    .foregroundColor(preselectedIndex == index ? colorScheme == .dark ? .white : .accentColor : .primary)
+                    .foregroundColor(preselectedIndex == index
+                                     ? colorScheme == .dark ? .white : .accentColor
+                                     : .primary)
                     .frame(height: 16)
                     .padding(.horizontal, 8)
                     .padding(.vertical, 3)
