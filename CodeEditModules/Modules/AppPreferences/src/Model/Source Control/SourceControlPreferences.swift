@@ -40,9 +40,9 @@ public extension AppPreferences {
         /// Indicates whether or not we should include the upsteam
         public var includeUpstreamChanges: Bool = false
         /// The selected value of the comparison view
-        public var comparisonView: Int = 0
+        public var comparisonView: ComparisonView = .localLeft
         /// The selected value of the control navigator
-        public var controlNavigator: Int = 0
+        public var controlNavigator: ControlNavigator = .sortName
         /// The name of the default branch
         public var defaultBranchName: String = "main"
         /// Default initializer
@@ -61,10 +61,28 @@ public extension AppPreferences {
                                                                           forKey: .showSourceControlChanges) ?? true
             self.includeUpstreamChanges = try container.decodeIfPresent(Bool.self,
                                                                         forKey: .includeUpstreamChanges) ?? true
-            self.comparisonView = try container.decodeIfPresent(Int.self, forKey: .comparisonView) ?? 0
-            self.controlNavigator = try container.decodeIfPresent(Int.self, forKey: .controlNavigator) ?? 0
+            self.comparisonView = try container.decodeIfPresent(ComparisonView.self,
+                                                                forKey: .comparisonView) ?? .localLeft
+            self.controlNavigator = try container.decodeIfPresent(ControlNavigator.self,
+                                                                  forKey: .controlNavigator) ?? .sortName
             self.defaultBranchName = try container.decodeIfPresent(String.self, forKey: .defaultBranchName) ?? "main"
         }
+    }
+
+    /// The style for comparison View
+    /// - **localLeft**: Local Revision on Left Side
+    /// - **localRight**: Local Revision on Right Side
+    enum ComparisonView: String, Codable {
+        case localLeft
+        case localRight
+    }
+
+    /// The style for control Navigator
+    /// - **sortName**: They are sorted by Name
+    /// - **sortDate**: They are sorted by Date
+    enum ControlNavigator: String, Codable {
+        case sortName
+        case sortDate
     }
 
     struct SourceControlGit: Codable {

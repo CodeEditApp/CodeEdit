@@ -41,7 +41,7 @@ struct SourceControlGeneralView: View {
             }
 
             PreferencesSection("Text Editing", hideLabels: false) {
-                Toggle("Show Source Control chnages",
+                Toggle("Show Source Control changes",
                        isOn: $prefs.preferences.sourceControl.general.showSourceControlChanges)
                     .toggleStyle(.checkbox)
 
@@ -51,27 +51,31 @@ struct SourceControlGeneralView: View {
                     .padding(.leading, 20)
             }
 
-            PreferencesSection("Comparison View", hideLabels: false) {
-                Menu {
-                    Button("Comparison") {}
-                } label: {
+            PreferencesSection("Comparison View", hideLabels: true) {
+                Picker("Comparison View",
+                       selection: $prefs.preferences.sourceControl.general.comparisonView) {
                     Text("Local Revision on Left Side")
-                        .font(.system(size: 11))
+                        .tag(AppPreferences.ComparisonView.localLeft)
+                    Text("Local Revision on Right Side")
+                        .tag(AppPreferences.ComparisonView.localRight)
                 }
+                .frame(width: 200)
             }
 
-            PreferencesSection("Source Control Navigator", hideLabels: false) {
-                Menu {
-                    Button("Control Navigator") {}
-                } label: {
+            PreferencesSection("Source Control Navigator", hideLabels: true) {
+                Picker("Source Control Navigator",
+                       selection: $prefs.preferences.sourceControl.general.controlNavigator) {
                     Text("Sort by Name")
-                        .font(.system(size: 11))
+                        .tag(AppPreferences.ControlNavigator.sortName)
+                    Text("Sort by Date")
+                        .tag(AppPreferences.ControlNavigator.sortDate)
                 }
+                .frame(width: 200)
             }
 
             PreferencesSection("Default Branch Name", hideLabels: false) {
-                TextField("Text", text: $branchName)
-                    .frame(width: 170)
+                TextField("main", text: $branchName)
+                    .frame(width: 200)
                 Text("Branch names cannot contain spaces, backslashes, or other symbols")
                     .font(.system(size: 12))
                     .foregroundColor(.secondary)
