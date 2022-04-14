@@ -37,6 +37,7 @@ struct SourceControlGitView: View {
                         if prefs.preferences.sourceControl.git.ignoredFiles.isEmpty {
                             Text("No Ignored Files")
                                 .foregroundColor(.secondary)
+                                .font(.system(size: 11))
                         }
                     })
                     .frame(height: 150)
@@ -68,6 +69,7 @@ struct SourceControlGitView: View {
         HStack(spacing: 12) {
             Button {} label: {
                 Image(systemName: "plus")
+                    .foregroundColor(Color.secondary)
             }
             .buttonStyle(.plain)
             Button {} label: {

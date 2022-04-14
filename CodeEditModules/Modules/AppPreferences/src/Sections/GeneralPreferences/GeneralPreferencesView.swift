@@ -30,6 +30,7 @@ public struct GeneralPreferencesView: View {
                 .onChange(of: prefs.preferences.general.appAppearance) { tag in
                     tag.applyAppearance()
                 }
+                .frame(width: 160)
             }
             PreferencesSection("File Icon Style") {
                 Picker("File Icon Style:", selection: $prefs.preferences.general.fileIconStyle) {
@@ -50,6 +51,7 @@ public struct GeneralPreferencesView: View {
                     Text("New Document")
                         .tag(AppPreferences.ReopenBehavior.newDocument)
                 }
+                .frame(width: 160)
             }
             PreferencesSection("Project Navigator Size") {
                 Picker("Project Navigator Size", selection: $prefs.preferences.general.projectNavigatorSize) {
@@ -60,6 +62,7 @@ public struct GeneralPreferencesView: View {
                     Text("Large")
                         .tag(AppPreferences.ProjectNavigatorSize.large)
                 }
+                .frame(width: 160)
             }
         }
     }

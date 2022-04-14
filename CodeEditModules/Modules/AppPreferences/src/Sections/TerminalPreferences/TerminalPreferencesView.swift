@@ -39,6 +39,7 @@ public struct TerminalPreferencesView: View {
             Text("Bash")
                 .tag(AppPreferences.TerminalShell.bash)
         }
+        .frame(width: 150)
     }
 
     private var optionAsMetaToggle: some View {
@@ -56,6 +57,7 @@ public struct TerminalPreferencesView: View {
             Text("Custom")
                 .tag(true)
         }
+        .frame(width: 150)
         if prefs.preferences.terminal.font.customFont {
             FontPicker(
                 "\(prefs.preferences.terminal.font.name) \(prefs.preferences.terminal.font.size)",
