@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// A Button representing a system Help button displaying a question mark symbol.
 public struct HelpButton: View {
     var action : () -> Void
 
