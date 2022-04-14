@@ -74,7 +74,7 @@ public class StatusBarModel: ObservableObject {
 
     /// Search value to filter in drawer
     @Published
-    public var searchText = ""
+    public var searchText: String = ""
 
     /// Returns the font for status bar items to use
     private(set) var toolbarFont: Font = .system(size: 11)
