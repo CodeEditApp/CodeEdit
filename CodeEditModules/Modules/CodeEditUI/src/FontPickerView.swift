@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class FontPickerDelegate {
+final class FontPickerDelegate {
     var parent: FontPicker
 
     init(_ parent: FontPicker) {

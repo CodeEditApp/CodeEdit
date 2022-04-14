@@ -9,7 +9,7 @@ import Foundation
 import Combine
 import ExtensionsStore
 
-class ExtensionNavigatorData: ObservableObject {
+final class ExtensionNavigatorData: ObservableObject {
     @Published var plugins = [Plugin]()
 
     // Tells if all records have been loaded. (Used to hide/show activity spinner)

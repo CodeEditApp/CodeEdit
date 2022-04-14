@@ -9,7 +9,7 @@ import Cocoa
 import SwiftUI
 import AppPreferences
 
-public class CodeEditorTextView: NSTextView {
+public final class CodeEditorTextView: NSTextView {
 
     @StateObject
     private var prefs: AppPreferencesModel = .shared

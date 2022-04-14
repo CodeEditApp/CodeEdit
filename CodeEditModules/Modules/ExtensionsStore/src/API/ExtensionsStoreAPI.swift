@@ -84,7 +84,7 @@ public struct ExtensionsStoreAPI {
     }
 }
 
-class Agent {
+final class Agent {
     func run<T: Decodable>(_ request: URLRequest,
                            _ decoder: JSONDecoder = JSONDecoder()) -> AnyPublisher<Response<T>, Error> {
         return URLSession.shared

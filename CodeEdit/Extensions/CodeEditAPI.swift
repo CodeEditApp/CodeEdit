@@ -8,7 +8,7 @@
 import Foundation
 import CodeEditKit
 
-class CodeEditAPI: ExtensionAPI {
+final class CodeEditAPI: ExtensionAPI {
      var extensionId: String
      var workspace: WorkspaceDocument
 
