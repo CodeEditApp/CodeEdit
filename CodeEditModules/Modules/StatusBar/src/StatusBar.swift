@@ -7,7 +7,7 @@
 
 import SwiftUI
 import GitClient
-import Design
+import CodeEditUI
 
 /// # StatusBarView
 ///
