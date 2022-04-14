@@ -66,12 +66,9 @@ struct GithubLoginView: View {
                     }
                 }.padding(.top, 2)
             }
-            .background(Rectangle().foregroundColor(Color("Logins")))
             .frame(maxWidth: .infinity)
             .padding(.bottom, 10)
             .padding(.top, 10)
-            .background(RoundedRectangle(cornerRadius: 4)
-                .stroke(Color("Stroke"), lineWidth: 1))
 
             HStack {
                 HStack {
