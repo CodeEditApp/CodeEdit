@@ -14,6 +14,8 @@ import GitClone
 public struct WelcomeView: View {
     @Environment(\.colorScheme) var colorScheme
     @State var showGitClone = false
+    @State var showCheckoutBranch = false
+    @State private var repoPath = "~/"
     @State var isHovering: Bool = false
     @State var isHoveringClose: Bool = false
     @StateObject private var prefs: AppPreferencesModel = .shared
@@ -201,7 +203,15 @@ public struct WelcomeView: View {
             }
         }
         .sheet(isPresented: $showGitClone) {
-            GitCloneView(shellClient: .live, isPresented: $showGitClone)
+            GitCloneView(shellClient: .live,
+                         isPresented: $showGitClone,
+                         showCheckout: $showCheckoutBranch,
+                         repoPath: $repoPath)
+        }
+        .sheet(isPresented: $showCheckoutBranch) {
+            CheckoutBranchModal(isPresented: $showCheckoutBranch,
+                                repoPath: $repoPath,
+                                shellClient: .live)
         }
     }
 

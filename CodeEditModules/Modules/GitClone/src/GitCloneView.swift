@@ -13,11 +13,17 @@ import ShellClient
 public struct GitCloneView: View {
     private let shellClient: ShellClient
     @Binding private var isPresented: Bool
+    @Binding private var showCheckout: Bool
+    @Binding private var repoPath: String
     @State private var repoUrlStr = ""
-    @State private var repoPath = "~/"
-    public init(shellClient: ShellClient, isPresented: Binding<Bool>) {
+    public init(shellClient: ShellClient,
+                isPresented: Binding<Bool>,
+                showCheckout: Binding<Bool>,
+                repoPath: Binding<String>) {
         self.shellClient = shellClient
         self._isPresented = isPresented
+        self._showCheckout = showCheckout
+        self._repoPath = repoPath
     }
     public var body: some View {
         VStack(spacing: 8) {
@@ -156,6 +162,7 @@ extension GitCloneView {
                                   shellClient: shellClient).cloneRepository(repoUrlStr)
             // TODO: Maybe add possibility to checkout to certain branch straight after cloning
             isPresented = false
+            showCheckout = true
         } catch {
             guard let error = error as? GitClient.GitClientError else {
                 return showAlert(alertMsg: "Error", infoText: error.localizedDescription)
