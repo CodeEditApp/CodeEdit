@@ -40,9 +40,9 @@ public extension AppPreferences {
         /// Indicates whether or not we should include the upsteam
         public var includeUpstreamChanges: Bool = false
         /// The selected value of the comparison view
-        public var comparisonView: RevisionComparisonLayout = .localLeft
+        public var revisionComparisonLayout: RevisionComparisonLayout = .localLeft
         /// The selected value of the control navigator
-        public var controlNavigator: ControlNavigatorOrder = .sortByName
+        public var controlNavigatorOrder: ControlNavigatorOrder = .sortByName
         /// The name of the default branch
         public var defaultBranchName: String = "main"
         /// Default initializer
@@ -61,10 +61,10 @@ public extension AppPreferences {
                                                                           forKey: .showSourceControlChanges) ?? true
             self.includeUpstreamChanges = try container.decodeIfPresent(Bool.self,
                                                                         forKey: .includeUpstreamChanges) ?? true
-            self.comparisonView = try container.decodeIfPresent(RevisionComparisonLayout.self,
-                                                                forKey: .comparisonView) ?? .localLeft
-            self.controlNavigator = try container.decodeIfPresent(ControlNavigatorOrder.self,
-                                                                  forKey: .controlNavigator) ?? .sortByName
+            self.revisionComparisonLayout = try container.decodeIfPresent(RevisionComparisonLayout.self,
+                                                                forKey: .revisionComparisonLayout) ?? .localLeft
+            self.controlNavigatorOrder = try container.decodeIfPresent(ControlNavigatorOrder.self,
+                                                                  forKey: .controlNavigatorOrder) ?? .sortByName
             self.defaultBranchName = try container.decodeIfPresent(String.self, forKey: .defaultBranchName) ?? "main"
         }
     }

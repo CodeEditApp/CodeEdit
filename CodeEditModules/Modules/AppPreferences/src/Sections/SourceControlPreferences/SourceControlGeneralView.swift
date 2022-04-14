@@ -55,7 +55,7 @@ struct SourceControlGeneralView: View {
 
             PreferencesSection("Comparison View", hideLabels: true) {
                 Picker("Comparison View",
-                       selection: $prefs.preferences.sourceControl.general.comparisonView) {
+                       selection: $prefs.preferences.sourceControl.general.revisionComparisonLayout) {
                     Text("Local Revision on Left Side")
                         .tag(AppPreferences.RevisionComparisonLayout.localLeft)
                     Text("Local Revision on Right Side")
@@ -66,7 +66,7 @@ struct SourceControlGeneralView: View {
 
             PreferencesSection("Source Control Navigator", hideLabels: true) {
                 Picker("Source Control Navigator",
-                       selection: $prefs.preferences.sourceControl.general.controlNavigator) {
+                       selection: $prefs.preferences.sourceControl.general.controlNavigatorOrder) {
                     Text("Sort by Name")
                         .tag(AppPreferences.ControlNavigatorOrder.sortByName)
                     Text("Sort by Date")
