@@ -264,6 +264,7 @@ let package = Package(
             dependencies: [
                 "GitAccounts",
                 "CodeEditUI",
+                "AppPreferences"
             ],
             path: "Modules/Feedback/src"
         ),

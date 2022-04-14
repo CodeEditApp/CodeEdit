@@ -10,15 +10,12 @@ import CodeEditUI
 
 struct FeedbackToolbar<T: View>: View {
 
-    private var height: Double
     private var content: () -> T
 
     init(
-        height: Double = 27,
         bgColor: Color = Color(NSColor.controlBackgroundColor),
         @ViewBuilder content: @escaping () -> T
     ) {
-        self.height = height
         self.content = content
     }
 
