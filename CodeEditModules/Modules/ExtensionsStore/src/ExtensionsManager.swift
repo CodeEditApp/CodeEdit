@@ -11,7 +11,7 @@ import CodeEditKit
 import GRDB
 
 /// Class which handles all extensions (its bundles, instances for each workspace and so on)
-public class ExtensionsManager {
+public final class ExtensionsManager {
     struct PluginWorkspaceKey: Hashable {
         var releaseID: UUID
         var workspace: URL

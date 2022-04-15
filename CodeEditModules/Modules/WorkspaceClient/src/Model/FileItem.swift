@@ -16,7 +16,7 @@ public extension WorkspaceClient {
     }
 
     /// An object containing all necessary information and actions for a specific file in the workspace
-    class FileItem: Identifiable, Codable {
+    final class FileItem: Identifiable, Codable {
 
         public typealias ID = String
 

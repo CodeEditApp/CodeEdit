@@ -7,7 +7,7 @@
 
 import Cocoa
 
-class LineGutter: NSRulerView {
+final class LineGutter: NSRulerView {
     private var _lineIndices: [Int]? {
         didSet {
             DispatchQueue.main.async {
@@ -77,6 +77,7 @@ class LineGutter: NSRulerView {
         needsDisplay = true
     }
 
+    @available(*, unavailable)
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
