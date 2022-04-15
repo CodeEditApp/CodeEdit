@@ -125,16 +125,12 @@ final class OutlineMenu: NSMenu {
     /// Action that opens **Finder** at the items location.
     @objc
     private func showInFinder() {
-        if let item = item {
-            item.showInFinder()
-        }
+        item?.showInFinder()
     }
 
     /// Action that deletes the item.
     @objc
     private func delete() {
-        if let item = item {
-            item.delete()
-        }
+        item?.delete()
     }
 }
