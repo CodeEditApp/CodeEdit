@@ -9,7 +9,7 @@ import SwiftUI
 import WorkspaceClient
 
 /// A subclass of `NSMenu` implementing the contextual menu for the project navigator
-class OutlineMenu: NSMenu {
+final class OutlineMenu: NSMenu {
 
     /// The item to show the contextual menu for
     var item: WorkspaceClient.FileItem?
@@ -21,6 +21,7 @@ class OutlineMenu: NSMenu {
         super.init(title: "Options")
     }
 
+    @available(*, unavailable)
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

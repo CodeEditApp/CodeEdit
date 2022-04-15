@@ -17,7 +17,7 @@ import CodeEditKit
 import ExtensionsStore
 
 @objc(WorkspaceDocument)
-class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
+final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var workspaceClient: WorkspaceClient?
 
     var extensionNavigatorData = ExtensionNavigatorData()
@@ -236,7 +236,7 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
 // MARK: - Search
 
 extension WorkspaceDocument {
-    class SearchState: ObservableObject {
+    final class SearchState: ObservableObject {
         var workspace: WorkspaceDocument
         @Published var searchResult: [SearchResultModel] = []
 

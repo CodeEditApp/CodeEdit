@@ -7,7 +7,7 @@
 
 import Cocoa
 
-public class OverlayPanel: NSPanel, NSWindowDelegate {
+public final class OverlayPanel: NSPanel, NSWindowDelegate {
     public init() {
         super.init(
             contentRect: NSRect(x: 0, y: 0, width: 500, height: 48),
