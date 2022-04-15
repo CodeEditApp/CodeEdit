@@ -42,12 +42,19 @@ struct TabBarItem: View {
 
     @State
     var isPressingClose: Bool = false
+    
+    @State
+    var isAppeared: Bool = false
 
     var item: WorkspaceClient.FileItem
     var windowController: NSWindowController
 
-    func closeAction () {
-        withAnimation {
+    func switchAction() {
+        workspace.selectionState.selectedId = item.id
+    }
+    
+    func closeAction() {
+        withAnimation(.easeOut(duration: 0.12)) {
             workspace.closeFileTab(item: item)
         }
     }
@@ -84,7 +91,7 @@ struct TabBarItem: View {
                             .frame(width: 16, height: 16)
                             .contentShape(Rectangle())
                     }
-                    .buttonStyle(PlainButtonStyle())
+                    .buttonStyle(.borderless)
                     .foregroundColor(isPressingClose ? .primary : .secondary)
                     .background(colorScheme == .dark
                         ? Color(nsColor: .white).opacity(isPressingClose ? 0.32 : isHoveringClose ? 0.18 : 0)
@@ -101,7 +108,7 @@ struct TabBarItem: View {
                         isPressingClose = false
                     }
                     .opacity(isHovering ? 1 : 0)
-                    .animation(.easeInOut(duration: 0.15), value: isHovering)
+                    .animation(.easeInOut(duration: 0.08), value: isHovering)
                 }
                 Image(systemName: item.systemImage)
                     .resizable()
@@ -122,9 +129,9 @@ struct TabBarItem: View {
                     .opacity(
                         colorScheme == .dark
                             ? isHovering ? 0.15 : 0.45
-                            : isHovering ? 0.15 : 0.05
+                            : isHovering ? 0.10 : 0.05
                     )
-                    .animation(.easeInOut(duration: 0.15), value: isHovering)
+                    .animation(.easeInOut(duration: 0.08), value: isHovering)
             )
             TabDivider()
         }
@@ -141,38 +148,54 @@ struct TabBarItem: View {
             }
         }
     }
+    
+    // I am not using Button for wrapping content because Button will potentially have conflict with the inner close Button when the style of this Button is not set to `plain`. And based on the design of CodeEdit, plain style is not an expected choice, so I eventually come up with this solution for now.
+    // It is possible to make a customized Button (which may solve the clicking conflict, but I am not sure). I will try that in the future.
     var body: some View {
-        Button(
-            action: { workspace.selectionState.selectedId = item.id },
-            label: { content }
-        )
-        .background(EffectView(
-            material: NSVisualEffectView.Material.titlebar,
-            blendingMode: NSVisualEffectView.BlendingMode.withinWindow
-        ))
-        .buttonStyle(.plain)
-        .id(item.id)
-        .keyboardShortcut(
-            workspace.getTabKeyEquivalent(item: item),
-            modifiers: [.command]
-        )
-        .contextMenu {
-            Button("Close Tab") {
-                withAnimation {
-                    workspace.closeFileTab(item: item)
+        content
+            .overlay(
+                // Use hidden button to keep the behavior of tab shortcut.
+                Button(action: switchAction) {
+                    EmptyView().hidden()
+                }
+                .frame(width: 0, height: 0)
+                .padding(0)
+                .opacity(0)
+                .keyboardShortcut(
+                    workspace.getTabKeyEquivalent(item: item),
+                    modifiers: [.command]
+                )
+            )
+            .background(EffectView(
+                material: NSVisualEffectView.Material.titlebar,
+                blendingMode: NSVisualEffectView.BlendingMode.withinWindow
+            ))
+            .onTapGesture(perform: switchAction) // The click event now goes to here.
+            .offset(x: isAppeared ? 0 : -18, y: 0)
+            .opacity(isAppeared ? 1.0 : 0.0)
+            .onAppear {
+                withAnimation(.easeOut(duration: 0.16)) {
+                    isAppeared = true
                 }
             }
-            Button("Close Other Tabs") {
-                withAnimation {
-                    workspace.closeFileTab(where: { $0.id != item.id })
+            .id(item.id)
+            .contextMenu {
+                Button("Close Tab") {
+                    withAnimation {
+                        workspace.closeFileTab(item: item)
+                    }
+                }
+                Button("Close Other Tabs") {
+                    withAnimation {
+                        workspace.closeFileTab(where: { $0.id != item.id })
+                    }
+                }
+                Button("Close Tabs to the Right") {
+                    withAnimation {
+                        workspace.closeFileTabs(after: item)
+                    }
                 }
             }
-            Button("Close Tabs to the Right") {
-                withAnimation {
-                    workspace.closeFileTabs(after: item)
-                }
-            }
-        }
     }
 }
 
