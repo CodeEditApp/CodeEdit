@@ -101,7 +101,7 @@ public struct FeedbackView: View {
                 }
                 Picker("", selection: $feedbackModel.issueAreaListSelection) {
                     ForEach(feedbackModel.issueAreaList) {
-                        if $0.id == "none" {
+                        if feedbackModel.issueAreaListSelection == "none" {
                             Text($0.name)
                                 .tag($0.id)
                                 .foregroundColor(.secondary)
@@ -127,7 +127,7 @@ public struct FeedbackView: View {
                 }
                 Picker("", selection: $feedbackModel.feedbackTypeListSelection) {
                     ForEach(feedbackModel.feedbackTypeList) {
-                        if $0.id == "none" {
+                        if feedbackModel.feedbackTypeListSelection == "none" {
                             Text($0.name)
                                 .tag($0.id)
                                 .foregroundColor(.secondary)
@@ -164,6 +164,7 @@ public struct FeedbackView: View {
                 }
                 TextEditor(text: $feedbackModel.issueDescription)
                            .frame(minHeight: 127, alignment: .leading)
+                           .border(Color(NSColor.separatorColor))
                 Text("Example: CodeEdit crashes when the autocomplete popup appears on screen.")
                     .font(.system(size: 10))
                     .foregroundColor(.secondary)
@@ -174,6 +175,7 @@ public struct FeedbackView: View {
                 Text("Please list the steps you took to reproduce the issue:")
                 TextEditor(text: $feedbackModel.stepsReproduceDescription)
                            .frame(minHeight: 60, alignment: .leading)
+                           .border(Color(NSColor.separatorColor))
                 Text("Example:")
                     .font(.system(size: 10))
                     .foregroundColor(.secondary)
@@ -190,6 +192,7 @@ public struct FeedbackView: View {
                 Text("What did you expect to happen?")
                 TextEditor(text: $feedbackModel.expectationDescription)
                            .frame(minHeight: 60, alignment: .leading)
+                           .border(Color(NSColor.separatorColor))
                 Text("Example: I expected autocomplete to show me a list of headers.")
                     .font(.system(size: 10))
                     .foregroundColor(.secondary)
@@ -201,6 +204,7 @@ public struct FeedbackView: View {
                 Text("What actually happened?")
                 TextEditor(text: $feedbackModel.whatHappenedDescription)
                            .frame(minHeight: 60, alignment: .leading)
+                           .border(Color(NSColor.separatorColor))
                 Text("Example: The autocomplete window flickered on screen and CodeEdit crashed. See attached crashlog.")
                     .font(.system(size: 10))
                     .foregroundColor(.secondary)
