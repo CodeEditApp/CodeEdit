@@ -11,6 +11,7 @@ import Preferences
 import About
 import WelcomeModule
 import ExtensionsStore
+import Feedback
 
 final class CodeEditApplication: NSApplication {
     let strongDelegate = AppDelegate()
@@ -167,6 +168,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 
     @IBAction func openAbout(_ sender: Any) {
         AboutView().showWindow(width: 530, height: 220)
+    }
+
+    @IBAction func openFeedback(_ sender: Any) {
+        FeedbackView().showWindow()
     }
 
     // MARK: - Preferences
