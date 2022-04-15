@@ -178,6 +178,15 @@
         "code",
         "bug"
       ]
+    },
+    {
+      "login": "richardtop",
+      "name": "Richard Topchii",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8013017?v=4",
+      "profile": "https://www.youtube.com/channel/UCx1gvWpy5zjOd7yZyDwmXEA?sub_confirmation=1",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
