@@ -59,6 +59,7 @@ public struct CheckoutBranchModal: View {
                         Button("Checkout") {
                             checkoutBranch()
                         }
+                        .keyboardShortcut(.defaultAction)
                     }
                     .alignmentGuide(.leading) { context in
                         context[.leading]
