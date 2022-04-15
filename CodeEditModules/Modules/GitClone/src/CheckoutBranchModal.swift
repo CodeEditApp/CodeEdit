@@ -61,14 +61,16 @@ public struct CheckoutBranchModal: View {
                         }
                         .keyboardShortcut(.defaultAction)
                     }
-                    .alignmentGuide(.leading) { context in
-                        context[.leading]
+                    .alignmentGuide(.trailing) { context in
+                        context[.trailing]
                     }
+                    .offset(x: 145)
                 }
             }
             .padding(.top, 20)
             .padding(.horizontal, 20)
             .padding(.bottom, 16)
+            .frame(width: 400)
         }
     }
 }
@@ -88,7 +90,7 @@ extension CheckoutBranchModal {
     }
     func checkoutBranch() {
         var parsedBranch = selectedBranch
-        if selectedBranch.contains("origin/") {
+        if selectedBranch.contains("origin/") || selectedBranch.contains("upstream/") {
             parsedBranch = selectedBranch.components(separatedBy: "/")[1]
         }
         do {
