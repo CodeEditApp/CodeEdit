@@ -80,17 +80,21 @@ extension CheckoutBranchModal {
         }
         do {
             let branches = try GitClient.default(directoryURL: url,
-                                  shellClient: shellClient).getBranches()
+                                                 shellClient: shellClient).getBranches(true)
             return branches
         } catch {
             return [""]
         }
     }
     func checkoutBranch() {
+        var parsedBranch = selectedBranch
+        if selectedBranch.contains("origin/") {
+            parsedBranch = selectedBranch.components(separatedBy: "/")[1]
+        }
         do {
             if let url = URL(string: repoPath) {
                 try GitClient.default(directoryURL: url,
-                                      shellClient: shellClient).checkoutBranch(selectedBranch)
+                                      shellClient: shellClient).checkoutBranch(parsedBranch)
                 isPresented = false
             }
         } catch {
