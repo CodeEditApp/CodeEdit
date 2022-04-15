@@ -73,15 +73,32 @@ public final class CodeEditorTextView: NSTextView {
         "{": "}",
         "[": "]",
         "\"": "\"",
+        "\'": "\'"
     ]
+
+    /// Autocompletes if symbol is auto pair
+    private func autocompleteSymbols(_ symbol: String) {
+        guard let end = autoPairs[symbol]
+        else { return }
+
+        if prefs.preferences.textEditing.autocompleteBraces && symbol == "{" {
+            super.insertText(end, replacementRange: selectedRange())
+            super.moveBackward(self)
+            return
+        }
+
+        guard prefs.preferences.textEditing.enableTypeOverCompletion, symbol != "{"
+        else { return }
+
+        super.insertText(end, replacementRange: selectedRange())
+        super.moveBackward(self)
+    }
 
     public override func insertText(_ string: Any, replacementRange: NSRange) {
         super.insertText(string, replacementRange: replacementRange)
-        guard let string = string as? String,
-              let end = autoPairs[string]
+        guard let string = string as? String
         else { return }
-        super.insertText(end, replacementRange: selectedRange())
-        super.moveBackward(self)
+        self.autocompleteSymbols(string)
     }
 
     public override func insertTab(_ sender: Any?) {
