@@ -74,7 +74,8 @@ public final class ExtensionsManager {
 
         loadedLanguageServers.filter { elem in
             return elem.key.workspace == url
-        }.forEach { (key: PluginWorkspaceKey, _) in
+        }.forEach { (key: PluginWorkspaceKey, client: LSPClient) in
+            client.close()
             loadedLanguageServers.removeValue(forKey: key)
         }
     }
@@ -118,7 +119,9 @@ public final class ExtensionsManager {
                 return nil
             }
 
-            return LSPClient(lspURL, workspace: workspaceURL)
+            return try LSPClient(lspURL,
+                                 workspace: workspaceURL,
+                                 arguments: loadedBundles[id]?.infoDictionary?["CELSPArguments"] as? [String])
         }
 
         guard let bundle = try loadBundle(id: id, withExtension: "celsp") else {
@@ -133,7 +136,9 @@ public final class ExtensionsManager {
             return nil
         }
 
-        return LSPClient(lspURL, workspace: workspaceURL)
+        return try LSPClient(lspURL,
+                             workspace: workspaceURL,
+                             arguments: loadedBundles[id]?.infoDictionary?["CELSPArguments"] as? [String])
     }
 
     /// Preloads all extensions' bundles to `loadedBundles`
@@ -269,8 +274,9 @@ public final class ExtensionsManager {
 
         loadedLanguageServers.filter { elem in
             return elem.key.releaseID == entry.release
-        }.forEach { (key: PluginWorkspaceKey, _) in
-            loadedPlugins.removeValue(forKey: key)
+        }.forEach { (key: PluginWorkspaceKey, client: LSPClient) in
+            client.close()
+            loadedLanguageServers.removeValue(forKey: key)
         }
     }
 
