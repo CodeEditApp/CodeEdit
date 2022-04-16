@@ -212,6 +212,7 @@ public final class ExtensionsManager {
             )
             .appendingPathComponent("\(release.id.uuidString).tar")
 
+        // TODO: show progress
         let (source, _) = try await URLSession.shared.download(from: tarball)
 
         if FileManager.default.fileExists(atPath: cacheTar.path) {

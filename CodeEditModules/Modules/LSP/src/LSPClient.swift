@@ -20,6 +20,7 @@ public class LSPClient {
     ///   - arguments: Additional arguments from `CELSPArguments` in `Info.plist` of the Language Server bundle
     public init(_ executable: URL, workspace: URL, arguments: [String]?) throws {
         self.executable = executable
+        try FileManager.default.setAttributes([.posixPermissions: 0o555], ofItemAtPath: self.executable.path)
         self.workspace = workspace
         self.process = try Process.run(executable, arguments: arguments ?? ["--stdio"], terminationHandler: nil)
     }
