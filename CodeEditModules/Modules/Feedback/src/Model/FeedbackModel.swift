@@ -134,7 +134,7 @@ public class FeedbackModel: ObservableObject {
                             steps: String?,
                             expectation: String?,
                             actuallyHappened: String?) {
-        let config = GithubTokenConfiguration("") // Token needs to fetched from keychain
+        let config = GithubTokenConfiguration("") // TODO: Token needs to fetched from keychain
         GithubAccount(config).postIssue(owner: "CodeEditApp",
                                   repository: "CodeEdit",
                                   title: "\(getFeebackTypeTitle()) \(title)",
