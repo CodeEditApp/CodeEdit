@@ -13,7 +13,7 @@ struct AccountListItem: View {
 
     var body: some View {
         HStack {
-            Image(systemName: "xmark.square.fill")
+            Image("vault.fill")
                 .resizable()
                 .frame(width: 28.0, height: 28.0)
             Text(gitClientName)

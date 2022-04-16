@@ -14,7 +14,7 @@ struct GitAccountItem: View {
 
     var body: some View {
         HStack {
-            Image(systemName: "xmark.square.fill")
+            Image("vault.fill")
                 .resizable()
                 .frame(width: 24.0, height: 24.0)
 
