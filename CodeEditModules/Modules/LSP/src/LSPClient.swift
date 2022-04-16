@@ -9,7 +9,7 @@ import Foundation
 
 /// A LSP client to handle Language Server process
 public class LSPClient {
-    var exec: URL
+    var executable: URL
     var workspace: URL
     var process: Process
 
@@ -19,7 +19,7 @@ public class LSPClient {
     ///   - workspace: Workspace's URL
     ///   - arguments: Additional arguments from `CELSPArguments` in `Info.plist` of the Language Server bundle
     public init(_ executable: URL, workspace: URL, arguments: [String]?) throws {
-        self.exec = executable
+        self.executable = executable
         self.workspace = workspace
         self.process = try Process.run(executable, arguments: arguments ?? ["--stdio"], terminationHandler: nil)
     }
