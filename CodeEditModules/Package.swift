@@ -247,7 +247,8 @@ let package = Package(
             dependencies: [
                 "CodeEditKit",
                 "Light-Swift-Untar",
-                .productItem(name: "GRDB", package: "GRDB.swift", condition: nil)
+                .productItem(name: "GRDB", package: "GRDB.swift", condition: nil),
+                "LSP"
             ],
             path: "Modules/ExtensionsStore/src"
         ),
@@ -267,6 +268,10 @@ let package = Package(
                 "AppPreferences"
             ],
             path: "Modules/Feedback/src"
+        ),
+        .target(
+            name: "LSP",
+            path: "Modules/LSP/src"
         ),
     ]
 )
