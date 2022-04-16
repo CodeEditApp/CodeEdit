@@ -9,6 +9,7 @@ import Foundation
 import Light_Swift_Untar
 import CodeEditKit
 import GRDB
+import LSP
 
 /// Class which handles all extensions (its bundles, instances for each workspace and so on)
 public final class ExtensionsManager {
@@ -28,6 +29,7 @@ public final class ExtensionsManager {
 
     var loadedBundles: [UUID: Bundle] = [:]
     var loadedPlugins: [PluginWorkspaceKey: ExtensionInterface] = [:]
+    var loadedLanguageServers: [PluginWorkspaceKey: LSPClient] = [:]
 
     init() throws {
         self.codeeditFolder = try FileManager.default
@@ -53,6 +55,11 @@ public final class ExtensionsManager {
                 table.column("loadable", .boolean)
             }
         }
+        migrator.registerMigration("v1.0.1") { database in
+            try database.alter(table: DownloadedPlugin.databaseTableName) { body in
+                body.add(column: "sdk", .text).defaults(to: "swift")
+            }
+        }
         try migrator.migrate(self.dbQueue)
     }
 
@@ -64,6 +71,28 @@ public final class ExtensionsManager {
         }.forEach { (key: PluginWorkspaceKey, _) in
             loadedPlugins.removeValue(forKey: key)
         }
+
+        loadedLanguageServers.filter { elem in
+            return elem.key.workspace == url
+        }.forEach { (key: PluginWorkspaceKey, client: LSPClient) in
+            client.close()
+            loadedLanguageServers.removeValue(forKey: key)
+        }
+    }
+
+    private func loadBundle(id: UUID, withExtension ext: String) throws -> Bundle? {
+        guard let bundleURL = try FileManager.default.contentsOfDirectory(
+            at: extensionsFolder.appendingPathComponent(id.uuidString,
+                                                        isDirectory: true),
+            includingPropertiesForKeys: nil,
+            options: .skipsPackageDescendants
+        ).first(where: {$0.pathExtension == ext}) else { return nil }
+
+        guard let bundle = Bundle(url: bundleURL) else { return nil }
+
+        loadedBundles[id] = bundle
+
+        return bundle
     }
 
     private func getExtensionBuilder(id: UUID) throws -> ExtensionBuilder.Type? {
@@ -71,21 +100,45 @@ public final class ExtensionsManager {
             return loadedBundles[id]?.principalClass as? ExtensionBuilder.Type
         }
 
-        guard let bundleURL = try FileManager.default.contentsOfDirectory(
-            at: extensionsFolder.appendingPathComponent(id.uuidString,
-                                                        isDirectory: true),
-            includingPropertiesForKeys: nil,
-            options: .skipsPackageDescendants
-        ).first else { return nil }
-
-        guard bundleURL.pathExtension == "ceext" else { return nil }
-        guard let bundle = Bundle(url: bundleURL) else { return nil }
+        guard let bundle = try loadBundle(id: id, withExtension: "ceext") else {
+            return nil
+        }
 
         guard bundle.load() else { return nil }
 
-        loadedBundles[id] = bundle
-
         return bundle.principalClass as? ExtensionBuilder.Type
+    }
+
+    private func getLSPClient(id: UUID, workspaceURL: URL) throws -> LSPClient? {
+        if loadedBundles.keys.contains(id) {
+            guard let lspFile = loadedBundles[id]?.infoDictionary?["CELSPExecutable"] as? String else {
+                return nil
+            }
+
+            guard let lspURL = loadedBundles[id]?.url(forResource: lspFile, withExtension: nil) else {
+                return nil
+            }
+
+            return try LSPClient(lspURL,
+                                 workspace: workspaceURL,
+                                 arguments: loadedBundles[id]?.infoDictionary?["CELSPArguments"] as? [String])
+        }
+
+        guard let bundle = try loadBundle(id: id, withExtension: "celsp") else {
+            return nil
+        }
+
+        guard let lspFile = bundle.infoDictionary?["CELSPExecutable"] as? String else {
+            return nil
+        }
+
+        guard let lspURL = bundle.url(forResource: lspFile, withExtension: nil) else {
+            return nil
+        }
+
+        return try LSPClient(lspURL,
+                             workspace: workspaceURL,
+                             arguments: loadedBundles[id]?.infoDictionary?["CELSPArguments"] as? [String])
     }
 
     /// Preloads all extensions' bundles to `loadedBundles`
@@ -95,27 +148,42 @@ public final class ExtensionsManager {
         }
 
         try plugins.forEach { plugin in
-            _ = try getExtensionBuilder(id: plugin.release)
+            switch plugin.sdk {
+            case .swift:
+                _ = try loadBundle(id: plugin.release, withExtension: "ceext")
+            case .languageServer:
+                _ = try loadBundle(id: plugin.release, withExtension: "celsp")
+            }
         }
     }
 
-    /// Loads extensions' bundles which were not loaded before and creates `ExtensionInterface` instances
-    /// with `ExtensionAPI` created using specified initializer
-    /// - Parameter apiInitializer: function which creates `ExtensionAPI` instance based on plugin's ID
-    public func load(_ apiInitializer: (String) -> ExtensionAPI) throws {
+    /// Loads extensions' bundles which were not loaded before and passes `ExtensionAPI` as a whole class
+    /// or workspace's URL
+    /// - Parameter apiBuilder: function which creates `ExtensionAPI` instance based on plugin's ID
+    public func load(_ apiBuilder: (String) -> ExtensionAPI) throws {
         let plugins = try self.dbQueue.read { database in
-            try DownloadedPlugin.filter(Column("loadable") == true).fetchAll(database)
+            try DownloadedPlugin
+                .filter(Column("loadable") == true)
+                .fetchAll(database)
         }
 
         try plugins.forEach { plugin in
-            guard let builder = try getExtensionBuilder(id: plugin.release) else {
-                return
-            }
-
-            let api = apiInitializer(plugin.plugin.uuidString)
-
+            let api = apiBuilder(plugin.plugin.uuidString)
             let key = PluginWorkspaceKey(releaseID: plugin.release, workspace: api.workspaceURL)
-            loadedPlugins[key] = builder.init().build(withAPI: api)
+
+            switch plugin.sdk {
+            case .swift:
+                guard let builder = try getExtensionBuilder(id: plugin.release) else {
+                    return
+                }
+
+                loadedPlugins[key] = builder.init().build(withAPI: api)
+            case .languageServer:
+                guard let client = try getLSPClient(id: plugin.release, workspaceURL: api.workspaceURL) else {
+                    return
+                }
+                loadedLanguageServers[key] = client
+            }
         }
     }
 
@@ -144,6 +212,7 @@ public final class ExtensionsManager {
             )
             .appendingPathComponent("\(release.id.uuidString).tar")
 
+        // TODO: show progress
         let (source, _) = try await URLSession.shared.download(from: tarball)
 
         if FileManager.default.fileExists(atPath: cacheTar.path) {
@@ -168,7 +237,7 @@ public final class ExtensionsManager {
         // save to db
 
         try await dbQueue.write { database in
-            try DownloadedPlugin(plugin: plugin.id, release: release.id, loadable: true)
+            try DownloadedPlugin(plugin: plugin.id, release: release.id, loadable: true, sdk: plugin.sdk)
                 .insert(database)
         }
     }
@@ -202,6 +271,13 @@ public final class ExtensionsManager {
             return elem.key.releaseID == entry.release
         }.forEach { (key: PluginWorkspaceKey, _) in
             loadedPlugins.removeValue(forKey: key)
+        }
+
+        loadedLanguageServers.filter { elem in
+            return elem.key.releaseID == entry.release
+        }.forEach { (key: PluginWorkspaceKey, client: LSPClient) in
+            client.close()
+            loadedLanguageServers.removeValue(forKey: key)
         }
     }
 
