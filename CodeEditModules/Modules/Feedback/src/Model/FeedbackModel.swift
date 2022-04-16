@@ -159,8 +159,13 @@ public class FeedbackModel: ObservableObject {
                                   labels: [getFeebackTypeLabel(), getIssueLabel()]) { response in
             switch response {
             case .success(let issue):
+                if self.prefs.preferences.sourceControl.general.openFeedbackInBrowser {
+                    self.openIssueURL(issue.htmlURL ?? URL(string: "https://github.com/CodeEditApp/CodeEdit/issues")!)
+                }
+                self.isSubmitted.toggle()
                 print(issue)
             case .failure(let error):
+                self.failedToSubmit.toggle()
                 print(error)
             }
         }
