@@ -39,6 +39,11 @@ public struct FeedbackView: View {
             FeedbackToolbar {
                 HelpButton(action: {})
                 Spacer()
+                if feedbackModel.isSubmitted {
+                    Text("Feedback submitted")
+                } else if feedbackModel.failedToSubmit {
+                    Text("Failed to submit feedback")
+                }
                 Button {
                     feedbackModel.createIssue(title: feedbackModel.feedbackTitle,
                                               description: feedbackModel.issueDescription,

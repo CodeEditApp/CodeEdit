@@ -7,11 +7,20 @@
 
 import SwiftUI
 import GitAccounts
+import AppPreferences
 
 public class FeedbackModel: ObservableObject {
 
     public static let shared: FeedbackModel = .init()
 
+    var prefs: AppPreferencesModel = .shared
+
+    @Environment(\.openURL) var openIssueURL
+
+    @Published
+    var isSubmitted: Bool = false
+    @Published
+    var failedToSubmit: Bool = false
     @Published
     var feedbackTitle: String = ""
     @Published
@@ -146,8 +155,13 @@ public class FeedbackModel: ObservableObject {
                                   labels: [getFeebackTypeLabel(), getIssueLabel()]) { response in
             switch response {
             case .success(let issue):
+                if self.prefs.preferences.sourceControl.general.openFeedbackInBrowser {
+                    self.openIssueURL(issue.htmlURL ?? URL(string: "https://github.com/CodeEditApp/CodeEdit/issues")!)
+                }
+                self.isSubmitted.toggle()
                 print(issue)
             case .failure(let error):
+                self.failedToSubmit.toggle()
                 print(error)
             }
         }
