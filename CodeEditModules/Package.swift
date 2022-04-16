@@ -77,6 +77,10 @@ let package = Package(
             name: "Feedback",
             targets: ["Feedback"]
         ),
+        .library(
+            name: "CodeEditUtils",
+            targets: ["CodeEditUtils"]
+        ),
     ],
     dependencies: [
         .package(
@@ -217,7 +221,8 @@ let package = Package(
             dependencies: [
                 "Preferences",
                 "CodeEditUI",
-                "GitAccounts"
+                "GitAccounts",
+                "CodeEditUtils",
             ],
             path: "Modules/AppPreferences/src"
         ),
@@ -265,13 +270,20 @@ let package = Package(
             dependencies: [
                 "GitAccounts",
                 "CodeEditUI",
-                "AppPreferences"
+                "AppPreferences",
+                "CodeEditUtils",
             ],
             path: "Modules/Feedback/src"
         ),
         .target(
             name: "LSP",
             path: "Modules/LSP/src"
+
+        ),
+        .target(
+            name: "CodeEditUtils",
+            path: "Modules/CodeEditUtils/src"
+
         ),
     ]
 )
