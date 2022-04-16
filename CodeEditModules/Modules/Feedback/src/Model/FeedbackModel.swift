@@ -8,12 +8,14 @@
 import SwiftUI
 import GitAccounts
 import AppPreferences
+import CodeEditUtils
 
 public class FeedbackModel: ObservableObject {
 
     public static let shared: FeedbackModel = .init()
 
-    var prefs: AppPreferencesModel = .shared
+    private var prefs: AppPreferencesModel = .shared
+    private let keychain = CodeEditKeychain()
 
     @Environment(\.openURL) var openIssueURL
 
@@ -137,13 +139,15 @@ public class FeedbackModel: ObservableObject {
         """
     }
 
-    /// Still need to add support for saving tokens in the keychain
     public func createIssue(title: String,
                             description: String,
                             steps: String?,
                             expectation: String?,
                             actuallyHappened: String?) {
-        let config = GithubTokenConfiguration("") // TODO: Token needs to fetched from keychain
+        let gitAccounts = prefs.preferences.accounts.sourceControlAccounts.gitAccount
+        let firstGitAccount = gitAccounts.first
+
+        let config = GithubTokenConfiguration(keychain.get(firstGitAccount!.gitAccountName))
         GithubAccount(config).postIssue(owner: "CodeEditApp",
                                   repository: "CodeEdit",
                                   title: "\(getFeebackTypeTitle()) \(title)",
