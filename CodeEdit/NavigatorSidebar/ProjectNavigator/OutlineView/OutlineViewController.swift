@@ -115,8 +115,10 @@ extension OutlineViewController: NSOutlineViewDataSource {
     func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
         if let item = item as? Item,
            let children = item.children {
+            print("return child \(children[index].url): \(index)")
             return children[index]
         }
+        print("return content \(content[index].url): \(index)")
         return content[index]
     }
 
@@ -148,12 +150,12 @@ extension OutlineViewController: NSOutlineViewDataSource {
     
     func outlineView(_ outlineView: NSOutlineView, acceptDrop info: NSDraggingInfo, item: Any?, childIndex index: Int) -> Bool {
         guard index != -1, let items = info.draggingPasteboard.pasteboardItems, items.count > 0, let movingItem = item as? Item, var itemChildren = movingItem.children else { return false }
-        print("itemChildren before: \(itemChildren)")
+        
         let fileNames = items.compactMap { $0.string(forType: .fileURL) }
         var fileNameSet = Set(fileNames)
         let movedItems = itemChildren.filter { !fileNameSet.insert($0.url.absoluteString).inserted }
+        print(movedItems)
         itemChildren.insert(contentsOf: movedItems, at: index)
-        print("itemChildren after: \(itemChildren)")
         return true
     }
 }

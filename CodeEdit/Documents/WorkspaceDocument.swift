@@ -206,7 +206,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
                     }
                 }
                 let selectionStateFile = projectDir.appendingPathComponent("selection.json", isDirectory: false)
-                let sidebarOrderState = projectDir.appendingPathComponent("file-order.json", isDirectory: false)
+                let fileOrderStateFile = projectDir.appendingPathComponent("file-order.json", isDirectory: false)
                 
                 let data = try JSONEncoder().encode(selectionState)
                 let fileData = try JSONEncoder().encode(fileOrderState)
@@ -218,12 +218,12 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
                 }
                 try data.write(to: selectionStateFile)
                 
-                if FileManager.default.fileExists(atPath: sidebarOrderState.path) {
+                if FileManager.default.fileExists(atPath: fileOrderStateFile.path) {
                     do {
-                        try FileManager.default.removeItem(at: sidebarOrderState)
+                        try FileManager.default.removeItem(at: fileOrderStateFile)
                     }
                 }
-                try fileData.write(to: sidebarOrderState)
+                try fileData.write(to: fileOrderStateFile)
                 
             } catch let error {
                 Swift.print(error)
