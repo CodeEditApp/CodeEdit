@@ -85,43 +85,6 @@ struct TabBarItem: View {
                     isActive && prefs.preferences.general.tabBarStyle == .xcode ? 0.0 : 1.0
                 )
             HStack(alignment: .center, spacing: 5) {
-                ZStack {
-                    if isActive {
-                        // Create a hidden button, if the tab is selected
-                        // and hide the button in the ZStack.
-                        Button(action: closeAction) {
-                            Text("").hidden()
-                        }
-                        .frame(width: 0, height: 0)
-                        .padding(0)
-                        .opacity(0)
-                        .keyboardShortcut("w", modifiers: [.command])
-                    }
-                    Button(action: closeAction) {
-                        Image(systemName: "xmark")
-                            .font(.system(size: 9.5, weight: .medium, design: .rounded))
-                            .frame(width: 16, height: 16)
-                            .contentShape(Rectangle())
-                    }
-                    .buttonStyle(.borderless)
-                    .foregroundColor(isPressingClose ? .primary : .secondary)
-                    .background(colorScheme == .dark
-                        ? Color(nsColor: .white).opacity(isPressingClose ? 0.32 : isHoveringClose ? 0.18 : 0)
-                        : Color(nsColor: .black).opacity(isPressingClose ? 0.29 : isHoveringClose ? 0.11 : 0)
-                    )
-                    .cornerRadius(2)
-                    .accessibilityLabel(Text("Close"))
-                    .onHover { hover in
-                        isHoveringClose = hover
-                    }
-                    .pressAction {
-                        isPressingClose = true
-                    } onRelease: {
-                        isPressingClose = false
-                    }
-                    .opacity(isHovering ? 1 : 0)
-                    .animation(.easeInOut(duration: 0.08), value: isHovering)
-                }
                 Image(systemName: item.systemImage)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
@@ -134,8 +97,75 @@ struct TabBarItem: View {
                     .lineLimit(1)
             }
             .frame(height: 28)
-            .padding(.leading, 4)
-            .padding(.trailing, 28)
+            .padding(.horizontal, prefs.preferences.general.tabBarStyle == .native ? 28 : 23.5)
+            .overlay {
+                if isActive {
+                    // Create a hidden button, if the tab is selected
+                    // and hide the button in the ZStack.
+                    Button(action: closeAction) {
+                        Text("").hidden()
+                    }
+                    .frame(width: 0, height: 0)
+                    .padding(0)
+                    .opacity(0)
+                    .keyboardShortcut("w", modifiers: [.command])
+                }
+                Button(action: closeAction) {
+                    if prefs.preferences.general.tabBarStyle == .xcode {
+                        Image(systemName: "xmark")
+                            .font(.system(size: 11.2, weight: .regular, design: .rounded))
+                            .frame(width: 16, height: 16)
+                            .foregroundColor(
+                                isActive
+                                ? (
+                                    colorScheme == .dark
+                                    ? .primary
+                                    : Color(nsColor: .controlAccentColor)
+                                )
+                                : .secondary.opacity(0.80)
+                            )
+                    } else {
+                        Image(systemName: "xmark")
+                            .font(.system(size: 9.5, weight: .medium, design: .rounded))
+                            .frame(width: 16, height: 16)
+                    }
+                }
+                .buttonStyle(.borderless)
+                .foregroundColor(isPressingClose ? .primary : .secondary)
+                .background(
+                    colorScheme == .dark
+                    ? Color(nsColor: .white).opacity(isPressingClose ? 0.32 : isHoveringClose ? 0.18 : 0)
+                    : (
+                        prefs.preferences.general.tabBarStyle == .xcode
+                        ? Color(nsColor: isActive ? .controlAccentColor : .black)
+                            .opacity(
+                                isPressingClose
+                                ? 0.25
+                                : (isHoveringClose ? (isActive ? 0.10 : 0.06) : 0)
+                            )
+                        : Color(nsColor: .black)
+                            .opacity(
+                                isPressingClose
+                                ? 0.29
+                                : (isHoveringClose ? 0.11 : 0)
+                            )
+                    )
+                )
+                .cornerRadius(2)
+                .accessibilityLabel(Text("Close"))
+                .onHover { hover in
+                    isHoveringClose = hover
+                }
+                .pressAction {
+                    isPressingClose = true
+                } onRelease: {
+                    isPressingClose = false
+                }
+                .opacity(isHovering ? 1 : 0)
+                .animation(.easeInOut(duration: 0.08), value: isHovering)
+                .padding(.leading, prefs.preferences.general.tabBarStyle == .xcode ? 3.5 : 4)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            }
             TabDivider()
                 .opacity(
                     isActive && prefs.preferences.general.tabBarStyle == .xcode ? 0.0 : 1.0
