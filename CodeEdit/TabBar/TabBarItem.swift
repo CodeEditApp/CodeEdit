@@ -13,6 +13,10 @@ import CodeEditUI
 struct TabDivider: View {
     @Environment(\.colorScheme)
     var colorScheme
+
+    @StateObject
+    private var prefs: AppPreferencesModel = .shared
+
     let width: CGFloat = 1
 
     var body: some View {
@@ -20,9 +24,14 @@ struct TabDivider: View {
             Rectangle()
         }
         .frame(width: width)
+        .padding(.vertical, prefs.preferences.general.tabBarStyle == .xcode ? 8 : 0)
         .foregroundColor(
             Color(nsColor: colorScheme == .dark ? .white : .black)
-                .opacity(colorScheme == .dark ? 0.08 : 0.12)
+                .opacity(
+                    prefs.preferences.general.tabBarStyle == .xcode
+                    ? (colorScheme == .dark ? 0.05 : 0.08)
+                    : (colorScheme == .dark ? 0.08 : 0.12)
+                )
         )
     }
 }
@@ -42,7 +51,7 @@ struct TabBarItem: View {
 
     @State
     var isPressingClose: Bool = false
-    
+
     @State
     var isAppeared: Bool = false
 
@@ -52,7 +61,7 @@ struct TabBarItem: View {
     func switchAction() {
         workspace.selectionState.selectedId = item.id
     }
-    
+
     func closeAction() {
         withAnimation(.easeOut(duration: 0.12)) {
             workspace.closeFileTab(item: item)
@@ -72,6 +81,9 @@ struct TabBarItem: View {
     var content: some View {
         HStack(spacing: 0.0) {
             TabDivider()
+                .opacity(
+                    isActive && prefs.preferences.general.tabBarStyle == .xcode ? 0.0 : 1.0
+                )
             HStack(alignment: .center, spacing: 5) {
                 ZStack {
                     if isActive {
@@ -124,7 +136,28 @@ struct TabBarItem: View {
             .frame(height: 28)
             .padding(.leading, 4)
             .padding(.trailing, 28)
-            .background(
+            TabDivider()
+                .opacity(
+                    isActive && prefs.preferences.general.tabBarStyle == .xcode ? 0.0 : 1.0
+                )
+        }
+        .frame(height: tabBarHeight)
+        .foregroundColor(
+            isActive
+            ? (
+                prefs.preferences.general.tabBarStyle == .xcode
+                ? Color(nsColor: .controlAccentColor)
+                : .primary
+            )
+            : .secondary
+        )
+        .background {
+            if prefs.preferences.general.tabBarStyle == .xcode {
+                Color(nsColor: isActive ? .selectedControlColor : (colorScheme == .dark ? .black : .white))
+                    .opacity(isActive ? 0.50 : 1.0)
+                    .background(colorScheme == .dark ? .black : .white)
+                    .animation(.easeInOut(duration: 0.08), value: isHovering)
+            } else {
                 Color(nsColor: isActive ? .clear : .black)
                     .opacity(
                         colorScheme == .dark
@@ -132,11 +165,8 @@ struct TabBarItem: View {
                             : isHovering ? 0.10 : 0.05
                     )
                     .animation(.easeInOut(duration: 0.08), value: isHovering)
-            )
-            TabDivider()
+            }
         }
-        .frame(height: tabBarHeight)
-        .foregroundColor(isActive ? .primary : .secondary)
         .onHover { hover in
             isHovering = hover
             DispatchQueue.main.async {
@@ -148,9 +178,13 @@ struct TabBarItem: View {
             }
         }
     }
-    
-    // I am not using Button for wrapping content because Button will potentially have conflict with the inner close Button when the style of this Button is not set to `plain`. And based on the design of CodeEdit, plain style is not an expected choice, so I eventually come up with this solution for now.
-    // It is possible to make a customized Button (which may solve the clicking conflict, but I am not sure). I will try that in the future.
+
+    // I am not using Button for wrapping content because Button will potentially
+    // have conflict with the inner close Button when the style of this Button is
+    // not set to `plain`. And based on the design of CodeEdit, plain style is not
+    // an expected choice, so I eventually come up with this solution for now. It
+    // is possible to make a customized Button (which may solve the clicking conflict,
+    // but I am not sure). I will try that in the future.
     var body: some View {
         content
             .overlay(
@@ -166,13 +200,18 @@ struct TabBarItem: View {
                     modifiers: [.command]
                 )
             )
-            .background(EffectView(
-                material: NSVisualEffectView.Material.titlebar,
-                blendingMode: NSVisualEffectView.BlendingMode.withinWindow
-            ))
+            .background {
+                if prefs.preferences.general.tabBarStyle == .native {
+                    EffectView(
+                        material: NSVisualEffectView.Material.titlebar,
+                        blendingMode: NSVisualEffectView.BlendingMode.withinWindow
+                    )
+                }
+            }
             .onTapGesture(perform: switchAction) // The click event now goes to here.
-            .offset(x: isAppeared ? 0 : -18, y: 0)
+            .offset(x: isAppeared ? 0 : -16, y: 0)
             .opacity(isAppeared ? 1.0 : 0.0)
+            .zIndex(isActive ? 1 : 0)
             .onAppear {
                 withAnimation(.easeOut(duration: 0.16)) {
                     isAppeared = true

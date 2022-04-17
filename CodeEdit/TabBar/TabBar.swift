@@ -7,6 +7,7 @@
 
 import SwiftUI
 import WorkspaceClient
+import AppPreferences
 import CodeEditUI
 
 struct TabBar: View {
@@ -20,12 +21,17 @@ struct TabBar: View {
 
     var tabBarHeight = 28.0
 
+    @StateObject
+    private var prefs: AppPreferencesModel = .shared
+
     var body: some View {
         VStack(spacing: 0.0) {
             ZStack(alignment: .top) {
                 Rectangle()
                     .fill(
-                        Color(nsColor: .black).opacity(colorScheme == .dark ? 0.45 : 0.05)
+                        prefs.preferences.general.tabBarStyle == .xcode
+                        ? (colorScheme == .dark ? .black : .white)
+                        : Color(nsColor: .black).opacity(colorScheme == .dark ? 0.45 : 0.05)
                     )
                     .frame(height: 28)
                 ScrollView(.horizontal, showsIndicators: false) {
@@ -47,11 +53,13 @@ struct TabBar: View {
                 .padding(.leading, -1)
             }
         }
-        .background(
-            EffectView(
-                material: NSVisualEffectView.Material.titlebar,
-                blendingMode: NSVisualEffectView.BlendingMode.withinWindow
-            )
-        )
+        .background {
+            if prefs.preferences.general.tabBarStyle == .native {
+                EffectView(
+                    material: NSVisualEffectView.Material.titlebar,
+                    blendingMode: NSVisualEffectView.BlendingMode.withinWindow
+                )
+            }
+        }
     }
 }
