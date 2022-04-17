@@ -21,11 +21,11 @@ struct InspectorSidebar: View {
         VStack {
             switch selection {
             case 0:
-            Text("File Inspector")
+                FileInspectorView()
             case 1:
-            Text("History Inspector")
+                HistoryInspector()
             case 2:
-            Text("Quick Help Inspector")
+                QuickHelpInspector().padding(5)
             default: EmptyView()
             }
         }
@@ -34,7 +34,7 @@ struct InspectorSidebar: View {
             idealWidth: 260,
             minHeight: 0,
             maxHeight: .infinity,
-            alignment: .center
+            alignment: .top
         )
         .safeAreaInset(edge: .top) {
             InspectorSidebarToolbarTop(selection: $selection)
