@@ -44,6 +44,12 @@ public extension GitClient {
                 throw GitClientError.outputError(output)
             }
         }
+        func cloneRepository(url: String) throws {
+            let output = try shellClient.run("cd \(directoryURL.relativePath);git clone \(url) .")
+            if output.contains("fatal") {
+                throw GitClientError.outputError(output)
+            }
+        }
 
         func getCommitHistory(entries: Int?, fileLocalPath: String?) throws -> [Commit] {
             var entriesString = ""
@@ -79,6 +85,7 @@ public extension GitClient {
                     throw GitClientError.notGitRepository
                 }
             },
+            cloneRepository: cloneRepository(url:),
             getCommitHistory: getCommitHistory(entries:fileLocalPath:)
         )
     }

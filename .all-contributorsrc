@@ -17,7 +17,7 @@
     },
     {
       "login": "lukepistrol",
-      "name": "Lukas",
+      "name": "Lukas Pistrol",
       "avatar_url": "https://avatars.githubusercontent.com/u/9460130?v=4",
       "profile": "http://lukaspistrol.com",
       "contributions": [
@@ -148,6 +148,44 @@
       "contributions": [
         "infra",
         "plugin"
+      ]
+    },
+    {
+      "login": "dzign1",
+      "name": "Rob Hughes",
+      "avatar_url": "https://avatars.githubusercontent.com/u/44317715?v=4",
+      "profile": "https://github.com/dzign1",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "lilingxi01",
+      "name": "Lingxi Li",
+      "avatar_url": "https://avatars.githubusercontent.com/u/36816148?v=4",
+      "profile": "https://lingxi.li",
+      "contributions": [
+        "code",
+        "bug"
+      ]
+    },
+    {
+      "login": "octree",
+      "name": "HZ.Liu",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7934444?v=4",
+      "profile": "https://github.com/octree",
+      "contributions": [
+        "code",
+        "bug"
+      ]
+    },
+    {
+      "login": "richardtop",
+      "name": "Richard Topchii",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8013017?v=4",
+      "profile": "https://www.youtube.com/channel/UCx1gvWpy5zjOd7yZyDwmXEA?sub_confirmation=1",
+      "contributions": [
+        "code"
       ]
     }
   ],

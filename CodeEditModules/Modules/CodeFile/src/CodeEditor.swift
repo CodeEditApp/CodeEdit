@@ -155,7 +155,7 @@ struct CodeEditor: NSViewRepresentable {
 extension CodeEditor {
     // A wrapper around a `Bool` that enables updating
     // the wrapped value during `View` renders.
-    private class ReferenceTypeBool {
+    private final class ReferenceTypeBool {
         var value: Bool
 
         init(value: Bool) {

@@ -26,10 +26,6 @@ let package = Package(
             targets: ["StatusBar"]
         ),
         .library(
-            name: "Overlays",
-            targets: ["Overlays"]
-        ),
-        .library(
             name: "GitClient",
             targets: ["GitClient"]
         ),
@@ -42,8 +38,8 @@ let package = Package(
             targets: ["Search"]
         ),
         .library(
-            name: "FontPicker",
-            targets: ["FontPicker"]
+            name: "GitClone",
+            targets: ["GitClone"]
         ),
         .library(
             name: "ShellClient",
@@ -54,8 +50,8 @@ let package = Package(
             targets: ["AppPreferences"]
         ),
         .library(
-            name: "Accounts",
-            targets: ["Accounts"]
+            name: "GitAccounts",
+            targets: ["GitAccounts"]
         ),
         .library(
             name: "About",
@@ -66,12 +62,24 @@ let package = Package(
             targets: ["QuickOpen"]
         ),
         .library(
-            name: "Design",
-            targets: ["Design"]
+            name: "CodeEditUI",
+            targets: ["CodeEditUI"]
         ),
         .library(
             name: "ExtensionsStore",
             targets: ["ExtensionsStore"]
+        ),
+        .library(
+            name: "Breadcrumbs",
+            targets: ["Breadcrumbs"]
+        ),
+        .library(
+            name: "Feedback",
+            targets: ["Feedback"]
+        ),
+        .library(
+            name: "CodeEditUtils",
+            targets: ["CodeEditUtils"]
         ),
     ],
     dependencies: [
@@ -94,11 +102,6 @@ let package = Package(
             name: "Preferences",
             url: "https://github.com/sindresorhus/Preferences.git",
             from: "2.5.0"
-        ),
-        .package(
-            name: "Introspect",
-            url: "https://github.com/siteline/SwiftUI-Introspect",
-            from: "0.1.4"
         ),
         .package(
             name: "CodeEditKit",
@@ -146,7 +149,7 @@ let package = Package(
             name: "WelcomeModule",
             dependencies: [
                 "WorkspaceClient",
-                "Design",
+                "CodeEditUI",
                 "AppPreferences",
             ],
             path: "Modules/WelcomeModule/src",
@@ -170,10 +173,6 @@ let package = Package(
                 "CodeFile",
             ],
             path: "Modules/StatusBar/src"
-        ),
-        .target(
-            name: "Overlays",
-            path: "Modules/Overlays/src"
         ),
         .target(
             name: "GitClient",
@@ -206,8 +205,12 @@ let package = Package(
             path: "Modules/Search/src"
         ),
         .target(
-            name: "FontPicker",
-            path: "Modules/FontPicker/src"
+            name: "GitClone",
+            dependencies: [
+                "GitClient",
+                "ShellClient"
+            ],
+            path: "Modules/GitClone/src"
         ),
         .target(
             name: "ShellClient",
@@ -217,13 +220,15 @@ let package = Package(
             name: "AppPreferences",
             dependencies: [
                 "Preferences",
-                "FontPicker",
+                "CodeEditUI",
+                "GitAccounts",
+                "CodeEditUtils",
             ],
             path: "Modules/AppPreferences/src"
         ),
         .target(
-            name: "Accounts",
-            path: "Modules/Accounts/src"
+            name: "GitAccounts",
+            path: "Modules/GitAccounts/src"
         ),
         .target(
             name: "About",
@@ -234,25 +239,51 @@ let package = Package(
             dependencies: [
                 "WorkspaceClient",
                 "CodeFile",
-                "Design",
+                "CodeEditUI",
             ],
             path: "Modules/QuickOpen/src"
         ),
         .target(
-            name: "Design",
-            dependencies: [
-                "Introspect",
-            ],
-            path: "Modules/Design/src"
+            name: "CodeEditUI",
+            path: "Modules/CodeEditUI/src"
         ),
         .target(
             name: "ExtensionsStore",
             dependencies: [
                 "CodeEditKit",
                 "Light-Swift-Untar",
-                .productItem(name: "GRDB", package: "GRDB.swift", condition: nil)
+                .productItem(name: "GRDB", package: "GRDB.swift", condition: nil),
+                "LSP"
             ],
             path: "Modules/ExtensionsStore/src"
+        ),
+        .target(
+            name: "Breadcrumbs",
+            dependencies: [
+                "WorkspaceClient",
+                "AppPreferences",
+            ],
+            path: "Modules/Breadcrumbs/src"
+        ),
+        .target(
+            name: "Feedback",
+            dependencies: [
+                "GitAccounts",
+                "CodeEditUI",
+                "AppPreferences",
+                "CodeEditUtils",
+            ],
+            path: "Modules/Feedback/src"
+        ),
+        .target(
+            name: "LSP",
+            path: "Modules/LSP/src"
+
+        ),
+        .target(
+            name: "CodeEditUtils",
+            path: "Modules/CodeEditUtils/src"
+
         ),
     ]
 )

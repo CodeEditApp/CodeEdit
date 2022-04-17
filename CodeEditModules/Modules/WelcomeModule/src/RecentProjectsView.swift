@@ -6,7 +6,7 @@
 //
 import SwiftUI
 import WorkspaceClient
-import Design
+import CodeEditUI
 
 public struct RecentProjectsView: View {
     @State private var recentProjectPaths: [String]
@@ -136,14 +136,15 @@ public struct RecentProjectsView: View {
                         .buttonStyle(.borderless)
                         .keyboardShortcut(.defaultAction)
                     }
-                }.removeBackground()
+                }
+                .listStyle(.sidebar)
             } else {
                 emptyView
             }
         }
         .frame(width: 300)
         .background(
-            BlurView(
+            EffectView(
                 material: NSVisualEffectView.Material.underWindowBackground,
                 blendingMode: NSVisualEffectView.BlendingMode.behindWindow
             )

@@ -8,7 +8,7 @@
 import SwiftUI
 import WorkspaceClient
 import AppPreferences
-import Design
+import CodeEditUI
 
 struct TabDivider: View {
     @Environment(\.colorScheme)
@@ -151,7 +151,7 @@ struct TabBarItem: View {
             action: { workspace.selectionState.selectedId = item.id },
             label: { content }
         )
-        .background(BlurView(
+        .background(EffectView(
             material: NSVisualEffectView.Material.titlebar,
             blendingMode: NSVisualEffectView.BlendingMode.withinWindow
         ))

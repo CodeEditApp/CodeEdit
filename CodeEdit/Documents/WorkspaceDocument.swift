@@ -17,7 +17,7 @@ import CodeEditKit
 import ExtensionsStore
 
 @objc(WorkspaceDocument)
-class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
+final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var workspaceClient: WorkspaceClient?
 
     var extensionNavigatorData = ExtensionNavigatorData()
@@ -88,7 +88,9 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
 
                 selectionState.openedCodeFiles[item] = codeFile
             }
-            selectionState.selectedId = item.id
+            if selectionState.selectedId != item.id {
+                selectionState.selectedId = item.id
+            }
             Swift.print("Opening file for item: ", item.url)
             self.windowControllers.first?.window?.subtitle = item.url.lastPathComponent
         } catch let err {
@@ -248,7 +250,7 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
 // MARK: - Search
 
 extension WorkspaceDocument {
-    class SearchState: ObservableObject {
+    final class SearchState: ObservableObject {
         var workspace: WorkspaceDocument
         @Published var searchResult: [SearchResultModel] = []
 
