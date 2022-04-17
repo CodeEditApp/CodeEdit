@@ -160,9 +160,8 @@ extension GitCloneView {
                                                     attributes: nil)
             try GitClient.default(directoryURL: dirUrl,
                                   shellClient: shellClient).cloneRepository(repoUrlStr)
-            // TODO: Maybe add possibility to checkout to certain branch straight after cloning
             isPresented = false
-            showCheckout = true
+            checkBranches(dirUrl: dirUrl)
         } catch {
             guard let error = error as? GitClient.GitClientError else {
                 return showAlert(alertMsg: "Error", infoText: error.localizedDescription)
@@ -173,6 +172,19 @@ extension GitCloneView {
             case .notGitRepository:
                 showAlert(alertMsg: "Error", infoText: "Not git repository")
             }
+        }
+    }
+    private func checkBranches(dirUrl: URL) {
+        // Check if repo has only one branch, and if so, don't show the checkout page
+        do {
+            let branches = try GitClient.default(directoryURL: dirUrl,
+                                  shellClient: shellClient).getBranches(true)
+            let filtered = branches.filter {!$0.contains("HEAD")}
+            if filtered.count > 1 {
+                showCheckout = true
+            }
+        } catch {
+            return
         }
     }
 }

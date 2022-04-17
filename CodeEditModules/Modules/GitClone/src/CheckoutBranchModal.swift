@@ -41,7 +41,7 @@ public struct CheckoutBranchModal: View {
                         context[.trailing]
                     }
                     Menu {
-                        ForEach(getBranches(), id: \.self) { branch in
+                        ForEach(getBranches().filter {!$0.contains("HEAD")}, id: \.self) { branch in
                             Button {
                                     guard selectedBranch != branch else { return }
                                     selectedBranch = branch
