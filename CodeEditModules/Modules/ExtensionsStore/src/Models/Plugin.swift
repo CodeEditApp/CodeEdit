@@ -18,6 +18,7 @@ public struct Plugin: Codable, Identifiable, Hashable {
 
     public enum SDK: String, Codable, Hashable {
         case swift
+        case languageServer = "language_server"
     }
 
     public enum ReleaseManagement: String, Codable, Hashable {

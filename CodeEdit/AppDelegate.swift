@@ -11,6 +11,7 @@ import Preferences
 import About
 import WelcomeModule
 import ExtensionsStore
+import Feedback
 
 final class CodeEditApplication: NSApplication {
     let strongDelegate = AppDelegate()
@@ -169,6 +170,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         AboutView().showWindow(width: 530, height: 220)
     }
 
+    @IBAction func openFeedback(_ sender: Any) {
+        FeedbackView().showWindow()
+    }
+
     // MARK: - Preferences
 
     private lazy var preferencesWindowController = PreferencesWindowController(
@@ -233,7 +238,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
             Preferences.Pane(
                 identifier: Preferences.PaneIdentifier("SourceControl"),
                 title: "Source Control",
-                toolbarIcon: NSImage(systemSymbolName: "square.stack", accessibilityDescription: nil)!
+                toolbarIcon: NSImage(named: "vault")!
             ) {
                 PreferenceSourceControlView()
             },

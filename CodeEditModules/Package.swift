@@ -73,6 +73,14 @@ let package = Package(
             name: "Breadcrumbs",
             targets: ["Breadcrumbs"]
         ),
+        .library(
+            name: "Feedback",
+            targets: ["Feedback"]
+        ),
+        .library(
+            name: "CodeEditUtils",
+            targets: ["CodeEditUtils"]
+        ),
     ],
     dependencies: [
         .package(
@@ -213,7 +221,8 @@ let package = Package(
             dependencies: [
                 "Preferences",
                 "CodeEditUI",
-                "GitAccounts"
+                "GitAccounts",
+                "CodeEditUtils",
             ],
             path: "Modules/AppPreferences/src"
         ),
@@ -243,7 +252,8 @@ let package = Package(
             dependencies: [
                 "CodeEditKit",
                 "Light-Swift-Untar",
-                .productItem(name: "GRDB", package: "GRDB.swift", condition: nil)
+                .productItem(name: "GRDB", package: "GRDB.swift", condition: nil),
+                "LSP"
             ],
             path: "Modules/ExtensionsStore/src"
         ),
@@ -254,6 +264,26 @@ let package = Package(
                 "AppPreferences",
             ],
             path: "Modules/Breadcrumbs/src"
+        ),
+        .target(
+            name: "Feedback",
+            dependencies: [
+                "GitAccounts",
+                "CodeEditUI",
+                "AppPreferences",
+                "CodeEditUtils",
+            ],
+            path: "Modules/Feedback/src"
+        ),
+        .target(
+            name: "LSP",
+            path: "Modules/LSP/src"
+
+        ),
+        .target(
+            name: "CodeEditUtils",
+            path: "Modules/CodeEditUtils/src"
+
         ),
     ]
 )

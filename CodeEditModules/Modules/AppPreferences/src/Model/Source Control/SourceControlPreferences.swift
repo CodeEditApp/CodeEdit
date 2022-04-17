@@ -39,6 +39,8 @@ public extension AppPreferences {
         public var showSourceControlChanges: Bool = true
         /// Indicates whether or not we should include the upsteam
         public var includeUpstreamChanges: Bool = false
+        /// Indicates whether or not we should open the reported feedback in the browser
+        public var openFeedbackInBrowser: Bool = true
         /// The selected value of the comparison view
         public var revisionComparisonLayout: RevisionComparisonLayout = .localLeft
         /// The selected value of the control navigator
@@ -61,6 +63,8 @@ public extension AppPreferences {
                                                                           forKey: .showSourceControlChanges) ?? true
             self.includeUpstreamChanges = try container.decodeIfPresent(Bool.self,
                                                                         forKey: .includeUpstreamChanges) ?? true
+            self.openFeedbackInBrowser = try container.decodeIfPresent(Bool.self,
+                                                                        forKey: .openFeedbackInBrowser) ?? true
             self.revisionComparisonLayout = try container.decodeIfPresent(RevisionComparisonLayout.self,
                                                                 forKey: .revisionComparisonLayout) ?? .localLeft
             self.controlNavigatorOrder = try container.decodeIfPresent(ControlNavigatorOrder.self,

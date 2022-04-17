@@ -7,6 +7,7 @@
 
 import SwiftUI
 import GitAccounts
+import CodeEditUtils
 
 struct GithubEnterpriseLoginView: View {
 
@@ -20,6 +21,8 @@ struct GithubEnterpriseLoginView: View {
 
     @StateObject
     private var prefs: AppPreferencesModel = .shared
+
+    private let keychain = CodeEditKeychain()
 
     var body: some View {
         VStack {
@@ -80,7 +83,6 @@ struct GithubEnterpriseLoginView: View {
         GithubAccount(config).me { response in
             switch response {
             case .success(let user):
-                print(user.login as Any)
                 if gitAccounts.contains(where: { $0.id == gitAccountName.lowercased()}) {
                     print("Account with the username already exists!")
                 } else {
@@ -94,7 +96,7 @@ struct GithubEnterpriseLoginView: View {
                                               gitCloningProtocol: true,
                                               gitSSHKey: "",
                                               isTokenValid: true))
-
+                    keychain.set(accountToken, forKey: accountName)
                     dismissDialog = false
                 }
             case .failure(let error):
