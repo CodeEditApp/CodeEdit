@@ -29,7 +29,7 @@ struct TabDivider: View {
             Color(nsColor: colorScheme == .dark ? .white : .black)
                 .opacity(
                     prefs.preferences.general.tabBarStyle == .xcode
-                    ? (colorScheme == .dark ? 0.05 : 0.08)
+                    ? 0.08
                     : (colorScheme == .dark ? 0.08 : 0.12)
                 )
         )
@@ -145,17 +145,25 @@ struct TabBarItem: View {
         .foregroundColor(
             isActive
             ? (
-                prefs.preferences.general.tabBarStyle == .xcode
+                prefs.preferences.general.tabBarStyle == .xcode && colorScheme != .dark
                 ? Color(nsColor: .controlAccentColor)
                 : .primary
             )
-            : .secondary
+            : (
+                prefs.preferences.general.tabBarStyle == .xcode
+                ? .primary
+                : .secondary
+            )
         )
         .background {
             if prefs.preferences.general.tabBarStyle == .xcode {
-                Color(nsColor: isActive ? .selectedControlColor : (colorScheme == .dark ? .black : .white))
-                    .opacity(isActive ? 0.50 : 1.0)
-                    .background(colorScheme == .dark ? .black : .white)
+                Color(nsColor: isActive ? .selectedControlColor : .clear)
+                    .opacity(colorScheme == .dark ? 0.70 : 0.50)
+                    .background(
+                        // This layer of background is to hide dividers of other tab bar items
+                        // because the original background above is translucent (by opacity).
+                        Color(nsColor: .controlBackgroundColor)
+                    )
                     .animation(.easeInOut(duration: 0.08), value: isHovering)
             } else {
                 Color(nsColor: isActive ? .clear : .black)
@@ -209,11 +217,11 @@ struct TabBarItem: View {
                 }
             }
             .onTapGesture(perform: switchAction) // The click event now goes to here.
-            .offset(x: isAppeared ? 0 : -16, y: 0)
-            .opacity(isAppeared ? 1.0 : 0.0)
+            .offset(x: isAppeared ? 0 : -12, y: 0)
+            .opacity(isAppeared ? 1.0 : 0.5)
             .zIndex(isActive ? 1 : 0)
             .onAppear {
-                withAnimation(.easeOut(duration: 0.16)) {
+                withAnimation(.easeOut(duration: 0.14)) {
                     isAppeared = true
                 }
             }
