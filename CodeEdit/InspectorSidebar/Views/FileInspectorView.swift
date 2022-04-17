@@ -8,6 +8,10 @@ import SwiftUI
 
 struct FileInspectorView: View {
     @State var fileName: String = "Index.swift"
+    @State var fileTypeSelection: LanguageType.ID = "none"
+
+    @ObservedObject
+    private var inspectorModel: InspectorModel = .shared
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -31,6 +35,13 @@ struct FileInspectorView: View {
                         .foregroundColor(.primary)
                         .fontWeight(.regular)
                         .font(.system(size: 10))
+                    Picker("", selection: $fileTypeSelection) {
+                        Section(header: Text("Sourcecode Objective-C")) {
+                            ForEach(inspectorModel.sourcecodeCList) {
+                                Text("item \($0.name)")
+                            }
+                        }
+                    }
                     Menu {
                         Button("Swift Source") {}
                     } label: {
@@ -134,11 +145,5 @@ struct FileInspectorView: View {
                 }
             }
         }.frame(maxWidth: 250).padding(5)
-    }
-}
-
-struct FileInspectorView_Previews: PreviewProvider {
-    static var previews: some View {
-        FileInspectorView().preferredColorScheme(.dark)
     }
 }
