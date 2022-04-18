@@ -59,7 +59,10 @@ struct TabBarItem: View {
     var windowController: NSWindowController
 
     func switchAction() {
-        workspace.selectionState.selectedId = item.id
+        // Only set the `selectedId` when they are not equal to avoid performance issue for now.
+        if workspace.selectionState.selectedId != item.id {
+            workspace.selectionState.selectedId = item.id
+        }
     }
 
     func closeAction() {
@@ -99,71 +102,73 @@ struct TabBarItem: View {
             .frame(height: 28)
             .padding(.horizontal, prefs.preferences.general.tabBarStyle == .native ? 28 : 23.5)
             .overlay {
-                if isActive {
-                    // Create a hidden button, if the tab is selected
-                    // and hide the button in the ZStack.
+                ZStack {
+                    if isActive {
+                        // Create a hidden button, if the tab is selected
+                        // and hide the button in the ZStack.
+                        Button(action: closeAction) {
+                            Text("").hidden()
+                        }
+                        .frame(width: 0, height: 0)
+                        .padding(0)
+                        .opacity(0)
+                        .keyboardShortcut("w", modifiers: [.command])
+                    }
                     Button(action: closeAction) {
-                        Text("").hidden()
-                    }
-                    .frame(width: 0, height: 0)
-                    .padding(0)
-                    .opacity(0)
-                    .keyboardShortcut("w", modifiers: [.command])
-                }
-                Button(action: closeAction) {
-                    if prefs.preferences.general.tabBarStyle == .xcode {
-                        Image(systemName: "xmark")
-                            .font(.system(size: 11.2, weight: .regular, design: .rounded))
-                            .frame(width: 16, height: 16)
-                            .foregroundColor(
-                                isActive
-                                ? (
-                                    colorScheme == .dark
-                                    ? .primary
-                                    : Color(nsColor: .controlAccentColor)
+                        if prefs.preferences.general.tabBarStyle == .xcode {
+                            Image(systemName: "xmark")
+                                .font(.system(size: 11.2, weight: .regular, design: .rounded))
+                                .frame(width: 16, height: 16)
+                                .foregroundColor(
+                                    isActive
+                                    ? (
+                                        colorScheme == .dark
+                                        ? .primary
+                                        : Color(nsColor: .controlAccentColor)
+                                    )
+                                    : .secondary.opacity(0.80)
                                 )
-                                : .secondary.opacity(0.80)
-                            )
-                    } else {
-                        Image(systemName: "xmark")
-                            .font(.system(size: 9.5, weight: .medium, design: .rounded))
-                            .frame(width: 16, height: 16)
+                        } else {
+                            Image(systemName: "xmark")
+                                .font(.system(size: 9.5, weight: .medium, design: .rounded))
+                                .frame(width: 16, height: 16)
+                        }
                     }
-                }
-                .buttonStyle(.borderless)
-                .foregroundColor(isPressingClose ? .primary : .secondary)
-                .background(
-                    colorScheme == .dark
-                    ? Color(nsColor: .white).opacity(isPressingClose ? 0.32 : isHoveringClose ? 0.18 : 0)
-                    : (
-                        prefs.preferences.general.tabBarStyle == .xcode
-                        ? Color(nsColor: isActive ? .controlAccentColor : .black)
-                            .opacity(
-                                isPressingClose
-                                ? 0.25
-                                : (isHoveringClose ? (isActive ? 0.10 : 0.06) : 0)
-                            )
-                        : Color(nsColor: .black)
-                            .opacity(
-                                isPressingClose
-                                ? 0.29
-                                : (isHoveringClose ? 0.11 : 0)
-                            )
+                    .buttonStyle(.borderless)
+                    .foregroundColor(isPressingClose ? .primary : .secondary)
+                    .background(
+                        colorScheme == .dark
+                        ? Color(nsColor: .white).opacity(isPressingClose ? 0.32 : isHoveringClose ? 0.18 : 0)
+                        : (
+                            prefs.preferences.general.tabBarStyle == .xcode
+                            ? Color(nsColor: isActive ? .controlAccentColor : .black)
+                                .opacity(
+                                    isPressingClose
+                                    ? 0.25
+                                    : (isHoveringClose ? (isActive ? 0.10 : 0.06) : 0)
+                                )
+                            : Color(nsColor: .black)
+                                .opacity(
+                                    isPressingClose
+                                    ? 0.29
+                                    : (isHoveringClose ? 0.11 : 0)
+                                )
+                        )
                     )
-                )
-                .cornerRadius(2)
-                .accessibilityLabel(Text("Close"))
-                .onHover { hover in
-                    isHoveringClose = hover
+                    .cornerRadius(2)
+                    .accessibilityLabel(Text("Close"))
+                    .onHover { hover in
+                        isHoveringClose = hover
+                    }
+                    .pressAction {
+                        isPressingClose = true
+                    } onRelease: {
+                        isPressingClose = false
+                    }
+                    .opacity(isHovering ? 1 : 0)
+                    .animation(.easeInOut(duration: 0.08), value: isHovering)
+                    .padding(.leading, prefs.preferences.general.tabBarStyle == .xcode ? 3.5 : 4)
                 }
-                .pressAction {
-                    isPressingClose = true
-                } onRelease: {
-                    isPressingClose = false
-                }
-                .opacity(isHovering ? 1 : 0)
-                .animation(.easeInOut(duration: 0.08), value: isHovering)
-                .padding(.leading, prefs.preferences.general.tabBarStyle == .xcode ? 3.5 : 4)
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
             TabDivider()
@@ -171,7 +176,6 @@ struct TabBarItem: View {
                     isActive && prefs.preferences.general.tabBarStyle == .xcode ? 0.0 : 1.0
                 )
         }
-        .frame(height: tabBarHeight)
         .foregroundColor(
             isActive
             ? (
@@ -184,6 +188,35 @@ struct TabBarItem: View {
                 ? .primary
                 : .secondary
             )
+        )
+        .frame(height: tabBarHeight)
+        .contentShape(Rectangle())
+        .onHover { hover in
+            isHovering = hover
+            DispatchQueue.main.async {
+                if hover {
+                    NSCursor.arrow.push()
+                } else {
+                    NSCursor.pop()
+                }
+            }
+        }
+    }
+
+    // I am not using Button for wrapping content because Button will potentially
+    // have conflict with the inner close Button when the style of this Button is
+    // not set to `plain`. And based on the design of CodeEdit, plain style is not
+    // an expected choice, so I eventually come up with this solution for now. It
+    // is possible to make a customized Button (which may solve the clicking conflict,
+    // but I am not sure). I will try that in the future.
+    var body: some View {
+        Button(action: switchAction) {
+            content
+        }
+        .buttonStyle(TabBarItemButtonStyle())
+        .keyboardShortcut(
+            workspace.getTabKeyEquivalent(item: item),
+            modifiers: [.command]
         )
         .background {
             if prefs.preferences.general.tabBarStyle == .xcode {
@@ -205,74 +238,40 @@ struct TabBarItem: View {
                     .animation(.easeInOut(duration: 0.08), value: isHovering)
             }
         }
-        .onHover { hover in
-            isHovering = hover
-            DispatchQueue.main.async {
-                if hover {
-                    NSCursor.arrow.push()
-                } else {
-                    NSCursor.pop()
+        .background {
+            if prefs.preferences.general.tabBarStyle == .native {
+                EffectView(
+                    material: NSVisualEffectView.Material.titlebar,
+                    blendingMode: NSVisualEffectView.BlendingMode.withinWindow
+                )
+            }
+        }
+        .offset(x: isAppeared ? 0 : -14, y: 0)
+        .opacity(isAppeared ? 1.0 : 0.5)
+        .zIndex(isActive ? 1 : 0)
+        .onAppear {
+            withAnimation(.easeOut(duration: 0.12)) {
+                isAppeared = true
+            }
+        }
+        .id(item.id)
+        .contextMenu {
+            Button("Close Tab") {
+                withAnimation {
+                    workspace.closeFileTab(item: item)
+                }
+            }
+            Button("Close Other Tabs") {
+                withAnimation {
+                    workspace.closeFileTab(where: { $0.id != item.id })
+                }
+            }
+            Button("Close Tabs to the Right") {
+                withAnimation {
+                    workspace.closeFileTabs(after: item)
                 }
             }
         }
-    }
-
-    // I am not using Button for wrapping content because Button will potentially
-    // have conflict with the inner close Button when the style of this Button is
-    // not set to `plain`. And based on the design of CodeEdit, plain style is not
-    // an expected choice, so I eventually come up with this solution for now. It
-    // is possible to make a customized Button (which may solve the clicking conflict,
-    // but I am not sure). I will try that in the future.
-    var body: some View {
-        content
-            .overlay(
-                // Use hidden button to keep the behavior of tab shortcut.
-                Button(action: switchAction) {
-                    EmptyView().hidden()
-                }
-                .frame(width: 0, height: 0)
-                .padding(0)
-                .opacity(0)
-                .keyboardShortcut(
-                    workspace.getTabKeyEquivalent(item: item),
-                    modifiers: [.command]
-                )
-            )
-            .background {
-                if prefs.preferences.general.tabBarStyle == .native {
-                    EffectView(
-                        material: NSVisualEffectView.Material.titlebar,
-                        blendingMode: NSVisualEffectView.BlendingMode.withinWindow
-                    )
-                }
-            }
-            .onTapGesture(perform: switchAction) // The click event now goes to here.
-            .offset(x: isAppeared ? 0 : -12, y: 0)
-            .opacity(isAppeared ? 1.0 : 0.5)
-            .zIndex(isActive ? 1 : 0)
-            .onAppear {
-                withAnimation(.easeOut(duration: 0.14)) {
-                    isAppeared = true
-                }
-            }
-            .id(item.id)
-            .contextMenu {
-                Button("Close Tab") {
-                    withAnimation {
-                        workspace.closeFileTab(item: item)
-                    }
-                }
-                Button("Close Other Tabs") {
-                    withAnimation {
-                        workspace.closeFileTab(where: { $0.id != item.id })
-                    }
-                }
-                Button("Close Tabs to the Right") {
-                    withAnimation {
-                        workspace.closeFileTabs(after: item)
-                    }
-                }
-            }
     }
 }
 
@@ -286,5 +285,22 @@ fileprivate extension WorkspaceDocument {
         }
 
         return "0"
+    }
+}
+
+private struct TabBarItemButtonStyle: ButtonStyle {
+    @Environment(\.colorScheme)
+    var colorScheme
+
+    @StateObject
+    private var prefs: AppPreferencesModel = .shared
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .background(
+                configuration.isPressed && prefs.preferences.general.tabBarStyle == .xcode
+                ? (colorScheme == .dark ? .white.opacity(0.08) : .black.opacity(0.09))
+                : .clear
+            )
     }
 }
