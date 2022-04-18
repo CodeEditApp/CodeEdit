@@ -36,17 +36,87 @@ struct FileInspectorView: View {
                         .fontWeight(.regular)
                         .font(.system(size: 10))
                     Picker("", selection: $fileTypeSelection) {
-                        Section(header: Text("Sourcecode Objective-C")) {
-                            ForEach(inspectorModel.sourcecodeCList) {
-                                Text("item \($0.name)")
+                        Group {
+                            Section(header: Text("Sourcecode Objective-C")) {
+                                ForEach(inspectorModel.languageTypeObjCList) {
+                                    Text($0.name)
+                                }
+                            }
+                            Section(header: Text("Sourcecode C")) {
+                                ForEach(inspectorModel.sourcecodeCList) {
+                                    Text($0.name)
+                                }
+                            }
+                            Section(header: Text("Sourcecode C++")) {
+                                ForEach(inspectorModel.sourcecodeCPlusList) {
+                                    Text($0.name)
+                                }
+                            }
+                            Section(header: Text("Sourcecode Swift")) {
+                                ForEach(inspectorModel.sourcecodeSwiftList) {
+                                    Text($0.name)
+                                }
+                            }
+                            Section(header: Text("Sourcecode Assembly")) {
+                                ForEach(inspectorModel.sourcecodeAssemblyList) {
+                                    Text($0.name)
+                                }
                             }
                         }
-                    }
-                    Menu {
-                        Button("Swift Source") {}
-                    } label: {
-                        Text("Language Type")
-                            .font(.system(size: 11))
+                        Group {
+                            Section(header: Text("Sourcecode Objective-C")) {
+                                ForEach(inspectorModel.sourcecodeScriptList) {
+                                    Text($0.name)
+                                }
+                            }
+                            Section(header: Text("Property List / XML")) {
+                                ForEach(inspectorModel.propertyList) {
+                                    Text($0.name)
+                                }
+                            }
+                            Section(header: Text("Shell Script")) {
+                                ForEach(inspectorModel.shellList) {
+                                    Text($0.name)
+                                }
+                            }
+                            Section(header: Text("Mach-O")) {
+                                ForEach(inspectorModel.machOList) {
+                                    Text($0.name)
+                                }
+                            }
+                            Section(header: Text("Text")) {
+                                ForEach(inspectorModel.textList) {
+                                    Text($0.name)
+                                }
+                            }
+                        }
+                        Group {
+                            Section(header: Text("Audio")) {
+                                ForEach(inspectorModel.audioList) {
+                                    Text($0.name)
+                                }
+                            }
+                            Section(header: Text("Image")) {
+                                ForEach(inspectorModel.imageList) {
+                                    Text($0.name)
+                                }
+                            }
+                            Section(header: Text("Video")) {
+                                ForEach(inspectorModel.videoList) {
+                                    Text($0.name)
+                                }
+                            }
+                            Section(header: Text("Archive")) {
+                                ForEach(inspectorModel.archiveList) {
+                                    Text($0.name)
+                                }
+                            }
+                            Section(header: Text("Other")) {
+                                ForEach(inspectorModel.otherList) {
+                                    Text($0.name)
+                                }
+                            }
+                        }
                     }.frame(maxWidth: 150, maxHeight: 12)
                 }
                 Divider()
