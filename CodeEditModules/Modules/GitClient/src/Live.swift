@@ -14,8 +14,15 @@ public extension GitClient {
         directoryURL: URL,
         shellClient: ShellClient
     ) -> GitClient {
-        func getBranches() throws -> [String] {
-            try shellClient.run(
+        func getBranches(_ allBranches: Bool = false) throws -> [String] {
+            if allBranches == true {
+                return try shellClient.run(
+                    "cd \(directoryURL.relativePath);git branch -a --format \"%(refname:short)\""
+                )
+                    .components(separatedBy: "\n")
+                    .filter { $0 != "" }
+            }
+            return try shellClient.run(
                 "cd \(directoryURL.relativePath);git branch --format \"%(refname:short)\""
             )
                 .components(separatedBy: "\n")
@@ -40,11 +47,16 @@ public extension GitClient {
             )
             if output.contains("fatal: not a git repository") {
                 throw GitClientError.notGitRepository
-            } else if !output.contains("Switched to branch") {
+            } else if !output.contains("Switched to branch") && !output.contains("Switched to a new branch") {
                 throw GitClientError.outputError(output)
             }
         }
-
+        func cloneRepository(url: String) throws {
+            let output = try shellClient.run("cd \(directoryURL.relativePath);git clone \(url) .")
+            if output.contains("fatal") {
+                throw GitClientError.outputError(output)
+            }
+        }
         func getCommitHistory(entries: Int?, fileLocalPath: String?) throws -> [Commit] {
             var entriesString = ""
             let fileLocalPath = fileLocalPath ?? ""
@@ -53,7 +65,7 @@ public extension GitClient {
             dateFormatter.locale = Locale.current
             dateFormatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss Z"
             return try shellClient.run(
-                "cd \(directoryURL.relativePath);git log --pretty=%h¦%s¦%aN¦%aD¦ \(fileLocalPath) \(entriesString)"
+                "cd \(directoryURL.relativePath);git log --pretty=%h¦%s¦%aN¦%aD¦ \(entriesString) \(fileLocalPath)"
             )
                 .split(separator: "\n")
                 .map { line -> Commit in
@@ -69,7 +81,7 @@ public extension GitClient {
 
         return GitClient(
             getCurrentBranchName: getCurrentBranchName,
-            getBranches: getBranches,
+            getBranches: getBranches(_:),
             checkoutBranch: checkoutBranch(name:),
             pull: {
                 let output = try shellClient.run(
@@ -79,6 +91,7 @@ public extension GitClient {
                     throw GitClientError.notGitRepository
                 }
             },
+            cloneRepository: cloneRepository(url:),
             getCommitHistory: getCommitHistory(entries:fileLocalPath:)
         )
     }

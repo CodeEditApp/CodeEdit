@@ -20,9 +20,8 @@ final class GitClientTests: XCTestCase {
             directoryURL: URL(fileURLWithPath: ""),
             shellClient: shellClient
         )
-        print(try gitClient.getCommitHistory(nil))
         XCTAssertEqual(
-            try gitClient.getCommitHistory(nil).first!,
+            try gitClient.getCommitHistory(nil, nil).first!,
             GitClient.Commit(
                 hash: "e5fe4bf",
                 message: "Merge pull request #260 from lukepistrol/terminal-color-fix",

@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftTerm
 
 public extension TerminalEmulatorView {
-    class Coordinator: NSObject, LocalProcessTerminalViewDelegate {
+    final class Coordinator: NSObject, LocalProcessTerminalViewDelegate {
 
         @State
         private var url: URL

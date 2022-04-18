@@ -2,12 +2,48 @@
   "object": {
     "pins": [
       {
+        "package": "CodeEditKit",
+        "repositoryURL": "https://github.com/CodeEditApp/CodeEditKit",
+        "state": {
+          "branch": "main",
+          "revision": "2482e5870fd8082c908fabfdaaf245498cb3dd54",
+          "version": null
+        }
+      },
+      {
+        "package": "CodeEditSymbols",
+        "repositoryURL": "https://github.com/CodeEditApp/CodeEditSymbols",
+        "state": {
+          "branch": "main",
+          "revision": "51ab9b4e7e6434ce8e2c74b04a6ba2591b972bb1",
+          "version": null
+        }
+      },
+      {
+        "package": "GRDB",
+        "repositoryURL": "https://github.com/groue/GRDB.swift.git",
+        "state": {
+          "branch": null,
+          "revision": "4472d3a60ec4cc383503eba5072ce17f781b9ddc",
+          "version": "5.23.0"
+        }
+      },
+      {
         "package": "Highlightr",
         "repositoryURL": "https://github.com/raspu/Highlightr.git",
         "state": {
           "branch": null,
           "revision": "93199b9e434f04bda956a613af8f571933f9f037",
           "version": "2.1.2"
+        }
+      },
+      {
+        "package": "Light-Swift-Untar",
+        "repositoryURL": "https://github.com/Light-Untar/Light-Swift-Untar",
+        "state": {
+          "branch": null,
+          "revision": "fcff1f1b82373ea64b9565a364f63ffe7fdecf9f",
+          "version": "1.0.4"
         }
       },
       {
@@ -35,15 +71,6 @@
           "branch": null,
           "revision": "70a3af884c24dff9f1beeda04e889b5591f04f3c",
           "version": "1.0.7"
-        }
-      },
-      {
-        "package": "Introspect",
-        "repositoryURL": "https://github.com/siteline/SwiftUI-Introspect",
-        "state": {
-          "branch": null,
-          "revision": "f2616860a41f9d9932da412a8978fec79c06fe24",
-          "version": "0.1.4"
         }
       }
     ]

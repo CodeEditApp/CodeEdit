@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditSymbols
 
 struct NavigatorSidebarToolbarTop: View {
     @Environment(\.controlActiveState)
@@ -17,7 +18,7 @@ struct NavigatorSidebarToolbarTop: View {
     var body: some View {
         HStack(spacing: 2) {
             icon(systemImage: "folder", title: "Project", id: 0)
-            icon(systemImage: "globe", title: "Version Control", id: 1)
+            icon(named: "vault", title: "Version Control", id: 1)
             icon(systemImage: "magnifyingglass", title: "Search", id: 2)
             icon(systemImage: "shippingbox", title: "...", id: 3)
             icon(systemImage: "play", title: "...", id: 4)
@@ -36,7 +37,11 @@ struct NavigatorSidebarToolbarTop: View {
         }
     }
 
-    func icon(systemImage: String, title: String, id: Int) -> some View {
+    func icon(systemImage: String,
+              title: String,
+              id: Int,
+              scale: Image.Scale = .medium
+    ) -> some View {
         Button {
             selection = id
         } label: {
@@ -44,6 +49,22 @@ struct NavigatorSidebarToolbarTop: View {
                 .help(title)
         }
         .buttonStyle(NavigatorToolbarButtonStyle(id: id, selection: selection, activeState: activeState))
+        .imageScale(scale)
+    }
+
+    func icon(named: String,
+              title: String,
+              id: Int,
+              scale: Image.Scale = .medium
+    ) -> some View {
+        Button {
+            selection = id
+        } label: {
+            Image(symbol: named)
+                .help(title)
+        }
+        .buttonStyle(NavigatorToolbarButtonStyle(id: id, selection: selection, activeState: activeState))
+        .imageScale(scale)
     }
 
     struct NavigatorToolbarButtonStyle: ButtonStyle {
@@ -52,6 +73,7 @@ struct NavigatorSidebarToolbarTop: View {
         var activeState: ControlActiveState
         func makeBody(configuration: Configuration) -> some View {
             configuration.label
+                .font(.system(size: 12, weight: id == selection ? .semibold : .regular))
                 .symbolVariant(id == selection ? .fill : .none)
                 .foregroundColor(id == selection ? .accentColor : configuration.isPressed ? .primary : .secondary)
                 .frame(width: 25, height: 25, alignment: .center)

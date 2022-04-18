@@ -9,7 +9,7 @@ import SwiftUI
 import WorkspaceClient
 
 /// A subclass of `NSMenu` implementing the contextual menu for the project navigator
-class OutlineMenu: NSMenu {
+final class OutlineMenu: NSMenu {
 
     /// The item to show the contextual menu for
     var item: WorkspaceClient.FileItem?
@@ -21,6 +21,7 @@ class OutlineMenu: NSMenu {
         super.init(title: "Options")
     }
 
+    @available(*, unavailable)
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -124,16 +125,12 @@ class OutlineMenu: NSMenu {
     /// Action that opens **Finder** at the items location.
     @objc
     private func showInFinder() {
-        if let item = item {
-            item.showInFinder()
-        }
+        item?.showInFinder()
     }
 
     /// Action that deletes the item.
     @objc
     private func delete() {
-        if let item = item {
-            item.delete()
-        }
+        item?.delete()
     }
 }

@@ -11,8 +11,10 @@ import Preferences
 import About
 import WelcomeModule
 import ExtensionsStore
+import Feedback
+import CodeEditSymbols
 
-class CodeEditApplication: NSApplication {
+final class CodeEditApplication: NSApplication {
     let strongDelegate = AppDelegate()
 
     override init() {
@@ -20,6 +22,7 @@ class CodeEditApplication: NSApplication {
         self.delegate = strongDelegate
     }
 
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -27,7 +30,7 @@ class CodeEditApplication: NSApplication {
 }
 
 @NSApplicationMain
-class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
+final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     func applicationWillFinishLaunching(_ notification: Notification) {
         _ = CodeEditDocumentController.shared
     }
@@ -54,12 +57,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
             }
         }
 
-        DispatchQueue(label: "extensions.preload").async {
-            do {
-                try ExtensionsManager.shared?.preload()
-            } catch let error {
-                print(error)
-            }
+        do {
+            try ExtensionsManager.shared?.preload()
+        } catch let error {
+            print(error)
         }
     }
 
@@ -145,9 +146,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                     }
 
                 } else {
-                    CodeEditDocumentController.shared.openDocument { _, _ in
+                    windowController.window?.close()
+                    CodeEditDocumentController.shared.openDocument(onCompletion: { _, _ in
                         opened()
-                    }
+                    }, onCancel: {
+                        self.openWelcome(self)
+                    })
                 }
             },
             newDocument: {
@@ -167,6 +171,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         AboutView().showWindow(width: 530, height: 220)
     }
 
+    @IBAction func openFeedback(_ sender: Any) {
+        FeedbackView().showWindow()
+    }
+
     // MARK: - Preferences
 
     private lazy var preferencesWindowController = PreferencesWindowController(
@@ -183,7 +191,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                 title: "Accounts",
                 toolbarIcon: NSImage(systemSymbolName: "at", accessibilityDescription: nil)!
             ) {
-                PreferencesPlaceholderView()
+                PreferenceAccountsView()
             },
             Preferences.Pane(
                 identifier: Preferences.PaneIdentifier("Behaviors"),
@@ -231,9 +239,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
             Preferences.Pane(
                 identifier: Preferences.PaneIdentifier("SourceControl"),
                 title: "Source Control",
-                toolbarIcon: NSImage(systemSymbolName: "square.stack", accessibilityDescription: nil)!
+                toolbarIcon: NSImage.vault
             ) {
-                PreferencesPlaceholderView()
+                PreferenceSourceControlView()
             },
             Preferences.Pane(
                 identifier: Preferences.PaneIdentifier("Components"),
