@@ -110,7 +110,7 @@ struct FileInspectorView: View {
                     textEncoding
                 }
 
-                HStack() {
+                HStack {
                     Text("Line Endings")
                         .foregroundColor(.primary)
                         .fontWeight(.regular)
