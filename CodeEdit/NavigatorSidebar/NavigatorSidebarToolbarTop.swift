@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditSymbols
 
 struct NavigatorSidebarToolbarTop: View {
     @Environment(\.controlActiveState)
@@ -59,7 +60,7 @@ struct NavigatorSidebarToolbarTop: View {
         Button {
             selection = id
         } label: {
-            Image(named)
+            Image(symbol: named)
                 .help(title)
         }
         .buttonStyle(NavigatorToolbarButtonStyle(id: id, selection: selection, activeState: activeState))
