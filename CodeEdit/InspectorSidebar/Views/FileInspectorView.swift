@@ -7,11 +7,15 @@
 import SwiftUI
 
 struct FileInspectorView: View {
-    @State var fileName: String = "Index.swift"
-    @State var fileTypeSelection: LanguageType.ID = "none"
 
     @ObservedObject
-    private var inspectorModel: InspectorModel = .shared
+    private var inspectorModel: FileInspectorModel
+
+    /// Initialize with GitClient
+    /// - Parameter gitClient: a GitClient
+    init(workspaceURL: URL, fileURL: String) {
+        self.inspectorModel = .init(workspaceURL: workspaceURL, fileURL: fileURL)
+    }
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -27,98 +31,19 @@ struct FileInspectorView: View {
                         .foregroundColor(.primary)
                         .fontWeight(.regular)
                         .font(.system(size: 10))
-                    TextField("Name", text: $fileName)
+                    TextField("", text: $inspectorModel.fileName)
+                        .font(.system(size: 11))
                         .frame(maxWidth: 150)
                 }
-                HStack() {
+
+                HStack {
                     Text("Type")
                         .foregroundColor(.primary)
                         .fontWeight(.regular)
                         .font(.system(size: 10))
-                    Picker("", selection: $fileTypeSelection) {
-                        Group {
-                            Section(header: Text("Sourcecode Objective-C")) {
-                                ForEach(inspectorModel.languageTypeObjCList) {
-                                    Text($0.name)
-                                }
-                            }
-                            Section(header: Text("Sourcecode C")) {
-                                ForEach(inspectorModel.sourcecodeCList) {
-                                    Text($0.name)
-                                }
-                            }
-                            Section(header: Text("Sourcecode C++")) {
-                                ForEach(inspectorModel.sourcecodeCPlusList) {
-                                    Text($0.name)
-                                }
-                            }
-                            Section(header: Text("Sourcecode Swift")) {
-                                ForEach(inspectorModel.sourcecodeSwiftList) {
-                                    Text($0.name)
-                                }
-                            }
-                            Section(header: Text("Sourcecode Assembly")) {
-                                ForEach(inspectorModel.sourcecodeAssemblyList) {
-                                    Text($0.name)
-                                }
-                            }
-                        }
-                        Group {
-                            Section(header: Text("Sourcecode Objective-C")) {
-                                ForEach(inspectorModel.sourcecodeScriptList) {
-                                    Text($0.name)
-                                }
-                            }
-                            Section(header: Text("Property List / XML")) {
-                                ForEach(inspectorModel.propertyList) {
-                                    Text($0.name)
-                                }
-                            }
-                            Section(header: Text("Shell Script")) {
-                                ForEach(inspectorModel.shellList) {
-                                    Text($0.name)
-                                }
-                            }
-                            Section(header: Text("Mach-O")) {
-                                ForEach(inspectorModel.machOList) {
-                                    Text($0.name)
-                                }
-                            }
-                            Section(header: Text("Text")) {
-                                ForEach(inspectorModel.textList) {
-                                    Text($0.name)
-                                }
-                            }
-                        }
-                        Group {
-                            Section(header: Text("Audio")) {
-                                ForEach(inspectorModel.audioList) {
-                                    Text($0.name)
-                                }
-                            }
-                            Section(header: Text("Image")) {
-                                ForEach(inspectorModel.imageList) {
-                                    Text($0.name)
-                                }
-                            }
-                            Section(header: Text("Video")) {
-                                ForEach(inspectorModel.videoList) {
-                                    Text($0.name)
-                                }
-                            }
-                            Section(header: Text("Archive")) {
-                                ForEach(inspectorModel.archiveList) {
-                                    Text($0.name)
-                                }
-                            }
-                            Section(header: Text("Other")) {
-                                ForEach(inspectorModel.otherList) {
-                                    Text($0.name)
-                                }
-                            }
-                        }
-                    }.frame(maxWidth: 150, maxHeight: 12)
+                    fileType
                 }
+
                 Divider()
             }
 
@@ -130,28 +55,22 @@ struct FileInspectorView: View {
                         .font(.system(size: 10))
 
                     VStack {
-                        Menu {
-                            Button("Absolute Path") {}
-                            Button("Relative to Group") {}
-                            Button("Relative to Project") {}
-                            Button("Relative to Developer Directory") {}
-                            Button("Relative to Build Projects") {}
-                            Button("Relative to SDK") { }
-                        } label: {
-                            Text("Location Type")
-                                .font(.system(size: 11))
-                        }
+                        location
                         HStack {
-                            Text("Index.swift")
+                            Text(inspectorModel.fileName)
                                 .font(.system(size: 11))
 
                             Spacer()
 
                             Image(systemName: "folder.fill")
+                                .resizable()
                                 .foregroundColor(.secondary)
+                                .frame(width: 13, height: 11)
                         }
                     }.frame(maxWidth: 150)
                 }
+                .padding(.top, 1)
+
                 HStack(alignment: .top) {
                     Text("Full Path")
                         .foregroundColor(.primary)
@@ -159,7 +78,7 @@ struct FileInspectorView: View {
                         .font(.system(size: 10))
 
                     HStack(alignment: .bottom) {
-                        Text("/Users/nanashili/CodeEdit/CodeEdit/InspectorSidebar/FileInspectorView.swift")
+                        Text(inspectorModel.fileURL)
                             .foregroundColor(.primary)
                             .fontWeight(.regular)
                             .font(.system(size: 10))
@@ -167,10 +86,13 @@ struct FileInspectorView: View {
 
                         Image(systemName: "arrow.forward.circle.fill")
                             .resizable()
-                            .frame(width: 15, height: 15)
                             .foregroundColor(.secondary)
-                    }.frame(maxWidth: 150, alignment: .leading)
-                }.padding(.top, -5)
+                            .frame(width: 11, height: 11)
+
+                    }
+                    .frame(maxWidth: 150, alignment: .leading)
+                }
+                .padding(.top, -5)
 
                 Divider()
             }
@@ -180,40 +102,181 @@ struct FileInspectorView: View {
                 .fontWeight(.bold)
 
             VStack(alignment: .trailing) {
-                HStack() {
+                HStack {
                     Text("Text Encoding")
                         .foregroundColor(.primary)
                         .fontWeight(.regular)
                         .font(.system(size: 10))
-                    Menu {
-                        Button("Unicode (UTF-8)") {}
-                    } label: {
-                        Text("No Explicit Encoding")
-                            .font(.system(size: 11))
-                    }.frame(maxWidth: 150, maxHeight: 12)
+                    textEncoding
                 }
+
                 HStack() {
                     Text("Line Endings")
                         .foregroundColor(.primary)
                         .fontWeight(.regular)
                         .font(.system(size: 10))
-                    Menu {
-                        Button("Unicode (UTF-8)") {}
-                    } label: {
-                        Text("No Explicit Line Endings")
-                            .font(.system(size: 11))
-                    }.disabled(true).frame(maxWidth: 150, maxHeight: 12).padding(.top, 3)
+                    lineEndings
                 }
+                .padding(.top, 4)
+
                 Divider()
-                HStack() {
+
+                HStack {
                     Text("Indent Using")
                         .foregroundColor(.primary)
                         .fontWeight(.regular)
                         .font(.system(size: 10))
-                    Menu("Spaces", content: {
-                    }).frame(maxWidth: 150)
+                    indentUsing
                 }
+                .padding(.top, 1)
             }
         }.frame(maxWidth: 250).padding(5)
+    }
+
+    private var fileType: some View {
+        Picker("", selection: $inspectorModel.fileTypeSelection) {
+            Group {
+                Section(header: Text("Sourcecode Objective-C")) {
+                    ForEach(inspectorModel.languageTypeObjCList) {
+                        Text($0.name)
+                            .font(.system(size: 11))
+                    }
+                }
+                Section(header: Text("Sourcecode C")) {
+                    ForEach(inspectorModel.sourcecodeCList) {
+                        Text($0.name)
+                            .font(.system(size: 11))
+                    }
+                }
+                Section(header: Text("Sourcecode C++")) {
+                    ForEach(inspectorModel.sourcecodeCPlusList) {
+                        Text($0.name)
+                            .font(.system(size: 11))
+                    }
+                }
+                Section(header: Text("Sourcecode Swift")) {
+                    ForEach(inspectorModel.sourcecodeSwiftList) {
+                        Text($0.name)
+                            .font(.system(size: 11))
+                    }
+                }
+                Section(header: Text("Sourcecode Assembly")) {
+                    ForEach(inspectorModel.sourcecodeAssemblyList) {
+                        Text($0.name)
+                            .font(.system(size: 11))
+                    }
+                }
+            }
+            Group {
+                Section(header: Text("Sourcecode Objective-C")) {
+                    ForEach(inspectorModel.sourcecodeScriptList) {
+                        Text($0.name)
+                            .font(.system(size: 11))
+                    }
+                }
+                Section(header: Text("Property List / XML")) {
+                    ForEach(inspectorModel.propertyList) {
+                        Text($0.name)
+                            .font(.system(size: 11))
+                    }
+                }
+                Section(header: Text("Shell Script")) {
+                    ForEach(inspectorModel.shellList) {
+                        Text($0.name)
+                            .font(.system(size: 11))
+                    }
+                }
+                Section(header: Text("Mach-O")) {
+                    ForEach(inspectorModel.machOList) {
+                        Text($0.name)
+                            .font(.system(size: 11))
+                    }
+                }
+                Section(header: Text("Text")) {
+                    ForEach(inspectorModel.textList) {
+                        Text($0.name)
+                            .font(.system(size: 11))
+                    }
+                }
+            }
+            Group {
+                Section(header: Text("Audio")) {
+                    ForEach(inspectorModel.audioList) {
+                        Text($0.name)
+                            .font(.system(size: 11))
+                    }
+                }
+                Section(header: Text("Image")) {
+                    ForEach(inspectorModel.imageList) {
+                        Text($0.name)
+                            .font(.system(size: 11))
+                    }
+                }
+                Section(header: Text("Video")) {
+                    ForEach(inspectorModel.videoList) {
+                        Text($0.name)
+                            .font(.system(size: 11))
+                    }
+                }
+                Section(header: Text("Archive")) {
+                    ForEach(inspectorModel.archiveList) {
+                        Text($0.name)
+                            .font(.system(size: 11))
+                    }
+                }
+                Section(header: Text("Other")) {
+                    ForEach(inspectorModel.otherList) {
+                        Text($0.name)
+                            .font(.system(size: 11))
+                    }
+                }
+            }
+        }
+        .labelsHidden()
+        .frame(maxWidth: 150, maxHeight: 12)
+    }
+
+    private var location: some View {
+        Picker("", selection: $inspectorModel.locationSelection) {
+            ForEach(inspectorModel.locationList) {
+                Text($0.name)
+                    .font(.system(size: 11))
+            }
+        }
+        .labelsHidden()
+        .frame(maxWidth: 150, maxHeight: 12)
+    }
+
+    private var textEncoding: some View {
+        Picker("", selection: $inspectorModel.textEncodingSelection) {
+            ForEach(inspectorModel.textEncodingList) {
+                Text($0.name)
+                    .font(.system(size: 11))
+            }
+        }
+        .labelsHidden()
+        .frame(maxWidth: 150, maxHeight: 12)
+    }
+
+    private var lineEndings: some View {
+        Picker("", selection: $inspectorModel.lineEndingsSelection) {
+            ForEach(inspectorModel.lineEndingsList) {
+                Text($0.name)
+                    .font(.system(size: 11))
+            }
+        }
+        .labelsHidden()
+        .frame(maxWidth: 150, maxHeight: 12)
+    }
+
+    private var indentUsing: some View {
+        Picker("", selection: $inspectorModel.indentUsingSelection) {
+            ForEach(inspectorModel.indentUsingList) {
+                Text($0.name)
+                    .font(.system(size: 11))
+            }
+        }
+        .labelsHidden()
+        .frame(maxWidth: 150, maxHeight: 12)
     }
 }

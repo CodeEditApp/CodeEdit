@@ -19,14 +19,22 @@ struct InspectorSidebar: View {
 
     var body: some View {
         VStack {
-            switch selection {
-            case 0:
-                FileInspectorView()
-            case 1:
-                HistoryInspector()
-            case 2:
-                QuickHelpInspector().padding(5)
-            default: EmptyView()
+            if let item = workspace.selectionState.openFileItems.first(where: { file in
+                return file.id == workspace.selectionState.selectedId
+            }) {
+                if let codeFile = workspace.selectionState.openedCodeFiles[item] {
+                    switch selection {
+                    case 0:
+                        FileInspectorView(workspaceURL: workspace.fileURL!,
+                                          fileURL: codeFile.fileURL!.path)
+                    case 1:
+                        HistoryInspector(workspaceURL: workspace.fileURL!,
+                                         fileURL: codeFile.fileURL!.path)
+                    case 2:
+                        QuickHelpInspector().padding(5)
+                    default: EmptyView()
+                    }
+                }
             }
         }
         .frame(

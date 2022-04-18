@@ -6,11 +6,10 @@
 //
 
 import Foundation.NSDate
-public extension GitClient {
-    struct Commit: Equatable {
-        let hash: String
-        let message: String
-        let author: String
-        let date: Date
-    }
+
+public struct Commit: Equatable, Hashable {
+    public let hash: String
+    public let message: String
+    public let author: String
+    public let date: Date
 }

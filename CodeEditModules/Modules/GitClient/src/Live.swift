@@ -51,6 +51,7 @@ public extension GitClient {
             }
         }
 
+        // swiftlint:disable line_length
         func getCommitHistory(entries: Int?, fileLocalPath: String?) throws -> [Commit] {
             var entriesString = ""
             let fileLocalPath = fileLocalPath ?? ""
@@ -58,8 +59,10 @@ public extension GitClient {
             let dateFormatter = DateFormatter()
             dateFormatter.locale = Locale.current
             dateFormatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss Z"
+
+            print("Shell Command: cd \(directoryURL.relativePath);git log --pretty=%h¦%s¦%aN¦%aD¦ \(entriesString) \(fileLocalPath)")
             return try shellClient.run(
-                "cd \(directoryURL.relativePath);git log --pretty=%h¦%s¦%aN¦%aD¦ \(fileLocalPath) \(entriesString)"
+                "cd \(directoryURL.relativePath);git log --pretty=%h¦%s¦%aN¦%aD¦ \(entriesString) \(fileLocalPath)"
             )
                 .split(separator: "\n")
                 .map { line -> Commit in
