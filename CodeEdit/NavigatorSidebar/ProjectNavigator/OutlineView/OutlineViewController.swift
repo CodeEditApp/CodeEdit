@@ -142,6 +142,8 @@ extension OutlineViewController: NSOutlineViewDataSource {
         } else {
             outlineView.draggingDestinationFeedbackStyle = .none
         }
+        
+        print("index: \(index)")
         if let _ = item as? Item {
             return .link
         }
@@ -149,12 +151,15 @@ extension OutlineViewController: NSOutlineViewDataSource {
     }
     
     func outlineView(_ outlineView: NSOutlineView, acceptDrop info: NSDraggingInfo, item: Any?, childIndex index: Int) -> Bool {
-        guard index != -1, let items = info.draggingPasteboard.pasteboardItems, items.count > 0, let movingItem = item as? Item, var itemChildren = movingItem.children else { return false }
+        guard let items = info.draggingPasteboard.pasteboardItems, items.count > 0, let movingItem = item as? Item, var itemChildren = movingItem.children else { return false }
+        
+        // Moving Item is the parent folder where the drag is being put
+        print("movingItem: \(movingItem.id)")
         
         let fileNames = items.compactMap { $0.string(forType: .fileURL) }
         var fileNameSet = Set(fileNames)
         let movedItems = itemChildren.filter { !fileNameSet.insert($0.url.absoluteString).inserted }
-        print(movedItems)
+        print("movedItems: \(movedItems)")
         itemChildren.insert(contentsOf: movedItems, at: index)
         return true
     }
