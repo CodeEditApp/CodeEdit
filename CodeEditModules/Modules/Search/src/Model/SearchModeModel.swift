@@ -21,14 +21,19 @@ public struct SearchModeModel {
                                                      needSelectionHightlight: true)
     public static let EndingWith = SearchModeModel(title: "Ending With", children: [], needSelectionHightlight: true)
 
+    public static let IgnoreCase = SearchModeModel(title: "Ignoring Case", children: [], needSelectionHightlight: true)
+
     public static let Text = SearchModeModel(title: "Text",
-                                 children: [.Containing, .MatchingWord, .StartingWith, .EndingWith],
+                                             children: [.Containing, .MatchingWord,
+                                                        .StartingWith, .EndingWith, .IgnoreCase],
                                  needSelectionHightlight: false)
     public static let References = SearchModeModel(title: "References",
-                                       children: [.Containing, .MatchingWord, .StartingWith, .EndingWith],
+                                                   children: [.Containing, .MatchingWord,
+                                                              .StartingWith, .EndingWith, .IgnoreCase],
                                        needSelectionHightlight: true)
     public static let Definitions = SearchModeModel(title: "Definitions",
-                                        children: [.Containing, .MatchingWord, .StartingWith, .EndingWith],
+                                                    children: [.Containing, .MatchingWord,
+                                                               .StartingWith, .EndingWith, .IgnoreCase],
                                         needSelectionHightlight: true)
     public static let RegularExpression = SearchModeModel(title: "Regular Expression",
                                                    children: [],
@@ -44,7 +49,8 @@ public struct SearchModeModel {
                                     children: [.Text, .RegularExpression],
                                     needSelectionHightlight: true)
 
-    public static let TextMatchingModes: [SearchModeModel] = [.Containing, .MatchingWord, .StartingWith, .EndingWith]
+    public static let TextMatchingModes: [SearchModeModel] = [.Containing, .MatchingWord,
+                                                              .StartingWith, .EndingWith, .IgnoreCase]
     public static let FindModes: [SearchModeModel] = [.Text,
                                                       .References,
                                                       .Definitions,
