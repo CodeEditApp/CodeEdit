@@ -244,7 +244,7 @@ extension WorkspaceDocument {
             self.workspace = workspace
         }
 
-        func search(_ text: String) {
+        func search(_ text: String, mode: SearchModeModel = .Containing) {
             self.searchResult = []
             if let url = self.workspace.fileURL {
                 let enumerator = FileManager.default.enumerator(at: url,
@@ -267,7 +267,19 @@ extension WorkspaceDocument {
                                     .map { String(decoding: UnsafeRawBufferPointer(rebasing: $0), as: UTF8.self) }
                             }.enumerated().forEach { (index: Int, line: String) in
                                 let noSpaceLine = line.trimmingCharacters(in: .whitespaces)
-                                if noSpaceLine.contains(text) {
+
+                                // Creating copies to avoid modifying original
+                                // when switching between modes
+                                var compareText = noSpaceLine
+                                var inputText = text
+
+                                if mode == .IgnoreCase {
+                                    inputText = text.lowercased()
+                                    compareText = noSpaceLine.lowercased()
+                                }
+                                // add other modes here
+
+                                if compareText.contains(inputText) {
                                     if fileAddedFlag {
                                         searchResult.append(SearchResultModel(
                                             file: fileItem,
@@ -277,7 +289,7 @@ extension WorkspaceDocument {
                                         )
                                         fileAddedFlag = false
                                     }
-                                    noSpaceLine.ranges(of: text).forEach { range in
+                                    compareText.ranges(of: inputText).forEach { range in
                                         searchResult.append(SearchResultModel(
                                             file: fileItem,
                                             lineNumber: index,

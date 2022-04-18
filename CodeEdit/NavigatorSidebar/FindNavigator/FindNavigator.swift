@@ -15,6 +15,7 @@ struct FindNavigator: View {
 
     @State
     private var searchText: String = ""
+//    private var mode: SearchModeModel = .Containing //
 
     private var foundFilesCount: Int {
         state.searchResult.filter {!$0.hasKeywordInfo}.count
@@ -45,7 +46,8 @@ struct FindNavigator: View {
             FindNavigatorResultList(state: state)
         }
         .onSubmit {
-            state.search(searchText)
+            let mode = SearchModeModel.IgnoreCase // test; need to figure out how to get mode here
+            state.search(searchText, mode: mode)
         }
     }
 }

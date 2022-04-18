@@ -70,6 +70,13 @@ struct FindNavigatorModeSelector: View {
             .imageScale(.large)
     }
 
+    // Gets the outermost (most specific) search mode
+    public func getSearchMode() -> SearchModeModel {
+        print(self.selectedMode)
+//        print(self.selectedMode[self.selectedMode.count - 1])
+        return self.selectedMode[self.selectedMode.count - 1]
+    }
+
     var body: some View {
         HStack(spacing: 0) {
             ForEach(0..<selectedMode.count, id: \.self) { index in
