@@ -117,6 +117,11 @@ let package = Package(
             url: "https://github.com/groue/GRDB.swift.git",
             from: "5.22.2"
         ),
+        .package(
+            name: "CodeEditSymbols",
+            url: "https://github.com/CodeEditApp/CodeEditSymbols",
+            branch: "main"
+        ),
     ],
     targets: [
         .target(
