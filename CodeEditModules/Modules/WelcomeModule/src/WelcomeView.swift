@@ -209,7 +209,7 @@ public struct WelcomeView: View {
                          repoPath: $repoPath)
         }
         .sheet(isPresented: $showCheckoutBranch) {
-            CheckoutBranchModal(isPresented: $showCheckoutBranch,
+            CheckoutBranchView(isPresented: $showCheckoutBranch,
                                 repoPath: $repoPath,
                                 shellClient: .live)
         }

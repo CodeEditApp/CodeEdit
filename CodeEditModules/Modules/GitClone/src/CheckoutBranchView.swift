@@ -1,5 +1,5 @@
 //
-//  CheckoutBranchModal.swift
+//  CheckoutBranchView.swift
 //  
 //
 //  Created by Aleksi Puttonen on 14.4.2022.
@@ -10,12 +10,12 @@ import SwiftUI
 import GitClient
 import ShellClient
 
-public struct CheckoutBranchModal: View {
-    private let shellClient: ShellClient
-    @Binding private var isPresented: Bool
-    @Binding private var repoPath: String
+public struct CheckoutBranchView: View {
+    internal let shellClient: ShellClient
+    @Binding internal var isPresented: Bool
+    @Binding internal var repoPath: String
     // TODO: This has to be derived from git
-    @State private var selectedBranch = "main"
+    @State internal var selectedBranch = "main"
     public init(isPresented: Binding<Bool>,
                 repoPath: Binding<String>,
                 shellClient: ShellClient) {
@@ -71,46 +71,6 @@ public struct CheckoutBranchModal: View {
             .padding(.horizontal, 20)
             .padding(.bottom, 16)
             .frame(width: 400)
-        }
-    }
-}
-
-extension CheckoutBranchModal {
-    func getBranches() -> [String] {
-        guard let url = URL(string: repoPath) else {
-            return [""]
-        }
-        do {
-            let branches = try GitClient.default(directoryURL: url,
-                                                 shellClient: shellClient).getBranches(true)
-            return branches
-        } catch {
-            return [""]
-        }
-    }
-    func checkoutBranch() {
-        var parsedBranch = selectedBranch
-        if selectedBranch.contains("origin/") || selectedBranch.contains("upstream/") {
-            parsedBranch = selectedBranch.components(separatedBy: "/")[1]
-        }
-        do {
-            if let url = URL(string: repoPath) {
-                try GitClient.default(directoryURL: url,
-                                      shellClient: shellClient).checkoutBranch(parsedBranch)
-                isPresented = false
-            }
-        } catch {
-            guard let error = error as? GitClient.GitClientError else { return }
-            let alert = NSAlert()
-            alert.alertStyle = .critical
-            alert.addButton(withTitle: "Ok")
-            switch error {
-            case .notGitRepository:
-                alert.messageText = "Not a git repository"
-            case let .outputError(message):
-                alert.messageText = message
-            }
-            alert.runModal()
         }
     }
 }
