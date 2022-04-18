@@ -51,7 +51,6 @@ public extension GitClient {
             }
         }
 
-        // swiftlint:disable line_length
         func getCommitHistory(entries: Int?, fileLocalPath: String?) throws -> [Commit] {
             var entriesString = ""
             let fileLocalPath = fileLocalPath ?? ""
