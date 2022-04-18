@@ -65,7 +65,7 @@ public extension GitClient {
             dateFormatter.locale = Locale.current
             dateFormatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss Z"
             return try shellClient.run(
-                "cd \(directoryURL.relativePath);git log --pretty=%h¦%s¦%aN¦%aD¦ \(fileLocalPath) \(entriesString)"
+                "cd \(directoryURL.relativePath);git log --pretty=%h¦%s¦%aN¦%aD¦ \(entriesString) \(fileLocalPath)"
             )
                 .split(separator: "\n")
                 .map { line -> Commit in
