@@ -228,6 +228,7 @@ let package = Package(
                 "CodeEditUI",
                 "GitAccounts",
                 "CodeEditUtils",
+                "CodeEditSymbols",
             ],
             path: "Modules/AppPreferences/src"
         ),

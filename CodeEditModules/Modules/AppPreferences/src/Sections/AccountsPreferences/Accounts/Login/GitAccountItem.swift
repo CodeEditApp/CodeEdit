@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditSymbols
 
 struct GitAccountItem: View {
 
@@ -14,7 +15,7 @@ struct GitAccountItem: View {
 
     var body: some View {
         HStack {
-            Image("vault.fill")
+            Image(symbol: "vault.fill")
                 .resizable()
                 .frame(width: 24.0, height: 24.0)
 
