@@ -7,25 +7,36 @@
 
 import SwiftUI
 import CodeEditSymbols
+import AppKit
 
 struct NavigatorSidebarToolbarTop: View {
     @Environment(\.controlActiveState)
     var activeState
 
+    typealias iconInfo = (imageName: String, title: String, id: Int)
+    @State private var icons = [
+        DockIcon(imageName: "folder", title: "Project", id: 0),
+        DockIcon(imageName: "vault", title: "Version Control", id: 1),
+        DockIcon(imageName: "magnifyingglass", title: "Search", id: 2),
+        DockIcon(imageName: "shippingbox", title: "...", id: 3),
+        DockIcon(imageName: "play", title: "...", id: 4),
+        DockIcon(imageName: "exclamationmark.triangle", title: "...", id: 5),
+        DockIcon(imageName: "curlybraces.square", title: "...", id: 6),
+        DockIcon(imageName: "puzzlepiece.extension", title: "...", id: 7),
+        DockIcon(imageName: "square.grid.2x2", title: "...", id: 8)
+    ]
+    
     @Binding
     var selection: Int
 
     var body: some View {
         HStack(spacing: 2) {
-            icon(systemImage: "folder", title: "Project", id: 0)
-            icon(named: "vault", title: "Version Control", id: 1)
-            icon(systemImage: "magnifyingglass", title: "Search", id: 2)
-            icon(systemImage: "shippingbox", title: "...", id: 3)
-            icon(systemImage: "play", title: "...", id: 4)
-            icon(systemImage: "exclamationmark.triangle", title: "...", id: 5)
-            icon(systemImage: "curlybraces.square", title: "...", id: 6)
-            icon(systemImage: "puzzlepiece.extension", title: "...", id: 7)
-            icon(systemImage: "square.grid.2x2", title: "...", id: 8)
+            ForEach(icons) { icon in
+                makeIcon(named: icon.imageName, title: icon.title, id: icon.id)
+            }
+            .onMove { indexSet, offset in
+                print("index: \(indexSet) and dest: \(offset)")
+            }
         }
         .frame(height: 29, alignment: .center)
         .frame(maxWidth: .infinity)
@@ -36,8 +47,13 @@ struct NavigatorSidebarToolbarTop: View {
             Divider()
         }
     }
+    
+    func move(from source: IndexSet, to destination: Int) {
+        print("source: \(source) and index: \(destination)")
+        icons.move(fromOffsets: source, toOffset: destination)
+    }
 
-    func icon(systemImage: String,
+    func makeIcon(named: String,
               title: String,
               id: Int,
               scale: Image.Scale = .medium
@@ -45,26 +61,19 @@ struct NavigatorSidebarToolbarTop: View {
         Button {
             selection = id
         } label: {
-            Image(systemName: systemImage)
+            getSafeImage(named: named, accesibilityDescription: title)
                 .help(title)
         }
         .buttonStyle(NavigatorToolbarButtonStyle(id: id, selection: selection, activeState: activeState))
         .imageScale(scale)
     }
-
-    func icon(named: String,
-              title: String,
-              id: Int,
-              scale: Image.Scale = .medium
-    ) -> some View {
-        Button {
-            selection = id
-        } label: {
-            Image(symbol: named)
-                .help(title)
+    
+    func getSafeImage(named: String, accesibilityDescription: String?) -> Image {
+        if let nsImage = NSImage(systemSymbolName: named, accessibilityDescription: accesibilityDescription) {
+            return Image(nsImage: nsImage)
+        } else {
+            return Image(symbol: named)
         }
-        .buttonStyle(NavigatorToolbarButtonStyle(id: id, selection: selection, activeState: activeState))
-        .imageScale(scale)
     }
 
     struct NavigatorToolbarButtonStyle: ButtonStyle {
@@ -80,6 +89,12 @@ struct NavigatorSidebarToolbarTop: View {
                 .contentShape(Rectangle())
                 .opacity(activeState == .inactive ? 0.45 : 1)
         }
+    }
+    
+    private struct DockIcon: Identifiable {
+        let imageName: String
+        let title: String
+        var id: Int
     }
 }
 
