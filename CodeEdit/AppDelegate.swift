@@ -12,6 +12,7 @@ import About
 import WelcomeModule
 import ExtensionsStore
 import Feedback
+import CodeEditSymbols
 
 final class CodeEditApplication: NSApplication {
     let strongDelegate = AppDelegate()
@@ -238,7 +239,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
             Preferences.Pane(
                 identifier: Preferences.PaneIdentifier("SourceControl"),
                 title: "Source Control",
-                toolbarIcon: NSImage(named: "vault")!
+                toolbarIcon: NSImage.symbol(named: "vault")
             ) {
                 PreferenceSourceControlView()
             },
