@@ -97,11 +97,18 @@
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="m54-Is-iLE"/>
-                            <menuItem title="Close" keyEquivalent="w" id="DVo-aG-piG">
+                            <menuItem title="Close Tab" keyEquivalent="w" id="DVo-aG-piG"/>
+                            <menuItem title="Close Editor" keyEquivalent="W" id="Xhf-Xm-5lk">
+                                <modifierMask key="keyEquivalentModifierMask" control="YES" command="YES"/>
+                            </menuItem>
+                            <menuItem title="Close Window" keyEquivalent="W" id="2tv-fO-t5i"/>
+                            <menuItem title="Close Workspace" keyEquivalent="w" id="aHY-bT-UtW">
+                                <modifierMask key="keyEquivalentModifierMask" control="YES" option="YES" command="YES"/>
                                 <connections>
-                                    <action selector="performClose:" target="-1" id="HmO-Ls-i7Q"/>
+                                    <action selector="performClose:" target="-1" id="hDP-mA-SiS"/>
                                 </connections>
                             </menuItem>
+                            <menuItem isSeparatorItem="YES" id="oaB-hH-59T"/>
                             <menuItem title="Save…" keyEquivalent="s" id="pxx-59-PXV">
                                 <connections>
                                     <action selector="saveDocument:" target="-1" id="kkG-H8-VoM"/>
