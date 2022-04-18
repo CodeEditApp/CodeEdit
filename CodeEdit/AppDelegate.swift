@@ -239,7 +239,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
             Preferences.Pane(
                 identifier: Preferences.PaneIdentifier("SourceControl"),
                 title: "Source Control",
-                toolbarIcon: NSImage.symbol(named: "vault")
+                toolbarIcon: NSImage.vault
             ) {
                 PreferenceSourceControlView()
             },
