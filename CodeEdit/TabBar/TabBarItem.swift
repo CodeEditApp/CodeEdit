@@ -10,6 +10,7 @@ import WorkspaceClient
 import AppPreferences
 import CodeEditUI
 
+/// The vertical divider between tab bar items.
 struct TabDivider: View {
     @Environment(\.colorScheme)
     var colorScheme
@@ -25,7 +26,7 @@ struct TabDivider: View {
             .padding(.vertical, prefs.preferences.general.tabBarStyle == .xcode ? 8 : 0)
             .foregroundColor(
                 prefs.preferences.general.tabBarStyle == .xcode
-                ? Color(nsColor: colorScheme == .dark ? .white : .black).opacity(0.08)
+                ? Color(nsColor: colorScheme == .dark ? .white : .black).opacity(0.12)
                 : Color(nsColor: .separatorColor).opacity(colorScheme == .dark ? 0.4 : 1.0)
             )
     }
@@ -47,7 +48,7 @@ struct NativeTabShadow: View {
             .padding(.vertical, prefs.preferences.general.tabBarStyle == .xcode ? 8 : 0)
             .foregroundColor(
                 prefs.preferences.general.tabBarStyle == .xcode
-                ? Color(nsColor: colorScheme == .dark ? .white : .black).opacity(0.08)
+                ? Color(nsColor: colorScheme == .dark ? .white : .black).opacity(0.12)
                 : Color(nsColor: .separatorColor).opacity(colorScheme == .dark ? 0.3 : 1.0)
             )
     }
@@ -83,7 +84,7 @@ struct TabBarItem: View {
     }
 
     func closeAction() {
-        withAnimation(.easeOut(duration: 0.12)) {
+        withAnimation(.easeOut(duration: 0.20)) {
             workspace.closeFileTab(item: item)
         }
     }
@@ -116,8 +117,8 @@ struct TabBarItem: View {
                     .font(.system(size: 11.0))
                     .lineLimit(1)
             }
-            .frame(height: 28)
-            .padding(.horizontal, prefs.preferences.general.tabBarStyle == .native ? 28 : 23.5)
+            .frame(height: tabBarHeight)
+            .padding(.horizontal, prefs.preferences.general.tabBarStyle == .native ? 28 : 23)
             .overlay {
                 ZStack {
                     if isActive {
@@ -281,11 +282,18 @@ struct TabBarItem: View {
                 }
             }
         }
-        .offset(x: isAppeared ? 0 : -14, y: 0)
-        .opacity(isAppeared ? 1.0 : 0.5)
+        .padding(
+            // This padding is to avoid background color overlapping with top divider.
+            .top, prefs.preferences.general.tabBarStyle == .xcode ? 1 : 0
+        )
+        .offset(
+            x: isAppeared || prefs.preferences.general.tabBarStyle == .native ? 0 : -14,
+            y: 0
+        )
+        .opacity(isAppeared ? 1.0 : 0.0)
         .zIndex(isActive ? 1 : 0)
         .onAppear {
-            withAnimation(.easeOut(duration: 0.12)) {
+            withAnimation(.easeOut(duration: 0.20)) {
                 isAppeared = true
             }
         }
