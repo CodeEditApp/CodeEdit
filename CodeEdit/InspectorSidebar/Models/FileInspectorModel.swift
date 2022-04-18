@@ -13,7 +13,7 @@ public class FileInspectorModel: ObservableObject {
     private(set) var workspaceURL: URL
 
     @Published
-    var fileTypeSelection: LanguageType.ID = "none"
+    var fileTypeSelection: LanguageType.ID = "swift"
     @Published
     var fileURL: String = ""
     @Published

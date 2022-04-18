@@ -59,8 +59,6 @@ public extension GitClient {
             let dateFormatter = DateFormatter()
             dateFormatter.locale = Locale.current
             dateFormatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss Z"
-
-            print("Shell Command: cd \(directoryURL.relativePath);git log --pretty=%h¦%s¦%aN¦%aD¦ \(entriesString) \(fileLocalPath)")
             return try shellClient.run(
                 "cd \(directoryURL.relativePath);git log --pretty=%h¦%s¦%aN¦%aD¦ \(entriesString) \(fileLocalPath)"
             )
