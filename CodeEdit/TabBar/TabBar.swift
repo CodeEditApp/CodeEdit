@@ -67,18 +67,28 @@ struct TabBar: View {
             // TODO: Tab bar tools (e.g. split view).
         }
         .frame(height: tabBarHeight)
-        .background(
-            prefs.preferences.general.tabBarStyle == .xcode
-            ? Color(nsColor: .controlBackgroundColor)
-            : Color(nsColor: .black).opacity(colorScheme == .dark ? 0.45 : 0.05)
-        )
         .background {
             if prefs.preferences.general.tabBarStyle == .native {
+                NativeTabShadow()
+                    .frame(height: tabBarHeight, alignment: .top)
+                    .overlay(
+                        Color(nsColor: .black)
+                            .opacity(colorScheme == .dark ? 0.50 : 0.05)
+                            .padding(.top, 1)
+                            .padding(.horizontal, 1)
+                    )
+            }
+        }
+        .background {
+            if prefs.preferences.general.tabBarStyle == .xcode {
+                Color(nsColor: .controlBackgroundColor)
+            } else {
                 EffectView(
                     material: NSVisualEffectView.Material.titlebar,
                     blendingMode: NSVisualEffectView.BlendingMode.withinWindow
                 )
             }
         }
+        .padding(.leading, -1)
     }
 }

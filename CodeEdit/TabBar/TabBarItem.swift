@@ -20,19 +20,36 @@ struct TabDivider: View {
     let width: CGFloat = 1
 
     var body: some View {
-        Group {
-            Rectangle()
-        }
-        .frame(width: width)
-        .padding(.vertical, prefs.preferences.general.tabBarStyle == .xcode ? 8 : 0)
-        .foregroundColor(
-            Color(nsColor: colorScheme == .dark ? .white : .black)
-                .opacity(
-                    prefs.preferences.general.tabBarStyle == .xcode
-                    ? 0.08
-                    : (colorScheme == .dark ? 0.08 : 0.12)
-                )
-        )
+        Rectangle()
+            .frame(width: width)
+            .padding(.vertical, prefs.preferences.general.tabBarStyle == .xcode ? 8 : 0)
+            .foregroundColor(
+                prefs.preferences.general.tabBarStyle == .xcode
+                ? Color(nsColor: colorScheme == .dark ? .white : .black).opacity(0.08)
+                : Color(nsColor: .separatorColor).opacity(colorScheme == .dark ? 0.4 : 1.0)
+            )
+    }
+}
+
+/// The top border for inactive tabs when native-styled tab bar is selected.
+struct NativeTabShadow: View {
+    @Environment(\.colorScheme)
+    var colorScheme
+
+    @StateObject
+    private var prefs: AppPreferencesModel = .shared
+
+    let height: CGFloat = 1
+
+    var body: some View {
+        Rectangle()
+            .frame(height: height)
+            .padding(.vertical, prefs.preferences.general.tabBarStyle == .xcode ? 8 : 0)
+            .foregroundColor(
+                prefs.preferences.general.tabBarStyle == .xcode
+                ? Color(nsColor: colorScheme == .dark ? .white : .black).opacity(0.08)
+                : Color(nsColor: .separatorColor).opacity(colorScheme == .dark ? 0.3 : 1.0)
+            )
     }
 }
 
@@ -171,6 +188,13 @@ struct TabBarItem: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
+            .overlay {
+                // Only show NativeTabShadow when `tabBarStyle` is native and this tab is not active.
+                if prefs.preferences.general.tabBarStyle == .native && !isActive {
+                    NativeTabShadow()
+                        .frame(maxHeight: .infinity, alignment: .top)
+                }
+            }
             TabDivider()
                 .opacity(
                     isActive && prefs.preferences.general.tabBarStyle == .xcode ? 0.0 : 1.0
@@ -229,21 +253,27 @@ struct TabBarItem: View {
                     )
                     .animation(.easeInOut(duration: 0.08), value: isHovering)
             } else {
-                Color(nsColor: isActive ? .clear : .black)
-                    .opacity(
-                        colorScheme == .dark
-                            ? isHovering ? 0.15 : 0.45
-                            : isHovering ? 0.10 : 0.05
+                if isActive {
+                    Color(hex: colorScheme == .dark ? "#3c3938" : "#f7f6f4")
+                } else {
+                    EffectView(
+                        material: NSVisualEffectView.Material.titlebar,
+                        blendingMode: NSVisualEffectView.BlendingMode.withinWindow
                     )
-                    .animation(.easeInOut(duration: 0.08), value: isHovering)
-            }
-        }
-        .background {
-            if prefs.preferences.general.tabBarStyle == .native {
-                EffectView(
-                    material: NSVisualEffectView.Material.titlebar,
-                    blendingMode: NSVisualEffectView.BlendingMode.withinWindow
-                )
+                    .overlay(
+                        Color(nsColor: .black)
+                            .opacity(colorScheme == .dark ? 0.50 : 0.05)
+                            .padding(.top, 1)
+                            .padding(.horizontal, 1)
+                    )
+                    .overlay(
+                        Color(nsColor: colorScheme == .dark ? .white : .black)
+                            .opacity(isHovering ? 0.05 : 0.0)
+                            .animation(.easeInOut(duration: 0.10), value: isHovering)
+                            .padding(.top, 1)
+                            .padding(.horizontal, 1)
+                    )
+                }
             }
         }
         .offset(x: isAppeared ? 0 : -14, y: 0)
@@ -272,6 +302,25 @@ struct TabBarItem: View {
                 }
             }
         }
+        // Update titlebarSeparatorStyle per tabBarStyle.
+        .onChange(of: colorScheme, perform: { value in
+            if prefs.preferences.general.tabBarStyle == .native {
+                workspace.windowControllers.first?.window?.backgroundColor = .init(
+                    Color(hex: value == .dark ? "#3c3938" : "#f7f6f4")
+                )
+            }
+        })
+        .onChange(of: prefs.preferences.general.tabBarStyle, perform: { _ in
+            if prefs.preferences.general.tabBarStyle == .native {
+                workspace.windowControllers.first?.window?.titlebarAppearsTransparent = true
+                workspace.windowControllers.first?.window?.backgroundColor = .init(
+                    Color(hex: colorScheme == .dark ? "#3c3938" : "#f7f6f4")
+                )
+            } else {
+                workspace.windowControllers.first?.window?.titlebarAppearsTransparent = false
+                workspace.windowControllers.first?.window?.backgroundColor = .windowBackgroundColor
+            }
+        })
     }
 }
 
