@@ -254,7 +254,12 @@ struct TabBarItem: View {
                     .animation(.easeInOut(duration: 0.08), value: isHovering)
             } else {
                 if isActive {
-                    Color(hex: colorScheme == .dark ? "#3c3938" : "#f7f6f4")
+                    EffectView(
+                        // Use `windowBackground` material to fit the material of transparent titlebar
+                        // in order to make it native-styled.
+                        material: NSVisualEffectView.Material.windowBackground,
+                        blendingMode: NSVisualEffectView.BlendingMode.withinWindow
+                    )
                 } else {
                     EffectView(
                         material: NSVisualEffectView.Material.titlebar,
@@ -302,23 +307,12 @@ struct TabBarItem: View {
                 }
             }
         }
-        // Update titlebarSeparatorStyle per tabBarStyle.
-        .onChange(of: colorScheme, perform: { value in
-            if prefs.preferences.general.tabBarStyle == .native {
-                workspace.windowControllers.first?.window?.backgroundColor = .init(
-                    Color(hex: value == .dark ? "#3c3938" : "#f7f6f4")
-                )
-            }
-        })
+        // Update titlebarAppearsTransparent per tabBarStyle.
         .onChange(of: prefs.preferences.general.tabBarStyle, perform: { _ in
             if prefs.preferences.general.tabBarStyle == .native {
                 workspace.windowControllers.first?.window?.titlebarAppearsTransparent = true
-                workspace.windowControllers.first?.window?.backgroundColor = .init(
-                    Color(hex: colorScheme == .dark ? "#3c3938" : "#f7f6f4")
-                )
             } else {
                 workspace.windowControllers.first?.window?.titlebarAppearsTransparent = false
-                workspace.windowControllers.first?.window?.backgroundColor = .windowBackgroundColor
             }
         })
     }
