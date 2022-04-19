@@ -11,7 +11,9 @@ import CodeEditSymbols
 struct NavigatorSidebarToolbarTop: View {
     @Environment(\.controlActiveState)
     var activeState
-
+    
+    @Binding
+    var selection: Int
     @State private var icons = [
         SidebarDockIcon(imageName: "folder", title: "Project", id: 0),
         SidebarDockIcon(imageName: "vault", title: "Version Control", id: 1),
@@ -23,10 +25,6 @@ struct NavigatorSidebarToolbarTop: View {
         SidebarDockIcon(imageName: "puzzlepiece.extension", title: "...", id: 7),
         SidebarDockIcon(imageName: "square.grid.2x2", title: "...", id: 8)
     ]
-    
-    @Binding
-    var selection: Int
-    
     var body: some View {
         HStack(spacing: 2) {
             ForEach(icons) { icon in
@@ -48,11 +46,7 @@ struct NavigatorSidebarToolbarTop: View {
         icons.move(fromOffsets: source, toOffset: destination)
     }
 
-    func makeIcon(named: String,
-              title: String,
-              id: Int,
-              scale: Image.Scale = .medium
-    ) -> some View {
+    func makeIcon(named: String, title: String, id: Int, scale: Image.Scale = .medium) -> some View {
         Button {
             selection = id
         } label: {
@@ -60,8 +54,12 @@ struct NavigatorSidebarToolbarTop: View {
                 .help(title)
                 .onDrop(of: [.utf8PlainText], isTargeted: nil) { providers in
                     guard let provider = providers.first else { return false }
-                    provider.loadItem(forTypeIdentifier: "public.utf8-plain-text", options: nil) { data, error in
-                        if let data = data as? Data, let name = String(data: data, encoding: .utf8), let movedIndex = icons.firstIndex(where: { $0.imageName == name }), let insertionIndex = icons.firstIndex (where: { $0.imageName == named }) {
+                    provider.loadItem(forTypeIdentifier: "public.utf8-plain-text", options: nil) { data, _ in
+                        if let data = data as? Data,
+                            let name = String(data: data, encoding: .utf8),
+                            let movedIndex = icons.firstIndex(where: { $0.imageName == name }),
+                            let insertionIndex = icons.firstIndex(where: { $0.imageName == named }) {
+                            
                             let tempIcon = icons[movedIndex]
                             icons.remove(at: movedIndex)
                             icons.insert(tempIcon, at: insertionIndex)

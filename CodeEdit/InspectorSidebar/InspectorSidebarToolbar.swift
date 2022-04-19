@@ -47,8 +47,12 @@ struct InspectorSidebarToolbarTop: View {
                 .frame(width: 16, alignment: .center)
                 .onDrop(of: [.utf8PlainText], isTargeted: nil) { providers in
                     guard let provider = providers.first else { return false }
-                    provider.loadItem(forTypeIdentifier: "public.utf8-plain-text", options: nil) { data, error in
-                        if let data = data as? Data, let name = String(data: data, encoding: .utf8), let movedIndex = icons.firstIndex(where: { $0.imageName == name }), let insertionIndex = icons.firstIndex (where: { $0.imageName == systemImage }) {
+                    provider.loadItem(forTypeIdentifier: "public.utf8-plain-text", options: nil) { data, _ in
+                        if let data = data as? Data,
+                            let name = String(data: data, encoding: .utf8),
+                            let movedIndex = icons.firstIndex(where: { $0.imageName == name }),
+                            let insertionIndex = icons.firstIndex(where: { $0.imageName == systemImage }) {
+                            
                             let tempIcon = icons[movedIndex]
                             icons.remove(at: movedIndex)
                             icons.insert(tempIcon, at: insertionIndex)
