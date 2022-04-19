@@ -18,7 +18,7 @@ struct EditorThemeView: View {
 
     var body: some View {
         ZStack(alignment: .topLeading) {
-            EffectView(material: .contentBackground)
+            EffectView(.contentBackground)
             if let selectedTheme = themeModel.selectedTheme,
                let index = themeModel.themes.firstIndex(of: selectedTheme) {
                 VStack(alignment: .leading, spacing: 0) {
