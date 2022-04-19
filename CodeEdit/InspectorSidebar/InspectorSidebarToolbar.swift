@@ -27,8 +27,14 @@ struct InspectorSidebarToolbarTop: View {
             HStack(spacing: 10) {
                 ForEach(icons) { icon in
                     makeInspectorIcon(systemImage: icon.imageName, title: icon.title, id: icon.id)
-                        .opacity(draggingItem?.imageName == icon.imageName && hasChangedLocation && drugItemLocation != nil ? 0.0: 1.0)
-                        .onDrop(of: [.utf8PlainText], delegate: InspectorSidebarDockIconDelegate(item: icon, current: $draggingItem, icons: $icons, hasChangedLocation: $hasChangedLocation, drugItemLocation: $drugItemLocation))
+                        .opacity(draggingItem?.imageName == icon.imageName &&
+                                 hasChangedLocation &&
+                                 drugItemLocation != nil ? 0.0: 1.0)
+                        .onDrop(of: [.utf8PlainText], delegate: InspectorSidebarDockIconDelegate(item: icon,
+                                                                                                    current: $draggingItem,
+                                                                                                    icons: $icons,
+                                                                                                    hasChangedLocation: $hasChangedLocation,
+                                                                                                    drugItemLocation: $drugItemLocation))
                 }
             }
             .frame(height: 29, alignment: .center)
@@ -96,13 +102,13 @@ struct InspectorSidebarToolbarTop: View {
 
             guard item != current, let current = current,
                     let from = icons.firstIndex(of: current),
-                    let to = icons.firstIndex(of: item) else { return }
+                    let toIndex = icons.firstIndex(of: item) else { return }
 
             hasChangedLocation = true
             drugItemLocation = info.location
 
-            if icons[to] != current {
-                icons.move(fromOffsets: IndexSet(integer: from), toOffset: to > from ? to + 1 : to)
+            if icons[toIndex] != current {
+                icons.move(fromOffsets: IndexSet(integer: from), toOffset: toIndex > from ? toIndex + 1 : toIndex)
             }
         }
 
@@ -113,7 +119,7 @@ struct InspectorSidebarToolbarTop: View {
         func dropUpdated(info: DropInfo) -> DropProposal? {
             return DropProposal(operation: .move)
         }
-        
+
         func performDrop(info: DropInfo) -> Bool {
             hasChangedLocation = false
             drugItemLocation = nil

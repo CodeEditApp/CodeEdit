@@ -35,8 +35,14 @@ struct NavigatorSidebarToolbarTop: View {
             HStack(spacing: 0) {
                 ForEach(icons) { icon in
                     makeIcon(named: icon.imageName, title: icon.title, id: icon.id)
-                        .opacity(draggingItem?.imageName == icon.imageName && hasChangedLocation && drugItemLocation != nil ? 0.0: 1.0)
-                        .onDrop(of: [.utf8PlainText], delegate: NavigatorSidebarDockIconDelegate(item: icon, current: $draggingItem, icons: $icons, hasChangedLocation: $hasChangedLocation, drugItemLocation: $drugItemLocation))
+                        .opacity(draggingItem?.imageName == icon.imageName &&
+                                 hasChangedLocation &&
+                                 drugItemLocation != nil ? 0.0: 1.0)
+                        .onDrop(of: [.utf8PlainText], delegate: NavigatorSidebarDockIconDelegate(item: icon,
+                                                                                                    current: $draggingItem,
+                                                                                                    icons: $icons,
+                                                                                                    hasChangedLocation: $hasChangedLocation,
+                                                                                                    drugItemLocation: $drugItemLocation))
                 }
             }
             .frame(height: 29, alignment: .center)
@@ -117,16 +123,16 @@ struct NavigatorSidebarToolbarTop: View {
 
             guard item != current, let current = current,
                     let from = icons.firstIndex(of: current),
-                    let to = icons.firstIndex(of: item) else { return }
+                    let toIndex = icons.firstIndex(of: item) else { return }
 
             hasChangedLocation = true
             drugItemLocation = info.location
 
-            if icons[to] != current {
-                icons.move(fromOffsets: IndexSet(integer: from), toOffset: to > from ? to + 1 : to)
+            if icons[toIndex] != current {
+                icons.move(fromOffsets: IndexSet(integer: from), toOffset: toIndex > from ? toIndex + 1 : toIndex)
             }
         }
-        
+
         func dropExited(info: DropInfo) {
             drugItemLocation = nil
         }
