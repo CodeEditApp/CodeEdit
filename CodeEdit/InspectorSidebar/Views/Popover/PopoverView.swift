@@ -150,7 +150,7 @@ struct PopoverView: View {
     }
 
     private func generateAvatarHash() -> String {
-        let hash = commit.authorEmail.md5(true)
+        let hash = commit.authorEmail.md5()
         return "\(hash)?d=404"
     }
 }
