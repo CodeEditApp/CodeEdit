@@ -9,10 +9,10 @@ import Foundation
 import CryptoKit
 
 public extension String {
-  func md5(_ lowercased: Bool = true) -> String {
-    var trimmed = self.trimmingCharacters(in: .whitespacesAndNewlines)
-    if lowercased { trimmed = trimmed.lowercased() }
-    let computed = Insecure.MD5.hash(data: trimmed.data(using: .utf8)!)
-    return computed.map { String(format: "%02hhx", $0) }.joined()
-  }
+    func md5(_ lowercased: Bool = true) -> String {
+        var trimmed = self.trimmingCharacters(in: .whitespacesAndNewlines)
+        if lowercased { trimmed = trimmed.lowercased() }
+        let computed = Insecure.MD5.hash(data: trimmed.data(using: .utf8)!)
+        return computed.map { String(format: "%02hhx", $0) }.joined()
+    }
 }
