@@ -57,6 +57,10 @@ public extension GitClient {
                 throw GitClientError.outputError(output)
             }
         }
+
+        /// Gets the commit history log of the current file opened
+        /// in the workspace.
+
         func getCommitHistory(entries: Int?, fileLocalPath: String?) throws -> [Commit] {
             var entriesString = ""
             let fileLocalPath = fileLocalPath ?? ""
@@ -65,16 +69,21 @@ public extension GitClient {
             dateFormatter.locale = Locale.current
             dateFormatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss Z"
             return try shellClient.run(
-                "cd \(directoryURL.relativePath);git log --pretty=%h¦%s¦%aN¦%aD¦ \(entriesString) \(fileLocalPath)"
+                // swiftlint:disable:next line_length
+                "cd \(directoryURL.relativePath);git log --pretty=%h¦%H¦%s¦%aN¦%ae¦%cn¦%ce¦%aD¦ \(entriesString) \(fileLocalPath)"
             )
                 .split(separator: "\n")
                 .map { line -> Commit in
                     let parameters = line.components(separatedBy: "¦")
                     return Commit(
                         hash: parameters[safe: 0] ?? "",
-                        message: parameters[safe: 1] ?? "",
-                        author: parameters[safe: 2] ?? "",
-                        date: dateFormatter.date(from: parameters[safe: 3] ?? "") ?? Date()
+                        commitHash: parameters[safe: 1] ?? "",
+                        message: parameters[safe: 2] ?? "",
+                        author: parameters[safe: 3] ?? "",
+                        authorEmail: parameters[safe: 4] ?? "",
+                        commiter: parameters[safe: 5] ?? "",
+                        commiterEmail: parameters[safe: 6] ?? "",
+                        date: dateFormatter.date(from: parameters[safe: 7] ?? "") ?? Date()
                     )
                 }
         }

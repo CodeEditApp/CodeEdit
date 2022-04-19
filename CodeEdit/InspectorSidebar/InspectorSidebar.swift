@@ -35,6 +35,8 @@ struct InspectorSidebar: View {
                     default: EmptyView()
                     }
                 }
+            } else {
+                NoSelectionView()
             }
         }
         .frame(
@@ -48,5 +50,7 @@ struct InspectorSidebar: View {
             InspectorSidebarToolbarTop(selection: $selection)
                 .padding(.bottom, -8)
         }
+        .background(Rectangle()
+            .foregroundColor(Color("InspectorBackgroundColor")))
     }
 }
