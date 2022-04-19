@@ -119,11 +119,22 @@ struct PopoverView: View {
     }
 
     private func commitDetails() -> String {
-        return """
-            \(commit.message)
+        if commit.commiterEmail == "noreply@github.com" {
+            return """
+                \(commit.message)
+                """
+        } else if commit.authorEmail != commit.commiterEmail {
+            return """
+                \(commit.message)
+                """
+        } else {
+            return """
+                \(commit.message)
 
-            \(coAuthDetail())
-            """
+                \(coAuthDetail())
+                """
+        }
+        return ""
     }
 
     private func coAuthDetail() -> String {
