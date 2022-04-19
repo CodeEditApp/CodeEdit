@@ -18,9 +18,9 @@ final class CodeEditUIUnitTests: XCTestCase {
     func testHelpButtonLight() throws {
         let view = HelpButton(action: {})
         let hosting = NSHostingView(rootView: view)
-        hosting.appearance = .init(named: .aqua)
         hosting.frame = CGRect(origin: .zero, size: .init(width: 40, height: 40))
-        assertSnapshot(matching: hosting, as: .image)
+        hosting.appearance = .init(named: .aqua)
+        assertSnapshot(matching: hosting, as: .image(size: .init(width: 40, height: 40)))
     }
 
     func testHelpButtonDark() throws {
