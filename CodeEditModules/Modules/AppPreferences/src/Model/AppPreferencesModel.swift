@@ -15,7 +15,7 @@ import SwiftUI
 /// @StateObject
 /// private var prefs: AppPreferencesModel = .shared
 /// ```
-public class AppPreferencesModel: ObservableObject {
+public final class AppPreferencesModel: ObservableObject {
 
     /// The publicly available singleton instance of ``AppPreferencesModel``
     public static let shared: AppPreferencesModel = .init()

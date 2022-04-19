@@ -106,7 +106,7 @@ public struct PreferenceAccountsView: View {
             }
             .padding(.top, 10)
             .frame(maxHeight: .infinity, alignment: .top)
-            .background(EffectView(material: .contentBackground))
+            .background(EffectView(.contentBackground))
         }
     }
 
@@ -137,7 +137,7 @@ public struct PreferenceAccountsView: View {
             Text("Click the add (+) button to create a new account")
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(EffectView(material: .contentBackground))
+        .background(EffectView(.contentBackground))
     }
 
     private var selectAccount: some View {
@@ -145,7 +145,7 @@ public struct PreferenceAccountsView: View {
             Text("Select an account from the list in the left panel")
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(EffectView(material: .contentBackground))
+        .background(EffectView(.contentBackground))
     }
 
     private func getSourceControlAccount(selectedAccountId: String) -> SourceControlAccounts? {

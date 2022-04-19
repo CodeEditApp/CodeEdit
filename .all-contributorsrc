@@ -178,6 +178,24 @@
         "code",
         "bug"
       ]
+    },
+    {
+      "login": "richardtop",
+      "name": "Richard Topchii",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8013017?v=4",
+      "profile": "https://www.youtube.com/channel/UCx1gvWpy5zjOd7yZyDwmXEA?sub_confirmation=1",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "Pythonen",
+      "name": "Pythonen",
+      "avatar_url": "https://avatars.githubusercontent.com/u/53183345?v=4",
+      "profile": "https://github.com/Pythonen",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,

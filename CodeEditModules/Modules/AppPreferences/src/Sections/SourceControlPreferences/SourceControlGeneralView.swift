@@ -53,6 +53,12 @@ struct SourceControlGeneralView: View {
                     .padding(.leading, 20)
             }
 
+            PreferencesSection("Reporting", hideLabels: false) {
+                Toggle("Open created issue in the browser",
+                       isOn: $prefs.preferences.sourceControl.general.openFeedbackInBrowser)
+                    .toggleStyle(.checkbox)
+            }
+
             PreferencesSection("Comparison View", hideLabels: true) {
                 Picker("Comparison View",
                        selection: $prefs.preferences.sourceControl.general.revisionComparisonLayout) {
@@ -84,7 +90,7 @@ struct SourceControlGeneralView: View {
             }
         }
         .frame(height: 350)
-        .background(EffectView(material: .contentBackground))
+        .background(EffectView(.contentBackground))
     }
 }
 

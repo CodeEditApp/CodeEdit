@@ -42,6 +42,10 @@ public struct TextEditingPreferencesView: View {
             PreferencesSection("Font") {
                 fontSelector
             }
+            PreferencesSection("Code completion") {
+                autocompleteBraces
+                enableTypeOverCompletion
+            }
         }
     }
 
@@ -59,6 +63,20 @@ public struct TextEditingPreferencesView: View {
                 "\(prefs.preferences.textEditing.font.name) \(prefs.preferences.textEditing.font.size)",
                 name: $prefs.preferences.textEditing.font.name, size: $prefs.preferences.textEditing.font.size
             )
+        }
+    }
+
+    private var autocompleteBraces: some View {
+        HStack {
+            Toggle("Autocomplete braces", isOn: $prefs.preferences.textEditing.autocompleteBraces)
+            Text("Automatically insert closing braces (\"}\")")
+        }
+    }
+
+    private var enableTypeOverCompletion: some View {
+        HStack {
+            Toggle("Enable type-over completion", isOn: $prefs.preferences.textEditing.enableTypeOverCompletion)
+            Text("Enable type-over completion")
         }
     }
 }

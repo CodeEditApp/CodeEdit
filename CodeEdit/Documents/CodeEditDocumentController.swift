@@ -7,7 +7,7 @@
 
 import Cocoa
 
-class CodeEditDocumentController: NSDocumentController {
+final class CodeEditDocumentController: NSDocumentController {
     override func openDocument(_ sender: Any?) {
         self.openDocument(onCompletion: { document, documentWasAlreadyOpen in
             // TODO: handle errors
@@ -41,7 +41,7 @@ class CodeEditDocumentController: NSDocumentController {
 }
 
 extension NSDocumentController {
-    func openDocument(onCompletion: @escaping (NSDocument?, Bool) -> Void, onCancel: @escaping () -> Void) {
+    final func openDocument(onCompletion: @escaping (NSDocument?, Bool) -> Void, onCancel: @escaping () -> Void) {
         let dialog = NSOpenPanel()
 
         dialog.title = "Open Workspace or File"
@@ -76,7 +76,7 @@ extension NSDocumentController {
         }
     }
 
-    func updateRecent(_ url: URL) {
+    final func updateRecent(_ url: URL) {
         var recentProjectPaths: [String] = UserDefaults.standard.array(
             forKey: "recentProjectPaths"
         ) as? [String] ?? []

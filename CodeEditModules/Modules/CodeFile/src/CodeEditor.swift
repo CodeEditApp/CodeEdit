@@ -63,8 +63,8 @@ struct CodeEditor: NSViewRepresentable {
         scrollView.documentView = textView
         scrollView.verticalRulerView = LineGutter(
             scrollView: scrollView,
-            width: 45,
-            font: .monospacedDigitSystemFont(ofSize: 11, weight: .regular),
+            width: 37,
+            font: NSFont(name: "SF Mono", size: 11) ?? .monospacedSystemFont(ofSize: 11, weight: .regular),
             textColor: .secondaryLabelColor,
             backgroundColor: .clear
         )
@@ -155,7 +155,7 @@ struct CodeEditor: NSViewRepresentable {
 extension CodeEditor {
     // A wrapper around a `Bool` that enables updating
     // the wrapped value during `View` renders.
-    private class ReferenceTypeBool {
+    private final class ReferenceTypeBool {
         var value: Bool
 
         init(value: Bool) {

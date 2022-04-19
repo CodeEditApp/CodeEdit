@@ -43,6 +43,15 @@ public struct GeneralPreferencesView: View {
                 }
                 .pickerStyle(.radioGroup)
             }
+            PreferencesSection("Tab Bar Style") {
+                Picker("Tab Bar Style:", selection: $prefs.preferences.general.tabBarStyle) {
+                    Text("Native")
+                        .tag(AppPreferences.TabBarStyle.native)
+                    Text("Xcode")
+                        .tag(AppPreferences.TabBarStyle.xcode)
+                }
+                .pickerStyle(.radioGroup)
+            }
             PreferencesSection("Reopen Behavior") {
                 Picker("Reopen Behavior:", selection: $prefs.preferences.general.reopenBehavior) {
                     Text("Welcome Screen")

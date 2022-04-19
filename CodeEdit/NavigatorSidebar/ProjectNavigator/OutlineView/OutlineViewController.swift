@@ -13,7 +13,7 @@ import AppPreferences
 ///
 /// Adds a ``outlineView`` inside a ``scrollView`` which shows the folder structure of the
 /// currently open project.
-class OutlineViewController: NSViewController {
+final class OutlineViewController: NSViewController {
 
     typealias Item = WorkspaceClient.FileItem
 
