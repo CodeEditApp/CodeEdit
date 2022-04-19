@@ -41,7 +41,7 @@ struct NavigatorSidebarToolbarTop: View {
             Divider()
         }
     }
-    
+
     func makeIcon(named: String, title: String, id: Int, scale: Image.Scale = .medium) -> some View {
         Button {
             selection = id
@@ -55,7 +55,7 @@ struct NavigatorSidebarToolbarTop: View {
                             let name = String(data: data, encoding: .utf8),
                             let movedIndex = icons.firstIndex(where: { $0.imageName == name }),
                             let insertionIndex = icons.firstIndex(where: { $0.imageName == named }) {
-                            
+
                             let tempIcon = icons[movedIndex]
                             icons.remove(at: movedIndex)
                             icons.insert(tempIcon, at: insertionIndex)
@@ -70,7 +70,7 @@ struct NavigatorSidebarToolbarTop: View {
         .buttonStyle(NavigatorToolbarButtonStyle(id: id, selection: selection, activeState: activeState))
         .imageScale(scale)
     }
-    
+
     private func getSafeImage(named: String, accesibilityDescription: String?) -> Image {
         if let nsImage = NSImage(systemSymbolName: named, accessibilityDescription: accesibilityDescription) {
             return Image(nsImage: nsImage)
@@ -93,7 +93,7 @@ struct NavigatorSidebarToolbarTop: View {
                 .opacity(activeState == .inactive ? 0.45 : 1)
         }
     }
-    
+
     private struct SidebarDockIcon: Identifiable {
         let imageName: String
         let title: String

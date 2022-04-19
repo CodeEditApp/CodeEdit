@@ -17,7 +17,7 @@ struct InspectorSidebarToolbarTop: View {
         InspectorDockIcon(imageName: "clock", title: "History Inspector", id: 1),
         InspectorDockIcon(imageName: "questionmark.circle", title: "Quick Help Inspector", id: 2)
     ]
-    
+
     var body: some View {
         HStack(spacing: 10) {
             ForEach(icons) { icon in
@@ -52,7 +52,7 @@ struct InspectorSidebarToolbarTop: View {
                             let name = String(data: data, encoding: .utf8),
                             let movedIndex = icons.firstIndex(where: { $0.imageName == name }),
                             let insertionIndex = icons.firstIndex(where: { $0.imageName == systemImage }) {
-                            
+
                             let tempIcon = icons[movedIndex]
                             icons.remove(at: movedIndex)
                             icons.insert(tempIcon, at: insertionIndex)
@@ -66,7 +66,7 @@ struct InspectorSidebarToolbarTop: View {
         }
         .buttonStyle(.plain)
     }
-    
+
     private func getSafeImage(named: String, accesibilityDescription: String?) -> Image {
         if let nsImage = NSImage(systemSymbolName: named, accessibilityDescription: accesibilityDescription) {
             return Image(nsImage: nsImage)
@@ -74,13 +74,12 @@ struct InspectorSidebarToolbarTop: View {
             return Image(symbol: named)
         }
     }
-    
+
     private struct InspectorDockIcon: Identifiable {
         let imageName: String
         let title: String
         var id: Int
     }
-    
 }
 
 struct InspectorSidebarToolbar_Previews: PreviewProvider {
