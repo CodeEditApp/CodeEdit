@@ -16,13 +16,6 @@ struct PopoverView: View {
 
     @State var onHover: Bool = false
 
-    var dateFormatter: DateFormatter {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .long
-        formatter.timeStyle = .short
-        return formatter
-    }
-
     var body: some View {
         VStack {
             VStack(alignment: .leading) {
@@ -51,7 +44,7 @@ struct PopoverView: View {
                     VStack(alignment: .leading) {
                         Text(commit.author)
                             .fontWeight(.bold)
-                        Text(dateFormatter.string(from: commit.date))
+                        Text(commit.date.formatted(date: .long, time: .shortened))
                     }
 
                     Spacer()
