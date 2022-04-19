@@ -37,13 +37,13 @@ struct PopoverView: View {
                             Image(systemName: "person.crop.circle.fill")
                                 .symbolRenderingMode(.hierarchical)
                                 .resizable()
-                                .foregroundColor(.teal)
+                                .foregroundColor(avatarColor)
                                 .frame(width: 42, height: 42)
                         } else {
                             Image(systemName: "person.crop.circle.fill")
                                 .symbolRenderingMode(.hierarchical)
                                 .resizable()
-                                .foregroundColor(.teal)
+                                .foregroundColor(avatarColor)
                                 .frame(width: 42, height: 42)
                         }
                     }
@@ -134,7 +134,6 @@ struct PopoverView: View {
                 \(coAuthDetail())
                 """
         }
-        return ""
     }
 
     private func coAuthDetail() -> String {
@@ -152,5 +151,24 @@ struct PopoverView: View {
     private func generateAvatarHash() -> String {
         let hash = commit.authorEmail.md5()
         return "\(hash)?d=404"
+    }
+
+    private var avatarColor: Color {
+        let hash = generateAvatarHash().hash
+        switch hash % 12 {
+        case 0: return .red
+        case 1: return .orange
+        case 2: return .yellow
+        case 3: return .green
+        case 4: return .mint
+        case 5: return .teal
+        case 6: return .cyan
+        case 7: return .blue
+        case 8: return .indigo
+        case 9: return .purple
+        case 10: return .brown
+        case 11: return .pink
+        default: return .teal
+        }
     }
 }
