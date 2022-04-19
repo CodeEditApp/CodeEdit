@@ -87,6 +87,8 @@ struct TabBar: View {
                     NSVisualEffectView.Material.titlebar,
                     blendingMode: NSVisualEffectView.BlendingMode.withinWindow
                 )
+                .background(Color(nsColor: .controlBackgroundColor))
+                .edgesIgnoringSafeArea(.top)
             }
         }
         .padding(.leading, -1)
