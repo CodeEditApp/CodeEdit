@@ -67,21 +67,39 @@ struct TabBar: View {
             // TODO: Tab bar tools (e.g. split view).
         }
         .frame(height: tabBarHeight)
+        .overlay {
+            // When tab bar style is `xcode`, we put the top divider as an overlay.
+            if prefs.preferences.general.tabBarStyle == .xcode {
+                NativeTabShadow()
+                    .frame(height: tabBarHeight, alignment: .top)
+            }
+        }
         .background {
+            // When tab bar style is `native`, we put the top divider beneath tabs.
             if prefs.preferences.general.tabBarStyle == .native {
                 NativeTabShadow()
                     .frame(height: tabBarHeight, alignment: .top)
-                    .overlay(
-                        Color(nsColor: .black)
-                            .opacity(colorScheme == .dark ? 0.50 : 0.05)
-                            .padding(.top, 1)
-                            .padding(.horizontal, 1)
-                    )
             }
         }
         .background {
             if prefs.preferences.general.tabBarStyle == .xcode {
                 Color(nsColor: .controlBackgroundColor)
+            } else {
+                Color(nsColor: .black)
+                    .opacity(colorScheme == .dark ? 0.50 : 0.05)
+                    // Set padding top to 1 to avoid color-overlapping.
+                    .padding(.top, 1)
+            }
+        }
+        .background {
+            if prefs.preferences.general.tabBarStyle == .xcode {
+                EffectView(
+                    NSVisualEffectView.Material.titlebar,
+                    blendingMode: NSVisualEffectView.BlendingMode.withinWindow
+                )
+                // Set bottom padding to avoid material overlapping in bar.
+                .padding(.bottom, tabBarHeight)
+                .edgesIgnoringSafeArea(.top)
             } else {
                 EffectView(
                     NSVisualEffectView.Material.titlebar,
