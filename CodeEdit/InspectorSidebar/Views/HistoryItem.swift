@@ -6,18 +6,24 @@
 //
 import SwiftUI
 import GitClient
+import CodeEditUtils
 
 struct HistoryItem: View {
 
     var commit: Commit
 
-    @State var showPopup: Bool = false
+    @Binding var selection: Commit?
 
-    var dateFormatter: DateFormatter {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        formatter.dateFormat = "yyyy/MM/dd"
-        return formatter
+    private var showPopup: Binding<Bool> {
+        Binding<Bool> {
+            return selection == commit
+        } set: { newValue in
+            if newValue {
+                selection = commit
+            } else {
+                selection = nil
+            }
+        }
     }
 
     @Environment(\.openURL) var openCommit
@@ -34,7 +40,7 @@ struct HistoryItem: View {
                         .lineLimit(2)
                 }
                 Spacer()
-                VStack(alignment: .trailing) {
+                VStack(alignment: .trailing, spacing: 5) {
                     Text(commit.hash)
                         .font(.system(size: 10))
                         .background(RoundedRectangle(cornerRadius: 3)
@@ -42,7 +48,7 @@ struct HistoryItem: View {
                             .padding(.leading, -5)
                             .foregroundColor(Color("HistoryInspectorHash")))
                         .padding(.trailing, 5)
-                    Text(dateFormatter.string(from: commit.date))
+                    Text(commit.date.relativeStringToNow())
                         .font(.system(size: 11))
                         .foregroundColor(.secondary)
                 }
@@ -51,11 +57,9 @@ struct HistoryItem: View {
         }
         .padding(.vertical, 6)
         .padding(.horizontal, 10)
-        .onTapGesture {
-            showPopup.toggle()
-        }
-        .popover(isPresented: $showPopup, arrowEdge: .leading) {
-          PopoverView(commit: commit)
+        .contentShape(Rectangle())
+        .popover(isPresented: showPopup, arrowEdge: .leading) {
+            PopoverView(commit: commit)
         }
         .contextMenu {
             Group {

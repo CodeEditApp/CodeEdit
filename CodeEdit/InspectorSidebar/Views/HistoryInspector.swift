@@ -13,7 +13,7 @@ struct HistoryInspector: View {
     @ObservedObject
     private var model: HistoryInspectorModel
 
-    @State var selectedCommitHistory: Commit.ID?
+    @State var selectedCommitHistory: Commit?
 
     /// Initialize with GitClient
     /// - Parameter gitClient: a GitClient
@@ -29,7 +29,8 @@ struct HistoryInspector: View {
             } else {
                 List(selection: $selectedCommitHistory) {
                     ForEach(model.commitHistory) { commit in
-                        HistoryItem(commit: commit)
+                        HistoryItem(commit: commit, selection: $selectedCommitHistory)
+                            .tag(commit)
                     }
                 }
                 .listStyle(.inset)
