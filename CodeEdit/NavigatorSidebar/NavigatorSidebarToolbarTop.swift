@@ -28,17 +28,18 @@ struct NavigatorSidebarToolbarTop: View {
     ]
     @State private var hasChangedLocation: Bool = false
     @State private var draggingItem: SidebarDockIcon?
+    @State private var drugItemLocation: CGPoint?
 
     var body: some View {
         ScrollView {
             HStack(spacing: 0) {
                 ForEach(icons) { icon in
                     makeIcon(named: icon.imageName, title: icon.title, id: icon.id)
-                        .opacity(draggingItem?.imageName == icon.imageName && hasChangedLocation ? 0.0: 1.0)
-                        .onDrop(of: [.utf8PlainText], delegate: SidebarDockIconDelegate(item: icon, current: $draggingItem, icons: $icons, hasChangedLocation: $hasChangedLocation))
+                        .opacity(draggingItem?.imageName == icon.imageName && hasChangedLocation && drugItemLocation != nil ? 0.0: 1.0)
+                        .onDrop(of: [.utf8PlainText], delegate: SidebarDockIconDelegate(item: icon, current: $draggingItem, icons: $icons, hasChangedLocation: $hasChangedLocation, drugItemLocation: $drugItemLocation))
                 }
             }
-            .frame(height: 32, alignment: .center)
+            .frame(height: 29, alignment: .center)
             .frame(maxWidth: .infinity)
             .overlay(alignment: .top) {
                 Divider()
@@ -103,19 +104,28 @@ struct NavigatorSidebarToolbarTop: View {
         @Binding var current: SidebarDockIcon?
         @Binding var icons: [SidebarDockIcon]
         @Binding var hasChangedLocation: Bool
-
+        @Binding var drugItemLocation: CGPoint?
+        
         func dropEntered(info: DropInfo) {
-            if current == nil { current = item }
+            if current == nil {
+                current = item
+                drugItemLocation = info.location
+            }
             
             guard item != current, let current = current,
                     let from = icons.firstIndex(of: current),
                     let to = icons.firstIndex(of: item) else { return }
 
             hasChangedLocation = true
-
+            drugItemLocation = info.location
+            
             if icons[to] != current {
                 icons.move(fromOffsets: IndexSet(integer: from), toOffset: to > from ? to + 1 : to)
             }
+        }
+        
+        func dropExited(info: DropInfo) {
+            drugItemLocation = nil
         }
         
         func dropUpdated(info: DropInfo) -> DropProposal? {
@@ -124,6 +134,7 @@ struct NavigatorSidebarToolbarTop: View {
         
         func performDrop(info: DropInfo) -> Bool {
             hasChangedLocation = false
+            drugItemLocation = nil
             current = nil
             return true
         }
