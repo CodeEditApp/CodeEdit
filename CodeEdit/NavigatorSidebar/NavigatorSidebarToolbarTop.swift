@@ -28,10 +28,10 @@ struct NavigatorSidebarToolbarTop: View {
     ]
     @State private var hasChangedLocation: Bool = false
     @State private var draggingItem: SidebarDockIcon?
-    
+
     var body: some View {
         ScrollView {
-            HStack(spacing: 2) {
+            HStack(spacing: 0) {
                 ForEach(icons) { icon in
                     makeIcon(named: icon.imageName, title: icon.title, id: icon.id)
                         .opacity(draggingItem?.imageName == icon.imageName && hasChangedLocation ? 0.0: 1.0)
@@ -39,6 +39,7 @@ struct NavigatorSidebarToolbarTop: View {
                 }
             }
             .frame(height: 32, alignment: .center)
+            .frame(maxWidth: .infinity)
             .overlay(alignment: .top) {
                 Divider()
             }
@@ -49,7 +50,6 @@ struct NavigatorSidebarToolbarTop: View {
         }
         .frame(height: 32, alignment: .center)
         .frame(maxWidth: .infinity)
-        .onDrop(of: [.utf8PlainText], delegate: DropOutsideDelegate(current: $draggingItem))
     }
 
     func makeIcon(named: String, title: String, id: Int, scale: Image.Scale = .medium) -> some View {
@@ -97,7 +97,7 @@ struct NavigatorSidebarToolbarTop: View {
         let title: String
         var id: Int
     }
-    
+
     private struct SidebarDockIconDelegate: DropDelegate {
         let item: SidebarDockIcon
         @Binding var current: SidebarDockIcon?
@@ -105,16 +105,16 @@ struct NavigatorSidebarToolbarTop: View {
         @Binding var hasChangedLocation: Bool
 
         func dropEntered(info: DropInfo) {
-            if item != current {
-                let from = icons.firstIndex(of: current!)!
-                let to = icons.firstIndex(of: item)!
-                
-                hasChangedLocation = true
-                
-                if icons[to].id != current!.id {
-                    icons.move(fromOffsets: IndexSet(integer: from),
-                        toOffset: to > from ? to + 1 : to)
-                }
+            if current == nil { current = item }
+            
+            guard item != current, let current = current,
+                    let from = icons.firstIndex(of: current),
+                    let to = icons.firstIndex(of: item) else { return }
+
+            hasChangedLocation = true
+
+            if icons[to] != current {
+                icons.move(fromOffsets: IndexSet(integer: from), toOffset: to > from ? to + 1 : to)
             }
         }
         
@@ -124,15 +124,6 @@ struct NavigatorSidebarToolbarTop: View {
         
         func performDrop(info: DropInfo) -> Bool {
             hasChangedLocation = false
-            current = nil
-            return true
-        }
-    }
-    
-    private struct DropOutsideDelegate: DropDelegate {
-        @Binding var current: SidebarDockIcon?
-            
-        func performDrop(info: DropInfo) -> Bool {
             current = nil
             return true
         }
