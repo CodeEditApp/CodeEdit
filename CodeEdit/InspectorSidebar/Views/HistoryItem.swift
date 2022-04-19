@@ -64,7 +64,8 @@ struct HistoryItem: View {
                     pasteboard.clearContents()
                     pasteboard.setString(commit.message, forType: .string)
                 }
-                Button("Copy Identifier") {} // TODO: Implementation Needed
+                Button("Copy Identifier") {}
+                    .disabled(true) // TODO: Implementation Needed
                 Button("Email \(commit.author)...") {
                     let service = NSSharingService(named: NSSharingService.Name.composeEmail)
                     service?.recipients = [commit.authorEmail]
@@ -72,9 +73,12 @@ struct HistoryItem: View {
                 Divider()
             }
             Group {
-                Button("Tag \(commit.hash)...") {} // TODO: Implementation Needed
-                Button("New Branch from \(commit.hash)...") {} // TODO: Implementation Needed
-                Button("Cherry-Pick \(commit.hash)...") {} // TODO: Implementation Needed
+                Button("Tag \(commit.hash)...") {}
+                    .disabled(true) // TODO: Implementation Needed
+                Button("New Branch from \(commit.hash)...") {}
+                    .disabled(true) // TODO: Implementation Needed
+                Button("Cherry-Pick \(commit.hash)...") {}
+                    .disabled(true) // TODO: Implementation Needed
             }
             Group {
                 Divider()
@@ -87,9 +91,11 @@ struct HistoryItem: View {
                     openCommit(URL(string: commitURL)!)
                 }
                 Divider()
-                Button("Check Out \(commit.hash)...") {} // TODO: Implementation Needed
+                Button("Check Out \(commit.hash)...") {}
+                    .disabled(true) // TODO: Implementation Needed
                 Divider()
-                Button("History Editor Help") {} // TODO: Implementation Needed
+                Button("History Editor Help") {}
+                    .disabled(true) // TODO: Implementation Needed
             }
         }
     }

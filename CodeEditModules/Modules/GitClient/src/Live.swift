@@ -58,6 +58,9 @@ public extension GitClient {
             }
         }
 
+        /// Gets the commit history log of the current file opened
+        /// in the workspace.
+
         // swiftlint:disable line_length
         func getCommitHistory(entries: Int?, fileLocalPath: String?) throws -> [Commit] {
             var entriesString = ""

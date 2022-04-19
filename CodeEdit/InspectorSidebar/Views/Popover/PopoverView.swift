@@ -8,7 +8,7 @@
 import SwiftUI
 import GitClient
 import CodeEditUI
-import CryptoKit
+import CodeEditUtils
 
 struct PopoverView: View {
 
@@ -81,6 +81,7 @@ struct PopoverView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.leading, 12)
                 }
+                .disabled(true)
                 .buttonStyle(.plain)
                 .onHover { hover in
                     onHover = hover
@@ -91,6 +92,7 @@ struct PopoverView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.leading, 12)
                 }
+                .disabled(true)
                 .buttonStyle(.plain)
                 .padding(.top, -3)
                 .onHover { hover in
@@ -113,7 +115,7 @@ struct PopoverView: View {
             .padding(.top, -10)
             .padding(.bottom, 10)
         }
-        .frame(minWidth: 310, minHeight: 185)
+        .frame(maxWidth: 310, minHeight: 190)
     }
 
     private func commitDetails() -> String {
@@ -125,7 +127,9 @@ struct PopoverView: View {
     }
 
     private func coAuthDetail() -> String {
-        if commit.authorEmail != commit.commiterEmail {
+        if commit.commiterEmail == "noreply@github.com" {
+            return ""
+        } else if commit.authorEmail != commit.commiterEmail {
             return """
                 Co-authored-by: \(commit.commiter)
                 <\(commit.commiterEmail)>
@@ -135,7 +139,7 @@ struct PopoverView: View {
     }
 
     private func generateAvatarHash() -> String {
-        let hash = commit.authorEmail.MD5
-        return hash
+        let hash = commit.authorEmail.md5(true)
+        return "\(hash)?d=404"
     }
 }

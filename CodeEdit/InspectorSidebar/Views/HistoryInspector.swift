@@ -32,7 +32,7 @@ struct HistoryInspector: View {
                         HistoryItem(commit: commit)
                     }
                 }
-                .listStyle(.plain)
+                .listStyle(.inset)
             }
         }
     }
