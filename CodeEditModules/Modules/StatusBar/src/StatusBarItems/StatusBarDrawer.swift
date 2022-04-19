@@ -28,7 +28,7 @@ internal struct StatusBarDrawer: View {
         }
         return 0
     }
-    
+
     internal var body: some View {
         ZStack(alignment: .bottom) {
             TerminalEmulatorView(url: model.workspaceURL)
