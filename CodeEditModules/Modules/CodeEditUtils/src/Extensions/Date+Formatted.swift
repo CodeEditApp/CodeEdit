@@ -8,6 +8,11 @@
 import Foundation
 
 public extension Date {
+    
+    /// Returns a formatted & localized string of a relative duration compared to the current date & time
+    /// when the date is in `today` or `yesterday`. Otherwise it returns a formatted date in `short`
+    /// format. The time is omitted.
+    /// - Returns: A localized formatted string
     func relativeStringToNow() -> String {
         if Calendar.current.isDateInToday(self) ||
             Calendar.current.isDateInYesterday(self) {
