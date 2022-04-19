@@ -10,7 +10,6 @@ import CryptoKit
 
 public extension String {
 
-
     /// Returns a MD5 encrypted String of the input String
     ///
     /// - Note: Whitespaces and Newlines are trimmed
