@@ -18,22 +18,31 @@ struct InspectorSidebarToolbarTop: View {
         InspectorDockIcon(imageName: "questionmark.circle", title: "Quick Help Inspector", id: 2)
     ]
 
+    @State private var hasChangedLocation: Bool = false
+    @State private var draggingItem: InspectorDockIcon?
+    @State private var drugItemLocation: CGPoint?
+
     var body: some View {
-        HStack(spacing: 10) {
-            ForEach(icons) { icon in
-                makeInspectorIcon(systemImage: icon.imageName, title: icon.title, id: icon.id)
+        ScrollView {
+            HStack(spacing: 10) {
+                ForEach(icons) { icon in
+                    makeInspectorIcon(systemImage: icon.imageName, title: icon.title, id: icon.id)
+                        .opacity(draggingItem?.imageName == icon.imageName && hasChangedLocation && drugItemLocation != nil ? 0.0: 1.0)
+                        .onDrop(of: [.utf8PlainText], delegate: InspectorSidebarDockIconDelegate(item: icon, current: $draggingItem, icons: $icons, hasChangedLocation: $hasChangedLocation, drugItemLocation: $drugItemLocation))
+                }
             }
+            .frame(height: 29, alignment: .center)
+            .frame(maxWidth: .infinity)
+            .overlay(alignment: .top) {
+                Divider()
+            }
+            .overlay(alignment: .bottom) {
+                Divider()
+            }
+            .animation(.default, value: icons)
         }
-        .frame(height: 29, alignment: .center)
+        .frame(height: 32, alignment: .center)
         .frame(maxWidth: .infinity)
-        .overlay(alignment: .top) {
-            Divider()
-        }
-        .overlay(alignment: .bottom) {
-            Divider()
-        }
-        .background(Rectangle()
-            .foregroundColor(Color("InspectorBackgroundColor")))
     }
 
     func makeInspectorIcon(systemImage: String, title: String, id: Int) -> some View {
@@ -45,23 +54,14 @@ struct InspectorSidebarToolbarTop: View {
                 .symbolVariant(id == selection ? .fill : .none)
                 .foregroundColor(id == selection ? .accentColor : .secondary)
                 .frame(width: 16, alignment: .center)
-                .onDrop(of: [.utf8PlainText], isTargeted: nil) { providers in
-                    guard let provider = providers.first else { return false }
-                    provider.loadItem(forTypeIdentifier: "public.utf8-plain-text", options: nil) { data, _ in
-                        if let data = data as? Data,
-                            let name = String(data: data, encoding: .utf8),
-                            let movedIndex = icons.firstIndex(where: { $0.imageName == name }),
-                            let insertionIndex = icons.firstIndex(where: { $0.imageName == systemImage }) {
-
-                            let tempIcon = icons[movedIndex]
-                            icons.remove(at: movedIndex)
-                            icons.insert(tempIcon, at: insertionIndex)
-                        }
-                    }
-                    return false
-                }
                 .onDrag {
+                if let index = icons.firstIndex(where: { $0.imageName == systemImage }) {
+                    draggingItem = icons[index]
+                }
                     return .init(object: NSString(string: systemImage))
+                } preview: {
+                    RoundedRectangle(cornerRadius: .zero)
+                        .frame(width: .zero)
                 }
         }
         .buttonStyle(.plain)
@@ -75,10 +75,51 @@ struct InspectorSidebarToolbarTop: View {
         }
     }
 
-    private struct InspectorDockIcon: Identifiable {
+    private struct InspectorDockIcon: Identifiable, Equatable {
         let imageName: String
         let title: String
         var id: Int
+    }
+
+    private struct InspectorSidebarDockIconDelegate: DropDelegate {
+        let item: InspectorDockIcon
+        @Binding var current: InspectorDockIcon?
+        @Binding var icons: [InspectorDockIcon]
+        @Binding var hasChangedLocation: Bool
+        @Binding var drugItemLocation: CGPoint?
+
+        func dropEntered(info: DropInfo) {
+            if current == nil {
+                current = item
+                drugItemLocation = info.location
+            }
+
+            guard item != current, let current = current,
+                    let from = icons.firstIndex(of: current),
+                    let to = icons.firstIndex(of: item) else { return }
+
+            hasChangedLocation = true
+            drugItemLocation = info.location
+
+            if icons[to] != current {
+                icons.move(fromOffsets: IndexSet(integer: from), toOffset: to > from ? to + 1 : to)
+            }
+        }
+
+        func dropExited(info: DropInfo) {
+            drugItemLocation = nil
+        }
+
+        func dropUpdated(info: DropInfo) -> DropProposal? {
+            return DropProposal(operation: .move)
+        }
+        
+        func performDrop(info: DropInfo) -> Bool {
+            hasChangedLocation = false
+            drugItemLocation = nil
+            current = nil
+            return true
+        }
     }
 }
 
