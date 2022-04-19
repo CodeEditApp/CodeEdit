@@ -59,12 +59,6 @@ struct NavigatorSidebarToolbarTop: View {
         } label: {
             getSafeImage(named: named, accesibilityDescription: title)
             .help(title)
-//            .onDrag {
-//                if let index = icons.firstIndex(where: { $0.imageName == named }) {
-//                    draggingItem = icons[index]
-//                }
-//                return .init(object: NSString(string: named))
-//            }
             .onDrag {
             if let index = icons.firstIndex(where: { $0.imageName == named }) {
                 draggingItem = icons[index]
