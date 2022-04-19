@@ -46,15 +46,14 @@ struct NativeTabShadow: View {
 
     var body: some View {
         Rectangle()
-            .frame(height: height)
-            .padding(.vertical, prefs.preferences.general.tabBarStyle == .xcode ? 8 : 0)
             .foregroundColor(
                 prefs.preferences.general.tabBarStyle == .xcode
                 ? Color(nsColor: colorScheme == .dark ? .white : .black)
                     .opacity(0.12)
                 : Color(nsColor: colorScheme == .dark ? .black : .black)
-                    .opacity(colorScheme == .dark ? 0.45 : 0.15)
+                    .opacity(colorScheme == .dark ? 0.40 : 0.15)
             )
+            .frame(height: height)
     }
 }
 
@@ -96,8 +95,6 @@ struct TabBarItem: View {
     @ObservedObject
     var workspace: WorkspaceDocument
 
-    var tabBarHeight: Double = 28.0
-
     var isActive: Bool {
         item.id == workspace.selectionState.selectedId
     }
@@ -121,7 +118,7 @@ struct TabBarItem: View {
                     .font(.system(size: 11.0))
                     .lineLimit(1)
             }
-            .frame(height: tabBarHeight)
+            .frame(maxHeight: .infinity) // To max-out the parent (tab bar) area.
             .padding(.horizontal, prefs.preferences.general.tabBarStyle == .native ? 28 : 23)
             .overlay {
                 ZStack {
@@ -218,7 +215,7 @@ struct TabBarItem: View {
                 : .secondary
             )
         )
-        .frame(height: tabBarHeight)
+        .frame(maxHeight: .infinity) // To max-out the parent (tab bar) area.
         .contentShape(Rectangle())
         .onHover { hover in
             isHovering = hover
@@ -272,14 +269,12 @@ struct TabBarItem: View {
                         ZStack {
                             Color(nsColor: .black)
                                 .opacity(colorScheme == .dark ? 0.50 : 0.05)
-                                .padding(.top, 1)
-                                .padding(.horizontal, 1)
                             Color(nsColor: colorScheme == .dark ? .white : .black)
                                 .opacity(isHovering ? 0.05 : 0.0)
                                 .animation(.easeInOut(duration: 0.10), value: isHovering)
-                                .padding(.top, 1)
-                                .padding(.horizontal, 1)
                         }
+                        .padding(.top, colorScheme == .dark ? 0 : 1)
+                        .padding(.horizontal, 1)
                     }
                 }
             }
@@ -317,14 +312,6 @@ struct TabBarItem: View {
                 }
             }
         }
-        // Update titlebarAppearsTransparent per tabBarStyle.
-        .onChange(of: prefs.preferences.general.tabBarStyle, perform: { _ in
-            if prefs.preferences.general.tabBarStyle == .native {
-                workspace.windowControllers.first?.window?.titlebarAppearsTransparent = true
-            } else {
-                workspace.windowControllers.first?.window?.titlebarAppearsTransparent = false
-            }
-        })
     }
 }
 
