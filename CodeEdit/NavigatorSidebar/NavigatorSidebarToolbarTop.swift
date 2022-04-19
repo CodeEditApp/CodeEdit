@@ -26,10 +26,14 @@ struct NavigatorSidebarToolbarTop: View {
         SidebarDockIcon(imageName: "puzzlepiece.extension", title: "...", id: 7),
         SidebarDockIcon(imageName: "square.grid.2x2", title: "...", id: 8)
     ]
+    @State private var hasChangedLocation: Bool = false
+    @State private var draggingItem: SidebarDockIcon?
+    
     var body: some View {
         HStack(spacing: 2) {
             ForEach(icons) { icon in
                 makeIcon(named: icon.imageName, title: icon.title, id: icon.id)
+                    .opacity(draggingItem == icon ? 0.0: 1.0)
             }
         }
         .frame(height: 29, alignment: .center)
@@ -40,6 +44,7 @@ struct NavigatorSidebarToolbarTop: View {
         .overlay(alignment: .bottom) {
             Divider()
         }
+        .animation(.default, value: icons)
     }
 
     func makeIcon(named: String, title: String, id: Int, scale: Image.Scale = .medium) -> some View {
@@ -47,25 +52,29 @@ struct NavigatorSidebarToolbarTop: View {
             selection = id
         } label: {
             getSafeImage(named: named, accesibilityDescription: title)
-                .help(title)
-                .onDrop(of: [.utf8PlainText], isTargeted: nil) { providers in
-                    guard let provider = providers.first else { return false }
-                    provider.loadItem(forTypeIdentifier: "public.utf8-plain-text", options: nil) { data, _ in
-                        if let data = data as? Data,
-                            let name = String(data: data, encoding: .utf8),
-                            let movedIndex = icons.firstIndex(where: { $0.imageName == name }),
-                            let insertionIndex = icons.firstIndex(where: { $0.imageName == named }) {
+            .help(title)
+            .onDrop(of: [.utf8PlainText], isTargeted: nil) { providers in
+                guard let provider = providers.first else { return false }
+                provider.loadItem(forTypeIdentifier: "public.utf8-plain-text", options: nil) { data, _ in
+                    if let data = data as? Data,
+                        let name = String(data: data, encoding: .utf8),
+                        let movedIndex = icons.firstIndex(where: { $0.imageName == name }),
+                        let insertionIndex = icons.firstIndex(where: { $0.imageName == named }) {
 
-                            let tempIcon = icons[movedIndex]
-                            icons.remove(at: movedIndex)
-                            icons.insert(tempIcon, at: insertionIndex)
-                        }
+                        let tempIcon = icons[movedIndex]
+                        icons.remove(at: movedIndex)
+                        icons.insert(tempIcon, at: insertionIndex)
+                        draggingItem = nil
                     }
-                    return false
                 }
-                .onDrag {
-                    return .init(object: NSString(string: named))
+                return false
+            }
+            .onDrag {
+                if let index = icons.firstIndex(where: {$0.imageName == named }) {
+                    draggingItem = icons[index]
                 }
+                return .init(object: NSString(string: named))
+            }
         }
         .buttonStyle(NavigatorToolbarButtonStyle(id: id, selection: selection, activeState: activeState))
         .imageScale(scale)
@@ -94,7 +103,7 @@ struct NavigatorSidebarToolbarTop: View {
         }
     }
 
-    private struct SidebarDockIcon: Identifiable {
+    private struct SidebarDockIcon: Identifiable, Equatable {
         let imageName: String
         let title: String
         var id: Int
