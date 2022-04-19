@@ -258,12 +258,12 @@ struct TabBarItem: View {
                     EffectView(
                         // Use `windowBackground` material to fit the material of transparent titlebar
                         // in order to make it native-styled.
-                        material: NSVisualEffectView.Material.windowBackground,
+                        NSVisualEffectView.Material.windowBackground,
                         blendingMode: NSVisualEffectView.BlendingMode.withinWindow
                     )
                 } else {
                     EffectView(
-                        material: NSVisualEffectView.Material.titlebar,
+                        NSVisualEffectView.Material.titlebar,
                         blendingMode: NSVisualEffectView.BlendingMode.withinWindow
                     )
                     .overlay(

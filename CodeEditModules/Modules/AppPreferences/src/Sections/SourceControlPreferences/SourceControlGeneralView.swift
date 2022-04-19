@@ -90,7 +90,7 @@ struct SourceControlGeneralView: View {
             }
         }
         .frame(height: 350)
-        .background(EffectView(material: .contentBackground))
+        .background(EffectView(.contentBackground))
     }
 }
 

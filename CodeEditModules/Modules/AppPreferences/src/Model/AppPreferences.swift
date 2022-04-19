@@ -17,8 +17,9 @@ import SwiftUI
 ///  ``ThemePreferences``,  or ``TerminalPreferences`` does.
 ///
 /// - Note: Also make sure to implement the ``init(from:)`` initializer, decoding
-///  all properties with ``decodeIfPresent(_:forKey:)`` and providing a default
-///  value. Otherwise all settings get overridden.
+///  all properties with
+///  [`decodeIfPresent`](https://developer.apple.com/documentation/swift/keyeddecodingcontainer/2921389-decodeifpresent)
+///  and providing a default value. Otherwise all settings get overridden.
 public struct AppPreferences: Codable {
 
     /// The general global setting

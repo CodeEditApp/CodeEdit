@@ -84,7 +84,7 @@ struct TabBar: View {
                 Color(nsColor: .controlBackgroundColor)
             } else {
                 EffectView(
-                    material: NSVisualEffectView.Material.titlebar,
+                    NSVisualEffectView.Material.titlebar,
                     blendingMode: NSVisualEffectView.BlendingMode.withinWindow
                 )
             }

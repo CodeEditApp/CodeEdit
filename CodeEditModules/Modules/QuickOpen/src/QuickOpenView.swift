@@ -47,7 +47,7 @@ public struct QuickOpenView: View {
                 }
                     .padding(16)
                     .foregroundColor(.primary.opacity(0.85))
-                    .background(EffectView(material: .sidebar, blendingMode: .behindWindow))
+                    .background(EffectView(.sidebar, blendingMode: .behindWindow))
             }
             Divider()
             NavigationView {
@@ -73,7 +73,7 @@ public struct QuickOpenView: View {
                 }
             }
         }
-            .background(EffectView(material: .sidebar, blendingMode: .behindWindow))
+            .background(EffectView(.sidebar, blendingMode: .behindWindow))
             .edgesIgnoringSafeArea(.vertical)
             .frame(minWidth: 600,
                minHeight: self.state.isShowingOpenQuicklyFiles ? 400 : 28,

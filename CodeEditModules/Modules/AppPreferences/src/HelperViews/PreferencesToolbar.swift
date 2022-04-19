@@ -24,7 +24,7 @@ struct PreferencesToolbar<T: View>: View {
 
     var body: some View {
         ZStack {
-            EffectView(material: .contentBackground)
+            EffectView(.contentBackground)
             HStack {
                 content()
                     .padding(.horizontal, 8)
