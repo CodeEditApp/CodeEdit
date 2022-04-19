@@ -25,6 +25,8 @@ struct InspectorSidebarToolbarTop: View {
         .overlay(alignment: .bottom) {
             Divider()
         }
+        .background(Rectangle()
+            .foregroundColor(Color("InspectorBackgroundColor")))
     }
 
     func icon(systemImage: String, title: String, id: Int) -> some View {

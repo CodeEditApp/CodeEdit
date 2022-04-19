@@ -6,11 +6,14 @@
 //
 import SwiftUI
 import GitClient
+import CodeEditUI
 
 struct HistoryInspector: View {
 
     @ObservedObject
     private var model: HistoryInspectorModel
+
+    @State var selectedCommitHistory: Commit.ID?
 
     /// Initialize with GitClient
     /// - Parameter gitClient: a GitClient
@@ -20,9 +23,17 @@ struct HistoryInspector: View {
 
     var body: some View {
         VStack {
-            List((try? model.gitClient.getCommitHistory(40, model.fileURL)) ?? [], id: \.self) { commit in
-                HistoryItem(commit: commit)
+            if model.commitHistory.isEmpty {
+                NoCommitHistoryView()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else {
+                List(selection: $selectedCommitHistory) {
+                    ForEach(model.commitHistory) { commit in
+                        HistoryItem(commit: commit)
+                    }
+                }
+                .listStyle(.plain)
             }
-        }.padding(.top, 10)
+        }
     }
 }

@@ -36,7 +36,9 @@ struct WorkspaceCodeFileView: View {
                 Text("CodeEdit cannot open this file because its file type is not supported.")
             }
         } else {
-            Text("Open file from sidebar")
+            Text("No Editor")
+                .font(.system(size: 17))
+                .foregroundColor(.secondary)
         }
     }
 
