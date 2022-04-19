@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditSymbols
 
 internal struct StatusBarBreakpointButton: View {
     @ObservedObject
@@ -20,10 +21,10 @@ internal struct StatusBarBreakpointButton: View {
             model.isBreakpointEnabled.toggle()
         } label: {
             if model.isBreakpointEnabled {
-                Image("custom.breakpoint.fill")
+                Image.breakpoint_fill
                     .foregroundColor(.accentColor)
             } else {
-                Image("custom.breakpoint")
+                Image.breakpoint
                     .foregroundColor(.secondary)
             }
         }

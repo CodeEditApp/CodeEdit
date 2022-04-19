@@ -177,6 +177,7 @@ let package = Package(
                 "TerminalEmulator",
                 "CodeFile",
                 "CodeEditUI",
+                "CodeEditSymbols",
             ],
             path: "Modules/StatusBar/src"
         ),
