@@ -36,12 +36,10 @@ struct WorkspaceView: View {
 
     var body: some View {
         ZStack {
-            if workspace.workspaceClient != nil {
+            if workspace.workspaceClient != nil, let model = workspace.statusBarModel {
                 WorkspaceCodeFileView(windowController: windowController, workspace: workspace)
                     .safeAreaInset(edge: .bottom) {
-                        if let url = workspace.fileURL {
-                            StatusBarView(workspaceURL: url)
-                        }
+                        StatusBarView(model: model)
                     }
             } else {
                 EmptyView()
