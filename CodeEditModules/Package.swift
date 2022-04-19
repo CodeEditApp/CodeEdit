@@ -253,6 +253,14 @@ let package = Package(
             name: "CodeEditUI",
             path: "Modules/CodeEditUI/src"
         ),
+        .testTarget(
+            name: "CodeEditUITests",
+            dependencies: [
+                "CodeEditUI",
+                "SnapshotTesting",
+            ],
+            path: "Modules/CodeEditUI/Tests"
+        ),
         .target(
             name: "ExtensionsStore",
             dependencies: [
