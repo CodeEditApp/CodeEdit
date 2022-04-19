@@ -28,14 +28,26 @@ struct NavigatorSidebarToolbarTop: View {
     
     @Binding
     var selection: Int
-
+    @State var targeted: Bool = true
+    
     var body: some View {
         HStack(spacing: 2) {
             ForEach(icons) { icon in
                 makeIcon(named: icon.imageName, title: icon.title, id: icon.id)
-            }
-            .onMove { indexSet, offset in
-                print("index: \(indexSet) and dest: \(offset)")
+                    .onDrop(of: [.utf8PlainText], isTargeted: self.$targeted) { providers in
+                        guard let provider = providers.first else { return false }
+                        provider.loadItem(forTypeIdentifier: "public.utf8-plain-text", options: nil) { data, error in
+                            if let data = data as? Data, let name = String(data: data, encoding: .utf8), let movedIndex = icons.firstIndex(where: { $0.imageName == name }), let insertionIndex = icons.firstIndex (where: { $0.imageName == icon.imageName }) {
+                                let tempIcon = icons[movedIndex]
+                                icons.remove(at: movedIndex)
+                                icons.insert(tempIcon, at: insertionIndex)
+                            }
+                        }
+                        return false
+                    }
+                    .onDrag {
+                        return NSItemProvider(object: NSString(string: icon.imageName))
+                    }
             }
         }
         .frame(height: 29, alignment: .center)
@@ -58,14 +70,21 @@ struct NavigatorSidebarToolbarTop: View {
               id: Int,
               scale: Image.Scale = .medium
     ) -> some View {
-        Button {
-            selection = id
-        } label: {
-            getSafeImage(named: named, accesibilityDescription: title)
-                .help(title)
-        }
-        .buttonStyle(NavigatorToolbarButtonStyle(id: id, selection: selection, activeState: activeState))
-        .imageScale(scale)
+        getSafeImage(named: named, accesibilityDescription: title)
+            .help(title)
+            .frame(width: 25, height: 25, alignment: .center)
+            .onAppear {
+                selection = id
+            }
+            
+//        Button {
+//            selection = id
+//        } label: {
+//            getSafeImage(named: named, accesibilityDescription: title)
+//                .help(title)
+//        }
+        //.buttonStyle(NavigatorToolbarButtonStyle(id: id, selection: selection, activeState: activeState))
+        //.imageScale(scale)
     }
     
     func getSafeImage(named: String, accesibilityDescription: String?) -> Image {
@@ -91,7 +110,17 @@ struct NavigatorSidebarToolbarTop: View {
         }
     }
     
-    private struct DockIcon: Identifiable {
+    private struct DockIcon: Identifiable, DropDelegate {
+        func performDrop(info: DropInfo) -> Bool {
+            guard let provider = info.itemProviders(for: [.utf8PlainText]).first else { return false }
+            provider.loadItem(forTypeIdentifier: "public.utf8-plain-text", options: nil) { data, error in
+                if let data = data as? Data, let name = String(data: data, encoding: .utf8) {
+                    print(name)
+                }
+            }
+            return false
+        }
+        
         let imageName: String
         let title: String
         var id: Int
