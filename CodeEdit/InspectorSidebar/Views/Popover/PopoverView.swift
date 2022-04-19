@@ -75,6 +75,7 @@ struct PopoverView: View {
             .padding(12)
 
             VStack(alignment: .leading) {
+                // TODO: Implementation Needed
                 Button {} label: {
                     Label("Show Commit", systemImage: "clock")
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -84,6 +85,7 @@ struct PopoverView: View {
                 .onHover { hover in
                     onHover = hover
                 }
+                // TODO: Implementation Needed
                 Button {} label: {
                     Label("Open in Code Review", systemImage: "arrow.left.arrow.right")
                         .frame(maxWidth: .infinity, alignment: .leading)

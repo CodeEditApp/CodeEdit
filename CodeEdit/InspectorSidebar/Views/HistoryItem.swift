@@ -64,7 +64,7 @@ struct HistoryItem: View {
                     pasteboard.clearContents()
                     pasteboard.setString(commit.message, forType: .string)
                 }
-                Button("Copy Identifier") {}
+                Button("Copy Identifier") {} // TODO: Implementation Needed
                 Button("Email \(commit.author)...") {
                     let service = NSSharingService(named: NSSharingService.Name.composeEmail)
                     service?.recipients = [commit.authorEmail]
@@ -72,24 +72,24 @@ struct HistoryItem: View {
                 Divider()
             }
             Group {
-                Button("Tag \(commit.hash)...") {}
-                Button("New Branch from \(commit.hash)...") {}
-                Button("Cherry-Pick \(commit.hash)...") {}
+                Button("Tag \(commit.hash)...") {} // TODO: Implementation Needed
+                Button("New Branch from \(commit.hash)...") {} // TODO: Implementation Needed
+                Button("Cherry-Pick \(commit.hash)...") {} // TODO: Implementation Needed
             }
             Group {
                 Divider()
                 Button("View on GitHub...") {
                     /**
-                     TODO: fetch the users username from git account also check if github
-                     also check if the user has a github account attached to the editor
+                     TODO: fetch the users username from git account also check
+                     user has a github account attached to the editor
                      */
                     let commitURL = "https://github.com/nanashili/CodeEdit/commit/\(commit.commitHash)"
                     openCommit(URL(string: commitURL)!)
                 }
                 Divider()
-                Button("Check Out \(commit.hash)...") {}
+                Button("Check Out \(commit.hash)...") {} // TODO: Implementation Needed
                 Divider()
-                Button("History Editor Help") {}
+                Button("History Editor Help") {} // TODO: Implementation Needed
             }
         }
     }
