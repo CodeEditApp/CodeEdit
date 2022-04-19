@@ -59,11 +59,20 @@ struct NavigatorSidebarToolbarTop: View {
         } label: {
             getSafeImage(named: named, accesibilityDescription: title)
             .help(title)
+//            .onDrag {
+//                if let index = icons.firstIndex(where: { $0.imageName == named }) {
+//                    draggingItem = icons[index]
+//                }
+//                return .init(object: NSString(string: named))
+//            }
             .onDrag {
-                if let index = icons.firstIndex(where: { $0.imageName == named }) {
-                    draggingItem = icons[index]
-                }
+            if let index = icons.firstIndex(where: { $0.imageName == named }) {
+                draggingItem = icons[index]
+            }
                 return .init(object: NSString(string: named))
+            } preview: {
+                RoundedRectangle(cornerRadius: 18)
+                    .frame(width: .zero)
             }
         }
         .buttonStyle(NavigatorToolbarButtonStyle(id: id, selection: selection, activeState: activeState))
