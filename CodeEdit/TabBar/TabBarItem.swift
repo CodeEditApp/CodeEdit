@@ -259,7 +259,7 @@ struct TabBarItem: View {
                     .animation(.easeInOut(duration: 0.08), value: isHovering)
             } else {
                 EffectView(
-                    material: NSVisualEffectView.Material.titlebar,
+                    NSVisualEffectView.Material.titlebar,
                     blendingMode: NSVisualEffectView.BlendingMode.withinWindow
                 )
                 .background(
