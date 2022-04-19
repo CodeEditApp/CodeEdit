@@ -22,9 +22,6 @@
                             </menuItem>
                             <menuItem title="CodeEdit Extensions..." id="saf-gh-uIY">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <connections>
-                                    <action selector="openAbout:" target="-1" id="Xon-Gi-J3Q"/>
-                                </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="VOq-y0-SEH"/>
                             <menuItem title="Preferences…" keyEquivalent="," id="BOF-NM-1cW">
