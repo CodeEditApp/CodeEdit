@@ -11,9 +11,10 @@ import CodeEditSymbols
 struct NavigatorSidebarToolbarTop: View {
     @Environment(\.controlActiveState)
     var activeState
-    
+
     @Binding
     var selection: Int
+
     @State private var icons = [
         SidebarDockIcon(imageName: "folder", title: "Project", id: 0),
         SidebarDockIcon(imageName: "vault", title: "Version Control", id: 1),
@@ -41,11 +42,6 @@ struct NavigatorSidebarToolbarTop: View {
         }
     }
     
-    func move(from source: IndexSet, to destination: Int) {
-        print("source: \(source) and index: \(destination)")
-        icons.move(fromOffsets: source, toOffset: destination)
-    }
-
     func makeIcon(named: String, title: String, id: Int, scale: Image.Scale = .medium) -> some View {
         Button {
             selection = id

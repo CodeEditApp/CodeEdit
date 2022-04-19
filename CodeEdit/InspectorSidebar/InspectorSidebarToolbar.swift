@@ -10,7 +10,7 @@ import SwiftUI
 struct InspectorSidebarToolbarTop: View {
     @Binding
     var selection: Int
-    
+
     @State var targeted: Bool = true
     @State private var icons = [
         InspectorDockIcon(imageName: "doc", title: "File Inspector", id: 0),
