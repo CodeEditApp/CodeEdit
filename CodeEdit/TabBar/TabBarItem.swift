@@ -26,8 +26,10 @@ struct TabDivider: View {
             .padding(.vertical, prefs.preferences.general.tabBarStyle == .xcode ? 8 : 0)
             .foregroundColor(
                 prefs.preferences.general.tabBarStyle == .xcode
-                ? Color(nsColor: colorScheme == .dark ? .white : .black).opacity(0.12)
-                : Color(nsColor: .separatorColor).opacity(colorScheme == .dark ? 0.4 : 1.0)
+                ? Color(nsColor: colorScheme == .dark ? .white : .black)
+                    .opacity(0.12)
+                : Color(nsColor: colorScheme == .dark ? .white : .black)
+                    .opacity(colorScheme == .dark ? 0.08 : 0.12)
             )
     }
 }
@@ -48,8 +50,10 @@ struct NativeTabShadow: View {
             .padding(.vertical, prefs.preferences.general.tabBarStyle == .xcode ? 8 : 0)
             .foregroundColor(
                 prefs.preferences.general.tabBarStyle == .xcode
-                ? Color(nsColor: colorScheme == .dark ? .white : .black).opacity(0.12)
-                : Color(nsColor: .separatorColor).opacity(colorScheme == .dark ? 0.3 : 1.0)
+                ? Color(nsColor: colorScheme == .dark ? .white : .black)
+                    .opacity(0.12)
+                : Color(nsColor: colorScheme == .dark ? .black : .black)
+                    .opacity(colorScheme == .dark ? 0.45 : 0.15)
             )
     }
 }
@@ -254,31 +258,29 @@ struct TabBarItem: View {
                     )
                     .animation(.easeInOut(duration: 0.08), value: isHovering)
             } else {
-                if isActive {
-                    EffectView(
-                        // Use `windowBackground` material to fit the material of transparent titlebar
-                        // in order to make it native-styled.
-                        NSVisualEffectView.Material.windowBackground,
-                        blendingMode: NSVisualEffectView.BlendingMode.withinWindow
-                    )
-                } else {
-                    EffectView(
-                        NSVisualEffectView.Material.titlebar,
-                        blendingMode: NSVisualEffectView.BlendingMode.withinWindow
-                    )
-                    .overlay(
-                        Color(nsColor: .black)
-                            .opacity(colorScheme == .dark ? 0.50 : 0.05)
-                            .padding(.top, 1)
-                            .padding(.horizontal, 1)
-                    )
-                    .overlay(
-                        Color(nsColor: colorScheme == .dark ? .white : .black)
-                            .opacity(isHovering ? 0.05 : 0.0)
-                            .animation(.easeInOut(duration: 0.10), value: isHovering)
-                            .padding(.top, 1)
-                            .padding(.horizontal, 1)
-                    )
+                EffectView(
+                    NSVisualEffectView.Material.titlebar,
+                    blendingMode: NSVisualEffectView.BlendingMode.withinWindow
+                )
+                .background(
+                    // This background is used to avoid color-split between title bar and tab bar.
+                    // The material will tint the color hind, which will result in a color-split.
+                    Color(nsColor: .controlBackgroundColor)
+                )
+                .overlay {
+                    if !isActive {
+                        ZStack {
+                            Color(nsColor: .black)
+                                .opacity(colorScheme == .dark ? 0.50 : 0.05)
+                                .padding(.top, 1)
+                                .padding(.horizontal, 1)
+                            Color(nsColor: colorScheme == .dark ? .white : .black)
+                                .opacity(isHovering ? 0.05 : 0.0)
+                                .animation(.easeInOut(duration: 0.10), value: isHovering)
+                                .padding(.top, 1)
+                                .padding(.horizontal, 1)
+                        }
+                    }
                 }
             }
         }
