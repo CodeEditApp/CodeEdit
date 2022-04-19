@@ -138,16 +138,4 @@ struct PopoverView: View {
         let hash = commit.authorEmail.MD5
         return hash
     }
-
-//    struct CustomButton: ButtonStyle {
-//        let onHover: Bool
-//
-//        func makeBody(configuration: Configuration) -> some View {
-//            if onHover {
-//                configuration.buttonStyle(PlainButtonStyle())
-//            } else {
-//                configuration.buttonStyle(BorderedButtonStyle())
-//            }
-//        }
-//    }
 }

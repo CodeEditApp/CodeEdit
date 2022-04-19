@@ -83,7 +83,7 @@ struct HistoryItem: View {
                      TODO: fetch the users username from git account also check
                      user has a github account attached to the editor
                      */
-                    let commitURL = "https://github.com/nanashili/CodeEdit/commit/\(commit.commitHash)"
+                    let commitURL = "https://github.com/CodeEditApp/CodeEdit/commit/\(commit.commitHash)"
                     openCommit(URL(string: commitURL)!)
                 }
                 Divider()
