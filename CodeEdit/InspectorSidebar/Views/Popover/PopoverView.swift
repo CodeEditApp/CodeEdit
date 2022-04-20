@@ -14,11 +14,9 @@ struct PopoverView: View {
 
     var commit: Commit
 
-    @State var onHover: Bool = false
-
     var body: some View {
         VStack {
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 10) {
                 HStack(alignment: .top) {
                     AsyncImage(url: URL(string: "https://www.gravatar.com/avatar/\(generateAvatarHash())")) { phase in
                         if let image = phase.image {
@@ -27,17 +25,9 @@ struct PopoverView: View {
                                 .clipShape(Circle())
                                 .frame(width: 42, height: 42)
                         } else if phase.error != nil {
-                            Image(systemName: "person.crop.circle.fill")
-                                .symbolRenderingMode(.hierarchical)
-                                .resizable()
-                                .foregroundColor(avatarColor)
-                                .frame(width: 42, height: 42)
+                            defaultAvatar
                         } else {
-                            Image(systemName: "person.crop.circle.fill")
-                                .symbolRenderingMode(.hierarchical)
-                                .resizable()
-                                .foregroundColor(avatarColor)
-                                .frame(width: 42, height: 42)
+                            defaultAvatar
                         }
                     }
 
@@ -53,79 +43,87 @@ struct PopoverView: View {
                         .font(.system(size: 12))
                         .foregroundColor(.secondary)
                 }
-                .padding(.top, 10)
-                .padding(.horizontal, 8)
-
-                VStack {
-                    Text(commitDetails())
-                        .padding(.top, 5)
-                        .padding(.bottom, 15)
-                        .padding(.horizontal, 8)
-                }
+                Text(commitDetails())
             }
-            .background(RoundedRectangle(cornerRadius: 10)
-                .foregroundColor(Color("HistoryInspectorPopover")))
-            .padding(12)
+            .padding(.horizontal)
 
-            VStack(alignment: .leading) {
+            Divider()
+                .padding(.horizontal)
+
+            VStack(alignment: .leading, spacing: 0) {
                 // TODO: Implementation Needed
-                Button {} label: {
-                    Label("Show Commit", systemImage: "clock")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.leading, 12)
-                }
-                .disabled(true)
-                .buttonStyle(.plain)
-                .onHover { hover in
-                    onHover = hover
-                }
+                ActionButton("Show Commit", systemImage: "clock") {}
+                    .disabled(true)
                 // TODO: Implementation Needed
-                Button {} label: {
-                    Label("Open in Code Review", systemImage: "arrow.left.arrow.right")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.leading, 12)
-                }
-                .disabled(true)
-                .buttonStyle(.plain)
-                .padding(.top, -3)
-                .onHover { hover in
-                    onHover = hover
-                }
-                Button {
+                ActionButton("Open in Code Review", systemImage: "arrow.left.arrow.right") {}
+                    .disabled(true)
+                ActionButton("Email \(commit.author)", systemImage: "envelope") {
                     let service = NSSharingService(named: NSSharingService.Name.composeEmail)
                     service?.recipients = [commit.authorEmail]
-                } label: {
-                    Label("Email \(commit.author)", systemImage: "envelope")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.leading, 12)
-                }
-                .buttonStyle(.plain)
-                .padding(.top, -3)
-                .onHover { hover in
-                    onHover = hover
+                    service?.perform(withItems: [])
                 }
             }
-            .padding(.top, -10)
-            .padding(.bottom, 10)
+            .padding(.horizontal, 6)
         }
-        .frame(maxWidth: 310, minHeight: 190)
+        .padding(.top)
+        .padding(.bottom, 10)
+        .frame(maxWidth: 310)
+    }
+
+    private var defaultAvatar: some View {
+        Image(systemName: "person.crop.circle.fill")
+            .symbolRenderingMode(.hierarchical)
+            .resizable()
+            .foregroundColor(avatarColor)
+            .frame(width: 42, height: 42)
+    }
+
+    private struct ActionButton: View {
+
+        private var title: String
+        private var image: String
+        private var action: () -> Void
+
+        @State
+        private var isHovering: Bool = false
+
+        @Environment(\.isEnabled) private var isEnabled
+
+        init(_ title: String, systemImage: String, action: @escaping () -> Void) {
+            self.title = title
+            self.image = systemImage
+            self.action = action
+        }
+
+        var body: some View {
+            Button {
+                action()
+            } label: {
+                Label(title, systemImage: image)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .foregroundColor(isHovering && isEnabled ? .white : .primary)
+                    .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 3)
+            .background(
+                isHovering && isEnabled ? Color(nsColor: .selectedContentBackgroundColor) : .clear
+            )
+            .clipShape(RoundedRectangle(cornerRadius: 3))
+            .onHover { hovering in
+                isHovering = hovering
+            }
+        }
     }
 
     private func commitDetails() -> String {
         if commit.commiterEmail == "noreply@github.com" {
-            return """
-                \(commit.message)
-                """
+            return commit.message.trimmingCharacters(in: .whitespacesAndNewlines)
         } else if commit.authorEmail != commit.commiterEmail {
-            return """
-                \(commit.message)
-                """
+            return commit.message.trimmingCharacters(in: .whitespacesAndNewlines)
         } else {
-            return """
-                \(commit.message)
-
-                \(coAuthDetail())
-                """
+            return "\(commit.message.trimmingCharacters(in: .whitespacesAndNewlines))\n\n\(coAuthDetail())"
         }
     }
 
@@ -133,17 +131,14 @@ struct PopoverView: View {
         if commit.commiterEmail == "noreply@github.com" {
             return ""
         } else if commit.authorEmail != commit.commiterEmail {
-            return """
-                Co-authored-by: \(commit.commiter)
-                <\(commit.commiterEmail)>
-                """
+            return "Co-authored-by: \(commit.commiter)\n<\(commit.commiterEmail)>"
         }
         return ""
     }
 
     private func generateAvatarHash() -> String {
         let hash = commit.authorEmail.md5()
-        return "\(hash)?d=404"
+        return "\(hash)?d=404&s=84" // send 404 if no image available, image size 84x84 (42x42 @2x)
     }
 
     private var avatarColor: Color {
