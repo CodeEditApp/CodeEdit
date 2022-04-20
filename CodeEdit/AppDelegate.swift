@@ -175,6 +175,20 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         FeedbackView().showWindow()
     }
 
+    @IBAction func biggerFont(_ sender: Any) {
+        AppPreferencesModel.shared.preferences.textEditing.font.size += 1
+    }
+
+    @IBAction func smallerFont(_ sender: Any) {
+        if AppPreferencesModel.shared.preferences.textEditing.font.size > 9 {
+            AppPreferencesModel.shared.preferences.textEditing.font.size -= 1
+        }
+    }
+
+    @IBAction func resetFontSize(_ sender: Any) {
+        AppPreferencesModel.shared.preferences.textEditing.font.size = 11
+    }
+
     // MARK: - Preferences
 
     private lazy var preferencesWindowController = PreferencesWindowController(

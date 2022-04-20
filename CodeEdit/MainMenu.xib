@@ -204,15 +204,11 @@ CA
                                                         </connections>
                                                     </menuItem>
                                                     <menuItem isSeparatorItem="YES" id="5gT-KC-WSO"/>
-                                                    <menuItem title="Bigger" tag="3" keyEquivalent="+" id="Ptp-SP-VEL">
-                                                        <connections>
-                                                            <action selector="modifyFont:" target="YLy-65-1bz" id="Uc7-di-UnL"/>
-                                                        </connections>
+                                                    <menuItem title="Bigger" tag="3" enabled="NO" id="Ptp-SP-VEL">
+                                                        <modifierMask key="keyEquivalentModifierMask"/>
                                                     </menuItem>
-                                                    <menuItem title="Smaller" tag="4" keyEquivalent="-" id="i1d-Er-qST">
-                                                        <connections>
-                                                            <action selector="modifyFont:" target="YLy-65-1bz" id="HcX-Lf-eNd"/>
-                                                        </connections>
+                                                    <menuItem title="Smaller" tag="4" enabled="NO" id="i1d-Er-qST">
+                                                        <modifierMask key="keyEquivalentModifierMask"/>
                                                     </menuItem>
                                                     <menuItem isSeparatorItem="YES" id="kx3-Dk-x3B"/>
                                                     <menuItem title="Kern" id="jBQ-r6-VK2">
@@ -680,6 +676,37 @@ CA
                             <menuItem isSeparatorItem="YES" id="h4K-F8-VpK"/>
                             <menuItem title="Jump to Next Issue" keyEquivalent="'" id="GTg-Ou-4nc"/>
                             <menuItem title="Jump to Previous Issue" keyEquivalent="'" id="bOf-h7-TmD"/>
+                        </items>
+                    </menu>
+                </menuItem>
+                <menuItem title="Editor" id="N8G-w5-xFb">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" title="Editor" id="LOc-5m-I5D">
+                        <items>
+                            <menuItem title="Font Size" id="SXT-qb-XGi">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" id="qaL-9F-pps">
+                                    <items>
+                                        <menuItem title="Increase" keyEquivalent="+" id="GSZ-ue-rHJ">
+                                            <connections>
+                                                <action selector="biggerFont:" target="-1" id="VXX-7T-ny0"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Decrease" keyEquivalent="-" id="2qW-5F-MYr">
+                                            <connections>
+                                                <action selector="smallerFont:" target="-1" id="KGT-Kv-Nlb"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="1rL-GM-DIh"/>
+                                        <menuItem title="Reset" keyEquivalent="0" id="JAu-hi-B8d">
+                                            <modifierMask key="keyEquivalentModifierMask" control="YES" command="YES"/>
+                                            <connections>
+                                                <action selector="resetFontSize:" target="-1" id="R8q-RZ-632"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
                         </items>
                     </menu>
                 </menuItem>
