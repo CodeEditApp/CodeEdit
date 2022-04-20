@@ -87,7 +87,7 @@ final class OutlineViewController: NSViewController {
 
         select(by: itemID, from: content)
     }
-    
+
     /// Expand or collapse the folder on double click
     @objc
     private func onItemDoubleClicked() {
