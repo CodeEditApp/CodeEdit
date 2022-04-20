@@ -68,10 +68,14 @@ public extension GitClient {
             let dateFormatter = DateFormatter()
             dateFormatter.locale = Locale.current
             dateFormatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss Z"
-            return try shellClient.run(
+            let output = try shellClient.run(
                 // swiftlint:disable:next line_length
                 "cd \(directoryURL.relativePath);git log --pretty=%h¦%H¦%s¦%aN¦%ae¦%cn¦%ce¦%aD¦ \(entriesString) \(fileLocalPath)"
             )
+            if output.contains("fatal: not a git repository") {
+                throw GitClientError.notGitRepository
+            }
+            return output
                 .split(separator: "\n")
                 .map { line -> Commit in
                     let parameters = line.components(separatedBy: "¦")
