@@ -72,6 +72,9 @@ public extension GitClient {
                 // swiftlint:disable:next line_length
                 "cd \(directoryURL.relativePath);git log --pretty=%h¦%H¦%s¦%aN¦%ae¦%cn¦%ce¦%aD¦ \(entriesString) \(fileLocalPath)"
             )
+            let remote = try shellClient.run("cd \(directoryURL.relativePath);git ls-remote --get-url")
+            let remoteURL = URL(string: remote.trimmingCharacters(in: .whitespacesAndNewlines))
+            print(remote, remoteURL)
             if output.contains("fatal: not a git repository") {
                 throw GitClientError.notGitRepository
             }
@@ -87,6 +90,7 @@ public extension GitClient {
                         authorEmail: parameters[safe: 4] ?? "",
                         commiter: parameters[safe: 5] ?? "",
                         commiterEmail: parameters[safe: 6] ?? "",
+                        remoteURL: remoteURL,
                         date: dateFormatter.date(from: parameters[safe: 7] ?? "") ?? Date()
                     )
                 }
