@@ -44,6 +44,7 @@ struct PopoverView: View {
                         .foregroundColor(.secondary)
                 }
                 Text(commitDetails())
+                    .frame(alignment: .leading)
             }
             .padding(.horizontal)
 
@@ -67,7 +68,7 @@ struct PopoverView: View {
         }
         .padding(.top)
         .padding(.bottom, 10)
-        .frame(maxWidth: 310)
+        .frame(width: 310)
     }
 
     private var defaultAvatar: some View {
@@ -123,7 +124,7 @@ struct PopoverView: View {
         } else if commit.authorEmail != commit.commiterEmail {
             return commit.message.trimmingCharacters(in: .whitespacesAndNewlines)
         } else {
-            return "\(commit.message.trimmingCharacters(in: .whitespacesAndNewlines))\n\n\(coAuthDetail())"
+            return "\(commit.message)\n\n\(coAuthDetail())".trimmingCharacters(in: .whitespacesAndNewlines)
         }
     }
 
