@@ -28,7 +28,7 @@ public struct Commit: Equatable, Hashable, Identifiable {
             if remoteURL.absoluteString.contains("bitbucket") {
                 return remoteURL.deletingPathExtension().appendingPathComponent("commits")
             }
-            // TODO: Implement other git clients other than github here
+            // TODO: Implement other git clients other than github, bitbucket here
         }
         return nil
     }
