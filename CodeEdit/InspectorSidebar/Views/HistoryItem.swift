@@ -89,15 +89,13 @@ struct HistoryItem: View {
             }
             Group {
                 Divider()
-                Button("View on GitHub...") {
-                    /**
-                     TODO: fetch the users username from git account also check
-                     user has a github account attached to the editor
-                     */
-                    let commitURL = "https://github.com/CodeEditApp/CodeEdit/commit/\(commit.commitHash)"
-                    openCommit(URL(string: commitURL)!)
+                if let commitRemoteURL = commit.commitBaseURL?.absoluteString {
+                    Button("View on \(commit.remoteString)...") {
+                        let commitURL = "\(commitRemoteURL)/\(commit.commitHash)"
+                        openCommit(URL(string: commitURL)!)
+                    }
+                    Divider()
                 }
-                Divider()
                 Button("Check Out \(commit.hash)...") {}
                     .disabled(true) // TODO: Implementation Needed
                 Divider()
