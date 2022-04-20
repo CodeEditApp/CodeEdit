@@ -73,8 +73,7 @@ public extension GitClient {
                 "cd \(directoryURL.relativePath);git log --pretty=%h¦%H¦%s¦%aN¦%ae¦%cn¦%ce¦%aD¦ \(entriesString) \(fileLocalPath)"
             )
             let remote = try shellClient.run("cd \(directoryURL.relativePath);git ls-remote --get-url")
-            let remoteURL = URL(string: remote)
-            print(remote, remoteURL)
+            let remoteURL = URL(string: remote.trimmingCharacters(in: .whitespacesAndNewlines))
             if output.contains("fatal: not a git repository") {
                 throw GitClientError.notGitRepository
             }
