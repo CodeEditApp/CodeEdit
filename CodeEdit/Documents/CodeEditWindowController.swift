@@ -71,7 +71,8 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
         toolbar.delegate = self
         toolbar.displayMode = .labelOnly
         self.window?.toolbarStyle = .unifiedCompact
-        self.window?.titlebarSeparatorStyle = .automatic
+        // Set titlebar background as transparent by default in order to style the toolbar background.
+        self.window?.titlebarAppearsTransparent = true
         self.window?.toolbar = toolbar
     }
 

@@ -34,6 +34,7 @@ public extension AppPreferences {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.appAppearance = try container.decodeIfPresent(Appearances.self, forKey: .appAppearance) ?? .system
             self.fileIconStyle = try container.decodeIfPresent(FileIconStyle.self, forKey: .fileIconStyle) ?? .color
+            self.tabBarStyle = try container.decodeIfPresent(TabBarStyle.self, forKey: .tabBarStyle) ?? .xcode
             self.reopenBehavior = try container.decodeIfPresent(ReopenBehavior.self,
                                                                 forKey: .reopenBehavior) ?? .welcome
             self.projectNavigatorSize = try container.decodeIfPresent(ProjectNavigatorSize.self,
@@ -76,7 +77,7 @@ public extension AppPreferences {
 
     /// The style for tab bar
     /// - **native**: Native-styled tab bar (like Finder)
-    /// - **monochrome**: Xcode-liked tab bar
+    /// - **xcode**: Xcode-liked tab bar
     enum TabBarStyle: String, Codable {
         case native
         case xcode

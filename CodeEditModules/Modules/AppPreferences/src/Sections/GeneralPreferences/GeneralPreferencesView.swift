@@ -45,10 +45,10 @@ public struct GeneralPreferencesView: View {
             }
             PreferencesSection("Tab Bar Style") {
                 Picker("Tab Bar Style:", selection: $prefs.preferences.general.tabBarStyle) {
-                    Text("Native")
-                        .tag(AppPreferences.TabBarStyle.native)
                     Text("Xcode")
                         .tag(AppPreferences.TabBarStyle.xcode)
+                    Text("Native")
+                        .tag(AppPreferences.TabBarStyle.native)
                 }
                 .pickerStyle(.radioGroup)
             }
