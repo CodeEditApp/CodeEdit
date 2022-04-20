@@ -8,14 +8,6 @@
 import SwiftUI
 
 /// A view that creates a segmented control from an array of text labels.
-///
-/// ## Usage
-/// ```swift
-/// @State var selected: Int = 0
-/// var items: [String] = ["Tab 1", "Tab 2"]
-///
-/// SegementedControl($selected, options: items)
-/// ```
 public struct SegmentedControl: View {
 
     @Environment(\.colorScheme)
@@ -67,5 +59,12 @@ public struct SegmentedControl: View {
             }
         }
         .frame(height: 20)
+    }
+}
+
+struct SegmentedControl_Previews: PreviewProvider {
+    static var previews: some View {
+        SegmentedControl(.constant(0), options: ["Tab 1", "Tab 2"])
+            .padding()
     }
 }
