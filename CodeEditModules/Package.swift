@@ -155,6 +155,7 @@ let package = Package(
             dependencies: [
                 "WorkspaceClient",
                 "CodeEditUI",
+                "GitClone",
                 "AppPreferences",
             ],
             path: "Modules/WelcomeModule/src",
@@ -166,6 +167,8 @@ let package = Package(
             name: "WelcomeModuleTests",
             dependencies: [
                 "WelcomeModule",
+                "GitClone",
+                "ShellClient",
                 "SnapshotTesting",
             ],
             path: "Modules/WelcomeModule/Tests"
