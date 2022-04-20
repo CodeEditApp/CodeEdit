@@ -44,7 +44,7 @@ public extension AppPreferences {
         public var size: Int = 11
 
         /// The name of the custom font
-        public var name: String = "SF-MonoMedium"
+        public var name: String = "SFMono-Medium"
 
         /// Default initializer
         public init() {}
@@ -54,7 +54,7 @@ public extension AppPreferences {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.customFont = try container.decodeIfPresent(Bool.self, forKey: .customFont) ?? false
             self.size = try container.decodeIfPresent(Int.self, forKey: .size) ?? 11
-            self.name = try container.decodeIfPresent(String.self, forKey: .name) ?? "SF-MonoMedium"
+            self.name = try container.decodeIfPresent(String.self, forKey: .name) ?? "SFMono-Medium"
         }
     }
 }
