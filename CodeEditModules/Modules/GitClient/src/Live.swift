@@ -63,7 +63,7 @@ public extension GitClient {
 
         func getCommitHistory(entries: Int?, fileLocalPath: String?) throws -> [Commit] {
             var entriesString = ""
-            let fileLocalPath = fileLocalPath ?? ""
+            let fileLocalPath = fileLocalPath?.replacingOccurrences(of: " ", with: "\\ ") ?? ""
             if let entries = entries { entriesString = "-n \(entries)" }
             let dateFormatter = DateFormatter()
             dateFormatter.locale = Locale.current
