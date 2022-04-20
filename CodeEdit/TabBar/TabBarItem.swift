@@ -47,11 +47,12 @@ struct NativeTabShadow: View {
     var body: some View {
         Rectangle()
             .foregroundColor(
-                prefs.preferences.general.tabBarStyle == .xcode
-                ? Color(nsColor: colorScheme == .dark ? .white : .black)
-                    .opacity(0.12)
-                : Color(nsColor: colorScheme == .dark ? .black : .black)
-                    .opacity(colorScheme == .dark ? 0.40 : 0.15)
+                Color(nsColor: .black)
+                    .opacity(
+                        prefs.preferences.general.tabBarStyle == .xcode
+                        ? (colorScheme == .dark ? 0.28 : 0.12)
+                        : (colorScheme == .dark ? 0.40 : 0.15)
+                    )
             )
             .frame(height: height)
     }

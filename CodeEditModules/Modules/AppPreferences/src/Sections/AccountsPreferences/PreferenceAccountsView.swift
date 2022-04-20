@@ -51,6 +51,9 @@ public struct PreferenceAccountsView: View {
                  selection: $accountSelection) { gitAccount in
                 GitAccountItem(sourceControlAccount: gitAccount)
             }
+                 .background(
+                    EffectView(.contentBackground)
+                 )
             PreferencesToolbar {
                 sidebarBottomToolbar
             }

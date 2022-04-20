@@ -196,6 +196,16 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "jav-solo",
+      "name": "Javier Solorzano",
+      "avatar_url": "https://avatars.githubusercontent.com/u/10246220?v=4",
+      "profile": "https://github.com/jav-solo",
+      "contributions": [
+        "code",
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
