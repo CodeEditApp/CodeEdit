@@ -90,7 +90,7 @@ struct HistoryItem: View {
             Group {
                 Divider()
                 if let commitRemoteURL = commit.commitBaseURL?.absoluteString {
-                    Button("View on Remote...") {
+                    Button("View on \(commit.remoteString)...") {
                         let commitURL = "\(commitRemoteURL)/\(commit.commitHash)"
                         openCommit(URL(string: commitURL)!)
                     }

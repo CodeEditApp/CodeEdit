@@ -25,9 +25,23 @@ public struct Commit: Equatable, Hashable, Identifiable {
             if remoteURL.absoluteString.contains("github") {
                 return remoteURL.deletingPathExtension().appendingPathComponent("commit")
             }
-
+            if remoteURL.absoluteString.contains("bitbucket") {
+                return remoteURL.deletingPathExtension().appendingPathComponent("commits")
+            }
             // TODO: Implement other git clients other than github here
         }
         return nil
+    }
+
+    public var remoteString: String {
+        if let remoteURL = remoteURL {
+            if remoteURL.absoluteString.contains("github") {
+                return "GitHub"
+            }
+            if remoteURL.absoluteString.contains("bitbucket") {
+                return "BitBucket"
+            }
+        }
+        return "Remote"
     }
 }
