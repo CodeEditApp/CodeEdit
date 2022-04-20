@@ -43,10 +43,12 @@ struct HistoryItem: View {
                 VStack(alignment: .trailing, spacing: 5) {
                     Text(commit.hash)
                         .font(.system(size: 10))
-                        .background(RoundedRectangle(cornerRadius: 3)
-                            .padding(.trailing, -5)
-                            .padding(.leading, -5)
-                            .foregroundColor(Color("HistoryInspectorHash")))
+                        .background(
+                            RoundedRectangle(cornerRadius: 3)
+                                .padding(.trailing, -5)
+                                .padding(.leading, -5)
+                                .foregroundColor(Color(nsColor: .quaternaryLabelColor))
+                        )
                         .padding(.trailing, 5)
                     Text(commit.date.relativeStringToNow())
                         .font(.system(size: 11))
