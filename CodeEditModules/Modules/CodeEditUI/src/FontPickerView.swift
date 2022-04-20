@@ -22,14 +22,6 @@ final class FontPickerDelegate {
 }
 
 /// A view that opens a `NSFontPanel` in order to choose a font installed on the system.
-///
-/// ## Usage
-/// ```swift
-/// @State var fontName: String = "SF-Mono"
-/// @State var fontSize: Int = 13
-///
-/// FontPicker("Font", name: $fontName, size: $fontSize)
-/// ```
 public struct FontPicker: View {
     private let labelString: String
 
@@ -89,6 +81,7 @@ public struct FontPicker: View {
 
 struct FontPicker_Previews: PreviewProvider {
     static var previews: some View {
-        FontPicker("font", name: .constant("Test"), size: .constant(11))
+        FontPicker("Font Picker", name: .constant("SF-MonoMedium"), size: .constant(11))
+            .padding()
     }
 }
