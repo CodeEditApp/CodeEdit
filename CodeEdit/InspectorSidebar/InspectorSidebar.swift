@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditUI
 import WorkspaceClient
 
 struct InspectorSidebar: View {
@@ -50,7 +51,8 @@ struct InspectorSidebar: View {
             InspectorSidebarToolbarTop(selection: $selection)
                 .padding(.bottom, -8)
         }
-        .background(Rectangle()
-            .foregroundColor(Color("InspectorBackgroundColor")))
+        .background(
+            EffectView(.windowBackground, blendingMode: .withinWindow)
+        )
     }
 }
