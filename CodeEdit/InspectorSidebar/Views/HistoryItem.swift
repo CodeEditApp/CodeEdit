@@ -75,6 +75,7 @@ struct HistoryItem: View {
                 Button("Email \(commit.author)...") {
                     let service = NSSharingService(named: NSSharingService.Name.composeEmail)
                     service?.recipients = [commit.authorEmail]
+                    service?.perform(withItems: [])
                 }
                 Divider()
             }
