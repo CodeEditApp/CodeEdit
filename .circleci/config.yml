@@ -20,5 +20,5 @@ jobs:
 workflows:
   primary: 
     jobs:
-      - test
+#      - test
       - lint
