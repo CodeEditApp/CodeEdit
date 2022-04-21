@@ -256,6 +256,9 @@ let package = Package(
         ),
         .target(
             name: "CodeEditUI",
+            dependencies: [
+                "CodeEditSymbols"
+            ],
             path: "Modules/CodeEditUI/src"
         ),
         .testTarget(
