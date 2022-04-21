@@ -35,7 +35,8 @@ public struct Commit: Equatable, Hashable, Identifiable {
         }
         return nil
     }
-    func parsedRemoteUrl(domain: String, remote: URL) -> URL {
+
+    private func parsedRemoteUrl(domain: String, remote: URL) -> URL {
         // There are 2 types of remotes - https and ssh. While https has URL in its name, ssh doesnt.
         // Following code takes remote name in format profileName/repoName and prepends according domain
         var formattedRemote = remote
