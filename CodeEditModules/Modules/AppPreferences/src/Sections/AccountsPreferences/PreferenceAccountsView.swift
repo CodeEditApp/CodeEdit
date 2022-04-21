@@ -11,9 +11,12 @@ import CodeEditUI
 // swiftlint:disable for_where
 public struct PreferenceAccountsView: View {
 
-    @State private var openAccountDialog = false
-    @State private var cloneUsing = false
-    @State var accountSelection: SourceControlAccounts.ID?
+    @State
+    private var openAccountDialog = false
+    @State
+    private var cloneUsing = false
+    @State
+    var accountSelection: SourceControlAccounts.ID?
 
     @StateObject
     private var prefs: AppPreferencesModel = .shared
@@ -115,11 +118,13 @@ public struct PreferenceAccountsView: View {
 
     private var sidebarBottomToolbar: some View {
         HStack {
-            Button { openAccountDialog = true } label: {
+            Button {
+                openAccountDialog.toggle()
+            } label: {
                 Image(systemName: "plus")
             }
             .sheet(isPresented: $openAccountDialog, content: {
-                AccountSelectionDialog(dismissDialog: $openAccountDialog)
+                AccountSelectionDialog(openAccountDialog: $openAccountDialog)
             })
             .help("Add a Git Account")
             .buttonStyle(.plain)

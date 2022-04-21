@@ -1,27 +1,27 @@
 //
-//  GithubLoginView.swift
+//  GitlabHostedLoginView.swift
 //  
 //
-//  Created by Nanshi Li on 2022/04/01.
+//  Created by Nanashi Li on 2022/04/21.
 //
 
 import SwiftUI
-import GitAccounts
 import CodeEditUtils
+import GitAccounts
 
-struct GithubLoginView: View {
-
+struct GitlabHostedLoginView: View {
+    @State var eneterpriseLink = ""
     @State var accountName = ""
     @State var accountToken = ""
 
     @Environment(\.openURL) var createToken
 
-    private let keychain = CodeEditKeychain()
-
     @Binding var dismissDialog: Bool
 
     @StateObject
     private var prefs: AppPreferencesModel = .shared
+
+    private let keychain = CodeEditKeychain()
 
     var body: some View {
         VStack {
@@ -29,8 +29,13 @@ struct GithubLoginView: View {
 
             VStack(alignment: .trailing) {
                 HStack {
+                    Text("Server:")
+                    TextField("https://example.com", text: $eneterpriseLink)
+                        .frame(width: 300)
+                }
+                HStack {
                     Text("Account:")
-                    TextField("Enter your username", text: $accountName)
+                    TextField("", text: $accountName)
                         .frame(width: 300)
                 }
                 HStack {
@@ -41,55 +46,23 @@ struct GithubLoginView: View {
                 }
             }
 
-            VStack {
-                Text("GitHub personal access tokens must have these scopes set:")
-                    .fontWeight(.bold)
-                    .font(.system(size: 11))
-
-                VStack(alignment: .leading) {
-                    HStack {
-                        Image(systemName: "checkmark")
-                        Text("admin:public _key")
-                            .font(.system(size: 10))
-                    }
-                    HStack {
-                        Image(systemName: "checkmark")
-                        Text("write:discussion")
-                            .font(.system(size: 10))
-                    }
-                    HStack {
-                        Image(systemName: "checkmark")
-                        Text("repo")
-                            .font(.system(size: 10))
-                    }
-                    HStack {
-                        Image(systemName: "checkmark")
-                        Text("user")
-                            .font(.system(size: 10))
-                    }
-                }.padding(.top, 2)
-            }
-            .frame(maxWidth: .infinity)
-            .padding(.bottom, 10)
-            .padding(.top, 10)
-
             HStack {
                 HStack {
-                    Button("Create a Token on GitHub") {
-                        createToken(URL(string: "https://github.com/settings/tokens/new")!)
+                    Button("Create a Token on Gitlab Self-Hosted") {
+                        createToken(URL(string: "https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html")!)
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 HStack {
                     Button("Cancel") {
-                        dismissDialog.toggle()
+                        dismissDialog = false
                     }
                     if accountToken.isEmpty {
                         Button("Sign In") {}
                         .disabled(true)
                     } else {
                         Button("Sign In") {
-                            loginGithub(gitAccountName: accountName)
+                            loginGitlabSelfHosted(gitAccountName: accountName)
                         }
                         .buttonStyle(.borderedProminent)
                     }
@@ -98,14 +71,15 @@ struct GithubLoginView: View {
             }.padding(.top, 10)
         }
         .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
-        .frame(width: 485, height: 280)
+        .frame(width: 485, height: 190)
     }
 
-    private func loginGithub(gitAccountName: String) {
+    private func loginGitlabSelfHosted(gitAccountName: String) {
         let gitAccounts = prefs.preferences.accounts.sourceControlAccounts.gitAccount
 
-        let config = GithubTokenConfiguration(accountToken)
-        GithubAccount(config).me { response in
+        let config = GitlabTokenConfiguration(accountToken,
+                                              url: eneterpriseLink )
+        GitlabAccount(config).me { response in
             switch response {
             case .success(let user):
                 if gitAccounts.contains(where: { $0.id == gitAccountName.lowercased()}) {
@@ -114,15 +88,15 @@ struct GithubLoginView: View {
                     print(user)
                     prefs.preferences.accounts.sourceControlAccounts.gitAccount.append(
                         SourceControlAccounts(id: gitAccountName.lowercased(),
-                                              gitProvider: "GitHub",
-                                              gitProviderLink: "https://github.com",
-                                              gitProviderDescription: "GitHub",
+                                              gitProvider: "Gitlab",
+                                              gitProviderLink: eneterpriseLink,
+                                              gitProviderDescription: "Gitlab",
                                               gitAccountName: gitAccountName,
                                               gitCloningProtocol: true,
                                               gitSSHKey: "",
                                               isTokenValid: true))
-                    keychain.set(accountToken, forKey: "github_\(accountName)")
-                    dismissDialog.toggle()
+                    keychain.set(accountToken, forKey: "gitlab_\(gitAccountName)_hosted")
+                    dismissDialog = false
                 }
             case .failure(let error):
                 print(error)

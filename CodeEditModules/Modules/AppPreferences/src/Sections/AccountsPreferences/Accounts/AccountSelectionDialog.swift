@@ -21,7 +21,8 @@ struct AccountSelectionDialog: View {
     @State var providerSelection: Providers.ID? = "github"
     @State var openGitLogin = false
 
-    @Binding var dismissDialog: Bool
+    @Binding
+    var openAccountDialog: Bool
 
     var body: some View {
         VStack {
@@ -37,10 +38,10 @@ struct AccountSelectionDialog: View {
 
             HStack {
                 Button("Cancel") {
-                    dismissDialog.toggle()
+                    openAccountDialog.toggle()
                 }
                 Button("Continue") {
-                    dismissDialog.toggle()
+                    openAccountDialog.toggle()
                     openGitLogin.toggle()
                 }
                 .sheet(isPresented: $openGitLogin, content: {
@@ -66,9 +67,9 @@ struct AccountSelectionDialog: View {
         case "githubEnterprise":
             GithubEnterpriseLoginView(dismissDialog: $openGitLogin)
         case "gitlab":
-            implementationNeeded
+            GitlabLoginView(dismissDialog: $openGitLogin)
         case "gitlabSelfHosted":
-            implementationNeeded
+            GitlabHostedLoginView(dismissDialog: $openGitLogin)
         default:
             implementationNeeded
         }
@@ -88,7 +89,7 @@ struct AccountSelectionDialog: View {
             .padding(.trailing, 20)
         }
         .padding(20)
-        .frame(width: 400, height: 285)
+        .frame(width: 300, height: 120)
     }
 
 }
