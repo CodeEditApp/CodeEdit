@@ -48,8 +48,8 @@ struct GitlabHostedLoginView: View {
 
             HStack {
                 HStack {
-                    Button("Create a Token on GitHub Enterprise") {
-                        createToken(URL(string: "https://github.com/settings/tokens/new")!)
+                    Button("Create a Token on Gitlab Self-Hosted") {
+                        createToken(URL(string: "https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html")!)
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
