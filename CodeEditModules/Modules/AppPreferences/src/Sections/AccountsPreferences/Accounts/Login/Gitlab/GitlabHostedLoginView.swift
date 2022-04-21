@@ -62,7 +62,7 @@ struct GitlabHostedLoginView: View {
                         .disabled(true)
                     } else {
                         Button("Sign In") {
-                            loginGithubEnterprise(gitAccountName: accountName)
+                            loginGitlabSelfHosted(gitAccountName: accountName)
                         }
                         .buttonStyle(.borderedProminent)
                     }
@@ -74,7 +74,7 @@ struct GitlabHostedLoginView: View {
         .frame(width: 485, height: 190)
     }
 
-    private func loginGithubEnterprise(gitAccountName: String) {
+    private func loginGitlabSelfHosted(gitAccountName: String) {
         let gitAccounts = prefs.preferences.accounts.sourceControlAccounts.gitAccount
 
         let config = GitlabTokenConfiguration(accountToken,
