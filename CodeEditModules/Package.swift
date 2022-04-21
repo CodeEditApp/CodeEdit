@@ -256,12 +256,19 @@ let package = Package(
         ),
         .target(
             name: "CodeEditUI",
+            dependencies: [
+                "CodeEditSymbols",
+                "WorkspaceClient",
+                "GitClient"
+            ],
             path: "Modules/CodeEditUI/src"
         ),
         .testTarget(
             name: "CodeEditUITests",
             dependencies: [
                 "CodeEditUI",
+                "WorkspaceClient",
+                "GitClient",
                 "SnapshotTesting",
             ],
             path: "Modules/CodeEditUI/Tests"
