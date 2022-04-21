@@ -1,15 +1,15 @@
 //
-//  GithubLoginView.swift
+//  GitlabLoginView.swift
 //  
 //
-//  Created by Nanshi Li on 2022/04/01.
+//  Created by Nanashi Li on 2022/04/21.
 //
 
 import SwiftUI
 import GitAccounts
 import CodeEditUtils
 
-struct GithubLoginView: View {
+struct GitlabLoginView: View {
 
     @State var accountName = ""
     @State var accountToken = ""
@@ -25,7 +25,7 @@ struct GithubLoginView: View {
 
     var body: some View {
         VStack {
-            Text("Sign in to your GitHub account")
+            Text("Sign in to your Gitlab account")
 
             VStack(alignment: .trailing) {
                 HStack {
@@ -41,42 +41,10 @@ struct GithubLoginView: View {
                 }
             }
 
-            VStack {
-                Text("GitHub personal access tokens must have these scopes set:")
-                    .fontWeight(.bold)
-                    .font(.system(size: 11))
-
-                VStack(alignment: .leading) {
-                    HStack {
-                        Image(systemName: "checkmark")
-                        Text("admin:public _key")
-                            .font(.system(size: 10))
-                    }
-                    HStack {
-                        Image(systemName: "checkmark")
-                        Text("write:discussion")
-                            .font(.system(size: 10))
-                    }
-                    HStack {
-                        Image(systemName: "checkmark")
-                        Text("repo")
-                            .font(.system(size: 10))
-                    }
-                    HStack {
-                        Image(systemName: "checkmark")
-                        Text("user")
-                            .font(.system(size: 10))
-                    }
-                }.padding(.top, 2)
-            }
-            .frame(maxWidth: .infinity)
-            .padding(.bottom, 10)
-            .padding(.top, 10)
-
             HStack {
                 HStack {
-                    Button("Create a Token on GitHub") {
-                        createToken(URL(string: "https://github.com/settings/tokens/new")!)
+                    Button("Create a Token on Gitlab") {
+                        createToken(URL(string: "https://gitlab.com/-/profile/personal_access_tokens")!)
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -89,7 +57,7 @@ struct GithubLoginView: View {
                         .disabled(true)
                     } else {
                         Button("Sign In") {
-                            loginGithub(gitAccountName: accountName)
+                            loginGitlab(gitAccountName: accountName)
                         }
                         .buttonStyle(.borderedProminent)
                     }
@@ -98,14 +66,14 @@ struct GithubLoginView: View {
             }.padding(.top, 10)
         }
         .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
-        .frame(width: 485, height: 280)
+        .frame(width: 485, height: 160)
     }
 
-    private func loginGithub(gitAccountName: String) {
+    private func loginGitlab(gitAccountName: String) {
         let gitAccounts = prefs.preferences.accounts.sourceControlAccounts.gitAccount
 
-        let config = GithubTokenConfiguration(accountToken)
-        GithubAccount(config).me { response in
+        let config = GitlabTokenConfiguration(accountToken)
+        GitlabAccount(config).me { response in
             switch response {
             case .success(let user):
                 if gitAccounts.contains(where: { $0.id == gitAccountName.lowercased()}) {
@@ -114,15 +82,15 @@ struct GithubLoginView: View {
                     print(user)
                     prefs.preferences.accounts.sourceControlAccounts.gitAccount.append(
                         SourceControlAccounts(id: gitAccountName.lowercased(),
-                                              gitProvider: "GitHub",
-                                              gitProviderLink: "https://github.com",
-                                              gitProviderDescription: "GitHub",
+                                              gitProvider: "Gitlab",
+                                              gitProviderLink: "https://gitlab.com",
+                                              gitProviderDescription: "Gitlab",
                                               gitAccountName: gitAccountName,
                                               gitCloningProtocol: true,
                                               gitSSHKey: "",
                                               isTokenValid: true))
-                    keychain.set(accountToken, forKey: "github_\(accountName)")
-                    dismissDialog.toggle()
+                    keychain.set(accountToken, forKey: "gitlab_\(accountName)")
+                    dismissDialog = false
                 }
             case .failure(let error):
                 print(error)
