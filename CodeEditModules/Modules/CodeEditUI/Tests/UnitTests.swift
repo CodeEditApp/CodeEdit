@@ -9,10 +9,7 @@
 import Foundation
 import SnapshotTesting
 import SwiftUI
-import WorkspaceClient
 import XCTest
-import Combine
-import ShellClient
 
 final class CodeEditUIUnitTests: XCTestCase {
 
