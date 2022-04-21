@@ -13,7 +13,10 @@ import GitClient
 public struct BranchPickerToolbarItem: View {
 
     private var workspace: WorkspaceClient?
+
     private var gitClient: GitClient?
+
+    @State private var currentBranch: String?
 
     public init(_ workspace: WorkspaceClient?) {
         self.workspace = workspace
@@ -23,6 +26,7 @@ public struct BranchPickerToolbarItem: View {
                 shellClient: .live
             )
         }
+        self._currentBranch = State(initialValue: try? gitClient?.getCurrentBranchName())
     }
 
     @State
@@ -55,6 +59,7 @@ public struct BranchPickerToolbarItem: View {
                 }
             }
         }
+        .contentShape(Rectangle())
         .onTapGesture {
             displayPopover.toggle()
         }
@@ -62,7 +67,7 @@ public struct BranchPickerToolbarItem: View {
             isHovering = active
         }
         .popover(isPresented: $displayPopover, arrowEdge: .bottom) {
-            PopoverView()
+            PopoverView(gitClient: gitClient, currentBranch: $currentBranch)
         }
     }
 
@@ -70,16 +75,92 @@ public struct BranchPickerToolbarItem: View {
         workspace?.folderURL()?.lastPathComponent ?? "Empty"
     }
 
-    private var currentBranch: String? {
-        try? gitClient?.getCurrentBranchName()
-    }
-
     private struct PopoverView: View {
+
+        var gitClient: GitClient?
+
+        @Binding var currentBranch: String?
+
         var body: some View {
-            VStack {
-                Text("Current Branch:")
+            VStack(alignment: .leading) {
+                if let currentBranch = currentBranch {
+                    VStack(alignment: .leading, spacing: 0) {
+                        headerLabel("Current Branch")
+                        BranchView(name: currentBranch, active: true) {}
+                    }
+                }
+                if !branchNames.isEmpty {
+                    VStack(alignment: .leading, spacing: 0) {
+                        headerLabel("Branches")
+                        ForEach(branchNames, id: \.self) { branch in
+                            BranchView(name: branch) {
+                                try? gitClient?.checkoutBranch(branch)
+                                currentBranch = try? gitClient?.getCurrentBranchName()
+                            }
+                        }
+                    }
+                }
             }
-            .padding()
+            .padding(5)
+            .frame(width: 340)
+        }
+
+        func headerLabel(_ title: String) -> some View {
+            Text(title)
+                .font(.subheadline.bold())
+                .foregroundColor(.secondary)
+                .padding(.horizontal)
+                .padding(.vertical, 5)
+        }
+
+        struct BranchView: View {
+            @Environment(\.dismiss) private var dismiss
+
+            var name: String
+            var active: Bool = false
+            var action: () -> Void
+
+            @State
+            private var isHovering: Bool = false
+
+            var body: some View {
+                Button {
+                    action()
+                    dismiss()
+                } label: {
+                    HStack {
+                        Label {
+                            Text(name)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                        } icon: {
+                            Image.checkout
+                                .imageScale(.large)
+                        }
+                        .foregroundColor(isHovering ? .white : .secondary)
+                        if active {
+                            Image(systemName: "checkmark.circle.fill")
+                                .foregroundColor(isHovering ? .white : .green)
+                        }
+                    }
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .padding(.horizontal)
+                .padding(.vertical, 10)
+                .background(
+                    RoundedRectangle(cornerRadius: 4)
+                        .foregroundColor(
+                            isHovering ? Color(nsColor: .selectedContentBackgroundColor).opacity(0.8) : .clear
+                        )
+                )
+                .onHover { active in
+                    isHovering = active
+                }
+            }
+        }
+
+        var branchNames: [String] {
+            (try? gitClient?.getBranches(false)) ?? []
         }
     }
 }

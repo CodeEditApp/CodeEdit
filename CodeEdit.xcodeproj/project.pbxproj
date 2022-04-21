@@ -52,6 +52,8 @@
 		2847019E27FDDF7600F87B6B /* OutlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2847019D27FDDF7600F87B6B /* OutlineView.swift */; };
 		285FEC7027FE4B9800E57D53 /* OutlineTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285FEC6F27FE4B9800E57D53 /* OutlineTableViewCell.swift */; };
 		286471AB27ED51FD0039369D /* ProjectNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286471AA27ED51FD0039369D /* ProjectNavigator.swift */; };
+		2864BAAC28117B3F002DBD1A /* ShellClient in Frameworks */ = {isa = PBXBuildFile; productRef = 2864BAAB28117B3F002DBD1A /* ShellClient */; };
+		2864BAAE28117D7C002DBD1A /* TerminalEmulator in Frameworks */ = {isa = PBXBuildFile; productRef = 2864BAAD28117D7C002DBD1A /* TerminalEmulator */; };
 		287776E927E34BC700D46668 /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287776E827E34BC700D46668 /* TabBar.swift */; };
 		287776EF27E3515300D46668 /* TabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287776EE27E3515300D46668 /* TabBarItem.swift */; };
 		28B0A19827E385C300B73177 /* NavigatorSidebarToolbarTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B0A19727E385C300B73177 /* NavigatorSidebarToolbarTop.swift */; };
@@ -183,7 +185,9 @@
 				0483E34D27FCC46600354AC0 /* ExtensionsStore in Frameworks */,
 				64B64EDE27F7B79400C400F1 /* About in Frameworks */,
 				04C3256B28034FC800C8DA2D /* CodeEditKit in Frameworks */,
+				2864BAAC28117B3F002DBD1A /* ShellClient in Frameworks */,
 				20C4319A28058B9E00964DD5 /* GitAccounts in Frameworks */,
+				2864BAAE28117D7C002DBD1A /* TerminalEmulator in Frameworks */,
 				5C403B8F27E20F8000788241 /* WorkspaceClient in Frameworks */,
 				5CAD1B972806B57D0059A74E /* Breadcrumbs in Frameworks */,
 				2803257127F3CF1F009C7DC2 /* AppPreferences in Frameworks */,
@@ -477,6 +481,8 @@
 				2004A3822808468600FD9696 /* Feedback */,
 				2040F0B0280AE96100411B6F /* CodeEditUtils */,
 				2816F593280CF50500DD548B /* CodeEditSymbols */,
+				2864BAAB28117B3F002DBD1A /* ShellClient */,
+				2864BAAD28117D7C002DBD1A /* TerminalEmulator */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -1007,7 +1013,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 9VS2VKC5LQ;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1030,7 +1036,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 9VS2VKC5LQ;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1140,6 +1146,14 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 2816F592280CF50500DD548B /* XCRemoteSwiftPackageReference "CodeEditSymbols" */;
 			productName = CodeEditSymbols;
+		};
+		2864BAAB28117B3F002DBD1A /* ShellClient */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ShellClient;
+		};
+		2864BAAD28117D7C002DBD1A /* TerminalEmulator */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = TerminalEmulator;
 		};
 		28CE5E9F27E6493D0065D29C /* StatusBar */ = {
 			isa = XCSwiftPackageProductDependency;

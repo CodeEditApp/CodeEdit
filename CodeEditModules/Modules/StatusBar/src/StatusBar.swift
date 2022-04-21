@@ -53,10 +53,6 @@ public struct StatusBarView: View {
                         .padding(.horizontal, 7)
                     SegmentedControl($model.selectedTab, options: StatusBarTab.allOptions)
                 }
-                if model.selectedBranch != nil {
-                    StatusBarBranchPicker(model: model)
-                    StatusBarPullButton(model: model)
-                }
                 Spacer()
                 StatusBarCursorLocationLabel(model: model)
                 StatusBarIndentSelector(model: model)

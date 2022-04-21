@@ -5,9 +5,9 @@
 //  Created by Marco Carnevali on 27/03/22.
 //
 
+import XCTest
 @testable import GitClient
 import ShellClient
-import XCTest
 
 final class GitClientTests: XCTestCase {
     // FIXME: Update GitClient.getCommitHistory implementation on date or this test case

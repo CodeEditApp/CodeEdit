@@ -257,7 +257,9 @@ let package = Package(
         .target(
             name: "CodeEditUI",
             dependencies: [
-                "CodeEditSymbols"
+                "CodeEditSymbols",
+                "WorkspaceClient",
+                "GitClient"
             ],
             path: "Modules/CodeEditUI/src"
         ),
@@ -265,6 +267,8 @@ let package = Package(
             name: "CodeEditUITests",
             dependencies: [
                 "CodeEditUI",
+                "WorkspaceClient",
+                "GitClient",
                 "SnapshotTesting",
             ],
             path: "Modules/CodeEditUI/Tests"
