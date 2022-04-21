@@ -9,7 +9,10 @@
 import Foundation
 import SnapshotTesting
 import SwiftUI
+import WorkspaceClient
 import XCTest
+import Combine
+import ShellClient
 
 final class CodeEditUIUnitTests: XCTestCase {
 
@@ -82,6 +85,24 @@ final class CodeEditUIUnitTests: XCTestCase {
         let hosting = NSHostingView(rootView: view)
         hosting.appearance = .init(named: .darkAqua)
         hosting.frame = CGRect(origin: .zero, size: .init(width: 20, height: 20))
+        assertSnapshot(matching: hosting, as: .image)
+    }
+
+    // MARK: ToolbarBranchPicker
+
+    func testBranchPickerLight() throws {
+        let view = ToolbarBranchPicker(nil)
+        let hosting = NSHostingView(rootView: view)
+        hosting.appearance = .init(named: .aqua)
+        hosting.frame = CGRect(origin: .zero, size: .init(width: 100, height: 50))
+        assertSnapshot(matching: hosting, as: .image)
+    }
+
+    func testBranchPickerDark() throws {
+        let view = ToolbarBranchPicker(nil)
+        let hosting = NSHostingView(rootView: view)
+        hosting.appearance = .init(named: .darkAqua)
+        hosting.frame = CGRect(origin: .zero, size: .init(width: 100, height: 50))
         assertSnapshot(matching: hosting, as: .image)
     }
 }

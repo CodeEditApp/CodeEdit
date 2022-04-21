@@ -10,6 +10,7 @@ This module contains UI elements that can be reused throughout the `CodeEdit` ap
 
 ### Controls
 
+- ``ToolbarBranchPicker``
 - ``FontPicker``
 - ``HelpButton``
 - ``SegmentedControl``

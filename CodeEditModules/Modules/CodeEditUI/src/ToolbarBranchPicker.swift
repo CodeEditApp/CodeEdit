@@ -1,5 +1,5 @@
 //
-//  BranchPickerToolbarItem.swift
+//  ToolbarBranchPicker.swift
 //  CodeEdit
 //
 //  Created by Lukas Pistrol on 21.04.22.
@@ -10,8 +10,8 @@ import CodeEditSymbols
 import WorkspaceClient
 import GitClient
 
-/// A view that displays a branch selector when tapped. This is designed to live in the toolbar of a window.
-public struct BranchPickerToolbarItem: View {
+/// A view that pops up a branch picker.
+public struct ToolbarBranchPicker: View {
 
     private var workspace: WorkspaceClient?
 
@@ -19,6 +19,8 @@ public struct BranchPickerToolbarItem: View {
 
     @State private var currentBranch: String?
 
+    /// Initializes the ``ToolbarBranchPicker`` with an instance of a `WorkspaceClient`
+    /// - Parameter workspace: An instance of the current `WorkspaceClient`
     public init(_ workspace: WorkspaceClient?) {
         self.workspace = workspace
         if let folderURL = workspace?.folderURL() {
