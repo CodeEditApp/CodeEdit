@@ -10,6 +10,7 @@ import CodeEditSymbols
 import WorkspaceClient
 import GitClient
 
+/// A view that displays a branch selector when tapped. This is designed to live in the toolbar of a window.
 public struct BranchPickerToolbarItem: View {
 
     private var workspace: WorkspaceClient?
@@ -75,6 +76,11 @@ public struct BranchPickerToolbarItem: View {
         workspace?.folderURL()?.lastPathComponent ?? "Empty"
     }
 
+    // MARK: Popover View
+
+    /// A popover view that appears once the branch picker is tapped.
+    ///
+    /// It displays the currently checked-out branch and all other local branches.
     private struct PopoverView: View {
 
         var gitClient: GitClient?
@@ -86,14 +92,14 @@ public struct BranchPickerToolbarItem: View {
                 if let currentBranch = currentBranch {
                     VStack(alignment: .leading, spacing: 0) {
                         headerLabel("Current Branch")
-                        BranchView(name: currentBranch, active: true) {}
+                        BranchCell(name: currentBranch, active: true) {}
                     }
                 }
                 if !branchNames.isEmpty {
                     VStack(alignment: .leading, spacing: 0) {
                         headerLabel("Branches")
                         ForEach(branchNames, id: \.self) { branch in
-                            BranchView(name: branch) {
+                            BranchCell(name: branch) {
                                 try? gitClient?.checkoutBranch(branch)
                                 currentBranch = try? gitClient?.getCurrentBranchName()
                             }
@@ -113,7 +119,10 @@ public struct BranchPickerToolbarItem: View {
                 .padding(.vertical, 5)
         }
 
-        struct BranchView: View {
+        // MARK: Branch Cell
+
+        /// A Button Cell that represents a branch in the branch picker
+        struct BranchCell: View {
             @Environment(\.dismiss) private var dismiss
 
             var name: String
