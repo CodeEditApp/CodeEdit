@@ -230,21 +230,28 @@ struct TabBarItem: View {
         }
     }
 
-    // I am not using Button for wrapping content because Button will potentially
-    // have conflict with the inner close Button when the style of this Button is
-    // not set to `plain`. And based on the design of CodeEdit, plain style is not
-    // an expected choice, so I eventually come up with this solution for now. It
-    // is possible to make a customized Button (which may solve the clicking conflict,
-    // but I am not sure). I will try that in the future.
     var body: some View {
-        Button(action: switchAction) {
-            content
-        }
-        .buttonStyle(TabBarItemButtonStyle())
-        .keyboardShortcut(
-            workspace.getTabKeyEquivalent(item: item),
-            modifiers: [.command]
+        Button(
+            action: switchAction,
+            label: { content }
         )
+        .buttonStyle(TabBarItemButtonStyle())
+        .overlay {
+            // Using an overlay to contain the keyboard shortcut is simply because
+            // the keyboard shortcut has an unexpected bug when working with custom
+            // buttonStyle. This is an workaround and it should work as expected.
+            Button(
+                action: switchAction,
+                label: { EmptyView() }
+            )
+            .frame(width: 0, height: 0)
+            .padding(0)
+            .opacity(0)
+            .keyboardShortcut(
+                workspace.getTabKeyEquivalent(item: item),
+                modifiers: [.command]
+            )
+        }
         .background {
             if prefs.preferences.general.tabBarStyle == .xcode {
                 Color(nsColor: isActive ? .selectedControlColor : .clear)
@@ -324,7 +331,6 @@ fileprivate extension WorkspaceDocument {
                 Character.init("\(counter + 1)")
             )
         }
-
         return "0"
     }
 }
