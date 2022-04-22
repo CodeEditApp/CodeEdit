@@ -56,6 +56,9 @@ public struct EffectView: NSViewRepresentable {
         nsView.blendingMode = blendingMode
     }
 
+    /// Returns the system selection style as an ``EffectView`` if the `condition` is met. Otherwise it returns `Color.clear`
+    /// - Parameter condition: The condition of when to apply the background. Defaults to `true`.
+    /// - Returns: A View
     @ViewBuilder
     public static func selectionBackground(_ condition: Bool = true) -> some View {
         if condition {
