@@ -124,16 +124,36 @@ struct TabBarItem: View {
             .overlay {
                 ZStack {
                     if isActive {
-                        // Create a hidden button, if the tab is selected
-                        // and hide the button in the ZStack.
-                        Button(action: closeAction) {
-                            Text("").hidden()
-                        }
+                        // Close Tab Shortcut:
+                        // Using an invisible button to contain the keyboard shortcut is simply
+                        // because the keyboard shortcut has an unexpected bug when working with
+                        // custom buttonStyle. This is an workaround and it works as expected.
+                        Button(
+                            action: closeAction,
+                            label: { EmptyView() }
+                        )
                         .frame(width: 0, height: 0)
                         .padding(0)
                         .opacity(0)
                         .keyboardShortcut("w", modifiers: [.command])
                     }
+                    // Switch Tab Shortcut:
+                    // Using an invisible button to contain the keyboard shortcut is simply
+                    // because the keyboard shortcut has an unexpected bug when working with
+                    // custom buttonStyle. This is an workaround and it works as expected.
+                    Button(
+                        action: switchAction,
+                        label: { EmptyView() }
+                    )
+                    .frame(width: 0, height: 0)
+                    .padding(0)
+                    .opacity(0)
+                    .keyboardShortcut(
+                        workspace.getTabKeyEquivalent(item: item),
+                        modifiers: [.command]
+                    )
+                    .background(.blue)
+                    // Close button.
                     Button(action: closeAction) {
                         if prefs.preferences.general.tabBarStyle == .xcode {
                             Image(systemName: "xmark")
@@ -236,22 +256,6 @@ struct TabBarItem: View {
             label: { content }
         )
         .buttonStyle(TabBarItemButtonStyle())
-        .overlay {
-            // Using an overlay to contain the keyboard shortcut is simply because
-            // the keyboard shortcut has an unexpected bug when working with custom
-            // buttonStyle. This is an workaround and it should work as expected.
-            Button(
-                action: switchAction,
-                label: { EmptyView() }
-            )
-            .frame(width: 0, height: 0)
-            .padding(0)
-            .opacity(0)
-            .keyboardShortcut(
-                workspace.getTabKeyEquivalent(item: item),
-                modifiers: [.command]
-            )
-        }
         .background {
             if prefs.preferences.general.tabBarStyle == .xcode {
                 Color(nsColor: isActive ? .selectedControlColor : .clear)
