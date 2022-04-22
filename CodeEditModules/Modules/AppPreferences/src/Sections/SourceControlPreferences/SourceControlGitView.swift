@@ -10,6 +10,8 @@ import CodeEditUI
 
 struct SourceControlGitView: View {
 
+    private let inputWidth: Double = 280
+
     @State var ignoredFileSelection: IgnoredFiles.ID?
 
     @StateObject
@@ -19,12 +21,12 @@ struct SourceControlGitView: View {
         VStack {
             PreferencesSection("Author Name", hideLabels: false) {
                 TextField("Git Author Name", text: $prefs.preferences.sourceControl.git.authorName)
-                    .frame(width: 280)
+                    .frame(width: inputWidth)
             }
 
             PreferencesSection("Author Email", hideLabels: false) {
                 TextField("Git Email", text: $prefs.preferences.sourceControl.git.authorEmail)
-                    .frame(width: 280)
+                    .frame(width: inputWidth)
             }
 
             PreferencesSection("Ignored Files", hideLabels: false, align: .top) {
@@ -37,6 +39,7 @@ struct SourceControlGitView: View {
                         if prefs.preferences.sourceControl.git.ignoredFiles.isEmpty {
                             Text("No Ignored Files")
                                 .foregroundColor(.secondary)
+                                .font(.system(size: 11))
                         }
                     })
                     .frame(height: 150)
@@ -44,7 +47,7 @@ struct SourceControlGitView: View {
                         bottomToolbar
                     }
                 }
-                .frame(width: 280)
+                .frame(width: inputWidth)
                 .padding(1)
                 .background(Rectangle().foregroundColor(Color(NSColor.separatorColor)))
             }
@@ -53,21 +56,22 @@ struct SourceControlGitView: View {
                 Toggle("Prefer to rebase when pulling",
                        isOn: $prefs.preferences.sourceControl.git.preferRebaseWhenPulling)
                     .toggleStyle(.checkbox)
-                    .frame(width: 280, alignment: .leading)
+                    .frame(width: inputWidth, alignment: .leading)
                 Toggle("Show merge commits in per-file log",
                        isOn: $prefs.preferences.sourceControl.git.showMergeCommitsPerFileLog)
                     .toggleStyle(.checkbox)
-                    .frame(width: 280, alignment: .leading)
+                    .frame(width: inputWidth, alignment: .leading)
             }
         }
         .frame(height: 350)
-        .background(EffectView(material: .contentBackground))
+        .background(EffectView(.contentBackground))
     }
 
     private var bottomToolbar: some View {
         HStack(spacing: 12) {
             Button {} label: {
                 Image(systemName: "plus")
+                    .foregroundColor(Color.secondary)
             }
             .buttonStyle(.plain)
             Button {} label: {

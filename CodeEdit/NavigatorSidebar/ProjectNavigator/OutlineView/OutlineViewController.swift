@@ -13,7 +13,7 @@ import AppPreferences
 ///
 /// Adds a ``outlineView`` inside a ``scrollView`` which shows the folder structure of the
 /// currently open project.
-class OutlineViewController: NSViewController {
+final class OutlineViewController: NSViewController {
 
     typealias Item = WorkspaceClient.FileItem
 
@@ -55,6 +55,7 @@ class OutlineViewController: NSViewController {
         self.outlineView.headerView = nil
         self.outlineView.menu = OutlineMenu(sender: self.outlineView)
         self.outlineView.menu?.delegate = self
+        self.outlineView.doubleAction = #selector(onItemDoubleClicked)
 
         let column = NSTableColumn(identifier: .init(rawValue: "Cell"))
         column.title = "Cell"
@@ -85,7 +86,17 @@ class OutlineViewController: NSViewController {
         }
 
         select(by: itemID, from: content)
+    }
 
+    /// Expand or collapse the folder on double click
+    @objc
+    private func onItemDoubleClicked() {
+        guard let item = outlineView.item(atRow: outlineView.clickedRow) as? Item else { return }
+
+        if item.children != nil {
+            let isExpanded = outlineView.isItemExpanded(item)
+            isExpanded ? outlineView.collapseItem(item) : outlineView.expandItem(item)
+        }
     }
 
     /// Get the appropriate color for the items icon depending on the users preferences.

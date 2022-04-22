@@ -9,11 +9,15 @@ import Foundation
 import AppKit
 import SwiftUI
 import Highlightr
+import AppPreferences
 import Combine
 
 struct CodeEditor: NSViewRepresentable {
     @State
     private var isCurrentlyUpdatingView: ReferenceTypeBool = .init(value: false)
+
+    @StateObject
+    private var prefs: AppPreferencesModel = .shared
 
     private var content: Binding<String>
     private let language: CodeLanguage?
@@ -63,8 +67,8 @@ struct CodeEditor: NSViewRepresentable {
         scrollView.documentView = textView
         scrollView.verticalRulerView = LineGutter(
             scrollView: scrollView,
-            width: 45,
-            font: .monospacedDigitSystemFont(ofSize: 11, weight: .regular),
+            width: 37,
+            font: NSFont(name: "SF Mono", size: 11) ?? .monospacedSystemFont(ofSize: 11, weight: .regular),
             textColor: .secondaryLabelColor,
             backgroundColor: .clear
         )
@@ -116,6 +120,14 @@ struct CodeEditor: NSViewRepresentable {
         }
 
         highlightr?.setTheme(to: theme.wrappedValue.rawValue)
+        if prefs.preferences.textEditing.font.customFont {
+            highlightr?.theme.codeFont = .init(
+                name: prefs.preferences.textEditing.font.name,
+                size: CGFloat(prefs.preferences.textEditing.font.size)
+            )
+        } else {
+            highlightr?.theme.codeFont = .monospacedSystemFont(ofSize: 11, weight: .medium)
+        }
 
         if content.wrappedValue != textView.string {
             if let textStorage = textView.textStorage as? CodeAttributedString {
@@ -155,7 +167,7 @@ struct CodeEditor: NSViewRepresentable {
 extension CodeEditor {
     // A wrapper around a `Bool` that enables updating
     // the wrapped value during `View` renders.
-    private class ReferenceTypeBool {
+    private final class ReferenceTypeBool {
         var value: Bool
 
         init(value: Bool) {

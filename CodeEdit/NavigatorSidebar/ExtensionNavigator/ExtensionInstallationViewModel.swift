@@ -9,7 +9,7 @@ import Foundation
 import Combine
 import ExtensionsStore
 
-class ExtensionInstallationViewModel: ObservableObject {
+final class ExtensionInstallationViewModel: ObservableObject {
     var plugin: Plugin
 
     init(plugin: Plugin) {

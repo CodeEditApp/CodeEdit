@@ -15,4 +15,5 @@ public struct DownloadedPlugin: Codable, FetchableRecord, PersistableRecord, Tab
     public var plugin: UUID
     public var release: UUID
     public var loadable: Bool
+    public var sdk: Plugin.SDK
 }

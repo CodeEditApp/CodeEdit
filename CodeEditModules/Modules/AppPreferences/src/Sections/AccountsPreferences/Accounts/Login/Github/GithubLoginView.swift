@@ -7,6 +7,7 @@
 
 import SwiftUI
 import GitAccounts
+import CodeEditUtils
 
 struct GithubLoginView: View {
 
@@ -14,6 +15,8 @@ struct GithubLoginView: View {
     @State var accountToken = ""
 
     @Environment(\.openURL) var createToken
+
+    private let keychain = CodeEditKeychain()
 
     @Binding var dismissDialog: Bool
 
@@ -79,7 +82,7 @@ struct GithubLoginView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 HStack {
                     Button("Cancel") {
-                        dismissDialog = false
+                        dismissDialog.toggle()
                     }
                     if accountToken.isEmpty {
                         Button("Sign In") {}
@@ -105,7 +108,6 @@ struct GithubLoginView: View {
         GithubAccount(config).me { response in
             switch response {
             case .success(let user):
-                print(user.login as Any)
                 if gitAccounts.contains(where: { $0.id == gitAccountName.lowercased()}) {
                     print("Account with the username already exists!")
                 } else {
@@ -119,8 +121,8 @@ struct GithubLoginView: View {
                                               gitCloningProtocol: true,
                                               gitSSHKey: "",
                                               isTokenValid: true))
-
-                    dismissDialog = false
+                    keychain.set(accountToken, forKey: "github_\(accountName)")
+                    dismissDialog.toggle()
                 }
             case .failure(let error):
                 print(error)

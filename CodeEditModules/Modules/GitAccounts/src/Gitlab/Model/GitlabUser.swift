@@ -61,6 +61,7 @@ public extension GitlabAccount {
      Fetches the currently logged in user
      - parameter completion: Callback for the outcome of the fetch.
      */
+    @discardableResult
     func me(
         _ session: GitURLSession = URLSession.shared,
         completion: @escaping (_ response: Result<GitlabUser, Error>) -> Void) -> URLSessionDataTaskProtocol? {

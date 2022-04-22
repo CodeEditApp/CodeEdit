@@ -10,6 +10,7 @@ import SwiftUI
 import CodeFile
 import CodeEditUI
 import QuickOpen
+import GitClient
 
 final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
 
@@ -29,6 +30,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
         setupToolbar()
     }
 
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -69,8 +71,10 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
         let toolbar = NSToolbar(identifier: UUID().uuidString)
         toolbar.delegate = self
         toolbar.displayMode = .labelOnly
+        self.window?.titleVisibility = .hidden
         self.window?.toolbarStyle = .unifiedCompact
-        self.window?.titlebarSeparatorStyle = .automatic
+        // Set titlebar background as transparent by default in order to style the toolbar background.
+        self.window?.titlebarAppearsTransparent = true
         self.window?.toolbar = toolbar
     }
 
@@ -80,6 +84,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
         return [
             .toggleFirstSidebarItem,
             .sidebarTrackingSeparator,
+            .branchPicker,
             .flexibleSpace,
             .flexibleSpace,
             .toggleLastSidebarItem
@@ -92,10 +97,12 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
             .sidebarTrackingSeparator,
             .flexibleSpace,
             .itemListTrackingSeparator,
-            .toggleLastSidebarItem
+            .toggleLastSidebarItem,
+            .branchPicker
         ]
     }
 
+    // swiftlint:disable:next function_body_length
     func toolbar(
         _ toolbar: NSToolbar,
         itemForItemIdentifier itemIdentifier: NSToolbarItem.Identifier,
@@ -140,6 +147,12 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
             )?.withSymbolConfiguration(.init(scale: .large))
 
             return toolbarItem
+        case .branchPicker:
+            let toolbarItem = NSToolbarItem(itemIdentifier: .branchPicker)
+            let view = NSHostingView(rootView: ToolbarBranchPicker(workspace?.workspaceClient))
+            toolbarItem.view = view
+
+            return toolbarItem
         default:
             return NSToolbarItem(itemIdentifier: itemIdentifier)
         }
@@ -158,9 +171,9 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
         guard let lastSplitView = splitViewController.splitViewItems.last else { return }
         lastSplitView.animator().isCollapsed.toggle()
         if lastSplitView.animator().isCollapsed {
-            window?.toolbar?.removeItem(at: 3)
+            window?.toolbar?.removeItem(at: 4)
         } else {
-            window?.toolbar?.insertItem(withItemIdentifier: .itemListTrackingSeparator, at: 3)
+            window?.toolbar?.insertItem(withItemIdentifier: .itemListTrackingSeparator, at: 4)
         }
     }
 
@@ -207,4 +220,5 @@ private extension NSToolbarItem.Identifier {
     static let toggleFirstSidebarItem: NSToolbarItem.Identifier = NSToolbarItem.Identifier("ToggleFirstSidebarItem")
     static let toggleLastSidebarItem: NSToolbarItem.Identifier = NSToolbarItem.Identifier("ToggleLastSidebarItem")
     static let itemListTrackingSeparator = NSToolbarItem.Identifier("ItemListTrackingSeparator")
+    static let branchPicker: NSToolbarItem.Identifier = NSToolbarItem.Identifier("BranchPicker")
 }

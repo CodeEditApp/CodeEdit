@@ -9,7 +9,7 @@ import Foundation
 
 public struct GitClient {
     public var getCurrentBranchName: () throws -> String
-    public var getBranches: () throws -> [String]
+    public var getBranches: (Bool) throws -> [String]
     public var checkoutBranch: (String) throws -> Void
     public var pull: () throws -> Void
     public var cloneRepository: (String) throws -> Void
@@ -22,7 +22,7 @@ public struct GitClient {
 
     init(
         getCurrentBranchName: @escaping () throws -> String,
-        getBranches: @escaping () throws -> [String],
+        getBranches: @escaping (Bool) throws -> [String],
         checkoutBranch: @escaping (String) throws -> Void,
         pull: @escaping () throws -> Void,
         cloneRepository: @escaping (String) throws -> Void,

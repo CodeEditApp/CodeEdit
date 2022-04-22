@@ -128,7 +128,7 @@ public struct ThemePreferencesView: View {
             }
                       .padding(.vertical, 20)
         }
-        .background(EffectView(material: .contentBackground))
+        .background(EffectView(.contentBackground))
     }
 
     private var sidebarBottomToolbar: some View {

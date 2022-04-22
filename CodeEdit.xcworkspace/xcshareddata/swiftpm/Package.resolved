@@ -11,12 +11,21 @@
         }
       },
       {
+        "package": "CodeEditSymbols",
+        "repositoryURL": "https://github.com/CodeEditApp/CodeEditSymbols",
+        "state": {
+          "branch": "main",
+          "revision": "9a33d8e9899f36136b1e1e138b8101080927ae80",
+          "version": null
+        }
+      },
+      {
         "package": "GRDB",
         "repositoryURL": "https://github.com/groue/GRDB.swift.git",
         "state": {
           "branch": null,
-          "revision": "15c06e037430c8a2dc570f9199dd7bf8caa21195",
-          "version": "5.22.2"
+          "revision": "4472d3a60ec4cc383503eba5072ce17f781b9ddc",
+          "version": "5.23.0"
         }
       },
       {

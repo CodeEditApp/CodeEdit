@@ -10,6 +10,8 @@ import CodeEditUI
 
 struct SourceControlGeneralView: View {
 
+    private let inputWidth: Double = 200
+
     @State var isChecked: Bool
     @State var branchName: String
 
@@ -41,7 +43,7 @@ struct SourceControlGeneralView: View {
             }
 
             PreferencesSection("Text Editing", hideLabels: false) {
-                Toggle("Show Source Control chnages",
+                Toggle("Show Source Control changes",
                        isOn: $prefs.preferences.sourceControl.general.showSourceControlChanges)
                     .toggleStyle(.checkbox)
 
@@ -51,34 +53,44 @@ struct SourceControlGeneralView: View {
                     .padding(.leading, 20)
             }
 
-            PreferencesSection("Comparison View", hideLabels: false) {
-                Menu {
-                    Button("Comparison") {}
-                } label: {
-                    Text("Local Revision on Left Side")
-                        .font(.system(size: 11))
-                }
+            PreferencesSection("Reporting", hideLabels: false) {
+                Toggle("Open created issue in the browser",
+                       isOn: $prefs.preferences.sourceControl.general.openFeedbackInBrowser)
+                    .toggleStyle(.checkbox)
             }
 
-            PreferencesSection("Source Control Navigator", hideLabels: false) {
-                Menu {
-                    Button("Control Navigator") {}
-                } label: {
-                    Text("Sort by Name")
-                        .font(.system(size: 11))
+            PreferencesSection("Comparison View", hideLabels: true) {
+                Picker("Comparison View",
+                       selection: $prefs.preferences.sourceControl.general.revisionComparisonLayout) {
+                    Text("Local Revision on Left Side")
+                        .tag(AppPreferences.RevisionComparisonLayout.localLeft)
+                    Text("Local Revision on Right Side")
+                        .tag(AppPreferences.RevisionComparisonLayout.localRight)
                 }
+                .frame(width: inputWidth)
+            }
+
+            PreferencesSection("Source Control Navigator", hideLabels: true) {
+                Picker("Source Control Navigator",
+                       selection: $prefs.preferences.sourceControl.general.controlNavigatorOrder) {
+                    Text("Sort by Name")
+                        .tag(AppPreferences.ControlNavigatorOrder.sortByName)
+                    Text("Sort by Date")
+                        .tag(AppPreferences.ControlNavigatorOrder.sortByDate)
+                }
+                .frame(width: inputWidth)
             }
 
             PreferencesSection("Default Branch Name", hideLabels: false) {
-                TextField("Text", text: $branchName)
-                    .frame(width: 170)
+                TextField("main", text: $branchName)
+                    .frame(width: inputWidth)
                 Text("Branch names cannot contain spaces, backslashes, or other symbols")
                     .font(.system(size: 12))
                     .foregroundColor(.secondary)
             }
         }
         .frame(height: 350)
-        .background(EffectView(material: .contentBackground))
+        .background(EffectView(.contentBackground))
     }
 }
 

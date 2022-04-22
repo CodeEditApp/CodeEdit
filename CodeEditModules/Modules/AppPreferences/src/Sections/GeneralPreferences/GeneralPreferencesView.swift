@@ -10,6 +10,8 @@ import SwiftUI
 /// A view that implements the `General` preference section
 public struct GeneralPreferencesView: View {
 
+    private let inputWidth: Double = 160
+
     @StateObject
     private var prefs: AppPreferencesModel = .shared
 
@@ -30,6 +32,7 @@ public struct GeneralPreferencesView: View {
                 .onChange(of: prefs.preferences.general.appAppearance) { tag in
                     tag.applyAppearance()
                 }
+                .frame(width: inputWidth)
             }
             PreferencesSection("File Icon Style") {
                 Picker("File Icon Style:", selection: $prefs.preferences.general.fileIconStyle) {
@@ -37,6 +40,15 @@ public struct GeneralPreferencesView: View {
                         .tag(AppPreferences.FileIconStyle.color)
                     Text("Monochrome")
                         .tag(AppPreferences.FileIconStyle.monochrome)
+                }
+                .pickerStyle(.radioGroup)
+            }
+            PreferencesSection("Tab Bar Style") {
+                Picker("Tab Bar Style:", selection: $prefs.preferences.general.tabBarStyle) {
+                    Text("Xcode")
+                        .tag(AppPreferences.TabBarStyle.xcode)
+                    Text("Native")
+                        .tag(AppPreferences.TabBarStyle.native)
                 }
                 .pickerStyle(.radioGroup)
             }
@@ -50,6 +62,7 @@ public struct GeneralPreferencesView: View {
                     Text("New Document")
                         .tag(AppPreferences.ReopenBehavior.newDocument)
                 }
+                .frame(width: inputWidth)
             }
             PreferencesSection("Project Navigator Size") {
                 Picker("Project Navigator Size", selection: $prefs.preferences.general.projectNavigatorSize) {
@@ -60,6 +73,7 @@ public struct GeneralPreferencesView: View {
                     Text("Large")
                         .tag(AppPreferences.ProjectNavigatorSize.large)
                 }
+                .frame(width: inputWidth)
             }
         }
     }

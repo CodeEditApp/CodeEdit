@@ -145,7 +145,7 @@ public struct RecentProjectsView: View {
         .frame(width: 300)
         .background(
             EffectView(
-                material: NSVisualEffectView.Material.underWindowBackground,
+                NSVisualEffectView.Material.underWindowBackground,
                 blendingMode: NSVisualEffectView.BlendingMode.behindWindow
             )
         )

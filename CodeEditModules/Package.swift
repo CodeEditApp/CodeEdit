@@ -73,6 +73,14 @@ let package = Package(
             name: "Breadcrumbs",
             targets: ["Breadcrumbs"]
         ),
+        .library(
+            name: "Feedback",
+            targets: ["Feedback"]
+        ),
+        .library(
+            name: "CodeEditUtils",
+            targets: ["CodeEditUtils"]
+        ),
     ],
     dependencies: [
         .package(
@@ -109,6 +117,11 @@ let package = Package(
             url: "https://github.com/groue/GRDB.swift.git",
             from: "5.22.2"
         ),
+        .package(
+            name: "CodeEditSymbols",
+            url: "https://github.com/CodeEditApp/CodeEditSymbols",
+            branch: "main"
+        ),
     ],
     targets: [
         .target(
@@ -142,6 +155,7 @@ let package = Package(
             dependencies: [
                 "WorkspaceClient",
                 "CodeEditUI",
+                "GitClone",
                 "AppPreferences",
             ],
             path: "Modules/WelcomeModule/src",
@@ -153,6 +167,8 @@ let package = Package(
             name: "WelcomeModuleTests",
             dependencies: [
                 "WelcomeModule",
+                "GitClone",
+                "ShellClient",
                 "SnapshotTesting",
             ],
             path: "Modules/WelcomeModule/Tests"
@@ -163,6 +179,8 @@ let package = Package(
                 "GitClient",
                 "TerminalEmulator",
                 "CodeFile",
+                "CodeEditUI",
+                "CodeEditSymbols",
             ],
             path: "Modules/StatusBar/src"
         ),
@@ -213,7 +231,9 @@ let package = Package(
             dependencies: [
                 "Preferences",
                 "CodeEditUI",
-                "GitAccounts"
+                "GitAccounts",
+                "CodeEditUtils",
+                "CodeEditSymbols",
             ],
             path: "Modules/AppPreferences/src"
         ),
@@ -236,14 +256,30 @@ let package = Package(
         ),
         .target(
             name: "CodeEditUI",
+            dependencies: [
+                "CodeEditSymbols",
+                "WorkspaceClient",
+                "GitClient"
+            ],
             path: "Modules/CodeEditUI/src"
+        ),
+        .testTarget(
+            name: "CodeEditUITests",
+            dependencies: [
+                "CodeEditUI",
+                "WorkspaceClient",
+                "GitClient",
+                "SnapshotTesting",
+            ],
+            path: "Modules/CodeEditUI/Tests"
         ),
         .target(
             name: "ExtensionsStore",
             dependencies: [
                 "CodeEditKit",
                 "Light-Swift-Untar",
-                .productItem(name: "GRDB", package: "GRDB.swift", condition: nil)
+                .productItem(name: "GRDB", package: "GRDB.swift", condition: nil),
+                "LSP"
             ],
             path: "Modules/ExtensionsStore/src"
         ),
@@ -254,6 +290,26 @@ let package = Package(
                 "AppPreferences",
             ],
             path: "Modules/Breadcrumbs/src"
+        ),
+        .target(
+            name: "Feedback",
+            dependencies: [
+                "GitAccounts",
+                "CodeEditUI",
+                "AppPreferences",
+                "CodeEditUtils",
+            ],
+            path: "Modules/Feedback/src"
+        ),
+        .target(
+            name: "LSP",
+            path: "Modules/LSP/src"
+
+        ),
+        .target(
+            name: "CodeEditUtils",
+            path: "Modules/CodeEditUtils/src"
+
         ),
     ]
 )

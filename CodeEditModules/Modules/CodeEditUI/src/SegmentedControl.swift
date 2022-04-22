@@ -10,22 +10,31 @@ import SwiftUI
 /// A view that creates a segmented control from an array of text labels.
 public struct SegmentedControl: View {
 
+    @Environment(\.colorScheme)
+    private var colorScheme
+
     /// A view that creates a segmented control from an array of text labels.
     /// - Parameters:
     ///   - selection: The index of the current selected item.
     ///   - options: the options to display as an array of strings.
-
-    @Environment(\.colorScheme)
-    var colorScheme
-
-    public init(_ selection: Binding<Int>, options: [String]) {
+    ///   - color: The color of the selected item. Defaults to `NSColor.selectedControlColor`
+    public init(
+        _ selection: Binding<Int>,
+        options: [String],
+        color: Color = Color(nsColor: .selectedControlColor)
+    ) {
         self._preselectedIndex = selection
         self.options = options
+        self.color = color
     }
 
-    @Binding var preselectedIndex: Int
-    var options: [String]
-    let color = Color(nsColor: .selectedControlColor)
+    @Binding
+    private var preselectedIndex: Int
+
+    private var options: [String]
+
+    private let color: Color
+
     public var body: some View {
         HStack(spacing: 0) {
             ForEach(options.indices, id: \.self) { index in
@@ -50,5 +59,12 @@ public struct SegmentedControl: View {
             }
         }
         .frame(height: 20)
+    }
+}
+
+struct SegmentedControl_Previews: PreviewProvider {
+    static var previews: some View {
+        SegmentedControl(.constant(0), options: ["Tab 1", "Tab 2"])
+            .padding()
     }
 }

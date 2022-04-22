@@ -8,7 +8,7 @@
 import Foundation
 import CodeEditKit
 
-class CodeEditTargetsAPI: TargetsAPI {
+final class CodeEditTargetsAPI: TargetsAPI {
 
     var workspace: WorkspaceDocument
 

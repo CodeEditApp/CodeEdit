@@ -17,6 +17,10 @@ public extension AppPreferences {
         /// The font to use in editor.
         public var font: EditorFont = .init()
 
+        public var enableTypeOverCompletion: Bool = true
+
+        public var autocompleteBraces: Bool = true
+
         /// Default initializer
         public init() {}
 
@@ -25,6 +29,10 @@ public extension AppPreferences {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.defaultTabWidth = try container.decodeIfPresent(Int.self, forKey: .defaultTabWidth) ?? 4
             self.font = try container.decodeIfPresent(EditorFont.self, forKey: .font) ?? .init()
+            self.enableTypeOverCompletion = try container.decodeIfPresent(
+                Bool.self, forKey: .enableTypeOverCompletion) ?? true
+            self.autocompleteBraces = try container.decodeIfPresent(Bool.self,
+                                                                    forKey: .autocompleteBraces) ?? true
         }
     }
 
@@ -36,7 +44,7 @@ public extension AppPreferences {
         public var size: Int = 11
 
         /// The name of the custom font
-        public var name: String = "SF-MonoMedium"
+        public var name: String = "SFMono-Medium"
 
         /// Default initializer
         public init() {}
@@ -46,7 +54,7 @@ public extension AppPreferences {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.customFont = try container.decodeIfPresent(Bool.self, forKey: .customFont) ?? false
             self.size = try container.decodeIfPresent(Int.self, forKey: .size) ?? 11
-            self.name = try container.decodeIfPresent(String.self, forKey: .name) ?? "SF-MonoMedium"
+            self.name = try container.decodeIfPresent(String.self, forKey: .name) ?? "SFMono-Medium"
         }
     }
 }

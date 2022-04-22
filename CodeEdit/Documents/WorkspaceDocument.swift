@@ -15,9 +15,10 @@ import Search
 import QuickOpen
 import CodeEditKit
 import ExtensionsStore
+import StatusBar
 
 @objc(WorkspaceDocument)
-class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
+final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var workspaceClient: WorkspaceClient?
 
     var extensionNavigatorData = ExtensionNavigatorData()
@@ -25,6 +26,7 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     @Published var sortFoldersOnTop: Bool = true
     @Published var selectionState: WorkspaceSelectionState = .init()
 
+    var statusBarModel: StatusBarModel?
     var searchState: SearchState?
     var quickOpenState: QuickOpenState?
     private var cancellables = Set<AnyCancellable>()
@@ -124,7 +126,7 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         self.addWindowController(windowController)
     }
 
-    override func read(from url: URL, ofType typeName: String) throws {
+    private func initWorkspaceState(_ url: URL) throws {
         self.workspaceClient = try .default(
             fileManager: .default,
             folderURL: url,
@@ -132,6 +134,11 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         )
         self.searchState = .init(self)
         self.quickOpenState = .init(fileURL: url)
+        self.statusBarModel = .init(workspaceURL: url)
+    }
+
+    override func read(from url: URL, ofType typeName: String) throws {
+        try initWorkspaceState(url)
 
         // Initialize Workspace
         do {
@@ -236,7 +243,7 @@ class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
 // MARK: - Search
 
 extension WorkspaceDocument {
-    class SearchState: ObservableObject {
+    final class SearchState: ObservableObject {
         var workspace: WorkspaceDocument
         @Published var searchResult: [SearchResultModel] = []
 
