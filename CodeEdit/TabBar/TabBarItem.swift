@@ -237,7 +237,7 @@ struct TabBarItem: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
             .opacity(
-                activeState != ControlActiveState.inactive
+                activeState != .inactive
                 ? 1.0
                 : (isActive ? 0.6 : 0.4)
             )
@@ -291,8 +291,8 @@ struct TabBarItem: View {
                 Color(nsColor: isActive ? .selectedControlColor : .clear)
                     .opacity(
                         colorScheme == .dark
-                        ? (activeState != ControlActiveState.inactive ? 0.70 : 0.50)
-                        : (activeState != ControlActiveState.inactive ? 0.50 : 0.35)
+                        ? (activeState != .inactive ? 0.70 : 0.50)
+                        : (activeState != .inactive ? 0.50 : 0.35)
                     )
                     .background(
                         // This layer of background is to hide dividers of other tab bar items

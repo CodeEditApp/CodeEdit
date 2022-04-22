@@ -50,7 +50,7 @@ struct TabBar: View {
                 .buttonStyle(.plain)
             }
             .padding(.horizontal, 11)
-            .opacity(activeState != ControlActiveState.inactive ? 1.0 : 0.5)
+            .opacity(activeState != .inactive ? 1.0 : 0.5)
             // Tab bar items.
             ScrollView(.horizontal, showsIndicators: false) {
                 ScrollViewReader { value in
