@@ -28,7 +28,7 @@ struct WorkspaceCodeFileView: View {
                     .safeAreaInset(edge: .top, spacing: 0) {
                         VStack(spacing: 0) {
                             TabBar(windowController: windowController, workspace: workspace)
-                            Divider()
+                            TabBarBottomDivider()
                             BreadcrumbsView(file: item, tappedOpenFile: workspace.openFile(item:))
                         }
                     }
