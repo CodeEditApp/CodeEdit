@@ -34,15 +34,13 @@ struct TabDivider: View {
     }
 }
 
-/// The top border for inactive tabs when native-styled tab bar is selected.
-struct NativeTabShadow: View {
+/// The top border for tab bar (between tab bar and titlebar).
+struct TabBarTopDivider: View {
     @Environment(\.colorScheme)
     var colorScheme
 
     @StateObject
     private var prefs: AppPreferencesModel = .shared
-
-    let height: CGFloat = 1
 
     var body: some View {
         Rectangle()
@@ -50,11 +48,33 @@ struct NativeTabShadow: View {
                 Color(nsColor: .black)
                     .opacity(
                         prefs.preferences.general.tabBarStyle == .xcode
-                        ? (colorScheme == .dark ? 0.28 : 0.12)
-                        : (colorScheme == .dark ? 0.40 : 0.15)
+                        ? (colorScheme == .dark ? 0.29 : 0.11)
+                        : (colorScheme == .dark ? 0.80 : 0.15)
                     )
             )
-            .frame(height: height)
+            .frame(height: prefs.preferences.general.tabBarStyle == .xcode ? 1.0 : 0.8)
+    }
+}
+
+/// The bottom border for tab bar (between tab bar and breadcrumbs).
+struct TabBarBottomDivider: View {
+    @Environment(\.colorScheme)
+    var colorScheme
+
+    @StateObject
+    private var prefs: AppPreferencesModel = .shared
+
+    var body: some View {
+        Rectangle()
+            .foregroundColor(
+                prefs.preferences.general.tabBarStyle == .xcode
+                ? Color(nsColor: .separatorColor)
+                    .opacity(colorScheme == .dark ? 0.40 : 0.45)
+                : Color(nsColor: .black)
+                    .opacity(colorScheme == .dark ? 0.65 : 0.09)
+
+            )
+            .frame(height: prefs.preferences.general.tabBarStyle == .xcode ? 1.0 : 0.8)
     }
 }
 
@@ -194,7 +214,7 @@ struct TabBarItem: View {
             .overlay {
                 // Only show NativeTabShadow when `tabBarStyle` is native and this tab is not active.
                 if prefs.preferences.general.tabBarStyle == .native && !isActive {
-                    NativeTabShadow()
+                    TabBarTopDivider()
                         .frame(maxHeight: .infinity, alignment: .top)
                 }
             }
@@ -275,10 +295,17 @@ struct TabBarItem: View {
                 .overlay {
                     if !isActive {
                         ZStack {
+                            // Native inactive tab background dim.
                             Color(nsColor: .black)
                                 .opacity(colorScheme == .dark ? 0.50 : 0.05)
+
+                            // Native inactive tab hover state.
                             Color(nsColor: colorScheme == .dark ? .white : .black)
-                                .opacity(isHovering ? 0.05 : 0.0)
+                                .opacity(
+                                    isHovering
+                                    ? (colorScheme == .dark ? 0.08 : 0.05)
+                                    : 0.0
+                                )
                                 .animation(.easeInOut(duration: 0.10), value: isHovering)
                         }
                         .padding(.top, colorScheme == .dark ? 0 : 1)
