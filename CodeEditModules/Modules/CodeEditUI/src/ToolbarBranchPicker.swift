@@ -43,10 +43,17 @@ public struct ToolbarBranchPicker: View {
 
     public var body: some View {
         HStack(alignment: .center, spacing: 5) {
-            Image.checkout
-                .font(.title3)
-                .imageScale(.large)
-                .foregroundColor(controlActive == .inactive ? inactiveColor : .primary)
+            if currentBranch != nil {
+                Image.checkout
+                    .font(.title3)
+                    .imageScale(.large)
+                    .foregroundColor(controlActive == .inactive ? inactiveColor : .primary)
+            } else {
+                Image(systemName: "square.dashed.inset.filled")
+                    .font(.title3)
+                    .imageScale(.medium)
+                    .foregroundColor(controlActive == .inactive ? inactiveColor : .accentColor)
+            }
             VStack(alignment: .leading, spacing: 2) {
                 Text(title)
                     .font(.headline)
@@ -78,6 +85,9 @@ public struct ToolbarBranchPicker: View {
         }
         .popover(isPresented: $displayPopover, arrowEdge: .bottom) {
             PopoverView(gitClient: gitClient, currentBranch: $currentBranch)
+        }
+        .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { (_) in
+            currentBranch = try? gitClient?.getCurrentBranchName()
         }
     }
 
