@@ -20,28 +20,14 @@ struct FindNavigatorModeSelector: View {
         return index == 0 ? SearchModeModel.SearchModes : selectedMode[index - 1].children
     }
 
-    // TODO: improve this function and remove swiftlint comment
-    // swiftlint:disable:next cyclomatic_complexity
     private func onSelectMenuItem(_ index: Int, searchMode: SearchModeModel) {
         var newSelectedMode: [SearchModeModel] = []
+
         switch index {
         case 0:
-            newSelectedMode.append(searchMode)
-            if let secondMode = searchMode.children.first {
-                if let selectedSecondMode = selectedMode.second, searchMode.children.contains(selectedSecondMode) {
-                    newSelectedMode.append(contentsOf: selectedMode.dropFirst())
-                } else {
-                    newSelectedMode.append(secondMode)
-                    if let thirdMode = secondMode.children.first, let selectedThirdMode = selectedMode.third {
-                        if secondMode.children.contains(selectedThirdMode) {
-                            newSelectedMode.append(selectedThirdMode)
-                        } else {
-                            newSelectedMode.append(thirdMode)
-                        }
-                    }
-                }
-            }
-            self.selectedMode = newSelectedMode
+                newSelectedMode.append(searchMode)
+                self.updateSelectedMode(searchMode, searchModel: &newSelectedMode)
+                self.selectedMode = newSelectedMode
         case 1:
             if let firstMode = selectedMode.first {
                 newSelectedMode.append(contentsOf: [firstMode, searchMode])
@@ -61,6 +47,23 @@ struct FindNavigatorModeSelector: View {
             self.selectedMode = newSelectedMode
         default:
             return
+        }
+    }
+
+    private func updateSelectedMode(_ searchMode: SearchModeModel, searchModel: inout [SearchModeModel]) {
+        if let secondMode = searchMode.children.first {
+            if let selectedSecondMode = selectedMode.second, searchMode.children.contains(selectedSecondMode) {
+                searchModel.append(contentsOf: selectedMode.dropFirst())
+            } else {
+                searchModel.append(secondMode)
+                if let thirdMode = secondMode.children.first, let selectedThirdMode = selectedMode.third {
+                    if secondMode.children.contains(selectedThirdMode) {
+                        searchModel.append(selectedThirdMode)
+                    } else {
+                        searchModel.append(thirdMode)
+                    }
+                }
+            }
         }
     }
 
