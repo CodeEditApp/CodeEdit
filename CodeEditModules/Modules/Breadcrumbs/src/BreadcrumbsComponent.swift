@@ -42,23 +42,21 @@ public struct BreadcrumbsComponent: View {
     }
 
     public var body: some View {
-        HStack(alignment: .center) {
-            HStack {
-                Image(systemName: image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 12)
-                    .foregroundStyle(
-                        prefs.preferences.general.fileIconStyle == .color
-                        ? color
-                        : .secondary
-                    )
-                    .opacity(activeState != .inactive ? 1.0 : 0.4)
-            }
+        HStack(alignment: .center, spacing: 5) {
+            Image(systemName: image)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 12)
+                .foregroundStyle(
+                    prefs.preferences.general.fileIconStyle == .color
+                    ? color
+                    : .secondary
+                )
+                .opacity(activeState != .inactive ? 1.0 : 0.4)
             Text(fileItem.fileName)
                 .foregroundStyle(.primary)
                 .font(.system(size: 11))
-                .opacity(activeState != .inactive ? 1.0 : 0.25)
+                .opacity(activeState != .inactive ? 1.0 : 0.2)
         }
         /// Get location in window
         .background(GeometryReader { (proxy: GeometryProxy) -> Color in

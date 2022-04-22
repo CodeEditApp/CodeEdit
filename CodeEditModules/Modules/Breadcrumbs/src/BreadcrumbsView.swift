@@ -30,17 +30,18 @@ public struct BreadcrumbsView: View {
 
     public var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 4) {
+            HStack(spacing: 1) {
                 ForEach(fileItems, id: \.self) { fileItem in
                     if fileItem.parent != nil {
                         chevron
                     }
                     BreadcrumbsComponent(fileItem: fileItem, tappedOpenFile: tappedOpenFile)
+                        .padding(.leading, 2)
                 }
             }
-            .padding(.horizontal, 12)
+            .padding(.horizontal, 11)
         }
-        .frame(height: 29)
+        .frame(height: 29, alignment: .center)
         .background(Color(nsColor: .controlBackgroundColor))
         .overlay(alignment: .bottom) {
             Divider()
