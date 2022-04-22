@@ -9,7 +9,12 @@ import SwiftUI
 import WorkspaceClient
 
 public struct BreadcrumbsView: View {
-    @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.colorScheme)
+    private var colorScheme
+
+    @Environment(\.controlActiveState)
+    private var activeState
+
     @State private var fileItems: [WorkspaceClient.FileItem] = []
 
     private let file: WorkspaceClient.FileItem
@@ -24,22 +29,19 @@ public struct BreadcrumbsView: View {
     }
 
     public var body: some View {
-        ZStack(alignment: .leading) {
-            Rectangle()
-                .foregroundStyle(Color(nsColor: .controlBackgroundColor))
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack {
-                    ForEach(fileItems, id: \.self) { fileItem in
-                        if fileItem.parent != nil {
-                            chevron
-                        }
-                        BreadcrumbsComponent(fileItem: fileItem, tappedOpenFile: tappedOpenFile)
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 4) {
+                ForEach(fileItems, id: \.self) { fileItem in
+                    if fileItem.parent != nil {
+                        chevron
                     }
+                    BreadcrumbsComponent(fileItem: fileItem, tappedOpenFile: tappedOpenFile)
                 }
-                .padding(.horizontal, 12)
             }
+            .padding(.horizontal, 12)
         }
         .frame(height: 29)
+        .background(Color(nsColor: .controlBackgroundColor))
         .overlay(alignment: .bottom) {
             Divider()
         }
@@ -53,8 +55,11 @@ public struct BreadcrumbsView: View {
 
     private var chevron: some View {
         Image(systemName: "chevron.compact.right")
-            .foregroundStyle(.secondary)
+            .font(.system(size: 15, weight: .thin, design: .default))
+            .foregroundStyle(.primary)
+            .scaleEffect(x: 1.25, y: 1.0, anchor: .center)
             .imageScale(.large)
+            .opacity(activeState != .inactive ? 0.8 : 0.5)
     }
 
     private func fileInfo(_ file: WorkspaceClient.FileItem) {

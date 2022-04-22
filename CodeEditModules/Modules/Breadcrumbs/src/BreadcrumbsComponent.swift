@@ -10,6 +10,9 @@ import SwiftUI
 import WorkspaceClient
 
 public struct BreadcrumbsComponent: View {
+    @Environment(\.controlActiveState)
+    private var activeState
+
     @StateObject private var prefs: AppPreferencesModel = .shared
     @State var position: NSPoint?
     private let fileItem: WorkspaceClient.FileItem
@@ -45,11 +48,17 @@ public struct BreadcrumbsComponent: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 12)
-                    .foregroundStyle(prefs.preferences.general.fileIconStyle == .color ? color : .secondary)
+                    .foregroundStyle(
+                        prefs.preferences.general.fileIconStyle == .color
+                        ? color
+                        : .secondary
+                    )
+                    .opacity(activeState != .inactive ? 1.0 : 0.4)
             }
             Text(fileItem.fileName)
                 .foregroundStyle(.primary)
                 .font(.system(size: 11))
+                .opacity(activeState != .inactive ? 1.0 : 0.25)
         }
         /// Get location in window
         .background(GeometryReader { (proxy: GeometryProxy) -> Color in
