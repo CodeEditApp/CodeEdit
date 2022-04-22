@@ -181,11 +181,9 @@ public struct ToolbarBranchPicker: View {
                 .padding(.horizontal)
                 .padding(.vertical, 10)
                 .background(
-                    RoundedRectangle(cornerRadius: 4)
-                        .foregroundColor(
-                            isHovering ? Color(nsColor: .selectedContentBackgroundColor).opacity(0.8) : .clear
-                        )
+                    EffectView.selectionBackground(isHovering)
                 )
+                .clipShape(RoundedRectangle(cornerRadius: 4))
                 .onHover { active in
                     isHovering = active
                 }

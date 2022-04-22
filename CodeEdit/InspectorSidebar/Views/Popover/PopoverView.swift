@@ -67,7 +67,7 @@ struct PopoverView: View {
             .padding(.horizontal, 6)
         }
         .padding(.top)
-        .padding(.bottom, 10)
+        .padding(.bottom, 5)
         .frame(width: 310)
     }
 
@@ -109,9 +109,9 @@ struct PopoverView: View {
             .padding(.horizontal, 10)
             .padding(.vertical, 3)
             .background(
-                isHovering && isEnabled ? Color(nsColor: .selectedContentBackgroundColor) : .clear
+                EffectView.selectionBackground(isHovering && isEnabled)
             )
-            .clipShape(RoundedRectangle(cornerRadius: 3))
+            .clipShape(RoundedRectangle(cornerRadius: 4))
             .onHover { hovering in
                 isHovering = hovering
             }
