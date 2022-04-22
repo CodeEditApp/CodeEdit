@@ -30,13 +30,13 @@ public struct BreadcrumbsView: View {
 
     public var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 1) {
+            HStack(spacing: 1.5) {
                 ForEach(fileItems, id: \.self) { fileItem in
                     if fileItem.parent != nil {
                         chevron
                     }
                     BreadcrumbsComponent(fileItem: fileItem, tappedOpenFile: tappedOpenFile)
-                        .padding(.leading, 2)
+                        .padding(.leading, 2.5)
                 }
             }
             .padding(.horizontal, 11)
@@ -56,9 +56,9 @@ public struct BreadcrumbsView: View {
 
     private var chevron: some View {
         Image(systemName: "chevron.compact.right")
-            .font(.system(size: 15, weight: .thin, design: .default))
+            .font(.system(size: 14, weight: .thin, design: .default))
             .foregroundStyle(.primary)
-            .scaleEffect(x: 1.25, y: 1.0, anchor: .center)
+            .scaleEffect(x: 1.30, y: 1.0, anchor: .center)
             .imageScale(.large)
             .opacity(activeState != .inactive ? 0.8 : 0.5)
     }
