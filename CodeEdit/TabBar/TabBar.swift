@@ -14,6 +14,9 @@ struct TabBar: View {
     @Environment(\.colorScheme)
     var colorScheme
 
+    @Environment(\.controlActiveState)
+    private var activeState
+
     var windowController: NSWindowController
 
     @ObservedObject
@@ -47,6 +50,7 @@ struct TabBar: View {
                 .buttonStyle(.plain)
             }
             .padding(.horizontal, 11)
+            .opacity(activeState != ControlActiveState.inactive ? 1.0 : 0.5)
             // Tab bar items.
             ScrollView(.horizontal, showsIndicators: false) {
                 ScrollViewReader { value in

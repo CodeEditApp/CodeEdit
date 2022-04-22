@@ -82,6 +82,9 @@ struct TabBarItem: View {
     @Environment(\.colorScheme)
     var colorScheme
 
+    @Environment(\.controlActiveState)
+    private var activeState
+
     @StateObject
     private var prefs: AppPreferencesModel = .shared
 
@@ -132,7 +135,9 @@ struct TabBarItem: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .foregroundColor(
-                        prefs.preferences.general.fileIconStyle == .color ? item.iconColor : .secondary
+                        prefs.preferences.general.fileIconStyle == .color && activeState != .inactive
+                        ? item.iconColor
+                        : .secondary
                     )
                     .frame(width: 12, height: 12)
                 Text(item.url.lastPathComponent)
@@ -231,6 +236,11 @@ struct TabBarItem: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
+            .opacity(
+                activeState != ControlActiveState.inactive
+                ? 1.0
+                : (isActive ? 0.6 : 0.4)
+            )
             .overlay {
                 // Only show NativeTabShadow when `tabBarStyle` is native and this tab is not active.
                 if prefs.preferences.general.tabBarStyle == .native && !isActive {
@@ -279,7 +289,11 @@ struct TabBarItem: View {
         .background {
             if prefs.preferences.general.tabBarStyle == .xcode {
                 Color(nsColor: isActive ? .selectedControlColor : .clear)
-                    .opacity(colorScheme == .dark ? 0.70 : 0.50)
+                    .opacity(
+                        colorScheme == .dark
+                        ? (activeState != ControlActiveState.inactive ? 0.70 : 0.50)
+                        : (activeState != ControlActiveState.inactive ? 0.50 : 0.35)
+                    )
                     .background(
                         // This layer of background is to hide dividers of other tab bar items
                         // because the original background above is translucent (by opacity).
