@@ -70,14 +70,7 @@ struct TabBar: View {
         .overlay {
             // When tab bar style is `xcode`, we put the top divider as an overlay.
             if prefs.preferences.general.tabBarStyle == .xcode {
-                NativeTabShadow()
-                    .frame(height: tabBarHeight, alignment: .top)
-            }
-        }
-        .background {
-            // When tab bar style is `native`, we put the top divider beneath tabs.
-            if prefs.preferences.general.tabBarStyle == .native {
-                NativeTabShadow()
+                TabBarTopDivider()
                     .frame(height: tabBarHeight, alignment: .top)
             }
         }
@@ -85,10 +78,15 @@ struct TabBar: View {
             if prefs.preferences.general.tabBarStyle == .xcode {
                 Color(nsColor: .controlBackgroundColor)
             } else {
-                Color(nsColor: .black)
-                    .opacity(colorScheme == .dark ? 0.50 : 0.05)
-                    // Set padding top to 1 to avoid color-overlapping.
-                    .padding(.top, 1)
+                ZStack {
+                    Color(nsColor: .black)
+                        .opacity(colorScheme == .dark ? 0.50 : 0.05)
+                        // Set padding top to 1 to avoid color-overlapping.
+                        .padding(.top, 1)
+                    // When tab bar style is `native`, we put the top divider beneath tabs.
+                    TabBarTopDivider()
+                        .frame(height: tabBarHeight, alignment: .top)
+                }
             }
         }
         .background {
