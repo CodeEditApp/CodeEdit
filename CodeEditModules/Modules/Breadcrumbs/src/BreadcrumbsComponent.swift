@@ -10,6 +10,9 @@ import SwiftUI
 import WorkspaceClient
 
 public struct BreadcrumbsComponent: View {
+    @Environment(\.colorScheme)
+    var colorScheme
+
     @Environment(\.controlActiveState)
     private var activeState
 
@@ -36,9 +39,11 @@ public struct BreadcrumbsComponent: View {
     private var color: Color {
         fileItem.parent == nil
         ? .accentColor
-        : fileItem.children?.isEmpty ?? true
-        ? fileItem.iconColor
-        : .secondary
+        : (
+            fileItem.isFolder
+            ? Color(hex: colorScheme == .dark ? "#61b6df" :"#27b9ff")
+            : fileItem.iconColor
+        )
     }
 
     public var body: some View {
