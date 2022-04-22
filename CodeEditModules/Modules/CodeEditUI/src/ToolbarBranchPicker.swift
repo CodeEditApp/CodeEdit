@@ -13,6 +13,9 @@ import GitClient
 /// A view that pops up a branch picker.
 public struct ToolbarBranchPicker: View {
 
+    @Environment(\.controlActiveState)
+    private var controlActive
+
     private var workspace: WorkspaceClient?
 
     private var gitClient: GitClient?
@@ -39,13 +42,15 @@ public struct ToolbarBranchPicker: View {
     private var displayPopover: Bool = false
 
     public var body: some View {
-        HStack(alignment: .center) {
+        HStack(alignment: .center, spacing: 5) {
             Image.checkout
+                .font(.title3)
                 .imageScale(.large)
-            VStack(alignment: .leading, spacing: 0) {
+                .foregroundColor(controlActive == .inactive ? inactiveColor : .primary)
+            VStack(alignment: .leading, spacing: 2) {
                 Text(title)
                     .font(.headline)
-                    .foregroundColor(.primary)
+                    .foregroundColor(controlActive == .inactive ? inactiveColor : .primary)
                     .frame(height: 16)
                     .help(title)
                 if let currentBranch = currentBranch {
@@ -57,14 +62,16 @@ public struct ToolbarBranchPicker: View {
                         }
                     }
                     .font(.subheadline)
-                    .foregroundColor(.secondary)
+                    .foregroundColor(controlActive == .inactive ? inactiveColor : .secondary)
                     .frame(height: 11)
                 }
             }
         }
         .contentShape(Rectangle())
         .onTapGesture {
-            displayPopover.toggle()
+            if currentBranch != nil {
+                displayPopover.toggle()
+            }
         }
         .onHover { active in
             isHovering = active
@@ -72,6 +79,10 @@ public struct ToolbarBranchPicker: View {
         .popover(isPresented: $displayPopover, arrowEdge: .bottom) {
             PopoverView(gitClient: gitClient, currentBranch: $currentBranch)
         }
+    }
+
+    private var inactiveColor: Color {
+        Color(nsColor: .disabledControlTextColor)
     }
 
     private var title: String {
@@ -109,6 +120,7 @@ public struct ToolbarBranchPicker: View {
                     }
                 }
             }
+            .padding(.top, 10)
             .padding(5)
             .frame(width: 340)
         }
@@ -171,7 +183,7 @@ public struct ToolbarBranchPicker: View {
         }
 
         var branchNames: [String] {
-            (try? gitClient?.getBranches(false)) ?? []
+            ((try? gitClient?.getBranches(false)) ?? []).filter { $0 != currentBranch }
         }
     }
 }
