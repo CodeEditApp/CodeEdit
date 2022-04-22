@@ -16,9 +16,6 @@ public struct ToolbarBranchPicker: View {
     @Environment(\.controlActiveState)
     private var controlActive
 
-    @Environment(\.scenePhase)
-    private var scenePhase
-
     private var workspace: WorkspaceClient?
 
     private var gitClient: GitClient?
@@ -82,10 +79,9 @@ public struct ToolbarBranchPicker: View {
         .popover(isPresented: $displayPopover, arrowEdge: .bottom) {
             PopoverView(gitClient: gitClient, currentBranch: $currentBranch)
         }
-        .onChange(of: scenePhase) { _ in
+        .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { (_) in
             currentBranch = try? gitClient?.getCurrentBranchName()
         }
-
     }
 
     private var inactiveColor: Color {
