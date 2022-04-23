@@ -10,6 +10,12 @@ import SwiftUI
 import WorkspaceClient
 
 public struct BreadcrumbsComponent: View {
+    @Environment(\.colorScheme)
+    var colorScheme
+
+    @Environment(\.controlActiveState)
+    private var activeState
+
     @StateObject private var prefs: AppPreferencesModel = .shared
     @State var position: NSPoint?
     private let fileItem: WorkspaceClient.FileItem
@@ -33,23 +39,29 @@ public struct BreadcrumbsComponent: View {
     private var color: Color {
         fileItem.parent == nil
         ? .accentColor
-        : fileItem.children?.isEmpty ?? true
-        ? fileItem.iconColor
-        : .secondary
+        : (
+            fileItem.isFolder
+            ? Color(hex: colorScheme == .dark ? "#61b6df" :"#27b9ff")
+            : fileItem.iconColor
+        )
     }
 
     public var body: some View {
-        HStack(alignment: .center) {
-            HStack {
-                Image(systemName: image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 12)
-                    .foregroundStyle(prefs.preferences.general.fileIconStyle == .color ? color : .secondary)
-            }
+        HStack(alignment: .center, spacing: 5) {
+            Image(systemName: image)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 12)
+                .foregroundStyle(
+                    prefs.preferences.general.fileIconStyle == .color
+                    ? color
+                    : .secondary
+                )
+                .opacity(activeState != .inactive ? 1.0 : 0.4)
             Text(fileItem.fileName)
                 .foregroundStyle(.primary)
                 .font(.system(size: 11))
+                .opacity(activeState != .inactive ? 1.0 : 0.2)
         }
         /// Get location in window
         .background(GeometryReader { (proxy: GeometryProxy) -> Color in

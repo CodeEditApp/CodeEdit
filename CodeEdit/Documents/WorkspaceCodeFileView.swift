@@ -30,6 +30,7 @@ struct WorkspaceCodeFileView: View {
                             TabBar(windowController: windowController, workspace: workspace)
                             TabBarBottomDivider()
                             BreadcrumbsView(file: item, tappedOpenFile: workspace.openFile(item:))
+                            Divider()
                         }
                     }
             } else {
