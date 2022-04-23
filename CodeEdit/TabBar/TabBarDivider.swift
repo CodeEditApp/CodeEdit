@@ -47,11 +47,13 @@ struct TabBarTopDivider: View {
                 .opacity(
                     prefs.preferences.general.tabBarStyle == .xcode
                     ? (colorScheme == .dark ? 0.29 : 0.11)
-                    : (colorScheme == .dark ? 0.80 : 0.01)
+                    : (colorScheme == .dark ? 0.80 : 0.02)
                 )
                 .frame(height: prefs.preferences.general.tabBarStyle == .xcode ? 1.0 : 0.8)
-            TabBarNativeShadow()
-//                .padding(.top, 0.7)
+            // Shadow of top divider in native style.
+            if prefs.preferences.general.tabBarStyle == .native {
+                TabBarNativeShadow()
+            }
         }
     }
 }
@@ -78,8 +80,12 @@ struct TabBarBottomDivider: View {
     }
 }
 
+/// The divider shadow for native tab bar style.
+///
+/// This is generally used in the top divider of tab bar when tab bar style is set to `native`.
 struct TabBarNativeShadow: View {
     let shadowColor = Color(nsColor: .shadowColor)
+
     var body: some View {
         LinearGradient(
             colors: [
