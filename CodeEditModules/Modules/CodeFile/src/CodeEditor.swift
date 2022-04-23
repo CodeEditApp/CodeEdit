@@ -69,7 +69,6 @@ struct CodeEditor: NSViewRepresentable {
         scrollView.verticalRulerView = LineGutter(
             scrollView: scrollView,
             width: 37,
-            // font: NSFont(name: "SF Mono", size: 11) ?? .monospacedSystemFont(ofSize: 11, weight: .regular),
             font: lineGutterFont,
             textColor: .tertiaryLabelColor,
             backgroundColor: .clear
