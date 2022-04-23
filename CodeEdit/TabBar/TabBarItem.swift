@@ -169,9 +169,14 @@ struct TabBarItem: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
             .opacity(
+                // Inactive states for tab bar item content.
                 activeState != .inactive
                 ? 1.0
-                : (isActive ? 0.6 : 0.4)
+                : (
+                    isActive
+                    ? (prefs.preferences.general.tabBarStyle == .xcode ? 0.6 : 0.35)
+                    : (prefs.preferences.general.tabBarStyle == .xcode ? 0.4 : 0.55)
+                )
             )
             TabDivider()
                 .opacity(
