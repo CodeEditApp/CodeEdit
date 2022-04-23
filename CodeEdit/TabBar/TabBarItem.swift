@@ -10,74 +10,6 @@ import WorkspaceClient
 import AppPreferences
 import CodeEditUI
 
-/// The vertical divider between tab bar items.
-struct TabDivider: View {
-    @Environment(\.colorScheme)
-    var colorScheme
-
-    @StateObject
-    private var prefs: AppPreferencesModel = .shared
-
-    let width: CGFloat = 1
-
-    var body: some View {
-        Rectangle()
-            .frame(width: width)
-            .padding(.vertical, prefs.preferences.general.tabBarStyle == .xcode ? 8 : 0)
-            .foregroundColor(
-                prefs.preferences.general.tabBarStyle == .xcode
-                ? Color(nsColor: colorScheme == .dark ? .white : .black)
-                    .opacity(0.12)
-                : Color(nsColor: colorScheme == .dark ? .white : .black)
-                    .opacity(colorScheme == .dark ? 0.08 : 0.12)
-            )
-    }
-}
-
-/// The top border for tab bar (between tab bar and titlebar).
-struct TabBarTopDivider: View {
-    @Environment(\.colorScheme)
-    var colorScheme
-
-    @StateObject
-    private var prefs: AppPreferencesModel = .shared
-
-    var body: some View {
-        Rectangle()
-            .foregroundColor(
-                Color(nsColor: .black)
-                    .opacity(
-                        prefs.preferences.general.tabBarStyle == .xcode
-                        ? (colorScheme == .dark ? 0.29 : 0.11)
-                        : (colorScheme == .dark ? 0.80 : 0.15)
-                    )
-            )
-            .frame(height: prefs.preferences.general.tabBarStyle == .xcode ? 1.0 : 0.8)
-    }
-}
-
-/// The bottom border for tab bar (between tab bar and breadcrumbs).
-struct TabBarBottomDivider: View {
-    @Environment(\.colorScheme)
-    var colorScheme
-
-    @StateObject
-    private var prefs: AppPreferencesModel = .shared
-
-    var body: some View {
-        Rectangle()
-            .foregroundColor(
-                prefs.preferences.general.tabBarStyle == .xcode
-                ? Color(nsColor: .separatorColor)
-                    .opacity(colorScheme == .dark ? 0.40 : 0.45)
-                : Color(nsColor: .black)
-                    .opacity(colorScheme == .dark ? 0.65 : 0.09)
-
-            )
-            .frame(height: prefs.preferences.general.tabBarStyle == .xcode ? 1.0 : 0.8)
-    }
-}
-
 struct TabBarItem: View {
     @Environment(\.colorScheme)
     var colorScheme
@@ -241,17 +173,16 @@ struct TabBarItem: View {
                 ? 1.0
                 : (isActive ? 0.6 : 0.4)
             )
-            .overlay {
-                // Only show NativeTabShadow when `tabBarStyle` is native and this tab is not active.
-                if prefs.preferences.general.tabBarStyle == .native && !isActive {
-                    TabBarTopDivider()
-                        .frame(maxHeight: .infinity, alignment: .top)
-                }
-            }
             TabDivider()
                 .opacity(
                     isActive && prefs.preferences.general.tabBarStyle == .xcode ? 0.0 : 1.0
                 )
+        }
+        .overlay(alignment: .top) {
+            // Only show NativeTabShadow when `tabBarStyle` is native and this tab is not active.
+            if prefs.preferences.general.tabBarStyle == .native && !isActive {
+                TabBarTopDivider()
+            }
         }
         .foregroundColor(
             isActive
@@ -315,7 +246,7 @@ struct TabBarItem: View {
                         ZStack {
                             // Native inactive tab background dim.
                             Color(nsColor: .black)
-                                .opacity(colorScheme == .dark ? 0.50 : 0.05)
+                                .opacity(colorScheme == .dark ? 0.45 : 0.05)
 
                             // Native inactive tab hover state.
                             Color(nsColor: colorScheme == .dark ? .white : .black)
@@ -326,7 +257,6 @@ struct TabBarItem: View {
                                 )
                                 .animation(.easeInOut(duration: 0.10), value: isHovering)
                         }
-                        .padding(.top, colorScheme == .dark ? 0 : 1)
                         .padding(.horizontal, 1)
                     }
                 }

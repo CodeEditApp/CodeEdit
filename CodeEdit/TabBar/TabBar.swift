@@ -71,25 +71,21 @@ struct TabBar: View {
             // TODO: Tab bar tools (e.g. split view).
         }
         .frame(height: tabBarHeight)
-        .overlay {
+        .overlay(alignment: .top) {
             // When tab bar style is `xcode`, we put the top divider as an overlay.
             if prefs.preferences.general.tabBarStyle == .xcode {
                 TabBarTopDivider()
-                    .frame(height: tabBarHeight, alignment: .top)
             }
         }
         .background {
             if prefs.preferences.general.tabBarStyle == .xcode {
                 Color(nsColor: .controlBackgroundColor)
             } else {
-                ZStack {
+                ZStack(alignment: .top) {
                     Color(nsColor: .black)
-                        .opacity(colorScheme == .dark ? 0.50 : 0.05)
-                        // Set padding top to 1 to avoid color-overlapping.
-                        .padding(.top, 1)
+                        .opacity(colorScheme == .dark ? 0.45 : 0.05)
                     // When tab bar style is `native`, we put the top divider beneath tabs.
                     TabBarTopDivider()
-                        .frame(height: tabBarHeight, alignment: .top)
                 }
             }
         }
