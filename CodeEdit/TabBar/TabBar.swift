@@ -107,6 +107,6 @@ struct TabBar: View {
                 .edgesIgnoringSafeArea(.top)
             }
         }
-        .padding(.leading, -1)
+        .padding(.leading, 1)
     }
 }

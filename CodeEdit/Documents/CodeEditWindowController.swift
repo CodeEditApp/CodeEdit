@@ -27,7 +27,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
         self.workspace = workspace
 
         setupSplitView(with: workspace)
-        setupToolbar()
+        setupToolbar(with: workspace)
     }
 
     @available(*, unavailable)
@@ -67,14 +67,25 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
         self.splitViewController = splitVC
     }
 
-    private func setupToolbar() {
+    private func setupToolbar(with workspace: WorkspaceDocument) {
         let toolbar = NSToolbar(identifier: UUID().uuidString)
         toolbar.delegate = self
         toolbar.displayMode = .labelOnly
+        toolbar.showsBaselineSeparator = false
         self.window?.titleVisibility = .hidden
         self.window?.toolbarStyle = .unifiedCompact
         // Set titlebar background as transparent by default in order to style the toolbar background.
         self.window?.titlebarAppearsTransparent = true
+        self.window?.titlebarSeparatorStyle = .none
+        self.window?.styleMask.insert(.fullSizeContentView)
+
+        let titlebar = NSTitlebarAccessoryViewController()
+        let hostingView = NSHostingView(rootView: TabBar(windowController: self, workspace: workspace))
+        titlebar.view = hostingView
+        titlebar.fullScreenMinHeight = 28
+        titlebar.layoutAttribute = .bottom
+        self.window?.addTitlebarAccessoryViewController(titlebar)
+
         self.window?.toolbar = toolbar
     }
 
