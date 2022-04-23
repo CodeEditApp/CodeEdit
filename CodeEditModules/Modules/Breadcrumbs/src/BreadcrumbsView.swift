@@ -39,13 +39,10 @@ public struct BreadcrumbsView: View {
                         .padding(.leading, 2.5)
                 }
             }
-            .padding(.horizontal, 11)
+            .padding(.horizontal, 10)
         }
-        .frame(height: 29, alignment: .center)
+        .frame(height: 28, alignment: .center)
         .background(Color(nsColor: .controlBackgroundColor))
-        .overlay(alignment: .bottom) {
-            Divider()
-        }
         .onAppear {
             fileInfo(self.file)
         }
