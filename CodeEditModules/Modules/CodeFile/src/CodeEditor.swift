@@ -57,6 +57,7 @@ struct CodeEditor: NSViewRepresentable {
         textView.maxSize = NSSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)
         textView.minSize = NSSize(width: 0, height: scrollView.contentSize.height)
         textView.delegate = context.coordinator
+        textView.usesFontPanel = false
 
         scrollView.drawsBackground = true
         scrollView.borderType = .noBorder
@@ -68,8 +69,8 @@ struct CodeEditor: NSViewRepresentable {
         scrollView.verticalRulerView = LineGutter(
             scrollView: scrollView,
             width: 37,
-            font: NSFont(name: "SF Mono", size: 11) ?? .monospacedSystemFont(ofSize: 11, weight: .regular),
-            textColor: .secondaryLabelColor,
+            font: lineGutterFont,
+            textColor: .tertiaryLabelColor,
             backgroundColor: .clear
         )
         scrollView.rulersVisible = true
@@ -78,13 +79,37 @@ struct CodeEditor: NSViewRepresentable {
         return scrollView
     }
 
+    private var lineGutterFont: NSFont {
+        let fontSize: Double = 10
+
+        // TODO: calculate the font size depending on the editors font size.
+
+        let font = NSFont.monospacedSystemFont(ofSize: fontSize, weight: .medium)
+
+        let alt0NoSlash: [NSFontDescriptor.FeatureKey: Int] = [
+            .selectorIdentifier: 6,
+            .typeIdentifier: kStylisticAlternativesType,
+        ]
+
+        let alt1NoSerif: [NSFontDescriptor.FeatureKey: Int] = [
+            .selectorIdentifier: 8,
+            .typeIdentifier: kStylisticAlternativesType,
+        ]
+
+        let descriptor = font.fontDescriptor.addingAttributes([.featureSettings: [alt0NoSlash, alt1NoSerif]])
+
+        return NSFont(descriptor: descriptor, size: 0) ?? font
+    }
+
     func updateNSView(_ scrollView: NSScrollView, context: Context) {
         guard let textView = scrollView.documentView as? CodeEditorTextView else {
             return
         }
-        if let rulerView = scrollView.verticalRulerView as? LineGutter,
-           content.wrappedValue != textView.string {
-            rulerView.invalidateLineIndices()
+        if let rulerView = scrollView.verticalRulerView as? LineGutter {
+            if content.wrappedValue != textView.string {
+                rulerView.invalidateLineIndices()
+            }
+            rulerView.font = lineGutterFont
         }
         updateTextView(textView)
     }

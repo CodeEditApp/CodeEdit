@@ -56,7 +56,11 @@ final class LineGutter: NSRulerView {
 
     private let rulerMargin: CGFloat = 5
     private let rulerWidth: CGFloat
-    private let font: NSFont
+    public var font: NSFont {
+        didSet {
+            needsDisplay = true
+        }
+    }
     public var textColor: NSColor
     public var backgroundColor: NSColor
 
@@ -236,6 +240,8 @@ final class LineGutter: NSRulerView {
     func textAttributes() -> [NSAttributedString.Key: AnyObject] {
         [
             NSAttributedString.Key.font: self.font,
+            NSAttributedString.Key.kern: NSNumber(value: 0),
+            NSAttributedString.Key.tracking: NSNumber(value: 0),
             NSAttributedString.Key.foregroundColor: self.textColor
         ]
     }
