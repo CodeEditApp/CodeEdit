@@ -8,7 +8,7 @@
 import SwiftUI
 
 public extension Color {
-    
+
     /// Initializes a `Color` from a HEX String (e.g.: #112233)
     init(hex: String) {
         let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
