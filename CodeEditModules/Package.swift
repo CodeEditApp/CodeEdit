@@ -139,7 +139,8 @@ let package = Package(
             name: "CodeFile",
             dependencies: [
                 "Highlightr",
-                "AppPreferences"
+                "AppPreferences",
+                "CodeEditUtils"
             ],
             path: "Modules/CodeFile/src"
         ),

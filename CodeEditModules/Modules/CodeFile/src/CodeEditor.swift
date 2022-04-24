@@ -11,6 +11,7 @@ import SwiftUI
 import Highlightr
 import AppPreferences
 import Combine
+import CodeEditUtils
 
 struct CodeEditor: NSViewRepresentable {
     @State

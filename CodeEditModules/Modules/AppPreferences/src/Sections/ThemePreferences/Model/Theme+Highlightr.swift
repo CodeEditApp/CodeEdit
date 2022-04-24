@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CodeEditUtils
 
 public extension Theme {
     /// Returns a CSS string describing a highlight.js theme that represents the
