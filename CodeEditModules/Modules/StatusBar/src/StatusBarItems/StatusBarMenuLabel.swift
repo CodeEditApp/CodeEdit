@@ -6,6 +6,6 @@ internal struct StatusBarMenuLabel: View {
 
     internal var body: some View {
         Text(text + " ") +
-        Text(Image("custom.chevron.up.chevron.down"))
+        Text(Image.customChevronUpChevronDown)
     }
 }
