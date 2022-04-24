@@ -36,7 +36,7 @@ public extension AppPreferences {
         public var selectedTheme: String?
 
         /// Use the system background that matches the appearance setting
-        public var useThemeBackground: Bool = false
+        public var useThemeBackground: Bool = true
 
         /// Dictionary of themes containing overrides
         ///
@@ -72,7 +72,7 @@ public extension AppPreferences {
         public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.selectedTheme = try container.decodeIfPresent(String.self, forKey: .selectedTheme)
-            self.useThemeBackground = try container.decodeIfPresent(Bool.self, forKey: .useThemeBackground) ?? false
+            self.useThemeBackground = try container.decodeIfPresent(Bool.self, forKey: .useThemeBackground) ?? true
             self.overrides = try container.decodeIfPresent([String: ThemeOverrides].self, forKey: .overrides) ?? [:]
         }
     }

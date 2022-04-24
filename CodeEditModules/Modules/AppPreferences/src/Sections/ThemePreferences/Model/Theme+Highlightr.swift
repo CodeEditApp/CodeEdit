@@ -8,6 +8,11 @@
 import Foundation
 
 public extension Theme {
+    /// Returns a CSS string describing a highlight.js theme that represents the
+    /// theme set in preferences.
+    ///
+    /// Reference for CSS stylable scopes can be found in
+    /// [`highlightjs docs`](https://highlightjs.readthedocs.io/en/latest/css-classes-reference.html)
     var highlightrThemeString: String {
         let themeColors = editor
         return """
@@ -36,11 +41,11 @@ public extension Theme {
 .hljs-variable, .hljs-template-variable {
  color:\(themeColors.variables.color)
 }
+.hljs-subst,.hljs-function,.hljs-title,.hljs-params,.hljs-formula{
+  color:\(themeColors.variables.color)
+}
 .hljs-title {
  color:\(themeColors.variables.color)
-}
-.hljs-params {
- color:\(themeColors.values.color)
 }
 .hljs-comment, .hljs-quote {
   color:\(themeColors.comments.color)

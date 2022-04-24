@@ -21,7 +21,6 @@ struct CodeEditor: NSViewRepresentable {
 
     private var content: Binding<String>
     private let language: CodeLanguage?
-    private let theme: Binding<CodeFileView.Theme>
     private let highlightr = Highlightr()
 
     private var themeString: String {
@@ -30,13 +29,10 @@ struct CodeEditor: NSViewRepresentable {
 
     init(
         content: Binding<String>,
-        language: CodeLanguage?,
-        theme: Binding<CodeFileView.Theme>
+        language: CodeLanguage?
     ) {
         self.content = content
         self.language = language
-        self.theme = theme
-//        highlightr?.setTheme(to: theme.wrappedValue.rawValue)
         highlightr?.setTheme(theme: .init(themeString: themeString))
     }
 
@@ -139,6 +135,8 @@ struct CodeEditor: NSViewRepresentable {
     }
 
     private func updateTextView(_ textView: NSTextView) {
+
+        textView.backgroundColor = textViewBackgroundColor()
         guard !isCurrentlyUpdatingView.value else {
             return
         }
@@ -149,7 +147,6 @@ struct CodeEditor: NSViewRepresentable {
             isCurrentlyUpdatingView.value = false
         }
 
-//        highlightr?.setTheme(to: theme.wrappedValue.rawValue)
         highlightr?.setTheme(theme: .init(themeString: themeString))
         if prefs.preferences.textEditing.font.customFont {
             highlightr?.theme.codeFont = .init(
@@ -171,6 +168,14 @@ struct CodeEditor: NSViewRepresentable {
                 textView.string = content.wrappedValue
             }
         }
+    }
+
+    private func textViewBackgroundColor() -> NSColor {
+        guard let currentTheme = ThemeModel.shared.selectedTheme,
+              AppPreferencesModel.shared.preferences.theme.useThemeBackground else {
+            return .textBackgroundColor
+        }
+        return NSColor(currentTheme.editor.background.swiftColor)
     }
 
     private func buildTextStorage(language: CodeLanguage?, scrollView: NSScrollView) -> NSTextContainer {
