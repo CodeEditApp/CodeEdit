@@ -15,7 +15,7 @@ public extension Theme {
     /// [`highlightjs docs`](https://highlightjs.readthedocs.io/en/latest/css-classes-reference.html)
     var highlightrThemeString: String {
         let themeColors = editor
-        return """
+        let themeString = """
 .hljs{
   display:block;
   overflow-x:auto;
@@ -27,10 +27,10 @@ public extension Theme {
   color:#c0c0c0
 }
 .hljs-keyword,.hljs-literal,.hljs-symbol,.hljs-name {
- color:\(themeColors.keywords.color)
+  color:\(themeColors.keywords.color)
 }
 .hljs-built_in,.hljs-type {
- color:\(themeColors.types.color)
+  color:\(themeColors.types.color)
 }
 .hljs-number {
   color:\(themeColors.numbers.color)
@@ -39,13 +39,13 @@ public extension Theme {
   color:\(themeColors.strings.color)
 }
 .hljs-variable, .hljs-template-variable {
- color:\(themeColors.variables.color)
+  color:\(themeColors.variables.color)
 }
 .hljs-subst,.hljs-function,.hljs-title,.hljs-params,.hljs-formula{
   color:\(themeColors.variables.color)
 }
 .hljs-title {
- color:\(themeColors.variables.color)
+  color:\(themeColors.variables.color)
 }
 .hljs-comment, .hljs-quote {
   color:\(themeColors.comments.color)
@@ -57,17 +57,20 @@ public extension Theme {
   font-style:italic
 }
 .hljs-tag {
- color:\(themeColors.text.color)
+  color:\(themeColors.text.color)
 }
 .hljs-attr,.hljs-attribute,.hljs-builtin-name{
- color:\(themeColors.attributes.color)
+  color:\(themeColors.attributes.color)
 }
 .hljs-meta {
- color:\(themeColors.keywords.color)
+  color:\(themeColors.keywords.color)
 }
 .hljs-code {
- color:\(themeColors.strings.color)
+  color:\(themeColors.strings.color)
 }
-""".replacingOccurrences(of: "\n", with: "").replacingOccurrences(of: " ", with: "")
+"""
+        return themeString
+            .removingNewLines()
+            .removingSpaces()
     }
 }
