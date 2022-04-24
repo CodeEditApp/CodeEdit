@@ -19,9 +19,10 @@ internal struct StatusBarLineEndSelector: View {
         Menu {
             // LF, CRLF
         } label: {
-            Text("LF")
+            StatusBarMenuLabel(text: "LF")
                 .font(model.toolbarFont)
         }
+        .menuIndicator(.hidden)
         .menuStyle(.borderlessButton)
         .fixedSize()
         .onHover { isHovering($0) }
