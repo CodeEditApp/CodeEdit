@@ -30,11 +30,11 @@
       },
       {
         "package": "Highlightr",
-        "repositoryURL": "https://github.com/raspu/Highlightr.git",
+        "repositoryURL": "https://github.com/lukepistrol/Highlightr.git",
         "state": {
-          "branch": null,
-          "revision": "93199b9e434f04bda956a613af8f571933f9f037",
-          "version": "2.1.2"
+          "branch": "main",
+          "revision": "7d278c8e92d96cbfec8dbb3c8054990b2951db98",
+          "version": null
         }
       },
       {

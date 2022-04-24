@@ -11,6 +11,7 @@ import SwiftUI
 import Highlightr
 import AppPreferences
 import Combine
+import CodeEditUtils
 
 struct CodeEditor: NSViewRepresentable {
     @State
@@ -21,18 +22,19 @@ struct CodeEditor: NSViewRepresentable {
 
     private var content: Binding<String>
     private let language: CodeLanguage?
-    private let theme: Binding<CodeFileView.Theme>
     private let highlightr = Highlightr()
+
+    private var themeString: String {
+        return ThemeModel.shared.selectedTheme?.highlightrThemeString ?? ""
+    }
 
     init(
         content: Binding<String>,
-        language: CodeLanguage?,
-        theme: Binding<CodeFileView.Theme>
+        language: CodeLanguage?
     ) {
         self.content = content
         self.language = language
-        self.theme = theme
-        highlightr?.setTheme(to: theme.wrappedValue.rawValue)
+        highlightr?.setTheme(theme: .init(themeString: themeString))
     }
 
     func makeNSView(context: Context) -> NSScrollView {
@@ -134,6 +136,8 @@ struct CodeEditor: NSViewRepresentable {
     }
 
     private func updateTextView(_ textView: NSTextView) {
+
+        textView.backgroundColor = textViewBackgroundColor()
         guard !isCurrentlyUpdatingView.value else {
             return
         }
@@ -144,7 +148,7 @@ struct CodeEditor: NSViewRepresentable {
             isCurrentlyUpdatingView.value = false
         }
 
-        highlightr?.setTheme(to: theme.wrappedValue.rawValue)
+        highlightr?.setTheme(theme: .init(themeString: themeString))
         if prefs.preferences.textEditing.font.customFont {
             highlightr?.theme.codeFont = .init(
                 name: prefs.preferences.textEditing.font.name,
@@ -165,6 +169,14 @@ struct CodeEditor: NSViewRepresentable {
                 textView.string = content.wrappedValue
             }
         }
+    }
+
+    private func textViewBackgroundColor() -> NSColor {
+        guard let currentTheme = ThemeModel.shared.selectedTheme,
+              AppPreferencesModel.shared.preferences.theme.useThemeBackground else {
+            return .textBackgroundColor
+        }
+        return NSColor(hex: currentTheme.editor.background.color)
     }
 
     private func buildTextStorage(language: CodeLanguage?, scrollView: NSScrollView) -> NSTextContainer {

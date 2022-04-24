@@ -85,8 +85,8 @@ let package = Package(
     dependencies: [
         .package(
             name: "Highlightr",
-            url: "https://github.com/raspu/Highlightr.git",
-            from: "2.1.2"
+            url: "https://github.com/lukepistrol/Highlightr.git",
+            branch: "main"
         ),
         .package(
             name: "SnapshotTesting",
@@ -139,7 +139,8 @@ let package = Package(
             name: "CodeFile",
             dependencies: [
                 "Highlightr",
-                "AppPreferences"
+                "AppPreferences",
+                "CodeEditUtils"
             ],
             path: "Modules/CodeFile/src"
         ),
