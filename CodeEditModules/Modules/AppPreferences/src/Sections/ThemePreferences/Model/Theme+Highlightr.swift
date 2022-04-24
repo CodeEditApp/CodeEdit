@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  Theme+Highlightr.swift
 //  
 //
 //  Created by Lukas Pistrol on 24.04.22.
