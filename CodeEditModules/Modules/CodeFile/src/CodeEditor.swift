@@ -175,7 +175,7 @@ struct CodeEditor: NSViewRepresentable {
               AppPreferencesModel.shared.preferences.theme.useThemeBackground else {
             return .textBackgroundColor
         }
-        return NSColor(currentTheme.editor.background.swiftColor)
+        return NSColor(hex: currentTheme.editor.background.color)
     }
 
     private func buildTextStorage(language: CodeLanguage?, scrollView: NSScrollView) -> NSTextContainer {
