@@ -39,9 +39,10 @@ internal struct StatusBarIndentSelector: View {
                 }
             }
         } label: {
-            Text("\(prefs.preferences.textEditing.defaultTabWidth) Spaces")
+            StatusBarMenuLabel(text: "\(prefs.preferences.textEditing.defaultTabWidth) Spaces")
                 .font(model.toolbarFont)
         }
+        .menuIndicator(.hidden)
         .menuStyle(.borderlessButton)
         .fixedSize()
         .onHover { isHovering($0) }

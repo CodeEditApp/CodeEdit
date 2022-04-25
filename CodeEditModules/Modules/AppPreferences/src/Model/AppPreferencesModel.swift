@@ -21,6 +21,7 @@ public final class AppPreferencesModel: ObservableObject {
     public static let shared: AppPreferencesModel = .init()
 
     private init() {
+        self.preferences = .init()
         self.preferences = loadPreferences()
     }
 
@@ -28,7 +29,7 @@ public final class AppPreferencesModel: ObservableObject {
     ///
     /// Changes are saved automatically.
     @Published
-    public var preferences: AppPreferences! {
+    public var preferences: AppPreferences {
         didSet {
             try? savePreferences()
             objectWillChange.send()

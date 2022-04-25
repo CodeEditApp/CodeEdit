@@ -19,9 +19,10 @@ internal struct StatusBarEncodingSelector: View {
         Menu {
             // UTF 8, ASCII, ...
         } label: {
-            Text("UTF 8")
+            StatusBarMenuLabel(text: "UTF 8")
                 .font(model.toolbarFont)
         }
+        .menuIndicator(.hidden)
         .menuStyle(.borderlessButton)
         .fixedSize()
         .onHover { isHovering($0) }
