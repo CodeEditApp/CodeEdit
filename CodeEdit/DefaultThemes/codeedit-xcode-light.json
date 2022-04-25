@@ -1,0 +1,125 @@
+{
+  "author" : "CodeEdit",
+  "distributionURL" : "https:\/\/github.com\/CodeEditApp\/CodeEdit",
+  "version" : "0.0.1",
+  "license" : "MIT",
+  "type" : "light",
+  "name" : "codeedit-xcode-light",
+  "displayName" : "Xcode Light",
+  "description" : "Xcode light theme.",
+  "editor" : {
+    "strings" : {
+      "color" : "#C41A16"
+    },
+    "comments" : {
+      "color" : "#267507"
+    },
+    "numbers" : {
+      "color" : "#1C00CF"
+    },
+    "commands" : {
+      "color" : "#326D74"
+    },
+    "lineHighlight" : {
+      "color" : "#E8F2FF"
+    },
+    "values" : {
+      "color" : "#6C36A9"
+    },
+    "background" : {
+      "color" : "#FFFFFF"
+    },
+    "keywords" : {
+      "color" : "#9B2393"
+    },
+    "text" : {
+      "color" : "#262626"
+    },
+    "insertionPoint" : {
+      "color" : "#262626"
+    },
+    "selection" : {
+      "color" : "#A4CDFF"
+    },
+    "types" : {
+      "color" : "#0B4F79"
+    },
+    "variables" : {
+      "color" : "#0F68A0"
+    },
+    "attributes" : {
+      "color" : "#3900A0"
+    },
+    "characters" : {
+      "color" : "#1C00CF"
+    },
+    "invisibles" : {
+      "color" : "#CCCCCC"
+    }
+  },
+  "terminal" : {
+    "white" : {
+      "color" : "#bfbfbf"
+    },
+    "brightMagenta" : {
+      "color" : "#e500e5"
+    },
+    "brightRed" : {
+      "color" : "#e50000"
+    },
+    "blue" : {
+      "color" : "#0000b2"
+    },
+    "red" : {
+      "color" : "#990000"
+    },
+    "green" : {
+      "color" : "#00a600"
+    },
+    "boldText" : {
+      "color" : "#ffffff"
+    },
+    "brightGreen" : {
+      "color" : "#00d900"
+    },
+    "background" : {
+      "color" : "#1e1e1e"
+    },
+    "cursor" : {
+      "color" : "#ffffff"
+    },
+    "selection" : {
+      "color" : "#8b8b8b"
+    },
+    "magenta" : {
+      "color" : "#b200b2"
+    },
+    "black" : {
+      "color" : "#000000"
+    },
+    "text" : {
+      "color" : "#ffffff"
+    },
+    "brightWhite" : {
+      "color" : "#e5e5e5"
+    },
+    "brightBlue" : {
+      "color" : "#0000ff"
+    },
+    "brightYellow" : {
+      "color" : "#e5e500"
+    },
+    "cyan" : {
+      "color" : "#00a6b2"
+    },
+    "yellow" : {
+      "color" : "#999900"
+    },
+    "brightCyan" : {
+      "color" : "#00e5e5"
+    },
+    "brightBlack" : {
+      "color" : "#666666"
+    }
+  }
+}

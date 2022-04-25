@@ -38,6 +38,9 @@ public extension AppPreferences {
         /// Use the system background that matches the appearance setting
         public var useThemeBackground: Bool = true
 
+        /// Automatically change theme based on system appearance
+        public var mirrorSystemAppearance: Bool = false
+
         /// Dictionary of themes containing overrides
         ///
         /// ```json
@@ -73,6 +76,9 @@ public extension AppPreferences {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.selectedTheme = try container.decodeIfPresent(String.self, forKey: .selectedTheme)
             self.useThemeBackground = try container.decodeIfPresent(Bool.self, forKey: .useThemeBackground) ?? true
+            self.mirrorSystemAppearance = try container.decodeIfPresent(
+                Bool.self, forKey: .mirrorSystemAppearance
+            ) ?? false
             self.overrides = try container.decodeIfPresent([String: ThemeOverrides].self, forKey: .overrides) ?? [:]
         }
     }

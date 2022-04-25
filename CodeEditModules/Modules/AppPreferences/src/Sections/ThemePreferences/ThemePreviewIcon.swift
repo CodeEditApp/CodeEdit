@@ -42,7 +42,7 @@ struct ThemePreviewIcon: View {
                     .strokeBorder(lineWidth: 2)
                     .foregroundColor(selection == theme ? .accentColor : .clear)
             }
-            Text(theme.name)
+            Text(theme.displayName)
                 .font(.subheadline)
                 .padding(.horizontal, 7)
                 .padding(.vertical, 2)

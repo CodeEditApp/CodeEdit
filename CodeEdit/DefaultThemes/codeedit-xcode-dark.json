@@ -1,0 +1,125 @@
+{
+  "author" : "CodeEdit",
+  "distributionURL" : "https:\/\/github.com\/CodeEditApp\/CodeEdit",
+  "version" : "0.0.1",
+  "license" : "MIT",
+  "type" : "dark",
+  "name" : "codeedit-xcode-dark",
+  "displayName" : "Xcode Dark",
+  "description" : "Xcode dark theme.",
+  "editor" : {
+    "strings" : {
+      "color" : "#FC6A5D"
+    },
+    "comments" : {
+      "color" : "#73A74E"
+    },
+    "numbers" : {
+      "color" : "#D0BF69"
+    },
+    "commands" : {
+      "color" : "#67B7A4"
+    },
+    "lineHighlight" : {
+      "color" : "#23252B"
+    },
+    "values" : {
+      "color" : "#A167E6"
+    },
+    "background" : {
+      "color" : "#1F1F24"
+    },
+    "keywords" : {
+      "color" : "#FC5FA3"
+    },
+    "text" : {
+      "color" : "#D9D9D9"
+    },
+    "insertionPoint" : {
+      "color" : "#D9D9D9"
+    },
+    "selection" : {
+      "color" : "#515B70"
+    },
+    "types" : {
+      "color" : "#5DD8FF"
+    },
+    "variables" : {
+      "color" : "#41A1C0"
+    },
+    "attributes" : {
+      "color" : "#D0A8FF"
+    },
+    "characters" : {
+      "color" : "#D0BF69"
+    },
+    "invisibles" : {
+      "color" : "#424D5B"
+    }
+  },
+  "terminal" : {
+    "white" : {
+      "color" : "#bfbfbf"
+    },
+    "brightMagenta" : {
+      "color" : "#e500e5"
+    },
+    "brightRed" : {
+      "color" : "#e50000"
+    },
+    "blue" : {
+      "color" : "#0000b2"
+    },
+    "red" : {
+      "color" : "#990000"
+    },
+    "green" : {
+      "color" : "#00a600"
+    },
+    "boldText" : {
+      "color" : "#ffffff"
+    },
+    "brightGreen" : {
+      "color" : "#00d900"
+    },
+    "background" : {
+      "color" : "#1e1e1e"
+    },
+    "cursor" : {
+      "color" : "#ffffff"
+    },
+    "selection" : {
+      "color" : "#8b8b8b"
+    },
+    "magenta" : {
+      "color" : "#b200b2"
+    },
+    "black" : {
+      "color" : "#000000"
+    },
+    "text" : {
+      "color" : "#ffffff"
+    },
+    "brightWhite" : {
+      "color" : "#e5e5e5"
+    },
+    "brightBlue" : {
+      "color" : "#0000ff"
+    },
+    "brightYellow" : {
+      "color" : "#e5e500"
+    },
+    "cyan" : {
+      "color" : "#00a6b2"
+    },
+    "yellow" : {
+      "color" : "#999900"
+    },
+    "brightCyan" : {
+      "color" : "#00e5e5"
+    },
+    "brightBlack" : {
+      "color" : "#666666"
+    }
+  }
+}
