@@ -6,12 +6,14 @@
 //
 import SwiftUI
 import WorkspaceClient
+import KeyboardShortcutManager
 import CodeEditUI
 
 public struct RecentProjectsView: View {
     @State private var recentProjectPaths: [String]
     @State private var selectedProjectPath: String? = ""
 
+    var mgr = KeyboardShortcutManager.shared
     private let openDocument: (URL?, @escaping () -> Void) -> Void
     private let dismissWindow: () -> Void
 
@@ -102,7 +104,7 @@ public struct RecentProjectsView: View {
                             .contextMenu {
                                 contextMenuShowInFinder(projectPath: projectPath)
                                 contextMenuCopy(path: projectPath)
-                                    .keyboardShortcut(.init("C", modifiers: [.command]))
+                                    .keyboardShortcut(mgr.named(with: "recentProjectsViewCopyPath").keyboardShortcut)
 
                                 Divider()
                                 contextMenuDelete(projectPath: projectPath)
@@ -122,7 +124,7 @@ public struct RecentProjectsView: View {
                                 pasteboard.setString(projectPath, forType: .string)
                             }
                             .buttonStyle(.borderless)
-                            .keyboardShortcut(.init("C", modifiers: [.command]))
+                            .keyboardShortcut(mgr.named(with: "recentProjectsViewCopyPath").keyboardShortcut)
                         }
 
                         Button("") {

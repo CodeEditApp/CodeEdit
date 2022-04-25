@@ -81,6 +81,10 @@ let package = Package(
             name: "CodeEditUtils",
             targets: ["CodeEditUtils"]
         ),
+        .library(
+            name: "KeyboardShortcutManager",
+            targets: ["KeyboardShortcutManager"]
+        ),
     ],
     dependencies: [
         .package(
@@ -158,6 +162,7 @@ let package = Package(
                 "CodeEditUI",
                 "GitClone",
                 "AppPreferences",
+                "KeyboardShortcutManager",
             ],
             path: "Modules/WelcomeModule/src",
             resources: [
@@ -310,6 +315,11 @@ let package = Package(
         .target(
             name: "CodeEditUtils",
             path: "Modules/CodeEditUtils/src"
+
+        ),
+        .target(
+            name: "KeyboardShortcutManager",
+            path: "Modules/KeyboardShortcutManager/src"
 
         ),
     ]
