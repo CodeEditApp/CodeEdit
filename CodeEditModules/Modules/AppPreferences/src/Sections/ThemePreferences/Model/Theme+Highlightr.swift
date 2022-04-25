@@ -27,10 +27,16 @@ public extension Theme {
 .xml .hljs-meta {
   color:#c0c0c0
 }
-.hljs-keyword,.hljs-literal,.hljs-symbol,.hljs-name {
+.hljs-keyword,.hljs-literal,.hljs-symbol {
   color:\(themeColors.keywords.color)
 }
-.hljs-built_in,.hljs-type {
+.hljs-built_in {
+  color:\(themeColors.values.color)
+}
+.hljs-type {
+  color:\(themeColors.types.color)
+}
+.hljs-class {
   color:\(themeColors.types.color)
 }
 .hljs-number {
@@ -39,16 +45,16 @@ public extension Theme {
 .hljs-string,.hljs-meta-string {
   color:\(themeColors.strings.color)
 }
-.hljs-variable, .hljs-template-variable {
+.hljs-property {
+  color:\(themeColors.commands.color)
+}
+.hljs-variable,.hljs-template-variable {
   color:\(themeColors.variables.color)
 }
 .hljs-subst,.hljs-function,.hljs-title,.hljs-params,.hljs-formula{
   color:\(themeColors.variables.color)
 }
-.hljs-title {
-  color:\(themeColors.variables.color)
-}
-.hljs-comment, .hljs-quote {
+.hljs-comment,.hljs-quote {
   color:\(themeColors.comments.color)
 }
 .hljs-doctag,.hljs-strong{
