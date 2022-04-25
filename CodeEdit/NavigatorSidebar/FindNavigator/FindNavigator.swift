@@ -13,9 +13,6 @@ struct FindNavigator: View {
     @ObservedObject
     var state: WorkspaceDocument.SearchState
 
-    @State
-    private var searchText: String = ""
-
     private var foundFilesCount: Int {
         state.searchResult.filter {!$0.hasKeywordInfo}.count
     }
@@ -28,7 +25,7 @@ struct FindNavigator: View {
         VStack {
             VStack {
                 FindNavigatorModeSelector()
-                FindNavigatorSearchBar(state: state, title: "", text: $searchText)
+                FindNavigatorSearchBar(state: state, title: "", text: $state.searchText)
                 HStack {
                     Spacer()
                 }
@@ -45,7 +42,7 @@ struct FindNavigator: View {
             FindNavigatorResultList(state: state)
         }
         .onSubmit {
-            state.search(searchText)
+            state.search(state.searchText)
         }
     }
 }

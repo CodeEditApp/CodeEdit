@@ -20,19 +20,6 @@ struct FindNavigatorResultFileItem: View {
     var results: [SearchResultModel]
     var jumpToFile: () -> Void
 
-    private func foundLineResult(_ lineContent: String?, keywordRange: Range<String.Index>?) -> some View {
-        guard let lineContent = lineContent, let keywordRange = keywordRange else {
-            return AnyView(EmptyView())
-        }
-        return AnyView(
-            Text(lineContent[lineContent.startIndex..<keywordRange.lowerBound]) +
-            Text(lineContent[keywordRange.lowerBound..<keywordRange.upperBound])
-                .foregroundColor(.white)
-                .font(.system(size: 12, weight: .bold)) +
-            Text(lineContent[keywordRange.upperBound..<lineContent.endIndex])
-        )
-    }
-
     var body: some View {
         DisclosureGroup(isExpanded: $isExpanded) {
             ForEach(results, id: \.lineContent) { (result: SearchResultModel) in
@@ -40,24 +27,51 @@ struct FindNavigatorResultFileItem: View {
                     Image(systemName: "text.alignleft")
                         .font(.system(size: 12))
                         .padding(.top, 2)
-                    foundLineResult(result.lineContent, keywordRange: result.keywordRange)
+                    ResultView(lineContent: result.lineContent, keywordRange: result.keywordRange)
                         .lineLimit(Int.max)
-                        .foregroundColor(Color(nsColor: .secondaryLabelColor))
                         .font(.system(size: 12, weight: .light))
                     Spacer()
                 }
             }
         } label: {
+            FileNameView(fileItem: fileItem, fileURL: state.workspace.fileURL)
+        }
+    }
+
+    // MARK: - Subviews
+
+    struct FileNameView: View {
+        let fileItem: WorkspaceClient.FileItem
+        let fileURL: URL?
+
+        private var formattedFilePath: String {
+            return fileItem.url.path.replacingOccurrences(of: fileURL?.path ?? "", with: "")
+        }
+
+        var body: some View {
             HStack {
                 Image(systemName: fileItem.systemImage)
-                Text(fileItem.fileName)
-                    .foregroundColor(Color(nsColor: NSColor.headerTextColor))
-                    .font(.system(size: 13, weight: .semibold)) +
-                Text("  ") +
-                Text(fileItem.url.path.replacingOccurrences(of: state.workspace.fileURL?.path ?? "", with: ""))
-                    .foregroundColor(.secondary)
-                    .font(.system(size: 12, weight: .light))
+                Text(fileItem.fileName).font(.system(size: 13, weight: .semibold))
+                + Text("  ")
+                + Text(formattedFilePath).font(.system(size: 12, weight: .light))
                 Spacer()
+            }
+        }
+    }
+
+    struct ResultView: View {
+
+        let lineContent: String?
+        let keywordRange: Range<String.Index>?
+
+        var body: some View {
+            if let lineContent = lineContent, let keywordRange = keywordRange {
+                Text(lineContent[lineContent.startIndex..<keywordRange.lowerBound]) +
+                Text(lineContent[keywordRange.lowerBound..<keywordRange.upperBound])
+                    .font(.system(size: 12, weight: .bold)) +
+                Text(lineContent[keywordRange.upperBound..<lineContent.endIndex])
+            } else {
+                EmptyView()
             }
         }
     }

@@ -246,6 +246,7 @@ extension WorkspaceDocument {
     final class SearchState: ObservableObject {
         var workspace: WorkspaceDocument
         @Published var searchResult: [SearchResultModel] = []
+        @Published var searchText: String = ""
 
         init(_ workspace: WorkspaceDocument) {
             self.workspace = workspace
