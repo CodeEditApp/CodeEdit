@@ -28,6 +28,13 @@ struct CodeEditor: NSViewRepresentable {
         return ThemeModel.shared.selectedTheme?.highlightrThemeString ?? ""
     }
 
+    private var lineGutterColor: NSColor {
+        if let color = ThemeModel.shared.selectedTheme?.editor.text.color {
+            return .init(hex: color).withAlphaComponent(0.5)
+        }
+        return .tertiaryLabelColor
+    }
+
     init(
         content: Binding<String>,
         language: CodeLanguage?
@@ -72,7 +79,7 @@ struct CodeEditor: NSViewRepresentable {
             scrollView: scrollView,
             width: 37,
             font: lineGutterFont,
-            textColor: .tertiaryLabelColor,
+            textColor: lineGutterColor,
             backgroundColor: .clear
         )
         scrollView.rulersVisible = true
@@ -112,6 +119,7 @@ struct CodeEditor: NSViewRepresentable {
                 rulerView.invalidateLineIndices()
             }
             rulerView.font = lineGutterFont
+            rulerView.textColor = lineGutterColor
         }
         updateTextView(textView)
     }
@@ -146,6 +154,13 @@ struct CodeEditor: NSViewRepresentable {
 
         defer {
             isCurrentlyUpdatingView.value = false
+        }
+
+        if let selectedTheme = ThemeModel.shared.selectedTheme {
+            textView.insertionPointColor = .init(hex: selectedTheme.editor.insertionPoint.color)
+            textView.selectedTextAttributes = [
+                .backgroundColor: NSColor(hex: selectedTheme.editor.selection.color)
+            ]
         }
 
         highlightr?.setTheme(theme: .init(themeString: themeString))
