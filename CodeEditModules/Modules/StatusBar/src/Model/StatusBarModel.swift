@@ -29,7 +29,7 @@ public class StatusBarModel: ObservableObject {
     /// - **1**: Debugger
     /// - **2**: Output
     @Published
-    public var selectedTab: Int = 1
+    public var selectedTab: Int = 0
 
     // TODO: Implement logic for updating values
     /// Returns number of errors during comilation
