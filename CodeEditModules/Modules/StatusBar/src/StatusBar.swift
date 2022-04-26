@@ -19,6 +19,9 @@ import CodeEditUI
 /// host a terminal or additional debug information
 ///
 public struct StatusBarView: View {
+    @Environment(\.controlActiveState)
+    private var controlActive
+
     @ObservedObject
     private var model: StatusBarModel
 
@@ -36,6 +39,7 @@ public struct StatusBarView: View {
                     .transition(.move(edge: .bottom))
             }
         }
+        .disabled(controlActive == .inactive)
         // removes weird light gray bar above when in light mode
         .padding(.top, -8) // (comment out to make it look normal in preview)
     }
