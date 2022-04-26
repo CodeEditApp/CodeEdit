@@ -30,11 +30,8 @@ internal struct StatusBarDrawer: View {
     }
 
     internal var body: some View {
-        ZStack(alignment: .bottom) {
+        VStack(spacing: 0) {
             TerminalEmulatorView(url: model.workspaceURL)
-                .frame(minHeight: 0,
-                       idealHeight: height,
-                       maxHeight: height)
             HStack(alignment: .center, spacing: 10) {
                 FilterTextField(title: "Filter", text: $searchText)
                     .frame(maxWidth: 300)
@@ -44,8 +41,12 @@ internal struct StatusBarDrawer: View {
                 StatusBarSplitTerminalButton(model: model)
                 StatusBarMaximizeButton(model: model)
             }
-            .padding(.all, 10)
+            .padding(10)
             .frame(maxHeight: 34)
+            .background(.bar)
         }
+        .frame(minHeight: 0,
+               idealHeight: height,
+               maxHeight: height)
     }
 }

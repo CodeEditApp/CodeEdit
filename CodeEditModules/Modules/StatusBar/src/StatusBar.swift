@@ -52,6 +52,7 @@ public struct StatusBarView: View {
                         .frame(maxHeight: 12)
                         .padding(.horizontal, 7)
                     SegmentedControl($model.selectedTab, options: StatusBarTab.allOptions)
+                        .opacity(model.isExpanded ? 1 : 0)
                 }
                 Spacer()
                 StatusBarCursorLocationLabel(model: model)
