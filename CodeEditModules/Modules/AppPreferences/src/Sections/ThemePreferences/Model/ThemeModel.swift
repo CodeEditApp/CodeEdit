@@ -69,12 +69,17 @@ public final class ThemeModel: ObservableObject {
     /// Loads a theme from a given url and appends it to ``themes``.
     /// - Parameter url: The URL of the theme
     /// - Returns: A ``Theme``
-    private func load(from url: URL) throws -> Theme {
-        // get the data from the provided file
-        let json = try Data(contentsOf: url)
-        // decode the json into ``Theme``
-        let theme = try JSONDecoder().decode(Theme.self, from: json)
-        return theme
+    private func load(from url: URL) throws -> Theme? {
+        do {
+            // get the data from the provided file
+            let json = try Data(contentsOf: url)
+            // decode the json into ``Theme``
+            let theme = try JSONDecoder().decode(Theme.self, from: json)
+            return theme
+        } catch {
+            try filemanager.removeItem(at: url)
+            return nil
+        }
     }
 
     /// Loads all available themes from `~/.codeedit/themes/`
@@ -98,13 +103,60 @@ public final class ThemeModel: ObservableObject {
             try filemanager.createDirectory(at: url, withIntermediateDirectories: true)
         }
 
+        try loadBundledThemes()
+
         // get all filenames in themes folder that end with `.json`
         let content = try filemanager.contentsOfDirectory(atPath: url.path).filter { $0.contains(".json") }
 
-        // if the folder does not contain any themes create a default bundled theme,
-        // write it to disk and return
-        if content.isEmpty {
-            guard let defaultUrl = Bundle.main.url(forResource: "default-dark", withExtension: "json") else {
+        let prefs = AppPreferencesModel.shared.preferences
+        // load each theme from disk
+        try content.forEach { file in
+            let fileURL = url.appendingPathComponent(file)
+            if var theme = try load(from: fileURL) {
+
+                // get all properties of terminal and editor colors
+                guard let terminalColors = try theme.terminal.allProperties() as? [String: Theme.Attributes],
+                      let editorColors = try theme.editor.allProperties() as? [String: Theme.Attributes]
+                else {
+                    print("error")
+                    throw NSError()
+                }
+
+                // check if there are any overrides in `preferences.json`
+                if let overrides = prefs.theme.overrides[theme.name]?["terminal"] {
+                    terminalColors.forEach { (key, _) in
+                        if let attributes = overrides[key] {
+                            theme.terminal[key] = attributes
+                        }
+                    }
+                }
+                if let overrides = prefs.theme.overrides[theme.name]?["editor"] {
+                    editorColors.forEach { (key, _) in
+                        if let attributes = overrides[key] {
+                            theme.editor[key] = attributes
+                        }
+                    }
+                }
+
+                // add the theme to themes array
+                self.themes.append(theme)
+
+                // if there already is a selected theme in `preferences.json` select this theme
+                // otherwise take the first in the list
+                self.selectedTheme = self.themes.first { $0.name == prefs.theme.selectedTheme } ?? self.themes.first
+            }
+        }
+    }
+
+    private func loadBundledThemes() throws {
+        let bundledThemeNames: [String] = [
+            "codeedit-xcode-dark",
+            "codeedit-xcode-light",
+            "codeedit-github-dark",
+            "codeedit-github-light"
+        ]
+        for themeName in bundledThemeNames {
+            guard let defaultUrl = Bundle.main.url(forResource: themeName, withExtension: "json") else {
                 return
             }
             let json = try Data(contentsOf: defaultUrl)
@@ -112,47 +164,7 @@ public final class ThemeModel: ObservableObject {
             let prettyJSON = try JSONSerialization.data(withJSONObject: jsonObject,
                                                         options: .prettyPrinted)
 
-            try prettyJSON.write(to: url.appendingPathComponent("Default (Dark).json"))
-
-            return
-        }
-
-        let prefs = AppPreferencesModel.shared.preferences
-        // load each theme from disk
-        try content.forEach { file in
-            let fileURL = url.appendingPathComponent(file)
-            var theme = try load(from: fileURL)
-
-            // get all properties of terminal and editor colors
-            guard let terminalColors = try theme.terminal.allProperties() as? [String: Theme.Attributes],
-                  let editorColors = try theme.editor.allProperties() as? [String: Theme.Attributes]
-            else {
-                print("error")
-                throw NSError()
-            }
-
-            // check if there are any overrides in `preferences.json`
-            if let overrides = prefs?.theme.overrides[theme.name]?["terminal"] {
-                terminalColors.forEach { (key, _) in
-                    if let attributes = overrides[key] {
-                        theme.terminal[key] = attributes
-                    }
-                }
-            }
-            if let overrides = prefs?.theme.overrides[theme.name]?["editor"] {
-                editorColors.forEach { (key, _) in
-                    if let attributes = overrides[key] {
-                        theme.editor[key] = attributes
-                    }
-                }
-            }
-
-            // add the theme to themes array
-            self.themes.append(theme)
-
-            // if there already is a selected theme in `preferences.json` select this theme
-            // otherwise take the first in the list
-            self.selectedTheme = self.themes.first { $0.name == prefs?.theme.selectedTheme } ?? self.themes.first
+            try prettyJSON.write(to: themesURL.appendingPathComponent("\(themeName).json"), options: .atomic)
         }
     }
 

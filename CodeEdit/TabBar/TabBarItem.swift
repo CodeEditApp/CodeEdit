@@ -10,53 +10,12 @@ import WorkspaceClient
 import AppPreferences
 import CodeEditUI
 
-/// The vertical divider between tab bar items.
-struct TabDivider: View {
-    @Environment(\.colorScheme)
-    var colorScheme
-
-    @StateObject
-    private var prefs: AppPreferencesModel = .shared
-
-    let width: CGFloat = 1
-
-    var body: some View {
-        Rectangle()
-            .frame(width: width)
-            .padding(.vertical, prefs.preferences.general.tabBarStyle == .xcode ? 8 : 0)
-            .foregroundColor(
-                prefs.preferences.general.tabBarStyle == .xcode
-                ? Color(nsColor: colorScheme == .dark ? .white : .black).opacity(0.12)
-                : Color(nsColor: .separatorColor).opacity(colorScheme == .dark ? 0.4 : 1.0)
-            )
-    }
-}
-
-/// The top border for inactive tabs when native-styled tab bar is selected.
-struct NativeTabShadow: View {
-    @Environment(\.colorScheme)
-    var colorScheme
-
-    @StateObject
-    private var prefs: AppPreferencesModel = .shared
-
-    let height: CGFloat = 1
-
-    var body: some View {
-        Rectangle()
-            .frame(height: height)
-            .padding(.vertical, prefs.preferences.general.tabBarStyle == .xcode ? 8 : 0)
-            .foregroundColor(
-                prefs.preferences.general.tabBarStyle == .xcode
-                ? Color(nsColor: colorScheme == .dark ? .white : .black).opacity(0.12)
-                : Color(nsColor: .separatorColor).opacity(colorScheme == .dark ? 0.3 : 1.0)
-            )
-    }
-}
-
 struct TabBarItem: View {
     @Environment(\.colorScheme)
     var colorScheme
+
+    @Environment(\.controlActiveState)
+    private var activeState
 
     @StateObject
     private var prefs: AppPreferencesModel = .shared
@@ -92,8 +51,6 @@ struct TabBarItem: View {
     @ObservedObject
     var workspace: WorkspaceDocument
 
-    var tabBarHeight: Double = 28.0
-
     var isActive: Bool {
         item.id == workspace.selectionState.selectedId
     }
@@ -110,28 +67,50 @@ struct TabBarItem: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .foregroundColor(
-                        prefs.preferences.general.fileIconStyle == .color ? item.iconColor : .secondary
+                        prefs.preferences.general.fileIconStyle == .color && activeState != .inactive
+                        ? item.iconColor
+                        : .secondary
                     )
                     .frame(width: 12, height: 12)
                 Text(item.url.lastPathComponent)
                     .font(.system(size: 11.0))
                     .lineLimit(1)
             }
-            .frame(height: tabBarHeight)
+            .frame(maxHeight: .infinity) // To max-out the parent (tab bar) area.
             .padding(.horizontal, prefs.preferences.general.tabBarStyle == .native ? 28 : 23)
             .overlay {
                 ZStack {
                     if isActive {
-                        // Create a hidden button, if the tab is selected
-                        // and hide the button in the ZStack.
-                        Button(action: closeAction) {
-                            Text("").hidden()
-                        }
+                        // Close Tab Shortcut:
+                        // Using an invisible button to contain the keyboard shortcut is simply
+                        // because the keyboard shortcut has an unexpected bug when working with
+                        // custom buttonStyle. This is an workaround and it works as expected.
+                        Button(
+                            action: closeAction,
+                            label: { EmptyView() }
+                        )
                         .frame(width: 0, height: 0)
                         .padding(0)
                         .opacity(0)
                         .keyboardShortcut("w", modifiers: [.command])
                     }
+                    // Switch Tab Shortcut:
+                    // Using an invisible button to contain the keyboard shortcut is simply
+                    // because the keyboard shortcut has an unexpected bug when working with
+                    // custom buttonStyle. This is an workaround and it works as expected.
+                    Button(
+                        action: switchAction,
+                        label: { EmptyView() }
+                    )
+                    .frame(width: 0, height: 0)
+                    .padding(0)
+                    .opacity(0)
+                    .keyboardShortcut(
+                        workspace.getTabKeyEquivalent(item: item),
+                        modifiers: [.command]
+                    )
+                    .background(.blue)
+                    // Close button.
                     Button(action: closeAction) {
                         if prefs.preferences.general.tabBarStyle == .xcode {
                             Image(systemName: "xmark")
@@ -189,17 +168,26 @@ struct TabBarItem: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .overlay {
-                // Only show NativeTabShadow when `tabBarStyle` is native and this tab is not active.
-                if prefs.preferences.general.tabBarStyle == .native && !isActive {
-                    NativeTabShadow()
-                        .frame(maxHeight: .infinity, alignment: .top)
-                }
-            }
+            .opacity(
+                // Inactive states for tab bar item content.
+                activeState != .inactive
+                ? 1.0
+                : (
+                    isActive
+                    ? (prefs.preferences.general.tabBarStyle == .xcode ? 0.6 : 0.35)
+                    : (prefs.preferences.general.tabBarStyle == .xcode ? 0.4 : 0.55)
+                )
+            )
             TabDivider()
                 .opacity(
                     isActive && prefs.preferences.general.tabBarStyle == .xcode ? 0.0 : 1.0
                 )
+        }
+        .overlay(alignment: .top) {
+            // Only show NativeTabShadow when `tabBarStyle` is native and this tab is not active.
+            if prefs.preferences.general.tabBarStyle == .native && !isActive {
+                TabBarTopDivider()
+            }
         }
         .foregroundColor(
             isActive
@@ -214,7 +202,7 @@ struct TabBarItem: View {
                 : .secondary
             )
         )
-        .frame(height: tabBarHeight)
+        .frame(maxHeight: .infinity) // To max-out the parent (tab bar) area.
         .contentShape(Rectangle())
         .onHover { hover in
             isHovering = hover
@@ -228,25 +216,20 @@ struct TabBarItem: View {
         }
     }
 
-    // I am not using Button for wrapping content because Button will potentially
-    // have conflict with the inner close Button when the style of this Button is
-    // not set to `plain`. And based on the design of CodeEdit, plain style is not
-    // an expected choice, so I eventually come up with this solution for now. It
-    // is possible to make a customized Button (which may solve the clicking conflict,
-    // but I am not sure). I will try that in the future.
     var body: some View {
-        Button(action: switchAction) {
-            content
-        }
-        .buttonStyle(TabBarItemButtonStyle())
-        .keyboardShortcut(
-            workspace.getTabKeyEquivalent(item: item),
-            modifiers: [.command]
+        Button(
+            action: switchAction,
+            label: { content }
         )
+        .buttonStyle(TabBarItemButtonStyle())
         .background {
             if prefs.preferences.general.tabBarStyle == .xcode {
                 Color(nsColor: isActive ? .selectedControlColor : .clear)
-                    .opacity(colorScheme == .dark ? 0.70 : 0.50)
+                    .opacity(
+                        colorScheme == .dark
+                        ? (activeState != .inactive ? 0.70 : 0.50)
+                        : (activeState != .inactive ? 0.50 : 0.35)
+                    )
                     .background(
                         // This layer of background is to hide dividers of other tab bar items
                         // because the original background above is translucent (by opacity).
@@ -254,31 +237,33 @@ struct TabBarItem: View {
                     )
                     .animation(.easeInOut(duration: 0.08), value: isHovering)
             } else {
-                if isActive {
-                    EffectView(
-                        // Use `windowBackground` material to fit the material of transparent titlebar
-                        // in order to make it native-styled.
-                        material: NSVisualEffectView.Material.windowBackground,
-                        blendingMode: NSVisualEffectView.BlendingMode.withinWindow
-                    )
-                } else {
-                    EffectView(
-                        material: NSVisualEffectView.Material.titlebar,
-                        blendingMode: NSVisualEffectView.BlendingMode.withinWindow
-                    )
-                    .overlay(
-                        Color(nsColor: .black)
-                            .opacity(colorScheme == .dark ? 0.50 : 0.05)
-                            .padding(.top, 1)
-                            .padding(.horizontal, 1)
-                    )
-                    .overlay(
-                        Color(nsColor: colorScheme == .dark ? .white : .black)
-                            .opacity(isHovering ? 0.05 : 0.0)
-                            .animation(.easeInOut(duration: 0.10), value: isHovering)
-                            .padding(.top, 1)
-                            .padding(.horizontal, 1)
-                    )
+                EffectView(
+                    NSVisualEffectView.Material.titlebar,
+                    blendingMode: NSVisualEffectView.BlendingMode.withinWindow
+                )
+                .background(
+                    // This background is used to avoid color-split between title bar and tab bar.
+                    // The material will tint the color hind, which will result in a color-split.
+                    Color(nsColor: .controlBackgroundColor)
+                )
+                .overlay {
+                    if !isActive {
+                        ZStack {
+                            // Native inactive tab background dim.
+                            Color(nsColor: .black)
+                                .opacity(colorScheme == .dark ? 0.45 : 0.05)
+
+                            // Native inactive tab hover state.
+                            Color(nsColor: colorScheme == .dark ? .white : .black)
+                                .opacity(
+                                    isHovering
+                                    ? (colorScheme == .dark ? 0.08 : 0.05)
+                                    : 0.0
+                                )
+                                .animation(.easeInOut(duration: 0.10), value: isHovering)
+                        }
+                        .padding(.horizontal, 1)
+                    }
                 }
             }
         }
@@ -315,14 +300,6 @@ struct TabBarItem: View {
                 }
             }
         }
-        // Update titlebarAppearsTransparent per tabBarStyle.
-        .onChange(of: prefs.preferences.general.tabBarStyle, perform: { _ in
-            if prefs.preferences.general.tabBarStyle == .native {
-                workspace.windowControllers.first?.window?.titlebarAppearsTransparent = true
-            } else {
-                workspace.windowControllers.first?.window?.titlebarAppearsTransparent = false
-            }
-        })
     }
 }
 
@@ -334,7 +311,6 @@ fileprivate extension WorkspaceDocument {
                 Character.init("\(counter + 1)")
             )
         }
-
         return "0"
     }
 }

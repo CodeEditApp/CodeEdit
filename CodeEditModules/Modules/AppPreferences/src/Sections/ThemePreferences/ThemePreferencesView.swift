@@ -17,6 +17,9 @@ public struct ThemePreferencesView: View {
     @ObservedObject
     private var themeModel: ThemeModel = .shared
 
+    @ObservedObject
+    private var prefs: AppPreferencesModel = .shared
+
     @State
     private var listView: Bool = false
 
@@ -26,9 +29,10 @@ public struct ThemePreferencesView: View {
         VStack(spacing: 20) {
             frame
             HStack(alignment: .center) {
-                Toggle("Automatically change theme based on system appearance", isOn: .constant(false))
-                    .disabled(true)
-                    .help("Not yet implemented")
+                Toggle(
+                    "Automatically change theme based on system appearance",
+                    isOn: $prefs.preferences.theme.mirrorSystemAppearance
+                )
                 Spacer()
                 Button("Get More Themes...") {}
                     .disabled(true)
@@ -81,7 +85,7 @@ public struct ThemePreferencesView: View {
     private var sidebarListView: some View {
         List(selection: $themeModel.selectedTheme) {
             ForEach(themeModel.selectedAppearance == 0 ? themeModel.darkThemes : themeModel.lightThemes) { theme in
-                Button(theme.name) { themeModel.selectedTheme = theme }
+                Button(theme.displayName) { themeModel.selectedTheme = theme }
                     .buttonStyle(.plain)
                     .tag(theme)
                     .contextMenu {
@@ -128,7 +132,7 @@ public struct ThemePreferencesView: View {
             }
                       .padding(.vertical, 20)
         }
-        .background(EffectView(material: .contentBackground))
+        .background(EffectView(.contentBackground))
     }
 
     private var sidebarBottomToolbar: some View {

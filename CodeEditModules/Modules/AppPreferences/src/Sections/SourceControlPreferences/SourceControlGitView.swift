@@ -64,7 +64,7 @@ struct SourceControlGitView: View {
             }
         }
         .frame(height: 350)
-        .background(EffectView(material: .contentBackground))
+        .background(EffectView(.contentBackground))
     }
 
     private var bottomToolbar: some View {

@@ -6,48 +6,102 @@
 //
 import SwiftUI
 import GitClient
+import CodeEditUtils
 
 struct HistoryItem: View {
 
     var commit: Commit
 
-    var dateFormatter: DateFormatter {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        formatter.dateFormat = "yyyy/MM/dd"
-        return formatter
+    @Binding var selection: Commit?
+
+    private var showPopup: Binding<Bool> {
+        Binding<Bool> {
+            return selection == commit
+        } set: { newValue in
+            if newValue {
+                selection = commit
+            } else {
+                selection = nil
+            }
+        }
     }
+
+    @Environment(\.openURL) var openCommit
 
     var body: some View {
         VStack(alignment: .trailing) {
-            HStack {
-                Text(commit.author)
-                    .fontWeight(.bold)
-                    .font(.system(size: 11))
-                Spacer()
-                Text(commit.hash)
-                    .font(.system(size: 10))
-                    .background(RoundedRectangle(cornerRadius: 3)
-                        .padding(.trailing, -5)
-                        .padding(.leading, -5)
-                        .foregroundColor(Color("HistoryInspectorHash")))
-                    .padding(.trailing, 5)
-            }
-
             HStack(alignment: .top) {
-                Text(commit.message)
-                    .font(.system(size: 11))
-                    .lineLimit(2)
+                VStack(alignment: .leading) {
+                    Text(commit.author)
+                        .fontWeight(.bold)
+                        .font(.system(size: 11))
+                    Text(commit.message)
+                        .font(.system(size: 11))
+                        .lineLimit(2)
+                }
                 Spacer()
-                Text(dateFormatter.string(from: commit.date))
-                    .font(.system(size: 11))
-                    .foregroundColor(.secondary)
+                VStack(alignment: .trailing, spacing: 5) {
+                    Text(commit.hash)
+                        .font(.system(size: 10))
+                        .background(
+                            RoundedRectangle(cornerRadius: 3)
+                                .padding(.trailing, -5)
+                                .padding(.leading, -5)
+                                .foregroundColor(Color(nsColor: .quaternaryLabelColor))
+                        )
+                        .padding(.trailing, 5)
+                    Text(commit.date.relativeStringToNow())
+                        .font(.system(size: 11))
+                        .foregroundColor(.secondary)
+                }
+                .padding(.top, 1)
             }
-            .frame(height: 30).padding(.top, -8)
-
-            Divider().frame(maxWidth: 60).padding(.top, -3)
-
         }
-        .padding(EdgeInsets(top: 0, leading: 15, bottom: 0, trailing: 15))
+        .padding(.vertical, 6)
+        .padding(.horizontal, 10)
+        .contentShape(Rectangle())
+        .popover(isPresented: showPopup, arrowEdge: .leading) {
+            PopoverView(commit: commit)
+        }
+        .contextMenu {
+            Group {
+                Button("Copy Commit Message") {
+                    let pasteboard = NSPasteboard.general
+                    pasteboard.clearContents()
+                    pasteboard.setString(commit.message, forType: .string)
+                }
+                Button("Copy Identifier") {}
+                    .disabled(true) // TODO: Implementation Needed
+                Button("Email \(commit.author)...") {
+                    let service = NSSharingService(named: NSSharingService.Name.composeEmail)
+                    service?.recipients = [commit.authorEmail]
+                    service?.perform(withItems: [])
+                }
+                Divider()
+            }
+            Group {
+                Button("Tag \(commit.hash)...") {}
+                    .disabled(true) // TODO: Implementation Needed
+                Button("New Branch from \(commit.hash)...") {}
+                    .disabled(true) // TODO: Implementation Needed
+                Button("Cherry-Pick \(commit.hash)...") {}
+                    .disabled(true) // TODO: Implementation Needed
+            }
+            Group {
+                Divider()
+                if let commitRemoteURL = commit.commitBaseURL?.absoluteString {
+                    Button("View on \(commit.remoteString)...") {
+                        let commitURL = "\(commitRemoteURL)/\(commit.commitHash)"
+                        openCommit(URL(string: commitURL)!)
+                    }
+                    Divider()
+                }
+                Button("Check Out \(commit.hash)...") {}
+                    .disabled(true) // TODO: Implementation Needed
+                Divider()
+                Button("History Editor Help") {}
+                    .disabled(true) // TODO: Implementation Needed
+            }
+        }
     }
 }

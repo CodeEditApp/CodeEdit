@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditUI
 import WorkspaceClient
 
 struct InspectorSidebar: View {
@@ -35,6 +36,8 @@ struct InspectorSidebar: View {
                     default: EmptyView()
                     }
                 }
+            } else {
+                NoSelectionView()
             }
         }
         .frame(
@@ -48,5 +51,8 @@ struct InspectorSidebar: View {
             InspectorSidebarToolbarTop(selection: $selection)
                 .padding(.bottom, -8)
         }
+        .background(
+            EffectView(.windowBackground, blendingMode: .withinWindow)
+        )
     }
 }

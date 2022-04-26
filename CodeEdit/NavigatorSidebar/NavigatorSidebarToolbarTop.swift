@@ -15,17 +15,35 @@ struct NavigatorSidebarToolbarTop: View {
     @Binding
     var selection: Int
 
+    @State private var icons = [
+        SidebarDockIcon(imageName: "folder", title: "Project", id: 0),
+        SidebarDockIcon(imageName: "vault", title: "Version Control", id: 1),
+        SidebarDockIcon(imageName: "magnifyingglass", title: "Search", id: 2),
+        SidebarDockIcon(imageName: "shippingbox", title: "...", id: 3),
+        SidebarDockIcon(imageName: "play", title: "...", id: 4),
+        SidebarDockIcon(imageName: "exclamationmark.triangle", title: "...", id: 5),
+        SidebarDockIcon(imageName: "curlybraces.square", title: "...", id: 6),
+        SidebarDockIcon(imageName: "puzzlepiece.extension", title: "...", id: 7),
+        SidebarDockIcon(imageName: "square.grid.2x2", title: "...", id: 8)
+    ]
+    @State private var hasChangedLocation: Bool = false
+    @State private var draggingItem: SidebarDockIcon?
+    @State private var drugItemLocation: CGPoint?
+
     var body: some View {
         HStack(spacing: 2) {
-            icon(systemImage: "folder", title: "Project", id: 0)
-            icon(named: "vault", title: "Version Control", id: 1)
-            icon(systemImage: "magnifyingglass", title: "Search", id: 2)
-            icon(systemImage: "shippingbox", title: "...", id: 3)
-            icon(systemImage: "play", title: "...", id: 4)
-            icon(systemImage: "exclamationmark.triangle", title: "...", id: 5)
-            icon(systemImage: "curlybraces.square", title: "...", id: 6)
-            icon(systemImage: "puzzlepiece.extension", title: "...", id: 7)
-            icon(systemImage: "square.grid.2x2", title: "...", id: 8)
+            ForEach(icons) { icon in
+                makeIcon(named: icon.imageName, title: icon.title, id: icon.id)
+                    .opacity(draggingItem?.imageName == icon.imageName &&
+                             hasChangedLocation &&
+                             drugItemLocation != nil ? 0.0: 1.0)
+                    .onDrop(of: [.utf8PlainText],
+                            delegate: NavigatorSidebarDockIconDelegate(item: icon,
+                                                                        current: $draggingItem,
+                                                                        icons: $icons,
+                                                                        hasChangedLocation: $hasChangedLocation,
+                                                                        drugItemLocation: $drugItemLocation))
+            }
         }
         .frame(height: 29, alignment: .center)
         .frame(maxWidth: .infinity)
@@ -35,36 +53,35 @@ struct NavigatorSidebarToolbarTop: View {
         .overlay(alignment: .bottom) {
             Divider()
         }
+        .animation(.default, value: icons)
     }
 
-    func icon(systemImage: String,
-              title: String,
-              id: Int,
-              scale: Image.Scale = .medium
-    ) -> some View {
+    func makeIcon(named: String, title: String, id: Int, scale: Image.Scale = .medium) -> some View {
         Button {
             selection = id
         } label: {
-            Image(systemName: systemImage)
-                .help(title)
+            getSafeImage(named: named, accesibilityDescription: title)
+            .help(title)
+            .onDrag {
+            if let index = icons.firstIndex(where: { $0.imageName == named }) {
+                draggingItem = icons[index]
+            }
+                return .init(object: NSString(string: named))
+            } preview: {
+                RoundedRectangle(cornerRadius: .zero)
+                    .frame(width: .zero)
+            }
         }
         .buttonStyle(NavigatorToolbarButtonStyle(id: id, selection: selection, activeState: activeState))
         .imageScale(scale)
     }
 
-    func icon(named: String,
-              title: String,
-              id: Int,
-              scale: Image.Scale = .medium
-    ) -> some View {
-        Button {
-            selection = id
-        } label: {
-            Image(symbol: named)
-                .help(title)
+    private func getSafeImage(named: String, accesibilityDescription: String?) -> Image {
+        if let nsImage = NSImage(systemSymbolName: named, accessibilityDescription: accesibilityDescription) {
+            return Image(nsImage: nsImage)
+        } else {
+            return Image(symbol: named)
         }
-        .buttonStyle(NavigatorToolbarButtonStyle(id: id, selection: selection, activeState: activeState))
-        .imageScale(scale)
     }
 
     struct NavigatorToolbarButtonStyle: ButtonStyle {
@@ -79,6 +96,53 @@ struct NavigatorSidebarToolbarTop: View {
                 .frame(width: 25, height: 25, alignment: .center)
                 .contentShape(Rectangle())
                 .opacity(activeState == .inactive ? 0.45 : 1)
+        }
+    }
+
+    private struct SidebarDockIcon: Identifiable, Equatable {
+        let imageName: String
+        let title: String
+        var id: Int
+    }
+
+    private struct NavigatorSidebarDockIconDelegate: DropDelegate {
+        let item: SidebarDockIcon
+        @Binding var current: SidebarDockIcon?
+        @Binding var icons: [SidebarDockIcon]
+        @Binding var hasChangedLocation: Bool
+        @Binding var drugItemLocation: CGPoint?
+
+        func dropEntered(info: DropInfo) {
+            if current == nil {
+                current = item
+                drugItemLocation = info.location
+            }
+
+            guard item != current, let current = current,
+                    let from = icons.firstIndex(of: current),
+                    let toIndex = icons.firstIndex(of: item) else { return }
+
+            hasChangedLocation = true
+            drugItemLocation = info.location
+
+            if icons[toIndex] != current {
+                icons.move(fromOffsets: IndexSet(integer: from), toOffset: toIndex > from ? toIndex + 1 : toIndex)
+            }
+        }
+
+        func dropExited(info: DropInfo) {
+            drugItemLocation = nil
+        }
+
+        func dropUpdated(info: DropInfo) -> DropProposal? {
+            return DropProposal(operation: .move)
+        }
+
+        func performDrop(info: DropInfo) -> Bool {
+            hasChangedLocation = false
+            drugItemLocation = nil
+            current = nil
+            return true
         }
     }
 }

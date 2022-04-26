@@ -28,15 +28,18 @@ struct WorkspaceCodeFileView: View {
                     .safeAreaInset(edge: .top, spacing: 0) {
                         VStack(spacing: 0) {
                             TabBar(windowController: windowController, workspace: workspace)
-                            Divider()
+                            TabBarBottomDivider()
                             BreadcrumbsView(file: item, tappedOpenFile: workspace.openFile(item:))
+                            Divider()
                         }
                     }
             } else {
                 Text("CodeEdit cannot open this file because its file type is not supported.")
             }
         } else {
-            Text("Open file from sidebar")
+            Text("No Editor")
+                .font(.system(size: 17))
+                .foregroundColor(.secondary)
         }
     }
 

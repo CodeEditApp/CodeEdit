@@ -7,6 +7,7 @@
 
 import SwiftUI
 import GitClient
+import CodeEditUI
 
 /// # StatusBarView
 ///
@@ -21,10 +22,10 @@ public struct StatusBarView: View {
     @ObservedObject
     private var model: StatusBarModel
 
-    /// Initialize with GitClient
-    /// - Parameter gitClient: a GitClient
-    public init(workspaceURL: URL) {
-        self.model = .init(workspaceURL: workspaceURL)
+    /// Initialize with model
+    /// - Parameter model: The statusbar model
+    public init(model: StatusBarModel) {
+        self.model = model
     }
 
     public var body: some View {
@@ -46,20 +47,11 @@ public struct StatusBarView: View {
                 .foregroundStyle(.bar)
             HStack(spacing: 15) {
                 HStack(spacing: 5) {
-                    StatusBarLabelButton(
-                        model: model,
-                        title: model.errorCount.formatted(),
-                        image: "xmark.octagon"
-                    )
-                    StatusBarLabelButton(
-                        model: model,
-                        title: model.warningCount.formatted(),
-                        image: "exclamationmark.triangle"
-                    )
-                }
-                if model.selectedBranch != nil {
-                    StatusBarBranchPicker(model: model)
-                    StatusBarPullButton(model: model)
+                    StatusBarBreakpointButton(model: model)
+                    Divider()
+                        .frame(maxHeight: 12)
+                        .padding(.horizontal, 7)
+                    SegmentedControl($model.selectedTab, options: StatusBarTab.allOptions)
                 }
                 Spacer()
                 StatusBarCursorLocationLabel(model: model)
@@ -111,7 +103,7 @@ struct SwiftUIView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack(alignment: .bottom) {
             Color.white
-            StatusBarView(workspaceURL: URL(fileURLWithPath: ""))
+            StatusBarView(model: StatusBarModel(workspaceURL: URL(fileURLWithPath: "")))
                 .previewLayout(.fixed(width: 1.336, height: 500.0))
                 .preferredColorScheme(.light)
         }

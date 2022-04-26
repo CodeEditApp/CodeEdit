@@ -82,7 +82,7 @@ struct GithubLoginView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 HStack {
                     Button("Cancel") {
-                        dismissDialog = false
+                        dismissDialog.toggle()
                     }
                     if accountToken.isEmpty {
                         Button("Sign In") {}
@@ -121,8 +121,8 @@ struct GithubLoginView: View {
                                               gitCloningProtocol: true,
                                               gitSSHKey: "",
                                               isTokenValid: true))
-                    keychain.set(accountToken, forKey: accountName)
-                    dismissDialog = false
+                    keychain.set(accountToken, forKey: "github_\(accountName)")
+                    dismissDialog.toggle()
                 }
             case .failure(let error):
                 print(error)

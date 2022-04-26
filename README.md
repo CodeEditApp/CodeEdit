@@ -29,7 +29,7 @@ CodeEdit is a code editor built by the community, for the community, written ent
 
 Developers that use a Mac should be able to use an editor that feels at home on the Mac. Comparable editors are built on Electron. This is a huge limitation because it cannot utilize system resources to their fullest potential.
 
-Electron requires a Chromium instance to run. This can mean massive performance losses and high RAM usage even for small apps built on it. Additionally, the overall code footprint is much larger and animations are slower. More frames are lost and things like window resizing feels laggy. Native apps are smooth as butter and utilize system resources much more efficiantly for better performance and reliability. For more information on this, we'll point you to [a fantastic article](https://www.remotion.com/blog/why-remotion-is-a-native-macos-app-not-electron) by the nice folks at Remotion.
+Electron requires a Chromium instance to run. This can mean massive performance losses and high RAM usage even for small apps built on it. Additionally, the overall code footprint is much larger and animations are slower. More frames are lost and things like window resizing feels laggy. Native apps are smooth as butter and utilize system resources much more efficiently for better performance and reliability. For more information on this, we'll point you to [a fantastic article](https://www.remotion.com/blog/why-remotion-is-a-native-macos-app-not-electron) by the nice folks at Remotion.
 
 Xcode offers this great native experience however it mostly supports projects written specifically for Apple platforms. There are many projects not written for Apple platforms that deserve that same macOS-native experience that developers get with Xcode.
 
@@ -87,6 +87,10 @@ Read the [Contribution Guide](https://github.com/CodeEditApp/CodeEdit/blob/main/
     <td align="center"><a href="https://github.com/octree"><img src="https://avatars.githubusercontent.com/u/7934444?v=4?s=100" width="100px;" alt=""/><br /><sub><b>HZ.Liu</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=octree" title="Code">💻</a> <a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3Aoctree" title="Bug reports">🐛</a></td>
     <td align="center"><a href="https://www.youtube.com/channel/UCx1gvWpy5zjOd7yZyDwmXEA?sub_confirmation=1"><img src="https://avatars.githubusercontent.com/u/8013017?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Richard Topchii</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=richardtop" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/Pythonen"><img src="https://avatars.githubusercontent.com/u/53183345?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Pythonen</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=Pythonen" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/jav-solo"><img src="https://avatars.githubusercontent.com/u/10246220?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Javier Solorzano</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=jav-solo" title="Code">💻</a> <a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3Ajav-solo" title="Bug reports">🐛</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="http://angcosmin.com"><img src="https://avatars.githubusercontent.com/u/8146514?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Cosmin Anghel</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=AngCosmin" title="Code">💻</a></td>
   </tr>
 </table>
 

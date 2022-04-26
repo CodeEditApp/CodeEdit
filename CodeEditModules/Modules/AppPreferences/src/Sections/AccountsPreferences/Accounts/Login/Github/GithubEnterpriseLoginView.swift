@@ -72,7 +72,7 @@ struct GithubEnterpriseLoginView: View {
             }.padding(.top, 10)
         }
         .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
-        .frame(width: 485, height: 280)
+        .frame(width: 485, height: 190)
     }
 
     private func loginGithubEnterprise(gitAccountName: String) {
@@ -96,7 +96,7 @@ struct GithubEnterpriseLoginView: View {
                                               gitCloningProtocol: true,
                                               gitSSHKey: "",
                                               isTokenValid: true))
-                    keychain.set(accountToken, forKey: accountName)
+                    keychain.set(accountToken, forKey: "github_\(accountName)_enterprise")
                     dismissDialog = false
                 }
             case .failure(let error):

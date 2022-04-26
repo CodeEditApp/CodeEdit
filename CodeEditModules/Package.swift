@@ -89,8 +89,8 @@ let package = Package(
     dependencies: [
         .package(
             name: "Highlightr",
-            url: "https://github.com/raspu/Highlightr.git",
-            from: "2.1.2"
+            url: "https://github.com/lukepistrol/Highlightr.git",
+            branch: "main"
         ),
         .package(
             name: "SnapshotTesting",
@@ -143,7 +143,8 @@ let package = Package(
             name: "CodeFile",
             dependencies: [
                 "Highlightr",
-                "AppPreferences"
+                "AppPreferences",
+                "CodeEditUtils"
             ],
             path: "Modules/CodeFile/src"
         ),
@@ -159,6 +160,7 @@ let package = Package(
             dependencies: [
                 "WorkspaceClient",
                 "CodeEditUI",
+                "GitClone",
                 "AppPreferences",
             ],
             path: "Modules/WelcomeModule/src",
@@ -170,6 +172,8 @@ let package = Package(
             name: "WelcomeModuleTests",
             dependencies: [
                 "WelcomeModule",
+                "GitClone",
+                "ShellClient",
                 "SnapshotTesting",
             ],
             path: "Modules/WelcomeModule/Tests"
@@ -180,6 +184,8 @@ let package = Package(
                 "GitClient",
                 "TerminalEmulator",
                 "CodeFile",
+                "CodeEditUI",
+                "CodeEditSymbols",
             ],
             path: "Modules/StatusBar/src"
         ),
@@ -258,7 +264,22 @@ let package = Package(
         ),
         .target(
             name: "CodeEditUI",
+            dependencies: [
+                "CodeEditSymbols",
+                "WorkspaceClient",
+                "GitClient"
+            ],
             path: "Modules/CodeEditUI/src"
+        ),
+        .testTarget(
+            name: "CodeEditUITests",
+            dependencies: [
+                "CodeEditUI",
+                "WorkspaceClient",
+                "GitClient",
+                "SnapshotTesting",
+            ],
+            path: "Modules/CodeEditUI/Tests"
         ),
         .target(
             name: "Acknowledgements",

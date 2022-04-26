@@ -11,9 +11,12 @@ import CodeEditUI
 // swiftlint:disable for_where
 public struct PreferenceAccountsView: View {
 
-    @State private var openAccountDialog = false
-    @State private var cloneUsing = false
-    @State var accountSelection: SourceControlAccounts.ID?
+    @State
+    private var openAccountDialog = false
+    @State
+    private var cloneUsing = false
+    @State
+    var accountSelection: SourceControlAccounts.ID?
 
     @StateObject
     private var prefs: AppPreferencesModel = .shared
@@ -51,6 +54,9 @@ public struct PreferenceAccountsView: View {
                  selection: $accountSelection) { gitAccount in
                 GitAccountItem(sourceControlAccount: gitAccount)
             }
+                 .background(
+                    EffectView(.contentBackground)
+                 )
             PreferencesToolbar {
                 sidebarBottomToolbar
             }
@@ -106,17 +112,19 @@ public struct PreferenceAccountsView: View {
             }
             .padding(.top, 10)
             .frame(maxHeight: .infinity, alignment: .top)
-            .background(EffectView(material: .contentBackground))
+            .background(EffectView(.contentBackground))
         }
     }
 
     private var sidebarBottomToolbar: some View {
         HStack {
-            Button { openAccountDialog = true } label: {
+            Button {
+                openAccountDialog.toggle()
+            } label: {
                 Image(systemName: "plus")
             }
             .sheet(isPresented: $openAccountDialog, content: {
-                AccountSelectionDialog(dismissDialog: $openAccountDialog)
+                AccountSelectionDialog(openAccountDialog: $openAccountDialog)
             })
             .help("Add a Git Account")
             .buttonStyle(.plain)
@@ -137,7 +145,7 @@ public struct PreferenceAccountsView: View {
             Text("Click the add (+) button to create a new account")
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(EffectView(material: .contentBackground))
+        .background(EffectView(.contentBackground))
     }
 
     private var selectAccount: some View {
@@ -145,7 +153,7 @@ public struct PreferenceAccountsView: View {
             Text("Select an account from the list in the left panel")
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(EffectView(material: .contentBackground))
+        .background(EffectView(.contentBackground))
     }
 
     private func getSourceControlAccount(selectedAccountId: String) -> SourceControlAccounts? {
