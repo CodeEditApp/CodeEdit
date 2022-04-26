@@ -26,7 +26,12 @@ struct HistoryItem: View {
         }
     }
 
-    @Environment(\.openURL) var openCommit
+    @Environment(\.openURL) private var openCommit
+    
+    init(commit: Commit, selection: Binding<Commit?>) {
+        self.commit = commit
+        self._selection = selection
+    }
 
     var body: some View {
         VStack(alignment: .trailing) {

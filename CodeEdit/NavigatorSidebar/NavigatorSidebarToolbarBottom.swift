@@ -9,10 +9,14 @@ import SwiftUI
 
 struct NavigatorSidebarToolbarBottom: View {
     @Environment(\.controlActiveState)
-    var activeState
+    private var activeState
 
     @ObservedObject
-    var workspace: WorkspaceDocument
+    private var workspace: WorkspaceDocument
+    
+    init(workspace: WorkspaceDocument) {
+        self.workspace = workspace
+    }
 
     var body: some View {
         HStack(spacing: 10) {

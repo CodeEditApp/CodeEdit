@@ -9,7 +9,7 @@ import SwiftUI
 
 struct InspectorSidebarToolbarTop: View {
     @Binding
-    var selection: Int
+    private var selection: Int
 
     @State var targeted: Bool = true
     @State private var icons = [
@@ -21,6 +21,10 @@ struct InspectorSidebarToolbarTop: View {
     @State private var hasChangedLocation: Bool = false
     @State private var draggingItem: InspectorDockIcon?
     @State private var drugItemLocation: CGPoint?
+    
+    init(selection: Binding<Int>) {
+        self._selection = selection
+    }
 
     var body: some View {
         ScrollView {

@@ -10,12 +10,18 @@ import WorkspaceClient
 
 struct NavigatorSidebar: View {
     @ObservedObject
-    var workspace: WorkspaceDocument
+    private var workspace: WorkspaceDocument
 
-    var windowController: NSWindowController
+    private let windowController: NSWindowController
 
     @State
     private var selection: Int = 0
+    
+    init(workspace: WorkspaceDocument, windowController: NSWindowController) {
+        self.workspace = workspace
+        self.windowController = windowController
+    }
+    
 
     var body: some View {
         VStack {

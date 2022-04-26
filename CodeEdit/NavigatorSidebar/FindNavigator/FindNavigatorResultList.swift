@@ -11,11 +11,16 @@ import Search
 
 struct FindNavigatorResultList: View {
     @ObservedObject
-    var state: WorkspaceDocument.SearchState
+    private var state: WorkspaceDocument.SearchState
 
     @State
-    var selectedResult: SearchResultModel?
-
+    private var selectedResult: SearchResultModel?
+    
+    init(state: WorkspaceDocument.SearchState, selectedResult: SearchResultModel? = nil) {
+        self.state = state
+        self.selectedResult = selectedResult
+    }
+    
     private var foundFiles: [SearchResultModel] {
         state.searchResult.filter {!$0.hasKeywordInfo}
     }

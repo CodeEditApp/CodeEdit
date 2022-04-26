@@ -10,13 +10,19 @@ import CodeEditUI
 import WorkspaceClient
 
 struct InspectorSidebar: View {
-    @ObservedObject
-    var workspace: WorkspaceDocument
 
-    var windowController: NSWindowController
+    @ObservedObject
+    private var workspace: WorkspaceDocument
+
+    private let windowController: NSWindowController
 
     @State
     private var selection: Int = 0
+    
+    init(workspace: WorkspaceDocument, windowController: NSWindowController) {
+        self.workspace = workspace
+        self.windowController = windowController
+    }
 
     var body: some View {
         VStack {

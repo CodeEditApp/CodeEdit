@@ -10,10 +10,10 @@ import CodeEditSymbols
 
 struct NavigatorSidebarToolbarTop: View {
     @Environment(\.controlActiveState)
-    var activeState
+    private var activeState
 
     @Binding
-    var selection: Int
+    private var selection: Int
 
     @State private var icons = [
         SidebarDockIcon(imageName: "folder", title: "Project", id: 0),
@@ -29,6 +29,10 @@ struct NavigatorSidebarToolbarTop: View {
     @State private var hasChangedLocation: Bool = false
     @State private var draggingItem: SidebarDockIcon?
     @State private var drugItemLocation: CGPoint?
+    
+    init(selection: Binding<Int>) {
+        self._selection = selection
+    }
 
     var body: some View {
         HStack(spacing: 2) {
@@ -56,7 +60,7 @@ struct NavigatorSidebarToolbarTop: View {
         .animation(.default, value: icons)
     }
 
-    func makeIcon(named: String, title: String, id: Int, scale: Image.Scale = .medium) -> some View {
+    private func makeIcon(named: String, title: String, id: Int, scale: Image.Scale = .medium) -> some View {
         Button {
             selection = id
         } label: {

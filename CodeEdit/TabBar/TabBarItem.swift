@@ -12,7 +12,7 @@ import CodeEditUI
 
 struct TabBarItem: View {
     @Environment(\.colorScheme)
-    var colorScheme
+    private var colorScheme
 
     @Environment(\.controlActiveState)
     private var activeState
@@ -21,38 +21,44 @@ struct TabBarItem: View {
     private var prefs: AppPreferencesModel = .shared
 
     @State
-    var isHovering: Bool = false
+    private var isHovering: Bool = false
 
     @State
-    var isHoveringClose: Bool = false
+    private var isHoveringClose: Bool = false
 
     @State
-    var isPressingClose: Bool = false
+    private var isPressingClose: Bool = false
 
     @State
-    var isAppeared: Bool = false
+    private var isAppeared: Bool = false
 
-    var item: WorkspaceClient.FileItem
-    var windowController: NSWindowController
+    private var item: WorkspaceClient.FileItem
+    private var windowController: NSWindowController
 
-    func switchAction() {
+    private func switchAction() {
         // Only set the `selectedId` when they are not equal to avoid performance issue for now.
         if workspace.selectionState.selectedId != item.id {
             workspace.selectionState.selectedId = item.id
         }
     }
 
-    func closeAction() {
+    private func closeAction() {
         withAnimation(.easeOut(duration: 0.20)) {
             workspace.closeFileTab(item: item)
         }
     }
 
     @ObservedObject
-    var workspace: WorkspaceDocument
+    private var workspace: WorkspaceDocument
 
-    var isActive: Bool {
+    private var isActive: Bool {
         item.id == workspace.selectionState.selectedId
+    }
+    
+    init(item: WorkspaceClient.FileItem, windowController: NSWindowController, workspace: WorkspaceDocument) {
+        self.item = item
+        self.windowController = windowController
+        self.workspace = workspace
     }
 
     @ViewBuilder
