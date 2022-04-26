@@ -46,6 +46,7 @@ public struct AboutView: View {
                                 .onHover { _ in
                                     self.hoveringOnCommitHash.toggle()
                                 }
+                                .animation(.easeInOut, value: self.hoveringOnCommitHash)
                         }.foregroundColor(.secondary)
                             .font(.system(size: 10, weight: .light))
                         Spacer().frame(height: 36)

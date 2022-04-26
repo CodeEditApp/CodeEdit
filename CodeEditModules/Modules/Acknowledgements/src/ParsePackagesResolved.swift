@@ -7,7 +7,6 @@
 
 import Foundation
 
-//   let parsedJSON = try? JSONDecoder().decode(RootObject.self, from: jsonData)
 struct Dependency: Decodable {
     var name: String
     var repositoryLink: String
@@ -19,7 +18,6 @@ struct Dependency: Decodable {
 
 struct RootObject: Codable {
     let object: Object
-    let version: Int
 }
 
 // MARK: - Object
@@ -36,5 +34,6 @@ struct Pin: Codable {
 
 // MARK: - State
 struct State: Codable {
-    let revision, version: String
+    let revision: String
+    let version: String?
 }

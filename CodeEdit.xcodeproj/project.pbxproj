@@ -86,7 +86,7 @@
 		D7E201BD27EA00E200CB86D0 /* FindNavigatorResultFileItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201BC27EA00E200CB86D0 /* FindNavigatorResultFileItem.swift */; };
 		D7F72DEB27EA3574000C3064 /* Search in Frameworks */ = {isa = PBXBuildFile; productRef = D7F72DEA27EA3574000C3064 /* Search */; };
 		DE6F77872813625500D00A76 /* TabBarDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6F77862813625500D00A76 /* TabBarDivider.swift */; };
-		FDF7C12227FAEA860039BA76 /* Package.resolved in Resources */ = {isa = PBXBuildFile; fileRef = FDF7C12127FAEA860039BA76 /* Package.resolved */; };
+		FD6A3D3D2817C13B008BCF11 /* Package.resolved in Resources */ = {isa = PBXBuildFile; fileRef = FD6A3D3C2817C13B008BCF11 /* Package.resolved */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -183,8 +183,8 @@
 		D7E201B127E8D50000CB86D0 /* FindNavigatorModeSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindNavigatorModeSelector.swift; sourceTree = "<group>"; };
 		D7E201B327E9989900CB86D0 /* FindNavigatorResultList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindNavigatorResultList.swift; sourceTree = "<group>"; };
 		D7E201BC27EA00E200CB86D0 /* FindNavigatorResultFileItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindNavigatorResultFileItem.swift; sourceTree = "<group>"; };
-		FDF7C12127FAEA860039BA76 /* Package.resolved */ = {isa = PBXFileReference; lastKnownFileType = text; path = Package.resolved; sourceTree = SOURCE_ROOT; };
 		DE6F77862813625500D00A76 /* TabBarDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarDivider.swift; sourceTree = "<group>"; };
+		FD6A3D3C2817C13B008BCF11 /* Package.resolved */ = {isa = PBXFileReference; lastKnownFileType = file; path = Package.resolved; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -410,7 +410,7 @@
 				043C321927E32295006AE443 /* MainMenu.xib */,
 				B673FDAC27E8296A00795864 /* PressActionsModifier.swift */,
 				B658FB3127DA9E0F00EA4DBD /* WorkspaceView.swift */,
-				FDF7C12127FAEA860039BA76 /* Package.resolved */,
+				FD6A3D3C2817C13B008BCF11 /* Package.resolved */,
 				28069DA527F5BD320016BC47 /* DefaultThemes */,
 			);
 			path = CodeEdit;
@@ -599,7 +599,7 @@
 				D7211D4727E06BFE008F2ED7 /* Localizable.strings in Resources */,
 				28A51001281673530087B0CC /* codeedit-xcode-dark.json in Resources */,
 				B658FB3427DA9E1000EA4DBD /* Assets.xcassets in Resources */,
-				FDF7C12227FAEA860039BA76 /* Package.resolved in Resources */,
+				FD6A3D3D2817C13B008BCF11 /* Package.resolved in Resources */,
 				043C321A27E32295006AE443 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
