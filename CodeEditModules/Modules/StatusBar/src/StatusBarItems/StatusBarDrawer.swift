@@ -7,6 +7,7 @@
 
 import SwiftUI
 import TerminalEmulator
+import CodeEditUI
 
 internal struct StatusBarDrawer: View {
     @ObservedObject
@@ -31,7 +32,10 @@ internal struct StatusBarDrawer: View {
 
     internal var body: some View {
         VStack(spacing: 0) {
-            TerminalEmulatorView(url: model.workspaceURL)
+            switch model.selectedTab {
+            case 0: TerminalEmulatorView(url: model.workspaceURL)
+            default: Rectangle().foregroundColor(Color(nsColor: .textBackgroundColor))
+            }
             HStack(alignment: .center, spacing: 10) {
                 FilterTextField(title: "Filter", text: $searchText)
                     .frame(maxWidth: 300)
@@ -42,8 +46,11 @@ internal struct StatusBarDrawer: View {
                 StatusBarMaximizeButton(model: model)
             }
             .padding(10)
-            .frame(maxHeight: 34)
+            .frame(maxHeight: 32)
             .background(.bar)
+            .overlay(alignment: .top) {
+                Divider()
+            }
         }
         .frame(minHeight: 0,
                idealHeight: height,
