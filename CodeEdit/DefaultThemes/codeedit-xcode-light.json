@@ -1,0 +1,126 @@
+{
+    "author" : "CodeEdit",
+    "distributionURL" : "https:\/\/github.com\/CodeEditApp\/CodeEdit",
+    "version" : "0.0.1",
+    "license" : "MIT",
+    "type" : "light",
+    "name" : "codeedit-xcode-light",
+    "displayName" : "Xcode Light",
+    "description" : "Xcode light theme.",
+    "editor" : {
+        "strings" : {
+            "color" : "#C41A16"
+        },
+        "comments" : {
+            "color" : "#267507"
+        },
+        "numbers" : {
+            "color" : "#1C00CF"
+        },
+        "commands" : {
+            "color" : "#326D74"
+        },
+        "lineHighlight" : {
+            "color" : "#E8F2FF"
+        },
+        "values" : {
+            "color" : "#6C36A9"
+        },
+        "background" : {
+            "color" : "#FFFFFF"
+        },
+        "keywords" : {
+            "color" : "#9B2393"
+        },
+        "text" : {
+            "color" : "#262626"
+        },
+        "insertionPoint" : {
+            "color" : "#262626"
+        },
+        "selection" : {
+            "color" : "#A4CDFF"
+        },
+        "types" : {
+            "color" : "#0B4F79"
+        },
+        "variables" : {
+            "color" : "#0F68A0"
+        },
+        "attributes" : {
+            "color" : "#3900A0"
+        },
+        "characters" : {
+            "color" : "#1C00CF"
+        },
+        "invisibles" : {
+            "color" : "#CCCCCC"
+        }
+    },
+    "terminal" : {
+        "white" : {
+            "color" : "#d9d9d9"
+        },
+        "brightMagenta" : {
+            "color" : "#af52de"
+        },
+        "brightRed" : {
+            "color" : "#ff3b30"
+        },
+        "blue" : {
+            "color" : "#007aff"
+        },
+        "red" : {
+            "color" : "#ff3b30"
+        },
+        "green" : {
+            "color" : "#28cd41"
+        },
+        "boldText" : {
+            "color" : "#262626"
+        },
+        "brightGreen" : {
+            "color" : "#28cd41"
+        },
+        "background" : {
+            "color" : "#ffffff"
+        },
+        "cursor" : {
+            "color" : "#262626"
+        },
+        "selection" : {
+            "color" : "#a4cdff"
+        },
+        "magenta" : {
+            "color" : "#af52de"
+        },
+        "black" : {
+            "color" : "#1f2024"
+        },
+        "text" : {
+            "color" : "#262626"
+        },
+        "brightWhite" : {
+            "color" : "#ffffff"
+        },
+        "brightBlue" : {
+            "color" : "#007aff"
+        },
+        "brightYellow" : {
+            "color" : "#ffcc00"
+        },
+        "cyan" : {
+            "color" : "#59adc4"
+        },
+        "yellow" : {
+            "color" : "#ffcc00"
+        },
+        "brightCyan" : {
+            "color" : "#55bef0"
+        },
+        "brightBlack" : {
+            "color" : "#8e8e93"
+        }
+    }
+}
+

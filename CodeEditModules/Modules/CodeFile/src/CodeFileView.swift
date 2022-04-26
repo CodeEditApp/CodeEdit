@@ -14,9 +14,6 @@ public struct CodeFileView: View {
     @ObservedObject
     private var codeFile: CodeFileDocument
 
-    @AppStorage(Theme.storageKey)
-    var theme: Theme = .atelierSavannaAuto
-
     @Environment(\.colorScheme)
     private var colorScheme
 
@@ -30,8 +27,7 @@ public struct CodeFileView: View {
     public var body: some View {
         CodeEditor(
             content: $codeFile.content,
-            language: getLanguage(),
-            theme: $theme
+            language: getLanguage()
         )
         .disabled(!editable)
     }
@@ -42,12 +38,5 @@ public struct CodeFileView: View {
         } else {
             return .default
         }
-    }
-
-    private func getTheme() -> Theme {
-        if theme == .atelierSavannaAuto {
-            return colorScheme == .light ? .atelierSavannaLight : .atelierSavannaDark
-        }
-        return theme
     }
 }
