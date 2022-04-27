@@ -55,6 +55,7 @@ private extension GeneralPreferencesView {
         }
     }
 
+    // TODO: Implement reflecting Show Issues preference and remove disabled modifier
     var showIssuesSection: some View {
         PreferencesSection("Show Issues:") {
             Picker("Show Issues:", selection: $prefs.preferences.general.showIssues) {
@@ -65,8 +66,10 @@ private extension GeneralPreferencesView {
             }
             .frame(width: inputWidth)
         }
+        .disabled(true)
     }
 
+    // TODO: Implement reflecting Show Live Issues preference and remove disabled modifier
     var showLiveIssuesSection: some View {
         PreferencesSection("", hideLabels: false, align: .center) {
             Toggle(isOn: $prefs.preferences.general.showLiveIssues) {
@@ -74,8 +77,10 @@ private extension GeneralPreferencesView {
             }
             .toggleStyle(.checkbox)
         }
+        .disabled(true)
     }
 
+    // TODO: Implement reflecting File Extensions preference and remove disabled modifier
     var fileExtensionsSection: some View {
         PreferencesSection("File Extensions:") {
             Picker("File Extensions:", selection: $prefs.preferences.general.fileExtensions) {
@@ -89,6 +94,7 @@ private extension GeneralPreferencesView {
             }
             .frame(width: inputWidth)
         }
+        .disabled(true)
     }
 
     var fileIconStyleSection: some View {
@@ -144,6 +150,7 @@ private extension GeneralPreferencesView {
         }
     }
 
+    // TODO: Implement reflecting File Extensions preference and remove disabled modifier
     var findNavigatorDetailSection: some View {
         PreferencesSection("Find Navigator Detail:") {
             Picker("Find Navigator Detail:", selection: $prefs.preferences.general.findNavigatorDetail) {
@@ -153,8 +160,10 @@ private extension GeneralPreferencesView {
             }
             .frame(width: inputWidth)
         }
+        .disabled(true)
     }
 
+    // TODO: Implement reflecting File Extensions preference and remove disabled modifier
     var issueNavigatorDetailSection: some View {
         PreferencesSection("Issue Navigator Detail:") {
             Picker("Issue Navigator Detail:", selection: $prefs.preferences.general.issueNavigatorDetail) {
@@ -164,17 +173,19 @@ private extension GeneralPreferencesView {
             }
             .frame(width: inputWidth)
         }
+        .disabled(true)
     }
 
+    // TODO: Implement reset for Don't Ask Me warnings Button and remove disabled modifier
     var dialogWarningsSection: some View {
         PreferencesSection("Dialog Warnings:", align: .center) {
             Button(action: {
-                // TODO: Add reset for Don't Ask Me warnings
             }, label: {
                 Text("Reset \"Don't Ask Me\" Warnings")
                     .padding(.horizontal, 10)
             })
             .buttonStyle(.bordered)
         }
+        .disabled(true)
     }
 }
