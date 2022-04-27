@@ -35,11 +35,15 @@ struct WorkspaceCodeFileView: View {
                     }
             } else {
                 Text("CodeEdit cannot open this file because its file type is not supported.")
+                    .frame(minHeight: 0)
+                    .clipped()
             }
         } else {
             Text("No Editor")
                 .font(.system(size: 17))
                 .foregroundColor(.secondary)
+                .frame(minHeight: 0)
+                .clipped()
         }
     }
 

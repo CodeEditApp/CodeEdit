@@ -11,14 +11,26 @@ import Search
 
 struct FindNavigatorResultFileItem: View {
     @ObservedObject
-    var state: WorkspaceDocument.SearchState
+    private var state: WorkspaceDocument.SearchState
 
     @State
-    var isExpanded: Bool = true
+    private var isExpanded: Bool = true
 
-    var fileItem: WorkspaceClient.FileItem
-    var results: [SearchResultModel]
-    var jumpToFile: () -> Void
+    private var fileItem: WorkspaceClient.FileItem
+    private var results: [SearchResultModel]
+    private var jumpToFile: () -> Void
+
+    init(state: WorkspaceDocument.SearchState,
+         isExpanded: Bool = true,
+         fileItem: WorkspaceClient.FileItem,
+         results: [SearchResultModel],
+         jumpToFile: @escaping () -> Void) {
+             self.state = state
+             self.isExpanded = isExpanded
+             self.fileItem = fileItem
+             self.results = results
+             self.jumpToFile = jumpToFile
+    }
 
     private func foundLineResult(_ lineContent: String?, keywordRange: Range<String.Index>?) -> some View {
         guard let lineContent = lineContent, let keywordRange = keywordRange else {
