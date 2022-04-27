@@ -15,9 +15,9 @@ struct FindNavigatorModeSelector: View {
         .Text,
         .Containing
     ]
-    
+
     init() {}
-    
+
     init(selectedMode: [SearchModeModel]) {
         self.selectedMode = selectedMode
     }

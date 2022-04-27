@@ -23,7 +23,7 @@ struct FindNavigator: View {
     private var foundResultsCount: Int {
         state.searchResult.filter {$0.hasKeywordInfo}.count
     }
-    
+
     init(state: WorkspaceDocument.SearchState) {
         self.state = state
     }

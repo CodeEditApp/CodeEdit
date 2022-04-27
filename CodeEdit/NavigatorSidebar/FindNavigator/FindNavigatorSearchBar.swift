@@ -15,7 +15,7 @@ struct FindNavigatorSearchBar: View {
 
     @Binding
     private var text: String
-    
+
     init(state: WorkspaceDocument.SearchState,
          title: String,
          text: Binding<String>) {

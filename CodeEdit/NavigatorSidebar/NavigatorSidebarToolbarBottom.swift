@@ -13,7 +13,7 @@ struct NavigatorSidebarToolbarBottom: View {
 
     @ObservedObject
     private var workspace: WorkspaceDocument
-    
+
     init(workspace: WorkspaceDocument) {
         self.workspace = workspace
     }

@@ -21,7 +21,7 @@ struct InspectorSidebarToolbarTop: View {
     @State private var hasChangedLocation: Bool = false
     @State private var draggingItem: InspectorDockIcon?
     @State private var drugItemLocation: CGPoint?
-    
+
     init(selection: Binding<Int>) {
         self._selection = selection
     }

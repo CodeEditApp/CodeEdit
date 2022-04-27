@@ -27,7 +27,7 @@ struct HistoryItem: View {
     }
 
     @Environment(\.openURL) private var openCommit
-    
+
     init(commit: Commit, selection: Binding<Commit?>) {
         self.commit = commit
         self._selection = selection

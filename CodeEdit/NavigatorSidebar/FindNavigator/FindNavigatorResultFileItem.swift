@@ -19,7 +19,7 @@ struct FindNavigatorResultFileItem: View {
     private var fileItem: WorkspaceClient.FileItem
     private var results: [SearchResultModel]
     private var jumpToFile: () -> Void
-    
+
     init(state: WorkspaceDocument.SearchState,
          isExpanded: Bool = true,
          fileItem: WorkspaceClient.FileItem,

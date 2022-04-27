@@ -26,7 +26,7 @@ struct TabBar: View {
 
     @StateObject
     private var prefs: AppPreferencesModel = .shared
-    //TabBar(windowController: windowController, workspace: workspace)
+    // TabBar(windowController: windowController, workspace: workspace)
     init(windowController: NSWindowController, workspace: WorkspaceDocument) {
         self.windowController = windowController
         self.workspace = workspace

@@ -29,7 +29,7 @@ struct NavigatorSidebarToolbarTop: View {
     @State private var hasChangedLocation: Bool = false
     @State private var draggingItem: SidebarDockIcon?
     @State private var drugItemLocation: CGPoint?
-    
+
     init(selection: Binding<Int>) {
         self._selection = selection
     }

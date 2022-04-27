@@ -15,12 +15,12 @@ struct FindNavigatorResultList: View {
 
     @State
     private var selectedResult: SearchResultModel?
-    
+
     init(state: WorkspaceDocument.SearchState, selectedResult: SearchResultModel? = nil) {
         self.state = state
         self.selectedResult = selectedResult
     }
-    
+
     private var foundFiles: [SearchResultModel] {
         state.searchResult.filter {!$0.hasKeywordInfo}
     }

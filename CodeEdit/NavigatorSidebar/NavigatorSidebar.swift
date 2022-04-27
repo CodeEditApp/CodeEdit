@@ -16,12 +16,11 @@ struct NavigatorSidebar: View {
 
     @State
     private var selection: Int = 0
-    
+
     init(workspace: WorkspaceDocument, windowController: NSWindowController) {
         self.workspace = workspace
         self.windowController = windowController
     }
-    
 
     var body: some View {
         VStack {

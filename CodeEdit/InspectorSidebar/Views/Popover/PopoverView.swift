@@ -13,7 +13,7 @@ import CodeEditUtils
 struct PopoverView: View {
 
     private var commit: Commit
-    
+
     init(commit: Commit) {
         self.commit = commit
     }

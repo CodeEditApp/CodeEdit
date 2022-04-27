@@ -54,7 +54,7 @@ struct TabBarItem: View {
     private var isActive: Bool {
         item.id == workspace.selectionState.selectedId
     }
-    
+
     init(item: WorkspaceClient.FileItem, windowController: NSWindowController, workspace: WorkspaceDocument) {
         self.item = item
         self.windowController = windowController
