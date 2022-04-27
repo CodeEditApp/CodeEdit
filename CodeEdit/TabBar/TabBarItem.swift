@@ -254,14 +254,10 @@ struct TabBarItem: View {
                     )
                     .animation(.easeInOut(duration: 0.08), value: isHovering)
             } else {
-                EffectView(
-                    NSVisualEffectView.Material.titlebar,
-                    blendingMode: NSVisualEffectView.BlendingMode.withinWindow
-                )
-                .background(Color(nsColor: .controlBackgroundColor))
+                TabBarNativeMaterial()
                 ZStack {
                     // Native inactive tab background dim.
-                    TabBarNativeBackgroundInactiveColor()
+                    TabBarNativeInactiveBackgroundColor()
                     // Native inactive tab hover state.
                     Color(nsColor: colorScheme == .dark ? .white : .black)
                         .opacity(isHovering ? (colorScheme == .dark ? 0.08 : 0.05) : 0.0)
