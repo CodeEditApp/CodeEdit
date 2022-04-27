@@ -48,9 +48,6 @@ internal struct StatusBarDrawer: View {
             .padding(10)
             .frame(maxHeight: 29)
             .background(.bar)
-            .overlay(alignment: .top) {
-                Divider()
-            }
         }
         .frame(minHeight: 0,
                idealHeight: height,
