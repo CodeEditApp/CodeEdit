@@ -15,6 +15,15 @@ public extension AppPreferences {
         /// The appearance of the app
         public var appAppearance: Appearances = .system
 
+        /// The show issues behavior of the app
+        public var showIssues: Issues = .inline
+
+        /// The show live issues behavior of the app
+        public var showLiveIssues: Bool = true
+
+        /// The show file extensions behavior of the app
+        public var fileExtensions: FileExtensions = .showAll
+
         /// The style for file icons
         public var fileIconStyle: FileIconStyle = .color
 
@@ -67,6 +76,23 @@ public extension AppPreferences {
         }
     }
 
+    /// The style for issues display
+    ///  - **inline**: Issues show inline
+    ///  - **minimized** Issues show minimized
+    enum Issues: String, Codable {
+        case inline
+        case minimized
+    }
+
+    /// The style for file extensions display
+    ///  - **hideAll**: File extensions are hidden
+    ///  - **showAll** File extensions are visible
+    ///  - **showOnly** Display specified file extensions
+    enum FileExtensions: String, Codable {
+        case hideAll
+        case showAll
+        case showOnly
+    }
     /// The style for file icons
     /// - **color**: File icons appear in their default colors
     /// - **monochrome**: File icons appear monochromatic

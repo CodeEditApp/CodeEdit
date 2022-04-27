@@ -19,7 +19,7 @@ public struct GeneralPreferencesView: View {
 
     public var body: some View {
         PreferencesContent {
-            PreferencesSection("Appearance") {
+            PreferencesSection("Appearance:") {
                 Picker("Appearance:", selection: $prefs.preferences.general.appAppearance) {
                     Text("System")
                         .tag(AppPreferences.Appearances.system)
@@ -31,6 +31,33 @@ public struct GeneralPreferencesView: View {
                 }
                 .onChange(of: prefs.preferences.general.appAppearance) { tag in
                     tag.applyAppearance()
+                }
+                .frame(width: inputWidth)
+            }
+            PreferencesSection("Show Issues:") {
+                Picker("Show Issues:", selection: $prefs.preferences.general.showIssues) {
+                    Text("Show Inline")
+                        .tag(AppPreferences.Issues.inline)
+                    Text("Show Minimized")
+                        .tag(AppPreferences.Issues.minimized)
+                }
+                .frame(width: inputWidth)
+            }
+            PreferencesSection("", hideLabels: false) {
+                Toggle(isOn: $prefs.preferences.general.showLiveIssues) {
+                    Text("Show Live Issues")
+                }
+                .toggleStyle(.checkbox)
+            }
+            PreferencesSection("File Extensions:") {
+                Picker("File Extensions:", selection: $prefs.preferences.general.fileExtensions) {
+                    Text("Hide all")
+                        .tag(AppPreferences.FileExtensions.hideAll)
+                    Text("Show all")
+                        .tag(AppPreferences.FileExtensions.showAll)
+                    Divider()
+                    Text("Show only")
+                        .tag(AppPreferences.FileExtensions.showOnly)
                 }
                 .frame(width: inputWidth)
             }
