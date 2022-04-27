@@ -35,6 +35,12 @@ public extension AppPreferences {
 
         public var projectNavigatorSize: ProjectNavigatorSize = .medium
 
+        /// The Find Navigator Detail line limit
+        public var findNavigatorDetail: NavigatorDetail = .upTo3
+
+        /// The Issue Navigator Detail line limit
+        public var issueNavigatorDetail: NavigatorDetail = .upTo3
+
         /// Default initializer
         public init() {}
 
@@ -123,5 +129,24 @@ public extension AppPreferences {
         case small
         case medium
         case large
+    }
+
+    enum NavigatorDetail: Int, Codable, CaseIterable {
+        case upTo1 = 1
+        case upTo2 = 2
+        case upTo3 = 3
+        case upTo4 = 4
+        case upTo5 = 5
+        case upTo10 = 10
+        case upTo30 = 30
+
+        var label: String {
+            switch self {
+            case .upTo1:
+                return "One Line"
+            default:
+                return "Up to \(self.rawValue) lines"
+            }
+        }
     }
 }
