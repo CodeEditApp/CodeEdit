@@ -11,11 +11,9 @@ import AppPreferences
 import CodeEditUI
 
 struct TabBar: View {
-    @Environment(\.colorScheme)
-    var colorScheme
+    @Environment(\.colorScheme) var colorScheme
 
-    @Environment(\.controlActiveState)
-    private var activeState
+    @Environment(\.controlActiveState) private var activeState
 
     var windowController: NSWindowController
 
@@ -26,6 +24,12 @@ struct TabBar: View {
 
     @StateObject
     private var prefs: AppPreferencesModel = .shared
+
+    @State
+    var expectedTabWidth: CGFloat = 0
+
+    @State
+    var isHoveringOverTabs: Bool = false
 
     var body: some View {
         HStack(alignment: .center, spacing: 0) {
@@ -51,20 +55,76 @@ struct TabBar: View {
             }
             .padding(.horizontal, 11)
             .opacity(activeState != .inactive ? 1.0 : 0.5)
+            .frame(maxHeight: .infinity) // Fill out vertical spaces.
+            if prefs.preferences.general.tabBarStyle == .native {
+                TabDivider()
+                    .opacity(0.7)
+            }
             // Tab bar items.
-            ScrollView(.horizontal, showsIndicators: false) {
-                ScrollViewReader { value in
-                    HStack(alignment: .center, spacing: -1) {
-                        ForEach(workspace.selectionState.openFileItems, id: \.id) { item in
-                            TabBarItem(
-                                item: item,
-                                windowController: windowController,
-                                workspace: workspace
+            GeometryReader { geometryReader in
+                ScrollView(.horizontal, showsIndicators: false) {
+                    ScrollViewReader { value in
+                        HStack(
+                            alignment: .center,
+                            spacing: -1
+                        ) {
+                            ForEach(workspace.selectionState.openFileItems, id: \.id) { item in
+                                TabBarItem(
+                                    expectedWidth: $expectedTabWidth,
+                                    item: item,
+                                    windowController: windowController,
+                                    workspace: workspace
+                                )
+//                                .transition(.offset(x: 0, y: 0))
+                            }
+                        }
+                        .padding(.leading, prefs.preferences.general.tabBarStyle == .native ? -1 : 0)
+                        .onAppear {
+                            expectedTabWidth = max(
+                                // Equally divided size of a native tab.
+                                (geometryReader.size.width + 1) /
+                                    CGFloat(workspace.selectionState.openFileItems.count) + 1,
+                                // Min size of a native tab.
+                                CGFloat(130)
+                            )
+
+                            value.scrollTo(self.workspace.selectionState.selectedId)
+                        }
+                        .onChange(of: workspace.selectionState.openFileItems.count) { tabCount in
+                            if !isHoveringOverTabs {
+                                withAnimation(.easeOut(duration: 0.15)) {
+                                    expectedTabWidth = max(
+                                        // Equally divided size of a native tab.
+                                        (geometryReader.size.width + 1) / CGFloat(tabCount) + 1,
+                                        // Min size of a native tab.
+                                        CGFloat(130)
+                                    )
+                                }
+                            }
+                        }
+                        .onChange(of: geometryReader.size.width) { newWidth in
+                            expectedTabWidth = max(
+                                // Equally divided size of a native tab.
+                                (newWidth + 1) /
+                                    CGFloat(workspace.selectionState.openFileItems.count) + 1,
+                                // Min size of a native tab.
+                                CGFloat(130)
                             )
                         }
-                    }
-                    .onAppear {
-                        value.scrollTo(self.workspace.selectionState.selectedId)
+                        .onHover { isHovering in
+                            isHoveringOverTabs = isHovering
+                            if !isHovering {
+                                withAnimation(.easeOut(duration: 0.15)) {
+                                    expectedTabWidth = max(
+                                        // Equally divided size of a native tab.
+                                        (geometryReader.size.width + 1) /
+                                            CGFloat(workspace.selectionState.openFileItems.count) + 1,
+                                        // Min size of a native tab.
+                                        CGFloat(130)
+                                    )
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -81,12 +141,7 @@ struct TabBar: View {
             if prefs.preferences.general.tabBarStyle == .xcode {
                 Color(nsColor: .controlBackgroundColor)
             } else {
-                ZStack(alignment: .top) {
-                    Color(nsColor: .black)
-                        .opacity(colorScheme == .dark ? 0.45 : 0.05)
-                    // When tab bar style is `native`, we put the top divider beneath tabs.
-                    TabBarTopDivider()
-                }
+                TabBarNativeBackgroundInactive()
             }
         }
         .background {
