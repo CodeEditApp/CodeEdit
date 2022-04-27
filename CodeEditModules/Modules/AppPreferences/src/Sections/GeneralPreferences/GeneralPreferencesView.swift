@@ -102,6 +102,15 @@ public struct GeneralPreferencesView: View {
                 }
                 .frame(width: inputWidth)
             }
+            PreferencesSection("Dialog Warnings:", align: .center) {
+                Button(action: {
+                    // TODO: Add reset for Don't Ask Me warnings
+                }, label: {
+                    Text("Reset \"Don't Ask Me\" Warnings")
+                        .padding(.horizontal, 10)
+                })
+                .buttonStyle(.bordered)
+            }
         }
     }
 }
