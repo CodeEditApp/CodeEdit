@@ -12,20 +12,25 @@ import CodeEditUI
 
 struct TabBar: View {
     @Environment(\.colorScheme)
-    var colorScheme
+    private var colorScheme
 
     @Environment(\.controlActiveState)
     private var activeState
 
-    var windowController: NSWindowController
+    private let windowController: NSWindowController
 
     @ObservedObject
-    var workspace: WorkspaceDocument
+    private var workspace: WorkspaceDocument
 
-    var tabBarHeight = 28.0
+    private let tabBarHeight = 28.0
 
     @StateObject
     private var prefs: AppPreferencesModel = .shared
+    // TabBar(windowController: windowController, workspace: workspace)
+    init(windowController: NSWindowController, workspace: WorkspaceDocument) {
+        self.windowController = windowController
+        self.workspace = workspace
+    }
 
     var body: some View {
         HStack(alignment: .center, spacing: 0) {

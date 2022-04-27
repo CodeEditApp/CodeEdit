@@ -11,7 +11,7 @@ import Search
 
 struct FindNavigator: View {
     @ObservedObject
-    var state: WorkspaceDocument.SearchState
+    private var state: WorkspaceDocument.SearchState
 
     @State
     private var searchText: String = ""
@@ -22,6 +22,10 @@ struct FindNavigator: View {
 
     private var foundResultsCount: Int {
         state.searchResult.filter {$0.hasKeywordInfo}.count
+    }
+
+    init(state: WorkspaceDocument.SearchState) {
+        self.state = state
     }
 
     var body: some View {
