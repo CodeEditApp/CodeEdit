@@ -284,7 +284,6 @@ struct TabBarItem: View {
                 : nil
             )
         )
-        .clipped()
         .onAppear {
             withAnimation(.easeOut(duration: 0.20)) {
                 isAppeared = true
