@@ -12,13 +12,8 @@ import AppPreferences
 import WorkspaceClient
 import CodeEditUI
 
+/// Native style background view (including color and shadow divider) for tab bar.
 struct TabBarNativeInactiveBackground: View {
-    @Environment(\.colorScheme)
-    var colorScheme
-
-    @Environment(\.controlActiveState)
-    private var activeState
-
     var body: some View {
         ZStack(alignment: .top) {
             TabBarNativeInactiveBackgroundColor()
@@ -28,9 +23,10 @@ struct TabBarNativeInactiveBackground: View {
     }
 }
 
+/// Native style background color for tab bar.
 struct TabBarNativeInactiveBackgroundColor: View {
     @Environment(\.colorScheme)
-    var colorScheme
+    private var colorScheme
 
     var body: some View {
         Color(nsColor: .black)
@@ -38,6 +34,7 @@ struct TabBarNativeInactiveBackgroundColor: View {
     }
 }
 
+/// Native style background material for tab bar.
 struct TabBarNativeMaterial: View {
     var body: some View {
         EffectView(

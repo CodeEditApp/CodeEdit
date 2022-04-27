@@ -14,7 +14,8 @@ struct TabBar: View {
     @Environment(\.colorScheme)
     private var colorScheme
 
-    @Environment(\.controlActiveState) private var activeState
+    @Environment(\.controlActiveState)
+    private var activeState
 
     private let windowController: NSWindowController
 
@@ -25,6 +26,7 @@ struct TabBar: View {
 
     @StateObject
     private var prefs: AppPreferencesModel = .shared
+
     // TabBar(windowController: windowController, workspace: workspace)
     init(windowController: NSWindowController, workspace: WorkspaceDocument) {
         self.windowController = windowController
@@ -36,7 +38,8 @@ struct TabBar: View {
 
     /// This state is used to detect if the mouse is hovering over tabs.
     /// If it is true, then we do not update the expected tab width immediately.
-    @State var isHoveringOverTabs: Bool = false
+    @State
+    var isHoveringOverTabs: Bool = false
 
     private func updateExpectedTabWidth(proxy: GeometryProxy) {
         expectedTabWidth = max(
@@ -87,6 +90,7 @@ struct TabBar: View {
                                 )
                             }
                         }
+                        // This padding is to hide dividers at two ends under the accessory view divider.
                         .padding(.horizontal, prefs.preferences.general.tabBarStyle == .native ? -1 : 0)
                         .onAppear {
                             updateExpectedTabWidth(proxy: geometryProxy)

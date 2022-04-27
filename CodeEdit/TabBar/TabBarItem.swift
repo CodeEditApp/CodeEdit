@@ -32,8 +32,19 @@ struct TabBarItem: View {
     @State
     private var isAppeared: Bool = false
 
+    @Binding
+    private var expectedWidth: CGFloat
+
+    @ObservedObject
+    var workspace: WorkspaceDocument
+
     private var item: WorkspaceClient.FileItem
+
     private var windowController: NSWindowController
+
+    var isActive: Bool {
+        item.id == workspace.selectionState.selectedId
+    }
 
     private func switchAction() {
         // Only set the `selectedId` when they are not equal to avoid performance issue for now.
@@ -43,42 +54,21 @@ struct TabBarItem: View {
     }
 
     func closeAction() {
-//        if prefs.preferences.general.tabBarStyle == .native {
-//            if workspace.selectionState.selectedId == item.id {
-//                // If the closed item is the selected one, then select another tab.
-//                guard let idx = workspace.selectionState.openFileItems.firstIndex(of: item) else { return }
-//                if idx == 0 {
-//                    workspace.selectionState.selectedId = workspace.selectionState.openFileItems.second?.id
-//                } else if idx == workspace.selectionState.openFileItems.count - 1 {
-//                    workspace.selectionState.selectedId = workspace.selectionState.openFileItems[idx-1].id
-//                } else {
-//                    workspace.selectionState.selectedId = workspace.selectionState.openFileItems[idx+1].id
-//                }
-//            }
-//            withAnimation(.linear(duration: 0.15)) {
-//                isClosing = true
-//            }
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.17, execute: {
-//                workspace.closeFileTab(item: item)
-//            })
-//        } else {
+        if prefs.preferences.general.tabBarStyle == .native {
             isAppeared = false
-            withAnimation(.easeOut(duration: 0.20)) {
-                workspace.closeFileTab(item: item)
-            }
-//        }
+        }
+        withAnimation(.easeOut(duration: 0.20)) {
+            workspace.closeFileTab(item: item)
+        }
     }
 
-    @ObservedObject var workspace: WorkspaceDocument
-
-    @State var isAppeared: Bool = false
-    @State var isClosing: Bool = false
-
-    var isActive: Bool {
-        item.id == workspace.selectionState.selectedId && !isClosing
-    }
-
-    init(item: WorkspaceClient.FileItem, windowController: NSWindowController, workspace: WorkspaceDocument) {
+    init(
+        expectedWidth: Binding<CGFloat>,
+        item: WorkspaceClient.FileItem,
+        windowController: NSWindowController,
+        workspace: WorkspaceDocument
+    ) {
+        self._expectedWidth = expectedWidth
         self.item = item
         self.windowController = windowController
         self.workspace = workspace
@@ -89,6 +79,7 @@ struct TabBarItem: View {
         HStack(spacing: 0.0) {
             TabDivider()
                 .opacity(isActive && prefs.preferences.general.tabBarStyle == .xcode ? 0.0 : 1.0)
+            // Tab content (icon and text).
             HStack(alignment: .center, spacing: 5) {
                 Image(systemName: item.systemImage)
                     .resizable()
@@ -228,7 +219,7 @@ struct TabBarItem: View {
             )
         )
         .frame(maxHeight: .infinity) // To vertically max-out the parent (tab bar) area.
-        .contentShape(Rectangle())
+        .contentShape(Rectangle()) // Make entire area clickable.
         .onHover { hover in
             isHovering = hover
             DispatchQueue.main.async {
@@ -286,12 +277,12 @@ struct TabBarItem: View {
         .opacity(isAppeared ? 1.0 : 0.0)
         .zIndex(isActive ? 1 : 0)
         .frame(
-            // Constrain the width for native tab style.
             width: (
+                // Constrain the width of tab bar item for native tab style only.
                 prefs.preferences.general.tabBarStyle == .native
-                ? isClosing ? 0 : max(expectedWidth.isFinite ? expectedWidth : 0, 0)
+                ? max(expectedWidth.isFinite ? expectedWidth : 0, 0)
                 : nil
-            ), alignment: .leading
+            )
         )
         .clipped()
         .onAppear {
