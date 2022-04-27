@@ -96,7 +96,7 @@ struct TabBar: View {
                             updateExpectedTabWidth(proxy: geometryProxy)
                             value.scrollTo(self.workspace.selectionState.selectedId)
                         }
-                        .onChange(of: workspace.selectionState.openFileItems.count) { tabCount in
+                        .onChange(of: workspace.selectionState.openFileItems.count) { _ in
                             // Only update the expected width when user is not hovering over tabs.
                             // This should give users a better experience on closing multiple tabs continuously.
                             if !isHoveringOverTabs {
@@ -105,7 +105,7 @@ struct TabBar: View {
                                 }
                             }
                         }
-                        .onChange(of: geometryProxy.size.width) { newWidth in
+                        .onChange(of: geometryProxy.size.width) { _ in
                             updateExpectedTabWidth(proxy: geometryProxy)
                         }
                         .onHover { isHovering in
