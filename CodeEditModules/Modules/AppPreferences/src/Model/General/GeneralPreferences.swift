@@ -48,6 +48,9 @@ public extension AppPreferences {
         public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.appAppearance = try container.decodeIfPresent(Appearances.self, forKey: .appAppearance) ?? .system
+            self.showIssues = try container.decodeIfPresent(Issues.self, forKey: .showIssues) ?? .inline
+            self.showLiveIssues = container.decodeIfPresent(Bool.self, forKey: .showLiveIssues) ?? true
+            self.fileExtensions = container.decodeIfPresent(FileExtensions.self, forKey: .fileExtensions) ?? .showAll
             self.fileIconStyle = try container.decodeIfPresent(FileIconStyle.self, forKey: .fileIconStyle) ?? .color
             self.tabBarStyle = try container.decodeIfPresent(TabBarStyle.self, forKey: .tabBarStyle) ?? .xcode
             self.reopenBehavior = try container.decodeIfPresent(ReopenBehavior.self,
@@ -55,6 +58,8 @@ public extension AppPreferences {
             self.projectNavigatorSize = try container.decodeIfPresent(ProjectNavigatorSize.self,
                                                                                   forKey: .projectNavigatorSize)
             ?? .medium
+            self.findNavigatorDetail = try container.decodeIfPresent(NavigatorDetail.self, forKey: .findNavigatorDetail) ?? .upTo3
+            self.issueNavigatorDetail = try container.decodeIfPresent(NavigatorDetail.self, forKey: .issueNavigatorDetail) ?? .upTo3
         }
     }
 
@@ -131,6 +136,9 @@ public extension AppPreferences {
         case large
     }
 
+    
+    /// The Navigation Detauk behavior of the app
+    ///  - Use **rawValue** to set lineLimit
     enum NavigatorDetail: Int, Codable, CaseIterable {
         case upTo1 = 1
         case upTo2 = 2
