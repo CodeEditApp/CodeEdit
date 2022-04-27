@@ -46,7 +46,7 @@ internal struct StatusBarDrawer: View {
                 StatusBarMaximizeButton(model: model)
             }
             .padding(10)
-            .frame(maxHeight: 32)
+            .frame(maxHeight: 29)
             .background(.bar)
             .overlay(alignment: .top) {
                 Divider()

@@ -75,7 +75,7 @@ public struct StatusBarView: View {
                 Divider()
             }
         }
-        .frame(height: 32)
+        .frame(height: 29)
         .gesture(dragGesture)
         .onHover { isHovering($0, isDragging: model.isDragging, cursor: .resizeUpDown) }
     }
