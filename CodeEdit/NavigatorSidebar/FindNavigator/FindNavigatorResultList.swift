@@ -11,17 +11,22 @@ import Search
 
 struct FindNavigatorResultList: View {
     @ObservedObject
-    var state: WorkspaceDocument.SearchState
+    private var state: WorkspaceDocument.SearchState
 
     @State
-    var selectedResult: SearchResultModel?
+    private var selectedResult: SearchResultModel?
+
+    init(state: WorkspaceDocument.SearchState, selectedResult: SearchResultModel? = nil) {
+        self.state = state
+        self.selectedResult = selectedResult
+    }
 
     private var foundFiles: [SearchResultModel] {
-        return state.searchResult.filter {!$0.hasKeywordInfo}
+        state.searchResult.filter {!$0.hasKeywordInfo}
     }
 
     private func getResultWith(_ file: WorkspaceClient.FileItem) -> [SearchResultModel] {
-        return state.searchResult.filter {$0.file == file && $0.hasKeywordInfo}
+        state.searchResult.filter {$0.file == file && $0.hasKeywordInfo}
     }
 
     var body: some View {
