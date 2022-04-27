@@ -28,27 +28,32 @@ struct TabBar: View {
     @State
     var expectedTabWidth: CGFloat = 0
 
-    @State
-    var isHoveringOverTabs: Bool = false
+    /// This state is used to detect if the mouse is hovering over tabs.
+    /// If it is true, then we do not update the expected tab width immediately.
+    @State var isHoveringOverTabs: Bool = false
+
+    private func updateExpectedTabWidth(proxy: GeometryProxy) {
+        expectedTabWidth = max(
+            // Equally divided size of a native tab.
+            (proxy.size.width + 1) / CGFloat(workspace.selectionState.openFileItems.count) + 1,
+            // Min size of a native tab.
+            CGFloat(140)
+        )
+    }
 
     var body: some View {
         HStack(alignment: .center, spacing: 0) {
             // Tab bar navigation control.
-            // TODO: Real functionality of tab bar navigation control and their stated foreground color.
             HStack(spacing: 10) {
-                Button(
-                    action: { /* TODO */ },
-                    label: {
-                        Image(systemName: "chevron.left")
-                    }
+                TabBarAccessoryIcon(
+                    icon: .init(systemName: "chevron.left"),
+                    action: { /* TODO */ }
                 )
                 .foregroundColor(.secondary)
                 .buttonStyle(.plain)
-                Button(
-                    action: { /* TODO */ },
-                    label: {
-                        Image(systemName: "chevron.right")
-                    }
+                TabBarAccessoryIcon(
+                    icon: .init(systemName: "chevron.right"),
+                    action: { /* TODO */ }
                 )
                 .foregroundColor(.secondary.opacity(0.5))
                 .buttonStyle(.plain)
@@ -58,10 +63,9 @@ struct TabBar: View {
             .frame(maxHeight: .infinity) // Fill out vertical spaces.
             if prefs.preferences.general.tabBarStyle == .native {
                 TabDivider()
-                    .opacity(0.7)
             }
             // Tab bar items.
-            GeometryReader { geometryReader in
+            GeometryReader { geometryProxy in
                 ScrollView(.horizontal, showsIndicators: false) {
                     ScrollViewReader { value in
                         HStack(
@@ -75,60 +79,64 @@ struct TabBar: View {
                                     windowController: windowController,
                                     workspace: workspace
                                 )
-//                                .transition(.offset(x: 0, y: 0))
                             }
                         }
-                        .padding(.leading, prefs.preferences.general.tabBarStyle == .native ? -1 : 0)
+                        .padding(.horizontal, prefs.preferences.general.tabBarStyle == .native ? -1 : 0)
                         .onAppear {
-                            expectedTabWidth = max(
-                                // Equally divided size of a native tab.
-                                (geometryReader.size.width + 1) /
-                                    CGFloat(workspace.selectionState.openFileItems.count) + 1,
-                                // Min size of a native tab.
-                                CGFloat(130)
-                            )
-
+                            updateExpectedTabWidth(proxy: geometryProxy)
                             value.scrollTo(self.workspace.selectionState.selectedId)
                         }
                         .onChange(of: workspace.selectionState.openFileItems.count) { tabCount in
+                            // Only update the expected width when user is not hovering over tabs.
+                            // This should give users a better experience on closing multiple tabs continuously.
                             if !isHoveringOverTabs {
-                                withAnimation(.easeOut(duration: 0.15)) {
-                                    expectedTabWidth = max(
-                                        // Equally divided size of a native tab.
-                                        (geometryReader.size.width + 1) / CGFloat(tabCount) + 1,
-                                        // Min size of a native tab.
-                                        CGFloat(130)
-                                    )
+                                withAnimation(.easeOut(duration: 0.20)) {
+                                    updateExpectedTabWidth(proxy: geometryProxy)
                                 }
                             }
                         }
-                        .onChange(of: geometryReader.size.width) { newWidth in
-                            expectedTabWidth = max(
-                                // Equally divided size of a native tab.
-                                (newWidth + 1) /
-                                    CGFloat(workspace.selectionState.openFileItems.count) + 1,
-                                // Min size of a native tab.
-                                CGFloat(130)
-                            )
+                        .onChange(of: geometryProxy.size.width) { newWidth in
+                            updateExpectedTabWidth(proxy: geometryProxy)
                         }
                         .onHover { isHovering in
                             isHoveringOverTabs = isHovering
+                            // When user is not hovering anymore, update the expected width immediately.
                             if !isHovering {
-                                withAnimation(.easeOut(duration: 0.15)) {
-                                    expectedTabWidth = max(
-                                        // Equally divided size of a native tab.
-                                        (geometryReader.size.width + 1) /
-                                            CGFloat(workspace.selectionState.openFileItems.count) + 1,
-                                        // Min size of a native tab.
-                                        CGFloat(130)
-                                    )
+                                withAnimation(.easeOut(duration: 0.20)) {
+                                    updateExpectedTabWidth(proxy: geometryProxy)
                                 }
                             }
                         }
                     }
                 }
             }
-            // TODO: Tab bar tools (e.g. split view).
+            if prefs.preferences.general.tabBarStyle == .native {
+                TabDivider()
+            }
+            // Tab bar tools (e.g. split view).
+            HStack(spacing: 10) {
+                TabBarAccessoryIcon(
+                    icon: .init(systemName: "ellipsis.circle"),
+                    action: { /* TODO */ }
+                )
+                .foregroundColor(.secondary)
+                .buttonStyle(.plain)
+                TabBarAccessoryIcon(
+                    icon: .init(systemName: "arrow.left.arrow.right.square"),
+                    action: { /* TODO */ }
+                )
+                .foregroundColor(.secondary)
+                .buttonStyle(.plain)
+                TabBarAccessoryIcon(
+                    icon: .init(systemName: "square.split.2x1"),
+                    action: { /* TODO */ }
+                )
+                .foregroundColor(.secondary)
+                .buttonStyle(.plain)
+            }
+            .padding(.horizontal, 11)
+            .opacity(activeState != .inactive ? 1.0 : 0.5)
+            .frame(maxHeight: .infinity) // Fill out vertical spaces.
         }
         .frame(height: tabBarHeight)
         .overlay(alignment: .top) {
@@ -141,7 +149,7 @@ struct TabBar: View {
             if prefs.preferences.general.tabBarStyle == .xcode {
                 Color(nsColor: .controlBackgroundColor)
             } else {
-                TabBarNativeBackgroundInactive()
+                TabBarNativeInactiveBackground()
             }
         }
         .background {
@@ -154,14 +162,31 @@ struct TabBar: View {
                 .padding(.bottom, tabBarHeight)
                 .edgesIgnoringSafeArea(.top)
             } else {
-                EffectView(
-                    NSVisualEffectView.Material.titlebar,
-                    blendingMode: NSVisualEffectView.BlendingMode.withinWindow
-                )
-                .background(Color(nsColor: .controlBackgroundColor))
-                .edgesIgnoringSafeArea(.top)
+                TabBarNativeMaterial()
+                    .edgesIgnoringSafeArea(.top)
             }
         }
         .padding(.leading, -1)
+    }
+}
+
+/// Accessory icon's view for tab bar.
+struct TabBarAccessoryIcon: View {
+    /// Unifies icon font for tab bar accessories.
+    static private let iconFont = Font.system(size: 14, weight: .regular, design: .default)
+
+    private let icon: Image
+    private let action: () -> Void
+
+    init(icon: Image, action: @escaping () -> Void) {
+        self.icon = icon
+        self.action = action
+    }
+
+    var body: some View {
+        Button(
+            action: action,
+            label: { icon.font(TabBarAccessoryIcon.iconFont) }
+        )
     }
 }
