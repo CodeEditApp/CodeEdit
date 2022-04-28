@@ -163,6 +163,10 @@ struct CodeEditor: NSViewRepresentable {
             ]
         }
 
+        // FIXME: For some reason the theme does not get applied once it is changed (Issue #555)
+        // To reproduce: Change the app appearance and then select a different theme.
+        // - `themeString` gets changed successfully
+        // - background changes accordingly
         highlightr?.setTheme(theme: .init(themeString: themeString))
         if prefs.preferences.textEditing.font.customFont {
             highlightr?.theme.codeFont = .init(

@@ -44,6 +44,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
         )
         navigator.titlebarSeparatorStyle = .none
         navigator.minimumThickness = 260
+        navigator.collapseBehavior = .useConstraints
         splitVC.addSplitViewItem(navigator)
 
         let workspaceView = WorkspaceView(windowController: self, workspace: workspace)
@@ -61,7 +62,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
         inspector.minimumThickness = 260
         inspector.maximumThickness = 260
         inspector.isCollapsed = true
-        inspector.collapseBehavior = .preferResizingSiblingsWithFixedSplitView
+        inspector.collapseBehavior = .useConstraints
         splitVC.addSplitViewItem(inspector)
 
         self.splitViewController = splitVC
@@ -170,7 +171,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     @objc func toggleLastPanel() {
         guard let lastSplitView = splitViewController.splitViewItems.last else { return }
         lastSplitView.animator().isCollapsed.toggle()
-        if lastSplitView.animator().isCollapsed {
+        if lastSplitView.isCollapsed {
             window?.toolbar?.removeItem(at: 4)
         } else {
             window?.toolbar?.insertItem(withItemIdentifier: .itemListTrackingSeparator, at: 4)
