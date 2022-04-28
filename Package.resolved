@@ -1,0 +1,79 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "CodeEditKit",
+        "repositoryURL": "https://github.com/CodeEditApp/CodeEditKit",
+        "state": {
+          "branch": "main",
+          "revision": "2482e5870fd8082c908fabfdaaf245498cb3dd54",
+          "version": null
+        }
+      },
+      {
+        "package": "CodeEditSymbols",
+        "repositoryURL": "https://github.com/CodeEditApp/CodeEditSymbols",
+        "state": {
+          "branch": "main",
+          "revision": "9a94c84aeae793e4767ea7fbb515d564a4b7a49c",
+          "version": null
+        }
+      },
+      {
+        "package": "GRDB",
+        "repositoryURL": "https://github.com/groue/GRDB.swift.git",
+        "state": {
+          "branch": null,
+          "revision": "4472d3a60ec4cc383503eba5072ce17f781b9ddc",
+          "version": "5.23.0"
+        }
+      },
+      {
+        "package": "Highlightr",
+        "repositoryURL": "https://github.com/lukepistrol/Highlightr.git",
+        "state": {
+          "branch": "main",
+          "revision": "7d278c8e92d96cbfec8dbb3c8054990b2951db98",
+          "version": null
+        }
+      },
+      {
+        "package": "Light-Swift-Untar",
+        "repositoryURL": "https://github.com/Light-Untar/Light-Swift-Untar",
+        "state": {
+          "branch": null,
+          "revision": "fcff1f1b82373ea64b9565a364f63ffe7fdecf9f",
+          "version": "1.0.4"
+        }
+      },
+      {
+        "package": "Preferences",
+        "repositoryURL": "https://github.com/sindresorhus/Preferences.git",
+        "state": {
+          "branch": null,
+          "revision": "ffeaaad1def45d0625720dc1adae3789cd9c167d",
+          "version": "2.5.0"
+        }
+      },
+      {
+        "package": "SnapshotTesting",
+        "repositoryURL": "https://github.com/pointfreeco/swift-snapshot-testing.git",
+        "state": {
+          "branch": null,
+          "revision": "f8a9c997c3c1dab4e216a8ec9014e23144cbab37",
+          "version": "1.9.0"
+        }
+      },
+      {
+        "package": "SwiftTerm",
+        "repositoryURL": "https://github.com/migueldeicaza/SwiftTerm.git",
+        "state": {
+          "branch": null,
+          "revision": "70a3af884c24dff9f1beeda04e889b5591f04f3c",
+          "version": "1.0.7"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

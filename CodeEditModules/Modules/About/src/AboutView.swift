@@ -1,8 +1,10 @@
 import SwiftUI
+import Acknowledgements
 
 public struct AboutView: View {
-    @Environment(\.colorScheme)
-    var colorScheme
+    @Environment(\.openURL) var openURL
+
+    @State var hoveringOnCommitHash = false
 
     public init() {}
 
@@ -12,6 +14,10 @@ public struct AboutView: View {
 
     private var appBuild: String {
         return Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? ""
+    }
+
+    private var commitHash: String {
+        return Bundle.main.object(forInfoDictionaryKey: "GitHash") as? String ?? ""
     }
 
     public var body: some View {
@@ -27,10 +33,29 @@ public struct AboutView: View {
                     VStack(alignment: .leading, spacing: 0) {
                         Text("CodeEdit").font(.system(size: 38, weight: .regular))
                         Text("Version \(appVersion) (\(appBuild))")
+                            .textSelection(.enabled)
                             .foregroundColor(.secondary)
                             .font(.system(size: 13, weight: .light))
+                        Spacer().frame(height: 5)
+                        HStack(spacing: 2.0) {
+                            Text("Commit:")
+                            Text(self.hoveringOnCommitHash ?
+                                    commitHash :
+                                    String(commitHash[...commitHash.index(commitHash.startIndex, offsetBy: 7)]))
+                                .textSelection(.enabled)
+                                .onHover { _ in
+                                    self.hoveringOnCommitHash.toggle()
+                                }
+                                .animation(.easeInOut, value: self.hoveringOnCommitHash)
+                        }.foregroundColor(.secondary)
+                            .font(.system(size: 10, weight: .light))
                         Spacer().frame(height: 36)
-                        Text("Copyright (c) 2022 CodeEdit\n\nMIT License")
+                        Text("Copyright © 2022 CodeEdit")
+                            .foregroundColor(.secondary)
+                            .font(.system(size: 9, weight: .light))
+                            .lineSpacing(0.2)
+                        Spacer().frame(height: 5)
+                        Text("MIT License")
                             .foregroundColor(.secondary)
                             .font(.system(size: 9, weight: .light))
                             .lineSpacing(0.2)
@@ -40,12 +65,16 @@ public struct AboutView: View {
                 Spacer()
                 HStack(spacing: 0) {
                     Spacer().frame(width: 6)
-                    Button(action: {}, label: {
+                    Button(action: {
+                        AcknowledgementsView().showWindow(width: 300, height: 400)
+                    }, label: {
                         Text("Acknowledgments")
                             .frame(width: 136, height: 20)
                     })
                     Spacer().frame(width: 12)
-                    Button(action: {}, label: {
+                    Button(action: {
+                        openURL(URL(string: "https://github.com/CodeEditApp/CodeEdit/blob/main/LICENSE.md")!)
+                    }, label: {
                         Text("License Agreement")
                             .frame(width: 136, height: 20)
                     })
@@ -54,11 +83,6 @@ public struct AboutView: View {
                 Spacer().frame(height: 20)
             }
         }
-        .background(backgroundColor)
-    }
-
-    public var backgroundColor: Color {
-        Color(nsColor: colorScheme == .dark ? .windowBackgroundColor : .white)
     }
 
     public func showWindow(width: CGFloat, height: CGFloat) {
