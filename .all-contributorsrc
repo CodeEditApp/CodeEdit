@@ -215,6 +215,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "mmshivesh",
+      "name": "Shivesh",
+      "avatar_url": "https://avatars.githubusercontent.com/u/23611514?v=4",
+      "profile": "http://mmshivesh.ml",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
