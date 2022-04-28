@@ -47,26 +47,45 @@ public extension AppPreferences {
         /// Explicit decoder init for setting default values when key is not present in `JSON`
         public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
-            self.appAppearance = try container.decodeIfPresent(Appearances.self, forKey: .appAppearance) ?? .system
-            self.showIssues = try container.decodeIfPresent(Issues.self, forKey: .showIssues) ?? .inline
-            self.showLiveIssues = try container.decodeIfPresent(Bool.self, forKey: .showLiveIssues) ?? true
+            self.appAppearance = try container.decodeIfPresent(
+                Appearances.self,
+                forKey: .appAppearance
+            ) ?? .system
+            self.showIssues = try container.decodeIfPresent(
+                Issues.self,
+                forKey: .showIssues
+            ) ?? .inline
+            self.showLiveIssues = try container.decodeIfPresent(
+                Bool.self,
+                forKey: .showLiveIssues
+            ) ?? true
             self.fileExtensions = try container.decodeIfPresent(
                 FileExtensions.self,
                 forKey: .fileExtensions) ?? .showAll
-            self.fileIconStyle = try container.decodeIfPresent(FileIconStyle.self, forKey: .fileIconStyle) ?? .color
-            self.tabBarStyle = try container.decodeIfPresent(TabBarStyle.self, forKey: .tabBarStyle) ?? .xcode
-            self.reopenBehavior = try container.decodeIfPresent(ReopenBehavior.self,
-                                                                forKey: .reopenBehavior) ?? .welcome
-            self.projectNavigatorSize = try container.decodeIfPresent(ProjectNavigatorSize.self,
-                                                                                  forKey: .projectNavigatorSize)
-            ?? .medium
+            self.fileIconStyle = try container.decodeIfPresent(
+                FileIconStyle.self,
+                forKey: .fileIconStyle
+            ) ?? .color
+            self.tabBarStyle = try container.decodeIfPresent(
+                TabBarStyle.self,
+                forKey: .tabBarStyle
+            ) ?? .xcode
+            self.reopenBehavior = try container.decodeIfPresent(
+                ReopenBehavior.self,
+                forKey: .reopenBehavior
+            ) ?? .welcome
+            self.projectNavigatorSize = try container.decodeIfPresent(
+                ProjectNavigatorSize.self,
+                forKey: .projectNavigatorSize
+            ) ?? .medium
             self.findNavigatorDetail = try container.decodeIfPresent(
                 NavigatorDetail.self,
                 forKey: .findNavigatorDetail
             ) ?? .upTo3
             self.issueNavigatorDetail = try container.decodeIfPresent(
                 NavigatorDetail.self,
-                forKey: .issueNavigatorDetail) ?? .upTo3
+                forKey: .issueNavigatorDetail
+            ) ?? .upTo3
         }
     }
 

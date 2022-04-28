@@ -150,7 +150,7 @@ private extension GeneralPreferencesView {
         }
     }
 
-    // TODO: Implement reflecting File Extensions preference and remove disabled modifier
+    // TODO: Implement reflecting Find Navigator Detail preference and remove disabled modifier
     var findNavigatorDetailSection: some View {
         PreferencesSection("Find Navigator Detail:") {
             Picker("Find Navigator Detail:", selection: $prefs.preferences.general.findNavigatorDetail) {
@@ -163,7 +163,7 @@ private extension GeneralPreferencesView {
         .disabled(true)
     }
 
-    // TODO: Implement reflecting File Extensions preference and remove disabled modifier
+    // TODO: Implement reflecting Issue Navigator Detail preference and remove disabled modifier
     var issueNavigatorDetailSection: some View {
         PreferencesSection("Issue Navigator Detail:") {
             Picker("Issue Navigator Detail:", selection: $prefs.preferences.general.issueNavigatorDetail) {
