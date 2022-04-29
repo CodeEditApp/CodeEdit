@@ -52,7 +52,8 @@ public struct PreferencesSection<Content: View>: View {
 
     public var body: some View {
         HStack(alignment: align) {
-            Text("\(title)")
+            /// We keep the ":" since it's being used by all preference views.
+            Text("\(title):")
                 .frame(width: width, alignment: .trailing)
             if hideLabels {
                 VStack(alignment: .leading) {

@@ -21,7 +21,6 @@ public struct GeneralPreferencesView: View {
         PreferencesContent {
             appearanceSection
             showIssuesSection
-            showLiveIssuesSection
             fileExtensionsSection
             fileIconStyleSection
             tabBarStyleSection
@@ -38,8 +37,8 @@ public struct GeneralPreferencesView: View {
 
 private extension GeneralPreferencesView {
     var appearanceSection: some View {
-        PreferencesSection("Appearance:") {
-            Picker("Appearance:", selection: $prefs.preferences.general.appAppearance) {
+        PreferencesSection("Appearance") {
+            Picker("Appearance", selection: $prefs.preferences.general.appAppearance) {
                 Text("System")
                     .tag(AppPreferences.Appearances.system)
                 Divider()
@@ -57,32 +56,25 @@ private extension GeneralPreferencesView {
 
     // TODO: Implement reflecting Show Issues preference and remove disabled modifier
     var showIssuesSection: some View {
-        PreferencesSection("Show Issues:") {
-            Picker("Show Issues:", selection: $prefs.preferences.general.showIssues) {
+        PreferencesSection("Show Issues", hideLabels: false) {
+            Picker("Show Issues", selection: $prefs.preferences.general.showIssues) {
                 Text("Show Inline")
                     .tag(AppPreferences.Issues.inline)
                 Text("Show Minimized")
                     .tag(AppPreferences.Issues.minimized)
             }
+            .labelsHidden()
             .frame(width: inputWidth)
-        }
-        .disabled(true)
-    }
 
-    // TODO: Implement reflecting Show Live Issues preference and remove disabled modifier
-    var showLiveIssuesSection: some View {
-        PreferencesSection("", hideLabels: false, align: .center) {
-            Toggle(isOn: $prefs.preferences.general.showLiveIssues) {
-                Text("Show Live Issues")
-            }
-            .toggleStyle(.checkbox)
+            Toggle("Show Live Issues", isOn: $prefs.preferences.general.showLiveIssues)
+                .toggleStyle(.checkbox)
         }
         .disabled(true)
     }
 
     // TODO: Implement reflecting File Extensions preference and remove disabled modifier
     var fileExtensionsSection: some View {
-        PreferencesSection("File Extensions:") {
+        PreferencesSection("File Extensions") {
             Picker("File Extensions:", selection: $prefs.preferences.general.fileExtensions) {
                 Text("Hide all")
                     .tag(AppPreferences.FileExtensions.hideAll)
@@ -98,7 +90,7 @@ private extension GeneralPreferencesView {
     }
 
     var fileIconStyleSection: some View {
-        PreferencesSection("File Icon Style:") {
+        PreferencesSection("File Icon Style") {
             Picker("File Icon Style:", selection: $prefs.preferences.general.fileIconStyle) {
                 Text("Color")
                     .tag(AppPreferences.FileIconStyle.color)
@@ -110,7 +102,7 @@ private extension GeneralPreferencesView {
     }
 
     var tabBarStyleSection: some View {
-        PreferencesSection("Tab Bar Style:") {
+        PreferencesSection("Tab Bar Style") {
             Picker("Tab Bar Style:", selection: $prefs.preferences.general.tabBarStyle) {
                 Text("Xcode")
                     .tag(AppPreferences.TabBarStyle.xcode)
@@ -122,7 +114,7 @@ private extension GeneralPreferencesView {
     }
 
     var reopenBehaviorSection: some View {
-        PreferencesSection("Reopen Behavior:") {
+        PreferencesSection("Reopen Behavior") {
             Picker("Reopen Behavior:", selection: $prefs.preferences.general.reopenBehavior) {
                 Text("Welcome Screen")
                     .tag(AppPreferences.ReopenBehavior.welcome)
@@ -137,8 +129,8 @@ private extension GeneralPreferencesView {
     }
 
     var projectNavigatorSizeSection: some View {
-        PreferencesSection("Project Navigator Size:") {
-            Picker("Project Navigator Size:", selection: $prefs.preferences.general.projectNavigatorSize) {
+        PreferencesSection("Project Navigator Size") {
+            Picker("Project Navigator Size", selection: $prefs.preferences.general.projectNavigatorSize) {
                 Text("Small")
                     .tag(AppPreferences.ProjectNavigatorSize.small)
                 Text("Medium")
@@ -152,8 +144,8 @@ private extension GeneralPreferencesView {
 
     // TODO: Implement reflecting Find Navigator Detail preference and remove disabled modifier
     var findNavigatorDetailSection: some View {
-        PreferencesSection("Find Navigator Detail:") {
-            Picker("Find Navigator Detail:", selection: $prefs.preferences.general.findNavigatorDetail) {
+        PreferencesSection("Find Navigator Detail") {
+            Picker("Find Navigator Detail", selection: $prefs.preferences.general.findNavigatorDetail) {
                 ForEach(AppPreferences.NavigatorDetail.allCases, id: \.self) { tag in
                     Text(tag.label).tag(tag)
                 }
@@ -165,8 +157,8 @@ private extension GeneralPreferencesView {
 
     // TODO: Implement reflecting Issue Navigator Detail preference and remove disabled modifier
     var issueNavigatorDetailSection: some View {
-        PreferencesSection("Issue Navigator Detail:") {
-            Picker("Issue Navigator Detail:", selection: $prefs.preferences.general.issueNavigatorDetail) {
+        PreferencesSection("Issue Navigator Detail") {
+            Picker("Issue Navigator Detail", selection: $prefs.preferences.general.issueNavigatorDetail) {
                 ForEach(AppPreferences.NavigatorDetail.allCases, id: \.self) { tag in
                     Text(tag.label).tag(tag)
                 }
@@ -178,7 +170,7 @@ private extension GeneralPreferencesView {
 
     // TODO: Implement reset for Don't Ask Me warnings Button and remove disabled modifier
     var dialogWarningsSection: some View {
-        PreferencesSection("Dialog Warnings:", align: .center) {
+        PreferencesSection("Dialog Warnings", align: .center) {
             Button(action: {
             }, label: {
                 Text("Reset \"Don't Ask Me\" Warnings")
