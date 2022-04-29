@@ -79,7 +79,7 @@ struct TabBarItem: View {
         HStack(spacing: 0.0) {
             TabDivider()
                 .opacity(isActive && prefs.preferences.general.tabBarStyle == .xcode ? 0.0 : 1.0)
-                .padding(.top, isActive && prefs.preferences.general.tabBarStyle == .native ? 2 : 0)
+                .padding(.top, isActive && prefs.preferences.general.tabBarStyle == .native ? 1.22 : 0)
             // Tab content (icon and text).
             HStack(alignment: .center, spacing: 5) {
                 Image(systemName: item.systemImage)
@@ -200,7 +200,7 @@ struct TabBarItem: View {
             )
             TabDivider()
                 .opacity(isActive && prefs.preferences.general.tabBarStyle == .xcode ? 0.0 : 1.0)
-                .padding(.top, isActive && prefs.preferences.general.tabBarStyle == .native ? 2 : 0)
+                .padding(.top, isActive && prefs.preferences.general.tabBarStyle == .native ? 1.22 : 0)
         }
         .overlay(alignment: .top) {
             // Only show NativeTabShadow when `tabBarStyle` is native and this tab is not active.

@@ -94,14 +94,17 @@ struct TabBar: View {
                         }
                         // This padding is to hide dividers at two ends under the accessory view divider.
                         .padding(.horizontal, prefs.preferences.general.tabBarStyle == .native ? -1 : 0)
+                        // On view appeared, compute the initial expected width for tabs.
                         .onAppear {
                             updateExpectedTabWidth(proxy: geometryProxy)
                             scrollReader.scrollTo(workspace.selectionState.selectedId)
                         }
+                        // When selected tab is changed, scroll to it if possible.
                         .onChange(of: workspace.selectionState.selectedId) { targetId in
                             guard let selectedId = targetId else { return }
                             scrollReader.scrollTo(selectedId)
                         }
+                        // When tabs are changing, re-compute the expected tab width.
                         .onChange(of: workspace.selectionState.openFileItems.count) { _ in
                             // Only update the expected width when user is not hovering over tabs.
                             // This should give users a better experience on closing multiple tabs continuously.
@@ -111,12 +114,13 @@ struct TabBar: View {
                                 }
                             }
                         }
+                        // When window size changes, re-compute the expected tab width.
                         .onChange(of: geometryProxy.size.width) { _ in
                             updateExpectedTabWidth(proxy: geometryProxy)
                         }
+                        // When user is not hovering anymore, re-compute the expected tab width immediately.
                         .onHover { isHovering in
                             isHoveringOverTabs = isHovering
-                            // When user is not hovering anymore, update the expected width immediately.
                             if !isHovering {
                                 withAnimation(.easeOut(duration: 0.20)) {
                                     updateExpectedTabWidth(proxy: geometryProxy)
