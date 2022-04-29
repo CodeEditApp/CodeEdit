@@ -70,13 +70,15 @@ struct TabBar: View {
             .padding(.horizontal, 11)
             .opacity(activeState != .inactive ? 1.0 : 0.5)
             .frame(maxHeight: .infinity) // Fill out vertical spaces.
-            if prefs.preferences.general.tabBarStyle == .native {
-                TabDivider()
+            .background {
+                if prefs.preferences.general.tabBarStyle == .native {
+                    TabBarAccessoryNativeBackground(dividerAt: .trailing)
+                }
             }
             // Tab bar items.
             GeometryReader { geometryProxy in
                 ScrollView(.horizontal, showsIndicators: false) {
-                    ScrollViewReader { value in
+                    ScrollViewReader { scrollReader in
                         HStack(
                             alignment: .center,
                             spacing: -1
@@ -94,7 +96,11 @@ struct TabBar: View {
                         .padding(.horizontal, prefs.preferences.general.tabBarStyle == .native ? -1 : 0)
                         .onAppear {
                             updateExpectedTabWidth(proxy: geometryProxy)
-                            value.scrollTo(self.workspace.selectionState.selectedId)
+                            scrollReader.scrollTo(workspace.selectionState.selectedId)
+                        }
+                        .onChange(of: workspace.selectionState.selectedId) { targetId in
+                            guard let selectedId = targetId else { return }
+                            scrollReader.scrollTo(selectedId)
                         }
                         .onChange(of: workspace.selectionState.openFileItems.count) { _ in
                             // Only update the expected width when user is not hovering over tabs.
@@ -119,9 +125,9 @@ struct TabBar: View {
                         }
                     }
                 }
-            }
-            if prefs.preferences.general.tabBarStyle == .native {
-                TabDivider()
+                .background {
+                    TabBarNativeInactiveBackground()
+                }
             }
             // Tab bar tools (e.g. split view).
             HStack(spacing: 10) {
@@ -147,6 +153,11 @@ struct TabBar: View {
             .padding(.horizontal, 11)
             .opacity(activeState != .inactive ? 1.0 : 0.5)
             .frame(maxHeight: .infinity) // Fill out vertical spaces.
+            .background {
+                if prefs.preferences.general.tabBarStyle == .native {
+                    TabBarAccessoryNativeBackground(dividerAt: .leading)
+                }
+            }
         }
         .frame(height: tabBarHeight)
         .overlay(alignment: .top) {
@@ -158,8 +169,6 @@ struct TabBar: View {
         .background {
             if prefs.preferences.general.tabBarStyle == .xcode {
                 Color(nsColor: .controlBackgroundColor)
-            } else {
-                TabBarNativeInactiveBackground()
             }
         }
         .background {
@@ -177,26 +186,5 @@ struct TabBar: View {
             }
         }
         .padding(.leading, -1)
-    }
-}
-
-/// Accessory icon's view for tab bar.
-struct TabBarAccessoryIcon: View {
-    /// Unifies icon font for tab bar accessories.
-    static private let iconFont = Font.system(size: 14, weight: .regular, design: .default)
-
-    private let icon: Image
-    private let action: () -> Void
-
-    init(icon: Image, action: @escaping () -> Void) {
-        self.icon = icon
-        self.action = action
-    }
-
-    var body: some View {
-        Button(
-            action: action,
-            label: { icon.font(TabBarAccessoryIcon.iconFont) }
-        )
     }
 }

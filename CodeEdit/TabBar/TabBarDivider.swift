@@ -27,8 +27,8 @@ struct TabDivider: View {
                 prefs.preferences.general.tabBarStyle == .xcode
                 ? Color(nsColor: colorScheme == .dark ? .white : .black)
                     .opacity(0.12)
-                : Color(nsColor: colorScheme == .dark ? .white : .black)
-                    .opacity(colorScheme == .dark ? 0.08 : 0.12)
+                : Color(nsColor: colorScheme == .dark ? .controlColor : .black)
+                    .opacity(colorScheme == .dark ? 0.40 : 0.13)
             )
     }
 }
