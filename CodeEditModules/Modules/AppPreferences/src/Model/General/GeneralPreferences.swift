@@ -44,6 +44,7 @@ public extension AppPreferences {
         /// Default initializer
         public init() {}
 
+        // swiftlint:disable function_body_length
         /// Explicit decoder init for setting default values when key is not present in `JSON`
         public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -88,6 +89,7 @@ public extension AppPreferences {
                 forKey: .issueNavigatorDetail
             ) ?? .upTo3
         }
+        // swiftlint:enable function_body_length
     }
 
     /// The appearance of the app
