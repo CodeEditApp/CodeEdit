@@ -56,19 +56,18 @@ private extension GeneralPreferencesView {
 
     // TODO: Implement reflecting Show Issues preference and remove disabled modifier
     var showIssuesSection: some View {
-        PreferencesSection("Show Issues") {
+        PreferencesSection("Show Issues", hideLabels: false) {
             Picker("Show Issues", selection: $prefs.preferences.general.showIssues) {
                 Text("Show Inline")
                     .tag(AppPreferences.Issues.inline)
                 Text("Show Minimized")
                     .tag(AppPreferences.Issues.minimized)
             }
+            .labelsHidden()
             .frame(width: inputWidth)
 
-            Toggle(isOn: $prefs.preferences.general.showLiveIssues) {
-                Text("Show Live Issues")
-            }
-            .toggleStyle(.checkbox)
+            Toggle("Show Live Issues", isOn: $prefs.preferences.general.showLiveIssues)
+                .toggleStyle(.checkbox)
         }
         .disabled(true)
     }
