@@ -80,8 +80,8 @@ struct FindNavigatorSearchBar: View {
         .padding(.horizontal, 5)
         .padding(.vertical, 3)
         .background(selectionBackground(isFocused))
-        .clipShape(RoundedRectangle(cornerRadius: 4))
-        .overlay(RoundedRectangle(cornerRadius: 4).stroke(Color.gray, lineWidth: 0.5).cornerRadius(4))
+        .clipShape(RoundedRectangle(cornerRadius: 6))
+        .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.gray, lineWidth: 0.5).cornerRadius(6))
     }
 
     private var textField: some View {
