@@ -61,7 +61,8 @@ public extension AppPreferences {
             ) ?? true
             self.fileExtensions = try container.decodeIfPresent(
                 FileExtensions.self,
-                forKey: .fileExtensions) ?? .showAll
+                forKey: .fileExtensions
+            ) ?? .showAll
             self.fileIconStyle = try container.decodeIfPresent(
                 FileIconStyle.self,
                 forKey: .fileIconStyle
