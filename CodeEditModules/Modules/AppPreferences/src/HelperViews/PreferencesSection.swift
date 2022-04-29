@@ -52,7 +52,7 @@ public struct PreferencesSection<Content: View>: View {
 
     public var body: some View {
         HStack(alignment: align) {
-            Text("\(title):")
+            Text("\(title)")
                 .frame(width: width, alignment: .trailing)
             if hideLabels {
                 VStack(alignment: .leading) {
