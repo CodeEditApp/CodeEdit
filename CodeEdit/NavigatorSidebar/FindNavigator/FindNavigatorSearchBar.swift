@@ -6,10 +6,14 @@
 //
 
 import SwiftUI
+import CodeEditUI
 
 struct FindNavigatorSearchBar: View {
     @ObservedObject
     private var state: WorkspaceDocument.SearchState
+
+    @FocusState
+    private var focusState: Bool
 
     private let title: String
 
@@ -33,6 +37,11 @@ struct FindNavigatorSearchBar: View {
         }
         .padding(.horizontal, 5)
         .padding(.vertical, 3)
+        .background(focusState ?
+                    EffectView(.contentBackground) :
+                    EffectView(.underPageBackground, blendingMode: .withinWindow)
+        )
+        .clipShape(RoundedRectangle(cornerRadius: 4))
         .overlay(RoundedRectangle(cornerRadius: 4).stroke(Color.gray, lineWidth: 0.5).cornerRadius(4))
     }
 
@@ -40,6 +49,7 @@ struct FindNavigatorSearchBar: View {
         TextField(title, text: $text)
             .disableAutocorrection(true)
             .textFieldStyle(PlainTextFieldStyle())
+            .focused($focusState)
     }
 
     private var clearButton: some View {
