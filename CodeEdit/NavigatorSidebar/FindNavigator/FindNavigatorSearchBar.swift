@@ -13,7 +13,7 @@ struct FindNavigatorSearchBar: View {
     private var state: WorkspaceDocument.SearchState
 
     @FocusState
-    private var focusState: Bool
+    private var isFocused: Bool
 
     private let title: String
 
@@ -37,7 +37,7 @@ struct FindNavigatorSearchBar: View {
         }
         .padding(.horizontal, 5)
         .padding(.vertical, 3)
-        .background(focusState ?
+        .background(isFocused ?
                     EffectView(.contentBackground) :
                     EffectView(.underPageBackground, blendingMode: .withinWindow)
         )
@@ -49,7 +49,7 @@ struct FindNavigatorSearchBar: View {
         TextField(title, text: $text)
             .disableAutocorrection(true)
             .textFieldStyle(PlainTextFieldStyle())
-            .focused($focusState)
+            .focused($isFocused)
     }
 
     private var clearButton: some View {
