@@ -8,7 +8,19 @@
 import SwiftUI
 import CodeEditUI
 
+extension Color {
+    init(hex: Int, opacity: Double = 1.0) {
+        let red = Double((hex & 0xff0000) >> 16) / 255.0
+        let green = Double((hex & 0xff00) >> 8) / 255.0
+        let blue = Double((hex & 0xff) >> 0) / 255.0
+        self.init(.sRGB, red: red, green: green, blue: blue, opacity: opacity)
+    }
+}
+
 struct FindNavigatorSearchBar: View {
+    @Environment(\.colorScheme)
+    var colorScheme
+
     @ObservedObject
     private var state: WorkspaceDocument.SearchState
 
@@ -19,6 +31,36 @@ struct FindNavigatorSearchBar: View {
 
     @Binding
     private var text: String
+
+    @Environment(\.controlActiveState)
+    private var controlActive
+
+    @ViewBuilder
+    public func selectionBackground(
+        _ isFocused: Bool = false
+    ) -> some View {
+        if self.controlActive != .inactive {
+            if isFocused {
+                if colorScheme == .light {
+                    Color.white
+                } else {
+                    Color(hex: 0x1e1e1e)
+                }
+            } else {
+                if colorScheme == .light {
+                    Color.black.opacity(0.06)
+                } else {
+                    Color.white.opacity(0.24)
+                }
+            }
+        } else {
+            if colorScheme == .light {
+                Color.clear
+            } else {
+                Color.white.opacity(0.14)
+            }
+        }
+    }
 
     init(state: WorkspaceDocument.SearchState,
          title: String,
@@ -37,10 +79,7 @@ struct FindNavigatorSearchBar: View {
         }
         .padding(.horizontal, 5)
         .padding(.vertical, 3)
-        .background(isFocused ?
-                    EffectView(.contentBackground) :
-                    EffectView(.underPageBackground, blendingMode: .withinWindow)
-        )
+        .background(selectionBackground(isFocused))
         .clipShape(RoundedRectangle(cornerRadius: 4))
         .overlay(RoundedRectangle(cornerRadius: 4).stroke(Color.gray, lineWidth: 0.5).cornerRadius(4))
     }
