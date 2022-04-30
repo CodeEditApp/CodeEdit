@@ -90,13 +90,15 @@ struct TabBar: View {
                                     windowController: windowController,
                                     workspace: workspace
                                 )
+                                .transition(.slide)
                             }
                         }
                         // This padding is to hide dividers at two ends under the accessory view divider.
                         .padding(.horizontal, prefs.preferences.general.tabBarStyle == .native ? -1 : 0)
-                        // On view appeared, compute the initial expected width for tabs.
                         .onAppear {
+                            // On view appeared, compute the initial expected width for tabs.
                             updateExpectedTabWidth(proxy: geometryProxy)
+                            // On first tab appeared, jump to the corresponding position.
                             scrollReader.scrollTo(workspace.selectionState.selectedId)
                         }
                         // When selected tab is changed, scroll to it if possible.
@@ -109,7 +111,7 @@ struct TabBar: View {
                             // Only update the expected width when user is not hovering over tabs.
                             // This should give users a better experience on closing multiple tabs continuously.
                             if !isHoveringOverTabs {
-                                withAnimation(.easeOut(duration: 0.20)) {
+                                withAnimation(.easeOut(duration: 0.15)) {
                                     updateExpectedTabWidth(proxy: geometryProxy)
                                 }
                             }
@@ -122,13 +124,17 @@ struct TabBar: View {
                         .onHover { isHovering in
                             isHoveringOverTabs = isHovering
                             if !isHovering {
-                                withAnimation(.easeOut(duration: 0.20)) {
+                                withAnimation(.easeOut(duration: 0.15)) {
                                     updateExpectedTabWidth(proxy: geometryProxy)
                                 }
                             }
                         }
                     }
                 }
+                // When there is no opened file, hide the scroll view, but keep the background.
+                .opacity(workspace.selectionState.openFileItems.isEmpty ? 0.0 : 1.0)
+                // To fill up the parent space of tab bar.
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background {
                     TabBarNativeInactiveBackground()
                 }

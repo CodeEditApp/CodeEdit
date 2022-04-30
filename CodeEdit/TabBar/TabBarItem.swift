@@ -62,7 +62,9 @@ struct TabBarItem: View {
         if prefs.preferences.general.tabBarStyle == .native {
             isAppeared = false
         }
-        withAnimation(.easeOut(duration: 0.20)) {
+        withAnimation(
+            .easeOut(duration: prefs.preferences.general.tabBarStyle == .native ? 0.15 : 0.20)
+        ) {
             workspace.closeFileTab(item: item)
         }
     }
@@ -297,7 +299,9 @@ struct TabBarItem: View {
             )
         )
         .onAppear {
-            withAnimation(.easeOut(duration: 0.20)) {
+            withAnimation(
+                .easeOut(duration: prefs.preferences.general.tabBarStyle == .native ? 0.15 : 0.20)
+            ) {
                 isAppeared = true
             }
         }
