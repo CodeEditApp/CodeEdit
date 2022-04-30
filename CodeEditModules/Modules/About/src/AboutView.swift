@@ -2,9 +2,9 @@ import SwiftUI
 import Acknowledgements
 
 public struct AboutView: View {
-    @Environment(\.openURL) var openURL
+    @Environment(\.openURL) private var openURL
 
-    @State var hoveringOnCommitHash = false
+    @State private var hoveringOnCommitHash = false
 
     public init() {}
 
