@@ -15,8 +15,8 @@ struct WorkspaceView: View {
         self.workspace = workspace
     }
 
-    var windowController: NSWindowController
-    var tabBarHeight = 28.0
+    let windowController: NSWindowController
+    let tabBarHeight = 28.0
     private var path: String = ""
 
     @ObservedObject
