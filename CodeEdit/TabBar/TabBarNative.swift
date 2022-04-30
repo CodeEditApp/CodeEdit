@@ -34,6 +34,31 @@ struct TabBarNativeInactiveBackgroundColor: View {
     }
 }
 
+/// Native style background material for active tab bar in fullscreen.
+/// This view is only used in fullscreen (to match the material of toolbar).
+struct TabBarNativeActiveMaterial: View {
+    @Environment(\.colorScheme)
+    private var colorScheme
+
+    var body: some View {
+        EffectView(
+            NSVisualEffectView.Material.headerView,
+            blendingMode: NSVisualEffectView.BlendingMode.withinWindow
+        )
+        .background(
+            // This layer of background is for matching the native toolbar background
+            // in dark mode and in fullscreen.
+            // There is no exactly matched material available.
+            // If you have a better solution, feel free to replace!!
+            Color(nsColor: colorScheme == .dark ? .selectedContentBackgroundColor : .clear)
+                .opacity(0.003)
+        )
+        .background(
+            Color(nsColor: colorScheme == .dark ? .windowBackgroundColor : .controlBackgroundColor)
+        )
+    }
+}
+
 /// Native style background material for tab bar.
 struct TabBarNativeMaterial: View {
     var body: some View {

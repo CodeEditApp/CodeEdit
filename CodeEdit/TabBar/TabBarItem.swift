@@ -10,12 +10,17 @@ import WorkspaceClient
 import AppPreferences
 import CodeEditUI
 
+// Disable the rule because this view is fairly complicated and I have already modularize some parts.
+// swiftlint:disable type_body_length
 struct TabBarItem: View {
     @Environment(\.colorScheme)
     private var colorScheme
 
     @Environment(\.controlActiveState)
     private var activeState
+
+    @Environment(\.isFullscreen)
+    private var isFullscreen
 
     @StateObject
     private var prefs: AppPreferencesModel = .shared
@@ -159,7 +164,8 @@ struct TabBarItem: View {
                     .foregroundColor(isPressingClose ? .primary : .secondary)
                     .background(
                         colorScheme == .dark
-                        ? Color(nsColor: .white).opacity(isPressingClose ? 0.32 : isHoveringClose ? 0.18 : 0)
+                        ? Color(nsColor: .white)
+                            .opacity(isPressingClose ? 0.32 : isHoveringClose ? 0.18 : 0)
                         : (
                             prefs.preferences.general.tabBarStyle == .xcode
                             ? Color(nsColor: isActive ? .controlAccentColor : .black)
@@ -255,7 +261,11 @@ struct TabBarItem: View {
                     )
                     .animation(.easeInOut(duration: 0.08), value: isHovering)
             } else {
-                TabBarNativeMaterial()
+                if isFullscreen && isActive {
+                    TabBarNativeActiveMaterial()
+                } else {
+                    TabBarNativeMaterial()
+                }
                 ZStack {
                     // Native inactive tab background dim.
                     TabBarNativeInactiveBackgroundColor()
@@ -311,6 +321,7 @@ struct TabBarItem: View {
         }
     }
 }
+// swiftlint:enable type_body_length
 
 fileprivate extension WorkspaceDocument {
     func getTabKeyEquivalent(item: WorkspaceClient.FileItem) -> KeyEquivalent {
