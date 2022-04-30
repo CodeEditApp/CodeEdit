@@ -71,7 +71,7 @@ struct TabBarBottomDivider: View {
             .foregroundColor(
                 prefs.preferences.general.tabBarStyle == .xcode
                 ? Color(nsColor: .separatorColor)
-                    .opacity(colorScheme == .dark ? 0.40 : 0.45)
+                    .opacity(colorScheme == .dark ? 0.80 : 0.50)
                 : Color(nsColor: .black)
                     .opacity(colorScheme == .dark ? 0.65 : 0.13)
 

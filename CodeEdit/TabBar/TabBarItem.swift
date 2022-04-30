@@ -259,7 +259,7 @@ struct TabBarItem: View {
                     .background(
                         // This layer of background is to hide dividers of other tab bar items
                         // because the original background above is translucent (by opacity).
-                        Color(nsColor: .controlBackgroundColor)
+                        TabBarXcodeBackground()
                     )
                     .animation(.easeInOut(duration: 0.08), value: isHovering)
             } else {

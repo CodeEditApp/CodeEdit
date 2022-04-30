@@ -183,7 +183,7 @@ struct TabBar: View {
         }
         .background {
             if prefs.preferences.general.tabBarStyle == .xcode {
-                Color(nsColor: .controlBackgroundColor)
+                TabBarXcodeBackground()
             }
         }
         .background {
