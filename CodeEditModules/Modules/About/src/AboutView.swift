@@ -9,15 +9,21 @@ public struct AboutView: View {
     public init() {}
 
     private var appVersion: String {
-        return Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
+        Bundle
+            .main
+            .object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
     }
 
     private var appBuild: String {
-        return Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? ""
+        Bundle
+            .main
+            .object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? ""
     }
 
     private var commitHash: String {
-        return Bundle.main.object(forInfoDictionaryKey: "GitHash") as? String ?? ""
+        Bundle
+            .main
+            .object(forInfoDictionaryKey: "GitHash") as? String ?? ""
     }
 
     public var body: some View {
