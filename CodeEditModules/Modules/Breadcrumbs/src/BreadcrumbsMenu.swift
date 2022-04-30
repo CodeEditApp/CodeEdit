@@ -57,7 +57,7 @@ public final class BreadcrumsMenu: NSMenu, NSMenuDelegate {
     }
 }
 
-class BreadcrumbsMenuItem: NSMenuItem {
+final class BreadcrumbsMenuItem: NSMenuItem {
     private let fileItem: WorkspaceClient.FileItem
     private let tappedOpenFile: (WorkspaceClient.FileItem) -> Void
 
