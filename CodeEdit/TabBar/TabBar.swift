@@ -11,6 +11,10 @@ import AppPreferences
 import CodeEditUI
 
 struct TabBar: View {
+    /// The height of tab bar.
+    /// I am not making it a private variable because it may need to be used in outside views.
+    static let height = 28.0
+
     @Environment(\.colorScheme)
     private var colorScheme
 
@@ -21,8 +25,6 @@ struct TabBar: View {
 
     @ObservedObject
     private var workspace: WorkspaceDocument
-
-    private let tabBarHeight = 28.0
 
     @StateObject
     private var prefs: AppPreferencesModel = .shared
@@ -90,7 +92,7 @@ struct TabBar: View {
                                     windowController: windowController,
                                     workspace: workspace
                                 )
-                                .transition(.slide)
+                                .frame(height: TabBar.height)
                             }
                         }
                         // This padding is to hide dividers at two ends under the accessory view divider.
@@ -129,14 +131,17 @@ struct TabBar: View {
                                 }
                             }
                         }
+                        .frame(height: TabBar.height)
                     }
                 }
                 // When there is no opened file, hide the scroll view, but keep the background.
                 .opacity(workspace.selectionState.openFileItems.isEmpty ? 0.0 : 1.0)
                 // To fill up the parent space of tab bar.
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .frame(maxWidth: .infinity)
                 .background {
-                    TabBarNativeInactiveBackground()
+                    if prefs.preferences.general.tabBarStyle == .native {
+                        TabBarNativeInactiveBackground()
+                    }
                 }
             }
             // Tab bar tools (e.g. split view).
@@ -169,7 +174,7 @@ struct TabBar: View {
                 }
             }
         }
-        .frame(height: tabBarHeight)
+        .frame(height: TabBar.height)
         .overlay(alignment: .top) {
             // When tab bar style is `xcode`, we put the top divider as an overlay.
             if prefs.preferences.general.tabBarStyle == .xcode {
@@ -188,7 +193,7 @@ struct TabBar: View {
                     blendingMode: NSVisualEffectView.BlendingMode.withinWindow
                 )
                 // Set bottom padding to avoid material overlapping in bar.
-                .padding(.bottom, tabBarHeight)
+                .padding(.bottom, TabBar.height)
                 .edgesIgnoringSafeArea(.top)
             } else {
                 TabBarNativeMaterial()
