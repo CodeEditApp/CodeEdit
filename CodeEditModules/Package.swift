@@ -58,6 +58,10 @@ let package = Package(
             targets: ["About"]
         ),
         .library(
+            name: "Acknowledgements",
+            targets: ["Acknowledgements"]
+        ),
+        .library(
             name: "QuickOpen",
             targets: ["QuickOpen"]
         ),
@@ -244,6 +248,9 @@ let package = Package(
         ),
         .target(
             name: "About",
+            dependencies: [
+                "Acknowledgements"
+            ],
             path: "Modules/About/src"
         ),
         .target(
@@ -273,6 +280,10 @@ let package = Package(
                 "SnapshotTesting",
             ],
             path: "Modules/CodeEditUI/Tests"
+        ),
+        .target(
+            name: "Acknowledgements",
+            path: "Modules/Acknowledgements/src"
         ),
         .target(
             name: "ExtensionsStore",

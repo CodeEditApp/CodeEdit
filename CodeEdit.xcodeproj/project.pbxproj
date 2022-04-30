@@ -87,6 +87,7 @@
 		DE513F52281B672D002260B9 /* TabBarAccessory.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE513F51281B672D002260B9 /* TabBarAccessory.swift */; };
 		DE6405A62817734700881FDF /* TabBarNative.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6405A52817734700881FDF /* TabBarNative.swift */; };
 		DE6F77872813625500D00A76 /* TabBarDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6F77862813625500D00A76 /* TabBarDivider.swift */; };
+		FD6A3D3D2817C13B008BCF11 /* Package.resolved in Resources */ = {isa = PBXBuildFile; fileRef = FD6A3D3C2817C13B008BCF11 /* Package.resolved */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -185,6 +186,7 @@
 		DE513F51281B672D002260B9 /* TabBarAccessory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarAccessory.swift; sourceTree = "<group>"; };
 		DE6405A52817734700881FDF /* TabBarNative.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarNative.swift; sourceTree = "<group>"; };
 		DE6F77862813625500D00A76 /* TabBarDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarDivider.swift; sourceTree = "<group>"; };
+		FD6A3D3C2817C13B008BCF11 /* Package.resolved */ = {isa = PBXFileReference; lastKnownFileType = file; path = Package.resolved; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -411,6 +413,7 @@
 				04660F6027E3A68A00477777 /* Info.plist */,
 				043C321927E32295006AE443 /* MainMenu.xib */,
 				B658FB3127DA9E0F00EA4DBD /* WorkspaceView.swift */,
+				FD6A3D3C2817C13B008BCF11 /* Package.resolved */,
 				28069DA527F5BD320016BC47 /* DefaultThemes */,
 			);
 			path = CodeEdit;
@@ -470,6 +473,7 @@
 				2B18499A27F8A7A0005119F0 /* Mark // swiftlint:disable:all as errors | Run Script */,
 				2BA119D327E5274D00A996FF /* SwiftLint Run Script */,
 				04ADA0CC27E6043B00BF00B2 /* Add TODO/FIXME as warnings | Run Script */,
+				FDF7C12027FAE90F0039BA76 /* Copy Package.resolved into Project Directory */,
 				04C3255A2801B43A00C8DA2D /* Embed Frameworks */,
 			);
 			buildRules = (
@@ -598,6 +602,7 @@
 				D7211D4727E06BFE008F2ED7 /* Localizable.strings in Resources */,
 				28A51001281673530087B0CC /* codeedit-xcode-dark.json in Resources */,
 				B658FB3427DA9E1000EA4DBD /* Assets.xcassets in Resources */,
+				FD6A3D3D2817C13B008BCF11 /* Package.resolved in Resources */,
 				043C321A27E32295006AE443 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -690,6 +695,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint >/dev/null; then\n  swiftlint --strict\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+		FDF7C12027FAE90F0039BA76 /* Copy Package.resolved into Project Directory */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Package.resolved into Project Directory";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# The following script copies the generated Package.resolved file into the project directory, ignoring any errors.\ncp ${PROJECT_DIR}/CodeEdit.xcworkspace/xcshareddata/swiftpm/Package.resolved ${PROJECT_DIR} || :\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
