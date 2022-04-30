@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		043BCF03281DA18A000AC47C /* WorkspaceDocument+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043BCF02281DA18A000AC47C /* WorkspaceDocument+Search.swift */; };
+		043BCF05281DA19A000AC47C /* WorkspaceDocument+Selection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043BCF04281DA19A000AC47C /* WorkspaceDocument+Selection.swift */; };
+		043BCF07281DA2F5000AC47C /* TabBar in Frameworks */ = {isa = PBXBuildFile; productRef = 043BCF06281DA2F5000AC47C /* TabBar */; };
 		043C321427E31FF6006AE443 /* CodeEditDocumentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043C321327E31FF6006AE443 /* CodeEditDocumentController.swift */; };
 		043C321627E3201F006AE443 /* WorkspaceDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043C321527E3201F006AE443 /* WorkspaceDocument.swift */; };
 		043C321A27E32295006AE443 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 043C321927E32295006AE443 /* MainMenu.xib */; };
@@ -120,6 +123,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		043BCF02281DA18A000AC47C /* WorkspaceDocument+Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkspaceDocument+Search.swift"; sourceTree = "<group>"; };
+		043BCF04281DA19A000AC47C /* WorkspaceDocument+Selection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkspaceDocument+Selection.swift"; sourceTree = "<group>"; };
 		043C321327E31FF6006AE443 /* CodeEditDocumentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditDocumentController.swift; sourceTree = "<group>"; };
 		043C321527E3201F006AE443 /* WorkspaceDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceDocument.swift; sourceTree = "<group>"; };
 		043C321927E32295006AE443 /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
@@ -182,7 +187,7 @@
 		D7E201B327E9989900CB86D0 /* FindNavigatorResultList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindNavigatorResultList.swift; sourceTree = "<group>"; };
 		D7E201BC27EA00E200CB86D0 /* FindNavigatorResultFileItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindNavigatorResultFileItem.swift; sourceTree = "<group>"; };
 		DE6F77862813625500D00A76 /* TabBarDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarDivider.swift; sourceTree = "<group>"; };
-		FD6A3D3C2817C13B008BCF11 /* Package.resolved */ = {isa = PBXFileReference; lastKnownFileType = file; path = Package.resolved; sourceTree = SOURCE_ROOT; };
+		FD6A3D3C2817C13B008BCF11 /* Package.resolved */ = {isa = PBXFileReference; lastKnownFileType = text; path = Package.resolved; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -192,6 +197,7 @@
 			files = (
 				0483E34D27FCC46600354AC0 /* ExtensionsStore in Frameworks */,
 				64B64EDE27F7B79400C400F1 /* About in Frameworks */,
+				043BCF07281DA2F5000AC47C /* TabBar in Frameworks */,
 				04C3256B28034FC800C8DA2D /* CodeEditKit in Frameworks */,
 				2864BAAC28117B3F002DBD1A /* ShellClient in Frameworks */,
 				20C4319A28058B9E00964DD5 /* GitAccounts in Frameworks */,
@@ -238,6 +244,8 @@
 				04660F6927E51E5C00477777 /* CodeEditWindowController.swift */,
 				0485EB1E27E7458B00138301 /* WorkspaceCodeFileView.swift */,
 				D7E201AD27E8B3C000CB86D0 /* String+Ranges.swift */,
+				043BCF02281DA18A000AC47C /* WorkspaceDocument+Search.swift */,
+				043BCF04281DA19A000AC47C /* WorkspaceDocument+Selection.swift */,
 			);
 			path = Documents;
 			sourceTree = "<group>";
@@ -496,6 +504,7 @@
 				2816F593280CF50500DD548B /* CodeEditSymbols */,
 				2864BAAB28117B3F002DBD1A /* ShellClient */,
 				2864BAAD28117D7C002DBD1A /* TerminalEmulator */,
+				043BCF06281DA2F5000AC47C /* TabBar */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -752,6 +761,7 @@
 				D7E201BD27EA00E200CB86D0 /* FindNavigatorResultFileItem.swift in Sources */,
 				287776EF27E3515300D46668 /* TabBarItem.swift in Sources */,
 				04660F6A27E51E5C00477777 /* CodeEditWindowController.swift in Sources */,
+				043BCF05281DA19A000AC47C /* WorkspaceDocument+Selection.swift in Sources */,
 				2072FA18280D871200C7F8D4 /* TextEncoding.swift in Sources */,
 				2072FA16280D83A500C7F8D4 /* FileTypeList.swift in Sources */,
 				04C3254F2800AA4700C8DA2D /* ExtensionInstallationView.swift in Sources */,
@@ -759,6 +769,7 @@
 				20D839AB280DEB2900B27357 /* NoSelectionView.swift in Sources */,
 				20EBB505280C329800F3A5DA /* HistoryItem.swift in Sources */,
 				043C321627E3201F006AE443 /* WorkspaceDocument.swift in Sources */,
+				043BCF03281DA18A000AC47C /* WorkspaceDocument+Search.swift in Sources */,
 				04C325512800AC7400C8DA2D /* ExtensionInstallationViewModel.swift in Sources */,
 				28B0A19827E385C300B73177 /* NavigatorSidebarToolbarTop.swift in Sources */,
 				0463E51127FCC1DF00806D5C /* CodeEditAPI.swift in Sources */,
@@ -1148,6 +1159,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		043BCF06281DA2F5000AC47C /* TabBar */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = TabBar;
+		};
 		0483E34C27FCC46600354AC0 /* ExtensionsStore */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ExtensionsStore;

@@ -34,10 +34,36 @@ struct WorkspaceView: View {
     @State
     var showInspector = true
 
+    var noEditor: some View {
+        Text("No Editor")
+            .font(.system(size: 17))
+            .foregroundColor(.secondary)
+            .frame(minHeight: 0)
+            .clipped()
+    }
+
+    @ViewBuilder var tabContent: some View {
+        if let tabID = workspace.selectionState.selectedId {
+            switch tabID {
+            case .codeEditor:
+                WorkspaceCodeFileView(windowController: windowController, workspace: workspace)
+            }
+        } else {
+            noEditor
+        }
+    }
+
     var body: some View {
         ZStack {
             if workspace.workspaceClient != nil, let model = workspace.statusBarModel {
-                WorkspaceCodeFileView(windowController: windowController, workspace: workspace)
+                tabContent
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .safeAreaInset(edge: .top, spacing: 0) {
+                        VStack(spacing: 0) {
+                            TabBar(windowController: windowController, workspace: workspace)
+                            TabBarBottomDivider()
+                        }
+                    }
                     .safeAreaInset(edge: .bottom) {
                         StatusBarView(model: model)
                     }

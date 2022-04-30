@@ -18,18 +18,16 @@ struct WorkspaceCodeFileView: View {
     @ViewBuilder
     var codeView: some View {
         if let item = workspace.selectionState.openFileItems.first(where: { file in
-            if file.id == workspace.selectionState.selectedId {
+            if file.tabID == workspace.selectionState.selectedId {
                 print("Item loaded is: ", file.url)
             }
-            return file.id == workspace.selectionState.selectedId
+            return file.tabID == workspace.selectionState.selectedId
         }) {
             if let codeFile = workspace.selectionState.openedCodeFiles[item] {
                 CodeFileView(codeFile: codeFile)
                     .safeAreaInset(edge: .top, spacing: 0) {
                         VStack(spacing: 0) {
-                            TabBar(windowController: windowController, workspace: workspace)
-                            TabBarBottomDivider()
-                            BreadcrumbsView(file: item, tappedOpenFile: workspace.openFile(item:))
+                            BreadcrumbsView(file: item, tappedOpenFile: workspace.openTab(item:))
                             Divider()
                         }
                     }

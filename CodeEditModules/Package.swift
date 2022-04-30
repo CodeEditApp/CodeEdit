@@ -85,6 +85,10 @@ let package = Package(
             name: "CodeEditUtils",
             targets: ["CodeEditUtils"]
         ),
+        .library(
+            name: "TabBar",
+            targets: ["TabBar"]
+        ),
     ],
     dependencies: [
         .package(
@@ -130,6 +134,9 @@ let package = Package(
     targets: [
         .target(
             name: "WorkspaceClient",
+            dependencies: [
+                "TabBar"
+            ],
             path: "Modules/WorkspaceClient/src"
         ),
         .testTarget(
@@ -321,7 +328,10 @@ let package = Package(
         .target(
             name: "CodeEditUtils",
             path: "Modules/CodeEditUtils/src"
-
+        ),
+        .target(
+            name: "TabBar",
+            path: "Modules/TabBar/src"
         ),
     ]
 )

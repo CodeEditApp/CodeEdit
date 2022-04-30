@@ -9,6 +9,7 @@ import SwiftUI
 import WorkspaceClient
 import AppPreferences
 import CodeEditUI
+import TabBar
 
 struct TabBarItem: View {
     @Environment(\.colorScheme)
@@ -32,19 +33,19 @@ struct TabBarItem: View {
     @State
     private var isAppeared: Bool = false
 
-    private var item: WorkspaceClient.FileItem
+    private var item: TabBarItemRepresentable
     private var windowController: NSWindowController
 
     private func switchAction() {
         // Only set the `selectedId` when they are not equal to avoid performance issue for now.
-        if workspace.selectionState.selectedId != item.id {
-            workspace.selectionState.selectedId = item.id
+        if workspace.selectionState.selectedId != item.tabID {
+            workspace.selectionState.selectedId = item.tabID
         }
     }
 
     private func closeAction() {
         withAnimation(.easeOut(duration: 0.20)) {
-            workspace.closeFileTab(item: item)
+            workspace.closeTab(item: item.tabID)
         }
     }
 
@@ -52,10 +53,10 @@ struct TabBarItem: View {
     private var workspace: WorkspaceDocument
 
     private var isActive: Bool {
-        item.id == workspace.selectionState.selectedId
+        item.tabID == workspace.selectionState.selectedId
     }
 
-    init(item: WorkspaceClient.FileItem, windowController: NSWindowController, workspace: WorkspaceDocument) {
+    init(item: TabBarItemRepresentable, windowController: NSWindowController, workspace: WorkspaceDocument) {
         self.item = item
         self.windowController = windowController
         self.workspace = workspace
@@ -69,7 +70,7 @@ struct TabBarItem: View {
                     isActive && prefs.preferences.general.tabBarStyle == .xcode ? 0.0 : 1.0
                 )
             HStack(alignment: .center, spacing: 5) {
-                Image(systemName: item.systemImage)
+                item.icon
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .foregroundColor(
@@ -78,7 +79,7 @@ struct TabBarItem: View {
                         : .secondary
                     )
                     .frame(width: 12, height: 12)
-                Text(item.url.lastPathComponent)
+                Text(item.title)
                     .font(.system(size: 11.0))
                     .lineLimit(1)
             }
@@ -288,21 +289,21 @@ struct TabBarItem: View {
                 isAppeared = true
             }
         }
-        .id(item.id)
+        .id(item.tabID)
         .contextMenu {
             Button("Close Tab") {
                 withAnimation {
-                    workspace.closeFileTab(item: item)
+                    workspace.closeTab(item: item.tabID)
                 }
             }
             Button("Close Other Tabs") {
                 withAnimation {
-                    workspace.closeFileTab(where: { $0.id != item.id })
+                    workspace.closeTab(where: { $0 != item.tabID })
                 }
             }
             Button("Close Tabs to the Right") {
                 withAnimation {
-                    workspace.closeFileTabs(after: item)
+                    workspace.closeTabs(after: item.tabID)
                 }
             }
         }
@@ -310,9 +311,9 @@ struct TabBarItem: View {
 }
 
 fileprivate extension WorkspaceDocument {
-    func getTabKeyEquivalent(item: WorkspaceClient.FileItem) -> KeyEquivalent {
+    func getTabKeyEquivalent(item: TabBarItemRepresentable) -> KeyEquivalent {
         for counter in 0..<9 where self.selectionState.openFileItems.count > counter &&
-        self.selectionState.openFileItems[counter].fileName == item.fileName {
+        self.selectionState.openFileItems[counter].tabID == item.tabID {
             return KeyEquivalent.init(
                 Character.init("\(counter + 1)")
             )

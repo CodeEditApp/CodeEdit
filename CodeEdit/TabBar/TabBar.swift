@@ -60,12 +60,14 @@ struct TabBar: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 ScrollViewReader { value in
                     HStack(alignment: .center, spacing: -1) {
-                        ForEach(workspace.selectionState.openFileItems, id: \.id) { item in
-                            TabBarItem(
-                                item: item,
-                                windowController: windowController,
-                                workspace: workspace
-                            )
+                        ForEach(workspace.selectionState.openedTabs, id: \.id) { id in
+                            if let item = self.workspace.selectionState.getItemByTab(id: id) {
+                                TabBarItem(
+                                    item: item,
+                                    windowController: windowController,
+                                    workspace: workspace
+                                )
+                            }
                         }
                     }
                     .onAppear {

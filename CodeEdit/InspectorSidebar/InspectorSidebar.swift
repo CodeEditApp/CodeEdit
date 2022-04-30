@@ -27,7 +27,7 @@ struct InspectorSidebar: View {
     var body: some View {
         VStack {
             if let item = workspace.selectionState.openFileItems.first(where: { file in
-                return file.id == workspace.selectionState.selectedId
+                return file.tabID == workspace.selectionState.selectedId
             }) {
                 if let codeFile = workspace.selectionState.openedCodeFiles[item] {
                     switch selection {
