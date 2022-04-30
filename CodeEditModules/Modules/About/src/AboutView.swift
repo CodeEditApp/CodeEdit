@@ -92,7 +92,10 @@ public struct AboutView: View {
     }
 
     public func showWindow(width: CGFloat, height: CGFloat) {
-        PlaceholderWindowController(view: self, size: NSSize(width: width, height: height)).showWindow(nil)
+        PlaceholderWindowController(view: self,
+                                    size: NSSize(width: width,
+                                                 height: height))
+        .showWindow(nil)
     }
 }
 
