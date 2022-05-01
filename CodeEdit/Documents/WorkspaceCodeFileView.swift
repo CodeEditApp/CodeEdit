@@ -48,19 +48,6 @@ struct WorkspaceCodeFileView: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background {
-            if prefs.preferences.general.tabBarStyle == .xcode {
-                // Use the same background material as xcode tab bar style.
-                // Only when the tab bar style is set to `xcode`.
-                TabBarXcodeBackground()
-            }
-        }
-        .safeAreaInset(edge: .top, spacing: 0) {
-            VStack(spacing: 0) {
-                TabBar(windowController: windowController, workspace: workspace)
-                TabBarBottomDivider()
-            }
-        }
     }
 
     var body: some View {

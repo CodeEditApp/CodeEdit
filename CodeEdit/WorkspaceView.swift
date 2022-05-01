@@ -10,6 +10,7 @@ import WorkspaceClient
 import StatusBar
 import ExtensionsStore
 import AppKit
+import AppPreferences
 
 struct WorkspaceView: View {
     init(windowController: NSWindowController, workspace: WorkspaceDocument) {
@@ -23,6 +24,9 @@ struct WorkspaceView: View {
 
     @ObservedObject
     var workspace: WorkspaceDocument
+
+    @StateObject
+    private var prefs: AppPreferencesModel = .shared
 
     @State
     private var showingAlert = false
@@ -79,6 +83,13 @@ struct WorkspaceView: View {
                     tabContent
                 }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background {
+                        if prefs.preferences.general.tabBarStyle == .xcode {
+                            // Use the same background material as xcode tab bar style.
+                            // Only when the tab bar style is set to `xcode`.
+                            TabBarXcodeBackground()
+                        }
+                    }
                     .safeAreaInset(edge: .top, spacing: 0) {
                         VStack(spacing: 0) {
                             TabBar(windowController: windowController, workspace: workspace)
