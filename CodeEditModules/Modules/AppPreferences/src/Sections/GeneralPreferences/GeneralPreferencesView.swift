@@ -142,7 +142,6 @@ private extension GeneralPreferencesView {
         }
     }
 
-    // TODO: Implement reflecting Find Navigator Detail preference and remove disabled modifier
     var findNavigatorDetailSection: some View {
         PreferencesSection("Find Navigator Detail") {
             Picker("Find Navigator Detail", selection: $prefs.preferences.general.findNavigatorDetail) {
@@ -152,7 +151,6 @@ private extension GeneralPreferencesView {
             }
             .frame(width: inputWidth)
         }
-        .disabled(true)
     }
 
     // TODO: Implement reflecting Issue Navigator Detail preference and remove disabled modifier
