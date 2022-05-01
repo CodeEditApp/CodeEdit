@@ -1,4 +1,5 @@
 import SwiftUI
+import CodeEditUtils
 import Acknowledgements
 
 public struct AboutView: View {
@@ -9,21 +10,15 @@ public struct AboutView: View {
     public init() {}
 
     private var appVersion: String {
-        Bundle
-            .main
-            .object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
+        Bundle.versionString ?? "No Version"
     }
 
     private var appBuild: String {
-        Bundle
-            .main
-            .object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? ""
+        Bundle.buildString ?? "No Build"
     }
 
     private var commitHash: String {
-        Bundle
-            .main
-            .object(forInfoDictionaryKey: "GitHash") as? String ?? "No Hash"
+        Bundle.commitHash ?? "No Hash"
     }
 
     private var shortCommitHash: String {
