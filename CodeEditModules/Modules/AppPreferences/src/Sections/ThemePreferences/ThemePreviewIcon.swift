@@ -1,6 +1,6 @@
 //
 //  ThemePreviewIcon.swift
-//  
+//  CodeEditModules/AppPreferences
 //
 //  Created by Lukas Pistrol on 30.03.22.
 //

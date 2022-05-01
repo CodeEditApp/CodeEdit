@@ -1,3 +1,10 @@
+//
+//  AboutView.swift
+//  CodeEditModules/About
+//
+//  Created by Andrei Vidrasco on 02.04.2022
+//
+
 import SwiftUI
 import CodeEditUtils
 import Acknowledgements

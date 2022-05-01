@@ -1,6 +1,6 @@
 //
 //  OverlayPanel.swift
-//  CodeEdit
+//  CodeEditModules/CodeEditUI
 //
 //  Created by Pavel Kasila on 20.03.22.
 //

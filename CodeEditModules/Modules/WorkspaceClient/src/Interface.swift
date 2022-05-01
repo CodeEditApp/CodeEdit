@@ -1,6 +1,6 @@
 //
 //  Interface.swift
-//  CodeEdit
+//  CodeEditModules/WorkspaceClient
 //
 //  Created by Marco Carnevali on 16/03/22.
 //

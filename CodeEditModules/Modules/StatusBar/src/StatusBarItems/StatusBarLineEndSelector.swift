@@ -1,6 +1,6 @@
 //
 //  StatusBarLineEndSelector.swift
-//  
+//  CodeEditModules/StatusBar
 //
 //  Created by Lukas Pistrol on 22.03.22.
 //

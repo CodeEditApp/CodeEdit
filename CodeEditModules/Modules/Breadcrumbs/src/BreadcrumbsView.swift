@@ -1,6 +1,6 @@
 //
 //  BreadcrumbsView.swift
-//  CodeEdit
+//  CodeEditModules/Breadcrumbs
 //
 //  Created by Lukas Pistrol on 17.03.22.
 //

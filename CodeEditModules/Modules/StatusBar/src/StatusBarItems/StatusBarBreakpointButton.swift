@@ -1,6 +1,6 @@
 //
 //  StatusBarBreakpointButton.swift
-//  
+//  CodeEditModules/StatusBar
 //
 //  Created by Stef Kors on 14/04/2022.
 //
