@@ -1,6 +1,6 @@
 //
 //  LSPClient.swift
-//  
+//  CodeEditModules/LSP
 //
 //  Created by Pavel Kasila on 16.04.22.
 //

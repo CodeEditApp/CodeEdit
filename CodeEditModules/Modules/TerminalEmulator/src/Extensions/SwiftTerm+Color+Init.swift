@@ -1,6 +1,6 @@
 //
 //  SwiftTerm+Color+Init.swift
-//  
+//  CodeEditModules/TerminalEmulator
 //
 //  Created by Lukas Pistrol on 24.03.22.
 //

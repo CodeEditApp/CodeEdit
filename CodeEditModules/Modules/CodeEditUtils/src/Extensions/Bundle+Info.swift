@@ -1,6 +1,6 @@
 //
 //  Bundle+Info.swift
-//  CodeEdit
+//  CodeEditModules/CodeEditUtils
 //
 //  Created by Lukas Pistrol on 01.05.22.
 //

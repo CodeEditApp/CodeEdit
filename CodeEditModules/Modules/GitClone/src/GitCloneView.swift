@@ -1,6 +1,6 @@
 //
 //  GitCloneView.swift
-//  CodeEdit
+//  CodeEditModules/GitClone
 //
 //  Created by Aleksi Puttonen on 23.3.2022.
 //

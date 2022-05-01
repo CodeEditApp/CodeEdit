@@ -1,6 +1,6 @@
 //
 //  UnitTests.swift
-//  CodeEdit
+//  CodeEditModules/CodeEditUITests
 //
 //  Created by Lukas Pistrol on 19.04.22.
 //
