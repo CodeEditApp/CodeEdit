@@ -13,7 +13,7 @@ public extension String {
     /// Returns a MD5 encrypted String of the input String
     ///
     /// - Note: Whitespaces and Newlines are trimmed
-    /// - Parameter lowercased: If true this will convert the input string to lowercase characters
+    /// - Parameter caseSensitive: If `false` the input string will be converted to lowercase characters. Defaults to `false`.
     /// - Returns: A String in HEX format
     func md5(_ caseSensitive: Bool = false) -> String {
         var trimmed = self.trimmingCharacters(in: .whitespacesAndNewlines)
