@@ -8,33 +8,16 @@
 import SwiftUI
 
 public struct AcknowledgementsView: View {
-    private var acknowledgements: [Dependency]
 
-    // TODO: Move logic to separate View Model
+    @ObservedObject
+    private var model: AcknowledgementsModel
+
     public init() {
-        self.acknowledgements = []
-        do {
-            if let bundlePath = Bundle.main.path(forResource: "Package.resolved", ofType: nil) {
-                let jsonData = try String(contentsOfFile: bundlePath).data(using: .utf8)
-                let parsedJSON = try JSONDecoder().decode(RootObject.self, from: jsonData!)
-                for dependency in parsedJSON.object.pins.sorted(by: {$0.package < $1.package}) {
-                    // Filter out Dependencies containing CodeEdit (case insensitive)
-                    if dependency.package.range(of: "[Cc]ode[Ee]dit",
-                                                options: .regularExpression, range: nil, locale: nil) == nil {
-                        self.acknowledgements.append(
-                            Dependency(name: dependency.package,
-                                       repositoryLink: dependency.repositoryURL,
-                                       version: dependency.state.version ?? ""))
-                    }
-                }
-            }
-        } catch {
-            print(error)
-        }
+        self.model = .init()
     }
 
     init(_ dependencies: [Dependency]) {
-        self.acknowledgements = dependencies
+        self.model = .init(dependencies)
     }
 
     public var body: some View {
@@ -43,7 +26,7 @@ public struct AcknowledgementsView: View {
                 .font(.system(size: 18, weight: .semibold)).padding([.leading, .top], 10.0)
             ScrollView {
                 VStack(alignment: .leading, spacing: 10) {
-                    ForEach(acknowledgements, id: \.name) { acknowledgement in
+                    ForEach(model.acknowledgements, id: \.name) { acknowledgement in
                         AcknowledgementRow(acknowledgement: acknowledgement)
                             .listRowBackground(Color.clear)
                     }
@@ -63,7 +46,7 @@ struct AcknowledgementRow: View {
     var acknowledgement: Dependency
 
     var body: some View {
-        HStack(alignment: .bottom) {
+        HStack(alignment: .firstTextBaseline, spacing: 10) {
             Text(acknowledgement.name)
                 .bold()
             Text(acknowledgement.version)
@@ -74,7 +57,8 @@ struct AcknowledgementRow: View {
             Button(action: {
                 openURL(acknowledgement.repositoryURL)
             }, label: {
-                Image(systemName: "arrow.right.circle.fill").foregroundColor(.secondary)
+                Image(systemName: "arrow.right.circle.fill")
+                    .foregroundColor(Color(nsColor: .tertiaryLabelColor))
             }).buttonStyle(.plain)
         }
     }
@@ -134,7 +118,7 @@ struct Acknowledgements_Previews: PreviewProvider {
             Dependency(name: "Hi", repositoryLink: "Test", version: "1.2.3"),
             Dependency(name: "Hi", repositoryLink: "Test", version: "1.2.3"),
             Dependency(name: "Hi", repositoryLink: "Test", version: "1.2.3")
-        ])
+        ]).preferredColorScheme(.dark)
         AcknowledgementsView([
             Dependency(name: "Hi", repositoryLink: "Test", version: "1.2.3"),
             Dependency(name: "Hi", repositoryLink: "Test", version: "1.2.3"),
