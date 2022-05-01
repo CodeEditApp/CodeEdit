@@ -37,7 +37,8 @@ struct FindNavigatorResultFileItem: View {
 
     @ViewBuilder
     private func foundLineResult(_ lineContent: String?, keywordRange: Range<String.Index>?) -> some View {
-        if let lineContent = lineContent, let keywordRange = keywordRange {
+        if let lineContent = lineContent,
+           let keywordRange = keywordRange {
             Text(lineContent[lineContent.startIndex..<keywordRange.lowerBound]) +
             Text(lineContent[keywordRange.lowerBound..<keywordRange.upperBound])
                 .foregroundColor(.white)
