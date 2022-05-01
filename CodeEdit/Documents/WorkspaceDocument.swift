@@ -45,6 +45,9 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
             case .codeEditor:
                 guard let file = item as? WorkspaceClient.FileItem else { return }
                 try self.openFile(item: file)
+            case .extensionInstallation:
+                guard let plugin = item as? Plugin else { return }
+                self.openExtension(item: plugin)
             }
 
             if !selectionState.openedTabs.contains(item.tabID) {
@@ -72,7 +75,12 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
             selectionState.openedCodeFiles[item] = codeFile
         }
         Swift.print("Opening file for item: ", item.url)
-        self.windowControllers.first?.window?.subtitle = item.url.lastPathComponent
+    }
+
+    private func openExtension(item: Plugin) {
+        if !selectionState.openedExtensions.contains(item) {
+            selectionState.openedExtensions.append(item)
+        }
     }
 
     func closeTab(item id: TabBarItemID) {
@@ -84,6 +92,9 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         case .codeEditor:
             guard let item = selectionState.getItemByTab(id: id) as? WorkspaceClient.FileItem else { return }
             closeFileTab(item: item)
+        case .extensionInstallation:
+            guard let item = selectionState.getItemByTab(id: id) as? Plugin else { return }
+            closeExtensionTab(item: item)
         }
 
         if selectionState.openedTabs.isEmpty {
@@ -123,8 +134,12 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         }
 
         guard let idx = selectionState.openFileItems.firstIndex(of: item) else { return }
-        let closedFileItem = selectionState.openFileItems.remove(at: idx)
-        guard closedFileItem.id == item.id else { return }
+        selectionState.openFileItems.remove(at: idx)
+    }
+
+    private func closeExtensionTab(item: Plugin) {
+        guard let idx = selectionState.openedExtensions.firstIndex(of: item) else { return }
+        selectionState.openedExtensions.remove(at: idx)
     }
 
     private let ignoredFilesAndDirectory = [
@@ -182,6 +197,10 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
                             switch tab {
                             case .codeEditor(let path):
                                 return try? workspaceClient?.getFileItem(path)
+                            case .extensionInstallation:
+                                return state.openedExtensions.first { plugin in
+                                    plugin.tabID == tab
+                                }
                             }
                         }
                         .forEach { item in

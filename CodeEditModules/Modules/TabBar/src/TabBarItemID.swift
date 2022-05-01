@@ -13,8 +13,11 @@ public enum TabBarItemID: Codable, Identifiable, Hashable {
         switch self {
         case .codeEditor(let path):
             return "codeEditor_\(path)"
+        case .extensionInstallation(let id):
+            return "extensionInstallation_\(id.uuidString)"
         }
     }
 
     case codeEditor(String)
+    case extensionInstallation(UUID)
 }

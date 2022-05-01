@@ -6,9 +6,27 @@
 //
 
 import Foundation
+import SwiftUI
 import CodeEditKit
+import TabBar
 
-public struct Plugin: Codable, Identifiable, Hashable {
+public struct Plugin: Codable, Identifiable, Hashable, TabBarItemRepresentable {
+    public var tabID: TabBarItemID {
+        .extensionInstallation(self.id)
+    }
+
+    public var title: String {
+        self.manifest.displayName
+    }
+
+    public var icon: Image {
+        Image(systemName: "puzzlepiece.extension.fill")
+    }
+
+    public var iconColor: Color {
+        .blue
+    }
+
     public var id: UUID
     public var manifest: ExtensionManifest
     public var author: UUID

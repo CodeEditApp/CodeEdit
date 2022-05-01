@@ -8,6 +8,7 @@
 import SwiftUI
 import WorkspaceClient
 import StatusBar
+import ExtensionsStore
 
 struct WorkspaceView: View {
     init(windowController: NSWindowController, workspace: WorkspaceDocument) {
@@ -47,6 +48,12 @@ struct WorkspaceView: View {
             switch tabID {
             case .codeEditor:
                 WorkspaceCodeFileView(windowController: windowController, workspace: workspace)
+            case .extensionInstallation:
+                if let plugin = workspace.selectionState.selected as? Plugin {
+                    ExtensionInstallationView(plugin: plugin)
+                        .environmentObject(workspace)
+                        .frame(alignment: .center)
+                }
             }
         } else {
             noEditor
@@ -56,7 +63,9 @@ struct WorkspaceView: View {
     var body: some View {
         ZStack {
             if workspace.workspaceClient != nil, let model = workspace.statusBarModel {
-                tabContent
+                ZStack {
+                    tabContent
+                }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .safeAreaInset(edge: .top, spacing: 0) {
                         VStack(spacing: 0) {

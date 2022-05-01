@@ -9,6 +9,7 @@ import Foundation
 import WorkspaceClient
 import CodeFile
 import TabBar
+import ExtensionsStore
 
 struct WorkspaceSelectionState: Codable {
 
@@ -17,17 +18,16 @@ struct WorkspaceSelectionState: Codable {
 
     var selected: TabBarItemRepresentable? {
         guard let selectedId = selectedId else { return nil }
-        switch selectedId {
-        case .codeEditor(let id):
-            return openFileItems.first(where: { $0.id == id })
-        }
+        return getItemByTab(id: selectedId)
     }
 
     var openFileItems: [WorkspaceClient.FileItem] = []
     var openedCodeFiles: [WorkspaceClient.FileItem: CodeFileDocument] = [:]
 
+    var openedExtensions: [Plugin] = []
+
     enum CodingKeys: String, CodingKey {
-        case selectedId, openedTabs
+        case selectedId, openedTabs, openedExtensions
     }
 
     init() {
@@ -37,18 +37,24 @@ struct WorkspaceSelectionState: Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         selectedId = try container.decode(TabBarItemID?.self, forKey: .selectedId)
         openedTabs = try container.decode([TabBarItemID].self, forKey: .openedTabs)
+        openedExtensions = try container.decode([Plugin].self, forKey: .openedExtensions)
     }
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(selectedId, forKey: .selectedId)
         try container.encode(openedTabs, forKey: .openedTabs)
+        try container.encode(openedExtensions, forKey: .openedExtensions)
     }
 
     func getItemByTab(id: TabBarItemID) -> TabBarItemRepresentable? {
         switch id {
         case .codeEditor:
             return self.openFileItems.first { item in
+                item.tabID == id
+            }
+        case .extensionInstallation:
+            return self.openedExtensions.first { item in
                 item.tabID == id
             }
         }
