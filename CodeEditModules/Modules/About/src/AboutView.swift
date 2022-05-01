@@ -23,70 +23,85 @@ public struct AboutView: View {
     private var commitHash: String {
         Bundle
             .main
-            .object(forInfoDictionaryKey: "GitHash") as? String ?? ""
+            .object(forInfoDictionaryKey: "GitHash") as? String ?? "No Hash"
+    }
+
+    private var shortCommitHash: String {
+        if commitHash.count > 7 {
+            return String(commitHash[...commitHash.index(commitHash.startIndex, offsetBy: 7)])
+        }
+        return commitHash
     }
 
     public var body: some View {
         HStack(spacing: 0) {
-            Spacer().frame(width: 32)
-            Image(nsImage: NSApp.applicationIconImage)
-                .resizable()
-                .frame(width: 128, height: 128)
-            Spacer().frame(width: 32)
+            logo
             VStack(alignment: .leading, spacing: 0) {
-                HStack(spacing: 0) {
-                    Spacer().frame(width: 6)
-                    VStack(alignment: .leading, spacing: 0) {
-                        Text("CodeEdit").font(.system(size: 38, weight: .regular))
-                        Text("Version \(appVersion) (\(appBuild))")
-                            .textSelection(.enabled)
-                            .foregroundColor(.secondary)
-                            .font(.system(size: 13, weight: .light))
-                        Spacer().frame(height: 5)
-                        HStack(spacing: 2.0) {
-                            Text("Commit:")
-                            Text(self.hoveringOnCommitHash ?
-                                    commitHash :
-                                    String(commitHash[...commitHash.index(commitHash.startIndex, offsetBy: 7)]))
-                                .textSelection(.enabled)
-                                .onHover { _ in
-                                    self.hoveringOnCommitHash.toggle()
-                                }
-                                .animation(.easeInOut, value: self.hoveringOnCommitHash)
-                        }.foregroundColor(.secondary)
-                            .font(.system(size: 10, weight: .light))
-                        Spacer().frame(height: 36)
-                        Text("Copyright © 2022 CodeEdit")
-                            .foregroundColor(.secondary)
-                            .font(.system(size: 9, weight: .light))
-                            .lineSpacing(0.2)
-                        Spacer().frame(height: 5)
-                        Text("MIT License")
-                            .foregroundColor(.secondary)
-                            .font(.system(size: 9, weight: .light))
-                            .lineSpacing(0.2)
-                    }
-                    Spacer().frame(width: 32)
-                }
+                topMetaData
                 Spacer()
-                HStack(spacing: 0) {
-                    Spacer().frame(width: 6)
-                    Button(action: {
-                        AcknowledgementsView().showWindow(width: 300, height: 400)
-                    }, label: {
-                        Text("Acknowledgments")
-                            .frame(width: 136, height: 20)
-                    })
-                    Spacer().frame(width: 12)
-                    Button(action: {
-                        openURL(URL(string: "https://github.com/CodeEditApp/CodeEdit/blob/main/LICENSE.md")!)
-                    }, label: {
-                        Text("License Agreement")
-                            .frame(width: 136, height: 20)
-                    })
-                    Spacer().frame(width: 16)
-                }.frame(maxWidth: .infinity)
-                Spacer().frame(height: 20)
+                bottomMetaData
+                actionButtons
+            }
+            .padding([.trailing, .bottom])
+        }
+    }
+
+    // MARK: Sub-Views
+
+    private var logo: some View {
+        Image(nsImage: NSApp.applicationIconImage)
+            .resizable()
+            .frame(width: 128, height: 128)
+            .padding(32)
+    }
+
+    private var topMetaData: some View {
+        VStack(alignment: .leading, spacing: 5) {
+            Text("CodeEdit").font(.system(size: 38, weight: .regular))
+            Text("Version \(appVersion) (\(appBuild))")
+                .textSelection(.enabled)
+                .foregroundColor(.secondary)
+                .font(.system(size: 13, weight: .light))
+            HStack(spacing: 2.0) {
+                Text("Commit:")
+                Text(self.hoveringOnCommitHash ?
+                     commitHash : shortCommitHash)
+                .textSelection(.enabled)
+                .onHover { hovering in
+                    self.hoveringOnCommitHash = hovering
+                }
+                .animation(.easeInOut, value: self.hoveringOnCommitHash)
+            }
+            .foregroundColor(.secondary)
+            .font(.system(size: 10, weight: .light))
+        }
+    }
+
+    private var bottomMetaData: some View {
+        VStack(alignment: .leading, spacing: 5) {
+            Text("Copyright © 2022 CodeEdit")
+            Text("MIT License")
+        }
+        .foregroundColor(.secondary)
+        .font(.system(size: 9, weight: .light))
+        .padding(.bottom, 10)
+    }
+
+    private var actionButtons: some View {
+        HStack {
+            Button {
+                AcknowledgementsView().showWindow(width: 300, height: 400)
+            } label: {
+                Text("Acknowledgments")
+                    .frame(maxWidth: .infinity)
+            }
+            Button {
+                guard let url = URL(string: "https://github.com/CodeEditApp/CodeEdit/blob/main/LICENSE.md")
+                else { return }
+                openURL(url)
+            } label: {
+                Text("License Agreement")
+                    .frame(maxWidth: .infinity)
             }
         }
     }
@@ -143,5 +158,12 @@ final class PlaceholderWindowController: NSWindowController {
         }
         window?.animator().alphaValue = 0.0
         NSAnimationContext.endGrouping()
+    }
+}
+
+struct About_Previews: PreviewProvider {
+    static var previews: some View {
+        AboutView()
+            .frame(width: 530, height: 220)
     }
 }
