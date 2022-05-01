@@ -46,7 +46,7 @@ struct WorkspaceView: View {
 
     @State
     private var leaveFullscreenObserver: Any?
-    
+
     var noEditor: some View {
         Text("No Editor")
             .font(.system(size: 17))

@@ -31,11 +31,7 @@ struct WorkspaceCodeFileView: View {
                                 BreadcrumbsView(file: item, tappedOpenFile: workspace.openTab(item:))
                                 Divider()
                             }
-                    } else {
-                        Text("CodeEdit cannot open this file because its file type is not supported.")
-                            .frame(minHeight: 0)
-                            .clipped()
-                    }
+                        }
                 } else {
                     Text("No Editor")
                         .font(.system(size: 17))
@@ -46,12 +42,6 @@ struct WorkspaceCodeFileView: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .safeAreaInset(edge: .top, spacing: 0) {
-            VStack(spacing: 0) {
-                TabBar(windowController: windowController, workspace: workspace)
-                TabBarBottomDivider()
-            }
-        }
     }
 
     var body: some View {

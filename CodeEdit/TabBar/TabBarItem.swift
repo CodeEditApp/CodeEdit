@@ -49,7 +49,7 @@ struct TabBarItem: View {
     private var windowController: NSWindowController
 
     var isActive: Bool {
-        item.id == workspace.selectionState.selectedId
+        item.tabID == workspace.selectionState.selectedId
     }
 
     private func switchAction() {
@@ -68,13 +68,6 @@ struct TabBarItem: View {
         ) {
             workspace.closeTab(item: item.tabID)
         }
-    }
-
-    @ObservedObject
-    private var workspace: WorkspaceDocument
-
-    private var isActive: Bool {
-        item.tabID == workspace.selectionState.selectedId
     }
 
     init(

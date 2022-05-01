@@ -85,14 +85,16 @@ struct TabBar: View {
                             alignment: .center,
                             spacing: -1
                         ) {
-                            ForEach(workspace.selectionState.openedTabs, id: \.id) { item in
-                                TabBarItem(
-                                    expectedWidth: $expectedTabWidth,
-                                    item: item,
-                                    windowController: windowController,
-                                    workspace: workspace
-                                )
-                                .frame(height: TabBar.height)
+                            ForEach(workspace.selectionState.openedTabs, id: \.id) { id in
+                                if let item = workspace.selectionState.getItemByTab(id: id) {
+                                    TabBarItem(
+                                        expectedWidth: $expectedTabWidth,
+                                        item: item,
+                                        windowController: windowController,
+                                        workspace: workspace
+                                    )
+                                    .frame(height: TabBar.height)
+                                }
                             }
                         }
                         // This padding is to hide dividers at two ends under the accessory view divider.
