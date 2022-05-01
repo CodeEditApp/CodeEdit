@@ -8,10 +8,10 @@
 import Foundation
 
 /// A LSP client to handle Language Server process
-public class LSPClient {
-    var executable: URL
-    var workspace: URL
-    var process: Process
+public final class LSPClient {
+    private let executable: URL
+    private let workspace: URL
+    private let process: Process
 
     /// Initialize new LSP client
     /// - Parameters:
@@ -20,13 +20,13 @@ public class LSPClient {
     ///   - arguments: Additional arguments from `CELSPArguments` in `Info.plist` of the Language Server bundle
     public init(_ executable: URL, workspace: URL, arguments: [String]?) throws {
         self.executable = executable
-        try FileManager.default.setAttributes([.posixPermissions: 0o555], ofItemAtPath: self.executable.path)
+        try FileManager.default.setAttributes([.posixPermissions: 0o555], ofItemAtPath: executable.path)
         self.workspace = workspace
         self.process = try Process.run(executable, arguments: arguments ?? ["--stdio"], terminationHandler: nil)
     }
 
     /// Close the process
     public func close() {
-        self.process.terminate()
+        process.terminate()
     }
 }

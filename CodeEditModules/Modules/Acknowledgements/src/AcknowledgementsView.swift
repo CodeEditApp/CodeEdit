@@ -8,7 +8,7 @@
 import SwiftUI
 
 public struct AcknowledgementsView: View {
-    var acknowledgements: [Dependency]
+    private var acknowledgements: [Dependency]
 
     public init() {
         self.acknowledgements = []

@@ -12,7 +12,7 @@ struct PreferencesColorPicker: View {
     @Binding
     var color: Color
 
-    private var label: String?
+    private let label: String?
 
     init(_ color: Binding<Color>, label: String? = nil) {
         self._color = color

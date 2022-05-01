@@ -12,7 +12,7 @@ import Foundation
 
 /// A collection of file types and their associated extensions,
 ///  which can be selected in the inspector to override default values
-public class FileTypeList {
+final class FileTypeList {
 
     var languageTypeObjCList = [LanguageType(name: "Objective-C Preprocessed Source", id: "obj_c_pre_source"),
                                 LanguageType(name: "Objective-C Source", id: "m"),

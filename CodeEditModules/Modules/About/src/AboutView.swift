@@ -2,22 +2,28 @@ import SwiftUI
 import Acknowledgements
 
 public struct AboutView: View {
-    @Environment(\.openURL) var openURL
+    @Environment(\.openURL) private var openURL
 
-    @State var hoveringOnCommitHash = false
+    @State private var hoveringOnCommitHash = false
 
     public init() {}
 
     private var appVersion: String {
-        return Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
+        Bundle
+            .main
+            .object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
     }
 
     private var appBuild: String {
-        return Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? ""
+        Bundle
+            .main
+            .object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? ""
     }
 
     private var commitHash: String {
-        return Bundle.main.object(forInfoDictionaryKey: "GitHash") as? String ?? ""
+        Bundle
+            .main
+            .object(forInfoDictionaryKey: "GitHash") as? String ?? ""
     }
 
     public var body: some View {
@@ -86,7 +92,10 @@ public struct AboutView: View {
     }
 
     public func showWindow(width: CGFloat, height: CGFloat) {
-        PlaceholderWindowController(view: self, size: NSSize(width: width, height: height)).showWindow(nil)
+        PlaceholderWindowController(view: self,
+                                    size: NSSize(width: width,
+                                                 height: height))
+        .showWindow(nil)
     }
 }
 

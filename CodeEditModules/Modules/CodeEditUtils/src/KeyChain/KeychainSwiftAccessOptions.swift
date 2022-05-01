@@ -89,6 +89,6 @@ public enum CodeEditKeychainAccessOptions {
     }
 
     func toString(_ value: CFString) -> String {
-        return CodeEditKeychainConstants.toString(value)
+        CodeEditKeychainConstants.toString(value)
     }
 }

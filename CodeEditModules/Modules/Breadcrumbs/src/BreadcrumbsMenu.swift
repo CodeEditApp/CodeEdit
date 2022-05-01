@@ -9,8 +9,8 @@ import AppKit
 import WorkspaceClient
 
 public final class BreadcrumsMenu: NSMenu, NSMenuDelegate {
-    let fileItems: [WorkspaceClient.FileItem]
-    let tappedOpenFile: (WorkspaceClient.FileItem) -> Void
+    private let fileItems: [WorkspaceClient.FileItem]
+    private let tappedOpenFile: (WorkspaceClient.FileItem) -> Void
 
     public init(
         fileItems: [WorkspaceClient.FileItem],
@@ -57,9 +57,9 @@ public final class BreadcrumsMenu: NSMenu, NSMenuDelegate {
     }
 }
 
-class BreadcrumbsMenuItem: NSMenuItem {
-    let fileItem: WorkspaceClient.FileItem
-    let tappedOpenFile: (WorkspaceClient.FileItem) -> Void
+final class BreadcrumbsMenuItem: NSMenuItem {
+    private let fileItem: WorkspaceClient.FileItem
+    private let tappedOpenFile: (WorkspaceClient.FileItem) -> Void
 
     init(
         fileItem: WorkspaceClient.FileItem,
