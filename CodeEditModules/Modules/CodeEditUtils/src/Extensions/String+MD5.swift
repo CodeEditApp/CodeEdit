@@ -15,9 +15,9 @@ public extension String {
     /// - Note: Whitespaces and Newlines are trimmed
     /// - Parameter lowercased: If true this will convert the input string to lowercase characters
     /// - Returns: A String in HEX format
-    func md5(_ lowercased: Bool = true) -> String {
+    func md5(_ caseSensitive: Bool = false) -> String {
         var trimmed = self.trimmingCharacters(in: .whitespacesAndNewlines)
-        if lowercased { trimmed = trimmed.lowercased() }
+        if !caseSensitive { trimmed = trimmed.lowercased() }
         let computed = Insecure.MD5.hash(data: trimmed.data(using: .utf8)!)
         return computed.map { String(format: "%02hhx", $0) }.joined()
     }
