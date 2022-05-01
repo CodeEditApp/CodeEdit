@@ -46,7 +46,7 @@ struct TabBar: View {
     private func updateExpectedTabWidth(proxy: GeometryProxy) {
         expectedTabWidth = max(
             // Equally divided size of a native tab.
-            (proxy.size.width + 1) / CGFloat(workspace.selectionState.openFileItems.count) + 1,
+            (proxy.size.width + 1) / CGFloat(workspace.selectionState.openedTabs.count) + 1,
             // Min size of a native tab.
             CGFloat(140)
         )
@@ -85,14 +85,16 @@ struct TabBar: View {
                             alignment: .center,
                             spacing: -1
                         ) {
-                            ForEach(workspace.selectionState.openFileItems, id: \.id) { item in
-                                TabBarItem(
-                                    expectedWidth: $expectedTabWidth,
-                                    item: item,
-                                    windowController: windowController,
-                                    workspace: workspace
-                                )
-                                .frame(height: TabBar.height)
+                            ForEach(workspace.selectionState.openedTabs, id: \.id) { id in
+                                if let item = workspace.selectionState.getItemByTab(id: id) {
+                                    TabBarItem(
+                                        expectedWidth: $expectedTabWidth,
+                                        item: item,
+                                        windowController: windowController,
+                                        workspace: workspace
+                                    )
+                                    .frame(height: TabBar.height)
+                                }
                             }
                         }
                         // This padding is to hide dividers at two ends under the accessory view divider.
@@ -109,7 +111,7 @@ struct TabBar: View {
                             scrollReader.scrollTo(selectedId)
                         }
                         // When tabs are changing, re-compute the expected tab width.
-                        .onChange(of: workspace.selectionState.openFileItems.count) { _ in
+                        .onChange(of: workspace.selectionState.openedTabs.count) { _ in
                             // Only update the expected width when user is not hovering over tabs.
                             // This should give users a better experience on closing multiple tabs continuously.
                             if !isHoveringOverTabs {
@@ -135,7 +137,7 @@ struct TabBar: View {
                     }
                 }
                 // When there is no opened file, hide the scroll view, but keep the background.
-                .opacity(workspace.selectionState.openFileItems.isEmpty ? 0.0 : 1.0)
+                .opacity(workspace.selectionState.openedTabs.isEmpty ? 0.0 : 1.0)
                 // To fill up the parent space of tab bar.
                 .frame(maxWidth: .infinity)
                 .background {
@@ -173,6 +175,7 @@ struct TabBar: View {
                     TabBarAccessoryNativeBackground(dividerAt: .leading)
                 }
             }
+            // TODO: Tab bar tools (e.g. split view).
         }
         .frame(height: TabBar.height)
         .overlay(alignment: .top) {

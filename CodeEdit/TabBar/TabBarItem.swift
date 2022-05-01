@@ -9,6 +9,7 @@ import SwiftUI
 import WorkspaceClient
 import AppPreferences
 import CodeEditUI
+import TabBar
 
 // Disable the rule because this view is fairly complicated and I have already modularize some parts.
 // swiftlint:disable type_body_length
@@ -43,18 +44,18 @@ struct TabBarItem: View {
     @ObservedObject
     var workspace: WorkspaceDocument
 
-    private var item: WorkspaceClient.FileItem
+    private var item: TabBarItemRepresentable
 
     private var windowController: NSWindowController
 
     var isActive: Bool {
-        item.id == workspace.selectionState.selectedId
+        item.tabID == workspace.selectionState.selectedId
     }
 
     private func switchAction() {
         // Only set the `selectedId` when they are not equal to avoid performance issue for now.
-        if workspace.selectionState.selectedId != item.id {
-            workspace.selectionState.selectedId = item.id
+        if workspace.selectionState.selectedId != item.tabID {
+            workspace.selectionState.selectedId = item.tabID
         }
     }
 
@@ -65,13 +66,13 @@ struct TabBarItem: View {
         withAnimation(
             .easeOut(duration: prefs.preferences.general.tabBarStyle == .native ? 0.15 : 0.20)
         ) {
-            workspace.closeFileTab(item: item)
+            workspace.closeTab(item: item.tabID)
         }
     }
 
     init(
         expectedWidth: Binding<CGFloat>,
-        item: WorkspaceClient.FileItem,
+        item: TabBarItemRepresentable,
         windowController: NSWindowController,
         workspace: WorkspaceDocument
     ) {
@@ -89,7 +90,7 @@ struct TabBarItem: View {
                 .padding(.top, isActive && prefs.preferences.general.tabBarStyle == .native ? 1.22 : 0)
             // Tab content (icon and text).
             HStack(alignment: .center, spacing: 5) {
-                Image(systemName: item.systemImage)
+                item.icon
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .foregroundColor(
@@ -98,7 +99,7 @@ struct TabBarItem: View {
                         : .secondary
                     )
                     .frame(width: 12, height: 12)
-                Text(item.url.lastPathComponent)
+                Text(item.title)
                     .font(.system(size: 11.0))
                     .lineLimit(1)
             }
@@ -313,21 +314,21 @@ struct TabBarItem: View {
                 isAppeared = true
             }
         }
-        .id(item.id)
+        .id(item.tabID)
         .contextMenu {
             Button("Close Tab") {
                 withAnimation {
-                    workspace.closeFileTab(item: item)
+                    workspace.closeTab(item: item.tabID)
                 }
             }
             Button("Close Other Tabs") {
                 withAnimation {
-                    workspace.closeFileTab(where: { $0.id != item.id })
+                    workspace.closeTab(where: { $0 != item.tabID })
                 }
             }
             Button("Close Tabs to the Right") {
                 withAnimation {
-                    workspace.closeFileTabs(after: item)
+                    workspace.closeTabs(after: item.tabID)
                 }
             }
         }
@@ -336,9 +337,9 @@ struct TabBarItem: View {
 // swiftlint:enable type_body_length
 
 fileprivate extension WorkspaceDocument {
-    func getTabKeyEquivalent(item: WorkspaceClient.FileItem) -> KeyEquivalent {
+    func getTabKeyEquivalent(item: TabBarItemRepresentable) -> KeyEquivalent {
         for counter in 0..<9 where self.selectionState.openFileItems.count > counter &&
-        self.selectionState.openFileItems[counter].fileName == item.fileName {
+        self.selectionState.openFileItems[counter].tabID == item.tabID {
             return KeyEquivalent.init(
                 Character.init("\(counter + 1)")
             )

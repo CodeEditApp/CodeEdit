@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import TabBar
 
 public extension WorkspaceClient {
     enum FileItemCodingKeys: String, CodingKey {
@@ -16,7 +17,18 @@ public extension WorkspaceClient {
     }
 
     /// An object containing all necessary information and actions for a specific file in the workspace
-    final class FileItem: Identifiable, Codable {
+    final class FileItem: Identifiable, Codable, TabBarItemRepresentable {
+        public var tabID: TabBarItemID {
+            .codeEditor(id)
+        }
+
+        public var title: String {
+            self.url.lastPathComponent
+        }
+
+        public var icon: Image {
+            Image(systemName: self.systemImage)
+        }
 
         public typealias ID = String
 

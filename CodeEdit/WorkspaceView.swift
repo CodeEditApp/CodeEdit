@@ -8,7 +8,9 @@
 import SwiftUI
 import WorkspaceClient
 import StatusBar
+import ExtensionsStore
 import AppKit
+import AppPreferences
 
 struct WorkspaceView: View {
     init(windowController: NSWindowController, workspace: WorkspaceDocument) {
@@ -22,6 +24,9 @@ struct WorkspaceView: View {
 
     @ObservedObject
     var workspace: WorkspaceDocument
+
+    @StateObject
+    private var prefs: AppPreferencesModel = .shared
 
     @State
     private var showingAlert = false
@@ -46,10 +51,51 @@ struct WorkspaceView: View {
     @State
     private var leaveFullscreenObserver: Any?
 
+    var noEditor: some View {
+        Text("No Editor")
+            .font(.system(size: 17))
+            .foregroundColor(.secondary)
+            .frame(minHeight: 0)
+            .clipped()
+    }
+
+    @ViewBuilder var tabContent: some View {
+        if let tabID = workspace.selectionState.selectedId {
+            switch tabID {
+            case .codeEditor:
+                WorkspaceCodeFileView(windowController: windowController, workspace: workspace)
+            case .extensionInstallation:
+                if let plugin = workspace.selectionState.selected as? Plugin {
+                    ExtensionInstallationView(plugin: plugin)
+                        .environmentObject(workspace)
+                        .frame(alignment: .center)
+                }
+            }
+        } else {
+            noEditor
+        }
+    }
+
     var body: some View {
         ZStack {
             if workspace.workspaceClient != nil, let model = workspace.statusBarModel {
-                WorkspaceCodeFileView(windowController: windowController, workspace: workspace)
+                ZStack {
+                    tabContent
+                }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background {
+                        if prefs.preferences.general.tabBarStyle == .xcode {
+                            // Use the same background material as xcode tab bar style.
+                            // Only when the tab bar style is set to `xcode`.
+                            TabBarXcodeBackground()
+                        }
+                    }
+                    .safeAreaInset(edge: .top, spacing: 0) {
+                        VStack(spacing: 0) {
+                            TabBar(windowController: windowController, workspace: workspace)
+                            TabBarBottomDivider()
+                        }
+                    }
                     .safeAreaInset(edge: .bottom) {
                         StatusBarView(model: model)
                     }

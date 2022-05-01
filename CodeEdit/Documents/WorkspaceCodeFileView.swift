@@ -25,46 +25,29 @@ struct WorkspaceCodeFileView: View {
     var codeView: some View {
         ZStack {
             if let item = workspace.selectionState.openFileItems.first(where: { file in
-                if file.id == workspace.selectionState.selectedId {
+                if file.tabID == workspace.selectionState.selectedId {
                     print("Item loaded is: ", file.url)
                 }
-                return file.id == workspace.selectionState.selectedId
+                return file.tabID == workspace.selectionState.selectedId
             }) {
                 if let codeFile = workspace.selectionState.openedCodeFiles[item] {
                     CodeFileView(codeFile: codeFile)
                         .safeAreaInset(edge: .top, spacing: 0) {
                             VStack(spacing: 0) {
-                                BreadcrumbsView(file: item, tappedOpenFile: workspace.openFile(item:))
+                                BreadcrumbsView(file: item, tappedOpenFile: workspace.openTab(item:))
                                 Divider()
                             }
                         }
                 } else {
-                    Text("CodeEdit cannot open this file because its file type is not supported.")
+                    Text("No Editor")
+                        .font(.system(size: 17))
+                        .foregroundColor(.secondary)
                         .frame(minHeight: 0)
                         .clipped()
                 }
-            } else {
-                Text("No Editor")
-                    .font(.system(size: 17))
-                    .foregroundColor(.secondary)
-                    .frame(minHeight: 0)
-                    .clipped()
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background {
-            if prefs.preferences.general.tabBarStyle == .xcode {
-                // Use the same background material as xcode tab bar style.
-                // Only when the tab bar style is set to `xcode`.
-                TabBarXcodeBackground()
-            }
-        }
-        .safeAreaInset(edge: .top, spacing: 0) {
-            VStack(spacing: 0) {
-                TabBar(windowController: windowController, workspace: workspace)
-                TabBarBottomDivider()
-            }
-        }
     }
 
     var body: some View {

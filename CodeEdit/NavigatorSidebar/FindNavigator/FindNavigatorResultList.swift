@@ -35,14 +35,14 @@ struct FindNavigatorResultList: View {
                 FindNavigatorResultFileItem(
                     state: state,
                     fileItem: foundFile.file, results: getResultWith(foundFile.file)) {
-                        state.workspace.openFile(item: foundFile.file)
+                        state.workspace.openTab(item: foundFile.file)
                     }
             }
         }
         .listStyle(.sidebar)
         .onChange(of: selectedResult) { newValue in
             if let file = newValue?.file {
-                state.workspace.openFile(item: file)
+                state.workspace.openTab(item: file)
             }
         }
     }
