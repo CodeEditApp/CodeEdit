@@ -42,6 +42,20 @@ final class CodeEditUtilsExtensionsUnitTests: XCTestCase {
         XCTAssertEqual(colorInt, color.hex)
     }
 
+    func testColorConversionAlphaValue() throws {
+        let alpha = 0.25
+        let color = Color(hex: "#123456", alpha: alpha)
+
+        XCTAssertEqual(alpha, color.alphaComponent)
+    }
+
+    func testNSColorConversionAlphaValue() throws {
+        let alpha = 0.25
+        let color = NSColor(hex: "#123456", alpha: alpha)
+
+        XCTAssertEqual(alpha, color.alphaComponent)
+    }
+
     // MARK: - DATE + FORMATTED
 
     func testRelativeDateStringMinutes() throws {
