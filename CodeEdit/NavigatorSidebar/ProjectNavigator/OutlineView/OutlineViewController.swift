@@ -208,7 +208,7 @@ extension OutlineViewController: NSOutlineViewDelegate {
     /// Recursively gets and selects an ``Item`` from an array of ``Item`` and their `children` based on the `id`.
     /// - Parameters:
     ///   - id: the id of the item item
-    ///   - collection: the array to searchx for
+    ///   - collection: the array to search for
     private func select(by id: TabBarItemID, from collection: [Item]) {
         guard let item = collection.first(where: { $0.tabID == id }) else {
             for item in collection {
