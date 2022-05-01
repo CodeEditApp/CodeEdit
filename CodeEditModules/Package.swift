@@ -249,7 +249,8 @@ let package = Package(
         .target(
             name: "About",
             dependencies: [
-                "Acknowledgements"
+                "Acknowledgements",
+                "CodeEditUtils"
             ],
             path: "Modules/About/src"
         ),
