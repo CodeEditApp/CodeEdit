@@ -39,6 +39,8 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         cancellables.forEach { $0.cancel() }
     }
 
+    /// Opens new tab
+    /// - Parameter item: any item which can be represented as a tab
     func openTab(item: TabBarItemRepresentable) {
         do {
             switch item.tabID {
@@ -83,6 +85,8 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         }
     }
 
+    /// Closes single tab
+    /// - Parameter id: tab bar item's identifier to be closed
     func closeTab(item id: TabBarItemID) {
         guard let idx = selectionState.openedTabs.firstIndex(of: id) else { return }
         let closedID = selectionState.openedTabs.remove(at: idx)
@@ -111,6 +115,8 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         }
     }
 
+    /// Closes collection of tab bar items
+    /// - Parameter items: items to be closed
     func closeTabs<Items>(items: Items) where Items: Collection, Items.Element == TabBarItemID {
         // TODO: Could potentially be optimized
         for item in items {
@@ -118,10 +124,14 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         }
     }
 
+    /// Closes tabs according to predicator
+    /// - Parameter predicate: predicator which returns whether tab should be closed based on its identifier
     func closeTab(where predicate: (TabBarItemID) -> Bool) {
         closeTabs(items: selectionState.openedTabs.filter(predicate))
     }
 
+    /// Closes tabs after specified identifier
+    /// - Parameter id: identifier after which tabs will be closed
     func closeTabs(after id: TabBarItemID) {
         guard let startIdx = selectionState.openFileItems.firstIndex(where: { $0.tabID == id }) else {
             assert(false, "Expected file item to be present in openFileItems")

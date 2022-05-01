@@ -18,6 +18,9 @@ public enum TabBarItemID: Codable, Identifiable, Hashable {
         }
     }
 
+    /// Represents code editor tab
     case codeEditor(String)
+
+    /// Represents extension installation tab
     case extensionInstallation(UUID)
 }

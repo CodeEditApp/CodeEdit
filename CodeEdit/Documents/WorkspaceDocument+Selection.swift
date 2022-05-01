@@ -47,6 +47,9 @@ struct WorkspaceSelectionState: Codable {
         try container.encode(openedExtensions, forKey: .openedExtensions)
     }
 
+    /// Returns TabBarItemRepresentable by its identifier
+    /// - Parameter id: tab bar item's identifier
+    /// - Returns: item with passed identifier
     func getItemByTab(id: TabBarItemID) -> TabBarItemRepresentable? {
         switch id {
         case .codeEditor:
