@@ -250,18 +250,26 @@ struct TabBarItem: View {
         .buttonStyle(TabBarItemButtonStyle())
         .background {
             if prefs.preferences.general.tabBarStyle == .xcode {
-                Color(nsColor: isActive ? .selectedControlColor : .clear)
-                    .opacity(
-                        colorScheme == .dark
-                        ? (activeState != .inactive ? 0.70 : 0.50)
-                        : (activeState != .inactive ? 0.50 : 0.35)
-                    )
-                    .background(
-                        // This layer of background is to hide dividers of other tab bar items
-                        // because the original background above is translucent (by opacity).
-                        TabBarXcodeBackground()
-                    )
-                    .animation(.easeInOut(duration: 0.08), value: isHovering)
+                ZStack {
+                    // This layer of background is to hide dividers of other tab bar items
+                    // because the original background above is translucent (by opacity).
+                    TabBarXcodeBackground()
+                    if isActive {
+                        Color(nsColor: .controlAccentColor)
+                            .saturation(
+                                colorScheme == .dark
+                                ? (activeState != .inactive ? 0.60 : 0.75)
+                                : (activeState != .inactive ? 0.90 : 0.75)
+                            )
+                            .opacity(
+                                colorScheme == .dark
+                                ? (activeState != .inactive ? 0.50 : 0.35)
+                                : (activeState != .inactive ? 0.19 : 0.13)
+                            )
+                            .hueRotation(.degrees(-5))
+                    }
+                }
+                .animation(.easeInOut(duration: 0.08), value: isHovering)
             } else {
                 if isFullscreen && isActive {
                     TabBarNativeActiveMaterial()
