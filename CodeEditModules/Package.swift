@@ -321,7 +321,13 @@ let package = Package(
         .target(
             name: "CodeEditUtils",
             path: "Modules/CodeEditUtils/src"
-
         ),
+        .testTarget(
+            name: "CodeEditUtilsTests",
+            dependencies: [
+                "CodeEditUtils"
+            ],
+            path: "Modules/CodeEditUtils/Tests"
+        )
     ]
 )

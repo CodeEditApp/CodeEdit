@@ -10,6 +10,7 @@ import SwiftUI
 public struct AcknowledgementsView: View {
     private var acknowledgements: [Dependency]
 
+    // TODO: Move logic to separate View Model
     public init() {
         self.acknowledgements = []
         do {
