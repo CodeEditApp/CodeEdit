@@ -1,6 +1,6 @@
 //
-//  File.swift
-//
+//  FileItem+Array.swift
+//  CodeEditModules/WorkspaceClient
 //
 //  Created by Lukas Pistrol on 17.03.22.
 //

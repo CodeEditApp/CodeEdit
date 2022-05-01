@@ -1,6 +1,6 @@
 //
 //  AcknowledgementsModel.swift
-//  CodeEdit
+//  CodeEditModules/Acknowledgements
 //
 //  Created by Lukas Pistrol on 01.05.22.
 //

@@ -1,6 +1,6 @@
 //
 //  ImageFileView.swift
-//  CodeEdit
+//  CodeEditModules/CodeFile
 //
 //  Created by Nanashi Li on 2022/04/16.
 //
