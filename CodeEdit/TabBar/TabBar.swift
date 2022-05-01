@@ -46,7 +46,7 @@ struct TabBar: View {
     private func updateExpectedTabWidth(proxy: GeometryProxy) {
         expectedTabWidth = max(
             // Equally divided size of a native tab.
-            (proxy.size.width + 1) / CGFloat(workspace.selectionState.openFileItems.count) + 1,
+            (proxy.size.width + 1) / CGFloat(workspace.selectionState.openedTabs.count) + 1,
             // Min size of a native tab.
             CGFloat(140)
         )
@@ -111,7 +111,7 @@ struct TabBar: View {
                             scrollReader.scrollTo(selectedId)
                         }
                         // When tabs are changing, re-compute the expected tab width.
-                        .onChange(of: workspace.selectionState.openFileItems.count) { _ in
+                        .onChange(of: workspace.selectionState.openedTabs.count) { _ in
                             // Only update the expected width when user is not hovering over tabs.
                             // This should give users a better experience on closing multiple tabs continuously.
                             if !isHoveringOverTabs {
