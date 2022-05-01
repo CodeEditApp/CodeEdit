@@ -259,7 +259,7 @@ struct TabBarItem: View {
                             .saturation(
                                 colorScheme == .dark
                                 ? (activeState != .inactive ? 0.60 : 0.75)
-                                : (activeState != .inactive ? 0.90 : 0.75)
+                                : (activeState != .inactive ? 0.90 : 0.85)
                             )
                             .opacity(
                                 colorScheme == .dark
