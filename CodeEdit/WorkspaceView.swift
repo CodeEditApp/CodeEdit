@@ -9,6 +9,7 @@ import SwiftUI
 import WorkspaceClient
 import StatusBar
 import ExtensionsStore
+import AppKit
 
 struct WorkspaceView: View {
     init(windowController: NSWindowController, workspace: WorkspaceDocument) {
@@ -16,8 +17,8 @@ struct WorkspaceView: View {
         self.workspace = workspace
     }
 
-    var windowController: NSWindowController
-    var tabBarHeight = 28.0
+    let windowController: NSWindowController
+    let tabBarHeight = 28.0
     private var path: String = ""
 
     @ObservedObject
@@ -35,6 +36,17 @@ struct WorkspaceView: View {
     @State
     var showInspector = true
 
+    /// The fullscreen state of the NSWindow.
+    /// This will be passed into all child views as an environment variable.
+    @State
+    var isFullscreen = false
+
+    @State
+    private var enterFullscreenObserver: Any?
+
+    @State
+    private var leaveFullscreenObserver: Any?
+    
     var noEditor: some View {
         Text("No Editor")
             .font(.system(size: 17))
@@ -91,11 +103,50 @@ struct WorkspaceView: View {
                 windowController.window?.subtitle = ""
             }
         }
+        .onAppear {
+            // There may be other methods to monitor the full-screen state.
+            // But I cannot find a better one for now because I need to pass this into the SwiftUI.
+            // And it should always be updated.
+            enterFullscreenObserver = NotificationCenter.default.addObserver(
+                forName: NSWindow.didEnterFullScreenNotification,
+                object: nil,
+                queue: .current,
+                using: { _ in self.isFullscreen = true }
+            )
+            leaveFullscreenObserver = NotificationCenter.default.addObserver(
+                forName: NSWindow.willExitFullScreenNotification,
+                object: nil,
+                queue: .current,
+                using: { _ in self.isFullscreen = false }
+            )
+        }
+        .onDisappear {
+            // Unregister the observer when view is going to be disappeared.
+            if enterFullscreenObserver != nil {
+                NotificationCenter.default.removeObserver(enterFullscreenObserver!)
+            }
+            if leaveFullscreenObserver != nil {
+                NotificationCenter.default.removeObserver(leaveFullscreenObserver!)
+            }
+        }
+        // Send the environment to all subviews.
+        .environment(\.isFullscreen, self.isFullscreen)
     }
 }
 
 struct WorkspaceView_Previews: PreviewProvider {
     static var previews: some View {
         WorkspaceView(windowController: NSWindowController(), workspace: .init())
+    }
+}
+
+private struct WorkspaceFullscreenStateEnvironmentKey: EnvironmentKey {
+    static let defaultValue: Bool = false
+}
+
+extension EnvironmentValues {
+    var isFullscreen: Bool {
+        get { self[WorkspaceFullscreenStateEnvironmentKey.self] }
+        set { self[WorkspaceFullscreenStateEnvironmentKey.self] = newValue }
     }
 }

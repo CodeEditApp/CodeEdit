@@ -256,7 +256,8 @@ let package = Package(
         .target(
             name: "About",
             dependencies: [
-                "Acknowledgements"
+                "Acknowledgements",
+                "CodeEditUtils"
             ],
             path: "Modules/About/src"
         ),
@@ -333,5 +334,12 @@ let package = Package(
             name: "TabBar",
             path: "Modules/TabBar/src"
         ),
+        .testTarget(
+            name: "CodeEditUtilsTests",
+            dependencies: [
+                "CodeEditUtils"
+            ],
+            path: "Modules/CodeEditUtils/Tests"
+        )
     ]
 )

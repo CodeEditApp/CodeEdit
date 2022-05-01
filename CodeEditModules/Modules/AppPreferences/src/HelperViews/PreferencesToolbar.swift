@@ -10,8 +10,8 @@ import CodeEditUI
 
 struct PreferencesToolbar<T: View>: View {
 
-    private var height: Double
-    private var content: () -> T
+    private let height: Double
+    private let content: () -> T
 
     init(
         height: Double = 27,

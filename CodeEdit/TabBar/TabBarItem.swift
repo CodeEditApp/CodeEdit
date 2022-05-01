@@ -11,12 +11,17 @@ import AppPreferences
 import CodeEditUI
 import TabBar
 
+// Disable the rule because this view is fairly complicated and I have already modularize some parts.
+// swiftlint:disable type_body_length
 struct TabBarItem: View {
     @Environment(\.colorScheme)
     private var colorScheme
 
     @Environment(\.controlActiveState)
     private var activeState
+
+    @Environment(\.isFullscreen)
+    private var isFullscreen
 
     @StateObject
     private var prefs: AppPreferencesModel = .shared
@@ -33,8 +38,19 @@ struct TabBarItem: View {
     @State
     private var isAppeared: Bool = false
 
+    @Binding
+    private var expectedWidth: CGFloat
+
+    @ObservedObject
+    var workspace: WorkspaceDocument
+
     private var item: TabBarItemRepresentable
+
     private var windowController: NSWindowController
+
+    var isActive: Bool {
+        item.id == workspace.selectionState.selectedId
+    }
 
     private func switchAction() {
         // Only set the `selectedId` when they are not equal to avoid performance issue for now.
@@ -43,8 +59,13 @@ struct TabBarItem: View {
         }
     }
 
-    private func closeAction() {
-        withAnimation(.easeOut(duration: 0.20)) {
+    func closeAction() {
+        if prefs.preferences.general.tabBarStyle == .native {
+            isAppeared = false
+        }
+        withAnimation(
+            .easeOut(duration: prefs.preferences.general.tabBarStyle == .native ? 0.15 : 0.20)
+        ) {
             workspace.closeTab(item: item.tabID)
         }
     }
@@ -56,7 +77,13 @@ struct TabBarItem: View {
         item.tabID == workspace.selectionState.selectedId
     }
 
-    init(item: TabBarItemRepresentable, windowController: NSWindowController, workspace: WorkspaceDocument) {
+    init(
+        expectedWidth: Binding<CGFloat>,
+        item: TabBarItemRepresentable,
+        windowController: NSWindowController,
+        workspace: WorkspaceDocument
+    ) {
+        self._expectedWidth = expectedWidth
         self.item = item
         self.windowController = windowController
         self.workspace = workspace
@@ -66,9 +93,9 @@ struct TabBarItem: View {
     var content: some View {
         HStack(spacing: 0.0) {
             TabDivider()
-                .opacity(
-                    isActive && prefs.preferences.general.tabBarStyle == .xcode ? 0.0 : 1.0
-                )
+                .opacity(isActive && prefs.preferences.general.tabBarStyle == .xcode ? 0.0 : 1.0)
+                .padding(.top, isActive && prefs.preferences.general.tabBarStyle == .native ? 1.22 : 0)
+            // Tab content (icon and text).
             HStack(alignment: .center, spacing: 5) {
                 item.icon
                     .resizable()
@@ -83,7 +110,12 @@ struct TabBarItem: View {
                     .font(.system(size: 11.0))
                     .lineLimit(1)
             }
-            .frame(maxHeight: .infinity) // To max-out the parent (tab bar) area.
+            .frame(
+                // To horizontally max-out the given width area ONLY in native tab bar style.
+                maxWidth: prefs.preferences.general.tabBarStyle == .native ? .infinity : nil,
+                // To max-out the parent (tab bar) area.
+                maxHeight: .infinity
+            )
             .padding(.horizontal, prefs.preferences.general.tabBarStyle == .native ? 28 : 23)
             .overlay {
                 ZStack {
@@ -142,7 +174,8 @@ struct TabBarItem: View {
                     .foregroundColor(isPressingClose ? .primary : .secondary)
                     .background(
                         colorScheme == .dark
-                        ? Color(nsColor: .white).opacity(isPressingClose ? 0.32 : isHoveringClose ? 0.18 : 0)
+                        ? Color(nsColor: .white)
+                            .opacity(isPressingClose ? 0.32 : isHoveringClose ? 0.18 : 0)
                         : (
                             prefs.preferences.general.tabBarStyle == .xcode
                             ? Color(nsColor: isActive ? .controlAccentColor : .black)
@@ -152,11 +185,7 @@ struct TabBarItem: View {
                                     : (isHoveringClose ? (isActive ? 0.10 : 0.06) : 0)
                                 )
                             : Color(nsColor: .black)
-                                .opacity(
-                                    isPressingClose
-                                    ? 0.29
-                                    : (isHoveringClose ? 0.11 : 0)
-                                )
+                                .opacity(isPressingClose ? 0.29 : (isHoveringClose ? 0.11 : 0))
                         )
                     )
                     .cornerRadius(2)
@@ -186,15 +215,13 @@ struct TabBarItem: View {
                 )
             )
             TabDivider()
-                .opacity(
-                    isActive && prefs.preferences.general.tabBarStyle == .xcode ? 0.0 : 1.0
-                )
+                .opacity(isActive && prefs.preferences.general.tabBarStyle == .xcode ? 0.0 : 1.0)
+                .padding(.top, isActive && prefs.preferences.general.tabBarStyle == .native ? 1.22 : 0)
         }
         .overlay(alignment: .top) {
             // Only show NativeTabShadow when `tabBarStyle` is native and this tab is not active.
-            if prefs.preferences.general.tabBarStyle == .native && !isActive {
-                TabBarTopDivider()
-            }
+            TabBarTopDivider()
+                .opacity(prefs.preferences.general.tabBarStyle == .native && !isActive ? 1 : 0)
         }
         .foregroundColor(
             isActive
@@ -209,8 +236,8 @@ struct TabBarItem: View {
                 : .secondary
             )
         )
-        .frame(maxHeight: .infinity) // To max-out the parent (tab bar) area.
-        .contentShape(Rectangle())
+        .frame(maxHeight: .infinity) // To vertically max-out the parent (tab bar) area.
+        .contentShape(Rectangle()) // Make entire area clickable.
         .onHover { hover in
             isHovering = hover
             DispatchQueue.main.async {
@@ -231,47 +258,42 @@ struct TabBarItem: View {
         .buttonStyle(TabBarItemButtonStyle())
         .background {
             if prefs.preferences.general.tabBarStyle == .xcode {
-                Color(nsColor: isActive ? .selectedControlColor : .clear)
-                    .opacity(
-                        colorScheme == .dark
-                        ? (activeState != .inactive ? 0.70 : 0.50)
-                        : (activeState != .inactive ? 0.50 : 0.35)
-                    )
-                    .background(
-                        // This layer of background is to hide dividers of other tab bar items
-                        // because the original background above is translucent (by opacity).
-                        Color(nsColor: .controlBackgroundColor)
-                    )
-                    .animation(.easeInOut(duration: 0.08), value: isHovering)
-            } else {
-                EffectView(
-                    NSVisualEffectView.Material.titlebar,
-                    blendingMode: NSVisualEffectView.BlendingMode.withinWindow
-                )
-                .background(
-                    // This background is used to avoid color-split between title bar and tab bar.
-                    // The material will tint the color hind, which will result in a color-split.
-                    Color(nsColor: .controlBackgroundColor)
-                )
-                .overlay {
-                    if !isActive {
-                        ZStack {
-                            // Native inactive tab background dim.
-                            Color(nsColor: .black)
-                                .opacity(colorScheme == .dark ? 0.45 : 0.05)
-
-                            // Native inactive tab hover state.
-                            Color(nsColor: colorScheme == .dark ? .white : .black)
-                                .opacity(
-                                    isHovering
-                                    ? (colorScheme == .dark ? 0.08 : 0.05)
-                                    : 0.0
-                                )
-                                .animation(.easeInOut(duration: 0.10), value: isHovering)
-                        }
-                        .padding(.horizontal, 1)
+                ZStack {
+                    // This layer of background is to hide dividers of other tab bar items
+                    // because the original background above is translucent (by opacity).
+                    TabBarXcodeBackground()
+                    if isActive {
+                        Color(nsColor: .controlAccentColor)
+                            .saturation(
+                                colorScheme == .dark
+                                ? (activeState != .inactive ? 0.60 : 0.75)
+                                : (activeState != .inactive ? 0.90 : 0.85)
+                            )
+                            .opacity(
+                                colorScheme == .dark
+                                ? (activeState != .inactive ? 0.50 : 0.35)
+                                : (activeState != .inactive ? 0.18 : 0.12)
+                            )
+                            .hueRotation(.degrees(-5))
                     }
                 }
+                .animation(.easeInOut(duration: 0.08), value: isHovering)
+            } else {
+                if isFullscreen && isActive {
+                    TabBarNativeActiveMaterial()
+                } else {
+                    TabBarNativeMaterial()
+                }
+                ZStack {
+                    // Native inactive tab background dim.
+                    TabBarNativeInactiveBackgroundColor()
+                    // Native inactive tab hover state.
+                    Color(nsColor: colorScheme == .dark ? .white : .black)
+                        .opacity(isHovering ? (colorScheme == .dark ? 0.08 : 0.05) : 0.0)
+                        .animation(.easeInOut(duration: 0.10), value: isHovering)
+                }
+                .padding(.horizontal, 1)
+                .opacity(isActive ? 0 : 1)
             }
         }
         .padding(
@@ -283,9 +305,19 @@ struct TabBarItem: View {
             y: 0
         )
         .opacity(isAppeared ? 1.0 : 0.0)
-        .zIndex(isActive ? 1 : 0)
+        .zIndex(isActive ? (prefs.preferences.general.tabBarStyle == .native ? -1 : 1) : 0)
+        .frame(
+            width: (
+                // Constrain the width of tab bar item for native tab style only.
+                prefs.preferences.general.tabBarStyle == .native
+                ? max(expectedWidth.isFinite ? expectedWidth : 0, 0)
+                : nil
+            )
+        )
         .onAppear {
-            withAnimation(.easeOut(duration: 0.20)) {
+            withAnimation(
+                .easeOut(duration: prefs.preferences.general.tabBarStyle == .native ? 0.15 : 0.20)
+            ) {
                 isAppeared = true
             }
         }
@@ -309,6 +341,7 @@ struct TabBarItem: View {
         }
     }
 }
+// swiftlint:enable type_body_length
 
 fileprivate extension WorkspaceDocument {
     func getTabKeyEquivalent(item: TabBarItemRepresentable) -> KeyEquivalent {

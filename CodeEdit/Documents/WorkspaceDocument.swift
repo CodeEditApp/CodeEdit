@@ -99,10 +99,15 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
 
         if selectionState.openedTabs.isEmpty {
             selectionState.selectedId = nil
-        } else if idx == 0 {
-            selectionState.selectedId = selectionState.openedTabs.first
+        } else if selectionState.selectedId == closedFileItem.tabID {
+            // If the closed item is the selected one, then select another tab.
+            if idx == 0 {
+                selectionState.selectedId = selectionState.openedTabs.first?.tabID
+            } else {
+                selectionState.selectedId = selectionState.openedTabs[idx - 1].id
+            }
         } else {
-            selectionState.selectedId = selectionState.openedTabs[idx - 1]
+            // If the closed item is not the selected one, then do nothing.
         }
     }
 

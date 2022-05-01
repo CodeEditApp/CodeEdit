@@ -10,8 +10,8 @@ import SwiftUI
 /// A view that wraps multiple ``PreferencesSection`` views and aligns them correctly.
 public struct PreferencesContent<Content: View>: View {
 
-    private var width: Double
-    private var content: Content
+    private let width: Double
+    private let content: Content
 
     public init(width: Double = 844, @ViewBuilder content: () -> Content) {
         self.width = width
@@ -30,11 +30,11 @@ public struct PreferencesContent<Content: View>: View {
 /// A view that wraps controls and more and adds a right aligned label.
 public struct PreferencesSection<Content: View>: View {
 
-    private var title: String
-    private var width: Double
-    private var hideLabels: Bool
-    private var content: Content
-    private var align: VerticalAlignment
+    private let title: String
+    private let width: Double
+    private let hideLabels: Bool
+    private let content: Content
+    private let align: VerticalAlignment
 
     public init(
         _ title: String,
