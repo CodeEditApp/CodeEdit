@@ -13,10 +13,10 @@ public extension Date {
     /// when the date is in `today` or `yesterday`. Otherwise it returns a formatted date in `short`
     /// format. The time is omitted.
     /// - Returns: A localized formatted string
-    func relativeStringToNow() -> String {
+    func relativeStringToNow(locale: Locale = .current) -> String {
         if Calendar.current.isDateInToday(self) ||
             Calendar.current.isDateInYesterday(self) {
-            let style = RelativeFormatStyle(
+            var style = RelativeFormatStyle(
                 presentation: .named,
                 unitsStyle: .abbreviated,
                 locale: .current,
@@ -24,11 +24,14 @@ public extension Date {
                 capitalizationContext: .standalone
             )
 
+            style.locale = locale
+
             return self.formatted(style)
         }
         let formatter = DateFormatter()
         formatter.dateStyle = .short
         formatter.timeStyle = .none
+        formatter.locale = locale
 
         return formatter.string(from: self)
     }

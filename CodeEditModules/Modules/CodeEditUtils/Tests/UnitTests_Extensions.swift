@@ -46,21 +46,21 @@ final class CodeEditUtilsExtensionsUnitTests: XCTestCase {
 
     func testRelativeDateStringMinutes() throws {
         let date = Date.now.addingTimeInterval(-61)
-        let string = date.relativeStringToNow()
+        let string = date.relativeStringToNow(locale: Locale(identifier: "en_US"))
 
-        XCTAssertEqual("1 min ago", string)
+        XCTAssertEqual("1 min. ago", string)
     }
 
     func testRelativeDateStringHours() throws {
         let date = Date.now.addingTimeInterval(-3_601)
-        let string = date.relativeStringToNow()
+        let string = date.relativeStringToNow(locale: Locale(identifier: "en_US"))
 
-        XCTAssertEqual("1 hr ago", string)
+        XCTAssertEqual("1 hr. ago", string)
     }
 
     func testRelativeDateStringDays() throws {
         let date = Date.now.addingTimeInterval(-86_400)
-        let string = date.relativeStringToNow()
+        let string = date.relativeStringToNow(locale: Locale(identifier: "en_US"))
 
         XCTAssertEqual("yesterday", string)
     }
