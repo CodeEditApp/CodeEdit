@@ -264,7 +264,7 @@ struct TabBarItem: View {
                             .opacity(
                                 colorScheme == .dark
                                 ? (activeState != .inactive ? 0.50 : 0.35)
-                                : (activeState != .inactive ? 0.19 : 0.13)
+                                : (activeState != .inactive ? 0.18 : 0.12)
                             )
                             .hueRotation(.degrees(-5))
                     }
