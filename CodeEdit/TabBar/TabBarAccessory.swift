@@ -23,7 +23,13 @@ struct TabBarAccessoryIcon: View {
     var body: some View {
         Button(
             action: action,
-            label: { icon.font(TabBarAccessoryIcon.iconFont) }
+            label: {
+                icon
+                    .font(TabBarAccessoryIcon.iconFont)
+                    .frame(height: TabBar.height - 2)
+                    .padding(.horizontal, 4)
+                    .contentShape(Rectangle())
+            }
         )
     }
 }
