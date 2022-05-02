@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-public class FileInspectorModel: ObservableObject {
+public final class FileInspectorModel: ObservableObject {
 
     /// The base URL of the workspace
     private(set) var workspaceURL: URL

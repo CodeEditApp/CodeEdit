@@ -8,7 +8,7 @@
 import Foundation
 import GitClient
 
-public class HistoryInspectorModel: ObservableObject {
+public final class HistoryInspectorModel: ObservableObject {
 
     /// A GitClient instance
     private(set) var gitClient: GitClient

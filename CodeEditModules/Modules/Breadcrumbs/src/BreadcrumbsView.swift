@@ -1,12 +1,13 @@
 //
 //  BreadcrumbsView.swift
-//  CodeEdit
+//  CodeEditModules/Breadcrumbs
 //
 //  Created by Lukas Pistrol on 17.03.22.
 //
 
 import SwiftUI
 import WorkspaceClient
+import CodeEditUI
 
 public struct BreadcrumbsView: View {
     @Environment(\.colorScheme)
@@ -42,7 +43,14 @@ public struct BreadcrumbsView: View {
             .padding(.horizontal, 10)
         }
         .frame(height: 28, alignment: .center)
-        .background(Color(nsColor: .controlBackgroundColor))
+        .background {
+            EffectView(
+                colorScheme == .dark
+                ? NSVisualEffectView.Material.windowBackground
+                : NSVisualEffectView.Material.contentBackground,
+                blendingMode: NSVisualEffectView.BlendingMode.withinWindow
+            )
+        }
         .onAppear {
             fileInfo(self.file)
         }

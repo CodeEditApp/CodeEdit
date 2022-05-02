@@ -1,6 +1,6 @@
 //
 //  String+MD5.swift
-//  
+//  CodeEditModules/CodeEditUtils
 //
 //  Created by Nanashi Li on 2022/04/19.
 //
@@ -13,11 +13,12 @@ public extension String {
     /// Returns a MD5 encrypted String of the input String
     ///
     /// - Note: Whitespaces and Newlines are trimmed
-    /// - Parameter lowercased: If true this will convert the input string to lowercase characters
+    /// - Parameter caseSensitive: If `false` the input string will be converted to lowercase characters.
+    /// Defaults to `false`.
     /// - Returns: A String in HEX format
-    func md5(_ lowercased: Bool = true) -> String {
+    func md5(_ caseSensitive: Bool = false) -> String {
         var trimmed = self.trimmingCharacters(in: .whitespacesAndNewlines)
-        if lowercased { trimmed = trimmed.lowercased() }
+        if !caseSensitive { trimmed = trimmed.lowercased() }
         let computed = Insecure.MD5.hash(data: trimmed.data(using: .utf8)!)
         return computed.map { String(format: "%02hhx", $0) }.joined()
     }

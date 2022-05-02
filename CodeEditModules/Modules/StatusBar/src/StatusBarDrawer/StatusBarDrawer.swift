@@ -1,12 +1,13 @@
 //
 //  StatusBarDrawer.swift
-//  
+//  CodeEditModules/StatusBar
 //
 //  Created by Lukas Pistrol on 22.03.22.
 //
 
 import SwiftUI
 import TerminalEmulator
+import CodeEditUI
 
 internal struct StatusBarDrawer: View {
     @ObservedObject
@@ -30,11 +31,11 @@ internal struct StatusBarDrawer: View {
     }
 
     internal var body: some View {
-        ZStack(alignment: .bottom) {
-            TerminalEmulatorView(url: model.workspaceURL)
-                .frame(minHeight: 0,
-                       idealHeight: height,
-                       maxHeight: height)
+        VStack(spacing: 0) {
+            switch model.selectedTab {
+            case 0: TerminalEmulatorView(url: model.workspaceURL)
+            default: Rectangle().foregroundColor(Color(nsColor: .textBackgroundColor))
+            }
             HStack(alignment: .center, spacing: 10) {
                 FilterTextField(title: "Filter", text: $searchText)
                     .frame(maxWidth: 300)
@@ -44,8 +45,12 @@ internal struct StatusBarDrawer: View {
                 StatusBarSplitTerminalButton(model: model)
                 StatusBarMaximizeButton(model: model)
             }
-            .padding(.all, 10)
-            .frame(maxHeight: 34)
+            .padding(10)
+            .frame(maxHeight: 29)
+            .background(.bar)
         }
+        .frame(minHeight: 0,
+               idealHeight: height,
+               maxHeight: height)
     }
 }

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		043BCF03281DA18A000AC47C /* WorkspaceDocument+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043BCF02281DA18A000AC47C /* WorkspaceDocument+Search.swift */; };
+		043BCF05281DA19A000AC47C /* WorkspaceDocument+Selection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043BCF04281DA19A000AC47C /* WorkspaceDocument+Selection.swift */; };
+		043BCF07281DA2F5000AC47C /* TabBar in Frameworks */ = {isa = PBXBuildFile; productRef = 043BCF06281DA2F5000AC47C /* TabBar */; };
 		043C321427E31FF6006AE443 /* CodeEditDocumentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043C321327E31FF6006AE443 /* CodeEditDocumentController.swift */; };
 		043C321627E3201F006AE443 /* WorkspaceDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043C321527E3201F006AE443 /* WorkspaceDocument.swift */; };
 		043C321A27E32295006AE443 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 043C321927E32295006AE443 /* MainMenu.xib */; };
@@ -74,7 +77,6 @@
 		B34B213227ECDC3A006033A9 /* GitClone in Frameworks */ = {isa = PBXBuildFile; productRef = B34B213127ECDC3A006033A9 /* GitClone */; };
 		B658FB3427DA9E1000EA4DBD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3327DA9E1000EA4DBD /* Assets.xcassets */; };
 		B658FB3727DA9E1000EA4DBD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3627DA9E1000EA4DBD /* Preview Assets.xcassets */; };
-		B673FDAD27E8296A00795864 /* PressActionsModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B673FDAC27E8296A00795864 /* PressActionsModifier.swift */; };
 		B6EE989027E8879A00CDD8AB /* InspectorSidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EE988F27E8879A00CDD8AB /* InspectorSidebar.swift */; };
 		B6EE989227E887C600CDD8AB /* InspectorSidebarToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EE989127E887C600CDD8AB /* InspectorSidebarToolbar.swift */; };
 		D7012EE827E757850001E1EF /* FindNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7012EE727E757850001E1EF /* FindNavigator.swift */; };
@@ -86,7 +88,11 @@
 		D7E201B227E8D50000CB86D0 /* FindNavigatorModeSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201B127E8D50000CB86D0 /* FindNavigatorModeSelector.swift */; };
 		D7E201BD27EA00E200CB86D0 /* FindNavigatorResultFileItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201BC27EA00E200CB86D0 /* FindNavigatorResultFileItem.swift */; };
 		D7F72DEB27EA3574000C3064 /* Search in Frameworks */ = {isa = PBXBuildFile; productRef = D7F72DEA27EA3574000C3064 /* Search */; };
+		DE513F52281B672D002260B9 /* TabBarAccessory.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE513F51281B672D002260B9 /* TabBarAccessory.swift */; };
+		DE513F54281DE5D0002260B9 /* TabBarXcode.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE513F53281DE5D0002260B9 /* TabBarXcode.swift */; };
+		DE6405A62817734700881FDF /* TabBarNative.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6405A52817734700881FDF /* TabBarNative.swift */; };
 		DE6F77872813625500D00A76 /* TabBarDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6F77862813625500D00A76 /* TabBarDivider.swift */; };
+		FD6A3D3D2817C13B008BCF11 /* Package.resolved in Resources */ = {isa = PBXBuildFile; fileRef = FD6A3D3C2817C13B008BCF11 /* Package.resolved */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -121,6 +127,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		043BCF02281DA18A000AC47C /* WorkspaceDocument+Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkspaceDocument+Search.swift"; sourceTree = "<group>"; };
+		043BCF04281DA19A000AC47C /* WorkspaceDocument+Selection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkspaceDocument+Selection.swift"; sourceTree = "<group>"; };
 		043C321327E31FF6006AE443 /* CodeEditDocumentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditDocumentController.swift; sourceTree = "<group>"; };
 		043C321527E3201F006AE443 /* WorkspaceDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceDocument.swift; sourceTree = "<group>"; };
 		043C321927E32295006AE443 /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
@@ -174,7 +182,6 @@
 		B658FB3827DA9E1000EA4DBD /* CodeEdit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CodeEdit.entitlements; sourceTree = "<group>"; };
 		B658FB3D27DA9E1000EA4DBD /* CodeEditTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CodeEditTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B658FB4727DA9E1000EA4DBD /* CodeEditUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CodeEditUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		B673FDAC27E8296A00795864 /* PressActionsModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PressActionsModifier.swift; sourceTree = "<group>"; };
 		B6EE988F27E8879A00CDD8AB /* InspectorSidebar.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = InspectorSidebar.swift; sourceTree = "<group>"; tabWidth = 4; };
 		B6EE989127E887C600CDD8AB /* InspectorSidebarToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorSidebarToolbar.swift; sourceTree = "<group>"; };
 		D7012EE727E757850001E1EF /* FindNavigator.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = FindNavigator.swift; sourceTree = "<group>"; tabWidth = 4; };
@@ -185,7 +192,11 @@
 		D7E201B127E8D50000CB86D0 /* FindNavigatorModeSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindNavigatorModeSelector.swift; sourceTree = "<group>"; };
 		D7E201B327E9989900CB86D0 /* FindNavigatorResultList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindNavigatorResultList.swift; sourceTree = "<group>"; };
 		D7E201BC27EA00E200CB86D0 /* FindNavigatorResultFileItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindNavigatorResultFileItem.swift; sourceTree = "<group>"; };
+		DE513F51281B672D002260B9 /* TabBarAccessory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarAccessory.swift; sourceTree = "<group>"; };
+		DE513F53281DE5D0002260B9 /* TabBarXcode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarXcode.swift; sourceTree = "<group>"; };
+		DE6405A52817734700881FDF /* TabBarNative.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarNative.swift; sourceTree = "<group>"; };
 		DE6F77862813625500D00A76 /* TabBarDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarDivider.swift; sourceTree = "<group>"; };
+		FD6A3D3C2817C13B008BCF11 /* Package.resolved */ = {isa = PBXFileReference; lastKnownFileType = text; path = Package.resolved; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -195,6 +206,7 @@
 			files = (
 				0483E34D27FCC46600354AC0 /* ExtensionsStore in Frameworks */,
 				64B64EDE27F7B79400C400F1 /* About in Frameworks */,
+				043BCF07281DA2F5000AC47C /* TabBar in Frameworks */,
 				04C3256B28034FC800C8DA2D /* CodeEditKit in Frameworks */,
 				2864BAAC28117B3F002DBD1A /* ShellClient in Frameworks */,
 				20C4319A28058B9E00964DD5 /* GitAccounts in Frameworks */,
@@ -242,6 +254,8 @@
 				04660F6927E51E5C00477777 /* CodeEditWindowController.swift */,
 				0485EB1E27E7458B00138301 /* WorkspaceCodeFileView.swift */,
 				D7E201AD27E8B3C000CB86D0 /* String+Ranges.swift */,
+				043BCF02281DA18A000AC47C /* WorkspaceDocument+Search.swift */,
+				043BCF04281DA19A000AC47C /* WorkspaceDocument+Selection.swift */,
 			);
 			path = Documents;
 			sourceTree = "<group>";
@@ -363,6 +377,9 @@
 				287776E827E34BC700D46668 /* TabBar.swift */,
 				287776EE27E3515300D46668 /* TabBarItem.swift */,
 				DE6F77862813625500D00A76 /* TabBarDivider.swift */,
+				DE6405A52817734700881FDF /* TabBarNative.swift */,
+				DE513F51281B672D002260B9 /* TabBarAccessory.swift */,
+				DE513F53281DE5D0002260B9 /* TabBarXcode.swift */,
 			);
 			path = TabBar;
 			sourceTree = "<group>";
@@ -412,8 +429,8 @@
 				B658FB3827DA9E1000EA4DBD /* CodeEdit.entitlements */,
 				04660F6027E3A68A00477777 /* Info.plist */,
 				043C321927E32295006AE443 /* MainMenu.xib */,
-				B673FDAC27E8296A00795864 /* PressActionsModifier.swift */,
 				B658FB3127DA9E0F00EA4DBD /* WorkspaceView.swift */,
+				FD6A3D3C2817C13B008BCF11 /* Package.resolved */,
 				28069DA527F5BD320016BC47 /* DefaultThemes */,
 			);
 			path = CodeEdit;
@@ -473,6 +490,7 @@
 				2B18499A27F8A7A0005119F0 /* Mark // swiftlint:disable:all as errors | Run Script */,
 				2BA119D327E5274D00A996FF /* SwiftLint Run Script */,
 				04ADA0CC27E6043B00BF00B2 /* Add TODO/FIXME as warnings | Run Script */,
+				FDF7C12027FAE90F0039BA76 /* Copy Package.resolved into Project Directory */,
 				04C3255A2801B43A00C8DA2D /* Embed Frameworks */,
 			);
 			buildRules = (
@@ -502,6 +520,7 @@
 				2864BAAB28117B3F002DBD1A /* ShellClient */,
 				2864BAAD28117D7C002DBD1A /* TerminalEmulator */,
 				3F4419B728165A610052E799 /* KeyboardShortcutManager */,
+				043BCF06281DA2F5000AC47C /* TabBar */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -602,6 +621,7 @@
 				D7211D4727E06BFE008F2ED7 /* Localizable.strings in Resources */,
 				28A51001281673530087B0CC /* codeedit-xcode-dark.json in Resources */,
 				B658FB3427DA9E1000EA4DBD /* Assets.xcassets in Resources */,
+				FD6A3D3D2817C13B008BCF11 /* Package.resolved in Resources */,
 				043C321A27E32295006AE443 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -695,6 +715,24 @@
 			shellPath = /bin/sh;
 			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint >/dev/null; then\n  swiftlint --strict\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
+		FDF7C12027FAE90F0039BA76 /* Copy Package.resolved into Project Directory */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Package.resolved into Project Directory";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# The following script copies the generated Package.resolved file into the project directory, ignoring any errors.\ncp ${PROJECT_DIR}/CodeEdit.xcworkspace/xcshareddata/swiftpm/Package.resolved ${PROJECT_DIR} || :\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -703,7 +741,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				2072FA13280D74ED00C7F8D4 /* HistoryInspectorModel.swift in Sources */,
+				DE513F52281B672D002260B9 /* TabBarAccessory.swift in Sources */,
 				2813F93927ECC4C300E305E4 /* NavigatorSidebar.swift in Sources */,
+				DE513F54281DE5D0002260B9 /* TabBarXcode.swift in Sources */,
 				20EBB50D280C383700F3A5DA /* LanguageType.swift in Sources */,
 				2813F93827ECC4AA00E305E4 /* FindNavigatorResultList.swift in Sources */,
 				0483E35027FDB17700354AC0 /* ExtensionNavigator.swift in Sources */,
@@ -716,13 +756,13 @@
 				D7E201B027E8C07300CB86D0 /* FindNavigatorSearchBar.swift in Sources */,
 				2072FA1C280D874000C7F8D4 /* IndentUsing.swift in Sources */,
 				B6EE989227E887C600CDD8AB /* InspectorSidebarToolbar.swift in Sources */,
-				B673FDAD27E8296A00795864 /* PressActionsModifier.swift in Sources */,
 				28B8F884280FFE4600596236 /* NSTableView+Background.swift in Sources */,
 				200412EF280F3EAC00BCAF5C /* NoCommitHistoryView.swift in Sources */,
 				043C321427E31FF6006AE443 /* CodeEditDocumentController.swift in Sources */,
 				20EBB503280C327C00F3A5DA /* HistoryInspector.swift in Sources */,
 				2072FA1A280D872600C7F8D4 /* LineEndings.swift in Sources */,
 				20EBB507280C32D300F3A5DA /* QuickHelpInspector.swift in Sources */,
+				DE6405A62817734700881FDF /* TabBarNative.swift in Sources */,
 				04C3255C2801F86900C8DA2D /* OutlineMenu.swift in Sources */,
 				04540D5E27DD08C300E91B77 /* WorkspaceView.swift in Sources */,
 				DE6F77872813625500D00A76 /* TabBarDivider.swift in Sources */,
@@ -740,6 +780,7 @@
 				D7E201BD27EA00E200CB86D0 /* FindNavigatorResultFileItem.swift in Sources */,
 				287776EF27E3515300D46668 /* TabBarItem.swift in Sources */,
 				04660F6A27E51E5C00477777 /* CodeEditWindowController.swift in Sources */,
+				043BCF05281DA19A000AC47C /* WorkspaceDocument+Selection.swift in Sources */,
 				2072FA18280D871200C7F8D4 /* TextEncoding.swift in Sources */,
 				2072FA16280D83A500C7F8D4 /* FileTypeList.swift in Sources */,
 				04C3254F2800AA4700C8DA2D /* ExtensionInstallationView.swift in Sources */,
@@ -747,6 +788,7 @@
 				20D839AB280DEB2900B27357 /* NoSelectionView.swift in Sources */,
 				20EBB505280C329800F3A5DA /* HistoryItem.swift in Sources */,
 				043C321627E3201F006AE443 /* WorkspaceDocument.swift in Sources */,
+				043BCF03281DA18A000AC47C /* WorkspaceDocument+Search.swift in Sources */,
 				04C325512800AC7400C8DA2D /* ExtensionInstallationViewModel.swift in Sources */,
 				28B0A19827E385C300B73177 /* NavigatorSidebarToolbarTop.swift in Sources */,
 				0463E51127FCC1DF00806D5C /* CodeEditAPI.swift in Sources */,
@@ -1138,6 +1180,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		043BCF06281DA2F5000AC47C /* TabBar */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = TabBar;
+		};
 		0483E34C27FCC46600354AC0 /* ExtensionsStore */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ExtensionsStore;

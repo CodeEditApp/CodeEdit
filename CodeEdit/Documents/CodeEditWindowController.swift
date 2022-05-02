@@ -44,6 +44,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
         )
         navigator.titlebarSeparatorStyle = .none
         navigator.minimumThickness = 260
+        navigator.collapseBehavior = .useConstraints
         splitVC.addSplitViewItem(navigator)
 
         let workspaceView = WorkspaceView(windowController: self, workspace: workspace)
@@ -61,7 +62,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
         inspector.minimumThickness = 260
         inspector.maximumThickness = 260
         inspector.isCollapsed = true
-        inspector.collapseBehavior = .preferResizingSiblingsWithFixedSplitView
+        inspector.collapseBehavior = .useConstraints
         splitVC.addSplitViewItem(inspector)
 
         self.splitViewController = splitVC
@@ -170,7 +171,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     @objc func toggleLastPanel() {
         guard let lastSplitView = splitViewController.splitViewItems.last else { return }
         lastSplitView.animator().isCollapsed.toggle()
-        if lastSplitView.animator().isCollapsed {
+        if lastSplitView.isCollapsed {
             window?.toolbar?.removeItem(at: 4)
         } else {
             window?.toolbar?.insertItem(withItemIdentifier: .itemListTrackingSeparator, at: 4)
@@ -180,7 +181,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     private func getSelectedCodeFile() -> CodeFileDocument? {
         guard let id = workspace?.selectionState.selectedId else { return nil }
         guard let item = workspace?.selectionState.openFileItems.first(where: { item in
-            return item.id == id
+            return item.tabID == id
         }) else { return nil }
         guard let file = workspace?.selectionState.openedCodeFiles[item] else { return nil }
         return file
@@ -206,7 +207,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
                 let contentView = QuickOpenView(
                     state: state,
                     onClose: { panel.close() },
-                    openFile: workspace.openFile(item:)
+                    openFile: workspace.openTab(item:)
                 )
                 panel.contentView = NSHostingView(rootView: contentView)
                 window?.addChildWindow(panel, ordered: .above)

@@ -57,25 +57,25 @@
       "color" : "#d9d9d9"
     },
     "brightMagenta" : {
-      "color" : "#af52de"
+      "color" : "#8250df"
     },
     "brightRed" : {
-      "color" : "#ff3b30"
+      "color" : "#cf222e"
     },
     "blue" : {
-      "color" : "#007aff"
+      "color" : "#79c0ff"
     },
     "red" : {
-      "color" : "#ff3b30"
+      "color" : "#cf222e"
     },
     "green" : {
-      "color" : "#28cd41"
+      "color" : "#7ee787"
     },
     "boldText" : {
       "color" : "#24292f"
     },
     "brightGreen" : {
-      "color" : "#28cd41"
+      "color" : "#116329"
     },
     "background" : {
       "color" : "#ffffff"
@@ -87,7 +87,7 @@
       "color" : "#b4d6f5"
     },
     "magenta" : {
-      "color" : "#af52de"
+      "color" : "#8250df"
     },
     "black" : {
       "color" : "#1f2024"
@@ -99,19 +99,19 @@
       "color" : "#ffffff"
     },
     "brightBlue" : {
-      "color" : "#007aff"
+      "color" : "#79c0ff"
     },
     "brightYellow" : {
-      "color" : "#ffcc00"
+      "color" : "#b38300"
     },
     "cyan" : {
-      "color" : "#59adc4"
+      "color" : "#0550ae"
     },
     "yellow" : {
-      "color" : "#ffcc00"
+      "color" : "#f2cc60"
     },
     "brightCyan" : {
-      "color" : "#55bef0"
+      "color" : "#0550ae"
     },
     "brightBlack" : {
       "color" : "#8e8e93"

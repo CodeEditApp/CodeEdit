@@ -1,6 +1,6 @@
 //
-//  File.swift
-//  
+//  TerminalEmulatorView.swift
+//  CodeEditModules/TerminalEmulator
 //
 //  Created by Lukas Pistrol on 22.03.22.
 //
@@ -180,7 +180,17 @@ public struct TerminalEmulatorView: NSViewRepresentable {
             terminal.optionAsMetaKey = optionAsMeta
         }
         terminal.appearance = colorAppearance
+        scroller?.isHidden = true
         TerminalEmulatorView.lastTerminal[url.path] = terminal
+    }
+
+    private var scroller: NSScroller? {
+        for subView in terminal.subviews {
+            if let scroller = subView as? NSScroller {
+                return scroller
+            }
+        }
+        return nil
     }
 
     public func updateNSView(_ view: LocalProcessTerminalView, context: Context) {

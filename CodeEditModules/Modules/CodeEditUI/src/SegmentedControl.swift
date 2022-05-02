@@ -1,6 +1,6 @@
 //
 //  SegmentedControl.swift
-//  
+//  CodeEditModules/CodeEditUI
 //
 //  Created by Lukas Pistrol on 31.03.22.
 //
@@ -9,10 +9,6 @@ import SwiftUI
 
 /// A view that creates a segmented control from an array of text labels.
 public struct SegmentedControl: View {
-
-    @Environment(\.colorScheme)
-    private var colorScheme
-
     /// A view that creates a segmented control from an array of text labels.
     /// - Parameters:
     ///   - selection: The index of the current selected item.
@@ -36,29 +32,72 @@ public struct SegmentedControl: View {
     private let color: Color
 
     public var body: some View {
-        HStack(spacing: 0) {
+        HStack(spacing: 8) {
             ForEach(options.indices, id: \.self) { index in
-                Text(options[index])
-                    .font(.subheadline)
-                    .foregroundColor(preselectedIndex == index
-                                     ? colorScheme == .dark ? .white : .accentColor
-                                     : .primary)
-                    .frame(height: 16)
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 3)
-                    .background {
-                        Rectangle()
-                            .fill(color)
-                            .cornerRadius(5)
-                            .padding(2)
-                            .opacity(preselectedIndex == index ? 0.75 : 0.01)
-                    }
-                    .onTapGesture {
+                SegmentedControlItem(
+                    label: options[index],
+                    active: preselectedIndex == index,
+                    action: {
                         preselectedIndex = index
-                    }
+                    },
+                    color: color
+                )
+
             }
         }
         .frame(height: 20)
+    }
+}
+
+struct SegmentedControlItem: View {
+    @Environment(\.colorScheme)
+    private var colorScheme
+
+    @Environment(\.controlActiveState)
+    private var activeState
+
+    @State
+    var isHovering: Bool = false
+
+    @State
+    var isPressing: Bool = false
+
+    let label: String
+
+    let active: Bool
+
+    let action: () -> Void
+
+    let color: Color
+
+    public var body: some View {
+        Text(label)
+            .font(.subheadline)
+            .foregroundColor(active
+                             ? colorScheme == .dark ? .white : .accentColor
+                             : .primary)
+            .opacity(activeState != .inactive ? 1 : active ? 0.5 : 0.3)
+            .frame(height: 20)
+            .padding(.horizontal, 7.5)
+            .background(
+                active
+                ? color.opacity(isPressing ? 1 : activeState != .inactive ? 0.75 : 0.5)
+                : Color(nsColor: colorScheme == .dark ? .white : .black)
+                    .opacity(isPressing ? 0.10 : isHovering ? 0.05 : 0)
+            )
+            .cornerRadius(5)
+            .onTapGesture {
+                action()
+            }
+            .onHover { hover in
+                isHovering = hover
+            }
+            .pressAction {
+                isPressing = true
+            } onRelease: {
+                isPressing = false
+            }
+
     }
 }
 

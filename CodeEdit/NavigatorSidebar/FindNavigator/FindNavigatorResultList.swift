@@ -11,17 +11,22 @@ import Search
 
 struct FindNavigatorResultList: View {
     @ObservedObject
-    var state: WorkspaceDocument.SearchState
+    private var state: WorkspaceDocument.SearchState
 
     @State
-    var selectedResult: SearchResultModel?
+    private var selectedResult: SearchResultModel?
+
+    init(state: WorkspaceDocument.SearchState, selectedResult: SearchResultModel? = nil) {
+        self.state = state
+        self.selectedResult = selectedResult
+    }
 
     private var foundFiles: [SearchResultModel] {
-        return state.searchResult.filter {!$0.hasKeywordInfo}
+        state.searchResult.filter {!$0.hasKeywordInfo}
     }
 
     private func getResultWith(_ file: WorkspaceClient.FileItem) -> [SearchResultModel] {
-        return state.searchResult.filter {$0.file == file && $0.hasKeywordInfo}
+        state.searchResult.filter {$0.file == file && $0.hasKeywordInfo}
     }
 
     var body: some View {
@@ -30,14 +35,14 @@ struct FindNavigatorResultList: View {
                 FindNavigatorResultFileItem(
                     state: state,
                     fileItem: foundFile.file, results: getResultWith(foundFile.file)) {
-                        state.workspace.openFile(item: foundFile.file)
+                        state.workspace.openTab(item: foundFile.file)
                     }
             }
         }
         .listStyle(.sidebar)
         .onChange(of: selectedResult) { newValue in
             if let file = newValue?.file {
-                state.workspace.openFile(item: file)
+                state.workspace.openTab(item: file)
             }
         }
     }

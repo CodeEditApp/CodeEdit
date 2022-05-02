@@ -1,6 +1,6 @@
 //
 //  CodeFileView.swift
-//  CodeEdit
+//  CodeEditModules/CodeFile
 //
 //  Created by Marco Carnevali on 17/03/22.
 //

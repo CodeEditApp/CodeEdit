@@ -58,6 +58,10 @@ let package = Package(
             targets: ["About"]
         ),
         .library(
+            name: "Acknowledgements",
+            targets: ["Acknowledgements"]
+        ),
+        .library(
             name: "QuickOpen",
             targets: ["QuickOpen"]
         ),
@@ -84,6 +88,10 @@ let package = Package(
         .library(
             name: "KeyboardShortcutManager",
             targets: ["KeyboardShortcutManager"]
+        ),
+        .library(
+            name: "TabBar",
+            targets: ["TabBar"]
         ),
     ],
     dependencies: [
@@ -130,6 +138,9 @@ let package = Package(
     targets: [
         .target(
             name: "WorkspaceClient",
+            dependencies: [
+                "TabBar"
+            ],
             path: "Modules/WorkspaceClient/src"
         ),
         .testTarget(
@@ -249,6 +260,10 @@ let package = Package(
         ),
         .target(
             name: "About",
+            dependencies: [
+                "Acknowledgements",
+                "CodeEditUtils"
+            ],
             path: "Modules/About/src"
         ),
         .target(
@@ -278,6 +293,10 @@ let package = Package(
                 "SnapshotTesting",
             ],
             path: "Modules/CodeEditUI/Tests"
+        ),
+        .target(
+            name: "Acknowledgements",
+            path: "Modules/Acknowledgements/src"
         ),
         .target(
             name: "ExtensionsStore",
@@ -315,12 +334,23 @@ let package = Package(
         .target(
             name: "CodeEditUtils",
             path: "Modules/CodeEditUtils/src"
-
         ),
         .target(
+
             name: "KeyboardShortcutManager",
             path: "Modules/KeyboardShortcutManager/src"
 
         ),
+        .target(
+            name: "TabBar",
+            path: "Modules/TabBar/src"
+        ),
+        .testTarget(
+            name: "CodeEditUtilsTests",
+            dependencies: [
+                "CodeEditUtils"
+            ],
+            path: "Modules/CodeEditUtils/Tests"
+        )
     ]
 )

@@ -1,6 +1,6 @@
 //
 //  StatusBar.swift
-//  
+//  CodeEditModules/StatusBar
 //
 //  Created by Lukas Pistrol on 19.03.22.
 //
@@ -19,6 +19,9 @@ import CodeEditUI
 /// host a terminal or additional debug information
 ///
 public struct StatusBarView: View {
+    @Environment(\.controlActiveState)
+    private var controlActive
+
     @ObservedObject
     private var model: StatusBarModel
 
@@ -36,6 +39,7 @@ public struct StatusBarView: View {
                     .transition(.move(edge: .bottom))
             }
         }
+        .disabled(controlActive == .inactive)
         // removes weird light gray bar above when in light mode
         .padding(.top, -8) // (comment out to make it look normal in preview)
     }
@@ -52,6 +56,7 @@ public struct StatusBarView: View {
                         .frame(maxHeight: 12)
                         .padding(.horizontal, 7)
                     SegmentedControl($model.selectedTab, options: StatusBarTab.allOptions)
+                        .opacity(model.isExpanded ? 1 : 0)
                 }
                 Spacer()
                 StatusBarCursorLocationLabel(model: model)
@@ -70,7 +75,7 @@ public struct StatusBarView: View {
                 Divider()
             }
         }
-        .frame(height: 32)
+        .frame(height: 29)
         .gesture(dragGesture)
         .onHover { isHovering($0, isDragging: model.isDragging, cursor: .resizeUpDown) }
     }

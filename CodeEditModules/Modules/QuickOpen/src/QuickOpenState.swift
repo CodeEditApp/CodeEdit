@@ -1,6 +1,6 @@
 //
 //  QuickOpenState.swift
-//  CodeEdit
+//  CodeEditModules/QuickOpen
 //
 //  Created by Marco Carnevali on 05/04/22.
 //

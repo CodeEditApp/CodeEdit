@@ -1,6 +1,6 @@
 //
 //  CodeEditKeychainAccessOptions.swift
-//  
+//  CodeEditModules/CodeEditUtils
 //
 //  Created by Nanashi Li on 2022/04/14.
 //
@@ -89,6 +89,6 @@ public enum CodeEditKeychainAccessOptions {
     }
 
     func toString(_ value: CFString) -> String {
-        return CodeEditKeychainConstants.toString(value)
+        CodeEditKeychainConstants.toString(value)
     }
 }

@@ -1,6 +1,6 @@
 //
 //  LocationsPreferencesView.swift
-//  
+//  CodeEditModules/AppPreferences
 //
 //  Created by Lukas Pistrol on 03.04.22.
 //

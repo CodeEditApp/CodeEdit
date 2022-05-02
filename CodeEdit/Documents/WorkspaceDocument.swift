@@ -16,6 +16,7 @@ import QuickOpen
 import CodeEditKit
 import ExtensionsStore
 import StatusBar
+import TabBar
 
 @objc(WorkspaceDocument)
 final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
@@ -25,6 +26,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
 
     @Published var sortFoldersOnTop: Bool = true
     @Published var selectionState: WorkspaceSelectionState = .init()
+    @Published var fileItems: [WorkspaceClient.FileItem] = []
 
     var statusBarModel: StatusBarModel?
     var searchState: SearchState?
@@ -37,66 +39,122 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         cancellables.forEach { $0.cancel() }
     }
 
-    func closeFileTab(item: WorkspaceClient.FileItem) {
+    /// Opens new tab
+    /// - Parameter item: any item which can be represented as a tab
+    func openTab(item: TabBarItemRepresentable) {
+        do {
+            switch item.tabID {
+            case .codeEditor:
+                guard let file = item as? WorkspaceClient.FileItem else { return }
+                try self.openFile(item: file)
+            case .extensionInstallation:
+                guard let plugin = item as? Plugin else { return }
+                self.openExtension(item: plugin)
+            }
+
+            if !selectionState.openedTabs.contains(item.tabID) {
+                selectionState.openedTabs.append(item.tabID)
+            }
+
+            if selectionState.selectedId != item.tabID {
+                selectionState.selectedId = item.tabID
+            }
+        } catch let err {
+            Swift.print(err)
+        }
+    }
+
+    private func openFile(item: WorkspaceClient.FileItem) throws {
+        let codeFile = try CodeFileDocument(
+            for: item.url,
+            withContentsOf: item.url,
+            ofType: "public.source-code"
+        )
+
+        if !selectionState.openFileItems.contains(item) {
+            selectionState.openFileItems.append(item)
+
+            selectionState.openedCodeFiles[item] = codeFile
+        }
+        Swift.print("Opening file for item: ", item.url)
+    }
+
+    private func openExtension(item: Plugin) {
+        if !selectionState.openedExtensions.contains(item) {
+            selectionState.openedExtensions.append(item)
+        }
+    }
+
+    /// Closes single tab
+    /// - Parameter id: tab bar item's identifier to be closed
+    func closeTab(item id: TabBarItemID) {
+        guard let idx = selectionState.openedTabs.firstIndex(of: id) else { return }
+        let closedID = selectionState.openedTabs.remove(at: idx)
+        guard closedID == id else { return }
+
+        switch id {
+        case .codeEditor:
+            guard let item = selectionState.getItemByTab(id: id) as? WorkspaceClient.FileItem else { return }
+            closeFileTab(item: item)
+        case .extensionInstallation:
+            guard let item = selectionState.getItemByTab(id: id) as? Plugin else { return }
+            closeExtensionTab(item: item)
+        }
+
+        if selectionState.openedTabs.isEmpty {
+            selectionState.selectedId = nil
+        } else if selectionState.selectedId == closedID {
+            // If the closed item is the selected one, then select another tab.
+            if idx == 0 {
+                selectionState.selectedId = selectionState.openedTabs.first
+            } else {
+                selectionState.selectedId = selectionState.openedTabs[idx - 1]
+            }
+        } else {
+            // If the closed item is not the selected one, then do nothing.
+        }
+    }
+
+    /// Closes collection of tab bar items
+    /// - Parameter items: items to be closed
+    func closeTabs<Items>(items: Items) where Items: Collection, Items.Element == TabBarItemID {
+        // TODO: Could potentially be optimized
+        for item in items {
+            closeTab(item: item)
+        }
+    }
+
+    /// Closes tabs according to predicator
+    /// - Parameter predicate: predicator which returns whether tab should be closed based on its identifier
+    func closeTab(where predicate: (TabBarItemID) -> Bool) {
+        closeTabs(items: selectionState.openedTabs.filter(predicate))
+    }
+
+    /// Closes tabs after specified identifier
+    /// - Parameter id: identifier after which tabs will be closed
+    func closeTabs(after id: TabBarItemID) {
+        guard let startIdx = selectionState.openFileItems.firstIndex(where: { $0.tabID == id }) else {
+            assert(false, "Expected file item to be present in openFileItems")
+            return
+        }
+
+        let range = selectionState.openedTabs[(startIdx+1)...]
+        closeTabs(items: range)
+    }
+
+    private func closeFileTab(item: WorkspaceClient.FileItem) {
         defer {
             let file = selectionState.openedCodeFiles.removeValue(forKey: item)
             file?.save(self)
         }
 
         guard let idx = selectionState.openFileItems.firstIndex(of: item) else { return }
-        let closedFileItem = selectionState.openFileItems.remove(at: idx)
-        guard closedFileItem.id == item.id else { return }
-
-        if selectionState.openFileItems.isEmpty {
-            selectionState.selectedId = nil
-        } else if idx == 0 {
-            selectionState.selectedId = selectionState.openFileItems.first?.id
-        } else {
-            selectionState.selectedId = selectionState.openFileItems[idx - 1].id
-        }
-    }
-    func closeFileTabs<Items>(items: Items) where Items: Collection, Items.Element == WorkspaceClient.FileItem {
-        // TODO: Could potentially be optimized
-        for item in items {
-            closeFileTab(item: item)
-        }
+        selectionState.openFileItems.remove(at: idx)
     }
 
-    func closeFileTab(where predicate: (WorkspaceClient.FileItem) -> Bool) {
-        closeFileTabs(items: selectionState.openFileItems.filter(predicate))
-    }
-
-    func closeFileTabs(after item: WorkspaceClient.FileItem) {
-        guard let startIdx = selectionState.openFileItems.firstIndex(where: { $0.id == item.id }) else {
-            assert(false, "Expected file item to be present in openFileItems")
-            return
-        }
-
-        let range = selectionState.openFileItems[(startIdx+1)...]
-        closeFileTabs(items: range)
-    }
-
-    func openFile(item: WorkspaceClient.FileItem) {
-        do {
-            let codeFile = try CodeFileDocument(
-                for: item.url,
-                withContentsOf: item.url,
-                ofType: "public.source-code"
-            )
-
-            if !selectionState.openFileItems.contains(item) {
-                selectionState.openFileItems.append(item)
-
-                selectionState.openedCodeFiles[item] = codeFile
-            }
-            if selectionState.selectedId != item.id {
-                selectionState.selectedId = item.id
-            }
-            Swift.print("Opening file for item: ", item.url)
-            self.windowControllers.first?.window?.subtitle = item.url.lastPathComponent
-        } catch let err {
-            Swift.print(err)
-        }
+    private func closeExtensionTab(item: Plugin) {
+        guard let idx = selectionState.openedExtensions.firstIndex(of: item) else { return }
+        selectionState.openedExtensions.remove(at: idx)
     }
 
     private let ignoredFilesAndDirectory = [
@@ -149,11 +207,19 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
                 if FileManager.default.fileExists(atPath: selectionStateFile.path) {
                     let state = try JSONDecoder().decode(WorkspaceSelectionState.self,
                                                          from: Data(contentsOf: selectionStateFile))
-                    self.selectionState.fileItems = state.fileItems
-                    state.openFileItems
-                        .compactMap { try? workspaceClient?.getFileItem($0.id) }
+                    state.openedTabs
+                        .compactMap { tab in
+                            switch tab {
+                            case .codeEditor(let path):
+                                return try? workspaceClient?.getFileItem(path)
+                            case .extensionInstallation:
+                                return state.openedExtensions.first { plugin in
+                                    plugin.tabID == tab
+                                }
+                            }
+                        }
                         .forEach { item in
-                        self.openFile(item: item)
+                        self.openTab(item: item)
                     }
                     self.selectionState.selectedId = state.selectedId
                 }
@@ -167,8 +233,8 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
             .sink { [weak self] files in
                 guard let self = self else { return }
 
-                guard !self.selectionState.fileItems.isEmpty else {
-                    self.selectionState.fileItems = files
+                guard !self.fileItems.isEmpty else {
+                    self.fileItems = files
                     return
                 }
 
@@ -177,12 +243,12 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
                 // and now. If the index of the file exists in the array
                 // it means we need to remove the element, otherwise we need to append
                 // it.
-                let diff = files.difference(from: self.selectionState.fileItems)
+                let diff = files.difference(from: self.fileItems)
                 diff.forEach { newFile in
-                    if let index = self.selectionState.fileItems.firstIndex(of: newFile) {
-                        self.selectionState.fileItems.remove(at: index)
+                    if let index = self.fileItems.firstIndex(of: newFile) {
+                        self.fileItems.remove(at: index)
                     } else {
-                        self.selectionState.fileItems.append(newFile)
+                        self.fileItems.append(newFile)
                     }
                 }
             }
@@ -237,102 +303,6 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         }
 
         super.close()
-    }
-}
-
-// MARK: - Search
-
-extension WorkspaceDocument {
-    final class SearchState: ObservableObject {
-        var workspace: WorkspaceDocument
-        @Published var searchResult: [SearchResultModel] = []
-
-        init(_ workspace: WorkspaceDocument) {
-            self.workspace = workspace
-        }
-
-        func search(_ text: String) {
-            self.searchResult = []
-            if let url = self.workspace.fileURL {
-                let enumerator = FileManager.default.enumerator(at: url,
-                                                                includingPropertiesForKeys: [
-                                                                    .isRegularFileKey
-                                                                ],
-                                                                options: [
-                                                                    .skipsHiddenFiles,
-                                                                    .skipsPackageDescendants
-                                                                ])
-                if let filePaths = enumerator?.allObjects as? [URL] {
-                    filePaths.map { url in
-                        WorkspaceClient.FileItem(url: url, children: nil)
-                    }.forEach { fileItem in
-                        var fileAddedFlag = true
-                        do {
-                            let data = try Data(contentsOf: fileItem.url)
-                            data.withUnsafeBytes {
-                                $0.split(separator: UInt8(ascii: "\n"))
-                                    .map { String(decoding: UnsafeRawBufferPointer(rebasing: $0), as: UTF8.self) }
-                            }.enumerated().forEach { (index: Int, line: String) in
-                                let noSpaceLine = line.trimmingCharacters(in: .whitespaces)
-                                if noSpaceLine.contains(text) {
-                                    if fileAddedFlag {
-                                        searchResult.append(SearchResultModel(
-                                            file: fileItem,
-                                            lineNumber: nil,
-                                            lineContent: nil,
-                                            keywordRange: nil)
-                                        )
-                                        fileAddedFlag = false
-                                    }
-                                    noSpaceLine.ranges(of: text).forEach { range in
-                                        searchResult.append(SearchResultModel(
-                                            file: fileItem,
-                                            lineNumber: index,
-                                            lineContent: noSpaceLine,
-                                            keywordRange: range)
-                                        )
-                                    }
-                                }
-                            }
-                        } catch {}
-                    }
-                }
-            }
-        }
-    }
-}
-
-// MARK: - Selection
-
-struct WorkspaceSelectionState: Codable {
-
-    var selectedId: String?
-    var openFileItems: [WorkspaceClient.FileItem] = []
-    var fileItems: [WorkspaceClient.FileItem] = []
-
-    var selected: WorkspaceClient.FileItem? {
-        guard let selectedId = selectedId else { return nil }
-        return fileItems.first(where: { $0.id == selectedId })
-    }
-    var openedCodeFiles: [WorkspaceClient.FileItem: CodeFileDocument] = [:]
-
-    enum CodingKeys: String, CodingKey {
-        case selectedId, openFileItems
-    }
-
-    init() {
-    }
-
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        selectedId = try container.decode(String?.self, forKey: .selectedId)
-        openFileItems = try container.decode([WorkspaceClient.FileItem].self, forKey: .openFileItems)
-    }
-
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(selectedId, forKey: .selectedId)
-        try container.encode(openFileItems, forKey: .openFileItems)
     }
 }
 
