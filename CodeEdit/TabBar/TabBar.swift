@@ -55,28 +55,7 @@ struct TabBar: View {
     var body: some View {
         HStack(alignment: .center, spacing: 0) {
             // Tab bar navigation control.
-            HStack(spacing: 2) {
-                TabBarAccessoryIcon(
-                    icon: .init(systemName: "chevron.left"),
-                    action: { /* TODO */ }
-                )
-                .foregroundColor(.secondary)
-                .buttonStyle(.plain)
-                TabBarAccessoryIcon(
-                    icon: .init(systemName: "chevron.right"),
-                    action: { /* TODO */ }
-                )
-                .foregroundColor(.secondary)
-                .buttonStyle(.plain)
-            }
-            .padding(.horizontal, 7)
-            .opacity(activeState != .inactive ? 1.0 : 0.5)
-            .frame(maxHeight: .infinity) // Fill out vertical spaces.
-            .background {
-                if prefs.preferences.general.tabBarStyle == .native {
-                    TabBarAccessoryNativeBackground(dividerAt: .trailing)
-                }
-            }
+            leadingAccessories
             // Tab bar items.
             GeometryReader { geometryProxy in
                 ScrollView(.horizontal, showsIndicators: false) {
@@ -147,35 +126,7 @@ struct TabBar: View {
                 }
             }
             // Tab bar tools (e.g. split view).
-            HStack(spacing: 2) {
-                TabBarAccessoryIcon(
-                    icon: .init(systemName: "ellipsis.circle"),
-                    action: { /* TODO */ }
-                )
-                .foregroundColor(.secondary)
-                .buttonStyle(.plain)
-                TabBarAccessoryIcon(
-                    icon: .init(systemName: "arrow.left.arrow.right.square"),
-                    action: { /* TODO */ }
-                )
-                .foregroundColor(.secondary)
-                .buttonStyle(.plain)
-                TabBarAccessoryIcon(
-                    icon: .init(systemName: "square.split.2x1"),
-                    action: { /* TODO */ }
-                )
-                .foregroundColor(.secondary)
-                .buttonStyle(.plain)
-            }
-            .padding(.horizontal, 7)
-            .opacity(activeState != .inactive ? 1.0 : 0.5)
-            .frame(maxHeight: .infinity) // Fill out vertical spaces.
-            .background {
-                if prefs.preferences.general.tabBarStyle == .native {
-                    TabBarAccessoryNativeBackground(dividerAt: .leading)
-                }
-            }
-            // TODO: Tab bar tools (e.g. split view).
+            trailingAccessories
         }
         .frame(height: TabBar.height)
         .overlay(alignment: .top) {
@@ -204,5 +155,63 @@ struct TabBar: View {
             }
         }
         .padding(.leading, -1)
+    }
+
+    // MARK: Accessories
+
+    private var leadingAccessories: some View {
+        HStack(spacing: 2) {
+            TabBarAccessoryIcon(
+                icon: .init(systemName: "chevron.left"),
+                action: { /* TODO */ }
+            )
+            .foregroundColor(.secondary)
+            .buttonStyle(.plain)
+            TabBarAccessoryIcon(
+                icon: .init(systemName: "chevron.right"),
+                action: { /* TODO */ }
+            )
+            .foregroundColor(.secondary)
+            .buttonStyle(.plain)
+        }
+        .padding(.horizontal, 7)
+        .opacity(activeState != .inactive ? 1.0 : 0.5)
+        .frame(maxHeight: .infinity) // Fill out vertical spaces.
+        .background {
+            if prefs.preferences.general.tabBarStyle == .native {
+                TabBarAccessoryNativeBackground(dividerAt: .trailing)
+            }
+        }
+    }
+
+    private var trailingAccessories: some View {
+        HStack(spacing: 2) {
+            TabBarAccessoryIcon(
+                icon: .init(systemName: "ellipsis.circle"),
+                action: { /* TODO */ }
+            )
+            .foregroundColor(.secondary)
+            .buttonStyle(.plain)
+            TabBarAccessoryIcon(
+                icon: .init(systemName: "arrow.left.arrow.right.square"),
+                action: { /* TODO */ }
+            )
+            .foregroundColor(.secondary)
+            .buttonStyle(.plain)
+            TabBarAccessoryIcon(
+                icon: .init(systemName: "square.split.2x1"),
+                action: { /* TODO */ }
+            )
+            .foregroundColor(.secondary)
+            .buttonStyle(.plain)
+        }
+        .padding(.horizontal, 7)
+        .opacity(activeState != .inactive ? 1.0 : 0.5)
+        .frame(maxHeight: .infinity) // Fill out vertical spaces.
+        .background {
+            if prefs.preferences.general.tabBarStyle == .native {
+                TabBarAccessoryNativeBackground(dividerAt: .leading)
+            }
+        }
     }
 }
