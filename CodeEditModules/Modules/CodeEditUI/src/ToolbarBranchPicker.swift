@@ -29,7 +29,7 @@ public struct ToolbarBranchPicker: View {
         if let folderURL = workspace?.folderURL() {
             self.gitClient = GitClient.default(
                 directoryURL: folderURL,
-                shellClient: .live
+                shellClient: .live()
             )
         }
         self._currentBranch = State(initialValue: try? gitClient?.getCurrentBranchName())

@@ -31,7 +31,7 @@ public final class HistoryInspectorModel: ObservableObject {
         self.fileURL = fileURL
         gitClient = GitClient.default(
             directoryURL: workspaceURL,
-            shellClient: .live
+            shellClient: .live()
         )
         do {
             let commitHistory = try gitClient.getCommitHistory(40, fileURL)
