@@ -5,7 +5,7 @@
 //  Created by Lukas Pistrol on 20.03.22.
 //
 
-import GitClient
+import Git
 import SwiftUI
 
 public enum StatusBarTab: String, CaseIterable, Identifiable {

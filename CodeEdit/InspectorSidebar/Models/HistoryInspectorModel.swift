@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import GitClient
+import Git
 
 public final class HistoryInspectorModel: ObservableObject {
 

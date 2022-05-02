@@ -1,6 +1,6 @@
 //
 //  Live.swift
-//  CodeEditModules/GitClient
+//  CodeEditModules/Git
 //
 //  Created by Marco Carnevali on 21/03/22.
 //
