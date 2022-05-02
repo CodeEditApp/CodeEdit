@@ -167,12 +167,14 @@ struct TabBar: View {
             )
             .foregroundColor(.secondary)
             .buttonStyle(.plain)
+            .help("Navigate back")
             TabBarAccessoryIcon(
                 icon: .init(systemName: "chevron.right"),
                 action: { /* TODO */ }
             )
             .foregroundColor(.secondary)
             .buttonStyle(.plain)
+            .help("Navigate forward")
         }
         .padding(.horizontal, 7)
         .opacity(activeState != .inactive ? 1.0 : 0.5)
@@ -192,18 +194,21 @@ struct TabBar: View {
             )
             .foregroundColor(.secondary)
             .buttonStyle(.plain)
+            .help("Options")
             TabBarAccessoryIcon(
                 icon: .init(systemName: "arrow.left.arrow.right.square"),
                 action: { /* TODO */ }
             )
             .foregroundColor(.secondary)
             .buttonStyle(.plain)
+            .help("Enable Code Review")
             TabBarAccessoryIcon(
                 icon: .init(systemName: "square.split.2x1"),
                 action: { /* TODO */ }
             )
             .foregroundColor(.secondary)
             .buttonStyle(.plain)
+            .help("Split View")
         }
         .padding(.horizontal, 7)
         .opacity(activeState != .inactive ? 1.0 : 0.5)
