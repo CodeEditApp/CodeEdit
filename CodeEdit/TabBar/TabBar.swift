@@ -55,7 +55,7 @@ struct TabBar: View {
     var body: some View {
         HStack(alignment: .center, spacing: 0) {
             // Tab bar navigation control.
-            HStack(spacing: 10) {
+            HStack(spacing: 2) {
                 TabBarAccessoryIcon(
                     icon: .init(systemName: "chevron.left"),
                     action: { /* TODO */ }
@@ -66,10 +66,10 @@ struct TabBar: View {
                     icon: .init(systemName: "chevron.right"),
                     action: { /* TODO */ }
                 )
-                .foregroundColor(.secondary.opacity(0.5))
+                .foregroundColor(.secondary)
                 .buttonStyle(.plain)
             }
-            .padding(.horizontal, 11)
+            .padding(.horizontal, 7)
             .opacity(activeState != .inactive ? 1.0 : 0.5)
             .frame(maxHeight: .infinity) // Fill out vertical spaces.
             .background {
@@ -147,7 +147,7 @@ struct TabBar: View {
                 }
             }
             // Tab bar tools (e.g. split view).
-            HStack(spacing: 10) {
+            HStack(spacing: 2) {
                 TabBarAccessoryIcon(
                     icon: .init(systemName: "ellipsis.circle"),
                     action: { /* TODO */ }
@@ -167,7 +167,7 @@ struct TabBar: View {
                 .foregroundColor(.secondary)
                 .buttonStyle(.plain)
             }
-            .padding(.horizontal, 11)
+            .padding(.horizontal, 7)
             .opacity(activeState != .inactive ? 1.0 : 0.5)
             .frame(maxHeight: .infinity) // Fill out vertical spaces.
             .background {
