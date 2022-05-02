@@ -8,10 +8,13 @@
 import SwiftUI
 import WorkspaceClient
 import Search
+import AppPreferences
 
 struct FindNavigatorResultFileItem: View {
     @ObservedObject
     private var state: WorkspaceDocument.SearchState
+    @StateObject
+    private var prefs: AppPreferencesModel = .shared
 
     @State
     private var isExpanded: Bool = true
@@ -32,17 +35,16 @@ struct FindNavigatorResultFileItem: View {
              self.jumpToFile = jumpToFile
     }
 
+    @ViewBuilder
     private func foundLineResult(_ lineContent: String?, keywordRange: Range<String.Index>?) -> some View {
-        guard let lineContent = lineContent, let keywordRange = keywordRange else {
-            return AnyView(EmptyView())
-        }
-        return AnyView(
+        if let lineContent = lineContent,
+           let keywordRange = keywordRange {
             Text(lineContent[lineContent.startIndex..<keywordRange.lowerBound]) +
             Text(lineContent[keywordRange.lowerBound..<keywordRange.upperBound])
                 .foregroundColor(.white)
                 .font(.system(size: 12, weight: .bold)) +
             Text(lineContent[keywordRange.upperBound..<lineContent.endIndex])
-        )
+        }
     }
 
     var body: some View {
@@ -53,7 +55,7 @@ struct FindNavigatorResultFileItem: View {
                         .font(.system(size: 12))
                         .padding(.top, 2)
                     foundLineResult(result.lineContent, keywordRange: result.keywordRange)
-                        .lineLimit(Int.max)
+                        .lineLimit(prefs.preferences.general.findNavigatorDetail.rawValue)
                         .foregroundColor(Color(nsColor: .secondaryLabelColor))
                         .font(.system(size: 12, weight: .light))
                     Spacer()
