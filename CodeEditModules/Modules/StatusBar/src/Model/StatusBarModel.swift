@@ -108,7 +108,7 @@ public class StatusBarModel: ObservableObject {
         self.workspaceURL = workspaceURL
         gitClient = GitClient.default(
             directoryURL: workspaceURL,
-            shellClient: .live
+            shellClient: .live()
         )
         do {
             let selectedBranch = try gitClient.getCurrentBranchName()

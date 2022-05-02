@@ -203,7 +203,7 @@ public struct WelcomeView: View {
             }
         }
         .sheet(isPresented: $showGitClone) {
-            GitCloneView(shellClient: .live,
+            GitCloneView(shellClient: .live(),
                          isPresented: $showGitClone,
                          showCheckout: $showCheckoutBranch,
                          repoPath: $repoPath)
@@ -211,7 +211,7 @@ public struct WelcomeView: View {
         .sheet(isPresented: $showCheckoutBranch) {
             CheckoutBranchView(isPresented: $showCheckoutBranch,
                                 repoPath: $repoPath,
-                                shellClient: .live)
+                               shellClient: .live())
         }
     }
 
