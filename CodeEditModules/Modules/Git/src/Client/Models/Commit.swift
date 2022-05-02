@@ -1,6 +1,6 @@
 //
 //  Commit.swift
-//  CodeEditModules/GitClient
+//  CodeEditModules/Git
 //
 //  Created by Marco Carnevali on 27/03/22.
 //

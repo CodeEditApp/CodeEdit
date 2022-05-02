@@ -1,12 +1,11 @@
 //
 //  CheckoutBranch.swift
-//  CodeEditModules/GitClone
+//  CodeEditModules/Git
 //
 //  Created by Aleksi Puttonen on 18.4.2022.
 //
 
 import Foundation
-import GitClient
 import SwiftUI
 
 public extension CheckoutBranchView {

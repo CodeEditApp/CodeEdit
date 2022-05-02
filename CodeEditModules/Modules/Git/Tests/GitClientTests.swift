@@ -1,12 +1,12 @@
 //
 //  GitClientTests.swift
-//  CodeEditModules/GitClientTests
+//  CodeEditModules/GitTests
 //
 //  Created by Marco Carnevali on 27/03/22.
 //
 
 import XCTest
-@testable import GitClient
+@testable import Git
 import ShellClient
 
 final class GitClientTests: XCTestCase {

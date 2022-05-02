@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import GitAccounts
+import Git
 import AppPreferences
 import CodeEditUtils
 

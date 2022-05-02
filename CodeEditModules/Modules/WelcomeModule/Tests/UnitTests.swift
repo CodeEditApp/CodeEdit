@@ -7,7 +7,7 @@
 
 @testable import WelcomeModule
 import ShellClient
-import GitClone
+import Git
 import Foundation
 import SnapshotTesting
 import SwiftUI

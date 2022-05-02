@@ -10,7 +10,7 @@ import SwiftUI
 import CodeFile
 import CodeEditUI
 import QuickOpen
-import GitClient
+import Git
 
 final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
 
