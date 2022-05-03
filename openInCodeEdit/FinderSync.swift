@@ -8,7 +8,7 @@
 import Cocoa
 import FinderSync
 
-class FinderSync: FIFinderSync {
+class CEOpenWith: FIFinderSync {
     override init() {
         super.init()
         // Add finder sync
@@ -33,34 +33,46 @@ class FinderSync: FIFinderSync {
     /// Open in CodeEdit (menu) action
     /// - Parameter sender: sender
     @objc func openInCodeEditAction(_ sender: AnyObject?) {
-        print("Open in code eidt..")
-//        let target = FIFinderSyncController.default().targetedURL()
-        let items = FIFinderSyncController.default().selectedItemURLs()
-
-//        let item = sender as! NSMenuItem
-//        NSLog(
-//            "OpenInCE sampleAction: menu item: %@, target = %@ items = ",
-//            item.title as NSString,
-//            target!.path as NSString
-//        )
-
-        var fileURLs = ""
-        for obj in items! {
-            NSLog("OpenInCE %@", obj.path as NSString)
-            fileURLs.append(" \(obj.path)")
+        guard let items = FIFinderSyncController.default().selectedItemURLs() else {
+            return
         }
 
-        guard let url = NSWorkspace.shared.urlForApplication(
+        // Make values compatible to ArrayLiteralElement
+        var fileURLs: [URL] = []
+
+        for obj in items {
+            NSLog("OpenInCE Append urls %@", obj.path as NSString)
+            fileURLs.append(.init(string: "\(obj.path)")!)
+        }
+
+        guard let codeEdit = NSWorkspace.shared.urlForApplication(
             withBundleIdentifier: "austincondiff.CodeEdit"
         ) else { return }
+
+        NSLog("CEOpener:\n CE Path: %@\n Files to open: %@",
+              codeEdit.path as NSString,
+              fileURLs
+        )
 
         let path = "\(fileURLs)"
         let configuration = NSWorkspace.OpenConfiguration()
         configuration.arguments = [path]
 
-        NSWorkspace.shared.openApplication(at: url,
-                                           configuration: configuration,
-                                           completionHandler: nil)
+        // The "configuration" will be ignored if sandboxed,
+        // but we cannot run a extension without sandbox.
+//        NSWorkspace.shared.openApplication(at: codeEdit,
+//                                           configuration: configuration,
+//                                           completionHandler: nil)
+
+        // without using file://
+        // The application “CodeEdit.app” cannot open the specified document or URL.
+        // if using file://[filename]
+        // The application “openInCodeEdit” does not have permission to open “CODE_OF_CONDUCT.md.”
+        NSWorkspace.shared.open(fileURLs,
+                                withApplicationAt: codeEdit,
+                                configuration: NSWorkspace.OpenConfiguration())
+
+        
     }
 
     // MARK: - Menu and toolbar item support
