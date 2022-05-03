@@ -13,12 +13,17 @@ class FinderSync: FIFinderSync {
         super.init()
         // Add finder sync
         let finderSync = FIFinderSyncController.default()
-        if let mountedVolumes = FileManager.default.mountedVolumeURLs(includingResourceValuesForKeys: nil, options: [.skipHiddenVolumes]) {
+        if let mountedVolumes = FileManager.default.mountedVolumeURLs(
+            includingResourceValuesForKeys: nil,
+            options: [.skipHiddenVolumes]) {
             finderSync.directoryURLs = Set<URL>(mountedVolumes)
         }
         // Monitor volumes
         let notificationCenter = NSWorkspace.shared.notificationCenter
-        notificationCenter.addObserver(forName: NSWorkspace.didMountNotification, object: nil, queue: .main) { notification in
+        notificationCenter.addObserver(
+            forName: NSWorkspace.didMountNotification,
+            object: nil,
+            queue: .main) { notification in
             if let volumeURL = notification.userInfo?[NSWorkspace.volumeURLUserInfoKey] as? URL {
                 finderSync.directoryURLs.insert(volumeURL)
             }
@@ -29,11 +34,15 @@ class FinderSync: FIFinderSync {
     /// - Parameter sender: sender
     @objc func openInCodeEditAction(_ sender: AnyObject?) {
         print("Open in code eidt..")
-        let target = FIFinderSyncController.default().targetedURL()
+//        let target = FIFinderSyncController.default().targetedURL()
         let items = FIFinderSyncController.default().selectedItemURLs()
 
-        let item = sender as! NSMenuItem
-        NSLog("OpenInCE sampleAction: menu item: %@, target = %@, items = ", item.title as NSString, target!.path as NSString)
+//        let item = sender as! NSMenuItem
+//        NSLog(
+//            "OpenInCE sampleAction: menu item: %@, target = %@ items = ",
+//            item.title as NSString,
+//            target!.path as NSString
+//        )
 
         var fileURLs = ""
         for obj in items! {
@@ -44,7 +53,6 @@ class FinderSync: FIFinderSync {
         guard let url = NSWorkspace.shared.urlForApplication(
             withBundleIdentifier: "austincondiff.CodeEdit"
         ) else { return }
-
 
         let path = "\(fileURLs)"
         let configuration = NSWorkspace.OpenConfiguration()
@@ -59,8 +67,8 @@ class FinderSync: FIFinderSync {
     override func menu(for menuKind: FIMenuKind) -> NSMenu {
         let menu = NSMenu(title: "")
         let menuItem = NSMenuItem(title: "Open in CodeEdit",
-            action: #selector(openInCodeEditAction(_:)),
-            keyEquivalent: ""
+                                  action: #selector(openInCodeEditAction(_:)),
+                                  keyEquivalent: ""
         )
         menuItem.image = NSImage(named: NSImage.cautionName)!
         menu.addItem(menuItem)
@@ -68,4 +76,3 @@ class FinderSync: FIFinderSync {
         return menu
     }
 }
-
