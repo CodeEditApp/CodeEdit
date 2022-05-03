@@ -10,10 +10,16 @@ import Combine
 import ExtensionsStore
 
 final class ExtensionInstallationViewModel: ObservableObject {
-    var plugin: Plugin
 
     init(plugin: Plugin) {
-        self.plugin = plugin
+        self.storedPlugin = plugin
+    }
+
+    var storedPlugin: Plugin
+    @Published var fetchedPlugin: Plugin?
+
+    var plugin: Plugin {
+        self.fetchedPlugin ?? storedPlugin
     }
 
     @Published var release: PluginRelease?
@@ -26,9 +32,17 @@ final class ExtensionInstallationViewModel: ObservableObject {
     // Limit of records per page. (Only if backend supports, it usually does)
     let perPage = 10
 
+    private var pluginFetchCancellable: AnyCancellable?
     private var cancellable: AnyCancellable?
 
     func fetch() {
+        pluginFetchCancellable = ExtensionsStoreAPI.plugin(id: plugin.id)
+            .map { $0 as Plugin? }
+            .catch { _ in Just(nil) }
+            .sink { [weak self] (plugin: Plugin?) in
+                self?.fetchedPlugin = plugin
+            }
+
         cancellable = ExtensionsStoreAPI.pluginReleases(id: plugin.id, page: currentPage)
             .tryMap { $0.items }
             .catch { _ in Just(self.releases) }
@@ -39,7 +53,7 @@ final class ExtensionInstallationViewModel: ObservableObject {
                 if $0.count < self?.perPage ?? 10 {
                     self?.listFull = true
                 }
-        }
+            }
     }
 
 }

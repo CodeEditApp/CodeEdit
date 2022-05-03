@@ -8,6 +8,7 @@
 import SwiftUI
 import WorkspaceClient
 import AppPreferences
+import TabBar
 
 /// A `NSViewController` that handles the **ProjectNavigator** in the **NavigatorSideabr**.
 ///
@@ -25,7 +26,7 @@ final class OutlineViewController: NSViewController {
     /// Also creates a top level item "root" which represents the projects root directory and automatically expands it.
     private var content: [Item] {
         guard let folderURL = workspace?.workspaceClient?.folderURL() else { return [] }
-        let children = workspace?.selectionState.fileItems.sortItems(foldersOnTop: true)
+        let children = workspace?.fileItems.sortItems(foldersOnTop: true)
         guard let root = try? workspace?.workspaceClient?.getFileItem(folderURL.path) else { return [] }
         root.children = children
         return [root]
@@ -179,7 +180,7 @@ extension OutlineViewController: NSOutlineViewDelegate {
         guard let item = outlineView.item(atRow: selectedIndex) as? Item else { return }
 
         if item.children == nil {
-            workspace?.openFile(item: item)
+            workspace?.openTab(item: item)
         }
     }
 
@@ -208,8 +209,8 @@ extension OutlineViewController: NSOutlineViewDelegate {
     /// - Parameters:
     ///   - id: the id of the item item
     ///   - collection: the array to search for
-    private func select(by id: Item.ID, from collection: [Item]) {
-        guard let item = collection.first(where: { $0.id == id }) else {
+    private func select(by id: TabBarItemID, from collection: [Item]) {
+        guard let item = collection.first(where: { $0.tabID == id }) else {
             for item in collection {
                 select(by: id, from: item.children ?? [])
             }

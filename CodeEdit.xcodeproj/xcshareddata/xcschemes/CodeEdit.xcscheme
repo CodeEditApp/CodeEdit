@@ -78,6 +78,16 @@
                ReferencedContainer = "container:CodeEditModules">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "CodeEditUtilsTests"
+               BuildableName = "CodeEditUtilsTests"
+               BlueprintName = "CodeEditUtilsTests"
+               ReferencedContainer = "container:CodeEditModules">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

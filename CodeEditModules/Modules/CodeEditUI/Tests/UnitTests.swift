@@ -1,6 +1,6 @@
 //
 //  UnitTests.swift
-//  CodeEdit
+//  CodeEditModules/CodeEditUITests
 //
 //  Created by Lukas Pistrol on 19.04.22.
 //
@@ -88,7 +88,10 @@ final class CodeEditUIUnitTests: XCTestCase {
     // MARK: ToolbarBranchPicker
 
     func testBranchPickerLight() throws {
-        let view = ToolbarBranchPicker(nil)
+        let view = ToolbarBranchPicker(
+            shellClient: .always(""),
+            workspace: nil
+        )
         let hosting = NSHostingView(rootView: view)
         hosting.appearance = .init(named: .aqua)
         hosting.frame = CGRect(origin: .zero, size: .init(width: 100, height: 50))
@@ -96,7 +99,10 @@ final class CodeEditUIUnitTests: XCTestCase {
     }
 
     func testBranchPickerDark() throws {
-        let view = ToolbarBranchPicker(nil)
+        let view = ToolbarBranchPicker(
+            shellClient: .always(""),
+            workspace: nil
+        )
         let hosting = NSHostingView(rootView: view)
         hosting.appearance = .init(named: .darkAqua)
         hosting.frame = CGRect(origin: .zero, size: .init(width: 100, height: 50))

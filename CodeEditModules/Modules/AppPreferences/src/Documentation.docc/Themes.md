@@ -2,8 +2,8 @@
 
 ## Overview
 
-A ``AppPreferences/Theme`` is stored in a `theme_name.json` file in the `~/.codeedit/themes/` directory. When this
-is empty, a bundled template theme will be created. 
+A ``AppPreferences/Theme`` is stored in a `theme_name.json` file in the `~/.codeedit/themes/` directory. There are a
+couple of bundled themes that will automatically be put there once the app starts.
 
 Once a `JSON` file is loaded, the ``AppPreferences/Theme`` gets added to ``AppPreferences/ThemeModel/themes``.
 
@@ -14,126 +14,152 @@ They can either be ``AppPreferences/Theme/ThemeType/dark`` or ``AppPreferences/T
 ```json
 {
   "author" : "CodeEdit",
-  "license" : "MIT",
-  "description" : "CodeEdit default dark theme.",
-  "distributionURL" : "https:\/\/github.com\/CodeEditApp\/CodeEdit",
-  "name" : "Default (Dark)",
+  "name" : "codeedit-xcode-dark",
+  "displayName" : "Xcode Dark",
+  "description" : "Xcode dark theme.",
   "version" : "0.0.1",
+  "license" : "MIT",
   "type" : "dark",
-  "editor" : {
-    "strings" : {
-      "color" : "#f0907f"
-    },
-    "comments" : {
-      "color" : "#97be71"
-    },
-    "numbers" : {
-      "color" : "#d6c775"
-    },
-    "commands" : {
-      "color" : "#c6a3f9"
-    },
-    "lineHighlight" : {
-      "color" : "#303030"
-    },
-    "values" : {
-      "color" : "#70c1e2"
-    },
-    "background" : {
-      "color" : "#1e1e1e"
-    },
-    "keywords" : {
-      "color" : "#ef8bb6"
-    },
-    "text" : {
-      "color" : "#DDDDDD"
-    },
-    "insertionPoint" : {
-      "color" : "#DDDDDD"
-    },
-    "selection" : {
-      "color" : "#8b8b8b"
-    },
-    "types" : {
-      "color" : "#93c7bc"
-    },
-    "variables" : {
-      "color" : "#70c1e2"
-    },
-    "attributes" : {
-      "color" : "#93c7bc"
-    },
-    "characters" : {
-      "color" : "#93c7bc"
-    },
-    "invisibles" : {
-      "color" : "#636363"
-    }
+  "distributionURL" : "https:\/\/github.com\/CodeEditApp\/CodeEdit",
+  "editor" : { ... },
+  "terminal" : { ... }
+}
+```
+
+| Key | Description |
+| --- | ----------- |
+| ``author`` | Your Name |
+| ``name`` | A unique string representing the theme. _It's good practice to start it with your name or domain to make sure it is unique._ |
+| ``displayName`` | The name that will appear in the UI |
+| description / ``metadataDescription`` | A short description that will appear when hovering over the theme thumbnail |
+| ``version`` | A version number |
+| ``license`` | Which license your theme is published under |
+| type / ``appearance`` | The type of the theme [**dark**, **light**] |
+| ``distributionURL`` | A URL to your web presentation |
+| ``editor`` | A collection of colors for the editor |
+| ``terminal`` | A collection of colors for the terminal |
+
+### Editor
+
+```json
+{
+  "invisibles" : {
+    "color" : "#424D5B"
   },
-  "terminal" : {
-    "text" : {
-      "color" : "#ffffff"
-    },
-    "boldText" : {
-      "color" : "#ffffff"
-    },
-    "cursor" : {
-      "color" : "#ffffff"
-    },
-    "background" : {
-      "color" : "#1e1e1e"
-    },
-    "selection" : {
-      "color" : "#8b8b8b"
-    },
-    "black" : {
-      "color" : "#000000"
-    },
-    "red" : {
-      "color" : "#990000"
-    },
-    "green" : {
-      "color" : "#00a600"
-    },
-    "yellow" : {
-      "color" : "#999900"
-    },
-    "blue" : {
-      "color" : "#0000b2"
-    },
-    "magenta" : {
-      "color" : "#b200b2"
-    },
-    "cyan" : {
-      "color" : "#00a6b2"
-    },
-    "white" : {
-      "color" : "#bfbfbf"
-    },
-    "brightBlack" : {
-      "color" : "#666666"
-    },
-    "brightRed" : {
-      "color" : "#e50000"
-    },
-    "brightGreen" : {
-      "color" : "#00d900"
-    },
-    "brightYellow" : {
-      "color" : "#e5e500"
-    },
-    "brightBlue" : {
-      "color" : "#0000ff"
-    },
-    "brightMagenta" : {
-      "color" : "#e500e5"
-    },
-    "brightCyan" : {
-      "color" : "#00e5e5"
-    },
-    "brightWhite" : {
-      "color" : "#e5e5e5"
-    }
+  "comments" : {
+    "color" : "#73A74E"
+  },
+  "numbers" : {
+    "color" : "#D0BF69"
+  },
+  "commands" : {
+    "color" : "#67B7A4"
+  },
+  "lineHighlight" : {
+    "color" : "#23252B"
+  },
+  "values" : {
+    "color" : "#A167E6"
+  },
+  "background" : {
+    "color" : "#1F1F24"
+  },
+  "keywords" : {
+    "color" : "#FF7AB3"
+  },
+  "text" : {
+    "color" : "#D9D9D9"
+  },
+  "insertionPoint" : {
+    "color" : "#D9D9D9"
+  },
+  "strings" : {
+    "color" : "#FC6A5D"
+  },
+  "selection" : {
+    "color" : "#515B70"
+  },
+  "types" : {
+    "color" : "#5DD8FF"
+  },
+  "variables" : {
+    "color" : "#41A1C0"
+  },
+  "attributes" : {
+    "color" : "#D0A8FF"
+  },
+  "characters" : {
+    "color" : "#D0BF69"
+  }
+}
+```
+
+### Terminal
+
+```json
+{
+  "white" : {
+    "color" : "#d9d9d9"
+  },
+  "brightMagenta" : {
+    "color" : "#af52de"
+  },
+  "brightRed" : {
+    "color" : "#ff3b30"
+  },
+  "blue" : {
+    "color" : "#007aff"
+  },
+  "red" : {
+    "color" : "#ff3b30"
+  },
+  "green" : {
+    "color" : "#28cd41"
+  },
+  "boldText" : {
+    "color" : "#d9d9d9"
+  },
+  "brightGreen" : {
+    "color" : "#28cd41"
+  },
+  "background" : {
+    "color" : "#1f2024"
+  },
+  "cursor" : {
+    "color" : "#d9d9d9"
+  },
+  "selection" : {
+    "color" : "#515b70"
+  },
+  "magenta" : {
+    "color" : "#af52de"
+  },
+  "black" : {
+    "color" : "#1f2024"
+  },
+  "text" : {
+    "color" : "#d9d9d9"
+  },
+  "brightWhite" : {
+    "color" : "#ffffff"
+  },
+  "brightBlue" : {
+    "color" : "#007aff"
+  },
+  "brightYellow" : {
+    "color" : "#ffff00"
+  },
+  "cyan" : {
+    "color" : "#59adc4"
+  },
+  "yellow" : {
+    "color" : "#ffcc00"
+  },
+  "brightCyan" : {
+    "color" : "#55bef0"
+  },
+   "brightBlack" : {
+    "color" : "#8e8e93"
   }
 }
 ```
@@ -143,12 +169,13 @@ They can either be ``AppPreferences/Theme/ThemeType/dark`` or ``AppPreferences/T
 ### General Info
 
 - ``author``
-- ``license``
-- ``metadataDescription``
-- ``distributionURL``
 - ``name``
+- ``displayName``
+- ``metadataDescription``
 - ``version``
+- ``license``
 - ``appearance``
+- ``distributionURL``
 - ``ThemeType``
 
 ### Editor
@@ -162,3 +189,6 @@ They can either be ``AppPreferences/Theme/ThemeType/dark`` or ``AppPreferences/T
 - ``Theme/TerminalColors``
 - ``terminal``
 - ``Attributes``
+
+### Highlight.JS Wrapper
+- ``highlightrThemeString``

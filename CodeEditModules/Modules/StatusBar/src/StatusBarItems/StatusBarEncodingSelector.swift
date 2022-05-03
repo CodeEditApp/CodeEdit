@@ -1,6 +1,6 @@
 //
 //  StatusBarEncodingSelector.swift
-//  
+//  CodeEditModules/StatusBar
 //
 //  Created by Lukas Pistrol on 22.03.22.
 //
@@ -19,9 +19,9 @@ internal struct StatusBarEncodingSelector: View {
         Menu {
             // UTF 8, ASCII, ...
         } label: {
-            Text("UTF 8")
-                .font(model.toolbarFont)
+            StatusBarMenuLabel("UTF 8", model: model)
         }
+        .menuIndicator(.hidden)
         .menuStyle(.borderlessButton)
         .fixedSize()
         .onHover { isHovering($0) }

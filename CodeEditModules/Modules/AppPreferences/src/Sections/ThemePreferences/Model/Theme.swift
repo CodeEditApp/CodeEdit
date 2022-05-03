@@ -1,6 +1,6 @@
 //
 //  Theme.swift
-//  
+//  CodeEditModules/AppPreferences
 //
 //  Created by Lukas Pistrol on 31.03.22.
 //
@@ -13,7 +13,7 @@ import SwiftUI
 public struct Theme: Identifiable, Codable, Equatable, Hashable, Loopable {
 
     enum CodingKeys: String, CodingKey {
-        case author, license, distributionURL, name, editor, terminal, version
+        case author, license, distributionURL, name, displayName, editor, terminal, version
         case appearance = "type"
         case metadataDescription = "description"
     }
@@ -37,8 +37,11 @@ public struct Theme: Identifiable, Codable, Equatable, Hashable, Loopable {
     /// An URL for reference
     public var distributionURL: String
 
-    /// The `display name` of the theme
+    /// The `unique name` of the theme
     public var name: String
+
+    /// The `display name` of the theme
+    public var displayName: String
 
     /// The `version` of the theme
     public var version: String
@@ -62,6 +65,7 @@ public struct Theme: Identifiable, Codable, Equatable, Hashable, Loopable {
         metadataDescription: String,
         distributionURL: String,
         name: String,
+        displayName: String,
         appearance: ThemeType,
         version: String
     ) {
@@ -70,6 +74,7 @@ public struct Theme: Identifiable, Codable, Equatable, Hashable, Loopable {
         self.metadataDescription = metadataDescription
         self.distributionURL = distributionURL
         self.name = name
+        self.displayName = displayName
         self.appearance = appearance
         self.version = version
         self.editor = editor

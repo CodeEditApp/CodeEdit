@@ -10,9 +10,11 @@ import SwiftUI
 import CodeFile
 import CodeEditUI
 import QuickOpen
-import GitClient
+import Git
+import AppPreferences
 
 final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
+    private var prefs: AppPreferencesModel = .shared
 
     var workspace: WorkspaceDocument?
     var quickOpenPanel: OverlayPanel?
@@ -44,6 +46,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
         )
         navigator.titlebarSeparatorStyle = .none
         navigator.minimumThickness = 260
+        navigator.collapseBehavior = .useConstraints
         splitVC.addSplitViewItem(navigator)
 
         let workspaceView = WorkspaceView(windowController: self, workspace: workspace)
@@ -61,7 +64,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
         inspector.minimumThickness = 260
         inspector.maximumThickness = 260
         inspector.isCollapsed = true
-        inspector.collapseBehavior = .preferResizingSiblingsWithFixedSplitView
+        inspector.collapseBehavior = .useConstraints
         splitVC.addSplitViewItem(inspector)
 
         self.splitViewController = splitVC
@@ -71,10 +74,20 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
         let toolbar = NSToolbar(identifier: UUID().uuidString)
         toolbar.delegate = self
         toolbar.displayMode = .labelOnly
+        toolbar.showsBaselineSeparator = false
         self.window?.titleVisibility = .hidden
         self.window?.toolbarStyle = .unifiedCompact
-        // Set titlebar background as transparent by default in order to style the toolbar background.
-        self.window?.titlebarAppearsTransparent = true
+        if prefs.preferences.general.tabBarStyle == .native {
+            // Set titlebar background as transparent by default in order to
+            // style the toolbar background in native tab bar style.
+            self.window?.titlebarAppearsTransparent = true
+            self.window?.titlebarSeparatorStyle = .none
+        } else {
+            // In xcode tab bar style, we use default toolbar background with
+            // line separator.
+            self.window?.titlebarAppearsTransparent = false
+            self.window?.titlebarSeparatorStyle = .line
+        }
         self.window?.toolbar = toolbar
     }
 
@@ -149,7 +162,12 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
             return toolbarItem
         case .branchPicker:
             let toolbarItem = NSToolbarItem(itemIdentifier: .branchPicker)
-            let view = NSHostingView(rootView: ToolbarBranchPicker(workspace?.workspaceClient))
+            let view = NSHostingView(
+                rootView: ToolbarBranchPicker(
+                    shellClient: Current.shellClient,
+                    workspace: workspace?.workspaceClient
+                )
+            )
             toolbarItem.view = view
 
             return toolbarItem
@@ -170,7 +188,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     @objc func toggleLastPanel() {
         guard let lastSplitView = splitViewController.splitViewItems.last else { return }
         lastSplitView.animator().isCollapsed.toggle()
-        if lastSplitView.animator().isCollapsed {
+        if lastSplitView.isCollapsed {
             window?.toolbar?.removeItem(at: 4)
         } else {
             window?.toolbar?.insertItem(withItemIdentifier: .itemListTrackingSeparator, at: 4)
@@ -180,7 +198,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     private func getSelectedCodeFile() -> CodeFileDocument? {
         guard let id = workspace?.selectionState.selectedId else { return nil }
         guard let item = workspace?.selectionState.openFileItems.first(where: { item in
-            return item.id == id
+            return item.tabID == id
         }) else { return nil }
         guard let file = workspace?.selectionState.openedCodeFiles[item] else { return nil }
         return file
@@ -206,7 +224,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
                 let contentView = QuickOpenView(
                     state: state,
                     onClose: { panel.close() },
-                    openFile: workspace.openFile(item:)
+                    openFile: workspace.openTab(item:)
                 )
                 panel.contentView = NSHostingView(rootView: contentView)
                 window?.addChildWindow(panel, ordered: .above)

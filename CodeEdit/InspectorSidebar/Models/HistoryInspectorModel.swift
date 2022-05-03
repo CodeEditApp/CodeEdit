@@ -6,9 +6,9 @@
 //
 
 import Foundation
-import GitClient
+import Git
 
-public class HistoryInspectorModel: ObservableObject {
+public final class HistoryInspectorModel: ObservableObject {
 
     /// A GitClient instance
     private(set) var gitClient: GitClient
@@ -31,7 +31,7 @@ public class HistoryInspectorModel: ObservableObject {
         self.fileURL = fileURL
         gitClient = GitClient.default(
             directoryURL: workspaceURL,
-            shellClient: .live
+            shellClient: Current.shellClient
         )
         do {
             let commitHistory = try gitClient.getCommitHistory(40, fileURL)

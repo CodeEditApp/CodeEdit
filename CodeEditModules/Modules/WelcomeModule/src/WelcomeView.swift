@@ -1,6 +1,6 @@
 //
 //  WelcomeView.swift
-//  CodeEdit
+//  CodeEditModules/WelcomeModule
 //
 //  Created by Ziyuan Zhao on 2022/3/18.
 //
@@ -9,7 +9,8 @@ import SwiftUI
 import AppKit
 import Foundation
 import AppPreferences
-import GitClone
+import Git
+import ShellClient
 
 public struct WelcomeView: View {
     @Environment(\.colorScheme) var colorScheme
@@ -23,12 +24,15 @@ public struct WelcomeView: View {
     private let openDocument: (URL?, @escaping () -> Void) -> Void
     private let newDocument: () -> Void
     private let dismissWindow: () -> Void
+    private let shellClient: ShellClient
 
     public init(
+        shellClient: ShellClient,
         openDocument: @escaping (URL?, @escaping () -> Void) -> Void,
         newDocument: @escaping () -> Void,
         dismissWindow: @escaping () -> Void
     ) {
+        self.shellClient = shellClient
         self.openDocument = openDocument
         self.newDocument = newDocument
         self.dismissWindow = dismissWindow
@@ -203,15 +207,19 @@ public struct WelcomeView: View {
             }
         }
         .sheet(isPresented: $showGitClone) {
-            GitCloneView(shellClient: .live,
-                         isPresented: $showGitClone,
-                         showCheckout: $showCheckoutBranch,
-                         repoPath: $repoPath)
+            GitCloneView(
+                shellClient: shellClient,
+                isPresented: $showGitClone,
+                showCheckout: $showCheckoutBranch,
+                repoPath: $repoPath
+            )
         }
         .sheet(isPresented: $showCheckoutBranch) {
-            CheckoutBranchView(isPresented: $showCheckoutBranch,
-                                repoPath: $repoPath,
-                                shellClient: .live)
+            CheckoutBranchView(
+                isPresented: $showCheckoutBranch,
+                repoPath: $repoPath,
+                shellClient: shellClient
+            )
         }
     }
 
@@ -240,6 +248,7 @@ public struct WelcomeView: View {
 struct WelcomeView_Previews: PreviewProvider {
     static var previews: some View {
         WelcomeView(
+            shellClient: .live(),
             openDocument: { _, _  in },
             newDocument: {},
             dismissWindow: {}

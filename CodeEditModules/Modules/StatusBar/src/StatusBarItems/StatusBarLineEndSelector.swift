@@ -1,6 +1,6 @@
 //
 //  StatusBarLineEndSelector.swift
-//  
+//  CodeEditModules/StatusBar
 //
 //  Created by Lukas Pistrol on 22.03.22.
 //
@@ -19,9 +19,8 @@ internal struct StatusBarLineEndSelector: View {
         Menu {
             // LF, CRLF
         } label: {
-            Text("LF")
-                .font(model.toolbarFont)
-        }
+            StatusBarMenuLabel("LF", model: model)        }
+        .menuIndicator(.hidden)
         .menuStyle(.borderlessButton)
         .fixedSize()
         .onHover { isHovering($0) }

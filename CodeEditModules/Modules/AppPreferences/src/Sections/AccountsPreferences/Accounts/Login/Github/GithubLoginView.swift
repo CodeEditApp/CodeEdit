@@ -1,12 +1,12 @@
 //
 //  GithubLoginView.swift
-//  
+//  CodeEditModules/AppPreferences
 //
 //  Created by Nanshi Li on 2022/04/01.
 //
 
 import SwiftUI
-import GitAccounts
+import Git
 import CodeEditUtils
 
 struct GithubLoginView: View {

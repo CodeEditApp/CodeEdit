@@ -1,12 +1,13 @@
 //
 //  StatusBarModel.swift
-//
+//  CodeEditModules/StatusBar
 //
 //  Created by Lukas Pistrol on 20.03.22.
 //
 
-import GitClient
+import Git
 import SwiftUI
+import ShellClient
 
 public enum StatusBarTab: String, CaseIterable, Identifiable {
     case terminal
@@ -29,7 +30,7 @@ public class StatusBarModel: ObservableObject {
     /// - **1**: Debugger
     /// - **2**: Output
     @Published
-    public var selectedTab: Int = 1
+    public var selectedTab: Int = 0
 
     // TODO: Implement logic for updating values
     /// Returns number of errors during comilation
@@ -104,11 +105,11 @@ public class StatusBarModel: ObservableObject {
     /// Initialize with a GitClient
     /// - Parameter workspaceURL: the current workspace URL
     ///
-    public init(workspaceURL: URL) {
+    public init(shellClient: ShellClient, workspaceURL: URL) {
         self.workspaceURL = workspaceURL
         gitClient = GitClient.default(
             directoryURL: workspaceURL,
-            shellClient: .live
+            shellClient: shellClient
         )
         do {
             let selectedBranch = try gitClient.getCurrentBranchName()

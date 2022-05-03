@@ -1,6 +1,6 @@
 //
 //  ExtensionsManager.swift
-//  
+//  CodeEditModules/ExtensionStore
 //
 //  Created by Pavel Kasila on 7.04.22.
 //

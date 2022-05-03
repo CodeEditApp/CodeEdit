@@ -1,13 +1,13 @@
 //
 //  UnitTests.swift
-//  
+//  CodeEditModules/WelcomeModuleTests
 //
 //  Created by Ziyuan Zhao on 2022/3/19.
 //
 
 @testable import WelcomeModule
 import ShellClient
-import GitClone
+import Git
 import Foundation
 import SnapshotTesting
 import SwiftUI

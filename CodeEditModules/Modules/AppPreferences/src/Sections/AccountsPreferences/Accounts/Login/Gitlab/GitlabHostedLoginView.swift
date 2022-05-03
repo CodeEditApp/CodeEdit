@@ -1,13 +1,13 @@
 //
 //  GitlabHostedLoginView.swift
-//  
+//  CodeEditModules/AppPreferences
 //
 //  Created by Nanashi Li on 2022/04/21.
 //
 
 import SwiftUI
 import CodeEditUtils
-import GitAccounts
+import Git
 
 struct GitlabHostedLoginView: View {
     @State var eneterpriseLink = ""

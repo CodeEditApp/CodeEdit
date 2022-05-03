@@ -1,6 +1,6 @@
 //
 //  StatusBarIndentSelector.swift
-//  
+//  CodeEditModules/StatusBar
 //
 //  Created by Lukas Pistrol on 22.03.22.
 //
@@ -39,9 +39,9 @@ internal struct StatusBarIndentSelector: View {
                 }
             }
         } label: {
-            Text("\(prefs.preferences.textEditing.defaultTabWidth) Spaces")
-                .font(model.toolbarFont)
+            StatusBarMenuLabel("\(prefs.preferences.textEditing.defaultTabWidth) Spaces", model: model)
         }
+        .menuIndicator(.hidden)
         .menuStyle(.borderlessButton)
         .fixedSize()
         .onHover { isHovering($0) }

@@ -10,11 +10,17 @@ import Search
 
 struct FindNavigatorModeSelector: View {
     @State
-    var selectedMode: [SearchModeModel] = [
+    private var selectedMode: [SearchModeModel] = [
         .Find,
         .Text,
         .Containing
     ]
+
+    init() {}
+
+    init(selectedMode: [SearchModeModel]) {
+        self.selectedMode = selectedMode
+    }
 
     private func getMenuList(_ index: Int) -> [SearchModeModel] {
         return index == 0 ? SearchModeModel.SearchModes : selectedMode[index - 1].children

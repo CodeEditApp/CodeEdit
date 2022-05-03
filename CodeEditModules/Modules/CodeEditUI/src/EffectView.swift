@@ -1,6 +1,6 @@
 //
 //  BlurView.swift
-//  CodeEdit
+//  CodeEditModules/CodeEditUI
 //
 //  Created by Rehatbir Singh on 15/03/2022.
 //

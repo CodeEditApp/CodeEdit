@@ -1,0 +1,126 @@
+{
+  "author" : "CodeEdit",
+  "displayName" : "GitHub Dark",
+  "editor" : {
+    "invisibles" : {
+      "color" : "#424D5B"
+    },
+    "comments" : {
+      "color" : "#8B949E"
+    },
+    "numbers" : {
+      "color" : "#79C0FF"
+    },
+    "commands" : {
+      "color" : "#D2A8FF"
+    },
+    "lineHighlight" : {
+      "color" : "#23252B"
+    },
+    "values" : {
+      "color" : "#79C0FF"
+    },
+    "background" : {
+      "color" : "#0D1117"
+    },
+    "keywords" : {
+      "color" : "#FF7B72"
+    },
+    "text" : {
+      "color" : "#C9D1D9"
+    },
+    "insertionPoint" : {
+      "color" : "#C9D1D9"
+    },
+    "strings" : {
+      "color" : "#A5D6FF"
+    },
+    "selection" : {
+      "color" : "#1E4273"
+    },
+    "types" : {
+      "color" : "#79C0FF"
+    },
+    "variables" : {
+      "color" : "#D2A8FF"
+    },
+    "attributes" : {
+      "color" : "#79C0FF"
+    },
+    "characters" : {
+      "color" : "#79C0FF"
+    }
+  },
+  "distributionURL" : "https:\/\/github.com\/CodeEditApp\/CodeEdit",
+  "terminal" : {
+    "white" : {
+      "color" : "#d9d9d9"
+    },
+    "brightMagenta" : {
+      "color" : "#d2a8ff"
+    },
+    "brightRed" : {
+      "color" : "#ff7b72"
+    },
+    "blue" : {
+      "color" : "#79c0ff"
+    },
+    "red" : {
+      "color" : "#ff7b72"
+    },
+    "green" : {
+      "color" : "#7ee787"
+    },
+    "boldText" : {
+      "color" : "#C9D1D9"
+    },
+    "brightGreen" : {
+      "color" : "#7ee787"
+    },
+    "background" : {
+      "color" : "#0D1117"
+    },
+    "cursor" : {
+      "color" : "#C9D1D9"
+    },
+    "selection" : {
+      "color" : "#1E4273"
+    },
+    "magenta" : {
+      "color" : "#d2a8ff"
+    },
+    "black" : {
+      "color" : "#1f2024"
+    },
+    "text" : {
+      "color" : "#C9D1D9"
+    },
+    "brightWhite" : {
+      "color" : "#ffffff"
+    },
+    "brightBlue" : {
+      "color" : "#79c0ff"
+    },
+    "brightYellow" : {
+      "color" : "#f2cc60"
+    },
+    "cyan" : {
+      "color" : "#79c0ff"
+    },
+    "yellow" : {
+      "color" : "#f2cc60"
+    },
+    "brightCyan" : {
+      "color" : "#79c0ff"
+    },
+    "brightBlack" : {
+      "color" : "#8e8e93"
+    }
+  },
+  "version" : "0.0.1",
+  "license" : "MIT",
+  "type" : "dark",
+  "name" : "codeedit-github-dark",
+  "description" : "GitHub dark theme."
+}
+

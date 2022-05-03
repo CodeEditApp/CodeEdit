@@ -6,13 +6,17 @@
 //
 
 import SwiftUI
-import GitClient
+import Git
 import CodeEditUI
 import CodeEditUtils
 
 struct PopoverView: View {
 
-    var commit: Commit
+    private var commit: Commit
+
+    init(commit: Commit) {
+        self.commit = commit
+    }
 
     var body: some View {
         VStack {

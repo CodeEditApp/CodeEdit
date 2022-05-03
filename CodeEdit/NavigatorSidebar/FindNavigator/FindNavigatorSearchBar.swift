@@ -6,15 +6,60 @@
 //
 
 import SwiftUI
+import CodeEditUI
 
 struct FindNavigatorSearchBar: View {
-    @ObservedObject
-    var state: WorkspaceDocument.SearchState
+    @Environment(\.colorScheme)
+    var colorScheme
 
-    let title: String
+    @ObservedObject
+    private var state: WorkspaceDocument.SearchState
+
+    @FocusState
+    private var isFocused: Bool
+
+    private let title: String
 
     @Binding
-    var text: String
+    private var text: String
+
+    @Environment(\.controlActiveState)
+    private var controlActive
+
+    @ViewBuilder
+    public func selectionBackground(
+        _ isFocused: Bool = false
+    ) -> some View {
+        if self.controlActive != .inactive {
+            if isFocused {
+                if colorScheme == .light {
+                    Color.white
+                } else {
+                    Color(hex: 0x1e1e1e)
+                }
+            } else {
+                if colorScheme == .light {
+                    Color.black.opacity(0.06)
+                } else {
+                    Color.white.opacity(0.24)
+                }
+            }
+        } else {
+            if colorScheme == .light {
+                Color.clear
+            } else {
+                Color.white.opacity(0.14)
+            }
+        }
+    }
+
+    init(state: WorkspaceDocument.SearchState,
+         title: String,
+         text: Binding<String>) {
+        self.state = state
+        self.title = title
+        self._text = text
+    }
 
     var body: some View {
         HStack {
@@ -25,13 +70,16 @@ struct FindNavigatorSearchBar: View {
         }
         .padding(.horizontal, 5)
         .padding(.vertical, 3)
-        .overlay(RoundedRectangle(cornerRadius: 4).stroke(Color.gray, lineWidth: 0.5).cornerRadius(4))
+        .background(selectionBackground(isFocused))
+        .clipShape(RoundedRectangle(cornerRadius: 6))
+        .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.gray, lineWidth: 0.5).cornerRadius(6))
     }
 
     private var textField: some View {
         TextField(title, text: $text)
             .disableAutocorrection(true)
             .textFieldStyle(PlainTextFieldStyle())
+            .focused($isFocused)
     }
 
     private var clearButton: some View {
