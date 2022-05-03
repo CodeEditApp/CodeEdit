@@ -19,7 +19,7 @@ import StatusBar
 import TabBar
 
 @objc(WorkspaceDocument)
-final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
+public class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var workspaceClient: WorkspaceClient?
 
     var extensionNavigatorData = ExtensionNavigatorData()
@@ -161,15 +161,15 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         ".DS_Store"
     ]
 
-    override class var autosavesInPlace: Bool {
+    public override class var autosavesInPlace: Bool {
         return false
     }
 
-    override var isDocumentEdited: Bool {
+    public override var isDocumentEdited: Bool {
         return false
     }
 
-    override func makeWindowControllers() {
+    public override func makeWindowControllers() {
         let window = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 800, height: 600),
             styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
@@ -195,7 +195,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         self.statusBarModel = .init(workspaceURL: url)
     }
 
-    override func read(from url: URL, ofType typeName: String) throws {
+    public override func read(from url: URL, ofType typeName: String) throws {
         try initWorkspaceState(url)
 
         // Initialize Workspace
@@ -264,9 +264,9 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         }
     }
 
-    override func write(to url: URL, ofType typeName: String) throws {}
+    public override func write(to url: URL, ofType typeName: String) throws {}
 
-    override func close() {
+    public override func close() {
         if let projectDir = fileURL?.appendingPathComponent(".codeedit", isDirectory: true) {
             do {
                 if !FileManager.default.fileExists(atPath: projectDir.path) {

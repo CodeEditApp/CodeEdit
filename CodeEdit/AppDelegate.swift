@@ -13,6 +13,7 @@ import WelcomeModule
 import ExtensionsStore
 import Feedback
 import CodeEditSymbols
+import Workspace
 
 final class CodeEditApplication: NSApplication {
     let strongDelegate = AppDelegate()
@@ -147,11 +148,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 
                 } else {
                     windowController.window?.close()
-                    CodeEditDocumentController.shared.openDocument(onCompletion: { _, _ in
-                        opened()
-                    }, onCancel: {
-                        self.openWelcome(self)
-                    })
+                    CodeEditDocumentController.shared.openDocument(opened())
                 }
             },
             newDocument: {

@@ -14,6 +14,10 @@ let package = Package(
             targets: ["WorkspaceClient"]
         ),
         .library(
+            name: "Workspace",
+            targets: ["Workspace"]
+        ),
+        .library(
             name: "CodeFile",
             targets: ["CodeFile"]
         ),
@@ -137,6 +141,26 @@ let package = Package(
                 "WorkspaceClient",
             ],
             path: "Modules/WorkspaceClient/Tests"
+        ),
+        .target(
+            name: "Workspace",
+            dependencies: [
+                "WorkspaceClient",
+                "CodeFile",
+                "Search",
+                "QuickOpen",
+                "CodeEditKit",
+                "ExtensionsStore",
+                "StatusBar",
+                "TabBar",
+                "CodeEditUI",
+                "Breadcrumbs",
+                "AppPreferences",
+                "CodeEditUtils",
+                "CodeEditSymbols",
+                "Git"
+            ],
+            path: "Modules/Workspace/src"
         ),
         .target(
             name: "CodeFile",
