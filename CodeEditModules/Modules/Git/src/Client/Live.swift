@@ -121,7 +121,29 @@ public extension GitClient {
                     }
                     .map { value -> CloneProgressResult in
                         // TODO: Make a more solid parsing system.
-                        if value.contains("Receiving objects: ") {
+                        if value.contains("Cloning into") {
+                            return .cloningInto
+                        } else if value.contains("Counting objects: ") {
+                            return .countingProgress(
+                                Int(
+                                    value
+                                        .replacingOccurrences(of: "remote: Counting objects: ", with: "")
+                                        .replacingOccurrences(of: " ", with: "")
+                                        .split(separator: "%")
+                                        .first ?? "0"
+                                ) ?? 0
+                            )
+                        } else if value.contains("Compressing objects: ") {
+                            return .compressingProgress(
+                                Int(
+                                    value
+                                        .replacingOccurrences(of: "remote: Compressing objects: ", with: "")
+                                        .replacingOccurrences(of: " ", with: "")
+                                        .split(separator: "%")
+                                        .first ?? "0"
+                                ) ?? 0
+                            )
+                        } else if value.contains("Receiving objects: ") {
                             return .receivingProgress(
                                 Int(
                                     value

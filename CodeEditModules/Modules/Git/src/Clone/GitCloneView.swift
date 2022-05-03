@@ -18,6 +18,9 @@ public struct GitCloneView: View {
     @State private var repoUrlStr = ""
     @State private var gitClient: GitClient?
     @State private var cloneCancellable: AnyCancellable?
+    @State private var isCloning: Bool = false
+    @State private var stateCloning: String = "Preparing to clone..."
+    @State private var valueCloning: Int = 0
 
     public init(
         shellClient: ShellClient,
@@ -38,33 +41,61 @@ public struct GitCloneView: View {
                     .resizable()
                     .frame(width: 64, height: 64)
                     .padding(.bottom, 50)
-                VStack(alignment: .leading) {
-                    Text("Clone a repository")
-                        .bold()
-                        .padding(.bottom, 2)
-                    Text("Enter a git repository URL:")
-                        .font(.system(size: 11))
-                        .foregroundColor(.secondary)
-                        .alignmentGuide(.trailing) { context in
-                            context[.trailing]
+                if !isCloning {
+                    VStack(alignment: .leading) {
+                        Text("Clone a repository")
+                            .bold()
+                            .padding(.bottom, 2)
+                        Text("Enter a git repository URL:")
+                            .font(.system(size: 11))
+                            .foregroundColor(.secondary)
+                            .alignmentGuide(.trailing) { context in
+                                context[.trailing]
+                            }
+                        TextField("Git Repository URL", text: $repoUrlStr)
+                            .lineLimit(1)
+                            .padding(.bottom, 15)
+                            .frame(width: 300)
+                        HStack {
+                            Button("Cancel") {
+                                isPresented = false
+                            }
+                            Button("Clone") {
+                                cloneRepository()
+                            }
+                            .keyboardShortcut(.defaultAction)
+                            .disabled(!isValid(url: repoUrlStr))
                         }
-                    TextField("Git Repository URL", text: $repoUrlStr)
-                        .lineLimit(1)
-                        .padding(.bottom, 15)
-                        .frame(width: 300)
-                    HStack {
-                        Button("Cancel") {
-                            isPresented = false
+                        .offset(x: 185)
+                        .alignmentGuide(.leading) { context in
+                            context[.leading]
                         }
-                        Button("Clone") {
-                            cloneRepository()
-                        }
-                        .keyboardShortcut(.defaultAction)
-                        .disabled(!isValid(url: repoUrlStr))
                     }
-                    .offset(x: 185)
-                    .alignmentGuide(.leading) { context in
-                        context[.leading]
+                } else {
+                    VStack(alignment: .leading) {
+                        Text("Cloning \""+repoUrlStr+"\"")
+                            .bold()
+                            .padding(.bottom, 2)
+                        Text(stateCloning)
+                            .font(.system(size: 11))
+                            .foregroundColor(.secondary)
+                            .alignmentGuide(.trailing) { context in
+                                context[.trailing]
+                            }
+
+                        ProgressView(value: Float(valueCloning)/100.0)
+                            .progressViewStyle(LinearProgressViewStyle())
+
+                        HStack {
+                            Button("Cancel") {
+                                isPresented = false
+                                cloneCancellable?.cancel()
+                            }
+                        }
+                        .offset(x: 240)
+                        .alignmentGuide(.leading) { context in
+                            context[.leading]
+                        }
                     }
                 }
             }
@@ -188,12 +219,25 @@ extension GitCloneView {
                     }
                 }, receiveValue: { result in
                     switch result {
+                    case .cloningInto:
+                        isCloning = true
+                    case let .countingProgress(progress):
+                        stateCloning = "Counting Progress"
+                        valueCloning = progress
+                        print("Counting Progress: ", progress)
+                    case let .compressingProgress(progress):
+                        stateCloning = "Compressing Progress"
+                        valueCloning = progress
+                        print("Compressing Progress: ", progress)
                     case let .receivingProgress(progress):
+                        stateCloning = "Receiving Progress"
+                        valueCloning = progress
                         print("Receiving Progress: ", progress)
                     case let .resolvingProgress(progress):
+                        stateCloning = "Resolving Progress"
+                        valueCloning = progress
                         print("Resolving Progress: ", progress)
                         if progress >= 100 {
-                            cloneCancellable?.cancel()
                             isPresented = false
                         }
                     case .other: break
@@ -208,7 +252,7 @@ extension GitCloneView {
         // Check if repo has only one branch, and if so, don't show the checkout page
         do {
             let branches = try GitClient.default(directoryURL: dirUrl,
-                                  shellClient: shellClient).getBranches(true)
+                                                 shellClient: shellClient).getBranches(true)
             let filtered = branches.filter {!$0.contains("HEAD")}
             if filtered.count > 1 {
                 showCheckout = true
