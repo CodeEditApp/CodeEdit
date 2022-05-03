@@ -11,7 +11,6 @@ import CodeFile
 import CodeEditUI
 import QuickOpen
 import Git
-import GitClient
 import AppPreferences
 
 final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
