@@ -1,12 +1,11 @@
 //
 //  GitCloneView.swift
-//  CodeEditModules/GitClone
+//  CodeEditModules/Git
 //
 //  Created by Aleksi Puttonen on 23.3.2022.
 //
 
 import SwiftUI
-import GitClient
 import Foundation
 import ShellClient
 

@@ -8,7 +8,7 @@
 import SwiftUI
 import CodeEditSymbols
 import WorkspaceClient
-import GitClient
+import Git
 
 /// A view that pops up a branch picker.
 public struct ToolbarBranchPicker: View {
@@ -29,7 +29,7 @@ public struct ToolbarBranchPicker: View {
         if let folderURL = workspace?.folderURL() {
             self.gitClient = GitClient.default(
                 directoryURL: folderURL,
-                shellClient: .live
+                shellClient: .live()
             )
         }
         self._currentBranch = State(initialValue: try? gitClient?.getCurrentBranchName())

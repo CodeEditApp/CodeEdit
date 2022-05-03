@@ -10,6 +10,7 @@ import SwiftUI
 import CodeFile
 import CodeEditUI
 import QuickOpen
+import Git
 import GitClient
 import AppPreferences
 

@@ -37,7 +37,7 @@
 		2072FA1A280D872600C7F8D4 /* LineEndings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2072FA19280D872600C7F8D4 /* LineEndings.swift */; };
 		2072FA1C280D874000C7F8D4 /* IndentUsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2072FA1B280D874000C7F8D4 /* IndentUsing.swift */; };
 		2072FA1E280D891500C7F8D4 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2072FA1D280D891500C7F8D4 /* Location.swift */; };
-		20C4319A28058B9E00964DD5 /* GitAccounts in Frameworks */ = {isa = PBXBuildFile; productRef = 20C4319928058B9E00964DD5 /* GitAccounts */; };
+		20AFDC7F28206701001A4FC7 /* Git in Frameworks */ = {isa = PBXBuildFile; productRef = 20AFDC7E28206701001A4FC7 /* Git */; };
 		20D839AB280DEB2900B27357 /* NoSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D839AA280DEB2900B27357 /* NoSelectionView.swift */; };
 		20D839AE280E0CA700B27357 /* PopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D839AD280E0CA700B27357 /* PopoverView.swift */; };
 		20EBB501280C325D00F3A5DA /* FileInspectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EBB500280C325D00F3A5DA /* FileInspectorView.swift */; };
@@ -71,9 +71,7 @@
 		5CA8776527FC6A95003F5CD5 /* QuickOpen in Frameworks */ = {isa = PBXBuildFile; productRef = 5CA8776427FC6A95003F5CD5 /* QuickOpen */; };
 		5CAD1B972806B57D0059A74E /* Breadcrumbs in Frameworks */ = {isa = PBXBuildFile; productRef = 5CAD1B962806B57D0059A74E /* Breadcrumbs */; };
 		5CF38A5E27E48E6C0096A0F7 /* CodeFile in Frameworks */ = {isa = PBXBuildFile; productRef = 5CF38A5D27E48E6C0096A0F7 /* CodeFile */; };
-		5CFA753B27E896B60002F01B /* GitClient in Frameworks */ = {isa = PBXBuildFile; productRef = 5CFA753A27E896B60002F01B /* GitClient */; };
 		64B64EDE27F7B79400C400F1 /* About in Frameworks */ = {isa = PBXBuildFile; productRef = 64B64EDD27F7B79400C400F1 /* About */; };
-		B34B213227ECDC3A006033A9 /* GitClone in Frameworks */ = {isa = PBXBuildFile; productRef = B34B213127ECDC3A006033A9 /* GitClone */; };
 		B658FB3427DA9E1000EA4DBD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3327DA9E1000EA4DBD /* Assets.xcassets */; };
 		B658FB3727DA9E1000EA4DBD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3627DA9E1000EA4DBD /* Preview Assets.xcassets */; };
 		B6EE989027E8879A00CDD8AB /* InspectorSidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EE988F27E8879A00CDD8AB /* InspectorSidebar.swift */; };
@@ -204,9 +202,9 @@
 				0483E34D27FCC46600354AC0 /* ExtensionsStore in Frameworks */,
 				64B64EDE27F7B79400C400F1 /* About in Frameworks */,
 				043BCF07281DA2F5000AC47C /* TabBar in Frameworks */,
+				20AFDC7F28206701001A4FC7 /* Git in Frameworks */,
 				04C3256B28034FC800C8DA2D /* CodeEditKit in Frameworks */,
 				2864BAAC28117B3F002DBD1A /* ShellClient in Frameworks */,
-				20C4319A28058B9E00964DD5 /* GitAccounts in Frameworks */,
 				2864BAAE28117D7C002DBD1A /* TerminalEmulator in Frameworks */,
 				5C403B8F27E20F8000788241 /* WorkspaceClient in Frameworks */,
 				5CAD1B972806B57D0059A74E /* Breadcrumbs in Frameworks */,
@@ -216,8 +214,6 @@
 				D70F5E2C27E4E8CF004EE4B9 /* WelcomeModule in Frameworks */,
 				D7F72DEB27EA3574000C3064 /* Search in Frameworks */,
 				2816F594280CF50500DD548B /* CodeEditSymbols in Frameworks */,
-				B34B213227ECDC3A006033A9 /* GitClone in Frameworks */,
-				5CFA753B27E896B60002F01B /* GitClient in Frameworks */,
 				28CE5EA027E6493D0065D29C /* StatusBar in Frameworks */,
 				2004A3832808468600FD9696 /* Feedback in Frameworks */,
 				5CF38A5E27E48E6C0096A0F7 /* CodeFile in Frameworks */,
@@ -497,15 +493,12 @@
 				5CF38A5D27E48E6C0096A0F7 /* CodeFile */,
 				D70F5E2B27E4E8CF004EE4B9 /* WelcomeModule */,
 				28CE5E9F27E6493D0065D29C /* StatusBar */,
-				5CFA753A27E896B60002F01B /* GitClient */,
 				D7F72DEA27EA3574000C3064 /* Search */,
-				B34B213127ECDC3A006033A9 /* GitClone */,
 				2803257027F3CF1F009C7DC2 /* AppPreferences */,
 				64B64EDD27F7B79400C400F1 /* About */,
 				5CA8776427FC6A95003F5CD5 /* QuickOpen */,
 				0483E34C27FCC46600354AC0 /* ExtensionsStore */,
 				04C3256A28034FC800C8DA2D /* CodeEditKit */,
-				20C4319928058B9E00964DD5 /* GitAccounts */,
 				5CAD1B962806B57D0059A74E /* Breadcrumbs */,
 				28117FCF280768A500649353 /* CodeEditUI */,
 				2004A3822808468600FD9696 /* Feedback */,
@@ -514,6 +507,7 @@
 				2864BAAB28117B3F002DBD1A /* ShellClient */,
 				2864BAAD28117D7C002DBD1A /* TerminalEmulator */,
 				043BCF06281DA2F5000AC47C /* TabBar */,
+				20AFDC7E28206701001A4FC7 /* Git */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -1192,9 +1186,9 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = CodeEditUtils;
 		};
-		20C4319928058B9E00964DD5 /* GitAccounts */ = {
+		20AFDC7E28206701001A4FC7 /* Git */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = GitAccounts;
+			productName = Git;
 		};
 		2803257027F3CF1F009C7DC2 /* AppPreferences */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -1237,17 +1231,9 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = CodeFile;
 		};
-		5CFA753A27E896B60002F01B /* GitClient */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = GitClient;
-		};
 		64B64EDD27F7B79400C400F1 /* About */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = About;
-		};
-		B34B213127ECDC3A006033A9 /* GitClone */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = GitClone;
 		};
 		D70F5E2B27E4E8CF004EE4B9 /* WelcomeModule */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import GitClient
+import Git
 import CodeEditUI
 
 /// # StatusBarView
