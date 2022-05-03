@@ -37,6 +37,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         AppPreferencesModel.shared.preferences.general.appAppearance.applyAppearance()
+        checkForFilesToOpen()
 
         DispatchQueue.main.async {
             if NSApp.windows.isEmpty {
@@ -174,6 +175,28 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 
     @IBAction func openFeedback(_ sender: Any) {
         FeedbackView().showWindow()
+    }
+
+    // MARK: - Open With CodeEdit (Extension) functions
+    private func checkForFilesToOpen() {
+        guard let defaults = UserDefaults.init(
+            suiteName: "austincondiff.CodeEdit.shared"
+        ) else {
+            print("Failed to get/init shared defaults")
+            return
+        }
+
+        // Register enableOpenInCE (enable Open In CodeEdit
+        defaults.register(defaults: ["enableOpenInCE": true])
+
+        // Temporary, to always create the PLIST file.
+        defaults.set(true, forKey: "Trigger_Save_PLIST")
+
+        print(defaults.string(forKey: "openInCEFiles"))
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.checkForFilesToOpen()
+        }
     }
 
     // MARK: - Preferences
