@@ -192,7 +192,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         // Temporary, to always create the PLIST file.
         defaults.set(true, forKey: "Trigger_Save_PLIST")
 
-        print(defaults.string(forKey: "openInCEFiles"))
+        if let filesToOpen = defaults.string(forKey: "openInCEFiles") {
+            print("Should open file(s): \(filesToOpen)")
+            defaults.removeObject(forKey: "openInCEFiles")
+        }
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.checkForFilesToOpen()

@@ -82,15 +82,6 @@ class CEOpenWith: FIFinderSync {
         // Register enableOpenInCE (enable Open In CodeEdit
         defaults.register(defaults: ["enableOpenInCE": true])
 
-        // Clear registery for opening files
-        defaults.set("", forKey: "openInCEFiles")
-
-        // Trigger plist?
-        defaults.set(true, forKey: "PLIST_FROM_EXTENSION")
-
-        // "Should not be used"
-        defaults.synchronize()
-
         let menu = NSMenu(title: "")
         let menuItem = NSMenuItem(title: "Open in CodeEdit",
                                   action: #selector(openInCodeEditAction(_:)),
