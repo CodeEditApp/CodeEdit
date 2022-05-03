@@ -4,15 +4,15 @@
 //
 //  Created by Marco Carnevali on 21/03/22.
 //
-
 import Foundation
+import Combine
 
 public struct GitClient {
     public var getCurrentBranchName: () throws -> String
     public var getBranches: (Bool) throws -> [String]
     public var checkoutBranch: (String) throws -> Void
     public var pull: () throws -> Void
-    public var cloneRepository: (String) throws -> Void
+    public var cloneRepository: (String) -> AnyPublisher<CloneProgressResult, GitClientError>
     /// Get commit history
     /// - Parameters:
     ///   - entries: number of commits we want to fetch. Will use max if nil
@@ -25,7 +25,7 @@ public struct GitClient {
         getBranches: @escaping (Bool) throws -> [String],
         checkoutBranch: @escaping (String) throws -> Void,
         pull: @escaping () throws -> Void,
-        cloneRepository: @escaping (String) throws -> Void,
+        cloneRepository: @escaping (String) -> AnyPublisher<CloneProgressResult, GitClientError>,
         getCommitHistory: @escaping (_ entries: Int?, _ fileLocalPath: String?) throws -> [Commit]
     ) {
         self.getCurrentBranchName = getCurrentBranchName
@@ -39,5 +39,11 @@ public struct GitClient {
     public enum GitClientError: Error {
         case outputError(String)
         case notGitRepository
+    }
+
+    public enum CloneProgressResult {
+        case receivingProgress(Int)
+        case resolvingProgress(Int)
+        case other(String)
     }
 }

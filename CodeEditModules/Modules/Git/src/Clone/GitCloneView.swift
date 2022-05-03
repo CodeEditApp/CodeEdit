@@ -8,6 +8,7 @@
 import SwiftUI
 import Foundation
 import ShellClient
+import Combine
 
 public struct GitCloneView: View {
     private let shellClient: ShellClient
@@ -15,15 +16,21 @@ public struct GitCloneView: View {
     @Binding private var showCheckout: Bool
     @Binding private var repoPath: String
     @State private var repoUrlStr = ""
-    public init(shellClient: ShellClient,
-                isPresented: Binding<Bool>,
-                showCheckout: Binding<Bool>,
-                repoPath: Binding<String>) {
+    @State private var gitClient: GitClient?
+    @State private var cloneCancellable: AnyCancellable?
+
+    public init(
+        shellClient: ShellClient,
+        isPresented: Binding<Bool>,
+        showCheckout: Binding<Bool>,
+        repoPath: Binding<String>
+    ) {
         self.shellClient = shellClient
         self._isPresented = isPresented
         self._showCheckout = showCheckout
         self._repoPath = repoPath
     }
+
     public var body: some View {
         VStack(spacing: 8) {
             HStack {
@@ -32,15 +39,15 @@ public struct GitCloneView: View {
                     .frame(width: 64, height: 64)
                     .padding(.bottom, 50)
                 VStack(alignment: .leading) {
-                    Text("Clone an existing repository")
+                    Text("Clone a repository")
                         .bold()
                         .padding(.bottom, 2)
                     Text("Enter a git repository URL:")
                         .font(.system(size: 11))
                         .foregroundColor(.secondary)
                         .alignmentGuide(.trailing) { context in
-                        context[.trailing]
-                    }
+                            context[.trailing]
+                        }
                     TextField("Git Repository URL", text: $repoUrlStr)
                         .lineLimit(1)
                         .padding(.bottom, 15)
@@ -98,6 +105,7 @@ extension GitCloneView {
         }
         return nil
     }
+
     func showAlert(alertMsg: String, infoText: String) {
         let alert = NSAlert()
         alert.messageText = alertMsg
@@ -106,6 +114,7 @@ extension GitCloneView {
         alert.alertStyle = .warning
         alert.runModal()
     }
+
     func isValid(url: String) -> Bool {
         // Doing the same kind of check that Xcode does when cloning
         let url = url.lowercased()
@@ -118,6 +127,7 @@ extension GitCloneView {
         }
         return false
     }
+
     func checkClipboard(textFieldText: inout String) {
         if let url = NSPasteboard.general.pasteboardItems?.first?.string(forType: .string) {
             if isValid(url: url) {
@@ -125,6 +135,7 @@ extension GitCloneView {
             }
         }
     }
+    // swiftlint:disable function_body_length cyclomatic_complexity
     private func cloneRepository() {
         do {
             if repoUrlStr == "" {
@@ -157,20 +168,40 @@ extension GitCloneView {
             try FileManager.default.createDirectory(atPath: repoPath,
                                                     withIntermediateDirectories: true,
                                                     attributes: nil)
-            try GitClient.default(directoryURL: dirUrl,
-                                  shellClient: shellClient).cloneRepository(repoUrlStr)
-            isPresented = false
+            gitClient = GitClient.default(
+                directoryURL: dirUrl,
+                shellClient: shellClient
+            )
+
+            cloneCancellable = gitClient?
+                .cloneRepository(repoUrlStr)
+                .sink(receiveCompletion: { result in
+                    switch result {
+                    case let .failure(error):
+                        switch error {
+                        case .notGitRepository:
+                            showAlert(alertMsg: "Error", infoText: "Not a git repository")
+                        case let .outputError(error):
+                            showAlert(alertMsg: "Error", infoText: error)
+                        }
+                    case .finished: break
+                    }
+                }, receiveValue: { result in
+                    switch result {
+                    case let .receivingProgress(progress):
+                        print("Receiving Progress: ", progress)
+                    case let .resolvingProgress(progress):
+                        print("Resolving Progress: ", progress)
+                        if progress >= 100 {
+                            cloneCancellable?.cancel()
+                            isPresented = false
+                        }
+                    case .other: break
+                    }
+                })
             checkBranches(dirUrl: dirUrl)
         } catch {
-            guard let error = error as? GitClient.GitClientError else {
-                return showAlert(alertMsg: "Error", infoText: error.localizedDescription)
-            }
-            switch error {
-            case let .outputError(message):
-                showAlert(alertMsg: "Error", infoText: message)
-            case .notGitRepository:
-                showAlert(alertMsg: "Error", infoText: "Not git repository")
-            }
+            showAlert(alertMsg: "Error", infoText: error.localizedDescription)
         }
     }
     private func checkBranches(dirUrl: URL) {

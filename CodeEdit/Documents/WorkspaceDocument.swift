@@ -192,7 +192,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         )
         self.searchState = .init(self)
         self.quickOpenState = .init(fileURL: url)
-        self.statusBarModel = .init(workspaceURL: url)
+        self.statusBarModel = .init(shellClient: Current.shellClient, workspaceURL: url)
     }
 
     override func read(from url: URL, ofType typeName: String) throws {

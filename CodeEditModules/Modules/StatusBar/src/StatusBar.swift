@@ -108,7 +108,7 @@ struct SwiftUIView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack(alignment: .bottom) {
             Color.white
-            StatusBarView(model: StatusBarModel(workspaceURL: URL(fileURLWithPath: "")))
+            StatusBarView(model: StatusBarModel(shellClient: .live(), workspaceURL: URL(fileURLWithPath: "")))
                 .previewLayout(.fixed(width: 1.336, height: 500.0))
                 .preferredColorScheme(.light)
         }

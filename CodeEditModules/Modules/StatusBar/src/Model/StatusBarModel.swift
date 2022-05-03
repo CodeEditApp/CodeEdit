@@ -7,6 +7,7 @@
 
 import Git
 import SwiftUI
+import ShellClient
 
 public enum StatusBarTab: String, CaseIterable, Identifiable {
     case terminal
@@ -104,11 +105,11 @@ public class StatusBarModel: ObservableObject {
     /// Initialize with a GitClient
     /// - Parameter workspaceURL: the current workspace URL
     ///
-    public init(workspaceURL: URL) {
+    public init(shellClient: ShellClient, workspaceURL: URL) {
         self.workspaceURL = workspaceURL
         gitClient = GitClient.default(
             directoryURL: workspaceURL,
-            shellClient: .live()
+            shellClient: shellClient
         )
         do {
             let selectedBranch = try gitClient.getCurrentBranchName()

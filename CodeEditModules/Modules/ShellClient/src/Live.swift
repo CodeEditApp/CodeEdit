@@ -46,8 +46,11 @@ public extension ShellClient {
                             subject.send(completion: .finished)
                             return
                         }
-                        if let line = String(data: data, encoding: .utf8) {
-                            subject.send(line)
+                        if let line = String(data: data, encoding: .utf8)?
+                            .split(whereSeparator: \.isNewline) {
+                            line
+                                .map(String.init)
+                                .forEach(subject.send(_:))
                         }
                         outputHandler.waitForDataInBackgroundAndNotify()
                     }
