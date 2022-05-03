@@ -43,15 +43,12 @@ struct TabBarTopDivider: View {
 
     var body: some View {
         ZStack(alignment: .top) {
-            Color(nsColor: .black)
-                .opacity(
-                    prefs.preferences.general.tabBarStyle == .xcode
-                    ? (colorScheme == .dark ? 0.29 : 0.11)
-                    : (colorScheme == .dark ? 0.80 : 0.02)
-                )
-                .frame(height: prefs.preferences.general.tabBarStyle == .xcode ? 1.0 : 0.8)
-            // Shadow of top divider in native style.
             if prefs.preferences.general.tabBarStyle == .native {
+                // Color background overlay in native style.
+                Color(nsColor: .black)
+                    .opacity(colorScheme == .dark ? 0.80 : 0.02)
+                    .frame(height: prefs.preferences.general.tabBarStyle == .xcode ? 1.0 : 0.8)
+                // Shadow of top divider in native style.
                 TabBarNativeShadow()
             }
         }
@@ -71,7 +68,7 @@ struct TabBarBottomDivider: View {
             .foregroundColor(
                 prefs.preferences.general.tabBarStyle == .xcode
                 ? Color(nsColor: .separatorColor)
-                    .opacity(colorScheme == .dark ? 0.80 : 0.50)
+                    .opacity(colorScheme == .dark ? 0.80 : 0.40)
                 : Color(nsColor: .black)
                     .opacity(colorScheme == .dark ? 0.65 : 0.13)
 
