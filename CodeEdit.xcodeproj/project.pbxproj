@@ -68,6 +68,7 @@
 		28FFE1BF27E3A441001939DB /* NavigatorSidebarToolbarBottom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FFE1BE27E3A441001939DB /* NavigatorSidebarToolbarBottom.swift */; };
 		2B7A583527E4BA0100D25D4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0468438427DC76E200F8E88E /* AppDelegate.swift */; };
 		5C403B8F27E20F8000788241 /* WorkspaceClient in Frameworks */ = {isa = PBXBuildFile; productRef = 5C403B8E27E20F8000788241 /* WorkspaceClient */; };
+		5C4BB1E128212B1E00A92FB2 /* World.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4BB1E028212B1E00A92FB2 /* World.swift */; };
 		5CA8776527FC6A95003F5CD5 /* QuickOpen in Frameworks */ = {isa = PBXBuildFile; productRef = 5CA8776427FC6A95003F5CD5 /* QuickOpen */; };
 		5CAD1B972806B57D0059A74E /* Breadcrumbs in Frameworks */ = {isa = PBXBuildFile; productRef = 5CAD1B962806B57D0059A74E /* Breadcrumbs */; };
 		5CF38A5E27E48E6C0096A0F7 /* CodeFile in Frameworks */ = {isa = PBXBuildFile; productRef = 5CF38A5D27E48E6C0096A0F7 /* CodeFile */; };
@@ -170,6 +171,7 @@
 		28B0A19727E385C300B73177 /* NavigatorSidebarToolbarTop.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = NavigatorSidebarToolbarTop.swift; sourceTree = "<group>"; tabWidth = 4; };
 		28B8F883280FFE4600596236 /* NSTableView+Background.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTableView+Background.swift"; sourceTree = "<group>"; };
 		28FFE1BE27E3A441001939DB /* NavigatorSidebarToolbarBottom.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = NavigatorSidebarToolbarBottom.swift; sourceTree = "<group>"; tabWidth = 4; };
+		5C4BB1E028212B1E00A92FB2 /* World.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = World.swift; sourceTree = "<group>"; };
 		B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodeEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B658FB3127DA9E0F00EA4DBD /* WorkspaceView.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceView.swift; sourceTree = "<group>"; tabWidth = 4; };
 		B658FB3327DA9E1000EA4DBD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -415,6 +417,7 @@
 				B658FB3527DA9E1000EA4DBD /* Preview Content */,
 				287776EB27E350BA00D46668 /* TabBar */,
 				0468438427DC76E200F8E88E /* AppDelegate.swift */,
+				5C4BB1E028212B1E00A92FB2 /* World.swift */,
 				B658FB3327DA9E1000EA4DBD /* Assets.xcassets */,
 				B658FB3827DA9E1000EA4DBD /* CodeEdit.entitlements */,
 				04660F6027E3A68A00477777 /* Info.plist */,
@@ -756,6 +759,7 @@
 				D7211D4327E066CE008F2ED7 /* Localized+Ex.swift in Sources */,
 				20D839AE280E0CA700B27357 /* PopoverView.swift in Sources */,
 				2072FA1E280D891500C7F8D4 /* Location.swift in Sources */,
+				5C4BB1E128212B1E00A92FB2 /* World.swift in Sources */,
 				D7E201B227E8D50000CB86D0 /* FindNavigatorModeSelector.swift in Sources */,
 				287776E927E34BC700D46668 /* TabBar.swift in Sources */,
 				285FEC7027FE4B9800E57D53 /* OutlineTableViewCell.swift in Sources */,

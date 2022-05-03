@@ -7,6 +7,7 @@
 
 import Foundation
 import ShellClient
+import Combine
 
 public extension GitClient {
     // swiftlint:disable function_body_length
@@ -109,7 +110,50 @@ public extension GitClient {
                     throw GitClientError.notGitRepository
                 }
             },
-            cloneRepository: cloneRepository(url:),
+            cloneRepository: { path in
+                shellClient
+                    .runLive("git clone \(path) \(directoryURL.relativePath.escapedWhiteSpaces()) --progress")
+                    .tryMap { output -> String in
+                        if output.contains("fatal: not a git repository") {
+                            throw GitClientError.notGitRepository
+                        }
+                        return output
+                    }
+                    .map { value -> CloneProgressResult in
+                        // TODO: Make a more solid parsing system.
+                        if value.contains("Receiving objects: ") {
+                            return .receivingProgress(
+                                Int(
+                                    value
+                                        .replacingOccurrences(of: "Receiving objects: ", with: "")
+                                        .replacingOccurrences(of: " ", with: "")
+                                        .split(separator: "%")
+                                        .first ?? "0"
+                                ) ?? 0
+                            )
+                        } else if value.contains("Resolving deltas: ") {
+                            return .resolvingProgress(
+                                Int(
+                                    value
+                                        .replacingOccurrences(of: "Resolving deltas: ", with: "")
+                                        .replacingOccurrences(of: " ", with: "")
+                                        .split(separator: "%")
+                                        .first ?? "0"
+                                ) ?? 0
+                            )
+                        } else {
+                            return .other(value)
+                        }
+                    }
+                    .mapError {
+                        if let error = $0 as? GitClientError {
+                            return error
+                        } else {
+                            return GitClientError.outputError($0.localizedDescription)
+                        }
+                    }
+                    .eraseToAnyPublisher()
+            },
             getCommitHistory: getCommitHistory(entries:fileLocalPath:)
         )
     }
