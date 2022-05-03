@@ -11,8 +11,10 @@ import CodeFile
 import CodeEditUI
 import QuickOpen
 import GitClient
+import AppPreferences
 
 final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
+    private var prefs: AppPreferencesModel = .shared
 
     var workspace: WorkspaceDocument?
     var quickOpenPanel: OverlayPanel?
@@ -72,10 +74,20 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
         let toolbar = NSToolbar(identifier: UUID().uuidString)
         toolbar.delegate = self
         toolbar.displayMode = .labelOnly
+        toolbar.showsBaselineSeparator = false
         self.window?.titleVisibility = .hidden
         self.window?.toolbarStyle = .unifiedCompact
-        // Set titlebar background as transparent by default in order to style the toolbar background.
-        self.window?.titlebarAppearsTransparent = true
+        if prefs.preferences.general.tabBarStyle == .native {
+            // Set titlebar background as transparent by default in order to
+            // style the toolbar background in native tab bar style.
+            self.window?.titlebarAppearsTransparent = true
+            self.window?.titlebarSeparatorStyle = .none
+        } else {
+            // In xcode tab bar style, we use default toolbar background with
+            // line separator.
+            self.window?.titlebarAppearsTransparent = false
+            self.window?.titlebarSeparatorStyle = .line
+        }
         self.window?.toolbar = toolbar
     }
 

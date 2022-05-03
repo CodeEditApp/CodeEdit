@@ -54,7 +54,7 @@ struct TabBarNativeActiveMaterial: View {
                 .opacity(0.003)
         )
         .background(
-            Color(nsColor: colorScheme == .dark ? .windowBackgroundColor : .controlBackgroundColor)
+            Color(nsColor: .windowBackgroundColor)
         )
     }
 }
@@ -66,6 +66,6 @@ struct TabBarNativeMaterial: View {
             NSVisualEffectView.Material.titlebar,
             blendingMode: NSVisualEffectView.BlendingMode.withinWindow
         )
-        .background(Color(nsColor: .controlBackgroundColor))
+        .background(Color(nsColor: .windowBackgroundColor))
     }
 }
