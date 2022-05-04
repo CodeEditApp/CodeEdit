@@ -224,19 +224,15 @@ extension GitCloneView {
                     case let .countingProgress(progress):
                         stateCloning = "Counting Progress"
                         valueCloning = progress
-                        print("Counting Progress: ", progress)
                     case let .compressingProgress(progress):
                         stateCloning = "Compressing Progress"
                         valueCloning = progress
-                        print("Compressing Progress: ", progress)
                     case let .receivingProgress(progress):
                         stateCloning = "Receiving Progress"
                         valueCloning = progress
-                        print("Receiving Progress: ", progress)
                     case let .resolvingProgress(progress):
                         stateCloning = "Resolving Progress"
                         valueCloning = progress
-                        print("Resolving Progress: ", progress)
                         if progress >= 100 {
                             isPresented = false
                         }
