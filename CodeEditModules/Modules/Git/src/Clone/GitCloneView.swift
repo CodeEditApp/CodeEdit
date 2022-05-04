@@ -235,6 +235,7 @@ extension GitCloneView {
                         valueCloning = progress
                         if progress >= 100 {
                             isPresented = false
+                            cloneCancellable?.cancel()
                         }
                     case .other: break
                     }
