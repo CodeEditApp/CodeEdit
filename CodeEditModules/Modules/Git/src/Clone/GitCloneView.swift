@@ -247,7 +247,7 @@ extension GitCloneView {
     private func checkBranches(dirUrl: URL) {
         // Check if repo has only one branch, and if so, don't show the checkout page
         do {
-            let branches = try GitClient.default(directoryURL: dirUrl,
+            let branches = try gitClient.default(directoryURL: dirUrl,
                                                  shellClient: shellClient).getBranches(true)
             let filtered = branches.filter {!$0.contains("HEAD")}
             if filtered.count > 1 {
