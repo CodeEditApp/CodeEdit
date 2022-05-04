@@ -4,6 +4,7 @@
 //
 //  Created by Marco Carnevali on 27/03/22.
 //
+// swiftlint:disable function_body_length
 import Foundation
 import Combine
 
@@ -46,16 +47,23 @@ public extension ShellClient {
                             subject.send(completion: .finished)
                             return
                         }
-                        if let line = String(data: data, encoding: .utf8)?.split(whereSeparator: \.isNewline) {
-                            line.map(String.init).forEach(subject.send(_:))
+                        if let line = String(data: data, encoding: .utf8)?
+                            .split(whereSeparator: \.isNewline) {
+                            line
+                                .map(String.init)
+                                .forEach(subject.send(_:))
                         }
                         outputHandler.waitForDataInBackgroundAndNotify()
                     }
                 task.launch()
-                return subject.handleEvents(receiveCancel: {
-                    cancellables.removeValue(forKey: id)
-                    task.terminate()
-                }).eraseToAnyPublisher()
+                return subject
+                    .handleEvents(
+                        receiveCancel: {
+                           cancellables.removeValue(forKey: id)
+                           task.terminate()
+                        }
+                    )
+                    .eraseToAnyPublisher()
             }, run: { args in
                 let (task, pipe) = generateProcessAndPipe(args)
                 try task.run()
