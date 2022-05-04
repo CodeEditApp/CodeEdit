@@ -9,7 +9,7 @@ import Foundation
 import Security
 
 /// Constants used by the library
-public struct CodeEditKeychainConstants {
+public enum CodeEditKeychainConstants {
     /// Specifies a Keychain access group. Used for sharing Keychain items between apps.
     public static var accessGroup: String { return toString(kSecAttrAccessGroup) }
 
