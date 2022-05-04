@@ -80,7 +80,7 @@ open class CodeEditKeychain {
         let prefixedKey = keyWithPrefix(key)
 
         var query: [String: Any] = [
-            CodeEditKeychainConstants.klass: kSecClassGenericPassword,
+            CodeEditKeychainConstants.class: kSecClassGenericPassword,
             CodeEditKeychainConstants.attrAccount: prefixedKey,
             CodeEditKeychainConstants.valueData: value,
             CodeEditKeychainConstants.accessible: accessible
@@ -146,7 +146,7 @@ open class CodeEditKeychain {
         let prefixedKey = keyWithPrefix(key)
 
         var query: [String: Any] = [
-            CodeEditKeychainConstants.klass: kSecClassGenericPassword,
+            CodeEditKeychainConstants.class: kSecClassGenericPassword,
             CodeEditKeychainConstants.attrAccount: prefixedKey,
             CodeEditKeychainConstants.matchLimit: kSecMatchLimitOne
         ]
@@ -205,7 +205,7 @@ open class CodeEditKeychain {
      */
     public var allKeys: [String] {
         var query: [String: Any] = [
-            CodeEditKeychainConstants.klass: kSecClassGenericPassword,
+            CodeEditKeychainConstants.class: kSecClassGenericPassword,
             CodeEditKeychainConstants.returnData: true,
             CodeEditKeychainConstants.returnAttributes: true,
             CodeEditKeychainConstants.returnReference: true,
@@ -238,7 +238,7 @@ open class CodeEditKeychain {
         let prefixedKey = keyWithPrefix(key)
 
         var query: [String: Any] = [
-            CodeEditKeychainConstants.klass: kSecClassGenericPassword,
+            CodeEditKeychainConstants.class: kSecClassGenericPassword,
             CodeEditKeychainConstants.attrAccount: prefixedKey
         ]
 

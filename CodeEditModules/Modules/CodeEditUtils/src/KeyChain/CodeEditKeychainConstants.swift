@@ -27,7 +27,7 @@ public enum CodeEditKeychainConstants {
     public static var attrSynchronizable: String { toString(kSecAttrSynchronizable) }
 
     /// An item class key used to construct a Keychain search dictionary.
-    public static var klass: String { return toString(kSecClass) }
+    public static var `class`: String { toString(kSecClass) }
 
     /// Specifies the number of values returned from the keychain. The library only supports single values.
     public static var matchLimit: String { toString(kSecMatchLimit) }
