@@ -27,6 +27,8 @@ struct NavigatorSidebar: View {
             switch selection {
             case 0:
                 ProjectNavigator(workspace: workspace, windowController: windowController)
+            case 1:
+                SourceControlNavigatorView(workspace: workspace)
             case 2:
                 FindNavigator(state: workspace.searchState ?? .init(workspace))
             case 7:
@@ -41,8 +43,22 @@ struct NavigatorSidebar: View {
                 .padding(.bottom, -8)
         }
         .safeAreaInset(edge: .bottom) {
-            NavigatorSidebarToolbarBottom(workspace: workspace)
-                .padding(.top, -8)
+            switch selection {
+            case 0:
+                NavigatorSidebarToolbarBottom(workspace: workspace)
+                    .padding(.top, -8)
+            case 1:
+                SourceControlToolbarBottom()
+            case 2:
+                NavigatorSidebarToolbarBottom(workspace: workspace)
+                    .padding(.top, -8)
+            case 7:
+                NavigatorSidebarToolbarBottom(workspace: workspace)
+                    .padding(.top, -8)
+            default:
+                NavigatorSidebarToolbarBottom(workspace: workspace)
+                    .padding(.top, -8)
+            }
         }
     }
 }

@@ -59,6 +59,25 @@ public extension GitClient {
             }
         }
 
+        /// Displays paths that have differences between the index file and the current HEAD commit,
+        /// paths that have differences between the working tree and the index file, and paths in the working tree
+        func getChangedFiles() throws -> [ChangedFiles] {
+            let output = try shellClient.run(
+                "cd \(directoryURL.relativePath.escapedWhiteSpaces());git status -s --porcelain -u"
+            )
+            if output.contains("fatal: not a git repository") {
+                throw GitClientError.notGitRepository
+            }
+            return output
+                .split(separator: "\n")
+                .map { line -> ChangedFiles in
+                    let paramData = line.trimmingCharacters(in: .whitespacesAndNewlines)
+                    let parameters = paramData.components(separatedBy: " ")
+                    return ChangedFiles(changeType: parameters[safe: 0] ?? "",
+                                        fileLink: parameters[safe: 1] ?? "")
+                }
+        }
+
         /// Gets the commit history log of the current file opened
         /// in the workspace.
 
@@ -154,6 +173,7 @@ public extension GitClient {
                     }
                     .eraseToAnyPublisher()
             },
+            getChangedFiles: getChangedFiles,
             getCommitHistory: getCommitHistory(entries:fileLocalPath:)
         )
     }
