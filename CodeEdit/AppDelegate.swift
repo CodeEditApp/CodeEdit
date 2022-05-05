@@ -37,6 +37,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         AppPreferencesModel.shared.preferences.general.appAppearance.applyAppearance()
+        checkForFilesToOpen()
 
         DispatchQueue.main.async {
             if NSApp.windows.isEmpty {
@@ -176,8 +177,40 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         FeedbackView().showWindow()
     }
 
-    // MARK: - Preferences
+    // MARK: - Open With CodeEdit (Extension) functions
+    private func checkForFilesToOpen() {
+        guard let defaults = UserDefaults.init(
+            suiteName: "austincondiff.CodeEdit.shared"
+        ) else {
+            print("Failed to get/init shared defaults")
+            return
+        }
 
+        // Register enableOpenInCE (enable Open In CodeEdit
+        defaults.register(defaults: ["enableOpenInCE": true])
+
+        if let filesToOpen = defaults.string(forKey: "openInCEFiles") {
+            let files = filesToOpen.split(separator: ";")
+
+            for filePath in files {
+                let fileURL = URL(fileURLWithPath: String(filePath))
+                CodeEditDocumentController.shared.reopenDocument(
+                    for: fileURL,
+                    withContentsOf: fileURL,
+                    display: true) { document, _, _ in
+                        document?.windowControllers.first?.synchronizeWindowTitleWithDocumentName()
+                    }
+            }
+
+            defaults.removeObject(forKey: "openInCEFiles")
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.checkForFilesToOpen()
+        }
+    }
+
+    // MARK: - Preferences
     private lazy var preferencesWindowController = PreferencesWindowController(
         panes: [
             Preferences.Pane(
