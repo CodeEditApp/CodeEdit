@@ -24,6 +24,7 @@ public extension AppPreferences {
         /// The show file extensions behavior of the app
         public var fileExtensions: FileExtensions = .showAll
 
+        /// The file extensions collection to display
         public var fileExtensionsShowed: ShowedFileExtensions = .default
 
         /// The style for file icons
@@ -133,13 +134,14 @@ public extension AppPreferences {
     /// The style for file extensions display
     ///  - **hideAll**: File extensions are hidden
     ///  - **showAll** File extensions are visible
-    ///  - **showOnly** Display specified file extensions
+    ///  - **showOnly** Specific file extensions are visible
     enum FileExtensions: Codable, Hashable {
         case hideAll
         case showAll
         case showOnly
     }
 
+    /// The collection of displayed file extensions of ``FileExtensions/showOnly`` preference
     struct ShowedFileExtensions: Codable, Hashable {
         public var extensions: [String]
         public static var `default` = ShowedFileExtensions(extensions: [
