@@ -105,8 +105,13 @@ public extension WorkspaceClient {
         }
 
         /// Returns the extension of the file or an empty string if no extension is present.
-        private var fileType: String {
-            url.lastPathComponent.components(separatedBy: ".").last ?? ""
+        public var fileType: String {
+            url.pathExtension
+        }
+
+        /// Returns the file name with optional extension (e.g.: `Package.swift`)
+        public func fileName(typeHidden: Bool) -> String {
+            typeHidden ? url.deletingPathExtension().lastPathComponent : fileName
         }
 
         /// Returns a string describing a SFSymbol for folders

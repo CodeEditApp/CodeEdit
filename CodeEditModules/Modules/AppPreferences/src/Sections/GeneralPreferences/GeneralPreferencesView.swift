@@ -11,6 +11,7 @@ import SwiftUI
 public struct GeneralPreferencesView: View {
 
     private let inputWidth: Double = 160
+    private let textEditorWidth: Double = 220
 
     @StateObject
     private var prefs: AppPreferencesModel = .shared
@@ -72,7 +73,6 @@ private extension GeneralPreferencesView {
         .disabled(true)
     }
 
-    // TODO: Implement reflecting File Extensions preference and remove disabled modifier
     var fileExtensionsSection: some View {
         PreferencesSection("File Extensions") {
             Picker("File Extensions:", selection: $prefs.preferences.general.fileExtensions) {
@@ -85,8 +85,18 @@ private extension GeneralPreferencesView {
                     .tag(AppPreferences.FileExtensions.showOnly)
             }
             .frame(width: inputWidth)
+            if case .showOnly = prefs.preferences.general.fileExtensions {
+                let showedFileExtensionsBinding = Binding(get: {
+                    prefs.preferences.general.fileExtensionsShowed.extensions.joined(separator: ", ")
+                }, set: { newValue in
+                    let components = newValue.components(separatedBy: ", ")
+                    prefs.preferences.general.fileExtensionsShowed.extensions = components
+                })
+                TextEditor(text: showedFileExtensionsBinding)
+                    .frame(width: textEditorWidth)
+                    .textFieldStyle(.squareBorder)
+            }
         }
-        .disabled(true)
     }
 
     var fileIconStyleSection: some View {

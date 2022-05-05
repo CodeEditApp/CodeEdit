@@ -24,6 +24,8 @@ public extension AppPreferences {
         /// The show file extensions behavior of the app
         public var fileExtensions: FileExtensions = .showAll
 
+        public var fileExtensionsShowed: ShowedFileExtensions = .default
+
         /// The style for file icons
         public var fileIconStyle: FileIconStyle = .color
 
@@ -64,6 +66,10 @@ public extension AppPreferences {
                 FileExtensions.self,
                 forKey: .fileExtensions
             ) ?? .showAll
+            self.fileExtensionsShowed = try container.decodeIfPresent(
+                ShowedFileExtensions.self,
+                forKey: .fileExtensionsShowed
+            ) ?? .default
             self.fileIconStyle = try container.decodeIfPresent(
                 FileIconStyle.self,
                 forKey: .fileIconStyle
@@ -128,10 +134,18 @@ public extension AppPreferences {
     ///  - **hideAll**: File extensions are hidden
     ///  - **showAll** File extensions are visible
     ///  - **showOnly** Display specified file extensions
-    enum FileExtensions: String, Codable {
+    enum FileExtensions: Codable, Hashable {
         case hideAll
         case showAll
         case showOnly
+    }
+
+    struct ShowedFileExtensions: Codable, Hashable {
+        public var extensions: [String]
+        public static var `default` = ShowedFileExtensions(extensions: [
+            "c", "cc", "cpp", "h", "hpp", "m", "mm", "gif",
+            "icns", "jpeg", "jpg", "png", "tiff", "swift"
+        ])
     }
     /// The style for file icons
     /// - **color**: File icons appear in their default colors
