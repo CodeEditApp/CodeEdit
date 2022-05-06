@@ -22,10 +22,12 @@ struct SourceControlNavigatorView: View {
 
     var body: some View {
         VStack {
-            SourceControlToolbar {
-                SegmentedControl($selectedSection, options: ["Changes", "Repositories"])
-            }
+            SegmentedControl($selectedSection,
+                             options: ["Changes", "Repositories"],
+                             prominent: true)
             .frame(maxWidth: .infinity)
+            .frame(height: 27)
+            .padding(.horizontal, 8)
             .padding(.bottom, 2)
             .overlay(alignment: .bottom) {
                 Divider()
@@ -34,6 +36,7 @@ struct SourceControlNavigatorView: View {
             if selectedSection == 0 {
                 ChangesView(workspaceURL: workspace.fileURL!)
             }
+
             if selectedSection == 1 {
                 RepositoriesView()
             }
