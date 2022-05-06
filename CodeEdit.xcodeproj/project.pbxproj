@@ -192,11 +192,11 @@
 		28B0A19727E385C300B73177 /* NavigatorSidebarToolbarTop.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = NavigatorSidebarToolbarTop.swift; sourceTree = "<group>"; tabWidth = 4; };
 		28B8F883280FFE4600596236 /* NSTableView+Background.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTableView+Background.swift"; sourceTree = "<group>"; };
 		28FFE1BE27E3A441001939DB /* NavigatorSidebarToolbarBottom.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = NavigatorSidebarToolbarBottom.swift; sourceTree = "<group>"; tabWidth = 4; };
+		2B15CA0028254139004E8F22 /* OpenWithCodeEdit.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = OpenWithCodeEdit.entitlements; sourceTree = "<group>"; };
 		2B7AC06A282452FB0082A5B8 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		2BE487EC28245162003F3F64 /* OpenWithCodeEdit.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OpenWithCodeEdit.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BE487EE28245162003F3F64 /* FinderSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderSync.swift; sourceTree = "<group>"; };
 		2BE487F028245162003F3F64 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		2BE487F128245162003F3F64 /* openInCodeEdit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = openInCodeEdit.entitlements; sourceTree = "<group>"; };
 		5C4BB1E028212B1E00A92FB2 /* World.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = World.swift; sourceTree = "<group>"; };
 		B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodeEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B658FB3127DA9E0F00EA4DBD /* WorkspaceView.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceView.swift; sourceTree = "<group>"; tabWidth = 4; };
@@ -411,15 +411,15 @@
 			path = TabBar;
 			sourceTree = "<group>";
 		};
-		2BE487ED28245162003F3F64 /* openInCodeEdit */ = {
+		2BE487ED28245162003F3F64 /* OpenWithCodeEdit */ = {
 			isa = PBXGroup;
 			children = (
 				2BE487EE28245162003F3F64 /* FinderSync.swift */,
 				2BE487F028245162003F3F64 /* Info.plist */,
 				2B7AC06A282452FB0082A5B8 /* Media.xcassets */,
-				2BE487F128245162003F3F64 /* openInCodeEdit.entitlements */,
+				2B15CA0028254139004E8F22 /* OpenWithCodeEdit.entitlements */,
 			);
-			path = openInCodeEdit;
+			path = OpenWithCodeEdit;
 			sourceTree = "<group>";
 		};
 		5C403B8D27E20F8000788241 /* Frameworks */ = {
@@ -433,7 +433,7 @@
 			isa = PBXGroup;
 			children = (
 				B658FB2E27DA9E0F00EA4DBD /* CodeEdit */,
-				2BE487ED28245162003F3F64 /* openInCodeEdit */,
+				2BE487ED28245162003F3F64 /* OpenWithCodeEdit */,
 				B658FB2D27DA9E0F00EA4DBD /* Products */,
 				5C403B8D27E20F8000788241 /* Frameworks */,
 			);
@@ -922,7 +922,7 @@
 		2BE487F628245162003F3F64 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = openInCodeEdit/openInCodeEdit.entitlements;
+				CODE_SIGN_ENTITLEMENTS = OpenWithCodeEdit/OpenWithCodeEdit.entitlements;
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -930,8 +930,8 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = openInCodeEdit/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = openInCodeEdit;
+				INFOPLIST_FILE = OpenWithCodeEdit/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = OpenWithCodeEdit;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -951,7 +951,7 @@
 		2BE487F728245162003F3F64 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = openInCodeEdit/openInCodeEdit.entitlements;
+				CODE_SIGN_ENTITLEMENTS = OpenWithCodeEdit/OpenWithCodeEdit.entitlements;
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -959,8 +959,8 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = openInCodeEdit/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = openInCodeEdit;
+				INFOPLIST_FILE = OpenWithCodeEdit/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = OpenWithCodeEdit;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
