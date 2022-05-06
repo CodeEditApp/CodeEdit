@@ -46,7 +46,7 @@
 		20EBB507280C32D300F3A5DA /* QuickHelpInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EBB506280C32D300F3A5DA /* QuickHelpInspector.swift */; };
 		20EBB50D280C383700F3A5DA /* LanguageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EBB50C280C383700F3A5DA /* LanguageType.swift */; };
 		20EBB50F280C389300F3A5DA /* FileInspectorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EBB50E280C389300F3A5DA /* FileInspectorModel.swift */; };
-		20F11CD32823EDF3002DC3DB /* ChangesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20F11CD22823EDF3002DC3DB /* ChangesModel.swift */; };
+		20F11CD32823EDF3002DC3DB /* SourceControlModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20F11CD22823EDF3002DC3DB /* SourceControlModel.swift */; };
 		20F11CD52823EE12002DC3DB /* SourceControlNavigatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20F11CD42823EE12002DC3DB /* SourceControlNavigatorView.swift */; };
 		20F11CD72823EE31002DC3DB /* SourceControlSearchToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20F11CD62823EE31002DC3DB /* SourceControlSearchToolbar.swift */; };
 		20F11CD92823EE83002DC3DB /* SourceControlToolbarBottom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20F11CD82823EE83002DC3DB /* SourceControlToolbarBottom.swift */; };
@@ -163,7 +163,7 @@
 		20EBB506280C32D300F3A5DA /* QuickHelpInspector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickHelpInspector.swift; sourceTree = "<group>"; };
 		20EBB50C280C383700F3A5DA /* LanguageType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageType.swift; sourceTree = "<group>"; };
 		20EBB50E280C389300F3A5DA /* FileInspectorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileInspectorModel.swift; sourceTree = "<group>"; };
-		20F11CD22823EDF3002DC3DB /* ChangesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangesModel.swift; sourceTree = "<group>"; };
+		20F11CD22823EDF3002DC3DB /* SourceControlModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlModel.swift; sourceTree = "<group>"; };
 		20F11CD42823EE12002DC3DB /* SourceControlNavigatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlNavigatorView.swift; sourceTree = "<group>"; };
 		20F11CD62823EE31002DC3DB /* SourceControlSearchToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlSearchToolbar.swift; sourceTree = "<group>"; };
 		20F11CD82823EE83002DC3DB /* SourceControlToolbarBottom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlToolbarBottom.swift; sourceTree = "<group>"; };
@@ -350,7 +350,7 @@
 		20F11CD12823EDE6002DC3DB /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				20F11CD22823EDF3002DC3DB /* ChangesModel.swift */,
+				20F11CD22823EDF3002DC3DB /* SourceControlModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -808,7 +808,7 @@
 				20F11CD52823EE12002DC3DB /* SourceControlNavigatorView.swift in Sources */,
 				2072FA1C280D874000C7F8D4 /* IndentUsing.swift in Sources */,
 				B6EE989227E887C600CDD8AB /* InspectorSidebarToolbar.swift in Sources */,
-				20F11CD32823EDF3002DC3DB /* ChangesModel.swift in Sources */,
+				20F11CD32823EDF3002DC3DB /* SourceControlModel.swift in Sources */,
 				28B8F884280FFE4600596236 /* NSTableView+Background.swift in Sources */,
 				200412EF280F3EAC00BCAF5C /* NoCommitHistoryView.swift in Sources */,
 				043C321427E31FF6006AE443 /* CodeEditDocumentController.swift in Sources */,

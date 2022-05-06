@@ -46,18 +46,14 @@ struct NavigatorSidebar: View {
             switch selection {
             case 0:
                 NavigatorSidebarToolbarBottom(workspace: workspace)
-                    .padding(.top, -8)
             case 1:
                 SourceControlToolbarBottom()
             case 2:
                 NavigatorSidebarToolbarBottom(workspace: workspace)
-                    .padding(.top, -8)
             case 7:
                 NavigatorSidebarToolbarBottom(workspace: workspace)
-                    .padding(.top, -8)
             default:
                 NavigatorSidebarToolbarBottom(workspace: workspace)
-                    .padding(.top, -8)
             }
         }
     }

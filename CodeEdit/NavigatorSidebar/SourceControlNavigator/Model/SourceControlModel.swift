@@ -1,5 +1,5 @@
 //
-//  ChangesModel.swift
+//  SourceControlModel.swift
 //  CodeEdit
 //
 //  Created by Nanashi Li on 2022/05/05.
@@ -8,13 +8,15 @@
 import Foundation
 import Git
 
-public final class ChangesModel: ObservableObject {
+/// This model handle the fetching and adding of changes etc... for the
+/// Source Control Navigator
+public final class SourceControlModel: ObservableObject {
 
     /// A GitClient instance
-    private(set) var gitClient: GitClient
+    let gitClient: GitClient
 
     /// The base URL of the workspace
-    private(set) var workspaceURL: URL
+    let workspaceURL: URL
 
     /// A list of changed files
     @Published

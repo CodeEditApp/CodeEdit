@@ -12,7 +12,7 @@ import Git
 struct ChangesView: View {
 
     @ObservedObject
-    var model: ChangesModel
+    var model: SourceControlModel
 
     @State
     var selectedFile: ChangedFiles.ID?
