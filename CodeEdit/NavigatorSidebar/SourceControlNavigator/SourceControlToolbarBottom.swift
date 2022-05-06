@@ -23,13 +23,13 @@ struct SourceControlToolbarBottom: View {
     private var addNewFileButton: some View {
         Menu {
             Button("Discard Changes...") {}
-                .disabled(true)
+                .disabled(true) // TODO: Implementation Needed
             Button("Stash Changes...") {}
-                .disabled(true)
+                .disabled(true) // TODO: Implementation Needed
             Button("Commit...") {}
-                .disabled(true)
+                .disabled(true) // TODO: Implementation Needed
             Button("Create Pull Request...") {}
-                .disabled(true)
+                .disabled(true) // TODO: Implementation Needed
         } label: {
             Image(systemName: "ellipsis.circle")
         }
