@@ -102,7 +102,7 @@
 			containerPortal = B658FB2427DA9E0F00EA4DBD /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 2BE487EB28245162003F3F64;
-			remoteInfo = openInCodeEdit;
+			remoteInfo = OpenWithCodeEdit;
 		};
 		B658FB3E27DA9E1000EA4DBD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -531,7 +531,7 @@
 			dependencies = (
 			);
 			name = OpenWithCodeEdit;
-			productName = openInCodeEdit;
+			productName = OpenWithCodeEdit;
 			productReference = 2BE487EC28245162003F3F64 /* OpenWithCodeEdit.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
@@ -940,7 +940,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.3;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = austincondiff.CodeEdit.openInCodeEdit;
+				PRODUCT_BUNDLE_IDENTIFIER = austincondiff.CodeEdit.OpenWithCodeEdit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -969,7 +969,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.3;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = austincondiff.CodeEdit.openInCodeEdit;
+				PRODUCT_BUNDLE_IDENTIFIER = austincondiff.CodeEdit.OpenWithCodeEdit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
