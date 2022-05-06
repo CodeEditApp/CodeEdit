@@ -9,6 +9,7 @@ import SwiftUI
 import WorkspaceClient
 import AppPreferences
 import CodeEditUI
+import TabBar
 
 struct TabBar: View {
     /// The height of tab bar.
@@ -29,19 +30,28 @@ struct TabBar: View {
     @StateObject
     private var prefs: AppPreferencesModel = .shared
 
+    @State
+    private var draggingItemId: TabBarItemID?
+
+    @State
+    private var draggingItemLocation: CGPoint?
+
+    @State
+    private var currentPositionItemId: TabBarItemID?
+
+    @State
+    private var expectedTabWidth: CGFloat = 0
+
+    /// This state is used to detect if the mouse is hovering over tabs.
+    /// If it is true, then we do not update the expected tab width immediately.
+    @State
+    private var isHoveringOverTabs: Bool = false
+
     // TabBar(windowController: windowController, workspace: workspace)
     init(windowController: NSWindowController, workspace: WorkspaceDocument) {
         self.windowController = windowController
         self.workspace = workspace
     }
-
-    @State
-    var expectedTabWidth: CGFloat = 0
-
-    /// This state is used to detect if the mouse is hovering over tabs.
-    /// If it is true, then we do not update the expected tab width immediately.
-    @State
-    var isHoveringOverTabs: Bool = false
 
     private func updateExpectedTabWidth(proxy: GeometryProxy) {
         expectedTabWidth = max(
@@ -70,9 +80,23 @@ struct TabBar: View {
                                         expectedWidth: $expectedTabWidth,
                                         item: item,
                                         windowController: windowController,
+                                        draggingTabId: $draggingItemId,
                                         workspace: workspace
                                     )
                                     .frame(height: TabBar.height)
+                                    .opacity(
+                                        draggingItemId == id
+                                        && draggingItemLocation != nil ? 0.0: 1.0
+                                    )
+                                    .onDrop(
+                                        of: [.utf8PlainText],
+                                        delegate: TabBarDragAndDropDelegate(
+                                            itemId: id,
+                                            itemLocation: $draggingItemLocation,
+                                            currentPositionItemId: $currentPositionItemId,
+                                            workspaceDocument: _workspace
+                                        )
+                                    )
                                 }
                             }
                         }
@@ -155,6 +179,9 @@ struct TabBar: View {
             }
         }
         .padding(.leading, -1)
+        .onChange(of: draggingItemLocation, perform: { location in
+            print("Location:", location)
+        })
     }
 
     // MARK: Accessories
@@ -218,5 +245,65 @@ struct TabBar: View {
                 TabBarAccessoryNativeBackground(dividerAt: .leading)
             }
         }
+    }
+}
+
+/// The drag-and-drop reordering delegate for
+struct TabBarDragAndDropDelegate: DropDelegate {
+    private var itemId: TabBarItemID
+
+    @Binding
+    private var itemLocation: CGPoint?
+
+    @Binding
+    private var currentPositionItemId: TabBarItemID?
+
+    @ObservedObject
+    private var workspaceDocument: WorkspaceDocument
+
+    init(
+        itemId: TabBarItemID,
+        itemLocation: Binding<CGPoint?>,
+        currentPositionItemId: Binding<TabBarItemID?>,
+        workspaceDocument: ObservedObject<WorkspaceDocument>
+    ) {
+        self.itemId = itemId
+        self._itemLocation = itemLocation
+        self._currentPositionItemId = currentPositionItemId
+        self._workspaceDocument = workspaceDocument
+    }
+
+    func dropEntered(info: DropInfo) {
+        print("Location: DROP!")
+        if currentPositionItemId == nil {
+            currentPositionItemId = itemId
+            itemLocation = info.location // TODO: Check if we need to write it twice.
+        }
+
+        guard itemId != currentPositionItemId, let current = currentPositionItemId,
+            let from = workspaceDocument.selectionState.openedTabs.firstIndex(of: current),
+            let toIndex = workspaceDocument.selectionState.openedTabs.firstIndex(of: itemId) else { return }
+
+        itemLocation = info.location
+
+        if workspaceDocument.selectionState.openedTabs[toIndex] != current {
+            workspaceDocument.selectionState.openedTabs.move(
+                fromOffsets: IndexSet(integer: from),
+                toOffset: toIndex > from ? toIndex + 1 : toIndex
+            )
+        }
+    }
+
+    func dropExited(info: DropInfo) {
+        itemLocation = nil
+    }
+
+    func dropUpdated(info: DropInfo) -> DropProposal? {
+        return DropProposal(operation: .move)
+    }
+
+    func performDrop(info: DropInfo) -> Bool {
+        itemLocation = nil
+        return true
     }
 }

@@ -41,6 +41,9 @@ struct TabBarItem: View {
     @Binding
     private var expectedWidth: CGFloat
 
+    @Binding
+    private var draggingTabId: TabBarItemID?
+
     @ObservedObject
     var workspace: WorkspaceDocument
 
@@ -74,11 +77,13 @@ struct TabBarItem: View {
         expectedWidth: Binding<CGFloat>,
         item: TabBarItemRepresentable,
         windowController: NSWindowController,
+        draggingTabId: Binding<TabBarItemID?>,
         workspace: WorkspaceDocument
     ) {
         self._expectedWidth = expectedWidth
         self.item = item
         self.windowController = windowController
+        self._draggingTabId = draggingTabId
         self.workspace = workspace
     }
 
@@ -246,49 +251,56 @@ struct TabBarItem: View {
     var body: some View {
         Button(
             action: switchAction,
-            label: { content }
+            label: {
+                content
+                    .background {
+                        if prefs.preferences.general.tabBarStyle == .xcode {
+                            ZStack {
+                                // This layer of background is to hide dividers of other tab bar items
+                                // because the original background above is translucent (by opacity).
+                                TabBarXcodeBackground()
+                                if isActive {
+                                    Color(nsColor: .controlAccentColor)
+                                        .saturation(
+                                            colorScheme == .dark
+                                            ? (activeState != .inactive ? 0.60 : 0.75)
+                                            : (activeState != .inactive ? 0.90 : 0.85)
+                                        )
+                                        .opacity(
+                                            colorScheme == .dark
+                                            ? (activeState != .inactive ? 0.50 : 0.35)
+                                            : (activeState != .inactive ? 0.18 : 0.12)
+                                        )
+                                        .hueRotation(.degrees(-5))
+                                }
+                            }
+                            .animation(.easeInOut(duration: 0.08), value: isHovering)
+                        } else {
+                            if isFullscreen && isActive {
+                                TabBarNativeActiveMaterial()
+                            } else {
+                                TabBarNativeMaterial()
+                            }
+                            ZStack {
+                                // Native inactive tab background dim.
+                                TabBarNativeInactiveBackgroundColor()
+                                // Native inactive tab hover state.
+                                Color(nsColor: colorScheme == .dark ? .white : .black)
+                                    .opacity(isHovering ? (colorScheme == .dark ? 0.08 : 0.05) : 0.0)
+                                    .animation(.easeInOut(duration: 0.10), value: isHovering)
+                            }
+                            .padding(.horizontal, 1)
+                            .opacity(isActive ? 0 : 1)
+                        }
+                    }
+                    .onDrag {
+                        draggingTabId = item.tabID
+                        print("Location: INSIDE!")
+                        return .init(object: NSString(string: "\(item.tabID)" as NSString))
+                    }
+            }
         )
         .buttonStyle(TabBarItemButtonStyle())
-        .background {
-            if prefs.preferences.general.tabBarStyle == .xcode {
-                ZStack {
-                    // This layer of background is to hide dividers of other tab bar items
-                    // because the original background above is translucent (by opacity).
-                    TabBarXcodeBackground()
-                    if isActive {
-                        Color(nsColor: .controlAccentColor)
-                            .saturation(
-                                colorScheme == .dark
-                                ? (activeState != .inactive ? 0.60 : 0.75)
-                                : (activeState != .inactive ? 0.90 : 0.85)
-                            )
-                            .opacity(
-                                colorScheme == .dark
-                                ? (activeState != .inactive ? 0.50 : 0.35)
-                                : (activeState != .inactive ? 0.18 : 0.12)
-                            )
-                            .hueRotation(.degrees(-5))
-                    }
-                }
-                .animation(.easeInOut(duration: 0.08), value: isHovering)
-            } else {
-                if isFullscreen && isActive {
-                    TabBarNativeActiveMaterial()
-                } else {
-                    TabBarNativeMaterial()
-                }
-                ZStack {
-                    // Native inactive tab background dim.
-                    TabBarNativeInactiveBackgroundColor()
-                    // Native inactive tab hover state.
-                    Color(nsColor: colorScheme == .dark ? .white : .black)
-                        .opacity(isHovering ? (colorScheme == .dark ? 0.08 : 0.05) : 0.0)
-                        .animation(.easeInOut(duration: 0.10), value: isHovering)
-                }
-                .padding(.horizontal, 1)
-                .opacity(isActive ? 0 : 1)
-            }
-        }
         .padding(
             // This padding is to avoid background color overlapping with top divider.
             .top, prefs.preferences.general.tabBarStyle == .xcode ? 1 : 0
