@@ -13,15 +13,16 @@ public struct SegmentedControl: View {
     /// - Parameters:
     ///   - selection: The index of the current selected item.
     ///   - options: the options to display as an array of strings.
-    ///   - color: The color of the selected item. Defaults to `NSColor.selectedControlColor`
+    ///   - prominent: A Bool indicating whether to use a prominent appearance instead
+    ///   of the muted selection color. Defaults to `false`.
     public init(
         _ selection: Binding<Int>,
         options: [String],
-        color: Color = Color(nsColor: .selectedControlColor)
+        prominent: Bool = false
     ) {
         self._preselectedIndex = selection
         self.options = options
-        self.color = color
+        self.prominent = prominent
     }
 
     @Binding
@@ -29,7 +30,7 @@ public struct SegmentedControl: View {
 
     private var options: [String]
 
-    private let color: Color
+    private var prominent: Bool
 
     public var body: some View {
         HStack(spacing: 8) {
@@ -40,7 +41,7 @@ public struct SegmentedControl: View {
                     action: {
                         preselectedIndex = index
                     },
-                    color: color
+                    prominent: prominent
                 )
 
             }
@@ -68,22 +69,19 @@ struct SegmentedControlItem: View {
 
     let action: () -> Void
 
-    let color: Color
+    let prominent: Bool
+
+    private let color: Color = Color(nsColor: .selectedControlColor)
 
     public var body: some View {
         Text(label)
             .font(.subheadline)
-            .foregroundColor(active
-                             ? colorScheme == .dark ? .white : .accentColor
-                             : .primary)
-            .opacity(activeState != .inactive ? 1 : active ? 0.5 : 0.3)
+            .foregroundColor(textColor)
+            .opacity(textOpacity)
             .frame(height: 20)
             .padding(.horizontal, 7.5)
             .background(
-                active
-                ? color.opacity(isPressing ? 1 : activeState != .inactive ? 0.75 : 0.5)
-                : Color(nsColor: colorScheme == .dark ? .white : .black)
-                    .opacity(isPressing ? 0.10 : isHovering ? 0.05 : 0)
+                background
             )
             .cornerRadius(5)
             .onTapGesture {
@@ -99,10 +97,48 @@ struct SegmentedControlItem: View {
             }
 
     }
+
+    private var textColor: Color {
+        if prominent {
+            return active
+            ? .white
+            : .primary
+        } else {
+            return active
+            ? colorScheme == .dark ? .white : .accentColor
+            : .primary
+        }
+    }
+
+    private var textOpacity: Double {
+        if prominent {
+            return activeState != .inactive ? 1 : active ? 1 : 0.3
+        } else {
+            return activeState != .inactive ? 1 : active ? 0.5 : 0.3
+        }
+    }
+
+    @ViewBuilder
+    private var background: some View {
+        if prominent {
+            active
+            ? Color.accentColor.opacity(activeState != .inactive ? 1 : 0.5)
+            : Color(nsColor: colorScheme == .dark ? .white : .black)
+                .opacity(isPressing ? 0.10 : isHovering ? 0.05 : 0)
+        } else {
+            active
+            ? color.opacity(isPressing ? 1 : activeState != .inactive ? 0.75 : 0.5)
+            : Color(nsColor: colorScheme == .dark ? .white : .black)
+                .opacity(isPressing ? 0.10 : isHovering ? 0.05 : 0)
+        }
+    }
 }
 
 struct SegmentedControl_Previews: PreviewProvider {
     static var previews: some View {
+        SegmentedControl(.constant(0), options: ["Tab 1", "Tab 2"], prominent: true)
+            .padding()
+
         SegmentedControl(.constant(0), options: ["Tab 1", "Tab 2"])
             .padding()
     }
