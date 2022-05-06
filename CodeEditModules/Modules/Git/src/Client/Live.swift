@@ -59,9 +59,9 @@ public extension GitClient {
             }
         }
 
+        /// Displays paths that have differences between the index file and the current HEAD commit,
+        /// paths that have differences between the working tree and the index file, and paths in the working tree
         func getChangedFiles() throws -> [ChangedFiles] {
-            /// Displays paths that have differences between the index file and the current HEAD commit,
-            /// paths that have differences between the working tree and the index file, and paths in the working tree
             let output = try shellClient.run(
                 "cd \(directoryURL.relativePath.escapedWhiteSpaces());git status -s --porcelain -u"
             )
