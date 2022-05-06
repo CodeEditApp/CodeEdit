@@ -295,7 +295,6 @@ struct TabBarItem: View {
                     }
                     .onDrag {
                         draggingTabId = item.tabID
-                        print("Location: INSIDE!")
                         return .init(object: NSString(string: "\(item.tabID)" as NSString))
                     }
             }

@@ -179,9 +179,6 @@ struct TabBar: View {
             }
         }
         .padding(.leading, -1)
-        .onChange(of: draggingItemLocation, perform: { location in
-            print("Location:", location)
-        })
     }
 
     // MARK: Accessories
@@ -274,7 +271,6 @@ struct TabBarDragAndDropDelegate: DropDelegate {
     }
 
     func dropEntered(info: DropInfo) {
-        print("Location: DROP!")
         if currentPositionItemId == nil {
             currentPositionItemId = itemId
             itemLocation = info.location // TODO: Check if we need to write it twice.
@@ -287,10 +283,12 @@ struct TabBarDragAndDropDelegate: DropDelegate {
         itemLocation = info.location
 
         if workspaceDocument.selectionState.openedTabs[toIndex] != current {
-            workspaceDocument.selectionState.openedTabs.move(
-                fromOffsets: IndexSet(integer: from),
-                toOffset: toIndex > from ? toIndex + 1 : toIndex
-            )
+            withAnimation {
+                workspaceDocument.selectionState.openedTabs.move(
+                    fromOffsets: IndexSet(integer: from),
+                    toOffset: toIndex > from ? toIndex + 1 : toIndex
+                )
+            }
         }
     }
 
