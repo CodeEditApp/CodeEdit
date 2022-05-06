@@ -193,8 +193,8 @@ private extension GeneralPreferencesView {
     }
 
     var openInCodeEditToggle: some View {
-        PreferencesSection("Finder Contextmenu", hideLabels: false) {
-            Toggle("Show open in CodeEdit", isOn: $openInCodeEdit)
+        PreferencesSection("Finder Context Menu:", hideLabels: false) {
+            Toggle("Show “Open With CodeEdit” option", isOn: $openInCodeEdit)
                 .toggleStyle(.checkbox)
                 .onChange(of: openInCodeEdit) { newValue in
                     guard let defaults = UserDefaults.init(
