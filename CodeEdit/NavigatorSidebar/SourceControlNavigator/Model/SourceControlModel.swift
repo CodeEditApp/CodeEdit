@@ -32,8 +32,7 @@ public final class SourceControlModel: ObservableObject {
             shellClient: Current.shellClient
         )
         do {
-            let changed = try gitClient.getChangedFiles()
-            self.changed = changed
+            changed = try gitClient.getChangedFiles()
         } catch {
             changed = []
         }

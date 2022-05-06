@@ -34,7 +34,9 @@ struct SourceControlNavigatorView: View {
             }
 
             if selectedSection == 0 {
-                ChangesView(workspaceURL: workspace.fileURL!)
+                if let urlString = workspace.fileURL {
+                    ChangesView(workspaceURL: urlString)
+                }
             }
 
             if selectedSection == 1 {

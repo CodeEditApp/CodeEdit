@@ -17,6 +17,8 @@ struct NavigatorSidebar: View {
     @State
     private var selection: Int = 0
 
+    private let paddingBottom: Double = -8.0
+
     init(workspace: WorkspaceDocument, windowController: NSWindowController) {
         self.workspace = workspace
         self.windowController = windowController
@@ -40,20 +42,25 @@ struct NavigatorSidebar: View {
         }
         .safeAreaInset(edge: .top) {
             NavigatorSidebarToolbarTop(selection: $selection)
-                .padding(.bottom, -8)
+                .padding(.bottom, paddingBottom)
         }
         .safeAreaInset(edge: .bottom) {
             switch selection {
             case 0:
                 NavigatorSidebarToolbarBottom(workspace: workspace)
+                    .padding(.top, paddingBottom)
             case 1:
                 SourceControlToolbarBottom()
+                    .padding(.top, paddingBottom)
             case 2:
                 NavigatorSidebarToolbarBottom(workspace: workspace)
+                    .padding(.top, paddingBottom)
             case 7:
                 NavigatorSidebarToolbarBottom(workspace: workspace)
+                    .padding(.top, paddingBottom)
             default:
                 NavigatorSidebarToolbarBottom(workspace: workspace)
+                    .padding(.top, paddingBottom)
             }
         }
     }

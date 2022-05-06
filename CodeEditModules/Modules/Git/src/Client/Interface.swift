@@ -42,6 +42,7 @@ public struct GitClient {
     public enum GitClientError: Error {
         case outputError(String)
         case notGitRepository
+        case failedToDecodeURL
     }
 
     public enum CloneProgressResult {

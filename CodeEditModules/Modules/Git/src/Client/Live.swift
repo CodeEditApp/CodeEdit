@@ -68,13 +68,17 @@ public extension GitClient {
             if output.contains("fatal: not a git repository") {
                 throw GitClientError.notGitRepository
             }
-            return output
-                .split(separator: "\n")
+            return try output
+                .split(whereSeparator: \.isNewline)
                 .map { line -> ChangedFiles in
                     let paramData = line.trimmingCharacters(in: .whitespacesAndNewlines)
                     let parameters = paramData.components(separatedBy: " ")
+                    guard let url = URL(string: parameters[safe: 1] ?? "") else {
+                        throw GitClientError.failedToDecodeURL
+                    }
+
                     return ChangedFiles(changeType: parameters[safe: 0] ?? "",
-                                        fileLink: parameters[safe: 1] ?? "")
+                                        fileLink: url)
                 }
         }
 

@@ -11,15 +11,19 @@ import WorkspaceClient
 
 public struct ChangedFiles: Codable, Hashable, Identifiable {
     public var id = UUID()
-    public var changeType: String
-    public var fileLink: String
+
+    /// Change type is to tell us whether the type is a new file, modified or deleted
+    public let changeType: String
+
+    /// Link of the file
+    public let fileLink: URL
 
     /// Use it like this
     /// ```swift
     /// Image(systemName: item.systemImage)
     /// ```
     public var systemImage: String {
-        if !isFile {
+        if isFolder {
             return "folder.fill"
         } else {
             return FileIcon.fileIcon(fileType: fileType)
@@ -28,16 +32,16 @@ public struct ChangedFiles: Codable, Hashable, Identifiable {
 
     /// Returns the file name (e.g.: `Package.swift`)
     public var fileName: String {
-        URL(string: fileLink)?.lastPathComponent ?? ""
+        fileLink.lastPathComponent
     }
 
-    private var isFile: Bool {
-        return fileName.contains(".")
+    private var isFolder: Bool {
+        return fileLink.hasDirectoryPath
     }
 
     /// Returns the extension of the file or an empty string if no extension is present.
-    private var fileType: String {
-        URL(string: fileLink)?.lastPathComponent.components(separatedBy: ".").last ?? ""
+    private var fileType: FileIcon.FileType {
+        return FileIcon.FileType.init(rawValue: fileLink.pathExtension) ?? FileIcon.FileType.txt
     }
 
     /// Returns a `Color` for a specific `fileType`
@@ -52,7 +56,10 @@ public struct ChangedFiles: Codable, Hashable, Identifiable {
     /// Allows the user to view the file or folder in the finder application
     public func showInFinder(workspaceURL: URL) {
         let workspace = workspaceURL.absoluteString
-        let url = URL(string: workspace + fileLink)!
+        let file = fileLink.absoluteString
+        guard let url = URL(string: workspace + file) else {
+            return print("Failed to decode URL")
+        }
         NSWorkspace.shared.activateFileViewerSelecting([url])
     }
 }

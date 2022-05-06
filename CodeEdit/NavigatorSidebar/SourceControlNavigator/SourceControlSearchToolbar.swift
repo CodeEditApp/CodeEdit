@@ -20,11 +20,11 @@ struct SourceControlSearchToolbar: View {
     private var controlActive
 
     @State
-    private var text: String = ""
+    private var text = ""
 
     @ViewBuilder
     public func selectionBackground(
-        _ isFocused: Bool = false
+        _ isFocused: Bool
     ) -> some View {
         if self.controlActive != .inactive {
             if isFocused {
@@ -37,14 +37,14 @@ struct SourceControlSearchToolbar: View {
                 if colorScheme == .light {
                     Color.black.opacity(0.06)
                 } else {
-                    EffectView(.mediumLight).opacity(0.37)
+                    Color.white.opacity(0.24)
                 }
             }
         } else {
             if colorScheme == .light {
                 Color.clear
             } else {
-                EffectView(.mediumLight).opacity(0.14)
+                Color.white.opacity(0.14)
             }
         }
     }
