@@ -49,6 +49,22 @@ final class CodeEditUIUnitTests: XCTestCase {
         assertSnapshot(matching: hosting, as: .image)
     }
 
+    func testSegmentedControlProminentLight() throws {
+        let view = SegmentedControl(.constant(0), options: ["Opt1", "Opt2"], prominent: true)
+        let hosting = NSHostingView(rootView: view)
+        hosting.appearance = .init(named: .aqua)
+        hosting.frame = CGRect(origin: .zero, size: .init(width: 100, height: 30))
+        assertSnapshot(matching: hosting, as: .image)
+    }
+
+    func testSegmentedControlProminentDark() throws {
+        let view = SegmentedControl(.constant(0), options: ["Opt1", "Opt2"], prominent: true)
+        let hosting = NSHostingView(rootView: view)
+        hosting.appearance = .init(named: .darkAqua)
+        hosting.frame = CGRect(origin: .zero, size: .init(width: 100, height: 30))
+        assertSnapshot(matching: hosting, as: .image)
+    }
+
     // MARK: FontPickerView
 
     func testFontPickerViewLight() throws {
