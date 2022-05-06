@@ -69,7 +69,7 @@
 		2B7A583527E4BA0100D25D4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0468438427DC76E200F8E88E /* AppDelegate.swift */; };
 		2B7AC06B282452FB0082A5B8 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B7AC06A282452FB0082A5B8 /* Media.xcassets */; };
 		2BE487EF28245162003F3F64 /* FinderSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE487EE28245162003F3F64 /* FinderSync.swift */; };
-		2BE487F428245162003F3F64 /* openInCodeEdit.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 2BE487EC28245162003F3F64 /* openInCodeEdit.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		2BE487F428245162003F3F64 /* OpenWithCodeEdit.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 2BE487EC28245162003F3F64 /* OpenWithCodeEdit.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		5C403B8F27E20F8000788241 /* WorkspaceClient in Frameworks */ = {isa = PBXBuildFile; productRef = 5C403B8E27E20F8000788241 /* WorkspaceClient */; };
 		5C4BB1E128212B1E00A92FB2 /* World.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4BB1E028212B1E00A92FB2 /* World.swift */; };
 		5CA8776527FC6A95003F5CD5 /* QuickOpen in Frameworks */ = {isa = PBXBuildFile; productRef = 5CA8776427FC6A95003F5CD5 /* QuickOpen */; };
@@ -138,7 +138,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				2BE487F428245162003F3F64 /* openInCodeEdit.appex in Embed App Extensions */,
+				2BE487F428245162003F3F64 /* OpenWithCodeEdit.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -193,7 +193,7 @@
 		28B8F883280FFE4600596236 /* NSTableView+Background.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTableView+Background.swift"; sourceTree = "<group>"; };
 		28FFE1BE27E3A441001939DB /* NavigatorSidebarToolbarBottom.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = NavigatorSidebarToolbarBottom.swift; sourceTree = "<group>"; tabWidth = 4; };
 		2B7AC06A282452FB0082A5B8 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
-		2BE487EC28245162003F3F64 /* openInCodeEdit.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = openInCodeEdit.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		2BE487EC28245162003F3F64 /* OpenWithCodeEdit.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OpenWithCodeEdit.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BE487EE28245162003F3F64 /* FinderSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderSync.swift; sourceTree = "<group>"; };
 		2BE487F028245162003F3F64 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2BE487F128245162003F3F64 /* openInCodeEdit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = openInCodeEdit.entitlements; sourceTree = "<group>"; };
@@ -447,7 +447,7 @@
 				B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */,
 				B658FB3D27DA9E1000EA4DBD /* CodeEditTests.xctest */,
 				B658FB4727DA9E1000EA4DBD /* CodeEditUITests.xctest */,
-				2BE487EC28245162003F3F64 /* openInCodeEdit.appex */,
+				2BE487EC28245162003F3F64 /* OpenWithCodeEdit.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -518,9 +518,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		2BE487EB28245162003F3F64 /* openInCodeEdit */ = {
+		2BE487EB28245162003F3F64 /* OpenWithCodeEdit */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2BE487F828245162003F3F64 /* Build configuration list for PBXNativeTarget "openInCodeEdit" */;
+			buildConfigurationList = 2BE487F828245162003F3F64 /* Build configuration list for PBXNativeTarget "OpenWithCodeEdit" */;
 			buildPhases = (
 				2BE487E828245162003F3F64 /* Sources */,
 				2BE487E928245162003F3F64 /* Frameworks */,
@@ -530,9 +530,9 @@
 			);
 			dependencies = (
 			);
-			name = openInCodeEdit;
+			name = OpenWithCodeEdit;
 			productName = openInCodeEdit;
-			productReference = 2BE487EC28245162003F3F64 /* openInCodeEdit.appex */;
+			productReference = 2BE487EC28245162003F3F64 /* OpenWithCodeEdit.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 		B658FB2B27DA9E0F00EA4DBD /* CodeEdit */ = {
@@ -663,7 +663,7 @@
 				B658FB2B27DA9E0F00EA4DBD /* CodeEdit */,
 				B658FB3C27DA9E1000EA4DBD /* CodeEditTests */,
 				B658FB4627DA9E1000EA4DBD /* CodeEditUITests */,
-				2BE487EB28245162003F3F64 /* openInCodeEdit */,
+				2BE487EB28245162003F3F64 /* OpenWithCodeEdit */,
 			);
 		};
 /* End PBXProject section */
@@ -892,7 +892,7 @@
 /* Begin PBXTargetDependency section */
 		2BE487F328245162003F3F64 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 2BE487EB28245162003F3F64 /* openInCodeEdit */;
+			target = 2BE487EB28245162003F3F64 /* OpenWithCodeEdit */;
 			targetProxy = 2BE487F228245162003F3F64 /* PBXContainerItemProxy */;
 		};
 		B658FB3F27DA9E1000EA4DBD /* PBXTargetDependency */ = {
@@ -1261,7 +1261,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		2BE487F828245162003F3F64 /* Build configuration list for PBXNativeTarget "openInCodeEdit" */ = {
+		2BE487F828245162003F3F64 /* Build configuration list for PBXNativeTarget "OpenWithCodeEdit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2BE487F628245162003F3F64 /* Debug */,
