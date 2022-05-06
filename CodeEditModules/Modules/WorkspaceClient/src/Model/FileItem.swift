@@ -106,7 +106,7 @@ public extension WorkspaceClient {
 
         /// Returns the extension of the file or an empty string if no extension is present.
         private var fileType: FileIcon.FileType {
-            return FileIcon.FileType.init(rawValue: url.pathExtension) ?? FileIcon.FileType.txt
+            .init(rawValue: url.pathExtension) ?? .txt
         }
 
         /// Returns a string describing a SFSymbol for folders
@@ -128,7 +128,7 @@ public extension WorkspaceClient {
         ///
         /// If not specified otherwise this will return `Color.accentColor`
         public var iconColor: Color {
-            return FileIcon.iconColor(fileType: fileType)
+            FileIcon.iconColor(fileType: fileType)
         }
 
         // MARK: Statics

@@ -20,14 +20,14 @@ public extension GitClient {
                 return try shellClient.run(
                     "cd \(directoryURL.relativePath.escapedWhiteSpaces());git branch -a --format \"%(refname:short)\""
                 )
-                    .components(separatedBy: "\n")
-                    .filter { $0 != "" }
+                .components(separatedBy: "\n")
+                .filter { $0 != "" }
             }
             return try shellClient.run(
                 "cd \(directoryURL.relativePath.escapedWhiteSpaces());git branch --format \"%(refname:short)\""
             )
-                .components(separatedBy: "\n")
-                .filter { $0 != "" }
+            .components(separatedBy: "\n")
+            .filter { $0 != "" }
         }
 
         func getCurrentBranchName() throws -> String {
@@ -59,9 +59,9 @@ public extension GitClient {
             }
         }
 
-        /// Displays paths that have differences between the index file and the current HEAD commit,
-        /// paths that have differences between the working tree and the index file, and paths in the working tree
         func getChangedFiles() throws -> [ChangedFiles] {
+            /// Displays paths that have differences between the index file and the current HEAD commit,
+            /// paths that have differences between the working tree and the index file, and paths in the working tree
             let output = try shellClient.run(
                 "cd \(directoryURL.relativePath.escapedWhiteSpaces());git status -s --porcelain -u"
             )
@@ -70,14 +70,18 @@ public extension GitClient {
             }
             return try output
                 .split(whereSeparator: \.isNewline)
-                .map { line -> ChangedFiles in
+                .compactMap { line -> ChangedFiles in
                     let paramData = line.trimmingCharacters(in: .whitespacesAndNewlines)
                     let parameters = paramData.components(separatedBy: " ")
                     guard let url = URL(string: parameters[safe: 1] ?? "") else {
                         throw GitClientError.failedToDecodeURL
                     }
 
-                    return ChangedFiles(changeType: parameters[safe: 0] ?? "",
+                    var gitType: GitType {
+                        .init(rawValue: parameters[safe: 0] ?? "") ?? GitType.Unknown
+                    }
+
+                    return ChangedFiles(changeType: gitType,
                                         fileLink: url)
                 }
         }
