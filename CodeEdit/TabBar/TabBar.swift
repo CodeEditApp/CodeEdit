@@ -142,6 +142,7 @@ struct TabBar: View {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
                     if draggingStartLocation == nil {
                         draggingItemId = nil
+                        workspace.selectionState.openedTabs = openedTabs
                     }
                 }
             })
