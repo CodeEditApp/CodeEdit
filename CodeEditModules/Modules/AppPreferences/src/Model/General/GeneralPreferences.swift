@@ -151,19 +151,24 @@ public extension AppPreferences {
 
     /// The collection of file extensions used by ``FileExtensions/showOnly`` or  ``FileExtensions/hideOnly`` preference
     struct FileExtensionsCollection: Codable, Hashable {
-        public var extensions: [String] {
-            string
-                .components(separatedBy: ",")
-                .map({$0.trimmingCharacters(in: .whitespacesAndNewlines)})
-                .filter({!$0.isEmpty})
+        public var extensions: [String]
+
+        public var string: String {
+            get {
+                extensions.joined(separator: ", ")
+            }
+            set {
+                extensions = newValue
+                    .components(separatedBy: ",")
+                    .map({$0.trimmingCharacters(in: .whitespacesAndNewlines)})
+                    .filter({!$0.isEmpty || string.count < newValue.count })
+            }
         }
 
-        public var string: String
-
-        public static var `default` = FileExtensionsCollection(string: [
+        public static var `default` = FileExtensionsCollection(extensions: [
             "c", "cc", "cpp", "h", "hpp", "m", "mm", "gif",
             "icns", "jpeg", "jpg", "png", "tiff", "swift"
-        ].joined(separator: ", "))
+        ])
     }
     /// The style for file icons
     /// - **color**: File icons appear in their default colors
