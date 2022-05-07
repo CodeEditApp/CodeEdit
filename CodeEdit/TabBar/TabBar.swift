@@ -11,6 +11,11 @@ import AppPreferences
 import CodeEditUI
 import TabBar
 
+// TODO: Optimize the body size.
+
+// Disable the rule because the tab bar view is fairly complicated.
+// It has the gesture implementation and its animations.
+// swiftlint:disable type_body_length
 struct TabBar: View {
     /// The height of tab bar.
     /// I am not making it a private variable because it may need to be used in outside views.
@@ -34,10 +39,19 @@ struct TabBar: View {
     private var draggingItemId: TabBarItemID?
 
     @State
-    private var draggingItemLocation: CGPoint?
+    private var draggingStartLocation: CGFloat?
 
     @State
-    private var currentPositionItemId: TabBarItemID?
+    private var openedTabs: [TabBarItemID] = []
+
+    @State
+    private var tabWidth: [TabBarItemID: CGFloat] = [:]
+
+    @State
+    private var tabLocations: [TabBarItemID: CGRect] = [:]
+
+    @State
+    private var tabOffsets: [TabBarItemID: CGFloat] = [:]
 
     @State
     private var expectedTabWidth: CGFloat = 0
@@ -62,6 +76,78 @@ struct TabBar: View {
         )
     }
 
+    // Disable the rule because this function is implementing the drag gesture and its animations.
+    // It is fairly complicated, so ignore the function body length limitation for now.
+    // swiftlint:disable function_body_length
+    private func makeTabDragGesture(id: TabBarItemID) -> some Gesture {
+        return DragGesture(minimumDistance: 2, coordinateSpace: .global)
+            .onChanged({ value in
+                if draggingItemId != id {
+                    draggingItemId = id
+                    draggingStartLocation = value.startLocation.x
+                }
+                // Get the current cursor location.
+                let currentLocation = value.location.x
+                guard let startLocation = draggingStartLocation,
+                      let currentIndex = openedTabs.firstIndex(of: id) else { return }
+                let previousIndex = currentIndex > 0 ? currentIndex - 1 : nil
+                let nextIndex = currentIndex < openedTabs.count - 1 ? currentIndex + 1 : nil
+                tabOffsets[id] = currentLocation - startLocation
+                // Interacting with the previous tab.
+                if previousIndex != nil {
+                    // Wrap `previousTabIndex` because it may be `nil`.
+                    guard let previousTabIndex = previousIndex,
+                          let previousTabLocation = tabLocations[openedTabs[previousTabIndex]],
+                          let previousTabWidth = tabWidth[openedTabs[previousTabIndex]]
+                    else { return }
+                    if currentLocation < previousTabLocation.maxX - previousTabWidth * 0.2 {
+                        let changing = previousTabWidth - 1 // One offset for overlapping divider.
+                        draggingStartLocation! -= changing
+                        withAnimation {
+                            tabOffsets[id]! += changing
+                            openedTabs.move(
+                                fromOffsets: IndexSet(integer: previousTabIndex),
+                                toOffset: currentIndex + 1
+                            )
+                        }
+                        return
+                    }
+                }
+                // Interacting with the next tab.
+                if nextIndex != nil {
+                    // Wrap `previousTabIndex` because it may be `nil`.
+                    guard let nextTabIndex = nextIndex,
+                          let nextTabLocation = tabLocations[openedTabs[nextTabIndex]],
+                          let nextTabWidth = tabWidth[openedTabs[nextTabIndex]]
+                    else { return }
+                    if currentLocation > nextTabLocation.minX + nextTabWidth * 0.2 {
+                        let changing = nextTabWidth - 1 // One offset for overlapping divider.
+                        draggingStartLocation! += changing
+                        withAnimation {
+                            tabOffsets[id]! -= changing
+                            openedTabs.move(
+                                fromOffsets: IndexSet(integer: nextTabIndex),
+                                toOffset: currentIndex
+                            )
+                        }
+                        return
+                    }
+                }
+            })
+            .onEnded({ _ in
+                draggingStartLocation = nil
+                withAnimation(.easeInOut(duration: 0.25)) {
+                    tabOffsets = [:]
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                    if draggingStartLocation == nil {
+                        draggingItemId = nil
+                    }
+                }
+            })
+    }
+    // swiftlint:enable function_body_length
+
     var body: some View {
         HStack(alignment: .center, spacing: 0) {
             // Tab bar navigation control.
@@ -72,9 +158,9 @@ struct TabBar: View {
                     ScrollViewReader { scrollReader in
                         HStack(
                             alignment: .center,
-                            spacing: -1
+                            spacing: -1 // Negative spacing for overlapping the divider.
                         ) {
-                            ForEach(workspace.selectionState.openedTabs, id: \.id) { id in
+                            ForEach(openedTabs, id: \.id) { id in
                                 if let item = workspace.selectionState.getItemByTab(id: id) {
                                     TabBarItem(
                                         expectedWidth: $expectedTabWidth,
@@ -84,25 +170,37 @@ struct TabBar: View {
                                         workspace: workspace
                                     )
                                     .frame(height: TabBar.height)
-                                    .opacity(
-                                        draggingItemId == id
-                                        && draggingItemLocation != nil ? 0.0: 1.0
-                                    )
-                                    .onDrop(
-                                        of: [.utf8PlainText],
-                                        delegate: TabBarDragAndDropDelegate(
-                                            itemId: id,
-                                            itemLocation: $draggingItemLocation,
-                                            currentPositionItemId: $currentPositionItemId,
-                                            workspaceDocument: _workspace
-                                        )
-                                    )
+                                    .background {
+                                        GeometryReader { tabGeoReader in
+                                            Rectangle()
+                                                .foregroundColor(.clear)
+                                                .onAppear {
+                                                    tabWidth[id] = tabGeoReader.size.width
+                                                    tabLocations[id] = tabGeoReader
+                                                        .frame(in: .global)
+                                                }
+                                                .onChange(
+                                                    of: tabGeoReader.frame(in: .global),
+                                                    perform: { tabCGRect in
+                                                        tabLocations[id] = tabCGRect
+                                                    }
+                                                )
+                                                .onChange(
+                                                    of: tabGeoReader.size.width,
+                                                    perform: { newWidth in
+                                                        tabWidth[id] = newWidth
+                                                    })
+                                        }
+                                    }
+                                    .offset(x: tabOffsets[id] ?? 0, y: 0)
+                                    .highPriorityGesture(makeTabDragGesture(id: id))
                                 }
                             }
                         }
                         // This padding is to hide dividers at two ends under the accessory view divider.
                         .padding(.horizontal, prefs.preferences.general.tabBarStyle == .native ? -1 : 0)
                         .onAppear {
+                            openedTabs = workspace.selectionState.openedTabs
                             // On view appeared, compute the initial expected width for tabs.
                             updateExpectedTabWidth(proxy: geometryProxy)
                             // On first tab appeared, jump to the corresponding position.
@@ -115,6 +213,7 @@ struct TabBar: View {
                         }
                         // When tabs are changing, re-compute the expected tab width.
                         .onChange(of: workspace.selectionState.openedTabs.count) { _ in
+                            openedTabs = workspace.selectionState.openedTabs
                             // Only update the expected width when user is not hovering over tabs.
                             // This should give users a better experience on closing multiple tabs continuously.
                             if !isHoveringOverTabs {
@@ -244,64 +343,4 @@ struct TabBar: View {
         }
     }
 }
-
-/// The drag-and-drop reordering delegate for
-struct TabBarDragAndDropDelegate: DropDelegate {
-    private var itemId: TabBarItemID
-
-    @Binding
-    private var itemLocation: CGPoint?
-
-    @Binding
-    private var currentPositionItemId: TabBarItemID?
-
-    @ObservedObject
-    private var workspaceDocument: WorkspaceDocument
-
-    init(
-        itemId: TabBarItemID,
-        itemLocation: Binding<CGPoint?>,
-        currentPositionItemId: Binding<TabBarItemID?>,
-        workspaceDocument: ObservedObject<WorkspaceDocument>
-    ) {
-        self.itemId = itemId
-        self._itemLocation = itemLocation
-        self._currentPositionItemId = currentPositionItemId
-        self._workspaceDocument = workspaceDocument
-    }
-
-    func dropEntered(info: DropInfo) {
-        if currentPositionItemId == nil {
-            currentPositionItemId = itemId
-            itemLocation = info.location // TODO: Check if we need to write it twice.
-        }
-
-        guard itemId != currentPositionItemId, let current = currentPositionItemId,
-            let from = workspaceDocument.selectionState.openedTabs.firstIndex(of: current),
-            let toIndex = workspaceDocument.selectionState.openedTabs.firstIndex(of: itemId) else { return }
-
-        itemLocation = info.location
-
-        if workspaceDocument.selectionState.openedTabs[toIndex] != current {
-            withAnimation {
-                workspaceDocument.selectionState.openedTabs.move(
-                    fromOffsets: IndexSet(integer: from),
-                    toOffset: toIndex > from ? toIndex + 1 : toIndex
-                )
-            }
-        }
-    }
-
-    func dropExited(info: DropInfo) {
-        itemLocation = nil
-    }
-
-    func dropUpdated(info: DropInfo) -> DropProposal? {
-        return DropProposal(operation: .move)
-    }
-
-    func performDrop(info: DropInfo) -> Bool {
-        itemLocation = nil
-        return true
-    }
-}
+// swiftlint:enable type_body_length
