@@ -36,7 +36,8 @@ final class OutlineViewController: NSViewController {
 
     var iconColor: AppPreferences.FileIconStyle = .color
     var fileExtension: AppPreferences.FileExtensions = .showAll
-    var showFileExtensions: AppPreferences.ShowedFileExtensions = .default
+    var shownFileExtensions: AppPreferences.FileExtensionsCollection = .default
+    var hiddenFileExtensions: AppPreferences.FileExtensionsCollection = .default
 
     var rowHeight: Double = 22 {
         didSet {
@@ -179,7 +180,9 @@ extension OutlineViewController: NSOutlineViewDelegate {
         case .showAll:
             return item.fileName(typeHidden: false)
         case .showOnly:
-            return item.fileName(typeHidden: !showFileExtensions.extensions.contains(item.fileType))
+            return item.fileName(typeHidden: !shownFileExtensions.extensions.contains(item.fileType))
+        case .hideOnly:
+            return item.fileName(typeHidden: hiddenFileExtensions.extensions.contains(item.fileType))
         }
     }
 

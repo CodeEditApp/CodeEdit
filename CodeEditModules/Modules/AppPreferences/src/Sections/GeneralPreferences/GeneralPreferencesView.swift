@@ -96,18 +96,17 @@ private extension GeneralPreferencesView {
                 Divider()
                 Text("Show only")
                     .tag(AppPreferences.FileExtensions.showOnly)
+                Text("Hide only")
+                    .tag(AppPreferences.FileExtensions.hideOnly)
             }
             .frame(width: inputWidth)
             if case .showOnly = prefs.preferences.general.fileExtensions {
-                let showedFileExtensionsBinding = Binding(get: {
-                    prefs.preferences.general.fileExtensionsShowed.extensions.joined(separator: ", ")
-                }, set: { newValue in
-                    let components = newValue.components(separatedBy: ", ")
-                    prefs.preferences.general.fileExtensionsShowed.extensions = components
-                })
-                TextEditor(text: showedFileExtensionsBinding)
+                TextEditor(text: $prefs.preferences.general.shownFileExtensions.string)
                     .frame(width: textEditorWidth)
-                    .textFieldStyle(.squareBorder)
+            }
+            if case .hideOnly = prefs.preferences.general.fileExtensions {
+                TextEditor(text: $prefs.preferences.general.hiddenFileExtensions.string)
+                    .frame(width: textEditorWidth)
             }
         }
     }

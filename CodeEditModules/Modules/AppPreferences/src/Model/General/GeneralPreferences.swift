@@ -25,7 +25,10 @@ public extension AppPreferences {
         public var fileExtensions: FileExtensions = .showAll
 
         /// The file extensions collection to display
-        public var fileExtensionsShowed: ShowedFileExtensions = .default
+        public var shownFileExtensions: FileExtensionsCollection = .default
+
+        /// The file extensions collection to hide
+        public var hiddenFileExtensions: FileExtensionsCollection = .default
 
         /// The style for file icons
         public var fileIconStyle: FileIconStyle = .color
@@ -67,9 +70,13 @@ public extension AppPreferences {
                 FileExtensions.self,
                 forKey: .fileExtensions
             ) ?? .showAll
-            self.fileExtensionsShowed = try container.decodeIfPresent(
-                ShowedFileExtensions.self,
-                forKey: .fileExtensionsShowed
+            self.shownFileExtensions = try container.decodeIfPresent(
+                FileExtensionsCollection.self,
+                forKey: .shownFileExtensions
+            ) ?? .default
+            self.hiddenFileExtensions = try container.decodeIfPresent(
+                FileExtensionsCollection.self,
+                forKey: .hiddenFileExtensions
             ) ?? .default
             self.fileIconStyle = try container.decodeIfPresent(
                 FileIconStyle.self,
@@ -139,15 +146,24 @@ public extension AppPreferences {
         case hideAll
         case showAll
         case showOnly
+        case hideOnly
     }
 
-    /// The collection of displayed file extensions of ``FileExtensions/showOnly`` preference
-    struct ShowedFileExtensions: Codable, Hashable {
-        public var extensions: [String]
-        public static var `default` = ShowedFileExtensions(extensions: [
+    /// The collection of file extensions used by ``FileExtensions/showOnly`` or  ``FileExtensions/hideOnly`` preference
+    struct FileExtensionsCollection: Codable, Hashable {
+        public var extensions: [String] {
+            string
+                .components(separatedBy: ",")
+                .map({$0.trimmingCharacters(in: .whitespacesAndNewlines)})
+                .filter({!$0.isEmpty})
+        }
+
+        public var string: String
+
+        public static var `default` = FileExtensionsCollection(string: [
             "c", "cc", "cpp", "h", "hpp", "m", "mm", "gif",
             "icns", "jpeg", "jpg", "png", "tiff", "swift"
-        ])
+        ].joined(separator: ", "))
     }
     /// The style for file icons
     /// - **color**: File icons appear in their default colors

@@ -32,7 +32,8 @@ struct OutlineView: NSViewControllerRepresentable {
         nsViewController.iconColor = prefs.preferences.general.fileIconStyle
         nsViewController.rowHeight = rowHeight
         nsViewController.fileExtension = prefs.preferences.general.fileExtensions
-        nsViewController.showFileExtensions = prefs.preferences.general.fileExtensionsShowed
+        nsViewController.shownFileExtensions = prefs.preferences.general.shownFileExtensions
+        nsViewController.hiddenFileExtensions = prefs.preferences.general.hiddenFileExtensions
         nsViewController.updateSelection()
         return
     }
