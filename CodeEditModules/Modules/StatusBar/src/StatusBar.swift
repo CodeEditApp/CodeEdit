@@ -68,11 +68,11 @@ public struct StatusBarView: View {
             .padding(.horizontal, 10)
         }
         .overlay(alignment: .top) {
-            Divider()
+            PanelDivider()
         }
         .overlay(alignment: .bottom) {
             if model.isExpanded {
-                Divider()
+                PanelDivider()
             }
         }
         .frame(height: 29)
