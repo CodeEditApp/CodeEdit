@@ -175,7 +175,8 @@ let package = Package(
                 "ShellClient",
                 "SnapshotTesting",
             ],
-            path: "Modules/WelcomeModule/Tests"
+            path: "Modules/WelcomeModule/Tests",
+            exclude: ["__Snapshots__"]
         ),
         .target(
             name: "StatusBar",
@@ -252,7 +253,8 @@ let package = Package(
                 "Git",
                 "SnapshotTesting",
             ],
-            path: "Modules/CodeEditUI/Tests"
+            path: "Modules/CodeEditUI/Tests",
+            exclude: ["__Snapshots__"]
         ),
         .target(
             name: "Acknowledgements",
