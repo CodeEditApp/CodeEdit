@@ -14,12 +14,11 @@ public struct PanelDivider: View {
     public init() {}
 
     public var body: some View {
-        Rectangle()
-            .foregroundColor(
-                Color(nsColor: .black)
+        Divider()
+            .opacity(0)
+            .overlay(
+                Color(.black)
                     .opacity(colorScheme == .dark ? 0.65 : 0.13)
-
             )
-            .frame(height: 1.0)
     }
 }
