@@ -6,14 +6,14 @@
 //
 import SwiftUI
 import WorkspaceClient
-import KeyboardShortcutManager
+import Keybindings
 import CodeEditUI
 
 public struct RecentProjectsView: View {
     @State private var recentProjectPaths: [String]
     @State private var selectedProjectPath: String? = ""
 
-    var mgr = KeyboardShortcutManager.shared
+    var mgr = KeybindingManager.shared
     private let openDocument: (URL?, @escaping () -> Void) -> Void
     private let dismissWindow: () -> Void
 

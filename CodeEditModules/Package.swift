@@ -86,8 +86,8 @@ let package = Package(
             targets: ["CodeEditUtils"]
         ),
         .library(
-            name: "KeyboardShortcutManager",
-            targets: ["KeyboardShortcutManager"]
+            name: "Keybindings",
+            targets: ["Keybindings"]
         ),
         .library(
             name: "TabBar",
@@ -173,7 +173,7 @@ let package = Package(
                 "CodeEditUI",
                 "GitClone",
                 "AppPreferences",
-                "KeyboardShortcutManager",
+                "Keybindings",
             ],
             path: "Modules/WelcomeModule/src",
             resources: [
@@ -336,10 +336,12 @@ let package = Package(
             path: "Modules/CodeEditUtils/src"
         ),
         .target(
-
-            name: "KeyboardShortcutManager",
-            path: "Modules/KeyboardShortcutManager/src"
-
+            name: "Keybindings",
+            dependencies: [
+                "AppPreferences"
+            ],
+            path: "Modules/Keybindings/src",
+            resources: [.copy("default_keybindings.json")]
         ),
         .target(
             name: "TabBar",

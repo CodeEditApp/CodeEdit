@@ -67,7 +67,6 @@
 		28CE5EA027E6493D0065D29C /* StatusBar in Frameworks */ = {isa = PBXBuildFile; productRef = 28CE5E9F27E6493D0065D29C /* StatusBar */; };
 		28FFE1BF27E3A441001939DB /* NavigatorSidebarToolbarBottom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FFE1BE27E3A441001939DB /* NavigatorSidebarToolbarBottom.swift */; };
 		2B7A583527E4BA0100D25D4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0468438427DC76E200F8E88E /* AppDelegate.swift */; };
-		3F4419B828165A610052E799 /* KeyboardShortcutManager in Frameworks */ = {isa = PBXBuildFile; productRef = 3F4419B728165A610052E799 /* KeyboardShortcutManager */; };
 		5C403B8F27E20F8000788241 /* WorkspaceClient in Frameworks */ = {isa = PBXBuildFile; productRef = 5C403B8E27E20F8000788241 /* WorkspaceClient */; };
 		5CA8776527FC6A95003F5CD5 /* QuickOpen in Frameworks */ = {isa = PBXBuildFile; productRef = 5CA8776427FC6A95003F5CD5 /* QuickOpen */; };
 		5CAD1B972806B57D0059A74E /* Breadcrumbs in Frameworks */ = {isa = PBXBuildFile; productRef = 5CAD1B962806B57D0059A74E /* Breadcrumbs */; };
@@ -92,6 +91,7 @@
 		DE513F54281DE5D0002260B9 /* TabBarXcode.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE513F53281DE5D0002260B9 /* TabBarXcode.swift */; };
 		DE6405A62817734700881FDF /* TabBarNative.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6405A52817734700881FDF /* TabBarNative.swift */; };
 		DE6F77872813625500D00A76 /* TabBarDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6F77862813625500D00A76 /* TabBarDivider.swift */; };
+		FA6BA6F1282ACAD600019309 /* Keybindings in Frameworks */ = {isa = PBXBuildFile; productRef = FA6BA6F0282ACAD600019309 /* Keybindings */; };
 		FD6A3D3D2817C13B008BCF11 /* Package.resolved in Resources */ = {isa = PBXBuildFile; fileRef = FD6A3D3C2817C13B008BCF11 /* Package.resolved */; };
 /* End PBXBuildFile section */
 
@@ -173,8 +173,6 @@
 		28B0A19727E385C300B73177 /* NavigatorSidebarToolbarTop.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = NavigatorSidebarToolbarTop.swift; sourceTree = "<group>"; tabWidth = 4; };
 		28B8F883280FFE4600596236 /* NSTableView+Background.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTableView+Background.swift"; sourceTree = "<group>"; };
 		28FFE1BE27E3A441001939DB /* NavigatorSidebarToolbarBottom.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = NavigatorSidebarToolbarBottom.swift; sourceTree = "<group>"; tabWidth = 4; };
-		3F4344B32815C5CD00C9AA0A /* ShortcutKeyboardManager */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ShortcutKeyboardManager; path = CodeEditModules/Modules/ShortcutKeyboardManager; sourceTree = "<group>"; };
-		3F4419B628165A500052E799 /* KeyboardShortcutManager */ = {isa = PBXFileReference; lastKnownFileType = folder; name = KeyboardShortcutManager; path = CodeEditModules/Modules/KeyboardShortcutManager; sourceTree = "<group>"; };
 		B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodeEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B658FB3127DA9E0F00EA4DBD /* WorkspaceView.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceView.swift; sourceTree = "<group>"; tabWidth = 4; };
 		B658FB3327DA9E1000EA4DBD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -216,7 +214,6 @@
 				2803257127F3CF1F009C7DC2 /* AppPreferences in Frameworks */,
 				2040F0B1280AE96100411B6F /* CodeEditUtils in Frameworks */,
 				5CA8776527FC6A95003F5CD5 /* QuickOpen in Frameworks */,
-				3F4419B828165A610052E799 /* KeyboardShortcutManager in Frameworks */,
 				D70F5E2C27E4E8CF004EE4B9 /* WelcomeModule in Frameworks */,
 				D7F72DEB27EA3574000C3064 /* Search in Frameworks */,
 				2816F594280CF50500DD548B /* CodeEditSymbols in Frameworks */,
@@ -225,6 +222,7 @@
 				28CE5EA027E6493D0065D29C /* StatusBar in Frameworks */,
 				2004A3832808468600FD9696 /* Feedback in Frameworks */,
 				5CF38A5E27E48E6C0096A0F7 /* CodeFile in Frameworks */,
+				FA6BA6F1282ACAD600019309 /* Keybindings in Frameworks */,
 				28117FD0280768A500649353 /* CodeEditUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -387,8 +385,6 @@
 		5C403B8D27E20F8000788241 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				3F4344B32815C5CD00C9AA0A /* ShortcutKeyboardManager */,
-				3F4419B628165A500052E799 /* KeyboardShortcutManager */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -519,8 +515,8 @@
 				2816F593280CF50500DD548B /* CodeEditSymbols */,
 				2864BAAB28117B3F002DBD1A /* ShellClient */,
 				2864BAAD28117D7C002DBD1A /* TerminalEmulator */,
-				3F4419B728165A610052E799 /* KeyboardShortcutManager */,
 				043BCF06281DA2F5000AC47C /* TabBar */,
+				FA6BA6F0282ACAD600019309 /* Keybindings */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -1230,10 +1226,6 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = StatusBar;
 		};
-		3F4419B728165A610052E799 /* KeyboardShortcutManager */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = KeyboardShortcutManager;
-		};
 		5C403B8E27E20F8000788241 /* WorkspaceClient */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = WorkspaceClient;
@@ -1269,6 +1261,10 @@
 		D7F72DEA27EA3574000C3064 /* Search */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Search;
+		};
+		FA6BA6F0282ACAD600019309 /* Keybindings */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Keybindings;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

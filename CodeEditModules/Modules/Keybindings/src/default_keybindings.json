@@ -1,0 +1,12 @@
+{
+    "default": [
+        {
+            "name": "copy",
+            "description": "Copy command",
+            "context": "Global",
+            "modifiers": ["command"],
+            "keybinding": "c""
+        }
+    ]
+
+}
