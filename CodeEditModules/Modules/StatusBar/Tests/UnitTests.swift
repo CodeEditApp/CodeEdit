@@ -34,7 +34,7 @@ final class StatusBarUnitTests: XCTestCase {
         model.selectedTab = 1
         model.currentHeight = 300
         model.isExpanded = true
-        let view = StatusBarView(model: model)
+        let view = StatusBarView(model: model).preferredColorScheme(.light)
         let hosting = NSHostingView(rootView: view)
         hosting.frame = CGRect(origin: .zero, size: .init(width: 600, height: 350))
         hosting.appearance = .init(named: .aqua)
@@ -46,7 +46,7 @@ final class StatusBarUnitTests: XCTestCase {
         model.selectedTab = 1
         model.currentHeight = 300
         model.isExpanded = true
-        let view = StatusBarView(model: model)
+        let view = StatusBarView(model: model).preferredColorScheme(.dark)
         let hosting = NSHostingView(rootView: view)
         hosting.frame = CGRect(origin: .zero, size: .init(width: 600, height: 350))
         hosting.appearance = .init(named: .darkAqua)
