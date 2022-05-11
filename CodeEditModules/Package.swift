@@ -181,7 +181,6 @@ let package = Package(
         .target(
             name: "StatusBar",
             dependencies: [
-                "Git",
                 "TerminalEmulator",
                 "CodeFile",
                 "CodeEditUI",

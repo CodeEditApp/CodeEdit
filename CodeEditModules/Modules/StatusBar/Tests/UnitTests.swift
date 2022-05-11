@@ -31,6 +31,7 @@ final class StatusBarUnitTests: XCTestCase {
 
     func testStatusBarExpandedLight() throws {
         let model = StatusBarModel(workspaceURL: URL(fileURLWithPath: ""))
+        model.selectedTab = 1
         model.currentHeight = 300
         model.isExpanded = true
         let view = StatusBarView(model: model)
@@ -42,6 +43,7 @@ final class StatusBarUnitTests: XCTestCase {
 
     func testStatusBarExpandedDark() throws {
         let model = StatusBarModel(workspaceURL: URL(fileURLWithPath: ""))
+        model.selectedTab = 1
         model.currentHeight = 300
         model.isExpanded = true
         let view = StatusBarView(model: model)

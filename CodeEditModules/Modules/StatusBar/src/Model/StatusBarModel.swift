@@ -5,9 +5,7 @@
 //  Created by Lukas Pistrol on 20.03.22.
 //
 
-import Git
 import SwiftUI
-import ShellClient
 
 /// # StatusBarModel
 ///
