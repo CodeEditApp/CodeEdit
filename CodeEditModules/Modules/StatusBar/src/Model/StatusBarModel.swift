@@ -9,22 +9,15 @@ import Git
 import SwiftUI
 import ShellClient
 
-public enum StatusBarTab: String, CaseIterable, Identifiable {
-    case terminal
-    case debugger
-    case output
-
-    public var id: String { return self.rawValue }
-    public static var allOptions: [String] {
-        return StatusBarTab.allCases.map { $0.rawValue.capitalized }
-    }
-}
-
 /// # StatusBarModel
 ///
 /// A model class to host and manage data for the ``StatusBarView``
 ///
 public class StatusBarModel: ObservableObject {
+
+    // TODO: Implement logic for updating values
+    // TODO: Add @Published vars for indentation, encoding, linebreak
+
     /// The selected tab in the main section.
     /// - **0**: Terminal
     /// - **1**: Debugger
@@ -32,30 +25,9 @@ public class StatusBarModel: ObservableObject {
     @Published
     public var selectedTab: Int = 0
 
-    // TODO: Implement logic for updating values
-    /// Returns number of errors during comilation
+    /// Returns the current location of the cursor in an editing view
     @Published
-    public var errorCount: Int = 0 // Implementation missing
-
-    /// Returns number of warnings during comilation
-    @Published
-    public var warningCount: Int = 0 // Implementation missing
-
-    /// The selected branch from the GitClient
-    @Published
-    public var selectedBranch: String?
-
-    /// State of pulling from git
-    @Published
-    public var isReloading: Bool = false // Implementation missing
-
-    /// Returns the current line of the cursor in an editing view
-    @Published
-    public var currentLine: Int = 1 // Implementation missing
-
-    /// Returns the current column of the cursor in an editing view
-    @Published
-    public var currentCol: Int = 1 // Implementation missing
+    public var cursorLocation: CursorLocation = .init(line: 1, column: 1) // Implementation needed!!
 
     /// Returns true when the drawer is visible
     @Published
@@ -84,9 +56,6 @@ public class StatusBarModel: ObservableObject {
     /// Returns the font for status bar items to use
     private(set) var toolbarFont: Font = .system(size: 11)
 
-    /// A GitClient instance
-    private(set) var gitClient: GitClient
-
     /// The base URL of the workspace
     private(set) var workspaceURL: URL
 
@@ -100,22 +69,9 @@ public class StatusBarModel: ObservableObject {
     /// The minimum height of the drawe
     private(set) var minHeight: Double = 100
 
-    // TODO: Add @Published vars for indentation, encoding, linebreak
-
     /// Initialize with a GitClient
     /// - Parameter workspaceURL: the current workspace URL
-    ///
-    public init(shellClient: ShellClient, workspaceURL: URL) {
+    public init(workspaceURL: URL) {
         self.workspaceURL = workspaceURL
-        gitClient = GitClient.default(
-            directoryURL: workspaceURL,
-            shellClient: shellClient
-        )
-        do {
-            let selectedBranch = try gitClient.getCurrentBranchName()
-            self.selectedBranch = selectedBranch
-        } catch {
-            selectedBranch = nil
-        }
     }
 }
