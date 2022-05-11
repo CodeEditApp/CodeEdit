@@ -189,6 +189,15 @@ let package = Package(
             ],
             path: "Modules/StatusBar/src"
         ),
+        .testTarget(
+            name: "StatusBarTests",
+            dependencies: [
+                "StatusBar",
+                "SnapshotTesting"
+            ],
+            path: "Modules/StatusBar/Tests",
+            exclude: ["__Snapshots__"]
+        ),
         .target(
             name: "TerminalEmulator",
             dependencies: [
