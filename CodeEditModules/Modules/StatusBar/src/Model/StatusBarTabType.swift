@@ -13,8 +13,8 @@ public enum StatusBarTabType: String, CaseIterable, Identifiable {
     case debugger
     case output
 
-    public var id: String { return self.rawValue }
+    public var id: String { self.rawValue }
     public static var allOptions: [String] {
-        return StatusBarTabType.allCases.map { $0.rawValue.capitalized }
+        return StatusBarTabType.allCases.map(\.rawValue.capitalized)
     }
 }
