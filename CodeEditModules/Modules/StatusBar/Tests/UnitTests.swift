@@ -38,7 +38,7 @@ final class StatusBarUnitTests: XCTestCase {
         let hosting = NSHostingView(rootView: view)
         hosting.frame = CGRect(origin: .zero, size: .init(width: 600, height: 350))
         hosting.appearance = .init(named: .aqua)
-        assertSnapshot(matching: hosting, as: .image)
+        assertSnapshot(matching: hosting, as: .image(size: .init(width: 600, height: 350)))
     }
 
     func testStatusBarExpandedDark() throws {
@@ -50,7 +50,7 @@ final class StatusBarUnitTests: XCTestCase {
         let hosting = NSHostingView(rootView: view)
         hosting.frame = CGRect(origin: .zero, size: .init(width: 600, height: 350))
         hosting.appearance = .init(named: .darkAqua)
-        assertSnapshot(matching: hosting, as: .image)
+        assertSnapshot(matching: hosting, as: .image(size: .init(width: 600, height: 350)))
     }
 
 }
