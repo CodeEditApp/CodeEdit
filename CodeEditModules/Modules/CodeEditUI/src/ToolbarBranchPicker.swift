@@ -8,38 +8,35 @@
 import SwiftUI
 import CodeEditSymbols
 import WorkspaceClient
-import GitClient
+import Git
+import ShellClient
 
 /// A view that pops up a branch picker.
 public struct ToolbarBranchPicker: View {
-
     @Environment(\.controlActiveState)
     private var controlActive
-
     private var workspace: WorkspaceClient?
-
     private var gitClient: GitClient?
-
+    @State private var isHovering: Bool = false
+    @State private var displayPopover: Bool = false
     @State private var currentBranch: String?
 
     /// Initializes the ``ToolbarBranchPicker`` with an instance of a `WorkspaceClient`
+    /// - Parameter shellClient: An instance of the current `ShellClient`
     /// - Parameter workspace: An instance of the current `WorkspaceClient`
-    public init(_ workspace: WorkspaceClient?) {
+    public init(
+        shellClient: ShellClient,
+        workspace: WorkspaceClient?
+    ) {
         self.workspace = workspace
         if let folderURL = workspace?.folderURL() {
             self.gitClient = GitClient.default(
                 directoryURL: folderURL,
-                shellClient: .live
+                shellClient: shellClient
             )
         }
         self._currentBranch = State(initialValue: try? gitClient?.getCurrentBranchName())
     }
-
-    @State
-    private var isHovering: Bool = false
-
-    @State
-    private var displayPopover: Bool = false
 
     public var body: some View {
         HStack(alignment: .center, spacing: 5) {

@@ -1,5 +1,5 @@
 //
-//  Commit.swift
+//  GitlabCommit.swift
 //  CodeEditModules/GitAccounts
 //
 //  Created by Nanashi Li on 2022/03/31.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-open class Commit: Codable {
+open class GitlabCommit: Codable {
     open var id: String
     open var shortID: String?
     open var title: String?
@@ -131,7 +131,7 @@ public extension GitlabAccount {
                  since: String = "",
                  until: String = "",
                  completion: @escaping (
-                    _ response: Result<Commit, Error>) -> Void) -> URLSessionDataTaskProtocol? {
+                    _ response: Result<GitlabCommit, Error>) -> Void) -> URLSessionDataTaskProtocol? {
 
                         let router = CommitRouter.readCommits(self.configuration,
                                                               id: id,
@@ -141,7 +141,7 @@ public extension GitlabAccount {
 
                         return router.load(session,
                                            dateDecodingStrategy: .formatted(Time.rfc3339DateFormatter),
-                                           expectedResultType: Commit.self) { json, error in
+                                           expectedResultType: GitlabCommit.self) { json, error in
 
                             if let error = error {
                                 completion(Result.failure(error))
@@ -163,13 +163,13 @@ public extension GitlabAccount {
                 id: String,
                 sha: String,
                 completion: @escaping (
-                    _ response: Result<Commit, Error>) -> Void) -> URLSessionDataTaskProtocol? {
+                    _ response: Result<GitlabCommit, Error>) -> Void) -> URLSessionDataTaskProtocol? {
 
                         let router = CommitRouter.readCommit(self.configuration, id: id, sha: sha)
 
                         return router.load(session,
                                            dateDecodingStrategy: .formatted(Time.rfc3339DateFormatter),
-                                           expectedResultType: Commit.self) { json, error in
+                                           expectedResultType: GitlabCommit.self) { json, error in
 
                             if let error = error {
                                 completion(Result.failure(error))

@@ -145,6 +145,18 @@ struct WorkspaceView: View {
         }
         // Send the environment to all subviews.
         .environment(\.isFullscreen, self.isFullscreen)
+        // When tab bar style is changed, update NSWindow configuration as follow.
+        .onChange(of: prefs.preferences.general.tabBarStyle) { newStyle in
+            DispatchQueue.main.async {
+                if newStyle == .native {
+                    windowController.window?.titlebarAppearsTransparent = true
+                    windowController.window?.titlebarSeparatorStyle = .none
+                } else {
+                    windowController.window?.titlebarAppearsTransparent = false
+                    windowController.window?.titlebarSeparatorStyle = .line
+                }
+            }
+        }
     }
 }
 

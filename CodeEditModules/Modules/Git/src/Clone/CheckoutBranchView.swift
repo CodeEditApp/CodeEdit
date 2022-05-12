@@ -1,13 +1,12 @@
 //
 //  CheckoutBranchView.swift
-//  CodeEditModules/GitClone
+//  CodeEditModules/Git
 //
 //  Created by Aleksi Puttonen on 14.4.2022.
 //
 
 import Foundation
 import SwiftUI
-import GitClient
 import ShellClient
 
 public struct CheckoutBranchView: View {

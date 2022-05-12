@@ -37,7 +37,7 @@
 		2072FA1A280D872600C7F8D4 /* LineEndings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2072FA19280D872600C7F8D4 /* LineEndings.swift */; };
 		2072FA1C280D874000C7F8D4 /* IndentUsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2072FA1B280D874000C7F8D4 /* IndentUsing.swift */; };
 		2072FA1E280D891500C7F8D4 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2072FA1D280D891500C7F8D4 /* Location.swift */; };
-		20C4319A28058B9E00964DD5 /* GitAccounts in Frameworks */ = {isa = PBXBuildFile; productRef = 20C4319928058B9E00964DD5 /* GitAccounts */; };
+		20AFDC7F28206701001A4FC7 /* Git in Frameworks */ = {isa = PBXBuildFile; productRef = 20AFDC7E28206701001A4FC7 /* Git */; };
 		20D839AB280DEB2900B27357 /* NoSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D839AA280DEB2900B27357 /* NoSelectionView.swift */; };
 		20D839AE280E0CA700B27357 /* PopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D839AD280E0CA700B27357 /* PopoverView.swift */; };
 		20EBB501280C325D00F3A5DA /* FileInspectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EBB500280C325D00F3A5DA /* FileInspectorView.swift */; };
@@ -67,13 +67,15 @@
 		28CE5EA027E6493D0065D29C /* StatusBar in Frameworks */ = {isa = PBXBuildFile; productRef = 28CE5E9F27E6493D0065D29C /* StatusBar */; };
 		28FFE1BF27E3A441001939DB /* NavigatorSidebarToolbarBottom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FFE1BE27E3A441001939DB /* NavigatorSidebarToolbarBottom.swift */; };
 		2B7A583527E4BA0100D25D4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0468438427DC76E200F8E88E /* AppDelegate.swift */; };
+		2B7AC06B282452FB0082A5B8 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B7AC06A282452FB0082A5B8 /* Media.xcassets */; };
+		2BE487EF28245162003F3F64 /* FinderSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE487EE28245162003F3F64 /* FinderSync.swift */; };
+		2BE487F428245162003F3F64 /* OpenWithCodeEdit.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 2BE487EC28245162003F3F64 /* OpenWithCodeEdit.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		5C403B8F27E20F8000788241 /* WorkspaceClient in Frameworks */ = {isa = PBXBuildFile; productRef = 5C403B8E27E20F8000788241 /* WorkspaceClient */; };
+		5C4BB1E128212B1E00A92FB2 /* World.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4BB1E028212B1E00A92FB2 /* World.swift */; };
 		5CA8776527FC6A95003F5CD5 /* QuickOpen in Frameworks */ = {isa = PBXBuildFile; productRef = 5CA8776427FC6A95003F5CD5 /* QuickOpen */; };
 		5CAD1B972806B57D0059A74E /* Breadcrumbs in Frameworks */ = {isa = PBXBuildFile; productRef = 5CAD1B962806B57D0059A74E /* Breadcrumbs */; };
 		5CF38A5E27E48E6C0096A0F7 /* CodeFile in Frameworks */ = {isa = PBXBuildFile; productRef = 5CF38A5D27E48E6C0096A0F7 /* CodeFile */; };
-		5CFA753B27E896B60002F01B /* GitClient in Frameworks */ = {isa = PBXBuildFile; productRef = 5CFA753A27E896B60002F01B /* GitClient */; };
 		64B64EDE27F7B79400C400F1 /* About in Frameworks */ = {isa = PBXBuildFile; productRef = 64B64EDD27F7B79400C400F1 /* About */; };
-		B34B213227ECDC3A006033A9 /* GitClone in Frameworks */ = {isa = PBXBuildFile; productRef = B34B213127ECDC3A006033A9 /* GitClone */; };
 		B658FB3427DA9E1000EA4DBD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3327DA9E1000EA4DBD /* Assets.xcassets */; };
 		B658FB3727DA9E1000EA4DBD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3627DA9E1000EA4DBD /* Preview Assets.xcassets */; };
 		B6EE989027E8879A00CDD8AB /* InspectorSidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EE988F27E8879A00CDD8AB /* InspectorSidebar.swift */; };
@@ -96,6 +98,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		2BE487F228245162003F3F64 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B658FB2427DA9E0F00EA4DBD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2BE487EB28245162003F3F64;
+			remoteInfo = OpenWithCodeEdit;
+		};
 		B658FB3E27DA9E1000EA4DBD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B658FB2427DA9E0F00EA4DBD /* Project object */;
@@ -122,6 +131,17 @@
 				04C3256C28034FC800C8DA2D /* CodeEditKit in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2BE487F528245162003F3F64 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				2BE487F428245162003F3F64 /* OpenWithCodeEdit.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -173,6 +193,12 @@
 		28B0A19727E385C300B73177 /* NavigatorSidebarToolbarTop.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = NavigatorSidebarToolbarTop.swift; sourceTree = "<group>"; tabWidth = 4; };
 		28B8F883280FFE4600596236 /* NSTableView+Background.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTableView+Background.swift"; sourceTree = "<group>"; };
 		28FFE1BE27E3A441001939DB /* NavigatorSidebarToolbarBottom.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = NavigatorSidebarToolbarBottom.swift; sourceTree = "<group>"; tabWidth = 4; };
+		2B15CA0028254139004E8F22 /* OpenWithCodeEdit.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = OpenWithCodeEdit.entitlements; sourceTree = "<group>"; };
+		2B7AC06A282452FB0082A5B8 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
+		2BE487EC28245162003F3F64 /* OpenWithCodeEdit.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OpenWithCodeEdit.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		2BE487EE28245162003F3F64 /* FinderSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderSync.swift; sourceTree = "<group>"; };
+		2BE487F028245162003F3F64 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5C4BB1E028212B1E00A92FB2 /* World.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = World.swift; sourceTree = "<group>"; };
 		B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodeEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B658FB3127DA9E0F00EA4DBD /* WorkspaceView.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceView.swift; sourceTree = "<group>"; tabWidth = 4; };
 		B658FB3327DA9E1000EA4DBD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -198,6 +224,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		2BE487E928245162003F3F64 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B658FB2927DA9E0F00EA4DBD /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -205,9 +238,9 @@
 				0483E34D27FCC46600354AC0 /* ExtensionsStore in Frameworks */,
 				64B64EDE27F7B79400C400F1 /* About in Frameworks */,
 				043BCF07281DA2F5000AC47C /* TabBar in Frameworks */,
+				20AFDC7F28206701001A4FC7 /* Git in Frameworks */,
 				04C3256B28034FC800C8DA2D /* CodeEditKit in Frameworks */,
 				2864BAAC28117B3F002DBD1A /* ShellClient in Frameworks */,
-				20C4319A28058B9E00964DD5 /* GitAccounts in Frameworks */,
 				2864BAAE28117D7C002DBD1A /* TerminalEmulator in Frameworks */,
 				5C403B8F27E20F8000788241 /* WorkspaceClient in Frameworks */,
 				5CAD1B972806B57D0059A74E /* Breadcrumbs in Frameworks */,
@@ -217,8 +250,6 @@
 				D70F5E2C27E4E8CF004EE4B9 /* WelcomeModule in Frameworks */,
 				D7F72DEB27EA3574000C3064 /* Search in Frameworks */,
 				2816F594280CF50500DD548B /* CodeEditSymbols in Frameworks */,
-				B34B213227ECDC3A006033A9 /* GitClone in Frameworks */,
-				5CFA753B27E896B60002F01B /* GitClient in Frameworks */,
 				28CE5EA027E6493D0065D29C /* StatusBar in Frameworks */,
 				2004A3832808468600FD9696 /* Feedback in Frameworks */,
 				5CF38A5E27E48E6C0096A0F7 /* CodeFile in Frameworks */,
@@ -382,6 +413,17 @@
 			path = TabBar;
 			sourceTree = "<group>";
 		};
+		2BE487ED28245162003F3F64 /* OpenWithCodeEdit */ = {
+			isa = PBXGroup;
+			children = (
+				2BE487EE28245162003F3F64 /* FinderSync.swift */,
+				2BE487F028245162003F3F64 /* Info.plist */,
+				2B7AC06A282452FB0082A5B8 /* Media.xcassets */,
+				2B15CA0028254139004E8F22 /* OpenWithCodeEdit.entitlements */,
+			);
+			path = OpenWithCodeEdit;
+			sourceTree = "<group>";
+		};
 		5C403B8D27E20F8000788241 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -393,6 +435,7 @@
 			isa = PBXGroup;
 			children = (
 				B658FB2E27DA9E0F00EA4DBD /* CodeEdit */,
+				2BE487ED28245162003F3F64 /* OpenWithCodeEdit */,
 				B658FB2D27DA9E0F00EA4DBD /* Products */,
 				5C403B8D27E20F8000788241 /* Frameworks */,
 			);
@@ -406,6 +449,7 @@
 				B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */,
 				B658FB3D27DA9E1000EA4DBD /* CodeEditTests.xctest */,
 				B658FB4727DA9E1000EA4DBD /* CodeEditUITests.xctest */,
+				2BE487EC28245162003F3F64 /* OpenWithCodeEdit.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -421,6 +465,7 @@
 				B658FB3527DA9E1000EA4DBD /* Preview Content */,
 				287776EB27E350BA00D46668 /* TabBar */,
 				0468438427DC76E200F8E88E /* AppDelegate.swift */,
+				5C4BB1E028212B1E00A92FB2 /* World.swift */,
 				B658FB3327DA9E1000EA4DBD /* Assets.xcassets */,
 				B658FB3827DA9E1000EA4DBD /* CodeEdit.entitlements */,
 				04660F6027E3A68A00477777 /* Info.plist */,
@@ -475,6 +520,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		2BE487EB28245162003F3F64 /* OpenWithCodeEdit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2BE487F828245162003F3F64 /* Build configuration list for PBXNativeTarget "OpenWithCodeEdit" */;
+			buildPhases = (
+				2BE487E828245162003F3F64 /* Sources */,
+				2BE487E928245162003F3F64 /* Frameworks */,
+				2BE487EA28245162003F3F64 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OpenWithCodeEdit;
+			productName = OpenWithCodeEdit;
+			productReference = 2BE487EC28245162003F3F64 /* OpenWithCodeEdit.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		B658FB2B27DA9E0F00EA4DBD /* CodeEdit */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B658FB5127DA9E1000EA4DBD /* Build configuration list for PBXNativeTarget "CodeEdit" */;
@@ -488,10 +550,12 @@
 				04ADA0CC27E6043B00BF00B2 /* Add TODO/FIXME as warnings | Run Script */,
 				FDF7C12027FAE90F0039BA76 /* Copy Package.resolved into Project Directory */,
 				04C3255A2801B43A00C8DA2D /* Embed Frameworks */,
+				2BE487F528245162003F3F64 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				2BE487F328245162003F3F64 /* PBXTargetDependency */,
 			);
 			name = CodeEdit;
 			packageProductDependencies = (
@@ -499,15 +563,12 @@
 				5CF38A5D27E48E6C0096A0F7 /* CodeFile */,
 				D70F5E2B27E4E8CF004EE4B9 /* WelcomeModule */,
 				28CE5E9F27E6493D0065D29C /* StatusBar */,
-				5CFA753A27E896B60002F01B /* GitClient */,
 				D7F72DEA27EA3574000C3064 /* Search */,
-				B34B213127ECDC3A006033A9 /* GitClone */,
 				2803257027F3CF1F009C7DC2 /* AppPreferences */,
 				64B64EDD27F7B79400C400F1 /* About */,
 				5CA8776427FC6A95003F5CD5 /* QuickOpen */,
 				0483E34C27FCC46600354AC0 /* ExtensionsStore */,
 				04C3256A28034FC800C8DA2D /* CodeEditKit */,
-				20C4319928058B9E00964DD5 /* GitAccounts */,
 				5CAD1B962806B57D0059A74E /* Breadcrumbs */,
 				28117FCF280768A500649353 /* CodeEditUI */,
 				2004A3822808468600FD9696 /* Feedback */,
@@ -517,6 +578,7 @@
 				2864BAAD28117D7C002DBD1A /* TerminalEmulator */,
 				043BCF06281DA2F5000AC47C /* TabBar */,
 				FA6BA6F0282ACAD600019309 /* Keybindings */,
+				20AFDC7E28206701001A4FC7 /* Git */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -565,9 +627,12 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1310;
+				LastSwiftUpdateCheck = 1330;
 				LastUpgradeCheck = 1330;
 				TargetAttributes = {
+					2BE487EB28245162003F3F64 = {
+						CreatedOnToolsVersion = 13.3.1;
+					};
 					B658FB2B27DA9E0F00EA4DBD = {
 						CreatedOnToolsVersion = 13.1;
 					};
@@ -601,11 +666,20 @@
 				B658FB2B27DA9E0F00EA4DBD /* CodeEdit */,
 				B658FB3C27DA9E1000EA4DBD /* CodeEditTests */,
 				B658FB4627DA9E1000EA4DBD /* CodeEditUITests */,
+				2BE487EB28245162003F3F64 /* OpenWithCodeEdit */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		2BE487EA28245162003F3F64 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2B7AC06B282452FB0082A5B8 /* Media.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B658FB2A27DA9E0F00EA4DBD /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -732,6 +806,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		2BE487E828245162003F3F64 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2BE487EF28245162003F3F64 /* FinderSync.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B658FB2827DA9E0F00EA4DBD /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -765,6 +847,7 @@
 				D7211D4327E066CE008F2ED7 /* Localized+Ex.swift in Sources */,
 				20D839AE280E0CA700B27357 /* PopoverView.swift in Sources */,
 				2072FA1E280D891500C7F8D4 /* Location.swift in Sources */,
+				5C4BB1E128212B1E00A92FB2 /* World.swift in Sources */,
 				D7E201B227E8D50000CB86D0 /* FindNavigatorModeSelector.swift in Sources */,
 				287776E927E34BC700D46668 /* TabBar.swift in Sources */,
 				285FEC7027FE4B9800E57D53 /* OutlineTableViewCell.swift in Sources */,
@@ -810,6 +893,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		2BE487F328245162003F3F64 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2BE487EB28245162003F3F64 /* OpenWithCodeEdit */;
+			targetProxy = 2BE487F228245162003F3F64 /* PBXContainerItemProxy */;
+		};
 		B658FB3F27DA9E1000EA4DBD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = B658FB2B27DA9E0F00EA4DBD /* CodeEdit */;
@@ -834,6 +922,64 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		2BE487F628245162003F3F64 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = OpenWithCodeEdit/OpenWithCodeEdit.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = OpenWithCodeEdit/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = OpenWithCodeEdit;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = austincondiff.CodeEdit.OpenWithCodeEdit;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		2BE487F728245162003F3F64 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = OpenWithCodeEdit/OpenWithCodeEdit.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = OpenWithCodeEdit/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = OpenWithCodeEdit;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = austincondiff.CodeEdit.OpenWithCodeEdit;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 		B658FB4F27DA9E1000EA4DBD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -956,6 +1102,7 @@
 		B658FB5227DA9E1000EA4DBD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconDev;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = CodeEdit/CodeEdit.entitlements;
@@ -989,6 +1136,7 @@
 		B658FB5327DA9E1000EA4DBD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconDev;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = CodeEdit/CodeEdit.entitlements;
@@ -1118,6 +1266,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		2BE487F828245162003F3F64 /* Build configuration list for PBXNativeTarget "OpenWithCodeEdit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2BE487F628245162003F3F64 /* Debug */,
+				2BE487F728245162003F3F64 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		B658FB2727DA9E0F00EA4DBD /* Build configuration list for PBXProject "CodeEdit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1197,9 +1354,9 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = CodeEditUtils;
 		};
-		20C4319928058B9E00964DD5 /* GitAccounts */ = {
+		20AFDC7E28206701001A4FC7 /* Git */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = GitAccounts;
+			productName = Git;
 		};
 		2803257027F3CF1F009C7DC2 /* AppPreferences */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -1242,17 +1399,9 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = CodeFile;
 		};
-		5CFA753A27E896B60002F01B /* GitClient */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = GitClient;
-		};
 		64B64EDD27F7B79400C400F1 /* About */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = About;
-		};
-		B34B213127ECDC3A006033A9 /* GitClone */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = GitClone;
 		};
 		D70F5E2B27E4E8CF004EE4B9 /* WelcomeModule */ = {
 			isa = XCSwiftPackageProductDependency;

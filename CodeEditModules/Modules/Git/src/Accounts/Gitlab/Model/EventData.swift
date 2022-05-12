@@ -21,7 +21,7 @@ open class EventData: Codable {
     open var userAvatar: URL?
     open var projectID: Int?
     open var project: Project?
-    open var commits: [Commit]?
+    open var commits: [GitlabCommit]?
     open var totalCommitsCount: Int?
 
     enum CodingKeys: String, CodingKey {

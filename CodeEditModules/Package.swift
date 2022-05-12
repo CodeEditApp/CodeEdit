@@ -26,10 +26,6 @@ let package = Package(
             targets: ["StatusBar"]
         ),
         .library(
-            name: "GitClient",
-            targets: ["GitClient"]
-        ),
-        .library(
             name: "TerminalEmulator",
             targets: ["TerminalEmulator"]
         ),
@@ -38,20 +34,12 @@ let package = Package(
             targets: ["Search"]
         ),
         .library(
-            name: "GitClone",
-            targets: ["GitClone"]
-        ),
-        .library(
             name: "ShellClient",
             targets: ["ShellClient"]
         ),
         .library(
             name: "AppPreferences",
             targets: ["AppPreferences"]
-        ),
-        .library(
-            name: "GitAccounts",
-            targets: ["GitAccounts"]
         ),
         .library(
             name: "About",
@@ -92,6 +80,10 @@ let package = Package(
         .library(
             name: "TabBar",
             targets: ["TabBar"]
+        ),
+        .library(
+            name: "Git",
+            targets: ["Git"]
         ),
     ],
     dependencies: [
@@ -171,7 +163,7 @@ let package = Package(
             dependencies: [
                 "WorkspaceClient",
                 "CodeEditUI",
-                "GitClone",
+                "Git",
                 "AppPreferences",
                 "Keybindings",
             ],
@@ -184,37 +176,23 @@ let package = Package(
             name: "WelcomeModuleTests",
             dependencies: [
                 "WelcomeModule",
-                "GitClone",
+                "Git",
                 "ShellClient",
                 "SnapshotTesting",
             ],
-            path: "Modules/WelcomeModule/Tests"
+            path: "Modules/WelcomeModule/Tests",
+            exclude: ["__Snapshots__"]
         ),
         .target(
             name: "StatusBar",
             dependencies: [
-                "GitClient",
+                "Git",
                 "TerminalEmulator",
                 "CodeFile",
                 "CodeEditUI",
                 "CodeEditSymbols",
             ],
             path: "Modules/StatusBar/src"
-        ),
-        .target(
-            name: "GitClient",
-            dependencies: [
-                "ShellClient",
-            ],
-            path: "Modules/GitClient/src"
-        ),
-        .testTarget(
-            name: "GitClientTests",
-            dependencies: [
-                "GitClient",
-                "ShellClient",
-            ],
-            path: "Modules/GitClient/Tests"
         ),
         .target(
             name: "TerminalEmulator",
@@ -232,14 +210,6 @@ let package = Package(
             path: "Modules/Search/src"
         ),
         .target(
-            name: "GitClone",
-            dependencies: [
-                "GitClient",
-                "ShellClient"
-            ],
-            path: "Modules/GitClone/src"
-        ),
-        .target(
             name: "ShellClient",
             path: "Modules/ShellClient/src"
         ),
@@ -248,15 +218,11 @@ let package = Package(
             dependencies: [
                 "Preferences",
                 "CodeEditUI",
-                "GitAccounts",
+                "Git",
                 "CodeEditUtils",
                 "CodeEditSymbols",
             ],
             path: "Modules/AppPreferences/src"
-        ),
-        .target(
-            name: "GitAccounts",
-            path: "Modules/GitAccounts/src"
         ),
         .target(
             name: "About",
@@ -280,7 +246,7 @@ let package = Package(
             dependencies: [
                 "CodeEditSymbols",
                 "WorkspaceClient",
-                "GitClient"
+                "Git"
             ],
             path: "Modules/CodeEditUI/src"
         ),
@@ -289,10 +255,11 @@ let package = Package(
             dependencies: [
                 "CodeEditUI",
                 "WorkspaceClient",
-                "GitClient",
+                "Git",
                 "SnapshotTesting",
             ],
-            path: "Modules/CodeEditUI/Tests"
+            path: "Modules/CodeEditUI/Tests",
+            exclude: ["__Snapshots__"]
         ),
         .target(
             name: "Acknowledgements",
@@ -319,7 +286,7 @@ let package = Package(
         .target(
             name: "Feedback",
             dependencies: [
-                "GitAccounts",
+                "Git",
                 "CodeEditUI",
                 "AppPreferences",
                 "CodeEditUtils",
@@ -353,6 +320,21 @@ let package = Package(
                 "CodeEditUtils"
             ],
             path: "Modules/CodeEditUtils/Tests"
-        )
+        ),
+        .target(
+            name: "Git",
+            dependencies: [
+                "ShellClient"
+            ],
+            path: "Modules/Git/src"
+        ),
+        .testTarget(
+            name: "GitTests",
+            dependencies: [
+                "Git",
+                "ShellClient",
+            ],
+            path: "Modules/Git/Tests"
+        ),
     ]
 )

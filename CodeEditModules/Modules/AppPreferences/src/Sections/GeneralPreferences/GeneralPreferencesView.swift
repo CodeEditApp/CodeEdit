@@ -15,7 +15,19 @@ public struct GeneralPreferencesView: View {
     @StateObject
     private var prefs: AppPreferencesModel = .shared
 
-    public init() {}
+    @State
+    private var openInCodeEdit: Bool = true
+
+    public init() {
+        guard let defaults = UserDefaults.init(
+            suiteName: "austincondiff.CodeEdit.shared"
+        ) else {
+            print("Failed to get/init shared defaults")
+            return
+        }
+
+        self.openInCodeEdit = defaults.bool(forKey: "enableOpenInCE")
+    }
 
     public var body: some View {
         PreferencesContent {
@@ -31,6 +43,7 @@ public struct GeneralPreferencesView: View {
                 issueNavigatorDetailSection
                 dialogWarningsSection
             }
+            openInCodeEditToggle
         }
     }
 }
@@ -177,5 +190,22 @@ private extension GeneralPreferencesView {
             .buttonStyle(.bordered)
         }
         .disabled(true)
+    }
+
+    var openInCodeEditToggle: some View {
+        PreferencesSection("Finder Context Menu", hideLabels: false) {
+            Toggle("Show “Open With CodeEdit” option", isOn: $openInCodeEdit)
+                .toggleStyle(.checkbox)
+                .onChange(of: openInCodeEdit) { newValue in
+                    guard let defaults = UserDefaults.init(
+                        suiteName: "austincondiff.CodeEdit.shared"
+                    ) else {
+                        print("Failed to get/init shared defaults")
+                        return
+                    }
+
+                    defaults.set(newValue, forKey: "enableOpenInCE")
+                }
+        }
     }
 }

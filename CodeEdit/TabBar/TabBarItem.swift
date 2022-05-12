@@ -331,6 +331,8 @@ struct TabBarItem: View {
                     workspace.closeTabs(after: item.tabID)
                 }
             }
+            // Disable this option when current tab is the last one.
+            .disabled(workspace.selectionState.openedTabs.last?.id == item.tabID.id)
         }
     }
 }

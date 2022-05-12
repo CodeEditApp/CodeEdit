@@ -7,7 +7,7 @@
 
 import SwiftUI
 import CodeEditUI
-import GitAccounts
+import Git
 import AppPreferences
 
 public struct FeedbackView: View {

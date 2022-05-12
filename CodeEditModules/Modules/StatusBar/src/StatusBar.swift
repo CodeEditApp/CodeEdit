@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import GitClient
+import Git
 import CodeEditUI
 
 /// # StatusBarView
@@ -68,11 +68,11 @@ public struct StatusBarView: View {
             .padding(.horizontal, 10)
         }
         .overlay(alignment: .top) {
-            Divider()
+            PanelDivider()
         }
         .overlay(alignment: .bottom) {
             if model.isExpanded {
-                Divider()
+                PanelDivider()
             }
         }
         .frame(height: 29)
@@ -108,7 +108,7 @@ struct SwiftUIView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack(alignment: .bottom) {
             Color.white
-            StatusBarView(model: StatusBarModel(workspaceURL: URL(fileURLWithPath: "")))
+            StatusBarView(model: StatusBarModel(shellClient: .live(), workspaceURL: URL(fileURLWithPath: "")))
                 .previewLayout(.fixed(width: 1.336, height: 500.0))
                 .preferredColorScheme(.light)
         }
