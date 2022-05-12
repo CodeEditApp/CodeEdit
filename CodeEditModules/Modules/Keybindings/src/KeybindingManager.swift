@@ -10,22 +10,18 @@ import SwiftUI
 import AppPreferences
 
 public final class KeybindingManager {
-    init() {
-        self.keyboardShortcuts = ["recentProjectsViewCopyPath":
-                                    KeyboardShortcutWrapper(name: "Copy Path", description: "test",
-                                                            context: "recentProjects",
-                                                            keybinding: "C",
-                                                            modifiers: [".command"])]
-        loadKeybindings()
+    public var keyboardShortcuts = [String: KeyboardShortcutWrapper]()
+
+    private init() {
+//        self.keyboardShortcuts = [String: KeyboardShortcutWrapper]()
+        // loadKeybindings()
     }
 
-    static public var shared = KeybindingManager()
+    static public let shared: KeybindingManager = .init()
 
     // We need this fallback shortcut because optional shortcuts available only from 12.3, while we have target of 12.0x
     var fallbackShortcut = KeyboardShortcutWrapper(name: "?", description: "Test", context: "Fallback",
-                                                   keybinding: "?", modifiers: [".command", ".shift"])
-
-    public var keyboardShortcuts: [String: KeyboardShortcutWrapper]
+                                                   keybinding: "?", modifier: "shift", id: "fallback")
 
     public func addNewShortcut(shortcut: KeyboardShortcutWrapper, name: String) {
         KeybindingManager.shared.keyboardShortcuts[name] = (shortcut)
@@ -33,13 +29,18 @@ public final class KeybindingManager {
 
     private func loadKeybindings() {
 
-        var bindingsURL = Bundle.module.url(forResource: "default_keybindings.json", withExtension: nil)
-        guard var json = try? Data(contentsOf: bindingsURL!),
-              var prefs = try? JSONDecoder().decode(AppPreferences.self, from: json) else {
-            return
+        let bindingsURL = Bundle.module.url(forResource: "default_keybindings.json", withExtension: nil)
+        if let json = try? Data(contentsOf: bindingsURL!) {
+            do {
+                let prefs = try JSONDecoder().decode([KeyboardShortcutWrapper].self, from: json)
+                for pref in prefs {
+                    addNewShortcut(shortcut: pref, name: pref.id)
+                }
+                } catch {
+                    print("error:\(error)")
+                }
         }
-
-        print(json)
+            return
 //        let preferenceURL = AppPreferencesModel.shared.preferencesURL
     }
 
@@ -56,28 +57,46 @@ public final class KeybindingManager {
 
 public struct KeyboardShortcutWrapper: Codable {
     public var keyboardShortcut: KeyboardShortcut {
-        KeyboardShortcut.init(.init(Character(keybinding)))
+        return KeyboardShortcut.init(.init(Character(keybinding)), modifiers: parsedModifier)
+    }
+
+    public var parsedModifier: EventModifiers {
+        switch modifier {
+        case "command":
+            return EventModifiers.command
+        case "shift":
+            return EventModifiers.shift
+        case "option":
+            return EventModifiers.option
+        case "control":
+            return EventModifiers.control
+        default:
+            return EventModifiers.command
+        }
     }
     var name: String
     var description: String
     var context: String
     var keybinding: String
-    var modifiers: [String]
+    var modifier: String
+    var id: String
 
     enum CodingKeys: String, CodingKey {
         case name
         case description
         case context
         case keybinding
-        case modifiers
+        case modifier
+        case id
     }
 
-    init(name: String, description: String, context: String, keybinding: String, modifiers: [String]) {
+    init(name: String, description: String, context: String, keybinding: String, modifier: String, id: String) {
         self.name = name
         self.description = description
         self.context = context
         self.keybinding = keybinding
-        self.modifiers = modifiers
+        self.modifier = modifier
+        self.id = id
     }
 
     public init(from decoder: Decoder) throws {
@@ -86,11 +105,7 @@ public struct KeyboardShortcutWrapper: Codable {
         description = try container.decode(String.self, forKey: .description)
         context = try container.decode(String.self, forKey: .context)
         keybinding = try container.decode(String.self, forKey: .keybinding)
-        modifiers = try container.decode([String].self, forKey: .modifiers)
+        modifier = try container.decode(String.self, forKey: .modifier)
+        id = try container.decode(String.self, forKey: .id)
     }
-
-    func encode(from encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-    }
-
 }

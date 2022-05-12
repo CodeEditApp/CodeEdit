@@ -1,12 +1,5 @@
-{
-    "default": [
-        {
-            "name": "copy",
-            "description": "Copy command",
-            "context": "Global",
-            "modifiers": ["command"],
-            "keybinding": "c""
-        }
-    ]
-
-}
+[
+    {
+        "id": "recentProjectsViewCopyPath", "name": "copy", "description": "Copy command", "context": "Global", "modifier": "command", "keybinding": "c"
+    }
+]
