@@ -97,6 +97,14 @@
                BlueprintName = "StatusBarTests"
                ReferencedContainer = "container:CodeEditModules">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "StatusBarUnitTests/testStatusBarExpandedDark()">
+               </Test>
+               <Test
+                  Identifier = "StatusBarUnitTests/testStatusBarExpandedLight()">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
    </TestAction>
