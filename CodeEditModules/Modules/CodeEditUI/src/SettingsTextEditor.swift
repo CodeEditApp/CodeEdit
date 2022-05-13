@@ -21,7 +21,11 @@ public struct SettingsTextEditor: View {
 
     public var body: some View {
         Representable(text: $text, isFocused: $isFocus)
-        .overlay(Rectangle().stroke(Color.accentColor.opacity(isFocus ? 0.4 : 0), lineWidth: 2))
+            .overlay(focusOverlay)
+    }
+
+    private var focusOverlay: some View {
+      Rectangle().stroke(Color.accentColor.opacity(isFocus ? 0.4 : 0), lineWidth: 2)
     }
 }
 
@@ -52,10 +56,11 @@ private extension SettingsTextEditor {
 
         class Coordinator: NSObject, NSTextViewDelegate {
             var parent: Representable
+
             init(parent: Representable) {
                 self.parent = parent
             }
-          
+
             func textDidBeginEditing(_ notification: Notification) {
                 parent.isFocused = true
             }
