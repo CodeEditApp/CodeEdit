@@ -1,5 +1,5 @@
 [
     {
-        "id": "recentProjectsViewCopyPath", "name": "copy", "description": "Copy command", "context": "Global", "modifier": "command", "keybinding": "c"
+        "id": "copy", "name": "copy", "description": "Copy command", "context": "Global", "modifier": "command", "keybinding": "c"
     }
 ]

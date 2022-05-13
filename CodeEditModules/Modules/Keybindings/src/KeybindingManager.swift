@@ -13,8 +13,7 @@ public final class KeybindingManager {
     public var keyboardShortcuts = [String: KeyboardShortcutWrapper]()
 
     private init() {
-//        self.keyboardShortcuts = [String: KeyboardShortcutWrapper]()
-        // loadKeybindings()
+        loadKeybindings()
     }
 
     static public let shared: KeybindingManager = .init()
@@ -24,7 +23,7 @@ public final class KeybindingManager {
                                                    keybinding: "?", modifier: "shift", id: "fallback")
 
     public func addNewShortcut(shortcut: KeyboardShortcutWrapper, name: String) {
-        KeybindingManager.shared.keyboardShortcuts[name] = (shortcut)
+        keyboardShortcuts[name] = shortcut
     }
 
     private func loadKeybindings() {
@@ -48,6 +47,9 @@ public final class KeybindingManager {
 
     }
 
+    /// Get shortcut by name
+    /// - Parameter name: shortcut name
+    /// - Returns: KeyboardShortcutWrapper
     public func named(with name: String) -> KeyboardShortcutWrapper {
         let foundElement = keyboardShortcuts[name]
         return foundElement != nil ? foundElement! : fallbackShortcut

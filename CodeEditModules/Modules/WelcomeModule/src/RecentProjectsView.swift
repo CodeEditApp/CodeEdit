@@ -104,7 +104,7 @@ public struct RecentProjectsView: View {
                             .contextMenu {
                                 contextMenuShowInFinder(projectPath: projectPath)
                                 contextMenuCopy(path: projectPath)
-                                    .keyboardShortcut(mgr.named(with: "recentProjectsViewCopyPath").keyboardShortcut)
+                                    .keyboardShortcut(mgr.named(with: "copy").keyboardShortcut)
 
                                 Divider()
                                 contextMenuDelete(projectPath: projectPath)
@@ -124,7 +124,7 @@ public struct RecentProjectsView: View {
                                 pasteboard.setString(projectPath, forType: .string)
                             }
                             .buttonStyle(.borderless)
-                            .keyboardShortcut(mgr.named(with: "recentProjectsViewCopyPath").keyboardShortcut)
+                            .keyboardShortcut(mgr.named(with: "copy").keyboardShortcut)
                         }
 
                         Button("") {
