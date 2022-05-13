@@ -6,12 +6,14 @@
 //
 
 import SwiftUI
+import CodeEditUI
 
 /// A view that implements the `General` preference section
 public struct GeneralPreferencesView: View {
 
     private let inputWidth: Double = 160
     private let textEditorWidth: Double = 220
+    private let textEditorHeight: Double = 30
 
     @StateObject
     private var prefs: AppPreferencesModel = .shared
@@ -101,12 +103,14 @@ private extension GeneralPreferencesView {
             }
             .frame(width: inputWidth)
             if case .showOnly = prefs.preferences.general.fileExtensions {
-                TextEditor(text: $prefs.preferences.general.shownFileExtensions.string)
+                SettingsTextEditor(text: $prefs.preferences.general.shownFileExtensions.string)
                     .frame(width: textEditorWidth)
+                    .frame(height: textEditorHeight)
             }
             if case .hideOnly = prefs.preferences.general.fileExtensions {
-                TextEditor(text: $prefs.preferences.general.hiddenFileExtensions.string)
-                    .frame(width: textEditorWidth)
+                SettingsTextEditor(text: $prefs.preferences.general.hiddenFileExtensions.string)
+                .frame(width: textEditorWidth)
+                .frame(height: textEditorHeight)
             }
         }
     }
