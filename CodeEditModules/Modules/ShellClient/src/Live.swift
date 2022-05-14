@@ -35,7 +35,7 @@ public extension ShellClient {
                 cancellables[id] = NotificationCenter
                     .default
                     .publisher(for: .NSFileHandleDataAvailable, object: outputHandler)
-                    .sink { _ in
+                    .sink { _ in
                         let data = outputHandler.availableData
                         // swiftlint:disable:next empty_count
                         guard data.count > 0 else {
