@@ -11,8 +11,6 @@ import AppPreferences
 import CodeEditUI
 import TabBar
 
-// TODO: Optimize the body size.
-
 // Disable the rule because the tab bar view is fairly complicated.
 // It has the gesture implementation and its animations.
 // swiftlint:disable type_body_length
@@ -27,32 +25,61 @@ struct TabBar: View {
     @Environment(\.controlActiveState)
     private var activeState
 
-    private let windowController: NSWindowController
-
+    /// The workspace document.
     @ObservedObject
     private var workspace: WorkspaceDocument
 
+    /// The app preference.
     @StateObject
     private var prefs: AppPreferencesModel = .shared
 
-    @State
-    private var draggingItemId: TabBarItemID?
+    /// The controller of current NSWindow.
+    private let windowController: NSWindowController
 
+    /// The tab id of current dragging tab.
+    ///
+    /// It will be `nil` when there is no tab dragged currently.
+    @State
+    private var draggingTabId: TabBarItemID?
+
+    /// The start location of dragging.
+    ///
+    /// When there is no tab being dragged, it will be `nil`.
     @State
     private var draggingStartLocation: CGFloat?
 
+    /// Current opened tabs.
+    ///
+    /// This is a copy of `workspace.selectionState.openedTabs`.
+    /// I am making a copy of it because using state will hugely improve the dragging performance.
+    /// Updating ObservedObject too often will generate lags.
     @State
     private var openedTabs: [TabBarItemID] = []
 
+    /// A map of tab width.
+    ///
+    /// All width are measured dynamically (so it can also fit the Xcode tab bar style).
+    /// This is used to be added on the offset of current dragging tab in order to make a smooth
+    /// dragging experience.
     @State
     private var tabWidth: [TabBarItemID: CGFloat] = [:]
 
+    /// A map of tab location (CGRect).
+    ///
+    /// All locations are measured dynamically.
+    /// This is used to compute when we should swap two tabs based on current cursor location.
     @State
     private var tabLocations: [TabBarItemID: CGRect] = [:]
 
+    /// A map of tab offsets.
+    ///
+    /// This is used to determine the tab offset of every tab (by their tab id) while dragging.
     @State
     private var tabOffsets: [TabBarItemID: CGFloat] = [:]
 
+    /// The expected tab width in native tab bar style.
+    ///
+    /// This is computed by the total width of tab bar. It is updated automatically.
     @State
     private var expectedTabWidth: CGFloat = 0
 
@@ -82,8 +109,8 @@ struct TabBar: View {
     private func makeTabDragGesture(id: TabBarItemID) -> some Gesture {
         return DragGesture(minimumDistance: 2, coordinateSpace: .global)
             .onChanged({ value in
-                if draggingItemId != id {
-                    draggingItemId = id
+                if draggingTabId != id {
+                    draggingTabId = id
                     draggingStartLocation = value.startLocation.x
                 }
                 // Get the current cursor location.
@@ -141,7 +168,7 @@ struct TabBar: View {
                 }
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
                     if draggingStartLocation == nil {
-                        draggingItemId = nil
+                        draggingTabId = nil
                         workspace.selectionState.openedTabs = openedTabs
                     }
                 }
@@ -167,7 +194,7 @@ struct TabBar: View {
                                         expectedWidth: $expectedTabWidth,
                                         item: item,
                                         windowController: windowController,
-                                        draggingTabId: $draggingItemId,
+                                        draggingTabId: $draggingTabId,
                                         workspace: workspace
                                     )
                                     .frame(height: TabBar.height)

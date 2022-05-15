@@ -310,7 +310,7 @@ struct TabBarItem: View {
                     .foregroundColor(
                         isActive
                         ? Color(nsColor: .controlAccentColor).opacity(0.08)
-                        : (colorScheme == .dark ? .white.opacity(0.08) : .black.opacity(0.09))
+                        : (colorScheme == .dark ? .white.opacity(0.08) : .black.opacity(0.08))
                     )
             }
         }
