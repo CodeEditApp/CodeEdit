@@ -13,7 +13,8 @@ import TabBar
 
 // Disable the rule because the tab bar view is fairly complicated.
 // It has the gesture implementation and its animations.
-// swiftlint:disable type_body_length
+// I am now also disabling `file_length` rule because the dragging algorithm (with UX) is complex.
+// swiftlint:disable file_length type_body_length
 struct TabBar: View {
     /// The height of tab bar.
     /// I am not making it a private variable because it may need to be used in outside views.
@@ -45,8 +46,16 @@ struct TabBar: View {
     /// The start location of dragging.
     ///
     /// When there is no tab being dragged, it will be `nil`.
+    /// - TODO: Check if I can use `value.startLocation` trustfully.
     @State
     private var draggingStartLocation: CGFloat?
+
+    /// The last location of dragging.
+    ///
+    /// This is used to determine the dragging direction.
+    /// - TODO: Check if I can use `value.translation` instead.
+    @State
+    private var draggingLastLocation: CGFloat?
 
     /// Current opened tabs.
     ///
@@ -94,6 +103,9 @@ struct TabBar: View {
         self.workspace = workspace
     }
 
+    /// Update the expected tab width when corresponding UI state is updated.
+    ///
+    /// This function will be called when the number of tabs or the parent size is changed.
     private func updateExpectedTabWidth(proxy: GeometryProxy) {
         expectedTabWidth = max(
             // Equally divided size of a native tab.
@@ -112,22 +124,30 @@ struct TabBar: View {
                 if draggingTabId != id {
                     draggingTabId = id
                     draggingStartLocation = value.startLocation.x
+                    draggingLastLocation = value.location.x
                 }
                 // Get the current cursor location.
                 let currentLocation = value.location.x
                 guard let startLocation = draggingStartLocation,
-                      let currentIndex = openedTabs.firstIndex(of: id) else { return }
+                      let currentIndex = openedTabs.firstIndex(of: id),
+                      let currentTabWidth = tabWidth[id],
+                      let lastLocation = draggingLastLocation
+                else { return }
+                let dragDifference = currentLocation - lastLocation
                 let previousIndex = currentIndex > 0 ? currentIndex - 1 : nil
                 let nextIndex = currentIndex < openedTabs.count - 1 ? currentIndex + 1 : nil
                 tabOffsets[id] = currentLocation - startLocation
                 // Interacting with the previous tab.
-                if previousIndex != nil {
+                if previousIndex != nil && dragDifference < 0 {
                     // Wrap `previousTabIndex` because it may be `nil`.
                     guard let previousTabIndex = previousIndex,
                           let previousTabLocation = tabLocations[openedTabs[previousTabIndex]],
                           let previousTabWidth = tabWidth[openedTabs[previousTabIndex]]
                     else { return }
-                    if currentLocation < previousTabLocation.maxX - previousTabWidth * 0.2 {
+                    if currentLocation < max(
+                        previousTabLocation.maxX - previousTabWidth * 0.1,
+                        previousTabLocation.minX + currentTabWidth * 0.8
+                    ) {
                         let changing = previousTabWidth - 1 // One offset for overlapping divider.
                         draggingStartLocation! -= changing
                         withAnimation {
@@ -141,13 +161,16 @@ struct TabBar: View {
                     }
                 }
                 // Interacting with the next tab.
-                if nextIndex != nil {
+                if nextIndex != nil && dragDifference > 0 {
                     // Wrap `previousTabIndex` because it may be `nil`.
                     guard let nextTabIndex = nextIndex,
                           let nextTabLocation = tabLocations[openedTabs[nextTabIndex]],
                           let nextTabWidth = tabWidth[openedTabs[nextTabIndex]]
                     else { return }
-                    if currentLocation > nextTabLocation.minX + nextTabWidth * 0.2 {
+                    if currentLocation > min(
+                        nextTabLocation.minX + nextTabWidth * 0.1,
+                        nextTabLocation.maxX - currentTabWidth * 0.8
+                    ) {
                         let changing = nextTabWidth - 1 // One offset for overlapping divider.
                         draggingStartLocation! += changing
                         withAnimation {
@@ -160,15 +183,24 @@ struct TabBar: View {
                         return
                     }
                 }
+                // Only update the last dragging location when there is enough offset.
+                if draggingLastLocation == nil || abs(value.location.x - draggingLastLocation!) >= 10 {
+                    draggingLastLocation = value.location.x
+                }
             })
             .onEnded({ _ in
                 draggingStartLocation = nil
+                draggingLastLocation = nil
                 withAnimation(.easeInOut(duration: 0.25)) {
                     tabOffsets = [:]
                 }
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                    draggingTabId = nil
+                }
+                // Sync the workspace's `openedTabs` 150ms after animation is finished.
+                // In order to avoid the lag due to the update of workspace state.
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.40) {
                     if draggingStartLocation == nil {
-                        draggingTabId = nil
                         workspace.selectionState.openedTabs = openedTabs
                     }
                 }

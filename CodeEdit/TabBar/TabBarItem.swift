@@ -243,7 +243,8 @@ struct TabBarItem: View {
                     } onRelease: {
                         isPressingClose = false
                     }
-                    .opacity(isHovering ? 1 : 0)
+                    // Only show when the mouse is hovering and there is no tab dragging.
+                    .opacity(isHovering && draggingTabId == nil ? 1 : 0)
                     .animation(.easeInOut(duration: 0.08), value: isHovering)
                     .padding(.leading, prefs.preferences.general.tabBarStyle == .xcode ? 3.5 : 4)
                 }
