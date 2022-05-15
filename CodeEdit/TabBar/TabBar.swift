@@ -146,7 +146,7 @@ struct TabBar: View {
                     else { return }
                     if currentLocation < max(
                         previousTabLocation.maxX - previousTabWidth * 0.1,
-                        previousTabLocation.minX + currentTabWidth * 0.8
+                        previousTabLocation.minX + currentTabWidth * 0.9
                     ) {
                         let changing = previousTabWidth - 1 // One offset for overlapping divider.
                         draggingStartLocation! -= changing
@@ -169,7 +169,7 @@ struct TabBar: View {
                     else { return }
                     if currentLocation > min(
                         nextTabLocation.minX + nextTabWidth * 0.1,
-                        nextTabLocation.maxX - currentTabWidth * 0.8
+                        nextTabLocation.maxX - currentTabWidth * 0.9
                     ) {
                         let changing = nextTabWidth - 1 // One offset for overlapping divider.
                         draggingStartLocation! += changing
