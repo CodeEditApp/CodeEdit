@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import TabBar
+import UniformTypeIdentifiers
 
 public extension WorkspaceClient {
     enum FileItemCodingKeys: String, CodingKey {
@@ -23,11 +24,11 @@ public extension WorkspaceClient {
         }
 
         public var title: String {
-            self.url.lastPathComponent
+            url.lastPathComponent
         }
 
         public var icon: Image {
-            Image(systemName: self.systemImage)
+            Image(systemName: systemImage)
         }
 
         public typealias ID = String
@@ -114,16 +115,21 @@ public extension WorkspaceClient {
             typeHidden ? url.deletingPathExtension().lastPathComponent : fileName
         }
 
+        /// Return the file's UTType
+        public var contentType: UTType? {
+            try? url.resourceValues(forKeys: [.contentTypeKey]).contentType
+        }
+
         /// Returns a string describing a SFSymbol for folders
         ///
         /// If it is the top-level folder this will return `"square.dashed.inset.filled"`.
         /// If it is a `.codeedit` folder this will return `"folder.fill.badge.gearshape"`.
         /// If it has children this will return `"folder.fill"` otherwise `"folder"`.
         private func folderIcon(_ children: [FileItem]) -> String {
-            if self.parent == nil {
+            if parent == nil {
                 return "square.dashed.inset.filled"
             }
-            if self.fileName == ".codeedit" {
+            if fileName == ".codeedit" {
                 return "folder.fill.badge.gearshape"
             }
             return children.isEmpty ? "folder" : "folder.fill"

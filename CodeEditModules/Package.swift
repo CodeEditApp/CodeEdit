@@ -175,18 +175,27 @@ let package = Package(
                 "ShellClient",
                 "SnapshotTesting",
             ],
-            path: "Modules/WelcomeModule/Tests"
+            path: "Modules/WelcomeModule/Tests",
+            exclude: ["__Snapshots__"]
         ),
         .target(
             name: "StatusBar",
             dependencies: [
-                "Git",
                 "TerminalEmulator",
                 "CodeFile",
                 "CodeEditUI",
                 "CodeEditSymbols",
             ],
             path: "Modules/StatusBar/src"
+        ),
+        .testTarget(
+            name: "StatusBarTests",
+            dependencies: [
+                "StatusBar",
+                "SnapshotTesting"
+            ],
+            path: "Modules/StatusBar/Tests",
+            exclude: ["__Snapshots__"]
         ),
         .target(
             name: "TerminalEmulator",
@@ -252,7 +261,8 @@ let package = Package(
                 "Git",
                 "SnapshotTesting",
             ],
-            path: "Modules/CodeEditUI/Tests"
+            path: "Modules/CodeEditUI/Tests",
+            exclude: ["__Snapshots__"]
         ),
         .target(
             name: "Acknowledgements",
