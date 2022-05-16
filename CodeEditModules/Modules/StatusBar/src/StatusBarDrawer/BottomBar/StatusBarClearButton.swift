@@ -29,6 +29,6 @@ internal struct StatusBarClearButton: View {
 struct StatusBarClearButton_Previews: PreviewProvider {
     static var previews: some View {
         let url = URL(string: "~/Developer")!
-        StatusBarClearButton(model: StatusBarModel(shellClient: .live(), workspaceURL: url))
+        StatusBarClearButton(model: StatusBarModel(workspaceURL: url))
     }
 }

@@ -55,7 +55,7 @@ public struct StatusBarView: View {
                     Divider()
                         .frame(maxHeight: 12)
                         .padding(.horizontal, 7)
-                    SegmentedControl($model.selectedTab, options: StatusBarTab.allOptions)
+                    SegmentedControl($model.selectedTab, options: StatusBarTabType.allOptions)
                         .opacity(model.isExpanded ? 1 : 0)
                 }
                 Spacer()
@@ -68,11 +68,11 @@ public struct StatusBarView: View {
             .padding(.horizontal, 10)
         }
         .overlay(alignment: .top) {
-            Divider()
+            PanelDivider()
         }
         .overlay(alignment: .bottom) {
             if model.isExpanded {
-                Divider()
+                PanelDivider()
             }
         }
         .frame(height: 29)
@@ -108,7 +108,7 @@ struct SwiftUIView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack(alignment: .bottom) {
             Color.white
-            StatusBarView(model: StatusBarModel(shellClient: .live(), workspaceURL: URL(fileURLWithPath: "")))
+            StatusBarView(model: StatusBarModel(workspaceURL: URL(fileURLWithPath: "")))
                 .previewLayout(.fixed(width: 1.336, height: 500.0))
                 .preferredColorScheme(.light)
         }

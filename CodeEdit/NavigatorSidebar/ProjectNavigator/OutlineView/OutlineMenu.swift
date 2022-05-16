@@ -6,23 +6,25 @@
 //
 
 import SwiftUI
+import UniformTypeIdentifiers
 import WorkspaceClient
 
 /// A subclass of `NSMenu` implementing the contextual menu for the project navigator
 final class OutlineMenu: NSMenu {
+    typealias Item = WorkspaceClient.FileItem
 
     /// The item to show the contextual menu for
-    var item: WorkspaceClient.FileItem?
+    var item: Item?
 
     var outlineView: NSOutlineView
 
     init(sender: NSOutlineView) {
-        self.outlineView = sender
+        outlineView = sender
         super.init(title: "Options")
     }
 
     @available(*, unavailable)
-    required init(coder: NSCoder) {
+    required init(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -41,7 +43,8 @@ final class OutlineMenu: NSMenu {
 
     /// Setup the menu and disables certain items when `isFile` is false
     /// - Parameter isFile: A flag indicating that the item is a file instead of a directory
-    private func setupMenu(isFile: Bool) {
+    private func setupMenu() {
+        guard let item = item else { return }
         let showInFinder = menuItem("Show in Finder", action: #selector(showInFinder))
 
         let openInTab = menuItem("Open in Tab", action: nil)
@@ -57,14 +60,14 @@ final class OutlineMenu: NSMenu {
         let delete = menuItem("Delete", action: #selector(delete))
 
         let sortByName = menuItem("Sort by Name", action: nil)
-        sortByName.isEnabled = !isFile
+        sortByName.isEnabled = item.isFolder
 
         let sortByType = menuItem("Sort by Type", action: nil)
-        sortByType.isEnabled = !isFile
+        sortByType.isEnabled = item.isFolder
 
         let sourceControl = menuItem("Source Control", action: nil)
 
-        self.items = [
+        items = [
             showInFinder,
             NSMenuItem.separator(),
             openInTab,
@@ -85,26 +88,66 @@ final class OutlineMenu: NSMenu {
             sourceControl,
         ]
 
-        self.setSubmenu(openAsMenu(), for: openAs)
-        self.setSubmenu(sourceControlMenu(), for: sourceControl)
+        setSubmenu(openAsMenu(item: item), for: openAs)
+        setSubmenu(sourceControlMenu(item: item), for: sourceControl)
     }
 
     /// Submenu for **Open As** menu item.
-    private func openAsMenu() -> NSMenu {
+    private func openAsMenu(item: Item) -> NSMenu {
         let openAsMenu = NSMenu(title: "Open As")
-        openAsMenu.addItem(withTitle: "Source Core", action: nil, keyEquivalent: "")
-        openAsMenu.addItem(.separator())
-        openAsMenu.addItem(withTitle: "ASCII Property List", action: nil, keyEquivalent: "")
-        openAsMenu.addItem(withTitle: "Hex", action: nil, keyEquivalent: "")
-        openAsMenu.addItem(withTitle: "Quick Look", action: nil, keyEquivalent: "")
+        func getMenusItems() -> ([NSMenuItem], [NSMenuItem]) {
+            // Use UTType to distinguish between bundle file and user-browsable directory
+            // The isDirectory property is not accurate on this.
+            guard let type = item.contentType else { return ([.none()], []) }
+            if type.conforms(to: .folder) {
+                return ([.none()], [])
+            }
+            var primaryItems = [NSMenuItem]()
+            if type.conforms(to: .sourceCode) {
+                primaryItems.append(.sourceCode())
+            }
+            if type.conforms(to: .propertyList) {
+                primaryItems.append(.propertyList())
+            }
+            if type.conforms(to: UTType(filenameExtension: "xcassets")!) {
+                primaryItems.append(NSMenuItem(title: "Asset Catalog Document", action: nil, keyEquivalent: ""))
+            }
+            if type.conforms(to: UTType(filenameExtension: "xib")!) {
+                primaryItems.append(NSMenuItem(title: "Interface Builder XIB Document", action: nil, keyEquivalent: ""))
+            }
+            if type.conforms(to: UTType(filenameExtension: "xcodeproj")!) {
+                primaryItems.append(NSMenuItem(title: "Xcode Project", action: nil, keyEquivalent: ""))
+            }
+            var secondaryItems = [NSMenuItem]()
+            if type.conforms(to: .text) {
+                secondaryItems.append(.asciiPropertyList())
+                secondaryItems.append(.hex())
+            }
 
+            // FIXME: Update the quickLook condition
+            if type.conforms(to: .data) {
+                secondaryItems.append(.quickLook())
+            }
+
+            return (primaryItems, secondaryItems)
+        }
+        let (primaryItems, secondaryItems) = getMenusItems()
+        for item in primaryItems {
+            openAsMenu.addItem(item)
+        }
+        if !secondaryItems.isEmpty {
+            openAsMenu.addItem(.separator())
+        }
+        for item in secondaryItems {
+            openAsMenu.addItem(item)
+        }
         return openAsMenu
     }
 
     /// Submenu for **Source Control** menu item.
-    private func sourceControlMenu() -> NSMenu {
+    private func sourceControlMenu(item: Item) -> NSMenu {
         let sourceControlMenu = NSMenu(title: "Source Control")
-        sourceControlMenu.addItem(withTitle: "Commit...", action: nil, keyEquivalent: "")
+        sourceControlMenu.addItem(withTitle: "Commit \"\(item.fileName)\"...", action: nil, keyEquivalent: "")
         sourceControlMenu.addItem(.separator())
         sourceControlMenu.addItem(withTitle: "Discard Changes...", action: nil, keyEquivalent: "")
         sourceControlMenu.addItem(.separator())
@@ -116,10 +159,8 @@ final class OutlineMenu: NSMenu {
 
     /// Updates the menu for the selected item and hides it if no item is provided.
     override func update() {
-        self.removeAllItems()
-        if let item = item {
-            setupMenu(isFile: item.children == nil)
-        }
+        removeAllItems()
+        setupMenu()
     }
 
     /// Action that opens **Finder** at the items location.
@@ -132,5 +173,33 @@ final class OutlineMenu: NSMenu {
     @objc
     private func delete() {
         item?.delete()
+    }
+}
+
+extension NSMenuItem {
+    fileprivate static func none() -> NSMenuItem {
+        let item = NSMenuItem(title: "<None>", action: nil, keyEquivalent: "")
+        item.isEnabled = false
+        return item
+    }
+
+    fileprivate static func sourceCode() -> NSMenuItem {
+        NSMenuItem(title: "Source Code", action: nil, keyEquivalent: "")
+    }
+
+    fileprivate static func propertyList() -> NSMenuItem {
+        NSMenuItem(title: "Property List", action: nil, keyEquivalent: "")
+    }
+
+    fileprivate static func asciiPropertyList() -> NSMenuItem {
+        NSMenuItem(title: "ASCII Property List", action: nil, keyEquivalent: "")
+    }
+
+    fileprivate static func hex() -> NSMenuItem {
+        NSMenuItem(title: "Hex", action: nil, keyEquivalent: "")
+    }
+
+    fileprivate static func quickLook() -> NSMenuItem {
+        NSMenuItem(title: "Quick Look", action: nil, keyEquivalent: "")
     }
 }
