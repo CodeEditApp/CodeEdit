@@ -90,24 +90,24 @@ private extension GeneralPreferencesView {
 
     var fileExtensionsSection: some View {
         PreferencesSection("File Extensions") {
-            Picker("File Extensions:", selection: $prefs.preferences.general.fileExtensions) {
+            Picker("File Extensions:", selection: $prefs.preferences.general.fileExtensionsVisibility) {
                 Text("Hide all")
-                    .tag(AppPreferences.FileExtensions.hideAll)
+                    .tag(AppPreferences.FileExtensionsVisibility.hideAll)
                 Text("Show all")
-                    .tag(AppPreferences.FileExtensions.showAll)
+                    .tag(AppPreferences.FileExtensionsVisibility.showAll)
                 Divider()
                 Text("Show only")
-                    .tag(AppPreferences.FileExtensions.showOnly)
+                    .tag(AppPreferences.FileExtensionsVisibility.showOnly)
                 Text("Hide only")
-                    .tag(AppPreferences.FileExtensions.hideOnly)
+                    .tag(AppPreferences.FileExtensionsVisibility.hideOnly)
             }
             .frame(width: inputWidth)
-            if case .showOnly = prefs.preferences.general.fileExtensions {
+            if case .showOnly = prefs.preferences.general.fileExtensionsVisibility {
                 SettingsTextEditor(text: $prefs.preferences.general.shownFileExtensions.string)
                     .frame(width: textEditorWidth)
                     .frame(height: textEditorHeight)
             }
-            if case .hideOnly = prefs.preferences.general.fileExtensions {
+            if case .hideOnly = prefs.preferences.general.fileExtensionsVisibility {
                 SettingsTextEditor(text: $prefs.preferences.general.hiddenFileExtensions.string)
                 .frame(width: textEditorWidth)
                 .frame(height: textEditorHeight)

@@ -31,7 +31,7 @@ struct OutlineView: NSViewControllerRepresentable {
     func updateNSViewController(_ nsViewController: OutlineViewController, context: Context) {
         nsViewController.iconColor = prefs.preferences.general.fileIconStyle
         nsViewController.rowHeight = rowHeight
-        nsViewController.fileExtension = prefs.preferences.general.fileExtensions
+        nsViewController.fileExtensionsVisibility = prefs.preferences.general.fileExtensionsVisibility
         nsViewController.shownFileExtensions = prefs.preferences.general.shownFileExtensions
         nsViewController.hiddenFileExtensions = prefs.preferences.general.hiddenFileExtensions
         nsViewController.updateSelection()

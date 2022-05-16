@@ -35,9 +35,9 @@ final class OutlineViewController: NSViewController {
     var workspace: WorkspaceDocument?
 
     var iconColor: AppPreferences.FileIconStyle = .color
-    var fileExtension: AppPreferences.FileExtensions = .showAll
-    var shownFileExtensions: AppPreferences.FileExtensionsCollection = .default
-    var hiddenFileExtensions: AppPreferences.FileExtensionsCollection = .default
+    var fileExtensionsVisibility: AppPreferences.FileExtensionsVisibility = .showAll
+    var shownFileExtensions: AppPreferences.FileExtensions = .default
+    var hiddenFileExtensions: AppPreferences.FileExtensions = .default
 
     var rowHeight: Double = 22 {
         didSet {
@@ -174,7 +174,7 @@ extension OutlineViewController: NSOutlineViewDelegate {
     }
 
     private func outlineViewLabel(for item: Item) -> String {
-        switch fileExtension {
+        switch fileExtensionsVisibility {
         case .hideAll:
             return item.fileName(typeHidden: true)
         case .showAll:
