@@ -48,6 +48,8 @@ struct TabBarItem: View {
 
     private var windowController: NSWindowController
 
+    private var isTemporary: Bool
+
     var isActive: Bool {
         item.tabID == workspace.selectionState.selectedId
     }
@@ -80,6 +82,7 @@ struct TabBarItem: View {
         self.item = item
         self.windowController = windowController
         self.workspace = workspace
+        self.isTemporary = workspace.selectionState.temporaryTab == item.tabID
     }
 
     @ViewBuilder
@@ -100,7 +103,11 @@ struct TabBarItem: View {
                     )
                     .frame(width: 12, height: 12)
                 Text(item.title)
-                    .font(.system(size: 11.0))
+                    .font(
+                        isTemporary
+                        ? .system(size: 11.0).italic()
+                        : .system(size: 11.0)
+                    )
                     .lineLimit(1)
             }
             .frame(

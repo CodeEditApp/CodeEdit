@@ -15,6 +15,7 @@ struct WorkspaceSelectionState: Codable {
 
     var selectedId: TabBarItemID?
     var openedTabs: [TabBarItemID] = []
+    var temporaryTab: TabBarItemID?
 
     var selected: TabBarItemRepresentable? {
         guard let selectedId = selectedId else { return nil }
@@ -27,7 +28,7 @@ struct WorkspaceSelectionState: Codable {
     var openedExtensions: [Plugin] = []
 
     enum CodingKeys: String, CodingKey {
-        case selectedId, openedTabs, openedExtensions
+        case selectedId, openedTabs, temporaryTab, openedExtensions
     }
 
     init() {
@@ -37,6 +38,7 @@ struct WorkspaceSelectionState: Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         selectedId = try container.decode(TabBarItemID?.self, forKey: .selectedId)
         openedTabs = try container.decode([TabBarItemID].self, forKey: .openedTabs)
+        temporaryTab = try container.decode(TabBarItemID?.self, forKey: .temporaryTab)
         openedExtensions = try container.decode([Plugin].self, forKey: .openedExtensions)
     }
 
@@ -44,6 +46,7 @@ struct WorkspaceSelectionState: Codable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(selectedId, forKey: .selectedId)
         try container.encode(openedTabs, forKey: .openedTabs)
+        try container.encode(temporaryTab, forKey: .temporaryTab)
         try container.encode(openedExtensions, forKey: .openedExtensions)
     }
 

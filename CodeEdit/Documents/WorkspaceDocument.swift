@@ -43,6 +43,8 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     /// - Parameter item: any item which can be represented as a tab
     func openTab(item: TabBarItemRepresentable) {
         do {
+            updateNewlyOpenedTabs(item: item)
+
             switch item.tabID {
             case .codeEditor:
                 guard let file = item as? WorkspaceClient.FileItem else { return }
@@ -52,16 +54,53 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
                 self.openExtension(item: plugin)
             }
 
-            if !selectionState.openedTabs.contains(item.tabID) {
-                selectionState.openedTabs.append(item.tabID)
-            }
-
             if selectionState.selectedId != item.tabID {
                 selectionState.selectedId = item.tabID
             }
         } catch let err {
             Swift.print(err)
         }
+    }
+
+    private func updateNewlyOpenedTabs(item: TabBarItemRepresentable) {
+        if !selectionState.openedTabs.contains(item.tabID) {
+            selectionState.openedTabs.append(item.tabID)
+
+            // If there is no temporary tab, temp tabs are enabled, and this tab hasn't
+            // already been opened: make this the temporary tab.
+            if selectionState.temporaryTab == nil {
+                selectionState.temporaryTab = item.tabID
+            } else if selectionState.temporaryTab != item.tabID {
+                // If there is a temporary tab, we need to close it first before 
+                // making the new tab the temp tab.
+                closeTemporaryTab(id: selectionState.temporaryTab!)
+                selectionState.temporaryTab = item.tabID
+            }
+        }
+    }
+
+    /// Closes an open temporary tab,  does not save the temporary tab's file.
+    /// Removes the tab item from `openedCodeFiles`, `openedExtensions`, and `openFileItems`.
+    /// - Parameter id: The ID of the current temporary tab that should be removed.
+    private func closeTemporaryTab(id: TabBarItemID) {
+        guard let openTabIdx = selectionState.openedTabs.firstIndex(of: id) else { return }
+        selectionState.openedTabs.remove(at: openTabIdx)
+
+        switch id {
+        case .codeEditor:
+            guard let item = selectionState.getItemByTab(id: id)
+                    as? WorkspaceClient.FileItem else { return }
+            selectionState.openedCodeFiles.removeValue(forKey: item)
+        case .extensionInstallation:
+            guard let item = selectionState.getItemByTab(id: id)
+                    as? Plugin else { return }
+            closeExtensionTab(item: item)
+        }
+
+        guard let openFileItemIdx = selectionState
+            .openFileItems
+            .firstIndex(where: { $0.tabID == id}) else { return }
+        selectionState.openFileItems.remove(at: openFileItemIdx)
     }
 
     private func openFile(item: WorkspaceClient.FileItem) throws {
