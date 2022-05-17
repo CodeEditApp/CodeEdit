@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  SettingsTextEditor.swift
 //  
 //
 //  Created by Andrey Plotnikov on 07.05.2022.
