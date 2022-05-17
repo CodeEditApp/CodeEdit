@@ -43,6 +43,9 @@ struct TabBar: View {
     @State
     private var draggingTabId: TabBarItemID?
 
+    @State
+    private var onDragTabId: TabBarItemID?
+
     /// The start location of dragging.
     ///
     /// When there is no tab being dragged, it will be `nil`.
@@ -97,6 +100,9 @@ struct TabBar: View {
     @State
     private var isHoveringOverTabs: Bool = false
 
+    @State
+    private var shouldOnDrag: Bool = false
+
     // TabBar(windowController: windowController, workspace: workspace)
     init(windowController: NSWindowController, workspace: WorkspaceDocument) {
         self.windowController = windowController
@@ -117,14 +123,28 @@ struct TabBar: View {
 
     // Disable the rule because this function is implementing the drag gesture and its animations.
     // It is fairly complicated, so ignore the function body length limitation for now.
-    // swiftlint:disable function_body_length
+    // swiftlint:disable function_body_length cyclomatic_complexity
     private func makeTabDragGesture(id: TabBarItemID) -> some Gesture {
         return DragGesture(minimumDistance: 2, coordinateSpace: .global)
             .onChanged({ value in
                 if draggingTabId != id {
+                    shouldOnDrag = false
                     draggingTabId = id
                     draggingStartLocation = value.startLocation.x
                     draggingLastLocation = value.location.x
+                }
+                if abs(value.location.y - value.startLocation.y) > TabBar.height {
+                    shouldOnDrag = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+                        shouldOnDrag = false
+                        draggingStartLocation = nil
+                        draggingLastLocation = nil
+                        draggingTabId = nil
+                        withAnimation(.easeInOut(duration: 0.25)) {
+                            tabOffsets = [:]
+                        }
+                    })
+                    return
                 }
                 // Get the current cursor location.
                 let currentLocation = value.location.x
@@ -189,6 +209,7 @@ struct TabBar: View {
                 }
             })
             .onEnded({ _ in
+                shouldOnDrag = false
                 draggingStartLocation = nil
                 draggingLastLocation = nil
                 withAnimation(.easeInOut(duration: 0.25)) {
@@ -206,7 +227,7 @@ struct TabBar: View {
                 }
             })
     }
-    // swiftlint:enable function_body_length
+    // swiftlint:enable function_body_length cyclomatic_complexity
 
     var body: some View {
         HStack(alignment: .center, spacing: 0) {
@@ -227,6 +248,7 @@ struct TabBar: View {
                                         item: item,
                                         windowController: windowController,
                                         draggingTabId: $draggingTabId,
+                                        onDragTabId: $onDragTabId,
                                         workspace: workspace
                                     )
                                     .frame(height: TabBar.height)
@@ -253,7 +275,10 @@ struct TabBar: View {
                                         }
                                     }
                                     .offset(x: tabOffsets[id] ?? 0, y: 0)
-                                    .highPriorityGesture(makeTabDragGesture(id: id))
+                                    .highPriorityGesture(
+                                        makeTabDragGesture(id: id),
+                                        including: shouldOnDrag ? .subviews : .all
+                                    )
                                 }
                             }
                         }

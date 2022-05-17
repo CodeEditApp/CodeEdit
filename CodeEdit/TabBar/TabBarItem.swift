@@ -66,6 +66,9 @@ struct TabBarItem: View {
     @Binding
     private var draggingTabId: TabBarItemID?
 
+    @Binding
+    private var onDragTabId: TabBarItemID?
+
     /// The current WorkspaceDocument object.
     ///
     /// It contains the workspace-related information like selection states.
@@ -122,12 +125,14 @@ struct TabBarItem: View {
         item: TabBarItemRepresentable,
         windowController: NSWindowController,
         draggingTabId: Binding<TabBarItemID?>,
+        onDragTabId: Binding<TabBarItemID?>,
         workspace: WorkspaceDocument
     ) {
         self._expectedWidth = expectedWidth
         self.item = item
         self.windowController = windowController
         self._draggingTabId = draggingTabId
+        self._onDragTabId = onDragTabId
         self.workspace = workspace
     }
 
@@ -302,7 +307,13 @@ struct TabBarItem: View {
     var body: some View {
         Button(
             action: switchAction,
-            label: { content }
+            label: {
+                content
+                    .onDrag({
+                        onDragTabId = item.tabID
+                        return .init(object: NSString(string: "\(item.tabID)"))
+                    })
+            }
         )
         .buttonStyle(TabBarItemButtonStyle(isPressing: $isPressing))
         .background {
@@ -364,7 +375,7 @@ struct TabBarItem: View {
             x: isAppeared || prefs.preferences.general.tabBarStyle == .native ? 0 : -14,
             y: 0
         )
-        .opacity(isAppeared ? 1.0 : 0.0)
+        .opacity(isAppeared && onDragTabId != item.tabID ? 1.0 : 0.0)
         .zIndex(
             isActive
             ? (prefs.preferences.general.tabBarStyle == .native ? -1 : 2)
