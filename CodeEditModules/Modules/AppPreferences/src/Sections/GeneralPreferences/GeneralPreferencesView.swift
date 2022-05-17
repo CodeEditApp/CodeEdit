@@ -6,11 +6,14 @@
 //
 
 import SwiftUI
+import CodeEditUI
 
 /// A view that implements the `General` preference section
 public struct GeneralPreferencesView: View {
 
     private let inputWidth: Double = 160
+    private let textEditorWidth: Double = 220
+    private let textEditorHeight: Double = 30
 
     @StateObject
     private var prefs: AppPreferencesModel = .shared
@@ -85,21 +88,31 @@ private extension GeneralPreferencesView {
         .disabled(true)
     }
 
-    // TODO: Implement reflecting File Extensions preference and remove disabled modifier
     var fileExtensionsSection: some View {
         PreferencesSection("File Extensions") {
-            Picker("File Extensions:", selection: $prefs.preferences.general.fileExtensions) {
+            Picker("File Extensions:", selection: $prefs.preferences.general.fileExtensionsVisibility) {
                 Text("Hide all")
-                    .tag(AppPreferences.FileExtensions.hideAll)
+                    .tag(AppPreferences.FileExtensionsVisibility.hideAll)
                 Text("Show all")
-                    .tag(AppPreferences.FileExtensions.showAll)
+                    .tag(AppPreferences.FileExtensionsVisibility.showAll)
                 Divider()
                 Text("Show only")
-                    .tag(AppPreferences.FileExtensions.showOnly)
+                    .tag(AppPreferences.FileExtensionsVisibility.showOnly)
+                Text("Hide only")
+                    .tag(AppPreferences.FileExtensionsVisibility.hideOnly)
             }
             .frame(width: inputWidth)
+            if case .showOnly = prefs.preferences.general.fileExtensionsVisibility {
+                SettingsTextEditor(text: $prefs.preferences.general.shownFileExtensions.string)
+                    .frame(width: textEditorWidth)
+                    .frame(height: textEditorHeight)
+            }
+            if case .hideOnly = prefs.preferences.general.fileExtensionsVisibility {
+                SettingsTextEditor(text: $prefs.preferences.general.hiddenFileExtensions.string)
+                .frame(width: textEditorWidth)
+                .frame(height: textEditorHeight)
+            }
         }
-        .disabled(true)
     }
 
     var fileIconStyleSection: some View {

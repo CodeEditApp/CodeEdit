@@ -110,6 +110,11 @@ public extension WorkspaceClient {
             url.pathExtension
         }
 
+        /// Returns the file name with optional extension (e.g.: `Package.swift`)
+        public func fileName(typeHidden: Bool) -> String {
+            typeHidden ? url.deletingPathExtension().lastPathComponent : fileName
+        }
+
         /// Return the file's UTType
         public var contentType: UTType? {
             try? url.resourceValues(forKeys: [.contentTypeKey]).contentType
