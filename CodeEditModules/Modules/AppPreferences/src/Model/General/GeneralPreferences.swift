@@ -22,7 +22,13 @@ public extension AppPreferences {
         public var showLiveIssues: Bool = true
 
         /// The show file extensions behavior of the app
-        public var fileExtensions: FileExtensions = .showAll
+        public var fileExtensionsVisibility: FileExtensionsVisibility = .showAll
+
+        /// The file extensions collection to display
+        public var shownFileExtensions: FileExtensions = .default
+
+        /// The file extensions collection to hide
+        public var hiddenFileExtensions: FileExtensions = .default
 
         /// The style for file icons
         public var fileIconStyle: FileIconStyle = .color
@@ -60,10 +66,18 @@ public extension AppPreferences {
                 Bool.self,
                 forKey: .showLiveIssues
             ) ?? true
-            self.fileExtensions = try container.decodeIfPresent(
-                FileExtensions.self,
-                forKey: .fileExtensions
+            self.fileExtensionsVisibility = try container.decodeIfPresent(
+                FileExtensionsVisibility.self,
+                forKey: .fileExtensionsVisibility
             ) ?? .showAll
+            self.shownFileExtensions = try container.decodeIfPresent(
+                FileExtensions.self,
+                forKey: .shownFileExtensions
+            ) ?? .default
+            self.hiddenFileExtensions = try container.decodeIfPresent(
+                FileExtensions.self,
+                forKey: .hiddenFileExtensions
+            ) ?? .default
             self.fileIconStyle = try container.decodeIfPresent(
                 FileIconStyle.self,
                 forKey: .fileIconStyle
@@ -124,14 +138,39 @@ public extension AppPreferences {
         case minimized
     }
 
-    /// The style for file extensions display
+    /// The style for file extensions visibility
     ///  - **hideAll**: File extensions are hidden
     ///  - **showAll** File extensions are visible
-    ///  - **showOnly** Display specified file extensions
-    enum FileExtensions: String, Codable {
+    ///  - **showOnly** Specific file extensions are visible
+    ///  - **hideOnly** Specific file extensions are hidden
+    enum FileExtensionsVisibility: Codable, Hashable {
         case hideAll
         case showAll
         case showOnly
+        case hideOnly
+    }
+
+    /// The collection of file extensions used by
+    /// ``FileExtensionsVisibility/showOnly`` or  ``FileExtensionsVisibility/hideOnly`` preference
+    struct FileExtensions: Codable, Hashable {
+        public var extensions: [String]
+
+        public var string: String {
+            get {
+                extensions.joined(separator: ", ")
+            }
+            set {
+                extensions = newValue
+                    .components(separatedBy: ",")
+                    .map({$0.trimmingCharacters(in: .whitespacesAndNewlines)})
+                    .filter({!$0.isEmpty || string.count < newValue.count })
+            }
+        }
+
+        public static var `default` = FileExtensions(extensions: [
+            "c", "cc", "cpp", "h", "hpp", "m", "mm", "gif",
+            "icns", "jpeg", "jpg", "png", "tiff", "swift"
+        ])
     }
     /// The style for file icons
     /// - **color**: File icons appear in their default colors

@@ -19,7 +19,7 @@ internal struct StatusBarCursorLocationLabel: View {
     }
 
     internal var body: some View {
-        Text("Line: \(model.currentLine)  Col: \(model.currentCol)")
+        Text("Line: \(model.cursorLocation.line)  Col: \(model.cursorLocation.column)")
             .font(model.toolbarFont)
             .foregroundColor(foregroundColor)
             .fixedSize()

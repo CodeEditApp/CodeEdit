@@ -86,7 +86,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
             // In xcode tab bar style, we use default toolbar background with
             // line separator.
             self.window?.titlebarAppearsTransparent = false
-            self.window?.titlebarSeparatorStyle = .line
+            self.window?.titlebarSeparatorStyle = .automatic
         }
         self.window?.toolbar = toolbar
     }
