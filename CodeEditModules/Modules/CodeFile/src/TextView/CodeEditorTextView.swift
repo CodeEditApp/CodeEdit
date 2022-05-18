@@ -112,8 +112,7 @@ public final class CodeEditorTextView: NSTextView {
         let max = self.string.index(self.string.endIndex, offsetBy: -1)
         if index <= max {
             return String(self.string[index])
-        }
-        else {
+        } else {
             return ""
         }
     }
