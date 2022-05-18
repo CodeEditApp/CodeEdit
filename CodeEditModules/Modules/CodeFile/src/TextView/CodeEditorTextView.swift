@@ -95,10 +95,27 @@ public final class CodeEditorTextView: NSTextView {
     }
 
     public override func insertText(_ string: Any, replacementRange: NSRange) {
+        let nextChar = getNextCharacter()
+        if autoPairs.values.contains(nextChar)
+                && string as? String == nextChar {
+            super.moveForward(self)
+            return
+        }
         super.insertText(string, replacementRange: replacementRange)
         guard let string = string as? String
         else { return }
         self.autocompleteSymbols(string)
+    }
+
+    private func getNextCharacter() -> String {
+        let index = swiftSelectedRange.lowerBound
+        let max = self.string.index(self.string.endIndex, offsetBy: -1)
+        if index <= max {
+            return String(self.string[index])
+        }
+        else {
+            return ""
+        }
     }
 
     public override func insertTab(_ sender: Any?) {
