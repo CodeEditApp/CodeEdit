@@ -2,7 +2,7 @@
 //  TabBar.swift
 //  CodeEdit
 //
-//  Created by Lukas Pistrol on 17.03.22.
+//  Created by Lukas Pistrol and Lingxi Li on 17.03.22.
 //
 
 import SwiftUI
@@ -100,8 +100,25 @@ struct TabBar: View {
     @State
     private var isHoveringOverTabs: Bool = false
 
+    /// This state is used to detect if the dragging type should be changed from DragGesture to OnDrag.
+    /// It is basically switched when vertical displacement is exceeding the threshold.
     @State
     private var shouldOnDrag: Bool = false
+
+    /// Is current `onDrag` over tabs?
+    ///
+    /// When it is true, then the `onDrag` is over the tabs, then we leave the space for dragged tab.
+    /// When it is false, then the dragging cursor is outside the tab bar, then we should shrink the space.
+    ///
+    /// - TODO: The change of this state is overall incorrect. Should move it into workspace state.
+    @State
+    private var isOnDragOverTabs: Bool = false
+
+    /// The last location of `onDrag`.
+    ///
+    /// It can be used on reordering algorithm of `onDrag` (detecting when should we switch two tabs).
+    @State
+    private var onDragLastLocation: CGPoint?
 
     // TabBar(windowController: windowController, workspace: workspace)
     init(windowController: NSWindowController, workspace: WorkspaceDocument) {
@@ -229,6 +246,30 @@ struct TabBar: View {
     }
     // swiftlint:enable function_body_length cyclomatic_complexity
 
+    private func makeTabItemGeometryReader(id: TabBarItemID) -> some View {
+        GeometryReader { tabItemGeoReader in
+            Rectangle()
+                .foregroundColor(.clear)
+                .onAppear {
+                    tabWidth[id] = tabItemGeoReader.size.width
+                    tabLocations[id] = tabItemGeoReader
+                        .frame(in: .global)
+                }
+                .onChange(
+                    of: tabItemGeoReader.frame(in: .global),
+                    perform: { tabCGRect in
+                        tabLocations[id] = tabCGRect
+                    }
+                )
+                .onChange(
+                    of: tabItemGeoReader.size.width,
+                    perform: { newWidth in
+                        tabWidth[id] = newWidth
+                    }
+                )
+        }
+    }
+
     var body: some View {
         HStack(alignment: .center, spacing: 0) {
             // Tab bar navigation control.
@@ -252,32 +293,29 @@ struct TabBar: View {
                                         workspace: workspace
                                     )
                                     .frame(height: TabBar.height)
-                                    .background {
-                                        GeometryReader { tabGeoReader in
-                                            Rectangle()
-                                                .foregroundColor(.clear)
-                                                .onAppear {
-                                                    tabWidth[id] = tabGeoReader.size.width
-                                                    tabLocations[id] = tabGeoReader
-                                                        .frame(in: .global)
-                                                }
-                                                .onChange(
-                                                    of: tabGeoReader.frame(in: .global),
-                                                    perform: { tabCGRect in
-                                                        tabLocations[id] = tabCGRect
-                                                    }
-                                                )
-                                                .onChange(
-                                                    of: tabGeoReader.size.width,
-                                                    perform: { newWidth in
-                                                        tabWidth[id] = newWidth
-                                                    })
-                                        }
-                                    }
+                                    .background(makeTabItemGeometryReader(id: id))
+                                    // TODO: Detect the onDrag outside of tab bar.
+                                    // When a tab is dragged out, we shrink the space of it.
+//                                    .padding(
+//                                        .trailing,
+//                                        !isOnDragOverTabs && onDragTabId == id ? (-tabWidth[id]! + 1) : 0
+//                                    )
                                     .offset(x: tabOffsets[id] ?? 0, y: 0)
                                     .highPriorityGesture(
                                         makeTabDragGesture(id: id),
                                         including: shouldOnDrag ? .subviews : .all
+                                    )
+                                    // Detect the drop action of each tab.
+                                    .onDrop(
+                                        of: [.utf8PlainText], // TODO: Make a unique type for it.
+                                        delegate: TabBarItemOnDropDelegate(
+                                            currentTabId: id,
+                                            openedTabs: $openedTabs,
+                                            onDragTabId: $onDragTabId,
+                                            onDragLastLocation: $onDragLastLocation,
+                                            isOnDragOverTabs: $isOnDragOverTabs,
+                                            tabWidth: $tabWidth
+                                        )
                                     )
                                 }
                             }
@@ -425,6 +463,68 @@ struct TabBar: View {
             if prefs.preferences.general.tabBarStyle == .native {
                 TabBarAccessoryNativeBackground(dividerAt: .leading)
             }
+        }
+    }
+
+    private struct TabBarItemOnDropDelegate: DropDelegate {
+        private let currentTabId: TabBarItemID
+        @Binding
+        private var openedTabs: [TabBarItemID]
+        @Binding
+        private var onDragTabId: TabBarItemID?
+        @Binding
+        private var onDragLastLocation: CGPoint?
+        @Binding
+        private var isOnDragOverTabs: Bool
+        @Binding
+        private var tabWidth: [TabBarItemID: CGFloat]
+
+        public init(
+            currentTabId: TabBarItemID,
+            openedTabs: Binding<[TabBarItemID]>,
+            onDragTabId: Binding<TabBarItemID?>,
+            onDragLastLocation: Binding<CGPoint?>,
+            isOnDragOverTabs: Binding<Bool>,
+            tabWidth: Binding<[TabBarItemID: CGFloat]>
+        ) {
+            self.currentTabId = currentTabId
+            self._openedTabs = openedTabs
+            self._onDragTabId = onDragTabId
+            self._onDragLastLocation = onDragLastLocation
+            self._isOnDragOverTabs = isOnDragOverTabs
+            self._tabWidth = tabWidth
+        }
+
+        func dropEntered(info: DropInfo) {
+            isOnDragOverTabs = true
+            guard let onDragTabId = onDragTabId,
+                  currentTabId != onDragTabId,
+                  let from = openedTabs.firstIndex(of: onDragTabId),
+                  let toIndex = openedTabs.firstIndex(of: currentTabId)
+            else { return }
+            if openedTabs[toIndex] != onDragTabId {
+                withAnimation {
+                    openedTabs.move(
+                        fromOffsets: IndexSet(integer: from),
+                        toOffset: toIndex > from ? toIndex + 1 : toIndex
+                    )
+                }
+            }
+        }
+
+        func dropExited(info: DropInfo) {
+            // Do nothing.
+        }
+
+        func dropUpdated(info: DropInfo) -> DropProposal? {
+            return DropProposal(operation: .move)
+        }
+
+        func performDrop(info: DropInfo) -> Bool {
+            isOnDragOverTabs = false
+            onDragTabId = nil
+            onDragLastLocation = nil
+            return true
         }
     }
 }

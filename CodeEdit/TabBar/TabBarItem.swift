@@ -249,7 +249,7 @@ struct TabBarItem: View {
                         isPressingClose = false
                     }
                     // Only show when the mouse is hovering and there is no tab dragging.
-                    .opacity(isHovering && draggingTabId == nil ? 1 : 0)
+                    .opacity(isHovering && draggingTabId == nil && onDragTabId == nil ? 1 : 0)
                     .animation(.easeInOut(duration: 0.08), value: isHovering)
                     .padding(.leading, prefs.preferences.general.tabBarStyle == .xcode ? 3.5 : 4)
                 }
@@ -305,68 +305,66 @@ struct TabBarItem: View {
     }
 
     var body: some View {
-        Button(
-            action: switchAction,
-            label: {
+        Button(action: switchAction) {
+            ZStack {
                 content
-                    .onDrag({
-                        onDragTabId = item.tabID
-                        return .init(object: NSString(string: "\(item.tabID)"))
-                    })
             }
-        )
-        .buttonStyle(TabBarItemButtonStyle(isPressing: $isPressing))
-        .background {
-            if inHoldingState && prefs.preferences.general.tabBarStyle == .xcode {
-                Rectangle()
-                    .foregroundColor(
-                        isActive
-                        ? Color(nsColor: .controlAccentColor).opacity(0.08)
-                        : (colorScheme == .dark ? .white.opacity(0.08) : .black.opacity(0.08))
-                    )
+            .background {
+                if inHoldingState && prefs.preferences.general.tabBarStyle == .xcode {
+                    Rectangle()
+                        .foregroundColor(
+                            isActive
+                            ? Color(nsColor: .controlAccentColor).opacity(0.08)
+                            : (colorScheme == .dark ? .white.opacity(0.08) : .black.opacity(0.08))
+                        )
+                }
             }
-        }
-        .background {
-            if prefs.preferences.general.tabBarStyle == .xcode {
-                ZStack {
-                    // This layer of background is to hide dividers of other tab bar items
-                    // because the original background above is translucent (by opacity).
-                    TabBarXcodeBackground()
-                    if isActive {
-                        Color(nsColor: .controlAccentColor)
-                            .saturation(
-                                colorScheme == .dark
-                                ? (activeState != .inactive ? 0.60 : 0.75)
-                                : (activeState != .inactive ? 0.90 : 0.85)
-                            )
-                            .opacity(
-                                colorScheme == .dark
-                                ? (activeState != .inactive ? 0.50 : 0.35)
-                                : (activeState != .inactive ? 0.18 : 0.12)
-                            )
-                            .hueRotation(.degrees(-5))
+            .background {
+                if prefs.preferences.general.tabBarStyle == .xcode {
+                    ZStack {
+                        // This layer of background is to hide dividers of other tab bar items
+                        // because the original background above is translucent (by opacity).
+                        TabBarXcodeBackground()
+                        if isActive {
+                            Color(nsColor: .controlAccentColor)
+                                .saturation(
+                                    colorScheme == .dark
+                                    ? (activeState != .inactive ? 0.60 : 0.75)
+                                    : (activeState != .inactive ? 0.90 : 0.85)
+                                )
+                                .opacity(
+                                    colorScheme == .dark
+                                    ? (activeState != .inactive ? 0.50 : 0.35)
+                                    : (activeState != .inactive ? 0.18 : 0.12)
+                                )
+                                .hueRotation(.degrees(-5))
+                        }
                     }
-                }
-//                .padding(.horizontal, 0.5) // Half pixel for divider.
-                .animation(.easeInOut(duration: 0.08), value: isHovering)
-            } else {
-                if isFullscreen && isActive {
-                    TabBarNativeActiveMaterial()
+                    .animation(.easeInOut(duration: 0.08), value: isHovering)
                 } else {
-                    TabBarNativeMaterial()
+                    if isFullscreen && isActive {
+                        TabBarNativeActiveMaterial()
+                    } else {
+                        TabBarNativeMaterial()
+                    }
+                    ZStack {
+                        // Native inactive tab background dim.
+                        TabBarNativeInactiveBackgroundColor()
+                        // Native inactive tab hover state.
+                        Color(nsColor: colorScheme == .dark ? .white : .black)
+                            .opacity(isHovering ? (colorScheme == .dark ? 0.08 : 0.05) : 0.0)
+                            .animation(.easeInOut(duration: 0.10), value: isHovering)
+                    }
+                    .padding(.horizontal, 1)
+                    .opacity(isActive ? 0 : 1)
                 }
-                ZStack {
-                    // Native inactive tab background dim.
-                    TabBarNativeInactiveBackgroundColor()
-                    // Native inactive tab hover state.
-                    Color(nsColor: colorScheme == .dark ? .white : .black)
-                        .opacity(isHovering ? (colorScheme == .dark ? 0.08 : 0.05) : 0.0)
-                        .animation(.easeInOut(duration: 0.10), value: isHovering)
-                }
-                .padding(.horizontal, 1)
-                .opacity(isActive ? 0 : 1)
             }
+            .onDrag({
+                onDragTabId = item.tabID
+                return .init(object: NSString(string: "\(item.tabID)"))
+            })
         }
+        .buttonStyle(TabBarItemButtonStyle(isPressing: $isPressing))
         .padding(
             // This padding is to avoid background color overlapping with top divider.
             .top, prefs.preferences.general.tabBarStyle == .xcode ? 1 : 0
