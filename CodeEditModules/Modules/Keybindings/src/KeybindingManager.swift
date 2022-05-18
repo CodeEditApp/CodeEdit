@@ -7,7 +7,6 @@
 
 import Foundation
 import SwiftUI
-import AppPreferences
 
 public final class KeybindingManager {
     public var keyboardShortcuts = [String: KeyboardShortcutWrapper]()

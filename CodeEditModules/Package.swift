@@ -219,6 +219,7 @@ let package = Package(
                 "Preferences",
                 "CodeEditUI",
                 "Git",
+                "Keybindings",
                 "CodeEditUtils",
                 "CodeEditSymbols",
             ],
@@ -304,9 +305,6 @@ let package = Package(
         ),
         .target(
             name: "Keybindings",
-            dependencies: [
-                "AppPreferences"
-            ],
             path: "Modules/Keybindings/src",
             resources: [.copy("default_keybindings.json")]
         ),
