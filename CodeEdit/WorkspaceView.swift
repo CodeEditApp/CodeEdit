@@ -153,7 +153,7 @@ struct WorkspaceView: View {
                     windowController.window?.titlebarSeparatorStyle = .none
                 } else {
                     windowController.window?.titlebarAppearsTransparent = false
-                    windowController.window?.titlebarSeparatorStyle = .line
+                    windowController.window?.titlebarSeparatorStyle = .automatic
                 }
             }
         }

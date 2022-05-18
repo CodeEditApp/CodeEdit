@@ -186,13 +186,21 @@ let package = Package(
         .target(
             name: "StatusBar",
             dependencies: [
-                "Git",
                 "TerminalEmulator",
                 "CodeFile",
                 "CodeEditUI",
                 "CodeEditSymbols",
             ],
             path: "Modules/StatusBar/src"
+        ),
+        .testTarget(
+            name: "StatusBarTests",
+            dependencies: [
+                "StatusBar",
+                "SnapshotTesting"
+            ],
+            path: "Modules/StatusBar/Tests",
+            exclude: ["__Snapshots__"]
         ),
         .target(
             name: "TerminalEmulator",

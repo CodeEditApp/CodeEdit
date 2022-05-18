@@ -29,6 +29,6 @@ internal struct StatusBarMaximizeButton: View {
 struct StatusBarMaximizeButton_Previews: PreviewProvider {
     static var previews: some View {
         let url = URL(string: "~/Developer")!
-        StatusBarMaximizeButton(model: StatusBarModel(shellClient: .live(), workspaceURL: url))
+        StatusBarMaximizeButton(model: StatusBarModel(workspaceURL: url))
     }
 }
