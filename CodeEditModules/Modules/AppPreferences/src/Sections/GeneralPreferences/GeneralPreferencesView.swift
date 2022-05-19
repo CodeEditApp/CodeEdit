@@ -45,8 +45,9 @@ public struct GeneralPreferencesView: View {
             Group {
                 issueNavigatorDetailSection
                 dialogWarningsSection
+                openInCodeEditToggle
+                autoSaveToggle
             }
-            openInCodeEditToggle
         }
     }
 }
@@ -219,6 +220,14 @@ private extension GeneralPreferencesView {
 
                     defaults.set(newValue, forKey: "enableOpenInCE")
                 }
+        }
+    }
+
+    var autoSaveToggle: some View {
+        PreferencesSection("Auto Save Behavior", hideLabels: false) {
+            Toggle("Automatically save changes to disk",
+                   isOn: $prefs.preferences.general.isAutoSaveOn)
+            .toggleStyle(.checkbox)
         }
     }
 }

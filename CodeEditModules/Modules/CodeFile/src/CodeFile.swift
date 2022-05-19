@@ -8,6 +8,7 @@
 import AppKit
 import Foundation
 import SwiftUI
+import AppPreferences
 
 public enum CodeFileError: Error {
     case failedToDecode
@@ -22,7 +23,7 @@ public final class CodeFileDocument: NSDocument, ObservableObject {
     // MARK: - NSDocument
 
     override public class var autosavesInPlace: Bool {
-        return true
+        return AppPreferencesModel.shared.preferences.general.isAutoSaveOn
     }
 
     override public func makeWindowControllers() {
