@@ -17,6 +17,7 @@ import CodeEditKit
 import ExtensionsStore
 import StatusBar
 import TabBar
+import AppPreferences
 
 @objc(WorkspaceDocument)
 final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
