@@ -17,6 +17,7 @@ import CodeEditKit
 import ExtensionsStore
 import StatusBar
 import TabBar
+import AppPreferences
 
 @objc(WorkspaceDocument)
 final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
@@ -162,7 +163,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     ]
 
     override class var autosavesInPlace: Bool {
-        return false
+        return AppPreferencesModel.shared.preferences.general.isAutoSaveOn
     }
 
     override var isDocumentEdited: Bool {

@@ -47,6 +47,9 @@ public extension AppPreferences {
         /// The Issue Navigator Detail line limit
         public var issueNavigatorDetail: NavigatorDetail = .upTo3
 
+        /// Auto save behavior toggle
+        public var isAutoSaveOn: Bool = true
+
         /// Default initializer
         public init() {}
 
@@ -102,6 +105,10 @@ public extension AppPreferences {
                 NavigatorDetail.self,
                 forKey: .issueNavigatorDetail
             ) ?? .upTo3
+            self.isAutoSaveOn = try container.decodeIfPresent(
+                Bool.self,
+                forKey: .isAutoSaveOn
+            ) ?? true
         }
         // swiftlint:enable function_body_length
     }
