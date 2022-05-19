@@ -1,5 +1,9 @@
 [
     {
         "id": "copy", "name": "copy", "description": "Copy command", "context": "Global", "modifier": "command", "keybinding": "c"
+    },
+    {
+        "id": "paste", "name": "paste", "description": "Copy command", "context": "Global", "modifier": "command", "keybinding": "c"
     }
+
 ]
