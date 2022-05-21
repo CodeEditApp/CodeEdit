@@ -15,7 +15,7 @@ struct ChangesView: View {
     var model: SourceControlModel
 
     @State
-    var selectedFile: ChangedFiles.ID?
+    var selectedFile: ChangedFile.ID?
 
     /// Initialize with GitClient
     /// - Parameter gitClient: a GitClient

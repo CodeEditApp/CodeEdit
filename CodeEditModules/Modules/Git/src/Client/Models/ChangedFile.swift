@@ -1,5 +1,5 @@
 //
-//  ChangedFiles.swift
+//  ChangedFile.swift
 //  
 //
 //  Created by Nanashi Li on 2022/05/20.
@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import WorkspaceClient
 
-public struct ChangedFiles: Codable, Hashable, Identifiable {
+public struct ChangedFile: Codable, Hashable, Identifiable {
     /// ID of the changed file
     public var id = UUID()
 

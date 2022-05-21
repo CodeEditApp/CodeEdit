@@ -11,7 +11,7 @@ import SwiftUI
  struct ChangedFileItemView: View {
 
      @State
-     var changedFile: ChangedFiles
+     var changedFile: ChangedFile
      @State
      var workspaceURL: URL
 

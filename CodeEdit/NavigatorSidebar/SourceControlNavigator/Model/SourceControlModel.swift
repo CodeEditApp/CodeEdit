@@ -20,7 +20,7 @@ public final class SourceControlModel: ObservableObject {
 
     /// A list of changed files
     @Published
-    public var changed: [ChangedFiles]
+    public var changed: [ChangedFile]
 
     /// Initialize with a GitClient
     /// - Parameter workspaceURL: the current workspace URL we also need this to open files in finder

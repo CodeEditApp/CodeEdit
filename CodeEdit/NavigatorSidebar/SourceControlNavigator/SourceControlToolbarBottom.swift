@@ -10,7 +10,7 @@ import SwiftUI
 struct SourceControlToolbarBottom: View {
     var body: some View {
         HStack(spacing: 0) {
-            addNewFileButton
+            sourceControlMenu
             SourceControlSearchToolbar()
         }
         .frame(height: 29, alignment: .center)
@@ -21,7 +21,7 @@ struct SourceControlToolbarBottom: View {
         }
     }
 
-    private var addNewFileButton: some View {
+    private var sourceControlMenu: some View {
         Menu {
             Button("Discard Changes...") {}
                 .disabled(true) // TODO: Implementation Needed
