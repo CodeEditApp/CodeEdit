@@ -13,6 +13,9 @@ public struct GitClient {
     public var checkoutBranch: (String) throws -> Void
     public var pull: () throws -> Void
     public var cloneRepository: (String) -> AnyPublisher<CloneProgressResult, GitClientError>
+    /// Displays paths that have differences between the index file and the current HEAD commit,
+    /// paths that have differences between the working tree and the index file, and paths in the working tree
+    public var getChangedFiles: () throws -> [ChangedFile]
     /// Get commit history
     /// - Parameters:
     ///   - entries: number of commits we want to fetch. Will use max if nil
@@ -26,6 +29,7 @@ public struct GitClient {
         checkoutBranch: @escaping (String) throws -> Void,
         pull: @escaping () throws -> Void,
         cloneRepository: @escaping (String) -> AnyPublisher<CloneProgressResult, GitClientError>,
+        getChangedFiles: @escaping () throws -> [ChangedFile],
         getCommitHistory: @escaping (_ entries: Int?, _ fileLocalPath: String?) throws -> [Commit]
     ) {
         self.getCurrentBranchName = getCurrentBranchName
@@ -33,12 +37,14 @@ public struct GitClient {
         self.checkoutBranch = checkoutBranch
         self.pull = pull
         self.cloneRepository = cloneRepository
+        self.getChangedFiles = getChangedFiles
         self.getCommitHistory = getCommitHistory
     }
 
     public enum GitClientError: Error {
         case outputError(String)
         case notGitRepository
+        case failedToDecodeURL
     }
 
     public enum CloneProgressResult {

@@ -183,6 +183,8 @@ extension GitCloneView {
                             showAlert(alertMsg: "Error", infoText: "Not a git repository")
                         case let .outputError(error):
                             showAlert(alertMsg: "Error", infoText: error)
+                        case .failedToDecodeURL:
+                            showAlert(alertMsg: "Error", infoText: "Failed to decode URL")
                         }
                     case .finished: break
                     }

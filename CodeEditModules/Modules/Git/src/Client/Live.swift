@@ -59,6 +59,31 @@ public extension GitClient {
             }
         }
 
+        func getChangedFiles() throws -> [ChangedFile] {
+            let output = try shellClient.run(
+                "cd \(directoryURL.relativePath.escapedWhiteSpaces());git status -s --porcelain -u"
+            )
+            if output.contains("fatal: not a git repository") {
+                throw GitClientError.notGitRepository
+            }
+            return try output
+                .split(whereSeparator: \.isNewline)
+                .map { line -> ChangedFile in
+                    let paramData = line.trimmingCharacters(in: .whitespacesAndNewlines)
+                    let parameters = paramData.components(separatedBy: " ")
+                    guard let url = URL(string: parameters[safe: 1] ?? String(describing: URLError.badURL)) else {
+                        throw GitClientError.failedToDecodeURL
+                    }
+
+                    var gitType: GitType {
+                        .init(rawValue: parameters[safe: 0] ?? "") ?? GitType.unknown
+                    }
+
+                    return ChangedFile(changeType: gitType,
+                                        fileLink: url)
+                }
+        }
+
         /// Gets the commit history log of the current file opened
         /// in the workspace.
 
@@ -154,6 +179,7 @@ public extension GitClient {
                     }
                     .eraseToAnyPublisher()
             },
+            getChangedFiles: getChangedFiles,
             getCommitHistory: getCommitHistory(entries:fileLocalPath:)
         )
     }
