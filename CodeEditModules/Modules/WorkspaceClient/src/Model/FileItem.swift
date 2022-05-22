@@ -153,6 +153,11 @@ public extension WorkspaceClient {
         public func showInFinder() {
             NSWorkspace.shared.activateFileViewerSelecting([url])
         }
+        
+        /// Allows the user to launch the file or folder as it would be in finder
+        public func openWithExternalEditor() {
+            NSWorkspace.shared.open(url)
+        }
 
         /// This function allows creation of folders in the main directory or sub-folders
         /// - Parameter folderName: The name of the new folder
@@ -171,11 +176,12 @@ public extension WorkspaceClient {
         /// - Parameter fileName: The name of the new file
         public func addFile(fileName: String) {
             let fileUrl = url.appendingPathComponent(fileName)
-            FileItem.fileManger.createFile(
-                atPath: fileUrl.path,
-                contents: nil,
-                attributes: [FileAttributeKey.creationDate: Date()]
-            )
+            print(fileUrl)
+//            FileItem.fileManger.createFile(
+//                atPath: fileUrl.path,
+//                contents: nil,
+//                attributes: [FileAttributeKey.creationDate: Date()]
+//            )
         }
 
         /// This function deletes the item or folder from the current project

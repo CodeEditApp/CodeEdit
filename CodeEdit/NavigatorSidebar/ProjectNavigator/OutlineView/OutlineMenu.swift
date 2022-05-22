@@ -15,6 +15,9 @@ final class OutlineMenu: NSMenu {
 
     /// The item to show the contextual menu for
     var item: Item?
+    
+    /// The workspace, for opening the item
+    var workspace: WorkspaceDocument?
 
     var outlineView: NSOutlineView
 
@@ -47,14 +50,14 @@ final class OutlineMenu: NSMenu {
         guard let item = item else { return }
         let showInFinder = menuItem("Show in Finder", action: #selector(showInFinder))
 
-        let openInTab = menuItem("Open in Tab", action: nil)
+        let openInTab = menuItem("Open in Tab", action: #selector(openInTab))
         let openInNewWindow = menuItem("Open in New Window", action: nil)
-        let openExternalEditor = menuItem("Open with External Editor", action: nil)
+        let openExternalEditor = menuItem("Open with External Editor", action: #selector(openWithExternalEditor))
         let openAs = menuItem("Open As", action: nil)
 
         let showFileInspector = menuItem("Show File Inspector", action: nil)
 
-        let newFile = menuItem("New File...", action: nil)
+        let newFile = menuItem("New File...", action: #selector(newFile))
         let newFolder = menuItem("New Folder", action: nil)
 
         let delete = menuItem("Delete", action: #selector(delete))
@@ -167,6 +170,25 @@ final class OutlineMenu: NSMenu {
     @objc
     private func showInFinder() {
         item?.showInFinder()
+    }
+    
+    /// Action that opens the item, identical to clicking it.
+    @objc
+    private func openInTab() {
+        workspace?.openTab(item: item!)
+    }
+    
+    /// Action that opens in an external editor
+    @objc
+    private func openWithExternalEditor() {
+        item?.openWithExternalEditor()
+    }
+    
+    /// Action that creates a new untitled file
+    @objc
+    private func newFile() {
+        print("Creating new file at \(String(describing: item?.url)), from \(String(describing: item?.title))")
+        item?.addFile(fileName: "untitled")
     }
 
     /// Action that deletes the item.
