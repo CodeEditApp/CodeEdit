@@ -58,7 +58,7 @@ final class OutlineMenu: NSMenu {
         let showFileInspector = menuItem("Show File Inspector", action: nil)
 
         let newFile = menuItem("New File...", action: #selector(newFile))
-        let newFolder = menuItem("New Folder", action: nil)
+        let newFolder = menuItem("New Folder", action: #selector(newFolder))
 
         let delete = menuItem("Delete", action: #selector(delete))
 
@@ -184,11 +184,22 @@ final class OutlineMenu: NSMenu {
         item?.openWithExternalEditor()
     }
     
+    // TODO: allow custom file names
     /// Action that creates a new untitled file
     @objc
     private func newFile() {
         print("Creating new file at \(String(describing: item?.url)), from \(String(describing: item?.title))")
         item?.addFile(fileName: "untitled")
+        outlineView.reloadData()
+    }
+    
+    // TODO: allow custom folder names
+    /// Action that creates a new untitled folder
+    @objc
+    private func newFolder() {
+        print("Creating new folder at \(String(describing: item?.url)), from \(String(describing: item?.title))")
+        item?.addFolder(folderName: "untitled")
+        outlineView.reloadData()
     }
 
     /// Action that deletes the item.

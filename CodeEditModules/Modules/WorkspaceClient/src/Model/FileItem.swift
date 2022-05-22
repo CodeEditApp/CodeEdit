@@ -117,6 +117,9 @@ public extension WorkspaceClient {
         /// If it has children this will return `"folder.fill"` otherwise `"folder"`.
         private func folderIcon(_ children: [FileItem]) -> String {
             if self.parent == nil {
+                print("Icon for folder \(self.url): parent")
+                print("Children: \(self.children)")
+                print("Parent: \(self.parent)")
                 return "square.dashed.inset.filled"
             }
             if self.fileName == ".codeedit" {
@@ -162,30 +165,62 @@ public extension WorkspaceClient {
         /// This function allows creation of folders in the main directory or sub-folders
         /// - Parameter folderName: The name of the new folder
         public func addFolder(folderName: String) {
-            let folderUrl = url.appendingPathComponent(folderName)
-            do {
-                try FileItem.fileManger.createDirectory(at: folderUrl,
-                                                        withIntermediateDirectories: true,
-                                                        attributes: [:])
-            } catch {
-                fatalError(error.localizedDescription)
+            // TODO: check for folders of same name
+            // check if folder, if it is create folder under self
+            if self.isFolder {
+                let folderUrl = self.url.appendingPathComponent(folderName)
+                print("Creating folder under folder \(self.url): \(folderUrl)")
+                do {
+                    try FileItem.fileManger.createDirectory(at: folderUrl,
+                                                            withIntermediateDirectories: true,
+                                                            attributes: [:])
+                } catch {
+                    fatalError(error.localizedDescription)
+                }
+            }
+            // if not folder, the new folder is created on the same level
+            else {
+                let folderUrl = self.url.deletingLastPathComponent().appendingPathComponent(folderName)
+                print("Creating folder at same level \(self.url): \(folderUrl)")
+                do {
+                    try FileItem.fileManger.createDirectory(at: folderUrl,
+                                                            withIntermediateDirectories: true,
+                                                            attributes: [:])
+                } catch {
+                    fatalError(error.localizedDescription)
+                }
             }
         }
 
         /// This function allows creating files in the selected folder or project main directory
         /// - Parameter fileName: The name of the new file
         public func addFile(fileName: String) {
-            let fileUrl = url.appendingPathComponent(fileName)
-            print(fileUrl)
-//            FileItem.fileManger.createFile(
-//                atPath: fileUrl.path,
-//                contents: nil,
-//                attributes: [FileAttributeKey.creationDate: Date()]
-//            )
+            // TODO: check for files of same name
+            // check if folder, if it is create file under self
+            if self.isFolder {
+                let fileUrl = self.url.appendingPathComponent(fileName)
+                print("Creating file under folder \(self.url): \(fileUrl)")
+                FileItem.fileManger.createFile(
+                    atPath: fileUrl.path,
+                    contents: nil,
+                    attributes: [FileAttributeKey.creationDate: Date()]
+                )
+            }
+            // if not folder, the new file is created on the same level
+            else {
+                let fileUrl = self.url.deletingLastPathComponent().appendingPathComponent(fileName)
+                print("Creating file at same level \(self.url): \(fileUrl)")
+                FileItem.fileManger.createFile(
+                    atPath: fileUrl.path,
+                    contents: nil,
+                    attributes: [FileAttributeKey.creationDate: Date()]
+                )
+            }
         }
 
         /// This function deletes the item or folder from the current project
         public func delete() {
+            // TODO: check if tab of deleted file is open, and mark the tab as deleted
             if FileItem.fileManger.fileExists(atPath: url.path) {
                 do {
                     try FileItem.fileManger.removeItem(at: url)

@@ -256,6 +256,7 @@ extension OutlineViewController: NSMenuDelegate {
             if let item = outlineView.item(atRow: row) as? Item {
                 menu.item = item
                 menu.workspace = workspace
+                
             } else {
                 menu.item = nil
             }
