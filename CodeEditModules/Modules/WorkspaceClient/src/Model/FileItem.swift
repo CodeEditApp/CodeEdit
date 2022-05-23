@@ -162,29 +162,27 @@ public extension WorkspaceClient {
         /// This function allows creation of folders in the main directory or sub-folders
         /// - Parameter folderName: The name of the new folder
         public func addFolder(folderName: String) {
-            // TODO: check for folders of same name
             // check if folder, if it is create folder under self
-            if self.isFolder {
-                let folderUrl = self.url.appendingPathComponent(folderName)
-                print("Creating folder under folder \(self.url): \(folderUrl)")
-                do {
-                    try FileItem.fileManger.createDirectory(at: folderUrl,
-                                                            withIntermediateDirectories: true,
-                                                            attributes: [:])
-                } catch {
-                    fatalError(error.localizedDescription)
-                }
-            }
+            var folderUrl = self.url
+            if self.isFolder { folderUrl = folderUrl.appendingPathComponent(folderName) }
+
             // if not folder, the new folder is created on the same level
-            else {
-                let folderUrl = self.url.deletingLastPathComponent().appendingPathComponent(folderName)
-                print("Creating folder at same level \(self.url): \(folderUrl)")
+            else { folderUrl = folderUrl.deletingLastPathComponent().appendingPathComponent(folderName) }
+
+            var iterations = 0
+            while true {
                 do {
                     try FileItem.fileManger.createDirectory(at: folderUrl,
-                                                            withIntermediateDirectories: true,
-                                                            attributes: [:])
+                        withIntermediateDirectories: true,
+                        attributes: [:])
+                    break
                 } catch {
-                    fatalError(error.localizedDescription)
+                    // WARNING: this assumes that the error was related to multiple files with the same name
+                    // if the error is ANYTHING ELSE, this will loop forever.
+                    iterations += 1
+                    folderUrl = folderUrl.deletingLastPathComponent()
+                        .appendingPathComponent("\(folderName)\(iterations)")
+//                        fatalError(error.localizedDescription)
                 }
             }
         }
@@ -192,27 +190,18 @@ public extension WorkspaceClient {
         /// This function allows creating files in the selected folder or project main directory
         /// - Parameter fileName: The name of the new file
         public func addFile(fileName: String) {
-            // TODO: check for files of same name
             // check if folder, if it is create file under self
-            if self.isFolder {
-                let fileUrl = self.url.appendingPathComponent(fileName)
-                print("Creating file under folder \(self.url): \(fileUrl)")
-                FileItem.fileManger.createFile(
-                    atPath: fileUrl.path,
-                    contents: nil,
-                    attributes: [FileAttributeKey.creationDate: Date()]
-                )
-            }
+            var fileUrl = self.url
+            if self.isFolder { fileUrl = fileUrl.appendingPathComponent(fileName) }
+
             // if not folder, the new file is created on the same level
-            else {
-                let fileUrl = self.url.deletingLastPathComponent().appendingPathComponent(fileName)
-                print("Creating file at same level \(self.url): \(fileUrl)")
-                FileItem.fileManger.createFile(
-                    atPath: fileUrl.path,
-                    contents: nil,
-                    attributes: [FileAttributeKey.creationDate: Date()]
-                )
-            }
+            else { fileUrl = fileUrl.deletingLastPathComponent().appendingPathComponent(fileName) }
+
+            // if error, the file is simply not created.
+            FileItem.fileManger.createFile(
+                atPath: fileUrl.path,
+                contents: nil,
+                attributes: [FileAttributeKey.creationDate: Date()])
         }
 
         /// This function deletes the item or folder from the current project

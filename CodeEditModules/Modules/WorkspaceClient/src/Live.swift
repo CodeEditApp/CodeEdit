@@ -21,9 +21,14 @@ public extension WorkspaceClient {
             let directoryContents = try fileManager.contentsOfDirectory(at: url, includingPropertiesForKeys: nil)
             var items: [FileItem] = []
 
+            print("Loading file: \(url.absoluteString)")
+
             for itemURL in directoryContents {
                 // Skip file if it is in ignore list
-                guard !ignoredFilesAndFolders.contains(itemURL.lastPathComponent) else { continue }
+                guard !ignoredFilesAndFolders.contains(itemURL.lastPathComponent) else {
+                    print("    Ignored")
+                    continue
+                }
 
                 var isDir: ObjCBool = false
 
@@ -33,15 +38,19 @@ public extension WorkspaceClient {
                     if isDir.boolValue {
                         // TODO: Possibly optimize to loading avoid cache dirs and/or large folders
                         // Recursively fetch subdirectories and files if the path points to a directory
+                        print("    Loading recursive file \(itemURL.absoluteString)")
                         subItems = try loadFiles(fromURL: itemURL)
                     }
 
                     let newFileItem = FileItem(url: itemURL, children: subItems?.sortItems(foldersOnTop: true))
                     subItems?.forEach {
+                        print("    Calculating parent for subItem \($0.url)")
                         $0.parent = newFileItem
                     }
                     items.append(newFileItem)
                     flattenedFileItems[newFileItem.id] = newFileItem
+                } else {
+                    print("    File does not exist, or is not directory")
                 }
             }
             return items
@@ -59,36 +68,59 @@ public extension WorkspaceClient {
         // consumer subscribes to the publisher.
         let subject = CurrentValueSubject<[FileItem], Never>(fileItems)
 
-        var source: DispatchSourceFileSystemObject?
+        var sources = [DispatchSourceFileSystemObject?]()
 
-        func startListeningToDirectory() {
+        func startListeningToDirectory(_ fromURL: URL = folderURL) {
+            print("Listening to \(fromURL.absoluteString)")
             // open the folder to listen for changes
-            let descriptor = open(folderURL.path, O_EVTONLY)
+            let descriptor = open(fromURL.path, O_EVTONLY)
 
-            source = DispatchSource.makeFileSystemObjectSource(
+            sources.append(DispatchSource.makeFileSystemObjectSource(
                 fileDescriptor: descriptor,
                 eventMask: .write,
                 queue: DispatchQueue.global()
-            )
+            ))
 
-            source?.setEventHandler {
+            sources.last!?.setEventHandler {
                 // Something has changed inside the directory
                 // We should reload the files.
                 if let fileItems = try? loadFiles(fromURL: folderURL) {
+                    startListeningToDirectory(fromURL)
                     subject.send(fileItems)
                 }
             }
 
-            source?.setCancelHandler {
+            sources.last!?.setCancelHandler {
                 close(descriptor)
             }
 
-            source?.resume()
+            sources.last!?.resume()
+
+            // see if there are any child folders and listen to them
+            do {
+                let directoryContents = try fileManager.contentsOfDirectory(at:
+                                                                                fromURL,
+                                                                                includingPropertiesForKeys: nil)
+                for itemURL in directoryContents {
+                    // Skip file if it is in ignore list
+                    guard !ignoredFilesAndFolders.contains(itemURL.lastPathComponent) else { continue }
+
+                    var isDir: ObjCBool = false
+
+                    if fileManager.fileExists(atPath: itemURL.path, isDirectory: &isDir) {
+                        if isDir.boolValue {
+                            startListeningToDirectory(itemURL)
+                        }
+                    }
+                }
+            } catch {}
         }
 
         func stopListeningToDirectory() {
-            source?.cancel()
-            source = nil
+            for source in sources {
+                source?.cancel()
+            }
+            sources = []
         }
 
         return Self(
