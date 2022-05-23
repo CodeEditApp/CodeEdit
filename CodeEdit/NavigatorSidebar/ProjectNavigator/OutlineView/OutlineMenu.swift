@@ -15,7 +15,7 @@ final class OutlineMenu: NSMenu {
 
     /// The item to show the contextual menu for
     var item: Item?
-    
+
     /// The workspace, for opening the item
     var workspace: WorkspaceDocument?
 
@@ -171,35 +171,33 @@ final class OutlineMenu: NSMenu {
     private func showInFinder() {
         item?.showInFinder()
     }
-    
+
     /// Action that opens the item, identical to clicking it.
     @objc
     private func openInTab() {
         workspace?.openTab(item: item!)
     }
-    
+
     /// Action that opens in an external editor
     @objc
     private func openWithExternalEditor() {
         item?.openWithExternalEditor()
     }
-    
+
     // TODO: allow custom file names
     /// Action that creates a new untitled file
     @objc
     private func newFile() {
         print("Creating new file at \(String(describing: item?.url)), from \(String(describing: item?.title))")
         item?.addFile(fileName: "untitled")
-        outlineView.reloadData()
     }
-    
+
     // TODO: allow custom folder names
     /// Action that creates a new untitled folder
     @objc
     private func newFolder() {
         print("Creating new folder at \(String(describing: item?.url)), from \(String(describing: item?.title))")
         item?.addFolder(folderName: "untitled")
-        outlineView.reloadData()
     }
 
     /// Action that deletes the item.

@@ -117,9 +117,6 @@ public extension WorkspaceClient {
         /// If it has children this will return `"folder.fill"` otherwise `"folder"`.
         private func folderIcon(_ children: [FileItem]) -> String {
             if self.parent == nil {
-                print("Icon for folder \(self.url): parent")
-                print("Children: \(self.children)")
-                print("Parent: \(self.parent)")
                 return "square.dashed.inset.filled"
             }
             if self.fileName == ".codeedit" {
@@ -156,7 +153,7 @@ public extension WorkspaceClient {
         public func showInFinder() {
             NSWorkspace.shared.activateFileViewerSelecting([url])
         }
-        
+
         /// Allows the user to launch the file or folder as it would be in finder
         public func openWithExternalEditor() {
             NSWorkspace.shared.open(url)
