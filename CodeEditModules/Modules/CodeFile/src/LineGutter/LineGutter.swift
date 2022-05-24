@@ -55,7 +55,6 @@ final class LineGutter: NSRulerView {
     }
 
     private let rulerMargin: CGFloat = 5
-    private let rulerWidth: CGFloat
     public var font: NSFont {
         didSet {
             needsDisplay = true
@@ -71,7 +70,6 @@ final class LineGutter: NSRulerView {
         textColor: NSColor,
         backgroundColor: NSColor
     ) {
-        rulerWidth = width
         self.font = font
         self.textColor = textColor
         self.backgroundColor = backgroundColor
@@ -132,7 +130,7 @@ final class LineGutter: NSRulerView {
     func calculateRuleThickness() -> CGFloat {
         let string = String(lineIndices?.last ?? 0) as NSString
         let rect = calculateStringSize(string)
-        return max(rect.width, rulerWidth)
+        return max(rect.width + 2 * rulerMargin, ruleThickness)
     }
 
     func calculateLines() {
