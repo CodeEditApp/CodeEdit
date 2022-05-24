@@ -21,12 +21,9 @@ public extension WorkspaceClient {
             let directoryContents = try fileManager.contentsOfDirectory(at: url, includingPropertiesForKeys: nil)
             var items: [FileItem] = []
 
-            print("Loading file: \(url.absoluteString)")
-
             for itemURL in directoryContents {
                 // Skip file if it is in ignore list
                 guard !ignoredFilesAndFolders.contains(itemURL.lastPathComponent) else {
-                    print("    Ignored")
                     continue
                 }
 
@@ -38,19 +35,17 @@ public extension WorkspaceClient {
                     if isDir.boolValue {
                         // TODO: Possibly optimize to loading avoid cache dirs and/or large folders
                         // Recursively fetch subdirectories and files if the path points to a directory
-                        print("    Loading recursive file \(itemURL.absoluteString)")
                         subItems = try loadFiles(fromURL: itemURL)
                     }
 
                     let newFileItem = FileItem(url: itemURL, children: subItems?.sortItems(foldersOnTop: true))
                     subItems?.forEach {
-                        print("    Calculating parent for subItem \($0.url)")
                         $0.parent = newFileItem
                     }
                     items.append(newFileItem)
+                    print(newFileItem)
+                    print(newFileItem.id)
                     flattenedFileItems[newFileItem.id] = newFileItem
-                } else {
-                    print("    File does not exist, or is not directory")
                 }
             }
             return items
@@ -71,7 +66,6 @@ public extension WorkspaceClient {
         var sources = [DispatchSourceFileSystemObject?]()
 
         func startListeningToDirectory(_ fromURL: URL = folderURL) {
-            print("Listening to \(fromURL.absoluteString)")
             // open the folder to listen for changes
             let descriptor = open(fromURL.path, O_EVTONLY)
 
