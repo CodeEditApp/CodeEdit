@@ -331,7 +331,8 @@ let package = Package(
         .target(
             name: "Git",
             dependencies: [
-                "ShellClient"
+                "ShellClient",
+                "WorkspaceClient"
             ],
             path: "Modules/Git/src"
         ),

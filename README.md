@@ -25,6 +25,17 @@ CodeEdit is a code editor built by the community, for the community, written ent
 | :warning: | **CodeEdit is currently in development and we do not yet offer a download.** <br> We will post a link here when we have an alpha release ready for testing. Until then, we welcome contributors to help bring this project to life. | &nbsp;&nbsp;&nbsp;&nbsp;[CONTRIBUTE](https://github.com/CodeEditApp/CodeEdit/blob/main/CONTRIBUTING.md)&nbsp;&nbsp;&nbsp;&nbsp; |
 | - |:-| - |
 
+## Table of Contents
+
+- [Motivation](#motivation)
+- [Mission](#mission)
+- [Community](#community)
+- [Contributing](#contributing)
+- [Contributors](#contributors)
+- [Sponsors](#sponsors)
+- [Backers](#backers)
+- [License](#license)
+
 ## Motivation
 
 Developers that use a Mac should be able to use an editor that feels at home on the Mac. Comparable editors are built on Electron. This is a huge limitation because it cannot utilize system resources to their fullest potential.
@@ -49,11 +60,11 @@ It might sound crazy, but it is our hope that at some point Apple adopts this pr
 
 ## Community
 
-Join our growing community of amazing contributors on [Discord](https://discord.gg/vChUXVf9Em).
+Join our growing community on [Discord](https://discord.gg/vChUXVf9Em) where we discuss and collaborate on all things CodeEdit. Don't be shy, jump right in and be part of the discussion!
 
 ## Contributing
 
-Read the [Contribution Guide](https://github.com/CodeEditApp/CodeEdit/blob/main/CONTRIBUTING.md)
+Be part of the next revolution in code editing by contributing to the project. This is a community-led effort, so we welcome as many contributors who can help. Read the [Contribution Guide](https://github.com/CodeEditApp/CodeEdit/blob/main/CONTRIBUTING.md) for more information.
 
 ## Contributors
 
@@ -93,6 +104,7 @@ Read the [Contribution Guide](https://github.com/CodeEditApp/CodeEdit/blob/main/
     <td align="center"><a href="http://angcosmin.com"><img src="https://avatars.githubusercontent.com/u/8146514?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Cosmin Anghel</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=AngCosmin" title="Code">💻</a></td>
     <td align="center"><a href="http://mmshivesh.ml"><img src="https://avatars.githubusercontent.com/u/23611514?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Shivesh</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=mmshivesh" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/drucelweisse"><img src="https://avatars.githubusercontent.com/u/36012972?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Andrey Plotnikov</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=drucelweisse" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/POPOBE97"><img src="https://avatars.githubusercontent.com/u/7891810?v=4?s=100" width="100px;" alt=""/><br /><sub><b>POPOBE97</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=POPOBE97" title="Code">💻</a></td>
   </tr>
 </table>
 
@@ -125,6 +137,11 @@ Support CodeEdit's development by [becoming a backer](https://github.com/sponsor
 
 [@ivanvorobei](https://github.com/ivanvorobei)
 [@albertorestifo](https://github.com/albertorestifo)
+[@rkusa](https://github.com/rkusa)
+[@cadenkriese](https://github.com/cadenkriese)
+[@petrjahoda](https://github.com/petrjahoda)
+[@allejo](https://github.com/allejo)
+[@frousselet](frousselet)
 
 ## License
 
