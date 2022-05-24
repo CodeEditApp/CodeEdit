@@ -26,9 +26,17 @@ public extension AppPreferences {
             self.keybindings = try container.decodeIfPresent([String: KeyboardShortcutWrapper].self,
                                                                        forKey: .keybindings) ?? .init()
             appendNew()
+
+            let mgr = CommandManager.init()
+            let wrap = ClosureWrapper.init(closure: {
+                print("testing closure")
+            })
+            mgr.addCommand(name: "test", command: wrap)
+            mgr.executeCommand(name: "test")
         }
 
-        /// Adds new keybindings if they were added to default_keybindings.json. To ensure users will get new keybindings with new app version releases
+        /// Adds new keybindings if they were added to default_keybindings.json.
+        /// To ensure users will get new keybindings with new app version releases
         private mutating func appendNew() {
             let newKeybindings = KeybindingManager.shared
                 .keyboardShortcuts.filter { !keybindings.keys.contains($0.key) }

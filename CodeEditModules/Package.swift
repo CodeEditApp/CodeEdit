@@ -313,6 +313,7 @@ let package = Package(
         ),
         .target(
             name: "Keybindings",
+            dependencies: ["WorkspaceClient"],
             path: "Modules/Keybindings/src",
             resources: [.copy("default_keybindings.json")]
         ),
