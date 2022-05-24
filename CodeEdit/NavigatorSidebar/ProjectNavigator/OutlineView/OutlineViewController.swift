@@ -180,9 +180,9 @@ extension OutlineViewController: NSOutlineViewDelegate {
         case .showAll:
             return item.fileName(typeHidden: false)
         case .showOnly:
-            return item.fileName(typeHidden: !shownFileExtensions.extensions.contains(item.fileType))
+            return item.fileName(typeHidden: !shownFileExtensions.extensions.contains(item.fileType.rawValue))
         case .hideOnly:
-            return item.fileName(typeHidden: hiddenFileExtensions.extensions.contains(item.fileType))
+            return item.fileName(typeHidden: hiddenFileExtensions.extensions.contains(item.fileType.rawValue))
         }
     }
 
