@@ -18,6 +18,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
 
     var workspace: WorkspaceDocument?
     var quickOpenPanel: OverlayPanel?
+    var commandPalettePanel: OverlayPanel?
 
     private var splitViewController: NSSplitViewController! {
         get { return contentViewController as? NSSplitViewController }
@@ -206,6 +207,25 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
 
     @IBAction func saveDocument(_ sender: Any) {
         getSelectedCodeFile()?.save(sender)
+    }
+
+    @IBAction func openCommandPalette(_ sender: Any) {
+        if let commandPalettePanel = commandPalettePanel {
+            if commandPalettePanel.isKeyWindow {
+                commandPalettePanel.close()
+                return
+            } else {
+                window?.addChildWindow(commandPalettePanel, ordered: .above)
+                commandPalettePanel.makeKeyAndOrderFront(self)
+            }
+        } else {
+            let panel = OverlayPanel()
+            self.commandPalettePanel = panel
+            let contentView = CommandPaletteView()
+            panel.contentView = NSHostingView(rootView: contentView)
+            window?.addChildWindow(panel, ordered: .above)
+            panel.makeKeyAndOrderFront(self)
+        }
     }
 
     @IBAction func openQuickly(_ sender: Any) {

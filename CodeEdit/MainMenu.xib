@@ -118,7 +118,8 @@
                                     <action selector="runPageLayout:" target="-1" id="Din-rz-gC5"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Print…" keyEquivalent="p" id="aTl-1u-JFS">
+                            <menuItem title="Print…" id="aTl-1u-JFS">
+                                <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="print:" target="-1" id="qaZ-4w-aoO"/>
                                 </connections>
@@ -578,6 +579,11 @@ CA
                                 <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
                                 <connections>
                                     <action selector="toggleToolbarShown:" target="-1" id="BXY-wc-z0C"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Show Command Palette" keyEquivalent="p" id="uRx-N6-0Fs">
+                                <connections>
+                                    <action selector="openCommandPalette:" target="-1" id="Lpq-nO-zer"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Customize Toolbar…" id="1UK-8n-QPP">
