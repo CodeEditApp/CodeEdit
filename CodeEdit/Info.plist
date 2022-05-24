@@ -45,6 +45,10 @@
 		</dict>
 	</array>
 	<key>GitHash</key>
+<<<<<<< HEAD
 	<string>739d9070c93561b6a3d4af32fa6cdaffb3ae2576</string>
+=======
+	<string>a985358499a2f8922e11376e3c55c464174c0e6b</string>
+>>>>>>> parent of 739d907 (created recursive folder watching function)
 </dict>
 </plist>

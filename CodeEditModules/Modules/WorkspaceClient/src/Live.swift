@@ -23,9 +23,7 @@ public extension WorkspaceClient {
 
             for itemURL in directoryContents {
                 // Skip file if it is in ignore list
-                guard !ignoredFilesAndFolders.contains(itemURL.lastPathComponent) else {
-                    continue
-                }
+                guard !ignoredFilesAndFolders.contains(itemURL.lastPathComponent) else { continue }
 
                 var isDir: ObjCBool = false
 
@@ -43,8 +41,6 @@ public extension WorkspaceClient {
                         $0.parent = newFileItem
                     }
                     items.append(newFileItem)
-                    print(newFileItem)
-                    print(newFileItem.id)
                     flattenedFileItems[newFileItem.id] = newFileItem
                 }
             }
@@ -58,63 +54,41 @@ public extension WorkspaceClient {
         fileItems.forEach { item in
             item.parent = workspaceItem
         }
-        // By using `CurrentValueSubject` we can define a starting value.
+        // By using `CurrentValueSubject` we can define a starting value.
         // The value passed during init it's going to be send as soon as the
         // consumer subscribes to the publisher.
         let subject = CurrentValueSubject<[FileItem], Never>(fileItems)
 
-        var sources = [DispatchSourceFileSystemObject?]()
+        var source: DispatchSourceFileSystemObject?
 
-        func startListeningToDirectory(_ fromURL: URL = folderURL) {
+        func startListeningToDirectory() {
             // open the folder to listen for changes
-            let descriptor = open(fromURL.path, O_EVTONLY)
+            let descriptor = open(folderURL.path, O_EVTONLY)
 
-            sources.append(DispatchSource.makeFileSystemObjectSource(
+            source = DispatchSource.makeFileSystemObjectSource(
                 fileDescriptor: descriptor,
                 eventMask: .write,
                 queue: DispatchQueue.global()
-            ))
+            )
 
-            sources.last!?.setEventHandler {
+            source?.setEventHandler {
                 // Something has changed inside the directory
                 // We should reload the files.
                 if let fileItems = try? loadFiles(fromURL: folderURL) {
-                    startListeningToDirectory(fromURL)
                     subject.send(fileItems)
                 }
             }
 
-            sources.last!?.setCancelHandler {
+            source?.setCancelHandler {
                 close(descriptor)
             }
 
-            sources.last!?.resume()
-
-            // see if there are any child folders and listen to them
-            do {
-                let directoryContents = try fileManager.contentsOfDirectory(at:
-                                                                                fromURL,
-                                                                                includingPropertiesForKeys: nil)
-                for itemURL in directoryContents {
-                    // Skip file if it is in ignore list
-                    guard !ignoredFilesAndFolders.contains(itemURL.lastPathComponent) else { continue }
-
-                    var isDir: ObjCBool = false
-
-                    if fileManager.fileExists(atPath: itemURL.path, isDirectory: &isDir) {
-                        if isDir.boolValue {
-                            startListeningToDirectory(itemURL)
-                        }
-                    }
-                }
-            } catch {}
+            source?.resume()
         }
 
         func stopListeningToDirectory() {
-            for source in sources {
-                source?.cancel()
-            }
-            sources = []
+            source?.cancel()
+            source = nil
         }
 
         return Self(
