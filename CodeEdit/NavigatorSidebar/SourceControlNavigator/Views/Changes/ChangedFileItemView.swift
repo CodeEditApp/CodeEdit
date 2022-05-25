@@ -20,7 +20,7 @@ import SwiftUI
      var workspaceURL: URL
 
      var body: some View {
-         HStack() {
+         HStack {
              Image(systemName: changedFile.systemImage)
                  .frame(width: 11, height: 11)
                  .foregroundColor(selection == changedFile.id ? .white : changedFile.iconColor)
