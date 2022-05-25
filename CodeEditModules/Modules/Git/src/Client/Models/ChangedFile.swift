@@ -33,7 +33,11 @@ public struct ChangedFile: Codable, Hashable, Identifiable {
 
     /// Returns the file name (e.g.: `Package.swift`)
     public var fileName: String {
-        fileLink.lastPathComponent
+        fileLink.deletingPathExtension().lastPathComponent
+    }
+
+    public var changeTypeValue: String {
+        changeType?.description ?? ""
     }
 
     /// Returns the extension of the file or an empty string if no extension is present.
