@@ -43,7 +43,20 @@ public final class CommandManager: ObservableObject {
     }
 }
 
-public struct Command: Identifiable {
+public struct Command: Identifiable, Hashable {
+
+    public static func == (lhs: Command, rhs: Command) -> Bool {
+        return lhs.id == rhs.id
+    }
+
+    static func < (lhs: Command, rhs: Command) -> Bool {
+        return false
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+
     public let id: String
     public let title: String
     public let closureWrapper: ClosureWrapper

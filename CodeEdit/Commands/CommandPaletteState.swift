@@ -10,6 +10,7 @@ import Keybindings
 
 public final class CommandPaletteState: ObservableObject {
     @Published var commandQuery: String = ""
+    @Published var selected: Command?
     @Published var isShowingCommandsList: Bool = true
 
     func fetchMatchingCommands() {

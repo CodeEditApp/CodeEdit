@@ -12,7 +12,7 @@ import CodeEditUI
 public struct CommandPaletteView: View {
     @ObservedObject private var state: CommandPaletteState
     @ObservedObject var commandManager: CommandManager = CommandManager.shared
-    @State private var selectedItem: Command?
+    @State private var selectedItem: Command? = CommandManager.shared.commands[0]
     private let closePalette: () -> Void
 
     public init(state: CommandPaletteState, closePalette: @escaping () -> Void) {
@@ -50,41 +50,29 @@ public struct CommandPaletteView: View {
                     .foregroundColor(Color(.systemGray).opacity(0.85))
                     .background(EffectView(.sidebar, blendingMode: .behindWindow))
             }
-//            Divider()
-            List {
-                ForEach(commandManager.commands) { command in
-                    HStack(alignment: .center, spacing: 0) {
-                        // swiftlint:disable:next multiple_closures_with_trailing_closure
-                        Button(action: { callHandler(command: command) }) {
+            Divider()
+            VStack(spacing: 0) {
+                    List(commandManager.commands, selection: $selectedItem) { command in
+                        VStack(alignment: .leading, spacing: 0) {
                             Text(command.title).foregroundColor(Color.white)
-                        }
-                        .contentShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-                        .buttonStyle(PlainButtonStyle())
-                        .padding(5)
-                        .background(Color(.systemBlue))
+                                .padding(EdgeInsets.init(top: 0, leading: 10, bottom: 0, trailing: 0))
+                                .frame(height: 10)
+                        }.frame(maxWidth: .infinity, maxHeight: 15, alignment: .leading)
+                            .listRowBackground(self.selectedItem == command ?
+                                               RoundedRectangle(cornerRadius: 5, style: .continuous)
+                                .fill(Color(.systemBlue)) :
+                                                RoundedRectangle(cornerRadius: 5, style: .continuous)
+                                .fill(Color.clear) )
 
-                    }.frame(maxWidth: .infinity)
-
-                }
+                        .onTapGesture {
+                            self.selectedItem = command
+                            callHandler(command: command)
+                        }.onHover(perform: { _ in self.selectedItem = command })
+                    }.listStyle(SidebarListStyle())
             }
-//                List(state.commands.values, id: \.id) { file in
-//                    NavigationLink(tag: file, selection: $selectedItem) {
-//
-//                    } label: {
-//
-//                    }
-//                    .onTapGesture(count: 2) {
-//                        self.openFile(file)
-//                        self.onClose()
-//                    }
-//                    .onTapGesture(count: 1) {
-//                        self.selectedItem = file
-//                    }
-//                }
-//                .frame(minWidth: 250, maxWidth: 250)
-
         }
         .background(EffectView(.sidebar, blendingMode: .behindWindow))
+        .foregroundColor(.gray)
         .edgesIgnoringSafeArea(.vertical)
         .frame(minWidth: 600,
            minHeight: self.state.isShowingCommandsList ? 400 : 28,
