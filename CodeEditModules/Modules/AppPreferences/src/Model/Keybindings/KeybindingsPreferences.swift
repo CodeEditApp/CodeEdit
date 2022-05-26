@@ -27,11 +27,12 @@ public extension AppPreferences {
                                                                        forKey: .keybindings) ?? .init()
             appendNew()
 
-            let mgr = CommandManager.init()
+            let mgr = CommandManager.shared
             let wrap = ClosureWrapper.init(closure: {
                 print("testing closure")
             })
-            mgr.addCommand(name: "test", command: wrap)
+            mgr.addCommand(name: "Send test to console",
+                           title: "Send test to console", id: "codeedit.test", command: wrap)
             mgr.executeCommand(name: "test")
         }
 

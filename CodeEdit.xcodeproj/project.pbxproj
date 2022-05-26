@@ -102,6 +102,7 @@
 		DE6F77872813625500D00A76 /* TabBarDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6F77862813625500D00A76 /* TabBarDivider.swift */; };
 		FA275791283D61F300FDAFEE /* CommandPaletteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA275790283D61F300FDAFEE /* CommandPaletteView.swift */; };
 		FA6BA6F1282ACAD600019309 /* Keybindings in Frameworks */ = {isa = PBXBuildFile; productRef = FA6BA6F0282ACAD600019309 /* Keybindings */; };
+		FA85159D283F4F800040A467 /* CommandPaletteState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA85159C283F4F800040A467 /* CommandPaletteState.swift */; };
 		FD6A3D3D2817C13B008BCF11 /* Package.resolved in Resources */ = {isa = PBXBuildFile; fileRef = FD6A3D3C2817C13B008BCF11 /* Package.resolved */; };
 /* End PBXBuildFile section */
 
@@ -237,6 +238,7 @@
 		DE6F77862813625500D00A76 /* TabBarDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarDivider.swift; sourceTree = "<group>"; };
 		FA275790283D61F300FDAFEE /* CommandPaletteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandPaletteView.swift; sourceTree = "<group>"; };
 		FA73C6632836C0D3008353ED /* Keybindings */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Keybindings; path = CodeEditModules/Modules/Keybindings; sourceTree = "<group>"; };
+		FA85159C283F4F800040A467 /* CommandPaletteState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandPaletteState.swift; sourceTree = "<group>"; };
 		FD6A3D3C2817C13B008BCF11 /* Package.resolved */ = {isa = PBXFileReference; lastKnownFileType = text; path = Package.resolved; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -586,6 +588,7 @@
 		FA73C664283BEDE6008353ED /* Commands */ = {
 			isa = PBXGroup;
 			children = (
+				FA85159C283F4F800040A467 /* CommandPaletteState.swift */,
 				FA275790283D61F300FDAFEE /* CommandPaletteView.swift */,
 			);
 			path = Commands;
@@ -895,6 +898,7 @@
 				2072FA13280D74ED00C7F8D4 /* HistoryInspectorModel.swift in Sources */,
 				201169E52837B40300F92B46 /* RepositoriesView.swift in Sources */,
 				DE513F52281B672D002260B9 /* TabBarAccessory.swift in Sources */,
+				FA85159D283F4F800040A467 /* CommandPaletteState.swift in Sources */,
 				2813F93927ECC4C300E305E4 /* NavigatorSidebar.swift in Sources */,
 				DE513F54281DE5D0002260B9 /* TabBarXcode.swift in Sources */,
 				20EBB50D280C383700F3A5DA /* LanguageType.swift in Sources */,

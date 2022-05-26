@@ -210,21 +210,23 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     }
 
     @IBAction func openCommandPalette(_ sender: Any) {
-        if let commandPalettePanel = commandPalettePanel {
-            if commandPalettePanel.isKeyWindow {
-                commandPalettePanel.close()
-                return
+        if let workspace = workspace, let state = workspace.commandsPaletteState {
+            if let commandPalettePanel = commandPalettePanel {
+                if commandPalettePanel.isKeyWindow {
+                    commandPalettePanel.close()
+                    return
+                } else {
+                    window?.addChildWindow(commandPalettePanel, ordered: .above)
+                    commandPalettePanel.makeKeyAndOrderFront(self)
+                }
             } else {
-                window?.addChildWindow(commandPalettePanel, ordered: .above)
-                commandPalettePanel.makeKeyAndOrderFront(self)
+                let panel = OverlayPanel()
+                self.commandPalettePanel = panel
+                let contentView = CommandPaletteView(state: state, closePalette: panel.close)
+                panel.contentView = NSHostingView(rootView: contentView)
+                window?.addChildWindow(panel, ordered: .above)
+                panel.makeKeyAndOrderFront(self)
             }
-        } else {
-            let panel = OverlayPanel()
-            self.commandPalettePanel = panel
-            let contentView = CommandPaletteView()
-            panel.contentView = NSHostingView(rootView: contentView)
-            window?.addChildWindow(panel, ordered: .above)
-            panel.makeKeyAndOrderFront(self)
         }
     }
 

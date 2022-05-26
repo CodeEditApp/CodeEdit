@@ -20,17 +20,37 @@ mgr.executeCommand(name: "test")
  ```
  */
 
-public final class CommandManager {
-    private var commandsList: [String: ClosureWrapper]
-    public init() {
+public final class CommandManager: ObservableObject {
+    @Published private var commandsList: [String: Command]
+
+    private init() {
         commandsList = [:]
     }
-    public func addCommand(name: String, command: ClosureWrapper) {
-        commandsList[name] = command
+
+    static public let shared: CommandManager = .init()
+
+    public func addCommand(name: String, title: String, id: String, command: ClosureWrapper) {
+        let command = Command.init(id: name, title: title, closureWrapper: command)
+        commandsList[id] = command
+    }
+
+    public var commands: [Command] {
+        return commandsList.map {$0.value}
     }
 
     public func executeCommand(name: String) {
-        commandsList[name]?.call()
+        commandsList[name]?.closureWrapper.call()
+    }
+}
+
+public struct Command: Identifiable {
+    public let id: String
+    public let title: String
+    public let closureWrapper: ClosureWrapper
+    public init(id: String, title: String, closureWrapper: ClosureWrapper) {
+        self.id = id
+        self.title = title
+        self.closureWrapper = closureWrapper
     }
 }
 

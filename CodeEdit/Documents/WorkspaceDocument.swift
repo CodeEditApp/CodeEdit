@@ -31,6 +31,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var statusBarModel: StatusBarModel?
     var searchState: SearchState?
     var quickOpenState: QuickOpenState?
+    var commandsPaletteState: CommandPaletteState?
     private var cancellables = Set<AnyCancellable>()
 
     @Published var targets: [Target] = []
@@ -192,6 +193,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         )
         self.searchState = .init(self)
         self.quickOpenState = .init(fileURL: url)
+        self.commandsPaletteState = .init()
         self.statusBarModel = .init(workspaceURL: url)
     }
 

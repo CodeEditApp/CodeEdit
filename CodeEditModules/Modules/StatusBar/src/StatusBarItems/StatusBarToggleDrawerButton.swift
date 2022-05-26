@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Keybindings
 
 internal struct StatusBarToggleDrawerButton: View {
     @ObservedObject
@@ -13,6 +14,16 @@ internal struct StatusBarToggleDrawerButton: View {
 
     internal init(model: StatusBarModel) {
         self.model = model
+        CommandManager.shared.addCommand(name: "Toggle Drawer",
+                                         title: "Toggle Drawer",
+                                         id: "open.drawer", command: ClosureWrapper.init(closure: {
+            withAnimation {
+                model.isExpanded.toggle()
+                if model.isExpanded && model.currentHeight < 1 {
+                    model.currentHeight = 300
+                }
+            }
+        }))
     }
 
     internal var body: some View {
