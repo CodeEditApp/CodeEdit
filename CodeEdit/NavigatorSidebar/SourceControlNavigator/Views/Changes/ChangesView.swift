@@ -15,7 +15,7 @@ struct ChangesView: View {
     var model: SourceControlModel
 
     @State
-    var selectedFile: ChangedFile.ID?
+    var selectedFileID: ChangedFile.ID?
 
     /// Initialize with GitClient
     /// - Parameter gitClient: a GitClient
@@ -30,17 +30,17 @@ struct ChangesView: View {
                     .font(.system(size: 16))
                     .foregroundColor(.secondary)
             } else {
-                List(selection: $selectedFile) {
-                    Section("Local Changes") {
-                        ForEach(model.changed) { file in
-                            ChangedFileItemView(changedFile: file,
-                                                selection: $selectedFile,
-                                                workspaceURL: model.workspaceURL)
-                        }
+                List(selection: $selectedFileID) {
+                    ForEach(model.changed) { file in
+                        ChangedFileItemView(
+                            changedFile: file,
+                            selectedFileID: $selectedFileID,
+                            workspaceURL: model.workspaceURL
+                        )
                     }
-                    .foregroundColor(.secondary)
+                    .foregroundColor(.primary)
                 }
-                .listStyle(.sidebar)
+                .listStyle(.automatic)
             }
         }
         .frame(maxHeight: .infinity)

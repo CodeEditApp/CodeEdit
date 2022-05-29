@@ -13,7 +13,7 @@ struct ChangedFileItemView: View {
     var changedFile: ChangedFile
 
     @Binding
-    var selection: ChangedFile.ID?
+    var selectedFileID: ChangedFile.ID?
 
     @State
     var workspaceURL: URL
@@ -22,17 +22,12 @@ struct ChangedFileItemView: View {
         HStack {
             Image(systemName: changedFile.systemImage)
                 .frame(width: 12, height: 12)
-                .foregroundColor(selection == changedFile.id ? .white : changedFile.iconColor)
-
+                .foregroundColor(selectedFileID == changedFile.id ? nil : changedFile.iconColor)
             Text(changedFile.fileName)
-                .font(.system(size: 12))
-                .foregroundColor(selection == changedFile.id ? .white : .secondary)
-
+                .font(.system(size: 13).weight(.regular))
             Spacer()
-
             Text(changedFile.changeTypeValue)
-                .font(.system(size: 12))
-                .foregroundColor(selection == changedFile.id ? .white : .secondary)
+                .font(.system(size: 12).weight(.semibold))
         }
         .contextMenu {
             Group {
@@ -67,6 +62,7 @@ struct ChangedFileItemView: View {
                     .disabled(true) // TODO: Implementation Needed
             }
         }
-        .padding(.leading, 15)
+        .listRowInsets(EdgeInsets(top: 4, leading: 11, bottom: 4, trailing: 4))
+        .tag(changedFile.id)
     }
 }
