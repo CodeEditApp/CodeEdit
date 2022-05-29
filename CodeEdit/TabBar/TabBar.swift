@@ -46,10 +46,34 @@ struct TabBar: View {
     private func updateExpectedTabWidth(proxy: GeometryProxy) {
         expectedTabWidth = max(
             // Equally divided size of a native tab.
-            (proxy.size.width + 1) / CGFloat(workspace.selectionState.openedTabs.count) + 1,
+            (proxy.size.width + 1) / CGFloat(openTabCount()) + 1,
             // Min size of a native tab.
             CGFloat(140)
         )
+    }
+
+    /// Convenience method for finding the total number of opened tabs.
+    /// *Accounts for temporary tabs.*
+    /// - Returns: The number of opened tabs.
+    private func openTabCount() -> Int {
+        if workspace.selectionState.temporaryTab != nil {
+            return workspace.selectionState.openedTabs.count + 1
+        } else {
+            return workspace.selectionState.openedTabs.count
+        }
+    }
+
+    /// Conditionally updates the `expectedTabWidth`.
+    /// Called when the tab count changes or the temporary tab changes.
+    /// - Parameter geometryProxy: The geometry proxy to calculate the new width using.
+    private func updateForTabCountChange(geometryProxy: GeometryProxy) {
+        // Only update the expected width when user is not hovering over tabs.
+        // This should give users a better experience on closing multiple tabs continuously.
+        if !isHoveringOverTabs {
+            withAnimation(.easeOut(duration: 0.15)) {
+                updateExpectedTabWidth(proxy: geometryProxy)
+            }
+        }
     }
 
     var body: some View {
@@ -101,14 +125,11 @@ struct TabBar: View {
                         }
                         // When tabs are changing, re-compute the expected tab width.
                         .onChange(of: workspace.selectionState.openedTabs.count) { _ in
-                            // Only update the expected width when user is not hovering over tabs.
-                            // This should give users a better experience on closing multiple tabs continuously.
-                            if !isHoveringOverTabs {
-                                withAnimation(.easeOut(duration: 0.15)) {
-                                    updateExpectedTabWidth(proxy: geometryProxy)
-                                }
-                            }
+                            updateForTabCountChange(geometryProxy: geometryProxy)
                         }
+                        .onChange(of: workspace.selectionState.temporaryTab, perform: { _ in
+                            updateForTabCountChange(geometryProxy: geometryProxy)
+                        })
                         // When window size changes, re-compute the expected tab width.
                         .onChange(of: geometryProxy.size.width) { _ in
                             updateExpectedTabWidth(proxy: geometryProxy)
