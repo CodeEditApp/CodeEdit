@@ -62,7 +62,7 @@ struct ChangedFileItemView: View {
                     .disabled(true) // TODO: Implementation Needed
             }
         }
-        .listRowInsets(EdgeInsets(top: 4, leading: 11, bottom: 4, trailing: 4))
+        .listRowInsets(EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 4))
         .tag(changedFile.id)
     }
 }

@@ -31,6 +31,9 @@ struct ChangesView: View {
                     .foregroundColor(.secondary)
             } else {
                 List(selection: $selectedFileID) {
+                    Text("Local Changes")
+                        .font(.system(size: 12).weight(.bold))
+                        .foregroundColor(.secondary)
                     ForEach(model.changed) { file in
                         ChangedFileItemView(
                             changedFile: file,
