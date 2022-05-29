@@ -75,6 +75,16 @@ struct TabBar: View {
                                     .frame(height: TabBar.height)
                                 }
                             }
+                            if let tempTabId = workspace.selectionState.temporaryTab,
+                               let item = workspace.selectionState.getItemByTab(id: tempTabId) {
+                                TabBarItem(
+                                    expectedWidth: $expectedTabWidth,
+                                    item: item,
+                                    windowController: windowController,
+                                    workspace: workspace
+                                )
+                                .frame(height: TabBar.height)
+                            }
                         }
                         // This padding is to hide dividers at two ends under the accessory view divider.
                         .padding(.horizontal, prefs.preferences.general.tabBarStyle == .native ? -1 : 0)
@@ -116,7 +126,11 @@ struct TabBar: View {
                     }
                 }
                 // When there is no opened file, hide the scroll view, but keep the background.
-                .opacity(workspace.selectionState.openedTabs.isEmpty ? 0.0 : 1.0)
+                .opacity(
+                    workspace.selectionState.openedTabs.isEmpty && workspace.selectionState.temporaryTab == nil
+                    ? 0.0
+                    : 1.0
+                )
                 // To fill up the parent space of tab bar.
                 .frame(maxWidth: .infinity)
                 .background {

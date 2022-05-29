@@ -64,16 +64,18 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
 
     private func updateNewlyOpenedTabs(item: TabBarItemRepresentable) {
         if !selectionState.openedTabs.contains(item.tabID) {
-            selectionState.openedTabs.append(item.tabID)
+            if selectionState.temporaryTab == item.tabID {
+                // This is the temporary tab, make it permanent.
+                selectionState.temporaryTab = nil
+                selectionState.openedTabs.append(item.tabID)
+            } else {
+                // If this isn't opened and not the temp tab, it's now the temp tab
 
-            // If there is no temporary tab, temp tabs are enabled, and this tab hasn't
-            // already been opened: make this the temporary tab.
-            if selectionState.temporaryTab == nil {
-                selectionState.temporaryTab = item.tabID
-            } else if selectionState.temporaryTab != item.tabID {
-                // If there is a temporary tab, we need to close it first before 
-                // making the new tab the temp tab.
-                closeTemporaryTab(id: selectionState.temporaryTab!)
+                // But, if there is already a temporary tab, close it first
+                if selectionState.temporaryTab != nil {
+                    closeTemporaryTab()
+                }
+
                 selectionState.temporaryTab = item.tabID
             }
         }
@@ -81,10 +83,12 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
 
     /// Closes an open temporary tab,  does not save the temporary tab's file.
     /// Removes the tab item from `openedCodeFiles`, `openedExtensions`, and `openFileItems`.
-    /// - Parameter id: The ID of the current temporary tab that should be removed.
-    private func closeTemporaryTab(id: TabBarItemID) {
-        guard let openTabIdx = selectionState.openedTabs.firstIndex(of: id) else { return }
-        selectionState.openedTabs.remove(at: openTabIdx)
+    private func closeTemporaryTab() {
+        guard let id = selectionState.temporaryTab else { return }
+        if selectionState.temporaryTab == selectionState.selectedId {
+            selectionState.selectedId = nil
+        }
+        selectionState.temporaryTab = nil
 
         switch id {
         case .codeEditor:
@@ -127,6 +131,10 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     /// Closes single tab
     /// - Parameter id: tab bar item's identifier to be closed
     func closeTab(item id: TabBarItemID) {
+        if id == selectionState.temporaryTab {
+            closeTemporaryTab()
+        }
+
         guard let idx = selectionState.openedTabs.firstIndex(of: id) else { return }
         let closedID = selectionState.openedTabs.remove(at: idx)
         guard closedID == id else { return }
