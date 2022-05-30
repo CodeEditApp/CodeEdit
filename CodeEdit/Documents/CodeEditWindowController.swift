@@ -206,6 +206,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
 
     @IBAction func saveDocument(_ sender: Any) {
         getSelectedCodeFile()?.save(sender)
+        workspace?.editorUpdatedContent()
     }
 
     @IBAction func openQuickly(_ sender: Any) {

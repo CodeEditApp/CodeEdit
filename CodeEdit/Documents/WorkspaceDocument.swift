@@ -18,8 +18,8 @@ import ExtensionsStore
 import StatusBar
 import TabBar
 
-@objc(WorkspaceDocument)
-final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
+// swiftlint:disable:next type_body_length
+@objc(WorkspaceDocument) final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var workspaceClient: WorkspaceClient?
 
     var extensionNavigatorData = ExtensionNavigatorData()
@@ -37,7 +37,10 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
 
     deinit {
         cancellables.forEach { $0.cancel() }
+        NotificationCenter.default.removeObserver(self)
     }
+
+    // MARK: Open Tabs
 
     /// Opens new tab
     /// - Parameter item: any item which can be represented as a tab
@@ -62,6 +65,8 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         }
     }
 
+    /// Updates the opened tabs and temporary tab.
+    /// - Parameter item: The item to use to update the tab state.
     private func updateNewlyOpenedTabs(item: TabBarItemRepresentable) {
         if !selectionState.openedTabs.contains(item.tabID) {
             if selectionState.temporaryTab == item.tabID {
@@ -79,32 +84,6 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
                 selectionState.temporaryTab = item.tabID
             }
         }
-    }
-
-    /// Closes an open temporary tab,  does not save the temporary tab's file.
-    /// Removes the tab item from `openedCodeFiles`, `openedExtensions`, and `openFileItems`.
-    private func closeTemporaryTab() {
-        guard let id = selectionState.temporaryTab else { return }
-        if selectionState.temporaryTab == selectionState.selectedId {
-            selectionState.selectedId = nil
-        }
-        selectionState.temporaryTab = nil
-
-        switch id {
-        case .codeEditor:
-            guard let item = selectionState.getItemByTab(id: id)
-                    as? WorkspaceClient.FileItem else { return }
-            selectionState.openedCodeFiles.removeValue(forKey: item)
-        case .extensionInstallation:
-            guard let item = selectionState.getItemByTab(id: id)
-                    as? Plugin else { return }
-            closeExtensionTab(item: item)
-        }
-
-        guard let openFileItemIdx = selectionState
-            .openFileItems
-            .firstIndex(where: { $0.tabID == id}) else { return }
-        selectionState.openFileItems.remove(at: openFileItemIdx)
     }
 
     private func openFile(item: WorkspaceClient.FileItem) throws {
@@ -127,6 +106,8 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
             selectionState.openedExtensions.append(item)
         }
     }
+
+    // MARK: Close Tabs
 
     /// Closes single tab
     /// - Parameter id: tab bar item's identifier to be closed
@@ -189,6 +170,32 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         closeTabs(items: range)
     }
 
+    /// Closes an open temporary tab,  does not save the temporary tab's file.
+    /// Removes the tab item from `openedCodeFiles`, `openedExtensions`, and `openFileItems`.
+    private func closeTemporaryTab() {
+        guard let id = selectionState.temporaryTab else { return }
+        if selectionState.temporaryTab == selectionState.selectedId {
+            selectionState.selectedId = selectionState.openedTabs.last
+        }
+        selectionState.temporaryTab = nil
+
+        switch id {
+        case .codeEditor:
+            guard let item = selectionState.getItemByTab(id: id)
+                    as? WorkspaceClient.FileItem else { return }
+            selectionState.openedCodeFiles.removeValue(forKey: item)
+        case .extensionInstallation:
+            guard let item = selectionState.getItemByTab(id: id)
+                    as? Plugin else { return }
+            closeExtensionTab(item: item)
+        }
+
+        guard let openFileItemIdx = selectionState
+            .openFileItems
+            .firstIndex(where: { $0.tabID == id}) else { return }
+        selectionState.openFileItems.remove(at: openFileItemIdx)
+    }
+
     private func closeFileTab(item: WorkspaceClient.FileItem) {
         defer {
             let file = selectionState.openedCodeFiles.removeValue(forKey: item)
@@ -203,6 +210,18 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         guard let idx = selectionState.openedExtensions.firstIndex(of: item) else { return }
         selectionState.openedExtensions.remove(at: idx)
     }
+
+    /// Makes the temporary tab permanent when a file save or edit happens.
+    @objc func editorUpdatedContent() {
+        if selectionState.selectedId == selectionState.temporaryTab
+            && selectionState.temporaryTab != nil {
+            let tabID: TabBarItemID = selectionState.temporaryTab!
+            selectionState.temporaryTab = nil
+            selectionState.openedTabs.append(tabID)
+        }
+    }
+
+    // MARK: NSDocument
 
     private let ignoredFilesAndDirectory = [
         ".DS_Store"
@@ -231,6 +250,8 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         self.addWindowController(windowController)
     }
 
+    // MARK: Set Up Workspace
+
     private func initWorkspaceState(_ url: URL) throws {
         self.workspaceClient = try .default(
             fileManager: .default,
@@ -240,6 +261,11 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         self.searchState = .init(self)
         self.quickOpenState = .init(fileURL: url)
         self.statusBarModel = .init(workspaceURL: url)
+
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(editorUpdatedContent),
+                                               name: NSNotification.Name("CodeEditor.changed"),
+                                               object: nil)
     }
 
     override func read(from url: URL, ofType typeName: String) throws {
@@ -312,6 +338,8 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     }
 
     override func write(to url: URL, ofType typeName: String) throws {}
+
+    // MARK: Close Workspace
 
     override func close() {
         if let projectDir = fileURL?.appendingPathComponent(".codeedit", isDirectory: true) {

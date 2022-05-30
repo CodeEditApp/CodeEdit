@@ -135,6 +135,7 @@ struct CodeEditor: NSViewRepresentable {
                 return
             }
             content.wrappedValue = textView.string
+            NotificationCenter.default.post(name: NSNotification.Name("CodeEditor.changed"), object: nil)
         }
 
     }
