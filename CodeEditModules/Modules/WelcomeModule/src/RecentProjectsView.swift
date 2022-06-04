@@ -77,14 +77,6 @@ public struct RecentProjectsView: View {
     /// Update recent projects, including removing deleted/moved projects
     func updateRecentProjects() {
         recentProjectPaths = UserDefaults.standard.array(forKey: "recentProjectPaths") as? [String] ?? []
-        let newRecentProjects = recentProjectPaths.filter({ FileManager.default.fileExists(atPath: $0) })
-        if newRecentProjects != recentProjectPaths {
-            recentProjectPaths = newRecentProjects
-            UserDefaults.standard.set(
-                self.recentProjectPaths,
-                forKey: "recentProjectPaths"
-            )
-        }
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
             updateRecentProjects()
