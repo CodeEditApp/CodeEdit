@@ -46,6 +46,7 @@ public extension WorkspaceClient {
             }
             return items
         }
+
         // initial load
         let fileItems = try loadFiles(fromURL: folderURL)
         // workspace fileItem
