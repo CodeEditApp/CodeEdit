@@ -30,6 +30,13 @@
 		04C3256C28034FC800C8DA2D /* CodeEditKit in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 04C3256A28034FC800C8DA2D /* CodeEditKit */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		200412EF280F3EAC00BCAF5C /* NoCommitHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200412EE280F3EAC00BCAF5C /* NoCommitHistoryView.swift */; };
 		2004A3832808468600FD9696 /* Feedback in Frameworks */ = {isa = PBXBuildFile; productRef = 2004A3822808468600FD9696 /* Feedback */; };
+		201169D72837B2E300F92B46 /* SourceControlNavigatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201169D62837B2E300F92B46 /* SourceControlNavigatorView.swift */; };
+		201169D92837B31200F92B46 /* SourceControlSearchToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201169D82837B31200F92B46 /* SourceControlSearchToolbar.swift */; };
+		201169DB2837B34000F92B46 /* ChangedFileItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201169DA2837B34000F92B46 /* ChangedFileItemView.swift */; };
+		201169DD2837B3AC00F92B46 /* SourceControlToolbarBottom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201169DC2837B3AC00F92B46 /* SourceControlToolbarBottom.swift */; };
+		201169E22837B3D800F92B46 /* ChangesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201169E12837B3D800F92B46 /* ChangesView.swift */; };
+		201169E52837B40300F92B46 /* RepositoriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201169E42837B40300F92B46 /* RepositoriesView.swift */; };
+		201169E72837B5CA00F92B46 /* SourceControlModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201169E62837B5CA00F92B46 /* SourceControlModel.swift */; };
 		2040F0B1280AE96100411B6F /* CodeEditUtils in Frameworks */ = {isa = PBXBuildFile; productRef = 2040F0B0280AE96100411B6F /* CodeEditUtils */; };
 		2072FA13280D74ED00C7F8D4 /* HistoryInspectorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2072FA12280D74ED00C7F8D4 /* HistoryInspectorModel.swift */; };
 		2072FA16280D83A500C7F8D4 /* FileTypeList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2072FA15280D83A500C7F8D4 /* FileTypeList.swift */; };
@@ -164,6 +171,13 @@
 		04C3254E2800AA4700C8DA2D /* ExtensionInstallationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionInstallationView.swift; sourceTree = "<group>"; };
 		04C325502800AC7400C8DA2D /* ExtensionInstallationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionInstallationViewModel.swift; sourceTree = "<group>"; };
 		200412EE280F3EAC00BCAF5C /* NoCommitHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoCommitHistoryView.swift; sourceTree = "<group>"; };
+		201169D62837B2E300F92B46 /* SourceControlNavigatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlNavigatorView.swift; sourceTree = "<group>"; };
+		201169D82837B31200F92B46 /* SourceControlSearchToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlSearchToolbar.swift; sourceTree = "<group>"; };
+		201169DA2837B34000F92B46 /* ChangedFileItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangedFileItemView.swift; sourceTree = "<group>"; };
+		201169DC2837B3AC00F92B46 /* SourceControlToolbarBottom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlToolbarBottom.swift; sourceTree = "<group>"; };
+		201169E12837B3D800F92B46 /* ChangesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangesView.swift; sourceTree = "<group>"; };
+		201169E42837B40300F92B46 /* RepositoriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoriesView.swift; sourceTree = "<group>"; };
+		201169E62837B5CA00F92B46 /* SourceControlModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlModel.swift; sourceTree = "<group>"; };
 		2072FA12280D74ED00C7F8D4 /* HistoryInspectorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryInspectorModel.swift; sourceTree = "<group>"; };
 		2072FA15280D83A500C7F8D4 /* FileTypeList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTypeList.swift; sourceTree = "<group>"; };
 		2072FA17280D871200C7F8D4 /* TextEncoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextEncoding.swift; sourceTree = "<group>"; };
@@ -311,6 +325,52 @@
 			path = ExtensionNavigator;
 			sourceTree = "<group>";
 		};
+		201169D52837B29600F92B46 /* SourceControlNavigator */ = {
+			isa = PBXGroup;
+			children = (
+				201169DF2837B3CB00F92B46 /* Model */,
+				201169DE2837B3C700F92B46 /* Views */,
+				201169D62837B2E300F92B46 /* SourceControlNavigatorView.swift */,
+				201169D82837B31200F92B46 /* SourceControlSearchToolbar.swift */,
+				201169DC2837B3AC00F92B46 /* SourceControlToolbarBottom.swift */,
+			);
+			path = SourceControlNavigator;
+			sourceTree = "<group>";
+		};
+		201169DE2837B3C700F92B46 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				201169E32837B3EF00F92B46 /* Repositories */,
+				201169E02837B3D100F92B46 /* Changes */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		201169DF2837B3CB00F92B46 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				201169E62837B5CA00F92B46 /* SourceControlModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		201169E02837B3D100F92B46 /* Changes */ = {
+			isa = PBXGroup;
+			children = (
+				201169E12837B3D800F92B46 /* ChangesView.swift */,
+				201169DA2837B34000F92B46 /* ChangedFileItemView.swift */,
+			);
+			path = Changes;
+			sourceTree = "<group>";
+		};
+		201169E32837B3EF00F92B46 /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+				201169E42837B40300F92B46 /* RepositoriesView.swift */,
+			);
+			path = Repositories;
+			sourceTree = "<group>";
+		};
 		2072FA14280D838800C7F8D4 /* Lists */ = {
 			isa = PBXGroup;
 			children = (
@@ -390,6 +450,7 @@
 		287776EA27E350A100D46668 /* NavigatorSidebar */ = {
 			isa = PBXGroup;
 			children = (
+				201169D52837B29600F92B46 /* SourceControlNavigator */,
 				0483E34E27FDB15F00354AC0 /* ExtensionNavigator */,
 				286471AC27ED52950039369D /* ProjectNavigator */,
 				D7012EE627E757660001E1EF /* FindNavigator */,
@@ -819,26 +880,32 @@
 			buildActionMask = 2147483647;
 			files = (
 				2072FA13280D74ED00C7F8D4 /* HistoryInspectorModel.swift in Sources */,
+				201169E52837B40300F92B46 /* RepositoriesView.swift in Sources */,
 				DE513F52281B672D002260B9 /* TabBarAccessory.swift in Sources */,
 				2813F93927ECC4C300E305E4 /* NavigatorSidebar.swift in Sources */,
 				DE513F54281DE5D0002260B9 /* TabBarXcode.swift in Sources */,
 				20EBB50D280C383700F3A5DA /* LanguageType.swift in Sources */,
 				2813F93827ECC4AA00E305E4 /* FindNavigatorResultList.swift in Sources */,
+				201169D92837B31200F92B46 /* SourceControlSearchToolbar.swift in Sources */,
 				0483E35027FDB17700354AC0 /* ExtensionNavigator.swift in Sources */,
+				201169DB2837B34000F92B46 /* ChangedFileItemView.swift in Sources */,
 				2B7A583527E4BA0100D25D4E /* AppDelegate.swift in Sources */,
 				D7012EE827E757850001E1EF /* FindNavigator.swift in Sources */,
 				D7E201AE27E8B3C000CB86D0 /* String+Ranges.swift in Sources */,
 				20EBB50F280C389300F3A5DA /* FileInspectorModel.swift in Sources */,
 				0463E51327FCC1FB00806D5C /* CodeEditTargetsAPI.swift in Sources */,
+				201169DD2837B3AC00F92B46 /* SourceControlToolbarBottom.swift in Sources */,
 				04C3254D27FF331B00C8DA2D /* ExtensionNavigatorItem.swift in Sources */,
 				D7E201B027E8C07300CB86D0 /* FindNavigatorSearchBar.swift in Sources */,
 				2072FA1C280D874000C7F8D4 /* IndentUsing.swift in Sources */,
 				B6EE989227E887C600CDD8AB /* InspectorSidebarToolbar.swift in Sources */,
+				201169E72837B5CA00F92B46 /* SourceControlModel.swift in Sources */,
 				28B8F884280FFE4600596236 /* NSTableView+Background.swift in Sources */,
 				200412EF280F3EAC00BCAF5C /* NoCommitHistoryView.swift in Sources */,
 				043C321427E31FF6006AE443 /* CodeEditDocumentController.swift in Sources */,
 				20EBB503280C327C00F3A5DA /* HistoryInspector.swift in Sources */,
 				2072FA1A280D872600C7F8D4 /* LineEndings.swift in Sources */,
+				201169E22837B3D800F92B46 /* ChangesView.swift in Sources */,
 				20EBB507280C32D300F3A5DA /* QuickHelpInspector.swift in Sources */,
 				DE6405A62817734700881FDF /* TabBarNative.swift in Sources */,
 				04C3255C2801F86900C8DA2D /* OutlineMenu.swift in Sources */,
@@ -864,6 +931,7 @@
 				2072FA16280D83A500C7F8D4 /* FileTypeList.swift in Sources */,
 				04C3254F2800AA4700C8DA2D /* ExtensionInstallationView.swift in Sources */,
 				B6EE989027E8879A00CDD8AB /* InspectorSidebar.swift in Sources */,
+				201169D72837B2E300F92B46 /* SourceControlNavigatorView.swift in Sources */,
 				20D839AB280DEB2900B27357 /* NoSelectionView.swift in Sources */,
 				20EBB505280C329800F3A5DA /* HistoryItem.swift in Sources */,
 				043C321627E3201F006AE443 /* WorkspaceDocument.swift in Sources */,

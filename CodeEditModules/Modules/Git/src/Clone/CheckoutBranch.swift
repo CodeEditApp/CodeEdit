@@ -42,6 +42,8 @@ public extension CheckoutBranchView {
                 alert.messageText = "Not a git repository"
             case let .outputError(message):
                 alert.messageText = message
+            case .failedToDecodeURL:
+                alert.messageText = "Failed to decode URL"
             }
             alert.runModal()
         }
