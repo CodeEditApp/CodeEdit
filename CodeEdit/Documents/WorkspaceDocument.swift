@@ -264,7 +264,7 @@ import TabBar
 
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(editorUpdatedContent),
-                                               name: NSNotification.Name("CodeEditor.changed"),
+                                               name: NSNotification.Name("CodeEditor.didBeginEditing"),
                                                object: nil)
     }
 

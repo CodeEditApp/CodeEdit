@@ -135,7 +135,10 @@ struct CodeEditor: NSViewRepresentable {
                 return
             }
             content.wrappedValue = textView.string
-            NotificationCenter.default.post(name: NSNotification.Name("CodeEditor.changed"), object: nil)
+        }
+
+        func textDidBeginEditing(_ notification: Notification) {
+            NotificationCenter.default.post(name: NSNotification.Name("CodeEditor.didBeginEditing"), object: nil)
         }
 
     }
