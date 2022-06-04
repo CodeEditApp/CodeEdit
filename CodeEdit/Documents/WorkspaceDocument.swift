@@ -74,15 +74,12 @@ import TabBar
             // But, if there is already a temporary tab, close it first
             if selectionState.temporaryTab != nil {
                 if let index = selectionState.openedTabs.firstIndex(of: selectionState.temporaryTab!) {
-                    Swift.print("\nFound index \(index), replacing", item.tabID)
                     closeTemporaryTab()
                     selectionState.openedTabs[index] = item.tabID
                 } else {
-                    Swift.print("\nNew tab (1)", item.tabID)
                     selectionState.openedTabs.append(item.tabID)
                 }
             } else {
-                Swift.print("\nNew tab (2)", item.tabID)
                 selectionState.openedTabs.append(item.tabID)
             }
 
@@ -139,9 +136,8 @@ import TabBar
             selectionState.selectedId = nil
         } else if selectionState.selectedId == closedID {
             // If the closed item is the selected one, then select another tab.
-            // If there are no more permanent tabs, select the temporary one.
             if idx == 0 {
-                selectionState.selectedId = selectionState.openedTabs.first ?? selectionState.temporaryTab
+                selectionState.selectedId = selectionState.openedTabs.first
             } else {
                 selectionState.selectedId = selectionState.openedTabs[idx - 1]
             }
