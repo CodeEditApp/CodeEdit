@@ -46,21 +46,10 @@ struct TabBar: View {
     private func updateExpectedTabWidth(proxy: GeometryProxy) {
         expectedTabWidth = max(
             // Equally divided size of a native tab.
-            (proxy.size.width + 1) / CGFloat(openTabCount()) + 1,
+            (proxy.size.width + 1) / CGFloat(workspace.selectionState.openedTabs.count) + 1,
             // Min size of a native tab.
             CGFloat(140)
         )
-    }
-
-    /// Convenience method for finding the total number of opened tabs.
-    /// *Accounts for temporary tabs.*
-    /// - Returns: The number of opened tabs.
-    private func openTabCount() -> Int {
-        if workspace.selectionState.temporaryTab != nil {
-            return workspace.selectionState.openedTabs.count + 1
-        } else {
-            return workspace.selectionState.openedTabs.count
-        }
     }
 
     /// Conditionally updates the `expectedTabWidth`.
@@ -98,16 +87,6 @@ struct TabBar: View {
                                     )
                                     .frame(height: TabBar.height)
                                 }
-                            }
-                            if let tempTabId = workspace.selectionState.temporaryTab,
-                               let item = workspace.selectionState.getItemByTab(id: tempTabId) {
-                                TabBarItem(
-                                    expectedWidth: $expectedTabWidth,
-                                    item: item,
-                                    windowController: windowController,
-                                    workspace: workspace
-                                )
-                                .frame(height: TabBar.height)
                             }
                         }
                         // This padding is to hide dividers at two ends under the accessory view divider.

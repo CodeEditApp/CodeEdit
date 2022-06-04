@@ -16,6 +16,7 @@ struct WorkspaceSelectionState: Codable {
     var selectedId: TabBarItemID?
     var openedTabs: [TabBarItemID] = []
     var temporaryTab: TabBarItemID?
+    var previousTemporaryTab: TabBarItemID?
 
     var selected: TabBarItemRepresentable? {
         guard let selectedId = selectedId else { return nil }

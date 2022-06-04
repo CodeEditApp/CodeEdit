@@ -256,6 +256,14 @@ struct TabBarItem: View {
             label: { content }
         )
         .buttonStyle(TabBarItemButtonStyle())
+        .simultaneousGesture(
+            TapGesture(count: 2)
+                .onEnded { _ in
+                    if isTemporary {
+                        workspace.convertTemporaryTab()
+                    }
+                }
+        )
         .background {
             if prefs.preferences.general.tabBarStyle == .xcode {
                 ZStack {
@@ -315,10 +323,17 @@ struct TabBarItem: View {
             )
         )
         .onAppear {
-            withAnimation(
-                .easeOut(duration: prefs.preferences.general.tabBarStyle == .native ? 0.15 : 0.20)
-            ) {
-                isAppeared = true
+            if (isTemporary && workspace.selectionState.previousTemporaryTab == nil)
+                || !(isTemporary && workspace.selectionState.previousTemporaryTab != item.tabID) {
+                withAnimation(
+                    .easeOut(duration: prefs.preferences.general.tabBarStyle == .native ? 0.15 : 0.20)
+                ) {
+                    isAppeared = true
+                }
+            } else {
+                withAnimation(.linear(duration: 0.0)) {
+                    isAppeared = true
+                }
             }
         }
         .id(item.tabID)
@@ -340,6 +355,11 @@ struct TabBarItem: View {
             }
             // Disable this option when current tab is the last one.
             .disabled(workspace.selectionState.openedTabs.last?.id == item.tabID.id)
+            if isTemporary {
+                Button("Keep Open") {
+                    workspace.convertTemporaryTab()
+                }
+            }
         }
     }
 }
@@ -354,22 +374,5 @@ fileprivate extension WorkspaceDocument {
             )
         }
         return "0"
-    }
-}
-
-private struct TabBarItemButtonStyle: ButtonStyle {
-    @Environment(\.colorScheme)
-    var colorScheme
-
-    @StateObject
-    private var prefs: AppPreferencesModel = .shared
-
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .background(
-                configuration.isPressed && prefs.preferences.general.tabBarStyle == .xcode
-                ? (colorScheme == .dark ? .white.opacity(0.08) : .black.opacity(0.09))
-                : .clear
-            )
     }
 }

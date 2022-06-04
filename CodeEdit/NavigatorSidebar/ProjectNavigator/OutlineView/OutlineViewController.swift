@@ -104,7 +104,7 @@ final class OutlineViewController: NSViewController {
             isExpanded ? outlineView.collapseItem(item) : outlineView.expandItem(item)
         } else {
             if workspace?.selectionState.temporaryTab == item.tabID {
-                workspace?.openTab(item: item)
+                workspace?.convertTemporaryTab()
             }
         }
     }

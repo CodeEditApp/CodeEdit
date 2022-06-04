@@ -69,20 +69,25 @@ import TabBar
     /// - Parameter item: The item to use to update the tab state.
     private func updateNewlyOpenedTabs(item: TabBarItemRepresentable) {
         if !selectionState.openedTabs.contains(item.tabID) {
-            if selectionState.temporaryTab == item.tabID {
-                // This is the temporary tab, make it permanent.
-                selectionState.temporaryTab = nil
-                selectionState.openedTabs.append(item.tabID)
-            } else {
-                // If this isn't opened and not the temp tab, it's now the temp tab
+            // If this isn't opened then we do the temp tab functionality
 
-                // But, if there is already a temporary tab, close it first
-                if selectionState.temporaryTab != nil {
+            // But, if there is already a temporary tab, close it first
+            if selectionState.temporaryTab != nil {
+                if let index = selectionState.openedTabs.firstIndex(of: selectionState.temporaryTab!) {
+                    Swift.print("\nFound index \(index), replacing", item.tabID)
                     closeTemporaryTab()
+                    selectionState.openedTabs[index] = item.tabID
+                } else {
+                    Swift.print("\nNew tab (1)", item.tabID)
+                    selectionState.openedTabs.append(item.tabID)
                 }
-
-                selectionState.temporaryTab = item.tabID
+            } else {
+                Swift.print("\nNew tab (2)", item.tabID)
+                selectionState.openedTabs.append(item.tabID)
             }
+
+            selectionState.previousTemporaryTab = selectionState.temporaryTab
+            selectionState.temporaryTab = item.tabID
         }
     }
 
@@ -113,7 +118,8 @@ import TabBar
     /// - Parameter id: tab bar item's identifier to be closed
     func closeTab(item id: TabBarItemID) {
         if id == selectionState.temporaryTab {
-            closeTemporaryTab()
+            selectionState.previousTemporaryTab = selectionState.temporaryTab
+            selectionState.temporaryTab = nil
         }
 
         guard let idx = selectionState.openedTabs.firstIndex(of: id) else { return }
@@ -133,8 +139,9 @@ import TabBar
             selectionState.selectedId = nil
         } else if selectionState.selectedId == closedID {
             // If the closed item is the selected one, then select another tab.
+            // If there are no more permanent tabs, select the temporary one.
             if idx == 0 {
-                selectionState.selectedId = selectionState.openedTabs.first
+                selectionState.selectedId = selectionState.openedTabs.first ?? selectionState.temporaryTab
             } else {
                 selectionState.selectedId = selectionState.openedTabs[idx - 1]
             }
@@ -174,10 +181,6 @@ import TabBar
     /// Removes the tab item from `openedCodeFiles`, `openedExtensions`, and `openFileItems`.
     private func closeTemporaryTab() {
         guard let id = selectionState.temporaryTab else { return }
-        if selectionState.temporaryTab == selectionState.selectedId {
-            selectionState.selectedId = selectionState.openedTabs.last
-        }
-        selectionState.temporaryTab = nil
 
         switch id {
         case .codeEditor:
@@ -212,12 +215,11 @@ import TabBar
     }
 
     /// Makes the temporary tab permanent when a file save or edit happens.
-    @objc func editorUpdatedContent() {
-        if selectionState.selectedId == selectionState.temporaryTab
-            && selectionState.temporaryTab != nil {
-            let tabID: TabBarItemID = selectionState.temporaryTab!
+    @objc func convertTemporaryTab() {
+        if selectionState.selectedId == selectionState.temporaryTab &&
+            selectionState.temporaryTab != nil {
+            selectionState.previousTemporaryTab = selectionState.temporaryTab
             selectionState.temporaryTab = nil
-            selectionState.openedTabs.append(tabID)
         }
     }
 
@@ -263,7 +265,7 @@ import TabBar
         self.statusBarModel = .init(workspaceURL: url)
 
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(editorUpdatedContent),
+                                               selector: #selector(convertTemporaryTab),
                                                name: NSNotification.Name("CodeEditor.didBeginEditing"),
                                                object: nil)
     }
