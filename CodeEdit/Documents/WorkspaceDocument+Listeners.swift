@@ -11,8 +11,8 @@ import Combine
 
 class WorkspaceNotificationModel: ObservableObject {
     init() {
-        highlitedFileItem = nil
+        highlightedFileItem = nil
     }
 
-    @Published var highlitedFileItem: WorkspaceClient.FileItem?
+    @Published var highlightedFileItem: WorkspaceClient.FileItem?
 }

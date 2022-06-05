@@ -80,7 +80,7 @@ struct TabBarContextMenu: ViewModifier {
                     }
 
                     Button("Reveal in Project Navigator") {
-                        workspace.listenerModel.highlitedFileItem = item
+                        workspace.listenerModel.highlightedFileItem = item
                     }
 
                     Button("Open in New Window") {
