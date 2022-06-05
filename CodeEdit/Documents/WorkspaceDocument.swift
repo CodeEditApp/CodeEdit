@@ -31,6 +31,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var statusBarModel: StatusBarModel?
     var searchState: SearchState?
     var quickOpenState: QuickOpenState?
+    var listenerModel: WorkspaceNotificationModel = .init()
     private var cancellables = Set<AnyCancellable>()
 
     @Published var targets: [Target] = []

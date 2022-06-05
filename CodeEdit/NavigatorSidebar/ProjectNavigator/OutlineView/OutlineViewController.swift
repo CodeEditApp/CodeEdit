@@ -238,6 +238,34 @@ extension OutlineViewController: NSOutlineViewDelegate {
         }
         outlineView.selectRowIndexes(.init(integer: row), byExtendingSelection: false)
     }
+
+    /// Reveals the given `fileItem` in the outline view by expanding all the parent directories of the file.
+    /// If the file is not found, it will present an alert saying so.
+    /// - Parameter fileItem: The file to reveal.
+    public func reveal(_ fileItem: Item) {
+        if let parent = fileItem.parent {
+            expandParent(item: parent)
+        }
+        let row = outlineView.row(forItem: fileItem)
+        outlineView.selectRowIndexes(.init(integer: row), byExtendingSelection: false)
+
+        if row < 0 {
+            let alert = NSAlert()
+            alert.messageText = NSLocalizedString("Could not find file",
+                                                  comment: "Could not find file")
+            alert.runModal()
+            return
+        }
+    }
+
+    /// Method for recursively expanding a file's parent directories.
+    /// - Parameter item:
+    private func expandParent(item: Item) {
+        if let parent = item.parent as Item? {
+            expandParent(item: parent)
+        }
+        outlineView.expandItem(item)
+    }
 }
 
 extension OutlineViewController: NSMenuDelegate {
