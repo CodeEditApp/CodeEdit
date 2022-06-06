@@ -6,6 +6,7 @@
 //
 
 import Cocoa
+import WelcomeModule
 
 final class CodeEditDocumentController: NSDocumentController {
     override func openDocument(_ sender: Any?) {
@@ -31,6 +32,14 @@ final class CodeEditDocumentController: NSDocumentController {
             }
             self.updateRecent(url)
             completionHandler(document, documentWasAlreadyOpen, error)
+        }
+    }
+
+    override func removeDocument(_ document: NSDocument) {
+        super.removeDocument(document)
+
+        if CodeEditDocumentController.shared.documents.isEmpty {
+            WelcomeWindowView.openWelcomeWindow()
         }
     }
 
