@@ -52,6 +52,19 @@ struct TabBar: View {
         )
     }
 
+    /// Conditionally updates the `expectedTabWidth`.
+    /// Called when the tab count changes or the temporary tab changes.
+    /// - Parameter geometryProxy: The geometry proxy to calculate the new width using.
+    private func updateForTabCountChange(geometryProxy: GeometryProxy) {
+        // Only update the expected width when user is not hovering over tabs.
+        // This should give users a better experience on closing multiple tabs continuously.
+        if !isHoveringOverTabs {
+            withAnimation(.easeOut(duration: 0.15)) {
+                updateExpectedTabWidth(proxy: geometryProxy)
+            }
+        }
+    }
+
     var body: some View {
         HStack(alignment: .center, spacing: 0) {
             // Tab bar navigation control.
@@ -91,14 +104,11 @@ struct TabBar: View {
                         }
                         // When tabs are changing, re-compute the expected tab width.
                         .onChange(of: workspace.selectionState.openedTabs.count) { _ in
-                            // Only update the expected width when user is not hovering over tabs.
-                            // This should give users a better experience on closing multiple tabs continuously.
-                            if !isHoveringOverTabs {
-                                withAnimation(.easeOut(duration: 0.15)) {
-                                    updateExpectedTabWidth(proxy: geometryProxy)
-                                }
-                            }
+                            updateForTabCountChange(geometryProxy: geometryProxy)
                         }
+                        .onChange(of: workspace.selectionState.temporaryTab, perform: { _ in
+                            updateForTabCountChange(geometryProxy: geometryProxy)
+                        })
                         // When window size changes, re-compute the expected tab width.
                         .onChange(of: geometryProxy.size.width) { _ in
                             updateExpectedTabWidth(proxy: geometryProxy)
@@ -116,7 +126,11 @@ struct TabBar: View {
                     }
                 }
                 // When there is no opened file, hide the scroll view, but keep the background.
-                .opacity(workspace.selectionState.openedTabs.isEmpty ? 0.0 : 1.0)
+                .opacity(
+                    workspace.selectionState.openedTabs.isEmpty && workspace.selectionState.temporaryTab == nil
+                    ? 0.0
+                    : 1.0
+                )
                 // To fill up the parent space of tab bar.
                 .frame(maxWidth: .infinity)
                 .background {
