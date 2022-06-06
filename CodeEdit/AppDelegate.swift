@@ -123,12 +123,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     }
 
     @IBAction func openWelcome(_ sender: Any) {
-        if let window = NSApp.windows.filter({ window in
-            return (window.contentView as? NSHostingView<WelcomeWindowView>) != nil
-        }).first {
-            window.makeKeyAndOrderFront(self)
-            return
-        }
+        if tryFocusWindow(of: WelcomeWindowView.self) { return }
 
         let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 800, height: 460),
                               styleMask: [.titled, .fullSizeContentView], backing: .buffered, defer: false)
@@ -170,11 +165,23 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     }
 
     @IBAction func openAbout(_ sender: Any) {
+        if tryFocusWindow(of: AboutView.self) { return }
+
         AboutView().showWindow(width: 530, height: 220)
     }
 
     @IBAction func openFeedback(_ sender: Any) {
+        if tryFocusWindow(of: FeedbackView.self) { return }
+
         FeedbackView().showWindow()
+    }
+
+    private func tryFocusWindow<T: View>(of type: T.Type) -> Bool {
+        guard let window = NSApp.windows.filter({ ($0.contentView as? NSHostingView<T>) != nil }).first
+        else { return false }
+
+        window.makeKeyAndOrderFront(self)
+        return true
     }
 
     // MARK: - Open With CodeEdit (Extension) functions
