@@ -55,41 +55,119 @@ public extension WorkspaceClient {
         fileItems.forEach { item in
             item.parent = workspaceItem
         }
+
         // By using `CurrentValueSubject` we can define a starting value.
         // The value passed during init it's going to be send as soon as the
         // consumer subscribes to the publisher.
         let subject = CurrentValueSubject<[FileItem], Never>(fileItems)
 
-        var source: DispatchSourceFileSystemObject?
+        func rebuildFiles(fromItem fileItem: FileItem) throws {
+            // TODO: don't rebuild the entire index, just add and remove items when needed.
 
-        func startListeningToDirectory() {
-            // open the folder to listen for changes
-            let descriptor = open(folderURL.path, O_EVTONLY)
+            // get a copy of the array of actual children of directory
+            let directoryContentsUrls = try fileManager.contentsOfDirectory(at: fileItem.url,
+                                                                            includingPropertiesForKeys: nil)
 
-            source = DispatchSource.makeFileSystemObjectSource(
-                fileDescriptor: descriptor,
-                eventMask: .write,
-                queue: DispatchQueue.global()
-            )
+            // get currently indexed children of directory
+            var newChildren = fileItem.children?.filter({ _ in true }) // build a new array based on fileItem.children
 
-            source?.setEventHandler {
-                // Something has changed inside the directory
-                // We should reload the files.
-                if let fileItems = try? loadFiles(fromURL: folderURL) {
-                    subject.send(fileItems)
+            // test for deleted children, and remove them from the index
+            for oldContent in fileItem.children! {
+                if directoryContentsUrls.contains(oldContent.url) {
+                    continue
+                }
+
+                newChildren!.remove(at: newChildren!.firstIndex(of: oldContent)!)
+                flattenedFileItems.removeValue(forKey: oldContent.id)
+            }
+
+            // test for new children, and index them using loadFiles
+            for newContent in directoryContentsUrls {
+                guard !ignoredFilesAndFolders.contains(newContent.lastPathComponent) else { continue }
+
+                var childExists = false
+                fileItem.children?.forEach({ childExists = $0.url == newContent ? true : childExists })
+                if childExists {
+                    continue
+                }
+
+                var isDir: ObjCBool = false
+                if fileManager.fileExists(atPath: newContent.path, isDirectory: &isDir) {
+                    var subItems: [FileItem]?
+
+                    if isDir.boolValue {
+                        subItems = try loadFiles(fromURL: newContent)
+                    }
+
+                    let newFileItem = FileItem(url: newContent, children: subItems?.sortItems(foldersOnTop: true))
+                    subItems?.forEach {
+                        $0.parent = newFileItem
+                    }
+                    newFileItem.parent = fileItem
+                    flattenedFileItems[newFileItem.id] = newFileItem
+                    newChildren?.append(newFileItem)
                 }
             }
 
-            source?.setCancelHandler {
-                close(descriptor)
-            }
+            newChildren?.forEach({
+                try? rebuildFiles(fromItem: $0)
+                flattenedFileItems[$0.id] = $0
+            })
 
-            source?.resume()
+            fileItem.children = newChildren
+            return
+        }
+
+        var sources: [String: DispatchSourceFileSystemObject] = [:]
+
+        func startListeningToDirectory() {
+            // iterate over every item, checking if its a directory first
+            for item in flattenedFileItems.values {
+                guard item.isFolder else { continue }
+
+                // open the folder to listen for changes
+                let descriptor = open(item.url.path, O_EVTONLY)
+
+                let source = DispatchSource.makeFileSystemObjectSource(
+                    fileDescriptor: descriptor,
+                    eventMask: .write,
+                    queue: DispatchQueue.global()
+                )
+
+                source.setEventHandler {
+                    // Something has changed inside the directory
+                    // We should reload the files.
+                    flattenedFileItems = [:]
+                    flattenedFileItems[workspaceItem.id] = workspaceItem
+//                    try rebuildFiles(fromItem: workspaceItem)
+//                    subject.send(workspaceItem.children)
+                    try? rebuildFiles(fromItem: workspaceItem)
+                    subject.send(workspaceItem.children ?? [])
+                    stopListeningToDirectory()
+                    startListeningToDirectory()
+                    // TODO: reload data in outline view controller
+                }
+
+                source.setCancelHandler {
+                    close(descriptor)
+                }
+
+                source.resume()
+
+                sources[item.id] = source
+            }
         }
 
         func stopListeningToDirectory() {
-            source?.cancel()
-            source = nil
+            for source in sources.values {
+                source.cancel()
+            }
+            sources = [:]
+        }
+
+        func stopListeningToDirectory(directory: URL) {
+            sources[directory.path]?.cancel()
+            sources.removeValue(forKey: directory.path)
         }
 
         return Self(
