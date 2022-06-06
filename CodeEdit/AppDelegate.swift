@@ -176,7 +176,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         FeedbackView().showWindow()
     }
 
-
     /// Tries to focus a window with specified view content type.
     /// - Parameter type: The type of viewContent which hosted in a window to be focused.
     /// - Returns: `true` if window exist and focused, oterwise - `false`
