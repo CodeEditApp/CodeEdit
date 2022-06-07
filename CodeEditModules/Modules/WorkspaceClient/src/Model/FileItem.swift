@@ -210,6 +210,7 @@ public extension WorkspaceClient {
         /// This function deletes the item or folder from the current project
         public func delete() {
             // TODO: check if tab of deleted file is open, and mark the tab as deleted
+            self.children?.forEach({ $0.delete() })
             if FileItem.fileManger.fileExists(atPath: url.path) {
                 do {
                     try FileItem.fileManger.removeItem(at: url)
