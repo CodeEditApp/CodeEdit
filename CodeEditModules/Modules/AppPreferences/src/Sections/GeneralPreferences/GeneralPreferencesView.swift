@@ -227,7 +227,7 @@ private extension GeneralPreferencesView {
 
     var revealFileOnFocusChangeToggle: some View {
         PreferencesSection("Project Navigator Behavior", hideLabels: false) {
-            Toggle("Highlight current file in Navigator", isOn: $prefs.preferences.general.revealFileOnFocusChange)
+            Toggle("Automatically Show Active File", isOn: $prefs.preferences.general.revealFileOnFocusChange)
                 .toggleStyle(.checkbox)
         }
     }
