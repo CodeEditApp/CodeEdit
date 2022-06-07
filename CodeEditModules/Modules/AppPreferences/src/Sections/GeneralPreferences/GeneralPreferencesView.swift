@@ -46,7 +46,10 @@ public struct GeneralPreferencesView: View {
                 issueNavigatorDetailSection
                 dialogWarningsSection
             }
-            openInCodeEditToggle
+            Group {
+                openInCodeEditToggle
+                revealFileOnFocusChangeToggle
+            }
         }
     }
 }
@@ -219,6 +222,13 @@ private extension GeneralPreferencesView {
 
                     defaults.set(newValue, forKey: "enableOpenInCE")
                 }
+        }
+    }
+
+    var revealFileOnFocusChangeToggle: some View {
+        PreferencesSection("Project Navigator Behavior", hideLabels: false) {
+            Toggle("Automatically Show Active File", isOn: $prefs.preferences.general.revealFileOnFocusChange)
+                .toggleStyle(.checkbox)
         }
     }
 }
