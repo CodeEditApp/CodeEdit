@@ -12,22 +12,26 @@ import TabBar
 
 extension View {
     func tabBarContextMenu(item: TabBarItemRepresentable,
-                           workspace: WorkspaceDocument) -> some View {
-        modifier(TabBarContextMenu(item: item, workspace: workspace))
+                           workspace: WorkspaceDocument,
+                           isTemporary: Bool) -> some View {
+        modifier(TabBarContextMenu(item: item, workspace: workspace, isTemporary: isTemporary))
     }
 }
 
 struct TabBarContextMenu: ViewModifier {
     init(item: TabBarItemRepresentable,
-         workspace: WorkspaceDocument) {
+         workspace: WorkspaceDocument,
+         isTemporary: Bool) {
         self.item = item
         self.workspace = workspace
+        self.isTemporary = isTemporary
     }
 
     @ObservedObject
     var workspace: WorkspaceDocument
 
     private var item: TabBarItemRepresentable
+    private var isTemporary: Bool
 
     func body(content: Content) -> some View {
         content.contextMenu(menuItems: {
@@ -55,6 +59,12 @@ struct TabBarContextMenu: ViewModifier {
                 Button("Close All") {
                     withAnimation {
                         workspace.closeTabs(items: workspace.selectionState.openedTabs)
+                    }
+                }
+
+                if isTemporary {
+                    Button("Keep Open") {
+                        workspace.convertTemporaryTab()
                     }
                 }
             }

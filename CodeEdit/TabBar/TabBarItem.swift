@@ -337,7 +337,7 @@ struct TabBarItem: View {
             }
         }
         .id(item.tabID)
-        .tabBarContextMenu(item: item, workspace: workspace)
+        .tabBarContextMenu(item: item, workspace: workspace, isTemporary: isTemporary)
     }
 }
 // swiftlint:enable type_body_length

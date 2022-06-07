@@ -235,6 +235,14 @@ extension OutlineViewController: NSOutlineViewDelegate {
     ///   - id: the id of the item item
     ///   - collection: the array to search for
     private func select(by id: TabBarItemID, from collection: [Item]) {
+        // If the user has set "Reveal file on selection change" on, we need to reveal the item before
+        // selecting the row.
+        if AppPreferencesModel.shared.preferences.general.revealFileOnFocusChange,
+           case let .codeEditor(id) = id,
+           let fileItem = try? workspace?.workspaceClient?.getFileItem(id as Item.ID) as? Item {
+            reveal(fileItem)
+        }
+
         guard let item = collection.first(where: { $0.tabID == id }) else {
             for item in collection {
                 select(by: id, from: item.children ?? [])
@@ -266,6 +274,8 @@ extension OutlineViewController: NSOutlineViewDelegate {
                                                   comment: "Could not find file")
             alert.runModal()
             return
+        } else {
+            outlineView.scrollRowToVisible(row)
         }
     }
 
