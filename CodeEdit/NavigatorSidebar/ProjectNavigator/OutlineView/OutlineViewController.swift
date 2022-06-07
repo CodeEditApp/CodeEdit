@@ -46,6 +46,11 @@ final class OutlineViewController: NSViewController {
         }
     }
 
+    /// This helps determine whether or not to send an `openTab` when the selection changes.
+    /// Used b/c the state may update when the selection changes, but we don't necessarily want
+    /// to open the file a second time.
+    private var shouldSendSelectionUpdate: Bool = true
+
     /// Setup the ``scrollView`` and ``outlineView``
     override func loadView() {
         self.scrollView = NSScrollView()
@@ -100,6 +105,10 @@ final class OutlineViewController: NSViewController {
         if item.children != nil {
             let isExpanded = outlineView.isItemExpanded(item)
             isExpanded ? outlineView.collapseItem(item) : outlineView.expandItem(item)
+        } else {
+            if workspace?.selectionState.temporaryTab == item.tabID {
+                workspace?.convertTemporaryTab()
+            }
         }
     }
 
@@ -195,7 +204,7 @@ extension OutlineViewController: NSOutlineViewDelegate {
 
         guard let item = outlineView.item(atRow: selectedIndex) as? Item else { return }
 
-        if item.children == nil {
+        if item.children == nil && shouldSendSelectionUpdate {
             workspace?.openTab(item: item)
         }
     }
@@ -236,7 +245,9 @@ extension OutlineViewController: NSOutlineViewDelegate {
         if row == -1 {
             outlineView.deselectRow(outlineView.selectedRow)
         }
+        shouldSendSelectionUpdate = false
         outlineView.selectRowIndexes(.init(integer: row), byExtendingSelection: false)
+        shouldSendSelectionUpdate = true
     }
 }
 
