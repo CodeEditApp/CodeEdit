@@ -212,7 +212,6 @@ public extension WorkspaceClient {
             DispatchQueue.main.async {
                 if FileItem.fileManger.fileExists(atPath: self.url.path) {
                     do {
-                        print("Deleting \(self.id)")
                         try FileItem.fileManger.removeItem(at: self.url)
                     } catch {
                         fatalError(error.localizedDescription)

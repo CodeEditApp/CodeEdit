@@ -175,7 +175,9 @@ final class OutlineMenu: NSMenu {
     /// Action that opens the item, identical to clicking it.
     @objc
     private func openInTab() {
-        workspace?.openTab(item: item!)
+        if let item = item {
+            workspace?.openTab(item: item)
+        }
     }
 
     /// Action that opens in an external editor
@@ -188,7 +190,6 @@ final class OutlineMenu: NSMenu {
     /// Action that creates a new untitled file
     @objc
     private func newFile() {
-        print("Creating new file at \(String(describing: item?.url)), from \(String(describing: item?.title))")
         item?.addFile(fileName: "untitled")
     }
 
@@ -196,7 +197,6 @@ final class OutlineMenu: NSMenu {
     /// Action that creates a new untitled folder
     @objc
     private func newFolder() {
-        print("Creating new folder at \(String(describing: item?.url)), from \(String(describing: item?.title))")
         item?.addFolder(folderName: "untitled")
     }
 

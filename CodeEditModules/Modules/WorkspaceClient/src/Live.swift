@@ -72,13 +72,15 @@ public extension WorkspaceClient {
             var newChildren = fileItem.children?.filter({ _ in true }) // build a new array based on fileItem.children
 
             // test for deleted children, and remove them from the index
-            for oldContent in fileItem.children! {
+            for oldContent in fileItem.children ?? [] {
                 if directoryContentsUrls.contains(oldContent.url) {
                     continue
                 }
 
-                newChildren!.remove(at: newChildren!.firstIndex(of: oldContent)!)
-                flattenedFileItems.removeValue(forKey: oldContent.id)
+                if let removeAt = newChildren?.firstIndex(of: oldContent) {
+                    newChildren?.remove(at: removeAt)
+                    flattenedFileItems.removeValue(forKey: oldContent.id)
+                }
             }
 
             // test for new children, and index them using loadFiles
@@ -125,10 +127,7 @@ public extension WorkspaceClient {
             for item in flattenedFileItems.values {
                 // check if it actually exists and is a folder
                 guard item.isFolder else { continue }
-                guard FileItem.fileManger.fileExists(atPath: item.url.path) else {
-                    print("File does not exist at \(item.url)")
-                    continue
-                }
+                guard FileItem.fileManger.fileExists(atPath: item.url.path) else { continue }
 
                 // open the folder to listen for changes
                 let descriptor = open(item.url.path, O_EVTONLY)
