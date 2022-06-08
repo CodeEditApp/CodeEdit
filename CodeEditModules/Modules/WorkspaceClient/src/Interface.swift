@@ -16,6 +16,9 @@ public struct WorkspaceClient {
 
     public var getFileItem: (_ id: String) throws -> FileItem
 
+    // callback function that is run when the files are reindexed
+    public static var onRefresh: () -> Void = {}
+
     // For some strange reason, swiftlint thinks this is wrong?
     public init(
         folderURL: @escaping () -> URL?,

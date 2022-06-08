@@ -123,7 +123,12 @@ public extension WorkspaceClient {
         func startListeningToDirectory() {
             // iterate over every item, checking if its a directory first
             for item in flattenedFileItems.values {
+                // check if it actually exists and is a folder
                 guard item.isFolder else { continue }
+                guard FileItem.fileManger.fileExists(atPath: item.url.path) else {
+                    print("File does not exist at \(item.url)")
+                    continue
+                }
 
                 // open the folder to listen for changes
                 let descriptor = open(item.url.path, O_EVTONLY)
@@ -145,7 +150,8 @@ public extension WorkspaceClient {
                     subject.send(workspaceItem.children ?? [])
                     stopListeningToDirectory()
                     startListeningToDirectory()
-                    // TODO: reload data in outline view controller
+                    // reload data in outline view controller through the main thread
+                    DispatchQueue.main.async { onRefresh() }
                 }
 
                 source.setCancelHandler {

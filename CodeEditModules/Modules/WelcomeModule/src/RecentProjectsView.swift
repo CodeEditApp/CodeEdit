@@ -74,7 +74,7 @@ public struct RecentProjectsView: View {
         )
     }
 
-    /// Update recent projects, including removing deleted/moved projects
+    /// Update recent projects.
     func updateRecentProjects() {
         recentProjectPaths = UserDefaults.standard.array(forKey: "recentProjectPaths") as? [String] ?? []
 
