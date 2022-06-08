@@ -17,6 +17,9 @@ public extension WorkspaceClient {
     ) throws -> Self {
         var flattenedFileItems: [String: FileItem] = [:]
 
+        /// Recursive loading of files into `FileItem`s
+        /// - Parameter url: The URL of the directory to load the items of
+        /// - Returns: `[FileItem]` representing the contents of the directory
         func loadFiles(fromURL url: URL) throws -> [FileItem] {
             let directoryContents = try fileManager.contentsOfDirectory(at: url, includingPropertiesForKeys: nil)
             var items: [FileItem] = []
@@ -61,6 +64,9 @@ public extension WorkspaceClient {
         // consumer subscribes to the publisher.
         let subject = CurrentValueSubject<[FileItem], Never>(fileItems)
 
+        /// Recursive function similar to `loadFiles`, but creates or deletes children of the `FileItem` so that they are accurate with
+        /// the file system, instead of creating an entirely new `FileItem`, to prevent the `OutlineView` from going crazy with folding.
+        /// - Parameter fileItem: The `FileItem` to correct the children of
         func rebuildFiles(fromItem fileItem: FileItem) throws {
             // TODO: don't rebuild the entire index, just add and remove items when needed.
 
@@ -122,6 +128,7 @@ public extension WorkspaceClient {
 
         var sources: [String: DispatchSourceFileSystemObject] = [:]
 
+        /// Function to apply listeners that rebuild the file index when the file system is changed.
         func startListeningToDirectory() {
             // iterate over every item, checking if its a directory first
             for item in flattenedFileItems.values {
@@ -143,8 +150,6 @@ public extension WorkspaceClient {
                     // We should reload the files.
                     flattenedFileItems = [:]
                     flattenedFileItems[workspaceItem.id] = workspaceItem
-//                    try rebuildFiles(fromItem: workspaceItem)
-//                    subject.send(workspaceItem.children)
                     try? rebuildFiles(fromItem: workspaceItem)
                     subject.send(workspaceItem.children ?? [])
                     stopListeningToDirectory()
