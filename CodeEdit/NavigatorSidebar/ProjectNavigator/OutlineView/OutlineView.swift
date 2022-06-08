@@ -8,6 +8,7 @@
 import SwiftUI
 import WorkspaceClient
 import AppPreferences
+import Combine
 
 /// Wraps an ``OutlineViewController`` inside a `NSViewControllerRepresentable`
 struct OutlineView: NSViewControllerRepresentable {
@@ -25,6 +26,8 @@ struct OutlineView: NSViewControllerRepresentable {
         controller.workspace = workspace
         controller.iconColor = prefs.preferences.general.fileIconStyle
 
+        context.coordinator.controller = controller
+
         return controller
     }
 
@@ -36,6 +39,33 @@ struct OutlineView: NSViewControllerRepresentable {
         nsViewController.hiddenFileExtensions = prefs.preferences.general.hiddenFileExtensions
         nsViewController.updateSelection()
         return
+    }
+
+    func makeCoordinator() -> Coordinator {
+        return Coordinator(workspace)
+    }
+
+    class Coordinator: NSObject {
+        init(_ workspace: WorkspaceDocument) {
+            self.workspace = workspace
+            super.init()
+
+            listener = workspace.listenerModel.$highlightedFileItem
+                .sink(receiveValue: { [weak self] fileItem in
+                guard let fileItem = fileItem else {
+                    return
+                }
+                self?.controller?.reveal(fileItem)
+            })
+        }
+
+        var listener: AnyCancellable?
+        var workspace: WorkspaceDocument
+        var controller: OutlineViewController?
+
+        deinit {
+            listener?.cancel()
+        }
     }
 
     /// Returns the row height depending on the `projectNavigatorSize` in `AppPreferences`.

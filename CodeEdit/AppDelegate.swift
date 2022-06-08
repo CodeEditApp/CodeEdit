@@ -123,58 +123,32 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     }
 
     @IBAction func openWelcome(_ sender: Any) {
-        if let window = NSApp.windows.filter({ window in
-            return (window.contentView as? NSHostingView<WelcomeWindowView>) != nil
-        }).first {
-            window.makeKeyAndOrderFront(self)
-            return
-        }
+        if tryFocusWindow(of: WelcomeWindowView.self) { return }
 
-        let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 800, height: 460),
-                              styleMask: [.titled, .fullSizeContentView], backing: .buffered, defer: false)
-        let windowController = NSWindowController(window: window)
-        window.center()
-        let contentView = WelcomeWindowView(
-            shellClient: Current.shellClient,
-            openDocument: { url, opened in
-                if let url = url {
-                    CodeEditDocumentController.shared.openDocument(
-                        withContentsOf: url,
-                        display: true
-                    ) { doc, _, _ in
-                        if doc != nil {
-                            opened()
-                        }
-                    }
-
-                } else {
-                    windowController.window?.close()
-                    CodeEditDocumentController.shared.openDocument(onCompletion: { _, _ in
-                        opened()
-                    }, onCancel: {
-                        self.openWelcome(self)
-                    })
-                }
-            },
-            newDocument: {
-                CodeEditDocumentController.shared.newDocument(nil)
-            },
-            dismissWindow: {
-                windowController.window?.close()
-            }
-        )
-        window.titlebarAppearsTransparent = true
-        window.isMovableByWindowBackground = true
-        window.contentView = NSHostingView(rootView: contentView)
-        window.makeKeyAndOrderFront(self)
+        WelcomeWindowView.openWelcomeWindow()
     }
 
     @IBAction func openAbout(_ sender: Any) {
+        if tryFocusWindow(of: AboutView.self) { return }
+
         AboutView().showWindow(width: 530, height: 220)
     }
 
     @IBAction func openFeedback(_ sender: Any) {
+        if tryFocusWindow(of: FeedbackView.self) { return }
+
         FeedbackView().showWindow()
+    }
+
+    /// Tries to focus a window with specified view content type.
+    /// - Parameter type: The type of viewContent which hosted in a window to be focused.
+    /// - Returns: `true` if window exist and focused, oterwise - `false`
+    private func tryFocusWindow<T: View>(of type: T.Type) -> Bool {
+        guard let window = NSApp.windows.filter({ ($0.contentView as? NSHostingView<T>) != nil }).first
+        else { return false }
+
+        window.makeKeyAndOrderFront(self)
+        return true
     }
 
     // MARK: - Open With CodeEdit (Extension) functions
