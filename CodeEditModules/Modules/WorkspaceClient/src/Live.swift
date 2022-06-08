@@ -64,8 +64,9 @@ public extension WorkspaceClient {
         // consumer subscribes to the publisher.
         let subject = CurrentValueSubject<[FileItem], Never>(fileItems)
 
-        /// Recursive function similar to `loadFiles`, but creates or deletes children of the `FileItem` so that they are accurate with
-        /// the file system, instead of creating an entirely new `FileItem`, to prevent the `OutlineView` from going crazy with folding.
+        /// Recursive function similar to `loadFiles`, but creates or deletes children of the
+        /// `FileItem` so that they are accurate with the file system, instead of creating an
+        /// entirely new `FileItem`, to prevent the `OutlineView` from going crazy with folding.
         /// - Parameter fileItem: The `FileItem` to correct the children of
         func rebuildFiles(fromItem fileItem: FileItem) throws {
             // TODO: don't rebuild the entire index, just add and remove items when needed.
@@ -129,11 +130,13 @@ public extension WorkspaceClient {
         var sources: [String: DispatchSourceFileSystemObject] = [:]
 
         /// Function to apply listeners that rebuild the file index when the file system is changed.
+        /// Optimised so that it only deletes/creates the needed listeners instead of replacing every one.
         func startListeningToDirectory() {
             // iterate over every item, checking if its a directory first
             for item in flattenedFileItems.values {
-                // check if it actually exists and is a folder
+                // check if it actually exists, doesn't have a listener, and is a folder
                 guard item.isFolder else { continue }
+                guard !sources.keys.contains(item.id) else { continue }
                 guard FileItem.fileManger.fileExists(atPath: item.url.path) else { continue }
 
                 // open the folder to listen for changes
@@ -152,7 +155,6 @@ public extension WorkspaceClient {
                     flattenedFileItems[workspaceItem.id] = workspaceItem
                     try? rebuildFiles(fromItem: workspaceItem)
                     subject.send(workspaceItem.children ?? [])
-                    stopListeningToDirectory()
                     startListeningToDirectory()
                     // reload data in outline view controller through the main thread
                     DispatchQueue.main.async { onRefresh() }
@@ -166,18 +168,31 @@ public extension WorkspaceClient {
 
                 sources[item.id] = source
             }
-        }
 
-        func stopListeningToDirectory() {
-            for source in sources.values {
-                source.cancel()
+            // test for deleted directories and remove their listeners
+            for (id, source) in sources {
+                var childExists = false
+                for item in flattenedFileItems.values {
+                    childExists = item.id == id ? true : childExists
+                }
+
+                if !childExists {
+                    source.cancel()
+                    sources.removeValue(forKey: id)
+                }
             }
-            sources = [:]
         }
 
-        func stopListeningToDirectory(directory: URL) {
-            sources[directory.path]?.cancel()
-            sources.removeValue(forKey: directory.path)
+        func stopListeningToDirectory(directory: URL? = nil) {
+            if let directory = directory {
+                sources[directory.path]?.cancel()
+                sources.removeValue(forKey: directory.path)
+            } else {
+                for source in sources.values {
+                    source.cancel()
+                }
+                sources = [:]
+            }
         }
 
         return Self(

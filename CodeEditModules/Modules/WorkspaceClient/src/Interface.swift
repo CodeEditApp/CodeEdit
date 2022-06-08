@@ -16,7 +16,8 @@ public struct WorkspaceClient {
 
     public var getFileItem: (_ id: String) throws -> FileItem
 
-    /// callback function that is run when a change is detected in the file system. This usually contains a `reloadData` function.
+    /// callback function that is run when a change is detected in the file system.
+    /// This usually contains a `reloadData` function.
     public static var onRefresh: () -> Void = {}
 
     // For some strange reason, swiftlint thinks this is wrong?
