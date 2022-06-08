@@ -236,6 +236,14 @@ extension OutlineViewController: NSOutlineViewDelegate {
     ///   - id: the id of the item item
     ///   - collection: the array to search for
     private func select(by id: TabBarItemID, from collection: [Item]) {
+        // If the user has set "Reveal file on selection change" on, we need to reveal the item before
+        // selecting the row.
+        if AppPreferencesModel.shared.preferences.general.revealFileOnFocusChange,
+           case let .codeEditor(id) = id,
+           let fileItem = try? workspace?.workspaceClient?.getFileItem(id as Item.ID) as? Item {
+            reveal(fileItem)
+        }
+
         guard let item = collection.first(where: { $0.tabID == id }) else {
             for item in collection {
                 select(by: id, from: item.children ?? [])
@@ -249,6 +257,36 @@ extension OutlineViewController: NSOutlineViewDelegate {
         shouldSendSelectionUpdate = false
         outlineView.selectRowIndexes(.init(integer: row), byExtendingSelection: false)
         shouldSendSelectionUpdate = true
+    }
+
+    /// Reveals the given `fileItem` in the outline view by expanding all the parent directories of the file.
+    /// If the file is not found, it will present an alert saying so.
+    /// - Parameter fileItem: The file to reveal.
+    public func reveal(_ fileItem: Item) {
+        if let parent = fileItem.parent {
+            expandParent(item: parent)
+        }
+        let row = outlineView.row(forItem: fileItem)
+        outlineView.selectRowIndexes(.init(integer: row), byExtendingSelection: false)
+
+        if row < 0 {
+            let alert = NSAlert()
+            alert.messageText = NSLocalizedString("Could not find file",
+                                                  comment: "Could not find file")
+            alert.runModal()
+            return
+        } else {
+            outlineView.scrollRowToVisible(row)
+        }
+    }
+
+    /// Method for recursively expanding a file's parent directories.
+    /// - Parameter item:
+    private func expandParent(item: Item) {
+        if let parent = item.parent as Item? {
+            expandParent(item: parent)
+        }
+        outlineView.expandItem(item)
     }
 }
 
