@@ -19,7 +19,6 @@ import StatusBar
 import TabBar
 import CryptoKit
 
-// swiftlint:disable:next type_body_length
 @objc(WorkspaceDocument) final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var workspaceClient: WorkspaceClient?
 
@@ -269,9 +268,9 @@ import CryptoKit
     }
 
     private func readSelectionState() throws -> WorkspaceSelectionState {
-        guard fileURL != nil else { return selectionState }
-        guard fileURL!.path != "" else { return selectionState }
-        let path = fileURL!.path.data(using: .utf8)
+        guard let path = fileURL?.path.data(using: .utf8) else {
+            return selectionState
+        }
         let hash = String(CryptoKit.SHA256.hash(data: path!).hashValue)
         if let data = UserDefaults.standard.value(forKey: hash) as? Data {
             let state = try? PropertyListDecoder().decode(WorkspaceSelectionState.self, from: data)
