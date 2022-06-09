@@ -18,7 +18,6 @@ import ExtensionsStore
 import StatusBar
 import TabBar
 
-// swiftlint:disable:next type_body_length
 @objc(WorkspaceDocument) final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var workspaceClient: WorkspaceClient?
 
@@ -267,37 +266,25 @@ import TabBar
                                                object: nil)
     }
 
+    /// Retrieves selection state from UserDefaults using SHA256 hash of project  path as key
+    /// - Throws: `DecodingError.dataCorrupted` error if retrived data from UserDefaults is not decodable
+    /// - Returns: retrived state from UserDefaults or default state if not found
+    private func readSelectionState() throws -> WorkspaceSelectionState {
+        guard let path = fileURL?.path,
+              let hash = path.sha256Hash,
+              let data = UserDefaults.standard.value(forKey: hash) as? Data  else { return selectionState }
+        let state = try PropertyListDecoder().decode(WorkspaceSelectionState.self, from: data)
+        return state
+    }
+
     override func read(from url: URL, ofType typeName: String) throws {
         try initWorkspaceState(url)
 
         // Initialize Workspace
         do {
-            if let projectDir = fileURL?.appendingPathComponent(".codeedit", isDirectory: true),
-               FileManager.default.fileExists(atPath: projectDir.path) {
-                let selectionStateFile = projectDir.appendingPathComponent("selection.json", isDirectory: false)
-
-                if FileManager.default.fileExists(atPath: selectionStateFile.path) {
-                    let state = try JSONDecoder().decode(WorkspaceSelectionState.self,
-                                                         from: Data(contentsOf: selectionStateFile))
-                    state.openedTabs
-                        .compactMap { tab in
-                            switch tab {
-                            case .codeEditor(let path):
-                                return try? workspaceClient?.getFileItem(path)
-                            case .extensionInstallation:
-                                return state.openedExtensions.first { plugin in
-                                    plugin.tabID == tab
-                                }
-                            }
-                        }
-                        .forEach { item in
-                        self.openTab(item: item)
-                    }
-                    self.selectionState.selectedId = state.selectedId
-                }
-            }
+            selectionState = try readSelectionState()
         } catch {
-            Swift.print(".codeedit/selection.json is not found")
+            Swift.print("couldn't retrieve selection state from user defaults")
         }
 
         workspaceClient?
@@ -340,27 +327,20 @@ import TabBar
 
     // MARK: Close Workspace
 
+    /// Saves selection state to UserDefaults using SHA256 hash of project  path as key
+    /// - Throws: `EncodingError.invalidValue` error if sellection state is not encodable
+    private func saveSelectionState() throws {
+        guard let path = fileURL?.path,
+              let hash = path.sha256Hash else { return }
+        let data = try PropertyListEncoder().encode(selectionState)
+        UserDefaults.standard.set(data, forKey: hash)
+    }
+
     override func close() {
-        if let projectDir = fileURL?.appendingPathComponent(".codeedit", isDirectory: true) {
-            do {
-                if !FileManager.default.fileExists(atPath: projectDir.path) {
-                    do {
-                        try FileManager.default.createDirectory(at: projectDir,
-                                                                withIntermediateDirectories: false,
-                                                                attributes: [:])
-                    }
-                }
-                let selectionStateFile = projectDir.appendingPathComponent("selection.json", isDirectory: false)
-                let data = try JSONEncoder().encode(selectionState)
-                if FileManager.default.fileExists(atPath: selectionStateFile.path) {
-                    do {
-                        try FileManager.default.removeItem(at: selectionStateFile)
-                    }
-                }
-                try data.write(to: selectionStateFile)
-            } catch let error {
-                Swift.print(error)
-            }
+        do {
+            try saveSelectionState()
+        } catch {
+            Swift.print("couldn't save selection state from user defaults")
         }
 
         selectionState.selectedId = nil
