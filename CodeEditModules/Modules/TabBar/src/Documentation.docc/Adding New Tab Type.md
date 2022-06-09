@@ -59,7 +59,11 @@ The same is for closing tabs using ``WorkspaceDocument.closeTab(item:)`` method.
 Closing multiple tabs at once is handled by common functions, so there are no changes
 required for them.
 
-Also, because previously opened tabs are persisted in `.codeedit/selection.json`,
+``WorkspaceDocument.close`` calls ``WorkspaceDocument.saveSelectionState`` to persist Workspace Selection State to UserDefaults.
+
+``WorkspaceDocument.read`` calls ``WorkspaceDocument.readSelectionState`` to retrieve Workspace Selection State from UserDefaults.
+
+Also, because previously opened tabs are persisted in UserDefaults,
 they should be recovered some way later. To recover new tab types you need to add
 a case for ``WorkspaceDocument.read`` to let it know how to recover your new tab type.
 

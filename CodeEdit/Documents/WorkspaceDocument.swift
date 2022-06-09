@@ -19,6 +19,7 @@ import StatusBar
 import TabBar
 import CryptoKit
 
+// swiftlint:disable:next type_body_length
 @objc(WorkspaceDocument) final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var workspaceClient: WorkspaceClient?
 
@@ -285,6 +286,7 @@ import CryptoKit
         // Initialize Workspace
         do {
             selectionState = try readSelectionState()
+            Swift.print(selectionState)
         } catch {
             Swift.print("couldn't retrieve selection state from user defaults")
         }
