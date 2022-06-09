@@ -265,7 +265,8 @@ import TabBar
                                                name: NSNotification.Name("CodeEditor.didBeginEditing"),
                                                object: nil)
     }
-
+    
+    /// Retrieves selection state from UserDefaults using SHA256 hash of project  path as key
     private func readSelectionState() throws -> WorkspaceSelectionState {
         guard let path = fileURL?.path,
               let hash = path.sha256Hash,
@@ -324,6 +325,7 @@ import TabBar
 
     // MARK: Close Workspace
 
+    /// Saves selection state to UserDefaults using SHA256 hash of project  path as key
     private func saveSelectionState() throws {
         guard let path = fileURL?.path,
               let hash = path.sha256Hash else { return }
