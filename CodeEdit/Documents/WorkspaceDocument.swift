@@ -17,7 +17,6 @@ import CodeEditKit
 import ExtensionsStore
 import StatusBar
 import TabBar
-import CryptoKit
 
 @objc(WorkspaceDocument) final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var workspaceClient: WorkspaceClient?
@@ -268,14 +267,11 @@ import CryptoKit
     }
 
     private func readSelectionState() throws -> WorkspaceSelectionState {
-        guard let path = fileURL?.path else { return selectionState }
-        if let hash = path.sha256Hash {
-            if let data = UserDefaults.standard.value(forKey: hash) as? Data {
-                let state = try PropertyListDecoder().decode(WorkspaceSelectionState.self, from: data)
-                return state
-            }
-        }
-        return selectionState
+        guard let path = fileURL?.path,
+              let hash = path.sha256Hash,
+              let data = UserDefaults.standard.value(forKey: hash) as? Data  else { return selectionState }
+        let state = try PropertyListDecoder().decode(WorkspaceSelectionState.self, from: data)
+        return state
     }
 
     override func read(from url: URL, ofType typeName: String) throws {
@@ -329,11 +325,10 @@ import CryptoKit
     // MARK: Close Workspace
 
     private func saveSelectionState() throws {
-        guard let path = fileURL?.path else { return }
-        if let hash = path.sha256Hash {
-            let data = try PropertyListEncoder().encode(selectionState)
-            UserDefaults.standard.set(data, forKey: hash)
-        }
+        guard let path = fileURL?.path,
+              let hash = path.sha256Hash else { return }
+        let data = try PropertyListEncoder().encode(selectionState)
+        UserDefaults.standard.set(data, forKey: hash)
     }
 
     override func close() {
@@ -370,13 +365,5 @@ extension WorkspaceDocument {
     }
     func targetDidClear() {
         self.targets.removeAll()
-    }
-}
-
-extension String {
-    var sha256Hash: String? {
-        guard let data = self.data(using: .utf8) else { return nil }
-        let hash = SHA256.hash(data: data)
-        return hash.compactMap { String(format: "%02x", $0) }.joined()
     }
 }
