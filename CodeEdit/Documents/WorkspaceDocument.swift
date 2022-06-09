@@ -267,6 +267,8 @@ import TabBar
     }
     
     /// Retrieves selection state from UserDefaults using SHA256 hash of project  path as key
+    /// - Throws: `DecodingError.dataCorrupted` error if retrived data from UserDefaults is not decodable
+    /// - Returns: retrived state from UserDefaults or default state if not found
     private func readSelectionState() throws -> WorkspaceSelectionState {
         guard let path = fileURL?.path,
               let hash = path.sha256Hash,
@@ -326,6 +328,7 @@ import TabBar
     // MARK: Close Workspace
 
     /// Saves selection state to UserDefaults using SHA256 hash of project  path as key
+    /// - Throws: `EncodingError.invalidValue` error if sellection state is not encodable
     private func saveSelectionState() throws {
         guard let path = fileURL?.path,
               let hash = path.sha256Hash else { return }
