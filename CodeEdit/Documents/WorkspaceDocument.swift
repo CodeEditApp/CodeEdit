@@ -286,7 +286,6 @@ import CryptoKit
         // Initialize Workspace
         do {
             selectionState = try readSelectionState()
-            Swift.print(selectionState)
         } catch {
             Swift.print("couldn't retrieve selection state from user defaults")
         }
