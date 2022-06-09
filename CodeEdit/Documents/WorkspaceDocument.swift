@@ -268,13 +268,12 @@ import CryptoKit
     }
 
     private func readSelectionState() throws -> WorkspaceSelectionState {
-        guard let path = fileURL?.path.data(using: .utf8) else {
-            return selectionState
-        }
-        let hash = String(CryptoKit.SHA256.hash(data: path!).hashValue)
+        guard let path = fileURL?.path,
+              let pathData = path.data(using: .utf8) else { return selectionState }
+        let hash = String(CryptoKit.SHA256.hash(data: pathData).hashValue)
         if let data = UserDefaults.standard.value(forKey: hash) as? Data {
-            let state = try? PropertyListDecoder().decode(WorkspaceSelectionState.self, from: data)
-            if state != nil { return state! }
+            let state = try PropertyListDecoder().decode(WorkspaceSelectionState.self, from: data)
+            return state
         }
         return selectionState
     }
@@ -330,11 +329,10 @@ import CryptoKit
     // MARK: Close Workspace
 
     private func saveSelectionState() throws {
-        guard fileURL != nil else { return }
-        guard fileURL!.path != "" else { return }
-        let path = fileURL!.path.data(using: .utf8)
-        let hash = String(CryptoKit.SHA256.hash(data: path!).hashValue)
-        let data =  try? PropertyListEncoder().encode(selectionState)
+        guard let path = fileURL?.path,
+              let pathData = path.data(using: .utf8) else { return }
+        let hash = String(CryptoKit.SHA256.hash(data: pathData).hashValue)
+        let data =  try PropertyListEncoder().encode(selectionState)
         UserDefaults.standard.set(data, forKey: hash)
     }
 
