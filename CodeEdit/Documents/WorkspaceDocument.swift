@@ -265,7 +265,7 @@ import TabBar
                                                name: NSNotification.Name("CodeEditor.didBeginEditing"),
                                                object: nil)
     }
-    
+
     /// Retrieves selection state from UserDefaults using SHA256 hash of project  path as key
     /// - Throws: `DecodingError.dataCorrupted` error if retrived data from UserDefaults is not decodable
     /// - Returns: retrived state from UserDefaults or default state if not found
