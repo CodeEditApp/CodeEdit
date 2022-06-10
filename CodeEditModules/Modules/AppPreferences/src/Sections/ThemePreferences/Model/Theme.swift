@@ -6,9 +6,6 @@
 //
 
 import SwiftUI
-import CodeEditTextView
-
-// swiftlint:disable file_length
 
 /// # Theme
 ///
@@ -110,20 +107,10 @@ public extension Theme {
             self.color = color
         }
 
-        /// The `SwiftUI` of ``color``
-        public var swiftColor: Color {
+        /// The `SwiftUI` color
+        public internal(set) var swiftColor: Color {
             get {
                 Color(hex: color)
-            }
-            set {
-                self.color = newValue.hexString
-            }
-        }
-
-        /// The `NSColor` of ``color``
-        public var nsColor: NSColor {
-            get {
-                NSColor(hex: color)
             }
             set {
                 self.color = newValue.hexString
@@ -135,46 +122,6 @@ public extension Theme {
 public extension Theme {
     /// The editor colors of the theme
     struct EditorColors: Codable, Hashable, Loopable {
-
-        public var editorTheme: EditorTheme {
-            get {
-                .init(text: text.nsColor,
-                      insertionPoint: insertionPoint.nsColor,
-                      invisibles: invisibles.nsColor,
-                      background: background.nsColor,
-                      lineHighlight: lineHighlight.nsColor,
-                      selection: selection.nsColor,
-                      keywords: keywords.nsColor,
-                      commands: commands.nsColor,
-                      types: types.nsColor,
-                      attributes: attributes.nsColor,
-                      variables: variables.nsColor,
-                      values: values.nsColor,
-                      numbers: numbers.nsColor,
-                      strings: strings.nsColor,
-                      characters: characters.nsColor,
-                      comments: comments.nsColor)
-            }
-            set {
-                self.text.nsColor = newValue.text
-                self.insertionPoint.nsColor = newValue.insertionPoint
-                self.invisibles.nsColor = newValue.invisibles
-                self.background.nsColor = newValue.background
-                self.lineHighlight.nsColor = newValue.lineHighlight
-                self.selection.nsColor = newValue.selection
-                self.keywords.nsColor = newValue.keywords
-                self.commands.nsColor = newValue.commands
-                self.types.nsColor = newValue.types
-                self.attributes.nsColor = newValue.attributes
-                self.variables.nsColor = newValue.variables
-                self.values.nsColor = newValue.values
-                self.numbers.nsColor = newValue.numbers
-                self.strings.nsColor = newValue.strings
-                self.characters.nsColor = newValue.characters
-                self.comments.nsColor = newValue.comments
-            }
-        }
-
         public var text: Attributes
         public var insertionPoint: Attributes
         public var invisibles: Attributes
@@ -200,7 +147,7 @@ public extension Theme {
         /// // equal to calling
         /// editor.text
         /// ```
-        public subscript(key: String) -> Attributes {
+        subscript(key: String) -> Attributes {
             get {
                 switch key {
                 case "text": return self.text
@@ -338,7 +285,7 @@ public extension Theme {
         /// // equal to calling
         /// terminal.text
         /// ```
-        public subscript(key: String) -> Attributes {
+        subscript(key: String) -> Attributes {
             get {
                 switch key {
                 case "text": return self.text
@@ -393,7 +340,7 @@ public extension Theme {
             }
         }
 
-        public init(
+        init(
             text: Attributes,
             boldText: Attributes,
             cursor: Attributes,
@@ -440,5 +387,3 @@ public extension Theme {
         }
     }
 }
-
-// swiftlint:enable file_length
