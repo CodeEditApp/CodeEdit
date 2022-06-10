@@ -14,6 +14,7 @@ import CodeFile
 import Search
 import QuickOpen
 import CodeEditKit
+import CodeEditUtils
 import ExtensionsStore
 import StatusBar
 import TabBar
@@ -271,8 +272,7 @@ import TabBar
     /// - Returns: retrived state from UserDefaults or default state if not found
     private func readSelectionState() throws -> WorkspaceSelectionState {
         guard let path = fileURL?.path,
-              let hash = path.sha256Hash,
-              let data = UserDefaults.standard.value(forKey: hash) as? Data  else { return selectionState }
+              let data = UserDefaults.standard.value(forKey: path.sha256()) as? Data  else { return selectionState }
         let state = try PropertyListDecoder().decode(WorkspaceSelectionState.self, from: data)
         return state
     }
@@ -330,8 +330,8 @@ import TabBar
     /// Saves selection state to UserDefaults using SHA256 hash of project  path as key
     /// - Throws: `EncodingError.invalidValue` error if sellection state is not encodable
     private func saveSelectionState() throws {
-        guard let path = fileURL?.path,
-              let hash = path.sha256Hash else { return }
+        guard let path = fileURL?.path else { return }
+        let hash = path.sha256()
         let data = try PropertyListEncoder().encode(selectionState)
         UserDefaults.standard.set(data, forKey: hash)
     }
