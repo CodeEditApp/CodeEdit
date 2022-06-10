@@ -19,6 +19,7 @@ opt_in_rules:
   - missing_docs
   - implicit_return
   - modifier_order
+  - convenience_type
 
 custom_rules:
   spaces_over_tabs:

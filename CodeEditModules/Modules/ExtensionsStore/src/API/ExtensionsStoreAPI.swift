@@ -17,7 +17,7 @@ public enum ExtensionsStoreAPIError: Error {
 // TODO: add authorization
 
 /// Structure to work with Extensions Store API
-public struct ExtensionsStoreAPI {
+public enum ExtensionsStoreAPI {
 
     static let base = URL(string: "https://codeedit.pkasila.net/api/")!
     static let agent = Agent()
