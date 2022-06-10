@@ -122,6 +122,11 @@ let package = Package(
             url: "https://github.com/CodeEditApp/CodeEditSymbols",
             branch: "main"
         ),
+        .package(
+            name: "CodeEditTextView",
+            url: "https://github.com/CodeEditApp/CodeEditTextView",
+            branch: "main"
+        ),
     ],
     targets: [
         .target(
@@ -143,7 +148,8 @@ let package = Package(
             dependencies: [
                 "Highlightr",
                 "AppPreferences",
-                "CodeEditUtils"
+                "CodeEditUtils",
+                "CodeEditTextView",
             ],
             path: "Modules/CodeFile/src"
         ),
@@ -224,6 +230,7 @@ let package = Package(
                 "Git",
                 "CodeEditUtils",
                 "CodeEditSymbols",
+                "CodeEditTextView",
             ],
             path: "Modules/AppPreferences/src"
         ),
