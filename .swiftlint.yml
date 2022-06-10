@@ -18,6 +18,7 @@ opt_in_rules:
   - contains_over_first_not_nil
   - missing_docs
   - implicit_return
+  - modifier_order
 
 custom_rules:
   spaces_over_tabs:
