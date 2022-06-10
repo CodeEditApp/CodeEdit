@@ -99,11 +99,11 @@ enum ProjectRouter: Router {
     }
 
     var method: HTTPMethod {
-        return .GET
+        .GET
     }
 
     var encoding: HTTPEncoding {
-        return .url
+        .url
     }
 
     var params: [String: Any] {

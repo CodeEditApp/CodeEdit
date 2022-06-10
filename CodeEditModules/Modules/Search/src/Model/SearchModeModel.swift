@@ -80,7 +80,7 @@ public struct SearchModeModel {
 
 extension SearchModeModel: Equatable {
     public static func == (lhs: SearchModeModel, rhs: SearchModeModel) -> Bool {
-        return lhs.title == rhs.title
+        lhs.title == rhs.title
             && lhs.children == rhs.children
             && lhs.needSelectionHightlight == rhs.needSelectionHightlight
     }

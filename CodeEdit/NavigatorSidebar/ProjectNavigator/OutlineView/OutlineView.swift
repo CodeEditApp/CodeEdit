@@ -42,7 +42,7 @@ struct OutlineView: NSViewControllerRepresentable {
     }
 
     func makeCoordinator() -> Coordinator {
-        return Coordinator(workspace)
+        Coordinator(workspace)
     }
 
     class Coordinator: NSObject {

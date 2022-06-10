@@ -19,11 +19,11 @@ public enum BitbucketUserRouter: Router {
     }
 
     public var method: HTTPMethod {
-        return .GET
+        .GET
     }
 
     public var encoding: HTTPEncoding {
-        return .url
+        .url
     }
 
     public var path: String {
@@ -36,6 +36,6 @@ public enum BitbucketUserRouter: Router {
     }
 
     public var params: [String: Any] {
-        return [:]
+        [:]
     }
 }

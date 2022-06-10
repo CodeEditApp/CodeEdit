@@ -26,7 +26,7 @@ public struct BitbucketOAuthConfiguration: Configuration {
     }
 
     public func authenticate() -> URL? {
-        return OAuthRouter.authorize(self).URLRequest?.url
+        OAuthRouter.authorize(self).URLRequest?.url
     }
 
     fileprivate func basicAuthenticationString() -> String {

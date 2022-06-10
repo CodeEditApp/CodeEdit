@@ -169,8 +169,8 @@ public extension AppPreferences {
             set {
                 extensions = newValue
                     .components(separatedBy: ",")
-                    .map({$0.trimmingCharacters(in: .whitespacesAndNewlines)})
-                    .filter({!$0.isEmpty || string.count < newValue.count })
+                    .map({ $0.trimmingCharacters(in: .whitespacesAndNewlines) })
+                    .filter({ !$0.isEmpty || string.count < newValue.count })
             }
         }
 

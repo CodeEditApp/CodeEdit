@@ -22,6 +22,6 @@ public struct BitbucketAccount {
 
 extension Router {
     internal var URLRequest: Foundation.URLRequest? {
-        return request()
+        request()
     }
 }

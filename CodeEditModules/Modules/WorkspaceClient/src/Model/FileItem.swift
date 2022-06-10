@@ -205,11 +205,11 @@ extension WorkspaceClient.FileItem: Hashable {
 
 extension WorkspaceClient.FileItem: Comparable {
     public static func == (lhs: WorkspaceClient.FileItem, rhs: WorkspaceClient.FileItem) -> Bool {
-        return lhs.id == rhs.id
+        lhs.id == rhs.id
     }
 
     public static func < (lhs: WorkspaceClient.FileItem, rhs: WorkspaceClient.FileItem) -> Bool {
-        return lhs.url.lastPathComponent < rhs.url.lastPathComponent
+        lhs.url.lastPathComponent < rhs.url.lastPathComponent
     }
 }
 

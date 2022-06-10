@@ -192,7 +192,7 @@ import TabBar
 
         guard let openFileItemIdx = selectionState
             .openFileItems
-            .firstIndex(where: { $0.tabID == id}) else { return }
+            .firstIndex(where: { $0.tabID == id }) else { return }
         selectionState.openFileItems.remove(at: openFileItemIdx)
     }
 
@@ -227,11 +227,11 @@ import TabBar
     ]
 
     override class var autosavesInPlace: Bool {
-        return false
+        false
     }
 
     override var isDocumentEdited: Bool {
-        return false
+        false
     }
 
     override func makeWindowControllers() {
@@ -316,7 +316,7 @@ import TabBar
         // initialize extensions
         do {
             try ExtensionsManager.shared?.load { extensionID in
-                return CodeEditAPI(extensionId: extensionID, workspace: self)
+                CodeEditAPI(extensionId: extensionID, workspace: self)
             }
         } catch let error {
             Swift.print(error)

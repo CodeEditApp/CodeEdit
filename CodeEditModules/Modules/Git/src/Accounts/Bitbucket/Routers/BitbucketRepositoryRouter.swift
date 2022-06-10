@@ -19,11 +19,11 @@ public enum BitbucketRepositoryRouter: Router {
     }
 
     public var method: HTTPMethod {
-        return .GET
+        .GET
     }
 
     public var encoding: HTTPEncoding {
-        return .url
+        .url
     }
 
     public var params: [String: Any] {
