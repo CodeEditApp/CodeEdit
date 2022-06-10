@@ -9,6 +9,8 @@
 
 import Foundation
 
+// TODO: DOCS (Nanashi Li)
+// swiftlint:disable missing_docs
 public enum HTTPMethod: String {
     case GET, POST, PUT, PATCH, DELETE
 }

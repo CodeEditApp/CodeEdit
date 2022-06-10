@@ -7,6 +7,8 @@
 
 import Foundation
 
+// TODO: DOCS (Nanashi Li)
+// swiftlint:disable missing_docs
 public let bitbucketBaseURL = "https://api.bitbucket.org/2.0"
 public let bitbucketWebURL = "https://bitbucket.org/"
 

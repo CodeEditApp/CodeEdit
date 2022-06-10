@@ -7,6 +7,8 @@
 
 import Foundation
 
+// TODO: DOCS (Ziyuan Zhao)
+// swiftlint:disable missing_docs
 public struct SearchModeModel {
     public let title: String
     public let children: [SearchModeModel]

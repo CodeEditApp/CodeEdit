@@ -15,6 +15,7 @@ identifier_name:
 opt_in_rules:
   - empty_count
   - contains_over_first_not_nil
+  - missing_docs
 
 custom_rules:
   spaces_over_tabs:

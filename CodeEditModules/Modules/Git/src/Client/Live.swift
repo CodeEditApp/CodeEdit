@@ -9,6 +9,8 @@ import Foundation
 import ShellClient
 import Combine
 
+// TODO: DOCS (Marco Carnevali)
+// swiftlint:disable missing_docs
 public extension GitClient {
     // swiftlint:disable function_body_length
     static func `default`(
