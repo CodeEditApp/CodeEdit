@@ -10,7 +10,7 @@ import WorkspaceClient
 
 extension String {
     func abbreviatingWithTildeInPath() -> String {
-        return (self as NSString).abbreviatingWithTildeInPath
+        (self as NSString).abbreviatingWithTildeInPath
     }
 }
 

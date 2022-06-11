@@ -7,6 +7,8 @@
 import Foundation
 import Combine
 
+// TODO: DOCS (Marco Carnevali)
+// swiftlint:disable missing_docs
 public extension ShellClient {
     static func live() -> Self {
         func generateProcessAndPipe(_ args: [String]) -> (Process, Pipe) {

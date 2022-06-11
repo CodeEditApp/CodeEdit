@@ -20,7 +20,7 @@ public extension String {
         var string = self
 
         // trim whitespaces & new lines if specifiedå
-        if trim { string = string.trimmingCharacters(in: .whitespacesAndNewlines)}
+        if trim { string = string.trimmingCharacters(in: .whitespacesAndNewlines) }
 
         // make string lowercased if not case sensitive
         if !caseSensitive { string = string.lowercased() }

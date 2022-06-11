@@ -25,7 +25,7 @@ struct CodeEditor: NSViewRepresentable {
     private let highlightr = Highlightr()
 
     private var themeString: String {
-        return ThemeModel.shared.selectedTheme?.highlightrThemeString ?? ""
+        ThemeModel.shared.selectedTheme?.highlightrThemeString ?? ""
     }
 
     private var lineGutterColor: NSColor {

@@ -8,6 +8,8 @@
 import Foundation
 import SwiftUI
 
+// TODO: DOCS (Nanashi Li)
+// swiftlint:disable missing_docs
 open class BitbucketUser: Codable {
     open var id: String?
     open var login: String?

@@ -23,7 +23,7 @@ public struct CodeLanguage {
         let fileName = url.pathComponents.last?.lowercased()
         // This is to handle special file types without an extension (e.g., Makefile, Dockerfile)
         let fileNameOrExtension = fileExtension.isEmpty ? (fileName != nil ? fileName! : "") : fileExtension
-        if let lang = knownLanguages.first(where: { lang in lang.extensions.contains(fileNameOrExtension)}) {
+        if let lang = knownLanguages.first(where: { lang in lang.extensions.contains(fileNameOrExtension) }) {
             return lang
         } else {
             return .default

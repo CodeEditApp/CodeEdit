@@ -7,6 +7,8 @@
 
 import Foundation
 
+// TODO: DOCS (Ziyuan Zhao)
+// swiftlint:disable missing_docs
 public struct SearchModeModel {
     public let title: String
     public let children: [SearchModeModel]
@@ -78,7 +80,7 @@ public struct SearchModeModel {
 
 extension SearchModeModel: Equatable {
     public static func == (lhs: SearchModeModel, rhs: SearchModeModel) -> Bool {
-        return lhs.title == rhs.title
+        lhs.title == rhs.title
             && lhs.children == rhs.children
             && lhs.needSelectionHightlight == rhs.needSelectionHightlight
     }

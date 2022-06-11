@@ -205,15 +205,18 @@ extension WorkspaceClient.FileItem: Hashable {
 
 extension WorkspaceClient.FileItem: Comparable {
     public static func == (lhs: WorkspaceClient.FileItem, rhs: WorkspaceClient.FileItem) -> Bool {
-        return lhs.id == rhs.id
+        lhs.id == rhs.id
     }
 
     public static func < (lhs: WorkspaceClient.FileItem, rhs: WorkspaceClient.FileItem) -> Bool {
-        return lhs.url.lastPathComponent < rhs.url.lastPathComponent
+        lhs.url.lastPathComponent < rhs.url.lastPathComponent
     }
 }
 
 public extension Array where Element: Hashable {
+
+    // TODO: DOCS (Marco Carnevali)
+    // swiftlint:disable:next missing_docs
     func difference(from other: [Element]) -> [Element] {
         let thisSet = Set(self)
         let otherSet = Set(other)

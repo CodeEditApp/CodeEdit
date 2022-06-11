@@ -51,7 +51,7 @@ public extension Color {
 
     /// The alpha (opacity) component of the Color (0.0 - 1.0)
     var alphaComponent: Double {
-        return NSColor(self).alphaComponent
+        NSColor(self).alphaComponent
     }
 }
 

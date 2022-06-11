@@ -20,7 +20,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     var quickOpenPanel: OverlayPanel?
 
     private var splitViewController: NSSplitViewController! {
-        get { return contentViewController as? NSSplitViewController }
+        get { contentViewController as? NSSplitViewController }
         set { contentViewController = newValue }
     }
 
@@ -94,7 +94,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     // MARK: - Toolbar
 
     func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
-        return [
+        [
             .toggleFirstSidebarItem,
             .sidebarTrackingSeparator,
             .branchPicker,
@@ -105,7 +105,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     }
 
     func toolbarAllowedItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
-        return [
+        [
             .toggleFirstSidebarItem,
             .sidebarTrackingSeparator,
             .flexibleSpace,
@@ -198,7 +198,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     private func getSelectedCodeFile() -> CodeFileDocument? {
         guard let id = workspace?.selectionState.selectedId else { return nil }
         guard let item = workspace?.selectionState.openFileItems.first(where: { item in
-            return item.tabID == id
+            item.tabID == id
         }) else { return nil }
         guard let file = workspace?.selectionState.openedCodeFiles[item] else { return nil }
         return file

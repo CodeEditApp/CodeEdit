@@ -8,6 +8,8 @@
 import Combine
 import Foundation
 
+// TODO: DOCS (Marco Carnevali)
+// swiftlint:disable missing_docs
 public extension WorkspaceClient {
     static var empty = Self(
         folderURL: { nil },

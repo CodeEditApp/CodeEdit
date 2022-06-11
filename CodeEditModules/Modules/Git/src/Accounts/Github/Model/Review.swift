@@ -10,6 +10,8 @@ import Foundation
 import FoundationNetworking
 #endif
 
+// TODO: DOCS (Nanashi Li)
+// swiftlint:disable missing_docs
 public struct Review {
     public let body: String
     public let commitID: String

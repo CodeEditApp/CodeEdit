@@ -19,11 +19,11 @@ public enum TokenRouter: Router {
     }
 
     public var method: HTTPMethod {
-        return .POST
+        .POST
     }
 
     public var encoding: HTTPEncoding {
-        return .form
+        .form
     }
 
     public var params: [String: Any] {

@@ -39,11 +39,11 @@ public struct WelcomeView: View {
     }
 
     private var appVersion: String {
-        return Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
+        Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
     }
 
     private var appBuild: String {
-        return Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? ""
+        Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? ""
     }
 
     /// Get the MacOS version & build
@@ -193,7 +193,7 @@ public struct WelcomeView: View {
                     HStack {
                         Spacer()
                         Toggle("Show this window when CodeEdit launches", isOn: .init(get: {
-                            return prefs.preferences.general.reopenBehavior == .welcome
+                            prefs.preferences.general.reopenBehavior == .welcome
                         }, set: { new in
                             prefs.preferences.general.reopenBehavior = new ? .welcome : .openPanel
                         }))

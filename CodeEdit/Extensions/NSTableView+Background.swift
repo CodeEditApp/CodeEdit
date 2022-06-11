@@ -9,7 +9,7 @@ import SwiftUI
 
 extension NSTableView {
     /// Allows to set a lists background color in SwiftUI
-    open override func viewDidMoveToWindow() {
+    override open func viewDidMoveToWindow() {
         super.viewDidMoveToWindow()
 
         backgroundColor = NSColor.clear
