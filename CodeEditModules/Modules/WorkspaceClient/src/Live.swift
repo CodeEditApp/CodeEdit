@@ -64,29 +64,29 @@ public extension WorkspaceClient {
         // consumer subscribes to the publisher.
         let subject = CurrentValueSubject<[FileItem], Never>(fileItems)
 
+        var isRunning: Bool = false
+        var anotherInstanceRan: Int = 0
+
         /// Recursive function similar to `loadFiles`, but creates or deletes children of the
         /// `FileItem` so that they are accurate with the file system, instead of creating an
         /// entirely new `FileItem`, to prevent the `OutlineView` from going crazy with folding.
         /// - Parameter fileItem: The `FileItem` to correct the children of
-        func rebuildFiles(fromItem fileItem: FileItem) throws {
-            // TODO: don't rebuild the entire index, just add and remove items when needed.
+        func rebuildFiles(fromItem fileItem: FileItem) throws -> Bool {
 
-            // get a copy of the array of actual children of directory
+            var didChangeSomething = false
+
+            // get the actual directory children
             let directoryContentsUrls = try fileManager.contentsOfDirectory(at: fileItem.url,
                                                                             includingPropertiesForKeys: nil)
 
-            // get currently indexed children of directory
-            var newChildren = fileItem.children?.filter({ _ in true }) // build a new array based on fileItem.children
-
             // test for deleted children, and remove them from the index
             for oldContent in fileItem.children ?? [] {
-                if directoryContentsUrls.contains(oldContent.url) {
-                    continue
-                }
-
-                if let removeAt = newChildren?.firstIndex(of: oldContent) {
-                    newChildren?.remove(at: removeAt)
-                    flattenedFileItems.removeValue(forKey: oldContent.id)
+                if !directoryContentsUrls.contains(oldContent.url) {
+                    if let removeAt = fileItem.children?.firstIndex(of: oldContent) {
+                        fileItem.children?.remove(at: removeAt)
+                        flattenedFileItems.removeValue(forKey: oldContent.id)
+                        didChangeSomething = true
+                    }
                 }
             }
 
@@ -104,27 +104,26 @@ public extension WorkspaceClient {
                 if fileManager.fileExists(atPath: newContent.path, isDirectory: &isDir) {
                     var subItems: [FileItem]?
 
-                    if isDir.boolValue {
-                        subItems = try loadFiles(fromURL: newContent)
-                    }
+                    if isDir.boolValue { subItems = try loadFiles(fromURL: newContent) }
 
                     let newFileItem = FileItem(url: newContent, children: subItems?.sortItems(foldersOnTop: true))
-                    subItems?.forEach {
-                        $0.parent = newFileItem
-                    }
+                    subItems?.forEach { $0.parent = newFileItem }
                     newFileItem.parent = fileItem
                     flattenedFileItems[newFileItem.id] = newFileItem
-                    newChildren?.append(newFileItem)
+                    fileItem.children?.append(newFileItem)
+                    didChangeSomething = true
                 }
             }
 
-            newChildren?.forEach({
-                try? rebuildFiles(fromItem: $0)
+            fileItem.children?.forEach({
+                if $0.isFolder {
+                    let childChanged = try? rebuildFiles(fromItem: $0)
+                    didChangeSomething = (childChanged ?? false) ? true : didChangeSomething
+                }
                 flattenedFileItems[$0.id] = $0
             })
 
-            fileItem.children = newChildren
-            return
+            return didChangeSomething
         }
 
         var sources: [String: DispatchSourceFileSystemObject] = [:]
@@ -135,13 +134,11 @@ public extension WorkspaceClient {
             // iterate over every item, checking if its a directory first
             for item in flattenedFileItems.values {
                 // check if it actually exists, doesn't have a listener, and is a folder
-                guard item.isFolder else { continue }
-                guard !sources.keys.contains(item.id) else { continue }
-                guard FileItem.fileManger.fileExists(atPath: item.url.path) else { continue }
+                guard item.isFolder &&
+                        !sources.keys.contains(item.id) &&
+                        FileItem.fileManger.fileExists(atPath: item.url.path) else { continue }
 
-                // open the folder to listen for changes
-                let descriptor = open(item.url.path, O_EVTONLY)
-
+                let descriptor = open(item.url.path, O_EVTONLY) // open the folder to listen for changes
                 let source = DispatchSource.makeFileSystemObjectSource(
                     fileDescriptor: descriptor,
                     eventMask: .write,
@@ -151,11 +148,21 @@ public extension WorkspaceClient {
                 source.setEventHandler {
                     // Something has changed inside the directory
                     // We should reload the files.
-                    flattenedFileItems = [:]
-                    flattenedFileItems[workspaceItem.id] = workspaceItem
-                    try? rebuildFiles(fromItem: workspaceItem)
+                    guard !isRunning else { // this runs when a file change is detected but is already running
+                        anotherInstanceRan += 1
+                        return
+                    }
+                    isRunning = true
+                    flattenedFileItems = [workspaceItem.id: workspaceItem]
+                    _ = try? rebuildFiles(fromItem: workspaceItem)
+                    while anotherInstanceRan > 0 { // TODO: optimise
+                        let somethingChanged = try? rebuildFiles(fromItem: workspaceItem)
+                        anotherInstanceRan = !(somethingChanged ?? false) ? 0 : anotherInstanceRan - 1
+                    }
                     subject.send(workspaceItem.children ?? [])
                     startListeningToDirectory()
+                    isRunning = false
+                    anotherInstanceRan = 0
                     // reload data in outline view controller through the main thread
                     DispatchQueue.main.async { onRefresh() }
                 }
@@ -170,15 +177,14 @@ public extension WorkspaceClient {
             }
 
             // test for deleted directories and remove their listeners
-            for (id, source) in sources {
+            for (id, _) in sources {
                 var childExists = false
                 for item in flattenedFileItems.values {
                     childExists = item.id == id ? true : childExists
                 }
 
                 if !childExists {
-                    source.cancel()
-                    sources.removeValue(forKey: id)
+                    sources.removeValue(forKey: id)?.cancel()
                 }
             }
         }

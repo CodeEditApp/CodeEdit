@@ -209,17 +209,15 @@ public extension WorkspaceClient {
 
         /// This function deletes the item or folder from the current project
         public func delete() {
-            DispatchQueue.main.async {
-                if FileItem.fileManger.fileExists(atPath: self.url.path) {
-                    do {
-                        try FileItem.fileManger.removeItem(at: self.url)
-                    } catch {
-                        fatalError(error.localizedDescription)
-                    }
+            // this function also has to account for how the
+            // file system can change outside of the editor
+
+            if FileItem.fileManger.fileExists(atPath: self.url.path) {
+                do {
+                    try FileItem.fileManger.removeItem(at: self.url)
+                } catch {
+                    fatalError(error.localizedDescription)
                 }
-            }
-            for child in self.children ?? [] {
-                DispatchQueue.main.async { child.delete() }
             }
         }
     }
