@@ -16,7 +16,7 @@ struct ExtensionNavigator: View {
 
     var body: some View {
         VStack {
-            Divider() // TODO: fix this workaround because when switching tabs without this app carshes
+            Divider() // TODO: fix this workaround because when switching tabs without this, the app crashes
             List {
                 ForEach(data.plugins) { plugin in
                     ExtensionNavigatorItem(plugin: plugin)
