@@ -9,6 +9,8 @@
 
 import Foundation
 
+// TODO: DOCS (Nanashi Li)
+// swiftlint:disable missing_docs
 public enum HTTPMethod: String {
     case GET, POST, PUT, PATCH, DELETE
 }
@@ -37,19 +39,19 @@ public protocol Configuration {
 
 public extension Configuration {
     var accessTokenFieldName: String? {
-        return "access_token"
+        "access_token"
     }
 
     var authorizationHeader: String? {
-        return nil
+        nil
     }
 
     var errorDomain: String? {
-        return "com.codeedit.models.accounts.networking"
+        "com.codeedit.models.accounts.networking"
     }
 
     var customHeaders: [HTTPHeader]? {
-        return nil
+        nil
     }
 }
 
@@ -195,7 +197,7 @@ public extension Router {
         _ session: GitURLSession = URLSession.shared,
         expectedResultType: T.Type,
         completion: @escaping (_ json: T?, _ error: Error?) -> Void) -> URLSessionDataTaskProtocol? {
-        return load(session, expectedResultType: expectedResultType, completion: completion)
+        load(session, expectedResultType: expectedResultType, completion: completion)
     }
 
     func load<T: Codable>(

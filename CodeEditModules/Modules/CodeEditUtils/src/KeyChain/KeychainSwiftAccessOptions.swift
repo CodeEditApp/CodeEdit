@@ -66,7 +66,7 @@ public enum CodeEditKeychainAccessOptions {
     case accessibleWhenPasscodeSetThisDeviceOnly
 
     static var defaultOption: CodeEditKeychainAccessOptions {
-        return .accessibleWhenUnlocked
+        .accessibleWhenUnlocked
     }
 
     var value: String {

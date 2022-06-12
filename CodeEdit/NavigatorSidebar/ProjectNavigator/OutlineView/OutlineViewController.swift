@@ -157,11 +157,11 @@ extension OutlineViewController: NSOutlineViewDataSource {
 extension OutlineViewController: NSOutlineViewDelegate {
     func outlineView(_ outlineView: NSOutlineView,
                      shouldShowCellExpansionFor tableColumn: NSTableColumn?, item: Any) -> Bool {
-        return true
+        true
     }
 
     func outlineView(_ outlineView: NSOutlineView, shouldShowOutlineCellForItem item: Any) -> Bool {
-        return true
+        true
     }
 
     func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
@@ -211,7 +211,7 @@ extension OutlineViewController: NSOutlineViewDelegate {
     }
 
     func outlineView(_ outlineView: NSOutlineView, heightOfRowByItem item: Any) -> CGFloat {
-        return rowHeight // This can be changed to 20 to match Xcodes row height.
+        rowHeight // This can be changed to 20 to match Xcodes row height.
     }
 
     func outlineViewItemDidExpand(_ notification: Notification) {

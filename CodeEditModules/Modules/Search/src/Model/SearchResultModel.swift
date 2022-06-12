@@ -27,6 +27,6 @@ public struct SearchResultModel: Hashable {
     }
 
     public var hasKeywordInfo: Bool {
-        return lineNumber != nil && lineContent != nil && keywordRange != nil
+        lineNumber != nil && lineContent != nil && keywordRange != nil
     }
 }

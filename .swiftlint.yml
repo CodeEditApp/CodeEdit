@@ -14,7 +14,12 @@ identifier_name:
 
 opt_in_rules:
   - empty_count
+  - closure_spacing
   - contains_over_first_not_nil
+  - missing_docs
+#  - implicit_return
+  - modifier_order
+  - convenience_type
 
 custom_rules:
   spaces_over_tabs:

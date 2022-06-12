@@ -17,11 +17,11 @@ struct FindNavigator: View {
     private var searchText: String = ""
 
     private var foundFilesCount: Int {
-        state.searchResult.filter {!$0.hasKeywordInfo}.count
+        state.searchResult.filter { !$0.hasKeywordInfo }.count
     }
 
     private var foundResultsCount: Int {
-        state.searchResult.filter {$0.hasKeywordInfo}.count
+        state.searchResult.filter { $0.hasKeywordInfo }.count
     }
 
     init(state: WorkspaceDocument.SearchState) {

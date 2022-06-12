@@ -20,7 +20,7 @@ public final class ExtensionsManager {
 
     /// Shared instance of `ExtensionsManager`
     public static let shared: ExtensionsManager? = {
-        return try? ExtensionsManager()
+        try? ExtensionsManager()
     }()
 
     let dbQueue: DatabaseQueue
@@ -67,13 +67,13 @@ public final class ExtensionsManager {
     /// - Parameter url: workspace's URL
     public func close(url: URL) {
         loadedPlugins.filter { elem in
-            return elem.key.workspace == url
+            elem.key.workspace == url
         }.forEach { (key: PluginWorkspaceKey, _) in
             loadedPlugins.removeValue(forKey: key)
         }
 
         loadedLanguageServers.filter { elem in
-            return elem.key.workspace == url
+            elem.key.workspace == url
         }.forEach { (key: PluginWorkspaceKey, client: LSPClient) in
             client.close()
             loadedLanguageServers.removeValue(forKey: key)
@@ -86,7 +86,7 @@ public final class ExtensionsManager {
                                                         isDirectory: true),
             includingPropertiesForKeys: nil,
             options: .skipsPackageDescendants
-        ).first(where: {$0.pathExtension == ext}) else { return nil }
+        ).first(where: { $0.pathExtension == ext }) else { return nil }
 
         guard let bundle = Bundle(url: bundleURL) else { return nil }
 
@@ -268,13 +268,13 @@ public final class ExtensionsManager {
         loadedBundles.removeValue(forKey: entry.release)
 
         loadedPlugins.filter { elem in
-            return elem.key.releaseID == entry.release
+            elem.key.releaseID == entry.release
         }.forEach { (key: PluginWorkspaceKey, _) in
             loadedPlugins.removeValue(forKey: key)
         }
 
         loadedLanguageServers.filter { elem in
-            return elem.key.releaseID == entry.release
+            elem.key.releaseID == entry.release
         }.forEach { (key: PluginWorkspaceKey, client: LSPClient) in
             client.close()
             loadedLanguageServers.removeValue(forKey: key)

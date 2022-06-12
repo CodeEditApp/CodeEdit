@@ -11,6 +11,8 @@ import Foundation
 ///
 /// - Note: Not yet implemented
 public struct CursorLocation {
+    /// The current line the cursor is located at.
     public var line: Int
+    /// The current column the cursor is located at.
     public var column: Int
 }

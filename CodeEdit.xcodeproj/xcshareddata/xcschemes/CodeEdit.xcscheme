@@ -99,6 +99,12 @@
             </BuildableReference>
             <SkippedTests>
                <Test
+                  Identifier = "StatusBarUnitTests/testStatusBarCollapsedDark()">
+               </Test>
+               <Test
+                  Identifier = "StatusBarUnitTests/testStatusBarCollapsedLight()">
+               </Test>
+               <Test
                   Identifier = "StatusBarUnitTests/testStatusBarExpandedDark()">
                </Test>
                <Test

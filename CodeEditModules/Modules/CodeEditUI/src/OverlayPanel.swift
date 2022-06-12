@@ -19,7 +19,7 @@ public final class OverlayPanel: NSPanel, NSWindowDelegate {
         self.isMovableByWindowBackground = true
     }
 
-    public override func standardWindowButton(_ button: NSWindow.ButtonType) -> NSButton? {
+    override public func standardWindowButton(_ button: NSWindow.ButtonType) -> NSButton? {
         let btn = super.standardWindowButton(button)
         btn?.isHidden = true
         return btn

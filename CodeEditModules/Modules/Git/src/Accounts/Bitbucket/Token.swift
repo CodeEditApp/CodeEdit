@@ -7,6 +7,8 @@
 
 import Foundation
 
+// TODO: DOCS (Nanashi Li)
+// swiftlint:disable missing_docs
 public extension BitbucketAccount {
 
     func refreshToken(

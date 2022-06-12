@@ -12,6 +12,8 @@ import Foundation
 import FoundationNetworking
 #endif
 
+// TODO: DOCS (Nanashi Li)
+// swiftlint:disable missing_docs
 public protocol JSONPostRouter: Router {
 
     func postJSON<T>(

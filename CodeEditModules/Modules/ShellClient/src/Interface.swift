@@ -6,6 +6,8 @@
 //
 import Combine
 
+// TODO: DOCS (Marco Carnevali)
+// swiftlint:disable missing_docs
 public struct ShellClient {
     public var runLive: (_ args: String...) -> AnyPublisher<String, Never>
     public var run: (_ args: String...) throws -> String

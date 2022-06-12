@@ -83,17 +83,35 @@ final class CodeEditUtilsExtensionsUnitTests: XCTestCase {
 
     func testMD5GenerationCaseSensitive() throws {
         let testString = "CodeEdit"
-        let md5 = testString.md5(true)
+        let md5 = testString.md5(caseSensitive: true)
 
         let result = "8ba8c8fd0442f7bae4d441e2a3fda706"
         XCTAssertEqual(result, md5)
     }
 
     func testMD5Generation() throws {
-        let testString = "codeedit"
-        let md5 = testString.md5()
+        let testString = "CodeEdit"
+        let md5 = testString.md5(caseSensitive: false)
 
         let result = "4cdf122ff382a2d929eddc1a63473ec1"
+        XCTAssertEqual(result, md5)
+    }
+
+    // MARK: - STRING + SHA256
+
+    func testSHA256GenerationCaseSensitive() throws {
+        let testString = "CodeEdit"
+        let md5 = testString.sha256(caseSensitive: true)
+
+        let result = "52125689c088f1783e53c48db78a4fe7b3fa10b12d8fba205fcf054e5ef3789a"
+        XCTAssertEqual(result, md5)
+    }
+
+    func test256Generation() throws {
+        let testString = "CodeEdit"
+        let md5 = testString.sha256(caseSensitive: false)
+
+        let result = "7c3f327eab3860fc823a99623b348afbf1d7aebaec5d21289fbaeab0f6340e4a"
         XCTAssertEqual(result, md5)
     }
 

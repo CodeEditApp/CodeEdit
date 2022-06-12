@@ -69,7 +69,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     }
 
     func applicationSupportsSecureRestorableState(_ app: NSApplication) -> Bool {
-        return true
+        true
     }
 
     func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
@@ -83,7 +83,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     }
 
     func applicationShouldOpenUntitledFile(_ sender: NSApplication) -> Bool {
-        return false
+        false
     }
 
     func handleOpen() {
@@ -102,7 +102,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
         let projects: [String] = CodeEditDocumentController.shared.documents
             .map { doc in
-                return (doc as? WorkspaceDocument)?.fileURL?.path
+                (doc as? WorkspaceDocument)?.fileURL?.path
             }
             .filter { $0 != nil }
             .map { $0! }

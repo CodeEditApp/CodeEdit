@@ -17,11 +17,11 @@ enum UserRouter: Router {
     }
 
     var method: HTTPMethod {
-        return .GET
+        .GET
     }
 
     var encoding: HTTPEncoding {
-        return .url
+        .url
     }
 
     var path: String {
@@ -32,6 +32,6 @@ enum UserRouter: Router {
     }
 
     var params: [String: Any] {
-        return [:]
+        [:]
     }
 }

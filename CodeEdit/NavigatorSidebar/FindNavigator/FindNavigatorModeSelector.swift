@@ -23,7 +23,7 @@ struct FindNavigatorModeSelector: View {
     }
 
     private func getMenuList(_ index: Int) -> [SearchModeModel] {
-        return index == 0 ? SearchModeModel.SearchModes : selectedMode[index - 1].children
+        index == 0 ? SearchModeModel.SearchModes : selectedMode[index - 1].children
     }
 
     private func onSelectMenuItem(_ index: Int, searchMode: SearchModeModel) {
@@ -107,11 +107,11 @@ struct FindNavigatorModeSelector: View {
 
 extension Array {
     var second: Element? {
-        return self.count > 1 ? self[1] : nil
+        self.count > 1 ? self[1] : nil
     }
 
     var third: Element? {
-        return self.count > 2 ? self[2] : nil
+        self.count > 2 ? self[2] : nil
     }
 }
 

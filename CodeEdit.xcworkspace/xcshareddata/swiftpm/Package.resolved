@@ -15,7 +15,16 @@
         "repositoryURL": "https://github.com/CodeEditApp/CodeEditSymbols",
         "state": {
           "branch": "main",
-          "revision": "9a94c84aeae793e4767ea7fbb515d564a4b7a49c",
+          "revision": "6b62ebfd46beea5ec2576b5ff626b94615dfba83",
+          "version": null
+        }
+      },
+      {
+        "package": "CodeEditTextView",
+        "repositoryURL": "https://github.com/CodeEditApp/CodeEditTextView",
+        "state": {
+          "branch": "main",
+          "revision": "896d9127dd0138af4abb919c4ef2da0e2f00d1eb",
           "version": null
         }
       },
@@ -24,8 +33,8 @@
         "repositoryURL": "https://github.com/groue/GRDB.swift.git",
         "state": {
           "branch": null,
-          "revision": "4472d3a60ec4cc383503eba5072ce17f781b9ddc",
-          "version": "5.23.0"
+          "revision": "2ac5c773537622b1520fdde3efc1a216119359ff",
+          "version": "5.24.1"
         }
       },
       {
@@ -56,6 +65,15 @@
         }
       },
       {
+        "package": "STTextView",
+        "repositoryURL": "https://github.com/krzyzanowskim/STTextView",
+        "state": {
+          "branch": "main",
+          "revision": "cb65d2786808526f11d99aff2e5111439ed93d19",
+          "version": null
+        }
+      },
+      {
         "package": "SnapshotTesting",
         "repositoryURL": "https://github.com/pointfreeco/swift-snapshot-testing.git",
         "state": {
@@ -71,6 +89,168 @@
           "branch": null,
           "revision": "70a3af884c24dff9f1beeda04e889b5591f04f3c",
           "version": "1.0.7"
+        }
+      },
+      {
+        "package": "SwiftTreeSitter",
+        "repositoryURL": "https://github.com/ChimeHQ/SwiftTreeSitter",
+        "state": {
+          "branch": null,
+          "revision": "824aa62ccfeb9bed62a6abd42ba1f06f9a75e99c",
+          "version": "0.6.1"
+        }
+      },
+      {
+        "package": "TreeSitterBash",
+        "repositoryURL": "https://github.com/lukepistrol/tree-sitter-bash.git",
+        "state": {
+          "branch": "feature/spm",
+          "revision": "13af3b5b2c40d560aefeac28361d64f525d1869f",
+          "version": null
+        }
+      },
+      {
+        "package": "TreeSitterC",
+        "repositoryURL": "https://github.com/tree-sitter/tree-sitter-c.git",
+        "state": {
+          "branch": "master",
+          "revision": "3ced8d6cd212a6f576cd4ef3d533bcb9c09eface",
+          "version": null
+        }
+      },
+      {
+        "package": "TreeSitterCSharp",
+        "repositoryURL": "https://github.com/tree-sitter/tree-sitter-c-sharp.git",
+        "state": {
+          "branch": "master",
+          "revision": "9c494a503c8e2044bfffce57f70b480c01a82f03",
+          "version": null
+        }
+      },
+      {
+        "package": "TreeSitterCPP",
+        "repositoryURL": "https://github.com/tree-sitter/tree-sitter-cpp.git",
+        "state": {
+          "branch": "master",
+          "revision": "38d8b495bd43977498f0eb122e0f9cfef8526d18",
+          "version": null
+        }
+      },
+      {
+        "package": "TreeSitterCSS",
+        "repositoryURL": "https://github.com/lukepistrol/tree-sitter-css.git",
+        "state": {
+          "branch": "feature/spm",
+          "revision": "baf1fadcac4f7b7c0f0f273feec4ad68864bc783",
+          "version": null
+        }
+      },
+      {
+        "package": "TreeSitterGo",
+        "repositoryURL": "https://github.com/tree-sitter/tree-sitter-go.git",
+        "state": {
+          "branch": "master",
+          "revision": "aeb2f33b366fd78d5789ff104956ce23508b85db",
+          "version": null
+        }
+      },
+      {
+        "package": "TreeSitterGoMod",
+        "repositoryURL": "https://github.com/camdencheek/tree-sitter-go-mod.git",
+        "state": {
+          "branch": "main",
+          "revision": "4a65743dbc2bb3094114dd2b43da03c820aa5234",
+          "version": null
+        }
+      },
+      {
+        "package": "TreeSitterHTML",
+        "repositoryURL": "https://github.com/mattmassicotte/tree-sitter-html.git",
+        "state": {
+          "branch": "feature/spm",
+          "revision": "68b8bed0c1ebecbaf1919d0a7ae4b27592e6cc45",
+          "version": null
+        }
+      },
+      {
+        "package": "TreeSitterJava",
+        "repositoryURL": "https://github.com/tree-sitter/tree-sitter-java.git",
+        "state": {
+          "branch": "master",
+          "revision": "ac14b4b1884102839455d32543ab6d53ae089ab7",
+          "version": null
+        }
+      },
+      {
+        "package": "TreeSitterJS",
+        "repositoryURL": "https://github.com/tree-sitter/tree-sitter-javascript.git",
+        "state": {
+          "branch": "master",
+          "revision": "785831303ce3d36f5dd8ada7c4c7d63518d4d2f5",
+          "version": null
+        }
+      },
+      {
+        "package": "TreeSitterJSON",
+        "repositoryURL": "https://github.com/mattmassicotte/tree-sitter-json.git",
+        "state": {
+          "branch": "feature/spm",
+          "revision": "46528daf985e5ce73f0f9ad4eb3e5638bba9e069",
+          "version": null
+        }
+      },
+      {
+        "package": "TreeSitterPHP",
+        "repositoryURL": "https://github.com/tree-sitter/tree-sitter-php.git",
+        "state": {
+          "branch": "master",
+          "revision": "866e4a155739a1374da5247b876e70f8639005f6",
+          "version": null
+        }
+      },
+      {
+        "package": "TreeSitterPython",
+        "repositoryURL": "https://github.com/lukepistrol/tree-sitter-python.git",
+        "state": {
+          "branch": "feature/spm",
+          "revision": "78ab3c3dd69a571156ffd1c7ace7c49fb2e284ef",
+          "version": null
+        }
+      },
+      {
+        "package": "TreeSitterRuby",
+        "repositoryURL": "https://github.com/mattmassicotte/tree-sitter-ruby.git",
+        "state": {
+          "branch": "feature/swift",
+          "revision": "e0923bfc25cadb2d5fd0a07c3b55e4b2d1501cb8",
+          "version": null
+        }
+      },
+      {
+        "package": "TreeSitterRust",
+        "repositoryURL": "https://github.com/tree-sitter/tree-sitter-rust.git",
+        "state": {
+          "branch": "master",
+          "revision": "36ae187ed6dd3803a8a89dbb54f3124c8ee74662",
+          "version": null
+        }
+      },
+      {
+        "package": "TreeSitterSwift",
+        "repositoryURL": "https://github.com/mattmassicotte/tree-sitter-swift.git",
+        "state": {
+          "branch": "feature/spm",
+          "revision": "0305ffaa9df7266cf8f81d2a23f1b83888363288",
+          "version": null
+        }
+      },
+      {
+        "package": "TreeSitterYAML",
+        "repositoryURL": "https://github.com/mattmassicotte/tree-sitter-yaml.git",
+        "state": {
+          "branch": "feature/spm",
+          "revision": "bd633dc67bd71934961610ca8bd832bf2153883e",
+          "version": null
         }
       }
     ]

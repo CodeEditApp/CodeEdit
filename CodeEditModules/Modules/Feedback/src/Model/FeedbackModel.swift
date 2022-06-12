@@ -120,7 +120,7 @@ public class FeedbackModel: ObservableObject {
                                  steps: String?,
                                  expectation: String?,
                                  actuallyHappened: String?) -> String {
-        return """
+        """
         **Description**
 
         \(description)

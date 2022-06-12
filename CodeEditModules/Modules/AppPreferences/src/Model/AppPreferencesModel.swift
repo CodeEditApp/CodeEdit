@@ -71,7 +71,7 @@ public final class AppPreferencesModel: ObservableObject {
     ///
     /// Points to `~/.codeedit/`
     internal var baseURL: URL {
-        return filemanager
+        filemanager
             .homeDirectoryForCurrentUser
             .appendingPathComponent(".codeedit", isDirectory: true)
     }
@@ -80,7 +80,7 @@ public final class AppPreferencesModel: ObservableObject {
     ///
     /// Points to `~/.codeedit/preferences.json`
     private var preferencesURL: URL {
-        return baseURL
+        baseURL
             .appendingPathComponent("preferences")
             .appendingPathExtension("json")
     }
