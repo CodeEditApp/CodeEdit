@@ -60,7 +60,11 @@ final class OutlineMenu: NSMenu {
         let newFile = menuItem("New File...", action: #selector(newFile))
         let newFolder = menuItem("New Folder", action: #selector(newFolder))
 
-        let delete = menuItem("Delete", action: #selector(delete))
+        let delete = menuItem("Delete", action:
+                                item.url != workspace?.workspaceClient?.folderURL()
+                              ? #selector(delete) : nil)
+
+        let duplicate = menuItem("Duplicate \(item.isFolder ? "Folder" : "File")", action: #selector(duplicate))
 
         let sortByName = menuItem("Sort by Name", action: nil)
         sortByName.isEnabled = item.isFolder
@@ -84,6 +88,7 @@ final class OutlineMenu: NSMenu {
             newFolder,
             NSMenuItem.separator(),
             delete,
+            duplicate,
             NSMenuItem.separator(),
             sortByName,
             sortByType,
@@ -204,6 +209,12 @@ final class OutlineMenu: NSMenu {
     @objc
     private func delete() {
         item?.delete()
+    }
+
+    /// Action that duplicates the item
+    @objc
+    private func duplicate() {
+        item?.duplicate()
     }
 }
 

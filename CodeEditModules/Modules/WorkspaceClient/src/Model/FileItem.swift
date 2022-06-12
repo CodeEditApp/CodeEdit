@@ -212,10 +212,37 @@ public extension WorkspaceClient {
             // this function also has to account for how the
             // file system can change outside of the editor
 
+            let deleteConfirmation = NSAlert()
+            deleteConfirmation.messageText = "Do you want to move \(self.fileName) and its children to the bin?"
+            deleteConfirmation.alertStyle = .critical
+            deleteConfirmation.addButton(withTitle: "Delete")
+            deleteConfirmation.buttons[0].hasDestructiveAction = true
+            deleteConfirmation.addButton(withTitle: "Cancel")
+            if deleteConfirmation.runModal() == .alertFirstButtonReturn { // "Delete" button
+                if FileItem.fileManger.fileExists(atPath: self.url.path) {
+                    do {
+                        try FileItem.fileManger.removeItem(at: self.url)
+                    } catch {
+                        fatalError(error.localizedDescription)
+                    }
+                }
+            }
+        }
+
+        /// This function duplicates the item or folder
+        public func duplicate() {
+            // if a file/folder with the same name exists, add "copy" to the end
+            var fileUrl = self.url
+            while FileItem.fileManger.fileExists(atPath: fileUrl.path) {
+                let previousName = fileUrl.lastPathComponent
+                fileUrl = fileUrl.deletingLastPathComponent().appendingPathComponent("\(previousName) copy")
+            }
+
             if FileItem.fileManger.fileExists(atPath: self.url.path) {
                 do {
-                    try FileItem.fileManger.removeItem(at: self.url)
+                    try FileItem.fileManger.copyItem(at: self.url, to: fileUrl)
                 } catch {
+                    print("Error at \(self.url.path) to \(fileUrl.path)")
                     fatalError(error.localizedDescription)
                 }
             }
