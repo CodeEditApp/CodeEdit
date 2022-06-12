@@ -210,7 +210,7 @@ extension OutlineViewController: NSOutlineViewDelegate {
     }
 
     func outlineView(_ outlineView: NSOutlineView, heightOfRowByItem item: Any) -> CGFloat {
-        rowHeight // This can be changed to 20 to match Xcodes row height.
+        rowHeight // This can be changed to 20 to match Xcode's row height.
     }
 
     func outlineViewItemDidExpand(_ notification: Notification) {
@@ -235,7 +235,7 @@ extension OutlineViewController: NSOutlineViewDelegate {
     ///   - id: the id of the item item
     ///   - collection: the array to search for
     private func select(by id: TabBarItemID, from collection: [Item]) {
-        // If the user has set "Reveal file on selection change" on, we need to reveal the item before
+        // If the user has set "Reveal file on selection change" to on, we need to reveal the item before
         // selecting the row.
         if AppPreferencesModel.shared.preferences.general.revealFileOnFocusChange,
            case let .codeEditor(id) = id,
