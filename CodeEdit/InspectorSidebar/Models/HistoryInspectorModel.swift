@@ -25,6 +25,7 @@ public final class HistoryInspectorModel: ObservableObject {
 
     /// Initialize with a GitClient
     /// - Parameter workspaceURL: the current workspace URL
+    ///
 
     public init(workspaceURL: URL, fileURL: String) {
         self.workspaceURL = workspaceURL
