@@ -132,7 +132,7 @@ struct WorkspaceView: View {
             )
         }
         .onDisappear {
-            // Unregister the observer when view is going to be disappeared.
+            // Unregister the observer when the view is going to disappear.
             if enterFullscreenObserver != nil {
                 NotificationCenter.default.removeObserver(enterFullscreenObserver!)
             }
@@ -142,7 +142,7 @@ struct WorkspaceView: View {
         }
         // Send the environment to all subviews.
         .environment(\.isFullscreen, self.isFullscreen)
-        // When tab bar style is changed, update NSWindow configuration as follow.
+        // When tab bar style is changed, update NSWindow configuration as follows.
         .onChange(of: prefs.preferences.general.tabBarStyle) { newStyle in
             DispatchQueue.main.async {
                 if newStyle == .native {
