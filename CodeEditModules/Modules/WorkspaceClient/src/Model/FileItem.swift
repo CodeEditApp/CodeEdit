@@ -213,10 +213,11 @@ public extension WorkspaceClient {
             // file system can change outside of the editor
 
             let deleteConfirmation = NSAlert()
-            deleteConfirmation.messageText = "Do you want to move \(self.fileName) and its children to the bin?"
+            let message = "\(self.fileName)\(self.isFolder ? " and its children" :"")"
+            deleteConfirmation.messageText = "Do you want to move \(message) to the bin?"
             deleteConfirmation.alertStyle = .critical
             deleteConfirmation.addButton(withTitle: "Delete")
-            deleteConfirmation.buttons[0].hasDestructiveAction = true
+            deleteConfirmation.buttons.last?.hasDestructiveAction = true
             deleteConfirmation.addButton(withTitle: "Cancel")
             if deleteConfirmation.runModal() == .alertFirstButtonReturn { // "Delete" button
                 if FileItem.fileManger.fileExists(atPath: self.url.path) {
