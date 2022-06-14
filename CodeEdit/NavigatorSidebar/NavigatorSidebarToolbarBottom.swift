@@ -44,8 +44,6 @@ struct NavigatorSidebarToolbarBottom: View {
                 guard let root = try? workspace.workspaceClient?.getFileItem(folderURL.path) else { return }
                 root.addFolder(folderName: "untitled") // TODO: use currently selected file instead of root
             }
-            Button("Not implemented yet") {}
-                .disabled(true)
         } label: {
             Image(systemName: "plus")
         }
