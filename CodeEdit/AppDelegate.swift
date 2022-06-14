@@ -40,6 +40,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         checkForFilesToOpen()
 
         DispatchQueue.main.async {
+            var needToHandleOpen = true
+            
             if NSApp.windows.isEmpty {
                 if let projects = UserDefaults.standard.array(forKey: AppDelegate.recoverWorkspacesKey) as? [String],
                    !projects.isEmpty {
@@ -51,9 +53,25 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                             document?.windowControllers.first?.synchronizeWindowTitleWithDocumentName()
                         }
                     }
-                    return
+                    
+                    needToHandleOpen = false
                 }
-
+            }
+            
+            for index in 0..<CommandLine.arguments.count {
+                if CommandLine.arguments[index] == "--open" && (index + 1) < CommandLine.arguments.count {
+                    let path = CommandLine.arguments[index+1]
+                    let url = URL(fileURLWithPath: path)
+                    
+                    CodeEditDocumentController.shared.reopenDocument(for: url, withContentsOf: url, display: true) { document, _, _ in
+                        document?.windowControllers.first?.synchronizeWindowTitleWithDocumentName()
+                    }
+                    
+                    needToHandleOpen = false
+                }
+            }
+            
+            if needToHandleOpen {
                 self.handleOpen()
             }
         }
