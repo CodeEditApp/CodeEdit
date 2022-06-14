@@ -12,16 +12,23 @@ func convertToAbsolutePath(_ path: String) -> String {
     if nsString.isAbsolutePath {
         return nsString.standardizingPath
     }
-    
-    return String(URL(string: path, relativeTo: URL(fileURLWithPath: FileManager.default.currentDirectoryPath))?.pathComponents.joined(separator: "/").dropFirst(1) ?? "")
+
+    return String(
+        URL(
+            string: path,
+            relativeTo: URL(
+                fileURLWithPath: FileManager.default.currentDirectoryPath
+            )
+        )?.pathComponents.joined(separator: "/").dropFirst(1) ?? ""
+    )
 }
 
 func openApp(paths: [String]? = nil) {
     let task = Process()
     task.launchPath = "/usr/bin/open" // This should be the same on all installations of MacOS
-    
+
     task.arguments = ["-a", "CodeEdit"]
-    
+
     if let paths = paths {
         task.arguments?.append("--args")
         for path in paths {
@@ -29,14 +36,12 @@ func openApp(paths: [String]? = nil) {
             task.arguments?.append(convertToAbsolutePath(path))
         }
     }
-    
+
     task.launch()
 }
 
-let args = CommandLine.arguments
-
-if args.count < 2 {
+if CommandLine.arguments.count < 2 {
     openApp()
 } else {
-    openApp(paths: Array(args.dropFirst(1)))
+    openApp(paths: Array(CommandLine.arguments.dropFirst(1)))
 }
