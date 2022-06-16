@@ -174,6 +174,7 @@ extension OutlineViewController: NSOutlineViewDelegate {
 
         if let item = item as? Item {
             let image = NSImage(systemSymbolName: item.systemImage, accessibilityDescription: nil)!
+            view.fileItem = item
             view.icon.image = image
             view.icon.contentTintColor = color(for: item)
 

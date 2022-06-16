@@ -248,6 +248,14 @@ public extension WorkspaceClient {
                 }
             }
         }
+
+        /// This function moves the item or folder if possible
+        public func move(to newLocation: URL) {
+            guard !FileItem.fileManger.fileExists(atPath: newLocation.path) else { return }
+            do {
+                try FileItem.fileManger.moveItem(at: self.url, to: newLocation)
+            } catch { fatalError(error.localizedDescription) }
+        }
     }
 }
 
