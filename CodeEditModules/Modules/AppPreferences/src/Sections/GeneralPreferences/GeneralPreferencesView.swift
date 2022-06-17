@@ -49,6 +49,7 @@ public struct GeneralPreferencesView: View {
             Group {
                 openInCodeEditToggle
                 revealFileOnFocusChangeToggle
+                shellCommandSection
             }
         }
     }
@@ -206,6 +207,34 @@ private extension GeneralPreferencesView {
             .buttonStyle(.bordered)
         }
         .disabled(true)
+    }
+
+    var shellCommandSection: some View {
+        PreferencesSection("Shell Command", align: .center) {
+            Button(action: {
+                do {
+                    let url = Bundle.module.url(forResource: "codeedit", withExtension: nil, subdirectory: "Resources")
+                    let destination = "/usr/local/bin/codeedit"
+
+                    if FileManager.default.fileExists(atPath: destination) {
+                        try FileManager.default.removeItem(atPath: destination)
+                    }
+
+                    guard let shellUrl = url?.path else {
+                        print("Failed to get URL to shelll command")
+                        return
+                    }
+
+                    try FileManager.default.createSymbolicLink(atPath: destination, withDestinationPath: shellUrl)
+                } catch {
+                    print(error)
+                }
+            }, label: {
+                Text("Install 'codeedit' command")
+                    .padding(.horizontal, 10)
+            })
+            .buttonStyle(.bordered)
+        }
     }
 
     var openInCodeEditToggle: some View {
