@@ -221,11 +221,24 @@ private extension GeneralPreferencesView {
                     }
 
                     guard let shellUrl = url?.path else {
-                        print("Failed to get URL to shelll command")
+                        print("Failed to get URL to shell command")
                         return
                     }
 
-                    try FileManager.default.createSymbolicLink(atPath: destination, withDestinationPath: shellUrl)
+                    NSWorkspace.shared.requestAuthorization(to: .createSymbolicLink) { auth, error in
+                        guard let auth = auth, error == nil else {
+                            fallbackShellInstallation(commandPath: shellUrl, destinationPath: destination)
+                            return
+                        }
+
+                        do {
+                            try FileManager(authorization: auth).createSymbolicLink(
+                                atPath: destination, withDestinationPath: shellUrl
+                            )
+                        } catch {
+                            fallbackShellInstallation(commandPath: shellUrl, destinationPath: destination)
+                        }
+                    }
                 } catch {
                     print(error)
                 }
@@ -234,6 +247,32 @@ private extension GeneralPreferencesView {
                     .padding(.horizontal, 10)
             })
             .buttonStyle(.bordered)
+        }
+    }
+
+    func fallbackShellInstallation(commandPath: String, destinationPath: String) {
+        let cmd = [
+            "osascript",
+            "-e",
+            "\"do shell script \\\"mkdir -p /usr/local/bin && ln -sf \'\(commandPath)\' \'\(destinationPath)\'\\\"\"",
+            "with administrator privileges"
+        ]
+
+        let cmdStr = cmd.joined(separator: " ")
+
+        let task = Process()
+        let pipe = Pipe()
+
+        task.standardOutput = pipe
+        task.standardError = pipe
+        task.arguments = ["-c", cmdStr]
+        task.executableURL = URL(fileURLWithPath: "/bin/zsh")
+        task.standardInput = nil
+
+        do {
+            try task.run()
+        } catch {
+            print(error)
         }
     }
 
