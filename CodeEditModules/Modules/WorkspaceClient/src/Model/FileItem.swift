@@ -154,10 +154,27 @@ public extension WorkspaceClient {
             NSWorkspace.shared.activateFileViewerSelecting([url])
         }
 
+        /// Allows the user to launch the file or folder as it would be in finder
+        public func openWithExternalEditor() {
+            NSWorkspace.shared.open(url)
+        }
+
         /// This function allows creation of folders in the main directory or sub-folders
         /// - Parameter folderName: The name of the new folder
         public func addFolder(folderName: String) {
-            let folderUrl = url.appendingPathComponent(folderName)
+            // check if folder, if it is create folder under self, else create on same level.
+            var folderUrl = (self.isFolder ?
+                             self.url.appendingPathComponent(folderName) :
+                                self.url.deletingLastPathComponent().appendingPathComponent(folderName))
+
+            // if a file/folder with the same name exists, add a number to the end.
+            var fileNumber = 0
+            while FileItem.fileManger.fileExists(atPath: folderUrl.path) {
+                fileNumber += 1
+                folderUrl = folderUrl.deletingLastPathComponent().appendingPathComponent("\(folderName)\(fileNumber)")
+            }
+
+            // create the folder
             do {
                 try FileItem.fileManger.createDirectory(at: folderUrl,
                                                         withIntermediateDirectories: true,
@@ -170,7 +187,19 @@ public extension WorkspaceClient {
         /// This function allows creating files in the selected folder or project main directory
         /// - Parameter fileName: The name of the new file
         public func addFile(fileName: String) {
-            let fileUrl = url.appendingPathComponent(fileName)
+            // check if folder, if it is create file under self
+            var fileUrl = (self.isFolder ?
+                       self.url.appendingPathComponent(fileName) :
+                        self.url.deletingLastPathComponent().appendingPathComponent(fileName))
+
+            // if a file/folder with the same name exists, add a number to the end.
+            var fileNumber = 0
+            while FileItem.fileManger.fileExists(atPath: fileUrl.path) {
+                fileNumber += 1
+                fileUrl = fileUrl.deletingLastPathComponent().appendingPathComponent("\(fileName)\(fileNumber)")
+            }
+
+            // create the file
             FileItem.fileManger.createFile(
                 atPath: fileUrl.path,
                 contents: nil,
@@ -180,13 +209,52 @@ public extension WorkspaceClient {
 
         /// This function deletes the item or folder from the current project
         public func delete() {
-            if FileItem.fileManger.fileExists(atPath: url.path) {
+            // this function also has to account for how the
+            // file system can change outside of the editor
+
+            let deleteConfirmation = NSAlert()
+            let message = "\(self.fileName)\(self.isFolder ? " and its children" :"")"
+            deleteConfirmation.messageText = "Do you want to move \(message) to the bin?"
+            deleteConfirmation.alertStyle = .critical
+            deleteConfirmation.addButton(withTitle: "Delete")
+            deleteConfirmation.buttons.last?.hasDestructiveAction = true
+            deleteConfirmation.addButton(withTitle: "Cancel")
+            if deleteConfirmation.runModal() == .alertFirstButtonReturn { // "Delete" button
+                if FileItem.fileManger.fileExists(atPath: self.url.path) {
+                    do {
+                        try FileItem.fileManger.removeItem(at: self.url)
+                    } catch {
+                        fatalError(error.localizedDescription)
+                    }
+                }
+            }
+        }
+
+        /// This function duplicates the item or folder
+        public func duplicate() {
+            // if a file/folder with the same name exists, add "copy" to the end
+            var fileUrl = self.url
+            while FileItem.fileManger.fileExists(atPath: fileUrl.path) {
+                let previousName = fileUrl.lastPathComponent
+                fileUrl = fileUrl.deletingLastPathComponent().appendingPathComponent("\(previousName) copy")
+            }
+
+            if FileItem.fileManger.fileExists(atPath: self.url.path) {
                 do {
-                    try FileItem.fileManger.removeItem(at: url)
+                    try FileItem.fileManger.copyItem(at: self.url, to: fileUrl)
                 } catch {
+                    print("Error at \(self.url.path) to \(fileUrl.path)")
                     fatalError(error.localizedDescription)
                 }
             }
+        }
+
+        /// This function moves the item or folder if possible
+        public func move(to newLocation: URL) {
+            guard !FileItem.fileManger.fileExists(atPath: newLocation.path) else { return }
+            do {
+                try FileItem.fileManger.moveItem(at: self.url, to: newLocation)
+            } catch { fatalError(error.localizedDescription) }
         }
     }
 }

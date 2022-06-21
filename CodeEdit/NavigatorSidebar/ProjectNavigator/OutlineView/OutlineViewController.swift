@@ -74,6 +74,7 @@ final class OutlineViewController: NSViewController {
         self.scrollView.contentView.automaticallyAdjustsContentInsets = false
         self.scrollView.contentView.contentInsets = .init(top: 10, left: 0, bottom: 0, right: 0)
 
+        WorkspaceClient.onRefresh = self.outlineView.reloadData
         outlineView.expandItem(outlineView.item(atRow: 0))
     }
 
@@ -173,6 +174,7 @@ extension OutlineViewController: NSOutlineViewDelegate {
 
         if let item = item as? Item {
             let image = NSImage(systemSymbolName: item.systemImage, accessibilityDescription: nil)!
+            view.fileItem = item
             view.icon.image = image
             view.icon.contentTintColor = color(for: item)
 
@@ -304,6 +306,7 @@ extension OutlineViewController: NSMenuDelegate {
         } else {
             if let item = outlineView.item(atRow: row) as? Item {
                 menu.item = item
+                menu.workspace = workspace
             } else {
                 menu.item = nil
             }
