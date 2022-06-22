@@ -79,6 +79,11 @@ public struct RecentProjectsView: View {
         recentProjectPaths = ( UserDefaults.standard.array(forKey: "recentProjectPaths") as? [String] ?? [] )
             .filter { FileManager.default.fileExists(atPath: $0) }
 
+        UserDefaults.standard.set(
+            self.recentProjectPaths,
+            forKey: "recentProjectPaths"
+        )
+
         DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
             updateRecentProjects()
         }
