@@ -27,7 +27,7 @@ Once you are happy with your changes, submit a `Pull Request`.
 
 The pull request opens with a template loaded. Fill out all fields that are relevant.
 
-The `PR` should include follwing information:
+The `PR` should include the following information:
 * A descriptive **title** on what changed.
 * A detailed **description** of changes.
 * If you made changes to the UI please add a **screenshot** or **video** as well.
@@ -42,7 +42,7 @@ Note: If it is your first PR, an admin will need to request a review for you.
 
 > Please resolve all `Violation` errors in Xcode (except: _TODO:_ warnings). Otherwise the swiftlint check on GitHub will fail.
 
-Once you submitted the `PR` GitHub will run a couple of actions which run tests and `SwiftLint` (this can take a couple of minutes). Should a test fail it cannot be merged until tests succeed.
+Once you submitted the `PR`, GitHub will run a couple of actions that run tests and `SwiftLint` (`SwiftLint` is the linter we use to keep a uniform codde style; this can take a couple of minutes). Should a test fail it cannot be merged until tests succeed.
 
 Make sure to resolve all merge-conflicts otherwise the `PR` cannot be merged.
 
