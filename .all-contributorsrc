@@ -260,6 +260,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "benkoska",
+      "name": "Ben Koska",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17319613?v=4",
+      "profile": "https://github.com/benkoska",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
