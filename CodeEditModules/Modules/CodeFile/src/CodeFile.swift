@@ -34,7 +34,6 @@ public final class CodeFileDocument: NSDocument, ObservableObject {
         if type.conforms(to: UTType.text) {
             return UTType.text
         }
-        // TODO: support more type of documents
         return nil
     }
 
@@ -76,7 +75,6 @@ public final class CodeFileDocument: NSDocument, ObservableObject {
         case .text:
             guard let content = String(data: data, encoding: .utf8) else { throw CodeFileError.failedToDecode }
             self.content = content
-            // TODO: support more type of documents
         default:
             guard let content = String(data: data, encoding: .utf8) else { throw CodeFileError.failedToDecode }
             self.content = content
