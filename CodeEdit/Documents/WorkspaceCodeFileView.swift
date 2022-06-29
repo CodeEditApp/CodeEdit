@@ -14,6 +14,10 @@ import AppPreferences
 
 struct WorkspaceCodeFileView: View {
     var windowController: NSWindowController
+    private let unsupportFileMessage = """
+The file is not displayed in the editor because it is either binary or uses an unsupported text encoding
+"""
+
 
     @ObservedObject
     var workspace: WorkspaceDocument
@@ -39,7 +43,7 @@ struct WorkspaceCodeFileView: View {
                             }
                         }
                 } else {
-                    Text("The file is not displayed in the editor because it is either binary or uses an unsupported text encoding")
+                    Text(unsupportFileMessage)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .safeAreaInset(edge: .top, spacing: 0) {
                             VStack(spacing: 0) {
