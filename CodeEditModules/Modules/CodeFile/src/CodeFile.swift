@@ -82,6 +82,4 @@ public final class CodeFileDocument: NSDocument, ObservableObject {
             self.content = content
         }
     }
-
-
 }
