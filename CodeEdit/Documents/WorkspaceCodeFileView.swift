@@ -33,14 +33,12 @@ The file is not displayed in the editor because it is either binary or uses an u
                 }
                 return file.tabID == workspace.selectionState.selectedId
             }) {
-                if let codeFile = workspace.selectionState.openedCodeFiles[item] {
-                    CodeFileView(codeFile: codeFile)
-                        .safeAreaInset(edge: .top, spacing: 0) {
-                            VStack(spacing: 0) {
-                                BreadcrumbsView(file: item, tappedOpenFile: workspace.openTab(item:))
-                                Divider()
-                            }
-                        }
+                if let fileItem = workspace.selectionState.openedCodeFiles[item] {
+                    if fileItem.typeOfFile == .image {
+                        imageFileVIew(fileItem, for: item)
+                    } else {
+                        codeFileView(fileItem, for: item)
+                    }
                 } else {
                     Text(unsupportFileMessage)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -60,6 +58,32 @@ The file is not displayed in the editor because it is either binary or uses an u
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    @ViewBuilder
+    private func codeFileView(
+        _ codeFile: CodeFileDocument,
+        for item: WorkspaceClient.FileItem
+    ) -> some View {
+        CodeFileView(codeFile: codeFile)
+            .safeAreaInset(edge: .top, spacing: 0) {
+                VStack(spacing: 0) {
+                    BreadcrumbsView(file: item, tappedOpenFile: workspace.openTab(item:))
+                    Divider()
+                }
+            }
+    }
+
+    @ViewBuilder
+    private func imageFileVIew(
+        _ imageFile: CodeFileDocument,
+        for item: WorkspaceClient.FileItem
+    ) -> some View {
+        VStack(spacing: 0) {
+            BreadcrumbsView(file: item, tappedOpenFile: workspace.openTab(item:))
+            Divider()
+            ImageFileView(imageFile: imageFile)
+        }
     }
 
     var body: some View {

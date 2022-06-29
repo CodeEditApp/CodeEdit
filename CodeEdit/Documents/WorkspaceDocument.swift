@@ -92,10 +92,11 @@ import TabBar
         if !selectionState.openFileItems.contains(item) {
             selectionState.openFileItems.append(item)
         }
+        let pathExtention = item.url.pathExtension
         let codeFile = try CodeFileDocument(
             for: item.url,
             withContentsOf: item.url,
-            ofType: "public.source-code"
+            ofType: pathExtention
         )
         selectionState.openedCodeFiles[item] = codeFile
         Swift.print("Opening file for item: ", item.url)

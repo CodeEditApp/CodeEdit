@@ -7,31 +7,33 @@
 
 import SwiftUI
 
-struct ImageFileView: View {
-    var body: some View {
-        Image("")
-            .resizable()
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+public struct ImageFileView: View {
+
+    @ObservedObject
+    private var imageFile: CodeFileDocument
+
+    public init(imageFile: CodeFileDocument) {
+        self.imageFile = imageFile
     }
 
-    func loadImageFromDiskWith(fileName: String) -> NSImage? {
-
-        let documentDirectory = FileManager.SearchPathDirectory.documentDirectory
-        let userDomainMask = FileManager.SearchPathDomainMask.userDomainMask
-        let paths = NSSearchPathForDirectoriesInDomains(documentDirectory, userDomainMask, true)
-
-        if let dirPath = paths.first {
-            let imageUrl = URL(fileURLWithPath: dirPath).appendingPathComponent(fileName)
-            let image = NSImage(contentsOfFile: imageUrl.path)
-            return image
-
+    public var body: some View {
+        GeometryReader { proxy in
+            if let image = imageFile.image {
+                if image.size.width > proxy.size.width || image.size.height > proxy.size.height {
+                    ScrollView {
+                        Image(nsImage: image)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: proxy.size.width)
+                    }
+                    .frame(maxHeight: .infinity)
+                } else {
+                    Image(nsImage: image)
+                        .frame(width: proxy.size.width, height: proxy.size.height)
+                }
+            } else {
+                EmptyView()
+            }
         }
-        return nil
-    }
-}
-
-struct ImageFileView_Previews: PreviewProvider {
-    static var previews: some View {
-        ImageFileView()
     }
 }

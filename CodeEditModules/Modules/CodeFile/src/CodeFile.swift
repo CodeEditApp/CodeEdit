@@ -8,16 +8,35 @@
 import AppKit
 import Foundation
 import SwiftUI
+import UniformTypeIdentifiers
 
 public enum CodeFileError: Error {
     case failedToDecode
     case failedToEncode
+    case fileTypeError
 }
 
 @objc(CodeFileDocument)
 public final class CodeFileDocument: NSDocument, ObservableObject {
     @Published
     var content = ""
+
+    @Published
+    var image: NSImage?
+
+    public var typeOfFile: UTType? {
+        guard let fileType = fileType, let type = UTType(filenameExtension: fileType) else {
+            return nil
+        }
+        if type.conforms(to: UTType.image) {
+            return UTType.image
+        }
+        if type.conforms(to: UTType.text) {
+            return UTType.text
+        }
+        // TODO: support more type of documents
+        return nil
+    }
 
     // MARK: - NSDocument
 
@@ -45,7 +64,24 @@ public final class CodeFileDocument: NSDocument, ObservableObject {
     }
 
     override public func read(from data: Data, ofType _: String) throws {
-        guard let content = String(data: data, encoding: .utf8) else { throw CodeFileError.failedToDecode }
-        self.content = content
+        guard let typeOfFile = self.typeOfFile else {
+            guard let content = String(data: data, encoding: .utf8) else { throw CodeFileError.fileTypeError }
+            self.content = content
+            return
+        }
+        switch typeOfFile {
+        case .image:
+            guard let image = NSImage(data: data) else { throw CodeFileError.failedToDecode }
+            self.image = image
+        case .text:
+            guard let content = String(data: data, encoding: .utf8) else { throw CodeFileError.failedToDecode }
+            self.content = content
+            // TODO: support more type of documents
+        default:
+            guard let content = String(data: data, encoding: .utf8) else { throw CodeFileError.failedToDecode }
+            self.content = content
+        }
     }
+
+
 }
