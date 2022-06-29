@@ -39,12 +39,21 @@ struct WorkspaceCodeFileView: View {
                             }
                         }
                 } else {
-                    Text("No Editor")
-                        .font(.system(size: 17))
-                        .foregroundColor(.secondary)
-                        .frame(minHeight: 0)
-                        .clipped()
+                    Text("The file is not displayed in the editor because it is either binary or uses an unsupported text encoding")
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .safeAreaInset(edge: .top, spacing: 0) {
+                            VStack(spacing: 0) {
+                                BreadcrumbsView(file: item, tappedOpenFile: workspace.openTab(item:))
+                                Divider()
+                            }
+                        }
                 }
+            } else {
+                Text("No Editor")
+                    .font(.system(size: 17))
+                    .foregroundColor(.secondary)
+                    .frame(minHeight: 0)
+                    .clipped()
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
