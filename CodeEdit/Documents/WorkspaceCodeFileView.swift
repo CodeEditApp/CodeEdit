@@ -18,7 +18,6 @@ struct WorkspaceCodeFileView: View {
 The file is not displayed in the editor because it is either binary or uses an unsupported text encoding
 """
 
-
     @ObservedObject
     var workspace: WorkspaceDocument
 
