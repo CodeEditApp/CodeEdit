@@ -14,11 +14,14 @@ extension WorkspaceDocument {
         var workspace: WorkspaceDocument
         @Published var searchResult: [SearchResultModel] = []
 
+        var ignoreCase: Bool = true
+
         init(_ workspace: WorkspaceDocument) {
             self.workspace = workspace
         }
 
         func search(_ text: String) {
+            let textToCompare = ignoreCase ? text.lowercased() : text
             self.searchResult = []
             if let url = self.workspace.fileURL {
                 let enumerator = FileManager.default.enumerator(at: url,
@@ -40,8 +43,10 @@ extension WorkspaceDocument {
                                 $0.split(separator: UInt8(ascii: "\n"))
                                     .map { String(decoding: UnsafeRawBufferPointer(rebasing: $0), as: UTF8.self) }
                             }.enumerated().forEach { (index: Int, line: String) in
-                                let noSpaceLine = line.trimmingCharacters(in: .whitespaces)
-                                if noSpaceLine.contains(text) {
+                                let rawNoSpaceLine = line.trimmingCharacters(in: .whitespaces)
+                                let noSpaceLine = ignoreCase ? rawNoSpaceLine.lowercased() : rawNoSpaceLine
+                                if noSpaceLine.contains(textToCompare) {
+                                    Swift.print(noSpaceLine)
                                     if fileAddedFlag {
                                         searchResult.append(SearchResultModel(
                                             file: fileItem,
@@ -51,11 +56,11 @@ extension WorkspaceDocument {
                                         )
                                         fileAddedFlag = false
                                     }
-                                    noSpaceLine.ranges(of: text).forEach { range in
+                                    noSpaceLine.ranges(of: textToCompare).forEach { range in
                                         searchResult.append(SearchResultModel(
                                             file: fileItem,
                                             lineNumber: index,
-                                            lineContent: noSpaceLine,
+                                            lineContent: rawNoSpaceLine,
                                             keywordRange: range)
                                         )
                                     }
