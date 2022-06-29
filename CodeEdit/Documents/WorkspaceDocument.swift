@@ -60,7 +60,6 @@ import TabBar
                 self.openExtension(item: plugin)
             }
 
-            
         } catch let err {
             Swift.print(err)
         }
@@ -98,13 +97,7 @@ import TabBar
             withContentsOf: item.url,
             ofType: "public.source-code"
         )
-        
-        
-//        if !selectionState.openFileItems.contains(item) {
-//            selectionState.openFileItems.append(item)
-
-            selectionState.openedCodeFiles[item] = codeFile
-//        }
+        selectionState.openedCodeFiles[item] = codeFile
         Swift.print("Opening file for item: ", item.url)
     }
 
