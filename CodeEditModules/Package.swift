@@ -232,7 +232,8 @@ let package = Package(
                 "CodeEditSymbols",
                 "CodeEditTextView",
             ],
-            path: "Modules/AppPreferences/src"
+            path: "Modules/AppPreferences/src",
+            resources: [.copy("Resources")]
         ),
         .target(
             name: "About",
