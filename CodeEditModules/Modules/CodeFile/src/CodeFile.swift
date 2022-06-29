@@ -24,6 +24,8 @@ public final class CodeFileDocument: NSDocument, ObservableObject {
     @Published
     var image: NSImage?
 
+    /* This is the main type of the document. For example, if the file is end with '.png', it will be an image, if the file is end with '.py', it will be a text file. If its neither image or text, this could be nil.
+    */
     public var typeOfFile: UTType? {
         guard let fileType = fileType, let type = UTType(filenameExtension: fileType) else {
             return nil
