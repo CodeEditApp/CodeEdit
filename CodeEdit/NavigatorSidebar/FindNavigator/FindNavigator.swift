@@ -35,7 +35,7 @@ struct FindNavigator: View {
     var body: some View {
         VStack {
             VStack {
-                FindNavigatorModeSelector()
+                FindNavigatorModeSelector(state: state)
                 FindNavigatorSearchBar(state: state, title: "", text: $searchText)
                 HStack {
                     Button {} label: {
