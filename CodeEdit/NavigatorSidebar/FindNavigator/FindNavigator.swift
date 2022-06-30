@@ -17,8 +17,8 @@ struct FindNavigator: View {
     private var searchText: String = ""
 
     @State var filters: [String] = ["Ignoring Case", "Matching Case"]
-    @State
-    var currentFilter: String = ""
+    @State var currentFilter: String = ""
+    @State var currentFilterIndex: Int = 0
 
     private var foundFilesCount: Int {
         state.searchResult.filter { !$0.hasKeywordInfo }.count
@@ -44,19 +44,26 @@ struct FindNavigator: View {
                     }.buttonStyle(.borderless)
                     Spacer()
                     Menu {
-                        Button(filters[0], action: {
+                        Button {
                             currentFilter = filters[0]
                             state.ignoreCase = true
                             state.search(searchText)
-                        })
-                        Button(filters[1], action: {
+                        } label: {
+                            Text(filters[0])
+                        }
+                        Button {
                             currentFilter = filters[1]
                             state.ignoreCase = true
                             state.search(searchText)
-                        })
+                        } label: {
+                            Text(filters[1])
+                        }
                     } label: {
-                        HStack {
+                        HStack(spacing: 2) {
+                            Spacer()
                             Text(currentFilter)
+                                .foregroundColor(currentFilter == filters[1] ?
+                                                 Color.accentColor : .primary)
                                 .font(.system(size: 10))
                         }
                     }
