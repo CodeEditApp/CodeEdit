@@ -75,6 +75,7 @@ extension WorkspaceDocument {
         }
 
         // see if the line contains search term, obeying selectedMode
+        // swiftlint:disable cyclomatic_complexity
         func lineContainsSearchTerm(line rawLine: String, term searchterm: String) -> Bool {
             var line = rawLine
             if line.hasSuffix(" ") { line.removeLast() }
@@ -84,18 +85,36 @@ extension WorkspaceDocument {
             let findMode = selectedMode[1]
             if findMode == .Text {
                 let textMatching = selectedMode[2]
-                guard textMatching != .Containing else {
-                    return line.contains(searchterm)
-                }
+                let textContainsSearchTerm = line.contains(searchterm)
+                guard textContainsSearchTerm == true else { return false }
+                guard textMatching != .Containing else { return textContainsSearchTerm }
+
+                // get the index of the search term's appearance in the line
+                // and get the characters to the left and right
+                let appearances = line.appearancesOfSubstring(substring: searchterm, toLeft: 1, toRight: 1)
                 var foundMatch = false
-                switch textMatching {
-                case .MatchingWord:
-                    foundMatch = " \(line) ".contains(" \(searchterm) ")
-                case .StartingWith:
-                    foundMatch = " \(line)".contains(" \(searchterm)")
-                case .EndingWith:
-                    foundMatch = "\(line) ".contains("\(searchterm) ")
-                default: return false
+                for appearance in appearances {
+                    let appearanceString = String(line[appearance])
+                    guard appearanceString.count >= 2 else { continue }
+                    var startsWith = false
+                    var endsWith = false
+                    if appearanceString.hasPrefix(searchterm) || (
+                        !appearanceString.first!.isLetter ||
+                        !appearanceString.character(at: 2).isLetter
+                    ) { startsWith = true }
+                    if appearanceString.hasSuffix(searchterm) || (
+                        !appearanceString.last!.isLetter ||
+                        !appearanceString.character(at: appearanceString.count-2).isLetter
+                    ) { endsWith = true }
+                    switch textMatching {
+                    case .MatchingWord:
+                        foundMatch = startsWith && endsWith ? true : foundMatch
+                    case .StartingWith:
+                        foundMatch = startsWith ? true : foundMatch
+                    case .EndingWith:
+                        foundMatch = endsWith ? true : foundMatch
+                    default: continue
+                    }
                 }
                 return foundMatch
             } else if findMode == .RegularExpression {
@@ -108,5 +127,30 @@ extension WorkspaceDocument {
 
             // TODO: references and definitions
         }
+    }
+}
+
+extension String {
+    func character(at index: Int) -> Character {
+        return self[self.index(self.startIndex, offsetBy: index)]
+    }
+
+    func appearancesOfSubstring(substring: String, toLeft: Int=0, toRight: Int=0) -> [Range<String.Index>] {
+        guard !substring.isEmpty && self.contains(substring) else { return [] }
+        var appearances: [Range<String.Index>] = []
+        for (index, character) in self.enumerated() where character == substring.first {
+            let startOfFoundCharacter = self.index(self.startIndex, offsetBy: index)
+            guard index + substring.count < self.count else { continue }
+            let lengthOfFoundCharacter = self.index(self.startIndex, offsetBy: (substring.count + index))
+            if self[startOfFoundCharacter..<lengthOfFoundCharacter] == substring {
+                let startIndex = self.index(self.startIndex,
+                    offsetBy: index - (toLeft <= index ? toLeft : 0))
+                let endIndex = self.index(self.startIndex,
+                    offsetBy: substring.count + index +
+                        (substring.count+index+toRight <= self.count ? toRight : 0))
+                appearances.append(startIndex..<endIndex)
+            }
+        }
+        return appearances
     }
 }
