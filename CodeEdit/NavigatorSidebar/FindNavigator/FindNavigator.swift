@@ -68,6 +68,7 @@ struct FindNavigator: View {
                         }
                     }
                     .menuStyle(.borderlessButton)
+                    .frame(width: currentFilter == filters[0] ? 80 : 88)
                     .onAppear {
                         if currentFilter == "" {
                             currentFilter = filters[0]
