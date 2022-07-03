@@ -81,6 +81,10 @@ let package = Package(
             name: "Git",
             targets: ["Git"]
         ),
+        .library(
+            name: "SplitEditors",
+            targets: ["SplitEditors"]
+        )
     ],
     dependencies: [
         .package(
@@ -339,6 +343,18 @@ let package = Package(
                 "ShellClient",
             ],
             path: "Modules/Git/Tests"
+        ),
+        .target(
+            name: "SplitEditors",
+            dependencies: [],
+            path: "Modules/SplitEditors/src"
+        ),
+        .testTarget(
+            name: "SplitEditorsTests",
+            dependencies: [
+                "SplitEditors"
+            ],
+            path: "Modules/SplitEditors/Tests"
         ),
     ]
 )
