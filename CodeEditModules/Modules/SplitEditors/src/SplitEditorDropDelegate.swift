@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 
 struct SplitEditorDropDelegate: DropDelegate {
+    let availablePositions: [SplitEditorProposalDropPosition]
     @Binding var proposalPosition: SplitEditorProposalDropPosition?
     let geometryProxy: GeometryProxy
     let margin: CGFloat
@@ -20,11 +21,15 @@ struct SplitEditorDropDelegate: DropDelegate {
     func dropUpdated(info: DropInfo) -> DropProposal? {
         let localFrame = geometryProxy.frame(in: .local)
 
-        proposalPosition = calculateDropProposalPosition(
+        if let calculatedProposalPosition = calculateDropProposalPosition(
             in: localFrame,
             for: info.location,
             margin: margin
-        )
+        ), availablePositions.contains(calculatedProposalPosition) {
+            proposalPosition = calculatedProposalPosition
+        } else {
+            proposalPosition = nil
+        }
 
         return nil
     }
