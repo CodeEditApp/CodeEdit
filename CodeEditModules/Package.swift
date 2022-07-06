@@ -346,7 +346,9 @@ let package = Package(
         ),
         .target(
             name: "SplitEditors",
-            dependencies: [],
+            dependencies: [
+                "CodeEditUI"
+            ],
             path: "Modules/SplitEditors/src"
         ),
         .testTarget(

@@ -7,6 +7,16 @@
 
 import Foundation
 import SwiftUI
+import CodeEditUI
+
+private enum Const {
+    static let padding: CGFloat = 5.5
+    static let animationDuration: TimeInterval = 0.2
+    static let overlayCornerRadius: CGFloat = 5
+    static let overlayBorderColorOpacity: CGFloat = 0.2
+    static let overlayBorderLineWidth: CGFloat = 1
+    static let overlayIconSize: CGFloat = 30.5
+}
 
 struct SplitEditorDropProposalOverlay: View {
     private enum MatchedGeometryEffect {
@@ -18,8 +28,11 @@ struct SplitEditorDropProposalOverlay: View {
 
     var body: some View {
         contentView
-            .padding(4)
-            .animation(.spring(), value: proposalPosition)
+            .padding(Const.padding)
+            .animation(
+                .easeInOut(duration: Const.animationDuration),
+                value: proposalPosition
+            )
     }
 
     @ViewBuilder
@@ -41,9 +54,6 @@ struct SplitEditorDropProposalOverlay: View {
     private var leadingPositionOverlay: some View {
         HStack(spacing: 0) {
             overlay
-                .matchedGeometryEffect(id: MatchedGeometryEffect.overlay, in: animation)
-                .transition(.identity.combined(with: .opacity))
-
             Color.clear
         }
     }
@@ -51,19 +61,13 @@ struct SplitEditorDropProposalOverlay: View {
     private var trailingPositionOverlay: some View {
         HStack(spacing: 0) {
             Color.clear
-
             overlay
-                .matchedGeometryEffect(id: MatchedGeometryEffect.overlay, in: animation)
-                .transition(.identity.combined(with: .opacity))
         }
     }
 
     private var topPositionOverlay: some View {
         VStack(spacing: 0) {
             overlay
-                .matchedGeometryEffect(id: MatchedGeometryEffect.overlay, in: animation)
-                .transition(.identity.combined(with: .opacity))
-
             Color.clear
         }
     }
@@ -71,27 +75,34 @@ struct SplitEditorDropProposalOverlay: View {
     private var bottomPositionOverlay: some View {
         VStack(spacing: 0) {
             Color.clear
-
             overlay
-                .matchedGeometryEffect(id: MatchedGeometryEffect.overlay, in: animation)
-                .transition(.identity.combined(with: .opacity))
         }
     }
 
     private var centerPositionOverlay: some View {
         overlay
-            .matchedGeometryEffect(id: MatchedGeometryEffect.overlay, in: animation)
-            .transition(.identity.combined(with: .opacity))
     }
 
     private var overlay: some View {
         ZStack {
-            Color.secondary
-                .cornerRadius(4)
-
+            EffectView(
+                .fullScreenUI,
+                blendingMode: .withinWindow,
+                emphasized: false
+            )
+            .cornerRadius(Const.overlayCornerRadius)
+            .overlay {
+                RoundedRectangle(cornerRadius: Const.overlayCornerRadius)
+                    .stroke(
+                        Color(nsColor: .secondaryLabelColor)
+                            .opacity(Const.overlayBorderColorOpacity),
+                        lineWidth: Const.overlayBorderLineWidth
+                    )
+            }
             Image(systemName: "plus")
-                .foregroundColor(Color.white)
-                .font(.title)
+                .foregroundColor(Color(nsColor: .secondaryLabelColor))
+                .font(.system(size: Const.overlayIconSize, weight: .light))
         }
+        .matchedGeometryEffect(id: MatchedGeometryEffect.overlay, in: animation)
     }
 }
