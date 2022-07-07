@@ -13,9 +13,14 @@ struct SplitViewDropDelegate: DropDelegate {
     @Binding var proposalPosition: SplitViewProposalDropPosition?
     let geometryProxy: GeometryProxy
     let margin: CGFloat
+    let onDrop: ((SplitViewProposalDropPosition) -> Void)?
 
     func performDrop(info: DropInfo) -> Bool {
-        false
+        if let proposalPosition = proposalPosition {
+            onDrop?(proposalPosition)
+        }
+
+        return false
     }
 
     func dropUpdated(info: DropInfo) -> DropProposal? {

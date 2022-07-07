@@ -11,6 +11,7 @@ struct SplitViewModifier: ViewModifier {
     let availablePositions: [SplitViewProposalDropPosition]
     @Binding var proposalPosition: SplitViewProposalDropPosition?
     let margin: CGFloat
+    let onDrop: ((SplitViewProposalDropPosition) -> Void)?
 
     func body(content: Content) -> some View {
         GeometryReader { geometryProxy in
@@ -22,7 +23,8 @@ struct SplitViewModifier: ViewModifier {
                             availablePositions: availablePositions,
                             proposalPosition: $proposalPosition,
                             geometryProxy: geometryProxy,
-                            margin: margin
+                            margin: margin,
+                            onDrop: onDrop
                         )
                     )
 
@@ -43,18 +45,21 @@ extension View {
     ///   - availablePositions: availablePositions description
     ///   - proposalPosition: proposalPosition description
     ///   - margin: margin description
+    ///   - onDrop: onDrop description
     ///
     /// - Returns: description
     public func splitView(
         availablePositions: [SplitViewProposalDropPosition],
         proposalPosition: Binding<SplitViewProposalDropPosition?>,
-        margin: CGFloat
+        margin: CGFloat,
+        onDrop: ((SplitViewProposalDropPosition) -> Void)?
     ) -> some View {
         modifier(
             SplitViewModifier(
                 availablePositions: availablePositions,
                 proposalPosition: proposalPosition,
-                margin: margin
+                margin: margin,
+                onDrop: onDrop
             )
         )
     }
