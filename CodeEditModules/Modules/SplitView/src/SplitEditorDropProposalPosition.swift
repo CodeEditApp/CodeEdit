@@ -5,6 +5,6 @@
 //  Created by Mateusz Bąk on 2022/07/03.
 //
 
-enum SplitViewProposalDropPosition: Equatable, CaseIterable {
+public enum SplitViewProposalDropPosition: Equatable, CaseIterable {
     case leading, trailing, top, bottom, center
 }
