@@ -1,6 +1,6 @@
 //
 //  DropProposalPositionCalculationsTests.swift
-//  CodeEditModules/SplitEditors
+//  CodeEditModules/SplitView
 //
 //  Created by Mateusz Bąk on 2022/07/03.
 //

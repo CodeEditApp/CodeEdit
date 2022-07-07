@@ -1,6 +1,6 @@
 //
-//  SplitEditorDropProposalOverlay.swift
-//  CodeEditModules/SplitEditors
+//  SplitViewDropProposalOverlay.swift
+//  CodeEditModules/SplitView
 //
 //  Created by Mateusz Bąk on 2022/07/03.
 //
@@ -18,13 +18,13 @@ private enum Const {
     static let overlayIconSize: CGFloat = 30.5
 }
 
-struct SplitEditorDropProposalOverlay: View {
+struct SplitViewDropProposalOverlay: View {
     private enum MatchedGeometryEffect {
         case overlay
     }
     @Namespace private var animation
 
-    let proposalPosition: SplitEditorProposalDropPosition
+    let proposalPosition: SplitViewProposalDropPosition
 
     var body: some View {
         contentView

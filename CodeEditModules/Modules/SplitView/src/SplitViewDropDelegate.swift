@@ -1,6 +1,6 @@
 //
-//  SplitEditorDropDelegate.swift
-//  CodeEditModules/SplitEditors
+//  SplitViewDropDelegate.swift
+//  CodeEditModules/SplitView
 //
 //  Created by Mateusz Bąk on 2022/07/03.
 //
@@ -8,9 +8,9 @@
 import Foundation
 import SwiftUI
 
-struct SplitEditorDropDelegate: DropDelegate {
-    let availablePositions: [SplitEditorProposalDropPosition]
-    @Binding var proposalPosition: SplitEditorProposalDropPosition?
+struct SplitViewDropDelegate: DropDelegate {
+    let availablePositions: [SplitViewProposalDropPosition]
+    @Binding var proposalPosition: SplitViewProposalDropPosition?
     let geometryProxy: GeometryProxy
     let margin: CGFloat
 

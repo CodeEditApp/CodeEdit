@@ -82,8 +82,8 @@ let package = Package(
             targets: ["Git"]
         ),
         .library(
-            name: "SplitEditors",
-            targets: ["SplitEditors"]
+            name: "SplitView",
+            targets: ["SplitView"]
         )
     ],
     dependencies: [
@@ -345,18 +345,18 @@ let package = Package(
             path: "Modules/Git/Tests"
         ),
         .target(
-            name: "SplitEditors",
+            name: "SplitView",
             dependencies: [
                 "CodeEditUI"
             ],
-            path: "Modules/SplitEditors/src"
+            path: "Modules/SplitView/src"
         ),
         .testTarget(
-            name: "SplitEditorsTests",
+            name: "SplitViewTests",
             dependencies: [
-                "SplitEditors"
+                "SplitView"
             ],
-            path: "Modules/SplitEditors/Tests"
+            path: "Modules/SplitView/Tests"
         ),
     ]
 )

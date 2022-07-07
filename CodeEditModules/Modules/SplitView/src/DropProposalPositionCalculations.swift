@@ -1,6 +1,6 @@
 //
 //  DropProposalPositionCalculations.swift
-//  CodeEditModules/SplitEditors
+//  CodeEditModules/SplitView
 //
 //  Created by Mateusz Bąk on 2022/07/03.
 //
@@ -77,7 +77,7 @@ func calculateDropProposalPosition(
     in rect: CGRect,
     for point: CGPoint,
     margin: CGFloat
-) -> SplitEditorProposalDropPosition? {
+) -> SplitViewProposalDropPosition? {
     let leadingRect = CGRect(
         x: rect.minX,
         y: rect.minY,
