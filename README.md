@@ -135,6 +135,7 @@ Support CodeEdit's development by [becoming a backer](https://github.com/sponsor
 <a title="sparrowcode" href="https://github.com/sparrowcode" target="_blank"><img src="https://avatars.githubusercontent.com/u/98487302?s=200&v=4" width="64"></a>
 <a title="Gebes" href="https://github.com/Gebes" target="_blank"><img src="https://avatars.githubusercontent.com/u/35232234?v=4" width="64"></a>
 <a title="lovetodream" href="https://github.com/lovetodream" target="_blank"><img src="https://avatars.githubusercontent.com/u/38291523?v=4" width="64"></a>
+<a title="ridafkih" href="https://github.com/ridafkih" target="_blank"><img src="https://avatars.githubusercontent.com/u/9158485?v=4" width="64"></a>
 
 ### Thanks to all of our other backers
 
@@ -145,6 +146,7 @@ Support CodeEdit's development by [becoming a backer](https://github.com/sponsor
 [@petrjahoda](https://github.com/petrjahoda)
 [@allejo](https://github.com/allejo)
 [@frousselet](frousselet)
+[@wkillerud](wkillerud)
 
 ## License
 
