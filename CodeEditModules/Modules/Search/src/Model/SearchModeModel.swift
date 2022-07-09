@@ -54,28 +54,6 @@ public struct SearchModeModel {
                                                       .CallHierarchy]
     public static let ReplaceModes: [SearchModeModel] = [.Text, .RegularExpression]
     public static let SearchModes: [SearchModeModel] = [.Find, .Replace]
-
-    public static func getAllModes(_ index: Int, currentSelected: [SearchModeModel]) -> [SearchModeModel] {
-        switch index {
-        case 0:
-            return SearchModes
-        case 1:
-            if let searchMode = currentSelected.first {
-                if searchMode == SearchModeModel.Find {
-                    return SearchModes
-                } else if searchMode == searchMode {
-                    return ReplaceModes
-                }
-            } else {
-                return []
-            }
-        case 2:
-            return TextMatchingModes
-        default:
-            return []
-        }
-        return []
-    }
 }
 
 extension SearchModeModel: Equatable {
