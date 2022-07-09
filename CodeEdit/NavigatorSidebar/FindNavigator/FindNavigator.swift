@@ -24,11 +24,11 @@ struct FindNavigator: View {
     @State var currentFilter: String = ""
 
     private var foundFilesCount: Int {
-        state.searchResult.filter { !$0.hasKeywordInfo }.count
+        state.searchResult.count
     }
 
     private var foundResultsCount: Int {
-        state.searchResult.filter { $0.hasKeywordInfo }.count
+        state.searchResult.count
     }
 
     init(state: WorkspaceDocument.SearchState) {
@@ -91,7 +91,9 @@ struct FindNavigator: View {
             FindNavigatorResultList(state: state)
         }
         .onSubmit {
+            print(searchText)
             state.search(searchText)
+            print(state.searchResult)
         }
     }
 }

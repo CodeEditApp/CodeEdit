@@ -8,25 +8,16 @@
 import Foundation
 import WorkspaceClient
 
+/// A struct for holding information about a file and any matches it may have for a search query.
 public struct SearchResultModel: Hashable {
     public var file: WorkspaceClient.FileItem
-    public var lineNumber: Int?
-    public var lineContent: String?
-    public var keywordRange: Range<String.Index>?
+    public var lineMatches: [SearchResultMatchModel]
 
     public init(
         file: WorkspaceClient.FileItem,
-        lineNumber: Int?,
-        lineContent: String?,
-        keywordRange: Range<String.Index>?
+        lineMatches: [SearchResultMatchModel] = []
     ) {
         self.file = file
-        self.lineNumber = lineNumber
-        self.lineContent = lineContent
-        self.keywordRange = keywordRange
-    }
-
-    public var hasKeywordInfo: Bool {
-        lineNumber != nil && lineContent != nil && keywordRange != nil
+        self.lineMatches = lineMatches
     }
 }

@@ -18,6 +18,7 @@ extension WorkspaceDocument {
             .Containing
         ]
         @Published var searchResult: [SearchResultModel] = []
+        @Published var searchText: String = ""
 
         var ignoreCase: Bool = true
 
