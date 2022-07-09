@@ -39,6 +39,7 @@ extension WorkspaceDocument {
                 ])
             guard let filePaths = enumerator?.allObjects as? [URL] else { return }
 
+            // TODO: Optimisation
             filePaths.map { url in
                 WorkspaceClient.FileItem(url: url, children: nil)
             }.forEach { fileItem in
