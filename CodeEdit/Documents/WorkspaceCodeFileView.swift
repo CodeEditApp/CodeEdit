@@ -11,12 +11,10 @@ import WorkspaceClient
 import StatusBar
 import Breadcrumbs
 import AppPreferences
+import UniformTypeIdentifiers
 
 struct WorkspaceCodeFileView: View {
     var windowController: NSWindowController
-    private let unsupportFileMessage = """
-The file is not displayed in the editor because it is either binary or uses an unsupported text encoding
-"""
 
     @ObservedObject
     var workspace: WorkspaceDocument
@@ -34,20 +32,14 @@ The file is not displayed in the editor because it is either binary or uses an u
                 return file.tabID == workspace.selectionState.selectedId
             }) {
                 if let fileItem = workspace.selectionState.openedCodeFiles[item] {
-                    if fileItem.typeOfFile == .image {
-                        imageFileVIew(fileItem, for: item)
-                    } else {
+                    switch fileItem.typeOfFile {
+                    case UTType.image:
+                        imageFileView(fileItem, for: item)
+                    case UTType.text:
                         codeFileView(fileItem, for: item)
+                    default:
+                        otherFileView(fileItem, for: item)
                     }
-                } else {
-                    Text(unsupportFileMessage)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .safeAreaInset(edge: .top, spacing: 0) {
-                            VStack(spacing: 0) {
-                                BreadcrumbsView(file: item, tappedOpenFile: workspace.openTab(item:))
-                                Divider()
-                            }
-                        }
                 }
             } else {
                 Text("No Editor")
@@ -75,7 +67,7 @@ The file is not displayed in the editor because it is either binary or uses an u
     }
 
     @ViewBuilder
-    private func imageFileVIew(
+    private func imageFileView(
         _ imageFile: CodeFileDocument,
         for item: WorkspaceClient.FileItem
     ) -> some View {
@@ -83,6 +75,18 @@ The file is not displayed in the editor because it is either binary or uses an u
             BreadcrumbsView(file: item, tappedOpenFile: workspace.openTab(item:))
             Divider()
             ImageFileView(imageFile: imageFile)
+        }
+    }
+
+    @ViewBuilder
+    private func otherFileView(
+        _ otherFile: CodeFileDocument,
+        for item: WorkspaceClient.FileItem
+    ) -> some View {
+        VStack(spacing: 0) {
+            BreadcrumbsView(file: item, tappedOpenFile: workspace.openTab(item:))
+            Divider()
+            OtherFileView(otherFile)
         }
     }
 
