@@ -43,7 +43,7 @@ public final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem
         if type.conforms(to: UTType.image) {
             return UTType.image
         }
-        if type.conforms(to: UTType.text){
+        if type.conforms(to: UTType.text) {
             return UTType.text
         }
         return nil
