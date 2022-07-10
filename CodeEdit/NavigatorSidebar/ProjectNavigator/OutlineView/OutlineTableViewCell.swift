@@ -103,7 +103,7 @@ extension OutlineTableViewCell: NSTextFieldDelegate {
 
 extension String {
     var isValidFilename: Bool {
-        let regex = ".*[^A-Za-z0-9 .].*"
+        let regex = "[^:]"
         let testString = NSPredicate(format: "SELF MATCHES %@", regex)
         return !testString.evaluate(with: self)
     }
