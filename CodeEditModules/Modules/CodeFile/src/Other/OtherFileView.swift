@@ -16,7 +16,6 @@ import QuickLookUI
 /// ```
 public struct OtherFileView: NSViewRepresentable {
 
-    @ObservedObject
     private var otherFile: CodeFileDocument
 
     /// Initialize the OtherFileView
@@ -29,11 +28,13 @@ public struct OtherFileView: NSViewRepresentable {
 
     public func makeNSView(context: Context) -> QLPreviewView {
         let qlPreviewView = QLPreviewView()
-        qlPreviewView.previewItem = otherFile
+        qlPreviewView.previewItem = otherFile.previewItemURL as QLPreviewItem
         return qlPreviewView
     }
 
+    /// Update preview file when file changed
     public func updateNSView(_ nsView: QLPreviewView, context: Context) {
-        
+        nsView.previewItem = otherFile.previewItemURL as QLPreviewItem
     }
+
 }
