@@ -16,6 +16,13 @@ struct FindNavigator: View {
     @State
     private var searchText: String = ""
 
+    enum Filters: String {
+        case ignoring = "Ignoring Case"
+        case matching = "Matching Case"
+    }
+
+    @State var currentFilter: String = ""
+
     private var foundFilesCount: Int {
         state.searchResult.filter { !$0.hasKeywordInfo }.count
     }
@@ -31,10 +38,45 @@ struct FindNavigator: View {
     var body: some View {
         VStack {
             VStack {
-                FindNavigatorModeSelector()
+                FindNavigatorModeSelector(state: state)
                 FindNavigatorSearchBar(state: state, title: "", text: $searchText)
                 HStack {
+                    Button {} label: {
+                        Text("In Workspace")
+                            .font(.system(size: 10))
+                    }.buttonStyle(.borderless)
                     Spacer()
+                    Menu {
+                        Button {
+                            currentFilter = Filters.ignoring.rawValue
+                            state.ignoreCase = true
+                            state.search(searchText)
+                        } label: {
+                            Text(Filters.ignoring.rawValue)
+                        }
+                        Button {
+                            currentFilter = Filters.matching.rawValue
+                            state.ignoreCase = false
+                            state.search(searchText)
+                        } label: {
+                            Text(Filters.matching.rawValue)
+                        }
+                    } label: {
+                        HStack(spacing: 2) {
+                            Spacer()
+                            Text(currentFilter)
+                                .foregroundColor(currentFilter == Filters.matching.rawValue ?
+                                                 Color.accentColor : .primary)
+                                .font(.system(size: 10))
+                        }
+                    }
+                    .menuStyle(.borderlessButton)
+                    .frame(width: currentFilter == Filters.ignoring.rawValue ? 80 : 88)
+                    .onAppear {
+                        if currentFilter == "" {
+                            currentFilter = Filters.ignoring.rawValue
+                        }
+                    }
                 }
             }
             .padding(.horizontal, 10)
