@@ -92,9 +92,8 @@ extension OutlineTableViewCell: NSTextFieldDelegate {
     func validateFileName(for newName: String) -> Bool {
         guard newName != fileItem.fileName else { return true }
 
-        guard newName != "" &&
-               !newName.isValidFilename &&
-               !WorkspaceClient.FileItem.fileManger.fileExists(atPath:
+        guard newName != "" && newName.isValidFilename &&
+              !WorkspaceClient.FileItem.fileManger.fileExists(atPath:
                     fileItem.url.deletingLastPathComponent().appendingPathComponent(newName).path)
         else { return false }
 
@@ -104,8 +103,8 @@ extension OutlineTableViewCell: NSTextFieldDelegate {
 
 extension String {
     var isValidFilename: Bool {
-        let regex = ".*[^A-Za-z0-9 ].*"
+        let regex = ".*[^A-Za-z0-9 .].*"
         let testString = NSPredicate(format: "SELF MATCHES %@", regex)
-        return testString.evaluate(with: self.components(separatedBy: ".").joined(separator: ""))
+        return !testString.evaluate(with: self)
     }
 }
