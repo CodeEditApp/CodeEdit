@@ -9,17 +9,21 @@ import SwiftUI
 import Search
 
 struct FindNavigatorModeSelector: View {
+    @ObservedObject
+    private var state: WorkspaceDocument.SearchState
+
     @State
-    private var selectedMode: [SearchModeModel] = [
-        .Find,
-        .Text,
-        .Containing
-    ]
+    private var selectedMode: [SearchModeModel] {
+        didSet {
+            // sync the variables, as selectedMode is an array
+            // and cannot be synced directly with @ObservedObject
+            state.selectedMode = selectedMode
+        }
+    }
 
-    init() {}
-
-    init(selectedMode: [SearchModeModel]) {
-        self.selectedMode = selectedMode
+    init(state: WorkspaceDocument.SearchState) {
+        self.state = state
+        selectedMode = state.selectedMode
     }
 
     private func getMenuList(_ index: Int) -> [SearchModeModel] {
@@ -125,6 +129,6 @@ extension View {
 
 struct SearchModeSelector_Previews: PreviewProvider {
     static var previews: some View {
-        FindNavigatorModeSelector()
+        FindNavigatorModeSelector(state: WorkspaceDocument.SearchState(WorkspaceDocument()))
     }
 }
