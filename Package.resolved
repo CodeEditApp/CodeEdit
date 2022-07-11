@@ -240,7 +240,7 @@
         "repositoryURL": "https://github.com/mattmassicotte/tree-sitter-swift.git",
         "state": {
           "branch": "feature/spm",
-          "revision": "0305ffaa9df7266cf8f81d2a23f1b83888363288",
+          "revision": "79db1387dceb4b65175f194cc2b06507d2b4c26f",
           "version": null
         }
       },
