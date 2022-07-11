@@ -269,6 +269,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "evolify",
+      "name": "evolify",
+      "avatar_url": "https://avatars.githubusercontent.com/u/12669069?v=4",
+      "profile": "https://github.com/evolify",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
