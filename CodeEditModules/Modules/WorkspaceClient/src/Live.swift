@@ -45,10 +45,8 @@ public extension WorkspaceClient {
 
                     let newFileItem = FileItem(url: itemURL, children: subItems?.sorted(by: {
                         $0.url.fileSize < $1.url.fileSize
-                    }))
-                    subItems?.forEach {
-                        $0.parent = newFileItem
-                    }
+                    })) // sort by file size, so smaller folders are prioritised over large ones
+                    subItems?.forEach { $0.parent = newFileItem }
                     items.append(newFileItem)
                     flattenedFileItems[newFileItem.id] = newFileItem
                 }
@@ -132,89 +130,54 @@ public extension WorkspaceClient {
             })
 
             return didChangeSomething
-
-            print("Rebuilt files")
         }
 
-        var sources: [String: DispatchSourceFileSystemObject] = [:]
+        FileItem.watcherCode = {
+            // Something has changed inside the directory
+            // We should reload the files.
+            guard !isRunning else { // this runs when a file change is detected but is already running
+                anotherInstanceRan += 1
+                return
+            }
+            isRunning = true
+            flattenedFileItems = [workspaceItem.id: workspaceItem]
+            _ = try? rebuildFiles(fromItem: workspaceItem)
+            while anotherInstanceRan > 0 { // TODO: optimise
+                let somethingChanged = try? rebuildFiles(fromItem: workspaceItem)
+                anotherInstanceRan = !(somethingChanged ?? false) ? 0 : anotherInstanceRan - 1
+            }
+            subject.send(workspaceItem.children ?? [])
+            startListeningToDirectory()
+            isRunning = false
+            anotherInstanceRan = 0
+            // reload data in outline view controller through the main thread
+            DispatchQueue.main.async { onRefresh() }
+        }
 
         /// Function to apply listeners that rebuild the file index when the file system is changed.
         /// Optimised so that it only deletes/creates the needed listeners instead of replacing every one.
         func startListeningToDirectory() {
-            var totalSkipped = 0
-            // iterate over every item, checking if its a directory first
-            for (index, item) in flattenedFileItems.values.enumerated() {
-                // check if it actually exists, doesn't have a listener, and is a folder
-                guard item.isFolder &&
-                        !sources.keys.contains(item.id) &&
-                        FileItem.fileManger.fileExists(atPath: item.url.path) else { continue }
-                // open the folder to listen for changes
-                let descriptor = open(item.url.path, O_EVTONLY)
-                print("Iterating over item \(index) \(descriptor): \(item.url.absoluteString)")
-                guard descriptor > 0 else { totalSkipped+=1; print("\tSKIPPED #\(totalSkipped)"); continue }
-                let source = DispatchSource.makeFileSystemObjectSource(
-                    fileDescriptor: descriptor,
-                    eventMask: .write,
-                    queue: DispatchQueue.global()
-                )
-
-                source.setEventHandler {
-                    // Something has changed inside the directory
-                    // We should reload the files.
-                    guard !isRunning else { // this runs when a file change is detected but is already running
-                        anotherInstanceRan += 1
-                        return
-                    }
-                    isRunning = true
-                    flattenedFileItems = [workspaceItem.id: workspaceItem]
-                    _ = try? rebuildFiles(fromItem: workspaceItem)
-                    while anotherInstanceRan > 0 { // TODO: optimise
-                        let somethingChanged = try? rebuildFiles(fromItem: workspaceItem)
-                        anotherInstanceRan = !(somethingChanged ?? false) ? 0 : anotherInstanceRan - 1
-                    }
-                    subject.send(workspaceItem.children ?? [])
-                    startListeningToDirectory()
-                    isRunning = false
-                    anotherInstanceRan = 0
-                    // reload data in outline view controller through the main thread
-                    DispatchQueue.main.async { onRefresh() }
-                }
-
-                source.setCancelHandler {
-                    close(descriptor)
-                }
-
-                source.resume()
-
-                sources[item.id] = source
-            }
-
-            // test for deleted directories and remove their listeners
-            for (id, _) in sources {
-                var childExists = false
-                for item in flattenedFileItems.values {
-                    childExists = item.id == id ? true : childExists
-                }
-
-                if !childExists {
-                    sources.removeValue(forKey: id)?.cancel()
-                }
-            }
-
-            print("Sourcing complete")
+//            // iterate over every item, checking if its a directory first
+//            for (index, item) in flattenedFileItems.values.enumerated() {
+//                // check if it actually exists, doesn't have a listener, and is a folder
+//                guard item.isFolder &&
+//                        item.watcher == nil &&
+//                        FileItem.fileManger.fileExists(atPath: item.url.path) else { continue }
+//                if !item.activateWatcher() { // if the file watcher failed to init due to file limit
+//                    print("Failed item \(index): \(item.title)")
+//                }
+//            }
+//
+//            print("Sourcing complete")
         }
 
         func stopListeningToDirectory(directory: URL? = nil) {
-            print("Sourcing stopped")
-
-            if let directory = directory {
-                sources[directory.path]?.cancel()
-                sources.removeValue(forKey: directory.path)
+            if directory != nil {
+                flattenedFileItems[directory!.relativePath]?.watcher?.cancel()
             } else {
-                for source in sources.values {
-                    source.cancel()
+                for (index, item) in flattenedFileItems.values.enumerated() {
+                    item.watcher?.cancel()
                 }
-                sources = [:]
             }
         }
 
