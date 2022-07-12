@@ -23,6 +23,8 @@ public extension WorkspaceClient {
         /// - Parameter url: The URL of the directory to load the items of
         /// - Returns: `[FileItem]` representing the contents of the directory
         func loadFiles(fromURL url: URL) throws -> [FileItem] {
+            print("Loading files")
+
             let directoryContents = try fileManager.contentsOfDirectory(at: url, includingPropertiesForKeys: nil)
             var items: [FileItem] = []
 
@@ -41,7 +43,9 @@ public extension WorkspaceClient {
                         subItems = try loadFiles(fromURL: itemURL)
                     }
 
-                    let newFileItem = FileItem(url: itemURL, children: subItems?.sortItems(foldersOnTop: true))
+                    let newFileItem = FileItem(url: itemURL, children: subItems?.sorted(by: {
+                        $0.url.fileSize < $1.url.fileSize
+                    }))
                     subItems?.forEach {
                         $0.parent = newFileItem
                     }
@@ -49,6 +53,8 @@ public extension WorkspaceClient {
                     flattenedFileItems[newFileItem.id] = newFileItem
                 }
             }
+            print("Loaded files")
+
             return items
         }
 
@@ -74,7 +80,7 @@ public extension WorkspaceClient {
         /// entirely new `FileItem`, to prevent the `OutlineView` from going crazy with folding.
         /// - Parameter fileItem: The `FileItem` to correct the children of
         func rebuildFiles(fromItem fileItem: FileItem) throws -> Bool {
-
+            print("Rebuilding files")
             var didChangeSomething = false
 
             // get the actual directory children
@@ -126,6 +132,8 @@ public extension WorkspaceClient {
             })
 
             return didChangeSomething
+
+            print("Rebuilt files")
         }
 
         var sources: [String: DispatchSourceFileSystemObject] = [:]
@@ -133,14 +141,17 @@ public extension WorkspaceClient {
         /// Function to apply listeners that rebuild the file index when the file system is changed.
         /// Optimised so that it only deletes/creates the needed listeners instead of replacing every one.
         func startListeningToDirectory() {
+            var totalSkipped = 0
             // iterate over every item, checking if its a directory first
-            for item in flattenedFileItems.values {
+            for (index, item) in flattenedFileItems.values.enumerated() {
                 // check if it actually exists, doesn't have a listener, and is a folder
                 guard item.isFolder &&
                         !sources.keys.contains(item.id) &&
                         FileItem.fileManger.fileExists(atPath: item.url.path) else { continue }
-
-                let descriptor = open(item.url.path, O_EVTONLY) // open the folder to listen for changes
+                // open the folder to listen for changes
+                let descriptor = open(item.url.path, O_EVTONLY)
+                print("Iterating over item \(index) \(descriptor): \(item.url.absoluteString)")
+                guard descriptor > 0 else { totalSkipped+=1; print("\tSKIPPED #\(totalSkipped)"); continue }
                 let source = DispatchSource.makeFileSystemObjectSource(
                     fileDescriptor: descriptor,
                     eventMask: .write,
@@ -189,9 +200,13 @@ public extension WorkspaceClient {
                     sources.removeValue(forKey: id)?.cancel()
                 }
             }
+
+            print("Sourcing complete")
         }
 
         func stopListeningToDirectory(directory: URL? = nil) {
+            print("Sourcing stopped")
+
             if let directory = directory {
                 sources[directory.path]?.cancel()
                 sources.removeValue(forKey: directory.path)
@@ -220,5 +235,28 @@ public extension WorkspaceClient {
                 return item
             }
         )
+    }
+}
+
+extension URL {
+    var attributes: [FileAttributeKey: Any]? {
+        do {
+            return try FileManager.default.attributesOfItem(atPath: path)
+        } catch let error as NSError {
+            print("FileAttribute error: \(error)")
+        }
+        return nil
+    }
+
+    var fileSize: UInt64 {
+        return attributes?[.size] as? UInt64 ?? UInt64(0)
+    }
+
+    var fileSizeString: String {
+        return ByteCountFormatter.string(fromByteCount: Int64(fileSize), countStyle: .file)
+    }
+
+    var creationDate: Date? {
+        return attributes?[.creationDate] as? Date
     }
 }
