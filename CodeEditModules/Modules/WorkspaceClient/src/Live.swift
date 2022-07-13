@@ -23,8 +23,6 @@ public extension WorkspaceClient {
         /// - Parameter url: The URL of the directory to load the items of
         /// - Returns: `[FileItem]` representing the contents of the directory
         func loadFiles(fromURL url: URL) throws -> [FileItem] {
-            print("Loading files")
-
             let directoryContents = try fileManager.contentsOfDirectory(at: url, includingPropertiesForKeys: nil)
             var items: [FileItem] = []
 
@@ -43,15 +41,12 @@ public extension WorkspaceClient {
                         subItems = try loadFiles(fromURL: itemURL)
                     }
 
-                    let newFileItem = FileItem(url: itemURL, children: subItems?.sorted(by: {
-                        $0.url.fileSize < $1.url.fileSize
-                    })) // sort by file size, so smaller folders are prioritised over large ones
+                    let newFileItem = FileItem(url: itemURL, children: subItems?.sortItems(foldersOnTop: true))
                     subItems?.forEach { $0.parent = newFileItem }
                     items.append(newFileItem)
                     flattenedFileItems[newFileItem.id] = newFileItem
                 }
             }
-            print("Loaded files")
 
             return items
         }
@@ -78,7 +73,6 @@ public extension WorkspaceClient {
         /// entirely new `FileItem`, to prevent the `OutlineView` from going crazy with folding.
         /// - Parameter fileItem: The `FileItem` to correct the children of
         func rebuildFiles(fromItem fileItem: FileItem) throws -> Bool {
-            print("Rebuilding files")
             var didChangeSomething = false
 
             // get the actual directory children
@@ -121,6 +115,7 @@ public extension WorkspaceClient {
                 }
             }
 
+            fileItem.children = fileItem.children?.sortItems(foldersOnTop: true)
             fileItem.children?.forEach({
                 if $0.isFolder {
                     let childChanged = try? rebuildFiles(fromItem: $0)
@@ -154,22 +149,8 @@ public extension WorkspaceClient {
             DispatchQueue.main.async { onRefresh() }
         }
 
-        /// Function to apply listeners that rebuild the file index when the file system is changed.
-        /// Optimised so that it only deletes/creates the needed listeners instead of replacing every one.
-        func startListeningToDirectory() {
-//            // iterate over every item, checking if its a directory first
-//            for (index, item) in flattenedFileItems.values.enumerated() {
-//                // check if it actually exists, doesn't have a listener, and is a folder
-//                guard item.isFolder &&
-//                        item.watcher == nil &&
-//                        FileItem.fileManger.fileExists(atPath: item.url.path) else { continue }
-//                if !item.activateWatcher() { // if the file watcher failed to init due to file limit
-//                    print("Failed item \(index): \(item.title)")
-//                }
-//            }
-//
-//            print("Sourcing complete")
-        }
+        // no longer functional. Directory listening code has been moved to the FileItem.
+        func startListeningToDirectory() {}
 
         func stopListeningToDirectory(directory: URL? = nil) {
             if directory != nil {

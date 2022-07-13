@@ -38,7 +38,6 @@ public extension WorkspaceClient {
 
         public func activateWatcher() -> Bool {
             let descriptor = open(self.url.path, O_EVTONLY)
-            print("Activating watcher \(descriptor) for \(self.title)")
             guard descriptor > 0 else { return false }
             let source = DispatchSource.makeFileSystemObjectSource(
                 fileDescriptor: descriptor,
@@ -111,7 +110,6 @@ public extension WorkspaceClient {
         /// Image(systemName: item.systemImage)
         /// ```
         public var systemImage: String {
-            print("Image accessed for \(self.title)")
             switch children {
             case nil:
                 return FileIcon.fileIcon(fileType: fileType)
