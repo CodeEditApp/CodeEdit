@@ -7,7 +7,9 @@
 
 import SwiftUI
 import WorkspaceClient
+import AppPreferences
 import Search
+import Combine
 
 struct FindNavigatorResultList: NSViewControllerRepresentable {
 
@@ -16,6 +18,9 @@ struct FindNavigatorResultList: NSViewControllerRepresentable {
 
     @State
     private var selectedResult: SearchResultMatchModel?
+
+    @StateObject
+    var prefs: AppPreferencesModel = .shared
 
     typealias NSViewControllerType = FindNavigatorListViewController
 
@@ -27,41 +32,44 @@ struct FindNavigatorResultList: NSViewControllerRepresentable {
     func makeNSViewController(context: Context) -> FindNavigatorListViewController {
         let controller = FindNavigatorListViewController()
         controller.searchItems = state.searchResult
+        controller.rowHeight = prefs.preferences.general.projectNavigatorSize.rowHeight
         context.coordinator.controller = controller
         return controller
     }
 
     func updateNSViewController(_ nsViewController: FindNavigatorListViewController, context: Context) {
-        nsViewController.searchItems = state.searchResult
-        nsViewController.outlineView.reloadData()
+        nsViewController.updateNewSearchResults(state.searchResult)
+        if nsViewController.rowHeight != prefs.preferences.general.projectNavigatorSize.rowHeight {
+            nsViewController.rowHeight = prefs.preferences.general.projectNavigatorSize.rowHeight
+        }
         return
     }
 
     func makeCoordinator() -> Coordinator {
-        Coordinator()
+        Coordinator(state: state,
+                    controller: nil)
     }
 
     class Coordinator: NSObject {
+        init(state: WorkspaceDocument.SearchState, controller: FindNavigatorListViewController?) {
+            self.controller = controller
+            super.init()
+            self.listener = state.searchResult
+                .publisher
+                .receive(on: RunLoop.main)
+                .collect()
+                .sink(receiveValue: { [weak self] searchResults in
+                    self?.controller?.updateNewSearchResults(searchResults)
+                })
+        }
+
+        var listener: AnyCancellable?
         var controller: FindNavigatorListViewController?
 
         deinit {
             controller = nil
+            listener?.cancel()
+            listener = nil
         }
     }
-
-//    private func getResultWith(_ file: WorkspaceClient.FileItem) -> [SearchResultModel] {
-//        state.searchResult.filter { $0.file == file }
-//    }
-//
-//    var body: some View {
-//        List(selection: $selectedResult) {
-//
-//        }
-//        .listStyle(.sidebar)
-//        .onChange(of: selectedResult) { newValue in
-//            if let file = newValue?.file {
-//                state.workspace.openTab(item: file)
-//            }
-//        }
-//    }
 }

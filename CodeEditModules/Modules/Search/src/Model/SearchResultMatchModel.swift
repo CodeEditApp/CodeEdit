@@ -9,7 +9,7 @@ import Foundation
 import WorkspaceClient
 
 /// A struct for holding information about a search match.
-public struct SearchResultMatchModel: Hashable, Identifiable {
+public class SearchResultMatchModel: Hashable, Identifiable {
     public init(lineNumber: Int? = nil,
                 file: WorkspaceClient.FileItem,
                 lineContent: String? = nil,
@@ -29,5 +29,21 @@ public struct SearchResultMatchModel: Hashable, Identifiable {
 
     public var hasKeywordInfo: Bool {
         lineNumber != nil && lineContent != nil && keywordRange != nil
+    }
+
+    public static func == (lhs: SearchResultMatchModel, rhs: SearchResultMatchModel) -> Bool {
+        return lhs.id == rhs.id
+        && lhs.file == rhs.file
+        && lhs.lineNumber == rhs.lineNumber
+        && lhs.lineContent == rhs.lineContent
+        && lhs.keywordRange == rhs.keywordRange
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(file)
+        hasher.combine(lineNumber)
+        hasher.combine(lineContent)
+        hasher.combine(keywordRange)
     }
 }

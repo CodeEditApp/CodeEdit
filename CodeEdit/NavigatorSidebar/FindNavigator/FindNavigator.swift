@@ -91,9 +91,7 @@ struct FindNavigator: View {
             FindNavigatorResultList(state: state)
         }
         .onSubmit {
-            print(searchText)
             state.search(searchText)
-            print(state.searchResult)
         }
     }
 }

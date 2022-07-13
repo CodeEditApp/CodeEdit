@@ -44,9 +44,13 @@ extension WorkspaceDocument {
             filePaths.map { url in
                 WorkspaceClient.FileItem(url: url, children: nil)
             }.forEach { fileItem in
-                var fileAddedFlag = true
                 guard let data = try? Data(contentsOf: fileItem.url) else { return }
+                var fileSearchResult: SearchResultModel?
 
+                // Loop through each line and look for any matches
+                // If one is found we create a `SearchResultModel` and add any lines
+                // with matches, and any information we may need to display or navigate
+                // to them.
                 data.withUnsafeBytes {
                     $0.split(separator: UInt8(ascii: "\n"))
                         .map { String(decoding: UnsafeRawBufferPointer(rebasing: $0), as: UTF8.self) }
@@ -54,24 +58,32 @@ extension WorkspaceDocument {
                     let rawNoSpaceLine = line.trimmingCharacters(in: .whitespaces)
                     let noSpaceLine = ignoreCase ? rawNoSpaceLine.lowercased() : rawNoSpaceLine
                     if lineContainsSearchTerm(line: noSpaceLine, term: textToCompare) {
-                        if fileAddedFlag {
-                            searchResult.append(SearchResultModel(
-                                file: fileItem,
-                                lineNumber: nil,
-                                lineContent: nil,
-                                keywordRange: nil)
-                            )
-                            fileAddedFlag = false
-                        }
-                        noSpaceLine.ranges(of: textToCompare).forEach { range in
-                            searchResult.append(SearchResultModel(
-                                file: fileItem,
-                                lineNumber: index,
-                                lineContent: rawNoSpaceLine,
-                                keywordRange: range)
-                            )
+                        // We've got a match
+                        let matches = noSpaceLine.ranges(of: textToCompare)
+                            .map { range in
+                                return SearchResultMatchModel(
+                                    lineNumber: index,
+                                    file: fileItem,
+                                    lineContent: rawNoSpaceLine,
+                                    keywordRange: range
+                                )
+                            }
+                        if fileSearchResult != nil {
+                            // We've already found something in this file, add the rest
+                            // of the matches
+                            fileSearchResult?.lineMatches.append(contentsOf: matches)
+                        } else {
+                            // We haven't found anything in this file yet, record a new one
+                            fileSearchResult = SearchResultModel(file: fileItem,
+                                                                 lineMatches: matches)
                         }
                     }
+                }
+
+                // If `fileSearchResult` isn't nil it means we've found matches in the file
+                // so we add it to the search results.
+                if let fileSearchResult = fileSearchResult {
+                    searchResult.append(fileSearchResult)
                 }
             }
         }
