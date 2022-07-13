@@ -114,7 +114,9 @@ public extension WorkspaceClient {
             case nil:
                 return FileIcon.fileIcon(fileType: fileType)
             case let .some(children):
-                if self.watcher == nil { self.activateWatcher() }
+                if self.watcher == nil && !self.activateWatcher() {
+                    return "questionmark.folder"
+                }
                 return folderIcon(children)
             }
         }

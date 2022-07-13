@@ -36,7 +36,6 @@ public extension WorkspaceClient {
                     var subItems: [FileItem]?
 
                     if isDir.boolValue {
-                        // TODO: Possibly optimize to loading avoid cache dirs and/or large folders
                         // Recursively fetch subdirectories and files if the path points to a directory
                         subItems = try loadFiles(fromURL: itemURL)
                     }
@@ -156,7 +155,7 @@ public extension WorkspaceClient {
             if directory != nil {
                 flattenedFileItems[directory!.relativePath]?.watcher?.cancel()
             } else {
-                for (index, item) in flattenedFileItems.values.enumerated() {
+                for item in flattenedFileItems.values {
                     item.watcher?.cancel()
                 }
             }
