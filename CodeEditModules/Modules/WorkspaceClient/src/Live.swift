@@ -141,15 +141,11 @@ public extension WorkspaceClient {
                 anotherInstanceRan = !(somethingChanged ?? false) ? 0 : anotherInstanceRan - 1
             }
             subject.send(workspaceItem.children ?? [])
-            startListeningToDirectory()
             isRunning = false
             anotherInstanceRan = 0
             // reload data in outline view controller through the main thread
             DispatchQueue.main.async { onRefresh() }
         }
-
-        // no longer functional. Directory listening code has been moved to the FileItem.
-        func startListeningToDirectory() {}
 
         func stopListeningToDirectory(directory: URL? = nil) {
             if directory != nil {
@@ -164,9 +160,7 @@ public extension WorkspaceClient {
         return Self(
             folderURL: { folderURL },
             getFiles: subject
-                .handleEvents(receiveSubscription: { _ in
-                    startListeningToDirectory()
-                }, receiveCancel: {
+                .handleEvents(receiveCancel: {
                     stopListeningToDirectory()
                 })
                 .receive(on: RunLoop.main)
@@ -178,28 +172,5 @@ public extension WorkspaceClient {
                 return item
             }
         )
-    }
-}
-
-extension URL {
-    var attributes: [FileAttributeKey: Any]? {
-        do {
-            return try FileManager.default.attributesOfItem(atPath: path)
-        } catch let error as NSError {
-            print("FileAttribute error: \(error)")
-        }
-        return nil
-    }
-
-    var fileSize: UInt64 {
-        return attributes?[.size] as? UInt64 ?? UInt64(0)
-    }
-
-    var fileSizeString: String {
-        return ByteCountFormatter.string(fromByteCount: Int64(fileSize), countStyle: .file)
-    }
-
-    var creationDate: Date? {
-        return attributes?[.creationDate] as? Date
     }
 }
