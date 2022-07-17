@@ -9,24 +9,19 @@ import SwiftUI
 
 public struct ImageFileView: View {
 
-    @ObservedObject
-    private var imageFile: CodeFileDocument
+    private let image: NSImage?
 
-    public init(imageFile: CodeFileDocument) {
-        self.imageFile = imageFile
+    public init(image: NSImage?) {
+        self.image = image
     }
 
     public var body: some View {
         GeometryReader { proxy in
-            if let image = imageFile.image {
+            if let image = image {
                 if image.size.width > proxy.size.width || image.size.height > proxy.size.height {
-                    ScrollView {
-                        Image(nsImage: image)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: proxy.size.width)
-                    }
-                    .frame(maxHeight: .infinity)
+                    Image(nsImage: image)
+                        .resizable()
+                        .scaledToFit()
                 } else {
                     Image(nsImage: image)
                         .frame(width: proxy.size.width, height: proxy.size.height)

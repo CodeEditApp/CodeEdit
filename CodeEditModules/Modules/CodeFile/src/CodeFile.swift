@@ -23,9 +23,6 @@ public final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem
     @Published
     var content = ""
 
-    @Published
-    var image: NSImage?
-
     /*
      This is the main type of the document.
      For example, if the file is end with '.png', it will be an image,
@@ -84,13 +81,7 @@ public final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem
     /// This fuction is used for decoding files.
     /// It should not throw error as unsupported files can still be opened by QLPreviewView.
     override public func read(from data: Data, ofType _: String) throws {
-        switch typeOfFile {
-        case .some(.image):
-            guard let image = NSImage(data: data) else { return }
-            self.image = image
-        default:
-            guard let content = String(data: data, encoding: .utf8) else { return }
-            self.content = content
-        }
+        guard let content = String(data: data, encoding: .utf8) else { return }
+        self.content = content
     }
 }

@@ -32,12 +32,9 @@ struct WorkspaceCodeFileView: View {
                 return file.tabID == workspace.selectionState.selectedId
             }) {
                 if let fileItem = workspace.selectionState.openedCodeFiles[item] {
-                    switch fileItem.typeOfFile {
-                    case UTType.image:
-                        imageFileView(fileItem, for: item)
-                    case UTType.text:
+                    if fileItem.typeOfFile == .text {
                         codeFileView(fileItem, for: item)
-                    default:
+                    } else {
                         otherFileView(fileItem, for: item)
                     }
                 }
@@ -57,24 +54,10 @@ struct WorkspaceCodeFileView: View {
         _ codeFile: CodeFileDocument,
         for item: WorkspaceClient.FileItem
     ) -> some View {
-        CodeFileView(codeFile: codeFile)
-            .safeAreaInset(edge: .top, spacing: 0) {
-                VStack(spacing: 0) {
-                    BreadcrumbsView(file: item, tappedOpenFile: workspace.openTab(item:))
-                    Divider()
-                }
-            }
-    }
-
-    @ViewBuilder
-    private func imageFileView(
-        _ imageFile: CodeFileDocument,
-        for item: WorkspaceClient.FileItem
-    ) -> some View {
         VStack(spacing: 0) {
             BreadcrumbsView(file: item, tappedOpenFile: workspace.openTab(item:))
             Divider()
-            ImageFileView(imageFile: imageFile)
+            CodeFileView(codeFile: codeFile)
         }
     }
 
@@ -86,8 +69,25 @@ struct WorkspaceCodeFileView: View {
         VStack(spacing: 0) {
             BreadcrumbsView(file: item, tappedOpenFile: workspace.openTab(item:))
             Divider()
-            OtherFileView(otherFile)
+            if otherFile.typeOfFile == .image {
+                if let url = otherFile.previewItemURL, let image = NSImage(contentsOf: url) {
+                    GeometryReader { proxy in
+                        if image.size.width > proxy.size.width || image.size.height > proxy.size.height {
+                            OtherFileView(otherFile)
+                        } else {
+                            OtherFileView(otherFile)
+                                .frame(width: image.size.width, height: image.size.height)
+                                .position(x: proxy.frame(in: .local).midX, y: proxy.frame(in: .local).midY)
+                        }
+                    }
+                } else {
+                    OtherFileView(otherFile)
+                }
+            } else {
+                OtherFileView(otherFile)
+            }
         }
+
     }
 
     var body: some View {

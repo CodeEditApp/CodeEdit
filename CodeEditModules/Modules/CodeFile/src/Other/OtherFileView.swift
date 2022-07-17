@@ -28,13 +28,18 @@ public struct OtherFileView: NSViewRepresentable {
 
     public func makeNSView(context: Context) -> QLPreviewView {
         let qlPreviewView = QLPreviewView()
-        qlPreviewView.previewItem = otherFile.previewItemURL as QLPreviewItem
+        if let previewItemURL = otherFile.previewItemURL {
+            qlPreviewView.previewItem = previewItemURL as QLPreviewItem
+        }
         return qlPreviewView
     }
 
     /// Update preview file when file changed
     public func updateNSView(_ nsView: QLPreviewView, context: Context) {
-        nsView.previewItem = otherFile.previewItemURL as QLPreviewItem
+        if let previewItemURL = otherFile.previewItemURL {
+            nsView.previewItem = previewItemURL as QLPreviewItem
+        }
+
     }
 
 }
