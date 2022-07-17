@@ -52,11 +52,8 @@ public final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem
     /*
      This is the QLPreviewItemURL
      */
-    public var previewItemURL: URL {
-        guard let fileURL = self.fileURL else {
-            return URL(string: "")!
-        }
-        return fileURL
+    public var previewItemURL: URL? {
+        fileURL
     }
 
     // MARK: - NSDocument
