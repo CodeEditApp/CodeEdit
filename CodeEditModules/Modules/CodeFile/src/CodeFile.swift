@@ -84,18 +84,10 @@ public final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem
     /// This fuction is used for decoding files.
     /// It should not throw error as unsupported files can still be opened by QLPreviewView.
     override public func read(from data: Data, ofType _: String) throws {
-        guard let typeOfFile = self.typeOfFile else {
-            guard let content = String(data: data, encoding: .utf8) else { return }
-            self.content = content
-            return
-        }
         switch typeOfFile {
-        case .image:
+        case .some(.image):
             guard let image = NSImage(data: data) else { return }
             self.image = image
-        case .text:
-            guard let content = String(data: data, encoding: .utf8) else { return }
-            self.content = content
         default:
             guard let content = String(data: data, encoding: .utf8) else { return }
             self.content = content
