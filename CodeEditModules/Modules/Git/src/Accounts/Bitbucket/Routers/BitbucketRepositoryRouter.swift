@@ -48,7 +48,7 @@ public enum BitbucketRepositoryRouter: Router {
             } else {
                 return "repositories"
             }
-        case .readRepository(_, let owner, let name):
+        case let .readRepository(_, owner, name):
             return "repositories/\(owner)/\(name)"
         }
     }
