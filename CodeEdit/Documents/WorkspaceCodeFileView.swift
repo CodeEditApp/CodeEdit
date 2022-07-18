@@ -11,6 +11,7 @@ import WorkspaceClient
 import StatusBar
 import Breadcrumbs
 import AppPreferences
+import UniformTypeIdentifiers
 
 struct WorkspaceCodeFileView: View {
     var windowController: NSWindowController
@@ -30,24 +31,65 @@ struct WorkspaceCodeFileView: View {
                 }
                 return file.tabID == workspace.selectionState.selectedId
             }) {
-                if let codeFile = workspace.selectionState.openedCodeFiles[item] {
-                    CodeFileView(codeFile: codeFile)
-                        .safeAreaInset(edge: .top, spacing: 0) {
-                            VStack(spacing: 0) {
-                                BreadcrumbsView(file: item, tappedOpenFile: workspace.openTab(item:))
-                                Divider()
-                            }
-                        }
-                } else {
-                    Text("No Editor")
-                        .font(.system(size: 17))
-                        .foregroundColor(.secondary)
-                        .frame(minHeight: 0)
-                        .clipped()
+                if let fileItem = workspace.selectionState.openedCodeFiles[item] {
+                    if fileItem.typeOfFile == .text {
+                        codeFileView(fileItem, for: item)
+                    } else {
+                        otherFileView(fileItem, for: item)
+                    }
                 }
+            } else {
+                Text("No Editor")
+                    .font(.system(size: 17))
+                    .foregroundColor(.secondary)
+                    .frame(minHeight: 0)
+                    .clipped()
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    @ViewBuilder
+    private func codeFileView(
+        _ codeFile: CodeFileDocument,
+        for item: WorkspaceClient.FileItem
+    ) -> some View {
+        CodeFileView(codeFile: codeFile)
+            .safeAreaInset(edge: .top, spacing: 0) {
+                VStack(spacing: 0) {
+                    BreadcrumbsView(file: item, tappedOpenFile: workspace.openTab(item:))
+                    Divider()
+                }
+            }
+    }
+
+    @ViewBuilder
+    private func otherFileView(
+        _ otherFile: CodeFileDocument,
+        for item: WorkspaceClient.FileItem
+    ) -> some View {
+        ZStack {
+            if let url = otherFile.previewItemURL,
+               let image = NSImage(contentsOf: url),
+               otherFile.typeOfFile == .image {
+                GeometryReader { proxy in
+                    if image.size.width > proxy.size.width || image.size.height > proxy.size.height {
+                        OtherFileView(otherFile)
+                    } else {
+                        OtherFileView(otherFile)
+                            .frame(width: image.size.width, height: image.size.height)
+                            .position(x: proxy.frame(in: .local).midX, y: proxy.frame(in: .local).midY)
+                    }
+                }
+            } else {
+                OtherFileView(otherFile)
+            }
+        }.safeAreaInset(edge: .top, spacing: 0) {
+            VStack(spacing: 0) {
+                BreadcrumbsView(file: item, tappedOpenFile: workspace.openTab(item:))
+                Divider()
+            }
+        }
     }
 
     var body: some View {

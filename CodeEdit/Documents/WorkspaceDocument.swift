@@ -48,7 +48,9 @@ import TabBar
     func openTab(item: TabBarItemRepresentable) {
         do {
             updateNewlyOpenedTabs(item: item)
-
+            if selectionState.selectedId != item.tabID {
+                selectionState.selectedId = item.tabID
+            }
             switch item.tabID {
             case .codeEditor:
                 guard let file = item as? WorkspaceClient.FileItem else { return }
@@ -58,9 +60,6 @@ import TabBar
                 self.openExtension(item: plugin)
             }
 
-            if selectionState.selectedId != item.tabID {
-                selectionState.selectedId = item.tabID
-            }
         } catch let err {
             Swift.print(err)
         }
@@ -90,17 +89,16 @@ import TabBar
     }
 
     private func openFile(item: WorkspaceClient.FileItem) throws {
+        if !selectionState.openFileItems.contains(item) {
+            selectionState.openFileItems.append(item)
+        }
+        let pathExtention = item.url.pathExtension
         let codeFile = try CodeFileDocument(
             for: item.url,
             withContentsOf: item.url,
-            ofType: "public.source-code"
+            ofType: pathExtention
         )
-
-        if !selectionState.openFileItems.contains(item) {
-            selectionState.openFileItems.append(item)
-
-            selectionState.openedCodeFiles[item] = codeFile
-        }
+        selectionState.openedCodeFiles[item] = codeFile
         Swift.print("Opening file for item: ", item.url)
     }
 
