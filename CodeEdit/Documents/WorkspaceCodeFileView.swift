@@ -54,11 +54,13 @@ struct WorkspaceCodeFileView: View {
         _ codeFile: CodeFileDocument,
         for item: WorkspaceClient.FileItem
     ) -> some View {
-        VStack(spacing: 0) {
-            BreadcrumbsView(file: item, tappedOpenFile: workspace.openTab(item:))
-            Divider()
-            CodeFileView(codeFile: codeFile)
-        }
+        CodeFileView(codeFile: codeFile)
+            .safeAreaInset(edge: .top, spacing: 0) {
+                VStack(spacing: 0) {
+                    BreadcrumbsView(file: item, tappedOpenFile: workspace.openTab(item:))
+                    Divider()
+                }
+            }
     }
 
     @ViewBuilder
@@ -66,28 +68,26 @@ struct WorkspaceCodeFileView: View {
         _ otherFile: CodeFileDocument,
         for item: WorkspaceClient.FileItem
     ) -> some View {
-        VStack(spacing: 0) {
-            BreadcrumbsView(file: item, tappedOpenFile: workspace.openTab(item:))
-            Divider()
-            if otherFile.typeOfFile == .image {
-                if let url = otherFile.previewItemURL, let image = NSImage(contentsOf: url) {
-                    GeometryReader { proxy in
-                        if image.size.width > proxy.size.width || image.size.height > proxy.size.height {
-                            OtherFileView(otherFile)
-                        } else {
-                            OtherFileView(otherFile)
-                                .frame(width: image.size.width, height: image.size.height)
-                                .position(x: proxy.frame(in: .local).midX, y: proxy.frame(in: .local).midY)
-                        }
+        ZStack {
+            if let url = otherFile.previewItemURL, let image = NSImage(contentsOf: url), otherFile.typeOfFile == .image {
+                GeometryReader { proxy in
+                    if image.size.width > proxy.size.width || image.size.height > proxy.size.height {
+                        OtherFileView(otherFile)
+                    } else {
+                        OtherFileView(otherFile)
+                            .frame(width: image.size.width, height: image.size.height)
+                            .position(x: proxy.frame(in: .local).midX, y: proxy.frame(in: .local).midY)
                     }
-                } else {
-                    OtherFileView(otherFile)
                 }
             } else {
                 OtherFileView(otherFile)
             }
+        }.safeAreaInset(edge: .top, spacing: 0) {
+            VStack(spacing: 0) {
+                BreadcrumbsView(file: item, tappedOpenFile: workspace.openTab(item:))
+                Divider()
+            }
         }
-
     }
 
     var body: some View {
