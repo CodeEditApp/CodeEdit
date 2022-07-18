@@ -69,7 +69,9 @@ struct WorkspaceCodeFileView: View {
         for item: WorkspaceClient.FileItem
     ) -> some View {
         ZStack {
-            if let url = otherFile.previewItemURL, let image = NSImage(contentsOf: url), otherFile.typeOfFile == .image {
+            if let url = otherFile.previewItemURL,
+               let image = NSImage(contentsOf: url),
+               otherFile.typeOfFile == .image {
                 GeometryReader { proxy in
                     if image.size.width > proxy.size.width || image.size.height > proxy.size.height {
                         OtherFileView(otherFile)
