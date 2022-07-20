@@ -194,10 +194,14 @@ import TabBar
         selectionState.openFileItems.remove(at: openFileItemIdx)
     }
 
+    /// Closes an open tab, save text files only.
+    /// Removes the tab item from `openedCodeFiles`, `openedExtensions`, and `openFileItems`.
     private func closeFileTab(item: WorkspaceClient.FileItem) {
         defer {
             let file = selectionState.openedCodeFiles.removeValue(forKey: item)
-            file?.save(self)
+            if file?.typeOfFile == .text {
+                file?.save(self)
+            }
         }
 
         guard let idx = selectionState.openFileItems.firstIndex(of: item) else { return }
