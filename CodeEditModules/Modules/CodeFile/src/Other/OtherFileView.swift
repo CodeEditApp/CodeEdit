@@ -36,10 +36,12 @@ public struct OtherFileView: NSViewRepresentable {
 
     /// Update preview file when file changed
     public func updateNSView(_ nsView: QLPreviewView, context: Context) {
-        if let previewItemURL = otherFile.previewItemURL {
-            nsView.previewItem = previewItemURL as QLPreviewItem
+        guard let currentPreviewItem = nsView.previewItem else {
+            return
         }
-
+        if let previewItemURL = otherFile.previewItemURL, previewItemURL != currentPreviewItem.previewItemURL {
+            nsView.previewItem = previewItemURL as QLPreviewItem
+            nsView.refreshPreviewItem()
+        }
     }
-
 }
