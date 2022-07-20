@@ -21,14 +21,13 @@ struct SourceControlNavigatorView: View {
     }
 
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             SegmentedControl($selectedSection,
                              options: ["Changes", "Repositories"],
                              prominent: true)
             .frame(maxWidth: .infinity)
             .frame(height: 27)
             .padding(.horizontal, 8)
-            .padding(.bottom, 2)
             .overlay(alignment: .bottom) {
                 Divider()
             }
