@@ -108,16 +108,16 @@ enum ProjectRouter: Router {
 
     var params: [String: Any] {
         switch self {
-        case .readAuthenticatedProjects(
+        case let .readAuthenticatedProjects(
             _,
-            let page,
-            let perPage,
-            let archived,
-            let visibility,
-            let orderBy,
-            let sort,
-            let search,
-            let simple):
+            page,
+            perPage,
+            archived,
+            visibility,
+            orderBy,
+            sort,
+            search,
+            simple):
             return [
                 "page": page,
                 "per_page": perPage,
@@ -127,16 +127,16 @@ enum ProjectRouter: Router {
                 "sort": sort,
                 "search": search,
                 "simple": String(simple)]
-        case .readVisibleProjects(
+        case let .readVisibleProjects(
             _,
-            let page,
-            let perPage,
-            let archived,
-            let visibility,
-            let orderBy,
-            let sort,
-            let search,
-            let simple):
+            page,
+            perPage,
+            archived,
+            visibility,
+            orderBy,
+            sort,
+            search,
+            simple):
             return [
                 "page": page,
                 "per_page": perPage,
@@ -146,15 +146,16 @@ enum ProjectRouter: Router {
                 "sort": sort,
                 "search": search,
                 "simple": String(simple)]
-        case .readOwnedProjects(
-            _, let page,
-            let perPage,
-            let archived,
-            let visibility,
-            let orderBy,
-            let sort,
-            let search,
-            let simple):
+        case let .readOwnedProjects(
+            _,
+            page,
+            perPage,
+            archived,
+            visibility,
+            orderBy,
+            sort,
+            search,
+            simple):
             return [
                 "page": page,
                 "per_page": perPage,
@@ -164,16 +165,16 @@ enum ProjectRouter: Router {
                 "sort": sort,
                 "search": search,
                 "simple": String(simple)]
-        case .readStarredProjects(
+        case let .readStarredProjects(
             _,
-            let page,
-            let perPage,
-            let archived,
-            let visibility,
-            let orderBy,
-            let sort,
-            let search,
-            let simple):
+            page,
+            perPage,
+            archived,
+            visibility,
+            orderBy,
+            sort,
+            search,
+            simple):
             return [
                 "page": page,
                 "per_page": perPage,
@@ -183,16 +184,16 @@ enum ProjectRouter: Router {
                 "sort": sort,
                 "search": search,
                 "simple": String(simple)]
-        case .readAllProjects(
+        case let .readAllProjects(
             _,
-            let page,
-            let perPage,
-            let archived,
-            let visibility,
-            let orderBy,
-            let sort,
-            let search,
-            let simple):
+            page,
+            perPage,
+            archived,
+            visibility,
+            orderBy,
+            sort,
+            search,
+            simple):
             return [
                 "page": page,
                 "per_page": perPage,
@@ -204,7 +205,7 @@ enum ProjectRouter: Router {
                 "simple": String(simple)]
         case .readSingleProject:
             return [:]
-        case .readProjectEvents(_, _, let page, let perPage):
+        case let .readProjectEvents(_, _, page, perPage):
             return ["per_page": perPage, "page": page]
         case .readProjectHooks:
             return [:]
@@ -231,7 +232,7 @@ enum ProjectRouter: Router {
             return "projects/\(id)/events"
         case .readProjectHooks(_, let id):
             return "projects/\(id)/hooks"
-        case .readProjectHook(_, let id, let hookId):
+        case let .readProjectHook(_, id, hookId):
             return "projects/\(id)/hooks/\(hookId)"
         }
     }

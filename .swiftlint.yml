@@ -20,6 +20,7 @@ opt_in_rules:
 #  - implicit_return
   - modifier_order
   - convenience_type
+  - pattern_matching_keywords
 
 custom_rules:
   spaces_over_tabs:

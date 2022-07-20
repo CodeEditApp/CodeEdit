@@ -269,6 +269,33 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "evolify",
+      "name": "evolify",
+      "avatar_url": "https://avatars.githubusercontent.com/u/12669069?v=4",
+      "profile": "https://github.com/evolify",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "shibotong",
+      "name": "Shibo Tong",
+      "avatar_url": "https://avatars.githubusercontent.com/u/44807628?v=4",
+      "profile": "https://github.com/shibotong",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "GetToSet",
+      "name": "Ethan Wong",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8158163?v=4",
+      "profile": "https://ethanwong.me",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,

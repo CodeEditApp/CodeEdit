@@ -33,6 +33,24 @@ public extension WorkspaceClient {
 
         public typealias ID = String
 
+        public var watcher: DispatchSourceFileSystemObject?
+        static var watcherCode: () -> Void = {}
+
+        public func activateWatcher() -> Bool {
+            let descriptor = open(self.url.path, O_EVTONLY)
+            guard descriptor > 0 else { return false }
+            let source = DispatchSource.makeFileSystemObjectSource(
+                fileDescriptor: descriptor,
+                eventMask: .write,
+                queue: DispatchQueue.global()
+            )
+            source.setEventHandler { FileItem.watcherCode() }
+            source.setCancelHandler { close(descriptor) }
+            source.resume()
+            self.watcher = source
+            return true
+        }
+
         public init(
             url: URL,
             children: [FileItem]? = nil
@@ -96,6 +114,9 @@ public extension WorkspaceClient {
             case nil:
                 return FileIcon.fileIcon(fileType: fileType)
             case let .some(children):
+                if self.watcher == nil && !self.activateWatcher() {
+                    return "questionmark.folder"
+                }
                 return folderIcon(children)
             }
         }
