@@ -41,7 +41,6 @@ public struct OtherFileView: NSViewRepresentable {
         }
         if let previewItemURL = otherFile.previewItemURL, previewItemURL != currentPreviewItem.previewItemURL {
             nsView.previewItem = previewItemURL as QLPreviewItem
-            nsView.refreshPreviewItem()
         }
     }
 }
