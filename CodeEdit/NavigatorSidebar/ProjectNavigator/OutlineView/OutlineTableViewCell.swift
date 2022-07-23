@@ -29,6 +29,7 @@ final class OutlineTableViewCell: NSTableCellView {
         self.label.delegate = self
         self.label.layer?.cornerRadius = 10.0
         self.label.font = .labelFont(ofSize: fontSize)
+        self.label.lineBreakMode = .byTruncatingMiddle
 
         self.addSubview(label)
         self.textField = label
