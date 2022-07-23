@@ -201,7 +201,7 @@ import TabBar
             do {
                 guard let file = selectionState.openedCodeFiles.removeValue(forKey: item) else { throw NSError() }
                 guard let url  = file.fileURL else { throw NSError() }
-                
+
                 if file.typeOfFile == .text {
                     try NSData(data: file.data(ofType: "public.source-code")).write(to: url, atomically: true)
                 }
@@ -209,7 +209,7 @@ import TabBar
                 Swift.print("Failed to write file for item: ", item.url)
             }
         }
-        
+
         guard let idx = selectionState.openFileItems.firstIndex(of: item) else { return }
         selectionState.openFileItems.remove(at: idx)
     }
