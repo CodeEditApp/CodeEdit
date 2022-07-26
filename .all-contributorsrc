@@ -296,6 +296,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "gantoreno",
+      "name": "Gabriel Moreno",
+      "avatar_url": "https://avatars.githubusercontent.com/u/43397475?v=4",
+      "profile": "http://gantoreno.com",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
