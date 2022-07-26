@@ -198,9 +198,15 @@ import TabBar
     /// Removes the tab item from `openedCodeFiles`, `openedExtensions`, and `openFileItems`.
     private func closeFileTab(item: WorkspaceClient.FileItem) {
         defer {
-            let file = selectionState.openedCodeFiles.removeValue(forKey: item)
-            if file?.typeOfFile == .text {
-                file?.save(self)
+            do {
+                guard let file = selectionState.openedCodeFiles.removeValue(forKey: item) else { throw NSError() }
+                guard let url  = file.fileURL else { throw NSError() }
+
+                if file.typeOfFile == .text {
+                    try NSData(data: file.data(ofType: "public.source-code")).write(to: url, atomically: true)
+                }
+            } catch {
+                Swift.print("Failed to write file for item: ", item.url)
             }
         }
 
