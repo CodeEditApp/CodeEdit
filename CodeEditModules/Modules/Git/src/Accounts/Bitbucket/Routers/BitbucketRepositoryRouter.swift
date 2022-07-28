@@ -19,11 +19,11 @@ public enum BitbucketRepositoryRouter: Router {
     }
 
     public var method: HTTPMethod {
-        return .GET
+        .GET
     }
 
     public var encoding: HTTPEncoding {
-        return .url
+        .url
     }
 
     public var params: [String: Any] {
@@ -48,7 +48,7 @@ public enum BitbucketRepositoryRouter: Router {
             } else {
                 return "repositories"
             }
-        case .readRepository(_, let owner, let name):
+        case let .readRepository(_, owner, name):
             return "repositories/\(owner)/\(name)"
         }
     }

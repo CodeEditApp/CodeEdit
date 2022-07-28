@@ -47,6 +47,9 @@ public extension AppPreferences {
         /// The Issue Navigator Detail line limit
         public var issueNavigatorDetail: NavigatorDetail = .upTo3
 
+        /// The reveal file in navigator when focus changes behavior of the app.
+        public var revealFileOnFocusChange: Bool = false
+
         /// Default initializer
         public init() {}
 
@@ -102,6 +105,10 @@ public extension AppPreferences {
                 NavigatorDetail.self,
                 forKey: .issueNavigatorDetail
             ) ?? .upTo3
+            self.revealFileOnFocusChange = try container.decodeIfPresent(
+                Bool.self,
+                forKey: .revealFileOnFocusChange
+            ) ?? false
         }
         // swiftlint:enable function_body_length
     }
@@ -162,8 +169,8 @@ public extension AppPreferences {
             set {
                 extensions = newValue
                     .components(separatedBy: ",")
-                    .map({$0.trimmingCharacters(in: .whitespacesAndNewlines)})
-                    .filter({!$0.isEmpty || string.count < newValue.count })
+                    .map({ $0.trimmingCharacters(in: .whitespacesAndNewlines) })
+                    .filter({ !$0.isEmpty || string.count < newValue.count })
             }
         }
 

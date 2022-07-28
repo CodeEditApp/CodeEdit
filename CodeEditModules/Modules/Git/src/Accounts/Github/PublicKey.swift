@@ -10,6 +10,8 @@ import Foundation
 import FoundationNetworking
 #endif
 
+// TODO: DOCS (Nanashi Li)
+// swiftlint:disable missing_docs
 public extension GithubAccount {
     func postPublicKey(_ session: GitURLSession = URLSession.shared,
                        publicKey: String,

@@ -12,6 +12,8 @@ import Foundation
 import FoundationNetworking
 #endif
 
+// TODO: DOCS (Nanashi Li)
+// swiftlint:disable missing_docs
 public protocol GitURLSession {
 
     func dataTask(
@@ -46,13 +48,13 @@ extension URLSession: GitURLSession {
     public func dataTask(
         with request: URLRequest,
         completionHandler: @escaping (Data?, URLResponse?, Error?) -> Swift.Void) -> URLSessionDataTaskProtocol {
-            return (dataTask(with: request, completionHandler: completionHandler) as URLSessionDataTask)
+            (dataTask(with: request, completionHandler: completionHandler) as URLSessionDataTask)
         }
 
     public func uploadTask(
         with request: URLRequest,
         fromData bodyData: Data?,
         completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTaskProtocol {
-            return uploadTask(with: request, from: bodyData, completionHandler: completionHandler)
+            uploadTask(with: request, from: bodyData, completionHandler: completionHandler)
         }
 }

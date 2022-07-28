@@ -66,7 +66,7 @@ public struct OAuthConfiguration: Configuration {
     }
 
     public func authenticate() -> URL? {
-        return GithubOAuthRouter.authorize(self).URLRequest?.url
+        GithubOAuthRouter.authorize(self).URLRequest?.url
     }
 
     public func authorize(

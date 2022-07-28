@@ -34,6 +34,7 @@ struct ChangesView: View {
                     Section("Local Changes") {
                         ForEach(model.changed) { file in
                             ChangedFileItemView(changedFile: file,
+                                                selection: $selectedFile,
                                                 workspaceURL: model.workspaceURL)
                         }
                     }

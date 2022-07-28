@@ -7,6 +7,8 @@
 
 import Foundation
 
+// TODO: DOCS (Nanashi Li)
+// swiftlint:disable missing_docs
 open class BitbucketRepositories: Codable {
     open var id: String
     open var owner: BitbucketUser

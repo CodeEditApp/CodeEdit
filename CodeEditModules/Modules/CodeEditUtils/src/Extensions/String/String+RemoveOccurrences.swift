@@ -1,5 +1,5 @@
 //
-//  String+RemoveOccurances.swift
+//  String+RemoveOccurrences.swift
 //  CodeEditModules/CodeEditUtils
 //
 //  Created by Lukas Pistrol on 24.04.22.

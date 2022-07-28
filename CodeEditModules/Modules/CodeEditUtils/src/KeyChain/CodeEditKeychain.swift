@@ -8,6 +8,8 @@
 import Foundation
 import Security
 
+// TODO: DOCS (Nanashi Li)
+// swiftlint:disable missing_docs
 open class CodeEditKeychain {
 
     var lastQueryParameters: [String: Any]? // Used by the unit tests
@@ -273,7 +275,7 @@ open class CodeEditKeychain {
 
     /// Returns the key with currently set prefix.
     func keyWithPrefix(_ key: String) -> String {
-        return "\(keyPrefix)\(key)"
+        "\(keyPrefix)\(key)"
     }
 
     func addAccessGroupWhenPresent(_ items: [String: Any]) -> [String: Any] {
