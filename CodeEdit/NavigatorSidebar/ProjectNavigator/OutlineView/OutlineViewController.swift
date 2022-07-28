@@ -46,6 +46,11 @@ final class OutlineViewController: NSViewController {
         }
     }
 
+    /// This helps determine whether or not to send an `openTab` when the selection changes.
+    /// Used b/c the state may update when the selection changes, but we don't necessarily want
+    /// to open the file a second time.
+    private var shouldSendSelectionUpdate: Bool = true
+
     /// Setup the ``scrollView`` and ``outlineView``
     override func loadView() {
         self.scrollView = NSScrollView()
@@ -69,6 +74,7 @@ final class OutlineViewController: NSViewController {
         self.scrollView.contentView.automaticallyAdjustsContentInsets = false
         self.scrollView.contentView.contentInsets = .init(top: 10, left: 0, bottom: 0, right: 0)
 
+        WorkspaceClient.onRefresh = self.outlineView.reloadData
         outlineView.expandItem(outlineView.item(atRow: 0))
     }
 
@@ -100,6 +106,10 @@ final class OutlineViewController: NSViewController {
         if item.children != nil {
             let isExpanded = outlineView.isItemExpanded(item)
             isExpanded ? outlineView.collapseItem(item) : outlineView.expandItem(item)
+        } else {
+            if workspace?.selectionState.temporaryTab == item.tabID {
+                workspace?.convertTemporaryTab()
+            }
         }
     }
 
@@ -147,11 +157,11 @@ extension OutlineViewController: NSOutlineViewDataSource {
 extension OutlineViewController: NSOutlineViewDelegate {
     func outlineView(_ outlineView: NSOutlineView,
                      shouldShowCellExpansionFor tableColumn: NSTableColumn?, item: Any) -> Bool {
-        return true
+        true
     }
 
     func outlineView(_ outlineView: NSOutlineView, shouldShowOutlineCellForItem item: Any) -> Bool {
-        return true
+        true
     }
 
     func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
@@ -164,6 +174,7 @@ extension OutlineViewController: NSOutlineViewDelegate {
 
         if let item = item as? Item {
             let image = NSImage(systemSymbolName: item.systemImage, accessibilityDescription: nil)!
+            view.fileItem = item
             view.icon.image = image
             view.icon.contentTintColor = color(for: item)
 
@@ -195,13 +206,13 @@ extension OutlineViewController: NSOutlineViewDelegate {
 
         guard let item = outlineView.item(atRow: selectedIndex) as? Item else { return }
 
-        if item.children == nil {
+        if item.children == nil && shouldSendSelectionUpdate {
             workspace?.openTab(item: item)
         }
     }
 
     func outlineView(_ outlineView: NSOutlineView, heightOfRowByItem item: Any) -> CGFloat {
-        return rowHeight // This can be changed to 20 to match Xcodes row height.
+        rowHeight // This can be changed to 20 to match Xcode's row height.
     }
 
     func outlineViewItemDidExpand(_ notification: Notification) {
@@ -226,6 +237,14 @@ extension OutlineViewController: NSOutlineViewDelegate {
     ///   - id: the id of the item item
     ///   - collection: the array to search for
     private func select(by id: TabBarItemID, from collection: [Item]) {
+        // If the user has set "Reveal file on selection change" to on, we need to reveal the item before
+        // selecting the row.
+        if AppPreferencesModel.shared.preferences.general.revealFileOnFocusChange,
+           case let .codeEditor(id) = id,
+           let fileItem = try? workspace?.workspaceClient?.getFileItem(id as Item.ID) as? Item {
+            reveal(fileItem)
+        }
+
         guard let item = collection.first(where: { $0.tabID == id }) else {
             for item in collection {
                 select(by: id, from: item.children ?? [])
@@ -236,7 +255,39 @@ extension OutlineViewController: NSOutlineViewDelegate {
         if row == -1 {
             outlineView.deselectRow(outlineView.selectedRow)
         }
+        shouldSendSelectionUpdate = false
         outlineView.selectRowIndexes(.init(integer: row), byExtendingSelection: false)
+        shouldSendSelectionUpdate = true
+    }
+
+    /// Reveals the given `fileItem` in the outline view by expanding all the parent directories of the file.
+    /// If the file is not found, it will present an alert saying so.
+    /// - Parameter fileItem: The file to reveal.
+    public func reveal(_ fileItem: Item) {
+        if let parent = fileItem.parent {
+            expandParent(item: parent)
+        }
+        let row = outlineView.row(forItem: fileItem)
+        outlineView.selectRowIndexes(.init(integer: row), byExtendingSelection: false)
+
+        if row < 0 {
+            let alert = NSAlert()
+            alert.messageText = NSLocalizedString("Could not find file",
+                                                  comment: "Could not find file")
+            alert.runModal()
+            return
+        } else {
+            outlineView.scrollRowToVisible(row)
+        }
+    }
+
+    /// Method for recursively expanding a file's parent directories.
+    /// - Parameter item:
+    private func expandParent(item: Item) {
+        if let parent = item.parent as Item? {
+            expandParent(item: parent)
+        }
+        outlineView.expandItem(item)
     }
 }
 
@@ -255,6 +306,7 @@ extension OutlineViewController: NSMenuDelegate {
         } else {
             if let item = outlineView.item(atRow: row) as? Item {
                 menu.item = item
+                menu.workspace = workspace
             } else {
                 menu.item = nil
             }

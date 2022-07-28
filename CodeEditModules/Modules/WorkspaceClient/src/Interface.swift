@@ -8,6 +8,8 @@
 import Combine
 import Foundation
 
+// TODO: DOCS (Marco Carnevali)
+// swiftlint:disable missing_docs
 public struct WorkspaceClient {
 
     public var folderURL: () -> URL?
@@ -15,6 +17,10 @@ public struct WorkspaceClient {
     public var getFiles: AnyPublisher<[FileItem], Never>
 
     public var getFileItem: (_ id: String) throws -> FileItem
+
+    /// callback function that is run when a change is detected in the file system.
+    /// This usually contains a `reloadData` function.
+    public static var onRefresh: () -> Void = {}
 
     // For some strange reason, swiftlint thinks this is wrong?
     public init(

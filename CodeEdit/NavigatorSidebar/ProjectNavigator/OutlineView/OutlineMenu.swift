@@ -16,6 +16,9 @@ final class OutlineMenu: NSMenu {
     /// The item to show the contextual menu for
     var item: Item?
 
+    /// The workspace, for opening the item
+    var workspace: WorkspaceDocument?
+
     var outlineView: NSOutlineView
 
     init(sender: NSOutlineView) {
@@ -47,17 +50,21 @@ final class OutlineMenu: NSMenu {
         guard let item = item else { return }
         let showInFinder = menuItem("Show in Finder", action: #selector(showInFinder))
 
-        let openInTab = menuItem("Open in Tab", action: nil)
+        let openInTab = menuItem("Open in Tab", action: #selector(openInTab))
         let openInNewWindow = menuItem("Open in New Window", action: nil)
-        let openExternalEditor = menuItem("Open with External Editor", action: nil)
+        let openExternalEditor = menuItem("Open with External Editor", action: #selector(openWithExternalEditor))
         let openAs = menuItem("Open As", action: nil)
 
         let showFileInspector = menuItem("Show File Inspector", action: nil)
 
-        let newFile = menuItem("New File...", action: nil)
-        let newFolder = menuItem("New Folder", action: nil)
+        let newFile = menuItem("New File...", action: #selector(newFile))
+        let newFolder = menuItem("New Folder", action: #selector(newFolder))
 
-        let delete = menuItem("Delete", action: #selector(delete))
+        let delete = menuItem("Delete", action:
+                                item.url != workspace?.workspaceClient?.folderURL()
+                              ? #selector(delete) : nil)
+
+        let duplicate = menuItem("Duplicate \(item.isFolder ? "Folder" : "File")", action: #selector(duplicate))
 
         let sortByName = menuItem("Sort by Name", action: nil)
         sortByName.isEnabled = item.isFolder
@@ -81,6 +88,7 @@ final class OutlineMenu: NSMenu {
             newFolder,
             NSMenuItem.separator(),
             delete,
+            duplicate,
             NSMenuItem.separator(),
             sortByName,
             sortByType,
@@ -169,10 +177,47 @@ final class OutlineMenu: NSMenu {
         item?.showInFinder()
     }
 
+    /// Action that opens the item, identical to clicking it.
+    @objc
+    private func openInTab() {
+        if let item = item {
+            workspace?.openTab(item: item)
+        }
+    }
+
+    /// Action that opens in an external editor
+    @objc
+    private func openWithExternalEditor() {
+        item?.openWithExternalEditor()
+    }
+
+    // TODO: allow custom file names
+    /// Action that creates a new untitled file
+    @objc
+    private func newFile() {
+        item?.addFile(fileName: "untitled")
+        outlineView.expandItem((item?.isFolder ?? true) ? item : item?.parent)
+    }
+
+    // TODO: allow custom folder names
+    /// Action that creates a new untitled folder
+    @objc
+    private func newFolder() {
+        item?.addFolder(folderName: "untitled")
+        outlineView.expandItem(item)
+        outlineView.expandItem((item?.isFolder ?? true) ? item : item?.parent)
+    }
+
     /// Action that deletes the item.
     @objc
     private func delete() {
         item?.delete()
+    }
+
+    /// Action that duplicates the item
+    @objc
+    private func duplicate() {
+        item?.duplicate()
     }
 }
 

@@ -49,7 +49,7 @@ struct FindNavigatorResultFileItem: View {
 
     var body: some View {
         DisclosureGroup(isExpanded: $isExpanded) {
-            ForEach(results, id: \.lineContent) { (result: SearchResultModel) in
+            ForEach(results, id: \.self) { (result: SearchResultModel) in
                 HStack(alignment: .top, spacing: 4) {
                     Image(systemName: "text.alignleft")
                         .font(.system(size: 12))

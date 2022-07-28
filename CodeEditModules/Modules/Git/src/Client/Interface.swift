@@ -7,6 +7,9 @@
 import Foundation
 import Combine
 
+// TODO: DOCS (Marco Carnevali)
+// swiftlint:disable missing_docs
+
 public struct GitClient {
     public var getCurrentBranchName: () throws -> String
     public var getBranches: (Bool) throws -> [String]

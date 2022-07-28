@@ -211,7 +211,7 @@ extension GitCloneView {
         do {
             let branches = try GitClient.default(directoryURL: dirUrl,
                                   shellClient: shellClient).getBranches(true)
-            let filtered = branches.filter {!$0.contains("HEAD")}
+            let filtered = branches.filter { !$0.contains("HEAD") }
             if filtered.count > 1 {
                 showCheckout = true
             }

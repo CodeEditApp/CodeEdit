@@ -105,6 +105,15 @@ Be part of the next revolution in code editing by contributing to the project. T
     <td align="center"><a href="http://mmshivesh.ml"><img src="https://avatars.githubusercontent.com/u/23611514?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Shivesh</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=mmshivesh" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/drucelweisse"><img src="https://avatars.githubusercontent.com/u/36012972?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Andrey Plotnikov</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=drucelweisse" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/POPOBE97"><img src="https://avatars.githubusercontent.com/u/7891810?v=4?s=100" width="100px;" alt=""/><br /><sub><b>POPOBE97</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=POPOBE97" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/nrudnyk"><img src="https://avatars.githubusercontent.com/u/20221382?v=4?s=100" width="100px;" alt=""/><br /><sub><b>nrudnyk</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=nrudnyk" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/KaiTheRedNinja"><img src="https://avatars.githubusercontent.com/u/88234730?v=4?s=100" width="100px;" alt=""/><br /><sub><b>KaiTheRedNinja</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=KaiTheRedNinja" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/benkoska"><img src="https://avatars.githubusercontent.com/u/17319613?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ben Koska</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=benkoska" title="Code">💻</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/evolify"><img src="https://avatars.githubusercontent.com/u/12669069?v=4?s=100" width="100px;" alt=""/><br /><sub><b>evolify</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3Aevolify" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/shibotong"><img src="https://avatars.githubusercontent.com/u/44807628?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Shibo Tong</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=shibotong" title="Code">💻</a></td>
+    <td align="center"><a href="https://ethanwong.me"><img src="https://avatars.githubusercontent.com/u/8158163?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ethan Wong</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=GetToSet" title="Code">💻</a></td>
+    <td align="center"><a href="http://gantoreno.com"><img src="https://avatars.githubusercontent.com/u/43397475?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Gabriel Moreno</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3Agantoreno" title="Bug reports">🐛</a></td>
   </tr>
 </table>
 
@@ -132,6 +141,7 @@ Support CodeEdit's development by [becoming a backer](https://github.com/sponsor
 <a title="sparrowcode" href="https://github.com/sparrowcode" target="_blank"><img src="https://avatars.githubusercontent.com/u/98487302?s=200&v=4" width="64"></a>
 <a title="Gebes" href="https://github.com/Gebes" target="_blank"><img src="https://avatars.githubusercontent.com/u/35232234?v=4" width="64"></a>
 <a title="lovetodream" href="https://github.com/lovetodream" target="_blank"><img src="https://avatars.githubusercontent.com/u/38291523?v=4" width="64"></a>
+<a title="ridafkih" href="https://github.com/ridafkih" target="_blank"><img src="https://avatars.githubusercontent.com/u/9158485?v=4" width="64"></a>
 
 ### Thanks to all of our other backers
 
@@ -142,6 +152,7 @@ Support CodeEdit's development by [becoming a backer](https://github.com/sponsor
 [@petrjahoda](https://github.com/petrjahoda)
 [@allejo](https://github.com/allejo)
 [@frousselet](frousselet)
+[@wkillerud](wkillerud)
 
 ## License
 

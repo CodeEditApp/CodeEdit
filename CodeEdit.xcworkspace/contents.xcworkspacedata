@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:CodeEditCli">
+   </FileRef>
+   <FileRef
       location = "group:CodeEditModules">
    </FileRef>
    <FileRef

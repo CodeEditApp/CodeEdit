@@ -13,7 +13,7 @@ final class CodeEditAPI: ExtensionAPI {
      var workspace: WorkspaceDocument
 
      var workspaceURL: URL {
-         return workspace.fileURL!
+         workspace.fileURL!
      }
 
      init(extensionId: String, workspace: WorkspaceDocument) {

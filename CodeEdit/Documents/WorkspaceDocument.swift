@@ -14,12 +14,12 @@ import CodeFile
 import Search
 import QuickOpen
 import CodeEditKit
+import CodeEditUtils
 import ExtensionsStore
 import StatusBar
 import TabBar
 
-@objc(WorkspaceDocument)
-final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
+@objc(WorkspaceDocument) final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var workspaceClient: WorkspaceClient?
 
     var extensionNavigatorData = ExtensionNavigatorData()
@@ -32,18 +32,26 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var searchState: SearchState?
     var quickOpenState: QuickOpenState?
     var commandsPaletteState: CommandPaletteState?
+    var listenerModel: WorkspaceNotificationModel = .init()
     private var cancellables = Set<AnyCancellable>()
 
     @Published var targets: [Target] = []
 
     deinit {
         cancellables.forEach { $0.cancel() }
+        NotificationCenter.default.removeObserver(self)
     }
+
+    // MARK: Open Tabs
 
     /// Opens new tab
     /// - Parameter item: any item which can be represented as a tab
     func openTab(item: TabBarItemRepresentable) {
         do {
+            updateNewlyOpenedTabs(item: item)
+            if selectionState.selectedId != item.tabID {
+                selectionState.selectedId = item.tabID
+            }
             switch item.tabID {
             case .codeEditor:
                 guard let file = item as? WorkspaceClient.FileItem else { return }
@@ -53,30 +61,45 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
                 self.openExtension(item: plugin)
             }
 
-            if !selectionState.openedTabs.contains(item.tabID) {
-                selectionState.openedTabs.append(item.tabID)
-            }
-
-            if selectionState.selectedId != item.tabID {
-                selectionState.selectedId = item.tabID
-            }
         } catch let err {
             Swift.print(err)
         }
     }
 
+    /// Updates the opened tabs and temporary tab.
+    /// - Parameter item: The item to use to update the tab state.
+    private func updateNewlyOpenedTabs(item: TabBarItemRepresentable) {
+        if !selectionState.openedTabs.contains(item.tabID) {
+            // If this isn't opened then we do the temp tab functionality
+
+            // But, if there is already a temporary tab, close it first
+            if selectionState.temporaryTab != nil {
+                if let index = selectionState.openedTabs.firstIndex(of: selectionState.temporaryTab!) {
+                    closeTemporaryTab()
+                    selectionState.openedTabs[index] = item.tabID
+                } else {
+                    selectionState.openedTabs.append(item.tabID)
+                }
+            } else {
+                selectionState.openedTabs.append(item.tabID)
+            }
+
+            selectionState.previousTemporaryTab = selectionState.temporaryTab
+            selectionState.temporaryTab = item.tabID
+        }
+    }
+
     private func openFile(item: WorkspaceClient.FileItem) throws {
+        if !selectionState.openFileItems.contains(item) {
+            selectionState.openFileItems.append(item)
+        }
+        let pathExtention = item.url.pathExtension
         let codeFile = try CodeFileDocument(
             for: item.url,
             withContentsOf: item.url,
-            ofType: "public.source-code"
+            ofType: pathExtention
         )
-
-        if !selectionState.openFileItems.contains(item) {
-            selectionState.openFileItems.append(item)
-
-            selectionState.openedCodeFiles[item] = codeFile
-        }
+        selectionState.openedCodeFiles[item] = codeFile
         Swift.print("Opening file for item: ", item.url)
     }
 
@@ -86,9 +109,16 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         }
     }
 
+    // MARK: Close Tabs
+
     /// Closes single tab
     /// - Parameter id: tab bar item's identifier to be closed
     func closeTab(item id: TabBarItemID) {
+        if id == selectionState.temporaryTab {
+            selectionState.previousTemporaryTab = selectionState.temporaryTab
+            selectionState.temporaryTab = nil
+        }
+
         guard let idx = selectionState.openedTabs.firstIndex(of: id) else { return }
         let closedID = selectionState.openedTabs.remove(at: idx)
         guard closedID == id else { return }
@@ -143,10 +173,42 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         closeTabs(items: range)
     }
 
+    /// Closes an open temporary tab,  does not save the temporary tab's file.
+    /// Removes the tab item from `openedCodeFiles`, `openedExtensions`, and `openFileItems`.
+    private func closeTemporaryTab() {
+        guard let id = selectionState.temporaryTab else { return }
+
+        switch id {
+        case .codeEditor:
+            guard let item = selectionState.getItemByTab(id: id)
+                    as? WorkspaceClient.FileItem else { return }
+            selectionState.openedCodeFiles.removeValue(forKey: item)
+        case .extensionInstallation:
+            guard let item = selectionState.getItemByTab(id: id)
+                    as? Plugin else { return }
+            closeExtensionTab(item: item)
+        }
+
+        guard let openFileItemIdx = selectionState
+            .openFileItems
+            .firstIndex(where: { $0.tabID == id }) else { return }
+        selectionState.openFileItems.remove(at: openFileItemIdx)
+    }
+
+    /// Closes an open tab, save text files only.
+    /// Removes the tab item from `openedCodeFiles`, `openedExtensions`, and `openFileItems`.
     private func closeFileTab(item: WorkspaceClient.FileItem) {
         defer {
-            let file = selectionState.openedCodeFiles.removeValue(forKey: item)
-            file?.save(self)
+            do {
+                guard let file = selectionState.openedCodeFiles.removeValue(forKey: item) else { throw NSError() }
+                guard let url  = file.fileURL else { throw NSError() }
+
+                if file.typeOfFile == .text {
+                    try NSData(data: file.data(ofType: "public.source-code")).write(to: url, atomically: true)
+                }
+            } catch {
+                Swift.print("Failed to write file for item: ", item.url)
+            }
         }
 
         guard let idx = selectionState.openFileItems.firstIndex(of: item) else { return }
@@ -158,16 +220,27 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         selectionState.openedExtensions.remove(at: idx)
     }
 
+    /// Makes the temporary tab permanent when a file save or edit happens.
+    @objc func convertTemporaryTab() {
+        if selectionState.selectedId == selectionState.temporaryTab &&
+            selectionState.temporaryTab != nil {
+            selectionState.previousTemporaryTab = selectionState.temporaryTab
+            selectionState.temporaryTab = nil
+        }
+    }
+
+    // MARK: NSDocument
+
     private let ignoredFilesAndDirectory = [
         ".DS_Store"
     ]
 
     override class var autosavesInPlace: Bool {
-        return false
+        false
     }
 
     override var isDocumentEdited: Bool {
-        return false
+        false
     }
 
     override func makeWindowControllers() {
@@ -185,6 +258,8 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         self.addWindowController(windowController)
     }
 
+    // MARK: Set Up Workspace
+
     private func initWorkspaceState(_ url: URL) throws {
         self.workspaceClient = try .default(
             fileManager: .default,
@@ -195,6 +270,21 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         self.quickOpenState = .init(fileURL: url)
         self.commandsPaletteState = .init()
         self.statusBarModel = .init(workspaceURL: url)
+
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(convertTemporaryTab),
+                                               name: NSNotification.Name("CodeEditor.didBeginEditing"),
+                                               object: nil)
+    }
+
+    /// Retrieves selection state from UserDefaults using SHA256 hash of project  path as key
+    /// - Throws: `DecodingError.dataCorrupted` error if retrived data from UserDefaults is not decodable
+    /// - Returns: retrived state from UserDefaults or default state if not found
+    private func readSelectionState() throws -> WorkspaceSelectionState {
+        guard let path = fileURL?.path,
+              let data = UserDefaults.standard.value(forKey: path.sha256()) as? Data  else { return selectionState }
+        let state = try PropertyListDecoder().decode(WorkspaceSelectionState.self, from: data)
+        return state
     }
 
     override func read(from url: URL, ofType typeName: String) throws {
@@ -202,32 +292,9 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
 
         // Initialize Workspace
         do {
-            if let projectDir = fileURL?.appendingPathComponent(".codeedit", isDirectory: true),
-               FileManager.default.fileExists(atPath: projectDir.path) {
-                let selectionStateFile = projectDir.appendingPathComponent("selection.json", isDirectory: false)
-
-                if FileManager.default.fileExists(atPath: selectionStateFile.path) {
-                    let state = try JSONDecoder().decode(WorkspaceSelectionState.self,
-                                                         from: Data(contentsOf: selectionStateFile))
-                    state.openedTabs
-                        .compactMap { tab in
-                            switch tab {
-                            case .codeEditor(let path):
-                                return try? workspaceClient?.getFileItem(path)
-                            case .extensionInstallation:
-                                return state.openedExtensions.first { plugin in
-                                    plugin.tabID == tab
-                                }
-                            }
-                        }
-                        .forEach { item in
-                        self.openTab(item: item)
-                    }
-                    self.selectionState.selectedId = state.selectedId
-                }
-            }
+            selectionState = try readSelectionState()
         } catch {
-            Swift.print(".codeedit/selection.json is not found")
+            Swift.print("couldn't retrieve selection state from user defaults")
         }
 
         workspaceClient?
@@ -259,7 +326,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         // initialize extensions
         do {
             try ExtensionsManager.shared?.load { extensionID in
-                return CodeEditAPI(extensionId: extensionID, workspace: self)
+                CodeEditAPI(extensionId: extensionID, workspace: self)
             }
         } catch let error {
             Swift.print(error)
@@ -268,27 +335,22 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
 
     override func write(to url: URL, ofType typeName: String) throws {}
 
+    // MARK: Close Workspace
+
+    /// Saves selection state to UserDefaults using SHA256 hash of project  path as key
+    /// - Throws: `EncodingError.invalidValue` error if sellection state is not encodable
+    private func saveSelectionState() throws {
+        guard let path = fileURL?.path else { return }
+        let hash = path.sha256()
+        let data = try PropertyListEncoder().encode(selectionState)
+        UserDefaults.standard.set(data, forKey: hash)
+    }
+
     override func close() {
-        if let projectDir = fileURL?.appendingPathComponent(".codeedit", isDirectory: true) {
-            do {
-                if !FileManager.default.fileExists(atPath: projectDir.path) {
-                    do {
-                        try FileManager.default.createDirectory(at: projectDir,
-                                                                withIntermediateDirectories: false,
-                                                                attributes: [:])
-                    }
-                }
-                let selectionStateFile = projectDir.appendingPathComponent("selection.json", isDirectory: false)
-                let data = try JSONEncoder().encode(selectionState)
-                if FileManager.default.fileExists(atPath: selectionStateFile.path) {
-                    do {
-                        try FileManager.default.removeItem(at: selectionStateFile)
-                    }
-                }
-                try data.write(to: selectionStateFile)
-            } catch let error {
-                Swift.print(error)
-            }
+        do {
+            try saveSelectionState()
+        } catch {
+            Swift.print("couldn't save selection state from user defaults")
         }
 
         selectionState.selectedId = nil

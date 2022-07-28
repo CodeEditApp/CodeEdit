@@ -29,6 +29,12 @@ public struct PressActions: ViewModifier {
 }
 
 public extension View {
+
+    /// A custom view modifier for press actions with callbacks for `onPress` and `onRelease`.
+    /// - Parameters:
+    ///   - onPress: Action to perform once the view is pressed.
+    ///   - onRelease: Action to perform once the view press is released.
+    /// - Returns: some View
     func pressAction(onPress: @escaping (() -> Void), onRelease: @escaping (() -> Void)) -> some View {
         modifier(PressActions(onPress: {
             onPress()

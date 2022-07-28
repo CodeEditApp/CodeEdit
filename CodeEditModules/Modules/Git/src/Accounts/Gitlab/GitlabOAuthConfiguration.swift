@@ -27,7 +27,7 @@ public struct GitlabOAuthConfiguration: Configuration {
     }
 
     public func authenticate() -> URL? {
-        return GitlabOAuthRouter.authorize(self, redirectURI).URLRequest?.url
+        GitlabOAuthRouter.authorize(self, redirectURI).URLRequest?.url
     }
 
     public func authorize(_ session: GitURLSession = URLSession.shared,

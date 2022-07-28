@@ -12,6 +12,10 @@ import SwiftUI
 
      @State
      var changedFile: ChangedFile
+
+     @Binding
+     var selection: ChangedFile.ID?
+
      @State
      var workspaceURL: URL
 
@@ -19,10 +23,16 @@ import SwiftUI
          HStack {
              Image(systemName: changedFile.systemImage)
                  .frame(width: 11, height: 11)
-                 .foregroundColor(changedFile.iconColor)
+                 .foregroundColor(selection == changedFile.id ? .white : changedFile.iconColor)
+
              Text(changedFile.fileName)
                  .font(.system(size: 11))
-                 .foregroundColor(.primary)
+                 .foregroundColor(selection == changedFile.id ? .white : .secondary)
+
+             Text(changedFile.changeTypeValue)
+                 .font(.system(size: 11))
+                 .foregroundColor(selection == changedFile.id ? .white : .secondary)
+                 .frame(maxWidth: .infinity, alignment: .trailing)
          }
          .contextMenu {
              Group {

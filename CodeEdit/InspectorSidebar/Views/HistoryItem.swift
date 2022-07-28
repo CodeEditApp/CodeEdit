@@ -16,7 +16,7 @@ struct HistoryItem: View {
 
     private var showPopup: Binding<Bool> {
         Binding<Bool> {
-            return selection == commit
+            selection == commit
         } set: { newValue in
             if newValue {
                 selection = commit

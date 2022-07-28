@@ -21,7 +21,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     var commandPalettePanel: OverlayPanel?
 
     private var splitViewController: NSSplitViewController! {
-        get { return contentViewController as? NSSplitViewController }
+        get { contentViewController as? NSSplitViewController }
         set { contentViewController = newValue }
     }
 
@@ -95,7 +95,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     // MARK: - Toolbar
 
     func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
-        return [
+        [
             .toggleFirstSidebarItem,
             .sidebarTrackingSeparator,
             .branchPicker,
@@ -106,7 +106,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     }
 
     func toolbarAllowedItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
-        return [
+        [
             .toggleFirstSidebarItem,
             .sidebarTrackingSeparator,
             .flexibleSpace,
@@ -199,7 +199,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     private func getSelectedCodeFile() -> CodeFileDocument? {
         guard let id = workspace?.selectionState.selectedId else { return nil }
         guard let item = workspace?.selectionState.openFileItems.first(where: { item in
-            return item.tabID == id
+            item.tabID == id
         }) else { return nil }
         guard let file = workspace?.selectionState.openedCodeFiles[item] else { return nil }
         return file
@@ -207,6 +207,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
 
     @IBAction func saveDocument(_ sender: Any) {
         getSelectedCodeFile()?.save(sender)
+        workspace?.convertTemporaryTab()
     }
 
     @IBAction func openCommandPalette(_ sender: Any) {

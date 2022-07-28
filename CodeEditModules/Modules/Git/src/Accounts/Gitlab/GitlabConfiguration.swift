@@ -30,6 +30,6 @@ public struct PrivateTokenConfiguration: Configuration {
     }
 
     public var accessTokenFieldName: String {
-        return "private_token"
+        "private_token"
     }
 }

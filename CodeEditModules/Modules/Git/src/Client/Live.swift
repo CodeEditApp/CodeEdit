@@ -9,6 +9,8 @@ import Foundation
 import ShellClient
 import Combine
 
+// TODO: DOCS (Marco Carnevali)
+// swiftlint:disable missing_docs
 public extension GitClient {
     // swiftlint:disable function_body_length
     static func `default`(
@@ -188,7 +190,7 @@ public extension GitClient {
 private extension Collection {
     /// Returns the element at the specified index if it is within bounds, otherwise nil.
     subscript (safe index: Index) -> Element? {
-        return indices.contains(index) ? self[index] : nil
+        indices.contains(index) ? self[index] : nil
     }
 }
 
