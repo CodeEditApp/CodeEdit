@@ -12,6 +12,7 @@ import CodeEditUI
 import QuickOpen
 import Git
 import AppPreferences
+import Keybindings
 
 final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     private var prefs: AppPreferencesModel = .shared
@@ -31,11 +32,31 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
 
         setupSplitView(with: workspace)
         setupToolbar()
+        registerCommands()
     }
 
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    func registerCommands() {
+        CommandManager.shared.addCommand(name: "Quick Open", title: "Quick Open", id: "quick_open",
+                                         command: ClosureWrapper(closure: {
+            self.openQuickly(self)
+        }))
+
+        CommandManager.shared.addCommand(name: "Toggle Left Sidebar", title: "Toggle Left Sidebar",
+                                         id: "toggle_left_sidebar",
+                                         command: ClosureWrapper(closure: {
+            self.toggleFirstPanel()
+        }))
+
+        CommandManager.shared.addCommand(name: "Toggle Right Sidebar", title: "Toggle Right Sidebar",
+                                         id: "toggle_right_sidebar",
+                                         command: ClosureWrapper(closure: {
+            self.toggleLastPanel()
+        }))
     }
 
     private func setupSplitView(with workspace: WorkspaceDocument) {

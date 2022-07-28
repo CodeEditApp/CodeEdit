@@ -12,7 +12,13 @@ public final class CommandPaletteState: ObservableObject {
     @Published var commandQuery: String = ""
     @Published var selected: Command?
     @Published var isShowingCommandsList: Bool = true
+    @Published var filteredCommands: [Command] = []
 
-    func fetchMatchingCommands() {
+    func fetchMatchingCommands(val: String) {
+        if val == "" {
+            self.filteredCommands = []
+            return
+        }
+        self.filteredCommands = [CommandManager.shared.commands[1]]
     }
 }

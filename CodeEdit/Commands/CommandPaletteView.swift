@@ -12,7 +12,8 @@ import CodeEditUI
 public struct CommandPaletteView: View {
     @ObservedObject private var state: CommandPaletteState
     @ObservedObject var commandManager: CommandManager = CommandManager.shared
-    @State private var selectedItem: Command? = CommandManager.shared.commands[0]
+
+    @State private var selectedItem: Command?
     private let closePalette: () -> Void
 
     public init(state: CommandPaletteState, closePalette: @escaping () -> Void) {
@@ -20,9 +21,15 @@ public struct CommandPaletteView: View {
         self.closePalette = closePalette
     }
 
+    func resetState() {
+        self.selectedItem = nil
+        self.state.commandQuery = ""
+    }
+
     func callHandler(command: Command) {
         closePalette()
         command.closureWrapper.call()
+        resetState()
     }
 
     public var body: some View {
@@ -42,17 +49,19 @@ public struct CommandPaletteView: View {
                             state.$commandQuery
                                 .debounce(for: .seconds(0.4), scheduler: DispatchQueue.main)
                         ) { val in
-                            print(val)
-                            state.fetchMatchingCommands()
-                        }
-                }
+                            state.fetchMatchingCommands(val: val)
+                        }.keyboardListener(keys: [Character("t")],
+                                           modifiers: [.option],
+                                           onDown: { print("Down") },
+                                           onUp: { print("Up") })
                     .padding(16)
                     .foregroundColor(Color(.systemGray).opacity(0.85))
                     .background(EffectView(.sidebar, blendingMode: .behindWindow))
             }
             Divider()
             VStack(spacing: 0) {
-                    List(commandManager.commands, selection: $selectedItem) { command in
+                List(state.filteredCommands.isEmpty ?
+                     commandManager.commands : state.filteredCommands, selection: $selectedItem) { command in
                         VStack(alignment: .leading, spacing: 0) {
                             Text(command.title).foregroundColor(Color.white)
                                 .padding(EdgeInsets.init(top: 0, leading: 10, bottom: 0, trailing: 0))
@@ -70,7 +79,7 @@ public struct CommandPaletteView: View {
                         }.onHover(perform: { _ in self.selectedItem = command })
                     }.listStyle(SidebarListStyle())
             }
-        }
+        }.searchable(text: $state.commandQuery)
         .background(EffectView(.sidebar, blendingMode: .behindWindow))
         .foregroundColor(.gray)
         .edgesIgnoringSafeArea(.vertical)
@@ -88,3 +97,4 @@ struct CommandPaletteView_Previews: PreviewProvider {
         )
     }
 }
+

@@ -16,24 +16,21 @@ internal struct StatusBarToggleDrawerButton: View {
         self.model = model
         CommandManager.shared.addCommand(name: "Toggle Drawer",
                                          title: "Toggle Drawer",
-                                         id: "open.drawer", command: ClosureWrapper.init(closure: {
-            withAnimation {
-                model.isExpanded.toggle()
-                if model.isExpanded && model.currentHeight < 1 {
-                    model.currentHeight = 300
-                }
+                                         id: "open.drawer", command: ClosureWrapper.init(closure: togglePanel))
+    }
+
+    func togglePanel() {
+        withAnimation {
+            model.isExpanded.toggle()
+            if model.isExpanded && model.currentHeight < 1 {
+                model.currentHeight = 300
             }
-        }))
+        }
     }
 
     internal var body: some View {
         Button {
-            withAnimation {
-                model.isExpanded.toggle()
-                if model.isExpanded && model.currentHeight < 1 {
-                    model.currentHeight = 300
-                }
-            }
+            togglePanel()
             // Show/hide terminal window
         } label: {
             Image(systemName: "rectangle.bottomthird.inset.filled")
