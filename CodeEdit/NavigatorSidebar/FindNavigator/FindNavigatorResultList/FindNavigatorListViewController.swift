@@ -16,6 +16,7 @@ final class FindNavigatorListViewController: NSViewController {
     public var selectedItem: Any?
 
     typealias FileItem = WorkspaceClient.FileItem
+    private var searchId: UUID?
     private var searchItems: [SearchResultModel] = []
     private var scrollView: NSScrollView!
     private var outlineView: NSOutlineView!
@@ -57,6 +58,8 @@ final class FindNavigatorListViewController: NSViewController {
         fatalError("init?(coder: NSCoder) not implemented by FindNavigatorListViewController")
     }
 
+    override var acceptsFirstResponder: Bool { true }
+
     /// Sets the search items for the view without loading anything.
     /// - Parameter searchItems: The search items to set.
     public func setSearchResults(_ searchItems: [SearchResultModel]) {
@@ -65,10 +68,15 @@ final class FindNavigatorListViewController: NSViewController {
 
     /// Updates the view with new search results and updates the UI.
     /// - Parameter searchItems: The search items to set.
-    public func updateNewSearchResults(_ searchItems: [SearchResultModel]) {
-        self.searchItems = searchItems
-        outlineView.reloadData()
-        outlineView.expandItem(nil, expandChildren: true)
+    /// - Parameter searchText: The search text, used to preserve result deletions across view updates.
+    public func updateNewSearchResults(_ searchItems: [SearchResultModel], searchId: UUID?) {
+        if searchId != self.searchId {
+            self.searchItems = searchItems
+            outlineView.reloadData()
+            outlineView.expandItem(nil, expandChildren: true)
+
+            self.searchId = searchId
+        }
 
         if let selectedItem = selectedItem {
             selectSearchResult(selectedItem)
@@ -78,28 +86,43 @@ final class FindNavigatorListViewController: NSViewController {
     override func keyUp(with event: NSEvent) {
         if event.charactersIgnoringModifiers == String(NSEvent.SpecialKey.delete.unicodeScalar) {
             deleteSelectedItem()
-        } else {
-            super.keyUp(with: event)
         }
+        super.keyUp(with: event)
     }
 
     /// Removes the selected item, called in response to an action like the backspace
     /// character
     private func deleteSelectedItem() {
         let selectedRow = outlineView.selectedRow
-        guard selectedRow > 0,
+        guard selectedRow >= 0,
               let selectedItem = outlineView.item(atRow: selectedRow) else { return }
 
         if selectedItem is SearchResultMatchModel {
             guard let parent = outlineView.parent(forItem: selectedItem) else { return }
-            outlineView.removeItems(at: IndexSet([selectedRow]), inParent: parent)
+
+            // Remove the item from the search results
+            let parentIndex = outlineView.childIndex(forItem: parent)
+            let childIndex = outlineView.childIndex(forItem: selectedItem)
+            searchItems[parentIndex].lineMatches.remove(at: childIndex)
+
+            // If this was the last child, we need to remove the parent or we'll
+            // hit an exception
+            if searchItems[parentIndex].lineMatches.isEmpty {
+                searchItems.remove(at: parentIndex)
+                outlineView.removeItems(at: IndexSet([parentIndex]), inParent: nil)
+            } else {
+                outlineView.removeItems(at: IndexSet([childIndex]), inParent: parent)
+            }
         } else {
-            outlineView.removeItems(at: IndexSet([selectedRow]), inParent: nil)
+            let index = outlineView.childIndex(forItem: selectedItem)
+            searchItems.remove(at: index)
+            outlineView.removeItems(at: IndexSet([index]), inParent: nil)
         }
+
+        outlineView.selectRowIndexes(IndexSet([selectedRow]), byExtendingSelection: false)
     }
 
     public func selectSearchResult(_ selectedItem: Any) {
-        print("Selecing row,", selectedItem)
         let index = outlineView.row(forItem: selectedItem)
         guard index >= 0 && index != outlineView.selectedRow else { return }
         outlineView.selectRowIndexes(IndexSet([index]), byExtendingSelection: false)
