@@ -13,6 +13,7 @@ import AppPreferences
 final class FindNavigatorListViewController: NSViewController {
 
     public var workspace: WorkspaceDocument
+    public var selectedItem: Any?
 
     typealias FileItem = WorkspaceClient.FileItem
     private var searchItems: [SearchResultModel] = []
@@ -68,6 +69,10 @@ final class FindNavigatorListViewController: NSViewController {
         self.searchItems = searchItems
         outlineView.reloadData()
         outlineView.expandItem(nil, expandChildren: true)
+
+        if let selectedItem = selectedItem {
+            selectSearchResult(selectedItem)
+        }
     }
 
     override func keyUp(with event: NSEvent) {
@@ -91,6 +96,13 @@ final class FindNavigatorListViewController: NSViewController {
         } else {
             outlineView.removeItems(at: IndexSet([selectedRow]), inParent: nil)
         }
+    }
+
+    public func selectSearchResult(_ selectedItem: Any) {
+        print("Selecing row,", selectedItem)
+        let index = outlineView.row(forItem: selectedItem)
+        guard index >= 0 && index != outlineView.selectedRow else { return }
+        outlineView.selectRowIndexes(IndexSet([index]), byExtendingSelection: false)
     }
 }
 
@@ -164,9 +176,17 @@ extension FindNavigatorListViewController: NSOutlineViewDelegate {
         let selectedIndex = outlineView.selectedRow
 
         if let item = outlineView.item(atRow: selectedIndex) as? SearchResultMatchModel {
-            workspace.openTab(item: item.file)
+            let selectedMatch = self.selectedItem as? SearchResultMatchModel
+            if selectedItem == nil || selectedMatch != item {
+                self.selectedItem = item
+                workspace.openTab(item: item.file)
+            }
         } else if let item = outlineView.item(atRow: selectedIndex) as? SearchResultModel {
-            workspace.openTab(item: item.file)
+            let selectedFile = self.selectedItem as? SearchResultModel
+            if selectedItem == nil || selectedFile != item {
+                self.selectedItem = item
+                workspace.openTab(item: item.file)
+            }
         }
     }
 

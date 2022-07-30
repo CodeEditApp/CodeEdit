@@ -16,9 +16,6 @@ struct FindNavigatorResultList: NSViewControllerRepresentable {
     @StateObject
     var workspace: WorkspaceDocument
 
-    @State
-    var selectedResult: SearchResultMatchModel?
-
     @StateObject
     var prefs: AppPreferencesModel = .shared
 
