@@ -81,6 +81,10 @@ let package = Package(
             name: "Git",
             targets: ["Git"]
         ),
+        .library(
+            name: "SplitView",
+            targets: ["SplitView"]
+        )
     ],
     dependencies: [
         .package(
@@ -339,6 +343,20 @@ let package = Package(
                 "ShellClient",
             ],
             path: "Modules/Git/Tests"
+        ),
+        .target(
+            name: "SplitView",
+            dependencies: [
+                "CodeEditUI"
+            ],
+            path: "Modules/SplitView/src"
+        ),
+        .testTarget(
+            name: "SplitViewTests",
+            dependencies: [
+                "SplitView"
+            ],
+            path: "Modules/SplitView/Tests"
         ),
     ]
 )
