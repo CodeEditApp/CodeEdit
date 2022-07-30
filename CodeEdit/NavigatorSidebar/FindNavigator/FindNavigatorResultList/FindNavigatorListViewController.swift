@@ -12,9 +12,12 @@ import AppPreferences
 
 final class FindNavigatorListViewController: NSViewController {
 
-    var searchItems: [SearchResultModel] = []
-    var scrollView: NSScrollView!
-    var outlineView: NSOutlineView!
+    public var workspace: WorkspaceDocument
+
+    typealias FileItem = WorkspaceClient.FileItem
+    private var searchItems: [SearchResultModel] = []
+    private var scrollView: NSScrollView!
+    private var outlineView: NSOutlineView!
     private let prefs = AppPreferencesModel.shared.preferences
     private var collapsedRows: Set<Int> = []
 
@@ -24,7 +27,7 @@ final class FindNavigatorListViewController: NSViewController {
         }
     }
 
-    /// Setup the ``scrollView`` and ``outlineView``
+    /// Setup the `scrollView` and `outlineView`
     override func loadView() {
         self.scrollView = NSScrollView()
         self.view = scrollView
@@ -33,7 +36,7 @@ final class FindNavigatorListViewController: NSViewController {
         self.outlineView.dataSource = self
         self.outlineView.delegate = self
         self.outlineView.headerView = nil
-//        self.outlineView.usesAutomaticRowHeights = true
+        self.outlineView.lineBreakMode = .byTruncatingTail
 
         let column = NSTableColumn(identifier: .init(rawValue: "Cell"))
         column.title = "Cell"
@@ -44,7 +47,8 @@ final class FindNavigatorListViewController: NSViewController {
         self.scrollView.contentView.contentInsets = .init(top: 0, left: 0, bottom: 0, right: 0)
     }
 
-    init() {
+    init(workspace: WorkspaceDocument) {
+        self.workspace = workspace
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -52,12 +56,42 @@ final class FindNavigatorListViewController: NSViewController {
         fatalError("init?(coder: NSCoder) not implemented by FindNavigatorListViewController")
     }
 
-    public func updateNewSearchResults(_ searchItems: [SearchResultModel]) {
+    /// Sets the search items for the view without loading anything.
+    /// - Parameter searchItems: The search items to set.
+    public func setSearchResults(_ searchItems: [SearchResultModel]) {
         self.searchItems = searchItems
-        self.outlineView.reloadData()
-        self.outlineView.expandItem(nil, expandChildren: true)
     }
 
+    /// Updates the view with new search results and updates the UI.
+    /// - Parameter searchItems: The search items to set.
+    public func updateNewSearchResults(_ searchItems: [SearchResultModel]) {
+        self.searchItems = searchItems
+        outlineView.reloadData()
+        outlineView.expandItem(nil, expandChildren: true)
+    }
+
+    override func keyUp(with event: NSEvent) {
+        if event.charactersIgnoringModifiers == String(NSEvent.SpecialKey.delete.unicodeScalar) {
+            deleteSelectedItem()
+        } else {
+            super.keyUp(with: event)
+        }
+    }
+
+    /// Removes the selected item, called in response to an action like the backspace
+    /// character
+    private func deleteSelectedItem() {
+        let selectedRow = outlineView.selectedRow
+        guard selectedRow > 0,
+              let selectedItem = outlineView.item(atRow: selectedRow) else { return }
+
+        if selectedItem is SearchResultMatchModel {
+            guard let parent = outlineView.parent(forItem: selectedItem) else { return }
+            outlineView.removeItems(at: IndexSet([selectedRow]), inParent: parent)
+        } else {
+            outlineView.removeItems(at: IndexSet([selectedRow]), inParent: nil)
+        }
+    }
 }
 
 // MARK: - NSOutlineViewDataSource
@@ -123,50 +157,38 @@ extension FindNavigatorListViewController: NSOutlineViewDelegate {
     }
 
     func outlineViewSelectionDidChange(_ notification: Notification) {
-        // TODO: Select the file item & line
+        guard let outlineView = notification.object as? NSOutlineView else {
+            return
+        }
+
+        let selectedIndex = outlineView.selectedRow
+
+        if let item = outlineView.item(atRow: selectedIndex) as? SearchResultMatchModel {
+            workspace.openTab(item: item.file)
+        } else if let item = outlineView.item(atRow: selectedIndex) as? SearchResultModel {
+            workspace.openTab(item: item.file)
+        }
     }
 
-//    func outlineViewItemDidExpand(_ notification: Notification) {
-//        guard let item = notification.object else { return }
-//        let row = outlineView.row(forItem: item)
-//        if row >= 0 {
-//            collapsedRows.remove(row)
-//        }
-//    }
-//
-//    func outlineViewItemDidCollapse(_ notification: Notification) {
-//        guard let item = notification.object else { return }
-//        let row = outlineView.row(forItem: item)
-//        if row >= 0 {
-//            collapsedRows.insert(row)
-//        }
-//    }
-
     func outlineView(_ outlineView: NSOutlineView, heightOfRowByItem item: Any) -> CGFloat {
-        if let item = item as? SearchResultMatchModel,
-           let lineContent = item.lineContent,
-           let keywordRange = item.keywordRange {
-            let lowerIndex = lineContent.index(keywordRange.lowerBound,
-                                               offsetBy: -120,
-                                               limitedBy: lineContent.startIndex) ?? lineContent.startIndex
-            let upperIndex = lineContent.index(keywordRange.upperBound,
-                                               offsetBy: 120,
-                                               limitedBy: lineContent.endIndex) ?? lineContent.endIndex
-            let tempView = NSTextField(wrappingLabelWithString: String(lineContent[lowerIndex..<upperIndex]))
-            let width = outlineView.frame.width - outlineView.indentationPerLevel - 22
-            return max(tempView.sizeThatFits(NSSize(width: width,
-                                                    height: CGFloat.greatestFiniteMagnitude)).height + 8,
-                       rowHeight)
+        if let item = item as? SearchResultMatchModel {
+            let tempView = NSTextField(wrappingLabelWithString: item.attributedLabel().string)
+            tempView.allowsDefaultTighteningForTruncation = false
+            tempView.cell?.truncatesLastVisibleLine = true
+            tempView.cell?.wraps = true
+            tempView.maximumNumberOfLines = 3
+            tempView.attributedStringValue = item.attributedLabel()
+            tempView.layout()
+            let width = outlineView.frame.width - outlineView.indentationPerLevel*2 - 24
+            return tempView.sizeThatFits(NSSize(width: width,
+                                                height: CGFloat.greatestFiniteMagnitude)).height + 8
         } else {
             return rowHeight
         }
     }
 
     func outlineViewColumnDidResize(_ notification: Notification) {
-        guard let range = Range(outlineView.rows(in: scrollView.visibleRect)) else {
-            return
-        }
-        let indexes = IndexSet(integersIn: range)
+        let indexes = IndexSet(integersIn: 0..<searchItems.count)
         outlineView.noteHeightOfRows(withIndexesChanged: indexes)
     }
 

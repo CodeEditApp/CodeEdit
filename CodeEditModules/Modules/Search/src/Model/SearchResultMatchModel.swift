@@ -7,13 +7,14 @@
 
 import Foundation
 import WorkspaceClient
+import Cocoa
 
 /// A struct for holding information about a search match.
 public class SearchResultMatchModel: Hashable, Identifiable {
-    public init(lineNumber: Int? = nil,
+    public init(lineNumber: Int,
                 file: WorkspaceClient.FileItem,
-                lineContent: String? = nil,
-                keywordRange: Range<String.Index>? = nil) {
+                lineContent: String,
+                keywordRange: Range<String.Index>) {
         self.id = UUID()
         self.file = file
         self.lineNumber = lineNumber
@@ -23,9 +24,9 @@ public class SearchResultMatchModel: Hashable, Identifiable {
 
     public var id: UUID
     public var file: WorkspaceClient.FileItem
-    public var lineNumber: Int?
-    public var lineContent: String?
-    public var keywordRange: Range<String.Index>?
+    public var lineNumber: Int
+    public var lineContent: String
+    public var keywordRange: Range<String.Index>
 
     public var hasKeywordInfo: Bool {
         lineNumber != nil && lineContent != nil && keywordRange != nil
@@ -45,5 +46,51 @@ public class SearchResultMatchModel: Hashable, Identifiable {
         hasher.combine(lineNumber)
         hasher.combine(lineContent)
         hasher.combine(keywordRange)
+    }
+
+    /// Returns a formatted `NSAttributedString` with the search result bolded.
+    /// Will only return 60 characters before and after the matched result.
+    /// - Returns: The formatted `NSAttributedString`
+    public func attributedLabel() -> NSAttributedString {
+        /// By default `NSTextView` will ignore any paragraph wrapping set to the label when it's
+        /// using an `NSAttributedString` so we need to set the wrap mode here.
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineBreakMode = .byCharWrapping
+
+        let normalAttributes: [NSAttributedString.Key: Any] = [
+            .font: NSFont.systemFont(ofSize: 13,
+                                     weight: .regular),
+            .foregroundColor: NSColor.secondaryLabelColor,
+            .paragraphStyle: paragraphStyle
+        ]
+        let boldAttributes: [NSAttributedString.Key: Any] = [
+            .font: NSFont.systemFont(ofSize: 13,
+                                     weight: .bold),
+            .foregroundColor: NSColor.labelColor,
+            .paragraphStyle: paragraphStyle
+        ]
+
+        /// Set up the search result string with the matched search in bold.
+        ///
+        /// We also limit the result to 60 characters before and after the
+        /// match to reduce *massive* results in the search result list, and for
+        /// cases where a file may be formatted in one line (eg: a minimized JS file).
+        let lowerIndex = lineContent.safeOffset(keywordRange.lowerBound, offsetBy: -60)
+        let upperIndex = lineContent.safeOffset(keywordRange.upperBound, offsetBy: 60)
+        let prefix = String(lineContent[lowerIndex..<keywordRange.lowerBound])
+        let searchMatch = String(lineContent[keywordRange.lowerBound..<keywordRange.upperBound])
+        let postfix = String(lineContent[keywordRange.upperBound..<upperIndex])
+
+        let attributedString = NSMutableAttributedString(
+            string: prefix,
+            attributes: normalAttributes)
+        attributedString.append(NSAttributedString(
+            string: searchMatch,
+            attributes: boldAttributes))
+        attributedString.append(NSAttributedString(
+            string: postfix,
+            attributes: normalAttributes))
+
+        return attributedString
     }
 }

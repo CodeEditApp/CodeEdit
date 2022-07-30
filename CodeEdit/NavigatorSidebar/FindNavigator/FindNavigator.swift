@@ -13,6 +13,9 @@ struct FindNavigator: View {
     @ObservedObject
     private var state: WorkspaceDocument.SearchState
 
+    @ObservedObject
+    private var workspace: WorkspaceDocument
+
     @State
     private var searchText: String = ""
 
@@ -31,7 +34,8 @@ struct FindNavigator: View {
         state.searchResult.count
     }
 
-    init(state: WorkspaceDocument.SearchState) {
+    init(workspace: WorkspaceDocument, state: WorkspaceDocument.SearchState) {
+        self.workspace = workspace
         self.state = state
     }
 
@@ -84,11 +88,11 @@ struct FindNavigator: View {
             Divider()
             HStack(alignment: .center) {
                 Text(
-                    "\(foundResultsCount) results in \(foundFilesCount) files")
+                    "\(state.searchResultCount) results in \(foundFilesCount) files")
                     .font(.system(size: 10))
             }
             Divider()
-            FindNavigatorResultList(state: state)
+            FindNavigatorResultList(workspace: workspace)
         }
         .onSubmit {
             state.search(searchText)

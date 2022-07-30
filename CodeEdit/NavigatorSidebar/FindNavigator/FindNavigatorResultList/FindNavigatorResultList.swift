@@ -13,32 +13,27 @@ import Combine
 
 struct FindNavigatorResultList: NSViewControllerRepresentable {
 
-    @ObservedObject
-    private var state: WorkspaceDocument.SearchState
+    @StateObject
+    var workspace: WorkspaceDocument
 
     @State
-    private var selectedResult: SearchResultMatchModel?
+    var selectedResult: SearchResultMatchModel?
 
     @StateObject
     var prefs: AppPreferencesModel = .shared
 
     typealias NSViewControllerType = FindNavigatorListViewController
 
-    init(state: WorkspaceDocument.SearchState, selectedResult: SearchResultMatchModel? = nil) {
-        self.state = state
-        self.selectedResult = selectedResult
-    }
-
     func makeNSViewController(context: Context) -> FindNavigatorListViewController {
-        let controller = FindNavigatorListViewController()
-        controller.searchItems = state.searchResult
+        let controller = FindNavigatorListViewController(workspace: workspace)
+        controller.setSearchResults(workspace.searchState?.searchResult ?? [])
         controller.rowHeight = prefs.preferences.general.projectNavigatorSize.rowHeight
         context.coordinator.controller = controller
         return controller
     }
 
     func updateNSViewController(_ nsViewController: FindNavigatorListViewController, context: Context) {
-        nsViewController.updateNewSearchResults(state.searchResult)
+        nsViewController.updateNewSearchResults(workspace.searchState?.searchResult ?? [])
         if nsViewController.rowHeight != prefs.preferences.general.projectNavigatorSize.rowHeight {
             nsViewController.rowHeight = prefs.preferences.general.projectNavigatorSize.rowHeight
         }
@@ -46,15 +41,16 @@ struct FindNavigatorResultList: NSViewControllerRepresentable {
     }
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(state: state,
+        Coordinator(state: workspace.searchState,
                     controller: nil)
     }
 
     class Coordinator: NSObject {
-        init(state: WorkspaceDocument.SearchState, controller: FindNavigatorListViewController?) {
+        init(state: WorkspaceDocument.SearchState?, controller: FindNavigatorListViewController?) {
             self.controller = controller
             super.init()
-            self.listener = state.searchResult
+            self.listener = state?
+                .searchResult
                 .publisher
                 .receive(on: RunLoop.main)
                 .collect()

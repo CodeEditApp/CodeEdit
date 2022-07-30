@@ -18,6 +18,7 @@ extension WorkspaceDocument {
             .Containing
         ]
         @Published var searchResult: [SearchResultModel] = []
+        @Published var searchResultCount: Int = 0
         @Published var searchText: String = ""
 
         var ignoreCase: Bool = true
@@ -31,43 +32,39 @@ extension WorkspaceDocument {
             self.searchResult = []
             guard let url = self.workspace.fileURL else { return }
             let enumerator = FileManager.default.enumerator(at: url,
-                includingPropertiesForKeys: [
-                    .isRegularFileKey
-                ],
-                options: [
-                    .skipsHiddenFiles,
-                    .skipsPackageDescendants
-                ])
+                                                            includingPropertiesForKeys: [
+                                                                .isRegularFileKey
+                                                            ],
+                                                            options: [
+                                                                .skipsHiddenFiles,
+                                                                .skipsPackageDescendants
+                                                            ])
             guard let filePaths = enumerator?.allObjects as? [URL] else { return }
 
             // TODO: Optimisation
             filePaths.map { url in
                 WorkspaceClient.FileItem(url: url, children: nil)
             }.forEach { fileItem in
-                guard let data = try? Data(contentsOf: fileItem.url) else { return }
+                guard let data = try? Data(contentsOf: fileItem.url),
+                      let string = String(data: data, encoding: .utf8) else { return }
                 var fileSearchResult: SearchResultModel?
 
                 // Loop through each line and look for any matches
                 // If one is found we create a `SearchResultModel` and add any lines
                 // with matches, and any information we may need to display or navigate
                 // to them.
-                data.withUnsafeBytes {
-                    $0.split(separator: UInt8(ascii: "\n"))
-                        .map { String(decoding: UnsafeRawBufferPointer(rebasing: $0), as: UTF8.self) }
-                }.enumerated().forEach { (index: Int, line: String) in
-                    let rawNoSpaceLine = line.trimmingCharacters(in: .whitespaces)
+                for (lineNumber, line) in string.split(separator: "\n").lazy.enumerated() {
+                    let rawNoSpaceLine = line.trimmingCharacters(in: .whitespacesAndNewlines)
                     let noSpaceLine = ignoreCase ? rawNoSpaceLine.lowercased() : rawNoSpaceLine
+
                     if lineContainsSearchTerm(line: noSpaceLine, term: textToCompare) {
                         // We've got a match
-                        let matches = noSpaceLine.ranges(of: textToCompare)
-                            .map { range in
-                                return SearchResultMatchModel(
-                                    lineNumber: index,
-                                    file: fileItem,
-                                    lineContent: rawNoSpaceLine,
-                                    keywordRange: range
-                                )
-                            }
+                        let matches = noSpaceLine.ranges(of: textToCompare).map { range in
+                            return SearchResultMatchModel(lineNumber: lineNumber,
+                                                          file: fileItem,
+                                                          lineContent: String(noSpaceLine),
+                                                          keywordRange: range)
+                        }
                         if fileSearchResult != nil {
                             // We've already found something in this file, add the rest
                             // of the matches
@@ -77,6 +74,7 @@ extension WorkspaceDocument {
                             fileSearchResult = SearchResultModel(file: fileItem,
                                                                  lineMatches: matches)
                         }
+                        searchResultCount += 1
                     }
                 }
 
@@ -110,16 +108,20 @@ extension WorkspaceDocument {
                 for appearance in appearances {
                     let appearanceString = String(line[appearance])
                     guard appearanceString.count >= 2 else { continue }
+
                     var startsWith = false
                     var endsWith = false
-                    if appearanceString.hasPrefix(searchterm) || (
+                    if appearanceString.hasPrefix(searchterm) ||
                         !appearanceString.first!.isLetter ||
-                        !appearanceString.character(at: 2).isLetter
-                    ) { startsWith = true }
-                    if appearanceString.hasSuffix(searchterm) || (
+                        !appearanceString.character(at: 2).isLetter {
+                        startsWith = true
+                    }
+                    if appearanceString.hasSuffix(searchterm) ||
                         !appearanceString.last!.isLetter ||
-                        !appearanceString.character(at: appearanceString.count-2).isLetter
-                    ) { endsWith = true }
+                        !appearanceString.character(at: appearanceString.count-2).isLetter {
+                        endsWith = true
+                    }
+
                     switch textMatching {
                     case .MatchingWord:
                         foundMatch = startsWith && endsWith ? true : foundMatch
@@ -134,7 +136,7 @@ extension WorkspaceDocument {
             } else if findMode == .RegularExpression {
                 guard let regex = try? NSRegularExpression(pattern: searchterm) else { return false }
                 // swiftlint:disable legacy_constructor
-                return regex.firstMatch(in: line, range: NSMakeRange(0, line.utf16.count)) != nil
+                return regex.firstMatch(in: String(line), range: NSMakeRange(0, line.utf16.count)) != nil
             }
 
             return false
