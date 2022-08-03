@@ -155,7 +155,6 @@ public final class ThemeModel: ObservableObject {
             "codeedit-github-dark",
             "codeedit-github-light",
             "codeedit-midnight"
-            
         ]
         for themeName in bundledThemeNames {
             guard let defaultUrl = Bundle.main.url(forResource: themeName, withExtension: "json") else {
