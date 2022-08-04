@@ -121,15 +121,19 @@ struct SegmentedControlItem: View {
     @ViewBuilder
     private var background: some View {
         if prominent {
-            active
-            ? Color.accentColor.opacity(activeState != .inactive ? 1 : 0.5)
-            : Color(nsColor: colorScheme == .dark ? .white : .black)
+            if active {
+                Color.accentColor.opacity(activeState != .inactive ? 1 : 0.5)
+            } else {
+                Color(nsColor: colorScheme == .dark ? .white : .black)
                 .opacity(isPressing ? 0.10 : isHovering ? 0.05 : 0)
+            }
         } else {
-            active
-            ? color.opacity(isPressing ? 1 : activeState != .inactive ? 0.75 : 0.5)
-            : Color(nsColor: colorScheme == .dark ? .white : .black)
+            if active {
+                color.opacity(isPressing ? 1 : activeState != .inactive ? 0.75 : 0.5)
+            } else {
+                Color(nsColor: colorScheme == .dark ? .white : .black)
                 .opacity(isPressing ? 0.10 : isHovering ? 0.05 : 0)
+            }
         }
     }
 }
