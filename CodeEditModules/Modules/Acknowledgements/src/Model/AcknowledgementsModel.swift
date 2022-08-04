@@ -27,7 +27,7 @@ final class AcknowledgementsModel: ObservableObject {
                 let jsonData = try String(contentsOfFile: bundlePath).data(using: .utf8)
                 let parsedJSON = try JSONDecoder().decode(RootObject.self, from: jsonData!)
                 for dependency in parsedJSON.object.pins.sorted(by: { $0.package < $1.package })
-                where if dependency.package.range(
+                where dependency.package.range(
                     of: "[Cc]ode[Ee]dit",
                     options: .regularExpression,
                     range: nil,
