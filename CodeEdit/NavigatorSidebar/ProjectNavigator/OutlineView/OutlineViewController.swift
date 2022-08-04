@@ -104,8 +104,11 @@ final class OutlineViewController: NSViewController {
         guard let item = outlineView.item(atRow: outlineView.clickedRow) as? Item else { return }
 
         if item.children != nil {
-            let isExpanded = outlineView.isItemExpanded(item)
-            isExpanded ? outlineView.collapseItem(item) : outlineView.expandItem(item)
+            if outlineView.isItemExpanded(item) {
+                outlineView.collapseItem(item)
+            } else {
+                outlineView.expandItem(item)
+            }
         } else {
             if workspace?.selectionState.temporaryTab == item.tabID {
                 workspace?.convertTemporaryTab()
