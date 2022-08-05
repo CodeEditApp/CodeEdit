@@ -19,6 +19,6 @@ public final class CommandPaletteState: ObservableObject {
             self.filteredCommands = []
             return
         }
-        self.filteredCommands = [CommandManager.shared.commands[1]]
+        self.filteredCommands = CommandManager.shared.commands.filter { $0.title.localizedCaseInsensitiveContains(val) }
     }
 }

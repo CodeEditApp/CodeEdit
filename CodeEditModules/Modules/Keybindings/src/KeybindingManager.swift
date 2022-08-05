@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 
+// swiftlint:disable missing_docs
 public final class KeybindingManager {
     public var keyboardShortcuts = [String: KeyboardShortcutWrapper]()
 
@@ -15,7 +16,8 @@ public final class KeybindingManager {
         loadKeybindings()
     }
 
-    static public let shared: KeybindingManager = .init()
+    // swiftlint:disable missing_docs
+    public static let shared: KeybindingManager = .init()
 
     // We need this fallback shortcut because optional shortcuts available only from 12.3, while we have target of 12.0x
     var fallbackShortcut = KeyboardShortcutWrapper(name: "?", description: "Test", context: "Fallback",

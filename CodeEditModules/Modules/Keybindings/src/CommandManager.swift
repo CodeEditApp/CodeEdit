@@ -27,7 +27,7 @@ public final class CommandManager: ObservableObject {
         commandsList = [:]
     }
 
-    static public let shared: CommandManager = .init()
+    public static let shared: CommandManager = .init()
 
     public func addCommand(name: String, title: String, id: String, command: ClosureWrapper) {
         let command = Command.init(id: name, title: title, closureWrapper: command)
@@ -35,7 +35,7 @@ public final class CommandManager: ObservableObject {
     }
 
     public var commands: [Command] {
-        return commandsList.map {$0.value}
+        return commandsList.map { $0.value }
     }
 
     public func executeCommand(name: String) {
@@ -67,15 +67,17 @@ public struct Command: Identifiable, Hashable {
     }
 }
 
+// swiftlint:disable missing_docs
 public typealias WorkspaceClientClosure = () -> Void
+// swiftlint:disable missing_docs
 public struct ClosureWrapper {
 
     let workspaceClientClosure: WorkspaceClientClosure?
-
+    // swiftlint:disable missing_docs
     public init(closure: @escaping WorkspaceClientClosure) {
        self.workspaceClientClosure = closure
     }
-
+    // swiftlint:disable missing_docs
     public func call() {
         workspaceClientClosure?()
     }

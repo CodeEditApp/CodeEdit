@@ -40,7 +40,7 @@ public struct CommandPaletteView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 20, height: 20)
-                        .padding(.trailing, 12)
+                        .padding(.leading, 20)
                         .offset(x: 0, y: 1)
                     TextField("Search Commands", text: $state.commandQuery)
                         .font(.system(size: 20, weight: .light, design: .default))
@@ -50,13 +50,11 @@ public struct CommandPaletteView: View {
                                 .debounce(for: .seconds(0.4), scheduler: DispatchQueue.main)
                         ) { val in
                             state.fetchMatchingCommands(val: val)
-                        }.keyboardListener(keys: [Character("t")],
-                                           modifiers: [.option],
-                                           onDown: { print("Down") },
-                                           onUp: { print("Up") })
+                        }
                     .padding(16)
                     .foregroundColor(Color(.systemGray).opacity(0.85))
                     .background(EffectView(.sidebar, blendingMode: .behindWindow))
+                }
             }
             Divider()
             VStack(spacing: 0) {
@@ -78,8 +76,9 @@ public struct CommandPaletteView: View {
                             callHandler(command: command)
                         }.onHover(perform: { _ in self.selectedItem = command })
                     }.listStyle(SidebarListStyle())
+                    
             }
-        }.searchable(text: $state.commandQuery)
+        }
         .background(EffectView(.sidebar, blendingMode: .behindWindow))
         .foregroundColor(.gray)
         .edgesIgnoringSafeArea(.vertical)
@@ -97,4 +96,3 @@ struct CommandPaletteView_Previews: PreviewProvider {
         )
     }
 }
-

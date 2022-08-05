@@ -8,6 +8,7 @@
 import SwiftUI
 import AppKit
 
+// swiftlint:disable missing_docs
 extension View {
     public func keyboardListener(keys: Set<Character>,
                                  modifiers: NSEvent.ModifierFlags?,

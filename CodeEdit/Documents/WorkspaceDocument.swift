@@ -19,6 +19,7 @@ import ExtensionsStore
 import StatusBar
 import TabBar
 
+// swiftlint:disable type_body_length
 @objc(WorkspaceDocument) final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var workspaceClient: WorkspaceClient?
 
@@ -43,7 +44,6 @@ import TabBar
     }
 
     // MARK: Open Tabs
-
     /// Opens new tab
     /// - Parameter item: any item which can be represented as a tab
     func openTab(item: TabBarItemRepresentable) {
