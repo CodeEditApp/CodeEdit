@@ -14,7 +14,7 @@ identifier_name:
 
 # paths to ignore during linting.
 excluded:
-  - .build # Where Swift Package Manager checks out dependency sources
+  - CodeEditModules/.build # Where Swift Package Manager checks out dependency sources
   
 opt_in_rules:
   - empty_count

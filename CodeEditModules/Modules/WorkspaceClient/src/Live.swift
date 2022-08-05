@@ -79,13 +79,11 @@ public extension WorkspaceClient {
                                                                             includingPropertiesForKeys: nil)
 
             // test for deleted children, and remove them from the index
-            for oldContent in fileItem.children ?? [] {
-                if !directoryContentsUrls.contains(oldContent.url) {
-                    if let removeAt = fileItem.children?.firstIndex(of: oldContent) {
-                        fileItem.children?.remove(at: removeAt)
-                        flattenedFileItems.removeValue(forKey: oldContent.id)
-                        didChangeSomething = true
-                    }
+            for oldContent in fileItem.children ?? [] where !directoryContentsUrls.contains(oldContent.url) {
+                if let removeAt = fileItem.children?.firstIndex(of: oldContent) {
+                    fileItem.children?.remove(at: removeAt)
+                    flattenedFileItems.removeValue(forKey: oldContent.id)
+                    didChangeSomething = true
                 }
             }
 
