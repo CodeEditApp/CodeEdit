@@ -209,6 +209,19 @@ public extension AppPreferences {
         case small
         case medium
         case large
+
+        /// Returns the row height depending on the `projectNavigatorSize` in `AppPreferences`.
+        ///
+        /// * `small`: 20
+        /// * `medium`: 22
+        /// * `large`: 24
+        public var rowHeight: Double {
+            switch self {
+            case .small: return 20
+            case .medium: return 22
+            case .large: return 24
+            }
+        }
     }
 
     /// The Navigation Detail behavior of the app
