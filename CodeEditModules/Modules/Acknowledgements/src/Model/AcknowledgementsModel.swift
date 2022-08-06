@@ -26,22 +26,20 @@ final class AcknowledgementsModel: ObservableObject {
             if let bundlePath = Bundle.main.path(forResource: "Package.resolved", ofType: nil) {
                 let jsonData = try String(contentsOfFile: bundlePath).data(using: .utf8)
                 let parsedJSON = try JSONDecoder().decode(RootObject.self, from: jsonData!)
-                for dependency in parsedJSON.object.pins.sorted(by: { $0.package < $1.package }) {
-                    // Filter out Dependencies containing CodeEdit (case insensitive)
-                    if dependency.package.range(
-                        of: "[Cc]ode[Ee]dit",
-                        options: .regularExpression,
-                        range: nil,
-                        locale: nil
-                    ) == nil {
-                        self.acknowledgements.append(
-                            Dependency(
-                                name: dependency.package,
-                                repositoryLink: dependency.repositoryURL,
-                                version: dependency.state.version ?? ""
-                            )
+                for dependency in parsedJSON.object.pins.sorted(by: { $0.package < $1.package })
+                where dependency.package.range(
+                    of: "[Cc]ode[Ee]dit",
+                    options: .regularExpression,
+                    range: nil,
+                    locale: nil
+                ) == nil {
+                    self.acknowledgements.append(
+                        Dependency(
+                            name: dependency.package,
+                            repositoryLink: dependency.repositoryURL,
+                            version: dependency.state.version ?? ""
                         )
-                    }
+                    )
                 }
             }
         } catch {
