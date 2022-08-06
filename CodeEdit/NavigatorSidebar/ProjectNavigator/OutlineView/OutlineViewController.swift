@@ -168,36 +168,11 @@ extension OutlineViewController: NSOutlineViewDelegate {
     }
 
     func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
-
         guard let tableColumn = tableColumn else { return nil }
 
         let frameRect = NSRect(x: 0, y: 0, width: tableColumn.width, height: rowHeight)
 
-        let view = OutlineTableViewCell(frame: frameRect)
-
-        if let item = item as? Item {
-            let image = NSImage(systemSymbolName: item.systemImage, accessibilityDescription: nil)!
-            view.fileItem = item
-            view.icon.image = image
-            view.icon.contentTintColor = color(for: item)
-
-            view.label.stringValue = outlineViewLabel(for: item)
-        }
-
-        return view
-    }
-
-    private func outlineViewLabel(for item: Item) -> String {
-        switch fileExtensionsVisibility {
-        case .hideAll:
-            return item.fileName(typeHidden: true)
-        case .showAll:
-            return item.fileName(typeHidden: false)
-        case .showOnly:
-            return item.fileName(typeHidden: !shownFileExtensions.extensions.contains(item.fileType.rawValue))
-        case .hideOnly:
-            return item.fileName(typeHidden: hiddenFileExtensions.extensions.contains(item.fileType.rawValue))
-        }
+        return OutlineTableViewCell(frame: frameRect, item: item as? Item)
     }
 
     func outlineViewSelectionDidChange(_ notification: Notification) {
