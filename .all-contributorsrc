@@ -305,6 +305,15 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "Prince213",
+      "name": "Sizhe Zhao",
+      "avatar_url": "https://avatars.githubusercontent.com/u/25235514?v=4",
+      "profile": "https://github.com/Prince213",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
