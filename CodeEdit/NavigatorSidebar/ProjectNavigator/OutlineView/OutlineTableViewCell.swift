@@ -7,15 +7,24 @@
 
 import SwiftUI
 import WorkspaceClient
+import AppPreferences
 
 /// A `NSTableCellView` showing an ``icon`` and a ``label``
 final class OutlineTableViewCell: NSTableCellView {
 
     var label: NSTextField!
     var icon: NSImageView!
-    var fileItem: WorkspaceClient.FileItem!
+    private var fileItem: WorkspaceClient.FileItem!
 
-    override init(frame frameRect: NSRect) {
+    private let prefs = AppPreferencesModel.shared.preferences.general
+
+    /// Initializes the `OutlineTableViewCell` with an `icon` and `label`
+    /// Both the icon and label will be colored, and sized based on the user's preferences.
+    /// - Parameters:
+    ///   - frameRect: The frame of the cell.
+    ///   - item: The file item the cell represents.
+    ///   - isEditable: Set to true if the user should be able to edit the file name.
+    init(frame frameRect: NSRect, item: WorkspaceClient.FileItem?, isEditable: Bool = true) {
         super.init(frame: frameRect)
 
         // Create the label
@@ -24,11 +33,12 @@ final class OutlineTableViewCell: NSTableCellView {
         self.label.translatesAutoresizingMaskIntoConstraints = false
         self.label.drawsBackground = false
         self.label.isBordered = false
-        self.label.isEditable = true
-        self.label.isSelectable = true
+        self.label.isEditable = isEditable
+        self.label.isSelectable = isEditable
         self.label.delegate = self
         self.label.layer?.cornerRadius = 10.0
         self.label.font = .labelFont(ofSize: fontSize)
+        self.label.lineBreakMode = .byTruncatingMiddle
 
         self.addSubview(label)
         self.textField = label
@@ -54,10 +64,32 @@ final class OutlineTableViewCell: NSTableCellView {
         self.label.leadingAnchor.constraint(equalTo: icon.trailingAnchor, constant: 1).isActive = true
         self.label.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 1).isActive = true
         self.label.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+
+        if let item = item {
+            let image = NSImage(systemSymbolName: item.systemImage, accessibilityDescription: nil)!
+            fileItem = item
+            icon.image = image
+            icon.contentTintColor = color(for: item)
+
+            label.stringValue = label(for: item)
+        }
     }
 
+    /// *Not Implemented*
+    override init(frame frameRect: NSRect) {
+        super.init(frame: frameRect)
+        fatalError("""
+        init(frame: ) isn't implemented on `OutlineTableViewCell`.
+        Please use `.init(frame: NSRect, item: WorkspaceClient.FileItem?)
+        """)
+    }
+
+    /// *Not Implemented*
     required init?(coder: NSCoder) {
-        fatalError()
+        fatalError("""
+        init?(coder: NSCoder) isn't implemented on `OutlineTableViewCell`.
+        Please use `.init(frame: NSRect, item: WorkspaceClient.FileItem?)
+        """)
     }
 
     /// Returns the font size for the current row height. Defaults to `13.0`
@@ -67,6 +99,33 @@ final class OutlineTableViewCell: NSTableCellView {
         case 22: return 13
         case 24: return 14
         default: return 13
+        }
+    }
+
+    /// Generates a string based on user's file name preferences.
+    /// - Parameter item: The FileItem to generate the name for.
+    /// - Returns: A `String` with the name to display.
+    private func label(for item: WorkspaceClient.FileItem) -> String {
+        switch prefs.fileExtensionsVisibility {
+        case .hideAll:
+            return item.fileName(typeHidden: true)
+        case .showAll:
+            return item.fileName(typeHidden: false)
+        case .showOnly:
+            return item.fileName(typeHidden: !prefs.shownFileExtensions.extensions.contains(item.fileType.rawValue))
+        case .hideOnly:
+            return item.fileName(typeHidden: prefs.hiddenFileExtensions.extensions.contains(item.fileType.rawValue))
+        }
+    }
+
+    /// Get the appropriate color for the items icon depending on the users preferences.
+    /// - Parameter item: The `FileItem` to get the color for
+    /// - Returns: A `NSColor` for the given `FileItem`.
+    private func color(for item: WorkspaceClient.FileItem) -> NSColor {
+        if item.children == nil && prefs.fileIconStyle == .color {
+            return NSColor(item.iconColor)
+        } else {
+            return .secondaryLabelColor
         }
     }
 }

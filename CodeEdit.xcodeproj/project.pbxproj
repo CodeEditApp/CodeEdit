@@ -85,6 +85,8 @@
 		5CF38A5E27E48E6C0096A0F7 /* CodeFile in Frameworks */ = {isa = PBXBuildFile; productRef = 5CF38A5D27E48E6C0096A0F7 /* CodeFile */; };
 		64B64EDE27F7B79400C400F1 /* About in Frameworks */ = {isa = PBXBuildFile; productRef = 64B64EDD27F7B79400C400F1 /* About */; };
 		6C05A8AF284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C05A8AE284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift */; };
+		6C14CEB028777D3C001468FE /* FindNavigatorListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C14CEAF28777D3C001468FE /* FindNavigatorListViewController.swift */; };
+		6C14CEB32877A68F001468FE /* FindNavigatorMatchListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C14CEB22877A68F001468FE /* FindNavigatorMatchListCell.swift */; };
 		6CDA84AB284C0E4A00C1CC3A /* TabBarItemButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CDA84AA284C0E4A00C1CC3A /* TabBarItemButtonStyle.swift */; };
 		6CDA84AD284C1BA000C1CC3A /* TabBarContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CDA84AC284C1BA000C1CC3A /* TabBarContextMenu.swift */; };
 		9C3E1A07284E8E020042BEC0 /* WelcomeModuleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C3E1A06284E8E020042BEC0 /* WelcomeModuleExtensions.swift */; };
@@ -99,7 +101,6 @@
 		D7E201AE27E8B3C000CB86D0 /* String+Ranges.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201AD27E8B3C000CB86D0 /* String+Ranges.swift */; };
 		D7E201B027E8C07300CB86D0 /* FindNavigatorSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201AF27E8C07300CB86D0 /* FindNavigatorSearchBar.swift */; };
 		D7E201B227E8D50000CB86D0 /* FindNavigatorModeSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201B127E8D50000CB86D0 /* FindNavigatorModeSelector.swift */; };
-		D7E201BD27EA00E200CB86D0 /* FindNavigatorResultFileItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201BC27EA00E200CB86D0 /* FindNavigatorResultFileItem.swift */; };
 		D7F72DEB27EA3574000C3064 /* Search in Frameworks */ = {isa = PBXBuildFile; productRef = D7F72DEA27EA3574000C3064 /* Search */; };
 		DE513F52281B672D002260B9 /* TabBarAccessory.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE513F51281B672D002260B9 /* TabBarAccessory.swift */; };
 		DE513F54281DE5D0002260B9 /* TabBarXcode.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE513F53281DE5D0002260B9 /* TabBarXcode.swift */; };
@@ -219,6 +220,8 @@
 		474397C42893AC4B00518C8C /* codeedit-midnight.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "codeedit-midnight.json"; sourceTree = "<group>"; };
 		5C4BB1E028212B1E00A92FB2 /* World.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = World.swift; sourceTree = "<group>"; };
 		6C05A8AE284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkspaceDocument+Listeners.swift"; sourceTree = "<group>"; };
+		6C14CEAF28777D3C001468FE /* FindNavigatorListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindNavigatorListViewController.swift; sourceTree = "<group>"; };
+		6C14CEB22877A68F001468FE /* FindNavigatorMatchListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindNavigatorMatchListCell.swift; sourceTree = "<group>"; };
 		6CDA84AA284C0E4A00C1CC3A /* TabBarItemButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarItemButtonStyle.swift; sourceTree = "<group>"; };
 		6CDA84AC284C1BA000C1CC3A /* TabBarContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarContextMenu.swift; sourceTree = "<group>"; };
 		9C3E1A06284E8E020042BEC0 /* WelcomeModuleExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeModuleExtensions.swift; sourceTree = "<group>"; };
@@ -238,7 +241,6 @@
 		D7E201AF27E8C07300CB86D0 /* FindNavigatorSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindNavigatorSearchBar.swift; sourceTree = "<group>"; };
 		D7E201B127E8D50000CB86D0 /* FindNavigatorModeSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindNavigatorModeSelector.swift; sourceTree = "<group>"; };
 		D7E201B327E9989900CB86D0 /* FindNavigatorResultList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindNavigatorResultList.swift; sourceTree = "<group>"; };
-		D7E201BC27EA00E200CB86D0 /* FindNavigatorResultFileItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindNavigatorResultFileItem.swift; sourceTree = "<group>"; };
 		DE513F51281B672D002260B9 /* TabBarAccessory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarAccessory.swift; sourceTree = "<group>"; };
 		DE513F53281DE5D0002260B9 /* TabBarXcode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarXcode.swift; sourceTree = "<group>"; };
 		DE6405A52817734700881FDF /* TabBarNative.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarNative.swift; sourceTree = "<group>"; };
@@ -505,6 +507,16 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		6C14CEB12877A5BE001468FE /* FindNavigatorResultList */ = {
+			isa = PBXGroup;
+			children = (
+				D7E201B327E9989900CB86D0 /* FindNavigatorResultList.swift */,
+				6C14CEAF28777D3C001468FE /* FindNavigatorListViewController.swift */,
+				6C14CEB22877A68F001468FE /* FindNavigatorMatchListCell.swift */,
+			);
+			path = FindNavigatorResultList;
+			sourceTree = "<group>";
+		};
 		B658FB2327DA9E0F00EA4DBD = {
 			isa = PBXGroup;
 			children = (
@@ -576,8 +588,7 @@
 				D7012EE727E757850001E1EF /* FindNavigator.swift */,
 				D7E201AF27E8C07300CB86D0 /* FindNavigatorSearchBar.swift */,
 				D7E201B127E8D50000CB86D0 /* FindNavigatorModeSelector.swift */,
-				D7E201B327E9989900CB86D0 /* FindNavigatorResultList.swift */,
-				D7E201BC27EA00E200CB86D0 /* FindNavigatorResultFileItem.swift */,
+				6C14CEB12877A5BE001468FE /* FindNavigatorResultList */,
 			);
 			path = FindNavigator;
 			sourceTree = "<group>";
@@ -897,6 +908,7 @@
 				DE513F52281B672D002260B9 /* TabBarAccessory.swift in Sources */,
 				2813F93927ECC4C300E305E4 /* NavigatorSidebar.swift in Sources */,
 				DE513F54281DE5D0002260B9 /* TabBarXcode.swift in Sources */,
+				6C14CEB028777D3C001468FE /* FindNavigatorListViewController.swift in Sources */,
 				20EBB50D280C383700F3A5DA /* LanguageType.swift in Sources */,
 				2813F93827ECC4AA00E305E4 /* FindNavigatorResultList.swift in Sources */,
 				201169D92837B31200F92B46 /* SourceControlSearchToolbar.swift in Sources */,
@@ -933,10 +945,10 @@
 				285FEC7027FE4B9800E57D53 /* OutlineTableViewCell.swift in Sources */,
 				0485EB1F27E7458B00138301 /* WorkspaceCodeFileView.swift in Sources */,
 				2847019E27FDDF7600F87B6B /* OutlineView.swift in Sources */,
+				6C14CEB32877A68F001468FE /* FindNavigatorMatchListCell.swift in Sources */,
 				20EBB501280C325D00F3A5DA /* FileInspectorView.swift in Sources */,
 				286471AB27ED51FD0039369D /* ProjectNavigator.swift in Sources */,
 				04C3254B27FF23B000C8DA2D /* ExtensionNavigatorData.swift in Sources */,
-				D7E201BD27EA00E200CB86D0 /* FindNavigatorResultFileItem.swift in Sources */,
 				287776EF27E3515300D46668 /* TabBarItem.swift in Sources */,
 				04660F6A27E51E5C00477777 /* CodeEditWindowController.swift in Sources */,
 				043BCF05281DA19A000AC47C /* WorkspaceDocument+Selection.swift in Sources */,
