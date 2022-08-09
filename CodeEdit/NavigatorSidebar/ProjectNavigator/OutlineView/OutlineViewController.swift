@@ -269,6 +269,8 @@ extension OutlineViewController: NSOutlineViewDelegate {
     }
 }
 
+// MARK: - NSMenuDelegate
+
 extension OutlineViewController: NSMenuDelegate {
 
     /// Once a menu gets requested by a `right click` setup the menu

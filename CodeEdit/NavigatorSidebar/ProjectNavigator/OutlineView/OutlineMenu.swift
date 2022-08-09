@@ -44,6 +44,7 @@ final class OutlineMenu: NSMenu {
         return mItem
     }
 
+    // swiftlint:disable function_body_length
     /// Setup the menu and disables certain items when `isFile` is false
     /// - Parameter isFile: A flag indicating that the item is a file instead of a directory
     private func setupMenu() {
@@ -60,6 +61,7 @@ final class OutlineMenu: NSMenu {
         let newFile = menuItem("New File...", action: #selector(newFile))
         let newFolder = menuItem("New Folder", action: #selector(newFolder))
 
+        let rename = menuItem("Rename", action: #selector(renameFile))
         let delete = menuItem("Delete", action:
                                 item.url != workspace?.workspaceClient?.folderURL()
                               ? #selector(delete) : nil)
@@ -87,6 +89,7 @@ final class OutlineMenu: NSMenu {
             newFile,
             newFolder,
             NSMenuItem.separator(),
+            rename,
             delete,
             duplicate,
             NSMenuItem.separator(),
@@ -206,6 +209,17 @@ final class OutlineMenu: NSMenu {
         item?.addFolder(folderName: "untitled")
         outlineView.expandItem(item)
         outlineView.expandItem((item?.isFolder ?? true) ? item : item?.parent)
+    }
+
+    /// Opens the rename file dialogue on the cell this was presented from.
+    @objc
+    private func renameFile() {
+        let row = outlineView.row(forItem: item)
+        guard row > 0,
+              let cell = outlineView.view(atColumn: 0, row: row, makeIfNecessary: false) as? OutlineTableViewCell else {
+            return
+        }
+        cell.textField?.becomeFirstResponder()
     }
 
     /// Action that deletes the item.
