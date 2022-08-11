@@ -101,7 +101,7 @@ let package = Package(
         .package(
             name: "Preferences",
             url: "https://github.com/sindresorhus/Preferences.git",
-            from: "2.5.0"
+            from: "2.6.0"
         ),
         .package(
             name: "CodeEditKit",
