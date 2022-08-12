@@ -1,29 +1,35 @@
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/806104/163099605-4eaedd33-8441-4125-9ca1-a7ccb2f62a74.png" height="128">
-  <h1 align="center">CodeEdit for macOS</h1>
-</p>
+<div align="center">
+  <p>
+    <img src="https://user-images.githubusercontent.com/806104/163099605-4eaedd33-8441-4125-9ca1-a7ccb2f62a74.png" height="128">
+    <h1>CodeEdit for macOS</h1>
+  </p>
 
-<p align="center">
-  <a aria-label="Follow CodeEdit on Twitter" href="https://twitter.com/CodeEditApp" target="_blank">
-    <img alt="" src="https://img.shields.io/badge/Follow%20@CodeEditApp-black.svg?style=for-the-badge&logo=Twitter">
-  </a>
-  <a aria-label="Join the community on Discord" href="https://discord.gg/vChUXVf9Em" target="_blank">
-    <img alt="" src="https://img.shields.io/badge/Join%20the%20community-black.svg?style=for-the-badge&logo=Discord">
-  </a>
-</p>
+  <p>
+    <a aria-label="Follow CodeEdit on Twitter" href="https://twitter.com/CodeEditApp" target="_blank">
+      <img alt="" src="https://img.shields.io/badge/Follow%20@CodeEditApp-black.svg?style=for-the-badge&logo=Twitter">
+    </a>
+    <a aria-label="Join the community on Discord" href="https://discord.gg/vChUXVf9Em" target="_blank">
+      <img alt="" src="https://img.shields.io/badge/Join%20the%20community-black.svg?style=for-the-badge&logo=Discord">
+    </a>
+  </p>
 
-CodeEdit is a code editor built by the community, for the community, written entirely and unapologetically for macOS. Features include syntax highlighting, code completion, project find and replace, snippets, terminal, task running, debugging, git integration, code review, extensions, and more. 
+  CodeEdit is a code editor built by the community, for the community, written entirely and unapologetically for macOS. Features include syntax highlighting, code completion, project find and replace, snippets, terminal, task running, debugging, git integration, code review, extensions, and more. 
 
-<img width="1012" alt="github-banner" src="https://user-images.githubusercontent.com/806104/163101427-4787970f-c78b-4a98-a29b-1ef26b62fd40.png">
+  <img width="1012" alt="github-banner" src="https://user-images.githubusercontent.com/806104/163101427-4787970f-c78b-4a98-a29b-1ef26b62fd40.png">
 
-[![All Contributors](https://img.shields.io/badge/all_contributors-32-orange.svg?style=flat-square)](#contributors-)
-![GitHub branch checks state](https://img.shields.io/github/checks-status/CodeEditApp/CodeEdit/main?style=flat-square)
-![GitHub Repo stars](https://img.shields.io/github/stars/CodeEditApp/CodeEdit?style=flat-square)
-![GitHub forks](https://img.shields.io/github/forks/CodeEditApp/CodeEdit?style=flat-square)
-[![Discord Badge](https://img.shields.io/discord/951544472238444645?color=5865F2&label=Discord&logo=discord&logoColor=white&style=flat-square)](https://discord.gg/vChUXVf9Em)
+  [![All Contributors](https://img.shields.io/badge/all_contributors-32-orange.svg?style=flat-square)](#contributors-)
+  ![GitHub branch checks state](https://img.shields.io/github/checks-status/CodeEditApp/CodeEdit/main?style=flat-square)
+  ![GitHub Repo stars](https://img.shields.io/github/stars/CodeEditApp/CodeEdit?style=flat-square)
+  ![GitHub forks](https://img.shields.io/github/forks/CodeEditApp/CodeEdit?style=flat-square)
+  [![Discord Badge](https://img.shields.io/discord/951544472238444645?color=5865F2&label=Discord&logo=discord&logoColor=white&style=flat-square)](https://discord.gg/vChUXVf9Em)
+</div>
+
+<br>
 
 | :warning: | **CodeEdit is currently in development and we do not yet offer a download.** <br> We will post a link here when we have an alpha release ready for testing. Until then, we welcome contributors to help bring this project to life. | &nbsp;&nbsp;&nbsp;&nbsp;[CONTRIBUTE](https://github.com/CodeEditApp/CodeEdit/blob/main/CONTRIBUTING.md)&nbsp;&nbsp;&nbsp;&nbsp; |
 | - |:-| - |
+
+<br>
 
 ## Table of Contents
 
@@ -36,6 +42,8 @@ CodeEdit is a code editor built by the community, for the community, written ent
 - [Backers](#backers)
 - [License](#license)
 
+<br><br>
+
 ## Motivation
 
 Developers that use a Mac should be able to use an editor that feels at home on the Mac. Comparable editors are built on Electron. This is a huge limitation because it cannot utilize system resources to their fullest potential.
@@ -45,6 +53,8 @@ Electron requires a Chromium instance to run. This can mean massive performance 
 Xcode offers this great native experience however it mostly supports projects written specifically for Apple platforms. There are many projects not written for Apple platforms that deserve that same macOS-native experience that developers get with Xcode.
 
 This raised the question, what if such an editor existed? We think developers deserve a native experience. This led to the creation of [this concept](https://www.figma.com/proto/qj6raZbQsZpGO0NAVi4qsv/CodeEdit-Concept?node-id=1%3A870) which our project aims to make a reality.
+
+<br><br>
 
 ## Mission
 
@@ -58,13 +68,19 @@ Our goal is to develop an app that looks and feels like it was designed and deve
 
 It might sound crazy, but it is our hope that at some point Apple adopts this project or at least feels like they could.
 
+<br><br>
+
 ## Community
 
 Join our growing community on [Discord](https://discord.gg/vChUXVf9Em) where we discuss and collaborate on all things CodeEdit. Don't be shy, jump right in and be part of the discussion!
 
+<br>
+
 ## Contributing
 
 Be part of the next revolution in code editing by contributing to the project. This is a community-led effort, so we welcome as many contributors who can help. Read the [Contribution Guide](https://github.com/CodeEditApp/CodeEdit/blob/main/CONTRIBUTING.md) for more information.
+
+<br>
 
 ## Contributors
 
@@ -118,6 +134,8 @@ Be part of the next revolution in code editing by contributing to the project. T
   </tr>
 </table>
 
+<br><br>
+
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
 
@@ -133,6 +151,8 @@ Support CodeEdit's development by [becoming a sponsor](https://github.com/sponso
 <a title="panascais" href="https://github.com/panascais" target="_blank"><img src="https://avatars.githubusercontent.com/u/19628635?s=200&v=4" width="128"></a>
 <a title="DevUtilsApp" href="https://devutils.app/?utm_source=codeedit&utm_campaign=oss" target="_blank"><img src="https://devutils.app/512.png" width="128"></a>
 
+<br>
+
 ## Backers
 
 Support CodeEdit's development by [becoming a backer](https://github.com/sponsors/CodeEditApp).
@@ -144,6 +164,8 @@ Support CodeEdit's development by [becoming a backer](https://github.com/sponsor
 <a title="lovetodream" href="https://github.com/lovetodream" target="_blank"><img src="https://avatars.githubusercontent.com/u/38291523?v=4" width="64"></a>
 <a title="ridafkih" href="https://github.com/ridafkih" target="_blank"><img src="https://avatars.githubusercontent.com/u/9158485?v=4" width="64"></a>
 
+<br>
+
 ### Thanks to all of our other backers
 
 [@ivanvorobei](https://github.com/ivanvorobei)
@@ -154,6 +176,8 @@ Support CodeEdit's development by [becoming a backer](https://github.com/sponsor
 [@allejo](https://github.com/allejo)
 [@frousselet](frousselet)
 [@wkillerud](wkillerud)
+
+<br>
 
 ## License
 
