@@ -14,11 +14,20 @@ public final class CommandPaletteState: ObservableObject {
     @Published var isShowingCommandsList: Bool = true
     @Published var filteredCommands: [Command] = []
 
+    func reset() {
+        commandQuery = ""
+        selected = nil
+        filteredCommands = []
+    }
+
     func fetchMatchingCommands(val: String) {
         if val == "" {
             self.filteredCommands = []
             return
         }
         self.filteredCommands = CommandManager.shared.commands.filter { $0.title.localizedCaseInsensitiveContains(val) }
+        if self.filteredCommands.capacity > 0 {
+            self.selected = self.filteredCommands.first
+        }
     }
 }

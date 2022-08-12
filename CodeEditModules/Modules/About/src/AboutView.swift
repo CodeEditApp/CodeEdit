@@ -139,6 +139,7 @@ final class PlaceholderWindowController: NSWindowController {
 
         // close the window when the escape key is pressed
         NSEvent.addLocalMonitorForEvents(matching: .keyDown) { event in
+            print("Abt View")
             guard event.keyCode == 53 else { return event }
 
             self.closeAnimated()

@@ -10,40 +10,38 @@ import AppKit
 
 // swiftlint:disable missing_docs
 extension View {
-    public func keyboardListener(keys: Set<Character>,
+    public func keyboardListener(keys: [UInt16],
                                  modifiers: NSEvent.ModifierFlags?,
-                                 onDown: (() -> Void)?,
-                                 onUp: (() -> Void)?) -> some View {
-        modifier(KeyboardListenerModifier(keys: keys, modifiers: modifiers, onDown: onDown, onUp: onUp))
+                                 onDown: (() -> Void)?
+                                 ) -> some View {
+        modifier(KeyboardListenerModifier(keys: keys, modifiers: modifiers, onDown: onDown))
     }
 }
 
 struct KeyboardListenerModifier: ViewModifier {
-    let keys: Set<Character>
+    let keys: [UInt16]
     let modifiers: NSEvent.ModifierFlags?
     var onDown: (() -> Void)?
-    var onUp: (() -> Void)?
 
     func body(content: Content) -> some View {
         ZStack {
-            KeyboardListener(keys: keys, modifiers: modifiers, onDown: onDown, onUp: onUp)
+            KeyboardListener(keys: keys, modifiers: modifiers, onDown: onDown)
+            TextInput()
             content
         }
     }
 }
 
 public struct KeyboardListener: NSViewRepresentable {
-    let keys: Set<Character>
+    let keys: [UInt16]
     let modifiers: NSEvent.ModifierFlags?
     var onDown: (() -> Void)?
-    var onUp: (() -> Void)?
 
     public func makeNSView(context: Context) -> some NSView {
         let view = KeyboardListenerView()
         view.keys = keys
         view.modifiers = modifiers
         view.onDown = onDown
-        view.onUp = onUp
         return view
     }
 
@@ -53,14 +51,23 @@ public struct KeyboardListener: NSViewRepresentable {
 
 }
 
+public struct TextInput: NSViewRepresentable {
+    public func makeNSView(context: Context) -> some NSView {
+        let view = NSTextField()
+        return view
+    }
+
+    public func updateNSView(_ nsView: NSViewType, context: Context) {
+
+    }
+}
+
 class KeyboardListenerView: NSView {
-    var keys: Set<Character> = []
+    var keys: [UInt16] = []
     var modifiers: NSEvent.ModifierFlags?
     var onDown: (() -> Void)?
-    var onUp: (() -> Void)?
 
     private var modifiersPressed: Bool = false
-    private var charactersPressed: Set<Character> = []
 
     override var acceptsFirstResponder: Bool {
         return true
@@ -68,37 +75,24 @@ class KeyboardListenerView: NSView {
 
     override func flagsChanged(with event: NSEvent) {
         modifiersPressed = event.modifierFlags.intersection(.deviceIndependentFlagsMask) == modifiers
-        if keyCommandMatches() {
+        if keyCommandMatches(eventKey: event.keyCode) {
             onDown?()
-        } else if charactersPressed.isEmpty && modifiersPressed == false {
-            onUp?()
         }
     }
     override func keyDown(with event: NSEvent) {
-        for char in event.characters ?? "" {
-            charactersPressed.insert(char)
-        }
-        if keyCommandMatches() {
+        print(event.keyCode)
+        if keyCommandMatches(eventKey: event.keyCode) {
             onDown?()
-        }
-    }
-    override func keyUp(with event: NSEvent) {
-        for char in event.characters ?? "" {
-            charactersPressed.remove(char)
-        }
-        if charactersPressed.isEmpty && modifiersPressed == false {
-            onUp?()
         }
     }
 
     /// Returns `true` if the current key-flag combination matches.
     /// - Returns: `true` if the current key-flag combination matches the keyboard's pressed keys.
-    private func keyCommandMatches() -> Bool {
-        return charactersPressed == keys && modifiersPressed // && !didEscape
+    private func keyCommandMatches(eventKey: UInt16) -> Bool {
+        return keys.contains(eventKey) && modifiersPressed // && !didEscape
     }
 
     deinit {
         onDown = nil
-        onUp = nil
     }
 }

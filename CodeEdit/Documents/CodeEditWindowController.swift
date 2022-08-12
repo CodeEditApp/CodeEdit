@@ -236,12 +236,17 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
             if let commandPalettePanel = commandPalettePanel {
                 if commandPalettePanel.isKeyWindow {
                     commandPalettePanel.close()
+                    print("closed")
+                    state.reset()
                     return
                 } else {
+                    print("not key window")
+                    state.reset()
                     window?.addChildWindow(commandPalettePanel, ordered: .above)
                     commandPalettePanel.makeKeyAndOrderFront(self)
                 }
             } else {
+                print("creating")
                 let panel = OverlayPanel()
                 self.commandPalettePanel = panel
                 let contentView = CommandPaletteView(state: state, closePalette: panel.close)
