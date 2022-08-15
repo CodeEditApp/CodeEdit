@@ -151,6 +151,7 @@ final class PlaceholderWindowController: NSWindowController {
         window?.isMovableByWindowBackground = true
         window?.titlebarAppearsTransparent = true
         window?.titleVisibility = .hidden
+        window?.isExcludedFromWindowsMenu = true
     }
 
     func closeAnimated() {

@@ -137,7 +137,8 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/35942988?v=4",
       "profile": "https://blog.windchillmedia.com",
       "contributions": [
-        "code"
+        "code",
+        "bug"
       ]
     },
     {
@@ -302,6 +303,15 @@
       "name": "Gabriel Moreno",
       "avatar_url": "https://avatars.githubusercontent.com/u/43397475?v=4",
       "profile": "http://gantoreno.com",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "Prince213",
+      "name": "Sizhe Zhao",
+      "avatar_url": "https://avatars.githubusercontent.com/u/25235514?v=4",
+      "profile": "https://github.com/Prince213",
       "contributions": [
         "bug"
       ]

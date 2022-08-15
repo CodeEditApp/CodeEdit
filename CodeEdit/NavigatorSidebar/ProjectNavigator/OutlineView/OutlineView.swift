@@ -33,7 +33,7 @@ struct OutlineView: NSViewControllerRepresentable {
 
     func updateNSViewController(_ nsViewController: OutlineViewController, context: Context) {
         nsViewController.iconColor = prefs.preferences.general.fileIconStyle
-        nsViewController.rowHeight = rowHeight
+        nsViewController.rowHeight = prefs.preferences.general.projectNavigatorSize.rowHeight
         nsViewController.fileExtensionsVisibility = prefs.preferences.general.fileExtensionsVisibility
         nsViewController.shownFileExtensions = prefs.preferences.general.shownFileExtensions
         nsViewController.hiddenFileExtensions = prefs.preferences.general.hiddenFileExtensions
@@ -65,19 +65,6 @@ struct OutlineView: NSViewControllerRepresentable {
 
         deinit {
             listener?.cancel()
-        }
-    }
-
-    /// Returns the row height depending on the `projectNavigatorSize` in `AppPreferences`.
-    ///
-    /// * `small`: 20
-    /// * `medium`: 22
-    /// * `large`: 24
-    private var rowHeight: Double {
-        switch prefs.preferences.general.projectNavigatorSize {
-        case .small: return 20
-        case .medium: return 22
-        case .large: return 24
         }
     }
 }

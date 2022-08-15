@@ -1,60 +1,60 @@
 {
-    "author" : "CodeEdit",
-    "distributionURL" : "https:\/\/github.com\/CodeEditApp\/CodeEdit",
-    "version" : "0.0.1",
-    "license" : "MIT",
-    "type" : "dark",
-    "name" : "codeedit-xcode-dark",
-    "displayName" : "Xcode Dark",
-    "description" : "Xcode dark theme.",
-    "editor" : {
-        "strings" : {
-            "color" : "#FC6A5D"
+    "author": "CodeEdit",
+    "distributionURL": "https://github.com/CodeEditApp/CodeEdit",
+    "version": "0.0.1",
+    "license": "MIT",
+    "type": "dark",
+    "name": "codeedit-midnight",
+    "displayName": "Midnight",
+    "description": "Midnight theme.",
+    "editor": {
+        "strings": {
+            "color": "#FF4647"
         },
-        "comments" : {
-            "color" : "#73A74E"
+        "comments": {
+            "color": "#4BD156"
         },
-        "numbers" : {
-            "color" : "#D0BF69"
+        "numbers": {
+            "color": "#8B87FF"
         },
-        "commands" : {
-            "color" : "#67B7A4"
+        "commands": {
+            "color": "#EB905A"
         },
-        "lineHighlight" : {
-            "color" : "#23252B"
+        "lineHighlight": {
+            "color": "#232121"
         },
-        "values" : {
-            "color" : "#A167E6"
+        "values": {
+            "color": "#A167E6"
         },
-        "background" : {
-            "color" : "#1F1F24"
+        "background": {
+            "color": "#000000"
         },
-        "keywords" : {
-            "color" : "#FF7AB3"
+        "keywords": {
+            "color": "#DE38A5"
         },
-        "text" : {
-            "color" : "#D9D9D9"
+        "text": {
+            "color": "#FFFFFF"
         },
-        "insertionPoint" : {
-            "color" : "#D9D9D9"
+        "insertionPoint": {
+            "color": "#D9D9D9"
         },
-        "selection" : {
-            "color" : "#515B70"
+        "selection": {
+            "color": "#515B70"
         },
-        "types" : {
-            "color" : "#5DD8FF"
+        "types": {
+            "color": "#00A0FF"
         },
-        "variables" : {
-            "color" : "#41A1C0"
+        "variables": {
+            "color": "#41A1C0"
         },
-        "attributes" : {
-            "color" : "#D0A8FF"
+        "attributes": {
+            "color": "#3B5AAC"
         },
-        "characters" : {
-            "color" : "#D0BF69"
+        "characters": {
+            "color": "#8B87FF"
         },
-        "invisibles" : {
-            "color" : "#424D5B"
+        "invisibles": {
+            "color": "#424242"
         }
     },
     "terminal" : {
