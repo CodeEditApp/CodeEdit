@@ -2,7 +2,7 @@
 //  CommandPaletteView.swift
 //  CodeEdit
 //
-//  Created by Alex on 24.05.2022.
+//  Created by Alex Sinelnikov on 24.05.2022.
 //
 
 import SwiftUI
@@ -13,6 +13,8 @@ public struct CommandPaletteView: View {
     @ObservedObject private var state: CommandPaletteState
     @ObservedObject var commandManager: CommandManager = CommandManager.shared
 
+    @Environment(\.colorScheme) var colorScheme: ColorScheme
+
     @State private var monitor: Any?
     @State private var selectedItem: Command?
     private let closePalette: () -> Void
@@ -20,10 +22,7 @@ public struct CommandPaletteView: View {
     public init(state: CommandPaletteState, closePalette: @escaping () -> Void) {
         self.state = state
         self.closePalette = closePalette
-        print(commandsList.count)
-        print(commandsList[0])
-        self.selectedItem = commandManager.commands[0]
-
+        self.selectedItem = commandsList.first
     }
 
     func resetState() {
@@ -83,24 +82,27 @@ public struct CommandPaletteView: View {
     func onKeyDown(with event: NSEvent) -> Bool {
 
         switch event.keyCode {
+            // down arrow button
         case 125:
             selectNext()
             return true
+            // up arrow button
         case 126:
             selectPrev()
             return true
+            // enter button
         case 36:
             if let command = self.selectedItem {
                 callHandler(command: command)
             }
             return true
+            // esc button
         case 53:
             closePalette()
+            return true
         default:
             return false
         }
-
-        return false
     }
 
     func onQueryChange(text: String) {
@@ -113,6 +115,34 @@ public struct CommandPaletteView: View {
         callHandler(command: command)
     }
 
+    func textColor(command: Command) -> Color {
+        if self.selectedItem == command {
+            return .white
+        }
+
+        return colorScheme == .dark ? .white : .black
+    }
+
+    func highlightedText(str: String, searched: String) -> Text {
+        guard !str.isEmpty && !searched.isEmpty else {
+            return Text(str).foregroundColor(Color(hex: 0xFFFFFF, alpha: 0.55))
+
+        }
+
+//        Color(.white).opacity(0.55)
+        var result: Text!
+        let parts = str.components(separatedBy: searched)
+        for idx in parts.indices {
+            result = result == nil ? Text(parts[idx]).foregroundColor(Color(hex: 0xFFFFFF, alpha: 0.55)) :
+                result + Text(parts[idx]).foregroundColor(Color(hex: 0xFFFFFF, alpha: 0.55))
+            if idx != parts.count - 1 {
+                // swiftlint:disable shorthand_operator
+                result = result + Text(searched).foregroundColor(Color(hex: 0xFFFFFF, alpha: 0.85))
+            }
+        }
+        return result ?? Text(str)
+    }
+
     public var body: some View {
         VStack(spacing: 0.0) {
                 HStack(alignment: .center, spacing: 0) {
@@ -122,21 +152,6 @@ public struct CommandPaletteView: View {
                         .frame(width: 16, height: 16)
                         .padding(.leading, 20)
                         .offset(x: 0, y: 1)
-//                    TextField("Search Commands", text: $state.commandQuery)
-//                        .font(.system(size: 20, weight: .light, design: .default))
-//                        .textFieldStyle(.plain)
-//                        .onReceive(
-//                            state.$commandQuery
-//                                .debounce(for: .seconds(0.1), scheduler: DispatchQueue.main)
-//                        ) { val in
-//                            state.fetchMatchingCommands(val: val)
-//                        }.keyboardListener(keys: [126, 125, 53], modifiers: [], onDown: {
-//                            print("On down")
-//                        })
-//                    .padding(16)
-//                    .foregroundColor(Color(.systemGray).opacity(0.85))
-//                    .background(EffectView(.sidebar, blendingMode: .behindWindow))
-
                     ActionAwareInput(onDown: onKeyDown,
                                      onTextChange: onQueryChange, text: $state.commandQuery)
                         .font(.system(size: 24, weight: .light, design: .default))
@@ -152,9 +167,9 @@ public struct CommandPaletteView: View {
                     // swiftlint:disable multiple_closures_with_trailing_closure
                     Button(action: { onCommandClick(command: command) }) {
                         VStack {
-                            Text(command.title)
+                            highlightedText(str: command.title, searched: state.commandQuery)
                             .padding(EdgeInsets.init(top: 0, leading: 8, bottom: 0, trailing: 0))
-                            .foregroundColor(.white)
+                            .foregroundColor(textColor(command: command))
                         }.frame(maxWidth: .infinity, maxHeight: 15, alignment: .leading)
                     }.frame(maxWidth: .infinity, maxHeight: 15, alignment: .leading)
                         .listRowInsets(EdgeInsets.init(top: 0, leading: 0, bottom: 0, trailing: 0))
@@ -194,17 +209,15 @@ class ActionAwareInputView: NSTextView, NSTextFieldDelegate {
     var onTextChange: ((String) -> Void)?
 
     func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
-        print(commandSelector)
         return true
     }
 
     override var acceptsFirstResponder: Bool { return true }
 
     override public func keyDown(with event: NSEvent) {
-        print("keydown")
-        print(event.keyCode)
-
         if onDown!(event) {
+            // We don't want to pass event down the pipe if it was handled.
+            // By handled I mean its keycode was used for something else than typing
             return
         }
 
@@ -213,7 +226,6 @@ class ActionAwareInputView: NSTextView, NSTextFieldDelegate {
 
     override public func didChangeText() {
         onTextChange?(self.string)
-        print(self.string)
     }
 
 }
