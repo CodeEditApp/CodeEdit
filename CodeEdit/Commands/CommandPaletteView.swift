@@ -123,26 +123,6 @@ public struct CommandPaletteView: View {
         return colorScheme == .dark ? .white : .black
     }
 
-    func highlightedText(str: String, searched: String) -> Text {
-        guard !str.isEmpty && !searched.isEmpty else {
-            return Text(str).foregroundColor(Color(hex: 0xFFFFFF, alpha: 0.55))
-
-        }
-
-//        Color(.white).opacity(0.55)
-        var result: Text!
-        let parts = str.components(separatedBy: searched)
-        for idx in parts.indices {
-            result = result == nil ? Text(parts[idx]).foregroundColor(Color(hex: 0xFFFFFF, alpha: 0.55)) :
-                result + Text(parts[idx]).foregroundColor(Color(hex: 0xFFFFFF, alpha: 0.55))
-            if idx != parts.count - 1 {
-                // swiftlint:disable shorthand_operator
-                result = result + Text(searched).foregroundColor(Color(hex: 0xFFFFFF, alpha: 0.85))
-            }
-        }
-        return result ?? Text(str)
-    }
-
     public var body: some View {
         VStack(spacing: 0.0) {
                 HStack(alignment: .center, spacing: 0) {
@@ -167,9 +147,9 @@ public struct CommandPaletteView: View {
                     // swiftlint:disable multiple_closures_with_trailing_closure
                     Button(action: { onCommandClick(command: command) }) {
                         VStack {
-                            highlightedText(str: command.title, searched: state.commandQuery)
-                            .padding(EdgeInsets.init(top: 0, leading: 8, bottom: 0, trailing: 0))
-                            .foregroundColor(textColor(command: command))
+                            SearchResultLabel(labelName: command.title, textToMatch: state.commandQuery,
+                                              fontColor: textColor(command: command))
+                                .padding(EdgeInsets.init(top: 0, leading: 8, bottom: 0, trailing: 0))
                         }.frame(maxWidth: .infinity, maxHeight: 15, alignment: .leading)
                     }.frame(maxWidth: .infinity, maxHeight: 15, alignment: .leading)
                         .listRowInsets(EdgeInsets.init(top: 0, leading: 0, bottom: 0, trailing: 0))
@@ -226,6 +206,48 @@ class ActionAwareInputView: NSTextView, NSTextFieldDelegate {
 
     override public func didChangeText() {
         onTextChange?(self.string)
+    }
+
+}
+
+public struct SearchResultLabel: NSViewRepresentable {
+
+    var labelName: String
+    var textToMatch: String
+    var fontColor: Color
+
+    public func makeNSView(context: Context) -> some NSTextField {
+        let label = NSTextField(wrappingLabelWithString: labelName)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.drawsBackground = false
+        label.textColor = NSColor(fontColor.opacity(0.55))
+        label.isEditable = false
+        label.isSelectable = false
+        label.layer?.cornerRadius = 10.0
+        label.font = .labelFont(ofSize: 13)
+        label.allowsDefaultTighteningForTruncation = false
+        label.cell?.truncatesLastVisibleLine = true
+        label.cell?.wraps = true
+        label.maximumNumberOfLines = 1
+        label.attributedStringValue = highlight()
+        return label
+    }
+
+    func highlight() -> NSAttributedString {
+
+        let attribText = NSMutableAttributedString(string: self.labelName)
+        let range: NSRange = attribText.mutableString.range(of: self.textToMatch,
+                                                                options: NSString.CompareOptions.caseInsensitive)
+
+        var attributes: [NSAttributedString.Key: Any] = [:]
+        attributes[.foregroundColor] = NSColor(fontColor.opacity(0.85))
+        attribText.addAttributes(attributes, range: range)
+        return attribText
+    }
+
+    public func updateNSView(_ nsView: NSViewType, context: Context) {
+        nsView.textColor = NSColor(fontColor.opacity(0.55))
+        nsView.attributedStringValue = highlight()
     }
 
 }
