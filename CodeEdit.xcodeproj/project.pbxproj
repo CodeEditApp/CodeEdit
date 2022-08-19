@@ -249,7 +249,6 @@
 		DE6405A52817734700881FDF /* TabBarNative.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarNative.swift; sourceTree = "<group>"; };
 		DE6F77862813625500D00A76 /* TabBarDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarDivider.swift; sourceTree = "<group>"; };
 		FA275790283D61F300FDAFEE /* CommandPaletteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandPaletteView.swift; sourceTree = "<group>"; };
-		FA73C6632836C0D3008353ED /* Keybindings */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Keybindings; path = CodeEditModules/Modules/Keybindings; sourceTree = "<group>"; };
 		FA85159C283F4F800040A467 /* CommandPaletteState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandPaletteState.swift; sourceTree = "<group>"; };
 		FD6A3D3C2817C13B008BCF11 /* Package.resolved */ = {isa = PBXFileReference; lastKnownFileType = text; path = Package.resolved; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -510,7 +509,6 @@
 		5C403B8D27E20F8000788241 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				FA73C6632836C0D3008353ED /* Keybindings */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
