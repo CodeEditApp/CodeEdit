@@ -40,23 +40,34 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
         fatalError("init(coder:) has not been implemented")
     }
 
+    /// These are example items that added as commands to command palette
     func registerCommands() {
-        CommandManager.shared.addCommand(name: "Quick Open", title: "Quick Open", id: "quick_open",
-                                         command: ClosureWrapper(closure: {
-            self.openQuickly(self)
-        }))
+        CommandManager.shared.addCommand(
+            name: "Quick Open",
+             title: "Quick Open",
+             id: "quick_open",
+             command: ClosureWrapper(closure: {
+                self.openQuickly(self)
+            })
+        )
 
-        CommandManager.shared.addCommand(name: "Toggle Left Sidebar", title: "Toggle Left Sidebar",
-                                         id: "toggle_left_sidebar",
-                                         command: ClosureWrapper(closure: {
-            self.toggleFirstPanel()
-        }))
+        CommandManager.shared.addCommand(
+            name: "Toggle Left Sidebar",
+             title: "Toggle Left Sidebar",
+             id: "toggle_left_sidebar",
+             command: ClosureWrapper(closure: {
+                 self.toggleFirstPanel()
+             })
+        )
 
-        CommandManager.shared.addCommand(name: "Toggle Right Sidebar", title: "Toggle Right Sidebar",
-                                         id: "toggle_right_sidebar",
-                                         command: ClosureWrapper(closure: {
-            self.toggleLastPanel()
-        }))
+        CommandManager.shared.addCommand(
+            name: "Toggle Right Sidebar",
+            title: "Toggle Right Sidebar",
+            id: "toggle_right_sidebar",
+            command: ClosureWrapper(closure: {
+                self.toggleLastPanel()
+            })
+        )
     }
 
     private func setupSplitView(with workspace: WorkspaceDocument) {

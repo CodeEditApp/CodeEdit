@@ -9,6 +9,7 @@ import SwiftUI
 import Keybindings
 import CodeEditUI
 
+/// Command palette view
 public struct CommandPaletteView: View {
     @ObservedObject private var state: CommandPaletteState
     @ObservedObject var commandManager: CommandManager = CommandManager.shared
@@ -133,7 +134,8 @@ public struct CommandPaletteView: View {
                         .padding(.leading, 20)
                         .offset(x: 0, y: 1)
                     ActionAwareInput(onDown: onKeyDown,
-                                     onTextChange: onQueryChange, text: $state.commandQuery)
+                                     onTextChange: onQueryChange,
+                                     text: $state.commandQuery)
                         .font(.system(size: 24, weight: .light, design: .default))
                         .padding(16)
                         .frame(height: 52, alignment: .center)
@@ -147,13 +149,14 @@ public struct CommandPaletteView: View {
                     // swiftlint:disable multiple_closures_with_trailing_closure
                     Button(action: { onCommandClick(command: command) }) {
                         VStack {
-                            SearchResultLabel(labelName: command.title, textToMatch: state.commandQuery,
+                            SearchResultLabel(labelName: command.title,
+                                              textToMatch: state.commandQuery,
                                               fontColor: textColor(command: command))
-                                .padding(EdgeInsets.init(top: 0, leading: 8, bottom: 0, trailing: 0))
+                            .padding(.zero)
                         }.frame(maxWidth: .infinity, maxHeight: 15, alignment: .leading)
                     }.frame(maxWidth: .infinity, maxHeight: 15, alignment: .leading)
-                        .listRowInsets(EdgeInsets.init(top: 0, leading: 0, bottom: 0, trailing: 0))
-                        .padding(EdgeInsets.init(top: 5, leading: 5, bottom: 5, trailing: 0))
+                        .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
+                        .padding(.init(top: 5, leading: 5, bottom: 5, trailing: 0))
                         .buttonStyle(.borderless)
                         .background(self.selectedItem == command ?
                                            RoundedRectangle(cornerRadius: 5, style: .continuous)
@@ -210,6 +213,10 @@ class ActionAwareInputView: NSTextView, NSTextFieldDelegate {
 
 }
 
+/// Implementation of command palette entity. While swiftui does not allow to use NSMutableAttributeStrings,
+/// the only way to fallback to UIKit and have NSViewRepresentable to be a bridge between UIKit and SwiftUI.
+/// Highlights currently entered text query
+
 public struct SearchResultLabel: NSViewRepresentable {
 
     var labelName: String
@@ -238,10 +245,8 @@ public struct SearchResultLabel: NSViewRepresentable {
         let attribText = NSMutableAttributedString(string: self.labelName)
         let range: NSRange = attribText.mutableString.range(of: self.textToMatch,
                                                                 options: NSString.CompareOptions.caseInsensitive)
+        attribText.addAttribute(.foregroundColor, value: NSColor(fontColor.opacity(0.85)), range: range)
 
-        var attributes: [NSAttributedString.Key: Any] = [:]
-        attributes[.foregroundColor] = NSColor(fontColor.opacity(0.85))
-        attribText.addAttributes(attributes, range: range)
         return attribText
     }
 
@@ -252,6 +257,8 @@ public struct SearchResultLabel: NSViewRepresentable {
 
 }
 
+/// A special NSTextView based input that allows to override onkeyDown events and add according handlers.
+/// Very useful when need to use arrows to navigate through the list of items that matches entered text
 public struct ActionAwareInput: NSViewRepresentable {
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     var fontColor: Color {

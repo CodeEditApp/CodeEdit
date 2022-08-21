@@ -14,9 +14,11 @@ internal struct StatusBarToggleDrawerButton: View {
 
     internal init(model: StatusBarModel) {
         self.model = model
-        CommandManager.shared.addCommand(name: "Toggle Drawer",
-                                         title: "Toggle Drawer",
-                                         id: "open.drawer", command: ClosureWrapper.init(closure: togglePanel))
+        CommandManager.shared.addCommand(
+            name: "Toggle Drawer",
+            title: "Toggle Drawer",
+            id: "open.drawer",
+            command: ClosureWrapper.init(closure: togglePanel))
     }
 
     func togglePanel() {

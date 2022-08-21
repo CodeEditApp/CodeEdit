@@ -8,6 +8,9 @@
 import Foundation
 import Keybindings
 
+/// Simple state class for command palette view. Contains currently selected command,
+/// query text and list of filtered commands
+
 public final class CommandPaletteState: ObservableObject {
     @Published var commandQuery: String = ""
     @Published var selected: Command?
@@ -26,8 +29,7 @@ public final class CommandPaletteState: ObservableObject {
             return
         }
         self.filteredCommands = CommandManager.shared.commands.filter { $0.title.localizedCaseInsensitiveContains(val) }
-        if self.filteredCommands.capacity > 0 {
-            self.selected = self.filteredCommands.first
-        }
+        self.selected = self.filteredCommands.first
+
     }
 }

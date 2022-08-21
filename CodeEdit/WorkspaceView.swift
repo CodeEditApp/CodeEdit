@@ -95,7 +95,6 @@ struct WorkspaceView: View {
                     }
                     .safeAreaInset(edge: .top, spacing: 0) {
                         VStack(spacing: 0) {
-                            Text("123")
                             TabBar(windowController: windowController, workspace: workspace)
                             TabBarBottomDivider()
                         }

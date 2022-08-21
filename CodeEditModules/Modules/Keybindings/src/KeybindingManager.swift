@@ -8,21 +8,23 @@
 import Foundation
 import SwiftUI
 
-// swiftlint:disable missing_docs
+// swiftlint:disable:next missing_docs
 public final class KeybindingManager {
+    /// Array which contains all available keyboard shortcuts
     public var keyboardShortcuts = [String: KeyboardShortcutWrapper]()
 
     private init() {
         loadKeybindings()
     }
 
-    // swiftlint:disable missing_docs
+    /// Static method to access singleton
     public static let shared: KeybindingManager = .init()
 
     // We need this fallback shortcut because optional shortcuts available only from 12.3, while we have target of 12.0x
     var fallbackShortcut = KeyboardShortcutWrapper(name: "?", description: "Test", context: "Fallback",
                                                    keybinding: "?", modifier: "shift", id: "fallback")
 
+    /// Adds new shortcut
     public func addNewShortcut(shortcut: KeyboardShortcutWrapper, name: String) {
         keyboardShortcuts[name] = shortcut
     }
@@ -41,11 +43,6 @@ public final class KeybindingManager {
                 }
         }
             return
-//        let preferenceURL = AppPreferencesModel.shared.preferencesURL
-    }
-
-    private func loadDefaultKeybindings() {
-
     }
 
     /// Get shortcut by name
@@ -58,6 +55,7 @@ public final class KeybindingManager {
 
 }
 
+/// Wrapper for KeyboardShortcut. It contains name, keybindings.
 public struct KeyboardShortcutWrapper: Codable {
     public var keyboardShortcut: KeyboardShortcut {
         return KeyboardShortcut.init(.init(Character(keybinding)), modifiers: parsedModifier)
