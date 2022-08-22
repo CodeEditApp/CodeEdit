@@ -262,7 +262,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                 title: "Key Bindings",
                 toolbarIcon: NSImage(systemSymbolName: "keyboard", accessibilityDescription: nil)!
             ) {
-                PreferencesPlaceholderView()
+                PreferenceKeybindingsView()
             },
             Preferences.Pane(
                 identifier: Preferences.PaneIdentifier("SourceControl"),

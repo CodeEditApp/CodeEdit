@@ -19,6 +19,7 @@ import ExtensionsStore
 import StatusBar
 import TabBar
 
+// swiftlint:disable type_body_length
 @objc(WorkspaceDocument) final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var workspaceClient: WorkspaceClient?
 
@@ -31,6 +32,7 @@ import TabBar
     var statusBarModel: StatusBarModel?
     var searchState: SearchState?
     var quickOpenState: QuickOpenState?
+    var commandsPaletteState: CommandPaletteState?
     var listenerModel: WorkspaceNotificationModel = .init()
     private var cancellables = Set<AnyCancellable>()
 
@@ -42,7 +44,6 @@ import TabBar
     }
 
     // MARK: Open Tabs
-
     /// Opens new tab
     /// - Parameter item: any item which can be represented as a tab
     func openTab(item: TabBarItemRepresentable) {
@@ -267,6 +268,7 @@ import TabBar
         )
         self.searchState = .init(self)
         self.quickOpenState = .init(fileURL: url)
+        self.commandsPaletteState = .init()
         self.statusBarModel = .init(workspaceURL: url)
 
         NotificationCenter.default.addObserver(self,
