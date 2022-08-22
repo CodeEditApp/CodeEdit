@@ -14,7 +14,7 @@ public extension WorkspaceClient {
     enum FileItemCodingKeys: String, CodingKey {
         case id
         case url
-        case children
+        case children 
     }
 
     /// An object containing all necessary information and actions for a specific file in the workspace
