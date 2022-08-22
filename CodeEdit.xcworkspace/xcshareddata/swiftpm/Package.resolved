@@ -24,7 +24,7 @@
         "repositoryURL": "https://github.com/CodeEditApp/CodeEditTextView",
         "state": {
           "branch": "main",
-          "revision": "03220567eb26a890a40e53d6bd7ae7dbb492c316",
+          "revision": "9b300d8a37589f4e16719f98d1bf8763940ef0b2",
           "version": null
         }
       },
@@ -68,8 +68,8 @@
         "package": "STTextView",
         "repositoryURL": "https://github.com/krzyzanowskim/STTextView",
         "state": {
-          "branch": null,
-          "revision": "c4f3d18da9e9c3660cf4d6660c34fa887dd1b852",
+          "branch": "main",
+          "revision": "6f80a71d9e687629a8d7ee69cb96b91685739d69",
           "version": null
         }
       },
@@ -96,8 +96,8 @@
         "repositoryURL": "https://github.com/ChimeHQ/SwiftTreeSitter",
         "state": {
           "branch": null,
-          "revision": "824aa62ccfeb9bed62a6abd42ba1f06f9a75e99c",
-          "version": "0.6.1"
+          "revision": "86a13b3c6ba29c8fd086b17b5e91306398275f91",
+          "version": "0.6.2"
         }
       },
       {
@@ -132,7 +132,7 @@
         "repositoryURL": "https://github.com/tree-sitter/tree-sitter-cpp.git",
         "state": {
           "branch": "master",
-          "revision": "818a564afc1571fc3996ddbe7227af778f7a112c",
+          "revision": "f40125503642845492d87fa56ece3ed26a4ef4db",
           "version": null
         }
       },
@@ -177,7 +177,7 @@
         "repositoryURL": "https://github.com/tree-sitter/tree-sitter-java.git",
         "state": {
           "branch": "master",
-          "revision": "ac14b4b1884102839455d32543ab6d53ae089ab7",
+          "revision": "443275301e60538a1c6f7979ac20a1fda9792934",
           "version": null
         }
       },
@@ -186,7 +186,7 @@
         "repositoryURL": "https://github.com/tree-sitter/tree-sitter-javascript.git",
         "state": {
           "branch": "master",
-          "revision": "35565430231d0c15b748b0c9de36b247d8780f75",
+          "revision": "936d976a782e75395d9b1c8c7c7bf4ba6fe0d86b",
           "version": null
         }
       },
@@ -213,7 +213,7 @@
         "repositoryURL": "https://github.com/lukepistrol/tree-sitter-python.git",
         "state": {
           "branch": "feature/spm",
-          "revision": "78ab3c3dd69a571156ffd1c7ace7c49fb2e284ef",
+          "revision": "6a74b1a2de12c90218cbace9c6b896d137cd5201",
           "version": null
         }
       },
@@ -231,16 +231,16 @@
         "repositoryURL": "https://github.com/tree-sitter/tree-sitter-rust.git",
         "state": {
           "branch": "master",
-          "revision": "41e23b454f503e6fe63ec4b6d9f7f2cf7788ab8e",
+          "revision": "47b061c1e1ba3a7e9c2f450363a50e87de3f7c61",
           "version": null
         }
       },
       {
         "package": "TreeSitterSwift",
-        "repositoryURL": "https://github.com/mattmassicotte/tree-sitter-swift.git",
+        "repositoryURL": "https://github.com/alex-pinkus/tree-sitter-swift",
         "state": {
-          "branch": "feature/spm",
-          "revision": "79db1387dceb4b65175f194cc2b06507d2b4c26f",
+          "branch": "with-generated-files",
+          "revision": "77c6312c8438f4dbaa0350cec92b3d6dd3d74a66",
           "version": null
         }
       },
