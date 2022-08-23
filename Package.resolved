@@ -24,7 +24,11 @@
         "repositoryURL": "https://github.com/CodeEditApp/CodeEditTextView",
         "state": {
           "branch": "main",
+<<<<<<< HEAD
           "revision": "9b300d8a37589f4e16719f98d1bf8763940ef0b2",
+=======
+          "revision": "03220567eb26a890a40e53d6bd7ae7dbb492c316",
+>>>>>>> 0cfd746f96d1ce6c61e8942b262492aa02a583be
           "version": null
         }
       },
@@ -68,8 +72,13 @@
         "package": "STTextView",
         "repositoryURL": "https://github.com/krzyzanowskim/STTextView",
         "state": {
+<<<<<<< HEAD
           "branch": "main",
           "revision": "6f80a71d9e687629a8d7ee69cb96b91685739d69",
+=======
+          "branch": null,
+          "revision": "c4f3d18da9e9c3660cf4d6660c34fa887dd1b852",
+>>>>>>> 0cfd746f96d1ce6c61e8942b262492aa02a583be
           "version": null
         }
       },
@@ -132,7 +141,11 @@
         "repositoryURL": "https://github.com/tree-sitter/tree-sitter-cpp.git",
         "state": {
           "branch": "master",
+<<<<<<< HEAD
           "revision": "f40125503642845492d87fa56ece3ed26a4ef4db",
+=======
+          "revision": "818a564afc1571fc3996ddbe7227af778f7a112c",
+>>>>>>> 0cfd746f96d1ce6c61e8942b262492aa02a583be
           "version": null
         }
       },
@@ -186,7 +199,11 @@
         "repositoryURL": "https://github.com/tree-sitter/tree-sitter-javascript.git",
         "state": {
           "branch": "master",
+<<<<<<< HEAD
           "revision": "936d976a782e75395d9b1c8c7c7bf4ba6fe0d86b",
+=======
+          "revision": "35565430231d0c15b748b0c9de36b247d8780f75",
+>>>>>>> 0cfd746f96d1ce6c61e8942b262492aa02a583be
           "version": null
         }
       },
@@ -231,7 +248,11 @@
         "repositoryURL": "https://github.com/tree-sitter/tree-sitter-rust.git",
         "state": {
           "branch": "master",
+<<<<<<< HEAD
           "revision": "47b061c1e1ba3a7e9c2f450363a50e87de3f7c61",
+=======
+          "revision": "41e23b454f503e6fe63ec4b6d9f7f2cf7788ab8e",
+>>>>>>> 0cfd746f96d1ce6c61e8942b262492aa02a583be
           "version": null
         }
       },

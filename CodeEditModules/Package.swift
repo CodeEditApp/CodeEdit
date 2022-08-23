@@ -74,6 +74,10 @@ let package = Package(
             targets: ["CodeEditUtils"]
         ),
         .library(
+            name: "Keybindings",
+            targets: ["Keybindings"]
+        ),
+        .library(
             name: "TabBar",
             targets: ["TabBar"]
         ),
@@ -167,6 +171,7 @@ let package = Package(
                 "CodeEditUI",
                 "Git",
                 "AppPreferences",
+                "Keybindings",
             ],
             path: "Modules/WelcomeModule/src",
             resources: [
@@ -228,6 +233,7 @@ let package = Package(
                 "Preferences",
                 "CodeEditUI",
                 "Git",
+                "Keybindings",
                 "CodeEditUtils",
                 "CodeEditSymbols",
                 "CodeEditTextView",
@@ -312,6 +318,12 @@ let package = Package(
         .target(
             name: "CodeEditUtils",
             path: "Modules/CodeEditUtils/src"
+        ),
+        .target(
+            name: "Keybindings",
+            dependencies: ["WorkspaceClient"],
+            path: "Modules/Keybindings/src",
+            resources: [.copy("default_keybindings.json")]
         ),
         .target(
             name: "TabBar",

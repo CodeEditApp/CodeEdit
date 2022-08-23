@@ -106,6 +106,9 @@
 		DE513F54281DE5D0002260B9 /* TabBarXcode.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE513F53281DE5D0002260B9 /* TabBarXcode.swift */; };
 		DE6405A62817734700881FDF /* TabBarNative.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6405A52817734700881FDF /* TabBarNative.swift */; };
 		DE6F77872813625500D00A76 /* TabBarDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6F77862813625500D00A76 /* TabBarDivider.swift */; };
+		FA275791283D61F300FDAFEE /* CommandPaletteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA275790283D61F300FDAFEE /* CommandPaletteView.swift */; };
+		FA6BA6F1282ACAD600019309 /* Keybindings in Frameworks */ = {isa = PBXBuildFile; productRef = FA6BA6F0282ACAD600019309 /* Keybindings */; };
+		FA85159D283F4F800040A467 /* CommandPaletteState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA85159C283F4F800040A467 /* CommandPaletteState.swift */; };
 		FD6A3D3D2817C13B008BCF11 /* Package.resolved in Resources */ = {isa = PBXBuildFile; fileRef = FD6A3D3C2817C13B008BCF11 /* Package.resolved */; };
 /* End PBXBuildFile section */
 
@@ -245,6 +248,8 @@
 		DE513F53281DE5D0002260B9 /* TabBarXcode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarXcode.swift; sourceTree = "<group>"; };
 		DE6405A52817734700881FDF /* TabBarNative.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarNative.swift; sourceTree = "<group>"; };
 		DE6F77862813625500D00A76 /* TabBarDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarDivider.swift; sourceTree = "<group>"; };
+		FA275790283D61F300FDAFEE /* CommandPaletteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandPaletteView.swift; sourceTree = "<group>"; };
+		FA85159C283F4F800040A467 /* CommandPaletteState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandPaletteState.swift; sourceTree = "<group>"; };
 		FD6A3D3C2817C13B008BCF11 /* Package.resolved */ = {isa = PBXFileReference; lastKnownFileType = text; path = Package.resolved; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -278,6 +283,7 @@
 				28CE5EA027E6493D0065D29C /* StatusBar in Frameworks */,
 				2004A3832808468600FD9696 /* Feedback in Frameworks */,
 				5CF38A5E27E48E6C0096A0F7 /* CodeFile in Frameworks */,
+				FA6BA6F1282ACAD600019309 /* Keybindings in Frameworks */,
 				28117FD0280768A500649353 /* CodeEditUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -543,6 +549,7 @@
 		B658FB2E27DA9E0F00EA4DBD /* CodeEdit */ = {
 			isa = PBXGroup;
 			children = (
+				FA73C664283BEDE6008353ED /* Commands */,
 				0463E50F27FCC19800806D5C /* Extensions */,
 				043C321227E31FE8006AE443 /* Documents */,
 				B6EE988E27E8877C00CDD8AB /* InspectorSidebar */,
@@ -600,6 +607,15 @@
 				D7211D4927E06BFE008F2ED7 /* Localizable.strings */,
 			);
 			path = Localization;
+			sourceTree = "<group>";
+		};
+		FA73C664283BEDE6008353ED /* Commands */ = {
+			isa = PBXGroup;
+			children = (
+				FA85159C283F4F800040A467 /* CommandPaletteState.swift */,
+				FA275790283D61F300FDAFEE /* CommandPaletteView.swift */,
+			);
+			path = Commands;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -662,6 +678,7 @@
 				2864BAAB28117B3F002DBD1A /* ShellClient */,
 				2864BAAD28117D7C002DBD1A /* TerminalEmulator */,
 				043BCF06281DA2F5000AC47C /* TabBar */,
+				FA6BA6F0282ACAD600019309 /* Keybindings */,
 				20AFDC7E28206701001A4FC7 /* Git */,
 			);
 			productName = CodeEdit;
@@ -906,6 +923,7 @@
 				2072FA13280D74ED00C7F8D4 /* HistoryInspectorModel.swift in Sources */,
 				201169E52837B40300F92B46 /* RepositoriesView.swift in Sources */,
 				DE513F52281B672D002260B9 /* TabBarAccessory.swift in Sources */,
+				FA85159D283F4F800040A467 /* CommandPaletteState.swift in Sources */,
 				2813F93927ECC4C300E305E4 /* NavigatorSidebar.swift in Sources */,
 				DE513F54281DE5D0002260B9 /* TabBarXcode.swift in Sources */,
 				6C14CEB028777D3C001468FE /* FindNavigatorListViewController.swift in Sources */,
@@ -964,6 +982,7 @@
 				043BCF03281DA18A000AC47C /* WorkspaceDocument+Search.swift in Sources */,
 				04C325512800AC7400C8DA2D /* ExtensionInstallationViewModel.swift in Sources */,
 				28B0A19827E385C300B73177 /* NavigatorSidebarToolbarTop.swift in Sources */,
+				FA275791283D61F300FDAFEE /* CommandPaletteView.swift in Sources */,
 				6CDA84AD284C1BA000C1CC3A /* TabBarContextMenu.swift in Sources */,
 				0463E51127FCC1DF00806D5C /* CodeEditAPI.swift in Sources */,
 				04C3255B2801F86400C8DA2D /* OutlineViewController.swift in Sources */,
@@ -1219,6 +1238,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = austincondiff.CodeEdit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1236,7 +1256,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconDev;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = CodeEdit/CodeEdit.entitlements;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1252,6 +1272,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = austincondiff.CodeEdit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1505,6 +1526,10 @@
 		D7F72DEA27EA3574000C3064 /* Search */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Search;
+		};
+		FA6BA6F0282ACAD600019309 /* Keybindings */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Keybindings;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
