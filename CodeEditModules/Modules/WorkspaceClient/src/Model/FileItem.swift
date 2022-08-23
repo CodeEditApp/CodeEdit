@@ -235,7 +235,7 @@ public extension WorkspaceClient {
 
             let deleteConfirmation = NSAlert()
             let message = "\(self.fileName)\(self.isFolder ? " and its children" :"")"
-            deleteConfirmation.messageText = "Do you want to move \(message) to the bin?"
+            deleteConfirmation.messageText = "Are you sure you want to move \(message) to the Trash?"
             deleteConfirmation.alertStyle = .critical
             deleteConfirmation.addButton(withTitle: "Delete")
             deleteConfirmation.buttons.last?.hasDestructiveAction = true
@@ -259,7 +259,8 @@ public extension WorkspaceClient {
                 let previousName = fileUrl.lastPathComponent
                 let filextension = fileUrl.pathExtension
                 let fileName = filextension.isEmpty ? previousName : previousName.replacingOccurrences(of: ".\(filextension)", with: "")
-                fileUrl = fileUrl.deletingLastPathComponent().appendingPathComponent("\(fileName) copy.\(filextension)")
+                fileUrl = fileUrl.deletingLastPathComponent()
+                fileurl.appendPathComponent("\(fileName) copy.\(filextension)")
             }
 
             if FileItem.fileManger.fileExists(atPath: self.url.path) {
