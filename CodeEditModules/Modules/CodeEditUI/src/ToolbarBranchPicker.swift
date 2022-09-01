@@ -116,12 +116,14 @@ public struct ToolbarBranchPicker: View {
                     }
                 }
                 if !branchNames.isEmpty {
-                    VStack(alignment: .leading, spacing: 0) {
-                        headerLabel("Branches")
-                        ForEach(branchNames, id: \.self) { branch in
-                            BranchCell(name: branch) {
-                                try? gitClient?.checkoutBranch(branch)
-                                currentBranch = try? gitClient?.getCurrentBranchName()
+                    ScrollView {
+                        VStack(alignment: .leading, spacing: 0) {
+                            headerLabel("Branches")
+                            ForEach(branchNames, id: \.self) { branch in
+                                BranchCell(name: branch) {
+                                    try? gitClient?.checkoutBranch(branch)
+                                    currentBranch = try? gitClient?.getCurrentBranchName()
+                                }
                             }
                         }
                     }
