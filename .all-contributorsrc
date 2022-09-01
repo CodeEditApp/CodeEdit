@@ -315,6 +315,15 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "matthijseikelenboom",
+      "name": "Matthijs Eikelenboom",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1364843?v=4",
+      "profile": "https://github.com/matthijseikelenboom",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
