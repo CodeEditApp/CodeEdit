@@ -124,7 +124,7 @@ Support CodeEdit's development by [becoming a backer](https://github.com/sponsor
 ### Thanks to all of our other backers
 
 [@ivanvorobei](https://github.com/ivanvorobei)
-[@albertorestifo](https://github.com/albertorestifo)mhessain733
+[@albertorestifo](https://github.com/albertorestifo)
 
 
 ## RP
