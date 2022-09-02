@@ -262,7 +262,8 @@ public extension WorkspaceClient {
                 let fileName = filextension.isEmpty ?
                 previousName : previousNameWithoutExtension
                 fileUrl = fileUrl.deletingLastPathComponent()
-                fileUrl.appendPathComponent("\(fileName)_copy.\(filextension)")
+                fileUrl.appendPathComponent("\(fileName)_copy")
+                fileUrl.appendPathExtension("\(filextension)")
             }
 
             if FileItem.fileManger.fileExists(atPath: self.url.path) {
