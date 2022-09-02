@@ -127,9 +127,9 @@ Support CodeEdit's development by [becoming a backer](https://github.com/sponsor
 [@albertorestifo](https://github.com/albertorestifo)
 
 
-## RP
+## Important
 
-This project is tested with [BrowserStack](https://BrowserStack.com).
+This project is tested with [BrowserStack](https://BrowserStack.com) by 2/9/2022. 
 
 
 ## License
