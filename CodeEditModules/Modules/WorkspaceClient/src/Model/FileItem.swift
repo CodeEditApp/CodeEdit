@@ -261,8 +261,8 @@ public extension WorkspaceClient {
                 let duplicateName = "\(previousName)-copy"
 
                 fileUrl = fileUrl.deletingLastPathComponent()
-                fileUrl.appendPathComponent("\(duplicateName)")
-                fileUrl.appendPathExtension("\(filextension)")
+                fileUrl.appendPathComponent(duplicateName)
+                fileUrl.appendPathExtension(filextension)
             }
 
             if FileItem.fileManger.fileExists(atPath: self.url.path) {
