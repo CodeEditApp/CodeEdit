@@ -28,6 +28,7 @@
 		04C3255C2801F86900C8DA2D /* OutlineMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285FEC7127FE4EEF00E57D53 /* OutlineMenu.swift */; };
 		04C3256B28034FC800C8DA2D /* CodeEditKit in Frameworks */ = {isa = PBXBuildFile; productRef = 04C3256A28034FC800C8DA2D /* CodeEditKit */; };
 		04C3256C28034FC800C8DA2D /* CodeEditKit in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 04C3256A28034FC800C8DA2D /* CodeEditKit */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		098CB2B228C3F8D5007CE148 /* Package.resolved in Resources */ = {isa = PBXBuildFile; fileRef = 098CB2B128C3F8D5007CE148 /* Package.resolved */; };
 		200412EF280F3EAC00BCAF5C /* NoCommitHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200412EE280F3EAC00BCAF5C /* NoCommitHistoryView.swift */; };
 		2004A3832808468600FD9696 /* Feedback in Frameworks */ = {isa = PBXBuildFile; productRef = 2004A3822808468600FD9696 /* Feedback */; };
 		201169D72837B2E300F92B46 /* SourceControlNavigatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201169D62837B2E300F92B46 /* SourceControlNavigatorView.swift */; };
@@ -177,6 +178,7 @@
 		04C3254C27FF331B00C8DA2D /* ExtensionNavigatorItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionNavigatorItem.swift; sourceTree = "<group>"; };
 		04C3254E2800AA4700C8DA2D /* ExtensionInstallationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionInstallationView.swift; sourceTree = "<group>"; };
 		04C325502800AC7400C8DA2D /* ExtensionInstallationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionInstallationViewModel.swift; sourceTree = "<group>"; };
+		098CB2B128C3F8D5007CE148 /* Package.resolved */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Package.resolved; sourceTree = "<group>"; };
 		200412EE280F3EAC00BCAF5C /* NoCommitHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoCommitHistoryView.swift; sourceTree = "<group>"; };
 		201169D62837B2E300F92B46 /* SourceControlNavigatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlNavigatorView.swift; sourceTree = "<group>"; };
 		201169D82837B31200F92B46 /* SourceControlSearchToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlSearchToolbar.swift; sourceTree = "<group>"; };
@@ -562,6 +564,7 @@
 				04660F6027E3A68A00477777 /* Info.plist */,
 				043C321927E32295006AE443 /* MainMenu.xib */,
 				B658FB3127DA9E0F00EA4DBD /* WorkspaceView.swift */,
+				098CB2B128C3F8D5007CE148 /* Package.resolved */,
 				28069DA527F5BD320016BC47 /* DefaultThemes */,
 			);
 			path = CodeEdit;
@@ -788,6 +791,7 @@
 				28A51005281701B40087B0CC /* codeedit-github-light.json in Resources */,
 				D7211D4727E06BFE008F2ED7 /* Localizable.strings in Resources */,
 				28A51001281673530087B0CC /* codeedit-xcode-dark.json in Resources */,
+				098CB2B228C3F8D5007CE148 /* Package.resolved in Resources */,
 				B658FB3427DA9E1000EA4DBD /* Assets.xcassets in Resources */,
 				474397C52893AC4B00518C8C /* codeedit-midnight.json in Resources */,
 				043C321A27E32295006AE443 /* MainMenu.xib in Resources */,
