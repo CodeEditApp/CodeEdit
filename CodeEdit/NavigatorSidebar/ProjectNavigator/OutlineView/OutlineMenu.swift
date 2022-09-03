@@ -214,12 +214,12 @@ final class OutlineMenu: NSMenu {
     /// Opens the rename file dialogue on the cell this was presented from.
     @objc
     private func renameFile() {
-        var row = outlineView.row(forItem: item)
-        // remove the file extension from row
-        if let item = item, !item.isFolder {
-            row -= 1
+        let row = outlineView.row(forItem: item)
+        guard row > 0,
+              let cell = outlineView.view(atColumn: 0, row: row, makeIfNecessary: false) as? OutlineTableViewCell else {
+            return
         }
-        outlineView.editColumn(0, row: row, with: nil, select: true)
+        cell.textField?.becomeFirstResponder()
     }
 
     /// Action that deletes the item.
