@@ -33,6 +33,8 @@ public extension WorkspaceClient {
 
         public typealias ID = String
 
+        private let uuid: UUID
+
         public var watcher: DispatchSourceFileSystemObject?
         static var watcherCode: () -> Void = {}
 
@@ -58,6 +60,7 @@ public extension WorkspaceClient {
             self.url = url
             self.children = children
             id = url.relativePath
+            uuid = UUID()
         }
 
         public required init(from decoder: Decoder) throws {
@@ -65,6 +68,7 @@ public extension WorkspaceClient {
             id = try values.decode(String.self, forKey: .id)
             url = try values.decode(URL.self, forKey: .url)
             children = try values.decode([FileItem]?.self, forKey: .children)
+            uuid = UUID()
         }
 
         public func encode(to encoder: Encoder) throws {
@@ -289,9 +293,7 @@ public extension WorkspaceClient {
 
 extension WorkspaceClient.FileItem: Hashable {
     public func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-        hasher.combine(url)
-        hasher.combine(children)
+        hasher.combine(uuid)
     }
 }
 
