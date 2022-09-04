@@ -116,6 +116,7 @@ Be part of the next revolution in code editing by contributing to the project. T
     <td align="center"><a href="http://gantoreno.com"><img src="https://avatars.githubusercontent.com/u/43397475?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Gabriel Moreno</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3Agantoreno" title="Bug reports">🐛</a></td>
     <td align="center"><a href="https://github.com/Prince213"><img src="https://avatars.githubusercontent.com/u/25235514?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Sizhe Zhao</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3APrince213" title="Bug reports">🐛</a></td>
     <td align="center"><a href="https://github.com/matthijseikelenboom"><img src="https://avatars.githubusercontent.com/u/1364843?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Matthijs Eikelenboom</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=matthijseikelenboom" title="Code">💻</a> <a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3Amatthijseikelenboom" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/Muhammed9991"><img src="https://avatars.githubusercontent.com/u/80204376?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Muhammed Mahmood</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=Muhammed9991" title="Code">💻</a></td>
   </tr>
 </table>
 
