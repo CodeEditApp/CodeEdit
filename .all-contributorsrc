@@ -334,6 +334,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "muescha",
+      "name": "Muescha",
+      "avatar_url": "https://avatars.githubusercontent.com/u/184316?v=4",
+      "profile": "https://github.com/muescha",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
