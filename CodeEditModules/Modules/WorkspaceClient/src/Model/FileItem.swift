@@ -239,7 +239,7 @@ public extension WorkspaceClient {
 
             let deleteConfirmation = NSAlert()
             let message = "\(self.fileName)\(self.isFolder ? " and its children" :"")"
-            deleteConfirmation.messageText = "Do you want to move \(message) to the bin?"
+            deleteConfirmation.messageText = "Are you sure you want to move \(message) to the Trash?"
             deleteConfirmation.alertStyle = .critical
             deleteConfirmation.addButton(withTitle: "Delete")
             deleteConfirmation.buttons.last?.hasDestructiveAction = true
@@ -260,8 +260,13 @@ public extension WorkspaceClient {
             // if a file/folder with the same name exists, add "copy" to the end
             var fileUrl = self.url
             while FileItem.fileManger.fileExists(atPath: fileUrl.path) {
-                let previousName = fileUrl.lastPathComponent
-                fileUrl = fileUrl.deletingLastPathComponent().appendingPathComponent("\(previousName) copy")
+                let previousName = fileUrl.deletingPathExtension().lastPathComponent
+                let filextension = fileUrl.pathExtension
+                let duplicateName = "\(previousName)-copy"
+
+                fileUrl = fileUrl.deletingLastPathComponent()
+                fileUrl.appendPathComponent(duplicateName)
+                fileUrl.appendPathExtension(filextension)
             }
 
             if FileItem.fileManger.fileExists(atPath: self.url.path) {

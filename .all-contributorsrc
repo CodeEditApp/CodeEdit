@@ -315,6 +315,25 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "matthijseikelenboom",
+      "name": "Matthijs Eikelenboom",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1364843?v=4",
+      "profile": "https://github.com/matthijseikelenboom",
+      "contributions": [
+        "code",
+        "bug"
+      ]
+    },
+    {
+      "login": "Muhammed9991",
+      "name": "Muhammed Mahmood",
+      "avatar_url": "https://avatars.githubusercontent.com/u/80204376?v=4",
+      "profile": "https://github.com/Muhammed9991",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
