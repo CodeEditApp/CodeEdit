@@ -9,12 +9,17 @@ import SwiftUI
 import WorkspaceClient
 import AppPreferences
 
+protocol OutlineTableViewCellDelegate: AnyObject {
+    func moveFile(file: WorkspaceClient.FileItem, to destination: URL)
+}
+
 /// A `NSTableCellView` showing an ``icon`` and a ``label``
 final class OutlineTableViewCell: NSTableCellView {
 
     var label: NSTextField!
     var icon: NSImageView!
     private var fileItem: WorkspaceClient.FileItem!
+    private var delegate: OutlineTableViewCellDelegate?
 
     private let prefs = AppPreferencesModel.shared.preferences.general
 
@@ -24,8 +29,12 @@ final class OutlineTableViewCell: NSTableCellView {
     ///   - frameRect: The frame of the cell.
     ///   - item: The file item the cell represents.
     ///   - isEditable: Set to true if the user should be able to edit the file name.
-    init(frame frameRect: NSRect, item: WorkspaceClient.FileItem?, isEditable: Bool = true) {
+    init(frame frameRect: NSRect, item: WorkspaceClient.FileItem?,
+         isEditable: Bool = true,
+         delegate: OutlineTableViewCellDelegate? = nil) {
         super.init(frame: frameRect)
+
+        self.delegate = delegate
 
         // Create the label
 
@@ -141,8 +150,10 @@ extension OutlineTableViewCell: NSTextFieldDelegate {
         print("File validity: \(validateFileName(for: label?.stringValue ?? ""))")
         label.backgroundColor = validateFileName(for: label?.stringValue ?? "") ? .none : errorRed
         if validateFileName(for: label?.stringValue ?? "") {
-            fileItem.move(to: fileItem.url.deletingLastPathComponent()
-                .appendingPathComponent(label?.stringValue ?? ""))
+            let destinationURL = fileItem.url
+                .deletingLastPathComponent()
+                .appendingPathComponent(label?.stringValue ?? "")
+            delegate?.moveFile(file: fileItem, to: destinationURL)
         } else {
             label?.stringValue = fileItem.fileName
         }
