@@ -27,7 +27,7 @@ Once you are happy with your changes, submit a `Pull Request`.
 
 The pull request opens with a template loaded. Fill out all fields that are relevant.
 
-The `PR` should include follwing information:
+The `PR` should include following information:
 * A descriptive **title** on what changed.
 * A detailed **description** of changes.
 * If you made changes to the UI please add a **screenshot** or **video** as well.

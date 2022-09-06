@@ -219,7 +219,7 @@ final class OutlineMenu: NSMenu {
               let cell = outlineView.view(atColumn: 0, row: row, makeIfNecessary: false) as? OutlineTableViewCell else {
             return
         }
-        cell.textField?.becomeFirstResponder()
+        outlineView.window?.makeFirstResponder(cell.textField)
     }
 
     /// Action that deletes the item.
