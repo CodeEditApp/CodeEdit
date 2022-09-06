@@ -343,6 +343,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "avdept",
+      "name": "Alex Sinelnikov",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1757017?v=4",
+      "profile": "https://alexsinelnikov.io/",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
