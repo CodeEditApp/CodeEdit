@@ -284,7 +284,10 @@ public extension WorkspaceClient {
             guard !FileItem.fileManger.fileExists(atPath: newLocation.path) else { return }
             do {
                 try FileItem.fileManger.moveItem(at: self.url, to: newLocation)
-            } catch { fatalError(error.localizedDescription) }
+                self.url = newLocation
+            } catch {
+                fatalError(error.localizedDescription)
+            }
         }
     }
 }
