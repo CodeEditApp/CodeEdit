@@ -172,7 +172,7 @@ extension OutlineViewController: NSOutlineViewDelegate {
 
         let frameRect = NSRect(x: 0, y: 0, width: tableColumn.width, height: rowHeight)
 
-        return OutlineTableViewCell(frame: frameRect, item: item as? Item)
+        return OutlineTableViewCell(frame: frameRect, item: item as? Item, delegate: self)
     }
 
     func outlineViewSelectionDidChange(_ notification: Notification) {
@@ -292,5 +292,15 @@ extension OutlineViewController: NSMenuDelegate {
             }
         }
         menu.update()
+    }
+}
+
+// MARK: - OutlineTableViewCellDelegate
+
+extension OutlineViewController: OutlineTableViewCellDelegate {
+    func moveFile(file: Item, to destination: URL) {
+        workspace?.closeTab(item: .codeEditor(file.id))
+        file.move(to: destination)
+        workspace?.openTab(item: file)
     }
 }
