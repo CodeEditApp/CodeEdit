@@ -193,9 +193,7 @@ extension OutlineViewController: NSOutlineViewDelegate {
         rowHeight // This can be changed to 20 to match Xcode's row height.
     }
 
-    func outlineViewItemDidExpand(_ notification: Notification) {
-        updateSelection()
-    }
+    func outlineViewItemDidExpand(_ notification: Notification) {}
 
     func outlineViewItemDidCollapse(_ notification: Notification) {}
 
