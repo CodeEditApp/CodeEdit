@@ -91,6 +91,7 @@ final class OutlineViewController: NSViewController {
     /// Most importantly when the `id` changes from an external view.
     func updateSelection() {
         guard let itemID = workspace?.selectionState.selectedId else {
+            outlineView.deselectRow(outlineView.selectedRow)
             return
         }
 
@@ -192,9 +193,7 @@ extension OutlineViewController: NSOutlineViewDelegate {
         rowHeight // This can be changed to 20 to match Xcode's row height.
     }
 
-    func outlineViewItemDidExpand(_ notification: Notification) {
-        updateSelection()
-    }
+    func outlineViewItemDidExpand(_ notification: Notification) {}
 
     func outlineViewItemDidCollapse(_ notification: Notification) {}
 
