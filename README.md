@@ -121,6 +121,7 @@ Be part of the next revolution in code editing by contributing to the project. T
   <tr>
     <td align="center"><a href="https://github.com/muescha"><img src="https://avatars.githubusercontent.com/u/184316?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Muescha</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=muescha" title="Code">💻</a></td>
     <td align="center"><a href="https://alexsinelnikov.io/"><img src="https://avatars.githubusercontent.com/u/1757017?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Alex Sinelnikov</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=avdept" title="Code">💻</a></td>
+    <td align="center"><a href="http://pribess.github.io"><img src="https://avatars.githubusercontent.com/u/72389357?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Heewon Cho</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3APribess" title="Bug reports">🐛</a></td>
   </tr>
 </table>
 
