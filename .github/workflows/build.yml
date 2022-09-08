@@ -1,0 +1,25 @@
+name: Build and Upload Artifact
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  build_upload:
+    name: Build and Upload Artifact
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Build CodeEdit
+        # 'CODE_SIGN_IDENTITY=-' overrides code signing to ad-hoc. To sign with a developer account, see below. 
+        # https://docs.github.com/en/actions/deployment/deploying-xcode-applications/installing-an-apple-certificate-on-macos-runners-for-xcode-development
+        run: xcodebuild -workspace CodeEdit.xcworkspace -scheme CodeEdit -configuration Release -archivePath CodeEdit.xcarchive archive CODE_SIGN_IDENTITY=-
+      - name: Zip CodeEdit.app
+        run: zip -r CodeEdit.zip CodeEdit.xcarchive/Products/Applications/CodeEdit.app
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3.1.0
+        with:
+            path: CodeEdit.zip
