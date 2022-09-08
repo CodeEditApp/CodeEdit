@@ -17,8 +17,13 @@ jobs:
         # 'CODE_SIGN_IDENTITY=-' overrides code signing to ad-hoc. To sign with a developer account, see below. 
         # https://docs.github.com/en/actions/deployment/deploying-xcode-applications/installing-an-apple-certificate-on-macos-runners-for-xcode-development
         run: xcodebuild -workspace CodeEdit.xcworkspace -scheme CodeEdit -configuration Release -archivePath CodeEdit.xcarchive archive CODE_SIGN_IDENTITY=-
-      - name: Upload CodeEdit.app
+      - name: Create CodeEdit.dmg
+        run: |
+          mkdir CodeEdit_dmg
+          cp -r CodeEdit.xcarchive/Products/Applications/CodeEdit.app CodeEdit_dmg
+          hdiutil create -srcfolder CodeEdit_dmg -volname CodeEdit -format ULMO CodeEdit.dmg
+      - name: Upload CodeEdit.dmg
         uses: actions/upload-artifact@v3.1.0
         with:
-          name: CodeEdit
-          path: CodeEdit.xcarchive/Products/Applications/CodeEdit.app
+          name: CodeEdit.dmg
+          path: CodeEdit.dmg
