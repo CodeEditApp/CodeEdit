@@ -1,4 +1,4 @@
-name: Build and Upload Artifact
+name: Build and Release
 
 on:
   workflow_dispatch:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   build_upload:
-    name: Build and Upload Artifact
+    name: Build and Release
     runs-on: macos-12
     steps:
       - name: Checkout repository
@@ -19,11 +19,15 @@ jobs:
         run: xcodebuild -workspace CodeEdit.xcworkspace -scheme CodeEdit -configuration Release -archivePath CodeEdit.xcarchive archive CODE_SIGN_IDENTITY=-
       - name: Create CodeEdit.dmg
         run: |
-          mkdir CodeEdit_dmg
-          cp -r CodeEdit.xcarchive/Products/Applications/CodeEdit.app CodeEdit_dmg
-          hdiutil create -srcfolder CodeEdit_dmg -volname CodeEdit -format ULMO CodeEdit.dmg
-      - name: Upload CodeEdit.dmg
-        uses: actions/upload-artifact@v3.1.0
+          REV=$(git rev-parse --short HEAD)
+          echo "REV=$REV" >> $GITHUB_ENV
+          mkdir "CodeEdit-$REV"
+          cp -r CodeEdit.xcarchive/Products/Applications/CodeEdit.app "CodeEdit-$REV"
+          hdiutil create -srcfolder CodeEdit-$REV -volname CodeEdit -format ULMO "CodeEdit-$REV.dmg"
+      - name: Release
+        uses: softprops/action-gh-release@v1
         with:
-          name: CodeEdit.dmg
-          path: CodeEdit.dmg
+          files: CodeEdit-${{ env.REV }}.dmg
+          name: CodeEdit-${{ env.REV }}
+          prerelease: true
+          generate_release_notes: true
