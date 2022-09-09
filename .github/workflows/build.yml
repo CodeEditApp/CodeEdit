@@ -1,4 +1,4 @@
-name: Build and Release
+name: Build and Pre-release
 
 on:
   workflow_dispatch:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   build_upload:
-    name: Build and Release
+    name: Build and Pre-release
     runs-on: macos-12
     steps:
       - name: Checkout repository
@@ -24,10 +24,11 @@ jobs:
           mkdir "CodeEdit-$REV"
           cp -r CodeEdit.xcarchive/Products/Applications/CodeEdit.app "CodeEdit-$REV"
           hdiutil create -srcfolder CodeEdit-$REV -volname CodeEdit -format ULMO "CodeEdit-$REV.dmg"
-      - name: Release
-        uses: softprops/action-gh-release@v1
+      - name: Pre-release
+        uses: marvinpinto/action-automatic-releases@latest
         with:
-          files: CodeEdit-${{ env.REV }}.dmg
-          name: CodeEdit-${{ env.REV }}
+          title: "CodeEdit-${{ env.REV }}"
+          files: "CodeEdit-${{ env.REV }}.dmg"
+          automatic_release_tag: "latest"
           prerelease: true
-          generate_release_notes: true
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
