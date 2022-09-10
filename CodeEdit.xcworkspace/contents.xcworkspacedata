@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:CodeEditModules">
+      location = "group:CodeEdit.xcworkspace">
    </FileRef>
    <FileRef
       location = "container:CodeEdit.xcodeproj">

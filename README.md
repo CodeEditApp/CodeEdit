@@ -12,7 +12,7 @@
   </a>
 </p>
 
-CodeEdit is a code editor built by the community, for the community, written entirely and unapologetically for macOS. Features include syntax highlighting, code completion, project find and replace, snippets, terminal, task running, debugging, git integration, code review, extensions, and more. 
+CodeEdit is a code editor built by the community, for the community, written entirely and unapologetically for macOS. Features include syntax highlighting, code completion, project find and replace, snippets, terminal, task running, debugging, git integration, code review, extensions, and more.
 
 <img width="1012" alt="github-banner" src="https://user-images.githubusercontent.com/806104/163101427-4787970f-c78b-4a98-a29b-1ef26b62fd40.png">
 
@@ -48,7 +48,7 @@ This raised the question, what if such an editor existed? We think developers de
 
 ## Mission
 
-We think there is room to streamline the developer experience. To gain maximum adoption, CodeEdit should be open source, free to use, and supported by the community. 
+We think there is room to streamline the developer experience. To gain maximum adoption, CodeEdit should be open source, free to use, and supported by the community.
 
 ![github-equation](https://user-images.githubusercontent.com/806104/163101287-feba5466-dde0-450c-a9ac-8f9dd3d00e52.png)
 
@@ -67,7 +67,6 @@ Join our growing community on [Discord](https://discord.gg/vChUXVf9Em) where we 
 Be part of the next revolution in code editing by contributing to the project. This is a community-led effort, so we welcome as many contributors who can help. Read the [Contribution Guide](https://github.com/CodeEditApp/CodeEdit/blob/main/CONTRIBUTING.md) for more information.
 
 ## Contributors
-
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
