@@ -366,10 +366,12 @@ struct TabBarItem: View {
                     .opacity(isActive ? 0 : 1)
                 }
             }
-            .onDrag({
-                onDragTabId = item.tabID
-                return .init(object: NSString(string: "\(item.tabID)"))
-            })
+            // TODO: Enable the following code snippet when dragging-out behavior should be allowed.
+            // Since we didn't handle the drop-outside event, dragging-out is disabled for now.
+//            .onDrag({
+//                onDragTabId = item.tabID
+//                return .init(object: NSString(string: "\(item.tabID)"))
+//            })
         }
         .buttonStyle(TabBarItemButtonStyle(isPressing: $isPressing))
         .simultaneousGesture(

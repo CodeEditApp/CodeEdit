@@ -15,6 +15,7 @@ import TabBar
 // It has the gesture implementation and its animations.
 // I am now also disabling `file_length` rule because the dragging algorithm (with UX) is complex.
 // swiftlint:disable file_length type_body_length
+// - TODO: TabBarItem drop-outside event handler.
 struct TabBar: View {
     /// The height of tab bar.
     /// I am not making it a private variable because it may need to be used in outside views.
@@ -150,7 +151,9 @@ struct TabBar: View {
                     draggingStartLocation = value.startLocation.x
                     draggingLastLocation = value.location.x
                 }
-                if abs(value.location.y - value.startLocation.y) > TabBar.height {
+                // TODO: Enable this code snippet when re-enabling dragging-out behavior.
+                // I disabled (1 == 0) this behavior for now as dragging-out behavior isn't allowed.
+                if 1 == 0 && abs(value.location.y - value.startLocation.y) > TabBar.height {
                     shouldOnDrag = true
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
                         shouldOnDrag = false
@@ -158,6 +161,7 @@ struct TabBar: View {
                         draggingLastLocation = nil
                         draggingTabId = nil
                         withAnimation(.easeInOut(duration: 0.25)) {
+                            // Clean the tab offsets.
                             tabOffsets = [:]
                         }
                     })
@@ -309,17 +313,12 @@ struct TabBar: View {
                                     )
                                     .frame(height: TabBar.height)
                                     .background(makeTabItemGeometryReader(id: id))
-                                    // TODO: Detect the onDrag outside of tab bar.
-                                    // When a tab is dragged out, we shrink the space of it.
-//                                    .padding(
-//                                        .trailing,
-//                                        !isOnDragOverTabs && onDragTabId == id ? (-tabWidth[id]! + 1) : 0
-//                                    )
                                     .offset(x: tabOffsets[id] ?? 0, y: 0)
                                     .highPriorityGesture(
                                         makeTabDragGesture(id: id),
                                         including: shouldOnDrag ? .subviews : .all
                                     )
+                                    // TODO: Detect the onDrag outside of tab bar.
                                     // Detect the drop action of each tab.
                                     .onDrop(
                                         of: [.utf8PlainText], // TODO: Make a unique type for it.
