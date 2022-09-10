@@ -35,6 +35,9 @@ final class OutlineViewController: NSViewController {
     var workspace: WorkspaceDocument?
 
     var iconColor: AppPreferences.FileIconStyle = .color
+    var fileExtensionsVisibility: AppPreferences.FileExtensionsVisibility = .showAll
+    var shownFileExtensions: AppPreferences.FileExtensions = .default
+    var hiddenFileExtensions: AppPreferences.FileExtensions = .default
 
     var rowHeight: Double = 22 {
         didSet {
@@ -42,6 +45,11 @@ final class OutlineViewController: NSViewController {
             outlineView.reloadData()
         }
     }
+
+    /// This helps determine whether or not to send an `openTab` when the selection changes.
+    /// Used b/c the state may update when the selection changes, but we don't necessarily want
+    /// to open the file a second time.
+    private var shouldSendSelectionUpdate: Bool = true
 
     /// Setup the ``scrollView`` and ``outlineView``
     override func loadView() {
@@ -97,6 +105,10 @@ final class OutlineViewController: NSViewController {
         if item.children != nil {
             let isExpanded = outlineView.isItemExpanded(item)
             isExpanded ? outlineView.collapseItem(item) : outlineView.expandItem(item)
+        } else {
+            if workspace?.selectionState.temporaryTab == item.tabID {
+                workspace?.convertTemporaryTab()
+            }
         }
     }
 
@@ -164,10 +176,23 @@ extension OutlineViewController: NSOutlineViewDelegate {
             view.icon.image = image
             view.icon.contentTintColor = color(for: item)
 
-            view.label.stringValue = item.fileName
+            view.label.stringValue = outlineViewLabel(for: item)
         }
 
         return view
+    }
+
+    private func outlineViewLabel(for item: Item) -> String {
+        switch fileExtensionsVisibility {
+        case .hideAll:
+            return item.fileName(typeHidden: true)
+        case .showAll:
+            return item.fileName(typeHidden: false)
+        case .showOnly:
+            return item.fileName(typeHidden: !shownFileExtensions.extensions.contains(item.fileType.rawValue))
+        case .hideOnly:
+            return item.fileName(typeHidden: hiddenFileExtensions.extensions.contains(item.fileType.rawValue))
+        }
     }
 
     func outlineViewSelectionDidChange(_ notification: Notification) {
@@ -179,7 +204,7 @@ extension OutlineViewController: NSOutlineViewDelegate {
 
         guard let item = outlineView.item(atRow: selectedIndex) as? Item else { return }
 
-        if item.children == nil {
+        if item.children == nil && shouldSendSelectionUpdate {
             workspace?.openTab(item: item)
         }
     }
@@ -220,7 +245,9 @@ extension OutlineViewController: NSOutlineViewDelegate {
         if row == -1 {
             outlineView.deselectRow(outlineView.selectedRow)
         }
+        shouldSendSelectionUpdate = false
         outlineView.selectRowIndexes(.init(integer: row), byExtendingSelection: false)
+        shouldSendSelectionUpdate = true
     }
 }
 

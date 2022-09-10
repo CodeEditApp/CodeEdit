@@ -83,6 +83,8 @@ struct TabBarItem: View {
     /// AppKit window controller.
     private var windowController: NSWindowController
 
+    private var isTemporary: Bool
+
     /// Is the current tab the active tab.
     private var isActive: Bool {
         item.tabID == workspace.selectionState.selectedId
@@ -134,6 +136,7 @@ struct TabBarItem: View {
         self._draggingTabId = draggingTabId
         self._onDragTabId = onDragTabId
         self.workspace = workspace
+        self.isTemporary = workspace.selectionState.temporaryTab == item.tabID
     }
 
     @ViewBuilder
@@ -157,7 +160,11 @@ struct TabBarItem: View {
                     )
                     .frame(width: 12, height: 12)
                 Text(item.title)
-                    .font(.system(size: 11.0))
+                    .font(
+                        isTemporary
+                        ? .system(size: 11.0).italic()
+                        : .system(size: 11.0)
+                    )
                     .lineLimit(1)
             }
             .frame(
@@ -365,6 +372,14 @@ struct TabBarItem: View {
             })
         }
         .buttonStyle(TabBarItemButtonStyle(isPressing: $isPressing))
+        .simultaneousGesture(
+            TapGesture(count: 2)
+                .onEnded { _ in
+                    if isTemporary {
+                        workspace.convertTemporaryTab()
+                    }
+                }
+        )
         .padding(
             // This padding is to avoid background color overlapping with top divider.
             .top, prefs.preferences.general.tabBarStyle == .xcode ? 1 : 0
@@ -388,10 +403,17 @@ struct TabBarItem: View {
             )
         )
         .onAppear {
-            withAnimation(
-                .easeOut(duration: prefs.preferences.general.tabBarStyle == .native ? 0.15 : 0.20)
-            ) {
-                isAppeared = true
+            if (isTemporary && workspace.selectionState.previousTemporaryTab == nil)
+                || !(isTemporary && workspace.selectionState.previousTemporaryTab != item.tabID) {
+                withAnimation(
+                    .easeOut(duration: prefs.preferences.general.tabBarStyle == .native ? 0.15 : 0.20)
+                ) {
+                    isAppeared = true
+                }
+            } else {
+                withAnimation(.linear(duration: 0.0)) {
+                    isAppeared = true
+                }
             }
         }
         .id(item.tabID)
@@ -413,6 +435,11 @@ struct TabBarItem: View {
             }
             // Disable this option when current tab is the last one.
             .disabled(workspace.selectionState.openedTabs.last?.id == item.tabID.id)
+            if isTemporary {
+                Button("Keep Open") {
+                    workspace.convertTemporaryTab()
+                }
+            }
         }
     }
 }
@@ -425,27 +452,5 @@ fileprivate extension WorkspaceDocument {
             return KeyEquivalent.init(Character.init("\(counter + 1)"))
         }
         return "0"
-    }
-}
-
-private struct TabBarItemButtonStyle: ButtonStyle {
-    @Environment(\.colorScheme)
-    var colorScheme
-
-    @StateObject
-    private var prefs: AppPreferencesModel = .shared
-
-    @Binding
-    private var isPressing: Bool
-
-    init(isPressing: Binding<Bool>) {
-        self._isPressing = isPressing
-    }
-
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .onChange(of: configuration.isPressed, perform: { isPressed in
-                self.isPressing = isPressed
-            })
     }
 }
