@@ -417,30 +417,7 @@ struct TabBarItem: View {
             }
         }
         .id(item.tabID)
-        .contextMenu {
-            Button("Close Tab") {
-                withAnimation {
-                    workspace.closeTab(item: item.tabID)
-                }
-            }
-            Button("Close Other Tabs") {
-                withAnimation {
-                    workspace.closeTab(where: { $0 != item.tabID })
-                }
-            }
-            Button("Close Tabs to the Right") {
-                withAnimation {
-                    workspace.closeTabs(after: item.tabID)
-                }
-            }
-            // Disable this option when current tab is the last one.
-            .disabled(workspace.selectionState.openedTabs.last?.id == item.tabID.id)
-            if isTemporary {
-                Button("Keep Open") {
-                    workspace.convertTemporaryTab()
-                }
-            }
-        }
+        .tabBarContextMenu(item: item, workspace: workspace, isTemporary: isTemporary)
     }
 }
 // swiftlint:enable type_body_length

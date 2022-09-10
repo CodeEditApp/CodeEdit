@@ -46,7 +46,11 @@ public struct GeneralPreferencesView: View {
                 issueNavigatorDetailSection
                 dialogWarningsSection
             }
-            openInCodeEditToggle
+            Group {
+                openInCodeEditToggle
+                revealFileOnFocusChangeToggle
+                shellCommandSection
+            }
         }
     }
 }
@@ -205,6 +209,73 @@ private extension GeneralPreferencesView {
         .disabled(true)
     }
 
+    var shellCommandSection: some View {
+        PreferencesSection("Shell Command", align: .center) {
+            Button(action: {
+                do {
+                    let url = Bundle.module.url(forResource: "codeedit", withExtension: nil, subdirectory: "Resources")
+                    let destination = "/usr/local/bin/codeedit"
+
+                    if FileManager.default.fileExists(atPath: destination) {
+                        try FileManager.default.removeItem(atPath: destination)
+                    }
+
+                    guard let shellUrl = url?.path else {
+                        print("Failed to get URL to shell command")
+                        return
+                    }
+
+                    NSWorkspace.shared.requestAuthorization(to: .createSymbolicLink) { auth, error in
+                        guard let auth = auth, error == nil else {
+                            fallbackShellInstallation(commandPath: shellUrl, destinationPath: destination)
+                            return
+                        }
+
+                        do {
+                            try FileManager(authorization: auth).createSymbolicLink(
+                                atPath: destination, withDestinationPath: shellUrl
+                            )
+                        } catch {
+                            fallbackShellInstallation(commandPath: shellUrl, destinationPath: destination)
+                        }
+                    }
+                } catch {
+                    print(error)
+                }
+            }, label: {
+                Text("Install 'codeedit' command")
+                    .padding(.horizontal, 10)
+            })
+            .buttonStyle(.bordered)
+        }
+    }
+
+    func fallbackShellInstallation(commandPath: String, destinationPath: String) {
+        let cmd = [
+            "osascript",
+            "-e",
+            "\"do shell script \\\"mkdir -p /usr/local/bin && ln -sf \'\(commandPath)\' \'\(destinationPath)\'\\\"\"",
+            "with administrator privileges"
+        ]
+
+        let cmdStr = cmd.joined(separator: " ")
+
+        let task = Process()
+        let pipe = Pipe()
+
+        task.standardOutput = pipe
+        task.standardError = pipe
+        task.arguments = ["-c", cmdStr]
+        task.executableURL = URL(fileURLWithPath: "/bin/zsh")
+        task.standardInput = nil
+
+        do {
+            try task.run()
+        } catch {
+            print(error)
+        }
+    }
+
     var openInCodeEditToggle: some View {
         PreferencesSection("Finder Context Menu", hideLabels: false) {
             Toggle("Show “Open With CodeEdit” option", isOn: $openInCodeEdit)
@@ -219,6 +290,13 @@ private extension GeneralPreferencesView {
 
                     defaults.set(newValue, forKey: "enableOpenInCE")
                 }
+        }
+    }
+
+    var revealFileOnFocusChangeToggle: some View {
+        PreferencesSection("Project Navigator Behavior", hideLabels: false) {
+            Toggle("Automatically Show Active File", isOn: $prefs.preferences.general.revealFileOnFocusChange)
+                .toggleStyle(.checkbox)
         }
     }
 }

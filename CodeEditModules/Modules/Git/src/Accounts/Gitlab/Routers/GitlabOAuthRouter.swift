@@ -47,12 +47,12 @@ enum GitlabOAuthRouter: Router {
 
     var params: [String: Any] {
         switch self {
-        case .authorize(let config, let redirectURI):
+        case let .authorize(config, redirectURI):
             return [
                 "client_id": config.token as AnyObject,
                 "response_type": "code" as AnyObject,
                 "redirect_uri": redirectURI as AnyObject]
-        case .accessToken(let config, let code, let rediredtURI):
+        case let .accessToken(config, code, rediredtURI):
             return [
                 "client_id": config.token as AnyObject,
                 "client_secret": config.secret as AnyObject,

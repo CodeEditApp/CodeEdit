@@ -52,39 +52,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "CodeEditUITests"
-               BuildableName = "CodeEditUITests"
-               BlueprintName = "CodeEditUITests"
-               ReferencedContainer = "container:CodeEditModules">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "WelcomeModuleTests"
-               BuildableName = "WelcomeModuleTests"
-               BlueprintName = "WelcomeModuleTests"
-               ReferencedContainer = "container:CodeEditModules">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "GitClientTests"
                BuildableName = "GitClientTests"
                BlueprintName = "GitClientTests"
-               ReferencedContainer = "container:CodeEditModules">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "CodeEditUtilsTests"
-               BuildableName = "CodeEditUtilsTests"
-               BlueprintName = "CodeEditUtilsTests"
                ReferencedContainer = "container:CodeEditModules">
             </BuildableReference>
          </TestableReference>
@@ -99,12 +69,28 @@
             </BuildableReference>
             <SkippedTests>
                <Test
+                  Identifier = "StatusBarUnitTests/testStatusBarCollapsedDark()">
+               </Test>
+               <Test
+                  Identifier = "StatusBarUnitTests/testStatusBarCollapsedLight()">
+               </Test>
+               <Test
                   Identifier = "StatusBarUnitTests/testStatusBarExpandedDark()">
                </Test>
                <Test
                   Identifier = "StatusBarUnitTests/testStatusBarExpandedLight()">
                </Test>
             </SkippedTests>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "CodeEditUtilsTests"
+               BuildableName = "CodeEditUtilsTests"
+               BlueprintName = "CodeEditUtilsTests"
+               ReferencedContainer = "container:CodeEditModules">
+            </BuildableReference>
          </TestableReference>
       </Testables>
    </TestAction>

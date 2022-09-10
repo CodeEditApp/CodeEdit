@@ -12,15 +12,17 @@ import CodeEditUI
 import QuickOpen
 import Git
 import AppPreferences
+import Keybindings
 
 final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     private var prefs: AppPreferencesModel = .shared
 
     var workspace: WorkspaceDocument?
     var quickOpenPanel: OverlayPanel?
+    var commandPalettePanel: OverlayPanel?
 
     private var splitViewController: NSSplitViewController! {
-        get { return contentViewController as? NSSplitViewController }
+        get { contentViewController as? NSSplitViewController }
         set { contentViewController = newValue }
     }
 
@@ -30,11 +32,42 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
 
         setupSplitView(with: workspace)
         setupToolbar()
+        registerCommands()
     }
 
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    /// These are example items that added as commands to command palette
+    func registerCommands() {
+        CommandManager.shared.addCommand(
+            name: "Quick Open",
+             title: "Quick Open",
+             id: "quick_open",
+             command: ClosureWrapper(closure: {
+                self.openQuickly(self)
+            })
+        )
+
+        CommandManager.shared.addCommand(
+            name: "Toggle Left Sidebar",
+             title: "Toggle Left Sidebar",
+             id: "toggle_left_sidebar",
+             command: ClosureWrapper(closure: {
+                 self.toggleFirstPanel()
+             })
+        )
+
+        CommandManager.shared.addCommand(
+            name: "Toggle Right Sidebar",
+            title: "Toggle Right Sidebar",
+            id: "toggle_right_sidebar",
+            command: ClosureWrapper(closure: {
+                self.toggleLastPanel()
+            })
+        )
     }
 
     private func setupSplitView(with workspace: WorkspaceDocument) {
@@ -94,7 +127,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     // MARK: - Toolbar
 
     func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
-        return [
+        [
             .toggleFirstSidebarItem,
             .sidebarTrackingSeparator,
             .branchPicker,
@@ -105,7 +138,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     }
 
     func toolbarAllowedItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
-        return [
+        [
             .toggleFirstSidebarItem,
             .sidebarTrackingSeparator,
             .flexibleSpace,
@@ -198,7 +231,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     private func getSelectedCodeFile() -> CodeFileDocument? {
         guard let id = workspace?.selectionState.selectedId else { return nil }
         guard let item = workspace?.selectionState.openFileItems.first(where: { item in
-            return item.tabID == id
+            item.tabID == id
         }) else { return nil }
         guard let file = workspace?.selectionState.openedCodeFiles[item] else { return nil }
         return file
@@ -207,6 +240,29 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     @IBAction func saveDocument(_ sender: Any) {
         getSelectedCodeFile()?.save(sender)
         workspace?.convertTemporaryTab()
+    }
+
+    @IBAction func openCommandPalette(_ sender: Any) {
+        if let workspace = workspace, let state = workspace.commandsPaletteState {
+            if let commandPalettePanel = commandPalettePanel {
+                if commandPalettePanel.isKeyWindow {
+                    commandPalettePanel.close()
+                    state.reset()
+                    return
+                } else {
+                    state.reset()
+                    window?.addChildWindow(commandPalettePanel, ordered: .above)
+                    commandPalettePanel.makeKeyAndOrderFront(self)
+                }
+            } else {
+                let panel = OverlayPanel()
+                self.commandPalettePanel = panel
+                let contentView = CommandPaletteView(state: state, closePalette: panel.close)
+                panel.contentView = NSHostingView(rootView: contentView)
+                window?.addChildWindow(panel, ordered: .above)
+                panel.makeKeyAndOrderFront(self)
+            }
+        }
     }
 
     @IBAction func openQuickly(_ sender: Any) {

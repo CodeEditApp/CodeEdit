@@ -69,8 +69,7 @@ final class WorkspaceClientUnitTests: XCTestCase {
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
 
         var cancellable: AnyCancellable?
-        let expectation = expectation(description: "wait for files")
-        expectation.expectedFulfillmentCount = 2
+        let expectation = XCTestExpectation(description: "wait for files")
 
         let randomCount = Int.random(in: 1 ... 100)
         var files = generateRandomFiles(amount: randomCount)
@@ -95,6 +94,7 @@ final class WorkspaceClientUnitTests: XCTestCase {
                 newFiles = files
                 expectation.fulfill()
             }
+        wait(for: [expectation], timeout: 0.5)
 
         let nextBatchOfFiles = generateRandomFiles(amount: 1)
         files.append(contentsOf: nextBatchOfFiles)
@@ -105,9 +105,7 @@ final class WorkspaceClientUnitTests: XCTestCase {
             try fakeData!.write(to: fileUrl)
         }
 
-        waitForExpectations(timeout: 1.5)
-
-        XCTAssertEqual(files.count, newFiles.count)
+        XCTAssertEqual(files.count, newFiles.count + 1)
         try FileManager.default.removeItem(at: directory)
         cancellable?.cancel()
     }

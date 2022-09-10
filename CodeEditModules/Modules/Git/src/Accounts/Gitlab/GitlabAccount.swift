@@ -7,6 +7,8 @@
 
 import Foundation
 
+// TODO: DOCS (Nanashi Li)
+// swiftlint:disable missing_docs
 public let gitlabBaseURL = "https://gitlab.com/api/v4/"
 public let gitlabWebURL = "https://gitlab.com/"
 

@@ -139,7 +139,7 @@ struct NavigatorSidebarToolbarTop: View {
         }
 
         func dropUpdated(info: DropInfo) -> DropProposal? {
-            return DropProposal(operation: .move)
+            DropProposal(operation: .move)
         }
 
         func performDrop(info: DropInfo) -> Bool {

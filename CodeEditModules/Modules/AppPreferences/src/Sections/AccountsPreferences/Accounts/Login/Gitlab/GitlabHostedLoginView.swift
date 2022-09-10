@@ -82,7 +82,7 @@ struct GitlabHostedLoginView: View {
         GitlabAccount(config).me { response in
             switch response {
             case .success(let user):
-                if gitAccounts.contains(where: { $0.id == gitAccountName.lowercased()}) {
+                if gitAccounts.contains(where: { $0.id == gitAccountName.lowercased() }) {
                     print("Account with the username already exists!")
                 } else {
                     print(user)

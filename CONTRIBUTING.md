@@ -27,7 +27,7 @@ Once you are happy with your changes, submit a `Pull Request`.
 
 The pull request opens with a template loaded. Fill out all fields that are relevant.
 
-The `PR` should include follwing information:
+The `PR` should include following information:
 * A descriptive **title** on what changed.
 * A detailed **description** of changes.
 * If you made changes to the UI please add a **screenshot** or **video** as well.
@@ -37,6 +37,8 @@ The `PR` should include follwing information:
 ### Checks, Tests & Documentation
 
 Request a review from one of our admins @austincondiff, @lukepistrol, @MarcoCarnevali, @jasonplatts, @pkasila or maintainers @cstef, @linusS1, @RayZhao1998, @wdg.
+
+Note: If it is your first PR, an admin will need to request a review for you.
 
 > Please resolve all `Violation` errors in Xcode (except: _TODO:_ warnings). Otherwise the swiftlint check on GitHub will fail.
 

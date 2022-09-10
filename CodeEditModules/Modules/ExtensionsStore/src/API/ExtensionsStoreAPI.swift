@@ -17,7 +17,7 @@ public enum ExtensionsStoreAPIError: Error {
 // TODO: add authorization
 
 /// Structure to work with Extensions Store API
-public struct ExtensionsStoreAPI {
+public enum ExtensionsStoreAPI {
 
     static let base = URL(string: "https://codeedit.pkasila.net/api/")!
     static let agent = Agent()
@@ -87,7 +87,7 @@ public struct ExtensionsStoreAPI {
 final class Agent {
     func run<T: Decodable>(_ request: URLRequest,
                            _ decoder: JSONDecoder = JSONDecoder()) -> AnyPublisher<Response<T>, Error> {
-        return URLSession.shared
+        URLSession.shared
             .dataTaskPublisher(for: request)
             .tryMap { result -> Response<T> in
                 let value = try decoder.decode(T.self, from: result.data)

@@ -74,6 +74,7 @@ final class OutlineViewController: NSViewController {
         self.scrollView.contentView.automaticallyAdjustsContentInsets = false
         self.scrollView.contentView.contentInsets = .init(top: 10, left: 0, bottom: 0, right: 0)
 
+        WorkspaceClient.onRefresh = self.outlineView.reloadData
         outlineView.expandItem(outlineView.item(atRow: 0))
     }
 
@@ -103,8 +104,11 @@ final class OutlineViewController: NSViewController {
         guard let item = outlineView.item(atRow: outlineView.clickedRow) as? Item else { return }
 
         if item.children != nil {
-            let isExpanded = outlineView.isItemExpanded(item)
-            isExpanded ? outlineView.collapseItem(item) : outlineView.expandItem(item)
+            if outlineView.isItemExpanded(item) {
+                outlineView.collapseItem(item)
+            } else {
+                outlineView.expandItem(item)
+            }
         } else {
             if workspace?.selectionState.temporaryTab == item.tabID {
                 workspace?.convertTemporaryTab()
@@ -156,43 +160,19 @@ extension OutlineViewController: NSOutlineViewDataSource {
 extension OutlineViewController: NSOutlineViewDelegate {
     func outlineView(_ outlineView: NSOutlineView,
                      shouldShowCellExpansionFor tableColumn: NSTableColumn?, item: Any) -> Bool {
-        return true
+        true
     }
 
     func outlineView(_ outlineView: NSOutlineView, shouldShowOutlineCellForItem item: Any) -> Bool {
-        return true
+        true
     }
 
     func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
-
         guard let tableColumn = tableColumn else { return nil }
 
         let frameRect = NSRect(x: 0, y: 0, width: tableColumn.width, height: rowHeight)
 
-        let view = OutlineTableViewCell(frame: frameRect)
-
-        if let item = item as? Item {
-            let image = NSImage(systemSymbolName: item.systemImage, accessibilityDescription: nil)!
-            view.icon.image = image
-            view.icon.contentTintColor = color(for: item)
-
-            view.label.stringValue = outlineViewLabel(for: item)
-        }
-
-        return view
-    }
-
-    private func outlineViewLabel(for item: Item) -> String {
-        switch fileExtensionsVisibility {
-        case .hideAll:
-            return item.fileName(typeHidden: true)
-        case .showAll:
-            return item.fileName(typeHidden: false)
-        case .showOnly:
-            return item.fileName(typeHidden: !shownFileExtensions.extensions.contains(item.fileType.rawValue))
-        case .hideOnly:
-            return item.fileName(typeHidden: hiddenFileExtensions.extensions.contains(item.fileType.rawValue))
-        }
+        return OutlineTableViewCell(frame: frameRect, item: item as? Item, delegate: self)
     }
 
     func outlineViewSelectionDidChange(_ notification: Notification) {
@@ -210,12 +190,10 @@ extension OutlineViewController: NSOutlineViewDelegate {
     }
 
     func outlineView(_ outlineView: NSOutlineView, heightOfRowByItem item: Any) -> CGFloat {
-        return rowHeight // This can be changed to 20 to match Xcodes row height.
+        rowHeight // This can be changed to 20 to match Xcode's row height.
     }
 
-    func outlineViewItemDidExpand(_ notification: Notification) {
-        updateSelection()
-    }
+    func outlineViewItemDidExpand(_ notification: Notification) {}
 
     func outlineViewItemDidCollapse(_ notification: Notification) {}
 
@@ -235,6 +213,14 @@ extension OutlineViewController: NSOutlineViewDelegate {
     ///   - id: the id of the item item
     ///   - collection: the array to search for
     private func select(by id: TabBarItemID, from collection: [Item]) {
+        // If the user has set "Reveal file on selection change" to on, we need to reveal the item before
+        // selecting the row.
+        if AppPreferencesModel.shared.preferences.general.revealFileOnFocusChange,
+           case let .codeEditor(id) = id,
+           let fileItem = try? workspace?.workspaceClient?.getFileItem(id as Item.ID) as? Item {
+            reveal(fileItem)
+        }
+
         guard let item = collection.first(where: { $0.tabID == id }) else {
             for item in collection {
                 select(by: id, from: item.children ?? [])
@@ -249,7 +235,39 @@ extension OutlineViewController: NSOutlineViewDelegate {
         outlineView.selectRowIndexes(.init(integer: row), byExtendingSelection: false)
         shouldSendSelectionUpdate = true
     }
+
+    /// Reveals the given `fileItem` in the outline view by expanding all the parent directories of the file.
+    /// If the file is not found, it will present an alert saying so.
+    /// - Parameter fileItem: The file to reveal.
+    public func reveal(_ fileItem: Item) {
+        if let parent = fileItem.parent {
+            expandParent(item: parent)
+        }
+        let row = outlineView.row(forItem: fileItem)
+        outlineView.selectRowIndexes(.init(integer: row), byExtendingSelection: false)
+
+        if row < 0 {
+            let alert = NSAlert()
+            alert.messageText = NSLocalizedString("Could not find file",
+                                                  comment: "Could not find file")
+            alert.runModal()
+            return
+        } else {
+            outlineView.scrollRowToVisible(row)
+        }
+    }
+
+    /// Method for recursively expanding a file's parent directories.
+    /// - Parameter item:
+    private func expandParent(item: Item) {
+        if let parent = item.parent as Item? {
+            expandParent(item: parent)
+        }
+        outlineView.expandItem(item)
+    }
 }
+
+// MARK: - NSMenuDelegate
 
 extension OutlineViewController: NSMenuDelegate {
 
@@ -266,10 +284,21 @@ extension OutlineViewController: NSMenuDelegate {
         } else {
             if let item = outlineView.item(atRow: row) as? Item {
                 menu.item = item
+                menu.workspace = workspace
             } else {
                 menu.item = nil
             }
         }
         menu.update()
+    }
+}
+
+// MARK: - OutlineTableViewCellDelegate
+
+extension OutlineViewController: OutlineTableViewCellDelegate {
+    func moveFile(file: Item, to destination: URL) {
+        workspace?.closeTab(item: .codeEditor(file.id))
+        file.move(to: destination)
+        workspace?.openTab(item: file)
     }
 }

@@ -74,6 +74,10 @@ let package = Package(
             targets: ["CodeEditUtils"]
         ),
         .library(
+            name: "Keybindings",
+            targets: ["Keybindings"]
+        ),
+        .library(
             name: "TabBar",
             targets: ["TabBar"]
         ),
@@ -101,7 +105,7 @@ let package = Package(
         .package(
             name: "Preferences",
             url: "https://github.com/sindresorhus/Preferences.git",
-            from: "2.5.0"
+            from: "2.6.0"
         ),
         .package(
             name: "CodeEditKit",
@@ -120,6 +124,11 @@ let package = Package(
         .package(
             name: "CodeEditSymbols",
             url: "https://github.com/CodeEditApp/CodeEditSymbols",
+            branch: "main"
+        ),
+        .package(
+            name: "CodeEditTextView",
+            url: "https://github.com/CodeEditApp/CodeEditTextView",
             branch: "main"
         ),
     ],
@@ -143,7 +152,8 @@ let package = Package(
             dependencies: [
                 "Highlightr",
                 "AppPreferences",
-                "CodeEditUtils"
+                "CodeEditUtils",
+                "CodeEditTextView",
             ],
             path: "Modules/CodeFile/src"
         ),
@@ -161,6 +171,7 @@ let package = Package(
                 "CodeEditUI",
                 "Git",
                 "AppPreferences",
+                "Keybindings",
             ],
             path: "Modules/WelcomeModule/src",
             resources: [
@@ -222,10 +233,13 @@ let package = Package(
                 "Preferences",
                 "CodeEditUI",
                 "Git",
+                "Keybindings",
                 "CodeEditUtils",
                 "CodeEditSymbols",
+                "CodeEditTextView",
             ],
-            path: "Modules/AppPreferences/src"
+            path: "Modules/AppPreferences/src",
+            resources: [.copy("Resources")]
         ),
         .target(
             name: "About",
@@ -304,6 +318,12 @@ let package = Package(
         .target(
             name: "CodeEditUtils",
             path: "Modules/CodeEditUtils/src"
+        ),
+        .target(
+            name: "Keybindings",
+            dependencies: ["WorkspaceClient"],
+            path: "Modules/Keybindings/src",
+            resources: [.copy("default_keybindings.json")]
         ),
         .target(
             name: "TabBar",

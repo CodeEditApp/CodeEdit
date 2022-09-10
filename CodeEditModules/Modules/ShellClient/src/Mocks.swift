@@ -6,6 +6,7 @@
 //
 import Combine
 
+// swiftlint:disable missing_docs
 public extension ShellClient {
     static func always(_ output: String) -> Self {
         Self(

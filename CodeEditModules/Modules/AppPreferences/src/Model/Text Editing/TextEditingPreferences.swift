@@ -36,7 +36,7 @@ public extension AppPreferences {
         }
     }
 
-    struct EditorFont: Codable {
+    struct EditorFont: Codable, Equatable {
         /// Indicates whether or not to use a custom font
         public var customFont: Bool = false
 

@@ -6,12 +6,14 @@
 //
 import SwiftUI
 import WorkspaceClient
+import Keybindings
 import CodeEditUI
 
 public struct RecentProjectsView: View {
     @State private var recentProjectPaths: [String]
     @State private var selectedProjectPath: String? = ""
 
+    var mgr = KeybindingManager.shared
     private let openDocument: (URL?, @escaping () -> Void) -> Void
     private let dismissWindow: () -> Void
 
@@ -74,9 +76,15 @@ public struct RecentProjectsView: View {
         )
     }
 
-    /// Update recent projects.
+    /// Update recent projects, and remove ones that no longer exist
     func updateRecentProjects() {
-        recentProjectPaths = UserDefaults.standard.array(forKey: "recentProjectPaths") as? [String] ?? []
+        recentProjectPaths = ( UserDefaults.standard.array(forKey: "recentProjectPaths") as? [String] ?? [] )
+            .filter { FileManager.default.fileExists(atPath: $0) }
+
+        UserDefaults.standard.set(
+            self.recentProjectPaths,
+            forKey: "recentProjectPaths"
+        )
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
             updateRecentProjects()
@@ -102,7 +110,7 @@ public struct RecentProjectsView: View {
                             .contextMenu {
                                 contextMenuShowInFinder(projectPath: projectPath)
                                 contextMenuCopy(path: projectPath)
-                                    .keyboardShortcut(.init("C", modifiers: [.command]))
+                                    .keyboardShortcut(mgr.named(with: "copy").keyboardShortcut)
 
                                 Divider()
                                 contextMenuDelete(projectPath: projectPath)
@@ -122,7 +130,7 @@ public struct RecentProjectsView: View {
                                 pasteboard.setString(projectPath, forType: .string)
                             }
                             .buttonStyle(.borderless)
-                            .keyboardShortcut(.init("C", modifiers: [.command]))
+                            .keyboardShortcut(mgr.named(with: "copy").keyboardShortcut)
                         }
 
                         Button("") {

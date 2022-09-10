@@ -47,6 +47,9 @@ public extension AppPreferences {
         /// The Issue Navigator Detail line limit
         public var issueNavigatorDetail: NavigatorDetail = .upTo3
 
+        /// The reveal file in navigator when focus changes behavior of the app.
+        public var revealFileOnFocusChange: Bool = false
+
         /// Default initializer
         public init() {}
 
@@ -102,6 +105,10 @@ public extension AppPreferences {
                 NavigatorDetail.self,
                 forKey: .issueNavigatorDetail
             ) ?? .upTo3
+            self.revealFileOnFocusChange = try container.decodeIfPresent(
+                Bool.self,
+                forKey: .revealFileOnFocusChange
+            ) ?? false
         }
         // swiftlint:enable function_body_length
     }
@@ -162,8 +169,8 @@ public extension AppPreferences {
             set {
                 extensions = newValue
                     .components(separatedBy: ",")
-                    .map({$0.trimmingCharacters(in: .whitespacesAndNewlines)})
-                    .filter({!$0.isEmpty || string.count < newValue.count })
+                    .map({ $0.trimmingCharacters(in: .whitespacesAndNewlines) })
+                    .filter({ !$0.isEmpty || string.count < newValue.count })
             }
         }
 
@@ -202,6 +209,19 @@ public extension AppPreferences {
         case small
         case medium
         case large
+
+        /// Returns the row height depending on the `projectNavigatorSize` in `AppPreferences`.
+        ///
+        /// * `small`: 20
+        /// * `medium`: 22
+        /// * `large`: 24
+        public var rowHeight: Double {
+            switch self {
+            case .small: return 20
+            case .medium: return 22
+            case .large: return 24
+            }
+        }
     }
 
     /// The Navigation Detail behavior of the app
