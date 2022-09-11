@@ -11,8 +11,15 @@ import AppPreferences
 import CodeEditUI
 import TabBar
 
-// Disable the rule because this view is fairly complicated and I have already modularize some parts.
-// swiftlint:disable type_body_length
+// TODO: Drag to activate behavior.
+// In Xcode, dragging an inactive tab will make it activated. But due to our editor performance issue,
+// there will be a huge lag after releasing the drag. So I will implement this behavior after optimizing
+// the file-opening performance.
+
+// Disable `file_length` because this file has a lot of properties and algorithms.
+// I kept some blank lines to make this file organized, so I have to disable the file length rule.
+// Disable `type_body_length` because this view is fairly complicated and I have modularized some parts.
+// swiftlint:disable file_length type_body_length
 struct TabBarItem: View {
     @Environment(\.colorScheme)
     private var colorScheme
@@ -23,37 +30,79 @@ struct TabBarItem: View {
     @Environment(\.isFullscreen)
     private var isFullscreen
 
+    /// User preferences.
     @StateObject
     private var prefs: AppPreferencesModel = .shared
 
+    /// Is cursor hovering over the entire tab.
     @State
     private var isHovering: Bool = false
 
+    /// Is cursor hovering over the close button.
     @State
     private var isHoveringClose: Bool = false
 
+    /// Is entire tab being pressed.
+    @State
+    private var isPressing: Bool = false
+
+    /// Is close button being pressed.
     @State
     private var isPressingClose: Bool = false
 
+    /// A bool state for going-in animation.
+    ///
+    /// By default, this value is `false`. When the root view is appeared, it turns `true`.
     @State
     private var isAppeared: Bool = false
 
+    /// The expected tab width in native tab bar style.
     @Binding
     private var expectedWidth: CGFloat
 
+    /// The id associating with the tab that is currently being dragged.
+    ///
+    /// When `nil`, then there is no tab being dragged.
+    @Binding
+    private var draggingTabId: TabBarItemID?
+
+    @Binding
+    private var onDragTabId: TabBarItemID?
+
+    /// The current WorkspaceDocument object.
+    ///
+    /// It contains the workspace-related information like selection states.
     @ObservedObject
     var workspace: WorkspaceDocument
 
+    /// The item associated with the current tab.
+    ///
+    /// You can get tab-related information from here, like `label`, `icon`, etc.
     private var item: TabBarItemRepresentable
 
+    /// AppKit window controller.
     private var windowController: NSWindowController
 
     private var isTemporary: Bool
 
-    var isActive: Bool {
+    /// Is the current tab the active tab.
+    private var isActive: Bool {
         item.tabID == workspace.selectionState.selectedId
     }
 
+    /// Is the current tab being dragged.
+    private var isDragging: Bool {
+        draggingTabId == item.tabID
+    }
+
+    /// Is the current tab being held (by click and hold, not drag).
+    ///
+    /// I use the name `inHoldingState` to avoid any confusion with `isPressing` and `isDragging`.
+    private var inHoldingState: Bool {
+        isPressing || isDragging
+    }
+
+    /// Switch the active tab to current tab.
     private func switchAction() {
         // Only set the `selectedId` when they are not equal to avoid performance issue for now.
         if workspace.selectionState.selectedId != item.tabID {
@@ -61,6 +110,7 @@ struct TabBarItem: View {
         }
     }
 
+    /// Close the current tab.
     func closeAction() {
         if prefs.preferences.general.tabBarStyle == .native {
             isAppeared = false
@@ -76,11 +126,15 @@ struct TabBarItem: View {
         expectedWidth: Binding<CGFloat>,
         item: TabBarItemRepresentable,
         windowController: NSWindowController,
+        draggingTabId: Binding<TabBarItemID?>,
+        onDragTabId: Binding<TabBarItemID?>,
         workspace: WorkspaceDocument
     ) {
         self._expectedWidth = expectedWidth
         self.item = item
         self.windowController = windowController
+        self._draggingTabId = draggingTabId
+        self._onDragTabId = onDragTabId
         self.workspace = workspace
         self.isTemporary = workspace.selectionState.temporaryTab == item.tabID
     }
@@ -89,7 +143,10 @@ struct TabBarItem: View {
     var content: some View {
         HStack(spacing: 0.0) {
             TabDivider()
-                .opacity(isActive && prefs.preferences.general.tabBarStyle == .xcode ? 0.0 : 1.0)
+                .opacity(
+                    (isActive || inHoldingState)
+                    && prefs.preferences.general.tabBarStyle == .xcode ? 0.0 : 1.0
+                )
                 .padding(.top, isActive && prefs.preferences.general.tabBarStyle == .native ? 1.22 : 0)
             // Tab content (icon and text).
             HStack(alignment: .center, spacing: 5) {
@@ -198,7 +255,8 @@ struct TabBarItem: View {
                     } onRelease: {
                         isPressingClose = false
                     }
-                    .opacity(isHovering ? 1 : 0)
+                    // Only show when the mouse is hovering and there is no tab dragging.
+                    .opacity(isHovering && draggingTabId == nil && onDragTabId == nil ? 1 : 0)
                     .animation(.easeInOut(duration: 0.08), value: isHovering)
                     .padding(.leading, prefs.preferences.general.tabBarStyle == .xcode ? 3.5 : 4)
                 }
@@ -215,7 +273,10 @@ struct TabBarItem: View {
                 )
             )
             TabDivider()
-                .opacity(isActive && prefs.preferences.general.tabBarStyle == .xcode ? 0.0 : 1.0)
+                .opacity(
+                    (isActive || inHoldingState)
+                    && prefs.preferences.general.tabBarStyle == .xcode ? 0.0 : 1.0
+                )
                 .padding(.top, isActive && prefs.preferences.general.tabBarStyle == .native ? 1.22 : 0)
         }
         .overlay(alignment: .top) {
@@ -251,11 +312,68 @@ struct TabBarItem: View {
     }
 
     var body: some View {
-        Button(
-            action: switchAction,
-            label: { content }
-        )
-        .buttonStyle(TabBarItemButtonStyle())
+        Button(action: switchAction) {
+            ZStack {
+                content
+            }
+            .background {
+                if inHoldingState && prefs.preferences.general.tabBarStyle == .xcode {
+                    Rectangle()
+                        .foregroundColor(
+                            isActive
+                            ? Color(nsColor: .controlAccentColor).opacity(0.08)
+                            : (colorScheme == .dark ? .white.opacity(0.08) : .black.opacity(0.08))
+                        )
+                }
+            }
+            .background {
+                if prefs.preferences.general.tabBarStyle == .xcode {
+                    ZStack {
+                        // This layer of background is to hide dividers of other tab bar items
+                        // because the original background above is translucent (by opacity).
+                        TabBarXcodeBackground()
+                        if isActive {
+                            Color(nsColor: .controlAccentColor)
+                                .saturation(
+                                    colorScheme == .dark
+                                    ? (activeState != .inactive ? 0.60 : 0.75)
+                                    : (activeState != .inactive ? 0.90 : 0.85)
+                                )
+                                .opacity(
+                                    colorScheme == .dark
+                                    ? (activeState != .inactive ? 0.50 : 0.35)
+                                    : (activeState != .inactive ? 0.18 : 0.12)
+                                )
+                                .hueRotation(.degrees(-5))
+                        }
+                    }
+                    .animation(.easeInOut(duration: 0.08), value: isHovering)
+                } else {
+                    if isFullscreen && isActive {
+                        TabBarNativeActiveMaterial()
+                    } else {
+                        TabBarNativeMaterial()
+                    }
+                    ZStack {
+                        // Native inactive tab background dim.
+                        TabBarNativeInactiveBackgroundColor()
+                        // Native inactive tab hover state.
+                        Color(nsColor: colorScheme == .dark ? .white : .black)
+                            .opacity(isHovering ? (colorScheme == .dark ? 0.08 : 0.05) : 0.0)
+                            .animation(.easeInOut(duration: 0.10), value: isHovering)
+                    }
+                    .padding(.horizontal, 1)
+                    .opacity(isActive ? 0 : 1)
+                }
+            }
+            // TODO: Enable the following code snippet when dragging-out behavior should be allowed.
+            // Since we didn't handle the drop-outside event, dragging-out is disabled for now.
+//            .onDrag({
+//                onDragTabId = item.tabID
+//                return .init(object: NSString(string: "\(item.tabID)"))
+//            })
+        }
+        .buttonStyle(TabBarItemButtonStyle(isPressing: $isPressing))
         .simultaneousGesture(
             TapGesture(count: 2)
                 .onEnded { _ in
@@ -264,46 +382,6 @@ struct TabBarItem: View {
                     }
                 }
         )
-        .background {
-            if prefs.preferences.general.tabBarStyle == .xcode {
-                ZStack {
-                    // This layer of background is to hide dividers of other tab bar items
-                    // because the original background above is translucent (by opacity).
-                    TabBarXcodeBackground()
-                    if isActive {
-                        Color(nsColor: .controlAccentColor)
-                            .saturation(
-                                colorScheme == .dark
-                                ? (activeState != .inactive ? 0.60 : 0.75)
-                                : (activeState != .inactive ? 0.90 : 0.85)
-                            )
-                            .opacity(
-                                colorScheme == .dark
-                                ? (activeState != .inactive ? 0.50 : 0.35)
-                                : (activeState != .inactive ? 0.18 : 0.12)
-                            )
-                            .hueRotation(.degrees(-5))
-                    }
-                }
-                .animation(.easeInOut(duration: 0.08), value: isHovering)
-            } else {
-                if isFullscreen && isActive {
-                    TabBarNativeActiveMaterial()
-                } else {
-                    TabBarNativeMaterial()
-                }
-                ZStack {
-                    // Native inactive tab background dim.
-                    TabBarNativeInactiveBackgroundColor()
-                    // Native inactive tab hover state.
-                    Color(nsColor: colorScheme == .dark ? .white : .black)
-                        .opacity(isHovering ? (colorScheme == .dark ? 0.08 : 0.05) : 0.0)
-                        .animation(.easeInOut(duration: 0.10), value: isHovering)
-                }
-                .padding(.horizontal, 1)
-                .opacity(isActive ? 0 : 1)
-            }
-        }
         .padding(
             // This padding is to avoid background color overlapping with top divider.
             .top, prefs.preferences.general.tabBarStyle == .xcode ? 1 : 0
@@ -312,8 +390,12 @@ struct TabBarItem: View {
             x: isAppeared || prefs.preferences.general.tabBarStyle == .native ? 0 : -14,
             y: 0
         )
-        .opacity(isAppeared ? 1.0 : 0.0)
-        .zIndex(isActive ? (prefs.preferences.general.tabBarStyle == .native ? -1 : 1) : 0)
+        .opacity(isAppeared && onDragTabId != item.tabID ? 1.0 : 0.0)
+        .zIndex(
+            isActive
+            ? (prefs.preferences.general.tabBarStyle == .native ? -1 : 2)
+            : (isDragging ? 3 : (isPressing ? 1 : 0))
+        )
         .frame(
             width: (
                 // Constrain the width of tab bar item for native tab style only.
@@ -346,9 +428,7 @@ fileprivate extension WorkspaceDocument {
     func getTabKeyEquivalent(item: TabBarItemRepresentable) -> KeyEquivalent {
         for counter in 0..<9 where self.selectionState.openFileItems.count > counter &&
         self.selectionState.openFileItems[counter].tabID == item.tabID {
-            return KeyEquivalent.init(
-                Character.init("\(counter + 1)")
-            )
+            return KeyEquivalent.init(Character.init("\(counter + 1)"))
         }
         return "0"
     }
