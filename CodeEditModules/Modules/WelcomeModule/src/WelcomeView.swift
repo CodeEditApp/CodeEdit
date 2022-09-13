@@ -20,6 +20,7 @@ public struct WelcomeView: View {
     @State var isHovering: Bool = false
     @State var isHoveringClose: Bool = false
     @StateObject private var prefs: AppPreferencesModel = .shared
+    @StateObject private var themeModel: ThemeModel = .shared
 
     private let openDocument: (URL?, @escaping () -> Void) -> Void
     private let newDocument: () -> Void
@@ -84,6 +85,17 @@ public struct WelcomeView: View {
         return nil
     }
 
+    /// Set saved dark/light theme from `ThemeModel`,  based on system apperaance 
+    private func mirrorThemeToSystemAppearance() {
+        if AppPreferencesModel.shared.preferences.theme.mirrorSystemAppearance {
+            if colorScheme == .dark {
+                themeModel.selectedTheme = themeModel.selectedDarkTheme
+            } else {
+                themeModel.selectedTheme = themeModel.selectedLightTheme
+            }
+        }
+    }
+
     /// Get program and operating system information
     private func copyInformation() {
         var copyString = "CodeEdit: \(appVersion) (\(appBuild))\n"
@@ -141,6 +153,7 @@ public struct WelcomeView: View {
                             subtitle: NSLocalizedString("Create a new file", bundle: .module, comment: "")
                         )
                         .onTapGesture {
+                            mirrorThemeToSystemAppearance()
                             newDocument()
                             dismissWindow()
                         }

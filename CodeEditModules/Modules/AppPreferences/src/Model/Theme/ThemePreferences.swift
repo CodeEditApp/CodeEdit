@@ -32,6 +32,12 @@ public extension AppPreferences {
     /// The global settings for themes
     struct ThemePreferences: Codable {
 
+        /// The name of the currently selected dark theme
+        public var selectedDarkTheme: String?
+
+        /// The name of the currently selected light theme
+        public var selectedLightTheme: String?
+
         /// The name of the currently selected theme
         public var selectedTheme: String?
 

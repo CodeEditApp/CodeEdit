@@ -47,6 +47,9 @@ public struct ThemePreferencesView: View {
         .onAppear {
             try? themeModel.loadThemes()
         }
+        .onChange(of: themeModel.selectedTheme) {_ in
+            themeModel.setDarkLightThemes()
+        }
     }
 
     private var frame: some View {

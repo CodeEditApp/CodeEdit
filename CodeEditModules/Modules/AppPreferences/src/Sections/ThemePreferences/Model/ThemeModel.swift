@@ -16,7 +16,29 @@ import SwiftUI
 /// ```
 public final class ThemeModel: ObservableObject {
 
+    /// Retrieves system apperance settings
+    @Environment(\.colorScheme)
+       var colorScheme
+
     public static let shared: ThemeModel = .init()
+
+    /// Selected 'light' theme
+    /// Used for auto-switching theme to match macOS system appearance
+    @Published
+    public var selectedLightTheme: Theme? {
+        didSet {
+            AppPreferencesModel.shared.preferences.theme.selectedLightTheme = selectedLightTheme?.name
+        }
+    }
+
+    /// Selected 'dark' theme
+    /// Used for auto-switching theme to match macOS system appearance
+    @Published
+    public var selectedDarkTheme: Theme? {
+        didSet {
+            AppPreferencesModel.shared.preferences.theme.selectedDarkTheme = selectedDarkTheme?.name
+        }
+    }
 
     /// The selected appearance in the sidebar.
     /// - **0**: dark mode themes
@@ -144,7 +166,20 @@ public final class ThemeModel: ObservableObject {
                 // if there already is a selected theme in `preferences.json` select this theme
                 // otherwise take the first in the list
                 self.selectedTheme = self.themes.first { $0.name == prefs.theme.selectedTheme } ?? self.themes.first
+
+                // take any previously selected theme and set it to correct light/dark theme variable
+                setDarkLightThemes()
             }
+        }
+    }
+
+    /// This function stores  'dark' and 'light' themes into `ThemePreferences` if user happens to select a theme
+    func setDarkLightThemes() {
+        if self.selectedTheme?.appearance == .dark {
+            self.selectedDarkTheme = self.selectedTheme
+        }
+        if self.selectedTheme?.appearance == .light {
+            self.selectedLightTheme = self.selectedTheme
         }
     }
 
