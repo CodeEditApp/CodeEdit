@@ -49,15 +49,14 @@ jobs:
           hdiutil create -srcfolder "$RUNNER_TEMP/CodeEdit-$REV" -volname CodeEdit -format ULMO "$RUNNER_TEMP/CodeEdit-$REV.dmg"
       - name: Notarize CodeEdit.dmg
         env:
-          # APP_STORE_CONNECT_KEY_B64: Base64-encoded App Store Connect API key as .p8
-          # APP_STORE_CONNECT_KEY_ID: App Store Connect API Key ID
-          # APP_STORE_CONNECT_ISSUER_ID: App Store Connect API Issuer ID
-          APP_STORE_CONNECT_KEY_B64: ${{ secrets.APP_STORE_CONNECT_KEY_B64 }}
-          APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
-          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          # APPLE_ID: Developer Apple ID
+          # APPLE_ID_PWD: App-specific password for Apple ID
+          # APPLE_TEAM_ID: Developer Team ID
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_ID_PWD: ${{ secrets.APPLE_ID_PWD }}
+          APPLE_TEAM_ID:  ${{ secrets.APPLE_TEAM_ID }}
         run: |
-          echo -n "$APP_STORE_CONNECT_KEY_B64" | base64 --decode --output "$RUNNER_TEMP/app_store_connect.p8"
-          xcrun notarytool submit --key "$RUNNER_TEMP/app_store_connect.p8" --key-id "$APP_STORE_CONNECT_KEY_ID" --issuer "$APP_STORE_CONNECT_ISSUER_ID" --wait "$RUNNER_TEMP/CodeEdit-$REV.dmg"
+          xcrun notarytool submit --apple-id "$APPLE_ID" --password "$APPLE_ID_PWD" --team-id "$APPLE_TEAM_ID" --wait "$RUNNER_TEMP/CodeEdit-$REV.dmg"
           xcrun stapler staple "$RUNNER_TEMP/CodeEdit-$REV.dmg"
       - name: Update Sparkle appcast
         env:
