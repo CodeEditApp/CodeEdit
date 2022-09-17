@@ -361,6 +361,15 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "MattKiazyk",
+      "name": "Matt Kiazyk",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1119565?v=4",
+      "profile": "https://www.xcodes.app",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
