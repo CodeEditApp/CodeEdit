@@ -1240,6 +1240,10 @@
 		</dict>
 	</array>
 	<key>GitHash</key>
-	<string>515c9ebc3ea3e756957a2ca8e199c41888ff233e</string>
+	<string>4e95209de7935f28f8f46524a1179ab12a54a198</string>
+	<key>SUFeedURL</key>
+	<string>https://CodeEditApp.github.io/CodeEdit/appcast.xml</string>
+	<key>SUPublicEDKey</key>
+	<string>/vAnxnK9wj4IqnUt6wS9EN3Ug69zHb+S/Pb9CyZuwa0=</string>
 </dict>
 </plist>

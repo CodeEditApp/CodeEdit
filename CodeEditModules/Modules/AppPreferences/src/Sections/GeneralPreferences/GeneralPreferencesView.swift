@@ -7,9 +7,11 @@
 
 import SwiftUI
 import CodeEditUI
+import Sparkle
 
 /// A view that implements the `General` preference section
 public struct GeneralPreferencesView: View {
+    @StateObject private var updater = ObservableUpdater()
 
     private let inputWidth: Double = 160
     private let textEditorWidth: Double = 220
@@ -50,6 +52,7 @@ public struct GeneralPreferencesView: View {
                 openInCodeEditToggle
                 revealFileOnFocusChangeToggle
                 shellCommandSection
+                updaterSection
             }
         }
     }
@@ -250,6 +253,37 @@ private extension GeneralPreferencesView {
         }
     }
 
+    var updaterSection: some View {
+        PreferencesSection("Updates", hideLabels: false) {
+            VStack(alignment: .leading) {
+                Toggle("Check For App Updates", isOn: $updater.automaticallyChecksForUpdates)
+
+                Toggle("Include Pre-release", isOn: $updater.includePrereleaseVersions)
+
+                Button("Check Now") {
+                    updater.checkForUpdates()
+                }
+
+                Text("Last checked: \(lastUpdatedString)")
+                    .font(.footnote)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+    }
+
+    private var lastUpdatedString: String {
+        if let lastUpdatedDate = updater.lastUpdateCheckDate {
+            return Self.formatter.string(from: lastUpdatedDate)
+        } else {
+            return "Never"
+        }
+    }
+
+    private static let formatter = configure(DateFormatter()) {
+        $0.dateStyle = .medium
+        $0.timeStyle = .medium
+    }
+
     func fallbackShellInstallation(commandPath: String, destinationPath: String) {
         let cmd = [
             "osascript",
@@ -299,4 +333,60 @@ private extension GeneralPreferencesView {
                 .toggleStyle(.checkbox)
         }
     }
+}
+class ObservableUpdater: ObservableObject {
+    private let updater: SPUUpdater
+    @Published var automaticallyChecksForUpdates = false {
+        didSet {
+            updater.automaticallyChecksForUpdates = automaticallyChecksForUpdates
+        }
+    }
+    private var automaticallyChecksForUpdatesObservation: NSKeyValueObservation?
+    @Published var lastUpdateCheckDate: Date?
+    private var lastUpdateCheckDateObservation: NSKeyValueObservation?
+    @Published var includePrereleaseVersions = false {
+        didSet {
+            UserDefaults.standard.setValue(includePrereleaseVersions, forKey: "includePrereleaseVersions")
+            if includePrereleaseVersions {
+                updater.setFeedURL(.prereleaseAppcast)
+            } else {
+                updater.setFeedURL(.appcast)
+            }
+        }
+    }
+    init() {
+        updater = SPUStandardUpdaterController(
+            startingUpdater: true,
+            updaterDelegate: nil,
+            userDriverDelegate: nil
+        ).updater
+        automaticallyChecksForUpdatesObservation = updater.observe(
+            \.automaticallyChecksForUpdates,
+            options: [.initial, .new, .old],
+            changeHandler: { [unowned self] updater, change in
+                guard change.newValue != change.oldValue else { return }
+                self.automaticallyChecksForUpdates = updater.automaticallyChecksForUpdates
+            }
+        )
+        lastUpdateCheckDateObservation = updater.observe(
+            \.lastUpdateCheckDate,
+            options: [.initial, .new, .old],
+            changeHandler: { [unowned self] updater, _ in
+                self.lastUpdateCheckDate = updater.lastUpdateCheckDate
+            }
+        )
+        includePrereleaseVersions = UserDefaults.standard.bool(forKey: "includePrereleaseVersions")
+    }
+    func checkForUpdates() {
+        updater.checkForUpdates()
+    }
+}
+extension URL {
+    static let appcast = URL(string: "https://codeeditapp.github.io/CodeEdit/appcast.xml")!
+    static let prereleaseAppcast = URL(string: "https://codeeditapp.github.io/CodeEdit/appcast_pre.xml")!
+}
+func configure<Subject>(_ subject: Subject, configuration: (inout Subject) -> Void) -> Subject {
+    var copy = subject
+    configuration(&copy)
+    return copy
 }
