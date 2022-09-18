@@ -254,11 +254,11 @@ private extension GeneralPreferencesView {
     }
 
     var updaterSection: some View {
-        PreferencesSection("Updates", hideLabels: false) {
+        PreferencesSection("Software Updates", hideLabels: false) {
             VStack(alignment: .leading) {
-                Toggle("Check For App Updates", isOn: $updater.automaticallyChecksForUpdates)
+                Toggle("Automatically check for app updates", isOn: $updater.automaticallyChecksForUpdates)
 
-                Toggle("Include Pre-release", isOn: $updater.includePrereleaseVersions)
+                Toggle("Include pre-release versions", isOn: $updater.includePrereleaseVersions)
 
                 Button("Check Now") {
                     updater.checkForUpdates()
