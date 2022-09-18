@@ -397,11 +397,6 @@ struct TabBar: View {
         }
         .background {
             if prefs.preferences.general.tabBarStyle == .xcode {
-                TabBarXcodeBackground()
-            }
-        }
-        .background {
-            if prefs.preferences.general.tabBarStyle == .xcode {
                 EffectView(
                     NSVisualEffectView.Material.titlebar,
                     blendingMode: NSVisualEffectView.BlendingMode.withinWindow

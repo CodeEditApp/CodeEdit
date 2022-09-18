@@ -54,13 +54,11 @@ struct WorkspaceCodeFileView: View {
         _ codeFile: CodeFileDocument,
         for item: WorkspaceClient.FileItem
     ) -> some View {
-        CodeFileView(codeFile: codeFile)
-            .safeAreaInset(edge: .top, spacing: 0) {
-                VStack(spacing: 0) {
-                    BreadcrumbsView(file: item, tappedOpenFile: workspace.openTab(item:))
-                    Divider()
-                }
-            }
+        VStack(spacing: 0) {
+            BreadcrumbsView(file: item, tappedOpenFile: workspace.openTab(item:))
+            Divider()
+            CodeFileView(codeFile: codeFile)
+        }
     }
 
     @ViewBuilder
@@ -68,7 +66,10 @@ struct WorkspaceCodeFileView: View {
         _ otherFile: CodeFileDocument,
         for item: WorkspaceClient.FileItem
     ) -> some View {
-        ZStack {
+        VStack(spacing: 0) {
+            BreadcrumbsView(file: item, tappedOpenFile: workspace.openTab(item:))
+            Divider()
+
             if let url = otherFile.previewItemURL,
                let image = NSImage(contentsOf: url),
                otherFile.typeOfFile == .image {
@@ -83,11 +84,6 @@ struct WorkspaceCodeFileView: View {
                 }
             } else {
                 OtherFileView(otherFile)
-            }
-        }.safeAreaInset(edge: .top, spacing: 0) {
-            VStack(spacing: 0) {
-                BreadcrumbsView(file: item, tappedOpenFile: workspace.openTab(item:))
-                Divider()
             }
         }
     }
