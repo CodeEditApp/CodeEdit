@@ -13,7 +13,6 @@ import WelcomeModule
 import ExtensionsStore
 import Feedback
 import CodeEditSymbols
-import Sparkle
 
 final class CodeEditApplication: NSApplication {
     let strongDelegate = AppDelegate()
