@@ -8,7 +8,7 @@
 import Foundation
 import Sparkle
 
-public class ObservableUpdater: ObservableObject {
+public class SoftwareUpdater: ObservableObject {
     public static let shared = ObservableUpdater()
 
     private let updater: SPUUpdater

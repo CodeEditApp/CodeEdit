@@ -11,7 +11,7 @@ import Sparkle
 
 /// A view that implements the `General` preference section
 public struct GeneralPreferencesView: View {
-    @EnvironmentObject var updater: ObservableUpdater
+    @EnvironmentObject var updater: SoftwareUpdater
 
     private let inputWidth: Double = 160
     private let textEditorWidth: Double = 220

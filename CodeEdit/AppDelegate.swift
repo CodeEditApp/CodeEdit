@@ -31,7 +31,7 @@ final class CodeEditApplication: NSApplication {
 
 @NSApplicationMain
 final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
-    @StateObject var updater: ObservableUpdater = ObservableUpdater.shared
+    @StateObject var updater: SoftwareUpdater = SoftwareUpdater.shared
 
     func applicationWillFinishLaunching(_ notification: Notification) {
         _ = CodeEditDocumentController.shared
