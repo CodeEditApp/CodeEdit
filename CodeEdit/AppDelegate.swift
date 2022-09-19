@@ -31,6 +31,8 @@ final class CodeEditApplication: NSApplication {
 
 @NSApplicationMain
 final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
+    @StateObject var updater: ObservableUpdater = ObservableUpdater.shared
+
     func applicationWillFinishLaunching(_ notification: Notification) {
         _ = CodeEditDocumentController.shared
     }
@@ -213,6 +215,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                 toolbarIcon: NSImage(systemSymbolName: "gearshape", accessibilityDescription: nil)!
             ) {
                 GeneralPreferencesView()
+                    .environmentObject(updater)
             },
             Preferences.Pane(
                 identifier: Preferences.PaneIdentifier("Accounts"),
