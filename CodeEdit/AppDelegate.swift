@@ -129,10 +129,16 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 
         UserDefaults.standard.set(projects, forKey: AppDelegate.recoverWorkspacesKey)
 
-        CodeEditDocumentController.shared.documents.forEach { doc in
-            doc.close()
-            CodeEditDocumentController.shared.removeDocument(doc)
+        let areAllDocumentsClean = CodeEditDocumentController.shared.documents.allSatisfy { !$0.isDocumentEdited }
+        guard areAllDocumentsClean else {
+            CodeEditDocumentController.shared.closeAllDocuments(
+                withDelegate: self,
+                didCloseAllSelector: #selector(documentController(_:didCloseAll:contextInfo:)),
+                contextInfo: nil
+            )
+            return .terminateLater
         }
+
         return .terminateNow
     }
 
@@ -295,6 +301,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         ],
         animated: false
     )
+
+    // MARK: NSDocumentController delegate
+
+    @objc func documentController(_ docController: NSDocumentController, didCloseAll: Bool, contextInfo: Any) {
+        NSApplication.shared.reply(toApplicationShouldTerminate: didCloseAll)
+    }
 }
 
 extension AppDelegate {

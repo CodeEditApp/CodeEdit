@@ -50,6 +50,7 @@ public struct GeneralPreferencesView: View {
                 openInCodeEditToggle
                 revealFileOnFocusChangeToggle
                 shellCommandSection
+                autoSaveSection
             }
         }
     }
@@ -247,6 +248,14 @@ private extension GeneralPreferencesView {
                     .padding(.horizontal, 10)
             })
             .buttonStyle(.bordered)
+        }
+    }
+
+    var autoSaveSection: some View {
+        PreferencesSection("Auto Save Behavior", hideLabels: false) {
+            Toggle("Automatically save changes to disk",
+                   isOn: $prefs.preferences.general.isAutoSaveOn)
+            .toggleStyle(.checkbox)
         }
     }
 

@@ -10,6 +10,7 @@ import Foundation
 import SwiftUI
 import CodeEditTextView
 import AppPreferences
+import Combine
 
 /// CodeFileView is just a wrapper of the `CodeEditor` dependency
 public struct CodeFileView: View {
@@ -22,11 +23,34 @@ public struct CodeFileView: View {
     @Environment(\.colorScheme)
     private var colorScheme
 
+    private var cancellables = [AnyCancellable]()
+
     private let editable: Bool
 
     public init(codeFile: CodeFileDocument, editable: Bool = true) {
         self.codeFile = codeFile
         self.editable = editable
+
+        codeFile
+            .$content
+            .dropFirst()
+            .debounce(
+                for: 0.25,
+                scheduler: DispatchQueue.main
+            )
+            .sink { _ in
+                codeFile.autosave(withImplicitCancellability: false) { _ in
+                }
+            }
+            .store(in: &cancellables)
+
+        codeFile
+            .$content
+            .dropFirst()
+            .sink { _ in
+                codeFile.updateChangeCount(.changeDone)
+            }
+            .store(in: &cancellables)
     }
 
     @State

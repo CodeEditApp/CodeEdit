@@ -20,6 +20,7 @@ import StatusBar
 import TabBar
 
 // swiftlint:disable type_body_length
+// swiftlint:disable file_length
 @objc(WorkspaceDocument) final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var workspaceClient: WorkspaceClient?
 
@@ -90,9 +91,10 @@ import TabBar
     }
 
     private func openFile(item: WorkspaceClient.FileItem) throws {
-        if !selectionState.openFileItems.contains(item) {
-            selectionState.openFileItems.append(item)
+        guard !selectionState.openFileItems.contains(item) else {
+            return
         }
+        selectionState.openFileItems.append(item)
         let pathExtention = item.url.pathExtension
         let codeFile = try CodeFileDocument(
             for: item.url,
@@ -100,6 +102,7 @@ import TabBar
             ofType: pathExtention
         )
         selectionState.openedCodeFiles[item] = codeFile
+        CodeEditDocumentController.shared.addDocument(codeFile)
         Swift.print("Opening file for item: ", item.url)
     }
 
@@ -114,15 +117,6 @@ import TabBar
     /// Closes single tab
     /// - Parameter id: tab bar item's identifier to be closed
     func closeTab(item id: TabBarItemID) {
-        if id == selectionState.temporaryTab {
-            selectionState.previousTemporaryTab = selectionState.temporaryTab
-            selectionState.temporaryTab = nil
-        }
-
-        guard let idx = selectionState.openedTabs.firstIndex(of: id) else { return }
-        let closedID = selectionState.openedTabs.remove(at: idx)
-        guard closedID == id else { return }
-
         switch id {
         case .codeEditor:
             guard let item = selectionState.getItemByTab(id: id) as? WorkspaceClient.FileItem else { return }
@@ -130,19 +124,6 @@ import TabBar
         case .extensionInstallation:
             guard let item = selectionState.getItemByTab(id: id) as? Plugin else { return }
             closeExtensionTab(item: item)
-        }
-
-        if selectionState.openedTabs.isEmpty {
-            selectionState.selectedId = nil
-        } else if selectionState.selectedId == closedID {
-            // If the closed item is the selected one, then select another tab.
-            if idx == 0 {
-                selectionState.selectedId = selectionState.openedTabs.first
-            } else {
-                selectionState.selectedId = selectionState.openedTabs[idx - 1]
-            }
-        } else {
-            // If the closed item is not the selected one, then do nothing.
         }
     }
 
@@ -198,26 +179,37 @@ import TabBar
     /// Closes an open tab, save text files only.
     /// Removes the tab item from `openedCodeFiles`, `openedExtensions`, and `openFileItems`.
     private func closeFileTab(item: WorkspaceClient.FileItem) {
-        defer {
-            do {
-                guard let file = selectionState.openedCodeFiles.removeValue(forKey: item) else { throw NSError() }
-                guard let url  = file.fileURL else { throw NSError() }
-
-                if file.typeOfFile == .text {
-                    try NSData(data: file.data(ofType: "public.source-code")).write(to: url, atomically: true)
-                }
-            } catch {
-                Swift.print("Failed to write file for item: ", item.url)
+        guard let file = selectionState.openedCodeFiles[item],
+              let openFileItemIndex = selectionState.openFileItems.firstIndex(of: item)
+        else {
+            return
+        }
+        if file.isDocumentEdited {
+            let shouldClose = UnsafeMutablePointer<Bool>.allocate(capacity: 1)
+            shouldClose.initialize(to: true)
+            defer {
+                _ = shouldClose.move()
+                shouldClose.deallocate()
+            }
+            file.canClose(
+                withDelegate: self,
+                shouldClose: #selector(document(_:shouldClose:contextInfo:)),
+                contextInfo: shouldClose
+            )
+            guard shouldClose.pointee else {
+                return
             }
         }
-
-        guard let idx = selectionState.openFileItems.firstIndex(of: item) else { return }
-        selectionState.openFileItems.remove(at: idx)
+        selectionState.openedCodeFiles.removeValue(forKey: item)
+        selectionState.openFileItems.remove(at: openFileItemIndex)
+        removeTab(id: item.tabID)
     }
 
     private func closeExtensionTab(item: Plugin) {
         guard let idx = selectionState.openedExtensions.firstIndex(of: item) else { return }
         selectionState.openedExtensions.remove(at: idx)
+
+        removeTab(id: item.tabID)
     }
 
     /// Makes the temporary tab permanent when a file save or edit happens.
@@ -226,6 +218,32 @@ import TabBar
             selectionState.temporaryTab != nil {
             selectionState.previousTemporaryTab = selectionState.temporaryTab
             selectionState.temporaryTab = nil
+        }
+    }
+
+    /// Removes the tab from `openedTabs`.
+    /// - Parameter id: The id of `TabBarItemID` which will be removed.
+    private func removeTab(id: TabBarItemID) {
+        if id == selectionState.temporaryTab {
+            selectionState.previousTemporaryTab = selectionState.temporaryTab
+            selectionState.temporaryTab = nil
+        }
+
+        guard let idx = selectionState.openedTabs.firstIndex(of: id) else { return }
+        let closedID = selectionState.openedTabs.remove(at: idx)
+        guard closedID == id else { return }
+
+        if selectionState.openedTabs.isEmpty {
+            selectionState.selectedId = nil
+        } else if selectionState.selectedId == closedID {
+            // If the closed item is the selected one, then select another tab.
+            if idx == 0 {
+                selectionState.selectedId = selectionState.openedTabs.first
+            } else {
+                selectionState.selectedId = selectionState.openedTabs[idx - 1]
+            }
+        } else {
+            // If the closed item is not the selected one, then do nothing.
         }
     }
 
@@ -354,12 +372,6 @@ import TabBar
         }
 
         selectionState.selectedId = nil
-        selectionState.openFileItems.forEach { item in
-            do {
-                try selectionState.openedCodeFiles[item]?.write(to: item.url, ofType: "public.source-code")
-                selectionState.openedCodeFiles[item]?.close()
-            } catch {}
-        }
         selectionState.openedCodeFiles.removeAll()
 
         if let url = self.fileURL {
@@ -367,6 +379,89 @@ import TabBar
         }
 
         super.close()
+    }
+
+    /// Determines the windows should be closed.
+    ///
+    /// This method iterates all editied documents If there are any editied documents.
+    ///
+    /// A panel giving the user the choice of canceling, discarding changes, or saving is presented while iteration.
+    ///
+    /// If the user chooses cancel on the panel, iteration is breaked.
+    ///
+    /// In the last step, `shouldCloseSelector` is called with true if all documents are clean, otherwise false
+    ///
+    /// - Parameters:
+    ///   - windowController: The windowController may be closed.
+    ///   - delegate: The object which is a target of `shouldCloseSelector`.
+    ///   - shouldClose: The callback which receives result of this method.
+    ///   - contextInfo: The additional info which is not used in this method.
+    override func shouldCloseWindowController(
+        _ windowController: NSWindowController,
+        delegate: Any?,
+        shouldClose shouldCloseSelector: Selector?,
+        contextInfo: UnsafeMutableRawPointer?
+    ) {
+        guard let object = (delegate as? NSObject),
+              let shouldCloseSelector = shouldCloseSelector,
+              let contextInfo = contextInfo
+        else {
+            super.shouldCloseWindowController(
+                windowController,
+                delegate: delegate,
+                shouldClose: shouldCloseSelector,
+                contextInfo: contextInfo
+            )
+            return
+        }
+        // Save unsaved changes before closing
+        let editedCodeFiles = selectionState.openedCodeFiles.values.filter { $0.isDocumentEdited }
+        for editedCodeFile in editedCodeFiles {
+            let shouldClose = UnsafeMutablePointer<Bool>.allocate(capacity: 1)
+            shouldClose.initialize(to: true)
+            defer {
+                _ = shouldClose.move()
+                shouldClose.deallocate()
+            }
+            // Present a panel giving the user the choice of canceling, discarding changes, or saving.
+            editedCodeFile.canClose(
+                withDelegate: self,
+                shouldClose: #selector(document(_:shouldClose:contextInfo:)),
+                contextInfo: shouldClose
+            )
+            // pointee becomes false when user select cancel
+            guard shouldClose.pointee else {
+                break
+            }
+        }
+        // Invoke shouldCloseSelector at delegate
+        let implementation = object.method(for: shouldCloseSelector)
+        let function = unsafeBitCast(
+            implementation,
+            to: (@convention(c)(Any, Selector, Any, Bool, UnsafeMutableRawPointer?) -> Void).self
+        )
+        let areAllOpenedCodeFilesClean = selectionState.openedCodeFiles.values.allSatisfy { !$0.isDocumentEdited }
+        function(object, shouldCloseSelector, self, areAllOpenedCodeFilesClean, contextInfo)
+    }
+
+    // MARK: NSDocument delegate
+
+    /// Receives result of `canClose` and then, set `shouldClose` to `contextInfo`'s `pointee`.
+    ///
+    /// - Parameters:
+    ///   - document: The document may be closed.
+    ///   - shouldClose: The result of user selection.
+    ///      `shouldClose` becomes false if the user selects cancel, otherwise true.
+    ///   - contextInfo: The additional info which will be set `shouldClose`.
+    ///       `contextInfo` must be `UnsafeMutablePointer<Bool>`.
+    @objc private func document(
+        _ document: NSDocument,
+        shouldClose: Bool,
+        contextInfo: UnsafeMutableRawPointer
+    ) {
+        let opaquePtr = OpaquePointer(contextInfo)
+        let mutablePointer = UnsafeMutablePointer<Bool>(opaquePtr)
+        mutablePointer.pointee = shouldClose
     }
 }
 
