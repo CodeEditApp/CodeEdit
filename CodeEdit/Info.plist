@@ -1244,7 +1244,7 @@
 	<key>SUEnableInstallerLauncherService</key>
 	<true/>
 	<key>SUFeedURL</key>
-	<string>https://CodeEditApp.github.io/CodeEdit/appcast.xml</string>
+	<string>https://codeeditapp.github.io/CodeEdit/appcast.xml</string>
 	<key>SUPublicEDKey</key>
 	<string>/vAnxnK9wj4IqnUt6wS9EN3Ug69zHb+S/Pb9CyZuwa0=</string>
 </dict>
