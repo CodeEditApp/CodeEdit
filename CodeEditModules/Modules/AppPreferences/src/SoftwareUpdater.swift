@@ -9,8 +9,6 @@ import Foundation
 import Sparkle
 
 public class SoftwareUpdater: ObservableObject {
-    public static let shared = SoftwareUpdater()
-
     private let updater: SPUUpdater
     @Published var automaticallyChecksForUpdates = false {
         didSet {
