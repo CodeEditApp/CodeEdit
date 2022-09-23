@@ -383,11 +383,11 @@ import TabBar
 
     /// Determines the windows should be closed.
     ///
-    /// This method iterates all editied documents If there are any editied documents.
+    /// This method iterates all edited documents If there are any edited documents.
     ///
     /// A panel giving the user the choice of canceling, discarding changes, or saving is presented while iteration.
     ///
-    /// If the user chooses cancel on the panel, iteration is breaked.
+    /// If the user chooses cancel on the panel, iteration is broken.
     ///
     /// In the last step, `shouldCloseSelector` is called with true if all documents are clean, otherwise false
     ///
