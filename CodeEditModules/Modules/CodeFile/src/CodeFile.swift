@@ -10,6 +10,7 @@ import Foundation
 import SwiftUI
 import UniformTypeIdentifiers
 import QuickLookUI
+import AppPreferences
 
 public enum CodeFileError: Error {
     case failedToDecode
@@ -56,7 +57,13 @@ public final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem
     // MARK: - NSDocument
 
     override public class var autosavesInPlace: Bool {
-        true
+        AppPreferencesModel.shared.preferences.general.isAutoSaveOn
+    }
+
+    override public var autosavingFileType: String? {
+        AppPreferencesModel.shared.preferences.general.isAutoSaveOn
+            ? fileType
+            : nil
     }
 
     override public func makeWindowControllers() {
