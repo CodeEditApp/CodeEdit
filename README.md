@@ -125,6 +125,7 @@ Be part of the next revolution in code editing by contributing to the project. T
       <td align="center"><a href="http://pribess.github.io"><img src="https://avatars.githubusercontent.com/u/72389357?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Heewon Cho</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3APribess" title="Bug reports">🐛</a></td>
       <td align="center"><a href="https://www.xcodes.app"><img src="https://avatars.githubusercontent.com/u/1119565?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Matt Kiazyk</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=MattKiazyk" title="Code">💻</a></td>
       <td align="center"><a href="https://github.com/DingoBits"><img src="https://avatars.githubusercontent.com/u/107956274?v=4?s=100" width="100px;" alt=""/><br /><sub><b>DingoBits</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=DingoBits" title="Code">💻</a></td>
+      <td align="center"><a href="https://github.com/sk409"><img src="https://avatars.githubusercontent.com/u/25968819?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Shoto Kobayashi</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3Ask409" title="Bug reports">🐛</a> <a href="https://github.com/CodeEditApp/CodeEdit/commits?author=sk409" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>

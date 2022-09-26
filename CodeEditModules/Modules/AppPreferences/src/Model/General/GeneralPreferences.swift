@@ -50,6 +50,9 @@ public extension AppPreferences {
         /// The reveal file in navigator when focus changes behavior of the app.
         public var revealFileOnFocusChange: Bool = false
 
+        /// Auto save behavior toggle
+        public var isAutoSaveOn: Bool = true
+
         /// Default initializer
         public init() {}
 
@@ -109,6 +112,10 @@ public extension AppPreferences {
                 Bool.self,
                 forKey: .revealFileOnFocusChange
             ) ?? false
+            self.isAutoSaveOn = try container.decodeIfPresent(
+                Bool.self,
+                forKey: .isAutoSaveOn
+            ) ?? true
         }
         // swiftlint:enable function_body_length
     }

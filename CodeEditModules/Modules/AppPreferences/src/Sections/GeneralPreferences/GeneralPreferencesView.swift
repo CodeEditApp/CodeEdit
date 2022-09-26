@@ -52,6 +52,7 @@ public struct GeneralPreferencesView: View {
                 openInCodeEditToggle
                 revealFileOnFocusChangeToggle
                 shellCommandSection
+                autoSaveSection
                 updaterSection
             }
         }
@@ -282,6 +283,14 @@ private extension GeneralPreferencesView {
     private static let formatter = configure(DateFormatter()) {
         $0.dateStyle = .medium
         $0.timeStyle = .medium
+    }
+
+    var autoSaveSection: some View {
+        PreferencesSection("Auto Save Behavior", hideLabels: false) {
+            Toggle("Automatically save changes to disk",
+                   isOn: $prefs.preferences.general.isAutoSaveOn)
+            .toggleStyle(.checkbox)
+        }
     }
 
     func fallbackShellInstallation(commandPath: String, destinationPath: String) {
