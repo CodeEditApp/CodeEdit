@@ -18,6 +18,24 @@ public final class ThemeModel: ObservableObject {
 
     public static let shared: ThemeModel = .init()
 
+    /// Selected 'light' theme
+    /// Used for auto-switching theme to match macOS system appearance
+    @Published
+    public var selectedLightTheme: Theme? {
+        didSet {
+            AppPreferencesModel.shared.preferences.theme.selectedLightTheme = selectedLightTheme?.name ?? "Broken"
+        }
+    }
+
+    /// Selected 'dark' theme
+    /// Used for auto-switching theme to match macOS system appearance
+    @Published
+    public var selectedDarkTheme: Theme? {
+        didSet {
+            AppPreferencesModel.shared.preferences.theme.selectedDarkTheme = selectedDarkTheme?.name ?? "Broken"
+        }
+    }
+
     /// The selected appearance in the sidebar.
     /// - **0**: dark mode themes
     /// - **1**: light mode themes
@@ -45,6 +63,7 @@ public final class ThemeModel: ObservableObject {
     public var selectedTheme: Theme? {
         didSet {
             AppPreferencesModel.shared.preferences.theme.selectedTheme = selectedTheme?.name
+            updateAppearanceTheme()
         }
     }
 
@@ -143,8 +162,36 @@ public final class ThemeModel: ObservableObject {
 
                 // if there already is a selected theme in `preferences.json` select this theme
                 // otherwise take the first in the list
-                self.selectedTheme = self.themes.first { $0.name == prefs.theme.selectedTheme } ?? self.themes.first
+                self.selectedDarkTheme = self.darkThemes.first {
+                    $0.name == prefs.theme.selectedDarkTheme
+                } ?? self.darkThemes.first
+
+                self.selectedLightTheme = self.lightThemes.first {
+                    $0.name == prefs.theme.selectedLightTheme
+                } ?? self.lightThemes.first
+
+                // For selecting the default theme, doing it correctly on startup requires some more logic
+                let userSelectedTheme = self.themes.first { $0.name == prefs.theme.selectedTheme }
+                let systemAppearance = NSAppearance.currentDrawing().name
+                if userSelectedTheme != nil {
+                    self.selectedTheme = userSelectedTheme
+                } else {
+                    if systemAppearance == .darkAqua {
+                        self.selectedTheme = self.selectedDarkTheme
+                    } else {
+                        self.selectedTheme = self.selectedLightTheme
+                    }
+                }
             }
+        }
+    }
+
+    /// This function stores  'dark' and 'light' themes into `ThemePreferences` if user happens to select a theme
+    private func updateAppearanceTheme() {
+        if self.selectedTheme?.appearance == .dark {
+            self.selectedDarkTheme = self.selectedTheme
+        } else if self.selectedTheme?.appearance == .light {
+            self.selectedLightTheme = self.selectedTheme
         }
     }
 

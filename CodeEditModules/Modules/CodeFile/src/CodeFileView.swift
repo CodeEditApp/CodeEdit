@@ -80,6 +80,13 @@ public struct CodeFileView: View {
             guard let theme = newValue else { return }
             self.selectedTheme = theme
         }
+        .onChange(of: colorScheme) { newValue in
+            if prefs.preferences.theme.mirrorSystemAppearance {
+                ThemeModel.shared.selectedTheme = newValue == .dark
+                    ? ThemeModel.shared.selectedDarkTheme!
+                    : ThemeModel.shared.selectedLightTheme!
+            }
+        }
         .onChange(of: prefs.preferences.textEditing.font) { _ in
             font = NSFont(
                 name: prefs.preferences.textEditing.font.name,
