@@ -171,11 +171,12 @@ public final class ThemeModel: ObservableObject {
                 
                 // For selecting the default theme, doing it correctly on startup requires some more logic
                 let userSelectedTheme = self.themes.first { $0.name == prefs.theme.selectedTheme }
+                let systemAppearance = NSAppearance.currentDrawing().name
                 if userSelectedTheme != nil {
                     self.selectedTheme = userSelectedTheme
                 } else {
-                    print(colorScheme == .dark)
-                    if colorScheme == .dark {
+                    print(systemAppearance == .aqua)
+                    if systemAppearance == .darkAqua {
                         self.selectedTheme = self.selectedDarkTheme
                     } else {
                         self.selectedTheme = self.selectedLightTheme
