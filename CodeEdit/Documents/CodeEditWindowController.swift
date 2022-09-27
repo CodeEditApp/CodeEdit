@@ -44,20 +44,20 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     func registerCommands() {
         CommandManager.shared.addCommand(
             name: "Quick Open",
-             title: "Quick Open",
-             id: "quick_open",
-             command: ClosureWrapper(closure: {
+            title: "Quick Open",
+            id: "quick_open",
+            command: ClosureWrapper(closure: {
                 self.openQuickly(self)
             })
         )
 
         CommandManager.shared.addCommand(
             name: "Toggle Left Sidebar",
-             title: "Toggle Left Sidebar",
-             id: "toggle_left_sidebar",
-             command: ClosureWrapper(closure: {
-                 self.toggleFirstPanel()
-             })
+            title: "Toggle Left Sidebar",
+            id: "toggle_left_sidebar",
+            command: ClosureWrapper(closure: {
+                self.toggleFirstPanel()
+            })
         )
 
         CommandManager.shared.addCommand(

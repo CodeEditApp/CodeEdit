@@ -7,9 +7,11 @@
 
 import SwiftUI
 import CodeEditUI
+import Sparkle
 
 /// A view that implements the `General` preference section
 public struct GeneralPreferencesView: View {
+    @EnvironmentObject var updater: SoftwareUpdater
 
     private let inputWidth: Double = 160
     private let textEditorWidth: Double = 220
@@ -51,6 +53,7 @@ public struct GeneralPreferencesView: View {
                 revealFileOnFocusChangeToggle
                 shellCommandSection
                 autoSaveSection
+                updaterSection
             }
         }
     }
@@ -251,6 +254,37 @@ private extension GeneralPreferencesView {
         }
     }
 
+    var updaterSection: some View {
+        PreferencesSection("Software Updates", hideLabels: false) {
+            VStack(alignment: .leading) {
+                Toggle("Automatically check for app updates", isOn: $updater.automaticallyChecksForUpdates)
+
+                Toggle("Include pre-release versions", isOn: $updater.includePrereleaseVersions)
+
+                Button("Check Now") {
+                    updater.checkForUpdates()
+                }
+
+                Text("Last checked: \(lastUpdatedString)")
+                    .font(.footnote)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+    }
+
+    private var lastUpdatedString: String {
+        if let lastUpdatedDate = updater.lastUpdateCheckDate {
+            return Self.formatter.string(from: lastUpdatedDate)
+        } else {
+            return "Never"
+        }
+    }
+
+    private static let formatter = configure(DateFormatter()) {
+        $0.dateStyle = .medium
+        $0.timeStyle = .medium
+    }
+
     var autoSaveSection: some View {
         PreferencesSection("Auto Save Behavior", hideLabels: false) {
             Toggle("Automatically save changes to disk",
@@ -308,4 +342,10 @@ private extension GeneralPreferencesView {
                 .toggleStyle(.checkbox)
         }
     }
+}
+
+func configure<Subject>(_ subject: Subject, configuration: (inout Subject) -> Void) -> Subject {
+    var copy = subject
+    configuration(&copy)
+    return copy
 }

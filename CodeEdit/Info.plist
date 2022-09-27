@@ -1240,6 +1240,12 @@
 		</dict>
 	</array>
 	<key>GitHash</key>
-	<string>f41ffa79d66ee2ba1e65740b73577641b8ce7f1b</string>
+	<string>7a96cf534b4118d9c5f69164c85f06e501b322d2</string>
+	<key>SUEnableInstallerLauncherService</key>
+	<true/>
+	<key>SUFeedURL</key>
+	<string>https://codeeditapp.github.io/CodeEdit/appcast.xml</string>
+	<key>SUPublicEDKey</key>
+	<string>/vAnxnK9wj4IqnUt6wS9EN3Ug69zHb+S/Pb9CyZuwa0=</string>
 </dict>
 </plist>
