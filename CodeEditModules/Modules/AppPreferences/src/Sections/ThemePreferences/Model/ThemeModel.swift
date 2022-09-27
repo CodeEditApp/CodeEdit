@@ -18,10 +18,6 @@ public final class ThemeModel: ObservableObject {
 
     public static let shared: ThemeModel = .init()
     
-    /// Retrieves system apperance settings
-    @Environment(\.colorScheme)
-    var colorScheme: ColorScheme
-    
     /// Selected 'light' theme
     /// Used for auto-switching theme to match macOS system appearance
     @Published
