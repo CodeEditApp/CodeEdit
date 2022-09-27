@@ -171,7 +171,6 @@ public final class ThemeModel: ObservableObject {
                 if userSelectedTheme != nil {
                     self.selectedTheme = userSelectedTheme
                 } else {
-                    print(systemAppearance == .aqua)
                     if systemAppearance == .darkAqua {
                         self.selectedTheme = self.selectedDarkTheme
                     } else {
