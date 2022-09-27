@@ -82,7 +82,9 @@ public struct CodeFileView: View {
         }
         .onChange(of: colorScheme) { newValue in
             if prefs.preferences.theme.mirrorSystemAppearance {
-                ThemeModel.shared.selectedTheme = newValue == .dark ? ThemeModel.shared.selectedDarkTheme! : ThemeModel.shared.selectedLightTheme!
+                ThemeModel.shared.selectedTheme = newValue == .dark
+                    ? ThemeModel.shared.selectedDarkTheme!
+                    : ThemeModel.shared.selectedLightTheme!
             }
         }
         .onChange(of: prefs.preferences.textEditing.font) { _ in

@@ -34,10 +34,10 @@ public extension AppPreferences {
 
         /// The name of the currently selected dark theme
         public var selectedDarkTheme: String = "codeedit-xcode-dark"
-        
+
         /// The name of the currently selected light theme
         public var selectedLightTheme: String = "codeedit-xcode-light"
-        
+
         /// The name of the currently selected theme
         public var selectedTheme: String?
 
@@ -80,8 +80,12 @@ public extension AppPreferences {
         /// Explicit decoder init for setting default values when key is not present in `JSON`
         public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
-            self.selectedDarkTheme = try container.decodeIfPresent(String.self, forKey: .selectedDarkTheme) ?? selectedDarkTheme
-            self.selectedLightTheme = try container.decodeIfPresent(String.self, forKey: .selectedLightTheme) ?? selectedLightTheme
+            self.selectedDarkTheme = try container.decodeIfPresent(
+                String.self, forKey: .selectedDarkTheme
+            ) ?? selectedDarkTheme
+            self.selectedLightTheme = try container.decodeIfPresent(
+                String.self, forKey: .selectedLightTheme
+            ) ?? selectedLightTheme
             self.selectedTheme = try container.decodeIfPresent(String.self, forKey: .selectedTheme)
             self.useThemeBackground = try container.decodeIfPresent(Bool.self, forKey: .useThemeBackground) ?? true
             self.mirrorSystemAppearance = try container.decodeIfPresent(

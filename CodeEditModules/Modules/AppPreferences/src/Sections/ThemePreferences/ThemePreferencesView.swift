@@ -34,17 +34,19 @@ public struct ThemePreferencesView: View {
                     isOn: $prefs.preferences.theme.mirrorSystemAppearance
                 )
                 .onChange(of: prefs.preferences.theme.mirrorSystemAppearance) { value in
-                    if (value) {
+                    if value {
                         if colorScheme == .dark {
                             themeModel.selectedTheme = themeModel.selectedDarkTheme
                         } else {
                             themeModel.selectedTheme = themeModel.selectedLightTheme
                         }
                     } else {
-                        themeModel.selectedTheme = themeModel.themes.first { $0.name == prefs.preferences.theme.selectedTheme }
+                        themeModel.selectedTheme = themeModel.themes.first {
+                            $0.name == prefs.preferences.theme.selectedTheme
+                        }
                     }
                 }
-                
+
                 Spacer()
                 Button("Get More Themes...") {}
                     .disabled(true)
