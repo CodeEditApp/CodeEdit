@@ -1,0 +1,14 @@
+//
+//  Common.xcconfig
+//  CodeEdit
+//
+//  Created by Kyle on 2022/10/2.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+// Dynamic Configuration
+#include "GitHash.xcconfig"
+
+// Static Configuration

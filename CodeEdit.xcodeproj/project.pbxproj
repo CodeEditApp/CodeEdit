@@ -53,6 +53,8 @@
 		20EBB507280C32D300F3A5DA /* QuickHelpInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EBB506280C32D300F3A5DA /* QuickHelpInspector.swift */; };
 		20EBB50D280C383700F3A5DA /* LanguageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EBB50C280C383700F3A5DA /* LanguageType.swift */; };
 		20EBB50F280C389300F3A5DA /* FileInspectorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EBB50E280C389300F3A5DA /* FileInspectorModel.swift */; };
+		27EF75AD28E9324F00D6F4D4 /* Common.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 27EF75AC28E9324F00D6F4D4 /* Common.xcconfig */; };
+		27EF75AF28E9328200D6F4D4 /* GitHash.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 27EF75AE28E9328200D6F4D4 /* GitHash.xcconfig */; };
 		2803257127F3CF1F009C7DC2 /* AppPreferences in Frameworks */ = {isa = PBXBuildFile; productRef = 2803257027F3CF1F009C7DC2 /* AppPreferences */; };
 		28117FD0280768A500649353 /* CodeEditUI in Frameworks */ = {isa = PBXBuildFile; productRef = 28117FCF280768A500649353 /* CodeEditUI */; };
 		2813F93827ECC4AA00E305E4 /* FindNavigatorResultList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201B327E9989900CB86D0 /* FindNavigatorResultList.swift */; };
@@ -201,6 +203,8 @@
 		20EBB506280C32D300F3A5DA /* QuickHelpInspector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickHelpInspector.swift; sourceTree = "<group>"; };
 		20EBB50C280C383700F3A5DA /* LanguageType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageType.swift; sourceTree = "<group>"; };
 		20EBB50E280C389300F3A5DA /* FileInspectorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileInspectorModel.swift; sourceTree = "<group>"; };
+		27EF75AC28E9324F00D6F4D4 /* Common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Common.xcconfig; sourceTree = "<group>"; };
+		27EF75AE28E9328200D6F4D4 /* GitHash.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = GitHash.xcconfig; sourceTree = "<group>"; };
 		2847019D27FDDF7600F87B6B /* OutlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineView.swift; sourceTree = "<group>"; };
 		285FEC6D27FE4B4A00E57D53 /* OutlineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineViewController.swift; sourceTree = "<group>"; };
 		285FEC6F27FE4B9800E57D53 /* OutlineTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineTableViewCell.swift; sourceTree = "<group>"; };
@@ -436,6 +440,15 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		27EF75AB28E9324F00D6F4D4 /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				27EF75AC28E9324F00D6F4D4 /* Common.xcconfig */,
+				27EF75AE28E9328200D6F4D4 /* GitHash.xcconfig */,
+			);
+			path = Configuration;
+			sourceTree = "<group>";
+		};
 		28069DA527F5BD320016BC47 /* DefaultThemes */ = {
 			isa = PBXGroup;
 			children = (
@@ -528,6 +541,7 @@
 		B658FB2327DA9E0F00EA4DBD = {
 			isa = PBXGroup;
 			children = (
+				27EF75AB28E9324F00D6F4D4 /* Configuration */,
 				B658FB2E27DA9E0F00EA4DBD /* CodeEdit */,
 				2BE487ED28245162003F3F64 /* OpenWithCodeEdit */,
 				B658FB2D27DA9E0F00EA4DBD /* Products */,
@@ -648,7 +662,6 @@
 				B658FB2827DA9E0F00EA4DBD /* Sources */,
 				B658FB2927DA9E0F00EA4DBD /* Frameworks */,
 				B658FB2A27DA9E0F00EA4DBD /* Resources */,
-				2B1A76FC27F628BD008ED4A2 /* Update commit hash */,
 				2B18499A27F8A7A0005119F0 /* Mark // swiftlint:disable:all as errors | Run Script */,
 				2BA119D327E5274D00A996FF /* SwiftLint Run Script */,
 				04ADA0CC27E6043B00BF00B2 /* Add TODO/FIXME as warnings | Run Script */,
@@ -795,6 +808,8 @@
 				28A51005281701B40087B0CC /* codeedit-github-light.json in Resources */,
 				D7211D4727E06BFE008F2ED7 /* Localizable.strings in Resources */,
 				28A51001281673530087B0CC /* codeedit-xcode-dark.json in Resources */,
+				27EF75AD28E9324F00D6F4D4 /* Common.xcconfig in Resources */,
+				27EF75AF28E9328200D6F4D4 /* GitHash.xcconfig in Resources */,
 				28A9678B28C7B72E00F103F0 /* Package.resolved in Resources */,
 				B658FB3427DA9E1000EA4DBD /* Assets.xcassets in Resources */,
 				474397C52893AC4B00518C8C /* codeedit-midnight.json in Resources */,
@@ -854,24 +869,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "TAGS=\"\\/\\/ swiftlint:disable all\"\necho \"searching ${SRCROOT} for ${TAGS}\"\nfind \"${SRCROOT}\" \\( -name \"*.swift\" \\) -print0 | xargs -0 egrep --with-filename --line-number --only-matching \"($TAGS).*\\$\" | perl -p -e \"s/($TAGS)/ error: Usage of \\$1 is prohibited/\"\n";
-		};
-		2B1A76FC27F628BD008ED4A2 /* Update commit hash */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Update commit hash";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Hash (full length)\nGITHASH=$(git rev-parse HEAD)\n\necho \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\necho $GITHASH\n# Set the hash.\n/usr/libexec/PlistBuddy -c \"Set :GitHash $GITHASH\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\n";
 		};
 		2BA119D327E5274D00A996FF /* SwiftLint Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1221,6 +1218,7 @@
 		};
 		B658FB5227DA9E1000EA4DBD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 27EF75AC28E9324F00D6F4D4 /* Common.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconDev;
@@ -1255,6 +1253,7 @@
 		};
 		B658FB5327DA9E1000EA4DBD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 27EF75AC28E9324F00D6F4D4 /* Common.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconDev;
