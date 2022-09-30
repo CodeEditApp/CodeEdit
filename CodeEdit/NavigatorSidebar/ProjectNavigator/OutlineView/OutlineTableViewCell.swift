@@ -134,7 +134,7 @@ final class OutlineTableViewCell: NSTableCellView {
         if item.children == nil && prefs.fileIconStyle == .color {
             return NSColor(item.iconColor)
         } else {
-            return .secondaryLabelColor
+            return NSColor(named: "FolderBlue")!
         }
     }
 }
