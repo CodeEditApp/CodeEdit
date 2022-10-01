@@ -17,6 +17,8 @@ Find issues from the [Issues tab](https://github.com/CodeEditApp/CodeEdit/issues
 
 Please read the [Getting Started](https://github.com/CodeEditApp/CodeEdit/wiki/Getting-Started) guide in our wiki.
 
+We also have an troubleshooting [guide](https://github.com/CodeEditApp/CodeEdit/wiki/Troubleshooting) that provide common resolutions.
+
 ## Code Style
 
 Please read our guide on [Code Style](https://github.com/CodeEditApp/CodeEdit/wiki/Code-Style) in our wiki.
