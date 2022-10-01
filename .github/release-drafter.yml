@@ -1,10 +1,12 @@
 categories:
-  - title: '🚀 Enhancements'
+  - title: '✨ Enhancements'
     labels:
       - 'enhancement'
-  - title: '🐛 Bug Fixes'
+      - 'feature'
+  - title: '🐞 Bug Fixes'
     labels:
       - 'bugfix'
+      - 'bug'
   - title: '🧰 Maintenance'
     label:
       - 'chore'
