@@ -1,5 +1,5 @@
 //
-//  GeneralPreferencesView.swift
+//  NavigationPreferencesView.swift
 //  CodeEditModules/AppPreferences
 //
 //  Created by Aaryan Kothari on 04.10.22.
@@ -15,20 +15,8 @@ public struct NavigationPreferencesView: View {
 
     @StateObject
     private var prefs: AppPreferencesModel = .shared
-
-    @State
-    private var openInCodeEdit: Bool = true
-
-    public init() {
-        guard let defaults = UserDefaults.init(
-            suiteName: "austincondiff.CodeEdit.shared"
-        ) else {
-            print("Failed to get/init shared defaults")
-            return
-        }
-
-        self.openInCodeEdit = defaults.bool(forKey: "enableOpenInCE")
-    }
+    
+    public init() { }
 
     public var body: some View {
         PreferencesContent {
