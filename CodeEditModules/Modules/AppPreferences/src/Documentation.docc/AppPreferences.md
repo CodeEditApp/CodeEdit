@@ -29,6 +29,7 @@ It also contains all preferences section views and necessary sub-models.
 - ``AppPreferences/TerminalPreferencesView``
 - ``AppPreferences/LocationsPreferencesView``
 - ``AppPreferences/PreferencesPlaceholderView``
+- ``AppPreferences/NavigationPreferencesView``
 
 ### Section Content Views
 

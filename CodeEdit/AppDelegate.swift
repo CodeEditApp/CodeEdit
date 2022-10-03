@@ -243,7 +243,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                 toolbarIcon: NSImage(systemSymbolName: "arrow.triangle.turn.up.right.diamond",
                                      accessibilityDescription: nil)!
             ) {
-                PreferencesPlaceholderView()
+                NavigationPreferencesView()
             },
             Preferences.Pane(
                 identifier: Preferences.PaneIdentifier("Themes"),
