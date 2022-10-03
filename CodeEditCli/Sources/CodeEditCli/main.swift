@@ -25,7 +25,7 @@ func convertToAbsolutePath(_ path: String) -> String {
 
 func openApp(paths: [String]? = nil) {
     let task = Process()
-    task.launchPath = "/usr/bin/open" // This should be the same on all installations of MacOS
+    task.launchPath = "/usr/bin/open" // This should be the same on all installations of macOS
 
     task.arguments = ["-a", "CodeEdit"]
 

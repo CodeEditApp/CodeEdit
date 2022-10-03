@@ -18,9 +18,4 @@ public extension Bundle {
     static var buildString: String? {
         Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String
     }
-
-    /// Returns the main bundle's commitHash string if available (e.g. 7dbca499d2ae5e4a6d674c6cb498a862e930f4c3)
-    static var commitHash: String? {
-        Bundle.main.object(forInfoDictionaryKey: "GitHash") as? String
-    }
 }

@@ -39,15 +39,15 @@ public struct WelcomeView: View {
     }
 
     private var appVersion: String {
-        Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
+        Bundle.versionString ?? ""
     }
 
     private var appBuild: String {
-        Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? ""
+        Bundle.buildString ?? ""
     }
 
-    /// Get the MacOS version & build
-    private var macOsVersion: String {
+    /// Get the macOS version & build
+    private var macOSVersion: String {
         let url = URL(fileURLWithPath: "/System/Library/CoreServices/SystemVersion.plist")
         guard let dict = NSDictionary(contentsOf: url),
            let version = dict["ProductUserVisibleVersion"],
@@ -75,24 +75,11 @@ public struct WelcomeView: View {
         return "\(version) (\(build))"
     }
 
-    /// Get the last commit hash.
-    private var getGitHash: String? {
-        if let hash = Bundle.main.infoDictionary?["GitHash"] as? String {
-            return hash
-        }
-
-        return nil
-    }
-
     /// Get program and operating system information
     private func copyInformation() {
         var copyString = "CodeEdit: \(appVersion) (\(appBuild))\n"
 
-        if let hash = getGitHash {
-            copyString.append("Commit: \(hash)\n")
-        }
-
-        copyString.append("MacOS: \(macOsVersion)\n")
+        copyString.append("macOS: \(macOSVersion)\n")
 
         if let xcodeVersion = xcodeVersion {
             copyString.append("Xcode: \(xcodeVersion)")

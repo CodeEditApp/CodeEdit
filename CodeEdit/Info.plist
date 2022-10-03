@@ -1239,8 +1239,6 @@
 			</array>
 		</dict>
 	</array>
-	<key>GitHash</key>
-	<string>92d4bf7f3ea8f1aa861dd6ad1c106f9e38ddd59a</string>
 	<key>SUEnableInstallerLauncherService</key>
 	<true/>
 	<key>SUFeedURL</key>
