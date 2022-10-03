@@ -90,13 +90,13 @@ public struct RecentProjectsView: View {
             forKey: "recentProjectPaths"
         )
     }
-    
+
     func deleteProject(projectPath: String) {
         self.selectedProjectPaths.forEach { projectPath in
             deleteFromRecent(item: projectPath)
         }
     }
-    
+
     func openProject(projectPath: String) {
         if selectedProjectPaths.contains(projectPath) {
             selectedProjectPaths.forEach { projectPath in
@@ -139,11 +139,12 @@ public struct RecentProjectsView: View {
                                 openProject(projectPath: projectPath)
                             })
                             .gesture(TapGesture().onEnded {
-                                if NSEvent.modifierFlags.contains(.command){
+                                if NSEvent.modifierFlags.contains(.command) {
                                     self.lastSelectedProjectPath = projectPath
                                     selectedProjectPaths.insert(projectPath)
                                 } else if NSEvent.modifierFlags.contains(.shift) {
-                                    if let lastIndex = recentProjectPaths.firstIndex(of: lastSelectedProjectPath), let currentIndex = recentProjectPaths.firstIndex(of: projectPath) {
+                                    if let lastIndex = recentProjectPaths.firstIndex(of: lastSelectedProjectPath),
+                                       let currentIndex = recentProjectPaths.firstIndex(of: projectPath) {
                                         if currentIndex > lastIndex {
                                             let projectPaths = Array(recentProjectPaths[lastIndex..<currentIndex+1])
                                             selectedProjectPaths = selectedProjectPaths.union(projectPaths)
@@ -159,7 +160,7 @@ public struct RecentProjectsView: View {
                             })
                             .contextMenu {
                                 contextMenuShowInFinder(projectPath: projectPath)
-                                
+
                                 if !selectedProjectPaths.contains(projectPath) {
                                     contextMenuCopy(path: projectPath)
                                         .keyboardShortcut(mgr.named(with: "copy").keyboardShortcut)
@@ -183,7 +184,6 @@ public struct RecentProjectsView: View {
                             }
                             .buttonStyle(.borderless)
                             .keyboardShortcut(mgr.named(with: "copy").keyboardShortcut)
-                        
 
                         Button("") {
                             openProject(projectPath: projectPath)
