@@ -1,0 +1,4 @@
+---
+release_only: false
+---
+{%include appcast.inc %}
