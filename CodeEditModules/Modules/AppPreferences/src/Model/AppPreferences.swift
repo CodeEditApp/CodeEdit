@@ -43,6 +43,9 @@ public struct AppPreferences: Codable {
     /// The global settings for keybindings
     public var keybindings: KeybindingsPreferences = .init()
 
+    /// The global settings for navigation
+    public var navigation: NavigationPreferences = .init()
+
     /// Default initializer
     public init() {}
 
@@ -57,5 +60,6 @@ public struct AppPreferences: Codable {
         self.sourceControl = try container.decodeIfPresent(SourceControlPreferences.self,
                                                            forKey: .sourceControl) ?? .init()
         self.keybindings = try container.decodeIfPresent(KeybindingsPreferences.self, forKey: .keybindings) ?? .init()
+        self.navigation = try container.decodeIfPresent(NavigationPreferences.self, forKey: .navigation) ?? .init()
     }
 }
