@@ -12,8 +12,6 @@ import Acknowledgements
 public struct AboutView: View {
     @Environment(\.openURL) private var openURL
 
-    @State private var hoveringOnCommitHash = false
-
     public init() {}
 
     private var appVersion: String {
@@ -22,17 +20,6 @@ public struct AboutView: View {
 
     private var appBuild: String {
         Bundle.buildString ?? "No Build"
-    }
-
-    private var commitHash: String {
-        Bundle.commitHash ?? "No Hash"
-    }
-
-    private var shortCommitHash: String {
-        if commitHash.count > 7 {
-            return String(commitHash[...commitHash.index(commitHash.startIndex, offsetBy: 7)])
-        }
-        return commitHash
     }
 
     public var body: some View {
@@ -64,18 +51,6 @@ public struct AboutView: View {
                 .textSelection(.enabled)
                 .foregroundColor(.secondary)
                 .font(.system(size: 13, weight: .light))
-            HStack(spacing: 2.0) {
-                Text("Commit:")
-                Text(self.hoveringOnCommitHash ?
-                     commitHash : shortCommitHash)
-                .textSelection(.enabled)
-                .onHover { hovering in
-                    self.hoveringOnCommitHash = hovering
-                }
-                .animation(.easeInOut, value: self.hoveringOnCommitHash)
-            }
-            .foregroundColor(.secondary)
-            .font(.system(size: 10, weight: .light))
         }
     }
 
