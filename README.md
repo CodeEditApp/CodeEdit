@@ -134,6 +134,9 @@ Be part of the next revolution in code editing by contributing to the project. T
       <td align="center"><a href="https://github.com/sk409"><img src="https://avatars.githubusercontent.com/u/25968819?v=4?s=100" width="100px;" alt="Shoto Kobayashi"/><br /><sub><b>Shoto Kobayashi</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3Ask409" title="Bug reports">🐛</a> <a href="https://github.com/CodeEditApp/CodeEdit/commits?author=sk409" title="Code">💻</a></td>
       <td align="center"><a href="http://www.linkedin.com/in/aaryankotharii"><img src="https://avatars.githubusercontent.com/u/53724307?v=4?s=100" width="100px;" alt="Aaryan Kothari"/><br /><sub><b>Aaryan Kothari</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3Aaaryankotharii" title="Bug reports">🐛</a></td>
     </tr>
+    <tr>
+      <td align="center"><a href="http://kyleye.top/"><img src="https://avatars.githubusercontent.com/u/43724855?v=4?s=100" width="100px;" alt="Kyle"/><br /><sub><b>Kyle</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=Kyle-Ye" title="Code">💻</a></td>
+    </tr>
   </tbody>
   <tfoot>
     
