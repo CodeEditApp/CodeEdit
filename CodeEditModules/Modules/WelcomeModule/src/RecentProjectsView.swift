@@ -11,7 +11,8 @@ import CodeEditUI
 
 public struct RecentProjectsView: View {
     @State private var recentProjectPaths: [String]
-    @State private var selectedProjectPath: String? = ""
+    @State private var selectedProjectPaths = Set<String>()
+    @State private var lastSelectedProjectPath = String()
 
     var mgr = KeybindingManager.shared
     private let openDocument: (URL?, @escaping () -> Void) -> Void
@@ -38,11 +39,19 @@ public struct RecentProjectsView: View {
     func contextMenuShowInFinder(projectPath: String) -> some View {
         Group {
             Button(NSLocalizedString("Show in Finder", bundle: .module, comment: "")) {
-                guard let url = URL(string: "file://\(projectPath)") else {
-                    return
+                if selectedProjectPaths.contains(projectPath) {
+                    self.selectedProjectPaths.forEach { projectPath in
+                        guard let url = URL(string: "file://\(projectPath)") else {
+                            return
+                        }
+                        NSWorkspace.shared.activateFileViewerSelecting([url])
+                    }
+                } else {
+                    guard let url = URL(string: "file://\(projectPath)") else {
+                        return
+                    }
+                    NSWorkspace.shared.activateFileViewerSelecting([url])
                 }
-
-                NSWorkspace.shared.activateFileViewerSelecting([url])
             }
         }
     }
@@ -60,7 +69,13 @@ public struct RecentProjectsView: View {
     func contextMenuDelete(projectPath: String) -> some View {
         Group {
             Button(NSLocalizedString("Remove from Recent Projects", bundle: .module, comment: "")) {
-                deleteFromRecent(item: projectPath)
+                if selectedProjectPaths.contains(projectPath) {
+                    self.selectedProjectPaths.forEach { projectPath in
+                        deleteFromRecent(item: projectPath)
+                    }
+                } else {
+                    deleteFromRecent(item: projectPath)
+                }
             }
         }
     }
@@ -74,6 +89,28 @@ public struct RecentProjectsView: View {
             self.recentProjectPaths,
             forKey: "recentProjectPaths"
         )
+    }
+
+    func deleteProject(projectPath: String) {
+        self.selectedProjectPaths.forEach { projectPath in
+            deleteFromRecent(item: projectPath)
+        }
+    }
+
+    func openProject(projectPath: String) {
+        if selectedProjectPaths.contains(projectPath) {
+            selectedProjectPaths.forEach { projectPath in
+                openDocument(
+                    URL(fileURLWithPath: projectPath),
+                    dismissWindow
+                )
+            }
+        } else {
+            openDocument(
+                URL(fileURLWithPath: projectPath),
+                dismissWindow
+            )
+        }
     }
 
     /// Update recent projects, and remove ones that no longer exist
@@ -94,32 +131,48 @@ public struct RecentProjectsView: View {
     public var body: some View {
         VStack(alignment: !recentProjectPaths.isEmpty ? .leading : .center, spacing: 10) {
             if !recentProjectPaths.isEmpty {
-                List(recentProjectPaths, id: \.self, selection: $selectedProjectPath) { projectPath in
+                List(recentProjectPaths, id: \.self, selection: $selectedProjectPaths) { projectPath in
                     ZStack {
                         RecentProjectItem(projectPath: projectPath)
                             .frame(width: 300)
-                            .gesture(TapGesture(count: 2).onEnded {
-                                openDocument(
-                                    URL(fileURLWithPath: projectPath),
-                                    dismissWindow
-                                )
+                            .highPriorityGesture(TapGesture(count: 2).onEnded {
+                                openProject(projectPath: projectPath)
                             })
-                            .simultaneousGesture(TapGesture().onEnded {
-                                selectedProjectPath = projectPath
+                            .gesture(TapGesture().onEnded {
+                                if NSEvent.modifierFlags.contains(.command) {
+                                    self.lastSelectedProjectPath = projectPath
+                                    selectedProjectPaths.insert(projectPath)
+                                } else if NSEvent.modifierFlags.contains(.shift) {
+                                    if let lastIndex = recentProjectPaths.firstIndex(of: lastSelectedProjectPath),
+                                       let currentIndex = recentProjectPaths.firstIndex(of: projectPath) {
+                                        if currentIndex > lastIndex {
+                                            let projectPaths = Array(recentProjectPaths[lastIndex..<currentIndex+1])
+                                            selectedProjectPaths = selectedProjectPaths.union(projectPaths)
+                                        } else {
+                                            let projectPaths = Array(recentProjectPaths[currentIndex..<lastIndex+1])
+                                            selectedProjectPaths = selectedProjectPaths.union(projectPaths)
+                                        }
+                                    }
+                                } else {
+                                    self.lastSelectedProjectPath = projectPath
+                                    selectedProjectPaths = [projectPath]
+                                }
                             })
                             .contextMenu {
                                 contextMenuShowInFinder(projectPath: projectPath)
-                                contextMenuCopy(path: projectPath)
-                                    .keyboardShortcut(mgr.named(with: "copy").keyboardShortcut)
+
+                                if !selectedProjectPaths.contains(projectPath) {
+                                    contextMenuCopy(path: projectPath)
+                                        .keyboardShortcut(mgr.named(with: "copy").keyboardShortcut)
+                                }
 
                                 Divider()
                                 contextMenuDelete(projectPath: projectPath)
                                     .keyboardShortcut(.init(.delete))
                             }
 
-                        if selectedProjectPath == projectPath {
                             Button("") {
-                                deleteFromRecent(item: projectPath)
+                                deleteProject(projectPath: projectPath)
                             }
                             .buttonStyle(.borderless)
                             .keyboardShortcut(.init(.delete))
@@ -131,15 +184,9 @@ public struct RecentProjectsView: View {
                             }
                             .buttonStyle(.borderless)
                             .keyboardShortcut(mgr.named(with: "copy").keyboardShortcut)
-                        }
 
                         Button("") {
-                            if let selectedProjectPath = selectedProjectPath {
-                                openDocument(
-                                    URL(fileURLWithPath: selectedProjectPath),
-                                    dismissWindow
-                                )
-                            }
+                            openProject(projectPath: projectPath)
                         }
                         .buttonStyle(.borderless)
                         .keyboardShortcut(.defaultAction)
