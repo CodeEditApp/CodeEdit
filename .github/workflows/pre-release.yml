@@ -33,7 +33,7 @@ jobs:
           security set-keychain-settings -lut "$KEYCHAIN_TIMEOUT" "$KEYCHAIN_DB"
           security unlock-keychain -p "$KEYCHAIN_PWD" "$KEYCHAIN_DB"
           echo -n "$DEV_CERT_B64" | base64 --decode --output "$DEV_CERT_P12"
-          security import "$DEV_CERT_P12" -P "$KEYCHAIN_PWD" -A -t cert -f pkcs12 -k "$KEYCHAIN_DB"
+          security import "$DEV_CERT_P12" -P "$DEV_CERT_PWD" -A -t cert -f pkcs12 -k "$KEYCHAIN_DB"
           security list-keychain -d user -s "$KEYCHAIN_DB"
           echo -n "$PROVISION_PROFILE_B64" | base64 --decode --output "$PROVISION_PROFILE_MP"
           mkdir -p "~/Library/MobileDevice/Provisioning Profiles"
