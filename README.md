@@ -66,7 +66,7 @@ It might sound crazy, but it is our hope that at some point Apple adopts this pr
 
 ## Community
 
-Join our growing community on [Discord](https://discord.gg/vChUXVf9Em) where we discuss and collaborate on all things CodeEdit. Don't be shy, jump right in and be part of the discussion!
+Join our growing community on [Discord](https://discord.gg/vChUXVf9Em) and [GitHub Discussions](https://github.com/orgs/CodeEditApp/discussions) where we discuss and collaborate on all things CodeEdit. Don't be shy, jump right in and be part of the discussion!
 
 ## Contributing
 
