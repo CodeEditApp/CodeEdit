@@ -58,7 +58,9 @@ jobs:
           APPLE_ID_PWD: ${{ secrets.APPLE_ID_PWD }}
           APPLE_TEAM_ID:  ${{ secrets.APPLE_TEAM_ID }}
         run: |
-          xcrun notarytool submit --verbose --apple-id "$APPLE_ID" --password "$APPLE_ID_PWD" --team-id "$APPLE_TEAM_ID" --wait --timeout 2h "$RUNNER_TEMP/CodeEdit-$REV.dmg"
+          xcrun notarytool submit --verbose --apple-id "$APPLE_ID" --password "$APPLE_ID_PWD" --team-id "$APPLE_TEAM_ID" --wait --timeout 2h "$RUNNER_TEMP/CodeEdit-$REV.dmg" --output-format plist > "NotarizationResponse.plist"
+          echo "**RESPONSE**"
+          cat NotarizationResponse.plist
           xcrun stapler staple "$RUNNER_TEMP/CodeEdit-$REV.dmg"
       - name: Update Sparkle appcast
         env:
