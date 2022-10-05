@@ -20,7 +20,7 @@
 
 CodeEdit is a code editor built by the community, for the community, written entirely and unapologetically for macOS. Features include syntax highlighting, code completion, project find and replace, snippets, terminal, task running, debugging, git integration, code review, extensions, and more. 
 
-<img width="1012" alt="github-banner" src="https://user-images.githubusercontent.com/806104/163101427-4787970f-c78b-4a98-a29b-1ef26b62fd40.png">
+<img width="1012" alt="github-banner" src="https://user-images.githubusercontent.com/806104/194004176-3143d19f-1ad9-449c-bd41-8c4f9998f44b.png">
 
 [![All Contributors](https://img.shields.io/badge/all_contributors-32-orange.svg?style=flat-square)](#contributors-)
 ![GitHub branch checks state](https://img.shields.io/github/checks-status/CodeEditApp/CodeEdit/main?style=flat-square)
@@ -56,7 +56,7 @@ This raised the question, what if such an editor existed? We think developers de
 
 We think there is room to streamline the developer experience. To gain maximum adoption, CodeEdit should be open source, free to use, and supported by the community. 
 
-![github-equation](https://user-images.githubusercontent.com/806104/163101287-feba5466-dde0-450c-a9ac-8f9dd3d00e52.png)
+![github-equation](https://user-images.githubusercontent.com/806104/194004377-4b7e12a1-e3b1-409f-ba63-d7c6d2c53a1d.png)
 
 We'd like to keep our application light as TextEdit, but provide an experience similar to Xcode. In other words, we'd like to offer developers the power of a full IDE while remaining lightweight.
 
