@@ -42,6 +42,10 @@ CodeEdit is a code editor built by the community, for the community, written ent
 - [Backers](#backers)
 - [License](#license)
 
+## Why CodeEdit?
+
+We think that the looks and feel of TextEdit is really nice and to combine it with Xcode will be an awesome mix. It feels lightweight and powerful at the same time.
+
 ## Motivation
 
 Developers that use a Mac should be able to use an editor that feels at home on the Mac. Comparable editors are built on Electron. This is a huge limitation because it cannot utilize system resources to their fullest potential.
