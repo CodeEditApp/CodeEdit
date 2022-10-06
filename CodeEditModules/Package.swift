@@ -18,6 +18,10 @@ let package = Package(
             targets: ["CodeFile"]
         ),
         .library(
+            name: "Commands",
+            targets: ["Commands"]
+        ),
+        .library(
             name: "WelcomeModule",
             targets: ["WelcomeModule"]
         ),
@@ -163,6 +167,14 @@ let package = Package(
                 "CodeFile",
             ],
             path: "Modules/CodeFile/Tests"
+        ),
+        .target(
+            name: "Commands",
+            dependencies: [
+                "Keybindings",
+                "CodeEditUI",
+            ],
+            path: "Modules/Commands/src"
         ),
         .target(
             name: "WelcomeModule",
