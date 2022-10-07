@@ -94,7 +94,6 @@
 		9C3E1A07284E8E020042BEC0 /* WelcomeModuleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C3E1A06284E8E020042BEC0 /* WelcomeModuleExtensions.swift */; };
 		B658FB3427DA9E1000EA4DBD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3327DA9E1000EA4DBD /* Assets.xcassets */; };
 		B658FB3727DA9E1000EA4DBD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3627DA9E1000EA4DBD /* Preview Assets.xcassets */; };
-		B69542E128D5788B00EAD898 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = B69542E028D5788B00EAD898 /* Sparkle */; };
 		B6EE989027E8879A00CDD8AB /* InspectorSidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EE988F27E8879A00CDD8AB /* InspectorSidebar.swift */; };
 		B6EE989227E887C600CDD8AB /* InspectorSidebarToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EE989127E887C600CDD8AB /* InspectorSidebarToolbar.swift */; };
 		D7012EE827E757850001E1EF /* FindNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7012EE727E757850001E1EF /* FindNavigator.swift */; };
@@ -263,7 +262,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B69542E128D5788B00EAD898 /* Sparkle in Frameworks */,
 				0483E34D27FCC46600354AC0 /* ExtensionsStore in Frameworks */,
 				64B64EDE27F7B79400C400F1 /* About in Frameworks */,
 				043BCF07281DA2F5000AC47C /* TabBar in Frameworks */,
@@ -669,7 +667,6 @@
 				043BCF06281DA2F5000AC47C /* TabBar */,
 				FA6BA6F0282ACAD600019309 /* Keybindings */,
 				20AFDC7E28206701001A4FC7 /* Git */,
-				B69542E028D5788B00EAD898 /* Sparkle */,
 				5C7448AB28EF2E2E00F73D21 /* Commands */,
 			);
 			productName = CodeEdit;
@@ -750,7 +747,6 @@
 			packageReferences = (
 				04C3256728034F3D00C8DA2D /* XCRemoteSwiftPackageReference "CodeEditKit" */,
 				2816F592280CF50500DD548B /* XCRemoteSwiftPackageReference "CodeEditSymbols" */,
-				B69542DF28D5788B00EAD898 /* XCRemoteSwiftPackageReference "Sparkle" */,
 			);
 			productRefGroup = B658FB2D27DA9E0F00EA4DBD /* Products */;
 			projectDirPath = "";
@@ -1419,14 +1415,6 @@
 				kind = branch;
 			};
 		};
-		B69542DF28D5788B00EAD898 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/sparkle-project/Sparkle";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1503,11 +1491,6 @@
 		64B64EDD27F7B79400C400F1 /* About */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = About;
-		};
-		B69542E028D5788B00EAD898 /* Sparkle */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = B69542DF28D5788B00EAD898 /* XCRemoteSwiftPackageReference "Sparkle" */;
-			productName = Sparkle;
 		};
 		D70F5E2B27E4E8CF004EE4B9 /* WelcomeModule */ = {
 			isa = XCSwiftPackageProductDependency;
