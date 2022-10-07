@@ -92,6 +92,11 @@ let package = Package(
     ],
     dependencies: [
         .package(
+            name: "Sparkle",
+            url: "https://github.com/sparkle-project/Sparkle.git",
+            from: "2.0.0"
+        ),
+        .package(
             name: "Highlightr",
             url: "https://github.com/lukepistrol/Highlightr.git",
             branch: "main"
@@ -249,6 +254,7 @@ let package = Package(
                 "CodeEditUtils",
                 "CodeEditSymbols",
                 "CodeEditTextView",
+                "Sparkle"
             ],
             path: "Modules/AppPreferences/src",
             resources: [.copy("Resources")]

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CodeEditUI
+import Sparkle
 
 /// A view that implements the `General` preference section
 public struct GeneralPreferencesView: View {
