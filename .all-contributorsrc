@@ -407,6 +407,16 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "NakaokaRei",
+      "name": "Nakaoka Rei",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39183069?v=4",
+      "profile": "https://github.com/NakaokaRei",
+      "contributions": [
+        "code",
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
