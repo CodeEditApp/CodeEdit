@@ -15,6 +15,7 @@ import Search
 import QuickOpen
 import CodeEditKit
 import CodeEditUtils
+import Commands
 import ExtensionsStore
 import StatusBar
 import TabBar

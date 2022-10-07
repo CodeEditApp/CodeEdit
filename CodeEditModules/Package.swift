@@ -18,6 +18,10 @@ let package = Package(
             targets: ["CodeFile"]
         ),
         .library(
+            name: "Commands",
+            targets: ["Commands"]
+        ),
+        .library(
             name: "WelcomeModule",
             targets: ["WelcomeModule"]
         ),
@@ -87,6 +91,11 @@ let package = Package(
         ),
     ],
     dependencies: [
+        .package(
+            name: "Sparkle",
+            url: "https://github.com/sparkle-project/Sparkle.git",
+            from: "2.0.0"
+        ),
         .package(
             name: "Highlightr",
             url: "https://github.com/lukepistrol/Highlightr.git",
@@ -165,6 +174,14 @@ let package = Package(
             path: "Modules/CodeFile/Tests"
         ),
         .target(
+            name: "Commands",
+            dependencies: [
+                "Keybindings",
+                "CodeEditUI",
+            ],
+            path: "Modules/Commands/src"
+        ),
+        .target(
             name: "WelcomeModule",
             dependencies: [
                 "WorkspaceClient",
@@ -237,6 +254,7 @@ let package = Package(
                 "CodeEditUtils",
                 "CodeEditSymbols",
                 "CodeEditTextView",
+                "Sparkle"
             ],
             path: "Modules/AppPreferences/src",
             resources: [.copy("Resources")]
