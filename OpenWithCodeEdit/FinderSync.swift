@@ -13,8 +13,11 @@
 
 import Cocoa
 import FinderSync
+import os.log
 
 class CEOpenWith: FIFinderSync {
+    let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "FinderSync")
+
     override init() {
         super.init()
         // Add finder sync
@@ -68,7 +71,7 @@ class CEOpenWith: FIFinderSync {
     // MARK: - Menu and toolbar item support
     override func menu(for menuKind: FIMenuKind) -> NSMenu {
         guard let defaults = UserDefaults.init(suiteName: "austincondiff.CodeEdit.shared") else {
-            NSLog("Unable to load defaults")
+            logger.error("Unable to load defaults")
             return NSMenu(title: "")
         }
 
@@ -82,10 +85,11 @@ class CEOpenWith: FIFinderSync {
         )
         menuItem.image = NSImage.init(named: "icon")
 
-        if defaults.bool(forKey: "enableOpenInCE") {
+        let enableOpenInCE = defaults.bool(forKey: "enableOpenInCE")
+        logger.info("Enable Open In CodeEdit value is \(enableOpenInCE, privacy: .public)")
+        if enableOpenInCE {
             menu.addItem(menuItem)
         }
-
         return menu
     }
 }
