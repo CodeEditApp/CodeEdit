@@ -418,6 +418,15 @@
         "code",
         "bug"
       ]
+    },
+    {
+      "login": "alexdeem",
+      "name": "Alex Deem",
+      "avatar_url": "https://avatars.githubusercontent.com/u/404584?v=4",
+      "profile": "https://github.com/alexdeem",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,
@@ -425,5 +434,6 @@
   "projectOwner": "CodeEditApp",
   "repoType": "github",
   "repoHost": "https://github.com",
-  "skipCi": true
+  "skipCi": true,
+  "commitConvention": "angular"
 }

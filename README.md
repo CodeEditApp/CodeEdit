@@ -137,6 +137,7 @@ Be part of the next revolution in code editing by contributing to the project. T
     <tr>
       <td align="center"><a href="http://kyleye.top/"><img src="https://avatars.githubusercontent.com/u/43724855?v=4?s=100" width="100px;" alt="Kyle"/><br /><sub><b>Kyle</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=Kyle-Ye" title="Code">💻</a></td>
       <td align="center"><a href="https://github.com/NakaokaRei"><img src="https://avatars.githubusercontent.com/u/39183069?v=4?s=100" width="100px;" alt="Nakaoka Rei"/><br /><sub><b>Nakaoka Rei</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=NakaokaRei" title="Code">💻</a> <a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3ANakaokaRei" title="Bug reports">🐛</a></td>
+      <td align="center"><a href="https://github.com/alexdeem"><img src="https://avatars.githubusercontent.com/u/404584?v=4?s=100" width="100px;" alt="Alex Deem"/><br /><sub><b>Alex Deem</b></sub></a><br /><a href="#maintenance-alexdeem" title="Maintenance">🚧</a></td>
     </tr>
   </tbody>
 </table>
