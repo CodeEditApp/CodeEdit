@@ -32,7 +32,7 @@ struct WorkspaceCodeFileView: View {
                 return file.tabID == workspace.selectionState.selectedId
             }) {
                 if let fileItem = workspace.selectionState.openedCodeFiles[item] {
-                    if fileItem.typeOfFile == .text {
+                    if fileItem.typeOfFile == .text || fileItem.typeOfFile == .data {
                         codeFileView(fileItem, for: item)
                     } else {
                         otherFileView(fileItem, for: item)
