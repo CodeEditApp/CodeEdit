@@ -15,6 +15,7 @@ import Search
 import QuickOpen
 import CodeEditKit
 import CodeEditUtils
+import Commands
 import ExtensionsStore
 import StatusBar
 import TabBar
@@ -95,11 +96,12 @@ import TabBar
             return
         }
         selectionState.openFileItems.append(item)
-        let pathExtention = item.url.pathExtension
+
+        let contentType = try item.url.resourceValues(forKeys: [.contentTypeKey]).contentType
         let codeFile = try CodeFileDocument(
             for: item.url,
             withContentsOf: item.url,
-            ofType: pathExtention
+            ofType: contentType?.identifier ?? ""
         )
         selectionState.openedCodeFiles[item] = codeFile
         CodeEditDocumentController.shared.addDocument(codeFile)

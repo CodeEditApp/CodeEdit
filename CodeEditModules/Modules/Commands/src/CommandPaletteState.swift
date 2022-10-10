@@ -17,13 +17,15 @@ public final class CommandPaletteState: ObservableObject {
     @Published var isShowingCommandsList: Bool = true
     @Published var filteredCommands: [Command] = []
 
-    func reset() {
+    public init() {}
+
+    public func reset() {
         commandQuery = ""
         selected = nil
         filteredCommands = []
     }
 
-    func fetchMatchingCommands(val: String) {
+    public func fetchMatchingCommands(val: String) {
         if val == "" {
             self.filteredCommands = []
             return

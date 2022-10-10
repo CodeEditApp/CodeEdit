@@ -20,7 +20,7 @@
 
 CodeEdit is a code editor built by the community, for the community, written entirely and unapologetically for macOS. Features include syntax highlighting, code completion, project find and replace, snippets, terminal, task running, debugging, git integration, code review, extensions, and more. 
 
-<img width="1012" alt="github-banner" src="https://user-images.githubusercontent.com/806104/163101427-4787970f-c78b-4a98-a29b-1ef26b62fd40.png">
+<img width="1012" alt="github-banner" src="https://user-images.githubusercontent.com/806104/194004176-3143d19f-1ad9-449c-bd41-8c4f9998f44b.png">
 
 [![All Contributors](https://img.shields.io/badge/all_contributors-32-orange.svg?style=flat-square)](#contributors-)
 ![GitHub branch checks state](https://img.shields.io/github/checks-status/CodeEditApp/CodeEdit/main?style=flat-square)
@@ -56,7 +56,7 @@ This raised the question, what if such an editor existed? We think developers de
 
 We think there is room to streamline the developer experience. To gain maximum adoption, CodeEdit should be open source, free to use, and supported by the community. 
 
-![github-equation](https://user-images.githubusercontent.com/806104/163101287-feba5466-dde0-450c-a9ac-8f9dd3d00e52.png)
+![github-equation](https://user-images.githubusercontent.com/806104/194004377-4b7e12a1-e3b1-409f-ba63-d7c6d2c53a1d.png)
 
 We'd like to keep our application light as TextEdit, but provide an experience similar to Xcode. In other words, we'd like to offer developers the power of a full IDE while remaining lightweight.
 
@@ -66,7 +66,7 @@ It might sound crazy, but it is our hope that at some point Apple adopts this pr
 
 ## Community
 
-Join our growing community on [Discord](https://discord.gg/vChUXVf9Em) where we discuss and collaborate on all things CodeEdit. Don't be shy, jump right in and be part of the discussion!
+Join our growing community on [Discord](https://discord.gg/vChUXVf9Em) and [GitHub Discussions](https://github.com/orgs/CodeEditApp/discussions) where we discuss and collaborate on all things CodeEdit. Don't be shy, jump right in and be part of the discussion!
 
 ## Contributing
 
@@ -123,7 +123,7 @@ Be part of the next revolution in code editing by contributing to the project. T
       <td align="center"><a href="http://gantoreno.com"><img src="https://avatars.githubusercontent.com/u/43397475?v=4?s=100" width="100px;" alt="Gabriel Moreno"/><br /><sub><b>Gabriel Moreno</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3Agantoreno" title="Bug reports">🐛</a></td>
       <td align="center"><a href="https://github.com/Prince213"><img src="https://avatars.githubusercontent.com/u/25235514?v=4?s=100" width="100px;" alt="Sizhe Zhao"/><br /><sub><b>Sizhe Zhao</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3APrince213" title="Bug reports">🐛</a></td>
       <td align="center"><a href="https://github.com/matthijseikelenboom"><img src="https://avatars.githubusercontent.com/u/1364843?v=4?s=100" width="100px;" alt="Matthijs Eikelenboom"/><br /><sub><b>Matthijs Eikelenboom</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=matthijseikelenboom" title="Code">💻</a> <a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3Amatthijseikelenboom" title="Bug reports">🐛</a></td>
-      <td align="center"><a href="https://github.com/Muhammed9991"><img src="https://avatars.githubusercontent.com/u/80204376?v=4?s=100" width="100px;" alt="Muhammed Mahmood"/><br /><sub><b>Muhammed Mahmood</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=Muhammed9991" title="Code">💻</a></td>
+      <td align="center"><a href="https://github.com/Muhammed9991"><img src="https://avatars.githubusercontent.com/u/80204376?v=4?s=100" width="100px;" alt="Muhammed Mahmood"/><br /><sub><b>Muhammed Mahmood</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=Muhammed9991" title="Code">💻</a> <a href="#maintenance-Muhammed9991" title="Maintenance">🚧</a></td>
     </tr>
     <tr>
       <td align="center"><a href="https://github.com/muescha"><img src="https://avatars.githubusercontent.com/u/184316?v=4?s=100" width="100px;" alt="Muescha"/><br /><sub><b>Muescha</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=muescha" title="Code">💻</a></td>
@@ -136,11 +136,11 @@ Be part of the next revolution in code editing by contributing to the project. T
     </tr>
     <tr>
       <td align="center"><a href="http://kyleye.top/"><img src="https://avatars.githubusercontent.com/u/43724855?v=4?s=100" width="100px;" alt="Kyle"/><br /><sub><b>Kyle</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=Kyle-Ye" title="Code">💻</a></td>
+      <td align="center"><a href="https://github.com/NakaokaRei"><img src="https://avatars.githubusercontent.com/u/39183069?v=4?s=100" width="100px;" alt="Nakaoka Rei"/><br /><sub><b>Nakaoka Rei</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=NakaokaRei" title="Code">💻</a> <a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3ANakaokaRei" title="Bug reports">🐛</a></td>
+      <td align="center"><a href="https://github.com/alexdeem"><img src="https://avatars.githubusercontent.com/u/404584?v=4?s=100" width="100px;" alt="Alex Deem"/><br /><sub><b>Alex Deem</b></sub></a><br /><a href="#maintenance-alexdeem" title="Maintenance">🚧</a></td>
+      <td align="center"><a href="https://github.com/denizak"><img src="https://avatars.githubusercontent.com/u/1758456?v=4?s=100" width="100px;" alt="deni zakya"/><br /><sub><b>deni zakya</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3Adenizak" title="Bug reports">🐛</a></td>
     </tr>
   </tbody>
-  <tfoot>
-    
-  </tfoot>
 </table>
 
 <!-- markdownlint-restore -->
