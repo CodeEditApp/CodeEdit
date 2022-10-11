@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import TerminalEmulator
+import Terminal
 import CodeEditUI
 
 internal struct StatusBarDrawer: View {
