@@ -19,12 +19,12 @@ struct NavigatorSidebarToolbarTop: View {
         SidebarDockIcon(imageName: "folder", title: "Project", id: 0),
         SidebarDockIcon(imageName: "vault", title: "Version Control", id: 1),
         SidebarDockIcon(imageName: "magnifyingglass", title: "Search", id: 2),
-        SidebarDockIcon(imageName: "shippingbox", title: "...", id: 3),
-        SidebarDockIcon(imageName: "play", title: "...", id: 4),
-        SidebarDockIcon(imageName: "exclamationmark.triangle", title: "...", id: 5),
-        SidebarDockIcon(imageName: "curlybraces.square", title: "...", id: 6),
-        SidebarDockIcon(imageName: "puzzlepiece.extension", title: "...", id: 7),
-        SidebarDockIcon(imageName: "square.grid.2x2", title: "...", id: 8)
+        SidebarDockIcon(imageName: "shippingbox", title: "...", id: 3, disabled: true),
+        SidebarDockIcon(imageName: "play", title: "...", id: 4, disabled: true),
+        SidebarDockIcon(imageName: "exclamationmark.triangle", title: "...", id: 5, disabled: true),
+        SidebarDockIcon(imageName: "curlybraces.square", title: "...", id: 6, disabled: true),
+        SidebarDockIcon(imageName: "puzzlepiece.extension", title: "...", id: 7, disabled: true),
+        SidebarDockIcon(imageName: "square.grid.2x2", title: "...", id: 8, disabled: true)
     ]
     @State private var hasChangedLocation: Bool = false
     @State private var draggingItem: SidebarDockIcon?
@@ -40,13 +40,14 @@ struct NavigatorSidebarToolbarTop: View {
                 makeIcon(named: icon.imageName, title: icon.title, id: icon.id)
                     .opacity(draggingItem?.imageName == icon.imageName &&
                              hasChangedLocation &&
-                             drugItemLocation != nil ? 0.0: 1.0)
+                             drugItemLocation != nil ? 0.0: icon.disabled ? 0.3 : 1.0)
                     .onDrop(of: [.utf8PlainText],
                             delegate: NavigatorSidebarDockIconDelegate(item: icon,
                                                                         current: $draggingItem,
                                                                         icons: $icons,
                                                                         hasChangedLocation: $hasChangedLocation,
                                                                         drugItemLocation: $drugItemLocation))
+                    .disabled(icon.disabled)
             }
         }
         .frame(height: 29, alignment: .center)
@@ -107,6 +108,7 @@ struct NavigatorSidebarToolbarTop: View {
         let imageName: String
         let title: String
         var id: Int
+        var disabled: Bool = false
     }
 
     private struct NavigatorSidebarDockIconDelegate: DropDelegate {
