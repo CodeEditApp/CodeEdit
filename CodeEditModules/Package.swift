@@ -30,8 +30,8 @@ let package = Package(
             targets: ["StatusBar"]
         ),
         .library(
-            name: "TerminalEmulator",
-            targets: ["TerminalEmulator"]
+            name: "Terminal",
+            targets: ["Terminal"]
         ),
         .library(
             name: "Search",
@@ -209,7 +209,7 @@ let package = Package(
         .target(
             name: "StatusBar",
             dependencies: [
-                "TerminalEmulator",
+                "Terminal",
                 "CodeFile",
                 "CodeEditUI",
                 "CodeEditSymbols",
@@ -226,12 +226,12 @@ let package = Package(
             exclude: ["__Snapshots__"]
         ),
         .target(
-            name: "TerminalEmulator",
+            name: "Terminal",
             dependencies: [
                 "SwiftTerm",
                 "AppPreferences"
             ],
-            path: "Modules/TerminalEmulator/src"
+            path: "Modules/Terminal/src"
         ),
         .target(
             name: "Search",

@@ -62,7 +62,6 @@
 		285FEC7027FE4B9800E57D53 /* OutlineTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285FEC6F27FE4B9800E57D53 /* OutlineTableViewCell.swift */; };
 		286471AB27ED51FD0039369D /* ProjectNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286471AA27ED51FD0039369D /* ProjectNavigator.swift */; };
 		2864BAAC28117B3F002DBD1A /* ShellClient in Frameworks */ = {isa = PBXBuildFile; productRef = 2864BAAB28117B3F002DBD1A /* ShellClient */; };
-		2864BAAE28117D7C002DBD1A /* TerminalEmulator in Frameworks */ = {isa = PBXBuildFile; productRef = 2864BAAD28117D7C002DBD1A /* TerminalEmulator */; };
 		287776E927E34BC700D46668 /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287776E827E34BC700D46668 /* TabBar.swift */; };
 		287776EF27E3515300D46668 /* TabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287776EE27E3515300D46668 /* TabBarItem.swift */; };
 		28A51001281673530087B0CC /* codeedit-xcode-dark.json in Resources */ = {isa = PBXBuildFile; fileRef = 28A50FFF281673530087B0CC /* codeedit-xcode-dark.json */; };
@@ -92,6 +91,7 @@
 		6CDA84AB284C0E4A00C1CC3A /* TabBarItemButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CDA84AA284C0E4A00C1CC3A /* TabBarItemButtonStyle.swift */; };
 		6CDA84AD284C1BA000C1CC3A /* TabBarContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CDA84AC284C1BA000C1CC3A /* TabBarContextMenu.swift */; };
 		9C3E1A07284E8E020042BEC0 /* WelcomeModuleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C3E1A06284E8E020042BEC0 /* WelcomeModuleExtensions.swift */; };
+		B635976628F4C85700E9FA28 /* Terminal in Frameworks */ = {isa = PBXBuildFile; productRef = B635976528F4C85700E9FA28 /* Terminal */; };
 		B658FB3427DA9E1000EA4DBD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3327DA9E1000EA4DBD /* Assets.xcassets */; };
 		B658FB3727DA9E1000EA4DBD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3627DA9E1000EA4DBD /* Preview Assets.xcassets */; };
 		B6EE989027E8879A00CDD8AB /* InspectorSidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EE988F27E8879A00CDD8AB /* InspectorSidebar.swift */; };
@@ -268,7 +268,6 @@
 				20AFDC7F28206701001A4FC7 /* Git in Frameworks */,
 				04C3256B28034FC800C8DA2D /* CodeEditKit in Frameworks */,
 				2864BAAC28117B3F002DBD1A /* ShellClient in Frameworks */,
-				2864BAAE28117D7C002DBD1A /* TerminalEmulator in Frameworks */,
 				5C403B8F27E20F8000788241 /* WorkspaceClient in Frameworks */,
 				5CAD1B972806B57D0059A74E /* Breadcrumbs in Frameworks */,
 				5C7448AC28EF2E2E00F73D21 /* Commands in Frameworks */,
@@ -279,6 +278,7 @@
 				D7F72DEB27EA3574000C3064 /* Search in Frameworks */,
 				2816F594280CF50500DD548B /* CodeEditSymbols in Frameworks */,
 				28CE5EA027E6493D0065D29C /* StatusBar in Frameworks */,
+				B635976628F4C85700E9FA28 /* Terminal in Frameworks */,
 				2004A3832808468600FD9696 /* Feedback in Frameworks */,
 				5CF38A5E27E48E6C0096A0F7 /* CodeFile in Frameworks */,
 				FA6BA6F1282ACAD600019309 /* Keybindings in Frameworks */,
@@ -663,11 +663,11 @@
 				2040F0B0280AE96100411B6F /* CodeEditUtils */,
 				2816F593280CF50500DD548B /* CodeEditSymbols */,
 				2864BAAB28117B3F002DBD1A /* ShellClient */,
-				2864BAAD28117D7C002DBD1A /* TerminalEmulator */,
 				043BCF06281DA2F5000AC47C /* TabBar */,
 				FA6BA6F0282ACAD600019309 /* Keybindings */,
 				20AFDC7E28206701001A4FC7 /* Git */,
 				5C7448AB28EF2E2E00F73D21 /* Commands */,
+				B635976528F4C85700E9FA28 /* Terminal */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -1460,10 +1460,6 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = ShellClient;
 		};
-		2864BAAD28117D7C002DBD1A /* TerminalEmulator */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = TerminalEmulator;
-		};
 		28CE5E9F27E6493D0065D29C /* StatusBar */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = StatusBar;
@@ -1491,6 +1487,10 @@
 		64B64EDD27F7B79400C400F1 /* About */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = About;
+		};
+		B635976528F4C85700E9FA28 /* Terminal */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Terminal;
 		};
 		D70F5E2B27E4E8CF004EE4B9 /* WelcomeModule */ = {
 			isa = XCSwiftPackageProductDependency;
