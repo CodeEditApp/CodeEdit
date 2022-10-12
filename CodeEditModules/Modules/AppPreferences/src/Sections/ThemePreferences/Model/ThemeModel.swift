@@ -101,14 +101,14 @@ public final class ThemeModel: ObservableObject {
         }
     }
 
-    /// Loads all available themes from `~/.codeedit/themes/`
+    /// Loads all available themes from `~/Library/Application Support/CodeEdit/themes/`
     ///
     /// If no themes are available, it will create a default theme and save
     /// it to the location mentioned above.
     ///
-    /// When overrides are found in `~/.codeedit/.preferences.json`
+    /// When overrides are found in `~/Library/Application Support/CodeEdit/.preferences.json`
     /// they are applied to the loaded themes without altering the original
-    /// the files in `~/.codeedit/themes/`.
+    /// the files in `~/Library/Application Support/CodeEdit/themes/`.
     public func loadThemes() throws {
         // remove all themes from memory
         themes.removeAll()
@@ -217,10 +217,10 @@ public final class ThemeModel: ObservableObject {
     }
 
     /// Removes all overrides of the given theme in
-    /// `~/.codeedit/preferences.json`
+    /// `~/Library/Application Support/CodeEdit/preferences.json`
     ///
     /// After removing overrides, themes are reloaded
-    /// from `~/.codeedit/themes`. See ``loadThemes()``
+    /// from `~/Library/Application Support/CodeEdit/themes`. See ``loadThemes()``
     /// for more information.
     ///
     /// - Parameter theme: The theme to reset
@@ -233,10 +233,10 @@ public final class ThemeModel: ObservableObject {
         }
     }
 
-    /// Removes the given theme from `–/.codeedit/themes`
+    /// Removes the given theme from `–/Library/Application Support/CodeEdit/themes`
     ///
     /// After removing the theme, themes are reloaded
-    /// from `~/.codeedit/themes`. See ``loadThemes()``
+    /// from `~/Library/Application Support/CodeEdit/themes`. See ``loadThemes()``
     /// for more information.
     ///
     /// - Parameter theme: The theme to delete
@@ -259,12 +259,12 @@ public final class ThemeModel: ObservableObject {
     }
 
     /// Saves changes on theme properties to `overrides`
-    /// in `~/.codeedit/preferences.json`.
+    /// in `~/Library/Application Support/CodeEdit/preferences.json`.
     private func saveThemes() {
         let url = themesURL
         themes.forEach { theme in
             do {
-                // load the original theme from `~/.codeedit/themes/`
+                // load the original theme from `~/Library/Application Support/CodeEdit/themes/`
                 let originalUrl = url.appendingPathComponent(theme.name).appendingPathExtension("json")
                 let originalData = try Data(contentsOf: originalUrl)
                 let originalTheme = try JSONDecoder().decode(Theme.self, from: originalData)
@@ -303,9 +303,9 @@ public final class ThemeModel: ObservableObject {
     /// Default instance of the `FileManager`
     private let filemanager = FileManager.default
 
-    /// The base folder url `~/.codeedit/`
+    /// The base folder url `~/Library/Application Support/CodeEdit/`
     private var baseURL: URL {
-        filemanager.homeDirectoryForCurrentUser.appendingPathComponent(".codeedit")
+        filemanager.homeDirectoryForCurrentUser.appendingPathComponent("Library/Application Support/CodeEdit")
     }
 
     /// The URL of the `themes` folder
