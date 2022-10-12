@@ -62,6 +62,10 @@ let package = Package(
             targets: ["CodeEditUI"]
         ),
         .library(
+            name: "CodeEditExtension",
+            targets: ["CodeEditExtension"]
+        ),
+        .library(
             name: "ExtensionsStore",
             targets: ["ExtensionsStore"]
         ),
@@ -285,6 +289,10 @@ let package = Package(
         .target(
             name: "Acknowledgements",
             path: "Modules/Acknowledgements/src"
+        ),
+        .target(
+            name: "CodeEditExtension",
+            path: "Modules/CodeEditExtension/src"
         ),
         .target(
             name: "ExtensionsStore",

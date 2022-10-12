@@ -10,7 +10,7 @@ import AppPreferences
 import Preferences
 import About
 import WelcomeModule
-import ExtensionsStore
+import CodeEditExtension
 import Feedback
 import CodeEditSymbols
 
@@ -80,11 +80,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
             }
         }
 
-        do {
-            try ExtensionsManager.shared?.preload()
-        } catch let error {
-            print(error)
-        }
+        ExtensionManager.shared.preload()
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
