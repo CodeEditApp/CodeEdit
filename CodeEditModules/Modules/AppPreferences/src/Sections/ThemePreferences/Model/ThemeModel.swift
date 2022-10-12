@@ -18,6 +18,19 @@ public final class ThemeModel: ObservableObject {
 
     public static let shared: ThemeModel = .init()
 
+    /// Default instance of the `FileManager`
+    private let filemanager = FileManager.default
+
+    /// The base folder url `~/Library/Application Support/CodeEdit/`
+    private var baseURL: URL {
+        filemanager.homeDirectoryForCurrentUser.appendingPathComponent("Library/Application Support/CodeEdit")
+    }
+
+    /// The URL of the `themes` folder
+    internal var themesURL: URL {
+        baseURL.appendingPathComponent("themes", isDirectory: true)
+    }
+
     /// Selected 'light' theme
     /// Used for auto-switching theme to match macOS system appearance
     @Published
@@ -298,18 +311,5 @@ public final class ThemeModel: ObservableObject {
                 print(error)
             }
         }
-    }
-
-    /// Default instance of the `FileManager`
-    private let filemanager = FileManager.default
-
-    /// The base folder url `~/Library/Application Support/CodeEdit/`
-    private var baseURL: URL {
-        filemanager.homeDirectoryForCurrentUser.appendingPathComponent("Library/Application Support/CodeEdit")
-    }
-
-    /// The URL of the `themes` folder
-    internal var themesURL: URL {
-        baseURL.appendingPathComponent("themes", isDirectory: true)
     }
 }
