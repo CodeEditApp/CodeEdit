@@ -11,7 +11,7 @@ import SwiftUI
 ///
 /// The model structure of settings for `CodeEdit`
 ///
-/// A `JSON` representation is persisted in `~/.codeedit/preference.json`.
+/// A `JSON` representation is persisted in `~/Library/Application Support/CodeEdit/preference.json`.
 /// - Attention: Don't use `UserDefaults` for persisting user accessible settings.
 ///  If a further setting is needed, extend the struct like ``GeneralPreferences``,
 ///  ``ThemePreferences``,  or ``TerminalPreferences`` does.
