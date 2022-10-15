@@ -278,11 +278,6 @@ let package = Package(
         ),
         .target(
             name: "CodeEditUI",
-            dependencies: [
-                "CodeEditSymbols",
-                "WorkspaceClient",
-                "Git"
-            ],
             path: "Modules/CodeEditUI/src"
         ),
         .testTarget(
@@ -345,6 +340,11 @@ let package = Package(
         ),
         .target(
             name: "TabBar",
+            dependencies: [
+                "AppPreferences",
+                "CodeEditUI",
+                "WorkspaceClient"
+            ],
             path: "Modules/TabBar/src"
         ),
         .testTarget(
@@ -357,6 +357,7 @@ let package = Package(
         .target(
             name: "Git",
             dependencies: [
+                "CodeEditSymbols",
                 "ShellClient",
                 "WorkspaceClient"
             ],

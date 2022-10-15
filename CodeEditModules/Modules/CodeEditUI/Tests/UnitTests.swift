@@ -101,27 +101,4 @@ final class CodeEditUIUnitTests: XCTestCase {
         assertSnapshot(matching: hosting, as: .image)
     }
 
-    // MARK: ToolbarBranchPicker
-
-    func testBranchPickerLight() throws {
-        let view = ToolbarBranchPicker(
-            shellClient: .always(""),
-            workspace: nil
-        )
-        let hosting = NSHostingView(rootView: view)
-        hosting.appearance = .init(named: .aqua)
-        hosting.frame = CGRect(origin: .zero, size: .init(width: 100, height: 50))
-        assertSnapshot(matching: hosting, as: .image)
-    }
-
-    func testBranchPickerDark() throws {
-        let view = ToolbarBranchPicker(
-            shellClient: .always(""),
-            workspace: nil
-        )
-        let hosting = NSHostingView(rootView: view)
-        hosting.appearance = .init(named: .darkAqua)
-        hosting.frame = CGRect(origin: .zero, size: .init(width: 100, height: 50))
-        assertSnapshot(matching: hosting, as: .image)
-    }
 }

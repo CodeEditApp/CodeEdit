@@ -12,6 +12,7 @@ import ExtensionsStore
 import AppKit
 import AppPreferences
 import Keybindings
+import TabBar
 
 struct WorkspaceView: View {
     init(windowController: NSWindowController, workspace: WorkspaceDocument) {
