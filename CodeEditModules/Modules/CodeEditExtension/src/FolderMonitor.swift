@@ -21,11 +21,10 @@ final class FolderMonitor {
     private let folderMonitorQueue = DispatchQueue(label: "FolderMonitorQueue", attributes: .concurrent)
 
     /// When there are changes in the folder, this is the function that gets triggered
-    private var folderDidChange: () -> Void
+    internal var folderDidChange: () -> Void = { }
 
-    init(url: URL, whenFolderChanges: @escaping () -> Void) {
+    init(url: URL) {
         self.folderToMonitor = url
-        self.folderDidChange = whenFolderChanges
     }
 
     /// Start monitoring the folder

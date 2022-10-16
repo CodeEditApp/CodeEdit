@@ -13,6 +13,8 @@ public final class ExtensionManager {
     /// Shared instance of `ExtenstionManager`
     public static let shared: ExtensionManager = .init()
 
+    private var loadedBundles: [Bundle] = []
+
     private let codeeditFolder: URL
     private let extensionsFolder: URL
     private let folderMonitor: FolderMonitor
@@ -36,14 +38,36 @@ public final class ExtensionManager {
             fatalError("Error while initializing the ExtensionManager, line: 36")
         }
 
-        self.folderMonitor = FolderMonitor(url: self.extensionsFolder) {
-            print("Test")
-        }
+        self.folderMonitor = FolderMonitor(url: self.extensionsFolder)
+        self.folderMonitor.folderDidChange = self.refreshBundles
         self.folderMonitor.startMonitoring()
     }
 
+    private func refreshBundles() {
+        var bundleURLs: [URL] = []
+        do {
+            bundleURLs = try FileManager.default.contentsOfDirectory(
+                at: extensionsFolder,
+                includingPropertiesForKeys: nil,
+                options: .skipsPackageDescendants
+            ).filter({ $0.pathExtension == "ceext" })
+        } catch {
+            print("Error while refreshing bundles folder")
+            return
+        }
+
+        for bundleURL in bundleURLs {
+            print(bundleURL)
+            guard let bundle = Bundle(url: bundleURL) else { return }
+            if !loadedBundles.contains(where: { $0.bundleURL == bundleURL }) {
+                loadedBundles.append(bundle)
+                preload(bundle)
+            }
+        }
+    }
+
     /// Opens the extension, reads and parses the manifest.json file
-    public func preload() {
+    private func preload(_ bundle: Bundle) {
         // Read out current files in the Extensions directory
         // Parse manifest files and register onActivate functions
     }
