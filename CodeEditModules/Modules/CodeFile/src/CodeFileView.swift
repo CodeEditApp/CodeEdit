@@ -70,7 +70,8 @@ public struct CodeFileView: View {
             theme: $selectedTheme.editor.editorTheme,
             font: $font,
             tabWidth: $prefs.preferences.textEditing.defaultTabWidth,
-            lineHeight: .constant(1.2) // TODO: Add to preferences
+            lineHeight: .constant(1.2), // TODO: Add to preferences
+            cursorPosition: codeFile.$cursorPosition
         )
         .id(codeFile.fileURL)
         .background(selectedTheme.editor.background.swiftColor)

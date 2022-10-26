@@ -13,6 +13,7 @@ import WelcomeModule
 import ExtensionsStore
 import Feedback
 import CodeEditSymbols
+import CodeFile
 
 final class CodeEditApplication: NSApplication {
     let strongDelegate = AppDelegate()
@@ -118,6 +119,27 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
             CodeEditDocumentController.shared.openDocument(self)
         case .newDocument:
             CodeEditDocumentController.shared.newDocument(self)
+        }
+    }
+
+    /// Handle urls with the form `codeedit://file/{filepath}:{line}:{column}`
+    func application(_ application: NSApplication, open urls: [URL]) {
+        for url in urls {
+            let file = URL(fileURLWithPath: url.path).path.split(separator: ":")
+            let filePath = URL(fileURLWithPath: String(file[0]))
+            let line = file.count > 1 ? Int(file[1]) ?? 0 : 0
+            let column = file.count > 2 ? Int(file[2]) ?? 1 : 1
+
+            CodeEditDocumentController.shared
+                .openDocument(withContentsOf: filePath, display: true) { document, _, error in
+                    if let error = error {
+                        NSAlert(error: error).runModal()
+                        return
+                    }
+                    if line > 0, let document = document as? CodeFileDocument {
+                        document.cursorPosition = (line, column)
+                    }
+                }
         }
     }
 
