@@ -133,7 +133,11 @@ public final class ExtensionManager {
             let extInstance = builder.init().build(withAPI: api)
             print("Activated extension: \(manifest.name)")
 
-            loadedExtentions[bundleIdentifier] = Extension(bundle: bundle, manifest: manifest, instance: extInstance)
+            loadedExtentions[bundleIdentifier] = Extension(
+                bundle: bundle,
+                manifest: manifest,
+                instance: extInstance
+            )
         }
     }
 }
