@@ -50,7 +50,57 @@ public final class ExtensionManager {
         self.folderMonitor.startMonitoring()
     }
 
+    /// This function reads out all the files in the Extension folder and filters the bundles based on the `.ceext` folder extension
+    public func refreshBundles() {
+        var bundleURLs: [URL] = []
+        do {
+            bundleURLs = try FileManager.default.contentsOfDirectory(
+                at: extensionsFolder,
+                includingPropertiesForKeys: nil,
+                options: .skipsPackageDescendants
+            ).filter({ $0.pathExtension == "ceext" })
+        } catch {
+            print("Error while refreshing bundles folder")
+            return
+        }
+
+        for bundleURL in bundleURLs {
+            self.preload(bundleURL)
+        }
+    }
+    
+    /// Starts loading all the extensions found in the Extension folder
+    /// - Parameter apiBuilder: Function that returns a `ExtensionAPI` subclass to inject into the extension
+    public func loadExtensions(_ apiBuilder: (String) -> ExtensionAPI) {
+        self.refreshBundles()
+
+        for bundle in loadedBundles where bundle.isLoaded {
+            self.load(bundle, apiBuilder)
+        }
+    }
+    
+    /// Loads and parses the manifest file of the extension
+    /// - Parameter of: The bundle that you want to load the manifest of
+    private func loadManifestFile(of bundle: Bundle) -> ExtensionManifest? {
+        if let manifestURL = bundle.url(forResource: "manifest", withExtension: "json") {
+            do {
+                if let rawManifest = try String(contentsOf: manifestURL).data(using: .utf8) {
+                    let manifest = try JSONDecoder().decode(ExtensionManifest.self, from: rawManifest)
+                    return manifest
+                }
+            } catch {
+                print("An error occured trying to parse the manifest file for: \(bundle.bundlePath)")
+                print(error)
+            }
+            return nil
+        } else {
+            print("Manifest file not found in: \(bundle.bundlePath)")
+        }
+        return nil
+    }
+    
     /// Opens the extension, reads and parses the manifest.json file
+    /// - Parameter bundleURL: The URL of the bundle that should be loaded
     private func preload(_ bundleURL: URL) {
         guard let bundle = Bundle(url: bundleURL) else { return }
         guard bundle.bundleIdentifier != nil else { return }
@@ -71,55 +121,9 @@ public final class ExtensionManager {
             bundle.unload()
         }
     }
-
-    private func loadManifestFile(of bundle: Bundle) -> ExtensionManifest? {
-        if let manifestURL = bundle.url(forResource: "manifest", withExtension: "json") {
-            do {
-                if let rawManifest = try String(contentsOf: manifestURL).data(using: .utf8) {
-                    let manifest = try JSONDecoder().decode(ExtensionManifest.self, from: rawManifest)
-                    return manifest
-                }
-            } catch {
-                print("An error occured trying to parse the manifest file for: \(bundle.bundlePath)")
-                print(error)
-            }
-            return nil
-        } else {
-            print("Manifest file not found in: \(bundle.bundlePath)")
-        }
-        return nil
-    }
-
-    /// This a dummy doc
-    public func refreshBundles() {
-        var bundleURLs: [URL] = []
-        do {
-            bundleURLs = try FileManager.default.contentsOfDirectory(
-                at: extensionsFolder,
-                includingPropertiesForKeys: nil,
-                options: .skipsPackageDescendants
-            ).filter({ $0.pathExtension == "ceext" })
-        } catch {
-            print("Error while refreshing bundles folder")
-            return
-        }
-
-        for bundleURL in bundleURLs {
-            self.preload(bundleURL)
-        }
-    }
-
-    /// This is a doc
-    public func loadExtensions(_ apiBuilder: (String) -> ExtensionAPI) {
-        self.refreshBundles()
-
-        for bundle in loadedBundles where bundle.isLoaded {
-            self.load(bundle, apiBuilder)
-        }
-    }
-
-    /// Activate a specific extension
-    public func load(_ bundle: Bundle, _ apiBuilder: (String) -> ExtensionAPI) {
+    
+    /// Triggers the build function of the extension and thereby activates the extesion
+    private func load(_ bundle: Bundle, _ apiBuilder: (String) -> ExtensionAPI) {
         for bundle in loadedBundles {
             guard let bundleIdentifier = bundle.bundleIdentifier else { continue }
             guard let manifest = self.loadManifestFile(of: bundle) else { continue }
