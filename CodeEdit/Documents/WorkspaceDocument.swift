@@ -17,6 +17,7 @@ import CodeEditKit
 import CodeEditUtils
 import Commands
 import ExtensionsStore
+import CodeEditExtension
 import StatusBar
 import TabBar
 
@@ -344,13 +345,16 @@ import TabBar
             .store(in: &cancellables)
 
         // initialize extensions
-        do {
-            try ExtensionsManager.shared?.load { extensionID in
-                CodeEditAPI(extensionId: extensionID, workspace: self)
-            }
-        } catch let error {
-            Swift.print(error)
+        ExtensionManager.shared.loadExtensions { extensionID in
+            CodeEditAPI(extensionId: extensionID, workspace: self)
         }
+//        do {
+//            try ExtensionsManager.shared?.load { extensionID in
+//                CodeEditAPI(extensionId: extensionID, workspace: self)
+//            }
+//        } catch let error {
+//            Swift.print(error)
+//        }
     }
 
     override func write(to url: URL, ofType typeName: String) throws {}

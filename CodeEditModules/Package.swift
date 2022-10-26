@@ -292,6 +292,9 @@ let package = Package(
         ),
         .target(
             name: "CodeEditExtension",
+            dependencies: [
+                "CodeEditKit"
+            ],
             path: "Modules/CodeEditExtension/src"
         ),
         .target(

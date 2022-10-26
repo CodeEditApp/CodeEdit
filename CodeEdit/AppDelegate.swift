@@ -80,7 +80,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
             }
         }
 
-//        ExtensionManager.shared.preload(nil)
+        ExtensionManager.shared.refreshBundles()
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

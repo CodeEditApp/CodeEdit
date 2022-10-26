@@ -1,19 +1,26 @@
 //
-//  File.swift
+//  ExtensionManager.swift
 //  
 //
 //  Created by Matthijs Eikelenboom on 08/10/2022.
 //
 
 import Foundation
+import CodeEditKit
 
 /// Single class instance that manages the extensions
 public final class ExtensionManager {
+    struct Extension {
+        var bundle: Bundle
+        var manifest: ExtensionManifest
+        var instance: ExtensionInterface
+    }
 
     /// Shared instance of `ExtenstionManager`
     public static let shared: ExtensionManager = .init()
 
     private var loadedBundles: [Bundle] = []
+    private var loadedExtentions: [String: Extension] = [:]
 
     private let codeeditFolder: URL
     private let extensionsFolder: URL
@@ -43,7 +50,48 @@ public final class ExtensionManager {
         self.folderMonitor.startMonitoring()
     }
 
-    private func refreshBundles() {
+    /// Opens the extension, reads and parses the manifest.json file
+    private func preload(_ bundleURL: URL) {
+        guard let bundle = Bundle(url: bundleURL) else { return }
+        guard bundle.bundleIdentifier != nil else { return }
+        if loadedBundles.contains(where: { $0.bundleURL == bundleURL }) { return }
+
+        let loaded = bundle.load()
+
+        if !loaded {
+            print("Bundle failed to load")
+            return
+        }
+
+        if let manifest = self.loadManifestFile(of: bundle) {
+            print("Manifest validated for: \(manifest.name)")
+            loadedBundles.append(bundle)
+        } else {
+            print("Invalid manifest for: \(bundle.bundleIdentifier!)")
+            bundle.unload()
+        }
+    }
+
+    private func loadManifestFile(of bundle: Bundle) -> ExtensionManifest? {
+        if let manifestURL = bundle.url(forResource: "manifest", withExtension: "json") {
+            do {
+                if let rawManifest = try String(contentsOf: manifestURL).data(using: .utf8) {
+                    let manifest = try JSONDecoder().decode(ExtensionManifest.self, from: rawManifest)
+                    return manifest
+                }
+            } catch {
+                print("An error occured trying to parse the manifest file for: \(bundle.bundlePath)")
+                print(error)
+            }
+            return nil
+        } else {
+            print("Manifest file not found in: \(bundle.bundlePath)")
+        }
+        return nil
+    }
+
+    /// This a dummy doc
+    public func refreshBundles() {
         var bundleURLs: [URL] = []
         do {
             bundleURLs = try FileManager.default.contentsOfDirectory(
@@ -57,23 +105,31 @@ public final class ExtensionManager {
         }
 
         for bundleURL in bundleURLs {
-            print(bundleURL)
-            guard let bundle = Bundle(url: bundleURL) else { return }
-            if !loadedBundles.contains(where: { $0.bundleURL == bundleURL }) {
-                loadedBundles.append(bundle)
-                preload(bundle)
-            }
+            self.preload(bundleURL)
         }
     }
 
-    /// Opens the extension, reads and parses the manifest.json file
-    private func preload(_ bundle: Bundle) {
-        // Read out current files in the Extensions directory
-        // Parse manifest files and register onActivate functions
+    /// This is a doc
+    public func loadExtensions(_ apiBuilder: (String) -> ExtensionAPI) {
+        self.refreshBundles()
+
+        for bundle in loadedBundles where bundle.isLoaded {
+            self.load(bundle, apiBuilder)
+        }
     }
 
     /// Activate a specific extension
-    public func load(extensionId: String) {
+    public func load(_ bundle: Bundle, _ apiBuilder: (String) -> ExtensionAPI) {
+        for bundle in loadedBundles {
+            guard let bundleIdentifier = bundle.bundleIdentifier else { continue }
+            guard let manifest = self.loadManifestFile(of: bundle) else { continue }
+            guard let builder = bundle.principalClass as? ExtensionBuilder.Type else { continue }
 
+            let api = apiBuilder(bundleIdentifier)
+            let extInstance = builder.init().build(withAPI: api)
+            print("Activated extension: \(manifest.name)")
+
+            loadedExtentions[bundleIdentifier] = Extension(bundle: bundle, manifest: manifest, instance: extInstance)
+        }
     }
 }

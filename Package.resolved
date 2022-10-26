@@ -6,7 +6,7 @@
         "repositoryURL": "https://github.com/CodeEditApp/CodeEditKit",
         "state": {
           "branch": "main",
-          "revision": "ab737640e779fe98f729dff7d072af87978e4f10",
+          "revision": "7bd380464313df30a70d1de4d1e221106f3e384a",
           "version": null
         }
       },
@@ -141,7 +141,7 @@
         "repositoryURL": "https://github.com/tree-sitter/tree-sitter-cpp.git",
         "state": {
           "branch": "master",
-          "revision": "d5e90fba898f320db48d81ddedd78d52c67c1fed",
+          "revision": "5ead1e26c6ab71919db0f1880c46a278a93bc5ea",
           "version": null
         }
       },
@@ -159,7 +159,7 @@
         "repositoryURL": "https://github.com/elixir-lang/tree-sitter-elixir.git",
         "state": {
           "branch": "main",
-          "revision": "3b8eb02597599ee38cfcc2c0fea76dc37a7472eb",
+          "revision": "b20eaa75565243c50be5e35e253d8beb58f45d56",
           "version": null
         }
       },
@@ -168,7 +168,7 @@
         "repositoryURL": "https://github.com/tree-sitter/tree-sitter-go.git",
         "state": {
           "branch": "master",
-          "revision": "aeb2f33b366fd78d5789ff104956ce23508b85db",
+          "revision": "05900faa3cdb5d2d8c8bd5e77ee698487e0a8611",
           "version": null
         }
       },
@@ -285,7 +285,7 @@
         "repositoryURL": "https://github.com/maxxnino/tree-sitter-zig.git",
         "state": {
           "branch": "main",
-          "revision": "433574f2a086a13cb30463f1f9c72a9be4f88a57",
+          "revision": "b1803f2a665d228f968a831eac4fcc07a377c7bc",
           "version": null
         }
       }
