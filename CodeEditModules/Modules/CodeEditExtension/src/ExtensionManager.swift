@@ -50,7 +50,8 @@ public final class ExtensionManager {
         self.folderMonitor.startMonitoring()
     }
 
-    /// This function reads out all the files in the Extension folder and filters the bundles based on the `.ceext` folder extension
+    /// This function reads out all the files in the Extension folder
+    /// and filters the bundles based on the `.ceext` folder extension
     public func refreshBundles() {
         var bundleURLs: [URL] = []
         do {
@@ -68,7 +69,7 @@ public final class ExtensionManager {
             self.preload(bundleURL)
         }
     }
-    
+
     /// Starts loading all the extensions found in the Extension folder
     /// - Parameter apiBuilder: Function that returns a `ExtensionAPI` subclass to inject into the extension
     public func loadExtensions(_ apiBuilder: (String) -> ExtensionAPI) {
@@ -78,7 +79,7 @@ public final class ExtensionManager {
             self.load(bundle, apiBuilder)
         }
     }
-    
+
     /// Loads and parses the manifest file of the extension
     /// - Parameter of: The bundle that you want to load the manifest of
     private func loadManifestFile(of bundle: Bundle) -> ExtensionManifest? {
@@ -98,7 +99,7 @@ public final class ExtensionManager {
         }
         return nil
     }
-    
+
     /// Opens the extension, reads and parses the manifest.json file
     /// - Parameter bundleURL: The URL of the bundle that should be loaded
     private func preload(_ bundleURL: URL) {
@@ -121,7 +122,7 @@ public final class ExtensionManager {
             bundle.unload()
         }
     }
-    
+
     /// Triggers the build function of the extension and thereby activates the extesion
     private func load(_ bundle: Bundle, _ apiBuilder: (String) -> ExtensionAPI) {
         for bundle in loadedBundles {

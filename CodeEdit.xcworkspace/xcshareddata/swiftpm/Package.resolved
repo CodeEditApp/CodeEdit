@@ -1,293 +1,12 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "CodeEditKit",
-        "repositoryURL": "https://github.com/CodeEditApp/CodeEditKit",
-        "state": {
-          "branch": "main",
-          "revision": "7bd380464313df30a70d1de4d1e221106f3e384a",
-          "version": null
-        }
-      },
-      {
-        "package": "CodeEditSymbols",
-        "repositoryURL": "https://github.com/CodeEditApp/CodeEditSymbols",
-        "state": {
-          "branch": "main",
-          "revision": "6b62ebfd46beea5ec2576b5ff626b94615dfba83",
-          "version": null
-        }
-      },
-      {
-        "package": "CodeEditTextView",
-        "repositoryURL": "https://github.com/CodeEditApp/CodeEditTextView",
-        "state": {
-          "branch": "main",
-          "revision": "486c5480280b36957e041ae35427aba855cb50f5",
-          "version": null
-        }
-      },
-      {
-        "package": "GRDB",
-        "repositoryURL": "https://github.com/groue/GRDB.swift.git",
-        "state": {
-          "branch": null,
-          "revision": "dd7e7f39e8e4d7a22d258d9809a882f914690b01",
-          "version": "5.26.1"
-        }
-      },
-      {
-        "package": "Highlightr",
-        "repositoryURL": "https://github.com/lukepistrol/Highlightr.git",
-        "state": {
-          "branch": "main",
-          "revision": "7d278c8e92d96cbfec8dbb3c8054990b2951db98",
-          "version": null
-        }
-      },
-      {
-        "package": "Light-Swift-Untar",
-        "repositoryURL": "https://github.com/Light-Untar/Light-Swift-Untar",
-        "state": {
-          "branch": null,
-          "revision": "fcff1f1b82373ea64b9565a364f63ffe7fdecf9f",
-          "version": "1.0.4"
-        }
-      },
-      {
-        "package": "Preferences",
-        "repositoryURL": "https://github.com/sindresorhus/Preferences.git",
-        "state": {
-          "branch": null,
-          "revision": "2651cd144615009242c994b087508fef99e9275c",
-          "version": "2.6.0"
-        }
-      },
-      {
-        "package": "Sparkle",
-        "repositoryURL": "https://github.com/sparkle-project/Sparkle",
-        "state": {
-          "branch": null,
-          "revision": "2a98381dfe72e24bf593c5c06d2c4fc1763c3f19",
-          "version": "2.3.0"
-        }
-      },
-      {
-        "package": "STTextView",
-        "repositoryURL": "https://github.com/krzyzanowskim/STTextView",
-        "state": {
-          "branch": null,
-          "revision": "9164f84b14b6315d9aaad0fb100b35f0c236db5a",
-          "version": "0.1.0"
-        }
-      },
-      {
-        "package": "swift-snapshot-testing",
-        "repositoryURL": "https://github.com/pointfreeco/swift-snapshot-testing.git",
-        "state": {
-          "branch": null,
-          "revision": "f29e2014f6230cf7d5138fc899da51c7f513d467",
-          "version": "1.10.0"
-        }
-      },
-      {
-        "package": "SwiftTerm",
-        "repositoryURL": "https://github.com/migueldeicaza/SwiftTerm.git",
-        "state": {
-          "branch": null,
-          "revision": "70a3af884c24dff9f1beeda04e889b5591f04f3c",
-          "version": "1.0.7"
-        }
-      },
-      {
-        "package": "SwiftTreeSitter",
-        "repositoryURL": "https://github.com/ChimeHQ/SwiftTreeSitter",
-        "state": {
-          "branch": null,
-          "revision": "3b1599ba9f466d8269cea2474beb5c9f0a3d7a5e",
-          "version": "0.7.0"
-        }
-      },
-      {
-        "package": "TreeSitterBash",
-        "repositoryURL": "https://github.com/lukepistrol/tree-sitter-bash.git",
-        "state": {
-          "branch": "feature/spm",
-          "revision": "13af3b5b2c40d560aefeac28361d64f525d1869f",
-          "version": null
-        }
-      },
-      {
-        "package": "TreeSitterC",
-        "repositoryURL": "https://github.com/tree-sitter/tree-sitter-c.git",
-        "state": {
-          "branch": "master",
-          "revision": "7175a6dd5fc1cee660dce6fe23f6043d75af424a",
-          "version": null
-        }
-      },
-      {
-        "package": "TreeSitterCSharp",
-        "repositoryURL": "https://github.com/tree-sitter/tree-sitter-c-sharp.git",
-        "state": {
-          "branch": "master",
-          "revision": "5b60f99545fea00a33bbfae5be956f684c4c69e2",
-          "version": null
-        }
-      },
-      {
-        "package": "TreeSitterCPP",
-        "repositoryURL": "https://github.com/tree-sitter/tree-sitter-cpp.git",
-        "state": {
-          "branch": "master",
-          "revision": "5ead1e26c6ab71919db0f1880c46a278a93bc5ea",
-          "version": null
-        }
-      },
-      {
-        "package": "TreeSitterCSS",
-        "repositoryURL": "https://github.com/lukepistrol/tree-sitter-css.git",
-        "state": {
-          "branch": "feature/spm",
-          "revision": "baf1fadcac4f7b7c0f0f273feec4ad68864bc783",
-          "version": null
-        }
-      },
-      {
-        "package": "TreeSitterElixir",
-        "repositoryURL": "https://github.com/elixir-lang/tree-sitter-elixir.git",
-        "state": {
-          "branch": "main",
-          "revision": "b20eaa75565243c50be5e35e253d8beb58f45d56",
-          "version": null
-        }
-      },
-      {
-        "package": "TreeSitterGo",
-        "repositoryURL": "https://github.com/tree-sitter/tree-sitter-go.git",
-        "state": {
-          "branch": "master",
-          "revision": "05900faa3cdb5d2d8c8bd5e77ee698487e0a8611",
-          "version": null
-        }
-      },
-      {
-        "package": "TreeSitterGoMod",
-        "repositoryURL": "https://github.com/camdencheek/tree-sitter-go-mod.git",
-        "state": {
-          "branch": "main",
-          "revision": "4a65743dbc2bb3094114dd2b43da03c820aa5234",
-          "version": null
-        }
-      },
-      {
-        "package": "TreeSitterHaskell",
-        "repositoryURL": "https://github.com/tree-sitter/tree-sitter-haskell.git",
-        "state": {
-          "branch": "master",
-          "revision": "bee6b49543e34c2967c6294a4b05e8bd2bf2da59",
-          "version": null
-        }
-      },
-      {
-        "package": "TreeSitterHTML",
-        "repositoryURL": "https://github.com/mattmassicotte/tree-sitter-html.git",
-        "state": {
-          "branch": "feature/spm",
-          "revision": "68b8bed0c1ebecbaf1919d0a7ae4b27592e6cc45",
-          "version": null
-        }
-      },
-      {
-        "package": "TreeSitterJava",
-        "repositoryURL": "https://github.com/tree-sitter/tree-sitter-java.git",
-        "state": {
-          "branch": "master",
-          "revision": "09d650def6cdf7f479f4b78f595e9ef5b58ce31e",
-          "version": null
-        }
-      },
-      {
-        "package": "TreeSitterJS",
-        "repositoryURL": "https://github.com/tree-sitter/tree-sitter-javascript.git",
-        "state": {
-          "branch": "master",
-          "revision": "936d976a782e75395d9b1c8c7c7bf4ba6fe0d86b",
-          "version": null
-        }
-      },
-      {
-        "package": "TreeSitterJSON",
-        "repositoryURL": "https://github.com/mattmassicotte/tree-sitter-json.git",
-        "state": {
-          "branch": "feature/spm",
-          "revision": "46528daf985e5ce73f0f9ad4eb3e5638bba9e069",
-          "version": null
-        }
-      },
-      {
-        "package": "TreeSitterPHP",
-        "repositoryURL": "https://github.com/tree-sitter/tree-sitter-php.git",
-        "state": {
-          "branch": "master",
-          "revision": "ab2e72179ceb8bb0b249c8ac9162a148e911b3dc",
-          "version": null
-        }
-      },
-      {
-        "package": "TreeSitterPython",
-        "repositoryURL": "https://github.com/lukepistrol/tree-sitter-python.git",
-        "state": {
-          "branch": "feature/spm",
-          "revision": "6a74b1a2de12c90218cbace9c6b896d137cd5201",
-          "version": null
-        }
-      },
-      {
-        "package": "TreeSitterRuby",
-        "repositoryURL": "https://github.com/mattmassicotte/tree-sitter-ruby.git",
-        "state": {
-          "branch": "feature/swift",
-          "revision": "5e75ef7cbd18d96178cabb7979086f84ad51106b",
-          "version": null
-        }
-      },
-      {
-        "package": "TreeSitterRust",
-        "repositoryURL": "https://github.com/tree-sitter/tree-sitter-rust.git",
-        "state": {
-          "branch": "master",
-          "revision": "47b061c1e1ba3a7e9c2f450363a50e87de3f7c61",
-          "version": null
-        }
-      },
-      {
-        "package": "TreeSitterSwift",
-        "repositoryURL": "https://github.com/alex-pinkus/tree-sitter-swift.git",
-        "state": {
-          "branch": "with-generated-files",
-          "revision": "50b8c5e61c29fa30e760c7a1cbf24b59970e6233",
-          "version": null
-        }
-      },
-      {
-        "package": "TreeSitterYAML",
-        "repositoryURL": "https://github.com/mattmassicotte/tree-sitter-yaml.git",
-        "state": {
-          "branch": "feature/spm",
-          "revision": "bd633dc67bd71934961610ca8bd832bf2153883e",
-          "version": null
-        }
-      },
-      {
-        "package": "TreeSitterZig",
-        "repositoryURL": "https://github.com/maxxnino/tree-sitter-zig.git",
-        "state": {
-          "branch": "main",
-          "revision": "b1803f2a665d228f968a831eac4fcc07a377c7bc",
-          "version": null
-        }
+  "pins" : [
+    {
+      "identity" : "codeeditkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/CodeEditApp/CodeEditKit.git",
+      "state" : {
+        "revision" : "7bd380464313df30a70d1de4d1e221106f3e384a",
+        "version" : "0.0.1"
       }
     },
     {
@@ -311,7 +30,7 @@
     {
       "identity" : "codeedittextview",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/CodeEditApp/CodeEditTextView",
+      "location" : "https://github.com/CodeEditApp/CodeEditTextView.git",
       "state" : {
         "revision" : "4ea28854a175302dbc1d0f09c2c702dcd0ca8d64",
         "version" : "0.1.1"
@@ -329,7 +48,7 @@
     {
       "identity" : "light-swift-untar",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Light-Untar/Light-Swift-Untar",
+      "location" : "https://github.com/Light-Untar/Light-Swift-Untar.git",
       "state" : {
         "revision" : "fcff1f1b82373ea64b9565a364f63ffe7fdecf9f",
         "version" : "1.0.4"
@@ -347,7 +66,7 @@
     {
       "identity" : "sparkle",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/sparkle-project/Sparkle",
+      "location" : "https://github.com/sparkle-project/Sparkle.git",
       "state" : {
         "revision" : "2a98381dfe72e24bf593c5c06d2c4fc1763c3f19",
         "version" : "2.3.0"
@@ -356,7 +75,7 @@
     {
       "identity" : "sttextview",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/krzyzanowskim/STTextView",
+      "location" : "https://github.com/krzyzanowskim/STTextView.git",
       "state" : {
         "revision" : "9164f84b14b6315d9aaad0fb100b35f0c236db5a",
         "version" : "0.1.0"
@@ -383,7 +102,7 @@
     {
       "identity" : "swifttreesitter",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ChimeHQ/SwiftTreeSitter",
+      "location" : "https://github.com/ChimeHQ/SwiftTreeSitter.git",
       "state" : {
         "revision" : "3b1599ba9f466d8269cea2474beb5c9f0a3d7a5e",
         "version" : "0.7.0"
