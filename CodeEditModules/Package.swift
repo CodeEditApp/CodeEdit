@@ -96,10 +96,6 @@ let package = Package(
             from: "2.0.0"
         ),
         .package(
-            url: "https://github.com/lukepistrol/Highlightr.git",
-            branch: "main"
-        ),
-        .package(
             url: "https://github.com/pointfreeco/swift-snapshot-testing.git",
             from: "1.9.0"
         ),
@@ -112,11 +108,11 @@ let package = Package(
             from: "2.6.0"
         ),
         .package(
-            url: "https://github.com/CodeEditApp/CodeEditKit.git",
+            url: "https://github.com/CodeEditApp/CodeEditKit",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/Light-Untar/Light-Swift-Untar.git",
+            url: "https://github.com/Light-Untar/Light-Swift-Untar",
             from: "1.0.4"
         ),
         .package(
@@ -124,11 +120,11 @@ let package = Package(
             from: "5.22.2"
         ),
         .package(
-            url: "https://github.com/CodeEditApp/CodeEditSymbols.git",
+            url: "https://github.com/CodeEditApp/CodeEditSymbols",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/CodeEditApp/CodeEditTextView.git",
+            url: "https://github.com/CodeEditApp/CodeEditTextView",
             branch: "main"
         ),
     ],
@@ -150,7 +146,6 @@ let package = Package(
         .target(
             name: "CodeFile",
             dependencies: [
-                "Highlightr",
                 "AppPreferences",
                 "CodeEditUtils",
                 "CodeEditTextView",
@@ -192,7 +187,7 @@ let package = Package(
                 "WelcomeModule",
                 "Git",
                 "ShellClient",
-                .product(name: "SnapshotTesting", package: "swift-snapshot-testing")
+                .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
             ],
             path: "Modules/WelcomeModule/Tests",
             exclude: ["__Snapshots__"]
@@ -211,7 +206,7 @@ let package = Package(
             name: "StatusBarTests",
             dependencies: [
                 "StatusBar",
-                .product(name: "SnapshotTesting", package: "swift-snapshot-testing")
+                .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
             ],
             path: "Modules/StatusBar/Tests",
             exclude: ["__Snapshots__"]
@@ -282,7 +277,7 @@ let package = Package(
                 "CodeEditUI",
                 "WorkspaceClient",
                 "Git",
-                .product(name: "SnapshotTesting", package: "swift-snapshot-testing")
+                .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
             ],
             path: "Modules/CodeEditUI/Tests",
             exclude: ["__Snapshots__"]

@@ -5,10 +5,10 @@
 //  Created by Marco Carnevali on 17/03/22.
 //
 
-import Highlightr
 import Foundation
 import SwiftUI
 import CodeEditTextView
+import CodeEditLanguages
 import AppPreferences
 import Combine
 
