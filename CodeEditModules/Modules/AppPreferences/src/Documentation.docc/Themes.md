@@ -189,6 +189,3 @@ They can either be ``AppPreferences/Theme/ThemeType/dark`` or ``AppPreferences/T
 - ``Theme/TerminalColors``
 - ``terminal``
 - ``Attributes``
-
-### Highlight.JS Wrapper
-- ``highlightrThemeString``
