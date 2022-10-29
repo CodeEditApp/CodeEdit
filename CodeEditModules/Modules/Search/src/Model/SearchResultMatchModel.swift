@@ -29,7 +29,7 @@ public class SearchResultMatchModel: Hashable, Identifiable {
     public var keywordRange: Range<String.Index>
 
     public var hasKeywordInfo: Bool {
-        lineNumber != nil && lineContent != nil && keywordRange != nil
+        lineNumber >= 0 && !lineContent.isEmpty && !keywordRange.isEmpty
     }
 
     public static func == (lhs: SearchResultMatchModel, rhs: SearchResultMatchModel) -> Bool {

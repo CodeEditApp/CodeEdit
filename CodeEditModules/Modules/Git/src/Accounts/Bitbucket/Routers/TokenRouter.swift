@@ -13,7 +13,7 @@ public enum TokenRouter: Router {
 
     public var configuration: Configuration? {
         switch self {
-        case .refreshToken(let config, nil): return config
+        case .refreshToken(let config, _): return config
         default: return nil
         }
     }
@@ -28,7 +28,7 @@ public enum TokenRouter: Router {
 
     public var params: [String: Any] {
         switch self {
-        case .refreshToken(nil, let token):
+        case .refreshToken(_, let token):
             return ["refresh_token": token, "grant_type": "refresh_token"]
         default: return ["": ""]
         }
@@ -36,7 +36,7 @@ public enum TokenRouter: Router {
 
     public var path: String {
         switch self {
-        case .refreshToken(nil, nil):
+        case .refreshToken:
             return "site/oauth2/access_token"
         default: return ""
         }
@@ -44,7 +44,7 @@ public enum TokenRouter: Router {
 
     public var URLRequest: Foundation.URLRequest? {
         switch self {
-        case .refreshToken(let config, nil):
+        case .refreshToken(let config, _):
             let url = URL(string: path, relativeTo: URL(string: config.webEndpoint)!)
             let components = URLComponents(url: url!, resolvingAgainstBaseURL: true)
             return request(components!, parameters: params)

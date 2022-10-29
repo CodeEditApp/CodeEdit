@@ -54,7 +54,7 @@ final class FindNavigatorListMatchCell: NSTableCellView {
     /// Sets up the `NSTextField` used as a label in the cell.
     /// - Parameter frame: The frame the cell should use.
     private func setUpLabel() {
-        self.label = NSTextField(wrappingLabelWithString: matchItem.lineContent ?? "")
+        self.label = NSTextField(wrappingLabelWithString: matchItem.lineContent)
         self.label.translatesAutoresizingMaskIntoConstraints = false
         self.label.drawsBackground = false
         self.label.isEditable = false
