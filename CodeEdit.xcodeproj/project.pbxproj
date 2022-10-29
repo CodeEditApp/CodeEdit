@@ -26,8 +26,6 @@
 		04C325512800AC7400C8DA2D /* ExtensionInstallationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C325502800AC7400C8DA2D /* ExtensionInstallationViewModel.swift */; };
 		04C3255B2801F86400C8DA2D /* OutlineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285FEC6D27FE4B4A00E57D53 /* OutlineViewController.swift */; };
 		04C3255C2801F86900C8DA2D /* OutlineMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285FEC7127FE4EEF00E57D53 /* OutlineMenu.swift */; };
-		04C3256B28034FC800C8DA2D /* CodeEditKit in Frameworks */ = {isa = PBXBuildFile; productRef = 04C3256A28034FC800C8DA2D /* CodeEditKit */; };
-		04C3256C28034FC800C8DA2D /* CodeEditKit in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 04C3256A28034FC800C8DA2D /* CodeEditKit */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		200412EF280F3EAC00BCAF5C /* NoCommitHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200412EE280F3EAC00BCAF5C /* NoCommitHistoryView.swift */; };
 		2004A3832808468600FD9696 /* Feedback in Frameworks */ = {isa = PBXBuildFile; productRef = 2004A3822808468600FD9696 /* Feedback */; };
 		201169D72837B2E300F92B46 /* SourceControlNavigatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201169D62837B2E300F92B46 /* SourceControlNavigatorView.swift */; };
@@ -53,6 +51,7 @@
 		20EBB507280C32D300F3A5DA /* QuickHelpInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EBB506280C32D300F3A5DA /* QuickHelpInspector.swift */; };
 		20EBB50D280C383700F3A5DA /* LanguageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EBB50C280C383700F3A5DA /* LanguageType.swift */; };
 		20EBB50F280C389300F3A5DA /* FileInspectorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EBB50E280C389300F3A5DA /* FileInspectorModel.swift */; };
+		2801BB8A290D5A8E00EBF552 /* CodeEditKit in Frameworks */ = {isa = PBXBuildFile; productRef = 2801BB89290D5A8E00EBF552 /* CodeEditKit */; };
 		2803257127F3CF1F009C7DC2 /* AppPreferences in Frameworks */ = {isa = PBXBuildFile; productRef = 2803257027F3CF1F009C7DC2 /* AppPreferences */; };
 		28117FD0280768A500649353 /* CodeEditUI in Frameworks */ = {isa = PBXBuildFile; productRef = 28117FCF280768A500649353 /* CodeEditUI */; };
 		2813F93827ECC4AA00E305E4 /* FindNavigatorResultList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201B327E9989900CB86D0 /* FindNavigatorResultList.swift */; };
@@ -142,7 +141,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				04C3256C28034FC800C8DA2D /* CodeEditKit in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -262,11 +260,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2801BB8A290D5A8E00EBF552 /* CodeEditKit in Frameworks */,
 				0483E34D27FCC46600354AC0 /* ExtensionsStore in Frameworks */,
 				64B64EDE27F7B79400C400F1 /* About in Frameworks */,
 				043BCF07281DA2F5000AC47C /* TabBar in Frameworks */,
 				20AFDC7F28206701001A4FC7 /* Git in Frameworks */,
-				04C3256B28034FC800C8DA2D /* CodeEditKit in Frameworks */,
 				2864BAAC28117B3F002DBD1A /* ShellClient in Frameworks */,
 				2864BAAE28117D7C002DBD1A /* TerminalEmulator in Frameworks */,
 				5C403B8F27E20F8000788241 /* WorkspaceClient in Frameworks */,
@@ -656,7 +654,6 @@
 				64B64EDD27F7B79400C400F1 /* About */,
 				5CA8776427FC6A95003F5CD5 /* QuickOpen */,
 				0483E34C27FCC46600354AC0 /* ExtensionsStore */,
-				04C3256A28034FC800C8DA2D /* CodeEditKit */,
 				5CAD1B962806B57D0059A74E /* Breadcrumbs */,
 				28117FCF280768A500649353 /* CodeEditUI */,
 				2004A3822808468600FD9696 /* Feedback */,
@@ -668,6 +665,7 @@
 				FA6BA6F0282ACAD600019309 /* Keybindings */,
 				20AFDC7E28206701001A4FC7 /* Git */,
 				5C7448AB28EF2E2E00F73D21 /* Commands */,
+				2801BB89290D5A8E00EBF552 /* CodeEditKit */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -745,8 +743,8 @@
 			);
 			mainGroup = B658FB2327DA9E0F00EA4DBD;
 			packageReferences = (
-				04C3256728034F3D00C8DA2D /* XCRemoteSwiftPackageReference "CodeEditKit" */,
 				2816F592280CF50500DD548B /* XCRemoteSwiftPackageReference "CodeEditSymbols" */,
+				2801BB88290D5A8E00EBF552 /* XCRemoteSwiftPackageReference "CodeEditKit" */,
 			);
 			productRefGroup = B658FB2D27DA9E0F00EA4DBD /* Products */;
 			projectDirPath = "";
@@ -1413,20 +1411,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		04C3256728034F3D00C8DA2D /* XCRemoteSwiftPackageReference "CodeEditKit" */ = {
+		2801BB88290D5A8E00EBF552 /* XCRemoteSwiftPackageReference "CodeEditKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/CodeEditApp/CodeEditKit";
+			repositoryURL = "https://github.com/CodeEditApp/CodeEditKit.git";
 			requirement = {
-				branch = main;
-				kind = branch;
+				kind = exactVersion;
+				version = 0.0.1;
 			};
 		};
 		2816F592280CF50500DD548B /* XCRemoteSwiftPackageReference "CodeEditSymbols" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/CodeEditApp/CodeEditSymbols";
 			requirement = {
-				branch = main;
-				kind = branch;
+				kind = exactVersion;
+				version = 0.1.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -1440,11 +1438,6 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = ExtensionsStore;
 		};
-		04C3256A28034FC800C8DA2D /* CodeEditKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 04C3256728034F3D00C8DA2D /* XCRemoteSwiftPackageReference "CodeEditKit" */;
-			productName = CodeEditKit;
-		};
 		2004A3822808468600FD9696 /* Feedback */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Feedback;
@@ -1456,6 +1449,11 @@
 		20AFDC7E28206701001A4FC7 /* Git */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Git;
+		};
+		2801BB89290D5A8E00EBF552 /* CodeEditKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2801BB88290D5A8E00EBF552 /* XCRemoteSwiftPackageReference "CodeEditKit" */;
+			productName = CodeEditKit;
 		};
 		2803257027F3CF1F009C7DC2 /* AppPreferences */ = {
 			isa = XCSwiftPackageProductDependency;

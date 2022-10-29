@@ -109,7 +109,7 @@ let package = Package(
         ),
         .package(
             url: "https://github.com/CodeEditApp/CodeEditKit",
-            branch: "main"
+            exact: "0.0.1"
         ),
         .package(
             url: "https://github.com/Light-Untar/Light-Swift-Untar",
@@ -121,11 +121,11 @@ let package = Package(
         ),
         .package(
             url: "https://github.com/CodeEditApp/CodeEditSymbols",
-            branch: "main"
+            exact: "0.1.0"
         ),
         .package(
             url: "https://github.com/CodeEditApp/CodeEditTextView",
-            branch: "main"
+            exact: "0.1.0"
         ),
     ],
     targets: [
