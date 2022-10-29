@@ -1,4 +1,4 @@
-// swift-tools-version:5.5
+// swift-tools-version:5.6
 
 import PackageDescription
 
@@ -92,37 +92,26 @@ let package = Package(
     ],
     dependencies: [
         .package(
-            name: "Sparkle",
             url: "https://github.com/sparkle-project/Sparkle.git",
             from: "2.0.0"
         ),
         .package(
-            name: "Highlightr",
-            url: "https://github.com/lukepistrol/Highlightr.git",
-            branch: "main"
-        ),
-        .package(
-            name: "SnapshotTesting",
             url: "https://github.com/pointfreeco/swift-snapshot-testing.git",
             from: "1.9.0"
         ),
         .package(
-            name: "SwiftTerm",
             url: "https://github.com/migueldeicaza/SwiftTerm.git",
             from: "1.0.7"
         ),
         .package(
-            name: "Preferences",
             url: "https://github.com/sindresorhus/Preferences.git",
             from: "2.6.0"
         ),
         .package(
-            name: "CodeEditKit",
             url: "https://github.com/CodeEditApp/CodeEditKit",
             branch: "main"
         ),
         .package(
-            name: "Light-Swift-Untar",
             url: "https://github.com/Light-Untar/Light-Swift-Untar",
             from: "1.0.4"
         ),
@@ -131,12 +120,10 @@ let package = Package(
             from: "5.22.2"
         ),
         .package(
-            name: "CodeEditSymbols",
             url: "https://github.com/CodeEditApp/CodeEditSymbols",
             branch: "main"
         ),
         .package(
-            name: "CodeEditTextView",
             url: "https://github.com/CodeEditApp/CodeEditTextView",
             branch: "main"
         ),
@@ -159,7 +146,6 @@ let package = Package(
         .target(
             name: "CodeFile",
             dependencies: [
-                "Highlightr",
                 "AppPreferences",
                 "CodeEditUtils",
                 "CodeEditTextView",
@@ -201,7 +187,7 @@ let package = Package(
                 "WelcomeModule",
                 "Git",
                 "ShellClient",
-                "SnapshotTesting",
+                .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
             ],
             path: "Modules/WelcomeModule/Tests",
             exclude: ["__Snapshots__"]
@@ -220,7 +206,7 @@ let package = Package(
             name: "StatusBarTests",
             dependencies: [
                 "StatusBar",
-                "SnapshotTesting"
+                .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
             ],
             path: "Modules/StatusBar/Tests",
             exclude: ["__Snapshots__"]
@@ -291,7 +277,7 @@ let package = Package(
                 "CodeEditUI",
                 "WorkspaceClient",
                 "Git",
-                "SnapshotTesting",
+                .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
             ],
             path: "Modules/CodeEditUI/Tests",
             exclude: ["__Snapshots__"]
