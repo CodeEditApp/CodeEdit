@@ -137,7 +137,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                         return
                     }
                     if line > 0, let document = document as? CodeFileDocument {
-                        document.cursorPosition = (line, column)
+                        document.cursorPosition = (line, column > 0 ? column : 1)
                     }
                 }
         }
