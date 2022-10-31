@@ -140,6 +140,7 @@ Be part of the next revolution in code editing by contributing to the project. T
       <td align="center"><a href="https://github.com/alexdeem"><img src="https://avatars.githubusercontent.com/u/404584?v=4?s=100" width="100px;" alt="Alex Deem"/><br /><sub><b>Alex Deem</b></sub></a><br /><a href="#maintenance-alexdeem" title="Maintenance">🚧</a></td>
       <td align="center"><a href="https://github.com/denizak"><img src="https://avatars.githubusercontent.com/u/1758456?v=4?s=100" width="100px;" alt="deni zakya"/><br /><sub><b>deni zakya</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3Adenizak" title="Bug reports">🐛</a></td>
       <td align="center"><a href="https://github.com/ahmdyasser"><img src="https://avatars.githubusercontent.com/u/42544598?v=4?s=100" width="100px;" alt="Ahmad Yasser"/><br /><sub><b>Ahmad Yasser</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3Aahmdyasser" title="Bug reports">🐛</a></td>
+      <td align="center"><a href="https://github.com/ezraberch"><img src="https://avatars.githubusercontent.com/u/49635435?v=4?s=100" width="100px;" alt="ezraberch"/><br /><sub><b>ezraberch</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=ezraberch" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
