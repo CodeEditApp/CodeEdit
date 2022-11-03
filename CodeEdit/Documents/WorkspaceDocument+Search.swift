@@ -33,7 +33,7 @@ extension WorkspaceDocument {
         /// to modify the search if needed.
         ///
         /// This method will update ``searchResult`` and ``searchResultCount`` with any matched
-        /// search results. See ``Search.SearchResultModel`` and ``Search.SearchResultMatchModel``
+        /// search results. See `Search.SearchResultModel` and `Search.SearchResultMatchModel`
         /// for more information on search results and matches.
         ///
         /// - Parameter text: The search text to search for. Pass `nil` to this parameter to clear

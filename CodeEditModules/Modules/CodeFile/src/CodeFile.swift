@@ -57,6 +57,9 @@ public final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem
         fileURL
     }
 
+    @Published
+    public var cursorPosition = (1, 1)
+
     // MARK: - NSDocument
 
     override public class var autosavesInPlace: Bool {

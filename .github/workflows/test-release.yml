@@ -1,0 +1,79 @@
+name: Build and Publish Pre-release
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  pre-release:
+    name: Build and Publish Pre-release
+    runs-on: macos-12
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Xcode Select
+        uses: devbotsxyz/xcode-select@v1.1.0
+        with:
+          version: latest
+      - name: Import Signing Certificate
+        uses: devbotsxyz/import-signing-certificate@v1.0.0
+        with:
+          # Base64 encoded certificate in P12 format.
+            certificate-data: ${{ secrets.DEV_CERT_B64 }} # optional
+          # Passphrase to unlock the certificate P12 file. Required and cannot be empty.
+            certificate-passphrase: ${{ secrets.DEV_CERT_PWD }} 
+          # Keychain password
+            keychain-password: ${{ secrets.KEYCHAIN_PASSWORD }}  
+      - name: Archive
+        uses: devbotsxyz/xcode-archive@v1
+      - name: Export & Sign Release Build
+        uses: devbotsxyz/xcode-export-archive@master
+      - name: Notarize Release Build
+        uses: devbotsxyz/xcode-notarize@v1
+        with:
+          product-path: "Export/Rings.app"
+          appstore-connect-username: ${{ secrets.APPLE_ID }}
+          appstore-connect-password: ${{ secrets.APPLE_ID_PWD }}
+      - name: Staple Release Build
+        uses: devbotsxyz/xcode-staple@v1
+        with:
+          product-path: "Export/Rings.app"
+      - name: Package for Distribution
+        run: ditto -c -k --sequesterRsrc --keepParent "Export/Rings.app" "MyApp.dmg"
+      - name: Update Sparkle appcast
+        env:
+          # SPARKLE_KEY: Sparkle EdDSA key exported from `generate_keys -x` as plain text
+          # SPARKLE_CHANNEL: Seperate dev builds from default channel, to be specified in [SPUUpdaterDelegate allowedChannelsForUpdater:]
+          # SPARKLE_DL_PREFIX: Prefix for the URL from where updates will be downloaded
+          # SPARKLE_LINK: CodeEdit Website
+          SPARKLE_KEY: ${{ secrets.SPARKLE_KEY }}
+          SPARKLE_CHANNEL: dev
+          SPARKLE_DL_PREFIX: "https://github.com/CodeEditApp/CodeEdit/releases/download/latest"
+          SPARKLE_LINK: "https://github.com/CodeEditApp/CodeEdit"
+        run: |
+          SPARKLE_BIN="$RUNNER_TEMP/DerivedData/SourcePackages/artifacts/sparkle/bin"
+          SPARKLE_ARCHIVE="$RUNNER_TEMP/Sparkle_Archive"
+          echo -n "$SPARKLE_KEY" | tee "$RUNNER_TEMP/sparkle_key"
+          mkdir "$SPARKLE_ARCHIVE"
+          cp "MyApp.dmg" "$SPARKLE_ARCHIVE"
+          SPARKLE_SIG=$("$SPARKLE_BIN/sign_update" --ed-key-file "$RUNNER_TEMP/sparkle_key" "$SPARKLE_ARCHIVE/MyApp.dmg" | cut -d\" -f2)
+          "$SPARKLE_BIN/generate_appcast" --ed-key-file "$RUNNER_TEMP/sparkle_key" --download-url-prefix "$SPARKLE_DL_PREFIX" --link "$SPARKLE_LINK" --channel "$SPARKLE_CHANNEL" --maximum-deltas 0 "$SPARKLE_ARCHIVE"
+          brew install xmlstarlet
+          xmlstarlet ed -O --inplace --insert "/rss/channel/item/enclosure" --type attr -n "sparkle:edSignature" -v "$SPARKLE_SIG" "$SPARKLE_ARCHIVE/appcast.xml"
+      - name: Publish Pre-release
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          title: "CodeEdit-${{ env.REV }}"
+          files: |
+            "${{ RUNNER.TEMP }}/Sparkle_Archive/MyApp.dmg"
+            "${{ RUNNER.TEMP }}/Sparkle_Archive/appcast.xml"
+          automatic_release_tag: "latest"
+          prerelease: true
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+      - name: Clean up keychain and provisioning profile
+        if: ${{ always() }}
+        run: |
+          security delete-keychain "$RUNNER_TEMP/keychain.keychain-db"
+          rm -rf "~/Library/MobileDevice/Provisioning Profiles"

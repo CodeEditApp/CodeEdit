@@ -17,7 +17,7 @@ jobs:
         env:
           # DEV_CERT_B64: Base64-encoded developer certificate as .p12
           # DEV_CERT_PWD: Developer certificate .p12 password
-          # PROVISION_PROFILE_B64: Base64-encoded provisioning profile as .mobileprovision
+          # PROVISION_PROFILE_B64: Base64-encoded provisioning profile as .provisionprofile
           # KEYCHAIN_TIMEOUT: Lock keychain after timeout interval
           # https://docs.github.com/en/actions/deployment/deploying-xcode-applications/installing-an-apple-certificate-on-macos-runners-for-xcode-development
           DEV_CERT_B64: ${{ secrets.DEV_CERT_B64 }}
@@ -26,7 +26,7 @@ jobs:
           KEYCHAIN_TIMEOUT: 21600
         run: |
           DEV_CERT_P12="$RUNNER_TEMP/dev_cert.p12"
-          PROVISION_PROFILE_MP="$RUNNER_TEMP/provision_profile.mobileprovision"
+          PROVISION_PROFILE_MP="$RUNNER_TEMP/provision_profile.provisionprofile"
           KEYCHAIN_DB="$RUNNER_TEMP/keychain.keychain-db"
           KEYCHAIN_PWD=$(openssl rand -base64 24)
           security create-keychain -p "$KEYCHAIN_PWD" "$KEYCHAIN_DB"

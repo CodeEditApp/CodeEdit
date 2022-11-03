@@ -5,10 +5,10 @@
 //  Created by Marco Carnevali on 17/03/22.
 //
 
-import Highlightr
 import Foundation
 import SwiftUI
 import CodeEditTextView
+import CodeEditLanguages
 import AppPreferences
 import Combine
 
@@ -70,7 +70,8 @@ public struct CodeFileView: View {
             theme: $selectedTheme.editor.editorTheme,
             font: $font,
             tabWidth: $prefs.preferences.textEditing.defaultTabWidth,
-            lineHeight: .constant(1.2) // TODO: Add to preferences
+            lineHeight: .constant(1.2), // TODO: Add to preferences
+            cursorPosition: codeFile.$cursorPosition
         )
         .id(codeFile.fileURL)
         .background(selectedTheme.editor.background.swiftColor)

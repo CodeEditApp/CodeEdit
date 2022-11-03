@@ -4,7 +4,7 @@ This package manages **Preferences** of the app.
 
 ## Overview
 
-The main task is to get the preferences from `~/.codeedit/preferences.json` and load them into an ``AppPreferences/AppPreferences`` model.
+The main task is to get the preferences from `~/Library/Application Support/CodeEdit/preferences.json` and load them into an ``AppPreferences/AppPreferences`` model.
 Once a value changes the changes are written to the `preferences.json` file.
 
 It also contains all preferences section views and necessary sub-models.
