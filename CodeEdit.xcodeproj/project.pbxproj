@@ -77,6 +77,10 @@
 		2BE487EF28245162003F3F64 /* FinderSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE487EE28245162003F3F64 /* FinderSync.swift */; };
 		2BE487F428245162003F3F64 /* OpenWithCodeEdit.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 2BE487EC28245162003F3F64 /* OpenWithCodeEdit.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		474397C52893AC4B00518C8C /* codeedit-midnight.json in Resources */ = {isa = PBXBuildFile; fileRef = 474397C42893AC4B00518C8C /* codeedit-midnight.json */; };
+		582213F0291834A500EFE361 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 582213EF291834A500EFE361 /* AboutView.swift */; };
+		5878DA82291863F900DD95A3 /* AcknowledgementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5878DA81291863F900DD95A3 /* AcknowledgementsView.swift */; };
+		5878DA842918642000DD95A3 /* ParsePackagesResolved.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5878DA832918642000DD95A3 /* ParsePackagesResolved.swift */; };
+		5878DA872918642F00DD95A3 /* AcknowledgementsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5878DA862918642F00DD95A3 /* AcknowledgementsModel.swift */; };
 		5867933A28F5DC7A00D5DE54 /* CodeEditExtension in Frameworks */ = {isa = PBXBuildFile; productRef = 5867933928F5DC7A00D5DE54 /* CodeEditExtension */; };
 		5C403B8F27E20F8000788241 /* WorkspaceClient in Frameworks */ = {isa = PBXBuildFile; productRef = 5C403B8E27E20F8000788241 /* WorkspaceClient */; };
 		5C4BB1E128212B1E00A92FB2 /* World.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4BB1E028212B1E00A92FB2 /* World.swift */; };
@@ -84,7 +88,6 @@
 		5CA8776527FC6A95003F5CD5 /* QuickOpen in Frameworks */ = {isa = PBXBuildFile; productRef = 5CA8776427FC6A95003F5CD5 /* QuickOpen */; };
 		5CAD1B972806B57D0059A74E /* Breadcrumbs in Frameworks */ = {isa = PBXBuildFile; productRef = 5CAD1B962806B57D0059A74E /* Breadcrumbs */; };
 		5CF38A5E27E48E6C0096A0F7 /* CodeFile in Frameworks */ = {isa = PBXBuildFile; productRef = 5CF38A5D27E48E6C0096A0F7 /* CodeFile */; };
-		64B64EDE27F7B79400C400F1 /* About in Frameworks */ = {isa = PBXBuildFile; productRef = 64B64EDD27F7B79400C400F1 /* About */; };
 		6C05A8AF284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C05A8AE284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift */; };
 		6C14CEB028777D3C001468FE /* FindNavigatorListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C14CEAF28777D3C001468FE /* FindNavigatorListViewController.swift */; };
 		6C14CEB32877A68F001468FE /* FindNavigatorMatchListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C14CEB22877A68F001468FE /* FindNavigatorMatchListCell.swift */; };
@@ -218,6 +221,10 @@
 		2BE487EE28245162003F3F64 /* FinderSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderSync.swift; sourceTree = "<group>"; };
 		2BE487F028245162003F3F64 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		474397C42893AC4B00518C8C /* codeedit-midnight.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "codeedit-midnight.json"; sourceTree = "<group>"; };
+		582213EF291834A500EFE361 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
+		5878DA81291863F900DD95A3 /* AcknowledgementsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AcknowledgementsView.swift; sourceTree = "<group>"; };
+		5878DA832918642000DD95A3 /* ParsePackagesResolved.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParsePackagesResolved.swift; sourceTree = "<group>"; };
+		5878DA862918642F00DD95A3 /* AcknowledgementsModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AcknowledgementsModel.swift; sourceTree = "<group>"; };
 		5C4BB1E028212B1E00A92FB2 /* World.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = World.swift; sourceTree = "<group>"; };
 		6C05A8AE284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkspaceDocument+Listeners.swift"; sourceTree = "<group>"; };
 		6C14CEAF28777D3C001468FE /* FindNavigatorListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindNavigatorListViewController.swift; sourceTree = "<group>"; };
@@ -261,7 +268,6 @@
 			files = (
 				2801BB8A290D5A8E00EBF552 /* CodeEditKit in Frameworks */,
 				0483E34D27FCC46600354AC0 /* ExtensionsStore in Frameworks */,
-				64B64EDE27F7B79400C400F1 /* About in Frameworks */,
 				043BCF07281DA2F5000AC47C /* TabBar in Frameworks */,
 				20AFDC7F28206701001A4FC7 /* Git in Frameworks */,
 				2864BAAC28117B3F002DBD1A /* ShellClient in Frameworks */,
@@ -502,6 +508,48 @@
 			path = OpenWithCodeEdit;
 			sourceTree = "<group>";
 		};
+		582213EE2918345500EFE361 /* About */ = {
+			isa = PBXGroup;
+			children = (
+				582213F1291834E500EFE361 /* Views */,
+			);
+			path = About;
+			sourceTree = "<group>";
+		};
+		582213F1291834E500EFE361 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				582213EF291834A500EFE361 /* AboutView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		5878DA7D291862BC00DD95A3 /* Acknowledgements */ = {
+			isa = PBXGroup;
+			children = (
+				5878DA852918642F00DD95A3 /* Model */,
+				5878DA7E291862F200DD95A3 /* Views */,
+			);
+			path = Acknowledgements;
+			sourceTree = "<group>";
+		};
+		5878DA7E291862F200DD95A3 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				5878DA81291863F900DD95A3 /* AcknowledgementsView.swift */,
+				5878DA832918642000DD95A3 /* ParsePackagesResolved.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		5878DA852918642F00DD95A3 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				5878DA862918642F00DD95A3 /* AcknowledgementsModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		5C403B8D27E20F8000788241 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -545,6 +593,8 @@
 		B658FB2E27DA9E0F00EA4DBD /* CodeEdit */ = {
 			isa = PBXGroup;
 			children = (
+				5878DA7D291862BC00DD95A3 /* Acknowledgements */,
+				582213EE2918345500EFE361 /* About */,
 				0463E50F27FCC19800806D5C /* Extensions */,
 				043C321227E31FE8006AE443 /* Documents */,
 				B6EE988E27E8877C00CDD8AB /* InspectorSidebar */,
@@ -650,7 +700,6 @@
 				28CE5E9F27E6493D0065D29C /* StatusBar */,
 				D7F72DEA27EA3574000C3064 /* Search */,
 				2803257027F3CF1F009C7DC2 /* AppPreferences */,
-				64B64EDD27F7B79400C400F1 /* About */,
 				5CA8776427FC6A95003F5CD5 /* QuickOpen */,
 				0483E34C27FCC46600354AC0 /* ExtensionsStore */,
 				5CAD1B962806B57D0059A74E /* Breadcrumbs */,
@@ -873,6 +922,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5878DA842918642000DD95A3 /* ParsePackagesResolved.swift in Sources */,
 				2072FA13280D74ED00C7F8D4 /* HistoryInspectorModel.swift in Sources */,
 				201169E52837B40300F92B46 /* RepositoriesView.swift in Sources */,
 				DE513F52281B672D002260B9 /* TabBarAccessory.swift in Sources */,
@@ -909,6 +959,7 @@
 				D7211D4327E066CE008F2ED7 /* Localized+Ex.swift in Sources */,
 				20D839AE280E0CA700B27357 /* PopoverView.swift in Sources */,
 				2072FA1E280D891500C7F8D4 /* Location.swift in Sources */,
+				582213F0291834A500EFE361 /* AboutView.swift in Sources */,
 				5C4BB1E128212B1E00A92FB2 /* World.swift in Sources */,
 				D7E201B227E8D50000CB86D0 /* FindNavigatorModeSelector.swift in Sources */,
 				287776E927E34BC700D46668 /* TabBar.swift in Sources */,
@@ -920,6 +971,7 @@
 				286471AB27ED51FD0039369D /* ProjectNavigator.swift in Sources */,
 				04C3254B27FF23B000C8DA2D /* ExtensionNavigatorData.swift in Sources */,
 				287776EF27E3515300D46668 /* TabBarItem.swift in Sources */,
+				5878DA872918642F00DD95A3 /* AcknowledgementsModel.swift in Sources */,
 				04660F6A27E51E5C00477777 /* CodeEditWindowController.swift in Sources */,
 				043BCF05281DA19A000AC47C /* WorkspaceDocument+Selection.swift in Sources */,
 				2072FA18280D871200C7F8D4 /* TextEncoding.swift in Sources */,
@@ -928,6 +980,7 @@
 				B6EE989027E8879A00CDD8AB /* InspectorSidebar.swift in Sources */,
 				9C3E1A07284E8E020042BEC0 /* WelcomeModuleExtensions.swift in Sources */,
 				201169D72837B2E300F92B46 /* SourceControlNavigatorView.swift in Sources */,
+				5878DA82291863F900DD95A3 /* AcknowledgementsView.swift in Sources */,
 				20D839AB280DEB2900B27357 /* NoSelectionView.swift in Sources */,
 				20EBB505280C329800F3A5DA /* HistoryItem.swift in Sources */,
 				043C321627E3201F006AE443 /* WorkspaceDocument.swift in Sources */,
@@ -1501,10 +1554,6 @@
 		5CF38A5D27E48E6C0096A0F7 /* CodeFile */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = CodeFile;
-		};
-		64B64EDD27F7B79400C400F1 /* About */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = About;
 		};
 		D70F5E2B27E4E8CF004EE4B9 /* WelcomeModule */ = {
 			isa = XCSwiftPackageProductDependency;

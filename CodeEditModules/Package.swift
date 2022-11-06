@@ -46,14 +46,6 @@ let package = Package(
             targets: ["AppPreferences"]
         ),
         .library(
-            name: "About",
-            targets: ["About"]
-        ),
-        .library(
-            name: "Acknowledgements",
-            targets: ["Acknowledgements"]
-        ),
-        .library(
             name: "QuickOpen",
             targets: ["QuickOpen"]
         ),
@@ -250,14 +242,6 @@ let package = Package(
             resources: [.copy("Resources")]
         ),
         .target(
-            name: "About",
-            dependencies: [
-                "Acknowledgements",
-                "CodeEditUtils"
-            ],
-            path: "Modules/About/src"
-        ),
-        .target(
             name: "QuickOpen",
             dependencies: [
                 "WorkspaceClient",
@@ -285,10 +269,6 @@ let package = Package(
             ],
             path: "Modules/CodeEditUI/Tests",
             exclude: ["__Snapshots__"]
-        ),
-        .target(
-            name: "Acknowledgements",
-            path: "Modules/Acknowledgements/src"
         ),
         .target(
             name: "CodeEditExtension",

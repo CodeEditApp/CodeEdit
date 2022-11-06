@@ -8,7 +8,6 @@
 import SwiftUI
 import AppPreferences
 import Preferences
-import About
 import WelcomeModule
 import CodeEditExtension
 import Feedback

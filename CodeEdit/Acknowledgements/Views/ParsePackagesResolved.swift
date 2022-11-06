@@ -29,11 +29,11 @@ struct Object: Codable {
 struct Pin: Codable {
     let package: String
     let repositoryURL: String
-    let state: State
+    let state: PackageState
 }
 
 // MARK: - State
-struct State: Codable {
+struct PackageState: Codable {
     let revision: String
     let version: String?
 }
