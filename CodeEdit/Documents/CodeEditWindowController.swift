@@ -10,7 +10,6 @@ import SwiftUI
 import CodeFile
 import CodeEditUI
 import Commands
-import QuickOpen
 import Git
 import AppPreferences
 import Keybindings

@@ -46,10 +46,6 @@ let package = Package(
             targets: ["AppPreferences"]
         ),
         .library(
-            name: "QuickOpen",
-            targets: ["QuickOpen"]
-        ),
-        .library(
             name: "CodeEditUI",
             targets: ["CodeEditUI"]
         ),
@@ -240,15 +236,6 @@ let package = Package(
             ],
             path: "Modules/AppPreferences/src",
             resources: [.copy("Resources")]
-        ),
-        .target(
-            name: "QuickOpen",
-            dependencies: [
-                "WorkspaceClient",
-                "CodeFile",
-                "CodeEditUI",
-            ],
-            path: "Modules/QuickOpen/src"
         ),
         .target(
             name: "CodeEditUI",

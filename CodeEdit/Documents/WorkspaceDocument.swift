@@ -12,7 +12,6 @@ import WorkspaceClient
 import Combine
 import CodeFile
 import Search
-import QuickOpen
 import CodeEditKit
 import CodeEditUtils
 import Commands
