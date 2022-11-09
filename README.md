@@ -11,12 +11,6 @@
     <img alt="" src="https://img.shields.io/badge/Join%20the%20community-black.svg?style=for-the-badge&logo=Discord">
   </a>
 </p>
-<p align="center">
-  <a href="https://github.com/orgs/CodeEditApp/projects/3/views/4">
-    <img alt="" src="https://img.shields.io/github/issues/CodeEditApp/CodeEdit/hacktoberfest?color=%237c7fff&style=for-the-badge">
-  </a>
-</p>
-
 
 CodeEdit is a code editor built by the community, for the community, written entirely and unapologetically for macOS. Features include syntax highlighting, code completion, project find and replace, snippets, terminal, task running, debugging, git integration, code review, extensions, and more. 
 
