@@ -265,7 +265,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     }
 
     @IBAction func openQuickly(_ sender: Any) {
-        if let workspace = workspace, let state = workspace.quickOpenState {
+        if let workspace = workspace, let state = workspace.quickOpenViewModel {
             if let quickOpenPanel = quickOpenPanel {
                 if quickOpenPanel.isKeyWindow {
                     quickOpenPanel.close()

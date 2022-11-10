@@ -9,19 +9,21 @@ import SwiftUI
 import WorkspaceClient
 import CodeEditUI
 
-public struct BreadcrumbsView: View {
+struct BreadcrumbsView: View {
+
+    private let file: WorkspaceClient.FileItem
+    private let tappedOpenFile: (WorkspaceClient.FileItem) -> Void
+
     @Environment(\.colorScheme)
     private var colorScheme
 
     @Environment(\.controlActiveState)
     private var activeState
 
-    @State private var fileItems: [WorkspaceClient.FileItem] = []
+    @State
+    private var fileItems: [WorkspaceClient.FileItem] = []
 
-    private let file: WorkspaceClient.FileItem
-    private let tappedOpenFile: (WorkspaceClient.FileItem) -> Void
-
-    public init(
+    init(
         file: WorkspaceClient.FileItem,
         tappedOpenFile: @escaping (WorkspaceClient.FileItem) -> Void
     ) {
@@ -29,7 +31,7 @@ public struct BreadcrumbsView: View {
         self.tappedOpenFile = tappedOpenFile
     }
 
-    public var body: some View {
+    var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 1.5) {
                 ForEach(fileItems, id: \.self) { fileItem in

@@ -8,11 +8,11 @@
 import AppKit
 import WorkspaceClient
 
-public final class BreadcrumsMenu: NSMenu, NSMenuDelegate {
+final class BreadcrumsMenu: NSMenu, NSMenuDelegate {
     private let fileItems: [WorkspaceClient.FileItem]
     private let tappedOpenFile: (WorkspaceClient.FileItem) -> Void
 
-    public init(
+    init(
         fileItems: [WorkspaceClient.FileItem],
         tappedOpenFile: @escaping (WorkspaceClient.FileItem) -> Void
     ) {
@@ -37,7 +37,7 @@ public final class BreadcrumsMenu: NSMenu, NSMenuDelegate {
     }
 
     /// Only when menu item is highlighted then generate its submenu
-    public func menu(_: NSMenu, willHighlight item: NSMenuItem?) {
+    func menu(_: NSMenu, willHighlight item: NSMenuItem?) {
         if let highlightedItem = item, let submenuItems = highlightedItem.submenu?.items, submenuItems.isEmpty {
             if let highlightedFileItem = highlightedItem.representedObject as? WorkspaceClient.FileItem {
                 highlightedItem.submenu = generateSubmenu(highlightedFileItem)

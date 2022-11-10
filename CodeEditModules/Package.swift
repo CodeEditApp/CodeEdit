@@ -58,10 +58,6 @@ let package = Package(
             targets: ["ExtensionsStore"]
         ),
         .library(
-            name: "Breadcrumbs",
-            targets: ["Breadcrumbs"]
-        ),
-        .library(
             name: "Feedback",
             targets: ["Feedback"]
         ),
@@ -273,14 +269,6 @@ let package = Package(
                 "LSP"
             ],
             path: "Modules/ExtensionsStore/src"
-        ),
-        .target(
-            name: "Breadcrumbs",
-            dependencies: [
-                "WorkspaceClient",
-                "AppPreferences",
-            ],
-            path: "Modules/Breadcrumbs/src"
         ),
         .target(
             name: "Feedback",

@@ -9,7 +9,7 @@ import SwiftUI
 import WorkspaceClient
 
 struct QuickOpenItem: View {
-    
+
     private let baseDirectory: URL
     private let fileItem: WorkspaceClient.FileItem
 

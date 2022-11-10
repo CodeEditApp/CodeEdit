@@ -9,19 +9,24 @@ import AppPreferences
 import SwiftUI
 import WorkspaceClient
 
-public struct BreadcrumbsComponent: View {
+struct BreadcrumbsComponent: View {
+
+    private let fileItem: WorkspaceClient.FileItem
+    private let tappedOpenFile: (WorkspaceClient.FileItem) -> Void
+
     @Environment(\.colorScheme)
     var colorScheme
 
     @Environment(\.controlActiveState)
     private var activeState
 
-    @StateObject private var prefs: AppPreferencesModel = .shared
-    @State var position: NSPoint?
-    private let fileItem: WorkspaceClient.FileItem
-    private let tappedOpenFile: (WorkspaceClient.FileItem) -> Void
+    @StateObject
+    private var prefs: AppPreferencesModel = .shared
 
-    public init(
+    @State
+    var position: NSPoint?
+
+    init(
         fileItem: WorkspaceClient.FileItem,
         tappedOpenFile: @escaping (WorkspaceClient.FileItem) -> Void
     ) {
@@ -46,7 +51,7 @@ public struct BreadcrumbsComponent: View {
         )
     }
 
-    public var body: some View {
+    var body: some View {
         HStack(alignment: .center, spacing: 5) {
             Image(systemName: image)
                 .resizable()

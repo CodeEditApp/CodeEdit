@@ -10,16 +10,16 @@ import SwiftUI
 import WorkspaceClient
 
 struct QuickOpenPreviewView: View {
-    
+
     private let queue = DispatchQueue(label: "austincondiff.CodeEdit.quickOpen.preview")
     private let item: WorkspaceClient.FileItem
-    
+
     @State
     private var content: String = ""
-    
+
     @State
     private var loaded = false
-    
+
     @State
     private var error: String?
 

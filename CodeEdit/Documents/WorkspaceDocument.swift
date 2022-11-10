@@ -33,7 +33,7 @@ import TabBar
 
     var statusBarModel: StatusBarModel?
     var searchState: SearchState?
-    var quickOpenState: QuickOpenState?
+    var quickOpenViewModel: QuickOpenViewModel?
     var commandsPaletteState: CommandPaletteState?
     var listenerModel: WorkspaceNotificationModel = .init()
     private var cancellables = Set<AnyCancellable>()
@@ -287,7 +287,7 @@ import TabBar
             ignoredFilesAndFolders: ignoredFilesAndDirectory
         )
         self.searchState = .init(self)
-        self.quickOpenState = .init(fileURL: url)
+        self.quickOpenViewModel = .init(fileURL: url)
         self.commandsPaletteState = .init()
         self.statusBarModel = .init(workspaceURL: url)
 
