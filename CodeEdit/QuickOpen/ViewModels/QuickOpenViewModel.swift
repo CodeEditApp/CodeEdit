@@ -8,15 +8,22 @@ import Combine
 import Foundation
 import WorkspaceClient
 
-public final class QuickOpenState: ObservableObject {
-    @Published var openQuicklyQuery: String = ""
-    @Published var openQuicklyFiles: [WorkspaceClient.FileItem] = []
-    @Published var isShowingOpenQuicklyFiles: Bool = false
+final class QuickOpenViewModel: ObservableObject {
+    
+    @Published
+    var openQuicklyQuery: String = ""
+    
+    @Published
+    var openQuicklyFiles: [WorkspaceClient.FileItem] = []
+    
+    @Published
+    var isShowingOpenQuicklyFiles: Bool = false
 
-    public let fileURL: URL
+    let fileURL: URL
+    
     private let queue = DispatchQueue(label: "austincondiff.CodeEdit.quickOpen.searchFiles")
 
-    public init(fileURL: URL) {
+    init(fileURL: URL) {
         self.fileURL = fileURL
     }
 

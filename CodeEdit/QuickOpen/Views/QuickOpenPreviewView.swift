@@ -5,24 +5,31 @@
 //  Created by Pavel Kasila on 20.03.22.
 //
 
+import CodeFile
 import SwiftUI
 import WorkspaceClient
-import CodeFile
 
-public struct QuickOpenPreviewView: View {
+struct QuickOpenPreviewView: View {
+    
     private let queue = DispatchQueue(label: "austincondiff.CodeEdit.quickOpen.preview")
     private let item: WorkspaceClient.FileItem
-    @State private var content: String = ""
-    @State private var loaded = false
-    @State private var error: String?
+    
+    @State
+    private var content: String = ""
+    
+    @State
+    private var loaded = false
+    
+    @State
+    private var error: String?
 
-    public init(
+    init(
         item: WorkspaceClient.FileItem
     ) {
         self.item = item
     }
 
-    public var body: some View {
+    var body: some View {
         VStack {
             if let codeFile = try? CodeFileDocument(
                 for: item.url,

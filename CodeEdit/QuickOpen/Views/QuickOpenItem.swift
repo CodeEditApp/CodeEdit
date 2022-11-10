@@ -8,11 +8,12 @@
 import SwiftUI
 import WorkspaceClient
 
-public struct QuickOpenItem: View {
+struct QuickOpenItem: View {
+    
     private let baseDirectory: URL
     private let fileItem: WorkspaceClient.FileItem
 
-    public init(
+    init(
         baseDirectory: URL,
         fileItem: WorkspaceClient.FileItem
     ) {
@@ -20,7 +21,7 @@ public struct QuickOpenItem: View {
         self.fileItem = fileItem
     }
 
-    public var body: some View {
+    var body: some View {
         HStack(spacing: 8) {
             Image(nsImage: NSWorkspace.shared.icon(forFile: fileItem.url.path))
                 .resizable()

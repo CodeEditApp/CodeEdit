@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-final class AcknowledgementsModel: ObservableObject {
+final class AcknowledgementsViewModel: ObservableObject {
 
     @Published
     private (set) var acknowledgements: [Dependency]
 
-    public init(_ dependencies: [Dependency] = []) {
+    init(_ dependencies: [Dependency] = []) {
         self.acknowledgements = dependencies
 
         if acknowledgements.isEmpty {
@@ -20,7 +20,7 @@ final class AcknowledgementsModel: ObservableObject {
         }
     }
 
-    public func fetchDependencies() {
+    func fetchDependencies() {
         self.acknowledgements.removeAll()
         do {
             if let bundlePath = Bundle.main.path(forResource: "Package.resolved", ofType: nil) {

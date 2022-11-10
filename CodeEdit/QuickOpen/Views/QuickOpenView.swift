@@ -5,18 +5,23 @@
 //  Created by Pavel Kasila on 20.03.22.
 //
 
+import CodeEditUI
 import SwiftUI
 import WorkspaceClient
-import CodeEditUI
 
-public struct QuickOpenView: View {
-    @ObservedObject private var state: QuickOpenState
+struct QuickOpenView: View {
+    
     private let onClose: () -> Void
     private let openFile: (WorkspaceClient.FileItem) -> Void
-    @State private var selectedItem: WorkspaceClient.FileItem?
+    
+    @ObservedObject
+    private var state: QuickOpenViewModel
+    
+    @State
+    private var selectedItem: WorkspaceClient.FileItem?
 
-    public init(
-        state: QuickOpenState,
+    init(
+        state: QuickOpenViewModel,
         onClose: @escaping () -> Void,
         openFile: @escaping (WorkspaceClient.FileItem) -> Void
     ) {
@@ -25,7 +30,7 @@ public struct QuickOpenView: View {
         self.openFile = openFile
     }
 
-    public var body: some View {
+    var body: some View {
         VStack(spacing: 0.0) {
             VStack {
                 HStack(alignment: .center, spacing: 0) {

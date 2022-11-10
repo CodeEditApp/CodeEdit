@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-public struct AcknowledgementsView: View {
+struct AcknowledgementsView: View {
 
     @ObservedObject
-    private var model: AcknowledgementsModel
+    private var model: AcknowledgementsViewModel
 
-    public init() {
+    init() {
         self.model = .init()
     }
 
@@ -20,7 +20,7 @@ public struct AcknowledgementsView: View {
         self.model = .init(dependencies)
     }
 
-    public var body: some View {
+    var body: some View {
         VStack(alignment: .leading, spacing: 15) {
             Text("Dependencies")
                 .font(.system(size: 18, weight: .semibold)).padding([.leading, .top], 10.0)
@@ -35,7 +35,7 @@ public struct AcknowledgementsView: View {
         }
     }
 
-    public func showWindow(width: CGFloat, height: CGFloat) {
+    func showWindow(width: CGFloat, height: CGFloat) {
         AcknowledgementsViewWindowController(view: self, size: NSSize(width: width, height: height)).showWindow(nil)
     }
 }
