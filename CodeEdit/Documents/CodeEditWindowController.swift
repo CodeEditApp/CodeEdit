@@ -9,7 +9,6 @@ import Cocoa
 import SwiftUI
 import CodeFile
 import CodeEditUI
-import Commands
 import Git
 import AppPreferences
 import Keybindings

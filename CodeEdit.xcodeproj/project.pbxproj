@@ -90,9 +90,10 @@
 		5878DAB0291D627C00DD95A3 /* BreadcrumbsMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5878DAAD291D627C00DD95A3 /* BreadcrumbsMenu.swift */; };
 		5878DAB1291D627C00DD95A3 /* BreadcrumbsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5878DAAE291D627C00DD95A3 /* BreadcrumbsComponent.swift */; };
 		5878DAB2291D627C00DD95A3 /* BreadcrumbsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5878DAAF291D627C00DD95A3 /* BreadcrumbsView.swift */; };
+		58FD7608291EA1CB0051D6E4 /* CommandPaletteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FD7605291EA1CB0051D6E4 /* CommandPaletteViewModel.swift */; };
+		58FD7609291EA1CB0051D6E4 /* CommandPaletteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FD7607291EA1CB0051D6E4 /* CommandPaletteView.swift */; };
 		5C403B8F27E20F8000788241 /* WorkspaceClient in Frameworks */ = {isa = PBXBuildFile; productRef = 5C403B8E27E20F8000788241 /* WorkspaceClient */; };
 		5C4BB1E128212B1E00A92FB2 /* World.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4BB1E028212B1E00A92FB2 /* World.swift */; };
-		5C7448AC28EF2E2E00F73D21 /* Commands in Frameworks */ = {isa = PBXBuildFile; productRef = 5C7448AB28EF2E2E00F73D21 /* Commands */; };
 		5CF38A5E27E48E6C0096A0F7 /* CodeFile in Frameworks */ = {isa = PBXBuildFile; productRef = 5CF38A5D27E48E6C0096A0F7 /* CodeFile */; };
 		6C05A8AF284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C05A8AE284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift */; };
 		6C14CEB028777D3C001468FE /* FindNavigatorListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C14CEAF28777D3C001468FE /* FindNavigatorListViewController.swift */; };
@@ -238,6 +239,8 @@
 		5878DAAD291D627C00DD95A3 /* BreadcrumbsMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BreadcrumbsMenu.swift; sourceTree = "<group>"; };
 		5878DAAE291D627C00DD95A3 /* BreadcrumbsComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BreadcrumbsComponent.swift; sourceTree = "<group>"; };
 		5878DAAF291D627C00DD95A3 /* BreadcrumbsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BreadcrumbsView.swift; sourceTree = "<group>"; };
+		58FD7605291EA1CB0051D6E4 /* CommandPaletteViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandPaletteViewModel.swift; sourceTree = "<group>"; };
+		58FD7607291EA1CB0051D6E4 /* CommandPaletteView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandPaletteView.swift; sourceTree = "<group>"; };
 		5C4BB1E028212B1E00A92FB2 /* World.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = World.swift; sourceTree = "<group>"; };
 		6C05A8AE284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkspaceDocument+Listeners.swift"; sourceTree = "<group>"; };
 		6C14CEAF28777D3C001468FE /* FindNavigatorListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindNavigatorListViewController.swift; sourceTree = "<group>"; };
@@ -286,7 +289,6 @@
 				2864BAAC28117B3F002DBD1A /* ShellClient in Frameworks */,
 				2864BAAE28117D7C002DBD1A /* TerminalEmulator in Frameworks */,
 				5C403B8F27E20F8000788241 /* WorkspaceClient in Frameworks */,
-				5C7448AC28EF2E2E00F73D21 /* Commands in Frameworks */,
 				2803257127F3CF1F009C7DC2 /* AppPreferences in Frameworks */,
 				2040F0B1280AE96100411B6F /* CodeEditUtils in Frameworks */,
 				D70F5E2C27E4E8CF004EE4B9 /* WelcomeModule in Frameworks */,
@@ -605,6 +607,31 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		58FD7603291EA1CB0051D6E4 /* Commands */ = {
+			isa = PBXGroup;
+			children = (
+				58FD7604291EA1CB0051D6E4 /* ViewModels */,
+				58FD7606291EA1CB0051D6E4 /* Views */,
+			);
+			path = Commands;
+			sourceTree = "<group>";
+		};
+		58FD7604291EA1CB0051D6E4 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				58FD7605291EA1CB0051D6E4 /* CommandPaletteViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		58FD7606291EA1CB0051D6E4 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				58FD7607291EA1CB0051D6E4 /* CommandPaletteView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		5C403B8D27E20F8000788241 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -648,6 +675,7 @@
 		B658FB2E27DA9E0F00EA4DBD /* CodeEdit */ = {
 			isa = PBXGroup;
 			children = (
+				58FD7603291EA1CB0051D6E4 /* Commands */,
 				5878DA7D291862BC00DD95A3 /* Acknowledgements */,
 				582213EE2918345500EFE361 /* About */,
 				5878DAAB291D627C00DD95A3 /* Breadcrumbs */,
@@ -767,7 +795,6 @@
 				043BCF06281DA2F5000AC47C /* TabBar */,
 				FA6BA6F0282ACAD600019309 /* Keybindings */,
 				20AFDC7E28206701001A4FC7 /* Git */,
-				5C7448AB28EF2E2E00F73D21 /* Commands */,
 				2801BB89290D5A8E00EBF552 /* CodeEditKit */,
 				5867933928F5DC7A00D5DE54 /* CodeEditExtension */,
 			);
@@ -989,6 +1016,7 @@
 				201169D92837B31200F92B46 /* SourceControlSearchToolbar.swift in Sources */,
 				0483E35027FDB17700354AC0 /* ExtensionNavigator.swift in Sources */,
 				201169DB2837B34000F92B46 /* ChangedFileItemView.swift in Sources */,
+				58FD7609291EA1CB0051D6E4 /* CommandPaletteView.swift in Sources */,
 				2B7A583527E4BA0100D25D4E /* AppDelegate.swift in Sources */,
 				D7012EE827E757850001E1EF /* FindNavigator.swift in Sources */,
 				D7E201AE27E8B3C000CB86D0 /* String+Ranges.swift in Sources */,
@@ -1029,6 +1057,7 @@
 				04C3254B27FF23B000C8DA2D /* ExtensionNavigatorData.swift in Sources */,
 				287776EF27E3515300D46668 /* TabBarItem.swift in Sources */,
 				5878DAA8291AE76700DD95A3 /* QuickOpenItem.swift in Sources */,
+				58FD7608291EA1CB0051D6E4 /* CommandPaletteViewModel.swift in Sources */,
 				5878DA872918642F00DD95A3 /* AcknowledgementsViewModel.swift in Sources */,
 				04660F6A27E51E5C00477777 /* CodeEditWindowController.swift in Sources */,
 				043BCF05281DA19A000AC47C /* WorkspaceDocument+Selection.swift in Sources */,
@@ -1600,10 +1629,6 @@
 		5C403B8E27E20F8000788241 /* WorkspaceClient */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = WorkspaceClient;
-		};
-		5C7448AB28EF2E2E00F73D21 /* Commands */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Commands;
 		};
 		5CF38A5D27E48E6C0096A0F7 /* CodeFile */ = {
 			isa = XCSwiftPackageProductDependency;

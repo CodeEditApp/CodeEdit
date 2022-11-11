@@ -14,7 +14,6 @@ import CodeFile
 import Search
 import CodeEditKit
 import CodeEditUtils
-import Commands
 import ExtensionsStore
 import CodeEditExtension
 import StatusBar
@@ -34,7 +33,7 @@ import TabBar
     var statusBarModel: StatusBarModel?
     var searchState: SearchState?
     var quickOpenViewModel: QuickOpenViewModel?
-    var commandsPaletteState: CommandPaletteState?
+    var commandsPaletteState: CommandPaletteViewModel?
     var listenerModel: WorkspaceNotificationModel = .init()
     private var cancellables = Set<AnyCancellable>()
 

@@ -10,17 +10,31 @@ import Keybindings
 import CodeEditUI
 
 /// Command palette view
-public struct CommandPaletteView: View {
-    @ObservedObject private var state: CommandPaletteState
-    @ObservedObject var commandManager: CommandManager = CommandManager.shared
+struct CommandPaletteView: View {
 
-    @Environment(\.colorScheme) var colorScheme: ColorScheme
+    @Environment(\.colorScheme)
+    private var colorScheme: ColorScheme
 
-    @State private var monitor: Any?
-    @State private var selectedItem: Command?
+    @ObservedObject
+    private var state: CommandPaletteViewModel
+
+    @ObservedObject
+    private var commandManager: CommandManager = .shared
+
+    @State
+    private var monitor: Any?
+
+    @State
+    private var selectedItem: Command?
+
     private let closePalette: () -> Void
 
-    public init(state: CommandPaletteState, closePalette: @escaping () -> Void) {
+    private var commandsList: [Command] {
+        return $state.filteredCommands.wrappedValue.isEmpty && $state.commandQuery.wrappedValue.isEmpty ?
+             commandManager.commands : state.filteredCommands
+    }
+
+    init(state: CommandPaletteViewModel, closePalette: @escaping () -> Void) {
         self.state = state
         self.closePalette = closePalette
         self.selectedItem = commandsList.first
@@ -35,11 +49,6 @@ public struct CommandPaletteView: View {
         closePalette()
         command.closureWrapper.call()
         resetState()
-    }
-
-    var commandsList: [Command] {
-        return $state.filteredCommands.wrappedValue.isEmpty && $state.commandQuery.wrappedValue.isEmpty ?
-             commandManager.commands : state.filteredCommands
     }
 
     func selectNext() {
@@ -124,7 +133,7 @@ public struct CommandPaletteView: View {
         return colorScheme == .dark ? .white : .black
     }
 
-    public var body: some View {
+    var body: some View {
         VStack(spacing: 0.0) {
                 HStack(alignment: .center, spacing: 0) {
                     Image(systemName: "command")
@@ -133,9 +142,8 @@ public struct CommandPaletteView: View {
                         .frame(width: 16, height: 16)
                         .padding(.leading, 20)
                         .offset(x: 0, y: 1)
-                    ActionAwareInput(onDown: onKeyDown,
-                                     onTextChange: onQueryChange,
-                                     text: $state.commandQuery)
+                    ActionAwareInput(text: $state.commandQuery, onDown: onKeyDown,
+                                     onTextChange: onQueryChange)
                         .font(.system(size: 24, weight: .light, design: .default))
                         .padding(16)
                         .frame(height: 52, alignment: .center)
@@ -217,7 +225,7 @@ class ActionAwareInputView: NSTextView, NSTextFieldDelegate {
 /// the only way to fallback to UIKit and have NSViewRepresentable to be a bridge between UIKit and SwiftUI.
 /// Highlights currently entered text query
 
-public struct SearchResultLabel: NSViewRepresentable {
+struct SearchResultLabel: NSViewRepresentable {
 
     var labelName: String
     var textToMatch: String
@@ -250,7 +258,7 @@ public struct SearchResultLabel: NSViewRepresentable {
         return attribText
     }
 
-    public func updateNSView(_ nsView: NSViewType, context: Context) {
+    func updateNSView(_ nsView: NSViewType, context: Context) {
         nsView.textColor = NSColor(fontColor.opacity(0.55))
         nsView.attributedStringValue = highlight()
     }
@@ -259,17 +267,20 @@ public struct SearchResultLabel: NSViewRepresentable {
 
 /// A special NSTextView based input that allows to override onkeyDown events and add according handlers.
 /// Very useful when need to use arrows to navigate through the list of items that matches entered text
-public struct ActionAwareInput: NSViewRepresentable {
+struct ActionAwareInput: NSViewRepresentable {
+
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     var fontColor: Color {
-            colorScheme == .dark ? .white : .black
-        }
+        colorScheme == .dark ? .white : .black
+    }
+
+    @Binding
+    var text: String
 
     var onDown: ((NSEvent) -> Bool)?
     var onTextChange: ((String) -> Void)
-    @Binding var text: String
 
-    public func makeNSView(context: Context) -> some NSTextView {
+    func makeNSView(context: Context) -> some NSTextView {
         let input = ActionAwareInputView()
         input.textContainer?.maximumNumberOfLines = 1
         input.onTextChange = onTextChange
@@ -284,7 +295,7 @@ public struct ActionAwareInput: NSViewRepresentable {
         return input
     }
 
-    public func updateNSView(_ nsView: NSViewType, context: Context) {
+    func updateNSView(_ nsView: NSViewType, context: Context) {
         nsView.textContainer?.textView?.string = text
         // This way we can update light/dark mode font color
         nsView.textContainer?.textView?.textColor = NSColor(fontColor)

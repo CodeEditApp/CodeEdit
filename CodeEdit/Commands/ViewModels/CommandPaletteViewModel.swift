@@ -10,22 +10,29 @@ import Keybindings
 
 /// Simple state class for command palette view. Contains currently selected command,
 /// query text and list of filtered commands
+final class CommandPaletteViewModel: ObservableObject {
 
-public final class CommandPaletteState: ObservableObject {
-    @Published var commandQuery: String = ""
-    @Published var selected: Command?
-    @Published var isShowingCommandsList: Bool = true
-    @Published var filteredCommands: [Command] = []
+    @Published
+    var commandQuery: String = ""
 
-    public init() {}
+    @Published
+    var selected: Command?
 
-    public func reset() {
+    @Published
+    var isShowingCommandsList: Bool = true
+
+    @Published
+    var filteredCommands: [Command] = []
+
+    init() {}
+
+    func reset() {
         commandQuery = ""
         selected = nil
         filteredCommands = []
     }
 
-    public func fetchMatchingCommands(val: String) {
+    func fetchMatchingCommands(val: String) {
         if val == "" {
             self.filteredCommands = []
             return
