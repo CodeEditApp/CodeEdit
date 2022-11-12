@@ -125,7 +125,7 @@ let package = Package(
         ),
         .package(
             url: "https://github.com/CodeEditApp/CodeEditTextView.git",
-            exact: "0.1.1"
+            exact: "0.1.3"
         ),
     ],
     targets: [
