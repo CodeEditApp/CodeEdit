@@ -201,7 +201,7 @@ Licensed under the [MIT license](https://github.com/CodeEditApp/CodeEdit/blob/ma
     <td align="center">
       <a href="https://github.com/CodeEditApp/CodeEditLanguages">
         <img src="https://user-images.githubusercontent.com/806104/201497920-d6aace8d-f0dc-49f6-bcd7-6a3b64cc384c.png" height="128">
-        <p>CodeEditTextLanguages</p>
+        <p>CodeEditLanguages</p>
       </a>
     </td>
   </tr>
