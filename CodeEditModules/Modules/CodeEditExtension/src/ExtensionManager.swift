@@ -102,6 +102,8 @@ public final class ExtensionManager {
 
     /// Opens the extension, reads and parses the manifest.json file
     /// - Parameter bundleURL: The URL of the bundle that should be loaded
+    ///
+    // TODO: Reimplement this with XPC
     private func preload(_ bundleURL: URL) {
         guard let bundle = Bundle(url: bundleURL) else { return }
         guard bundle.bundleIdentifier != nil else { return }
@@ -124,6 +126,8 @@ public final class ExtensionManager {
     }
 
     /// Triggers the build function of the extension and thereby activates the extesion
+    ///
+    // TODO: Reimplement this with XPC
     private func load(_ bundle: Bundle, _ apiBuilder: (String) -> ExtensionAPI) {
         for bundle in loadedBundles {
             guard let bundleIdentifier = bundle.bundleIdentifier else { continue }
@@ -140,5 +144,9 @@ public final class ExtensionManager {
                 instance: extInstance
             )
         }
+    }
+
+    private func unload(_ bundle: Bundle) {
+        // TODO: Imeplement with XPC
     }
 }
