@@ -9,7 +9,6 @@ import SwiftUI
 import CodeFile
 import WorkspaceClient
 import StatusBar
-import Breadcrumbs
 import AppPreferences
 import UniformTypeIdentifiers
 

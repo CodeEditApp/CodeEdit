@@ -12,21 +12,34 @@ import AppPreferences
 import Git
 import ShellClient
 
-public struct WelcomeView: View {
-    @Environment(\.colorScheme) var colorScheme
-    @State var showGitClone = false
-    @State var showCheckoutBranch = false
-    @State private var repoPath = "~/"
-    @State var isHovering: Bool = false
-    @State var isHoveringClose: Bool = false
-    @StateObject private var prefs: AppPreferencesModel = .shared
+struct WelcomeView: View {
+    @Environment(\.colorScheme)
+    var colorScheme
+
+    @StateObject
+    private var prefs: AppPreferencesModel = .shared
+
+    @State
+    private var repoPath = "~/"
+
+    @State
+    var showGitClone = false
+
+    @State
+    var showCheckoutBranch = false
+
+    @State
+    var isHovering: Bool = false
+
+    @State
+    var isHoveringClose: Bool = false
 
     private let openDocument: (URL?, @escaping () -> Void) -> Void
     private let newDocument: () -> Void
     private let dismissWindow: () -> Void
     private let shellClient: ShellClient
 
-    public init(
+    init(
         shellClient: ShellClient,
         openDocument: @escaping (URL?, @escaping () -> Void) -> Void,
         newDocument: @escaping () -> Void,
@@ -90,18 +103,18 @@ public struct WelcomeView: View {
         pasteboard.setString(copyString, forType: .string)
     }
 
-    public var body: some View {
+    var body: some View {
         ZStack(alignment: .topLeading) {
             VStack(spacing: 8) {
                 Spacer().frame(height: 12)
                 Image(nsImage: NSApp.applicationIconImage)
                     .resizable()
                     .frame(width: 128, height: 128)
-                Text(NSLocalizedString("Welcome to CodeEdit", bundle: .module, comment: ""))
+                Text(NSLocalizedString("Welcome to CodeEdit", comment: ""))
                     .font(.system(size: 38))
                 Text(
                     String(
-                        format: NSLocalizedString("Version %@ (%@)", bundle: .module, comment: ""),
+                        format: NSLocalizedString("Version %@ (%@)", comment: ""),
                         appVersion,
                         appBuild
                     )
@@ -124,8 +137,8 @@ public struct WelcomeView: View {
                     VStack(alignment: .leading, spacing: 15) {
                         WelcomeActionView(
                             iconName: "plus.square",
-                            title: NSLocalizedString("Create a new file", bundle: .module, comment: ""),
-                            subtitle: NSLocalizedString("Create a new file", bundle: .module, comment: "")
+                            title: NSLocalizedString("Create a new file", comment: ""),
+                            subtitle: NSLocalizedString("Create a new file", comment: "")
                         )
                         .onTapGesture {
                             newDocument()
@@ -133,10 +146,9 @@ public struct WelcomeView: View {
                         }
                         WelcomeActionView(
                             iconName: "folder",
-                            title: NSLocalizedString("Open a file or folder", bundle: .module, comment: ""),
+                            title: NSLocalizedString("Open a file or folder", comment: ""),
                             subtitle: NSLocalizedString(
                                 "Open an existing file or folder on your Mac",
-                                bundle: .module,
                                 comment: ""
                             )
                         )
@@ -145,10 +157,9 @@ public struct WelcomeView: View {
                         }
                         WelcomeActionView(
                             iconName: "plus.square.on.square",
-                            title: NSLocalizedString("Clone an exisiting project", bundle: .module, comment: ""),
+                            title: NSLocalizedString("Clone an exisiting project", comment: ""),
                             subtitle: NSLocalizedString(
                                 "Start working on something from a Git repository",
-                                bundle: .module,
                                 comment: ""
                             )
                         )

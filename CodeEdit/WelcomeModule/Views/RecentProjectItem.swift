@@ -14,14 +14,14 @@ extension String {
     }
 }
 
-public struct RecentProjectItem: View {
+struct RecentProjectItem: View {
     let projectPath: String
 
-    public init(projectPath: String) {
+    init(projectPath: String) {
         self.projectPath = projectPath
     }
 
-    public var body: some View {
+    var body: some View {
         HStack(spacing: 8) {
             Image(nsImage: NSWorkspace.shared.icon(forFile: projectPath))
                 .resizable()

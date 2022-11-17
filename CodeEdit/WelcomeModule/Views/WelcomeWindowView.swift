@@ -8,14 +8,13 @@
 import SwiftUI
 import ShellClient
 
-public struct WelcomeWindowView: View {
-
+struct WelcomeWindowView: View {
     private let openDocument: (URL?, @escaping () -> Void) -> Void
     private let newDocument: () -> Void
     private let dismissWindow: () -> Void
     private let shellClient: ShellClient
 
-    public init(
+    init(
         shellClient: ShellClient,
         openDocument: @escaping (URL?, @escaping () -> Void) -> Void,
         newDocument: @escaping () -> Void,
@@ -27,7 +26,7 @@ public struct WelcomeWindowView: View {
         self.dismissWindow = dismissWindow
     }
 
-    public var body: some View {
+    var body: some View {
         HStack(spacing: 0) {
             WelcomeView(
                 shellClient: shellClient,

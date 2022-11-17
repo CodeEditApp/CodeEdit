@@ -18,10 +18,6 @@ let package = Package(
             targets: ["CodeFile"]
         ),
         .library(
-            name: "WelcomeModule",
-            targets: ["WelcomeModule"]
-        ),
-        .library(
             name: "StatusBar",
             targets: ["StatusBar"]
         ),
@@ -142,31 +138,6 @@ let package = Package(
                 "CodeFile",
             ],
             path: "Modules/CodeFile/Tests"
-        ),
-        .target(
-            name: "WelcomeModule",
-            dependencies: [
-                "WorkspaceClient",
-                "CodeEditUI",
-                "Git",
-                "AppPreferences",
-                "Keybindings",
-            ],
-            path: "Modules/WelcomeModule/src",
-            resources: [
-                .process("Resources"),
-            ]
-        ),
-        .testTarget(
-            name: "WelcomeModuleTests",
-            dependencies: [
-                "WelcomeModule",
-                "Git",
-                "ShellClient",
-                .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
-            ],
-            path: "Modules/WelcomeModule/Tests",
-            exclude: ["__Snapshots__"]
         ),
         .target(
             name: "StatusBar",

@@ -6,7 +6,6 @@
 //
 
 import Cocoa
-import WelcomeModule
 
 final class CodeEditDocumentController: NSDocumentController {
     override func openDocument(_ sender: Any?) {

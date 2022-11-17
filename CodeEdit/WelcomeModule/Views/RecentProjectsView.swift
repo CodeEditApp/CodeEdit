@@ -9,16 +9,22 @@ import WorkspaceClient
 import Keybindings
 import CodeEditUI
 
-public struct RecentProjectsView: View {
-    @State private var recentProjectPaths: [String]
-    @State private var selectedProjectPaths = Set<String>()
-    @State private var lastSelectedProjectPath = String()
+struct RecentProjectsView: View {
+    @State
+    private var recentProjectPaths: [String]
 
-    var mgr = KeybindingManager.shared
+    @State
+    private var selectedProjectPaths = Set<String>()
+
+    @State
+    private var lastSelectedProjectPath = String()
+
     private let openDocument: (URL?, @escaping () -> Void) -> Void
     private let dismissWindow: () -> Void
 
-    public init(
+    var mgr = KeybindingManager.shared
+
+    init(
         openDocument: @escaping (URL?, @escaping () -> Void) -> Void,
         dismissWindow: @escaping () -> Void
     ) {
@@ -30,7 +36,7 @@ public struct RecentProjectsView: View {
     private var emptyView: some View {
         VStack {
             Spacer()
-            Text(NSLocalizedString("No Recent Projects", bundle: .module, comment: ""))
+            Text(NSLocalizedString("No Recent Projects", comment: ""))
                 .font(.system(size: 20))
             Spacer()
         }
@@ -38,7 +44,7 @@ public struct RecentProjectsView: View {
 
     func contextMenuShowInFinder(projectPath: String) -> some View {
         Group {
-            Button(NSLocalizedString("Show in Finder", bundle: .module, comment: "")) {
+            Button(NSLocalizedString("Show in Finder", comment: "")) {
                 if selectedProjectPaths.contains(projectPath) {
                     self.selectedProjectPaths.forEach { projectPath in
                         guard let url = URL(string: "file://\(projectPath)") else {
@@ -58,7 +64,7 @@ public struct RecentProjectsView: View {
 
     func contextMenuCopy(path: String) -> some View {
         Group {
-            Button(NSLocalizedString("Copy Path", bundle: .module, comment: "")) {
+            Button(NSLocalizedString("Copy Path", comment: "")) {
                 let pasteboard = NSPasteboard.general
                 pasteboard.declareTypes([.string], owner: nil)
                 pasteboard.setString(path, forType: .string)
@@ -68,7 +74,7 @@ public struct RecentProjectsView: View {
 
     func contextMenuDelete(projectPath: String) -> some View {
         Group {
-            Button(NSLocalizedString("Remove from Recent Projects", bundle: .module, comment: "")) {
+            Button(NSLocalizedString("Remove from Recent Projects", comment: "")) {
                 if selectedProjectPaths.contains(projectPath) {
                     self.selectedProjectPaths.forEach { projectPath in
                         deleteFromRecent(item: projectPath)
@@ -128,7 +134,7 @@ public struct RecentProjectsView: View {
         }
     }
 
-    public var body: some View {
+    var body: some View {
         VStack(alignment: !recentProjectPaths.isEmpty ? .leading : .center, spacing: 10) {
             if !recentProjectPaths.isEmpty {
                 List(recentProjectPaths, id: \.self, selection: $selectedProjectPaths) { projectPath in

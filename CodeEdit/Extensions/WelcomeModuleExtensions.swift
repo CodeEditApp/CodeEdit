@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import WelcomeModule
 
 extension WelcomeWindowView {
 
