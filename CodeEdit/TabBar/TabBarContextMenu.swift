@@ -33,6 +33,7 @@ struct TabBarContextMenu: ViewModifier {
     private var item: TabBarItemRepresentable
     private var isTemporary: Bool
 
+    // swiftlint:disable:next function_body_length
     func body(content: Content) -> some View {
         content.contextMenu(menuItems: {
             Group {

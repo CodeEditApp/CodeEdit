@@ -329,7 +329,6 @@ public extension Theme {
             ]
         }
 
-        // swiftlint:disable function_body_length
         /// Allows to look up properties by their name
         ///
         /// **Example:**

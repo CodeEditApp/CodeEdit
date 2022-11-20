@@ -17,38 +17,38 @@ extension String {
     ///   - limitedBy: An index to limit the offset by.
     /// - Returns: A `String.Index`
     func safeOffset(_ idx: String.Index, offsetBy offset: Int, limitedBy: String.Index) -> String.Index {
-        /// This is the odd case this method solves. Swift's
-        /// ``String.index(_:offsetBy:limitedBy:)``
-        /// will crash if the given index is equal to the offset, and
-        /// we try to go outside of the string's limits anyways.
+        // This is the odd case this method solves. Swift's
+        // ``String.index(_:offsetBy:limitedBy:)``
+        // will crash if the given index is equal to the offset, and
+        // we try to go outside of the string's limits anyways.
         if idx == limitedBy {
             return limitedBy
         } else if offset < 0 {
-            /// If the offset is going backwards, but the limit index
-            /// is ahead in the string we return the original index.
+            // If the offset is going backwards, but the limit index
+            // is ahead in the string we return the original index.
             if limitedBy > idx {
                 return idx
             }
 
-            //// Return the index offset by the given offset.
-            /// If this index is nil we return the limit index.
+            // Return the index offset by the given offset.
+            // If this index is nil we return the limit index.
             return index(idx,
                          offsetBy: offset,
                          limitedBy: limitedBy) ?? limitedBy
         } else if offset > 0 {
-            /// If the offset is going forwards, but the limit index
-            /// is behind in the string we return the original index.
+            // If the offset is going forwards, but the limit index
+            // is behind in the string we return the original index.
             if limitedBy < idx {
                 return idx
             }
 
-            /// Return the index offset by the given offset.
-            /// If this index is nil we return the limit index.
+            // Return the index offset by the given offset.
+            // If this index is nil we return the limit index.
             return index(idx,
                          offsetBy: offset,
                          limitedBy: limitedBy) ?? limitedBy
         } else {
-            /// The offset is 0, so we return the limit index.
+            // The offset is 0, so we return the limit index.
             return limitedBy
         }
     }
@@ -66,7 +66,7 @@ extension String {
         } else if offset > 0 {
             return safeOffset(idx, offsetBy: offset, limitedBy: self.endIndex)
         } else {
-            /// If the offset is 0 we return the original index.
+            // If the offset is 0 we return the original index.
             return idx
         }
     }

@@ -61,18 +61,18 @@ extension WorkspaceDocument {
             guard let filePaths = enumerator?.allObjects as? [URL] else { return }
 
             // TODO: Optimization
-            /// This could be optimized further by doing a couple things:
-            /// - Making sure strings and indexes are using UTF8 everywhere possible
-            ///   (this will increase matching speed and time taken to calculate byte offsets for string indexes)
-            /// - Lazily fetching file paths. Right now we do `enumerator.allObjects`, but using an actual
-            ///   enumerator object to lazily enumerate through files would drop time.
-            /// - Loop through each character instead of each line to find matches, then return the line if needed.
-            ///   This could help in cases when the file is one *massive* line (eg: a minified JS document).
-            ///   In that case this method would load that entire file into memory to find matches. To speed
-            ///   this up we could enumerate through each character instead of each line and when a match
-            ///   is found only copy a couple characters into the result object.
-            /// - Lazily load strings using `FileHandle.AsyncBytes`
-            ///   https://developer.apple.com/documentation/foundation/filehandle/3766681-bytes
+            // This could be optimized further by doing a couple things:
+            // - Making sure strings and indexes are using UTF8 everywhere possible
+            //   (this will increase matching speed and time taken to calculate byte offsets for string indexes)
+            // - Lazily fetching file paths. Right now we do `enumerator.allObjects`, but using an actual
+            //   enumerator object to lazily enumerate through files would drop time.
+            // - Loop through each character instead of each line to find matches, then return the line if needed.
+            //   This could help in cases when the file is one *massive* line (eg: a minified JS document).
+            //   In that case this method would load that entire file into memory to find matches. To speed
+            //   this up we could enumerate through each character instead of each line and when a match
+            //   is found only copy a couple characters into the result object.
+            // - Lazily load strings using `FileHandle.AsyncBytes`
+            //   https://developer.apple.com/documentation/foundation/filehandle/3766681-bytes
             filePaths.map { url in
                 WorkspaceClient.FileItem(url: url, children: nil)
             }.forEach { fileItem in

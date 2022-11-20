@@ -52,8 +52,9 @@ public class SearchResultMatchModel: Hashable, Identifiable {
     /// Will only return 60 characters before and after the matched result.
     /// - Returns: The formatted `NSAttributedString`
     public func attributedLabel() -> NSAttributedString {
-        /// By default `NSTextView` will ignore any paragraph wrapping set to the label when it's
-        /// using an `NSAttributedString` so we need to set the wrap mode here.
+
+        // By default `NSTextView` will ignore any paragraph wrapping set to the label when it's
+        // using an `NSAttributedString` so we need to set the wrap mode here.
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineBreakMode = .byCharWrapping
 
@@ -70,11 +71,10 @@ public class SearchResultMatchModel: Hashable, Identifiable {
             .paragraphStyle: paragraphStyle
         ]
 
-        /// Set up the search result string with the matched search in bold.
-        ///
-        /// We also limit the result to 60 characters before and after the
-        /// match to reduce *massive* results in the search result list, and for
-        /// cases where a file may be formatted in one line (eg: a minimized JS file).
+        // Set up the search result string with the matched search in bold.
+        // We also limit the result to 60 characters before and after the
+        // match to reduce *massive* results in the search result list, and for
+        // cases where a file may be formatted in one line (eg: a minimized JS file).
         let lowerIndex = lineContent.safeOffset(keywordRange.lowerBound, offsetBy: -60)
         let upperIndex = lineContent.safeOffset(keywordRange.upperBound, offsetBy: 60)
         let prefix = String(lineContent[lowerIndex..<keywordRange.lowerBound])

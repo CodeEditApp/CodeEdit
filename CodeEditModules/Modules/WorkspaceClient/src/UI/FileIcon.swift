@@ -9,7 +9,6 @@ import SwiftUI
 
 // TODO: DOCS (Nanashi Li)
 // swiftlint:disable missing_docs
-// swiftlint:disable function_body_length
 // swiftlint:disable cyclomatic_complexity
 public enum FileIcon {
 

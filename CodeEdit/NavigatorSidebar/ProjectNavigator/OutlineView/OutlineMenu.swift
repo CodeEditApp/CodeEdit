@@ -44,7 +44,6 @@ final class OutlineMenu: NSMenu {
         return mItem
     }
 
-    // swiftlint:disable function_body_length
     /// Setup the menu and disables certain items when `isFile` is false
     /// - Parameter isFile: A flag indicating that the item is a file instead of a directory
     private func setupMenu() {

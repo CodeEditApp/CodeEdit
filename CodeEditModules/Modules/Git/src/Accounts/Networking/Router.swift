@@ -119,8 +119,7 @@ public extension Router {
     /// Due to the complexity of the the urlQuery method we disabled lint for the this method
     /// only so that it doesn't complain... Note this level of complexity is needed to give us as
     /// much success rate as possible due to all git providers having different types of url schemes.
-    // swiftlint:disable:next cyclomatic_complexity
-    func urlQuery(_ parameters: [String: Any]) -> [URLQueryItem]? {
+    func urlQuery(_ parameters: [String: Any]) -> [URLQueryItem]? { // swiftlint:disable:this cyclomatic_complexity
         guard !parameters.isEmpty else { return nil }
 
         var components: [URLQueryItem] = []
@@ -177,7 +176,7 @@ public extension Router {
         case .form:
             let queryData = urlComponents.percentEncodedQuery?.data(using: String.Encoding.utf8)
 
-            /// clear the query items as they go into the body
+            // clear the query items as they go into the body
             urlComponents.queryItems = nil
 
             var mutableURLRequest = Foundation.URLRequest(url: urlComponents.url!)
@@ -351,7 +350,7 @@ private extension CharacterSet {
     /// https://github.com/Alamofire/Alamofire/blob/3.5rameterEncoding.swift#L220-L225
     static func URLQueryAllowedCharacterSet() -> CharacterSet {
 
-        /// does not include "?" or "/" due to RFC 3986 - Section 3.4
+        // does not include "?" or "/" due to RFC 3986 - Section 3.4
         let generalDelimitersToEncode = ":#[]@"
         let subDelimitersToEncode = "!$&'()*+,;="
 

@@ -418,14 +418,14 @@ struct TabBar: View {
         HStack(spacing: 2) {
             TabBarAccessoryIcon(
                 icon: .init(systemName: "chevron.left"),
-                action: { /* TODO */ }
+                action: {} // TODO: Implement
             )
             .foregroundColor(.secondary)
             .buttonStyle(.plain)
             .help("Navigate back")
             TabBarAccessoryIcon(
                 icon: .init(systemName: "chevron.right"),
-                action: { /* TODO */ }
+                action: {} // TODO: Implement
             )
             .foregroundColor(.secondary)
             .buttonStyle(.plain)
@@ -445,21 +445,21 @@ struct TabBar: View {
         HStack(spacing: 2) {
             TabBarAccessoryIcon(
                 icon: .init(systemName: "ellipsis.circle"),
-                action: { /* TODO */ }
+                action: {} // TODO: Implement
             )
             .foregroundColor(.secondary)
             .buttonStyle(.plain)
             .help("Options")
             TabBarAccessoryIcon(
                 icon: .init(systemName: "arrow.left.arrow.right.square"),
-                action: { /* TODO */ }
+                action: {} // TODO: Implement
             )
             .foregroundColor(.secondary)
             .buttonStyle(.plain)
             .help("Enable Code Review")
             TabBarAccessoryIcon(
                 icon: .init(systemName: "square.split.2x1"),
-                action: { /* TODO */ }
+                action: {} // TODO: Implement
             )
             .foregroundColor(.secondary)
             .buttonStyle(.plain)
