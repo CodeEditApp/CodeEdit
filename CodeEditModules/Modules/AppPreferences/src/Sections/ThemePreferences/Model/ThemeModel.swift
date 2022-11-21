@@ -122,7 +122,7 @@ public final class ThemeModel: ObservableObject {
     /// When overrides are found in `~/Library/Application Support/CodeEdit/.preferences.json`
     /// they are applied to the loaded themes without altering the original
     /// the files in `~/Library/Application Support/CodeEdit/themes/`.
-    public func loadThemes() throws {
+    public func loadThemes() throws { // swiftlint:disable:this function_body_length
         // remove all themes from memory
         themes.removeAll()
 
@@ -151,7 +151,8 @@ public final class ThemeModel: ObservableObject {
                       let editorColors = try theme.editor.allProperties() as? [String: Theme.Attributes]
                 else {
                     print("error")
-                    throw NSError()
+                    // TODO: Throw a proper error
+                    throw NSError() // swiftlint:disable:this discouraged_direct_init
                 }
 
                 // check if there are any overrides in `preferences.json`
@@ -288,7 +289,8 @@ public final class ThemeModel: ObservableObject {
                       let oTermColors = try originalTheme.terminal.allProperties() as? [String: Theme.Attributes],
                       let oEditColors = try originalTheme.editor.allProperties() as? [String: Theme.Attributes]
                 else {
-                    throw NSError()
+                    // TODO: Throw a proper error
+                    throw NSError() // swiftlint:disable:this discouraged_direct_init
                 }
 
                 // compare the properties and if there are differences, save to overrides

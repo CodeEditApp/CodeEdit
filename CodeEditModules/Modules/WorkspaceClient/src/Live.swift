@@ -19,9 +19,9 @@ public extension WorkspaceClient {
     ) throws -> Self {
         var flattenedFileItems: [String: FileItem] = [:]
 
-        /// Recursive loading of files into `FileItem`s
-        /// - Parameter url: The URL of the directory to load the items of
-        /// - Returns: `[FileItem]` representing the contents of the directory
+        // Recursive loading of files into `FileItem`s
+        // - Parameter url: The URL of the directory to load the items of
+        // - Returns: `[FileItem]` representing the contents of the directory
         func loadFiles(fromURL url: URL) throws -> [FileItem] {
             let directoryContents = try fileManager.contentsOfDirectory(at: url.resolvingSymlinksInPath(),
                                                                         includingPropertiesForKeys: nil)
@@ -68,10 +68,10 @@ public extension WorkspaceClient {
         var isRunning: Bool = false
         var anotherInstanceRan: Int = 0
 
-        /// Recursive function similar to `loadFiles`, but creates or deletes children of the
-        /// `FileItem` so that they are accurate with the file system, instead of creating an
-        /// entirely new `FileItem`, to prevent the `OutlineView` from going crazy with folding.
-        /// - Parameter fileItem: The `FileItem` to correct the children of
+        // Recursive function similar to `loadFiles`, but creates or deletes children of the
+        // `FileItem` so that they are accurate with the file system, instead of creating an
+        // entirely new `FileItem`, to prevent the `OutlineView` from going crazy with folding.
+        // - Parameter fileItem: The `FileItem` to correct the children of
         func rebuildFiles(fromItem fileItem: FileItem) throws -> Bool {
             var didChangeSomething = false
 

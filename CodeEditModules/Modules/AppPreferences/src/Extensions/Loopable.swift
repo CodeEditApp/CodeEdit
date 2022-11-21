@@ -36,7 +36,8 @@ extension Loopable {
         let mirror = Mirror(reflecting: self)
 
         guard let style = mirror.displayStyle, style == .struct || style == .class else {
-            throw NSError()
+            // TODO: Throw a proper error
+            throw NSError() // swiftlint:disable:this discouraged_direct_init
         }
 
         for (property, value) in mirror.children {
