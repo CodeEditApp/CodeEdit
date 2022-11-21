@@ -632,7 +632,6 @@
 				B658FB2927DA9E0F00EA4DBD /* Frameworks */,
 				B658FB2A27DA9E0F00EA4DBD /* Resources */,
 				2B18499A27F8A7A0005119F0 /* Mark // swiftlint:disable:all as errors | Run Script */,
-				2BA119D327E5274D00A996FF /* SwiftLint Run Script */,
 				04ADA0CC27E6043B00BF00B2 /* Add TODO/FIXME as warnings | Run Script */,
 				04C3255A2801B43A00C8DA2D /* Embed Frameworks */,
 				2BE487F528245162003F3F64 /* Embed Foundation Extensions */,
@@ -640,6 +639,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				287136B3292A408700E9F5F4 /* PBXTargetDependency */,
 				2BE487F328245162003F3F64 /* PBXTargetDependency */,
 			);
 			name = CodeEdit;
@@ -745,6 +745,7 @@
 			packageReferences = (
 				2816F592280CF50500DD548B /* XCRemoteSwiftPackageReference "CodeEditSymbols" */,
 				2801BB88290D5A8E00EBF552 /* XCRemoteSwiftPackageReference "CodeEditKit" */,
+				287136B1292A407E00E9F5F4 /* XCRemoteSwiftPackageReference "SwiftLintPlugin" */,
 			);
 			productRefGroup = B658FB2D27DA9E0F00EA4DBD /* Products */;
 			projectDirPath = "";
@@ -837,25 +838,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "TAGS=\"\\/\\/ swiftlint:disable all\"\necho \"searching ${SRCROOT} for ${TAGS}\"\nfind \"${SRCROOT}\" \\( -name \"*.swift\" \\) -print0 | xargs -0 egrep --with-filename --line-number --only-matching \"($TAGS).*\\$\" | perl -p -e \"s/($TAGS)/ error: Usage of \\$1 is prohibited/\"\n";
-		};
-		2BA119D327E5274D00A996FF /* SwiftLint Run Script */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "SwiftLint Run Script";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint >/dev/null; then\n  swiftlint --strict\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 		FDF7C12027FAE90F0039BA76 /* Copy Package.resolved into Project Directory */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -978,6 +960,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		287136B3292A408700E9F5F4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 287136B2292A408700E9F5F4 /* SwiftLint */;
+		};
 		2BE487F328245162003F3F64 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 2BE487EB28245162003F3F64 /* OpenWithCodeEdit */;
@@ -1426,6 +1412,14 @@
 				version = 0.1.0;
 			};
 		};
+		287136B1292A407E00E9F5F4 /* XCRemoteSwiftPackageReference "SwiftLintPlugin" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/lukepistrol/SwiftLintPlugin";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1474,6 +1468,11 @@
 		2864BAAD28117D7C002DBD1A /* TerminalEmulator */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = TerminalEmulator;
+		};
+		287136B2292A408700E9F5F4 /* SwiftLint */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 287136B1292A407E00E9F5F4 /* XCRemoteSwiftPackageReference "SwiftLintPlugin" */;
+			productName = "plugin:SwiftLint";
 		};
 		28CE5E9F27E6493D0065D29C /* StatusBar */ = {
 			isa = XCSwiftPackageProductDependency;
