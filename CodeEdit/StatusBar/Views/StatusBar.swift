@@ -18,20 +18,20 @@ import CodeEditUI
 /// Additionally it offers a togglable/resizable drawer which can
 /// host a terminal or additional debug information
 ///
-public struct StatusBarView: View {
+struct StatusBarView: View {
     @Environment(\.controlActiveState)
     private var controlActive
 
     @ObservedObject
-    private var model: StatusBarModel
+    private var model: StatusBarViewModel
 
     /// Initialize with model
     /// - Parameter model: The statusbar model
-    public init(model: StatusBarModel) {
+    init(model: StatusBarViewModel) {
         self.model = model
     }
 
-    public var body: some View {
+    var body: some View {
         VStack(spacing: 0) {
             bar
             if model.isExpanded {
@@ -108,7 +108,7 @@ struct SwiftUIView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack(alignment: .bottom) {
             Color.white
-            StatusBarView(model: StatusBarModel(workspaceURL: URL(fileURLWithPath: "")))
+            StatusBarView(model: StatusBarViewModel(workspaceURL: URL(fileURLWithPath: "")))
                 .previewLayout(.fixed(width: 1.336, height: 500.0))
                 .preferredColorScheme(.light)
         }

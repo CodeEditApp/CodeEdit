@@ -8,15 +8,15 @@
 import SwiftUI
 import CodeEditSymbols
 
-internal struct StatusBarBreakpointButton: View {
+struct StatusBarBreakpointButton: View {
     @ObservedObject
-    private var model: StatusBarModel
+    private var model: StatusBarViewModel
 
-    internal init(model: StatusBarModel) {
+    init(model: StatusBarViewModel) {
         self.model = model
     }
 
-    internal var body: some View {
+    var body: some View {
         Button {
             model.isBreakpointEnabled.toggle()
         } label: {
@@ -35,6 +35,6 @@ internal struct StatusBarBreakpointButton: View {
 struct StatusBarBreakpointButton_Previews: PreviewProvider {
     static var previews: some View {
         let url = URL(string: "~/Developer")!
-        StatusBarBreakpointButton(model: StatusBarModel(workspaceURL: url))
+        StatusBarBreakpointButton(model: StatusBarViewModel(workspaceURL: url))
     }
 }

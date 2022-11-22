@@ -10,9 +10,9 @@ import Keybindings
 
 internal struct StatusBarToggleDrawerButton: View {
     @ObservedObject
-    private var model: StatusBarModel
+    private var model: StatusBarViewModel
 
-    internal init(model: StatusBarModel) {
+    internal init(model: StatusBarViewModel) {
         self.model = model
         CommandManager.shared.addCommand(
             name: "Toggle Drawer",

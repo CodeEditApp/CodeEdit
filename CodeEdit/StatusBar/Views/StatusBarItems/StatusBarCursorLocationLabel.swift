@@ -7,18 +7,18 @@
 
 import SwiftUI
 
-internal struct StatusBarCursorLocationLabel: View {
+struct StatusBarCursorLocationLabel: View {
     @Environment(\.controlActiveState)
     private var controlActive
 
     @ObservedObject
-    private var model: StatusBarModel
+    private var model: StatusBarViewModel
 
-    internal init(model: StatusBarModel) {
+    init(model: StatusBarViewModel) {
         self.model = model
     }
 
-    internal var body: some View {
+    var body: some View {
         Text("Line: \(model.cursorLocation.line)  Col: \(model.cursorLocation.column)")
             .font(model.toolbarFont)
             .foregroundColor(foregroundColor)

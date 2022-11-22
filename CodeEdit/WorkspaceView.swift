@@ -7,7 +7,6 @@
 
 import SwiftUI
 import WorkspaceClient
-import StatusBar
 import ExtensionsStore
 import AppKit
 import AppPreferences

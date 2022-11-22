@@ -9,18 +9,18 @@ import AppPreferences
 import SwiftUI
 import CodeFile
 
-internal struct StatusBarIndentSelector: View {
+struct StatusBarIndentSelector: View {
     @ObservedObject
-    private var model: StatusBarModel
+    private var model: StatusBarViewModel
 
     @StateObject
     private var prefs: AppPreferencesModel = .shared
 
-    internal init(model: StatusBarModel) {
+    init(model: StatusBarViewModel) {
         self.model = model
     }
 
-    internal var body: some View {
+    var body: some View {
         Menu {
             Button {} label: {
                 Text("Use Tabs")

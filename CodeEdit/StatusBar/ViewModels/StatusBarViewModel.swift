@@ -11,7 +11,7 @@ import SwiftUI
 ///
 /// A model class to host and manage data for the ``StatusBarView``
 ///
-public class StatusBarModel: ObservableObject {
+class StatusBarViewModel: ObservableObject {
 
     // TODO: Implement logic for updating values
     // TODO: Add @Published vars for indentation, encoding, linebreak
@@ -21,35 +21,35 @@ public class StatusBarModel: ObservableObject {
     /// - **1**: Debugger
     /// - **2**: Output
     @Published
-    public var selectedTab: Int = 0
+    var selectedTab: Int = 0
 
     /// Returns the current location of the cursor in an editing view
     @Published
-    public var cursorLocation: CursorLocation = .init(line: 1, column: 1) // Implementation needed!!
+    var cursorLocation: CursorLocation = .init(line: 1, column: 1) // Implementation needed!!
 
     /// Returns true when the drawer is visible
     @Published
-    public var isExpanded: Bool = false
+    var isExpanded: Bool = false
 
     /// Returns true when the drawer is visible
     @Published
-    public var isMaximized: Bool = false
+    var isMaximized: Bool = false
 
     /// The current height of the drawer. Zero if hidden
     @Published
-    public var currentHeight: Double = 0
+    var currentHeight: Double = 0
 
     /// Indicates whether the drawer is beeing resized or not
     @Published
-    public var isDragging: Bool = false
+    var isDragging: Bool = false
 
     /// Indicates whether the breakpoint is enabled or not
     @Published
-    public var isBreakpointEnabled: Bool = true
+    var isBreakpointEnabled: Bool = true
 
     /// Search value to filter in drawer
     @Published
-    public var searchText: String = ""
+    var searchText: String = ""
 
     /// Returns the font for status bar items to use
     private(set) var toolbarFont: Font = .system(size: 11)
@@ -69,7 +69,7 @@ public class StatusBarModel: ObservableObject {
 
     /// Initialize with a GitClient
     /// - Parameter workspaceURL: the current workspace URL
-    public init(workspaceURL: URL) {
+    init(workspaceURL: URL) {
         self.workspaceURL = workspaceURL
     }
 }

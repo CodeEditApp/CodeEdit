@@ -18,10 +18,6 @@ let package = Package(
             targets: ["CodeFile"]
         ),
         .library(
-            name: "StatusBar",
-            targets: ["StatusBar"]
-        ),
-        .library(
             name: "TerminalEmulator",
             targets: ["TerminalEmulator"]
         ),
@@ -138,25 +134,6 @@ let package = Package(
                 "CodeFile",
             ],
             path: "Modules/CodeFile/Tests"
-        ),
-        .target(
-            name: "StatusBar",
-            dependencies: [
-                "TerminalEmulator",
-                "CodeFile",
-                "CodeEditUI",
-                "CodeEditSymbols",
-            ],
-            path: "Modules/StatusBar/src"
-        ),
-        .testTarget(
-            name: "StatusBarTests",
-            dependencies: [
-                "StatusBar",
-                .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
-            ],
-            path: "Modules/StatusBar/Tests",
-            exclude: ["__Snapshots__"]
         ),
         .target(
             name: "TerminalEmulator",

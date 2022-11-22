@@ -7,15 +7,15 @@
 
 import SwiftUI
 
-internal struct StatusBarClearButton: View {
+struct StatusBarClearButton: View {
     @ObservedObject
-    private var model: StatusBarModel
+    private var model: StatusBarViewModel
 
-    internal init(model: StatusBarModel) {
+    init(model: StatusBarViewModel) {
         self.model = model
     }
 
-    internal var body: some View {
+    var body: some View {
         Button {
             // Clear terminal
         } label: {
@@ -29,6 +29,6 @@ internal struct StatusBarClearButton: View {
 struct StatusBarClearButton_Previews: PreviewProvider {
     static var previews: some View {
         let url = URL(string: "~/Developer")!
-        StatusBarClearButton(model: StatusBarModel(workspaceURL: url))
+        StatusBarClearButton(model: StatusBarViewModel(workspaceURL: url))
     }
 }

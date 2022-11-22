@@ -7,15 +7,15 @@
 
 import SwiftUI
 
-internal struct StatusBarSplitTerminalButton: View {
+struct StatusBarSplitTerminalButton: View {
     @ObservedObject
-    private var model: StatusBarModel
+    private var model: StatusBarViewModel
 
-    internal init(model: StatusBarModel) {
+    init(model: StatusBarViewModel) {
         self.model = model
     }
 
-    internal var body: some View {
+    var body: some View {
         Button {
             // todo
         } label: {
@@ -29,6 +29,6 @@ internal struct StatusBarSplitTerminalButton: View {
 struct StatusBarSplitTerminalButton_Previews: PreviewProvider {
     static var previews: some View {
         let url = URL(string: "~/Developer")!
-        StatusBarSplitTerminalButton(model: StatusBarModel(workspaceURL: url))
+        StatusBarSplitTerminalButton(model: StatusBarViewModel(workspaceURL: url))
     }
 }

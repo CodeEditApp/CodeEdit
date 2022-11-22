@@ -9,18 +9,18 @@ import SwiftUI
 import CodeEditSymbols
 
 /// A view that displays Text with custom chevron up/down symbol
-internal struct StatusBarMenuLabel: View {
+struct StatusBarMenuLabel: View {
     private let text: String
 
     @ObservedObject
-    private var model: StatusBarModel
+    private var model: StatusBarViewModel
 
-    internal init(_ text: String, model: StatusBarModel) {
+    init(_ text: String, model: StatusBarViewModel) {
         self.text = text
         self.model = model
     }
 
-    internal var body: some View {
+    var body: some View {
         Text(text + "  ")
             .font(model.toolbarFont) +
         Text(Image.customChevronUpChevronDown)

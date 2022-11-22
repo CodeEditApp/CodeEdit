@@ -8,7 +8,6 @@
 import SwiftUI
 import CodeFile
 import WorkspaceClient
-import StatusBar
 import AppPreferences
 import UniformTypeIdentifiers
 

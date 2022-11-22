@@ -1,5 +1,5 @@
 //
-//  StatusBarLineEndSelector.swift
+//  StatusBarEncodingSelector.swift
 //  CodeEditModules/StatusBar
 //
 //  Created by Lukas Pistrol on 22.03.22.
@@ -7,19 +7,20 @@
 
 import SwiftUI
 
-internal struct StatusBarLineEndSelector: View {
+struct StatusBarEncodingSelector: View {
     @ObservedObject
-    private var model: StatusBarModel
+    private var model: StatusBarViewModel
 
-    internal init(model: StatusBarModel) {
+    init(model: StatusBarViewModel) {
         self.model = model
     }
 
-    internal var body: some View {
+    var body: some View {
         Menu {
-            // LF, CRLF
+            // UTF 8, ASCII, ...
         } label: {
-            StatusBarMenuLabel("LF", model: model)        }
+            StatusBarMenuLabel("UTF 8", model: model)
+        }
         .menuIndicator(.hidden)
         .menuStyle(.borderlessButton)
         .fixedSize()

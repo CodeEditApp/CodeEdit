@@ -16,7 +16,6 @@ import CodeEditKit
 import CodeEditUtils
 import ExtensionsStore
 import CodeEditExtension
-import StatusBar
 import TabBar
 
 // swiftlint:disable type_body_length
@@ -30,7 +29,7 @@ import TabBar
     @Published var selectionState: WorkspaceSelectionState = .init()
     @Published var fileItems: [WorkspaceClient.FileItem] = []
 
-    var statusBarModel: StatusBarModel?
+    var statusBarModel: StatusBarViewModel?
     var searchState: SearchState?
     var quickOpenViewModel: QuickOpenViewModel?
     var commandsPaletteState: CommandPaletteViewModel?

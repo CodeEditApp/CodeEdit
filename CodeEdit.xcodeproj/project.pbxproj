@@ -70,7 +70,6 @@
 		28A51006281701B40087B0CC /* codeedit-github-dark.json in Resources */ = {isa = PBXBuildFile; fileRef = 28A51004281701B40087B0CC /* codeedit-github-dark.json */; };
 		28B0A19827E385C300B73177 /* NavigatorSidebarToolbarTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B0A19727E385C300B73177 /* NavigatorSidebarToolbarTop.swift */; };
 		28B8F884280FFE4600596236 /* NSTableView+Background.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B8F883280FFE4600596236 /* NSTableView+Background.swift */; };
-		28CE5EA027E6493D0065D29C /* StatusBar in Frameworks */ = {isa = PBXBuildFile; productRef = 28CE5E9F27E6493D0065D29C /* StatusBar */; };
 		28FFE1BF27E3A441001939DB /* NavigatorSidebarToolbarBottom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FFE1BE27E3A441001939DB /* NavigatorSidebarToolbarBottom.swift */; };
 		2B7A583527E4BA0100D25D4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0468438427DC76E200F8E88E /* AppDelegate.swift */; };
 		2B7AC06B282452FB0082A5B8 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B7AC06A282452FB0082A5B8 /* Media.xcassets */; };
@@ -86,8 +85,6 @@
 		5878DA82291863F900DD95A3 /* AcknowledgementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5878DA81291863F900DD95A3 /* AcknowledgementsView.swift */; };
 		5878DA842918642000DD95A3 /* ParsePackagesResolved.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5878DA832918642000DD95A3 /* ParsePackagesResolved.swift */; };
 		5878DA872918642F00DD95A3 /* AcknowledgementsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5878DA862918642F00DD95A3 /* AcknowledgementsViewModel.swift */; };
-		5878DA872918642F00DD95A3 /* AcknowledgementsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5878DA862918642F00DD95A3 /* AcknowledgementsModel.swift */; };
-		5867933A28F5DC7A00D5DE54 /* CodeEditExtension in Frameworks */ = {isa = PBXBuildFile; productRef = 5867933928F5DC7A00D5DE54 /* CodeEditExtension */; };
 		5878DAA5291AE76700DD95A3 /* QuickOpenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5878DAA1291AE76700DD95A3 /* QuickOpenView.swift */; };
 		5878DAA6291AE76700DD95A3 /* QuickOpenPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5878DAA2291AE76700DD95A3 /* QuickOpenPreviewView.swift */; };
 		5878DAA7291AE76700DD95A3 /* QuickOpenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5878DAA3291AE76700DD95A3 /* QuickOpenViewModel.swift */; };
@@ -95,6 +92,24 @@
 		5878DAB0291D627C00DD95A3 /* BreadcrumbsMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5878DAAD291D627C00DD95A3 /* BreadcrumbsMenu.swift */; };
 		5878DAB1291D627C00DD95A3 /* BreadcrumbsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5878DAAE291D627C00DD95A3 /* BreadcrumbsComponent.swift */; };
 		5878DAB2291D627C00DD95A3 /* BreadcrumbsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5878DAAF291D627C00DD95A3 /* BreadcrumbsView.swift */; };
+		588224FE292BFF0800E83CDE /* CodeEditExtension in Frameworks */ = {isa = PBXBuildFile; productRef = 5867933928F5DC7A00D5DE54 /* CodeEditExtension */; };
+		58822524292C280D00E83CDE /* StatusBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822509292C280D00E83CDE /* StatusBar.swift */; };
+		58822525292C280D00E83CDE /* StatusBarMenuLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882250B292C280D00E83CDE /* StatusBarMenuLabel.swift */; };
+		58822526292C280D00E83CDE /* StatusBarBreakpointButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882250C292C280D00E83CDE /* StatusBarBreakpointButton.swift */; };
+		58822527292C280D00E83CDE /* StatusBarIndentSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882250D292C280D00E83CDE /* StatusBarIndentSelector.swift */; };
+		58822528292C280D00E83CDE /* StatusBarEncodingSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882250E292C280D00E83CDE /* StatusBarEncodingSelector.swift */; };
+		58822529292C280D00E83CDE /* StatusBarLineEndSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882250F292C280D00E83CDE /* StatusBarLineEndSelector.swift */; };
+		5882252A292C280D00E83CDE /* StatusBarToggleDrawerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822510292C280D00E83CDE /* StatusBarToggleDrawerButton.swift */; };
+		5882252B292C280D00E83CDE /* StatusBarCursorLocationLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822511292C280D00E83CDE /* StatusBarCursorLocationLabel.swift */; };
+		5882252C292C280D00E83CDE /* StatusBarDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822513292C280D00E83CDE /* StatusBarDrawer.swift */; };
+		5882252D292C280D00E83CDE /* StatusBarSplitTerminalButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822515292C280D00E83CDE /* StatusBarSplitTerminalButton.swift */; };
+		5882252E292C280D00E83CDE /* StatusBarMaximizeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822516292C280D00E83CDE /* StatusBarMaximizeButton.swift */; };
+		5882252F292C280D00E83CDE /* StatusBarClearButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822517292C280D00E83CDE /* StatusBarClearButton.swift */; };
+		58822530292C280D00E83CDE /* FilterTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822518292C280D00E83CDE /* FilterTextField.swift */; };
+		58822531292C280D00E83CDE /* View+isHovering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882251A292C280D00E83CDE /* View+isHovering.swift */; };
+		58822532292C280D00E83CDE /* StatusBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882251C292C280D00E83CDE /* StatusBarViewModel.swift */; };
+		58822533292C280D00E83CDE /* StatusBarTabType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882251D292C280D00E83CDE /* StatusBarTabType.swift */; };
+		58822534292C280D00E83CDE /* CursorLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882251E292C280D00E83CDE /* CursorLocation.swift */; };
 		58FD7608291EA1CB0051D6E4 /* CommandPaletteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FD7605291EA1CB0051D6E4 /* CommandPaletteViewModel.swift */; };
 		58FD7609291EA1CB0051D6E4 /* CommandPaletteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FD7607291EA1CB0051D6E4 /* CommandPaletteView.swift */; };
 		5C403B8F27E20F8000788241 /* WorkspaceClient in Frameworks */ = {isa = PBXBuildFile; productRef = 5C403B8E27E20F8000788241 /* WorkspaceClient */; };
@@ -248,6 +263,23 @@
 		5878DAAD291D627C00DD95A3 /* BreadcrumbsMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BreadcrumbsMenu.swift; sourceTree = "<group>"; };
 		5878DAAE291D627C00DD95A3 /* BreadcrumbsComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BreadcrumbsComponent.swift; sourceTree = "<group>"; };
 		5878DAAF291D627C00DD95A3 /* BreadcrumbsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BreadcrumbsView.swift; sourceTree = "<group>"; };
+		58822509292C280D00E83CDE /* StatusBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBar.swift; sourceTree = "<group>"; };
+		5882250B292C280D00E83CDE /* StatusBarMenuLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarMenuLabel.swift; sourceTree = "<group>"; };
+		5882250C292C280D00E83CDE /* StatusBarBreakpointButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarBreakpointButton.swift; sourceTree = "<group>"; };
+		5882250D292C280D00E83CDE /* StatusBarIndentSelector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarIndentSelector.swift; sourceTree = "<group>"; };
+		5882250E292C280D00E83CDE /* StatusBarEncodingSelector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarEncodingSelector.swift; sourceTree = "<group>"; };
+		5882250F292C280D00E83CDE /* StatusBarLineEndSelector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarLineEndSelector.swift; sourceTree = "<group>"; };
+		58822510292C280D00E83CDE /* StatusBarToggleDrawerButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarToggleDrawerButton.swift; sourceTree = "<group>"; };
+		58822511292C280D00E83CDE /* StatusBarCursorLocationLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarCursorLocationLabel.swift; sourceTree = "<group>"; };
+		58822513292C280D00E83CDE /* StatusBarDrawer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarDrawer.swift; sourceTree = "<group>"; };
+		58822515292C280D00E83CDE /* StatusBarSplitTerminalButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarSplitTerminalButton.swift; sourceTree = "<group>"; };
+		58822516292C280D00E83CDE /* StatusBarMaximizeButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarMaximizeButton.swift; sourceTree = "<group>"; };
+		58822517292C280D00E83CDE /* StatusBarClearButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarClearButton.swift; sourceTree = "<group>"; };
+		58822518292C280D00E83CDE /* FilterTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterTextField.swift; sourceTree = "<group>"; };
+		5882251A292C280D00E83CDE /* View+isHovering.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+isHovering.swift"; sourceTree = "<group>"; };
+		5882251C292C280D00E83CDE /* StatusBarViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarViewModel.swift; sourceTree = "<group>"; };
+		5882251D292C280D00E83CDE /* StatusBarTabType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarTabType.swift; sourceTree = "<group>"; };
+		5882251E292C280D00E83CDE /* CursorLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CursorLocation.swift; sourceTree = "<group>"; };
 		58FD7605291EA1CB0051D6E4 /* CommandPaletteViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandPaletteViewModel.swift; sourceTree = "<group>"; };
 		58FD7607291EA1CB0051D6E4 /* CommandPaletteView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandPaletteView.swift; sourceTree = "<group>"; };
 		5C4BB1E028212B1E00A92FB2 /* World.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = World.swift; sourceTree = "<group>"; };
@@ -291,6 +323,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				588224FE292BFF0800E83CDE /* CodeEditExtension in Frameworks */,
 				2801BB8A290D5A8E00EBF552 /* CodeEditKit in Frameworks */,
 				0483E34D27FCC46600354AC0 /* ExtensionsStore in Frameworks */,
 				043BCF07281DA2F5000AC47C /* TabBar in Frameworks */,
@@ -302,7 +335,6 @@
 				2040F0B1280AE96100411B6F /* CodeEditUtils in Frameworks */,
 				D7F72DEB27EA3574000C3064 /* Search in Frameworks */,
 				2816F594280CF50500DD548B /* CodeEditSymbols in Frameworks */,
-				28CE5EA027E6493D0065D29C /* StatusBar in Frameworks */,
 				2004A3832808468600FD9696 /* Feedback in Frameworks */,
 				5CF38A5E27E48E6C0096A0F7 /* CodeFile in Frameworks */,
 				FA6BA6F1282ACAD600019309 /* Keybindings in Frameworks */,
@@ -635,6 +667,86 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		588224FF292C280D00E83CDE /* StatusBar */ = {
+			isa = PBXGroup;
+			children = (
+				58822519292C280D00E83CDE /* Extensions */,
+				5882251B292C280D00E83CDE /* Models */,
+				58822539292C333600E83CDE /* ViewModels */,
+				58822508292C280D00E83CDE /* Views */,
+			);
+			path = StatusBar;
+			sourceTree = "<group>";
+		};
+		58822508292C280D00E83CDE /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				58822512292C280D00E83CDE /* StatusBarDrawer */,
+				5882250A292C280D00E83CDE /* StatusBarItems */,
+				58822509292C280D00E83CDE /* StatusBar.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		5882250A292C280D00E83CDE /* StatusBarItems */ = {
+			isa = PBXGroup;
+			children = (
+				5882250B292C280D00E83CDE /* StatusBarMenuLabel.swift */,
+				5882250C292C280D00E83CDE /* StatusBarBreakpointButton.swift */,
+				5882250D292C280D00E83CDE /* StatusBarIndentSelector.swift */,
+				5882250E292C280D00E83CDE /* StatusBarEncodingSelector.swift */,
+				5882250F292C280D00E83CDE /* StatusBarLineEndSelector.swift */,
+				58822510292C280D00E83CDE /* StatusBarToggleDrawerButton.swift */,
+				58822511292C280D00E83CDE /* StatusBarCursorLocationLabel.swift */,
+			);
+			path = StatusBarItems;
+			sourceTree = "<group>";
+		};
+		58822512292C280D00E83CDE /* StatusBarDrawer */ = {
+			isa = PBXGroup;
+			children = (
+				58822514292C280D00E83CDE /* BottomBar */,
+				58822513292C280D00E83CDE /* StatusBarDrawer.swift */,
+			);
+			path = StatusBarDrawer;
+			sourceTree = "<group>";
+		};
+		58822514292C280D00E83CDE /* BottomBar */ = {
+			isa = PBXGroup;
+			children = (
+				58822515292C280D00E83CDE /* StatusBarSplitTerminalButton.swift */,
+				58822516292C280D00E83CDE /* StatusBarMaximizeButton.swift */,
+				58822517292C280D00E83CDE /* StatusBarClearButton.swift */,
+				58822518292C280D00E83CDE /* FilterTextField.swift */,
+			);
+			path = BottomBar;
+			sourceTree = "<group>";
+		};
+		58822519292C280D00E83CDE /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				5882251A292C280D00E83CDE /* View+isHovering.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		5882251B292C280D00E83CDE /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				5882251D292C280D00E83CDE /* StatusBarTabType.swift */,
+				5882251E292C280D00E83CDE /* CursorLocation.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		58822539292C333600E83CDE /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				5882251C292C280D00E83CDE /* StatusBarViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		58FD7603291EA1CB0051D6E4 /* Commands */ = {
 			isa = PBXGroup;
 			children = (
@@ -714,6 +826,7 @@
 				287776EA27E350A100D46668 /* NavigatorSidebar */,
 				B658FB3527DA9E1000EA4DBD /* Preview Content */,
 				5878DAA0291AE76700DD95A3 /* QuickOpen */,
+				588224FF292C280D00E83CDE /* StatusBar */,
 				287776EB27E350BA00D46668 /* TabBar */,
 				581BFB4B2926431000D251EC /* WelcomeModule */,
 				0468438427DC76E200F8E88E /* AppDelegate.swift */,
@@ -810,7 +923,6 @@
 			packageProductDependencies = (
 				5C403B8E27E20F8000788241 /* WorkspaceClient */,
 				5CF38A5D27E48E6C0096A0F7 /* CodeFile */,
-				28CE5E9F27E6493D0065D29C /* StatusBar */,
 				D7F72DEA27EA3574000C3064 /* Search */,
 				2803257027F3CF1F009C7DC2 /* AppPreferences */,
 				0483E34C27FCC46600354AC0 /* ExtensionsStore */,
@@ -1034,6 +1146,7 @@
 			files = (
 				5878DA842918642000DD95A3 /* ParsePackagesResolved.swift in Sources */,
 				2072FA13280D74ED00C7F8D4 /* HistoryInspectorModel.swift in Sources */,
+				58822534292C280D00E83CDE /* CursorLocation.swift in Sources */,
 				201169E52837B40300F92B46 /* RepositoriesView.swift in Sources */,
 				DE513F52281B672D002260B9 /* TabBarAccessory.swift in Sources */,
 				2813F93927ECC4C300E305E4 /* NavigatorSidebar.swift in Sources */,
@@ -1045,6 +1158,7 @@
 				201169D92837B31200F92B46 /* SourceControlSearchToolbar.swift in Sources */,
 				0483E35027FDB17700354AC0 /* ExtensionNavigator.swift in Sources */,
 				201169DB2837B34000F92B46 /* ChangedFileItemView.swift in Sources */,
+				5882252E292C280D00E83CDE /* StatusBarMaximizeButton.swift in Sources */,
 				58FD7609291EA1CB0051D6E4 /* CommandPaletteView.swift in Sources */,
 				2B7A583527E4BA0100D25D4E /* AppDelegate.swift in Sources */,
 				D7012EE827E757850001E1EF /* FindNavigator.swift in Sources */,
@@ -1052,6 +1166,7 @@
 				5878DAA7291AE76700DD95A3 /* QuickOpenViewModel.swift in Sources */,
 				20EBB50F280C389300F3A5DA /* FileInspectorModel.swift in Sources */,
 				5878DAB1291D627C00DD95A3 /* BreadcrumbsComponent.swift in Sources */,
+				58822533292C280D00E83CDE /* StatusBarTabType.swift in Sources */,
 				0463E51327FCC1FB00806D5C /* CodeEditTargetsAPI.swift in Sources */,
 				201169DD2837B3AC00F92B46 /* SourceControlToolbarBottom.swift in Sources */,
 				04C3254D27FF331B00C8DA2D /* ExtensionNavigatorItem.swift in Sources */,
@@ -1060,10 +1175,13 @@
 				2072FA1C280D874000C7F8D4 /* IndentUsing.swift in Sources */,
 				B6EE989227E887C600CDD8AB /* InspectorSidebarToolbar.swift in Sources */,
 				201169E72837B5CA00F92B46 /* SourceControlModel.swift in Sources */,
+				58822528292C280D00E83CDE /* StatusBarEncodingSelector.swift in Sources */,
 				28B8F884280FFE4600596236 /* NSTableView+Background.swift in Sources */,
 				200412EF280F3EAC00BCAF5C /* NoCommitHistoryView.swift in Sources */,
 				043C321427E31FF6006AE443 /* CodeEditDocumentController.swift in Sources */,
 				20EBB503280C327C00F3A5DA /* HistoryInspector.swift in Sources */,
+				5882252B292C280D00E83CDE /* StatusBarCursorLocationLabel.swift in Sources */,
+				5882252D292C280D00E83CDE /* StatusBarSplitTerminalButton.swift in Sources */,
 				2072FA1A280D872600C7F8D4 /* LineEndings.swift in Sources */,
 				201169E22837B3D800F92B46 /* ChangesView.swift in Sources */,
 				20EBB507280C32D300F3A5DA /* QuickHelpInspector.swift in Sources */,
@@ -1075,17 +1193,23 @@
 				581BFB692926431000D251EC /* WelcomeActionView.swift in Sources */,
 				20D839AE280E0CA700B27357 /* PopoverView.swift in Sources */,
 				2072FA1E280D891500C7F8D4 /* Location.swift in Sources */,
+				5882252F292C280D00E83CDE /* StatusBarClearButton.swift in Sources */,
 				582213F0291834A500EFE361 /* AboutView.swift in Sources */,
+				58822526292C280D00E83CDE /* StatusBarBreakpointButton.swift in Sources */,
+				58822529292C280D00E83CDE /* StatusBarLineEndSelector.swift in Sources */,
 				5C4BB1E128212B1E00A92FB2 /* World.swift in Sources */,
 				D7E201B227E8D50000CB86D0 /* FindNavigatorModeSelector.swift in Sources */,
 				287776E927E34BC700D46668 /* TabBar.swift in Sources */,
 				285FEC7027FE4B9800E57D53 /* OutlineTableViewCell.swift in Sources */,
 				581BFB6B2926431000D251EC /* RecentProjectItem.swift in Sources */,
 				0485EB1F27E7458B00138301 /* WorkspaceCodeFileView.swift in Sources */,
+				58822524292C280D00E83CDE /* StatusBar.swift in Sources */,
 				581BFB682926431000D251EC /* WelcomeView.swift in Sources */,
+				5882252C292C280D00E83CDE /* StatusBarDrawer.swift in Sources */,
 				2847019E27FDDF7600F87B6B /* OutlineView.swift in Sources */,
 				6C14CEB32877A68F001468FE /* FindNavigatorMatchListCell.swift in Sources */,
 				20EBB501280C325D00F3A5DA /* FileInspectorView.swift in Sources */,
+				58822531292C280D00E83CDE /* View+isHovering.swift in Sources */,
 				286471AB27ED51FD0039369D /* ProjectNavigator.swift in Sources */,
 				04C3254B27FF23B000C8DA2D /* ExtensionNavigatorData.swift in Sources */,
 				287776EF27E3515300D46668 /* TabBarItem.swift in Sources */,
@@ -1097,6 +1221,7 @@
 				2072FA18280D871200C7F8D4 /* TextEncoding.swift in Sources */,
 				2072FA16280D83A500C7F8D4 /* FileTypeList.swift in Sources */,
 				04C3254F2800AA4700C8DA2D /* ExtensionInstallationView.swift in Sources */,
+				58822530292C280D00E83CDE /* FilterTextField.swift in Sources */,
 				B6EE989027E8879A00CDD8AB /* InspectorSidebar.swift in Sources */,
 				5878DAA5291AE76700DD95A3 /* QuickOpenView.swift in Sources */,
 				9C3E1A07284E8E020042BEC0 /* WelcomeModuleExtensions.swift in Sources */,
@@ -1106,13 +1231,17 @@
 				20EBB505280C329800F3A5DA /* HistoryItem.swift in Sources */,
 				5878DAB2291D627C00DD95A3 /* BreadcrumbsView.swift in Sources */,
 				043C321627E3201F006AE443 /* WorkspaceDocument.swift in Sources */,
+				58822532292C280D00E83CDE /* StatusBarViewModel.swift in Sources */,
 				043BCF03281DA18A000AC47C /* WorkspaceDocument+Search.swift in Sources */,
+				58822527292C280D00E83CDE /* StatusBarIndentSelector.swift in Sources */,
 				5878DAA6291AE76700DD95A3 /* QuickOpenPreviewView.swift in Sources */,
 				5878DAB0291D627C00DD95A3 /* BreadcrumbsMenu.swift in Sources */,
 				04C325512800AC7400C8DA2D /* ExtensionInstallationViewModel.swift in Sources */,
 				28B0A19827E385C300B73177 /* NavigatorSidebarToolbarTop.swift in Sources */,
+				58822525292C280D00E83CDE /* StatusBarMenuLabel.swift in Sources */,
 				6CDA84AD284C1BA000C1CC3A /* TabBarContextMenu.swift in Sources */,
 				0463E51127FCC1DF00806D5C /* CodeEditAPI.swift in Sources */,
+				5882252A292C280D00E83CDE /* StatusBarToggleDrawerButton.swift in Sources */,
 				04C3255B2801F86400C8DA2D /* OutlineViewController.swift in Sources */,
 				6C05A8AF284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift in Sources */,
 				6CDA84AB284C0E4A00C1CC3A /* TabBarItemButtonStyle.swift in Sources */,
@@ -1650,10 +1779,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 287136B1292A407E00E9F5F4 /* XCRemoteSwiftPackageReference "SwiftLintPlugin" */;
 			productName = "plugin:SwiftLint";
-		};
-		28CE5E9F27E6493D0065D29C /* StatusBar */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = StatusBar;
 		};
 		5867933928F5DC7A00D5DE54 /* CodeEditExtension */ = {
 			isa = XCSwiftPackageProductDependency;

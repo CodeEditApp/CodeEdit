@@ -9,14 +9,14 @@ import SwiftUI
 import TerminalEmulator
 import CodeEditUI
 
-internal struct StatusBarDrawer: View {
+struct StatusBarDrawer: View {
     @ObservedObject
-    private var model: StatusBarModel
+    private var model: StatusBarViewModel
 
     @State
     private var searchText = ""
 
-    internal init(model: StatusBarModel) {
+    init(model: StatusBarViewModel) {
         self.model = model
     }
 
@@ -30,7 +30,7 @@ internal struct StatusBarDrawer: View {
         return 0
     }
 
-    internal var body: some View {
+    var body: some View {
         VStack(spacing: 0) {
             switch model.selectedTab {
             case 0: TerminalEmulatorView(url: model.workspaceURL)

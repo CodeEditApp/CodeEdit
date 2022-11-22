@@ -7,15 +7,15 @@
 
 import SwiftUI
 
-internal struct StatusBarMaximizeButton: View {
+struct StatusBarMaximizeButton: View {
     @ObservedObject
-    private var model: StatusBarModel
+    private var model: StatusBarViewModel
 
-    internal init(model: StatusBarModel) {
+    init(model: StatusBarViewModel) {
         self.model = model
     }
 
-    internal var body: some View {
+    var body: some View {
         Button {
             model.isMaximized.toggle()
         } label: {
@@ -29,6 +29,6 @@ internal struct StatusBarMaximizeButton: View {
 struct StatusBarMaximizeButton_Previews: PreviewProvider {
     static var previews: some View {
         let url = URL(string: "~/Developer")!
-        StatusBarMaximizeButton(model: StatusBarModel(workspaceURL: url))
+        StatusBarMaximizeButton(model: StatusBarViewModel(workspaceURL: url))
     }
 }

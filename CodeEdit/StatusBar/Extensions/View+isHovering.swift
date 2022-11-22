@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-internal extension View {
+extension View {
 
     /// Changes the cursor appearance when hovering attached View
     /// - Parameters:
