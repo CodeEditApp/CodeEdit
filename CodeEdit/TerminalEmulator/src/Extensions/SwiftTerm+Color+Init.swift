@@ -8,7 +8,7 @@
 import Foundation
 import SwiftTerm
 
-internal extension SwiftTerm.Color {
+extension SwiftTerm.Color {
     /// 0.0-1.0
     convenience init(dRed red: Double, green: Double, blue: Double) {
         let multiplier: Double = 65535

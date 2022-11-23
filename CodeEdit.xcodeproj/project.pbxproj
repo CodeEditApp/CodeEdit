@@ -59,7 +59,6 @@
 		285FEC7027FE4B9800E57D53 /* OutlineTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285FEC6F27FE4B9800E57D53 /* OutlineTableViewCell.swift */; };
 		286471AB27ED51FD0039369D /* ProjectNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286471AA27ED51FD0039369D /* ProjectNavigator.swift */; };
 		2864BAAC28117B3F002DBD1A /* ShellClient in Frameworks */ = {isa = PBXBuildFile; productRef = 2864BAAB28117B3F002DBD1A /* ShellClient */; };
-		2864BAAE28117D7C002DBD1A /* TerminalEmulator in Frameworks */ = {isa = PBXBuildFile; productRef = 2864BAAD28117D7C002DBD1A /* TerminalEmulator */; };
 		287776E927E34BC700D46668 /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287776E827E34BC700D46668 /* TabBar.swift */; };
 		287776EF27E3515300D46668 /* TabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287776EE27E3515300D46668 /* TabBarItem.swift */; };
 		28A51001281673530087B0CC /* codeedit-xcode-dark.json in Resources */ = {isa = PBXBuildFile; fileRef = 28A50FFF281673530087B0CC /* codeedit-xcode-dark.json */; };
@@ -114,6 +113,10 @@
 		5879826B292EC7B00085B254 /* Light-Swift-Untar in Frameworks */ = {isa = PBXBuildFile; productRef = 5879826A292EC7B00085B254 /* Light-Swift-Untar */; };
 		5879826F292EC9870085B254 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = 5879826E292EC9870085B254 /* GRDB */; };
 		58798277292ECFD40085B254 /* LSPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58798276292ECFD40085B254 /* LSPClient.swift */; };
+		58798284292ED0FB0085B254 /* TerminalEmulatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58798280292ED0FB0085B254 /* TerminalEmulatorView.swift */; };
+		58798285292ED0FB0085B254 /* TerminalEmulatorView+Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58798281292ED0FB0085B254 /* TerminalEmulatorView+Coordinator.swift */; };
+		58798286292ED0FB0085B254 /* SwiftTerm+Color+Init.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58798283292ED0FB0085B254 /* SwiftTerm+Color+Init.swift */; };
+		5879828A292ED15F0085B254 /* SwiftTerm in Frameworks */ = {isa = PBXBuildFile; productRef = 58798289292ED15F0085B254 /* SwiftTerm */; };
 		588224FE292BFF0800E83CDE /* CodeEditExtension in Frameworks */ = {isa = PBXBuildFile; productRef = 5867933928F5DC7A00D5DE54 /* CodeEditExtension */; };
 		58822524292C280D00E83CDE /* StatusBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822509292C280D00E83CDE /* StatusBar.swift */; };
 		58822525292C280D00E83CDE /* StatusBarMenuLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882250B292C280D00E83CDE /* StatusBarMenuLabel.swift */; };
@@ -305,6 +308,9 @@
 		5879825F292EC4080085B254 /* Response.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
 		58798260292EC4080085B254 /* Page.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Page.swift; sourceTree = "<group>"; };
 		58798276292ECFD40085B254 /* LSPClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LSPClient.swift; sourceTree = "<group>"; };
+		58798280292ED0FB0085B254 /* TerminalEmulatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TerminalEmulatorView.swift; sourceTree = "<group>"; };
+		58798281292ED0FB0085B254 /* TerminalEmulatorView+Coordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TerminalEmulatorView+Coordinator.swift"; sourceTree = "<group>"; };
+		58798283292ED0FB0085B254 /* SwiftTerm+Color+Init.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SwiftTerm+Color+Init.swift"; sourceTree = "<group>"; };
 		58822509292C280D00E83CDE /* StatusBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBar.swift; sourceTree = "<group>"; };
 		5882250B292C280D00E83CDE /* StatusBarMenuLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarMenuLabel.swift; sourceTree = "<group>"; };
 		5882250C292C280D00E83CDE /* StatusBarBreakpointButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarBreakpointButton.swift; sourceTree = "<group>"; };
@@ -371,11 +377,11 @@
 				20AFDC7F28206701001A4FC7 /* Git in Frameworks */,
 				2864BAAC28117B3F002DBD1A /* ShellClient in Frameworks */,
 				5879826F292EC9870085B254 /* GRDB in Frameworks */,
-				2864BAAE28117D7C002DBD1A /* TerminalEmulator in Frameworks */,
 				5C403B8F27E20F8000788241 /* WorkspaceClient in Frameworks */,
 				2803257127F3CF1F009C7DC2 /* AppPreferences in Frameworks */,
 				5879826B292EC7B00085B254 /* Light-Swift-Untar in Frameworks */,
 				2040F0B1280AE96100411B6F /* CodeEditUtils in Frameworks */,
+				5879828A292ED15F0085B254 /* SwiftTerm in Frameworks */,
 				2816F594280CF50500DD548B /* CodeEditSymbols in Frameworks */,
 				FA6BA6F1282ACAD600019309 /* Keybindings in Frameworks */,
 				28117FD0280768A500649353 /* CodeEditUI in Frameworks */,
@@ -836,6 +842,32 @@
 			path = LSP;
 			sourceTree = "<group>";
 		};
+		5879827E292ED0FB0085B254 /* TerminalEmulator */ = {
+			isa = PBXGroup;
+			children = (
+				5879827F292ED0FB0085B254 /* src */,
+			);
+			path = TerminalEmulator;
+			sourceTree = "<group>";
+		};
+		5879827F292ED0FB0085B254 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				58798282292ED0FB0085B254 /* Extensions */,
+				58798280292ED0FB0085B254 /* TerminalEmulatorView.swift */,
+				58798281292ED0FB0085B254 /* TerminalEmulatorView+Coordinator.swift */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		58798282292ED0FB0085B254 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				58798283292ED0FB0085B254 /* SwiftTerm+Color+Init.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		588224FF292C280D00E83CDE /* StatusBar */ = {
 			isa = PBXGroup;
 			children = (
@@ -1002,6 +1034,7 @@
 				58798210292D92370085B254 /* Search */,
 				588224FF292C280D00E83CDE /* StatusBar */,
 				287776EB27E350BA00D46668 /* TabBar */,
+				5879827E292ED0FB0085B254 /* TerminalEmulator */,
 				581BFB4B2926431000D251EC /* WelcomeModule */,
 				0468438427DC76E200F8E88E /* AppDelegate.swift */,
 				5C4BB1E028212B1E00A92FB2 /* World.swift */,
@@ -1101,7 +1134,6 @@
 				2040F0B0280AE96100411B6F /* CodeEditUtils */,
 				2816F593280CF50500DD548B /* CodeEditSymbols */,
 				2864BAAB28117B3F002DBD1A /* ShellClient */,
-				2864BAAD28117D7C002DBD1A /* TerminalEmulator */,
 				043BCF06281DA2F5000AC47C /* TabBar */,
 				FA6BA6F0282ACAD600019309 /* Keybindings */,
 				20AFDC7E28206701001A4FC7 /* Git */,
@@ -1109,6 +1141,7 @@
 				5867933928F5DC7A00D5DE54 /* CodeEditExtension */,
 				5879826A292EC7B00085B254 /* Light-Swift-Untar */,
 				5879826E292EC9870085B254 /* GRDB */,
+				58798289292ED15F0085B254 /* SwiftTerm */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -1191,6 +1224,7 @@
 				287136B1292A407E00E9F5F4 /* XCRemoteSwiftPackageReference "SwiftLintPlugin" */,
 				58798269292EC7B00085B254 /* XCRemoteSwiftPackageReference "Light-Swift-Untar" */,
 				5879826D292EC9870085B254 /* XCRemoteSwiftPackageReference "GRDB.swift" */,
+				58798288292ED15F0085B254 /* XCRemoteSwiftPackageReference "SwiftTerm" */,
 			);
 			productRefGroup = B658FB2D27DA9E0F00EA4DBD /* Products */;
 			projectDirPath = "";
@@ -1318,6 +1352,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				58798285292ED0FB0085B254 /* TerminalEmulatorView+Coordinator.swift in Sources */,
 				5878DA842918642000DD95A3 /* ParsePackagesResolved.swift in Sources */,
 				5879824F292E78D80085B254 /* CodeFileView.swift in Sources */,
 				2072FA13280D74ED00C7F8D4 /* HistoryInspectorModel.swift in Sources */,
@@ -1353,6 +1388,7 @@
 				58798237292E30B90085B254 /* FeedbackView.swift in Sources */,
 				581BFB672926431000D251EC /* WelcomeWindowView.swift in Sources */,
 				2072FA1C280D874000C7F8D4 /* IndentUsing.swift in Sources */,
+				58798284292ED0FB0085B254 /* TerminalEmulatorView.swift in Sources */,
 				B6EE989227E887C600CDD8AB /* InspectorSidebarToolbar.swift in Sources */,
 				201169E72837B5CA00F92B46 /* SourceControlModel.swift in Sources */,
 				58798265292EC4080085B254 /* ExtensionsStoreAPI.swift in Sources */,
@@ -1429,6 +1465,7 @@
 				043BCF03281DA18A000AC47C /* WorkspaceDocument+Search.swift in Sources */,
 				58822527292C280D00E83CDE /* StatusBarIndentSelector.swift in Sources */,
 				5878DAA6291AE76700DD95A3 /* QuickOpenPreviewView.swift in Sources */,
+				58798286292ED0FB0085B254 /* SwiftTerm+Color+Init.swift in Sources */,
 				5878DAB0291D627C00DD95A3 /* BreadcrumbsMenu.swift in Sources */,
 				04C325512800AC7400C8DA2D /* ExtensionInstallationViewModel.swift in Sources */,
 				28B0A19827E385C300B73177 /* NavigatorSidebarToolbarTop.swift in Sources */,
@@ -1938,6 +1975,14 @@
 				version = 5.22.2;
 			};
 		};
+		58798288292ED15F0085B254 /* XCRemoteSwiftPackageReference "SwiftTerm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/migueldeicaza/SwiftTerm.git";
+			requirement = {
+				kind = exactVersion;
+				version = 1.0.7;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1975,10 +2020,6 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = ShellClient;
 		};
-		2864BAAD28117D7C002DBD1A /* TerminalEmulator */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = TerminalEmulator;
-		};
 		287136B2292A408700E9F5F4 /* SwiftLint */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 287136B1292A407E00E9F5F4 /* XCRemoteSwiftPackageReference "SwiftLintPlugin" */;
@@ -1997,6 +2038,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5879826D292EC9870085B254 /* XCRemoteSwiftPackageReference "GRDB.swift" */;
 			productName = GRDB;
+		};
+		58798289292ED15F0085B254 /* SwiftTerm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 58798288292ED15F0085B254 /* XCRemoteSwiftPackageReference "SwiftTerm" */;
+			productName = SwiftTerm;
 		};
 		5C403B8E27E20F8000788241 /* WorkspaceClient */ = {
 			isa = XCSwiftPackageProductDependency;

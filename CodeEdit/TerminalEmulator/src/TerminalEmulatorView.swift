@@ -16,17 +16,17 @@ import AppPreferences
 /// Wraps a `LocalProcessTerminalView` from `SwiftTerm` inside a `NSViewRepresentable`
 /// for use in SwiftUI.
 ///
-public struct TerminalEmulatorView: NSViewRepresentable {
+struct TerminalEmulatorView: NSViewRepresentable {
     @StateObject
     private var prefs: AppPreferencesModel = .shared
 
     @StateObject
     private var themeModel: ThemeModel = .shared
 
-    internal static var lastTerminal: [String: LocalProcessTerminalView] = [:]
+    static var lastTerminal: [String: LocalProcessTerminalView] = [:]
 
     @State
-    internal var terminal: LocalProcessTerminalView
+    var terminal: LocalProcessTerminalView
 
     private let systemFont: NSFont = .monospacedSystemFont(ofSize: 11, weight: .medium)
 
@@ -42,7 +42,7 @@ public struct TerminalEmulatorView: NSViewRepresentable {
 
     private var url: URL
 
-    public init(url: URL) {
+    init(url: URL) {
         self.url = url
         self._terminal = State(initialValue: TerminalEmulatorView.lastTerminal[url.path] ?? .init(frame: .zero))
     }
@@ -151,13 +151,13 @@ public struct TerminalEmulatorView: NSViewRepresentable {
     }
 
     /// Inherited from NSViewRepresentable.makeNSView(context:).
-    public func makeNSView(context: Context) -> LocalProcessTerminalView {
+    func makeNSView(context: Context) -> LocalProcessTerminalView {
         terminal.processDelegate = context.coordinator
         setupSession()
         return terminal
     }
 
-    public func setupSession() {
+    func setupSession() {
         terminal.getTerminal().silentLog = true
         if TerminalEmulatorView.lastTerminal[url.path] == nil {
             let shell = getShell()
@@ -193,7 +193,7 @@ public struct TerminalEmulatorView: NSViewRepresentable {
         return nil
     }
 
-    public func updateNSView(_ view: LocalProcessTerminalView, context: Context) {
+    func updateNSView(_ view: LocalProcessTerminalView, context: Context) {
         if view.font != font { // Fixes Memory leak
             view.font = font
         }
@@ -212,7 +212,7 @@ public struct TerminalEmulatorView: NSViewRepresentable {
         view.feed(text: "") // send empty character to force colors to be redrawn
     }
 
-    public func makeCoordinator() -> Coordinator {
+    func makeCoordinator() -> Coordinator {
         Coordinator(url: url)
     }
 }

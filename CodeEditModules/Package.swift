@@ -14,10 +14,6 @@ let package = Package(
             targets: ["WorkspaceClient"]
         ),
         .library(
-            name: "TerminalEmulator",
-            targets: ["TerminalEmulator"]
-        ),
-        .library(
             name: "ShellClient",
             targets: ["ShellClient"]
         ),
@@ -102,14 +98,6 @@ let package = Package(
                 "WorkspaceClient",
             ],
             path: "Modules/WorkspaceClient/Tests"
-        ),
-        .target(
-            name: "TerminalEmulator",
-            dependencies: [
-                "SwiftTerm",
-                "AppPreferences"
-            ],
-            path: "Modules/TerminalEmulator/src"
         ),
         .target(
             name: "ShellClient",
