@@ -7,7 +7,6 @@
 
 import AppPreferences
 import SwiftUI
-import CodeFile
 
 struct StatusBarIndentSelector: View {
     @ObservedObject

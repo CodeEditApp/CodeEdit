@@ -7,7 +7,6 @@
 
 import Cocoa
 import SwiftUI
-import CodeFile
 import CodeEditUI
 import Git
 import AppPreferences

@@ -14,19 +14,19 @@ import QuickLookUI
 /// ```swift
 /// OtherFileView(otherFile)
 /// ```
-public struct OtherFileView: NSViewRepresentable {
+struct OtherFileView: NSViewRepresentable {
 
     private var otherFile: CodeFileDocument
 
     /// Initialize the OtherFileView
     /// - Parameter otherFile: a file which contains URL to show preview
-    public init(
+    init(
         _ otherFile: CodeFileDocument
     ) {
         self.otherFile = otherFile
     }
 
-    public func makeNSView(context: Context) -> QLPreviewView {
+    func makeNSView(context: Context) -> QLPreviewView {
         let qlPreviewView = QLPreviewView()
         if let previewItemURL = otherFile.previewItemURL {
             qlPreviewView.previewItem = previewItemURL as QLPreviewItem
@@ -35,7 +35,7 @@ public struct OtherFileView: NSViewRepresentable {
     }
 
     /// Update preview file when file changed
-    public func updateNSView(_ nsView: QLPreviewView, context: Context) {
+    func updateNSView(_ nsView: QLPreviewView, context: Context) {
         guard let currentPreviewItem = nsView.previewItem else {
             return
         }

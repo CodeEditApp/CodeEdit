@@ -13,7 +13,7 @@ import AppPreferences
 import Combine
 
 /// CodeFileView is just a wrapper of the `CodeEditor` dependency
-public struct CodeFileView: View {
+struct CodeFileView: View {
     @ObservedObject
     private var codeFile: CodeFileDocument
 
@@ -27,7 +27,7 @@ public struct CodeFileView: View {
 
     private let editable: Bool
 
-    public init(codeFile: CodeFileDocument, editable: Bool = true) {
+    init(codeFile: CodeFileDocument, editable: Bool = true) {
         self.codeFile = codeFile
         self.editable = editable
 
@@ -63,7 +63,7 @@ public struct CodeFileView: View {
         return NSFont(name: name, size: Double(size)) ?? NSFont.monospacedSystemFont(ofSize: 12, weight: .regular)
     }()
 
-    public var body: some View {
+    var body: some View {
         CodeEditTextView(
             $codeFile.content,
             language: getLanguage(),

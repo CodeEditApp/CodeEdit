@@ -7,15 +7,15 @@
 
 import SwiftUI
 
-public struct ImageFileView: View {
+struct ImageFileView: View {
 
     private let image: NSImage?
 
-    public init(image: NSImage?) {
+    init(image: NSImage?) {
         self.image = image
     }
 
-    public var body: some View {
+    var body: some View {
         GeometryReader { proxy in
             if let image = image {
                 if image.size.width > proxy.size.width || image.size.height > proxy.size.height {

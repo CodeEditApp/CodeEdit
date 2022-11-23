@@ -12,14 +12,14 @@ import UniformTypeIdentifiers
 import QuickLookUI
 import AppPreferences
 
-public enum CodeFileError: Error {
+enum CodeFileError: Error {
     case failedToDecode
     case failedToEncode
     case fileTypeError
 }
 
 @objc(CodeFileDocument)
-public final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
+final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
 
     @Published
     var content = ""
@@ -31,7 +31,7 @@ public final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem
      If text content is not empty, return text
      If its neither image or text, this could be nil.
     */
-    public var typeOfFile: UTType? {
+    var typeOfFile: UTType? {
         if !self.content.isEmpty {
             return UTType.text
         }
@@ -53,26 +53,26 @@ public final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem
     /*
      This is the QLPreviewItemURL
      */
-    public var previewItemURL: URL? {
+    var previewItemURL: URL? {
         fileURL
     }
 
     @Published
-    public var cursorPosition = (1, 1)
+    var cursorPosition = (1, 1)
 
     // MARK: - NSDocument
 
-    override public class var autosavesInPlace: Bool {
+    override class var autosavesInPlace: Bool {
         AppPreferencesModel.shared.preferences.general.isAutoSaveOn
     }
 
-    override public var autosavingFileType: String? {
+    override var autosavingFileType: String? {
         AppPreferencesModel.shared.preferences.general.isAutoSaveOn
             ? fileType
             : nil
     }
 
-    override public func makeWindowControllers() {
+    override func makeWindowControllers() {
         // Returns the Storyboard that contains your Document window.
         let contentView = CodeFileView(codeFile: self)
         let window = NSWindow(
@@ -86,14 +86,14 @@ public final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem
         addWindowController(windowController)
     }
 
-    override public func data(ofType _: String) throws -> Data {
+    override func data(ofType _: String) throws -> Data {
         guard let data = content.data(using: .utf8) else { throw CodeFileError.failedToEncode }
         return data
     }
 
     /// This fuction is used for decoding files.
     /// It should not throw error as unsupported files can still be opened by QLPreviewView.
-    override public func read(from data: Data, ofType _: String) throws {
+    override func read(from data: Data, ofType _: String) throws {
         guard let content = String(data: data, encoding: .utf8) else { return }
         self.content = content
     }

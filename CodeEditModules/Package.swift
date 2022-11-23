@@ -14,10 +14,6 @@ let package = Package(
             targets: ["WorkspaceClient"]
         ),
         .library(
-            name: "CodeFile",
-            targets: ["CodeFile"]
-        ),
-        .library(
             name: "TerminalEmulator",
             targets: ["TerminalEmulator"]
         ),
@@ -110,22 +106,6 @@ let package = Package(
                 "WorkspaceClient",
             ],
             path: "Modules/WorkspaceClient/Tests"
-        ),
-        .target(
-            name: "CodeFile",
-            dependencies: [
-                "AppPreferences",
-                "CodeEditUtils",
-                "CodeEditTextView",
-            ],
-            path: "Modules/CodeFile/src"
-        ),
-        .testTarget(
-            name: "CodeFileTests",
-            dependencies: [
-                "CodeFile",
-            ],
-            path: "Modules/CodeFile/Tests"
         ),
         .target(
             name: "TerminalEmulator",

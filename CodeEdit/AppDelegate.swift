@@ -10,7 +10,6 @@ import AppPreferences
 import Preferences
 import CodeEditExtension
 import CodeEditSymbols
-import CodeFile
 
 final class CodeEditApplication: NSApplication {
     let strongDelegate = AppDelegate()

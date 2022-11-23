@@ -10,7 +10,6 @@ import AppKit
 import SwiftUI
 import WorkspaceClient
 import Combine
-import CodeFile
 import CodeEditKit
 import CodeEditUtils
 import ExtensionsStore

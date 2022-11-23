@@ -101,6 +101,10 @@
 		58798236292E30B90085B254 /* FeedbackType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5879822F292E30B90085B254 /* FeedbackType.swift */; };
 		58798237292E30B90085B254 /* FeedbackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58798230292E30B90085B254 /* FeedbackView.swift */; };
 		58798238292E30B90085B254 /* FeedbackWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58798232292E30B90085B254 /* FeedbackWindowController.swift */; };
+		5879824F292E78D80085B254 /* CodeFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58798248292E78D80085B254 /* CodeFileView.swift */; };
+		58798250292E78D80085B254 /* CodeFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58798249292E78D80085B254 /* CodeFile.swift */; };
+		58798251292E78D80085B254 /* OtherFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5879824B292E78D80085B254 /* OtherFileView.swift */; };
+		58798252292E78D80085B254 /* ImageFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5879824D292E78D80085B254 /* ImageFileView.swift */; };
 		588224FE292BFF0800E83CDE /* CodeEditExtension in Frameworks */ = {isa = PBXBuildFile; productRef = 5867933928F5DC7A00D5DE54 /* CodeEditExtension */; };
 		58822524292C280D00E83CDE /* StatusBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822509292C280D00E83CDE /* StatusBar.swift */; };
 		58822525292C280D00E83CDE /* StatusBarMenuLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882250B292C280D00E83CDE /* StatusBarMenuLabel.swift */; };
@@ -123,7 +127,6 @@
 		58FD7609291EA1CB0051D6E4 /* CommandPaletteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FD7607291EA1CB0051D6E4 /* CommandPaletteView.swift */; };
 		5C403B8F27E20F8000788241 /* WorkspaceClient in Frameworks */ = {isa = PBXBuildFile; productRef = 5C403B8E27E20F8000788241 /* WorkspaceClient */; };
 		5C4BB1E128212B1E00A92FB2 /* World.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4BB1E028212B1E00A92FB2 /* World.swift */; };
-		5CF38A5E27E48E6C0096A0F7 /* CodeFile in Frameworks */ = {isa = PBXBuildFile; productRef = 5CF38A5D27E48E6C0096A0F7 /* CodeFile */; };
 		6C05A8AF284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C05A8AE284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift */; };
 		6C14CEB028777D3C001468FE /* FindNavigatorListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C14CEAF28777D3C001468FE /* FindNavigatorListViewController.swift */; };
 		6C14CEB32877A68F001468FE /* FindNavigatorMatchListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C14CEB22877A68F001468FE /* FindNavigatorMatchListCell.swift */; };
@@ -281,6 +284,10 @@
 		5879822F292E30B90085B254 /* FeedbackType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackType.swift; sourceTree = "<group>"; };
 		58798230292E30B90085B254 /* FeedbackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackView.swift; sourceTree = "<group>"; };
 		58798232292E30B90085B254 /* FeedbackWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackWindowController.swift; sourceTree = "<group>"; };
+		58798248292E78D80085B254 /* CodeFileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeFileView.swift; sourceTree = "<group>"; };
+		58798249292E78D80085B254 /* CodeFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeFile.swift; sourceTree = "<group>"; };
+		5879824B292E78D80085B254 /* OtherFileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OtherFileView.swift; sourceTree = "<group>"; };
+		5879824D292E78D80085B254 /* ImageFileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageFileView.swift; sourceTree = "<group>"; };
 		58822509292C280D00E83CDE /* StatusBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBar.swift; sourceTree = "<group>"; };
 		5882250B292C280D00E83CDE /* StatusBarMenuLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarMenuLabel.swift; sourceTree = "<group>"; };
 		5882250C292C280D00E83CDE /* StatusBarBreakpointButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarBreakpointButton.swift; sourceTree = "<group>"; };
@@ -352,7 +359,6 @@
 				2803257127F3CF1F009C7DC2 /* AppPreferences in Frameworks */,
 				2040F0B1280AE96100411B6F /* CodeEditUtils in Frameworks */,
 				2816F594280CF50500DD548B /* CodeEditSymbols in Frameworks */,
-				5CF38A5E27E48E6C0096A0F7 /* CodeFile in Frameworks */,
 				FA6BA6F1282ACAD600019309 /* Keybindings in Frameworks */,
 				28117FD0280768A500649353 /* CodeEditUI in Frameworks */,
 			);
@@ -747,6 +753,33 @@
 			path = Controllers;
 			sourceTree = "<group>";
 		};
+		58798244292E78D80085B254 /* CodeFile */ = {
+			isa = PBXGroup;
+			children = (
+				5879824C292E78D80085B254 /* Image */,
+				5879824A292E78D80085B254 /* Other */,
+				58798249292E78D80085B254 /* CodeFile.swift */,
+				58798248292E78D80085B254 /* CodeFileView.swift */,
+			);
+			path = CodeFile;
+			sourceTree = "<group>";
+		};
+		5879824A292E78D80085B254 /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				5879824B292E78D80085B254 /* OtherFileView.swift */,
+			);
+			path = Other;
+			sourceTree = "<group>";
+		};
+		5879824C292E78D80085B254 /* Image */ = {
+			isa = PBXGroup;
+			children = (
+				5879824D292E78D80085B254 /* ImageFileView.swift */,
+			);
+			path = Image;
+			sourceTree = "<group>";
+		};
 		588224FF292C280D00E83CDE /* StatusBar */ = {
 			isa = PBXGroup;
 			children = (
@@ -898,6 +931,7 @@
 				5878DA7D291862BC00DD95A3 /* Acknowledgements */,
 				582213EE2918345500EFE361 /* About */,
 				5878DAAB291D627C00DD95A3 /* Breadcrumbs */,
+				58798244292E78D80085B254 /* CodeFile */,
 				58FD7603291EA1CB0051D6E4 /* Commands */,
 				043C321227E31FE8006AE443 /* Documents */,
 				0463E50F27FCC19800806D5C /* Extensions */,
@@ -1004,7 +1038,6 @@
 			name = CodeEdit;
 			packageProductDependencies = (
 				5C403B8E27E20F8000788241 /* WorkspaceClient */,
-				5CF38A5D27E48E6C0096A0F7 /* CodeFile */,
 				2803257027F3CF1F009C7DC2 /* AppPreferences */,
 				0483E34C27FCC46600354AC0 /* ExtensionsStore */,
 				28117FCF280768A500649353 /* CodeEditUI */,
@@ -1225,6 +1258,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5878DA842918642000DD95A3 /* ParsePackagesResolved.swift in Sources */,
+				5879824F292E78D80085B254 /* CodeFileView.swift in Sources */,
 				2072FA13280D74ED00C7F8D4 /* HistoryInspectorModel.swift in Sources */,
 				58822534292C280D00E83CDE /* CursorLocation.swift in Sources */,
 				201169E52837B40300F92B46 /* RepositoriesView.swift in Sources */,
@@ -1265,6 +1299,7 @@
 				20EBB503280C327C00F3A5DA /* HistoryInspector.swift in Sources */,
 				58798219292D92370085B254 /* SearchModeModel.swift in Sources */,
 				5882252B292C280D00E83CDE /* StatusBarCursorLocationLabel.swift in Sources */,
+				58798252292E78D80085B254 /* ImageFileView.swift in Sources */,
 				5882252D292C280D00E83CDE /* StatusBarSplitTerminalButton.swift in Sources */,
 				58798238292E30B90085B254 /* FeedbackWindowController.swift in Sources */,
 				2072FA1A280D872600C7F8D4 /* LineEndings.swift in Sources */,
@@ -1290,6 +1325,7 @@
 				581BFB6B2926431000D251EC /* RecentProjectItem.swift in Sources */,
 				5879821A292D92370085B254 /* SearchResultModel.swift in Sources */,
 				0485EB1F27E7458B00138301 /* WorkspaceCodeFileView.swift in Sources */,
+				58798251292E78D80085B254 /* OtherFileView.swift in Sources */,
 				58822524292C280D00E83CDE /* StatusBar.swift in Sources */,
 				581BFB682926431000D251EC /* WelcomeView.swift in Sources */,
 				5882252C292C280D00E83CDE /* StatusBarDrawer.swift in Sources */,
@@ -1312,6 +1348,7 @@
 				04C3254F2800AA4700C8DA2D /* ExtensionInstallationView.swift in Sources */,
 				58822530292C280D00E83CDE /* FilterTextField.swift in Sources */,
 				B6EE989027E8879A00CDD8AB /* InspectorSidebar.swift in Sources */,
+				58798250292E78D80085B254 /* CodeFile.swift in Sources */,
 				5878DAA5291AE76700DD95A3 /* QuickOpenView.swift in Sources */,
 				9C3E1A07284E8E020042BEC0 /* WelcomeModuleExtensions.swift in Sources */,
 				201169D72837B2E300F92B46 /* SourceControlNavigatorView.swift in Sources */,
@@ -1873,10 +1910,6 @@
 		5C403B8E27E20F8000788241 /* WorkspaceClient */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = WorkspaceClient;
-		};
-		5CF38A5D27E48E6C0096A0F7 /* CodeFile */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = CodeFile;
 		};
 		FA6BA6F0282ACAD600019309 /* Keybindings */ = {
 			isa = XCSwiftPackageProductDependency;

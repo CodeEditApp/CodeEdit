@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import CodeFile
 import WorkspaceClient
 import AppPreferences
 import UniformTypeIdentifiers

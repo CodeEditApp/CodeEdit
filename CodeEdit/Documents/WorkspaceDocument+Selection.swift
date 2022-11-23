@@ -7,7 +7,6 @@
 
 import Foundation
 import WorkspaceClient
-import CodeFile
 import TabBar
 import ExtensionsStore
 
