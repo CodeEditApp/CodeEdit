@@ -10,8 +10,8 @@ import WorkspaceClient
 import Cocoa
 
 /// A struct for holding information about a search match.
-public class SearchResultMatchModel: Hashable, Identifiable {
-    public init(lineNumber: Int,
+class SearchResultMatchModel: Hashable, Identifiable {
+    init(lineNumber: Int,
                 file: WorkspaceClient.FileItem,
                 lineContent: String,
                 keywordRange: Range<String.Index>) {
@@ -22,17 +22,17 @@ public class SearchResultMatchModel: Hashable, Identifiable {
         self.keywordRange = keywordRange
     }
 
-    public var id: UUID
-    public var file: WorkspaceClient.FileItem
-    public var lineNumber: Int
-    public var lineContent: String
-    public var keywordRange: Range<String.Index>
+    var id: UUID
+    var file: WorkspaceClient.FileItem
+    var lineNumber: Int
+    var lineContent: String
+    var keywordRange: Range<String.Index>
 
-    public var hasKeywordInfo: Bool {
+    var hasKeywordInfo: Bool {
         lineNumber >= 0 && !lineContent.isEmpty && !keywordRange.isEmpty
     }
 
-    public static func == (lhs: SearchResultMatchModel, rhs: SearchResultMatchModel) -> Bool {
+    static func == (lhs: SearchResultMatchModel, rhs: SearchResultMatchModel) -> Bool {
         return lhs.id == rhs.id
         && lhs.file == rhs.file
         && lhs.lineNumber == rhs.lineNumber
@@ -40,7 +40,7 @@ public class SearchResultMatchModel: Hashable, Identifiable {
         && lhs.keywordRange == rhs.keywordRange
     }
 
-    public func hash(into hasher: inout Hasher) {
+    func hash(into hasher: inout Hasher) {
         hasher.combine(id)
         hasher.combine(file)
         hasher.combine(lineNumber)
@@ -51,7 +51,7 @@ public class SearchResultMatchModel: Hashable, Identifiable {
     /// Returns a formatted `NSAttributedString` with the search result bolded.
     /// Will only return 60 characters before and after the matched result.
     /// - Returns: The formatted `NSAttributedString`
-    public func attributedLabel() -> NSAttributedString {
+    func attributedLabel() -> NSAttributedString {
 
         // By default `NSTextView` will ignore any paragraph wrapping set to the label when it's
         // using an `NSAttributedString` so we need to set the wrap mode here.

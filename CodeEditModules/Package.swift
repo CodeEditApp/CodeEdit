@@ -22,10 +22,6 @@ let package = Package(
             targets: ["TerminalEmulator"]
         ),
         .library(
-            name: "Search",
-            targets: ["Search"]
-        ),
-        .library(
             name: "ShellClient",
             targets: ["ShellClient"]
         ),
@@ -142,13 +138,6 @@ let package = Package(
                 "AppPreferences"
             ],
             path: "Modules/TerminalEmulator/src"
-        ),
-        .target(
-            name: "Search",
-            dependencies: [
-                "WorkspaceClient",
-            ],
-            path: "Modules/Search/src"
         ),
         .target(
             name: "ShellClient",

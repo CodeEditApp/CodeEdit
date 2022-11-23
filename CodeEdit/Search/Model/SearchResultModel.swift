@@ -9,11 +9,11 @@ import Foundation
 import WorkspaceClient
 
 /// A struct for holding information about a file and any matches it may have for a search query.
-public class SearchResultModel: Hashable {
-    public var file: WorkspaceClient.FileItem
-    public var lineMatches: [SearchResultMatchModel]
+class SearchResultModel: Hashable {
+    var file: WorkspaceClient.FileItem
+    var lineMatches: [SearchResultMatchModel]
 
-    public init(
+    init(
         file: WorkspaceClient.FileItem,
         lineMatches: [SearchResultMatchModel] = []
     ) {
@@ -21,12 +21,12 @@ public class SearchResultModel: Hashable {
         self.lineMatches = lineMatches
     }
 
-    public static func == (lhs: SearchResultModel, rhs: SearchResultModel) -> Bool {
+    static func == (lhs: SearchResultModel, rhs: SearchResultModel) -> Bool {
         return lhs.file == rhs.file
         && lhs.lineMatches == rhs.lineMatches
     }
 
-    public func hash(into hasher: inout Hasher) {
+    func hash(into hasher: inout Hasher) {
         hasher.combine(file)
         hasher.combine(lineMatches)
     }
