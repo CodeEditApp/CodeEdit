@@ -7,7 +7,6 @@
 
 import SwiftUI
 import WorkspaceClient
-import Search
 
 /// A `NSTableCellView` showing an icon and label
 final class FindNavigatorListMatchCell: NSTableCellView {

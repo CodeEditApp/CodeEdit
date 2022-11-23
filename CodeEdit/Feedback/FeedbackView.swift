@@ -10,10 +10,7 @@ import CodeEditUI
 import Git
 import AppPreferences
 
-public struct FeedbackView: View {
-
-    public init() {}
-
+struct FeedbackView: View {
     @ObservedObject
     private var feedbackModel: FeedbackModel = .shared
 
@@ -26,7 +23,7 @@ public struct FeedbackView: View {
     @State
     var isSubmitButtonPressed: Bool = false
 
-    public var body: some View {
+    var body: some View {
         VStack {
             ScrollView {
                 VStack(alignment: .leading) {
@@ -218,7 +215,7 @@ public struct FeedbackView: View {
         }
     }
 
-    public func showWindow() {
+    func showWindow() {
         FeedbackWindowController(view: self, size: NSSize(width: 1028, height: 762)).showWindow(nil)
     }
 }

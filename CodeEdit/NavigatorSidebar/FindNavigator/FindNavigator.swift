@@ -7,7 +7,6 @@
 
 import SwiftUI
 import WorkspaceClient
-import Search
 
 struct FindNavigator: View {
     @ObservedObject

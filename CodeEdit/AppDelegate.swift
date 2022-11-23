@@ -9,7 +9,6 @@ import SwiftUI
 import AppPreferences
 import Preferences
 import CodeEditExtension
-import Feedback
 import CodeEditSymbols
 import CodeFile
 

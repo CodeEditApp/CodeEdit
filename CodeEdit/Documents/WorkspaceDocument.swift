@@ -11,7 +11,6 @@ import SwiftUI
 import WorkspaceClient
 import Combine
 import CodeFile
-import Search
 import CodeEditKit
 import CodeEditUtils
 import ExtensionsStore

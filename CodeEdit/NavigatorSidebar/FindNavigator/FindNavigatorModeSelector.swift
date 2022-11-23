@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Search
 
 struct FindNavigatorModeSelector: View {
     @ObservedObject

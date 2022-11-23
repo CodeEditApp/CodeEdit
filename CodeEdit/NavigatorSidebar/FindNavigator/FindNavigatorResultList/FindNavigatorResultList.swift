@@ -8,7 +8,6 @@
 import SwiftUI
 import WorkspaceClient
 import AppPreferences
-import Search
 import Combine
 
 struct FindNavigatorResultList: NSViewControllerRepresentable {

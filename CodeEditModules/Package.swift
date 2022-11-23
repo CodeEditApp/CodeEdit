@@ -42,10 +42,6 @@ let package = Package(
             targets: ["ExtensionsStore"]
         ),
         .library(
-            name: "Feedback",
-            targets: ["Feedback"]
-        ),
-        .library(
             name: "CodeEditUtils",
             targets: ["CodeEditUtils"]
         ),
@@ -194,16 +190,6 @@ let package = Package(
                 "LSP"
             ],
             path: "Modules/ExtensionsStore/src"
-        ),
-        .target(
-            name: "Feedback",
-            dependencies: [
-                "Git",
-                "CodeEditUI",
-                "AppPreferences",
-                "CodeEditUtils",
-            ],
-            path: "Modules/Feedback/src"
         ),
         .target(
             name: "LSP",

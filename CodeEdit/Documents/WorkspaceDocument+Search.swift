@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Search
 import WorkspaceClient
 
 extension WorkspaceDocument {
