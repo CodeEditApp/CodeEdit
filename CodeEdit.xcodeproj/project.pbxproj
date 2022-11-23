@@ -17,7 +17,6 @@
 		0463E51127FCC1DF00806D5C /* CodeEditAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0463E51027FCC1DF00806D5C /* CodeEditAPI.swift */; };
 		0463E51327FCC1FB00806D5C /* CodeEditTargetsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0463E51227FCC1FB00806D5C /* CodeEditTargetsAPI.swift */; };
 		04660F6A27E51E5C00477777 /* CodeEditWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04660F6927E51E5C00477777 /* CodeEditWindowController.swift */; };
-		0483E34D27FCC46600354AC0 /* ExtensionsStore in Frameworks */ = {isa = PBXBuildFile; productRef = 0483E34C27FCC46600354AC0 /* ExtensionsStore */; };
 		0483E35027FDB17700354AC0 /* ExtensionNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0483E34F27FDB17700354AC0 /* ExtensionNavigator.swift */; };
 		0485EB1F27E7458B00138301 /* WorkspaceCodeFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0485EB1E27E7458B00138301 /* WorkspaceCodeFileView.swift */; };
 		04C3254B27FF23B000C8DA2D /* ExtensionNavigatorData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C3254A27FF23B000C8DA2D /* ExtensionNavigatorData.swift */; };
@@ -105,6 +104,16 @@
 		58798250292E78D80085B254 /* CodeFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58798249292E78D80085B254 /* CodeFile.swift */; };
 		58798251292E78D80085B254 /* OtherFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5879824B292E78D80085B254 /* OtherFileView.swift */; };
 		58798252292E78D80085B254 /* ImageFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5879824D292E78D80085B254 /* ImageFileView.swift */; };
+		58798261292EC4080085B254 /* ExtensionsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58798258292EC4080085B254 /* ExtensionsManager.swift */; };
+		58798262292EC4080085B254 /* PluginRelease.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5879825A292EC4080085B254 /* PluginRelease.swift */; };
+		58798263292EC4080085B254 /* DownloadedPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5879825B292EC4080085B254 /* DownloadedPlugin.swift */; };
+		58798264292EC4080085B254 /* Plugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5879825C292EC4080085B254 /* Plugin.swift */; };
+		58798265292EC4080085B254 /* ExtensionsStoreAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5879825E292EC4080085B254 /* ExtensionsStoreAPI.swift */; };
+		58798266292EC4080085B254 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5879825F292EC4080085B254 /* Response.swift */; };
+		58798267292EC4080085B254 /* Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58798260292EC4080085B254 /* Page.swift */; };
+		5879826B292EC7B00085B254 /* Light-Swift-Untar in Frameworks */ = {isa = PBXBuildFile; productRef = 5879826A292EC7B00085B254 /* Light-Swift-Untar */; };
+		5879826F292EC9870085B254 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = 5879826E292EC9870085B254 /* GRDB */; };
+		58798277292ECFD40085B254 /* LSPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58798276292ECFD40085B254 /* LSPClient.swift */; };
 		588224FE292BFF0800E83CDE /* CodeEditExtension in Frameworks */ = {isa = PBXBuildFile; productRef = 5867933928F5DC7A00D5DE54 /* CodeEditExtension */; };
 		58822524292C280D00E83CDE /* StatusBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822509292C280D00E83CDE /* StatusBar.swift */; };
 		58822525292C280D00E83CDE /* StatusBarMenuLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882250B292C280D00E83CDE /* StatusBarMenuLabel.swift */; };
@@ -288,6 +297,14 @@
 		58798249292E78D80085B254 /* CodeFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeFile.swift; sourceTree = "<group>"; };
 		5879824B292E78D80085B254 /* OtherFileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OtherFileView.swift; sourceTree = "<group>"; };
 		5879824D292E78D80085B254 /* ImageFileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageFileView.swift; sourceTree = "<group>"; };
+		58798258292EC4080085B254 /* ExtensionsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionsManager.swift; sourceTree = "<group>"; };
+		5879825A292EC4080085B254 /* PluginRelease.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PluginRelease.swift; sourceTree = "<group>"; };
+		5879825B292EC4080085B254 /* DownloadedPlugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadedPlugin.swift; sourceTree = "<group>"; };
+		5879825C292EC4080085B254 /* Plugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Plugin.swift; sourceTree = "<group>"; };
+		5879825E292EC4080085B254 /* ExtensionsStoreAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionsStoreAPI.swift; sourceTree = "<group>"; };
+		5879825F292EC4080085B254 /* Response.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
+		58798260292EC4080085B254 /* Page.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Page.swift; sourceTree = "<group>"; };
+		58798276292ECFD40085B254 /* LSPClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LSPClient.swift; sourceTree = "<group>"; };
 		58822509292C280D00E83CDE /* StatusBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBar.swift; sourceTree = "<group>"; };
 		5882250B292C280D00E83CDE /* StatusBarMenuLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarMenuLabel.swift; sourceTree = "<group>"; };
 		5882250C292C280D00E83CDE /* StatusBarBreakpointButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarBreakpointButton.swift; sourceTree = "<group>"; };
@@ -350,13 +367,14 @@
 			files = (
 				588224FE292BFF0800E83CDE /* CodeEditExtension in Frameworks */,
 				2801BB8A290D5A8E00EBF552 /* CodeEditKit in Frameworks */,
-				0483E34D27FCC46600354AC0 /* ExtensionsStore in Frameworks */,
 				043BCF07281DA2F5000AC47C /* TabBar in Frameworks */,
 				20AFDC7F28206701001A4FC7 /* Git in Frameworks */,
 				2864BAAC28117B3F002DBD1A /* ShellClient in Frameworks */,
+				5879826F292EC9870085B254 /* GRDB in Frameworks */,
 				2864BAAE28117D7C002DBD1A /* TerminalEmulator in Frameworks */,
 				5C403B8F27E20F8000788241 /* WorkspaceClient in Frameworks */,
 				2803257127F3CF1F009C7DC2 /* AppPreferences in Frameworks */,
+				5879826B292EC7B00085B254 /* Light-Swift-Untar in Frameworks */,
 				2040F0B1280AE96100411B6F /* CodeEditUtils in Frameworks */,
 				2816F594280CF50500DD548B /* CodeEditSymbols in Frameworks */,
 				FA6BA6F1282ACAD600019309 /* Keybindings in Frameworks */,
@@ -780,6 +798,44 @@
 			path = Image;
 			sourceTree = "<group>";
 		};
+		58798256292EC4080085B254 /* ExtensionsStore */ = {
+			isa = PBXGroup;
+			children = (
+				5879825D292EC4080085B254 /* API */,
+				58798259292EC4080085B254 /* Models */,
+				58798258292EC4080085B254 /* ExtensionsManager.swift */,
+			);
+			path = ExtensionsStore;
+			sourceTree = "<group>";
+		};
+		58798259292EC4080085B254 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				5879825A292EC4080085B254 /* PluginRelease.swift */,
+				5879825B292EC4080085B254 /* DownloadedPlugin.swift */,
+				5879825C292EC4080085B254 /* Plugin.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		5879825D292EC4080085B254 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				5879825E292EC4080085B254 /* ExtensionsStoreAPI.swift */,
+				5879825F292EC4080085B254 /* Response.swift */,
+				58798260292EC4080085B254 /* Page.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		58798274292ECFD40085B254 /* LSP */ = {
+			isa = PBXGroup;
+			children = (
+				58798276292ECFD40085B254 /* LSPClient.swift */,
+			);
+			path = LSP;
+			sourceTree = "<group>";
+		};
 		588224FF292C280D00E83CDE /* StatusBar */ = {
 			isa = PBXGroup;
 			children = (
@@ -935,9 +991,11 @@
 				58FD7603291EA1CB0051D6E4 /* Commands */,
 				043C321227E31FE8006AE443 /* Documents */,
 				0463E50F27FCC19800806D5C /* Extensions */,
+				58798256292EC4080085B254 /* ExtensionsStore */,
 				58798228292E30B90085B254 /* Feedback */,
 				B6EE988E27E8877C00CDD8AB /* InspectorSidebar */,
 				D7211D4427E066D4008F2ED7 /* Localization */,
+				58798274292ECFD40085B254 /* LSP */,
 				287776EA27E350A100D46668 /* NavigatorSidebar */,
 				B658FB3527DA9E1000EA4DBD /* Preview Content */,
 				5878DAA0291AE76700DD95A3 /* QuickOpen */,
@@ -1039,7 +1097,6 @@
 			packageProductDependencies = (
 				5C403B8E27E20F8000788241 /* WorkspaceClient */,
 				2803257027F3CF1F009C7DC2 /* AppPreferences */,
-				0483E34C27FCC46600354AC0 /* ExtensionsStore */,
 				28117FCF280768A500649353 /* CodeEditUI */,
 				2040F0B0280AE96100411B6F /* CodeEditUtils */,
 				2816F593280CF50500DD548B /* CodeEditSymbols */,
@@ -1050,6 +1107,8 @@
 				20AFDC7E28206701001A4FC7 /* Git */,
 				2801BB89290D5A8E00EBF552 /* CodeEditKit */,
 				5867933928F5DC7A00D5DE54 /* CodeEditExtension */,
+				5879826A292EC7B00085B254 /* Light-Swift-Untar */,
+				5879826E292EC9870085B254 /* GRDB */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -1130,6 +1189,8 @@
 				2816F592280CF50500DD548B /* XCRemoteSwiftPackageReference "CodeEditSymbols" */,
 				2801BB88290D5A8E00EBF552 /* XCRemoteSwiftPackageReference "CodeEditKit" */,
 				287136B1292A407E00E9F5F4 /* XCRemoteSwiftPackageReference "SwiftLintPlugin" */,
+				58798269292EC7B00085B254 /* XCRemoteSwiftPackageReference "Light-Swift-Untar" */,
+				5879826D292EC9870085B254 /* XCRemoteSwiftPackageReference "GRDB.swift" */,
 			);
 			productRefGroup = B658FB2D27DA9E0F00EA4DBD /* Products */;
 			projectDirPath = "";
@@ -1265,6 +1326,7 @@
 				DE513F52281B672D002260B9 /* TabBarAccessory.swift in Sources */,
 				2813F93927ECC4C300E305E4 /* NavigatorSidebar.swift in Sources */,
 				DE513F54281DE5D0002260B9 /* TabBarXcode.swift in Sources */,
+				58798277292ECFD40085B254 /* LSPClient.swift in Sources */,
 				6C14CEB028777D3C001468FE /* FindNavigatorListViewController.swift in Sources */,
 				20EBB50D280C383700F3A5DA /* LanguageType.swift in Sources */,
 				581BFB6A2926431000D251EC /* RecentProjectsView.swift in Sources */,
@@ -1277,6 +1339,7 @@
 				2B7A583527E4BA0100D25D4E /* AppDelegate.swift in Sources */,
 				D7012EE827E757850001E1EF /* FindNavigator.swift in Sources */,
 				D7E201AE27E8B3C000CB86D0 /* String+Ranges.swift in Sources */,
+				58798262292EC4080085B254 /* PluginRelease.swift in Sources */,
 				58798233292E30B90085B254 /* FeedbackToolbar.swift in Sources */,
 				5878DAA7291AE76700DD95A3 /* QuickOpenViewModel.swift in Sources */,
 				20EBB50F280C389300F3A5DA /* FileInspectorModel.swift in Sources */,
@@ -1292,6 +1355,7 @@
 				2072FA1C280D874000C7F8D4 /* IndentUsing.swift in Sources */,
 				B6EE989227E887C600CDD8AB /* InspectorSidebarToolbar.swift in Sources */,
 				201169E72837B5CA00F92B46 /* SourceControlModel.swift in Sources */,
+				58798265292EC4080085B254 /* ExtensionsStoreAPI.swift in Sources */,
 				58822528292C280D00E83CDE /* StatusBarEncodingSelector.swift in Sources */,
 				28B8F884280FFE4600596236 /* NSTableView+Background.swift in Sources */,
 				200412EF280F3EAC00BCAF5C /* NoCommitHistoryView.swift in Sources */,
@@ -1334,7 +1398,9 @@
 				20EBB501280C325D00F3A5DA /* FileInspectorView.swift in Sources */,
 				58822531292C280D00E83CDE /* View+isHovering.swift in Sources */,
 				286471AB27ED51FD0039369D /* ProjectNavigator.swift in Sources */,
+				58798264292EC4080085B254 /* Plugin.swift in Sources */,
 				04C3254B27FF23B000C8DA2D /* ExtensionNavigatorData.swift in Sources */,
+				58798261292EC4080085B254 /* ExtensionsManager.swift in Sources */,
 				287776EF27E3515300D46668 /* TabBarItem.swift in Sources */,
 				5878DAA8291AE76700DD95A3 /* QuickOpenItem.swift in Sources */,
 				58FD7608291EA1CB0051D6E4 /* CommandPaletteViewModel.swift in Sources */,
@@ -1347,6 +1413,7 @@
 				2072FA16280D83A500C7F8D4 /* FileTypeList.swift in Sources */,
 				04C3254F2800AA4700C8DA2D /* ExtensionInstallationView.swift in Sources */,
 				58822530292C280D00E83CDE /* FilterTextField.swift in Sources */,
+				58798266292EC4080085B254 /* Response.swift in Sources */,
 				B6EE989027E8879A00CDD8AB /* InspectorSidebar.swift in Sources */,
 				58798250292E78D80085B254 /* CodeFile.swift in Sources */,
 				5878DAA5291AE76700DD95A3 /* QuickOpenView.swift in Sources */,
@@ -1368,8 +1435,10 @@
 				58822525292C280D00E83CDE /* StatusBarMenuLabel.swift in Sources */,
 				6CDA84AD284C1BA000C1CC3A /* TabBarContextMenu.swift in Sources */,
 				0463E51127FCC1DF00806D5C /* CodeEditAPI.swift in Sources */,
+				58798267292EC4080085B254 /* Page.swift in Sources */,
 				5882252A292C280D00E83CDE /* StatusBarToggleDrawerButton.swift in Sources */,
 				04C3255B2801F86400C8DA2D /* OutlineViewController.swift in Sources */,
+				58798263292EC4080085B254 /* DownloadedPlugin.swift in Sources */,
 				6C05A8AF284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift in Sources */,
 				6CDA84AB284C0E4A00C1CC3A /* TabBarItemButtonStyle.swift in Sources */,
 				28FFE1BF27E3A441001939DB /* NavigatorSidebarToolbarBottom.swift in Sources */,
@@ -1853,16 +1922,28 @@
 				kind = branch;
 			};
 		};
+		58798269292EC7B00085B254 /* XCRemoteSwiftPackageReference "Light-Swift-Untar" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Light-Untar/Light-Swift-Untar.git";
+			requirement = {
+				kind = exactVersion;
+				version = 1.0.4;
+			};
+		};
+		5879826D292EC9870085B254 /* XCRemoteSwiftPackageReference "GRDB.swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/groue/GRDB.swift.git";
+			requirement = {
+				kind = exactVersion;
+				version = 5.22.2;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		043BCF06281DA2F5000AC47C /* TabBar */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = TabBar;
-		};
-		0483E34C27FCC46600354AC0 /* ExtensionsStore */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = ExtensionsStore;
 		};
 		2040F0B0280AE96100411B6F /* CodeEditUtils */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -1906,6 +1987,16 @@
 		5867933928F5DC7A00D5DE54 /* CodeEditExtension */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = CodeEditExtension;
+		};
+		5879826A292EC7B00085B254 /* Light-Swift-Untar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 58798269292EC7B00085B254 /* XCRemoteSwiftPackageReference "Light-Swift-Untar" */;
+			productName = "Light-Swift-Untar";
+		};
+		5879826E292EC9870085B254 /* GRDB */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5879826D292EC9870085B254 /* XCRemoteSwiftPackageReference "GRDB.swift" */;
+			productName = GRDB;
 		};
 		5C403B8E27E20F8000788241 /* WorkspaceClient */ = {
 			isa = XCSwiftPackageProductDependency;

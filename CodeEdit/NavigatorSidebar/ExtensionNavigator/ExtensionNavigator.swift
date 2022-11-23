@@ -7,7 +7,6 @@
 
 import SwiftUI
 import Combine
-import ExtensionsStore
 
 struct ExtensionNavigator: View {
     @EnvironmentObject var workspace: WorkspaceDocument

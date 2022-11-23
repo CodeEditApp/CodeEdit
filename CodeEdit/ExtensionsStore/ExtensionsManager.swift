@@ -9,17 +9,16 @@ import Foundation
 import Light_Swift_Untar
 import CodeEditKit
 import GRDB
-import LSP
 
 /// Class which handles all extensions (its bundles, instances for each workspace and so on)
-public final class ExtensionsManager {
+final class ExtensionsManager {
     struct PluginWorkspaceKey: Hashable {
         var releaseID: UUID
         var workspace: URL
     }
 
     /// Shared instance of `ExtensionsManager`
-    public static let shared: ExtensionsManager? = {
+    static let shared: ExtensionsManager? = {
         try? ExtensionsManager()
     }()
 
@@ -65,7 +64,7 @@ public final class ExtensionsManager {
 
     /// Removes all plugins which are related to the specified workspace URL
     /// - Parameter url: workspace's URL
-    public func close(url: URL) {
+    func close(url: URL) {
         loadedPlugins.filter { elem in
             elem.key.workspace == url
         }.forEach { (key: PluginWorkspaceKey, _) in
@@ -142,7 +141,7 @@ public final class ExtensionsManager {
     }
 
     /// Preloads all extensions' bundles to `loadedBundles`
-    public func preload() throws {
+    func preload() throws {
         let plugins = try self.dbQueue.read { database in
             try DownloadedPlugin.filter(Column("loadable") == true).fetchAll(database)
         }
@@ -160,7 +159,7 @@ public final class ExtensionsManager {
     /// Loads extensions' bundles which were not loaded before and passes `ExtensionAPI` as a whole class
     /// or workspace's URL
     /// - Parameter apiBuilder: function which creates `ExtensionAPI` instance based on plugin's ID
-    public func load(_ apiBuilder: (String) -> ExtensionAPI) throws {
+    func load(_ apiBuilder: (String) -> ExtensionAPI) throws {
         let plugins = try self.dbQueue.read { database in
             try DownloadedPlugin
                 .filter(Column("loadable") == true)
@@ -191,7 +190,7 @@ public final class ExtensionsManager {
     /// - Parameters:
     ///   - plugin: plugin to be installed
     ///   - release: release of the plugin to be installed
-    public func install(plugin: Plugin, release: PluginRelease) async throws {
+    func install(plugin: Plugin, release: PluginRelease) async throws {
         guard let tarball = release.tarball else {
             throw ExtensionsStoreAPIError.noTarball
         }
@@ -244,7 +243,7 @@ public final class ExtensionsManager {
 
     /// Removes extension bundle (plugin)
     /// - Parameter plugin: plugin to be removed
-    public func remove(plugin: Plugin) throws {
+    func remove(plugin: Plugin) throws {
         guard let entry = (try self.dbQueue.read { database in
             try DownloadedPlugin.filter(Column("plugin") == plugin.id).fetchOne(database)
         }) else {
@@ -284,7 +283,7 @@ public final class ExtensionsManager {
     /// Checks whether extension's bundle (plugin) is installed
     /// - Parameter plugin: plugin to be checked
     /// - Returns: whether extension's bundle is installed
-    public func isInstalled(plugin: Plugin) -> Bool {
+    func isInstalled(plugin: Plugin) -> Bool {
         do {
             let entry = try self.dbQueue.read { database in
                 try DownloadedPlugin.filter(Column("plugin") == plugin.id).fetchOne(database)

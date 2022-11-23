@@ -7,7 +7,6 @@
 
 import Foundation
 import Combine
-import ExtensionsStore
 
 final class ExtensionNavigatorData: ObservableObject {
     @Published var plugins = [Plugin]()

@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import ExtensionsStore
 
 struct ExtensionNavigatorItem: View {
     var plugin: Plugin

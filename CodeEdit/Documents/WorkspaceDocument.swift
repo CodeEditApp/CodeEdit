@@ -12,7 +12,6 @@ import WorkspaceClient
 import Combine
 import CodeEditKit
 import CodeEditUtils
-import ExtensionsStore
 import CodeEditExtension
 import TabBar
 

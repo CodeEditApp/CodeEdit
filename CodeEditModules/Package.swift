@@ -34,10 +34,6 @@ let package = Package(
             targets: ["CodeEditExtension"]
         ),
         .library(
-            name: "ExtensionsStore",
-            targets: ["ExtensionsStore"]
-        ),
-        .library(
             name: "CodeEditUtils",
             targets: ["CodeEditUtils"]
         ),
@@ -160,21 +156,6 @@ let package = Package(
                 "CodeEditKit"
             ],
             path: "Modules/CodeEditExtension/src"
-        ),
-        .target(
-            name: "ExtensionsStore",
-            dependencies: [
-                "CodeEditKit",
-                "Light-Swift-Untar",
-                .productItem(name: "GRDB", package: "GRDB.swift", condition: nil),
-                "LSP"
-            ],
-            path: "Modules/ExtensionsStore/src"
-        ),
-        .target(
-            name: "LSP",
-            path: "Modules/LSP/src"
-
         ),
         .target(
             name: "CodeEditUtils",

@@ -8,7 +8,6 @@
 import Foundation
 import WorkspaceClient
 import TabBar
-import ExtensionsStore
 
 struct WorkspaceSelectionState: Codable {
 

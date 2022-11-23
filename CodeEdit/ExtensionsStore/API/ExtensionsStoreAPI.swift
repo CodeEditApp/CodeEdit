@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-public enum ExtensionsStoreAPIError: Error {
+enum ExtensionsStoreAPIError: Error {
     case noTarball
     case urlFailure
     case pathError
@@ -17,7 +17,7 @@ public enum ExtensionsStoreAPIError: Error {
 // TODO: add authorization
 
 /// Structure to work with Extensions Store API
-public enum ExtensionsStoreAPI {
+enum ExtensionsStoreAPI {
 
     static let base = URL(string: "https://codeedit.pkasila.net/api/")!
     static let agent = Agent()
@@ -25,7 +25,7 @@ public enum ExtensionsStoreAPI {
     /// Lists plugins on the specified page
     /// - Parameter page: page to be requested
     /// - Returns: publisher with the page
-    public static func plugins(page: Int) -> AnyPublisher<Page<Plugin>, Error> {
+    static func plugins(page: Int) -> AnyPublisher<Page<Plugin>, Error> {
         var components = URLComponents(url: base.appendingPathComponent("plugins"), resolvingAgainstBaseURL: false)
         components?.queryItems = [
             .init(name: "page", value: "\(page)")
@@ -44,7 +44,7 @@ public enum ExtensionsStoreAPI {
     /// Plugin by ID
     /// - Parameter id: identifier of the plugin
     /// - Returns: publisher with `Plugin`
-    public static func plugin(id: UUID) -> AnyPublisher<Plugin, Error> {
+    static func plugin(id: UUID) -> AnyPublisher<Plugin, Error> {
         let request = URLRequest(url: base.appendingPathComponent("plugins/\(id.uuidString)"))
         return agent.run(request)
             .map(\.value)
@@ -56,7 +56,7 @@ public enum ExtensionsStoreAPI {
     ///   - id: plugin's ID
     ///   - page: page to be requested
     /// - Returns: publisher with the page
-    public static func pluginReleases(id: UUID, page: Int) -> AnyPublisher<Page<PluginRelease>, Error> {
+    static func pluginReleases(id: UUID, page: Int) -> AnyPublisher<Page<PluginRelease>, Error> {
         var components = URLComponents(url: base.appendingPathComponent("plugins/\(id.uuidString)/releases"),
                                        resolvingAgainstBaseURL: false)
         components?.queryItems = [
@@ -76,7 +76,7 @@ public enum ExtensionsStoreAPI {
     /// Release by ID
     /// - Parameter id: release's ID
     /// - Returns: publisher with `PluginRelease`
-    public static func release(id: UUID) -> AnyPublisher<PluginRelease, Error> {
+    static func release(id: UUID) -> AnyPublisher<PluginRelease, Error> {
         let request = URLRequest(url: base.appendingPathComponent("releases/\(id.uuidString)"))
         return agent.run(request)
             .map(\.value)

@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import ExtensionsStore
 
 struct ExtensionInstallationView: View {
     init(plugin: Plugin) {
