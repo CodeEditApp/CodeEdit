@@ -12,9 +12,10 @@ import Cocoa
 /// A struct for holding information about a search match.
 class SearchResultMatchModel: Hashable, Identifiable {
     init(lineNumber: Int,
-                file: WorkspaceClient.FileItem,
-                lineContent: String,
-                keywordRange: Range<String.Index>) {
+         file: WorkspaceClient.FileItem,
+         lineContent: String,
+         keywordRange: Range<String.Index>
+    ) {
         self.id = UUID()
         self.file = file
         self.lineNumber = lineNumber
