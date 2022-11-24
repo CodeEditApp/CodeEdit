@@ -7,7 +7,6 @@
 
 import SwiftUI
 import Keybindings
-import CodeEditUI
 
 /// Command palette view
 struct CommandPaletteView: View {

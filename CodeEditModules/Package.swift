@@ -18,10 +18,6 @@ let package = Package(
             targets: ["ShellClient"]
         ),
         .library(
-            name: "CodeEditUI",
-            targets: ["CodeEditUI"]
-        ),
-        .library(
             name: "CodeEditUtils",
             targets: ["CodeEditUtils"]
         ),
@@ -94,26 +90,6 @@ let package = Package(
         .target(
             name: "ShellClient",
             path: "Modules/ShellClient/src"
-        ),
-        .target(
-            name: "CodeEditUI",
-            dependencies: [
-                "CodeEditSymbols",
-                "WorkspaceClient",
-                "Git"
-            ],
-            path: "Modules/CodeEditUI/src"
-        ),
-        .testTarget(
-            name: "CodeEditUITests",
-            dependencies: [
-                "CodeEditUI",
-                "WorkspaceClient",
-                "Git",
-                .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
-            ],
-            path: "Modules/CodeEditUI/Tests",
-            exclude: ["__Snapshots__"]
         ),
         .target(
             name: "CodeEditUtils",

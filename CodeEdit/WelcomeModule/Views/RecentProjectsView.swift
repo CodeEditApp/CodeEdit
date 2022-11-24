@@ -7,7 +7,6 @@
 import SwiftUI
 import WorkspaceClient
 import Keybindings
-import CodeEditUI
 
 struct RecentProjectsView: View {
     @State

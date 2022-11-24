@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import CodeEditUI
 
 /// The vertical divider between tab bar items.
 struct TabDivider: View {

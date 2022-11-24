@@ -8,17 +8,17 @@
 import SwiftUI
 
 /// A Button representing a system Help button displaying a question mark symbol.
-public struct HelpButton: View {
+struct HelpButton: View {
 
     private var action: () -> Void
 
     /// Initializes the ``HelpButton`` with an action closure
     /// - Parameter action: A closure that gets called once the button is pressed.
-    public init(action: @escaping () -> Void) {
+    init(action: @escaping () -> Void) {
         self.action = action
     }
 
-    public var body: some View {
+    var body: some View {
         Button(action: action, label: {
             ZStack {
                 Circle()

@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import CodeEditUI
 
 struct FeedbackToolbar<T: View>: View {
 

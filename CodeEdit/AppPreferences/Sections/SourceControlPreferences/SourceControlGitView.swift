@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import CodeEditUI
 
 struct SourceControlGitView: View {
     private let inputWidth: Double = 280

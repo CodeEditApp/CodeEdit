@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import CodeEditUI
 import WorkspaceClient
 
 struct InspectorSidebar: View {

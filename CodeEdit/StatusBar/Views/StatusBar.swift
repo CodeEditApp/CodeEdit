@@ -7,7 +7,6 @@
 
 import SwiftUI
 import Git
-import CodeEditUI
 
 /// # StatusBarView
 ///

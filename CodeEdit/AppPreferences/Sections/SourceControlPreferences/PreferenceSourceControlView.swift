@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import CodeEditUI
 
 struct PreferenceSourceControlView: View {
     @State

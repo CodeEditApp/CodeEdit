@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import CodeEditUI
 
 // swiftlint:disable for_where
 struct PreferenceAccountsView: View {

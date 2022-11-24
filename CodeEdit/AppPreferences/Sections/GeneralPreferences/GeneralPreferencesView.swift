@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import CodeEditUI
 
 /// A view that implements the `General` preference section
 struct GeneralPreferencesView: View {

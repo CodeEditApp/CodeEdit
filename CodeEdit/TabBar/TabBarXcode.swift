@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import CodeEditUI
 
 /// This is the Xcode style background material for tab bar and breadcrumbs.
 struct TabBarXcodeBackground: View {

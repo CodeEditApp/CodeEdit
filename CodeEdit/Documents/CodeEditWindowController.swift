@@ -7,7 +7,6 @@
 
 import Cocoa
 import SwiftUI
-import CodeEditUI
 import Git
 import Keybindings
 

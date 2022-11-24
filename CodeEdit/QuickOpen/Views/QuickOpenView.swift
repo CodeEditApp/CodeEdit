@@ -5,7 +5,6 @@
 //  Created by Pavel Kasila on 20.03.22.
 //
 
-import CodeEditUI
 import SwiftUI
 import WorkspaceClient
 

@@ -7,8 +7,8 @@
 
 import Cocoa
 
-public final class OverlayPanel: NSPanel, NSWindowDelegate {
-    public init() {
+final class OverlayPanel: NSPanel, NSWindowDelegate {
+    init() {
         super.init(
             contentRect: NSRect(x: 0, y: 0, width: 500, height: 48),
             styleMask: [.fullSizeContentView, .titled, .resizable],
@@ -19,13 +19,13 @@ public final class OverlayPanel: NSPanel, NSWindowDelegate {
         self.isMovableByWindowBackground = true
     }
 
-    override public func standardWindowButton(_ button: NSWindow.ButtonType) -> NSButton? {
+    override func standardWindowButton(_ button: NSWindow.ButtonType) -> NSButton? {
         let btn = super.standardWindowButton(button)
         btn?.isHidden = true
         return btn
     }
 
-    public func windowDidResignKey(_ notification: Notification) {
+    func windowDidResignKey(_ notification: Notification) {
         if let panel = notification.object as? OverlayPanel {
             panel.close()
         }

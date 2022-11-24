@@ -7,7 +7,6 @@
 
 import SwiftUI
 import WorkspaceClient
-import CodeEditUI
 
 struct BreadcrumbsView: View {
 

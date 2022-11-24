@@ -7,7 +7,6 @@
 
 import SwiftUI
 import Preferences
-import CodeEditExtension
 import CodeEditSymbols
 
 final class CodeEditApplication: NSApplication {

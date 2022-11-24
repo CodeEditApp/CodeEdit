@@ -22,17 +22,17 @@ final class FontPickerDelegate {
 }
 
 /// A view that opens a `NSFontPanel` in order to choose a font installed on the system.
-public struct FontPicker: View {
+struct FontPicker: View {
     private let labelString: String
+
+    @State
+    private var fontPickerDelegate: FontPickerDelegate?
 
     @Binding
     private var fontName: String
 
     @Binding
     private var fontSize: Int
-
-    @State
-    private var fontPickerDelegate: FontPickerDelegate?
 
     private var font: NSFont {
         get {
@@ -44,13 +44,13 @@ public struct FontPicker: View {
         }
     }
 
-    public init(_ label: String, name: Binding<String>, size: Binding<Int>) {
+    init(_ label: String, name: Binding<String>, size: Binding<Int>) {
         self.labelString = label
         self._fontName = name
         self._fontSize = size
     }
 
-    public var body: some View {
+    var body: some View {
         HStack {
             Text(labelString)
                 .lineLimit(1)

@@ -12,19 +12,26 @@ import Git
 import ShellClient
 
 /// A view that pops up a branch picker.
-public struct ToolbarBranchPicker: View {
-    @Environment(\.controlActiveState)
-    private var controlActive
+struct ToolbarBranchPicker: View {
     private var workspace: WorkspaceClient?
     private var gitClient: GitClient?
-    @State private var isHovering: Bool = false
-    @State private var displayPopover: Bool = false
-    @State private var currentBranch: String?
+
+    @Environment(\.controlActiveState)
+    private var controlActive
+
+    @State
+    private var isHovering: Bool = false
+
+    @State
+    private var displayPopover: Bool = false
+
+    @State
+    private var currentBranch: String?
 
     /// Initializes the ``ToolbarBranchPicker`` with an instance of a `WorkspaceClient`
     /// - Parameter shellClient: An instance of the current `ShellClient`
     /// - Parameter workspace: An instance of the current `WorkspaceClient`
-    public init(
+    init(
         shellClient: ShellClient,
         workspace: WorkspaceClient?
     ) {
@@ -38,7 +45,7 @@ public struct ToolbarBranchPicker: View {
         self._currentBranch = State(initialValue: try? gitClient?.getCurrentBranchName())
     }
 
-    public var body: some View {
+    var body: some View {
         HStack(alignment: .center, spacing: 5) {
             if currentBranch != nil {
                 Image.checkout
@@ -102,10 +109,10 @@ public struct ToolbarBranchPicker: View {
     ///
     /// It displays the currently checked-out branch and all other local branches.
     private struct PopoverView: View {
-
         var gitClient: GitClient?
 
-        @Binding var currentBranch: String?
+        @Binding
+        var currentBranch: String?
 
         var body: some View {
             VStack(alignment: .leading) {
@@ -146,11 +153,12 @@ public struct ToolbarBranchPicker: View {
 
         /// A Button Cell that represents a branch in the branch picker
         struct BranchCell: View {
-            @Environment(\.dismiss) private var dismiss
-
             var name: String
             var active: Bool = false
             var action: () -> Void
+
+            @Environment(\.dismiss)
+            private var dismiss
 
             @State
             private var isHovering: Bool = false

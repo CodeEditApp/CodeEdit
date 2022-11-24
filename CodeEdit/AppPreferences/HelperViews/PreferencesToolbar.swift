@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import CodeEditUI
 
 struct PreferencesToolbar<T: View>: View {
 

@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import CodeEditUI
 import Git
 
 struct ChangesView: View {

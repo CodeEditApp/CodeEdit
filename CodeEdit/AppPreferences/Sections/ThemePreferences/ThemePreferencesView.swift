@@ -7,7 +7,6 @@
 
 import SwiftUI
 import Preferences
-import CodeEditUI
 
 /// A view that implements the `Theme` preference section
 struct ThemePreferencesView: View {

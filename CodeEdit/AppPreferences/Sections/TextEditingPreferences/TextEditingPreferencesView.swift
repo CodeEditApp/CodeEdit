@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import CodeEditUI
 
 /// A view that implements the `Text Editing` preference section
 struct TextEditingPreferencesView: View {

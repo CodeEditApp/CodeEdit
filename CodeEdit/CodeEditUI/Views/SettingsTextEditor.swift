@@ -8,18 +8,18 @@
 import Foundation
 import SwiftUI
 
-public struct SettingsTextEditor: View {
-    @Binding
-    var text: String
-
+struct SettingsTextEditor: View {
     @State
     private var isFocus: Bool = false
 
-    public init(text: Binding<String>) {
+    @Binding
+    var text: String
+
+    init(text: Binding<String>) {
         self._text = text
     }
 
-    public var body: some View {
+    var body: some View {
         Representable(text: $text, isFocused: $isFocus)
             .overlay(focusOverlay)
     }
