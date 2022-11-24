@@ -116,7 +116,8 @@
 		58798285292ED0FB0085B254 /* TerminalEmulatorView+Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58798281292ED0FB0085B254 /* TerminalEmulatorView+Coordinator.swift */; };
 		58798286292ED0FB0085B254 /* SwiftTerm+Color+Init.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58798283292ED0FB0085B254 /* SwiftTerm+Color+Init.swift */; };
 		5879828A292ED15F0085B254 /* SwiftTerm in Frameworks */ = {isa = PBXBuildFile; productRef = 58798289292ED15F0085B254 /* SwiftTerm */; };
-		588224FE292BFF0800E83CDE /* CodeEditExtension in Frameworks */ = {isa = PBXBuildFile; productRef = 5867933928F5DC7A00D5DE54 /* CodeEditExtension */; };
+		587B9D56292FC27A00AC7927 /* ExtensionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9D53292FC27A00AC7927 /* ExtensionManager.swift */; };
+		587B9D57292FC27A00AC7927 /* FolderMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9D54292FC27A00AC7927 /* FolderMonitor.swift */; };
 		58822524292C280D00E83CDE /* StatusBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822509292C280D00E83CDE /* StatusBar.swift */; };
 		58822525292C280D00E83CDE /* StatusBarMenuLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882250B292C280D00E83CDE /* StatusBarMenuLabel.swift */; };
 		58822526292C280D00E83CDE /* StatusBarBreakpointButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882250C292C280D00E83CDE /* StatusBarBreakpointButton.swift */; };
@@ -357,6 +358,8 @@
 		58798280292ED0FB0085B254 /* TerminalEmulatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TerminalEmulatorView.swift; sourceTree = "<group>"; };
 		58798281292ED0FB0085B254 /* TerminalEmulatorView+Coordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TerminalEmulatorView+Coordinator.swift"; sourceTree = "<group>"; };
 		58798283292ED0FB0085B254 /* SwiftTerm+Color+Init.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SwiftTerm+Color+Init.swift"; sourceTree = "<group>"; };
+		587B9D53292FC27A00AC7927 /* ExtensionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionManager.swift; sourceTree = "<group>"; };
+		587B9D54292FC27A00AC7927 /* FolderMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderMonitor.swift; sourceTree = "<group>"; };
 		58822509292C280D00E83CDE /* StatusBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBar.swift; sourceTree = "<group>"; };
 		5882250B292C280D00E83CDE /* StatusBarMenuLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarMenuLabel.swift; sourceTree = "<group>"; };
 		5882250C292C280D00E83CDE /* StatusBarBreakpointButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarBreakpointButton.swift; sourceTree = "<group>"; };
@@ -461,7 +464,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				588224FE292BFF0800E83CDE /* CodeEditExtension in Frameworks */,
 				58F2EB1A292FB91C004A9BDE /* Preferences in Frameworks */,
 				2801BB8A290D5A8E00EBF552 /* CodeEditKit in Frameworks */,
 				043BCF07281DA2F5000AC47C /* TabBar in Frameworks */,
@@ -960,6 +962,15 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		587B9D50292FC27A00AC7927 /* CodeEditExtension */ = {
+			isa = PBXGroup;
+			children = (
+				587B9D53292FC27A00AC7927 /* ExtensionManager.swift */,
+				587B9D54292FC27A00AC7927 /* FolderMonitor.swift */,
+			);
+			path = CodeEditExtension;
+			sourceTree = "<group>";
+		};
 		588224FF292C280D00E83CDE /* StatusBar */ = {
 			isa = PBXGroup;
 			children = (
@@ -1379,6 +1390,7 @@
 				5878DA7D291862BC00DD95A3 /* Acknowledgements */,
 				58F2EA9E292FB2B0004A9BDE /* AppPreferences */,
 				5878DAAB291D627C00DD95A3 /* Breadcrumbs */,
+				587B9D50292FC27A00AC7927 /* CodeEditExtension */,
 				58798244292E78D80085B254 /* CodeFile */,
 				58FD7603291EA1CB0051D6E4 /* Commands */,
 				043C321227E31FE8006AE443 /* Documents */,
@@ -1497,7 +1509,6 @@
 				FA6BA6F0282ACAD600019309 /* Keybindings */,
 				20AFDC7E28206701001A4FC7 /* Git */,
 				2801BB89290D5A8E00EBF552 /* CodeEditKit */,
-				5867933928F5DC7A00D5DE54 /* CodeEditExtension */,
 				5879826A292EC7B00085B254 /* Light-Swift-Untar */,
 				5879826E292EC9870085B254 /* GRDB */,
 				58798289292ED15F0085B254 /* SwiftTerm */,
@@ -1780,6 +1791,7 @@
 				20EBB503280C327C00F3A5DA /* HistoryInspector.swift in Sources */,
 				58798219292D92370085B254 /* SearchModeModel.swift in Sources */,
 				5882252B292C280D00E83CDE /* StatusBarCursorLocationLabel.swift in Sources */,
+				587B9D57292FC27A00AC7927 /* FolderMonitor.swift in Sources */,
 				58798252292E78D80085B254 /* ImageFileView.swift in Sources */,
 				5882252D292C280D00E83CDE /* StatusBarSplitTerminalButton.swift in Sources */,
 				58798238292E30B90085B254 /* FeedbackWindowController.swift in Sources */,
@@ -1789,6 +1801,7 @@
 				20EBB507280C32D300F3A5DA /* QuickHelpInspector.swift in Sources */,
 				DE6405A62817734700881FDF /* TabBarNative.swift in Sources */,
 				58798235292E30B90085B254 /* FeedbackModel.swift in Sources */,
+				587B9D56292FC27A00AC7927 /* ExtensionManager.swift in Sources */,
 				04C3255C2801F86900C8DA2D /* OutlineMenu.swift in Sources */,
 				04540D5E27DD08C300E91B77 /* WorkspaceView.swift in Sources */,
 				DE6F77872813625500D00A76 /* TabBarDivider.swift in Sources */,
@@ -2453,10 +2466,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 287136B1292A407E00E9F5F4 /* XCRemoteSwiftPackageReference "SwiftLintPlugin" */;
 			productName = "plugin:SwiftLint";
-		};
-		5867933928F5DC7A00D5DE54 /* CodeEditExtension */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = CodeEditExtension;
 		};
 		5879826A292EC7B00085B254 /* Light-Swift-Untar */ = {
 			isa = XCSwiftPackageProductDependency;

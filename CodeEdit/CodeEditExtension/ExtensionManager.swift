@@ -9,7 +9,7 @@ import Foundation
 import CodeEditKit
 
 /// Single class instance that manages the extensions
-public final class ExtensionManager {
+final class ExtensionManager {
     struct Extension {
         var bundle: Bundle
         var manifest: ExtensionManifest
@@ -17,7 +17,7 @@ public final class ExtensionManager {
     }
 
     /// Shared instance of `ExtenstionManager`
-    public static let shared: ExtensionManager = .init()
+    static let shared: ExtensionManager = .init()
 
     private var loadedBundles: [Bundle] = []
     private var loadedExtentions: [String: Extension] = [:]
@@ -52,7 +52,7 @@ public final class ExtensionManager {
 
     /// This function reads out all the files in the Extension folder
     /// and filters the bundles based on the `.ceext` folder extension
-    public func refreshBundles() {
+    func refreshBundles() {
         var bundleURLs: [URL] = []
         do {
             bundleURLs = try FileManager.default.contentsOfDirectory(
@@ -72,7 +72,7 @@ public final class ExtensionManager {
 
     /// Starts loading all the extensions found in the Extension folder
     /// - Parameter apiBuilder: Function that returns a `ExtensionAPI` subclass to inject into the extension
-    public func loadExtensions(_ apiBuilder: (String) -> ExtensionAPI) {
+    func loadExtensions(_ apiBuilder: (String) -> ExtensionAPI) {
         self.refreshBundles()
 
         for bundle in loadedBundles where bundle.isLoaded {

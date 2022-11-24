@@ -22,10 +22,6 @@ let package = Package(
             targets: ["CodeEditUI"]
         ),
         .library(
-            name: "CodeEditExtension",
-            targets: ["CodeEditExtension"]
-        ),
-        .library(
             name: "CodeEditUtils",
             targets: ["CodeEditUtils"]
         ),
@@ -118,13 +114,6 @@ let package = Package(
             ],
             path: "Modules/CodeEditUI/Tests",
             exclude: ["__Snapshots__"]
-        ),
-        .target(
-            name: "CodeEditExtension",
-            dependencies: [
-                "CodeEditKit"
-            ],
-            path: "Modules/CodeEditExtension/src"
         ),
         .target(
             name: "CodeEditUtils",
