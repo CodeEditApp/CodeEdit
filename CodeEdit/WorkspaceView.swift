@@ -8,7 +8,6 @@
 import SwiftUI
 import WorkspaceClient
 import AppKit
-import AppPreferences
 import Keybindings
 
 struct WorkspaceView: View {

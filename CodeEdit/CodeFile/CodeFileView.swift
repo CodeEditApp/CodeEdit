@@ -9,7 +9,6 @@ import Foundation
 import SwiftUI
 import CodeEditTextView
 import CodeEditLanguages
-import AppPreferences
 import Combine
 
 /// CodeFileView is just a wrapper of the `CodeEditor` dependency

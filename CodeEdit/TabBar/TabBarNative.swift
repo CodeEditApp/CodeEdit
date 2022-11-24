@@ -8,7 +8,6 @@
 //
 
 import SwiftUI
-import AppPreferences
 import WorkspaceClient
 import CodeEditUI
 

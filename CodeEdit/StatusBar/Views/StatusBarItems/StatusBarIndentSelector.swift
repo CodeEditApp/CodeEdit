@@ -5,7 +5,6 @@
 //  Created by Lukas Pistrol on 22.03.22.
 //
 
-import AppPreferences
 import SwiftUI
 
 struct StatusBarIndentSelector: View {

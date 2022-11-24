@@ -8,7 +8,6 @@
 import SwiftUI
 import CodeEditUI
 import Git
-import AppPreferences
 
 struct FeedbackView: View {
     @ObservedObject

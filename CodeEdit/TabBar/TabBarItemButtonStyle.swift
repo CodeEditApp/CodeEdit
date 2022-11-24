@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import AppPreferences
 
 struct TabBarItemButtonStyle: ButtonStyle {
     @Environment(\.colorScheme)

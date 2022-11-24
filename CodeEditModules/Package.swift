@@ -18,10 +18,6 @@ let package = Package(
             targets: ["ShellClient"]
         ),
         .library(
-            name: "AppPreferences",
-            targets: ["AppPreferences"]
-        ),
-        .library(
             name: "CodeEditUI",
             targets: ["CodeEditUI"]
         ),
@@ -102,21 +98,6 @@ let package = Package(
         .target(
             name: "ShellClient",
             path: "Modules/ShellClient/src"
-        ),
-        .target(
-            name: "AppPreferences",
-            dependencies: [
-                "Preferences",
-                "CodeEditUI",
-                "Git",
-                "Keybindings",
-                "CodeEditUtils",
-                "CodeEditSymbols",
-                "CodeEditTextView",
-                "Sparkle"
-            ],
-            path: "Modules/AppPreferences/src",
-            resources: [.copy("Resources")]
         ),
         .target(
             name: "CodeEditUI",

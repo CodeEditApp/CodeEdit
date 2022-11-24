@@ -7,7 +7,6 @@
 
 import SwiftUI
 import WorkspaceClient
-import AppPreferences
 
 final class FindNavigatorListViewController: NSViewController {
 

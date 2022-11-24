@@ -7,7 +7,6 @@
 
 import SwiftUI
 import WorkspaceClient
-import AppPreferences
 import TabBar
 
 /// A `NSViewController` that handles the **ProjectNavigator** in the **NavigatorSideabr**.

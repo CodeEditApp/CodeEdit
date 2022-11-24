@@ -9,7 +9,6 @@ import Cocoa
 import SwiftUI
 import CodeEditUI
 import Git
-import AppPreferences
 import Keybindings
 
 final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {

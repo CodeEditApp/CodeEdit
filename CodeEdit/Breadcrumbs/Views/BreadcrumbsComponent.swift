@@ -5,7 +5,6 @@
 //  Created by Lukas Pistrol on 18.03.22.
 //
 
-import AppPreferences
 import SwiftUI
 import WorkspaceClient
 

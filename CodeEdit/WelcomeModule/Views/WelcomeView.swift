@@ -8,7 +8,6 @@
 import SwiftUI
 import AppKit
 import Foundation
-import AppPreferences
 import Git
 import ShellClient
 

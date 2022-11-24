@@ -7,7 +7,6 @@
 
 import SwiftUI
 import SwiftTerm
-import AppPreferences
 
 /// # TerminalEmulatorView
 ///

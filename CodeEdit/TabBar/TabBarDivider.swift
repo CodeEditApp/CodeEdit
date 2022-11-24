@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import AppPreferences
 import CodeEditUI
 
 /// The vertical divider between tab bar items.

@@ -7,7 +7,6 @@
 
 import SwiftUI
 import WorkspaceClient
-import AppPreferences
 import Combine
 
 /// Wraps an ``OutlineViewController`` inside a `NSViewControllerRepresentable`

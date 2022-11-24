@@ -7,7 +7,6 @@
 
 import SwiftUI
 import Git
-import AppPreferences
 import CodeEditUtils
 
 public class FeedbackModel: ObservableObject {

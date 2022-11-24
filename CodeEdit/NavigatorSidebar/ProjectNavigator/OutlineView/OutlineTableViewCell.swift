@@ -7,7 +7,6 @@
 
 import SwiftUI
 import WorkspaceClient
-import AppPreferences
 
 protocol OutlineTableViewCellDelegate: AnyObject {
     func moveFile(file: WorkspaceClient.FileItem, to destination: URL)
