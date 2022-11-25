@@ -8,7 +8,6 @@
 import SwiftUI
 import AppKit
 import Foundation
-import Git
 import ShellClient
 
 struct WelcomeView: View {

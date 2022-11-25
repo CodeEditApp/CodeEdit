@@ -6,11 +6,10 @@
 //
 
 import Foundation
-import Git
 
 /// This model handle the fetching and adding of changes etc... for the
 /// Source Control Navigator
-public final class SourceControlModel: ObservableObject {
+final class SourceControlModel: ObservableObject {
 
     /// A GitClient instance
     let gitClient: GitClient
@@ -20,12 +19,12 @@ public final class SourceControlModel: ObservableObject {
 
     /// A list of changed files
     @Published
-    public var changed: [ChangedFile]
+    var changed: [ChangedFile]
 
     /// Initialize with a GitClient
     /// - Parameter workspaceURL: the current workspace URL we also need this to open files in finder
     ///
-    public init(workspaceURL: URL) {
+    init(workspaceURL: URL) {
         self.workspaceURL = workspaceURL
         gitClient = GitClient.default(
             directoryURL: workspaceURL,

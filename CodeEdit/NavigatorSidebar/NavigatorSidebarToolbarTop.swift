@@ -93,6 +93,7 @@ struct NavigatorSidebarToolbarTop: View {
         var id: Int
         var selection: Int
         var activeState: ControlActiveState
+
         func makeBody(configuration: Configuration) -> some View {
             configuration.label
                 .font(.system(size: 12, weight: id == selection ? .semibold : .regular))

@@ -8,7 +8,6 @@
 import SwiftUI
 import CodeEditSymbols
 import WorkspaceClient
-import Git
 import ShellClient
 
 /// A view that pops up a branch picker.

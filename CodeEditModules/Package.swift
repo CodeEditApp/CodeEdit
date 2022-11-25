@@ -29,10 +29,6 @@ let package = Package(
             name: "TabBar",
             targets: ["TabBar"]
         ),
-        .library(
-            name: "Git",
-            targets: ["Git"]
-        ),
     ],
     dependencies: [
         .package(
@@ -111,22 +107,6 @@ let package = Package(
                 "CodeEditUtils"
             ],
             path: "Modules/CodeEditUtils/Tests"
-        ),
-        .target(
-            name: "Git",
-            dependencies: [
-                "ShellClient",
-                "WorkspaceClient"
-            ],
-            path: "Modules/Git/src"
-        ),
-        .testTarget(
-            name: "GitTests",
-            dependencies: [
-                "Git",
-                "ShellClient",
-            ],
-            path: "Modules/Git/Tests"
         ),
     ]
 )

@@ -6,9 +6,8 @@
 //
 
 import Foundation
-import Git
 
-public final class HistoryInspectorModel: ObservableObject {
+final class HistoryInspectorModel: ObservableObject {
 
     /// A GitClient instance
     private(set) var gitClient: GitClient
@@ -21,12 +20,12 @@ public final class HistoryInspectorModel: ObservableObject {
 
     /// The selected branch from the GitClient
     @Published
-    public var commitHistory: [Commit]
+    var commitHistory: [Commit]
 
     /// Initialize with a GitClient
     /// - Parameter workspaceURL: the current workspace URL
     ///
-    public init(workspaceURL: URL, fileURL: String) {
+    init(workspaceURL: URL, fileURL: String) {
         self.workspaceURL = workspaceURL
         self.fileURL = fileURL
         gitClient = GitClient.default(

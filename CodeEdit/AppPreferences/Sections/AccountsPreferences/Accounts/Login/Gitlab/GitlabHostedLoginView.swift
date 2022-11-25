@@ -7,7 +7,6 @@
 
 import SwiftUI
 import CodeEditUtils
-import Git
 
 struct GitlabHostedLoginView: View {
     @State var eneterpriseLink = ""
