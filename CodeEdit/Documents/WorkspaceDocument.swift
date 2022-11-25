@@ -11,7 +11,6 @@ import SwiftUI
 import WorkspaceClient
 import Combine
 import CodeEditKit
-import CodeEditUtils
 import TabBar
 
 // swiftlint:disable type_body_length

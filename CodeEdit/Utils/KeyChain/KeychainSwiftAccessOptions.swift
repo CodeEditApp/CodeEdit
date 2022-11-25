@@ -11,7 +11,7 @@ import Security
  These options are used to determine when a keychain item should be readable.
  The default value is AccessibleWhenUnlocked.
  */
-public enum CodeEditKeychainAccessOptions {
+enum CodeEditKeychainAccessOptions {
 
     /**
      The data in the keychain item can be accessed only while the device is unlocked by the user.

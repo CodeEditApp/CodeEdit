@@ -10,12 +10,12 @@ import Security
 
 // TODO: DOCS (Nanashi Li)
 // swiftlint:disable missing_docs
-open class CodeEditKeychain {
+class CodeEditKeychain {
 
     var lastQueryParameters: [String: Any]? // Used by the unit tests
 
     /// Contains result code from the last operation. Value is noErr (0) for a successful result.
-    open var lastResultCode: OSStatus = noErr
+    var lastResultCode: OSStatus = noErr
 
     var keyPrefix = "" // Can be useful in test.
 
@@ -25,17 +25,17 @@ open class CodeEditKeychain {
      When access group value is nil all application access groups are being accessed.
      Access group name is used by all functions: set, get, delete and clear.
      */
-    open var accessGroup: String?
+    var accessGroup: String?
 
     private let lock = NSLock()
 
-    public init() { }
+    init() { }
 
     /**
      - parameter keyPrefix: a prefix that is added before the key in get/set methods.
      Note that `clear` method still clears everything from the Keychain.
      */
-    public init(keyPrefix: String) {
+    init(keyPrefix: String) {
         self.keyPrefix = keyPrefix
     }
 
@@ -49,7 +49,7 @@ open class CodeEditKeychain {
      - returns: True if the text was successfully written to the keychain.
      */
     @discardableResult
-    open func set(_ value: String, forKey key: String,
+    func set(_ value: String, forKey key: String,
                   withAccess access: CodeEditKeychainAccessOptions? = nil) -> Bool {
 
         if let value = value.data(using: String.Encoding.utf8) {
@@ -68,7 +68,7 @@ open class CodeEditKeychain {
      - returns: True if the text was successfully written to the keychain.
      */
     @discardableResult
-    open func set(_ value: Data, forKey key: String,
+    func set(_ value: Data, forKey key: String,
                   withAccess access: CodeEditKeychainAccessOptions? = nil) -> Bool {
 
         // The lock prevents the code to be run simultaneously
@@ -106,7 +106,7 @@ open class CodeEditKeychain {
      - returns: True if the value was successfully written to the keychain.
      */
     @discardableResult
-    open func set(_ value: Bool, forKey key: String,
+    func set(_ value: Bool, forKey key: String,
                   withAccess access: CodeEditKeychainAccessOptions? = nil) -> Bool {
 
         let bytes: [UInt8] = value ? [1] : [0]
@@ -120,7 +120,7 @@ open class CodeEditKeychain {
      - parameter key: The key that is used to read the keychain item.
      - returns: The text value from the keychain. Returns nil if unable to read the item.
      */
-    open func get(_ key: String) -> String? {
+    func get(_ key: String) -> String? {
         if let data = getData(key) {
 
             if let currentString = String(data: data, encoding: .utf8) {
@@ -139,7 +139,7 @@ open class CodeEditKeychain {
      - parameter asReference: If true, returns the data as reference (needed for things like NEVPNProtocol).
      - returns: The text value from the keychain. Returns nil if unable to read the item.
      */
-    open func getData(_ key: String, asReference: Bool = false) -> Data? {
+    func getData(_ key: String, asReference: Bool = false) -> Data? {
         // The lock prevents the code to be run simultaneously
         // from multiple threads which may result in crashing
         lock.lock()
@@ -180,7 +180,7 @@ open class CodeEditKeychain {
      - parameter key: The key that is used to read the keychain item.
      - returns: The boolean value from the keychain. Returns nil if unable to read the item.
      */
-    open func getBool(_ key: String) -> Bool? {
+    func getBool(_ key: String) -> Bool? {
         guard let data = getData(key) else { return nil }
         guard let firstBit = data.first else { return nil }
         return firstBit == 1
@@ -192,7 +192,7 @@ open class CodeEditKeychain {
      - returns: True if the item was successfully deleted.
      */
     @discardableResult
-    open func delete(_ key: String) -> Bool {
+    func delete(_ key: String) -> Bool {
         // The lock prevents the code to be run simultaneously
         // from multiple threads which may result in crashing
         lock.lock()
@@ -205,7 +205,7 @@ open class CodeEditKeychain {
      Return all keys from keychain
      - returns: An string array with all keys from the keychain.
      */
-    public var allKeys: [String] {
+    var allKeys: [String] {
         var query: [String: Any] = [
             CodeEditKeychainConstants.class: kSecClassGenericPassword,
             CodeEditKeychainConstants.returnData: true,
@@ -258,7 +258,7 @@ open class CodeEditKeychain {
      - returns: True if the keychain items were successfully deleted.
      */
     @discardableResult
-    open func clear() -> Bool {
+    func clear() -> Bool {
         // The lock prevents the code to be run simultaneously
         // from multiple threads which may result in crashing
         lock.lock()

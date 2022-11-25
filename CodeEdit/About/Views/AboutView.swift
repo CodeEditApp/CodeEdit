@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import CodeEditUtils
 
 public struct AboutView: View {
     @Environment(\.openURL) private var openURL

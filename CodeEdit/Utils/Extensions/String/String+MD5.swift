@@ -8,7 +8,7 @@
 import Foundation
 import CryptoKit
 
-public extension String {
+extension String {
 
     /// Returns a MD5 encrypted String of the input String
     ///

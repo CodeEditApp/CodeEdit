@@ -7,7 +7,7 @@
 
 import Foundation
 
-public extension Bundle {
+extension Bundle {
 
     /// Returns the main bundle's version string if available (e.g. 1.0.0)
     static var versionString: String? {

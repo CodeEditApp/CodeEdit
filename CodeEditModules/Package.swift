@@ -18,10 +18,6 @@ let package = Package(
             targets: ["ShellClient"]
         ),
         .library(
-            name: "CodeEditUtils",
-            targets: ["CodeEditUtils"]
-        ),
-        .library(
             name: "Keybindings",
             targets: ["Keybindings"]
         ),
@@ -88,10 +84,6 @@ let package = Package(
             path: "Modules/ShellClient/src"
         ),
         .target(
-            name: "CodeEditUtils",
-            path: "Modules/CodeEditUtils/src"
-        ),
-        .target(
             name: "Keybindings",
             dependencies: ["WorkspaceClient"],
             path: "Modules/Keybindings/src",
@@ -100,13 +92,6 @@ let package = Package(
         .target(
             name: "TabBar",
             path: "Modules/TabBar/src"
-        ),
-        .testTarget(
-            name: "CodeEditUtilsTests",
-            dependencies: [
-                "CodeEditUtils"
-            ],
-            path: "Modules/CodeEditUtils/Tests"
         ),
     ]
 )

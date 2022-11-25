@@ -33,7 +33,6 @@
 		201169E22837B3D800F92B46 /* ChangesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201169E12837B3D800F92B46 /* ChangesView.swift */; };
 		201169E52837B40300F92B46 /* RepositoriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201169E42837B40300F92B46 /* RepositoriesView.swift */; };
 		201169E72837B5CA00F92B46 /* SourceControlModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201169E62837B5CA00F92B46 /* SourceControlModel.swift */; };
-		2040F0B1280AE96100411B6F /* CodeEditUtils in Frameworks */ = {isa = PBXBuildFile; productRef = 2040F0B0280AE96100411B6F /* CodeEditUtils */; };
 		2072FA13280D74ED00C7F8D4 /* HistoryInspectorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2072FA12280D74ED00C7F8D4 /* HistoryInspectorModel.swift */; };
 		2072FA16280D83A500C7F8D4 /* FileTypeList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2072FA15280D83A500C7F8D4 /* FileTypeList.swift */; };
 		2072FA18280D871200C7F8D4 /* TextEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2072FA17280D871200C7F8D4 /* TextEncoding.swift */; };
@@ -211,6 +210,16 @@
 		58822532292C280D00E83CDE /* StatusBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882251C292C280D00E83CDE /* StatusBarViewModel.swift */; };
 		58822533292C280D00E83CDE /* StatusBarTabType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882251D292C280D00E83CDE /* StatusBarTabType.swift */; };
 		58822534292C280D00E83CDE /* CursorLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882251E292C280D00E83CDE /* CursorLocation.swift */; };
+		58D01C94293167DC00C5B6B4 /* Color+HEX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D01C88293167DC00C5B6B4 /* Color+HEX.swift */; };
+		58D01C95293167DC00C5B6B4 /* Bundle+Info.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D01C89293167DC00C5B6B4 /* Bundle+Info.swift */; };
+		58D01C96293167DC00C5B6B4 /* Date+Formatted.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D01C8A293167DC00C5B6B4 /* Date+Formatted.swift */; };
+		58D01C97293167DC00C5B6B4 /* String+SHA256.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D01C8C293167DC00C5B6B4 /* String+SHA256.swift */; };
+		58D01C98293167DC00C5B6B4 /* String+RemoveOccurrences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D01C8D293167DC00C5B6B4 /* String+RemoveOccurrences.swift */; };
+		58D01C99293167DC00C5B6B4 /* String+MD5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D01C8E293167DC00C5B6B4 /* String+MD5.swift */; };
+		58D01C9A293167DC00C5B6B4 /* CodeEditKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D01C90293167DC00C5B6B4 /* CodeEditKeychain.swift */; };
+		58D01C9B293167DC00C5B6B4 /* CodeEditKeychainConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D01C91293167DC00C5B6B4 /* CodeEditKeychainConstants.swift */; };
+		58D01C9C293167DC00C5B6B4 /* Documentation.docc in Sources */ = {isa = PBXBuildFile; fileRef = 58D01C92293167DC00C5B6B4 /* Documentation.docc */; };
+		58D01C9D293167DC00C5B6B4 /* KeychainSwiftAccessOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D01C93293167DC00C5B6B4 /* KeychainSwiftAccessOptions.swift */; };
 		58F2EAE7292FB2B0004A9BDE /* GeneralPreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAA2292FB2B0004A9BDE /* GeneralPreferencesView.swift */; };
 		58F2EAE8292FB2B0004A9BDE /* TerminalPreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAA4292FB2B0004A9BDE /* TerminalPreferencesView.swift */; };
 		58F2EAE9292FB2B0004A9BDE /* PreferenceSourceControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAA6292FB2B0004A9BDE /* PreferenceSourceControlView.swift */; };
@@ -531,6 +540,16 @@
 		5882251C292C280D00E83CDE /* StatusBarViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarViewModel.swift; sourceTree = "<group>"; };
 		5882251D292C280D00E83CDE /* StatusBarTabType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarTabType.swift; sourceTree = "<group>"; };
 		5882251E292C280D00E83CDE /* CursorLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CursorLocation.swift; sourceTree = "<group>"; };
+		58D01C88293167DC00C5B6B4 /* Color+HEX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Color+HEX.swift"; sourceTree = "<group>"; };
+		58D01C89293167DC00C5B6B4 /* Bundle+Info.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bundle+Info.swift"; sourceTree = "<group>"; };
+		58D01C8A293167DC00C5B6B4 /* Date+Formatted.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Formatted.swift"; sourceTree = "<group>"; };
+		58D01C8C293167DC00C5B6B4 /* String+SHA256.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+SHA256.swift"; sourceTree = "<group>"; };
+		58D01C8D293167DC00C5B6B4 /* String+RemoveOccurrences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+RemoveOccurrences.swift"; sourceTree = "<group>"; };
+		58D01C8E293167DC00C5B6B4 /* String+MD5.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+MD5.swift"; sourceTree = "<group>"; };
+		58D01C90293167DC00C5B6B4 /* CodeEditKeychain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeEditKeychain.swift; sourceTree = "<group>"; };
+		58D01C91293167DC00C5B6B4 /* CodeEditKeychainConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeEditKeychainConstants.swift; sourceTree = "<group>"; };
+		58D01C92293167DC00C5B6B4 /* Documentation.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = Documentation.docc; sourceTree = "<group>"; };
+		58D01C93293167DC00C5B6B4 /* KeychainSwiftAccessOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainSwiftAccessOptions.swift; sourceTree = "<group>"; };
 		58F2EAA2292FB2B0004A9BDE /* GeneralPreferencesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneralPreferencesView.swift; sourceTree = "<group>"; };
 		58F2EAA4292FB2B0004A9BDE /* TerminalPreferencesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TerminalPreferencesView.swift; sourceTree = "<group>"; };
 		58F2EAA6292FB2B0004A9BDE /* PreferenceSourceControlView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferenceSourceControlView.swift; sourceTree = "<group>"; };
@@ -627,7 +646,6 @@
 				5C403B8F27E20F8000788241 /* WorkspaceClient in Frameworks */,
 				58F2EB1E292FB954004A9BDE /* Sparkle in Frameworks */,
 				5879826B292EC7B00085B254 /* Light-Swift-Untar in Frameworks */,
-				2040F0B1280AE96100411B6F /* CodeEditUtils in Frameworks */,
 				5879828A292ED15F0085B254 /* SwiftTerm in Frameworks */,
 				2816F594280CF50500DD548B /* CodeEditSymbols in Frameworks */,
 				FA6BA6F1282ACAD600019309 /* Keybindings in Frameworks */,
@@ -1423,6 +1441,55 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
+		58D01C85293167DC00C5B6B4 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				58D01C86293167DC00C5B6B4 /* Tests */,
+				58D01C87293167DC00C5B6B4 /* Extensions */,
+				58D01C8F293167DC00C5B6B4 /* KeyChain */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		58D01C86293167DC00C5B6B4 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		58D01C87293167DC00C5B6B4 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				58D01C88293167DC00C5B6B4 /* Color+HEX.swift */,
+				58D01C89293167DC00C5B6B4 /* Bundle+Info.swift */,
+				58D01C8A293167DC00C5B6B4 /* Date+Formatted.swift */,
+				58D01C8B293167DC00C5B6B4 /* String */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		58D01C8B293167DC00C5B6B4 /* String */ = {
+			isa = PBXGroup;
+			children = (
+				58D01C8C293167DC00C5B6B4 /* String+SHA256.swift */,
+				58D01C8D293167DC00C5B6B4 /* String+RemoveOccurrences.swift */,
+				58D01C8E293167DC00C5B6B4 /* String+MD5.swift */,
+			);
+			path = String;
+			sourceTree = "<group>";
+		};
+		58D01C8F293167DC00C5B6B4 /* KeyChain */ = {
+			isa = PBXGroup;
+			children = (
+				58D01C90293167DC00C5B6B4 /* CodeEditKeychain.swift */,
+				58D01C91293167DC00C5B6B4 /* CodeEditKeychainConstants.swift */,
+				58D01C92293167DC00C5B6B4 /* Documentation.docc */,
+				58D01C93293167DC00C5B6B4 /* KeychainSwiftAccessOptions.swift */,
+			);
+			path = KeyChain;
+			sourceTree = "<group>";
+		};
 		58F2EA9E292FB2B0004A9BDE /* AppPreferences */ = {
 			isa = PBXGroup;
 			children = (
@@ -1781,6 +1848,7 @@
 				588224FF292C280D00E83CDE /* StatusBar */,
 				287776EB27E350BA00D46668 /* TabBar */,
 				5879827E292ED0FB0085B254 /* TerminalEmulator */,
+				58D01C85293167DC00C5B6B4 /* Utils */,
 				581BFB4B2926431000D251EC /* WelcomeModule */,
 				0468438427DC76E200F8E88E /* AppDelegate.swift */,
 				5C4BB1E028212B1E00A92FB2 /* World.swift */,
@@ -1875,7 +1943,6 @@
 			name = CodeEdit;
 			packageProductDependencies = (
 				5C403B8E27E20F8000788241 /* WorkspaceClient */,
-				2040F0B0280AE96100411B6F /* CodeEditUtils */,
 				2816F593280CF50500DD548B /* CodeEditSymbols */,
 				2864BAAB28117B3F002DBD1A /* ShellClient */,
 				043BCF06281DA2F5000AC47C /* TabBar */,
@@ -2155,6 +2222,7 @@
 				5878DAA7291AE76700DD95A3 /* QuickOpenViewModel.swift in Sources */,
 				58F2EAED292FB2B0004A9BDE /* IgnoredFileView.swift in Sources */,
 				587B9E6529301D8F00AC7927 /* GroupAccess.swift in Sources */,
+				58D01C9B293167DC00C5B6B4 /* CodeEditKeychainConstants.swift in Sources */,
 				58F2EB0C292FB2B0004A9BDE /* SourceControlAccounts.swift in Sources */,
 				20EBB50F280C389300F3A5DA /* FileInspectorModel.swift in Sources */,
 				5878DAB1291D627C00DD95A3 /* BreadcrumbsComponent.swift in Sources */,
@@ -2193,8 +2261,10 @@
 				587B9E9329301D8F00AC7927 /* BitbucketOAuthConfiguration.swift in Sources */,
 				58F2EB0A292FB2B0004A9BDE /* AppPreferences.swift in Sources */,
 				20EBB503280C327C00F3A5DA /* HistoryInspector.swift in Sources */,
+				58D01C9C293167DC00C5B6B4 /* Documentation.docc in Sources */,
 				587B9E7529301D8F00AC7927 /* String+QueryParameters.swift in Sources */,
 				58798219292D92370085B254 /* SearchModeModel.swift in Sources */,
+				58D01C9D293167DC00C5B6B4 /* KeychainSwiftAccessOptions.swift in Sources */,
 				5882252B292C280D00E83CDE /* StatusBarCursorLocationLabel.swift in Sources */,
 				587B9D57292FC27A00AC7927 /* FolderMonitor.swift in Sources */,
 				58798252292E78D80085B254 /* ImageFileView.swift in Sources */,
@@ -2229,6 +2299,7 @@
 				582213F0291834A500EFE361 /* AboutView.swift in Sources */,
 				58F2EB12292FB2B0004A9BDE /* PreferencesPlaceholderView.swift in Sources */,
 				58822526292C280D00E83CDE /* StatusBarBreakpointButton.swift in Sources */,
+				58D01C96293167DC00C5B6B4 /* Date+Formatted.swift in Sources */,
 				587B9D9E29300ABD00AC7927 /* FontPickerView.swift in Sources */,
 				58822529292C280D00E83CDE /* StatusBarLineEndSelector.swift in Sources */,
 				58F2EAE7292FB2B0004A9BDE /* GeneralPreferencesView.swift in Sources */,
@@ -2242,10 +2313,12 @@
 				581BFB6B2926431000D251EC /* RecentProjectItem.swift in Sources */,
 				587B9DA429300ABD00AC7927 /* OverlayPanel.swift in Sources */,
 				58F2EAEE292FB2B0004A9BDE /* TextEditingPreferencesView.swift in Sources */,
+				58D01C95293167DC00C5B6B4 /* Bundle+Info.swift in Sources */,
 				5879821A292D92370085B254 /* SearchResultModel.swift in Sources */,
 				587B9DA129300ABD00AC7927 /* Documentation.docc in Sources */,
 				587B9E8929301D8F00AC7927 /* Gist.swift in Sources */,
 				0485EB1F27E7458B00138301 /* WorkspaceCodeFileView.swift in Sources */,
+				58D01C94293167DC00C5B6B4 /* Color+HEX.swift in Sources */,
 				58798251292E78D80085B254 /* OtherFileView.swift in Sources */,
 				587B9E7929301D8F00AC7927 /* IssueRouter.swift in Sources */,
 				587B9E8029301D8F00AC7927 /* GithubConfiguration.swift in Sources */,
@@ -2272,6 +2345,7 @@
 				04C3254B27FF23B000C8DA2D /* ExtensionNavigatorData.swift in Sources */,
 				58798261292EC4080085B254 /* ExtensionsManager.swift in Sources */,
 				287776EF27E3515300D46668 /* TabBarItem.swift in Sources */,
+				58D01C98293167DC00C5B6B4 /* String+RemoveOccurrences.swift in Sources */,
 				5878DAA8291AE76700DD95A3 /* QuickOpenItem.swift in Sources */,
 				58FD7608291EA1CB0051D6E4 /* CommandPaletteViewModel.swift in Sources */,
 				5878DA872918642F00DD95A3 /* AcknowledgementsViewModel.swift in Sources */,
@@ -2289,6 +2363,7 @@
 				58F2EAF3292FB2B0004A9BDE /* ThemePreviewIcon.swift in Sources */,
 				58F2EB07292FB2B0004A9BDE /* GeneralPreferences.swift in Sources */,
 				587B9E9A29301D8F00AC7927 /* GitType.swift in Sources */,
+				58D01C97293167DC00C5B6B4 /* String+SHA256.swift in Sources */,
 				587B9E7629301D8F00AC7927 /* Time.swift in Sources */,
 				2072FA16280D83A500C7F8D4 /* FileTypeList.swift in Sources */,
 				587B9E5D29301D8F00AC7927 /* UserRouter.swift in Sources */,
@@ -2305,8 +2380,10 @@
 				587B9E8329301D8F00AC7927 /* PullRequest.swift in Sources */,
 				5878DA82291863F900DD95A3 /* AcknowledgementsView.swift in Sources */,
 				587B9E8529301D8F00AC7927 /* Review.swift in Sources */,
+				58D01C9A293167DC00C5B6B4 /* CodeEditKeychain.swift in Sources */,
 				20D839AB280DEB2900B27357 /* NoSelectionView.swift in Sources */,
 				587B9E5A29301D8F00AC7927 /* GitCloneView.swift in Sources */,
+				58D01C99293167DC00C5B6B4 /* String+MD5.swift in Sources */,
 				20EBB505280C329800F3A5DA /* HistoryItem.swift in Sources */,
 				58F2EAEA292FB2B0004A9BDE /* SourceControlGeneralView.swift in Sources */,
 				5878DAB2291D627C00DD95A3 /* BreadcrumbsView.swift in Sources */,
@@ -2885,10 +2962,6 @@
 		043BCF06281DA2F5000AC47C /* TabBar */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = TabBar;
-		};
-		2040F0B0280AE96100411B6F /* CodeEditUtils */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = CodeEditUtils;
 		};
 		2801BB89290D5A8E00EBF552 /* CodeEditKit */ = {
 			isa = XCSwiftPackageProductDependency;
