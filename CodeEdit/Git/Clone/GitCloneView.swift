@@ -7,10 +7,9 @@
 
 import SwiftUI
 import Foundation
-import ShellClient
 import Combine
 
-public struct GitCloneView: View {
+struct GitCloneView: View {
     private let shellClient: ShellClient
     @Binding private var isPresented: Bool
     @Binding private var showCheckout: Bool
@@ -19,7 +18,7 @@ public struct GitCloneView: View {
     @State private var gitClient: GitClient?
     @State private var cloneCancellable: AnyCancellable?
 
-    public init(
+    init(
         shellClient: ShellClient,
         isPresented: Binding<Bool>,
         showCheckout: Binding<Bool>,
@@ -31,7 +30,7 @@ public struct GitCloneView: View {
         self._repoPath = repoPath
     }
 
-    public var body: some View {
+    var body: some View {
         VStack(spacing: 8) {
             HStack {
                 Image(nsImage: NSApp.applicationIconImage)
@@ -168,13 +167,10 @@ extension GitCloneView {
             try FileManager.default.createDirectory(atPath: repoPath,
                                                     withIntermediateDirectories: true,
                                                     attributes: nil)
-            gitClient = GitClient.default(
-                directoryURL: dirUrl,
-                shellClient: shellClient
-            )
+            gitClient = GitClient(directoryURL: dirUrl, shellClient: shellClient)
 
             cloneCancellable = gitClient?
-                .cloneRepository(repoUrlStr)
+                .cloneRepository(url: repoUrlStr)
                 .sink(receiveCompletion: { result in
                     switch result {
                     case let .failure(error):
@@ -209,8 +205,7 @@ extension GitCloneView {
     private func checkBranches(dirUrl: URL) {
         // Check if repo has only one branch, and if so, don't show the checkout page
         do {
-            let branches = try GitClient.default(directoryURL: dirUrl,
-                                  shellClient: shellClient).getBranches(true)
+            let branches = try GitClient(directoryURL: dirUrl, shellClient: shellClient).getBranches(true)
             let filtered = branches.filter { !$0.contains("HEAD") }
             if filtered.count > 1 {
                 showCheckout = true

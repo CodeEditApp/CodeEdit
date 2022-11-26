@@ -14,10 +14,6 @@ let package = Package(
             targets: ["WorkspaceClient"]
         ),
         .library(
-            name: "ShellClient",
-            targets: ["ShellClient"]
-        ),
-        .library(
             name: "Keybindings",
             targets: ["Keybindings"]
         ),
@@ -78,10 +74,6 @@ let package = Package(
                 "WorkspaceClient",
             ],
             path: "Modules/WorkspaceClient/Tests"
-        ),
-        .target(
-            name: "ShellClient",
-            path: "Modules/ShellClient/src"
         ),
         .target(
             name: "Keybindings",

@@ -8,7 +8,6 @@
 import SwiftUI
 import AppKit
 import Foundation
-import ShellClient
 
 struct WelcomeView: View {
     @Environment(\.colorScheme)

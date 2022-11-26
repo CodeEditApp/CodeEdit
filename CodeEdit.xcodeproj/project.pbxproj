@@ -54,7 +54,6 @@
 		2847019E27FDDF7600F87B6B /* OutlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2847019D27FDDF7600F87B6B /* OutlineView.swift */; };
 		285FEC7027FE4B9800E57D53 /* OutlineTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285FEC6F27FE4B9800E57D53 /* OutlineTableViewCell.swift */; };
 		286471AB27ED51FD0039369D /* ProjectNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286471AA27ED51FD0039369D /* ProjectNavigator.swift */; };
-		2864BAAC28117B3F002DBD1A /* ShellClient in Frameworks */ = {isa = PBXBuildFile; productRef = 2864BAAB28117B3F002DBD1A /* ShellClient */; };
 		287776E927E34BC700D46668 /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287776E827E34BC700D46668 /* TabBar.swift */; };
 		287776EF27E3515300D46668 /* TabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287776EE27E3515300D46668 /* TabBarItem.swift */; };
 		28A51001281673530087B0CC /* codeedit-xcode-dark.json in Resources */ = {isa = PBXBuildFile; fileRef = 28A50FFF281673530087B0CC /* codeedit-xcode-dark.json */; };
@@ -210,6 +209,8 @@
 		58822532292C280D00E83CDE /* StatusBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882251C292C280D00E83CDE /* StatusBarViewModel.swift */; };
 		58822533292C280D00E83CDE /* StatusBarTabType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882251D292C280D00E83CDE /* StatusBarTabType.swift */; };
 		58822534292C280D00E83CDE /* CursorLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882251E292C280D00E83CDE /* CursorLocation.swift */; };
+		58A5DF7D2931787A00D1BD5D /* ShellClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A5DF7C2931787A00D1BD5D /* ShellClient.swift */; };
+		58A5DF8029325B5A00D1BD5D /* GitClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A5DF7F29325B5A00D1BD5D /* GitClient.swift */; };
 		58D01C94293167DC00C5B6B4 /* Color+HEX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D01C88293167DC00C5B6B4 /* Color+HEX.swift */; };
 		58D01C95293167DC00C5B6B4 /* Bundle+Info.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D01C89293167DC00C5B6B4 /* Bundle+Info.swift */; };
 		58D01C96293167DC00C5B6B4 /* Date+Formatted.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D01C8A293167DC00C5B6B4 /* Date+Formatted.swift */; };
@@ -540,6 +541,8 @@
 		5882251C292C280D00E83CDE /* StatusBarViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarViewModel.swift; sourceTree = "<group>"; };
 		5882251D292C280D00E83CDE /* StatusBarTabType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarTabType.swift; sourceTree = "<group>"; };
 		5882251E292C280D00E83CDE /* CursorLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CursorLocation.swift; sourceTree = "<group>"; };
+		58A5DF7C2931787A00D1BD5D /* ShellClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShellClient.swift; sourceTree = "<group>"; };
+		58A5DF7F29325B5A00D1BD5D /* GitClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitClient.swift; sourceTree = "<group>"; };
 		58D01C88293167DC00C5B6B4 /* Color+HEX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Color+HEX.swift"; sourceTree = "<group>"; };
 		58D01C89293167DC00C5B6B4 /* Bundle+Info.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bundle+Info.swift"; sourceTree = "<group>"; };
 		58D01C8A293167DC00C5B6B4 /* Date+Formatted.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Formatted.swift"; sourceTree = "<group>"; };
@@ -641,7 +644,6 @@
 				2801BB8A290D5A8E00EBF552 /* CodeEditKit in Frameworks */,
 				043BCF07281DA2F5000AC47C /* TabBar in Frameworks */,
 				58F2EB17292FB74D004A9BDE /* CodeEditTextView in Frameworks */,
-				2864BAAC28117B3F002DBD1A /* ShellClient in Frameworks */,
 				5879826F292EC9870085B254 /* GRDB in Frameworks */,
 				5C403B8F27E20F8000788241 /* WorkspaceClient in Frameworks */,
 				58F2EB1E292FB954004A9BDE /* Sparkle in Frameworks */,
@@ -904,6 +906,14 @@
 				582213EF291834A500EFE361 /* AboutView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		5875680E29316BDC00C965A3 /* ShellClient */ = {
+			isa = PBXGroup;
+			children = (
+				58A5DF7B2931784D00D1BD5D /* Models */,
+			);
+			path = ShellClient;
 			sourceTree = "<group>";
 		};
 		5878DA7D291862BC00DD95A3 /* Acknowledgements */ = {
@@ -1347,6 +1357,7 @@
 				587B9E5229301D8F00AC7927 /* Models */,
 				587B9E5629301D8F00AC7927 /* Live.swift */,
 				587B9E5729301D8F00AC7927 /* Interface.swift */,
+				58A5DF7F29325B5A00D1BD5D /* GitClient.swift */,
 			);
 			path = Client;
 			sourceTree = "<group>";
@@ -1441,21 +1452,21 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
+		58A5DF7B2931784D00D1BD5D /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				58A5DF7C2931787A00D1BD5D /* ShellClient.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		58D01C85293167DC00C5B6B4 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				58D01C86293167DC00C5B6B4 /* Tests */,
 				58D01C87293167DC00C5B6B4 /* Extensions */,
 				58D01C8F293167DC00C5B6B4 /* KeyChain */,
 			);
 			path = Utils;
-			sourceTree = "<group>";
-		};
-		58D01C86293167DC00C5B6B4 /* Tests */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Tests;
 			sourceTree = "<group>";
 		};
 		58D01C87293167DC00C5B6B4 /* Extensions */ = {
@@ -1845,6 +1856,7 @@
 				B658FB3527DA9E1000EA4DBD /* Preview Content */,
 				5878DAA0291AE76700DD95A3 /* QuickOpen */,
 				58798210292D92370085B254 /* Search */,
+				5875680E29316BDC00C965A3 /* ShellClient */,
 				588224FF292C280D00E83CDE /* StatusBar */,
 				287776EB27E350BA00D46668 /* TabBar */,
 				5879827E292ED0FB0085B254 /* TerminalEmulator */,
@@ -1944,7 +1956,6 @@
 			packageProductDependencies = (
 				5C403B8E27E20F8000788241 /* WorkspaceClient */,
 				2816F593280CF50500DD548B /* CodeEditSymbols */,
-				2864BAAB28117B3F002DBD1A /* ShellClient */,
 				043BCF06281DA2F5000AC47C /* TabBar */,
 				FA6BA6F0282ACAD600019309 /* Keybindings */,
 				2801BB89290D5A8E00EBF552 /* CodeEditKit */,
@@ -2213,6 +2224,7 @@
 				58F2EB03292FB2B0004A9BDE /* Documentation.docc in Sources */,
 				2B7A583527E4BA0100D25D4E /* AppDelegate.swift in Sources */,
 				D7012EE827E757850001E1EF /* FindNavigator.swift in Sources */,
+				58A5DF8029325B5A00D1BD5D /* GitClient.swift in Sources */,
 				D7E201AE27E8B3C000CB86D0 /* String+Ranges.swift in Sources */,
 				587B9E6B29301D8F00AC7927 /* AvatarURL.swift in Sources */,
 				58798262292EC4080085B254 /* PluginRelease.swift in Sources */,
@@ -2314,6 +2326,7 @@
 				587B9DA429300ABD00AC7927 /* OverlayPanel.swift in Sources */,
 				58F2EAEE292FB2B0004A9BDE /* TextEditingPreferencesView.swift in Sources */,
 				58D01C95293167DC00C5B6B4 /* Bundle+Info.swift in Sources */,
+				58A5DF7D2931787A00D1BD5D /* ShellClient.swift in Sources */,
 				5879821A292D92370085B254 /* SearchResultModel.swift in Sources */,
 				587B9DA129300ABD00AC7927 /* Documentation.docc in Sources */,
 				587B9E8929301D8F00AC7927 /* Gist.swift in Sources */,
@@ -2972,10 +2985,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 2816F592280CF50500DD548B /* XCRemoteSwiftPackageReference "CodeEditSymbols" */;
 			productName = CodeEditSymbols;
-		};
-		2864BAAB28117B3F002DBD1A /* ShellClient */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = ShellClient;
 		};
 		287136B2292A408700E9F5F4 /* SwiftLint */ = {
 			isa = XCSwiftPackageProductDependency;

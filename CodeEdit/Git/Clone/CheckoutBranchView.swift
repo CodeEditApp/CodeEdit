@@ -7,22 +7,22 @@
 
 import Foundation
 import SwiftUI
-import ShellClient
 
-public struct CheckoutBranchView: View {
-    internal let shellClient: ShellClient
-    @Binding internal var isPresented: Bool
-    @Binding internal var repoPath: String
+struct CheckoutBranchView: View {
+    let shellClient: ShellClient
+    @Binding var isPresented: Bool
+    @Binding var repoPath: String
     // TODO: This has to be derived from git
-    @State internal var selectedBranch = "main"
-    public init(isPresented: Binding<Bool>,
-                repoPath: Binding<String>,
-                shellClient: ShellClient) {
+    @State var selectedBranch = "main"
+    init(isPresented: Binding<Bool>,
+         repoPath: Binding<String>,
+         shellClient: ShellClient
+    ) {
         self.shellClient = shellClient
         self._isPresented = isPresented
         self._repoPath = repoPath
     }
-    public var body: some View {
+    var body: some View {
         VStack(spacing: 8) {
             HStack {
                 Image(nsImage: NSApp.applicationIconImage)

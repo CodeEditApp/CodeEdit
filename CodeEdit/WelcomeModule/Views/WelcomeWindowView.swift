@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import ShellClient
 
 struct WelcomeWindowView: View {
     private let openDocument: (URL?, @escaping () -> Void) -> Void
