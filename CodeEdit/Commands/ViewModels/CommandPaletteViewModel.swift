@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Keybindings
 
 /// Simple state class for command palette view. Contains currently selected command,
 /// query text and list of filtered commands

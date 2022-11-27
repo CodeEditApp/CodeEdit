@@ -8,7 +8,6 @@
 import SwiftUI
 import WorkspaceClient
 import AppKit
-import Keybindings
 
 struct WorkspaceView: View {
     init(windowController: NSWindowController, workspace: WorkspaceDocument) {

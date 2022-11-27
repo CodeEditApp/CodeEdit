@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Keybindings
 
 internal struct StatusBarToggleDrawerButton: View {
     @ObservedObject

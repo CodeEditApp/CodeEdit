@@ -23,33 +23,33 @@ mgr.executeCommand(name: "test")
  ```
  */
 
-public final class CommandManager: ObservableObject {
+final class CommandManager: ObservableObject {
     @Published private var commandsList: [String: Command]
 
     private init() {
         commandsList = [:]
     }
 
-    public static let shared: CommandManager = .init()
+    static let shared: CommandManager = .init()
 
-    public func addCommand(name: String, title: String, id: String, command: ClosureWrapper) {
+    func addCommand(name: String, title: String, id: String, command: ClosureWrapper) {
         let command = Command.init(id: name, title: title, closureWrapper: command)
         commandsList[id] = command
     }
 
-    public var commands: [Command] {
+    var commands: [Command] {
         return commandsList.map { $0.value }
     }
 
-    public func executeCommand(name: String) {
+    func executeCommand(name: String) {
         commandsList[name]?.closureWrapper.call()
     }
 }
 
 /// Command struct uses as a wrapper for command. Used by command palette to call selected commands.
-public struct Command: Identifiable, Hashable {
+struct Command: Identifiable, Hashable {
 
-    public static func == (lhs: Command, rhs: Command) -> Bool {
+    static func == (lhs: Command, rhs: Command) -> Bool {
         return lhs.id == rhs.id
     }
 
@@ -57,14 +57,14 @@ public struct Command: Identifiable, Hashable {
         return false
     }
 
-    public func hash(into hasher: inout Hasher) {
+    func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
 
-    public let id: String
-    public let title: String
-    public let closureWrapper: ClosureWrapper
-    public init(id: String, title: String, closureWrapper: ClosureWrapper) {
+    let id: String
+    let title: String
+    let closureWrapper: ClosureWrapper
+    init(id: String, title: String, closureWrapper: ClosureWrapper) {
         self.id = id
         self.title = title
         self.closureWrapper = closureWrapper
@@ -72,18 +72,18 @@ public struct Command: Identifiable, Hashable {
 }
 
 /// A typealias of interface used for command closure declaration
-public typealias WorkspaceClientClosure = () -> Void
+typealias WorkspaceClientClosure = () -> Void
 /// A simple wrapper for command closure
-public struct ClosureWrapper {
+struct ClosureWrapper {
 
     let workspaceClientClosure: WorkspaceClientClosure?
     /// Initializer for closure wrapper
     /// - Parameter closure: Function that containts all logic to run command.
-    public init(closure: @escaping WorkspaceClientClosure) {
+    init(closure: @escaping WorkspaceClientClosure) {
        self.workspaceClientClosure = closure
     }
     // swiftlint:disable missing_docs
-    public func call() {
+    func call() {
         workspaceClientClosure?()
     }
 }

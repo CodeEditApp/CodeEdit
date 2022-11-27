@@ -211,6 +211,10 @@
 		58822534292C280D00E83CDE /* CursorLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882251E292C280D00E83CDE /* CursorLocation.swift */; };
 		58A5DF7D2931787A00D1BD5D /* ShellClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A5DF7C2931787A00D1BD5D /* ShellClient.swift */; };
 		58A5DF8029325B5A00D1BD5D /* GitClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A5DF7F29325B5A00D1BD5D /* GitClient.swift */; };
+		58A5DFA229339F6400D1BD5D /* KeybindingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A5DF9E29339F6400D1BD5D /* KeybindingManager.swift */; };
+		58A5DFA329339F6400D1BD5D /* CommandManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A5DF9F29339F6400D1BD5D /* CommandManager.swift */; };
+		58A5DFA429339F6400D1BD5D /* Documentation.docc in Sources */ = {isa = PBXBuildFile; fileRef = 58A5DFA029339F6400D1BD5D /* Documentation.docc */; };
+		58A5DFA529339F6400D1BD5D /* default_keybindings.json in Resources */ = {isa = PBXBuildFile; fileRef = 58A5DFA129339F6400D1BD5D /* default_keybindings.json */; };
 		58D01C94293167DC00C5B6B4 /* Color+HEX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D01C88293167DC00C5B6B4 /* Color+HEX.swift */; };
 		58D01C95293167DC00C5B6B4 /* Bundle+Info.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D01C89293167DC00C5B6B4 /* Bundle+Info.swift */; };
 		58D01C96293167DC00C5B6B4 /* Date+Formatted.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D01C8A293167DC00C5B6B4 /* Date+Formatted.swift */; };
@@ -292,7 +296,6 @@
 		DE513F54281DE5D0002260B9 /* TabBarXcode.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE513F53281DE5D0002260B9 /* TabBarXcode.swift */; };
 		DE6405A62817734700881FDF /* TabBarNative.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6405A52817734700881FDF /* TabBarNative.swift */; };
 		DE6F77872813625500D00A76 /* TabBarDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6F77862813625500D00A76 /* TabBarDivider.swift */; };
-		FA6BA6F1282ACAD600019309 /* Keybindings in Frameworks */ = {isa = PBXBuildFile; productRef = FA6BA6F0282ACAD600019309 /* Keybindings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -543,6 +546,10 @@
 		5882251E292C280D00E83CDE /* CursorLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CursorLocation.swift; sourceTree = "<group>"; };
 		58A5DF7C2931787A00D1BD5D /* ShellClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShellClient.swift; sourceTree = "<group>"; };
 		58A5DF7F29325B5A00D1BD5D /* GitClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitClient.swift; sourceTree = "<group>"; };
+		58A5DF9E29339F6400D1BD5D /* KeybindingManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeybindingManager.swift; sourceTree = "<group>"; };
+		58A5DF9F29339F6400D1BD5D /* CommandManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandManager.swift; sourceTree = "<group>"; };
+		58A5DFA029339F6400D1BD5D /* Documentation.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = Documentation.docc; sourceTree = "<group>"; };
+		58A5DFA129339F6400D1BD5D /* default_keybindings.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = default_keybindings.json; sourceTree = "<group>"; };
 		58D01C88293167DC00C5B6B4 /* Color+HEX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Color+HEX.swift"; sourceTree = "<group>"; };
 		58D01C89293167DC00C5B6B4 /* Bundle+Info.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bundle+Info.swift"; sourceTree = "<group>"; };
 		58D01C8A293167DC00C5B6B4 /* Date+Formatted.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Formatted.swift"; sourceTree = "<group>"; };
@@ -650,7 +657,6 @@
 				5879826B292EC7B00085B254 /* Light-Swift-Untar in Frameworks */,
 				5879828A292ED15F0085B254 /* SwiftTerm in Frameworks */,
 				2816F594280CF50500DD548B /* CodeEditSymbols in Frameworks */,
-				FA6BA6F1282ACAD600019309 /* Keybindings in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1460,6 +1466,17 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		58A5DF9D29339F6400D1BD5D /* Keybindings */ = {
+			isa = PBXGroup;
+			children = (
+				58A5DF9E29339F6400D1BD5D /* KeybindingManager.swift */,
+				58A5DF9F29339F6400D1BD5D /* CommandManager.swift */,
+				58A5DFA029339F6400D1BD5D /* Documentation.docc */,
+				58A5DFA129339F6400D1BD5D /* default_keybindings.json */,
+			);
+			path = Keybindings;
+			sourceTree = "<group>";
+		};
 		58D01C85293167DC00C5B6B4 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
@@ -1850,6 +1867,7 @@
 				58798228292E30B90085B254 /* Feedback */,
 				587B9E0129301D8F00AC7927 /* Git */,
 				B6EE988E27E8877C00CDD8AB /* InspectorSidebar */,
+				58A5DF9D29339F6400D1BD5D /* Keybindings */,
 				D7211D4427E066D4008F2ED7 /* Localization */,
 				58798274292ECFD40085B254 /* LSP */,
 				287776EA27E350A100D46668 /* NavigatorSidebar */,
@@ -1957,7 +1975,6 @@
 				5C403B8E27E20F8000788241 /* WorkspaceClient */,
 				2816F593280CF50500DD548B /* CodeEditSymbols */,
 				043BCF06281DA2F5000AC47C /* TabBar */,
-				FA6BA6F0282ACAD600019309 /* Keybindings */,
 				2801BB89290D5A8E00EBF552 /* CodeEditKit */,
 				5879826A292EC7B00085B254 /* Light-Swift-Untar */,
 				5879826E292EC9870085B254 /* GRDB */,
@@ -2080,6 +2097,7 @@
 				B658FB3727DA9E1000EA4DBD /* Preview Assets.xcassets in Resources */,
 				58F2EB01292FB2B0004A9BDE /* codeedit in Resources */,
 				28A51006281701B40087B0CC /* codeedit-github-dark.json in Resources */,
+				58A5DFA529339F6400D1BD5D /* default_keybindings.json in Resources */,
 				28A51002281673530087B0CC /* codeedit-xcode-light.json in Resources */,
 				28A51005281701B40087B0CC /* codeedit-github-light.json in Resources */,
 				D7211D4727E06BFE008F2ED7 /* Localizable.strings in Resources */,
@@ -2252,6 +2270,7 @@
 				587B9E9829301D8F00AC7927 /* Commit.swift in Sources */,
 				587B9E9429301D8F00AC7927 /* BitbucketTokenConfiguration.swift in Sources */,
 				581BFB672926431000D251EC /* WelcomeWindowView.swift in Sources */,
+				58A5DFA329339F6400D1BD5D /* CommandManager.swift in Sources */,
 				58F2EAF5292FB2B0004A9BDE /* Theme.swift in Sources */,
 				2072FA1C280D874000C7F8D4 /* IndentUsing.swift in Sources */,
 				58798284292ED0FB0085B254 /* TerminalEmulatorView.swift in Sources */,
@@ -2297,6 +2316,7 @@
 				04C3255C2801F86900C8DA2D /* OutlineMenu.swift in Sources */,
 				587B9E6429301D8F00AC7927 /* GitlabCommit.swift in Sources */,
 				587B9E9B29301D8F00AC7927 /* Live.swift in Sources */,
+				58A5DFA229339F6400D1BD5D /* KeybindingManager.swift in Sources */,
 				587B9E7A29301D8F00AC7927 /* ReviewsRouter.swift in Sources */,
 				04540D5E27DD08C300E91B77 /* WorkspaceView.swift in Sources */,
 				DE6F77872813625500D00A76 /* TabBarDivider.swift in Sources */,
@@ -2325,6 +2345,7 @@
 				581BFB6B2926431000D251EC /* RecentProjectItem.swift in Sources */,
 				587B9DA429300ABD00AC7927 /* OverlayPanel.swift in Sources */,
 				58F2EAEE292FB2B0004A9BDE /* TextEditingPreferencesView.swift in Sources */,
+				58A5DFA429339F6400D1BD5D /* Documentation.docc in Sources */,
 				58D01C95293167DC00C5B6B4 /* Bundle+Info.swift in Sources */,
 				58A5DF7D2931787A00D1BD5D /* ShellClient.swift in Sources */,
 				5879821A292D92370085B254 /* SearchResultModel.swift in Sources */,
@@ -3024,10 +3045,6 @@
 		5C403B8E27E20F8000788241 /* WorkspaceClient */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = WorkspaceClient;
-		};
-		FA6BA6F0282ACAD600019309 /* Keybindings */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Keybindings;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -7,7 +7,6 @@
 
 import Cocoa
 import SwiftUI
-import Keybindings
 
 final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     private var prefs: AppPreferencesModel = .shared

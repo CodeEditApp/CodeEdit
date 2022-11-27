@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Keybindings
 
 /// Command palette view
 struct CommandPaletteView: View {

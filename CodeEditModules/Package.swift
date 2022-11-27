@@ -14,10 +14,6 @@ let package = Package(
             targets: ["WorkspaceClient"]
         ),
         .library(
-            name: "Keybindings",
-            targets: ["Keybindings"]
-        ),
-        .library(
             name: "TabBar",
             targets: ["TabBar"]
         ),
@@ -74,12 +70,6 @@ let package = Package(
                 "WorkspaceClient",
             ],
             path: "Modules/WorkspaceClient/Tests"
-        ),
-        .target(
-            name: "Keybindings",
-            dependencies: ["WorkspaceClient"],
-            path: "Modules/Keybindings/src",
-            resources: [.copy("default_keybindings.json")]
         ),
         .target(
             name: "TabBar",
