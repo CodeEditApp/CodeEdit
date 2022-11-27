@@ -77,12 +77,13 @@ typealias WorkspaceClientClosure = () -> Void
 struct ClosureWrapper {
 
     let workspaceClientClosure: WorkspaceClientClosure?
+
     /// Initializer for closure wrapper
     /// - Parameter closure: Function that containts all logic to run command.
     init(closure: @escaping WorkspaceClientClosure) {
        self.workspaceClientClosure = closure
     }
-    // swiftlint:disable missing_docs
+
     func call() {
         workspaceClientClosure?()
     }

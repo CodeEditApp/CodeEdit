@@ -190,8 +190,6 @@
 		587B9E9829301D8F00AC7927 /* Commit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E5329301D8F00AC7927 /* Commit.swift */; };
 		587B9E9929301D8F00AC7927 /* ChangedFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E5429301D8F00AC7927 /* ChangedFile.swift */; };
 		587B9E9A29301D8F00AC7927 /* GitType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E5529301D8F00AC7927 /* GitType.swift */; };
-		587B9E9B29301D8F00AC7927 /* Live.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E5629301D8F00AC7927 /* Live.swift */; };
-		587B9E9C29301D8F00AC7927 /* Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E5729301D8F00AC7927 /* Interface.swift */; };
 		58822524292C280D00E83CDE /* StatusBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822509292C280D00E83CDE /* StatusBar.swift */; };
 		58822525292C280D00E83CDE /* StatusBarMenuLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882250B292C280D00E83CDE /* StatusBarMenuLabel.swift */; };
 		58822526292C280D00E83CDE /* StatusBarBreakpointButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882250C292C280D00E83CDE /* StatusBarBreakpointButton.swift */; };
@@ -525,8 +523,6 @@
 		587B9E5329301D8F00AC7927 /* Commit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Commit.swift; sourceTree = "<group>"; };
 		587B9E5429301D8F00AC7927 /* ChangedFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangedFile.swift; sourceTree = "<group>"; };
 		587B9E5529301D8F00AC7927 /* GitType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitType.swift; sourceTree = "<group>"; };
-		587B9E5629301D8F00AC7927 /* Live.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Live.swift; sourceTree = "<group>"; };
-		587B9E5729301D8F00AC7927 /* Interface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Interface.swift; sourceTree = "<group>"; };
 		58822509292C280D00E83CDE /* StatusBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBar.swift; sourceTree = "<group>"; };
 		5882250B292C280D00E83CDE /* StatusBarMenuLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarMenuLabel.swift; sourceTree = "<group>"; };
 		5882250C292C280D00E83CDE /* StatusBarBreakpointButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarBreakpointButton.swift; sourceTree = "<group>"; };
@@ -1361,8 +1357,6 @@
 			isa = PBXGroup;
 			children = (
 				587B9E5229301D8F00AC7927 /* Models */,
-				587B9E5629301D8F00AC7927 /* Live.swift */,
-				587B9E5729301D8F00AC7927 /* Interface.swift */,
 				58A5DF7F29325B5A00D1BD5D /* GitClient.swift */,
 			);
 			path = Client;
@@ -1510,9 +1504,9 @@
 		58D01C8F293167DC00C5B6B4 /* KeyChain */ = {
 			isa = PBXGroup;
 			children = (
+				58D01C92293167DC00C5B6B4 /* Documentation.docc */,
 				58D01C90293167DC00C5B6B4 /* CodeEditKeychain.swift */,
 				58D01C91293167DC00C5B6B4 /* CodeEditKeychainConstants.swift */,
-				58D01C92293167DC00C5B6B4 /* Documentation.docc */,
 				58D01C93293167DC00C5B6B4 /* KeychainSwiftAccessOptions.swift */,
 			);
 			path = KeyChain;
@@ -2315,7 +2309,6 @@
 				587B9D56292FC27A00AC7927 /* ExtensionManager.swift in Sources */,
 				04C3255C2801F86900C8DA2D /* OutlineMenu.swift in Sources */,
 				587B9E6429301D8F00AC7927 /* GitlabCommit.swift in Sources */,
-				587B9E9B29301D8F00AC7927 /* Live.swift in Sources */,
 				58A5DFA229339F6400D1BD5D /* KeybindingManager.swift in Sources */,
 				587B9E7A29301D8F00AC7927 /* ReviewsRouter.swift in Sources */,
 				04540D5E27DD08C300E91B77 /* WorkspaceView.swift in Sources */,
@@ -2390,7 +2383,6 @@
 				587B9E6229301D8F00AC7927 /* GitlabConfiguration.swift in Sources */,
 				5879821B292D92370085B254 /* SearchResultMatchModel.swift in Sources */,
 				043BCF05281DA19A000AC47C /* WorkspaceDocument+Selection.swift in Sources */,
-				587B9E9C29301D8F00AC7927 /* Interface.swift in Sources */,
 				587B9E5929301D8F00AC7927 /* CheckoutBranch.swift in Sources */,
 				58F2EB09292FB2B0004A9BDE /* TerminalPreferences.swift in Sources */,
 				2072FA18280D871200C7F8D4 /* TextEncoding.swift in Sources */,

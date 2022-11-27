@@ -12,7 +12,15 @@ enum CommitRouter: Router {
     case readCommit(RouterConfiguration, id: String, sha: String)
     case readCommitDiffs(RouterConfiguration, id: String, sha: String)
     case readCommitComments(RouterConfiguration, id: String, sha: String)
-    case readCommitStatuses(RouterConfiguration, id: String, sha: String, ref: String, stage: String, name: String, all: Bool)
+    case readCommitStatuses(
+        RouterConfiguration,
+        id: String,
+        sha: String,
+        ref: String,
+        stage: String,
+        name: String,
+        all: Bool
+    )
 
     var configuration: RouterConfiguration? {
         switch self {

@@ -9,7 +9,6 @@ import Foundation
 import Security
 
 // TODO: DOCS (Nanashi Li)
-// swiftlint:disable missing_docs
 class CodeEditKeychain {
 
     var lastQueryParameters: [String: Any]? // Used by the unit tests
@@ -50,8 +49,8 @@ class CodeEditKeychain {
      */
     @discardableResult
     func set(_ value: String, forKey key: String,
-                  withAccess access: CodeEditKeychainAccessOptions? = nil) -> Bool {
-
+             withAccess access: CodeEditKeychainAccessOptions? = nil
+    ) -> Bool {
         if let value = value.data(using: String.Encoding.utf8) {
             return set(value, forKey: key, withAccess: access)
         }
@@ -69,8 +68,8 @@ class CodeEditKeychain {
      */
     @discardableResult
     func set(_ value: Data, forKey key: String,
-                  withAccess access: CodeEditKeychainAccessOptions? = nil) -> Bool {
-
+             withAccess access: CodeEditKeychainAccessOptions? = nil
+    ) -> Bool {
         // The lock prevents the code to be run simultaneously
         // from multiple threads which may result in crashing
         lock.lock()
@@ -107,8 +106,8 @@ class CodeEditKeychain {
      */
     @discardableResult
     func set(_ value: Bool, forKey key: String,
-                  withAccess access: CodeEditKeychainAccessOptions? = nil) -> Bool {
-
+             withAccess access: CodeEditKeychainAccessOptions? = nil
+    ) -> Bool {
         let bytes: [UInt8] = value ? [1] : [0]
         let data = Data(bytes)
 

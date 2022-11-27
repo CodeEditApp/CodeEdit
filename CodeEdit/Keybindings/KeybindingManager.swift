@@ -8,7 +8,6 @@
 import Foundation
 import SwiftUI
 
-// swiftlint:disable:next missing_docs
 final class KeybindingManager {
     /// Array which contains all available keyboard shortcuts
     var keyboardShortcuts = [String: KeyboardShortcutWrapper]()
