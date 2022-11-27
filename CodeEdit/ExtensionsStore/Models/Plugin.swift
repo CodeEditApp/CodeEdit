@@ -8,7 +8,6 @@
 import Foundation
 import SwiftUI
 import CodeEditKit
-import TabBar
 
 struct Plugin: Codable, Identifiable, Hashable, TabBarItemRepresentable {
     var tabID: TabBarItemID {

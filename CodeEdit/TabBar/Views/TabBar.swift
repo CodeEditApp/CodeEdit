@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import TabBar
 
 // Disable the rule because the tab bar view is fairly complicated.
 // It has the gesture implementation and its animations.

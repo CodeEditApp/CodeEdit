@@ -7,7 +7,6 @@
 
 import Foundation
 import SwiftUI
-import TabBar
 
 extension View {
     func tabBarContextMenu(item: TabBarItemRepresentable,

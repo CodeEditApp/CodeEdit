@@ -7,7 +7,6 @@
 
 import Foundation
 import SwiftUI
-import TabBar
 import UniformTypeIdentifiers
 
 extension WorkspaceClient {

@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import TabBar
 
 // TODO: Drag to activate behavior.
 // In Xcode, dragging an inactive tab will make it activated. But due to our editor performance issue,

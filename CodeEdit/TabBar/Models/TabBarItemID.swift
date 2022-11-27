@@ -8,8 +8,8 @@
 import Foundation
 
 /// Enum to represent item's ID to tab bar
-public enum TabBarItemID: Codable, Identifiable, Hashable {
-    public var id: String {
+enum TabBarItemID: Codable, Identifiable, Hashable {
+    var id: String {
         switch self {
         case .codeEditor(let path):
             return "codeEditor_\(path)"

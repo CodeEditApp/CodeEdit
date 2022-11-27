@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import TabBar
 
 /// A `NSViewController` that handles the **ProjectNavigator** in the **NavigatorSideabr**.
 ///

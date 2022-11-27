@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import TabBar
 
 struct WorkspaceSelectionState: Codable {
 

@@ -8,7 +8,7 @@
 import SwiftUI
 
 /// Protocol for data passed to TabBarItem to conform to
-public protocol TabBarItemRepresentable {
+protocol TabBarItemRepresentable {
     /// Unique tab identifier
     var tabID: TabBarItemID { get }
     /// String to be shown as tab's title

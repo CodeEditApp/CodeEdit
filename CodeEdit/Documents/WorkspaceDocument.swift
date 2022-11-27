@@ -10,7 +10,6 @@ import AppKit
 import SwiftUI
 import Combine
 import CodeEditKit
-import TabBar
 
 // swiftlint:disable type_body_length
 // swiftlint:disable file_length
