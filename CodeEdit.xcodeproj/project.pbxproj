@@ -111,6 +111,29 @@
 		58798285292ED0FB0085B254 /* TerminalEmulatorView+Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58798281292ED0FB0085B254 /* TerminalEmulatorView+Coordinator.swift */; };
 		58798286292ED0FB0085B254 /* SwiftTerm+Color+Init.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58798283292ED0FB0085B254 /* SwiftTerm+Color+Init.swift */; };
 		5879828A292ED15F0085B254 /* SwiftTerm in Frameworks */ = {isa = PBXBuildFile; productRef = 58798289292ED15F0085B254 /* SwiftTerm */; };
+		587B60F82934124200D5CD8F /* UnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B60F72934124100D5CD8F /* UnitTests.swift */; };
+		587B61012934170A00D5CD8F /* UnitTests_Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B61002934170A00D5CD8F /* UnitTests_Extensions.swift */; };
+		587B611D293418CC00D5CD8F /* testHelpButtonDark.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 587B6110293418CC00D5CD8F /* testHelpButtonDark.1.png */; };
+		587B611E293418CC00D5CD8F /* testEffectViewLight.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 587B6111293418CC00D5CD8F /* testEffectViewLight.1.png */; };
+		587B611F293418CC00D5CD8F /* testSegmentedControlLight.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 587B6112293418CC00D5CD8F /* testSegmentedControlLight.1.png */; };
+		587B6120293418CC00D5CD8F /* testSegmentedControlProminentLight.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 587B6113293418CC00D5CD8F /* testSegmentedControlProminentLight.1.png */; };
+		587B6121293418CC00D5CD8F /* testHelpButtonLight.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 587B6114293418CC00D5CD8F /* testHelpButtonLight.1.png */; };
+		587B6122293418CC00D5CD8F /* testBranchPickerDark.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 587B6115293418CC00D5CD8F /* testBranchPickerDark.1.png */; };
+		587B6123293418CC00D5CD8F /* testFontPickerViewDark.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 587B6116293418CC00D5CD8F /* testFontPickerViewDark.1.png */; };
+		587B6124293418CC00D5CD8F /* testFontPickerViewLight.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 587B6117293418CC00D5CD8F /* testFontPickerViewLight.1.png */; };
+		587B6125293418CC00D5CD8F /* testSegmentedControlProminentDark.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 587B6118293418CC00D5CD8F /* testSegmentedControlProminentDark.1.png */; };
+		587B6126293418CC00D5CD8F /* testSegmentedControlDark.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 587B6119293418CC00D5CD8F /* testSegmentedControlDark.1.png */; };
+		587B6127293418CC00D5CD8F /* testEffectViewDark.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 587B611A293418CC00D5CD8F /* testEffectViewDark.1.png */; };
+		587B6128293418CC00D5CD8F /* testBranchPickerLight.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 587B611B293418CC00D5CD8F /* testBranchPickerLight.1.png */; };
+		587B6129293418CC00D5CD8F /* UnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B611C293418CC00D5CD8F /* UnitTests.swift */; };
+		587B612E293419B700D5CD8F /* UnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B612D293419B700D5CD8F /* UnitTests.swift */; };
+		587B614029341B1D00D5CD8F /* UnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B613729341B1D00D5CD8F /* UnitTests.swift */; };
+		587B614129341B1D00D5CD8F /* testWelcomeActionViewLightSnapshot.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 587B613A29341B1D00D5CD8F /* testWelcomeActionViewLightSnapshot.1.png */; };
+		587B614229341B1D00D5CD8F /* testWelcomeActionViewDarkSnapshot.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 587B613B29341B1D00D5CD8F /* testWelcomeActionViewDarkSnapshot.1.png */; };
+		587B614329341B1D00D5CD8F /* testRecentJSFileDarkSnapshot.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 587B613C29341B1D00D5CD8F /* testRecentJSFileDarkSnapshot.1.png */; };
+		587B614429341B1D00D5CD8F /* testRecentProjectItemDarkSnapshot.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 587B613D29341B1D00D5CD8F /* testRecentProjectItemDarkSnapshot.1.png */; };
+		587B614529341B1D00D5CD8F /* testRecentJSFileLightSnapshot.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 587B613E29341B1D00D5CD8F /* testRecentJSFileLightSnapshot.1.png */; };
+		587B614629341B1D00D5CD8F /* testRecentProjectItemLightSnapshot.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 587B613F29341B1D00D5CD8F /* testRecentProjectItemLightSnapshot.1.png */; };
 		587B9D56292FC27A00AC7927 /* ExtensionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9D53292FC27A00AC7927 /* ExtensionManager.swift */; };
 		587B9D57292FC27A00AC7927 /* FolderMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9D54292FC27A00AC7927 /* FolderMonitor.swift */; };
 		587B9D9E29300ABD00AC7927 /* FontPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9D8729300ABD00AC7927 /* FontPickerView.swift */; };
@@ -451,6 +474,29 @@
 		58798280292ED0FB0085B254 /* TerminalEmulatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TerminalEmulatorView.swift; sourceTree = "<group>"; };
 		58798281292ED0FB0085B254 /* TerminalEmulatorView+Coordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TerminalEmulatorView+Coordinator.swift"; sourceTree = "<group>"; };
 		58798283292ED0FB0085B254 /* SwiftTerm+Color+Init.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SwiftTerm+Color+Init.swift"; sourceTree = "<group>"; };
+		587B60F72934124100D5CD8F /* UnitTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnitTests.swift; sourceTree = "<group>"; };
+		587B61002934170A00D5CD8F /* UnitTests_Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnitTests_Extensions.swift; sourceTree = "<group>"; };
+		587B6110293418CC00D5CD8F /* testHelpButtonDark.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testHelpButtonDark.1.png; sourceTree = "<group>"; };
+		587B6111293418CC00D5CD8F /* testEffectViewLight.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testEffectViewLight.1.png; sourceTree = "<group>"; };
+		587B6112293418CC00D5CD8F /* testSegmentedControlLight.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testSegmentedControlLight.1.png; sourceTree = "<group>"; };
+		587B6113293418CC00D5CD8F /* testSegmentedControlProminentLight.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testSegmentedControlProminentLight.1.png; sourceTree = "<group>"; };
+		587B6114293418CC00D5CD8F /* testHelpButtonLight.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testHelpButtonLight.1.png; sourceTree = "<group>"; };
+		587B6115293418CC00D5CD8F /* testBranchPickerDark.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testBranchPickerDark.1.png; sourceTree = "<group>"; };
+		587B6116293418CC00D5CD8F /* testFontPickerViewDark.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testFontPickerViewDark.1.png; sourceTree = "<group>"; };
+		587B6117293418CC00D5CD8F /* testFontPickerViewLight.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testFontPickerViewLight.1.png; sourceTree = "<group>"; };
+		587B6118293418CC00D5CD8F /* testSegmentedControlProminentDark.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testSegmentedControlProminentDark.1.png; sourceTree = "<group>"; };
+		587B6119293418CC00D5CD8F /* testSegmentedControlDark.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testSegmentedControlDark.1.png; sourceTree = "<group>"; };
+		587B611A293418CC00D5CD8F /* testEffectViewDark.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testEffectViewDark.1.png; sourceTree = "<group>"; };
+		587B611B293418CC00D5CD8F /* testBranchPickerLight.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testBranchPickerLight.1.png; sourceTree = "<group>"; };
+		587B611C293418CC00D5CD8F /* UnitTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnitTests.swift; sourceTree = "<group>"; };
+		587B612D293419B700D5CD8F /* UnitTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnitTests.swift; sourceTree = "<group>"; };
+		587B613729341B1D00D5CD8F /* UnitTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnitTests.swift; sourceTree = "<group>"; };
+		587B613A29341B1D00D5CD8F /* testWelcomeActionViewLightSnapshot.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testWelcomeActionViewLightSnapshot.1.png; sourceTree = "<group>"; };
+		587B613B29341B1D00D5CD8F /* testWelcomeActionViewDarkSnapshot.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testWelcomeActionViewDarkSnapshot.1.png; sourceTree = "<group>"; };
+		587B613C29341B1D00D5CD8F /* testRecentJSFileDarkSnapshot.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testRecentJSFileDarkSnapshot.1.png; sourceTree = "<group>"; };
+		587B613D29341B1D00D5CD8F /* testRecentProjectItemDarkSnapshot.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testRecentProjectItemDarkSnapshot.1.png; sourceTree = "<group>"; };
+		587B613E29341B1D00D5CD8F /* testRecentJSFileLightSnapshot.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testRecentJSFileLightSnapshot.1.png; sourceTree = "<group>"; };
+		587B613F29341B1D00D5CD8F /* testRecentProjectItemLightSnapshot.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testRecentProjectItemLightSnapshot.1.png; sourceTree = "<group>"; };
 		587B9D53292FC27A00AC7927 /* ExtensionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionManager.swift; sourceTree = "<group>"; };
 		587B9D54292FC27A00AC7927 /* FolderMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderMonitor.swift; sourceTree = "<group>"; };
 		587B9D8729300ABD00AC7927 /* FontPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontPickerView.swift; sourceTree = "<group>"; };
@@ -868,12 +914,12 @@
 			path = OpenWithCodeEdit;
 			sourceTree = "<group>";
 		};
-		581BFB4B2926431000D251EC /* WelcomeModule */ = {
+		581BFB4B2926431000D251EC /* Welcome */ = {
 			isa = PBXGroup;
 			children = (
 				581BFB562926431000D251EC /* Views */,
 			);
-			path = WelcomeModule;
+			path = Welcome;
 			sourceTree = "<group>";
 		};
 		581BFB562926431000D251EC /* Views */ = {
@@ -928,7 +974,7 @@
 				588224FF292C280D00E83CDE /* StatusBar */,
 				287776EB27E350BA00D46668 /* TabBar */,
 				5879827E292ED0FB0085B254 /* TerminalEmulator */,
-				581BFB4B2926431000D251EC /* WelcomeModule */,
+				581BFB4B2926431000D251EC /* Welcome */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -1229,6 +1275,131 @@
 				58798281292ED0FB0085B254 /* TerminalEmulatorView+Coordinator.swift */,
 			);
 			path = TerminalEmulator;
+			sourceTree = "<group>";
+		};
+		587B60F329340A8000D5CD8F /* CodeEditTests */ = {
+			isa = PBXGroup;
+			children = (
+				587B60FE293416C900D5CD8F /* Features */,
+				587B60F42934122D00D5CD8F /* Utils */,
+			);
+			path = CodeEditTests;
+			sourceTree = "<group>";
+		};
+		587B60F42934122D00D5CD8F /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				587B61002934170A00D5CD8F /* UnitTests_Extensions.swift */,
+				587B60F52934124100D5CD8F /* WorkspaceClient */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		587B60F52934124100D5CD8F /* WorkspaceClient */ = {
+			isa = PBXGroup;
+			children = (
+				587B60F72934124100D5CD8F /* UnitTests.swift */,
+			);
+			path = WorkspaceClient;
+			sourceTree = "<group>";
+		};
+		587B60FE293416C900D5CD8F /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				587B612C2934199800D5CD8F /* CodeFile */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		587B61072934182F00D5CD8F /* CodeEditUITests */ = {
+			isa = PBXGroup;
+			children = (
+				587B61082934184200D5CD8F /* Features */,
+			);
+			path = CodeEditUITests;
+			sourceTree = "<group>";
+		};
+		587B61082934184200D5CD8F /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				587B61092934184A00D5CD8F /* CodeEditUI */,
+				587B613529341AF400D5CD8F /* Welcome */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		587B61092934184A00D5CD8F /* CodeEditUI */ = {
+			isa = PBXGroup;
+			children = (
+				587B610E293418CC00D5CD8F /* __Snapshots__ */,
+				587B611C293418CC00D5CD8F /* UnitTests.swift */,
+			);
+			path = CodeEditUI;
+			sourceTree = "<group>";
+		};
+		587B610E293418CC00D5CD8F /* __Snapshots__ */ = {
+			isa = PBXGroup;
+			children = (
+				587B610F293418CC00D5CD8F /* UnitTests */,
+			);
+			path = __Snapshots__;
+			sourceTree = "<group>";
+		};
+		587B610F293418CC00D5CD8F /* UnitTests */ = {
+			isa = PBXGroup;
+			children = (
+				587B6110293418CC00D5CD8F /* testHelpButtonDark.1.png */,
+				587B6111293418CC00D5CD8F /* testEffectViewLight.1.png */,
+				587B6112293418CC00D5CD8F /* testSegmentedControlLight.1.png */,
+				587B6113293418CC00D5CD8F /* testSegmentedControlProminentLight.1.png */,
+				587B6114293418CC00D5CD8F /* testHelpButtonLight.1.png */,
+				587B6115293418CC00D5CD8F /* testBranchPickerDark.1.png */,
+				587B6116293418CC00D5CD8F /* testFontPickerViewDark.1.png */,
+				587B6117293418CC00D5CD8F /* testFontPickerViewLight.1.png */,
+				587B6118293418CC00D5CD8F /* testSegmentedControlProminentDark.1.png */,
+				587B6119293418CC00D5CD8F /* testSegmentedControlDark.1.png */,
+				587B611A293418CC00D5CD8F /* testEffectViewDark.1.png */,
+				587B611B293418CC00D5CD8F /* testBranchPickerLight.1.png */,
+			);
+			path = UnitTests;
+			sourceTree = "<group>";
+		};
+		587B612C2934199800D5CD8F /* CodeFile */ = {
+			isa = PBXGroup;
+			children = (
+				587B612D293419B700D5CD8F /* UnitTests.swift */,
+			);
+			path = CodeFile;
+			sourceTree = "<group>";
+		};
+		587B613529341AF400D5CD8F /* Welcome */ = {
+			isa = PBXGroup;
+			children = (
+				587B613829341B1D00D5CD8F /* __Snapshots__ */,
+				587B613729341B1D00D5CD8F /* UnitTests.swift */,
+			);
+			path = Welcome;
+			sourceTree = "<group>";
+		};
+		587B613829341B1D00D5CD8F /* __Snapshots__ */ = {
+			isa = PBXGroup;
+			children = (
+				587B613929341B1D00D5CD8F /* UnitTests */,
+			);
+			path = __Snapshots__;
+			sourceTree = "<group>";
+		};
+		587B613929341B1D00D5CD8F /* UnitTests */ = {
+			isa = PBXGroup;
+			children = (
+				587B613A29341B1D00D5CD8F /* testWelcomeActionViewLightSnapshot.1.png */,
+				587B613B29341B1D00D5CD8F /* testWelcomeActionViewDarkSnapshot.1.png */,
+				587B613C29341B1D00D5CD8F /* testRecentJSFileDarkSnapshot.1.png */,
+				587B613D29341B1D00D5CD8F /* testRecentProjectItemDarkSnapshot.1.png */,
+				587B613E29341B1D00D5CD8F /* testRecentJSFileLightSnapshot.1.png */,
+				587B613F29341B1D00D5CD8F /* testRecentProjectItemLightSnapshot.1.png */,
+			);
+			path = UnitTests;
 			sourceTree = "<group>";
 		};
 		587B9D50292FC27A00AC7927 /* CodeEditExtension */ = {
@@ -1948,6 +2119,8 @@
 			isa = PBXGroup;
 			children = (
 				B658FB2E27DA9E0F00EA4DBD /* CodeEdit */,
+				587B60F329340A8000D5CD8F /* CodeEditTests */,
+				587B61072934182F00D5CD8F /* CodeEditUITests */,
 				2BE487ED28245162003F3F64 /* OpenWithCodeEdit */,
 				B658FB2D27DA9E0F00EA4DBD /* Products */,
 				5C403B8D27E20F8000788241 /* Frameworks */,
@@ -2137,6 +2310,7 @@
 					};
 					B658FB4627DA9E1000EA4DBD = {
 						CreatedOnToolsVersion = 13.1;
+						LastSwiftMigration = 1410;
 						TestTargetID = B658FB2B27DA9E0F00EA4DBD;
 					};
 				};
@@ -2211,6 +2385,24 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				587B614229341B1D00D5CD8F /* testWelcomeActionViewDarkSnapshot.1.png in Resources */,
+				587B611D293418CC00D5CD8F /* testHelpButtonDark.1.png in Resources */,
+				587B614429341B1D00D5CD8F /* testRecentProjectItemDarkSnapshot.1.png in Resources */,
+				587B614529341B1D00D5CD8F /* testRecentJSFileLightSnapshot.1.png in Resources */,
+				587B6125293418CC00D5CD8F /* testSegmentedControlProminentDark.1.png in Resources */,
+				587B6127293418CC00D5CD8F /* testEffectViewDark.1.png in Resources */,
+				587B611F293418CC00D5CD8F /* testSegmentedControlLight.1.png in Resources */,
+				587B6126293418CC00D5CD8F /* testSegmentedControlDark.1.png in Resources */,
+				587B6123293418CC00D5CD8F /* testFontPickerViewDark.1.png in Resources */,
+				587B6121293418CC00D5CD8F /* testHelpButtonLight.1.png in Resources */,
+				587B611E293418CC00D5CD8F /* testEffectViewLight.1.png in Resources */,
+				587B6122293418CC00D5CD8F /* testBranchPickerDark.1.png in Resources */,
+				587B6128293418CC00D5CD8F /* testBranchPickerLight.1.png in Resources */,
+				587B614329341B1D00D5CD8F /* testRecentJSFileDarkSnapshot.1.png in Resources */,
+				587B6120293418CC00D5CD8F /* testSegmentedControlProminentLight.1.png in Resources */,
+				587B614629341B1D00D5CD8F /* testRecentProjectItemLightSnapshot.1.png in Resources */,
+				587B6124293418CC00D5CD8F /* testFontPickerViewLight.1.png in Resources */,
+				587B614129341B1D00D5CD8F /* testWelcomeActionViewLightSnapshot.1.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2567,6 +2759,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				587B60F82934124200D5CD8F /* UnitTests.swift in Sources */,
+				587B61012934170A00D5CD8F /* UnitTests_Extensions.swift in Sources */,
+				587B612E293419B700D5CD8F /* UnitTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2574,6 +2769,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				587B6129293418CC00D5CD8F /* UnitTests.swift in Sources */,
+				587B614029341B1D00D5CD8F /* UnitTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2874,7 +3071,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = 9VS2VKC5LQ;
+				DEVELOPMENT_TEAM = RX4647B5SM;
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2900,7 +3097,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = 9VS2VKC5LQ;
+				DEVELOPMENT_TEAM = RX4647B5SM;
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2921,6 +3118,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -2936,6 +3134,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = austincondiff.CodeEditUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "CodeEditUITests/Features/CodeEditUI/CodeEditUITests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = CodeEdit;
 			};
@@ -2945,6 +3145,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -2960,6 +3161,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = austincondiff.CodeEditUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "CodeEditUITests/Features/CodeEditUI/CodeEditUITests-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = CodeEdit;
 			};
