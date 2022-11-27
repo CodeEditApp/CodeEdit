@@ -8,12 +8,11 @@
 import SwiftUI
 
 // TODO: DOCS (Nanashi Li)
-// swiftlint:disable missing_docs
 // swiftlint:disable cyclomatic_complexity
-public enum FileIcon {
+enum FileIcon {
 
     // swiftlint:disable identifier_name
-    public enum FileType: String {
+    enum FileType: String {
         case json
         case js
         case css
@@ -49,7 +48,7 @@ public enum FileIcon {
 
     /// Returns a string describing a SFSymbol for files
     /// If not specified otherwise this will return `"doc"`
-    public static func fileIcon(fileType: FileType) -> String {
+    static func fileIcon(fileType: FileType) -> String {
         switch fileType {
         case .json, .js:
             return "curlybraces"
@@ -100,7 +99,7 @@ public enum FileIcon {
 
     /// Returns a `Color` for a specific `fileType`
     /// If not specified otherwise this will return `Color.accentColor`
-    public static func iconColor(fileType: FileType) -> Color {
+    static func iconColor(fileType: FileType) -> Color {
         switch fileType {
         case .swift, .html:
             return .orange

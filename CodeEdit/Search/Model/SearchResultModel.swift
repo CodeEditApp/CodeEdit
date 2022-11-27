@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import WorkspaceClient
 
 /// A struct for holding information about a file and any matches it may have for a search query.
 class SearchResultModel: Hashable {

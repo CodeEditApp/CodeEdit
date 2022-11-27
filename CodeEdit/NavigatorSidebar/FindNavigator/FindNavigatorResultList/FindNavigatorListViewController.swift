@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import WorkspaceClient
 
 final class FindNavigatorListViewController: NSViewController {
 

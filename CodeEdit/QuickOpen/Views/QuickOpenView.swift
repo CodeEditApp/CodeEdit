@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import WorkspaceClient
 
 struct QuickOpenView: View {
 

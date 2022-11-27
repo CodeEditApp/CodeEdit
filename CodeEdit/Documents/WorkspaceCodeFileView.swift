@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import WorkspaceClient
 import UniformTypeIdentifiers
 
 struct WorkspaceCodeFileView: View {

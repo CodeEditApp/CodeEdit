@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import WorkspaceClient
 import AppKit
 
 struct WorkspaceView: View {

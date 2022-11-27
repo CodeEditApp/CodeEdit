@@ -7,7 +7,6 @@
 
 import SwiftUI
 import UniformTypeIdentifiers
-import WorkspaceClient
 
 /// A subclass of `NSMenu` implementing the contextual menu for the project navigator
 final class OutlineMenu: NSMenu {

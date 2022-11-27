@@ -7,7 +7,6 @@
 
 import Foundation
 import SwiftUI
-import WorkspaceClient
 import TabBar
 
 extension View {

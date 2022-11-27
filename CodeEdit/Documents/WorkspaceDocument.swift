@@ -8,7 +8,6 @@
 import Foundation
 import AppKit
 import SwiftUI
-import WorkspaceClient
 import Combine
 import CodeEditKit
 import TabBar

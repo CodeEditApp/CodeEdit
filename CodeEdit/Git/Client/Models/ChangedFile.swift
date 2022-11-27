@@ -7,7 +7,6 @@
 
 import Foundation
 import SwiftUI
-import WorkspaceClient
 
 struct ChangedFile: Codable, Hashable, Identifiable {
     /// ID of the changed file

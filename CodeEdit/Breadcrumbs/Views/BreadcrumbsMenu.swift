@@ -6,7 +6,6 @@
 //
 
 import AppKit
-import WorkspaceClient
 
 final class BreadcrumsMenu: NSMenu, NSMenuDelegate {
     private let fileItems: [WorkspaceClient.FileItem]

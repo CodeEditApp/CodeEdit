@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import WorkspaceClient
 
 extension WorkspaceDocument {
     final class SearchState: ObservableObject {

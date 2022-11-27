@@ -7,7 +7,6 @@
 
 import SwiftUI
 import CodeEditSymbols
-import WorkspaceClient
 
 /// A view that pops up a branch picker.
 struct ToolbarBranchPicker: View {

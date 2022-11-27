@@ -5,7 +5,6 @@
 //
 
 import Foundation
-import WorkspaceClient
 
 /**
 The object of this class intented to be a hearth of command palette. This object only exists as singleton.

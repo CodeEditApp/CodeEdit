@@ -8,7 +8,6 @@
 //
 
 import SwiftUI
-import WorkspaceClient
 
 /// Native style background view (including color and shadow divider) for tab bar.
 struct TabBarNativeInactiveBackground: View {

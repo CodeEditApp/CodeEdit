@@ -10,10 +10,6 @@ let package = Package(
     ],
     products: [
         .library(
-            name: "WorkspaceClient",
-            targets: ["WorkspaceClient"]
-        ),
-        .library(
             name: "TabBar",
             targets: ["TabBar"]
         ),
@@ -57,20 +53,6 @@ let package = Package(
         ),
     ],
     targets: [
-        .target(
-            name: "WorkspaceClient",
-            dependencies: [
-                "TabBar"
-            ],
-            path: "Modules/WorkspaceClient/src"
-        ),
-        .testTarget(
-            name: "WorkspaceClientTests",
-            dependencies: [
-                "WorkspaceClient",
-            ],
-            path: "Modules/WorkspaceClient/Tests"
-        ),
         .target(
             name: "TabBar",
             path: "Modules/TabBar/src"

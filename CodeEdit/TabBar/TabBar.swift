@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import WorkspaceClient
 import TabBar
 
 // Disable the rule because the tab bar view is fairly complicated.

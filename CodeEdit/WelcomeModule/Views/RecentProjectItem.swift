@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import WorkspaceClient
 
 extension String {
     func abbreviatingWithTildeInPath() -> String {

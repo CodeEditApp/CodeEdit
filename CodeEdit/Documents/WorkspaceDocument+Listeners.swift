@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import WorkspaceClient
 import Combine
 
 class WorkspaceNotificationModel: ObservableObject {

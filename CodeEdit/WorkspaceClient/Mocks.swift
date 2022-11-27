@@ -9,8 +9,7 @@ import Combine
 import Foundation
 
 // TODO: DOCS (Marco Carnevali)
-// swiftlint:disable missing_docs
-public extension WorkspaceClient {
+extension WorkspaceClient {
     static var empty = Self(
         folderURL: { nil },
         getFiles: CurrentValueSubject<[FileItem], Never>([]).eraseToAnyPublisher(),

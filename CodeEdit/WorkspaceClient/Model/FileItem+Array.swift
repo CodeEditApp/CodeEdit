@@ -7,7 +7,7 @@
 
 import Foundation
 
-public extension Array where Element == WorkspaceClient.FileItem {
+extension Array where Element == WorkspaceClient.FileItem {
 
     /// Sorts the elements in alphabetical order.
     /// - Parameter foldersOnTop: if set to `true` folders will always be on top of files.

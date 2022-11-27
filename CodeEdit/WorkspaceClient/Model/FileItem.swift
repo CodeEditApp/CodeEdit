@@ -10,7 +10,7 @@ import SwiftUI
 import TabBar
 import UniformTypeIdentifiers
 
-public extension WorkspaceClient {
+extension WorkspaceClient {
     enum FileItemCodingKeys: String, CodingKey {
         case id
         case url
@@ -19,26 +19,26 @@ public extension WorkspaceClient {
 
     /// An object containing all necessary information and actions for a specific file in the workspace
     final class FileItem: Identifiable, Codable, TabBarItemRepresentable {
-        public var tabID: TabBarItemID {
+        var tabID: TabBarItemID {
             .codeEditor(id)
         }
 
-        public var title: String {
+        var title: String {
             url.lastPathComponent
         }
 
-        public var icon: Image {
+        var icon: Image {
             Image(systemName: systemImage)
         }
 
-        public typealias ID = String
+        typealias ID = String
 
         private let uuid: UUID
 
-        public var watcher: DispatchSourceFileSystemObject?
+        var watcher: DispatchSourceFileSystemObject?
         static var watcherCode: () -> Void = {}
 
-        public func activateWatcher() -> Bool {
+        func activateWatcher() -> Bool {
             let descriptor = open(self.url.path, O_EVTONLY)
             guard descriptor > 0 else { return false }
             let source = DispatchSource.makeFileSystemObjectSource(
@@ -53,7 +53,7 @@ public extension WorkspaceClient {
             return true
         }
 
-        public init(
+        init(
             url: URL,
             children: [FileItem]? = nil
         ) {
@@ -63,7 +63,7 @@ public extension WorkspaceClient {
             uuid = UUID()
         }
 
-        public required init(from decoder: Decoder) throws {
+        required init(from decoder: Decoder) throws {
             let values = try decoder.container(keyedBy: FileItemCodingKeys.self)
             id = try values.decode(String.self, forKey: .id)
             url = try values.decode(URL.self, forKey: .url)
@@ -71,7 +71,7 @@ public extension WorkspaceClient {
             uuid = UUID()
         }
 
-        public func encode(to encoder: Encoder) throws {
+        func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: FileItemCodingKeys.self)
             try container.encode(id, forKey: .id)
             try container.encode(url, forKey: .url)
@@ -81,29 +81,29 @@ public extension WorkspaceClient {
         /// The id of the ``WorkspaceClient/WorkspaceClient/FileItem``.
         ///
         /// This is equal to `url.relativePath`
-        public var id: ID
+        var id: ID
 
         /// Returns the URL of the ``WorkspaceClient/WorkspaceClient/FileItem``
-        public var url: URL
+        var url: URL
 
         /// Returns the children of the current ``WorkspaceClient/WorkspaceClient/FileItem``.
         ///
         /// If the current ``WorkspaceClient/WorkspaceClient/FileItem`` is a file this will be `nil`.
         /// If it is an empty folder this will be an empty array.
-        public var children: [FileItem]?
+        var children: [FileItem]?
 
         /// Returns a parent ``WorkspaceClient/WorkspaceClient/FileItem``.
         ///
         /// If the item already is the top-level ``WorkspaceClient/WorkspaceClient/FileItem`` this returns `nil`.
-        public var parent: FileItem?
+        var parent: FileItem?
 
         /// A boolean that is true if ``children`` is not `nil`
-        public var isFolder: Bool {
+        var isFolder: Bool {
             children != nil
         }
 
         /// A boolean that is true if the file item is the root folder of the workspace.
-        public var isRoot: Bool {
+        var isRoot: Bool {
             parent == nil
         }
 
@@ -113,7 +113,7 @@ public extension WorkspaceClient {
         /// ```swift
         /// Image(systemName: item.systemImage)
         /// ```
-        public var systemImage: String {
+        var systemImage: String {
             switch children {
             case nil:
                 return FileIcon.fileIcon(fileType: fileType)
@@ -126,12 +126,12 @@ public extension WorkspaceClient {
         }
 
         /// Returns the file name (e.g.: `Package.swift`)
-        public var fileName: String {
+        var fileName: String {
             url.lastPathComponent
         }
 
         /// Returns the extension of the file or an empty string if no extension is present.
-        public var fileType: FileIcon.FileType {
+        var fileType: FileIcon.FileType {
             .init(rawValue: url.pathExtension) ?? .txt
         }
 
@@ -151,42 +151,42 @@ public extension WorkspaceClient {
         }
 
         /// Returns the file name with optional extension (e.g.: `Package.swift`)
-        public func fileName(typeHidden: Bool) -> String {
+        func fileName(typeHidden: Bool) -> String {
             typeHidden ? url.deletingPathExtension().lastPathComponent : fileName
         }
 
         /// Return the file's UTType
-        public var contentType: UTType? {
+        var contentType: UTType? {
             try? url.resourceValues(forKeys: [.contentTypeKey]).contentType
         }
 
         /// Returns a `Color` for a specific `fileType`
         ///
         /// If not specified otherwise this will return `Color.accentColor`
-        public var iconColor: Color {
+        var iconColor: Color {
             FileIcon.iconColor(fileType: fileType)
         }
 
         // MARK: Statics
 
         /// The default `FileManager` instance
-        public static let fileManger = FileManager.default
+        static let fileManger = FileManager.default
 
         // MARK: Intents
 
         /// Allows the user to view the file or folder in the finder application
-        public func showInFinder() {
+        func showInFinder() {
             NSWorkspace.shared.activateFileViewerSelecting([url])
         }
 
         /// Allows the user to launch the file or folder as it would be in finder
-        public func openWithExternalEditor() {
+        func openWithExternalEditor() {
             NSWorkspace.shared.open(url)
         }
 
         /// This function allows creation of folders in the main directory or sub-folders
         /// - Parameter folderName: The name of the new folder
-        public func addFolder(folderName: String) {
+        func addFolder(folderName: String) {
             // check if folder, if it is create folder under self, else create on same level.
             var folderUrl = (self.isFolder ?
                              self.url.appendingPathComponent(folderName) :
@@ -211,7 +211,7 @@ public extension WorkspaceClient {
 
         /// This function allows creating files in the selected folder or project main directory
         /// - Parameter fileName: The name of the new file
-        public func addFile(fileName: String) {
+        func addFile(fileName: String) {
             // check if folder, if it is create file under self
             var fileUrl = (self.isFolder ?
                        self.url.appendingPathComponent(fileName) :
@@ -233,7 +233,7 @@ public extension WorkspaceClient {
         }
 
         /// This function deletes the item or folder from the current project
-        public func delete() {
+        func delete() {
             // this function also has to account for how the
             // file system can change outside of the editor
 
@@ -256,7 +256,7 @@ public extension WorkspaceClient {
         }
 
         /// This function duplicates the item or folder
-        public func duplicate() {
+        func duplicate() {
             // if a file/folder with the same name exists, add "copy" to the end
             var fileUrl = self.url
             while FileItem.fileManger.fileExists(atPath: fileUrl.path) {
@@ -280,7 +280,7 @@ public extension WorkspaceClient {
         }
 
         /// This function moves the item or folder if possible
-        public func move(to newLocation: URL) {
+        func move(to newLocation: URL) {
             guard !FileItem.fileManger.fileExists(atPath: newLocation.path) else { return }
             do {
                 try FileItem.fileManger.moveItem(at: self.url, to: newLocation)
@@ -295,7 +295,7 @@ public extension WorkspaceClient {
 // MARK: Hashable
 
 extension WorkspaceClient.FileItem: Hashable {
-    public func hash(into hasher: inout Hasher) {
+    func hash(into hasher: inout Hasher) {
         hasher.combine(uuid)
     }
 }
@@ -303,19 +303,18 @@ extension WorkspaceClient.FileItem: Hashable {
 // MARK: Comparable
 
 extension WorkspaceClient.FileItem: Comparable {
-    public static func == (lhs: WorkspaceClient.FileItem, rhs: WorkspaceClient.FileItem) -> Bool {
+    static func == (lhs: WorkspaceClient.FileItem, rhs: WorkspaceClient.FileItem) -> Bool {
         lhs.id == rhs.id
     }
 
-    public static func < (lhs: WorkspaceClient.FileItem, rhs: WorkspaceClient.FileItem) -> Bool {
+    static func < (lhs: WorkspaceClient.FileItem, rhs: WorkspaceClient.FileItem) -> Bool {
         lhs.url.lastPathComponent < rhs.url.lastPathComponent
     }
 }
 
-public extension Array where Element: Hashable {
+extension Array where Element: Hashable {
 
     // TODO: DOCS (Marco Carnevali)
-    // swiftlint:disable:next missing_docs
     func difference(from other: [Element]) -> [Element] {
         let thisSet = Set(self)
         let otherSet = Set(other)

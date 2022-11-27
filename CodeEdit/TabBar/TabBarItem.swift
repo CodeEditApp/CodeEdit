@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import WorkspaceClient
 import TabBar
 
 // TODO: Drag to activate behavior.

@@ -6,7 +6,6 @@
 //
 import Combine
 import Foundation
-import WorkspaceClient
 
 final class QuickOpenViewModel: ObservableObject {
 

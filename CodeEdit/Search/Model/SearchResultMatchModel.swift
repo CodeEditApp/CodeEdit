@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import WorkspaceClient
 import Cocoa
 
 /// A struct for holding information about a search match.
