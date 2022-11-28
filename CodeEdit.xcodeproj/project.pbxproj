@@ -239,11 +239,9 @@
 		58A5DF8029325B5A00D1BD5D /* GitClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A5DF7F29325B5A00D1BD5D /* GitClient.swift */; };
 		58A5DFA229339F6400D1BD5D /* KeybindingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A5DF9E29339F6400D1BD5D /* KeybindingManager.swift */; };
 		58A5DFA329339F6400D1BD5D /* CommandManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A5DF9F29339F6400D1BD5D /* CommandManager.swift */; };
-		58A5DFA429339F6400D1BD5D /* Documentation.docc in Sources */ = {isa = PBXBuildFile; fileRef = 58A5DFA029339F6400D1BD5D /* Documentation.docc */; };
 		58A5DFA529339F6400D1BD5D /* default_keybindings.json in Resources */ = {isa = PBXBuildFile; fileRef = 58A5DFA129339F6400D1BD5D /* default_keybindings.json */; };
 		58AFAA2E2933C69E00482B53 /* TabBarItemRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AFAA2C2933C69E00482B53 /* TabBarItemRepresentable.swift */; };
 		58AFAA2F2933C69E00482B53 /* TabBarItemID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AFAA2D2933C69E00482B53 /* TabBarItemID.swift */; };
-		58AFAA312933C6C500482B53 /* Documentation.docc in Sources */ = {isa = PBXBuildFile; fileRef = 58AFAA302933C6C500482B53 /* Documentation.docc */; };
 		58D01C94293167DC00C5B6B4 /* Color+HEX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D01C88293167DC00C5B6B4 /* Color+HEX.swift */; };
 		58D01C95293167DC00C5B6B4 /* Bundle+Info.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D01C89293167DC00C5B6B4 /* Bundle+Info.swift */; };
 		58D01C96293167DC00C5B6B4 /* Date+Formatted.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D01C8A293167DC00C5B6B4 /* Date+Formatted.swift */; };
@@ -252,7 +250,6 @@
 		58D01C99293167DC00C5B6B4 /* String+MD5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D01C8E293167DC00C5B6B4 /* String+MD5.swift */; };
 		58D01C9A293167DC00C5B6B4 /* CodeEditKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D01C90293167DC00C5B6B4 /* CodeEditKeychain.swift */; };
 		58D01C9B293167DC00C5B6B4 /* CodeEditKeychainConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D01C91293167DC00C5B6B4 /* CodeEditKeychainConstants.swift */; };
-		58D01C9C293167DC00C5B6B4 /* Documentation.docc in Sources */ = {isa = PBXBuildFile; fileRef = 58D01C92293167DC00C5B6B4 /* Documentation.docc */; };
 		58D01C9D293167DC00C5B6B4 /* KeychainSwiftAccessOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D01C93293167DC00C5B6B4 /* KeychainSwiftAccessOptions.swift */; };
 		58F2EAE7292FB2B0004A9BDE /* GeneralPreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAA2292FB2B0004A9BDE /* GeneralPreferencesView.swift */; };
 		58F2EAE8292FB2B0004A9BDE /* TerminalPreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAA4292FB2B0004A9BDE /* TerminalPreferencesView.swift */; };
@@ -602,11 +599,9 @@
 		58A5DF7F29325B5A00D1BD5D /* GitClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitClient.swift; sourceTree = "<group>"; };
 		58A5DF9E29339F6400D1BD5D /* KeybindingManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeybindingManager.swift; sourceTree = "<group>"; };
 		58A5DF9F29339F6400D1BD5D /* CommandManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandManager.swift; sourceTree = "<group>"; };
-		58A5DFA029339F6400D1BD5D /* Documentation.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = Documentation.docc; sourceTree = "<group>"; };
 		58A5DFA129339F6400D1BD5D /* default_keybindings.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = default_keybindings.json; sourceTree = "<group>"; };
 		58AFAA2C2933C69E00482B53 /* TabBarItemRepresentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarItemRepresentable.swift; sourceTree = "<group>"; };
 		58AFAA2D2933C69E00482B53 /* TabBarItemID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarItemID.swift; sourceTree = "<group>"; };
-		58AFAA302933C6C500482B53 /* Documentation.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = Documentation.docc; sourceTree = "<group>"; };
 		58D01C88293167DC00C5B6B4 /* Color+HEX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Color+HEX.swift"; sourceTree = "<group>"; };
 		58D01C89293167DC00C5B6B4 /* Bundle+Info.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bundle+Info.swift"; sourceTree = "<group>"; };
 		58D01C8A293167DC00C5B6B4 /* Date+Formatted.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Formatted.swift"; sourceTree = "<group>"; };
@@ -615,7 +610,6 @@
 		58D01C8E293167DC00C5B6B4 /* String+MD5.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+MD5.swift"; sourceTree = "<group>"; };
 		58D01C90293167DC00C5B6B4 /* CodeEditKeychain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeEditKeychain.swift; sourceTree = "<group>"; };
 		58D01C91293167DC00C5B6B4 /* CodeEditKeychainConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeEditKeychainConstants.swift; sourceTree = "<group>"; };
-		58D01C92293167DC00C5B6B4 /* Documentation.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = Documentation.docc; sourceTree = "<group>"; };
 		58D01C93293167DC00C5B6B4 /* KeychainSwiftAccessOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainSwiftAccessOptions.swift; sourceTree = "<group>"; };
 		58F2EAA2292FB2B0004A9BDE /* GeneralPreferencesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneralPreferencesView.swift; sourceTree = "<group>"; };
 		58F2EAA4292FB2B0004A9BDE /* TerminalPreferencesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TerminalPreferencesView.swift; sourceTree = "<group>"; };
@@ -896,7 +890,6 @@
 		287776EB27E350BA00D46668 /* TabBar */ = {
 			isa = PBXGroup;
 			children = (
-				58AFAA302933C6C500482B53 /* Documentation.docc */,
 				58AFAA272933C65C00482B53 /* Models */,
 				58AFAA262933C65000482B53 /* Views */,
 			);
@@ -1735,10 +1728,9 @@
 		58A5DF9D29339F6400D1BD5D /* Keybindings */ = {
 			isa = PBXGroup;
 			children = (
-				58A5DF9E29339F6400D1BD5D /* KeybindingManager.swift */,
 				58A5DF9F29339F6400D1BD5D /* CommandManager.swift */,
-				58A5DFA029339F6400D1BD5D /* Documentation.docc */,
 				58A5DFA129339F6400D1BD5D /* default_keybindings.json */,
+				58A5DF9E29339F6400D1BD5D /* KeybindingManager.swift */,
 			);
 			path = Keybindings;
 			sourceTree = "<group>";
@@ -1807,7 +1799,6 @@
 		58D01C8F293167DC00C5B6B4 /* KeyChain */ = {
 			isa = PBXGroup;
 			children = (
-				58D01C92293167DC00C5B6B4 /* Documentation.docc */,
 				58D01C90293167DC00C5B6B4 /* CodeEditKeychain.swift */,
 				58D01C91293167DC00C5B6B4 /* CodeEditKeychainConstants.swift */,
 				58D01C93293167DC00C5B6B4 /* KeychainSwiftAccessOptions.swift */,
@@ -1818,7 +1809,6 @@
 		58F2EA9E292FB2B0004A9BDE /* AppPreferences */ = {
 			isa = PBXGroup;
 			children = (
-				58F2EACE292FB2B0004A9BDE /* Documentation.docc */,
 				58F2EAE2292FB2B0004A9BDE /* HelperViews */,
 				58F2EACF292FB2B0004A9BDE /* Model */,
 				58F2EACA292FB2B0004A9BDE /* Resources */,
@@ -2118,6 +2108,7 @@
 		B658FB2327DA9E0F00EA4DBD = {
 			isa = PBXGroup;
 			children = (
+				58F2EACE292FB2B0004A9BDE /* Documentation.docc */,
 				B658FB2E27DA9E0F00EA4DBD /* CodeEdit */,
 				587B60F329340A8000D5CD8F /* CodeEditTests */,
 				587B61072934182F00D5CD8F /* CodeEditUITests */,
@@ -2576,7 +2567,6 @@
 				587B9E9329301D8F00AC7927 /* BitbucketOAuthConfiguration.swift in Sources */,
 				58F2EB0A292FB2B0004A9BDE /* AppPreferences.swift in Sources */,
 				20EBB503280C327C00F3A5DA /* HistoryInspector.swift in Sources */,
-				58D01C9C293167DC00C5B6B4 /* Documentation.docc in Sources */,
 				587B9E7529301D8F00AC7927 /* String+QueryParameters.swift in Sources */,
 				58798219292D92370085B254 /* SearchModeModel.swift in Sources */,
 				58D01C9D293167DC00C5B6B4 /* KeychainSwiftAccessOptions.swift in Sources */,
@@ -2596,7 +2586,6 @@
 				DE6405A62817734700881FDF /* TabBarNative.swift in Sources */,
 				587B9E5C29301D8F00AC7927 /* Parameters.swift in Sources */,
 				58798235292E30B90085B254 /* FeedbackModel.swift in Sources */,
-				58AFAA312933C6C500482B53 /* Documentation.docc in Sources */,
 				587B9D56292FC27A00AC7927 /* ExtensionManager.swift in Sources */,
 				04C3255C2801F86900C8DA2D /* OutlineMenu.swift in Sources */,
 				587B9E6429301D8F00AC7927 /* GitlabCommit.swift in Sources */,
@@ -2631,7 +2620,6 @@
 				581BFB6B2926431000D251EC /* RecentProjectItem.swift in Sources */,
 				587B9DA429300ABD00AC7927 /* OverlayPanel.swift in Sources */,
 				58F2EAEE292FB2B0004A9BDE /* TextEditingPreferencesView.swift in Sources */,
-				58A5DFA429339F6400D1BD5D /* Documentation.docc in Sources */,
 				58D01C95293167DC00C5B6B4 /* Bundle+Info.swift in Sources */,
 				587D9B762933BF5700BF7490 /* Mocks.swift in Sources */,
 				58A5DF7D2931787A00D1BD5D /* ShellClient.swift in Sources */,
