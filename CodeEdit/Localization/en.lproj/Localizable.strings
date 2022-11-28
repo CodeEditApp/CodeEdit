@@ -57,3 +57,24 @@
 // Leading Sidebar Toolbar
 "Alphabetically"="Alphabetically";
 "Folders on top"="Folders on top";
+
+
+// Welcome Screen
+"Welcome to CodeEdit" = "Welcome to CodeEdit";
+"Version %@ (%@)" = "Version %@ (%@)";
+"No Recent Projects" = "No Recent Projects";
+
+// Welcome Screen - New File
+"Create a new file" = "Create a new file";
+"Clone an exisiting project" = "Clone an exisiting project";
+
+// Welcome Screen - Open File
+"Open a file or folder" = "Open a file or folder";
+"Open an existing file or folder on your Mac" = "Open an existing file or folder on your Mac";
+
+// Welcome Screen - SCM
+"Start working on something from a Git repository" = "Start working on something from a Git repository";
+
+"Remove from Recent Projects" = "Remove from Recent Projects";
+"Show in Finder" = "Show in Finder";
+"Copy Path" = "Copy Path";

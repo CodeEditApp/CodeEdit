@@ -6,14 +6,8 @@
 //
 
 import SwiftUI
-import AppPreferences
 import Preferences
-import About
-import WelcomeModule
-import ExtensionsStore
-import Feedback
 import CodeEditSymbols
-import CodeFile
 
 final class CodeEditApplication: NSApplication {
     let strongDelegate = AppDelegate()
@@ -81,11 +75,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
             }
         }
 
-        do {
-            try ExtensionsManager.shared?.preload()
-        } catch let error {
-            print(error)
-        }
+        ExtensionManager.shared.refreshBundles()
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

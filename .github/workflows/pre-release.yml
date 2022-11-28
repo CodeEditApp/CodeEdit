@@ -41,7 +41,7 @@ jobs:
       - name: Build CodeEdit
         env:
           APPLE_TEAM_ID:  ${{ secrets.APPLE_TEAM_ID }}
-        run: xcodebuild -workspace CodeEdit.xcworkspace -scheme CodeEdit -configuration Release -derivedDataPath "$RUNNER_TEMP/DerivedData" -archivePath "$RUNNER_TEMP/CodeEdit.xcarchive" DEVELOPMENT_TEAM=$APPLE_TEAM_ID archive
+        run: xcodebuild -workspace CodeEdit.xcworkspace -scheme CodeEdit -configuration Release -derivedDataPath "$RUNNER_TEMP/DerivedData" -archivePath "$RUNNER_TEMP/CodeEdit.xcarchive" -skipPackagePluginValidation DEVELOPMENT_TEAM=$APPLE_TEAM_ID archive
       - name: Create CodeEdit.dmg
         run: |
           REV=$(git rev-parse --short HEAD)

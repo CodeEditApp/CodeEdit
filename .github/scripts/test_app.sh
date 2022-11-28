@@ -9,10 +9,12 @@ elif [ $1 = "arm" ]; then
 fi
 
 echo "Building with arch: ${ARCH}"
+swiftlint --version
 
 export LC_CTYPE=en_US.UTF-8
 
 set -o pipefail && arch -"${ARCH}" xcodebuild -workspace CodeEdit.xcworkspace \
            -scheme CodeEdit \
            -destination "platform=OS X,arch=${ARCH}" \
+           -skipPackagePluginValidation \
            clean test | xcpretty
