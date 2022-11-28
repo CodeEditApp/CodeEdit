@@ -139,7 +139,6 @@
 		587B9D9E29300ABD00AC7927 /* FontPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9D8729300ABD00AC7927 /* FontPickerView.swift */; };
 		587B9D9F29300ABD00AC7927 /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9D8829300ABD00AC7927 /* SegmentedControl.swift */; };
 		587B9DA029300ABD00AC7927 /* PanelDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9D8929300ABD00AC7927 /* PanelDivider.swift */; };
-		587B9DA129300ABD00AC7927 /* Documentation.docc in Sources */ = {isa = PBXBuildFile; fileRef = 587B9D8A29300ABD00AC7927 /* Documentation.docc */; };
 		587B9DA229300ABD00AC7927 /* EffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9D8B29300ABD00AC7927 /* EffectView.swift */; };
 		587B9DA329300ABD00AC7927 /* SettingsTextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9D8C29300ABD00AC7927 /* SettingsTextEditor.swift */; };
 		587B9DA429300ABD00AC7927 /* OverlayPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9D8D29300ABD00AC7927 /* OverlayPanel.swift */; };
@@ -499,7 +498,6 @@
 		587B9D8729300ABD00AC7927 /* FontPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontPickerView.swift; sourceTree = "<group>"; };
 		587B9D8829300ABD00AC7927 /* SegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
 		587B9D8929300ABD00AC7927 /* PanelDivider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PanelDivider.swift; sourceTree = "<group>"; };
-		587B9D8A29300ABD00AC7927 /* Documentation.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = Documentation.docc; sourceTree = "<group>"; };
 		587B9D8B29300ABD00AC7927 /* EffectView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EffectView.swift; sourceTree = "<group>"; };
 		587B9D8C29300ABD00AC7927 /* SettingsTextEditor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTextEditor.swift; sourceTree = "<group>"; };
 		587B9D8D29300ABD00AC7927 /* OverlayPanel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverlayPanel.swift; sourceTree = "<group>"; };
@@ -1417,7 +1415,6 @@
 		587B9D8629300ABD00AC7927 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				587B9D8A29300ABD00AC7927 /* Documentation.docc */,
 				587B9D8B29300ABD00AC7927 /* EffectView.swift */,
 				587B9D8729300ABD00AC7927 /* FontPickerView.swift */,
 				587B9D9029300ABD00AC7927 /* HelpButton.swift */,
@@ -2624,7 +2621,6 @@
 				587D9B762933BF5700BF7490 /* Mocks.swift in Sources */,
 				58A5DF7D2931787A00D1BD5D /* ShellClient.swift in Sources */,
 				5879821A292D92370085B254 /* SearchResultModel.swift in Sources */,
-				587B9DA129300ABD00AC7927 /* Documentation.docc in Sources */,
 				587B9E8929301D8F00AC7927 /* Gist.swift in Sources */,
 				0485EB1F27E7458B00138301 /* WorkspaceCodeFileView.swift in Sources */,
 				58D01C94293167DC00C5B6B4 /* Color+HEX.swift in Sources */,
