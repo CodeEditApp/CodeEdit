@@ -1,5 +1,5 @@
 //
-//  GitlabAccount.swift
+//  GitLabAccount.swift
 //  CodeEditModules/GitAccounts
 //
 //  Created by Wesley de Groot on 02/04/2022.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension GitlabAccount {
+extension GitLabAccount {
     /**
      Fetches the Projects for which the authenticated user is a member.
      - parameter page: Current page for project pagination. `1` by default.

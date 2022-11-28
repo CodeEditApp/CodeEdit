@@ -11,7 +11,7 @@ import FoundationNetworking
 #endif
 
 // TODO: DOCS (Nanashi Li)
-extension GithubAccount {
+extension GitHubAccount {
     func postPublicKey(_ session: GitURLSession = URLSession.shared,
                        publicKey: String,
                        title: String,

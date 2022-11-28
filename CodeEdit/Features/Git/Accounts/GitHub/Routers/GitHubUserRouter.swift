@@ -1,5 +1,5 @@
 //
-//  GithubUserRouter.swift
+//  GitHubUserRouter.swift
 //  CodeEditModules/GitAccounts
 //
 //  Created by Nanshi Li on 2022/03/31.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum GithubUserRouter: Router {
+enum GitHubUserRouter: Router {
     case readAuthenticatedUser(RouterConfiguration)
     case readUser(String, RouterConfiguration)
 

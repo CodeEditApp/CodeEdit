@@ -8,7 +8,7 @@
 import Combine
 import Foundation
 
-class GitClient {
+struct GitClient {
     enum GitClientError: Error {
         case outputError(String)
         case notGitRepository

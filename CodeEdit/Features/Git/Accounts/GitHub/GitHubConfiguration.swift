@@ -1,5 +1,5 @@
 //
-//  GithubConfiguration.swift
+//  GitHubConfiguration.swift
 //  CodeEditModules/GitAccounts
 //
 //  Created by Nanashi Li on 2022/03/31.
@@ -10,7 +10,7 @@ import Foundation
 import FoundationNetworking
 #endif
 
-struct GithubTokenConfiguration: RouterConfiguration {
+struct GitHubTokenConfiguration: RouterConfiguration {
     var apiEndpoint: String?
     var accessToken: String?
     let errorDomain: String? = "com.codeedit.models.accounts.github"
@@ -66,15 +66,15 @@ struct OAuthConfiguration: RouterConfiguration {
     }
 
     func authenticate() -> URL? {
-        GithubOAuthRouter.authorize(self).URLRequest?.url
+        GitHubOAuthRouter.authorize(self).URLRequest?.url
     }
 
     func authorize(
         _ session: GitURLSession = URLSession.shared,
         code: String,
-        completion: @escaping (_ config: GithubTokenConfiguration) -> Void) {
+        completion: @escaping (_ config: GitHubTokenConfiguration) -> Void) {
 
-        let request = GithubOAuthRouter.accessToken(self, code).URLRequest
+        let request = GitHubOAuthRouter.accessToken(self, code).URLRequest
         if let request = request {
             let task = session.dataTask(with: request) { data, response, _ in
                 if let response = response as? HTTPURLResponse {
@@ -84,7 +84,7 @@ struct OAuthConfiguration: RouterConfiguration {
                         if let data = data, let string = String(data: data, encoding: .utf8) {
                             let accessToken = self.accessTokenFromResponse(string)
                             if let accessToken = accessToken {
-                                let config = GithubTokenConfiguration(accessToken, url: self.apiEndpoint ?? "")
+                                let config = GitHubTokenConfiguration(accessToken, url: self.apiEndpoint ?? "")
                                 completion(config)
                             }
                         }
@@ -98,7 +98,7 @@ struct OAuthConfiguration: RouterConfiguration {
     func handleOpenURL(
         _ session: GitURLSession = URLSession.shared,
         url: URL,
-        completion: @escaping (_ config: GithubTokenConfiguration) -> Void) {
+        completion: @escaping (_ config: GitHubTokenConfiguration) -> Void) {
 
         if let code = url.URLParameters["code"] {
             authorize(session, code: code) { config in
@@ -116,7 +116,7 @@ struct OAuthConfiguration: RouterConfiguration {
     }
 }
 
-enum GithubOAuthRouter: Router {
+enum GitHubOAuthRouter: Router {
     case authorize(OAuthConfiguration)
     case accessToken(OAuthConfiguration, String)
 

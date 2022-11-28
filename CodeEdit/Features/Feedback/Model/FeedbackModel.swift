@@ -144,8 +144,8 @@ public class FeedbackModel: ObservableObject {
         let gitAccounts = prefs.preferences.accounts.sourceControlAccounts.gitAccount
         let firstGitAccount = gitAccounts.first
 
-        let config = GithubTokenConfiguration(keychain.get(firstGitAccount!.gitAccountName))
-        GithubAccount(config).postIssue(owner: "CodeEditApp",
+        let config = GitHubTokenConfiguration(keychain.get(firstGitAccount!.gitAccountName))
+        GitHubAccount(config).postIssue(owner: "CodeEditApp",
                                   repository: "CodeEdit",
                                   title: "\(getFeebackTypeTitle()) \(title)",
                                   body: createIssueBody(description: description,

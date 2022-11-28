@@ -1,5 +1,5 @@
 //
-//  GithubAccount.swift
+//  GitHubAccount.swift
 //  CodeEditModules/GitAccounts
 //
 //  Created by Nanashi Li on 2022/03/31.
@@ -12,10 +12,10 @@ import Foundation
 let githubBaseURL = "https://api.github.com"
 let githubWebURL = "https://github.com"
 
-struct GithubAccount {
-    let configuration: GithubTokenConfiguration
+struct GitHubAccount {
+    let configuration: GitHubTokenConfiguration
 
-    init(_ config: GithubTokenConfiguration = GithubTokenConfiguration()) {
+    init(_ config: GitHubTokenConfiguration = GitHubTokenConfiguration()) {
         configuration = config
     }
 }

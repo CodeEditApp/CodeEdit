@@ -1,5 +1,5 @@
 //
-//  GithubUser.swift
+//  GitHubUser.swift
 //  CodeEditModules/GitAccounts
 //
 //  Created by Nanashi Li on 2022/03/31.
@@ -10,7 +10,7 @@ import Foundation
 import FoundationNetworking
 #endif
 
-class GithubUser: Codable {
+class GitHubUser: Codable {
     private(set) var id: Int = -1
     var login: String?
     var avatarURL: String?
@@ -66,7 +66,7 @@ class GithubUser: Codable {
     }
 }
 
-extension GithubAccount {
+extension GitHubAccount {
     /**
          Fetches a user or organization
          - parameter session: GitURLSession, defaults to URLSession.shared
@@ -76,14 +76,14 @@ extension GithubAccount {
     @discardableResult
     func user(_ session: GitURLSession = URLSession.shared,
               name: String,
-              completion: @escaping (_ response: Result<GithubUser, Error>) -> Void
+              completion: @escaping (_ response: Result<GitHubUser, Error>) -> Void
     ) -> URLSessionDataTaskProtocol? {
-        let router = GithubUserRouter.readUser(name, configuration)
+        let router = GitHubUserRouter.readUser(name, configuration)
 
         return router.load(
             session,
             dateDecodingStrategy: .formatted(Time.rfc3339DateFormatter),
-            expectedResultType: GithubUser.self) { user, error in
+            expectedResultType: GitHubUser.self) { user, error in
             if let error = error {
                 completion(.failure(error))
             } else {
@@ -101,14 +101,14 @@ extension GithubAccount {
      */
     @discardableResult
     func me(_ session: GitURLSession = URLSession.shared,
-            completion: @escaping (_ response: Result<GithubUser, Error>) -> Void
+            completion: @escaping (_ response: Result<GitHubUser, Error>) -> Void
     ) -> URLSessionDataTaskProtocol? {
-        let router = GithubUserRouter.readAuthenticatedUser(configuration)
+        let router = GitHubUserRouter.readAuthenticatedUser(configuration)
 
         return router.load(
             session,
             dateDecodingStrategy: .formatted(Time.rfc3339DateFormatter),
-            expectedResultType: GithubUser.self) { user, error in
+            expectedResultType: GitHubUser.self) { user, error in
             if let error = error {
                 completion(.failure(error))
             } else {

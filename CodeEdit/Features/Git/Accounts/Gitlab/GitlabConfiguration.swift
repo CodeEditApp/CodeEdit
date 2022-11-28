@@ -1,5 +1,5 @@
 //
-//  GitlabConfiguration.swift
+//  GitLabConfiguration.swift
 //  CodeEditModules/GitAccounts
 //
 //  Created by Nanashi Li on 2022/03/31.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct GitlabTokenConfiguration: RouterConfiguration {
+struct GitLabTokenConfiguration: RouterConfiguration {
 
     var apiEndpoint: String?
     var accessToken: String?

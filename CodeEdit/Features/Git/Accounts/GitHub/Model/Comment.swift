@@ -12,7 +12,7 @@ struct Comment: Codable {
     let url: URL
     let htmlURL: URL
     let body: String
-    let user: GithubUser
+    let user: GitHubUser
     let createdAt: Date
     let updatedAt: Date
 

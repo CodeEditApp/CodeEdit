@@ -1,5 +1,5 @@
 //
-//  GitlabAccount.swift
+//  GitLabAccount.swift
 //  CodeEditModules/GitAccounts
 //
 //  Created by Nanashi Li on 2022/03/31.
@@ -11,10 +11,10 @@ import Foundation
 let gitlabBaseURL = "https://gitlab.com/api/v4/"
 let gitlabWebURL = "https://gitlab.com/"
 
-struct GitlabAccount {
+struct GitLabAccount {
     let configuration: RouterConfiguration
 
-    init(_ config: RouterConfiguration = GitlabTokenConfiguration()) {
+    init(_ config: RouterConfiguration = GitLabTokenConfiguration()) {
         configuration = config
     }
 }

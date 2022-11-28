@@ -16,7 +16,7 @@ class Event: Codable {
     var authorID: Int?
     var data: EventData?
     var targetTitle: String?
-    var author: GitlabUser?
+    var author: GitLabUser?
     var authorUsername: String?
     var createdAt: Date?
     var note: EventNote?

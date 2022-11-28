@@ -15,7 +15,7 @@ enum VisibilityLevel: Int {
 
 class Project: Codable {
     let id: Int
-    let owner: GitlabUser
+    let owner: GitLabUser
     var name: String?
     var nameWithNamespace: String?
     var isPrivate: Bool?

@@ -1,5 +1,5 @@
 //
-//  GitlabOAuthConfiguration.swift
+//  GitLabOAuthConfiguration.swift
 //  CodeEditModules/GitAccounts
 //
 //  Created by Nanashi Li on 2022/03/31.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct GitlabOAuthConfiguration: RouterConfiguration {
+struct GitLabOAuthConfiguration: RouterConfiguration {
 
     var apiEndpoint: String?
     var accessToken: String?
@@ -28,14 +28,14 @@ struct GitlabOAuthConfiguration: RouterConfiguration {
     }
 
     func authenticate() -> URL? {
-        GitlabOAuthRouter.authorize(self, redirectURI).URLRequest?.url
+        GitLabOAuthRouter.authorize(self, redirectURI).URLRequest?.url
     }
 
     func authorize(_ session: GitURLSession = URLSession.shared,
                    code: String,
-                   completion: @escaping (_ config: GitlabTokenConfiguration) -> Void
+                   completion: @escaping (_ config: GitLabTokenConfiguration) -> Void
     ) {
-        let request = GitlabOAuthRouter.accessToken(self, code, redirectURI).URLRequest
+        let request = GitLabOAuthRouter.accessToken(self, code, redirectURI).URLRequest
         if let request = request {
             let task = session.dataTask(with: request) { data, response, _ in
                 if let response = response as? HTTPURLResponse {
@@ -49,7 +49,7 @@ struct GitlabOAuthConfiguration: RouterConfiguration {
                             let json = try JSONSerialization.jsonObject(with: data,
                                                                         options: .allowFragments) as? [String: Any]
                             if let json = json, let accessToken = json["access_token"] as? String {
-                                let config = GitlabTokenConfiguration(accessToken, url: self.apiEndpoint ?? "")
+                                let config = GitLabTokenConfiguration(accessToken, url: self.apiEndpoint ?? "")
                                 completion(config)
                             }
                         } catch {
@@ -64,7 +64,7 @@ struct GitlabOAuthConfiguration: RouterConfiguration {
 
     func handleOpenURL(_ session: GitURLSession = URLSession.shared,
                        url: URL,
-                       completion: @escaping (_ config: GitlabTokenConfiguration) -> Void
+                       completion: @escaping (_ config: GitLabTokenConfiguration) -> Void
     ) {
         if let code = url.absoluteString.components(separatedBy: "=").last {
             authorize(session, code: code) { (config) in

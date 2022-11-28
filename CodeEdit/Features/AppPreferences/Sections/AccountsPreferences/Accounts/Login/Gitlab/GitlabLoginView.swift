@@ -1,5 +1,5 @@
 //
-//  GitlabLoginView.swift
+//  GitLabLoginView.swift
 //  CodeEditModules/AppPreferences
 //
 //  Created by Nanashi Li on 2022/04/21.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct GitlabLoginView: View {
+struct GitLabLoginView: View {
 
     @State var accountName = ""
     @State var accountToken = ""
@@ -23,7 +23,7 @@ struct GitlabLoginView: View {
 
     var body: some View {
         VStack {
-            Text("Sign in to your Gitlab account")
+            Text("Sign in to your GitLab account")
 
             VStack(alignment: .trailing) {
                 HStack {
@@ -41,7 +41,7 @@ struct GitlabLoginView: View {
 
             HStack {
                 HStack {
-                    Button("Create a Token on Gitlab") {
+                    Button("Create a Token on GitLab") {
                         createToken(URL(string: "https://gitlab.com/-/profile/personal_access_tokens")!)
                     }
                 }
@@ -55,7 +55,7 @@ struct GitlabLoginView: View {
                         .disabled(true)
                     } else {
                         Button("Sign In") {
-                            loginGitlab(gitAccountName: accountName)
+                            loginGitLab(gitAccountName: accountName)
                         }
                         .buttonStyle(.borderedProminent)
                     }
@@ -67,11 +67,11 @@ struct GitlabLoginView: View {
         .frame(width: 485, height: 160)
     }
 
-    private func loginGitlab(gitAccountName: String) {
+    private func loginGitLab(gitAccountName: String) {
         let gitAccounts = prefs.preferences.accounts.sourceControlAccounts.gitAccount
 
-        let config = GitlabTokenConfiguration(accountToken)
-        GitlabAccount(config).me { response in
+        let config = GitLabTokenConfiguration(accountToken)
+        GitLabAccount(config).me { response in
             switch response {
             case .success(let user):
                 if gitAccounts.contains(where: { $0.id == gitAccountName.lowercased() }) {
@@ -80,9 +80,9 @@ struct GitlabLoginView: View {
                     print(user)
                     prefs.preferences.accounts.sourceControlAccounts.gitAccount.append(
                         SourceControlAccounts(id: gitAccountName.lowercased(),
-                                              gitProvider: "Gitlab",
+                                              gitProvider: "GitLab",
                                               gitProviderLink: "https://gitlab.com",
-                                              gitProviderDescription: "Gitlab",
+                                              gitProviderDescription: "GitLab",
                                               gitAccountName: gitAccountName,
                                               gitCloningProtocol: true,
                                               gitSSHKey: "",

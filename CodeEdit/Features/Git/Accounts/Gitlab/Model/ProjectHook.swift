@@ -39,7 +39,7 @@ class ProjectHook: Codable {
     }
 }
 
-extension GitlabAccount {
+extension GitLabAccount {
 
     /**
      Get a list of project hooks.

@@ -49,7 +49,7 @@ struct FeedbackView: View {
                     Text("Submit")
                 }
                 .alert(isPresented: self.$showsAlert) {
-                    Alert(title: Text("No Github Account"),
+                    Alert(title: Text("No GitHub Account"),
                           message: Text("A GitHub account is required to submit feedback."),
                           primaryButton: .default(Text("Cancel")),
                           secondaryButton: .default(Text("Add Account")))

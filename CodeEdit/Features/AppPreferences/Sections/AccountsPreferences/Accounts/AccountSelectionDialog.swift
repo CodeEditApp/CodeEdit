@@ -65,13 +65,13 @@ struct AccountSelectionDialog: View {
         case "bitbucketServer":
             implementationNeeded
         case "github":
-            GithubLoginView(dismissDialog: $openGitLogin)
+            GitHubLoginView(dismissDialog: $openGitLogin)
         case "githubEnterprise":
-            GithubEnterpriseLoginView(dismissDialog: $openGitLogin)
+            GitHubEnterpriseLoginView(dismissDialog: $openGitLogin)
         case "gitlab":
-            GitlabLoginView(dismissDialog: $openGitLogin)
+            GitLabLoginView(dismissDialog: $openGitLogin)
         case "gitlabSelfHosted":
-            GitlabHostedLoginView(dismissDialog: $openGitLogin)
+            GitLabHostedLoginView(dismissDialog: $openGitLogin)
         default:
             implementationNeeded
         }

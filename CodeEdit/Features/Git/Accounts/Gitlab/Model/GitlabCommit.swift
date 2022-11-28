@@ -1,5 +1,5 @@
 //
-//  GitlabCommit.swift
+//  GitLabCommit.swift
 //  CodeEditModules/GitAccounts
 //
 //  Created by Nanashi Li on 2022/03/31.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-class GitlabCommit: Codable {
+class GitLabCommit: Codable {
     var id: String
     var shortID: String?
     var title: String?
@@ -77,7 +77,7 @@ class CommitDiff: Codable {
 
 class CommitComment: Codable {
     var note: String?
-    var author: GitlabUser?
+    var author: GitLabUser?
 
     enum CodingKeys: String, CodingKey {
         case note
@@ -91,7 +91,7 @@ class CommitStatus: Codable {
     var startedAt: Date?
     var name: String?
     var allowFailure: Bool?
-    var author: GitlabUser?
+    var author: GitLabUser?
     var statusDescription: String?
     var sha: String?
     var targetURL: URL?
@@ -115,7 +115,7 @@ class CommitStatus: Codable {
     }
 }
 
-extension GitlabAccount {
+extension GitLabAccount {
 
     /**
      Get a list of repository commits in a project.
@@ -130,7 +130,7 @@ extension GitlabAccount {
                  refName: String = "",
                  since: String = "",
                  until: String = "",
-                 completion: @escaping (_ response: Result<GitlabCommit, Error>) -> Void
+                 completion: @escaping (_ response: Result<GitLabCommit, Error>) -> Void
     ) -> URLSessionDataTaskProtocol? {
         let router = CommitRouter.readCommits(self.configuration,
                                               id: id,
@@ -140,7 +140,7 @@ extension GitlabAccount {
 
         return router.load(session,
                            dateDecodingStrategy: .formatted(Time.rfc3339DateFormatter),
-                           expectedResultType: GitlabCommit.self) { json, error in
+                           expectedResultType: GitLabCommit.self) { json, error in
 
             if let error = error {
                 completion(Result.failure(error))
@@ -161,13 +161,13 @@ extension GitlabAccount {
     func commit(_ session: GitURLSession = URLSession.shared,
                 id: String,
                 sha: String,
-                completion: @escaping (_ response: Result<GitlabCommit, Error>) -> Void
+                completion: @escaping (_ response: Result<GitLabCommit, Error>) -> Void
     ) -> URLSessionDataTaskProtocol? {
         let router = CommitRouter.readCommit(self.configuration, id: id, sha: sha)
 
         return router.load(session,
                            dateDecodingStrategy: .formatted(Time.rfc3339DateFormatter),
-                           expectedResultType: GitlabCommit.self) { json, error in
+                           expectedResultType: GitLabCommit.self) { json, error in
 
             if let error = error {
                 completion(Result.failure(error))

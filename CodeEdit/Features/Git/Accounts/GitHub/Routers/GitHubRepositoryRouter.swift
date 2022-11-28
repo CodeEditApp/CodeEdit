@@ -1,5 +1,5 @@
 //
-//  GithubRepositoryRouter.swift
+//  GitHubRepositoryRouter.swift
 //  CodeEditModules/GitAccounts
 //
 //  Created by Nanshi Li on 2022/03/31.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum GithubRepositoryRouter: Router {
+enum GitHubRepositoryRouter: Router {
     case readRepositories(RouterConfiguration, String, String, String)
     case readAuthenticatedRepositories(RouterConfiguration, String, String)
     case readRepository(RouterConfiguration, String, String)

@@ -1,5 +1,5 @@
 //
-//  GitlabOAuthRouter.swift
+//  GitLabOAuthRouter.swift
 //  CodeEditModules/GitAccounts
 //
 //  Created by Nanashi Li on 2022/03/31.
@@ -7,9 +7,9 @@
 
 import Foundation
 
-enum GitlabOAuthRouter: Router {
-    case authorize(GitlabOAuthConfiguration, String)
-    case accessToken(GitlabOAuthConfiguration, String, String)
+enum GitLabOAuthRouter: Router {
+    case authorize(GitLabOAuthConfiguration, String)
+    case accessToken(GitLabOAuthConfiguration, String, String)
 
     var configuration: RouterConfiguration? {
         switch self {

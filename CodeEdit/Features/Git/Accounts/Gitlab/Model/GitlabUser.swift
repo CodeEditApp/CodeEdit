@@ -1,5 +1,5 @@
 //
-//  GitlabUser.swift
+//  GitLabUser.swift
 //  CodeEditModules/GitAccounts
 //
 //  Created by Nanashi Li on 2022/03/31.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-class GitlabUser: Codable {
+class GitLabUser: Codable {
     var id: Int
     var username: String?
     var state: String?
@@ -55,7 +55,7 @@ class GitlabUser: Codable {
     }
 }
 
-extension GitlabAccount {
+extension GitLabAccount {
 
     /**
      Fetches the currently logged in user
@@ -64,13 +64,13 @@ extension GitlabAccount {
     @discardableResult
     func me(
         _ session: GitURLSession = URLSession.shared,
-        completion: @escaping (_ response: Result<GitlabUser, Error>) -> Void
+        completion: @escaping (_ response: Result<GitLabUser, Error>) -> Void
     ) -> URLSessionDataTaskProtocol? {
         let router = UserRouter.readAuthenticatedUser(self.configuration)
 
         return router.load(session,
                            dateDecodingStrategy: .formatted(Time.rfc3339DateFormatter),
-                           expectedResultType: GitlabUser.self) { data, error in
+                           expectedResultType: GitLabUser.self) { data, error in
 
             if let error = error {
                 completion(Result.failure(error))

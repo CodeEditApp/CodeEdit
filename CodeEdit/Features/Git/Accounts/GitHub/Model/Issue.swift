@@ -23,14 +23,14 @@ class Issue: Codable {
     var state: Openness?
     var title: String?
     var body: String?
-    var user: GithubUser?
-    var assignee: GithubUser?
+    var user: GitHubUser?
+    var assignee: GitHubUser?
     var locked: Bool?
     var comments: Int?
     var closedAt: Date?
     var createdAt: Date?
     var updatedAt: Date?
-    var closedBy: GithubUser?
+    var closedBy: GitHubUser?
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -54,7 +54,7 @@ class Issue: Codable {
     }
 }
 
-extension GithubAccount {
+extension GitHubAccount {
     /**
      Fetches the issues of the authenticated user
      - parameter session: GitURLSession, defaults to URLSession.sharedSession()

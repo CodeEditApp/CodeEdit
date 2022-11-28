@@ -1,5 +1,5 @@
 //
-//  GithubLoginView.swift
+//  GitHubLoginView.swift
 //  CodeEditModules/AppPreferences
 //
 //  Created by Nanshi Li on 2022/04/01.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct GithubLoginView: View {
+struct GitHubLoginView: View {
 
     @State var accountName = ""
     @State var accountToken = ""
@@ -87,7 +87,7 @@ struct GithubLoginView: View {
                         .disabled(true)
                     } else {
                         Button("Sign In") {
-                            loginGithub(gitAccountName: accountName)
+                            loginGitHub(gitAccountName: accountName)
                         }
                         .buttonStyle(.borderedProminent)
                     }
@@ -99,11 +99,11 @@ struct GithubLoginView: View {
         .frame(width: 485, height: 280)
     }
 
-    private func loginGithub(gitAccountName: String) {
+    private func loginGitHub(gitAccountName: String) {
         let gitAccounts = prefs.preferences.accounts.sourceControlAccounts.gitAccount
 
-        let config = GithubTokenConfiguration(accountToken)
-        GithubAccount(config).me { response in
+        let config = GitHubTokenConfiguration(accountToken)
+        GitHubAccount(config).me { response in
             switch response {
             case .success(let user):
                 if gitAccounts.contains(where: { $0.id == gitAccountName.lowercased() }) {
