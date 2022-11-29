@@ -102,16 +102,6 @@
                ReferencedContainer = "container:CodeEdit.xcodeproj">
             </BuildableReference>
          </TestableReference>
-         <TestableReference
-            skipped = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B658FB4627DA9E1000EA4DBD"
-               BuildableName = "CodeEditUITests.xctest"
-               BlueprintName = "CodeEditUITests"
-               ReferencedContainer = "container:CodeEdit.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

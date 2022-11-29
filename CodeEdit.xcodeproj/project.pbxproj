@@ -73,6 +73,27 @@
 		581BFB6A2926431000D251EC /* RecentProjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 581BFB5D2926431000D251EC /* RecentProjectsView.swift */; };
 		581BFB6B2926431000D251EC /* RecentProjectItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 581BFB5E2926431000D251EC /* RecentProjectItem.swift */; };
 		582213F0291834A500EFE361 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 582213EF291834A500EFE361 /* AboutView.swift */; };
+		583E528529361B39001AB554 /* WelcomeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583E526A29361B39001AB554 /* WelcomeTests.swift */; };
+		583E528629361B39001AB554 /* testWelcomeActionViewLightSnapshot.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 583E526E29361B39001AB554 /* testWelcomeActionViewLightSnapshot.1.png */; };
+		583E528729361B39001AB554 /* testWelcomeActionViewDarkSnapshot.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 583E526F29361B39001AB554 /* testWelcomeActionViewDarkSnapshot.1.png */; };
+		583E528829361B39001AB554 /* testRecentJSFileDarkSnapshot.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 583E527029361B39001AB554 /* testRecentJSFileDarkSnapshot.1.png */; };
+		583E528929361B39001AB554 /* testRecentProjectItemDarkSnapshot.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 583E527129361B39001AB554 /* testRecentProjectItemDarkSnapshot.1.png */; };
+		583E528A29361B39001AB554 /* testRecentJSFileLightSnapshot.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 583E527229361B39001AB554 /* testRecentJSFileLightSnapshot.1.png */; };
+		583E528B29361B39001AB554 /* testRecentProjectItemLightSnapshot.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 583E527329361B39001AB554 /* testRecentProjectItemLightSnapshot.1.png */; };
+		583E528C29361B39001AB554 /* CodeEditUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583E527529361B39001AB554 /* CodeEditUITests.swift */; };
+		583E528D29361B39001AB554 /* testHelpButtonDark.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 583E527929361B39001AB554 /* testHelpButtonDark.1.png */; };
+		583E528E29361B39001AB554 /* testEffectViewLight.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 583E527A29361B39001AB554 /* testEffectViewLight.1.png */; };
+		583E528F29361B39001AB554 /* testSegmentedControlLight.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 583E527B29361B39001AB554 /* testSegmentedControlLight.1.png */; };
+		583E529029361B39001AB554 /* testSegmentedControlProminentLight.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 583E527C29361B39001AB554 /* testSegmentedControlProminentLight.1.png */; };
+		583E529129361B39001AB554 /* testHelpButtonLight.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 583E527D29361B39001AB554 /* testHelpButtonLight.1.png */; };
+		583E529229361B39001AB554 /* testBranchPickerDark.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 583E527E29361B39001AB554 /* testBranchPickerDark.1.png */; };
+		583E529329361B39001AB554 /* testFontPickerViewDark.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 583E527F29361B39001AB554 /* testFontPickerViewDark.1.png */; };
+		583E529429361B39001AB554 /* testFontPickerViewLight.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 583E528029361B39001AB554 /* testFontPickerViewLight.1.png */; };
+		583E529529361B39001AB554 /* testSegmentedControlProminentDark.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 583E528129361B39001AB554 /* testSegmentedControlProminentDark.1.png */; };
+		583E529629361B39001AB554 /* testSegmentedControlDark.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 583E528229361B39001AB554 /* testSegmentedControlDark.1.png */; };
+		583E529729361B39001AB554 /* testEffectViewDark.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 583E528329361B39001AB554 /* testEffectViewDark.1.png */; };
+		583E529829361B39001AB554 /* testBranchPickerLight.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 583E528429361B39001AB554 /* testBranchPickerLight.1.png */; };
+		583E529C29361BAB001AB554 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 583E529B29361BAB001AB554 /* SnapshotTesting */; };
 		5878DA82291863F900DD95A3 /* AcknowledgementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5878DA81291863F900DD95A3 /* AcknowledgementsView.swift */; };
 		5878DA842918642000DD95A3 /* ParsePackagesResolved.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5878DA832918642000DD95A3 /* ParsePackagesResolved.swift */; };
 		5878DA872918642F00DD95A3 /* AcknowledgementsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5878DA862918642F00DD95A3 /* AcknowledgementsViewModel.swift */; };
@@ -111,29 +132,9 @@
 		58798285292ED0FB0085B254 /* TerminalEmulatorView+Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58798281292ED0FB0085B254 /* TerminalEmulatorView+Coordinator.swift */; };
 		58798286292ED0FB0085B254 /* SwiftTerm+Color+Init.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58798283292ED0FB0085B254 /* SwiftTerm+Color+Init.swift */; };
 		5879828A292ED15F0085B254 /* SwiftTerm in Frameworks */ = {isa = PBXBuildFile; productRef = 58798289292ED15F0085B254 /* SwiftTerm */; };
-		587B60F82934124200D5CD8F /* UnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B60F72934124100D5CD8F /* UnitTests.swift */; };
+		587B60F82934124200D5CD8F /* WorkspaceClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B60F72934124100D5CD8F /* WorkspaceClientTests.swift */; };
 		587B61012934170A00D5CD8F /* UnitTests_Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B61002934170A00D5CD8F /* UnitTests_Extensions.swift */; };
-		587B611D293418CC00D5CD8F /* testHelpButtonDark.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 587B6110293418CC00D5CD8F /* testHelpButtonDark.1.png */; };
-		587B611E293418CC00D5CD8F /* testEffectViewLight.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 587B6111293418CC00D5CD8F /* testEffectViewLight.1.png */; };
-		587B611F293418CC00D5CD8F /* testSegmentedControlLight.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 587B6112293418CC00D5CD8F /* testSegmentedControlLight.1.png */; };
-		587B6120293418CC00D5CD8F /* testSegmentedControlProminentLight.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 587B6113293418CC00D5CD8F /* testSegmentedControlProminentLight.1.png */; };
-		587B6121293418CC00D5CD8F /* testHelpButtonLight.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 587B6114293418CC00D5CD8F /* testHelpButtonLight.1.png */; };
-		587B6122293418CC00D5CD8F /* testBranchPickerDark.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 587B6115293418CC00D5CD8F /* testBranchPickerDark.1.png */; };
-		587B6123293418CC00D5CD8F /* testFontPickerViewDark.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 587B6116293418CC00D5CD8F /* testFontPickerViewDark.1.png */; };
-		587B6124293418CC00D5CD8F /* testFontPickerViewLight.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 587B6117293418CC00D5CD8F /* testFontPickerViewLight.1.png */; };
-		587B6125293418CC00D5CD8F /* testSegmentedControlProminentDark.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 587B6118293418CC00D5CD8F /* testSegmentedControlProminentDark.1.png */; };
-		587B6126293418CC00D5CD8F /* testSegmentedControlDark.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 587B6119293418CC00D5CD8F /* testSegmentedControlDark.1.png */; };
-		587B6127293418CC00D5CD8F /* testEffectViewDark.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 587B611A293418CC00D5CD8F /* testEffectViewDark.1.png */; };
-		587B6128293418CC00D5CD8F /* testBranchPickerLight.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 587B611B293418CC00D5CD8F /* testBranchPickerLight.1.png */; };
-		587B6129293418CC00D5CD8F /* UnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B611C293418CC00D5CD8F /* UnitTests.swift */; };
-		587B612E293419B700D5CD8F /* UnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B612D293419B700D5CD8F /* UnitTests.swift */; };
-		587B614029341B1D00D5CD8F /* UnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B613729341B1D00D5CD8F /* UnitTests.swift */; };
-		587B614129341B1D00D5CD8F /* testWelcomeActionViewLightSnapshot.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 587B613A29341B1D00D5CD8F /* testWelcomeActionViewLightSnapshot.1.png */; };
-		587B614229341B1D00D5CD8F /* testWelcomeActionViewDarkSnapshot.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 587B613B29341B1D00D5CD8F /* testWelcomeActionViewDarkSnapshot.1.png */; };
-		587B614329341B1D00D5CD8F /* testRecentJSFileDarkSnapshot.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 587B613C29341B1D00D5CD8F /* testRecentJSFileDarkSnapshot.1.png */; };
-		587B614429341B1D00D5CD8F /* testRecentProjectItemDarkSnapshot.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 587B613D29341B1D00D5CD8F /* testRecentProjectItemDarkSnapshot.1.png */; };
-		587B614529341B1D00D5CD8F /* testRecentJSFileLightSnapshot.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 587B613E29341B1D00D5CD8F /* testRecentJSFileLightSnapshot.1.png */; };
-		587B614629341B1D00D5CD8F /* testRecentProjectItemLightSnapshot.1.png in Resources */ = {isa = PBXBuildFile; fileRef = 587B613F29341B1D00D5CD8F /* testRecentProjectItemLightSnapshot.1.png */; };
+		587B612E293419B700D5CD8F /* CodeFileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B612D293419B700D5CD8F /* CodeFileTests.swift */; };
 		587B9D56292FC27A00AC7927 /* ExtensionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9D53292FC27A00AC7927 /* ExtensionManager.swift */; };
 		587B9D57292FC27A00AC7927 /* FolderMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9D54292FC27A00AC7927 /* FolderMonitor.swift */; };
 		587B9D9E29300ABD00AC7927 /* FontPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9D8729300ABD00AC7927 /* FontPickerView.swift */; };
@@ -435,6 +436,28 @@
 		581BFB5D2926431000D251EC /* RecentProjectsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentProjectsView.swift; sourceTree = "<group>"; };
 		581BFB5E2926431000D251EC /* RecentProjectItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentProjectItem.swift; sourceTree = "<group>"; };
 		582213EF291834A500EFE361 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
+		583E526A29361B39001AB554 /* WelcomeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeTests.swift; sourceTree = "<group>"; };
+		583E526E29361B39001AB554 /* testWelcomeActionViewLightSnapshot.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testWelcomeActionViewLightSnapshot.1.png; sourceTree = "<group>"; };
+		583E526F29361B39001AB554 /* testWelcomeActionViewDarkSnapshot.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testWelcomeActionViewDarkSnapshot.1.png; sourceTree = "<group>"; };
+		583E527029361B39001AB554 /* testRecentJSFileDarkSnapshot.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testRecentJSFileDarkSnapshot.1.png; sourceTree = "<group>"; };
+		583E527129361B39001AB554 /* testRecentProjectItemDarkSnapshot.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testRecentProjectItemDarkSnapshot.1.png; sourceTree = "<group>"; };
+		583E527229361B39001AB554 /* testRecentJSFileLightSnapshot.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testRecentJSFileLightSnapshot.1.png; sourceTree = "<group>"; };
+		583E527329361B39001AB554 /* testRecentProjectItemLightSnapshot.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testRecentProjectItemLightSnapshot.1.png; sourceTree = "<group>"; };
+		583E527529361B39001AB554 /* CodeEditUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeEditUITests.swift; sourceTree = "<group>"; };
+		583E527929361B39001AB554 /* testHelpButtonDark.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testHelpButtonDark.1.png; sourceTree = "<group>"; };
+		583E527A29361B39001AB554 /* testEffectViewLight.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testEffectViewLight.1.png; sourceTree = "<group>"; };
+		583E527B29361B39001AB554 /* testSegmentedControlLight.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testSegmentedControlLight.1.png; sourceTree = "<group>"; };
+		583E527C29361B39001AB554 /* testSegmentedControlProminentLight.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testSegmentedControlProminentLight.1.png; sourceTree = "<group>"; };
+		583E527D29361B39001AB554 /* testHelpButtonLight.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testHelpButtonLight.1.png; sourceTree = "<group>"; };
+		583E527E29361B39001AB554 /* testBranchPickerDark.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testBranchPickerDark.1.png; sourceTree = "<group>"; };
+		583E527F29361B39001AB554 /* testFontPickerViewDark.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testFontPickerViewDark.1.png; sourceTree = "<group>"; };
+		583E528029361B39001AB554 /* testFontPickerViewLight.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testFontPickerViewLight.1.png; sourceTree = "<group>"; };
+		583E528129361B39001AB554 /* testSegmentedControlProminentDark.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testSegmentedControlProminentDark.1.png; sourceTree = "<group>"; };
+		583E528229361B39001AB554 /* testSegmentedControlDark.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testSegmentedControlDark.1.png; sourceTree = "<group>"; };
+		583E528329361B39001AB554 /* testEffectViewDark.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testEffectViewDark.1.png; sourceTree = "<group>"; };
+		583E528429361B39001AB554 /* testBranchPickerLight.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testBranchPickerLight.1.png; sourceTree = "<group>"; };
+		583E529E29361BCF001AB554 /* WelcomeTests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WelcomeTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		583E52A129361BFD001AB554 /* CodeEditUITests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CodeEditUITests-Bridging-Header.h"; sourceTree = "<group>"; };
 		5878DA81291863F900DD95A3 /* AcknowledgementsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AcknowledgementsView.swift; sourceTree = "<group>"; };
 		5878DA832918642000DD95A3 /* ParsePackagesResolved.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParsePackagesResolved.swift; sourceTree = "<group>"; };
 		5878DA862918642F00DD95A3 /* AcknowledgementsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AcknowledgementsViewModel.swift; sourceTree = "<group>"; };
@@ -470,29 +493,9 @@
 		58798280292ED0FB0085B254 /* TerminalEmulatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TerminalEmulatorView.swift; sourceTree = "<group>"; };
 		58798281292ED0FB0085B254 /* TerminalEmulatorView+Coordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TerminalEmulatorView+Coordinator.swift"; sourceTree = "<group>"; };
 		58798283292ED0FB0085B254 /* SwiftTerm+Color+Init.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SwiftTerm+Color+Init.swift"; sourceTree = "<group>"; };
-		587B60F72934124100D5CD8F /* UnitTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnitTests.swift; sourceTree = "<group>"; };
+		587B60F72934124100D5CD8F /* WorkspaceClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceClientTests.swift; sourceTree = "<group>"; };
 		587B61002934170A00D5CD8F /* UnitTests_Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnitTests_Extensions.swift; sourceTree = "<group>"; };
-		587B6110293418CC00D5CD8F /* testHelpButtonDark.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testHelpButtonDark.1.png; sourceTree = "<group>"; };
-		587B6111293418CC00D5CD8F /* testEffectViewLight.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testEffectViewLight.1.png; sourceTree = "<group>"; };
-		587B6112293418CC00D5CD8F /* testSegmentedControlLight.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testSegmentedControlLight.1.png; sourceTree = "<group>"; };
-		587B6113293418CC00D5CD8F /* testSegmentedControlProminentLight.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testSegmentedControlProminentLight.1.png; sourceTree = "<group>"; };
-		587B6114293418CC00D5CD8F /* testHelpButtonLight.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testHelpButtonLight.1.png; sourceTree = "<group>"; };
-		587B6115293418CC00D5CD8F /* testBranchPickerDark.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testBranchPickerDark.1.png; sourceTree = "<group>"; };
-		587B6116293418CC00D5CD8F /* testFontPickerViewDark.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testFontPickerViewDark.1.png; sourceTree = "<group>"; };
-		587B6117293418CC00D5CD8F /* testFontPickerViewLight.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testFontPickerViewLight.1.png; sourceTree = "<group>"; };
-		587B6118293418CC00D5CD8F /* testSegmentedControlProminentDark.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testSegmentedControlProminentDark.1.png; sourceTree = "<group>"; };
-		587B6119293418CC00D5CD8F /* testSegmentedControlDark.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testSegmentedControlDark.1.png; sourceTree = "<group>"; };
-		587B611A293418CC00D5CD8F /* testEffectViewDark.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testEffectViewDark.1.png; sourceTree = "<group>"; };
-		587B611B293418CC00D5CD8F /* testBranchPickerLight.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testBranchPickerLight.1.png; sourceTree = "<group>"; };
-		587B611C293418CC00D5CD8F /* UnitTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnitTests.swift; sourceTree = "<group>"; };
-		587B612D293419B700D5CD8F /* UnitTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnitTests.swift; sourceTree = "<group>"; };
-		587B613729341B1D00D5CD8F /* UnitTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnitTests.swift; sourceTree = "<group>"; };
-		587B613A29341B1D00D5CD8F /* testWelcomeActionViewLightSnapshot.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testWelcomeActionViewLightSnapshot.1.png; sourceTree = "<group>"; };
-		587B613B29341B1D00D5CD8F /* testWelcomeActionViewDarkSnapshot.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testWelcomeActionViewDarkSnapshot.1.png; sourceTree = "<group>"; };
-		587B613C29341B1D00D5CD8F /* testRecentJSFileDarkSnapshot.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testRecentJSFileDarkSnapshot.1.png; sourceTree = "<group>"; };
-		587B613D29341B1D00D5CD8F /* testRecentProjectItemDarkSnapshot.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testRecentProjectItemDarkSnapshot.1.png; sourceTree = "<group>"; };
-		587B613E29341B1D00D5CD8F /* testRecentJSFileLightSnapshot.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testRecentJSFileLightSnapshot.1.png; sourceTree = "<group>"; };
-		587B613F29341B1D00D5CD8F /* testRecentProjectItemLightSnapshot.1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testRecentProjectItemLightSnapshot.1.png; sourceTree = "<group>"; };
+		587B612D293419B700D5CD8F /* CodeFileTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeFileTests.swift; sourceTree = "<group>"; };
 		587B9D53292FC27A00AC7927 /* ExtensionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionManager.swift; sourceTree = "<group>"; };
 		587B9D54292FC27A00AC7927 /* FolderMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderMonitor.swift; sourceTree = "<group>"; };
 		587B9D8729300ABD00AC7927 /* FontPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontPickerView.swift; sourceTree = "<group>"; };
@@ -593,6 +596,7 @@
 		5882251C292C280D00E83CDE /* StatusBarViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarViewModel.swift; sourceTree = "<group>"; };
 		5882251D292C280D00E83CDE /* StatusBarTabType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarTabType.swift; sourceTree = "<group>"; };
 		5882251E292C280D00E83CDE /* CursorLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CursorLocation.swift; sourceTree = "<group>"; };
+		589F3E342936185400E1A4DA /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/MacOSX.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		58A5DF7C2931787A00D1BD5D /* ShellClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShellClient.swift; sourceTree = "<group>"; };
 		58A5DF7F29325B5A00D1BD5D /* GitClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitClient.swift; sourceTree = "<group>"; };
 		58A5DF9E29339F6400D1BD5D /* KeybindingManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeybindingManager.swift; sourceTree = "<group>"; };
@@ -710,6 +714,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				583E529C29361BAB001AB554 /* SnapshotTesting in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1051,6 +1056,74 @@
 			path = NSTableView;
 			sourceTree = "<group>";
 		};
+		583E526929361B39001AB554 /* Welcome */ = {
+			isa = PBXGroup;
+			children = (
+				583E526C29361B39001AB554 /* __Snapshots__ */,
+				583E526A29361B39001AB554 /* WelcomeTests.swift */,
+				583E529E29361BCF001AB554 /* WelcomeTests-Bridging-Header.h */,
+			);
+			path = Welcome;
+			sourceTree = "<group>";
+		};
+		583E526C29361B39001AB554 /* __Snapshots__ */ = {
+			isa = PBXGroup;
+			children = (
+				583E526D29361B39001AB554 /* UnitTests */,
+			);
+			path = __Snapshots__;
+			sourceTree = "<group>";
+		};
+		583E526D29361B39001AB554 /* UnitTests */ = {
+			isa = PBXGroup;
+			children = (
+				583E526E29361B39001AB554 /* testWelcomeActionViewLightSnapshot.1.png */,
+				583E526F29361B39001AB554 /* testWelcomeActionViewDarkSnapshot.1.png */,
+				583E527029361B39001AB554 /* testRecentJSFileDarkSnapshot.1.png */,
+				583E527129361B39001AB554 /* testRecentProjectItemDarkSnapshot.1.png */,
+				583E527229361B39001AB554 /* testRecentJSFileLightSnapshot.1.png */,
+				583E527329361B39001AB554 /* testRecentProjectItemLightSnapshot.1.png */,
+			);
+			path = UnitTests;
+			sourceTree = "<group>";
+		};
+		583E527429361B39001AB554 /* CodeEditUI */ = {
+			isa = PBXGroup;
+			children = (
+				583E527729361B39001AB554 /* __Snapshots__ */,
+				583E527529361B39001AB554 /* CodeEditUITests.swift */,
+				583E52A129361BFD001AB554 /* CodeEditUITests-Bridging-Header.h */,
+			);
+			path = CodeEditUI;
+			sourceTree = "<group>";
+		};
+		583E527729361B39001AB554 /* __Snapshots__ */ = {
+			isa = PBXGroup;
+			children = (
+				583E527829361B39001AB554 /* UnitTests */,
+			);
+			path = __Snapshots__;
+			sourceTree = "<group>";
+		};
+		583E527829361B39001AB554 /* UnitTests */ = {
+			isa = PBXGroup;
+			children = (
+				583E527929361B39001AB554 /* testHelpButtonDark.1.png */,
+				583E527A29361B39001AB554 /* testEffectViewLight.1.png */,
+				583E527B29361B39001AB554 /* testSegmentedControlLight.1.png */,
+				583E527C29361B39001AB554 /* testSegmentedControlProminentLight.1.png */,
+				583E527D29361B39001AB554 /* testHelpButtonLight.1.png */,
+				583E527E29361B39001AB554 /* testBranchPickerDark.1.png */,
+				583E527F29361B39001AB554 /* testFontPickerViewDark.1.png */,
+				583E528029361B39001AB554 /* testFontPickerViewLight.1.png */,
+				583E528129361B39001AB554 /* testSegmentedControlProminentDark.1.png */,
+				583E528229361B39001AB554 /* testSegmentedControlDark.1.png */,
+				583E528329361B39001AB554 /* testEffectViewDark.1.png */,
+				583E528429361B39001AB554 /* testBranchPickerLight.1.png */,
+			);
+			path = UnitTests;
+			sourceTree = "<group>";
+		};
 		5875680E29316BDC00C965A3 /* ShellClient */ = {
 			isa = PBXGroup;
 			children = (
@@ -1289,7 +1362,7 @@
 		587B60F52934124100D5CD8F /* WorkspaceClient */ = {
 			isa = PBXGroup;
 			children = (
-				587B60F72934124100D5CD8F /* UnitTests.swift */,
+				587B60F72934124100D5CD8F /* WorkspaceClientTests.swift */,
 			);
 			path = WorkspaceClient;
 			sourceTree = "<group>";
@@ -1297,100 +1370,19 @@
 		587B60FE293416C900D5CD8F /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				583E527429361B39001AB554 /* CodeEditUI */,
+				583E526929361B39001AB554 /* Welcome */,
 				587B612C2934199800D5CD8F /* CodeFile */,
 			);
 			path = Features;
 			sourceTree = "<group>";
 		};
-		587B61072934182F00D5CD8F /* CodeEditUITests */ = {
-			isa = PBXGroup;
-			children = (
-				587B61082934184200D5CD8F /* Features */,
-			);
-			path = CodeEditUITests;
-			sourceTree = "<group>";
-		};
-		587B61082934184200D5CD8F /* Features */ = {
-			isa = PBXGroup;
-			children = (
-				587B61092934184A00D5CD8F /* CodeEditUI */,
-				587B613529341AF400D5CD8F /* Welcome */,
-			);
-			path = Features;
-			sourceTree = "<group>";
-		};
-		587B61092934184A00D5CD8F /* CodeEditUI */ = {
-			isa = PBXGroup;
-			children = (
-				587B610E293418CC00D5CD8F /* __Snapshots__ */,
-				587B611C293418CC00D5CD8F /* UnitTests.swift */,
-			);
-			path = CodeEditUI;
-			sourceTree = "<group>";
-		};
-		587B610E293418CC00D5CD8F /* __Snapshots__ */ = {
-			isa = PBXGroup;
-			children = (
-				587B610F293418CC00D5CD8F /* UnitTests */,
-			);
-			path = __Snapshots__;
-			sourceTree = "<group>";
-		};
-		587B610F293418CC00D5CD8F /* UnitTests */ = {
-			isa = PBXGroup;
-			children = (
-				587B6110293418CC00D5CD8F /* testHelpButtonDark.1.png */,
-				587B6111293418CC00D5CD8F /* testEffectViewLight.1.png */,
-				587B6112293418CC00D5CD8F /* testSegmentedControlLight.1.png */,
-				587B6113293418CC00D5CD8F /* testSegmentedControlProminentLight.1.png */,
-				587B6114293418CC00D5CD8F /* testHelpButtonLight.1.png */,
-				587B6115293418CC00D5CD8F /* testBranchPickerDark.1.png */,
-				587B6116293418CC00D5CD8F /* testFontPickerViewDark.1.png */,
-				587B6117293418CC00D5CD8F /* testFontPickerViewLight.1.png */,
-				587B6118293418CC00D5CD8F /* testSegmentedControlProminentDark.1.png */,
-				587B6119293418CC00D5CD8F /* testSegmentedControlDark.1.png */,
-				587B611A293418CC00D5CD8F /* testEffectViewDark.1.png */,
-				587B611B293418CC00D5CD8F /* testBranchPickerLight.1.png */,
-			);
-			path = UnitTests;
-			sourceTree = "<group>";
-		};
 		587B612C2934199800D5CD8F /* CodeFile */ = {
 			isa = PBXGroup;
 			children = (
-				587B612D293419B700D5CD8F /* UnitTests.swift */,
+				587B612D293419B700D5CD8F /* CodeFileTests.swift */,
 			);
 			path = CodeFile;
-			sourceTree = "<group>";
-		};
-		587B613529341AF400D5CD8F /* Welcome */ = {
-			isa = PBXGroup;
-			children = (
-				587B613829341B1D00D5CD8F /* __Snapshots__ */,
-				587B613729341B1D00D5CD8F /* UnitTests.swift */,
-			);
-			path = Welcome;
-			sourceTree = "<group>";
-		};
-		587B613829341B1D00D5CD8F /* __Snapshots__ */ = {
-			isa = PBXGroup;
-			children = (
-				587B613929341B1D00D5CD8F /* UnitTests */,
-			);
-			path = __Snapshots__;
-			sourceTree = "<group>";
-		};
-		587B613929341B1D00D5CD8F /* UnitTests */ = {
-			isa = PBXGroup;
-			children = (
-				587B613A29341B1D00D5CD8F /* testWelcomeActionViewLightSnapshot.1.png */,
-				587B613B29341B1D00D5CD8F /* testWelcomeActionViewDarkSnapshot.1.png */,
-				587B613C29341B1D00D5CD8F /* testRecentJSFileDarkSnapshot.1.png */,
-				587B613D29341B1D00D5CD8F /* testRecentProjectItemDarkSnapshot.1.png */,
-				587B613E29341B1D00D5CD8F /* testRecentJSFileLightSnapshot.1.png */,
-				587B613F29341B1D00D5CD8F /* testRecentProjectItemLightSnapshot.1.png */,
-			);
-			path = UnitTests;
 			sourceTree = "<group>";
 		};
 		587B9D50292FC27A00AC7927 /* CodeEditExtension */ = {
@@ -2088,6 +2080,7 @@
 		5C403B8D27E20F8000788241 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				589F3E342936185400E1A4DA /* XCTest.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2108,7 +2101,6 @@
 				58F2EACE292FB2B0004A9BDE /* Documentation.docc */,
 				B658FB2E27DA9E0F00EA4DBD /* CodeEdit */,
 				587B60F329340A8000D5CD8F /* CodeEditTests */,
-				587B61072934182F00D5CD8F /* CodeEditUITests */,
 				2BE487ED28245162003F3F64 /* OpenWithCodeEdit */,
 				B658FB2D27DA9E0F00EA4DBD /* Products */,
 				5C403B8D27E20F8000788241 /* Frameworks */,
@@ -2254,6 +2246,9 @@
 				B658FB3F27DA9E1000EA4DBD /* PBXTargetDependency */,
 			);
 			name = CodeEditTests;
+			packageProductDependencies = (
+				583E529B29361BAB001AB554 /* SnapshotTesting */,
+			);
 			productName = CodeEditTests;
 			productReference = B658FB3D27DA9E1000EA4DBD /* CodeEditTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -2272,6 +2267,8 @@
 				B658FB4927DA9E1000EA4DBD /* PBXTargetDependency */,
 			);
 			name = CodeEditUITests;
+			packageProductDependencies = (
+			);
 			productName = CodeEditUITests;
 			productReference = B658FB4727DA9E1000EA4DBD /* CodeEditUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
@@ -2322,6 +2319,7 @@
 				58F2EB15292FB74D004A9BDE /* XCRemoteSwiftPackageReference "CodeEditTextView" */,
 				58F2EB18292FB91C004A9BDE /* XCRemoteSwiftPackageReference "Preferences" */,
 				58F2EB1C292FB954004A9BDE /* XCRemoteSwiftPackageReference "Sparkle" */,
+				583E529A29361BAB001AB554 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
 			);
 			productRefGroup = B658FB2D27DA9E0F00EA4DBD /* Products */;
 			projectDirPath = "";
@@ -2366,6 +2364,24 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				583E528729361B39001AB554 /* testWelcomeActionViewDarkSnapshot.1.png in Resources */,
+				583E529329361B39001AB554 /* testFontPickerViewDark.1.png in Resources */,
+				583E529129361B39001AB554 /* testHelpButtonLight.1.png in Resources */,
+				583E529029361B39001AB554 /* testSegmentedControlProminentLight.1.png in Resources */,
+				583E528F29361B39001AB554 /* testSegmentedControlLight.1.png in Resources */,
+				583E529429361B39001AB554 /* testFontPickerViewLight.1.png in Resources */,
+				583E528A29361B39001AB554 /* testRecentJSFileLightSnapshot.1.png in Resources */,
+				583E529729361B39001AB554 /* testEffectViewDark.1.png in Resources */,
+				583E528629361B39001AB554 /* testWelcomeActionViewLightSnapshot.1.png in Resources */,
+				583E529829361B39001AB554 /* testBranchPickerLight.1.png in Resources */,
+				583E528E29361B39001AB554 /* testEffectViewLight.1.png in Resources */,
+				583E528B29361B39001AB554 /* testRecentProjectItemLightSnapshot.1.png in Resources */,
+				583E528929361B39001AB554 /* testRecentProjectItemDarkSnapshot.1.png in Resources */,
+				583E528829361B39001AB554 /* testRecentJSFileDarkSnapshot.1.png in Resources */,
+				583E529229361B39001AB554 /* testBranchPickerDark.1.png in Resources */,
+				583E529529361B39001AB554 /* testSegmentedControlProminentDark.1.png in Resources */,
+				583E528D29361B39001AB554 /* testHelpButtonDark.1.png in Resources */,
+				583E529629361B39001AB554 /* testSegmentedControlDark.1.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2373,24 +2389,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				587B614229341B1D00D5CD8F /* testWelcomeActionViewDarkSnapshot.1.png in Resources */,
-				587B611D293418CC00D5CD8F /* testHelpButtonDark.1.png in Resources */,
-				587B614429341B1D00D5CD8F /* testRecentProjectItemDarkSnapshot.1.png in Resources */,
-				587B614529341B1D00D5CD8F /* testRecentJSFileLightSnapshot.1.png in Resources */,
-				587B6125293418CC00D5CD8F /* testSegmentedControlProminentDark.1.png in Resources */,
-				587B6127293418CC00D5CD8F /* testEffectViewDark.1.png in Resources */,
-				587B611F293418CC00D5CD8F /* testSegmentedControlLight.1.png in Resources */,
-				587B6126293418CC00D5CD8F /* testSegmentedControlDark.1.png in Resources */,
-				587B6123293418CC00D5CD8F /* testFontPickerViewDark.1.png in Resources */,
-				587B6121293418CC00D5CD8F /* testHelpButtonLight.1.png in Resources */,
-				587B611E293418CC00D5CD8F /* testEffectViewLight.1.png in Resources */,
-				587B6122293418CC00D5CD8F /* testBranchPickerDark.1.png in Resources */,
-				587B6128293418CC00D5CD8F /* testBranchPickerLight.1.png in Resources */,
-				587B614329341B1D00D5CD8F /* testRecentJSFileDarkSnapshot.1.png in Resources */,
-				587B6120293418CC00D5CD8F /* testSegmentedControlProminentLight.1.png in Resources */,
-				587B614629341B1D00D5CD8F /* testRecentProjectItemLightSnapshot.1.png in Resources */,
-				587B6124293418CC00D5CD8F /* testFontPickerViewLight.1.png in Resources */,
-				587B614129341B1D00D5CD8F /* testWelcomeActionViewLightSnapshot.1.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2743,9 +2741,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				587B60F82934124200D5CD8F /* UnitTests.swift in Sources */,
+				583E528529361B39001AB554 /* WelcomeTests.swift in Sources */,
+				583E528C29361B39001AB554 /* CodeEditUITests.swift in Sources */,
+				587B60F82934124200D5CD8F /* WorkspaceClientTests.swift in Sources */,
 				587B61012934170A00D5CD8F /* UnitTests_Extensions.swift in Sources */,
-				587B612E293419B700D5CD8F /* UnitTests.swift in Sources */,
+				587B612E293419B700D5CD8F /* CodeFileTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2753,8 +2753,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				587B6129293418CC00D5CD8F /* UnitTests.swift in Sources */,
-				587B614029341B1D00D5CD8F /* UnitTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3117,6 +3115,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = austincondiff.CodeEditUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "CodeEditUITests/Features/CodeEditUI/CodeEditUITests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -3144,6 +3143,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = austincondiff.CodeEditUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "CodeEditUITests/Features/CodeEditUI/CodeEditUITests-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -3226,6 +3226,14 @@
 				kind = branch;
 			};
 		};
+		583E529A29361BAB001AB554 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-snapshot-testing.git";
+			requirement = {
+				kind = exactVersion;
+				version = 1.9.0;
+			};
+		};
 		58798269292EC7B00085B254 /* XCRemoteSwiftPackageReference "Light-Swift-Untar" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Light-Untar/Light-Swift-Untar.git";
@@ -3291,6 +3299,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 287136B1292A407E00E9F5F4 /* XCRemoteSwiftPackageReference "SwiftLintPlugin" */;
 			productName = "plugin:SwiftLint";
+		};
+		583E529B29361BAB001AB554 /* SnapshotTesting */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 583E529A29361BAB001AB554 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
+			productName = SnapshotTesting;
 		};
 		5879826A292EC7B00085B254 /* Light-Swift-Untar */ = {
 			isa = XCSwiftPackageProductDependency;
