@@ -41,8 +41,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/groue/GRDB.swift.git",
       "state" : {
-        "revision" : "dd7e7f39e8e4d7a22d258d9809a882f914690b01",
-        "version" : "5.26.1"
+        "revision" : "15c06e037430c8a2dc570f9199dd7bf8caa21195",
+        "version" : "5.22.2"
       }
     },
     {
@@ -86,8 +86,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-snapshot-testing.git",
       "state" : {
-        "revision" : "f29e2014f6230cf7d5138fc899da51c7f513d467",
-        "version" : "1.10.0"
+        "revision" : "f8a9c997c3c1dab4e216a8ec9014e23144cbab37",
+        "version" : "1.9.0"
       }
     },
     {

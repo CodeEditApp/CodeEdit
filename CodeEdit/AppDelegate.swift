@@ -6,14 +6,8 @@
 //
 
 import SwiftUI
-import AppPreferences
 import Preferences
-import About
-import WelcomeModule
-import CodeEditExtension
-import Feedback
 import CodeEditSymbols
-import CodeFile
 
 final class CodeEditApplication: NSApplication {
     let strongDelegate = AppDelegate()

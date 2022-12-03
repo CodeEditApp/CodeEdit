@@ -29,7 +29,7 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
          <TestableReference
-            skipped = "NO">
+            skipped = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "CodeFileTests"
@@ -39,7 +39,7 @@
             </BuildableReference>
          </TestableReference>
          <TestableReference
-            skipped = "NO">
+            skipped = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "WorkspaceClientTests"
@@ -49,7 +49,7 @@
             </BuildableReference>
          </TestableReference>
          <TestableReference
-            skipped = "NO">
+            skipped = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "GitClientTests"
@@ -59,7 +59,7 @@
             </BuildableReference>
          </TestableReference>
          <TestableReference
-            skipped = "NO">
+            skipped = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "StatusBarTests"
@@ -83,13 +83,23 @@
             </SkippedTests>
          </TestableReference>
          <TestableReference
-            skipped = "NO">
+            skipped = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "CodeEditUtilsTests"
                BuildableName = "CodeEditUtilsTests"
                BlueprintName = "CodeEditUtilsTests"
                ReferencedContainer = "container:CodeEditModules">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "B658FB3C27DA9E1000EA4DBD"
+               BuildableName = "CodeEditTests.xctest"
+               BlueprintName = "CodeEditTests"
+               ReferencedContainer = "container:CodeEdit.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>

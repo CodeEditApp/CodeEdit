@@ -6,12 +6,7 @@
 //
 
 import SwiftUI
-import WorkspaceClient
-import StatusBar
-import ExtensionsStore
 import AppKit
-import AppPreferences
-import Keybindings
 
 struct WorkspaceView: View {
     init(windowController: NSWindowController, workspace: WorkspaceDocument) {
