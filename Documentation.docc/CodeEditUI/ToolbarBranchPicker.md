@@ -1,4 +1,4 @@
-#  ``CodeEditUI/ToolbarBranchPicker``
+# ``CodeEdit/ToolbarBranchPicker``
 
 ## Overview
 

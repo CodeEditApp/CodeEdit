@@ -1,4 +1,4 @@
-# ``CodeEditUI/SegmentedControl``
+# ``CodeEdit/SegmentedControl``
 
 ## Usage
 

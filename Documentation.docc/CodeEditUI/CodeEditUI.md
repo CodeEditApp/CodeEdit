@@ -1,4 +1,4 @@
-# ``CodeEditUI``
+# CodeEditUI
 
 A collection of reusable UI elements for `CodeEdit`.
 

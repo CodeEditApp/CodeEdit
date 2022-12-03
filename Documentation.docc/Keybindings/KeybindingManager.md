@@ -1,4 +1,4 @@
-# ``KeybindingManager``
+# ``CodeEdit/KeybindingManager``
 
 This module created in order to put all keybindings into single place in code, so it'd be easy to interact, reuse and change keybindings without going through every class and changing code to use other shortcut. It uses `default_keybindings.json` file to store initial set of keybindings. After app launched all keybindings loaded into memory and can be referenced via ``KeybindingManager/named(with:)`` function.
 

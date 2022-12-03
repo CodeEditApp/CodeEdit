@@ -4,9 +4,9 @@ Now that you followed the <doc:Getting-Started> guide it's time to create a view
 
 ## Add Option to existing Section
 
-In our example we added `ourNewOption` in ``AppPreferences/AppPreferences/GeneralPreferences``.
+In our example we added `ourNewOption` in ``AppPreferences/GeneralPreferences``.
 
-Now let's take a look at the ``AppPreferences/GeneralPreferencesView``.
+Now let's take a look at the ``GeneralPreferencesView``.
 
 ```swift
 import SwiftUI
@@ -34,9 +34,9 @@ public struct PreferencesGeneralView: View {
 }
 ```
 
-As you can see ``AppPreferences/AppPreferencesModel`` is already setup and ready to use.
+As you can see ``AppPreferencesModel`` is already setup and ready to use.
 Note that in order to align all the options in a nice and uniform way we wrap them into a
-``AppPreferences/PreferencesContent`` and individual ``AppPreferences/PreferencesSection`` views.
+``PreferencesContent`` and individual ``PreferencesSection`` views.
 
 To add your option toggle below the other options just add something like this:
 

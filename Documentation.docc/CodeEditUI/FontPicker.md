@@ -1,4 +1,4 @@
-# ``CodeEditUI/FontPicker``
+# ``CodeEdit/FontPicker``
 
 ## Overview
 

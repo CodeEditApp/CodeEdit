@@ -27,7 +27,7 @@ When implementing a new feature, we might have some options in regards to this n
 
 The preferences window is structered in different sections. Figure out in which section your new option should appear in.
 
-If the section is already populated with other options (e.g. ``AppPreferences/AppPreferences/GeneralPreferences``), just add your new option like this:
+If the section is already populated with other options (e.g. ``AppPreferences/GeneralPreferences``), just add your new option like this:
 
 ```swift
 struct GeneralPreferences: Codable {
@@ -98,5 +98,5 @@ public struct AppPreferences: Codable {
 
 ### Main Components
 
-- ``AppPreferences/AppPreferences``
-- ``AppPreferences/AppPreferencesModel``
+- ``AppPreferences``
+- ``AppPreferencesModel``
