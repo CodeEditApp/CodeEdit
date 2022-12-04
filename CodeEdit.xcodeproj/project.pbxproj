@@ -252,7 +252,7 @@
 		58D01C9D293167DC00C5B6B4 /* KeychainSwiftAccessOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D01C93293167DC00C5B6B4 /* KeychainSwiftAccessOptions.swift */; };
 		58F2EAE7292FB2B0004A9BDE /* GeneralPreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAA2292FB2B0004A9BDE /* GeneralPreferencesView.swift */; };
 		58F2EAE8292FB2B0004A9BDE /* TerminalPreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAA4292FB2B0004A9BDE /* TerminalPreferencesView.swift */; };
-		58F2EAE9292FB2B0004A9BDE /* PreferenceSourceControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAA6292FB2B0004A9BDE /* PreferenceSourceControlView.swift */; };
+		58F2EAE9292FB2B0004A9BDE /* SourceControlPreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAA6292FB2B0004A9BDE /* SourceControlPreferencesView.swift */; };
 		58F2EAEA292FB2B0004A9BDE /* SourceControlGeneralView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAA7292FB2B0004A9BDE /* SourceControlGeneralView.swift */; };
 		58F2EAEB292FB2B0004A9BDE /* SourceControlGitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAA8292FB2B0004A9BDE /* SourceControlGitView.swift */; };
 		58F2EAEC292FB2B0004A9BDE /* IgnoredFiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAAA292FB2B0004A9BDE /* IgnoredFiles.swift */; };
@@ -265,16 +265,16 @@
 		58F2EAF3292FB2B0004A9BDE /* ThemePreviewIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAB3292FB2B0004A9BDE /* ThemePreviewIcon.swift */; };
 		58F2EAF4292FB2B0004A9BDE /* ThemeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAB5292FB2B0004A9BDE /* ThemeModel.swift */; };
 		58F2EAF5292FB2B0004A9BDE /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAB6292FB2B0004A9BDE /* Theme.swift */; };
-		58F2EAF6292FB2B0004A9BDE /* PreferenceAccountsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAB8292FB2B0004A9BDE /* PreferenceAccountsView.swift */; };
-		58F2EAF7292FB2B0004A9BDE /* Providers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EABA292FB2B0004A9BDE /* Providers.swift */; };
-		58F2EAF8292FB2B0004A9BDE /* AccountListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EABC292FB2B0004A9BDE /* AccountListItem.swift */; };
+		58F2EAF6292FB2B0004A9BDE /* AccountPreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAB8292FB2B0004A9BDE /* AccountPreferencesView.swift */; };
+		58F2EAF7292FB2B0004A9BDE /* SourceControlProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EABA292FB2B0004A9BDE /* SourceControlProvider.swift */; };
+		58F2EAF8292FB2B0004A9BDE /* AccountListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EABC292FB2B0004A9BDE /* AccountListItemView.swift */; };
 		58F2EAF9292FB2B0004A9BDE /* AccountSelectionDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EABD292FB2B0004A9BDE /* AccountSelectionDialog.swift */; };
-		58F2EAFA292FB2B0004A9BDE /* GitlabHostedLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAC0292FB2B0004A9BDE /* GitlabHostedLoginView.swift */; };
-		58F2EAFB292FB2B0004A9BDE /* GitlabLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAC1292FB2B0004A9BDE /* GitlabLoginView.swift */; };
-		58F2EAFC292FB2B0004A9BDE /* GitAccountItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAC2292FB2B0004A9BDE /* GitAccountItem.swift */; };
-		58F2EAFD292FB2B0004A9BDE /* GithubLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAC4292FB2B0004A9BDE /* GithubLoginView.swift */; };
-		58F2EAFE292FB2B0004A9BDE /* GithubEnterpriseLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAC5292FB2B0004A9BDE /* GithubEnterpriseLoginView.swift */; };
-		58F2EAFF292FB2B0004A9BDE /* PreferenceKeybindingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAC7292FB2B0004A9BDE /* PreferenceKeybindingsView.swift */; };
+		58F2EAFA292FB2B0004A9BDE /* GitLabHostedLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAC0292FB2B0004A9BDE /* GitLabHostedLoginView.swift */; };
+		58F2EAFB292FB2B0004A9BDE /* GitLabLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAC1292FB2B0004A9BDE /* GitLabLoginView.swift */; };
+		58F2EAFC292FB2B0004A9BDE /* GitAccountItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAC2292FB2B0004A9BDE /* GitAccountItemView.swift */; };
+		58F2EAFD292FB2B0004A9BDE /* GitHubLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAC4292FB2B0004A9BDE /* GitHubLoginView.swift */; };
+		58F2EAFE292FB2B0004A9BDE /* GitHubEnterpriseLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAC5292FB2B0004A9BDE /* GitHubEnterpriseLoginView.swift */; };
+		58F2EAFF292FB2B0004A9BDE /* KeybindingsPreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAC7292FB2B0004A9BDE /* KeybindingsPreferencesView.swift */; };
 		58F2EB00292FB2B0004A9BDE /* LocationsPreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAC9292FB2B0004A9BDE /* LocationsPreferencesView.swift */; };
 		58F2EB01292FB2B0004A9BDE /* codeedit in Resources */ = {isa = PBXBuildFile; fileRef = 58F2EACB292FB2B0004A9BDE /* codeedit */; };
 		58F2EB02292FB2B0004A9BDE /* Loopable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EACD292FB2B0004A9BDE /* Loopable.swift */; };
@@ -613,7 +613,7 @@
 		58D01C93293167DC00C5B6B4 /* KeychainSwiftAccessOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainSwiftAccessOptions.swift; sourceTree = "<group>"; };
 		58F2EAA2292FB2B0004A9BDE /* GeneralPreferencesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneralPreferencesView.swift; sourceTree = "<group>"; };
 		58F2EAA4292FB2B0004A9BDE /* TerminalPreferencesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TerminalPreferencesView.swift; sourceTree = "<group>"; };
-		58F2EAA6292FB2B0004A9BDE /* PreferenceSourceControlView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferenceSourceControlView.swift; sourceTree = "<group>"; };
+		58F2EAA6292FB2B0004A9BDE /* SourceControlPreferencesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SourceControlPreferencesView.swift; sourceTree = "<group>"; };
 		58F2EAA7292FB2B0004A9BDE /* SourceControlGeneralView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SourceControlGeneralView.swift; sourceTree = "<group>"; };
 		58F2EAA8292FB2B0004A9BDE /* SourceControlGitView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SourceControlGitView.swift; sourceTree = "<group>"; };
 		58F2EAAA292FB2B0004A9BDE /* IgnoredFiles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IgnoredFiles.swift; sourceTree = "<group>"; };
@@ -626,16 +626,16 @@
 		58F2EAB3292FB2B0004A9BDE /* ThemePreviewIcon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemePreviewIcon.swift; sourceTree = "<group>"; };
 		58F2EAB5292FB2B0004A9BDE /* ThemeModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeModel.swift; sourceTree = "<group>"; };
 		58F2EAB6292FB2B0004A9BDE /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
-		58F2EAB8292FB2B0004A9BDE /* PreferenceAccountsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferenceAccountsView.swift; sourceTree = "<group>"; };
-		58F2EABA292FB2B0004A9BDE /* Providers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Providers.swift; sourceTree = "<group>"; };
-		58F2EABC292FB2B0004A9BDE /* AccountListItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountListItem.swift; sourceTree = "<group>"; };
+		58F2EAB8292FB2B0004A9BDE /* AccountPreferencesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountPreferencesView.swift; sourceTree = "<group>"; };
+		58F2EABA292FB2B0004A9BDE /* SourceControlProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SourceControlProvider.swift; sourceTree = "<group>"; };
+		58F2EABC292FB2B0004A9BDE /* AccountListItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountListItemView.swift; sourceTree = "<group>"; };
 		58F2EABD292FB2B0004A9BDE /* AccountSelectionDialog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSelectionDialog.swift; sourceTree = "<group>"; };
-		58F2EAC0292FB2B0004A9BDE /* GitlabHostedLoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitlabHostedLoginView.swift; sourceTree = "<group>"; };
-		58F2EAC1292FB2B0004A9BDE /* GitlabLoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitlabLoginView.swift; sourceTree = "<group>"; };
-		58F2EAC2292FB2B0004A9BDE /* GitAccountItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitAccountItem.swift; sourceTree = "<group>"; };
-		58F2EAC4292FB2B0004A9BDE /* GithubLoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GithubLoginView.swift; sourceTree = "<group>"; };
-		58F2EAC5292FB2B0004A9BDE /* GithubEnterpriseLoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GithubEnterpriseLoginView.swift; sourceTree = "<group>"; };
-		58F2EAC7292FB2B0004A9BDE /* PreferenceKeybindingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferenceKeybindingsView.swift; sourceTree = "<group>"; };
+		58F2EAC0292FB2B0004A9BDE /* GitLabHostedLoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitLabHostedLoginView.swift; sourceTree = "<group>"; };
+		58F2EAC1292FB2B0004A9BDE /* GitLabLoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitLabLoginView.swift; sourceTree = "<group>"; };
+		58F2EAC2292FB2B0004A9BDE /* GitAccountItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitAccountItemView.swift; sourceTree = "<group>"; };
+		58F2EAC4292FB2B0004A9BDE /* GitHubLoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubLoginView.swift; sourceTree = "<group>"; };
+		58F2EAC5292FB2B0004A9BDE /* GitHubEnterpriseLoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubEnterpriseLoginView.swift; sourceTree = "<group>"; };
+		58F2EAC7292FB2B0004A9BDE /* KeybindingsPreferencesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeybindingsPreferencesView.swift; sourceTree = "<group>"; };
 		58F2EAC9292FB2B0004A9BDE /* LocationsPreferencesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationsPreferencesView.swift; sourceTree = "<group>"; };
 		58F2EACB292FB2B0004A9BDE /* codeedit */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = codeedit; sourceTree = "<group>"; };
 		58F2EACD292FB2B0004A9BDE /* Loopable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Loopable.swift; sourceTree = "<group>"; };
@@ -1841,7 +1841,7 @@
 			children = (
 				58F2EAA9292FB2B0004A9BDE /* Model */,
 				58F2EAAB292FB2B0004A9BDE /* IgnoredFileView.swift */,
-				58F2EAA6292FB2B0004A9BDE /* PreferenceSourceControlView.swift */,
+				58F2EAA6292FB2B0004A9BDE /* SourceControlPreferencesView.swift */,
 				58F2EAA7292FB2B0004A9BDE /* SourceControlGeneralView.swift */,
 				58F2EAA8292FB2B0004A9BDE /* SourceControlGitView.swift */,
 			);
@@ -1891,7 +1891,7 @@
 			children = (
 				58F2EABB292FB2B0004A9BDE /* Accounts */,
 				58F2EAB9292FB2B0004A9BDE /* Models */,
-				58F2EAB8292FB2B0004A9BDE /* PreferenceAccountsView.swift */,
+				58F2EAB8292FB2B0004A9BDE /* AccountPreferencesView.swift */,
 			);
 			path = AccountsPreferences;
 			sourceTree = "<group>";
@@ -1899,7 +1899,7 @@
 		58F2EAB9292FB2B0004A9BDE /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				58F2EABA292FB2B0004A9BDE /* Providers.swift */,
+				58F2EABA292FB2B0004A9BDE /* SourceControlProvider.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1907,7 +1907,7 @@
 		58F2EABB292FB2B0004A9BDE /* Accounts */ = {
 			isa = PBXGroup;
 			children = (
-				58F2EABC292FB2B0004A9BDE /* AccountListItem.swift */,
+				58F2EABC292FB2B0004A9BDE /* AccountListItemView.swift */,
 				58F2EABD292FB2B0004A9BDE /* AccountSelectionDialog.swift */,
 				58F2EABE292FB2B0004A9BDE /* Login */,
 			);
@@ -1918,7 +1918,7 @@
 			isa = PBXGroup;
 			children = (
 				58F2EABF292FB2B0004A9BDE /* Gitlab */,
-				58F2EAC2292FB2B0004A9BDE /* GitAccountItem.swift */,
+				58F2EAC2292FB2B0004A9BDE /* GitAccountItemView.swift */,
 				58F2EAC3292FB2B0004A9BDE /* Github */,
 			);
 			path = Login;
@@ -1927,8 +1927,8 @@
 		58F2EABF292FB2B0004A9BDE /* Gitlab */ = {
 			isa = PBXGroup;
 			children = (
-				58F2EAC0292FB2B0004A9BDE /* GitlabHostedLoginView.swift */,
-				58F2EAC1292FB2B0004A9BDE /* GitlabLoginView.swift */,
+				58F2EAC0292FB2B0004A9BDE /* GitLabHostedLoginView.swift */,
+				58F2EAC1292FB2B0004A9BDE /* GitLabLoginView.swift */,
 			);
 			path = Gitlab;
 			sourceTree = "<group>";
@@ -1936,8 +1936,8 @@
 		58F2EAC3292FB2B0004A9BDE /* Github */ = {
 			isa = PBXGroup;
 			children = (
-				58F2EAC4292FB2B0004A9BDE /* GithubLoginView.swift */,
-				58F2EAC5292FB2B0004A9BDE /* GithubEnterpriseLoginView.swift */,
+				58F2EAC4292FB2B0004A9BDE /* GitHubLoginView.swift */,
+				58F2EAC5292FB2B0004A9BDE /* GitHubEnterpriseLoginView.swift */,
 			);
 			path = Github;
 			sourceTree = "<group>";
@@ -1945,7 +1945,7 @@
 		58F2EAC6292FB2B0004A9BDE /* KeybindingsPreferences */ = {
 			isa = PBXGroup;
 			children = (
-				58F2EAC7292FB2B0004A9BDE /* PreferenceKeybindingsView.swift */,
+				58F2EAC7292FB2B0004A9BDE /* KeybindingsPreferencesView.swift */,
 			);
 			path = KeybindingsPreferences;
 			sourceTree = "<group>";
@@ -2475,10 +2475,10 @@
 				201169E52837B40300F92B46 /* SourceControlNavigatorRepositoriesView.swift in Sources */,
 				587B9E6A29301D8F00AC7927 /* GitLabPermissions.swift in Sources */,
 				587B9E9229301D8F00AC7927 /* BitBucketAccount.swift in Sources */,
-				58F2EAFE292FB2B0004A9BDE /* GithubEnterpriseLoginView.swift in Sources */,
+				58F2EAFE292FB2B0004A9BDE /* GitHubEnterpriseLoginView.swift in Sources */,
 				DE513F52281B672D002260B9 /* TabBarAccessory.swift in Sources */,
 				2813F93927ECC4C300E305E4 /* NavigatorSidebarView.swift in Sources */,
-				58F2EAF7292FB2B0004A9BDE /* Providers.swift in Sources */,
+				58F2EAF7292FB2B0004A9BDE /* SourceControlProvider.swift in Sources */,
 				587B9E8A29301D8F00AC7927 /* GitHubIssue.swift in Sources */,
 				DE513F54281DE5D0002260B9 /* TabBarXcode.swift in Sources */,
 				58798277292ECFD40085B254 /* LSPClient.swift in Sources */,
@@ -2504,7 +2504,7 @@
 				58F2EB0D292FB2B0004A9BDE /* ThemePreferences.swift in Sources */,
 				587B9D9F29300ABD00AC7927 /* SegmentedControl.swift in Sources */,
 				58FD7609291EA1CB0051D6E4 /* CommandPaletteView.swift in Sources */,
-				58F2EAFC292FB2B0004A9BDE /* GitAccountItem.swift in Sources */,
+				58F2EAFC292FB2B0004A9BDE /* GitAccountItemView.swift in Sources */,
 				587B9E8F29301D8F00AC7927 /* BitBucketUserRouter.swift in Sources */,
 				58F2EB03292FB2B0004A9BDE /* Documentation.docc in Sources */,
 				2B7A583527E4BA0100D25D4E /* AppDelegate.swift in Sources */,
@@ -2571,7 +2571,7 @@
 				587B9E8729301D8F00AC7927 /* GitHubRepositories.swift in Sources */,
 				587B9DA329300ABD00AC7927 /* SettingsTextEditor.swift in Sources */,
 				2072FA1A280D872600C7F8D4 /* LineEndings.swift in Sources */,
-				58F2EAFB292FB2B0004A9BDE /* GitlabLoginView.swift in Sources */,
+				58F2EAFB292FB2B0004A9BDE /* GitLabLoginView.swift in Sources */,
 				587B9E7B29301D8F00AC7927 /* GitHubRouter.swift in Sources */,
 				201169E22837B3D800F92B46 /* SourceControlNavigatorChangesView.swift in Sources */,
 				20EBB507280C32D300F3A5DA /* QuickHelpInspectorView.swift in Sources */,
@@ -2589,7 +2589,7 @@
 				D7211D4327E066CE008F2ED7 /* Localized+Ex.swift in Sources */,
 				581BFB692926431000D251EC /* WelcomeActionView.swift in Sources */,
 				20D839AE280E0CA700B27357 /* PopoverView.swift in Sources */,
-				58F2EAFD292FB2B0004A9BDE /* GithubLoginView.swift in Sources */,
+				58F2EAFD292FB2B0004A9BDE /* GitHubLoginView.swift in Sources */,
 				587D9B782933BF5700BF7490 /* Interface.swift in Sources */,
 				2072FA1E280D891500C7F8D4 /* Location.swift in Sources */,
 				587B9E6729301D8F00AC7927 /* GitLabEventData.swift in Sources */,
@@ -2607,7 +2607,7 @@
 				287776E927E34BC700D46668 /* TabBarView.swift in Sources */,
 				587B9E6329301D8F00AC7927 /* GitLabAccount.swift in Sources */,
 				285FEC7027FE4B9800E57D53 /* OutlineTableViewCell.swift in Sources */,
-				58F2EAF8292FB2B0004A9BDE /* AccountListItem.swift in Sources */,
+				58F2EAF8292FB2B0004A9BDE /* AccountListItemView.swift in Sources */,
 				587B9E7429301D8F00AC7927 /* URL+URLParameters.swift in Sources */,
 				581BFB6B2926431000D251EC /* RecentProjectItem.swift in Sources */,
 				587B9DA429300ABD00AC7927 /* OverlayPanel.swift in Sources */,
@@ -2630,7 +2630,7 @@
 				5882252C292C280D00E83CDE /* StatusBarDrawer.swift in Sources */,
 				2847019E27FDDF7600F87B6B /* OutlineView.swift in Sources */,
 				6C14CEB32877A68F001468FE /* FindNavigatorMatchListCell.swift in Sources */,
-				58F2EAF6292FB2B0004A9BDE /* PreferenceAccountsView.swift in Sources */,
+				58F2EAF6292FB2B0004A9BDE /* AccountPreferencesView.swift in Sources */,
 				20EBB501280C325D00F3A5DA /* FileInspectorView.swift in Sources */,
 				58822531292C280D00E83CDE /* View+isHovering.swift in Sources */,
 				587B9E9929301D8F00AC7927 /* GitChangedFile.swift in Sources */,
@@ -2706,12 +2706,12 @@
 				587B9DA529300ABD00AC7927 /* PressActionsModifier.swift in Sources */,
 				28B0A19827E385C300B73177 /* NavigatorSidebarToolbarTop.swift in Sources */,
 				587B9E8629301D8F00AC7927 /* GitHubComment.swift in Sources */,
-				58F2EAE9292FB2B0004A9BDE /* PreferenceSourceControlView.swift in Sources */,
+				58F2EAE9292FB2B0004A9BDE /* SourceControlPreferencesView.swift in Sources */,
 				587B9E9029301D8F00AC7927 /* BitBucketTokenRouter.swift in Sources */,
 				58822525292C280D00E83CDE /* StatusBarMenuLabel.swift in Sources */,
 				58F2EB11292FB2B0004A9BDE /* PreferencesToolbar.swift in Sources */,
 				58F2EAF0292FB2B0004A9BDE /* PreviewThemeView.swift in Sources */,
-				58F2EAFF292FB2B0004A9BDE /* PreferenceKeybindingsView.swift in Sources */,
+				58F2EAFF292FB2B0004A9BDE /* KeybindingsPreferencesView.swift in Sources */,
 				6CDA84AD284C1BA000C1CC3A /* TabBarContextMenu.swift in Sources */,
 				0463E51127FCC1DF00806D5C /* CodeEditAPI.swift in Sources */,
 				587B9E8129301D8F00AC7927 /* PublicKey.swift in Sources */,
@@ -2729,7 +2729,7 @@
 				58AFAA2F2933C69E00482B53 /* TabBarItemID.swift in Sources */,
 				6CDA84AB284C0E4A00C1CC3A /* TabBarItemButtonStyle.swift in Sources */,
 				28FFE1BF27E3A441001939DB /* NavigatorSidebarToolbarBottom.swift in Sources */,
-				58F2EAFA292FB2B0004A9BDE /* GitlabHostedLoginView.swift in Sources */,
+				58F2EAFA292FB2B0004A9BDE /* GitLabHostedLoginView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

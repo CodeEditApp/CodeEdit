@@ -1,5 +1,5 @@
 //
-//  AccountListItem.swift
+//  AccountListItemView.swift
 //  CodeEditModules/AppPreferences
 //
 //  Created by Nanshi Li on 2022/04/01.
@@ -8,7 +8,7 @@
 import SwiftUI
 import CodeEditSymbols
 
-struct AccountListItem: View {
+struct AccountListItemView: View {
     var gitClientName: String
 
     var body: some View {

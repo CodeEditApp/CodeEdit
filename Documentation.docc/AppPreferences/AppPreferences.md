@@ -10,6 +10,7 @@
 ### Preferences Model
 
 - ``AppPreferencesModel``
+- ``SoftwareUpdater``
 
 ### Preferences Section Views
 
@@ -18,12 +19,17 @@
 - ``TextEditingPreferencesView``
 - ``TerminalPreferencesView``
 - ``LocationsPreferencesView``
+- ``KeybindingsPreferencesView``
+- ``AccountPreferencesView``
+- ``SourceControlPreferencesView``
 - ``PreferencesPlaceholderView``
 
-### Section Content Views
+### Helper Views
 
 - ``PreferencesContent``
 - ``PreferencesSection``
+- ``PreferencesColorPicker``
+- ``PreferencesToolbar``
 
 ### Theme Preferences Model
 

@@ -1,5 +1,5 @@
 //
-//  GitAccountItem.swift
+//  GitAccountItemView.swift
 //  CodeEditModules/AppPreferences
 //
 //  Created by Nanshi Li on 2022/04/01.
@@ -8,7 +8,7 @@
 import SwiftUI
 import CodeEditSymbols
 
-struct GitAccountItem: View {
+struct GitAccountItemView: View {
 
     @Binding
     var sourceControlAccount: SourceControlAccounts

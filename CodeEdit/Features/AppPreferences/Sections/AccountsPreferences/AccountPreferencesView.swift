@@ -1,5 +1,5 @@
 //
-//  PreferenceAccountsView.swift
+//  AccountPreferencesView.swift
 //  CodeEditModules/AppPreferences
 //
 //  Created by Nanshi Li on 2022/04/01.
@@ -8,7 +8,7 @@
 import SwiftUI
 
 // swiftlint:disable for_where
-struct PreferenceAccountsView: View {
+struct AccountPreferencesView: View {
     @StateObject
     private var prefs: AppPreferencesModel = .shared
 
@@ -50,7 +50,7 @@ struct PreferenceAccountsView: View {
             }
             List($prefs.preferences.accounts.sourceControlAccounts.gitAccount,
                  selection: $accountSelection) { gitAccount in
-                GitAccountItem(sourceControlAccount: gitAccount)
+                GitAccountItemView(sourceControlAccount: gitAccount)
             }
                  .background(
                     EffectView(.contentBackground)

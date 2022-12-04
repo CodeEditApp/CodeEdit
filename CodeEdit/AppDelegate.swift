@@ -240,7 +240,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                 title: "Accounts",
                 toolbarIcon: NSImage(systemSymbolName: "at", accessibilityDescription: nil)!
             ) {
-                PreferenceAccountsView()
+                AccountPreferencesView()
             },
             Preferences.Pane(
                 identifier: Preferences.PaneIdentifier("Behaviors"),
@@ -283,14 +283,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                 title: "Key Bindings",
                 toolbarIcon: NSImage(systemSymbolName: "keyboard", accessibilityDescription: nil)!
             ) {
-                PreferenceKeybindingsView()
+                KeybindingsPreferencesView()
             },
             Preferences.Pane(
                 identifier: Preferences.PaneIdentifier("SourceControl"),
                 title: "Source Control",
                 toolbarIcon: NSImage.vault
             ) {
-                PreferenceSourceControlView()
+                SourceControlPreferencesView()
             },
             Preferences.Pane(
                 identifier: Preferences.PaneIdentifier("Components"),
