@@ -63,7 +63,7 @@
 
 ### Git
 
-- ``GitClient``
+- <doc:Git>
 
 ### InspectorSidebar
 
