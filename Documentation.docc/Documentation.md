@@ -52,6 +52,9 @@
 ### ExtensionsStore
 
 - ``ExtensionsManager``
+- ``ExtensionsStoreAgent``
+- ``ExtensionsStoreAPI``
+- ``ExtensionsStoreAPIError``
 
 ### Feedback
 

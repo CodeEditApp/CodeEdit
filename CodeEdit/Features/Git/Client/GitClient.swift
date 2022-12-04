@@ -113,7 +113,7 @@ struct GitClient {
 
     }
 
-    func getChangedFiles() throws -> [ChangedFile] {
+    func getChangedFiles() throws -> [GitChangedFile] {
         let output = try shellClient.run(
             "cd \(directoryURL.relativePath.escapedWhiteSpaces());git status -s --porcelain -u"
         )
@@ -122,7 +122,7 @@ struct GitClient {
         }
         return try output
             .split(whereSeparator: \.isNewline)
-            .map { line -> ChangedFile in
+            .map { line -> GitChangedFile in
                 let paramData = line.trimmingCharacters(in: .whitespacesAndNewlines)
                 let parameters = paramData.components(separatedBy: " ")
                 guard let url = URL(string: parameters[safe: 1] ?? String(describing: URLError.badURL)) else {
@@ -133,14 +133,14 @@ struct GitClient {
                     .init(rawValue: parameters[safe: 0] ?? "") ?? GitType.unknown
                 }
 
-                return ChangedFile(changeType: gitType,
+                return GitChangedFile(changeType: gitType,
                                     fileLink: url)
             }
     }
 
     // Gets the commit history log of the current file opened
     // in the workspace.
-    func getCommitHistory(entries: Int?, fileLocalPath: String?) throws -> [Commit] {
+    func getCommitHistory(entries: Int?, fileLocalPath: String?) throws -> [GitCommit] {
         var entriesString = ""
         let fileLocalPath = fileLocalPath?.escapedWhiteSpaces() ?? ""
         if let entries = entries { entriesString = "-n \(entries)" }
@@ -160,9 +160,9 @@ struct GitClient {
         }
         return output
             .split(separator: "\n")
-            .map { line -> Commit in
+            .map { line -> GitCommit in
                 let parameters = line.components(separatedBy: "¦")
-                return Commit(
+                return GitCommit(
                     hash: parameters[safe: 0] ?? "",
                     commitHash: parameters[safe: 1] ?? "",
                     message: parameters[safe: 2] ?? "",

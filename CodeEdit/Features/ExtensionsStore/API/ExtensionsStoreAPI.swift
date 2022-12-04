@@ -20,12 +20,12 @@ enum ExtensionsStoreAPIError: Error {
 enum ExtensionsStoreAPI {
 
     static let base = URL(string: "https://codeedit.pkasila.net/api/")!
-    static let agent = Agent()
+    static let agent = ExtensionsStoreAgent()
 
     /// Lists plugins on the specified page
     /// - Parameter page: page to be requested
     /// - Returns: publisher with the page
-    static func plugins(page: Int) -> AnyPublisher<Page<Plugin>, Error> {
+    static func plugins(page: Int) -> AnyPublisher<APIPage<Plugin>, Error> {
         var components = URLComponents(url: base.appendingPathComponent("plugins"), resolvingAgainstBaseURL: false)
         components?.queryItems = [
             .init(name: "page", value: "\(page)")
@@ -56,7 +56,7 @@ enum ExtensionsStoreAPI {
     ///   - id: plugin's ID
     ///   - page: page to be requested
     /// - Returns: publisher with the page
-    static func pluginReleases(id: UUID, page: Int) -> AnyPublisher<Page<PluginRelease>, Error> {
+    static func pluginReleases(id: UUID, page: Int) -> AnyPublisher<APIPage<PluginRelease>, Error> {
         var components = URLComponents(url: base.appendingPathComponent("plugins/\(id.uuidString)/releases"),
                                        resolvingAgainstBaseURL: false)
         components?.queryItems = [
@@ -84,14 +84,14 @@ enum ExtensionsStoreAPI {
     }
 }
 
-final class Agent {
+final class ExtensionsStoreAgent {
     func run<T: Decodable>(_ request: URLRequest,
-                           _ decoder: JSONDecoder = JSONDecoder()) -> AnyPublisher<Response<T>, Error> {
+                           _ decoder: JSONDecoder = JSONDecoder()) -> AnyPublisher<APIResponse<T>, Error> {
         URLSession.shared
             .dataTaskPublisher(for: request)
-            .tryMap { result -> Response<T> in
+            .tryMap { result -> APIResponse<T> in
                 let value = try decoder.decode(T.self, from: result.data)
-                return Response(value: value, response: result.response)
+                return APIResponse(value: value, response: result.response)
             }
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()

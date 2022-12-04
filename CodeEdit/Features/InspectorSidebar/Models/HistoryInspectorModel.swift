@@ -20,7 +20,7 @@ final class HistoryInspectorModel: ObservableObject {
 
     /// The selected branch from the GitClient
     @Published
-    var commitHistory: [Commit]
+    var commitHistory: [GitCommit]
 
     /// Initialize with a GitClient
     /// - Parameter workspaceURL: the current workspace URL

@@ -11,7 +11,7 @@ struct HistoryInspector: View {
     @ObservedObject
     private var model: HistoryInspectorModel
 
-    @State var selectedCommitHistory: Commit?
+    @State var selectedCommitHistory: GitCommit?
 
     /// Initialize with GitClient
     /// - Parameter gitClient: a GitClient

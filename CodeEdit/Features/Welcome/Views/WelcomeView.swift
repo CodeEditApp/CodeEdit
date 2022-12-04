@@ -210,7 +210,7 @@ struct WelcomeView: View {
             )
         }
         .sheet(isPresented: $showCheckoutBranch) {
-            CheckoutBranchView(
+            GitCheckoutBranchView(
                 isPresented: $showCheckoutBranch,
                 repoPath: $repoPath,
                 shellClient: shellClient

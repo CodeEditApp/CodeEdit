@@ -7,12 +7,12 @@
 
 import Foundation
 
-enum SortDirection: String {
+enum GitSortDirection: String {
     case asc
     case desc
 }
 
-enum SortType: String {
+enum GitSortType: String {
     case created
     case updated
     case popularity

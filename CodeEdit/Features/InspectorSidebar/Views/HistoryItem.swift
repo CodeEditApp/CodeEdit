@@ -8,9 +8,9 @@ import SwiftUI
 
 struct HistoryItem: View {
 
-    var commit: Commit
+    var commit: GitCommit
 
-    @Binding var selection: Commit?
+    @Binding var selection: GitCommit?
 
     private var showPopup: Binding<Bool> {
         Binding<Bool> {
@@ -26,7 +26,7 @@ struct HistoryItem: View {
 
     @Environment(\.openURL) private var openCommit
 
-    init(commit: Commit, selection: Binding<Commit?>) {
+    init(commit: GitCommit, selection: Binding<GitCommit?>) {
         self.commit = commit
         self._selection = selection
     }

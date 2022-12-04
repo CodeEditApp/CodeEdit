@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Dependency: Decodable {
+struct AcknowledgementDependency: Decodable {
     var name: String
     var repositoryLink: String
     var version: String
@@ -16,24 +16,24 @@ struct Dependency: Decodable {
     }
 }
 
-struct RootObject: Codable {
-    let object: Object
+struct AcknowledgementRootObject: Codable {
+    let object: AcknowledgementObject
 }
 
 // MARK: - Object
-struct Object: Codable {
-    let pins: [Pin]
+struct AcknowledgementObject: Codable {
+    let pins: [AcknowledgementPin]
 }
 
 // MARK: - Pin
-struct Pin: Codable {
+struct AcknowledgementPin: Codable {
     let package: String
     let repositoryURL: String
-    let state: PackageState
+    let state: AcknowledgementPackageState
 }
 
 // MARK: - State
-struct PackageState: Codable {
+struct AcknowledgementPackageState: Codable {
     let revision: String
     let version: String?
 }

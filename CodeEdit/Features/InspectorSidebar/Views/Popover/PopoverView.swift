@@ -9,9 +9,9 @@ import SwiftUI
 
 struct PopoverView: View {
 
-    private var commit: Commit
+    private var commit: GitCommit
 
-    init(commit: Commit) {
+    init(commit: GitCommit) {
         self.commit = commit
     }
 

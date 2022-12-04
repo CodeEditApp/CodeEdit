@@ -10,10 +10,10 @@ import SwiftUI
  struct ChangedFileItemView: View {
 
      @State
-     var changedFile: ChangedFile
+     var changedFile: GitChangedFile
 
      @Binding
-     var selection: ChangedFile.ID?
+     var selection: GitChangedFile.ID?
 
      @State
      var workspaceURL: URL

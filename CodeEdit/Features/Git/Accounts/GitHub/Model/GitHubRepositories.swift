@@ -63,12 +63,12 @@ extension GitHubAccount {
                       perPage: String = "100",
                       completion: @escaping (
                         _ response: Result<[GitHubRepositories], Error>) -> Void
-    ) -> URLSessionDataTaskProtocol? {
+    ) -> GitURLSessionDataTaskProtocol? {
         let router = (owner != nil)
             ? GitHubRepositoryRouter.readRepositories(configuration, owner!, page, perPage)
             : GitHubRepositoryRouter.readAuthenticatedRepositories(configuration, page, perPage)
 
-        return router.load(session, dateDecodingStrategy: .formatted(Time.rfc3339DateFormatter), expectedResultType: [GitHubRepositories].self) { repos, error in
+        return router.load(session, dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter), expectedResultType: [GitHubRepositories].self) { repos, error in
             if let error = error {
                 completion(.failure(error))
             }
@@ -91,10 +91,10 @@ extension GitHubAccount {
                     owner: String,
                     name: String,
                     completion: @escaping (_ response: Result<GitHubRepositories, Error>) -> Void
-    ) -> URLSessionDataTaskProtocol? {
+    ) -> GitURLSessionDataTaskProtocol? {
         let router = GitHubRepositoryRouter.readRepository(configuration, owner, name)
 
-        return router.load(session, dateDecodingStrategy: .formatted(Time.rfc3339DateFormatter), expectedResultType: GitHubRepositories.self) { repo, error in
+        return router.load(session, dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter), expectedResultType: GitHubRepositories.self) { repo, error in
             if let error = error {
                 completion(.failure(error))
             } else {

@@ -123,8 +123,8 @@
 		58798263292EC4080085B254 /* DownloadedPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5879825B292EC4080085B254 /* DownloadedPlugin.swift */; };
 		58798264292EC4080085B254 /* Plugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5879825C292EC4080085B254 /* Plugin.swift */; };
 		58798265292EC4080085B254 /* ExtensionsStoreAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5879825E292EC4080085B254 /* ExtensionsStoreAPI.swift */; };
-		58798266292EC4080085B254 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5879825F292EC4080085B254 /* Response.swift */; };
-		58798267292EC4080085B254 /* Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58798260292EC4080085B254 /* Page.swift */; };
+		58798266292EC4080085B254 /* APIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5879825F292EC4080085B254 /* APIResponse.swift */; };
+		58798267292EC4080085B254 /* APIPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58798260292EC4080085B254 /* APIPage.swift */; };
 		5879826B292EC7B00085B254 /* Light-Swift-Untar in Frameworks */ = {isa = PBXBuildFile; productRef = 5879826A292EC7B00085B254 /* Light-Swift-Untar */; };
 		5879826F292EC9870085B254 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = 5879826E292EC9870085B254 /* GRDB */; };
 		58798277292ECFD40085B254 /* LSPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58798276292ECFD40085B254 /* LSPClient.swift */; };
@@ -146,71 +146,71 @@
 		587B9DA529300ABD00AC7927 /* PressActionsModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9D8E29300ABD00AC7927 /* PressActionsModifier.swift */; };
 		587B9DA629300ABD00AC7927 /* ToolbarBranchPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9D8F29300ABD00AC7927 /* ToolbarBranchPicker.swift */; };
 		587B9DA729300ABD00AC7927 /* HelpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9D9029300ABD00AC7927 /* HelpButton.swift */; };
-		587B9E5929301D8F00AC7927 /* CheckoutBranch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E0629301D8F00AC7927 /* CheckoutBranch.swift */; };
+		587B9E5929301D8F00AC7927 /* GitCheckoutBranchView+CheckoutBranch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E0629301D8F00AC7927 /* GitCheckoutBranchView+CheckoutBranch.swift */; };
 		587B9E5A29301D8F00AC7927 /* GitCloneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E0729301D8F00AC7927 /* GitCloneView.swift */; };
-		587B9E5B29301D8F00AC7927 /* CheckoutBranchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E0829301D8F00AC7927 /* CheckoutBranchView.swift */; };
+		587B9E5B29301D8F00AC7927 /* GitCheckoutBranchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E0829301D8F00AC7927 /* GitCheckoutBranchView.swift */; };
 		587B9E5C29301D8F00AC7927 /* Parameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E0A29301D8F00AC7927 /* Parameters.swift */; };
-		587B9E5D29301D8F00AC7927 /* UserRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E0D29301D8F00AC7927 /* UserRouter.swift */; };
-		587B9E5E29301D8F00AC7927 /* CommitRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E0E29301D8F00AC7927 /* CommitRouter.swift */; };
-		587B9E5F29301D8F00AC7927 /* ProjectRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E0F29301D8F00AC7927 /* ProjectRouter.swift */; };
-		587B9E6029301D8F00AC7927 /* GitlabOAuthRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E1029301D8F00AC7927 /* GitlabOAuthRouter.swift */; };
-		587B9E6129301D8F00AC7927 /* GitlabOAuthConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E1129301D8F00AC7927 /* GitlabOAuthConfiguration.swift */; };
-		587B9E6229301D8F00AC7927 /* GitlabConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E1229301D8F00AC7927 /* GitlabConfiguration.swift */; };
-		587B9E6329301D8F00AC7927 /* GitlabAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E1329301D8F00AC7927 /* GitlabAccount.swift */; };
-		587B9E6429301D8F00AC7927 /* GitlabCommit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E1529301D8F00AC7927 /* GitlabCommit.swift */; };
-		587B9E6529301D8F00AC7927 /* GroupAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E1629301D8F00AC7927 /* GroupAccess.swift */; };
-		587B9E6629301D8F00AC7927 /* ProjectHook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E1729301D8F00AC7927 /* ProjectHook.swift */; };
-		587B9E6729301D8F00AC7927 /* EventData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E1829301D8F00AC7927 /* EventData.swift */; };
-		587B9E6829301D8F00AC7927 /* GitlabAccountModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E1929301D8F00AC7927 /* GitlabAccountModel.swift */; };
-		587B9E6929301D8F00AC7927 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E1A29301D8F00AC7927 /* Event.swift */; };
-		587B9E6A29301D8F00AC7927 /* Permissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E1B29301D8F00AC7927 /* Permissions.swift */; };
-		587B9E6B29301D8F00AC7927 /* AvatarURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E1C29301D8F00AC7927 /* AvatarURL.swift */; };
-		587B9E6C29301D8F00AC7927 /* Namespace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E1D29301D8F00AC7927 /* Namespace.swift */; };
-		587B9E6D29301D8F00AC7927 /* EventNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E1E29301D8F00AC7927 /* EventNote.swift */; };
-		587B9E6E29301D8F00AC7927 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E1F29301D8F00AC7927 /* Project.swift */; };
-		587B9E6F29301D8F00AC7927 /* ProjectAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E2029301D8F00AC7927 /* ProjectAccess.swift */; };
-		587B9E7029301D8F00AC7927 /* GitlabUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E2129301D8F00AC7927 /* GitlabUser.swift */; };
-		587B9E7129301D8F00AC7927 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E2329301D8F00AC7927 /* Session.swift */; };
-		587B9E7229301D8F00AC7927 /* JSONPostRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E2429301D8F00AC7927 /* JSONPostRouter.swift */; };
-		587B9E7329301D8F00AC7927 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E2529301D8F00AC7927 /* Router.swift */; };
+		587B9E5D29301D8F00AC7927 /* GitLabUserRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E0D29301D8F00AC7927 /* GitLabUserRouter.swift */; };
+		587B9E5E29301D8F00AC7927 /* GitLabCommitRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E0E29301D8F00AC7927 /* GitLabCommitRouter.swift */; };
+		587B9E5F29301D8F00AC7927 /* GitLabProjectRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E0F29301D8F00AC7927 /* GitLabProjectRouter.swift */; };
+		587B9E6029301D8F00AC7927 /* GitLabOAuthRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E1029301D8F00AC7927 /* GitLabOAuthRouter.swift */; };
+		587B9E6129301D8F00AC7927 /* GitLabOAuthConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E1129301D8F00AC7927 /* GitLabOAuthConfiguration.swift */; };
+		587B9E6229301D8F00AC7927 /* GitLabConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E1229301D8F00AC7927 /* GitLabConfiguration.swift */; };
+		587B9E6329301D8F00AC7927 /* GitLabAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E1329301D8F00AC7927 /* GitLabAccount.swift */; };
+		587B9E6429301D8F00AC7927 /* GitLabCommit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E1529301D8F00AC7927 /* GitLabCommit.swift */; };
+		587B9E6529301D8F00AC7927 /* GitLabGroupAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E1629301D8F00AC7927 /* GitLabGroupAccess.swift */; };
+		587B9E6629301D8F00AC7927 /* GitLabProjectHook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E1729301D8F00AC7927 /* GitLabProjectHook.swift */; };
+		587B9E6729301D8F00AC7927 /* GitLabEventData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E1829301D8F00AC7927 /* GitLabEventData.swift */; };
+		587B9E6829301D8F00AC7927 /* GitLabAccountModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E1929301D8F00AC7927 /* GitLabAccountModel.swift */; };
+		587B9E6929301D8F00AC7927 /* GitLabEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E1A29301D8F00AC7927 /* GitLabEvent.swift */; };
+		587B9E6A29301D8F00AC7927 /* GitLabPermissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E1B29301D8F00AC7927 /* GitLabPermissions.swift */; };
+		587B9E6B29301D8F00AC7927 /* GitLabAvatarURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E1C29301D8F00AC7927 /* GitLabAvatarURL.swift */; };
+		587B9E6C29301D8F00AC7927 /* GitLabNamespace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E1D29301D8F00AC7927 /* GitLabNamespace.swift */; };
+		587B9E6D29301D8F00AC7927 /* GitLabEventNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E1E29301D8F00AC7927 /* GitLabEventNote.swift */; };
+		587B9E6E29301D8F00AC7927 /* GitLabProject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E1F29301D8F00AC7927 /* GitLabProject.swift */; };
+		587B9E6F29301D8F00AC7927 /* GitLabProjectAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E2029301D8F00AC7927 /* GitLabProjectAccess.swift */; };
+		587B9E7029301D8F00AC7927 /* GitLabUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E2129301D8F00AC7927 /* GitLabUser.swift */; };
+		587B9E7129301D8F00AC7927 /* GitURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E2329301D8F00AC7927 /* GitURLSession.swift */; };
+		587B9E7229301D8F00AC7927 /* GitJSONPostRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E2429301D8F00AC7927 /* GitJSONPostRouter.swift */; };
+		587B9E7329301D8F00AC7927 /* GitRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E2529301D8F00AC7927 /* GitRouter.swift */; };
 		587B9E7429301D8F00AC7927 /* URL+URLParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E2729301D8F00AC7927 /* URL+URLParameters.swift */; };
 		587B9E7529301D8F00AC7927 /* String+QueryParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E2829301D8F00AC7927 /* String+QueryParameters.swift */; };
-		587B9E7629301D8F00AC7927 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E2929301D8F00AC7927 /* Time.swift */; };
+		587B9E7629301D8F00AC7927 /* GitTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E2929301D8F00AC7927 /* GitTime.swift */; };
 		587B9E7729301D8F00AC7927 /* String+PercentEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E2A29301D8F00AC7927 /* String+PercentEncoding.swift */; };
 		587B9E7829301D8F00AC7927 /* Dictionary+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E2B29301D8F00AC7927 /* Dictionary+Additions.swift */; };
-		587B9E7929301D8F00AC7927 /* IssueRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E2E29301D8F00AC7927 /* IssueRouter.swift */; };
-		587B9E7A29301D8F00AC7927 /* ReviewsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E2F29301D8F00AC7927 /* ReviewsRouter.swift */; };
-		587B9E7B29301D8F00AC7927 /* GitRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E3029301D8F00AC7927 /* GitRouter.swift */; };
+		587B9E7929301D8F00AC7927 /* GitHubIssueRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E2E29301D8F00AC7927 /* GitHubIssueRouter.swift */; };
+		587B9E7A29301D8F00AC7927 /* GitHubReviewsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E2F29301D8F00AC7927 /* GitHubReviewsRouter.swift */; };
+		587B9E7B29301D8F00AC7927 /* GitHubRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E3029301D8F00AC7927 /* GitHubRouter.swift */; };
 		587B9E7C29301D8F00AC7927 /* GitHubRepositoryRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E3129301D8F00AC7927 /* GitHubRepositoryRouter.swift */; };
-		587B9E7D29301D8F00AC7927 /* PullRequestRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E3229301D8F00AC7927 /* PullRequestRouter.swift */; };
-		587B9E7E29301D8F00AC7927 /* GistRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E3329301D8F00AC7927 /* GistRouter.swift */; };
+		587B9E7D29301D8F00AC7927 /* GitHubPullRequestRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E3229301D8F00AC7927 /* GitHubPullRequestRouter.swift */; };
+		587B9E7E29301D8F00AC7927 /* GitHubGistRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E3329301D8F00AC7927 /* GitHubGistRouter.swift */; };
 		587B9E7F29301D8F00AC7927 /* GitHubUserRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E3429301D8F00AC7927 /* GitHubUserRouter.swift */; };
 		587B9E8029301D8F00AC7927 /* GitHubConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E3529301D8F00AC7927 /* GitHubConfiguration.swift */; };
 		587B9E8129301D8F00AC7927 /* PublicKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E3629301D8F00AC7927 /* PublicKey.swift */; };
-		587B9E8229301D8F00AC7927 /* PreviewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E3729301D8F00AC7927 /* PreviewHeader.swift */; };
-		587B9E8329301D8F00AC7927 /* PullRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E3929301D8F00AC7927 /* PullRequest.swift */; };
+		587B9E8229301D8F00AC7927 /* GitHubPreviewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E3729301D8F00AC7927 /* GitHubPreviewHeader.swift */; };
+		587B9E8329301D8F00AC7927 /* GitHubPullRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E3929301D8F00AC7927 /* GitHubPullRequest.swift */; };
 		587B9E8429301D8F00AC7927 /* GitHubUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E3A29301D8F00AC7927 /* GitHubUser.swift */; };
-		587B9E8529301D8F00AC7927 /* Review.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E3B29301D8F00AC7927 /* Review.swift */; };
-		587B9E8629301D8F00AC7927 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E3C29301D8F00AC7927 /* Comment.swift */; };
+		587B9E8529301D8F00AC7927 /* GitHubReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E3B29301D8F00AC7927 /* GitHubReview.swift */; };
+		587B9E8629301D8F00AC7927 /* GitHubComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E3C29301D8F00AC7927 /* GitHubComment.swift */; };
 		587B9E8729301D8F00AC7927 /* GitHubRepositories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E3D29301D8F00AC7927 /* GitHubRepositories.swift */; };
-		587B9E8829301D8F00AC7927 /* Files.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E3E29301D8F00AC7927 /* Files.swift */; };
-		587B9E8929301D8F00AC7927 /* Gist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E3F29301D8F00AC7927 /* Gist.swift */; };
-		587B9E8A29301D8F00AC7927 /* Issue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E4029301D8F00AC7927 /* Issue.swift */; };
-		587B9E8B29301D8F00AC7927 /* Git.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E4129301D8F00AC7927 /* Git.swift */; };
-		587B9E8C29301D8F00AC7927 /* Openness.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E4229301D8F00AC7927 /* Openness.swift */; };
+		587B9E8829301D8F00AC7927 /* GitHubFiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E3E29301D8F00AC7927 /* GitHubFiles.swift */; };
+		587B9E8929301D8F00AC7927 /* GitHubGist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E3F29301D8F00AC7927 /* GitHubGist.swift */; };
+		587B9E8A29301D8F00AC7927 /* GitHubIssue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E4029301D8F00AC7927 /* GitHubIssue.swift */; };
+		587B9E8B29301D8F00AC7927 /* GitHubAccount+deleteReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E4129301D8F00AC7927 /* GitHubAccount+deleteReference.swift */; };
+		587B9E8C29301D8F00AC7927 /* GitHubOpenness.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E4229301D8F00AC7927 /* GitHubOpenness.swift */; };
 		587B9E8D29301D8F00AC7927 /* GitHubAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E4329301D8F00AC7927 /* GitHubAccount.swift */; };
-		587B9E8E29301D8F00AC7927 /* BitbucketRepositoryRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E4629301D8F00AC7927 /* BitbucketRepositoryRouter.swift */; };
-		587B9E8F29301D8F00AC7927 /* BitbucketUserRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E4729301D8F00AC7927 /* BitbucketUserRouter.swift */; };
-		587B9E9029301D8F00AC7927 /* TokenRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E4829301D8F00AC7927 /* TokenRouter.swift */; };
-		587B9E9129301D8F00AC7927 /* OAuthRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E4929301D8F00AC7927 /* OAuthRouter.swift */; };
-		587B9E9229301D8F00AC7927 /* BitbucketAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E4A29301D8F00AC7927 /* BitbucketAccount.swift */; };
-		587B9E9329301D8F00AC7927 /* BitbucketOAuthConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E4B29301D8F00AC7927 /* BitbucketOAuthConfiguration.swift */; };
-		587B9E9429301D8F00AC7927 /* BitbucketTokenConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E4C29301D8F00AC7927 /* BitbucketTokenConfiguration.swift */; };
-		587B9E9529301D8F00AC7927 /* BitbucketUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E4E29301D8F00AC7927 /* BitbucketUser.swift */; };
-		587B9E9629301D8F00AC7927 /* BitbucketRepositories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E4F29301D8F00AC7927 /* BitbucketRepositories.swift */; };
-		587B9E9729301D8F00AC7927 /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E5029301D8F00AC7927 /* Token.swift */; };
-		587B9E9829301D8F00AC7927 /* Commit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E5329301D8F00AC7927 /* Commit.swift */; };
-		587B9E9929301D8F00AC7927 /* ChangedFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E5429301D8F00AC7927 /* ChangedFile.swift */; };
+		587B9E8E29301D8F00AC7927 /* BitBucketRepositoryRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E4629301D8F00AC7927 /* BitBucketRepositoryRouter.swift */; };
+		587B9E8F29301D8F00AC7927 /* BitBucketUserRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E4729301D8F00AC7927 /* BitBucketUserRouter.swift */; };
+		587B9E9029301D8F00AC7927 /* BitBucketTokenRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E4829301D8F00AC7927 /* BitBucketTokenRouter.swift */; };
+		587B9E9129301D8F00AC7927 /* BitBucketOAuthRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E4929301D8F00AC7927 /* BitBucketOAuthRouter.swift */; };
+		587B9E9229301D8F00AC7927 /* BitBucketAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E4A29301D8F00AC7927 /* BitBucketAccount.swift */; };
+		587B9E9329301D8F00AC7927 /* BitBucketOAuthConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E4B29301D8F00AC7927 /* BitBucketOAuthConfiguration.swift */; };
+		587B9E9429301D8F00AC7927 /* BitBucketTokenConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E4C29301D8F00AC7927 /* BitBucketTokenConfiguration.swift */; };
+		587B9E9529301D8F00AC7927 /* BitBucketUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E4E29301D8F00AC7927 /* BitBucketUser.swift */; };
+		587B9E9629301D8F00AC7927 /* BitBucketRepositories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E4F29301D8F00AC7927 /* BitBucketRepositories.swift */; };
+		587B9E9729301D8F00AC7927 /* BitBucketAccount+Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E5029301D8F00AC7927 /* BitBucketAccount+Token.swift */; };
+		587B9E9829301D8F00AC7927 /* GitCommit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E5329301D8F00AC7927 /* GitCommit.swift */; };
+		587B9E9929301D8F00AC7927 /* GitChangedFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E5429301D8F00AC7927 /* GitChangedFile.swift */; };
 		587B9E9A29301D8F00AC7927 /* GitType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E5529301D8F00AC7927 /* GitType.swift */; };
 		587D9B732933BF5700BF7490 /* FileIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587D9B6D2933BF5700BF7490 /* FileIcon.swift */; };
 		587D9B742933BF5700BF7490 /* FileItem+Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587D9B6E2933BF5700BF7490 /* FileItem+Array.swift */; };
@@ -487,8 +487,8 @@
 		5879825B292EC4080085B254 /* DownloadedPlugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadedPlugin.swift; sourceTree = "<group>"; };
 		5879825C292EC4080085B254 /* Plugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Plugin.swift; sourceTree = "<group>"; };
 		5879825E292EC4080085B254 /* ExtensionsStoreAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionsStoreAPI.swift; sourceTree = "<group>"; };
-		5879825F292EC4080085B254 /* Response.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
-		58798260292EC4080085B254 /* Page.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Page.swift; sourceTree = "<group>"; };
+		5879825F292EC4080085B254 /* APIResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIResponse.swift; sourceTree = "<group>"; };
+		58798260292EC4080085B254 /* APIPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIPage.swift; sourceTree = "<group>"; };
 		58798276292ECFD40085B254 /* LSPClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LSPClient.swift; sourceTree = "<group>"; };
 		58798280292ED0FB0085B254 /* TerminalEmulatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TerminalEmulatorView.swift; sourceTree = "<group>"; };
 		58798281292ED0FB0085B254 /* TerminalEmulatorView+Coordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TerminalEmulatorView+Coordinator.swift"; sourceTree = "<group>"; };
@@ -507,71 +507,71 @@
 		587B9D8E29300ABD00AC7927 /* PressActionsModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PressActionsModifier.swift; sourceTree = "<group>"; };
 		587B9D8F29300ABD00AC7927 /* ToolbarBranchPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToolbarBranchPicker.swift; sourceTree = "<group>"; };
 		587B9D9029300ABD00AC7927 /* HelpButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpButton.swift; sourceTree = "<group>"; };
-		587B9E0629301D8F00AC7927 /* CheckoutBranch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckoutBranch.swift; sourceTree = "<group>"; };
+		587B9E0629301D8F00AC7927 /* GitCheckoutBranchView+CheckoutBranch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GitCheckoutBranchView+CheckoutBranch.swift"; sourceTree = "<group>"; };
 		587B9E0729301D8F00AC7927 /* GitCloneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitCloneView.swift; sourceTree = "<group>"; };
-		587B9E0829301D8F00AC7927 /* CheckoutBranchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckoutBranchView.swift; sourceTree = "<group>"; };
+		587B9E0829301D8F00AC7927 /* GitCheckoutBranchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitCheckoutBranchView.swift; sourceTree = "<group>"; };
 		587B9E0A29301D8F00AC7927 /* Parameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parameters.swift; sourceTree = "<group>"; };
-		587B9E0D29301D8F00AC7927 /* UserRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserRouter.swift; sourceTree = "<group>"; };
-		587B9E0E29301D8F00AC7927 /* CommitRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommitRouter.swift; sourceTree = "<group>"; };
-		587B9E0F29301D8F00AC7927 /* ProjectRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectRouter.swift; sourceTree = "<group>"; };
-		587B9E1029301D8F00AC7927 /* GitlabOAuthRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitlabOAuthRouter.swift; sourceTree = "<group>"; };
-		587B9E1129301D8F00AC7927 /* GitlabOAuthConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitlabOAuthConfiguration.swift; sourceTree = "<group>"; };
-		587B9E1229301D8F00AC7927 /* GitlabConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitlabConfiguration.swift; sourceTree = "<group>"; };
-		587B9E1329301D8F00AC7927 /* GitlabAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitlabAccount.swift; sourceTree = "<group>"; };
-		587B9E1529301D8F00AC7927 /* GitlabCommit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitlabCommit.swift; sourceTree = "<group>"; };
-		587B9E1629301D8F00AC7927 /* GroupAccess.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupAccess.swift; sourceTree = "<group>"; };
-		587B9E1729301D8F00AC7927 /* ProjectHook.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectHook.swift; sourceTree = "<group>"; };
-		587B9E1829301D8F00AC7927 /* EventData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventData.swift; sourceTree = "<group>"; };
-		587B9E1929301D8F00AC7927 /* GitlabAccountModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitlabAccountModel.swift; sourceTree = "<group>"; };
-		587B9E1A29301D8F00AC7927 /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
-		587B9E1B29301D8F00AC7927 /* Permissions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Permissions.swift; sourceTree = "<group>"; };
-		587B9E1C29301D8F00AC7927 /* AvatarURL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AvatarURL.swift; sourceTree = "<group>"; };
-		587B9E1D29301D8F00AC7927 /* Namespace.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Namespace.swift; sourceTree = "<group>"; };
-		587B9E1E29301D8F00AC7927 /* EventNote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventNote.swift; sourceTree = "<group>"; };
-		587B9E1F29301D8F00AC7927 /* Project.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
-		587B9E2029301D8F00AC7927 /* ProjectAccess.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectAccess.swift; sourceTree = "<group>"; };
-		587B9E2129301D8F00AC7927 /* GitlabUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitlabUser.swift; sourceTree = "<group>"; };
-		587B9E2329301D8F00AC7927 /* Session.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
-		587B9E2429301D8F00AC7927 /* JSONPostRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONPostRouter.swift; sourceTree = "<group>"; };
-		587B9E2529301D8F00AC7927 /* Router.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
+		587B9E0D29301D8F00AC7927 /* GitLabUserRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitLabUserRouter.swift; sourceTree = "<group>"; };
+		587B9E0E29301D8F00AC7927 /* GitLabCommitRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitLabCommitRouter.swift; sourceTree = "<group>"; };
+		587B9E0F29301D8F00AC7927 /* GitLabProjectRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitLabProjectRouter.swift; sourceTree = "<group>"; };
+		587B9E1029301D8F00AC7927 /* GitLabOAuthRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitLabOAuthRouter.swift; sourceTree = "<group>"; };
+		587B9E1129301D8F00AC7927 /* GitLabOAuthConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitLabOAuthConfiguration.swift; sourceTree = "<group>"; };
+		587B9E1229301D8F00AC7927 /* GitLabConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitLabConfiguration.swift; sourceTree = "<group>"; };
+		587B9E1329301D8F00AC7927 /* GitLabAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitLabAccount.swift; sourceTree = "<group>"; };
+		587B9E1529301D8F00AC7927 /* GitLabCommit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitLabCommit.swift; sourceTree = "<group>"; };
+		587B9E1629301D8F00AC7927 /* GitLabGroupAccess.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitLabGroupAccess.swift; sourceTree = "<group>"; };
+		587B9E1729301D8F00AC7927 /* GitLabProjectHook.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitLabProjectHook.swift; sourceTree = "<group>"; };
+		587B9E1829301D8F00AC7927 /* GitLabEventData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitLabEventData.swift; sourceTree = "<group>"; };
+		587B9E1929301D8F00AC7927 /* GitLabAccountModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitLabAccountModel.swift; sourceTree = "<group>"; };
+		587B9E1A29301D8F00AC7927 /* GitLabEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitLabEvent.swift; sourceTree = "<group>"; };
+		587B9E1B29301D8F00AC7927 /* GitLabPermissions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitLabPermissions.swift; sourceTree = "<group>"; };
+		587B9E1C29301D8F00AC7927 /* GitLabAvatarURL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitLabAvatarURL.swift; sourceTree = "<group>"; };
+		587B9E1D29301D8F00AC7927 /* GitLabNamespace.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitLabNamespace.swift; sourceTree = "<group>"; };
+		587B9E1E29301D8F00AC7927 /* GitLabEventNote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitLabEventNote.swift; sourceTree = "<group>"; };
+		587B9E1F29301D8F00AC7927 /* GitLabProject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitLabProject.swift; sourceTree = "<group>"; };
+		587B9E2029301D8F00AC7927 /* GitLabProjectAccess.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitLabProjectAccess.swift; sourceTree = "<group>"; };
+		587B9E2129301D8F00AC7927 /* GitLabUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitLabUser.swift; sourceTree = "<group>"; };
+		587B9E2329301D8F00AC7927 /* GitURLSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitURLSession.swift; sourceTree = "<group>"; };
+		587B9E2429301D8F00AC7927 /* GitJSONPostRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitJSONPostRouter.swift; sourceTree = "<group>"; };
+		587B9E2529301D8F00AC7927 /* GitRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitRouter.swift; sourceTree = "<group>"; };
 		587B9E2729301D8F00AC7927 /* URL+URLParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "URL+URLParameters.swift"; sourceTree = "<group>"; };
 		587B9E2829301D8F00AC7927 /* String+QueryParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+QueryParameters.swift"; sourceTree = "<group>"; };
-		587B9E2929301D8F00AC7927 /* Time.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
+		587B9E2929301D8F00AC7927 /* GitTime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitTime.swift; sourceTree = "<group>"; };
 		587B9E2A29301D8F00AC7927 /* String+PercentEncoding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+PercentEncoding.swift"; sourceTree = "<group>"; };
 		587B9E2B29301D8F00AC7927 /* Dictionary+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+Additions.swift"; sourceTree = "<group>"; };
-		587B9E2E29301D8F00AC7927 /* IssueRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IssueRouter.swift; sourceTree = "<group>"; };
-		587B9E2F29301D8F00AC7927 /* ReviewsRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReviewsRouter.swift; sourceTree = "<group>"; };
-		587B9E3029301D8F00AC7927 /* GitRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitRouter.swift; sourceTree = "<group>"; };
+		587B9E2E29301D8F00AC7927 /* GitHubIssueRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubIssueRouter.swift; sourceTree = "<group>"; };
+		587B9E2F29301D8F00AC7927 /* GitHubReviewsRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubReviewsRouter.swift; sourceTree = "<group>"; };
+		587B9E3029301D8F00AC7927 /* GitHubRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubRouter.swift; sourceTree = "<group>"; };
 		587B9E3129301D8F00AC7927 /* GitHubRepositoryRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubRepositoryRouter.swift; sourceTree = "<group>"; };
-		587B9E3229301D8F00AC7927 /* PullRequestRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PullRequestRouter.swift; sourceTree = "<group>"; };
-		587B9E3329301D8F00AC7927 /* GistRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GistRouter.swift; sourceTree = "<group>"; };
+		587B9E3229301D8F00AC7927 /* GitHubPullRequestRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubPullRequestRouter.swift; sourceTree = "<group>"; };
+		587B9E3329301D8F00AC7927 /* GitHubGistRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubGistRouter.swift; sourceTree = "<group>"; };
 		587B9E3429301D8F00AC7927 /* GitHubUserRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubUserRouter.swift; sourceTree = "<group>"; };
 		587B9E3529301D8F00AC7927 /* GitHubConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubConfiguration.swift; sourceTree = "<group>"; };
 		587B9E3629301D8F00AC7927 /* PublicKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PublicKey.swift; sourceTree = "<group>"; };
-		587B9E3729301D8F00AC7927 /* PreviewHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewHeader.swift; sourceTree = "<group>"; };
-		587B9E3929301D8F00AC7927 /* PullRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PullRequest.swift; sourceTree = "<group>"; };
+		587B9E3729301D8F00AC7927 /* GitHubPreviewHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubPreviewHeader.swift; sourceTree = "<group>"; };
+		587B9E3929301D8F00AC7927 /* GitHubPullRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubPullRequest.swift; sourceTree = "<group>"; };
 		587B9E3A29301D8F00AC7927 /* GitHubUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubUser.swift; sourceTree = "<group>"; };
-		587B9E3B29301D8F00AC7927 /* Review.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Review.swift; sourceTree = "<group>"; };
-		587B9E3C29301D8F00AC7927 /* Comment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
+		587B9E3B29301D8F00AC7927 /* GitHubReview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubReview.swift; sourceTree = "<group>"; };
+		587B9E3C29301D8F00AC7927 /* GitHubComment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubComment.swift; sourceTree = "<group>"; };
 		587B9E3D29301D8F00AC7927 /* GitHubRepositories.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubRepositories.swift; sourceTree = "<group>"; };
-		587B9E3E29301D8F00AC7927 /* Files.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Files.swift; sourceTree = "<group>"; };
-		587B9E3F29301D8F00AC7927 /* Gist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gist.swift; sourceTree = "<group>"; };
-		587B9E4029301D8F00AC7927 /* Issue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Issue.swift; sourceTree = "<group>"; };
-		587B9E4129301D8F00AC7927 /* Git.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Git.swift; sourceTree = "<group>"; };
-		587B9E4229301D8F00AC7927 /* Openness.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Openness.swift; sourceTree = "<group>"; };
+		587B9E3E29301D8F00AC7927 /* GitHubFiles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubFiles.swift; sourceTree = "<group>"; };
+		587B9E3F29301D8F00AC7927 /* GitHubGist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubGist.swift; sourceTree = "<group>"; };
+		587B9E4029301D8F00AC7927 /* GitHubIssue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubIssue.swift; sourceTree = "<group>"; };
+		587B9E4129301D8F00AC7927 /* GitHubAccount+deleteReference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GitHubAccount+deleteReference.swift"; sourceTree = "<group>"; };
+		587B9E4229301D8F00AC7927 /* GitHubOpenness.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubOpenness.swift; sourceTree = "<group>"; };
 		587B9E4329301D8F00AC7927 /* GitHubAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubAccount.swift; sourceTree = "<group>"; };
-		587B9E4629301D8F00AC7927 /* BitbucketRepositoryRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitbucketRepositoryRouter.swift; sourceTree = "<group>"; };
-		587B9E4729301D8F00AC7927 /* BitbucketUserRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitbucketUserRouter.swift; sourceTree = "<group>"; };
-		587B9E4829301D8F00AC7927 /* TokenRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenRouter.swift; sourceTree = "<group>"; };
-		587B9E4929301D8F00AC7927 /* OAuthRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuthRouter.swift; sourceTree = "<group>"; };
-		587B9E4A29301D8F00AC7927 /* BitbucketAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitbucketAccount.swift; sourceTree = "<group>"; };
-		587B9E4B29301D8F00AC7927 /* BitbucketOAuthConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitbucketOAuthConfiguration.swift; sourceTree = "<group>"; };
-		587B9E4C29301D8F00AC7927 /* BitbucketTokenConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitbucketTokenConfiguration.swift; sourceTree = "<group>"; };
-		587B9E4E29301D8F00AC7927 /* BitbucketUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitbucketUser.swift; sourceTree = "<group>"; };
-		587B9E4F29301D8F00AC7927 /* BitbucketRepositories.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitbucketRepositories.swift; sourceTree = "<group>"; };
-		587B9E5029301D8F00AC7927 /* Token.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
-		587B9E5329301D8F00AC7927 /* Commit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Commit.swift; sourceTree = "<group>"; };
-		587B9E5429301D8F00AC7927 /* ChangedFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangedFile.swift; sourceTree = "<group>"; };
+		587B9E4629301D8F00AC7927 /* BitBucketRepositoryRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitBucketRepositoryRouter.swift; sourceTree = "<group>"; };
+		587B9E4729301D8F00AC7927 /* BitBucketUserRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitBucketUserRouter.swift; sourceTree = "<group>"; };
+		587B9E4829301D8F00AC7927 /* BitBucketTokenRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitBucketTokenRouter.swift; sourceTree = "<group>"; };
+		587B9E4929301D8F00AC7927 /* BitBucketOAuthRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitBucketOAuthRouter.swift; sourceTree = "<group>"; };
+		587B9E4A29301D8F00AC7927 /* BitBucketAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitBucketAccount.swift; sourceTree = "<group>"; };
+		587B9E4B29301D8F00AC7927 /* BitBucketOAuthConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitBucketOAuthConfiguration.swift; sourceTree = "<group>"; };
+		587B9E4C29301D8F00AC7927 /* BitBucketTokenConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitBucketTokenConfiguration.swift; sourceTree = "<group>"; };
+		587B9E4E29301D8F00AC7927 /* BitBucketUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitBucketUser.swift; sourceTree = "<group>"; };
+		587B9E4F29301D8F00AC7927 /* BitBucketRepositories.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitBucketRepositories.swift; sourceTree = "<group>"; };
+		587B9E5029301D8F00AC7927 /* BitBucketAccount+Token.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BitBucketAccount+Token.swift"; sourceTree = "<group>"; };
+		587B9E5329301D8F00AC7927 /* GitCommit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitCommit.swift; sourceTree = "<group>"; };
+		587B9E5429301D8F00AC7927 /* GitChangedFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitChangedFile.swift; sourceTree = "<group>"; };
 		587B9E5529301D8F00AC7927 /* GitType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitType.swift; sourceTree = "<group>"; };
 		587D9B6D2933BF5700BF7490 /* FileIcon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileIcon.swift; sourceTree = "<group>"; };
 		587D9B6E2933BF5700BF7490 /* FileItem+Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FileItem+Array.swift"; sourceTree = "<group>"; };
@@ -1318,8 +1318,8 @@
 			isa = PBXGroup;
 			children = (
 				5879825E292EC4080085B254 /* ExtensionsStoreAPI.swift */,
-				5879825F292EC4080085B254 /* Response.swift */,
-				58798260292EC4080085B254 /* Page.swift */,
+				5879825F292EC4080085B254 /* APIResponse.swift */,
+				58798260292EC4080085B254 /* APIPage.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -1433,9 +1433,9 @@
 		587B9E0529301D8F00AC7927 /* Clone */ = {
 			isa = PBXGroup;
 			children = (
-				587B9E0629301D8F00AC7927 /* CheckoutBranch.swift */,
 				587B9E0729301D8F00AC7927 /* GitCloneView.swift */,
-				587B9E0829301D8F00AC7927 /* CheckoutBranchView.swift */,
+				587B9E0829301D8F00AC7927 /* GitCheckoutBranchView.swift */,
+				587B9E0629301D8F00AC7927 /* GitCheckoutBranchView+CheckoutBranch.swift */,
 			);
 			path = Clone;
 			sourceTree = "<group>";
@@ -1445,7 +1445,7 @@
 			children = (
 				587B9E4429301D8F00AC7927 /* Bitbucket */,
 				587B9E2C29301D8F00AC7927 /* GitHub */,
-				587B9E0B29301D8F00AC7927 /* Gitlab */,
+				587B9E0B29301D8F00AC7927 /* GitLab */,
 				587B9E2229301D8F00AC7927 /* Networking */,
 				587B9E2629301D8F00AC7927 /* Utils */,
 				587B9E0A29301D8F00AC7927 /* Parameters.swift */,
@@ -1453,25 +1453,25 @@
 			path = Accounts;
 			sourceTree = "<group>";
 		};
-		587B9E0B29301D8F00AC7927 /* Gitlab */ = {
+		587B9E0B29301D8F00AC7927 /* GitLab */ = {
 			isa = PBXGroup;
 			children = (
 				587B9E1429301D8F00AC7927 /* Model */,
 				587B9E0C29301D8F00AC7927 /* Routers */,
-				587B9E1129301D8F00AC7927 /* GitlabOAuthConfiguration.swift */,
-				587B9E1229301D8F00AC7927 /* GitlabConfiguration.swift */,
-				587B9E1329301D8F00AC7927 /* GitlabAccount.swift */,
+				587B9E1129301D8F00AC7927 /* GitLabOAuthConfiguration.swift */,
+				587B9E1229301D8F00AC7927 /* GitLabConfiguration.swift */,
+				587B9E1329301D8F00AC7927 /* GitLabAccount.swift */,
 			);
-			path = Gitlab;
+			path = GitLab;
 			sourceTree = "<group>";
 		};
 		587B9E0C29301D8F00AC7927 /* Routers */ = {
 			isa = PBXGroup;
 			children = (
-				587B9E0D29301D8F00AC7927 /* UserRouter.swift */,
-				587B9E0E29301D8F00AC7927 /* CommitRouter.swift */,
-				587B9E0F29301D8F00AC7927 /* ProjectRouter.swift */,
-				587B9E1029301D8F00AC7927 /* GitlabOAuthRouter.swift */,
+				587B9E0D29301D8F00AC7927 /* GitLabUserRouter.swift */,
+				587B9E0E29301D8F00AC7927 /* GitLabCommitRouter.swift */,
+				587B9E0F29301D8F00AC7927 /* GitLabProjectRouter.swift */,
+				587B9E1029301D8F00AC7927 /* GitLabOAuthRouter.swift */,
 			);
 			path = Routers;
 			sourceTree = "<group>";
@@ -1479,19 +1479,19 @@
 		587B9E1429301D8F00AC7927 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				587B9E1529301D8F00AC7927 /* GitlabCommit.swift */,
-				587B9E1629301D8F00AC7927 /* GroupAccess.swift */,
-				587B9E1729301D8F00AC7927 /* ProjectHook.swift */,
-				587B9E1829301D8F00AC7927 /* EventData.swift */,
-				587B9E1929301D8F00AC7927 /* GitlabAccountModel.swift */,
-				587B9E1A29301D8F00AC7927 /* Event.swift */,
-				587B9E1B29301D8F00AC7927 /* Permissions.swift */,
-				587B9E1C29301D8F00AC7927 /* AvatarURL.swift */,
-				587B9E1D29301D8F00AC7927 /* Namespace.swift */,
-				587B9E1E29301D8F00AC7927 /* EventNote.swift */,
-				587B9E1F29301D8F00AC7927 /* Project.swift */,
-				587B9E2029301D8F00AC7927 /* ProjectAccess.swift */,
-				587B9E2129301D8F00AC7927 /* GitlabUser.swift */,
+				587B9E1529301D8F00AC7927 /* GitLabCommit.swift */,
+				587B9E1629301D8F00AC7927 /* GitLabGroupAccess.swift */,
+				587B9E1729301D8F00AC7927 /* GitLabProjectHook.swift */,
+				587B9E1829301D8F00AC7927 /* GitLabEventData.swift */,
+				587B9E1929301D8F00AC7927 /* GitLabAccountModel.swift */,
+				587B9E1A29301D8F00AC7927 /* GitLabEvent.swift */,
+				587B9E1B29301D8F00AC7927 /* GitLabPermissions.swift */,
+				587B9E1C29301D8F00AC7927 /* GitLabAvatarURL.swift */,
+				587B9E1D29301D8F00AC7927 /* GitLabNamespace.swift */,
+				587B9E1E29301D8F00AC7927 /* GitLabEventNote.swift */,
+				587B9E1F29301D8F00AC7927 /* GitLabProject.swift */,
+				587B9E2029301D8F00AC7927 /* GitLabProjectAccess.swift */,
+				587B9E2129301D8F00AC7927 /* GitLabUser.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1499,9 +1499,9 @@
 		587B9E2229301D8F00AC7927 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
-				587B9E2329301D8F00AC7927 /* Session.swift */,
-				587B9E2429301D8F00AC7927 /* JSONPostRouter.swift */,
-				587B9E2529301D8F00AC7927 /* Router.swift */,
+				587B9E2329301D8F00AC7927 /* GitURLSession.swift */,
+				587B9E2429301D8F00AC7927 /* GitJSONPostRouter.swift */,
+				587B9E2529301D8F00AC7927 /* GitRouter.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -1511,7 +1511,7 @@
 			children = (
 				587B9E2729301D8F00AC7927 /* URL+URLParameters.swift */,
 				587B9E2829301D8F00AC7927 /* String+QueryParameters.swift */,
-				587B9E2929301D8F00AC7927 /* Time.swift */,
+				587B9E2929301D8F00AC7927 /* GitTime.swift */,
 				587B9E2A29301D8F00AC7927 /* String+PercentEncoding.swift */,
 				587B9E2B29301D8F00AC7927 /* Dictionary+Additions.swift */,
 			);
@@ -1525,8 +1525,8 @@
 				587B9E2D29301D8F00AC7927 /* Routers */,
 				587B9E3529301D8F00AC7927 /* GitHubConfiguration.swift */,
 				587B9E3629301D8F00AC7927 /* PublicKey.swift */,
-				587B9E3729301D8F00AC7927 /* PreviewHeader.swift */,
-				587B9E4229301D8F00AC7927 /* Openness.swift */,
+				587B9E3729301D8F00AC7927 /* GitHubPreviewHeader.swift */,
+				587B9E4229301D8F00AC7927 /* GitHubOpenness.swift */,
 				587B9E4329301D8F00AC7927 /* GitHubAccount.swift */,
 			);
 			path = GitHub;
@@ -1535,12 +1535,12 @@
 		587B9E2D29301D8F00AC7927 /* Routers */ = {
 			isa = PBXGroup;
 			children = (
-				587B9E2E29301D8F00AC7927 /* IssueRouter.swift */,
-				587B9E2F29301D8F00AC7927 /* ReviewsRouter.swift */,
-				587B9E3029301D8F00AC7927 /* GitRouter.swift */,
+				587B9E2E29301D8F00AC7927 /* GitHubIssueRouter.swift */,
+				587B9E2F29301D8F00AC7927 /* GitHubReviewsRouter.swift */,
+				587B9E3029301D8F00AC7927 /* GitHubRouter.swift */,
 				587B9E3129301D8F00AC7927 /* GitHubRepositoryRouter.swift */,
-				587B9E3229301D8F00AC7927 /* PullRequestRouter.swift */,
-				587B9E3329301D8F00AC7927 /* GistRouter.swift */,
+				587B9E3229301D8F00AC7927 /* GitHubPullRequestRouter.swift */,
+				587B9E3329301D8F00AC7927 /* GitHubGistRouter.swift */,
 				587B9E3429301D8F00AC7927 /* GitHubUserRouter.swift */,
 			);
 			path = Routers;
@@ -1549,15 +1549,15 @@
 		587B9E3829301D8F00AC7927 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				587B9E3929301D8F00AC7927 /* PullRequest.swift */,
+				587B9E3929301D8F00AC7927 /* GitHubPullRequest.swift */,
 				587B9E3A29301D8F00AC7927 /* GitHubUser.swift */,
-				587B9E3B29301D8F00AC7927 /* Review.swift */,
-				587B9E3C29301D8F00AC7927 /* Comment.swift */,
+				587B9E3B29301D8F00AC7927 /* GitHubReview.swift */,
+				587B9E3C29301D8F00AC7927 /* GitHubComment.swift */,
 				587B9E3D29301D8F00AC7927 /* GitHubRepositories.swift */,
-				587B9E3E29301D8F00AC7927 /* Files.swift */,
-				587B9E3F29301D8F00AC7927 /* Gist.swift */,
-				587B9E4029301D8F00AC7927 /* Issue.swift */,
-				587B9E4129301D8F00AC7927 /* Git.swift */,
+				587B9E3E29301D8F00AC7927 /* GitHubFiles.swift */,
+				587B9E3F29301D8F00AC7927 /* GitHubGist.swift */,
+				587B9E4029301D8F00AC7927 /* GitHubIssue.swift */,
+				587B9E4129301D8F00AC7927 /* GitHubAccount+deleteReference.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1567,10 +1567,10 @@
 			children = (
 				587B9E4D29301D8F00AC7927 /* Model */,
 				587B9E4529301D8F00AC7927 /* Routers */,
-				587B9E4A29301D8F00AC7927 /* BitbucketAccount.swift */,
-				587B9E4B29301D8F00AC7927 /* BitbucketOAuthConfiguration.swift */,
-				587B9E4C29301D8F00AC7927 /* BitbucketTokenConfiguration.swift */,
-				587B9E5029301D8F00AC7927 /* Token.swift */,
+				587B9E4A29301D8F00AC7927 /* BitBucketAccount.swift */,
+				587B9E4B29301D8F00AC7927 /* BitBucketOAuthConfiguration.swift */,
+				587B9E4C29301D8F00AC7927 /* BitBucketTokenConfiguration.swift */,
+				587B9E5029301D8F00AC7927 /* BitBucketAccount+Token.swift */,
 			);
 			path = Bitbucket;
 			sourceTree = "<group>";
@@ -1578,10 +1578,10 @@
 		587B9E4529301D8F00AC7927 /* Routers */ = {
 			isa = PBXGroup;
 			children = (
-				587B9E4629301D8F00AC7927 /* BitbucketRepositoryRouter.swift */,
-				587B9E4729301D8F00AC7927 /* BitbucketUserRouter.swift */,
-				587B9E4829301D8F00AC7927 /* TokenRouter.swift */,
-				587B9E4929301D8F00AC7927 /* OAuthRouter.swift */,
+				587B9E4629301D8F00AC7927 /* BitBucketRepositoryRouter.swift */,
+				587B9E4729301D8F00AC7927 /* BitBucketUserRouter.swift */,
+				587B9E4829301D8F00AC7927 /* BitBucketTokenRouter.swift */,
+				587B9E4929301D8F00AC7927 /* BitBucketOAuthRouter.swift */,
 			);
 			path = Routers;
 			sourceTree = "<group>";
@@ -1589,8 +1589,8 @@
 		587B9E4D29301D8F00AC7927 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				587B9E4E29301D8F00AC7927 /* BitbucketUser.swift */,
-				587B9E4F29301D8F00AC7927 /* BitbucketRepositories.swift */,
+				587B9E4E29301D8F00AC7927 /* BitBucketUser.swift */,
+				587B9E4F29301D8F00AC7927 /* BitBucketRepositories.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1607,8 +1607,8 @@
 		587B9E5229301D8F00AC7927 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				587B9E5329301D8F00AC7927 /* Commit.swift */,
-				587B9E5429301D8F00AC7927 /* ChangedFile.swift */,
+				587B9E5329301D8F00AC7927 /* GitCommit.swift */,
+				587B9E5429301D8F00AC7927 /* GitChangedFile.swift */,
 				587B9E5529301D8F00AC7927 /* GitType.swift */,
 			);
 			path = Models;
@@ -2468,7 +2468,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				58798285292ED0FB0085B254 /* TerminalEmulatorView+Coordinator.swift in Sources */,
-				587B9E7D29301D8F00AC7927 /* PullRequestRouter.swift in Sources */,
+				587B9E7D29301D8F00AC7927 /* GitHubPullRequestRouter.swift in Sources */,
 				5878DA842918642000DD95A3 /* ParsePackagesResolved.swift in Sources */,
 				5879824F292E78D80085B254 /* CodeFileView.swift in Sources */,
 				587B9E8429301D8F00AC7927 /* GitHubUser.swift in Sources */,
@@ -2476,69 +2476,69 @@
 				587B9DA029300ABD00AC7927 /* PanelDivider.swift in Sources */,
 				58822534292C280D00E83CDE /* CursorLocation.swift in Sources */,
 				201169E52837B40300F92B46 /* RepositoriesView.swift in Sources */,
-				587B9E6A29301D8F00AC7927 /* Permissions.swift in Sources */,
-				587B9E9229301D8F00AC7927 /* BitbucketAccount.swift in Sources */,
+				587B9E6A29301D8F00AC7927 /* GitLabPermissions.swift in Sources */,
+				587B9E9229301D8F00AC7927 /* BitBucketAccount.swift in Sources */,
 				58F2EAFE292FB2B0004A9BDE /* GithubEnterpriseLoginView.swift in Sources */,
 				DE513F52281B672D002260B9 /* TabBarAccessory.swift in Sources */,
 				2813F93927ECC4C300E305E4 /* NavigatorSidebar.swift in Sources */,
 				58F2EAF7292FB2B0004A9BDE /* Providers.swift in Sources */,
-				587B9E8A29301D8F00AC7927 /* Issue.swift in Sources */,
+				587B9E8A29301D8F00AC7927 /* GitHubIssue.swift in Sources */,
 				DE513F54281DE5D0002260B9 /* TabBarXcode.swift in Sources */,
 				58798277292ECFD40085B254 /* LSPClient.swift in Sources */,
 				6C14CEB028777D3C001468FE /* FindNavigatorListViewController.swift in Sources */,
 				587B9E7F29301D8F00AC7927 /* GitHubUserRouter.swift in Sources */,
 				20EBB50D280C383700F3A5DA /* LanguageType.swift in Sources */,
-				587B9E9729301D8F00AC7927 /* Token.swift in Sources */,
+				587B9E9729301D8F00AC7927 /* BitBucketAccount+Token.swift in Sources */,
 				581BFB6A2926431000D251EC /* RecentProjectsView.swift in Sources */,
 				587B9E7729301D8F00AC7927 /* String+PercentEncoding.swift in Sources */,
-				587B9E5B29301D8F00AC7927 /* CheckoutBranchView.swift in Sources */,
+				587B9E5B29301D8F00AC7927 /* GitCheckoutBranchView.swift in Sources */,
 				2813F93827ECC4AA00E305E4 /* FindNavigatorResultList.swift in Sources */,
-				587B9E8829301D8F00AC7927 /* Files.swift in Sources */,
+				587B9E8829301D8F00AC7927 /* GitHubFiles.swift in Sources */,
 				201169D92837B31200F92B46 /* SourceControlSearchToolbar.swift in Sources */,
 				0483E35027FDB17700354AC0 /* ExtensionNavigator.swift in Sources */,
 				587B9DA729300ABD00AC7927 /* HelpButton.swift in Sources */,
 				58F2EB08292FB2B0004A9BDE /* TextEditingPreferences.swift in Sources */,
 				201169DB2837B34000F92B46 /* ChangedFileItemView.swift in Sources */,
 				5882252E292C280D00E83CDE /* StatusBarMaximizeButton.swift in Sources */,
-				587B9E6F29301D8F00AC7927 /* ProjectAccess.swift in Sources */,
-				587B9E6929301D8F00AC7927 /* Event.swift in Sources */,
-				587B9E5E29301D8F00AC7927 /* CommitRouter.swift in Sources */,
+				587B9E6F29301D8F00AC7927 /* GitLabProjectAccess.swift in Sources */,
+				587B9E6929301D8F00AC7927 /* GitLabEvent.swift in Sources */,
+				587B9E5E29301D8F00AC7927 /* GitLabCommitRouter.swift in Sources */,
 				58F2EAF4292FB2B0004A9BDE /* ThemeModel.swift in Sources */,
 				58F2EB0D292FB2B0004A9BDE /* ThemePreferences.swift in Sources */,
 				587B9D9F29300ABD00AC7927 /* SegmentedControl.swift in Sources */,
 				58FD7609291EA1CB0051D6E4 /* CommandPaletteView.swift in Sources */,
 				58F2EAFC292FB2B0004A9BDE /* GitAccountItem.swift in Sources */,
-				587B9E8F29301D8F00AC7927 /* BitbucketUserRouter.swift in Sources */,
+				587B9E8F29301D8F00AC7927 /* BitBucketUserRouter.swift in Sources */,
 				58F2EB03292FB2B0004A9BDE /* Documentation.docc in Sources */,
 				2B7A583527E4BA0100D25D4E /* AppDelegate.swift in Sources */,
 				D7012EE827E757850001E1EF /* FindNavigator.swift in Sources */,
 				58A5DF8029325B5A00D1BD5D /* GitClient.swift in Sources */,
 				D7E201AE27E8B3C000CB86D0 /* String+Ranges.swift in Sources */,
-				587B9E6B29301D8F00AC7927 /* AvatarURL.swift in Sources */,
+				587B9E6B29301D8F00AC7927 /* GitLabAvatarURL.swift in Sources */,
 				58798262292EC4080085B254 /* PluginRelease.swift in Sources */,
 				58F2EB10292FB2B0004A9BDE /* PreferencesColorPicker.swift in Sources */,
 				58798233292E30B90085B254 /* FeedbackToolbar.swift in Sources */,
-				587B9E6829301D8F00AC7927 /* GitlabAccountModel.swift in Sources */,
+				587B9E6829301D8F00AC7927 /* GitLabAccountModel.swift in Sources */,
 				5878DAA7291AE76700DD95A3 /* QuickOpenViewModel.swift in Sources */,
 				58F2EAED292FB2B0004A9BDE /* IgnoredFileView.swift in Sources */,
-				587B9E6529301D8F00AC7927 /* GroupAccess.swift in Sources */,
+				587B9E6529301D8F00AC7927 /* GitLabGroupAccess.swift in Sources */,
 				58D01C9B293167DC00C5B6B4 /* CodeEditKeychainConstants.swift in Sources */,
 				58F2EB0C292FB2B0004A9BDE /* SourceControlAccounts.swift in Sources */,
 				20EBB50F280C389300F3A5DA /* FileInspectorModel.swift in Sources */,
 				5878DAB1291D627C00DD95A3 /* BreadcrumbsComponent.swift in Sources */,
 				58822533292C280D00E83CDE /* StatusBarTabType.swift in Sources */,
-				587B9E6E29301D8F00AC7927 /* Project.swift in Sources */,
+				587B9E6E29301D8F00AC7927 /* GitLabProject.swift in Sources */,
 				58798234292E30B90085B254 /* IssueArea.swift in Sources */,
-				587B9E5F29301D8F00AC7927 /* ProjectRouter.swift in Sources */,
-				587B9E7329301D8F00AC7927 /* Router.swift in Sources */,
+				587B9E5F29301D8F00AC7927 /* GitLabProjectRouter.swift in Sources */,
+				587B9E7329301D8F00AC7927 /* GitRouter.swift in Sources */,
 				0463E51327FCC1FB00806D5C /* CodeEditTargetsAPI.swift in Sources */,
 				201169DD2837B3AC00F92B46 /* SourceControlToolbarBottom.swift in Sources */,
 				04C3254D27FF331B00C8DA2D /* ExtensionNavigatorItem.swift in Sources */,
-				587B9E8B29301D8F00AC7927 /* Git.swift in Sources */,
+				587B9E8B29301D8F00AC7927 /* GitHubAccount+deleteReference.swift in Sources */,
 				D7E201B027E8C07300CB86D0 /* FindNavigatorSearchBar.swift in Sources */,
 				58798237292E30B90085B254 /* FeedbackView.swift in Sources */,
-				587B9E9829301D8F00AC7927 /* Commit.swift in Sources */,
-				587B9E9429301D8F00AC7927 /* BitbucketTokenConfiguration.swift in Sources */,
+				587B9E9829301D8F00AC7927 /* GitCommit.swift in Sources */,
+				587B9E9429301D8F00AC7927 /* BitBucketTokenConfiguration.swift in Sources */,
 				581BFB672926431000D251EC /* WelcomeWindowView.swift in Sources */,
 				58A5DFA329339F6400D1BD5D /* CommandManager.swift in Sources */,
 				58F2EAF5292FB2B0004A9BDE /* Theme.swift in Sources */,
@@ -2550,16 +2550,16 @@
 				58798265292EC4080085B254 /* ExtensionsStoreAPI.swift in Sources */,
 				58822528292C280D00E83CDE /* StatusBarEncodingSelector.swift in Sources */,
 				58F2EB0F292FB2B0004A9BDE /* PreferencesSection.swift in Sources */,
-				587B9E8C29301D8F00AC7927 /* Openness.swift in Sources */,
-				587B9E8229301D8F00AC7927 /* PreviewHeader.swift in Sources */,
+				587B9E8C29301D8F00AC7927 /* GitHubOpenness.swift in Sources */,
+				587B9E8229301D8F00AC7927 /* GitHubPreviewHeader.swift in Sources */,
 				58F2EB02292FB2B0004A9BDE /* Loopable.swift in Sources */,
 				28B8F884280FFE4600596236 /* NSTableView+Background.swift in Sources */,
 				58F2EB06292FB2B0004A9BDE /* KeybindingsPreferences.swift in Sources */,
 				200412EF280F3EAC00BCAF5C /* NoCommitHistoryView.swift in Sources */,
-				587B9E8E29301D8F00AC7927 /* BitbucketRepositoryRouter.swift in Sources */,
+				587B9E8E29301D8F00AC7927 /* BitBucketRepositoryRouter.swift in Sources */,
 				043C321427E31FF6006AE443 /* CodeEditDocumentController.swift in Sources */,
-				587B9E6629301D8F00AC7927 /* ProjectHook.swift in Sources */,
-				587B9E9329301D8F00AC7927 /* BitbucketOAuthConfiguration.swift in Sources */,
+				587B9E6629301D8F00AC7927 /* GitLabProjectHook.swift in Sources */,
+				587B9E9329301D8F00AC7927 /* BitBucketOAuthConfiguration.swift in Sources */,
 				58F2EB0A292FB2B0004A9BDE /* AppPreferences.swift in Sources */,
 				20EBB503280C327C00F3A5DA /* HistoryInspector.swift in Sources */,
 				587B9E7529301D8F00AC7927 /* String+QueryParameters.swift in Sources */,
@@ -2570,12 +2570,12 @@
 				58798252292E78D80085B254 /* ImageFileView.swift in Sources */,
 				5882252D292C280D00E83CDE /* StatusBarSplitTerminalButton.swift in Sources */,
 				58798238292E30B90085B254 /* FeedbackWindowController.swift in Sources */,
-				587B9E6C29301D8F00AC7927 /* Namespace.swift in Sources */,
+				587B9E6C29301D8F00AC7927 /* GitLabNamespace.swift in Sources */,
 				587B9E8729301D8F00AC7927 /* GitHubRepositories.swift in Sources */,
 				587B9DA329300ABD00AC7927 /* SettingsTextEditor.swift in Sources */,
 				2072FA1A280D872600C7F8D4 /* LineEndings.swift in Sources */,
 				58F2EAFB292FB2B0004A9BDE /* GitlabLoginView.swift in Sources */,
-				587B9E7B29301D8F00AC7927 /* GitRouter.swift in Sources */,
+				587B9E7B29301D8F00AC7927 /* GitHubRouter.swift in Sources */,
 				201169E22837B3D800F92B46 /* ChangesView.swift in Sources */,
 				20EBB507280C32D300F3A5DA /* QuickHelpInspector.swift in Sources */,
 				DE6405A62817734700881FDF /* TabBarNative.swift in Sources */,
@@ -2583,10 +2583,10 @@
 				58798235292E30B90085B254 /* FeedbackModel.swift in Sources */,
 				587B9D56292FC27A00AC7927 /* ExtensionManager.swift in Sources */,
 				04C3255C2801F86900C8DA2D /* OutlineMenu.swift in Sources */,
-				587B9E6429301D8F00AC7927 /* GitlabCommit.swift in Sources */,
+				587B9E6429301D8F00AC7927 /* GitLabCommit.swift in Sources */,
 				58A5DFA229339F6400D1BD5D /* KeybindingManager.swift in Sources */,
 				58AFAA2E2933C69E00482B53 /* TabBarItemRepresentable.swift in Sources */,
-				587B9E7A29301D8F00AC7927 /* ReviewsRouter.swift in Sources */,
+				587B9E7A29301D8F00AC7927 /* GitHubReviewsRouter.swift in Sources */,
 				04540D5E27DD08C300E91B77 /* WorkspaceView.swift in Sources */,
 				DE6F77872813625500D00A76 /* TabBarDivider.swift in Sources */,
 				D7211D4327E066CE008F2ED7 /* Localized+Ex.swift in Sources */,
@@ -2595,7 +2595,7 @@
 				58F2EAFD292FB2B0004A9BDE /* GithubLoginView.swift in Sources */,
 				587D9B782933BF5700BF7490 /* Interface.swift in Sources */,
 				2072FA1E280D891500C7F8D4 /* Location.swift in Sources */,
-				587B9E6729301D8F00AC7927 /* EventData.swift in Sources */,
+				587B9E6729301D8F00AC7927 /* GitLabEventData.swift in Sources */,
 				5882252F292C280D00E83CDE /* StatusBarClearButton.swift in Sources */,
 				58F2EB04292FB2B0004A9BDE /* SourceControlPreferences.swift in Sources */,
 				582213F0291834A500EFE361 /* AboutView.swift in Sources */,
@@ -2608,7 +2608,7 @@
 				5C4BB1E128212B1E00A92FB2 /* World.swift in Sources */,
 				D7E201B227E8D50000CB86D0 /* FindNavigatorModeSelector.swift in Sources */,
 				287776E927E34BC700D46668 /* TabBar.swift in Sources */,
-				587B9E6329301D8F00AC7927 /* GitlabAccount.swift in Sources */,
+				587B9E6329301D8F00AC7927 /* GitLabAccount.swift in Sources */,
 				285FEC7027FE4B9800E57D53 /* OutlineTableViewCell.swift in Sources */,
 				58F2EAF8292FB2B0004A9BDE /* AccountListItem.swift in Sources */,
 				587B9E7429301D8F00AC7927 /* URL+URLParameters.swift in Sources */,
@@ -2619,27 +2619,27 @@
 				587D9B762933BF5700BF7490 /* Mocks.swift in Sources */,
 				58A5DF7D2931787A00D1BD5D /* ShellClient.swift in Sources */,
 				5879821A292D92370085B254 /* SearchResultModel.swift in Sources */,
-				587B9E8929301D8F00AC7927 /* Gist.swift in Sources */,
+				587B9E8929301D8F00AC7927 /* GitHubGist.swift in Sources */,
 				0485EB1F27E7458B00138301 /* WorkspaceCodeFileView.swift in Sources */,
 				58D01C94293167DC00C5B6B4 /* Color+HEX.swift in Sources */,
 				58798251292E78D80085B254 /* OtherFileView.swift in Sources */,
 				587D9B752933BF5700BF7490 /* FileItem.swift in Sources */,
-				587B9E7929301D8F00AC7927 /* IssueRouter.swift in Sources */,
+				587B9E7929301D8F00AC7927 /* GitHubIssueRouter.swift in Sources */,
 				587B9E8029301D8F00AC7927 /* GitHubConfiguration.swift in Sources */,
 				58822524292C280D00E83CDE /* StatusBar.swift in Sources */,
-				587B9E7E29301D8F00AC7927 /* GistRouter.swift in Sources */,
+				587B9E7E29301D8F00AC7927 /* GitHubGistRouter.swift in Sources */,
 				581BFB682926431000D251EC /* WelcomeView.swift in Sources */,
-				587B9E7129301D8F00AC7927 /* Session.swift in Sources */,
+				587B9E7129301D8F00AC7927 /* GitURLSession.swift in Sources */,
 				5882252C292C280D00E83CDE /* StatusBarDrawer.swift in Sources */,
 				2847019E27FDDF7600F87B6B /* OutlineView.swift in Sources */,
 				6C14CEB32877A68F001468FE /* FindNavigatorMatchListCell.swift in Sources */,
 				58F2EAF6292FB2B0004A9BDE /* PreferenceAccountsView.swift in Sources */,
 				20EBB501280C325D00F3A5DA /* FileInspectorView.swift in Sources */,
 				58822531292C280D00E83CDE /* View+isHovering.swift in Sources */,
-				587B9E9929301D8F00AC7927 /* ChangedFile.swift in Sources */,
+				587B9E9929301D8F00AC7927 /* GitChangedFile.swift in Sources */,
 				58F2EAF2292FB2B0004A9BDE /* EditorThemeView.swift in Sources */,
 				58F2EB0E292FB2B0004A9BDE /* SoftwareUpdater.swift in Sources */,
-				587B9E9529301D8F00AC7927 /* BitbucketUser.swift in Sources */,
+				587B9E9529301D8F00AC7927 /* BitBucketUser.swift in Sources */,
 				587B9E7C29301D8F00AC7927 /* GitHubRepositoryRouter.swift in Sources */,
 				286471AB27ED51FD0039369D /* ProjectNavigator.swift in Sources */,
 				58798264292EC4080085B254 /* Plugin.swift in Sources */,
@@ -2653,14 +2653,14 @@
 				5878DAA8291AE76700DD95A3 /* QuickOpenItem.swift in Sources */,
 				58FD7608291EA1CB0051D6E4 /* CommandPaletteViewModel.swift in Sources */,
 				5878DA872918642F00DD95A3 /* AcknowledgementsViewModel.swift in Sources */,
-				587B9E7029301D8F00AC7927 /* GitlabUser.swift in Sources */,
+				587B9E7029301D8F00AC7927 /* GitLabUser.swift in Sources */,
 				04660F6A27E51E5C00477777 /* CodeEditWindowController.swift in Sources */,
 				58798218292D92370085B254 /* String+SafeOffset.swift in Sources */,
-				587B9E6129301D8F00AC7927 /* GitlabOAuthConfiguration.swift in Sources */,
-				587B9E6229301D8F00AC7927 /* GitlabConfiguration.swift in Sources */,
+				587B9E6129301D8F00AC7927 /* GitLabOAuthConfiguration.swift in Sources */,
+				587B9E6229301D8F00AC7927 /* GitLabConfiguration.swift in Sources */,
 				5879821B292D92370085B254 /* SearchResultMatchModel.swift in Sources */,
 				043BCF05281DA19A000AC47C /* WorkspaceDocument+Selection.swift in Sources */,
-				587B9E5929301D8F00AC7927 /* CheckoutBranch.swift in Sources */,
+				587B9E5929301D8F00AC7927 /* GitCheckoutBranchView+CheckoutBranch.swift in Sources */,
 				58F2EB09292FB2B0004A9BDE /* TerminalPreferences.swift in Sources */,
 				587D9B742933BF5700BF7490 /* FileItem+Array.swift in Sources */,
 				587D9B772933BF5700BF7490 /* Live.swift in Sources */,
@@ -2669,21 +2669,21 @@
 				58F2EB07292FB2B0004A9BDE /* GeneralPreferences.swift in Sources */,
 				587B9E9A29301D8F00AC7927 /* GitType.swift in Sources */,
 				58D01C97293167DC00C5B6B4 /* String+SHA256.swift in Sources */,
-				587B9E7629301D8F00AC7927 /* Time.swift in Sources */,
+				587B9E7629301D8F00AC7927 /* GitTime.swift in Sources */,
 				2072FA16280D83A500C7F8D4 /* FileTypeList.swift in Sources */,
-				587B9E5D29301D8F00AC7927 /* UserRouter.swift in Sources */,
+				587B9E5D29301D8F00AC7927 /* GitLabUserRouter.swift in Sources */,
 				04C3254F2800AA4700C8DA2D /* ExtensionInstallationView.swift in Sources */,
 				58822530292C280D00E83CDE /* FilterTextField.swift in Sources */,
-				58798266292EC4080085B254 /* Response.swift in Sources */,
+				58798266292EC4080085B254 /* APIResponse.swift in Sources */,
 				58F2EAEF292FB2B0004A9BDE /* ThemePreferencesView.swift in Sources */,
 				B6EE989027E8879A00CDD8AB /* InspectorSidebar.swift in Sources */,
 				587B9DA229300ABD00AC7927 /* EffectView.swift in Sources */,
 				58798250292E78D80085B254 /* CodeFile.swift in Sources */,
 				5878DAA5291AE76700DD95A3 /* QuickOpenView.swift in Sources */,
 				201169D72837B2E300F92B46 /* SourceControlNavigatorView.swift in Sources */,
-				587B9E8329301D8F00AC7927 /* PullRequest.swift in Sources */,
+				587B9E8329301D8F00AC7927 /* GitHubPullRequest.swift in Sources */,
 				5878DA82291863F900DD95A3 /* AcknowledgementsView.swift in Sources */,
-				587B9E8529301D8F00AC7927 /* Review.swift in Sources */,
+				587B9E8529301D8F00AC7927 /* GitHubReview.swift in Sources */,
 				58D01C9A293167DC00C5B6B4 /* CodeEditKeychain.swift in Sources */,
 				20D839AB280DEB2900B27357 /* NoSelectionView.swift in Sources */,
 				587B9E5A29301D8F00AC7927 /* GitCloneView.swift in Sources */,
@@ -2696,22 +2696,22 @@
 				58F2EAEC292FB2B0004A9BDE /* IgnoredFiles.swift in Sources */,
 				58F2EAEB292FB2B0004A9BDE /* SourceControlGitView.swift in Sources */,
 				58798236292E30B90085B254 /* FeedbackType.swift in Sources */,
-				587B9E6D29301D8F00AC7927 /* EventNote.swift in Sources */,
-				587B9E9129301D8F00AC7927 /* OAuthRouter.swift in Sources */,
+				587B9E6D29301D8F00AC7927 /* GitLabEventNote.swift in Sources */,
+				587B9E9129301D8F00AC7927 /* BitBucketOAuthRouter.swift in Sources */,
 				58822532292C280D00E83CDE /* StatusBarViewModel.swift in Sources */,
 				043BCF03281DA18A000AC47C /* WorkspaceDocument+Search.swift in Sources */,
 				58822527292C280D00E83CDE /* StatusBarIndentSelector.swift in Sources */,
-				587B9E9629301D8F00AC7927 /* BitbucketRepositories.swift in Sources */,
+				587B9E9629301D8F00AC7927 /* BitBucketRepositories.swift in Sources */,
 				5878DAA6291AE76700DD95A3 /* QuickOpenPreviewView.swift in Sources */,
 				58798286292ED0FB0085B254 /* SwiftTerm+Color+Init.swift in Sources */,
-				587B9E7229301D8F00AC7927 /* JSONPostRouter.swift in Sources */,
+				587B9E7229301D8F00AC7927 /* GitJSONPostRouter.swift in Sources */,
 				5878DAB0291D627C00DD95A3 /* BreadcrumbsMenu.swift in Sources */,
 				04C325512800AC7400C8DA2D /* ExtensionInstallationViewModel.swift in Sources */,
 				587B9DA529300ABD00AC7927 /* PressActionsModifier.swift in Sources */,
 				28B0A19827E385C300B73177 /* NavigatorSidebarToolbarTop.swift in Sources */,
-				587B9E8629301D8F00AC7927 /* Comment.swift in Sources */,
+				587B9E8629301D8F00AC7927 /* GitHubComment.swift in Sources */,
 				58F2EAE9292FB2B0004A9BDE /* PreferenceSourceControlView.swift in Sources */,
-				587B9E9029301D8F00AC7927 /* TokenRouter.swift in Sources */,
+				587B9E9029301D8F00AC7927 /* BitBucketTokenRouter.swift in Sources */,
 				58822525292C280D00E83CDE /* StatusBarMenuLabel.swift in Sources */,
 				58F2EB11292FB2B0004A9BDE /* PreferencesToolbar.swift in Sources */,
 				58F2EAF0292FB2B0004A9BDE /* PreviewThemeView.swift in Sources */,
@@ -2721,11 +2721,11 @@
 				587B9E8129301D8F00AC7927 /* PublicKey.swift in Sources */,
 				58F2EB0B292FB2B0004A9BDE /* AccountsPreferences.swift in Sources */,
 				58F2EB00292FB2B0004A9BDE /* LocationsPreferencesView.swift in Sources */,
-				58798267292EC4080085B254 /* Page.swift in Sources */,
+				58798267292EC4080085B254 /* APIPage.swift in Sources */,
 				5882252A292C280D00E83CDE /* StatusBarToggleDrawerButton.swift in Sources */,
 				04C3255B2801F86400C8DA2D /* OutlineViewController.swift in Sources */,
 				58798263292EC4080085B254 /* DownloadedPlugin.swift in Sources */,
-				587B9E6029301D8F00AC7927 /* GitlabOAuthRouter.swift in Sources */,
+				587B9E6029301D8F00AC7927 /* GitLabOAuthRouter.swift in Sources */,
 				6C05A8AF284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift in Sources */,
 				587D9B732933BF5700BF7490 /* FileIcon.swift in Sources */,
 				58F2EAF9292FB2B0004A9BDE /* AccountSelectionDialog.swift in Sources */,

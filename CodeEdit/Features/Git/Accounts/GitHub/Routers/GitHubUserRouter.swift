@@ -7,22 +7,22 @@
 
 import Foundation
 
-enum GitHubUserRouter: Router {
-    case readAuthenticatedUser(RouterConfiguration)
-    case readUser(String, RouterConfiguration)
+enum GitHubUserRouter: GitRouter {
+    case readAuthenticatedUser(GitRouterConfiguration)
+    case readUser(String, GitRouterConfiguration)
 
-    var configuration: RouterConfiguration? {
+    var configuration: GitRouterConfiguration? {
         switch self {
         case let .readAuthenticatedUser(config): return config
         case let .readUser(_, config): return config
         }
     }
 
-    var method: HTTPMethod {
+    var method: GitHTTPMethod {
         .GET
     }
 
-    var encoding: HTTPEncoding {
+    var encoding: GitHTTPEncoding {
         .url
     }
 
