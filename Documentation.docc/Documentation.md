@@ -28,7 +28,6 @@
 ### CodeFile
 
 - ``CodeFileDocument``
-- ``CodeFileView``
 
 ### CommandPalette
 
@@ -75,10 +74,6 @@
 - ``SearchResultModel``
 - ``SearchResultMatchModel``
 
-### TerminalEmulator
-
-- ``TerminalEmulatorView``
-
 ### Utils
 
 - ``CodeEditKeychain``
@@ -87,4 +82,4 @@
 
 ### Welcome
 
-- ``WelcomeView``
+- <doc:Welcome-Window>

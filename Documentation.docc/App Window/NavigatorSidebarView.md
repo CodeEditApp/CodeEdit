@@ -23,7 +23,7 @@
 - ``SourceControlToolbarBottom``
 - ``SourceControlNavigatorRepositoriesView``
 - ``SourceControlNavigatorChangesView``
-- ``SourceControlNavigatorChangedFileItemView``
+- ``SourceControlNavigatorChangedFileView``
 
 ### Find Navigator
 

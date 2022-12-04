@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-/// Protocol for data passed to TabBarItem to conform to
+/// Protocol for data passed to TabBarItemView to conform to
 protocol TabBarItemRepresentable {
     /// Unique tab identifier
     var tabID: TabBarItemID { get }

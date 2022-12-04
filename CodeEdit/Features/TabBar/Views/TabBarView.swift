@@ -1,5 +1,5 @@
 //
-//  TabBar.swift
+//  TabBarView.swift
 //  CodeEdit
 //
 //  Created by Lukas Pistrol and Lingxi Li on 17.03.22.
@@ -11,8 +11,8 @@ import SwiftUI
 // It has the gesture implementation and its animations.
 // I am now also disabling `file_length` rule because the dragging algorithm (with UX) is complex.
 // swiftlint:disable file_length type_body_length
-// - TODO: TabBarItem drop-outside event handler.
-struct TabBar: View {
+// - TODO: TabBarItemView drop-outside event handler.
+struct TabBarView: View {
     /// The height of tab bar.
     /// I am not making it a private variable because it may need to be used in outside views.
     static let height = 28.0
@@ -149,7 +149,7 @@ struct TabBar: View {
                 }
                 // TODO: Enable this code snippet when re-enabling dragging-out behavior.
                 // I disabled (1 == 0) this behavior for now as dragging-out behavior isn't allowed.
-                if 1 == 0 && abs(value.location.y - value.startLocation.y) > TabBar.height {
+                if 1 == 0 && abs(value.location.y - value.startLocation.y) > TabBarView.height {
                     shouldOnDrag = true
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
                         shouldOnDrag = false
@@ -299,7 +299,7 @@ struct TabBar: View {
                         ) {
                             ForEach(openedTabs, id: \.id) { id in
                                 if let item = workspace.selectionState.getItemByTab(id: id) {
-                                    TabBarItem(
+                                    TabBarItemView(
                                         expectedWidth: $expectedTabWidth,
                                         item: item,
                                         windowController: windowController,
@@ -307,7 +307,7 @@ struct TabBar: View {
                                         onDragTabId: $onDragTabId,
                                         workspace: workspace
                                     )
-                                    .frame(height: TabBar.height)
+                                    .frame(height: TabBarView.height)
                                     .background(makeTabItemGeometryReader(id: id))
                                     .offset(x: tabOffsets[id] ?? 0, y: 0)
                                     .highPriorityGesture(
@@ -364,7 +364,7 @@ struct TabBar: View {
                                 }
                             }
                         }
-                        .frame(height: TabBar.height)
+                        .frame(height: TabBarView.height)
                     }
                 }
                 // When there is no opened file, hide the scroll view, but keep the background.
@@ -384,7 +384,7 @@ struct TabBar: View {
             // Tab bar tools (e.g. split view).
             trailingAccessories
         }
-        .frame(height: TabBar.height)
+        .frame(height: TabBarView.height)
         .overlay(alignment: .top) {
             // When tab bar style is `xcode`, we put the top divider as an overlay.
             if prefs.preferences.general.tabBarStyle == .xcode {
@@ -398,7 +398,7 @@ struct TabBar: View {
                     blendingMode: NSVisualEffectView.BlendingMode.withinWindow
                 )
                 // Set bottom padding to avoid material overlapping in bar.
-                .padding(.bottom, TabBar.height)
+                .padding(.bottom, TabBarView.height)
                 .edgesIgnoringSafeArea(.top)
             } else {
                 TabBarNativeMaterial()

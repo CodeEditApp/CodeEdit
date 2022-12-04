@@ -26,7 +26,7 @@ struct TabBarAccessoryIcon: View {
             label: {
                 icon
                     .font(TabBarAccessoryIcon.iconFont)
-                    .frame(height: TabBar.height - 2)
+                    .frame(height: TabBarView.height - 2)
                     .padding(.horizontal, 4)
                     .contentShape(Rectangle())
             }

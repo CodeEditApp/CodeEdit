@@ -4,6 +4,12 @@ A collection of all the views that make up the main app window.
 
 ## Topics
 
+### Main Content
+
+- ``CodeFileView``
+- ``ImageFileView``
+- ``OtherFileView``
+
 ### Breadcrumbs
 
 - ``BreadcrumbsView``
@@ -25,5 +31,8 @@ A collection of all the views that make up the main app window.
 
 ### Tab Bar
 
-- ``TabBar``
-- ``TabBarItem``
+- ``TabBarView``
+
+### Terminal Emulator
+
+- ``TerminalEmulatorView``

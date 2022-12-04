@@ -31,7 +31,7 @@ struct SourceControlNavigatorChangesView: View {
                 List(selection: $selectedFile) {
                     Section("Local Changes") {
                         ForEach(model.changed) { file in
-                            SourceControlNavigatorChangedFileItemView(changedFile: file,
+                            SourceControlNavigatorChangedFileView(changedFile: file,
                                                 selection: $selectedFile,
                                                 workspaceURL: model.workspaceURL)
                         }

@@ -1,5 +1,5 @@
 //
-//  TabBarItem.swift
+//  TabBarItemView.swift
 //  CodeEdit
 //
 //  Created by Lukas Pistrol on 17.03.22.
@@ -16,7 +16,7 @@ import SwiftUI
 // I kept some blank lines to make this file organized, so I have to disable the file length rule.
 // Disable `type_body_length` because this view is fairly complicated and I have modularized some parts.
 // swiftlint:disable file_length type_body_length
-struct TabBarItem: View {
+struct TabBarItemView: View {
     @Environment(\.colorScheme)
     private var colorScheme
 
