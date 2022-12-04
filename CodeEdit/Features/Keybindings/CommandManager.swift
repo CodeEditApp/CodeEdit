@@ -70,10 +70,11 @@ struct Command: Identifiable, Hashable {
     }
 }
 
-/// A typealias of interface used for command closure declaration
-typealias WorkspaceClientClosure = () -> Void
 /// A simple wrapper for command closure
 struct ClosureWrapper {
+
+    /// A typealias of interface used for command closure declaration
+    typealias WorkspaceClientClosure = () -> Void
 
     let workspaceClientClosure: WorkspaceClientClosure?
 

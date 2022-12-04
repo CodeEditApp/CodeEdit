@@ -177,7 +177,6 @@
 		587B9E7529301D8F00AC7927 /* String+QueryParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E2829301D8F00AC7927 /* String+QueryParameters.swift */; };
 		587B9E7629301D8F00AC7927 /* GitTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E2929301D8F00AC7927 /* GitTime.swift */; };
 		587B9E7729301D8F00AC7927 /* String+PercentEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E2A29301D8F00AC7927 /* String+PercentEncoding.swift */; };
-		587B9E7829301D8F00AC7927 /* Dictionary+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E2B29301D8F00AC7927 /* Dictionary+Additions.swift */; };
 		587B9E7929301D8F00AC7927 /* GitHubIssueRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E2E29301D8F00AC7927 /* GitHubIssueRouter.swift */; };
 		587B9E7A29301D8F00AC7927 /* GitHubReviewsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E2F29301D8F00AC7927 /* GitHubReviewsRouter.swift */; };
 		587B9E7B29301D8F00AC7927 /* GitHubRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E3029301D8F00AC7927 /* GitHubRouter.swift */; };
@@ -538,7 +537,6 @@
 		587B9E2829301D8F00AC7927 /* String+QueryParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+QueryParameters.swift"; sourceTree = "<group>"; };
 		587B9E2929301D8F00AC7927 /* GitTime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitTime.swift; sourceTree = "<group>"; };
 		587B9E2A29301D8F00AC7927 /* String+PercentEncoding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+PercentEncoding.swift"; sourceTree = "<group>"; };
-		587B9E2B29301D8F00AC7927 /* Dictionary+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+Additions.swift"; sourceTree = "<group>"; };
 		587B9E2E29301D8F00AC7927 /* GitHubIssueRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubIssueRouter.swift; sourceTree = "<group>"; };
 		587B9E2F29301D8F00AC7927 /* GitHubReviewsRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubReviewsRouter.swift; sourceTree = "<group>"; };
 		587B9E3029301D8F00AC7927 /* GitHubRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubRouter.swift; sourceTree = "<group>"; };
@@ -1513,7 +1511,6 @@
 				587B9E2829301D8F00AC7927 /* String+QueryParameters.swift */,
 				587B9E2929301D8F00AC7927 /* GitTime.swift */,
 				587B9E2A29301D8F00AC7927 /* String+PercentEncoding.swift */,
-				587B9E2B29301D8F00AC7927 /* Dictionary+Additions.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -2691,7 +2688,6 @@
 				20EBB505280C329800F3A5DA /* HistoryItem.swift in Sources */,
 				58F2EAEA292FB2B0004A9BDE /* SourceControlGeneralView.swift in Sources */,
 				5878DAB2291D627C00DD95A3 /* BreadcrumbsView.swift in Sources */,
-				587B9E7829301D8F00AC7927 /* Dictionary+Additions.swift in Sources */,
 				043C321627E3201F006AE443 /* WorkspaceDocument.swift in Sources */,
 				58F2EAEC292FB2B0004A9BDE /* IgnoredFiles.swift in Sources */,
 				58F2EAEB292FB2B0004A9BDE /* SourceControlGitView.swift in Sources */,

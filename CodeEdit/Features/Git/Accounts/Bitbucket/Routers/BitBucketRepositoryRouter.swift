@@ -32,7 +32,7 @@ enum BitBucketRepositoryRouter: GitRouter {
             if userName != nil {
                 return nextParameters as [String: Any]
             } else {
-                nextParameters += ["role": "member"]
+                nextParameters["role"] = "member"
                 return nextParameters as [String: Any]
             }
         case .readRepository:

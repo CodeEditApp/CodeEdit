@@ -17,7 +17,7 @@ struct GitLabOAuthConfiguration: GitRouterConfiguration {
     let webEndpoint: String
     let errorDomain = "com.codeedit.models.accounts.gitlab"
 
-    init(_ url: String = gitlabBaseURL, webURL: String = gitlabWebURL,
+    init(_ url: String = GitURL.gitlabBaseURL, webURL: String = GitURL.gitlabWebURL,
          token: String, secret: String, redirectURI: String
     ) {
         apiEndpoint = url

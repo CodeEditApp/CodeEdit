@@ -11,6 +11,8 @@ import FoundationNetworking
 #endif
 
 class GitHubGist: Codable {
+    typealias GitHubFiles = [String: GitHubFile]
+
     private(set) var id: String?
     var url: URL?
     var forksURL: URL?

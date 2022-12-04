@@ -26,7 +26,7 @@ final class SourceControlModel: ObservableObject {
     ///
     init(workspaceURL: URL) {
         self.workspaceURL = workspaceURL
-        gitClient = GitClient(directoryURL: workspaceURL, shellClient: Current.shellClient)
+        gitClient = GitClient(directoryURL: workspaceURL, shellClient: currentWorld.shellClient)
         do {
             changed = try gitClient.getChangedFiles()
         } catch {

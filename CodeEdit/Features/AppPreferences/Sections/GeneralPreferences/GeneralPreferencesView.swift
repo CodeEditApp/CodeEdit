@@ -279,6 +279,12 @@ private extension GeneralPreferencesView {
         }
     }
 
+    private static func configure<Subject>(_ subject: Subject, configuration: (inout Subject) -> Void) -> Subject {
+        var copy = subject
+        configuration(&copy)
+        return copy
+    }
+
     private static let formatter = configure(DateFormatter()) {
         $0.dateStyle = .medium
         $0.timeStyle = .medium
@@ -341,10 +347,4 @@ private extension GeneralPreferencesView {
                 .toggleStyle(.checkbox)
         }
     }
-}
-
-func configure<Subject>(_ subject: Subject, configuration: (inout Subject) -> Void) -> Subject {
-    var copy = subject
-    configuration(&copy)
-    return copy
 }

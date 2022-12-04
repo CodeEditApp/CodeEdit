@@ -190,7 +190,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
             let toolbarItem = NSToolbarItem(itemIdentifier: .branchPicker)
             let view = NSHostingView(
                 rootView: ToolbarBranchPicker(
-                    shellClient: Current.shellClient,
+                    shellClient: currentWorld.shellClient,
                     workspace: workspace?.workspaceClient
                 )
             )

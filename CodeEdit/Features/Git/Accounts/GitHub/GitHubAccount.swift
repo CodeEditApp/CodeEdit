@@ -9,9 +9,6 @@ import Foundation
 
 // TODO: DOCS (Nanashi Li)
 
-let githubBaseURL = "https://api.github.com"
-let githubWebURL = "https://github.com"
-
 struct GitHubAccount {
     let configuration: GitHubTokenConfiguration
 

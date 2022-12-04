@@ -27,7 +27,7 @@ struct GitHubTokenConfiguration: GitRouterConfiguration {
         return previewCustomHeaders
     }
 
-    init(_ token: String? = nil, url: String = githubBaseURL, previewHeaders: [GitHubPreviewHeader] = []) {
+    init(_ token: String? = nil, url: String = GitURL.githubBaseURL, previewHeaders: [GitHubPreviewHeader] = []) {
         apiEndpoint = url
         accessToken = token?.data(using: .utf8)!.base64EncodedString()
         previewCustomHeaders = previewHeaders.map { $0.header }
@@ -54,7 +54,7 @@ struct OAuthConfiguration: GitRouterConfiguration {
         return previewCustomHeaders
     }
 
-    init(_ url: String = githubBaseURL, webURL: String = githubWebURL,
+    init(_ url: String = GitURL.githubBaseURL, webURL: String = GitURL.githubWebURL,
          token: String, secret: String, scopes: [String], previewHeaders: [GitHubPreviewHeader] = []
     ) {
         apiEndpoint = url

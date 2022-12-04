@@ -8,8 +8,6 @@
 import Foundation
 
 // TODO: DOCS (Nanashi Li)
-let bitbucketBaseURL = "https://api.bitbucket.org/2.0"
-let bitbucketWebURL = "https://bitbucket.org/"
 
 struct BitBucketAccount {
     let configuration: BitBucketTokenConfiguration

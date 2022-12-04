@@ -16,7 +16,7 @@ struct BitBucketOAuthConfiguration: GitRouterConfiguration {
     let webEndpoint: String
     let errorDomain = "com.codeedit.models.accounts.bitbucket"
 
-    init(_ url: String = bitbucketBaseURL, webURL: String = bitbucketWebURL,
+    init(_ url: String = GitURL.bitbucketBaseURL, webURL: String = GitURL.bitbucketWebURL,
          token: String, secret: String, scopes: [String]
     ) {
         apiEndpoint = url

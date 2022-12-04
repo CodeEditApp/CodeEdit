@@ -54,8 +54,6 @@ extension GitRouterConfiguration {
     }
 }
 
-let gitErrorKey = "ErrorKey"
-
 protocol GitRouter {
     var method: GitHTTPMethod { get }
     var path: String { get }
@@ -88,6 +86,8 @@ protocol GitRouter {
 }
 
 extension GitRouter {
+
+    var gitErrorKey: String { "ErrorKey" }
 
     func request() -> URLRequest? {
         let url = URL(string: path, relativeTo: URL(string: configuration?.apiEndpoint ?? "")!)

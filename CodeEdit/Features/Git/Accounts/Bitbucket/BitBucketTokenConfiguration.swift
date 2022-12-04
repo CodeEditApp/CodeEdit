@@ -14,7 +14,7 @@ struct BitBucketTokenConfiguration: GitRouterConfiguration {
     var expirationDate: Date?
     let errorDomain = "com.codeedit.models.accounts.bitbucket"
 
-    init(json: [String: AnyObject], url: String = bitbucketBaseURL) {
+    init(json: [String: AnyObject], url: String = GitURL.bitbucketBaseURL) {
         apiEndpoint = url
         accessToken = json["access_token"] as? String
         refreshToken = json["refresh_token"] as? String
@@ -26,7 +26,7 @@ struct BitBucketTokenConfiguration: GitRouterConfiguration {
     init(_ token: String? = nil,
          refreshToken: String? = nil,
          expirationDate: Date? = nil,
-         url: String = bitbucketBaseURL
+         url: String = GitURL.bitbucketBaseURL
     ) {
         apiEndpoint = url
         accessToken = token

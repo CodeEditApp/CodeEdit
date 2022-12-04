@@ -8,7 +8,6 @@
 import Foundation
 
 // TODO: DOCS (Nanashi Li)
-typealias GitHubFiles = [String: GitHubFile]
 
 class GitHubFile: Codable {
     private(set) var id: Int = -1
