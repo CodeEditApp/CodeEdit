@@ -74,15 +74,3 @@ struct PreferencesSection<Content: View>: View {
         }
     }
 }
-
-struct PreferencesSection_Previews: PreviewProvider {
-    static var previews: some View {
-        PreferencesSection("Title") {
-            Picker("Test", selection: .constant(true)) {
-                Text("Hi")
-                    .tag(true)
-            }
-            Text("Whats up?")
-        }
-    }
-}

@@ -2,27 +2,17 @@
 
 ## Topics
 
-### About
+### About Window
 
-- ``AboutView``
-- ``AboutViewWindowController``
-
-### Acknowledgements
-
-- ``AcknowledgementsView``
-- ``AcknowledgementsViewModel``
-- ``AcknowledgementsViewWindowController``
+- <doc:About-Window>
 
 ### AppPreferences
 
 - ``AppPreferences``
-- ``AppPreferencesModel``
 
-### Breadcrumbs
+### App Window
 
-- ``BreadcrumbsView``
-- ``BreadcrumbsComponent``
-- ``BreadcrumsMenu``
+- <doc:App-Window>
 
 ### CodeEditExtension
 
@@ -65,10 +55,6 @@
 
 - <doc:Git>
 
-### InspectorSidebar
-
-- ``InspectorSidebar``
-
 ### Keybindings
 
 - ``KeybindingManager``
@@ -77,10 +63,6 @@
 ### LanguageServerProtocol
 
 - ``LSPClient``
-
-### NavigatorSidebar
-
-- ``NavigatorSidebar``
 
 ### QuickOpen
 
@@ -92,16 +74,6 @@
 - ``SearchModeModel``
 - ``SearchResultModel``
 - ``SearchResultMatchModel``
-
-### StatusBar
-
-- ``StatusBarView``
-- ``StatusBarViewModel``
-
-### TabBar
-
-- ``TabBar``
-- ``TabBarItem``
 
 ### TerminalEmulator
 

@@ -39,10 +39,3 @@ struct RecentProjectItem: View {
         .contentShape(Rectangle())
     }
 }
-
-struct RecentProjectItem_Previews: PreviewProvider {
-    static var previews: some View {
-        RecentProjectItem(projectPath: "/repos/CodeEdit")
-            .frame(width: 300)
-    }
-}

@@ -216,9 +216,3 @@ struct FeedbackView: View {
         FeedbackWindowController(view: self, size: NSSize(width: 1028, height: 762)).showWindow(nil)
     }
 }
-
-struct FeedbackView_Previews: PreviewProvider {
-    static var previews: some View {
-        FeedbackView()
-    }
-}

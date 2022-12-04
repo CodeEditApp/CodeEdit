@@ -171,10 +171,3 @@ struct PreferenceAccountsView: View {
     }
 
 }
-
-struct PreferenceAccountsView_Previews: PreviewProvider {
-    static var previews: some View {
-        PreferenceAccountsView()
-            .preferredColorScheme(.dark)
-    }
-}

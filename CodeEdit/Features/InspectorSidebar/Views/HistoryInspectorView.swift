@@ -1,12 +1,12 @@
 //
-//  HistoryInspector.swift
+//  HistoryInspectorView.swift
 //  CodeEdit
 //
 //  Created by Nanashi Li on 2022/03/24.
 //
 import SwiftUI
 
-struct HistoryInspector: View {
+struct HistoryInspectorView: View {
 
     @ObservedObject
     private var model: HistoryInspectorModel
@@ -22,12 +22,12 @@ struct HistoryInspector: View {
     var body: some View {
         VStack {
             if model.commitHistory.isEmpty {
-                NoCommitHistoryView()
+                HistoryInspectorNoHistoryView()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
                 List(selection: $selectedCommitHistory) {
                     ForEach(model.commitHistory) { commit in
-                        HistoryItem(commit: commit, selection: $selectedCommitHistory)
+                        HistoryInspectorItemView(commit: commit, selection: $selectedCommitHistory)
                             .tag(commit)
                     }
                 }

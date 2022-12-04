@@ -110,22 +110,3 @@ final class AcknowledgementsViewWindowController: NSWindowController {
         NSAnimationContext.endGrouping()
     }
 }
-
-struct Acknowledgements_Previews: PreviewProvider {
-    static var previews: some View {
-        AcknowledgementsView([
-            AcknowledgementDependency(name: "Hi", repositoryLink: "Test", version: "1.2.3"),
-            AcknowledgementDependency(name: "Hi", repositoryLink: "Test", version: "1.2.3"),
-            AcknowledgementDependency(name: "Hi", repositoryLink: "Test", version: "1.2.3"),
-            AcknowledgementDependency(name: "Hi", repositoryLink: "Test", version: "1.2.3"),
-            AcknowledgementDependency(name: "Hi", repositoryLink: "Test", version: "1.2.3")
-        ]).preferredColorScheme(.dark)
-        AcknowledgementsView([
-            AcknowledgementDependency(name: "Hi", repositoryLink: "Test", version: "1.2.3"),
-            AcknowledgementDependency(name: "Hi", repositoryLink: "Test", version: "1.2.3"),
-            AcknowledgementDependency(name: "Hi", repositoryLink: "Test", version: "1.2.3"),
-            AcknowledgementDependency(name: "Hi", repositoryLink: "Test", version: "1.2.3"),
-            AcknowledgementDependency(name: "Hi", repositoryLink: "Test", version: "1.2.3")
-        ]).preferredColorScheme(.light)
-    }
-}

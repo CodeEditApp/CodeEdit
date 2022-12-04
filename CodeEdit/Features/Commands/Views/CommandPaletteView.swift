@@ -183,15 +183,6 @@ struct CommandPaletteView: View {
     }
 }
 
-struct CommandPaletteView_Previews: PreviewProvider {
-    static var previews: some View {
-        CommandPaletteView(
-            state: .init(),
-            closePalette: {}
-        )
-    }
-}
-
 private class ActionAwareInputView: NSTextView, NSTextFieldDelegate {
 
     var onDown: ((NSEvent) -> Bool)?

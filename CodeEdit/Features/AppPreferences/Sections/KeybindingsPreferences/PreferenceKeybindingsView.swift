@@ -14,9 +14,3 @@ struct PreferenceKeybindingsView: View {
         }
     }
 }
-
-struct PreferenceKeybindingsView_Previews: PreviewProvider {
-    static var previews: some View {
-        PreferenceKeybindingsView()
-    }
-}

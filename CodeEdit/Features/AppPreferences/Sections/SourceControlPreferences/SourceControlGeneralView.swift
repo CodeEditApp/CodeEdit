@@ -94,9 +94,3 @@ struct SourceControlGeneralView: View {
         .background(EffectView(.contentBackground))
     }
 }
-
-struct SourceControlGeneralView_Previews: PreviewProvider {
-    static var previews: some View {
-        SourceControlGeneralView(isChecked: true, branchName: "main")
-    }
-}

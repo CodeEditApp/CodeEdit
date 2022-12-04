@@ -31,10 +31,3 @@ struct StatusBarBreakpointButton: View {
         .buttonStyle(.plain)
     }
 }
-
-struct StatusBarBreakpointButton_Previews: PreviewProvider {
-    static var previews: some View {
-        let url = URL(string: "~/Developer")!
-        StatusBarBreakpointButton(model: StatusBarViewModel(workspaceURL: url))
-    }
-}

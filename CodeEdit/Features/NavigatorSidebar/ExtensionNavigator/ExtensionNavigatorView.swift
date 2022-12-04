@@ -1,5 +1,5 @@
 //
-//  ExtensionNavigator.swift
+//  ExtensionNavigatorView.swift
 //  CodeEdit
 //
 //  Created by Pavel Kasila on 6.04.22.
@@ -8,7 +8,7 @@
 import SwiftUI
 import Combine
 
-struct ExtensionNavigator: View {
+struct ExtensionNavigatorView: View {
     @EnvironmentObject var workspace: WorkspaceDocument
     @ObservedObject var data: ExtensionNavigatorData
     @State var showing = false
@@ -18,7 +18,7 @@ struct ExtensionNavigator: View {
             Divider() // TODO: fix this workaround because when switching tabs without this, the app crashes
             List {
                 ForEach(data.plugins) { plugin in
-                    ExtensionNavigatorItem(plugin: plugin)
+                    ExtensionNavigatorItemView(plugin: plugin)
                         .tag(plugin)
                         .environmentObject(workspace)
                 }

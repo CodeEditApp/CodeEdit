@@ -34,10 +34,3 @@ struct HelpButton: View {
         .buttonStyle(PlainButtonStyle())
     }
 }
-
-struct HelpButton_Previews: PreviewProvider {
-    static var previews: some View {
-        HelpButton {}
-            .padding()
-    }
-}

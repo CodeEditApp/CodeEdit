@@ -1,5 +1,5 @@
 //
-//  InspectorSidebar.swift
+//  InspectorSidebarView.swift
 //  CodeEdit
 //
 //  Created by Austin Condiff on 3/21/22.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct InspectorSidebar: View {
+struct InspectorSidebarView: View {
 
     @ObservedObject
     private var workspace: WorkspaceDocument
@@ -33,15 +33,15 @@ struct InspectorSidebar: View {
                         FileInspectorView(workspaceURL: workspace.fileURL!,
                                           fileURL: codeFile.fileURL!.path)
                     case 1:
-                        HistoryInspector(workspaceURL: workspace.fileURL!,
+                        HistoryInspectorView(workspaceURL: workspace.fileURL!,
                                          fileURL: codeFile.fileURL!.path)
                     case 2:
-                        QuickHelpInspector().padding(5)
+                        QuickHelpInspectorView().padding(5)
                     default: EmptyView()
                     }
                 }
             } else {
-                NoSelectionView()
+                NoSelectionInspectorView()
             }
         }
         .frame(

@@ -239,15 +239,3 @@ struct WelcomeView: View {
         }
     }
 }
-
-struct WelcomeView_Previews: PreviewProvider {
-    static var previews: some View {
-        WelcomeView(
-            shellClient: .live(),
-            openDocument: { _, _  in },
-            newDocument: {},
-            dismissWindow: {}
-        )
-        .frame(width: 800, height: 460)
-    }
-}

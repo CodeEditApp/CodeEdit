@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ExtensionNavigatorItem: View {
+struct ExtensionNavigatorItemView: View {
     var plugin: Plugin
     @EnvironmentObject var document: WorkspaceDocument
 

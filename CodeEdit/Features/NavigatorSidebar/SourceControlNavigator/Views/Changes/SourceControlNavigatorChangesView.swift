@@ -1,5 +1,5 @@
 //
-//  ChangesView.swift
+//  SourceControlNavigatorChangesView.swift
 //  CodeEdit
 //
 //  Created by Nanashi Li on 2022/05/20.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ChangesView: View {
+struct SourceControlNavigatorChangesView: View {
 
     @ObservedObject
     var model: SourceControlModel
@@ -31,7 +31,7 @@ struct ChangesView: View {
                 List(selection: $selectedFile) {
                     Section("Local Changes") {
                         ForEach(model.changed) { file in
-                            ChangedFileItemView(changedFile: file,
+                            SourceControlNavigatorChangedFileItemView(changedFile: file,
                                                 selection: $selectedFile,
                                                 workspaceURL: model.workspaceURL)
                         }

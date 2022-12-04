@@ -44,9 +44,3 @@ struct LocationsPreferencesView: View {
         }
     }
 }
-
-private struct LocationsPreferences_Previews: PreviewProvider {
-    static var previews: some View {
-        LocationsPreferencesView()
-    }
-}

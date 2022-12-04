@@ -44,10 +44,3 @@ struct FilterTextField: View {
         .buttonStyle(PlainButtonStyle())
     }
 }
-
-struct FilterTextField_Previews: PreviewProvider {
-    static var previews: some View {
-        FilterTextField(title: "Filter", text: .constant(""))
-        FilterTextField(title: "Filter", text: .constant("codeedi"))
-    }
-}

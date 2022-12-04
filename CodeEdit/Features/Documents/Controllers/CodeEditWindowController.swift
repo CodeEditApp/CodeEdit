@@ -67,7 +67,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     private func setupSplitView(with workspace: WorkspaceDocument) {
         let splitVC = NSSplitViewController()
 
-        let navigatorView = NavigatorSidebar(workspace: workspace, windowController: self)
+        let navigatorView = NavigatorSidebarView(workspace: workspace, windowController: self)
         let navigator = NSSplitViewItem(
             sidebarWithViewController: NSHostingController(rootView: navigatorView)
         )
@@ -83,7 +83,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
         mainContent.titlebarSeparatorStyle = .line
         splitVC.addSplitViewItem(mainContent)
 
-        let inspectorView = InspectorSidebar(workspace: workspace, windowController: self)
+        let inspectorView = InspectorSidebarView(workspace: workspace, windowController: self)
         let inspector = NSSplitViewItem(
             viewController: NSHostingController(rootView: inspectorView)
         )

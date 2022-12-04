@@ -78,10 +78,3 @@ struct FontPicker: View {
         self.font = NSFontPanel.shared.convert(self.font)
     }
 }
-
-struct FontPicker_Previews: PreviewProvider {
-    static var previews: some View {
-        FontPicker("Font Picker", name: .constant("SF-MonoMedium"), size: .constant(11))
-            .padding()
-    }
-}

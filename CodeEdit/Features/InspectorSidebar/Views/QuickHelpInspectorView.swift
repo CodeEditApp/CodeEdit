@@ -1,12 +1,12 @@
 //
-//  QuickHelpInspector.swift
+//  QuickHelpInspectorView.swift
 //  CodeEdit
 //
 //  Created by Nanashi Li on 2022/03/24.
 //
 import SwiftUI
 
-struct QuickHelpInspector: View {
+struct QuickHelpInspectorView: View {
     var body: some View {
         VStack(alignment: .leading) {
 
@@ -33,11 +33,5 @@ struct QuickHelpInspector: View {
             Divider().padding(.top, 15)
 
         }.frame(maxWidth: 250).padding(5)
-    }
-}
-
-struct QuickHelpInspector_Previews: PreviewProvider {
-    static var previews: some View {
-        QuickHelpInspector()
     }
 }

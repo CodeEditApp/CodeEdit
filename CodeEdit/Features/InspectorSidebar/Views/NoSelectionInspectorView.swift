@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct NoSelectionView: View {
+struct NoSelectionInspectorView: View {
     var body: some View {
         VStack {
             Text("No Selection")
@@ -15,11 +15,5 @@ struct NoSelectionView: View {
                 .foregroundColor(.secondary)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-    }
-}
-
-struct NoSelectionView_Previews: PreviewProvider {
-    static var previews: some View {
-        NoSelectionView()
     }
 }

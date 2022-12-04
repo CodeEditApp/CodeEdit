@@ -132,13 +132,3 @@ struct SegmentedControlItem: View {
         }
     }
 }
-
-struct SegmentedControl_Previews: PreviewProvider {
-    static var previews: some View {
-        SegmentedControl(.constant(0), options: ["Tab 1", "Tab 2"], prominent: true)
-            .padding()
-
-        SegmentedControl(.constant(0), options: ["Tab 1", "Tab 2"])
-            .padding()
-    }
-}

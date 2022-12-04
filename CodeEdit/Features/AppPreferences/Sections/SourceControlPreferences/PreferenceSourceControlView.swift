@@ -31,9 +31,3 @@ struct PreferenceSourceControlView: View {
         }
     }
 }
-
-struct PreferenceSourceControlView_Previews: PreviewProvider {
-    static var previews: some View {
-        PreferenceSourceControlView()
-    }
-}

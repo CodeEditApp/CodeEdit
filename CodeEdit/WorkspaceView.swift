@@ -155,12 +155,6 @@ struct WorkspaceView: View {
     }
 }
 
-struct WorkspaceView_Previews: PreviewProvider {
-    static var previews: some View {
-        WorkspaceView(windowController: NSWindowController(), workspace: .init())
-    }
-}
-
 private struct WorkspaceFullscreenStateEnvironmentKey: EnvironmentKey {
     static let defaultValue: Bool = false
 }

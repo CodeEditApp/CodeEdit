@@ -1,5 +1,5 @@
 //
-//  NavigatorSidebar.swift
+//  ProjectNavigatorView.swift
 //  CodeEdit
 //
 //  Created by Lukas Pistrol on 25.03.22.
@@ -14,7 +14,7 @@ import SwiftUI
 ///
 /// When selecting a file it will open in the editor.
 ///
-struct ProjectNavigator: View {
+struct ProjectNavigatorView: View {
     @ObservedObject var workspace: WorkspaceDocument
     var windowController: NSWindowController
 

@@ -125,9 +125,3 @@ extension View {
             .menuIndicator(.hidden)
     }
 }
-
-struct SearchModeSelector_Previews: PreviewProvider {
-    static var previews: some View {
-        FindNavigatorModeSelector(state: WorkspaceDocument.SearchState(WorkspaceDocument()))
-    }
-}

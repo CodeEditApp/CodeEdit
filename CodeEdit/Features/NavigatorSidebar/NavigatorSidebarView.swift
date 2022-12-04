@@ -1,5 +1,5 @@
 //
-//  SideBar.swift
+//  NavigatorSidebarView.swift
 //  CodeEdit
 //
 //  Created by Lukas Pistrol on 17.03.22.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct NavigatorSidebar: View {
+struct NavigatorSidebarView: View {
     @ObservedObject
     private var workspace: WorkspaceDocument
 
@@ -27,13 +27,13 @@ struct NavigatorSidebar: View {
         VStack {
             switch selection {
             case 0:
-                ProjectNavigator(workspace: workspace, windowController: windowController)
+                ProjectNavigatorView(workspace: workspace, windowController: windowController)
             case 1:
                 SourceControlNavigatorView(workspace: workspace)
             case 2:
-                FindNavigator(workspace: workspace, state: workspace.searchState ?? .init(workspace))
+                FindNavigatorView(workspace: workspace, state: workspace.searchState ?? .init(workspace))
             case 7:
-                ExtensionNavigator(data: workspace.extensionNavigatorData)
+                ExtensionNavigatorView(data: workspace.extensionNavigatorData)
                     .environmentObject(workspace)
             default:
                 Spacer()

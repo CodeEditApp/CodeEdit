@@ -83,13 +83,3 @@ struct QuickOpenView: View {
                maxHeight: self.state.isShowingOpenQuicklyFiles ? .infinity : 28)
     }
 }
-
-struct QuickOpenView_Previews: PreviewProvider {
-    static var previews: some View {
-        QuickOpenView(
-            state: .init(fileURL: .init(fileURLWithPath: "")),
-            onClose: {},
-            openFile: { _ in }
-        )
-    }
-}
