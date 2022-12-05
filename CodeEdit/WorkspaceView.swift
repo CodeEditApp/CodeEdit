@@ -90,7 +90,7 @@ struct WorkspaceView: View {
                     }
                     .safeAreaInset(edge: .top, spacing: 0) {
                         VStack(spacing: 0) {
-                            TabBar(windowController: windowController, workspace: workspace)
+                            TabBarView(windowController: windowController, workspace: workspace)
                             TabBarBottomDivider()
                         }
                     }
@@ -152,12 +152,6 @@ struct WorkspaceView: View {
                 }
             }
         }
-    }
-}
-
-struct WorkspaceView_Previews: PreviewProvider {
-    static var previews: some View {
-        WorkspaceView(windowController: NSWindowController(), workspace: .init())
     }
 }
 

@@ -10,7 +10,7 @@ import Foundation
 import FoundationNetworking
 #endif
 
-struct GitHubTokenConfiguration: RouterConfiguration {
+struct GitHubTokenConfiguration: GitRouterConfiguration {
     var apiEndpoint: String?
     var accessToken: String?
     let errorDomain: String? = "com.codeedit.models.accounts.github"
@@ -20,21 +20,21 @@ struct GitHubTokenConfiguration: RouterConfiguration {
     ///
     /// Used for preview support of new APIs, for instance Reaction API.
     /// see: https://developer.github.com/changes/2016-05-12-reactions-api-preview/
-    private var previewCustomHeaders: [HTTPHeader]?
+    private var previewCustomHeaders: [GitHTTPHeader]?
 
-    var customHeaders: [HTTPHeader]? {
+    var customHeaders: [GitHTTPHeader]? {
         /// More (non-preview) headers can be appended if needed in the future
         return previewCustomHeaders
     }
 
-    init(_ token: String? = nil, url: String = githubBaseURL, previewHeaders: [PreviewHeader] = []) {
+    init(_ token: String? = nil, url: String = GitURL.githubBaseURL, previewHeaders: [GitHubPreviewHeader] = []) {
         apiEndpoint = url
         accessToken = token?.data(using: .utf8)!.base64EncodedString()
         previewCustomHeaders = previewHeaders.map { $0.header }
     }
 }
 
-struct OAuthConfiguration: RouterConfiguration {
+struct GitHubOAuthConfiguration: GitRouterConfiguration {
     var apiEndpoint: String?
     var accessToken: String?
     let token: String
@@ -47,15 +47,15 @@ struct OAuthConfiguration: RouterConfiguration {
     ///
     /// Used for preview support of new APIs, for instance Reaction API.
     /// see: https://developer.github.com/changes/2016-05-12-reactions-api-preview/
-    private var previewCustomHeaders: [HTTPHeader]?
+    private var previewCustomHeaders: [GitHTTPHeader]?
 
-    var customHeaders: [HTTPHeader]? {
+    var customHeaders: [GitHTTPHeader]? {
         /// More (non-preview) headers can be appended if needed in the future
         return previewCustomHeaders
     }
 
-    init(_ url: String = githubBaseURL, webURL: String = githubWebURL,
-         token: String, secret: String, scopes: [String], previewHeaders: [PreviewHeader] = []
+    init(_ url: String = GitURL.githubBaseURL, webURL: String = GitURL.githubWebURL,
+         token: String, secret: String, scopes: [String], previewHeaders: [GitHubPreviewHeader] = []
     ) {
         apiEndpoint = url
         webEndpoint = webURL
@@ -116,18 +116,18 @@ struct OAuthConfiguration: RouterConfiguration {
     }
 }
 
-enum GitHubOAuthRouter: Router {
-    case authorize(OAuthConfiguration)
-    case accessToken(OAuthConfiguration, String)
+enum GitHubOAuthRouter: GitRouter {
+    case authorize(GitHubOAuthConfiguration)
+    case accessToken(GitHubOAuthConfiguration, String)
 
-    var configuration: RouterConfiguration? {
+    var configuration: GitRouterConfiguration? {
         switch self {
         case let .authorize(config): return config
         case let .accessToken(config, _): return config
         }
     }
 
-    var method: HTTPMethod {
+    var method: GitHTTPMethod {
         switch self {
         case .authorize:
             return .GET
@@ -136,7 +136,7 @@ enum GitHubOAuthRouter: Router {
         }
     }
 
-    var encoding: HTTPEncoding {
+    var encoding: GitHTTPEncoding {
         switch self {
         case .authorize:
             return .url

@@ -137,8 +137,9 @@ final class OutlineTableViewCell: NSTableCellView {
     }
 }
 
-let errorRed = NSColor.init(red: 1, green: 0, blue: 0, alpha: 0.2)
 extension OutlineTableViewCell: NSTextFieldDelegate {
+    var errorRed: NSColor { .init(red: 1, green: 0, blue: 0, alpha: 0.2) }
+
     func controlTextDidChange(_ obj: Notification) {
         print("Contents changed to \(label?.stringValue ?? "idk")")
         print("File validity: \(validateFileName(for: label?.stringValue ?? ""))")

@@ -17,7 +17,7 @@ internal struct StatusBarToggleDrawerButton: View {
             name: "Toggle Drawer",
             title: "Toggle Drawer",
             id: "open.drawer",
-            command: ClosureWrapper.init(closure: togglePanel))
+            command: CommandClosureWrapper.init(closure: togglePanel))
     }
 
     func togglePanel() {

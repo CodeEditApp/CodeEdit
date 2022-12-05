@@ -183,16 +183,7 @@ struct CommandPaletteView: View {
     }
 }
 
-struct CommandPaletteView_Previews: PreviewProvider {
-    static var previews: some View {
-        CommandPaletteView(
-            state: .init(),
-            closePalette: {}
-        )
-    }
-}
-
-class ActionAwareInputView: NSTextView, NSTextFieldDelegate {
+private class ActionAwareInputView: NSTextView, NSTextFieldDelegate {
 
     var onDown: ((NSEvent) -> Bool)?
     var onTextChange: ((String) -> Void)?
@@ -265,7 +256,7 @@ struct SearchResultLabel: NSViewRepresentable {
 
 /// A special NSTextView based input that allows to override onkeyDown events and add according handlers.
 /// Very useful when need to use arrows to navigate through the list of items that matches entered text
-struct ActionAwareInput: NSViewRepresentable {
+private struct ActionAwareInput: NSViewRepresentable {
 
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     var fontColor: Color {

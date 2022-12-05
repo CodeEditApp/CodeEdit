@@ -214,9 +214,3 @@ struct RecentProjectsView: View {
         }
     }
 }
-
-struct RecentProjectsView_Previews: PreviewProvider {
-    static var previews: some View {
-        RecentProjectsView(openDocument: { _, _ in }, dismissWindow: {})
-    }
-}

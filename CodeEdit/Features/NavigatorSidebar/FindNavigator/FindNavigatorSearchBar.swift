@@ -92,16 +92,3 @@ struct FindNavigatorSearchBar: View {
         .buttonStyle(PlainButtonStyle())
     }
 }
-
-struct SearchBar_Previews: PreviewProvider {
-    static var previews: some View {
-        HStack {
-            FindNavigatorSearchBar(
-                state: .init(WorkspaceDocument.init()),
-                title: "placeholder",
-                text: .constant("value")
-            )
-        }
-        .padding()
-    }
-}

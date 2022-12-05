@@ -7,12 +7,12 @@
 
 import Foundation
 
-enum GitHubRepositoryRouter: Router {
-    case readRepositories(RouterConfiguration, String, String, String)
-    case readAuthenticatedRepositories(RouterConfiguration, String, String)
-    case readRepository(RouterConfiguration, String, String)
+enum GitHubRepositoryRouter: GitRouter {
+    case readRepositories(GitRouterConfiguration, String, String, String)
+    case readAuthenticatedRepositories(GitRouterConfiguration, String, String)
+    case readRepository(GitRouterConfiguration, String, String)
 
-    var configuration: RouterConfiguration? {
+    var configuration: GitRouterConfiguration? {
         switch self {
         case let .readRepositories(config, _, _, _): return config
         case let .readAuthenticatedRepositories(config, _, _): return config
@@ -20,11 +20,11 @@ enum GitHubRepositoryRouter: Router {
         }
     }
 
-    var method: HTTPMethod {
+    var method: GitHTTPMethod {
         .GET
     }
 
-    var encoding: HTTPEncoding {
+    var encoding: GitHTTPEncoding {
         .url
     }
 

@@ -57,7 +57,7 @@ struct WelcomeWindowView: View {
         let windowController = NSWindowController(window: window)
 
         window.contentView = NSHostingView(rootView: WelcomeWindowView(
-            shellClient: Current.shellClient,
+            shellClient: currentWorld.shellClient,
             openDocument: { url, opened in
                 if let url = url {
                     CodeEditDocumentController.shared.openDocument(withContentsOf: url, display: true) { doc, _, _ in

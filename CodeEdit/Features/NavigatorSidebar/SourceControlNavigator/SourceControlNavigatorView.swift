@@ -34,12 +34,12 @@ struct SourceControlNavigatorView: View {
 
             if selectedSection == 0 {
                 if let urlString = workspace.fileURL {
-                    ChangesView(workspaceURL: urlString)
+                    SourceControlNavigatorChangesView(workspaceURL: urlString)
                 }
             }
 
             if selectedSection == 1 {
-                RepositoriesView()
+                SourceControlNavigatorRepositoriesView()
             }
         }
     }

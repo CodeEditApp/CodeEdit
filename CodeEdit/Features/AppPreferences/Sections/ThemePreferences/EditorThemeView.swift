@@ -85,9 +85,3 @@ struct EditorThemeView: View {
         }
     }
 }
-
-private struct EditorThemeView_Previews: PreviewProvider {
-    static var previews: some View {
-        EditorThemeView()
-    }
-}

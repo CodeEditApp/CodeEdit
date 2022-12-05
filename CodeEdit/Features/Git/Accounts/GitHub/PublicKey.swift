@@ -16,8 +16,8 @@ extension GitHubAccount {
                        publicKey: String,
                        title: String,
                        completion: @escaping (_ response: Result<String, Error>) -> Void
-    ) -> URLSessionDataTaskProtocol? {
-        let router = PublicKeyRouter.postPublicKey(publicKey, title, configuration)
+    ) -> GitURLSessionDataTaskProtocol? {
+        let router = GitHubPublicKeyRouter.postPublicKey(publicKey, title, configuration)
 
         return router.postJSON(
             session,
@@ -34,23 +34,23 @@ extension GitHubAccount {
     }
 }
 
-enum PublicKeyRouter: JSONPostRouter {
-    case postPublicKey(String, String, RouterConfiguration)
+enum GitHubPublicKeyRouter: GitJSONPostRouter {
+    case postPublicKey(String, String, GitRouterConfiguration)
 
-    var configuration: RouterConfiguration? {
+    var configuration: GitRouterConfiguration? {
         switch self {
         case let .postPublicKey(_, _, config): return config
         }
     }
 
-    var method: HTTPMethod {
+    var method: GitHTTPMethod {
         switch self {
         case .postPublicKey:
             return .POST
         }
     }
 
-    var encoding: HTTPEncoding {
+    var encoding: GitHTTPEncoding {
         switch self {
         case .postPublicKey:
             return .json

@@ -39,9 +39,3 @@ struct SourceControlToolbarBottom: View {
         .frame(maxWidth: 30)
     }
 }
-
-struct SourceControlToolbarBottom_Previews: PreviewProvider {
-    static var previews: some View {
-        SourceControlToolbarBottom()
-    }
-}

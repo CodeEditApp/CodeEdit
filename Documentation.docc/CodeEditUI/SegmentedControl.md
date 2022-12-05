@@ -1,4 +1,4 @@
-# ``CodeEditUI/SegmentedControl``
+# ``CodeEdit/SegmentedControl``
 
 ## Usage
 
@@ -12,3 +12,9 @@ SegementedControl($selected, options: items)
 ## Preview
 
 ![Segmented Control](SegmentedControl_View.png)
+
+## Topics
+
+### Item
+
+- ``SegmentedControlItem``

@@ -16,7 +16,7 @@ struct AcknowledgementsView: View {
         self.model = .init()
     }
 
-    init(_ dependencies: [Dependency]) {
+    init(_ dependencies: [AcknowledgementDependency]) {
         self.model = .init(dependencies)
     }
 
@@ -43,7 +43,7 @@ struct AcknowledgementsView: View {
 struct AcknowledgementRow: View {
     @Environment(\.openURL) var openURL
 
-    var acknowledgement: Dependency
+    var acknowledgement: AcknowledgementDependency
 
     var body: some View {
         HStack(alignment: .firstTextBaseline, spacing: 10) {
@@ -108,24 +108,5 @@ final class AcknowledgementsViewWindowController: NSWindowController {
         }
         window?.animator().alphaValue = 0.0
         NSAnimationContext.endGrouping()
-    }
-}
-
-struct Acknowledgements_Previews: PreviewProvider {
-    static var previews: some View {
-        AcknowledgementsView([
-            Dependency(name: "Hi", repositoryLink: "Test", version: "1.2.3"),
-            Dependency(name: "Hi", repositoryLink: "Test", version: "1.2.3"),
-            Dependency(name: "Hi", repositoryLink: "Test", version: "1.2.3"),
-            Dependency(name: "Hi", repositoryLink: "Test", version: "1.2.3"),
-            Dependency(name: "Hi", repositoryLink: "Test", version: "1.2.3")
-        ]).preferredColorScheme(.dark)
-        AcknowledgementsView([
-            Dependency(name: "Hi", repositoryLink: "Test", version: "1.2.3"),
-            Dependency(name: "Hi", repositoryLink: "Test", version: "1.2.3"),
-            Dependency(name: "Hi", repositoryLink: "Test", version: "1.2.3"),
-            Dependency(name: "Hi", repositoryLink: "Test", version: "1.2.3"),
-            Dependency(name: "Hi", repositoryLink: "Test", version: "1.2.3")
-        ]).preferredColorScheme(.light)
     }
 }

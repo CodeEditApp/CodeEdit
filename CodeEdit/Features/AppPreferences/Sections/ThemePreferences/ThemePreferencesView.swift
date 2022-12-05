@@ -216,10 +216,3 @@ struct ThemePreferencesView: View {
         }
     }
 }
-
-private struct PrefsThemes_Previews: PreviewProvider {
-    static var previews: some View {
-        ThemePreferencesView()
-            .preferredColorScheme(.light)
-    }
-}

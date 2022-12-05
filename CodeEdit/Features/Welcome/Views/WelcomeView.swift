@@ -210,7 +210,7 @@ struct WelcomeView: View {
             )
         }
         .sheet(isPresented: $showCheckoutBranch) {
-            CheckoutBranchView(
+            GitCheckoutBranchView(
                 isPresented: $showCheckoutBranch,
                 repoPath: $repoPath,
                 shellClient: shellClient
@@ -237,17 +237,5 @@ struct WelcomeView: View {
         .onHover { hover in
             isHoveringClose = hover
         }
-    }
-}
-
-struct WelcomeView_Previews: PreviewProvider {
-    static var previews: some View {
-        WelcomeView(
-            shellClient: .live(),
-            openDocument: { _, _  in },
-            newDocument: {},
-            dismissWindow: {}
-        )
-        .frame(width: 800, height: 460)
     }
 }

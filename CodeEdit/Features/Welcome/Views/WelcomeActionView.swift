@@ -37,13 +37,3 @@ struct WelcomeActionView: View {
         .contentShape(Rectangle())
     }
 }
-
-struct WelcomeActionView_Previews: PreviewProvider {
-    static var previews: some View {
-        WelcomeActionView(
-            iconName: "plus.square",
-            title: "Create a new file",
-            subtitle: "Create a new file"
-        )
-    }
-}

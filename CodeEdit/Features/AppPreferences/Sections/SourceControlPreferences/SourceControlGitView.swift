@@ -82,9 +82,3 @@ struct SourceControlGitView: View {
         }
     }
 }
-
-struct SourceControlGitView_Previews: PreviewProvider {
-    static var previews: some View {
-        SourceControlGitView().preferredColorScheme(.dark)
-    }
-}

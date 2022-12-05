@@ -69,15 +69,3 @@ struct BreadcrumbsView: View {
         }
     }
 }
-
-struct BreadcrumbsView_Previews: PreviewProvider {
-    static var previews: some View {
-        BreadcrumbsView(file: .init(url: .init(fileURLWithPath: ""))) { _ in }
-            .previewLayout(.fixed(width: 500, height: 29))
-            .preferredColorScheme(.dark)
-
-        BreadcrumbsView(file: .init(url: .init(fileURLWithPath: ""))) { _ in }
-            .previewLayout(.fixed(width: 500, height: 29))
-            .preferredColorScheme(.light)
-    }
-}

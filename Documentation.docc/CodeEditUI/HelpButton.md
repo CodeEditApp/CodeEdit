@@ -1,4 +1,4 @@
-# ``CodeEditUI/HelpButton``
+# ``CodeEdit/HelpButton``
 
 ## Usage
 

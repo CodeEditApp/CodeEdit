@@ -40,7 +40,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
             name: "Quick Open",
             title: "Quick Open",
             id: "quick_open",
-            command: ClosureWrapper(closure: {
+            command: CommandClosureWrapper(closure: {
                 self.openQuickly(self)
             })
         )
@@ -49,7 +49,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
             name: "Toggle Left Sidebar",
             title: "Toggle Left Sidebar",
             id: "toggle_left_sidebar",
-            command: ClosureWrapper(closure: {
+            command: CommandClosureWrapper(closure: {
                 self.toggleFirstPanel()
             })
         )
@@ -58,7 +58,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
             name: "Toggle Right Sidebar",
             title: "Toggle Right Sidebar",
             id: "toggle_right_sidebar",
-            command: ClosureWrapper(closure: {
+            command: CommandClosureWrapper(closure: {
                 self.toggleLastPanel()
             })
         )
@@ -67,7 +67,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     private func setupSplitView(with workspace: WorkspaceDocument) {
         let splitVC = NSSplitViewController()
 
-        let navigatorView = NavigatorSidebar(workspace: workspace, windowController: self)
+        let navigatorView = NavigatorSidebarView(workspace: workspace, windowController: self)
         let navigator = NSSplitViewItem(
             sidebarWithViewController: NSHostingController(rootView: navigatorView)
         )
@@ -83,7 +83,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
         mainContent.titlebarSeparatorStyle = .line
         splitVC.addSplitViewItem(mainContent)
 
-        let inspectorView = InspectorSidebar(workspace: workspace, windowController: self)
+        let inspectorView = InspectorSidebarView(workspace: workspace, windowController: self)
         let inspector = NSSplitViewItem(
             viewController: NSHostingController(rootView: inspectorView)
         )
@@ -190,7 +190,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
             let toolbarItem = NSToolbarItem(itemIdentifier: .branchPicker)
             let view = NSHostingView(
                 rootView: ToolbarBranchPicker(
-                    shellClient: Current.shellClient,
+                    shellClient: currentWorld.shellClient,
                     workspace: workspace?.workspaceClient
                 )
             )

@@ -1,5 +1,4 @@
-// swiftlint:disable:next identifier_name
-var Current: World = .init()
+var currentWorld: World = .init()
 
 // Inspired by: https://vimeo.com/291588126
 struct World {

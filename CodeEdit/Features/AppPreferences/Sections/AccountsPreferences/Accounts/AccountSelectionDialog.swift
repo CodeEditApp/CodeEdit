@@ -9,16 +9,16 @@ import SwiftUI
 
 struct AccountSelectionDialog: View {
     var gitProviders = [
-        Providers(name: "Bitbucket Cloud", id: "bitbucketCloud"),
-        Providers(name: "Bitbucket Server", id: "bitbucketServer"),
-        Providers(name: "GitHub", id: "github"),
-        Providers(name: "GitHub Enterprise", id: "githubEnterprise"),
-        Providers(name: "GitLab", id: "gitlab"),
-        Providers(name: "GitLab Self-Hosted", id: "gitlabSelfHosted")
+        SourceControlProvider(name: "Bitbucket Cloud", id: "bitbucketCloud"),
+        SourceControlProvider(name: "Bitbucket Server", id: "bitbucketServer"),
+        SourceControlProvider(name: "GitHub", id: "github"),
+        SourceControlProvider(name: "GitHub Enterprise", id: "githubEnterprise"),
+        SourceControlProvider(name: "GitLab", id: "gitlab"),
+        SourceControlProvider(name: "GitLab Self-Hosted", id: "gitlabSelfHosted")
     ]
 
     @State
-    var providerSelection: Providers.ID? = "github"
+    var providerSelection: SourceControlProvider.ID? = "github"
 
     @State
     var openGitLogin = false
@@ -32,7 +32,7 @@ struct AccountSelectionDialog: View {
                 .font(.system(size: 12))
 
             List(gitProviders, selection: $providerSelection) {
-                AccountListItem(gitClientName: $0.name)
+                AccountListItemView(gitClientName: $0.name)
             }
             .background(Color(NSColor.controlBackgroundColor))
             .padding(1)

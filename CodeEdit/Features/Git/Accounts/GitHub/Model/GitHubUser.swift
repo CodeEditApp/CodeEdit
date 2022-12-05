@@ -77,12 +77,12 @@ extension GitHubAccount {
     func user(_ session: GitURLSession = URLSession.shared,
               name: String,
               completion: @escaping (_ response: Result<GitHubUser, Error>) -> Void
-    ) -> URLSessionDataTaskProtocol? {
+    ) -> GitURLSessionDataTaskProtocol? {
         let router = GitHubUserRouter.readUser(name, configuration)
 
         return router.load(
             session,
-            dateDecodingStrategy: .formatted(Time.rfc3339DateFormatter),
+            dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
             expectedResultType: GitHubUser.self) { user, error in
             if let error = error {
                 completion(.failure(error))
@@ -102,12 +102,12 @@ extension GitHubAccount {
     @discardableResult
     func me(_ session: GitURLSession = URLSession.shared,
             completion: @escaping (_ response: Result<GitHubUser, Error>) -> Void
-    ) -> URLSessionDataTaskProtocol? {
+    ) -> GitURLSessionDataTaskProtocol? {
         let router = GitHubUserRouter.readAuthenticatedUser(configuration)
 
         return router.load(
             session,
-            dateDecodingStrategy: .formatted(Time.rfc3339DateFormatter),
+            dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
             expectedResultType: GitHubUser.self) { user, error in
             if let error = error {
                 completion(.failure(error))

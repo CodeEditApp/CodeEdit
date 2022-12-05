@@ -10,9 +10,9 @@ import SwiftUI
 final class AcknowledgementsViewModel: ObservableObject {
 
     @Published
-    private (set) var acknowledgements: [Dependency]
+    private (set) var acknowledgements: [AcknowledgementDependency]
 
-    init(_ dependencies: [Dependency] = []) {
+    init(_ dependencies: [AcknowledgementDependency] = []) {
         self.acknowledgements = dependencies
 
         if acknowledgements.isEmpty {
@@ -25,7 +25,7 @@ final class AcknowledgementsViewModel: ObservableObject {
         do {
             if let bundlePath = Bundle.main.path(forResource: "Package.resolved", ofType: nil) {
                 let jsonData = try String(contentsOfFile: bundlePath).data(using: .utf8)
-                let parsedJSON = try JSONDecoder().decode(RootObject.self, from: jsonData!)
+                let parsedJSON = try JSONDecoder().decode(AcknowledgementRootObject.self, from: jsonData!)
                 for dependency in parsedJSON.object.pins.sorted(by: { $0.package < $1.package })
                 where dependency.package.range(
                     of: "[Cc]ode[Ee]dit",
@@ -34,7 +34,7 @@ final class AcknowledgementsViewModel: ObservableObject {
                     locale: nil
                 ) == nil {
                     self.acknowledgements.append(
-                        Dependency(
+                        AcknowledgementDependency(
                             name: dependency.package,
                             repositoryLink: dependency.repositoryURL,
                             version: dependency.state.version ?? ""

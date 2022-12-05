@@ -25,10 +25,3 @@ struct StatusBarSplitTerminalButton: View {
         .buttonStyle(.plain)
     }
 }
-
-struct StatusBarSplitTerminalButton_Previews: PreviewProvider {
-    static var previews: some View {
-        let url = URL(string: "~/Developer")!
-        StatusBarSplitTerminalButton(model: StatusBarViewModel(workspaceURL: url))
-    }
-}

@@ -26,9 +26,3 @@ struct PreviewThemeView: View {
         }
     }
 }
-
-private struct PreviewThemeView_Previews: PreviewProvider {
-    static var previews: some View {
-        PreviewThemeView()
-    }
-}

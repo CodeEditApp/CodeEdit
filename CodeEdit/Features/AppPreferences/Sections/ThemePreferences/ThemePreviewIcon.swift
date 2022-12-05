@@ -258,17 +258,3 @@ struct ThemePreviewIcon: View {
             .frame(width: length-1, height: 2)
     }
 }
-
- private struct ThemePreviewIcon_Previews: PreviewProvider {
-    static var previews: some View {
-        ThemePreviewIcon(ThemeModel.shared.themes.first!,
-                         selection: .constant(ThemeModel.shared.themes.first),
-                         colorScheme: .light)
-            .preferredColorScheme(.light)
-
-        ThemePreviewIcon(ThemeModel.shared.themes.last!,
-                         selection: .constant(nil),
-                         colorScheme: .dark)
-            .preferredColorScheme(.dark)
-    }
- }

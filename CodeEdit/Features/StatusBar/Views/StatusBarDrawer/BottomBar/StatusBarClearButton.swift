@@ -25,10 +25,3 @@ struct StatusBarClearButton: View {
         .buttonStyle(.plain)
     }
 }
-
-struct StatusBarClearButton_Previews: PreviewProvider {
-    static var previews: some View {
-        let url = URL(string: "~/Developer")!
-        StatusBarClearButton(model: StatusBarViewModel(workspaceURL: url))
-    }
-}

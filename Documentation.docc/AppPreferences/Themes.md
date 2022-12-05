@@ -1,13 +1,13 @@
-# ``AppPreferences/Theme``
+# ``CodeEdit/Theme``
 
 ## Overview
 
-A ``AppPreferences/Theme`` is stored in a `theme_name.json` file in the `~/Library/Application Support/CodeEdit/themes/` directory. There are a
+A ``Theme`` is stored in a `theme_name.json` file in the `~/Library/Application Support/CodeEdit/themes/` directory. There are a
 couple of bundled themes that will automatically be put there once the app starts.
 
-Once a `JSON` file is loaded, the ``AppPreferences/Theme`` gets added to ``AppPreferences/ThemeModel/themes``.
+Once a `JSON` file is loaded, the ``Theme`` gets added to ``ThemeModel/themes``.
 
-They can either be ``AppPreferences/Theme/ThemeType/dark`` or ``AppPreferences/Theme/ThemeType/light``.
+They can either be ``Theme/ThemeType/dark`` or ``Theme/ThemeType/light``.
 
 ## JSON Structure
 

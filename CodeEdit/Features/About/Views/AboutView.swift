@@ -137,10 +137,3 @@ final class AboutViewWindowController: NSWindowController {
         NSAnimationContext.endGrouping()
     }
 }
-
-struct About_Previews: PreviewProvider {
-    static var previews: some View {
-        AboutView()
-            .frame(width: 530, height: 220)
-    }
-}

@@ -1,13 +1,4 @@
-# ``AppPreferences``
-
-This package manages **Preferences** of the app.
-
-## Overview
-
-The main task is to get the preferences from `~/Library/Application Support/CodeEdit/preferences.json` and load them into an ``AppPreferences/AppPreferences`` model.
-Once a value changes the changes are written to the `preferences.json` file.
-
-It also contains all preferences section views and necessary sub-models.
+# ``CodeEdit/AppPreferences``
 
 ## Topics
 
@@ -18,24 +9,29 @@ It also contains all preferences section views and necessary sub-models.
 
 ### Preferences Model
 
-- ``AppPreferences/AppPreferences``
-- ``AppPreferences/AppPreferencesModel``
+- ``AppPreferencesModel``
+- ``SoftwareUpdater``
 
 ### Preferences Section Views
 
-- ``AppPreferences/GeneralPreferencesView``
-- ``AppPreferences/ThemePreferencesView``
-- ``AppPreferences/TextEditingPreferencesView``
-- ``AppPreferences/TerminalPreferencesView``
-- ``AppPreferences/LocationsPreferencesView``
-- ``AppPreferences/PreferencesPlaceholderView``
+- ``GeneralPreferencesView``
+- ``ThemePreferencesView``
+- ``TextEditingPreferencesView``
+- ``TerminalPreferencesView``
+- ``LocationsPreferencesView``
+- ``KeybindingsPreferencesView``
+- ``AccountPreferencesView``
+- ``SourceControlPreferencesView``
+- ``PreferencesPlaceholderView``
 
-### Section Content Views
+### Helper Views
 
-- ``AppPreferences/PreferencesContent``
-- ``AppPreferences/PreferencesSection``
+- ``PreferencesContent``
+- ``PreferencesSection``
+- ``PreferencesColorPicker``
+- ``PreferencesToolbar``
 
 ### Theme Preferences Model
 
-- ``AppPreferences/Theme``
-- ``AppPreferences/ThemeModel``
+- ``Theme``
+- ``ThemeModel``

@@ -48,9 +48,3 @@ struct SourceControlSearchToolbar: View {
         .buttonStyle(PlainButtonStyle())
     }
 }
-
-struct SourceControlSearchToolbar_Previews: PreviewProvider {
-    static var previews: some View {
-        SourceControlSearchToolbar()
-    }
-}

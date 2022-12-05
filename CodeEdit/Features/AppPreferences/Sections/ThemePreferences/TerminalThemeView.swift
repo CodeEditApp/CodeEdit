@@ -103,10 +103,3 @@ struct TerminalThemeView: View {
         }
     }
 }
-
-private struct TerminalThemeView_Previews: PreviewProvider {
-    static var previews: some View {
-        TerminalThemeView()
-            .preferredColorScheme(.dark)
-    }
-}

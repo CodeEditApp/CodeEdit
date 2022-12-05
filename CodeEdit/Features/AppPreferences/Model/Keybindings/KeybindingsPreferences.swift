@@ -27,7 +27,7 @@ extension AppPreferences {
             appendNew()
 
             let mgr = CommandManager.shared
-            let wrap = ClosureWrapper.init(closure: {
+            let wrap = CommandClosureWrapper.init(closure: {
                 print("testing closure")
             })
             mgr.addCommand(name: "Send test to console",

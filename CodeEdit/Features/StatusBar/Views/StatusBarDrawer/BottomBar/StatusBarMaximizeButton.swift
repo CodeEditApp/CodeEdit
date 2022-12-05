@@ -25,10 +25,3 @@ struct StatusBarMaximizeButton: View {
         .buttonStyle(.plain)
     }
 }
-
-struct StatusBarMaximizeButton_Previews: PreviewProvider {
-    static var previews: some View {
-        let url = URL(string: "~/Developer")!
-        StatusBarMaximizeButton(model: StatusBarViewModel(workspaceURL: url))
-    }
-}
