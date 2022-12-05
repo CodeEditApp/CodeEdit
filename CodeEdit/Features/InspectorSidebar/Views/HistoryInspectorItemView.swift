@@ -64,7 +64,7 @@ struct HistoryInspectorItemView: View {
         .padding(.horizontal, 10)
         .contentShape(Rectangle())
         .popover(isPresented: showPopup, arrowEdge: .leading) {
-            PopoverView(commit: commit)
+            HistoryPopoverView(commit: commit)
         }
         .contextMenu {
             Group {

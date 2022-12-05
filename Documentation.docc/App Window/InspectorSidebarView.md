@@ -10,6 +10,11 @@
 
 - ``FileInspectorView``
 - ``FileInspectorModel``
+- ``FileLocation``
+- ``IndentUsing``
+- ``LanguageType``
+- ``LineEndings``
+- ``TextEncoding``
 
 ### History Inspector
 
@@ -17,6 +22,7 @@
 - ``HistoryInspectorModel``
 - ``HistoryInspectorItemView``
 - ``HistoryInspectorNoHistoryView``
+- ``HistoryPopoverView``
 
 ### Quick Help Inspector
 
@@ -25,3 +31,7 @@
 ### No Selection
 
 - ``NoSelectionInspectorView``
+
+### File List
+
+- ``FileTypeList``

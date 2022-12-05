@@ -13,7 +13,7 @@ The object of this class intented to be a hearth of command palette. This object
 ```
  /* To add or execute command see snipper below */
 let mgr = CommandManager.shared
-let wrap = ClosureWrapper.init(closure: {
+let wrap = CommandClosureWrapper.init(closure: {
     print("testing closure")
 })
 
@@ -31,7 +31,7 @@ final class CommandManager: ObservableObject {
 
     static let shared: CommandManager = .init()
 
-    func addCommand(name: String, title: String, id: String, command: ClosureWrapper) {
+    func addCommand(name: String, title: String, id: String, command: CommandClosureWrapper) {
         let command = Command.init(id: name, title: title, closureWrapper: command)
         commandsList[id] = command
     }
@@ -62,8 +62,8 @@ struct Command: Identifiable, Hashable {
 
     let id: String
     let title: String
-    let closureWrapper: ClosureWrapper
-    init(id: String, title: String, closureWrapper: ClosureWrapper) {
+    let closureWrapper: CommandClosureWrapper
+    init(id: String, title: String, closureWrapper: CommandClosureWrapper) {
         self.id = id
         self.title = title
         self.closureWrapper = closureWrapper
@@ -71,7 +71,7 @@ struct Command: Identifiable, Hashable {
 }
 
 /// A simple wrapper for command closure
-struct ClosureWrapper {
+struct CommandClosureWrapper {
 
     /// A typealias of interface used for command closure declaration
     typealias WorkspaceClientClosure = () -> Void

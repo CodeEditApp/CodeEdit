@@ -5,3 +5,8 @@
 ### Articles
 
 - <doc:What-is-Keychain>
+
+### Enumerations
+
+- ``CodeEditKeychainAccessOptions``
+- ``CodeEditKeychainConstants``

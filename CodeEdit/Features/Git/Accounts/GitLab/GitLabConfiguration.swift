@@ -19,7 +19,7 @@ struct GitLabTokenConfiguration: GitRouterConfiguration {
     }
 }
 
-struct PrivateTokenConfiguration: GitRouterConfiguration {
+struct GitLabPrivateTokenConfiguration: GitRouterConfiguration {
     var apiEndpoint: String?
     var accessToken: String?
     let errorDomain: String? = "com.codeedit.models.accounts.gitlab"

@@ -57,6 +57,7 @@
 - ``GitHubGistRouter``
 - ``GitHubIssueRouter``
 - ``GitHubOAuthRouter``
+- ``GitHubOAuthConfiguration``
 - ``GitHubOpenness``
 - ``GitHubPreviewHeader``
 - ``GitHubPublicKeyRouter``
@@ -85,6 +86,7 @@
 - ``GitLabAccount``
 - ``GitLabTokenConfiguration``
 - ``GitLabOAuthConfiguration``
+- ``GitLabPrivateTokenConfiguration``
 - ``GitLabSort``
 - ``GitLabOrderBy``
 - ``GitLabVisibility``

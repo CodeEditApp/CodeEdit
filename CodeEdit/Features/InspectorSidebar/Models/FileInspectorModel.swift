@@ -20,7 +20,7 @@ public final class FileInspectorModel: ObservableObject {
     var fileName: String = ""
 
     @Published
-    var locationSelection: Location.ID = "relative_group"
+    var locationSelection: FileLocation.ID = "relative_group"
     @Published
     var textEncodingSelection: TextEncoding.ID = "utf8"
     @Published
@@ -62,12 +62,12 @@ public final class FileInspectorModel: ObservableObject {
     var otherList = FileTypeList.init().otherList
 
     @Published
-    var locationList = [Location(name: "Absolute Path", id: "absolute"),
-                            Location(name: "Relative to Group", id: "relative_group"),
-                            Location(name: "Relative to Project", id: "relative_project"),
-                            Location(name: "Relative to Developer Directory", id: "relative_developer_dir"),
-                            Location(name: "Relative to Build Projects", id: "relative_build_projects"),
-                            Location(name: "Relative to SDK", id: "relative_sdk")]
+    var locationList = [FileLocation(name: "Absolute Path", id: "absolute"),
+                            FileLocation(name: "Relative to Group", id: "relative_group"),
+                            FileLocation(name: "Relative to Project", id: "relative_project"),
+                            FileLocation(name: "Relative to Developer Directory", id: "relative_developer_dir"),
+                            FileLocation(name: "Relative to Build Projects", id: "relative_build_projects"),
+                            FileLocation(name: "Relative to SDK", id: "relative_sdk")]
 
     @Published
     var textEncodingList = [TextEncoding(name: "Unicode (UTF-8)", id: "utf8"),

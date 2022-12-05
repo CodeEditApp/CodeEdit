@@ -31,7 +31,7 @@ public class FeedbackModel: ObservableObject {
     @Published
     var whatHappenedDescription: String = ""
     @Published
-    var issueAreaListSelection: IssueArea.ID = "none"
+    var issueAreaListSelection: FeedbackIssueArea.ID = "none"
     @Published
     var feedbackTypeListSelection: FeedbackType.ID = "none"
 
@@ -44,13 +44,13 @@ public class FeedbackModel: ObservableObject {
                             FeedbackType(name: "Other", id: "other")]
 
     @Published
-    var issueAreaList = [IssueArea(name: "Please select the problem area", id: "none"),
-                         IssueArea(name: "Project Navigator", id: "projectNavigator"),
-                         IssueArea(name: "Extensions", id: "extensions"),
-                         IssueArea(name: "Git", id: "git"),
-                         IssueArea(name: "Debugger", id: "debugger"),
-                         IssueArea(name: "Editor", id: "editor"),
-                         IssueArea(name: "Other", id: "other")]
+    var issueAreaList = [FeedbackIssueArea(name: "Please select the problem area", id: "none"),
+                         FeedbackIssueArea(name: "Project Navigator", id: "projectNavigator"),
+                         FeedbackIssueArea(name: "Extensions", id: "extensions"),
+                         FeedbackIssueArea(name: "Git", id: "git"),
+                         FeedbackIssueArea(name: "Debugger", id: "debugger"),
+                         FeedbackIssueArea(name: "Editor", id: "editor"),
+                         FeedbackIssueArea(name: "Other", id: "other")]
 
     /// Gets the ID of the selected issue type and then
     /// cross references it to select the right Label based on the type

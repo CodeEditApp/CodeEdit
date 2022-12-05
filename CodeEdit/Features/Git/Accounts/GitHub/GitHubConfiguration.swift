@@ -34,7 +34,7 @@ struct GitHubTokenConfiguration: GitRouterConfiguration {
     }
 }
 
-struct OAuthConfiguration: GitRouterConfiguration {
+struct GitHubOAuthConfiguration: GitRouterConfiguration {
     var apiEndpoint: String?
     var accessToken: String?
     let token: String
@@ -117,8 +117,8 @@ struct OAuthConfiguration: GitRouterConfiguration {
 }
 
 enum GitHubOAuthRouter: GitRouter {
-    case authorize(OAuthConfiguration)
-    case accessToken(OAuthConfiguration, String)
+    case authorize(GitHubOAuthConfiguration)
+    case accessToken(GitHubOAuthConfiguration, String)
 
     var configuration: GitRouterConfiguration? {
         switch self {

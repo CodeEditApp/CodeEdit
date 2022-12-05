@@ -28,6 +28,7 @@
 ### CodeFile
 
 - ``CodeFileDocument``
+- ``CodeFileError``
 
 ### CommandPalette
 
@@ -37,6 +38,10 @@
 ### Documents
 
 - ``WorkspaceDocument``
+- ``CodeEditDocumentController``
+- ``WorkspaceCodeFileView``
+- ``WorkspaceSelectionState``
+- ``WorkspaceNotificationModel``
 
 ### ExtensionsStore
 
@@ -44,11 +49,20 @@
 - ``ExtensionsStoreAgent``
 - ``ExtensionsStoreAPI``
 - ``ExtensionsStoreAPIError``
+- ``Plugin``
+- ``PluginRelease``
+- ``APIPage``
+- ``APIResponse``
+- ``DownloadedPlugin``
 
 ### Feedback
 
 - ``FeedbackView``
 - ``FeedbackWindowController``
+- ``FeedbackToolbar``
+- ``FeedbackModel``
+- ``FeedbackType``
+- ``FeedbackIssueArea``
 
 ### Git
 
@@ -58,6 +72,9 @@
 
 - ``KeybindingManager``
 - ``CommandManager``
+- ``Command``
+- ``CommandClosureWrapper``
+- ``KeyboardShortcutWrapper``
 
 ### LanguageServerProtocol
 
@@ -67,18 +84,22 @@
 
 - ``QuickOpenView``
 - ``QuickOpenItem``
+- ``QuickOpenViewModel``
+- ``QuickOpenPreviewView``
 
 ### Search
 
 - ``SearchModeModel``
 - ``SearchResultModel``
 - ``SearchResultMatchModel``
+- ``SearchResultLabel``
 
 ### Utils
 
 - ``CodeEditKeychain``
 - ``ShellClient``
 - ``WorkspaceClient``
+- ``FileIcon``
 
 ### Welcome
 

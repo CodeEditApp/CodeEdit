@@ -12,8 +12,9 @@
 - ``ProjectNavigatorView``
 - ``OutlineView``
 - ``OutlineViewController``
-- ``OutlineTableViewCell``
 - ``OutlineMenu``
+- ``OutlineTableViewCell``
+- ``OutlineTableViewCellDelegate``
 
 ### Source Control Navigator
 

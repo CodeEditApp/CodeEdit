@@ -14,8 +14,11 @@ This module contains UI elements that can be reused throughout the `CodeEdit` ap
 - ``FontPicker``
 - ``HelpButton``
 - ``SegmentedControl``
+- ``SettingsTextEditor``
 
 ### Other
 
 - ``EffectView``
 - ``OverlayPanel``
+- ``PressActions``
+- ``PanelDivider``

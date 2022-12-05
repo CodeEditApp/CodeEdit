@@ -1,5 +1,5 @@
 //
-//  PopoverView.swift
+//  HistoryPopoverView.swift
 //  CodeEdit
 //
 //  Created by Nanashi Li on 2022/04/18.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct PopoverView: View {
+struct HistoryPopoverView: View {
 
     private var commit: GitCommit
 
