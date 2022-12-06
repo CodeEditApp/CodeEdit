@@ -204,5 +204,11 @@ Licensed under the [MIT license](https://github.com/CodeEditApp/CodeEdit/blob/ma
         <p>CodeEditLanguages</p>
       </a>
     </td>
+    <td align="center">
+      <a href="https://github.com/CodeEditApp/CodeEditCLI">
+        <img src="https://user-images.githubusercontent.com/806104/205848006-f2654778-21f1-4f97-b292-32849cc1eff6.png" height="128">
+        <p>CodeEdit CLI</p>
+      </a>
+    </td>
   </tr>
 </table>
