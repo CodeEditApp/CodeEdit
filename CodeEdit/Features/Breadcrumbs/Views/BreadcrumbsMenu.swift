@@ -84,7 +84,7 @@ final class BreadcrumbsMenuItem: NSMenuItem {
         )?.withSymbolConfiguration(.init(paletteColors: [NSColor(color)]))
         self.image = image
         representedObject = fileItem
-        if fileItem.isFolder == true {
+        if fileItem.isFolder {
             self.action = nil
         }
     }
