@@ -43,28 +43,36 @@ jobs:
         env:
           APPLE_TEAM_ID:  ${{ secrets.APPLE_TEAM_ID }}
         run: xcodebuild -workspace CodeEdit.xcworkspace -scheme CodeEdit -configuration Release -derivedDataPath "$RUNNER_TEMP/DerivedData" -archivePath "$RUNNER_TEMP/CodeEdit.xcarchive" -skipPackagePluginValidation DEVELOPMENT_TEAM=$APPLE_TEAM_ID archive
-      - name: Create CodeEdit.dmg
+      - name: Sign CodeEdit
+        env:
+          CODESIGN_SIGN: ${{ secrets.CODESIGN_SIGN }}
         run: |
           REV=$(git rev-parse --short HEAD)
           echo "REV=$REV" >> $GITHUB_ENV
-          mkdir "$RUNNER_TEMP/CodeEdit-$REV"
-          cp -r "$RUNNER_TEMP/CodeEdit.xcarchive/Products/Applications/CodeEdit.app" "$RUNNER_TEMP/CodeEdit-$REV"
-          hdiutil create -srcfolder "$RUNNER_TEMP/CodeEdit-$REV" -volname CodeEdit -format ULMO "$RUNNER_TEMP/CodeEdit-$REV.dmg"
-      - name: Notarize CodeEdit.dmg
+          codesign --sign "$CODESIGN_SIGN" -vvv --verbose --strict --options=runtime --prefix austincondiff.CodeEdit. --force --deep --timestamp "$RUNNER_TEMP/CodeEdit.xcarchive/Products/Applications/CodeEdit.app"
+      - name: Using brew
         env:
-          # APPLE_ID: Developer Apple ID
-          # APPLE_ID_PWD: App-specific password for Apple ID
-          # APPLE_TEAM_ID: Developer Team ID
+          CODESIGN_SIGN: ${{ secrets.CODESIGN_SIGN }}
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_ID_PWD: ${{ secrets.APPLE_ID_PWD }}
           APPLE_TEAM_ID:  ${{ secrets.APPLE_TEAM_ID }}
         run: |
-          xcrun notarytool submit --verbose --apple-id "$APPLE_ID" --password "$APPLE_ID_PWD" --team-id "$APPLE_TEAM_ID" --wait --timeout 2h "$RUNNER_TEMP/CodeEdit-$REV.dmg" --output-format plist > "NotarizationResponse.plist"
-          echo "**RESPONSE**"
-          cat NotarizationResponse.plist
-          id=`/usr/libexec/PlistBuddy -c "Print :id" "NotarizationResponse.plist"`
-          xcrun notarytool log --verbose --apple-id "$APPLE_ID" --password "$APPLE_ID_PWD" --team-id "$APPLE_TEAM_ID" "$id"
-          xcrun stapler staple "$RUNNER_TEMP/CodeEdit-$REV.dmg"
+          REV=$(git rev-parse --short HEAD)
+          echo "REV=$REV" >> $GITHUB_ENV
+          xcrun notarytool store-credentials CodeEdit --apple-id "$APPLE_ID" --team-id "$APPLE_TEAM_ID" --password "$APPLE_ID_PWD"
+          brew install create-dmg
+          create-dmg \
+            --volname "CodeEdit" \
+            --window-pos 200 120 \
+            --window-size 800 400 \
+            --icon-size 100 \
+            --icon "CodeEdit.app" 200 190 \
+            --hide-extension "CodeEdit.app" \
+            --app-drop-link 600 185 \
+            --codesign "$CODESIGN_SIGN" \
+            --notarize "CodeEdit" \
+            "$RUNNER_TEMP/CodeEdit-$REV.dmg" \
+            "$RUNNER_TEMP/CodeEdit.xcarchive/Products/Applications/"
       - name: Update Sparkle appcast
         env:
           # SPARKLE_KEY: Sparkle EdDSA key exported from `generate_keys -x` as plain text
