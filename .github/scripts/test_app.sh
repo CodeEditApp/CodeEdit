@@ -13,7 +13,7 @@ swiftlint --version
 
 export LC_CTYPE=en_US.UTF-8
 
-set -o pipefail && arch -"${ARCH}" xcodebuild -workspace CodeEdit.xcworkspace \
+set -o pipefail && arch -"${ARCH}" xcodebuild \
            -scheme CodeEdit \
            -destination "platform=OS X,arch=${ARCH}" \
            -skipPackagePluginValidation \
