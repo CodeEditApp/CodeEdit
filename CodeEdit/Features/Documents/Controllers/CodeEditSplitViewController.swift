@@ -39,6 +39,11 @@ final class CodeEditSplitViewController: NSSplitViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func viewWillAppear() {
+        super.viewWillAppear()
+        splitView.setPosition(.snapWidth, ofDividerAt: .zero)
+    }
+
     // MARK: - NSSplitViewDelegate
 
     override func splitView(
