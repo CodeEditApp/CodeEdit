@@ -16,7 +16,7 @@ private extension CGFloat {
 
 final class CodeEditSplitViewController: NSSplitViewController {
     // Properties
-    private var isSnapped: Bool = false {
+    private(set) var isSnapped: Bool = false {
         willSet {
             if newValue, newValue != isSnapped {
                 feedbackPerformer.perform(.alignment, performanceTime: .now)

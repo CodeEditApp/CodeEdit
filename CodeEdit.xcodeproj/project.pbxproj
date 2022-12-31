@@ -68,6 +68,8 @@
 		2BE487F428245162003F3F64 /* OpenWithCodeEdit.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 2BE487EC28245162003F3F64 /* OpenWithCodeEdit.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		474397C52893AC4B00518C8C /* codeedit-midnight.json in Resources */ = {isa = PBXBuildFile; fileRef = 474397C42893AC4B00518C8C /* codeedit-midnight.json */; };
 		4E7F066629602E7B00BB3C12 /* CodeEditSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7F066529602E7B00BB3C12 /* CodeEditSplitViewController.swift */; };
+		4EE96ECB2960565E00FFBEA8 /* DocumentsUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE96ECA2960565E00FFBEA8 /* DocumentsUnitTests.swift */; };
+		4EE96ECE296059E000FFBEA8 /* NSHapticFeedbackPerformerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE96ECD296059E000FFBEA8 /* NSHapticFeedbackPerformerMock.swift */; };
 		581BFB672926431000D251EC /* WelcomeWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 581BFB5A2926431000D251EC /* WelcomeWindowView.swift */; };
 		581BFB682926431000D251EC /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 581BFB5B2926431000D251EC /* WelcomeView.swift */; };
 		581BFB692926431000D251EC /* WelcomeActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 581BFB5C2926431000D251EC /* WelcomeActionView.swift */; };
@@ -431,6 +433,8 @@
 		2BE487F028245162003F3F64 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		474397C42893AC4B00518C8C /* codeedit-midnight.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "codeedit-midnight.json"; sourceTree = "<group>"; };
 		4E7F066529602E7B00BB3C12 /* CodeEditSplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditSplitViewController.swift; sourceTree = "<group>"; };
+		4EE96ECA2960565E00FFBEA8 /* DocumentsUnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsUnitTests.swift; sourceTree = "<group>"; };
+		4EE96ECD296059E000FFBEA8 /* NSHapticFeedbackPerformerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSHapticFeedbackPerformerMock.swift; sourceTree = "<group>"; };
 		581BFB5A2926431000D251EC /* WelcomeWindowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeWindowView.swift; sourceTree = "<group>"; };
 		581BFB5B2926431000D251EC /* WelcomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		581BFB5C2926431000D251EC /* WelcomeActionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeActionView.swift; sourceTree = "<group>"; };
@@ -910,6 +914,23 @@
 			path = OpenWithCodeEdit;
 			sourceTree = "<group>";
 		};
+		4EE96EC82960562000FFBEA8 /* Documents */ = {
+			isa = PBXGroup;
+			children = (
+				4EE96ECC296059D200FFBEA8 /* Mocks */,
+				4EE96ECA2960565E00FFBEA8 /* DocumentsUnitTests.swift */,
+			);
+			path = Documents;
+			sourceTree = "<group>";
+		};
+		4EE96ECC296059D200FFBEA8 /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				4EE96ECD296059E000FFBEA8 /* NSHapticFeedbackPerformerMock.swift */,
+			);
+			path = Mocks;
+			sourceTree = "<group>";
+		};
 		581BFB4B2926431000D251EC /* Welcome */ = {
 			isa = PBXGroup;
 			children = (
@@ -1371,6 +1392,7 @@
 		587B60FE293416C900D5CD8F /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				4EE96EC82960562000FFBEA8 /* Documents */,
 				583E527429361B39001AB554 /* CodeEditUI */,
 				583E526929361B39001AB554 /* Welcome */,
 				587B612C2934199800D5CD8F /* CodeFile */,
@@ -2745,6 +2767,8 @@
 				583E528C29361B39001AB554 /* CodeEditUITests.swift in Sources */,
 				587B60F82934124200D5CD8F /* WorkspaceClientTests.swift in Sources */,
 				587B61012934170A00D5CD8F /* UnitTests_Extensions.swift in Sources */,
+				4EE96ECB2960565E00FFBEA8 /* DocumentsUnitTests.swift in Sources */,
+				4EE96ECE296059E000FFBEA8 /* NSHapticFeedbackPerformerMock.swift in Sources */,
 				587B612E293419B700D5CD8F /* CodeFileTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
