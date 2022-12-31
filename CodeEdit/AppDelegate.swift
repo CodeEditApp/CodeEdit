@@ -75,7 +75,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
             }
         }
 
-        ExtensionManager.shared.refreshBundles()
+//        ExtensionManager.shared.refreshBundles()
+//        ExtensionWindow.openExtensionWindow()
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

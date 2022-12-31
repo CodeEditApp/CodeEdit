@@ -23,7 +23,7 @@ struct NavigatorSidebarToolbarTop: View {
         SidebarDockIcon(imageName: "play", title: "...", id: 4, disabled: true),
         SidebarDockIcon(imageName: "exclamationmark.triangle", title: "...", id: 5, disabled: true),
         SidebarDockIcon(imageName: "curlybraces.square", title: "...", id: 6, disabled: true),
-        SidebarDockIcon(imageName: "puzzlepiece.extension", title: "...", id: 7, disabled: true),
+        SidebarDockIcon(imageName: "puzzlepiece.extension", title: "Extensions", id: 7),
         SidebarDockIcon(imageName: "square.grid.2x2", title: "...", id: 8, disabled: true)
     ]
     @State private var hasChangedLocation: Bool = false

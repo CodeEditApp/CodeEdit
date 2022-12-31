@@ -35,6 +35,7 @@ struct NavigatorSidebarView: View {
             case 7:
                 ExtensionNavigatorView(data: workspace.extensionNavigatorData)
                     .environmentObject(workspace)
+                    .environmentObject(workspace.extensionManager)
             default:
                 Spacer()
             }

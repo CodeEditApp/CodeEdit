@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CodeEditKit
+import CodeEditKitOld
 
 final class CodeEditAPI: ExtensionAPI {
      var extensionId: String

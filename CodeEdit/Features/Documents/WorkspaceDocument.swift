@@ -9,7 +9,7 @@ import Foundation
 import AppKit
 import SwiftUI
 import Combine
-import CodeEditKit
+import CodeEditKitOld
 
 // swiftlint:disable type_body_length
 // swiftlint:disable file_length
@@ -27,6 +27,7 @@ import CodeEditKit
     var quickOpenViewModel: QuickOpenViewModel?
     var commandsPaletteState: CommandPaletteViewModel?
     var listenerModel: WorkspaceNotificationModel = .init()
+    var extensionManager = ExtensionManager()
     private var cancellables = Set<AnyCancellable>()
 
     @Published var targets: [Target] = []
@@ -335,9 +336,9 @@ import CodeEditKit
             .store(in: &cancellables)
 
         // initialize extensions
-        ExtensionManager.shared.loadExtensions { extensionID in
-            CodeEditAPI(extensionId: extensionID, workspace: self)
-        }
+//        ExtensionManager.shared.loadExtensions { extensionID in
+//            CodeEditAPI(extensionId: extensionID, workspace: self)
+//        }
 //        do {
 //            try ExtensionsManager.shared?.load { extensionID in
 //                CodeEditAPI(extensionId: extensionID, workspace: self)

@@ -7,7 +7,7 @@
 
 import Foundation
 import SwiftUI
-import CodeEditKit
+import CodeEditKitOld
 
 struct Plugin: Codable, Identifiable, Hashable, TabBarItemRepresentable {
     var tabID: TabBarItemID {
