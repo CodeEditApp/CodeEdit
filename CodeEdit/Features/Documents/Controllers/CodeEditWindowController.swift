@@ -65,14 +65,15 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     }
 
     private func setupSplitView(with workspace: WorkspaceDocument) {
-        let splitVC = NSSplitViewController()
+        let feedbackPerformer = NSHapticFeedbackManager.defaultPerformer
+        let splitVC = CodeEditSplitViewController(feedbackPerformer: feedbackPerformer)
 
         let navigatorView = NavigatorSidebarView(workspace: workspace, windowController: self)
         let navigator = NSSplitViewItem(
             sidebarWithViewController: NSHostingController(rootView: navigatorView)
         )
         navigator.titlebarSeparatorStyle = .none
-        navigator.minimumThickness = 260
+        navigator.minimumThickness = 242
         navigator.collapseBehavior = .useConstraints
         splitVC.addSplitViewItem(navigator)
 
