@@ -23,14 +23,12 @@ struct ExtensionInfo: Identifiable, Hashable {
         endpoint.localizedName
     }
 
-    var sidebars: [ExtensionKind] {
-        availableFeatures.filter {
-            switch $0 {
-            case .sidebarItem:
-                return true
-            default:
-                return false
+    var sidebars: [ExtensionSidebarItem] {
+        availableFeatures.compactMap { ext in
+            if case .sidebarItem(let sceneID, let icon) = ext {
+                return .init(endpoint: endpoint, icon: icon, sceneID: sceneID)
             }
+            return nil
         }
     }
 
@@ -45,6 +43,10 @@ struct ExtensionInfo: Identifiable, Hashable {
         let connection = try process.makeXPCConnection()
         connection.remoteObjectInterface = .init(with: XPCWrappable.self)
         connection.resume()
+
+        defer {
+            connection.invalidate()
+        }
 
         let encoded = try await connection.withContinuation { (service: XPCWrappable, continuation) in
             service.getExtensionKinds(reply: continuation.resumingHandler)

@@ -320,6 +320,7 @@
 		6C85B41129624A0F0015CCB5 /* StoreCategories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C85B41029624A0F0015CCB5 /* StoreCategories.swift */; };
 		6C85B41429624A3D0015CCB5 /* ExtensionStoreCategories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C85B41329624A3D0015CCB5 /* ExtensionStoreCategories.swift */; };
 		6CA577D5296255F1001A4C42 /* ExtensionWindowNavigationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CA577D4296255F1001A4C42 /* ExtensionWindowNavigationManager.swift */; };
+		6CC1AB61296266E400F0A5E3 /* ExtensionSidebarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC1AB60296266E400F0A5E3 /* ExtensionSidebarItem.swift */; };
 		6CDA84AB284C0E4A00C1CC3A /* TabBarItemButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CDA84AA284C0E4A00C1CC3A /* TabBarItemButtonStyle.swift */; };
 		6CDA84AD284C1BA000C1CC3A /* TabBarContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CDA84AC284C1BA000C1CC3A /* TabBarContextMenu.swift */; };
 		B658FB3427DA9E1000EA4DBD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3327DA9E1000EA4DBD /* Assets.xcassets */; };
@@ -704,6 +705,7 @@
 		6C85B41029624A0F0015CCB5 /* StoreCategories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreCategories.swift; sourceTree = "<group>"; };
 		6C85B41329624A3D0015CCB5 /* ExtensionStoreCategories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionStoreCategories.swift; sourceTree = "<group>"; };
 		6CA577D4296255F1001A4C42 /* ExtensionWindowNavigationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionWindowNavigationManager.swift; sourceTree = "<group>"; };
+		6CC1AB60296266E400F0A5E3 /* ExtensionSidebarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionSidebarItem.swift; sourceTree = "<group>"; };
 		6CDA84AA284C0E4A00C1CC3A /* TabBarItemButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarItemButtonStyle.swift; sourceTree = "<group>"; };
 		6CDA84AC284C1BA000C1CC3A /* TabBarContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarContextMenu.swift; sourceTree = "<group>"; };
 		B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodeEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2167,6 +2169,7 @@
 				6C85B3EC2961E2A20015CCB5 /* ExtensionWindowContentView.swift */,
 				6CA577D4296255F1001A4C42 /* ExtensionWindowNavigationManager.swift */,
 				6C85B40A296214D70015CCB5 /* ExtensionDetailView.swift */,
+				6CC1AB60296266E400F0A5E3 /* ExtensionSidebarItem.swift */,
 				6C671841295E697200FB45D2 /* ExtensionList.swift */,
 				6C85B41329624A3D0015CCB5 /* ExtensionStoreCategories.swift */,
 				6C85B41029624A0F0015CCB5 /* StoreCategories.swift */,
@@ -2725,6 +2728,7 @@
 				581BFB682926431000D251EC /* WelcomeView.swift in Sources */,
 				587B9E7129301D8F00AC7927 /* GitURLSession.swift in Sources */,
 				5882252C292C280D00E83CDE /* StatusBarDrawer.swift in Sources */,
+				6CC1AB61296266E400F0A5E3 /* ExtensionSidebarItem.swift in Sources */,
 				2847019E27FDDF7600F87B6B /* OutlineView.swift in Sources */,
 				6C14CEB32877A68F001468FE /* FindNavigatorMatchListCell.swift in Sources */,
 				58F2EAF6292FB2B0004A9BDE /* AccountPreferencesView.swift in Sources */,

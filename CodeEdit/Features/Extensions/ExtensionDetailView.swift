@@ -35,6 +35,7 @@ struct ExtensionDetailView: View {
                 .padding(.leading)
             ExtensionSceneView(with: ext.endpoint, sceneID: "Settings")
                 .padding(.top, -5)
+                .ceEnvironment(\.complexValue, ["HAllo"])
         }
         .navigationSubtitle(ext.name)
     }
