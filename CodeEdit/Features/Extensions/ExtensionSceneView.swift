@@ -1,51 +1,34 @@
 //
-//  ExtensionActivatorView.swift
+//  ExtensionSceneView.swift
 //  CodeEdit
 //
-//  Created by Wouter Hennen on 30/12/2022.
+//  Created by Wouter Hennen on 31/12/2022.
 //
 
 import SwiftUI
 import ExtensionKit
+import ExtensionFoundation
 
-struct ExtensionActivatorView: NSViewControllerRepresentable {
-    func makeNSViewController(context: Context) -> some NSViewController {
-        EXAppExtensionBrowserViewController()
-    }
+struct ExtensionSceneView: NSViewControllerRepresentable {
 
-    func updateNSViewController(_ nsViewController: NSViewControllerType, context: Context) {
+    let appExtension: AppExtensionIdentity
+    let sceneID: String
 
-    }
-
-    func makeCoordinator() -> () {
-
-    }
-}
-
-struct ExtensionActivatorView_Previews: PreviewProvider {
-    static var previews: some View {
-        ExtensionActivatorView()
-    }
-}
-
-struct ExtensionHostView: NSViewControllerRepresentable {
-
-    let appExtension: CEExtension
-
-    init(with appExtension: CEExtension) {
+    init(with appExtension: AppExtensionIdentity, sceneID: String) {
         self.appExtension = appExtension
+        self.sceneID = sceneID
     }
 
     func makeNSViewController(context: Context) -> EXHostViewController {
         let controller = EXHostViewController()
         controller.delegate = context.coordinator
-        controller.configuration = .some(.init(appExtension: appExtension, sceneID: "TestTest"))
+        controller.configuration = .some(.init(appExtension: appExtension, sceneID: sceneID))
 
         return controller
     }
 
     func updateNSViewController(_ nsViewController: EXHostViewController, context: Context) {
-        
+
     }
 
     func makeCoordinator() -> Coordinator {
@@ -67,15 +50,15 @@ struct ExtensionHostView: NSViewControllerRepresentable {
             isOnline = true
             do {
                 self.connection = try viewController.makeXPCConnection()
-//                connection?.remoteObjectInterface = .init(with: EnvironmentPublisherObjc.self)
+                //                connection?.remoteObjectInterface = .init(with: EnvironmentPublisherObjc.self)
                 connection?.resume()
-//                if let toPublish {
-//                    Task {
-//                        try? await connection?.withService { (service: EnvironmentPublisherObjc) in
-//                            service.publishEnvironment(data: toPublish)
-//                        }
-//                    }
-//                }
+                //                if let toPublish {
+                //                    Task {
+                //                        try? await connection?.withService { (service: EnvironmentPublisherObjc) in
+                //                            service.publishEnvironment(data: toPublish)
+                //                        }
+                //                    }
+                //                }
             } catch {
                 print("Unable to create connection: \(String(describing: error))")
             }

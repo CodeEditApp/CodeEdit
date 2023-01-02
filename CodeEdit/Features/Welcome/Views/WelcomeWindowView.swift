@@ -50,6 +50,7 @@ struct WelcomeWindowView: View {
             backing: .buffered,
             defer: false
         )
+        
         window.titlebarAppearsTransparent = true
         window.isMovableByWindowBackground = true
         window.center()

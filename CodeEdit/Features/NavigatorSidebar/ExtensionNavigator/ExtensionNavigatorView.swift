@@ -16,14 +16,25 @@ struct ExtensionNavigatorView: View {
     @State var showing = false
 
     var body: some View {
-        List(extensionManager.extensions) { ext in
-            HStack {
-                if let icon = ext.icon {
-                    Image(nsImage: icon)
-                } else {
-                    Text("No Image")
+        List {
+            ExtensionActivatorView()
+            ForEach(extensionManager.extensions) { ext in
+                HStack {
+                    if let icon = ext.icon {
+                        Image(nsImage: icon)
+                    } else {
+                        Text("No Image")
+                    }
+                    Text(ext.name)
                 }
-                Text(ext.localizedName)
+            }
+        }
+        .toolbar {
+            
+            ToolbarItem {
+                Button("HEllo") {
+
+                }
             }
         }
     }

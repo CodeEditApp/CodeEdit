@@ -106,6 +106,8 @@ import CodeEditKitOld
         }
     }
 
+
+
     // MARK: Close Tabs
 
     /// Closes single tab
