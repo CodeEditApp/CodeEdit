@@ -63,11 +63,12 @@ struct WorkspaceView: View {
             case .codeEditor:
                 WorkspaceCodeFileView(windowController: windowController, workspace: workspace)
             case .extensionInstallation:
-                if let plugin = workspace.selectionState.selected as? Plugin {
-                    ExtensionInstallationView(plugin: plugin)
-                        .environmentObject(workspace)
-                        .frame(alignment: .center)
-                }
+                EmptyView()
+//                if let plugin = workspace.selectionState.selected as? Plugin {
+//                    ExtensionInstallationView(plugin: plugin)
+//                        .environmentObject(workspace)
+//                        .frame(alignment: .center)
+//                }
             }
         } else {
             noEditor

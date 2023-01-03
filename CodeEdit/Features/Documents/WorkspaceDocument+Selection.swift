@@ -22,7 +22,6 @@ struct WorkspaceSelectionState: Codable {
     var openFileItems: [WorkspaceClient.FileItem] = []
     var openedCodeFiles: [WorkspaceClient.FileItem: CodeFileDocument] = [:]
 
-    var openedExtensions: [Plugin] = []
 
     enum CodingKeys: String, CodingKey {
         case selectedId, openedTabs, temporaryTab, openedExtensions
@@ -36,7 +35,6 @@ struct WorkspaceSelectionState: Codable {
         selectedId = try container.decode(TabBarItemID?.self, forKey: .selectedId)
         openedTabs = try container.decode([TabBarItemID].self, forKey: .openedTabs)
         temporaryTab = try container.decode(TabBarItemID?.self, forKey: .temporaryTab)
-        openedExtensions = try container.decode([Plugin].self, forKey: .openedExtensions)
     }
 
     func encode(to encoder: Encoder) throws {
@@ -44,7 +42,6 @@ struct WorkspaceSelectionState: Codable {
         try container.encode(selectedId, forKey: .selectedId)
         try container.encode(openedTabs, forKey: .openedTabs)
         try container.encode(temporaryTab, forKey: .temporaryTab)
-        try container.encode(openedExtensions, forKey: .openedExtensions)
     }
 
     /// Returns TabBarItemRepresentable by its identifier
@@ -57,9 +54,7 @@ struct WorkspaceSelectionState: Codable {
                 item.tabID == id
             }
         case .extensionInstallation:
-            return self.openedExtensions.first { item in
-                item.tabID == id
-            }
+            return nil
         }
     }
 }

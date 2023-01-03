@@ -12,7 +12,6 @@ struct ExtensionNavigatorView: View {
     @EnvironmentObject var workspace: WorkspaceDocument
     @EnvironmentObject var extensionManager: ExtensionManager
 
-    @ObservedObject var data: ExtensionNavigatorData
     @State var showing = false
 
     var body: some View {

@@ -9,14 +9,12 @@ import Foundation
 import AppKit
 import SwiftUI
 import Combine
-import CodeEditKitOld
 
 // swiftlint:disable type_body_length
 // swiftlint:disable file_length
 @objc(WorkspaceDocument) final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var workspaceClient: WorkspaceClient?
 
-    var extensionNavigatorData = ExtensionNavigatorData()
 
     @Published var sortFoldersOnTop: Bool = true
     @Published var selectionState: WorkspaceSelectionState = .init()
@@ -29,8 +27,6 @@ import CodeEditKitOld
     var listenerModel: WorkspaceNotificationModel = .init()
     var extensionManager = ExtensionManager()
     private var cancellables = Set<AnyCancellable>()
-
-    @Published var targets: [Target] = []
 
     deinit {
         cancellables.forEach { $0.cancel() }
@@ -51,8 +47,9 @@ import CodeEditKitOld
                 guard let file = item as? WorkspaceClient.FileItem else { return }
                 try self.openFile(item: file)
             case .extensionInstallation:
-                guard let plugin = item as? Plugin else { return }
-                self.openExtension(item: plugin)
+//                guard let plugin = item as? Plugin else { return }
+//                self.openExtension(item: plugin)
+                break
             }
 
         } catch let err {
@@ -100,12 +97,6 @@ import CodeEditKitOld
         Swift.print("Opening file for item: ", item.url)
     }
 
-    private func openExtension(item: Plugin) {
-        if !selectionState.openedExtensions.contains(item) {
-            selectionState.openedExtensions.append(item)
-        }
-    }
-
 
 
     // MARK: Close Tabs
@@ -118,8 +109,9 @@ import CodeEditKitOld
             guard let item = selectionState.getItemByTab(id: id) as? WorkspaceClient.FileItem else { return }
             closeFileTab(item: item)
         case .extensionInstallation:
-            guard let item = selectionState.getItemByTab(id: id) as? Plugin else { return }
-            closeExtensionTab(item: item)
+            break
+//            guard let item = selectionState.getItemByTab(id: id) as? Plugin else { return }
+//            closeExtensionTab(item: item)
         }
     }
 
@@ -161,9 +153,10 @@ import CodeEditKitOld
                     as? WorkspaceClient.FileItem else { return }
             selectionState.openedCodeFiles.removeValue(forKey: item)
         case .extensionInstallation:
-            guard let item = selectionState.getItemByTab(id: id)
-                    as? Plugin else { return }
-            closeExtensionTab(item: item)
+//            guard let item = selectionState.getItemByTab(id: id)
+//                    as? Plugin else { return }
+//            closeExtensionTab(item: item)
+            break
         }
 
         guard let openFileItemIdx = selectionState
@@ -201,12 +194,7 @@ import CodeEditKitOld
         removeTab(id: item.tabID)
     }
 
-    private func closeExtensionTab(item: Plugin) {
-        guard let idx = selectionState.openedExtensions.firstIndex(of: item) else { return }
-        selectionState.openedExtensions.remove(at: idx)
 
-        removeTab(id: item.tabID)
-    }
 
     /// Makes the temporary tab permanent when a file save or edit happens.
     @objc func convertTemporaryTab() {
@@ -373,10 +361,6 @@ import CodeEditKitOld
         selectionState.selectedId = nil
         selectionState.openedCodeFiles.removeAll()
 
-        if let url = self.fileURL {
-            ExtensionsManager.shared?.close(url: url)
-        }
-
         super.close()
     }
 
@@ -461,18 +445,5 @@ import CodeEditKitOld
         let opaquePtr = OpaquePointer(contextInfo)
         let mutablePointer = UnsafeMutablePointer<Bool>(opaquePtr)
         mutablePointer.pointee = shouldClose
-    }
-}
-
-// MARK: - Extensions
-extension WorkspaceDocument {
-    func target(didAdd target: Target) {
-        self.targets.append(target)
-    }
-    func target(didRemove target: Target) {
-        self.targets.removeAll { $0.id == target.id }
-    }
-    func targetDidClear() {
-        self.targets.removeAll()
     }
 }

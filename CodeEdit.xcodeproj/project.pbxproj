@@ -13,15 +13,9 @@
 		043C321627E3201F006AE443 /* WorkspaceDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043C321527E3201F006AE443 /* WorkspaceDocument.swift */; };
 		043C321A27E32295006AE443 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 043C321927E32295006AE443 /* MainMenu.xib */; };
 		04540D5E27DD08C300E91B77 /* WorkspaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B658FB3127DA9E0F00EA4DBD /* WorkspaceView.swift */; };
-		0463E51127FCC1DF00806D5C /* CodeEditAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0463E51027FCC1DF00806D5C /* CodeEditAPI.swift */; };
-		0463E51327FCC1FB00806D5C /* CodeEditTargetsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0463E51227FCC1FB00806D5C /* CodeEditTargetsAPI.swift */; };
 		04660F6A27E51E5C00477777 /* CodeEditWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04660F6927E51E5C00477777 /* CodeEditWindowController.swift */; };
 		0483E35027FDB17700354AC0 /* ExtensionNavigatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0483E34F27FDB17700354AC0 /* ExtensionNavigatorView.swift */; };
 		0485EB1F27E7458B00138301 /* WorkspaceCodeFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0485EB1E27E7458B00138301 /* WorkspaceCodeFileView.swift */; };
-		04C3254B27FF23B000C8DA2D /* ExtensionNavigatorData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C3254A27FF23B000C8DA2D /* ExtensionNavigatorData.swift */; };
-		04C3254D27FF331B00C8DA2D /* ExtensionNavigatorItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C3254C27FF331B00C8DA2D /* ExtensionNavigatorItemView.swift */; };
-		04C3254F2800AA4700C8DA2D /* ExtensionInstallationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C3254E2800AA4700C8DA2D /* ExtensionInstallationView.swift */; };
-		04C325512800AC7400C8DA2D /* ExtensionInstallationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C325502800AC7400C8DA2D /* ExtensionInstallationViewModel.swift */; };
 		04C3255B2801F86400C8DA2D /* OutlineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285FEC6D27FE4B4A00E57D53 /* OutlineViewController.swift */; };
 		04C3255C2801F86900C8DA2D /* OutlineMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285FEC7127FE4EEF00E57D53 /* OutlineMenu.swift */; };
 		200412EF280F3EAC00BCAF5C /* HistoryInspectorNoHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200412EE280F3EAC00BCAF5C /* HistoryInspectorNoHistoryView.swift */; };
@@ -118,13 +112,6 @@
 		58798250292E78D80085B254 /* CodeFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58798249292E78D80085B254 /* CodeFile.swift */; };
 		58798251292E78D80085B254 /* OtherFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5879824B292E78D80085B254 /* OtherFileView.swift */; };
 		58798252292E78D80085B254 /* ImageFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5879824D292E78D80085B254 /* ImageFileView.swift */; };
-		58798261292EC4080085B254 /* ExtensionsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58798258292EC4080085B254 /* ExtensionsManager.swift */; };
-		58798262292EC4080085B254 /* PluginRelease.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5879825A292EC4080085B254 /* PluginRelease.swift */; };
-		58798263292EC4080085B254 /* DownloadedPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5879825B292EC4080085B254 /* DownloadedPlugin.swift */; };
-		58798264292EC4080085B254 /* Plugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5879825C292EC4080085B254 /* Plugin.swift */; };
-		58798265292EC4080085B254 /* ExtensionsStoreAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5879825E292EC4080085B254 /* ExtensionsStoreAPI.swift */; };
-		58798266292EC4080085B254 /* APIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5879825F292EC4080085B254 /* APIResponse.swift */; };
-		58798267292EC4080085B254 /* APIPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58798260292EC4080085B254 /* APIPage.swift */; };
 		5879826B292EC7B00085B254 /* Light-Swift-Untar in Frameworks */ = {isa = PBXBuildFile; productRef = 5879826A292EC7B00085B254 /* Light-Swift-Untar */; };
 		5879826F292EC9870085B254 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = 5879826E292EC9870085B254 /* GRDB */; };
 		58798277292ECFD40085B254 /* LSPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58798276292ECFD40085B254 /* LSPClient.swift */; };
@@ -135,7 +122,6 @@
 		587B60F82934124200D5CD8F /* WorkspaceClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B60F72934124100D5CD8F /* WorkspaceClientTests.swift */; };
 		587B61012934170A00D5CD8F /* UnitTests_Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B61002934170A00D5CD8F /* UnitTests_Extensions.swift */; };
 		587B612E293419B700D5CD8F /* CodeFileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B612D293419B700D5CD8F /* CodeFileTests.swift */; };
-		587B9D56292FC27A00AC7927 /* ExtensionManagerOld.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9D53292FC27A00AC7927 /* ExtensionManagerOld.swift */; };
 		587B9D57292FC27A00AC7927 /* FolderMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9D54292FC27A00AC7927 /* FolderMonitor.swift */; };
 		587B9D9E29300ABD00AC7927 /* FontPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9D8729300ABD00AC7927 /* FontPickerView.swift */; };
 		587B9D9F29300ABD00AC7927 /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9D8829300ABD00AC7927 /* SegmentedControl.swift */; };
@@ -404,17 +390,11 @@
 		043C321327E31FF6006AE443 /* CodeEditDocumentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditDocumentController.swift; sourceTree = "<group>"; };
 		043C321527E3201F006AE443 /* WorkspaceDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceDocument.swift; sourceTree = "<group>"; };
 		043C321927E32295006AE443 /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
-		0463E51027FCC1DF00806D5C /* CodeEditAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditAPI.swift; sourceTree = "<group>"; };
-		0463E51227FCC1FB00806D5C /* CodeEditTargetsAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditTargetsAPI.swift; sourceTree = "<group>"; };
 		04660F6027E3A68A00477777 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		04660F6927E51E5C00477777 /* CodeEditWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditWindowController.swift; sourceTree = "<group>"; };
 		0468438427DC76E200F8E88E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0483E34F27FDB17700354AC0 /* ExtensionNavigatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionNavigatorView.swift; sourceTree = "<group>"; };
 		0485EB1E27E7458B00138301 /* WorkspaceCodeFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceCodeFileView.swift; sourceTree = "<group>"; };
-		04C3254A27FF23B000C8DA2D /* ExtensionNavigatorData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionNavigatorData.swift; sourceTree = "<group>"; };
-		04C3254C27FF331B00C8DA2D /* ExtensionNavigatorItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionNavigatorItemView.swift; sourceTree = "<group>"; };
-		04C3254E2800AA4700C8DA2D /* ExtensionInstallationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionInstallationView.swift; sourceTree = "<group>"; };
-		04C325502800AC7400C8DA2D /* ExtensionInstallationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionInstallationViewModel.swift; sourceTree = "<group>"; };
 		200412EE280F3EAC00BCAF5C /* HistoryInspectorNoHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryInspectorNoHistoryView.swift; sourceTree = "<group>"; };
 		201169D62837B2E300F92B46 /* SourceControlNavigatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlNavigatorView.swift; sourceTree = "<group>"; };
 		201169D82837B31200F92B46 /* SourceControlSearchToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlSearchToolbar.swift; sourceTree = "<group>"; };
@@ -510,13 +490,6 @@
 		58798249292E78D80085B254 /* CodeFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeFile.swift; sourceTree = "<group>"; };
 		5879824B292E78D80085B254 /* OtherFileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OtherFileView.swift; sourceTree = "<group>"; };
 		5879824D292E78D80085B254 /* ImageFileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageFileView.swift; sourceTree = "<group>"; };
-		58798258292EC4080085B254 /* ExtensionsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionsManager.swift; sourceTree = "<group>"; };
-		5879825A292EC4080085B254 /* PluginRelease.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PluginRelease.swift; sourceTree = "<group>"; };
-		5879825B292EC4080085B254 /* DownloadedPlugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadedPlugin.swift; sourceTree = "<group>"; };
-		5879825C292EC4080085B254 /* Plugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Plugin.swift; sourceTree = "<group>"; };
-		5879825E292EC4080085B254 /* ExtensionsStoreAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionsStoreAPI.swift; sourceTree = "<group>"; };
-		5879825F292EC4080085B254 /* APIResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIResponse.swift; sourceTree = "<group>"; };
-		58798260292EC4080085B254 /* APIPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIPage.swift; sourceTree = "<group>"; };
 		58798276292ECFD40085B254 /* LSPClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LSPClient.swift; sourceTree = "<group>"; };
 		58798280292ED0FB0085B254 /* TerminalEmulatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TerminalEmulatorView.swift; sourceTree = "<group>"; };
 		58798281292ED0FB0085B254 /* TerminalEmulatorView+Coordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TerminalEmulatorView+Coordinator.swift"; sourceTree = "<group>"; };
@@ -524,7 +497,6 @@
 		587B60F72934124100D5CD8F /* WorkspaceClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceClientTests.swift; sourceTree = "<group>"; };
 		587B61002934170A00D5CD8F /* UnitTests_Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnitTests_Extensions.swift; sourceTree = "<group>"; };
 		587B612D293419B700D5CD8F /* CodeFileTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeFileTests.swift; sourceTree = "<group>"; };
-		587B9D53292FC27A00AC7927 /* ExtensionManagerOld.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionManagerOld.swift; sourceTree = "<group>"; };
 		587B9D54292FC27A00AC7927 /* FolderMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderMonitor.swift; sourceTree = "<group>"; };
 		587B9D8729300ABD00AC7927 /* FontPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontPickerView.swift; sourceTree = "<group>"; };
 		587B9D8829300ABD00AC7927 /* SegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
@@ -790,10 +762,6 @@
 			isa = PBXGroup;
 			children = (
 				0483E34F27FDB17700354AC0 /* ExtensionNavigatorView.swift */,
-				04C3254A27FF23B000C8DA2D /* ExtensionNavigatorData.swift */,
-				04C3254C27FF331B00C8DA2D /* ExtensionNavigatorItemView.swift */,
-				04C3254E2800AA4700C8DA2D /* ExtensionInstallationView.swift */,
-				04C325502800AC7400C8DA2D /* ExtensionInstallationViewModel.swift */,
 			);
 			path = ExtensionNavigator;
 			sourceTree = "<group>";
@@ -1004,7 +972,6 @@
 				58FD7603291EA1CB0051D6E4 /* Commands */,
 				043C321227E31FE8006AE443 /* Documents */,
 				6C6718AB295FCB2E00FB45D2 /* Extensions */,
-				58798256292EC4080085B254 /* ExtensionsStore */,
 				58798228292E30B90085B254 /* Feedback */,
 				587B9E0129301D8F00AC7927 /* Git */,
 				B6EE988E27E8877C00CDD8AB /* InspectorSidebar */,
@@ -1340,36 +1307,6 @@
 			path = Image;
 			sourceTree = "<group>";
 		};
-		58798256292EC4080085B254 /* ExtensionsStore */ = {
-			isa = PBXGroup;
-			children = (
-				5879825D292EC4080085B254 /* API */,
-				58798259292EC4080085B254 /* Models */,
-				58798258292EC4080085B254 /* ExtensionsManager.swift */,
-			);
-			path = ExtensionsStore;
-			sourceTree = "<group>";
-		};
-		58798259292EC4080085B254 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				5879825A292EC4080085B254 /* PluginRelease.swift */,
-				5879825B292EC4080085B254 /* DownloadedPlugin.swift */,
-				5879825C292EC4080085B254 /* Plugin.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		5879825D292EC4080085B254 /* API */ = {
-			isa = PBXGroup;
-			children = (
-				5879825E292EC4080085B254 /* ExtensionsStoreAPI.swift */,
-				5879825F292EC4080085B254 /* APIResponse.swift */,
-				58798260292EC4080085B254 /* APIPage.swift */,
-			);
-			path = API;
-			sourceTree = "<group>";
-		};
 		58798274292ECFD40085B254 /* LSP */ = {
 			isa = PBXGroup;
 			children = (
@@ -1434,9 +1371,6 @@
 		587B9D50292FC27A00AC7927 /* CodeEditExtension */ = {
 			isa = PBXGroup;
 			children = (
-				0463E51027FCC1DF00806D5C /* CodeEditAPI.swift */,
-				0463E51227FCC1FB00806D5C /* CodeEditTargetsAPI.swift */,
-				587B9D53292FC27A00AC7927 /* ExtensionManagerOld.swift */,
 				587B9D54292FC27A00AC7927 /* FolderMonitor.swift */,
 			);
 			path = CodeEditExtension;
@@ -2607,7 +2541,6 @@
 				58A5DF8029325B5A00D1BD5D /* GitClient.swift in Sources */,
 				D7E201AE27E8B3C000CB86D0 /* String+Ranges.swift in Sources */,
 				587B9E6B29301D8F00AC7927 /* GitLabAvatarURL.swift in Sources */,
-				58798262292EC4080085B254 /* PluginRelease.swift in Sources */,
 				58F2EB10292FB2B0004A9BDE /* PreferencesColorPicker.swift in Sources */,
 				58798233292E30B90085B254 /* FeedbackToolbar.swift in Sources */,
 				587B9E6829301D8F00AC7927 /* GitLabAccountModel.swift in Sources */,
@@ -2624,9 +2557,7 @@
 				58798234292E30B90085B254 /* FeedbackIssueArea.swift in Sources */,
 				587B9E5F29301D8F00AC7927 /* GitLabProjectRouter.swift in Sources */,
 				587B9E7329301D8F00AC7927 /* GitRouter.swift in Sources */,
-				0463E51327FCC1FB00806D5C /* CodeEditTargetsAPI.swift in Sources */,
 				201169DD2837B3AC00F92B46 /* SourceControlToolbarBottom.swift in Sources */,
-				04C3254D27FF331B00C8DA2D /* ExtensionNavigatorItemView.swift in Sources */,
 				587B9E8B29301D8F00AC7927 /* GitHubAccount+deleteReference.swift in Sources */,
 				D7E201B027E8C07300CB86D0 /* FindNavigatorSearchBar.swift in Sources */,
 				58798237292E30B90085B254 /* FeedbackView.swift in Sources */,
@@ -2640,7 +2571,6 @@
 				B6EE989227E887C600CDD8AB /* InspectorSidebarToolbarTop.swift in Sources */,
 				587B9E8D29301D8F00AC7927 /* GitHubAccount.swift in Sources */,
 				201169E72837B5CA00F92B46 /* SourceControlModel.swift in Sources */,
-				58798265292EC4080085B254 /* ExtensionsStoreAPI.swift in Sources */,
 				58822528292C280D00E83CDE /* StatusBarEncodingSelector.swift in Sources */,
 				58F2EB0F292FB2B0004A9BDE /* PreferencesSection.swift in Sources */,
 				587B9E8C29301D8F00AC7927 /* GitHubOpenness.swift in Sources */,
@@ -2676,7 +2606,6 @@
 				587B9E5C29301D8F00AC7927 /* Parameters.swift in Sources */,
 				6C85B40E296249E40015CCB5 /* InstalledExtensionsList.swift in Sources */,
 				58798235292E30B90085B254 /* FeedbackModel.swift in Sources */,
-				587B9D56292FC27A00AC7927 /* ExtensionManagerOld.swift in Sources */,
 				04C3255C2801F86900C8DA2D /* OutlineMenu.swift in Sources */,
 				587B9E6429301D8F00AC7927 /* GitLabCommit.swift in Sources */,
 				58A5DFA229339F6400D1BD5D /* KeybindingManager.swift in Sources */,
@@ -2741,12 +2670,9 @@
 				587B9E9529301D8F00AC7927 /* BitBucketUser.swift in Sources */,
 				587B9E7C29301D8F00AC7927 /* GitHubRepositoryRouter.swift in Sources */,
 				286471AB27ED51FD0039369D /* ProjectNavigatorView.swift in Sources */,
-				58798264292EC4080085B254 /* Plugin.swift in Sources */,
 				587B9DA629300ABD00AC7927 /* ToolbarBranchPicker.swift in Sources */,
 				58F2EB05292FB2B0004A9BDE /* AppPreferencesModel.swift in Sources */,
 				58F2EAF1292FB2B0004A9BDE /* TerminalThemeView.swift in Sources */,
-				04C3254B27FF23B000C8DA2D /* ExtensionNavigatorData.swift in Sources */,
-				58798261292EC4080085B254 /* ExtensionsManager.swift in Sources */,
 				287776EF27E3515300D46668 /* TabBarItemView.swift in Sources */,
 				6CA577D5296255F1001A4C42 /* ExtensionWindowNavigationManager.swift in Sources */,
 				58D01C98293167DC00C5B6B4 /* String+RemoveOccurrences.swift in Sources */,
@@ -2775,9 +2701,7 @@
 				587B9E7629301D8F00AC7927 /* GitTime.swift in Sources */,
 				2072FA16280D83A500C7F8D4 /* FileTypeList.swift in Sources */,
 				587B9E5D29301D8F00AC7927 /* GitLabUserRouter.swift in Sources */,
-				04C3254F2800AA4700C8DA2D /* ExtensionInstallationView.swift in Sources */,
 				58822530292C280D00E83CDE /* FilterTextField.swift in Sources */,
-				58798266292EC4080085B254 /* APIResponse.swift in Sources */,
 				58F2EAEF292FB2B0004A9BDE /* ThemePreferencesView.swift in Sources */,
 				B6EE989027E8879A00CDD8AB /* InspectorSidebarView.swift in Sources */,
 				587B9DA229300ABD00AC7927 /* EffectView.swift in Sources */,
@@ -2808,7 +2732,6 @@
 				58798286292ED0FB0085B254 /* SwiftTerm+Color+Init.swift in Sources */,
 				587B9E7229301D8F00AC7927 /* GitJSONPostRouter.swift in Sources */,
 				5878DAB0291D627C00DD95A3 /* BreadcrumbsMenu.swift in Sources */,
-				04C325512800AC7400C8DA2D /* ExtensionInstallationViewModel.swift in Sources */,
 				587B9DA529300ABD00AC7927 /* PressActionsModifier.swift in Sources */,
 				28B0A19827E385C300B73177 /* NavigatorSidebarToolbarTop.swift in Sources */,
 				587B9E8629301D8F00AC7927 /* GitHubComment.swift in Sources */,
@@ -2819,15 +2742,12 @@
 				58F2EAF0292FB2B0004A9BDE /* PreviewThemeView.swift in Sources */,
 				58F2EAFF292FB2B0004A9BDE /* KeybindingsPreferencesView.swift in Sources */,
 				6CDA84AD284C1BA000C1CC3A /* TabBarContextMenu.swift in Sources */,
-				0463E51127FCC1DF00806D5C /* CodeEditAPI.swift in Sources */,
 				587B9E8129301D8F00AC7927 /* PublicKey.swift in Sources */,
 				58F2EB0B292FB2B0004A9BDE /* AccountsPreferences.swift in Sources */,
 				58F2EB00292FB2B0004A9BDE /* LocationsPreferencesView.swift in Sources */,
-				58798267292EC4080085B254 /* APIPage.swift in Sources */,
 				5882252A292C280D00E83CDE /* StatusBarToggleDrawerButton.swift in Sources */,
 				04C3255B2801F86400C8DA2D /* OutlineViewController.swift in Sources */,
 				6C85B41129624A0F0015CCB5 /* StoreCategories.swift in Sources */,
-				58798263292EC4080085B254 /* DownloadedPlugin.swift in Sources */,
 				587B9E6029301D8F00AC7927 /* GitLabOAuthRouter.swift in Sources */,
 				6C05A8AF284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift in Sources */,
 				587D9B732933BF5700BF7490 /* FileIcon.swift in Sources */,
