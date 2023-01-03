@@ -31,6 +31,7 @@ struct XcodeButtonStyle: ButtonStyle {
             .padding(.horizontal, controlSizePadding.horizontal)
             .padding(.vertical, controlSizePadding.vertical)
             .font(fontSize)
+            .foregroundColor(isActive ? .white : .primary)
             .opacity(textOpacity)
             .background {
                 if isActive {

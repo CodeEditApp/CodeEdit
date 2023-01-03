@@ -33,7 +33,7 @@ struct ExtensionSceneView: NSViewControllerRepresentable {
 
     func updateNSViewController(_ nsViewController: EXHostViewController, context: Context) {
         print("Updating....")
-        nsViewController.configuration?.sceneID = sceneID
+        nsViewController.configuration = .init(appExtension: appExtension, sceneID: sceneID)
         context.coordinator.updateEnvironment(context.environment._ceEnvironment)
     }
 
