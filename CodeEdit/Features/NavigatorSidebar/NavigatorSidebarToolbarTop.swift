@@ -35,30 +35,37 @@ struct NavigatorSidebarToolbarTop: View {
     }
 
     var body: some View {
-        HStack(spacing: 2) {
-            ForEach(icons) { icon in
-                makeIcon(named: icon.imageName, title: icon.title, id: icon.id)
-                    .opacity(draggingItem?.imageName == icon.imageName &&
-                             hasChangedLocation &&
-                             drugItemLocation != nil ? 0.0: icon.disabled ? 0.3 : 1.0)
-                    .onDrop(of: [.utf8PlainText],
-                            delegate: NavigatorSidebarDockIconDelegate(item: icon,
-                                                                        current: $draggingItem,
-                                                                        icons: $icons,
-                                                                        hasChangedLocation: $hasChangedLocation,
-                                                                        drugItemLocation: $drugItemLocation))
-                    .disabled(icon.disabled)
+        GeometryReader { proxy in
+            HStack(spacing: makeSpace(for: proxy.size)) {
+                ForEach(icons) { icon in
+                    makeIcon(named: icon.imageName, title: icon.title, id: icon.id)
+                        .opacity(draggingItem?.imageName == icon.imageName &&
+                                 hasChangedLocation &&
+                                 drugItemLocation != nil ? 0.0: icon.disabled ? 0.3 : 1.0)
+                        .onDrop(of: [.utf8PlainText],
+                                delegate: NavigatorSidebarDockIconDelegate(item: icon,
+                                                                            current: $draggingItem,
+                                                                            icons: $icons,
+                                                                            hasChangedLocation: $hasChangedLocation,
+                                                                            drugItemLocation: $drugItemLocation))
+                        .disabled(icon.disabled)
+                }
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .overlay(alignment: .top) {
+                Divider()
+            }
+            .overlay(alignment: .bottom) {
+                Divider()
+            }
+            .animation(.default, value: icons)
         }
-        .frame(height: 29, alignment: .center)
-        .frame(maxWidth: .infinity)
-        .overlay(alignment: .top) {
-            Divider()
-        }
-        .overlay(alignment: .bottom) {
-            Divider()
-        }
-        .animation(.default, value: icons)
+        .frame(maxWidth: .infinity, idealHeight: 29)
+        .fixedSize(horizontal: false, vertical: true)
+    }
+
+    private func makeSpace(for size: CGSize) -> CGFloat {
+        size.width < 270 ? 9 : 15
     }
 
     private func makeIcon(named: String, title: String, id: Int, scale: Image.Scale = .medium) -> some View {
@@ -66,19 +73,20 @@ struct NavigatorSidebarToolbarTop: View {
             selection = id
         } label: {
             getSafeImage(named: named, accesibilityDescription: title)
-            .help(title)
-            .onDrag {
-            if let index = icons.firstIndex(where: { $0.imageName == named }) {
-                draggingItem = icons[index]
-            }
-                return .init(object: NSString(string: named))
-            } preview: {
-                RoundedRectangle(cornerRadius: .zero)
-                    .frame(width: .zero)
-            }
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .help(title)
+                .onDrag {
+                    if let index = icons.firstIndex(where: { $0.imageName == named }) {
+                        draggingItem = icons[index]
+                    }
+                    return .init(object: NSString(string: named))
+                } preview: {
+                    RoundedRectangle(cornerRadius: .zero)
+                        .frame(width: .zero)
+                }
         }
         .buttonStyle(NavigatorToolbarButtonStyle(id: id, selection: selection, activeState: activeState))
-        .imageScale(scale)
     }
 
     private func getSafeImage(named: String, accesibilityDescription: String?) -> Image {
@@ -96,10 +104,9 @@ struct NavigatorSidebarToolbarTop: View {
 
         func makeBody(configuration: Configuration) -> some View {
             configuration.label
-                .font(.system(size: 12, weight: id == selection ? .semibold : .regular))
                 .symbolVariant(id == selection ? .fill : .none)
                 .foregroundColor(id == selection ? .accentColor : configuration.isPressed ? .primary : .secondary)
-                .frame(width: 25, height: 25, alignment: .center)
+                .frame(width: 15, height: 15)
                 .contentShape(Rectangle())
                 .opacity(activeState == .inactive ? 0.45 : 1)
         }

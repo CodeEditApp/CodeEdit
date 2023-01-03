@@ -67,6 +67,9 @@
 		2BE487EF28245162003F3F64 /* FinderSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE487EE28245162003F3F64 /* FinderSync.swift */; };
 		2BE487F428245162003F3F64 /* OpenWithCodeEdit.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 2BE487EC28245162003F3F64 /* OpenWithCodeEdit.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		474397C52893AC4B00518C8C /* codeedit-midnight.json in Resources */ = {isa = PBXBuildFile; fileRef = 474397C42893AC4B00518C8C /* codeedit-midnight.json */; };
+		4E7F066629602E7B00BB3C12 /* CodeEditSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7F066529602E7B00BB3C12 /* CodeEditSplitViewController.swift */; };
+		4EE96ECB2960565E00FFBEA8 /* DocumentsUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE96ECA2960565E00FFBEA8 /* DocumentsUnitTests.swift */; };
+		4EE96ECE296059E000FFBEA8 /* NSHapticFeedbackPerformerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE96ECD296059E000FFBEA8 /* NSHapticFeedbackPerformerMock.swift */; };
 		581BFB672926431000D251EC /* WelcomeWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 581BFB5A2926431000D251EC /* WelcomeWindowView.swift */; };
 		581BFB682926431000D251EC /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 581BFB5B2926431000D251EC /* WelcomeView.swift */; };
 		581BFB692926431000D251EC /* WelcomeActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 581BFB5C2926431000D251EC /* WelcomeActionView.swift */; };
@@ -276,7 +279,6 @@
 		58F2EAFE292FB2B0004A9BDE /* GitHubEnterpriseLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAC5292FB2B0004A9BDE /* GitHubEnterpriseLoginView.swift */; };
 		58F2EAFF292FB2B0004A9BDE /* KeybindingsPreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAC7292FB2B0004A9BDE /* KeybindingsPreferencesView.swift */; };
 		58F2EB00292FB2B0004A9BDE /* LocationsPreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAC9292FB2B0004A9BDE /* LocationsPreferencesView.swift */; };
-		58F2EB01292FB2B0004A9BDE /* codeedit in Resources */ = {isa = PBXBuildFile; fileRef = 58F2EACB292FB2B0004A9BDE /* codeedit */; };
 		58F2EB02292FB2B0004A9BDE /* Loopable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EACD292FB2B0004A9BDE /* Loopable.swift */; };
 		58F2EB03292FB2B0004A9BDE /* Documentation.docc in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EACE292FB2B0004A9BDE /* Documentation.docc */; };
 		58F2EB04292FB2B0004A9BDE /* SourceControlPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAD1292FB2B0004A9BDE /* SourceControlPreferences.swift */; };
@@ -429,6 +431,9 @@
 		2BE487EE28245162003F3F64 /* FinderSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderSync.swift; sourceTree = "<group>"; };
 		2BE487F028245162003F3F64 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		474397C42893AC4B00518C8C /* codeedit-midnight.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "codeedit-midnight.json"; sourceTree = "<group>"; };
+		4E7F066529602E7B00BB3C12 /* CodeEditSplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditSplitViewController.swift; sourceTree = "<group>"; };
+		4EE96ECA2960565E00FFBEA8 /* DocumentsUnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsUnitTests.swift; sourceTree = "<group>"; };
+		4EE96ECD296059E000FFBEA8 /* NSHapticFeedbackPerformerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSHapticFeedbackPerformerMock.swift; sourceTree = "<group>"; };
 		581BFB5A2926431000D251EC /* WelcomeWindowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeWindowView.swift; sourceTree = "<group>"; };
 		581BFB5B2926431000D251EC /* WelcomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		581BFB5C2926431000D251EC /* WelcomeActionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeActionView.swift; sourceTree = "<group>"; };
@@ -637,7 +642,6 @@
 		58F2EAC5292FB2B0004A9BDE /* GitHubEnterpriseLoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubEnterpriseLoginView.swift; sourceTree = "<group>"; };
 		58F2EAC7292FB2B0004A9BDE /* KeybindingsPreferencesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeybindingsPreferencesView.swift; sourceTree = "<group>"; };
 		58F2EAC9292FB2B0004A9BDE /* LocationsPreferencesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationsPreferencesView.swift; sourceTree = "<group>"; };
-		58F2EACB292FB2B0004A9BDE /* codeedit */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = codeedit; sourceTree = "<group>"; };
 		58F2EACD292FB2B0004A9BDE /* Loopable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Loopable.swift; sourceTree = "<group>"; };
 		58F2EACE292FB2B0004A9BDE /* Documentation.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = Documentation.docc; sourceTree = "<group>"; };
 		58F2EAD1292FB2B0004A9BDE /* SourceControlPreferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SourceControlPreferences.swift; sourceTree = "<group>"; };
@@ -908,6 +912,23 @@
 			path = OpenWithCodeEdit;
 			sourceTree = "<group>";
 		};
+		4EE96EC82960562000FFBEA8 /* Documents */ = {
+			isa = PBXGroup;
+			children = (
+				4EE96ECC296059D200FFBEA8 /* Mocks */,
+				4EE96ECA2960565E00FFBEA8 /* DocumentsUnitTests.swift */,
+			);
+			path = Documents;
+			sourceTree = "<group>";
+		};
+		4EE96ECC296059D200FFBEA8 /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				4EE96ECD296059E000FFBEA8 /* NSHapticFeedbackPerformerMock.swift */,
+			);
+			path = Mocks;
+			sourceTree = "<group>";
+		};
 		581BFB4B2926431000D251EC /* Welcome */ = {
 			isa = PBXGroup;
 			children = (
@@ -1034,6 +1055,7 @@
 			children = (
 				043C321327E31FF6006AE443 /* CodeEditDocumentController.swift */,
 				04660F6927E51E5C00477777 /* CodeEditWindowController.swift */,
+				4E7F066529602E7B00BB3C12 /* CodeEditSplitViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1368,6 +1390,7 @@
 		587B60FE293416C900D5CD8F /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				4EE96EC82960562000FFBEA8 /* Documents */,
 				583E527429361B39001AB554 /* CodeEditUI */,
 				583E526929361B39001AB554 /* Welcome */,
 				587B612C2934199800D5CD8F /* CodeFile */,
@@ -1961,7 +1984,6 @@
 		58F2EACA292FB2B0004A9BDE /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				58F2EACB292FB2B0004A9BDE /* codeedit */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -2344,7 +2366,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B658FB3727DA9E1000EA4DBD /* Preview Assets.xcassets in Resources */,
-				58F2EB01292FB2B0004A9BDE /* codeedit in Resources */,
 				28A51006281701B40087B0CC /* codeedit-github-dark.json in Resources */,
 				58A5DFA529339F6400D1BD5D /* default_keybindings.json in Resources */,
 				28A51002281673530087B0CC /* codeedit-xcode-light.json in Resources */,
@@ -2542,6 +2563,7 @@
 				2072FA1C280D874000C7F8D4 /* IndentUsing.swift in Sources */,
 				58798284292ED0FB0085B254 /* TerminalEmulatorView.swift in Sources */,
 				B6EE989227E887C600CDD8AB /* InspectorSidebarToolbarTop.swift in Sources */,
+				4E7F066629602E7B00BB3C12 /* CodeEditSplitViewController.swift in Sources */,
 				587B9E8D29301D8F00AC7927 /* GitHubAccount.swift in Sources */,
 				201169E72837B5CA00F92B46 /* SourceControlModel.swift in Sources */,
 				58798265292EC4080085B254 /* ExtensionsStoreAPI.swift in Sources */,
@@ -2741,6 +2763,8 @@
 				583E528C29361B39001AB554 /* CodeEditUITests.swift in Sources */,
 				587B60F82934124200D5CD8F /* WorkspaceClientTests.swift in Sources */,
 				587B61012934170A00D5CD8F /* UnitTests_Extensions.swift in Sources */,
+				4EE96ECB2960565E00FFBEA8 /* DocumentsUnitTests.swift in Sources */,
+				4EE96ECE296059E000FFBEA8 /* NSHapticFeedbackPerformerMock.swift in Sources */,
 				587B612E293419B700D5CD8F /* CodeFileTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

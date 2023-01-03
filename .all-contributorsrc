@@ -463,6 +463,24 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "bombardier200",
+      "name": "bombardier200",
+      "avatar_url": "https://avatars.githubusercontent.com/u/25121427?v=4",
+      "profile": "https://github.com/bombardier200",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "yapryntsev",
+      "name": "Alex Yapryntsev",
+      "avatar_url": "https://avatars.githubusercontent.com/u/18378212?v=4",
+      "profile": "https://github.com/yapryntsev",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
