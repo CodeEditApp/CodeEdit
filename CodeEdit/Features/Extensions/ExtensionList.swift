@@ -14,21 +14,31 @@ struct ExtensionList: View {
     @Binding var scope: SearchScope
 
     @FocusState private var focusedField: FocusedField?
-    
 
     enum FocusedField {
         case installedList,
              store,
-             sea
+             searchfield
     }
 
     var body: some View {
 
         VStack(spacing: 0) {
 
-            Button("Test") {
-                focusedField = .sea
-                print("Pressed")
+            // Keyboard shortcut for seacrhbar
+            Button("Focus Searchbar") {
+                switch scope {
+                case .installed:
+                    scope = .store
+                    // Small delay, otherwise focus doesn't work right.
+                    Task {
+                        try? await Task.sleep(for: .seconds(0.2))
+                        focusedField = .searchfield
+                    }
+                case .store:
+                    focusedField = .searchfield
+                }
+
             }
             .focusable(false)
             .keyboardShortcut("f")
@@ -36,19 +46,19 @@ struct ExtensionList: View {
             .frame(width: 0, height: 0)
 
             VStack {
-                TextField("Search Field", text: $filter, prompt: (Text(Image(systemName: "magnifyingglass")) + Text("Search...")))
-                    .focused($focusedField, equals: .sea)
+                // TODO: Find a way to have a magnifying glass icon in the prompt
+                // Text(Image(systemName: "magnifyingglass")) should work, but doesn't work in a textfield for some reason.
+                // .searchable can't be used as the picker needs to be displayed below it
+                // the picker can be shown when .searchScopes works in the sidebar
+                TextField("Search Field", text: $filter, prompt: Text("Search..."))
+                    .focused($focusedField, equals: .searchfield)
                     .focusable(false)
                     .textFieldStyle(.roundedBorder)
                     .controlSize(.large)
 
-                Picker("Search Scope", selection: $scope) {
-                    ForEach(SearchScope.allCases) {
-                        Text($0.description)
-                    }
-                }
-                .pickerStyle(.segmented)
-                .labelsHidden()
+                SegmentedControlImproved(selection: $scope, options: SearchScope.allCases, prominent: true)
+                    .controlSize(.regular)
+
             }
             .padding([.horizontal, .bottom], 10)
 
@@ -64,6 +74,7 @@ struct ExtensionList: View {
                     .focused($focusedField, equals: .store)
             }
         }
+        
         .animation(.spring(response: 0.3), value: scope)
         .onChange(of: scope) { newValue in
             switch newValue {
@@ -75,6 +86,3 @@ struct ExtensionList: View {
         }
     }
 }
-
-
-

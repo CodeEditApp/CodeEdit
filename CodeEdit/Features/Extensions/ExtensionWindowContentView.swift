@@ -18,7 +18,7 @@ enum SearchScope: Identifiable, CaseIterable, CustomStringConvertible {
         case .installed:
             return "Installed"
         case .store:
-            return "Store"
+            return "Explore"
         }
     }
 }
