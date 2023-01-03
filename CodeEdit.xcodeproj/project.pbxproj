@@ -276,7 +276,6 @@
 		58F2EAFE292FB2B0004A9BDE /* GitHubEnterpriseLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAC5292FB2B0004A9BDE /* GitHubEnterpriseLoginView.swift */; };
 		58F2EAFF292FB2B0004A9BDE /* KeybindingsPreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAC7292FB2B0004A9BDE /* KeybindingsPreferencesView.swift */; };
 		58F2EB00292FB2B0004A9BDE /* LocationsPreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAC9292FB2B0004A9BDE /* LocationsPreferencesView.swift */; };
-		58F2EB01292FB2B0004A9BDE /* codeedit in Resources */ = {isa = PBXBuildFile; fileRef = 58F2EACB292FB2B0004A9BDE /* codeedit */; };
 		58F2EB02292FB2B0004A9BDE /* Loopable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EACD292FB2B0004A9BDE /* Loopable.swift */; };
 		58F2EB03292FB2B0004A9BDE /* Documentation.docc in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EACE292FB2B0004A9BDE /* Documentation.docc */; };
 		58F2EB04292FB2B0004A9BDE /* SourceControlPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAD1292FB2B0004A9BDE /* SourceControlPreferences.swift */; };
@@ -637,7 +636,6 @@
 		58F2EAC5292FB2B0004A9BDE /* GitHubEnterpriseLoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubEnterpriseLoginView.swift; sourceTree = "<group>"; };
 		58F2EAC7292FB2B0004A9BDE /* KeybindingsPreferencesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeybindingsPreferencesView.swift; sourceTree = "<group>"; };
 		58F2EAC9292FB2B0004A9BDE /* LocationsPreferencesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationsPreferencesView.swift; sourceTree = "<group>"; };
-		58F2EACB292FB2B0004A9BDE /* codeedit */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = codeedit; sourceTree = "<group>"; };
 		58F2EACD292FB2B0004A9BDE /* Loopable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Loopable.swift; sourceTree = "<group>"; };
 		58F2EACE292FB2B0004A9BDE /* Documentation.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = Documentation.docc; sourceTree = "<group>"; };
 		58F2EAD1292FB2B0004A9BDE /* SourceControlPreferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SourceControlPreferences.swift; sourceTree = "<group>"; };
@@ -1961,7 +1959,6 @@
 		58F2EACA292FB2B0004A9BDE /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				58F2EACB292FB2B0004A9BDE /* codeedit */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -2344,7 +2341,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B658FB3727DA9E1000EA4DBD /* Preview Assets.xcassets in Resources */,
-				58F2EB01292FB2B0004A9BDE /* codeedit in Resources */,
 				28A51006281701B40087B0CC /* codeedit-github-dark.json in Resources */,
 				58A5DFA529339F6400D1BD5D /* default_keybindings.json in Resources */,
 				28A51002281673530087B0CC /* codeedit-xcode-light.json in Resources */,

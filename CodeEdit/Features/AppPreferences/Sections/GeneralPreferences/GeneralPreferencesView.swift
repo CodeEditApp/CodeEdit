@@ -249,6 +249,7 @@ private extension GeneralPreferencesView {
                 Text("Install 'codeedit' command")
                     .padding(.horizontal, 10)
             })
+            .disabled(true)
             .buttonStyle(.bordered)
         }
     }
