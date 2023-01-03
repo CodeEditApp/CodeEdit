@@ -70,6 +70,8 @@ struct CodeFileView: View {
             font: $font,
             tabWidth: $prefs.preferences.textEditing.defaultTabWidth,
             lineHeight: .constant(1.2), // TODO: Add to preferences
+            wrapLines: $prefs.preferences.textEditing.wrapLinesToEditorWidth,
+            wrappedIndent: $prefs.preferences.textEditing.spacesToIndentWrappedLines,
             cursorPosition: codeFile.$cursorPosition
         )
         .id(codeFile.fileURL)
