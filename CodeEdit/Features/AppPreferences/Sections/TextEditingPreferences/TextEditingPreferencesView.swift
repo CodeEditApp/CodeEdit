@@ -42,6 +42,10 @@ struct TextEditingPreferencesView: View {
                 autocompleteBraces
                 enableTypeOverCompletion
             }
+            PreferencesSection("Line Wrapping") {
+                wrapLinesToEditorWidth
+                indentWrappedLinesBy
+            }
         }
     }
 
@@ -73,6 +77,26 @@ struct TextEditingPreferencesView: View {
         HStack {
             Toggle("Enable type-over completion", isOn: $prefs.preferences.textEditing.enableTypeOverCompletion)
             Text("Enable type-over completion")
+        }
+    }
+
+    private var wrapLinesToEditorWidth: some View {
+        HStack {
+            Toggle("Wrap lines to editor width", isOn: $prefs.preferences.textEditing.wrapLinesToEditorWidth)
+            Text("Wrap lines to editor width")
+        }
+    }
+
+    private var indentWrappedLinesBy: some View {
+        HStack(spacing: 5) {
+            Text("Indent wrapped lines by:")
+            TextField("", value: $prefs.preferences.textEditing.spacesToIndentWrappedLines, formatter: numberFormat)
+                .multilineTextAlignment(.trailing)
+                .frame(width: 40)
+            Stepper("Indent wrapped lines by spaces",
+                    value: $prefs.preferences.textEditing.spacesToIndentWrappedLines,
+                    in: 1...8)
+            Text("spaces")
         }
     }
 }

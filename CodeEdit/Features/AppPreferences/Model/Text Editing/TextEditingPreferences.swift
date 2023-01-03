@@ -21,6 +21,10 @@ extension AppPreferences {
 
         var autocompleteBraces: Bool = true
 
+        var wrapLinesToEditorWidth: Bool = true
+
+        var spacesToIndentWrappedLines: Int = 4
+
         /// Default initializer
         init() {}
 
@@ -33,6 +37,10 @@ extension AppPreferences {
                 Bool.self, forKey: .enableTypeOverCompletion) ?? true
             self.autocompleteBraces = try container.decodeIfPresent(Bool.self,
                                                                     forKey: .autocompleteBraces) ?? true
+            self.wrapLinesToEditorWidth = try container.decodeIfPresent(Bool.self,
+                                                                    forKey: .wrapLinesToEditorWidth) ?? true
+            self.spacesToIndentWrappedLines = try container.decodeIfPresent(Int.self,
+                                                                    forKey: .spacesToIndentWrappedLines) ?? 4
         }
     }
 
