@@ -12,6 +12,8 @@ import ExtensionFoundation
 
 struct ExtensionSceneView: NSViewControllerRepresentable {
 
+    @Environment(\.openWindow) var openWindow
+
     let appExtension: AppExtensionIdentity
     let sceneID: String
 
@@ -36,13 +38,33 @@ struct ExtensionSceneView: NSViewControllerRepresentable {
     }
 
     func makeCoordinator() -> Coordinator {
-        Coordinator()
+        Coordinator { id in
+            print(id)
+            DispatchQueue.main.async {
+                openWindow(id: id)
+            }
+        }
     }
 
-    public class Coordinator: NSObject, EXHostViewControllerDelegate {
+    public class Coordinator: NSObject, EXHostViewControllerDelegate, EnvironmentPublisherObjc {
         var isOnline: Bool = false
         var toPublish: Data?
+        var openWindow: (String) -> Void
+
+        init(openWindow: @escaping (String) -> Void) {
+            self.openWindow = openWindow
+        }
+
         public var connection: NSXPCConnection?
+
+        public func publishEnvironment(@Decoded<Callbacks> data: Data) {
+            print("RECEIVED DATA")
+            guard let $data else { return }
+            switch $data {
+            case .openWindow(let id):
+                openWindow(id)
+            }
+        }
 
         public func updateEnvironment(@Encoded _ value: _CEEnvironment) {
             guard let $value else { return }
@@ -75,6 +97,8 @@ struct ExtensionSceneView: NSViewControllerRepresentable {
             isOnline = true
             do {
                 self.connection = try viewController.makeXPCConnection()
+                connection?.exportedInterface = .init(with: EnvironmentPublisherObjc.self)
+                connection?.exportedObject = self
                 connection?.remoteObjectInterface = .init(with: EnvironmentPublisherObjc.self)
                 connection?.resume()
                 if let toPublish {
