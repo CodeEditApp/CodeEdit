@@ -98,8 +98,8 @@ jobs:
         with:
           title: "CodeEdit-${{ env.REV }}"
           files: |
-            "${{ RUNNER.TEMP }}/Sparkle_Archive/CodeEdit-${{ env.REV }}.dmg"
-            "${{ RUNNER.TEMP }}/Sparkle_Archive/appcast.xml"
+            ${{ RUNNER.TEMP }}/Sparkle_Archive/CodeEdit-${{ env.REV }}.dmg
+            ${{ RUNNER.TEMP }}/Sparkle_Archive/appcast.xml
           automatic_release_tag: "latest"
           prerelease: true
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
