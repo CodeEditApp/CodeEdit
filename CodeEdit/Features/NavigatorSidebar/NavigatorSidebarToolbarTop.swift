@@ -73,6 +73,8 @@ struct NavigatorSidebarToolbarTop: View {
             selection = id
         } label: {
             getSafeImage(named: named, accesibilityDescription: title)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
                 .help(title)
                 .onDrag {
                     if let index = icons.firstIndex(where: { $0.imageName == named }) {
@@ -85,7 +87,6 @@ struct NavigatorSidebarToolbarTop: View {
                 }
         }
         .buttonStyle(NavigatorToolbarButtonStyle(id: id, selection: selection, activeState: activeState))
-        .imageScale(scale)
     }
 
     private func getSafeImage(named: String, accesibilityDescription: String?) -> Image {
@@ -103,10 +104,9 @@ struct NavigatorSidebarToolbarTop: View {
 
         func makeBody(configuration: Configuration) -> some View {
             configuration.label
-                .font(.system(size: 15, weight: id == selection ? .semibold : .regular))
                 .symbolVariant(id == selection ? .fill : .none)
                 .foregroundColor(id == selection ? .accentColor : configuration.isPressed ? .primary : .secondary)
-                .frame(width: 15, height: 15, alignment: .center)
+                .frame(width: 15, height: 15)
                 .contentShape(Rectangle())
                 .opacity(activeState == .inactive ? 0.45 : 1)
         }
