@@ -10,33 +10,31 @@ import Combine
 
 struct ExtensionNavigatorView: View {
     @EnvironmentObject var workspace: WorkspaceDocument
-    @ObservedObject var data: ExtensionNavigatorData
+    @EnvironmentObject var extensionManager: ExtensionManager
+
     @State var showing = false
 
     var body: some View {
-        VStack {
-            Divider() // TODO: fix this workaround because when switching tabs without this, the app crashes
-            List {
-                ForEach(data.plugins) { plugin in
-                    ExtensionNavigatorItemView(plugin: plugin)
-                        .tag(plugin)
-                        .environmentObject(workspace)
-                }
-
-                if !data.listFull {
-                    HStack {
-                        Spacer()
-                        ProgressView()
-                            .progressViewStyle(CircularProgressViewStyle())
-                            .onAppear {
-                                data.fetch()
-                            }
-                        Spacer()
+        List {
+            ExtensionActivatorView()
+            ForEach(extensionManager.extensions) { ext in
+                HStack {
+                    if let icon = ext.icon {
+                        Image(nsImage: icon)
+                    } else {
+                        Text("No Image")
                     }
+                    Text(ext.name)
                 }
             }
-            .listStyle(.sidebar)
-            .listRowInsets(.init())
+        }
+        .toolbar {
+            
+            ToolbarItem {
+                Button("HEllo") {
+
+                }
+            }
         }
     }
 }

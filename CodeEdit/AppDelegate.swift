@@ -9,6 +9,74 @@ import SwiftUI
 import Preferences
 import CodeEditSymbols
 
+@main
+struct CodeEditApp: App {
+    @NSApplicationDelegateAdaptor var delegate: AppDelegate
+    @Environment(\.openWindow) var openWindow
+
+    var body: some Scene {
+
+
+        Window("Welcome", id: "WelcomeWindow") {
+            WelcomeWindowView(
+                shellClient: currentWorld.shellClient,
+                openDocument: { url, opened in
+                    if let url = url {
+                        CodeEditDocumentController.shared.openDocument(withContentsOf: url, display: true) { doc, _, _ in
+                            if doc != nil {
+                                opened()
+                            }
+                        }
+                    } else {
+                        //                        windowController.window?.close()
+                        NSApp.windows.first {
+                            $0.identifier?.rawValue == "WelcomeWindow"
+                        }?.close()
+                        CodeEditDocumentController.shared.openDocument(
+                            onCompletion: { _, _ in opened() },
+                            onCancel: { WelcomeWindowView.openWelcomeWindow() }
+                        )
+                    }
+                },
+                newDocument: {
+                    CodeEditDocumentController.shared.newDocument(nil)
+                },
+                dismissWindow: {
+                    NSApp.windows.first {
+                        $0.identifier?.rawValue == "WelcomeWindow"
+                    }?.close()
+                }
+            )
+            .edgesIgnoringSafeArea(.all)
+            .frame(height: 460)
+            .fixedSize()
+            .task {
+                let window = NSApp.windows.first {
+                    $0.identifier?.rawValue == "WelcomeWindow"
+                }!
+                window.standardWindowButton(.closeButton)?.isHidden = true
+                window.standardWindowButton(.miniaturizeButton)?.isHidden = true
+                window.standardWindowButton(.zoomButton)?.isHidden = true
+                window.isMovableByWindowBackground = true
+            }
+        }
+        .windowStyle(.hiddenTitleBar)
+        .windowResizability(.contentSize)
+        .keyboardShortcut("1", modifiers: [.command, .shift])
+        .commands {
+            CommandGroup(after: .appInfo) {
+                Button("Open Settings") {
+                    delegate.openPreferences(self)
+                }
+            }
+        }
+
+        ExtensionWindow()
+            .keyboardShortcut("2", modifiers: [.command, .shift])
+
+    }
+}
+
 final class CodeEditApplication: NSApplication {
     let strongDelegate = AppDelegate()
 
@@ -24,7 +92,7 @@ final class CodeEditApplication: NSApplication {
 
 }
 
-@NSApplicationMain
+//@NSApplicationMain
 final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     var updater: SoftwareUpdater = SoftwareUpdater()
 
@@ -33,8 +101,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
+//        NSApp.windows.forEach { $0.close() }
+
         AppPreferencesModel.shared.preferences.general.appAppearance.applyAppearance()
         checkForFilesToOpen()
+
 
         DispatchQueue.main.async {
             var needToHandleOpen = true
@@ -75,7 +146,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
             }
         }
 
-        ExtensionManager.shared.refreshBundles()
+//        ExtensionManager.shared.refreshBundles()
+//        ExtensionWindow.openExtensionWindow()
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
@@ -104,7 +176,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 
         switch behavior {
         case .welcome:
-            openWelcome(self)
+            break
+//            openWelcome(self)
         case .openPanel:
             CodeEditDocumentController.shared.openDocument(self)
         case .newDocument:
@@ -164,8 +237,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 
     @IBAction func openWelcome(_ sender: Any) {
         if tryFocusWindow(of: WelcomeWindowView.self) { return }
-
+        
         WelcomeWindowView.openWelcomeWindow()
+    }
+
+    @IBAction func openExtensionWindow(_ sender: Any) {
+        if tryFocusWindow(of: ExtensionWindowContentView.self) { return }
+
+        ExtensionWindow.openExtensionWindow()
     }
 
     @IBAction func openAbout(_ sender: Any) {

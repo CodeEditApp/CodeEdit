@@ -13,41 +13,27 @@ struct NavigatorSidebarToolbarTop: View {
     private var activeState
 
     @Binding
-    private var selection: Int
+    var selection: SidebarNavigator
 
-    @State private var icons = [
-        SidebarDockIcon(imageName: "folder", title: "Project", id: 0),
-        SidebarDockIcon(imageName: "vault", title: "Version Control", id: 1),
-        SidebarDockIcon(imageName: "magnifyingglass", title: "Search", id: 2),
-        SidebarDockIcon(imageName: "shippingbox", title: "...", id: 3, disabled: true),
-        SidebarDockIcon(imageName: "play", title: "...", id: 4, disabled: true),
-        SidebarDockIcon(imageName: "exclamationmark.triangle", title: "...", id: 5, disabled: true),
-        SidebarDockIcon(imageName: "curlybraces.square", title: "...", id: 6, disabled: true),
-        SidebarDockIcon(imageName: "puzzlepiece.extension", title: "...", id: 7, disabled: true),
-        SidebarDockIcon(imageName: "square.grid.2x2", title: "...", id: 8, disabled: true)
-    ]
     @State private var hasChangedLocation: Bool = false
-    @State private var draggingItem: SidebarDockIcon?
+    @State private var draggingItem: SidebarNavigator?
     @State private var drugItemLocation: CGPoint?
-
-    init(selection: Binding<Int>) {
-        self._selection = selection
-    }
+    @State private var icons = SidebarNavigator.allCases
 
     var body: some View {
         HStack(spacing: 2) {
             ForEach(icons) { icon in
-                makeIcon(named: icon.imageName, title: icon.title, id: icon.id)
-                    .opacity(draggingItem?.imageName == icon.imageName &&
+                makeIcon(icon: icon)
+                    .opacity(draggingItem?.id == icon.id &&
                              hasChangedLocation &&
-                             drugItemLocation != nil ? 0.0: icon.disabled ? 0.3 : 1.0)
+                             drugItemLocation != nil ? 0.0 : 1.0)
                     .onDrop(of: [.utf8PlainText],
                             delegate: NavigatorSidebarDockIconDelegate(item: icon,
                                                                         current: $draggingItem,
                                                                         icons: $icons,
                                                                         hasChangedLocation: $hasChangedLocation,
                                                                         drugItemLocation: $drugItemLocation))
-                    .disabled(icon.disabled)
+//                    .disabled(icon.disabled)
             }
         }
         .frame(height: 29, alignment: .center)
@@ -61,23 +47,23 @@ struct NavigatorSidebarToolbarTop: View {
         .animation(.default, value: icons)
     }
 
-    private func makeIcon(named: String, title: String, id: Int, scale: Image.Scale = .medium) -> some View {
+    private func makeIcon(icon: SidebarNavigator, scale: Image.Scale = .medium) -> some View {
         Button {
-            selection = id
+            selection = icon.id
         } label: {
-            getSafeImage(named: named, accesibilityDescription: title)
-            .help(title)
+            icon.icon
+                .help(icon.description)
+
             .onDrag {
-            if let index = icons.firstIndex(where: { $0.imageName == named }) {
-                draggingItem = icons[index]
-            }
-                return .init(object: NSString(string: named))
+                draggingItem = icon
+
+                return .init(object: NSString(string: icon.description))
             } preview: {
                 RoundedRectangle(cornerRadius: .zero)
                     .frame(width: .zero)
             }
         }
-        .buttonStyle(NavigatorToolbarButtonStyle(id: id, selection: selection, activeState: activeState))
+        .buttonStyle(NavigatorToolbarButtonStyle(id: icon, selection: selection, activeState: activeState))
         .imageScale(scale)
     }
 
@@ -90,8 +76,8 @@ struct NavigatorSidebarToolbarTop: View {
     }
 
     struct NavigatorToolbarButtonStyle: ButtonStyle {
-        var id: Int
-        var selection: Int
+        var id: SidebarNavigator
+        var selection: SidebarNavigator
         var activeState: ControlActiveState
 
         func makeBody(configuration: Configuration) -> some View {
@@ -113,9 +99,9 @@ struct NavigatorSidebarToolbarTop: View {
     }
 
     private struct NavigatorSidebarDockIconDelegate: DropDelegate {
-        let item: SidebarDockIcon
-        @Binding var current: SidebarDockIcon?
-        @Binding var icons: [SidebarDockIcon]
+        let item: SidebarNavigator
+        @Binding var current: SidebarNavigator?
+        @Binding var icons: [SidebarNavigator]
         @Binding var hasChangedLocation: Bool
         @Binding var drugItemLocation: CGPoint?
 

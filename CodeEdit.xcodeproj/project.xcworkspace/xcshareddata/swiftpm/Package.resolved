@@ -1,12 +1,12 @@
 {
   "pins" : [
     {
-      "identity" : "codeeditkit",
+      "identity" : "anycodable",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/CodeEditApp/CodeEditKit.git",
+      "location" : "https://github.com/Flight-School/AnyCodable",
       "state" : {
-        "revision" : "7bd380464313df30a70d1de4d1e221106f3e384a",
-        "version" : "0.0.1"
+        "revision" : "862808b2070cd908cb04f9aafe7de83d35f81b05",
+        "version" : "0.6.7"
       }
     },
     {
@@ -37,6 +37,24 @@
       }
     },
     {
+      "identity" : "collectionconcurrencykit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/johnsundell/collectionconcurrencykit",
+      "state" : {
+        "revision" : "b4f23e24b5a1bff301efc5e70871083ca029ff95",
+        "version" : "0.2.0"
+      }
+    },
+    {
+      "identity" : "concurrencyplus",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ChimeHQ/ConcurrencyPlus",
+      "state" : {
+        "branch" : "main",
+        "revision" : "b5ba8d5ea6bfe9e43ccc44aa63f9b458057fa0f4"
+      }
+    },
+    {
       "identity" : "grdb.swift",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/groue/GRDB.swift.git",
@@ -61,6 +79,15 @@
       "state" : {
         "revision" : "2651cd144615009242c994b087508fef99e9275c",
         "version" : "2.6.0"
+      }
+    },
+    {
+      "identity" : "sequencebuilder",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/andtie/SequenceBuilder",
+      "state" : {
+        "branch" : "main",
+        "revision" : "54d3d1eff31a7e35122f616840fff11899ea85b4"
       }
     },
     {

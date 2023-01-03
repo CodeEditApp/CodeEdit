@@ -55,6 +55,11 @@
 - ``APIResponse``
 - ``DownloadedPlugin``
 
+### Extensions
+
+- ``ExtensionManager``
+- ``ExtensionDiscovery``
+
 ### Feedback
 
 - ``FeedbackView``
