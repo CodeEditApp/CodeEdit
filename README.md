@@ -139,6 +139,7 @@ Be part of the next revolution in code editing by contributing to the project. T
     </tr>
     <tr>
       <td align="center"><a href="https://github.com/bombardier200"><img src="https://avatars.githubusercontent.com/u/25121427?v=4?s=100" width="100px;" alt="bombardier200"/><br /><sub><b>bombardier200</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=bombardier200" title="Code">💻</a></td>
+      <td align="center"><a href="https://github.com/yapryntsev"><img src="https://avatars.githubusercontent.com/u/18378212?v=4?s=100" width="100px;" alt="Alex Yapryntsev"/><br /><sub><b>Alex Yapryntsev</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=yapryntsev" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
