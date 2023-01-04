@@ -1822,7 +1822,6 @@
 			children = (
 				58F2EAE2292FB2B0004A9BDE /* HelperViews */,
 				58F2EACF292FB2B0004A9BDE /* Model */,
-				58F2EACA292FB2B0004A9BDE /* Resources */,
 				58F2EAA0292FB2B0004A9BDE /* Sections */,
 				58F2EAE6292FB2B0004A9BDE /* PreferencesPlaceholderView.swift */,
 				58F2EAE1292FB2B0004A9BDE /* SoftwareUpdater.swift */,
@@ -1981,13 +1980,6 @@
 				58F2EAC9292FB2B0004A9BDE /* LocationsPreferencesView.swift */,
 			);
 			path = LocationsPreferences;
-			sourceTree = "<group>";
-		};
-		58F2EACA292FB2B0004A9BDE /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Resources;
 			sourceTree = "<group>";
 		};
 		58F2EACF292FB2B0004A9BDE /* Model */ = {
@@ -2819,7 +2811,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = OpenWithCodeEdit/OpenWithCodeEdit.entitlements;
 				CODE_SIGN_IDENTITY = "-";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
