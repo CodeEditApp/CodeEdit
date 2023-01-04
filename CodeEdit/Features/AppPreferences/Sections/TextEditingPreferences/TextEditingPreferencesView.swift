@@ -44,7 +44,6 @@ struct TextEditingPreferencesView: View {
             }
             PreferencesSection("Line Wrapping") {
                 wrapLinesToEditorWidth
-                indentWrappedLinesBy
             }
         }
     }
@@ -87,16 +86,4 @@ struct TextEditingPreferencesView: View {
         }
     }
 
-    private var indentWrappedLinesBy: some View {
-        HStack(spacing: 5) {
-            Text("Indent wrapped lines by:")
-            TextField("", value: $prefs.preferences.textEditing.spacesToIndentWrappedLines, formatter: numberFormat)
-                .multilineTextAlignment(.trailing)
-                .frame(width: 40)
-            Stepper("Indent wrapped lines by spaces",
-                    value: $prefs.preferences.textEditing.spacesToIndentWrappedLines,
-                    in: 1...8)
-            Text("spaces")
-        }
-    }
 }
