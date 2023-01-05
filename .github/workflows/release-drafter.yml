@@ -3,9 +3,7 @@ name: Release Drafter
 on:
   # Allow running it manually in case we forget to label a PR before merging
   workflow_dispatch:
-  push:
-    branches:
-      - main
+  workflow_call:
 
 jobs:
   update_release_draft:

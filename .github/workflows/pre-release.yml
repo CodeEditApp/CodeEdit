@@ -2,9 +2,7 @@ name: Build and Publish Pre-release
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - 'main'
+  workflow_call:
 
 jobs:
   pre-release:
