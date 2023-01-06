@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ExtensionDetailView: View {
     var ext: ExtensionInfo
-    
+
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
@@ -40,4 +40,3 @@ struct ExtensionDetailView: View {
         .navigationSubtitle(ext.name)
     }
 }
-

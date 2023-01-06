@@ -9,15 +9,15 @@ import SwiftUI
 import ExtensionKit
 
 struct ExtensionActivatorView: NSViewControllerRepresentable {
-    func makeNSViewController(context: Context) -> some NSViewController {
+    func makeNSViewController(context: Context) -> EXAppExtensionBrowserViewController {
         EXAppExtensionBrowserViewController()
     }
 
-    func updateNSViewController(_ nsViewController: NSViewControllerType, context: Context) {
+    func updateNSViewController(_ nsViewController: EXAppExtensionBrowserViewController, context: Context) {
 
     }
 
-    func makeCoordinator() -> () {
+    func makeCoordinator() {
 
     }
 }

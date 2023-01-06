@@ -74,7 +74,6 @@ struct ExtensionList: View {
                     .focused($focusedField, equals: .store)
             }
         }
-        
         .animation(.spring(response: 0.3), value: scope)
         .onChange(of: scope) { newValue in
             switch newValue {
