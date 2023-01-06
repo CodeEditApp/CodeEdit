@@ -37,6 +37,36 @@ extension AppPreferences {
                                                                     forKey: .autocompleteBraces) ?? true
             self.wrapLinesToEditorWidth = try container.decodeIfPresent(Bool.self,
                                                                     forKey: .wrapLinesToEditorWidth) ?? true
+            self.populateCommands()
+        }
+
+        /// Adds toggle-able preferences to the command palette via shared `CommandManager`
+        private func populateCommands() {
+            let mgr = CommandManager.shared
+
+            mgr.addCommand(
+                name: "Toggle Type-Over Completion",
+                title: "Toggle Type-Over Completion",
+                id: "prefs.text_editing.type_over_completion",
+                command: CommandClosureWrapper {
+                    AppPreferencesModel.shared.preferences.textEditing.enableTypeOverCompletion.toggle()
+            })
+
+            mgr.addCommand(
+                name: "Toggle Autocomplete Braces",
+                title: "Toggle Autocomplete Braces",
+                id: "prefs.text_editing.autocomplete_braces",
+                command: CommandClosureWrapper {
+                    AppPreferencesModel.shared.preferences.textEditing.autocompleteBraces.toggle()
+            })
+
+            mgr.addCommand(
+                name: "Toggle Word Wrap",
+                title: "Toggle Word Wrap",
+                id: "prefs.text_editing.wrap_lines_to_editor_width",
+                command: CommandClosureWrapper {
+                    AppPreferencesModel.shared.preferences.textEditing.wrapLinesToEditorWidth.toggle()
+            })
         }
     }
 
