@@ -154,7 +154,7 @@ struct WelcomeView: View {
                         }
                         WelcomeActionView(
                             iconName: "plus.square.on.square",
-                            title: NSLocalizedString("Clone an exisiting project", comment: ""),
+                            title: NSLocalizedString("Clone an existing project", comment: ""),
                             subtitle: NSLocalizedString(
                                 "Start working on something from a Git repository",
                                 comment: ""
