@@ -32,3 +32,4 @@ jobs:
           delete-branch: true
           base: main
           title: Bump Build Number
+          body: Automatically bump build number of all targets
