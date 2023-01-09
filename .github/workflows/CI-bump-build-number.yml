@@ -1,8 +1,5 @@
 name: CI - Update Build Number
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 jobs:
   upadate-build-number:
@@ -26,5 +23,12 @@ jobs:
         uses: ad-m/github-push-action@v0.6.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: main
+          branch: temp/bump-build-number
           force: true
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          branch: temp/bump-build-number
+          delete-branch: true
+          base: main
+          title: Bump Build Number
