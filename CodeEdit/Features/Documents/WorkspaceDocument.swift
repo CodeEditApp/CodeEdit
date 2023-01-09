@@ -266,6 +266,7 @@ import CodeEditKit
             window: window,
             workspace: self
         )
+        windowController.windowFrameAutosaveName = NSWindow.FrameAutosaveName("CodeEditWindow")
         self.addWindowController(windowController)
     }
 
