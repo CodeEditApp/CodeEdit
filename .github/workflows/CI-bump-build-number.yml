@@ -1,0 +1,25 @@
+name: CI - Update Build Number
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+jobs:
+  upadate-build-number:
+    name: Update Build Number
+    runs-on: macos-12
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+  
+      - name: Bump Build Number
+        run: |
+          xcrun agvtool next-version -all
+
+      - name: Push Changes
+        run: |
+          git add .
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -m "bump build number"
+          git push origin HEAD
