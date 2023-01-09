@@ -22,4 +22,4 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git commit -m "bump build number"
-          git push origin HEAD
+          git push origin HEAD -f
