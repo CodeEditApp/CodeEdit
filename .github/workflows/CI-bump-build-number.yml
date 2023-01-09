@@ -16,10 +16,15 @@ jobs:
         run: |
           xcrun agvtool next-version -all
 
-      - name: Push Changes
+      - name: Commit Changes
         run: |
           git add .
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git commit -m "bump build number"
-          git push origin HEAD -f
+      - name: Push Changes
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: main
+          force: true
