@@ -76,6 +76,11 @@ class SoftwareUpdater: NSObject, ObservableObject, SPUUpdaterDelegate {
 }
 
 extension URL {
-    static let appcast = URL(string: "https://github.com/CodeEditApp/CodeEdit/releases/download/latest/appcast.xml")!
-    static let prereleaseAppcast = URL(string: "https://github.com/CodeEditApp/CodeEdit/releases/download/latest/appcast.xml")!
+    static let appcast = URL(
+        string: "https://github.com/CodeEditApp/CodeEdit/releases/download/latest/appcast.xml"
+    )!
+
+    static let prereleaseAppcast = URL(
+        string: "https://github.com/CodeEditApp/CodeEdit/releases/download/latest/appcast.xml"
+    )!
 }
