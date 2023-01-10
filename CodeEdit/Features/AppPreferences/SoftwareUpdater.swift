@@ -27,11 +27,6 @@ class SoftwareUpdater: NSObject, ObservableObject, SPUUpdaterDelegate {
     var includePrereleaseVersions = false {
         didSet {
             UserDefaults.standard.setValue(includePrereleaseVersions, forKey: "includePrereleaseVersions")
-            if includePrereleaseVersions {
-                updater?.setFeedURL(.prereleaseAppcast)
-            } else {
-                updater?.setFeedURL(.appcast)
-            }
         }
     }
 
@@ -42,6 +37,8 @@ class SoftwareUpdater: NSObject, ObservableObject, SPUUpdaterDelegate {
             updaterDelegate: self,
             userDriverDelegate: nil
         ).updater
+
+        updater?.setFeedURL(.appcast)
 
         automaticallyChecksForUpdatesObservation = updater?.observe(
             \.automaticallyChecksForUpdates,
@@ -77,10 +74,6 @@ class SoftwareUpdater: NSObject, ObservableObject, SPUUpdaterDelegate {
 
 extension URL {
     static let appcast = URL(
-        string: "https://github.com/CodeEditApp/CodeEdit/releases/download/latest/appcast.xml"
-    )!
-
-    static let prereleaseAppcast = URL(
         string: "https://github.com/CodeEditApp/CodeEdit/releases/download/latest/appcast.xml"
     )!
 }
