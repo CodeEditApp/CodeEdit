@@ -73,8 +73,6 @@ struct NavigatorSidebarToolbarTop: View {
             selection = id
         } label: {
             getSafeImage(named: named, accesibilityDescription: title)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
                 .help(title)
                 .onDrag {
                     if let index = icons.firstIndex(where: { $0.imageName == named }) {
@@ -90,8 +88,9 @@ struct NavigatorSidebarToolbarTop: View {
     }
 
     private func getSafeImage(named: String, accesibilityDescription: String?) -> Image {
-        if let nsImage = NSImage(systemSymbolName: named, accessibilityDescription: accesibilityDescription) {
-            return Image(nsImage: nsImage)
+        // We still use the NSImage init to check if a symbol with the name exists.
+        if NSImage(systemSymbolName: named, accessibilityDescription: nil) != nil {
+            return Image(systemName: named)
         } else {
             return Image(symbol: named)
         }
