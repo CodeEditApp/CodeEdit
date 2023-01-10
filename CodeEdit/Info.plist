@@ -234,6 +234,25 @@
 		<dict>
 			<key>CFBundleTypeExtensions</key>
 			<array>
+				<string>Swift</string>
+			</array>
+			<key>CFBundleTypeName</key>
+			<string>Swift source code</string>
+			<key>CFBundleTypeOSTypes</key>
+			<array>
+				<string>TEXT</string>
+				<string>utxt</string>
+				<string>TUTX</string>
+				<string>****</string>
+			</array>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>NSDocumentClass</key>
+			<string>CodeFileDocument</string>
+		</dict>
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
 				<string>cs</string>
 				<string>csx</string>
 			</array>
@@ -1245,5 +1264,7 @@
 	<string>https://github.com/CodeEditApp/CodeEdit/releases/download/latest/appcast.xml</string>
 	<key>SUPublicEDKey</key>
 	<string>/vAnxnK9wj4IqnUt6wS9EN3Ug69zHb+S/Pb9CyZuwa0=</string>
+	<key>CFBundleShortVersionString</key>
+	<string>0.0.1</string>
 </dict>
 </plist>
