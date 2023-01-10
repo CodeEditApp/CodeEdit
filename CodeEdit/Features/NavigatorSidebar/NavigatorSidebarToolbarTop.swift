@@ -84,10 +84,14 @@ struct NavigatorSidebarToolbarTop: View {
                         .frame(width: .zero)
                 }
         }
-        .buttonStyle(NavigatorToolbarButtonStyle(id: id,
-                                                 selection: selection,
-                                                 activeState: activeState,
-                                                 sidebarWidth: sidebarWidth))
+        .buttonStyle(
+            NavigatorToolbarButtonStyle(
+                id: id,
+                selection: selection,
+                activeState: activeState,
+                sidebarWidth: sidebarWidth
+            )
+        )
     }
 
     private func getSafeImage(named: String, accesibilityDescription: String?) -> Image {
