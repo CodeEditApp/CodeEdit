@@ -44,9 +44,9 @@ enum SidebarNavigator: Identifiable, Hashable, CaseIterable, CustomStringConvert
     }
 
     static var allCases: [SidebarNavigator] {
-        return [.project, .sourceControl, .search] + ExtensionDiscovery.shared.extensions.map(\.sidebars).joined().map { Self.custom($0) }
+        return [.project, .sourceControl, .search] + ExtensionDiscovery.shared.extensions
+            .map(\.sidebars).joined().map { Self.custom($0) }
     }
-
 
 }
 

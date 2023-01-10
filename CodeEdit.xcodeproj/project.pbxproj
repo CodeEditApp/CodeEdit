@@ -289,6 +289,7 @@
 		6C05A8AF284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C05A8AE284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift */; };
 		6C14CEB028777D3C001468FE /* FindNavigatorListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C14CEAF28777D3C001468FE /* FindNavigatorListViewController.swift */; };
 		6C14CEB32877A68F001468FE /* FindNavigatorMatchListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C14CEB22877A68F001468FE /* FindNavigatorMatchListCell.swift */; };
+		6C20F9EF296A6F8A00A683F7 /* LanguageClient in Frameworks */ = {isa = PBXBuildFile; productRef = 6C20F9EE296A6F8A00A683F7 /* LanguageClient */; };
 		6C671842295E697200FB45D2 /* ExtensionList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C671841295E697200FB45D2 /* ExtensionList.swift */; };
 		6C671845295E69D000FB45D2 /* ExtensionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C671844295E69D000FB45D2 /* ExtensionManager.swift */; };
 		6C67184C295E6BAC00FB45D2 /* codeedit.extension.appextensionpoint in Resources */ = {isa = PBXBuildFile; fileRef = 6C67184A295E6BAC00FB45D2 /* codeedit.extension.appextensionpoint */; };
@@ -309,6 +310,13 @@
 		6CA5A3AC2964846C00C7EBFA /* CodeEditApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CA5A3AB2964846C00C7EBFA /* CodeEditApp.swift */; };
 		6CA5A3AF296484B200C7EBFA /* WelcomeWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CA5A3AE296484B200C7EBFA /* WelcomeWindow.swift */; };
 		6CA5A3B62964AAD700C7EBFA /* CodeEditKit in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 2801BB89290D5A8E00EBF552 /* CodeEditKit */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		6CA5A3C229650CBE00C7EBFA /* WorkspaceFileDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CA5A3C129650CBE00C7EBFA /* WorkspaceFileDocument.swift */; };
+		6CA5A3C529650DC700C7EBFA /* WorkspaceDocumentGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CA5A3C429650DC700C7EBFA /* WorkspaceDocumentGroup.swift */; };
+		6CA5A3CB296533A600C7EBFA /* WorkspaceEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CA5A3CA296533A600C7EBFA /* WorkspaceEditor.swift */; };
+		6CA8E6262968E483004AC5E1 /* WindowManagement in Frameworks */ = {isa = PBXBuildFile; productRef = 6CA8E6252968E483004AC5E1 /* WindowManagement */; };
+		6CA8E62A2968E772004AC5E1 /* NSDocumentController+Swizzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CA8E6292968E772004AC5E1 /* NSDocumentController+Swizzle.swift */; };
+		6CA8E62D2968E818004AC5E1 /* FileTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CA8E62C2968E818004AC5E1 /* FileTree.swift */; };
+		6CA8E6302968ECBB004AC5E1 /* SceneOutlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CA8E62F2968ECBB004AC5E1 /* SceneOutlineView.swift */; };
 		6CC1AB61296266E400F0A5E3 /* ExtensionSidebarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC1AB60296266E400F0A5E3 /* ExtensionSidebarItem.swift */; };
 		6CDA84AB284C0E4A00C1CC3A /* TabBarItemButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CDA84AA284C0E4A00C1CC3A /* TabBarItemButtonStyle.swift */; };
 		6CDA84AD284C1BA000C1CC3A /* TabBarContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CDA84AC284C1BA000C1CC3A /* TabBarContextMenu.swift */; };
@@ -683,6 +691,12 @@
 		6CA577D4296255F1001A4C42 /* ExtensionWindowNavigationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionWindowNavigationManager.swift; sourceTree = "<group>"; };
 		6CA5A3AB2964846C00C7EBFA /* CodeEditApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditApp.swift; sourceTree = "<group>"; };
 		6CA5A3AE296484B200C7EBFA /* WelcomeWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeWindow.swift; sourceTree = "<group>"; };
+		6CA5A3C129650CBE00C7EBFA /* WorkspaceFileDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceFileDocument.swift; sourceTree = "<group>"; };
+		6CA5A3C429650DC700C7EBFA /* WorkspaceDocumentGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceDocumentGroup.swift; sourceTree = "<group>"; };
+		6CA5A3CA296533A600C7EBFA /* WorkspaceEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceEditor.swift; sourceTree = "<group>"; };
+		6CA8E6292968E772004AC5E1 /* NSDocumentController+Swizzle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSDocumentController+Swizzle.swift"; sourceTree = "<group>"; };
+		6CA8E62C2968E818004AC5E1 /* FileTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTree.swift; sourceTree = "<group>"; };
+		6CA8E62F2968ECBB004AC5E1 /* SceneOutlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneOutlineView.swift; sourceTree = "<group>"; };
 		6CC1AB60296266E400F0A5E3 /* ExtensionSidebarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionSidebarItem.swift; sourceTree = "<group>"; };
 		6CDA84AA284C0E4A00C1CC3A /* TabBarItemButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarItemButtonStyle.swift; sourceTree = "<group>"; };
 		6CDA84AC284C1BA000C1CC3A /* TabBarContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarContextMenu.swift; sourceTree = "<group>"; };
@@ -720,10 +734,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6CA8E6262968E483004AC5E1 /* WindowManagement in Frameworks */,
 				6C671866295E727600FB45D2 /* ConcurrencyPlus in Frameworks */,
 				6C85B3DC295FE7700015CCB5 /* CollectionConcurrencyKit in Frameworks */,
 				58F2EB1A292FB91C004A9BDE /* Preferences in Frameworks */,
 				2801BB8A290D5A8E00EBF552 /* CodeEditKit in Frameworks */,
+				6C20F9EF296A6F8A00A683F7 /* LanguageClient in Frameworks */,
 				58F2EB17292FB74D004A9BDE /* CodeEditTextView in Frameworks */,
 				5879826F292EC9870085B254 /* GRDB in Frameworks */,
 				58F2EB1E292FB954004A9BDE /* Sparkle in Frameworks */,
@@ -2081,6 +2097,19 @@
 			path = FindNavigatorResultList;
 			sourceTree = "<group>";
 		};
+		6C2520082965F1F000D88AE9 /* DocumentGroup */ = {
+			isa = PBXGroup;
+			children = (
+				6CA5A3C129650CBE00C7EBFA /* WorkspaceFileDocument.swift */,
+				6CA8E62C2968E818004AC5E1 /* FileTree.swift */,
+				6CA8E62F2968ECBB004AC5E1 /* SceneOutlineView.swift */,
+				6CA5A3C429650DC700C7EBFA /* WorkspaceDocumentGroup.swift */,
+				6CA5A3CA296533A600C7EBFA /* WorkspaceEditor.swift */,
+				6CA8E6292968E772004AC5E1 /* NSDocumentController+Swizzle.swift */,
+			);
+			path = DocumentGroup;
+			sourceTree = "<group>";
+		};
 		6C671838295E52B700FB45D2 /* Packages */ = {
 			isa = PBXGroup;
 			children = (
@@ -2152,6 +2181,7 @@
 				D7211D4427E066D4008F2ED7 /* Localization */,
 				B658FB3527DA9E1000EA4DBD /* Preview Content */,
 				58D01C85293167DC00C5B6B4 /* Utils */,
+				6C2520082965F1F000D88AE9 /* DocumentGroup */,
 				6CA5A3AB2964846C00C7EBFA /* CodeEditApp.swift */,
 				0468438427DC76E200F8E88E /* AppDelegate.swift */,
 				5C4BB1E028212B1E00A92FB2 /* World.swift */,
@@ -2256,6 +2286,8 @@
 				58F2EB1D292FB954004A9BDE /* Sparkle */,
 				6C671865295E727600FB45D2 /* ConcurrencyPlus */,
 				6C85B3DB295FE7700015CCB5 /* CollectionConcurrencyKit */,
+				6CA8E6252968E483004AC5E1 /* WindowManagement */,
+				6C20F9EE296A6F8A00A683F7 /* LanguageClient */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -2351,6 +2383,8 @@
 				583E529A29361BAB001AB554 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
 				6C671864295E727600FB45D2 /* XCRemoteSwiftPackageReference "ConcurrencyPlus" */,
 				6C85B3DA295FE7700015CCB5 /* XCRemoteSwiftPackageReference "collectionconcurrencykit" */,
+				6CA8E6242968E483004AC5E1 /* XCRemoteSwiftPackageReference "SwiftUI-WindowManagement" */,
+				6C20F9ED296A6F8A00A683F7 /* XCRemoteSwiftPackageReference "LanguageClient" */,
 			);
 			productRefGroup = B658FB2D27DA9E0F00EA4DBD /* Products */;
 			projectDirPath = "";
@@ -2593,6 +2627,7 @@
 				587B9E9329301D8F00AC7927 /* BitBucketOAuthConfiguration.swift in Sources */,
 				58F2EB0A292FB2B0004A9BDE /* AppPreferences.swift in Sources */,
 				20EBB503280C327C00F3A5DA /* HistoryInspectorView.swift in Sources */,
+				6CA5A3C529650DC700C7EBFA /* WorkspaceDocumentGroup.swift in Sources */,
 				587B9E7529301D8F00AC7927 /* String+QueryParameters.swift in Sources */,
 				58798219292D92370085B254 /* SearchModeModel.swift in Sources */,
 				58D01C9D293167DC00C5B6B4 /* KeychainSwiftAccessOptions.swift in Sources */,
@@ -2630,6 +2665,7 @@
 				2072FA1E280D891500C7F8D4 /* FileLocation.swift in Sources */,
 				587B9E6729301D8F00AC7927 /* GitLabEventData.swift in Sources */,
 				5882252F292C280D00E83CDE /* StatusBarClearButton.swift in Sources */,
+				6CA8E6302968ECBB004AC5E1 /* SceneOutlineView.swift in Sources */,
 				58F2EB04292FB2B0004A9BDE /* SourceControlPreferences.swift in Sources */,
 				582213F0291834A500EFE361 /* AboutView.swift in Sources */,
 				58F2EB12292FB2B0004A9BDE /* PreferencesPlaceholderView.swift in Sources */,
@@ -2649,6 +2685,7 @@
 				6C671845295E69D000FB45D2 /* ExtensionManager.swift in Sources */,
 				587B9DA429300ABD00AC7927 /* OverlayPanel.swift in Sources */,
 				58F2EAEE292FB2B0004A9BDE /* TextEditingPreferencesView.swift in Sources */,
+				6CA8E62D2968E818004AC5E1 /* FileTree.swift in Sources */,
 				58D01C95293167DC00C5B6B4 /* Bundle+Info.swift in Sources */,
 				587D9B762933BF5700BF7490 /* Mocks.swift in Sources */,
 				58A5DF7D2931787A00D1BD5D /* ShellClient.swift in Sources */,
@@ -2679,6 +2716,7 @@
 				587B9E9529301D8F00AC7927 /* BitBucketUser.swift in Sources */,
 				587B9E7C29301D8F00AC7927 /* GitHubRepositoryRouter.swift in Sources */,
 				286471AB27ED51FD0039369D /* ProjectNavigatorView.swift in Sources */,
+				6CA5A3CB296533A600C7EBFA /* WorkspaceEditor.swift in Sources */,
 				587B9DA629300ABD00AC7927 /* ToolbarBranchPicker.swift in Sources */,
 				58F2EB05292FB2B0004A9BDE /* AppPreferencesModel.swift in Sources */,
 				58F2EAF1292FB2B0004A9BDE /* TerminalThemeView.swift in Sources */,
@@ -2725,6 +2763,7 @@
 				587B9E5A29301D8F00AC7927 /* GitCloneView.swift in Sources */,
 				58D01C99293167DC00C5B6B4 /* String+MD5.swift in Sources */,
 				20EBB505280C329800F3A5DA /* HistoryInspectorItemView.swift in Sources */,
+				6CA8E62A2968E772004AC5E1 /* NSDocumentController+Swizzle.swift in Sources */,
 				58F2EAEA292FB2B0004A9BDE /* SourceControlGeneralView.swift in Sources */,
 				5878DAB2291D627C00DD95A3 /* BreadcrumbsView.swift in Sources */,
 				043C321627E3201F006AE443 /* WorkspaceDocument.swift in Sources */,
@@ -2762,6 +2801,7 @@
 				6C05A8AF284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift in Sources */,
 				587D9B732933BF5700BF7490 /* FileIcon.swift in Sources */,
 				58F2EAF9292FB2B0004A9BDE /* AccountSelectionDialog.swift in Sources */,
+				6CA5A3C229650CBE00C7EBFA /* WorkspaceFileDocument.swift in Sources */,
 				58F2EAE8292FB2B0004A9BDE /* TerminalPreferencesView.swift in Sources */,
 				58AFAA2F2933C69E00482B53 /* TabBarItemID.swift in Sources */,
 				6CDA84AB284C0E4A00C1CC3A /* TabBarItemButtonStyle.swift in Sources */,
@@ -2943,6 +2983,7 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_SWIFT_FLAGS = "";
 				RUN_DOCUMENTATION_COMPILER = YES;
 				SDKROOT = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -3000,6 +3041,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "";
 				RUN_DOCUMENTATION_COMPILER = YES;
 				SDKROOT = macosx;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -3313,6 +3355,14 @@
 				version = 2.3.0;
 			};
 		};
+		6C20F9ED296A6F8A00A683F7 /* XCRemoteSwiftPackageReference "LanguageClient" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ChimeHQ/LanguageClient";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.3.1;
+			};
+		};
 		6C671864295E727600FB45D2 /* XCRemoteSwiftPackageReference "ConcurrencyPlus" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ChimeHQ/ConcurrencyPlus";
@@ -3327,6 +3377,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 0.2.0;
+			};
+		};
+		6CA8E6242968E483004AC5E1 /* XCRemoteSwiftPackageReference "SwiftUI-WindowManagement" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Wouter01/SwiftUI-WindowManagement";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -3382,6 +3440,11 @@
 			package = 58F2EB1C292FB954004A9BDE /* XCRemoteSwiftPackageReference "Sparkle" */;
 			productName = Sparkle;
 		};
+		6C20F9EE296A6F8A00A683F7 /* LanguageClient */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6C20F9ED296A6F8A00A683F7 /* XCRemoteSwiftPackageReference "LanguageClient" */;
+			productName = LanguageClient;
+		};
 		6C671865295E727600FB45D2 /* ConcurrencyPlus */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 6C671864295E727600FB45D2 /* XCRemoteSwiftPackageReference "ConcurrencyPlus" */;
@@ -3391,6 +3454,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6C85B3DA295FE7700015CCB5 /* XCRemoteSwiftPackageReference "collectionconcurrencykit" */;
 			productName = CollectionConcurrencyKit;
+		};
+		6CA8E6252968E483004AC5E1 /* WindowManagement */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6CA8E6242968E483004AC5E1 /* XCRemoteSwiftPackageReference "SwiftUI-WindowManagement" */;
+			productName = WindowManagement;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

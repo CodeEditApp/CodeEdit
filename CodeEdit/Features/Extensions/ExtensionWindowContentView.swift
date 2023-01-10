@@ -28,7 +28,6 @@ struct ExtensionWindowContentView: View {
     @StateObject var manager = ExtensionWindowNavigationManager()
     @State var scope: SearchScope = .installed
     @State var showExtensionActivator = false
-
     var body: some View {
         NavigationSplitView {
             ExtensionList(scope: $scope)

@@ -8,20 +8,23 @@
 import SwiftUI
 import Preferences
 import CodeEditSymbols
+import UniformTypeIdentifiers
+
+
 
 final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
+
     var updater: SoftwareUpdater = SoftwareUpdater()
 
     func applicationWillFinishLaunching(_ notification: Notification) {
         _ = CodeEditDocumentController.shared
+        NSDocumentController.swizzle()
     }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
-//        NSApp.windows.forEach { $0.close() }
 
         AppPreferencesModel.shared.preferences.general.appAppearance.applyAppearance()
         checkForFilesToOpen()
-
 
         DispatchQueue.main.async {
             var needToHandleOpen = true
@@ -160,7 +163,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     @IBAction func openExtensionWindow(_ sender: Any) {
         if tryFocusWindow(of: ExtensionWindowContentView.self) { return }
 
-        ExtensionWindow.openExtensionWindow()
+//        ExtensionWindow.openExtensionWindow()
     }
 
     @IBAction func openAbout(_ sender: Any) {

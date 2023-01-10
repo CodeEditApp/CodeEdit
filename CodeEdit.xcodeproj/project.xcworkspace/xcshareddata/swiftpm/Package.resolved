@@ -55,12 +55,57 @@
       }
     },
     {
+      "identity" : "fseventswrapper",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Frizlab/FSEventsWrapper",
+      "state" : {
+        "revision" : "e0c59a2ce2775e5f6642da6d19207445f10112d0",
+        "version" : "1.0.2"
+      }
+    },
+    {
+      "identity" : "glob",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Bouke/Glob",
+      "state" : {
+        "revision" : "deda6e163d2ff2a8d7e138e2c3326dbd71157faf",
+        "version" : "1.0.5"
+      }
+    },
+    {
       "identity" : "grdb.swift",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/groue/GRDB.swift.git",
       "state" : {
         "revision" : "15c06e037430c8a2dc570f9199dd7bf8caa21195",
         "version" : "5.22.2"
+      }
+    },
+    {
+      "identity" : "jsonrpc",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ChimeHQ/JSONRPC",
+      "state" : {
+        "revision" : "e0a30db87e70d31c821f99b9699c0bef61748aac",
+        "version" : "0.6.1"
+      }
+    },
+    {
+      "identity" : "languageclient",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ChimeHQ/LanguageClient",
+      "state" : {
+        "revision" : "f0198ee0a102d266078f7d9c28f086f2989f988a",
+        "version" : "0.3.1"
+      }
+    },
+    {
+      "identity" : "languageserverprotocol",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ChimeHQ/LanguageServerProtocol",
+      "state" : {
+        "revision" : "a859fd4d2f9c2cf5edb71bf3947aa922a86d8b94",
+        "version" : "0.8.1"
       }
     },
     {
@@ -73,12 +118,30 @@
       }
     },
     {
+      "identity" : "operationplus",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ChimeHQ/OperationPlus",
+      "state" : {
+        "revision" : "1340f95dce3e93d742497d88db18f8676f4badf4",
+        "version" : "1.6.0"
+      }
+    },
+    {
       "identity" : "preferences",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/sindresorhus/Preferences.git",
       "state" : {
         "revision" : "2651cd144615009242c994b087508fef99e9275c",
         "version" : "2.6.0"
+      }
+    },
+    {
+      "identity" : "processenv",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ChimeHQ/ProcessEnv",
+      "state" : {
+        "revision" : "29487b6581bb785c372c611c943541ef4309d051",
+        "version" : "0.3.1"
       }
     },
     {
@@ -142,6 +205,15 @@
       "state" : {
         "revision" : "3b1599ba9f466d8269cea2474beb5c9f0a3d7a5e",
         "version" : "0.7.0"
+      }
+    },
+    {
+      "identity" : "swiftui-windowmanagement",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Wouter01/SwiftUI-WindowManagement",
+      "state" : {
+        "revision" : "ed13ad41f090d3969307ac8ec01a56a0031b2b17",
+        "version" : "1.1.0"
       }
     }
   ],

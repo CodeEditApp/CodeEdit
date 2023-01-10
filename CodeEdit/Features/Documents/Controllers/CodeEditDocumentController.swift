@@ -25,7 +25,7 @@ final class CodeEditDocumentController: NSDocumentController {
                                display displayDocument: Bool,
                                completionHandler: @escaping (NSDocument?, Bool, Error?) -> Void) {
         super.openDocument(withContentsOf: url, display: displayDocument) { document, documentWasAlreadyOpen, error in
-
+            print("Opening document")
             if let document = document {
                 self.addDocument(document)
             }

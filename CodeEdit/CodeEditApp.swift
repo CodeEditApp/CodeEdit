@@ -6,20 +6,21 @@
 //
 
 import SwiftUI
+import WindowManagement
+import LanguageClient
 
 @main
 struct CodeEditApp: App {
     @NSApplicationDelegateAdaptor private var appDelegate: AppDelegate
 
     var body: some Scene {
-
         WelcomeWindow()
             .keyboardShortcut("1", modifiers: [.command, .shift])
             .commands {
                 CommandGroup(after: .appInfo) {
                     // Temporary while Settings ins't moved to Scene
                     Button("Settings...") {
-                        appDelegate.openPreferences(self)
+                        self.appDelegate.openPreferences(self)
                     }
                     .keyboardShortcut(",")
                 }
@@ -28,6 +29,6 @@ struct CodeEditApp: App {
         ExtensionWindow()
             .keyboardShortcut("2", modifiers: [.command, .shift])
 
-
+//        WorkspaceDocumentGroup()
     }
 }

@@ -6,8 +6,10 @@
 //
 
 import SwiftUI
+import WindowManagement
 
 struct WelcomeWindow: Scene {
+
     var body: some Scene {
         Window("Welcome", id: "WelcomeWindow") {
             WelcomeWindowView(
@@ -42,16 +44,11 @@ struct WelcomeWindow: Scene {
             .edgesIgnoringSafeArea(.all)
             .frame(height: 460)
             .fixedSize()
-            .task {
-                let window = NSApp.windows.first {
-                    $0.identifier?.rawValue == "WelcomeWindow"
-                }!
-                window.standardWindowButton(.closeButton)?.isHidden = true
-                window.standardWindowButton(.miniaturizeButton)?.isHidden = true
-                window.standardWindowButton(.zoomButton)?.isHidden = true
-                window.isMovableByWindowBackground = true
-            }
         }
+        .register("WelcomeWindow")
+        .movableByBackground(true)
+        .styleMask([.fullSizeContentView])
+        .collectionBehavior([.canJoinAllSpaces])
         .windowStyle(.hiddenTitleBar)
         .windowResizability(.contentSize)
     }
