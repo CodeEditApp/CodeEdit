@@ -11,6 +11,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+
+      ############################
+      # Install Certificate
+      ############################
       - name: Install codesign certificate
         env:
           # DEV_CERT_B64: Base64-encoded developer certificate as .p12
@@ -37,10 +41,18 @@ jobs:
           echo -n "$MAC_CERT_B64" | base64 --decode --output "$MAC_CERT_P12"
           security import "$MAC_CERT_P12" -P "$MAC_CERT_PWD" -A -t cert -f pkcs12 -k "$KEYCHAIN_DB"
           security list-keychain -d user -s "$KEYCHAIN_DB"
+      
+      ############################
+      # Build
+      ############################
       - name: Build CodeEdit
         env:
           APPLE_TEAM_ID:  ${{ secrets.APPLE_TEAM_ID }}
         run: xcodebuild -scheme CodeEdit -configuration Release -derivedDataPath "$RUNNER_TEMP/DerivedData" -archivePath "$RUNNER_TEMP/CodeEdit.xcarchive" -skipPackagePluginValidation DEVELOPMENT_TEAM=$APPLE_TEAM_ID archive
+      
+      ############################
+      # Sign
+      ############################
       - name: Sign CodeEdit
         env:
           CODESIGN_SIGN: ${{ secrets.CODESIGN_SIGN }}
@@ -48,7 +60,11 @@ jobs:
           REV=$(git rev-parse --short HEAD)
           echo "REV=$REV" >> $GITHUB_ENV
           codesign --sign "$CODESIGN_SIGN" -vvv --verbose --strict --options=runtime --prefix austincondiff.CodeEdit. --force --deep --timestamp "$RUNNER_TEMP/CodeEdit.xcarchive/Products/Applications/CodeEdit.app"
-      - name: Using brew
+
+      ############################
+      # DMG & Notarize
+      ############################
+      - name: Create DMG & Notarize
         env:
           CODESIGN_SIGN: ${{ secrets.CODESIGN_SIGN }}
           APPLE_ID: ${{ secrets.APPLE_ID }}
@@ -71,6 +87,10 @@ jobs:
             --notarize "CodeEdit" \
             "$RUNNER_TEMP/CodeEdit-$REV.dmg" \
             "$RUNNER_TEMP/CodeEdit.xcarchive/Products/Applications/"
+
+      ############################
+      # Sparkle Appcast
+      ############################
       - name: Update Sparkle appcast
         env:
           # SPARKLE_KEY: Sparkle EdDSA key exported from `generate_keys -x` as plain text
@@ -89,8 +109,10 @@ jobs:
           cp "$RUNNER_TEMP/CodeEdit-$REV.dmg" "$SPARKLE_ARCHIVE"
           SPARKLE_SIG=$("$SPARKLE_BIN/sign_update" --ed-key-file "$RUNNER_TEMP/sparkle_key" "$SPARKLE_ARCHIVE/CodeEdit-$REV.dmg" | cut -d\" -f2)
           "$SPARKLE_BIN/generate_appcast" --ed-key-file "$RUNNER_TEMP/sparkle_key" --download-url-prefix "$SPARKLE_DL_PREFIX" --link "$SPARKLE_LINK" --channel "$SPARKLE_CHANNEL" --maximum-deltas 0 "$SPARKLE_ARCHIVE"
-        # brew install xmlstarlet
-        # xmlstarlet ed -O --inplace --insert "/rss/channel/item/enclosure" --type attr -n "sparkle:edSignature" -v "$SPARKLE_SIG" "$SPARKLE_ARCHIVE/appcast.xml"
+
+      ############################
+      # Publish Pre Release
+      ############################
       - name: Publish Pre-release
         uses: marvinpinto/action-automatic-releases@latest
         with:
@@ -101,6 +123,10 @@ jobs:
           automatic_release_tag: "latest"
           prerelease: true
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
+
+      ############################
+      # Cleanup Secrets
+      ############################
       - name: Clean up keychain and provisioning profile
         if: ${{ always() }}
         run: |
