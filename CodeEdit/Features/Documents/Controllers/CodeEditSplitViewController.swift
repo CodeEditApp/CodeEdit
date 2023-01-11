@@ -8,7 +8,7 @@
 import Cocoa
 
 private extension CGFloat {
-    static let snapWidth: CGFloat = 270
+    static let snapWidth: CGFloat = 272
 
     static let minSnapWidth: CGFloat = snapWidth - 10
     static let maxSnapWidth: CGFloat = snapWidth + 10

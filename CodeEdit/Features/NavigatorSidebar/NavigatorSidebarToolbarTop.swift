@@ -36,9 +36,9 @@ struct NavigatorSidebarToolbarTop: View {
 
     var body: some View {
         GeometryReader { proxy in
-            HStack(spacing: makeSpace(for: proxy.size)) {
+            HStack(spacing: 0) {
                 ForEach(icons) { icon in
-                    makeIcon(named: icon.imageName, title: icon.title, id: icon.id)
+                    makeIcon(named: icon.imageName, title: icon.title, id: icon.id, sidebarWidth: proxy.size.width)
                         .opacity(draggingItem?.imageName == icon.imageName &&
                                  hasChangedLocation &&
                                  drugItemLocation != nil ? 0.0: icon.disabled ? 0.3 : 1.0)
@@ -64,17 +64,15 @@ struct NavigatorSidebarToolbarTop: View {
         .fixedSize(horizontal: false, vertical: true)
     }
 
-    private func makeSpace(for size: CGSize) -> CGFloat {
-        size.width < 270 ? 9 : 15
-    }
-
-    private func makeIcon(named: String, title: String, id: Int, scale: Image.Scale = .medium) -> some View {
+    private func makeIcon(named: String,
+                          title: String,
+                          id: Int,
+                          scale: Image.Scale = .medium,
+                          sidebarWidth: CGFloat) -> some View {
         Button {
             selection = id
         } label: {
             getSafeImage(named: named, accesibilityDescription: title)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
                 .help(title)
                 .onDrag {
                     if let index = icons.firstIndex(where: { $0.imageName == named }) {
@@ -86,12 +84,20 @@ struct NavigatorSidebarToolbarTop: View {
                         .frame(width: .zero)
                 }
         }
-        .buttonStyle(NavigatorToolbarButtonStyle(id: id, selection: selection, activeState: activeState))
+        .buttonStyle(
+            NavigatorToolbarButtonStyle(
+                id: id,
+                selection: selection,
+                activeState: activeState,
+                sidebarWidth: sidebarWidth
+            )
+        )
     }
 
     private func getSafeImage(named: String, accesibilityDescription: String?) -> Image {
-        if let nsImage = NSImage(systemSymbolName: named, accessibilityDescription: accesibilityDescription) {
-            return Image(nsImage: nsImage)
+        // We still use the NSImage init to check if a symbol with the name exists.
+        if NSImage(systemSymbolName: named, accessibilityDescription: nil) != nil {
+            return Image(systemName: named)
         } else {
             return Image(symbol: named)
         }
@@ -101,13 +107,13 @@ struct NavigatorSidebarToolbarTop: View {
         var id: Int
         var selection: Int
         var activeState: ControlActiveState
+        var sidebarWidth: CGFloat
 
         func makeBody(configuration: Configuration) -> some View {
             configuration.label
                 .symbolVariant(id == selection ? .fill : .none)
                 .foregroundColor(id == selection ? .accentColor : configuration.isPressed ? .primary : .secondary)
-                .frame(width: 15, height: 15)
-                .contentShape(Rectangle())
+                .frame(width: (sidebarWidth < 272 ? 24 : 30), alignment: .center)
                 .opacity(activeState == .inactive ? 0.45 : 1)
         }
     }
