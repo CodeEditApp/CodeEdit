@@ -73,7 +73,7 @@ jobs:
         run: |
           REV=$(git rev-parse --short HEAD)
           echo "REV=$REV" >> $GITHUB_ENV
-          xcrun notarytool store-credentials CodeEdit --apple-id "$APPLE_ID" --team-id "$APPLE_TEAM_ID" --password "$APPLE_ID_PWD"
+          xcrun notarytool store-credentials CodeEdit --apple-id "$APPLE_ID" --team-id "$APPLE_TEAM_ID" --password "$APPLE_ID_PWD" --keychain "$RUNNER_TEMP/keychain.keychain-db"
           create-dmg \
             --volname "CodeEdit" \
             --window-pos 200 120 \
