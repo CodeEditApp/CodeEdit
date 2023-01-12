@@ -129,11 +129,9 @@ final class OutlineTableViewCell: NSTableCellView {
     /// - Parameter item: The `FileItem` to get the color for
     /// - Returns: A `NSColor` for the given `FileItem`.
     private func color(for item: WorkspaceClient.FileItem) -> NSColor {
-        if item.children == nil && prefs.fileIconStyle == .color {
-            return NSColor(item.iconColor)
-        } else {
-            return NSColor(named: "FolderBlue")!
-        }
+        return prefs.fileIconStyle == .color
+            ? item.children == nil ? NSColor(item.iconColor) : NSColor(named: "FolderBlue")!
+            : .secondaryLabelColor
     }
 }
 
