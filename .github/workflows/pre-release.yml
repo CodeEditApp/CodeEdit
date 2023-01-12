@@ -111,18 +111,31 @@ jobs:
           cp "$RUNNER_TEMP/CodeEdit-$REV.dmg" "$SPARKLE_ARCHIVE"
           SPARKLE_SIG=$("$SPARKLE_BIN/sign_update" --ed-key-file "$RUNNER_TEMP/sparkle_key" "$SPARKLE_ARCHIVE/CodeEdit-$REV.dmg" | cut -d\" -f2)
           "$SPARKLE_BIN/generate_appcast" --ed-key-file "$RUNNER_TEMP/sparkle_key" --download-url-prefix "$SPARKLE_DL_PREFIX" --link "$SPARKLE_LINK" --channel "$SPARKLE_CHANNEL" --maximum-deltas 0 "$SPARKLE_ARCHIVE"
+      
+      ############################
+      # Get Version and Build number
+      ############################
+      - name: Get Version and Build number
+        run: |
+          APP_VERSION=$(xcrun agvtool mvers -terse1)
+          APP_BUILD=$(xcrun agvtool vers -terse)
+          echo "APP_VERSION=$APP_VERSION" >> $GITHUB_ENV
+          echo "APP_BUILD=$APP_BUILD" >> $GITHUB_ENV
 
       ############################
       # Publish Pre Release
       ############################
       - name: Publish Pre-release
         uses: marvinpinto/action-automatic-releases@latest
+        env:
+          APP_VERSION: ${{ env.APP_VERSION }}
+          APP_BUILD: ${{ env.APP_BUILD }}
         with:
-          title: "CodeEdit-${{ env.REV }}"
+          title: "${{ env.APP_VERSION }}-alpha.${{ env.APP_BUILD }}"
           files: |
             ${{ RUNNER.TEMP }}/Sparkle_Archive/CodeEdit-${{ env.REV }}.dmg
             ${{ RUNNER.TEMP }}/Sparkle_Archive/appcast.xml
-          automatic_release_tag: "latest"
+          automatic_release_tag: "${{ env.APP_VERSION }}-alpha.${{ env.APP_BUILD }}"
           prerelease: true
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
 
