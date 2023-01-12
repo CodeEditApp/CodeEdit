@@ -1,8 +1,5 @@
 name: CI - Pre Release
 on:
-  # push:
-  #   branches:
-  #     - main
   workflow_dispatch:
 jobs:
   swiftlint:
