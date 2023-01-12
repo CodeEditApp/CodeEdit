@@ -30,6 +30,8 @@ class SoftwareUpdater: NSObject, ObservableObject, SPUUpdaterDelegate {
         }
     }
 
+    private var feedURLTask: Task<(), Never>?
+
     private func setFeedURL() async {
         let url = URL(string: "https://api.github.com/repos/CodeEditApp/CodeEdit/releases/latest")!
         let request = URLRequest(url: url)
@@ -57,7 +59,7 @@ class SoftwareUpdater: NSObject, ObservableObject, SPUUpdaterDelegate {
             userDriverDelegate: nil
         ).updater
 
-        Task {
+        feedURLTask = Task {
             await setFeedURL()
         }
 
@@ -79,6 +81,10 @@ class SoftwareUpdater: NSObject, ObservableObject, SPUUpdaterDelegate {
         )
 
         includePrereleaseVersions = UserDefaults.standard.bool(forKey: "includePrereleaseVersions")
+    }
+
+    deinit {
+        feedURLTask?.cancel()
     }
 
     func allowedChannels(for updater: SPUUpdater) -> Set<String> {
