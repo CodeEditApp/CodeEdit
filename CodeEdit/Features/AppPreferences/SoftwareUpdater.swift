@@ -30,7 +30,7 @@ class SoftwareUpdater: NSObject, ObservableObject, SPUUpdaterDelegate {
         }
     }
 
-    func setFeedURL() async {
+    private func setFeedURL() async {
         let url = URL(string: "https://api.github.com/repos/CodeEditApp/CodeEdit/releases/latest")!
         let request = URLRequest(url: url)
         guard let data = try? await URLSession.shared.data(for: request),
