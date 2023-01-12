@@ -42,7 +42,6 @@ class SoftwareUpdater: NSObject, ObservableObject, SPUUpdaterDelegate {
             }
             return
         }
-        print("RESULT: \(result)")
         URL.appcast = URL(
             string: "https://github.com/CodeEditApp/CodeEdit/releases/download/\(result.tagName)/appcast.xml"
         )!
