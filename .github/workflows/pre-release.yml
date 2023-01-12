@@ -136,7 +136,7 @@ jobs:
             ${{ RUNNER.TEMP }}/Sparkle_Archive/CodeEdit-${{ env.REV }}.dmg
             ${{ RUNNER.TEMP }}/Sparkle_Archive/appcast.xml
           automatic_release_tag: "${{ env.APP_VERSION }}-alpha.${{ env.APP_BUILD }}"
-          prerelease: true
+          prerelease: false
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
 
       ############################
