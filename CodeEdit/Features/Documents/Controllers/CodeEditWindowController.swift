@@ -174,7 +174,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
 
             return toolbarItem
         case .toggleLastSidebarItem:
-            let toolbarItem = NSToolbarItem(itemIdentifier: NSToolbarItem.Identifier.toggleFirstSidebarItem)
+            let toolbarItem = NSToolbarItem(itemIdentifier: NSToolbarItem.Identifier.toggleLastSidebarItem)
             toolbarItem.label = "Inspector Sidebar"
             toolbarItem.paletteLabel = "Inspector Sidebar"
             toolbarItem.toolTip = "Hide or show the Inspectors"
