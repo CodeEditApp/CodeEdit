@@ -7,7 +7,7 @@ on:
 jobs:
   pre-release:
     name: Build and Publish Pre-release
-    runs-on: [self-hosted, macOS]
+    runs-on: macos-12
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
