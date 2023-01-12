@@ -392,15 +392,7 @@ struct TabBarView: View {
             }
         }
         .background {
-            if prefs.preferences.general.tabBarStyle == .xcode {
-                EffectView(
-                    NSVisualEffectView.Material.titlebar,
-                    blendingMode: NSVisualEffectView.BlendingMode.withinWindow
-                )
-                // Set bottom padding to avoid material overlapping in bar.
-                .padding(.bottom, TabBarView.height)
-                .edgesIgnoringSafeArea(.top)
-            } else {
+            if prefs.preferences.general.tabBarStyle == .native {
                 TabBarNativeMaterial()
                     .edgesIgnoringSafeArea(.top)
             }

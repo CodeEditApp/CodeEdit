@@ -49,6 +49,8 @@ struct WorkspaceView: View {
     @State
     private var leaveFullscreenObserver: Any?
 
+    @Environment(\.colorScheme) var colorScheme
+
     var noEditor: some View {
         Text("No Editor")
             .font(.system(size: 17))
@@ -80,27 +82,21 @@ struct WorkspaceView: View {
                 ZStack {
                     tabContent
                 }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .background {
-                        if prefs.preferences.general.tabBarStyle == .xcode {
-                            // Use the same background material as xcode tab bar style.
-                            // Only when the tab bar style is set to `xcode`.
-                            TabBarXcodeBackground()
-                        }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .safeAreaInset(edge: .top, spacing: 0) {
+                    VStack(spacing: 0) {
+                        TabBarView(windowController: windowController, workspace: workspace)
+                        TabBarBottomDivider()
                     }
-                    .safeAreaInset(edge: .top, spacing: 0) {
-                        VStack(spacing: 0) {
-                            TabBarView(windowController: windowController, workspace: workspace)
-                            TabBarBottomDivider()
-                        }
-                    }
-                    .safeAreaInset(edge: .bottom) {
-                        StatusBarView(model: model)
-                    }
+                }
+                .safeAreaInset(edge: .bottom) {
+                    StatusBarView(model: model)
+                }
             } else {
                 EmptyView()
             }
         }
+        .background(colorScheme == .dark ? Color(.black).opacity(0.25) : Color(.white))
         .alert(alertTitle, isPresented: $showingAlert, actions: {
             Button(
                 action: { showingAlert = false },
