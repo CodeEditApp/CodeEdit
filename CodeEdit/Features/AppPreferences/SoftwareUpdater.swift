@@ -30,6 +30,26 @@ class SoftwareUpdater: NSObject, ObservableObject, SPUUpdaterDelegate {
         }
     }
 
+    private var feedURLTask: Task<(), Never>?
+
+    private func setFeedURL() async {
+        let url = URL(string: "https://api.github.com/repos/CodeEditApp/CodeEdit/releases/latest")!
+        let request = URLRequest(url: url)
+        guard let data = try? await URLSession.shared.data(for: request),
+              let result = try? JSONDecoder().decode(GHAPIResult.self, from: data.0) else {
+            DispatchQueue.main.async {
+                self.updater?.setFeedURL(nil)
+            }
+            return
+        }
+        URL.appcast = URL(
+            string: "https://github.com/CodeEditApp/CodeEdit/releases/download/\(result.tagName)/appcast.xml"
+        )!
+        DispatchQueue.main.async {
+            self.updater?.setFeedURL(.appcast)
+        }
+    }
+
     override init() {
         super.init()
         updater = SPUStandardUpdaterController(
@@ -38,7 +58,9 @@ class SoftwareUpdater: NSObject, ObservableObject, SPUUpdaterDelegate {
             userDriverDelegate: nil
         ).updater
 
-        updater?.setFeedURL(.appcast)
+        feedURLTask = Task {
+            await setFeedURL()
+        }
 
         automaticallyChecksForUpdatesObservation = updater?.observe(
             \.automaticallyChecksForUpdates,
@@ -60,6 +82,10 @@ class SoftwareUpdater: NSObject, ObservableObject, SPUUpdaterDelegate {
         includePrereleaseVersions = UserDefaults.standard.bool(forKey: "includePrereleaseVersions")
     }
 
+    deinit {
+        feedURLTask?.cancel()
+    }
+
     func allowedChannels(for updater: SPUUpdater) -> Set<String> {
         if includePrereleaseVersions {
             return ["dev"]
@@ -70,10 +96,20 @@ class SoftwareUpdater: NSObject, ObservableObject, SPUUpdaterDelegate {
     func checkForUpdates() {
         updater?.checkForUpdates()
     }
+
+    private struct GHAPIResult: Codable {
+        enum CodingKeys: String, CodingKey {
+            case tagName = "tag_name"
+        }
+
+        var tagName: String
+    }
 }
 
 extension URL {
-    static let appcast = URL(
+    static var appcast = URL(
         string: "https://github.com/CodeEditApp/CodeEdit/releases/download/latest/appcast.xml"
     )!
 }
+
+// https://github.com/CodeEditApp/CodeEdit/releases/download/0.0.1-alpha.10/appcast.xml
