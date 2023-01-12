@@ -16,8 +16,9 @@ CodeEdit is a code editor built by the community, for the community, written ent
 
 <img width="1012" alt="github-banner" src="https://user-images.githubusercontent.com/806104/194004176-3143d19f-1ad9-449c-bd41-8c4f9998f44b.png">
 
+![GitHub release](https://img.shields.io/github/v/release/CodeEditApp/CodeEdit?color=orange&label=latest%20release&sort=semver&style=flat-square)
 [![All Contributors](https://img.shields.io/badge/all_contributors-32-orange.svg?style=flat-square)](#contributors-)
-![GitHub branch checks state](https://img.shields.io/github/checks-status/CodeEditApp/CodeEdit/main?style=flat-square)
+![GitHub Workflow Status (with branch)](https://img.shields.io/github/actions/workflow/status/CodeEditApp/CodeEdit/CI-pre-release.yml?style=flat-square)
 ![GitHub Repo stars](https://img.shields.io/github/stars/CodeEditApp/CodeEdit?style=flat-square)
 ![GitHub forks](https://img.shields.io/github/forks/CodeEditApp/CodeEdit?style=flat-square)
 [![Discord Badge](https://img.shields.io/discord/951544472238444645?color=5865F2&label=Discord&logo=discord&logoColor=white&style=flat-square)](https://discord.gg/vChUXVf9Em)
