@@ -7,7 +7,7 @@ on:
 jobs:
   pre-release:
     name: Build and Publish Pre-release
-    runs-on: macos-12
+    runs-on: [self-hosted, macOS]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -36,9 +36,9 @@ jobs:
           security create-keychain -p "$KEYCHAIN_PWD" "$KEYCHAIN_DB"
           security set-keychain-settings -lut "$KEYCHAIN_TIMEOUT" "$KEYCHAIN_DB"
           security unlock-keychain -p "$KEYCHAIN_PWD" "$KEYCHAIN_DB"
-          echo -n "$DEV_CERT_B64" | base64 --decode --output "$DEV_CERT_P12"
+          echo -n "$DEV_CERT_B64" | base64 --decode -o "$DEV_CERT_P12"
           security import "$DEV_CERT_P12" -P "$DEV_CERT_PWD" -A -t cert -f pkcs12 -k "$KEYCHAIN_DB"
-          echo -n "$MAC_CERT_B64" | base64 --decode --output "$MAC_CERT_P12"
+          echo -n "$MAC_CERT_B64" | base64 --decode -o "$MAC_CERT_P12"
           security import "$MAC_CERT_P12" -P "$MAC_CERT_PWD" -A -t cert -f pkcs12 -k "$KEYCHAIN_DB"
           security list-keychain -d user -s "$KEYCHAIN_DB"
       
@@ -74,7 +74,6 @@ jobs:
           REV=$(git rev-parse --short HEAD)
           echo "REV=$REV" >> $GITHUB_ENV
           xcrun notarytool store-credentials CodeEdit --apple-id "$APPLE_ID" --team-id "$APPLE_TEAM_ID" --password "$APPLE_ID_PWD"
-          brew install create-dmg
           create-dmg \
             --volname "CodeEdit" \
             --window-pos 200 120 \
