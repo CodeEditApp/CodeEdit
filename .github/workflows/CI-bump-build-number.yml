@@ -4,7 +4,7 @@ on:
 jobs:
   upadate-build-number:
     name: Update Build Number
-    runs-on: macos-12
+    runs-on: [self-hosted, macOS]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
