@@ -88,6 +88,7 @@ jobs:
             --notarize "CodeEdit" \
             "$RUNNER_TEMP/CodeEdit-$REV.dmg" \
             "$RUNNER_TEMP/CodeEdit.xcarchive/Products/Applications/"
+          security lock-keychain
 
       ############################
       # Sparkle Appcast
