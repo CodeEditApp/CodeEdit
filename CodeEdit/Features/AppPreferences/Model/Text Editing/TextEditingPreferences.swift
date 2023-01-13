@@ -17,12 +17,17 @@ extension AppPreferences {
         /// The font to use in editor.
         var font: EditorFont = .init()
 
+        /// A flag indicating whether type-over completion is enabled
         var enableTypeOverCompletion: Bool = true
 
+        /// A flag indicating whether braces are automatically completed
         var autocompleteBraces: Bool = true
 
-        // A flag indicating whether to wrap lines to editor width
+        /// A flag indicating whether to wrap lines to editor width
         var wrapLinesToEditorWidth: Bool = true
+
+        /// A multiplier for setting the line height. Defaults to `1.2`
+        var lineHeightMultiple: Double = 1.2
 
         /// Default initializer
         init() {
@@ -40,6 +45,9 @@ extension AppPreferences {
                                                                     forKey: .autocompleteBraces) ?? true
             self.wrapLinesToEditorWidth = try container.decodeIfPresent(Bool.self,
                                                                     forKey: .wrapLinesToEditorWidth) ?? true
+            self.lineHeightMultiple = try container.decodeIfPresent(Double.self,
+                                                                    forKey: .lineHeightMultiple) ?? 1.2
+
             self.populateCommands()
         }
 
