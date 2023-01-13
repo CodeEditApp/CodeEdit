@@ -21,10 +21,13 @@ extension AppPreferences {
 
         var autocompleteBraces: Bool = true
 
+        // A flag indicating whether to wrap lines to editor width
         var wrapLinesToEditorWidth: Bool = true
 
         /// Default initializer
-        init() {}
+        init() {
+            self.populateCommands()
+        }
 
         /// Explicit decoder init for setting default values when key is not present in `JSON`
         init(from decoder: Decoder) throws {
