@@ -1,0 +1,35 @@
+name: CI - Update Build Number
+on:
+  workflow_dispatch:
+jobs:
+  upadate-build-number:
+    name: Update Build Number
+    runs-on: [self-hosted, macOS]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+  
+      - name: Bump Build Number
+        run: |
+          xcrun agvtool next-version -all
+
+      - name: Commit Changes
+        run: |
+          git add .
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -m "bump build number"
+      - name: Push Changes
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: temp/bump-build-number
+          force: true
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          branch: temp/bump-build-number
+          delete-branch: true
+          base: main
+          title: Bump Build Number
+          body: Automatically bump build number of all targets

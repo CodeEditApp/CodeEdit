@@ -75,7 +75,7 @@ extension AppPreferences {
         var customFont: Bool = false
 
         /// The font size for the custom font
-        var size: Int = 11
+        var size: Int = 12
 
         /// The name of the custom font
         var name: String = "SFMono-Medium"

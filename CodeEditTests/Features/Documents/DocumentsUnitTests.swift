@@ -41,7 +41,7 @@ final class DocumentsUnitTests: XCTestCase {
         )
 
         // Then
-        XCTAssertEqual(result, 270)
+        XCTAssertEqual(result, 272)
     }
 
     func testSplitViewControllerStopSnappedWhenWidthIsLowerAppropriateRange() {

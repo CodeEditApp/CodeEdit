@@ -1,0 +1,16 @@
+name: CI - Pull Request
+on:
+  pull_request:
+    branches:
+      - 'main'
+  workflow_dispatch:
+jobs:
+  swiftlint:
+    name: SwiftLint
+    uses: ./.github/workflows/lint.yml
+    secrets: inherit
+  test:
+    name: Testing CodeEdit
+    needs: swiftlint
+    uses: ./.github/workflows/tests.yml
+    secrets: inherit
