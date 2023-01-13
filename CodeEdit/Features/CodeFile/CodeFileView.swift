@@ -69,7 +69,7 @@ struct CodeFileView: View {
             theme: $selectedTheme.editor.editorTheme,
             font: $font,
             tabWidth: $prefs.preferences.textEditing.defaultTabWidth,
-            lineHeight: .constant(1.2), // TODO: Add to preferences
+            lineHeight: $prefs.preferences.textEditing.lineHeightMultiple,
             wrapLines: $prefs.preferences.textEditing.wrapLinesToEditorWidth,
             cursorPosition: codeFile.$cursorPosition
         )
