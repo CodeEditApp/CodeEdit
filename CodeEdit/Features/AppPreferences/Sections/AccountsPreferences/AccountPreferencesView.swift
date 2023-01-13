@@ -94,7 +94,7 @@ struct AccountPreferencesView: View {
                     }
                     .pickerStyle(.radioGroup)
 
-                    Text("New repositories will be cloned from Bitbucket Cloud using HTTPS.")
+                    Text("New repositories will be cloned from Github using HTTPS.")
                         .lineLimit(2)
                         .font(.system(size: 11))
                         .foregroundColor(Color.secondary)
