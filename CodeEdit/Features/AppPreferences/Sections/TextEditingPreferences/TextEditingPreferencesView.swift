@@ -22,14 +22,14 @@ struct TextEditingPreferencesView: View {
         return formatter
     }
 
-    /// only allows float values in the range of `[0.70...2.00]`
+    /// only allows float values in the range of `[0.75...2.00]`
     /// and formats to 2 decimal places.
     private var lineHeightFormatter: NumberFormatter {
         let formatter = NumberFormatter()
         formatter.allowsFloats = true
         formatter.maximumFractionDigits = 2
         formatter.minimumFractionDigits = 2
-        formatter.minimum = 0.7
+        formatter.minimum = 0.75
         formatter.maximum = 2.0
 
         return formatter
@@ -109,7 +109,7 @@ struct TextEditingPreferencesView: View {
                 .frame(width: 40)
             Stepper("Line Height Multiple:",
                     value: $prefs.preferences.textEditing.lineHeightMultiple,
-                    in: 0.7...2.0,
+                    in: 0.75...2.0,
                     step: 0.05)
             Text("spaces")
         }
