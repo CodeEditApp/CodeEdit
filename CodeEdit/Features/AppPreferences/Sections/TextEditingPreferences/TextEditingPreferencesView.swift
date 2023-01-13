@@ -111,7 +111,6 @@ struct TextEditingPreferencesView: View {
                     value: $prefs.preferences.textEditing.lineHeightMultiple,
                     in: 0.75...2.0,
                     step: 0.05)
-            Text("spaces")
         }
     }
 }
