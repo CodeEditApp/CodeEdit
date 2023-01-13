@@ -57,9 +57,7 @@ struct CodeFileView: View {
 
     @State
     private var font: NSFont = {
-        let size = AppPreferencesModel.shared.preferences.textEditing.font.size
-        let name = AppPreferencesModel.shared.preferences.textEditing.font.name
-        return NSFont(name: name, size: Double(size)) ?? NSFont.monospacedSystemFont(ofSize: 12, weight: .regular)
+        return AppPreferencesModel.shared.preferences.textEditing.font.current()
     }()
 
     var body: some View {
@@ -89,10 +87,7 @@ struct CodeFileView: View {
             }
         }
         .onChange(of: prefs.preferences.textEditing.font) { _ in
-            font = NSFont(
-                name: prefs.preferences.textEditing.font.name,
-                size: Double(prefs.preferences.textEditing.font.size)
-            ) ?? .monospacedSystemFont(ofSize: 12, weight: .regular)
+            font = AppPreferencesModel.shared.preferences.textEditing.font.current()
         }
     }
 

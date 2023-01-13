@@ -5,6 +5,7 @@
 //  Created by Nanashi Li on 2022/04/08.
 //
 
+import AppKit
 import Foundation
 
 extension AppPreferences {
@@ -92,6 +93,18 @@ extension AppPreferences {
             self.customFont = try container.decodeIfPresent(Bool.self, forKey: .customFont) ?? false
             self.size = try container.decodeIfPresent(Int.self, forKey: .size) ?? 11
             self.name = try container.decodeIfPresent(String.self, forKey: .name) ?? "SFMono-Medium"
+        }
+
+        /// Returns an NSFont representation of the current configuration.
+        ///
+        /// Returns the custom font, if enabled and able to be instantiated.
+        /// Otherwise returns a default system font monospaced, size 12.
+        func current() -> NSFont {
+            guard customFont,
+                  let customFont = NSFont(name: name, size: Double(size)) else {
+                return NSFont.monospacedSystemFont(ofSize: 12, weight: .regular)
+            }
+            return customFont
         }
     }
 }
