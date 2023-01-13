@@ -7,7 +7,7 @@ jobs:
     runs-on: [self-hosted, macOS]
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
   
       - name: Bump Build Number
         run: |
