@@ -139,6 +139,18 @@
                   Identifier = "CodeEditUIUnitTests/testSegmentedControlProminentLight()">
                </Test>
                <Test
+                  Identifier = "DocumentsUnitTests/testSplitViewControllerProducedHapticFeedback()">
+               </Test>
+               <Test
+                  Identifier = "DocumentsUnitTests/testSplitViewControllerProducedHapticFeedbackOnceWhenPlentyChangesOccur()">
+               </Test>
+               <Test
+                  Identifier = "DocumentsUnitTests/testSplitViewControllerSnappedWhenWidthInAppropriateRange()">
+               </Test>
+               <Test
+                  Identifier = "DocumentsUnitTests/testSplitViewControllerStopSnappedWhenWidthIsHigherAppropriateRange()">
+               </Test>
+               <Test
                   Identifier = "WelcomeModuleUnitTests/testRecentJSFileDarkSnapshot()">
                </Test>
                <Test
