@@ -26,8 +26,8 @@ extension AppPreferences {
         /// A flag indicating whether to wrap lines to editor width
         var wrapLinesToEditorWidth: Bool = true
 
-        /// A multiplier for setting the line height. Defaults to `1.2`
-        var lineHeightMultiple: Double = 1.2
+        /// A multiplier for setting the line height. Defaults to `1.45`
+        var lineHeightMultiple: Double = 1.45
 
         /// Default initializer
         init() {
@@ -46,7 +46,7 @@ extension AppPreferences {
             self.wrapLinesToEditorWidth = try container.decodeIfPresent(Bool.self,
                                                                     forKey: .wrapLinesToEditorWidth) ?? true
             self.lineHeightMultiple = try container.decodeIfPresent(Double.self,
-                                                                    forKey: .lineHeightMultiple) ?? 1.2
+                                                                    forKey: .lineHeightMultiple) ?? 1.45
 
             self.populateCommands()
         }
