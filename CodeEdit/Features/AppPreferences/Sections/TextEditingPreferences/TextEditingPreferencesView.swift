@@ -42,6 +42,9 @@ struct TextEditingPreferencesView: View {
                 autocompleteBraces
                 enableTypeOverCompletion
             }
+            PreferencesSection("Line Wrapping") {
+                wrapLinesToEditorWidth
+            }
         }
     }
 
@@ -75,4 +78,12 @@ struct TextEditingPreferencesView: View {
             Text("Enable type-over completion")
         }
     }
+
+    private var wrapLinesToEditorWidth: some View {
+        HStack {
+            Toggle("Wrap lines to editor width", isOn: $prefs.preferences.textEditing.wrapLinesToEditorWidth)
+            Text("Wrap lines to editor width")
+        }
+    }
+
 }

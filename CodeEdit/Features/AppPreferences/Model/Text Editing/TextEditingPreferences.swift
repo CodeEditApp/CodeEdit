@@ -21,8 +21,13 @@ extension AppPreferences {
 
         var autocompleteBraces: Bool = true
 
+        // A flag indicating whether to wrap lines to editor width
+        var wrapLinesToEditorWidth: Bool = true
+
         /// Default initializer
-        init() {}
+        init() {
+            self.populateCommands()
+        }
 
         /// Explicit decoder init for setting default values when key is not present in `JSON`
         init(from decoder: Decoder) throws {
@@ -33,6 +38,38 @@ extension AppPreferences {
                 Bool.self, forKey: .enableTypeOverCompletion) ?? true
             self.autocompleteBraces = try container.decodeIfPresent(Bool.self,
                                                                     forKey: .autocompleteBraces) ?? true
+            self.wrapLinesToEditorWidth = try container.decodeIfPresent(Bool.self,
+                                                                    forKey: .wrapLinesToEditorWidth) ?? true
+            self.populateCommands()
+        }
+
+        /// Adds toggle-able preferences to the command palette via shared `CommandManager`
+        private func populateCommands() {
+            let mgr = CommandManager.shared
+
+            mgr.addCommand(
+                name: "Toggle Type-Over Completion",
+                title: "Toggle Type-Over Completion",
+                id: "prefs.text_editing.type_over_completion",
+                command: CommandClosureWrapper {
+                    AppPreferencesModel.shared.preferences.textEditing.enableTypeOverCompletion.toggle()
+            })
+
+            mgr.addCommand(
+                name: "Toggle Autocomplete Braces",
+                title: "Toggle Autocomplete Braces",
+                id: "prefs.text_editing.autocomplete_braces",
+                command: CommandClosureWrapper {
+                    AppPreferencesModel.shared.preferences.textEditing.autocompleteBraces.toggle()
+            })
+
+            mgr.addCommand(
+                name: "Toggle Word Wrap",
+                title: "Toggle Word Wrap",
+                id: "prefs.text_editing.wrap_lines_to_editor_width",
+                command: CommandClosureWrapper {
+                    AppPreferencesModel.shared.preferences.textEditing.wrapLinesToEditorWidth.toggle()
+            })
         }
     }
 
