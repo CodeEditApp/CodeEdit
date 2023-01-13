@@ -84,6 +84,15 @@ public final class FileInspectorModel: ObservableObject {
     var indentUsingList = [IndentUsing(name: "Spaces", id: "spaces"),
                            IndentUsing(name: "Tabs", id: "tabs")]
 
+    @Published
+    var tabWidth: Int = 4
+
+    @Published
+    var indentWidth: Int = 4
+
+    @Published
+    var wrapLines: Bool = true
+
     public init(workspaceURL: URL, fileURL: String) {
         self.workspaceURL = workspaceURL
         self.fileURL = fileURL
