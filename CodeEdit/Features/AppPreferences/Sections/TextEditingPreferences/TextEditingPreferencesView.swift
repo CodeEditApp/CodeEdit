@@ -51,8 +51,8 @@ struct TextEditingPreferencesView: View {
             PreferencesSection("Font") {
                 fontSelector
             }
-            PreferencesSection("Line Height Multiple") {
-                lineHeightMultiple
+            PreferencesSection("Line Height") {
+                lineHeight
             }
             PreferencesSection("Code completion") {
                 autocompleteBraces
@@ -102,12 +102,12 @@ struct TextEditingPreferencesView: View {
         }
     }
 
-    private var lineHeightMultiple: some View {
+    private var lineHeight: some View {
         HStack(spacing: 5) {
             TextField("", value: $prefs.preferences.textEditing.lineHeightMultiple, formatter: lineHeightFormatter)
                 .multilineTextAlignment(.trailing)
                 .frame(width: 40)
-            Stepper("Line Height Multiple:",
+            Stepper("Line Height:",
                     value: $prefs.preferences.textEditing.lineHeightMultiple,
                     in: 0.75...2.0,
                     step: 0.05)
