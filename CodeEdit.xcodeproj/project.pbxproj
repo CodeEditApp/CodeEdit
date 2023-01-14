@@ -3235,8 +3235,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/lukepistrol/SwiftLintPlugin";
 			requirement = {
-				branch = main;
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.2.2;
 			};
 		};
 		583E529A29361BAB001AB554 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */ = {
