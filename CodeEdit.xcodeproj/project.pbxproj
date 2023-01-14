@@ -419,6 +419,10 @@
 		20EBB506280C32D300F3A5DA /* QuickHelpInspectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickHelpInspectorView.swift; sourceTree = "<group>"; };
 		20EBB50C280C383700F3A5DA /* LanguageType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageType.swift; sourceTree = "<group>"; };
 		20EBB50E280C389300F3A5DA /* FileInspectorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileInspectorModel.swift; sourceTree = "<group>"; };
+		28052DFB29730DE300F4F90A /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
+		28052DFC29730DF600F4F90A /* Alpha.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Alpha.xcconfig; sourceTree = "<group>"; };
+		28052DFD29730E0300F4F90A /* Beta.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Beta.xcconfig; sourceTree = "<group>"; };
+		28052DFE29730E0B00F4F90A /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 		283BDCBC2972EEBD002AFF81 /* Package.resolved */ = {isa = PBXFileReference; lastKnownFileType = text; name = Package.resolved; path = CodeEdit.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved; sourceTree = "<group>"; };
 		283BDCC42972F236002AFF81 /* AcknowledgementsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcknowledgementsTests.swift; sourceTree = "<group>"; };
 		2847019D27FDDF7600F87B6B /* OutlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineView.swift; sourceTree = "<group>"; };
@@ -860,6 +864,17 @@
 				2072FA1D280D891500C7F8D4 /* FileLocation.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		28052E0129730F2F00F4F90A /* Configs */ = {
+			isa = PBXGroup;
+			children = (
+				28052DFB29730DE300F4F90A /* Debug.xcconfig */,
+				28052DFC29730DF600F4F90A /* Alpha.xcconfig */,
+				28052DFD29730E0300F4F90A /* Beta.xcconfig */,
+				28052DFE29730E0B00F4F90A /* Release.xcconfig */,
+			);
+			path = Configs;
 			sourceTree = "<group>";
 		};
 		28069DA527F5BD320016BC47 /* DefaultThemes */ = {
@@ -2144,6 +2159,7 @@
 		B658FB2327DA9E0F00EA4DBD = {
 			isa = PBXGroup;
 			children = (
+				28052E0129730F2F00F4F90A /* Configs */,
 				283BDCBC2972EEBD002AFF81 /* Package.resolved */,
 				58F2EACE292FB2B0004A9BDE /* Documentation.docc */,
 				B658FB2E27DA9E0F00EA4DBD /* CodeEdit */,
@@ -2832,6 +2848,7 @@
 /* Begin XCBuildConfiguration section */
 		28052DEA2973045200F4F90A /* Alpha */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28052DFC29730DF600F4F90A /* Alpha.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -2893,9 +2910,10 @@
 		};
 		28052DEB2973045200F4F90A /* Alpha */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28052DFC29730DF600F4F90A /* Alpha.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconAlpha;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "${CE_APPICON_NAME}";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = CodeEdit/CodeEdit.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -2927,6 +2945,7 @@
 		};
 		28052DEC2973045200F4F90A /* Alpha */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28052DFC29730DF600F4F90A /* Alpha.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -2953,6 +2972,7 @@
 		};
 		28052DED2973045200F4F90A /* Alpha */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28052DFC29730DF600F4F90A /* Alpha.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
@@ -2980,6 +3000,7 @@
 		};
 		28052DEE2973045200F4F90A /* Alpha */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28052DFC29730DF600F4F90A /* Alpha.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = OpenWithCodeEdit/OpenWithCodeEdit.entitlements;
 				CODE_SIGN_IDENTITY = "-";
@@ -3012,6 +3033,7 @@
 		};
 		28052DEF2973045C00F4F90A /* Beta */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28052DFD29730E0300F4F90A /* Beta.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -3073,9 +3095,10 @@
 		};
 		28052DF02973045C00F4F90A /* Beta */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28052DFD29730E0300F4F90A /* Beta.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconBeta;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "${CE_APPICON_NAME}";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = CodeEdit/CodeEdit.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -3107,6 +3130,7 @@
 		};
 		28052DF12973045C00F4F90A /* Beta */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28052DFD29730E0300F4F90A /* Beta.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -3133,6 +3157,7 @@
 		};
 		28052DF22973045C00F4F90A /* Beta */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28052DFD29730E0300F4F90A /* Beta.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
@@ -3160,6 +3185,7 @@
 		};
 		28052DF32973045C00F4F90A /* Beta */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28052DFD29730E0300F4F90A /* Beta.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = OpenWithCodeEdit/OpenWithCodeEdit.entitlements;
 				CODE_SIGN_IDENTITY = "-";
@@ -3192,6 +3218,7 @@
 		};
 		2BE487F628245162003F3F64 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28052DFB29730DE300F4F90A /* Debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = OpenWithCodeEdit/OpenWithCodeEdit.entitlements;
 				CODE_SIGN_IDENTITY = "-";
@@ -3224,6 +3251,7 @@
 		};
 		2BE487F728245162003F3F64 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28052DFE29730E0B00F4F90A /* Release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = OpenWithCodeEdit/OpenWithCodeEdit.entitlements;
 				CODE_SIGN_IDENTITY = "-";
@@ -3256,6 +3284,7 @@
 		};
 		B658FB4F27DA9E1000EA4DBD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28052DFB29730DE300F4F90A /* Debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -3323,6 +3352,7 @@
 		};
 		B658FB5027DA9E1000EA4DBD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28052DFE29730E0B00F4F90A /* Release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -3383,9 +3413,10 @@
 		};
 		B658FB5227DA9E1000EA4DBD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28052DFB29730DE300F4F90A /* Debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconDev;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "${CE_APPICON_NAME}";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = CodeEdit/CodeEdit.entitlements;
 				CODE_SIGN_IDENTITY = "-";
@@ -3417,9 +3448,10 @@
 		};
 		B658FB5327DA9E1000EA4DBD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28052DFE29730E0B00F4F90A /* Release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "${CE_APPICON_NAME}";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = CodeEdit/CodeEdit.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -3451,6 +3483,7 @@
 		};
 		B658FB5527DA9E1000EA4DBD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28052DFB29730DE300F4F90A /* Debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -3477,6 +3510,7 @@
 		};
 		B658FB5627DA9E1000EA4DBD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28052DFE29730E0B00F4F90A /* Release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -3503,6 +3537,7 @@
 		};
 		B658FB5827DA9E1000EA4DBD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28052DFB29730DE300F4F90A /* Debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
@@ -3531,6 +3566,7 @@
 		};
 		B658FB5927DA9E1000EA4DBD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28052DFE29730E0B00F4F90A /* Release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;

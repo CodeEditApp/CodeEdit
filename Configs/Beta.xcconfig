@@ -1,0 +1,11 @@
+//
+//  Beta.xcconfig
+//  CodeEdit
+//
+//  Created by Lukas Pistrol on 14.01.23.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+CE_APPICON_NAME = AppIconBeta
