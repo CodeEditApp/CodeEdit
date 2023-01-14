@@ -23,15 +23,7 @@ extension Bundle {
         Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String
     }
 
-    static var configurationString: String? {
-        #if BETA
-        return "beta"
-        #elseif ALPHA
-        return "alpha"
-        #elseif DEBUG
-        return "dev"
-        #else
-        return nil
-        #endif
+    static var versionPostfix: String? {
+        Bundle.main.object(forInfoDictionaryKey: "CE_VERSION_POSTFIX") as? String
     }
 }

@@ -56,11 +56,8 @@ struct WelcomeView: View {
         Bundle.buildString ?? ""
     }
 
-    private var appConfiguration: String {
-        if let config = Bundle.configurationString {
-            return "-\(config)"
-        }
-        return ""
+    private var appVersionPostfix: String {
+        Bundle.versionPostfix ?? ""
     }
 
     /// Get the macOS version & build
@@ -94,7 +91,7 @@ struct WelcomeView: View {
 
     /// Get program and operating system information
     private func copyInformation() {
-        var copyString = "CodeEdit: \(appVersion) (\(appBuild))\n"
+        var copyString = "CodeEdit: \(appVersion)\(appVersionPostfix) (\(appBuild))\n"
 
         copyString.append("macOS: \(macOSVersion)\n")
 
@@ -120,7 +117,7 @@ struct WelcomeView: View {
                     String(
                         format: NSLocalizedString("Version %@%@ (%@)", comment: ""),
                         appVersion,
-                        appConfiguration,
+                        appVersionPostfix,
                         appBuild
                     )
                 )

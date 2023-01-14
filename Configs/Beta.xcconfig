@@ -9,3 +9,4 @@
 // https://help.apple.com/xcode/#/dev745c5c974
 
 CE_APPICON_NAME = AppIconBeta
+CE_VERSION_POSTFIX = -beta

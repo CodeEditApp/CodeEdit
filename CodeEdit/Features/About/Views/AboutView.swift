@@ -19,11 +19,9 @@ public struct AboutView: View {
     private var appBuild: String {
         Bundle.buildString ?? "No Build"
     }
-    private var appConfig: String {
-        if let config = Bundle.configurationString {
-            return "-\(config)"
-        }
-        return ""
+
+    private var appVersionPostfix: String {
+        Bundle.versionPostfix ?? ""
     }
 
     public var body: some View {
@@ -51,7 +49,7 @@ public struct AboutView: View {
     private var topMetaData: some View {
         VStack(alignment: .leading, spacing: 5) {
             Text("CodeEdit").font(.system(size: 38, weight: .regular))
-            Text("Version \(appVersion)\(appConfig) (\(appBuild))")
+            Text("Version \(appVersion)\(appVersionPostfix) (\(appBuild))")
                 .textSelection(.enabled)
                 .foregroundColor(.secondary)
                 .font(.system(size: 13, weight: .light))
