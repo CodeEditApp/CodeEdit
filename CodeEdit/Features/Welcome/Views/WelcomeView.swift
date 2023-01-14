@@ -56,6 +56,13 @@ struct WelcomeView: View {
         Bundle.buildString ?? ""
     }
 
+    private var appConfiguration: String {
+        if let config = Bundle.configurationString {
+            return "-\(config)"
+        }
+        return ""
+    }
+
     /// Get the macOS version & build
     private var macOSVersion: String {
         let url = URL(fileURLWithPath: "/System/Library/CoreServices/SystemVersion.plist")
@@ -111,8 +118,9 @@ struct WelcomeView: View {
                     .font(.system(size: 38))
                 Text(
                     String(
-                        format: NSLocalizedString("Version %@ (%@)", comment: ""),
+                        format: NSLocalizedString("Version %@%@ (%@)", comment: ""),
                         appVersion,
+                        appConfiguration,
                         appBuild
                     )
                 )
