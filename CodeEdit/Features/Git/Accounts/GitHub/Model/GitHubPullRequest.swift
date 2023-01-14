@@ -93,12 +93,12 @@ extension GitHubAccount {
      - parameter completion: Callback for the outcome of the fetch.
      */
     @discardableResult
-    func pullRequest(_ session: GitURLSession = URLSession.shared,
-                     owner: String,
-                     repository: String,
-                     number: Int,
-                     completion: @escaping (
-                        _ response: Result<GitHubPullRequest, Error>) -> Void
+    func pullRequest(
+        _ session: GitURLSession = URLSession.shared,
+        owner: String,
+        repository: String,
+        number: Int,
+        completion: @escaping (_ response: Result<GitHubPullRequest, Error>) -> Void
     ) -> GitURLSessionDataTaskProtocol? {
         let router = GitHubPullRequestRouter.readPullRequest(configuration, owner, repository, "\(number)")
 
@@ -129,15 +129,16 @@ extension GitHubAccount {
      - parameter completion: Callback for the outcome of the fetch.
      */
     @discardableResult
-    func pullRequests(_ session: GitURLSession = URLSession.shared,
-                      owner: String,
-                      repository: String,
-                      base: String? = nil,
-                      head: String? = nil,
-                      state: GitHubOpenness = .open,
-                      sort: GitSortType = .created,
-                      direction: GitSortDirection = .desc,
-                      completion: @escaping (_ response: Result<[GitHubPullRequest], Error>) -> Void
+    func pullRequests(
+        _ session: GitURLSession = URLSession.shared,
+        owner: String,
+        repository: String,
+        base: String? = nil,
+        head: String? = nil,
+        state: GitHubOpenness = .open,
+        sort: GitSortType = .created,
+        direction: GitSortDirection = .desc,
+        completion: @escaping (_ response: Result<[GitHubPullRequest], Error>) -> Void
     ) -> GitURLSessionDataTaskProtocol? {
         let router = GitHubPullRequestRouter.readPullRequests(
             configuration,

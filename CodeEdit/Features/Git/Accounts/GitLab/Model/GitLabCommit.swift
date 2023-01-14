@@ -125,12 +125,13 @@ extension GitLabAccount {
      - parameter until: Only commits before or in this date will be returned in ISO 8601 format YYYY-MM-DDTHH:MM:SSZ.
      - parameter completion: Callback for the outcome of the fetch.
      */
-    func commits(_ session: GitURLSession = URLSession.shared,
-                 id: String,
-                 refName: String = "",
-                 since: String = "",
-                 until: String = "",
-                 completion: @escaping (_ response: Result<GitLabCommit, Error>) -> Void
+    func commits(
+        _ session: GitURLSession = URLSession.shared,
+        id: String,
+        refName: String = "",
+        since: String = "",
+        until: String = "",
+        completion: @escaping (_ response: Result<GitLabCommit, Error>) -> Void
     ) -> GitURLSessionDataTaskProtocol? {
         let router = GitLabCommitRouter.readCommits(self.configuration,
                                               id: id,
@@ -158,10 +159,11 @@ extension GitLabAccount {
      - parameter sha: The commit hash or name of a repository branch or tag.
      - parameter completion: Callback for the outcome of the fetch.
      */
-    func commit(_ session: GitURLSession = URLSession.shared,
-                id: String,
-                sha: String,
-                completion: @escaping (_ response: Result<GitLabCommit, Error>) -> Void
+    func commit(
+        _ session: GitURLSession = URLSession.shared,
+        id: String,
+        sha: String,
+        completion: @escaping (_ response: Result<GitLabCommit, Error>) -> Void
     ) -> GitURLSessionDataTaskProtocol? {
         let router = GitLabCommitRouter.readCommit(self.configuration, id: id, sha: sha)
 
@@ -185,10 +187,11 @@ extension GitLabAccount {
      - parameter sha: The commit hash or name of a repository branch or tag.
      - parameter completion: Callback for the outcome of the fetch.
      */
-    func commitDiffs(_ session: GitURLSession = URLSession.shared,
-                     id: String,
-                     sha: String,
-                     completion: @escaping (_ response: Result<GitLabCommitDiff, Error>) -> Void
+    func commitDiffs(
+        _ session: GitURLSession = URLSession.shared,
+        id: String,
+        sha: String,
+        completion: @escaping (_ response: Result<GitLabCommitDiff, Error>) -> Void
     ) -> GitURLSessionDataTaskProtocol? {
         let router = GitLabCommitRouter.readCommitDiffs(self.configuration, id: id, sha: sha)
 
@@ -212,10 +215,11 @@ extension GitLabAccount {
      - parameter sha: The commit hash or name of a repository branch or tag.
      - parameter completion: Callback for the outcome of the fetch.
      */
-    func commitComments(_ session: GitURLSession = URLSession.shared,
-                        id: String,
-                        sha: String,
-                        completion: @escaping (_ response: Result<GitLabCommitComment, Error>) -> Void
+    func commitComments(
+        _ session: GitURLSession = URLSession.shared,
+        id: String,
+        sha: String,
+        completion: @escaping (_ response: Result<GitLabCommitComment, Error>) -> Void
     ) -> GitURLSessionDataTaskProtocol? {
         let router = GitLabCommitRouter.readCommitComments(self.configuration, id: id, sha: sha)
 
@@ -243,14 +247,15 @@ extension GitLabAccount {
      - parameter all: Return all statuses, not only the latest ones. (Boolean value)
      - parameter completion: Callback for the outcome of the fetch.
      */
-    func commitStatuses(_ session: GitURLSession = URLSession.shared,
-                        id: String,
-                        sha: String,
-                        ref: String = "",
-                        stage: String = "",
-                        name: String = "",
-                        all: Bool = false,
-                        completion: @escaping (_ response: Result<GitLabCommitStatus, Error>) -> Void
+    func commitStatuses(
+        _ session: GitURLSession = URLSession.shared,
+        id: String,
+        sha: String,
+        ref: String = "",
+        stage: String = "",
+        name: String = "",
+        all: Bool = false,
+        completion: @escaping (_ response: Result<GitLabCommitStatus, Error>) -> Void
     ) -> GitURLSessionDataTaskProtocol? {
         let router = GitLabCommitRouter.readCommitStatuses(self.configuration, id: id,
                                                      sha: sha,

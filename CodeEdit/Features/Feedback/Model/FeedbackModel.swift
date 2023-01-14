@@ -113,10 +113,12 @@ public class FeedbackModel: ObservableObject {
     /// The format for the issue body is how it will be displayed on
     /// repos issues. If any changes are made use markdown format
     /// because the text gets converted when created.
-    private func createIssueBody(description: String,
-                                 steps: String?,
-                                 expectation: String?,
-                                 actuallyHappened: String?) -> String {
+    private func createIssueBody(
+        description: String,
+        steps: String?,
+        expectation: String?,
+        actuallyHappened: String?
+    ) -> String {
         """
         **Description**
 
@@ -136,11 +138,13 @@ public class FeedbackModel: ObservableObject {
         """
     }
 
-    public func createIssue(title: String,
-                            description: String,
-                            steps: String?,
-                            expectation: String?,
-                            actuallyHappened: String?) {
+    public func createIssue(
+        title: String,
+        description: String,
+        steps: String?,
+        expectation: String?,
+        actuallyHappened: String?
+    ) {
         let gitAccounts = prefs.preferences.accounts.sourceControlAccounts.gitAccount
         let firstGitAccount = gitAccounts.first
 

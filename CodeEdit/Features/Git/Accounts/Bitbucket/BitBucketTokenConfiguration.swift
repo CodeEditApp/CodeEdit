@@ -23,10 +23,11 @@ struct BitBucketTokenConfiguration: GitRouterConfiguration {
         expirationDate = currentDate.addingTimeInterval(TimeInterval(expiresIn ?? 0))
     }
 
-    init(_ token: String? = nil,
-         refreshToken: String? = nil,
-         expirationDate: Date? = nil,
-         url: String = GitURL.bitbucketBaseURL
+    init(
+        _ token: String? = nil,
+        refreshToken: String? = nil,
+        expirationDate: Date? = nil,
+        url: String = GitURL.bitbucketBaseURL
     ) {
         apiEndpoint = url
         accessToken = token

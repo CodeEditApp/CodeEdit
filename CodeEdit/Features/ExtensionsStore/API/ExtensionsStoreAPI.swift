@@ -85,8 +85,10 @@ enum ExtensionsStoreAPI {
 }
 
 final class ExtensionsStoreAgent {
-    func run<T: Decodable>(_ request: URLRequest,
-                           _ decoder: JSONDecoder = JSONDecoder()) -> AnyPublisher<APIResponse<T>, Error> {
+    func run<T: Decodable>(
+        _ request: URLRequest,
+        _ decoder: JSONDecoder = JSONDecoder()
+    ) -> AnyPublisher<APIResponse<T>, Error> {
         URLSession.shared
             .dataTaskPublisher(for: request)
             .tryMap { result -> APIResponse<T> in

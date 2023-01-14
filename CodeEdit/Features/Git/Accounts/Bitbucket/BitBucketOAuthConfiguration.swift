@@ -16,8 +16,12 @@ struct BitBucketOAuthConfiguration: GitRouterConfiguration {
     let webEndpoint: String
     let errorDomain = "com.codeedit.models.accounts.bitbucket"
 
-    init(_ url: String = GitURL.bitbucketBaseURL, webURL: String = GitURL.bitbucketWebURL,
-         token: String, secret: String, scopes: [String]
+    init(
+        _ url: String = GitURL.bitbucketBaseURL,
+        webURL: String = GitURL.bitbucketWebURL,
+        token: String,
+        secret: String,
+        scopes: [String]
     ) {
         apiEndpoint = url
         webEndpoint = webURL
@@ -43,9 +47,10 @@ struct BitBucketOAuthConfiguration: GitRouterConfiguration {
         return config
     }
 
-    func authorize(_ session: GitURLSession,
-                   code: String,
-                   completion: @escaping (_ config: BitBucketTokenConfiguration) -> Void
+    func authorize(
+        _ session: GitURLSession,
+        code: String,
+        completion: @escaping (_ config: BitBucketTokenConfiguration) -> Void
     ) {
         let request = BitBucketOAuthRouter.accessToken(self, code).URLRequest
 
@@ -79,9 +84,10 @@ struct BitBucketOAuthConfiguration: GitRouterConfiguration {
         }
     }
 
-    func handleOpenURL(_ session: GitURLSession = URLSession.shared,
-                       url: URL,
-                       completion: @escaping (_ config: BitBucketTokenConfiguration) -> Void
+    func handleOpenURL(
+        _ session: GitURLSession = URLSession.shared,
+        url: URL,
+        completion: @escaping (_ config: BitBucketTokenConfiguration) -> Void
     ) {
         let params = url.bitbucketURLParameters()
 

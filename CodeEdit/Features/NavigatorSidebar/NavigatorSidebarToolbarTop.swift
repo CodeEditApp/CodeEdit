@@ -64,11 +64,13 @@ struct NavigatorSidebarToolbarTop: View {
         .fixedSize(horizontal: false, vertical: true)
     }
 
-    private func makeIcon(named: String,
-                          title: String,
-                          id: Int,
-                          scale: Image.Scale = .medium,
-                          sidebarWidth: CGFloat) -> some View {
+    private func makeIcon(
+        named: String,
+        title: String,
+        id: Int,
+        scale: Image.Scale = .medium,
+        sidebarWidth: CGFloat
+    ) -> some View {
         Button {
             selection = id
         } label: {

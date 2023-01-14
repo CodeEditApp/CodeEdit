@@ -18,13 +18,15 @@ protocol GitJSONPostRouter: GitRouter {
     func postJSON<T>(
         _ session: GitURLSession,
         expectedResultType: T.Type,
-        completion: @escaping (_ json: T?, _ error: Error?) -> Void) -> GitURLSessionDataTaskProtocol?
+        completion: @escaping (_ json: T?, _ error: Error?) -> Void
+    ) -> GitURLSessionDataTaskProtocol?
 
     func post<T: Codable>(
         _ session: GitURLSession,
         decoder: JSONDecoder,
         expectedResultType: T.Type,
-        completion: @escaping (_ json: T?, _ error: Error?) -> Void) -> GitURLSessionDataTaskProtocol?
+        completion: @escaping (_ json: T?, _ error: Error?) -> Void
+    ) -> GitURLSessionDataTaskProtocol?
 
     #if !canImport(FoundationNetworking)
     @available(macOS 12.0, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
@@ -34,7 +36,8 @@ protocol GitJSONPostRouter: GitRouter {
     func post<T: Codable>(
         _ session: GitURLSession,
         decoder: JSONDecoder,
-        expectedResultType: T.Type) async throws -> T
+        expectedResultType: T.Type
+    ) async throws -> T
     #endif
 }
 
@@ -42,7 +45,8 @@ extension GitJSONPostRouter {
     func postJSON<T>(
         _ session: GitURLSession = URLSession.shared,
         expectedResultType _: T.Type,
-        completion: @escaping (_ json: T?, _ error: Error?) -> Void) -> GitURLSessionDataTaskProtocol? {
+        completion: @escaping (_ json: T?, _ error: Error?) -> Void
+    ) -> GitURLSessionDataTaskProtocol? {
 
         guard let request = request() else {
             return nil
@@ -105,7 +109,8 @@ extension GitJSONPostRouter {
     @available(macOS 12.0, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
     func postJSON<T>(
         _ session: GitURLSession = URLSession.shared,
-        expectedResultType _: T.Type) async throws -> T? {
+        expectedResultType _: T.Type
+    ) async throws -> T? {
 
         guard let request = request() else {
             throw NSError(domain: configuration?.errorDomain ?? "", code: -876, userInfo: nil)
@@ -137,7 +142,8 @@ extension GitJSONPostRouter {
         _ session: GitURLSession = URLSession.shared,
         decoder: JSONDecoder = JSONDecoder(),
         expectedResultType _: T.Type,
-        completion: @escaping (_ json: T?, _ error: Error?) -> Void) -> GitURLSessionDataTaskProtocol? {
+        completion: @escaping (_ json: T?, _ error: Error?) -> Void
+    ) -> GitURLSessionDataTaskProtocol? {
 
         guard let request = request() else {
             return nil
@@ -195,7 +201,8 @@ extension GitJSONPostRouter {
     func post<T: Codable>(
         _ session: GitURLSession,
         decoder: JSONDecoder = JSONDecoder(),
-        expectedResultType _: T.Type) async throws -> T {
+        expectedResultType _: T.Type
+    ) async throws -> T {
 
         guard let request = request() else {
             throw NSError(domain: configuration?.errorDomain ?? "", code: -876, userInfo: nil)

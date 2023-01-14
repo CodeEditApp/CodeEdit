@@ -12,10 +12,11 @@ import FoundationNetworking
 
 // TODO: DOCS (Nanashi Li)
 extension GitHubAccount {
-    func postPublicKey(_ session: GitURLSession = URLSession.shared,
-                       publicKey: String,
-                       title: String,
-                       completion: @escaping (_ response: Result<String, Error>) -> Void
+    func postPublicKey(
+        _ session: GitURLSession = URLSession.shared,
+        publicKey: String,
+        title: String,
+        completion: @escaping (_ response: Result<String, Error>) -> Void
     ) -> GitURLSessionDataTaskProtocol? {
         let router = GitHubPublicKeyRouter.postPublicKey(publicKey, title, configuration)
 

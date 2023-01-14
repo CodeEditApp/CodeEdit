@@ -157,9 +157,11 @@ extension FindNavigatorListViewController: NSOutlineViewDataSource {
 
 extension FindNavigatorListViewController: NSOutlineViewDelegate {
 
-    func outlineView(_ outlineView: NSOutlineView,
-                     shouldShowCellExpansionFor tableColumn: NSTableColumn?,
-                     item: Any) -> Bool {
+    func outlineView(
+        _ outlineView: NSOutlineView,
+        shouldShowCellExpansionFor tableColumn: NSTableColumn?,
+        item: Any
+    ) -> Bool {
         return item as? SearchResultModel != nil
     }
 

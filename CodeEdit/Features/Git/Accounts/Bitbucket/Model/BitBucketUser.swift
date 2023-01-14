@@ -39,7 +39,8 @@ extension BitBucketAccount {
 
     func me(
         _ session: GitURLSession = URLSession.shared,
-        completion: @escaping (_ response: Result<BitBucketUser, Error>) -> Void) -> GitURLSessionDataTaskProtocol? {
+        completion: @escaping (_ response: Result<BitBucketUser, Error>) -> Void
+    ) -> GitURLSessionDataTaskProtocol? {
 
             let router = BitBucketUserRouter.readAuthenticatedUser(configuration)
 
@@ -58,7 +59,8 @@ extension BitBucketAccount {
 
     func emails(
         _ session: GitURLSession = URLSession.shared,
-        completion: @escaping (_ response: Result<BitBucketEmail, Error>) -> Void) -> GitURLSessionDataTaskProtocol? {
+        completion: @escaping (_ response: Result<BitBucketEmail, Error>) -> Void
+    ) -> GitURLSessionDataTaskProtocol? {
 
             let router = BitBucketUserRouter.readEmails(configuration)
 

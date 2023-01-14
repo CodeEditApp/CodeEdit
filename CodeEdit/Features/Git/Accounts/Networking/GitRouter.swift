@@ -68,19 +68,22 @@ protocol GitRouter {
     func loadJSON<T: Codable>(
         _ session: GitURLSession,
         expectedResultType: T.Type,
-        completion: @escaping (_ json: T?, _ error: Error?) -> Void) -> GitURLSessionDataTaskProtocol?
+        completion: @escaping (_ json: T?, _ error: Error?) -> Void
+    ) -> GitURLSessionDataTaskProtocol?
 
     func load<T: Codable>(
         _ session: GitURLSession,
         dateDecodingStrategy: JSONDecoder.DateDecodingStrategy?,
         expectedResultType: T.Type,
-        completion: @escaping (_ json: T?, _ error: Error?) -> Void) -> GitURLSessionDataTaskProtocol?
+        completion: @escaping (_ json: T?, _ error: Error?) -> Void
+    ) -> GitURLSessionDataTaskProtocol?
 
     func load<T: Codable>(
         _ session: GitURLSession,
         decoder: JSONDecoder,
         expectedResultType: T.Type,
-        completion: @escaping (_ json: T?, _ error: Error?) -> Void) -> GitURLSessionDataTaskProtocol?
+        completion: @escaping (_ json: T?, _ error: Error?) -> Void
+    ) -> GitURLSessionDataTaskProtocol?
 
     func request() -> URLRequest?
 }
@@ -194,7 +197,8 @@ extension GitRouter {
     func loadJSON<T: Codable>(
         _ session: GitURLSession = URLSession.shared,
         expectedResultType: T.Type,
-        completion: @escaping (_ json: T?, _ error: Error?) -> Void) -> GitURLSessionDataTaskProtocol? {
+        completion: @escaping (_ json: T?, _ error: Error?) -> Void
+    ) -> GitURLSessionDataTaskProtocol? {
         load(session, expectedResultType: expectedResultType, completion: completion)
     }
 
@@ -202,7 +206,8 @@ extension GitRouter {
         _ session: GitURLSession = URLSession.shared,
         dateDecodingStrategy: JSONDecoder.DateDecodingStrategy?,
         expectedResultType: T.Type,
-        completion: @escaping (_ json: T?, _ error: Error?) -> Void) -> GitURLSessionDataTaskProtocol? {
+        completion: @escaping (_ json: T?, _ error: Error?) -> Void
+    ) -> GitURLSessionDataTaskProtocol? {
 
         let decoder = JSONDecoder()
 
@@ -216,7 +221,8 @@ extension GitRouter {
     func load<T: Codable>(
         _ session: GitURLSession = URLSession.shared,
         decoder: JSONDecoder = JSONDecoder(), expectedResultType _: T.Type,
-        completion: @escaping (_ json: T?, _ error: Error?) -> Void) -> GitURLSessionDataTaskProtocol? {
+        completion: @escaping (_ json: T?, _ error: Error?) -> Void
+    ) -> GitURLSessionDataTaskProtocol? {
 
         guard let request = request() else {
             return nil
@@ -265,7 +271,8 @@ extension GitRouter {
     func load<T: Codable>(
         _ session: GitURLSession = URLSession.shared,
         decoder: JSONDecoder = JSONDecoder(),
-        expectedResultType _: T.Type) async throws -> T {
+        expectedResultType _: T.Type
+    ) async throws -> T {
 
         guard let request = request() else {
             throw NSError(domain: configuration?.errorDomain ?? "", code: -876, userInfo: nil)
@@ -295,7 +302,8 @@ extension GitRouter {
     func load<T: Codable>(
         _ session: GitURLSession = URLSession.shared,
         dateDecodingStrategy: JSONDecoder.DateDecodingStrategy?,
-        expectedResultType: T.Type) async throws -> T {
+        expectedResultType: T.Type
+    ) async throws -> T {
 
         let decoder = JSONDecoder()
 
@@ -308,7 +316,8 @@ extension GitRouter {
 
     func load(
         _ session: GitURLSession = URLSession.shared,
-        completion: @escaping (_ error: Error?) -> Void) -> GitURLSessionDataTaskProtocol? {
+        completion: @escaping (_ error: Error?) -> Void
+    ) -> GitURLSessionDataTaskProtocol? {
 
         guard let request = request() else {
             return nil

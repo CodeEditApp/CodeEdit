@@ -17,8 +17,12 @@ struct GitLabOAuthConfiguration: GitRouterConfiguration {
     let webEndpoint: String
     let errorDomain = "com.codeedit.models.accounts.gitlab"
 
-    init(_ url: String = GitURL.gitlabBaseURL, webURL: String = GitURL.gitlabWebURL,
-         token: String, secret: String, redirectURI: String
+    init(
+        _ url: String = GitURL.gitlabBaseURL,
+        webURL: String = GitURL.gitlabWebURL,
+        token: String,
+        secret: String,
+        redirectURI: String
     ) {
         apiEndpoint = url
         webEndpoint = webURL
@@ -31,9 +35,10 @@ struct GitLabOAuthConfiguration: GitRouterConfiguration {
         GitLabOAuthRouter.authorize(self, redirectURI).URLRequest?.url
     }
 
-    func authorize(_ session: GitURLSession = URLSession.shared,
-                   code: String,
-                   completion: @escaping (_ config: GitLabTokenConfiguration) -> Void
+    func authorize(
+        _ session: GitURLSession = URLSession.shared,
+        code: String,
+        completion: @escaping (_ config: GitLabTokenConfiguration) -> Void
     ) {
         let request = GitLabOAuthRouter.accessToken(self, code, redirectURI).URLRequest
         if let request = request {
@@ -62,9 +67,10 @@ struct GitLabOAuthConfiguration: GitRouterConfiguration {
         }
     }
 
-    func handleOpenURL(_ session: GitURLSession = URLSession.shared,
-                       url: URL,
-                       completion: @escaping (_ config: GitLabTokenConfiguration) -> Void
+    func handleOpenURL(
+        _ session: GitURLSession = URLSession.shared,
+        url: URL,
+        completion: @escaping (_ config: GitLabTokenConfiguration) -> Void
     ) {
         if let code = url.absoluteString.components(separatedBy: "=").last {
             authorize(session, code: code) { (config) in

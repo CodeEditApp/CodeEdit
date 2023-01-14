@@ -155,8 +155,11 @@ extension OutlineViewController: NSOutlineViewDataSource {
 // MARK: - NSOutlineViewDelegate
 
 extension OutlineViewController: NSOutlineViewDelegate {
-    func outlineView(_ outlineView: NSOutlineView,
-                     shouldShowCellExpansionFor tableColumn: NSTableColumn?, item: Any) -> Bool {
+    func outlineView(
+        _ outlineView: NSOutlineView,
+        shouldShowCellExpansionFor tableColumn: NSTableColumn?,
+        item: Any
+    ) -> Bool {
         true
     }
 

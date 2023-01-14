@@ -48,8 +48,10 @@ class CodeEditKeychain {
      - returns: True if the text was successfully written to the keychain.
      */
     @discardableResult
-    func set(_ value: String, forKey key: String,
-             withAccess access: CodeEditKeychainAccessOptions? = nil
+    func set(
+        _ value: String,
+        forKey key: String,
+        withAccess access: CodeEditKeychainAccessOptions? = nil
     ) -> Bool {
         if let value = value.data(using: String.Encoding.utf8) {
             return set(value, forKey: key, withAccess: access)
@@ -67,8 +69,10 @@ class CodeEditKeychain {
      - returns: True if the text was successfully written to the keychain.
      */
     @discardableResult
-    func set(_ value: Data, forKey key: String,
-             withAccess access: CodeEditKeychainAccessOptions? = nil
+    func set(
+        _ value: Data,
+        forKey key: String,
+        withAccess access: CodeEditKeychainAccessOptions? = nil
     ) -> Bool {
         // The lock prevents the code to be run simultaneously
         // from multiple threads which may result in crashing
@@ -105,8 +109,10 @@ class CodeEditKeychain {
      - returns: True if the value was successfully written to the keychain.
      */
     @discardableResult
-    func set(_ value: Bool, forKey key: String,
-             withAccess access: CodeEditKeychainAccessOptions? = nil
+    func set(
+        _ value: Bool,
+        forKey key: String,
+        withAccess access: CodeEditKeychainAccessOptions? = nil
     ) -> Bool {
         let bytes: [UInt8] = value ? [1] : [0]
         let data = Data(bytes)

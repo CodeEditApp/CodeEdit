@@ -52,9 +52,11 @@ struct FindNavigatorSearchBar: View {
         }
     }
 
-    init(state: WorkspaceDocument.SearchState,
-         title: String,
-         text: Binding<String>) {
+    init(
+        state: WorkspaceDocument.SearchState,
+        title: String,
+        text: Binding<String>
+    ) {
         self.state = state
         self.title = title
         self._text = text

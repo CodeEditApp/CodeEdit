@@ -47,9 +47,10 @@ extension GitLabAccount {
      Make sure that the namespace/project-name is URL-encoded, eg. "%2F" for "/".
      - parameter completion: Callback for the outcome of the fetch.
      */
-    func projectHooks(_ session: GitURLSession = URLSession.shared,
-                      id: String,
-                      completion: @escaping (_ response: Result<GitLabProjectHook, Error>) -> Void
+    func projectHooks(
+        _ session: GitURLSession = URLSession.shared,
+        id: String,
+        completion: @escaping (_ response: Result<GitLabProjectHook, Error>) -> Void
     ) -> GitURLSessionDataTaskProtocol? {
         let router = GitLabProjectRouter.readProjectHooks(configuration: configuration, id: id)
 
@@ -75,10 +76,11 @@ extension GitLabAccount {
      (you can get the ID of a hook by searching for it with the **allProjectHooks** request).
      - parameter completion: Callback for the outcome of the fetch.
      */
-    func projectHook(_ session: GitURLSession = URLSession.shared,
-                     id: String,
-                     hookId: String,
-                     completion: @escaping (_ response: Result<GitLabProjectHook, Error>) -> Void
+    func projectHook(
+        _ session: GitURLSession = URLSession.shared,
+        id: String,
+        hookId: String,
+        completion: @escaping (_ response: Result<GitLabProjectHook, Error>) -> Void
     ) -> GitURLSessionDataTaskProtocol? {
         let router = GitLabProjectRouter.readProjectHook(configuration: configuration,
                                                    id: id,

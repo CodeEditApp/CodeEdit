@@ -23,11 +23,13 @@ struct FindNavigatorResultFileItem: View {
     private var results: [SearchResultModel]
     private var jumpToFile: () -> Void
 
-    init(state: WorkspaceDocument.SearchState,
-         isExpanded: Bool = true,
-         fileItem: WorkspaceClient.FileItem,
-         results: [SearchResultModel],
-         jumpToFile: @escaping () -> Void) {
+    init(
+        state: WorkspaceDocument.SearchState,
+        isExpanded: Bool = true,
+        fileItem: WorkspaceClient.FileItem,
+        results: [SearchResultModel],
+        jumpToFile: @escaping () -> Void
+    ) {
              self.state = state
              self.isExpanded = isExpanded
              self.fileItem = fileItem

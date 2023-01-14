@@ -57,12 +57,12 @@ extension GitHubAccount {
             - parameter completion: Callback for the outcome of the fetch.
      */
     @discardableResult
-    func repositories(_ session: GitURLSession = URLSession.shared,
-                      owner: String? = nil,
-                      page: String = "1",
-                      perPage: String = "100",
-                      completion: @escaping (
-                        _ response: Result<[GitHubRepositories], Error>) -> Void
+    func repositories(
+        _ session: GitURLSession = URLSession.shared,
+        owner: String? = nil,
+        page: String = "1",
+        perPage: String = "100",
+        completion: @escaping (_ response: Result<[GitHubRepositories], Error>) -> Void
     ) -> GitURLSessionDataTaskProtocol? {
         let router = (owner != nil)
             ? GitHubRepositoryRouter.readRepositories(configuration, owner!, page, perPage)
@@ -87,10 +87,11 @@ extension GitHubAccount {
          - parameter completion: Callback for the outcome of the fetch.
      */
     @discardableResult
-    func repository(_ session: GitURLSession = URLSession.shared,
-                    owner: String,
-                    name: String,
-                    completion: @escaping (_ response: Result<GitHubRepositories, Error>) -> Void
+    func repository(
+        _ session: GitURLSession = URLSession.shared,
+        owner: String,
+        name: String,
+        completion: @escaping (_ response: Result<GitHubRepositories, Error>) -> Void
     ) -> GitURLSessionDataTaskProtocol? {
         let router = GitHubRepositoryRouter.readRepository(configuration, owner, name)
 

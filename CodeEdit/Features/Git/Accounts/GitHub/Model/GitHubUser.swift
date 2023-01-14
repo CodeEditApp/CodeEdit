@@ -74,9 +74,10 @@ extension GitHubAccount {
          - parameter completion: Callback for the outcome of the fetch.
      */
     @discardableResult
-    func user(_ session: GitURLSession = URLSession.shared,
-              name: String,
-              completion: @escaping (_ response: Result<GitHubUser, Error>) -> Void
+    func user(
+        _ session: GitURLSession = URLSession.shared,
+        name: String,
+        completion: @escaping (_ response: Result<GitHubUser, Error>) -> Void
     ) -> GitURLSessionDataTaskProtocol? {
         let router = GitHubUserRouter.readUser(name, configuration)
 
@@ -100,8 +101,9 @@ extension GitHubAccount {
          - parameter completion: Callback for the outcome of the fetch.
      */
     @discardableResult
-    func me(_ session: GitURLSession = URLSession.shared,
-            completion: @escaping (_ response: Result<GitHubUser, Error>) -> Void
+    func me(
+        _ session: GitURLSession = URLSession.shared,
+        completion: @escaping (_ response: Result<GitHubUser, Error>) -> Void
     ) -> GitURLSessionDataTaskProtocol? {
         let router = GitHubUserRouter.readAuthenticatedUser(configuration)
 

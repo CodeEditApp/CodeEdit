@@ -54,8 +54,13 @@ struct GitHubOAuthConfiguration: GitRouterConfiguration {
         return previewCustomHeaders
     }
 
-    init(_ url: String = GitURL.githubBaseURL, webURL: String = GitURL.githubWebURL,
-         token: String, secret: String, scopes: [String], previewHeaders: [GitHubPreviewHeader] = []
+    init(
+        _ url: String = GitURL.githubBaseURL,
+        webURL: String = GitURL.githubWebURL,
+        token: String,
+        secret: String,
+        scopes: [String],
+        previewHeaders: [GitHubPreviewHeader] = []
     ) {
         apiEndpoint = url
         webEndpoint = webURL
@@ -72,7 +77,8 @@ struct GitHubOAuthConfiguration: GitRouterConfiguration {
     func authorize(
         _ session: GitURLSession = URLSession.shared,
         code: String,
-        completion: @escaping (_ config: GitHubTokenConfiguration) -> Void) {
+        completion: @escaping (_ config: GitHubTokenConfiguration) -> Void
+    ) {
 
         let request = GitHubOAuthRouter.accessToken(self, code).URLRequest
         if let request = request {
@@ -98,7 +104,8 @@ struct GitHubOAuthConfiguration: GitRouterConfiguration {
     func handleOpenURL(
         _ session: GitURLSession = URLSession.shared,
         url: URL,
-        completion: @escaping (_ config: GitHubTokenConfiguration) -> Void) {
+        completion: @escaping (_ config: GitHubTokenConfiguration) -> Void
+    ) {
 
         if let code = url.URLParameters["code"] {
             authorize(session, code: code) { config in
