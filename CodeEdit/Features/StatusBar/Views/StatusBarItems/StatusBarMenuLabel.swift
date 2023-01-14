@@ -12,12 +12,11 @@ import CodeEditSymbols
 struct StatusBarMenuLabel: View {
     private let text: String
 
-    @ObservedObject
+    @EnvironmentObject
     private var model: StatusBarViewModel
 
-    init(_ text: String, model: StatusBarViewModel) {
+    init(_ text: String) {
         self.text = text
-        self.model = model
     }
 
     var body: some View {

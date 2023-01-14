@@ -8,18 +8,13 @@
 import SwiftUI
 
 struct StatusBarLineEndSelector: View {
-    @ObservedObject
-    private var model: StatusBarViewModel
-
-    init(model: StatusBarViewModel) {
-        self.model = model
-    }
 
     var body: some View {
         Menu {
             // LF, CRLF
         } label: {
-            StatusBarMenuLabel("LF", model: model)        }
+            StatusBarMenuLabel("LF")
+        }
         .menuIndicator(.hidden)
         .menuStyle(.borderlessButton)
         .fixedSize()

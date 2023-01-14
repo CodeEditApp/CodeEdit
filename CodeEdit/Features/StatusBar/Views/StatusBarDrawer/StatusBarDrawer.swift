@@ -8,15 +8,11 @@
 import SwiftUI
 
 struct StatusBarDrawer: View {
-    @ObservedObject
+    @EnvironmentObject
     private var model: StatusBarViewModel
 
     @State
     private var searchText = ""
-
-    init(model: StatusBarViewModel) {
-        self.model = model
-    }
 
     var height: CGFloat {
         if model.isMaximized {
@@ -38,10 +34,10 @@ struct StatusBarDrawer: View {
                 FilterTextField(title: "Filter", text: $searchText)
                     .frame(maxWidth: 300)
                 Spacer()
-                StatusBarClearButton(model: model)
+                StatusBarClearButton()
                 Divider()
-                StatusBarSplitTerminalButton(model: model)
-                StatusBarMaximizeButton(model: model)
+                StatusBarSplitTerminalButton()
+                StatusBarMaximizeButton()
             }
             .padding(10)
             .frame(maxHeight: 29)

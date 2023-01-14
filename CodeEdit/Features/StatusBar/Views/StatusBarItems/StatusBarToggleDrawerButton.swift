@@ -8,11 +8,10 @@
 import SwiftUI
 
 internal struct StatusBarToggleDrawerButton: View {
-    @ObservedObject
+    @EnvironmentObject
     private var model: StatusBarViewModel
 
-    internal init(model: StatusBarViewModel) {
-        self.model = model
+    init() {
         CommandManager.shared.addCommand(
             name: "Toggle Drawer",
             title: "Toggle Drawer",

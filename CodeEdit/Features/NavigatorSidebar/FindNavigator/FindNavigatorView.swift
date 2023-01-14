@@ -8,11 +8,13 @@
 import SwiftUI
 
 struct FindNavigatorView: View {
-    @ObservedObject
-    private var state: WorkspaceDocument.SearchState
 
-    @ObservedObject
+    @EnvironmentObject
     private var workspace: WorkspaceDocument
+
+    private var state: WorkspaceDocument.SearchState {
+        workspace.searchState ?? .init(workspace)
+    }
 
     @State
     private var searchText: String = ""
@@ -30,11 +32,6 @@ struct FindNavigatorView: View {
 
     private var foundResultsCount: Int {
         state.searchResult.count
-    }
-
-    init(workspace: WorkspaceDocument, state: WorkspaceDocument.SearchState) {
-        self.workspace = workspace
-        self.state = state
     }
 
     var body: some View {
@@ -90,7 +87,7 @@ struct FindNavigatorView: View {
                     .font(.system(size: 10))
             }
             Divider()
-            FindNavigatorResultList(workspace: workspace)
+            FindNavigatorResultList()
         }
         .onSubmit {
             state.search(searchText)

@@ -53,11 +53,10 @@ struct WorkspaceView: View {
         if let tabID = workspace.selectionState.selectedId {
             switch tabID {
             case .codeEditor:
-                WorkspaceCodeFileView(workspace: workspace)
+                WorkspaceCodeFileView()
             case .extensionInstallation:
                 if let plugin = workspace.selectionState.selected as? Plugin {
                     ExtensionInstallationView(plugin: plugin)
-                        .environmentObject(workspace)
                         .frame(alignment: .center)
                 }
             }
@@ -75,17 +74,19 @@ struct WorkspaceView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .safeAreaInset(edge: .top, spacing: 0) {
                     VStack(spacing: 0) {
-                        TabBarView(workspace: workspace)
+                        TabBarView()
                         TabBarBottomDivider()
                     }
                 }
                 .safeAreaInset(edge: .bottom) {
-                    StatusBarView(model: model)
+                    StatusBarView()
+                        .environmentObject(model)
                 }
             } else {
                 EmptyView()
             }
         }
+        .environmentObject(workspace)
         .background(colorScheme == .dark ? Color(.black).opacity(0.25) : Color(.white))
         .alert(alertTitle, isPresented: $showingAlert, actions: {
             Button(
