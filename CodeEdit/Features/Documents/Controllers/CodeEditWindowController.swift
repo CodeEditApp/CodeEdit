@@ -92,9 +92,9 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
             viewController: NSHostingController(rootView: inspectorView)
         )
         inspector.titlebarSeparatorStyle = .none
-        inspector.minimumThickness = 260
-        inspector.maximumThickness = 260
+        inspector.minimumThickness = 242
         inspector.isCollapsed = true
+        inspector.canCollapse = true
         inspector.collapseBehavior = .useConstraints
         splitVC.addSplitViewItem(inspector)
 
@@ -288,7 +288,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     }
 }
 
-private extension NSToolbarItem.Identifier {
+extension NSToolbarItem.Identifier {
     static let toggleFirstSidebarItem: NSToolbarItem.Identifier = NSToolbarItem.Identifier("ToggleFirstSidebarItem")
     static let toggleLastSidebarItem: NSToolbarItem.Identifier = NSToolbarItem.Identifier("ToggleLastSidebarItem")
     static let itemListTrackingSeparator = NSToolbarItem.Identifier("ItemListTrackingSeparator")
