@@ -77,8 +77,10 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
         navigator.collapseBehavior = .useConstraints
         splitVC.addSplitViewItem(navigator)
 
-        let workspaceView = WorkspaceView(workspace: workspace)
-            .environment(\.window, window!)
+        let workspaceView = WindowObserver(window: window!) {
+            WorkspaceView(workspace: workspace)
+        }
+
         let mainContent = NSSplitViewItem(
             viewController: NSHostingController(rootView: workspaceView)
         )
