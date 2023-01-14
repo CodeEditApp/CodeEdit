@@ -133,15 +133,19 @@ extension GitLabAccount {
         until: String = "",
         completion: @escaping (_ response: Result<GitLabCommit, Error>) -> Void
     ) -> GitURLSessionDataTaskProtocol? {
-        let router = GitLabCommitRouter.readCommits(self.configuration,
-                                              id: id,
-                                              refName: refName,
-                                              since: since,
-                                              until: until)
+        let router = GitLabCommitRouter.readCommits(
+            self.configuration,
+            id: id,
+            refName: refName,
+            since: since,
+            until: until
+        )
 
-        return router.load(session,
-                           dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
-                           expectedResultType: GitLabCommit.self) { json, error in
+        return router.load(
+            session,
+            dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
+            expectedResultType: GitLabCommit.self
+        ) { json, error in
 
             if let error = error {
                 completion(Result.failure(error))
@@ -167,9 +171,11 @@ extension GitLabAccount {
     ) -> GitURLSessionDataTaskProtocol? {
         let router = GitLabCommitRouter.readCommit(self.configuration, id: id, sha: sha)
 
-        return router.load(session,
-                           dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
-                           expectedResultType: GitLabCommit.self) { json, error in
+        return router.load(
+            session,
+            dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
+            expectedResultType: GitLabCommit.self
+        ) { json, error in
 
             if let error = error {
                 completion(Result.failure(error))
@@ -195,9 +201,11 @@ extension GitLabAccount {
     ) -> GitURLSessionDataTaskProtocol? {
         let router = GitLabCommitRouter.readCommitDiffs(self.configuration, id: id, sha: sha)
 
-        return router.load(session,
-                           dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
-                           expectedResultType: GitLabCommitDiff.self) { json, error in
+        return router.load(
+            session,
+            dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
+            expectedResultType: GitLabCommitDiff.self
+        ) { json, error in
 
             if let error = error {
                 completion(Result.failure(error))
@@ -223,9 +231,11 @@ extension GitLabAccount {
     ) -> GitURLSessionDataTaskProtocol? {
         let router = GitLabCommitRouter.readCommitComments(self.configuration, id: id, sha: sha)
 
-        return router.load(session,
-                           dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
-                           expectedResultType: GitLabCommitComment.self) { json, error in
+        return router.load(
+            session,
+            dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
+            expectedResultType: GitLabCommitComment.self
+        ) { json, error in
 
             if let error = error {
                 completion(Result.failure(error))
@@ -257,16 +267,20 @@ extension GitLabAccount {
         all: Bool = false,
         completion: @escaping (_ response: Result<GitLabCommitStatus, Error>) -> Void
     ) -> GitURLSessionDataTaskProtocol? {
-        let router = GitLabCommitRouter.readCommitStatuses(self.configuration, id: id,
-                                                     sha: sha,
-                                                     ref: ref,
-                                                     stage: stage,
-                                                     name: name,
-                                                     all: all)
+        let router = GitLabCommitRouter.readCommitStatuses(
+            self.configuration, id: id,
+            sha: sha,
+            ref: ref,
+            stage: stage,
+            name: name,
+            all: all
+        )
 
-        return router.load(session,
-                           dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
-                           expectedResultType: GitLabCommitStatus.self) { json, error in
+        return router.load(
+            session,
+            dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
+            expectedResultType: GitLabCommitStatus.self
+        ) { json, error in
 
             if let error = error {
                 completion(Result.failure(error))

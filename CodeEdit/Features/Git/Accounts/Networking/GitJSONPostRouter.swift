@@ -67,21 +67,21 @@ extension GitJSONPostRouter {
                     var userInfo = [String: Any]()
                     if let data = data, let json = try? JSONSerialization.jsonObject(
                         with: data,
-                        options: .mutableContainers) as? [String: Any] {
+                        options: .mutableContainers
+                    ) as? [String: Any] {
 
                         userInfo[gitErrorKey] = json as Any?
 
-                    } else if let data = data, let string = String(
-                        data: data,
-                        encoding: String.Encoding.utf8) {
-
+                    } else if let data = data,
+                              let string = String(data: data, encoding: .utf8) {
                         userInfo[gitErrorKey] = string as Any?
                     }
 
                     let error = NSError(
                         domain: self.configuration?.errorDomain ?? "",
                         code: response.statusCode,
-                        userInfo: userInfo)
+                        userInfo: userInfo
+                    )
 
                     completion(nil, error)
                     return
@@ -123,7 +123,8 @@ extension GitJSONPostRouter {
                 var userInfo = [String: Any]()
                 if let json = try? JSONSerialization.jsonObject(
                     with: responseTuple.0,
-                    options: .mutableContainers) as? [String: Any] {
+                    options: .mutableContainers
+                ) as? [String: Any] {
 
                     userInfo[gitErrorKey] = json as Any?
 
@@ -162,7 +163,8 @@ extension GitJSONPostRouter {
                 var userInfo = [String: Any]()
                 if let data = data, let json = try? JSONSerialization.jsonObject(
                     with: data,
-                    options: .mutableContainers) as? [String: Any] {
+                    options: .mutableContainers
+                ) as? [String: Any] {
 
                     userInfo[gitErrorKey] = json as Any?
 
@@ -172,7 +174,8 @@ extension GitJSONPostRouter {
                 let error = NSError(
                     domain: self.configuration?.errorDomain ?? "",
                     code: response.statusCode,
-                    userInfo: userInfo)
+                    userInfo: userInfo
+                )
 
                 completion(nil, error)
 
@@ -214,7 +217,8 @@ extension GitJSONPostRouter {
             var userInfo = [String: Any]()
             if let json = try? JSONSerialization.jsonObject(
                 with: responseTuple.0,
-                options: .mutableContainers) as? [String: Any] {
+                options: .mutableContainers
+            ) as? [String: Any] {
 
                 userInfo[gitErrorKey] = json as Any?
             } else if let string = String(data: responseTuple.0, encoding: String.Encoding.utf8) {

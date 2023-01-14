@@ -70,8 +70,10 @@ extension NSDocumentController {
 
                     guard let document = document else {
                         let alert = NSAlert()
-                        alert.messageText = NSLocalizedString("Failed to get document",
-                                                              comment: "Failed to get document")
+                        alert.messageText = NSLocalizedString(
+                            "Failed to get document",
+                            comment: "Failed to get document"
+                        )
                         alert.runModal()
                         return
                     }

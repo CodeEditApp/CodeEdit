@@ -200,9 +200,11 @@ extension WorkspaceClient {
 
             // create the folder
             do {
-                try FileItem.fileManger.createDirectory(at: folderUrl,
-                                                        withIntermediateDirectories: true,
-                                                        attributes: [:])
+                try FileItem.fileManger.createDirectory(
+                    at: folderUrl,
+                    withIntermediateDirectories: true,
+                    attributes: [:]
+                )
             } catch {
                 fatalError(error.localizedDescription)
             }

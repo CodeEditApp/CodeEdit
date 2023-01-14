@@ -132,13 +132,15 @@ extension GitRouter {
             switch value {
             case let value as String:
                 if let escapedValue = value.addingPercentEncoding(
-                    withAllowedCharacters: CharacterSet.URLQueryAllowedCharacterSet()) {
+                    withAllowedCharacters: CharacterSet.URLQueryAllowedCharacterSet()
+                ) {
                     components.append(URLQueryItem(name: key, value: escapedValue))
                 }
             case let valueArray as [String]:
                 for (index, item) in valueArray.enumerated() {
                     if let escapedValue = item.addingPercentEncoding(
-                        withAllowedCharacters: CharacterSet.URLQueryAllowedCharacterSet()) {
+                        withAllowedCharacters: CharacterSet.URLQueryAllowedCharacterSet()
+                    ) {
                         components.append(URLQueryItem(name: "\(key)[\(index)]", value: escapedValue))
                     }
                 }
@@ -146,7 +148,8 @@ extension GitRouter {
                 for nestedKey in valueDict.keys.sorted(by: <) {
                     guard let value = valueDict[nestedKey] as? String else { continue }
                     if let escapedValue = value.addingPercentEncoding(
-                        withAllowedCharacters: CharacterSet.URLQueryAllowedCharacterSet()) {
+                        withAllowedCharacters: CharacterSet.URLQueryAllowedCharacterSet()
+                    ) {
                         components.append(URLQueryItem(name: "\(key)[\(nestedKey)]", value: escapedValue))
                     }
                 }
@@ -234,7 +237,8 @@ extension GitRouter {
                     var userInfo = [String: Any]()
                     if let data = data, let json = try? JSONSerialization.jsonObject(
                         with: data,
-                        options: .mutableContainers) as? [String: Any] {
+                        options: .mutableContainers
+                    ) as? [String: Any] {
 
                         userInfo[gitErrorKey] = json as Any?
                     }
@@ -242,7 +246,8 @@ extension GitRouter {
                     let error = NSError(
                         domain: self.configuration?.errorDomain ?? "",
                         code: response.statusCode,
-                        userInfo: userInfo)
+                        userInfo: userInfo
+                    )
 
                     completion(nil, error)
 
@@ -285,7 +290,8 @@ extension GitRouter {
                 var userInfo = [String: Any]()
                 if let json = try? JSONSerialization.jsonObject(
                     with: responseTuple.0,
-                    options: .mutableContainers) as? [String: Any] {
+                    options: .mutableContainers
+                ) as? [String: Any] {
 
                     userInfo[gitErrorKey] = json as Any?
 
@@ -329,7 +335,8 @@ extension GitRouter {
                     var userInfo = [String: Any]()
                     if let data = data, let json = try? JSONSerialization.jsonObject(
                         with: data,
-                        options: .mutableContainers) as? [String: Any] {
+                        options: .mutableContainers
+                    ) as? [String: Any] {
 
                         userInfo[gitErrorKey] = json as Any?
 
@@ -338,7 +345,8 @@ extension GitRouter {
                     let error = NSError(
                         domain: self.configuration?.errorDomain ?? "",
                         code: response.statusCode,
-                        userInfo: userInfo)
+                        userInfo: userInfo
+                    )
 
                     completion(error)
 

@@ -149,15 +149,19 @@ public class FeedbackModel: ObservableObject {
         let firstGitAccount = gitAccounts.first
 
         let config = GitHubTokenConfiguration(keychain.get(firstGitAccount!.gitAccountName))
-        GitHubAccount(config).postIssue(owner: "CodeEditApp",
-                                  repository: "CodeEdit",
-                                  title: "\(getFeebackTypeTitle()) \(title)",
-                                  body: createIssueBody(description: description,
-                                                        steps: steps,
-                                                        expectation: expectation,
-                                                        actuallyHappened: actuallyHappened),
-                                  assignee: "",
-                                  labels: [getFeebackTypeLabel(), getIssueLabel()]) { response in
+        GitHubAccount(config).postIssue(
+            owner: "CodeEditApp",
+            repository: "CodeEdit",
+            title: "\(getFeebackTypeTitle()) \(title)",
+            body: createIssueBody(
+                description: description,
+                steps: steps,
+                expectation: expectation,
+                actuallyHappened: actuallyHappened
+            ),
+            assignee: "",
+            labels: [getFeebackTypeLabel(), getIssueLabel()]
+        ) { response in
             switch response {
             case .success(let issue):
                 if self.prefs.preferences.sourceControl.general.openFeedbackInBrowser {

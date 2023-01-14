@@ -54,9 +54,11 @@ extension GitLabAccount {
     ) -> GitURLSessionDataTaskProtocol? {
         let router = GitLabProjectRouter.readProjectHooks(configuration: configuration, id: id)
 
-        return router.load(session,
-                           dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
-                           expectedResultType: GitLabProjectHook.self) { json, error in
+        return router.load(
+            session,
+            dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
+            expectedResultType: GitLabProjectHook.self
+        ) { json, error in
 
             if let error = error {
                 completion(Result.failure(error))
@@ -82,13 +84,17 @@ extension GitLabAccount {
         hookId: String,
         completion: @escaping (_ response: Result<GitLabProjectHook, Error>) -> Void
     ) -> GitURLSessionDataTaskProtocol? {
-        let router = GitLabProjectRouter.readProjectHook(configuration: configuration,
-                                                   id: id,
-                                                   hookId: hookId)
+        let router = GitLabProjectRouter.readProjectHook(
+            configuration: configuration,
+            id: id,
+            hookId: hookId
+        )
 
-        return router.load(session,
-                           dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
-                           expectedResultType: GitLabProjectHook.self) { json, error in
+        return router.load(
+            session,
+            dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
+            expectedResultType: GitLabProjectHook.self
+        ) { json, error in
 
             if let error = error {
                 completion(Result.failure(error))

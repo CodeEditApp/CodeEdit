@@ -30,8 +30,10 @@ struct SourceControlGitView: View {
 
             PreferencesSection("Ignored Files", hideLabels: false, align: .top) {
                 VStack(spacing: 1) {
-                    List($prefs.preferences.sourceControl.git.ignoredFiles,
-                         selection: $ignoredFileSelection) { ignoredFile in
+                    List(
+                        $prefs.preferences.sourceControl.git.ignoredFiles,
+                        selection: $ignoredFileSelection
+                    ) { ignoredFile in
                         IgnoredFileView(ignoredFile: ignoredFile)
                     }
                     .overlay(Group {
@@ -52,14 +54,18 @@ struct SourceControlGitView: View {
             }
 
             PreferencesSection("Options", hideLabels: false) {
-                Toggle("Prefer to rebase when pulling",
-                       isOn: $prefs.preferences.sourceControl.git.preferRebaseWhenPulling)
-                    .toggleStyle(.checkbox)
-                    .frame(width: inputWidth, alignment: .leading)
-                Toggle("Show merge commits in per-file log",
-                       isOn: $prefs.preferences.sourceControl.git.showMergeCommitsPerFileLog)
-                    .toggleStyle(.checkbox)
-                    .frame(width: inputWidth, alignment: .leading)
+                Toggle(
+                    "Prefer to rebase when pulling",
+                    isOn: $prefs.preferences.sourceControl.git.preferRebaseWhenPulling
+                )
+                .toggleStyle(.checkbox)
+                .frame(width: inputWidth, alignment: .leading)
+                Toggle(
+                    "Show merge commits in per-file log",
+                    isOn: $prefs.preferences.sourceControl.git.showMergeCommitsPerFileLog
+                )
+                .toggleStyle(.checkbox)
+                .frame(width: inputWidth, alignment: .leading)
             }
         }
         .frame(height: 350)

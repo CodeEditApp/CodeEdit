@@ -51,9 +51,11 @@ extension BitBucketAccount {
     ) -> GitURLSessionDataTaskProtocol? {
         let router = BitBucketRepositoryRouter.readRepositories(configuration, userName, nextParameters)
 
-        return router.load(session,
-                           dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
-                           expectedResultType: BitBucketRepositories.self) { repo, error in
+        return router.load(
+            session,
+            dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
+            expectedResultType: BitBucketRepositories.self
+        ) { repo, error in
 
             if let error = error {
                 completion(BitbucketPaginatedResponse.failure(error))
@@ -73,9 +75,11 @@ extension BitBucketAccount {
     ) -> GitURLSessionDataTaskProtocol? {
         let router = BitBucketRepositoryRouter.readRepository(configuration, owner, name)
 
-        return router.load(session,
-                           dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
-                           expectedResultType: BitBucketRepositories.self) { data, error in
+        return router.load(
+            session,
+            dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
+            expectedResultType: BitBucketRepositories.self
+        ) { data, error in
 
             if let error = error {
                 completion(Result.failure(error))

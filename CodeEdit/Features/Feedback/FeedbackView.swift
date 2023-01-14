@@ -39,20 +39,24 @@ struct FeedbackView: View {
                     Text("Failed to submit feedback")
                 }
                 Button {
-                    feedbackModel.createIssue(title: feedbackModel.feedbackTitle,
-                                              description: feedbackModel.issueDescription,
-                                              steps: feedbackModel.stepsReproduceDescription,
-                                              expectation: feedbackModel.expectationDescription,
-                                              actuallyHappened: feedbackModel.whatHappenedDescription)
+                    feedbackModel.createIssue(
+                        title: feedbackModel.feedbackTitle,
+                        description: feedbackModel.issueDescription,
+                        steps: feedbackModel.stepsReproduceDescription,
+                        expectation: feedbackModel.expectationDescription,
+                        actuallyHappened: feedbackModel.whatHappenedDescription
+                    )
                     isSubmitButtonPressed = true
                 } label: {
                     Text("Submit")
                 }
                 .alert(isPresented: self.$showsAlert) {
-                    Alert(title: Text("No GitHub Account"),
-                          message: Text("A GitHub account is required to submit feedback."),
-                          primaryButton: .default(Text("Cancel")),
-                          secondaryButton: .default(Text("Add Account")))
+                    Alert(
+                        title: Text("No GitHub Account"),
+                        message: Text("A GitHub account is required to submit feedback."),
+                        primaryButton: .default(Text("Cancel")),
+                        secondaryButton: .default(Text("Add Account"))
+                    )
                 }
             }
             .padding(10)

@@ -34,18 +34,22 @@ extension GitLabAccount {
         simple: Bool = false,
         completion: @escaping (_ response: Result<[GitLabProject], Error>) -> Void
     ) -> GitURLSessionDataTaskProtocol? {
-        let router = GitLabProjectRouter.readAuthenticatedProjects(configuration: configuration,
-                                                             page: page,
-                                                             perPage: perPage,
-                                                             archived: archived,
-                                                             visibility: visibility,
-                                                             orderBy: orderBy,
-                                                             sort: sort,
-                                                             search: search,
-                                                             simple: simple)
-        return router.load(session,
-                           dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
-                           expectedResultType: GitLabProject.self) { json, error in
+        let router = GitLabProjectRouter.readAuthenticatedProjects(
+            configuration: configuration,
+            page: page,
+            perPage: perPage,
+            archived: archived,
+            visibility: visibility,
+            orderBy: orderBy,
+            sort: sort,
+            search: search,
+            simple: simple
+        )
+        return router.load(
+            session,
+            dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
+            expectedResultType: GitLabProject.self
+        ) { json, error in
 
             if let error = error {
                 completion(Result.failure(error))
@@ -70,9 +74,11 @@ extension GitLabAccount {
     ) -> GitURLSessionDataTaskProtocol? {
         let router = GitLabProjectRouter.readSingleProject(configuration: configuration, id: id)
 
-        return router.load(session,
-                           dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
-                           expectedResultType: GitLabProject.self) { json, error in
+        return router.load(
+            session,
+            dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
+            expectedResultType: GitLabProject.self
+        ) { json, error in
 
             if let error = error {
                 completion(Result.failure(error))
@@ -110,19 +116,23 @@ extension GitLabAccount {
         simple: Bool = false,
         completion: @escaping (_ response: Result<GitLabProject, Error>) -> Void
     ) -> GitURLSessionDataTaskProtocol? {
-        let router = GitLabProjectRouter.readVisibleProjects(configuration: configuration,
-                                                       page: page,
-                                                       perPage: perPage,
-                                                       archived: archived,
-                                                       visibility: visibility,
-                                                       orderBy: orderBy,
-                                                       sort: sort,
-                                                       search: search,
-                                                       simple: simple)
+        let router = GitLabProjectRouter.readVisibleProjects(
+            configuration: configuration,
+            page: page,
+            perPage: perPage,
+            archived: archived,
+            visibility: visibility,
+            orderBy: orderBy,
+            sort: sort,
+            search: search,
+            simple: simple
+        )
 
-        return router.load(session,
-                           dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
-                           expectedResultType: GitLabProject.self) { json, error in
+        return router.load(
+            session,
+            dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
+            expectedResultType: GitLabProject.self
+        ) { json, error in
 
             if let error = error {
                 completion(Result.failure(error))
@@ -160,19 +170,23 @@ extension GitLabAccount {
         simple: Bool = false,
         completion: @escaping (_ response: Result<GitLabProject, Error>) -> Void
     ) -> GitURLSessionDataTaskProtocol? {
-        let router = GitLabProjectRouter.readOwnedProjects(configuration: configuration,
-                                                     page: page,
-                                                     perPage: perPage,
-                                                     archived: archived,
-                                                     visibility: visibility,
-                                                     orderBy: orderBy,
-                                                     sort: sort,
-                                                     search: search,
-                                                     simple: simple)
+        let router = GitLabProjectRouter.readOwnedProjects(
+            configuration: configuration,
+            page: page,
+            perPage: perPage,
+            archived: archived,
+            visibility: visibility,
+            orderBy: orderBy,
+            sort: sort,
+            search: search,
+            simple: simple
+        )
 
-        return router.load(session,
-                           dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
-                           expectedResultType: GitLabProject.self) { json, error in
+        return router.load(
+            session,
+            dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
+            expectedResultType: GitLabProject.self
+        ) { json, error in
 
             if let error = error {
                 completion(Result.failure(error))
@@ -210,19 +224,23 @@ extension GitLabAccount {
         simple: Bool = false,
         completion: @escaping (_ response: Result<GitLabProject, Error>) -> Void
     ) -> GitURLSessionDataTaskProtocol? {
-        let router = GitLabProjectRouter.readStarredProjects(configuration: configuration,
-                                                       page: page,
-                                                       perPage: perPage,
-                                                       archived: archived,
-                                                       visibility: visibility,
-                                                       orderBy: orderBy,
-                                                       sort: sort,
-                                                       search: search,
-                                                       simple: simple)
+        let router = GitLabProjectRouter.readStarredProjects(
+            configuration: configuration,
+            page: page,
+            perPage: perPage,
+            archived: archived,
+            visibility: visibility,
+            orderBy: orderBy,
+            sort: sort,
+            search: search,
+            simple: simple
+        )
 
-        return router.load(session,
-                           dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
-                           expectedResultType: GitLabProject.self) { json, error in
+        return router.load(
+            session,
+            dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
+            expectedResultType: GitLabProject.self
+        ) { json, error in
 
             if let error = error {
                 completion(Result.failure(error))
@@ -260,19 +278,23 @@ extension GitLabAccount {
         simple: Bool = false,
         completion: @escaping (_ response: Result<GitLabProject, Error>) -> Void
     ) -> GitURLSessionDataTaskProtocol? {
-        let router = GitLabProjectRouter.readAllProjects(configuration: configuration,
-                                                   page: page,
-                                                   perPage: perPage,
-                                                   archived: archived,
-                                                   visibility: visibility,
-                                                   orderBy: orderBy,
-                                                   sort: sort,
-                                                   search: search,
-                                                   simple: simple)
+        let router = GitLabProjectRouter.readAllProjects(
+            configuration: configuration,
+            page: page,
+            perPage: perPage,
+            archived: archived,
+            visibility: visibility,
+            orderBy: orderBy,
+            sort: sort,
+            search: search,
+            simple: simple
+        )
 
-        return router.load(session,
-                           dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
-                           expectedResultType: GitLabProject.self) { json, error in
+        return router.load(
+            session,
+            dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
+            expectedResultType: GitLabProject.self
+        ) { json, error in
 
             if let error = error {
                 completion(Result.failure(error))
@@ -298,14 +320,18 @@ extension GitLabAccount {
         perPage: String = "20",
         completion: @escaping (_ response: Result<GitLabEvent, Error>) -> Void
     ) -> GitURLSessionDataTaskProtocol? {
-        let router = GitLabProjectRouter.readProjectEvents(configuration: configuration,
-                                                     id: id,
-                                                     page: page,
-                                                     perPage: perPage)
+        let router = GitLabProjectRouter.readProjectEvents(
+            configuration: configuration,
+            id: id,
+            page: page,
+            perPage: perPage
+        )
 
-        return router.load(session,
-                           dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
-                           expectedResultType: GitLabEvent.self) { json, error in
+        return router.load(
+            session,
+            dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
+            expectedResultType: GitLabEvent.self
+        ) { json, error in
 
             if let error = error {
                 completion(Result.failure(error))

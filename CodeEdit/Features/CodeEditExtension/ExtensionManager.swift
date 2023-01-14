@@ -38,9 +38,11 @@ final class ExtensionManager {
 
         do {
             try FileManager.default
-                .createDirectory(at: self.extensionsFolder,
-                                 withIntermediateDirectories: true,
-                                 attributes: nil)
+                .createDirectory(
+                    at: self.extensionsFolder,
+                    withIntermediateDirectories: true,
+                    attributes: nil
+                )
         } catch {
             fatalError("Error while initializing the ExtensionManager, line: 36")
         }

@@ -51,8 +51,10 @@ struct GitLabOAuthConfiguration: GitRouterConfiguration {
                             return
                         }
                         do {
-                            let json = try JSONSerialization.jsonObject(with: data,
-                                                                        options: .allowFragments) as? [String: Any]
+                            let json = try JSONSerialization.jsonObject(
+                                with: data,
+                                options: .allowFragments
+                            ) as? [String: Any]
                             if let json = json, let accessToken = json["access_token"] as? String {
                                 let config = GitLabTokenConfiguration(accessToken, url: self.apiEndpoint ?? "")
                                 completion(config)

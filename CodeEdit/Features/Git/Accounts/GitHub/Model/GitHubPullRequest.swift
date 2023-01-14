@@ -105,7 +105,8 @@ extension GitHubAccount {
         return router.load(
             session,
             dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
-            expectedResultType: GitHubPullRequest.self) { pullRequest, error in
+            expectedResultType: GitHubPullRequest.self
+        ) { pullRequest, error in
 
             if let error = error {
                 completion(.failure(error))
@@ -148,12 +149,14 @@ extension GitHubAccount {
             head,
             state,
             sort,
-            direction)
+            direction
+        )
 
         return router.load(
             session,
             dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
-            expectedResultType: [GitHubPullRequest].self) { pullRequests, error in
+            expectedResultType: [GitHubPullRequest].self
+        ) { pullRequests, error in
 
             if let error = error {
                 completion(.failure(error))

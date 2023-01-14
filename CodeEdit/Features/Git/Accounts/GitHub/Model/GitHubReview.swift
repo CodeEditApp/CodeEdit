@@ -56,7 +56,8 @@ extension GitHubAccount {
         return router.load(
             session,
             dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
-            expectedResultType: [GitHubReview].self) { pullRequests, error in
+            expectedResultType: [GitHubReview].self
+        ) { pullRequests, error in
 
             if let error = error {
                 completion(.failure(error))

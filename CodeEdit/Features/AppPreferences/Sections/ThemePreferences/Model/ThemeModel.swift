@@ -222,8 +222,10 @@ final class ThemeModel: ObservableObject {
             }
             let json = try Data(contentsOf: defaultUrl)
             let jsonObject = try JSONSerialization.jsonObject(with: json)
-            let prettyJSON = try JSONSerialization.data(withJSONObject: jsonObject,
-                                                        options: .prettyPrinted)
+            let prettyJSON = try JSONSerialization.data(
+                withJSONObject: jsonObject,
+                options: .prettyPrinted
+            )
 
             try prettyJSON.write(to: themesURL.appendingPathComponent("\(themeName).json"), options: .atomic)
         }

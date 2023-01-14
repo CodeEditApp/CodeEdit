@@ -41,13 +41,21 @@ extension AppPreferences {
             self.defaultTabWidth = try container.decodeIfPresent(Int.self, forKey: .defaultTabWidth) ?? 4
             self.font = try container.decodeIfPresent(EditorFont.self, forKey: .font) ?? .init()
             self.enableTypeOverCompletion = try container.decodeIfPresent(
-                Bool.self, forKey: .enableTypeOverCompletion) ?? true
-            self.autocompleteBraces = try container.decodeIfPresent(Bool.self,
-                                                                    forKey: .autocompleteBraces) ?? true
-            self.wrapLinesToEditorWidth = try container.decodeIfPresent(Bool.self,
-                                                                    forKey: .wrapLinesToEditorWidth) ?? true
-            self.lineHeightMultiple = try container.decodeIfPresent(Double.self,
-                                                                    forKey: .lineHeightMultiple) ?? 1.45
+                Bool.self,
+                forKey: .enableTypeOverCompletion
+            ) ?? true
+            self.autocompleteBraces = try container.decodeIfPresent(
+                Bool.self,
+                forKey: .autocompleteBraces
+            ) ?? true
+            self.wrapLinesToEditorWidth = try container.decodeIfPresent(
+                Bool.self,
+                forKey: .wrapLinesToEditorWidth
+            ) ?? true
+            self.lineHeightMultiple = try container.decodeIfPresent(
+                Double.self,
+                forKey: .lineHeightMultiple
+            ) ?? 1.45
 
             self.populateCommands()
         }
@@ -62,7 +70,8 @@ extension AppPreferences {
                 id: "prefs.text_editing.type_over_completion",
                 command: CommandClosureWrapper {
                     AppPreferencesModel.shared.preferences.textEditing.enableTypeOverCompletion.toggle()
-            })
+                }
+            )
 
             mgr.addCommand(
                 name: "Toggle Autocomplete Braces",
@@ -70,7 +79,8 @@ extension AppPreferences {
                 id: "prefs.text_editing.autocomplete_braces",
                 command: CommandClosureWrapper {
                     AppPreferencesModel.shared.preferences.textEditing.autocompleteBraces.toggle()
-            })
+                }
+            )
 
             mgr.addCommand(
                 name: "Toggle Word Wrap",
@@ -78,7 +88,8 @@ extension AppPreferences {
                 id: "prefs.text_editing.wrap_lines_to_editor_width",
                 command: CommandClosureWrapper {
                     AppPreferencesModel.shared.preferences.textEditing.wrapLinesToEditorWidth.toggle()
-            })
+                }
+            )
         }
     }
 

@@ -16,10 +16,12 @@ final class FindNavigatorListMatchCell: NSTableCellView {
 
     init(frame: CGRect, matchItem: SearchResultMatchModel) {
         self.matchItem = matchItem
-        super.init(frame: CGRect(x: frame.origin.x,
-                                 y: frame.origin.y,
-                                 width: frame.width,
-                                 height: CGFloat.greatestFiniteMagnitude))
+        super.init(frame: CGRect(
+            x: frame.origin.x,
+            y: frame.origin.y,
+            width: frame.width,
+            height: CGFloat.greatestFiniteMagnitude
+        ))
 
         // Create the label
         setUpLabel()
@@ -69,9 +71,11 @@ final class FindNavigatorListMatchCell: NSTableCellView {
     private func setUpImageView() {
         self.icon = NSImageView(frame: .zero)
         self.icon.translatesAutoresizingMaskIntoConstraints = false
-        self.icon.symbolConfiguration = .init(pointSize: 13,
-                                              weight: .regular,
-                                              scale: .medium)
+        self.icon.symbolConfiguration = .init(
+            pointSize: 13,
+            weight: .regular,
+            scale: .medium
+        )
         self.icon.image = NSImage(systemSymbolName: "text.alignleft", accessibilityDescription: nil)
         self.icon.contentTintColor = NSColor.secondaryLabelColor
     }

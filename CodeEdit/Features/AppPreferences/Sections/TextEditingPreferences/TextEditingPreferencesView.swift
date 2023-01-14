@@ -42,9 +42,11 @@ struct TextEditingPreferencesView: View {
                     TextField("", value: $prefs.preferences.textEditing.defaultTabWidth, formatter: tabWidthFormatter)
                         .multilineTextAlignment(.trailing)
                         .frame(width: 40)
-                    Stepper("Default Tab Width:",
-                            value: $prefs.preferences.textEditing.defaultTabWidth,
-                            in: 1...8)
+                    Stepper(
+                        "Default Tab Width:",
+                        value: $prefs.preferences.textEditing.defaultTabWidth,
+                        in: 1...8
+                    )
                     Text("spaces")
                 }
             }
@@ -107,10 +109,12 @@ struct TextEditingPreferencesView: View {
             TextField("", value: $prefs.preferences.textEditing.lineHeightMultiple, formatter: lineHeightFormatter)
                 .multilineTextAlignment(.trailing)
                 .frame(width: 40)
-            Stepper("Line Height:",
-                    value: $prefs.preferences.textEditing.lineHeightMultiple,
-                    in: 0.75...2.0,
-                    step: 0.05)
+            Stepper(
+                "Line Height:",
+                value: $prefs.preferences.textEditing.lineHeightMultiple,
+                in: 0.75...2.0,
+                step: 0.05
+            )
         }
     }
 }

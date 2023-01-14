@@ -54,21 +54,35 @@ extension AppPreferences {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.enableSourceControl = try container.decodeIfPresent(Bool.self, forKey: .enableSourceControl) ?? true
             self.refreshStatusLocaly = try container.decodeIfPresent(Bool.self, forKey: .refreshStatusLocaly) ?? true
-            self.fetchRefreshServerStatus = try container.decodeIfPresent(Bool.self,
-                                                                          forKey: .fetchRefreshServerStatus) ?? true
-            self.addRemoveAutomatically = try container.decodeIfPresent(Bool.self,
-                                                                        forKey: .addRemoveAutomatically) ?? true
+            self.fetchRefreshServerStatus = try container.decodeIfPresent(
+                Bool.self,
+                forKey: .fetchRefreshServerStatus
+            ) ?? true
+            self.addRemoveAutomatically = try container.decodeIfPresent(
+                Bool.self,
+                forKey: .addRemoveAutomatically
+            ) ?? true
             self.selectFilesToCommit = try container.decodeIfPresent(Bool.self, forKey: .selectFilesToCommit) ?? true
-            self.showSourceControlChanges = try container.decodeIfPresent(Bool.self,
-                                                                          forKey: .showSourceControlChanges) ?? true
-            self.includeUpstreamChanges = try container.decodeIfPresent(Bool.self,
-                                                                        forKey: .includeUpstreamChanges) ?? true
-            self.openFeedbackInBrowser = try container.decodeIfPresent(Bool.self,
-                                                                        forKey: .openFeedbackInBrowser) ?? true
-            self.revisionComparisonLayout = try container.decodeIfPresent(RevisionComparisonLayout.self,
-                                                                forKey: .revisionComparisonLayout) ?? .localLeft
-            self.controlNavigatorOrder = try container.decodeIfPresent(ControlNavigatorOrder.self,
-                                                                  forKey: .controlNavigatorOrder) ?? .sortByName
+            self.showSourceControlChanges = try container.decodeIfPresent(
+                Bool.self,
+                forKey: .showSourceControlChanges
+            ) ?? true
+            self.includeUpstreamChanges = try container.decodeIfPresent(
+                Bool.self,
+                forKey: .includeUpstreamChanges
+            ) ?? true
+            self.openFeedbackInBrowser = try container.decodeIfPresent(
+                Bool.self,
+                forKey: .openFeedbackInBrowser
+            ) ?? true
+            self.revisionComparisonLayout = try container.decodeIfPresent(
+                RevisionComparisonLayout.self,
+                forKey: .revisionComparisonLayout
+            ) ?? .localLeft
+            self.controlNavigatorOrder = try container.decodeIfPresent(
+                ControlNavigatorOrder.self,
+                forKey: .controlNavigatorOrder
+            ) ?? .sortByName
             self.defaultBranchName = try container.decodeIfPresent(String.self, forKey: .defaultBranchName) ?? "main"
         }
     }
@@ -107,12 +121,18 @@ extension AppPreferences {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.authorName = try container.decodeIfPresent(String.self, forKey: .authorName) ?? ""
             self.authorEmail = try container.decodeIfPresent(String.self, forKey: .authorEmail) ?? ""
-            self.ignoredFiles = try container.decodeIfPresent([IgnoredFiles].self,
-                                                              forKey: .ignoredFiles) ?? []
-            self.preferRebaseWhenPulling = try container.decodeIfPresent(Bool.self,
-                                                                         forKey: .preferRebaseWhenPulling) ?? false
-            self.showMergeCommitsPerFileLog = try container.decodeIfPresent(Bool.self,
-                                                                        forKey: .showMergeCommitsPerFileLog) ?? false
+            self.ignoredFiles = try container.decodeIfPresent(
+                [IgnoredFiles].self,
+                forKey: .ignoredFiles
+            ) ?? []
+            self.preferRebaseWhenPulling = try container.decodeIfPresent(
+                Bool.self,
+                forKey: .preferRebaseWhenPulling
+            ) ?? false
+            self.showMergeCommitsPerFileLog = try container.decodeIfPresent(
+                Bool.self,
+                forKey: .showMergeCommitsPerFileLog
+            ) ?? false
         }
     }
 }

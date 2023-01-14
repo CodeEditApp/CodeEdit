@@ -43,8 +43,10 @@ struct StatusBarDrawer: View {
             .frame(maxHeight: 29)
             .background(.bar)
         }
-        .frame(minHeight: 0,
-               idealHeight: height,
-               maxHeight: height)
+        .frame(
+            minHeight: 0,
+            idealHeight: height,
+            maxHeight: height
+        )
     }
 }

@@ -34,7 +34,8 @@ extension BitBucketAccount {
                             let error = NSError(
                                 domain: "com.codeedit.models.accounts.bitbucket",
                                 code: response.statusCode,
-                                userInfo: [NSLocalizedDescriptionKey: errorDescription])
+                                userInfo: [NSLocalizedDescriptionKey: errorDescription]
+                            )
                             completion(Result.failure(error))
                         } else {
                             let tokenConfig = BitBucketTokenConfiguration(json: responseJSON)

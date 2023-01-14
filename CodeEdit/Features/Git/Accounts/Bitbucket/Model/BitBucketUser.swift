@@ -44,9 +44,11 @@ extension BitBucketAccount {
 
             let router = BitBucketUserRouter.readAuthenticatedUser(configuration)
 
-            return router.load(session,
-                               dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
-                               expectedResultType: BitBucketUser.self) { user, error in
+            return router.load(
+                session,
+                dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
+                expectedResultType: BitBucketUser.self
+            ) { user, error in
                 if let error = error {
                     completion(.failure(error))
                 } else {
@@ -64,9 +66,11 @@ extension BitBucketAccount {
 
             let router = BitBucketUserRouter.readEmails(configuration)
 
-            return router.load(session,
-                               dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
-                               expectedResultType: BitBucketEmail.self) { email, error in
+            return router.load(
+                session,
+                dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
+                expectedResultType: BitBucketEmail.self
+            ) { email, error in
                 if let error = error {
                     completion(.failure(error))
                 } else {

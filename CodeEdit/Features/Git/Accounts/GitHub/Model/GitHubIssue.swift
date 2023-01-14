@@ -76,7 +76,8 @@ extension GitHubAccount {
         return router.load(
             session,
             dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
-            expectedResultType: [GitHubIssue].self) { issues, error in
+            expectedResultType: [GitHubIssue].self
+        ) { issues, error in
 
             if let error = error {
                 completion(.failure(error))
@@ -108,7 +109,8 @@ extension GitHubAccount {
         return router.load(
             session,
             dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
-            expectedResultType: GitHubIssue.self) { issue, error in
+            expectedResultType: GitHubIssue.self
+        ) { issue, error in
 
             if let error = error {
                 completion(.failure(error))
@@ -145,7 +147,8 @@ extension GitHubAccount {
         return router.load(
             session,
             dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
-            expectedResultType: [GitHubIssue].self) { issues, error in
+            expectedResultType: [GitHubIssue].self
+        ) { issues, error in
 
             if let error = error {
                 completion(.failure(error))
@@ -191,7 +194,8 @@ extension GitHubAccount {
         return router.post(
             session,
             decoder: decoder,
-            expectedResultType: GitHubIssue.self) { issue, error in
+            expectedResultType: GitHubIssue.self
+        ) { issue, error in
 
             if let error = error {
                 completion(.failure(error))
@@ -235,7 +239,8 @@ extension GitHubAccount {
 
         return router.post(
             session,
-            expectedResultType: GitHubIssue.self) { issue, error in
+            expectedResultType: GitHubIssue.self
+        ) { issue, error in
 
             if let error = error {
                 completion(.failure(error))
@@ -273,7 +278,8 @@ extension GitHubAccount {
         return router.post(
             session,
             decoder: decoder,
-            expectedResultType: GitHubComment.self) { issue, error in
+            expectedResultType: GitHubComment.self
+        ) { issue, error in
 
             if let error = error {
                 completion(.failure(error))
@@ -310,7 +316,8 @@ extension GitHubAccount {
         return router.load(
             session,
             dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
-            expectedResultType: [GitHubComment].self) { comments, error in
+            expectedResultType: [GitHubComment].self
+        ) { comments, error in
 
             if let error = error {
                 completion(.failure(error))
@@ -346,7 +353,8 @@ extension GitHubAccount {
 
         return router.post(
             session, decoder: decoder,
-            expectedResultType: GitHubComment.self) { issue, error in
+            expectedResultType: GitHubComment.self
+        ) { issue, error in
 
             if let error = error {
                 completion(.failure(error))

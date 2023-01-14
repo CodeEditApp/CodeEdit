@@ -248,8 +248,10 @@ extension OutlineViewController: NSOutlineViewDelegate {
 
         if row < 0 {
             let alert = NSAlert()
-            alert.messageText = NSLocalizedString("Could not find file",
-                                                  comment: "Could not find file")
+            alert.messageText = NSLocalizedString(
+                "Could not find file",
+                comment: "Could not find file"
+            )
             alert.runModal()
             return
         } else {

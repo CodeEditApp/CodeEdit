@@ -72,7 +72,8 @@ extension GitHubAccount {
         return router.load(
             session,
             dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
-            expectedResultType: [GitHubGist].self) { gists, error in
+            expectedResultType: [GitHubGist].self
+        ) { gists, error in
 
             if let error = error {
                 completion(.failure(error))
@@ -106,7 +107,8 @@ extension GitHubAccount {
         return router.load(
             session,
             dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
-            expectedResultType: [GitHubGist].self) { gists, error in
+            expectedResultType: [GitHubGist].self
+        ) { gists, error in
 
             if let error = error {
                 completion(.failure(error))
@@ -136,7 +138,8 @@ extension GitHubAccount {
         return router.load(
             session,
             dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
-            expectedResultType: GitHubGist.self) { gist, error in
+            expectedResultType: GitHubGist.self
+        ) { gist, error in
 
             if let error = error {
                 completion(.failure(error))
@@ -175,7 +178,8 @@ extension GitHubAccount {
         return router.post(
             session,
             decoder: decoder,
-            expectedResultType: GitHubGist.self) { gist, error in
+            expectedResultType: GitHubGist.self
+        ) { gist, error in
 
             if let error = error {
                 completion(.failure(error))
@@ -214,7 +218,8 @@ extension GitHubAccount {
         return router.post(
             session,
             decoder: decoder,
-            expectedResultType: GitHubGist.self) { gist, error in
+            expectedResultType: GitHubGist.self
+        ) { gist, error in
 
             if let error = error {
                 completion(.failure(error))

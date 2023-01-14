@@ -12,7 +12,8 @@ final class OverlayPanel: NSPanel, NSWindowDelegate {
         super.init(
             contentRect: NSRect(x: 0, y: 0, width: 500, height: 48),
             styleMask: [.fullSizeContentView, .titled, .resizable],
-            backing: .buffered, defer: false)
+            backing: .buffered, defer: false
+        )
         self.delegate = self
         self.center()
         self.titlebarAppearsTransparent = true

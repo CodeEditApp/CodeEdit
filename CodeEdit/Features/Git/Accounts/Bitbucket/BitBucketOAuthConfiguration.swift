@@ -73,8 +73,10 @@ struct BitBucketOAuthConfiguration: GitRouterConfiguration {
     private func configFromData(_ data: Data?) -> BitBucketTokenConfiguration? {
         guard let data = data else { return nil }
         do {
-            guard let json = try JSONSerialization.jsonObject(with: data,
-                                                              options: .allowFragments) as? [String: AnyObject] else {
+            guard let json = try JSONSerialization.jsonObject(
+                with: data,
+                options: .allowFragments
+            ) as? [String: AnyObject] else {
                 return nil
             }
             let config = BitBucketTokenConfiguration(json: json)

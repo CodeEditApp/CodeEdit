@@ -22,7 +22,8 @@ extension GitHubAccount {
 
         return router.postJSON(
             session,
-            expectedResultType: [String: AnyObject].self) { json, error in
+            expectedResultType: [String: AnyObject].self
+        ) { json, error in
 
             if let error = error {
                 completion(.failure(error))

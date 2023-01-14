@@ -15,8 +15,10 @@ extension GitCheckoutBranchView {
             return [""]
         }
         do {
-            let branches = try GitClient(directoryURL: url,
-                                                 shellClient: shellClient).getBranches(true)
+            let branches = try GitClient(
+                directoryURL: url,
+                shellClient: shellClient
+            ).getBranches(true)
             return branches
         } catch {
             return [""]
