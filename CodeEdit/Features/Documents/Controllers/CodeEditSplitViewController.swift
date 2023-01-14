@@ -7,7 +7,7 @@
 
 import Cocoa
 
-private extension CGFloat {
+fileprivate extension CGFloat {
     static let snapWidth: CGFloat = 272
 
     static let minSnapWidth: CGFloat = snapWidth - 10
@@ -51,12 +51,50 @@ final class CodeEditSplitViewController: NSSplitViewController {
         constrainSplitPosition proposedPosition: CGFloat,
         ofSubviewAt dividerIndex: Int
     ) -> CGFloat {
-        if (CGFloat.minSnapWidth...CGFloat.maxSnapWidth).contains(proposedPosition) {
-            isSnapped = true
-            return .snapWidth
-        } else {
-            isSnapped = false
-            return proposedPosition
+        if dividerIndex == 0 {
+            // Navigator
+            if (CGFloat.minSnapWidth...CGFloat.maxSnapWidth).contains(proposedPosition) {
+                isSnapped = true
+                return .snapWidth
+            } else {
+                isSnapped = false
+                if proposedPosition <= 121 {
+                    splitViewItems.first?.isCollapsed = true
+                    return 0
+                }
+                return max(242, proposedPosition)
+            }
+        } else if dividerIndex == 1 {
+            let proposedWidth = view.frame.width - proposedPosition
+            if proposedWidth <= 121 {
+                splitViewItems.last?.isCollapsed = true
+                removeToolbarItemIfNeeded()
+                return proposedPosition
+            }
+            splitViewItems.last?.isCollapsed = false
+            insertToolbarItemIfNeeded()
+            return min(view.frame.width - 242, proposedPosition)
         }
+        return proposedPosition
+    }
+
+    /// Quick fix for list tracking separator needing to be added again after closing, then opening the inspector with a drag.
+    private func insertToolbarItemIfNeeded() {
+        guard !(
+            view.window?.toolbar?.items.contains(where: { $0.itemIdentifier == .itemListTrackingSeparator }) ?? true
+        ) else {
+            return
+        }
+        view.window?.toolbar?.insertItem(withItemIdentifier: .itemListTrackingSeparator, at: 4)
+    }
+
+    /// Quick fix for list tracking separator needing to be removed after closing the inspector with a drag
+    private func removeToolbarItemIfNeeded() {
+        guard let index = view.window?.toolbar?.items.firstIndex(
+                where: { $0.itemIdentifier == .itemListTrackingSeparator }
+              ) else {
+            return
+        }
+        view.window?.toolbar?.removeItem(at: index)
     }
 }
