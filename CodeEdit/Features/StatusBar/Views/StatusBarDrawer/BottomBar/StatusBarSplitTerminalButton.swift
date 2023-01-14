@@ -11,7 +11,6 @@ struct StatusBarSplitTerminalButton: View {
     @EnvironmentObject
     private var model: StatusBarViewModel
 
-
     var body: some View {
         Button {
             // todo
