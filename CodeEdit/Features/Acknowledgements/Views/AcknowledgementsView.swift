@@ -88,7 +88,6 @@ final class AcknowledgementsViewWindowController: NSWindowController {
 
         // close the window when the escape key is pressed
         NSEvent.addLocalMonitorForEvents(matching: .keyDown) { event in
-            print("Event from ack window")
             guard event.keyCode == 53 else { return event }
 
             self.closeAnimated()
