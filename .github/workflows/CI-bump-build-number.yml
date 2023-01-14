@@ -37,5 +37,5 @@ jobs:
           branch: temp/bump-build-number
           delete-branch: true
           base: main
-          title: Bump Build Number to $APP_BUILD
-          body: Automatically bump build number of all targets to $APP_BUILD
+          title: Bump Build Number to ${{ env.APP_BUILD }}
+          body: Automatically bump build number of all targets to ${{ env.APP_BUILD }}
