@@ -8,6 +8,8 @@
 import SwiftUI
 import CodeEditTextView
 
+//swiftlint:disable all
+
 indirect enum WorkspaceLayout: View {
 
     case one(Int)
@@ -19,17 +21,96 @@ indirect enum WorkspaceLayout: View {
     var body: some View {
         switch self {
         case .one(let file):
-            ReferenceWorkspaceEditor(identifier: file)
+
+                ReferenceWorkspaceEditor(identifier: file)
+
+
+            .overlay(alignment: .top) {
+
+                    VStack(spacing: 0) {
+
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack {
+                                ForEach(0..<10, id: \.self) {
+                                    Text("Hello \($0)")
+                                }
+                            }
+                        }
+                        .frame(height: 30)
+                        .padding(.leading)
+
+
+                        .scrollContentBackground(.hidden)
+                        Divider()
+
+                    }
+                    //                        .background(.ultraThinMaterial)
+                    .background(EffectView(.titlebar, blendingMode: .withinWindow, emphasized: false))
+
+                }
         case .horizontal(let file, let workspaceLayout):
             HSplitView {
                 ReferenceWorkspaceEditor(identifier: file)
+                    .ignoresSafeArea(.all, edges: .top)
+                    .overlay(alignment: .top) {
+
+                        VStack(spacing: 0) {
+
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                HStack {
+                                    ForEach(0..<10, id: \.self) {
+                                        Text("Hello \($0)")
+                                    }
+                                }
+                            }
+                            .frame(height: 30)
+                            .padding(.leading)
+
+
+                            .scrollContentBackground(.hidden)
+                            Divider()
+
+                        }
+//                        .background(.ultraThinMaterial)
+                        .background(EffectView(.titlebar, blendingMode: .withinWindow, emphasized: false))
+                        .padding(.bottom, -8)
+                    }
                 workspaceLayout
             }
+            
         case .vertical(let file, let workspaceLayout):
             VSplitView {
                 ReferenceWorkspaceEditor(identifier: file)
+                    .ignoresSafeArea(.all, edges: .top)
+                    .overlay(alignment: .top) {
+
+                        VStack(spacing: 0) {
+
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                HStack {
+                                    ForEach(0..<10, id: \.self) {
+                                        Text("Hello \($0)")
+                                    }
+                                }
+                            }
+                            .frame(height: 30)
+                            .padding(.leading)
+
+
+                            .scrollContentBackground(.hidden)
+                            Divider()
+
+                        }
+                        //                        .background(.ultraThinMaterial)
+                        .background(EffectView(.titlebar, blendingMode: .withinWindow, emphasized: false))
+                        .padding(.bottom, -8)
+                    }
                 workspaceLayout
             }
+//            .safeAreaInset(edge: .top) {
+//                Divider()
+//                    .background(.ultraThinMaterial)
+//            }
         }
     }
 
@@ -53,11 +134,11 @@ struct ReferenceWorkspaceEditor: View {
     @EnvironmentObject var doc: ReferenceWorkspaceFileDocument
     var identifier: Int
     var body: some View {
-        VStack {
-            HStack {
-                Text("Tabbar")
-            }
-            TextEditor(text: $doc.currentFile)
+
+        TextEditor(text: $doc.currentFile)
+            .foregroundColor(.red)
+            .fontWeight(.semibold)
+
 //            CodeEditTextView(
 //                $doc.currentFile,
 //                language: .swift,
@@ -68,6 +149,6 @@ struct ReferenceWorkspaceEditor: View {
 //            
 
 //            .id(doc.currentWrapper?.filename)
-        }
+
     }
 }

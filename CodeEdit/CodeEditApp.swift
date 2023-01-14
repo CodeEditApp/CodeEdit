@@ -13,6 +13,12 @@ import LanguageClient
 struct CodeEditApp: App {
     @NSApplicationDelegateAdaptor private var appDelegate: AppDelegate
 
+//    init() {
+//        NSSplitViewController.swizzle()
+//        NSToolbar.swizzle()
+//        NSVisualEffectView.swizzle()
+//    }
+
     var body: some Scene {
         WelcomeWindow()
             .keyboardShortcut("1", modifiers: [.command, .shift])
@@ -30,5 +36,6 @@ struct CodeEditApp: App {
             .keyboardShortcut("2", modifiers: [.command, .shift])
 
 //        WorkspaceDocumentGroup()
+//            .windowToolbarStyle(.unifiedCompact)
     }
 }

@@ -90,7 +90,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
         inspector.titlebarSeparatorStyle = .none
         inspector.minimumThickness = 260
         inspector.maximumThickness = 260
-        inspector.isCollapsed = true
+        inspector.isCollapsed = false
         inspector.collapseBehavior = .useConstraints
         splitVC.addSplitViewItem(inspector)
 

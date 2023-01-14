@@ -257,6 +257,7 @@ import Combine
             window: window,
             workspace: self
         )
+
         self.addWindowController(windowController)
     }
 
