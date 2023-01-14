@@ -9,12 +9,10 @@ import SwiftUI
 import AppKit
 
 struct WorkspaceView: View {
-    init(windowController: NSWindowController, workspace: WorkspaceDocument) {
-        self.windowController = windowController
+    init(workspace: WorkspaceDocument) {
         self.workspace = workspace
     }
 
-    let windowController: NSWindowController
     let tabBarHeight = 28.0
     private var path: String = ""
 
@@ -23,6 +21,9 @@ struct WorkspaceView: View {
 
     @StateObject
     private var prefs: AppPreferencesModel = .shared
+
+    @Environment(\.window)
+    private var window
 
     private var keybindings: KeybindingManager =  .shared
 
@@ -38,17 +39,6 @@ struct WorkspaceView: View {
     @State
     var showInspector = true
 
-    /// The fullscreen state of the NSWindow.
-    /// This will be passed into all child views as an environment variable.
-    @State
-    var isFullscreen = false
-
-    @State
-    private var enterFullscreenObserver: Any?
-
-    @State
-    private var leaveFullscreenObserver: Any?
-
     @Environment(\.colorScheme) var colorScheme
 
     var noEditor: some View {
@@ -63,7 +53,7 @@ struct WorkspaceView: View {
         if let tabID = workspace.selectionState.selectedId {
             switch tabID {
             case .codeEditor:
-                WorkspaceCodeFileView(windowController: windowController, workspace: workspace)
+                WorkspaceCodeFileView(workspace: workspace)
             case .extensionInstallation:
                 if let plugin = workspace.selectionState.selected as? Plugin {
                     ExtensionInstallationView(plugin: plugin)
@@ -85,7 +75,7 @@ struct WorkspaceView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .safeAreaInset(edge: .top, spacing: 0) {
                     VStack(spacing: 0) {
-                        TabBarView(windowController: windowController, workspace: workspace)
+                        TabBarView(workspace: workspace)
                         TabBarBottomDivider()
                     }
                 }
@@ -105,59 +95,8 @@ struct WorkspaceView: View {
         }, message: { Text(alertMsg) })
         .onChange(of: workspace.selectionState.selectedId) { newValue in
             if newValue == nil {
-                windowController.window?.subtitle = ""
+                window.subtitle = ""
             }
         }
-        .onAppear {
-            // There may be other methods to monitor the full-screen state.
-            // But I cannot find a better one for now because I need to pass this into the SwiftUI.
-            // And it should always be updated.
-            enterFullscreenObserver = NotificationCenter.default.addObserver(
-                forName: NSWindow.didEnterFullScreenNotification,
-                object: nil,
-                queue: .current,
-                using: { _ in self.isFullscreen = true }
-            )
-            leaveFullscreenObserver = NotificationCenter.default.addObserver(
-                forName: NSWindow.willExitFullScreenNotification,
-                object: nil,
-                queue: .current,
-                using: { _ in self.isFullscreen = false }
-            )
-        }
-        .onDisappear {
-            // Unregister the observer when the view is going to disappear.
-            if enterFullscreenObserver != nil {
-                NotificationCenter.default.removeObserver(enterFullscreenObserver!)
-            }
-            if leaveFullscreenObserver != nil {
-                NotificationCenter.default.removeObserver(leaveFullscreenObserver!)
-            }
-        }
-        // Send the environment to all subviews.
-        .environment(\.isFullscreen, self.isFullscreen)
-        // When tab bar style is changed, update NSWindow configuration as follows.
-        .onChange(of: prefs.preferences.general.tabBarStyle) { newStyle in
-            DispatchQueue.main.async {
-                if newStyle == .native {
-                    windowController.window?.titlebarAppearsTransparent = true
-                    windowController.window?.titlebarSeparatorStyle = .none
-                } else {
-                    windowController.window?.titlebarAppearsTransparent = false
-                    windowController.window?.titlebarSeparatorStyle = .automatic
-                }
-            }
-        }
-    }
-}
-
-private struct WorkspaceFullscreenStateEnvironmentKey: EnvironmentKey {
-    static let defaultValue: Bool = false
-}
-
-extension EnvironmentValues {
-    var isFullscreen: Bool {
-        get { self[WorkspaceFullscreenStateEnvironmentKey.self] }
-        set { self[WorkspaceFullscreenStateEnvironmentKey.self] = newValue }
     }
 }

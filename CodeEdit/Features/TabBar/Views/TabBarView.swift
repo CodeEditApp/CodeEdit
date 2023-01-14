@@ -31,9 +31,6 @@ struct TabBarView: View {
     @StateObject
     private var prefs: AppPreferencesModel = .shared
 
-    /// The controller of current NSWindow.
-    private let windowController: NSWindowController
-
     /// The tab id of current dragging tab.
     ///
     /// It will be `nil` when there is no tab dragged currently.
@@ -117,9 +114,8 @@ struct TabBarView: View {
     @State
     private var onDragLastLocation: CGPoint?
 
-    // TabBar(windowController: windowController, workspace: workspace)
-    init(windowController: NSWindowController, workspace: WorkspaceDocument) {
-        self.windowController = windowController
+    // TabBar(workspace: workspace)
+    init(workspace: WorkspaceDocument) {
         self.workspace = workspace
     }
 
@@ -302,7 +298,6 @@ struct TabBarView: View {
                                     TabBarItemView(
                                         expectedWidth: $expectedTabWidth,
                                         item: item,
-                                        windowController: windowController,
                                         draggingTabId: $draggingTabId,
                                         onDragTabId: $onDragTabId,
                                         workspace: workspace
