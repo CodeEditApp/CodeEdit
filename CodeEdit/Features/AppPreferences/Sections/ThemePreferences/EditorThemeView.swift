@@ -24,21 +24,33 @@ struct EditorThemeView: View {
                         .padding(.bottom, 20)
                     HStack(spacing: 0) {
                         VStack(alignment: .leading, spacing: 10) {
-                            PreferencesColorPicker($themeModel.themes[index].editor.text.swiftColor,
-                                                   label: "Text")
-                            PreferencesColorPicker($themeModel.themes[index].editor.insertionPoint.swiftColor,
-                                                   label: "Cursor")
-                            PreferencesColorPicker($themeModel.themes[index].editor.invisibles.swiftColor,
-                                                   label: "Invisibles")
+                            PreferencesColorPicker(
+                                $themeModel.themes[index].editor.text.swiftColor,
+                                label: "Text"
+                            )
+                            PreferencesColorPicker(
+                                $themeModel.themes[index].editor.insertionPoint.swiftColor,
+                                label: "Cursor"
+                            )
+                            PreferencesColorPicker(
+                                $themeModel.themes[index].editor.invisibles.swiftColor,
+                                label: "Invisibles"
+                            )
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                         VStack(alignment: .leading, spacing: 10) {
-                            PreferencesColorPicker($themeModel.themes[index].editor.background.swiftColor,
-                                                   label: "Background")
-                            PreferencesColorPicker($themeModel.themes[index].editor.lineHighlight.swiftColor,
-                                                   label: "Current Line")
-                            PreferencesColorPicker($themeModel.themes[index].editor.selection.swiftColor,
-                                                   label: "Selection")
+                            PreferencesColorPicker(
+                                $themeModel.themes[index].editor.background.swiftColor,
+                                label: "Background"
+                            )
+                            PreferencesColorPicker(
+                                $themeModel.themes[index].editor.lineHighlight.swiftColor,
+                                label: "Current Line"
+                            )
+                            PreferencesColorPicker(
+                                $themeModel.themes[index].editor.selection.swiftColor,
+                                label: "Selection"
+                            )
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                     }
@@ -49,29 +61,49 @@ struct EditorThemeView: View {
                         .padding(.bottom, 10)
                     HStack(spacing: 0) {
                         VStack(alignment: .leading, spacing: 10) {
-                            PreferencesColorPicker($themeModel.themes[index].editor.keywords.swiftColor,
-                                                   label: "Keywords")
-                            PreferencesColorPicker($themeModel.themes[index].editor.commands.swiftColor,
-                                                   label: "Commands")
-                            PreferencesColorPicker($themeModel.themes[index].editor.types.swiftColor,
-                                                   label: "Types")
-                            PreferencesColorPicker($themeModel.themes[index].editor.attributes.swiftColor,
-                                                   label: "Attributes")
-                            PreferencesColorPicker($themeModel.themes[index].editor.variables.swiftColor,
-                                                   label: "Variables")
+                            PreferencesColorPicker(
+                                $themeModel.themes[index].editor.keywords.swiftColor,
+                                label: "Keywords"
+                            )
+                            PreferencesColorPicker(
+                                $themeModel.themes[index].editor.commands.swiftColor,
+                                label: "Commands"
+                            )
+                            PreferencesColorPicker(
+                                $themeModel.themes[index].editor.types.swiftColor,
+                                label: "Types"
+                            )
+                            PreferencesColorPicker(
+                                $themeModel.themes[index].editor.attributes.swiftColor,
+                                label: "Attributes"
+                            )
+                            PreferencesColorPicker(
+                                $themeModel.themes[index].editor.variables.swiftColor,
+                                label: "Variables"
+                            )
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                         VStack(alignment: .leading, spacing: 10) {
-                            PreferencesColorPicker($themeModel.themes[index].editor.values.swiftColor,
-                                                   label: "Values")
-                            PreferencesColorPicker($themeModel.themes[index].editor.numbers.swiftColor,
-                                                   label: "Numbers")
-                            PreferencesColorPicker($themeModel.themes[index].editor.strings.swiftColor,
-                                                   label: "Strings")
-                            PreferencesColorPicker($themeModel.themes[index].editor.characters.swiftColor,
-                                                   label: "Characters")
-                            PreferencesColorPicker($themeModel.themes[index].editor.comments.swiftColor,
-                                                   label: "Comments")
+                            PreferencesColorPicker(
+                                $themeModel.themes[index].editor.values.swiftColor,
+                                label: "Values"
+                            )
+                            PreferencesColorPicker(
+                                $themeModel.themes[index].editor.numbers.swiftColor,
+                                label: "Numbers"
+                            )
+                            PreferencesColorPicker(
+                                $themeModel.themes[index].editor.strings.swiftColor,
+                                label: "Strings"
+                            )
+                            PreferencesColorPicker(
+                                $themeModel.themes[index].editor.characters.swiftColor,
+                                label: "Characters"
+                            )
+                            PreferencesColorPicker(
+                                $themeModel.themes[index].editor.comments.swiftColor,
+                                label: "Comments"
+                            )
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                     }

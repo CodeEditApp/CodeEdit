@@ -82,8 +82,7 @@ struct FindNavigatorView: View {
             .padding(.vertical, 5)
             Divider()
             HStack(alignment: .center) {
-                Text(
-                    "\(state.searchResultCount) results in \(foundFilesCount) files")
+                Text("\(state.searchResultCount) results in \(foundFilesCount) files")
                     .font(.system(size: 10))
             }
             Divider()

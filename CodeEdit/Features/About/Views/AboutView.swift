@@ -88,9 +88,10 @@ public struct AboutView: View {
     }
 
     public func showWindow(width: CGFloat, height: CGFloat) {
-        AboutViewWindowController(view: self,
-                                    size: NSSize(width: width,
-                                                 height: height))
+        AboutViewWindowController(
+            view: self,
+            size: NSSize(width: width, height: height)
+        )
         .showWindow(nil)
     }
 }

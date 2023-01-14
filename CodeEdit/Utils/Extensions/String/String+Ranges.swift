@@ -18,7 +18,8 @@ extension StringProtocol where Index == String.Index {
             of: substring,
             options: options,
             range: (ranges.last?.upperBound ?? startIndex)..<endIndex,
-            locale: locale) {
+            locale: locale
+        ) {
             ranges.append(result)
         }
         return ranges

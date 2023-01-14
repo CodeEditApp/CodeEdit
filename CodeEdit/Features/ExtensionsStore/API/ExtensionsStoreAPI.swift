@@ -57,8 +57,10 @@ enum ExtensionsStoreAPI {
     ///   - page: page to be requested
     /// - Returns: publisher with the page
     static func pluginReleases(id: UUID, page: Int) -> AnyPublisher<APIPage<PluginRelease>, Error> {
-        var components = URLComponents(url: base.appendingPathComponent("plugins/\(id.uuidString)/releases"),
-                                       resolvingAgainstBaseURL: false)
+        var components = URLComponents(
+            url: base.appendingPathComponent("plugins/\(id.uuidString)/releases"),
+            resolvingAgainstBaseURL: false
+        )
         components?.queryItems = [
             .init(name: "page", value: "\(page)")
         ]
@@ -85,8 +87,10 @@ enum ExtensionsStoreAPI {
 }
 
 final class ExtensionsStoreAgent {
-    func run<T: Decodable>(_ request: URLRequest,
-                           _ decoder: JSONDecoder = JSONDecoder()) -> AnyPublisher<APIResponse<T>, Error> {
+    func run<T: Decodable>(
+        _ request: URLRequest,
+        _ decoder: JSONDecoder = JSONDecoder()
+    ) -> AnyPublisher<APIResponse<T>, Error> {
         URLSession.shared
             .dataTaskPublisher(for: request)
             .tryMap { result -> APIResponse<T> in

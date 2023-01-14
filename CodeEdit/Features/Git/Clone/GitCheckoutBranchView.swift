@@ -14,9 +14,10 @@ struct GitCheckoutBranchView: View {
     @Binding var repoPath: String
     // TODO: This has to be derived from git
     @State var selectedBranch = "main"
-    init(isPresented: Binding<Bool>,
-         repoPath: Binding<String>,
-         shellClient: ShellClient
+    init(
+        isPresented: Binding<Bool>,
+        repoPath: Binding<String>,
+        shellClient: ShellClient
     ) {
         self.shellClient = shellClient
         self._isPresented = isPresented

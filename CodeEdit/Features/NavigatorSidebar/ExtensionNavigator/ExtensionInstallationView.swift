@@ -43,9 +43,12 @@ struct ExtensionInstallationView: View {
                             do {
                                 if let release = self.model.release {
                                     try await ExtensionsManager.shared?.install(
-                                        plugin: self.model.plugin, release: release)
+                                        plugin: self.model.plugin,
+                                        release: release
+                                    )
                                     self.installed = ExtensionsManager.shared?.isInstalled(
-                                        plugin: model.plugin) ?? false
+                                        plugin: model.plugin
+                                    ) ?? false
                                     if self.installed {
                                         self.reopenAlert = true
                                     }
@@ -76,10 +79,11 @@ struct ExtensionInstallationView: View {
             Button("Reopen workspace") {
                 guard let url = document.fileURL else { return }
                 document.close()
-                CodeEditDocumentController.shared.reopenDocument(for: url,
-                                                                 withContentsOf: url,
-                                                                 display: true) { _, _, _ in
-                }
+                CodeEditDocumentController.shared.reopenDocument(
+                    for: url,
+                    withContentsOf: url,
+                    display: true
+                ) { _, _, _ in }
             }
             Button("Reopen later") {
                 self.reopenAlert = false

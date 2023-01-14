@@ -78,8 +78,10 @@ struct QuickOpenView: View {
         }
             .background(EffectView(.sidebar, blendingMode: .behindWindow))
             .edgesIgnoringSafeArea(.vertical)
-            .frame(minWidth: 600,
-               minHeight: self.state.isShowingOpenQuicklyFiles ? 400 : 28,
-               maxHeight: self.state.isShowingOpenQuicklyFiles ? .infinity : 28)
+            .frame(
+                minWidth: 600,
+                minHeight: self.state.isShowingOpenQuicklyFiles ? 400 : 28,
+                maxHeight: self.state.isShowingOpenQuicklyFiles ? .infinity : 28
+            )
     }
 }

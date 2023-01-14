@@ -119,9 +119,7 @@ struct ThemePreferencesView: View {
                 repeating: .init(.fixed(130), spacing: 20, alignment: .center),
                 count: 2
             )
-            LazyVGrid(columns: grid,
-                      alignment: .center,
-                      spacing: 20) {
+            LazyVGrid(columns: grid, alignment: .center, spacing: 20) {
                 ForEach(themeModel.selectedAppearance == 0 ? themeModel.darkThemes : themeModel.lightThemes) { theme in
                     ThemePreviewIcon(
                         theme,

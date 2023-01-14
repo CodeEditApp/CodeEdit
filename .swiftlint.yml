@@ -25,6 +25,8 @@ opt_in_rules:
   - modifier_order
   - convenience_type
   - pattern_matching_keywords
+  - multiline_parameters_brackets
+  - multiline_arguments_brackets
 
 custom_rules:
   spaces_over_tabs:

@@ -138,8 +138,10 @@ extension GitCloneView {
     private func cloneRepository() {
         do {
             if repoUrlStr == "" {
-                showAlert(alertMsg: "Url cannot be empty",
-                          infoText: "You must specify a repository to clone")
+                showAlert(
+                    alertMsg: "Url cannot be empty",
+                    infoText: "You must specify a repository to clone"
+                )
                 return
             }
             // Parsing repo name
@@ -164,9 +166,11 @@ extension GitCloneView {
                 showAlert(alertMsg: "Error", infoText: "Directory already exists")
                 return
             }
-            try FileManager.default.createDirectory(atPath: repoPath,
-                                                    withIntermediateDirectories: true,
-                                                    attributes: nil)
+            try FileManager.default.createDirectory(
+                atPath: repoPath,
+                withIntermediateDirectories: true,
+                attributes: nil
+            )
             gitClient = GitClient(directoryURL: dirUrl, shellClient: shellClient)
 
             cloneCancellable = gitClient?

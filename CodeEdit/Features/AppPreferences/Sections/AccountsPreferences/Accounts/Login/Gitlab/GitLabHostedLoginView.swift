@@ -38,8 +38,10 @@ struct GitLabHostedLoginView: View {
                 }
                 HStack {
                     Text("Token:")
-                    SecureField("Enter your Personal Access Token",
-                                text: $accountToken)
+                    SecureField(
+                        "Enter your Personal Access Token",
+                        text: $accountToken
+                    )
                     .frame(width: 300)
                 }
             }
@@ -75,8 +77,7 @@ struct GitLabHostedLoginView: View {
     private func loginGitLabSelfHosted(gitAccountName: String) {
         let gitAccounts = prefs.preferences.accounts.sourceControlAccounts.gitAccount
 
-        let config = GitLabTokenConfiguration(accountToken,
-                                              url: eneterpriseLink )
+        let config = GitLabTokenConfiguration(accountToken, url: eneterpriseLink)
         GitLabAccount(config).me { response in
             switch response {
             case .success(let user):
@@ -85,14 +86,17 @@ struct GitLabHostedLoginView: View {
                 } else {
                     print(user)
                     prefs.preferences.accounts.sourceControlAccounts.gitAccount.append(
-                        SourceControlAccounts(id: gitAccountName.lowercased(),
-                                              gitProvider: "GitLab",
-                                              gitProviderLink: eneterpriseLink,
-                                              gitProviderDescription: "GitLab",
-                                              gitAccountName: gitAccountName,
-                                              gitCloningProtocol: true,
-                                              gitSSHKey: "",
-                                              isTokenValid: true))
+                        SourceControlAccounts(
+                            id: gitAccountName.lowercased(),
+                            gitProvider: "GitLab",
+                            gitProviderLink: eneterpriseLink,
+                            gitProviderDescription: "GitLab",
+                            gitAccountName: gitAccountName,
+                            gitCloningProtocol: true,
+                            gitSSHKey: "",
+                            isTokenValid: true
+                        )
+                    )
                     keychain.set(accountToken, forKey: "gitlab_\(gitAccountName)_hosted")
                     dismissDialog = false
                 }

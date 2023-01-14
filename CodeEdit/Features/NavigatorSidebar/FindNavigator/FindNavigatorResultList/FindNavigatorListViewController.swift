@@ -157,9 +157,11 @@ extension FindNavigatorListViewController: NSOutlineViewDataSource {
 
 extension FindNavigatorListViewController: NSOutlineViewDelegate {
 
-    func outlineView(_ outlineView: NSOutlineView,
-                     shouldShowCellExpansionFor tableColumn: NSTableColumn?,
-                     item: Any) -> Bool {
+    func outlineView(
+        _ outlineView: NSOutlineView,
+        shouldShowCellExpansionFor tableColumn: NSTableColumn?,
+        item: Any
+    ) -> Bool {
         return item as? SearchResultModel != nil
     }
 
@@ -171,16 +173,19 @@ extension FindNavigatorListViewController: NSOutlineViewDelegate {
         guard let tableColumn = tableColumn else { return nil }
         if let item = item as? SearchResultMatchModel {
             let frameRect = NSRect(x: 0, y: 0, width: tableColumn.width, height: CGFloat.greatestFiniteMagnitude)
-            return FindNavigatorListMatchCell(frame: frameRect,
-                                              matchItem: item)
+            return FindNavigatorListMatchCell(frame: frameRect, matchItem: item)
         } else {
-            let frameRect = NSRect(x: 0,
-                                   y: 0,
-                                   width: tableColumn.width,
-                                   height: prefs.general.projectNavigatorSize.rowHeight)
-            let view = OutlineTableViewCell(frame: frameRect,
-                                            item: (item as? SearchResultModel)?.file,
-                                            isEditable: false)
+            let frameRect = NSRect(
+                x: 0,
+                y: 0,
+                width: tableColumn.width,
+                height: prefs.general.projectNavigatorSize.rowHeight
+            )
+            let view = OutlineTableViewCell(
+                frame: frameRect,
+                item: (item as? SearchResultModel)?.file,
+                isEditable: false
+            )
             // We're using a medium label for file names b/c it makes it easier to
             // distinguish quickly which results are from which files.
             view.label.font = .systemFont(ofSize: 13, weight: .medium)
@@ -220,8 +225,9 @@ extension FindNavigatorListViewController: NSOutlineViewDelegate {
             tempView.attributedStringValue = item.attributedLabel()
             tempView.layout()
             let width = outlineView.frame.width - outlineView.indentationPerLevel*2 - 24
-            return tempView.sizeThatFits(NSSize(width: width,
-                                                height: CGFloat.greatestFiniteMagnitude)).height + 8
+            return tempView.sizeThatFits(
+                NSSize(width: width, height: CGFloat.greatestFiniteMagnitude)
+            ).height + 8
         } else {
             return rowHeight
         }

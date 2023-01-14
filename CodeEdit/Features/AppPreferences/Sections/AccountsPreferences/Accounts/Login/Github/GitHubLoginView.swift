@@ -33,8 +33,10 @@ struct GitHubLoginView: View {
                 }
                 HStack {
                     Text("Token:")
-                    SecureField("Enter your Personal Access Token",
-                                text: $accountToken)
+                    SecureField(
+                        "Enter your Personal Access Token",
+                        text: $accountToken
+                    )
                     .frame(width: 300)
                 }
             }
@@ -111,14 +113,17 @@ struct GitHubLoginView: View {
                 } else {
                     print(user)
                     prefs.preferences.accounts.sourceControlAccounts.gitAccount.append(
-                        SourceControlAccounts(id: gitAccountName.lowercased(),
-                                              gitProvider: "GitHub",
-                                              gitProviderLink: "https://github.com",
-                                              gitProviderDescription: "GitHub",
-                                              gitAccountName: gitAccountName,
-                                              gitCloningProtocol: true,
-                                              gitSSHKey: "",
-                                              isTokenValid: true))
+                        SourceControlAccounts(
+                            id: gitAccountName.lowercased(),
+                            gitProvider: "GitHub",
+                            gitProviderLink: "https://github.com",
+                            gitProviderDescription: "GitHub",
+                            gitAccountName: gitAccountName,
+                            gitCloningProtocol: true,
+                            gitSSHKey: "",
+                            isTokenValid: true
+                        )
+                    )
                     keychain.set(accountToken, forKey: "github_\(accountName)")
                     dismissDialog.toggle()
                 }

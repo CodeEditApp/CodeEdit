@@ -32,9 +32,7 @@ extension String {
 
             // Return the index offset by the given offset.
             // If this index is nil we return the limit index.
-            return index(idx,
-                         offsetBy: offset,
-                         limitedBy: limitedBy) ?? limitedBy
+            return index(idx, offsetBy: offset, limitedBy: limitedBy) ?? limitedBy
         } else if offset > 0 {
             // If the offset is going forwards, but the limit index
             // is behind in the string we return the original index.
@@ -44,9 +42,7 @@ extension String {
 
             // Return the index offset by the given offset.
             // If this index is nil we return the limit index.
-            return index(idx,
-                         offsetBy: offset,
-                         limitedBy: limitedBy) ?? limitedBy
+            return index(idx, offsetBy: offset, limitedBy: limitedBy) ?? limitedBy
         } else {
             // The offset is 0, so we return the limit index.
             return limitedBy

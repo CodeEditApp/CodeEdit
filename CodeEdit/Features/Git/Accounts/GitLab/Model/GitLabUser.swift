@@ -68,9 +68,11 @@ extension GitLabAccount {
     ) -> GitURLSessionDataTaskProtocol? {
         let router = GitLabUserRouter.readAuthenticatedUser(self.configuration)
 
-        return router.load(session,
-                           dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
-                           expectedResultType: GitLabUser.self) { data, error in
+        return router.load(
+            session,
+            dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
+            expectedResultType: GitLabUser.self
+        ) { data, error in
 
             if let error = error {
                 completion(Result.failure(error))

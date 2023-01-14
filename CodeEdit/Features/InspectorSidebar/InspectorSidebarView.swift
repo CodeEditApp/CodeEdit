@@ -27,11 +27,15 @@ struct InspectorSidebarView: View {
                 if let codeFile = workspace.selectionState.openedCodeFiles[item] {
                     switch selection {
                     case 0:
-                        FileInspectorView(workspaceURL: workspace.fileURL!,
-                                          fileURL: codeFile.fileURL!.path)
+                        FileInspectorView(
+                            workspaceURL: workspace.fileURL!,
+                            fileURL: codeFile.fileURL!.path
+                        )
                     case 1:
-                        HistoryInspectorView(workspaceURL: workspace.fileURL!,
-                                         fileURL: codeFile.fileURL!.path)
+                        HistoryInspectorView(
+                            workspaceURL: workspace.fileURL!,
+                            fileURL: codeFile.fileURL!.path
+                        )
                     case 2:
                         QuickHelpInspectorView().padding(5)
                     default: EmptyView()

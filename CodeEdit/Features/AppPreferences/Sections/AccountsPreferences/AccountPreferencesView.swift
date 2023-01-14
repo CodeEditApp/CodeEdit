@@ -48,8 +48,10 @@ struct AccountPreferencesView: View {
                     .foregroundColor(.secondary)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
-            List($prefs.preferences.accounts.sourceControlAccounts.gitAccount,
-                 selection: $accountSelection) { gitAccount in
+            List(
+                $prefs.preferences.accounts.sourceControlAccounts.gitAccount,
+                selection: $accountSelection
+            ) { gitAccount in
                 GitAccountItemView(sourceControlAccount: gitAccount)
             }
                  .background(

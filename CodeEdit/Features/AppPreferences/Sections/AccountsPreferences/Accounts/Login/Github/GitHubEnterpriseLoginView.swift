@@ -39,8 +39,10 @@ struct GitHubEnterpriseLoginView: View {
                 }
                 HStack {
                     Text("Token:")
-                    SecureField("Enter your Personal Access Token",
-                                text: $accountToken)
+                    SecureField(
+                        "Enter your Personal Access Token",
+                        text: $accountToken
+                    )
                     .frame(width: 300)
                 }
             }
@@ -76,8 +78,10 @@ struct GitHubEnterpriseLoginView: View {
     private func loginGitHubEnterprise(gitAccountName: String) {
         let gitAccounts = prefs.preferences.accounts.sourceControlAccounts.gitAccount
 
-        let config = GitHubTokenConfiguration(accountToken,
-                                              url: eneterpriseLink )
+        let config = GitHubTokenConfiguration(
+            accountToken,
+            url: eneterpriseLink
+        )
         GitHubAccount(config).me { response in
             switch response {
             case .success(let user):
@@ -86,14 +90,17 @@ struct GitHubEnterpriseLoginView: View {
                 } else {
                     print(user)
                     prefs.preferences.accounts.sourceControlAccounts.gitAccount.append(
-                        SourceControlAccounts(id: gitAccountName.lowercased(),
-                                              gitProvider: "GitHub",
-                                              gitProviderLink: eneterpriseLink,
-                                              gitProviderDescription: "GitHub",
-                                              gitAccountName: gitAccountName,
-                                              gitCloningProtocol: true,
-                                              gitSSHKey: "",
-                                              isTokenValid: true))
+                        SourceControlAccounts(
+                            id: gitAccountName.lowercased(),
+                            gitProvider: "GitHub",
+                            gitProviderLink: eneterpriseLink,
+                            gitProviderDescription: "GitHub",
+                            gitAccountName: gitAccountName,
+                            gitCloningProtocol: true,
+                            gitSSHKey: "",
+                            isTokenValid: true
+                        )
+                    )
                     keychain.set(accountToken, forKey: "github_\(accountName)_enterprise")
                     dismissDialog = false
                 }

@@ -22,16 +22,20 @@ extension AppPreferences {
         /// Explicit decoder init for setting default values when key is not present in `JSON`
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
-            self.keybindings = try container.decodeIfPresent([String: KeyboardShortcutWrapper].self,
-                                                                       forKey: .keybindings) ?? .init()
+            self.keybindings = try container.decodeIfPresent(
+                [String: KeyboardShortcutWrapper].self,
+                forKey: .keybindings
+            ) ?? .init()
             appendNew()
 
             let mgr = CommandManager.shared
             let wrap = CommandClosureWrapper.init(closure: {
                 print("testing closure")
             })
-            mgr.addCommand(name: "Send test to console",
-                           title: "Send test to console", id: "codeedit.test", command: wrap)
+            mgr.addCommand(
+                name: "Send test to console",
+                title: "Send test to console", id: "codeedit.test", command: wrap
+            )
             mgr.executeCommand(name: "test")
         }
 

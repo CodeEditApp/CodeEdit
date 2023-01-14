@@ -15,8 +15,10 @@ extension View {
 }
 
 struct TabBarContextMenu: ViewModifier {
-    init(item: TabBarItemRepresentable,
-         isTemporary: Bool) {
+    init(
+        item: TabBarItemRepresentable,
+        isTemporary: Bool
+    ) {
         self.item = item
         self.isTemporary = isTemporary
     }

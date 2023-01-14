@@ -44,18 +44,20 @@ extension GitHubReview {
 extension GitHubAccount {
 
     @discardableResult
-    func listReviews(_ session: GitURLSession = URLSession.shared,
-                     owner: String,
-                     repository: String,
-                     pullRequestNumber: Int,
-                     completion: @escaping (_ response: Result<[GitHubReview], Error>) -> Void
+    func listReviews(
+        _ session: GitURLSession = URLSession.shared,
+        owner: String,
+        repository: String,
+        pullRequestNumber: Int,
+        completion: @escaping (_ response: Result<[GitHubReview], Error>) -> Void
     ) -> GitURLSessionDataTaskProtocol? {
         let router = GitHubReviewsRouter.listReviews(configuration, owner, repository, pullRequestNumber)
 
         return router.load(
             session,
             dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
-            expectedResultType: [GitHubReview].self) { pullRequests, error in
+            expectedResultType: [GitHubReview].self
+        ) { pullRequests, error in
 
             if let error = error {
                 completion(.failure(error))

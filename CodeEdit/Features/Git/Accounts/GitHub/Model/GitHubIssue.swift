@@ -64,18 +64,20 @@ extension GitHubAccount {
      - parameter completion: Callback for the outcome of the fetch.
      */
     @discardableResult
-    func myIssues(_ session: GitURLSession = URLSession.shared,
-                  state: GitHubOpenness = .open,
-                  page: String = "1",
-                  perPage: String = "100",
-                  completion: @escaping (_ response: Result<[GitHubIssue], Error>) -> Void
+    func myIssues(
+        _ session: GitURLSession = URLSession.shared,
+        state: GitHubOpenness = .open,
+        page: String = "1",
+        perPage: String = "100",
+        completion: @escaping (_ response: Result<[GitHubIssue], Error>) -> Void
     ) -> GitURLSessionDataTaskProtocol? {
         let router = GitHubIssueRouter.readAuthenticatedIssues(configuration, page, perPage, state)
 
         return router.load(
             session,
             dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
-            expectedResultType: [GitHubIssue].self) { issues, error in
+            expectedResultType: [GitHubIssue].self
+        ) { issues, error in
 
             if let error = error {
                 completion(.failure(error))
@@ -96,17 +98,19 @@ extension GitHubAccount {
      - parameter completion: Callback for the outcome of the fetch.
      */
     @discardableResult
-    func issue(_ session: GitURLSession = URLSession.shared,
-               owner: String, repository: String,
-               number: Int,
-               completion: @escaping (
-                _ response: Result<GitHubIssue, Error>) -> Void) -> GitURLSessionDataTaskProtocol? {
+    func issue(
+        _ session: GitURLSession = URLSession.shared,
+        owner: String, repository: String,
+        number: Int,
+        completion: @escaping (_ response: Result<GitHubIssue, Error>) -> Void
+    ) -> GitURLSessionDataTaskProtocol? {
         let router = GitHubIssueRouter.readIssue(configuration, owner, repository, number)
 
         return router.load(
             session,
             dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
-            expectedResultType: GitHubIssue.self) { issue, error in
+            expectedResultType: GitHubIssue.self
+        ) { issue, error in
 
             if let error = error {
                 completion(.failure(error))
@@ -129,20 +133,22 @@ extension GitHubAccount {
      - parameter completion: Callback for the outcome of the fetch.
      */
     @discardableResult
-    func issues(_ session: GitURLSession = URLSession.shared,
-                owner: String,
-                repository: String,
-                state: GitHubOpenness = .open,
-                page: String = "1",
-                perPage: String = "100",
-                completion: @escaping (
-                    _ response: Result<[GitHubIssue], Error>) -> Void) -> GitURLSessionDataTaskProtocol? {
+    func issues(
+        _ session: GitURLSession = URLSession.shared,
+        owner: String,
+        repository: String,
+        state: GitHubOpenness = .open,
+        page: String = "1",
+        perPage: String = "100",
+        completion: @escaping (_ response: Result<[GitHubIssue], Error>) -> Void
+    ) -> GitURLSessionDataTaskProtocol? {
         let router = GitHubIssueRouter.readIssues(configuration, owner, repository, page, perPage, state)
 
         return router.load(
             session,
             dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
-            expectedResultType: [GitHubIssue].self) { issues, error in
+            expectedResultType: [GitHubIssue].self
+        ) { issues, error in
 
             if let error = error {
                 completion(.failure(error))
@@ -169,15 +175,16 @@ extension GitHubAccount {
      - parameter completion: Callback for the issue that is created.
      */
     @discardableResult
-    func postIssue(_ session: GitURLSession = URLSession.shared,
-                   owner: String,
-                   repository: String,
-                   title: String,
-                   body: String? = nil,
-                   assignee: String? = nil,
-                   labels: [String] = [],
-                   completion: @escaping (
-                    _ response: Result<GitHubIssue, Error>) -> Void) -> GitURLSessionDataTaskProtocol? {
+    func postIssue(
+        _ session: GitURLSession = URLSession.shared,
+        owner: String,
+        repository: String,
+        title: String,
+        body: String? = nil,
+        assignee: String? = nil,
+        labels: [String] = [],
+        completion: @escaping (_ response: Result<GitHubIssue, Error>) -> Void
+    ) -> GitURLSessionDataTaskProtocol? {
 
         let router = GitHubIssueRouter.postIssue(configuration, owner, repository, title, body, assignee, labels)
         let decoder = JSONDecoder()
@@ -187,7 +194,8 @@ extension GitHubAccount {
         return router.post(
             session,
             decoder: decoder,
-            expectedResultType: GitHubIssue.self) { issue, error in
+            expectedResultType: GitHubIssue.self
+        ) { issue, error in
 
             if let error = error {
                 completion(.failure(error))
@@ -213,16 +221,17 @@ extension GitHubAccount {
      - parameter completion: Callback for the issue that is created.
      */
     @discardableResult
-    func patchIssue(_ session: GitURLSession = URLSession.shared,
-                    owner: String,
-                    repository: String,
-                    number: Int,
-                    title: String? = nil,
-                    body: String? = nil,
-                    assignee: String? = nil,
-                    state: GitHubOpenness? = nil,
-                    completion: @escaping (
-                        _ response: Result<GitHubIssue, Error>) -> Void) -> GitURLSessionDataTaskProtocol? {
+    func patchIssue(
+        _ session: GitURLSession = URLSession.shared,
+        owner: String,
+        repository: String,
+        number: Int,
+        title: String? = nil,
+        body: String? = nil,
+        assignee: String? = nil,
+        state: GitHubOpenness? = nil,
+        completion: @escaping (_ response: Result<GitHubIssue, Error>) -> Void
+    ) -> GitURLSessionDataTaskProtocol? {
 
         let router = GitHubIssueRouter.patchIssue(
             configuration, owner, repository, number, title, body, assignee, state
@@ -230,7 +239,8 @@ extension GitHubAccount {
 
         return router.post(
             session,
-            expectedResultType: GitHubIssue.self) { issue, error in
+            expectedResultType: GitHubIssue.self
+        ) { issue, error in
 
             if let error = error {
                 completion(.failure(error))
@@ -251,13 +261,14 @@ extension GitHubAccount {
     ///   - body: The contents of the comment.
     ///   - completion: Callback for the comment that is created.
     @discardableResult
-    func commentIssue(_ session: GitURLSession = URLSession.shared,
-                      owner: String,
-                      repository: String,
-                      number: Int,
-                      body: String,
-                      completion: @escaping (
-                        _ response: Result<GitHubComment, Error>) -> Void) -> GitURLSessionDataTaskProtocol? {
+    func commentIssue(
+        _ session: GitURLSession = URLSession.shared,
+        owner: String,
+        repository: String,
+        number: Int,
+        body: String,
+        completion: @escaping (_ response: Result<GitHubComment, Error>) -> Void
+    ) -> GitURLSessionDataTaskProtocol? {
 
         let router = GitHubIssueRouter.commentIssue(configuration, owner, repository, number, body)
         let decoder = JSONDecoder()
@@ -267,7 +278,8 @@ extension GitHubAccount {
         return router.post(
             session,
             decoder: decoder,
-            expectedResultType: GitHubComment.self) { issue, error in
+            expectedResultType: GitHubComment.self
+        ) { issue, error in
 
             if let error = error {
                 completion(.failure(error))
@@ -289,21 +301,23 @@ extension GitHubAccount {
     /// - perPage: Number of comments per page. `100` by default.
     /// - completion: Callback for the outcome of the fetch.
     @discardableResult
-    func issueComments(_ session: GitURLSession = URLSession.shared,
-                       owner: String,
-                       repository: String,
-                       number: Int,
-                       page: String = "1",
-                       perPage: String = "100",
-                       completion: @escaping (
-                        _ response: Result<[GitHubComment], Error>) -> Void) -> GitURLSessionDataTaskProtocol? {
+    func issueComments(
+        _ session: GitURLSession = URLSession.shared,
+        owner: String,
+        repository: String,
+        number: Int,
+        page: String = "1",
+        perPage: String = "100",
+        completion: @escaping (_ response: Result<[GitHubComment], Error>) -> Void
+    ) -> GitURLSessionDataTaskProtocol? {
 
         let router = GitHubIssueRouter.readIssueComments(configuration, owner, repository, number, page, perPage)
 
         return router.load(
             session,
             dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
-            expectedResultType: [GitHubComment].self) { comments, error in
+            expectedResultType: [GitHubComment].self
+        ) { comments, error in
 
             if let error = error {
                 completion(.failure(error))
@@ -330,8 +344,8 @@ extension GitHubAccount {
         repository: String,
         number: Int,
         body: String,
-        completion: @escaping (
-            _ response: Result<GitHubComment, Error>) -> Void) -> GitURLSessionDataTaskProtocol? {
+        completion: @escaping (_ response: Result<GitHubComment, Error>) -> Void
+    ) -> GitURLSessionDataTaskProtocol? {
 
         let router = GitHubIssueRouter.patchIssueComment(configuration, owner, repository, number, body)
         let decoder = JSONDecoder()
@@ -339,7 +353,8 @@ extension GitHubAccount {
 
         return router.post(
             session, decoder: decoder,
-            expectedResultType: GitHubComment.self) { issue, error in
+            expectedResultType: GitHubComment.self
+        ) { issue, error in
 
             if let error = error {
                 completion(.failure(error))
