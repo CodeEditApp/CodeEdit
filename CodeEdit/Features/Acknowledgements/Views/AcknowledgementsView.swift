@@ -33,6 +33,7 @@ struct AcknowledgementsView: View {
                 }.padding(.horizontal, 15)
             }
         }
+        .frame(minWidth: 300, alignment: .leading)
     }
 
     func showWindow(width: CGFloat, height: CGFloat) {
