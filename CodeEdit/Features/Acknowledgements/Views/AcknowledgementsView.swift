@@ -65,12 +65,6 @@ struct AcknowledgementRow: View {
     }
 }
 
-struct Ackn_Previews: PreviewProvider {
-    static var previews: some View {
-        AcknowledgementsView()
-    }
-}
-
 final class AcknowledgementsViewWindowController: NSWindowController {
     convenience init<T: View>(view: T, size: NSSize) {
         let hostingController = NSHostingController(rootView: view)
