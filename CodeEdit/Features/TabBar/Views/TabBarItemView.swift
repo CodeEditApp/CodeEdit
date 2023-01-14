@@ -76,9 +76,6 @@ struct TabBarItemView: View {
     /// You can get tab-related information from here, like `label`, `icon`, etc.
     private var item: TabBarItemRepresentable
 
-    /// AppKit window controller.
-    private var windowController: NSWindowController
-
     private var isTemporary: Bool
 
     /// Is the current tab the active tab.
@@ -121,14 +118,12 @@ struct TabBarItemView: View {
     init(
         expectedWidth: Binding<CGFloat>,
         item: TabBarItemRepresentable,
-        windowController: NSWindowController,
         draggingTabId: Binding<TabBarItemID?>,
         onDragTabId: Binding<TabBarItemID?>,
         workspace: WorkspaceDocument
     ) {
         self._expectedWidth = expectedWidth
         self.item = item
-        self.windowController = windowController
         self._draggingTabId = draggingTabId
         self._onDragTabId = onDragTabId
         self.workspace = workspace

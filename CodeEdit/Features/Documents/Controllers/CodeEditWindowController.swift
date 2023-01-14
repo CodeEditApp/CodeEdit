@@ -68,7 +68,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
         let feedbackPerformer = NSHapticFeedbackManager.defaultPerformer
         let splitVC = CodeEditSplitViewController(feedbackPerformer: feedbackPerformer)
 
-        let navigatorView = NavigatorSidebarView(workspace: workspace, windowController: self)
+        let navigatorView = NavigatorSidebarView(workspace: workspace)
         let navigator = NSSplitViewItem(
             sidebarWithViewController: NSHostingController(rootView: navigatorView)
         )
@@ -77,14 +77,15 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
         navigator.collapseBehavior = .useConstraints
         splitVC.addSplitViewItem(navigator)
 
-        let workspaceView = WorkspaceView(windowController: self, workspace: workspace)
+        let workspaceView = WorkspaceView(workspace: workspace)
+            .environment(\.window, window!)
         let mainContent = NSSplitViewItem(
             viewController: NSHostingController(rootView: workspaceView)
         )
         mainContent.titlebarSeparatorStyle = .line
         splitVC.addSplitViewItem(mainContent)
 
-        let inspectorView = InspectorSidebarView(workspace: workspace, windowController: self)
+        let inspectorView = InspectorSidebarView(workspace: workspace)
         let inspector = NSSplitViewItem(
             viewController: NSHostingController(rootView: inspectorView)
         )

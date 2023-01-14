@@ -9,8 +9,6 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct WorkspaceCodeFileView: View {
-    var windowController: NSWindowController
-
     @ObservedObject
     var workspace: WorkspaceDocument
 

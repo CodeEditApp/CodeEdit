@@ -9,12 +9,10 @@ import SwiftUI
 import AppKit
 
 struct WorkspaceView: View {
-    init(windowController: NSWindowController, workspace: WorkspaceDocument) {
-        self.windowController = windowController
+    init(workspace: WorkspaceDocument) {
         self.workspace = workspace
     }
 
-    let windowController: NSWindowController
     let tabBarHeight = 28.0
     private var path: String = ""
 
@@ -23,6 +21,9 @@ struct WorkspaceView: View {
 
     @StateObject
     private var prefs: AppPreferencesModel = .shared
+
+    @Environment(\.window)
+    private var window
 
     private var keybindings: KeybindingManager =  .shared
 
@@ -63,7 +64,7 @@ struct WorkspaceView: View {
         if let tabID = workspace.selectionState.selectedId {
             switch tabID {
             case .codeEditor:
-                WorkspaceCodeFileView(windowController: windowController, workspace: workspace)
+                WorkspaceCodeFileView(workspace: workspace)
             case .extensionInstallation:
                 if let plugin = workspace.selectionState.selected as? Plugin {
                     ExtensionInstallationView(plugin: plugin)
@@ -85,7 +86,7 @@ struct WorkspaceView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .safeAreaInset(edge: .top, spacing: 0) {
                     VStack(spacing: 0) {
-                        TabBarView(windowController: windowController, workspace: workspace)
+                        TabBarView(workspace: workspace)
                         TabBarBottomDivider()
                     }
                 }
@@ -105,7 +106,7 @@ struct WorkspaceView: View {
         }, message: { Text(alertMsg) })
         .onChange(of: workspace.selectionState.selectedId) { newValue in
             if newValue == nil {
-                windowController.window?.subtitle = ""
+                window.subtitle = ""
             }
         }
         .onAppear {
@@ -140,24 +141,13 @@ struct WorkspaceView: View {
         .onChange(of: prefs.preferences.general.tabBarStyle) { newStyle in
             DispatchQueue.main.async {
                 if newStyle == .native {
-                    windowController.window?.titlebarAppearsTransparent = true
-                    windowController.window?.titlebarSeparatorStyle = .none
+                    window.titlebarAppearsTransparent = true
+                    window.titlebarSeparatorStyle = .none
                 } else {
-                    windowController.window?.titlebarAppearsTransparent = false
-                    windowController.window?.titlebarSeparatorStyle = .automatic
+                    window.titlebarAppearsTransparent = false
+                    window.titlebarSeparatorStyle = .automatic
                 }
             }
         }
-    }
-}
-
-private struct WorkspaceFullscreenStateEnvironmentKey: EnvironmentKey {
-    static let defaultValue: Bool = false
-}
-
-extension EnvironmentValues {
-    var isFullscreen: Bool {
-        get { self[WorkspaceFullscreenStateEnvironmentKey.self] }
-        set { self[WorkspaceFullscreenStateEnvironmentKey.self] = newValue }
     }
 }

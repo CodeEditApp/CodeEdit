@@ -11,23 +11,20 @@ struct NavigatorSidebarView: View {
     @ObservedObject
     private var workspace: WorkspaceDocument
 
-    private let windowController: NSWindowController
-
     @State
     private var selection: Int = 0
 
     private let toolbarPadding: Double = -8.0
 
-    init(workspace: WorkspaceDocument, windowController: NSWindowController) {
+    init(workspace: WorkspaceDocument) {
         self.workspace = workspace
-        self.windowController = windowController
     }
 
     var body: some View {
         VStack {
             switch selection {
             case 0:
-                ProjectNavigatorView(workspace: workspace, windowController: windowController)
+                ProjectNavigatorView(workspace: workspace)
             case 1:
                 SourceControlNavigatorView(workspace: workspace)
             case 2:

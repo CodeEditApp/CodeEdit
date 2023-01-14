@@ -16,7 +16,6 @@ import SwiftUI
 ///
 struct ProjectNavigatorView: View {
     @ObservedObject var workspace: WorkspaceDocument
-    var windowController: NSWindowController
 
     var body: some View {
         OutlineView(workspace: workspace)
