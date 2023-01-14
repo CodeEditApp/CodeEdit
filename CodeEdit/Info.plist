@@ -1266,5 +1266,7 @@
 	<string>https://github.com/CodeEditApp/CodeEdit/releases/download/latest/appcast.xml</string>
 	<key>SUPublicEDKey</key>
 	<string>/vAnxnK9wj4IqnUt6wS9EN3Ug69zHb+S/Pb9CyZuwa0=</string>
+    <key>CFBundleShortVersionString</key>
+    <string>0.0.1</string>
 </dict>
 </plist>
