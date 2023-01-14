@@ -9,27 +9,27 @@ import SwiftUI
 import Combine
 
 struct ExtensionNavigatorView: View {
-    @EnvironmentObject var workspace: WorkspaceDocument
-    @ObservedObject var data: ExtensionNavigatorData
+    @EnvironmentObject
+    private var workspace: WorkspaceDocument
+
     @State var showing = false
 
     var body: some View {
         VStack {
             Divider() // TODO: fix this workaround because when switching tabs without this, the app crashes
             List {
-                ForEach(data.plugins) { plugin in
+                ForEach(workspace.extensionNavigatorData.plugins) { plugin in
                     ExtensionNavigatorItemView(plugin: plugin)
                         .tag(plugin)
-                        .environmentObject(workspace)
                 }
 
-                if !data.listFull {
+                if !workspace.extensionNavigatorData.listFull {
                     HStack {
                         Spacer()
                         ProgressView()
                             .progressViewStyle(CircularProgressViewStyle())
                             .onAppear {
-                                data.fetch()
+                                workspace.extensionNavigatorData.fetch()
                             }
                         Spacer()
                     }

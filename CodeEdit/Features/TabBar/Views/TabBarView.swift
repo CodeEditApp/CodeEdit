@@ -24,7 +24,7 @@ struct TabBarView: View {
     private var activeState
 
     /// The workspace document.
-    @ObservedObject
+    @EnvironmentObject
     private var workspace: WorkspaceDocument
 
     /// The app preference.
@@ -113,11 +113,6 @@ struct TabBarView: View {
     /// It can be used on reordering algorithm of `onDrag` (detecting when should we switch two tabs).
     @State
     private var onDragLastLocation: CGPoint?
-
-    // TabBar(workspace: workspace)
-    init(workspace: WorkspaceDocument) {
-        self.workspace = workspace
-    }
 
     /// Update the expected tab width when corresponding UI state is updated.
     ///
@@ -299,8 +294,7 @@ struct TabBarView: View {
                                         expectedWidth: $expectedTabWidth,
                                         item: item,
                                         draggingTabId: $draggingTabId,
-                                        onDragTabId: $onDragTabId,
-                                        workspace: workspace
+                                        onDragTabId: $onDragTabId
                                     )
                                     .frame(height: TabBarView.height)
                                     .background(makeTabItemGeometryReader(id: id))

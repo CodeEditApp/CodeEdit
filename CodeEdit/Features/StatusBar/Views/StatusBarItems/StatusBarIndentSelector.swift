@@ -8,15 +8,9 @@
 import SwiftUI
 
 struct StatusBarIndentSelector: View {
-    @ObservedObject
-    private var model: StatusBarViewModel
 
     @StateObject
     private var prefs: AppPreferencesModel = .shared
-
-    init(model: StatusBarViewModel) {
-        self.model = model
-    }
 
     var body: some View {
         Menu {
@@ -37,7 +31,7 @@ struct StatusBarIndentSelector: View {
                 }
             }
         } label: {
-            StatusBarMenuLabel("\(prefs.preferences.textEditing.defaultTabWidth) Spaces", model: model)
+            StatusBarMenuLabel("\(prefs.preferences.textEditing.defaultTabWidth) Spaces")
         }
         .menuIndicator(.hidden)
         .menuStyle(.borderlessButton)
