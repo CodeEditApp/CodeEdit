@@ -20,6 +20,10 @@ public struct AboutView: View {
         Bundle.buildString ?? "No Build"
     }
 
+    private var appVersionPostfix: String {
+        Bundle.versionPostfix ?? ""
+    }
+
     public var body: some View {
         HStack(spacing: 0) {
             logo
@@ -45,7 +49,7 @@ public struct AboutView: View {
     private var topMetaData: some View {
         VStack(alignment: .leading, spacing: 5) {
             Text("CodeEdit").font(.system(size: 38, weight: .regular))
-            Text("Version \(appVersion) (\(appBuild))")
+            Text("Version \(appVersion)\(appVersionPostfix) (\(appBuild))")
                 .textSelection(.enabled)
                 .foregroundColor(.secondary)
                 .font(.system(size: 13, weight: .light))
@@ -54,7 +58,9 @@ public struct AboutView: View {
 
     private var bottomMetaData: some View {
         VStack(alignment: .leading, spacing: 5) {
-            Text("Copyright © 2022 CodeEdit")
+            if let copyright = Bundle.copyrightString {
+                Text(copyright)
+            }
             Text("MIT License")
         }
         .foregroundColor(.secondary)
