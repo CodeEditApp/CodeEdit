@@ -37,7 +37,7 @@ final class AcknowledgementsViewModel: ObservableObject {
                         AcknowledgementDependency(
                             name: dependency.name,
                             repositoryLink: dependency.location,
-                            version: dependency.state.version ?? ""
+                            version: dependency.state.version ?? "-"
                         )
                     )
                 }

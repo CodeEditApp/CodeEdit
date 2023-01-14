@@ -16,10 +16,6 @@ struct AcknowledgementDependency: Decodable {
     }
 }
 
-struct AcknowledgementRootObject: Codable {
-    let object: AcknowledgementObject
-}
-
 // MARK: - Object
 struct AcknowledgementObject: Codable {
     let pins: [AcknowledgementPin]
