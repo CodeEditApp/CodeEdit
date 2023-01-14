@@ -33,6 +33,7 @@ struct AcknowledgementsView: View {
                 }.padding(.horizontal, 15)
             }
         }
+        .frame(minWidth: 300, alignment: .leading)
     }
 
     func showWindow(width: CGFloat, height: CGFloat) {
@@ -61,6 +62,12 @@ struct AcknowledgementRow: View {
                     .foregroundColor(Color(nsColor: .tertiaryLabelColor))
             }).buttonStyle(.plain)
         }
+    }
+}
+
+struct Ackn_Previews: PreviewProvider {
+    static var previews: some View {
+        AcknowledgementsView()
     }
 }
 
