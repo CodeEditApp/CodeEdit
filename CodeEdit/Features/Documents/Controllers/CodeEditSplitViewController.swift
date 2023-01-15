@@ -39,6 +39,11 @@ final class CodeEditSplitViewController: NSSplitViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // TODO: Set user preferences width if it is not the snap width
+//    override func viewWillAppear() {
+//        super.viewWillAppear()
+//    }
+
     // MARK: - NSSplitViewDelegate
 
     override func splitView(
