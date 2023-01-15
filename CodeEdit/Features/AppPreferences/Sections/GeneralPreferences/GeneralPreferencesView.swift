@@ -55,6 +55,7 @@ struct GeneralPreferencesView: View {
                 updaterSection
             }
         }
+        .frame(minHeight: 650)
     }
 }
 
