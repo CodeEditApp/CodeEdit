@@ -41,7 +41,6 @@ final class CodeEditSplitViewController: NSSplitViewController {
 
     override func viewWillAppear() {
         super.viewWillAppear()
-        splitView.setPosition(.snapWidth, ofDividerAt: .zero)
     }
 
     // MARK: - NSSplitViewDelegate
