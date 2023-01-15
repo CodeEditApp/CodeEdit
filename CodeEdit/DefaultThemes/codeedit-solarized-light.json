@@ -2,8 +2,8 @@
   "author" : "CodeEdit",
   "displayName" : "Solarized Light",
   "editor" : {
-    "invisibles" : {
-      "color" : "#EEE8D5"
+    "characters" : {
+      "color" : "#DC322F"
     },
     "comments" : {
       "color" : "#93A1A1"
@@ -29,6 +29,9 @@
     "text" : {
       "color" : "#657B83"
     },
+    "invisibles" : {
+      "color" : "#EEE8D5"
+    },
     "insertionPoint" : {
       "color" : "#657B83"
     },
@@ -46,75 +49,72 @@
     },
     "attributes" : {
       "color" : "#6C71C4"
-    },
-    "characters" : {
-      "color" : "#DC322F"
     }
   },
   "distributionURL" : "https:\/\/github.com\/CodeEditApp\/CodeEdit",
   "terminal" : {
     "white" : {
-      "color" : "#D9D9D9"
+      "color" : "#EEE8D5"
     },
     "brightMagenta" : {
-      "color" : "#AF52DE"
+      "color" : "#6C71C4"
     },
     "brightRed" : {
-      "color" : "#FF3B30"
+      "color" : "#CB4B16"
     },
     "blue" : {
-      "color" : "#007AFF"
+      "color" : "#268BD2"
     },
     "red" : {
-      "color" : "#FF3B30"
+      "color" : "#DC322F"
     },
     "green" : {
-      "color" : "#28CD41"
+      "color" : "#859900"
     },
     "boldText" : {
-      "color" : "#D9D9D9"
+      "color" : "#586E75"
     },
     "brightGreen" : {
-      "color" : "#28CD41"
+      "color" : "#586E75"
     },
     "background" : {
-      "color" : "#1F2024"
+      "color" : "#FDF6E3"
     },
     "cursor" : {
-      "color" : "#D9D9D9"
+      "color" : "#657B83"
     },
     "selection" : {
-      "color" : "#515B70"
+      "color" : "#EEE8D5"
     },
     "magenta" : {
-      "color" : "#AF52DE"
+      "color" : "#D33682"
     },
     "black" : {
-      "color" : "#1F2024"
+      "color" : "#073642"
     },
     "text" : {
-      "color" : "#D9D9D9"
+      "color" : "#657B83"
     },
     "brightWhite" : {
-      "color" : "#FFFFFF"
+      "color" : "#FDF6E3"
     },
     "brightBlue" : {
-      "color" : "#007AFF"
+      "color" : "#839496"
     },
     "brightYellow" : {
-      "color" : "#FFFF00"
+      "color" : "#657B83"
     },
     "cyan" : {
-      "color" : "#59ADC4"
+      "color" : "#2AA198"
     },
     "yellow" : {
-      "color" : "#FFCC00"
+      "color" : "#B58900"
     },
     "brightCyan" : {
-      "color" : "#55BEF0"
+      "color" : "#93A1A1"
     },
     "brightBlack" : {
-      "color" : "#8E8E93"
+      "color" : "#002B36"
     }
   },
   "version" : "0.0.1",
