@@ -7,7 +7,7 @@
 
 import Cocoa
 
-fileprivate extension CGFloat {
+private extension CGFloat {
     static let snapWidth: CGFloat = 272
 
     static let minSnapWidth: CGFloat = snapWidth - 10
@@ -58,22 +58,22 @@ final class CodeEditSplitViewController: NSSplitViewController {
                 return .snapWidth
             } else {
                 isSnapped = false
-                if proposedPosition <= 121 {
+                if proposedPosition <= CodeEditWindowController.minSidebarWidth / 2 {
                     splitViewItems.first?.isCollapsed = true
                     return 0
                 }
-                return max(242, proposedPosition)
+                return max(CodeEditWindowController.minSidebarWidth, proposedPosition)
             }
         } else if dividerIndex == 1 {
             let proposedWidth = view.frame.width - proposedPosition
-            if proposedWidth <= 121 {
+            if proposedWidth <= CodeEditWindowController.minSidebarWidth / 2 {
                 splitViewItems.last?.isCollapsed = true
                 removeToolbarItemIfNeeded()
                 return proposedPosition
             }
             splitViewItems.last?.isCollapsed = false
             insertToolbarItemIfNeeded()
-            return min(view.frame.width - 242, proposedPosition)
+            return min(view.frame.width - CodeEditWindowController.minSidebarWidth, proposedPosition)
         }
         return proposedPosition
     }
