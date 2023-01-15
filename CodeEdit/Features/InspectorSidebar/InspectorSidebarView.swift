@@ -46,7 +46,7 @@ struct InspectorSidebarView: View {
             }
         }
         .frame(
-            minWidth: 250,
+            minWidth: CodeEditWindowController.minSidebarWidth,
             idealWidth: 260,
             minHeight: 0,
             maxHeight: .infinity,

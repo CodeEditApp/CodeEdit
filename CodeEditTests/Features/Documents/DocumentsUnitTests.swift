@@ -46,7 +46,8 @@ final class DocumentsUnitTests: XCTestCase {
 
     func testSplitViewControllerStopSnappedWhenWidthIsLowerAppropriateRange() {
         // Given
-        let position = (0..<260).randomElement() ?? .zero
+        // 242 is the minimum width of the sidebar
+        let position = (242..<260).randomElement() ?? .zero
 
         // When
         let result = splitViewController.splitView(

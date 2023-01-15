@@ -9,6 +9,8 @@ import Cocoa
 import SwiftUI
 
 final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
+    static let minSidebarWidth: CGFloat = 242
+
     private var prefs: AppPreferencesModel = .shared
 
     var workspace: WorkspaceDocument?
@@ -73,7 +75,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
             sidebarWithViewController: NSHostingController(rootView: navigatorView)
         )
         navigator.titlebarSeparatorStyle = .none
-        navigator.minimumThickness = 242
+        navigator.minimumThickness = Self.minSidebarWidth
         navigator.collapseBehavior = .useConstraints
         splitVC.addSplitViewItem(navigator)
 
@@ -92,9 +94,9 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
             viewController: NSHostingController(rootView: inspectorView)
         )
         inspector.titlebarSeparatorStyle = .none
-        inspector.minimumThickness = 260
-        inspector.maximumThickness = 260
+        inspector.minimumThickness = Self.minSidebarWidth
         inspector.isCollapsed = true
+        inspector.canCollapse = true
         inspector.collapseBehavior = .useConstraints
         splitVC.addSplitViewItem(inspector)
 
@@ -288,7 +290,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     }
 }
 
-private extension NSToolbarItem.Identifier {
+extension NSToolbarItem.Identifier {
     static let toggleFirstSidebarItem: NSToolbarItem.Identifier = NSToolbarItem.Identifier("ToggleFirstSidebarItem")
     static let toggleLastSidebarItem: NSToolbarItem.Identifier = NSToolbarItem.Identifier("ToggleLastSidebarItem")
     static let itemListTrackingSeparator = NSToolbarItem.Identifier("ItemListTrackingSeparator")
