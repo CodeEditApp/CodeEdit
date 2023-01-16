@@ -96,7 +96,7 @@ struct AccountPreferencesView: View {
                     }
                     .pickerStyle(.radioGroup)
 
-                    Text("New repositories will be cloned from Github using HTTPS.")
+                    Text("New repositories will be cloned from Github using \(cloneUsing ? "SSH" : "HTTPS").")
                         .lineLimit(2)
                         .font(.system(size: 11))
                         .foregroundColor(Color.secondary)
