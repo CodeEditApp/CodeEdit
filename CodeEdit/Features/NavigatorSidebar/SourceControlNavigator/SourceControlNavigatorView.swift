@@ -9,21 +9,19 @@ import SwiftUI
 
 struct SourceControlNavigatorView: View {
 
-    @ObservedObject
+    @EnvironmentObject
     private var workspace: WorkspaceDocument
 
     @State
     private var selectedSection: Int = 0
 
-    init(workspace: WorkspaceDocument) {
-        self.workspace = workspace
-    }
-
     var body: some View {
         VStack {
-            SegmentedControl($selectedSection,
-                             options: ["Changes", "Repositories"],
-                             prominent: true)
+            SegmentedControl(
+                $selectedSection,
+                options: ["Changes", "Repositories"],
+                prominent: true
+            )
             .frame(maxWidth: .infinity)
             .frame(height: 27)
             .padding(.horizontal, 8)

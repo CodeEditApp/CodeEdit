@@ -20,20 +20,14 @@ struct StatusBarView: View {
     @Environment(\.controlActiveState)
     private var controlActive
 
-    @ObservedObject
+    @EnvironmentObject
     private var model: StatusBarViewModel
-
-    /// Initialize with model
-    /// - Parameter model: The statusbar model
-    init(model: StatusBarViewModel) {
-        self.model = model
-    }
 
     var body: some View {
         VStack(spacing: 0) {
             bar
             if model.isExpanded {
-                StatusBarDrawer(model: model)
+                StatusBarDrawer()
                     .transition(.move(edge: .bottom))
             }
         }
@@ -49,7 +43,7 @@ struct StatusBarView: View {
                 .foregroundStyle(.bar)
             HStack(spacing: 15) {
                 HStack(spacing: 5) {
-                    StatusBarBreakpointButton(model: model)
+                    StatusBarBreakpointButton()
                     Divider()
                         .frame(maxHeight: 12)
                         .padding(.horizontal, 7)
@@ -57,11 +51,11 @@ struct StatusBarView: View {
                         .opacity(model.isExpanded ? 1 : 0)
                 }
                 Spacer()
-                StatusBarCursorLocationLabel(model: model)
-                StatusBarIndentSelector(model: model)
-                StatusBarEncodingSelector(model: model)
-                StatusBarLineEndSelector(model: model)
-                StatusBarToggleDrawerButton(model: model)
+                StatusBarCursorLocationLabel()
+                StatusBarIndentSelector()
+                StatusBarEncodingSelector()
+                StatusBarLineEndSelector()
+                StatusBarToggleDrawerButton()
             }
             .padding(.horizontal, 10)
         }

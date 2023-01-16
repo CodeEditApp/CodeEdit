@@ -27,9 +27,11 @@ final class OutlineTableViewCell: NSTableCellView {
     ///   - frameRect: The frame of the cell.
     ///   - item: The file item the cell represents.
     ///   - isEditable: Set to true if the user should be able to edit the file name.
-    init(frame frameRect: NSRect, item: WorkspaceClient.FileItem?,
-         isEditable: Bool = true,
-         delegate: OutlineTableViewCellDelegate? = nil) {
+    init(
+        frame frameRect: NSRect, item: WorkspaceClient.FileItem?,
+        isEditable: Bool = true,
+        delegate: OutlineTableViewCellDelegate? = nil
+    ) {
         super.init(frame: frameRect)
 
         self.delegate = delegate

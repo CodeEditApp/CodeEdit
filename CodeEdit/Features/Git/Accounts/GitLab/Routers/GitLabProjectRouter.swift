@@ -117,7 +117,8 @@ enum GitLabProjectRouter: GitRouter {
             orderBy,
             sort,
             search,
-            simple):
+            simple
+        ):
             return [
                 "page": page,
                 "per_page": perPage,
@@ -126,7 +127,8 @@ enum GitLabProjectRouter: GitRouter {
                 "order_by": orderBy,
                 "sort": sort,
                 "search": search,
-                "simple": String(simple)]
+                "simple": String(simple)
+            ]
         case let .readVisibleProjects(
             _,
             page,
@@ -136,7 +138,8 @@ enum GitLabProjectRouter: GitRouter {
             orderBy,
             sort,
             search,
-            simple):
+            simple
+        ):
             return [
                 "page": page,
                 "per_page": perPage,
@@ -145,7 +148,8 @@ enum GitLabProjectRouter: GitRouter {
                 "order_by": orderBy,
                 "sort": sort,
                 "search": search,
-                "simple": String(simple)]
+                "simple": String(simple)
+            ]
         case let .readOwnedProjects(
             _,
             page,
@@ -155,7 +159,8 @@ enum GitLabProjectRouter: GitRouter {
             orderBy,
             sort,
             search,
-            simple):
+            simple
+        ):
             return [
                 "page": page,
                 "per_page": perPage,
@@ -164,7 +169,8 @@ enum GitLabProjectRouter: GitRouter {
                 "order_by": orderBy,
                 "sort": sort,
                 "search": search,
-                "simple": String(simple)]
+                "simple": String(simple)
+            ]
         case let .readStarredProjects(
             _,
             page,
@@ -174,7 +180,8 @@ enum GitLabProjectRouter: GitRouter {
             orderBy,
             sort,
             search,
-            simple):
+            simple
+        ):
             return [
                 "page": page,
                 "per_page": perPage,
@@ -183,7 +190,8 @@ enum GitLabProjectRouter: GitRouter {
                 "order_by": orderBy,
                 "sort": sort,
                 "search": search,
-                "simple": String(simple)]
+                "simple": String(simple)
+            ]
         case let .readAllProjects(
             _,
             page,
@@ -193,7 +201,8 @@ enum GitLabProjectRouter: GitRouter {
             orderBy,
             sort,
             search,
-            simple):
+            simple
+        ):
             return [
                 "page": page,
                 "per_page": perPage,
@@ -202,7 +211,8 @@ enum GitLabProjectRouter: GitRouter {
                 "order_by": orderBy,
                 "sort": sort,
                 "search": search,
-                "simple": String(simple)]
+                "simple": String(simple)
+            ]
         case .readSingleProject:
             return [:]
         case let .readProjectEvents(_, _, page, perPage):

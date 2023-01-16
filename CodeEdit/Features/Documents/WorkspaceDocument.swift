@@ -284,10 +284,12 @@ import CodeEditKit
         self.commandsPaletteState = .init()
         self.statusBarModel = .init(workspaceURL: url)
 
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(convertTemporaryTab),
-                                               name: NSNotification.Name("CodeEditor.didBeginEditing"),
-                                               object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(convertTemporaryTab),
+            name: NSNotification.Name("CodeEditor.didBeginEditing"),
+            object: nil
+        )
     }
 
     /// Retrieves selection state from UserDefaults using SHA256 hash of project  path as key

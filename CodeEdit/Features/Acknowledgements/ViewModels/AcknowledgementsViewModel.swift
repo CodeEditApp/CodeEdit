@@ -23,11 +23,11 @@ final class AcknowledgementsViewModel: ObservableObject {
     func fetchDependencies() {
         self.acknowledgements.removeAll()
         do {
-            if let bundlePath = Bundle.main.path(forResource: "Package.resolved", ofType: nil) {
+            if let bundlePath = Bundle.main.path(forResource: "Package", ofType: "resolved") {
                 let jsonData = try String(contentsOfFile: bundlePath).data(using: .utf8)
-                let parsedJSON = try JSONDecoder().decode(AcknowledgementRootObject.self, from: jsonData!)
-                for dependency in parsedJSON.object.pins.sorted(by: { $0.package < $1.package })
-                where dependency.package.range(
+                let parsedJSON = try JSONDecoder().decode(AcknowledgementObject.self, from: jsonData!)
+                for dependency in parsedJSON.pins.sorted(by: { $0.identity < $1.identity })
+                where dependency.identity.range(
                     of: "[Cc]ode[Ee]dit",
                     options: .regularExpression,
                     range: nil,
@@ -35,9 +35,9 @@ final class AcknowledgementsViewModel: ObservableObject {
                 ) == nil {
                     self.acknowledgements.append(
                         AcknowledgementDependency(
-                            name: dependency.package,
-                            repositoryLink: dependency.repositoryURL,
-                            version: dependency.state.version ?? ""
+                            name: dependency.name,
+                            repositoryLink: dependency.location,
+                            version: dependency.state.version ?? "-"
                         )
                     )
                 }

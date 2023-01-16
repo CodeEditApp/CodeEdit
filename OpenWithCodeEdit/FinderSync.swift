@@ -24,7 +24,8 @@ class CEOpenWith: FIFinderSync {
         let finderSync = FIFinderSyncController.default()
         if let mountedVolumes = FileManager.default.mountedVolumeURLs(
             includingResourceValuesForKeys: nil,
-            options: [.skipHiddenVolumes]) {
+            options: [.skipHiddenVolumes]
+        ) {
             finderSync.directoryURLs = Set<URL>(mountedVolumes)
         }
         // Monitor volumes
@@ -32,11 +33,12 @@ class CEOpenWith: FIFinderSync {
         notificationCenter.addObserver(
             forName: NSWorkspace.didMountNotification,
             object: nil,
-            queue: .main) { notification in
-                if let volumeURL = notification.userInfo?[NSWorkspace.volumeURLUserInfoKey] as? URL {
-                    finderSync.directoryURLs.insert(volumeURL)
-                }
+            queue: .main
+        ) { notification in
+            if let volumeURL = notification.userInfo?[NSWorkspace.volumeURLUserInfoKey] as? URL {
+                finderSync.directoryURLs.insert(volumeURL)
             }
+        }
     }
 
     /// Open in CodeEdit (menu) action
@@ -79,9 +81,10 @@ class CEOpenWith: FIFinderSync {
         defaults.register(defaults: ["enableOpenInCE": true])
 
         let menu = NSMenu(title: "")
-        let menuItem = NSMenuItem(title: "Open in CodeEdit",
-                                  action: #selector(openInCodeEditAction(_:)),
-                                  keyEquivalent: ""
+        let menuItem = NSMenuItem(
+            title: "Open in CodeEdit",
+            action: #selector(openInCodeEditAction(_:)),
+            keyEquivalent: ""
         )
         menuItem.image = NSImage.init(named: "icon")
 

@@ -16,10 +16,6 @@ struct AcknowledgementDependency: Decodable {
     }
 }
 
-struct AcknowledgementRootObject: Codable {
-    let object: AcknowledgementObject
-}
-
 // MARK: - Object
 struct AcknowledgementObject: Codable {
     let pins: [AcknowledgementPin]
@@ -27,9 +23,13 @@ struct AcknowledgementObject: Codable {
 
 // MARK: - Pin
 struct AcknowledgementPin: Codable {
-    let package: String
-    let repositoryURL: String
+    let identity: String
+    let location: String
     let state: AcknowledgementPackageState
+
+    var name: String {
+        location.split(separator: "/").last?.replacingOccurrences(of: ".git", with: "") ?? identity
+    }
 }
 
 // MARK: - State

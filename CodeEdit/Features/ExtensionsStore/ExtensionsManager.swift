@@ -37,9 +37,11 @@ final class ExtensionsManager {
         self.extensionsFolder = codeeditFolder.appendingPathComponent("Extensions", isDirectory: true)
 
         try FileManager.default
-            .createDirectory(at: self.codeeditFolder,
-                             withIntermediateDirectories: true,
-                             attributes: nil)
+            .createDirectory(
+                at: self.codeeditFolder,
+                withIntermediateDirectories: true,
+                attributes: nil
+            )
 
         self.dbQueue = try DatabaseQueue(path: self.codeeditFolder
                                             .appendingPathComponent("extensions.db")
@@ -81,8 +83,7 @@ final class ExtensionsManager {
 
     private func loadBundle(id: UUID, withExtension ext: String) throws -> Bundle? {
         guard let bundleURL = try FileManager.default.contentsOfDirectory(
-            at: extensionsFolder.appendingPathComponent(id.uuidString,
-                                                        isDirectory: true),
+            at: extensionsFolder.appendingPathComponent(id.uuidString, isDirectory: true),
             includingPropertiesForKeys: nil,
             options: .skipsPackageDescendants
         ).first(where: { $0.pathExtension == ext }) else { return nil }
@@ -118,9 +119,11 @@ final class ExtensionsManager {
                 return nil
             }
 
-            return try LSPClient(lspURL,
-                                 workspace: workspaceURL,
-                                 arguments: loadedBundles[id]?.infoDictionary?["CELSPArguments"] as? [String])
+            return try LSPClient(
+                lspURL,
+                workspace: workspaceURL,
+                arguments: loadedBundles[id]?.infoDictionary?["CELSPArguments"] as? [String]
+            )
         }
 
         guard let bundle = try loadBundle(id: id, withExtension: "celsp") else {
@@ -135,9 +138,11 @@ final class ExtensionsManager {
             return nil
         }
 
-        return try LSPClient(lspURL,
-                             workspace: workspaceURL,
-                             arguments: loadedBundles[id]?.infoDictionary?["CELSPArguments"] as? [String])
+        return try LSPClient(
+            lspURL,
+            workspace: workspaceURL,
+            arguments: loadedBundles[id]?.infoDictionary?["CELSPArguments"] as? [String]
+        )
     }
 
     /// Preloads all extensions' bundles to `loadedBundles`
@@ -198,9 +203,11 @@ final class ExtensionsManager {
         let extensionsFolder = codeeditFolder.appendingPathComponent("Extensions", isDirectory: true)
 
         try FileManager.default
-            .createDirectory(at: extensionsFolder,
-                             withIntermediateDirectories: true,
-                             attributes: nil)
+            .createDirectory(
+                at: extensionsFolder,
+                withIntermediateDirectories: true,
+                attributes: nil
+            )
 
         let cacheTar = try FileManager.default
             .url(
@@ -226,8 +233,10 @@ final class ExtensionsManager {
                 .addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) else {
                     throw ExtensionsStoreAPIError.pathError
                 }
-        try FileManager.default.createFilesAndDirectories(path: path,
-                                                          tarPath: cacheTar.path)
+        try FileManager.default.createFilesAndDirectories(
+            path: path,
+            tarPath: cacheTar.path
+        )
 
         let manifest = extensionsFolder.appendingPathComponent("\(plugin.id.uuidString).json")
 

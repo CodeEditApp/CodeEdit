@@ -1,0 +1,125 @@
+{
+  "author": "CodeEdit",
+  "description": "Solarized light theme.",
+  "displayName": "Solarized Light",
+  "distributionURL": "https://github.com/CodeEditApp/CodeEdit",
+  "editor": {
+    "attributes": {
+      "color": "#6C71C4"
+    },
+    "background": {
+      "color": "#FDF6E3"
+    },
+    "characters": {
+      "color": "#DC322F"
+    },
+    "commands": {
+      "color": "#CB4B16"
+    },
+    "comments": {
+      "color": "#93A1A1"
+    },
+    "insertionPoint": {
+      "color": "#657B83"
+    },
+    "invisibles": {
+      "color": "#EEE8D5"
+    },
+    "keywords": {
+      "color": "#859900"
+    },
+    "lineHighlight": {
+      "color": "#EEE8D5"
+    },
+    "numbers": {
+      "color": "#DC322F"
+    },
+    "selection": {
+      "color": "#93A1A1"
+    },
+    "strings": {
+      "color": "#2AA198"
+    },
+    "text": {
+      "color": "#657B83"
+    },
+    "types": {
+      "color": "#268BD2"
+    },
+    "values": {
+      "color": "#D33682"
+    },
+    "variables": {
+      "color": "#B58900"
+    }
+  },
+  "license": "MIT",
+  "name": "codeedit-solarized-light",
+  "terminal": {
+    "background": {
+      "color": "#FDF6E3"
+    },
+    "black": {
+      "color": "#073642"
+    },
+    "blue": {
+      "color": "#268BD2"
+    },
+    "boldText": {
+      "color": "#586E75"
+    },
+    "brightBlack": {
+      "color": "#002B36"
+    },
+    "brightBlue": {
+      "color": "#839496"
+    },
+    "brightCyan": {
+      "color": "#93A1A1"
+    },
+    "brightGreen": {
+      "color": "#586E75"
+    },
+    "brightMagenta": {
+      "color": "#6C71C4"
+    },
+    "brightRed": {
+      "color": "#CB4B16"
+    },
+    "brightWhite": {
+      "color": "#FDF6E3"
+    },
+    "brightYellow": {
+      "color": "#657B83"
+    },
+    "cursor": {
+      "color": "#657B83"
+    },
+    "cyan": {
+      "color": "#2AA198"
+    },
+    "green": {
+      "color": "#859900"
+    },
+    "magenta": {
+      "color": "#D33682"
+    },
+    "red": {
+      "color": "#DC322F"
+    },
+    "selection": {
+      "color": "#EEE8D5"
+    },
+    "text": {
+      "color": "#657B83"
+    },
+    "white": {
+      "color": "#EEE8D5"
+    },
+    "yellow": {
+      "color": "#B58900"
+    }
+  },
+  "type": "light",
+  "version": "0.0.1"
+}

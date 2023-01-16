@@ -9,6 +9,8 @@ import Cocoa
 import SwiftUI
 
 final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
+    static let minSidebarWidth: CGFloat = 242
+
     private var prefs: AppPreferencesModel = .shared
 
     var workspace: WorkspaceDocument?
@@ -68,30 +70,33 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
         let feedbackPerformer = NSHapticFeedbackManager.defaultPerformer
         let splitVC = CodeEditSplitViewController(feedbackPerformer: feedbackPerformer)
 
-        let navigatorView = NavigatorSidebarView(workspace: workspace, windowController: self)
+        let navigatorView = NavigatorSidebarView(workspace: workspace)
         let navigator = NSSplitViewItem(
             sidebarWithViewController: NSHostingController(rootView: navigatorView)
         )
         navigator.titlebarSeparatorStyle = .none
-        navigator.minimumThickness = 242
+        navigator.minimumThickness = Self.minSidebarWidth
         navigator.collapseBehavior = .useConstraints
         splitVC.addSplitViewItem(navigator)
 
-        let workspaceView = WorkspaceView(windowController: self, workspace: workspace)
+        let workspaceView = WindowObserver(window: window!) {
+            WorkspaceView(workspace: workspace)
+        }
+
         let mainContent = NSSplitViewItem(
             viewController: NSHostingController(rootView: workspaceView)
         )
         mainContent.titlebarSeparatorStyle = .line
         splitVC.addSplitViewItem(mainContent)
 
-        let inspectorView = InspectorSidebarView(workspace: workspace, windowController: self)
+        let inspectorView = InspectorSidebarView(workspace: workspace)
         let inspector = NSSplitViewItem(
             viewController: NSHostingController(rootView: inspectorView)
         )
         inspector.titlebarSeparatorStyle = .none
-        inspector.minimumThickness = 260
-        inspector.maximumThickness = 260
+        inspector.minimumThickness = Self.minSidebarWidth
         inspector.isCollapsed = true
+        inspector.canCollapse = true
         inspector.collapseBehavior = .useConstraints
         splitVC.addSplitViewItem(inspector)
 
@@ -285,7 +290,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     }
 }
 
-private extension NSToolbarItem.Identifier {
+extension NSToolbarItem.Identifier {
     static let toggleFirstSidebarItem: NSToolbarItem.Identifier = NSToolbarItem.Identifier("ToggleFirstSidebarItem")
     static let toggleLastSidebarItem: NSToolbarItem.Identifier = NSToolbarItem.Identifier("ToggleLastSidebarItem")
     static let itemListTrackingSeparator = NSToolbarItem.Identifier("ItemListTrackingSeparator")

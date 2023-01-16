@@ -10,10 +10,11 @@ import Cocoa
 
 /// A struct for holding information about a search match.
 class SearchResultMatchModel: Hashable, Identifiable {
-    init(lineNumber: Int,
-         file: WorkspaceClient.FileItem,
-         lineContent: String,
-         keywordRange: Range<String.Index>
+    init(
+        lineNumber: Int,
+        file: WorkspaceClient.FileItem,
+        lineContent: String,
+        keywordRange: Range<String.Index>
     ) {
         self.id = UUID()
         self.file = file
@@ -59,14 +60,18 @@ class SearchResultMatchModel: Hashable, Identifiable {
         paragraphStyle.lineBreakMode = .byCharWrapping
 
         let normalAttributes: [NSAttributedString.Key: Any] = [
-            .font: NSFont.systemFont(ofSize: 13,
-                                     weight: .regular),
+            .font: NSFont.systemFont(
+                ofSize: 13,
+                weight: .regular
+            ),
             .foregroundColor: NSColor.secondaryLabelColor,
             .paragraphStyle: paragraphStyle
         ]
         let boldAttributes: [NSAttributedString.Key: Any] = [
-            .font: NSFont.systemFont(ofSize: 13,
-                                     weight: .bold),
+            .font: NSFont.systemFont(
+                ofSize: 13,
+                weight: .bold
+            ),
             .foregroundColor: NSColor.labelColor,
             .paragraphStyle: paragraphStyle
         ]
@@ -83,13 +88,16 @@ class SearchResultMatchModel: Hashable, Identifiable {
 
         let attributedString = NSMutableAttributedString(
             string: prefix,
-            attributes: normalAttributes)
+            attributes: normalAttributes
+        )
         attributedString.append(NSAttributedString(
             string: searchMatch,
-            attributes: boldAttributes))
+            attributes: boldAttributes
+        ))
         attributedString.append(NSAttributedString(
             string: postfix,
-            attributes: normalAttributes))
+            attributes: normalAttributes
+        ))
 
         return attributedString
     }

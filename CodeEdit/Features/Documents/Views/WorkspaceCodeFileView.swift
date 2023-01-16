@@ -9,10 +9,8 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct WorkspaceCodeFileView: View {
-    var windowController: NSWindowController
-
-    @ObservedObject
-    var workspace: WorkspaceDocument
+    @EnvironmentObject
+    private var workspace: WorkspaceDocument
 
     @StateObject
     private var prefs: AppPreferencesModel = .shared

@@ -214,7 +214,9 @@ final class ThemeModel: ObservableObject {
             "codeedit-xcode-light",
             "codeedit-github-dark",
             "codeedit-github-light",
-            "codeedit-midnight"
+            "codeedit-midnight",
+            "codeedit-solarized-dark",
+            "codeedit-solarized-light"
         ]
         for themeName in bundledThemeNames {
             guard let defaultUrl = Bundle.main.url(forResource: themeName, withExtension: "json") else {
@@ -222,8 +224,10 @@ final class ThemeModel: ObservableObject {
             }
             let json = try Data(contentsOf: defaultUrl)
             let jsonObject = try JSONSerialization.jsonObject(with: json)
-            let prettyJSON = try JSONSerialization.data(withJSONObject: jsonObject,
-                                                        options: .prettyPrinted)
+            let prettyJSON = try JSONSerialization.data(
+                withJSONObject: jsonObject,
+                options: .prettyPrinted
+            )
 
             try prettyJSON.write(to: themesURL.appendingPathComponent("\(themeName).json"), options: .atomic)
         }

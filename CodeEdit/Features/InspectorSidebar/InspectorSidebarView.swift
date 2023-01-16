@@ -12,14 +12,11 @@ struct InspectorSidebarView: View {
     @ObservedObject
     private var workspace: WorkspaceDocument
 
-    private let windowController: NSWindowController
-
     @State
     private var selection: Int = 0
 
-    init(workspace: WorkspaceDocument, windowController: NSWindowController) {
+    init(workspace: WorkspaceDocument) {
         self.workspace = workspace
-        self.windowController = windowController
     }
 
     var body: some View {
@@ -30,11 +27,15 @@ struct InspectorSidebarView: View {
                 if let codeFile = workspace.selectionState.openedCodeFiles[item] {
                     switch selection {
                     case 0:
-                        FileInspectorView(workspaceURL: workspace.fileURL!,
-                                          fileURL: codeFile.fileURL!.path)
+                        FileInspectorView(
+                            workspaceURL: workspace.fileURL!,
+                            fileURL: codeFile.fileURL!.path
+                        )
                     case 1:
-                        HistoryInspectorView(workspaceURL: workspace.fileURL!,
-                                         fileURL: codeFile.fileURL!.path)
+                        HistoryInspectorView(
+                            workspaceURL: workspace.fileURL!,
+                            fileURL: codeFile.fileURL!.path
+                        )
                     case 2:
                         QuickHelpInspectorView().padding(5)
                     default: EmptyView()
@@ -45,7 +46,7 @@ struct InspectorSidebarView: View {
             }
         }
         .frame(
-            minWidth: 250,
+            minWidth: CodeEditWindowController.minSidebarWidth,
             idealWidth: 260,
             minHeight: 0,
             maxHeight: .infinity,

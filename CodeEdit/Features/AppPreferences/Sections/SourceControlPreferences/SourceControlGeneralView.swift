@@ -27,42 +27,58 @@ struct SourceControlGeneralView: View {
                     .toggleStyle(.checkbox)
 
                 VStack(alignment: .leading) {
-                    Toggle("Refresh local status automatically",
-                           isOn: $prefs.preferences.sourceControl.general.refreshStatusLocaly)
-                        .toggleStyle(.checkbox)
-                    Toggle("Fetch and refresh server status automatically",
-                           isOn: $prefs.preferences.sourceControl.general.fetchRefreshServerStatus)
-                        .toggleStyle(.checkbox)
-                    Toggle("Add and remove files automatically",
-                           isOn: $prefs.preferences.sourceControl.general.addRemoveAutomatically)
-                        .toggleStyle(.checkbox)
-                    Toggle("Select files to commit automatically",
-                           isOn: $prefs.preferences.sourceControl.general.selectFilesToCommit)
-                        .toggleStyle(.checkbox)
+                    Toggle(
+                        "Refresh local status automatically",
+                        isOn: $prefs.preferences.sourceControl.general.refreshStatusLocaly
+                    )
+                    .toggleStyle(.checkbox)
+                    Toggle(
+                        "Fetch and refresh server status automatically",
+                        isOn: $prefs.preferences.sourceControl.general.fetchRefreshServerStatus
+                    )
+                    .toggleStyle(.checkbox)
+                    Toggle(
+                        "Add and remove files automatically",
+                        isOn: $prefs.preferences.sourceControl.general.addRemoveAutomatically
+                    )
+                    .toggleStyle(.checkbox)
+                    Toggle(
+                        "Select files to commit automatically",
+                        isOn: $prefs.preferences.sourceControl.general.selectFilesToCommit
+                    )
+                    .toggleStyle(.checkbox)
                 }
                 .padding(.leading, 20)
             }
 
             PreferencesSection("Text Editing", hideLabels: false) {
-                Toggle("Show Source Control changes",
-                       isOn: $prefs.preferences.sourceControl.general.showSourceControlChanges)
-                    .toggleStyle(.checkbox)
+                Toggle(
+                    "Show Source Control changes",
+                    isOn: $prefs.preferences.sourceControl.general.showSourceControlChanges
+                )
+                .toggleStyle(.checkbox)
 
-                Toggle("Include upstream changes",
-                       isOn: $prefs.preferences.sourceControl.general.includeUpstreamChanges)
-                    .toggleStyle(.checkbox)
-                    .padding(.leading, 20)
+                Toggle(
+                    "Include upstream changes",
+                    isOn: $prefs.preferences.sourceControl.general.includeUpstreamChanges
+                )
+                .toggleStyle(.checkbox)
+                .padding(.leading, 20)
             }
 
             PreferencesSection("Reporting", hideLabels: false) {
-                Toggle("Open created issue in the browser",
-                       isOn: $prefs.preferences.sourceControl.general.openFeedbackInBrowser)
-                    .toggleStyle(.checkbox)
+                Toggle(
+                    "Open created issue in the browser",
+                    isOn: $prefs.preferences.sourceControl.general.openFeedbackInBrowser
+                )
+                .toggleStyle(.checkbox)
             }
 
             PreferencesSection("Comparison View", hideLabels: true) {
-                Picker("Comparison View",
-                       selection: $prefs.preferences.sourceControl.general.revisionComparisonLayout) {
+                Picker(
+                    "Comparison View",
+                    selection: $prefs.preferences.sourceControl.general.revisionComparisonLayout
+                ) {
                     Text("Local Revision on Left Side")
                         .tag(AppPreferences.RevisionComparisonLayout.localLeft)
                     Text("Local Revision on Right Side")
@@ -72,8 +88,10 @@ struct SourceControlGeneralView: View {
             }
 
             PreferencesSection("Source Control Navigator", hideLabels: true) {
-                Picker("Source Control Navigator",
-                       selection: $prefs.preferences.sourceControl.general.controlNavigatorOrder) {
+                Picker(
+                    "Source Control Navigator",
+                    selection: $prefs.preferences.sourceControl.general.controlNavigatorOrder
+                ) {
                     Text("Sort by Name")
                         .tag(AppPreferences.ControlNavigatorOrder.sortByName)
                     Text("Sort by Date")

@@ -12,17 +12,21 @@ extension SwiftTerm.Color {
     /// 0.0-1.0
     convenience init(dRed red: Double, green: Double, blue: Double) {
         let multiplier: Double = 65535
-        self.init(red: UInt16(red * multiplier),
-                  green: UInt16(green * multiplier),
-                  blue: UInt16(blue * multiplier))
+        self.init(
+            red: UInt16(red * multiplier),
+            green: UInt16(green * multiplier),
+            blue: UInt16(blue * multiplier)
+        )
     }
 
     /// 0-255
     convenience init(iRed red: UInt8, green: UInt8, blue: UInt8) {
         let divisor: Double = 255
-        self.init(dRed: Double(red) / divisor,
-                  green: Double(green) / divisor,
-                  blue: Double(blue) / divisor)
+        self.init(
+            dRed: Double(red) / divisor,
+            green: Double(green) / divisor,
+            blue: Double(blue) / divisor
+        )
     }
 
     /// 0x000000 - 0xFFFFFF

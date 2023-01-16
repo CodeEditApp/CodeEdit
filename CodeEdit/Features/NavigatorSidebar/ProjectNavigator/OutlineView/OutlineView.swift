@@ -11,7 +11,7 @@ import Combine
 /// Wraps an ``OutlineViewController`` inside a `NSViewControllerRepresentable`
 struct OutlineView: NSViewControllerRepresentable {
 
-    @StateObject
+    @EnvironmentObject
     var workspace: WorkspaceDocument
 
     @StateObject

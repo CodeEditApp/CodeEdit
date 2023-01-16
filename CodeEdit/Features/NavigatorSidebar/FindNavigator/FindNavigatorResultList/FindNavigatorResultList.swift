@@ -10,7 +10,7 @@ import Combine
 
 struct FindNavigatorResultList: NSViewControllerRepresentable {
 
-    @StateObject
+    @EnvironmentObject
     var workspace: WorkspaceDocument
 
     @StateObject
@@ -27,8 +27,10 @@ struct FindNavigatorResultList: NSViewControllerRepresentable {
     }
 
     func updateNSViewController(_ nsViewController: FindNavigatorListViewController, context: Context) {
-        nsViewController.updateNewSearchResults(workspace.searchState?.searchResult ?? [],
-                                                searchId: workspace.searchState?.searchId)
+        nsViewController.updateNewSearchResults(
+            workspace.searchState?.searchResult ?? [],
+            searchId: workspace.searchState?.searchId
+        )
         if nsViewController.rowHeight != prefs.preferences.general.projectNavigatorSize.rowHeight {
             nsViewController.rowHeight = prefs.preferences.general.projectNavigatorSize.rowHeight
         }
@@ -36,8 +38,10 @@ struct FindNavigatorResultList: NSViewControllerRepresentable {
     }
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(state: workspace.searchState,
-                    controller: nil)
+        Coordinator(
+            state: workspace.searchState,
+            controller: nil
+        )
     }
 
     class Coordinator: NSObject {

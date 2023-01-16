@@ -9,23 +9,21 @@ import Foundation
 import SwiftUI
 
 extension View {
-    func tabBarContextMenu(item: TabBarItemRepresentable,
-                           workspace: WorkspaceDocument,
-                           isTemporary: Bool) -> some View {
-        modifier(TabBarContextMenu(item: item, workspace: workspace, isTemporary: isTemporary))
+    func tabBarContextMenu(item: TabBarItemRepresentable, isTemporary: Bool) -> some View {
+        modifier(TabBarContextMenu(item: item, isTemporary: isTemporary))
     }
 }
 
 struct TabBarContextMenu: ViewModifier {
-    init(item: TabBarItemRepresentable,
-         workspace: WorkspaceDocument,
-         isTemporary: Bool) {
+    init(
+        item: TabBarItemRepresentable,
+        isTemporary: Bool
+    ) {
         self.item = item
-        self.workspace = workspace
         self.isTemporary = isTemporary
     }
 
-    @ObservedObject
+    @EnvironmentObject
     var workspace: WorkspaceDocument
 
     private var item: TabBarItemRepresentable

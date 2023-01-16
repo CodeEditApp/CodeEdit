@@ -10,7 +10,7 @@ jobs:
     runs-on: [self-hosted, macOS]
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       ############################
       # Install Certificate
@@ -48,7 +48,7 @@ jobs:
       - name: Build CodeEdit
         env:
           APPLE_TEAM_ID:  ${{ secrets.APPLE_TEAM_ID }}
-        run: xcodebuild -scheme CodeEdit -configuration Release -derivedDataPath "$RUNNER_TEMP/DerivedData" -archivePath "$RUNNER_TEMP/CodeEdit.xcarchive" -skipPackagePluginValidation DEVELOPMENT_TEAM=$APPLE_TEAM_ID archive
+        run: xcodebuild -scheme CodeEdit -configuration Alpha -derivedDataPath "$RUNNER_TEMP/DerivedData" -archivePath "$RUNNER_TEMP/CodeEdit.xcarchive" -skipPackagePluginValidation DEVELOPMENT_TEAM=$APPLE_TEAM_ID archive
       
       ############################
       # Sign
@@ -89,6 +89,16 @@ jobs:
             "$RUNNER_TEMP/CodeEdit-$REV.dmg" \
             "$RUNNER_TEMP/CodeEdit.xcarchive/Products/Applications/"
           security lock-keychain
+          
+      ############################
+      # Get Version and Build number
+      ############################
+      - name: Get Version and Build number
+        run: |
+          APP_VERSION=$(xcrun agvtool mvers -terse1)
+          APP_BUILD=$(xcrun agvtool vers -terse)
+          echo "APP_VERSION=$APP_VERSION" >> $GITHUB_ENV
+          echo "APP_BUILD=$APP_BUILD" >> $GITHUB_ENV
 
       ############################
       # Sparkle Appcast
@@ -99,10 +109,13 @@ jobs:
           # SPARKLE_CHANNEL: Seperate dev builds from default channel, to be specified in [SPUUpdaterDelegate allowedChannelsForUpdater:]
           # SPARKLE_DL_PREFIX: Prefix for the URL from where updates will be downloaded
           # SPARKLE_LINK: CodeEdit Website
+          # https://github.com/CodeEditApp/CodeEdit/releases/download/0.0.1-alpha.11/CodeEdit-9113dc5.dmg
           SPARKLE_KEY: ${{ secrets.SPARKLE_KEY }}
           SPARKLE_CHANNEL: dev
-          SPARKLE_DL_PREFIX: "https://github.com/CodeEditApp/CodeEdit/releases/download/latest/"
+          SPARKLE_DL_PREFIX: "https://github.com/CodeEditApp/CodeEdit/releases/download"
           SPARKLE_LINK: "https://github.com/CodeEditApp/CodeEdit"
+          APP_VERSION: ${{ env.APP_VERSION }}
+          APP_BUILD: ${{ env.APP_BUILD }}
         run: |
           SPARKLE_BIN="$RUNNER_TEMP/DerivedData/SourcePackages/artifacts/sparkle/bin"
           SPARKLE_ARCHIVE="$RUNNER_TEMP/Sparkle_Archive"
@@ -110,17 +123,7 @@ jobs:
           mkdir "$SPARKLE_ARCHIVE"
           cp "$RUNNER_TEMP/CodeEdit-$REV.dmg" "$SPARKLE_ARCHIVE"
           SPARKLE_SIG=$("$SPARKLE_BIN/sign_update" --ed-key-file "$RUNNER_TEMP/sparkle_key" "$SPARKLE_ARCHIVE/CodeEdit-$REV.dmg" | cut -d\" -f2)
-          "$SPARKLE_BIN/generate_appcast" --ed-key-file "$RUNNER_TEMP/sparkle_key" --download-url-prefix "$SPARKLE_DL_PREFIX" --link "$SPARKLE_LINK" --channel "$SPARKLE_CHANNEL" --maximum-deltas 0 "$SPARKLE_ARCHIVE"
-      
-      ############################
-      # Get Version and Build number
-      ############################
-      - name: Get Version and Build number
-        run: |
-          APP_VERSION=$(xcrun agvtool mvers -terse1)
-          APP_BUILD=$(xcrun agvtool vers -terse)
-          echo "APP_VERSION=$APP_VERSION" >> $GITHUB_ENV
-          echo "APP_BUILD=$APP_BUILD" >> $GITHUB_ENV
+          "$SPARKLE_BIN/generate_appcast" --ed-key-file "$RUNNER_TEMP/sparkle_key" --download-url-prefix "${{ env.SPARKLE_DL_PREFIX }}/${{ env.APP_VERSION }}-alpha.${{ env.APP_BUILD }}/" --link "$SPARKLE_LINK" --channel "$SPARKLE_CHANNEL" --maximum-deltas 0 "$SPARKLE_ARCHIVE"
 
       ############################
       # Publish Pre Release

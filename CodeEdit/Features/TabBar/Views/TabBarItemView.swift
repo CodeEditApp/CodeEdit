@@ -68,18 +68,17 @@ struct TabBarItemView: View {
     /// The current WorkspaceDocument object.
     ///
     /// It contains the workspace-related information like selection states.
-    @ObservedObject
-    var workspace: WorkspaceDocument
+    @EnvironmentObject
+    private var workspace: WorkspaceDocument
 
     /// The item associated with the current tab.
     ///
     /// You can get tab-related information from here, like `label`, `icon`, etc.
     private var item: TabBarItemRepresentable
 
-    /// AppKit window controller.
-    private var windowController: NSWindowController
-
-    private var isTemporary: Bool
+    private var isTemporary: Bool {
+        workspace.selectionState.temporaryTab == item.tabID
+    }
 
     /// Is the current tab the active tab.
     private var isActive: Bool {
@@ -121,18 +120,13 @@ struct TabBarItemView: View {
     init(
         expectedWidth: Binding<CGFloat>,
         item: TabBarItemRepresentable,
-        windowController: NSWindowController,
         draggingTabId: Binding<TabBarItemID?>,
-        onDragTabId: Binding<TabBarItemID?>,
-        workspace: WorkspaceDocument
+        onDragTabId: Binding<TabBarItemID?>
     ) {
         self._expectedWidth = expectedWidth
         self.item = item
-        self.windowController = windowController
         self._draggingTabId = draggingTabId
         self._onDragTabId = onDragTabId
-        self.workspace = workspace
-        self.isTemporary = workspace.selectionState.temporaryTab == item.tabID
     }
 
     @ViewBuilder
@@ -415,7 +409,7 @@ struct TabBarItemView: View {
             }
         }
         .id(item.tabID)
-        .tabBarContextMenu(item: item, workspace: workspace, isTemporary: isTemporary)
+        .tabBarContextMenu(item: item, isTemporary: isTemporary)
     }
 }
 // swiftlint:enable type_body_length

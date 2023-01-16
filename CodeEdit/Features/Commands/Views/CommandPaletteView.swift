@@ -140,13 +140,15 @@ struct CommandPaletteView: View {
                         .frame(width: 16, height: 16)
                         .padding(.leading, 20)
                         .offset(x: 0, y: 1)
-                    ActionAwareInput(text: $state.commandQuery, onDown: onKeyDown,
-                                     onTextChange: onQueryChange)
-                        .font(.system(size: 24, weight: .light, design: .default))
-                        .padding(16)
-                        .frame(height: 52, alignment: .center)
-                        .foregroundColor(Color(.systemGray).opacity(0.85))
-                        .background(EffectView(.sidebar, blendingMode: .behindWindow))
+                    ActionAwareInput(
+                        text: $state.commandQuery, onDown: onKeyDown,
+                        onTextChange: onQueryChange
+                    )
+                    .font(.system(size: 24, weight: .light, design: .default))
+                    .padding(16)
+                    .frame(height: 52, alignment: .center)
+                    .foregroundColor(Color(.systemGray).opacity(0.85))
+                    .background(EffectView(.sidebar, blendingMode: .behindWindow))
                 }
 
             Divider()
@@ -155,31 +157,38 @@ struct CommandPaletteView: View {
                     // swiftlint:disable multiple_closures_with_trailing_closure
                     Button(action: { onCommandClick(command: command) }) {
                         VStack {
-                            SearchResultLabel(labelName: command.title,
-                                              textToMatch: state.commandQuery,
-                                              fontColor: textColor(command: command))
+                            SearchResultLabel(
+                                labelName: command.title,
+                                textToMatch: state.commandQuery,
+                                fontColor: textColor(command: command)
+                            )
                             .padding(.zero)
-                        }.frame(maxWidth: .infinity, maxHeight: 15, alignment: .leading)
-                    }.frame(maxWidth: .infinity, maxHeight: 15, alignment: .leading)
-                        .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
-                        .padding(.init(top: 5, leading: 5, bottom: 5, trailing: 0))
-                        .buttonStyle(.borderless)
-                        .background(self.selectedItem == command ?
-                                           RoundedRectangle(cornerRadius: 5, style: .continuous)
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: 15, alignment: .leading)
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: 15, alignment: .leading)
+                    .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
+                    .padding(.init(top: 5, leading: 5, bottom: 5, trailing: 0))
+                    .buttonStyle(.borderless)
+                    .background(
+                        self.selectedItem == command ? RoundedRectangle(cornerRadius: 5, style: .continuous)
                             .fill(Color(red: 0, green: 0.38, blue: 0.816, opacity: 0.85)) :
-                                            RoundedRectangle(cornerRadius: 5, style: .continuous)
-                            .fill(Color.clear))
-                        .onHover(perform: { _ in self.selectedItem = command })
-                    }.listStyle(SidebarListStyle())
-
+                            RoundedRectangle(cornerRadius: 5, style: .continuous)
+                            .fill(Color.clear)
+                    )
+                    .onHover(perform: { _ in self.selectedItem = command })
+                }
+                .listStyle(SidebarListStyle())
             }
         }
         .background(EffectView(.sidebar, blendingMode: .behindWindow))
         .foregroundColor(.gray)
         .edgesIgnoringSafeArea(.vertical)
-        .frame(minWidth: 600,
-           minHeight: self.state.isShowingCommandsList ? 400 : 28,
-           maxHeight: self.state.isShowingCommandsList ? .infinity : 28)
+        .frame(
+            minWidth: 600,
+            minHeight: self.state.isShowingCommandsList ? 400 : 28,
+            maxHeight: self.state.isShowingCommandsList ? .infinity : 28
+        )
     }
 }
 
@@ -240,8 +249,10 @@ struct SearchResultLabel: NSViewRepresentable {
     func highlight() -> NSAttributedString {
 
         let attribText = NSMutableAttributedString(string: self.labelName)
-        let range: NSRange = attribText.mutableString.range(of: self.textToMatch,
-                                                                options: NSString.CompareOptions.caseInsensitive)
+        let range: NSRange = attribText.mutableString.range(
+            of: self.textToMatch,
+            options: NSString.CompareOptions.caseInsensitive
+        )
         attribText.addAttribute(.foregroundColor, value: NSColor(fontColor.opacity(0.85)), range: range)
 
         return attribText

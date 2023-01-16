@@ -137,22 +137,24 @@ extension Theme {
 
         var editorTheme: EditorTheme {
             get {
-                .init(text: text.nsColor,
-                      insertionPoint: insertionPoint.nsColor,
-                      invisibles: invisibles.nsColor,
-                      background: background.nsColor,
-                      lineHighlight: lineHighlight.nsColor,
-                      selection: selection.nsColor,
-                      keywords: keywords.nsColor,
-                      commands: commands.nsColor,
-                      types: types.nsColor,
-                      attributes: attributes.nsColor,
-                      variables: variables.nsColor,
-                      values: values.nsColor,
-                      numbers: numbers.nsColor,
-                      strings: strings.nsColor,
-                      characters: characters.nsColor,
-                      comments: comments.nsColor)
+                .init(
+                    text: text.nsColor,
+                    insertionPoint: insertionPoint.nsColor,
+                    invisibles: invisibles.nsColor,
+                    background: background.nsColor,
+                    lineHighlight: lineHighlight.nsColor,
+                    selection: selection.nsColor,
+                    keywords: keywords.nsColor,
+                    commands: commands.nsColor,
+                    types: types.nsColor,
+                    attributes: attributes.nsColor,
+                    variables: variables.nsColor,
+                    values: values.nsColor,
+                    numbers: numbers.nsColor,
+                    strings: strings.nsColor,
+                    characters: characters.nsColor,
+                    comments: comments.nsColor
+                )
             }
             set {
                 self.text.nsColor = newValue.text

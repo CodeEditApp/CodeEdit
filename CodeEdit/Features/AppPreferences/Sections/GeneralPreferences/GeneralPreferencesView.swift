@@ -55,6 +55,7 @@ struct GeneralPreferencesView: View {
                 updaterSection
             }
         }
+        .frame(minHeight: 650)
     }
 }
 
@@ -293,8 +294,10 @@ private extension GeneralPreferencesView {
 
     var autoSaveSection: some View {
         PreferencesSection("Auto Save Behavior", hideLabels: false) {
-            Toggle("Automatically save changes to disk",
-                   isOn: $prefs.preferences.general.isAutoSaveOn)
+            Toggle(
+                "Automatically save changes to disk",
+                isOn: $prefs.preferences.general.isAutoSaveOn
+            )
             .toggleStyle(.checkbox)
         }
     }

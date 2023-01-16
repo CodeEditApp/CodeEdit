@@ -15,10 +15,8 @@ import SwiftUI
 /// When selecting a file it will open in the editor.
 ///
 struct ProjectNavigatorView: View {
-    @ObservedObject var workspace: WorkspaceDocument
-    var windowController: NSWindowController
 
     var body: some View {
-        OutlineView(workspace: workspace)
+        OutlineView()
     }
 }

@@ -34,12 +34,16 @@ struct InspectorSidebarToolbarTop: View {
                         .opacity(draggingItem?.imageName == icon.imageName &&
                                  hasChangedLocation &&
                                  drugItemLocation != nil ? 0.0: 1.0)
-                        .onDrop(of: [.utf8PlainText],
-                                delegate: InspectorSidebarDockIconDelegate(item: icon,
-                                                                           current: $draggingItem,
-                                                                           icons: $icons,
-                                                                           hasChangedLocation: $hasChangedLocation,
-                                                                           drugItemLocation: $drugItemLocation))
+                        .onDrop(
+                            of: [.utf8PlainText],
+                            delegate: InspectorSidebarDockIconDelegate(
+                                item: icon,
+                                current: $draggingItem,
+                                icons: $icons,
+                                hasChangedLocation: $hasChangedLocation,
+                                drugItemLocation: $drugItemLocation
+                            )
+                        )
                 }
             }
             .frame(height: 29, alignment: .center)

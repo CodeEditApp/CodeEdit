@@ -2,7 +2,6 @@ name: Build and publish a new appcast file
 
 on:
   workflow_dispatch:
-  release:
 
 jobs:
   jekyll:

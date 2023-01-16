@@ -11,30 +11,26 @@ struct NavigatorSidebarView: View {
     @ObservedObject
     private var workspace: WorkspaceDocument
 
-    private let windowController: NSWindowController
-
     @State
     private var selection: Int = 0
 
     private let toolbarPadding: Double = -8.0
 
-    init(workspace: WorkspaceDocument, windowController: NSWindowController) {
+    init(workspace: WorkspaceDocument) {
         self.workspace = workspace
-        self.windowController = windowController
     }
 
     var body: some View {
         VStack {
             switch selection {
             case 0:
-                ProjectNavigatorView(workspace: workspace, windowController: windowController)
+                ProjectNavigatorView()
             case 1:
-                SourceControlNavigatorView(workspace: workspace)
+                SourceControlNavigatorView()
             case 2:
-                FindNavigatorView(workspace: workspace, state: workspace.searchState ?? .init(workspace))
+                FindNavigatorView()
             case 7:
-                ExtensionNavigatorView(data: workspace.extensionNavigatorData)
-                    .environmentObject(workspace)
+                ExtensionNavigatorView()
             default:
                 Spacer()
             }
@@ -44,23 +40,18 @@ struct NavigatorSidebarView: View {
                 .padding(.bottom, toolbarPadding)
         }
         .safeAreaInset(edge: .bottom) {
-            switch selection {
-            case 0:
-                NavigatorSidebarToolbarBottom(workspace: workspace)
-                    .padding(.top, toolbarPadding)
-            case 1:
-                SourceControlToolbarBottom()
-                    .padding(.top, toolbarPadding)
-            case 2:
-                NavigatorSidebarToolbarBottom(workspace: workspace)
-                    .padding(.top, toolbarPadding)
-            case 7:
-                NavigatorSidebarToolbarBottom(workspace: workspace)
-                    .padding(.top, toolbarPadding)
-            default:
-                NavigatorSidebarToolbarBottom(workspace: workspace)
-                    .padding(.top, toolbarPadding)
+            Group {
+                switch selection {
+                case 0:
+                    NavigatorSidebarToolbarBottom()
+                case 1:
+                    SourceControlToolbarBottom()
+                default:
+                    NavigatorSidebarToolbarBottom()
+                }
             }
+            .padding(.top, toolbarPadding)
         }
+        .environmentObject(workspace)
     }
 }

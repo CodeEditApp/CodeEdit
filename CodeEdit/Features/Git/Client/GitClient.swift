@@ -133,8 +133,10 @@ struct GitClient {
                     .init(rawValue: parameters[safe: 0] ?? "") ?? GitType.unknown
                 }
 
-                return GitChangedFile(changeType: gitType,
-                                    fileLink: url)
+                return GitChangedFile(
+                    changeType: gitType,
+                    fileLink: url
+                )
             }
     }
 

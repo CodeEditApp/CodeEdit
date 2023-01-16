@@ -21,9 +21,11 @@ final class CodeEditDocumentController: NSDocumentController {
         }, onCancel: {})
     }
 
-    override func openDocument(withContentsOf url: URL,
-                               display displayDocument: Bool,
-                               completionHandler: @escaping (NSDocument?, Bool, Error?) -> Void) {
+    override func openDocument(
+        withContentsOf url: URL,
+        display displayDocument: Bool,
+        completionHandler: @escaping (NSDocument?, Bool, Error?) -> Void
+    ) {
         super.openDocument(withContentsOf: url, display: displayDocument) { document, documentWasAlreadyOpen, error in
 
             if let document = document {
@@ -68,8 +70,10 @@ extension NSDocumentController {
 
                     guard let document = document else {
                         let alert = NSAlert()
-                        alert.messageText = NSLocalizedString("Failed to get document",
-                                                              comment: "Failed to get document")
+                        alert.messageText = NSLocalizedString(
+                            "Failed to get document",
+                            comment: "Failed to get document"
+                        )
                         alert.runModal()
                         return
                     }

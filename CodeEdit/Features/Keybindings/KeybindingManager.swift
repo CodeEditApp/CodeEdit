@@ -20,8 +20,14 @@ final class KeybindingManager {
     static let shared: KeybindingManager = .init()
 
     // We need this fallback shortcut because optional shortcuts available only from 12.3, while we have target of 12.0x
-    var fallbackShortcut = KeyboardShortcutWrapper(name: "?", description: "Test", context: "Fallback",
-                                                   keybinding: "?", modifier: "shift", id: "fallback")
+    var fallbackShortcut = KeyboardShortcutWrapper(
+        name: "?",
+        description: "Test",
+        context: "Fallback",
+        keybinding: "?",
+        modifier: "shift",
+        id: "fallback"
+    )
 
     /// Adds new shortcut
     func addNewShortcut(shortcut: KeyboardShortcutWrapper, name: String) {

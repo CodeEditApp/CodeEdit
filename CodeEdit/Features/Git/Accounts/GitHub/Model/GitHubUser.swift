@@ -74,16 +74,18 @@ extension GitHubAccount {
          - parameter completion: Callback for the outcome of the fetch.
      */
     @discardableResult
-    func user(_ session: GitURLSession = URLSession.shared,
-              name: String,
-              completion: @escaping (_ response: Result<GitHubUser, Error>) -> Void
+    func user(
+        _ session: GitURLSession = URLSession.shared,
+        name: String,
+        completion: @escaping (_ response: Result<GitHubUser, Error>) -> Void
     ) -> GitURLSessionDataTaskProtocol? {
         let router = GitHubUserRouter.readUser(name, configuration)
 
         return router.load(
             session,
             dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
-            expectedResultType: GitHubUser.self) { user, error in
+            expectedResultType: GitHubUser.self
+        ) { user, error in
             if let error = error {
                 completion(.failure(error))
             } else {
@@ -100,15 +102,17 @@ extension GitHubAccount {
          - parameter completion: Callback for the outcome of the fetch.
      */
     @discardableResult
-    func me(_ session: GitURLSession = URLSession.shared,
-            completion: @escaping (_ response: Result<GitHubUser, Error>) -> Void
+    func me(
+        _ session: GitURLSession = URLSession.shared,
+        completion: @escaping (_ response: Result<GitHubUser, Error>) -> Void
     ) -> GitURLSessionDataTaskProtocol? {
         let router = GitHubUserRouter.readAuthenticatedUser(configuration)
 
         return router.load(
             session,
             dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
-            expectedResultType: GitHubUser.self) { user, error in
+            expectedResultType: GitHubUser.self
+        ) { user, error in
             if let error = error {
                 completion(.failure(error))
             } else {

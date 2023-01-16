@@ -22,11 +22,12 @@ extension GitHubAccount {
             - completion: Callback for the outcome of the deletion.
      */
     @discardableResult
-    func deleteReference(_ session: GitURLSession = URLSession.shared,
-                         owner: String,
-                         repository: String,
-                         ref: String,
-                         completion: @escaping (_ response: Error?) -> Void
+    func deleteReference(
+        _ session: GitURLSession = URLSession.shared,
+        owner: String,
+        repository: String,
+        ref: String,
+        completion: @escaping (_ response: Error?) -> Void
     ) -> GitURLSessionDataTaskProtocol? {
         let router = GitHubRouter.deleteReference(configuration, owner, repository, ref)
         return router.load(session, completion: completion)

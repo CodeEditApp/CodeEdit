@@ -36,7 +36,7 @@ extension WorkspaceDocument {
         ///
         /// - Parameter text: The search text to search for. Pass `nil` to this parameter to clear
         ///                   the search results.
-        func search(_ text: String?) {
+        func search(_ text: String?) { // swiftlint:disable:this function_body_length
             guard let text = text else {
                 searchResult = []
                 searchResultCount = 0
@@ -48,14 +48,16 @@ extension WorkspaceDocument {
             self.searchResult = []
             self.searchId = UUID()
             guard let url = self.workspace.fileURL else { return }
-            let enumerator = FileManager.default.enumerator(at: url,
-                                                            includingPropertiesForKeys: [
-                                                                .isRegularFileKey
-                                                            ],
-                                                            options: [
-                                                                .skipsHiddenFiles,
-                                                                .skipsPackageDescendants
-                                                            ])
+            let enumerator = FileManager.default.enumerator(
+                at: url,
+                includingPropertiesForKeys: [
+                    .isRegularFileKey
+                ],
+                options: [
+                    .skipsHiddenFiles,
+                    .skipsPackageDescendants
+                ]
+            )
             guard let filePaths = enumerator?.allObjects as? [URL] else { return }
 
             // TODO: Optimization
@@ -89,10 +91,12 @@ extension WorkspaceDocument {
                     if lineContainsSearchTerm(line: noSpaceLine, term: textToCompare) {
                         // We've got a match
                         let matches = noSpaceLine.ranges(of: textToCompare).map { range in
-                            return SearchResultMatchModel(lineNumber: lineNumber,
-                                                          file: fileItem,
-                                                          lineContent: String(noSpaceLine),
-                                                          keywordRange: range)
+                            return SearchResultMatchModel(
+                                lineNumber: lineNumber,
+                                file: fileItem,
+                                lineContent: String(noSpaceLine),
+                                keywordRange: range
+                            )
                         }
                         if fileSearchResult != nil {
                             // We've already found something in this file, add the rest
@@ -100,8 +104,10 @@ extension WorkspaceDocument {
                             fileSearchResult?.lineMatches.append(contentsOf: matches)
                         } else {
                             // We haven't found anything in this file yet, record a new one
-                            fileSearchResult = SearchResultModel(file: fileItem,
-                                                                 lineMatches: matches)
+                            fileSearchResult = SearchResultModel(
+                                file: fileItem,
+                                lineMatches: matches
+                            )
                         }
                         searchResultCount += 1
                     }
@@ -188,11 +194,14 @@ extension String {
             guard index + substring.count < self.count else { continue }
             let lengthOfFoundCharacter = self.index(self.startIndex, offsetBy: (substring.count + index))
             if self[startOfFoundCharacter..<lengthOfFoundCharacter] == substring {
-                let startIndex = self.index(self.startIndex,
-                    offsetBy: index - (toLeft <= index ? toLeft : 0))
-                let endIndex = self.index(self.startIndex,
-                    offsetBy: substring.count + index +
-                        (substring.count+index+toRight <= self.count ? toRight : 0))
+                let startIndex = self.index(
+                    self.startIndex,
+                    offsetBy: index - (toLeft <= index ? toLeft : 0)
+                )
+                let endIndex = self.index(
+                    self.startIndex,
+                    offsetBy: substring.count + index + (substring.count+index+toRight <= self.count ? toRight : 0)
+                )
                 appearances.append(startIndex..<endIndex)
             }
         }

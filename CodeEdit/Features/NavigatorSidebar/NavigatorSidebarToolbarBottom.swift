@@ -11,12 +11,8 @@ struct NavigatorSidebarToolbarBottom: View {
     @Environment(\.controlActiveState)
     private var activeState
 
-    @ObservedObject
-    private var workspace: WorkspaceDocument
-
-    init(workspace: WorkspaceDocument) {
-        self.workspace = workspace
-    }
+    @EnvironmentObject
+    var workspace: WorkspaceDocument
 
     var body: some View {
         HStack(spacing: 10) {

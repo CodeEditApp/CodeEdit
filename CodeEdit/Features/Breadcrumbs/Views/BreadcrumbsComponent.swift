@@ -91,9 +91,11 @@ struct BreadcrumbsComponent: View {
                 if let position = position,
                    let windowHeight = NSApp.keyWindow?.contentView?.frame.height {
                     let pos = NSPoint(x: position.x, y: windowHeight - 72) // 72 = offset from top to breadcrumbs bar
-                    menu.popUp(positioning: menu.item(withTitle: fileItem.fileName),
-                               at: pos,
-                               in: NSApp.keyWindow?.contentView)
+                    menu.popUp(
+                        positioning: menu.item(withTitle: fileItem.fileName),
+                        at: pos,
+                        in: NSApp.keyWindow?.contentView
+                    )
                 }
             }
         }

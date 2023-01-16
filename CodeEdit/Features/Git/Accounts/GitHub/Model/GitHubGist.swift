@@ -64,15 +64,16 @@ extension GitHubAccount {
         _ session: GitURLSession = URLSession.shared,
         page: String = "1",
         perPage: String = "100",
-        completion: @escaping (
-            _ response: Result<[GitHubGist], Error>) -> Void) -> GitURLSessionDataTaskProtocol? {
+        completion: @escaping (_ response: Result<[GitHubGist], Error>) -> Void
+    ) -> GitURLSessionDataTaskProtocol? {
 
         let router = GitHubGistRouter.readAuthenticatedGists(configuration, page, perPage)
 
         return router.load(
             session,
             dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
-            expectedResultType: [GitHubGist].self) { gists, error in
+            expectedResultType: [GitHubGist].self
+        ) { gists, error in
 
             if let error = error {
                 completion(.failure(error))
@@ -98,15 +99,16 @@ extension GitHubAccount {
         owner: String,
         page: String = "1",
         perPage: String = "100",
-        completion: @escaping (
-            _ response: Result<[GitHubGist], Error>) -> Void) -> GitURLSessionDataTaskProtocol? {
+        completion: @escaping (_ response: Result<[GitHubGist], Error>) -> Void
+    ) -> GitURLSessionDataTaskProtocol? {
 
         let router = GitHubGistRouter.readGists(configuration, owner, page, perPage)
 
         return router.load(
             session,
             dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
-            expectedResultType: [GitHubGist].self) { gists, error in
+            expectedResultType: [GitHubGist].self
+        ) { gists, error in
 
             if let error = error {
                 completion(.failure(error))
@@ -128,15 +130,16 @@ extension GitHubAccount {
     func gist(
         _ session: GitURLSession = URLSession.shared,
         id: String,
-        completion: @escaping (
-            _ response: Result<GitHubGist, Error>) -> Void) -> GitURLSessionDataTaskProtocol? {
+        completion: @escaping (_ response: Result<GitHubGist, Error>) -> Void
+    ) -> GitURLSessionDataTaskProtocol? {
 
         let router = GitHubGistRouter.readGist(configuration, id)
 
         return router.load(
             session,
             dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
-            expectedResultType: GitHubGist.self) { gist, error in
+            expectedResultType: GitHubGist.self
+        ) { gist, error in
 
             if let error = error {
                 completion(.failure(error))
@@ -158,13 +161,14 @@ extension GitHubAccount {
      - parameter completion: Callback for the gist that is created.
      */
     @discardableResult
-    func postGistFile(_ session: GitURLSession = URLSession.shared,
-                      description: String,
-                      filename: String,
-                      fileContent: String,
-                      publicAccess: Bool,
-                      completion: @escaping (
-                        _ response: Result<GitHubGist, Error>) -> Void) -> GitURLSessionDataTaskProtocol? {
+    func postGistFile(
+        _ session: GitURLSession = URLSession.shared,
+        description: String,
+        filename: String,
+        fileContent: String,
+        publicAccess: Bool,
+        completion: @escaping (_ response: Result<GitHubGist, Error>) -> Void
+    ) -> GitURLSessionDataTaskProtocol? {
 
         let router = GitHubGistRouter.postGistFile(configuration, description, filename, fileContent, publicAccess)
         let decoder = JSONDecoder()
@@ -174,7 +178,8 @@ extension GitHubAccount {
         return router.post(
             session,
             decoder: decoder,
-            expectedResultType: GitHubGist.self) { gist, error in
+            expectedResultType: GitHubGist.self
+        ) { gist, error in
 
             if let error = error {
                 completion(.failure(error))
@@ -196,13 +201,14 @@ extension GitHubAccount {
      - parameter completion: Callback for the gist that is created.
      */
     @discardableResult
-    func patchGistFile(_ session: GitURLSession = URLSession.shared,
-                       id: String,
-                       description: String,
-                       filename: String,
-                       fileContent: String,
-                       completion: @escaping (
-                        _ response: Result<GitHubGist, Error>) -> Void) -> GitURLSessionDataTaskProtocol? {
+    func patchGistFile(
+        _ session: GitURLSession = URLSession.shared,
+        id: String,
+        description: String,
+        filename: String,
+        fileContent: String,
+        completion: @escaping (_ response: Result<GitHubGist, Error>) -> Void
+    ) -> GitURLSessionDataTaskProtocol? {
 
         let router = GitHubGistRouter.patchGistFile(configuration, id, description, filename, fileContent)
         let decoder = JSONDecoder()
@@ -212,7 +218,8 @@ extension GitHubAccount {
         return router.post(
             session,
             decoder: decoder,
-            expectedResultType: GitHubGist.self) { gist, error in
+            expectedResultType: GitHubGist.self
+        ) { gist, error in
 
             if let error = error {
                 completion(.failure(error))

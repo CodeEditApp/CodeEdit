@@ -68,19 +68,22 @@ protocol GitRouter {
     func loadJSON<T: Codable>(
         _ session: GitURLSession,
         expectedResultType: T.Type,
-        completion: @escaping (_ json: T?, _ error: Error?) -> Void) -> GitURLSessionDataTaskProtocol?
+        completion: @escaping (_ json: T?, _ error: Error?) -> Void
+    ) -> GitURLSessionDataTaskProtocol?
 
     func load<T: Codable>(
         _ session: GitURLSession,
         dateDecodingStrategy: JSONDecoder.DateDecodingStrategy?,
         expectedResultType: T.Type,
-        completion: @escaping (_ json: T?, _ error: Error?) -> Void) -> GitURLSessionDataTaskProtocol?
+        completion: @escaping (_ json: T?, _ error: Error?) -> Void
+    ) -> GitURLSessionDataTaskProtocol?
 
     func load<T: Codable>(
         _ session: GitURLSession,
         decoder: JSONDecoder,
         expectedResultType: T.Type,
-        completion: @escaping (_ json: T?, _ error: Error?) -> Void) -> GitURLSessionDataTaskProtocol?
+        completion: @escaping (_ json: T?, _ error: Error?) -> Void
+    ) -> GitURLSessionDataTaskProtocol?
 
     func request() -> URLRequest?
 }
@@ -129,13 +132,15 @@ extension GitRouter {
             switch value {
             case let value as String:
                 if let escapedValue = value.addingPercentEncoding(
-                    withAllowedCharacters: CharacterSet.URLQueryAllowedCharacterSet()) {
+                    withAllowedCharacters: CharacterSet.URLQueryAllowedCharacterSet()
+                ) {
                     components.append(URLQueryItem(name: key, value: escapedValue))
                 }
             case let valueArray as [String]:
                 for (index, item) in valueArray.enumerated() {
                     if let escapedValue = item.addingPercentEncoding(
-                        withAllowedCharacters: CharacterSet.URLQueryAllowedCharacterSet()) {
+                        withAllowedCharacters: CharacterSet.URLQueryAllowedCharacterSet()
+                    ) {
                         components.append(URLQueryItem(name: "\(key)[\(index)]", value: escapedValue))
                     }
                 }
@@ -143,7 +148,8 @@ extension GitRouter {
                 for nestedKey in valueDict.keys.sorted(by: <) {
                     guard let value = valueDict[nestedKey] as? String else { continue }
                     if let escapedValue = value.addingPercentEncoding(
-                        withAllowedCharacters: CharacterSet.URLQueryAllowedCharacterSet()) {
+                        withAllowedCharacters: CharacterSet.URLQueryAllowedCharacterSet()
+                    ) {
                         components.append(URLQueryItem(name: "\(key)[\(nestedKey)]", value: escapedValue))
                     }
                 }
@@ -194,7 +200,8 @@ extension GitRouter {
     func loadJSON<T: Codable>(
         _ session: GitURLSession = URLSession.shared,
         expectedResultType: T.Type,
-        completion: @escaping (_ json: T?, _ error: Error?) -> Void) -> GitURLSessionDataTaskProtocol? {
+        completion: @escaping (_ json: T?, _ error: Error?) -> Void
+    ) -> GitURLSessionDataTaskProtocol? {
         load(session, expectedResultType: expectedResultType, completion: completion)
     }
 
@@ -202,7 +209,8 @@ extension GitRouter {
         _ session: GitURLSession = URLSession.shared,
         dateDecodingStrategy: JSONDecoder.DateDecodingStrategy?,
         expectedResultType: T.Type,
-        completion: @escaping (_ json: T?, _ error: Error?) -> Void) -> GitURLSessionDataTaskProtocol? {
+        completion: @escaping (_ json: T?, _ error: Error?) -> Void
+    ) -> GitURLSessionDataTaskProtocol? {
 
         let decoder = JSONDecoder()
 
@@ -216,7 +224,8 @@ extension GitRouter {
     func load<T: Codable>(
         _ session: GitURLSession = URLSession.shared,
         decoder: JSONDecoder = JSONDecoder(), expectedResultType _: T.Type,
-        completion: @escaping (_ json: T?, _ error: Error?) -> Void) -> GitURLSessionDataTaskProtocol? {
+        completion: @escaping (_ json: T?, _ error: Error?) -> Void
+    ) -> GitURLSessionDataTaskProtocol? {
 
         guard let request = request() else {
             return nil
@@ -228,7 +237,8 @@ extension GitRouter {
                     var userInfo = [String: Any]()
                     if let data = data, let json = try? JSONSerialization.jsonObject(
                         with: data,
-                        options: .mutableContainers) as? [String: Any] {
+                        options: .mutableContainers
+                    ) as? [String: Any] {
 
                         userInfo[gitErrorKey] = json as Any?
                     }
@@ -236,7 +246,8 @@ extension GitRouter {
                     let error = NSError(
                         domain: self.configuration?.errorDomain ?? "",
                         code: response.statusCode,
-                        userInfo: userInfo)
+                        userInfo: userInfo
+                    )
 
                     completion(nil, error)
 
@@ -265,7 +276,8 @@ extension GitRouter {
     func load<T: Codable>(
         _ session: GitURLSession = URLSession.shared,
         decoder: JSONDecoder = JSONDecoder(),
-        expectedResultType _: T.Type) async throws -> T {
+        expectedResultType _: T.Type
+    ) async throws -> T {
 
         guard let request = request() else {
             throw NSError(domain: configuration?.errorDomain ?? "", code: -876, userInfo: nil)
@@ -278,7 +290,8 @@ extension GitRouter {
                 var userInfo = [String: Any]()
                 if let json = try? JSONSerialization.jsonObject(
                     with: responseTuple.0,
-                    options: .mutableContainers) as? [String: Any] {
+                    options: .mutableContainers
+                ) as? [String: Any] {
 
                     userInfo[gitErrorKey] = json as Any?
 
@@ -295,7 +308,8 @@ extension GitRouter {
     func load<T: Codable>(
         _ session: GitURLSession = URLSession.shared,
         dateDecodingStrategy: JSONDecoder.DateDecodingStrategy?,
-        expectedResultType: T.Type) async throws -> T {
+        expectedResultType: T.Type
+    ) async throws -> T {
 
         let decoder = JSONDecoder()
 
@@ -308,7 +322,8 @@ extension GitRouter {
 
     func load(
         _ session: GitURLSession = URLSession.shared,
-        completion: @escaping (_ error: Error?) -> Void) -> GitURLSessionDataTaskProtocol? {
+        completion: @escaping (_ error: Error?) -> Void
+    ) -> GitURLSessionDataTaskProtocol? {
 
         guard let request = request() else {
             return nil
@@ -320,7 +335,8 @@ extension GitRouter {
                     var userInfo = [String: Any]()
                     if let data = data, let json = try? JSONSerialization.jsonObject(
                         with: data,
-                        options: .mutableContainers) as? [String: Any] {
+                        options: .mutableContainers
+                    ) as? [String: Any] {
 
                         userInfo[gitErrorKey] = json as Any?
 
@@ -329,7 +345,8 @@ extension GitRouter {
                     let error = NSError(
                         domain: self.configuration?.errorDomain ?? "",
                         code: response.statusCode,
-                        userInfo: userInfo)
+                        userInfo: userInfo
+                    )
 
                     completion(error)
 

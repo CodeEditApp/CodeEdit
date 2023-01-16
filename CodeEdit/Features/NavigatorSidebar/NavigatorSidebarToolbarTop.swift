@@ -42,12 +42,16 @@ struct NavigatorSidebarToolbarTop: View {
                         .opacity(draggingItem?.imageName == icon.imageName &&
                                  hasChangedLocation &&
                                  drugItemLocation != nil ? 0.0: icon.disabled ? 0.3 : 1.0)
-                        .onDrop(of: [.utf8PlainText],
-                                delegate: NavigatorSidebarDockIconDelegate(item: icon,
-                                                                            current: $draggingItem,
-                                                                            icons: $icons,
-                                                                            hasChangedLocation: $hasChangedLocation,
-                                                                            drugItemLocation: $drugItemLocation))
+                        .onDrop(
+                            of: [.utf8PlainText],
+                            delegate: NavigatorSidebarDockIconDelegate(
+                                item: icon,
+                                current: $draggingItem,
+                                icons: $icons,
+                                hasChangedLocation: $hasChangedLocation,
+                                drugItemLocation: $drugItemLocation
+                            )
+                        )
                         .disabled(icon.disabled)
                 }
             }
@@ -64,11 +68,13 @@ struct NavigatorSidebarToolbarTop: View {
         .fixedSize(horizontal: false, vertical: true)
     }
 
-    private func makeIcon(named: String,
-                          title: String,
-                          id: Int,
-                          scale: Image.Scale = .medium,
-                          sidebarWidth: CGFloat) -> some View {
+    private func makeIcon(
+        named: String,
+        title: String,
+        id: Int,
+        scale: Image.Scale = .medium,
+        sidebarWidth: CGFloat
+    ) -> some View {
         Button {
             selection = id
         } label: {

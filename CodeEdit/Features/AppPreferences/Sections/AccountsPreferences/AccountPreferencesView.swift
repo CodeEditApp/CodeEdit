@@ -48,8 +48,10 @@ struct AccountPreferencesView: View {
                     .foregroundColor(.secondary)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
-            List($prefs.preferences.accounts.sourceControlAccounts.gitAccount,
-                 selection: $accountSelection) { gitAccount in
+            List(
+                $prefs.preferences.accounts.sourceControlAccounts.gitAccount,
+                selection: $accountSelection
+            ) { gitAccount in
                 GitAccountItemView(sourceControlAccount: gitAccount)
             }
                  .background(
@@ -94,7 +96,7 @@ struct AccountPreferencesView: View {
                     }
                     .pickerStyle(.radioGroup)
 
-                    Text("New repositories will be cloned from Bitbucket Cloud using HTTPS.")
+                    Text("New repositories will be cloned from Github using HTTPS.")
                         .lineLimit(2)
                         .font(.system(size: 11))
                         .foregroundColor(Color.secondary)

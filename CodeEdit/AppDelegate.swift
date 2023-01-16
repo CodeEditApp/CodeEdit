@@ -25,7 +25,7 @@ final class CodeEditApplication: NSApplication {
 }
 
 @NSApplicationMain
-final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
+final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject { // swiftlint:disable:this type_body_length
     var updater: SoftwareUpdater = SoftwareUpdater()
 
     func applicationWillFinishLaunching(_ notification: Notification) {
@@ -44,9 +44,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                    !projects.isEmpty {
                     projects.forEach { path in
                         let url = URL(fileURLWithPath: path)
-                        CodeEditDocumentController.shared.reopenDocument(for: url,
-                                                                        withContentsOf: url,
-                                                                        display: true) { document, _, _ in
+                        CodeEditDocumentController.shared.reopenDocument(
+                            for: url,
+                            withContentsOf: url,
+                            display: true
+                        ) { document, _, _ in
                             document?.windowControllers.first?.synchronizeWindowTitleWithDocumentName()
                         }
                     }
@@ -60,9 +62,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                     let path = CommandLine.arguments[index+1]
                     let url = URL(fileURLWithPath: path)
 
-                    CodeEditDocumentController.shared.reopenDocument(for: url,
-                                                                    withContentsOf: url,
-                                                                    display: true) { document, _, _ in
+                    CodeEditDocumentController.shared.reopenDocument(
+                        for: url,
+                        withContentsOf: url,
+                        display: true
+                    ) { document, _, _ in
                         document?.windowControllers.first?.synchronizeWindowTitleWithDocumentName()
                     }
 
@@ -215,9 +219,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                 CodeEditDocumentController.shared.reopenDocument(
                     for: fileURL,
                     withContentsOf: fileURL,
-                    display: true) { document, _, _ in
-                        document?.windowControllers.first?.synchronizeWindowTitleWithDocumentName()
-                    }
+                    display: true
+                ) { document, _, _ in
+                    document?.windowControllers.first?.synchronizeWindowTitleWithDocumentName()
+                }
             }
 
             defaults.removeObject(forKey: "openInCEFiles")
@@ -256,8 +261,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
             Preferences.Pane(
                 identifier: Preferences.PaneIdentifier("Navigation"),
                 title: "Navigation",
-                toolbarIcon: NSImage(systemSymbolName: "arrow.triangle.turn.up.right.diamond",
-                                     accessibilityDescription: nil)!
+                toolbarIcon: NSImage(
+                    systemSymbolName: "arrow.triangle.turn.up.right.diamond",
+                    accessibilityDescription: nil
+                )!
             ) {
                 PreferencesPlaceholderView()
             },
