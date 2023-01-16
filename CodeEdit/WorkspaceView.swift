@@ -87,7 +87,7 @@ struct WorkspaceView: View {
             }
         }
         .environmentObject(workspace)
-        .background(colorScheme == .dark ? Color(.black).opacity(0.25) : Color(.white))
+        .background(EffectView(.contentBackground))
         .alert(alertTitle, isPresented: $showingAlert, actions: {
             Button(
                 action: { showingAlert = false },

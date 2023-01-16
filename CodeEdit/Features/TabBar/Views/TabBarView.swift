@@ -384,6 +384,8 @@ struct TabBarView: View {
             if prefs.preferences.general.tabBarStyle == .native {
                 TabBarNativeMaterial()
                     .edgesIgnoringSafeArea(.top)
+            } else {
+                EffectView(.headerView)
             }
         }
         .padding(.leading, -1)

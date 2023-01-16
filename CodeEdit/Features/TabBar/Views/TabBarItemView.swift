@@ -200,7 +200,7 @@ struct TabBarItemView: View {
                     Button(action: closeAction) {
                         if prefs.preferences.general.tabBarStyle == .xcode {
                             Image(systemName: "xmark")
-                                .font(.system(size: 11.2, weight: .regular, design: .rounded))
+                                .font(.system(size: 11.5, weight: .regular, design: .rounded))
                                 .frame(width: 16, height: 16)
                                 .foregroundColor(
                                     isActive
@@ -209,7 +209,7 @@ struct TabBarItemView: View {
                                         ? .primary
                                         : Color(nsColor: .controlAccentColor)
                                     )
-                                    : .secondary.opacity(0.80)
+                                    : .secondary
                                 )
                         } else {
                             Image(systemName: "xmark")
@@ -217,34 +217,8 @@ struct TabBarItemView: View {
                                 .frame(width: 16, height: 16)
                         }
                     }
-                    .buttonStyle(.borderless)
-                    .foregroundColor(isPressingClose ? .primary : .secondary)
-                    .background(
-                        colorScheme == .dark
-                        ? Color(nsColor: .white)
-                            .opacity(isPressingClose ? 0.32 : isHoveringClose ? 0.18 : 0)
-                        : (
-                            prefs.preferences.general.tabBarStyle == .xcode
-                            ? Color(nsColor: isActive ? .controlAccentColor : .black)
-                                .opacity(
-                                    isPressingClose
-                                    ? 0.25
-                                    : (isHoveringClose ? (isActive ? 0.10 : 0.06) : 0)
-                                )
-                            : Color(nsColor: .black)
-                                .opacity(isPressingClose ? 0.29 : (isHoveringClose ? 0.11 : 0))
-                        )
-                    )
-                    .cornerRadius(2)
+                    .buttonStyle(CloseTabButton(isActive: isActive))
                     .accessibilityLabel(Text("Close"))
-                    .onHover { hover in
-                        isHoveringClose = hover
-                    }
-                    .pressAction {
-                        isPressingClose = true
-                    } onRelease: {
-                        isPressingClose = false
-                    }
                     // Only show when the mouse is hovering and there is no tab dragging.
                     .opacity(isHovering && draggingTabId == nil && onDragTabId == nil ? 1 : 0)
                     .animation(.easeInOut(duration: 0.08), value: isHovering)
@@ -307,34 +281,24 @@ struct TabBarItemView: View {
                 content
             }
             .background {
-                if inHoldingState && prefs.preferences.general.tabBarStyle == .xcode {
-                    Rectangle()
-                        .foregroundColor(
-                            isActive
-                            ? Color(nsColor: .controlAccentColor).opacity(0.08)
-                            : (colorScheme == .dark ? .white.opacity(0.08) : .black.opacity(0.08))
-                        )
-                }
-            }
-            .background {
                 if prefs.preferences.general.tabBarStyle == .xcode {
                     ZStack {
-                        // This layer of background is to hide dividers of other tab bar items
-                        // because the original background above is translucent (by opacity).
-                        TabBarXcodeBackground()
                         if isActive {
-                            Color(nsColor: .controlAccentColor)
-                                .saturation(
-                                    colorScheme == .dark
-                                    ? (activeState != .inactive ? 0.60 : 0.75)
-                                    : (activeState != .inactive ? 0.90 : 0.85)
-                                )
-                                .opacity(
-                                    colorScheme == .dark
-                                    ? (activeState != .inactive ? 0.50 : 0.35)
-                                    : (activeState != .inactive ? 0.18 : 0.12)
-                                )
-                                .hueRotation(.degrees(-5))
+                            EffectView(.contentBackground)
+                            if colorScheme == .dark {
+                                Color(nsColor: .controlAccentColor)
+                                    .brightness(activeState == .inactive ? 0.23 : inHoldingState ? 0.4 : 0.33)
+                                    .hueRotation(.degrees(-5))
+                                    .opacity(activeState == .inactive ? 0.21 : inHoldingState ? 0.35 : 0.28)
+                            } else {
+                                Color(nsColor: .controlAccentColor)
+                                    .opacity(activeState == .inactive ? 0.1 : inHoldingState ? 0.29 : 0.21)
+                            }
+                        } else {
+                            if inHoldingState {
+                                Color(.unemphasizedSelectedTextBackgroundColor)
+                                    .opacity(isPressing ? 0.33 : 0.85)
+                            }
                         }
                     }
                     .animation(.easeInOut(duration: 0.08), value: isHovering)
@@ -413,6 +377,40 @@ struct TabBarItemView: View {
     }
 }
 // swiftlint:enable type_body_length
+
+struct CloseTabButton: ButtonStyle {
+    var isActive: Bool
+
+    @Environment(\.colorScheme) private var colorScheme
+    @StateObject private var prefs: AppPreferencesModel = .shared
+
+    @State private var isHovering: Bool = false
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .foregroundColor(configuration.isPressed ? .primary : .secondary)
+            .background(
+                colorScheme == .dark
+                ? Color(nsColor: .white)
+                    .opacity(configuration.isPressed ? 0.10 : isHovering ? 0.05 : 0)
+                : (
+                    prefs.preferences.general.tabBarStyle == .xcode
+                    ? Color(nsColor: isActive ? .controlAccentColor : .black)
+                        .opacity(
+                            configuration.isPressed
+                            ? 0.25
+                            : (isHovering ? (isActive ? 0.10 : 0.06) : 0)
+                        )
+                    : Color(nsColor: .black)
+                        .opacity(configuration.isPressed ? 0.29 : (isHovering ? 0.11 : 0))
+                )
+            )
+            .cornerRadius(2)
+            .onHover { hover in
+                isHovering = hover
+            }
+    }
+}
 
 fileprivate extension WorkspaceDocument {
     func getTabKeyEquivalent(item: TabBarItemRepresentable) -> KeyEquivalent {
