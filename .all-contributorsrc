@@ -491,6 +491,15 @@
         "code",
         "bug"
       ]
+    },
+    {
+      "login": "neilZon",
+      "name": "Neilzon Viloria",
+      "avatar_url": "https://avatars.githubusercontent.com/u/46465568?v=4",
+      "profile": "https://github.com/neilZon",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
