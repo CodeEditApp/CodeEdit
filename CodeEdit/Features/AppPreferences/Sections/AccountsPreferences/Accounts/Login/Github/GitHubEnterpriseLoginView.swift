@@ -16,6 +16,7 @@ struct GitHubEnterpriseLoginView: View {
     @Environment(\.openURL) var createToken
 
     @Binding var dismissDialog: Bool
+    @Binding var dismissParentDialog: Bool
 
     @StateObject
     private var prefs: AppPreferencesModel = .shared
@@ -103,6 +104,7 @@ struct GitHubEnterpriseLoginView: View {
                     )
                     keychain.set(accountToken, forKey: "github_\(accountName)_enterprise")
                     dismissDialog = false
+                    dismissParentDialog = false
                 }
             case .failure(let error):
                 print(error)

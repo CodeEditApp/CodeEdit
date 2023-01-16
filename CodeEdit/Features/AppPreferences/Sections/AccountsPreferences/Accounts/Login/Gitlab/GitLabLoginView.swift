@@ -17,6 +17,7 @@ struct GitLabLoginView: View {
     private let keychain = CodeEditKeychain()
 
     @Binding var dismissDialog: Bool
+    @Binding var dismissParentDialog: Bool
 
     @StateObject
     private var prefs: AppPreferencesModel = .shared
@@ -94,6 +95,7 @@ struct GitLabLoginView: View {
                     )
                     keychain.set(accountToken, forKey: "gitlab_\(accountName)")
                     dismissDialog = false
+                    dismissParentDialog = false
                 }
             case .failure(let error):
                 print(error)
