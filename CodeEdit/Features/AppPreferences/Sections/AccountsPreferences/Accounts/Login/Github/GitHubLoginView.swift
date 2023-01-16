@@ -17,6 +17,7 @@ struct GitHubLoginView: View {
     private let keychain = CodeEditKeychain()
 
     @Binding var dismissDialog: Bool
+    @Binding var dismissParentDialog: Bool
 
     @StateObject
     private var prefs: AppPreferencesModel = .shared
@@ -126,6 +127,7 @@ struct GitHubLoginView: View {
                     )
                     keychain.set(accountToken, forKey: "github_\(accountName)")
                     dismissDialog.toggle()
+                    dismissParentDialog.toggle()
                 }
             case .failure(let error):
                 print(error)

@@ -43,7 +43,6 @@ struct AccountSelectionDialog: View {
                     openAccountDialog.toggle()
                 }
                 Button("Continue") {
-                    openAccountDialog.toggle()
                     openGitLogin.toggle()
                 }
                 .sheet(isPresented: $openGitLogin, content: {
@@ -65,13 +64,13 @@ struct AccountSelectionDialog: View {
         case "bitbucketServer":
             implementationNeeded
         case "github":
-            GitHubLoginView(dismissDialog: $openGitLogin)
+            GitHubLoginView(dismissDialog: $openGitLogin, dismissParentDialog: $openAccountDialog)
         case "githubEnterprise":
-            GitHubEnterpriseLoginView(dismissDialog: $openGitLogin)
+            GitHubEnterpriseLoginView(dismissDialog: $openGitLogin, dismissParentDialog: $openAccountDialog)
         case "gitlab":
-            GitLabLoginView(dismissDialog: $openGitLogin)
+            GitLabLoginView(dismissDialog: $openGitLogin, dismissParentDialog: $openAccountDialog)
         case "gitlabSelfHosted":
-            GitLabHostedLoginView(dismissDialog: $openGitLogin)
+            GitLabHostedLoginView(dismissDialog: $openGitLogin, dismissParentDialog: $openAccountDialog)
         default:
             implementationNeeded
         }
