@@ -15,6 +15,7 @@ struct GitLabHostedLoginView: View {
     @Environment(\.openURL) var createToken
 
     @Binding var dismissDialog: Bool
+    @Binding var dismissParentDialog: Bool
 
     @StateObject
     private var prefs: AppPreferencesModel = .shared
@@ -99,6 +100,7 @@ struct GitLabHostedLoginView: View {
                     )
                     keychain.set(accountToken, forKey: "gitlab_\(gitAccountName)_hosted")
                     dismissDialog = false
+                    dismissParentDialog = false
                 }
             case .failure(let error):
                 print(error)
