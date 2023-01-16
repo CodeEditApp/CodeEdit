@@ -121,18 +121,18 @@ struct WelcomeView: View {
                         appBuild
                     )
                 )
-                    .foregroundColor(.secondary)
-                    .font(.system(size: 13))
-                    .onHover { inside in
-                        if inside {
-                            NSCursor.pointingHand.push()
-                        } else {
-                            NSCursor.pop()
-                        }
+                .foregroundColor(.secondary)
+                .font(.system(size: 13))
+                .onHover { inside in
+                    if inside {
+                        NSCursor.pointingHand.push()
+                    } else {
+                        NSCursor.pop()
                     }
-                    .onTapGesture {
-                        copyInformation()
-                    }
+                }
+                .onTapGesture {
+                    copyInformation()
+                }
 
                 Spacer().frame(height: 20)
                 HStack {
@@ -165,9 +165,9 @@ struct WelcomeView: View {
                                 comment: ""
                             )
                         )
-                            .onTapGesture {
-                                showGitClone = true
-                            }
+                        .onTapGesture {
+                            showGitClone = true
+                        }
                     }
                 }
                 Spacer()
@@ -177,26 +177,28 @@ struct WelcomeView: View {
             .padding(.horizontal, 56)
             .padding(.bottom, 16)
             .background(Color(colorScheme == .dark ? NSColor.windowBackgroundColor : .white))
-            .onHover { isHovering in
-                self.isHovering = isHovering
-            }
 
             if isHovering {
                 HStack(alignment: .center) {
                     dismissButton
                     Spacer()
-                }.padding(13).transition(AnyTransition.opacity.animation(.easeInOut(duration: 0.25)))
+                }
+                .padding(13)
+                .transition(AnyTransition.opacity.animation(.easeInOut(duration: 0.25)))
             }
             if isHovering {
                 VStack {
                     Spacer()
                     HStack {
                         Spacer()
-                        Toggle("Show this window when CodeEdit launches", isOn: .init(get: {
-                            prefs.preferences.general.reopenBehavior == .welcome
-                        }, set: { new in
-                            prefs.preferences.general.reopenBehavior = new ? .welcome : .openPanel
-                        }))
+                        Toggle(
+                            "Show this window when CodeEdit launches",
+                            isOn: .init(get: {
+                                prefs.preferences.general.reopenBehavior == .welcome
+                            }, set: { new in
+                                prefs.preferences.general.reopenBehavior = new ? .welcome : .openPanel
+                            })
+                        )
                         .toggleStyle(.checkbox)
                         Spacer()
                     }
@@ -205,6 +207,9 @@ struct WelcomeView: View {
                 .padding(.bottom, 16)
                 .transition(AnyTransition.opacity.animation(.easeInOut(duration: 0.25)))
             }
+        }
+        .onHover { isHovering in
+            self.isHovering = isHovering
         }
         .sheet(isPresented: $showGitClone) {
             GitCloneView(
