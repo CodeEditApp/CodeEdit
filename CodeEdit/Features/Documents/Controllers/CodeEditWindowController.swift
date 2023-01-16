@@ -68,7 +68,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
 
     private func setupSplitView(with workspace: WorkspaceDocument) {
         let feedbackPerformer = NSHapticFeedbackManager.defaultPerformer
-        let splitVC = CodeEditSplitViewController(feedbackPerformer: feedbackPerformer)
+        let splitVC = CodeEditSplitViewController(workspace: workspace, feedbackPerformer: feedbackPerformer)
 
         let navigatorView = NavigatorSidebarView(workspace: workspace)
         let navigator = NSSplitViewItem(

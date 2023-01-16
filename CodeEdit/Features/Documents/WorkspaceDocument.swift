@@ -22,6 +22,17 @@ import CodeEditKit
     @Published var selectionState: WorkspaceSelectionState = .init()
     @Published var fileItems: [WorkspaceClient.FileItem] = []
 
+    var workspaceState: [String: Any] {
+        get {
+            let key = "workspaceState-\(self.fileURL?.absoluteString ?? "")"
+            return UserDefaults.standard.object(forKey: key) as? [String: Any] ?? [:]
+        }
+        set {
+            let key = "workspaceState-\(self.fileURL?.absoluteString ?? "")"
+            UserDefaults.standard.set(newValue, forKey: key)
+        }
+    }
+
     var statusBarModel: StatusBarViewModel?
     var searchState: SearchState?
     var quickOpenViewModel: QuickOpenViewModel?
@@ -34,6 +45,14 @@ import CodeEditKit
     deinit {
         cancellables.forEach { $0.cancel() }
         NotificationCenter.default.removeObserver(self)
+    }
+
+    func getFromWorkspaceState(key: String) -> Any? {
+        return workspaceState[key]
+    }
+
+    func addToWorkspaceState(key: String, value: Any) {
+        workspaceState.updateValue(value, forKey: key)
     }
 
     // MARK: Open Tabs
