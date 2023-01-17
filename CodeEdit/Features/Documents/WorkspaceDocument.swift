@@ -38,7 +38,10 @@ import CodeEditKit
     var quickOpenViewModel: QuickOpenViewModel?
     var commandsPaletteState: CommandPaletteViewModel?
     var listenerModel: WorkspaceNotificationModel = .init()
+
     private var cancellables = Set<AnyCancellable>()
+    private let openTabsStateName: String = "\(String(describing: WorkspaceDocument.self))-OpenTabs"
+    private var openedTabsFromState = false
 
     @Published var targets: [Target] = []
 
@@ -215,6 +218,14 @@ import CodeEditKit
         selectionState.openedCodeFiles.removeValue(forKey: item)
         selectionState.openFileItems.remove(at: openFileItemIndex)
         removeTab(id: item.tabID)
+
+        if openedTabsFromState {
+            var openTabsInState = self.getFromWorkspaceState(key: openTabsStateName) as? [String] ?? []
+            if let index = openTabsInState.firstIndex(of: item.url.absoluteString) {
+                openTabsInState.remove(at: index)
+                self.addToWorkspaceState(key: openTabsStateName, value: openTabsInState)
+            }
+        }
     }
 
     private func closeExtensionTab(item: Plugin) {
@@ -228,8 +239,19 @@ import CodeEditKit
     @objc func convertTemporaryTab() {
         if selectionState.selectedId == selectionState.temporaryTab &&
             selectionState.temporaryTab != nil {
+            let item = selectionState.getItemByTab(id: selectionState.temporaryTab!)
             selectionState.previousTemporaryTab = selectionState.temporaryTab
             selectionState.temporaryTab = nil
+
+            guard let file = item as? WorkspaceClient.FileItem else { return }
+
+            if openedTabsFromState && item != nil {
+                var openTabsInState = self.getFromWorkspaceState(key: openTabsStateName) as? [String] ?? []
+                if !openTabsInState.contains(file.url.absoluteString) {
+                    openTabsInState.append(file.url.absoluteString)
+                    self.addToWorkspaceState(key: openTabsStateName, value: openTabsInState)
+                }
+            }
         }
     }
 
@@ -288,6 +310,17 @@ import CodeEditKit
         windowController.shouldCascadeWindows = false
         windowController.window?.setFrameAutosaveName(self.fileURL?.absoluteString ?? "Untitled")
         self.addWindowController(windowController)
+
+        var openTabsInState = self.getFromWorkspaceState(key: openTabsStateName) as? [String] ?? []
+        for openTab in openTabsInState {
+            let tabUrl = URL(string: openTab)!
+            if FileManager.default.fileExists(atPath: tabUrl.path) {
+                let item = WorkspaceClient.FileItem(url: tabUrl)
+                self.openTab(item: item)
+                self.convertTemporaryTab()
+            }
+        }
+        self.openedTabsFromState = true
     }
 
     // MARK: Set Up Workspace
@@ -311,26 +344,10 @@ import CodeEditKit
         )
     }
 
-    /// Retrieves selection state from UserDefaults using SHA256 hash of project  path as key
-    /// - Throws: `DecodingError.dataCorrupted` error if retrived data from UserDefaults is not decodable
-    /// - Returns: retrived state from UserDefaults or default state if not found
-    private func readSelectionState() throws -> WorkspaceSelectionState {
-        guard let path = fileURL?.path,
-              let data = UserDefaults.standard.value(forKey: path.sha256()) as? Data  else { return selectionState }
-        let state = try PropertyListDecoder().decode(WorkspaceSelectionState.self, from: data)
-        return state
-    }
-
     override func read(from url: URL, ofType typeName: String) throws {
         try initWorkspaceState(url)
 
         // Initialize Workspace
-        do {
-            selectionState = try readSelectionState()
-        } catch {
-            Swift.print("couldn't retrieve selection state from user defaults")
-        }
-
         workspaceClient?
             .getFiles
             .sink { [weak self] files in
@@ -374,22 +391,7 @@ import CodeEditKit
 
     // MARK: Close Workspace
 
-    /// Saves selection state to UserDefaults using SHA256 hash of project  path as key
-    /// - Throws: `EncodingError.invalidValue` error if sellection state is not encodable
-    private func saveSelectionState() throws {
-        guard let path = fileURL?.path else { return }
-        let hash = path.sha256()
-        let data = try PropertyListEncoder().encode(selectionState)
-        UserDefaults.standard.set(data, forKey: hash)
-    }
-
     override func close() {
-        do {
-            try saveSelectionState()
-        } catch {
-            Swift.print("couldn't save selection state from user defaults")
-        }
-
         selectionState.selectedId = nil
         selectionState.openedCodeFiles.removeAll()
 

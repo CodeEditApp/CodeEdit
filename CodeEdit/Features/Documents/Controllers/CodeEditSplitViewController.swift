@@ -47,7 +47,7 @@ final class CodeEditSplitViewController: NSSplitViewController {
     override func viewWillAppear() {
         super.viewWillAppear()
         let width = workspace.getFromWorkspaceState(key: self.widthStateName) as? CGFloat
-        splitView.setPosition(width ?? CodeEditWindowController.minSidebarWidth, ofDividerAt: .zero)
+        splitView.setPosition(width ?? .snapWidth, ofDividerAt: .zero)
         setWidthFromState = true
     }
 
