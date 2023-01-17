@@ -299,7 +299,7 @@ struct TabBarView: View {
                                     .frame(height: TabBarView.height)
                                     .background(makeTabItemGeometryReader(id: id))
                                     .offset(x: tabOffsets[id] ?? 0, y: 0)
-                                    .highPriorityGesture(
+                                    .simultaneousGesture(
                                         makeTabDragGesture(id: id),
                                         including: shouldOnDrag ? .subviews : .all
                                     )
