@@ -7,15 +7,6 @@
 
 import SwiftUI
 
-// TODO: Drag to activate behavior.
-// In Xcode, dragging an inactive tab will make it activated. But due to our editor performance issue,
-// there will be a huge lag after releasing the drag. So I will implement this behavior after optimizing
-// the file-opening performance.
-
-// Disable `file_length` because this file has a lot of properties and algorithms.
-// I kept some blank lines to make this file organized, so I have to disable the file length rule.
-// Disable `type_body_length` because this view is fairly complicated and I have modularized some parts.
-// swiftlint:disable file_length type_body_length
 struct TabBarItemView: View {
     @Environment(\.colorScheme)
     private var colorScheme
@@ -304,7 +295,6 @@ struct TabBarItemView: View {
             y: 0
         )
         .opacity(isAppeared && onDragTabId != item.tabID ? 1.0 : 0.0)
-
         .zIndex(
             isActive
             ? (prefs.preferences.general.tabBarStyle == .native ? -1 : 2)
@@ -334,11 +324,6 @@ struct TabBarItemView: View {
         }
         .id(item.tabID)
         .tabBarContextMenu(item: item, isTemporary: isTemporary)
-//        .zIndex(
-//            isActive
-//            ? 1
-//            : (isDragging ? 2 : (isPressing ? 2 : 0))
-//        )
     }
 }
 // swiftlint:enable type_body_length
