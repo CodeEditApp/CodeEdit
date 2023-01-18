@@ -30,68 +30,9 @@ struct RecentProjectsView: View {
         self.recentProjectPaths = UserDefaults.standard.array(forKey: "recentProjectPaths") as? [String] ?? []
     }
 
-    private var emptyView: some View {
-        VStack {
-            Spacer()
-            Text(NSLocalizedString("No Recent Projects", comment: ""))
-                .font(.system(size: 20))
-            Spacer()
-        }
-    }
-
-    func contextMenuShowInFinder(projectPath: String) -> some View {
-        Group {
-            Button(NSLocalizedString("Show in Finder", comment: "")) {
-                if selectedProjectPaths.contains(projectPath) {
-                    self.selectedProjectPaths.forEach { projectPath in
-                        guard let url = URL(string: "file://\(projectPath)") else {
-                            return
-                        }
-                        NSWorkspace.shared.activateFileViewerSelecting([url])
-                    }
-                } else {
-                    guard let url = URL(string: "file://\(projectPath)") else {
-                        return
-                    }
-                    NSWorkspace.shared.activateFileViewerSelecting([url])
-                }
-            }
-        }
-    }
-
-    func contextMenuCopy(path: String) -> some View {
-        Group {
-            Button(NSLocalizedString("Copy Path", comment: "")) {
-                let pasteboard = NSPasteboard.general
-                pasteboard.declareTypes([.string], owner: nil)
-                pasteboard.setString(path, forType: .string)
-            }
-        }
-    }
-
-    func contextMenuDelete(projectPath: String) -> some View {
-        Group {
-            Button(NSLocalizedString("Remove from Recent Projects", comment: "")) {
-                if selectedProjectPaths.contains(projectPath) {
-                    self.selectedProjectPaths.forEach { projectPath in
-                        deleteFromRecent(item: projectPath)
-                    }
-                } else {
-                    deleteFromRecent(item: projectPath)
-                }
-            }
-        }
-    }
-
     func deleteFromRecent(item: String) {
-        self.recentProjectPaths.removeAll {
-            $0 == item
-        }
-
-        UserDefaults.standard.set(
-            self.recentProjectPaths,
-            forKey: "recentProjectPaths"
-        )
+        self.recentProjectPaths.removeAll { $0 == item }
+        UserDefaults.standard.set(self.recentProjectPaths, forKey: "recentProjectPaths")
     }
 
     func deleteProject(projectPath: String) {
@@ -138,61 +79,10 @@ struct RecentProjectsView: View {
                     ZStack {
                         RecentProjectItem(projectPath: projectPath)
                             .frame(width: 300)
-                            .highPriorityGesture(TapGesture(count: 2).onEnded {
-                                openProject(projectPath: projectPath)
-                            })
-                            .gesture(TapGesture().onEnded {
-                                if NSEvent.modifierFlags.contains(.command) {
-                                    self.lastSelectedProjectPath = projectPath
-                                    selectedProjectPaths.insert(projectPath)
-                                } else if NSEvent.modifierFlags.contains(.shift) {
-                                    if let lastIndex = recentProjectPaths.firstIndex(of: lastSelectedProjectPath),
-                                       let currentIndex = recentProjectPaths.firstIndex(of: projectPath) {
-                                        if currentIndex > lastIndex {
-                                            let projectPaths = Array(recentProjectPaths[lastIndex..<currentIndex+1])
-                                            selectedProjectPaths = selectedProjectPaths.union(projectPaths)
-                                        } else {
-                                            let projectPaths = Array(recentProjectPaths[currentIndex..<lastIndex+1])
-                                            selectedProjectPaths = selectedProjectPaths.union(projectPaths)
-                                        }
-                                    }
-                                } else {
-                                    self.lastSelectedProjectPath = projectPath
-                                    selectedProjectPaths = [projectPath]
-                                }
-                            })
-                            .contextMenu {
-                                contextMenuShowInFinder(projectPath: projectPath)
-
-                                if !selectedProjectPaths.contains(projectPath) {
-                                    contextMenuCopy(path: projectPath)
-                                        .keyboardShortcut(mgr.named(with: "copy").keyboardShortcut)
-                                }
-
-                                Divider()
-                                contextMenuDelete(projectPath: projectPath)
-                                    .keyboardShortcut(.init(.delete))
-                            }
-
-                            Button("") {
-                                deleteProject(projectPath: projectPath)
-                            }
-                            .buttonStyle(.borderless)
-                            .keyboardShortcut(.init(.delete))
-
-                            Button("") {
-                                let pasteboard = NSPasteboard.general
-                                pasteboard.declareTypes([.string], owner: nil)
-                                pasteboard.setString(projectPath, forType: .string)
-                            }
-                            .buttonStyle(.borderless)
-                            .keyboardShortcut(mgr.named(with: "copy").keyboardShortcut)
-
-                        Button("") {
-                            openProject(projectPath: projectPath)
-                        }
-                        .buttonStyle(.borderless)
-                        .keyboardShortcut(.defaultAction)
+                            .highPriorityGesture(doubleTapGesture(projectPath))
+                            .gesture(singleTapGesture(projectPath))
+                            .contextMenu { contextMenu(projectPath) }
+                        keyboardShortcutButtons(projectPath)
                     }
                 }
                 .listStyle(.sidebar)
@@ -211,6 +101,140 @@ struct RecentProjectsView: View {
             // onAppear is called once, and therafter never again,
             // since the window is never release from memory.
             updateRecentProjects()
+
+            // initially select the first item
+            if let firstProject = recentProjectPaths.first {
+                print(firstProject)
+                self.lastSelectedProjectPath = firstProject
+                self.selectedProjectPaths = [firstProject]
+            }
         }
+    }
+
+    private var emptyView: some View {
+        VStack {
+            Spacer()
+            Text(NSLocalizedString("No Recent Projects", comment: ""))
+                .font(.system(size: 20))
+            Spacer()
+        }
+    }
+
+    // MARK: Gestures
+
+    private func doubleTapGesture(_ projectPath: String) -> some Gesture {
+        TapGesture(count: 2)
+            .onEnded {
+                openProject(projectPath: projectPath)
+            }
+    }
+
+    private func singleTapGesture(_ projectPath: String) -> some Gesture {
+        TapGesture()
+            .onEnded {
+                if NSEvent.modifierFlags.contains(.command) {
+                    self.lastSelectedProjectPath = projectPath
+                    selectedProjectPaths.insert(projectPath)
+                } else if NSEvent.modifierFlags.contains(.shift) {
+                    if let lastIndex = recentProjectPaths.firstIndex(of: lastSelectedProjectPath),
+                       let currentIndex = recentProjectPaths.firstIndex(of: projectPath) {
+                        if currentIndex > lastIndex {
+                            let projectPaths = Array(recentProjectPaths[lastIndex..<currentIndex+1])
+                            selectedProjectPaths = selectedProjectPaths.union(projectPaths)
+                        } else {
+                            let projectPaths = Array(recentProjectPaths[currentIndex..<lastIndex+1])
+                            selectedProjectPaths = selectedProjectPaths.union(projectPaths)
+                        }
+                    }
+                } else {
+                    self.lastSelectedProjectPath = projectPath
+                    selectedProjectPaths = [projectPath]
+                }
+            }
+    }
+
+    // MARK: Context Menu
+
+    @ViewBuilder
+    private func contextMenu(_ projectPath: String) -> some View {
+        contextMenuShowInFinder(projectPath)
+
+        if !selectedProjectPaths.contains(projectPath) {
+            contextMenuCopy(projectPath)
+                .keyboardShortcut(mgr.named(with: "copy").keyboardShortcut)
+        }
+
+        Divider()
+        contextMenuDelete(projectPath)
+            .keyboardShortcut(.init(.delete))
+    }
+
+    private func contextMenuShowInFinder(_ projectPath: String) -> some View {
+        Group {
+            Button(NSLocalizedString("Show in Finder", comment: "")) {
+                if selectedProjectPaths.contains(projectPath) {
+                    self.selectedProjectPaths.forEach { projectPath in
+                        guard let url = URL(string: "file://\(projectPath)") else {
+                            return
+                        }
+                        NSWorkspace.shared.activateFileViewerSelecting([url])
+                    }
+                } else {
+                    guard let url = URL(string: "file://\(projectPath)") else {
+                        return
+                    }
+                    NSWorkspace.shared.activateFileViewerSelecting([url])
+                }
+            }
+        }
+    }
+
+    private func contextMenuCopy(_ projectPath: String) -> some View {
+        Group {
+            Button(NSLocalizedString("Copy Path", comment: "")) {
+                let pasteboard = NSPasteboard.general
+                pasteboard.declareTypes([.string], owner: nil)
+                pasteboard.setString(projectPath, forType: .string)
+            }
+        }
+    }
+
+    private func contextMenuDelete(_ projectPath: String) -> some View {
+        Group {
+            Button(NSLocalizedString("Remove from Recent Projects", comment: "")) {
+                if selectedProjectPaths.contains(projectPath) {
+                    self.selectedProjectPaths.forEach { projectPath in
+                        deleteFromRecent(item: projectPath)
+                    }
+                } else {
+                    deleteFromRecent(item: projectPath)
+                }
+            }
+        }
+    }
+
+    // MARK: Keyboard Shortcuts
+
+    @ViewBuilder
+    private func keyboardShortcutButtons(_ projectPath: String) -> some View {
+        Button("") {
+            deleteProject(projectPath: projectPath)
+        }
+        .buttonStyle(.borderless)
+        .keyboardShortcut(.init(.delete))
+
+        Button("") {
+            let pasteboard = NSPasteboard.general
+            pasteboard.declareTypes([.string], owner: nil)
+            pasteboard.setString(projectPath, forType: .string)
+        }
+        .buttonStyle(.borderless)
+        .keyboardShortcut(mgr.named(with: "copy").keyboardShortcut)
+
+        Button("") {
+            openProject(projectPath: projectPath)
+        }
+        .buttonStyle(.borderless)
+        .keyboardShortcut(.defaultAction)
     }
 }
