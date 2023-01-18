@@ -43,6 +43,7 @@ struct BreadcrumbsView: View {
             .padding(.horizontal, 10)
         }
         .frame(height: 28, alignment: .center)
+        .background(EffectView(.headerView).frame(height: 28))
         .onAppear {
             fileInfo(self.file)
         }
