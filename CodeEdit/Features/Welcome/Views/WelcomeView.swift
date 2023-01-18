@@ -29,7 +29,7 @@ struct WelcomeView: View {
     var isHovering: Bool = false
 
     @State
-    var isHoveringClose: Bool = false
+    var isHoveringCloseButton: Bool = false
 
     private let openDocument: (URL?, @escaping () -> Void) -> Void
     private let newDocument: () -> Void
@@ -46,6 +46,14 @@ struct WelcomeView: View {
         self.openDocument = openDocument
         self.newDocument = newDocument
         self.dismissWindow = dismissWindow
+    }
+
+    private var showWhenLaunchedBinding: Binding<Bool> {
+        Binding<Bool> {
+            prefs.preferences.general.reopenBehavior == .welcome
+        } set: { new in
+            prefs.preferences.general.reopenBehavior = new ? .welcome : .openPanel
+        }
     }
 
     private var appVersion: String {
@@ -106,106 +114,13 @@ struct WelcomeView: View {
 
     var body: some View {
         ZStack(alignment: .topLeading) {
-            VStack(spacing: 8) {
-                Spacer().frame(height: 12)
-                Image(nsImage: NSApp.applicationIconImage)
-                    .resizable()
-                    .frame(width: 128, height: 128)
-                Text(NSLocalizedString("Welcome to CodeEdit", comment: ""))
-                    .font(.system(size: 38))
-                Text(
-                    String(
-                        format: NSLocalizedString("Version %@%@ (%@)", comment: ""),
-                        appVersion,
-                        appVersionPostfix,
-                        appBuild
-                    )
-                )
-                .foregroundColor(.secondary)
-                .font(.system(size: 13))
-                .onHover { inside in
-                    if inside {
-                        NSCursor.pointingHand.push()
-                    } else {
-                        NSCursor.pop()
-                    }
-                }
-                .onTapGesture {
-                    copyInformation()
-                }
-
-                Spacer().frame(height: 20)
-                HStack {
-                    VStack(alignment: .leading, spacing: 15) {
-                        WelcomeActionView(
-                            iconName: "plus.square",
-                            title: NSLocalizedString("Create a new file", comment: ""),
-                            subtitle: NSLocalizedString("Create a new file", comment: "")
-                        )
-                        .onTapGesture {
-                            newDocument()
-                            dismissWindow()
-                        }
-                        WelcomeActionView(
-                            iconName: "folder",
-                            title: NSLocalizedString("Open a file or folder", comment: ""),
-                            subtitle: NSLocalizedString(
-                                "Open an existing file or folder on your Mac",
-                                comment: ""
-                            )
-                        )
-                        .onTapGesture {
-                            openDocument(nil, dismissWindow)
-                        }
-                        WelcomeActionView(
-                            iconName: "plus.square.on.square",
-                            title: NSLocalizedString("Clone an existing project", comment: ""),
-                            subtitle: NSLocalizedString(
-                                "Start working on something from a Git repository",
-                                comment: ""
-                            )
-                        )
-                        .onTapGesture {
-                            showGitClone = true
-                        }
-                    }
-                }
-                Spacer()
-            }
-            .frame(width: 384)
-            .padding(.top, 20)
-            .padding(.horizontal, 56)
-            .padding(.bottom, 16)
-            .background(Color(colorScheme == .dark ? NSColor.windowBackgroundColor : .white))
+            mainContent
 
             if isHovering {
-                HStack(alignment: .center) {
-                    dismissButton
-                    Spacer()
-                }
-                .padding(13)
-                .transition(AnyTransition.opacity.animation(.easeInOut(duration: 0.25)))
+                dismissButton
             }
             if isHovering {
-                VStack {
-                    Spacer()
-                    HStack {
-                        Spacer()
-                        Toggle(
-                            "Show this window when CodeEdit launches",
-                            isOn: .init(get: {
-                                prefs.preferences.general.reopenBehavior == .welcome
-                            }, set: { new in
-                                prefs.preferences.general.reopenBehavior = new ? .welcome : .openPanel
-                            })
-                        )
-                        .toggleStyle(.checkbox)
-                        Spacer()
-                    }
-                }
-                .padding(.horizontal, 56)
-                .padding(.bottom, 16)
-                .transition(AnyTransition.opacity.animation(.easeInOut(duration: 0.25)))
+                showWhenLaunchedCheckbox
             }
         }
         .onHover { isHovering in
@@ -228,24 +143,116 @@ struct WelcomeView: View {
         }
     }
 
+    private var mainContent: some View {
+        VStack(spacing: 8) {
+            Spacer().frame(height: 12)
+            Image(nsImage: NSApp.applicationIconImage)
+                .resizable()
+                .frame(width: 128, height: 128)
+            Text(NSLocalizedString("Welcome to CodeEdit", comment: ""))
+                .font(.system(size: 38))
+            Text(
+                String(
+                    format: NSLocalizedString("Version %@%@ (%@)", comment: ""),
+                    appVersion,
+                    appVersionPostfix,
+                    appBuild
+                )
+            )
+            .foregroundColor(.secondary)
+            .font(.system(size: 13))
+            .onHover { hover in
+                if hover {
+                    NSCursor.pointingHand.push()
+                } else {
+                    NSCursor.pop()
+                }
+            }
+            .onTapGesture {
+                copyInformation()
+            }
+            .help("Copy System Information to Clipboard")
+
+            Spacer().frame(height: 20)
+            HStack {
+                VStack(alignment: .leading, spacing: 15) {
+                    WelcomeActionView(
+                        iconName: "plus.square",
+                        title: NSLocalizedString("Create a new file", comment: ""),
+                        subtitle: NSLocalizedString("Create a new file", comment: "")
+                    )
+                    .onTapGesture {
+                        newDocument()
+                        dismissWindow()
+                    }
+                    WelcomeActionView(
+                        iconName: "folder",
+                        title: NSLocalizedString("Open a file or folder", comment: ""),
+                        subtitle: NSLocalizedString(
+                            "Open an existing file or folder on your Mac",
+                            comment: ""
+                        )
+                    )
+                    .onTapGesture {
+                        openDocument(nil, dismissWindow)
+                    }
+                    WelcomeActionView(
+                        iconName: "plus.square.on.square",
+                        title: NSLocalizedString("Clone an existing project", comment: ""),
+                        subtitle: NSLocalizedString(
+                            "Start working on something from a Git repository",
+                            comment: ""
+                        )
+                    )
+                    .onTapGesture {
+                        showGitClone = true
+                    }
+                }
+            }
+            Spacer()
+        }
+        .frame(width: 384)
+        .padding(.top, 20)
+        .padding(.horizontal, 56)
+        .padding(.bottom, 16)
+        .background(Color(colorScheme == .dark ? NSColor.windowBackgroundColor : .white))
+    }
+
     private var dismissButton: some View {
         Button(
             action: dismissWindow,
             label: {
                 Circle()
-                    .fill(isHoveringClose ? .secondary : Color(.clear))
+                    .foregroundColor(isHoveringCloseButton ? .secondary : .clear)
                     .frame(width: 13, height: 13)
                     .overlay(
                         Image(systemName: "xmark")
                             .font(.system(size: 8.5, weight: .heavy, design: .rounded))
-                            .foregroundColor(isHoveringClose ? Color(NSColor.windowBackgroundColor) : .secondary)
+                            .foregroundColor(isHoveringCloseButton ? Color(.windowBackgroundColor) : .secondary)
                     )
             }
         )
-        .buttonStyle(PlainButtonStyle())
+        .buttonStyle(.plain)
         .accessibilityLabel(Text("Close"))
         .onHover { hover in
-            isHoveringClose = hover
+            isHoveringCloseButton = hover
         }
+        .padding(13)
+        .transition(AnyTransition.opacity.animation(.easeInOut(duration: 0.25)))
+    }
+
+    private var showWhenLaunchedCheckbox: some View {
+        VStack(alignment: .center) {
+            Spacer()
+            Toggle(
+                "Show this window when CodeEdit launches",
+                isOn: showWhenLaunchedBinding
+            )
+            .toggleStyle(.checkbox)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.horizontal, 56)
+        .padding(.bottom, 16)
+        .transition(AnyTransition.opacity.animation(.easeInOut(duration: 0.25)))
     }
 }
