@@ -56,6 +56,9 @@ struct TabBarItemView: View {
     @Binding
     private var onDragTabId: TabBarItemID?
 
+    @Binding
+    private var closeButtonGestureActive: Bool
+
     /// The current WorkspaceDocument object.
     ///
     /// It contains the workspace-related information like selection states.
@@ -112,12 +115,14 @@ struct TabBarItemView: View {
         expectedWidth: Binding<CGFloat>,
         item: TabBarItemRepresentable,
         draggingTabId: Binding<TabBarItemID?>,
-        onDragTabId: Binding<TabBarItemID?>
+        onDragTabId: Binding<TabBarItemID?>,
+        closeButtonGestureActive: Binding<Bool>
     ) {
         self._expectedWidth = expectedWidth
         self.item = item
         self._draggingTabId = draggingTabId
         self._onDragTabId = onDragTabId
+        self._closeButtonGestureActive = closeButtonGestureActive
     }
 
     @ViewBuilder
@@ -189,7 +194,8 @@ struct TabBarItemView: View {
                         isActive: isActive,
                         isHoveringTab: isHovering,
                         isDragging: draggingTabId != nil || onDragTabId != nil,
-                        closeAction: closeAction
+                        closeAction: closeAction,
+                        closeButtonGestureActive: $closeButtonGestureActive
                     )
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)

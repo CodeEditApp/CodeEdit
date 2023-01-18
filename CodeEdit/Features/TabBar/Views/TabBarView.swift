@@ -114,6 +114,9 @@ struct TabBarView: View {
     @State
     private var onDragLastLocation: CGPoint?
 
+    @State
+    private var closeButtonGestureActive: Bool = false
+
     /// Update the expected tab width when corresponding UI state is updated.
     ///
     /// This function will be called when the number of tabs or the parent size is changed.
@@ -132,6 +135,10 @@ struct TabBarView: View {
     private func makeTabDragGesture(id: TabBarItemID) -> some Gesture {
         return DragGesture(minimumDistance: 2, coordinateSpace: .global)
             .onChanged({ value in
+                if closeButtonGestureActive {
+                    return
+                }
+
                 if draggingTabId != id {
                     shouldOnDrag = false
                     draggingTabId = id
@@ -294,7 +301,8 @@ struct TabBarView: View {
                                         expectedWidth: $expectedTabWidth,
                                         item: item,
                                         draggingTabId: $draggingTabId,
-                                        onDragTabId: $onDragTabId
+                                        onDragTabId: $onDragTabId,
+                                        closeButtonGestureActive: $closeButtonGestureActive
                                     )
                                     .frame(height: TabBarView.height)
                                     .background(makeTabItemGeometryReader(id: id))

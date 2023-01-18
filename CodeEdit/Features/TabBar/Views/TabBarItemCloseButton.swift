@@ -13,6 +13,9 @@ struct TabBarItemCloseButton: View {
     var isDragging: Bool
     var closeAction: () -> Void
 
+    @Binding
+    var closeButtonGestureActive: Bool
+
     @Environment(\.colorScheme)
     var colorScheme
 
@@ -63,11 +66,11 @@ struct TabBarItemCloseButton: View {
         .foregroundColor(isPressingClose ? .primary : .secondary)
         .cornerRadius(2)
         .contentShape(Rectangle())
-        .highPriorityGesture(
+        .gesture(
             DragGesture(minimumDistance: 0)
                 .onChanged({ _ in
-                    print("pressed")
                     isPressingClose = true
+                    closeButtonGestureActive = true
                 })
                 .onEnded({ value in
                     if value.location.x > 0
@@ -77,8 +80,8 @@ struct TabBarItemCloseButton: View {
                         closeAction()
                     }
                     isPressingClose = false
+                    closeButtonGestureActive = false
                 })
-            , including: .gesture
         )
         .onHover { hover in
             isHoveringClose = hover
@@ -92,12 +95,15 @@ struct TabBarItemCloseButton: View {
 }
 
 struct TabBarItemCloseButton_Previews: PreviewProvider {
+    @State static var closeButtonGestureActive = true
+
     static var previews: some View {
         TabBarItemCloseButton(
             isActive: false,
             isHoveringTab: false,
             isDragging: false,
-            closeAction: { print("Close tab") }
+            closeAction: { print("Close tab") },
+            closeButtonGestureActive: $closeButtonGestureActive
         )
     }
 }
