@@ -27,13 +27,15 @@ struct RecentProjectItem: View {
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 32, height: 32)
             VStack(alignment: .leading) {
-                Text(projectPath.components(separatedBy: "/").last ?? "").font(.system(size: 13))
+                Text(projectPath.components(separatedBy: "/").last ?? "")
+                    .font(.system(size: 13))
                     .lineLimit(1)
                 Text(projectPath.abbreviatingWithTildeInPath())
                     .font(.system(size: 11))
                     .lineLimit(1)
                     .truncationMode(.head)
-            }.padding(.trailing, 15)
+            }
+            .padding(.trailing, 15)
             Spacer()
         }
         .contentShape(Rectangle())
