@@ -41,6 +41,7 @@ import CodeEditKit
 
     private var cancellables = Set<AnyCancellable>()
     private let openTabsStateName: String = "\(String(describing: WorkspaceDocument.self))-OpenTabs"
+    private let activeTabStateName: String = "\(String(describing: WorkspaceDocument.self))-ActiveTab"
     private var openedTabsFromState = false
 
     @Published var targets: [Target] = []
@@ -167,6 +168,13 @@ import CodeEditKit
 
         let range = selectionState.openedTabs[(startIdx+1)...]
         closeTabs(items: range)
+    }
+
+    /// Switched the active tab to current tab
+    /// - Parameter item: tab item that is now active.
+    func switchedTab(item: TabBarItemRepresentable) {
+        guard let fileItem = item as? WorkspaceClient.FileItem else { return }
+        self.addToWorkspaceState(key: activeTabStateName, value: fileItem.url.absoluteString)
     }
 
     /// Closes an open temporary tab,  does not save the temporary tab's file.
@@ -311,6 +319,8 @@ import CodeEditKit
         windowController.window?.setFrameAutosaveName(self.fileURL?.absoluteString ?? "Untitled")
         self.addWindowController(windowController)
 
+        var activeTabID: TabBarItemID?
+        var activeTabInState = self.getFromWorkspaceState(key: activeTabStateName) as? String ?? ""
         var openTabsInState = self.getFromWorkspaceState(key: openTabsStateName) as? [String] ?? []
         for openTab in openTabsInState {
             let tabUrl = URL(string: openTab)!
@@ -318,8 +328,16 @@ import CodeEditKit
                 let item = WorkspaceClient.FileItem(url: tabUrl)
                 self.openTab(item: item)
                 self.convertTemporaryTab()
+                if activeTabInState == openTab {
+                    activeTabID = item.tabID
+                }
             }
         }
+
+        if activeTabID != nil {
+            selectionState.selectedId = activeTabID
+        }
+
         self.openedTabsFromState = true
     }
 
