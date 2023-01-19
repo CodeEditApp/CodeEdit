@@ -18,7 +18,7 @@ final class AboutViewWindowController: NSWindowController {
         window.standardWindowButton(.zoomButton)?.isHidden = true
         window.titlebarAppearsTransparent = true
         window.titleVisibility = .hidden
-        window.backgroundColor = .gray.withAlphaComponent(0.01)
+        window.backgroundColor = .gray.withAlphaComponent(0.15)
     }
 
     override func showWindow(_ sender: Any?) {
