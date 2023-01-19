@@ -34,7 +34,7 @@ struct ContributorsView: View {
                 }
             }
         }
-        .frame(width: 350, height: 500)
+        .frame(width: 280, height: 400)
         .background(.regularMaterial)
         .task {
             viewModel.loadContributors()
