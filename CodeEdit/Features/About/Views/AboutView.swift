@@ -40,7 +40,7 @@ public struct AboutView: View {
             Text("Version \(appVersion)\(appVersionPostfix) (\(appBuild))")
                 .textSelection(.enabled)
                 .foregroundColor(.secondary)
-                .font(.caption)
+                .font(.caption2)
                 .padding(.vertical, 2)
 
             VStack {
@@ -68,15 +68,16 @@ public struct AboutView: View {
             Link(destination: Self.licenseURL) {
                 Text("MIT License")
                     .underline()
-                    .font(.caption)
+                    .font(.caption3)
                     .textSelection(.disabled)
                     .foregroundColor(.secondary)
             }
+            .padding(.bottom, 2)
 
             Text(Bundle.copyrightString ?? "")
                 .textSelection(.disabled)
                 .foregroundColor(.secondary)
-                .font(.caption)
+                .font(.caption3)
         }
         .padding([.horizontal, .bottom], 16)
         .frame(width: 280)
