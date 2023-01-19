@@ -31,7 +31,8 @@ public struct AboutView: View {
             Image(nsImage: NSApp.applicationIconImage)
                 .resizable()
                 .frame(width: 64, height: 64)
-                .padding(10)
+                .padding(.top, 9)
+                .padding(.bottom, 10)
 
             Text("CodeEdit")
                 .font(.title)
@@ -41,7 +42,7 @@ public struct AboutView: View {
                 .textSelection(.enabled)
                 .foregroundColor(.secondary)
                 .font(.caption2)
-                .padding(.vertical, 2)
+                .padding(.vertical, 3)
 
             VStack {
                 Button {
@@ -72,7 +73,7 @@ public struct AboutView: View {
                     .textSelection(.disabled)
                     .foregroundColor(.secondary)
             }
-            .padding(.bottom, 2)
+            .padding(.vertical, 2)
 
             Text(Bundle.copyrightString ?? "")
                 .textSelection(.disabled)
