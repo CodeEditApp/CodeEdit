@@ -16,7 +16,7 @@ struct ContributorsView: View {
         VStack(spacing: 0) {
             Image(nsImage: NSApp.applicationIconImage)
                 .resizable()
-                .frame(width: 70, height: 70)
+                .frame(width: 48, height: 48)
             Text("Contributors")
                 .font(.largeTitle)
                 .fontWeight(.bold)
