@@ -9,6 +9,7 @@ import SwiftUI
 
 public struct AboutView: View {
     @Environment(\.openURL) private var openURL
+    @Environment(\.colorScheme) private var colorScheme
 
     public init() {}
 
@@ -38,11 +39,13 @@ public struct AboutView: View {
                     Text("CodeEdit")
                         .font(.largeTitle)
                         .fontWeight(.bold)
+                        .foregroundColor(.primary)
 
                     Text("Version \(appVersion)\(appVersionPostfix) (\(appBuild))")
                         .textSelection(.enabled)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(Color(.tertiaryLabelColor))
                         .font(.body)
+                        .blendMode(colorScheme == .dark ? .plusLighter : .plusDarker)
                 }
             }
 
@@ -69,15 +72,14 @@ public struct AboutView: View {
                     Link(destination: Self.licenseURL) {
                         Text("MIT License")
                             .underline()
-                            .font(.caption3)
-                            .textSelection(.disabled)
-                            .foregroundColor(.secondary)
+
                     }
                     Text(Bundle.copyrightString ?? "")
-                        .textSelection(.disabled)
-                        .foregroundColor(.secondary)
-                        .font(.caption3)
                 }
+                .textSelection(.disabled)
+                .font(.system(size: 11, weight: .regular))
+                .foregroundColor(Color(.tertiaryLabelColor))
+                .blendMode(colorScheme == .dark ? .plusLighter : .plusDarker)
                 .padding(.top, 12)
                 .padding(.bottom, 8)
             }
@@ -85,7 +87,10 @@ public struct AboutView: View {
         .padding(16)
         .frame(width: 280)
         .fixedSize()
-        .background(.regularMaterial)
+        // hack required to get buttons appearing correctly in light appearance
+        // if anyone knows of a better way to do this feel free to refactor
+        .background(.regularMaterial.opacity(0))
+        .background(EffectView(.popover, blendingMode: .behindWindow).ignoresSafeArea())
     }
 
     public func showWindow(width: CGFloat, height: CGFloat) {

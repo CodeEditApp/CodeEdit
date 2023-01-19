@@ -29,6 +29,8 @@ struct AcknowledgementsView: View {
                 ) { (index, acknowledgement) in
                     if index != 0 {
                         Divider()
+                            .frame(height: 0.5)
+                            .opacity(0.5)
                     }
                     HStack {
                         Text(acknowledgement.name)
@@ -50,7 +52,7 @@ struct AcknowledgementsView: View {
             .padding(.horizontal, 16)
         }
         .frame(width: 280, height: 400)
-        .background(.regularMaterial)
+        .background(EffectView(.popover, blendingMode: .behindWindow).ignoresSafeArea())
     }
 
     func showWindow(width: CGFloat, height: CGFloat) {
