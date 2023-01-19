@@ -30,11 +30,11 @@ public struct AboutView: View {
         VStack(spacing: 0) {
             Image(nsImage: NSApp.applicationIconImage)
                 .resizable()
-                .frame(width: 70, height: 70)
+                .frame(width: 68, height: 68)
                 .padding(10)
 
             Text("CodeEdit")
-                .font(.largeTitle)
+                .font(.title)
                 .fontWeight(.bold)
 
             Text("Version \(appVersion)\(appVersionPostfix) (\(appBuild))")
