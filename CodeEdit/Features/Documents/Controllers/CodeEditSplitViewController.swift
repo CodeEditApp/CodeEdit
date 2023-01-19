@@ -17,6 +17,10 @@ private extension CGFloat {
 final class CodeEditSplitViewController: NSSplitViewController {
     private var workspace: WorkspaceDocument
     private let widthStateName: String = "\(String(describing: CodeEditSplitViewController.self))-Width"
+    private let isNavigatorCollapsedStateName: String
+        = "\(String(describing: CodeEditSplitViewController.self))-IsNavigatorCollapsed"
+    private let isInspectorCollapsedStateName: String
+        = "\(String(describing: CodeEditSplitViewController.self))-IsInspectorCollapsed"
     private var setWidthFromState = false
 
     // Properties
@@ -49,6 +53,18 @@ final class CodeEditSplitViewController: NSSplitViewController {
         let width = workspace.getFromWorkspaceState(key: self.widthStateName) as? CGFloat
         splitView.setPosition(width ?? .snapWidth, ofDividerAt: .zero)
         setWidthFromState = true
+
+        if let firstSplitView = splitViewItems.first {
+            firstSplitView.isCollapsed = workspace.getFromWorkspaceState(
+                key: isNavigatorCollapsedStateName
+            ) as? Bool ?? false
+        }
+
+        if let lastSplitView = splitViewItems.last {
+            lastSplitView.isCollapsed = workspace.getFromWorkspaceState(
+                key: isInspectorCollapsedStateName
+            ) as? Bool ?? true
+        }
     }
 
     // MARK: - NSSplitViewDelegate
@@ -97,6 +113,14 @@ final class CodeEditSplitViewController: NSSplitViewController {
                 workspace.addToWorkspaceState(key: self.widthStateName, value: width)
             }
         }
+    }
+
+    func saveNavigatorCollapsedState(isCollapsed: Bool) {
+        workspace.addToWorkspaceState(key: isNavigatorCollapsedStateName, value: isCollapsed)
+    }
+
+    func saveInspectorCollapsedState(isCollapsed: Bool) {
+        workspace.addToWorkspaceState(key: isInspectorCollapsedStateName, value: isCollapsed)
     }
 
     /// Quick fix for list tracking separator needing to be added again after closing,
