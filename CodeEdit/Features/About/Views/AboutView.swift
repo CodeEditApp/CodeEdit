@@ -30,7 +30,7 @@ public struct AboutView: View {
         VStack(spacing: 0) {
             Image(nsImage: NSApp.applicationIconImage)
                 .resizable()
-                .frame(width: 68, height: 68)
+                .frame(width: 64, height: 64)
                 .padding(10)
 
             Text("CodeEdit")
