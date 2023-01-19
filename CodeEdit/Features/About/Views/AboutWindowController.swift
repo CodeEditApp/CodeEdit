@@ -38,7 +38,7 @@ final class AboutViewWindowController: NSWindowController {
             return nil
         }
 
-        window?.collectionBehavior = [.transient, .ignoresCycle]
+        window?.collectionBehavior = [.managed, .ignoresCycle]
         window?.isMovableByWindowBackground = true
         window?.titlebarAppearsTransparent = true
         window?.titleVisibility = .hidden

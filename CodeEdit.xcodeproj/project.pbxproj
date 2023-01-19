@@ -47,6 +47,8 @@
 		20EBB50D280C383700F3A5DA /* LanguageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EBB50C280C383700F3A5DA /* LanguageType.swift */; };
 		20EBB50F280C389300F3A5DA /* FileInspectorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EBB50E280C389300F3A5DA /* FileInspectorModel.swift */; };
 		2801BB8A290D5A8E00EBF552 /* CodeEditKit in Frameworks */ = {isa = PBXBuildFile; productRef = 2801BB89290D5A8E00EBF552 /* CodeEditKit */; };
+		2806E9022979588B000040F4 /* Contributor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2806E9012979588B000040F4 /* Contributor.swift */; };
+		2806E904297958B9000040F4 /* ContributorRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2806E903297958B9000040F4 /* ContributorRowView.swift */; };
 		2813F93827ECC4AA00E305E4 /* FindNavigatorResultList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201B327E9989900CB86D0 /* FindNavigatorResultList.swift */; };
 		2813F93927ECC4C300E305E4 /* NavigatorSidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287776E627E3413200D46668 /* NavigatorSidebarView.swift */; };
 		2816F594280CF50500DD548B /* CodeEditSymbols in Frameworks */ = {isa = PBXBuildFile; productRef = 2816F593280CF50500DD548B /* CodeEditSymbols */; };
@@ -433,6 +435,8 @@
 		28052DFC29730DF600F4F90A /* Alpha.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Alpha.xcconfig; sourceTree = "<group>"; };
 		28052DFD29730E0300F4F90A /* Beta.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Beta.xcconfig; sourceTree = "<group>"; };
 		28052DFE29730E0B00F4F90A /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
+		2806E9012979588B000040F4 /* Contributor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contributor.swift; sourceTree = "<group>"; };
+		2806E903297958B9000040F4 /* ContributorRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContributorRowView.swift; sourceTree = "<group>"; };
 		283BDCBC2972EEBD002AFF81 /* Package.resolved */ = {isa = PBXFileReference; lastKnownFileType = text; name = Package.resolved; path = CodeEdit.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved; sourceTree = "<group>"; };
 		283BDCC42972F236002AFF81 /* AcknowledgementsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcknowledgementsTests.swift; sourceTree = "<group>"; };
 		2847019D27FDDF7600F87B6B /* OutlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineView.swift; sourceTree = "<group>"; };
@@ -911,6 +915,14 @@
 			path = DefaultThemes;
 			sourceTree = "<group>";
 		};
+		2806E8FE2979587A000040F4 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				2806E9012979588B000040F4 /* Contributor.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		283BDCC22972F211002AFF81 /* Acknowledgements */ = {
 			isa = PBXGroup;
 			children = (
@@ -922,8 +934,10 @@
 		284DC84B2978B5EB00BF2770 /* Contributors */ = {
 			isa = PBXGroup;
 			children = (
-				284DC84C2978B61400BF2770 /* ContributorsWindowController.swift */,
+				2806E8FE2979587A000040F4 /* Model */,
 				284DC84E2978B7B400BF2770 /* ContributorsView.swift */,
+				2806E903297958B9000040F4 /* ContributorRowView.swift */,
+				284DC84C2978B61400BF2770 /* ContributorsWindowController.swift */,
 			);
 			path = Contributors;
 			sourceTree = "<group>";
@@ -2753,6 +2767,7 @@
 				04C3254B27FF23B000C8DA2D /* ExtensionNavigatorData.swift in Sources */,
 				58798261292EC4080085B254 /* ExtensionsManager.swift in Sources */,
 				287776EF27E3515300D46668 /* TabBarItemView.swift in Sources */,
+				2806E9022979588B000040F4 /* Contributor.swift in Sources */,
 				58D01C98293167DC00C5B6B4 /* String+RemoveOccurrences.swift in Sources */,
 				5878DAA8291AE76700DD95A3 /* QuickOpenItem.swift in Sources */,
 				58FD7608291EA1CB0051D6E4 /* CommandPaletteViewModel.swift in Sources */,
@@ -2774,6 +2789,7 @@
 				58F2EB07292FB2B0004A9BDE /* GeneralPreferences.swift in Sources */,
 				587B9E9A29301D8F00AC7927 /* GitType.swift in Sources */,
 				58D01C97293167DC00C5B6B4 /* String+SHA256.swift in Sources */,
+				2806E904297958B9000040F4 /* ContributorRowView.swift in Sources */,
 				587B9E7629301D8F00AC7927 /* GitTime.swift in Sources */,
 				2072FA16280D83A500C7F8D4 /* FileTypeList.swift in Sources */,
 				587B9E5D29301D8F00AC7927 /* GitLabUserRouter.swift in Sources */,

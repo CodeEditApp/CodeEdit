@@ -14,8 +14,8 @@ final class ContributorsWindowController: NSWindowController {
         self.init(window: window)
         window.setContentSize(size)
         window.styleMask = [.closable, .fullSizeContentView, .titled, .nonactivatingPanel]
-        window.standardWindowButton(.miniaturizeButton)?.isEnabled = true
-        window.standardWindowButton(.zoomButton)?.isEnabled = true
+        window.standardWindowButton(.miniaturizeButton)?.isHidden = true
+        window.standardWindowButton(.zoomButton)?.isHidden = true
         window.titlebarAppearsTransparent = true
         window.titleVisibility = .hidden
         window.backgroundColor = .gray.withAlphaComponent(0.2)
@@ -37,7 +37,7 @@ final class ContributorsWindowController: NSWindowController {
             return nil
         }
 
-        window?.collectionBehavior = [.transient, .ignoresCycle]
+        window?.collectionBehavior = [.managed, .ignoresCycle]
         window?.isMovableByWindowBackground = true
         window?.title = "Contributors"
     }

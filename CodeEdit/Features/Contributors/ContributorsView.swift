@@ -9,9 +9,7 @@ import SwiftUI
 
 struct ContributorsView: View {
 
-    @Environment(\.openURL) private var openURL
-
-    @State private var contributors: [Contributor] = []
+    @StateObject private var viewModel = ContributorsViewModel()
 
     var body: some View {
         VStack {
@@ -22,74 +20,31 @@ struct ContributorsView: View {
                 .font(.largeTitle)
                 .fontWeight(.bold)
             ScrollView(showsIndicators: false) {
-                ForEach(contributors) { contributor in
-                    contributorItemView(contributor)
+                ForEach(viewModel.contributors) { contributor in
+                    ContributorRowView(contributor: contributor)
                 }
             }
         }
         .frame(width: 350, height: 500)
         .background(.regularMaterial)
         .task {
-            loadContributors()
+            viewModel.loadContributors()
         }
-    }
-
-    func contributorItemView(_ contributor: Contributor) -> some View {
-        HStack {
-            AsyncImage(url: URL(string: contributor.avatarURLString)) { image in
-                image
-                    .resizable()
-                    .frame(width: 40, height: 40)
-                    .clipShape(Circle())
-            } placeholder: {
-                Image(systemName: "person.circle.fill")
-                    .resizable()
-                    .frame(width: 40, height: 40)
-            }
-            VStack(alignment: .leading, spacing: 4) {
-                Text(contributor.name)
-                    .font(.headline)
-                HStack {
-                    ForEach(contributor.contributions, id: \.self) { item in
-                        Text(item.rawValue)
-                            .padding(.horizontal, 6)
-                            .padding(.vertical, 2)
-                            .background {
-                                Capsule()
-                                    .foregroundColor(item.color)
-                            }
-                    }
-                }
-            }
-            Spacer()
-            HStack(alignment: .top) {
-                if let profileURL = contributor.profileURL, profileURL != contributor.gitHubURL {
-                    Button {
-                        openURL(profileURL)
-                    } label: {
-                        Image(systemName: "globe")
-                            .imageScale(.large)
-                    }
-                    .buttonStyle(.plain)
-                }
-                if let gitHubURL = contributor.gitHubURL {
-                    Button {
-                        openURL(gitHubURL)
-                    } label: {
-                        Image.github
-                            .imageScale(.large)
-                    }
-                    .buttonStyle(.plain)
-                }
-            }
-        }
-        .padding(.horizontal)
-        .padding(.vertical, 8)
     }
 
     func showWindow(width: CGFloat, height: CGFloat) {
         ContributorsWindowController(view: self, size: NSSize(width: width, height: height)).showWindow(nil)
     }
+}
+
+struct ContributorsView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContributorsView()
+    }
+}
+
+class ContributorsViewModel: ObservableObject {
+    @Published private(set) var contributors: [Contributor] = []
 
     func loadContributors() {
         guard let url = Bundle.main.url(
@@ -102,54 +57,6 @@ struct ContributorsView: View {
             self.contributors = root.contributors
         } catch {
             print(error)
-        }
-    }
-}
-
-struct ContributorsView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContributorsView()
-    }
-}
-
-struct ContributorsRoot: Codable {
-    var contributors: [Contributor]
-}
-
-struct Contributor: Codable, Identifiable {
-    var id: String { login }
-    var login: String
-    var name: String
-    var avatarURLString: String
-    var profile: String
-    var contributions: [Contribution]
-
-    var gitHubURL: URL? {
-        URL(string: "https://github.com/\(login)")
-    }
-
-    var profileURL: URL? {
-        URL(string: profile)
-    }
-
-    enum CodingKeys: String, CodingKey {
-        case login, name, profile, contributions
-        case avatarURLString = "avatar_url"
-    }
-
-    enum Contribution: String, Codable {
-        case design, code, infra, test, bug, maintenance, plugin
-
-        var color: Color {
-            switch self {
-            case .design: return .blue
-            case .code: return .indigo
-            case .infra: return .pink
-            case .test: return .purple
-            case .bug: return .red
-            case .maintenance: return .brown
-            case .plugin: return .gray
-            }
         }
     }
 }
