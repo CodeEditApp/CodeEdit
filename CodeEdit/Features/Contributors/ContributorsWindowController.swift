@@ -1,18 +1,18 @@
 //
-//  AboutWindowController.swift
+//  ContributorsWindowController.swift
 //  CodeEdit
 //
-//  Created by Wouter Hennen on 18/01/2023.
+//  Created by Lukas Pistrol on 19.01.23.
 //
 
 import SwiftUI
 
-final class AboutViewWindowController: NSWindowController {
+final class ContributorsWindowController: NSWindowController {
     convenience init<T: View>(view: T, size: NSSize) {
         let hostingController = NSHostingController(rootView: view)
-        // New window holding our SwiftUI view
         let window = NSWindow(contentViewController: hostingController)
         self.init(window: window)
+        window.setContentSize(size)
         window.styleMask = [.closable, .fullSizeContentView, .titled, .nonactivatingPanel]
         window.standardWindowButton(.miniaturizeButton)?.isHidden = true
         window.standardWindowButton(.zoomButton)?.isHidden = true
@@ -29,7 +29,6 @@ final class AboutViewWindowController: NSWindowController {
 
         window?.animator().alphaValue = 1.0
 
-        // close the window when the escape key is pressed
         NSEvent.addLocalMonitorForEvents(matching: .keyDown) { event in
             guard event.keyCode == 53 else { return event }
 
@@ -40,9 +39,7 @@ final class AboutViewWindowController: NSWindowController {
 
         window?.collectionBehavior = [.managed, .ignoresCycle]
         window?.isMovableByWindowBackground = true
-        window?.titlebarAppearsTransparent = true
-        window?.titleVisibility = .hidden
-        window?.isExcludedFromWindowsMenu = true
+        window?.title = "Contributors"
     }
 
     func closeAnimated() {
