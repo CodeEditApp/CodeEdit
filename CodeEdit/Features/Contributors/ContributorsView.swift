@@ -29,6 +29,8 @@ struct ContributorsView: View {
                     ForEach(viewModel.contributors) { contributor in
                         ContributorRowView(contributor: contributor)
                         Divider()
+                            .frame(height: 0.5)
+                            .opacity(0.5)
                             .padding(.horizontal)
                     }
                 }
