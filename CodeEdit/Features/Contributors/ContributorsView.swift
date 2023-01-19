@@ -12,16 +12,21 @@ struct ContributorsView: View {
     @StateObject private var viewModel = ContributorsViewModel()
 
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             Image(nsImage: NSApp.applicationIconImage)
                 .resizable()
                 .frame(width: 70, height: 70)
             Text("Contributors")
                 .font(.largeTitle)
                 .fontWeight(.bold)
+                .padding(.vertical, 8)
+            Divider()
             ScrollView(showsIndicators: false) {
-                ForEach(viewModel.contributors) { contributor in
-                    ContributorRowView(contributor: contributor)
+                LazyVStack(spacing: 0) {
+                    ForEach(viewModel.contributors) { contributor in
+                        ContributorRowView(contributor: contributor)
+                        Divider()
+                    }
                 }
             }
         }

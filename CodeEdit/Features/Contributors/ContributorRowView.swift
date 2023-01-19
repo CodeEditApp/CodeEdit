@@ -36,7 +36,7 @@ struct ContributorRowView: View {
             }
         }
         .padding(.horizontal)
-        .padding(.vertical, 4)
+        .padding(.vertical, 8)
     }
 
     private var userImage: some View {
