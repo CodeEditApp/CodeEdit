@@ -177,6 +177,22 @@ import CodeEditKit
         self.addToWorkspaceState(key: activeTabStateName, value: fileItem.url.absoluteString)
     }
 
+    /// Tabs reordered
+    /// - Parameter openedTabs: reordered tabs
+    func reorderedTabs(openedTabs: [TabBarItemID]) {
+        selectionState.openedTabs = openedTabs
+
+        if openedTabsFromState {
+            var openTabsInState: [String] = []
+            for openTabId in openedTabs {
+                guard let item = selectionState.getItemByTab(id: openTabId) as? WorkspaceClient.FileItem
+                else { continue }
+                openTabsInState.append(item.url.absoluteString)
+            }
+            self.addToWorkspaceState(key: openTabsStateName, value: openTabsInState)
+        }
+    }
+
     /// Closes an open temporary tab,  does not save the temporary tab's file.
     /// Removes the tab item from `openedCodeFiles`, `openedExtensions`, and `openFileItems`.
     private func closeTemporaryTab() {
