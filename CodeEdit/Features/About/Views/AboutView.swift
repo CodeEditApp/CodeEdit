@@ -24,68 +24,60 @@ public struct AboutView: View {
         Bundle.versionPostfix ?? ""
     }
 
+    private static var licenseURL = URL(string: "https://github.com/CodeEditApp/CodeEdit/blob/main/LICENSE.md")!
+
     public var body: some View {
-        HStack(spacing: 0) {
-            logo
-            VStack(alignment: .leading, spacing: 0) {
-                topMetaData
-                Spacer()
-                bottomMetaData
-                actionButtons
-            }
-            .padding([.trailing, .vertical])
-        }
-        .background(.regularMaterial)
-        .edgesIgnoringSafeArea(.top)
-    }
+        VStack(spacing: 0) {
+            Image(nsImage: NSApp.applicationIconImage)
+                .resizable()
+                .frame(width: 70, height: 70)
 
-    // MARK: Sub-Views
+            Text("CodeEdit")
+                .font(.largeTitle)
+                .fontWeight(.bold)
 
-    private var logo: some View {
-        Image(nsImage: NSApp.applicationIconImage)
-            .resizable()
-            .frame(width: 128, height: 128)
-            .padding(32)
-    }
-
-    private var topMetaData: some View {
-        VStack(alignment: .leading, spacing: 5) {
-            Text("CodeEdit").font(.system(size: 38, weight: .regular))
             Text("Version \(appVersion)\(appVersionPostfix) (\(appBuild))")
                 .textSelection(.enabled)
                 .foregroundColor(.secondary)
-                .font(.system(size: 13, weight: .light))
-        }
-    }
+                .font(.caption)
+                .padding(.vertical, 2)
 
-    private var bottomMetaData: some View {
-        VStack(alignment: .leading, spacing: 5) {
-            if let copyright = Bundle.copyrightString {
-                Text(copyright)
-            }
-            Text("MIT License")
-        }
-        .foregroundColor(.secondary)
-        .font(.system(size: 9, weight: .light))
-        .padding(.bottom, 10)
-    }
+            VStack {
+                Button {
+                    
+                } label: {
+                    Text("Contributors")
+                        .foregroundColor(.primary)
+                }
 
-    private var actionButtons: some View {
-        HStack {
-            Button {
-                AcknowledgementsView().showWindow(width: 300, height: 400)
-            } label: {
-                Text("Acknowledgements")
-                    .foregroundColor(.primary)
+                Button {
+                    AcknowledgementsView().showWindow(width: 300, height: 400)
+                } label: {
+                    Text("Acknowledgements")
+                        .foregroundColor(.primary)
+                }
+            }
+            .padding(.vertical)
+
+            Link(destination: Self.licenseURL) {
+                Text("MIT License")
+                    .underline()
+                    .font(.caption)
+                    .textSelection(.disabled)
+                    .foregroundColor(.secondary)
+
             }
 
-            Button {
-                openURL(URL(string: "https://github.com/CodeEditApp/CodeEdit/blob/main/LICENSE.md")!)
-            } label: {
-                Text("License Agreement")
-                    .foregroundColor(.primary)
-            }
+            Text(Bundle.copyrightString ?? "")
+                .textSelection(.disabled)
+                .foregroundColor(.secondary)
+                .font(.caption)
         }
+        .padding(.horizontal, 50)
+        .padding(.bottom, 20)
+        .padding(.top, 10)
+        .fixedSize()
+        .background(.regularMaterial)
     }
 
     public func showWindow(width: CGFloat, height: CGFloat) {

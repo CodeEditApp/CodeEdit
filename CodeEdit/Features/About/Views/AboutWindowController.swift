@@ -13,7 +13,6 @@ final class AboutViewWindowController: NSWindowController {
         // New window holding our SwiftUI view
         let window = NSWindow(contentViewController: hostingController)
         self.init(window: window)
-        window.setContentSize(size)
         window.styleMask = [.closable, .fullSizeContentView, .titled, .nonactivatingPanel]
         window.standardWindowButton(.miniaturizeButton)?.isHidden = true
         window.standardWindowButton(.zoomButton)?.isHidden = true
