@@ -500,6 +500,15 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "Wouter01",
+      "name": "Wouter Hennen",
+      "avatar_url": "https://avatars.githubusercontent.com/u/62355975?v=4",
+      "profile": "https://github.com/Wouter01",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
