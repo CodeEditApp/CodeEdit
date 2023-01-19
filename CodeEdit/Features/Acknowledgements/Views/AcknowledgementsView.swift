@@ -21,6 +21,7 @@ struct AcknowledgementsView: View {
                 .frame(width: 48, height: 48)
             Text("Acknowledgements")
                 .font(.title)
+                .fontWeight(.bold)
             ScrollView {
                 ForEach(
                     Array(zip(model.acknowledgements.indices, model.acknowledgements)),
