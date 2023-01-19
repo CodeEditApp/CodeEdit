@@ -44,7 +44,7 @@ public struct AboutView: View {
 
             VStack {
                 Button {
-                    
+
                 } label: {
                     Text("Contributors")
                         .foregroundColor(.primary)
