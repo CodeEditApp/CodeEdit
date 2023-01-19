@@ -62,6 +62,7 @@
 		286471AB27ED51FD0039369D /* ProjectNavigatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286471AA27ED51FD0039369D /* ProjectNavigatorView.swift */; };
 		287776E927E34BC700D46668 /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287776E827E34BC700D46668 /* TabBarView.swift */; };
 		287776EF27E3515300D46668 /* TabBarItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287776EE27E3515300D46668 /* TabBarItemView.swift */; };
+		2897E1C72979A29200741E32 /* OffsettableScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2897E1C62979A29200741E32 /* OffsettableScrollView.swift */; };
 		28A51001281673530087B0CC /* codeedit-xcode-dark.json in Resources */ = {isa = PBXBuildFile; fileRef = 28A50FFF281673530087B0CC /* codeedit-xcode-dark.json */; };
 		28A51002281673530087B0CC /* codeedit-xcode-light.json in Resources */ = {isa = PBXBuildFile; fileRef = 28A51000281673530087B0CC /* codeedit-xcode-light.json */; };
 		28A51005281701B40087B0CC /* codeedit-github-light.json in Resources */ = {isa = PBXBuildFile; fileRef = 28A51003281701B40087B0CC /* codeedit-github-light.json */; };
@@ -450,6 +451,7 @@
 		287776E627E3413200D46668 /* NavigatorSidebarView.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = NavigatorSidebarView.swift; sourceTree = "<group>"; tabWidth = 4; };
 		287776E827E34BC700D46668 /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
 		287776EE27E3515300D46668 /* TabBarItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarItemView.swift; sourceTree = "<group>"; };
+		2897E1C62979A29200741E32 /* OffsettableScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OffsettableScrollView.swift; sourceTree = "<group>"; };
 		28A50FFF281673530087B0CC /* codeedit-xcode-dark.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "codeedit-xcode-dark.json"; sourceTree = "<group>"; };
 		28A51000281673530087B0CC /* codeedit-xcode-light.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "codeedit-xcode-light.json"; sourceTree = "<group>"; };
 		28A51003281701B40087B0CC /* codeedit-github-light.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "codeedit-github-light.json"; sourceTree = "<group>"; };
@@ -1525,6 +1527,7 @@
 				587B9D8829300ABD00AC7927 /* SegmentedControl.swift */,
 				587B9D8C29300ABD00AC7927 /* SettingsTextEditor.swift */,
 				587B9D8F29300ABD00AC7927 /* ToolbarBranchPicker.swift */,
+				2897E1C62979A29200741E32 /* OffsettableScrollView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2755,6 +2758,7 @@
 				58822531292C280D00E83CDE /* View+isHovering.swift in Sources */,
 				587B9E9929301D8F00AC7927 /* GitChangedFile.swift in Sources */,
 				58F2EAF2292FB2B0004A9BDE /* EditorThemeView.swift in Sources */,
+				2897E1C72979A29200741E32 /* OffsettableScrollView.swift in Sources */,
 				58F2EB0E292FB2B0004A9BDE /* SoftwareUpdater.swift in Sources */,
 				587B9E9529301D8F00AC7927 /* BitBucketUser.swift in Sources */,
 				587B9E7C29301D8F00AC7927 /* GitHubRepositoryRouter.swift in Sources */,

@@ -10,6 +10,7 @@ import SwiftUI
 struct ContributorsView: View {
 
     @StateObject private var viewModel = ContributorsViewModel()
+    @State private var displayDivider = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -21,11 +22,15 @@ struct ContributorsView: View {
                 .fontWeight(.bold)
                 .padding(.vertical, 8)
             Divider()
-            ScrollView(showsIndicators: false) {
+                .opacity(displayDivider ? 1 : 0)
+            OffsettableScrollView(showsIndicator: false) { offset in
+                displayDivider = offset.y < 0
+            } content: {
                 LazyVStack(spacing: 0) {
                     ForEach(viewModel.contributors) { contributor in
                         ContributorRowView(contributor: contributor)
                         Divider()
+                            .padding(.horizontal)
                     }
                 }
             }

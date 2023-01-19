@@ -14,12 +14,12 @@ struct ContributorRowView: View {
     var body: some View {
         HStack {
             userImage
-            VStack(alignment: .leading, spacing: 4) {
+            VStack(alignment: .leading, spacing: 2) {
                 HStack {
                     Text(contributor.name)
                         .font(.headline)
                 }
-                HStack(spacing: 4) {
+                HStack(spacing: 3) {
                     ForEach(contributor.contributions, id: \.self) { item in
                         tag(item)
                     }
@@ -43,24 +43,24 @@ struct ContributorRowView: View {
         AsyncImage(url: contributor.avatarURL) { image in
             image
                 .resizable()
-                .frame(width: 40, height: 40)
+                .frame(width: 32, height: 32)
                 .clipShape(Circle())
         } placeholder: {
             Image(systemName: "person.circle.fill")
                 .resizable()
-                .frame(width: 40, height: 40)
+                .frame(width: 32, height: 32)
         }
     }
 
     private func tag(_ item: Contributor.Contribution) -> some View {
         Text(item.rawValue.capitalized)
-            .font(.caption.bold())
+            .font(.caption)
             .padding(.horizontal, 6)
-            .padding(.vertical, 2)
+            .padding(.vertical, 1)
             .foregroundColor(item.color)
             .background {
                 Capsule(style: .continuous)
-                    .strokeBorder(lineWidth: 1.5)
+                    .strokeBorder(lineWidth: 1)
                     .foregroundStyle(item.color)
                     .opacity(0.8)
             }
