@@ -27,22 +27,24 @@ public struct AboutView: View {
     private static var licenseURL = URL(string: "https://github.com/CodeEditApp/CodeEdit/blob/main/LICENSE.md")!
 
     public var body: some View {
-        VStack(spacing: 0) {
-            Image(nsImage: NSApp.applicationIconImage)
-                .resizable()
-                .frame(width: 64, height: 64)
-                .padding(.top, 9)
-                .padding(.bottom, 10)
+        VStack(spacing: 32) {
+            VStack(spacing: 0) {
+                Image(nsImage: NSApp.applicationIconImage)
+                    .resizable()
+                    .frame(width: 128, height: 128)
+                    .padding(.bottom, 8)
 
-            Text("CodeEdit")
-                .font(.title)
-                .fontWeight(.bold)
+                VStack(spacing: 4) {
+                    Text("CodeEdit")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
 
-            Text("Version \(appVersion)\(appVersionPostfix) (\(appBuild))")
-                .textSelection(.enabled)
-                .foregroundColor(.secondary)
-                .font(.caption2)
-                .padding(.vertical, 3)
+                    Text("Version \(appVersion)\(appVersionPostfix) (\(appBuild))")
+                        .textSelection(.enabled)
+                        .foregroundColor(.secondary)
+                        .font(.body)
+                }
+            }
 
             VStack {
                 Button {
@@ -52,7 +54,6 @@ public struct AboutView: View {
                         .foregroundColor(.primary)
                         .frame(maxWidth: .infinity)
                 }
-
                 .controlSize(.large)
 
                 Button {
@@ -63,24 +64,25 @@ public struct AboutView: View {
                         .frame(maxWidth: .infinity)
                 }
                 .controlSize(.large)
-            }
-            .padding(.vertical)
 
-            Link(destination: Self.licenseURL) {
-                Text("MIT License")
-                    .underline()
-                    .font(.caption3)
-                    .textSelection(.disabled)
-                    .foregroundColor(.secondary)
+                VStack(spacing: 2) {
+                    Link(destination: Self.licenseURL) {
+                        Text("MIT License")
+                            .underline()
+                            .font(.caption3)
+                            .textSelection(.disabled)
+                            .foregroundColor(.secondary)
+                    }
+                    Text(Bundle.copyrightString ?? "")
+                        .textSelection(.disabled)
+                        .foregroundColor(.secondary)
+                        .font(.caption3)
+                }
+                .padding(.top, 12)
+                .padding(.bottom, 8)
             }
-            .padding(.vertical, 2)
-
-            Text(Bundle.copyrightString ?? "")
-                .textSelection(.disabled)
-                .foregroundColor(.secondary)
-                .font(.caption3)
         }
-        .padding([.horizontal, .bottom], 16)
+        .padding(16)
         .frame(width: 280)
         .fixedSize()
         .background(.regularMaterial)

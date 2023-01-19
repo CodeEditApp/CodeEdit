@@ -18,16 +18,20 @@ struct AcknowledgementsView: View {
         VStack {
             Image(nsImage: NSApp.applicationIconImage)
                 .resizable()
-                .frame(width: 70, height: 70)
+                .frame(width: 48, height: 48)
             Text("Acknowledgements")
-                .font(.largeTitle)
-                .fontWeight(.bold)
+                .font(.title)
             ScrollView {
-                ForEach(model.acknowledgements, id: \.name) { acknowledgement in
+                ForEach(
+                    Array(zip(model.acknowledgements.indices, model.acknowledgements)),
+                    id: \.1.name
+                ) { (index, acknowledgement) in
+                    if index != 0 {
+                        Divider()
+                    }
                     HStack {
                         Text(acknowledgement.name)
-                            .font(.title3)
-                            .fontWeight(.semibold)
+                            .font(.body)
 
                         Spacer()
 
@@ -39,12 +43,12 @@ struct AcknowledgementsView: View {
                         }
                         .buttonStyle(.plain)
                     }
-                    .frame(width: 200)
-                    .padding(.vertical, 2)
+                    .frame(maxWidth: .infinity)
                 }
             }
+            .padding(.horizontal, 16)
         }
-        .frame(width: 350, height: 420)
+        .frame(width: 280, height: 400)
         .background(.regularMaterial)
     }
 
