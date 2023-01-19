@@ -31,6 +31,7 @@ public struct AboutView: View {
             Image(nsImage: NSApp.applicationIconImage)
                 .resizable()
                 .frame(width: 70, height: 70)
+                .padding(10)
 
             Text("CodeEdit")
                 .font(.largeTitle)
@@ -48,14 +49,19 @@ public struct AboutView: View {
                 } label: {
                     Text("Contributors")
                         .foregroundColor(.primary)
+                        .frame(maxWidth: .infinity)
                 }
+
+                .controlSize(.large)
 
                 Button {
                     AcknowledgementsView().showWindow(width: 300, height: 400)
                 } label: {
                     Text("Acknowledgements")
                         .foregroundColor(.primary)
+                        .frame(maxWidth: .infinity)
                 }
+                .controlSize(.large)
             }
             .padding(.vertical)
 
@@ -65,7 +71,6 @@ public struct AboutView: View {
                     .font(.caption)
                     .textSelection(.disabled)
                     .foregroundColor(.secondary)
-
             }
 
             Text(Bundle.copyrightString ?? "")
@@ -73,9 +78,8 @@ public struct AboutView: View {
                 .foregroundColor(.secondary)
                 .font(.caption)
         }
-        .padding(.horizontal, 50)
-        .padding(.bottom, 20)
-        .padding(.top, 10)
+        .padding([.horizontal, .bottom], 16)
+        .frame(width: 280)
         .fixedSize()
         .background(.regularMaterial)
     }
