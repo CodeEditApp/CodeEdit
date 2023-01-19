@@ -9,6 +9,8 @@ import SwiftUI
 
 struct ContributorsView: View {
 
+    @Environment(\.openURL) private var openURL
+
     @State private var contributors: [Contributor] = []
 
     var body: some View {
@@ -60,6 +62,26 @@ struct ContributorsView: View {
                 }
             }
             Spacer()
+            HStack(alignment: .top) {
+                if let profileURL = contributor.profileURL, profileURL != contributor.gitHubURL {
+                    Button {
+                        openURL(profileURL)
+                    } label: {
+                        Image(systemName: "globe")
+                            .imageScale(.large)
+                    }
+                    .buttonStyle(.plain)
+                }
+                if let gitHubURL = contributor.gitHubURL {
+                    Button {
+                        openURL(gitHubURL)
+                    } label: {
+                        Image.github
+                            .imageScale(.large)
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
         }
         .padding(.horizontal)
         .padding(.vertical, 8)
@@ -101,6 +123,14 @@ struct Contributor: Codable, Identifiable {
     var avatarURLString: String
     var profile: String
     var contributions: [Contribution]
+
+    var gitHubURL: URL? {
+        URL(string: "https://github.com/\(login)")
+    }
+
+    var profileURL: URL? {
+        URL(string: profile)
+    }
 
     enum CodingKeys: String, CodingKey {
         case login, name, profile, contributions
