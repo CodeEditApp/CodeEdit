@@ -8,9 +8,6 @@
 import SwiftUI
 
 struct AcknowledgementsView: View {
-
-    @Environment(\.openURL) private var openURL
-
     @ObservedObject
     private var model = AcknowledgementsViewModel()
 
@@ -40,22 +37,7 @@ struct AcknowledgementsView: View {
                                 .frame(height: 0.5)
                                 .opacity(0.5)
                         }
-                        HStack {
-                            Text(acknowledgement.name)
-                                .font(.body)
-
-                            Spacer()
-
-                            Button {
-                                openURL(acknowledgement.repositoryURL)
-                            } label: {
-                                Image(systemName: "arrow.right.circle.fill")
-                                    .foregroundColor(Color(nsColor: .tertiaryLabelColor))
-                            }
-                            .buttonStyle(.plain)
-                        }
-                        .padding(.vertical, 8)
-                        .frame(maxWidth: .infinity)
+                        AcknowledgementRowView(acknowledgement: acknowledgement)
                     }
                 }
             }
