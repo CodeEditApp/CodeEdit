@@ -322,7 +322,6 @@
 		6C97EBCF297876E500302F95 /* AboutWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C97EBCE297876E500302F95 /* AboutWindowController.swift */; };
 		6CBD1BC62978DE53006639D5 /* Font+Caption3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBD1BC52978DE53006639D5 /* Font+Caption3.swift */; };
 		6CDA84AD284C1BA000C1CC3A /* TabBarContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CDA84AC284C1BA000C1CC3A /* TabBarContextMenu.swift */; };
-		B60BE8B92979F2D100841125 /* OffsettableScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60BE8B82979F2D100841125 /* OffsettableScrollView.swift */; };
 		B62617282964924E00E866AB /* CodeEditKit in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 2801BB89290D5A8E00EBF552 /* CodeEditKit */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		B658FB3427DA9E1000EA4DBD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3327DA9E1000EA4DBD /* Assets.xcassets */; };
 		B658FB3727DA9E1000EA4DBD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3627DA9E1000EA4DBD /* Preview Assets.xcassets */; };
@@ -709,7 +708,6 @@
 		6C97EBCE297876E500302F95 /* AboutWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutWindowController.swift; sourceTree = "<group>"; };
 		6CBD1BC52978DE53006639D5 /* Font+Caption3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Caption3.swift"; sourceTree = "<group>"; };
 		6CDA84AC284C1BA000C1CC3A /* TabBarContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarContextMenu.swift; sourceTree = "<group>"; };
-		B60BE8B82979F2D100841125 /* OffsettableScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OffsettableScrollView.swift; sourceTree = "<group>"; };
 		B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodeEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B658FB3127DA9E0F00EA4DBD /* WorkspaceView.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceView.swift; sourceTree = "<group>"; tabWidth = 4; };
 		B658FB3327DA9E1000EA4DBD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -2723,7 +2721,6 @@
 				58822526292C280D00E83CDE /* StatusBarBreakpointButton.swift in Sources */,
 				58D01C96293167DC00C5B6B4 /* Date+Formatted.swift in Sources */,
 				587B9D9E29300ABD00AC7927 /* FontPickerView.swift in Sources */,
-				B60BE8B92979F2D100841125 /* OffsettableScrollView.swift in Sources */,
 				6C97EBCF297876E500302F95 /* AboutWindowController.swift in Sources */,
 				58822529292C280D00E83CDE /* StatusBarLineEndSelector.swift in Sources */,
 				58F2EAE7292FB2B0004A9BDE /* GeneralPreferencesView.swift in Sources */,
