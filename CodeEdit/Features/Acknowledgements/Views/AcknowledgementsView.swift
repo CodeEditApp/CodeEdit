@@ -29,8 +29,8 @@ struct AcknowledgementsView: View {
             } content: {
                 LazyVStack(spacing: 0) {
                     ForEach(
-                        Array(zip(model.acknowledgements.indices, model.acknowledgements)),
-                        id: \.1.name
+                        model.indexedAcknowledgements,
+                        id: \.acknowledgement.name
                     ) { (index, acknowledgement) in
                         if index != 0 {
                             Divider()
