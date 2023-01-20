@@ -65,6 +65,7 @@ struct CodeFileView: View {
             $codeFile.content,
             language: getLanguage(),
             theme: $selectedTheme.editor.editorTheme,
+            useThemeBackground: $prefs.preferences.theme.useThemeBackground,
             font: $font,
             tabWidth: $prefs.preferences.textEditing.defaultTabWidth,
             lineHeight: $prefs.preferences.textEditing.lineHeightMultiple,
@@ -72,7 +73,22 @@ struct CodeFileView: View {
             cursorPosition: codeFile.$cursorPosition
         )
         .id(codeFile.fileURL)
-        .background(selectedTheme.editor.background.swiftColor)
+        .background {
+            if colorScheme == .dark {
+                if prefs.preferences.theme.selectedTheme == prefs.preferences.theme.selectedLightTheme {
+                    Color.white
+                } else {
+                    EffectView(.underPageBackground)
+                }
+            } else {
+                if prefs.preferences.theme.selectedTheme == prefs.preferences.theme.selectedDarkTheme {
+                    Color.black
+                } else {
+                    EffectView(.contentBackground)
+                }
+
+            }
+        }
         .disabled(!editable)
         .frame(maxHeight: .infinity)
         .onChange(of: ThemeModel.shared.selectedTheme) { newValue in
