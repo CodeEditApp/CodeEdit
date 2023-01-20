@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CFBundleShortVersionString</key>
+	<string>0.0.1</string>
 	<key>CE_VERSION_POSTFIX</key>
 	<string>${CE_VERSION_POSTFIX}</string>
 	<key>CFBundleDocumentTypes</key>
