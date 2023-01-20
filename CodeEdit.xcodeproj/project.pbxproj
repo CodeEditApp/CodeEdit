@@ -3004,7 +3004,7 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = CodeEdit/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022-2023 CodeEdit";
 				INFOPLIST_KEY_NSPrincipalClass = CodeEdit.CodeEditApplication;
@@ -3013,7 +3013,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 0.0.1;
+				MARKETING_VERSION = "Change in Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = austincondiff.CodeEdit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -3091,7 +3091,7 @@
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = OpenWithCodeEdit/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = OpenWithCodeEdit;
 				INFOPLIST_KEY_LSUIElement = YES;
@@ -3189,7 +3189,7 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = CodeEdit/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022-2023 CodeEdit";
 				INFOPLIST_KEY_NSPrincipalClass = CodeEdit.CodeEditApplication;
@@ -3198,7 +3198,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 0.0.1;
+				MARKETING_VERSION = "Change in Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = austincondiff.CodeEdit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -3276,7 +3276,7 @@
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = OpenWithCodeEdit/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = OpenWithCodeEdit;
 				INFOPLIST_KEY_LSUIElement = YES;
@@ -3309,7 +3309,7 @@
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = OpenWithCodeEdit/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = OpenWithCodeEdit;
 				INFOPLIST_KEY_LSUIElement = YES;
@@ -3342,7 +3342,7 @@
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = OpenWithCodeEdit/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = OpenWithCodeEdit;
 				INFOPLIST_KEY_LSUIElement = YES;
@@ -3507,7 +3507,7 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = CodeEdit/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022-2023 CodeEdit";
 				INFOPLIST_KEY_NSPrincipalClass = CodeEdit.CodeEditApplication;
@@ -3516,7 +3516,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 0.0.1;
+				MARKETING_VERSION = "Change in Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = austincondiff.CodeEdit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -3542,7 +3542,7 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = CodeEdit/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022-2023 CodeEdit";
 				INFOPLIST_KEY_NSPrincipalClass = CodeEdit.CodeEditApplication;
@@ -3551,7 +3551,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 0.0.1;
+				MARKETING_VERSION = "Change in Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = austincondiff.CodeEdit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
