@@ -8,44 +8,43 @@
 import SwiftUI
 
 struct AcknowledgementsView: View {
-
-    @Environment(\.openURL) private var openURL
-
     @ObservedObject
     private var model = AcknowledgementsViewModel()
 
+    @State private var displayDivider = false
+
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             Image(nsImage: NSApp.applicationIconImage)
                 .resizable()
-                .frame(width: 70, height: 70)
+                .frame(width: 48, height: 48)
             Text("Acknowledgements")
-                .font(.largeTitle)
+                .font(.title)
                 .fontWeight(.bold)
-            ScrollView {
-                ForEach(model.acknowledgements, id: \.name) { acknowledgement in
-                    HStack {
-                        Text(acknowledgement.name)
-                            .font(.title3)
-                            .fontWeight(.semibold)
-
-                        Spacer()
-
-                        Button {
-                            openURL(acknowledgement.repositoryURL)
-                        } label: {
-                            Image(systemName: "arrow.right.circle.fill")
-                                .foregroundColor(Color(nsColor: .tertiaryLabelColor))
+                .padding(.vertical, 8)
+            Divider()
+                .opacity(displayDivider ? 1 : 0)
+            OffsettableScrollView(showsIndicator: false) { offset in
+                displayDivider = offset.y < 0
+            } content: {
+                LazyVStack(spacing: 0) {
+                    ForEach(
+                        model.indexedAcknowledgements,
+                        id: \.acknowledgement.name
+                    ) { (index, acknowledgement) in
+                        if index != 0 {
+                            Divider()
+                                .frame(height: 0.5)
+                                .opacity(0.5)
                         }
-                        .buttonStyle(.plain)
+                        AcknowledgementRowView(acknowledgement: acknowledgement)
                     }
-                    .frame(width: 200)
-                    .padding(.vertical, 2)
                 }
             }
+            .padding(.horizontal, 16)
         }
-        .frame(width: 350, height: 420)
-        .background(.regularMaterial)
+        .frame(width: 280, height: 400)
+        .background(EffectView(.popover, blendingMode: .behindWindow).ignoresSafeArea())
     }
 
     func showWindow(width: CGFloat, height: CGFloat) {

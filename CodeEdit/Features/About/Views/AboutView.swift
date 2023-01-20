@@ -9,6 +9,7 @@ import SwiftUI
 
 public struct AboutView: View {
     @Environment(\.openURL) private var openURL
+    @Environment(\.colorScheme) private var colorScheme
 
     public init() {}
 
@@ -27,22 +28,26 @@ public struct AboutView: View {
     private static var licenseURL = URL(string: "https://github.com/CodeEditApp/CodeEdit/blob/main/LICENSE.md")!
 
     public var body: some View {
-        VStack(spacing: 0) {
-            Image(nsImage: NSApp.applicationIconImage)
-                .resizable()
-                .frame(width: 64, height: 64)
-                .padding(.top, 9)
-                .padding(.bottom, 10)
+        VStack(spacing: 32) {
+            VStack(spacing: 0) {
+                Image(nsImage: NSApp.applicationIconImage)
+                    .resizable()
+                    .frame(width: 128, height: 128)
+                    .padding(.bottom, 8)
 
-            Text("CodeEdit")
-                .font(.title)
-                .fontWeight(.bold)
+                VStack(spacing: 4) {
+                    Text("CodeEdit")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .foregroundColor(.primary)
 
-            Text("Version \(appVersion)\(appVersionPostfix) (\(appBuild))")
-                .textSelection(.enabled)
-                .foregroundColor(.secondary)
-                .font(.caption2)
-                .padding(.vertical, 3)
+                    Text("Version \(appVersion)\(appVersionPostfix) (\(appBuild))")
+                        .textSelection(.enabled)
+                        .foregroundColor(Color(.tertiaryLabelColor))
+                        .font(.body)
+                        .blendMode(colorScheme == .dark ? .plusLighter : .plusDarker)
+                }
+            }
 
             VStack {
                 Button {
@@ -52,7 +57,6 @@ public struct AboutView: View {
                         .foregroundColor(.primary)
                         .frame(maxWidth: .infinity)
                 }
-
                 .controlSize(.large)
 
                 Button {
@@ -63,27 +67,30 @@ public struct AboutView: View {
                         .frame(maxWidth: .infinity)
                 }
                 .controlSize(.large)
-            }
-            .padding(.vertical)
 
-            Link(destination: Self.licenseURL) {
-                Text("MIT License")
-                    .underline()
-                    .font(.caption3)
-                    .textSelection(.disabled)
-                    .foregroundColor(.secondary)
-            }
-            .padding(.vertical, 2)
+                VStack(spacing: 2) {
+                    Link(destination: Self.licenseURL) {
+                        Text("MIT License")
+                            .underline()
 
-            Text(Bundle.copyrightString ?? "")
+                    }
+                    Text(Bundle.copyrightString ?? "")
+                }
                 .textSelection(.disabled)
-                .foregroundColor(.secondary)
-                .font(.caption3)
+                .font(.system(size: 11, weight: .regular))
+                .foregroundColor(Color(.tertiaryLabelColor))
+                .blendMode(colorScheme == .dark ? .plusLighter : .plusDarker)
+                .padding(.top, 12)
+                .padding(.bottom, 8)
+            }
         }
-        .padding([.horizontal, .bottom], 16)
+        .padding(16)
         .frame(width: 280)
         .fixedSize()
-        .background(.regularMaterial)
+        // hack required to get buttons appearing correctly in light appearance
+        // if anyone knows of a better way to do this feel free to refactor
+        .background(.regularMaterial.opacity(0))
+        .background(EffectView(.popover, blendingMode: .behindWindow).ignoresSafeArea())
     }
 
     public func showWindow(width: CGFloat, height: CGFloat) {

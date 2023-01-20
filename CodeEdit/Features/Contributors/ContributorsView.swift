@@ -19,6 +19,7 @@ struct ContributorsView: View {
                 .frame(width: 48, height: 48)
             Text("Contributors")
                 .font(.title)
+                .fontWeight(.bold)
                 .padding(.vertical, 8)
             Divider()
                 .opacity(displayDivider ? 1 : 0)
@@ -37,7 +38,7 @@ struct ContributorsView: View {
             }
         }
         .frame(width: 280, height: 400)
-        .background(.regularMaterial)
+        .background(EffectView(.popover, blendingMode: .behindWindow).ignoresSafeArea())
         .task {
             viewModel.loadContributors()
         }

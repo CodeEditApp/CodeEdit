@@ -12,6 +12,10 @@ final class AcknowledgementsViewModel: ObservableObject {
     @Published
     private (set) var acknowledgements: [AcknowledgementDependency]
 
+    var indexedAcknowledgements: [(index: Int, acknowledgement: AcknowledgementDependency)] {
+      return Array(zip(acknowledgements.indices, acknowledgements))
+    }
+
     init(_ dependencies: [AcknowledgementDependency] = []) {
         self.acknowledgements = dependencies
 
