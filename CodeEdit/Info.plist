@@ -19,7 +19,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © 2022-2023 CodeEdit</string>
+	<string>${CE_COPYRIGHT}</string>
 	<key>CFBundleShortVersionString</key>
 	<string>0.0.1</string>
 	<key>CE_VERSION_POSTFIX</key>
