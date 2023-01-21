@@ -83,7 +83,10 @@ struct GitLabHostedLoginView: View {
             switch response {
             case .success(let user):
                 if gitAccounts.contains(
-                    where: { $0.id == "\(eneterpriseLink)_\(gitAccountName.lowercased())" }
+                    where: {
+                        $0.gitProviderLink == eneterpriseLink &&
+                        $0.gitAccountName.lowercased() == gitAccountName.lowercased()
+                    }
                 ) {
                     print("Account with the username and provider already exists!")
                 } else {

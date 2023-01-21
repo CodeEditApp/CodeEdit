@@ -80,7 +80,10 @@ struct GitLabLoginView: View {
             switch response {
             case .success(let user):
                 if gitAccounts.contains(
-                    where: { $0.id == "\(providerLink)_\(gitAccountName.lowercased())" }
+                    where: {
+                        $0.gitProviderLink == providerLink &&
+                        $0.gitAccountName.lowercased() == gitAccountName.lowercased()
+                    }
                 ) {
                     print("Account with the username and provider already exists!")
                 } else {
