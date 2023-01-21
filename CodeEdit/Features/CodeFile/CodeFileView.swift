@@ -65,12 +65,12 @@ struct CodeFileView: View {
             $codeFile.content,
             language: getLanguage(),
             theme: $selectedTheme.editor.editorTheme,
-            useThemeBackground: $prefs.preferences.theme.useThemeBackground,
             font: $font,
             tabWidth: $prefs.preferences.textEditing.defaultTabWidth,
             lineHeight: $prefs.preferences.textEditing.lineHeightMultiple,
             wrapLines: $prefs.preferences.textEditing.wrapLinesToEditorWidth,
-            cursorPosition: codeFile.$cursorPosition
+            cursorPosition: codeFile.$cursorPosition,
+            useThemeBackground: prefs.preferences.theme.useThemeBackground
         )
         .id(codeFile.fileURL)
         .background {
