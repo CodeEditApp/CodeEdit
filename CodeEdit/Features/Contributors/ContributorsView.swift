@@ -8,33 +8,26 @@
 import SwiftUI
 
 struct ContributorsView: View {
-    @StateObject private var viewModel = ContributorsViewModel()
+    @StateObject var model = ContributorsViewModel()
+    @Binding var aboutMode: AboutMode
+    var namespace: Namespace.ID
 
     var body: some View {
-        VStack(spacing: 0) {
-            ForEach(viewModel.contributors) { contributor in
+        AboutDetailView(title: "Contributors", aboutMode: $aboutMode, namespace: namespace) {
+            ForEach(model.contributors) { contributor in
                 ContributorRowView(contributor: contributor)
                 Divider()
                     .frame(height: 0.5)
                     .opacity(0.5)
             }
         }
-        .task {
-            viewModel.loadContributors()
-        }
-    }
-}
-
-struct ContributorsView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContributorsView()
     }
 }
 
 class ContributorsViewModel: ObservableObject {
     @Published private(set) var contributors: [Contributor] = []
 
-    func loadContributors() {
+    init() {
         guard let url = Bundle.main.url(
             forResource: ".all-contributorsrc",
             withExtension: nil

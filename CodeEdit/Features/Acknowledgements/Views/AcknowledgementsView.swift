@@ -8,11 +8,12 @@
 import SwiftUI
 
 struct AcknowledgementsView: View {
-    @ObservedObject
-    private var model = AcknowledgementsViewModel()
+    @StateObject var model = AcknowledgementsViewModel()
+    @Binding var aboutMode: AboutMode
+    var namespace: Namespace.ID
 
     var body: some View {
-        VStack(spacing: 0) {
+        AboutDetailView(title: "Acknowledgements", aboutMode: $aboutMode, namespace: namespace) {
             ForEach(
                 model.indexedAcknowledgements,
                 id: \.acknowledgement.name
