@@ -9,5 +9,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+      - name: Check Version Number exists
+        run: exec ./.github/scripts/test_version_number.sh
       - name: Testing App
         run: exec ./.github/scripts/test_app.sh arm
