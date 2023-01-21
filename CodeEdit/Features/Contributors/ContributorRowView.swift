@@ -35,7 +35,6 @@ struct ContributorRowView: View {
                 }
             }
         }
-        .padding(.horizontal)
         .padding(.vertical, 8)
     }
 

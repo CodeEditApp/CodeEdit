@@ -8,44 +8,20 @@
 import SwiftUI
 
 struct ContributorsView: View {
-
     @StateObject private var viewModel = ContributorsViewModel()
-    @State private var displayDivider = false
 
     var body: some View {
         VStack(spacing: 0) {
-            Image(nsImage: NSApp.applicationIconImage)
-                .resizable()
-                .frame(width: 48, height: 48)
-            Text("Contributors")
-                .font(.title)
-                .fontWeight(.bold)
-                .padding(.vertical, 8)
-            Divider()
-                .opacity(displayDivider ? 1 : 0)
-            OffsettableScrollView(showsIndicator: false) { offset in
-                displayDivider = offset.y < 0
-            } content: {
-                LazyVStack(spacing: 0) {
-                    ForEach(viewModel.contributors) { contributor in
-                        ContributorRowView(contributor: contributor)
-                        Divider()
-                            .frame(height: 0.5)
-                            .opacity(0.5)
-                            .padding(.horizontal)
-                    }
-                }
+            ForEach(viewModel.contributors) { contributor in
+                ContributorRowView(contributor: contributor)
+                Divider()
+                    .frame(height: 0.5)
+                    .opacity(0.5)
             }
         }
-        .frame(width: 280, height: 400)
-        .background(EffectView(.popover, blendingMode: .behindWindow).ignoresSafeArea())
         .task {
             viewModel.loadContributors()
         }
-    }
-
-    func showWindow(width: CGFloat, height: CGFloat) {
-        ContributorsWindowController(view: self, size: NSSize(width: width, height: height)).showWindow(nil)
     }
 }
 

@@ -1057,9 +1057,9 @@
 		5831E3C52933E6CB00D5A6D2 /* Features */ = {
 			isa = PBXGroup;
 			children = (
-				284DC84B2978B5EB00BF2770 /* Contributors */,
 				582213EE2918345500EFE361 /* About */,
 				5878DA7D291862BC00DD95A3 /* Acknowledgements */,
+				284DC84B2978B5EB00BF2770 /* Contributors */,
 				58F2EA9E292FB2B0004A9BDE /* AppPreferences */,
 				5878DAAB291D627C00DD95A3 /* Breadcrumbs */,
 				587B9D50292FC27A00AC7927 /* CodeEditExtension */,

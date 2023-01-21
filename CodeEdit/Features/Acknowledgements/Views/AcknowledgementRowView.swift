@@ -27,7 +27,7 @@ struct AcknowledgementRowView: View {
             }
             .buttonStyle(.plain)
         }
-        .padding(.vertical, 8)
+        .padding(.vertical, 10)
         .frame(maxWidth: .infinity)
     }
 }
