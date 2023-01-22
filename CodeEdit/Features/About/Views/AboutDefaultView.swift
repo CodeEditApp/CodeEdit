@@ -102,7 +102,8 @@ struct AboutDefaultView: View {
                 .padding(.top, 12)
                 .padding(.bottom, 24)
             }
-            .matchedGeometryEffect(id: "ContentView", in: namespace, properties: .position, anchor: .top)
+            .matchedGeometryEffect(id: "Titlebar", in: namespace, properties: .position, anchor: .top)
+            .matchedGeometryEffect(id: "ScrollView", in: namespace, properties: .position, anchor: .top)
         }
         .padding(.horizontal)
     }

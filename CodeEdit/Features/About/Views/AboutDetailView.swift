@@ -37,17 +37,20 @@ struct AboutDetailView<Content: View>: View {
     @State private var scrollOffset: CGFloat = 0
 
     var body: some View {
-        OffsettableScrollView(showsIndicator: false) { offset in
-            scrollOffset = offset.y
-        } content: {
-            Spacer(minLength: mediumTitlebarHeight + 8)
-            content
-                .padding(.horizontal)
-                .padding(.bottom, 8)
-                .matchedGeometryEffect(id: "ContentView", in: namespace, properties: .position, anchor: .top)
+        VStack {
+            Spacer(minLength: smallTitlebarHeight + 1)
+            OffsettableScrollView(showsIndicator: false) { offset in
+                scrollOffset = offset.y
+            } content: {
+                Spacer(minLength: mediumTitlebarHeight - smallTitlebarHeight - 1 + 8)
+                content
+                    .padding(.horizontal)
+                    .padding(.bottom, 8)
+            }
+            .frame(maxWidth: .infinity)
+            .matchedGeometryEffect(id: "ScrollView", in: namespace, properties: .position, anchor: .top)
+            .clipShape(Rectangle())
         }
-        .transition(.opacity.combined(with: .offset(y: largeTitlebarHeight)))
-        .frame(maxWidth: .infinity)
 
         VStack(spacing: 0) {
             Image(nsImage: NSApp.applicationIconImage)
@@ -82,7 +85,7 @@ struct AboutDetailView<Content: View>: View {
                     maxOffset: maxScrollOffset
                 ))
                 .padding(.bottom, getScrollAdjustedValue(
-                    minValue: 8,
+                    minValue: 5,
                     maxValue: 0,
                     minOffset: 0,
                     maxOffset: maxScrollOffset
@@ -95,7 +98,7 @@ struct AboutDetailView<Content: View>: View {
                         .foregroundColor(.primary)
                         .font(.system(
                             size: getScrollAdjustedValue(
-                                minValue: 22,
+                                minValue: 20,
                                 maxValue: 14,
                                 minOffset: 0,
                                 maxOffset: maxScrollOffset
@@ -105,22 +108,28 @@ struct AboutDetailView<Content: View>: View {
 
                     .fixedSize(horizontal: true, vertical: false)
                     .frame(minHeight: smallTitlebarHeight)
-                    .padding(.horizontal)
+                    .padding(.horizontal, 13)
                     .overlay(alignment: .leading) {
                         Image(systemName: "chevron.left")
                             .foregroundColor(.secondary)
+                            .padding(.trailing)
                     }
+                    .contentShape(Rectangle())
                     .matchedGeometryEffect(id: "Title", in: namespace, properties: .position, anchor: .center)
             }
             .buttonStyle(.plain)
 
-            if currentOffset <= 14.0 {
-                Divider()
-            }
+            Divider()
+                .opacity(getScrollAdjustedValue(
+                    minValue: 0,
+                    maxValue: 1,
+                    minOffset: 0,
+                    maxOffset: maxScrollOffset
+                ))
         }
         .padding(0)
         .frame(maxWidth: .infinity)
-        .background(.ultraThinMaterial.opacity(currentOffset <= 14.0 ? 1 : 0))
+        .matchedGeometryEffect(id: "Titlebar", in: namespace, properties: .position, anchor: .bottom)
     }
 
     func getScrollAdjustedValue(
@@ -134,13 +143,6 @@ struct AboutDetailView<Content: View>: View {
         let currentOffset = scrollOffset
         let percentage = (currentOffset - minOffset) / offsetRange
         let value = minValue + (valueRange * percentage)
-
-        print(currentOffset)
-
-        //        TODO: Commented out for now to move with overscroll effect, should this be configurable functionality?
-        //        if currentOffset >= minOffset {
-        //            return minValue
-        //        }
 
         if currentOffset <= maxOffset {
             return maxValue
