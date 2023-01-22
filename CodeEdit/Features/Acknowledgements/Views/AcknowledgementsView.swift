@@ -14,16 +14,18 @@ struct AcknowledgementsView: View {
 
     var body: some View {
         AboutDetailView(title: "Acknowledgements", aboutMode: $aboutMode, namespace: namespace) {
-            ForEach(
-                model.indexedAcknowledgements,
-                id: \.acknowledgement.name
-            ) { (index, acknowledgement) in
-                if index != 0 {
-                    Divider()
-                        .frame(height: 0.5)
-                        .opacity(0.5)
+            VStack(spacing: 0) {
+                ForEach(
+                    model.indexedAcknowledgements,
+                    id: \.acknowledgement.name
+                ) { (index, acknowledgement) in
+                    if index != 0 {
+                        Divider()
+                            .frame(height: 0.5)
+                            .opacity(0.5)
+                    }
+                    AcknowledgementRowView(acknowledgement: acknowledgement)
                 }
-                AcknowledgementRowView(acknowledgement: acknowledgement)
             }
         }
     }

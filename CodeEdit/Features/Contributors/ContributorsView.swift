@@ -14,11 +14,13 @@ struct ContributorsView: View {
 
     var body: some View {
         AboutDetailView(title: "Contributors", aboutMode: $aboutMode, namespace: namespace) {
-            ForEach(model.contributors) { contributor in
-                ContributorRowView(contributor: contributor)
-                Divider()
-                    .frame(height: 0.5)
-                    .opacity(0.5)
+            VStack(spacing: 0) {
+                ForEach(model.contributors) { contributor in
+                    ContributorRowView(contributor: contributor)
+                    Divider()
+                        .frame(height: 0.5)
+                        .opacity(0.5)
+                }
             }
         }
     }

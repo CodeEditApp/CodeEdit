@@ -26,6 +26,10 @@ struct AboutDefaultView: View {
 
     private static var licenseURL = URL(string: "https://github.com/CodeEditApp/CodeEdit/blob/main/LICENSE.md")!
 
+    let smallTitlebarHeight: CGFloat = 28
+    let mediumTitlebarHeight: CGFloat = 113
+    let largeTitlebarHeight: CGFloat = 231
+
     var body: some View {
         VStack(spacing: 0) {
             Image(nsImage: NSApp.applicationIconImage)
@@ -43,13 +47,18 @@ struct AboutDefaultView: View {
                         size: 26,
                         weight: .bold
                     ))
-
                 Text("Version \(appVersion)\(appVersionPostfix) (\(appBuild))")
                     .textSelection(.enabled)
                     .foregroundColor(Color(.tertiaryLabelColor))
                     .font(.body)
                     .blendMode(colorScheme == .dark ? .plusLighter : .plusDarker)
                     .padding(.top, 4)
+                    .matchedGeometryEffect(
+                        id: "Title",
+                        in: namespace,
+                        properties: .position,
+                        anchor: UnitPoint(x: 0.5, y: -0.75)
+                    )
             }
             .padding(.horizontal)
         }
@@ -57,39 +66,43 @@ struct AboutDefaultView: View {
 
         VStack {
             Spacer()
-            Button {
-                aboutMode = .contributors
-            } label: {
-                Text("Contributors")
-                    .foregroundColor(.primary)
-                    .frame(maxWidth: .infinity)
-            }
-            .controlSize(.large)
-            .buttonStyle(.blur)
-
-            Button {
-                aboutMode = .acknowledgements
-            } label: {
-                Text("Acknowledgements")
-                    .foregroundColor(.primary)
-                    .frame(maxWidth: .infinity)
-            }
-            .controlSize(.large)
-
-            VStack(spacing: 2) {
-                Link(destination: Self.licenseURL) {
-                    Text("MIT License")
-                        .underline()
-
+            VStack {
+                Button {
+                    aboutMode = .contributors
+                } label: {
+                    Text("Contributors")
+                        .foregroundColor(.primary)
+                        .frame(maxWidth: .infinity)
                 }
-                Text(Bundle.copyrightString ?? "")
+                .controlSize(.large)
+                .buttonStyle(.blur)
+
+                Button {
+                    aboutMode = .acknowledgements
+                } label: {
+                    Text("Acknowledgements")
+                        .foregroundColor(.primary)
+                        .frame(maxWidth: .infinity)
+                }
+                .controlSize(.large)
+                .buttonStyle(.blur)
+
+                VStack(spacing: 2) {
+                    Link(destination: Self.licenseURL) {
+                        Text("MIT License")
+                            .underline()
+
+                    }
+                    Text(Bundle.copyrightString ?? "")
+                }
+                .textSelection(.disabled)
+                .font(.system(size: 11, weight: .regular))
+                .foregroundColor(Color(.tertiaryLabelColor))
+                .blendMode(colorScheme == .dark ? .plusLighter : .plusDarker)
+                .padding(.top, 12)
+                .padding(.bottom, 24)
             }
-            .textSelection(.disabled)
-            .font(.system(size: 11, weight: .regular))
-            .foregroundColor(Color(.tertiaryLabelColor))
-            .blendMode(colorScheme == .dark ? .plusLighter : .plusDarker)
-            .padding(.top, 12)
-            .padding(.bottom, 24)
+            .matchedGeometryEffect(id: "ContentView", in: namespace, properties: .position, anchor: .top)
         }
         .padding(.horizontal)
     }

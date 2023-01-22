@@ -17,9 +17,9 @@ struct BlurButtonStyle: ButtonStyle {
     var height: CGFloat {
         switch controlSize {
         case .large:
-            return 30
+            return 28
         default:
-            return 10
+            return 20
         }
     }
 
@@ -34,19 +34,20 @@ struct BlurButtonStyle: ButtonStyle {
                 case .dark:
                     Color
                         .gray
-                        .opacity(0.1)
+                        .opacity(0.001)
                         .overlay(.regularMaterial.blendMode(.plusLighter))
-                        .overlay(Color.gray.opacity(0.35))
+                        .overlay(Color.gray.opacity(0.30))
+                        .overlay(Color.white.opacity(configuration.isPressed ? 0.20 : 0.00))
                 case .light:
                     Color
                         .gray
-                        .opacity(0.1)
-                        .overlay(.regularMaterial.blendMode(.plusDarker))
-                        .overlay(Color.gray.opacity(0.2).colorMultiply(.white))
+                        .opacity(0.001)
+                        .overlay(.regularMaterial.blendMode(.darken))
+                        .overlay(Color.gray.opacity(0.15).blendMode(.plusDarker))
                 @unknown default:
                     Color.black
                 }
             }
-            .cornerRadius(7)
+            .cornerRadius(6)
     }
 }

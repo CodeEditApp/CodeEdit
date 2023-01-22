@@ -77,7 +77,7 @@ struct ContributorRowView: View {
                 openURL(url)
             } label: {
                 image
-                    .imageScale(.large)
+                    .imageScale(.medium)
                     .foregroundColor(hovering ? .primary : .secondary)
             }
             .buttonStyle(.plain)

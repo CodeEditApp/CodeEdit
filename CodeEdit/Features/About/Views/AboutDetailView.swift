@@ -8,24 +8,23 @@
 import SwiftUI
 
 struct AboutDetailView<Content: View>: View {
-
     var title: String
 
     @Binding var aboutMode: AboutMode
-    
+
     var namespace: Namespace.ID
 
     @ViewBuilder
     var content: Content
-    
+
     let smallTitlebarHeight: CGFloat = 28
     let mediumTitlebarHeight: CGFloat = 113
     let largeTitlebarHeight: CGFloat = 231
-    
+
     var maxScrollOffset: CGFloat {
         smallTitlebarHeight - mediumTitlebarHeight
     }
-    
+
     var currentOffset: CGFloat {
         getScrollAdjustedValue(
             minValue: 22,
@@ -35,27 +34,23 @@ struct AboutDetailView<Content: View>: View {
         )
     }
 
-
-    
     @State private var scrollOffset: CGFloat = 0
-    
 
-    
     var body: some View {
         OffsettableScrollView(showsIndicator: false) { offset in
             scrollOffset = offset.y
         } content: {
-            Spacer(minLength: 110)
+            Spacer(minLength: mediumTitlebarHeight + 8)
             content
+                .padding(.horizontal)
+                .padding(.bottom, 8)
+                .matchedGeometryEffect(id: "ContentView", in: namespace, properties: .position, anchor: .top)
         }
-        .transition(.opacity.combined(with: .offset(y: 200)))
-        .padding(.horizontal)
+        .transition(.opacity.combined(with: .offset(y: largeTitlebarHeight)))
         .frame(maxWidth: .infinity)
-
 
         VStack(spacing: 0) {
             Image(nsImage: NSApp.applicationIconImage)
-
                 .resizable()
                 .matchedGeometryEffect(id: "AppIcon", in: namespace)
                 .frame(
@@ -80,18 +75,22 @@ struct AboutDetailView<Content: View>: View {
                         maxOffset: maxScrollOffset
                     )
                 )
-
-                .padding(.vertical, getScrollAdjustedValue(
+                .padding(.top, getScrollAdjustedValue(
+                    minValue: smallTitlebarHeight,
+                    maxValue: 0,
+                    minOffset: 0,
+                    maxOffset: maxScrollOffset
+                ))
+                .padding(.bottom, getScrollAdjustedValue(
                     minValue: 8,
                     maxValue: 0,
                     minOffset: 0,
                     maxOffset: maxScrollOffset
                 ))
-            
+
             Button {
                 aboutMode = .about
             } label: {
-
                     Text(title)
                         .foregroundColor(.primary)
                         .font(.system(
@@ -103,8 +102,6 @@ struct AboutDetailView<Content: View>: View {
                             ),
                             weight: .bold
                         ))
-
-
 
                     .fixedSize(horizontal: true, vertical: false)
                     .frame(minHeight: smallTitlebarHeight)
@@ -125,7 +122,7 @@ struct AboutDetailView<Content: View>: View {
         .frame(maxWidth: .infinity)
         .background(.ultraThinMaterial.opacity(currentOffset <= 14.0 ? 1 : 0))
     }
-    
+
     func getScrollAdjustedValue(
         minValue: CGFloat,
         maxValue: CGFloat,
@@ -137,12 +134,14 @@ struct AboutDetailView<Content: View>: View {
         let currentOffset = scrollOffset
         let percentage = (currentOffset - minOffset) / offsetRange
         let value = minValue + (valueRange * percentage)
-        
+
+        print(currentOffset)
+
         //        TODO: Commented out for now to move with overscroll effect, should this be configurable functionality?
         //        if currentOffset >= minOffset {
         //            return minValue
         //        }
-        
+
         if currentOffset <= maxOffset {
             return maxValue
         }
