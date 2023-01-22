@@ -45,8 +45,6 @@ struct OffsettableScrollView<T: View>: View {
             }
             .frame(width: 0, height: 0)
             content
-                .padding(.top, -8)
-                .padding(.bottom, -1)
         }
         .coordinateSpace(name: "ScrollViewOrigin")
         .onPreferenceChange(

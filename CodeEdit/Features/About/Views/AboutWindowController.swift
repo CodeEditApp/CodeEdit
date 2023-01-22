@@ -8,10 +8,21 @@
 import SwiftUI
 
 final class AboutViewWindowController: NSWindowController {
+
+    class CustomWindow: NSWindow {
+        @objc var hasMainAppearance: Bool {
+            true
+        }
+
+        @objc var hasKeyAppearance: Bool {
+            true
+        }
+    }
+
     convenience init<T: View>(view: T, size: NSSize) {
         let hostingController = NSHostingController(rootView: view)
         // New window holding our SwiftUI view
-        let window = NSWindow(contentViewController: hostingController)
+        let window = CustomWindow(contentViewController: hostingController)
         self.init(window: window)
         window.styleMask = [.closable, .fullSizeContentView, .titled, .nonactivatingPanel]
         window.standardWindowButton(.miniaturizeButton)?.isHidden = true
