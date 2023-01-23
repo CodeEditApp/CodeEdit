@@ -106,18 +106,25 @@ struct GitHubLoginView: View {
         let gitAccounts = prefs.preferences.accounts.sourceControlAccounts.gitAccount
 
         let config = GitHubTokenConfiguration(accountToken)
+
+        let providerLink = "https://github.com"
         GitHubAccount(config).me { response in
             switch response {
             case .success(let user):
-                if gitAccounts.contains(where: { $0.id == gitAccountName.lowercased() }) {
-                    print("Account with the username already exists!")
+                if gitAccounts.contains(
+                    where: {
+                        $0.gitProviderLink == providerLink &&
+                        $0.gitAccountName.lowercased() == gitAccountName.lowercased()
+                    }
+                ) {
+                    print("Account with the username and provider already exists!")
                 } else {
                     print(user)
                     prefs.preferences.accounts.sourceControlAccounts.gitAccount.append(
                         SourceControlAccounts(
-                            id: gitAccountName.lowercased(),
+                            id: "\(providerLink)_\(gitAccountName.lowercased())",
                             gitProvider: "GitHub",
-                            gitProviderLink: "https://github.com",
+                            gitProviderLink: providerLink,
                             gitProviderDescription: "GitHub",
                             gitAccountName: gitAccountName,
                             gitCloningProtocol: true,

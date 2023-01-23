@@ -86,13 +86,18 @@ struct GitHubEnterpriseLoginView: View {
         GitHubAccount(config).me { response in
             switch response {
             case .success(let user):
-                if gitAccounts.contains(where: { $0.id == gitAccountName.lowercased() }) {
-                    print("Account with the username already exists!")
+                if gitAccounts.contains(
+                    where: {
+                        $0.gitProviderLink == eneterpriseLink &&
+                        $0.gitAccountName.lowercased() == gitAccountName.lowercased()
+                    }
+                ) {
+                    print("Account with the username and provider already exists!")
                 } else {
                     print(user)
                     prefs.preferences.accounts.sourceControlAccounts.gitAccount.append(
                         SourceControlAccounts(
-                            id: gitAccountName.lowercased(),
+                            id: "\(eneterpriseLink)_\(gitAccountName.lowercased())",
                             gitProvider: "GitHub",
                             gitProviderLink: eneterpriseLink,
                             gitProviderDescription: "GitHub",
