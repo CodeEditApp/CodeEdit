@@ -509,6 +509,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "Cubik65536",
+      "name": "Cubik",
+      "avatar_url": "https://avatars.githubusercontent.com/u/72877496?v=4",
+      "profile": "https://cubik65536.top",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
