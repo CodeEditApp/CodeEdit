@@ -11,6 +11,12 @@ struct StatusBarDrawer: View {
     @EnvironmentObject
     private var model: StatusBarViewModel
 
+    @ObservedObject
+    private var prefs: AppPreferencesModel = .shared
+
+    @Environment(\.colorScheme)
+    private var colorScheme
+
     @State
     private var searchText = ""
 
@@ -27,7 +33,24 @@ struct StatusBarDrawer: View {
     var body: some View {
         VStack(spacing: 0) {
             switch model.selectedTab {
-            case 0: TerminalEmulatorView(url: model.workspaceURL)
+            case 0:
+                TerminalEmulatorView(url: model.workspaceURL)
+                    .background {
+                        if colorScheme == .dark {
+                            if prefs.preferences.theme.selectedTheme == prefs.preferences.theme.selectedLightTheme {
+                                Color.white
+                            } else {
+                                EffectView(.underPageBackground)
+                            }
+                        } else {
+                            if prefs.preferences.theme.selectedTheme == prefs.preferences.theme.selectedDarkTheme {
+                                Color.black
+                            } else {
+                                EffectView(.contentBackground)
+                            }
+
+                        }
+                    }
             default: Rectangle().foregroundColor(Color(nsColor: .textBackgroundColor))
             }
             HStack(alignment: .center, spacing: 10) {
