@@ -35,6 +35,7 @@ struct TerminalThemeView: View {
     private var topToggles: some View {
         VStack(alignment: .leading) {
             Toggle("Always use dark terminal appearance", isOn: $prefs.preferences.terminal.darkAppearance)
+            Toggle("Use theme background ", isOn: $prefs.preferences.terminal.useThemeBackground)
         }
     }
 

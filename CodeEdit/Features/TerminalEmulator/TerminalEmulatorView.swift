@@ -175,7 +175,7 @@ struct TerminalEmulatorView: NSViewRepresentable {
             terminal.caretColor = cursorColor
             terminal.selectedTextBackgroundColor = selectionColor
             terminal.nativeForegroundColor = textColor
-            terminal.nativeBackgroundColor = prefs.preferences.terminal.darkAppearance ? backgroundColor : .clear
+            terminal.nativeBackgroundColor = prefs.preferences.terminal.useThemeBackground ? backgroundColor : .clear
             terminal.layer?.backgroundColor = .clear
             terminal.optionAsMetaKey = optionAsMeta
         }
@@ -202,7 +202,7 @@ struct TerminalEmulatorView: NSViewRepresentable {
         view.caretColor = cursorColor
         view.selectedTextBackgroundColor = selectionColor
         view.nativeForegroundColor = textColor
-        view.nativeBackgroundColor = prefs.preferences.terminal.darkAppearance ? backgroundColor : .clear
+        view.nativeBackgroundColor = prefs.preferences.terminal.useThemeBackground ? backgroundColor : .clear
         view.layer?.backgroundColor = .clear
         view.optionAsMetaKey = optionAsMeta
         view.appearance = colorAppearance
