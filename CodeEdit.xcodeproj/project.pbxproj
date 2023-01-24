@@ -3806,7 +3806,7 @@
 			repositoryURL = "https://github.com/CodeEditApp/CodeEditTextView.git";
 			requirement = {
 				kind = exactVersion;
-				version = 0.3.4;
+				version = 0.3.5;
 			};
 		};
 		58F2EB18292FB91C004A9BDE /* XCRemoteSwiftPackageReference "Preferences" */ = {
