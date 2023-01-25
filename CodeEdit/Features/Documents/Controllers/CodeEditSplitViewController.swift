@@ -65,6 +65,8 @@ final class CodeEditSplitViewController: NSSplitViewController {
                 key: isInspectorCollapsedStateName
             ) as? Bool ?? true
         }
+
+        self.insertToolbarItemIfNeeded()
     }
 
     // MARK: - NSSplitViewDelegate
