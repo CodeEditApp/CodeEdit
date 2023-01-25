@@ -81,6 +81,9 @@ class StatusBarViewModel: ObservableObject {
 
         var currentHeight = workspace.getFromWorkspaceState(key: statusBarDrawerHeightStateName) as? Double
                             ?? self.standardHeight
+        if currentHeight == 0 {
+            currentHeight = self.standardHeight
+        }
 
         self.isExpanded = workspace.getFromWorkspaceState(key: isStatusBarDrawerCollapsedStateName) as? Bool ?? false
         if self.isExpanded {
