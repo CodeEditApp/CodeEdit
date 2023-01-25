@@ -368,7 +368,7 @@ import CodeEditKit
         self.searchState = .init(self)
         self.quickOpenViewModel = .init(fileURL: url)
         self.commandsPaletteState = .init()
-        self.statusBarModel = .init(workspaceURL: url)
+        self.statusBarModel = .init(workspace: self, workspaceURL: url)
 
         NotificationCenter.default.addObserver(
             self,

@@ -27,6 +27,7 @@ internal struct StatusBarToggleDrawerButton: View {
                 model.currentHeight = 300
             }
         }
+        self.model.saveIsExpandedToState()
     }
 
     internal var body: some View {
