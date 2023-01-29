@@ -8,6 +8,35 @@
 import Cocoa
 
 final class CodeEditDocumentController: NSDocumentController {
+    lazy var fileManager: FileManager = {
+        FileManager.default
+    }()
+
+    override func newDocument(_ sender: Any?) {
+        guard let newDocumentUrl = self.newDocumentUrl else { return }
+
+        let createdFile = self.fileManager.createFile(
+            atPath: newDocumentUrl.path,
+            contents: nil,
+            attributes: [FileAttributeKey.creationDate: Date()]
+        )
+        guard createdFile else {
+            print("Failed to create new document")
+            return
+        }
+
+        self.openDocument(withContentsOf: newDocumentUrl, display: true) { _, _, _ in }
+    }
+
+    private var newDocumentUrl: URL? {
+        let panel = NSSavePanel()
+        guard panel.runModal() == .OK else {
+            return nil
+        }
+
+        return panel.url
+    }
+
     override func openDocument(_ sender: Any?) {
         self.openDocument(onCompletion: { document, documentWasAlreadyOpen in
             // TODO: handle errors
@@ -30,8 +59,12 @@ final class CodeEditDocumentController: NSDocumentController {
 
             if let document = document {
                 self.addDocument(document)
+                self.updateRecent(url)
+            } else {
+                let errorMessage = error?.localizedDescription ?? "unknown error"
+                print("Unable to open document '\(url)': \(errorMessage)")
             }
-            self.updateRecent(url)
+
             completionHandler(document, documentWasAlreadyOpen, error)
         }
     }
