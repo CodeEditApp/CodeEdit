@@ -67,6 +67,9 @@ final class OutlineViewController: NSViewController {
         column.title = "Cell"
         outlineView.addTableColumn(column)
 
+        outlineView.setDraggingSourceOperationMask(.move, forLocal: false)
+        outlineView.registerForDraggedTypes([.fileURL])
+
         self.scrollView.documentView = outlineView
         self.scrollView.contentView.automaticallyAdjustsContentInsets = false
         self.scrollView.contentView.contentInsets = .init(top: 10, left: 0, bottom: 0, right: 0)
@@ -149,6 +152,84 @@ extension OutlineViewController: NSOutlineViewDataSource {
             return item.children != nil
         }
         return false
+    }
+
+    /// write dragged file(s) to pasteboard
+    func outlineView(_ outlineView: NSOutlineView, pasteboardWriterForItem item: Any) -> NSPasteboardWriting? {
+        guard let fileItem = item as? Item else { return nil }
+        return fileItem.url as NSURL
+    }
+
+    /// declare valid drop target
+    func outlineView(
+        _ outlineView: NSOutlineView,
+        validateDrop info: NSDraggingInfo,
+        proposedItem item: Any?,
+        proposedChildIndex index: Int
+    ) -> NSDragOperation {
+        guard let fileItem = item as? Item else { return [] }
+        // -1 index indicates that we are hovering over a row in outline view (folder or file)
+        if index == -1 {
+            if !fileItem.isFolder {
+                outlineView.setDropItem(fileItem.parent, dropChildIndex: index)
+            }
+            return .move
+        }
+        return []
+    }
+
+    /// handle successful or unsuccessful drop
+    func outlineView(
+        _ outlineView: NSOutlineView,
+        acceptDrop info: NSDraggingInfo,
+        item: Any?,
+        childIndex index: Int
+    ) -> Bool {
+        guard let pasteboardItems = info.draggingPasteboard.readObjects(forClasses: [NSURL.self]) else { return false }
+        let fileItemURLS = pasteboardItems.compactMap { $0 as? URL }
+
+        guard let fileItemDestination = item as? Item else { return false }
+        let destParentURL = fileItemDestination.url
+
+        for fileItemURL in fileItemURLS {
+            let destURL = destParentURL.appendingPathComponent(fileItemURL.lastPathComponent)
+            // cancel dropping file item on self or in parent directory
+            if fileItemURL == destURL || fileItemURL == destParentURL {
+                return false
+            }
+
+            // Needs to come before call to .removeItem or else race condition occurs
+            guard let srcFileItem = try? workspace?.workspaceClient?.getFileItem(fileItemURL.relativePath) else {
+                return false
+            }
+
+            if WorkspaceClient.FileItem.fileManger.fileExists(atPath: destURL.path) {
+                let shouldReplace = replaceFileDialog(fileName: fileItemURL.lastPathComponent)
+                guard shouldReplace else {
+                    return false
+                }
+                do {
+                    try WorkspaceClient.FileItem.fileManger.removeItem(at: destURL)
+                } catch {
+                    fatalError(error.localizedDescription)
+                }
+            }
+
+            self.moveFile(file: srcFileItem, to: destURL)
+        }
+        return true
+    }
+
+    func replaceFileDialog(fileName: String) -> Bool {
+        let alert = NSAlert()
+        alert.messageText = """
+        A file or folder with the name \(fileName) already exists in the destination folder. Do you want to replace it?
+        """
+        alert.informativeText = "This action is irreversible!"
+        alert.alertStyle = .warning
+        alert.addButton(withTitle: "Replace")
+        alert.addButton(withTitle: "Cancel")
+        return alert.runModal() == .alertFirstButtonReturn
     }
 }
 
@@ -299,8 +380,12 @@ extension OutlineViewController: NSMenuDelegate {
 
 extension OutlineViewController: OutlineTableViewCellDelegate {
     func moveFile(file: Item, to destination: URL) {
-        workspace?.closeTab(item: .codeEditor(file.id))
+        if !file.isFolder {
+            workspace?.closeTab(item: .codeEditor(file.id))
+        }
         file.move(to: destination)
-        workspace?.openTab(item: file)
+        if !file.isFolder {
+            workspace?.openTab(item: file)
+        }
     }
 }
