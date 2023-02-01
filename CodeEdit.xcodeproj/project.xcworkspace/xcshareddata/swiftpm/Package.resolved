@@ -51,7 +51,7 @@
       "location" : "https://github.com/ChimeHQ/ConcurrencyPlus",
       "state" : {
         "branch" : "main",
-        "revision" : "7e141f20ad22b1e4783bc1b7ed0f56300c2340ba"
+        "revision" : "373f6b1ac65274136baa4e3bae00ca29bcf5fc9a"
       }
     },
     {
@@ -86,8 +86,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/JSONRPC",
       "state" : {
-        "revision" : "e0a30db87e70d31c821f99b9699c0bef61748aac",
-        "version" : "0.6.1"
+        "revision" : "afc20d00e38674774f84edc325424a32ae3b9e01",
+        "version" : "0.7.0"
       }
     },
     {
@@ -95,8 +95,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/LanguageClient",
       "state" : {
-        "revision" : "f0198ee0a102d266078f7d9c28f086f2989f988a",
-        "version" : "0.3.1"
+        "revision" : "209d6070439e1703e381c37dfd1da6b39fd280e0",
+        "version" : "0.4.0"
       }
     },
     {
@@ -104,8 +104,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/LanguageServerProtocol",
       "state" : {
-        "revision" : "a859fd4d2f9c2cf5edb71bf3947aa922a86d8b94",
-        "version" : "0.8.1"
+        "revision" : "9293fd8a3b4298bab12475ff46f793a6d4055f0e",
+        "version" : "0.9.0"
       }
     },
     {

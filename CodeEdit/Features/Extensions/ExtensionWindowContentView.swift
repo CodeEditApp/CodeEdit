@@ -32,7 +32,9 @@ struct ExtensionWindowContentView: View {
         NavigationSplitView {
             ExtensionList(scope: $scope)
                 .environmentObject(manager)
+                .navigationSplitViewColumnWidth(min: 250, ideal: 250)
                 .toolbar {
+                    // Doesn't work atm in NSWindow.
                     ToolbarItem {
                         Button {
                             showExtensionActivator.toggle()
@@ -76,18 +78,22 @@ struct ExtensionWindowContentView: View {
     static func openExtensionsWindow() {
         let window = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 800, height: 460),
-            styleMask: [.titled, .fullSizeContentView],
+            styleMask: [.titled, .fullSizeContentView, .closable, .resizable, .miniaturizable],
             backing: .buffered,
             defer: false
         )
 
         window.titlebarAppearsTransparent = true
         window.isMovableByWindowBackground = true
+        window.toolbarStyle = .unified
         window.center()
 
         let windowController = NSWindowController(window: window)
 
-        window.contentView = NSHostingView(rootView: ExtensionWindowContentView())
+        let rootView = ExtensionWindowContentView()
+            .environmentObject(ExtensionDiscovery.shared)
+
+        window.contentView = NSHostingView(rootView: rootView)
         window.makeKeyAndOrderFront(self)
     }
 }

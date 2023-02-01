@@ -10,6 +10,21 @@ import Preferences
 import CodeEditSymbols
 import UniformTypeIdentifiers
 
+final class CodeEditApplication: NSApplication {
+    let strongDelegate = AppDelegate()
+
+    override init() {
+        super.init()
+        self.delegate = strongDelegate
+    }
+
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+}
+
 @main
 final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 

@@ -12,7 +12,7 @@ struct ExtensionList: View {
     @EnvironmentObject var manager: ExtensionDiscovery
     @State var filter: String = ""
     @Binding var scope: SearchScope
-
+    @State var showExtensionActivator = false
     @FocusState private var focusedField: FocusedField?
 
     enum FocusedField {
@@ -50,11 +50,24 @@ struct ExtensionList: View {
                 // Text(Image(systemName: "magnifyingglass")) should work, but doesn't work in a textfield for some reason.
                 // .searchable can't be used as the picker needs to be displayed below it
                 // the picker can be shown when .searchScopes works in the sidebar
-                TextField("Search Field", text: $filter, prompt: Text("Search..."))
-                    .focused($focusedField, equals: .searchfield)
-                    .focusable(false)
-                    .textFieldStyle(.roundedBorder)
+                HStack {
+                    TextField("Search Field", text: $filter, prompt: Text("Search..."))
+                        .focused($focusedField, equals: .searchfield)
+                        .focusable(false)
+                        .textFieldStyle(.roundedBorder)
+                        .controlSize(.large)
+                    
+                    Button {
+                        showExtensionActivator.toggle()
+                    } label: {
+                        Image(systemName: "puzzlepiece.extension")
+                    }
                     .controlSize(.large)
+                    .popover(isPresented: $showExtensionActivator) {
+                        ExtensionActivatorView()
+                            .frame(width: 400, height: 300)
+                    }
+                }
 
                 SegmentedControlImproved(selection: $scope, options: SearchScope.allCases, prominent: true)
                     .controlSize(.regular)
