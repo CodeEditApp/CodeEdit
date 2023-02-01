@@ -70,4 +70,24 @@ struct ExtensionWindowContentView: View {
             }
         }
     }
+
+    /// Helper function which opens welcome view
+    /// TODO: Move this to WelcomeModule after CodeEditDocumentController is in separate module
+    static func openExtensionsWindow() {
+        let window = NSWindow(
+            contentRect: NSRect(x: 0, y: 0, width: 800, height: 460),
+            styleMask: [.titled, .fullSizeContentView],
+            backing: .buffered,
+            defer: false
+        )
+
+        window.titlebarAppearsTransparent = true
+        window.isMovableByWindowBackground = true
+        window.center()
+
+        let windowController = NSWindowController(window: window)
+
+        window.contentView = NSHostingView(rootView: ExtensionWindowContentView())
+        window.makeKeyAndOrderFront(self)
+    }
 }

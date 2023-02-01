@@ -10,8 +10,7 @@ import Preferences
 import CodeEditSymbols
 import UniformTypeIdentifiers
 
-
-
+@main
 final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 
     var updater: SoftwareUpdater = SoftwareUpdater()
@@ -163,7 +162,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     @IBAction func openExtensionWindow(_ sender: Any) {
         if tryFocusWindow(of: ExtensionWindowContentView.self) { return }
 
-//        ExtensionWindow.openExtensionWindow()
+        ExtensionWindowContentView.openExtensionsWindow()
     }
 
     @IBAction func openAbout(_ sender: Any) {
