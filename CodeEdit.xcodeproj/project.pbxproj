@@ -2233,13 +2233,13 @@
 		B658FB2327DA9E0F00EA4DBD = {
 			isa = PBXGroup;
 			children = (
-				28052E0129730F2F00F4F90A /* Configs */,
-				283BDCBC2972EEBD002AFF81 /* Package.resolved */,
-				284DC8502978BA2600BF2770 /* .all-contributorsrc */,
-				58F2EACE292FB2B0004A9BDE /* Documentation.docc */,
 				B658FB2E27DA9E0F00EA4DBD /* CodeEdit */,
 				587B60F329340A8000D5CD8F /* CodeEditTests */,
+				28052E0129730F2F00F4F90A /* Configs */,
+				58F2EACE292FB2B0004A9BDE /* Documentation.docc */,
 				2BE487ED28245162003F3F64 /* OpenWithCodeEdit */,
+				284DC8502978BA2600BF2770 /* .all-contributorsrc */,
+				283BDCBC2972EEBD002AFF81 /* Package.resolved */,
 				B658FB2D27DA9E0F00EA4DBD /* Products */,
 				5C403B8D27E20F8000788241 /* Frameworks */,
 			);
