@@ -33,10 +33,8 @@ struct WelcomeWindowView: View {
                 newDocument: newDocument,
                 dismissWindow: dismissWindow
             )
-            RecentProjectsView(
-                openDocument: openDocument,
-                dismissWindow: dismissWindow
-            )
+            RecentProjectsList(openDocument: openDocument, dismissWindow: dismissWindow)
+                .frame(width: 300)
         }
         .edgesIgnoringSafeArea(.top)
     }

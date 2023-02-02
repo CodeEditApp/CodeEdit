@@ -14,28 +14,26 @@ extension String {
 }
 
 struct RecentProjectItem: View {
-    let projectPath: String
+    let projectPath: URL
 
-    init(projectPath: String) {
+    init(projectPath: URL) {
         self.projectPath = projectPath
     }
 
     var body: some View {
         HStack(spacing: 8) {
-            Image(nsImage: NSWorkspace.shared.icon(forFile: projectPath))
+            Image(nsImage: NSWorkspace.shared.icon(forFile: projectPath.path(percentEncoded: false)))
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 32, height: 32)
             VStack(alignment: .leading) {
-                Text(projectPath.components(separatedBy: "/").last ?? "")
-                    .font(.system(size: 13))
+                Text(projectPath.lastPathComponent).font(.system(size: 13))
                     .lineLimit(1)
-                Text(projectPath.abbreviatingWithTildeInPath())
+                Text(projectPath.formatted())
                     .font(.system(size: 11))
                     .lineLimit(1)
                     .truncationMode(.head)
-            }
-            .padding(.trailing, 15)
+            }.padding(.trailing, 15)
             Spacer()
         }
         .contentShape(Rectangle())
