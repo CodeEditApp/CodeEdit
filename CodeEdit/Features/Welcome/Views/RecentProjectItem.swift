@@ -27,9 +27,10 @@ struct RecentProjectItem: View {
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 32, height: 32)
             VStack(alignment: .leading) {
-                Text(projectPath.lastPathComponent).font(.system(size: 13))
+                Text(projectPath.lastPathComponent)
+                    .font(.system(size: 13))
                     .lineLimit(1)
-                Text(projectPath.formatted())
+                Text(projectPath.path(percentEncoded: false).abbreviatingWithTildeInPath())
                     .font(.system(size: 11))
                     .lineLimit(1)
                     .truncationMode(.head)

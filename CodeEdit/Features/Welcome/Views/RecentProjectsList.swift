@@ -36,6 +36,7 @@ struct RecentProjectsList: View {
             List(recentProjects, id: \.self, selection: $selection) { project in
                 RecentProjectItem(projectPath: project)
             }
+            .listStyle(.sidebar)
             .contextMenu(forSelectionType: URL.self) { items in
                 switch items.count {
                 case 0:
@@ -51,7 +52,7 @@ struct RecentProjectsList: View {
                         pasteBoard.writeObjects(selection.map(\.relativePath) as [NSString])
                     }
 
-                    Button("Delete") {
+                    Button("Remove from Recents") {
                         let oldItems = NSDocumentController.shared.recentDocumentURLs
                         NSDocumentController.shared.clearRecentDocuments(nil)
                         oldItems.filter { !items.contains($0) }.reversed().forEach { url in
@@ -81,6 +82,18 @@ struct RecentProjectsList: View {
                 recentProjects = NSDocumentController.shared.recentDocumentURLs
             }
             .background(EffectView(.underWindowBackground, blendingMode: .behindWindow))
+            .onReceive(NSApp.publisher(for: \.keyWindow)) { _ in
+                recentProjects = NSDocumentController.shared.recentDocumentURLs
+            }
+            .background {
+                Button("") {
+                    selection.forEach {
+                        openDocument($0, dismissWindow)
+                    }
+                }
+                .keyboardShortcut(.defaultAction)
+                .hidden()
+            }
         }
     }
 }
