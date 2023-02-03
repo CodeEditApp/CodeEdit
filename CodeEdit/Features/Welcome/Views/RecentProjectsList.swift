@@ -83,6 +83,7 @@ struct RecentProjectsList: View {
             }
             .background(EffectView(.underWindowBackground, blendingMode: .behindWindow))
             .onReceive(NSApp.publisher(for: \.keyWindow)) { _ in
+                // Update the list whenever the key window changes. Ideally, this should be 'whenever a doc opens/closes'.
                 recentProjects = NSDocumentController.shared.recentDocumentURLs
             }
             .background {
