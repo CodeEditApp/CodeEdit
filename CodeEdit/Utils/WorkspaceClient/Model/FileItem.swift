@@ -257,9 +257,9 @@ extension WorkspaceClient {
         }
 
         /// This function duplicates the item or folder
-        func duplicate() {
+        func duplicate(to destination: URL? = nil) {
+            var fileUrl = destination == nil ? self.url : destination!
             // if a file/folder with the same name exists, add "copy" to the end
-            var fileUrl = self.url
             while FileItem.fileManger.fileExists(atPath: fileUrl.path) {
                 let previousName = fileUrl.deletingPathExtension().lastPathComponent
                 let filextension = fileUrl.pathExtension
