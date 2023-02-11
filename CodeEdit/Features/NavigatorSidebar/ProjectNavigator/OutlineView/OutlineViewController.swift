@@ -173,7 +173,7 @@ extension OutlineViewController: NSOutlineViewDataSource {
             if !fileItem.isFolder {
                 outlineView.setDropItem(fileItem.parent, dropChildIndex: index)
             }
-            return .move
+            return info.draggingSourceOperationMask == .copy ? .copy : .move
         }
         return []
     }
