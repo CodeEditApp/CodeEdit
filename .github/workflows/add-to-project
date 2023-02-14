@@ -1,4 +1,4 @@
-name: Add enhancement and bug issues to project
+name: Add new issues to project
 
 on:
   issues:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   add-to-project:
-    name: Add issues labeled with enhancement or bug to project
+    name: Add new issues labeled with enhancement or bug to project
     runs-on: ubuntu-latest
     steps:
       - uses: actions/add-to-project@RELEASE_VERSION
