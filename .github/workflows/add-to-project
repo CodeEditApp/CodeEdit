@@ -15,6 +15,6 @@ jobs:
           # You can target a repository in a different organization
           # to the issue
           project-url: https://github.com/orgs/CodeEditApp/projects/3
-          github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           labeled: enhancement, bug
           label-operator: OR
