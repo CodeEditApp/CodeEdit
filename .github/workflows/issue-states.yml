@@ -1,0 +1,22 @@
+- name: Issue States
+  uses: dessant/issue-states@v3.0.0
+
+on:
+  project_card:
+    types: [created, edited, moved]
+
+permissions:
+  repository-projects: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  action:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: dessant/issue-states@v3
+        with:
+          github-token: ${{ github.token }}
+          open-issue-columns: '📋 Todo, 🏃‍♂️ In Progress'
+          closed-issue-columns: '🏁 Complete'
+          log-output: false
