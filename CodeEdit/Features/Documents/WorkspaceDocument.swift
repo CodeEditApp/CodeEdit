@@ -173,6 +173,7 @@ import CodeEditKit
     /// Switched the active tab to current tab
     /// - Parameter item: tab item that is now active.
     func switchedTab(item: TabBarItemRepresentable) {
+        selectionState.selectedId = item.tabID
         guard let fileItem = item as? WorkspaceClient.FileItem else { return }
         self.addToWorkspaceState(key: activeTabStateName, value: fileItem.url.absoluteString)
     }
