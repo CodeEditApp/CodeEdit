@@ -35,13 +35,11 @@ struct NavigatorSidebarToolbarBottom: View {
                 guard let root = try? workspace.workspaceClient?.getFileItem(folderURL.path) else { return }
                 let newFile = root.addFile(fileName: "untitled") // TODO: use currently selected file instead of root
 
-                DispatchQueue.global(qos: .background).async {
-                    DispatchQueue.main.sync {
-                        guard let newFileItem = try? workspace.workspaceClient?.getFileItem(newFile) else {
-                            return
-                        }
-                        workspace.openTab(item: newFileItem)
+                DispatchQueue.main.async {
+                    guard let newFileItem = try? workspace.workspaceClient?.getFileItem(newFile) else {
+                        return
                     }
+                    workspace.openTab(item: newFileItem)
                 }
 
             }
