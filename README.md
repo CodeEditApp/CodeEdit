@@ -176,6 +176,7 @@ Support CodeEdit's development by [becoming a backer](https://github.com/sponsor
 <a title="lovetodream" href="https://github.com/lovetodream" target="_blank"><img src="https://avatars.githubusercontent.com/u/38291523?v=4" width="64"></a>
 <a title="ridafkih" href="https://github.com/ridafkih" target="_blank"><img src="https://avatars.githubusercontent.com/u/9158485?v=4" width="64"></a>
 <a title="tjkohi" href="https://github.com/tjkohli" target="_blank"><img src="https://avatars.githubusercontent.com/u/7361247?v=4" width="64"></a>
+<a title="mattpilott" href="https://github.com/mattpilott" target="_blank"><img src="https://avatars.githubusercontent.com/u/2401925?v=4" width="64"></a>
 
 
 ### Thanks to all of our other backers
