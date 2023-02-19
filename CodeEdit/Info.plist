@@ -21,7 +21,7 @@
 	<key>NSHumanReadableCopyright</key>
 	<string>${CE_COPYRIGHT}</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.0.1</string>
+	<string>0.0.2</string>
 	<key>CE_VERSION_POSTFIX</key>
 	<string>${CE_VERSION_POSTFIX}</string>
 	<key>CFBundleDocumentTypes</key>

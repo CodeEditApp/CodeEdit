@@ -32,6 +32,6 @@
 	<key>NSHumanReadableCopyright</key>
 	<string>${CE_COPYRIGHT}</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.0.1</string>
+	<string>0.0.2</string>
 </dict>
 </plist>
