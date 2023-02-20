@@ -116,6 +116,8 @@ extension WorkspaceClient {
             switch children {
             case nil:
                 return FileIcon.fileIcon(fileType: fileType)
+            case .some where parent == nil:
+                return "square.dashed.inset.filled"
             case let .some(children):
                 if self.watcher == nil && !self.activateWatcher() {
                     return "questionmark.folder"
