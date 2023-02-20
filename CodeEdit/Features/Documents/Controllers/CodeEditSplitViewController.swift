@@ -22,11 +22,12 @@ final class CodeEditSplitViewController: NSSplitViewController {
     private let isInspectorCollapsedStateName: String
         = "\(String(describing: CodeEditSplitViewController.self))-IsInspectorCollapsed"
     private var setWidthFromState = false
+    private var viewIsReady = false
 
     // Properties
     private(set) var isSnapped: Bool = false {
         willSet {
-            if newValue, newValue != isSnapped {
+            if newValue, newValue != isSnapped && viewIsReady {
                 feedbackPerformer.perform(.alignment, performanceTime: .now)
             }
         }
@@ -50,6 +51,8 @@ final class CodeEditSplitViewController: NSSplitViewController {
 
     override func viewWillAppear() {
         super.viewWillAppear()
+
+        viewIsReady = false
         let width = workspace.getFromWorkspaceState(key: self.widthStateName) as? CGFloat
         splitView.setPosition(width ?? .snapWidth, ofDividerAt: .zero)
         setWidthFromState = true
@@ -67,6 +70,10 @@ final class CodeEditSplitViewController: NSSplitViewController {
         }
 
         self.insertToolbarItemIfNeeded()
+    }
+
+    override func viewDidAppear() {
+        viewIsReady = true
     }
 
     // MARK: - NSSplitViewDelegate
