@@ -237,7 +237,7 @@ struct TabBarView: View {
                 // In order to avoid the lag due to the update of workspace state.
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.40) {
                     if draggingStartLocation == nil {
-                        workspace.selectionState.openedTabs = openedTabs
+                        workspace.reorderedTabs(openedTabs: openedTabs)
                     }
                 }
             })

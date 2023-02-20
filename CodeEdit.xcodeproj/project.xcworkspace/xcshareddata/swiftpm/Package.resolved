@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CodeEditApp/CodeEditLanguages.git",
       "state" : {
-        "revision" : "d101d58d615e5ace892a9f006d8b4bb779a9fcb5",
-        "version" : "0.1.9"
+        "revision" : "02595fb02841568b9befcbfcdaf9be88280c49aa",
+        "version" : "0.1.11"
       }
     },
     {
@@ -32,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CodeEditApp/CodeEditTextView.git",
       "state" : {
-        "revision" : "7a0a4159490c915b5dbaf075eb85185fb84b3923",
-        "version" : "0.3.5"
+        "revision" : "f4f2fcd856d28ba28b29574dd90a49ca27eb73ff",
+        "version" : "0.4.0"
       }
     },
     {
@@ -64,6 +64,15 @@
       }
     },
     {
+      "identity" : "rearrange",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ChimeHQ/Rearrange",
+      "state" : {
+        "revision" : "8f97f721d8a08c6e01ab9f7460e53819bef72dfa",
+        "version" : "1.5.3"
+      }
+    },
+    {
       "identity" : "sparkle",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/sparkle-project/Sparkle.git",
@@ -77,8 +86,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/krzyzanowskim/STTextView.git",
       "state" : {
-        "revision" : "3df7ce1829a9277f427daa794e8a0d1aaeacfbb7",
-        "version" : "0.1.2"
+        "revision" : "41c7c87a552e6286ebea5f348e820b529c6f5662",
+        "version" : "0.4.2"
       }
     },
     {
@@ -115,6 +124,24 @@
       "state" : {
         "revision" : "df25a52f72ebc5b50ae20d26d1363793408bb28b",
         "version" : "0.7.1"
+      }
+    },
+    {
+      "identity" : "textformation",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ChimeHQ/TextFormation",
+      "state" : {
+        "revision" : "f07ecbdb8daab6cdb5344a88e8685ae55a7a44c3",
+        "version" : "0.6.8"
+      }
+    },
+    {
+      "identity" : "textstory",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ChimeHQ/TextStory",
+      "state" : {
+        "revision" : "b7b3fc551bd0177c32b3dc46d0478e9f0b6f8c6f",
+        "version" : "0.7.2"
       }
     }
   ],
