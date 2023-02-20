@@ -41,43 +41,19 @@ struct WorkspaceView: View {
 
     @Environment(\.colorScheme) var colorScheme
 
-    var noEditor: some View {
-        Text("No Editor")
-            .font(.system(size: 17))
-            .foregroundColor(.secondary)
-            .frame(minHeight: 0)
-            .clipped()
-    }
-
-    @ViewBuilder var tabContent: some View {
-        if let tabID = workspace.selectionState.selectedId {
-            switch tabID {
-            case .codeEditor:
-                WorkspaceCodeFileView()
-            case .extensionInstallation:
-                if let plugin = workspace.selectionState.selected as? Plugin {
-                    ExtensionInstallationView(plugin: plugin)
-                        .frame(alignment: .center)
-                }
-            }
-        } else {
-            noEditor
-        }
-    }
-
     var body: some View {
         ZStack {
             if workspace.workspaceClient != nil, let model = workspace.statusBarModel {
                 ZStack {
-                    tabContent
+                    EditorView(tabgroup: workspace.tabs)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .safeAreaInset(edge: .top, spacing: 0) {
-                    VStack(spacing: 0) {
-                        TabBarView()
-                        TabBarBottomDivider()
-                    }
-                }
+//                .safeAreaInset(edge: .top, spacing: 0) {
+//                    VStack(spacing: 0) {
+//                        TabBarView()
+//                        TabBarBottomDivider()
+//                    }
+//                }
                 .safeAreaInset(edge: .bottom) {
                     StatusBarView()
                         .environmentObject(model)

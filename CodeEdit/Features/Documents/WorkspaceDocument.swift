@@ -22,6 +22,16 @@ import CodeEditKit
     @Published var selectionState: WorkspaceSelectionState = .init()
     @Published var fileItems: [WorkspaceClient.FileItem] = []
 
+    @Published var tabs: TabGroup
+
+    var activeTab: TabGroupData
+
+    override init() {
+        self.activeTab = .init()
+        self.tabs = .horizontal(.init(.horizontal, tabgroups: [.one(activeTab)]))
+        super.init()
+    }
+
     var statusBarModel: StatusBarViewModel?
     var searchState: SearchState?
     var quickOpenViewModel: QuickOpenViewModel?
@@ -39,23 +49,17 @@ import CodeEditKit
     // MARK: Open Tabs
     /// Opens new tab
     /// - Parameter item: any item which can be represented as a tab
-    func openTab(item: TabBarItemRepresentable) {
-        do {
-            updateNewlyOpenedTabs(item: item)
-            if selectionState.selectedId != item.tabID {
-                selectionState.selectedId = item.tabID
+    func openTab(item: WorkspaceClient.FileItem) {
+        Task {
+            await MainActor.run {
+                activeTab.files.append(item)
+                activeTab.selected = item
+                do {
+                    try openFile(item: item)
+                } catch {
+                    Swift.print(error)
+                }
             }
-            switch item.tabID {
-            case .codeEditor:
-                guard let file = item as? WorkspaceClient.FileItem else { return }
-                try self.openFile(item: file)
-            case .extensionInstallation:
-                guard let plugin = item as? Plugin else { return }
-                self.openExtension(item: plugin)
-            }
-
-        } catch let err {
-            Swift.print(err)
         }
     }
 

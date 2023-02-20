@@ -13,7 +13,7 @@ struct ExtensionNavigatorItemView: View {
 
     var body: some View {
         Button {
-            document.openTab(item: plugin)
+//            document.openTab(item: plugin)
         } label: {
             ZStack {
                 HStack {

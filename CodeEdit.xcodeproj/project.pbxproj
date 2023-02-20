@@ -313,6 +313,13 @@
 		58FD7609291EA1CB0051D6E4 /* CommandPaletteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FD7607291EA1CB0051D6E4 /* CommandPaletteView.swift */; };
 		5C4BB1E128212B1E00A92FB2 /* World.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4BB1E028212B1E00A92FB2 /* World.swift */; };
 		6C05A8AF284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C05A8AE284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift */; };
+		6C147C4029A328BC0089B630 /* WorkspaceSplitViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C147C3F29A328560089B630 /* WorkspaceSplitViewData.swift */; };
+		6C147C4129A328BF0089B630 /* TabGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C147C3E29A3281D0089B630 /* TabGroup.swift */; };
+		6C147C4229A328C10089B630 /* TabGroupData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C147C3D29A3281D0089B630 /* TabGroupData.swift */; };
+		6C147C4529A329350089B630 /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = 6C147C4429A329350089B630 /* OrderedCollections */; };
+		6C147C4929A32A080089B630 /* EditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C147C4829A32A080089B630 /* EditorView.swift */; };
+		6C147C4B29A32A7B0089B630 /* Environment+SplitEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C147C4A29A32A7B0089B630 /* Environment+SplitEditor.swift */; };
+		6C147C4D29A32AA30089B630 /* WorkspaceTabGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C147C4C29A32AA30089B630 /* WorkspaceTabGroupView.swift */; };
 		6C14CEB028777D3C001468FE /* FindNavigatorListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C14CEAF28777D3C001468FE /* FindNavigatorListViewController.swift */; };
 		6C14CEB32877A68F001468FE /* FindNavigatorMatchListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C14CEB22877A68F001468FE /* FindNavigatorMatchListCell.swift */; };
 		6C4104E3297C87A000F472BA /* BlurButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C4104E2297C87A000F472BA /* BlurButtonStyle.swift */; };
@@ -704,6 +711,12 @@
 		58FD7607291EA1CB0051D6E4 /* CommandPaletteView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandPaletteView.swift; sourceTree = "<group>"; };
 		5C4BB1E028212B1E00A92FB2 /* World.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = World.swift; sourceTree = "<group>"; };
 		6C05A8AE284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkspaceDocument+Listeners.swift"; sourceTree = "<group>"; };
+		6C147C3D29A3281D0089B630 /* TabGroupData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabGroupData.swift; sourceTree = "<group>"; };
+		6C147C3E29A3281D0089B630 /* TabGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabGroup.swift; sourceTree = "<group>"; };
+		6C147C3F29A328560089B630 /* WorkspaceSplitViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceSplitViewData.swift; sourceTree = "<group>"; };
+		6C147C4829A32A080089B630 /* EditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorView.swift; sourceTree = "<group>"; };
+		6C147C4A29A32A7B0089B630 /* Environment+SplitEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Environment+SplitEditor.swift"; sourceTree = "<group>"; };
+		6C147C4C29A32AA30089B630 /* WorkspaceTabGroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceTabGroupView.swift; sourceTree = "<group>"; };
 		6C14CEAF28777D3C001468FE /* FindNavigatorListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindNavigatorListViewController.swift; sourceTree = "<group>"; };
 		6C14CEB22877A68F001468FE /* FindNavigatorMatchListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindNavigatorMatchListCell.swift; sourceTree = "<group>"; };
 		6C4104E2297C87A000F472BA /* BlurButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurButtonStyle.swift; sourceTree = "<group>"; };
@@ -762,6 +775,7 @@
 				58F2EB17292FB74D004A9BDE /* CodeEditTextView in Frameworks */,
 				5879826F292EC9870085B254 /* GRDB in Frameworks */,
 				58F2EB1E292FB954004A9BDE /* Sparkle in Frameworks */,
+				6C147C4529A329350089B630 /* OrderedCollections in Frameworks */,
 				5879826B292EC7B00085B254 /* Light-Swift-Untar in Frameworks */,
 				5879828A292ED15F0085B254 /* SwiftTerm in Frameworks */,
 				2816F594280CF50500DD548B /* CodeEditSymbols in Frameworks */,
@@ -989,13 +1003,14 @@
 			path = NavigatorSidebar;
 			sourceTree = "<group>";
 		};
-		287776EB27E350BA00D46668 /* TabBar */ = {
+		287776EB27E350BA00D46668 /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
+				6C147C3C29A328020089B630 /* TabGroup */,
 				58AFAA272933C65C00482B53 /* Models */,
 				58AFAA262933C65000482B53 /* Views */,
 			);
-			path = TabBar;
+			path = Tabs;
 			sourceTree = "<group>";
 		};
 		2BE487ED28245162003F3F64 /* OpenWithCodeEdit */ = {
@@ -1088,8 +1103,9 @@
 				287776EA27E350A100D46668 /* NavigatorSidebar */,
 				5878DAA0291AE76700DD95A3 /* QuickOpen */,
 				58798210292D92370085B254 /* Search */,
+				6C147C4729A329E50089B630 /* SplitView */,
 				588224FF292C280D00E83CDE /* StatusBar */,
-				287776EB27E350BA00D46668 /* TabBar */,
+				287776EB27E350BA00D46668 /* Tabs */,
 				5879827E292ED0FB0085B254 /* TerminalEmulator */,
 				581BFB4B2926431000D251EC /* Welcome */,
 			);
@@ -2206,6 +2222,26 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		6C147C3C29A328020089B630 /* TabGroup */ = {
+			isa = PBXGroup;
+			children = (
+				6C147C3F29A328560089B630 /* WorkspaceSplitViewData.swift */,
+				6C147C3E29A3281D0089B630 /* TabGroup.swift */,
+				6C147C3D29A3281D0089B630 /* TabGroupData.swift */,
+			);
+			path = TabGroup;
+			sourceTree = "<group>";
+		};
+		6C147C4729A329E50089B630 /* SplitView */ = {
+			isa = PBXGroup;
+			children = (
+				6C147C4C29A32AA30089B630 /* WorkspaceTabGroupView.swift */,
+				6C147C4A29A32A7B0089B630 /* Environment+SplitEditor.swift */,
+				6C147C4829A32A080089B630 /* EditorView.swift */,
+			);
+			path = SplitView;
+			sourceTree = "<group>";
+		};
 		6C14CEB12877A5BE001468FE /* FindNavigatorResultList */ = {
 			isa = PBXGroup;
 			children = (
@@ -2370,6 +2406,7 @@
 				58F2EB16292FB74D004A9BDE /* CodeEditTextView */,
 				58F2EB19292FB91C004A9BDE /* Preferences */,
 				58F2EB1D292FB954004A9BDE /* Sparkle */,
+				6C147C4429A329350089B630 /* OrderedCollections */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -2463,6 +2500,7 @@
 				58F2EB18292FB91C004A9BDE /* XCRemoteSwiftPackageReference "Preferences" */,
 				58F2EB1C292FB954004A9BDE /* XCRemoteSwiftPackageReference "Sparkle" */,
 				583E529A29361BAB001AB554 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
+				6C147C4329A329350089B630 /* XCRemoteSwiftPackageReference "swift-collections" */,
 			);
 			productRefGroup = B658FB2D27DA9E0F00EA4DBD /* Products */;
 			projectDirPath = "";
@@ -2709,6 +2747,7 @@
 				587B9E8729301D8F00AC7927 /* GitHubRepositories.swift in Sources */,
 				587B9DA329300ABD00AC7927 /* SettingsTextEditor.swift in Sources */,
 				2072FA1A280D872600C7F8D4 /* LineEndings.swift in Sources */,
+				6C147C4D29A32AA30089B630 /* WorkspaceTabGroupView.swift in Sources */,
 				58F2EAFB292FB2B0004A9BDE /* GitLabLoginView.swift in Sources */,
 				587B9E7B29301D8F00AC7927 /* GitHubRouter.swift in Sources */,
 				201169E22837B3D800F92B46 /* SourceControlNavigatorChangesView.swift in Sources */,
@@ -2777,6 +2816,7 @@
 				58822531292C280D00E83CDE /* View+isHovering.swift in Sources */,
 				587B9E9929301D8F00AC7927 /* GitChangedFile.swift in Sources */,
 				58F2EAF2292FB2B0004A9BDE /* EditorThemeView.swift in Sources */,
+				6C147C4B29A32A7B0089B630 /* Environment+SplitEditor.swift in Sources */,
 				2897E1C72979A29200741E32 /* OffsettableScrollView.swift in Sources */,
 				58F2EB0E292FB2B0004A9BDE /* SoftwareUpdater.swift in Sources */,
 				587B9E9529301D8F00AC7927 /* BitBucketUser.swift in Sources */,
@@ -2819,6 +2859,8 @@
 				04C3254F2800AA4700C8DA2D /* ExtensionInstallationView.swift in Sources */,
 				58822530292C280D00E83CDE /* FilterTextField.swift in Sources */,
 				58798266292EC4080085B254 /* APIResponse.swift in Sources */,
+				6C147C4929A32A080089B630 /* EditorView.swift in Sources */,
+				6C147C4129A328BF0089B630 /* TabGroup.swift in Sources */,
 				B6D7EA592971078500301FAC /* InspectorSection.swift in Sources */,
 				58F2EAEF292FB2B0004A9BDE /* ThemePreferencesView.swift in Sources */,
 				B6EE989027E8879A00CDD8AB /* InspectorSidebarView.swift in Sources */,
@@ -2857,10 +2899,12 @@
 				28B0A19827E385C300B73177 /* NavigatorSidebarToolbarTop.swift in Sources */,
 				587B9E8629301D8F00AC7927 /* GitHubComment.swift in Sources */,
 				58F2EAE9292FB2B0004A9BDE /* SourceControlPreferencesView.swift in Sources */,
+				6C147C4029A328BC0089B630 /* WorkspaceSplitViewData.swift in Sources */,
 				587B9E9029301D8F00AC7927 /* BitBucketTokenRouter.swift in Sources */,
 				B6C6A42E29771A8D00A3D28F /* TabBarItemButtonStyle.swift in Sources */,
 				58822525292C280D00E83CDE /* StatusBarMenuLabel.swift in Sources */,
 				58F2EB11292FB2B0004A9BDE /* PreferencesToolbar.swift in Sources */,
+				6C147C4229A328C10089B630 /* TabGroupData.swift in Sources */,
 				58F2EAF0292FB2B0004A9BDE /* PreviewThemeView.swift in Sources */,
 				58F2EAFF292FB2B0004A9BDE /* KeybindingsPreferencesView.swift in Sources */,
 				6CDA84AD284C1BA000C1CC3A /* TabBarContextMenu.swift in Sources */,
@@ -3829,6 +3873,14 @@
 				version = 2.3.0;
 			};
 		};
+		6C147C4329A329350089B630 /* XCRemoteSwiftPackageReference "swift-collections" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-collections.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -3881,6 +3933,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 58F2EB1C292FB954004A9BDE /* XCRemoteSwiftPackageReference "Sparkle" */;
 			productName = Sparkle;
+		};
+		6C147C4429A329350089B630 /* OrderedCollections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6C147C4329A329350089B630 /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = OrderedCollections;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

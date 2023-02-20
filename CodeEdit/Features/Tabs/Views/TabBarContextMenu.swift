@@ -9,14 +9,14 @@ import Foundation
 import SwiftUI
 
 extension View {
-    func tabBarContextMenu(item: TabBarItemRepresentable, isTemporary: Bool) -> some View {
+    func tabBarContextMenu(item: WorkspaceClient.FileItem, isTemporary: Bool) -> some View {
         modifier(TabBarContextMenu(item: item, isTemporary: isTemporary))
     }
 }
 
 struct TabBarContextMenu: ViewModifier {
     init(
-        item: TabBarItemRepresentable,
+        item: WorkspaceClient.FileItem,
         isTemporary: Bool
     ) {
         self.item = item
@@ -26,13 +26,30 @@ struct TabBarContextMenu: ViewModifier {
     @EnvironmentObject
     var workspace: WorkspaceDocument
 
-    private var item: TabBarItemRepresentable
+    @EnvironmentObject
+    var tabs: TabGroupData
+
+    @Environment(\.splitEditor) var splitEditor
+
+    private var item: WorkspaceClient.FileItem
     private var isTemporary: Bool
 
     // swiftlint:disable:next function_body_length
     func body(content: Content) -> some View {
         content.contextMenu(menuItems: {
             Group {
+                Button("Split and open on the right") {
+                    moveToNewSplit(.trailing)
+                }
+                Button("Split and open on the bottom") {
+                    moveToNewSplit(.bottom)
+                }
+                Button("Split and open on the top") {
+                    moveToNewSplit(.top)
+                }
+                Button("Split and open on the left") {
+                    moveToNewSplit(.leading)
+                }
                 Button("Close Tab") {
                     withAnimation {
                         workspace.closeTab(item: item.tabID)
@@ -106,6 +123,12 @@ struct TabBarContextMenu: ViewModifier {
     private func copyPath(item: WorkspaceClient.FileItem) {
         NSPasteboard.general.clearContents()
         NSPasteboard.general.setString(item.url.standardizedFileURL.path, forType: .string)
+    }
+
+    func moveToNewSplit(_ edge: Edge) {
+        let newTabGroup = TabGroupData(files: [item], selected: item)
+        splitEditor(edge, newTabGroup)
+        tabs.files.remove(item)
     }
 
     /// Copies the relative path from the workspace folder to the given file item to the pasteboard.

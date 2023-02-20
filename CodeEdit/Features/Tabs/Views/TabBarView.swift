@@ -13,6 +13,9 @@ import SwiftUI
 // swiftlint:disable file_length type_body_length
 // - TODO: TabBarItemView drop-outside event handler.
 struct TabBarView: View {
+
+    typealias TabID = WorkspaceClient.FileItem.ID
+
     /// The height of tab bar.
     /// I am not making it a private variable because it may need to be used in outside views.
     static let height = 28.0
@@ -24,8 +27,11 @@ struct TabBarView: View {
     private var activeState
 
     /// The workspace document.
+    //    @EnvironmentObject
+    //    private var workspace: WorkspaceFiles
+
     @EnvironmentObject
-    private var workspace: WorkspaceDocument
+    private var tabs: TabGroupData
 
     /// The app preference.
     @StateObject
@@ -35,10 +41,10 @@ struct TabBarView: View {
     ///
     /// It will be `nil` when there is no tab dragged currently.
     @State
-    private var draggingTabId: TabBarItemID?
+    private var draggingTabId: TabID?
 
     @State
-    private var onDragTabId: TabBarItemID?
+    private var onDragTabId: TabID?
 
     /// The start location of dragging.
     ///
@@ -60,7 +66,7 @@ struct TabBarView: View {
     /// I am making a copy of it because using state will hugely improve the dragging performance.
     /// Updating ObservedObject too often will generate lags.
     @State
-    private var openedTabs: [TabBarItemID] = []
+    private var openedTabs: [TabID] = []
 
     /// A map of tab width.
     ///
@@ -68,20 +74,20 @@ struct TabBarView: View {
     /// This is used to be added on the offset of current dragging tab in order to make a smooth
     /// dragging experience.
     @State
-    private var tabWidth: [TabBarItemID: CGFloat] = [:]
+    private var tabWidth: [TabID: CGFloat] = [:]
 
     /// A map of tab location (CGRect).
     ///
     /// All locations are measured dynamically.
     /// This is used to compute when we should swap two tabs based on current cursor location.
     @State
-    private var tabLocations: [TabBarItemID: CGRect] = [:]
+    private var tabLocations: [TabID: CGRect] = [:]
 
     /// A map of tab offsets.
     ///
     /// This is used to determine the tab offset of every tab (by their tab id) while dragging.
     @State
-    private var tabOffsets: [TabBarItemID: CGFloat] = [:]
+    private var tabOffsets: [TabID: CGFloat] = [:]
 
     /// The expected tab width in native tab bar style.
     ///
@@ -123,7 +129,7 @@ struct TabBarView: View {
     private func updateExpectedTabWidth(proxy: GeometryProxy) {
         expectedTabWidth = max(
             // Equally divided size of a native tab.
-            (proxy.size.width + 1) / CGFloat(workspace.selectionState.openedTabs.count) + 1,
+            (proxy.size.width + 1) / CGFloat(tabs.files.count) + 1,
             // Min size of a native tab.
             CGFloat(140)
         )
@@ -132,7 +138,7 @@ struct TabBarView: View {
     // Disable the rule because this function is implementing the drag gesture and its animations.
     // It is fairly complicated, so ignore the function body length limitation for now.
     // swiftlint:disable function_body_length cyclomatic_complexity
-    private func makeTabDragGesture(id: TabBarItemID) -> some Gesture {
+    private func makeTabDragGesture(id: TabID) -> some Gesture {
         return DragGesture(minimumDistance: 2, coordinateSpace: .global)
             .onChanged({ value in
                 if closeButtonGestureActive {
@@ -237,14 +243,16 @@ struct TabBarView: View {
                 // In order to avoid the lag due to the update of workspace state.
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.40) {
                     if draggingStartLocation == nil {
-                        workspace.selectionState.openedTabs = openedTabs
+                        tabs.files = .init(openedTabs.compactMap { id in
+                            tabs.files.first { $0.id == id }
+                        })
                     }
                 }
             })
     }
     // swiftlint:enable function_body_length cyclomatic_complexity
 
-    private func makeTabItemGeometryReader(id: TabBarItemID) -> some View {
+    private func makeTabItemGeometryReader(id: TabID) -> some View {
         GeometryReader { tabItemGeoReader in
             Rectangle()
                 .foregroundColor(.clear)
@@ -272,7 +280,7 @@ struct TabBarView: View {
     /// Called when the tab count changes or the temporary tab changes.
     /// - Parameter geometryProxy: The geometry proxy to calculate the new width using.
     private func updateForTabCountChange(geometryProxy: GeometryProxy) {
-        openedTabs = workspace.selectionState.openedTabs
+        openedTabs = tabs.files.map(\.id)
 
         // Only update the expected width when user is not hovering over tabs.
         // This should give users a better experience on closing multiple tabs continuously.
@@ -295,13 +303,14 @@ struct TabBarView: View {
                             alignment: .center,
                             spacing: -1 // Negative spacing for overlapping the divider.
                         ) {
-                            ForEach(openedTabs, id: \.id) { id in
-                                if let item = workspace.selectionState.getItemByTab(id: id) {
+                            ForEach(Array(openedTabs.enumerated()), id: \.element) { index, id in
+                                if let item = tabs.files.first { $0.id == id } {
                                     TabBarItemView(
-                                        expectedWidth: $expectedTabWidth,
+                                        expectedWidth: expectedTabWidth,
                                         item: item,
-                                        draggingTabId: $draggingTabId,
-                                        onDragTabId: $onDragTabId,
+                                        index: index,
+                                        draggingTabId: draggingTabId,
+                                        onDragTabId: onDragTabId,
                                         closeButtonGestureActive: $closeButtonGestureActive
                                     )
                                     .frame(height: TabBarView.height)
@@ -330,24 +339,25 @@ struct TabBarView: View {
                         // This padding is to hide dividers at two ends under the accessory view divider.
                         .padding(.horizontal, prefs.preferences.general.tabBarStyle == .native ? -1 : 0)
                         .onAppear {
-                            openedTabs = workspace.selectionState.openedTabs
+                            openedTabs = tabs.files.map(\.id)
                             // On view appeared, compute the initial expected width for tabs.
                             updateExpectedTabWidth(proxy: geometryProxy)
                             // On first tab appeared, jump to the corresponding position.
-                            scrollReader.scrollTo(workspace.selectionState.selectedId)
+                            scrollReader.scrollTo(tabs.selected)
                         }
                         // When selected tab is changed, scroll to it if possible.
-                        .onChange(of: workspace.selectionState.selectedId) { targetId in
+                        .onChange(of: tabs.selected) { targetId in
                             guard let selectedId = targetId else { return }
                             scrollReader.scrollTo(selectedId)
                         }
                         // When tabs are changing, re-compute the expected tab width.
-                        .onChange(of: workspace.selectionState.openedTabs.count) { _ in
+                        .onChange(of: tabs.files.count) { _ in
                             updateForTabCountChange(geometryProxy: geometryProxy)
                         }
-                        .onChange(of: workspace.selectionState.temporaryTab, perform: { _ in
-                            updateForTabCountChange(geometryProxy: geometryProxy)
-                        })
+                        // TODO: Fix this
+                        //                        .onChange(of: workspace.selectionState.temporaryTab, perform: { _ in
+                        //                            updateForTabCountChange(geometryProxy: geometryProxy)
+                        //                        })
                         // When window size changes, re-compute the expected tab width.
                         .onChange(of: geometryProxy.size.width) { _ in
                             updateExpectedTabWidth(proxy: geometryProxy)
@@ -366,7 +376,7 @@ struct TabBarView: View {
                 }
                 // When there is no opened file, hide the scroll view, but keep the background.
                 .opacity(
-                    workspace.selectionState.openedTabs.isEmpty && workspace.selectionState.temporaryTab == nil
+                    tabs.files.isEmpty // TODO: Fix this && workspace.selectionState.temporaryTab == nil
                     ? 0.0
                     : 1.0
                 )
@@ -463,25 +473,25 @@ struct TabBarView: View {
     }
 
     private struct TabBarItemOnDropDelegate: DropDelegate {
-        private let currentTabId: TabBarItemID
+        private let currentTabId: TabID
         @Binding
-        private var openedTabs: [TabBarItemID]
+        private var openedTabs: [TabID]
         @Binding
-        private var onDragTabId: TabBarItemID?
+        private var onDragTabId: TabID?
         @Binding
         private var onDragLastLocation: CGPoint?
         @Binding
         private var isOnDragOverTabs: Bool
         @Binding
-        private var tabWidth: [TabBarItemID: CGFloat]
+        private var tabWidth: [TabID: CGFloat]
 
         public init(
-            currentTabId: TabBarItemID,
-            openedTabs: Binding<[TabBarItemID]>,
-            onDragTabId: Binding<TabBarItemID?>,
+            currentTabId: TabID,
+            openedTabs: Binding<[TabID]>,
+            onDragTabId: Binding<TabID?>,
             onDragLastLocation: Binding<CGPoint?>,
             isOnDragOverTabs: Binding<Bool>,
-            tabWidth: Binding<[TabBarItemID: CGFloat]>
+            tabWidth: Binding<[TabID: CGFloat]>
         ) {
             self.currentTabId = currentTabId
             self._openedTabs = openedTabs
