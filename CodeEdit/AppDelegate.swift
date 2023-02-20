@@ -25,7 +25,7 @@ final class CodeEditApplication: NSApplication {
 }
 
 @NSApplicationMain
-final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject { // swiftlint:disable:this type_body_length
+final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     var updater: SoftwareUpdater = SoftwareUpdater()
 
     func applicationWillFinishLaunching(_ notification: Notification) {
