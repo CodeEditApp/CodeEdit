@@ -95,7 +95,7 @@ struct TabBarItemView: View {
     private func switchAction() {
         // Only set the `selectedId` when they are not equal to avoid performance issue for now.
         if workspace.selectionState.selectedId != item.tabID {
-            workspace.selectionState.selectedId = item.tabID
+            workspace.switchedTab(item: item)
         }
     }
 

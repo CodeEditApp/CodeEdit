@@ -15,6 +15,14 @@ private extension CGFloat {
 }
 
 final class CodeEditSplitViewController: NSSplitViewController {
+    private var workspace: WorkspaceDocument
+    private let widthStateName: String = "\(String(describing: CodeEditSplitViewController.self))-Width"
+    private let isNavigatorCollapsedStateName: String
+        = "\(String(describing: CodeEditSplitViewController.self))-IsNavigatorCollapsed"
+    private let isInspectorCollapsedStateName: String
+        = "\(String(describing: CodeEditSplitViewController.self))-IsInspectorCollapsed"
+    private var setWidthFromState = false
+
     // Properties
     private(set) var isSnapped: Bool = false {
         willSet {
@@ -29,7 +37,8 @@ final class CodeEditSplitViewController: NSSplitViewController {
 
     // MARK: - Initialization
 
-    init(feedbackPerformer: NSHapticFeedbackPerformer) {
+    init(workspace: WorkspaceDocument, feedbackPerformer: NSHapticFeedbackPerformer) {
+        self.workspace = workspace
         self.feedbackPerformer = feedbackPerformer
         super.init(nibName: nil, bundle: nil)
     }
@@ -39,10 +48,26 @@ final class CodeEditSplitViewController: NSSplitViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // TODO: Set user preferences width if it is not the snap width
-//    override func viewWillAppear() {
-//        super.viewWillAppear()
-//    }
+    override func viewWillAppear() {
+        super.viewWillAppear()
+        let width = workspace.getFromWorkspaceState(key: self.widthStateName) as? CGFloat
+        splitView.setPosition(width ?? .snapWidth, ofDividerAt: .zero)
+        setWidthFromState = true
+
+        if let firstSplitView = splitViewItems.first {
+            firstSplitView.isCollapsed = workspace.getFromWorkspaceState(
+                key: isNavigatorCollapsedStateName
+            ) as? Bool ?? false
+        }
+
+        if let lastSplitView = splitViewItems.last {
+            lastSplitView.isCollapsed = workspace.getFromWorkspaceState(
+                key: isInspectorCollapsedStateName
+            ) as? Bool ?? true
+        }
+
+        self.insertToolbarItemIfNeeded()
+    }
 
     // MARK: - NSSplitViewDelegate
 
@@ -76,6 +101,28 @@ final class CodeEditSplitViewController: NSSplitViewController {
             return min(view.frame.width - CodeEditWindowController.minSidebarWidth, proposedPosition)
         }
         return proposedPosition
+    }
+
+    override func splitViewDidResizeSubviews(_ notification: Notification) {
+        guard let resizedDivider = notification.userInfo?["NSSplitViewDividerIndex"] as? Int else {
+            return
+        }
+
+        if resizedDivider == 0 {
+            let panel = splitView.subviews[0]
+            let width = panel.frame.size.width
+            if width > 0 && setWidthFromState {
+                workspace.addToWorkspaceState(key: self.widthStateName, value: width)
+            }
+        }
+    }
+
+    func saveNavigatorCollapsedState(isCollapsed: Bool) {
+        workspace.addToWorkspaceState(key: isNavigatorCollapsedStateName, value: isCollapsed)
+    }
+
+    func saveInspectorCollapsedState(isCollapsed: Bool) {
+        workspace.addToWorkspaceState(key: isInspectorCollapsedStateName, value: isCollapsed)
     }
 
     /// Quick fix for list tracking separator needing to be added again after closing,
