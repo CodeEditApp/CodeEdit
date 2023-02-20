@@ -34,7 +34,7 @@ struct BreadcrumbsView: View {
             treePath.insert(currentFileLoop, at: 0)
             currentFile = currentFileLoop.parent
         }
-        
+
         return treePath
     }
 
