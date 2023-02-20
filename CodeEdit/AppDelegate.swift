@@ -24,7 +24,7 @@ final class CodeEditApplication: NSApplication {
 
 }
 
-@NSApplicationMain
+@main
 final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject { // swiftlint:disable:this type_body_length
     var updater: SoftwareUpdater = SoftwareUpdater()
 
