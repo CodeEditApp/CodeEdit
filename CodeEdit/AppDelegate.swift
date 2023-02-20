@@ -30,9 +30,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 
     func applicationWillFinishLaunching(_ notification: Notification) {
         _ = CodeEditDocumentController.shared
-
-        // This enables window restoring on normal quit (instead of only on force-quit).
-        UserDefaults.standard.setValue(true, forKey: "NSQuitAlwaysKeepsWindows")
+        Self.enableWindowSizeSaveOnQuit()
     }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
@@ -221,6 +219,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.checkForFilesToOpen()
         }
+    }
+
+    /// Enable window size restoring on app relaunch after quitting.
+    static func enableWindowSizeSaveOnQuit() {
+        // This enables window restoring on normal quit (instead of only on force-quit).
+        UserDefaults.standard.setValue(true, forKey: "NSQuitAlwaysKeepsWindows")
     }
 
     // MARK: - Preferences
