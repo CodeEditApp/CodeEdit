@@ -30,6 +30,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject { // 
 
     func applicationWillFinishLaunching(_ notification: Notification) {
         _ = CodeEditDocumentController.shared
+
+        // This enables window restoring on normal quit (instead of only on force-quit).
+        UserDefaults.standard.setValue(true, forKey: "NSQuitAlwaysKeepsWindows")
     }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
@@ -39,22 +42,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject { // 
         DispatchQueue.main.async {
             var needToHandleOpen = true
 
-            if NSApp.windows.isEmpty {
-                if let projects = UserDefaults.standard.array(forKey: AppDelegate.recoverWorkspacesKey) as? [String],
-                   !projects.isEmpty {
-                    projects.forEach { path in
-                        let url = URL(fileURLWithPath: path)
-                        CodeEditDocumentController.shared.reopenDocument(
-                            for: url,
-                            withContentsOf: url,
-                            display: true
-                        ) { document, _, _ in
-                            document?.windowControllers.first?.synchronizeWindowTitleWithDocumentName()
-                        }
-                    }
-
-                    needToHandleOpen = false
-                }
+            // If no windows were reopened by NSQuitAlwaysKeepsWindows, do default behavior.
+            if !NSApp.windows.isEmpty {
+                needToHandleOpen = false
             }
 
             for index in 0..<CommandLine.arguments.count {
