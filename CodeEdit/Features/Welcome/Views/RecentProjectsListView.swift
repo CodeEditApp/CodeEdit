@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct RecentProjectsList: View {
+struct RecentProjectsListView: View {
 
     @State private var selection: Set<URL>
 
