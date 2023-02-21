@@ -24,7 +24,7 @@ final class CodeEditApplication: NSApplication {
 
 }
 
-@NSApplicationMain
+@main
 final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     var updater: SoftwareUpdater = SoftwareUpdater()
 

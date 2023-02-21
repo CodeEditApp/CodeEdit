@@ -22,18 +22,41 @@ import CodeEditKit
     @Published var selectionState: WorkspaceSelectionState = .init()
     @Published var fileItems: [WorkspaceClient.FileItem] = []
 
+    var workspaceState: [String: Any] {
+        get {
+            let key = "workspaceState-\(self.fileURL?.absoluteString ?? "")"
+            return UserDefaults.standard.object(forKey: key) as? [String: Any] ?? [:]
+        }
+        set {
+            let key = "workspaceState-\(self.fileURL?.absoluteString ?? "")"
+            UserDefaults.standard.set(newValue, forKey: key)
+        }
+    }
+
     var statusBarModel: StatusBarViewModel?
     var searchState: SearchState?
     var quickOpenViewModel: QuickOpenViewModel?
     var commandsPaletteState: CommandPaletteViewModel?
     var listenerModel: WorkspaceNotificationModel = .init()
+
     private var cancellables = Set<AnyCancellable>()
+    private let openTabsStateName: String = "\(String(describing: WorkspaceDocument.self))-OpenTabs"
+    private let activeTabStateName: String = "\(String(describing: WorkspaceDocument.self))-ActiveTab"
+    private var openedTabsFromState = false
 
     @Published var targets: [Target] = []
 
     deinit {
         cancellables.forEach { $0.cancel() }
         NotificationCenter.default.removeObserver(self)
+    }
+
+    func getFromWorkspaceState(key: String) -> Any? {
+        return workspaceState[key]
+    }
+
+    func addToWorkspaceState(key: String, value: Any) {
+        workspaceState.updateValue(value, forKey: key)
     }
 
     // MARK: Open Tabs
@@ -147,6 +170,30 @@ import CodeEditKit
         closeTabs(items: range)
     }
 
+    /// Switched the active tab to current tab
+    /// - Parameter item: tab item that is now active.
+    func switchedTab(item: TabBarItemRepresentable) {
+        selectionState.selectedId = item.tabID
+        guard let fileItem = item as? WorkspaceClient.FileItem else { return }
+        self.addToWorkspaceState(key: activeTabStateName, value: fileItem.url.absoluteString)
+    }
+
+    /// Tabs reordered
+    /// - Parameter openedTabs: reordered tabs
+    func reorderedTabs(openedTabs: [TabBarItemID]) {
+        selectionState.openedTabs = openedTabs
+
+        if openedTabsFromState {
+            var openTabsInState: [String] = []
+            for openTabId in openedTabs {
+                guard let item = selectionState.getItemByTab(id: openTabId) as? WorkspaceClient.FileItem
+                else { continue }
+                openTabsInState.append(item.url.absoluteString)
+            }
+            self.addToWorkspaceState(key: openTabsStateName, value: openTabsInState)
+        }
+    }
+
     /// Closes an open temporary tab,  does not save the temporary tab's file.
     /// Removes the tab item from `openedCodeFiles`, `openedExtensions`, and `openFileItems`.
     private func closeTemporaryTab() {
@@ -196,6 +243,14 @@ import CodeEditKit
         selectionState.openedCodeFiles.removeValue(forKey: item)
         selectionState.openFileItems.remove(at: openFileItemIndex)
         removeTab(id: item.tabID)
+
+        if openedTabsFromState {
+            var openTabsInState = self.getFromWorkspaceState(key: openTabsStateName) as? [String] ?? []
+            if let index = openTabsInState.firstIndex(of: item.url.absoluteString) {
+                openTabsInState.remove(at: index)
+                self.addToWorkspaceState(key: openTabsStateName, value: openTabsInState)
+            }
+        }
     }
 
     private func closeExtensionTab(item: Plugin) {
@@ -209,8 +264,19 @@ import CodeEditKit
     @objc func convertTemporaryTab() {
         if selectionState.selectedId == selectionState.temporaryTab &&
             selectionState.temporaryTab != nil {
+            let item = selectionState.getItemByTab(id: selectionState.temporaryTab!)
             selectionState.previousTemporaryTab = selectionState.temporaryTab
             selectionState.temporaryTab = nil
+
+            guard let file = item as? WorkspaceClient.FileItem else { return }
+
+            if openedTabsFromState && item != nil {
+                var openTabsInState = self.getFromWorkspaceState(key: openTabsStateName) as? [String] ?? []
+                if !openTabsInState.contains(file.url.absoluteString) {
+                    openTabsInState.append(file.url.absoluteString)
+                    self.addToWorkspaceState(key: openTabsStateName, value: openTabsInState)
+                }
+            }
         }
     }
 
@@ -269,6 +335,27 @@ import CodeEditKit
         windowController.shouldCascadeWindows = false
         windowController.window?.setFrameAutosaveName(self.fileURL?.absoluteString ?? "Untitled")
         self.addWindowController(windowController)
+
+        var activeTabID: TabBarItemID?
+        var activeTabInState = self.getFromWorkspaceState(key: activeTabStateName) as? String ?? ""
+        var openTabsInState = self.getFromWorkspaceState(key: openTabsStateName) as? [String] ?? []
+        for openTab in openTabsInState {
+            let tabUrl = URL(string: openTab)!
+            if FileManager.default.fileExists(atPath: tabUrl.path) {
+                let item = WorkspaceClient.FileItem(url: tabUrl)
+                self.openTab(item: item)
+                self.convertTemporaryTab()
+                if activeTabInState == openTab {
+                    activeTabID = item.tabID
+                }
+            }
+        }
+
+        if activeTabID != nil {
+            selectionState.selectedId = activeTabID
+        }
+
+        self.openedTabsFromState = true
     }
 
     // MARK: Set Up Workspace
@@ -282,7 +369,7 @@ import CodeEditKit
         self.searchState = .init(self)
         self.quickOpenViewModel = .init(fileURL: url)
         self.commandsPaletteState = .init()
-        self.statusBarModel = .init(workspaceURL: url)
+        self.statusBarModel = .init(workspace: self, workspaceURL: url)
 
         NotificationCenter.default.addObserver(
             self,
@@ -292,26 +379,10 @@ import CodeEditKit
         )
     }
 
-    /// Retrieves selection state from UserDefaults using SHA256 hash of project  path as key
-    /// - Throws: `DecodingError.dataCorrupted` error if retrived data from UserDefaults is not decodable
-    /// - Returns: retrived state from UserDefaults or default state if not found
-    private func readSelectionState() throws -> WorkspaceSelectionState {
-        guard let path = fileURL?.path,
-              let data = UserDefaults.standard.value(forKey: path.sha256()) as? Data  else { return selectionState }
-        let state = try PropertyListDecoder().decode(WorkspaceSelectionState.self, from: data)
-        return state
-    }
-
     override func read(from url: URL, ofType typeName: String) throws {
         try initWorkspaceState(url)
 
         // Initialize Workspace
-        do {
-            selectionState = try readSelectionState()
-        } catch {
-            Swift.print("couldn't retrieve selection state from user defaults")
-        }
-
         workspaceClient?
             .getFiles
             .sink { [weak self] files in
@@ -355,22 +426,7 @@ import CodeEditKit
 
     // MARK: Close Workspace
 
-    /// Saves selection state to UserDefaults using SHA256 hash of project  path as key
-    /// - Throws: `EncodingError.invalidValue` error if sellection state is not encodable
-    private func saveSelectionState() throws {
-        guard let path = fileURL?.path else { return }
-        let hash = path.sha256()
-        let data = try PropertyListEncoder().encode(selectionState)
-        UserDefaults.standard.set(data, forKey: hash)
-    }
-
     override func close() {
-        do {
-            try saveSelectionState()
-        } catch {
-            Swift.print("couldn't save selection state from user defaults")
-        }
-
         selectionState.selectedId = nil
         selectionState.openedCodeFiles.removeAll()
 

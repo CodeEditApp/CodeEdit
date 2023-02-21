@@ -68,7 +68,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
 
     private func setupSplitView(with workspace: WorkspaceDocument) {
         let feedbackPerformer = NSHapticFeedbackManager.defaultPerformer
-        let splitVC = CodeEditSplitViewController(feedbackPerformer: feedbackPerformer)
+        let splitVC = CodeEditSplitViewController(workspace: workspace, feedbackPerformer: feedbackPerformer)
 
         let navigatorView = NavigatorSidebarView(workspace: workspace)
         let navigator = NSSplitViewItem(
@@ -215,6 +215,9 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     @objc func toggleFirstPanel() {
         guard let firstSplitView = splitViewController.splitViewItems.first else { return }
         firstSplitView.animator().isCollapsed.toggle()
+        if let codeEditSplitVC = splitViewController as? CodeEditSplitViewController {
+            codeEditSplitVC.saveNavigatorCollapsedState(isCollapsed: firstSplitView.isCollapsed)
+        }
     }
 
     @objc func toggleLastPanel() {
@@ -224,6 +227,9 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
             window?.toolbar?.removeItem(at: 4)
         } else {
             window?.toolbar?.insertItem(withItemIdentifier: .itemListTrackingSeparator, at: 4)
+        }
+        if let codeEditSplitVC = splitViewController as? CodeEditSplitViewController {
+            codeEditSplitVC.saveInspectorCollapsedState(isCollapsed: lastSplitView.isCollapsed)
         }
     }
 

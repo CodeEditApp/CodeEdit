@@ -12,6 +12,10 @@ import SwiftUI
 /// A model class to host and manage data for the ``StatusBarView``
 ///
 class StatusBarViewModel: ObservableObject {
+    private let isStatusBarDrawerCollapsedStateName: String
+        = "\(String(describing: StatusBarViewModel.self))-IsStatusBarDrawerCollapsed"
+    private let statusBarDrawerHeightStateName: String
+        = "\(String(describing: StatusBarViewModel.self))-StatusBarDrawerHeight"
 
     // TODO: Implement logic for updating values
     // TODO: Add @Published vars for indentation, encoding, linebreak
@@ -54,6 +58,8 @@ class StatusBarViewModel: ObservableObject {
     /// Returns the font for status bar items to use
     private(set) var toolbarFont: Font = .system(size: 11)
 
+    private(set) var workspace: WorkspaceDocument
+
     /// The base URL of the workspace
     private(set) var workspaceURL: URL
 
@@ -69,7 +75,27 @@ class StatusBarViewModel: ObservableObject {
 
     /// Initialize with a GitClient
     /// - Parameter workspaceURL: the current workspace URL
-    init(workspaceURL: URL) {
+    init(workspace: WorkspaceDocument, workspaceURL: URL) {
+        self.workspace = workspace
         self.workspaceURL = workspaceURL
+
+        var currentHeight = workspace.getFromWorkspaceState(key: statusBarDrawerHeightStateName) as? Double
+                            ?? self.standardHeight
+        if currentHeight == 0 {
+            currentHeight = self.standardHeight
+        }
+
+        self.isExpanded = workspace.getFromWorkspaceState(key: isStatusBarDrawerCollapsedStateName) as? Bool ?? false
+        if self.isExpanded {
+            self.currentHeight = currentHeight
+        }
+    }
+
+    func saveIsExpandedToState() {
+        self.workspace.addToWorkspaceState(key: isStatusBarDrawerCollapsedStateName, value: self.isExpanded)
+    }
+
+    func saveHeightToState(height: Double) {
+        self.workspace.addToWorkspaceState(key: statusBarDrawerHeightStateName, value: height)
     }
 }
