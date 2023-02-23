@@ -14,28 +14,23 @@ struct SplitViewItem: Hashable {
     init(id: AnyHashable, controller: NSViewController) {
         self.id = id
         self.item = .init(viewController: controller)
-        self.item.minimumThickness = 200
-        self.item.canCollapse = false
+        item.minimumThickness = 200
+        item.canCollapse = false
     }
 }
 
 struct EditorSplitView: NSViewControllerRepresentable {
 
     var axis: Axis
-
     var children: _VariadicView.Children
 
-    var splitPosition: CGFloat
-
     func makeNSViewController(context: Context) -> SplitViewController {
-        let controller = SplitViewController(childrenn: children, axis: axis)
+        let controller = SplitViewController(variadicChildren: children, axis: axis)
 
         return controller
     }
 
     func updateNSViewController(_ controller: SplitViewController, context: Context) {
-        print("Update!")
-
         // Reorder viewcontrollers if needed and add new ones.
         var hasChanged = false
         controller.items = children.map { child in
@@ -50,9 +45,15 @@ struct EditorSplitView: NSViewControllerRepresentable {
         controller.splitViewItems = controller.items.map(\.item)
 
         if hasChanged && controller.splitViewItems.count > 1 {
-            controller.splitView.setPosition(splitPosition, ofDividerAt: 0)
-            controller.splitView.layoutSubtreeIfNeeded()
-                    controller.splitView.adjustSubviews()
+            print(controller.items.count, controller.splitView.frame.width)
+            print(controller.splitView.frame.width / CGFloat(controller.items.count))
+
+            for idx in 0..<controller.items.count {
+                controller.splitView.setPosition(
+                    CGFloat(idx + 1) * controller.splitView.frame.width/CGFloat(controller.items.count),
+                    ofDividerAt: idx
+                )
+            }
         }
     }
 }
@@ -60,13 +61,11 @@ struct EditorSplitView: NSViewControllerRepresentable {
 final class SplitViewController: NSSplitViewController {
 
     var items: [SplitViewItem] = []
-
     var axis: Axis
+    var variadicChildren: _VariadicView.Children
 
-    var childrenn: _VariadicView.Children
-
-    init(childrenn: _VariadicView.Children, axis: Axis = .horizontal) {
-        self.childrenn = childrenn
+    init(variadicChildren: _VariadicView.Children, axis: Axis = .horizontal) {
+        self.variadicChildren = variadicChildren
         self.axis = axis
         super.init(nibName: nil, bundle: nil)
     }
@@ -77,7 +76,7 @@ final class SplitViewController: NSSplitViewController {
 
     override func viewDidLoad() {
         splitView.isVertical = axis != .vertical
-        splitView.dividerStyle = .thick
+        splitView.dividerStyle = .thin
     }
 
     override func splitView(_ splitView: NSSplitView, shouldHideDividerAt dividerIndex: Int) -> Bool {

@@ -27,19 +27,10 @@ struct SplitView<Content: View>: View {
 
     @ViewBuilder var content: Content
 
-    @State private var splitPosition = 1.0
-
     var body: some View {
         VStack {
-            HStack {
-                Stepper("Split position \(splitPosition)", value: $splitPosition, in: 0.0...500.0, step: 0.5)
-                Slider(value: $splitPosition, in: 0.0...500.0)
-                    .frame(width: 200)
-            }
             content.variadic { children in
-                EditorSplitView(axis: axis, children: children, splitPosition: splitPosition)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-
+                EditorSplitView(axis: axis, children: children)
             }
         }
     }
