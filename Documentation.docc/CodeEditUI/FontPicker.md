@@ -2,7 +2,7 @@
 
 ## Overview
 
-Opens a [`NSFontPanel`](https://developer.apple.com/documentation/appkit/nsfontpanel) and binds the `fontSize` and `fontName` paramters to the provided variables.
+Opens a [`NSFontPanel`](https://developer.apple.com/documentation/appkit/nsfontpanel) and binds the `fontSize` and `fontName` parameters to the provided variables.
 
 ## Usage
 
