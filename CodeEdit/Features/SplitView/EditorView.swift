@@ -23,15 +23,8 @@ struct EditorView: View {
         @ObservedObject var data: WorkspaceSplitViewData
 
         var body: some View {
-            switch data.axis {
-            case .vertical:
-                VSplitView {
-                    splitView
-                }
-            case .horizontal:
-                HSplitView {
-                    splitView
-                }
+            SplitView(axis: data.axis) {
+                splitView
             }
         }
 
