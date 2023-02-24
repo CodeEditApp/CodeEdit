@@ -45,7 +45,7 @@ struct WorkspaceView: View {
         ZStack {
             if workspace.workspaceClient != nil, let model = workspace.statusBarModel {
                 ZStack {
-                    EditorView(tabgroup: workspace.tabs, isBelowToolbar: true).id(UUID())
+                    EditorView(tabgroup: workspace.tabs).id(UUID())
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
 //                .safeAreaInset(edge: .top, spacing: 0) {

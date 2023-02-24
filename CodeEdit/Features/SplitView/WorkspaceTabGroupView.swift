@@ -10,24 +10,13 @@ import SwiftUI
 struct WorkspaceTabGroupView: View {
     @ObservedObject var tabgroup: TabGroupData
 
-    var isBelowToolbar = false
-
-    @Environment(\.window) private var window
-
-    var toolbarHeight: CGFloat {
-        window.contentView?.safeAreaInsets.top ?? .zero
-    }
-
-    var edgeInsets: EdgeInsets {
-        let top = TabBarView.height + BreadcrumbsView.height + 1 + 1
-        let extraHeight = isBelowToolbar ? toolbarHeight : .zero
-        return EdgeInsets(top: top + extraHeight, leading: 0, bottom: 0, trailing: 0)
-    }
-
     var body: some View {
         VStack {
             if let selected = tabgroup.selected {
                 WorkspaceCodeFileView(file: selected)
+                    .transformEnvironment(\.edgeInsets) { insets in
+                        insets.top += TabBarView.height + BreadcrumbsView.height + 1 + 1
+                    }
             } else {
                 VStack {
                     Spacer()
@@ -42,7 +31,6 @@ struct WorkspaceTabGroupView: View {
         }
         .frame(maxWidth: .infinity)
         .ignoresSafeArea(.all)
-        .environment(\.edgeInsets, edgeInsets)
         .safeAreaInset(edge: .top, spacing: 0) {
             VStack(spacing: 0) {
                 TabBarView()

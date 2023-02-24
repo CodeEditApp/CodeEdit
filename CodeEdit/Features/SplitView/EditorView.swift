@@ -10,21 +10,30 @@ import SwiftUI
 struct EditorView: View {
     var tabgroup: TabGroup
 
-    var isBelowToolbar = false
+    @Environment(\.window) private var window
+
+    @Environment(\.isBelowToolbar) private var isBelowToolbar
+
+    var toolbarHeight: CGFloat {
+        window.contentView?.safeAreaInsets.top ?? .zero
+    }
 
     var body: some View {
         switch tabgroup {
         case .one(let detailTabGroup):
-            WorkspaceTabGroupView(tabgroup: detailTabGroup, isBelowToolbar: isBelowToolbar)
+            WorkspaceTabGroupView(tabgroup: detailTabGroup)
+                .transformEnvironment(\.edgeInsets) { insets in
+                    if isBelowToolbar {
+                        insets.top += toolbarHeight
+                    }
+                }
         case .vertical(let data), .horizontal(let data):
-            SubEditorView(data: data, isBelowToolbar: isBelowToolbar)
+            SubEditorView(data: data)
         }
     }
 
     struct SubEditorView: View {
         @ObservedObject var data: WorkspaceSplitViewData
-
-        var isBelowToolbar = false
 
         var body: some View {
             SplitView(axis: data.axis) {
@@ -35,14 +44,17 @@ struct EditorView: View {
 
         var splitView: some View {
             ForEach(Array(data.tabgroups.enumerated()), id: \.offset) { index, item in
-                EditorView(tabgroup: item, isBelowToolbar: calcIsBelowToolbar(index: index))
+                EditorView(tabgroup: item)
+                    .transformEnvironment(\.isBelowToolbar, transform: { belowToolbar in
+                        belowToolbar = calcIsBelowToolbar(isBelowToolbar: belowToolbar, index: index)
+                    })
                     .environment(\.splitEditor) { edge, newTabGroup in
                         data.split(edge, at: index, new: newTabGroup)
                     }
             }
         }
 
-        func calcIsBelowToolbar(index: Int) -> Bool {
+        func calcIsBelowToolbar(isBelowToolbar: Bool, index: Int) -> Bool {
             switch data.axis {
             case .horizontal:
                 return isBelowToolbar
@@ -50,5 +62,16 @@ struct EditorView: View {
                 return isBelowToolbar && index == .zero
             }
         }
+    }
+}
+
+private struct BelowToolbarEnvironmentKey: EnvironmentKey {
+    static var defaultValue = true
+}
+
+extension EnvironmentValues {
+    fileprivate var isBelowToolbar: BelowToolbarEnvironmentKey.Value {
+        get { self[BelowToolbarEnvironmentKey.self] }
+        set { self[BelowToolbarEnvironmentKey.self] = newValue }
     }
 }
