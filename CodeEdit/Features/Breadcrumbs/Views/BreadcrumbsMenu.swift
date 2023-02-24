@@ -75,8 +75,12 @@ final class BreadcrumbsMenuItem: NSMenuItem {
         if fileItem.children != nil {
             let subMenu = NSMenu()
             submenu = subMenu
-            icon = "folder.fill"
-            color = .secondary
+            icon = fileItem.systemImage
+            if fileItem.parent == nil {
+                color = .accentColor
+            } else {
+                color = .secondary
+            }
         }
         let image = NSImage(
             systemSymbolName: icon,

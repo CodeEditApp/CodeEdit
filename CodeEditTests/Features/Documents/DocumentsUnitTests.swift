@@ -18,7 +18,7 @@ final class DocumentsUnitTests: XCTestCase {
     override func setUp() {
         super.setUp()
         hapticFeedbackPerformerMock = .init()
-        splitViewController = .init(feedbackPerformer: hapticFeedbackPerformerMock)
+        splitViewController = .init(workspace: WorkspaceDocument(), feedbackPerformer: hapticFeedbackPerformerMock)
     }
 
     override func tearDown() {

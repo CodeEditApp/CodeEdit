@@ -25,7 +25,7 @@ When implementing a new feature, we might have some options in regards to this n
 
 ### Find a Section
 
-The preferences window is structered in different sections. Figure out in which section your new option should appear in.
+The preferences window is structured in different sections. Figure out in which section your new option should appear in.
 
 If the section is already populated with other options (e.g. ``AppPreferences/GeneralPreferences``), just add your new option like this:
 

@@ -116,6 +116,8 @@ extension WorkspaceClient {
             switch children {
             case nil:
                 return FileIcon.fileIcon(fileType: fileType)
+            case .some where parent == nil:
+                return "square.dashed.inset.filled"
             case let .some(children):
                 if self.watcher == nil && !self.activateWatcher() {
                     return "questionmark.folder"
@@ -212,7 +214,7 @@ extension WorkspaceClient {
 
         /// This function allows creating files in the selected folder or project main directory
         /// - Parameter fileName: The name of the new file
-        func addFile(fileName: String) {
+        func addFile(fileName: String) -> String {
             // check if folder, if it is create file under self
             var fileUrl = (self.isFolder ?
                        self.url.appendingPathComponent(fileName) :
@@ -231,6 +233,8 @@ extension WorkspaceClient {
                 contents: nil,
                 attributes: [FileAttributeKey.creationDate: Date()]
             )
+
+            return fileUrl.path
         }
 
         /// This function deletes the item or folder from the current project

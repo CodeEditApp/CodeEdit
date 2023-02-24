@@ -246,6 +246,8 @@ struct TabBarView: View {
                         tabs.files = .init(openedTabs.compactMap { id in
                             tabs.files.first { $0.id == id }
                         })
+                        // workspace.reorderedTabs(openedTabs: openedTabs)
+                        // TODO: Fix save state
                     }
                 }
             })

@@ -99,6 +99,9 @@ struct TabBarItemView: View {
         // Only set the `selectedId` when they are not equal to avoid performance issue for now.
         if tabs.selected != item {
             tabs.selected = item
+        // if workspace.selectionState.selectedId != item.tabID {
+        //     workspace.switchedTab(item: item)
+            // TODO: Fix save state
         }
     }
 
