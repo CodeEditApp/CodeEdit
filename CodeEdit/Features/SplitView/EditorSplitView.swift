@@ -25,8 +25,7 @@ struct EditorSplitView: NSViewControllerRepresentable {
     var children: _VariadicView.Children
 
     func makeNSViewController(context: Context) -> SplitViewController {
-        let controller = SplitViewController(variadicChildren: children, axis: axis)
-
+        let controller = SplitViewController(axis: axis)
         return controller
     }
 
@@ -62,10 +61,8 @@ final class SplitViewController: NSSplitViewController {
 
     var items: [SplitViewItem] = []
     var axis: Axis
-    var variadicChildren: _VariadicView.Children
 
-    init(variadicChildren: _VariadicView.Children, axis: Axis = .horizontal) {
-        self.variadicChildren = variadicChildren
+    init(axis: Axis = .horizontal) {
         self.axis = axis
         super.init(nibName: nil, bundle: nil)
     }
