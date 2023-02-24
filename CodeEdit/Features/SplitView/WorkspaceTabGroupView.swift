@@ -10,6 +10,16 @@ import SwiftUI
 struct WorkspaceTabGroupView: View {
     @ObservedObject var tabgroup: TabGroupData
 
+    @Environment(\.window) var window
+
+    var toolbarHeight: CGFloat {
+        window.contentView?.safeAreaInsets.top ?? .zero
+    }
+
+    var edgeInsets: NSEdgeInsets {
+        .init(top: toolbarHeight + TabBarView.height + BreadcrumbsView.height + 1 + 1, leading: 0, bottom: 0, trailing: 0)
+    }
+
     var body: some View {
         VStack {
             if let selected = tabgroup.selected {
@@ -28,11 +38,12 @@ struct WorkspaceTabGroupView: View {
         }
         .frame(maxWidth: .infinity)
         .ignoresSafeArea(.all)
+        .environment(\.edgeInsets, edgeInsets)
         .safeAreaInset(edge: .top, spacing: 0) {
             VStack(spacing: 0) {
                 TabBarView()
                     .environmentObject(tabgroup)
-                
+
                 Divider()
                 if let file = tabgroup.selected {
                     BreadcrumbsView(file: file) { newFile in

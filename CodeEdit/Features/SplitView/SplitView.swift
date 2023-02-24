@@ -28,10 +28,8 @@ struct SplitView<Content: View>: View {
     @ViewBuilder var content: Content
 
     var body: some View {
-        VStack {
-            content.variadic { children in
-                EditorSplitView(axis: axis, children: children)
-            }
+        content.variadic { children in
+            EditorSplitView(axis: axis, children: children)
         }
     }
 }

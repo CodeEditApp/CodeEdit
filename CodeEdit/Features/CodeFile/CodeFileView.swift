@@ -60,6 +60,8 @@ struct CodeFileView: View {
         return AppPreferencesModel.shared.preferences.textEditing.font.current()
     }()
 
+    @Environment(\.edgeInsets) var edgeInsets
+
     var body: some View {
         CodeEditTextView(
             $codeFile.content,
@@ -70,7 +72,8 @@ struct CodeFileView: View {
             lineHeight: $prefs.preferences.textEditing.lineHeightMultiple,
             wrapLines: $prefs.preferences.textEditing.wrapLinesToEditorWidth,
             cursorPosition: codeFile.$cursorPosition,
-            useThemeBackground: prefs.preferences.theme.useThemeBackground
+            useThemeBackground: prefs.preferences.theme.useThemeBackground,
+            contentInsets: edgeInsets.nsEdgeInsets
         )
         .id(codeFile.fileURL)
         .background {

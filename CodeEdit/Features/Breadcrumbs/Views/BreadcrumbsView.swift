@@ -18,6 +18,8 @@ struct BreadcrumbsView: View {
     @Environment(\.controlActiveState)
     private var activeState
 
+    static let height = 28.0
+
     init(
         file: WorkspaceClient.FileItem,
         tappedOpenFile: @escaping (WorkspaceClient.FileItem) -> Void
@@ -51,8 +53,8 @@ struct BreadcrumbsView: View {
             }
             .padding(.horizontal, 10)
         }
-        .frame(height: 28, alignment: .center)
-        .background(EffectView(.headerView).frame(height: 28))
+        .frame(height: Self.height, alignment: .center)
+        .background(EffectView(.headerView).frame(height: Self.height))
     }
 
     private var chevron: some View {

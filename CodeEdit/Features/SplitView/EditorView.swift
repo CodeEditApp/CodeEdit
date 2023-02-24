@@ -26,6 +26,7 @@ struct EditorView: View {
             SplitView(axis: data.axis) {
                 splitView
             }
+            .edgesIgnoringSafeArea(.top)
         }
 
         var splitView: some View {
