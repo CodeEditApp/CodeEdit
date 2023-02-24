@@ -147,6 +147,9 @@ Be part of the next revolution in code editing by contributing to the project. T
       <td align="center" valign="top" width="14.28%"><a href="https://cubik65536.top"><img src="https://avatars.githubusercontent.com/u/72877496?v=4?s=100" width="100px;" alt="Cubik"/><br /><sub><b>Cubik</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3ACubik65536" title="Bug reports">🐛</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://twitter.com/RenanGreca"><img src="https://avatars.githubusercontent.com/u/5760386?v=4?s=100" width="100px;" alt="Renan Greca"/><br /><sub><b>Renan Greca</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=RenanGreca" title="Code">💻</a></td>
     </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/maxkel"><img src="https://avatars.githubusercontent.com/u/46418077?v=4?s=100" width="100px;" alt="maxkel"/><br /><sub><b>maxkel</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3Amaxkel" title="Bug reports">🐛</a></td>
+    </tr>
   </tbody>
 </table>
 
