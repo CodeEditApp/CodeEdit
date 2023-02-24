@@ -126,7 +126,7 @@ struct TabBarContextMenu: ViewModifier {
     }
 
     func moveToNewSplit(_ edge: Edge) {
-        let newTabGroup = TabGroupData(files: [item], selected: item)
+        let newTabGroup = TabGroupData(files: [item])
         splitEditor(edge, newTabGroup)
         tabs.files.remove(item)
     }
