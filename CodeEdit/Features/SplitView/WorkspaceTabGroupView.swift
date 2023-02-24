@@ -10,14 +10,18 @@ import SwiftUI
 struct WorkspaceTabGroupView: View {
     @ObservedObject var tabgroup: TabGroupData
 
-    @Environment(\.window) var window
+    var isBelowToolbar = false
+
+    @Environment(\.window) private var window
 
     var toolbarHeight: CGFloat {
         window.contentView?.safeAreaInsets.top ?? .zero
     }
 
-    var edgeInsets: NSEdgeInsets {
-        .init(top: toolbarHeight + TabBarView.height + BreadcrumbsView.height + 1 + 1, leading: 0, bottom: 0, trailing: 0)
+    var edgeInsets: EdgeInsets {
+        let top = TabBarView.height + BreadcrumbsView.height + 1 + 1
+        let extraHeight = isBelowToolbar ? toolbarHeight : .zero
+        return EdgeInsets(top: top + extraHeight, leading: 0, bottom: 0, trailing: 0)
     }
 
     var body: some View {

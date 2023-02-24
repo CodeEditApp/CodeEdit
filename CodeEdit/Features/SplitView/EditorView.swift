@@ -10,17 +10,21 @@ import SwiftUI
 struct EditorView: View {
     var tabgroup: TabGroup
 
+    var isBelowToolbar = false
+
     var body: some View {
         switch tabgroup {
         case .one(let detailTabGroup):
-            WorkspaceTabGroupView(tabgroup: detailTabGroup)
+            WorkspaceTabGroupView(tabgroup: detailTabGroup, isBelowToolbar: isBelowToolbar)
         case .vertical(let data), .horizontal(let data):
-            SubEditorView(data: data)
+            SubEditorView(data: data, isBelowToolbar: isBelowToolbar)
         }
     }
 
     struct SubEditorView: View {
         @ObservedObject var data: WorkspaceSplitViewData
+
+        var isBelowToolbar = false
 
         var body: some View {
             SplitView(axis: data.axis) {
@@ -31,10 +35,19 @@ struct EditorView: View {
 
         var splitView: some View {
             ForEach(Array(data.tabgroups.enumerated()), id: \.offset) { index, item in
-                EditorView(tabgroup: item)
+                EditorView(tabgroup: item, isBelowToolbar: calcIsBelowToolbar(index: index))
                     .environment(\.splitEditor) { edge, newTabGroup in
                         data.split(edge, at: index, new: newTabGroup)
                     }
+            }
+        }
+
+        func calcIsBelowToolbar(index: Int) -> Bool {
+            switch data.axis {
+            case .horizontal:
+                return isBelowToolbar
+            case .vertical:
+                return isBelowToolbar && index == .zero
             }
         }
     }
