@@ -70,6 +70,7 @@ struct WorkspaceView: View {
             if workspace.workspaceClient != nil, let model = workspace.statusBarModel {
                 ZStack {
                     tabContent
+                        .animation(nil, value: UUID())
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .safeAreaInset(edge: .top, spacing: 0) {
