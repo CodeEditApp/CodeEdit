@@ -23,6 +23,8 @@ struct StatusBarView: View {
     @EnvironmentObject
     private var model: StatusBarViewModel
 
+    static let height = 29.0
+
     var body: some View {
         VStack(spacing: 0) {
             bar
@@ -67,7 +69,7 @@ struct StatusBarView: View {
                 PanelDivider()
             }
         }
-        .frame(height: 29)
+        .frame(height: Self.height)
         .gesture(dragGesture)
         .onHover { isHovering($0, isDragging: model.isDragging, cursor: .resizeUpDown) }
     }

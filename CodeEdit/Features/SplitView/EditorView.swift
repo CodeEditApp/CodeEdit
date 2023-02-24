@@ -12,7 +12,7 @@ struct EditorView: View {
 
     @Environment(\.window) private var window
 
-    @Environment(\.isBelowToolbar) private var isBelowToolbar
+    @Environment(\.isAtEdge) private var isAtEdge
 
     var toolbarHeight: CGFloat {
         window.contentView?.safeAreaInsets.top ?? .zero
@@ -23,8 +23,16 @@ struct EditorView: View {
         case .one(let detailTabGroup):
             WorkspaceTabGroupView(tabgroup: detailTabGroup)
                 .transformEnvironment(\.edgeInsets) { insets in
-                    if isBelowToolbar {
+                    switch isAtEdge {
+                    case .all:
                         insets.top += toolbarHeight
+                        insets.bottom += StatusBarView.height
+                    case .top:
+                        insets.top += toolbarHeight
+                    case .bottom:
+                        insets.bottom += StatusBarView.height
+                    default:
+                        return
                     }
                 }
         case .vertical(let data), .horizontal(let data):
@@ -39,38 +47,42 @@ struct EditorView: View {
             SplitView(axis: data.axis) {
                 splitView
             }
-            .edgesIgnoringSafeArea(.top)
+            .edgesIgnoringSafeArea([.top, .bottom])
         }
 
         var splitView: some View {
             ForEach(Array(data.tabgroups.enumerated()), id: \.offset) { index, item in
                 EditorView(tabgroup: item)
-                    .transformEnvironment(\.isBelowToolbar, transform: { belowToolbar in
-                        belowToolbar = calcIsBelowToolbar(isBelowToolbar: belowToolbar, index: index)
-                    })
+                    .transformEnvironment(\.isAtEdge) { belowToolbar in
+                        calcIsAtEdge(current: &belowToolbar, index: index)
+                    }
                     .environment(\.splitEditor) { edge, newTabGroup in
                         data.split(edge, at: index, new: newTabGroup)
                     }
             }
         }
 
-        func calcIsBelowToolbar(isBelowToolbar: Bool, index: Int) -> Bool {
-            switch data.axis {
-            case .horizontal:
-                return isBelowToolbar
-            case .vertical:
-                return isBelowToolbar && index == .zero
+        func calcIsAtEdge(current: inout VerticalEdge.Set, index: Int) {
+            if case .vertical = data.axis {
+                guard data.tabgroups.count != 1 else { return }
+                if index == data.tabgroups.count - 1 {
+                    current.remove(.top)
+                } else if index == 0 {
+                    current.remove(.bottom)
+                } else {
+                    current = []
+                }
             }
         }
     }
 }
 
 private struct BelowToolbarEnvironmentKey: EnvironmentKey {
-    static var defaultValue = true
+    static var defaultValue: VerticalEdge.Set = .all
 }
 
 extension EnvironmentValues {
-    fileprivate var isBelowToolbar: BelowToolbarEnvironmentKey.Value {
+    fileprivate var isAtEdge: BelowToolbarEnvironmentKey.Value {
         get { self[BelowToolbarEnvironmentKey.self] }
         set { self[BelowToolbarEnvironmentKey.self] = newValue }
     }
