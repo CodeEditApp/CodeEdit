@@ -10,4 +10,4 @@ HelpButton {
 
 ## Preview
 
-![Help Button](HelpButton_View.png)
+![Help Button](Resources/HelpButton_View.png)
