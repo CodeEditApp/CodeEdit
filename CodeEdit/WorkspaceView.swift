@@ -41,22 +41,49 @@ struct WorkspaceView: View {
 
     @Environment(\.colorScheme) var colorScheme
 
+    @State var terminalCollapsed = false
+
     var body: some View {
         ZStack {
             if workspace.workspaceClient != nil, let model = workspace.statusBarModel {
-                ZStack {
-                    EditorView(tabgroup: workspace.tabs).id(UUID())
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-//                .safeAreaInset(edge: .top, spacing: 0) {
-//                    VStack(spacing: 0) {
-//                        TabBarView()
-//                        TabBarBottomDivider()
-//                    }
-//                }
-                .safeAreaInset(edge: .bottom) {
-                    StatusBarView()
+                VStack {
+                    SplitViewReader { proxy in
+                        SplitView(axis: .vertical) {
+
+                            EditorView(tabgroup: workspace.tabs)
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                .safeAreaInset(edge: .bottom, spacing: 0) {
+                                    StatusBarView(proxy: proxy, collapsed: $terminalCollapsed)
+                                }
+
+//                            if model.isExpanded {
+                                TerminalEmulatorView(url: model.workspaceURL)
+                                    .background {
+                                        if colorScheme == .dark {
+                                            if prefs.preferences.theme.selectedTheme == prefs.preferences.theme.selectedLightTheme {
+                                                Color.white
+                                            } else {
+                                                EffectView(.underPageBackground)
+                                            }
+                                        } else {
+                                            if prefs.preferences.theme.selectedTheme == prefs.preferences.theme.selectedDarkTheme {
+                                                Color.black
+                                            } else {
+                                                EffectView(.contentBackground)
+                                            }
+                                        }
+                                    }
+                                    .id(StatusBarView.statusbarID)
+                                    .collapsable()
+                                    .collapsed($terminalCollapsed)
+                                    .frame(minHeight: 200, maxHeight: 400)
+//                            }
+                        }
+
+                        .edgesIgnoringSafeArea(.top)
                         .environmentObject(model)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    }
                 }
             } else {
                 EmptyView()

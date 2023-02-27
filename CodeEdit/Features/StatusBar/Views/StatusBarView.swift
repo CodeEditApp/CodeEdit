@@ -23,26 +23,25 @@ struct StatusBarView: View {
     @EnvironmentObject
     private var model: StatusBarViewModel
 
+    @ObservedObject
+    private var prefs: AppPreferencesModel = .shared
+
     static let height = 29.0
 
-    var body: some View {
-        VStack(spacing: 0) {
-            bar
-            if model.isExpanded {
-                StatusBarDrawer()
-                    .transition(.move(edge: .bottom))
-            }
-        }
-        .disabled(controlActive == .inactive)
-        // removes weird light gray bar above when in light mode
-        .padding(.top, -8) // (comment out to make it look normal in preview)
-    }
+    @Environment(\.colorScheme)
+    private var colorScheme
+
+    var proxy: SplitViewProxy
+
+    @Binding var collapsed: Bool
+
+    static let statusbarID = "statusbarID"
 
     /// The actual status bar
-    private var bar: some View {
-        ZStack {
-            Rectangle()
-                .foregroundStyle(.bar)
+    var body: some View {
+        VStack {
+            Divider()
+//            Spacer()
             HStack(spacing: 15) {
                 HStack(spacing: 5) {
                     StatusBarBreakpointButton()
@@ -50,47 +49,54 @@ struct StatusBarView: View {
                         .frame(maxHeight: 12)
                         .padding(.horizontal, 7)
                     SegmentedControl($model.selectedTab, options: StatusBarTabType.allOptions)
-                        .opacity(model.isExpanded ? 1 : 0)
+                        .opacity(collapsed ? 0 : 1)
                 }
                 Spacer()
                 StatusBarCursorLocationLabel()
                 StatusBarIndentSelector()
                 StatusBarEncodingSelector()
                 StatusBarLineEndSelector()
-                StatusBarToggleDrawerButton()
+                StatusBarToggleDrawerButton(collapsed: $collapsed)
             }
             .padding(.horizontal, 10)
+//            Spacer()
+            Divider()
         }
-        .overlay(alignment: .top) {
-            PanelDivider()
-        }
-        .overlay(alignment: .bottom) {
-            if model.isExpanded {
-                PanelDivider()
-            }
-        }
-        .frame(height: Self.height)
+//        .overlay(alignment: .top) {
+//            PanelDivider()
+//        }
+//        .overlay(alignment: .bottom) {
+//            if model.isExpanded {
+//                PanelDivider()
+//            }
+//        }
+        .background(.bar)
         .gesture(dragGesture)
         .onHover { isHovering($0, isDragging: model.isDragging, cursor: .resizeUpDown) }
+        .disabled(controlActive == .inactive)
+        .frame(height: Self.height)
+
     }
 
     /// A drag gesture to resize the drawer beneath the status bar
     private var dragGesture: some Gesture {
-        DragGesture()
+
+        DragGesture(coordinateSpace: .global)
             .onChanged { value in
                 model.isDragging = true
-                var newHeight = max(0, min(model.currentHeight - value.translation.height, 500))
-                if newHeight-0.5 > model.currentHeight || newHeight+0.5 < model.currentHeight {
-                    if newHeight < model.minHeight { // simulate the snapping/resistance after reaching minimal height
-                        if newHeight > model.minHeight / 2 {
-                            newHeight = model.minHeight
-                        } else {
-                            newHeight = 0
-                        }
-                    }
-                    model.currentHeight = newHeight
-                }
-                model.isExpanded = model.currentHeight < 1 ? false : true
+                proxy.setPosition(of: 0, position: value.location.y + Self.height / 2)
+//                var newHeight = max(0, min(model.currentHeight - value.translation.height, 500))
+//                if newHeight-0.5 > model.currentHeight || newHeight+0.5 < model.currentHeight {
+//                    if newHeight < model.minHeight { // simulate the snapping/resistance after reaching minimal height
+//                        if newHeight > model.minHeight / 2 {
+//                            newHeight = model.minHeight
+//                        } else {
+//                            newHeight = 0
+//                        }
+//                    }
+//                    model.currentHeight = newHeight
+//                }
+//                model.isExpanded = model.currentHeight < 1 ? false : true
             }
             .onEnded { _ in
                 model.isDragging = false
