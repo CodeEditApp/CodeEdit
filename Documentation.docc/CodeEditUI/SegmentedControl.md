@@ -11,7 +11,7 @@ SegmentedControl($selected, options: items)
 
 ## Preview
 
-![Segmented Control](Resources/SegmentedControl_View.png)
+![Segmented Control](SegmentedControl_View.png)
 
 ## Topics
 
