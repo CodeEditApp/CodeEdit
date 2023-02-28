@@ -15,7 +15,7 @@ FontPicker("Font Picker", name: $fontName, size: $fontSize)
 
 ## Preview
 
-![FontPicker](Resources/FontPicker_View.png)
+![FontPicker](FontPicker_View.png)
 
 ## Topics
 
