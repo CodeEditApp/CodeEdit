@@ -6,7 +6,7 @@
 @State var selected: Int = 0
 var items: [String] = ["Tab 1", "Tab 2"]
 
-SegementedControl($selected, options: items)
+SegmentedControl($selected, options: items)
 ```
 
 ## Preview
