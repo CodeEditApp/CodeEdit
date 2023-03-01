@@ -32,7 +32,6 @@ final class AppPreferencesModel: ObservableObject {
     var preferences: AppPreferences {
         didSet {
             try? savePreferences()
-            objectWillChange.send()
         }
     }
 

@@ -11,8 +11,8 @@ struct StatusBarDrawer: View {
     @EnvironmentObject
     private var model: StatusBarViewModel
 
-    @ObservedObject
-    private var prefs: AppPreferencesModel = .shared
+//    @ObservedObject
+//    private var prefs: AppPreferencesModel = .shared
 
     @Environment(\.colorScheme)
     private var colorScheme
@@ -23,21 +23,6 @@ struct StatusBarDrawer: View {
     var body: some View {
         VStack(spacing: 0) {
             TerminalEmulatorView(url: model.workspaceURL)
-                .background {
-                    if colorScheme == .dark {
-                        if prefs.preferences.theme.selectedTheme == prefs.preferences.theme.selectedLightTheme {
-                            Color.white
-                        } else {
-                            EffectView(.underPageBackground)
-                        }
-                    } else {
-                        if prefs.preferences.theme.selectedTheme == prefs.preferences.theme.selectedDarkTheme {
-                            Color.black
-                        } else {
-                            EffectView(.contentBackground)
-                        }
-                    }
-                }
             HStack(alignment: .center, spacing: 10) {
                 FilterTextField(title: "Filter", text: $searchText)
                     .frame(maxWidth: 300)
