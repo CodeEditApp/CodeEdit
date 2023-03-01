@@ -20,7 +20,7 @@ struct NavigatorSidebarToolbarBottom: View {
             Spacer()
             sortButton
         }
-        .frame(height: 29, alignment: .center)
+        .frame(height: 29)
         .frame(maxWidth: .infinity)
         .padding(.horizontal, 4)
         .overlay(alignment: .top) {

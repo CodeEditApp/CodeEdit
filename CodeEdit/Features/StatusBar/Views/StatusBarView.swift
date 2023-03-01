@@ -39,7 +39,7 @@ struct StatusBarView: View {
 
     /// The actual status bar
     var body: some View {
-        VStack {
+        VStack(spacing: 4) {
             Divider()
             HStack(spacing: 15) {
                 HStack(spacing: 5) {
@@ -58,13 +58,13 @@ struct StatusBarView: View {
                 StatusBarToggleDrawerButton(collapsed: $collapsed)
             }
             .padding(.horizontal, 10)
-            Divider()
+//            Divider()
         }
+        .frame(height: Self.height + 3)
         .background(.bar)
         .gesture(dragGesture)
         .onHover { isHovering($0, isDragging: model.isDragging, cursor: .resizeUpDown) }
         .disabled(controlActive == .inactive)
-        .frame(height: Self.height)
 
     }
 
