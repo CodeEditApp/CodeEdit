@@ -20,44 +20,24 @@ struct StatusBarDrawer: View {
     @State
     private var searchText = ""
 
-    var height: CGFloat {
-        if model.isMaximized {
-            return model.maxHeight
-        }
-        if model.isExpanded {
-            return model.currentHeight
-        }
-        return 0
-    }
-
     var body: some View {
         VStack(spacing: 0) {
-            GeometryReader { geometryProxy in
-                switch model.selectedTab {
-                case 0:
-                    TerminalEmulatorView(url: model.workspaceURL)
-                        .background {
-                            if colorScheme == .dark {
-                                if prefs.preferences.theme.selectedTheme == prefs.preferences.theme.selectedLightTheme {
-                                    Color.white
-                                } else {
-                                    EffectView(.underPageBackground)
-                                }
-                            } else {
-                                if prefs.preferences.theme.selectedTheme == prefs.preferences.theme.selectedDarkTheme {
-                                    Color.black
-                                } else {
-                                    EffectView(.contentBackground)
-                                }
-                            }
+            TerminalEmulatorView(url: model.workspaceURL)
+                .background {
+                    if colorScheme == .dark {
+                        if prefs.preferences.theme.selectedTheme == prefs.preferences.theme.selectedLightTheme {
+                            Color.white
+                        } else {
+                            EffectView(.underPageBackground)
                         }
-                        // When size changes, save new height to workspace state.
-                        .onChange(of: geometryProxy.size.height) { _ in
-                            model.saveHeightToState(height: geometryProxy.size.height)
+                    } else {
+                        if prefs.preferences.theme.selectedTheme == prefs.preferences.theme.selectedDarkTheme {
+                            Color.black
+                        } else {
+                            EffectView(.contentBackground)
                         }
-                default: Rectangle().foregroundColor(Color(nsColor: .textBackgroundColor))
+                    }
                 }
-            }
             HStack(alignment: .center, spacing: 10) {
                 FilterTextField(title: "Filter", text: $searchText)
                     .frame(maxWidth: 300)
@@ -71,10 +51,6 @@ struct StatusBarDrawer: View {
             .frame(maxHeight: 29)
             .background(.bar)
         }
-        .frame(
-            minHeight: 0,
-            idealHeight: height,
-            maxHeight: height
-        )
+        
     }
 }

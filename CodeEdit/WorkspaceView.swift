@@ -41,10 +41,7 @@ struct WorkspaceView: View {
 
     @Environment(\.colorScheme) var colorScheme
 
-    @State var terminalCollapsed = false
-
-    @State
-    private var searchText = ""
+    @State var terminalCollapsed = true
 
     var body: some View {
         ZStack {
@@ -60,41 +57,11 @@ struct WorkspaceView: View {
                                 }
                                 .layoutPriority(2)
 
-                            VStack {
-                                TerminalEmulatorView(url: model.workspaceURL)
-                                    .background {
-                                        if colorScheme == .dark {
-                                            if prefs.preferences.theme.selectedTheme == prefs.preferences.theme.selectedLightTheme {
-                                                Color.white
-                                            } else {
-                                                EffectView(.underPageBackground)
-                                            }
-                                        } else {
-                                            if prefs.preferences.theme.selectedTheme == prefs.preferences.theme.selectedDarkTheme {
-                                                Color.black
-                                            } else {
-                                                EffectView(.contentBackground)
-                                            }
-                                        }
-                                    }
-                                HStack(alignment: .center, spacing: 10) {
-                                    FilterTextField(title: "Filter", text: $searchText)
-                                        .frame(maxWidth: 300)
-                                    Spacer()
-                                    StatusBarClearButton()
-                                    Divider()
-                                    StatusBarSplitTerminalButton()
-                                    StatusBarMaximizeButton()
-                                }
-                                .padding(10)
-                                .frame(maxHeight: 29)
-                                .background(.bar)
-                            }
-                            .id(StatusBarView.statusbarID)
-                            .collapsable()
-                            .collapsed($terminalCollapsed)
-                            .frame(minHeight: 200, maxHeight: 400)
-                            .layoutPriority(1)
+                            StatusBarDrawer()
+                                .collapsable()
+                                .collapsed($terminalCollapsed)
+                                .frame(minHeight: 200, maxHeight: 400)
+
                         }
                         .edgesIgnoringSafeArea(.top)
                         .environmentObject(model)

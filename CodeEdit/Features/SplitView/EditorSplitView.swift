@@ -24,6 +24,7 @@ class SplitViewItem: ObservableObject {
         self.item = NSSplitViewItem(viewController: NSHostingController(rootView: child))
         self.collapsed = child[SplitViewItemCollapsedViewTraitKey.self]
         self.item.canCollapse = child[SplitViewItemCanCollapseViewTraitKey.self]
+        self.item.isCollapsed = self.collapsed.wrappedValue
         self.observers = createObservers()
     }
 
@@ -51,13 +52,17 @@ struct EditorSplitView: NSViewControllerRepresentable {
     var viewController: SplitViewController
 
     func makeNSViewController(context: Context) -> SplitViewController {
+        viewController.items = children.map { SplitViewItem(child: $0) }
         return viewController
     }
 
     func updateNSViewController(_ controller: SplitViewController, context: Context) {
-        print("Update")
-        // Reorder viewcontrollers if needed and add new ones.
+        updateItems(controller: controller)
+    }
+
+    func updateItems(controller: SplitViewController) {
         var hasChanged = false
+        // Reorder viewcontrollers if needed and add new ones.
         controller.items = children.map { child in
             let item: SplitViewItem
             if let foundItem = controller.items.first(where: { $0.id == child.id }) {

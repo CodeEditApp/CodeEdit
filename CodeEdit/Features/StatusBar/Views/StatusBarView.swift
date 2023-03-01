@@ -41,7 +41,6 @@ struct StatusBarView: View {
     var body: some View {
         VStack {
             Divider()
-//            Spacer()
             HStack(spacing: 15) {
                 HStack(spacing: 5) {
                     StatusBarBreakpointButton()
@@ -59,17 +58,8 @@ struct StatusBarView: View {
                 StatusBarToggleDrawerButton(collapsed: $collapsed)
             }
             .padding(.horizontal, 10)
-//            Spacer()
             Divider()
         }
-//        .overlay(alignment: .top) {
-//            PanelDivider()
-//        }
-//        .overlay(alignment: .bottom) {
-//            if model.isExpanded {
-//                PanelDivider()
-//            }
-//        }
         .background(.bar)
         .gesture(dragGesture)
         .onHover { isHovering($0, isDragging: model.isDragging, cursor: .resizeUpDown) }
@@ -80,26 +70,9 @@ struct StatusBarView: View {
 
     /// A drag gesture to resize the drawer beneath the status bar
     private var dragGesture: some Gesture {
-
         DragGesture(coordinateSpace: .global)
             .onChanged { value in
-                model.isDragging = true
                 proxy.setPosition(of: 0, position: value.location.y + Self.height / 2)
-//                var newHeight = max(0, min(model.currentHeight - value.translation.height, 500))
-//                if newHeight-0.5 > model.currentHeight || newHeight+0.5 < model.currentHeight {
-//                    if newHeight < model.minHeight { // simulate the snapping/resistance after reaching minimal height
-//                        if newHeight > model.minHeight / 2 {
-//                            newHeight = model.minHeight
-//                        } else {
-//                            newHeight = 0
-//                        }
-//                    }
-//                    model.currentHeight = newHeight
-//                }
-//                model.isExpanded = model.currentHeight < 1 ? false : true
-            }
-            .onEnded { _ in
-                model.isDragging = false
             }
     }
 }
