@@ -27,8 +27,8 @@ struct TabBarView: View {
     private var activeState
 
     /// The workspace document.
-    //    @EnvironmentObject
-    //    private var workspace: WorkspaceFiles
+    @EnvironmentObject
+    private var workspace: WorkspaceDocument
 
     @EnvironmentObject
     private var tabs: TabGroupData
@@ -415,6 +415,21 @@ struct TabBarView: View {
 
     private var leadingAccessories: some View {
         HStack(spacing: 2) {
+            TabBarAccessoryIcon(
+                icon: .init(systemName: "multiply"),
+                action: {
+                    tabs.close()
+                    if workspace.activeTab == tabs {
+                        workspace.activeTab = workspace.tabs.findSomeTabGroup()
+                    }
+                }
+            )
+            .foregroundColor(.secondary)
+            .buttonStyle(.plain)
+            .help("Close Tab Group")
+            Divider()
+                .frame(height: 10)
+                .padding(.horizontal, 4)
             TabBarAccessoryIcon(
                 icon: .init(systemName: "chevron.left"),
                 action: {} // TODO: Implement

@@ -15,10 +15,17 @@ class WorkspaceSplitViewData: ObservableObject {
     init(_ axis: Axis, tabgroups: [TabGroup] = []) {
         self.tabgroups = tabgroups
         self.axis = axis
+
+        tabgroups.forEach {
+            if case .one(let tabGroupData) = $0 {
+                tabGroupData.parent = self
+            }
+        }
     }
 
     // Splits the editor at a certain index into two separate editors.
     func split(_ direction: Edge, at index: Int, new tabgroup: TabGroupData) {
+        tabgroup.parent = self
         switch (axis, direction) {
         case (.horizontal, .trailing), (.vertical, .bottom):
             tabgroups.insert(.one(tabgroup), at: index+1)
@@ -37,6 +44,17 @@ class WorkspaceSplitViewData: ObservableObject {
 
         case (.vertical, .trailing):
             tabgroups[index] = .horizontal(.init(.horizontal, tabgroups: [tabgroups[index], .one(tabgroup)]))
+        }
+    }
+
+    func closeTabGroup(with id: TabGroupData.ID) {
+        tabgroups.removeAll { tabgroup in
+            if case .one(let tabGroupData) = tabgroup {
+                if tabGroupData.id == id {
+                    return true
+                }
+            }
+            return false
         }
     }
 }

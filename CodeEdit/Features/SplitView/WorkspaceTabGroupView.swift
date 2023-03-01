@@ -38,6 +38,7 @@ struct WorkspaceTabGroupView: View {
         .safeAreaInset(edge: .top, spacing: 0) {
             VStack(spacing: 0) {
                 TabBarView()
+                    .id("TabBarView" + tabgroup.id.uuidString)
                     .environmentObject(tabgroup)
                     .environment(\.controlActiveState, tabgroup == workspace.activeTab ? .key : .inactive)
 

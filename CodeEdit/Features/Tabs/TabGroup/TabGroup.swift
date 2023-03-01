@@ -22,4 +22,18 @@ enum TabGroup {
             }
         }
     }
+
+    func findSomeTabGroup() -> TabGroupData? {
+        switch self {
+        case .one(let tabGroupData):
+            return tabGroupData
+        case .vertical(let data), .horizontal(let data):
+            for tabgroup in data.tabgroups {
+                if let result = tabgroup.findSomeTabGroup() {
+                    return result
+                }
+            }
+            return nil
+        }
+    }
 }

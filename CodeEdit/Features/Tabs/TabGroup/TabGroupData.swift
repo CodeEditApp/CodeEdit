@@ -8,7 +8,7 @@
 import Foundation
 import OrderedCollections
 
-final class TabGroupData: ObservableObject {
+final class TabGroupData: ObservableObject, Identifiable {
     @Published var files: OrderedSet<WorkspaceClient.FileItem> = [] {
         didSet {
             let change = files.symmetricDifference(oldValue)
@@ -31,16 +31,27 @@ final class TabGroupData: ObservableObject {
 
     @Published var selected: WorkspaceClient.FileItem?
 
-    let uuid = UUID()
+    let id = UUID()
 
-    init(files: OrderedSet<WorkspaceClient.FileItem> = [], selected: WorkspaceClient.FileItem? = nil) {
+    weak var parent: WorkspaceSplitViewData?
+
+    init(files: OrderedSet<WorkspaceClient.FileItem> = [], selected: WorkspaceClient.FileItem? = nil, parent: WorkspaceSplitViewData? = nil) {
         self.files = files
         self.selected = selected ?? files.first
+        self.parent = parent
+    }
+
+    func close() {
+        parent?.closeTabGroup(with: id)
+    }
+
+    deinit {
+        print("DEINITING CLASS WITH FILES \(files)")
     }
 }
 
 extension TabGroupData: Equatable {
     static func == (lhs: TabGroupData, rhs: TabGroupData) -> Bool {
-        lhs.uuid == rhs.uuid
+        lhs.id == rhs.id
     }
 }

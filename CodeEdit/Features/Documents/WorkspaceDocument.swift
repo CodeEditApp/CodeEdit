@@ -24,7 +24,11 @@ import CodeEditKit
 
     @Published var tabs: TabGroup
 
-    @Published var activeTab: TabGroupData
+    weak var activeTab: TabGroupData? {
+        didSet {
+            objectWillChange.send()
+        }
+    }
 
     override init() {
         let tab = TabGroupData()
@@ -76,8 +80,8 @@ import CodeEditKit
     func openTab(item: WorkspaceClient.FileItem) {
         Task {
             await MainActor.run {
-                activeTab.files.append(item)
-                activeTab.selected = item
+                activeTab?.files.append(item)
+                activeTab?.selected = item
                 do {
                     try openFile(item: item)
                 } catch {
