@@ -24,14 +24,15 @@ import CodeEditKit
 
     @Published var tabs: TabGroup
 
-    var activeTab: TabGroupData
+    @Published var activeTab: TabGroupData
 
     override init() {
-        self.activeTab = .init()
-        self.tabs = .horizontal(.init(.horizontal, tabgroups: [.one(activeTab)]))
+        let tab = TabGroupData()
+        self.activeTab = tab
+        self.tabs = .horizontal(.init(.horizontal, tabgroups: [.one(tab)]))
         super.init()
     }
-    
+
     var workspaceState: [String: Any] {
         get {
             let key = "workspaceState-\(self.fileURL?.absoluteString ?? "")"

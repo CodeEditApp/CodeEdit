@@ -55,6 +55,7 @@ struct WorkspaceView: View {
                                 .safeAreaInset(edge: .bottom, spacing: 0) {
                                     StatusBarView(proxy: proxy, collapsed: $terminalCollapsed)
                                 }
+                                .layoutPriority(2)
 
 //                            if model.isExpanded {
                                 TerminalEmulatorView(url: model.workspaceURL)
@@ -77,6 +78,7 @@ struct WorkspaceView: View {
                                     .collapsable()
                                     .collapsed($terminalCollapsed)
                                     .frame(minHeight: 200, maxHeight: 400)
+                                    .layoutPriority(1)
 //                            }
                         }
 

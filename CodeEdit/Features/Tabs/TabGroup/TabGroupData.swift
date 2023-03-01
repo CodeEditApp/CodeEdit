@@ -28,10 +28,19 @@ final class TabGroupData: ObservableObject {
             }
         }
     }
+
     @Published var selected: WorkspaceClient.FileItem?
+
+    let uuid = UUID()
 
     init(files: OrderedSet<WorkspaceClient.FileItem> = [], selected: WorkspaceClient.FileItem? = nil) {
         self.files = files
         self.selected = selected ?? files.first
+    }
+}
+
+extension TabGroupData: Equatable {
+    static func == (lhs: TabGroupData, rhs: TabGroupData) -> Bool {
+        lhs.uuid == rhs.uuid
     }
 }
