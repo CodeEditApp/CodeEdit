@@ -11,9 +11,6 @@ struct StatusBarDrawer: View {
     @EnvironmentObject
     private var model: StatusBarViewModel
 
-//    @ObservedObject
-//    private var prefs: AppPreferencesModel = .shared
-
     @Environment(\.colorScheme)
     private var colorScheme
 
