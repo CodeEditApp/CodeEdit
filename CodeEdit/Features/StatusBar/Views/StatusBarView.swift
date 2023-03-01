@@ -60,10 +60,10 @@ struct StatusBarView: View {
             .padding(.horizontal, 10)
             .padding(.bottom, 3)
         }
+        .cursor(.resizeUpDown)
         .frame(height: Self.height)
         .background(.bar)
         .gesture(dragGesture)
-        .onHover { isHovering($0, isDragging: model.isDragging, cursor: .resizeUpDown) }
         .disabled(controlActive == .inactive)
     }
 
@@ -73,5 +73,29 @@ struct StatusBarView: View {
             .onChanged { value in
                 proxy.setPosition(of: 0, position: value.location.y + Self.height / 2)
             }
+    }
+}
+
+extension View {
+    func cursor(_ cursor: NSCursor) -> some View {
+        // Using onContinuousHover instead of onHover, as the latter is less reliable.
+        onHover {
+            if $0 {
+                cursor.push()
+            } else {
+                cursor.pop()
+            }
+        }
+//        onContinuousHover { phase in
+//            print(phase)
+//            switch phase {
+//            case .active:
+//                cursor.push()
+//            case .ended:
+//                while NSCursor.current == cursor {
+//                    cursor.pop()
+//                }
+//            }
+//        }
     }
 }
