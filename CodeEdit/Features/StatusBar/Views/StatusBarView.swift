@@ -58,14 +58,13 @@ struct StatusBarView: View {
                 StatusBarToggleDrawerButton(collapsed: $collapsed)
             }
             .padding(.horizontal, 10)
-//            Divider()
+            .padding(.bottom, 3)
         }
-        .frame(height: Self.height + 3)
+        .frame(height: Self.height)
         .background(.bar)
         .gesture(dragGesture)
         .onHover { isHovering($0, isDragging: model.isDragging, cursor: .resizeUpDown) }
         .disabled(controlActive == .inactive)
-
     }
 
     /// A drag gesture to resize the drawer beneath the status bar
