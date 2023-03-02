@@ -23,16 +23,18 @@ enum TabGroup {
         }
     }
 
-    func findSomeTabGroup() -> TabGroupData? {
+    func findSomeTabGroup(except: TabGroupData? = nil) -> TabGroupData? {
         switch self {
-        case .one(let tabGroupData):
+        case .one(let tabGroupData) where tabGroupData != except:
             return tabGroupData
         case .vertical(let data), .horizontal(let data):
             for tabgroup in data.tabgroups {
-                if let result = tabgroup.findSomeTabGroup() {
+                if let result = tabgroup.findSomeTabGroup(except: except), result != except {
                     return result
                 }
             }
+            return nil
+        default:
             return nil
         }
     }

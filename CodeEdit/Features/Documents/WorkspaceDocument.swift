@@ -10,6 +10,7 @@ import AppKit
 import SwiftUI
 import Combine
 import CodeEditKit
+import OrderedCollections
 
 // swiftlint:disable type_body_length
 // swiftlint:disable file_length
@@ -24,15 +25,18 @@ import CodeEditKit
 
     @Published var tabs: TabGroup
 
-    weak var activeTab: TabGroupData? {
+    @Published var activeTab: TabGroupData {
         didSet {
-            objectWillChange.send()
+            activeTabHistory.updateOrInsert(oldValue, at: 0)
         }
     }
+
+    var activeTabHistory: OrderedSet<TabGroupData> = []
 
     override init() {
         let tab = TabGroupData()
         self.activeTab = tab
+        self.activeTabHistory.append(tab)
         self.tabs = .horizontal(.init(.horizontal, tabgroups: [.one(tab)]))
         super.init()
     }
@@ -80,8 +84,8 @@ import CodeEditKit
     func openTab(item: WorkspaceClient.FileItem) {
         Task {
             await MainActor.run {
-                activeTab?.files.append(item)
-                activeTab?.selected = item
+                activeTab.files.append(item)
+                activeTab.selected = item
                 do {
                     try openFile(item: item)
                 } catch {

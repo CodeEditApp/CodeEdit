@@ -50,8 +50,12 @@ final class TabGroupData: ObservableObject, Identifiable {
     }
 }
 
-extension TabGroupData: Equatable {
+extension TabGroupData: Equatable, Hashable {
     static func == (lhs: TabGroupData, rhs: TabGroupData) -> Bool {
         lhs.id == rhs.id
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
 }

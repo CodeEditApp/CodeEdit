@@ -415,21 +415,25 @@ struct TabBarView: View {
 
     private var leadingAccessories: some View {
         HStack(spacing: 2) {
-            TabBarAccessoryIcon(
-                icon: .init(systemName: "multiply"),
-                action: {
-                    tabs.close()
-                    if workspace.activeTab == tabs {
-                        workspace.activeTab = workspace.tabs.findSomeTabGroup()
+            if workspace.tabs.findSomeTabGroup(except: tabs) != nil {
+                TabBarAccessoryIcon(
+                    icon: .init(systemName: "multiply"),
+                    action: {
+                        tabs.close()
+                        if workspace.activeTab == tabs {
+                            workspace.activeTab = workspace.activeTabHistory.removeFirst()
+                        }
                     }
-                }
-            )
-            .foregroundColor(.secondary)
-            .buttonStyle(.plain)
-            .help("Close Tab Group")
-            Divider()
-                .frame(height: 10)
-                .padding(.horizontal, 4)
+                )
+                .foregroundColor(.secondary)
+                .buttonStyle(.plain)
+                .help("Close Tab Group")
+
+                Divider()
+                    .frame(height: 10)
+                    .padding(.horizontal, 4)
+            }
+
             TabBarAccessoryIcon(
                 icon: .init(systemName: "chevron.left"),
                 action: {} // TODO: Implement
