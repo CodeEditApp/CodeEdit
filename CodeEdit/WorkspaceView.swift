@@ -9,14 +9,11 @@ import SwiftUI
 import AppKit
 
 struct WorkspaceView: View {
-    init(workspace: WorkspaceDocument) {
-        self.workspace = workspace
-    }
 
     let tabBarHeight = 28.0
     private var path: String = ""
 
-    @ObservedObject
+    @EnvironmentObject
     var workspace: WorkspaceDocument
 
     @EnvironmentObject private var tabManager: TabManager
@@ -32,59 +29,33 @@ struct WorkspaceView: View {
     @State
     private var showingAlert = false
 
-    @State
-    private var alertTitle = ""
-
-    @State
-    private var alertMsg = ""
-
-    @State
-    var showInspector = true
-
     @Environment(\.colorScheme) var colorScheme
 
     @State var terminalCollapsed = true
 
     var body: some View {
-        ZStack {
-            if workspace.workspaceClient != nil, let model = workspace.statusBarModel {
-                VStack {
-                    SplitViewReader { proxy in
-                        SplitView(axis: .vertical) {
+        if workspace.workspaceClient != nil {
+            VStack {
+                SplitViewReader { proxy in
+                    SplitView(axis: .vertical) {
 
-                            EditorView(tabgroup: tabManager.tabs)
-                                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                .safeAreaInset(edge: .bottom, spacing: 0) {
-                                    StatusBarView(proxy: proxy, collapsed: $terminalCollapsed)
-                                }
-                                .layoutPriority(2)
+                        EditorView(tabgroup: tabManager.tabs)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .safeAreaInset(edge: .bottom, spacing: 0) {
+                                StatusBarView(proxy: proxy, collapsed: $terminalCollapsed)
+                            }
+                            .layoutPriority(2)
 
-                            StatusBarDrawer()
-                                .collapsable()
-                                .collapsed($terminalCollapsed)
-                                .frame(minHeight: 200, maxHeight: 400)
+                        StatusBarDrawer()
+                            .collapsable()
+                            .collapsed($terminalCollapsed)
+                            .frame(minHeight: 200, maxHeight: 400)
 
-                        }
-                        .edgesIgnoringSafeArea(.top)
-                        .environmentObject(model)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
+                    .edgesIgnoringSafeArea(.top)
+                    .environmentObject(workspace.statusBarModel)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
-            } else {
-                EmptyView()
-            }
-        }
-        .environmentObject(workspace)
-        .background(EffectView(.contentBackground))
-        .alert(alertTitle, isPresented: $showingAlert, actions: {
-            Button(
-                action: { showingAlert = false },
-                label: { Text("OK") }
-            )
-        }, message: { Text(alertMsg) })
-        .onChange(of: workspace.selectionState.selectedId) { newValue in
-            if newValue == nil {
-                window.subtitle = ""
             }
         }
     }

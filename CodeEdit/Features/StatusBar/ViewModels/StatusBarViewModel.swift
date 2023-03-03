@@ -61,7 +61,7 @@ class StatusBarViewModel: ObservableObject {
     private(set) var workspace: WorkspaceDocument
 
     /// The base URL of the workspace
-    private(set) var workspaceURL: URL
+    var workspaceURL: URL?
 
     /// The maximum height of the drawer
     /// when isMaximized is true the height gets set to maxHeight
@@ -75,9 +75,8 @@ class StatusBarViewModel: ObservableObject {
 
     /// Initialize with a GitClient
     /// - Parameter workspaceURL: the current workspace URL
-    init(workspace: WorkspaceDocument, workspaceURL: URL) {
+    init(workspace: WorkspaceDocument) {
         self.workspace = workspace
-        self.workspaceURL = workspaceURL
 
         var currentHeight = workspace.getFromWorkspaceState(key: statusBarDrawerHeightStateName) as? Double
                             ?? self.standardHeight

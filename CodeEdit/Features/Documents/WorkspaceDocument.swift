@@ -36,11 +36,17 @@ import OrderedCollections
         }
     }
 
-    var statusBarModel: StatusBarViewModel?
+    var statusBarModel: StatusBarViewModel
     var searchState: SearchState?
     var quickOpenViewModel: QuickOpenViewModel?
     var commandsPaletteState: CommandPaletteViewModel?
     var listenerModel: WorkspaceNotificationModel = .init()
+
+
+    override init() {
+        self.statusBarModel = StatusBarViewModel(workspace: self)
+        super.init()
+    }
 
     private var cancellables = Set<AnyCancellable>()
     private let openTabsStateName: String = "\(String(describing: WorkspaceDocument.self))-OpenTabs"
@@ -343,7 +349,7 @@ import OrderedCollections
         self.searchState = .init(self)
         self.quickOpenViewModel = .init(fileURL: url)
         self.commandsPaletteState = .init()
-        self.statusBarModel = .init(workspace: self, workspaceURL: url)
+        self.statusBarModel.workspaceURL = url
 
         NotificationCenter.default.addObserver(
             self,
