@@ -10,7 +10,7 @@ import SwiftUI
 struct WorkspaceTabGroupView: View {
     @ObservedObject var tabgroup: TabGroupData
 
-    @EnvironmentObject var workspace: WorkspaceDocument
+    @EnvironmentObject var tabManager: TabManager
 
     @FocusState var isFocused
 
@@ -40,7 +40,7 @@ struct WorkspaceTabGroupView: View {
                 TabBarView()
                     .id("TabBarView" + tabgroup.id.uuidString)
                     .environmentObject(tabgroup)
-                    .environment(\.controlActiveState, tabgroup == workspace.activeTab ? .key : .inactive)
+                    .environment(\.controlActiveState, tabgroup == tabManager.activeTab ? .key : .inactive)
 
                 Divider()
                 if let file = tabgroup.selected {
@@ -63,7 +63,7 @@ struct WorkspaceTabGroupView: View {
         .focused($isFocused)
         .onChange(of: isFocused) { focused in
             if focused {
-                workspace.activeTab = tabgroup
+                tabManager.activeTab = tabgroup
             }
         }
     }

@@ -23,23 +23,7 @@ import OrderedCollections
     @Published var selectionState: WorkspaceSelectionState = .init()
     @Published var fileItems: [WorkspaceClient.FileItem] = []
 
-    @Published var tabs: TabGroup
-
-    @Published var activeTab: TabGroupData {
-        didSet {
-            activeTabHistory.updateOrInsert(oldValue, at: 0)
-        }
-    }
-
-    var activeTabHistory: OrderedSet<TabGroupData> = []
-
-    override init() {
-        let tab = TabGroupData()
-        self.activeTab = tab
-        self.activeTabHistory.append(tab)
-        self.tabs = .horizontal(.init(.horizontal, tabgroups: [.one(tab)]))
-        super.init()
-    }
+    var tabManager = TabManager()
 
     var workspaceState: [String: Any] {
         get {
@@ -84,8 +68,8 @@ import OrderedCollections
     func openTab(item: WorkspaceClient.FileItem) {
         Task {
             await MainActor.run {
-                activeTab.files.append(item)
-                activeTab.selected = item
+                tabManager.activeTab.files.append(item)
+                tabManager.activeTab.selected = item
                 do {
                     try openFile(item: item)
                 } catch {

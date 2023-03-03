@@ -20,7 +20,7 @@ struct TabBarItemView: View {
     @Environment(\.isFullscreen)
     private var isFullscreen
 
-    @EnvironmentObject var workspace: WorkspaceDocument
+    @EnvironmentObject var tabManager: TabManager
 
     /// User preferences.
     @StateObject
@@ -97,7 +97,7 @@ struct TabBarItemView: View {
     /// Switch the active tab to current tab.
     private func switchAction() {
         // Only set the `selectedId` when they are not equal to avoid performance issue for now.
-        workspace.activeTab = tabs
+        tabManager.activeTab = tabs
         if tabs.selected != item {
             tabs.selected = item
         // if workspace.selectionState.selectedId != item.tabID {
@@ -327,17 +327,10 @@ struct TabBarItemView: View {
             )
         )
         .onAppear {
-            if (isTemporary && workspace.selectionState.previousTemporaryTab == nil)
-                || !(isTemporary && workspace.selectionState.previousTemporaryTab != item.tabID) {
-                withAnimation(
-                    .easeOut(duration: prefs.preferences.general.tabBarStyle == .native ? 0.15 : 0.20)
-                ) {
-                    isAppeared = true
-                }
-            } else {
-                withAnimation(.linear(duration: 0.0)) {
-                    isAppeared = true
-                }
+            withAnimation(
+                .easeOut(duration: prefs.preferences.general.tabBarStyle == .native ? 0.15 : 0.20)
+            ) {
+                isAppeared = true
             }
         }
         .id(item.id)

@@ -19,6 +19,8 @@ struct WorkspaceView: View {
     @ObservedObject
     var workspace: WorkspaceDocument
 
+    @EnvironmentObject private var tabManager: TabManager
+
     @StateObject
     private var prefs: AppPreferencesModel = .shared
 
@@ -50,7 +52,7 @@ struct WorkspaceView: View {
                     SplitViewReader { proxy in
                         SplitView(axis: .vertical) {
 
-                            EditorView(tabgroup: workspace.tabs)
+                            EditorView(tabgroup: tabManager.tabs)
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                                 .safeAreaInset(edge: .bottom, spacing: 0) {
                                     StatusBarView(proxy: proxy, collapsed: $terminalCollapsed)

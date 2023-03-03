@@ -30,6 +30,8 @@ struct TabBarView: View {
     @EnvironmentObject
     private var workspace: WorkspaceDocument
 
+    @EnvironmentObject private var tabManager: TabManager
+
     @EnvironmentObject
     private var tabs: TabGroupData
 
@@ -415,13 +417,13 @@ struct TabBarView: View {
 
     private var leadingAccessories: some View {
         HStack(spacing: 2) {
-            if workspace.tabs.findSomeTabGroup(except: tabs) != nil {
+            if tabManager.tabs.findSomeTabGroup(except: tabs) != nil {
                 TabBarAccessoryIcon(
                     icon: .init(systemName: "multiply"),
                     action: {
                         tabs.close()
-                        if workspace.activeTab == tabs {
-                            workspace.activeTab = workspace.activeTabHistory.removeFirst()
+                        if tabManager.activeTab == tabs {
+                            tabManager.activeTab = tabManager.activeTabHistory.removeFirst()
                         }
                     }
                 )
