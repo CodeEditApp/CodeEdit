@@ -325,7 +325,7 @@
 		6C53AAD829A6C4FD00EE9ED6 /* SplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C53AAD729A6C4FD00EE9ED6 /* SplitView.swift */; };
 		6C7256D729A3D7D000C2D3E0 /* EditorSplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C7256D629A3D7D000C2D3E0 /* EditorSplitView.swift */; };
 		6C7256DA29A3D98C00C2D3E0 /* SequenceBuilder in Frameworks */ = {isa = PBXBuildFile; productRef = 6C7256D929A3D98C00C2D3E0 /* SequenceBuilder */; };
-		6C91D57229B176FF0059A90D /* TabManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C91D57129B176FF0059A90D /* TabManagement.swift */; };
+		6C91D57229B176FF0059A90D /* TabManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C91D57129B176FF0059A90D /* TabManager.swift */; };
 		6C97EBCC2978760400302F95 /* AcknowledgementsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C97EBCB2978760400302F95 /* AcknowledgementsWindowController.swift */; };
 		6C97EBCF297876E500302F95 /* AboutWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C97EBCE297876E500302F95 /* AboutWindowController.swift */; };
 		6CBD1BC62978DE53006639D5 /* Font+Caption3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBD1BC52978DE53006639D5 /* Font+Caption3.swift */; };
@@ -718,7 +718,7 @@
 		6C5228B429A868BD00AC48F6 /* Environment+ContentInsets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Environment+ContentInsets.swift"; sourceTree = "<group>"; };
 		6C53AAD729A6C4FD00EE9ED6 /* SplitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitView.swift; sourceTree = "<group>"; };
 		6C7256D629A3D7D000C2D3E0 /* EditorSplitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorSplitView.swift; sourceTree = "<group>"; };
-		6C91D57129B176FF0059A90D /* TabManagement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabManagement.swift; sourceTree = "<group>"; };
+		6C91D57129B176FF0059A90D /* TabManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabManager.swift; sourceTree = "<group>"; };
 		6C97EBCB2978760400302F95 /* AcknowledgementsWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcknowledgementsWindowController.swift; sourceTree = "<group>"; };
 		6C97EBCE297876E500302F95 /* AboutWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutWindowController.swift; sourceTree = "<group>"; };
 		6CBD1BC52978DE53006639D5 /* Font+Caption3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Caption3.swift"; sourceTree = "<group>"; };
@@ -2204,7 +2204,7 @@
 				6C147C4829A32A080089B630 /* EditorView.swift */,
 				6C53AAD729A6C4FD00EE9ED6 /* SplitView.swift */,
 				6C7256D629A3D7D000C2D3E0 /* EditorSplitView.swift */,
-				6C91D57129B176FF0059A90D /* TabManagement.swift */,
+				6C91D57129B176FF0059A90D /* TabManager.swift */,
 			);
 			path = SplitView;
 			sourceTree = "<group>";
@@ -2654,7 +2654,7 @@
 				5878DAA7291AE76700DD95A3 /* QuickOpenViewModel.swift in Sources */,
 				58F2EAED292FB2B0004A9BDE /* IgnoredFileView.swift in Sources */,
 				587B9E6529301D8F00AC7927 /* GitLabGroupAccess.swift in Sources */,
-				6C91D57229B176FF0059A90D /* TabManagement.swift in Sources */,
+				6C91D57229B176FF0059A90D /* TabManager.swift in Sources */,
 				58D01C9B293167DC00C5B6B4 /* CodeEditKeychainConstants.swift in Sources */,
 				58F2EB0C292FB2B0004A9BDE /* SourceControlAccounts.swift in Sources */,
 				20EBB50F280C389300F3A5DA /* FileInspectorModel.swift in Sources */,

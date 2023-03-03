@@ -79,29 +79,6 @@ import OrderedCollections
         }
     }
 
-    /// Updates the opened tabs and temporary tab.
-    /// - Parameter item: The item to use to update the tab state.
-    private func updateNewlyOpenedTabs(item: TabBarItemRepresentable) {
-        if !selectionState.openedTabs.contains(item.tabID) {
-            // If this isn't opened then we do the temp tab functionality
-
-            // But, if there is already a temporary tab, close it first
-            if selectionState.temporaryTab != nil {
-                if let index = selectionState.openedTabs.firstIndex(of: selectionState.temporaryTab!) {
-                    closeTemporaryTab()
-                    selectionState.openedTabs[index] = item.tabID
-                } else {
-                    selectionState.openedTabs.append(item.tabID)
-                }
-            } else {
-                selectionState.openedTabs.append(item.tabID)
-            }
-
-            selectionState.previousTemporaryTab = selectionState.temporaryTab
-            selectionState.temporaryTab = item.tabID
-        }
-    }
-
     private func openFile(item: WorkspaceClient.FileItem) throws {
         guard !selectionState.openFileItems.contains(item) else {
             return
