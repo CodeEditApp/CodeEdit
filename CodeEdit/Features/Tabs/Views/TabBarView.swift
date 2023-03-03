@@ -349,6 +349,16 @@ struct TabBarView: View {
                             // On first tab appeared, jump to the corresponding position.
                             scrollReader.scrollTo(tabs.selected)
                         }
+                        .onChange(of: workspace.selectionState.openedTabs) { _ in
+                            DispatchQueue.main.asyncAfter(
+                                deadline: .now() + .milliseconds(
+                                    prefs.preferences.general.tabBarStyle == .native ? 150 : 200
+                                )
+                            ) {
+                                guard let selectedID = workspace.selectionState.selectedId else { return }
+                                scrollReader.scrollTo(selectedID)
+                            }
+                        }
                         // When selected tab is changed, scroll to it if possible.
                         .onChange(of: tabs.selected) { targetId in
                             guard let selectedId = targetId else { return }

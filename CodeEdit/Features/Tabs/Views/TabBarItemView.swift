@@ -108,9 +108,7 @@ struct TabBarItemView: View {
 
     /// Close the current tab.
     func closeAction() {
-        if prefs.preferences.general.tabBarStyle == .native {
-            isAppeared = false
-        }
+        isAppeared = false
         withAnimation(
             .easeOut(duration: prefs.preferences.general.tabBarStyle == .native ? 0.15 : 0.20)
         ) {
