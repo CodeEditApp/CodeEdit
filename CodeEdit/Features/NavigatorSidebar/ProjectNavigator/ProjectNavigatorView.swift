@@ -19,6 +19,6 @@ struct ProjectNavigatorView: View {
     @EnvironmentObject var tabManager: TabManager
 
     var body: some View {
-        OutlineView(selection: $tabManager.activeTab.selected)
+        OutlineView(selection: $tabManager.activeTabGroup.selected)
     }
 }

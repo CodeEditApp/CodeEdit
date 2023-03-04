@@ -9,9 +9,9 @@ import Foundation
 import OrderedCollections
 
 class TabManager: ObservableObject {
-    @Published var tabs: TabGroup
+    @Published var tabGroups: TabGroup
 
-    @Published var activeTab: TabGroupData {
+    @Published var activeTabGroup: TabGroupData {
         didSet {
             activeTabHistory.updateOrInsert(oldValue, at: 0)
         }
@@ -23,15 +23,15 @@ class TabManager: ObservableObject {
 
     init() {
         let tab = TabGroupData()
-        self.activeTab = tab
+        self.activeTabGroup = tab
         self.activeTabHistory.append(tab)
-        self.tabs = .horizontal(.init(.horizontal, tabgroups: [.one(tab)]))
+        self.tabGroups = .horizontal(.init(.horizontal, tabgroups: [.one(tab)]))
     }
 
     func openTab(item: WorkspaceClient.FileItem, in tabgroup: TabGroupData? = nil) {
         Task {
             await MainActor.run {
-                let tabgroup = tabgroup ?? activeTab
+                let tabgroup = tabgroup ?? activeTabGroup
                 tabgroup.files.append(item)
                 tabgroup.selected = item
                 do {

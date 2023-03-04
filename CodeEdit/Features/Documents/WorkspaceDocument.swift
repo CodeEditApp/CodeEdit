@@ -227,7 +227,7 @@ import CodeEditKit
             return
         }
         // Save unsaved changes before closing
-        let editedCodeFiles = tabManager.tabs.gatherOpenFiles().compactMap(\.fileDocument).filter(\.isDocumentEdited)
+        let editedCodeFiles = tabManager.tabGroups.gatherOpenFiles().compactMap(\.fileDocument).filter(\.isDocumentEdited)
         for editedCodeFile in editedCodeFiles {
             let shouldClose = UnsafeMutablePointer<Bool>.allocate(capacity: 1)
             shouldClose.initialize(to: true)
@@ -252,7 +252,7 @@ import CodeEditKit
             implementation,
             to: (@convention(c)(Any, Selector, Any, Bool, UnsafeMutableRawPointer?) -> Void).self
         )
-        let areAllOpenedCodeFilesClean = tabManager.tabs.gatherOpenFiles()
+        let areAllOpenedCodeFilesClean = tabManager.tabGroups.gatherOpenFiles()
             .compactMap(\.fileDocument)
             .allSatisfy { !$0.isDocumentEdited }
         function(object, shouldCloseSelector, self, areAllOpenedCodeFilesClean, contextInfo)

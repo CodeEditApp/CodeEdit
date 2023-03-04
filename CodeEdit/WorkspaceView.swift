@@ -39,7 +39,7 @@ struct WorkspaceView: View {
                 SplitViewReader { proxy in
                     SplitView(axis: .vertical) {
 
-                        EditorView(tabgroup: tabManager.tabs)
+                        EditorView(tabgroup: tabManager.tabGroups)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                             .safeAreaInset(edge: .bottom, spacing: 0) {
                                 StatusBarView(proxy: proxy, collapsed: $terminalCollapsed)

@@ -427,13 +427,13 @@ struct TabBarView: View {
 
     private var leadingAccessories: some View {
         HStack(spacing: 2) {
-            if tabManager.tabs.findSomeTabGroup(except: tabs) != nil {
+            if tabManager.tabGroups.findSomeTabGroup(except: tabs) != nil {
                 TabBarAccessoryIcon(
                     icon: .init(systemName: "multiply"),
                     action: {
                         tabs.close()
-                        if tabManager.activeTab == tabs {
-                            tabManager.activeTab = tabManager.activeTabHistory.removeFirst()
+                        if tabManager.activeTabGroup == tabs {
+                            tabManager.activeTabGroup = tabManager.activeTabHistory.removeFirst()
                         }
                     }
                 )

@@ -40,7 +40,7 @@ struct WorkspaceTabGroupView: View {
                 TabBarView()
                     .id("TabBarView" + tabgroup.id.uuidString)
                     .environmentObject(tabgroup)
-                    .environment(\.controlActiveState, tabgroup == tabManager.activeTab ? .key : .inactive)
+                    .environment(\.controlActiveState, tabgroup == tabManager.activeTabGroup ? .key : .inactive)
 
                 Divider()
                 if let file = tabgroup.selected {
@@ -60,7 +60,7 @@ struct WorkspaceTabGroupView: View {
         .focused($isFocused)
         .onChange(of: isFocused) { focused in
             if focused {
-                tabManager.activeTab = tabgroup
+                tabManager.activeTabGroup = tabgroup
             }
         }
     }

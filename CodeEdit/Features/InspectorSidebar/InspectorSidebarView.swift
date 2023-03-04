@@ -23,7 +23,7 @@ struct InspectorSidebarView: View {
 
     var body: some View {
         VStack {
-            if let path = tabManager.activeTab.selected?.fileDocument?.fileURL?.path(percentEncoded: false) {
+            if let path = tabManager.activeTabGroup.selected?.fileDocument?.fileURL?.path(percentEncoded: false) {
                 switch selection {
                 case 0:
                     FileInspectorView(

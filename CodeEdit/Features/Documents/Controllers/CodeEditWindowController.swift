@@ -242,7 +242,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     }
 
     private func getSelectedCodeFile() -> CodeFileDocument? {
-        workspace?.tabManager.activeTab.selected?.fileDocument
+        workspace?.tabManager.activeTabGroup.selected?.fileDocument
     }
 
     @IBAction func saveDocument(_ sender: Any) {

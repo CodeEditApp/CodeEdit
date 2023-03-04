@@ -90,7 +90,7 @@ final class OutlineViewController: NSViewController {
     ///
     /// Most importantly when the `id` changes from an external view.
     func updateSelection() {
-        guard let itemID = workspace?.tabManager.activeTab.selected?.id else {
+        guard let itemID = workspace?.tabManager.activeTabGroup.selected?.id else {
             outlineView.deselectRow(outlineView.selectedRow)
             return
         }
