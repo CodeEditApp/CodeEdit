@@ -33,7 +33,7 @@ struct WorkspaceTabGroupView: View {
                 }
             }
         }
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .ignoresSafeArea(.all)
         .safeAreaInset(edge: .top, spacing: 0) {
             VStack(spacing: 0) {

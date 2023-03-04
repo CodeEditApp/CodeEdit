@@ -78,12 +78,10 @@ struct EditorSplitView: NSViewControllerRepresentable {
         controller.splitViewItems = controller.items.map(\.item)
 
         if hasChanged && controller.splitViewItems.count > 1 {
-            print(controller.items.count, controller.splitView.frame.width)
-            print(controller.splitView.frame.width / CGFloat(controller.items.count))
-
+            let numerator = controller.splitView.isVertical ? controller.splitView.frame.width : controller.splitView.frame.height
             for idx in 0..<controller.items.count {
                 controller.splitView.setPosition(
-                    CGFloat(idx + 1) * controller.splitView.frame.width/CGFloat(controller.items.count),
+                    CGFloat(idx + 1) * numerator/CGFloat(controller.items.count),
                     ofDividerAt: idx
                 )
             }
