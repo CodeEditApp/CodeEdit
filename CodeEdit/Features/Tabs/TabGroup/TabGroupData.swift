@@ -75,9 +75,6 @@ final class TabGroupData: ObservableObject, Identifiable {
 //        }
     }
 
-    deinit {
-        print("DEINITING CLASS WITH FILES \(files)")
-    }
 }
 
 extension TabGroupData: Equatable, Hashable {
