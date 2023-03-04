@@ -6,27 +6,28 @@
 //
 
 import SwiftUI
+import Combine
 
 struct BreadcrumbsComponent: View {
-
+    
     private let fileItem: WorkspaceClient.FileItem
     private let tappedOpenFile: (WorkspaceClient.FileItem) -> Void
-
+    
     @Environment(\.colorScheme)
     var colorScheme
-
+    
     @Environment(\.controlActiveState)
     private var activeState
-
+    
     @StateObject
     private var prefs: AppPreferencesModel = .shared
-
+    
     @State
     var position: NSPoint?
-
+    
     @State
     var selection: WorkspaceClient.FileItem
-
+    
     init(
         fileItem: WorkspaceClient.FileItem,
         tappedOpenFile: @escaping (WorkspaceClient.FileItem) -> Void
@@ -35,7 +36,7 @@ struct BreadcrumbsComponent: View {
         self._selection = .init(wrappedValue: fileItem)
         self.tappedOpenFile = tappedOpenFile
     }
-
+    
     var siblings: [WorkspaceClient.FileItem] {
         if let siblings = fileItem.parent?.children?.sortItems(foldersOnTop: true), !siblings.isEmpty {
             return siblings
@@ -43,7 +44,7 @@ struct BreadcrumbsComponent: View {
             return [fileItem]
         }
     }
-
+    
     var body: some View {
         NSPopUpButtonView(selection: $selection) {
             let button = NSPopUpButton()
@@ -55,23 +56,26 @@ struct BreadcrumbsComponent: View {
         }
         .padding(.leading, -5)
     }
-
+    
     struct NSPopUpButtonView<ItemType>: NSViewRepresentable where ItemType: Equatable {
         @Binding var selection: ItemType
         var popupCreator: () -> NSPopUpButton
-
+        
         typealias NSViewType = NSPopUpButton
-
+        
         func makeNSView(context: NSViewRepresentableContext<NSPopUpButtonView>) -> NSPopUpButton {
             let newPopupButton = popupCreator()
             setPopUpFromSelection(newPopupButton, selection: selection)
+            if let menu = newPopupButton.menu {
+                context.coordinator.registerForChanges(in: menu)
+            }
             return newPopupButton
         }
-
+        
         func updateNSView(_ nsView: NSPopUpButton, context: NSViewRepresentableContext<NSPopUpButtonView>) {
             setPopUpFromSelection(nsView, selection: selection)
         }
-
+        
         func setPopUpFromSelection(_ button: NSPopUpButton, selection: ItemType) {
             let itemsList = button.itemArray
             let matchedMenuItem = itemsList.filter {
@@ -81,30 +85,30 @@ struct BreadcrumbsComponent: View {
                 button.select(matchedMenuItem)
             }
         }
-
+        
         func makeCoordinator() -> Coordinator {
             return Coordinator(self)
         }
-
+        
         class Coordinator: NSObject {
-            var parent: NSPopUpButtonView!
-
+            var parent: NSPopUpButtonView
+            
+            var cancellable: AnyCancellable?
+            
             init(_ parent: NSPopUpButtonView) {
-                super.init()
                 self.parent = parent
-                NotificationCenter.default.addObserver(
-                    self,
-                    selector: #selector(dropdownItemSelected),
-                    name: NSMenu.didSendActionNotification,
-                    object: nil
-                )
+                super.init()
             }
-
-            @objc func dropdownItemSelected(_ notification: NSNotification) {
-                let menuItem = (notification.userInfo?["MenuItem"])! as? NSMenuItem
-                if let selection = menuItem?.representedObject as? ItemType {
-                    parent.selection = selection
-                }
+            
+            func registerForChanges(in menu: NSMenu) {
+                cancellable = NotificationCenter.default
+                    .publisher(for: NSMenu.didSendActionNotification, object: menu)
+                    .sink { notification in
+                        if let menuItem = notification.userInfo?["MenuItem"] as? NSMenuItem,
+                           let selection = menuItem as? ItemType {
+                            self.parent.selection = selection
+                        }
+                    }
             }
         }
     }
