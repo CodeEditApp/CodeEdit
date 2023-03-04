@@ -71,6 +71,9 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
         let splitVC = CodeEditSplitViewController(workspace: workspace, feedbackPerformer: feedbackPerformer)
 
         let navigatorView = NavigatorSidebarView(workspace: workspace)
+            .environmentObject(workspace)
+            .environmentObject(workspace.tabManager)
+
         let navigator = NSSplitViewItem(
             sidebarWithViewController: NSHostingController(rootView: navigatorView)
         )
@@ -92,6 +95,9 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
         splitVC.addSplitViewItem(mainContent)
 
         let inspectorView = InspectorSidebarView(workspace: workspace)
+            .environmentObject(workspace)
+            .environmentObject(workspace.tabManager)
+
         let inspector = NSSplitViewItem(
             viewController: NSHostingController(rootView: inspectorView)
         )

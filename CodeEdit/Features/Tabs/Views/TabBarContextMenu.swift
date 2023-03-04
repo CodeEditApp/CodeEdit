@@ -76,7 +76,7 @@ struct TabBarContextMenu: ViewModifier {
                     }
                 }
                 // Disable this option when current tab is the last one.
-                .disabled(workspace.selectionState.openedTabs.last?.id == item.tabID.id)
+                .disabled(tabs.files.last == item)
 
                 Button("Close All") {
                     withAnimation {

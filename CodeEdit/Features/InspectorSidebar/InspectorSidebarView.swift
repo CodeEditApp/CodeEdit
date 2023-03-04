@@ -12,6 +12,8 @@ struct InspectorSidebarView: View {
     @ObservedObject
     private var workspace: WorkspaceDocument
 
+    @EnvironmentObject private var tabManager: TabManager
+
     @State
     private var selection: Int = 0
 
@@ -21,28 +23,22 @@ struct InspectorSidebarView: View {
 
     var body: some View {
         VStack {
-            if let item = workspace.selectionState.openFileItems.first(where: { file in
-                file.tabID == workspace.selectionState.selectedId
-            }) {
-                if let codeFile = workspace.selectionState.openedCodeFiles[item] {
-                    switch selection {
-                    case 0:
-                        FileInspectorView(
-                            workspaceURL: workspace.fileURL!,
-                            fileURL: codeFile.fileURL!.path
-                        )
-                    case 1:
-                        HistoryInspectorView(
-                            workspaceURL: workspace.fileURL!,
-                            fileURL: codeFile.fileURL!.path
-                        )
-                    case 2:
-                        QuickHelpInspectorView().padding(5)
-                    default: EmptyView()
-                    }
+            if let path = tabManager.activeTab.selected?.fileDocument?.fileURL?.path(percentEncoded: false) {
+                switch selection {
+                case 0:
+                    FileInspectorView(
+                        workspaceURL: workspace.fileURL!,
+                        fileURL: path
+                    )
+                case 1:
+                    HistoryInspectorView(
+                        workspaceURL: workspace.fileURL!,
+                        fileURL: path
+                    )
+                case 2:
+                    QuickHelpInspectorView().padding(5)
+                default: EmptyView()
                 }
-            } else {
-                NoSelectionInspectorView()
             }
         }
         .frame(

@@ -90,12 +90,12 @@ final class OutlineViewController: NSViewController {
     ///
     /// Most importantly when the `id` changes from an external view.
     func updateSelection() {
-        guard let itemID = workspace?.selectionState.selectedId else {
+        guard let itemID = workspace?.tabManager.activeTab.selected?.id else {
             outlineView.deselectRow(outlineView.selectedRow)
             return
         }
 
-        select(by: itemID, from: content)
+        select(by: .codeEditor(itemID), from: content)
     }
 
     /// Expand or collapse the folder on double click
@@ -110,9 +110,10 @@ final class OutlineViewController: NSViewController {
                 outlineView.expandItem(item)
             }
         } else {
-            if workspace?.selectionState.temporaryTab == item.tabID {
-                workspace?.convertTemporaryTab()
-            }
+            // TODO: Fix temporary tab
+//            if workspace?.selectionState.temporaryTab == item.tabID {
+//                workspace?.convertTemporaryTab()
+//            }
         }
     }
 

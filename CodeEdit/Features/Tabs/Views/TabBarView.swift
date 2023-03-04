@@ -349,7 +349,7 @@ struct TabBarView: View {
                             // On first tab appeared, jump to the corresponding position.
                             scrollReader.scrollTo(tabs.selected)
                         }
-                        .onChange(of: workspace.selectionState.openedTabs) { _ in
+                        .onChange(of: tabs.files) { _ in
                             DispatchQueue.main.asyncAfter(
                                 deadline: .now() + .milliseconds(
                                     prefs.preferences.general.tabBarStyle == .native ? 150 : 200

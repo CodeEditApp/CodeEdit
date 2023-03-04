@@ -17,6 +17,9 @@ struct OutlineView: NSViewControllerRepresentable {
     @StateObject
     var prefs: AppPreferencesModel = .shared
 
+    // This is mainly just used to trigger a view update.
+    @Binding var selection: WorkspaceClient.FileItem?
+
     typealias NSViewControllerType = OutlineViewController
 
     func makeNSViewController(context: Context) -> OutlineViewController {
