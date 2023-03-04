@@ -20,7 +20,7 @@ import OrderedCollections
     var extensionNavigatorData = ExtensionNavigatorData()
 
     @Published var sortFoldersOnTop: Bool = true
-//    @Published var selectionState: WorkspaceSelectionState = .init()
+
     @Published var fileItems: [WorkspaceClient.FileItem] = []
 
     var tabManager = TabManager()
@@ -66,172 +66,6 @@ import OrderedCollections
         workspaceState.updateValue(value, forKey: key)
     }
 
-    // MARK: Open Tabs
-    /// Opens new tab
-    /// - Parameter item: any item which can be represented as a tab
-//    func openTab(item: WorkspaceClient.FileItem) {
-//        Task {
-//            await MainActor.run {
-//                tabManager.activeTab.files.append(item)
-//                tabManager.activeTab.selected = item
-//                do {
-//                    try openFile(item: item)
-//                } catch {
-//                    Swift.print(error)
-//                }
-//            }
-//        }
-//    }
-
-//    private func openFile(item: WorkspaceClient.FileItem) throws {
-//        guard !selectionState.openFileItems.contains(item) else {
-//            return
-//        }
-//        selectionState.openFileItems.append(item)
-//
-//        let contentType = try item.url.resourceValues(forKeys: [.contentTypeKey]).contentType
-//        let codeFile = try CodeFileDocument(
-//            for: item.url,
-//            withContentsOf: item.url,
-//            ofType: contentType?.identifier ?? ""
-//        )
-//        selectionState.openedCodeFiles[item] = codeFile
-//        CodeEditDocumentController.shared.addDocument(codeFile)
-//        Swift.print("Opening file for item: ", item.url)
-//    }
-
-    // MARK: Close Tabs
-
-    /// Closes single tab
-    /// - Parameter id: tab bar item's identifier to be closed
-//    func closeTab(item id: TabBarItemID) {
-//        switch id {
-//        case .codeEditor:
-//            guard let item = selectionState.getItemByTab(id: id) as? WorkspaceClient.FileItem else { return }
-//            closeFileTab(item: item)
-//        case .extensionInstallation:
-//            guard let item = selectionState.getItemByTab(id: id) as? Plugin else { return }
-//            closeExtensionTab(item: item)
-//        }
-//    }
-
-    /// Closes collection of tab bar items
-    /// - Parameter items: items to be closed
-//    func closeTabs<Items>(items: Items) where Items: Collection, Items.Element == TabBarItemID {
-//        // TODO: Could potentially be optimized
-//        for item in items {
-//            closeTab(item: item)
-//        }
-//    }
-
-    /// Closes tabs according to predicator
-    /// - Parameter predicate: predicator which returns whether tab should be closed based on its identifier
-//    func closeTab(where predicate: (TabBarItemID) -> Bool) {
-//        closeTabs(items: selectionState.openedTabs.filter(predicate))
-//    }
-
-    /// Closes tabs after specified identifier
-    /// - Parameter id: identifier after which tabs will be closed
-//    func closeTabs(after id: TabBarItemID) {
-//        guard let startIdx = selectionState.openFileItems.firstIndex(where: { $0.tabID == id }) else {
-//            assert(false, "Expected file item to be present in openFileItems")
-//            return
-//        }
-//
-//        let range = selectionState.openedTabs[(startIdx+1)...]
-//        closeTabs(items: range)
-//    }
-
-    /// Switched the active tab to current tab
-    /// - Parameter item: tab item that is now active.
-//    func switchedTab(item: TabBarItemRepresentable) {
-//        selectionState.selectedId = item.tabID
-//        guard let fileItem = item as? WorkspaceClient.FileItem else { return }
-//        self.addToWorkspaceState(key: activeTabStateName, value: fileItem.url.absoluteString)
-//    }
-
-    /// Tabs reordered
-    /// - Parameter openedTabs: reordered tabs
-//    func reorderedTabs(openedTabs: [TabBarItemID]) {
-//        selectionState.openedTabs = openedTabs
-//
-//        if openedTabsFromState {
-//            var openTabsInState: [String] = []
-//            for openTabId in openedTabs {
-//                guard let item = selectionState.getItemByTab(id: openTabId) as? WorkspaceClient.FileItem
-//                else { continue }
-//                openTabsInState.append(item.url.absoluteString)
-//            }
-//            self.addToWorkspaceState(key: openTabsStateName, value: openTabsInState)
-//        }
-//    }
-
-    /// Closes an open temporary tab,  does not save the temporary tab's file.
-    /// Removes the tab item from `openedCodeFiles`, `openedExtensions`, and `openFileItems`.
-//    private func closeTemporaryTab() {
-//        guard let id = selectionState.temporaryTab else { return }
-//
-//        switch id {
-//        case .codeEditor:
-//            guard let item = selectionState.getItemByTab(id: id)
-//                    as? WorkspaceClient.FileItem else { return }
-//            selectionState.openedCodeFiles.removeValue(forKey: item)
-//        case .extensionInstallation:
-//            guard let item = selectionState.getItemByTab(id: id)
-//                    as? Plugin else { return }
-//            closeExtensionTab(item: item)
-//        }
-//
-//        guard let openFileItemIdx = selectionState
-//            .openFileItems
-//            .firstIndex(where: { $0.tabID == id }) else { return }
-//        selectionState.openFileItems.remove(at: openFileItemIdx)
-//    }
-
-    /// Closes an open tab, save text files only.
-    /// Removes the tab item from `openedCodeFiles`, `openedExtensions`, and `openFileItems`.
-//    private func closeFileTab(item: WorkspaceClient.FileItem) {
-//        guard let file = selectionState.openedCodeFiles[item],
-//              let openFileItemIndex = selectionState.openFileItems.firstIndex(of: item)
-//        else {
-//            return
-//        }
-//        if file.isDocumentEdited {
-//            let shouldClose = UnsafeMutablePointer<Bool>.allocate(capacity: 1)
-//            shouldClose.initialize(to: true)
-//            defer {
-//                _ = shouldClose.move()
-//                shouldClose.deallocate()
-//            }
-//            file.canClose(
-//                withDelegate: self,
-//                shouldClose: #selector(document(_:shouldClose:contextInfo:)),
-//                contextInfo: shouldClose
-//            )
-//            guard shouldClose.pointee else {
-//                return
-//            }
-//        }
-//        selectionState.openedCodeFiles.removeValue(forKey: item)
-//        selectionState.openFileItems.remove(at: openFileItemIndex)
-//        removeTab(id: item.tabID)
-//
-//        if openedTabsFromState {
-//            var openTabsInState = self.getFromWorkspaceState(key: openTabsStateName) as? [String] ?? []
-//            if let index = openTabsInState.firstIndex(of: item.url.absoluteString) {
-//                openTabsInState.remove(at: index)
-//                self.addToWorkspaceState(key: openTabsStateName, value: openTabsInState)
-//            }
-//        }
-//    }
-
-//    private func closeExtensionTab(item: Plugin) {
-//        guard let idx = selectionState.openedExtensions.firstIndex(of: item) else { return }
-//        selectionState.openedExtensions.remove(at: idx)
-//
-//        removeTab(id: item.tabID)
-//    }
-
     /// Makes the temporary tab permanent when a file save or edit happens.
     @objc func convertTemporaryTab() {
 //        if selectionState.selectedId == selectionState.temporaryTab &&
@@ -251,32 +85,6 @@ import OrderedCollections
 //            }
 //        }
     }
-
-    /// Removes the tab from `openedTabs`.
-    /// - Parameter id: The id of `TabBarItemID` which will be removed.
-//    private func removeTab(id: TabBarItemID) {
-//        if id == selectionState.temporaryTab {
-//            selectionState.previousTemporaryTab = selectionState.temporaryTab
-//            selectionState.temporaryTab = nil
-//        }
-//
-//        guard let idx = selectionState.openedTabs.firstIndex(of: id) else { return }
-//        let closedID = selectionState.openedTabs.remove(at: idx)
-//        guard closedID == id else { return }
-//
-//        if selectionState.openedTabs.isEmpty {
-//            selectionState.selectedId = nil
-//        } else if selectionState.selectedId == closedID {
-//            // If the closed item is the selected one, then select another tab.
-//            if idx == 0 {
-//                selectionState.selectedId = selectionState.openedTabs.first
-//            } else {
-//                selectionState.selectedId = selectionState.openedTabs[idx - 1]
-//            }
-//        } else {
-//            // If the closed item is not the selected one, then do nothing.
-//        }
-//    }
 
     // MARK: NSDocument
 
@@ -377,18 +185,6 @@ import OrderedCollections
                 }
             }
             .store(in: &cancellables)
-
-        // initialize extensions
-        ExtensionManager.shared.loadExtensions { extensionID in
-            CodeEditAPI(extensionId: extensionID, workspace: self)
-        }
-//        do {
-//            try ExtensionsManager.shared?.load { extensionID in
-//                CodeEditAPI(extensionId: extensionID, workspace: self)
-//            }
-//        } catch let error {
-//            Swift.print(error)
-//        }
     }
 
     override func write(to url: URL, ofType typeName: String) throws {}
