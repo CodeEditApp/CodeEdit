@@ -39,7 +39,7 @@ struct NavigatorSidebarToolbarBottom: View {
                     guard let newFileItem = try? workspace.workspaceClient?.getFileItem(newFile) else {
                         return
                     }
-                    workspace.openTab(item: newFileItem)
+                    workspace.tabManager.openTab(item: newFileItem)
                 }
 
             }

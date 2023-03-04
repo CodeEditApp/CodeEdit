@@ -168,6 +168,8 @@ extension WorkspaceClient {
             FileIcon.iconColor(fileType: fileType)
         }
 
+        var fileDocument: CodeFileDocument?
+
         // MARK: Statics
 
         /// The default `FileManager` instance

@@ -236,12 +236,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     }
 
     private func getSelectedCodeFile() -> CodeFileDocument? {
-        guard let id = workspace?.selectionState.selectedId else { return nil }
-        guard let item = workspace?.selectionState.openFileItems.first(where: { item in
-            item.tabID == id
-        }) else { return nil }
-        guard let file = workspace?.selectionState.openedCodeFiles[item] else { return nil }
-        return file
+        workspace?.tabManager.activeTab.selected?.fileDocument
     }
 
     @IBAction func saveDocument(_ sender: Any) {
@@ -288,7 +283,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
                 let contentView = QuickOpenView(
                     state: state,
                     onClose: { panel.close() },
-                    openFile: workspace.openTab(item:)
+                    openFile: workspace.tabManager.openTab(item:)
                 )
                 panel.contentView = NSHostingView(rootView: contentView)
                 window?.addChildWindow(panel, ordered: .above)

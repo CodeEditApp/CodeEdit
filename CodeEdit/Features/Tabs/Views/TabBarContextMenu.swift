@@ -52,19 +52,27 @@ struct TabBarContextMenu: ViewModifier {
                 }
                 Button("Close Tab") {
                     withAnimation {
-                        workspace.closeTab(item: item.tabID)
+                        tabs.closeTab(item: item)
                     }
                 }
                 .keyboardShortcut("w", modifiers: [.command])
 
                 Button("Close Other Tabs") {
                     withAnimation {
-                        workspace.closeTab(where: { $0 != item.tabID })
+                        tabs.files.forEach { file in
+                            if file != item {
+                                tabs.closeTab(item: file)
+                            }
+                        }
                     }
                 }
                 Button("Close Tabs to the Right") {
                     withAnimation {
-                        workspace.closeTabs(after: item.tabID)
+                        if let index = tabs.files.firstIndex(of: item) {
+                            tabs.files[index...].forEach {
+                                tabs.closeTab(item: $0)
+                            }
+                        }
                     }
                 }
                 // Disable this option when current tab is the last one.
@@ -72,7 +80,9 @@ struct TabBarContextMenu: ViewModifier {
 
                 Button("Close All") {
                     withAnimation {
-                        workspace.closeTabs(items: workspace.selectionState.openedTabs)
+                        tabs.files.forEach {
+                            tabs.closeTab(item: $0)
+                        }
                     }
                 }
 

@@ -9,13 +9,13 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct WorkspaceCodeFileView: View {
-    @EnvironmentObject
-    private var workspace: WorkspaceDocument
+
+    @EnvironmentObject private var tabManager: TabManager
 
     var file: WorkspaceClient.FileItem
 
     var document: CodeFileDocument? {
-        workspace.selectionState.openedCodeFiles[file]
+        file.fileDocument
     }
 
     @StateObject
@@ -49,7 +49,7 @@ struct WorkspaceCodeFileView: View {
         for item: WorkspaceClient.FileItem
     ) -> some View {
         VStack(spacing: 0) {
-            BreadcrumbsView(file: item, tappedOpenFile: workspace.openTab(item:))
+            BreadcrumbsView(file: item, tappedOpenFile: tabManager.openTab(item:))
             Divider()
 
             if let url = otherFile.previewItemURL,

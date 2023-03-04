@@ -28,7 +28,6 @@ internal struct StatusBarToggleDrawerButton: View {
             model.isExpanded.toggle()
             collapsed.toggle()
         }
-        self.model.saveIsExpandedToState()
     }
 
     internal var body: some View {

@@ -36,15 +36,13 @@ import OrderedCollections
         }
     }
 
-    var statusBarModel: StatusBarViewModel
+    var statusBarModel = StatusBarViewModel()
     var searchState: SearchState?
     var quickOpenViewModel: QuickOpenViewModel?
     var commandsPaletteState: CommandPaletteViewModel?
     var listenerModel: WorkspaceNotificationModel = .init()
 
-
     override init() {
-        self.statusBarModel = StatusBarViewModel(workspace: self)
         super.init()
     }
 
@@ -71,84 +69,78 @@ import OrderedCollections
     // MARK: Open Tabs
     /// Opens new tab
     /// - Parameter item: any item which can be represented as a tab
-    func openTab(item: WorkspaceClient.FileItem) {
-        Task {
-            await MainActor.run {
-                tabManager.activeTab.files.append(item)
-                tabManager.activeTab.selected = item
-                do {
-                    try openFile(item: item)
-                } catch {
-                    Swift.print(error)
-                }
-            }
-        }
-    }
+//    func openTab(item: WorkspaceClient.FileItem) {
+//        Task {
+//            await MainActor.run {
+//                tabManager.activeTab.files.append(item)
+//                tabManager.activeTab.selected = item
+//                do {
+//                    try openFile(item: item)
+//                } catch {
+//                    Swift.print(error)
+//                }
+//            }
+//        }
+//    }
 
-    private func openFile(item: WorkspaceClient.FileItem) throws {
-        guard !selectionState.openFileItems.contains(item) else {
-            return
-        }
-        selectionState.openFileItems.append(item)
-
-        let contentType = try item.url.resourceValues(forKeys: [.contentTypeKey]).contentType
-        let codeFile = try CodeFileDocument(
-            for: item.url,
-            withContentsOf: item.url,
-            ofType: contentType?.identifier ?? ""
-        )
-        selectionState.openedCodeFiles[item] = codeFile
-        CodeEditDocumentController.shared.addDocument(codeFile)
-        Swift.print("Opening file for item: ", item.url)
-    }
-
-    private func openExtension(item: Plugin) {
-        if !selectionState.openedExtensions.contains(item) {
-            selectionState.openedExtensions.append(item)
-        }
-    }
+//    private func openFile(item: WorkspaceClient.FileItem) throws {
+//        guard !selectionState.openFileItems.contains(item) else {
+//            return
+//        }
+//        selectionState.openFileItems.append(item)
+//
+//        let contentType = try item.url.resourceValues(forKeys: [.contentTypeKey]).contentType
+//        let codeFile = try CodeFileDocument(
+//            for: item.url,
+//            withContentsOf: item.url,
+//            ofType: contentType?.identifier ?? ""
+//        )
+//        selectionState.openedCodeFiles[item] = codeFile
+//        CodeEditDocumentController.shared.addDocument(codeFile)
+//        Swift.print("Opening file for item: ", item.url)
+//    }
 
     // MARK: Close Tabs
 
     /// Closes single tab
     /// - Parameter id: tab bar item's identifier to be closed
-    func closeTab(item id: TabBarItemID) {
-        switch id {
-        case .codeEditor:
-            guard let item = selectionState.getItemByTab(id: id) as? WorkspaceClient.FileItem else { return }
-            closeFileTab(item: item)
-        case .extensionInstallation:
-            guard let item = selectionState.getItemByTab(id: id) as? Plugin else { return }
-            closeExtensionTab(item: item)
-        }
-    }
+//    func closeTab(item id: TabBarItemID) {
+//        switch id {
+//        case .codeEditor:
+//            guard let item = selectionState.getItemByTab(id: id) as? WorkspaceClient.FileItem else { return }
+//            closeFileTab(item: item)
+//        case .extensionInstallation:
+//            guard let item = selectionState.getItemByTab(id: id) as? Plugin else { return }
+//            closeExtensionTab(item: item)
+//        }
+//    }
 
     /// Closes collection of tab bar items
     /// - Parameter items: items to be closed
-    func closeTabs<Items>(items: Items) where Items: Collection, Items.Element == TabBarItemID {
-        // TODO: Could potentially be optimized
-        for item in items {
-            closeTab(item: item)
-        }
-    }
+//    func closeTabs<Items>(items: Items) where Items: Collection, Items.Element == TabBarItemID {
+//        // TODO: Could potentially be optimized
+//        for item in items {
+//            closeTab(item: item)
+//        }
+//    }
 
     /// Closes tabs according to predicator
     /// - Parameter predicate: predicator which returns whether tab should be closed based on its identifier
-    func closeTab(where predicate: (TabBarItemID) -> Bool) {
-        closeTabs(items: selectionState.openedTabs.filter(predicate))
-    }
+//    func closeTab(where predicate: (TabBarItemID) -> Bool) {
+//        closeTabs(items: selectionState.openedTabs.filter(predicate))
+//    }
 
     /// Closes tabs after specified identifier
     /// - Parameter id: identifier after which tabs will be closed
-    func closeTabs(after id: TabBarItemID) {
-        guard let startIdx = selectionState.openFileItems.firstIndex(where: { $0.tabID == id }) else {
-            assert(false, "Expected file item to be present in openFileItems")
-            return
-        }
-
-        let range = selectionState.openedTabs[(startIdx+1)...]
-        closeTabs(items: range)
-    }
+//    func closeTabs(after id: TabBarItemID) {
+//        guard let startIdx = selectionState.openFileItems.firstIndex(where: { $0.tabID == id }) else {
+//            assert(false, "Expected file item to be present in openFileItems")
+//            return
+//        }
+//
+//        let range = selectionState.openedTabs[(startIdx+1)...]
+//        closeTabs(items: range)
+//    }
 
     /// Switched the active tab to current tab
     /// - Parameter item: tab item that is now active.
@@ -198,40 +190,40 @@ import OrderedCollections
 
     /// Closes an open tab, save text files only.
     /// Removes the tab item from `openedCodeFiles`, `openedExtensions`, and `openFileItems`.
-    private func closeFileTab(item: WorkspaceClient.FileItem) {
-        guard let file = selectionState.openedCodeFiles[item],
-              let openFileItemIndex = selectionState.openFileItems.firstIndex(of: item)
-        else {
-            return
-        }
-        if file.isDocumentEdited {
-            let shouldClose = UnsafeMutablePointer<Bool>.allocate(capacity: 1)
-            shouldClose.initialize(to: true)
-            defer {
-                _ = shouldClose.move()
-                shouldClose.deallocate()
-            }
-            file.canClose(
-                withDelegate: self,
-                shouldClose: #selector(document(_:shouldClose:contextInfo:)),
-                contextInfo: shouldClose
-            )
-            guard shouldClose.pointee else {
-                return
-            }
-        }
-        selectionState.openedCodeFiles.removeValue(forKey: item)
-        selectionState.openFileItems.remove(at: openFileItemIndex)
-        removeTab(id: item.tabID)
-
-        if openedTabsFromState {
-            var openTabsInState = self.getFromWorkspaceState(key: openTabsStateName) as? [String] ?? []
-            if let index = openTabsInState.firstIndex(of: item.url.absoluteString) {
-                openTabsInState.remove(at: index)
-                self.addToWorkspaceState(key: openTabsStateName, value: openTabsInState)
-            }
-        }
-    }
+//    private func closeFileTab(item: WorkspaceClient.FileItem) {
+//        guard let file = selectionState.openedCodeFiles[item],
+//              let openFileItemIndex = selectionState.openFileItems.firstIndex(of: item)
+//        else {
+//            return
+//        }
+//        if file.isDocumentEdited {
+//            let shouldClose = UnsafeMutablePointer<Bool>.allocate(capacity: 1)
+//            shouldClose.initialize(to: true)
+//            defer {
+//                _ = shouldClose.move()
+//                shouldClose.deallocate()
+//            }
+//            file.canClose(
+//                withDelegate: self,
+//                shouldClose: #selector(document(_:shouldClose:contextInfo:)),
+//                contextInfo: shouldClose
+//            )
+//            guard shouldClose.pointee else {
+//                return
+//            }
+//        }
+//        selectionState.openedCodeFiles.removeValue(forKey: item)
+//        selectionState.openFileItems.remove(at: openFileItemIndex)
+//        removeTab(id: item.tabID)
+//
+//        if openedTabsFromState {
+//            var openTabsInState = self.getFromWorkspaceState(key: openTabsStateName) as? [String] ?? []
+//            if let index = openTabsInState.firstIndex(of: item.url.absoluteString) {
+//                openTabsInState.remove(at: index)
+//                self.addToWorkspaceState(key: openTabsStateName, value: openTabsInState)
+//            }
+//        }
+//    }
 
     private func closeExtensionTab(item: Plugin) {
         guard let idx = selectionState.openedExtensions.firstIndex(of: item) else { return }
@@ -323,7 +315,7 @@ import OrderedCollections
             let tabUrl = URL(string: openTab)!
             if FileManager.default.fileExists(atPath: tabUrl.path) {
                 let item = WorkspaceClient.FileItem(url: tabUrl)
-                self.openTab(item: item)
+                self.tabManager.openTab(item: item)
                 self.convertTemporaryTab()
                 if activeTabInState == openTab {
                     activeTabID = item.tabID
@@ -349,7 +341,6 @@ import OrderedCollections
         self.searchState = .init(self)
         self.quickOpenViewModel = .init(fileURL: url)
         self.commandsPaletteState = .init()
-        self.statusBarModel.workspaceURL = url
 
         NotificationCenter.default.addObserver(
             self,
@@ -490,7 +481,7 @@ import OrderedCollections
     ///      `shouldClose` becomes false if the user selects cancel, otherwise true.
     ///   - contextInfo: The additional info which will be set `shouldClose`.
     ///       `contextInfo` must be `UnsafeMutablePointer<Bool>`.
-    @objc private func document(
+    @objc func document(
         _ document: NSDocument,
         shouldClose: Bool,
         contextInfo: UnsafeMutableRawPointer

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct StatusBarDrawer: View {
     @EnvironmentObject
-    private var model: StatusBarViewModel
+    private var workspace: WorkspaceDocument
 
     @Environment(\.colorScheme)
     private var colorScheme
@@ -18,21 +18,22 @@ struct StatusBarDrawer: View {
     private var searchText = ""
 
     var body: some View {
-        VStack(spacing: 0) {
-            TerminalEmulatorView(url: model.workspaceURL)
-            HStack(alignment: .center, spacing: 10) {
-                FilterTextField(title: "Filter", text: $searchText)
-                    .frame(maxWidth: 300)
-                Spacer()
-                StatusBarClearButton()
-                Divider()
-                StatusBarSplitTerminalButton()
-                StatusBarMaximizeButton()
+        if let url = workspace.workspaceClient?.folderURL() {
+            VStack(spacing: 0) {
+                TerminalEmulatorView(url: url)
+                HStack(alignment: .center, spacing: 10) {
+                    FilterTextField(title: "Filter", text: $searchText)
+                        .frame(maxWidth: 300)
+                    Spacer()
+                    StatusBarClearButton()
+                    Divider()
+                    StatusBarSplitTerminalButton()
+                    StatusBarMaximizeButton()
+                }
+                .padding(10)
+                .frame(maxHeight: 29)
+                .background(.bar)
             }
-            .padding(10)
-            .frame(maxHeight: 29)
-            .background(.bar)
         }
-        
     }
 }

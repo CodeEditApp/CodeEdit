@@ -182,7 +182,7 @@ final class OutlineMenu: NSMenu {
     @objc
     private func openInTab() {
         if let item = item {
-            workspace?.openTab(item: item)
+            workspace?.tabManager.openTab(item: item)
         }
     }
 

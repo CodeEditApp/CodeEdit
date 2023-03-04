@@ -275,7 +275,7 @@ extension OutlineViewController: NSOutlineViewDelegate {
         guard let item = outlineView.item(atRow: selectedIndex) as? Item else { return }
 
         if item.children == nil && shouldSendSelectionUpdate {
-            workspace?.openTab(item: item)
+            workspace?.tabManager.openTab(item: item)
         }
     }
 

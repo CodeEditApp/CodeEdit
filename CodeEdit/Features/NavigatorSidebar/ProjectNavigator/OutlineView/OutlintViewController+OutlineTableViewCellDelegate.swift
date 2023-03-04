@@ -12,11 +12,11 @@ import Foundation
 extension OutlineViewController: OutlineTableViewCellDelegate {
     func moveFile(file: Item, to destination: URL) {
         if !file.isFolder {
-            workspace?.closeTab(item: .codeEditor(file.id))
+            workspace?.tabManager.tabs.closeAllTabs(of: file)
         }
         file.move(to: destination)
         if !file.isFolder {
-            workspace?.openTab(item: file)
+            workspace?.tabManager.openTab(item: file)
         }
     }
 

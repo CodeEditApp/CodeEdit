@@ -45,6 +45,36 @@ final class TabGroupData: ObservableObject, Identifiable {
         parent?.closeTabGroup(with: id)
     }
 
+    func closeTab(item: WorkspaceClient.FileItem) {
+        guard let file = item.fileDocument else { return }
+
+        if file.isDocumentEdited {
+            let shouldClose = UnsafeMutablePointer<Bool>.allocate(capacity: 1)
+            shouldClose.initialize(to: true)
+            defer {
+                _ = shouldClose.move()
+                shouldClose.deallocate()
+            }
+            file.canClose(
+                withDelegate: self,
+                shouldClose: #selector(WorkspaceDocument.document(_:shouldClose:contextInfo:)),
+                contextInfo: shouldClose
+            )
+            guard shouldClose.pointee else {
+                return
+            }
+        }
+        files.remove(item)
+
+//        if openedTabsFromState {
+//            var openTabsInState = self.getFromWorkspaceState(key: openTabsStateName) as? [String] ?? []
+//            if let index = openTabsInState.firstIndex(of: item.url.absoluteString) {
+//                openTabsInState.remove(at: index)
+//                self.addToWorkspaceState(key: openTabsStateName, value: openTabsInState)
+//            }
+//        }
+    }
+
     deinit {
         print("DEINITING CLASS WITH FILES \(files)")
     }
