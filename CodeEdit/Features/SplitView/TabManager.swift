@@ -29,17 +29,13 @@ class TabManager: ObservableObject {
     }
 
     func openTab(item: WorkspaceClient.FileItem, in tabgroup: TabGroupData? = nil) {
-        Task {
-            await MainActor.run {
-                let tabgroup = tabgroup ?? activeTabGroup
-                tabgroup.files.append(item)
-                tabgroup.selected = item
-                do {
-                    try openFile(item: item)
-                } catch {
-                    Swift.print(error)
-                }
-            }
+        let tabgroup = tabgroup ?? activeTabGroup
+        tabgroup.files.append(item)
+        tabgroup.selected = item
+        do {
+            try openFile(item: item)
+        } catch {
+            print(error)
         }
     }
 
