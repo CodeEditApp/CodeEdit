@@ -325,6 +325,7 @@
 		6C53AAD829A6C4FD00EE9ED6 /* SplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C53AAD729A6C4FD00EE9ED6 /* SplitView.swift */; };
 		6C7256D729A3D7D000C2D3E0 /* EditorSplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C7256D629A3D7D000C2D3E0 /* EditorSplitView.swift */; };
 		6C7256DA29A3D98C00C2D3E0 /* SequenceBuilder in Frameworks */ = {isa = PBXBuildFile; productRef = 6C7256D929A3D98C00C2D3E0 /* SequenceBuilder */; };
+		6C81916729B3E80700B75C92 /* ModifierKeysObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C81916629B3E80700B75C92 /* ModifierKeysObserver.swift */; };
 		6C91D57229B176FF0059A90D /* TabManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C91D57129B176FF0059A90D /* TabManager.swift */; };
 		6C97EBCC2978760400302F95 /* AcknowledgementsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C97EBCB2978760400302F95 /* AcknowledgementsWindowController.swift */; };
 		6C97EBCF297876E500302F95 /* AboutWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C97EBCE297876E500302F95 /* AboutWindowController.swift */; };
@@ -718,6 +719,7 @@
 		6C5228B429A868BD00AC48F6 /* Environment+ContentInsets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Environment+ContentInsets.swift"; sourceTree = "<group>"; };
 		6C53AAD729A6C4FD00EE9ED6 /* SplitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitView.swift; sourceTree = "<group>"; };
 		6C7256D629A3D7D000C2D3E0 /* EditorSplitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorSplitView.swift; sourceTree = "<group>"; };
+		6C81916629B3E80700B75C92 /* ModifierKeysObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifierKeysObserver.swift; sourceTree = "<group>"; };
 		6C91D57129B176FF0059A90D /* TabManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabManager.swift; sourceTree = "<group>"; };
 		6C97EBCB2978760400302F95 /* AcknowledgementsWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcknowledgementsWindowController.swift; sourceTree = "<group>"; };
 		6C97EBCE297876E500302F95 /* AboutWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutWindowController.swift; sourceTree = "<group>"; };
@@ -1823,6 +1825,7 @@
 			isa = PBXGroup;
 			children = (
 				58A5DF9F29339F6400D1BD5D /* CommandManager.swift */,
+				6C81916629B3E80700B75C92 /* ModifierKeysObserver.swift */,
 				58A5DFA129339F6400D1BD5D /* default_keybindings.json */,
 				58A5DF9E29339F6400D1BD5D /* KeybindingManager.swift */,
 			);
@@ -2875,6 +2878,7 @@
 				58F2EAF0292FB2B0004A9BDE /* PreviewThemeView.swift in Sources */,
 				58F2EAFF292FB2B0004A9BDE /* KeybindingsPreferencesView.swift in Sources */,
 				6CDA84AD284C1BA000C1CC3A /* TabBarContextMenu.swift in Sources */,
+				6C81916729B3E80700B75C92 /* ModifierKeysObserver.swift in Sources */,
 				0463E51127FCC1DF00806D5C /* CodeEditAPI.swift in Sources */,
 				587B9E8129301D8F00AC7927 /* PublicKey.swift in Sources */,
 				58F2EB0B292FB2B0004A9BDE /* AccountsPreferences.swift in Sources */,

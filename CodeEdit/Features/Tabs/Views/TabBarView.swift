@@ -14,6 +14,8 @@ import SwiftUI
 // - TODO: TabBarItemView drop-outside event handler.
 struct TabBarView: View {
 
+    @Environment(\.modifierKeys) var modifierKeys
+
     typealias TabID = WorkspaceClient.FileItem.ID
 
     /// The height of tab bar.
@@ -34,6 +36,8 @@ struct TabBarView: View {
 
     @EnvironmentObject
     private var tabs: TabGroupData
+
+    @Environment(\.splitEditor) var splitEditor
 
     /// The app preference.
     @StateObject
@@ -471,6 +475,12 @@ struct TabBarView: View {
         }
     }
 
+//    var splitViewAxisButton: Axis {
+//        switch (tabs.parent?.axis, modifierKeys) {
+//        case (.horizontal, .option)
+//        }
+//    }
+
     private var trailingAccessories: some View {
         HStack(spacing: 2) {
             TabBarAccessoryIcon(
@@ -487,13 +497,7 @@ struct TabBarView: View {
             .foregroundColor(.secondary)
             .buttonStyle(.plain)
             .help("Enable Code Review")
-            TabBarAccessoryIcon(
-                icon: .init(systemName: "square.split.2x1"),
-                action: {} // TODO: Implement
-            )
-            .foregroundColor(.secondary)
-            .buttonStyle(.plain)
-            .help("Split View")
+            splitviewButton
         }
         .padding(.horizontal, 7)
         .opacity(activeState != .inactive ? 1.0 : 0.5)
@@ -502,6 +506,34 @@ struct TabBarView: View {
             if prefs.preferences.general.tabBarStyle == .native {
                 TabBarAccessoryNativeBackground(dividerAt: .leading)
             }
+        }
+    }
+
+    var splitviewButton: some View {
+        Group {
+            switch (tabs.parent!.axis, modifierKeys.contains(.option)) {
+            case (.horizontal, true), (.vertical, false):
+                TabBarAccessoryIcon(icon: Image(systemName: "square.split.1x2")) {
+                    split(edge: .bottom)
+                }
+                .help("Split Vertically")
+
+            case (.vertical, true), (.horizontal, false):
+                TabBarAccessoryIcon(icon: Image(systemName: "square.split.2x1")) {
+                    split(edge: .trailing)
+                }
+                .help("Split Horizontally")
+            }
+        }
+        .foregroundColor(.secondary)
+        .buttonStyle(.plain)
+    }
+
+    func split(edge: Edge) {
+        if let tab = tabs.selected {
+            splitEditor(edge, .init(files: [tab]))
+        } else {
+            splitEditor(edge, .init())
         }
     }
 

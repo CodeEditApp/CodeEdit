@@ -83,9 +83,11 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
         splitVC.addSplitViewItem(navigator)
 
         let workspaceView = WindowObserver(window: window!) {
-            WorkspaceView()
-                .environmentObject(workspace)
-                .environmentObject(workspace.tabManager)
+            EventModifierObserver {
+                WorkspaceView()
+                    .environmentObject(workspace)
+                    .environmentObject(workspace.tabManager)
+            }
         }
 
         let mainContent = NSSplitViewItem(
