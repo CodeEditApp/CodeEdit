@@ -51,8 +51,8 @@ struct BreadcrumbsView: View {
             }
             .padding(.horizontal, 10)
         }
-        .frame(height: 28, alignment: .center)
-        .background(EffectView(.headerView).frame(height: 28))
+        .frame(height: 27, alignment: .center)
+        .background(EffectView(.headerView).frame(height: 27))
     }
 
     private var chevron: some View {
