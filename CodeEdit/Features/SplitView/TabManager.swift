@@ -28,11 +28,12 @@ class TabManager: ObservableObject {
         self.tabs = .horizontal(.init(.horizontal, tabgroups: [.one(tab)]))
     }
 
-    func openTab(item: WorkspaceClient.FileItem) {
+    func openTab(item: WorkspaceClient.FileItem, in tabgroup: TabGroupData? = nil) {
         Task {
             await MainActor.run {
-                activeTab.files.append(item)
-                activeTab.selected = item
+                let tabgroup = tabgroup ?? activeTab
+                tabgroup.files.append(item)
+                tabgroup.selected = item
                 do {
                     try openFile(item: item)
                 } catch {

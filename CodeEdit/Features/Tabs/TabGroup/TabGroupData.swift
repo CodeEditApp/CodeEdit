@@ -35,7 +35,11 @@ final class TabGroupData: ObservableObject, Identifiable {
 
     weak var parent: WorkspaceSplitViewData?
 
-    init(files: OrderedSet<WorkspaceClient.FileItem> = [], selected: WorkspaceClient.FileItem? = nil, parent: WorkspaceSplitViewData? = nil) {
+    init(
+        files: OrderedSet<WorkspaceClient.FileItem> = [],
+        selected: WorkspaceClient.FileItem? = nil,
+        parent: WorkspaceSplitViewData? = nil
+    ) {
         self.files = files
         self.selected = selected ?? files.first
         self.parent = parent
@@ -73,6 +77,40 @@ final class TabGroupData: ObservableObject, Identifiable {
 //                self.addToWorkspaceState(key: openTabsStateName, value: openTabsInState)
 //            }
 //        }
+    }
+
+    func openTab(item: WorkspaceClient.FileItem, at index: Int? = nil) {
+        Task {
+            await MainActor.run {
+                if let index {
+                    files.insert(item, at: index)
+                } else {
+                    files.append(item)
+                }
+                selected = item
+                do {
+                    try openFile(item: item)
+                } catch {
+                    Swift.print(error)
+                }
+            }
+        }
+    }
+
+    private func openFile(item: WorkspaceClient.FileItem) throws {
+        guard item.fileDocument == nil else {
+            return
+        }
+
+        let contentType = try item.url.resourceValues(forKeys: [.contentTypeKey]).contentType
+        let codeFile = try CodeFileDocument(
+            for: item.url,
+            withContentsOf: item.url,
+            ofType: contentType?.identifier ?? ""
+        )
+        item.fileDocument = codeFile
+        CodeEditDocumentController.shared.addDocument(codeFile)
+        Swift.print("Opening file for item: ", item.url)
     }
 
 }

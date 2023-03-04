@@ -12,18 +12,16 @@ struct WorkspaceCodeFileView: View {
 
     @EnvironmentObject private var tabManager: TabManager
 
-    var file: WorkspaceClient.FileItem
+    @EnvironmentObject private var tabgroup: TabGroupData
 
-    var document: CodeFileDocument? {
-        file.fileDocument
-    }
+    var file: WorkspaceClient.FileItem
 
     @StateObject
     private var prefs: AppPreferencesModel = .shared
 
     @ViewBuilder
     var codeView: some View {
-        if let document {
+        if let document = file.fileDocument {
             Group {
                 switch document.typeOfFile {
                 case .some(.text), .some(.data):
@@ -49,8 +47,6 @@ struct WorkspaceCodeFileView: View {
         for item: WorkspaceClient.FileItem
     ) -> some View {
         VStack(spacing: 0) {
-            BreadcrumbsView(file: item, tappedOpenFile: tabManager.openTab(item:))
-            Divider()
 
             if let url = otherFile.previewItemURL,
                let image = NSImage(contentsOf: url),

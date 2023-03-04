@@ -10,10 +10,7 @@ import AppKit
 import SwiftUI
 import Combine
 import CodeEditKit
-import OrderedCollections
 
-// swiftlint:disable type_body_length
-// swiftlint:disable file_length
 @objc(WorkspaceDocument) final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var workspaceClient: WorkspaceClient?
 
@@ -255,7 +252,9 @@ import OrderedCollections
             implementation,
             to: (@convention(c)(Any, Selector, Any, Bool, UnsafeMutableRawPointer?) -> Void).self
         )
-        let areAllOpenedCodeFilesClean = tabManager.tabs.gatherOpenFiles().compactMap(\.fileDocument).allSatisfy { !$0.isDocumentEdited }
+        let areAllOpenedCodeFilesClean = tabManager.tabs.gatherOpenFiles()
+            .compactMap(\.fileDocument)
+            .allSatisfy { !$0.isDocumentEdited }
         function(object, shouldCloseSelector, self, areAllOpenedCodeFilesClean, contextInfo)
     }
 

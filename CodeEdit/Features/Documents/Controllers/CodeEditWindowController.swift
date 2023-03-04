@@ -286,11 +286,13 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
             } else {
                 let panel = OverlayPanel()
                 self.quickOpenPanel = panel
-                let contentView = QuickOpenView(
-                    state: state,
-                    onClose: { panel.close() },
-                    openFile: workspace.tabManager.openTab(item:)
-                )
+
+                let contentView = QuickOpenView(state: state) {
+                    panel.close()
+                } openFile: { file in
+                    workspace.tabManager.openTab(item: file)
+                }
+
                 panel.contentView = NSHostingView(rootView: contentView)
                 window?.addChildWindow(panel, ordered: .above)
                 panel.makeKeyAndOrderFront(self)
