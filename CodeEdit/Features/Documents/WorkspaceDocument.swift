@@ -20,7 +20,7 @@ import OrderedCollections
     var extensionNavigatorData = ExtensionNavigatorData()
 
     @Published var sortFoldersOnTop: Bool = true
-    @Published var selectionState: WorkspaceSelectionState = .init()
+//    @Published var selectionState: WorkspaceSelectionState = .init()
     @Published var fileItems: [WorkspaceClient.FileItem] = []
 
     var tabManager = TabManager()
@@ -396,12 +396,6 @@ import OrderedCollections
     // MARK: Close Workspace
 
     override func close() {
-        selectionState.selectedId = nil
-        selectionState.openedCodeFiles.removeAll()
-
-        if let url = self.fileURL {
-            ExtensionsManager.shared?.close(url: url)
-        }
 
         super.close()
     }
@@ -440,7 +434,7 @@ import OrderedCollections
             return
         }
         // Save unsaved changes before closing
-        let editedCodeFiles = selectionState.openedCodeFiles.values.filter { $0.isDocumentEdited }
+        let editedCodeFiles = tabManager.tabs.gatherOpenFiles().compactMap(\.fileDocument).filter(\.isDocumentEdited)
         for editedCodeFile in editedCodeFiles {
             let shouldClose = UnsafeMutablePointer<Bool>.allocate(capacity: 1)
             shouldClose.initialize(to: true)
@@ -465,7 +459,7 @@ import OrderedCollections
             implementation,
             to: (@convention(c)(Any, Selector, Any, Bool, UnsafeMutableRawPointer?) -> Void).self
         )
-        let areAllOpenedCodeFilesClean = selectionState.openedCodeFiles.values.allSatisfy { !$0.isDocumentEdited }
+        let areAllOpenedCodeFilesClean = tabManager.tabs.gatherOpenFiles().compactMap(\.fileDocument).allSatisfy { !$0.isDocumentEdited }
         function(object, shouldCloseSelector, self, areAllOpenedCodeFilesClean, contextInfo)
     }
 

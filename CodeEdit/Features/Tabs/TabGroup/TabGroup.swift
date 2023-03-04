@@ -38,4 +38,13 @@ enum TabGroup {
             return nil
         }
     }
+
+    func gatherOpenFiles() -> Set<WorkspaceClient.FileItem> {
+        switch self {
+        case .one(let tabGroupData):
+            return Set(tabGroupData.files)
+        case .vertical(let data), .horizontal(let data):
+            return data.tabgroups.map { $0.gatherOpenFiles() }.reduce(into: []) { $0.formUnion($1) }
+        }
+    }
 }

@@ -301,8 +301,8 @@ struct TabBarView: View {
             leadingAccessories
             // Tab bar items.
             GeometryReader { geometryProxy in
-                ScrollView(.horizontal, showsIndicators: false) {
-                    ScrollViewReader { scrollReader in
+                ScrollViewReader { scrollReader in
+                    ScrollView(.horizontal, showsIndicators: false) {
                         HStack(
                             alignment: .center,
                             spacing: -1 // Negative spacing for overlapping the divider.
@@ -355,8 +355,7 @@ struct TabBarView: View {
                                     prefs.preferences.general.tabBarStyle == .native ? 150 : 200
                                 )
                             ) {
-                                guard let selectedID = workspace.selectionState.selectedId else { return }
-                                scrollReader.scrollTo(selectedID)
+                                scrollReader.scrollTo(tabs.selected)
                             }
                         }
                         // When selected tab is changed, scroll to it if possible.
@@ -387,20 +386,21 @@ struct TabBarView: View {
                         }
                         .frame(height: TabBarView.height)
                     }
-                }
-                // When there is no opened file, hide the scroll view, but keep the background.
-                .opacity(
-                    tabs.files.isEmpty // TODO: Fix this && workspace.selectionState.temporaryTab == nil
-                    ? 0.0
-                    : 1.0
-                )
-                // To fill up the parent space of tab bar.
-                .frame(maxWidth: .infinity)
-                .background {
-                    if prefs.preferences.general.tabBarStyle == .native {
-                        TabBarNativeInactiveBackground()
+                    // When there is no opened file, hide the scroll view, but keep the background.
+                    .opacity(
+                        tabs.files.isEmpty // TODO: Fix this && workspace.selectionState.temporaryTab == nil
+                        ? 0.0
+                        : 1.0
+                    )
+                    // To fill up the parent space of tab bar.
+                    .frame(maxWidth: .infinity)
+                    .background {
+                        if prefs.preferences.general.tabBarStyle == .native {
+                            TabBarNativeInactiveBackground()
+                        }
                     }
                 }
+
             }
             // Tab bar tools (e.g. split view).
             trailingAccessories
