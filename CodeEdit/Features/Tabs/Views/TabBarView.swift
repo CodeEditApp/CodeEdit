@@ -441,8 +441,6 @@ struct TabBarView: View {
                         }
                     }
                 )
-                .foregroundColor(.secondary)
-                .buttonStyle(.plain)
                 .help("Close Tab Group")
 
                 Divider()
@@ -450,27 +448,20 @@ struct TabBarView: View {
                     .padding(.horizontal, 4)
             }
 
-            TabBarAccessoryIcon(
-                icon: .init(systemName: "chevron.left"),
-                action: {
-                    tabs.historyOffset += 1
-                } // TODO: Implement
-            )
+            TabBarAccessoryIcon(icon: .init(systemName: "chevron.left")) {
+                tabs.historyOffset += 1
+            }
             .disabled(tabs.historyOffset == tabs.history.count-1)
-            .foregroundColor(.secondary)
-            .buttonStyle(.plain)
             .help("Navigate back")
-            TabBarAccessoryIcon(
-                icon: .init(systemName: "chevron.right"),
-                action: {
-                    tabs.historyOffset -= 1
-                } // TODO: Implement
-            )
+
+            TabBarAccessoryIcon(icon: .init(systemName: "chevron.right")) {
+                tabs.historyOffset -= 1
+            }
             .disabled(tabs.historyOffset == 0)
-            .foregroundColor(.secondary)
-            .buttonStyle(.plain)
             .help("Navigate forward")
         }
+        .foregroundColor(.secondary)
+        .buttonStyle(.plain)
         .padding(.horizontal, 7)
         .brightness(activeState == .inactive ? -0.3 : 0)
         .frame(maxHeight: .infinity) // Fill out vertical spaces.
