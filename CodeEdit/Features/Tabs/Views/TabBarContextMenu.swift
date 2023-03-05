@@ -95,33 +95,31 @@ struct TabBarContextMenu: ViewModifier {
 
             Divider()
 
-            if let item = item as? WorkspaceClient.FileItem {
-                Group {
-                    Button("Copy Path") {
-                        copyPath(item: item)
-                    }
-
-                    Button("Copy Relative Path") {
-                        copyRelativePath(item: item)
-                    }
+            Group {
+                Button("Copy Path") {
+                    copyPath(item: item)
                 }
 
-                Divider()
-
-                Group {
-                    Button("Show in Finder") {
-                        item.showInFinder()
-                    }
-
-                    Button("Reveal in Project Navigator") {
-                        workspace.listenerModel.highlightedFileItem = item
-                    }
-
-                    Button("Open in New Window") {
-
-                    }
-                    .disabled(true)
+                Button("Copy Relative Path") {
+                    copyRelativePath(item: item)
                 }
+            }
+
+            Divider()
+
+            Group {
+                Button("Show in Finder") {
+                    item.showInFinder()
+                }
+
+                Button("Reveal in Project Navigator") {
+                    workspace.listenerModel.highlightedFileItem = item
+                }
+
+                Button("Open in New Window") {
+
+                }
+                .disabled(true)
             }
         })
     }

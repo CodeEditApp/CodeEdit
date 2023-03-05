@@ -216,6 +216,7 @@ extension WorkspaceClient {
 
         /// This function allows creating files in the selected folder or project main directory
         /// - Parameter fileName: The name of the new file
+        @discardableResult
         func addFile(fileName: String) -> String {
             // check if folder, if it is create file under self
             var fileUrl = (self.isFolder ?

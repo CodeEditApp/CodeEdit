@@ -23,7 +23,7 @@ class WorkspaceSplitViewData: ObservableObject {
         }
     }
 
-    // Splits the editor at a certain index into two separate editors.
+    /// Splits the editor at a certain index into two separate editors.
     func split(_ direction: Edge, at index: Int, new tabgroup: TabGroupData) {
         tabgroup.parent = self
         switch (axis, direction) {
