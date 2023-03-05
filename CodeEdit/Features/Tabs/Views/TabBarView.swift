@@ -359,13 +359,6 @@ struct TabBarView: View {
                             // On first tab appeared, jump to the corresponding position.
                             scrollReader.scrollTo(tabgroup.selected)
                         }
-                        .onChange(of: tabgroup.tabs.count) { _ in
-                            withAnimation(
-                                .easeOut(duration: prefs.preferences.general.tabBarStyle == .native ? 0.15 : 0.20)
-                            ) {
-                                updateForTabCountChange(geometryProxy: geometryProxy)
-                            }
-                        }
                         .onChange(of: tabgroup.tabs) { _ in
                             updateForTabCountChange(geometryProxy: geometryProxy)
                             DispatchQueue.main.asyncAfter(
