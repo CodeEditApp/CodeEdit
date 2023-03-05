@@ -451,14 +451,12 @@ struct TabBarView: View {
             TabBarAccessoryIcon(icon: .init(systemName: "chevron.left")) {
                 tabs.historyOffset += 1
             }
-            .buttonStyle(.move(.leading))
             .disabled(tabs.historyOffset == tabs.history.count-1 || tabs.history.isEmpty)
             .help("Navigate back")
 
             TabBarAccessoryIcon(icon: .init(systemName: "chevron.right")) {
                 tabs.historyOffset -= 1
             }
-            .buttonStyle(.move(.trailing))
             .disabled(tabs.historyOffset == 0)
             .help("Navigate forward")
         }
@@ -508,24 +506,25 @@ struct TabBarView: View {
         }
     }
 
-    var splitviewButton: some View {
-        Group {
-            switch (tabs.parent!.axis, modifierKeys.contains(.option)) {
-            case (.horizontal, true), (.vertical, false):
-                TabBarAccessoryIcon(icon: Image(systemName: "square.split.1x2")) {
-                    split(edge: .bottom)
-                }
-                .help("Split Vertically")
+    var splitViewButtonAxis: Axis {
+        switch (tabs.parent!.axis, modifierKeys.contains(.option)) {
+        case (.horizontal, true), (.vertical, false):
+            return .vertical
 
-            case (.vertical, true), (.horizontal, false):
-                TabBarAccessoryIcon(icon: Image(systemName: "square.split.2x1")) {
-                    split(edge: .trailing)
-                }
-                .help("Split Horizontally")
-            }
+        case (.vertical, true), (.horizontal, false):
+            return .horizontal
         }
+    }
+
+    var splitviewButton: some View {
+        TabBarAccessoryIcon(icon: Image(systemName: "square.split.2x1")) {
+            split(edge: splitViewButtonAxis == .vertical ? .bottom : .trailing)
+        }
+        .rotationEffect(splitViewButtonAxis == .vertical ? .degrees(90) : .zero)
+        .animation(.interactiveSpring(), value: splitViewButtonAxis)
         .foregroundColor(.secondary)
         .buttonStyle(.plain)
+        .help("Split \(splitViewButtonAxis == .vertical ? "Vertically" : "Horizontally")")
     }
 
     func split(edge: Edge) {

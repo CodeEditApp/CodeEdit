@@ -116,7 +116,7 @@ struct TabBarItemView: View {
         withAnimation(
             .easeOut(duration: prefs.preferences.general.tabBarStyle == .native ? 0.15 : 0.20)
         ) {
-            tabs.files.remove(item)
+            tabs.closeTab(item: item)
         }
     }
 

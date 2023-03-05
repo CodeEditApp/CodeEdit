@@ -44,8 +44,6 @@ struct WorkspaceTabGroupView: View {
                 Divider()
                 if let file = tabgroup.selected {
                     BreadcrumbsView(file: file) { newFile in
-                        print("Opening \(newFile.fileName)")
-
                         let index = tabgroup.files.firstIndex(of: file)
                         if let index {
                             tabgroup.openTab(item: newFile, at: index)

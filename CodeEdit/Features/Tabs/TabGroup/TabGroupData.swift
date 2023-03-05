@@ -19,25 +19,47 @@ final class TabGroupData: ObservableObject, Identifiable {
             if files.count > oldValue.count {
                 // Amount of tabs grew, so set the first new as selected.
                 selected = change.first
-                history.prepend(contentsOf: change)
-                historyOffset = 0
             } else {
                 // Selected file was removed
                 if let selected, change.contains(selected) {
                     if let oldIndex = oldValue.firstIndex(of: selected), oldIndex - 1 < files.count, !files.isEmpty {
                         self.selected = files[max(0, oldIndex-1)]
+                        print("Selection becomes \(self.selected?.fileName)")
                     } else {
                         self.selected = nil
+                        print("Selection becomes nil")
                     }
                 }
             }
         }
     }
 
-    @Published var history: Deque<Tab> = []
+    @Published var history: Deque<Tab> = [] {
+        didSet {
+            print(history.map(\.fileName))
+        }
+    }
     @Published var historyOffset: Int = 0 {
         didSet {
-            selected = history[historyOffset]
+            print("offset going to", historyOffset)
+            let tab = history[historyOffset]
+
+//            guard historyOffset != 0 else {
+//                selected = tab
+//                return
+//            }
+
+            if !files.contains(tab) {
+//
+                if let selected {
+                    openTab(item: tab, at: files.firstIndex(of: selected), fromHistory: true)
+                } else {
+                    openTab(item: tab, fromHistory: true)
+                }
+//                history.removeFirst()
+
+            }
+            selected = tab
         }
     }
 
@@ -62,6 +84,19 @@ final class TabGroupData: ObservableObject, Identifiable {
     }
 
     func closeTab(item: Tab) {
+        print("Closing tab...")
+        if item != selected {
+            history.prepend(item)
+        }
+        files.remove(item)
+        history.prepend(selected!)
+        historyOffset = 0
+        print("Closed tab.")
+//        history.removeFirst()
+        //        if let selected {
+//        history.prepend(item)
+        //        }
+
         guard let file = item.fileDocument else { return }
 
         if file.isDocumentEdited {
@@ -80,7 +115,8 @@ final class TabGroupData: ObservableObject, Identifiable {
                 return
             }
         }
-        files.remove(item)
+
+
 
 //        if openedTabsFromState {
 //            var openTabsInState = self.getFromWorkspaceState(key: openTabsStateName) as? [String] ?? []
@@ -91,21 +127,26 @@ final class TabGroupData: ObservableObject, Identifiable {
 //        }
     }
 
-    func openTab(item: Tab, at index: Int? = nil) {
-        Task {
-            await MainActor.run {
-                if let index {
-                    files.insert(item, at: index)
-                } else {
-                    files.append(item)
-                }
-                selected = item
-                do {
-                    try openFile(item: item)
-                } catch {
-                    Swift.print(error)
-                }
-            }
+    func openTab(item: Tab, at index: Int? = nil, fromHistory: Bool = false) {
+        if let index {
+            files.insert(item, at: index)
+        } else {
+            files.append(item)
+        }
+        selected = item
+        if fromHistory {
+            print("Opening from history")
+            print(history.map(\.fileName))
+//            historyOffset += 1
+        } else {
+            history.removeFirst(historyOffset)
+            history.prepend(item)
+            historyOffset = 0
+        }
+        do {
+            try openFile(item: item)
+        } catch {
+            Swift.print(error)
         }
     }
 

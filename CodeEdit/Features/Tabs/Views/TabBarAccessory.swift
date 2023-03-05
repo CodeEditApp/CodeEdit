@@ -34,40 +34,6 @@ struct TabBarAccessoryIcon: View {
     }
 }
 
-extension ButtonStyle where Self == MoveButtonStyle {
-    static func move(_ edge: Edge, offset: CGFloat = 2.0) -> MoveButtonStyle {
-        MoveButtonStyle(edge: edge, value: offset)
-    }
-}
-
-struct MoveButtonStyle: ButtonStyle {
-
-    @Environment(\.isEnabled) var isEnabled
-    
-    let edge: Edge
-    let value: CGFloat
-
-    var offset: CGSize {
-        switch edge {
-        case .top:
-            return .init(width: 0, height: -value)
-        case .leading:
-            return .init(width: -value, height: 0)
-        case .bottom:
-            return .init(width: 0, height: value)
-        case .trailing:
-            return .init(width: value, height: 0)
-        }
-    }
-
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .offset(configuration.isPressed ? offset : .zero)
-            .animation(.interactiveSpring(), value: configuration.isPressed)
-            .brightness(isEnabled ? 0.0 : -0.3)
-    }
-}
-
 /// Tab bar accessory area background for native tab bar style.
 struct TabBarAccessoryNativeBackground: View {
     enum DividerPosition {
