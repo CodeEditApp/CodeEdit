@@ -22,8 +22,14 @@ struct WindowObserver<Content: View>: View {
     @StateObject
     private var prefs: AppPreferencesModel = .shared
 
+    @State var modifierFlags: NSEvent.ModifierFlags = []
+
     var body: some View {
         content
+            .environment(\.modifierKeys, modifierFlags.intersection(.deviceIndependentFlagsMask))
+            .onReceive(NSEvent.publisher(scope: .local, matching: .flagsChanged)) { output in
+                modifierFlags = output.modifierFlags
+            }
             .environment(\.window, window)
             .environment(\.isFullscreen, isFullscreen)
             .onReceive(NotificationCenter.default.publisher(for: NSWindow.didEnterFullScreenNotification)) { _ in

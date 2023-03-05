@@ -69,6 +69,6 @@ class StatusBarViewModel: ObservableObject {
     private(set) var minHeight: Double = 100
 
     init() {
-        
+        // !!!: Lots of things in this class can be removed, such as maxHeight, as they are defined in the UI.
     }
 }

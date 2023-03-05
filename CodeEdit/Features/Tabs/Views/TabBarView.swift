@@ -312,7 +312,7 @@ struct TabBarView: View {
                             spacing: -1 // Negative spacing for overlapping the divider.
                         ) {
                             ForEach(Array(openedTabs.enumerated()), id: \.element) { index, id in
-                                if let item = tabs.files.first { $0.id == id } {
+                                if let item = tabs.files.first(where: { $0.id == id }) {
                                     TabBarItemView(
                                         expectedWidth: expectedTabWidth,
                                         item: item,
@@ -321,8 +321,12 @@ struct TabBarView: View {
                                         onDragTabId: onDragTabId,
                                         closeButtonGestureActive: $closeButtonGestureActive
                                     )
-                                    .transition(.asymmetric(insertion: .offset(x: -14).combined(with: .opacity), removal: .scale(scale: 0.7).combined(with: .opacity)))
-//                                    .animation(.spring())
+                                    .transition(
+                                        .asymmetric(
+                                            insertion: .offset(x: -14).combined(with: .opacity),
+                                            removal: .scale(scale: 0.7).combined(with: .opacity)
+                                        )
+                                    )
                                     .frame(height: TabBarView.height)
                                     .background(makeTabItemGeometryReader(id: id))
                                     .offset(x: tabOffsets[id] ?? 0, y: 0)
@@ -356,7 +360,9 @@ struct TabBarView: View {
                             scrollReader.scrollTo(tabs.selected)
                         }
                         .onChange(of: tabs.files.count) { _ in
-                            withAnimation(.easeOut(duration: prefs.preferences.general.tabBarStyle == .native ? 0.15 : 0.20)) {
+                            withAnimation(
+                                .easeOut(duration: prefs.preferences.general.tabBarStyle == .native ? 0.15 : 0.20)
+                            ) {
                                 updateForTabCountChange(geometryProxy: geometryProxy)
                             }
                         }

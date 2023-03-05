@@ -36,7 +36,6 @@ final class TabGroupData: ObservableObject, Identifiable {
 
     @Published var historyOffset: Int = 0 {
         didSet {
-            
             let tab = history[historyOffset]
 
             if !files.contains(tab) {

@@ -8,20 +8,6 @@
 import SwiftUI
 import Combine
 
-struct EventModifierObserver<Content: View>: View {
-    @ViewBuilder var content: Content
-
-    @State var modifierFlags: NSEvent.ModifierFlags = []
-
-    var body: some View {
-        content
-            .environment(\.modifierKeys, modifierFlags.intersection(.deviceIndependentFlagsMask))
-            .onReceive(NSEvent.publisher(scope: .local, matching: .flagsChanged)) { output in
-                modifierFlags = output.modifierFlags
-            }
-    }
-}
-
 struct EventModifierEnvironmentKey: EnvironmentKey {
     static var defaultValue: NSEvent.ModifierFlags = []
 }
