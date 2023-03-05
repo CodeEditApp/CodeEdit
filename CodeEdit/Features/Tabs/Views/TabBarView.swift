@@ -451,12 +451,14 @@ struct TabBarView: View {
             TabBarAccessoryIcon(icon: .init(systemName: "chevron.left")) {
                 tabs.historyOffset += 1
             }
-            .disabled(tabs.historyOffset == tabs.history.count-1)
+            .buttonStyle(.move(.leading))
+            .disabled(tabs.historyOffset == tabs.history.count-1 || tabs.history.isEmpty)
             .help("Navigate back")
 
             TabBarAccessoryIcon(icon: .init(systemName: "chevron.right")) {
                 tabs.historyOffset -= 1
             }
+            .buttonStyle(.move(.trailing))
             .disabled(tabs.historyOffset == 0)
             .help("Navigate forward")
         }
