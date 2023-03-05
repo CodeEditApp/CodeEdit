@@ -452,21 +452,27 @@ struct TabBarView: View {
 
             TabBarAccessoryIcon(
                 icon: .init(systemName: "chevron.left"),
-                action: {} // TODO: Implement
+                action: {
+                    tabs.historyOffset += 1
+                } // TODO: Implement
             )
+            .disabled(tabs.historyOffset == tabs.history.count-1)
             .foregroundColor(.secondary)
             .buttonStyle(.plain)
             .help("Navigate back")
             TabBarAccessoryIcon(
                 icon: .init(systemName: "chevron.right"),
-                action: {} // TODO: Implement
+                action: {
+                    tabs.historyOffset -= 1
+                } // TODO: Implement
             )
+            .disabled(tabs.historyOffset == 0)
             .foregroundColor(.secondary)
             .buttonStyle(.plain)
             .help("Navigate forward")
         }
         .padding(.horizontal, 7)
-        .opacity(activeState != .inactive ? 1.0 : 0.5)
+        .brightness(activeState == .inactive ? -0.3 : 0)
         .frame(maxHeight: .infinity) // Fill out vertical spaces.
         .background {
             if prefs.preferences.general.tabBarStyle == .native {

@@ -100,6 +100,10 @@ struct TabBarItemView: View {
         tabManager.activeTabGroup = tabs
         if tabs.selected != item {
             tabs.selected = item
+            tabs.history.removeFirst(tabs.historyOffset)
+            tabs.history.prepend(item)
+            tabs.historyOffset = 0
+
         // if workspace.selectionState.selectedId != item.tabID {
         //     workspace.switchedTab(item: item)
             // TODO: Fix save state

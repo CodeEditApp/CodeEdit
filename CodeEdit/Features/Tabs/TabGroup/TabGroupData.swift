@@ -7,15 +7,20 @@
 
 import Foundation
 import OrderedCollections
+import DequeModule
 
 final class TabGroupData: ObservableObject, Identifiable {
-    @Published var files: OrderedSet<WorkspaceClient.FileItem> = [] {
+    typealias Tab = WorkspaceClient.FileItem
+
+    @Published var files: OrderedSet<Tab> = [] {
         didSet {
             let change = files.symmetricDifference(oldValue)
 
             if files.count > oldValue.count {
                 // Amount of tabs grew, so set the first new as selected.
                 selected = change.first
+                history.prepend(contentsOf: change)
+                historyOffset = 0
             } else {
                 // Selected file was removed
                 if let selected, change.contains(selected) {
@@ -29,15 +34,22 @@ final class TabGroupData: ObservableObject, Identifiable {
         }
     }
 
-    @Published var selected: WorkspaceClient.FileItem?
+    @Published var history: Deque<Tab> = []
+    @Published var historyOffset: Int = 0 {
+        didSet {
+            selected = history[historyOffset]
+        }
+    }
+
+    @Published var selected: Tab?
 
     let id = UUID()
 
     weak var parent: WorkspaceSplitViewData?
 
     init(
-        files: OrderedSet<WorkspaceClient.FileItem> = [],
-        selected: WorkspaceClient.FileItem? = nil,
+        files: OrderedSet<Tab> = [],
+        selected: Tab? = nil,
         parent: WorkspaceSplitViewData? = nil
     ) {
         self.files = files
@@ -49,7 +61,7 @@ final class TabGroupData: ObservableObject, Identifiable {
         parent?.closeTabGroup(with: id)
     }
 
-    func closeTab(item: WorkspaceClient.FileItem) {
+    func closeTab(item: Tab) {
         guard let file = item.fileDocument else { return }
 
         if file.isDocumentEdited {
@@ -79,7 +91,7 @@ final class TabGroupData: ObservableObject, Identifiable {
 //        }
     }
 
-    func openTab(item: WorkspaceClient.FileItem, at index: Int? = nil) {
+    func openTab(item: Tab, at index: Int? = nil) {
         Task {
             await MainActor.run {
                 if let index {
@@ -97,7 +109,7 @@ final class TabGroupData: ObservableObject, Identifiable {
         }
     }
 
-    private func openFile(item: WorkspaceClient.FileItem) throws {
+    private func openFile(item: Tab) throws {
         guard item.fileDocument == nil else {
             return
         }

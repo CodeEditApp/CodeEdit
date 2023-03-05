@@ -326,6 +326,7 @@
 		6C7256D729A3D7D000C2D3E0 /* EditorSplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C7256D629A3D7D000C2D3E0 /* EditorSplitView.swift */; };
 		6C7256DA29A3D98C00C2D3E0 /* SequenceBuilder in Frameworks */ = {isa = PBXBuildFile; productRef = 6C7256D929A3D98C00C2D3E0 /* SequenceBuilder */; };
 		6C81916729B3E80700B75C92 /* ModifierKeysObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C81916629B3E80700B75C92 /* ModifierKeysObserver.swift */; };
+		6C81916B29B41DD300B75C92 /* DequeModule in Frameworks */ = {isa = PBXBuildFile; productRef = 6C81916A29B41DD300B75C92 /* DequeModule */; };
 		6C91D57229B176FF0059A90D /* TabManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C91D57129B176FF0059A90D /* TabManager.swift */; };
 		6C97EBCC2978760400302F95 /* AcknowledgementsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C97EBCB2978760400302F95 /* AcknowledgementsWindowController.swift */; };
 		6C97EBCF297876E500302F95 /* AboutWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C97EBCE297876E500302F95 /* AboutWindowController.swift */; };
@@ -776,6 +777,7 @@
 				5879828A292ED15F0085B254 /* SwiftTerm in Frameworks */,
 				2816F594280CF50500DD548B /* CodeEditSymbols in Frameworks */,
 				6C7256DA29A3D98C00C2D3E0 /* SequenceBuilder in Frameworks */,
+				6C81916B29B41DD300B75C92 /* DequeModule in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2378,6 +2380,7 @@
 				58F2EB1D292FB954004A9BDE /* Sparkle */,
 				6C147C4429A329350089B630 /* OrderedCollections */,
 				6C7256D929A3D98C00C2D3E0 /* SequenceBuilder */,
+				6C81916A29B41DD300B75C92 /* DequeModule */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -3921,6 +3924,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6C7256D829A3D98C00C2D3E0 /* XCRemoteSwiftPackageReference "SequenceBuilder" */;
 			productName = SequenceBuilder;
+		};
+		6C81916A29B41DD300B75C92 /* DequeModule */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6C147C4329A329350089B630 /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = DequeModule;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
