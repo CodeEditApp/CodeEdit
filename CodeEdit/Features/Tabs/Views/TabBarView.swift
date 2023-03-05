@@ -375,12 +375,7 @@ struct TabBarView: View {
                             guard let selectedId = targetId else { return }
                             scrollReader.scrollTo(selectedId)
                         }
-                        // When tabs are changing, re-compute the expected tab width.
 
-                        // TODO: Fix this
-                        //                        .onChange(of: workspace.selectionState.temporaryTab, perform: { _ in
-                        //                            updateForTabCountChange(geometryProxy: geometryProxy)
-                        //                        })
                         // When window size changes, re-compute the expected tab width.
                         .onChange(of: geometryProxy.size.width) { _ in
                             updateExpectedTabWidth(proxy: geometryProxy)
@@ -396,12 +391,7 @@ struct TabBarView: View {
                         }
                         .frame(height: TabBarView.height)
                     }
-                    // When there is no opened file, hide the scroll view, but keep the background.
-                    .opacity(
-                        tabs.files.isEmpty // TODO: Fix this && workspace.selectionState.temporaryTab == nil
-                        ? 0.0
-                        : 1.0
-                    )
+
                     // To fill up the parent space of tab bar.
                     .frame(maxWidth: .infinity)
                     .background {
@@ -454,17 +444,60 @@ struct TabBarView: View {
                     .padding(.horizontal, 4)
             }
 
-            TabBarAccessoryIcon(icon: .init(systemName: "chevron.left")) {
-                tabs.historyOffset += 1
-            }
-            .disabled(tabs.historyOffset == tabs.history.count-1 || tabs.history.isEmpty)
-            .help("Navigate back")
+            Group {
+                Menu {
+                    ForEach(
+                        Array(tabs.history.dropFirst(tabs.historyOffset+1).enumerated()),
+                        id: \.element
+                    ) { index, tab in
+                        Button {
+                            tabs.historyOffset += index + 1
+                        } label: {
+                            HStack {
+                                tab.icon
+                                Text(tab.fileName)
+                            }
+                        }
+                    }
+                } label: {
+                    Image(systemName: "chevron.left")
+                        .controlSize(.regular)
+                        .brightness(tabs.historyOffset == tabs.history.count-1 || tabs.history.isEmpty ? -0.4 : 0.0)
+                } primaryAction: {
+                    tabs.historyOffset += 1
+                }
+                .disabled(tabs.historyOffset == tabs.history.count-1 || tabs.history.isEmpty)
+                .help("Navigate back")
 
-            TabBarAccessoryIcon(icon: .init(systemName: "chevron.right")) {
-                tabs.historyOffset -= 1
+                Menu {
+                    ForEach(
+                        Array(tabs.history.prefix(tabs.historyOffset).reversed().enumerated()),
+                        id: \.element
+                    ) { index, tab in
+                        Button {
+                            tabs.historyOffset -= index + 1
+                        } label: {
+                            HStack {
+                                tab.icon
+                                Text(tab.fileName)
+                            }
+                        }
+                    }
+                } label: {
+                    Image(systemName: "chevron.right")
+                        .controlSize(.regular)
+                        .brightness(tabs.historyOffset == 0 ? -0.4 : 0.0)
+                } primaryAction: {
+                    tabs.historyOffset -= 1
+                }
+                .disabled(tabs.historyOffset == 0)
+                .help("Navigate forward")
             }
-            .disabled(tabs.historyOffset == 0)
-            .help("Navigate forward")
+            .controlSize(.small)
+            .font(TabBarAccessoryIcon.iconFont)
+            .frame(height: TabBarView.height - 2)
+            .padding(.horizontal, 4)
+            .contentShape(Rectangle())
         }
         .foregroundColor(.secondary)
         .buttonStyle(.plain)

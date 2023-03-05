@@ -36,6 +36,7 @@ final class TabGroupData: ObservableObject, Identifiable {
 
     @Published var historyOffset: Int = 0 {
         didSet {
+            
             let tab = history[historyOffset]
 
             if !files.contains(tab) {
@@ -60,9 +61,10 @@ final class TabGroupData: ObservableObject, Identifiable {
         selected: Tab? = nil,
         parent: WorkspaceSplitViewData? = nil
     ) {
-        self.files = files
-        self.selected = selected ?? files.first
+        self.files = []
         self.parent = parent
+        files.forEach { openTab(item: $0) }
+        self.selected = selected ?? files.first
     }
 
     func close() {
@@ -125,7 +127,6 @@ final class TabGroupData: ObservableObject, Identifiable {
             self.selected = item
         } else if selectedIsTemporary && !asTemporary {
             // Temporary becomes permanent.
-            openTab(item: item)
             selectedIsTemporary = false
 
         } else {

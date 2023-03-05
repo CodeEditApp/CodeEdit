@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		043BCF03281DA18A000AC47C /* WorkspaceDocument+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043BCF02281DA18A000AC47C /* WorkspaceDocument+Search.swift */; };
-		043BCF05281DA19A000AC47C /* WorkspaceDocument+Selection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043BCF04281DA19A000AC47C /* WorkspaceDocument+Selection.swift */; };
 		043C321427E31FF6006AE443 /* CodeEditDocumentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043C321327E31FF6006AE443 /* CodeEditDocumentController.swift */; };
 		043C321627E3201F006AE443 /* WorkspaceDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043C321527E3201F006AE443 /* WorkspaceDocument.swift */; };
 		043C321A27E32295006AE443 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 043C321927E32295006AE443 /* MainMenu.xib */; };
@@ -407,7 +406,6 @@
 
 /* Begin PBXFileReference section */
 		043BCF02281DA18A000AC47C /* WorkspaceDocument+Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkspaceDocument+Search.swift"; sourceTree = "<group>"; };
-		043BCF04281DA19A000AC47C /* WorkspaceDocument+Selection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkspaceDocument+Selection.swift"; sourceTree = "<group>"; };
 		043C321327E31FF6006AE443 /* CodeEditDocumentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditDocumentController.swift; sourceTree = "<group>"; };
 		043C321527E3201F006AE443 /* WorkspaceDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceDocument.swift; sourceTree = "<group>"; };
 		043C321927E32295006AE443 /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
@@ -806,7 +804,6 @@
 				5831E3CF2933F4E000D5A6D2 /* Views */,
 				043C321527E3201F006AE443 /* WorkspaceDocument.swift */,
 				043BCF02281DA18A000AC47C /* WorkspaceDocument+Search.swift */,
-				043BCF04281DA19A000AC47C /* WorkspaceDocument+Selection.swift */,
 				6C05A8AE284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift */,
 			);
 			path = Documents;
@@ -2814,7 +2811,6 @@
 				587B9E6129301D8F00AC7927 /* GitLabOAuthConfiguration.swift in Sources */,
 				587B9E6229301D8F00AC7927 /* GitLabConfiguration.swift in Sources */,
 				5879821B292D92370085B254 /* SearchResultMatchModel.swift in Sources */,
-				043BCF05281DA19A000AC47C /* WorkspaceDocument+Selection.swift in Sources */,
 				587B9E5929301D8F00AC7927 /* GitCheckoutBranchView+CheckoutBranch.swift in Sources */,
 				58F2EB09292FB2B0004A9BDE /* TerminalPreferences.swift in Sources */,
 				587D9B742933BF5700BF7490 /* FileItem+Array.swift in Sources */,

@@ -88,7 +88,7 @@ struct TabBarContextMenu: ViewModifier {
 
                 if isTemporary {
                     Button("Keep Open") {
-                        workspace.convertTemporaryTab()
+                        tabs.selectedIsTemporary = false
                     }
                 }
             }

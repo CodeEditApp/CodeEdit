@@ -249,7 +249,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
 
     @IBAction func saveDocument(_ sender: Any) {
         getSelectedCodeFile()?.save(sender)
-        workspace?.convertTemporaryTab()
+        workspace?.tabManager.activeTabGroup.selectedIsTemporary = false
     }
 
     @IBAction func openCommandPalette(_ sender: Any) {

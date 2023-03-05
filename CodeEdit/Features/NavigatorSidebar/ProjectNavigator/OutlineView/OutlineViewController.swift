@@ -110,11 +110,7 @@ final class OutlineViewController: NSViewController {
                 outlineView.expandItem(item)
             }
         } else {
-            // TODO: Fix temporary tab
             workspace?.tabManager.activeTabGroup.openTab(item: item, asTemporary: false)
-//            if workspace?.selectionState.temporaryTab == item.tabID {
-//                workspace?.convertTemporaryTab()
-//            }
         }
     }
 

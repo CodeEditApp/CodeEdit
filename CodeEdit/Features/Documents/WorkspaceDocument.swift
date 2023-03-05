@@ -63,26 +63,6 @@ import CodeEditKit
         workspaceState.updateValue(value, forKey: key)
     }
 
-    /// Makes the temporary tab permanent when a file save or edit happens.
-    @objc func convertTemporaryTab() {
-//        if selectionState.selectedId == selectionState.temporaryTab &&
-//            selectionState.temporaryTab != nil {
-//            let item = selectionState.getItemByTab(id: selectionState.temporaryTab!)
-//            selectionState.previousTemporaryTab = selectionState.temporaryTab
-//            selectionState.temporaryTab = nil
-//
-//            guard let file = item as? WorkspaceClient.FileItem else { return }
-//
-//            if openedTabsFromState && item != nil {
-//                var openTabsInState = self.getFromWorkspaceState(key: openTabsStateName) as? [String] ?? []
-//                if !openTabsInState.contains(file.url.absoluteString) {
-//                    openTabsInState.append(file.url.absoluteString)
-//                    self.addToWorkspaceState(key: openTabsStateName, value: openTabsInState)
-//                }
-//            }
-//        }
-    }
-
     // MARK: NSDocument
 
     private let ignoredFilesAndDirectory = [
@@ -143,14 +123,6 @@ import CodeEditKit
         self.searchState = .init(self)
         self.quickOpenViewModel = .init(fileURL: url)
         self.commandsPaletteState = .init()
-
-        // TODO: Fix temporary tabs
-//        NotificationCenter.default.addObserver(
-//            self,
-//            selector: #selector(convertTemporaryTab),
-//            name: NSNotification.Name("CodeEditor.didBeginEditing"),
-//            object: nil
-//        )
     }
 
     override func read(from url: URL, ofType typeName: String) throws {

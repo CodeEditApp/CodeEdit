@@ -73,8 +73,6 @@ struct TabBarItemView: View {
 
     private var isTemporary: Bool {
         isActive
-        // TODO: Fix this
-        //        workspace.selectionState.temporaryTab == item.tabID
     }
 
     /// Is the current tab the active tab.
@@ -103,10 +101,6 @@ struct TabBarItemView: View {
             tabs.history.removeFirst(tabs.historyOffset)
             tabs.history.prepend(item)
             tabs.historyOffset = 0
-
-        // if workspace.selectionState.selectedId != item.tabID {
-        //     workspace.switchedTab(item: item)
-            // TODO: Fix save state
         }
     }
 
@@ -302,8 +296,6 @@ struct TabBarItemView: View {
                 .onEnded { _ in
                     if isTemporary {
                         tabs.selectedIsTemporary = false
-                        // TODO: Fix this
-                        //                        workspace.convertTemporaryTab()
                     }
                 }
         )

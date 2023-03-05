@@ -61,5 +61,9 @@ struct WorkspaceTabGroupView: View {
                 tabManager.activeTabGroup = tabgroup
             }
         }
+        .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("CodeEditor.didBeginEditing"))) { _ in
+            print("Not temporary anymore")
+            tabgroup.selectedIsTemporary = false
+        }
     }
 }
