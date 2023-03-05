@@ -72,7 +72,7 @@ struct TabBarItemView: View {
     var index: Int
 
     private var isTemporary: Bool {
-        false
+        isActive
         // TODO: Fix this
         //        workspace.selectionState.temporaryTab == item.tabID
     }
@@ -301,6 +301,7 @@ struct TabBarItemView: View {
             TapGesture(count: 2)
                 .onEnded { _ in
                     if isTemporary {
+                        tabs.selectedIsTemporary = false
                         // TODO: Fix this
                         //                        workspace.convertTemporaryTab()
                     }
@@ -310,11 +311,11 @@ struct TabBarItemView: View {
             // This padding is to avoid background color overlapping with top divider.
             .top, prefs.preferences.general.tabBarStyle == .xcode ? 1 : 0
         )
-        .offset(
-            x: isAppeared || prefs.preferences.general.tabBarStyle == .native ? 0 : -14,
-            y: 0
-        )
-        .opacity(isAppeared && onDragTabId != item.id ? 1.0 : 0.0)
+//        .offset(
+//            x: isAppeared || prefs.preferences.general.tabBarStyle == .native ? 0 : -14,
+//            y: 0
+//        )
+//        .opacity(isAppeared && onDragTabId != item.id ? 1.0 : 0.0)
         .zIndex(
             isActive
             ? (prefs.preferences.general.tabBarStyle == .native ? -1 : 2)
@@ -332,7 +333,7 @@ struct TabBarItemView: View {
             withAnimation(
                 .easeOut(duration: prefs.preferences.general.tabBarStyle == .native ? 0.15 : 0.20)
             ) {
-                isAppeared = true
+//                isAppeared = true
             }
         }
         .id(item.id)

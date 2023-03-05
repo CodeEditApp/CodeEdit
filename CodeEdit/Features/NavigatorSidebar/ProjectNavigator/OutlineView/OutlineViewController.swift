@@ -111,6 +111,7 @@ final class OutlineViewController: NSViewController {
             }
         } else {
             // TODO: Fix temporary tab
+            workspace?.tabManager.activeTabGroup.openTab(item: item, asTemporary: false)
 //            if workspace?.selectionState.temporaryTab == item.tabID {
 //                workspace?.convertTemporaryTab()
 //            }
@@ -276,7 +277,7 @@ extension OutlineViewController: NSOutlineViewDelegate {
         guard let item = outlineView.item(atRow: selectedIndex) as? Item else { return }
 
         if item.children == nil && shouldSendSelectionUpdate {
-            workspace?.tabManager.activeTabGroup.openTab(item: item)
+            workspace?.tabManager.activeTabGroup.openTab(item: item, asTemporary: true)
         }
     }
 

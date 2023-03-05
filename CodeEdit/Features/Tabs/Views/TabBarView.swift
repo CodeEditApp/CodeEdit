@@ -321,6 +321,8 @@ struct TabBarView: View {
                                         onDragTabId: onDragTabId,
                                         closeButtonGestureActive: $closeButtonGestureActive
                                     )
+                                    .transition(.asymmetric(insertion: .offset(x: -14).combined(with: .opacity), removal: .scale(scale: 0.7).combined(with: .opacity)))
+//                                    .animation(.spring())
                                     .frame(height: TabBarView.height)
                                     .background(makeTabItemGeometryReader(id: id))
                                     .offset(x: tabOffsets[id] ?? 0, y: 0)
@@ -353,7 +355,13 @@ struct TabBarView: View {
                             // On first tab appeared, jump to the corresponding position.
                             scrollReader.scrollTo(tabs.selected)
                         }
+                        .onChange(of: tabs.files.count) { _ in
+                            withAnimation(.easeOut(duration: prefs.preferences.general.tabBarStyle == .native ? 0.15 : 0.20)) {
+                                updateForTabCountChange(geometryProxy: geometryProxy)
+                            }
+                        }
                         .onChange(of: tabs.files) { _ in
+                            updateForTabCountChange(geometryProxy: geometryProxy)
                             DispatchQueue.main.asyncAfter(
                                 deadline: .now() + .milliseconds(
                                     prefs.preferences.general.tabBarStyle == .native ? 150 : 200
@@ -368,9 +376,7 @@ struct TabBarView: View {
                             scrollReader.scrollTo(selectedId)
                         }
                         // When tabs are changing, re-compute the expected tab width.
-                        .onChange(of: tabs.files.count) { _ in
-                            updateForTabCountChange(geometryProxy: geometryProxy)
-                        }
+
                         // TODO: Fix this
                         //                        .onChange(of: workspace.selectionState.temporaryTab, perform: { _ in
                         //                            updateForTabCountChange(geometryProxy: geometryProxy)
