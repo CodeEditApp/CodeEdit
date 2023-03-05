@@ -51,6 +51,7 @@ final class OutlineViewController: NSViewController {
     /// Setup the ``scrollView`` and ``outlineView``
     override func loadView() {
         self.scrollView = NSScrollView()
+        self.scrollView.hasVerticalScroller = true
         self.view = scrollView
 
         self.outlineView = NSOutlineView()
