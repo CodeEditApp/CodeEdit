@@ -112,7 +112,6 @@ final class TabGroupData: ObservableObject, Identifiable {
     func openTab(item: Tab, asTemporary: Bool, fromHistory: Bool = false) {
         // Item is already opened in a tab.
         guard !files.contains(item) || !asTemporary else {
-            print("Tab is already open")
             selected = item
             history.prepend(item)
             return
@@ -120,20 +119,17 @@ final class TabGroupData: ObservableObject, Identifiable {
 
         if let selected, let index = files.firstIndex(of: selected), asTemporary && selectedIsTemporary {
             // Replace temporary tab
-            print("Replacing temporary tab")
             history.prepend(item)
             files.remove(selected)
             files.insert(item, at: index)
             self.selected = item
         } else if selectedIsTemporary && !asTemporary {
             // Temporary becomes permanent.
-            print("Selected became permanent")
             openTab(item: item)
             selectedIsTemporary = false
 
         } else {
             // New temporary tab
-            print("New Temporary Tab")
             openTab(item: item)
             selectedIsTemporary = true
         }
@@ -151,11 +147,7 @@ final class TabGroupData: ObservableObject, Identifiable {
             files.append(item)
         }
         selected = item
-        if fromHistory {
-            print("Opening from history")
-            print(history.map(\.fileName))
-//            historyOffset += 1
-        } else {
+        if !fromHistory {
             history.removeFirst(historyOffset)
             history.prepend(item)
             historyOffset = 0
@@ -180,7 +172,7 @@ final class TabGroupData: ObservableObject, Identifiable {
         )
         item.fileDocument = codeFile
         CodeEditDocumentController.shared.addDocument(codeFile)
-        Swift.print("Opening file for item: ", item.url)
+        print("Opening file for item: ", item.url)
     }
 }
 
