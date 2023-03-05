@@ -35,7 +35,7 @@ struct TabBarView: View {
     @EnvironmentObject private var tabManager: TabManager
 
     @EnvironmentObject
-    private var tabs: TabGroupData
+    private var tabgroup: TabGroupData
 
     @Environment(\.splitEditor) var splitEditor
 
@@ -135,7 +135,7 @@ struct TabBarView: View {
     private func updateExpectedTabWidth(proxy: GeometryProxy) {
         expectedTabWidth = max(
             // Equally divided size of a native tab.
-            (proxy.size.width + 1) / CGFloat(tabs.tabs.count) + 1,
+            (proxy.size.width + 1) / CGFloat(tabgroup.tabs.count) + 1,
             // Min size of a native tab.
             CGFloat(140)
         )
@@ -249,8 +249,8 @@ struct TabBarView: View {
                 // In order to avoid the lag due to the update of workspace state.
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.40) {
                     if draggingStartLocation == nil {
-                        tabs.tabs = .init(openedTabs.compactMap { id in
-                            tabs.tabs.first { $0.id == id }
+                        tabgroup.tabs = .init(openedTabs.compactMap { id in
+                            tabgroup.tabs.first { $0.id == id }
                         })
                         // workspace.reorderedTabs(openedTabs: openedTabs)
                         // TODO: Fix save state
@@ -288,7 +288,7 @@ struct TabBarView: View {
     /// Called when the tab count changes or the temporary tab changes.
     /// - Parameter geometryProxy: The geometry proxy to calculate the new width using.
     private func updateForTabCountChange(geometryProxy: GeometryProxy) {
-        openedTabs = tabs.tabs.map(\.id)
+        openedTabs = tabgroup.tabs.map(\.id)
 
         // Only update the expected width when user is not hovering over tabs.
         // This should give users a better experience on closing multiple tabs continuously.
@@ -305,14 +305,14 @@ struct TabBarView: View {
             leadingAccessories
             // Tab bar items.
             GeometryReader { geometryProxy in
-                ScrollViewReader { scrollReader in
-                    ScrollView(.horizontal, showsIndicators: false) {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    ScrollViewReader { scrollReader in
                         HStack(
                             alignment: .center,
                             spacing: -1 // Negative spacing for overlapping the divider.
                         ) {
                             ForEach(Array(openedTabs.enumerated()), id: \.element) { index, id in
-                                if let item = tabs.tabs.first(where: { $0.id == id }) {
+                                if let item = tabgroup.tabs.first(where: { $0.id == id }) {
                                     TabBarItemView(
                                         expectedWidth: expectedTabWidth,
                                         item: item,
@@ -353,33 +353,32 @@ struct TabBarView: View {
                         // This padding is to hide dividers at two ends under the accessory view divider.
                         .padding(.horizontal, prefs.preferences.general.tabBarStyle == .native ? -1 : 0)
                         .onAppear {
-                            openedTabs = tabs.tabs.map(\.id)
+                            openedTabs = tabgroup.tabs.map(\.id)
                             // On view appeared, compute the initial expected width for tabs.
                             updateExpectedTabWidth(proxy: geometryProxy)
                             // On first tab appeared, jump to the corresponding position.
-                            scrollReader.scrollTo(tabs.selected)
+                            scrollReader.scrollTo(tabgroup.selected)
                         }
-                        .onChange(of: tabs.tabs.count) { _ in
+                        .onChange(of: tabgroup.tabs.count) { _ in
                             withAnimation(
                                 .easeOut(duration: prefs.preferences.general.tabBarStyle == .native ? 0.15 : 0.20)
                             ) {
                                 updateForTabCountChange(geometryProxy: geometryProxy)
                             }
                         }
-                        .onChange(of: tabs.tabs) { _ in
+                        .onChange(of: tabgroup.tabs) { _ in
                             updateForTabCountChange(geometryProxy: geometryProxy)
                             DispatchQueue.main.asyncAfter(
                                 deadline: .now() + .milliseconds(
                                     prefs.preferences.general.tabBarStyle == .native ? 150 : 200
                                 )
                             ) {
-                                scrollReader.scrollTo(tabs.selected)
+                                scrollReader.scrollTo(tabgroup.selected?.id)
                             }
                         }
                         // When selected tab is changed, scroll to it if possible.
-                        .onChange(of: tabs.selected) { targetId in
-                            guard let selectedId = targetId else { return }
-                            scrollReader.scrollTo(selectedId)
+                        .onChange(of: tabgroup.selected) {
+                            scrollReader.scrollTo($0?.id)
                         }
 
                         // When window size changes, re-compute the expected tab width.
@@ -433,12 +432,12 @@ struct TabBarView: View {
 
     private var leadingAccessories: some View {
         HStack(spacing: 2) {
-            if tabManager.tabGroups.findSomeTabGroup(except: tabs) != nil {
+            if tabManager.tabGroups.findSomeTabGroup(except: tabgroup) != nil {
                 TabBarAccessoryIcon(
                     icon: .init(systemName: "multiply"),
                     action: {
-                        tabs.close()
-                        if tabManager.activeTabGroup == tabs {
+                        tabgroup.close()
+                        if tabManager.activeTabGroup == tabgroup {
                             tabManager.activeTabGroup = tabManager.activeTabGroupHistory.removeFirst()
                         }
                     }
@@ -453,11 +452,11 @@ struct TabBarView: View {
             Group {
                 Menu {
                     ForEach(
-                        Array(tabs.history.dropFirst(tabs.historyOffset+1).enumerated()),
-                        id: \.element
+                        Array(tabgroup.history.dropFirst(tabgroup.historyOffset+1).enumerated()),
+                        id: \.offset
                     ) { index, tab in
                         Button {
-                            tabs.historyOffset += index + 1
+                            tabgroup.historyOffset += index + 1
                         } label: {
                             HStack {
                                 tab.icon
@@ -468,20 +467,20 @@ struct TabBarView: View {
                 } label: {
                     Image(systemName: "chevron.left")
                         .controlSize(.regular)
-                        .brightness(tabs.historyOffset == tabs.history.count-1 || tabs.history.isEmpty ? -0.4 : 0.0)
+                        .brightness(tabgroup.historyOffset == tabgroup.history.count-1 || tabgroup.history.isEmpty ? -0.4 : 0.0)
                 } primaryAction: {
-                    tabs.historyOffset += 1
+                    tabgroup.historyOffset += 1
                 }
-                .disabled(tabs.historyOffset == tabs.history.count-1 || tabs.history.isEmpty)
+                .disabled(tabgroup.historyOffset == tabgroup.history.count-1 || tabgroup.history.isEmpty)
                 .help("Navigate back")
 
                 Menu {
                     ForEach(
-                        Array(tabs.history.prefix(tabs.historyOffset).reversed().enumerated()),
-                        id: \.element
+                        Array(tabgroup.history.prefix(tabgroup.historyOffset).reversed().enumerated()),
+                        id: \.offset
                     ) { index, tab in
                         Button {
-                            tabs.historyOffset -= index + 1
+                            tabgroup.historyOffset -= index + 1
                         } label: {
                             HStack {
                                 tab.icon
@@ -492,11 +491,11 @@ struct TabBarView: View {
                 } label: {
                     Image(systemName: "chevron.right")
                         .controlSize(.regular)
-                        .brightness(tabs.historyOffset == 0 ? -0.4 : 0.0)
+                        .brightness(tabgroup.historyOffset == 0 ? -0.4 : 0.0)
                 } primaryAction: {
-                    tabs.historyOffset -= 1
+                    tabgroup.historyOffset -= 1
                 }
-                .disabled(tabs.historyOffset == 0)
+                .disabled(tabgroup.historyOffset == 0)
                 .help("Navigate forward")
             }
             .controlSize(.small)
@@ -552,7 +551,7 @@ struct TabBarView: View {
     }
 
     var splitViewButtonAxis: Axis {
-        switch (tabs.parent!.axis, modifierKeys.contains(.option)) {
+        switch (tabgroup.parent!.axis, modifierKeys.contains(.option)) {
         case (.horizontal, true), (.vertical, false):
             return .vertical
 
@@ -573,7 +572,7 @@ struct TabBarView: View {
     }
 
     func split(edge: Edge) {
-        if let tab = tabs.selected {
+        if let tab = tabgroup.selected {
             splitEditor(edge, .init(files: [tab]))
         } else {
             splitEditor(edge, .init())
