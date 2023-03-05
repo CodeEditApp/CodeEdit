@@ -24,10 +24,8 @@ final class TabGroupData: ObservableObject, Identifiable {
                 if let selected, change.contains(selected) {
                     if let oldIndex = oldValue.firstIndex(of: selected), oldIndex - 1 < files.count, !files.isEmpty {
                         self.selected = files[max(0, oldIndex-1)]
-                        print("Selection becomes \(self.selected?.fileName)")
                     } else {
                         self.selected = nil
-                        print("Selection becomes nil")
                     }
                 }
             }
@@ -35,26 +33,17 @@ final class TabGroupData: ObservableObject, Identifiable {
     }
 
     @Published var history: Deque<Tab> = []
-    
+
     @Published var historyOffset: Int = 0 {
         didSet {
-            print("offset going to", historyOffset)
             let tab = history[historyOffset]
 
-//            guard historyOffset != 0 else {
-//                selected = tab
-//                return
-//            }
-
             if !files.contains(tab) {
-//
                 if let selected {
                     openTab(item: tab, at: files.firstIndex(of: selected), fromHistory: true)
                 } else {
                     openTab(item: tab, fromHistory: true)
                 }
-//                history.removeFirst()
-
             }
             selected = tab
         }
@@ -81,18 +70,14 @@ final class TabGroupData: ObservableObject, Identifiable {
     }
 
     func closeTab(item: Tab) {
-        print("Closing tab...")
+        historyOffset = 0
         if item != selected {
             history.prepend(item)
         }
         files.remove(item)
-        history.prepend(selected!)
-        historyOffset = 0
-        print("Closed tab.")
-//        history.removeFirst()
-        //        if let selected {
-//        history.prepend(item)
-        //        }
+        if let selected {
+            history.prepend(selected)
+        }
 
         guard let file = item.fileDocument else { return }
 
@@ -112,8 +97,6 @@ final class TabGroupData: ObservableObject, Identifiable {
                 return
             }
         }
-
-
 
 //        if openedTabsFromState {
 //            var openTabsInState = self.getFromWorkspaceState(key: openTabsStateName) as? [String] ?? []
