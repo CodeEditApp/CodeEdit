@@ -23,7 +23,7 @@ Keybinding module exists as singleton, so you always can reference Keybindings u
 
 In order to fetch keybinding you need to call following function with string name ``KeybindingManager/named(with:)`` returning you ``KeyboardShortcutWrapper`` which contains ``KeyboardShortcutWrapper/keyboardShortcut`` which can be passed directly to  ``keyboardShortcut``. So the end code would look like `.keyboardShortcut(KeyboardShortcutWrapper.shared.named(with: "copy").keyboardShortcut`
 
-If shortcut wasnt found by name, it will return fallback shortcut which has following keybinding `Shift + ?`
+If shortcut wasn't found by name, it will return fallback shortcut which has following keybinding `Shift + ?`
 
 ### Adding new shortcut
 

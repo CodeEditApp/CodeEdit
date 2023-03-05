@@ -54,7 +54,9 @@ struct BreadcrumbsComponent: View {
             (button.cell as? NSPopUpButtonCell)?.arrowPosition = .noArrow
             return button
         }
+        .padding(.top, -0.5)
         .padding(.leading, -5)
+        .padding(.trailing, -3)
     }
 
     struct NSPopUpButtonView<ItemType>: NSViewRepresentable where ItemType: Equatable {

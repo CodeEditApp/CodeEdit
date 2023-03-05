@@ -18,7 +18,7 @@ struct BreadcrumbsView: View {
     @Environment(\.controlActiveState)
     private var activeState
 
-    static let height = 28.0
+    static let height = 27.0
 
     init(
         file: WorkspaceClient.FileItem,
