@@ -59,7 +59,7 @@ struct TabBarContextMenu: ViewModifier {
 
                 Button("Close Other Tabs") {
                     withAnimation {
-                        tabs.files.forEach { file in
+                        tabs.tabs.forEach { file in
                             if file != item {
                                 tabs.closeTab(item: file)
                             }
@@ -68,19 +68,19 @@ struct TabBarContextMenu: ViewModifier {
                 }
                 Button("Close Tabs to the Right") {
                     withAnimation {
-                        if let index = tabs.files.firstIndex(of: item) {
-                            tabs.files[index...].forEach {
+                        if let index = tabs.tabs.firstIndex(of: item) {
+                            tabs.tabs[index...].forEach {
                                 tabs.closeTab(item: $0)
                             }
                         }
                     }
                 }
                 // Disable this option when current tab is the last one.
-                .disabled(tabs.files.last == item)
+                .disabled(tabs.tabs.last == item)
 
                 Button("Close All") {
                     withAnimation {
-                        tabs.files.forEach {
+                        tabs.tabs.forEach {
                             tabs.closeTab(item: $0)
                         }
                     }

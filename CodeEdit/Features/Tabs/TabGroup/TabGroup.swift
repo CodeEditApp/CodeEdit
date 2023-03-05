@@ -15,7 +15,7 @@ enum TabGroup {
     func closeAllTabs(of file: WorkspaceClient.FileItem) {
         switch self {
         case .one(let tabGroupData):
-            tabGroupData.files.remove(file)
+            tabGroupData.tabs.remove(file)
         case .vertical(let data), .horizontal(let data):
             data.tabgroups.forEach {
                 $0.closeAllTabs(of: file)
@@ -23,6 +23,7 @@ enum TabGroup {
         }
     }
 
+    /// Returns some tabgroup, except the given tabgroup.
     func findSomeTabGroup(except: TabGroupData? = nil) -> TabGroupData? {
         switch self {
         case .one(let tabGroupData) where tabGroupData != except:
@@ -39,10 +40,11 @@ enum TabGroup {
         }
     }
 
+    /// Forms a set of all files currently represented by tabs.
     func gatherOpenFiles() -> Set<WorkspaceClient.FileItem> {
         switch self {
         case .one(let tabGroupData):
-            return Set(tabGroupData.files)
+            return Set(tabGroupData.tabs)
         case .vertical(let data), .horizontal(let data):
             return data.tabgroups.map { $0.gatherOpenFiles() }.reduce(into: []) { $0.formUnion($1) }
         }

@@ -12,18 +12,19 @@ import DequeModule
 final class TabGroupData: ObservableObject, Identifiable {
     typealias Tab = WorkspaceClient.FileItem
 
-    @Published var files: OrderedSet<Tab> = [] {
+    /// Set of open tabs.
+    @Published var tabs: OrderedSet<Tab> = [] {
         didSet {
-            let change = files.symmetricDifference(oldValue)
+            let change = tabs.symmetricDifference(oldValue)
 
-            if files.count > oldValue.count {
+            if tabs.count > oldValue.count {
                 // Amount of tabs grew, so set the first new as selected.
                 selected = change.first
             } else {
                 // Selected file was removed
                 if let selected, change.contains(selected) {
-                    if let oldIndex = oldValue.firstIndex(of: selected), oldIndex - 1 < files.count, !files.isEmpty {
-                        self.selected = files[max(0, oldIndex-1)]
+                    if let oldIndex = oldValue.firstIndex(of: selected), oldIndex - 1 < tabs.count, !tabs.isEmpty {
+                        self.selected = tabs[max(0, oldIndex-1)]
                     } else {
                         self.selected = nil
                     }
@@ -32,15 +33,17 @@ final class TabGroupData: ObservableObject, Identifiable {
         }
     }
 
+    /// History of tab switching.
     @Published var history: Deque<Tab> = []
 
+    /// The current offset in the history list.
     @Published var historyOffset: Int = 0 {
         didSet {
             let tab = history[historyOffset]
 
-            if !files.contains(tab) {
+            if !tabs.contains(tab) {
                 if let selected {
-                    openTab(item: tab, at: files.firstIndex(of: selected), fromHistory: true)
+                    openTab(item: tab, at: tabs.firstIndex(of: selected), fromHistory: true)
                 } else {
                     openTab(item: tab, fromHistory: true)
                 }
@@ -49,7 +52,10 @@ final class TabGroupData: ObservableObject, Identifiable {
         }
     }
 
+    /// Currently selected tab.
     @Published var selected: Tab?
+
+    var selectedIsTemporary = false
 
     let id = UUID()
 
@@ -60,22 +66,24 @@ final class TabGroupData: ObservableObject, Identifiable {
         selected: Tab? = nil,
         parent: WorkspaceSplitViewData? = nil
     ) {
-        self.files = []
+        self.tabs = []
         self.parent = parent
         files.forEach { openTab(item: $0) }
         self.selected = selected ?? files.first
     }
 
+    /// Closes the tabgroup.
     func close() {
         parent?.closeTabGroup(with: id)
     }
 
+    /// Closes a tab in the tabgroup.
     func closeTab(item: Tab) {
         historyOffset = 0
         if item != selected {
             history.prepend(item)
         }
-        files.remove(item)
+        tabs.remove(item)
         if let selected {
             history.prepend(selected)
         }
@@ -108,21 +116,21 @@ final class TabGroupData: ObservableObject, Identifiable {
 //        }
     }
 
-    var selectedIsTemporary = false
-
+    /// Opens a tab in the tabgroup.
+    /// If a tab for the item already exists, it is used instead.
     func openTab(item: Tab, asTemporary: Bool, fromHistory: Bool = false) {
         // Item is already opened in a tab.
-        guard !files.contains(item) || !asTemporary else {
+        guard !tabs.contains(item) || !asTemporary else {
             selected = item
             history.prepend(item)
             return
         }
 
-        if let selected, let index = files.firstIndex(of: selected), asTemporary && selectedIsTemporary {
+        if let selected, let index = tabs.firstIndex(of: selected), asTemporary && selectedIsTemporary {
             // Replace temporary tab
             history.prepend(item)
-            files.remove(selected)
-            files.insert(item, at: index)
+            tabs.remove(selected)
+            tabs.insert(item, at: index)
             self.selected = item
         } else if selectedIsTemporary && !asTemporary {
             // Temporary becomes permanent.
@@ -140,11 +148,12 @@ final class TabGroupData: ObservableObject, Identifiable {
         }
     }
 
+    /// Opens a tab in the tabgroup.
     func openTab(item: Tab, at index: Int? = nil, fromHistory: Bool = false) {
         if let index {
-            files.insert(item, at: index)
+            tabs.insert(item, at: index)
         } else {
-            files.append(item)
+            tabs.append(item)
         }
         selected = item
         if !fromHistory {

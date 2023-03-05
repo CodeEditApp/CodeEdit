@@ -135,7 +135,7 @@ struct TabBarView: View {
     private func updateExpectedTabWidth(proxy: GeometryProxy) {
         expectedTabWidth = max(
             // Equally divided size of a native tab.
-            (proxy.size.width + 1) / CGFloat(tabs.files.count) + 1,
+            (proxy.size.width + 1) / CGFloat(tabs.tabs.count) + 1,
             // Min size of a native tab.
             CGFloat(140)
         )
@@ -249,8 +249,8 @@ struct TabBarView: View {
                 // In order to avoid the lag due to the update of workspace state.
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.40) {
                     if draggingStartLocation == nil {
-                        tabs.files = .init(openedTabs.compactMap { id in
-                            tabs.files.first { $0.id == id }
+                        tabs.tabs = .init(openedTabs.compactMap { id in
+                            tabs.tabs.first { $0.id == id }
                         })
                         // workspace.reorderedTabs(openedTabs: openedTabs)
                         // TODO: Fix save state
@@ -288,7 +288,7 @@ struct TabBarView: View {
     /// Called when the tab count changes or the temporary tab changes.
     /// - Parameter geometryProxy: The geometry proxy to calculate the new width using.
     private func updateForTabCountChange(geometryProxy: GeometryProxy) {
-        openedTabs = tabs.files.map(\.id)
+        openedTabs = tabs.tabs.map(\.id)
 
         // Only update the expected width when user is not hovering over tabs.
         // This should give users a better experience on closing multiple tabs continuously.
@@ -312,7 +312,7 @@ struct TabBarView: View {
                             spacing: -1 // Negative spacing for overlapping the divider.
                         ) {
                             ForEach(Array(openedTabs.enumerated()), id: \.element) { index, id in
-                                if let item = tabs.files.first(where: { $0.id == id }) {
+                                if let item = tabs.tabs.first(where: { $0.id == id }) {
                                     TabBarItemView(
                                         expectedWidth: expectedTabWidth,
                                         item: item,
@@ -353,20 +353,20 @@ struct TabBarView: View {
                         // This padding is to hide dividers at two ends under the accessory view divider.
                         .padding(.horizontal, prefs.preferences.general.tabBarStyle == .native ? -1 : 0)
                         .onAppear {
-                            openedTabs = tabs.files.map(\.id)
+                            openedTabs = tabs.tabs.map(\.id)
                             // On view appeared, compute the initial expected width for tabs.
                             updateExpectedTabWidth(proxy: geometryProxy)
                             // On first tab appeared, jump to the corresponding position.
                             scrollReader.scrollTo(tabs.selected)
                         }
-                        .onChange(of: tabs.files.count) { _ in
+                        .onChange(of: tabs.tabs.count) { _ in
                             withAnimation(
                                 .easeOut(duration: prefs.preferences.general.tabBarStyle == .native ? 0.15 : 0.20)
                             ) {
                                 updateForTabCountChange(geometryProxy: geometryProxy)
                             }
                         }
-                        .onChange(of: tabs.files) { _ in
+                        .onChange(of: tabs.tabs) { _ in
                             updateForTabCountChange(geometryProxy: geometryProxy)
                             DispatchQueue.main.asyncAfter(
                                 deadline: .now() + .milliseconds(
@@ -439,7 +439,7 @@ struct TabBarView: View {
                     action: {
                         tabs.close()
                         if tabManager.activeTabGroup == tabs {
-                            tabManager.activeTabGroup = tabManager.activeTabHistory.removeFirst()
+                            tabManager.activeTabGroup = tabManager.activeTabGroupHistory.removeFirst()
                         }
                     }
                 )
