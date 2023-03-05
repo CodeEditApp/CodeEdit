@@ -40,7 +40,6 @@ struct WorkspaceTabGroupView: View {
                 TabBarView()
                     .id("TabBarView" + tabgroup.id.uuidString)
                     .environmentObject(tabgroup)
-                    .environment(\.controlActiveState, tabgroup == tabManager.activeTabGroup ? .key : .inactive)
 
                 Divider()
                 if let file = tabgroup.selected {
@@ -55,6 +54,7 @@ struct WorkspaceTabGroupView: View {
                     Divider()
                 }
             }
+            .environment(\.controlActiveState, tabgroup == tabManager.activeTabGroup ? .key : .inactive)
             .background(EffectView(.titlebar, blendingMode: .withinWindow, emphasized: false))
         }
         .focused($isFocused)

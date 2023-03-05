@@ -54,6 +54,8 @@ struct BreadcrumbsView: View {
             .padding(.horizontal, 10)
         }
         .frame(height: Self.height, alignment: .center)
+        .saturation(activeState == .inactive ? 0.0 : 1.0)
+        .brightness(activeState == .inactive ? -0.1 : 0.0)
         .background(EffectView(.headerView).frame(height: Self.height))
     }
 
