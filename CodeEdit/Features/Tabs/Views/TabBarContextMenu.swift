@@ -38,17 +38,17 @@ struct TabBarContextMenu: ViewModifier {
     func body(content: Content) -> some View {
         content.contextMenu(menuItems: {
             Group {
-                Button("Split and open on the right") {
-                    moveToNewSplit(.trailing)
-                }
-                Button("Split and open on the bottom") {
-                    moveToNewSplit(.bottom)
-                }
-                Button("Split and open on the top") {
+                Button("Split Up") {
                     moveToNewSplit(.top)
                 }
-                Button("Split and open on the left") {
+                Button("Split Down") {
+                    moveToNewSplit(.bottom)
+                }
+                Button("Split Left") {
                     moveToNewSplit(.leading)
+                }
+                Button("Split Right") {
+                    moveToNewSplit(.trailing)
                 }
                 Button("Close Tab") {
                     withAnimation {
