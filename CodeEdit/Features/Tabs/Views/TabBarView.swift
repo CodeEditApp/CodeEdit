@@ -467,7 +467,10 @@ struct TabBarView: View {
                 } label: {
                     Image(systemName: "chevron.left")
                         .controlSize(.regular)
-                        .brightness(tabgroup.historyOffset == tabgroup.history.count-1 || tabgroup.history.isEmpty ? -0.4 : 0.0)
+                        .brightness(
+                            tabgroup.historyOffset == tabgroup.history.count-1 || tabgroup.history.isEmpty
+                            ? -0.4 : 0.0
+                        )
                 } primaryAction: {
                     tabgroup.historyOffset += 1
                 }
