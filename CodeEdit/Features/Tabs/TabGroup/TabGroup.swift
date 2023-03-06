@@ -9,8 +9,8 @@ import Foundation
 
 enum TabGroup {
     case one(TabGroupData)
-    case vertical(WorkspaceSplitViewData)
-    case horizontal(WorkspaceSplitViewData)
+    case vertical(SplitViewData)
+    case horizontal(SplitViewData)
 
     func closeAllTabs(of file: WorkspaceClient.FileItem) {
         switch self {

@@ -41,7 +41,7 @@ struct EditorView: View {
     }
 
     struct SubEditorView: View {
-        @ObservedObject var data: WorkspaceSplitViewData
+        @ObservedObject var data: SplitViewData
 
         var body: some View {
             SplitView(axis: data.axis) {

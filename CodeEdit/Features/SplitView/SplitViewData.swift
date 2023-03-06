@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class WorkspaceSplitViewData: ObservableObject {
+class SplitViewData: ObservableObject {
     @Published var tabgroups: [TabGroup]
 
     var axis: Axis

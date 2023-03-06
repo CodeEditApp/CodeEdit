@@ -59,12 +59,12 @@ final class TabGroupData: ObservableObject, Identifiable {
 
     let id = UUID()
 
-    weak var parent: WorkspaceSplitViewData?
+    weak var parent: SplitViewData?
 
     init(
         files: OrderedSet<Tab> = [],
         selected: Tab? = nil,
-        parent: WorkspaceSplitViewData? = nil
+        parent: SplitViewData? = nil
     ) {
         self.tabs = []
         self.parent = parent
