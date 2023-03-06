@@ -35,6 +35,10 @@ struct WorkspaceView: View {
 
     @FocusState var focusedEditor: TabGroupData?
 
+    @Namespace var namespace
+
+    @Environment(\.resetFocus) var resetFocus
+
     var body: some View {
         if workspace.workspaceClient != nil {
             VStack {
@@ -53,21 +57,24 @@ struct WorkspaceView: View {
                             .frame(minHeight: 200, maxHeight: 400)
 
                     }
+
                     .edgesIgnoringSafeArea(.top)
                     .environmentObject(workspace.statusBarModel)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .onChange(of: focusedEditor) { newValue in
-                        if let newValue {
-                            tabManager.activeTabGroup = newValue
-                        } else {
-                            print("No Editor has focus")
-                        }
-                    }
-                    .onChange(of: tabManager.activeTabGroup) { newValue in
-                        if newValue != focusedEditor {
-                            focusedEditor = newValue
-                        }
-                    }
+//                    .onChange(of: focusedEditor) { newValue in
+//                        print(newValue?.selected?.fileName, newValue?.id)
+//                        if let newValue {
+//                            tabManager.activeTabGroup = newValue
+//                        } else {
+//                            print("No Editor has focus")
+//                        }
+//                    }
+//                    .onChange(of: tabManager.activeTabGroup) { newValue in
+//                        if newValue != focusedEditor {
+//                            print("Syncing focus to", newValue.selected)
+//                            focusedEditor = newValue
+//                        }
+//                    }
                 }
             }
         }

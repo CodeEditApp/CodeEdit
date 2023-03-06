@@ -14,6 +14,8 @@ struct WorkspaceTabGroupView: View {
 
     @FocusState.Binding var focus: TabGroupData?
 
+    @FocusState var focused
+
     var body: some View {
         VStack {
             if let selected = tabgroup.selected {
@@ -60,14 +62,25 @@ struct WorkspaceTabGroupView: View {
             .environment(\.isActiveTabGroup, tabgroup == tabManager.activeTabGroup)
             .background(EffectView(.titlebar, blendingMode: .withinWindow, emphasized: false))
         }
-        .focused($focus, equals: tabgroup)
+        .environmentObject(tabgroup)
+//        .focused($focus, equals: tabgroup)
+        .focused($focused)
+
+//        .focused($focus, equals: tabgroup)
+        
 //        .focused($isFocused)
-//        .onChange(of: isFocused) { focused in
-//            print("Focus change for \(tabgroup.selected?.fileName)", focused)
-//            if focused {
-//                tabManager.activeTabGroup = tabgroup
-//            }
-//        }
+        .task(id: tabManager.activeTabGroup) {
+            focused = tabManager.activeTabGroup == tabgroup
+            print("Set Focus to \(focused)")
+        }
+        .onChange(of: focused) { focused in
+            print("Focus change for \(tabgroup.selected?.fileName)", focused)
+            if focused {
+                tabManager.activeTabGroup = tabgroup
+            } else {
+                print("Lost focus")
+            }
+        }
         .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("CodeEditor.didBeginEditing"))) { _ in
             print("Not temporary anymore")
             tabgroup.temporaryTab = nil

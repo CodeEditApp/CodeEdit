@@ -62,6 +62,8 @@ struct CodeFileView: View {
 
     @Environment(\.edgeInsets) var edgeInsets
 
+    @EnvironmentObject var tabgroup: TabGroupData
+
     var body: some View {
         CodeEditTextView(
             $codeFile.content,
@@ -75,7 +77,7 @@ struct CodeFileView: View {
             useThemeBackground: prefs.preferences.theme.useThemeBackground,
             contentInsets: edgeInsets.nsEdgeInsets
         )
-        .id(codeFile.fileURL)
+        .id("\(tabgroup.id)\(codeFile.fileURL)")
         .background {
             if colorScheme == .dark {
                 if prefs.preferences.theme.selectedTheme == prefs.preferences.theme.selectedLightTheme {
