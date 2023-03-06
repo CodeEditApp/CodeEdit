@@ -77,7 +77,7 @@ struct CodeFileView: View {
             useThemeBackground: prefs.preferences.theme.useThemeBackground,
             contentInsets: edgeInsets.nsEdgeInsets
         )
-        .id("\(tabgroup.id)\(codeFile.fileURL)")
+        .id(codeFile.fileURL)
         .background {
             if colorScheme == .dark {
                 if prefs.preferences.theme.selectedTheme == prefs.preferences.theme.selectedLightTheme {
