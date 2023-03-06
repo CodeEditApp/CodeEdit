@@ -33,13 +33,15 @@ struct WorkspaceView: View {
 
     @State var terminalCollapsed = true
 
+    @FocusState var focusedEditor: TabGroupData?
+
     var body: some View {
         if workspace.workspaceClient != nil {
             VStack {
                 SplitViewReader { proxy in
                     SplitView(axis: .vertical) {
 
-                        EditorView(tabgroup: tabManager.tabGroups)
+                        EditorView(tabgroup: tabManager.tabGroups, focus: $focusedEditor)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                             .safeAreaInset(edge: .bottom, spacing: 0) {
                                 StatusBarView(proxy: proxy, collapsed: $terminalCollapsed)
@@ -54,6 +56,13 @@ struct WorkspaceView: View {
                     .edgesIgnoringSafeArea(.top)
                     .environmentObject(workspace.statusBarModel)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .onChange(of: focusedEditor) { newValue in
+                        if let newValue {
+                            tabManager.activeTabGroup = newValue
+                        } else {
+                            print("No Editor has focus")
+                        }
+                    }
                 }
             }
         }

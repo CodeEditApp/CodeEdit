@@ -18,10 +18,12 @@ struct EditorView: View {
         window.contentView?.safeAreaInsets.top ?? .zero
     }
 
+    @FocusState.Binding var focus: TabGroupData?
+
     var body: some View {
         switch tabgroup {
         case .one(let detailTabGroup):
-            WorkspaceTabGroupView(tabgroup: detailTabGroup)
+            WorkspaceTabGroupView(tabgroup: detailTabGroup, focus: $focus)
                 .transformEnvironment(\.edgeInsets) { insets in
                     switch isAtEdge {
                     case .all:
@@ -36,12 +38,14 @@ struct EditorView: View {
                     }
                 }
         case .vertical(let data), .horizontal(let data):
-            SubEditorView(data: data)
+            SubEditorView(data: data, focus: $focus)
         }
     }
 
     struct SubEditorView: View {
         @ObservedObject var data: SplitViewData
+
+        @FocusState.Binding var focus: TabGroupData?
 
         var body: some View {
             SplitView(axis: data.axis) {
@@ -52,7 +56,7 @@ struct EditorView: View {
 
         var splitView: some View {
             ForEach(Array(data.tabgroups.enumerated()), id: \.offset) { index, item in
-                EditorView(tabgroup: item)
+                EditorView(tabgroup: item, focus: $focus)
                     .transformEnvironment(\.isAtEdge) { belowToolbar in
                         calcIsAtEdge(current: &belowToolbar, index: index)
                     }
