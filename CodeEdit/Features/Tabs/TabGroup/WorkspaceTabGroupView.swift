@@ -31,6 +31,11 @@ struct WorkspaceTabGroupView: View {
                         .clipped()
                     Spacer()
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    tabManager.activeTabGroup = tabgroup
+                }
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
