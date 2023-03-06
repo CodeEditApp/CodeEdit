@@ -75,7 +75,7 @@ struct TabBarItemView: View {
     var index: Int
 
     private var isTemporary: Bool {
-        isActive && tabgroup.selectedIsTemporary
+        tabgroup.temporaryTab == item
     }
 
     /// Is the current tab the active tab.
@@ -299,7 +299,7 @@ struct TabBarItemView: View {
             TapGesture(count: 2)
                 .onEnded { _ in
                     if isTemporary {
-                        tabgroup.selectedIsTemporary = false
+                        tabgroup.temporaryTab = nil
                     }
                 }
         )

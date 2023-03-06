@@ -55,7 +55,7 @@ final class TabGroupData: ObservableObject, Identifiable {
     /// Currently selected tab.
     @Published var selected: Tab?
 
-    var selectedIsTemporary = false
+    @Published var temporaryTab: Tab?
 
     let id = UUID()
 
@@ -118,7 +118,7 @@ final class TabGroupData: ObservableObject, Identifiable {
 
     /// Opens a tab in the tabgroup.
     /// If a tab for the item already exists, it is used instead.
-    func openTab(item: Tab, asTemporary: Bool, fromHistory: Bool = false) {
+    func openTab(item: Tab, asTemporary: Bool) {
         // Item is already opened in a tab.
         guard !tabs.contains(item) || !asTemporary else {
             selected = item
@@ -126,21 +126,30 @@ final class TabGroupData: ObservableObject, Identifiable {
             return
         }
 
-        if let selected, let index = tabs.firstIndex(of: selected), asTemporary && selectedIsTemporary {
-            // Replace temporary tab
-            history.prepend(item)
-            tabs.remove(selected)
-            tabs.insert(item, at: index)
-            self.selected = item
-        } else if selectedIsTemporary && !asTemporary {
-            // Temporary becomes permanent.
-            selectedIsTemporary = false
+        switch (temporaryTab, asTemporary) {
+        case (.some(let tab), true):
+            if let index = tabs.firstIndex(of: tab) {
+                history.prepend(item)
+                tabs.remove(tab)
+                tabs.insert(item, at: index)
+                self.selected = item
+                temporaryTab = item
+            }
 
-        } else {
-            // New temporary tab
+        case (.some(let tab), false) where tab == item:
+            temporaryTab = nil
+
+        case (.none, true):
             openTab(item: item)
-            selectedIsTemporary = true
+            temporaryTab = item
+
+        case (.none, false):
+            openTab(item: item)
+
+        default:
+            break
         }
+
         do {
             try openFile(item: item)
         } catch {
