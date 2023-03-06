@@ -334,6 +334,7 @@
 		6C97EBCC2978760400302F95 /* AcknowledgementsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C97EBCB2978760400302F95 /* AcknowledgementsWindowController.swift */; };
 		6C97EBCF297876E500302F95 /* AboutWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C97EBCE297876E500302F95 /* AboutWindowController.swift */; };
 		6CBD1BC62978DE53006639D5 /* Font+Caption3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBD1BC52978DE53006639D5 /* Font+Caption3.swift */; };
+		6CC9E4B229B5669900C97388 /* Environment+ActiveTabGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC9E4B129B5669900C97388 /* Environment+ActiveTabGroup.swift */; };
 		6CDA84AD284C1BA000C1CC3A /* TabBarContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CDA84AC284C1BA000C1CC3A /* TabBarContextMenu.swift */; };
 		B60BE8BD297A167600841125 /* AcknowledgementRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60BE8BC297A167600841125 /* AcknowledgementRowView.swift */; };
 		B62617282964924E00E866AB /* CodeEditKit in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 2801BB89290D5A8E00EBF552 /* CodeEditKit */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -731,6 +732,7 @@
 		6C97EBCB2978760400302F95 /* AcknowledgementsWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcknowledgementsWindowController.swift; sourceTree = "<group>"; };
 		6C97EBCE297876E500302F95 /* AboutWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutWindowController.swift; sourceTree = "<group>"; };
 		6CBD1BC52978DE53006639D5 /* Font+Caption3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Caption3.swift"; sourceTree = "<group>"; };
+		6CC9E4B129B5669900C97388 /* Environment+ActiveTabGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Environment+ActiveTabGroup.swift"; sourceTree = "<group>"; };
 		6CDA84AC284C1BA000C1CC3A /* TabBarContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarContextMenu.swift; sourceTree = "<group>"; };
 		B60BE8BC297A167600841125 /* AcknowledgementRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcknowledgementRowView.swift; sourceTree = "<group>"; };
 		B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodeEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2200,6 +2202,7 @@
 			isa = PBXGroup;
 			children = (
 				6C147C4C29A32AA30089B630 /* WorkspaceTabGroupView.swift */,
+				6CC9E4B129B5669900C97388 /* Environment+ActiveTabGroup.swift */,
 				6C147C3F29A328560089B630 /* WorkspaceSplitViewData.swift */,
 				6C147C3E29A3281D0089B630 /* TabGroup.swift */,
 				6C147C3D29A3281D0089B630 /* TabGroupData.swift */,
@@ -2758,6 +2761,7 @@
 				58F2EB04292FB2B0004A9BDE /* SourceControlPreferences.swift in Sources */,
 				582213F0291834A500EFE361 /* AboutView.swift in Sources */,
 				58F2EB12292FB2B0004A9BDE /* PreferencesPlaceholderView.swift in Sources */,
+				6CC9E4B229B5669900C97388 /* Environment+ActiveTabGroup.swift in Sources */,
 				58822526292C280D00E83CDE /* StatusBarBreakpointButton.swift in Sources */,
 				58D01C96293167DC00C5B6B4 /* Date+Formatted.swift in Sources */,
 				6C53AAD829A6C4FD00EE9ED6 /* SplitView.swift in Sources */,

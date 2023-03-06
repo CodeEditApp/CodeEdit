@@ -17,6 +17,9 @@ struct TabBarItemView: View {
     @Environment(\.controlActiveState)
     private var activeState
 
+    @Environment(\.isActiveTabGroup)
+    private var isActiveTabGroup
+
     @Environment(\.isFullscreen)
     private var isFullscreen
 
@@ -62,7 +65,7 @@ struct TabBarItemView: View {
     private var closeButtonGestureActive: Bool
 
     @EnvironmentObject
-    private var tabs: TabGroupData
+    private var tabgroup: TabGroupData
 
     /// The item associated with the current tab.
     ///
@@ -72,12 +75,12 @@ struct TabBarItemView: View {
     var index: Int
 
     private var isTemporary: Bool {
-        isActive
+        isActive && tabgroup.selectedIsTemporary
     }
 
     /// Is the current tab the active tab.
     private var isActive: Bool {
-        item == tabs.selected
+        item == tabgroup.selected
     }
 
     /// Is the current tab being dragged.
@@ -95,12 +98,12 @@ struct TabBarItemView: View {
     /// Switch the active tab to current tab.
     private func switchAction() {
         // Only set the `selectedId` when they are not equal to avoid performance issue for now.
-        tabManager.activeTabGroup = tabs
-        if tabs.selected != item {
-            tabs.selected = item
-            tabs.history.removeFirst(tabs.historyOffset)
-            tabs.history.prepend(item)
-            tabs.historyOffset = 0
+        tabManager.activeTabGroup = tabgroup
+        if tabgroup.selected != item {
+            tabgroup.selected = item
+            tabgroup.history.removeFirst(tabgroup.historyOffset)
+            tabgroup.history.prepend(item)
+            tabgroup.historyOffset = 0
         }
     }
 
@@ -110,7 +113,7 @@ struct TabBarItemView: View {
         withAnimation(
             .easeOut(duration: prefs.preferences.general.tabBarStyle == .native ? 0.15 : 0.20)
         ) {
-            tabs.closeTab(item: item)
+            tabgroup.closeTab(item: item)
         }
     }
 
@@ -145,7 +148,7 @@ struct TabBarItemView: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .foregroundColor(
-                        prefs.preferences.general.fileIconStyle == .color && activeState != .inactive
+                        prefs.preferences.general.fileIconStyle == .color && activeState != .inactive && isActiveTabGroup
                         ? item.iconColor
                         : .secondary
                     )
@@ -295,7 +298,7 @@ struct TabBarItemView: View {
             TapGesture(count: 2)
                 .onEnded { _ in
                     if isTemporary {
-                        tabs.selectedIsTemporary = false
+                        tabgroup.selectedIsTemporary = false
                     }
                 }
         )

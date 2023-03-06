@@ -52,7 +52,7 @@ struct WorkspaceTabGroupView: View {
                     Divider()
                 }
             }
-            .environment(\.controlActiveState, tabgroup == tabManager.activeTabGroup ? .key : .inactive)
+            .environment(\.isActiveTabGroup, tabgroup == tabManager.activeTabGroup)
             .background(EffectView(.titlebar, blendingMode: .withinWindow, emphasized: false))
         }
         .focused($isFocused)

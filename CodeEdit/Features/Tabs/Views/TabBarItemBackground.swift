@@ -18,6 +18,9 @@ struct TabBarItemBackground: View {
     @Environment(\.controlActiveState)
     private var activeState
 
+    @Environment(\.isActiveTabGroup)
+    private var isActiveTabGroup
+
     private var inHoldingState: Bool {
         isPressing || isDragging
     }
@@ -32,7 +35,7 @@ struct TabBarItemBackground: View {
             Color(.controlAccentColor)
                 .hueRotation(.degrees(-5))
                 .opacity(
-                    isActive
+                    isActive && isActiveTabGroup
                         ? colorScheme == .dark
                              ? activeState == .inactive ? 0.22 : inHoldingState ? 0.33 : 0.26
                              : activeState == .inactive ? 0.1 : inHoldingState ? 0.27 : 0.2
