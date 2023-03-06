@@ -359,19 +359,28 @@ struct TabBarView: View {
                             // On first tab appeared, jump to the corresponding position.
                             scrollReader.scrollTo(tabgroup.selected)
                         }
-                        .onChange(of: tabgroup.tabs) { _ in
-                            updateForTabCountChange(geometryProxy: geometryProxy)
-                            DispatchQueue.main.asyncAfter(
-                                deadline: .now() + .milliseconds(
-                                    prefs.preferences.general.tabBarStyle == .native ? 150 : 200
-                                )
-                            ) {
-                                scrollReader.scrollTo(tabgroup.selected?.id)
+                        .onChange(of: tabgroup.tabs) { [tabs = tabgroup.tabs] newValue in
+                            if tabs.count == newValue.count {
+                                updateForTabCountChange(geometryProxy: geometryProxy)
+                            } else {
+                                withAnimation(
+                                    .easeOut(duration: prefs.preferences.general.tabBarStyle == .native ? 0.15 : 0.20)
+                                ) {
+                                    updateForTabCountChange(geometryProxy: geometryProxy)
+                                }
+                            }
+                            Task {
+                                try? await Task.sleep(for: .milliseconds(300))
+                                withAnimation {
+                                    scrollReader.scrollTo(tabgroup.selected?.id)
+                                }
                             }
                         }
                         // When selected tab is changed, scroll to it if possible.
-                        .onChange(of: tabgroup.selected) {
-                            scrollReader.scrollTo($0?.id)
+                        .onChange(of: tabgroup.selected) { newValue in
+                            withAnimation {
+                                scrollReader.scrollTo(newValue?.id)
+                            }
                         }
 
                         // When window size changes, re-compute the expected tab width.
