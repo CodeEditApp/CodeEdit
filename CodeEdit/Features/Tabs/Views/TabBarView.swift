@@ -324,7 +324,7 @@ struct TabBarView: View {
                                     .transition(
                                         .asymmetric(
                                             insertion: .offset(x: -14).combined(with: .opacity),
-                                            removal: .scale(scale: 0.7).combined(with: .opacity)
+                                            removal: .opacity
                                         )
                                     )
                                     .frame(height: TabBarView.height)
