@@ -387,6 +387,9 @@ struct TabBarView: View {
                         // When window size changes, re-compute the expected tab width.
                         .onChange(of: geometryProxy.size.width) { _ in
                             updateExpectedTabWidth(proxy: geometryProxy)
+                            withAnimation {
+                                scrollReader.scrollTo(tabgroup.selected?.id)
+                            }
                         }
                         // When user is not hovering anymore, re-compute the expected tab width immediately.
                         .onHover { isHovering in
