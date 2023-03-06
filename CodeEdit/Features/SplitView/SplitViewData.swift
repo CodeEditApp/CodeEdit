@@ -57,4 +57,11 @@ class SplitViewData: ObservableObject {
             return false
         }
     }
+
+    /// Flattens the splitviews.
+    func flatten() {
+        for index in tabgroups.indices {
+            tabgroups[index].flatten(parent: self)
+        }
+    }
 }

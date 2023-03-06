@@ -31,6 +31,13 @@ class TabManager: ObservableObject {
         self.tabGroups = .horizontal(.init(.horizontal, tabgroups: [.one(tab)]))
     }
 
+    /// Flattens the splitviews.
+    func flatten() {
+        if case .horizontal(let data) = tabGroups {
+            data.flatten()
+        }
+    }
+
     /// Opens a new tab in a tabgroup. If no tabgroup is given, it is added to the active tab group.
     func openTab(item: WorkspaceClient.FileItem, in tabgroup: TabGroupData? = nil) {
         let tabgroup = tabgroup ?? activeTabGroup

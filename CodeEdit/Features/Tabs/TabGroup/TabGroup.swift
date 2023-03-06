@@ -49,4 +49,22 @@ enum TabGroup {
             return data.tabgroups.map { $0.gatherOpenFiles() }.reduce(into: []) { $0.formUnion($1) }
         }
     }
+
+    /// Flattens the splitviews.
+    mutating func flatten(parent: SplitViewData) {
+        switch self {
+        case .one:
+            break
+        case .horizontal(let data), .vertical(let data):
+            if data.tabgroups.count == 1 {
+                let one = data.tabgroups[0]
+                if case .one(let tabGroupData) = one {
+                    tabGroupData.parent = parent
+                }
+                self = one
+            } else {
+                data.flatten()
+            }
+        }
+    }
 }

@@ -433,6 +433,7 @@ struct TabBarView: View {
                         if tabManager.activeTabGroup == tabgroup {
                             tabManager.activeTabGroup = tabManager.activeTabGroupHistory.removeFirst()
                         }
+                        tabManager.flatten()
                     }
                 )
                 .help("Close Tab Group")
