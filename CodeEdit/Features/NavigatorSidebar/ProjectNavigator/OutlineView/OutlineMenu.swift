@@ -61,7 +61,7 @@ final class OutlineMenu: NSMenu {
 
         let rename = menuItem("Rename", action: #selector(renameFile))
         let delete = menuItem("Delete", action:
-                                item.url != workspace?.workspaceClient?.folderURL()
+                                item.url != workspace?.workspaceClient?.folderUrl
                               ? #selector(delete) : nil)
 
         let duplicate = menuItem("Duplicate \(item.isFolder ? "Folder" : "File")", action: #selector(duplicate))

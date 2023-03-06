@@ -31,7 +31,7 @@ struct NavigatorSidebarToolbarBottom: View {
     private var addNewFileButton: some View {
         Menu {
             Button("Add File") {
-                guard let folderURL = workspace.workspaceClient?.folderURL() else { return }
+                guard let folderURL = workspace.workspaceClient?.folderUrl else { return }
                 guard let root = try? workspace.workspaceClient?.getFileItem(folderURL.path) else { return }
                 let newFile = root.addFile(fileName: "untitled") // TODO: use currently selected file instead of root
 
@@ -44,7 +44,7 @@ struct NavigatorSidebarToolbarBottom: View {
 
             }
             Button("Add Folder") {
-                guard let folderURL = workspace.workspaceClient?.folderURL() else { return }
+                guard let folderURL = workspace.workspaceClient?.folderUrl else { return }
                 guard let root = try? workspace.workspaceClient?.getFileItem(folderURL.path) else { return }
                 root.addFolder(folderName: "untitled") // TODO: use currently selected file instead of root
             }

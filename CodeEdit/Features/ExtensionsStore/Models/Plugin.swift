@@ -14,7 +14,7 @@ struct Plugin: Codable, Identifiable, Hashable, TabBarItemRepresentable {
         .extensionInstallation(self.id)
     }
 
-    var title: String {
+    var name: String {
         self.manifest.displayName
     }
 

@@ -14,6 +14,8 @@ import CodeEditKit
 @objc(WorkspaceDocument) final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var workspaceClient: WorkspaceClient?
 
+    var workspaceClient: FileSystemClient?
+
     var extensionNavigatorData = ExtensionNavigatorData()
 
     @Published var sortFoldersOnTop: Bool = true
@@ -47,8 +49,6 @@ import CodeEditKit
     private let openTabsStateName: String = "\(String(describing: WorkspaceDocument.self))-OpenTabs"
     private let activeTabStateName: String = "\(String(describing: WorkspaceDocument.self))-ActiveTab"
     private var openedTabsFromState = false
-
-    @Published var targets: [Target] = []
 
     deinit {
         cancellables.forEach { $0.cancel() }
@@ -116,11 +116,12 @@ import CodeEditKit
     // MARK: Set Up Workspace
 
     private func initWorkspaceState(_ url: URL) throws {
-        self.workspaceClient = try .default(
-            fileManager: .default,
-            folderURL: url,
-            ignoredFilesAndFolders: ignoredFilesAndDirectory
-        )
+//        self.workspaceClient = try .default(
+//            fileManager: .default,
+//            folderURL: url,
+//            ignoredFilesAndFolders: ignoredFilesAndDirectory
+//        )
+        self.workspaceClient = .init(fileManager: .default, folderUrl: url, ignoredFilesAndFolders: ignoredFilesAndDirectory)
         self.searchState = .init(self)
         self.quickOpenViewModel = .init(fileURL: url)
         self.commandsPaletteState = .init()

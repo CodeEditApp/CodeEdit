@@ -22,7 +22,7 @@ extension WorkspaceClient {
             .codeEditor(id)
         }
 
-        var title: String {
+        var name: String {
             url.lastPathComponent
         }
 
@@ -324,15 +324,5 @@ extension WorkspaceClient.FileItem: Comparable {
 
     static func < (lhs: WorkspaceClient.FileItem, rhs: WorkspaceClient.FileItem) -> Bool {
         lhs.url.lastPathComponent < rhs.url.lastPathComponent
-    }
-}
-
-extension Array where Element: Hashable {
-
-    // TODO: DOCS (Marco Carnevali)
-    func difference(from other: [Element]) -> [Element] {
-        let thisSet = Set(self)
-        let otherSet = Set(other)
-        return Array(thisSet.symmetricDifference(otherSet))
     }
 }
