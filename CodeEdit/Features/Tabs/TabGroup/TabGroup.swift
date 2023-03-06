@@ -25,7 +25,6 @@ enum TabGroup {
         }
     }
 
-
     /// Returns some tabgroup, except the given tabgroup.
     /// - Parameter except: the search will exclude this tabgroup.
     /// - Returns: Some tabgroup.

@@ -53,7 +53,6 @@ class SplitViewData: ObservableObject {
         }
     }
 
-
     /// Closes a TabGroup.
     /// - Parameter id: ID of the TabGroup.
     func closeTabGroup(with id: TabGroupData.ID) {

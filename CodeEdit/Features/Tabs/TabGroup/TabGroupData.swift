@@ -119,7 +119,6 @@ final class TabGroupData: ObservableObject, Identifiable {
 //        }
     }
 
-
     /// Opens a tab in the tabgroup.
     /// If a tab for the item already exists, it is used instead.
     /// - Parameters:
@@ -163,7 +162,6 @@ final class TabGroupData: ObservableObject, Identifiable {
             print(error)
         }
     }
-
 
     /// Opens a tab in the tabgroup.
     /// - Parameters:

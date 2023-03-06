@@ -39,7 +39,6 @@ class TabManager: ObservableObject {
         }
     }
 
-
     /// Opens a new tab in a tabgroup.
     /// - Parameters:
     ///   - item: The tab to open.
