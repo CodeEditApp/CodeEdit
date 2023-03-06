@@ -137,6 +137,7 @@ struct TabBarContextMenu: ViewModifier {
         let newTabGroup = TabGroupData(files: [item])
         splitEditor(edge, newTabGroup)
         tabs.closeTab(item: item)
+        workspace.tabManager.activeTabGroup = newTabGroup
     }
 
     /// Copies the relative path from the workspace folder to the given file item to the pasteboard.

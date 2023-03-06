@@ -571,11 +571,14 @@ struct TabBarView: View {
     }
 
     func split(edge: Edge) {
+        let newTabgroup: TabGroupData
         if let tab = tabgroup.selected {
-            splitEditor(edge, .init(files: [tab]))
+            newTabgroup = .init(files: [tab])
         } else {
-            splitEditor(edge, .init())
+            newTabgroup = .init()
         }
+        splitEditor(edge, newTabgroup)
+        tabManager.activeTabGroup = newTabgroup
     }
 
     private struct TabBarItemOnDropDelegate: DropDelegate {
