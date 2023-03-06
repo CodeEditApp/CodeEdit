@@ -39,7 +39,11 @@ class TabManager: ObservableObject {
         }
     }
 
-    /// Opens a new tab in a tabgroup. If no tabgroup is given, it is added to the active tab group.
+
+    /// Opens a new tab in a tabgroup.
+    /// - Parameters:
+    ///   - item: The tab to open.
+    ///   - tabgroup: The tabgroup to add the tab to. If nil, it is added to the active tab group.
     func openTab(item: WorkspaceClient.FileItem, in tabgroup: TabGroupData? = nil) {
         let tabgroup = tabgroup ?? activeTabGroup
         tabgroup.openTab(item: item)

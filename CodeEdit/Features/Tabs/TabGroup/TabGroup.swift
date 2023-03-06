@@ -12,6 +12,8 @@ enum TabGroup {
     case vertical(SplitViewData)
     case horizontal(SplitViewData)
 
+    /// Closes all tabs which present the given file
+    /// - Parameter file: a file.
     func closeAllTabs(of file: WorkspaceClient.FileItem) {
         switch self {
         case .one(let tabGroupData):
@@ -23,7 +25,10 @@ enum TabGroup {
         }
     }
 
+
     /// Returns some tabgroup, except the given tabgroup.
+    /// - Parameter except: the search will exclude this tabgroup.
+    /// - Returns: Some tabgroup.
     func findSomeTabGroup(except: TabGroupData? = nil) -> TabGroupData? {
         switch self {
         case .one(let tabGroupData) where tabGroupData != except:

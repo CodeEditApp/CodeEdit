@@ -41,10 +41,20 @@ struct SplitViewProxy {
         self.viewController = viewController
     }
 
+    /// Set the position of a divider in a splitview.
+    /// - Parameters:
+    ///   - index: index of the divider. The mostleft / top divider has index 0.
+    ///   - position: position to place the divider. This is a position inside the views width / height.
+    ///   For example, if the splitview has a width of 500, setting the position to 250
+    ///    will put the divider in the middle of the splitview.
     func setPosition(of index: Int, position: CGFloat) {
         viewController()?.splitView.setPosition(position, ofDividerAt: index)
     }
 
+    /// Collapse a view of the splitview.
+    /// - Parameters:
+    ///   - id: ID of the view
+    ///   - enabled: true for collapse.
     func collapseView(with id: AnyHashable, _ enabled: Bool) {
         viewController()?.collapse(for: id, enabled: enabled)
     }

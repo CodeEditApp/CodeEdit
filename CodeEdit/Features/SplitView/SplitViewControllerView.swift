@@ -20,7 +20,7 @@ struct SplitViewControllerView: NSViewControllerRepresentable {
         updateItems(controller: controller)
     }
 
-    func updateItems(controller: SplitViewController) {
+    private func updateItems(controller: SplitViewController) {
         var hasChanged = false
         // Reorder viewcontrollers if needed and add new ones.
         controller.items = children.map { child in

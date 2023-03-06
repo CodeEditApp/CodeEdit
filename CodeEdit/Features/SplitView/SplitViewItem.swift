@@ -28,7 +28,7 @@ class SplitViewItem: ObservableObject {
         self.observers = createObservers()
     }
 
-    func createObservers() -> [NSKeyValueObservation] {
+    private func createObservers() -> [NSKeyValueObservation] {
         [
             item.observe(\.isCollapsed) { item, _ in
                 self.collapsed.wrappedValue = item.isCollapsed
@@ -36,6 +36,9 @@ class SplitViewItem: ObservableObject {
         ]
     }
 
+    /// Updates a SplitViewItem.
+    /// This will fetch updated binding values and update them if needed.
+    /// - Parameter child: the view corresponding to the SplitViewItem.
     func update(child: _VariadicView.Children.Element) {
         self.item.canCollapse = child[SplitViewItemCanCollapseViewTraitKey.self]
         DispatchQueue.main.async {

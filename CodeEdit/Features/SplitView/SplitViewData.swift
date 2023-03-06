@@ -24,6 +24,12 @@ class SplitViewData: ObservableObject {
     }
 
     /// Splits the editor at a certain index into two separate editors.
+    /// - Parameters:
+    ///   - direction: direction in which the editor will be split.
+    ///   If the direction is the same as the ancestor direction,
+    ///   the editor is added to the ancestor instead of creating a new split container.
+    ///   - index: index where the divider will be added.
+    ///   - tabgroup: new tabgroup class that will be used for the editor.
     func split(_ direction: Edge, at index: Int, new tabgroup: TabGroupData) {
         tabgroup.parent = self
         switch (axis, direction) {
@@ -47,6 +53,9 @@ class SplitViewData: ObservableObject {
         }
     }
 
+
+    /// Closes a TabGroup.
+    /// - Parameter id: ID of the TabGroup.
     func closeTabGroup(with id: TabGroupData.ID) {
         tabgroups.removeAll { tabgroup in
             if case .one(let tabGroupData) = tabgroup {

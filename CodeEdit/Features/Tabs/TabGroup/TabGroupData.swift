@@ -78,6 +78,8 @@ final class TabGroupData: ObservableObject, Identifiable {
     }
 
     /// Closes a tab in the tabgroup.
+    /// This will also write any changes to the file on disk and will add the tab to the tab history.
+    /// - Parameter item: the tab to close.
     func closeTab(item: Tab) {
         historyOffset = 0
         if item != selected {
@@ -107,6 +109,7 @@ final class TabGroupData: ObservableObject, Identifiable {
             }
         }
 
+        // TODO: Fix state
 //        if openedTabsFromState {
 //            var openTabsInState = self.getFromWorkspaceState(key: openTabsStateName) as? [String] ?? []
 //            if let index = openTabsInState.firstIndex(of: item.url.absoluteString) {
@@ -116,8 +119,12 @@ final class TabGroupData: ObservableObject, Identifiable {
 //        }
     }
 
+
     /// Opens a tab in the tabgroup.
     /// If a tab for the item already exists, it is used instead.
+    /// - Parameters:
+    ///   - item: the tab to open.
+    ///   - asTemporary: indicates whether the tab should be opened as a temporary tab or a permanent tab.
     func openTab(item: Tab, asTemporary: Bool) {
         // Item is already opened in a tab.
         guard !tabs.contains(item) || !asTemporary else {
@@ -157,7 +164,12 @@ final class TabGroupData: ObservableObject, Identifiable {
         }
     }
 
+
     /// Opens a tab in the tabgroup.
+    /// - Parameters:
+    ///   - item: The tab to open.
+    ///   - index: Index where the tab needs to be added. If nil, it is added to the back.
+    ///   - fromHistory: Indicates whether the tab has been opened from going back in history.
     func openTab(item: Tab, at index: Int? = nil, fromHistory: Bool = false) {
         if let index {
             tabs.insert(item, at: index)
