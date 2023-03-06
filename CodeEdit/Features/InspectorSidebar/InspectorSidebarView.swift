@@ -12,7 +12,8 @@ struct InspectorSidebarView: View {
     @ObservedObject
     private var workspace: WorkspaceDocument
 
-    @EnvironmentObject private var tabManager: TabManager
+    @EnvironmentObject
+    private var tabManager: TabManager
 
     @State
     private var selection: Int = 0

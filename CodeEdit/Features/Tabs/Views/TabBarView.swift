@@ -32,7 +32,8 @@ struct TabBarView: View {
     @EnvironmentObject
     private var workspace: WorkspaceDocument
 
-    @EnvironmentObject private var tabManager: TabManager
+    @EnvironmentObject
+    private var tabManager: TabManager
 
     @EnvironmentObject
     private var tabgroup: TabGroupData

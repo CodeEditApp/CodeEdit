@@ -11,7 +11,8 @@ internal struct StatusBarToggleDrawerButton: View {
     @EnvironmentObject
     private var model: StatusBarViewModel
 
-    @Binding var collapsed: Bool
+    @Binding
+    var collapsed: Bool
 
     init(collapsed: Binding<Bool>) {
         self._collapsed = collapsed

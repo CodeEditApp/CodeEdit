@@ -60,7 +60,9 @@ struct BreadcrumbsComponent: View {
     }
 
     struct NSPopUpButtonView<ItemType>: NSViewRepresentable where ItemType: Equatable {
-        @Binding var selection: ItemType
+        @Binding
+        var selection: ItemType
+        
         var popupCreator: () -> NSPopUpButton
 
         typealias NSViewType = NSPopUpButton

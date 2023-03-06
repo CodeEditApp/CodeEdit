@@ -23,7 +23,8 @@ struct TabBarItemView: View {
     @Environment(\.isFullscreen)
     private var isFullscreen
 
-    @EnvironmentObject var tabManager: TabManager
+    @EnvironmentObject
+    private var tabManager: TabManager
 
     /// User preferences.
     @StateObject

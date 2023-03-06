@@ -33,7 +33,8 @@ struct StatusBarView: View {
 
     var proxy: SplitViewProxy
 
-    @Binding var collapsed: Bool
+    @Binding
+    var collapsed: Bool
 
     static let statusbarID = "statusbarID"
 

@@ -18,10 +18,6 @@ struct ExtensionNavigatorView: View {
         VStack {
             Divider() // TODO: fix this workaround because when switching tabs without this, the app crashes
             List {
-                ForEach(workspace.extensionNavigatorData.plugins) { plugin in
-                    ExtensionNavigatorItemView(plugin: plugin)
-                        .tag(plugin)
-                }
 
                 if !workspace.extensionNavigatorData.listFull {
                     HStack {
