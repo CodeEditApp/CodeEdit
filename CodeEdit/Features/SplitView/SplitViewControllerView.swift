@@ -13,7 +13,6 @@ struct SplitViewControllerView: NSViewControllerRepresentable {
     var viewController: SplitViewController
 
     func makeNSViewController(context: Context) -> SplitViewController {
-//        viewController.items = children.map { SplitViewItem(child: $0) }
         return viewController
     }
 
@@ -37,9 +36,11 @@ struct SplitViewControllerView: NSViewControllerRepresentable {
         }
 
         controller.splitViewItems = controller.items.map(\.item)
+
         if hasChanged && controller.splitViewItems.count > 1 {
             let splitView = controller.splitView
             let numerator = splitView.isVertical ? splitView.frame.width : splitView.frame.height
+
             for idx in 0..<controller.items.count-1 {
                 // If the next view is collapsed, don't reposition the divider.
                 guard !controller.items[idx+1].item.isCollapsed else { continue }
@@ -74,7 +75,6 @@ final class SplitViewController: NSSplitViewController {
     }
 
     override func viewDidLoad() {
-//        splitView.arrangesAllSubviews = false
         splitView.isVertical = axis != .vertical
         splitView.dividerStyle = .thin
     }
