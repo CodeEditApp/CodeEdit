@@ -148,7 +148,8 @@ struct TabBarItemView: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .foregroundColor(
-                        prefs.preferences.general.fileIconStyle == .color && activeState != .inactive && isActiveTabGroup
+                        prefs.preferences.general.fileIconStyle == .color
+                        && activeState != .inactive && isActiveTabGroup
                         ? item.iconColor
                         : .secondary
                     )
