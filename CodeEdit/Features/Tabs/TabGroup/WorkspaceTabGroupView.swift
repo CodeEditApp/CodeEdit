@@ -8,11 +8,14 @@
 import SwiftUI
 
 struct WorkspaceTabGroupView: View {
-    @ObservedObject var tabgroup: TabGroupData
+    @ObservedObject
+    var tabgroup: TabGroupData
 
-    @EnvironmentObject var tabManager: TabManager
+    @FocusState.Binding
+    var focus: TabGroupData?
 
-    @FocusState.Binding var focus: TabGroupData?
+    @EnvironmentObject
+    private var tabManager: TabManager
 
     var body: some View {
         VStack {

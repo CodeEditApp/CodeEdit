@@ -10,15 +10,18 @@ import SwiftUI
 struct EditorView: View {
     var tabgroup: TabGroup
 
-    @Environment(\.window) private var window
+    @FocusState.Binding
+    var focus: TabGroupData?
 
-    @Environment(\.isAtEdge) private var isAtEdge
+    @Environment(\.window)
+    private var window
+
+    @Environment(\.isAtEdge)
+    private var isAtEdge
 
     var toolbarHeight: CGFloat {
         window.contentView?.safeAreaInsets.top ?? .zero
     }
-
-    @FocusState.Binding var focus: TabGroupData?
 
     var body: some View {
         switch tabgroup {

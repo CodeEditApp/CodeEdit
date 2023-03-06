@@ -10,7 +10,8 @@ import SwiftUI
 struct SplitView<Content: View>: View {
     var content: Content
 
-    @State var viewController: SplitViewController
+    @State
+    var viewController: SplitViewController
 
     init(axis: Axis, @ViewBuilder content: () -> Content) {
         self.content = content()

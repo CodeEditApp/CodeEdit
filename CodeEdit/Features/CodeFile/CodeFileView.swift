@@ -60,9 +60,11 @@ struct CodeFileView: View {
         return AppPreferencesModel.shared.preferences.textEditing.font.current()
     }()
 
-    @Environment(\.edgeInsets) var edgeInsets
+    @Environment(\.edgeInsets)
+    private var edgeInsets
 
-    @EnvironmentObject var tabgroup: TabGroupData
+    @EnvironmentObject
+    private var tabgroup: TabGroupData
 
     var body: some View {
         CodeEditTextView(

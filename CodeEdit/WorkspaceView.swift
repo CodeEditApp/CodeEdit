@@ -14,9 +14,10 @@ struct WorkspaceView: View {
     private var path: String = ""
 
     @EnvironmentObject
-    var workspace: WorkspaceDocument
+    private var workspace: WorkspaceDocument
 
-    @EnvironmentObject private var tabManager: TabManager
+    @EnvironmentObject
+    private var tabManager: TabManager
 
     @StateObject
     private var prefs: AppPreferencesModel = .shared
@@ -29,11 +30,14 @@ struct WorkspaceView: View {
     @State
     private var showingAlert = false
 
-    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.colorScheme)
+    private var colorScheme
 
-    @State var terminalCollapsed = true
+    @State
+    private var terminalCollapsed = true
 
-    @FocusState var focusedEditor: TabGroupData?
+    @FocusState
+    var focusedEditor: TabGroupData?
 
     var body: some View {
         if workspace.workspaceClient != nil {
