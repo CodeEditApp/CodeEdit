@@ -7,6 +7,7 @@
 
 import Foundation
 import OrderedCollections
+import DequeModule
 
 class TabManager: ObservableObject {
     /// Collection of all the tabgroups.
@@ -15,19 +16,19 @@ class TabManager: ObservableObject {
     /// The TabGroup with active focus.
     @Published var activeTabGroup: TabGroupData {
         didSet {
-            activeTabGroupHistory.updateOrInsert(oldValue, at: 0)
+            activeTabGroupHistory.prepend { [weak oldValue] in oldValue }
         }
     }
 
     /// History of last-used tab groups.
-    var activeTabGroupHistory: OrderedSet<TabGroupData> = []
+    var activeTabGroupHistory: Deque<() -> TabGroupData?> = []
 
     var fileDocuments: [WorkspaceClient.FileItem: CodeFileDocument] = [:]
 
     init() {
         let tab = TabGroupData()
         self.activeTabGroup = tab
-        self.activeTabGroupHistory.append(tab)
+        self.activeTabGroupHistory.prepend { [weak tab] in tab }
         self.tabGroups = .horizontal(.init(.horizontal, tabgroups: [.one(tab)]))
     }
 

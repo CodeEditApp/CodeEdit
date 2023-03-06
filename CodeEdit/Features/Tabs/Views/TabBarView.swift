@@ -440,7 +440,8 @@ struct TabBarView: View {
                     action: {
                         tabgroup.close()
                         if tabManager.activeTabGroup == tabgroup {
-                            tabManager.activeTabGroup = tabManager.activeTabGroupHistory.removeFirst()
+                            tabManager.activeTabGroupHistory.removeAll { $0() == nil }
+                            tabManager.activeTabGroup = tabManager.activeTabGroupHistory.removeFirst()()!
                         }
                         tabManager.flatten()
                     }
