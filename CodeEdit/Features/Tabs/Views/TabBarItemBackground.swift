@@ -35,12 +35,13 @@ struct TabBarItemBackground: View {
             Color(.controlAccentColor)
                 .hueRotation(.degrees(-5))
                 .opacity(
-                    isActive && isActiveTabGroup
+                    isActive
                         ? colorScheme == .dark
                              ? activeState == .inactive ? 0.22 : inHoldingState ? 0.33 : 0.26
                              : activeState == .inactive ? 0.1 : inHoldingState ? 0.27 : 0.2
                         : 0
                 )
+                .saturation(isActiveTabGroup ? 1.0 : 0.0)
 
             // Highlight (if in dark mode)
             Color(.white)

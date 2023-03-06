@@ -15,6 +15,9 @@ struct BreadcrumbsView: View {
     @Environment(\.colorScheme)
     private var colorScheme
 
+    @Environment(\.isActiveTabGroup)
+    private var isActiveTabGroup
+
     @Environment(\.controlActiveState)
     private var activeState
 
@@ -54,8 +57,9 @@ struct BreadcrumbsView: View {
             .padding(.horizontal, 10)
         }
         .frame(height: Self.height, alignment: .center)
-        .saturation(activeState == .inactive ? 0.0 : 1.0)
-        .brightness(activeState == .inactive ? -0.1 : 0.0)
+        .opacity(activeState == .inactive ? 0.8 : 1.0)
+        .saturation(isActiveTabGroup ? 1.0 : 0.0)
+        .brightness(isActiveTabGroup ? 0.0 : -0.1)
         .background(EffectView(.headerView).frame(height: Self.height))
     }
 
