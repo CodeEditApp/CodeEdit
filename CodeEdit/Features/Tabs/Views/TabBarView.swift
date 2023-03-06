@@ -522,12 +522,6 @@ struct TabBarView: View {
         }
     }
 
-//    var splitViewAxisButton: Axis {
-//        switch (tabs.parent?.axis, modifierKeys) {
-//        case (.horizontal, .option)
-//        }
-//    }
-
     private var trailingAccessories: some View {
         HStack(spacing: 2) {
             TabBarAccessoryIcon(
@@ -556,25 +550,24 @@ struct TabBarView: View {
         }
     }
 
-    var splitViewButtonAxis: Axis {
-        switch (tabgroup.parent!.axis, modifierKeys.contains(.option)) {
-        case (.horizontal, true), (.vertical, false):
-            return .vertical
-
-        case (.vertical, true), (.horizontal, false):
-            return .horizontal
-        }
-    }
-
     var splitviewButton: some View {
-        TabBarAccessoryIcon(icon: Image(systemName: "square.split.2x1")) {
-            split(edge: splitViewButtonAxis == .vertical ? .bottom : .trailing)
+        Group {
+            switch (tabgroup.parent!.axis, modifierKeys.contains(.option)) {
+            case (.horizontal, true), (.vertical, false):
+                TabBarAccessoryIcon(icon: Image(systemName: "square.split.1x2")) {
+                    split(edge: .bottom)
+                }
+                .help("Split Vertically")
+
+            case (.vertical, true), (.horizontal, false):
+                TabBarAccessoryIcon(icon: Image(systemName: "square.split.2x1")) {
+                    split(edge: .trailing)
+                }
+                .help("Split Horizontally")
+            }
         }
-        .rotationEffect(splitViewButtonAxis == .vertical ? .degrees(90) : .zero)
-        .animation(.interactiveSpring(), value: splitViewButtonAxis)
         .foregroundColor(.secondary)
         .buttonStyle(.plain)
-        .help("Split \(splitViewButtonAxis == .vertical ? "Vertically" : "Horizontally")")
     }
 
     func split(edge: Edge) {
