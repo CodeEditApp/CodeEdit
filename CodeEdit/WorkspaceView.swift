@@ -63,6 +63,11 @@ struct WorkspaceView: View {
                             print("No Editor has focus")
                         }
                     }
+                    .onChange(of: tabManager.activeTabGroup) { newValue in
+                        if newValue != focusedEditor {
+                            focusedEditor = newValue
+                        }
+                    }
                 }
             }
         }
