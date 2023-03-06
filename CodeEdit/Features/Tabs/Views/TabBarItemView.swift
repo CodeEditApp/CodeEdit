@@ -234,7 +234,7 @@ struct TabBarItemView: View {
                 .opacity(prefs.preferences.general.tabBarStyle == .native && !isActive ? 1 : 0)
         }
         .foregroundColor(
-            isActive
+            isActive && isActiveTabGroup
             ? (
                 prefs.preferences.general.tabBarStyle == .xcode && colorScheme != .dark
                 ? Color(nsColor: .controlAccentColor)
