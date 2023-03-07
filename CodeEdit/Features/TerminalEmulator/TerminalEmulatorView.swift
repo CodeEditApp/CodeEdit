@@ -83,7 +83,7 @@ struct TerminalEmulatorView: NSViewRepresentable {
         case .steadyUnderline:
             return CursorStyle.steadyUnderline
         case .blinkingBar:
-            return CursorStyle.blinkingBar
+            return CursorStyle.blinkBar
         case .steadyBar:
             return CursorStyle.steadyBar
         }

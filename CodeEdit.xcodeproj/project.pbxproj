@@ -3801,8 +3801,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/migueldeicaza/SwiftTerm.git";
 			requirement = {
-				kind = exactVersion;
-				version = 1.0.7;
+				branch = main;
+				kind = branch;
 			};
 		};
 		58F2EB15292FB74D004A9BDE /* XCRemoteSwiftPackageReference "CodeEditTextView" */ = {
