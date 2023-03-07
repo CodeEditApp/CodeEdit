@@ -26,6 +26,9 @@ struct TerminalPreferencesView: View {
             PreferencesSection("Font") {
                 fontSelector
             }
+            PreferencesSection("Style") {
+                carrotSelector
+            }
         }
     }
 
@@ -38,6 +41,23 @@ struct TerminalPreferencesView: View {
                 .tag(AppPreferences.TerminalShell.zsh)
             Text("Bash")
                 .tag(AppPreferences.TerminalShell.bash)
+        }
+        .frame(width: inputWidth)
+    }
+    private var carrotSelector: some View {
+        Picker("Terminal Carrot Style: ", selection: $prefs.preferences.terminal.cursorStyle) {
+            Text("Blink Block")
+                .tag(AppPreferences.TerminalCursorStyle.blinkBlock)
+            Text("Steady Block")
+                .tag(AppPreferences.TerminalCursorStyle.steadyBlock)
+            Text("Blink Underline")
+                .tag(AppPreferences.TerminalCursorStyle.blinkUnderline)
+            Text("Steady Underline")
+                .tag(AppPreferences.TerminalCursorStyle.steadyUnderline)
+            Text("Blinking Bar")
+                .tag(AppPreferences.TerminalCursorStyle.blinkingBar)
+            Text("Steady Bar")
+                .tag(AppPreferences.TerminalCursorStyle.steadyBar)
         }
         .frame(width: inputWidth)
     }

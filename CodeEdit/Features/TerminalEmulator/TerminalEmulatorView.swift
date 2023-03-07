@@ -72,6 +72,22 @@ struct TerminalEmulatorView: NSViewRepresentable {
             return "/bin/zsh"
         }
     }
+    private func getTerminalCarrot() -> CursorStyle {
+        switch prefs.preferences.terminal.cursorStyle {
+        case .blinkBlock:
+            return CursorStyle.blinkBlock
+        case .steadyBlock:
+            return CursorStyle.steadyBlock
+        case .blinkUnderline:
+            return CursorStyle.blinkUnderline
+        case .steadyUnderline:
+            return CursorStyle.steadyUnderline
+        case .blinkingBar:
+            return CursorStyle.blinkBar
+        case .steadyBar:
+            return CursorStyle.steadyBar
+        }
+    }
 
     /// Gets the default shell from the current user and returns the string of the shell path.
     private func autoDetectDefaultShell() -> String {
@@ -176,6 +192,7 @@ struct TerminalEmulatorView: NSViewRepresentable {
             terminal.selectedTextBackgroundColor = selectionColor
             terminal.nativeForegroundColor = textColor
             terminal.nativeBackgroundColor = prefs.preferences.terminal.useThemeBackground ? backgroundColor : .clear
+            terminal.cursorStyleChanged(source: terminal.getTerminal(), newStyle: getTerminalCarrot())
             terminal.layer?.backgroundColor = .clear
             terminal.optionAsMetaKey = optionAsMeta
         }
@@ -205,6 +222,7 @@ struct TerminalEmulatorView: NSViewRepresentable {
         view.nativeBackgroundColor = prefs.preferences.terminal.useThemeBackground ? backgroundColor : .clear
         view.layer?.backgroundColor = .clear
         view.optionAsMetaKey = optionAsMeta
+        view.cursorStyleChanged(source: terminal.getTerminal(), newStyle: getTerminalCarrot())
         view.appearance = colorAppearance
         if TerminalEmulatorView.lastTerminal[url.path] != nil {
             TerminalEmulatorView.lastTerminal[url.path] = view

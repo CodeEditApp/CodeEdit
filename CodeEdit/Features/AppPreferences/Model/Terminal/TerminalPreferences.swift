@@ -27,6 +27,9 @@ extension AppPreferences {
         /// The font to use in terminal.
         var font: TerminalFont = .init()
 
+        // The cursor style to use in terminal
+        var cursorStyle: TerminalCursorStyle = .steadyBlock
+
         /// Default initializer
         init() {}
 
@@ -37,6 +40,7 @@ extension AppPreferences {
             self.optionAsMeta = try container.decodeIfPresent(Bool.self, forKey: .optionAsMeta) ?? false
             self.shell = try container.decodeIfPresent(TerminalShell.self, forKey: .shell) ?? .system
             self.font = try container.decodeIfPresent(TerminalFont.self, forKey: .font) ?? .init()
+            self.cursorStyle = try container.decodeIfPresent(TerminalCursorStyle.self, forKey: .cursorStyle) ?? .steadyBlock
         }
     }
 
@@ -50,6 +54,14 @@ extension AppPreferences {
         case system
     }
 
+    enum TerminalCursorStyle: String, Codable {
+        case blinkBlock
+        case steadyBlock
+        case blinkUnderline
+        case steadyUnderline
+        case blinkingBar
+        case steadyBar
+    }
     struct TerminalFont: Codable {
         /// Indicates whether or not to use a custom font
         var customFont: Bool = false
