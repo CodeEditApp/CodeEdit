@@ -73,6 +73,18 @@ struct TerminalEmulatorView: NSViewRepresentable {
         }
     }
 
+    private func getTerminalCursor() -> CursorStyle {
+            let blink = prefs.preferences.terminal.cursorBlink
+            switch prefs.preferences.terminal.cursorStyle {
+            case .block:
+                return blink ? .blinkBlock : .steadyBlock
+            case .underline:
+                return blink ? .blinkUnderline : .steadyUnderline
+            case .bar:
+                return blink ? .blinkBar : .steadyBar
+            }
+    }
+
     /// Gets the default shell from the current user and returns the string of the shell path.
     private func autoDetectDefaultShell() -> String {
         let bufsize = sysconf(_SC_GETPW_R_SIZE_MAX)
@@ -176,6 +188,7 @@ struct TerminalEmulatorView: NSViewRepresentable {
             terminal.selectedTextBackgroundColor = selectionColor
             terminal.nativeForegroundColor = textColor
             terminal.nativeBackgroundColor = prefs.preferences.terminal.useThemeBackground ? backgroundColor : .clear
+            terminal.cursorStyleChanged(source: terminal.getTerminal(), newStyle: getTerminalCursor())
             terminal.layer?.backgroundColor = .clear
             terminal.optionAsMetaKey = optionAsMeta
         }
@@ -205,6 +218,7 @@ struct TerminalEmulatorView: NSViewRepresentable {
         view.nativeBackgroundColor = prefs.preferences.terminal.useThemeBackground ? backgroundColor : .clear
         view.layer?.backgroundColor = .clear
         view.optionAsMetaKey = optionAsMeta
+        view.cursorStyleChanged(source: view.getTerminal(), newStyle: getTerminalCursor())
         view.appearance = colorAppearance
         if TerminalEmulatorView.lastTerminal[url.path] != nil {
             TerminalEmulatorView.lastTerminal[url.path] = view

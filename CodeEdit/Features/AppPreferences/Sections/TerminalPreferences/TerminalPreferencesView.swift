@@ -26,6 +26,10 @@ struct TerminalPreferencesView: View {
             PreferencesSection("Font") {
                 fontSelector
             }
+            PreferencesSection("Cursor") {
+                cursorStyle
+                cursorBlink
+            }
         }
     }
 
@@ -40,6 +44,24 @@ struct TerminalPreferencesView: View {
                 .tag(AppPreferences.TerminalShell.bash)
         }
         .frame(width: inputWidth)
+    }
+    private var cursorStyle: some View {
+        Picker("Terminal Cursor Style: ", selection: $prefs.preferences.terminal.cursorStyle) {
+            Text("Block")
+                .tag(AppPreferences.TerminalCursorStyle.block)
+            Text("Underline")
+                .tag(AppPreferences.TerminalCursorStyle.underline)
+            Text("Bar")
+                .tag(AppPreferences.TerminalCursorStyle.bar)
+        }
+        .frame(width: inputWidth)
+    }
+
+    private var cursorBlink: some View {
+        HStack {
+            Toggle("Cursor Blink", isOn: $prefs.preferences.terminal.cursorBlink)
+            Text("Blink cursor")
+        }
     }
 
     private var optionAsMetaToggle: some View {
