@@ -27,7 +27,7 @@ struct TerminalPreferencesView: View {
                 fontSelector
             }
             PreferencesSection("Style") {
-                carrotSelector
+                cursorStyle
             }
         }
     }
@@ -44,8 +44,8 @@ struct TerminalPreferencesView: View {
         }
         .frame(width: inputWidth)
     }
-    private var carrotSelector: some View {
-        Picker("Terminal Carrot Style: ", selection: $prefs.preferences.terminal.cursorStyle) {
+    private var cursorStyle: some View {
+        Picker("Terminal Cursor Style: ", selection: $prefs.preferences.terminal.cursorStyle) {
             Text("Blink Block")
                 .tag(AppPreferences.TerminalCursorStyle.blinkBlock)
             Text("Steady Block")

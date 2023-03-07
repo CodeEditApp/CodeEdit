@@ -72,7 +72,7 @@ struct TerminalEmulatorView: NSViewRepresentable {
             return "/bin/zsh"
         }
     }
-    private func getTerminalCarrot() -> CursorStyle {
+    private func getTerminalCursor() -> CursorStyle {
         switch prefs.preferences.terminal.cursorStyle {
         case .blinkBlock:
             return CursorStyle.blinkBlock
@@ -83,7 +83,7 @@ struct TerminalEmulatorView: NSViewRepresentable {
         case .steadyUnderline:
             return CursorStyle.steadyUnderline
         case .blinkingBar:
-            return CursorStyle.blinkBar
+            return CursorStyle.blinkingBar
         case .steadyBar:
             return CursorStyle.steadyBar
         }
@@ -192,7 +192,7 @@ struct TerminalEmulatorView: NSViewRepresentable {
             terminal.selectedTextBackgroundColor = selectionColor
             terminal.nativeForegroundColor = textColor
             terminal.nativeBackgroundColor = prefs.preferences.terminal.useThemeBackground ? backgroundColor : .clear
-            terminal.cursorStyleChanged(source: terminal.getTerminal(), newStyle: getTerminalCarrot())
+            terminal.cursorStyleChanged(source: terminal.getTerminal(), newStyle: getTerminalCursor())
             terminal.layer?.backgroundColor = .clear
             terminal.optionAsMetaKey = optionAsMeta
         }
@@ -222,7 +222,7 @@ struct TerminalEmulatorView: NSViewRepresentable {
         view.nativeBackgroundColor = prefs.preferences.terminal.useThemeBackground ? backgroundColor : .clear
         view.layer?.backgroundColor = .clear
         view.optionAsMetaKey = optionAsMeta
-        view.cursorStyleChanged(source: terminal.getTerminal(), newStyle: getTerminalCarrot())
+        view.cursorStyleChanged(source: terminal.getTerminal(), newStyle: getTerminalCursor())
         view.appearance = colorAppearance
         if TerminalEmulatorView.lastTerminal[url.path] != nil {
             TerminalEmulatorView.lastTerminal[url.path] = view
