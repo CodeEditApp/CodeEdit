@@ -24,24 +24,26 @@ struct EditorView: View {
     }
 
     var body: some View {
-        switch tabgroup {
-        case .one(let detailTabGroup):
-            WorkspaceTabGroupView(tabgroup: detailTabGroup, focus: $focus)
-                .transformEnvironment(\.edgeInsets) { insets in
-                    switch isAtEdge {
-                    case .all:
-                        insets.top += toolbarHeight
-                        insets.bottom += StatusBarView.height + 5
-                    case .top:
-                        insets.top += toolbarHeight
-                    case .bottom:
-                        insets.bottom += StatusBarView.height + 5
-                    default:
-                        return
+        VStack {
+            switch tabgroup {
+            case .one(let detailTabGroup):
+                WorkspaceTabGroupView(tabgroup: detailTabGroup, focus: $focus)
+                    .transformEnvironment(\.edgeInsets) { insets in
+                        switch isAtEdge {
+                        case .all:
+                            insets.top += toolbarHeight
+                            insets.bottom += StatusBarView.height + 5
+                        case .top:
+                            insets.top += toolbarHeight
+                        case .bottom:
+                            insets.bottom += StatusBarView.height + 5
+                        default:
+                            return
+                        }
                     }
-                }
-        case .vertical(let data), .horizontal(let data):
-            SubEditorView(data: data, focus: $focus)
+            case .vertical(let data), .horizontal(let data):
+                SubEditorView(data: data, focus: $focus)
+            }
         }
     }
 
