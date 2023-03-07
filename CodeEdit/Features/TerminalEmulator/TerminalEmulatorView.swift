@@ -72,6 +72,7 @@ struct TerminalEmulatorView: NSViewRepresentable {
             return "/bin/zsh"
         }
     }
+    
     private func getTerminalCursor() -> CursorStyle {
         switch prefs.preferences.terminal.cursorStyle {
         case .blinkBlock:
@@ -222,7 +223,7 @@ struct TerminalEmulatorView: NSViewRepresentable {
         view.nativeBackgroundColor = prefs.preferences.terminal.useThemeBackground ? backgroundColor : .clear
         view.layer?.backgroundColor = .clear
         view.optionAsMetaKey = optionAsMeta
-        view.cursorStyleChanged(source: terminal.getTerminal(), newStyle: getTerminalCursor())
+        view.cursorStyleChanged(source: view.getTerminal(), newStyle: getTerminalCursor())
         view.appearance = colorAppearance
         if TerminalEmulatorView.lastTerminal[url.path] != nil {
             TerminalEmulatorView.lastTerminal[url.path] = view

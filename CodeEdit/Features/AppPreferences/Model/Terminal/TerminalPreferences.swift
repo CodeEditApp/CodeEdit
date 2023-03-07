@@ -65,6 +65,7 @@ extension AppPreferences {
         case blinkingBar
         case steadyBar
     }
+
     struct TerminalFont: Codable {
         /// Indicates whether or not to use a custom font
         var customFont: Bool = false
