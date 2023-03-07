@@ -40,8 +40,10 @@ extension AppPreferences {
             self.optionAsMeta = try container.decodeIfPresent(Bool.self, forKey: .optionAsMeta) ?? false
             self.shell = try container.decodeIfPresent(TerminalShell.self, forKey: .shell) ?? .system
             self.font = try container.decodeIfPresent(TerminalFont.self, forKey: .font) ?? .init()
-            self.cursorStyle = try container.decodeIfPresent(TerminalCursorStyle.self,
-                                                             forKey: .cursorStyle) ?? .steadyBlock
+            self.cursorStyle = try container.decodeIfPresent(
+                TerminalCursorStyle.self,
+                forKey: .cursorStyle
+            ) ?? .steadyBlock
         }
     }
 
