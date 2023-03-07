@@ -72,7 +72,7 @@ struct TerminalEmulatorView: NSViewRepresentable {
             return "/bin/zsh"
         }
     }
-    
+
     private func getTerminalCursor() -> CursorStyle {
         switch prefs.preferences.terminal.cursorStyle {
         case .blinkBlock:
