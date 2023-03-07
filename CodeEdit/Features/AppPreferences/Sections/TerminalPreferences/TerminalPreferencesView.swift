@@ -26,8 +26,9 @@ struct TerminalPreferencesView: View {
             PreferencesSection("Font") {
                 fontSelector
             }
-            PreferencesSection("Style") {
+            PreferencesSection("Cursor") {
                 cursorStyle
+                cursorBlink
             }
         }
     }
@@ -46,20 +47,21 @@ struct TerminalPreferencesView: View {
     }
     private var cursorStyle: some View {
         Picker("Terminal Cursor Style: ", selection: $prefs.preferences.terminal.cursorStyle) {
-            Text("Blink Block")
-                .tag(AppPreferences.TerminalCursorStyle.blinkBlock)
-            Text("Steady Block")
-                .tag(AppPreferences.TerminalCursorStyle.steadyBlock)
-            Text("Blink Underline")
-                .tag(AppPreferences.TerminalCursorStyle.blinkUnderline)
-            Text("Steady Underline")
-                .tag(AppPreferences.TerminalCursorStyle.steadyUnderline)
-            Text("Blinking Bar")
-                .tag(AppPreferences.TerminalCursorStyle.blinkingBar)
-            Text("Steady Bar")
-                .tag(AppPreferences.TerminalCursorStyle.steadyBar)
+            Text("Block")
+                .tag(AppPreferences.TerminalCursorStyle.block)
+            Text("Underline")
+                .tag(AppPreferences.TerminalCursorStyle.underline)
+            Text("Bar")
+                .tag(AppPreferences.TerminalCursorStyle.bar)
         }
         .frame(width: inputWidth)
+    }
+
+    private var cursorBlink: some View {
+        HStack {
+            Toggle("Cursor Blink", isOn: $prefs.preferences.terminal.cursorBlink)
+            Text("Blink cursor")
+        }
     }
 
     private var optionAsMetaToggle: some View {

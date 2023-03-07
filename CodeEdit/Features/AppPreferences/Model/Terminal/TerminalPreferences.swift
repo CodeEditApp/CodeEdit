@@ -28,7 +28,10 @@ extension AppPreferences {
         var font: TerminalFont = .init()
 
         // The cursor style to use in terminal
-        var cursorStyle: TerminalCursorStyle = .steadyBlock
+        var cursorStyle: TerminalCursorStyle = .block
+
+        // Toggle for blinking cursor or not
+        var cursorBlink: Bool = false
 
         /// Default initializer
         init() {}
@@ -43,7 +46,8 @@ extension AppPreferences {
             self.cursorStyle = try container.decodeIfPresent(
                 TerminalCursorStyle.self,
                 forKey: .cursorStyle
-            ) ?? .steadyBlock
+            ) ?? .block
+            self.cursorBlink = try container.decodeIfPresent(Bool.self, forKey: .cursorBlink) ?? false
         }
     }
 
@@ -58,12 +62,9 @@ extension AppPreferences {
     }
 
     enum TerminalCursorStyle: String, Codable {
-        case blinkBlock
-        case steadyBlock
-        case blinkUnderline
-        case steadyUnderline
-        case blinkingBar
-        case steadyBar
+        case block
+        case underline
+        case bar
     }
 
     struct TerminalFont: Codable {

@@ -74,20 +74,15 @@ struct TerminalEmulatorView: NSViewRepresentable {
     }
 
     private func getTerminalCursor() -> CursorStyle {
-        switch prefs.preferences.terminal.cursorStyle {
-        case .blinkBlock:
-            return CursorStyle.blinkBlock
-        case .steadyBlock:
-            return CursorStyle.steadyBlock
-        case .blinkUnderline:
-            return CursorStyle.blinkUnderline
-        case .steadyUnderline:
-            return CursorStyle.steadyUnderline
-        case .blinkingBar:
-            return CursorStyle.blinkBar
-        case .steadyBar:
-            return CursorStyle.steadyBar
-        }
+            let blink = prefs.preferences.terminal.cursorBlink
+            switch prefs.preferences.terminal.cursorStyle {
+            case .block:
+                return blink ? .blinkBlock : .steadyBlock
+            case .underline:
+                return blink ? .blinkUnderline : .steadyUnderline
+            case .bar:
+                return blink ? .blinkBar : .steadyBar
+            }
     }
 
     /// Gets the default shell from the current user and returns the string of the shell path.
