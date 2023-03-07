@@ -37,6 +37,10 @@ final class CodeEditDocumentController: NSDocumentController {
         return panel.url
     }
 
+    override func noteNewRecentDocument(_ document: NSDocument) {
+        // The super method is run manually when opening new documents.
+    }
+
     override func openDocument(_ sender: Any?) {
         self.openDocument(onCompletion: { document, documentWasAlreadyOpen in
             // TODO: handle errors
@@ -55,6 +59,7 @@ final class CodeEditDocumentController: NSDocumentController {
         display displayDocument: Bool,
         completionHandler: @escaping (NSDocument?, Bool, Error?) -> Void
     ) {
+        super.noteNewRecentDocumentURL(url)
         super.openDocument(withContentsOf: url, display: displayDocument) { document, documentWasAlreadyOpen, error in
 
             if let document = document {
