@@ -67,7 +67,9 @@ Join our growing community on [Discord](https://discord.gg/vChUXVf9Em) and [GitH
 
 Be part of the next revolution in code editing by contributing to the project. This is a community-led effort, so we welcome as many contributors who can help. Read the [Contribution Guide](https://github.com/CodeEditApp/CodeEdit/blob/main/CONTRIBUTING.md) for more information.
 
-Please note that this project spans [multiple repositories](https://github.com/CodeEditApp/CodeEdit#related-repositories) so instead of browsing issues in the issues tab, it may be helpful to find an issue to work on in our [project board](https://github.com/orgs/CodeEditApp/projects/3/views/1).
+This project spans [multiple repositories](https://github.com/CodeEditApp/CodeEdit#related-repositories) so instead of browsing issues in the issues tab, it may be helpful to find an issue to in our [project board](https://github.com/orgs/CodeEditApp/projects/3/views/1).
+
+For issues we want to focus on that are most relevant at any given time, please see the issues scoped to our current iteration [here](https://github.com/orgs/CodeEditApp/projects/3/views/13).
 
 ## Contributors
 
