@@ -170,8 +170,8 @@ struct GitClient {
                     message: parameters[safe: 2] ?? "",
                     author: parameters[safe: 3] ?? "",
                     authorEmail: parameters[safe: 4] ?? "",
-                    commiter: parameters[safe: 5] ?? "",
-                    commiterEmail: parameters[safe: 6] ?? "",
+                    committer: parameters[safe: 5] ?? "",
+                    committerEmail: parameters[safe: 6] ?? "",
                     remoteURL: remoteURL,
                     date: dateFormatter.date(from: parameters[safe: 7] ?? "") ?? Date()
                 )

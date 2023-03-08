@@ -157,7 +157,7 @@ extension GitHubAccount {
      - parameter description: The description of the gist.
      - parameter filename: The name of the file in the gist.
      - parameter fileContent: The content of the file in the gist.
-     - parameter publicAccess: The public/private visability of the gist.
+     - parameter publicAccess: The public/private visibility of the gist.
      - parameter completion: Callback for the gist that is created.
      */
     @discardableResult

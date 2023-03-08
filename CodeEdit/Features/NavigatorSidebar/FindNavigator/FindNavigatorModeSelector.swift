@@ -59,7 +59,7 @@ struct FindNavigatorModeSelector: View {
         }
     }
 
-    private func updateSelectedMode(_ searchMode: SearchModeModel, searchModel: inout [SearchModeModel]) {
+    private func updateSelectedMode(_ searchMode: SearchModeModel, searchModel: input [SearchModeModel]) {
         if let secondMode = searchMode.children.first {
             if let selectedSecondMode = selectedMode.second, searchMode.children.contains(selectedSecondMode) {
                 searchModel.append(contentsOf: selectedMode.dropFirst())
@@ -97,7 +97,7 @@ struct FindNavigatorModeSelector: View {
                             chevron
                         }
                         Text(selectedMode[index].title)
-                            .foregroundColor(selectedMode[index].needSelectionHightlight ? Color.accentColor : .primary)
+                            .foregroundColor(selectedMode[index].needSelectionHighlight ? Color.accentColor : .primary)
                             .font(.system(size: 10))
                     }
                 }
