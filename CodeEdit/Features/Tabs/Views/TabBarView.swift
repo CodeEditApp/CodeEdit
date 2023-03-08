@@ -411,7 +411,11 @@ struct TabBarView: View {
                         }
                     }
                 }
-
+                .background {
+                    if prefs.preferences.general.tabBarStyle == .native {
+                        TabBarAccessoryNativeBackground(dividerAt: .none)
+                    }
+                }
             }
             // Tab bar tools (e.g. split view).
             trailingAccessories
@@ -464,6 +468,7 @@ struct TabBarView: View {
                         id: \.offset
                     ) { index, tab in
                         Button {
+                            tabManager.activeTabGroup = tabgroup
                             tabgroup.historyOffset += index + 1
                         } label: {
                             HStack {
@@ -491,6 +496,7 @@ struct TabBarView: View {
                         id: \.offset
                     ) { index, tab in
                         Button {
+                            tabManager.activeTabGroup = tabgroup
                             tabgroup.historyOffset -= index + 1
                         } label: {
                             HStack {

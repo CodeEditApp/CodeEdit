@@ -38,18 +38,6 @@ struct TabBarContextMenu: ViewModifier {
     func body(content: Content) -> some View {
         content.contextMenu(menuItems: {
             Group {
-                Button("Split Up") {
-                    moveToNewSplit(.top)
-                }
-                Button("Split Down") {
-                    moveToNewSplit(.bottom)
-                }
-                Button("Split Left") {
-                    moveToNewSplit(.leading)
-                }
-                Button("Split Right") {
-                    moveToNewSplit(.trailing)
-                }
                 Button("Close Tab") {
                     withAnimation {
                         tabs.closeTab(item: item)
@@ -120,6 +108,21 @@ struct TabBarContextMenu: ViewModifier {
 
                 }
                 .disabled(true)
+            }
+
+            Divider()
+
+            Button("Split Up") {
+                moveToNewSplit(.top)
+            }
+            Button("Split Down") {
+                moveToNewSplit(.bottom)
+            }
+            Button("Split Left") {
+                moveToNewSplit(.leading)
+            }
+            Button("Split Right") {
+                moveToNewSplit(.trailing)
             }
         })
     }
