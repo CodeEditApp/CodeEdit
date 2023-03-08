@@ -42,10 +42,8 @@ struct WindowObserver<Content: View>: View {
             .onChange(of: prefs.preferences.general.tabBarStyle) { newStyle in
                 DispatchQueue.main.async {
                     if newStyle == .native {
-                        window.titlebarAppearsTransparent = true
                         window.titlebarSeparatorStyle = .none
                     } else {
-                        window.titlebarAppearsTransparent = false
                         window.titlebarSeparatorStyle = .automatic
                     }
                 }

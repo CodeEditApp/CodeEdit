@@ -121,12 +121,10 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
         if prefs.preferences.general.tabBarStyle == .native {
             // Set titlebar background as transparent by default in order to
             // style the toolbar background in native tab bar style.
-            self.window?.titlebarAppearsTransparent = true
             self.window?.titlebarSeparatorStyle = .none
         } else {
             // In xcode tab bar style, we use default toolbar background with
             // line separator.
-            self.window?.titlebarAppearsTransparent = false
             self.window?.titlebarSeparatorStyle = .automatic
         }
         self.window?.toolbar = toolbar
