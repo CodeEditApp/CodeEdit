@@ -485,6 +485,7 @@ struct TabBarView: View {
                             ? 0.5 : 1.0
                         )
                 } primaryAction: {
+                    tabManager.activeTabGroup = tabgroup
                     tabgroup.historyOffset += 1
                 }
                 .disabled(tabgroup.historyOffset == tabgroup.history.count-1 || tabgroup.history.isEmpty)
@@ -510,6 +511,7 @@ struct TabBarView: View {
                         .controlSize(.regular)
                         .opacity(tabgroup.historyOffset == 0 ? 0.5 : 1.0)
                 } primaryAction: {
+                    tabManager.activeTabGroup = tabgroup
                     tabgroup.historyOffset -= 1
                 }
                 .disabled(tabgroup.historyOffset == 0)
