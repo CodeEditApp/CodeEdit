@@ -22,8 +22,14 @@ struct WindowObserver<Content: View>: View {
     @StateObject
     private var prefs: AppPreferencesModel = .shared
 
+    @State var modifierFlags: NSEvent.ModifierFlags = []
+
     var body: some View {
         content
+            .environment(\.modifierKeys, modifierFlags.intersection(.deviceIndependentFlagsMask))
+            .onReceive(NSEvent.publisher(scope: .local, matching: .flagsChanged)) { output in
+                modifierFlags = output.modifierFlags
+            }
             .environment(\.window, window)
             .environment(\.isFullscreen, isFullscreen)
             .onReceive(NotificationCenter.default.publisher(for: NSWindow.didEnterFullScreenNotification)) { _ in
@@ -36,10 +42,8 @@ struct WindowObserver<Content: View>: View {
             .onChange(of: prefs.preferences.general.tabBarStyle) { newStyle in
                 DispatchQueue.main.async {
                     if newStyle == .native {
-                        window.titlebarAppearsTransparent = true
                         window.titlebarSeparatorStyle = .none
                     } else {
-                        window.titlebarAppearsTransparent = false
                         window.titlebarSeparatorStyle = .automatic
                     }
                 }

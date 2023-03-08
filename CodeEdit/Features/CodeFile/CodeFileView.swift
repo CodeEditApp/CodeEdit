@@ -60,6 +60,12 @@ struct CodeFileView: View {
         return AppPreferencesModel.shared.preferences.textEditing.font.current()
     }()
 
+    @Environment(\.edgeInsets)
+    private var edgeInsets
+
+    @EnvironmentObject
+    private var tabgroup: TabGroupData
+
     var body: some View {
         CodeEditTextView(
             $codeFile.content,
@@ -70,7 +76,8 @@ struct CodeFileView: View {
             lineHeight: $prefs.preferences.textEditing.lineHeightMultiple,
             wrapLines: $prefs.preferences.textEditing.wrapLinesToEditorWidth,
             cursorPosition: codeFile.$cursorPosition,
-            useThemeBackground: prefs.preferences.theme.useThemeBackground
+            useThemeBackground: prefs.preferences.theme.useThemeBackground,
+            contentInsets: edgeInsets.nsEdgeInsets
         )
         .id(codeFile.fileURL)
         .background {
@@ -90,7 +97,8 @@ struct CodeFileView: View {
             }
         }
         .disabled(!editable)
-        .frame(maxHeight: .infinity)
+        // minHeight zero fixes a bug where the app would freeze if the contents of the file are empty.
+        .frame(minHeight: .zero, maxHeight: .infinity)
         .onChange(of: ThemeModel.shared.selectedTheme) { newValue in
             guard let theme = newValue else { return }
             self.selectedTheme = theme

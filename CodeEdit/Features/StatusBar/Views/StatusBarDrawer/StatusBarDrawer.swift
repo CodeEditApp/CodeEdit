@@ -9,10 +9,7 @@ import SwiftUI
 
 struct StatusBarDrawer: View {
     @EnvironmentObject
-    private var model: StatusBarViewModel
-
-    @ObservedObject
-    private var prefs: AppPreferencesModel = .shared
+    private var workspace: WorkspaceDocument
 
     @Environment(\.colorScheme)
     private var colorScheme
@@ -20,61 +17,23 @@ struct StatusBarDrawer: View {
     @State
     private var searchText = ""
 
-    var height: CGFloat {
-        if model.isMaximized {
-            return model.maxHeight
-        }
-        if model.isExpanded {
-            return model.currentHeight
-        }
-        return 0
-    }
-
     var body: some View {
-        VStack(spacing: 0) {
-            GeometryReader { geometryProxy in
-                switch model.selectedTab {
-                case 0:
-                    TerminalEmulatorView(url: model.workspaceURL)
-                        .background {
-                            if colorScheme == .dark {
-                                if prefs.preferences.theme.selectedTheme == prefs.preferences.theme.selectedLightTheme {
-                                    Color.white
-                                } else {
-                                    EffectView(.underPageBackground)
-                                }
-                            } else {
-                                if prefs.preferences.theme.selectedTheme == prefs.preferences.theme.selectedDarkTheme {
-                                    Color.black
-                                } else {
-                                    EffectView(.contentBackground)
-                                }
-                            }
-                        }
-                        // When size changes, save new height to workspace state.
-                        .onChange(of: geometryProxy.size.height) { _ in
-                            model.saveHeightToState(height: geometryProxy.size.height)
-                        }
-                default: Rectangle().foregroundColor(Color(nsColor: .textBackgroundColor))
+        if let url = workspace.workspaceClient?.folderURL() {
+            VStack(spacing: 0) {
+                TerminalEmulatorView(url: url)
+                HStack(alignment: .center, spacing: 10) {
+                    FilterTextField(title: "Filter", text: $searchText)
+                        .frame(maxWidth: 300)
+                    Spacer()
+                    StatusBarClearButton()
+                    Divider()
+                    StatusBarSplitTerminalButton()
+                    StatusBarMaximizeButton()
                 }
+                .padding(10)
+                .frame(maxHeight: 29)
+                .background(.bar)
             }
-            HStack(alignment: .center, spacing: 10) {
-                FilterTextField(title: "Filter", text: $searchText)
-                    .frame(maxWidth: 300)
-                Spacer()
-                StatusBarClearButton()
-                Divider()
-                StatusBarSplitTerminalButton()
-                StatusBarMaximizeButton()
-            }
-            .padding(10)
-            .frame(maxHeight: 29)
-            .background(.bar)
         }
-        .frame(
-            minHeight: 0,
-            idealHeight: height,
-            maxHeight: height
-        )
     }
 }

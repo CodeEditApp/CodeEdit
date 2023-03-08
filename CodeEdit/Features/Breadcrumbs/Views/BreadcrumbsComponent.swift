@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct BreadcrumbsComponent: View {
 
@@ -59,7 +60,9 @@ struct BreadcrumbsComponent: View {
     }
 
     struct NSPopUpButtonView<ItemType>: NSViewRepresentable where ItemType: Equatable {
-        @Binding var selection: ItemType
+        @Binding
+        var selection: ItemType
+
         var popupCreator: () -> NSPopUpButton
 
         typealias NSViewType = NSPopUpButton
@@ -67,6 +70,9 @@ struct BreadcrumbsComponent: View {
         func makeNSView(context: NSViewRepresentableContext<NSPopUpButtonView>) -> NSPopUpButton {
             let newPopupButton = popupCreator()
             setPopUpFromSelection(newPopupButton, selection: selection)
+            if let menu = newPopupButton.menu {
+                context.coordinator.registerForChanges(in: menu)
+            }
             return newPopupButton
         }
 
@@ -89,24 +95,24 @@ struct BreadcrumbsComponent: View {
         }
 
         class Coordinator: NSObject {
-            var parent: NSPopUpButtonView!
+            var parent: NSPopUpButtonView
+
+            var cancellable: AnyCancellable?
 
             init(_ parent: NSPopUpButtonView) {
-                super.init()
                 self.parent = parent
-                NotificationCenter.default.addObserver(
-                    self,
-                    selector: #selector(dropdownItemSelected),
-                    name: NSMenu.didSendActionNotification,
-                    object: nil
-                )
+                super.init()
             }
 
-            @objc func dropdownItemSelected(_ notification: NSNotification) {
-                let menuItem = (notification.userInfo?["MenuItem"])! as? NSMenuItem
-                if let selection = menuItem?.representedObject as? ItemType {
-                    parent.selection = selection
-                }
+            func registerForChanges(in menu: NSMenu) {
+                cancellable = NotificationCenter.default
+                    .publisher(for: NSMenu.didSendActionNotification, object: menu)
+                    .sink { notification in
+                        if let menuItem = notification.userInfo?["MenuItem"] as? NSMenuItem,
+                           let selection = menuItem as? ItemType {
+                            self.parent.selection = selection
+                        }
+                    }
             }
         }
     }

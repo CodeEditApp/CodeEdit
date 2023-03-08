@@ -9,14 +9,14 @@ import Foundation
 import SwiftUI
 
 extension View {
-    func tabBarContextMenu(item: TabBarItemRepresentable, isTemporary: Bool) -> some View {
+    func tabBarContextMenu(item: WorkspaceClient.FileItem, isTemporary: Bool) -> some View {
         modifier(TabBarContextMenu(item: item, isTemporary: isTemporary))
     }
 }
 
 struct TabBarContextMenu: ViewModifier {
     init(
-        item: TabBarItemRepresentable,
+        item: WorkspaceClient.FileItem,
         isTemporary: Bool
     ) {
         self.item = item
@@ -26,7 +26,12 @@ struct TabBarContextMenu: ViewModifier {
     @EnvironmentObject
     var workspace: WorkspaceDocument
 
-    private var item: TabBarItemRepresentable
+    @EnvironmentObject
+    var tabs: TabGroupData
+
+    @Environment(\.splitEditor) var splitEditor
+
+    private var item: WorkspaceClient.FileItem
     private var isTemporary: Bool
 
     // swiftlint:disable:next function_body_length
@@ -35,66 +40,89 @@ struct TabBarContextMenu: ViewModifier {
             Group {
                 Button("Close Tab") {
                     withAnimation {
-                        workspace.closeTab(item: item.tabID)
+                        tabs.closeTab(item: item)
                     }
                 }
                 .keyboardShortcut("w", modifiers: [.command])
 
                 Button("Close Other Tabs") {
                     withAnimation {
-                        workspace.closeTab(where: { $0 != item.tabID })
+                        tabs.tabs.forEach { file in
+                            if file != item {
+                                tabs.closeTab(item: file)
+                            }
+                        }
                     }
                 }
                 Button("Close Tabs to the Right") {
                     withAnimation {
-                        workspace.closeTabs(after: item.tabID)
+                        if let index = tabs.tabs.firstIndex(of: item) {
+                            tabs.tabs[index...].forEach {
+                                tabs.closeTab(item: $0)
+                            }
+                        }
                     }
                 }
                 // Disable this option when current tab is the last one.
-                .disabled(workspace.selectionState.openedTabs.last?.id == item.tabID.id)
+                .disabled(tabs.tabs.last == item)
 
                 Button("Close All") {
                     withAnimation {
-                        workspace.closeTabs(items: workspace.selectionState.openedTabs)
+                        tabs.tabs.forEach {
+                            tabs.closeTab(item: $0)
+                        }
                     }
                 }
 
                 if isTemporary {
                     Button("Keep Open") {
-                        workspace.convertTemporaryTab()
+                        tabs.temporaryTab = nil
                     }
                 }
             }
 
             Divider()
 
-            if let item = item as? WorkspaceClient.FileItem {
-                Group {
-                    Button("Copy Path") {
-                        copyPath(item: item)
-                    }
-
-                    Button("Copy Relative Path") {
-                        copyRelativePath(item: item)
-                    }
+            Group {
+                Button("Copy Path") {
+                    copyPath(item: item)
                 }
 
-                Divider()
-
-                Group {
-                    Button("Show in Finder") {
-                        item.showInFinder()
-                    }
-
-                    Button("Reveal in Project Navigator") {
-                        workspace.listenerModel.highlightedFileItem = item
-                    }
-
-                    Button("Open in New Window") {
-
-                    }
-                    .disabled(true)
+                Button("Copy Relative Path") {
+                    copyRelativePath(item: item)
                 }
+            }
+
+            Divider()
+
+            Group {
+                Button("Show in Finder") {
+                    item.showInFinder()
+                }
+
+                Button("Reveal in Project Navigator") {
+                    workspace.listenerModel.highlightedFileItem = item
+                }
+
+                Button("Open in New Window") {
+
+                }
+                .disabled(true)
+            }
+
+            Divider()
+
+            Button("Split Up") {
+                moveToNewSplit(.top)
+            }
+            Button("Split Down") {
+                moveToNewSplit(.bottom)
+            }
+            Button("Split Left") {
+                moveToNewSplit(.leading)
+            }
+            Button("Split Right") {
+                moveToNewSplit(.trailing)
             }
         })
     }
@@ -106,6 +134,13 @@ struct TabBarContextMenu: ViewModifier {
     private func copyPath(item: WorkspaceClient.FileItem) {
         NSPasteboard.general.clearContents()
         NSPasteboard.general.setString(item.url.standardizedFileURL.path, forType: .string)
+    }
+
+    func moveToNewSplit(_ edge: Edge) {
+        let newTabGroup = TabGroupData(files: [item])
+        splitEditor(edge, newTabGroup)
+        tabs.closeTab(item: item)
+        workspace.tabManager.activeTabGroup = newTabGroup
     }
 
     /// Copies the relative path from the workspace folder to the given file item to the pasteboard.

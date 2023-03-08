@@ -16,7 +16,9 @@ import SwiftUI
 ///
 struct ProjectNavigatorView: View {
 
+    @EnvironmentObject var tabManager: TabManager
+
     var body: some View {
-        OutlineView()
+        OutlineView(selection: $tabManager.activeTabGroup.selected)
     }
 }

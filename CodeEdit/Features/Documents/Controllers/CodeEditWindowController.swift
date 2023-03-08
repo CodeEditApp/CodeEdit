@@ -71,6 +71,9 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
         let splitVC = CodeEditSplitViewController(workspace: workspace, feedbackPerformer: feedbackPerformer)
 
         let navigatorView = NavigatorSidebarView(workspace: workspace)
+            .environmentObject(workspace)
+            .environmentObject(workspace.tabManager)
+
         let navigator = NSSplitViewItem(
             sidebarWithViewController: NSHostingController(rootView: navigatorView)
         )
@@ -80,7 +83,9 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
         splitVC.addSplitViewItem(navigator)
 
         let workspaceView = WindowObserver(window: window!) {
-            WorkspaceView(workspace: workspace)
+            WorkspaceView()
+                .environmentObject(workspace)
+                .environmentObject(workspace.tabManager)
         }
 
         let mainContent = NSSplitViewItem(
@@ -90,6 +95,9 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
         splitVC.addSplitViewItem(mainContent)
 
         let inspectorView = InspectorSidebarView(workspace: workspace)
+            .environmentObject(workspace)
+            .environmentObject(workspace.tabManager)
+
         let inspector = NSSplitViewItem(
             viewController: NSHostingController(rootView: inspectorView)
         )
@@ -113,12 +121,10 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
         if prefs.preferences.general.tabBarStyle == .native {
             // Set titlebar background as transparent by default in order to
             // style the toolbar background in native tab bar style.
-            self.window?.titlebarAppearsTransparent = true
             self.window?.titlebarSeparatorStyle = .none
         } else {
             // In xcode tab bar style, we use default toolbar background with
             // line separator.
-            self.window?.titlebarAppearsTransparent = false
             self.window?.titlebarSeparatorStyle = .automatic
         }
         self.window?.toolbar = toolbar
@@ -234,17 +240,12 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     }
 
     private func getSelectedCodeFile() -> CodeFileDocument? {
-        guard let id = workspace?.selectionState.selectedId else { return nil }
-        guard let item = workspace?.selectionState.openFileItems.first(where: { item in
-            item.tabID == id
-        }) else { return nil }
-        guard let file = workspace?.selectionState.openedCodeFiles[item] else { return nil }
-        return file
+        workspace?.tabManager.activeTabGroup.selected?.fileDocument
     }
 
     @IBAction func saveDocument(_ sender: Any) {
         getSelectedCodeFile()?.save(sender)
-        workspace?.convertTemporaryTab()
+        workspace?.tabManager.activeTabGroup.temporaryTab = nil
     }
 
     @IBAction func openCommandPalette(_ sender: Any) {
@@ -283,11 +284,13 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
             } else {
                 let panel = OverlayPanel()
                 self.quickOpenPanel = panel
-                let contentView = QuickOpenView(
-                    state: state,
-                    onClose: { panel.close() },
-                    openFile: workspace.openTab(item:)
-                )
+
+                let contentView = QuickOpenView(state: state) {
+                    panel.close()
+                } openFile: { file in
+                    workspace.tabManager.openTab(item: file)
+                }
+
                 panel.contentView = NSHostingView(rootView: contentView)
                 window?.addChildWindow(panel, ordered: .above)
                 panel.makeKeyAndOrderFront(self)

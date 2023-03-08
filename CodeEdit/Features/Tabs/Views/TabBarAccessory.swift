@@ -10,7 +10,7 @@ import SwiftUI
 /// Accessory icon's view for tab bar.
 struct TabBarAccessoryIcon: View {
     /// Unifies icon font for tab bar accessories.
-    private static let iconFont = Font.system(size: 14, weight: .regular, design: .default)
+    static let iconFont = Font.system(size: 14, weight: .regular, design: .default)
 
     private let icon: Image
     private let action: () -> Void

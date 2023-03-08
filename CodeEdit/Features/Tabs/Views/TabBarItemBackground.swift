@@ -18,6 +18,9 @@ struct TabBarItemBackground: View {
     @Environment(\.controlActiveState)
     private var activeState
 
+    @Environment(\.isActiveTabGroup)
+    private var isActiveTabGroup
+
     private var inHoldingState: Bool {
         isPressing || isDragging
     }
@@ -38,6 +41,7 @@ struct TabBarItemBackground: View {
                              : activeState == .inactive ? 0.1 : inHoldingState ? 0.27 : 0.2
                         : 0
                 )
+                .saturation(isActiveTabGroup ? 1.0 : 0.0)
 
             // Highlight (if in dark mode)
             Color(.white)

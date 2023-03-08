@@ -58,11 +58,6 @@ class StatusBarViewModel: ObservableObject {
     /// Returns the font for status bar items to use
     private(set) var toolbarFont: Font = .system(size: 11)
 
-    private(set) var workspace: WorkspaceDocument
-
-    /// The base URL of the workspace
-    private(set) var workspaceURL: URL
-
     /// The maximum height of the drawer
     /// when isMaximized is true the height gets set to maxHeight
     private(set) var maxHeight: Double = 5000
@@ -73,29 +68,7 @@ class StatusBarViewModel: ObservableObject {
     /// The minimum height of the drawe
     private(set) var minHeight: Double = 100
 
-    /// Initialize with a GitClient
-    /// - Parameter workspaceURL: the current workspace URL
-    init(workspace: WorkspaceDocument, workspaceURL: URL) {
-        self.workspace = workspace
-        self.workspaceURL = workspaceURL
-
-        var currentHeight = workspace.getFromWorkspaceState(key: statusBarDrawerHeightStateName) as? Double
-                            ?? self.standardHeight
-        if currentHeight == 0 {
-            currentHeight = self.standardHeight
-        }
-
-        self.isExpanded = workspace.getFromWorkspaceState(key: isStatusBarDrawerCollapsedStateName) as? Bool ?? false
-        if self.isExpanded {
-            self.currentHeight = currentHeight
-        }
-    }
-
-    func saveIsExpandedToState() {
-        self.workspace.addToWorkspaceState(key: isStatusBarDrawerCollapsedStateName, value: self.isExpanded)
-    }
-
-    func saveHeightToState(height: Double) {
-        self.workspace.addToWorkspaceState(key: statusBarDrawerHeightStateName, value: height)
+    init() {
+        // !!!: Lots of things in this class can be removed, such as maxHeight, as they are defined in the UI.
     }
 }

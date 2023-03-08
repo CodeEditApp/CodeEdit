@@ -13,6 +13,11 @@ import SwiftUI
 // swiftlint:disable file_length type_body_length
 // - TODO: TabBarItemView drop-outside event handler.
 struct TabBarView: View {
+
+    @Environment(\.modifierKeys) var modifierKeys
+
+    typealias TabID = WorkspaceClient.FileItem.ID
+
     /// The height of tab bar.
     /// I am not making it a private variable because it may need to be used in outside views.
     static let height = 28.0
@@ -27,6 +32,14 @@ struct TabBarView: View {
     @EnvironmentObject
     private var workspace: WorkspaceDocument
 
+    @EnvironmentObject
+    private var tabManager: TabManager
+
+    @EnvironmentObject
+    private var tabgroup: TabGroupData
+
+    @Environment(\.splitEditor) var splitEditor
+
     /// The app preference.
     @StateObject
     private var prefs: AppPreferencesModel = .shared
@@ -35,10 +48,10 @@ struct TabBarView: View {
     ///
     /// It will be `nil` when there is no tab dragged currently.
     @State
-    private var draggingTabId: TabBarItemID?
+    private var draggingTabId: TabID?
 
     @State
-    private var onDragTabId: TabBarItemID?
+    private var onDragTabId: TabID?
 
     /// The start location of dragging.
     ///
@@ -60,7 +73,7 @@ struct TabBarView: View {
     /// I am making a copy of it because using state will hugely improve the dragging performance.
     /// Updating ObservedObject too often will generate lags.
     @State
-    private var openedTabs: [TabBarItemID] = []
+    private var openedTabs: [TabID] = []
 
     /// A map of tab width.
     ///
@@ -68,20 +81,20 @@ struct TabBarView: View {
     /// This is used to be added on the offset of current dragging tab in order to make a smooth
     /// dragging experience.
     @State
-    private var tabWidth: [TabBarItemID: CGFloat] = [:]
+    private var tabWidth: [TabID: CGFloat] = [:]
 
     /// A map of tab location (CGRect).
     ///
     /// All locations are measured dynamically.
     /// This is used to compute when we should swap two tabs based on current cursor location.
     @State
-    private var tabLocations: [TabBarItemID: CGRect] = [:]
+    private var tabLocations: [TabID: CGRect] = [:]
 
     /// A map of tab offsets.
     ///
     /// This is used to determine the tab offset of every tab (by their tab id) while dragging.
     @State
-    private var tabOffsets: [TabBarItemID: CGFloat] = [:]
+    private var tabOffsets: [TabID: CGFloat] = [:]
 
     /// The expected tab width in native tab bar style.
     ///
@@ -123,7 +136,7 @@ struct TabBarView: View {
     private func updateExpectedTabWidth(proxy: GeometryProxy) {
         expectedTabWidth = max(
             // Equally divided size of a native tab.
-            (proxy.size.width + 1) / CGFloat(workspace.selectionState.openedTabs.count) + 1,
+            (proxy.size.width + 1) / CGFloat(tabgroup.tabs.count) + 1,
             // Min size of a native tab.
             CGFloat(140)
         )
@@ -132,7 +145,7 @@ struct TabBarView: View {
     // Disable the rule because this function is implementing the drag gesture and its animations.
     // It is fairly complicated, so ignore the function body length limitation for now.
     // swiftlint:disable function_body_length cyclomatic_complexity
-    private func makeTabDragGesture(id: TabBarItemID) -> some Gesture {
+    private func makeTabDragGesture(id: TabID) -> some Gesture {
         return DragGesture(minimumDistance: 2, coordinateSpace: .global)
             .onChanged({ value in
                 if closeButtonGestureActive {
@@ -237,14 +250,18 @@ struct TabBarView: View {
                 // In order to avoid the lag due to the update of workspace state.
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.40) {
                     if draggingStartLocation == nil {
-                        workspace.reorderedTabs(openedTabs: openedTabs)
+                        tabgroup.tabs = .init(openedTabs.compactMap { id in
+                            tabgroup.tabs.first { $0.id == id }
+                        })
+                        // workspace.reorderedTabs(openedTabs: openedTabs)
+                        // TODO: Fix save state
                     }
                 }
             })
     }
     // swiftlint:enable function_body_length cyclomatic_complexity
 
-    private func makeTabItemGeometryReader(id: TabBarItemID) -> some View {
+    private func makeTabItemGeometryReader(id: TabID) -> some View {
         GeometryReader { tabItemGeoReader in
             Rectangle()
                 .foregroundColor(.clear)
@@ -272,7 +289,7 @@ struct TabBarView: View {
     /// Called when the tab count changes or the temporary tab changes.
     /// - Parameter geometryProxy: The geometry proxy to calculate the new width using.
     private func updateForTabCountChange(geometryProxy: GeometryProxy) {
-        openedTabs = workspace.selectionState.openedTabs
+        openedTabs = tabgroup.tabs.map(\.id)
 
         // Only update the expected width when user is not hovering over tabs.
         // This should give users a better experience on closing multiple tabs continuously.
@@ -295,14 +312,21 @@ struct TabBarView: View {
                             alignment: .center,
                             spacing: -1 // Negative spacing for overlapping the divider.
                         ) {
-                            ForEach(openedTabs, id: \.id) { id in
-                                if let item = workspace.selectionState.getItemByTab(id: id) {
+                            ForEach(Array(openedTabs.enumerated()), id: \.element) { index, id in
+                                if let item = tabgroup.tabs.first(where: { $0.id == id }) {
                                     TabBarItemView(
-                                        expectedWidth: $expectedTabWidth,
+                                        expectedWidth: expectedTabWidth,
                                         item: item,
-                                        draggingTabId: $draggingTabId,
-                                        onDragTabId: $onDragTabId,
+                                        index: index,
+                                        draggingTabId: draggingTabId,
+                                        onDragTabId: onDragTabId,
                                         closeButtonGestureActive: $closeButtonGestureActive
+                                    )
+                                    .transition(
+                                        .asymmetric(
+                                            insertion: .offset(x: -14).combined(with: .opacity),
+                                            removal: .opacity
+                                        )
                                     )
                                     .frame(height: TabBarView.height)
                                     .background(makeTabItemGeometryReader(id: id))
@@ -330,37 +354,42 @@ struct TabBarView: View {
                         // This padding is to hide dividers at two ends under the accessory view divider.
                         .padding(.horizontal, prefs.preferences.general.tabBarStyle == .native ? -1 : 0)
                         .onAppear {
-                            openedTabs = workspace.selectionState.openedTabs
+                            openedTabs = tabgroup.tabs.map(\.id)
                             // On view appeared, compute the initial expected width for tabs.
                             updateExpectedTabWidth(proxy: geometryProxy)
                             // On first tab appeared, jump to the corresponding position.
-                            scrollReader.scrollTo(workspace.selectionState.selectedId)
+                            scrollReader.scrollTo(tabgroup.selected)
                         }
-                        .onChange(of: workspace.selectionState.openedTabs) { _ in
-                            DispatchQueue.main.asyncAfter(
-                                deadline: .now() + .milliseconds(
-                                    prefs.preferences.general.tabBarStyle == .native ? 150 : 200
-                                )
-                            ) {
-                                guard let selectedID = workspace.selectionState.selectedId else { return }
-                                scrollReader.scrollTo(selectedID)
+                        .onChange(of: tabgroup.tabs) { [tabs = tabgroup.tabs] newValue in
+                            if tabs.count == newValue.count {
+                                updateForTabCountChange(geometryProxy: geometryProxy)
+                            } else {
+                                withAnimation(
+                                    .easeOut(duration: prefs.preferences.general.tabBarStyle == .native ? 0.15 : 0.20)
+                                ) {
+                                    updateForTabCountChange(geometryProxy: geometryProxy)
+                                }
+                            }
+                            Task {
+                                try? await Task.sleep(for: .milliseconds(300))
+                                withAnimation {
+                                    scrollReader.scrollTo(tabgroup.selected?.id)
+                                }
                             }
                         }
                         // When selected tab is changed, scroll to it if possible.
-                        .onChange(of: workspace.selectionState.selectedId) { targetId in
-                            guard let selectedId = targetId else { return }
-                            scrollReader.scrollTo(selectedId)
+                        .onChange(of: tabgroup.selected) { newValue in
+                            withAnimation {
+                                scrollReader.scrollTo(newValue?.id)
+                            }
                         }
-                        // When tabs are changing, re-compute the expected tab width.
-                        .onChange(of: workspace.selectionState.openedTabs.count) { _ in
-                            updateForTabCountChange(geometryProxy: geometryProxy)
-                        }
-                        .onChange(of: workspace.selectionState.temporaryTab, perform: { _ in
-                            updateForTabCountChange(geometryProxy: geometryProxy)
-                        })
+
                         // When window size changes, re-compute the expected tab width.
                         .onChange(of: geometryProxy.size.width) { _ in
                             updateExpectedTabWidth(proxy: geometryProxy)
+                            withAnimation {
+                                scrollReader.scrollTo(tabgroup.selected?.id)
+                            }
                         }
                         // When user is not hovering anymore, re-compute the expected tab width immediately.
                         .onHover { isHovering in
@@ -373,18 +402,18 @@ struct TabBarView: View {
                         }
                         .frame(height: TabBarView.height)
                     }
+
+                    // To fill up the parent space of tab bar.
+                    .frame(maxWidth: .infinity)
+                    .background {
+                        if prefs.preferences.general.tabBarStyle == .native {
+                            TabBarNativeInactiveBackground()
+                        }
+                    }
                 }
-                // When there is no opened file, hide the scroll view, but keep the background.
-                .opacity(
-                    workspace.selectionState.openedTabs.isEmpty && workspace.selectionState.temporaryTab == nil
-                    ? 0.0
-                    : 1.0
-                )
-                // To fill up the parent space of tab bar.
-                .frame(maxWidth: .infinity)
                 .background {
                     if prefs.preferences.general.tabBarStyle == .native {
-                        TabBarNativeInactiveBackground()
+                        TabBarAccessoryNativeBackground(dividerAt: .none)
                     }
                 }
             }
@@ -413,21 +442,89 @@ struct TabBarView: View {
 
     private var leadingAccessories: some View {
         HStack(spacing: 2) {
-            TabBarAccessoryIcon(
-                icon: .init(systemName: "chevron.left"),
-                action: {} // TODO: Implement
-            )
-            .foregroundColor(.secondary)
-            .buttonStyle(.plain)
-            .help("Navigate back")
-            TabBarAccessoryIcon(
-                icon: .init(systemName: "chevron.right"),
-                action: {} // TODO: Implement
-            )
-            .foregroundColor(.secondary)
-            .buttonStyle(.plain)
-            .help("Navigate forward")
+            if tabManager.tabGroups.findSomeTabGroup(except: tabgroup) != nil {
+                TabBarAccessoryIcon(
+                    icon: .init(systemName: "multiply"),
+                    action: {
+                        tabgroup.close()
+                        if tabManager.activeTabGroup == tabgroup {
+                            tabManager.activeTabGroupHistory.removeAll { $0() == nil }
+                            tabManager.activeTabGroup = tabManager.activeTabGroupHistory.removeFirst()()!
+                        }
+                        tabManager.flatten()
+                    }
+                )
+                .help("Close Tab Group")
+
+                Divider()
+                    .frame(height: 10)
+                    .padding(.horizontal, 4)
+            }
+
+            Group {
+                Menu {
+                    ForEach(
+                        Array(tabgroup.history.dropFirst(tabgroup.historyOffset+1).enumerated()),
+                        id: \.offset
+                    ) { index, tab in
+                        Button {
+                            tabManager.activeTabGroup = tabgroup
+                            tabgroup.historyOffset += index + 1
+                        } label: {
+                            HStack {
+                                tab.icon
+                                Text(tab.fileName)
+                            }
+                        }
+                    }
+                } label: {
+                    Image(systemName: "chevron.left")
+                        .controlSize(.regular)
+                        .opacity(
+                            tabgroup.historyOffset == tabgroup.history.count-1 || tabgroup.history.isEmpty
+                            ? 0.5 : 1.0
+                        )
+                } primaryAction: {
+                    tabManager.activeTabGroup = tabgroup
+                    tabgroup.historyOffset += 1
+                }
+                .disabled(tabgroup.historyOffset == tabgroup.history.count-1 || tabgroup.history.isEmpty)
+                .help("Navigate back")
+
+                Menu {
+                    ForEach(
+                        Array(tabgroup.history.prefix(tabgroup.historyOffset).reversed().enumerated()),
+                        id: \.offset
+                    ) { index, tab in
+                        Button {
+                            tabManager.activeTabGroup = tabgroup
+                            tabgroup.historyOffset -= index + 1
+                        } label: {
+                            HStack {
+                                tab.icon
+                                Text(tab.fileName)
+                            }
+                        }
+                    }
+                } label: {
+                    Image(systemName: "chevron.right")
+                        .controlSize(.regular)
+                        .opacity(tabgroup.historyOffset == 0 ? 0.5 : 1.0)
+                } primaryAction: {
+                    tabManager.activeTabGroup = tabgroup
+                    tabgroup.historyOffset -= 1
+                }
+                .disabled(tabgroup.historyOffset == 0)
+                .help("Navigate forward")
+            }
+            .controlSize(.small)
+            .font(TabBarAccessoryIcon.iconFont)
+            .frame(height: TabBarView.height - 2)
+            .padding(.horizontal, 4)
+            .contentShape(Rectangle())
         }
+        .foregroundColor(.secondary)
+        .buttonStyle(.plain)
         .padding(.horizontal, 7)
         .opacity(activeState != .inactive ? 1.0 : 0.5)
         .frame(maxHeight: .infinity) // Fill out vertical spaces.
@@ -454,13 +551,7 @@ struct TabBarView: View {
             .foregroundColor(.secondary)
             .buttonStyle(.plain)
             .help("Enable Code Review")
-            TabBarAccessoryIcon(
-                icon: .init(systemName: "square.split.2x1"),
-                action: {} // TODO: Implement
-            )
-            .foregroundColor(.secondary)
-            .buttonStyle(.plain)
-            .help("Split View")
+            splitviewButton
         }
         .padding(.horizontal, 7)
         .opacity(activeState != .inactive ? 1.0 : 0.5)
@@ -472,26 +563,57 @@ struct TabBarView: View {
         }
     }
 
+    var splitviewButton: some View {
+        Group {
+            switch (tabgroup.parent!.axis, modifierKeys.contains(.option)) {
+            case (.horizontal, true), (.vertical, false):
+                TabBarAccessoryIcon(icon: Image(systemName: "square.split.1x2")) {
+                    split(edge: .bottom)
+                }
+                .help("Split Vertically")
+
+            case (.vertical, true), (.horizontal, false):
+                TabBarAccessoryIcon(icon: Image(systemName: "square.split.2x1")) {
+                    split(edge: .trailing)
+                }
+                .help("Split Horizontally")
+            }
+        }
+        .foregroundColor(.secondary)
+        .buttonStyle(.plain)
+    }
+
+    func split(edge: Edge) {
+        let newTabgroup: TabGroupData
+        if let tab = tabgroup.selected {
+            newTabgroup = .init(files: [tab])
+        } else {
+            newTabgroup = .init()
+        }
+        splitEditor(edge, newTabgroup)
+        tabManager.activeTabGroup = newTabgroup
+    }
+
     private struct TabBarItemOnDropDelegate: DropDelegate {
-        private let currentTabId: TabBarItemID
+        private let currentTabId: TabID
         @Binding
-        private var openedTabs: [TabBarItemID]
+        private var openedTabs: [TabID]
         @Binding
-        private var onDragTabId: TabBarItemID?
+        private var onDragTabId: TabID?
         @Binding
         private var onDragLastLocation: CGPoint?
         @Binding
         private var isOnDragOverTabs: Bool
         @Binding
-        private var tabWidth: [TabBarItemID: CGFloat]
+        private var tabWidth: [TabID: CGFloat]
 
         public init(
-            currentTabId: TabBarItemID,
-            openedTabs: Binding<[TabBarItemID]>,
-            onDragTabId: Binding<TabBarItemID?>,
+            currentTabId: TabID,
+            openedTabs: Binding<[TabID]>,
+            onDragTabId: Binding<TabID?>,
             onDragLastLocation: Binding<CGPoint?>,
             isOnDragOverTabs: Binding<Bool>,
-            tabWidth: Binding<[TabBarItemID: CGFloat]>
+            tabWidth: Binding<[TabID: CGFloat]>
         ) {
             self.currentTabId = currentTabId
             self._openedTabs = openedTabs

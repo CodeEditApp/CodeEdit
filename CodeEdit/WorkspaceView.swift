@@ -9,15 +9,15 @@ import SwiftUI
 import AppKit
 
 struct WorkspaceView: View {
-    init(workspace: WorkspaceDocument) {
-        self.workspace = workspace
-    }
 
     let tabBarHeight = 28.0
     private var path: String = ""
 
-    @ObservedObject
-    var workspace: WorkspaceDocument
+    @EnvironmentObject
+    private var workspace: WorkspaceDocument
+
+    @EnvironmentObject
+    private var tabManager: TabManager
 
     @StateObject
     private var prefs: AppPreferencesModel = .shared
@@ -30,74 +30,48 @@ struct WorkspaceView: View {
     @State
     private var showingAlert = false
 
-    @State
-    private var alertTitle = ""
+    @Environment(\.colorScheme)
+    private var colorScheme
 
     @State
-    private var alertMsg = ""
+    private var terminalCollapsed = true
 
-    @State
-    var showInspector = true
-
-    @Environment(\.colorScheme) var colorScheme
-
-    var noEditor: some View {
-        Text("No Editor")
-            .font(.system(size: 17))
-            .foregroundColor(.secondary)
-            .frame(minHeight: 0)
-            .clipped()
-    }
-
-    @ViewBuilder var tabContent: some View {
-        if let tabID = workspace.selectionState.selectedId {
-            switch tabID {
-            case .codeEditor:
-                WorkspaceCodeFileView()
-            case .extensionInstallation:
-                if let plugin = workspace.selectionState.selected as? Plugin {
-                    ExtensionInstallationView(plugin: plugin)
-                        .frame(alignment: .center)
-                }
-            }
-        } else {
-            noEditor
-        }
-    }
+    @FocusState
+    var focusedEditor: TabGroupData?
 
     var body: some View {
-        ZStack {
-            if workspace.workspaceClient != nil, let model = workspace.statusBarModel {
-                ZStack {
-                    tabContent
-                        .animation(nil, value: UUID())
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .safeAreaInset(edge: .top, spacing: 0) {
-                    VStack(spacing: 0) {
-                        TabBarView()
-                        TabBarBottomDivider()
+        if workspace.workspaceClient != nil {
+            VStack {
+                SplitViewReader { proxy in
+                    SplitView(axis: .vertical) {
+
+                        EditorView(tabgroup: tabManager.tabGroups, focus: $focusedEditor)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .safeAreaInset(edge: .bottom, spacing: 0) {
+                                StatusBarView(proxy: proxy, collapsed: $terminalCollapsed)
+                            }
+
+                        StatusBarDrawer()
+                            .collapsable()
+                            .collapsed($terminalCollapsed)
+                            .frame(minHeight: 200, maxHeight: 400)
+
+                    }
+
+                    .edgesIgnoringSafeArea(.top)
+                    .environmentObject(workspace.statusBarModel)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .onChange(of: focusedEditor) { newValue in
+                        if let newValue {
+                            tabManager.activeTabGroup = newValue
+                        }
+                    }
+                    .onChange(of: tabManager.activeTabGroup) { newValue in
+                        if newValue != focusedEditor {
+                            focusedEditor = newValue
+                        }
                     }
                 }
-                .safeAreaInset(edge: .bottom) {
-                    StatusBarView()
-                        .environmentObject(model)
-                }
-            } else {
-                EmptyView()
-            }
-        }
-        .environmentObject(workspace)
-        .background(EffectView(.contentBackground))
-        .alert(alertTitle, isPresented: $showingAlert, actions: {
-            Button(
-                action: { showingAlert = false },
-                label: { Text("OK") }
-            )
-        }, message: { Text(alertMsg) })
-        .onChange(of: workspace.selectionState.selectedId) { newValue in
-            if newValue == nil {
-                window.subtitle = ""
             }
         }
     }
