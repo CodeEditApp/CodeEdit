@@ -59,7 +59,7 @@ struct FindNavigatorModeSelector: View {
         }
     }
 
-    private func updateSelectedMode(_ searchMode: SearchModeModel, searchModel: input [SearchModeModel]) {
+    private func updateSelectedMode(_ searchMode: SearchModeModel, searchModel: inout [SearchModeModel]) {
         if let secondMode = searchMode.children.first {
             if let selectedSecondMode = selectedMode.second, searchMode.children.contains(selectedSecondMode) {
                 searchModel.append(contentsOf: selectedMode.dropFirst())
