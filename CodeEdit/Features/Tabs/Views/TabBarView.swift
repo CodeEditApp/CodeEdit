@@ -524,7 +524,7 @@ struct TabBarView: View {
         .foregroundColor(.secondary)
         .buttonStyle(.plain)
         .padding(.horizontal, 7)
-        .brightness(activeState == .inactive ? -0.3 : 0)
+        .opacity(activeState != .inactive ? 1.0 : 0.5)
         .frame(maxHeight: .infinity) // Fill out vertical spaces.
         .background {
             if prefs.preferences.general.tabBarStyle == .native {

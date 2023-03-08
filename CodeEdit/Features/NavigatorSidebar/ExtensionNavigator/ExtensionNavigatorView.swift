@@ -18,7 +18,6 @@ struct ExtensionNavigatorView: View {
         VStack {
             Divider() // TODO: fix this workaround because when switching tabs without this, the app crashes
             List {
-
                 if !workspace.extensionNavigatorData.listFull {
                     HStack {
                         Spacer()

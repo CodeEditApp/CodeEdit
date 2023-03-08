@@ -38,8 +38,11 @@ struct InspectorSidebarView: View {
                     )
                 case 2:
                     QuickHelpInspectorView().padding(5)
-                default: EmptyView()
+                default:
+                    NoSelectionInspectorView()
                 }
+            } else {
+                NoSelectionInspectorView()
             }
         }
         .frame(

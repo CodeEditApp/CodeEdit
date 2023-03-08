@@ -65,7 +65,6 @@ struct WorkspaceTabGroupView: View {
         }
         .focused($focus, equals: tabgroup)
         .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("CodeEditor.didBeginEditing"))) { _ in
-            print("Not temporary anymore")
             tabgroup.temporaryTab = nil
         }
     }

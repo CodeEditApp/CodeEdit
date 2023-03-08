@@ -58,8 +58,7 @@ struct BreadcrumbsView: View {
         }
         .frame(height: Self.height, alignment: .center)
         .opacity(activeState == .inactive ? 0.8 : 1.0)
-        .saturation(isActiveTabGroup ? 1.0 : 0.0)
-        .brightness(isActiveTabGroup ? 0.0 : -0.1)
+        .grayscale(isActiveTabGroup ? 0.0 : 1.0)
         .background(EffectView(.headerView).frame(height: Self.height))
     }
 

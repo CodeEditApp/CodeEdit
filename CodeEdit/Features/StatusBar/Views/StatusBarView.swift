@@ -79,7 +79,6 @@ struct StatusBarView: View {
 
 extension View {
     func cursor(_ cursor: NSCursor) -> some View {
-        // Using onContinuousHover instead of onHover, as the latter is less reliable.
         onHover {
             if $0 {
                 cursor.push()
@@ -87,16 +86,5 @@ extension View {
                 cursor.pop()
             }
         }
-//        onContinuousHover { phase in
-//            print(phase)
-//            switch phase {
-//            case .active:
-//                cursor.push()
-//            case .ended:
-//                while NSCursor.current == cursor {
-//                    cursor.pop()
-//                }
-//            }
-//        }
     }
 }
