@@ -7,7 +7,7 @@
 import Foundation
 
 /**
-The object of this class intented to be a hearth of command palette. This object only exists as singleton.
+The object of this class intended to be a hearth of command palette. This object only exists as singleton.
  In Order to access its instance use `CommandManager.shared`
 
 ```
@@ -79,7 +79,7 @@ struct CommandClosureWrapper {
     let workspaceClientClosure: WorkspaceClientClosure?
 
     /// Initializer for closure wrapper
-    /// - Parameter closure: Function that containts all logic to run command.
+    /// - Parameter closure: Function that contains all logic to run command.
     init(closure: @escaping WorkspaceClientClosure) {
        self.workspaceClientClosure = closure
     }
