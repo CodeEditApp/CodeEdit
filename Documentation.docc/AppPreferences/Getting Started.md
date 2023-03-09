@@ -77,7 +77,7 @@ public extension YourNewSection: Codable {
 }
 ```
 
-Now lets add the new section to ``AppPreferences`` like this:
+Now let's add the new section to ``AppPreferences`` like this:
 
 ```swift
 public struct AppPreferences: Codable {
