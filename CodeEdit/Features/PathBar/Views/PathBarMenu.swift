@@ -44,9 +44,9 @@ final class PathBarMenu: NSMenu, NSMenuDelegate {
         }
     }
 
-    private func generateSubmenu(_ fileItem: WorkspaceClient.FileItem) -> BreadcrumsMenu? {
+    private func generateSubmenu(_ fileItem: WorkspaceClient.FileItem) -> PathBarMenu? {
         if let children = fileItem.children {
-            let menu = BreadcrumsMenu(
+            let menu = PathBarMenu(
                 fileItems: children,
                 tappedOpenFile: tappedOpenFile
             )
