@@ -1,13 +1,12 @@
 name: ✨ Feature request
 description: Suggest an idea for this project
-title: ✨ YOUR_DESCRIPTION
+title: ✨ <feature title>
 labels: enhancement
 
 body:
   - type: textarea
     attributes:
       label: Is your feature request related to a problem? Please describe.
-      render: "TEST"
       placeholder: A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
     validations:
       required: false
