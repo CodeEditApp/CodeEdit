@@ -35,6 +35,15 @@ struct TextEditingPreferencesView: View {
         return formatter
     }
 
+    private var fontSizeFormatter: NumberFormatter {
+        let formatter = NumberFormatter()
+        formatter.allowsFloats = false
+        formatter.minimum = 1
+        formatter.maximum = 288
+
+        return formatter
+    }
+
     var body: some View {
         PreferencesContent {
             PreferencesSection("Default Tab Width") {
@@ -52,6 +61,9 @@ struct TextEditingPreferencesView: View {
             }
             PreferencesSection("Font") {
                 fontSelector
+            }
+            PreferencesSection("Font Size") {
+                fontSizeSelector
             }
             PreferencesSection("Line Height") {
                 lineHeight
@@ -79,6 +91,20 @@ struct TextEditingPreferencesView: View {
             FontPicker(
                 "\(prefs.preferences.textEditing.font.name) \(prefs.preferences.textEditing.font.size)",
                 name: $prefs.preferences.textEditing.font.name, size: $prefs.preferences.textEditing.font.size
+            )
+        }
+    }
+
+    private var fontSizeSelector: some View {
+        HStack(spacing: 5) {
+            TextField("", value: $prefs.preferences.textEditing.font.size, formatter: fontSizeFormatter)
+                .multilineTextAlignment(.trailing)
+                .frame(width: 40)
+            Stepper(
+                "Font Size:",
+                value: $prefs.preferences.textEditing.font.size,
+                in: 1...288,
+                step: 1
             )
         }
     }
