@@ -43,7 +43,7 @@ class StatusBarViewModel: ObservableObject {
     @Published
     var currentHeight: Double = 0
 
-    /// Indicates whether the drawer is beeing resized or not
+    /// Indicates whether the drawer is being resized or not
     @Published
     var isDragging: Bool = false
 
@@ -65,7 +65,7 @@ class StatusBarViewModel: ObservableObject {
     /// The default height of the drawer
     private(set) var standardHeight: Double = 300
 
-    /// The minimum height of the drawe
+    /// The minimum height of the drawer
     private(set) var minHeight: Double = 100
 
     init() {
