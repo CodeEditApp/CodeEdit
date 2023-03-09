@@ -1,13 +1,13 @@
 //
-//  BreadcrumbsView.swift
-//  CodeEditModules/Breadcrumbs
+//  PathBarView.swift
+//  CodeEditModules/PathBar
 //
 //  Created by Lukas Pistrol on 17.03.22.
 //
 
 import SwiftUI
 
-struct BreadcrumbsView: View {
+struct PathBarView: View {
 
     private let file: WorkspaceClient.FileItem
     private let tappedOpenFile: (WorkspaceClient.FileItem) -> Void
@@ -50,7 +50,7 @@ struct BreadcrumbsView: View {
                     if fileItem.parent != nil {
                         chevron
                     }
-                    BreadcrumbsComponent(fileItem: fileItem, tappedOpenFile: tappedOpenFile)
+                    PathBarComponent(fileItem: fileItem, tappedOpenFile: tappedOpenFile)
                         .padding(.leading, 2.5)
                 }
             }

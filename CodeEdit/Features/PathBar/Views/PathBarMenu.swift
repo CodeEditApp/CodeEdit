@@ -1,5 +1,5 @@
 //
-//  BreadcrumbsMenu.swift
+//  PathBarMenu.swift
 //  CodeEditModules/Breadcrumbs
 //
 //  Created by Ziyuan Zhao on 2022/3/29.
@@ -7,7 +7,7 @@
 
 import AppKit
 
-final class BreadcrumsMenu: NSMenu, NSMenuDelegate {
+final class PathBarMenu: NSMenu, NSMenuDelegate {
     private let fileItems: [WorkspaceClient.FileItem]
     private let tappedOpenFile: (WorkspaceClient.FileItem) -> Void
 
@@ -20,7 +20,7 @@ final class BreadcrumsMenu: NSMenu, NSMenuDelegate {
         super.init(title: "")
         delegate = self
         fileItems.forEach { item in
-            let menuItem = BreadcrumbsMenuItem(
+            let menuItem = PathBarMenuItem(
                 fileItem: item
             ) { item in
                 tappedOpenFile(item)
@@ -56,7 +56,7 @@ final class BreadcrumsMenu: NSMenu, NSMenuDelegate {
     }
 }
 
-final class BreadcrumbsMenuItem: NSMenuItem {
+final class PathBarMenuItem: NSMenuItem {
     private let fileItem: WorkspaceClient.FileItem
     private let tappedOpenFile: (WorkspaceClient.FileItem) -> Void
 
