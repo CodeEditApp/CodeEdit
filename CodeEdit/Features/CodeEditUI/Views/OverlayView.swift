@@ -9,23 +9,18 @@ import Foundation
 import SwiftUI
 
 struct OverlayView<RowView: View, PreviewView: View, Option: Identifiable & Hashable>: View {
-    @ViewBuilder
-    let rowViewBuilder: ((Option) -> RowView)
+    @ViewBuilder let rowViewBuilder: ((Option) -> RowView)
+    @ViewBuilder let previewViewBuilder: ((Option) -> PreviewView)?
 
-    @ViewBuilder
-    let previewViewBuilder: ((Option) -> PreviewView)?
+    @Binding var options: [Option]
+    @Binding var text: String
 
-    @Binding
-    var options: [Option]
+    @State var selection: Option?
+    @State var previewVisible: Bool = true
 
-    @State
-    var selection: Option?
-
-    @Binding
-    var text: String
     let title: String
     let image: Image
-    let showsPreview: Bool
+    let hasPreview: Bool
     let onRowClick: ((Option) -> Void)
     let onClose: (() -> Void)
     let alwaysShowOptions: Bool
@@ -51,7 +46,7 @@ struct OverlayView<RowView: View, PreviewView: View, Option: Identifiable & Hash
         self.previewViewBuilder = preview
         self.onRowClick = onRowClick
         self.onClose = onClose
-        self.showsPreview = preview != nil
+        self.hasPreview = preview != nil
         self.alwaysShowOptions = alwaysShowOptions
         self.optionRowHeight = optionRowHeight
     }
@@ -84,6 +79,12 @@ struct OverlayView<RowView: View, PreviewView: View, Option: Identifiable & Hash
                                 }
                             }
                         }
+                    if hasPreview {
+                        PreviewToggle(previewVisible: $previewVisible)
+                            .onTapGesture {
+                                previewVisible = !previewVisible
+                            }
+                    }
                 }
                 .padding(.vertical, 12)
                 .padding(.horizontal, 12)
@@ -98,7 +99,7 @@ struct OverlayView<RowView: View, PreviewView: View, Option: Identifiable & Hash
                         Text("No matching options")
                             .font(.system(size: 17))
                             .foregroundColor(.secondary)
-                            .frame(maxWidth: showsPreview ? 272 : .infinity, maxHeight: .infinity)
+                            .frame(maxWidth: hasPreview ? 272 : .infinity, maxHeight: .infinity)
                     } else {
                         NSTableViewWrapper(
                             data: options,
@@ -106,9 +107,9 @@ struct OverlayView<RowView: View, PreviewView: View, Option: Identifiable & Hash
                             selection: $selection,
                             itemView: rowViewBuilder
                         )
-                        .frame(maxWidth: showsPreview ? 272 : .infinity)
+                        .frame(maxWidth: hasPreview && previewVisible ? 272 : .infinity)
                     }
-                    if showsPreview {
+                    if hasPreview && previewVisible {
                         Divider()
                         if options.isEmpty {
                             Spacer()
@@ -173,5 +174,30 @@ struct OverlayView<RowView: View, PreviewView: View, Option: Identifiable & Hash
             .opacity(0)
             .keyboardShortcut(.downArrow, modifiers: [])
             .accessibilityLabel("Select Down")
+    }
+}
+
+struct PreviewToggle: View {
+    @Binding var previewVisible: Bool
+
+    var body: some View {
+        ZStack {
+            Rectangle()
+                .fill(Color(NSColor.secondaryLabelColor))
+                .frame(width: previewVisible ? 12 : 14, height: 1)
+                .offset(CGSize(width: 0, height: -2.5))
+            if !previewVisible {
+                Rectangle()
+                    .fill(Color(NSColor.secondaryLabelColor))
+                    .frame(width: 1, height: 8)
+                    .offset(CGSize(width: -2.5, height: 2))
+            }
+            RoundedRectangle(cornerRadius: 2, style: .continuous)
+                .strokeBorder(Color(NSColor.secondaryLabelColor), lineWidth: 1)
+                .frame(width: previewVisible ? 14 : 16, height: 14)
+        }
+        .frame(width: 16, height: 16)
+        .padding(4)
+        .contentShape(Rectangle())
     }
 }
