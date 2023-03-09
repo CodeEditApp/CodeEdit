@@ -4,36 +4,33 @@ title: ✨ YOUR_DESCRIPTION
 labels: enhancement
 
 body:
-  - type: markdown
+  - type: textarea
     attributes:
       label: Is your feature request related to a problem? Please describe.
-      value: "### Problem"
+      render: "TEST"
       placeholder: A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
     validations:
       required: false
 
-  - type: markdown
+  - type: textarea
     attributes:
       label: Describe the solution you'd like
-      value: "### Description"
       placeholder: >-
         A clear and concise description of what you would like to happen.
     validations:
       required: true
       
-  - type: markdown
+  - type: textarea
     attributes:
       label: Describe alternatives you've considered
-      value: "### Alternatives"
       placeholder: >-
         A clear and concise description of any alternative solutions or features you've considered.
     validations:
       required: true
 
-  - type: markdown
+  - type: textarea
     attributes:
       label: Additional context
-      value: "### Context"
       placeholder: >-
         Add any other context or screenshots about the feature request here.
     validations:
