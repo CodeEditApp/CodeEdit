@@ -97,7 +97,7 @@ extension AppPreferences {
         /// Indicates whether or not to use a custom font
         var customFont: Bool = false
 
-        /// The font size for the font
+        /// The font size for the custom font
         var size: Int = 12
 
         /// The name of the custom font
