@@ -4,7 +4,7 @@
 
 <!--- REQUIRED: Describe what changed in detail -->
 
-### Related Issue
+### Related Issues
 
 <!--- REQUIRED: Tag all related issues (e.g. * #123) -->
 <!--- If this PR resolves the issue please specify (e.g. * closes #123) -->
