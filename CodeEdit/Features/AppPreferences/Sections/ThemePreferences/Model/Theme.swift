@@ -30,7 +30,7 @@ struct Theme: Identifiable, Codable, Equatable, Hashable, Loopable {
     /// The `author` of the theme
     var author: String
 
-    /// The `licence` of the theme
+    /// The `license` of the theme
     var license: String
 
     /// A short `description` of the theme

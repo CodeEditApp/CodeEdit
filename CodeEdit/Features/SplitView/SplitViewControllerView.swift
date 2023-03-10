@@ -1,5 +1,5 @@
 //
-//  EditorSplitView.swift
+//  SplitViewControllerView.swift
 //  CodeEdit
 //
 //  Created by Wouter Hennen on 20/02/2023.

@@ -1,6 +1,6 @@
 //
-//  BreadcrumbsComponent.swift
-//  CodeEditModules/Breadcrumbs
+//  PathBar.swift
+//  CodeEditModules/PathBar
 //
 //  Created by Lukas Pistrol on 18.03.22.
 //
@@ -8,7 +8,7 @@
 import SwiftUI
 import Combine
 
-struct BreadcrumbsComponent: View {
+struct PathBarComponent: View {
 
     private let fileItem: WorkspaceClient.FileItem
     private let tappedOpenFile: (WorkspaceClient.FileItem) -> Void
@@ -48,7 +48,7 @@ struct BreadcrumbsComponent: View {
     var body: some View {
         NSPopUpButtonView(selection: $selection) {
             let button = NSPopUpButton()
-            button.menu = BreadcrumsMenu(fileItems: siblings, tappedOpenFile: tappedOpenFile)
+            button.menu = PathBarMenu(fileItems: siblings, tappedOpenFile: tappedOpenFile)
             button.font = .systemFont(ofSize: NSFont.systemFontSize(for: .small))
             button.isBordered = false
             (button.cell as? NSPopUpButtonCell)?.arrowPosition = .noArrow
