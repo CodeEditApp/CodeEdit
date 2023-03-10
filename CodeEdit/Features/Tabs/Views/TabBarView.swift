@@ -445,10 +445,10 @@ struct TabBarView: View {
             if tabManager.tabGroups.findSomeTabGroup(except: tabgroup) != nil {
                 TabBarAccessoryIcon(
                     icon: .init(systemName: "multiply"),
-                    action: {
-                        tabgroup.close()
+                    action: { [weak tabgroup] in
+                        tabgroup?.close()
                         if tabManager.activeTabGroup == tabgroup {
-                            tabManager.activeTabGroupHistory.removeAll { $0() == nil }
+                            tabManager.activeTabGroupHistory.removeAll { $0() == nil || $0() == tabgroup }
                             tabManager.activeTabGroup = tabManager.activeTabGroupHistory.removeFirst()()!
                         }
                         tabManager.flatten()

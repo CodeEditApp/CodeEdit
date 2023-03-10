@@ -71,17 +71,6 @@ struct WorkspaceView: View {
                             focusedEditor = newValue
                         }
                     }
-                    .overlay {
-                        Button("Clear") {
-                            switch tabManager.tabGroups {
-                            case .one(let data):
-                                print(_getRetainCount(data))
-                            case .horizontal(let data), .vertical(let data):
-                                print(_getRetainCount(data))
-                            }
-                            tabManager.tabGroups = .one(.init())
-                        }
-                    }
                 }
             }
         }

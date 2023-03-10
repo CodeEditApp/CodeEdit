@@ -72,10 +72,6 @@ final class TabGroupData: ObservableObject, Identifiable {
         self.selected = selected ?? files.first
     }
 
-    deinit {
-        print("Deinit tabgroupdata")
-    }
-
     /// Closes the tabgroup.
     func close() {
         parent?.closeTabGroup(with: id)
