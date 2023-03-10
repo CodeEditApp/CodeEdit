@@ -16,7 +16,7 @@ body:
     attributes:
       label: Alternatives considered
       placeholder: >-
-        A clear and concise description of any alternative solutions or features you've considered...
+        Any alternative solutions or features you've considered...
 
   - type: textarea
     attributes:
