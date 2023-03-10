@@ -1,36 +1,31 @@
 name: ✨ Feature request
 description: Suggest an idea for this project
-title: ✨ YOUR_DESCRIPTION
+title: ✨ <feature title>
 labels: enhancement
 
 body:
-  - type: input
-    attributes:
-      label: Is your feature request related to a problem? Please describe.
-      placeholder: A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
-    validations:
-      required: false
-
   - type: textarea
     attributes:
-      label: Describe the solution you'd like
+      label: Description
       placeholder: >-
-        A clear and concise description of what you want to happen.
+        A clear and concise description of what you would like to happen...
     validations:
       required: true
       
   - type: textarea
     attributes:
-      label: Describe alternatives you've considered
+      label: Alternatives Considered
       placeholder: >-
-        A clear and concise description of any alternative solutions or features you've considered.
-    validations:
-      required: true
+        Any alternative solutions or features you've considered...
 
   - type: textarea
     attributes:
-      label: Additional context
+      label: Additional Context
       placeholder: >-
-        Add any other context or screenshots about the feature request here.
-    validations:
-      required: true
+        Any other context or considerations about the feature request...
+      
+  - type: textarea
+    attributes:
+      label: Screenshots
+      placeholder: >-
+        If applicable, please provide relevant screenshots or screen recordings...
