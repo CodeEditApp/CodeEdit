@@ -565,7 +565,7 @@ struct TabBarView: View {
 
     var splitviewButton: some View {
         Group {
-            switch (tabgroup.parent!.axis, modifierKeys.contains(.option)) {
+            switch (tabgroup.parent?.axis, modifierKeys.contains(.option)) {
             case (.horizontal, true), (.vertical, false):
                 TabBarAccessoryIcon(icon: Image(systemName: "square.split.1x2")) {
                     split(edge: .bottom)
@@ -577,6 +577,9 @@ struct TabBarView: View {
                     split(edge: .trailing)
                 }
                 .help("Split Horizontally")
+
+            default:
+                EmptyView()
             }
         }
         .foregroundColor(.secondary)

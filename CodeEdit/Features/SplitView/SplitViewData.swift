@@ -72,4 +72,8 @@ class SplitViewData: ObservableObject {
             tabgroups[index].flatten(parent: self)
         }
     }
+
+    deinit {
+        print("Deinit splitviewdata")
+    }
 }
