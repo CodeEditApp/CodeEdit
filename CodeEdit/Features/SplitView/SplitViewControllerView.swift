@@ -9,11 +9,12 @@ import SwiftUI
 
 struct SplitViewControllerView: NSViewControllerRepresentable {
 
+    var axis: Axis
     var children: _VariadicView.Children
-    var viewController: SplitViewController
+    @Binding var viewController: () -> SplitViewController?
 
     func makeNSViewController(context: Context) -> SplitViewController {
-        return viewController
+        context.coordinator
     }
 
     func updateNSViewController(_ controller: SplitViewController, context: Context) {
@@ -58,15 +59,21 @@ struct SplitViewControllerView: NSViewControllerRepresentable {
             }
         }
     }
+
+    func makeCoordinator() -> SplitViewController {
+        SplitViewController(parent: self, axis: axis)
+    }
 }
 
 final class SplitViewController: NSSplitViewController {
 
     var items: [SplitViewItem] = []
     var axis: Axis
+    var parentView: SplitViewControllerView
 
-    init(axis: Axis = .horizontal) {
+    init(parent: SplitViewControllerView, axis: Axis = .horizontal) {
         self.axis = axis
+        self.parentView = parent
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -77,6 +84,11 @@ final class SplitViewController: NSSplitViewController {
     override func viewDidLoad() {
         splitView.isVertical = axis != .vertical
         splitView.dividerStyle = .thin
+        DispatchQueue.main.async { [weak self] in
+            self?.parentView.viewController = { [weak self] in
+                self
+            }
+        }
     }
 
     override func splitView(_ splitView: NSSplitView, shouldHideDividerAt dividerIndex: Int) -> Bool {
