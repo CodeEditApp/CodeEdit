@@ -27,7 +27,7 @@ body:
 
   - type: textarea
     attributes:
-      label: Expected behavior
+      label: Expected Behavior
       placeholder: >-
         A clear and concise description of what you expected to happen...
     validations:
@@ -35,7 +35,7 @@ body:
       
   - type: textarea
     attributes:
-      label: Version information
+      label: Version Information
       description: >-
          click on the version number on the welcome screen
       value: |
@@ -45,7 +45,7 @@ body:
 
   - type: textarea
     attributes:
-      label: Additional context
+      label: Additional Context
       placeholder: >-
         Any other context or considerations about the bug...
       
