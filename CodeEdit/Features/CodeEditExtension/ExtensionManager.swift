@@ -16,11 +16,11 @@ final class ExtensionManager {
         var instance: ExtensionInterface
     }
 
-    /// Shared instance of `ExtenstionManager`
+    /// Shared instance of `ExtensionManager`
     static let shared: ExtensionManager = .init()
 
     private var loadedBundles: [Bundle] = []
-    private var loadedExtentions: [String: Extension] = [:]
+    private var loadedExtensions: [String: Extension] = [:]
 
     private let codeeditFolder: URL
     private let extensionsFolder: URL
@@ -92,7 +92,7 @@ final class ExtensionManager {
                     return manifest
                 }
             } catch {
-                print("An error occured trying to parse the manifest file for: \(bundle.bundlePath)")
+                print("An error occurred trying to parse the manifest file for: \(bundle.bundlePath)")
                 print(error)
             }
             return nil
@@ -128,7 +128,7 @@ final class ExtensionManager {
     }
 
     // TODO: Reimplement this with XPC
-    /// Triggers the build function of the extension and thereby activates the extesion
+    /// Triggers the build function of the extension and thereby activates the extension
     ///
     private func load(_ bundle: Bundle, _ apiBuilder: (String) -> ExtensionAPI) {
         for bundle in loadedBundles {
@@ -140,7 +140,7 @@ final class ExtensionManager {
             let extInstance = builder.init().build(withAPI: api)
             print("Activated extension: \(manifest.name)")
 
-            loadedExtentions[bundleIdentifier] = Extension(
+            loadedExtensions[bundleIdentifier] = Extension(
                 bundle: bundle,
                 manifest: manifest,
                 instance: extInstance

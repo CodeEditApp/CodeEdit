@@ -9,7 +9,7 @@ import SwiftUI
 
 /// # Project Navigator - Sidebar
 ///
-/// A list that functions as a project navigator, showing collapsable folders
+/// A list that functions as a project navigator, showing collapsible folders
 /// and files.
 ///
 /// When selecting a file it will open in the editor.

@@ -82,8 +82,8 @@ struct InspectorSidebarToolbarTop: View {
         .buttonStyle(.plain)
     }
 
-    private func getSafeImage(named: String, accesibilityDescription: String?) -> Image {
-        if let nsImage = NSImage(systemSymbolName: named, accessibilityDescription: accesibilityDescription) {
+    private func getSafeImage(named: String, accessibilityDescription: String?) -> Image {
+        if let nsImage = NSImage(systemSymbolName: named, accessibilityDescription: accessibilityDescription) {
             return Image(nsImage: nsImage)
         } else {
             return Image(symbol: named)

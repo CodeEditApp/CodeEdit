@@ -29,7 +29,7 @@ struct SourceControlGeneralView: View {
                 VStack(alignment: .leading) {
                     Toggle(
                         "Refresh local status automatically",
-                        isOn: $prefs.preferences.sourceControl.general.refreshStatusLocaly
+                        isOn: $prefs.preferences.sourceControl.general.refreshStatusLocally
                     )
                     .toggleStyle(.checkbox)
                     Toggle(

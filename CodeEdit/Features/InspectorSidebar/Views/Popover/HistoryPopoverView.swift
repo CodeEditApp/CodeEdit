@@ -120,9 +120,9 @@ struct HistoryPopoverView: View {
     }
 
     private func commitDetails() -> String {
-        if commit.commiterEmail == "noreply@github.com" {
+        if commit.committerEmail == "noreply@github.com" {
             return commit.message.trimmingCharacters(in: .whitespacesAndNewlines)
-        } else if commit.authorEmail != commit.commiterEmail {
+        } else if commit.authorEmail != commit.committerEmail {
             return commit.message.trimmingCharacters(in: .whitespacesAndNewlines)
         } else {
             return "\(commit.message)\n\n\(coAuthDetail())".trimmingCharacters(in: .whitespacesAndNewlines)
@@ -130,10 +130,10 @@ struct HistoryPopoverView: View {
     }
 
     private func coAuthDetail() -> String {
-        if commit.commiterEmail == "noreply@github.com" {
+        if commit.committerEmail == "noreply@github.com" {
             return ""
-        } else if commit.authorEmail != commit.commiterEmail {
-            return "Co-authored-by: \(commit.commiter)\n<\(commit.commiterEmail)>"
+        } else if commit.authorEmail != commit.committerEmail {
+            return "Co-authored-by: \(commit.committer)\n<\(commit.committerEmail)>"
         }
         return ""
     }
