@@ -42,8 +42,6 @@ body:
         CodeEdit: [e.g. 1.0]
         macOS: [e.g. 13.2.1]
         Xcode: [e.g. 14.2]
-    validations:
-      required: true
 
   - type: textarea
     attributes:
