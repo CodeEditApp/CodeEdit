@@ -39,7 +39,7 @@ body:
       description: >-
          click on the version number on the welcome screen
       value: |
-        CodeEdit: [e.g. 1.0]
+        CodeEdit: [e.g. 0.0.x-alpha.y]
         macOS: [e.g. 13.2.1]
         Xcode: [e.g. 14.2]
 
