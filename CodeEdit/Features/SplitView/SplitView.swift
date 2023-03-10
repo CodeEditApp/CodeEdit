@@ -10,7 +10,7 @@ import SwiftUI
 struct SplitView<Content: View>: View {
     var axis: Axis
     var content: Content
-    
+
     init(axis: Axis, @ViewBuilder content: () -> Content) {
         self.axis = axis
         self.content = content()
