@@ -12,112 +12,112 @@ enum FileIcon {
 
     // swiftlint:disable identifier_name
     enum FileType: String {
-        case pyw
-        case pyc
-        case docx
-        case docm
-        case doc
-        case lz
-        case gcode
-        case pns
-        case pnm
-        case jng
-        case xml
-        case gsh
-        case gy
-        case gvy
-        case groovy
-        case pkg
-        case dmg
-        case htm
-        case gzip
-        case obj
-        case dae
         case abc
-        case glb
-        case stl
-        case ply
-        case blend
         case ai
-        case heic
-        case gif
-        case tga
-        case bmp
-        case psd
-        case hdr
-        case pic
-        case webp
-        case avif
-        case ppm
-        case pgm
-        case pbm
-        case tiff
-        case tif
-        case pdf
-        case mp3
-        case wav
-        case mov
-        case mp4
-        case asm
         case app
-        case s
-        case inc
-        case wla
-        case src
-        case json
-        case js
-        case ruby
+        case asm
+        case avif
+        case blend
+        case bmp
         case c
         case cc
-        case hpp
-        case cpp
         case cobol
+        case cpp
         case cs
         case css
         case d
-        case kotlin
-        case julia
-        case jsx
-        case php
-        case perl
-        case lua
-        case scala
-        case sql
-        case svelte
-        case zip
-        case gz
-        case tar
-        case swift
+        case dae
+        case dmg
+        case doc
+        case docm
+        case docx
+        case entitlements
         case env
         case example
+        case gcode
+        case gif
         case gitignore
-        case png
-        case jpg
-        case jpeg
-        case ico
-        case svg
-        case entitlements
-        case plist
-        case md
-        case txt = "text"
-        case rtf
-        case r
-        case rust
-        case html
-        case py
-        case sh
-        case LICENSE
-        case java
-        case jar
-        case h
-        case m
-        case vue
+        case glb
         case go
-        case sum
-        case mod
+        case groovy
+        case gsh
+        case gvy
+        case gy
+        case gz
+        case gzip
+        case h
+        case hdr
+        case heic
+        case hpp
+        case htm
+        case html
+        case ico
+        case inc
+        case jar
+        case java
+        case jng
+        case jpeg
+        case jpg
+        case js
+        case json
+        case jsx
+        case julia
+        case kotlin
+        case LICENSE
+        case lua
+        case lz
+        case m
         case Makefile
+        case md
+        case mod
+        case mov
+        case mp3
+        case mp4
+        case obj
+        case pbm
+        case pdf
+        case perl
+        case pgm
+        case php
+        case pic
+        case pkg
+        case plist
+        case ply
+        case png
+        case pnm
+        case pns
+        case ppm
+        case psd
+        case py
+        case pyc
+        case pyw
+        case r
+        case rtf
+        case ruby
+        case rust
+        case s
+        case scala
+        case sh
+        case sql
+        case src
+        case stl
+        case sum
+        case svelte
+        case svg
+        case swift
+        case tar
+        case tga
+        case tif
+        case tiff
         case ts
+        case txt = "text"
+        case vue
         case warningRemover // Removes warning
+        case wav
+        case webp
+        case wla
+        case xml
+        case zip
     }
 
     // swiftlint:disable function_body_length
