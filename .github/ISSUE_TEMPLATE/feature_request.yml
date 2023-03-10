@@ -14,13 +14,13 @@ body:
       
   - type: textarea
     attributes:
-      label: Alternatives considered
+      label: Alternatives Considered
       placeholder: >-
         Any alternative solutions or features you've considered...
 
   - type: textarea
     attributes:
-      label: Additional context
+      label: Additional Context
       placeholder: >-
         Any other context or considerations about the feature request...
       
