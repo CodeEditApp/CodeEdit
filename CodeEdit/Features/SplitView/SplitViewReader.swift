@@ -11,12 +11,10 @@ struct SplitViewReader<Content: View>: View {
 
     @ViewBuilder var content: (SplitViewProxy) -> Content
 
-    @State private var viewController: SplitViewController?
+    @State private var viewController: () -> SplitViewController? = { nil }
 
     private var proxy: SplitViewProxy {
-        .init {
-            viewController
-        }
+        .init(viewController: viewController)
     }
 
     var body: some View {
@@ -24,10 +22,8 @@ struct SplitViewReader<Content: View>: View {
             .variadic { children in
                 ForEach(children, id: \.id) { child in
                     child
-                        .task {
-                            if let vc = child[SplitViewControllerLayoutValueKey.self] {
-                                viewController = vc
-                            }
+                        .task(id: child[SplitViewControllerLayoutValueKey.self]()) {
+                            viewController = child[SplitViewControllerLayoutValueKey.self]
                         }
                 }
             }
