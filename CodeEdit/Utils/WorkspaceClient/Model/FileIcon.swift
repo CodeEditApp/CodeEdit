@@ -125,10 +125,6 @@ enum FileIcon {
     /// If not specified otherwise this will return `"doc"`
     static func fileIcon(fileType: FileType) -> String {
         switch fileType {
-        case .doc, .docm, .docx:
-            return "doc.text"
-        case .lz:
-            return "arrowtriangle.right.fill"
         case .groovy, .gvy, .gy, .gsh:
             return "star"
         case .pkg:
@@ -143,9 +139,9 @@ enum FileIcon {
             return "video.square"
         case .app:
             return "app.dashed"
-        case .asm, .s, .inc, .wla, .src:
+        case .asm, .s, .inc, .wla, .src, .doc, .docm, .docx:
             return "doc.text"
-        case .zip, .tar, .gz, .gzip:
+        case .zip, .tar, .gz, .gzip, .lz:
             return "doc.zipper"
         case .json, .js, .xml:
             return "curlybraces"
@@ -185,7 +181,7 @@ enum FileIcon {
         case .html, .py, .sh, .htm, .pyc, .pyw:
             return "chevron.left.forwardslash.chevron.right"
         case .kotlin:
-            return "chevron.left.to.line"
+            return "k.square"
         case .LICENSE:
             return "key.fill"
         case .java:
