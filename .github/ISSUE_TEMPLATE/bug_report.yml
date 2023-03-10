@@ -16,7 +16,7 @@ body:
     attributes:
       label: To Reproduce
       description: >-
-        Steps to reproduce the behavior.
+        Steps to reliably reproduce the behavior.
       placeholder: |
         1. Go to '...'
         2. Click on '....'
