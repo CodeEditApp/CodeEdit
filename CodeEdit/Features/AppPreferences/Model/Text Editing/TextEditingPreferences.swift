@@ -97,7 +97,7 @@ extension AppPreferences {
         /// Indicates whether or not to use a custom font
         var customFont: Bool = false
 
-        /// The font size for the custom font
+        /// The font size for the font
         var size: Int = 12
 
         /// The name of the custom font
@@ -117,11 +117,11 @@ extension AppPreferences {
         /// Returns an NSFont representation of the current configuration.
         ///
         /// Returns the custom font, if enabled and able to be instantiated.
-        /// Otherwise returns a default system font monospaced, size 12.
+        /// Otherwise returns a default system font monospaced.
         func current() -> NSFont {
             guard customFont,
                   let customFont = NSFont(name: name, size: Double(size)) else {
-                return NSFont.monospacedSystemFont(ofSize: 12, weight: .regular)
+                return NSFont.monospacedSystemFont(ofSize: Double(size), weight: .regular)
             }
             return customFont
         }

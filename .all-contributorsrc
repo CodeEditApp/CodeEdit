@@ -537,6 +537,24 @@
         "bug",
         "code"
       ]
+    },
+    {
+      "login": "scrapp08",
+      "name": "Scrap",
+      "avatar_url": "https://avatars.githubusercontent.com/u/105889363?v=4",
+      "profile": "https://scrapp08.xyz",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "iggy890",
+      "name": "iggy890",
+      "avatar_url": "https://avatars.githubusercontent.com/u/98705626?v=4",
+      "profile": "https://github.com/iggy890",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,

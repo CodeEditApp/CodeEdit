@@ -1,5 +1,5 @@
 //
-//  SequenceView.swift
+//  SplitView.swift
 //  CodeEdit
 //
 //  Created by Wouter Hennen on 22/02/2023.
