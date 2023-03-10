@@ -1,22 +1,29 @@
-# Description
+<!--- IMPORTANT: If this PR addresses multiple unrelated issues, it will be closed until separated. -->
+
+### Description
 
 <!--- REQUIRED: Describe what changed in detail -->
 
-# Related Issue
+### Related Issue
 
-<!--- REQUIRED: Tag all related issues (e.g. * #23) -->
+<!--- REQUIRED: Tag all related issues (e.g. * #123) -->
+<!--- If this PR resolves the issue please specify (e.g. * closes #123) -->
+<!--- If this PR addresses multiple issues, these issues must be related to one other -->
+
 * #ISSUE_NUMBER
 
-# Checklist
+### Checklist
 
 <!--- Add things that are not yet implemented above -->
+
 - [ ] I read and understood the [contributing guide](https://github.com/CodeEditApp/CodeEdit/blob/main/CONTRIBUTING.md) as well as the [code of conduct](https://github.com/CodeEditApp/CodeEdit/blob/main/CODE_OF_CONDUCT.md)
 - [ ] My changes generate no new warnings
 - [ ] My code builds and runs on my machine
+- [ ] My changes are all related to the related issue above
+- [ ] The issues this PR address are releated to each other
 - [ ] I documented my code
-- [ ] Review requested
 
-# Screenshots
+### Screenshots
 
 <!--- REQUIRED: if issue is UI related -->
 
