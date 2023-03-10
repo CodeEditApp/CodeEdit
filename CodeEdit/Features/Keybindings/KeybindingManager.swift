@@ -1,6 +1,5 @@
 //
 //  KeybindingManager.swift
-//  
 //
 //  Created by Alex on 09.05.2022.
 //

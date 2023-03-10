@@ -153,7 +153,7 @@ struct TerminalEmulatorView: NSViewRepresentable {
     }
 
     /// returns a `NSAppearance` based on the user setting of the terminal appearance,
-    /// `nil` if app default is not overriden
+    /// `nil` if app default is not overridden
     private var colorAppearance: NSAppearance? {
         if prefs.preferences.terminal.darkAppearance {
             return .init(named: .darkAqua)

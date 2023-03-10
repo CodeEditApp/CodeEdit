@@ -1,5 +1,5 @@
 //
-//  WorkspaceSplitViewData.swift
+//  SplitViewData.swift
 //  CodeEdit
 //
 //  Created by Wouter Hennen on 16/02/2023.

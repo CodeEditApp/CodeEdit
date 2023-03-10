@@ -1,5 +1,5 @@
 //
-//  SideBarToolbar.swift
+//  SideBarToolbarTop.swift
 //  CodeEdit
 //
 //  Created by Lukas Pistrol on 17.03.22.
@@ -78,7 +78,7 @@ struct NavigatorSidebarToolbarTop: View {
         Button {
             selection = id
         } label: {
-            getSafeImage(named: named, accesibilityDescription: title)
+            getSafeImage(named: named, accessibilityDescription: title)
                 .help(title)
                 .onDrag {
                     if let index = icons.firstIndex(where: { $0.imageName == named }) {
@@ -100,7 +100,7 @@ struct NavigatorSidebarToolbarTop: View {
         )
     }
 
-    private func getSafeImage(named: String, accesibilityDescription: String?) -> Image {
+    private func getSafeImage(named: String, accessibilityDescription: String?) -> Image {
         // We still use the NSImage init to check if a symbol with the name exists.
         if NSImage(systemSymbolName: named, accessibilityDescription: nil) != nil {
             return Image(systemName: named)

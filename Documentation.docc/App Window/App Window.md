@@ -15,12 +15,12 @@ A collection of all the views that make up the main app window.
 - ``ImageFileView``
 - ``OtherFileView``
 
-### Breadcrumbs
+### PathBar
 
-- ``BreadcrumbsView``
-- ``BreadcrumbsComponent``
-- ``BreadcrumsMenu``
-- ``BreadcrumbsMenuItem``
+- ``PathBarView``
+- ``PathBarComponent``
+- ``PathBarMenu``
+- ``PathBarMenuItem``
 
 ### Navigator Sidebar
 

@@ -115,7 +115,7 @@ final class CodeEditUtilsExtensionsUnitTests: XCTestCase {
         XCTAssertEqual(result, md5)
     }
 
-    // MARK: - STRING + REMOVING OCCURRENCIES
+    // MARK: - STRING + REMOVING OCCURRENCES
 
     func testRemovingNewLines() throws {
         let string = "Hello, \nWorld!"

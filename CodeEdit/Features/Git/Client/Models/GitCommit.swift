@@ -15,8 +15,8 @@ struct GitCommit: Equatable, Hashable, Identifiable {
     let message: String
     let author: String
     let authorEmail: String
-    let commiter: String
-    let commiterEmail: String
+    let committer: String
+    let committerEmail: String
     let remoteURL: URL?
     let date: Date
 
@@ -37,7 +37,7 @@ struct GitCommit: Equatable, Hashable, Identifiable {
     }
 
     private func parsedRemoteUrl(domain: String, remote: URL) -> URL {
-        // There are 2 types of remotes - https and ssh. While https has URL in its name, ssh doesnt.
+        // There are 2 types of remotes - https and ssh. While https has URL in its name, ssh doesn't.
         // Following code takes remote name in format profileName/repoName and prepends according domain
         var formattedRemote = remote
         if formattedRemote.absoluteString.starts(with: "git@") {
