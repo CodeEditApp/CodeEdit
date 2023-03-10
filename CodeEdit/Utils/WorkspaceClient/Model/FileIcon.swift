@@ -10,6 +10,7 @@ import SwiftUI
 // swiftlint:disable cyclomatic_complexity
 enum FileIcon {
 
+    // Contributors, remember to alphabetically sort the cases.
     // swiftlint:disable identifier_name
     enum FileType: String {
         case abc
@@ -27,6 +28,7 @@ enum FileIcon {
         case css
         case d
         case dae
+        case dat
         case dmg
         case doc
         case docm
@@ -125,6 +127,8 @@ enum FileIcon {
     /// If not specified otherwise this will return `"doc"`
     static func fileIcon(fileType: FileType) -> String {
         switch fileType {
+        case .dat:
+            return "doc.fill"
         case .groovy, .gvy, .gy, .gsh:
             return "star"
         case .pkg:
