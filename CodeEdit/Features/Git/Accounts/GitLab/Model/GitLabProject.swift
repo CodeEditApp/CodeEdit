@@ -25,7 +25,7 @@ class GitLabProject: Codable {
     var webURL: URL?
     var path: String?
     var pathWithNamespace: String?
-    var containerRegisteryEnabled: Bool?
+    var containerRegistryEnabled: Bool?
     var defaultBranch: String?
     var tagList: [String]?
     var isArchived: Bool?
@@ -63,7 +63,7 @@ class GitLabProject: Codable {
         case webURL = "web_url"
         case path
         case pathWithNamespace = "path_with_namespace"
-        case containerRegisteryEnabled = "container_registry_enabled"
+        case containerRegistryEnabled = "container_registry_enabled"
         case defaultBranch = "default_branch"
         case tagList = "tag_list"
         case isArchived = "archived"

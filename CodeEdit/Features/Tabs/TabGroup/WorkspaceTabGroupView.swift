@@ -51,10 +51,9 @@ struct WorkspaceTabGroupView: View {
 
                 Divider()
                 if let file = tabgroup.selected {
-                    PathBarView(file: file) { newFile in
-                        let index = tabgroup.tabs.firstIndex(of: file)
-                        if let index {
-                            tabgroup.openTab(item: newFile, at: index)
+                    PathBarView(file: file) { [weak tabgroup] newFile in
+                        if let index = tabgroup?.tabs.firstIndex(of: file) {
+                            tabgroup?.openTab(item: newFile, at: index)
                         }
                     }
                     Divider()

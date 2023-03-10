@@ -74,7 +74,7 @@ public class FeedbackModel: ObservableObject {
     }
 
     /// This is just temporary till we have bot that will handle this
-    private func getFeebackTypeTitle() -> String {
+    private func getFeedbackTypeTitle() -> String {
         switch feedbackTypeListSelection {
         case "behaviour":
             return "🐞"
@@ -93,7 +93,7 @@ public class FeedbackModel: ObservableObject {
 
     /// Gets the ID of the selected feedback type and then
     /// cross references it to select the right Label based on the type
-    private func getFeebackTypeLabel() -> String {
+    private func getFeedbackTypeLabel() -> String {
         switch feedbackTypeListSelection {
         case "behaviour":
             return "Bug"
@@ -152,7 +152,7 @@ public class FeedbackModel: ObservableObject {
         GitHubAccount(config).postIssue(
             owner: "CodeEditApp",
             repository: "CodeEdit",
-            title: "\(getFeebackTypeTitle()) \(title)",
+            title: "\(getFeedbackTypeTitle()) \(title)",
             body: createIssueBody(
                 description: description,
                 steps: steps,
@@ -160,7 +160,7 @@ public class FeedbackModel: ObservableObject {
                 actuallyHappened: actuallyHappened
             ),
             assignee: "",
-            labels: [getFeebackTypeLabel(), getIssueLabel()]
+            labels: [getFeedbackTypeLabel(), getIssueLabel()]
         ) { response in
             switch response {
             case .success(let issue):

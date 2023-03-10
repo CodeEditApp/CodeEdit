@@ -16,8 +16,8 @@ class GitLabEventNote: Codable {
     var system: Bool?
     var upvote: Bool?
     var downvote: Bool?
-    var noteableID: Int?
-    var noteableType: String?
+    var notableID: Int?
+    var notableType: String?
 
     init(_ json: [String: AnyObject]) {
         id = json["id"] as? Int
@@ -28,7 +28,7 @@ class GitLabEventNote: Codable {
         system = json["system"] as? Bool
         upvote = json["upvote"] as? Bool
         downvote = json["downvote"] as? Bool
-        noteableID = json["noteable_id"] as? Int
-        noteableType = json["noteable_type"] as? String
+        notableID = json["notable_id"] as? Int
+        notableType = json["notable_type"] as? String
     }
 }

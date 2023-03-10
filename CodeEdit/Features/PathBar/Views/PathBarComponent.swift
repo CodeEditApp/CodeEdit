@@ -107,10 +107,10 @@ struct PathBarComponent: View {
             func registerForChanges(in menu: NSMenu) {
                 cancellable = NotificationCenter.default
                     .publisher(for: NSMenu.didSendActionNotification, object: menu)
-                    .sink { notification in
+                    .sink { [weak self] notification in
                         if let menuItem = notification.userInfo?["MenuItem"] as? NSMenuItem,
                            let selection = menuItem as? ItemType {
-                            self.parent.selection = selection
+                            self?.parent.selection = selection
                         }
                     }
             }

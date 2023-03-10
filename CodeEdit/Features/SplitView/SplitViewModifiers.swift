@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SplitViewControllerLayoutValueKey: _ViewTraitKey {
-    static var defaultValue: SplitViewController?
+    static var defaultValue: () -> SplitViewController? = { nil }
 }
 
 struct SplitViewItemCollapsedViewTraitKey: _ViewTraitKey {
