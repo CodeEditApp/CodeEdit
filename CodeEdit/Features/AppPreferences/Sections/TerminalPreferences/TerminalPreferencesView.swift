@@ -26,10 +26,20 @@ struct TerminalPreferencesView: View {
             PreferencesSection("Font") {
                 fontSelector
             }
+            PreferencesSection("Terminal window") {
+                mouseReporting
+            }
             PreferencesSection("Cursor") {
                 cursorStyle
                 cursorBlink
             }
+        }
+    }
+
+    private var mouseReporting: some View {
+        HStack {
+            Toggle("Mouse reporting", isOn: $prefs.preferences.terminal.allowMouseReporting)
+            Text("Allow mouse reporting")
         }
     }
 

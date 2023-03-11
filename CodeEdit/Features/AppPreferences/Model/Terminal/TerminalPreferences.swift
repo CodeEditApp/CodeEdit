@@ -12,6 +12,9 @@ extension AppPreferences {
     /// The global settings for the terminal emulator
     struct TerminalPreferences: Codable {
 
+        /// If true user can select buttons below the terminal
+        var allowMouseReporting: Bool = true
+
         /// If true terminal appearance will always be `dark`. Otherwise it adapts to the system setting.
         var darkAppearance: Bool = false
 
@@ -39,6 +42,7 @@ extension AppPreferences {
         /// Explicit decoder init for setting default values when key is not present in `JSON`
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.allowMouseReporting = try container.decodeIfPresent(Bool.self, forKey: .allowMouseReporting) ?? true
             self.darkAppearance = try container.decodeIfPresent(Bool.self, forKey: .darkAppearance) ?? false
             self.optionAsMeta = try container.decodeIfPresent(Bool.self, forKey: .optionAsMeta) ?? false
             self.shell = try container.decodeIfPresent(TerminalShell.self, forKey: .shell) ?? .system
