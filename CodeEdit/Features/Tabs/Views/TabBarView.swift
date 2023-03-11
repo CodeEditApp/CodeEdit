@@ -445,10 +445,10 @@ struct TabBarView: View {
             if tabManager.tabGroups.findSomeTabGroup(except: tabgroup) != nil {
                 TabBarAccessoryIcon(
                     icon: .init(systemName: "multiply"),
-                    action: {
-                        tabgroup.close()
+                    action: { [weak tabgroup] in
+                        tabgroup?.close()
                         if tabManager.activeTabGroup == tabgroup {
-                            tabManager.activeTabGroupHistory.removeAll { $0() == nil }
+                            tabManager.activeTabGroupHistory.removeAll { $0() == nil || $0() == tabgroup }
                             tabManager.activeTabGroup = tabManager.activeTabGroupHistory.removeFirst()()!
                         }
                         tabManager.flatten()
@@ -565,7 +565,7 @@ struct TabBarView: View {
 
     var splitviewButton: some View {
         Group {
-            switch (tabgroup.parent!.axis, modifierKeys.contains(.option)) {
+            switch (tabgroup.parent?.axis, modifierKeys.contains(.option)) {
             case (.horizontal, true), (.vertical, false):
                 TabBarAccessoryIcon(icon: Image(systemName: "square.split.1x2")) {
                     split(edge: .bottom)
@@ -577,6 +577,9 @@ struct TabBarView: View {
                     split(edge: .trailing)
                 }
                 .help("Split Horizontally")
+
+            default:
+                EmptyView()
             }
         }
         .foregroundColor(.secondary)

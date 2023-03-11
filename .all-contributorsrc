@@ -27,6 +27,55 @@
       ]
     },
     {
+      "login": "thecoolwinter",
+      "name": "Khan Winter",
+      "avatar_url": "https://avatars.githubusercontent.com/u/35942988?v=4",
+      "profile": "https://blog.windchillmedia.com",
+      "contributions": [
+        "code",
+        "bug"
+      ]
+    },
+    {
+      "login": "matthijseikelenboom",
+      "name": "Matthijs Eikelenboom",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1364843?v=4",
+      "profile": "https://github.com/matthijseikelenboom",
+      "contributions": [
+        "code",
+        "bug"
+      ]
+    },
+    {
+      "login": "Wouter01",
+      "name": "Wouter Hennen",
+      "avatar_url": "https://avatars.githubusercontent.com/u/62355975?v=4",
+      "profile": "https://github.com/Wouter01",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "wdg",
+      "name": "Wesley De Groot",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1290461?v=4",
+      "profile": "https://wdg.codes",
+      "contributions": [
+        "infra",
+        "test",
+        "code"
+      ]
+    },
+    {
+      "login": "KaiTheRedNinja",
+      "name": "KaiTheRedNinja",
+      "avatar_url": "https://avatars.githubusercontent.com/u/88234730?v=4",
+      "profile": "https://github.com/KaiTheRedNinja",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
       "login": "pkasila",
       "name": "Pavel Kasila",
       "avatar_url": "https://avatars.githubusercontent.com/u/17158860?v=4",
@@ -42,17 +91,6 @@
       "name": "Marco Carnevali",
       "avatar_url": "https://avatars.githubusercontent.com/u/9656572?v=4",
       "profile": "https://github.com/MarcoCarnevali",
-      "contributions": [
-        "infra",
-        "test",
-        "code"
-      ]
-    },
-    {
-      "login": "wdg",
-      "name": "Wesley De Groot",
-      "avatar_url": "https://avatars.githubusercontent.com/u/1290461?v=4",
-      "profile": "https://wdg.codes",
       "contributions": [
         "infra",
         "test",
@@ -129,16 +167,6 @@
       "profile": "https://github.com/highjeans",
       "contributions": [
         "code"
-      ]
-    },
-    {
-      "login": "thecoolwinter",
-      "name": "Khan Winter",
-      "avatar_url": "https://avatars.githubusercontent.com/u/35942988?v=4",
-      "profile": "https://blog.windchillmedia.com",
-      "contributions": [
-        "code",
-        "bug"
       ]
     },
     {
@@ -254,15 +282,6 @@
       ]
     },
     {
-      "login": "KaiTheRedNinja",
-      "name": "KaiTheRedNinja",
-      "avatar_url": "https://avatars.githubusercontent.com/u/88234730?v=4",
-      "profile": "https://github.com/KaiTheRedNinja",
-      "contributions": [
-        "code"
-      ]
-    },
-    {
       "login": "benkoska",
       "name": "Ben Koska",
       "avatar_url": "https://avatars.githubusercontent.com/u/17319613?v=4",
@@ -313,16 +332,6 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/25235514?v=4",
       "profile": "https://github.com/Prince213",
       "contributions": [
-        "bug"
-      ]
-    },
-    {
-      "login": "matthijseikelenboom",
-      "name": "Matthijs Eikelenboom",
-      "avatar_url": "https://avatars.githubusercontent.com/u/1364843?v=4",
-      "profile": "https://github.com/matthijseikelenboom",
-      "contributions": [
-        "code",
         "bug"
       ]
     },
@@ -502,15 +511,6 @@
       ]
     },
     {
-      "login": "Wouter01",
-      "name": "Wouter Hennen",
-      "avatar_url": "https://avatars.githubusercontent.com/u/62355975?v=4",
-      "profile": "https://github.com/Wouter01",
-      "contributions": [
-        "code"
-      ]
-    },
-    {
       "login": "Cubik65536",
       "name": "Cubik",
       "avatar_url": "https://avatars.githubusercontent.com/u/72877496?v=4",
@@ -553,6 +553,16 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/98705626?v=4",
       "profile": "https://github.com/iggy890",
       "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "stavares843",
+      "name": "Sara Tavares",
+      "avatar_url": "https://avatars.githubusercontent.com/u/29093946?v=4",
+      "profile": "https://github.com/stavares843",
+      "contributions": [
+        "bug",
         "code"
       ]
     }
