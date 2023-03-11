@@ -36,6 +36,9 @@ extension AppPreferences {
         // Toggle for blinking cursor or not
         var cursorBlink: Bool = false
 
+        // Terminal Scroll back, defaulting to 500 lines
+        var scrollBack: Int = 10000
+
         /// Default initializer
         init() {}
 
@@ -52,6 +55,7 @@ extension AppPreferences {
                 forKey: .cursorStyle
             ) ?? .block
             self.cursorBlink = try container.decodeIfPresent(Bool.self, forKey: .cursorBlink) ?? false
+            self.scrollBack = try container.decodeIfPresent(Int.self, forKey: .scrollBack) ?? 10000
         }
     }
 

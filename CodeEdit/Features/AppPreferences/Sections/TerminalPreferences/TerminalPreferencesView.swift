@@ -28,11 +28,36 @@ struct TerminalPreferencesView: View {
             }
             PreferencesSection("Terminal window") {
                 mouseReporting
+                scrollBack
             }
             PreferencesSection("Cursor") {
                 cursorStyle
                 cursorBlink
             }
+        }
+    }
+
+    /// Only allows integer values in the range of `[100...1,000,000]`
+    private var scrollBackFormatter: NumberFormatter {
+        let formatter = NumberFormatter()
+        formatter.allowsFloats = false
+        formatter.minimum = 100
+        formatter.maximum = 1000000
+
+        return formatter
+    }
+
+    private var scrollBack: some View {
+        HStack(spacing: 5) {
+            TextField("", value: $prefs.preferences.terminal.scrollBack, formatter: scrollBackFormatter)
+                .multilineTextAlignment(.trailing)
+                .frame(width: 40)
+            Stepper(
+                "Scroll back",
+                value: $prefs.preferences.terminal.scrollBack,
+                in: 100...1000000
+            )
+            Text("spaces")
         }
     }
 
