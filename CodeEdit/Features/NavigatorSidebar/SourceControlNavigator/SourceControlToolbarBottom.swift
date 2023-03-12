@@ -43,6 +43,9 @@ struct SourceControlToolbarBottom: View {
                     print(file)
                     if !commitText.isEmpty {
                         do {
+                            Window("Commit changes", id: "Commited") {
+                                Text("Commit changes here")
+                            }
                             try shellClient.run("cd \(file); git add .")
                             try shellClient.run("cd \(file); git commit -m \(commitText)")
                         } catch {
@@ -50,9 +53,6 @@ struct SourceControlToolbarBottom: View {
                         }
                     } else {
                         do {
-                            Window("Commit changes", id: "whats-new") {
-                                Text("Commit changes here")
-                            }
                             try shellClient.run("cd \(file); git add .")
                             try shellClient.run("cd \(file); git commit -m 'Changes'")
                         } catch {
