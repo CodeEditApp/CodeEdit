@@ -42,7 +42,6 @@ struct SourceControlToolbarBottom: View {
                     // TODO: Handle output
                     var file = getCurrentWorkspaceDocument(workspace: workspace)
                     print(file)
-                    Alert(title: Text("Alert!!!!!!"))
 
                     if !commitText.isEmpty {
                         do {
@@ -60,6 +59,12 @@ struct SourceControlToolbarBottom: View {
                             print("Git Error")
                         }
                     }
+                }.alert(isPresented: $presentPopup) {
+                    Alert(
+                        title: Text("Current Location Not Available"),
+                        message: Text("Your current location can’t be " +
+                                        "determined at this time.")
+                    )
                 }
                 Button("Push") {
                     var file = getCurrentWorkspaceDocument(workspace: workspace)
