@@ -58,10 +58,9 @@ struct SourceControlToolbarBottom: View {
                             print("Git Error")
                         }
                     }
-                }.popover(isPresented: $presentPopup, arrowEdge: .bottom) {
-                    Text("test")
-                      .frame(width: 100, height: 100)
-                  }
+                }.alert("Important message", isPresented: $presentPopup) {
+                    Button("OK", role: .cancel) { }
+                }
                 Button("Push") {
                     var file = getCurrentWorkspaceDocument(workspace: workspace)
                     do {
