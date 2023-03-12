@@ -9,7 +9,7 @@ import SwiftUI
 
 // Gets the current workspace's path
 func getCurrentWorkspaceDocument(workspace: WorkspaceDocument) -> String {
-    return String(describing: workspace.fileURL?.baseURL?.absoluteString)
+     return String(String(describing: workspace.fileURL!.absoluteURL).dropFirst(7))
 }
 
 struct SourceControlToolbarBottom: View {
