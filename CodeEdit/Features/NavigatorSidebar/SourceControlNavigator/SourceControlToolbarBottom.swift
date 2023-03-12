@@ -39,13 +39,13 @@ struct SourceControlToolbarBottom: View {
                 }
                 Button("Commit") {
                     // TODO: Handle output
+                    Window("Commit changes", id: "Commited") {
+                        Text("Commit changes here")
+                    }
                     var file = getCurrentWorkspaceDocument(workspace: workspace)
                     print(file)
                     if !commitText.isEmpty {
                         do {
-                            Window("Commit changes", id: "Commited") {
-                                Text("Commit changes here")
-                            }
                             try shellClient.run("cd \(file); git add .")
                             try shellClient.run("cd \(file); git commit -m \(commitText)")
                         } catch {
