@@ -53,10 +53,11 @@ struct SourceControlToolbarBottom: View {
 
     private var sourceControlMenu: some View {
         Menu {
-            Button("Discard Changes...") {}
-                .disabled(true) // TODO: Implementation Needed
+            Button("Discard Changes") {
+                shell("cd \(getCurrentWorkspaceDocument(workspace: workspace)); git reset –hard")
+            }
             Button("Stash Changes") {
-                shell("cd '\(getCurrentWorkspaceDocument(workspace: workspace)); git stash")
+                shell("cd \(getCurrentWorkspaceDocument(workspace: workspace)); git stash")
             }
             Button("Commit") {
                 // TODO: Handle output
@@ -75,7 +76,8 @@ struct SourceControlToolbarBottom: View {
             Button("Push") {
                 var file = getCurrentWorkspaceDocument(workspace: workspace)
                 print(shell("cd \(file); git push"))
-            } .disabled(!commited)
+            }
+                .disabled(commitText.isEmpty)
             Button("Create Pull Request") {
                 var file = getCurrentWorkspaceDocument(workspace: workspace)
                 shell("cd \(file); git pull") // TODO: Properly implement
