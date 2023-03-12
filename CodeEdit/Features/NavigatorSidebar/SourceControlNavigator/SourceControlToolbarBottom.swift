@@ -42,6 +42,7 @@ struct SourceControlToolbarBottom: View {
                     // TODO: Handle output
                     var file = getCurrentWorkspaceDocument(workspace: workspace)
                     print(file)
+                    presentPopup = true
 
                     if !commitText.isEmpty {
                         do {
@@ -51,7 +52,6 @@ struct SourceControlToolbarBottom: View {
                             print("Git Error")
                         }
                     } else {
-                        presentPopup = true
                         do {
                             try shellClient.run("cd \(file); git add .")
                             try shellClient.run("cd \(file); git commit -m 'Changes'")
