@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// Runs the specified shell command
 @discardableResult
 func shell(_ command: String) -> String {
     let task = Process()
@@ -25,10 +26,12 @@ func shell(_ command: String) -> String {
     return output
 }
 
+// Gets the current workspace's path
 func getCurrentWorkspaceDocument(workspace: WorkspaceDocument) -> String {
     return String(String(describing: workspace.fileURL!.absoluteURL).dropFirst(7))
 }
 
+// Changes to true when the user has an commit the needs to be pushed
 var commited: Bool = false
 
 struct SourceControlToolbarBottom: View {
@@ -65,7 +68,7 @@ struct SourceControlToolbarBottom: View {
                 if !commitText.isEmpty {
                     commited = true
                     shell("cd \(file); git add .")
-                    shell("cd \(file); git commit -m '\(commitText)'")
+                    shell("cd \(file); git commit -m \(commitText)")
                 } else {
                     commited = true
                     shell("cd \(file); git add .")
@@ -75,7 +78,8 @@ struct SourceControlToolbarBottom: View {
                 .disabled(commitText.isEmpty)
             Button("Push") {
                 var file = getCurrentWorkspaceDocument(workspace: workspace)
-                print(shell("cd \(file); git push"))
+                shell("cd \(file); git push")
+                commited = false
             }
                 .disabled(commitText.isEmpty)
             Button("Create Pull Request") {
