@@ -13,6 +13,7 @@ func getCurrentWorkspaceDocument(workspace: WorkspaceDocument) -> String {
 }
 
 struct SourceControlToolbarBottom: View {
+    @State var presentPopup: Bool = false
 
     @State
     private var commitText: String = ""
@@ -39,9 +40,6 @@ struct SourceControlToolbarBottom: View {
                 }
                 Button("Commit") {
                     // TODO: Handle output
-                    Window("Commit changes", id: "Commited") {
-                        Text("Commit changes here")
-                    }
                     var file = getCurrentWorkspaceDocument(workspace: workspace)
                     print(file)
                     if !commitText.isEmpty {
@@ -52,6 +50,7 @@ struct SourceControlToolbarBottom: View {
                             print("Git Error")
                         }
                     } else {
+                        presentPopup = true
                         do {
                             try shellClient.run("cd \(file); git add .")
                             try shellClient.run("cd \(file); git commit -m 'Changes'")
@@ -59,7 +58,10 @@ struct SourceControlToolbarBottom: View {
                             print("Git Error")
                         }
                     }
-                }
+                }.popover(isPresented: $presentPopup, arrowEdge: .bottom) {
+                    Text("test")
+                      .frame(width: 100, height: 100)
+                  }
                 Button("Push") {
                     var file = getCurrentWorkspaceDocument(workspace: workspace)
                     do {
