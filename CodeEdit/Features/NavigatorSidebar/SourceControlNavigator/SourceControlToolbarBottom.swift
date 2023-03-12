@@ -60,7 +60,8 @@ struct SourceControlToolbarBottom: View {
                         }
                     }
                 }.alert(isPresented: $presentPopup) {
-                    Alert(
+                    print("Creating stuff idk man")
+                    return Alert(
                         title: Text("Current Location Not Available"),
                         message: Text("Your current location can’t be " +
                                         "determined at this time.")
