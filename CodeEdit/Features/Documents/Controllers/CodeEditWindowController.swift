@@ -8,6 +8,8 @@
 import Cocoa
 import SwiftUI
 
+
+// swiftlint:disable type_body_length
 final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     static let minSidebarWidth: CGFloat = 242
 
@@ -135,10 +137,9 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
         [
             .toggleFirstSidebarItem,
+            .flexibleSpace,
             .sidebarTrackingSeparator,
             .branchPicker,
-            .flexibleSpace,
-            .flexibleSpace,
             .toggleLastSidebarItem
         ]
     }
@@ -146,14 +147,15 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     func toolbarAllowedItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
         [
             .toggleFirstSidebarItem,
-            .sidebarTrackingSeparator,
             .flexibleSpace,
+            .sidebarTrackingSeparator,
             .itemListTrackingSeparator,
             .toggleLastSidebarItem,
             .branchPicker
         ]
     }
 
+    // swiftlint:disable function_body_length
     func toolbar(
         _ toolbar: NSToolbar,
         itemForItemIdentifier itemIdentifier: NSToolbarItem.Identifier,
@@ -170,6 +172,20 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
                     splitView: splitViewController.splitView,
                     dividerIndex: 1
                 )
+        case .flexibleSpace:
+            let toolbarItem = NSToolbarItem(itemIdentifier: NSToolbarItem.Identifier.flexibleSpace)
+            toolbarItem.label = "Run"
+            toolbarItem.paletteLabel = "Run"
+            toolbarItem.toolTip = "Run Code"
+            toolbarItem.isBordered = true
+            toolbarItem.target = self
+            toolbarItem.action = #selector(self.moveToEndOfDocument(_:))
+            toolbarItem.image = NSImage(
+                systemSymbolName: "play",
+                accessibilityDescription: "Run code"
+            )?.withSymbolConfiguration(.init(scale: .large))
+
+            return toolbarItem
         case .toggleFirstSidebarItem:
             let toolbarItem = NSToolbarItem(itemIdentifier: NSToolbarItem.Identifier.toggleFirstSidebarItem)
             toolbarItem.label = "Navigator Sidebar"
@@ -303,5 +319,7 @@ extension NSToolbarItem.Identifier {
     static let toggleFirstSidebarItem: NSToolbarItem.Identifier = NSToolbarItem.Identifier("ToggleFirstSidebarItem")
     static let toggleLastSidebarItem: NSToolbarItem.Identifier = NSToolbarItem.Identifier("ToggleLastSidebarItem")
     static let itemListTrackingSeparator = NSToolbarItem.Identifier("ItemListTrackingSeparator")
+    static let flexibleSpace: NSToolbarItem.Identifier =
+        NSToolbarItem.Identifier("FlexibleSpace")
     static let branchPicker: NSToolbarItem.Identifier = NSToolbarItem.Identifier("BranchPicker")
 }

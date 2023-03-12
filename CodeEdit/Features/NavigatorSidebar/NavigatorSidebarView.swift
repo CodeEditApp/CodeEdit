@@ -29,6 +29,8 @@ struct NavigatorSidebarView: View {
                 SourceControlNavigatorView()
             case 2:
                 FindNavigatorView()
+            case 4:
+                RunCodeNavigatorView()
             case 7:
                 ExtensionNavigatorView()
             default:

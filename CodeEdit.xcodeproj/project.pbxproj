@@ -334,6 +334,7 @@
 		6CBD1BC62978DE53006639D5 /* Font+Caption3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBD1BC52978DE53006639D5 /* Font+Caption3.swift */; };
 		6CC9E4B229B5669900C97388 /* Environment+ActiveTabGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC9E4B129B5669900C97388 /* Environment+ActiveTabGroup.swift */; };
 		6CDA84AD284C1BA000C1CC3A /* TabBarContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CDA84AC284C1BA000C1CC3A /* TabBarContextMenu.swift */; };
+		857F35AD29BE130E00616026 /* RunCodeNavigatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857F35AC29BE130E00616026 /* RunCodeNavigatorView.swift */; };
 		B60BE8BD297A167600841125 /* AcknowledgementRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60BE8BC297A167600841125 /* AcknowledgementRowView.swift */; };
 		B62617282964924E00E866AB /* CodeEditKit in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 2801BB89290D5A8E00EBF552 /* CodeEditKit */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		B658FB3427DA9E1000EA4DBD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3327DA9E1000EA4DBD /* Assets.xcassets */; };
@@ -731,6 +732,7 @@
 		6CBD1BC52978DE53006639D5 /* Font+Caption3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Caption3.swift"; sourceTree = "<group>"; };
 		6CC9E4B129B5669900C97388 /* Environment+ActiveTabGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Environment+ActiveTabGroup.swift"; sourceTree = "<group>"; };
 		6CDA84AC284C1BA000C1CC3A /* TabBarContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarContextMenu.swift; sourceTree = "<group>"; };
+		857F35AC29BE130E00616026 /* RunCodeNavigatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunCodeNavigatorView.swift; sourceTree = "<group>"; };
 		B60BE8BC297A167600841125 /* AcknowledgementRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcknowledgementRowView.swift; sourceTree = "<group>"; };
 		B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodeEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B658FB3127DA9E0F00EA4DBD /* WorkspaceView.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceView.swift; sourceTree = "<group>"; tabWidth = 4; };
@@ -993,6 +995,7 @@
 		287776EA27E350A100D46668 /* NavigatorSidebar */ = {
 			isa = PBXGroup;
 			children = (
+				857F35AB29BE12F900616026 /* RunCodeNavigator */,
 				201169D52837B29600F92B46 /* SourceControlNavigator */,
 				0483E34E27FDB15F00354AC0 /* ExtensionNavigator */,
 				286471AC27ED52950039369D /* ProjectNavigator */,
@@ -2248,6 +2251,14 @@
 			path = Text;
 			sourceTree = "<group>";
 		};
+		857F35AB29BE12F900616026 /* RunCodeNavigator */ = {
+			isa = PBXGroup;
+			children = (
+				857F35AC29BE130E00616026 /* RunCodeNavigatorView.swift */,
+			);
+			path = RunCodeNavigator;
+			sourceTree = "<group>";
+		};
 		B658FB2327DA9E0F00EA4DBD = {
 			isa = PBXGroup;
 			children = (
@@ -2773,6 +2784,7 @@
 				587B9DA429300ABD00AC7927 /* OverlayPanel.swift in Sources */,
 				58F2EAEE292FB2B0004A9BDE /* TextEditingPreferencesView.swift in Sources */,
 				58D01C95293167DC00C5B6B4 /* Bundle+Info.swift in Sources */,
+				857F35AD29BE130E00616026 /* RunCodeNavigatorView.swift in Sources */,
 				587D9B762933BF5700BF7490 /* Mocks.swift in Sources */,
 				B6C6A42A297716A500A3D28F /* TabBarItemCloseButton.swift in Sources */,
 				58A5DF7D2931787A00D1BD5D /* ShellClient.swift in Sources */,

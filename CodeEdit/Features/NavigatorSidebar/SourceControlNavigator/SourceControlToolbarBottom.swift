@@ -22,7 +22,66 @@ struct SourceControlToolbarBottom: View {
     var body: some View {
         HStack(spacing: 0) {
             TextField("Commit message", text: $commitText)
-            sourceControlMenu
+            Menu {
+                Button("Discard Changes") {
+                    do {
+                        try shellClient.run("cd \(getCurrentWorkspaceDocument(workspace: workspace)); git reset –hard")
+                    } catch {
+                        print("Git Error")
+                    }
+                }
+                Button("Stash Changes") {
+                    do {
+                        try shellClient.run("cd \(getCurrentWorkspaceDocument(workspace: workspace)); git stash")
+                    } catch {
+                        print("Git Error")
+                    }
+                }
+                Button("Commit") {
+                    // TODO: Handle output
+                    var file = getCurrentWorkspaceDocument(workspace: workspace)
+                    print(file)
+                    if !commitText.isEmpty {
+                        do {
+                            try shellClient.run("cd \(file); git add .")
+                            try shellClient.run("cd \(file); git commit -m \(commitText)")
+                        } catch {
+                            print("Git Error")
+                        }
+                    } else {
+                        do {
+                            Window("Commit changes", id: "whats-new") {
+                                Text("Commit changes here")
+                            }
+                            try shellClient.run("cd \(file); git add .")
+                            try shellClient.run("cd \(file); git commit -m 'Changes'")
+                        } catch {
+                            print("Git Error")
+                        }
+                    }
+                }
+                Button("Push") {
+                    var file = getCurrentWorkspaceDocument(workspace: workspace)
+                    do {
+                        try shellClient.run("cd \(file); git push")
+                    } catch {
+                        print("Git Error")
+                    }
+                }
+                Button("Create Pull Request") {
+                    do {
+                        // TODO: Properly implement
+                        try shellClient.run("cd \(getCurrentWorkspaceDocument(workspace: workspace)); git pull")
+                    } catch {
+                        print("Git Error")
+                    }
+                }
+            } label: {
+                Image(systemName: "ellipsis.circle")
+            }
+            .menuStyle(.borderlessButton)
+            .menuIndicator(.hidden)
+            .frame(maxWidth: 30)
             SourceControlSearchToolbar()
         }
         .frame(height: 29, alignment: .center)
@@ -31,65 +90,5 @@ struct SourceControlToolbarBottom: View {
         .overlay(alignment: .top) {
             Divider()
         }
-    }
-
-    private var sourceControlMenu: some View {
-        Menu {
-            Button("Discard Changes") {
-                do {
-                    try shellClient.run("cd \(getCurrentWorkspaceDocument(workspace: workspace)); git reset –hard")
-                } catch {
-                    print("Git Error")
-                }
-            }
-            Button("Stash Changes") {
-                do {
-                    try shellClient.run("cd \(getCurrentWorkspaceDocument(workspace: workspace)); git stash")
-                } catch {
-                    print("Git Error")
-                }
-            }
-            Button("Commit") {
-                // TODO: Handle output
-                var file = getCurrentWorkspaceDocument(workspace: workspace)
-                print(file)
-                if !commitText.isEmpty {
-                    do {
-                        try shellClient.run("cd \(file); git add .")
-                        try shellClient.run("cd \(file); git commit -m \(commitText)")
-                    } catch {
-                        print("Git Error")
-                    }
-                } else {
-                    do {
-                        try shellClient.run("cd \(file); git add .")
-                        try shellClient.run("cd \(file); git commit -m 'Changes'")
-                    } catch {
-                        print("Git Error")
-                    }
-                }
-            }
-            Button("Push") {
-                var file = getCurrentWorkspaceDocument(workspace: workspace)
-                do {
-                    try shellClient.run("cd \(file); git push")
-                } catch {
-                    print("Git Error")
-                }
-            }
-            Button("Create Pull Request") {
-                do {
-                    // TODO: Properly implement
-                    try shellClient.run("cd \(getCurrentWorkspaceDocument(workspace: workspace)); git pull")
-                } catch {
-                    print("Git Error")
-                }
-            }
-        } label: {
-            Image(systemName: "ellipsis.circle")
-        }
-        .menuStyle(.borderlessButton)
-        .menuIndicator(.hidden)
-        .frame(maxWidth: 30)
     }
 }
