@@ -42,6 +42,8 @@ struct SourceControlToolbarBottom: View {
                     // TODO: Handle output
                     var file = getCurrentWorkspaceDocument(workspace: workspace)
                     print(file)
+                    Alert(title: Text("Alert!!!!!!"))
+
                     if !commitText.isEmpty {
                         do {
                             try shellClient.run("cd \(file); git add .")
@@ -58,8 +60,6 @@ struct SourceControlToolbarBottom: View {
                             print("Git Error")
                         }
                     }
-                }.alert("Important message", isPresented: $presentPopup) {
-                    Button("OK", role: .cancel) { }
                 }
                 Button("Push") {
                     var file = getCurrentWorkspaceDocument(workspace: workspace)
