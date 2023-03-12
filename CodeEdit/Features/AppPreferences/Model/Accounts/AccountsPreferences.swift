@@ -32,7 +32,7 @@ extension AppPreferences {
         var gitAccount: [SourceControlAccounts] = []
 
         var sshKey: String = "None"
-        
+
         /// Default initializer
         init() {}
         /// Explicit decoder init for setting default values when key is not present in `JSON`
