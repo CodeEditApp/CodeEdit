@@ -62,11 +62,6 @@ struct TerminalEmulatorView: NSViewRepresentable {
     /// if getpwuid_r(getuid(), &pwd, buffer, bufsize, &result) != 0 { return "/bin/bash" }
     ///    return String(cString: pwd.pw_shell)
     /// ```
-
-    private var allowMouseReporting: Bool {
-        prefs.preferences.terminal.allowMouseReporting
-    }
-
     private func getShell() -> String {
         switch prefs.preferences.terminal.shell {
         case .system:
@@ -186,7 +181,6 @@ struct TerminalEmulatorView: NSViewRepresentable {
             // to be changed later on
             FileManager.default.changeCurrentDirectoryPath(url.path)
             terminal.startProcess(executable: shell, execName: shellIdiom)
-            terminal.allowMouseReporting = allowMouseReporting
             terminal.font = font
             terminal.configureNativeColors()
             terminal.installColors(self.colors)
@@ -216,13 +210,12 @@ struct TerminalEmulatorView: NSViewRepresentable {
         if view.font != font { // Fixes Memory leak
             view.font = font
         }
-        view.allowMouseReporting = allowMouseReporting
         view.configureNativeColors()
         view.installColors(self.colors)
         view.caretColor = cursorColor
         view.selectedTextBackgroundColor = selectionColor
         view.nativeForegroundColor = textColor
-        view.nativeBackgroundColor = prefs.preferences.terminal.useThemeBackground ? backgroundColor: .clear
+        view.nativeBackgroundColor = prefs.preferences.terminal.useThemeBackground ? backgroundColor : .clear
         view.layer?.backgroundColor = .clear
         view.optionAsMetaKey = optionAsMeta
         view.cursorStyleChanged(source: view.getTerminal(), newStyle: getTerminalCursor())
@@ -231,7 +224,7 @@ struct TerminalEmulatorView: NSViewRepresentable {
             TerminalEmulatorView.lastTerminal[url.path] = view
         }
         view.getTerminal().softReset()
-        view.feed(text: "") // Send empty character to force colors to be redrawn
+        view.feed(text: "") // send empty character to force colors to be redrawn
     }
 
     func makeCoordinator() -> Coordinator {
