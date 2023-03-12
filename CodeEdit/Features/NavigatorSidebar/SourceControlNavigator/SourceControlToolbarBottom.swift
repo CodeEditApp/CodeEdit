@@ -7,37 +7,16 @@
 
 import SwiftUI
 
-// Runs the specified shell command
-@discardableResult
-func shell(_ command: String) -> String {
-    let task = Process()
-    let pipe = Pipe()
-
-    task.standardOutput = pipe
-    task.standardError = pipe
-    task.arguments = ["-c", command]
-    task.launchPath = "/bin/zsh"
-    task.standardInput = nil
-    task.launch()
-
-    let data = pipe.fileHandleForReading.readDataToEndOfFile()
-    let output = String(data: data, encoding: .utf8)!
-
-    return output
-}
-
 // Gets the current workspace's path
 func getCurrentWorkspaceDocument(workspace: WorkspaceDocument) -> String {
-    return String(String(describing: workspace.fileURL!.absoluteURL).dropFirst(7))
+    return String(describing: workspace.fileURL?.baseURL?.absoluteString)
 }
-
-// Changes to true when the user has an commit the needs to be pushed
-var commited: Bool = false
 
 struct SourceControlToolbarBottom: View {
 
     @State
     private var commitText: String = ""
+    var shellClient: ShellClient = ShellClient()
     var workspace: WorkspaceDocument
 
     var body: some View {
@@ -57,34 +36,54 @@ struct SourceControlToolbarBottom: View {
     private var sourceControlMenu: some View {
         Menu {
             Button("Discard Changes") {
-                shell("cd \(getCurrentWorkspaceDocument(workspace: workspace)); git reset –hard")
+                do {
+                    try shellClient.run("cd \(getCurrentWorkspaceDocument(workspace: workspace)); git reset –hard")
+                } catch {
+                    print("Git Error")
+                }
             }
             Button("Stash Changes") {
-                shell("cd \(getCurrentWorkspaceDocument(workspace: workspace)); git stash")
+                do {
+                    try shellClient.run("cd \(getCurrentWorkspaceDocument(workspace: workspace)); git stash")
+                } catch {
+                    print("Git Error")
+                }
             }
             Button("Commit") {
                 // TODO: Handle output
                 var file = getCurrentWorkspaceDocument(workspace: workspace)
+                print(file)
                 if !commitText.isEmpty {
-                    commited = true
-                    shell("cd \(file); git add .")
-                    shell("cd \(file); git commit -m \(commitText)")
+                    do {
+                        try shellClient.run("cd \(file); git add .")
+                        try shellClient.run("cd \(file); git commit -m \(commitText)")
+                    } catch {
+                        print("Git Error")
+                    }
                 } else {
-                    commited = true
-                    shell("cd \(file); git add .")
-                    shell("cd \(file); git commit -m 'Changes'")
+                    do {
+                        try shellClient.run("cd \(file); git add .")
+                        try shellClient.run("cd \(file); git commit -m 'Changes'")
+                    } catch {
+                        print("Git Error")
+                    }
                 }
             }
-                .disabled(commitText.isEmpty)
             Button("Push") {
                 var file = getCurrentWorkspaceDocument(workspace: workspace)
-                shell("cd \(file); git push")
-                commited = false
+                do {
+                    try shellClient.run("cd \(file); git push")
+                } catch {
+                    print("Git Error")
+                }
             }
-                .disabled(commitText.isEmpty)
             Button("Create Pull Request") {
-                var file = getCurrentWorkspaceDocument(workspace: workspace)
-                shell("cd \(file); git pull") // TODO: Properly implement
+                do {
+                    // TODO: Properly implement
+                    try shellClient.run("cd \(getCurrentWorkspaceDocument(workspace: workspace)); git pull")
+                } catch {
+                    print("Git Error")
+                }
             }
         } label: {
             Image(systemName: "ellipsis.circle")
