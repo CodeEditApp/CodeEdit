@@ -31,14 +31,15 @@ extension AppPreferences {
         /// This id will store the account name as the identifiable
         var gitAccount: [SourceControlAccounts] = []
 
-        var sshKey: String = ""
+        var sshKey: String = "None"
+        
         /// Default initializer
         init() {}
         /// Explicit decoder init for setting default values when key is not present in `JSON`
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.gitAccount = try container.decodeIfPresent([SourceControlAccounts].self, forKey: .gitAccount) ?? []
-            self.sshKey = try container.decodeIfPresent(String.self, forKey: .sshKey) ?? ""
+            self.sshKey = try container.decodeIfPresent(String.self, forKey: .sshKey) ?? "None"
         }
     }
 }

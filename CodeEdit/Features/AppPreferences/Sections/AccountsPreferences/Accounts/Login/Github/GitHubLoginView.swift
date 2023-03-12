@@ -29,11 +29,11 @@ struct GitHubLoginView: View {
             VStack(alignment: .trailing) {
                 HStack {
                     Text("Account:")
-                    TextField("Enter your username", text: $accountName)
+                    TextField("Username", text: $accountName)
                         .frame(width: 300)
                 }
                 HStack {
-                    Text("Token:")
+                    Text("Token")
                     SecureField(
                         "Enter your Personal Access Token",
                         text: $accountToken

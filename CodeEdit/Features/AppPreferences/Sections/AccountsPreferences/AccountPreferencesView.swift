@@ -108,8 +108,11 @@ struct AccountPreferencesView: View {
                 PreferencesSection("SSH Key", width: 100) {
                     Picker("", selection: $prefs.preferences.accounts.sourceControlAccounts.sshKey) {
                         Text("None")
-                        Text("Create New...")
-                        Text("Choose...")
+                            .tag("None")
+                        Text("Create New")
+                            .tag("Create New")
+                        Text("Choose")
+                            .tag("Choose")
                     }
                 }
             }
