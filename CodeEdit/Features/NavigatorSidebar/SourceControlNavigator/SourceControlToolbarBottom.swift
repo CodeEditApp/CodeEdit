@@ -54,9 +54,11 @@ struct SourceControlToolbarBottom: View {
         Menu {
             Button("Discard Changes...") {}
                 .disabled(true) // TODO: Implementation Needed
-            Button("Stash Changes...") {}
-                .disabled(true) // TODO: Implementation Needed
+            Button("Stash Changes...") {
+                shell("cd '\(getCurrentWorkspaceDocument(workspace: workspace)); git stash")
+            }
             Button("Commit") {
+                // TODO: Handle output
                 var file = getCurrentWorkspaceDocument(workspace: workspace)
                 if !commitText.isEmpty {
                     commited = true
@@ -74,7 +76,7 @@ struct SourceControlToolbarBottom: View {
             }
             Button("Create Pull Request") {
                 var file = getCurrentWorkspaceDocument(workspace: workspace)
-                print(shell("cd \(file); git pull")) // TODO: Handle output
+                print(shell("cd \(file); git pull")) // TODO: Properly implement
             }
         } label: {
             Image(systemName: "ellipsis.circle")
