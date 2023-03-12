@@ -6,6 +6,19 @@
 //
 
 import Cocoa
+import SwiftUI
+
+struct CodeEditSplitView: NSViewControllerRepresentable {
+    let controller: NSSplitViewController
+
+    func makeNSViewController(context: Context) -> NSSplitViewController {
+        controller
+    }
+
+    func updateNSViewController(_ nsViewController: NSSplitViewController, context: Context) {
+
+    }
+}
 
 private extension CGFloat {
     static let snapWidth: CGFloat = 272

@@ -17,16 +17,14 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     var quickOpenPanel: OverlayPanel?
     var commandPalettePanel: OverlayPanel?
 
-    private var splitViewController: NSSplitViewController! {
-        get { contentViewController as? NSSplitViewController }
-        set { contentViewController = newValue }
-    }
+    private var splitViewController: NSSplitViewController!
 
     init(window: NSWindow, workspace: WorkspaceDocument) {
         super.init(window: window)
         self.workspace = workspace
 
         setupSplitView(with: workspace)
+        contentViewController = NSHostingController(rootView: CodeEditSplitView(controller: splitViewController).ignoresSafeArea())
         setupToolbar()
         registerCommands()
     }
