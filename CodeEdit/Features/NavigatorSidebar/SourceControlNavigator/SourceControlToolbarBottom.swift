@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@discardableResult
 func shell(_ command: String) -> String {
     let task = Process()
     let pipe = Pipe()
@@ -54,7 +55,7 @@ struct SourceControlToolbarBottom: View {
         Menu {
             Button("Discard Changes...") {}
                 .disabled(true) // TODO: Implementation Needed
-            Button("Stash Changes...") {
+            Button("Stash Changes") {
                 shell("cd '\(getCurrentWorkspaceDocument(workspace: workspace)); git stash")
             }
             Button("Commit") {
@@ -62,21 +63,22 @@ struct SourceControlToolbarBottom: View {
                 var file = getCurrentWorkspaceDocument(workspace: workspace)
                 if !commitText.isEmpty {
                     commited = true
-                    print(shell("cd \(file); git add ."))
-                    print(shell("cd \(file); git commit -m '\(commitText)'"))
+                    shell("cd \(file); git add .")
+                    shell("cd \(file); git commit -m '\(commitText)'")
                 } else {
-                    print(shell("cd \(file); git add ."))
-                    print(shell("cd \(file); git commit -m 'Changes'"))
+                    commited = true
+                    shell("cd \(file); git add .")
+                    shell("cd \(file); git commit -m 'Changes'")
                 }
             }
                 .disabled(commitText.isEmpty)
             Button("Push") {
                 var file = getCurrentWorkspaceDocument(workspace: workspace)
                 print(shell("cd \(file); git push"))
-            }
+            } .disabled(!commited)
             Button("Create Pull Request") {
                 var file = getCurrentWorkspaceDocument(workspace: workspace)
-                print(shell("cd \(file); git pull")) // TODO: Properly implement
+                shell("cd \(file); git pull") // TODO: Properly implement
             }
         } label: {
             Image(systemName: "ellipsis.circle")
