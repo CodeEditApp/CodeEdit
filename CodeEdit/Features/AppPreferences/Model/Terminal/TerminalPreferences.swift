@@ -12,9 +12,6 @@ extension AppPreferences {
     /// The global settings for the terminal emulator
     struct TerminalPreferences: Codable {
 
-        /// If true user can select buttons below the terminal
-        var allowMouseReporting: Bool = true
-
         /// If true terminal appearance will always be `dark`. Otherwise it adapts to the system setting.
         var darkAppearance: Bool = false
 
@@ -36,16 +33,12 @@ extension AppPreferences {
         // Toggle for blinking cursor or not
         var cursorBlink: Bool = false
 
-        // Terminal Scroll back, defaulting to 500 lines
-        var scrollBack: Int = 10000
-
         /// Default initializer
         init() {}
 
         /// Explicit decoder init for setting default values when key is not present in `JSON`
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
-            self.allowMouseReporting = try container.decodeIfPresent(Bool.self, forKey: .allowMouseReporting) ?? true
             self.darkAppearance = try container.decodeIfPresent(Bool.self, forKey: .darkAppearance) ?? false
             self.optionAsMeta = try container.decodeIfPresent(Bool.self, forKey: .optionAsMeta) ?? false
             self.shell = try container.decodeIfPresent(TerminalShell.self, forKey: .shell) ?? .system
@@ -55,7 +48,6 @@ extension AppPreferences {
                 forKey: .cursorStyle
             ) ?? .block
             self.cursorBlink = try container.decodeIfPresent(Bool.self, forKey: .cursorBlink) ?? false
-            self.scrollBack = try container.decodeIfPresent(Int.self, forKey: .scrollBack) ?? 10000
         }
     }
 
