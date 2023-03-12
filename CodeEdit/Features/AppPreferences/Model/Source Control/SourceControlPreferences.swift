@@ -27,17 +27,17 @@ extension AppPreferences {
     struct SourceControlGeneral: Codable {
         /// Indicates whether or not the source control is active
         var enableSourceControl: Bool = true
-        /// Indicates whether or not we should include the upsteam changes
-        var refreshStatusLocaly: Bool = false
-        /// Indicates whether or not we should include the upsteam changes
+        /// Indicates whether or not we should include the upstream changes
+        var refreshStatusLocally: Bool = false
+        /// Indicates whether or not we should include the upstream changes
         var fetchRefreshServerStatus: Bool = false
-        /// Indicates whether or not we should include the upsteam changes
+        /// Indicates whether or not we should include the upstream changes
         var addRemoveAutomatically: Bool = false
-        /// Indicates whether or not we should include the upsteam changes
+        /// Indicates whether or not we should include the upstream changes
         var selectFilesToCommit: Bool = false
         /// Indicates whether or not to show the source control changes
         var showSourceControlChanges: Bool = true
-        /// Indicates whether or not we should include the upsteam
+        /// Indicates whether or not we should include the upstream
         var includeUpstreamChanges: Bool = false
         /// Indicates whether or not we should open the reported feedback in the browser
         var openFeedbackInBrowser: Bool = true
@@ -53,7 +53,7 @@ extension AppPreferences {
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.enableSourceControl = try container.decodeIfPresent(Bool.self, forKey: .enableSourceControl) ?? true
-            self.refreshStatusLocaly = try container.decodeIfPresent(Bool.self, forKey: .refreshStatusLocaly) ?? true
+            self.refreshStatusLocally = try container.decodeIfPresent(Bool.self, forKey: .refreshStatusLocally) ?? true
             self.fetchRefreshServerStatus = try container.decodeIfPresent(
                 Bool.self,
                 forKey: .fetchRefreshServerStatus
@@ -108,7 +108,7 @@ extension AppPreferences {
         var authorName: String = ""
         /// The author email
         var authorEmail: String = ""
-        /// Indicates what files should be ignored when commiting
+        /// Indicates what files should be ignored when committing
         var ignoredFiles: [IgnoredFiles] = []
         /// Indicates whether we should rebase when pulling commits
         var preferRebaseWhenPulling: Bool = false

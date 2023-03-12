@@ -154,6 +154,8 @@ For issues we want to focus on that are most relevant at any given time, please 
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/maxkel"><img src="https://avatars.githubusercontent.com/u/46418077?v=4?s=100" width="100px;" alt="maxkel"/><br /><sub><b>maxkel</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3Amaxkel" title="Bug reports">🐛</a> <a href="https://github.com/CodeEditApp/CodeEdit/commits?author=maxkel" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://scrapp08.xyz"><img src="https://avatars.githubusercontent.com/u/105889363?v=4?s=100" width="100px;" alt="Scrap"/><br /><sub><b>Scrap</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=scrapp08" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/iggy890"><img src="https://avatars.githubusercontent.com/u/98705626?v=4?s=100" width="100px;" alt="iggy890"/><br /><sub><b>iggy890</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=iggy890" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/stavares843"><img src="https://avatars.githubusercontent.com/u/29093946?v=4?s=100" width="100px;" alt="Sara Tavares"/><br /><sub><b>Sara Tavares</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3Astavares843" title="Bug reports">🐛</a> <a href="https://github.com/CodeEditApp/CodeEdit/commits?author=stavares843" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>

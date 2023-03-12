@@ -97,7 +97,7 @@ struct FindNavigatorModeSelector: View {
                             chevron
                         }
                         Text(selectedMode[index].title)
-                            .foregroundColor(selectedMode[index].needSelectionHightlight ? Color.accentColor : .primary)
+                            .foregroundColor(selectedMode[index].needSelectionHighlight ? Color.accentColor : .primary)
                             .font(.system(size: 10))
                     }
                 }

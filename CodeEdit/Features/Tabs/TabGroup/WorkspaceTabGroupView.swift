@@ -22,7 +22,7 @@ struct WorkspaceTabGroupView: View {
             if let selected = tabgroup.selected {
                 WorkspaceCodeFileView(file: selected)
                     .transformEnvironment(\.edgeInsets) { insets in
-                        insets.top += TabBarView.height + BreadcrumbsView.height + 1 + 1
+                        insets.top += TabBarView.height + PathBarView.height + 1 + 1
                     }
             } else {
                 VStack {
@@ -51,10 +51,9 @@ struct WorkspaceTabGroupView: View {
 
                 Divider()
                 if let file = tabgroup.selected {
-                    BreadcrumbsView(file: file) { newFile in
-                        let index = tabgroup.tabs.firstIndex(of: file)
-                        if let index {
-                            tabgroup.openTab(item: newFile, at: index)
+                    PathBarView(file: file) { [weak tabgroup] newFile in
+                        if let index = tabgroup?.tabs.firstIndex(of: file) {
+                            tabgroup?.openTab(item: newFile, at: index)
                         }
                     }
                     Divider()

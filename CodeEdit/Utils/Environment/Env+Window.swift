@@ -1,5 +1,5 @@
 //
-//  Window.swift
+//  Env+Window.swift
 //  CodeEdit
 //
 //  Created by Wouter Hennen on 14/01/2023.

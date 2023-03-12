@@ -65,8 +65,8 @@ struct EditorView: View {
                     .transformEnvironment(\.isAtEdge) { belowToolbar in
                         calcIsAtEdge(current: &belowToolbar, index: index)
                     }
-                    .environment(\.splitEditor) { edge, newTabGroup in
-                        data.split(edge, at: index, new: newTabGroup)
+                    .environment(\.splitEditor) { [weak data] edge, newTabGroup in
+                        data?.split(edge, at: index, new: newTabGroup)
                     }
             }
         }
