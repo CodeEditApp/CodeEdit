@@ -45,7 +45,7 @@ struct NavigatorSidebarView: View {
                 case 0:
                     NavigatorSidebarToolbarBottom()
                 case 1:
-                    SourceControlToolbarBottom()
+                    SourceControlToolbarBottom(workspace: self.workspace)
                 default:
                     NavigatorSidebarToolbarBottom()
                 }
