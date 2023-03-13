@@ -83,6 +83,7 @@ struct SourceControlToolbarBottom: View {
             }.popover(isPresented: $presentPopup, arrowEdge: .top) {
                 Divider()
                     .padding(.bottom, 51.0)
+                    .frame(width: 500.0, height: 500.0)
                 TextField("Commit Message", text: $commitText)
                     .padding(.bottom, 50.0)
                     .frame(height: 3.0)
