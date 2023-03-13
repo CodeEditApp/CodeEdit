@@ -25,7 +25,7 @@ struct MainCommands: Commands {
             Button("Old Settings...") {
                 NSApp.sendAction(#selector(AppDelegate.openPreferences(_:)), to: nil, from: nil)
             }
-            .keyboardShortcut(",", modifiers: [.command, .hiddenOption])
+            .keyboardShortcut(",", modifiers: [.command, .option, .hidden])
         }
 
     }
