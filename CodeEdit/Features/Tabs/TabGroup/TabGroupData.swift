@@ -8,6 +8,7 @@
 import Foundation
 import OrderedCollections
 import DequeModule
+import SwiftUI
 
 final class TabGroupData: ObservableObject, Identifiable {
     typealias Tab = WorkspaceClient.FileItem
@@ -15,18 +16,20 @@ final class TabGroupData: ObservableObject, Identifiable {
     /// Set of open tabs.
     @Published var tabs: OrderedSet<Tab> = [] {
         didSet {
-            let change = tabs.symmetricDifference(oldValue)
+            withAnimation(.linear(duration: 0)) {
+                let change = tabs.symmetricDifference(oldValue)
 
-            if tabs.count > oldValue.count {
-                // Amount of tabs grew, so set the first new as selected.
-                selected = change.first
-            } else {
-                // Selected file was removed
-                if let selected, change.contains(selected) {
-                    if let oldIndex = oldValue.firstIndex(of: selected), oldIndex - 1 < tabs.count, !tabs.isEmpty {
-                        self.selected = tabs[max(0, oldIndex-1)]
-                    } else {
-                        self.selected = nil
+                if tabs.count > oldValue.count {
+                    // Amount of tabs grew, so set the first new as selected.
+                    selected = change.first
+                } else {
+                    // Selected file was removed
+                    if let selected, change.contains(selected) {
+                        if let oldIndex = oldValue.firstIndex(of: selected), oldIndex - 1 < tabs.count, !tabs.isEmpty {
+                            self.selected = tabs[max(0, oldIndex-1)]
+                        } else {
+                            self.selected = nil
+                        }
                     }
                 }
             }

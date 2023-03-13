@@ -16,6 +16,7 @@ struct WorkspaceCodeFileView: View {
     @EnvironmentObject
     private var tabgroup: TabGroupData
 
+    @Binding
     var file: WorkspaceClient.FileItem
 
     @StateObject

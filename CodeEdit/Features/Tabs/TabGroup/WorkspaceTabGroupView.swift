@@ -20,7 +20,7 @@ struct WorkspaceTabGroupView: View {
     var body: some View {
         VStack {
             if let selected = tabgroup.selected {
-                WorkspaceCodeFileView(file: selected)
+                WorkspaceCodeFileView(file: .init(get: { selected }, set: { _ in }))
                     .transformEnvironment(\.edgeInsets) { insets in
                         insets.top += TabBarView.height + PathBarView.height + 1 + 1
                     }
