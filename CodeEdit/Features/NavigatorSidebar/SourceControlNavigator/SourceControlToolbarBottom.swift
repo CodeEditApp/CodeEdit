@@ -22,7 +22,6 @@ struct SourceControlToolbarBottom: View {
 
     var body: some View {
         HStack(spacing: 0) {
-            TextField("Commit message", text: $commitText)
             Menu {
                 Button("Discard Changes") {
                     do {
@@ -83,9 +82,9 @@ struct SourceControlToolbarBottom: View {
                 Image(systemName: "ellipsis.circle")
             }.popover(isPresented: $presentPopup, arrowEdge: .top) {
                 Text("Test")
+                TextField("Commit Message", text: $commitText)
             }
             .menuStyle(.borderlessButton)
-            .frame(width: 50.0, height: 50.0)
             .menuIndicator(.hidden)
             .frame(maxWidth: 30)
             SourceControlSearchToolbar()
