@@ -81,12 +81,14 @@ struct SourceControlToolbarBottom: View {
             } label: {
                 Image(systemName: "ellipsis.circle")
             }.popover(isPresented: $presentPopup, arrowEdge: .top) {
+                Divider()
+                    .padding(.bottom, 55.0)
                 TextField("Commit Message", text: $commitText)
                     .padding(.bottom, 50.0)
                     .frame(height: 40)
                 Divider()
                     .padding(.bottom, 25)
-                    .frame(width: 500.0, height: 500.0)
+                    .frame(width: 500.0, height: 20.0)
                 Toggle("Push to remote: ", isOn: $push)
                     .padding([.leading, .bottom])
             }
