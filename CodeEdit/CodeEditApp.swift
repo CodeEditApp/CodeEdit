@@ -11,8 +11,6 @@ import SwiftUI
 struct CodeEditApp: App {
     @NSApplicationDelegateAdaptor var appdelegate: AppDelegate
 
-    @StateObject var commandsManager = CommandsManager()
-
     init() {
         _ = CodeEditDocumentController.shared
         NSMenuItem.swizzle()
@@ -51,9 +49,4 @@ struct CodeEditApp: App {
             CodeEditCommands()
         }
     }
-}
-
-class CommandsManager: ObservableObject {
-    @Published var shown = true
-    @Published var commands: [String] = []
 }
