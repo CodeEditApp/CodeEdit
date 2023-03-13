@@ -82,7 +82,7 @@ struct SourceControlToolbarBottom: View {
                 Image(systemName: "ellipsis.circle")
             }.popover(isPresented: $presentPopup, arrowEdge: .top) {
                 TextField("Commit Message", text: $commitText)
-                    .frame(width: .infinity, height: 700)
+                    .frame(width: 700, height: 500)
             }
             .menuStyle(.borderlessButton)
             .menuIndicator(.hidden)
