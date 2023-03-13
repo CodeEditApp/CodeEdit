@@ -32,7 +32,7 @@ extension NSMenuItem {
             NSDocumentController.shared.value(forKey: "_installOpenRecentMenus")
         }
 
-        if self.title == "OpenWindowAction" {
+        if self.title == "OpenWindowAction" || self.title.isEmpty {
             self.isHidden = true
             self.allowsKeyEquivalentWhenHidden = true
         }
@@ -71,5 +71,9 @@ extension NSApplication {
 
     func closeWindow(id: String) {
         windows.first { $0.identifier?.rawValue == id }?.close()
+    }
+
+    func findWindow(id: String) -> NSWindow? {
+        windows.first { $0.identifier?.rawValue == id }
     }
 }

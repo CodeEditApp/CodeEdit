@@ -21,6 +21,13 @@ struct CodeEditApp: App {
 
         WelcomeWindow()
 
+        Window("", id: "About") {
+            AboutView()
+        }
+        .defaultSize(width: 530, height: 220)
+        .windowResizability(.contentSize)
+        .windowStyle(.hiddenTitleBar)
+
         Window("Extensions", id: "Extensions") {
             NavigationSplitView {
 

@@ -21,9 +21,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         AppPreferencesModel.shared.preferences.general.appAppearance.applyAppearance()
         checkForFilesToOpen()
 
-//        if NSApp.windows.count > 1 {
         NSApp.closeWindow(id: "Welcome")
-//        }
+        NSApp.closeWindow(id: "About")
+
         DispatchQueue.main.async {
             var needToHandleOpen = true
 
@@ -58,6 +58,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
+
     }
 
     func applicationSupportsSecureRestorableState(_ app: NSApplication) -> Bool {
@@ -146,15 +147,16 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     }
 
     @IBAction func openWelcome(_ sender: Any) {
-        if tryFocusWindow(of: WelcomeWindowView.self) { return }
+//        if tryFocusWindow(of: WelcomeWindowView.self) { return }
 
-        WelcomeWindowView.openWelcomeWindow()
+//        WelcomeWindowView.openWelcomeWindow()
+        NSApp.openWindow(id: "Welcome")
     }
 
     @IBAction func openAbout(_ sender: Any) {
-        if tryFocusWindow(of: AboutView.self) { return }
-
-        AboutView().showWindow(width: 530, height: 220)
+//        if tryFocusWindow(of: AboutView.self) { return }
+        NSApp.openWindow(id: "About")
+//        AboutView().showWindow(width: 530, height: 220)
     }
 
     @IBAction func openFeedback(_ sender: Any) {

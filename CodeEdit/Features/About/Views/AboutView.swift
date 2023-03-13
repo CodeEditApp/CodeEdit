@@ -16,6 +16,7 @@ enum AboutMode: String, CaseIterable {
 public struct AboutView: View {
     @Environment(\.openURL) private var openURL
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.dismiss) private var dismiss
 
     @State var aboutMode: AboutMode = .about
 
@@ -40,6 +41,22 @@ public struct AboutView: View {
         // if anyone knows of a better way to do this feel free to refactor
         .background(.regularMaterial.opacity(0))
         .background(EffectView(.popover, blendingMode: .behindWindow).ignoresSafeArea())
+        .background {
+            Button("") {
+                dismiss()
+            }
+            .keyboardShortcut(.escape, modifiers: [])
+            .hidden()
+        }
+        .task {
+            if let window = NSApp.findWindow(id: "About") {
+                window.styleMask = [.closable, .fullSizeContentView, .titled, .nonactivatingPanel]
+                window.standardWindowButton(.miniaturizeButton)?.isHidden = true
+                window.standardWindowButton(.zoomButton)?.isHidden = true
+                window.backgroundColor = .gray.withAlphaComponent(0.15)
+                window.isMovableByWindowBackground = true
+            }
+        }
     }
 
     public func showWindow(width: CGFloat, height: CGFloat) {
