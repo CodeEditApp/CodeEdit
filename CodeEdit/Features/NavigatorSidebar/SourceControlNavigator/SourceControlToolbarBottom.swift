@@ -59,14 +59,10 @@ struct SourceControlToolbarBottom: View {
                             print("Git Error")
                         }
                     }
-                }.alert(isPresented: $presentPopup) {
-                    print("Creating stuff idk man")
-                    return Alert(
-                        title: Text("Current Location Not Available"),
-                        message: Text("Your current location can’t be " +
-                                        "determined at this time.")
-                    )
-                }
+                }.popover(isPresented: $presentPopup, arrowEdge: .bottom) {
+                    Text("test")
+                      .frame(width: 100, height: 100)
+                  }
                 Button("Push") {
                     var file = getCurrentWorkspaceDocument(workspace: workspace)
                     do {
