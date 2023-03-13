@@ -21,11 +21,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         AppPreferencesModel.shared.preferences.general.appAppearance.applyAppearance()
         checkForFilesToOpen()
 
+//        if NSApp.windows.count > 1 {
+        NSApp.closeWindow(id: "Welcome")
+//        }
         DispatchQueue.main.async {
             var needToHandleOpen = true
 
             // If no windows were reopened by NSQuitAlwaysKeepsWindows, do default behavior.
-            if !NSApp.windows.isEmpty {
+            if NSApp.windows.count > 1 {
                 needToHandleOpen = false
             }
 
@@ -80,7 +83,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 
         switch behavior {
         case .welcome:
-            openWelcome(self)
+            NSApp.openWindow(id: "Welcome")
         case .openPanel:
             CodeEditDocumentController.shared.openDocument(self)
         case .newDocument:
@@ -130,6 +133,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         }
 
         return .terminateNow
+    }
+
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        false
     }
 
     // MARK: - Open windows

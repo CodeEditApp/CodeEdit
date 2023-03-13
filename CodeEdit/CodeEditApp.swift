@@ -17,22 +17,9 @@ struct CodeEditApp: App {
         NSMenuItem.swizzle()
     }
 
-    @Environment(\.dismiss) var dismiss
-
     var body: some Scene {
 
-        Window("Welcome To CodeEdit", id: "Welcome") {
-            NavigationSplitView {
-
-            } detail: {
-                VStack {
-                    Text("Welcome")
-                }
-            }
-            //                .task {
-            //                    dismiss()
-            //                }
-        }
+        WelcomeWindow()
 
         Window("Extensions", id: "Extensions") {
             NavigationSplitView {
@@ -42,10 +29,8 @@ struct CodeEditApp: App {
                     Text("Extensions")
                 }
             }
-            //                .task {
-            //                    dismiss()
-            //                }
         }
+        .keyboardShortcut("2", modifiers: [.command, .shift])
 
         Settings {
             VStack {

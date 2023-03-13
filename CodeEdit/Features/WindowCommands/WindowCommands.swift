@@ -8,14 +8,24 @@
 import SwiftUI
 
 struct WindowCommands: Commands {
-    
+
     @Environment(\.openWindow) var openWindow
 
     var body: some Commands {
         CommandGroup(after: .windowArrangement) {
             Button("OpenWindowAction") {
-                if let value = NSMenuItem.value {
-                    openWindow(id: "Workspace", value: value)
+                guard let result = NSMenuItem.openWindowAction?() else {
+                    return
+                }
+                switch result {
+                case (.some(let id), .none):
+                    openWindow(id: id)
+                case (.none, .some(let data)):
+                    openWindow(value: data)
+                case (.some(let id), .some(let data)):
+                    openWindow(id: id, value: data)
+                default:
+                    break
                 }
             }
         }
