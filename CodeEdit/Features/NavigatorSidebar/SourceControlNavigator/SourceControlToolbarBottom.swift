@@ -82,10 +82,10 @@ struct SourceControlToolbarBottom: View {
                 Image(systemName: "ellipsis.circle")
             }.popover(isPresented: $presentPopup, arrowEdge: .top) {
                 Divider()
-                    .frame(width: 700, height: 500)
+                    .padding(.bottom, 51.0)
                 TextField("Commit Message", text: $commitText)
                     .padding(.bottom, 50.0)
-                    .frame(height: 100.0)
+                    .frame(height: 3.0)
             }
             .menuStyle(.borderlessButton)
             .menuIndicator(.hidden)
