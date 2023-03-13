@@ -13,10 +13,10 @@ func getCurrentWorkspaceDocument(workspace: WorkspaceDocument) -> String {
 }
 
 struct SourceControlToolbarBottom: View {
+    @State private var commitText: String = ""
+    @State var push: Bool = false
     @State var presentPopup: Bool = false
 
-    @State
-    private var commitText: String = ""
     var shellClient: ShellClient = ShellClient()
     var workspace: WorkspaceDocument
 
@@ -81,12 +81,13 @@ struct SourceControlToolbarBottom: View {
             } label: {
                 Image(systemName: "ellipsis.circle")
             }.popover(isPresented: $presentPopup, arrowEdge: .top) {
-                Divider()
-                    .padding(.bottom, 51.0)
-                    .frame(width: 500.0, height: 500.0)
                 TextField("Commit Message", text: $commitText)
                     .padding(.bottom, 50.0)
                     .frame(height: 3.0)
+                Divider()
+                    .padding(.bottom, 2.0)
+                    .frame(width: 500.0, height: 500.0)
+                Toggle("Push to remote: ", isOn: $push)
             }
             .menuStyle(.borderlessButton)
             .menuIndicator(.hidden)
