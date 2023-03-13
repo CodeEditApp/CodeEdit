@@ -8,36 +8,16 @@
 import SwiftUI
 
 struct CodeEditCommands: Commands {
+    
     var body: some Commands {
+        MainCommands()
+        FileCommands()
         SidebarCommands()
-        TextEditingCommands()
-//        FileCommands()
-//        MainCommands()
-        CommandGroup(after: .windowArrangement) {
-            Button("") {}
-        }
-        CommandGroup(after: .windowSize) {
-            Button("") {}
-        }
-        CommandGroup(after: .windowList) {
-            Button("") {}
-        }
-        CommandGroup(after: .help) {
-            EmptyView()
-        }
-        CommandGroup(replacing: .toolbar) {
-            Button("") {}
-            
-        }
+        ViewCommands()
+        FindCommands()
+        WindowCommands()
     }
 }
 
-struct FileCommands: Commands {
-    var body: some Commands {
-        CommandGroup(replacing: .saveItem) {
-            Button("New") {
 
-            }
-        }
-    }
-}
+

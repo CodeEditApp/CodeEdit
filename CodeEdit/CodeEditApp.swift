@@ -17,7 +17,35 @@ struct CodeEditApp: App {
         NSMenuItem.swizzle()
     }
 
+    @Environment(\.dismiss) var dismiss
+
     var body: some Scene {
+
+        Window("Welcome To CodeEdit", id: "Welcome") {
+            NavigationSplitView {
+
+            } detail: {
+                VStack {
+                    Text("Welcome")
+                }
+            }
+            //                .task {
+            //                    dismiss()
+            //                }
+        }
+
+        Window("Extensions", id: "Extensions") {
+            NavigationSplitView {
+
+            } detail: {
+                VStack {
+                    Text("Extensions")
+                }
+            }
+            //                .task {
+            //                    dismiss()
+            //                }
+        }
 
         Settings {
             VStack {
@@ -26,10 +54,8 @@ struct CodeEditApp: App {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .defaultSize(width: 500, height: 500)
-//        .commandsRemoved()
         .commands {
             CodeEditCommands()
-            MainCommands(appDelegate: appdelegate)
         }
     }
 }
