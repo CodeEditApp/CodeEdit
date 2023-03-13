@@ -14,6 +14,7 @@ struct CodeEditApp: App {
     @StateObject var commandsManager = CommandsManager()
 
     init() {
+        _ = CodeEditDocumentController.shared
         NSMenuItem.swizzle()
     }
 

@@ -12,12 +12,8 @@ import CodeEditSymbols
 final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     var updater: SoftwareUpdater = SoftwareUpdater()
 
-    func applicationWillFinishLaunching(_ notification: Notification) {
-        _ = CodeEditDocumentController.shared
-        enableWindowSizeSaveOnQuit()
-    }
-
     func applicationDidFinishLaunching(_ notification: Notification) {
+        enableWindowSizeSaveOnQuit()
         AppPreferencesModel.shared.preferences.general.appAppearance.applyAppearance()
         checkForFilesToOpen()
 
