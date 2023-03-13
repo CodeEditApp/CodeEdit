@@ -23,6 +23,11 @@ struct SourceControlToolbarBottom: View {
     var body: some View {
         HStack(spacing: 0) {
             TextField("Commit message", text: $commitText)
+            Button("Show popover") {
+                presentPopup = true
+            }.popover(isPresented: $presentPopup, arrowEdge: .bottom) {
+                Text("Test")
+            }
             Menu {
                 Button("Discard Changes") {
                     do {
@@ -62,7 +67,7 @@ struct SourceControlToolbarBottom: View {
                 }.popover(isPresented: $presentPopup, arrowEdge: .bottom) {
                     Text("test")
                       .frame(width: 100, height: 100)
-                  }
+                }
                 Button("Push") {
                     var file = getCurrentWorkspaceDocument(workspace: workspace)
                     do {
