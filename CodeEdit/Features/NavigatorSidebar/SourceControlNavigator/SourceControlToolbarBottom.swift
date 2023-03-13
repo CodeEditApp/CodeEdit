@@ -81,10 +81,11 @@ struct SourceControlToolbarBottom: View {
                 }
             } label: {
                 Image(systemName: "ellipsis.circle")
-            }.popover(isPresented: $presentPopup, arrowEdge: .bottom) {
+            }.popover(isPresented: $presentPopup, arrowEdge: .top) {
                 Text("Test")
             }
             .menuStyle(.borderlessButton)
+            .frame(width: 50.0, height: 50.0)
             .menuIndicator(.hidden)
             .frame(maxWidth: 30)
             SourceControlSearchToolbar()
