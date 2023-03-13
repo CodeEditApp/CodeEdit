@@ -81,8 +81,9 @@ struct SourceControlToolbarBottom: View {
             } label: {
                 Image(systemName: "ellipsis.circle")
             }.popover(isPresented: $presentPopup, arrowEdge: .top) {
-                TextField("Commit Message", text: $commitText)
+                Divider()
                     .frame(width: 700, height: 500)
+                TextField("Commit Message", text: $commitText)
             }
             .menuStyle(.borderlessButton)
             .menuIndicator(.hidden)
