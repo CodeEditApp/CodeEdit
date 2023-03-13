@@ -162,8 +162,11 @@ import CodeEditKit
     // MARK: Close Workspace
 
     override func close() {
-
         super.close()
+
+        if CodeEditDocumentController.shared.documents.isEmpty {
+            NSApp.openWindow(id: "Welcome")
+        }
     }
 
     /// Determines the windows should be closed.

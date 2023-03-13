@@ -330,7 +330,6 @@
 		6C81916B29B41DD300B75C92 /* DequeModule in Frameworks */ = {isa = PBXBuildFile; productRef = 6C81916A29B41DD300B75C92 /* DequeModule */; };
 		6C91D57229B176FF0059A90D /* TabManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C91D57129B176FF0059A90D /* TabManager.swift */; };
 		6C97EBCC2978760400302F95 /* AcknowledgementsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C97EBCB2978760400302F95 /* AcknowledgementsWindowController.swift */; };
-		6C97EBCF297876E500302F95 /* AboutWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C97EBCE297876E500302F95 /* AboutWindowController.swift */; };
 		6CAAF68A29BC9C2300A1F48A /* CodeEditApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CAAF68929BC9C2300A1F48A /* CodeEditApp.swift */; };
 		6CAAF68D29BCC3F200A1F48A /* Commands+ForEach.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CAAF68C29BCC3F200A1F48A /* Commands+ForEach.swift */; };
 		6CAAF69229BCC71C00A1F48A /* CodeEditCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CAAF69129BCC71C00A1F48A /* CodeEditCommands.swift */; };
@@ -737,7 +736,6 @@
 		6C81916629B3E80700B75C92 /* ModifierKeysObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifierKeysObserver.swift; sourceTree = "<group>"; };
 		6C91D57129B176FF0059A90D /* TabManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabManager.swift; sourceTree = "<group>"; };
 		6C97EBCB2978760400302F95 /* AcknowledgementsWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcknowledgementsWindowController.swift; sourceTree = "<group>"; };
-		6C97EBCE297876E500302F95 /* AboutWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutWindowController.swift; sourceTree = "<group>"; };
 		6CAAF68929BC9C2300A1F48A /* CodeEditApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditApp.swift; sourceTree = "<group>"; };
 		6CAAF68C29BCC3F200A1F48A /* Commands+ForEach.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Commands+ForEach.swift"; sourceTree = "<group>"; };
 		6CAAF69129BCC71C00A1F48A /* CodeEditCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditCommands.swift; sourceTree = "<group>"; };
@@ -1098,7 +1096,6 @@
 				6C4104E8297C970F00F472BA /* AboutDefaultView.swift */,
 				6C4104E5297C884F00F472BA /* AboutDetailView.swift */,
 				6C4104E2297C87A000F472BA /* BlurButtonStyle.swift */,
-				6C97EBCE297876E500302F95 /* AboutWindowController.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2799,7 +2796,6 @@
 				58D01C96293167DC00C5B6B4 /* Date+Formatted.swift in Sources */,
 				6C53AAD829A6C4FD00EE9ED6 /* SplitView.swift in Sources */,
 				587B9D9E29300ABD00AC7927 /* FontPickerView.swift in Sources */,
-				6C97EBCF297876E500302F95 /* AboutWindowController.swift in Sources */,
 				58822529292C280D00E83CDE /* StatusBarLineEndSelector.swift in Sources */,
 				58F2EAE7292FB2B0004A9BDE /* GeneralPreferencesView.swift in Sources */,
 				5C4BB1E128212B1E00A92FB2 /* World.swift in Sources */,

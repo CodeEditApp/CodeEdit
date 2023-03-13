@@ -78,7 +78,7 @@ final class CodeEditDocumentController: NSDocumentController {
         super.removeDocument(document)
 
         if CodeEditDocumentController.shared.documents.isEmpty {
-            WelcomeWindowView.openWelcomeWindow()
+            NSApp.openWindow(id: "Welcome")
         }
     }
 

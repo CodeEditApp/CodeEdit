@@ -29,6 +29,7 @@ struct WelcomeWindow: Scene {
 
     struct ContentView: View {
         @Environment(\.dismiss) var dismiss
+        @Environment(\.openWindow) var openWindow
 
         var body: some View {
             WelcomeWindowView(shellClient: currentWorld.shellClient) { url, opened in
@@ -42,7 +43,7 @@ struct WelcomeWindow: Scene {
                     dismiss()
                     CodeEditDocumentController.shared.openDocument(
                         onCompletion: { _, _ in opened() },
-                        onCancel: { WelcomeWindowView.openWelcomeWindow() }
+                        onCancel: { openWindow(id: "Welcome") }
                     )
                 }
             } newDocument: {
