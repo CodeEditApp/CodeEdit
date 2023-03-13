@@ -44,19 +44,19 @@ struct SourceControlToolbarBottom: View {
                     presentPopup = true
 
                     if !commitText.isEmpty {
-                        do {
+                        // do {
                             // try shellClient.run("cd \(file); git add .")
                             // try shellClient.run("cd \(file); git commit -m \(commitText)")
-                        } catch {
-                            print("Git Error")
-                        }
+                        // } catch {
+                        //    print("Git Error")
+                        // }
                     } else {
-                        do {
+                        // do {
                             // try shellClient.run("cd \(file); git add .")
                             // try shellClient.run("cd \(file); git commit -m 'Changes'")
-                        } catch {
-                            print("Git Error")
-                        }
+                        // } catch {
+                        //    print("Git Error")
+                        // }
                     }
                 }.popover(isPresented: $presentPopup, arrowEdge: .bottom) {
                     Text("test")
