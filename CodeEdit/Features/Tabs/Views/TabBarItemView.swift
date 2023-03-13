@@ -309,11 +309,6 @@ struct TabBarItemView: View {
             // This padding is to avoid background color overlapping with top divider.
             .top, prefs.preferences.general.tabBarStyle == .xcode ? 1 : 0
         )
-        .offset(
-            x: isAppeared || prefs.preferences.general.tabBarStyle == .native ? 0 : -14,
-            y: 0
-        )
-        .opacity(isAppeared && onDragTabId != item.id ? 1.0 : 0.0)
         .zIndex(
             isActive
             ? (prefs.preferences.general.tabBarStyle == .native ? -1 : 2)
@@ -327,13 +322,6 @@ struct TabBarItemView: View {
                 : nil
             )
         )
-        .onAppear {
-            withAnimation(
-                .easeOut(duration: prefs.preferences.general.tabBarStyle == .native ? 0.15 : 0.20)
-            ) {
-                isAppeared = true
-            }
-        }
         .id(item.id)
         .tabBarContextMenu(item: item, isTemporary: isTemporary)
     }
