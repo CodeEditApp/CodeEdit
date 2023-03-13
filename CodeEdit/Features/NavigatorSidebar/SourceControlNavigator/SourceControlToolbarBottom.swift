@@ -45,15 +45,15 @@ struct SourceControlToolbarBottom: View {
 
                     if !commitText.isEmpty {
                         do {
-                            try shellClient.run("cd \(file); git add .")
-                            try shellClient.run("cd \(file); git commit -m \(commitText)")
+                            // try shellClient.run("cd \(file); git add .")
+                            // try shellClient.run("cd \(file); git commit -m \(commitText)")
                         } catch {
                             print("Git Error")
                         }
                     } else {
                         do {
-                            try shellClient.run("cd \(file); git add .")
-                            try shellClient.run("cd \(file); git commit -m 'Changes'")
+                            // try shellClient.run("cd \(file); git add .")
+                            // try shellClient.run("cd \(file); git commit -m 'Changes'")
                         } catch {
                             print("Git Error")
                         }
