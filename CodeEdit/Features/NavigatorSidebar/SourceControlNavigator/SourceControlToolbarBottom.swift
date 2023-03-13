@@ -90,7 +90,7 @@ struct SourceControlToolbarBottom: View {
                     .padding(.bottom, 25)
                     .frame(width: 500.0, height: 20.0)
                 Toggle("Push to remote: ", isOn: $push)
-                    .padding([.leading, .bottom])
+                    .padding(.leading)
             }
             .menuStyle(.borderlessButton)
             .menuIndicator(.hidden)
