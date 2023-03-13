@@ -24,11 +24,11 @@ struct CodeFileView: View {
 
     private var cancellables = [AnyCancellable]()
 
-    private let editable: Bool
+    private let isEditable: Bool
 
-    init(codeFile: CodeFileDocument, editable: Bool = true) {
+    init(codeFile: CodeFileDocument, isEditable: Bool = true) {
         self.codeFile = codeFile
-        self.editable = editable
+        self.isEditable = isEditable
 
         codeFile
             .$content
@@ -77,7 +77,8 @@ struct CodeFileView: View {
             wrapLines: $prefs.preferences.textEditing.wrapLinesToEditorWidth,
             cursorPosition: codeFile.$cursorPosition,
             useThemeBackground: prefs.preferences.theme.useThemeBackground,
-            contentInsets: edgeInsets.nsEdgeInsets
+            contentInsets: edgeInsets.nsEdgeInsets,
+            isEditable: isEditable
         )
         .id(codeFile.fileURL)
         .background {
@@ -96,7 +97,6 @@ struct CodeFileView: View {
 
             }
         }
-        .disabled(!editable)
         // minHeight zero fixes a bug where the app would freeze if the contents of the file are empty.
         .frame(minHeight: .zero, maxHeight: .infinity)
         .onChange(of: ThemeModel.shared.selectedTheme) { newValue in

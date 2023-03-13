@@ -9,13 +9,6 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct WorkspaceCodeFileView: View {
-
-    @EnvironmentObject
-    private var tabManager: TabManager
-
-    @EnvironmentObject
-    private var tabgroup: TabGroupData
-
     var file: WorkspaceClient.FileItem
 
     @StateObject

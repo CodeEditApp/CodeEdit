@@ -32,12 +32,11 @@ struct QuickOpenView: View {
         VStack(spacing: 0.0) {
             VStack {
                 HStack(alignment: .center, spacing: 0) {
-                    Image(systemName: "doc.text.magnifyingglass")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 20, height: 20)
-                        .padding(.trailing, 12)
-                        .offset(x: 0, y: 1)
+                    Image(systemName: "magnifyingglass")
+                        .font(.system(size: 18))
+                        .foregroundColor(.secondary)
+                        .padding(.leading, 1)
+                        .padding(.trailing, 10)
                     TextField("Open Quickly", text: $state.openQuicklyQuery)
                         .font(.system(size: 20, weight: .light, design: .default))
                         .textFieldStyle(.plain)
@@ -48,40 +47,48 @@ struct QuickOpenView: View {
                             state.fetchOpenQuickly()
                         }
                 }
-                    .padding(16)
+                    .padding(.vertical, 12)
+                    .padding(.horizontal, 12)
                     .foregroundColor(.primary.opacity(0.85))
                     .background(EffectView(.sidebar, blendingMode: .behindWindow))
             }
-            Divider()
-            NavigationView {
-                List(state.openQuicklyFiles, id: \.id) { file in
-                    NavigationLink(tag: file, selection: $selectedItem) {
-                        QuickOpenPreviewView(item: file)
-                    } label: {
-                        QuickOpenItem(baseDirectory: state.fileURL, fileItem: file)
-                    }
-                    .onTapGesture(count: 2) {
+            if self.state.isShowingOpenQuicklyFiles {
+                Divider()
+            }
+            HStack(spacing: 0) {
+                List(state.openQuicklyFiles, id: \.self, selection: $selectedItem) { file in
+                    QuickOpenItem(baseDirectory: state.fileURL, fileItem: file)
+                }
+                .contextMenu(forSelectionType: WorkspaceClient.FileItem.self, menu: { _ in
+                    EmptyView()
+                }, primaryAction: { files in
+                    if let file = files.first {
                         self.openFile(file)
                         self.onClose()
                     }
-                    .onTapGesture(count: 1) {
-                        self.selectedItem = file
-                    }
-                }
-                .frame(minWidth: 250, maxWidth: 250)
+                })
+                .frame(maxWidth: 272)
+                Divider()
                 if state.openQuicklyFiles.isEmpty {
                     EmptyView()
+                        .frame(maxWidth: .infinity)
                 } else {
-                    Text("Select a file to preview")
+                    if let selectedItem {
+                        QuickOpenPreviewView(item: selectedItem)
+                            .frame(maxWidth: .infinity)
+                    } else {
+                        Text("Select a file to preview")
+                            .frame(maxWidth: .infinity)
+                    }
                 }
             }
         }
-            .background(EffectView(.sidebar, blendingMode: .behindWindow))
-            .edgesIgnoringSafeArea(.vertical)
-            .frame(
-                minWidth: 600,
-                minHeight: self.state.isShowingOpenQuicklyFiles ? 400 : 28,
-                maxHeight: self.state.isShowingOpenQuicklyFiles ? .infinity : 28
-            )
+        .background(EffectView(.sidebar, blendingMode: .behindWindow))
+        .edgesIgnoringSafeArea(.vertical)
+        .frame(
+            minWidth: 680,
+            minHeight: self.state.isShowingOpenQuicklyFiles ? 400 : 19,
+            maxHeight: self.state.isShowingOpenQuicklyFiles ? .infinity : 19
+        )
     }
 }

@@ -29,12 +29,13 @@ struct QuickOpenItem: View {
             VStack(alignment: .leading, spacing: 0) {
                 Text(fileItem.url.lastPathComponent).font(.system(size: 13))
                     .lineLimit(1)
-                Text(fileItem.url.path.replacingOccurrences(of: baseDirectory.path, with: ""))
+                Text(fileItem.url.deletingLastPathComponent().path.replacingOccurrences(of: baseDirectory.path, with: ""))
                     .font(.system(size: 11))
                     .lineLimit(1)
-                    .truncationMode(.tail)
-            }.padding(.trailing, 15)
-            Spacer()
+                    .truncationMode(.head)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
+        .frame(maxWidth: .infinity)
     }
 }

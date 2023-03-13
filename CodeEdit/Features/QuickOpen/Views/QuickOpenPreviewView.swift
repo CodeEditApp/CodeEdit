@@ -34,7 +34,7 @@ struct QuickOpenPreviewView: View {
                 withContentsOf: item.url,
                 ofType: "public.source-code"
             ), loaded {
-                CodeFileView(codeFile: codeFile, editable: false)
+                CodeFileView(codeFile: codeFile, isEditable: false)
             } else if let error = error {
                 Text(error)
             } else {
