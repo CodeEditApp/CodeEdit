@@ -12,6 +12,7 @@ struct WelcomeWindow: Scene {
     var body: some Scene {
         Window("Welcome To CodeEdit", id: "Welcome") {
             ContentView()
+                .frame(width: 795, height: 460)
                 .task {
                     if let window = NSApp.windows.first { $0.identifier?.rawValue == "Welcome" } {
                         window.standardWindowButton(.closeButton)?.isHidden = true
@@ -23,6 +24,7 @@ struct WelcomeWindow: Scene {
         }
         .windowStyle(.hiddenTitleBar)
         .keyboardShortcut("1", modifiers: [.command, .shift])
+        .windowResizability(.contentSize)
     }
 
     struct ContentView: View {
