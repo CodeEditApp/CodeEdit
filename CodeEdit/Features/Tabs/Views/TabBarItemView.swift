@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-// swiftlint:disable type_body_length
 struct TabBarItemView: View {
 
     typealias Item = WorkspaceClient.FileItem
@@ -326,4 +325,3 @@ struct TabBarItemView: View {
         .tabBarContextMenu(item: item, isTemporary: isTemporary)
     }
 }
-// swiftlint:enable type_body_length
