@@ -23,11 +23,6 @@ struct SourceControlToolbarBottom: View {
     var body: some View {
         HStack(spacing: 0) {
             TextField("Commit message", text: $commitText)
-            Button("Show popover") {
-                presentPopup = true
-            }.popover(isPresented: $presentPopup, arrowEdge: .bottom) {
-                Text("Test")
-            }
             Menu {
                 Button("Discard Changes") {
                     do {
@@ -86,6 +81,8 @@ struct SourceControlToolbarBottom: View {
                 }
             } label: {
                 Image(systemName: "ellipsis.circle")
+            }.popover(isPresented: $presentPopup, arrowEdge: .bottom) {
+                Text("Test")
             }
             .menuStyle(.borderlessButton)
             .menuIndicator(.hidden)
