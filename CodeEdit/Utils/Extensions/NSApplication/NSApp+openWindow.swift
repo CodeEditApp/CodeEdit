@@ -37,4 +37,11 @@ extension NSApplication {
     func findWindow(id: String) -> NSWindow? {
         windows.first { $0.identifier?.rawValue == id }
     }
+
+    var openSwiftUIWindows: Int {
+        NSApp
+            .windows
+            .filter { $0.identifier?.rawValue == "Welcome" || $0.identifier?.rawValue == "About" }
+            .count
+    }
 }

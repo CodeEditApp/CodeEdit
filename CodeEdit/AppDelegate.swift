@@ -24,7 +24,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
             var needToHandleOpen = true
 
             // If no windows were reopened by NSQuitAlwaysKeepsWindows, do default behavior.
-            if NSApp.windows.count > 1 {
+            // Non-WindowGroup SwiftUI Windows are still in NSApp.windows when they are closed,
+            // So we need to think about those.
+            if NSApp.windows.count > NSApp.openSwiftUIWindows {
                 needToHandleOpen = false
             }
 
