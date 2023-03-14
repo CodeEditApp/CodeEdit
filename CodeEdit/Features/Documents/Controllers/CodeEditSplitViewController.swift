@@ -15,9 +15,7 @@ struct CodeEditSplitView: NSViewControllerRepresentable {
         controller
     }
 
-    func updateNSViewController(_ nsViewController: NSSplitViewController, context: Context) {
-
-    }
+    func updateNSViewController(_ nsViewController: NSSplitViewController, context: Context) {}
 }
 
 private extension CGFloat {

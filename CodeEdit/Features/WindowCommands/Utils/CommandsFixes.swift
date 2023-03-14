@@ -13,10 +13,12 @@ extension EventModifiers {
 
 extension NSMenuItem {
 
+    /// Helper variable to allow opening SwiftUI windows from anywhere in the app.
+    /// Don't use this, unless you know what you're doing.
     static var openWindowAction: (() -> (String?, (any Codable & Hashable)?))?
 
     @objc
-    func fixAlternate(_ newValue: NSEvent.ModifierFlags) {
+    fileprivate func fixAlternate(_ newValue: NSEvent.ModifierFlags) {
 
         if newValue.contains(.numericPad) {
             isAlternate = true
@@ -39,41 +41,11 @@ extension NSMenuItem {
     }
 
     static func swizzle() {
-        let originalMethodSet = class_getInstanceMethod(self as AnyClass, #selector(setter: NSMenuItem.keyEquivalentModifierMask))
-        let swizzledMethodSet = class_getInstanceMethod(self as AnyClass, #selector(fixAlternate))
+        let origSelector = #selector(setter: NSMenuItem.keyEquivalentModifierMask)
+        let swizzledSelector = #selector(fixAlternate)
+        let originalMethodSet = class_getInstanceMethod(self as AnyClass, origSelector)
+        let swizzledMethodSet = class_getInstanceMethod(self as AnyClass, swizzledSelector)
 
         method_exchangeImplementations(originalMethodSet!, swizzledMethodSet!)
-    }
-}
-
-extension NSApplication {
-    func openWindow(id: String) {
-        NSMenuItem.openWindowAction = { (id, nil) }
-        openWindowPerform()
-    }
-
-    func openWindow(id: String, value: any Codable & Hashable) {
-        NSMenuItem.openWindowAction = { (id, value) }
-        openWindowPerform()
-    }
-
-    func openWindow(value: any Codable & Hashable) {
-        NSMenuItem.openWindowAction = { (nil, value) }
-        openWindowPerform()
-    }
-
-    private func openWindowPerform() {
-        let item = NSApp.windowsMenu?.items.first { $0.title == "OpenWindowAction" }
-        if let item, let action = item.action {
-            NSApp.sendAction(action, to: item.representedObject, from: nil)
-        }
-    }
-
-    func closeWindow(id: String) {
-        windows.first { $0.identifier?.rawValue == id }?.close()
-    }
-
-    func findWindow(id: String) -> NSWindow? {
-        windows.first { $0.identifier?.rawValue == id }
     }
 }

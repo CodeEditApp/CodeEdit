@@ -17,7 +17,7 @@ struct MainCommands: Commands {
             Button("About CodeEdit") {
                 openWindow(id: "About")
             }
-            
+
             Button("Check for updates...") {
                 NSApp.sendAction(#selector(SPUStandardUpdaterController.checkForUpdates(_:)), to: nil, from: nil)
             }

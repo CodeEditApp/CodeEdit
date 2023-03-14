@@ -24,7 +24,13 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
         self.workspace = workspace
 
         setupSplitView(with: workspace)
-        contentViewController = NSHostingController(rootView: CodeEditSplitView(controller: splitViewController).ignoresSafeArea())
+
+        let view = CodeEditSplitView(controller: splitViewController).ignoresSafeArea()
+
+        // An NSHostingController is used, so the root viewController of the window is a SwiftUI-managed one.
+        // This allows us to use some SwiftUI features, like focusedSceneObject.
+        contentViewController = NSHostingController(rootView: view)
+
         setupToolbar()
         registerCommands()
     }

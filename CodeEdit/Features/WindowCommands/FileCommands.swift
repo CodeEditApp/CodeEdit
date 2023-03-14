@@ -54,7 +54,7 @@ struct FileCommands: Commands {
             .keyboardShortcut("w", modifiers: [.control, .option, .command])
 
             Divider()
-            
+
             Button("Save") {
                 NSApp.sendAction(#selector(CodeEditWindowController.saveDocument(_:)), to: nil, from: nil)
             }

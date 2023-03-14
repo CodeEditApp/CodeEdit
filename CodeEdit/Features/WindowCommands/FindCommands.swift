@@ -44,7 +44,7 @@ struct FindCommands: Commands {
                     send(.setFindString)
                 }
                 .keyboardShortcut("e")
-                
+
                 Button("Jump to Selection") {
                     NSApp.sendAction(#selector(NSTextView.centerSelectionInVisibleArea(_:)), to: nil, from: nil)
                 }
