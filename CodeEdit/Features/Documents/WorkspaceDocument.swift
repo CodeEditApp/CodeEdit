@@ -12,15 +12,19 @@ import Combine
 import CodeEditKit
 
 @objc(WorkspaceDocument) final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
-    var workspaceClient: WorkspaceClient?
 
-    var workspaceClient: FileSystemClient?
+    @Published
+    var sortFoldersOnTop: Bool = true
+
+    @Published
+    var fileItems: [CEWorkspaceFile] = []
+
+    @Published
+    var targets: [Target] = []
+
+    var workspaceFileManager: CEWorkspaceFileManager?
 
     var extensionNavigatorData = ExtensionNavigatorData()
-
-    @Published var sortFoldersOnTop: Bool = true
-
-    @Published var fileItems: [WorkspaceClient.FileItem] = []
 
     var tabManager = TabManager()
 
@@ -121,7 +125,10 @@ import CodeEditKit
 //            folderURL: url,
 //            ignoredFilesAndFolders: ignoredFilesAndDirectory
 //        )
-        self.workspaceClient = .init(fileManager: .default, folderUrl: url, ignoredFilesAndFolders: ignoredFilesAndDirectory)
+        self.workspaceFileManager = .init(
+            folderUrl: url,
+            ignoredFilesAndFolders: ignoredFilesAndDirectory
+        )
         self.searchState = .init(self)
         self.quickOpenViewModel = .init(fileURL: url)
         self.commandsPaletteState = .init()
@@ -131,7 +138,7 @@ import CodeEditKit
         try initWorkspaceState(url)
 
         // Initialize Workspace
-        workspaceClient?
+        workspaceFileManager?
             .getFiles
             .sink { [weak self] files in
                 guard let self = self else { return }

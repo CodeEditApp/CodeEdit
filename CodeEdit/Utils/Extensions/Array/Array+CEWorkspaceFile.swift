@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Array where Element == FileSystemClient.FileSystemItem {
+extension Array where Element == CEWorkspaceFile {
 
     /// Sorts the elements in alphabetical order.
     /// - Parameter foldersOnTop: if set to `true` folders will always be on top of files.

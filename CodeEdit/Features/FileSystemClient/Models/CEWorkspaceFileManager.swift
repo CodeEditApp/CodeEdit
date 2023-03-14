@@ -9,44 +9,43 @@ import Combine
 import Foundation
 
 /// This class is used to load the files of the machine into a CodeEdit workspace.
-final class FileSystemClient {
-
+final class CEWorkspaceFileManager {
     enum FileSystemClientError: Error {
         case fileNotExist
     }
 
-    private var subject = CurrentValueSubject<[FileSystemItem], Never>([])
+    private var subject = CurrentValueSubject<[CEWorkspaceFile], Never>([])
     private var isRunning = false
     private var anotherInstanceRan = 0
 
     private(set) var fileManager = FileManager.default
     private(set) var ignoredFilesAndFolders: [String]
-    private(set) var flattenedFileItems: [String: FileSystemItem]
+    private(set) var flattenedFileItems: [String: CEWorkspaceFile]
 
     var onRefresh: () -> Void = {}
-    var getFiles: AnyPublisher<[FileSystemItem], Never> =
-        CurrentValueSubject<[FileSystemItem], Never>([]).eraseToAnyPublisher()
+    var getFiles: AnyPublisher<[CEWorkspaceFile], Never> =
+        CurrentValueSubject<[CEWorkspaceFile], Never>([]).eraseToAnyPublisher()
 
     let folderUrl: URL
-    let workspaceItem: FileSystemItem
+    let workspaceItem: CEWorkspaceFile
 
     init(folderUrl: URL, ignoredFilesAndFolders: [String]) {
         self.folderUrl = folderUrl
         self.ignoredFilesAndFolders = ignoredFilesAndFolders
 
-        self.workspaceItem = FileSystemItem(url: folderUrl, children: [])
+        self.workspaceItem = CEWorkspaceFile(url: folderUrl, children: [])
         self.flattenedFileItems = [workspaceItem.id: workspaceItem]
     }
 
     /// Recursive loading of files into `FileItem`s
     /// - Parameter url: The URL of the directory to load the items of
     /// - Returns: `[FileItem]` representing the contents of the directory
-    private func loadFiles(fromURL url: URL) throws -> [FileSystemItem] {
+    private func loadFiles(fromURL url: URL) throws -> [CEWorkspaceFile] {
         let directoryContents = try fileManager.contentsOfDirectory(
             at: url.resolvingSymlinksInPath(),
             includingPropertiesForKeys: nil
         )
-        var items: [FileSystemItem] = []
+        var items: [CEWorkspaceFile] = []
 
         for itemURL in directoryContents {
             guard !ignoredFilesAndFolders.contains(itemURL.lastPathComponent) else { continue }
@@ -54,14 +53,14 @@ final class FileSystemClient {
             var isDir: ObjCBool = false
 
             if fileManager.fileExists(atPath: itemURL.path, isDirectory: &isDir) {
-                var subItems: [FileSystemItem]?
+                var subItems: [CEWorkspaceFile]?
 
                 if isDir.boolValue {
                     // Recursively fetch subdirectories and files if the path points to a directory
                     subItems = try loadFiles(fromURL: itemURL)
                 }
 
-                let newFileItem = FileSystemItem(
+                let newFileItem = CEWorkspaceFile(
                     url: itemURL,
                     children: subItems?.sortItems(foldersOnTop: true)
                 )
@@ -83,7 +82,7 @@ final class FileSystemClient {
     /// within the scope of the `FileSystemClient`.
     /// - Parameter id: The file's full path
     /// - Returns: The file item corresponding to the file
-    func getFileItem(_ id: String) throws -> FileSystemItem {
+    func getFileItem(_ id: String) throws -> CEWorkspaceFile {
         guard let item = flattenedFileItems[id] else {
             throw FileSystemClientError.fileNotExist
         }
@@ -107,7 +106,7 @@ final class FileSystemClient {
     /// instances may be running concurrently, so the function prevents more than one instance of it from
     /// running the main code body.
     /// - Parameter sourceFileItem: The `FileItem` corresponding to the file that triggered the `DispatchSource`
-    func reloadFromWatcher(sourceFileItem: FileSystemItem) {
+    func reloadFromWatcher(sourceFileItem: CEWorkspaceFile) {
         // Something has changed inside the directory
         // We should reload the files.
         guard !isRunning else { // this runs when a file change is detected but is already running
@@ -154,7 +153,7 @@ final class FileSystemClient {
     /// entirely new `FileItem`, to prevent the `OutlineView` from going crazy with folding.
     /// - Parameter fileItem: The `FileItem` to correct the children of
     @discardableResult
-    func rebuildFiles(fromItem fileItem: FileSystemItem) throws -> Bool {
+    func rebuildFiles(fromItem fileItem: CEWorkspaceFile) throws -> Bool {
         var didChangeSomething = false
 
         // get the actual directory children
@@ -182,11 +181,11 @@ final class FileSystemClient {
 
             var isDir: ObjCBool = false
             if fileManager.fileExists(atPath: newContent.path, isDirectory: &isDir) {
-                var subItems: [FileSystemItem]?
+                var subItems: [CEWorkspaceFile]?
 
                 if isDir.boolValue { subItems = try loadFiles(fromURL: newContent) }
 
-                let newFileItem = FileSystemItem(
+                let newFileItem = CEWorkspaceFile(
                     url: newContent,
                     children: subItems?.sortItems(foldersOnTop: true)
                 )

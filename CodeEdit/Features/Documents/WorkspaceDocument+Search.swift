@@ -74,7 +74,7 @@ extension WorkspaceDocument {
             // - Lazily load strings using `FileHandle.AsyncBytes`
             //   https://developer.apple.com/documentation/foundation/filehandle/3766681-bytes
             filePaths.map { url in
-                WorkspaceClient.FileItem(url: url, children: nil)
+                CEWorkspaceFile(url: url, children: nil)
             }.forEach { fileItem in
                 guard let data = try? Data(contentsOf: fileItem.url),
                       let string = String(data: data, encoding: .utf8) else { return }

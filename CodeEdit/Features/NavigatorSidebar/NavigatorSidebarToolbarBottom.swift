@@ -31,22 +31,18 @@ struct NavigatorSidebarToolbarBottom: View {
     private var addNewFileButton: some View {
         Menu {
             Button("Add File") {
-                guard let folderURL = workspace.workspaceClient?.folderUrl else { return }
-                guard let root = try? workspace.workspaceClient?.getFileItem(folderURL.path) else { return }
-                let newFile = root.addFile(fileName: "untitled") // TODO: use currently selected file instead of root
+                guard let folderURL = workspace.workspaceFileManager?.folderUrl,
+                      let root = try? workspace.workspaceFileManager?.getFileItem(folderURL.path) else { return }
 
-                DispatchQueue.main.async {
-                    guard let newFileItem = try? workspace.workspaceClient?.getFileItem(newFile) else {
-                        return
-                    }
-                    workspace.tabManager.openTab(item: newFileItem)
-                }
-
+                // TODO: use currently selected file instead of root
+                root.addFile(fileName: "untitled")
             }
             Button("Add Folder") {
-                guard let folderURL = workspace.workspaceClient?.folderUrl else { return }
-                guard let root = try? workspace.workspaceClient?.getFileItem(folderURL.path) else { return }
-                root.addFolder(folderName: "untitled") // TODO: use currently selected file instead of root
+                guard let folderURL = workspace.workspaceFileManager?.folderUrl,
+                      let root = try? workspace.workspaceFileManager?.getFileItem(folderURL.path) else { return }
+
+                // TODO: use currently selected file instead of root
+                root.addFolder(folderName: "untitled")
             }
         } label: {
             Image(systemName: "plus")

@@ -209,7 +209,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
             let view = NSHostingView(
                 rootView: ToolbarBranchPicker(
                     shellClient: currentWorld.shellClient,
-                    workspace: workspace?.workspaceClient
+                    workspaceFileManager: workspace?.workspaceFileManager
                 )
             )
             toolbarItem.view = view

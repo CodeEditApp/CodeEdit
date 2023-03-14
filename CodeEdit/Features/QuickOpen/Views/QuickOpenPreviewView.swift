@@ -10,7 +10,7 @@ import SwiftUI
 struct QuickOpenPreviewView: View {
 
     private let queue = DispatchQueue(label: "austincondiff.CodeEdit.quickOpen.preview")
-    private let item: WorkspaceClient.FileItem
+    private let item: CEWorkspaceFile
 
     @State
     private var content: String = ""
@@ -22,7 +22,7 @@ struct QuickOpenPreviewView: View {
     private var error: String?
 
     init(
-        item: WorkspaceClient.FileItem
+        item: CEWorkspaceFile
     ) {
         self.item = item
     }

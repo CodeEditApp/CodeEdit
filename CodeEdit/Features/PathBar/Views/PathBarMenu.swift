@@ -8,12 +8,12 @@
 import AppKit
 
 final class PathBarMenu: NSMenu, NSMenuDelegate {
-    private let fileItems: [WorkspaceClient.FileItem]
-    private let tappedOpenFile: (WorkspaceClient.FileItem) -> Void
+    private let fileItems: [CEWorkspaceFile]
+    private let tappedOpenFile: (CEWorkspaceFile) -> Void
 
     init(
-        fileItems: [WorkspaceClient.FileItem],
-        tappedOpenFile: @escaping (WorkspaceClient.FileItem) -> Void
+        fileItems: [CEWorkspaceFile],
+        tappedOpenFile: @escaping (CEWorkspaceFile) -> Void
     ) {
         self.fileItems = fileItems
         self.tappedOpenFile = tappedOpenFile
@@ -38,13 +38,13 @@ final class PathBarMenu: NSMenu, NSMenuDelegate {
     /// Only when menu item is highlighted then generate its submenu
     func menu(_: NSMenu, willHighlight item: NSMenuItem?) {
         if let highlightedItem = item, let submenuItems = highlightedItem.submenu?.items, submenuItems.isEmpty {
-            if let highlightedFileItem = highlightedItem.representedObject as? WorkspaceClient.FileItem {
+            if let highlightedFileItem = highlightedItem.representedObject as? CEWorkspaceFile {
                 highlightedItem.submenu = generateSubmenu(highlightedFileItem)
             }
         }
     }
 
-    private func generateSubmenu(_ fileItem: WorkspaceClient.FileItem) -> PathBarMenu? {
+    private func generateSubmenu(_ fileItem: CEWorkspaceFile) -> PathBarMenu? {
         if let children = fileItem.children {
             let menu = PathBarMenu(
                 fileItems: children,
@@ -57,16 +57,16 @@ final class PathBarMenu: NSMenu, NSMenuDelegate {
 }
 
 final class PathBarMenuItem: NSMenuItem {
-    private let fileItem: WorkspaceClient.FileItem
-    private let tappedOpenFile: (WorkspaceClient.FileItem) -> Void
+    private let fileItem: CEWorkspaceFile
+    private let tappedOpenFile: (CEWorkspaceFile) -> Void
 
     init(
-        fileItem: WorkspaceClient.FileItem,
-        tappedOpenFile: @escaping (WorkspaceClient.FileItem) -> Void
+        fileItem: CEWorkspaceFile,
+        tappedOpenFile: @escaping (CEWorkspaceFile) -> Void
     ) {
         self.fileItem = fileItem
         self.tappedOpenFile = tappedOpenFile
-        super.init(title: fileItem.fileName, action: #selector(openFile), keyEquivalent: "")
+        super.init(title: fileItem.name, action: #selector(openFile), keyEquivalent: "")
 
         var icon = fileItem.systemImage
         var color = NSColor(fileItem.iconColor)

@@ -12,7 +12,7 @@ import Cocoa
 class SearchResultMatchModel: Hashable, Identifiable {
     init(
         lineNumber: Int,
-        file: WorkspaceClient.FileItem,
+        file: CEWorkspaceFile,
         lineContent: String,
         keywordRange: Range<String.Index>
     ) {
@@ -24,7 +24,7 @@ class SearchResultMatchModel: Hashable, Identifiable {
     }
 
     var id: UUID
-    var file: WorkspaceClient.FileItem
+    var file: CEWorkspaceFile
     var lineNumber: Int
     var lineContent: String
     var keywordRange: Range<String.Index>

@@ -14,7 +14,7 @@ final class QuickOpenViewModel: ObservableObject {
     var openQuicklyQuery: String = ""
 
     @Published
-    var openQuicklyFiles: [WorkspaceClient.FileItem] = []
+    var openQuicklyFiles: [CEWorkspaceFile] = []
 
     @Published
     var isShowingOpenQuicklyFiles: Bool = false
