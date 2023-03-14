@@ -12,17 +12,17 @@ struct FileCommands: Commands {
         CommandGroup(replacing: .newItem) {
             Group {
                 Button("New") {
-
+                    NSDocumentController.shared.newDocument(nil)
                 }
                 .keyboardShortcut("n")
                 Button("Open...") {
-
+                    NSDocumentController.shared.openDocument(nil)
                 }
                 .keyboardShortcut("o")
                 Menu("Open Recent") {
                 }
                 Button("Open Quickly") {
-
+                    NSApp.sendAction(#selector(CodeEditWindowController.openQuickly(_:)), to: nil, from: nil)
                 }
                 .keyboardShortcut("o", modifiers: [.command, .shift])
             }
@@ -46,7 +46,7 @@ struct FileCommands: Commands {
             .keyboardShortcut("w", modifiers: [.control, .option, .command])
             Divider()
             Button("Save") {
-
+                NSApp.sendAction(#selector(CodeEditWindowController.saveDocument(_:)), to: nil, from: nil)
             }
             .keyboardShortcut("s")
         }

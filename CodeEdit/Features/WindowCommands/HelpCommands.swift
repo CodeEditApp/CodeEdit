@@ -18,7 +18,7 @@ struct HelpCommands: Commands {
             }
 
             Button("Report an Issue") {
-
+                NSApp.sendAction(#selector(AppDelegate.openFeedback(_:)), to: nil, from: nil)
             }
         }
     }
