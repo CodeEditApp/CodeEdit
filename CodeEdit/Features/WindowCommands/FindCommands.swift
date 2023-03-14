@@ -24,22 +24,27 @@ struct FindCommands: Commands {
                     send(.showFindPanel)
                 }
                 .keyboardShortcut("f")
+
                 Button("Find and Replace...") {
                     send(.init(rawValue: 12)!)
                 }
                 .keyboardShortcut("f", modifiers: [.option, .command])
+
                 Button("Find Next") {
                     send(.next)
                 }
                 .keyboardShortcut("g")
+
                 Button("Find Previous") {
                     send(.previous)
                 }
                 .keyboardShortcut("g", modifiers: [.shift, .command])
+
                 Button("Use Selection for Find") {
                     send(.setFindString)
                 }
                 .keyboardShortcut("e")
+                
                 Button("Jump to Selection") {
                     NSApp.sendAction(#selector(NSTextView.centerSelectionInVisibleArea(_:)), to: nil, from: nil)
                 }

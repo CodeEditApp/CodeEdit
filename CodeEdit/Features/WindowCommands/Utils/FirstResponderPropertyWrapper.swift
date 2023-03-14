@@ -7,6 +7,9 @@
 
 import SwiftUI
 
+/// A property wrapper which allows for easy access to the current first responder.
+/// This differs from the SwiftUI Focus System, as you get AppKit NSResponders, which you can call methods on.
+/// It can also be easily checked if the current first selector accepts some event.
 @propertyWrapper
 struct FirstResponder: DynamicProperty {
     @StateObject var helper = HelperClass()

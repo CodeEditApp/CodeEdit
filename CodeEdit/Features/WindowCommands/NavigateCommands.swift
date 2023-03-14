@@ -15,10 +15,12 @@ struct NavigateCommands: Commands {
 
                 }
                 .keyboardShortcut("j", modifiers: [.shift, .command])
+
                 Button("Reveal Changes in Navigator") {
 
                 }
                 .keyboardShortcut("m", modifiers: [.shift, .command])
+
                 Button("Open in Next Editor") {
 
                 }
@@ -39,7 +41,6 @@ struct NavigateCommands: Commands {
                 }
 
                 Divider()
-
 
                 Button("Go Forward") {
 

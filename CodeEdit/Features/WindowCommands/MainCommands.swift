@@ -17,16 +17,17 @@ struct MainCommands: Commands {
             Button("About CodeEdit") {
                 openWindow(id: "About")
             }
+            
             Button("Check for updates...") {
                 NSApp.sendAction(#selector(SPUStandardUpdaterController.checkForUpdates(_:)), to: nil, from: nil)
             }
         }
+
         CommandGroup(after: .appSettings) {
             Button("Old Settings...") {
                 NSApp.sendAction(#selector(AppDelegate.openPreferences(_:)), to: nil, from: nil)
             }
             .keyboardShortcut(",", modifiers: [.command, .option, .hidden])
         }
-
     }
 }

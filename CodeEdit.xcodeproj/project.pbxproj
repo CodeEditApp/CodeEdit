@@ -2262,21 +2262,29 @@
 			path = Environment;
 			sourceTree = "<group>";
 		};
-		6CAAF68F29BCC6F900A1F48A /* WindowCommands */ = {
+		6C82D6BF29C00EE300495C54 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
 				6CAAF68C29BCC3F200A1F48A /* Commands+ForEach.swift */,
+				6CAAF69329BCD78600A1F48A /* CommandsFixes.swift */,
+				6C82D6BB29C00CD900495C54 /* FirstResponderPropertyWrapper.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		6CAAF68F29BCC6F900A1F48A /* WindowCommands */ = {
+			isa = PBXGroup;
+			children = (
 				6CAAF69129BCC71C00A1F48A /* CodeEditCommands.swift */,
-				6C82D6B529BFDB5100495C54 /* SourceControlCommands.swift */,
-				6C82D6B229BFD88700495C54 /* NavigateCommands.swift */,
-				6CFF967B29BEBD5200182D6F /* WindowCommands.swift */,
-				6CFF967929BEBD2400182D6F /* ViewCommands.swift */,
 				6CFF967729BEBCF600182D6F /* MainCommands.swift */,
 				6CFF967529BEBCD900182D6F /* FileCommands.swift */,
+				6CFF967929BEBD2400182D6F /* ViewCommands.swift */,
 				6CFF967329BEBCC300182D6F /* FindCommands.swift */,
-				6C82D6BB29C00CD900495C54 /* FirstResponderPropertyWrapper.swift */,
+				6C82D6B229BFD88700495C54 /* NavigateCommands.swift */,
+				6C82D6B529BFDB5100495C54 /* SourceControlCommands.swift */,
+				6CFF967B29BEBD5200182D6F /* WindowCommands.swift */,
 				6C82D6B829BFE34900495C54 /* HelpCommands.swift */,
-				6CAAF69329BCD78600A1F48A /* CommandsFixes.swift */,
+				6C82D6BF29C00EE300495C54 /* Utils */,
 			);
 			path = WindowCommands;
 			sourceTree = "<group>";
