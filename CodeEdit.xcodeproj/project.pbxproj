@@ -330,6 +330,7 @@
 		6C82D6B329BFD88700495C54 /* NavigateCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C82D6B229BFD88700495C54 /* NavigateCommands.swift */; };
 		6C82D6B629BFDB5100495C54 /* SourceControlCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C82D6B529BFDB5100495C54 /* SourceControlCommands.swift */; };
 		6C82D6B929BFE34900495C54 /* HelpCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C82D6B829BFE34900495C54 /* HelpCommands.swift */; };
+		6C82D6BC29C00CD900495C54 /* FirstResponderPropertyWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C82D6BB29C00CD900495C54 /* FirstResponderPropertyWrapper.swift */; };
 		6C91D57229B176FF0059A90D /* TabManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C91D57129B176FF0059A90D /* TabManager.swift */; };
 		6C97EBCC2978760400302F95 /* AcknowledgementsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C97EBCB2978760400302F95 /* AcknowledgementsWindowController.swift */; };
 		6CAAF68A29BC9C2300A1F48A /* CodeEditApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CAAF68929BC9C2300A1F48A /* CodeEditApp.swift */; };
@@ -738,6 +739,7 @@
 		6C82D6B229BFD88700495C54 /* NavigateCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigateCommands.swift; sourceTree = "<group>"; };
 		6C82D6B529BFDB5100495C54 /* SourceControlCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlCommands.swift; sourceTree = "<group>"; };
 		6C82D6B829BFE34900495C54 /* HelpCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpCommands.swift; sourceTree = "<group>"; };
+		6C82D6BB29C00CD900495C54 /* FirstResponderPropertyWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstResponderPropertyWrapper.swift; sourceTree = "<group>"; };
 		6C91D57129B176FF0059A90D /* TabManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabManager.swift; sourceTree = "<group>"; };
 		6C97EBCB2978760400302F95 /* AcknowledgementsWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcknowledgementsWindowController.swift; sourceTree = "<group>"; };
 		6CAAF68929BC9C2300A1F48A /* CodeEditApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditApp.swift; sourceTree = "<group>"; };
@@ -2274,6 +2276,7 @@
 				6CFF967729BEBCF600182D6F /* MainCommands.swift */,
 				6CFF967529BEBCD900182D6F /* FileCommands.swift */,
 				6CFF967329BEBCC300182D6F /* FindCommands.swift */,
+				6C82D6BB29C00CD900495C54 /* FirstResponderPropertyWrapper.swift */,
 				6C82D6B829BFE34900495C54 /* HelpCommands.swift */,
 				6CAAF69329BCD78600A1F48A /* CommandsFixes.swift */,
 			);
@@ -2709,6 +2712,7 @@
 				58F2EAED292FB2B0004A9BDE /* IgnoredFileView.swift in Sources */,
 				587B9E6529301D8F00AC7927 /* GitLabGroupAccess.swift in Sources */,
 				6C91D57229B176FF0059A90D /* TabManager.swift in Sources */,
+				6C82D6BC29C00CD900495C54 /* FirstResponderPropertyWrapper.swift in Sources */,
 				58D01C9B293167DC00C5B6B4 /* CodeEditKeychainConstants.swift in Sources */,
 				58F2EB0C292FB2B0004A9BDE /* SourceControlAccounts.swift in Sources */,
 				20EBB50F280C389300F3A5DA /* FileInspectorModel.swift in Sources */,

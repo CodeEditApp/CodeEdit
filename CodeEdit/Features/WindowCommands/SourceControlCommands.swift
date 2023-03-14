@@ -49,36 +49,40 @@ struct SourceControlCommands: Commands {
 
                 Divider()
             }
+            .disabled(true)
 
-            Button("Create Pull Request...") {
+            Group {
+                Button("Create Pull Request...") {
 
+                }
+
+                Divider()
+
+                Button("Add Selected Files") {
+
+                }
+
+                Button("Discard Changes in Selected Files...") {
+
+                }
+
+                Button("Mark Selected Files as Resolved") {
+
+                }
+
+                Divider()
+
+                Button("New Git Repositories") {
+
+                }
+
+                Divider()
+
+                Button("Clone...") {
+
+                }
             }
-
-            Divider()
-
-            Button("Add Selected Files") {
-
-            }
-
-            Button("Discard Changes in Selected Files...") {
-
-            }
-
-            Button("Mark Selected Files as Resolved") {
-
-            }
-
-            Divider()
-
-            Button("New Git Repositories") {
-
-            }
-
-            Divider()
-
-            Button("Clone...") {
-                
-            }
+            .disabled(true)
         }
     }
 }

@@ -13,9 +13,11 @@ struct HelpCommands: Commands {
             Button("What's New in CodeEdit") {
 
             }
+            .disabled(true)
 
             Button("Release Notes") {
             }
+            .disabled(true)
 
             Button("Report an Issue") {
                 NSApp.sendAction(#selector(AppDelegate.openFeedback(_:)), to: nil, from: nil)
