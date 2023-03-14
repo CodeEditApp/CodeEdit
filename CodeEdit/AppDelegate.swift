@@ -143,16 +143,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     }
 
     @IBAction func openWelcome(_ sender: Any) {
-//        if tryFocusWindow(of: WelcomeWindowView.self) { return }
-
-//        WelcomeWindowView.openWelcomeWindow()
         NSApp.openWindow(id: "Welcome")
     }
 
     @IBAction func openAbout(_ sender: Any) {
-//        if tryFocusWindow(of: AboutView.self) { return }
         NSApp.openWindow(id: "About")
-//        AboutView().showWindow(width: 530, height: 220)
     }
 
     @IBAction func openFeedback(_ sender: Any) {

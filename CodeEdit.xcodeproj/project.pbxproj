@@ -10,7 +10,6 @@
 		043BCF03281DA18A000AC47C /* WorkspaceDocument+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043BCF02281DA18A000AC47C /* WorkspaceDocument+Search.swift */; };
 		043C321427E31FF6006AE443 /* CodeEditDocumentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043C321327E31FF6006AE443 /* CodeEditDocumentController.swift */; };
 		043C321627E3201F006AE443 /* WorkspaceDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043C321527E3201F006AE443 /* WorkspaceDocument.swift */; };
-		043C321A27E32295006AE443 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 043C321927E32295006AE443 /* MainMenu.xib */; };
 		04540D5E27DD08C300E91B77 /* WorkspaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B658FB3127DA9E0F00EA4DBD /* WorkspaceView.swift */; };
 		0463E51127FCC1DF00806D5C /* CodeEditAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0463E51027FCC1DF00806D5C /* CodeEditAPI.swift */; };
 		0463E51327FCC1FB00806D5C /* CodeEditTargetsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0463E51227FCC1FB00806D5C /* CodeEditTargetsAPI.swift */; };
@@ -423,7 +422,6 @@
 		043BCF02281DA18A000AC47C /* WorkspaceDocument+Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkspaceDocument+Search.swift"; sourceTree = "<group>"; };
 		043C321327E31FF6006AE443 /* CodeEditDocumentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditDocumentController.swift; sourceTree = "<group>"; };
 		043C321527E3201F006AE443 /* WorkspaceDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceDocument.swift; sourceTree = "<group>"; };
-		043C321927E32295006AE443 /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		0463E51027FCC1DF00806D5C /* CodeEditAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditAPI.swift; sourceTree = "<group>"; };
 		0463E51227FCC1FB00806D5C /* CodeEditTargetsAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditTargetsAPI.swift; sourceTree = "<group>"; };
 		04660F6027E3A68A00477777 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -2332,7 +2330,6 @@
 				B658FB3327DA9E1000EA4DBD /* Assets.xcassets */,
 				B658FB3827DA9E1000EA4DBD /* CodeEdit.entitlements */,
 				04660F6027E3A68A00477777 /* Info.plist */,
-				043C321927E32295006AE443 /* MainMenu.xib */,
 				B658FB3127DA9E0F00EA4DBD /* WorkspaceView.swift */,
 				6C48D8F62972E5F300D6D205 /* WindowObserver.swift */,
 				28069DA527F5BD320016BC47 /* DefaultThemes */,
@@ -2564,7 +2561,6 @@
 				284DC8512978BA2600BF2770 /* .all-contributorsrc in Resources */,
 				B658FB3427DA9E1000EA4DBD /* Assets.xcassets in Resources */,
 				474397C52893AC4B00518C8C /* codeedit-midnight.json in Resources */,
-				043C321A27E32295006AE443 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
