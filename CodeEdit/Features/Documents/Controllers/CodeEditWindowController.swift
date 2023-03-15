@@ -111,7 +111,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
         inspector.canCollapse = true
         inspector.collapseBehavior = .useConstraints
         inspector.isSpringLoaded = true
-        
+
         splitVC.addSplitViewItem(inspector)
 
         self.splitViewController = splitVC
@@ -224,34 +224,6 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
         super.windowDidLoad()
     }
 
-    @objc func toggleFirstPanel() {
-        guard let firstSplitView = splitViewController.splitViewItems.first else { return }
-        firstSplitView.animator().isCollapsed.toggle()
-        if let codeEditSplitVC = splitViewController as? CodeEditSplitViewController {
-            codeEditSplitVC.saveNavigatorCollapsedState(isCollapsed: firstSplitView.isCollapsed)
-        }
-    }
-
-    @objc func toggleLastPanel() {
-        guard let lastSplitView = splitViewController.splitViewItems.last else { return }
-
-        if lastSplitView.isCollapsed {
-            window?.toolbar?.insertItem(withItemIdentifier: .itemListTrackingSeparator, at: 4)
-        }
-        NSAnimationContext.runAnimationGroup { context in
-            lastSplitView.animator().isCollapsed.toggle()
-        } completionHandler: { [weak self] in
-            if lastSplitView.isCollapsed {
-                self?.window?.animator().toolbar?.removeItem(at: 4)
-            }
-        }
-
-        if let codeEditSplitVC = splitViewController as? CodeEditSplitViewController {
-            codeEditSplitVC.saveInspectorCollapsedState(isCollapsed: lastSplitView.isCollapsed)
-            codeEditSplitVC.fixInspectorToolbarBackground()
-        }
-    }
-
     private func getSelectedCodeFile() -> CodeFileDocument? {
         workspace?.tabManager.activeTabGroup.selected?.fileDocument
     }
@@ -308,6 +280,38 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
                 window?.addChildWindow(panel, ordered: .above)
                 panel.makeKeyAndOrderFront(self)
             }
+        }
+    }
+}
+
+extension CodeEditWindowController {
+    @objc
+    func toggleFirstPanel() {
+        guard let firstSplitView = splitViewController.splitViewItems.first else { return }
+        firstSplitView.animator().isCollapsed.toggle()
+        if let codeEditSplitVC = splitViewController as? CodeEditSplitViewController {
+            codeEditSplitVC.saveNavigatorCollapsedState(isCollapsed: firstSplitView.isCollapsed)
+        }
+    }
+
+    @objc
+    func toggleLastPanel() {
+        guard let lastSplitView = splitViewController.splitViewItems.last else { return }
+
+        if lastSplitView.isCollapsed {
+            window?.toolbar?.insertItem(withItemIdentifier: .itemListTrackingSeparator, at: 4)
+        }
+        NSAnimationContext.runAnimationGroup { _ in
+            lastSplitView.animator().isCollapsed.toggle()
+        } completionHandler: { [weak self] in
+            if lastSplitView.isCollapsed {
+                self?.window?.animator().toolbar?.removeItem(at: 4)
+            }
+        }
+
+        if let codeEditSplitVC = splitViewController as? CodeEditSplitViewController {
+            codeEditSplitVC.saveInspectorCollapsedState(isCollapsed: lastSplitView.isCollapsed)
+            codeEditSplitVC.fixInspectorToolbarBackground()
         }
     }
 }
