@@ -35,7 +35,9 @@ final class ThemeModel: ObservableObject {
     @Published
     var selectedLightTheme: Theme? {
         didSet {
-            AppPreferencesModel.shared.preferences.theme.selectedLightTheme = selectedLightTheme?.name ?? "Broken"
+            DispatchQueue.main.async {
+                AppPreferencesModel.shared.preferences.theme.selectedLightTheme = self.selectedLightTheme?.name ?? "Broken"
+            }
         }
     }
 
@@ -44,7 +46,9 @@ final class ThemeModel: ObservableObject {
     @Published
     var selectedDarkTheme: Theme? {
         didSet {
-            AppPreferencesModel.shared.preferences.theme.selectedDarkTheme = selectedDarkTheme?.name ?? "Broken"
+            DispatchQueue.main.async {
+                AppPreferencesModel.shared.preferences.theme.selectedDarkTheme = self.selectedDarkTheme?.name ?? "Broken"
+            }
         }
     }
 
@@ -66,7 +70,6 @@ final class ThemeModel: ObservableObject {
     var themes: [Theme] = [] {
         didSet {
             saveThemes()
-            objectWillChange.send()
         }
     }
 
@@ -74,7 +77,9 @@ final class ThemeModel: ObservableObject {
     @Published
     var selectedTheme: Theme? {
         didSet {
-            AppPreferencesModel.shared.preferences.theme.selectedTheme = selectedTheme?.name
+            DispatchQueue.main.async {
+                AppPreferencesModel.shared.preferences.theme.selectedTheme = self.selectedTheme?.name
+            }
             updateAppearanceTheme()
         }
     }
@@ -310,7 +315,9 @@ final class ThemeModel: ObservableObject {
                         newAttr["editor"]?[key] = value
                     }
                 }
-                AppPreferencesModel.shared.preferences.theme.overrides[theme.name] = newAttr
+                DispatchQueue.main.async {
+                    AppPreferencesModel.shared.preferences.theme.overrides[theme.name] = newAttr
+                }
 
             } catch {
                 print(error)
