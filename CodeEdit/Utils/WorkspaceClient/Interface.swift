@@ -17,7 +17,7 @@ struct WorkspaceClient {
 
     var getFileItem: (_ id: String) throws -> FileItem
 
-    /// callback function that is run when a change is detected in the file system.
+    /// Callback function that is run when a change is detected in the file system.
     /// This usually contains a `reloadData` function.
     static var onRefresh: () -> Void = {}
 
@@ -31,7 +31,7 @@ struct WorkspaceClient {
         self.getFiles = getFiles
         self.getFileItem = getFileItem
     }
-    // swiftlint:enable vertical_parameter_alignment
+    // Swiftlint:enable vertical_parameter_alignment
 
     enum WorkspaceClientError: Error {
         case fileNotExist

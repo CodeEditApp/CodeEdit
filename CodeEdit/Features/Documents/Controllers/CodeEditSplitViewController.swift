@@ -144,7 +144,7 @@ final class CodeEditSplitViewController: NSSplitViewController {
     }
 
     /// Quick fix for list tracking separator needing to be added again after closing,
-    /// then opening the inspector with a drag.
+    /// Then opening the inspector with a drag.
     private func insertToolbarItemIfNeeded() {
         guard !(
             view.window?.toolbar?.items.contains(where: { $0.itemIdentifier == .itemListTrackingSeparator }) ?? true

@@ -53,7 +53,7 @@ public class FeedbackModel: ObservableObject {
                          FeedbackIssueArea(name: "Other", id: "other")]
 
     /// Gets the ID of the selected issue type and then
-    /// cross references it to select the right Label based on the type
+    /// Cross references it to select the right Label based on the type
     private func getIssueLabel() -> String {
         switch issueAreaListSelection {
         case "projectNavigator":
@@ -92,7 +92,7 @@ public class FeedbackModel: ObservableObject {
     }
 
     /// Gets the ID of the selected feedback type and then
-    /// cross references it to select the right Label based on the type
+    /// Cross references it to select the right Label based on the type
     private func getFeedbackTypeLabel() -> String {
         switch feedbackTypeListSelection {
         case "behaviour":
@@ -111,8 +111,8 @@ public class FeedbackModel: ObservableObject {
     }
 
     /// The format for the issue body is how it will be displayed on
-    /// repos issues. If any changes are made use markdown format
-    /// because the text gets converted when created.
+    /// Repos issues. If any changes are made use markdown format
+    /// Because the text gets converted when created.
     private func createIssueBody(
         description: String,
         steps: String?,

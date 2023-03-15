@@ -12,7 +12,7 @@ import SwiftUI
 /// **Usage:**
 /// ```swift
 /// @StateObject
-/// private var themeModel: ThemeModel = .shared
+/// Private var themeModel: ThemeModel = .shared
 /// ```
 final class ThemeModel: ObservableObject {
     static let shared: ThemeModel = .init()
@@ -109,9 +109,9 @@ final class ThemeModel: ObservableObject {
     /// - Returns: A ``Theme``
     private func load(from url: URL) throws -> Theme? {
         do {
-            // get the data from the provided file
+            // Get the data from the provided file
             let json = try Data(contentsOf: url)
-            // decode the json into ``Theme``
+            // Decode the json into ``Theme``
             let theme = try JSONDecoder().decode(Theme.self, from: json)
             return theme
         } catch {
@@ -123,45 +123,45 @@ final class ThemeModel: ObservableObject {
     /// Loads all available themes from `~/Library/Application Support/CodeEdit/themes/`
     ///
     /// If no themes are available, it will create a default theme and save
-    /// it to the location mentioned above.
+    /// It to the location mentioned above.
     ///
     /// When overrides are found in `~/Library/Application Support/CodeEdit/.preferences.json`
-    /// they are applied to the loaded themes without altering the original
-    /// the files in `~/Library/Application Support/CodeEdit/themes/`.
-    func loadThemes() throws { // swiftlint:disable:this function_body_length
-        // remove all themes from memory
+    /// They are applied to the loaded themes without altering the original
+    /// The files in `~/Library/Application Support/CodeEdit/themes/`.
+    func loadThemes() throws { // Swiftlint:disable:this function_body_length
+        // Remove all themes from memory
         themes.removeAll()
 
         let url = themesURL
 
         var isDir: ObjCBool = false
 
-        // check if a themes directory exists, otherwise create one
+        // Check if a themes directory exists, otherwise create one
         if !filemanager.fileExists(atPath: url.path, isDirectory: &isDir) {
             try filemanager.createDirectory(at: url, withIntermediateDirectories: true)
         }
 
         try loadBundledThemes()
 
-        // get all filenames in themes folder that end with `.json`
+        // Get all filenames in themes folder that end with `.json`
         let content = try filemanager.contentsOfDirectory(atPath: url.path).filter { $0.contains(".json") }
 
         let prefs = AppPreferencesModel.shared.preferences
-        // load each theme from disk
+        // Load each theme from disk
         try content.forEach { file in
             let fileURL = url.appendingPathComponent(file)
             if var theme = try load(from: fileURL) {
 
-                // get all properties of terminal and editor colors
+                // Get all properties of terminal and editor colors
                 guard let terminalColors = try theme.terminal.allProperties() as? [String: Theme.Attributes],
                       let editorColors = try theme.editor.allProperties() as? [String: Theme.Attributes]
                 else {
                     print("error")
                     // TODO: Throw a proper error
-                    throw NSError() // swiftlint:disable:this discouraged_direct_init
+                    throw NSError() // Swiftlint:disable:this discouraged_direct_init
                 }
 
-                // check if there are any overrides in `preferences.json`
+                // Check if there are any overrides in `preferences.json`
                 if let overrides = prefs.theme.overrides[theme.name]?["terminal"] {
                     terminalColors.forEach { (key, _) in
                         if let attributes = overrides[key] {
@@ -177,11 +177,11 @@ final class ThemeModel: ObservableObject {
                     }
                 }
 
-                // add the theme to themes array
+                // Add the theme to themes array
                 self.themes.append(theme)
 
-                // if there already is a selected theme in `preferences.json` select this theme
-                // otherwise take the first in the list
+                // If there already is a selected theme in `preferences.json` select this theme
+                // Otherwise take the first in the list
                 self.selectedDarkTheme = self.darkThemes.first {
                     $0.name == prefs.theme.selectedDarkTheme
                 } ?? self.darkThemes.first
@@ -244,8 +244,8 @@ final class ThemeModel: ObservableObject {
     /// `~/Library/Application Support/CodeEdit/preferences.json`
     ///
     /// After removing overrides, themes are reloaded
-    /// from `~/Library/Application Support/CodeEdit/themes`. See ``loadThemes()``
-    /// for more information.
+    /// From `~/Library/Application Support/CodeEdit/themes`. See ``loadThemes()``
+    /// For more information.
     ///
     /// - Parameter theme: The theme to reset
     func reset(_ theme: Theme) {
@@ -260,8 +260,8 @@ final class ThemeModel: ObservableObject {
     /// Removes the given theme from `–/Library/Application Support/CodeEdit/themes`
     ///
     /// After removing the theme, themes are reloaded
-    /// from `~/Library/Application Support/CodeEdit/themes`. See ``loadThemes()``
-    /// for more information.
+    /// From `~/Library/Application Support/CodeEdit/themes`. See ``loadThemes()``
+    /// For more information.
     ///
     /// - Parameter theme: The theme to delete
     func delete(_ theme: Theme) {
@@ -269,13 +269,13 @@ final class ThemeModel: ObservableObject {
             .appendingPathComponent(theme.name)
             .appendingPathExtension("json")
         do {
-            // remove the theme from the list
+            // Remove the theme from the list
             try filemanager.removeItem(at: url)
 
-            // remove from overrides in `preferences.json`
+            // Remove from overrides in `preferences.json`
             AppPreferencesModel.shared.preferences.theme.overrides.removeValue(forKey: theme.name)
 
-            // reload themes
+            // Reload themes
             try self.loadThemes()
         } catch {
             print(error)
@@ -283,28 +283,28 @@ final class ThemeModel: ObservableObject {
     }
 
     /// Saves changes on theme properties to `overrides`
-    /// in `~/Library/Application Support/CodeEdit/preferences.json`.
+    /// In `~/Library/Application Support/CodeEdit/preferences.json`.
     private func saveThemes() {
         let url = themesURL
         themes.forEach { theme in
             do {
-                // load the original theme from `~/Library/Application Support/CodeEdit/themes/`
+                // Load the original theme from `~/Library/Application Support/CodeEdit/themes/`
                 let originalUrl = url.appendingPathComponent(theme.name).appendingPathExtension("json")
                 let originalData = try Data(contentsOf: originalUrl)
                 let originalTheme = try JSONDecoder().decode(Theme.self, from: originalData)
 
-                // get properties of the current theme as well as the original
+                // Get properties of the current theme as well as the original
                 guard let terminalColors = try theme.terminal.allProperties() as? [String: Theme.Attributes],
                       let editorColors = try theme.editor.allProperties() as? [String: Theme.Attributes],
                       let oTermColors = try originalTheme.terminal.allProperties() as? [String: Theme.Attributes],
                       let oEditColors = try originalTheme.editor.allProperties() as? [String: Theme.Attributes]
                 else {
                     // TODO: Throw a proper error
-                    throw NSError() // swiftlint:disable:this discouraged_direct_init
+                    throw NSError() // Swiftlint:disable:this discouraged_direct_init
                 }
 
-                // compare the properties and if there are differences, save to overrides
-                // in `preferences.json
+                // Compare the properties and if there are differences, save to overrides
+                // In `preferences.json
                 var newAttr: [String: [String: Theme.Attributes]] = ["terminal": [:], "editor": [:]]
                 terminalColors.forEach { (key, value) in
                     if value != oTermColors[key] {

@@ -13,7 +13,7 @@ import SwiftUI
 /// **Usage:**
 /// ```swift
 /// @StateObject
-/// private var prefs: AppPreferencesModel = .shared
+/// Private var prefs: AppPreferencesModel = .shared
 /// ```
 final class AppPreferencesModel: ObservableObject {
 

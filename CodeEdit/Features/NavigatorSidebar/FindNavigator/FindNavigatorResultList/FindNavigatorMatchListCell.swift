@@ -81,7 +81,7 @@ final class FindNavigatorListMatchCell: NSTableCellView {
     }
 
     /// Sets the attributed string for the search result with correct paragraph break mode,
-    /// styling, font, etc.
+    /// Styling, font, etc.
     private func setLabelString() {
         self.label.attributedStringValue = matchItem.attributedLabel()
     }

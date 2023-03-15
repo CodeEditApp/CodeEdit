@@ -13,7 +13,7 @@ struct StatusBarSplitTerminalButton: View {
 
     var body: some View {
         Button {
-            // todo
+            // Todo
         } label: {
             Image(systemName: "square.split.2x1")
                 .foregroundColor(.secondary)

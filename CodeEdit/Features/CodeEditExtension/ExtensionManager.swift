@@ -53,7 +53,7 @@ final class ExtensionManager {
     }
 
     /// This function reads out all the files in the Extension folder
-    /// and filters the bundles based on the `.ceext` folder extension
+    /// And filters the bundles based on the `.ceext` folder extension
     func refreshBundles() {
         var bundleURLs: [URL] = []
         do {

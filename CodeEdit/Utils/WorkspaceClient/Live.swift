@@ -10,7 +10,7 @@ import Foundation
 
 // TODO: DOCS (Marco Carnevali)
 extension WorkspaceClient {
-    // swiftlint:disable:next function_body_length
+    // Swiftlint:disable:next function_body_length
     static func `default`(
         fileManager: FileManager,
         folderURL: URL,
@@ -52,9 +52,9 @@ extension WorkspaceClient {
             return items
         }
 
-        // initial load
+        // Initial load
         let fileItems = try loadFiles(fromURL: folderURL)
-        // workspace fileItem
+        // Workspace fileItem
         let workspaceItem = FileItem(url: folderURL, children: fileItems)
         flattenedFileItems[workspaceItem.id] = workspaceItem
         fileItems.forEach { item in
@@ -63,7 +63,7 @@ extension WorkspaceClient {
 
         // By using `CurrentValueSubject` we can define a starting value.
         // The value passed during init it's going to be send as soon as the
-        // consumer subscribes to the publisher.
+        // Consumer subscribes to the publisher.
         let subject = CurrentValueSubject<[FileItem], Never>(fileItems)
 
         var isRunning: Bool = false
@@ -71,18 +71,18 @@ extension WorkspaceClient {
 
         // Recursive function similar to `loadFiles`, but creates or deletes children of the
         // `FileItem` so that they are accurate with the file system, instead of creating an
-        // entirely new `FileItem`, to prevent the `OutlineView` from going crazy with folding.
+        // Entirely new `FileItem`, to prevent the `OutlineView` from going crazy with folding.
         // - Parameter fileItem: The `FileItem` to correct the children of
         func rebuildFiles(fromItem fileItem: FileItem) throws -> Bool {
             var didChangeSomething = false
 
-            // get the actual directory children
+            // Get the actual directory children
             let directoryContentsUrls = try fileManager.contentsOfDirectory(
                 at: fileItem.url.resolvingSymlinksInPath(),
                 includingPropertiesForKeys: nil
             )
 
-            // test for deleted children, and remove them from the index
+            // Test for deleted children, and remove them from the index
             for oldContent in fileItem.children ?? [] where !directoryContentsUrls.contains(oldContent.url) {
                 if let removeAt = fileItem.children?.firstIndex(of: oldContent) {
                     fileItem.children?.remove(at: removeAt)
@@ -91,7 +91,7 @@ extension WorkspaceClient {
                 }
             }
 
-            // test for new children, and index them using loadFiles
+            // Test for new children, and index them using loadFiles
             for newContent in directoryContentsUrls {
                 guard !ignoredFilesAndFolders.contains(newContent.lastPathComponent) else { continue }
 
@@ -131,7 +131,7 @@ extension WorkspaceClient {
         FileItem.watcherCode = {
             // Something has changed inside the directory
             // We should reload the files.
-            guard !isRunning else { // this runs when a file change is detected but is already running
+            guard !isRunning else { // This runs when a file change is detected but is already running
                 anotherInstanceRan += 1
                 return
             }
@@ -145,7 +145,7 @@ extension WorkspaceClient {
             subject.send(workspaceItem.children ?? [])
             isRunning = false
             anotherInstanceRan = 0
-            // reload data in outline view controller through the main thread
+            // Reload data in outline view controller through the main thread
             DispatchQueue.main.async { onRefresh() }
         }
 

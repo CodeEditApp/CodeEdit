@@ -19,7 +19,7 @@ struct GitHubTokenConfiguration: GitRouterConfiguration {
     /// Custom `Accept` header for API previews.
     ///
     /// Used for preview support of new APIs, for instance Reaction API.
-    /// see: https://developer.github.com/changes/2016-05-12-reactions-api-preview/
+    /// See: https://developer.github.com/changes/2016-05-12-reactions-api-preview/
     private var previewCustomHeaders: [GitHTTPHeader]?
 
     var customHeaders: [GitHTTPHeader]? {
@@ -46,7 +46,7 @@ struct GitHubOAuthConfiguration: GitRouterConfiguration {
     /// Custom `Accept` header for API previews.
     ///
     /// Used for preview support of new APIs, for instance Reaction API.
-    /// see: https://developer.github.com/changes/2016-05-12-reactions-api-preview/
+    /// See: https://developer.github.com/changes/2016-05-12-reactions-api-preview/
     private var previewCustomHeaders: [GitHTTPHeader]?
 
     var customHeaders: [GitHTTPHeader]? {

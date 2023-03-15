@@ -13,7 +13,7 @@ import SwiftTerm
 /// A terminal emulator view.
 ///
 /// Wraps a `LocalProcessTerminalView` from `SwiftTerm` inside a `NSViewRepresentable`
-/// for use in SwiftUI.
+/// For use in SwiftUI.
 ///
 struct TerminalEmulatorView: NSViewRepresentable {
     @StateObject
@@ -53,13 +53,13 @@ struct TerminalEmulatorView: NSViewRepresentable {
     ///    let bufsize = sysconf(_SC_GETPW_R_SIZE_MAX)
     ///    guard bufsize != -1 else { return "/bin/bash" }
     ///    let buffer = UnsafeMutablePointer<Int8>.allocate(capacity: bufsize)
-    /// defer {
+    /// Defer {
     ///        buffer.deallocate()
     ///    }
     ///    var pwd = passwd()
     ///    var result: UnsafeMutablePointer<passwd>? = UnsafeMutablePointer<passwd>.allocate(capacity: 1)
     ///
-    /// if getpwuid_r(getuid(), &pwd, buffer, bufsize, &result) != 0 { return "/bin/bash" }
+    /// If getpwuid_r(getuid(), &pwd, buffer, bufsize, &result) != 0 { return "/bin/bash" }
     ///    return String(cString: pwd.pw_shell)
     /// ```
     private func getShell() -> String {
@@ -152,7 +152,7 @@ struct TerminalEmulatorView: NSViewRepresentable {
         return .windowBackgroundColor
     }
 
-    /// returns a `NSAppearance` based on the user setting of the terminal appearance,
+    /// Returns a `NSAppearance` based on the user setting of the terminal appearance,
     /// `nil` if app default is not overridden
     private var colorAppearance: NSAppearance? {
         if prefs.preferences.terminal.darkAppearance {
@@ -174,11 +174,11 @@ struct TerminalEmulatorView: NSViewRepresentable {
             let shell = getShell()
             let shellIdiom = "-" + NSString(string: shell).lastPathComponent
 
-            // changes working directory to project root
+            // Changes working directory to project root
             // TODO: Get rid of FileManager shared instance to prevent problems
-            // using shared instance of FileManager might lead to problems when using
-            // multiple workspaces. This works for now but most probably will need
-            // to be changed later on
+            // Using shared instance of FileManager might lead to problems when using
+            // Multiple workspaces. This works for now but most probably will need
+            // To be changed later on
             FileManager.default.changeCurrentDirectoryPath(url.path)
             terminal.startProcess(executable: shell, execName: shellIdiom)
             terminal.font = font
@@ -224,7 +224,7 @@ struct TerminalEmulatorView: NSViewRepresentable {
             TerminalEmulatorView.lastTerminal[url.path] = view
         }
         view.getTerminal().softReset()
-        view.feed(text: "") // send empty character to force colors to be redrawn
+        view.feed(text: "") // Send empty character to force colors to be redrawn
     }
 
     func makeCoordinator() -> Coordinator {

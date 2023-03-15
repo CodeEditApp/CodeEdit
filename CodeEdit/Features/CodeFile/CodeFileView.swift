@@ -97,7 +97,7 @@ struct CodeFileView: View {
             }
         }
         .disabled(!editable)
-        // minHeight zero fixes a bug where the app would freeze if the contents of the file are empty.
+        // MinHeight zero fixes a bug where the app would freeze if the contents of the file are empty.
         .frame(minHeight: .zero, maxHeight: .infinity)
         .onChange(of: ThemeModel.shared.selectedTheme) { newValue in
             guard let theme = newValue else { return }

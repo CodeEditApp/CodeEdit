@@ -162,7 +162,7 @@ final class ExtensionsManager {
     }
 
     /// Loads extensions' bundles which were not loaded before and passes `ExtensionAPI` as a whole class
-    /// or workspace's URL
+    /// Or workspace's URL
     /// - Parameter apiBuilder: function which creates `ExtensionAPI` instance based on plugin's ID
     func load(_ apiBuilder: (String) -> ExtensionAPI) throws {
         let plugins = try self.dbQueue.read { database in
@@ -242,7 +242,7 @@ final class ExtensionsManager {
 
         try JSONEncoder().encode(plugin).write(to: manifest)
 
-        // save to db
+        // Save to db
 
         try await dbQueue.write { database in
             try DownloadedPlugin(plugin: plugin.id, release: release.id, loadable: true, sdk: plugin.sdk)

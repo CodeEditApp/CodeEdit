@@ -190,19 +190,19 @@ extension WorkspaceClient {
         /// This function allows creation of folders in the main directory or sub-folders
         /// - Parameter folderName: The name of the new folder
         func addFolder(folderName: String) {
-            // check if folder, if it is create folder under self, else create on same level.
+            // Check if folder, if it is create folder under self, else create on same level.
             var folderUrl = (self.isFolder ?
                              self.url.appendingPathComponent(folderName) :
                                 self.url.deletingLastPathComponent().appendingPathComponent(folderName))
 
-            // if a file/folder with the same name exists, add a number to the end.
+            // If a file/folder with the same name exists, add a number to the end.
             var fileNumber = 0
             while FileItem.fileManger.fileExists(atPath: folderUrl.path) {
                 fileNumber += 1
                 folderUrl = folderUrl.deletingLastPathComponent().appendingPathComponent("\(folderName)\(fileNumber)")
             }
 
-            // create the folder
+            // Create the folder
             do {
                 try FileItem.fileManger.createDirectory(
                     at: folderUrl,
@@ -218,19 +218,19 @@ extension WorkspaceClient {
         /// - Parameter fileName: The name of the new file
         @discardableResult
         func addFile(fileName: String) -> String {
-            // check if folder, if it is create file under self
+            // Check if folder, if it is create file under self
             var fileUrl = (self.isFolder ?
                        self.url.appendingPathComponent(fileName) :
                         self.url.deletingLastPathComponent().appendingPathComponent(fileName))
 
-            // if a file/folder with the same name exists, add a number to the end.
+            // If a file/folder with the same name exists, add a number to the end.
             var fileNumber = 0
             while FileItem.fileManger.fileExists(atPath: fileUrl.path) {
                 fileNumber += 1
                 fileUrl = fileUrl.deletingLastPathComponent().appendingPathComponent("\(fileName)\(fileNumber)")
             }
 
-            // create the file
+            // Create the file
             FileItem.fileManger.createFile(
                 atPath: fileUrl.path,
                 contents: nil,
@@ -242,8 +242,8 @@ extension WorkspaceClient {
 
         /// This function deletes the item or folder from the current project
         func delete() {
-            // this function also has to account for how the
-            // file system can change outside of the editor
+            // This function also has to account for how the
+            // File system can change outside of the editor
 
             let deleteConfirmation = NSAlert()
             let message = "\(self.fileName)\(self.isFolder ? " and its children" :"")"
@@ -266,15 +266,15 @@ extension WorkspaceClient {
         /// This function duplicates the item or folder
         func duplicate(to destination: URL? = nil) {
             var fileUrl = destination == nil ? self.url : destination!
-            // if a file/folder with the same name exists, add "copy" to the end
+            // If a file/folder with the same name exists, add "copy" to the end
             while FileItem.fileManger.fileExists(atPath: fileUrl.path) {
                 let previousName = fileUrl.deletingPathExtension().lastPathComponent
-                let filextension = fileUrl.pathExtension
+                let fileExtension = fileUrl.pathExtension
                 let duplicateName = "\(previousName)-copy"
 
                 fileUrl = fileUrl.deletingLastPathComponent()
                 fileUrl.appendPathComponent(duplicateName)
-                fileUrl.appendPathExtension(filextension)
+                fileUrl.appendPathExtension(fileExtension)
             }
 
             if FileItem.fileManger.fileExists(atPath: self.url.path) {

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-// swiftlint:disable for_where
+// Swiftlint:disable for_where
 struct AccountPreferencesView: View {
     @StateObject
     private var prefs: AppPreferencesModel = .shared
@@ -92,9 +92,9 @@ struct AccountPreferencesView: View {
 
                     Picker("", selection: $cloneUsing) {
                         Text("HTTPS")
-                            .tag(false) // temporary
+                            .tag(false) // Temporary
                         Text("SSH")
-                            .tag(true) // temporary
+                            .tag(true) // Temporary
                     }
                     .pickerStyle(.radioGroup)
 

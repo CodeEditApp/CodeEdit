@@ -90,21 +90,21 @@ struct CommandPaletteView: View {
     func onKeyDown(with event: NSEvent) -> Bool {
 
         switch event.keyCode {
-            // down arrow button
+            // Down arrow button
         case 125:
             selectNext()
             return true
-            // up arrow button
+            // Up arrow button
         case 126:
             selectPrev()
             return true
-            // enter button
+            // Enter button
         case 36:
             if let command = self.selectedItem {
                 callHandler(command: command)
             }
             return true
-            // esc button
+            // Esc button
         case 53:
             closePalette()
             return true
@@ -154,7 +154,7 @@ struct CommandPaletteView: View {
             Divider()
             VStack(spacing: 0) {
                 List(commandsList, selection: $state.selected) { command in
-                    // swiftlint:disable multiple_closures_with_trailing_closure
+                    // Swiftlint:disable multiple_closures_with_trailing_closure
                     Button(action: { onCommandClick(command: command) }) {
                         VStack {
                             SearchResultLabel(
@@ -220,7 +220,7 @@ private class ActionAwareInputView: NSTextView, NSTextFieldDelegate {
 }
 
 /// Implementation of command palette entity. While swiftui does not allow to use NSMutableAttributeStrings,
-/// the only way to fallback to UIKit and have NSViewRepresentable to be a bridge between UIKit and SwiftUI.
+/// The only way to fallback to UIKit and have NSViewRepresentable to be a bridge between UIKit and SwiftUI.
 /// Highlights currently entered text query
 
 struct SearchResultLabel: NSViewRepresentable {

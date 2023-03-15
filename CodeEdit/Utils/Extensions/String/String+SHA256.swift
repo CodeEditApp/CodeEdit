@@ -19,17 +19,17 @@ extension String {
     func sha256(trim: Bool = false, caseSensitive: Bool = true) -> String {
         var string = self
 
-        // trim whitespaces & new lines if specified
+        // Trim whitespaces & new lines if specified
         if trim { string = string.trimmingCharacters(in: .whitespacesAndNewlines) }
 
-        // make string lowercased if not case sensitive
+        // Make string lowercased if not case sensitive
         if !caseSensitive { string = string.lowercased() }
 
-        // compute the hash
+        // Compute the hash
         // (note that `String.data(using: .utf8)!` is safe since it will never fail)
         let computed = SHA256.hash(data: string.data(using: .utf8)!)
 
-        // map the result to a hex string and return
+        // Map the result to a hex string and return
         return computed.compactMap { String(format: "%02x", $0) }.joined()
     }
 }

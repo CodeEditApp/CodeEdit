@@ -141,10 +141,10 @@ import CodeEditKit
                 }
 
                 // Instead of rebuilding the array we want to
-                // calculate the difference between the last iteration
-                // and now. If the index of the file exists in the array
-                // it means we need to remove the element, otherwise we need to append
-                // it.
+                // Calculate the difference between the last iteration
+                // And now. If the index of the file exists in the array
+                // It means we need to remove the element, otherwise we need to append
+                // It.
                 let diff = files.difference(from: self.fileItems)
                 diff.forEach { newFile in
                     if let index = self.fileItems.firstIndex(of: newFile) {
@@ -217,7 +217,7 @@ import CodeEditKit
                 shouldClose: #selector(document(_:shouldClose:contextInfo:)),
                 contextInfo: shouldClose
             )
-            // pointee becomes false when user select cancel
+            // Pointee becomes false when user select cancel
             guard shouldClose.pointee else {
                 break
             }

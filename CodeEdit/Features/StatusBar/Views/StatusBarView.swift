@@ -10,11 +10,11 @@ import SwiftUI
 /// # StatusBarView
 ///
 /// A View that lives on the bottom of the window and offers information
-/// about compilation errors/warnings, git,  cursor position in text,
-/// indentation width (in spaces), text encoding and linebreak
+/// About compilation errors/warnings, git,  cursor position in text,
+/// Indentation width (in spaces), text encoding and linebreak
 ///
 /// Additionally it offers a togglable/resizable drawer which can
-/// host a terminal or additional debug information
+/// Host a terminal or additional debug information
 ///
 struct StatusBarView: View {
     @Environment(\.controlActiveState)

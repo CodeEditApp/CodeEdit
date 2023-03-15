@@ -12,7 +12,7 @@ struct TextEditingPreferencesView: View {
     @StateObject
     private var prefs: AppPreferencesModel = .shared
 
-    /// only allows integer values in the range of `[1...8]`
+    /// Only allows integer values in the range of `[1...8]`
     private var tabWidthFormatter: NumberFormatter {
         let formatter = NumberFormatter()
         formatter.allowsFloats = false
@@ -22,8 +22,8 @@ struct TextEditingPreferencesView: View {
         return formatter
     }
 
-    /// only allows float values in the range of `[0.75...2.00]`
-    /// and formats to 2 decimal places.
+    /// Only allows float values in the range of `[0.75...2.00]`
+    /// And formats to 2 decimal places.
     private var lineHeightFormatter: NumberFormatter {
         let formatter = NumberFormatter()
         formatter.allowsFloats = true

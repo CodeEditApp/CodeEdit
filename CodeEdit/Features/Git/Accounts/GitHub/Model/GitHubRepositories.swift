@@ -44,7 +44,7 @@ class GitHubRepositories: Codable {
     }
 }
 
-// swiftlint:disable line_length
+// Swiftlint:disable line_length
 extension GitHubAccount {
 
     /**

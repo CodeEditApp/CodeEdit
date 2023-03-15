@@ -10,7 +10,7 @@ import SwiftUI
 /// A `NSViewController` that handles the **ProjectNavigatorView** in the **NavigatorSideabr**.
 ///
 /// Adds a ``outlineView`` inside a ``scrollView`` which shows the folder structure of the
-/// currently open project.
+/// Currently open project.
 final class OutlineViewController: NSViewController {
 
     typealias Item = WorkspaceClient.FileItem
@@ -45,7 +45,7 @@ final class OutlineViewController: NSViewController {
 
     /// This helps determine whether or not to send an `openTab` when the selection changes.
     /// Used b/c the state may update when the selection changes, but we don't necessarily want
-    /// to open the file a second time.
+    /// To open the file a second time.
     private var shouldSendSelectionUpdate: Bool = true
 
     /// Setup the ``scrollView`` and ``outlineView``
@@ -153,13 +153,13 @@ extension OutlineViewController: NSOutlineViewDataSource {
         return false
     }
 
-    /// write dragged file(s) to pasteboard
+    /// Write dragged file(s) to pasteboard
     func outlineView(_ outlineView: NSOutlineView, pasteboardWriterForItem item: Any) -> NSPasteboardWriting? {
         guard let fileItem = item as? Item else { return nil }
         return fileItem.url as NSURL
     }
 
-    /// declare valid drop target
+    /// Declare valid drop target
     func outlineView(
         _ outlineView: NSOutlineView,
         validateDrop info: NSDraggingInfo,
@@ -177,7 +177,7 @@ extension OutlineViewController: NSOutlineViewDataSource {
         return []
     }
 
-    /// handle successful or unsuccessful drop
+    /// Handle successful or unsuccessful drop
     func outlineView(
         _ outlineView: NSOutlineView,
         acceptDrop info: NSDraggingInfo,
@@ -192,7 +192,7 @@ extension OutlineViewController: NSOutlineViewDataSource {
 
         for fileItemURL in fileItemURLS {
             let destURL = destParentURL.appendingPathComponent(fileItemURL.lastPathComponent)
-            // cancel dropping file item on self or in parent directory
+            // Cancel dropping file item on self or in parent directory
             if fileItemURL == destURL || fileItemURL == destParentURL {
                 return false
             }
@@ -303,7 +303,7 @@ extension OutlineViewController: NSOutlineViewDelegate {
     ///   - collection: the array to search for
     private func select(by id: TabBarItemID, from collection: [Item]) {
         // If the user has set "Reveal file on selection change" to on, we need to reveal the item before
-        // selecting the row.
+        // Selecting the row.
         if AppPreferencesModel.shared.preferences.general.revealFileOnFocusChange,
            case let .codeEditor(id) = id,
            let fileItem = try? workspace?.workspaceClient?.getFileItem(id as Item.ID) as? Item {

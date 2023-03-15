@@ -20,13 +20,13 @@ struct EffectView: NSViewRepresentable {
 
     /// Initializes the
     /// [`NSVisualEffectView`](https://developer.apple.com/documentation/appkit/nsvisualeffectview)
-    /// with a
+    /// With a
     /// [`Material`](https://developer.apple.com/documentation/appkit/nsvisualeffectview/material) and
     /// [`BlendingMode`](https://developer.apple.com/documentation/appkit/nsvisualeffectview/blendingmode)
     ///
     /// By setting the
     /// [`emphasized`](https://developer.apple.com/documentation/appkit/nsvisualeffectview/1644721-isemphasized)
-    /// flag the emphasized state of the material will be used if available.
+    /// Flag the emphasized state of the material will be used if available.
     ///
     /// - Parameters:
     ///   - material: The material to use. Defaults to `.headerView`.

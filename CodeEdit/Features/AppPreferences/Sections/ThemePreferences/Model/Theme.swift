@@ -8,7 +8,7 @@
 import SwiftUI
 import CodeEditTextView
 
-// swiftlint:disable file_length
+// Swiftlint:disable file_length
 
 /// # Theme
 ///
@@ -99,7 +99,7 @@ extension Theme {
     /// Attributes of a certain field
     ///
     /// As of now it only includes the colors `hex` string and
-    /// an accessor for a `SwiftUI` `Color`.
+    /// An accessor for a `SwiftUI` `Color`.
     struct Attributes: Codable, Equatable, Hashable, Loopable {
 
         /// The 24-bit hex string of the color (e.g. #123456)
@@ -197,9 +197,9 @@ extension Theme {
         ///
         /// **Example:**
         /// ```swift
-        /// editor["text"]
-        /// // equal to calling
-        /// editor.text
+        /// Editor["text"]
+        /// // Equal to calling
+        /// Editor.text
         /// ```
         subscript(key: String) -> Attributes {
             get {
@@ -334,9 +334,9 @@ extension Theme {
         ///
         /// **Example:**
         /// ```swift
-        /// terminal["text"]
-        /// // equal to calling
-        /// terminal.text
+        /// Terminal["text"]
+        /// // Equal to calling
+        /// Terminal.text
         /// ```
         subscript(key: String) -> Attributes {
             get {

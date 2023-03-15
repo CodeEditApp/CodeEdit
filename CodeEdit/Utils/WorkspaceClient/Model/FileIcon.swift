@@ -8,10 +8,10 @@
 import SwiftUI
 
 // TODO: DOCS (Nanashi Li)
-// swiftlint:disable cyclomatic_complexity
+// Swiftlint:disable cyclomatic_complexity
 enum FileIcon {
 
-    // swiftlint:disable identifier_name
+    // Swiftlint:disable identifier_name
     enum FileType: String {
         case json
         case js

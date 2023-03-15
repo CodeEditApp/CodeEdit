@@ -202,7 +202,7 @@ struct FeedbackView: View {
             }
             .padding(.top)
 
-            // swiftlint:disable line_length
+            // Swiftlint:disable line_length
             VStack(alignment: .leading) {
                 Text("What actually happened?")
                 TextEditor(text: $feedbackModel.whatHappenedDescription)

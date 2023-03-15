@@ -37,8 +37,8 @@ public struct AboutView: View {
         .ignoresSafeArea()
         .frame(width: 280, height: 400 - 28)
         .fixedSize()
-        // hack required to get buttons appearing correctly in light appearance
-        // if anyone knows of a better way to do this feel free to refactor
+        // Hack required to get buttons appearing correctly in light appearance
+        // If anyone knows of a better way to do this feel free to refactor
         .background(.regularMaterial.opacity(0))
         .background(EffectView(.popover, blendingMode: .behindWindow).ignoresSafeArea())
         .background {

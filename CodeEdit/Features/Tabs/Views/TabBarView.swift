@@ -10,7 +10,7 @@ import SwiftUI
 // Disable the rule because the tab bar view is fairly complicated.
 // It has the gesture implementation and its animations.
 // I am now also disabling `file_length` rule because the dragging algorithm (with UX) is complex.
-// swiftlint:disable file_length type_body_length
+// Swiftlint:disable file_length type_body_length
 // - TODO: TabBarItemView drop-outside event handler.
 struct TabBarView: View {
 
@@ -79,7 +79,7 @@ struct TabBarView: View {
     ///
     /// All width are measured dynamically (so it can also fit the Xcode tab bar style).
     /// This is used to be added on the offset of current dragging tab in order to make a smooth
-    /// dragging experience.
+    /// Dragging experience.
     @State
     private var tabWidth: [TabID: CGFloat] = [:]
 
@@ -144,7 +144,7 @@ struct TabBarView: View {
 
     // Disable the rule because this function is implementing the drag gesture and its animations.
     // It is fairly complicated, so ignore the function body length limitation for now.
-    // swiftlint:disable function_body_length cyclomatic_complexity
+    // Swiftlint:disable function_body_length cyclomatic_complexity
     private func makeTabDragGesture(id: TabID) -> some Gesture {
         return DragGesture(minimumDistance: 2, coordinateSpace: .global)
             .onChanged({ value in
@@ -253,13 +253,13 @@ struct TabBarView: View {
                         tabgroup.tabs = .init(openedTabs.compactMap { id in
                             tabgroup.tabs.first { $0.id == id }
                         })
-                        // workspace.reorderedTabs(openedTabs: openedTabs)
+                        // Workspace.reorderedTabs(openedTabs: openedTabs)
                         // TODO: Fix save state
                     }
                 }
             })
     }
-    // swiftlint:enable function_body_length cyclomatic_complexity
+    // Swiftlint:enable function_body_length cyclomatic_complexity
 
     private func makeTabItemGeometryReader(id: TabID) -> some View {
         GeometryReader { tabItemGeoReader in
@@ -659,4 +659,4 @@ struct TabBarView: View {
         }
     }
 }
-// swiftlint:enable type_body_length
+// Swiftlint:enable type_body_length

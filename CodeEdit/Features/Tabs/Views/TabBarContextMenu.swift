@@ -34,7 +34,7 @@ struct TabBarContextMenu: ViewModifier {
     private var item: WorkspaceClient.FileItem
     private var isTemporary: Bool
 
-    // swiftlint:disable:next function_body_length
+    // Swiftlint:disable:next function_body_length
     func body(content: Content) -> some View {
         content.contextMenu(menuItems: {
             Group {

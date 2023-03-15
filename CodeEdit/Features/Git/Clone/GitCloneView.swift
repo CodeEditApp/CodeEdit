@@ -93,7 +93,7 @@ extension GitCloneView {
 
             if result != nil {
                 let path: String = result!.path
-                // path contains the directory path e.g
+                // Path contains the directory path e.g
                 // /Users/ourcodeworld/Desktop/folder
                 modifiable = path
                 return path
@@ -134,7 +134,7 @@ extension GitCloneView {
             }
         }
     }
-    // swiftlint:disable function_body_length cyclomatic_complexity
+    // Swiftlint:disable function_body_length cyclomatic_complexity
     private func cloneRepository() {
         do {
             if repoUrlStr == "" {

@@ -48,8 +48,8 @@ class ShellClient {
         let subject = PassthroughSubject<String, Never>()
         let (task, pipe) = generateProcessAndPipe(args)
         let outputHandler = pipe.fileHandleForReading
-        // wait for the data to come in and then notify
-        // the Notification with Name: `NSFileHandleDataAvailable`
+        // Wait for the data to come in and then notify
+        // The Notification with Name: `NSFileHandleDataAvailable`
         outputHandler.waitForDataInBackgroundAndNotify()
         let id = UUID()
         self.cancellables[id] = NotificationCenter
@@ -58,9 +58,9 @@ class ShellClient {
             .sink { _ in
                 let data = outputHandler.availableData
                 guard !data.isEmpty else {
-                    // if no data is available anymore
-                    // we should cancel this cancellable
-                    // and mark the subject as finished
+                    // If no data is available anymore
+                    // We should cancel this cancellable
+                    // And mark the subject as finished
                     self.cancellables.removeValue(forKey: id)
                     subject.send(completion: .finished)
                     return

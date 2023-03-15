@@ -88,7 +88,7 @@ final class FindNavigatorListViewController: NSViewController {
     }
 
     /// Removes the selected item, called in response to an action like the backspace
-    /// character
+    /// Character
     private func deleteSelectedItem() {
         let selectedRow = outlineView.selectedRow
         guard selectedRow >= 0,
@@ -103,7 +103,7 @@ final class FindNavigatorListViewController: NSViewController {
             searchItems[parentIndex].lineMatches.remove(at: childIndex)
 
             // If this was the last child, we need to remove the parent or we'll
-            // hit an exception
+            // Hit an exception
             if searchItems[parentIndex].lineMatches.isEmpty {
                 searchItems.remove(at: parentIndex)
                 outlineView.removeItems(at: IndexSet([parentIndex]), inParent: nil)
@@ -187,7 +187,7 @@ extension FindNavigatorListViewController: NSOutlineViewDelegate {
                 isEditable: false
             )
             // We're using a medium label for file names b/c it makes it easier to
-            // distinguish quickly which results are from which files.
+            // Distinguish quickly which results are from which files.
             view.label.font = .systemFont(ofSize: 13, weight: .medium)
             return view
         }

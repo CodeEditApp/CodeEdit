@@ -5,7 +5,7 @@
 //  Created by Nanashi Li on 2022/03/31.
 //
 // This file should be strictly just be used for Accounts since it's not
-// built for any other networking except those of git accounts
+// Built for any other networking except those of git accounts
 
 import Foundation
 
@@ -119,9 +119,9 @@ extension GitRouter {
     }
 
     /// Due to the complexity of the the urlQuery method we disabled lint for the this method
-    /// only so that it doesn't complain... Note this level of complexity is needed to give us as
-    /// much success rate as possible due to all git providers having different types of url schemes.
-    func urlQuery(_ parameters: [String: Any]) -> [URLQueryItem]? { // swiftlint:disable:this cyclomatic_complexity
+    /// Only so that it doesn't complain... Note this level of complexity is needed to give us as
+    /// Much success rate as possible due to all git providers having different types of url schemes.
+    func urlQuery(_ parameters: [String: Any]) -> [URLQueryItem]? { // Swiftlint:disable:this cyclomatic_complexity
         guard !parameters.isEmpty else { return nil }
 
         var components: [URLQueryItem] = []
@@ -181,7 +181,7 @@ extension GitRouter {
         case .form:
             let queryData = urlComponents.percentEncodedQuery?.data(using: String.Encoding.utf8)
 
-            // clear the query items as they go into the body
+            // Clear the query items as they go into the body
             urlComponents.queryItems = nil
 
             var mutableURLRequest = Foundation.URLRequest(url: urlComponents.url!)
@@ -363,10 +363,10 @@ extension GitRouter {
 
 private extension CharacterSet {
 
-    /// https://github.com/Alamofire/Alamofire/blob/3.5rameterEncoding.swift#L220-L225
+    /// Https://github.com/Alamofire/Alamofire/blob/3.5rameterEncoding.swift#L220-L225
     static func URLQueryAllowedCharacterSet() -> CharacterSet {
 
-        // does not include "?" or "/" due to RFC 3986 - Section 3.4
+        // Does not include "?" or "/" due to RFC 3986 - Section 3.4
         let generalDelimitersToEncode = ":#[]@"
         let subDelimitersToEncode = "!$&'()*+,;="
 

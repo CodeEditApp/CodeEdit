@@ -140,7 +140,7 @@ struct HistoryPopoverView: View {
 
     private func generateAvatarHash() -> String {
         let hash = commit.authorEmail.md5(trim: true, caseSensitive: false)
-        return "\(hash)?d=404&s=84" // send 404 if no image available, image size 84x84 (42x42 @2x)
+        return "\(hash)?d=404&s=84" // Send 404 if no image available, image size 84x84 (42x42 @2x)
     }
 
     private var avatarColor: Color {

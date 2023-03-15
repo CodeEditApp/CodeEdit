@@ -18,7 +18,7 @@ extension WorkspaceDocument {
         @Published var searchResult: [SearchResultModel] = []
         @Published var searchResultCount: Int = 0
         /// A unique ID for the current search results. Used to "re-search" with the same
-        /// search text but refresh results and UI.
+        /// Search text but refresh results and UI.
         @Published var searchId: UUID?
 
         var ignoreCase: Bool = true
@@ -28,15 +28,15 @@ extension WorkspaceDocument {
         }
 
         /// Searches the entire workspace for the given string, using the ``selectedMode`` modifiers
-        /// to modify the search if needed.
+        /// To modify the search if needed.
         ///
         /// This method will update ``searchResult`` and ``searchResultCount`` with any matched
-        /// search results. See `Search.SearchResultModel` and `Search.SearchResultMatchModel`
-        /// for more information on search results and matches.
+        /// Search results. See `Search.SearchResultModel` and `Search.SearchResultMatchModel`
+        /// For more information on search results and matches.
         ///
         /// - Parameter text: The search text to search for. Pass `nil` to this parameter to clear
         ///                   the search results.
-        func search(_ text: String?) { // swiftlint:disable:this function_body_length
+        func search(_ text: String?) { // Swiftlint:disable:this function_body_length
             guard let text = text else {
                 searchResult = []
                 searchResultCount = 0
@@ -82,8 +82,8 @@ extension WorkspaceDocument {
 
                 // Loop through each line and look for any matches
                 // If one is found we create a `SearchResultModel` and add any lines
-                // with matches, and any information we may need to display or navigate
-                // to them.
+                // With matches, and any information we may need to display or navigate
+                // To them.
                 for (lineNumber, line) in string.split(separator: "\n").lazy.enumerated() {
                     let rawNoSpaceLine = line.trimmingCharacters(in: .whitespacesAndNewlines)
                     let noSpaceLine = ignoreCase ? rawNoSpaceLine.lowercased() : rawNoSpaceLine
@@ -100,7 +100,7 @@ extension WorkspaceDocument {
                         }
                         if fileSearchResult != nil {
                             // We've already found something in this file, add the rest
-                            // of the matches
+                            // Of the matches
                             fileSearchResult?.lineMatches.append(contentsOf: matches)
                         } else {
                             // We haven't found anything in this file yet, record a new one
@@ -114,15 +114,15 @@ extension WorkspaceDocument {
                 }
 
                 // If `fileSearchResult` isn't nil it means we've found matches in the file
-                // so we add it to the search results.
+                // So we add it to the search results.
                 if let fileSearchResult = fileSearchResult {
                     searchResult.append(fileSearchResult)
                 }
             }
         }
 
-        // see if the line contains search term, obeying selectedMode
-        // swiftlint:disable cyclomatic_complexity
+        // See if the line contains search term, obeying selectedMode
+        // Swiftlint:disable cyclomatic_complexity
         func lineContainsSearchTerm(line rawLine: String, term searchterm: String) -> Bool {
             var line = rawLine
             if line.hasSuffix(" ") { line.removeLast() }
@@ -136,8 +136,8 @@ extension WorkspaceDocument {
                 guard textContainsSearchTerm == true else { return false }
                 guard textMatching != .Containing else { return textContainsSearchTerm }
 
-                // get the index of the search term's appearance in the line
-                // and get the characters to the left and right
+                // Get the index of the search term's appearance in the line
+                // And get the characters to the left and right
                 let appearances = line.appearancesOfSubstring(substring: searchterm, toLeft: 1, toRight: 1)
                 var foundMatch = false
                 for appearance in appearances {
@@ -170,7 +170,7 @@ extension WorkspaceDocument {
                 return foundMatch
             } else if findMode == .RegularExpression {
                 guard let regex = try? NSRegularExpression(pattern: searchterm) else { return false }
-                // swiftlint:disable legacy_constructor
+                // Swiftlint:disable legacy_constructor
                 return regex.firstMatch(in: String(line), range: NSMakeRange(0, line.utf16.count)) != nil
             }
 

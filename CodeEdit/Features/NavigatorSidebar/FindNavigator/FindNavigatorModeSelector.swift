@@ -14,8 +14,8 @@ struct FindNavigatorModeSelector: View {
     @State
     private var selectedMode: [SearchModeModel] {
         didSet {
-            // sync the variables, as selectedMode is an array
-            // and cannot be synced directly with @ObservedObject
+            // Sync the variables, as selectedMode is an array
+            // And cannot be synced directly with @ObservedObject
             state.selectedMode = selectedMode
         }
     }

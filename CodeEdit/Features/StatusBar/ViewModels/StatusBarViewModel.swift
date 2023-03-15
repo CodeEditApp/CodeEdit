@@ -59,7 +59,7 @@ class StatusBarViewModel: ObservableObject {
     private(set) var toolbarFont: Font = .system(size: 11)
 
     /// The maximum height of the drawer
-    /// when isMaximized is true the height gets set to maxHeight
+    /// When isMaximized is true the height gets set to maxHeight
     private(set) var maxHeight: Double = 5000
 
     /// The default height of the drawer

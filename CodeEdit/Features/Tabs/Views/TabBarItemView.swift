@@ -175,8 +175,8 @@ struct TabBarItemView: View {
                     if isActive {
                         // Close Tab Shortcut:
                         // Using an invisible button to contain the keyboard shortcut is simply
-                        // because the keyboard shortcut has an unexpected bug when working with
-                        // custom buttonStyle. This is an workaround and it works as expected.
+                        // Because the keyboard shortcut has an unexpected bug when working with
+                        // Custom buttonStyle. This is an workaround and it works as expected.
                         Button(
                             action: closeAction,
                             label: { EmptyView() }
@@ -187,8 +187,8 @@ struct TabBarItemView: View {
                     }
                     // Switch Tab Shortcut:
                     // Using an invisible button to contain the keyboard shortcut is simply
-                    // because the keyboard shortcut has an unexpected bug when working with
-                    // custom buttonStyle. This is an workaround and it works as expected.
+                    // Because the keyboard shortcut has an unexpected bug when working with
+                    // Custom buttonStyle. This is an workaround and it works as expected.
                     if index < 10 {
                         Button(
                             action: switchAction,

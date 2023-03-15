@@ -112,4 +112,4 @@ extension URL {
     )!
 }
 
-// https://github.com/CodeEditApp/CodeEdit/releases/download/0.0.1-alpha.10/appcast.xml
+// Https://github.com/CodeEditApp/CodeEdit/releases/download/0.0.1-alpha.10/appcast.xml

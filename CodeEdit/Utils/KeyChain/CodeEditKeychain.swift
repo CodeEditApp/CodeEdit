@@ -75,7 +75,7 @@ class CodeEditKeychain {
         withAccess access: CodeEditKeychainAccessOptions? = nil
     ) -> Bool {
         // The lock prevents the code to be run simultaneously
-        // from multiple threads which may result in crashing
+        // From multiple threads which may result in crashing
         lock.lock()
         defer { lock.unlock() }
 
@@ -132,7 +132,7 @@ class CodeEditKeychain {
                 return currentString
             }
 
-            lastResultCode = -67853 // errSecInvalidEncoding
+            lastResultCode = -67853 // ErrSecInvalidEncoding
         }
 
         return nil
@@ -146,7 +146,7 @@ class CodeEditKeychain {
      */
     func getData(_ key: String, asReference: Bool = false) -> Data? {
         // The lock prevents the code to be run simultaneously
-        // from multiple threads which may result in crashing
+        // From multiple threads which may result in crashing
         lock.lock()
         defer { lock.unlock() }
 
@@ -199,7 +199,7 @@ class CodeEditKeychain {
     @discardableResult
     func delete(_ key: String) -> Bool {
         // The lock prevents the code to be run simultaneously
-        // from multiple threads which may result in crashing
+        // From multiple threads which may result in crashing
         lock.lock()
         defer { lock.unlock() }
 
@@ -265,7 +265,7 @@ class CodeEditKeychain {
     @discardableResult
     func clear() -> Bool {
         // The lock prevents the code to be run simultaneously
-        // from multiple threads which may result in crashing
+        // From multiple threads which may result in crashing
         lock.lock()
         defer { lock.unlock() }
 

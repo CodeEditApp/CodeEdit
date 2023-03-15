@@ -44,7 +44,7 @@ struct TabBarNativeActiveMaterial: View {
         )
         .background(
             // This layer of background is for matching the native toolbar background
-            // in dark mode and in fullscreen.
+            // In dark mode and in fullscreen.
             // There is no exactly matched material available.
             // If you have a better solution, feel free to replace!!
             Color(nsColor: colorScheme == .dark ? .selectedContentBackgroundColor : .clear)

@@ -8,26 +8,26 @@
 import Foundation
 
 /// Loopable protocol implements a method that will return all child
-/// properties and their associated values of a `Type`
+/// Properties and their associated values of a `Type`
 protocol Loopable {
     func allProperties() throws -> [String: Any]
 }
 
 extension Loopable {
 
-    /// returns all child properties and their associated values of `self`
+    /// Returns all child properties and their associated values of `self`
     ///
     /// **Example:**
     /// ```swift
-    /// struct Author: Loopable {
+    /// Struct Author: Loopable {
     ///   var name: String = "Steve"
     ///   var books: Int = 4
     /// }
     ///
-    /// let author = Author()
-    /// print(author.allProperties())
+    /// Let author = Author()
+    /// Print(author.allProperties())
     ///
-    /// // returns
+    /// // Returns
     /// ["name": "Steve", "books": 4]
     /// ```
     func allProperties() throws -> [String: Any] {
@@ -37,7 +37,7 @@ extension Loopable {
 
         guard let style = mirror.displayStyle, style == .struct || style == .class else {
             // TODO: Throw a proper error
-            throw NSError() // swiftlint:disable:this discouraged_direct_init
+            throw NSError() // Swiftlint:disable:this discouraged_direct_init
         }
 
         for (property, value) in mirror.children {
