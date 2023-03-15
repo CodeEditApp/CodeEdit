@@ -311,7 +311,7 @@ extension CodeEditWindowController {
 
         if let codeEditSplitVC = splitViewController as? CodeEditSplitViewController {
             codeEditSplitVC.saveInspectorCollapsedState(isCollapsed: lastSplitView.isCollapsed)
-            codeEditSplitVC.fixInspectorToolbarBackground()
+            codeEditSplitVC.hideInspectorToolbarBackground()
         }
     }
 }

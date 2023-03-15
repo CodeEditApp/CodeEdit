@@ -85,7 +85,7 @@ final class CodeEditSplitViewController: NSSplitViewController {
 
     override func viewDidAppear() {
         viewIsReady = true
-        fixInspectorToolbarBackground()
+        hideInspectorToolbarBackground()
     }
 
     // MARK: - NSSplitViewDelegate
@@ -165,7 +165,7 @@ final class CodeEditSplitViewController: NSSplitViewController {
         view.window?.toolbar?.removeItem(at: index)
     }
 
-    func fixInspectorToolbarBackground() {
+    func hideInspectorToolbarBackground() {
         let controller = self.view.window?.perform(Selector(("titlebarViewController"))).takeUnretainedValue()
         if let controller = controller as? NSViewController {
             let effectViewCount = controller.view.subviews.filter { $0 is NSVisualEffectView }.count
