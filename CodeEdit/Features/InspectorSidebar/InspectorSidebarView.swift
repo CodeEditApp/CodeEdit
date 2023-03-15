@@ -52,12 +52,9 @@ struct InspectorSidebarView: View {
             maxHeight: .infinity,
             alignment: .top
         )
-        .safeAreaInset(edge: .top) {
+        .safeAreaInset(edge: .top, spacing: 0) {
             InspectorSidebarToolbarTop(selection: $selection)
-                .padding(.bottom, -8)
+                .background(.ultraThinMaterial)
         }
-        .background(
-            EffectView(.windowBackground, blendingMode: .withinWindow)
-        )
     }
 }
