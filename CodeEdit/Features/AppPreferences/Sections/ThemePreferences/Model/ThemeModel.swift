@@ -36,7 +36,8 @@ final class ThemeModel: ObservableObject {
     var selectedLightTheme: Theme? {
         didSet {
             DispatchQueue.main.async {
-                AppPreferencesModel.shared.preferences.theme.selectedLightTheme = self.selectedLightTheme?.name ?? "Broken"
+                AppPreferencesModel.shared
+                    .preferences.theme.selectedLightTheme = self.selectedLightTheme?.name ?? "Broken"
             }
         }
     }
@@ -47,7 +48,8 @@ final class ThemeModel: ObservableObject {
     var selectedDarkTheme: Theme? {
         didSet {
             DispatchQueue.main.async {
-                AppPreferencesModel.shared.preferences.theme.selectedDarkTheme = self.selectedDarkTheme?.name ?? "Broken"
+                AppPreferencesModel.shared
+                    .preferences.theme.selectedDarkTheme = self.selectedDarkTheme?.name ?? "Broken"
             }
         }
     }
