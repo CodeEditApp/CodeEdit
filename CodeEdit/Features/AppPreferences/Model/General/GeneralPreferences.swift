@@ -56,7 +56,7 @@ extension AppPreferences {
         /// Default initializer
         init() {}
 
-        // Swiftlint:disable function_body_length
+        // swiftlint:disable function_body_length
         /// Explicit decoder init for setting default values when key is not present in `JSON`
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -117,7 +117,7 @@ extension AppPreferences {
                 forKey: .isAutoSaveOn
             ) ?? true
         }
-        // Swiftlint:enable function_body_length
+        // swiftlint:enable function_body_length
     }
 
     /// The appearance of the app
