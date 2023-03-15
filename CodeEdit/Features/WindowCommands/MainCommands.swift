@@ -32,7 +32,7 @@ struct MainCommands: Commands {
             Button("New Settings...") {
                 NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
             }
-            .keyboardShortcut(",", modifiers: [.command, .option])
+            .keyboardShortcut(",", modifiers: [.command, .option, .hidden])
         }
     }
 }

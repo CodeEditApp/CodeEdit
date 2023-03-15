@@ -47,7 +47,8 @@ extension NSApplication {
     var openSwiftUIWindows: Int {
         NSApp
             .windows
-            .filter { $0.identifier?.rawValue == "Welcome" || $0.identifier?.rawValue == "About" }
+            .compactMap(\.identifier?.rawValue)
+            .compactMap { SceneID(rawValue: $0) }
             .count
     }
 }
