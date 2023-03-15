@@ -28,7 +28,7 @@ struct MainCommands: Commands {
                 NSApp.sendAction(#selector(AppDelegate.openPreferences(_:)), to: nil, from: nil)
             }
             .keyboardShortcut(",")
-            
+
             Button("New Settings...") {
                 NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
             }
