@@ -8,12 +8,12 @@
 import AppKit
 
 extension NSApplication {
-    func openWindow(id: String) {
+    func openWindow(_ id: SceneID) {
         NSMenuItem.openWindowAction = { (id, nil) }
         openWindowPerform()
     }
 
-    func openWindow(id: String, value: any Codable & Hashable) {
+    func openWindow(_ id: SceneID, value: any Codable & Hashable) {
         NSMenuItem.openWindowAction = { (id, value) }
         openWindowPerform()
     }
@@ -30,12 +30,18 @@ extension NSApplication {
         }
     }
 
-    func closeWindow(id: String) {
-        windows.first { $0.identifier?.rawValue == id }?.close()
+    func closeWindow(_ id: SceneID) {
+        windows.first { $0.identifier?.rawValue == id.rawValue }?.close()
     }
 
-    func findWindow(id: String) -> NSWindow? {
-        windows.first { $0.identifier?.rawValue == id }
+    func closeWindow(_ ids: SceneID...) {
+        ids.forEach { id in
+            windows.first { $0.identifier?.rawValue == id.rawValue }?.close()
+        }
+    }
+
+    func findWindow(_ id: SceneID) -> NSWindow? {
+        windows.first { $0.identifier?.rawValue == id.rawValue }
     }
 
     var openSwiftUIWindows: Int {

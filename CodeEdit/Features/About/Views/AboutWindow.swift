@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AboutWindow: Scene {
     var body: some Scene {
-        Window("", id: "About") {
+        Window("", id: SceneID.about.rawValue) {
             AboutView()
         }
         .defaultSize(width: 530, height: 220)

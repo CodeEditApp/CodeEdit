@@ -17,8 +17,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         AppPreferencesModel.shared.preferences.general.appAppearance.applyAppearance()
         checkForFilesToOpen()
 
-        NSApp.closeWindow(id: "Welcome")
-        NSApp.closeWindow(id: "About")
+        NSApp.closeWindow(.welcome, .about)
 
         DispatchQueue.main.async {
             var needToHandleOpen = true
@@ -82,7 +81,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 
         switch behavior {
         case .welcome:
-            NSApp.openWindow(id: "Welcome")
+            NSApp.openWindow(.welcome)
         case .openPanel:
             CodeEditDocumentController.shared.openDocument(self)
         case .newDocument:
@@ -145,11 +144,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     }
 
     @IBAction func openWelcome(_ sender: Any) {
-        NSApp.openWindow(id: "Welcome")
+        NSApp.openWindow(.welcome)
     }
 
     @IBAction func openAbout(_ sender: Any) {
-        NSApp.openWindow(id: "About")
+        NSApp.openWindow(.about)
     }
 
     @IBAction func openFeedback(_ sender: Any) {

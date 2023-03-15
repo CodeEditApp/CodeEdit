@@ -10,11 +10,11 @@ import SwiftUI
 struct WelcomeWindow: Scene {
 
     var body: some Scene {
-        Window("Welcome To CodeEdit", id: "Welcome") {
+        Window("Welcome To CodeEdit", id: SceneID.welcome.rawValue) {
             ContentView()
                 .frame(width: 795, height: 460)
                 .task {
-                    if let window = NSApp.windows.first { $0.identifier?.rawValue == "Welcome" } {
+                    if let window = NSApp.findWindow(.welcome) {
                         window.standardWindowButton(.closeButton)?.isHidden = true
                         window.standardWindowButton(.miniaturizeButton)?.isHidden = true
                         window.standardWindowButton(.zoomButton)?.isHidden = true

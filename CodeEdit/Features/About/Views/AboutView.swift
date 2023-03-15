@@ -49,7 +49,7 @@ public struct AboutView: View {
             .hidden()
         }
         .task {
-            if let window = NSApp.findWindow(id: "About") {
+            if let window = NSApp.findWindow(.about) {
                 window.styleMask = [.closable, .fullSizeContentView, .titled, .nonactivatingPanel]
                 window.standardWindowButton(.miniaturizeButton)?.isHidden = true
                 window.standardWindowButton(.zoomButton)?.isHidden = true

@@ -15,7 +15,7 @@ extension NSMenuItem {
 
     /// Helper variable to allow opening SwiftUI windows from anywhere in the app.
     /// Don't use this, unless you know what you're doing.
-    static var openWindowAction: (() -> (String?, (any Codable & Hashable)?))?
+    static var openWindowAction: (() -> (SceneID?, (any Codable & Hashable)?))?
 
     @objc
     fileprivate func fixAlternate(_ newValue: NSEvent.ModifierFlags) {

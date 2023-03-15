@@ -22,11 +22,11 @@ struct WindowCommands: Commands {
                 }
                 switch result {
                 case (.some(let id), .none):
-                    openWindow(id: id)
+                    openWindow(id: id.rawValue)
                 case (.none, .some(let data)):
                     openWindow(value: data)
                 case let (.some(id), .some(data)):
-                    openWindow(id: id, value: data)
+                    openWindow(id: id.rawValue, value: data)
                 default:
                     break
                 }
