@@ -89,6 +89,7 @@ import CodeEditKit
             window: window,
             workspace: self
         )
+
         windowController.shouldCascadeWindows = false
         windowController.window?.setFrameAutosaveName(self.fileURL?.absoluteString ?? "Untitled")
         self.addWindowController(windowController)
@@ -161,7 +162,6 @@ import CodeEditKit
     // MARK: Close Workspace
 
     override func close() {
-
         super.close()
     }
 

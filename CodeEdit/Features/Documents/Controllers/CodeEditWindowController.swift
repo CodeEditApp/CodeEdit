@@ -17,16 +17,20 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     var quickOpenPanel: OverlayPanel?
     var commandPalettePanel: OverlayPanel?
 
-    private var splitViewController: NSSplitViewController! {
-        get { contentViewController as? NSSplitViewController }
-        set { contentViewController = newValue }
-    }
+    private var splitViewController: NSSplitViewController!
 
     init(window: NSWindow, workspace: WorkspaceDocument) {
         super.init(window: window)
         self.workspace = workspace
 
         setupSplitView(with: workspace)
+
+        let view = CodeEditSplitView(controller: splitViewController).ignoresSafeArea()
+
+        // An NSHostingController is used, so the root viewController of the window is a SwiftUI-managed one.
+        // This allows us to use some SwiftUI features, like focusedSceneObject.
+        contentViewController = NSHostingController(rootView: view)
+
         setupToolbar()
         registerCommands()
     }
