@@ -27,7 +27,8 @@ struct InspectorSidebarToolbarTop: View {
     }
 
     var body: some View {
-        ScrollView {
+        VStack(alignment: .center, spacing: 0) {
+            Divider()
             HStack(spacing: 10) {
                 ForEach(icons) { icon in
                     makeInspectorIcon(systemImage: icon.imageName, title: icon.title, id: icon.id)
@@ -46,18 +47,11 @@ struct InspectorSidebarToolbarTop: View {
                         )
                 }
             }
-            .frame(height: 29, alignment: .center)
-            .frame(maxWidth: .infinity)
-            .overlay(alignment: .top) {
-                Divider()
-            }
-            .overlay(alignment: .bottom) {
-                Divider()
-            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
             .animation(.default, value: icons)
+            Divider()
         }
-        .frame(height: 32, alignment: .center)
-        .frame(maxWidth: .infinity)
+        .frame(height: TabBarView.height)
     }
 
     func makeInspectorIcon(systemImage: String, title: String, id: Int) -> some View {

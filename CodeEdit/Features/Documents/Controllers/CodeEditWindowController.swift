@@ -110,6 +110,8 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
         inspector.isCollapsed = true
         inspector.canCollapse = true
         inspector.collapseBehavior = .useConstraints
+        inspector.isSpringLoaded = true
+        
         splitVC.addSplitViewItem(inspector)
 
         self.splitViewController = splitVC
@@ -232,14 +234,21 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
 
     @objc func toggleLastPanel() {
         guard let lastSplitView = splitViewController.splitViewItems.last else { return }
-        lastSplitView.animator().isCollapsed.toggle()
+
         if lastSplitView.isCollapsed {
-            window?.toolbar?.removeItem(at: 4)
-        } else {
             window?.toolbar?.insertItem(withItemIdentifier: .itemListTrackingSeparator, at: 4)
         }
+        NSAnimationContext.runAnimationGroup { context in
+            lastSplitView.animator().isCollapsed.toggle()
+        } completionHandler: { [weak self] in
+            if lastSplitView.isCollapsed {
+                self?.window?.animator().toolbar?.removeItem(at: 4)
+            }
+        }
+
         if let codeEditSplitVC = splitViewController as? CodeEditSplitViewController {
             codeEditSplitVC.saveInspectorCollapsedState(isCollapsed: lastSplitView.isCollapsed)
+            codeEditSplitVC.fixInspectorToolbarBackground()
         }
     }
 
