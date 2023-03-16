@@ -12,7 +12,6 @@ final class FindNavigatorListViewController: NSViewController {
     public var workspace: WorkspaceDocument
     public var selectedItem: Any?
 
-    typealias FileItem = WorkspaceClient.FileItem
     private var searchId: UUID?
     private var searchItems: [SearchResultModel] = []
     private var scrollView: NSScrollView!

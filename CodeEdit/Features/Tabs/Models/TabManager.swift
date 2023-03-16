@@ -25,7 +25,7 @@ class TabManager: ObservableObject {
     /// History of last-used tab groups.
     var activeTabGroupHistory: Deque<() -> TabGroupData?> = []
 
-    var fileDocuments: [WorkspaceClient.FileItem: CodeFileDocument] = [:]
+    var fileDocuments: [CEWorkspaceFile: CodeFileDocument] = [:]
 
     init() {
         let tab = TabGroupData()

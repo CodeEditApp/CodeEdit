@@ -163,7 +163,7 @@ extension OutlineTableViewCell: NSTextFieldDelegate {
         guard newName != fileItem.name else { return true }
 
         guard newName != "" && newName.isValidFilename &&
-              !WorkspaceClient.FileItem.fileManger.fileExists(atPath:
+              !CEWorkspaceFile.fileManger.fileExists(atPath:
                     fileItem.url.deletingLastPathComponent().appendingPathComponent(newName).path)
         else { return false }
 

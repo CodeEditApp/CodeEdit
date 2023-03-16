@@ -9,8 +9,6 @@ import SwiftUI
 
 struct TabBarItemView: View {
 
-    typealias Item = WorkspaceClient.FileItem
-
     @Environment(\.colorScheme)
     private var colorScheme
 
