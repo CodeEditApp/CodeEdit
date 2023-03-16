@@ -137,8 +137,6 @@ import CodeEditKit
     override func read(from url: URL, ofType typeName: String) throws {
         try initWorkspaceState(url)
 
-        Swift.print("Done loading files. . .")
-
         // Initialize Workspace
         workspaceFileManager?
             .getFiles

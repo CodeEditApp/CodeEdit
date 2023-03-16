@@ -114,7 +114,7 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, TabBar
 
     func activateWatcher() -> Bool {
         guard let watcherCode else { return false }
-        
+
         let descriptor = open(self.url.path, O_EVTONLY)
         guard descriptor > 0 else { return false }
 
