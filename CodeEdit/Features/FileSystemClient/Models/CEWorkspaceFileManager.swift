@@ -35,12 +35,51 @@ final class CEWorkspaceFileManager {
 
         self.workspaceItem = CEWorkspaceFile(url: folderUrl, children: [])
         self.flattenedFileItems = [workspaceItem.id: workspaceItem]
+
+        self.setup()
+    }
+
+    private func setup() {
+        // initial load
+        var workspaceFiles: [CEWorkspaceFile]
+        do {
+            workspaceFiles = try loadFiles(fromUrl: self.folderUrl)
+        } catch {
+            fatalError("Failed to loadFiles")
+        }
+
+        // workspace fileItem
+        let workspaceFile = CEWorkspaceFile(url: self.folderUrl, children: workspaceFiles)
+        flattenedFileItems[workspaceFile.id] = workspaceFile
+        workspaceFiles.forEach { item in
+            item.parent = workspaceFile
+        }
+
+        // By using `CurrentValueSubject` we can define a starting value.
+        // The value passed during init it's going to be send as soon as the
+        // consumer subscribes to the publisher.
+        let subject = CurrentValueSubject<[CEWorkspaceFile], Never>(workspaceFiles)
+
+        self.getFiles = subject
+            .handleEvents(receiveCancel: {
+                for item in self.flattenedFileItems.values {
+                    item.watcher?.cancel()
+                    item.watcher = nil
+                }
+            })
+            .receive(on: RunLoop.main)
+            .eraseToAnyPublisher()
+
+        workspaceFile.watcherCode = { sourceFileItem in
+            self.reloadFromWatcher(sourceFileItem: sourceFileItem)
+        }
+        reloadFromWatcher(sourceFileItem: workspaceFile)
     }
 
     /// Recursive loading of files into `FileItem`s
     /// - Parameter url: The URL of the directory to load the items of
     /// - Returns: `[FileItem]` representing the contents of the directory
-    private func loadFiles(fromURL url: URL) throws -> [CEWorkspaceFile] {
+    private func loadFiles(fromUrl url: URL) throws -> [CEWorkspaceFile] {
         let directoryContents = try fileManager.contentsOfDirectory(
             at: url.resolvingSymlinksInPath(),
             includingPropertiesForKeys: nil
@@ -57,7 +96,7 @@ final class CEWorkspaceFileManager {
 
                 if isDir.boolValue {
                     // Recursively fetch subdirectories and files if the path points to a directory
-                    subItems = try loadFiles(fromURL: itemURL)
+                    subItems = try loadFiles(fromUrl: itemURL)
                 }
 
                 let newFileItem = CEWorkspaceFile(
@@ -183,7 +222,7 @@ final class CEWorkspaceFileManager {
             if fileManager.fileExists(atPath: newContent.path, isDirectory: &isDir) {
                 var subItems: [CEWorkspaceFile]?
 
-                if isDir.boolValue { subItems = try loadFiles(fromURL: newContent) }
+                if isDir.boolValue { subItems = try loadFiles(fromUrl: newContent) }
 
                 let newFileItem = CEWorkspaceFile(
                     url: newContent,

@@ -113,8 +113,8 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, TabBar
     }
 
     func activateWatcher() -> Bool {
-        // check that there is watcher code and that opening the file succeeded
         guard let watcherCode else { return false }
+        
         let descriptor = open(self.url.path, O_EVTONLY)
         guard descriptor > 0 else { return false }
 
@@ -124,9 +124,11 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, TabBar
             eventMask: .write,
             queue: DispatchQueue.global()
         )
+
         if descriptor > 2000 {
             print("Watcher \(descriptor) used up on \(url.path)")
         }
+
         source.setEventHandler { watcherCode(self) }
         source.setCancelHandler { close(descriptor) }
         source.resume()

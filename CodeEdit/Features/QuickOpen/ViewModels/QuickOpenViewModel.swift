@@ -56,7 +56,7 @@ final class QuickOpenViewModel: ObservableObject {
                         return false
                     }
                 }.map { url in
-                    WorkspaceClient.FileItem(url: url, children: nil)
+                    CEWorkspaceFile(url: url, children: nil)
                 }
                 DispatchQueue.main.async {
                     self.openQuicklyFiles = files
