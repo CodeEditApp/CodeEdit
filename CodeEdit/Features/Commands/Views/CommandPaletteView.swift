@@ -133,61 +133,56 @@ struct CommandPaletteView: View {
 
     var body: some View {
         VStack(spacing: 0.0) {
+            VStack {
                 HStack(alignment: .center, spacing: 0) {
-                    Image(systemName: "command")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 16, height: 16)
-                        .padding(.leading, 20)
-                        .offset(x: 0, y: 1)
+                    Image(systemName: "magnifyingglass")
+                        .font(.system(size: 18))
+                        .foregroundColor(.secondary)
+                        .padding(.leading, 1)
+                        .padding(.trailing, 5)
+
                     ActionAwareInput(
                         text: $state.commandQuery, onDown: onKeyDown,
                         onTextChange: onQueryChange
                     )
                     .font(.system(size: 24, weight: .light, design: .default))
-                    .padding(16)
-                    .frame(height: 52, alignment: .center)
-                    .foregroundColor(Color(.systemGray).opacity(0.85))
-                    .background(EffectView(.sidebar, blendingMode: .behindWindow))
                 }
-
+                .padding(.vertical, 12)
+                .padding(.horizontal, 12)
+                .foregroundColor(.primary)
+                .background(EffectView(.sidebar, blendingMode: .behindWindow))
+            }
+            .frame(height: 48)
             Divider()
-            VStack(spacing: 0) {
-                List(commandsList, selection: $state.selected) { command in
-                    // swiftlint:disable multiple_closures_with_trailing_closure
-                    Button(action: { onCommandClick(command: command) }) {
-                        VStack {
-                            SearchResultLabel(
-                                labelName: command.title,
-                                textToMatch: state.commandQuery,
-                                fontColor: textColor(command: command)
-                            )
-                            .padding(.zero)
+            ScrollView {
+                VStack(spacing: 0) {
+                    ForEach(commandsList) { command in
+                        // swiftlint:disable multiple_closures_with_trailing_closure
+                        Button(action: { onCommandClick(command: command) }) {
+                                SearchResultLabel(
+                                    labelName: command.title,
+                                    textToMatch: state.commandQuery
+                                )
                         }
-                        .frame(maxWidth: .infinity, maxHeight: 15, alignment: .leading)
+                        .padding(.init(top: 8, leading: 10, bottom: 8, trailing: 8))
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .buttonStyle(.borderless)
+                        .background(
+                            Color(self.selectedItem == command ? .selectedContentBackgroundColor : .clear)
+                        )
+                        .cornerRadius(5)
+                        .onHover(perform: { _ in self.selectedItem = command })
                     }
-                    .frame(maxWidth: .infinity, maxHeight: 15, alignment: .leading)
-                    .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
-                    .padding(.init(top: 5, leading: 5, bottom: 5, trailing: 0))
-                    .buttonStyle(.borderless)
-                    .background(
-                        self.selectedItem == command ? RoundedRectangle(cornerRadius: 5, style: .continuous)
-                            .fill(Color(red: 0, green: 0.38, blue: 0.816, opacity: 0.85)) :
-                            RoundedRectangle(cornerRadius: 5, style: .continuous)
-                            .fill(Color.clear)
-                    )
-                    .onHover(perform: { _ in self.selectedItem = command })
                 }
-                .listStyle(SidebarListStyle())
+                .padding(8)
             }
         }
         .background(EffectView(.sidebar, blendingMode: .behindWindow))
-        .foregroundColor(.gray)
         .edgesIgnoringSafeArea(.vertical)
         .frame(
-            minWidth: 600,
-            minHeight: self.state.isShowingCommandsList ? 400 : 28,
-            maxHeight: self.state.isShowingCommandsList ? .infinity : 28
+            minWidth: 680,
+            minHeight: self.state.isShowingCommandsList ? 400 : 19,
+            maxHeight: self.state.isShowingCommandsList ? .infinity : 19
         )
     }
 }
@@ -217,6 +212,24 @@ private class ActionAwareInputView: NSTextView, NSTextFieldDelegate {
         onTextChange?(self.string)
     }
 
+    var placeholderString: String = ""
+
+    override func draw(_ dirtyRect: NSRect) {
+        super.draw(dirtyRect)
+
+        if string.isEmpty && !placeholderString.isEmpty {
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.alignment = .left
+            let attrs: [NSAttributedString.Key: Any] = [
+                .foregroundColor: NSColor.placeholderTextColor,
+                .font: font ?? NSFont.systemFont(ofSize: 12),
+                .paragraphStyle: paragraphStyle
+            ]
+            let attributedPlaceholder = NSAttributedString(string: placeholderString, attributes: attrs)
+            attributedPlaceholder.draw(in: dirtyRect.insetBy(dx: 6, dy: 0))
+        }
+    }
+
 }
 
 /// Implementation of command palette entity. While swiftui does not allow to use NSMutableAttributeStrings,
@@ -227,16 +240,14 @@ struct SearchResultLabel: NSViewRepresentable {
 
     var labelName: String
     var textToMatch: String
-    var fontColor: Color
 
     public func makeNSView(context: Context) -> some NSTextField {
         let label = NSTextField(wrappingLabelWithString: labelName)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.drawsBackground = false
-        label.textColor = NSColor(fontColor.opacity(0.55))
+        label.textColor = .labelColor
         label.isEditable = false
         label.isSelectable = false
-        label.layer?.cornerRadius = 10.0
         label.font = .labelFont(ofSize: 13)
         label.allowsDefaultTighteningForTruncation = false
         label.cell?.truncatesLastVisibleLine = true
@@ -247,19 +258,21 @@ struct SearchResultLabel: NSViewRepresentable {
     }
 
     func highlight() -> NSAttributedString {
-
         let attribText = NSMutableAttributedString(string: self.labelName)
         let range: NSRange = attribText.mutableString.range(
             of: self.textToMatch,
             options: NSString.CompareOptions.caseInsensitive
         )
-        attribText.addAttribute(.foregroundColor, value: NSColor(fontColor.opacity(0.85)), range: range)
+        attribText.addAttribute(.foregroundColor, value: NSColor(Color(.labelColor)), range: range)
+        attribText.addAttribute(.font, value: NSFont.boldSystemFont(ofSize: NSFont.systemFontSize), range: range)
 
         return attribText
     }
 
     func updateNSView(_ nsView: NSViewType, context: Context) {
-        nsView.textColor = NSColor(fontColor.opacity(0.55))
+        if textToMatch == "" {
+            nsView.textColor = .labelColor
+        }
         nsView.attributedStringValue = highlight()
     }
 
@@ -291,6 +304,7 @@ private struct ActionAwareInput: NSViewRepresentable {
         input.drawsBackground = false
         input.becomeFirstResponder()
         input.invalidateIntrinsicContentSize()
+        input.placeholderString = "Commands"
 
         return input
     }

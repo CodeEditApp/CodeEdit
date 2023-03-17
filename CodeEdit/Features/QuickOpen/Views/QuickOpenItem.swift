@@ -18,7 +18,6 @@ struct QuickOpenItem: View {
     ) {
         self.baseDirectory = baseDirectory
         self.fileItem = fileItem
-        print(type(of: fileItem.url.pathComponents.dropFirst(baseDirectory.pathComponents.count-1).dropLast()))
     }
 
     var relativePathComponents: ArraySlice<String> {

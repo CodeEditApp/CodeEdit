@@ -47,10 +47,10 @@ struct QuickOpenView: View {
                             state.fetchOpenQuickly()
                         }
                 }
-                    .padding(.vertical, 12)
-                    .padding(.horizontal, 12)
-                    .foregroundColor(.primary.opacity(0.85))
-                    .background(EffectView(.sidebar, blendingMode: .behindWindow))
+                .padding(.vertical, 12)
+                .padding(.horizontal, 12)
+                .foregroundColor(.primary.opacity(0.85))
+                .background(EffectView(.sidebar, blendingMode: .behindWindow))
             }
             if self.state.isShowingOpenQuicklyFiles {
                 Divider()
