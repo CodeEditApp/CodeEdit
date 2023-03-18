@@ -59,8 +59,16 @@ struct OverlayView<RowView: View, PreviewView: View, Data: Identifiable & Hashab
                         .foregroundColor(.secondary)
                         .padding(.leading, 1)
                         .padding(.trailing, 10)
-                    PaletteTextField(text: $queryContent, overruleKeyCode: handleKeyCodes)
-                        .frame(height: 20)
+                    TextField(title, text: $queryContent)
+                        .font(.system(size: 20, weight: .light, design: .default))
+                        .textFieldStyle(.plain)
+                        .onSubmit {
+                            if let selectedItem {
+                                onRowClick(selectedItem)
+                            } else {
+                                NSSound.beep()
+                            }
+                        }
                         .onChange(of: data) { newValue in
                             if newValue.isEmpty {
                                 selectedItem = nil
@@ -71,7 +79,7 @@ struct OverlayView<RowView: View, PreviewView: View, Data: Identifiable & Hashab
                             }
                         }
                 }
-                .padding(.vertical, 14)
+                .padding(.vertical, 12)
                 .padding(.horizontal, 12)
                 .foregroundColor(.primary.opacity(0.85))
                 .background(EffectView(.sidebar, blendingMode: .behindWindow))
@@ -102,12 +110,7 @@ struct OverlayView<RowView: View, PreviewView: View, Data: Identifiable & Hashab
             }
         }
         .overlay {
-            Button {
-                onClose()
-            } label: { EmptyView() }
-                .opacity(0)
-                .keyboardShortcut(.escape, modifiers: [])
-                .accessibilityLabel("Close Overlay")
+            keyHandlers
         }
         .background(EffectView(.sidebar, blendingMode: .behindWindow))
         .edgesIgnoringSafeArea(.vertical)
@@ -118,9 +121,28 @@ struct OverlayView<RowView: View, PreviewView: View, Data: Identifiable & Hashab
         )
     }
 
-    func handleKeyCodes(keycode: Int) {
-        switch keycode {
-        case 125: // Key Down
+    @ViewBuilder
+    var keyHandlers: some View {
+        Button {
+            onClose()
+        } label: { EmptyView() }
+            .opacity(0)
+            .keyboardShortcut(.escape, modifiers: [])
+            .accessibilityLabel("Close Overlay")
+        Button {
+            guard selectedItem != data.first else {
+                return
+            }
+            if let selectedItem, let index = data.firstIndex(of: selectedItem) {
+                self.selectedItem = data[index-1]
+            } else {
+                selectedItem = data.first
+            }
+        } label: { EmptyView() }
+            .opacity(0)
+            .keyboardShortcut(.upArrow, modifiers: [])
+            .accessibilityLabel("Select Up")
+        Button {
             guard selectedItem != data.last else {
                 return
             }
@@ -130,24 +152,9 @@ struct OverlayView<RowView: View, PreviewView: View, Data: Identifiable & Hashab
             } else {
                 selectedItem = data.first
             }
-
-        case 126: // Key Up
-            guard selectedItem != data.first else {
-                return
-            }
-            if let selectedItem, let index = data.firstIndex(of: selectedItem) {
-                self.selectedItem = data[index-1]
-            } else {
-                selectedItem = data.first
-            }
-        case 36: // Enter
-            if let selectedItem {
-                onRowClick(selectedItem)
-            } else {
-                NSSound.beep()
-            }
-        default:
-            break
-        }
+        } label: { EmptyView() }
+            .opacity(0)
+            .keyboardShortcut(.downArrow, modifiers: [])
+            .accessibilityLabel("Select Down")
     }
 }

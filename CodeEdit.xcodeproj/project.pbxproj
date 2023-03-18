@@ -340,7 +340,6 @@
 		6CAAF69429BCD78600A1F48A /* CommandsFixes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CAAF69329BCD78600A1F48A /* CommandsFixes.swift */; };
 		6CB9144B29BEC7F100BC47F2 /* WelcomeWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CB9144A29BEC7F100BC47F2 /* WelcomeWindow.swift */; };
 		6CABB19E29C5591D00340467 /* NSTableViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CABB19C29C5591D00340467 /* NSTableViewWrapper.swift */; };
-		6CABB19F29C5591D00340467 /* PaletteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CABB19D29C5591D00340467 /* PaletteTextField.swift */; };
 		6CABB1A129C5593800340467 /* OverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CABB1A029C5593800340467 /* OverlayView.swift */; };
 		6CBD1BC62978DE53006639D5 /* Font+Caption3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBD1BC52978DE53006639D5 /* Font+Caption3.swift */; };
 		6CC9E4B229B5669900C97388 /* Environment+ActiveTabGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC9E4B129B5669900C97388 /* Environment+ActiveTabGroup.swift */; };
@@ -749,6 +748,8 @@
 		6C91D57129B176FF0059A90D /* TabManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabManager.swift; sourceTree = "<group>"; };
 		6C97EBCB2978760400302F95 /* AcknowledgementsWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcknowledgementsWindowController.swift; sourceTree = "<group>"; };
 		6C97EBCE297876E500302F95 /* AboutWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutWindowController.swift; sourceTree = "<group>"; };
+		6CABB19C29C5591D00340467 /* NSTableViewWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NSTableViewWrapper.swift; path = CodeEdit/Features/QuickOpen/Views/NSTableViewWrapper.swift; sourceTree = SOURCE_ROOT; };
+		6CABB1A029C5593800340467 /* OverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverlayView.swift; sourceTree = "<group>"; };
 		6CBD1BC52978DE53006639D5 /* Font+Caption3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Caption3.swift"; sourceTree = "<group>"; };
 		6CC9E4B129B5669900C97388 /* Environment+ActiveTabGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Environment+ActiveTabGroup.swift"; sourceTree = "<group>"; };
 		6CDA84AC284C1BA000C1CC3A /* TabBarContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarContextMenu.swift; sourceTree = "<group>"; };
@@ -1308,7 +1309,6 @@
 			isa = PBXGroup;
 			children = (
 				6CABB19C29C5591D00340467 /* NSTableViewWrapper.swift */,
-				6CABB19D29C5591D00340467 /* PaletteTextField.swift */,
 				5878DAA1291AE76700DD95A3 /* QuickOpenView.swift */,
 				5878DAA2291AE76700DD95A3 /* QuickOpenPreviewView.swift */,
 				5878DAA4291AE76700DD95A3 /* QuickOpenItem.swift */,
@@ -2811,7 +2811,6 @@
 				58AFAA2E2933C69E00482B53 /* TabBarItemRepresentable.swift in Sources */,
 				6C4104E6297C884F00F472BA /* AboutDetailView.swift in Sources */,
 				587B9E7A29301D8F00AC7927 /* GitHubReviewsRouter.swift in Sources */,
-				6CABB19F29C5591D00340467 /* PaletteTextField.swift in Sources */,
 				04540D5E27DD08C300E91B77 /* WorkspaceView.swift in Sources */,
 				DE6F77872813625500D00A76 /* TabBarDivider.swift in Sources */,
 				6CABB1A129C5593800340467 /* OverlayView.swift in Sources */,
