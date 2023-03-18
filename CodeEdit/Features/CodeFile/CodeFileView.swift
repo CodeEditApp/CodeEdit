@@ -77,8 +77,7 @@ struct CodeFileView: View {
             wrapLines: $prefs.preferences.textEditing.wrapLinesToEditorWidth,
             cursorPosition: codeFile.$cursorPosition,
             useThemeBackground: prefs.preferences.theme.useThemeBackground,
-            contentInsets: edgeInsets.nsEdgeInsets,
-            isEditable: isEditable
+            contentInsets: edgeInsets.nsEdgeInsets
         )
         .id(codeFile.fileURL)
         .background {

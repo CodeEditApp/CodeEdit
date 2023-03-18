@@ -23,7 +23,6 @@ struct OverlayView<RowView: View, PreviewView: View, Data: Identifiable & Hashab
 
     @Binding
     var queryContent: String
-
     let title: String
     let image: Image
     let showsPreview: Bool
@@ -60,136 +59,55 @@ struct OverlayView<RowView: View, PreviewView: View, Data: Identifiable & Hashab
                         .foregroundColor(.secondary)
                         .padding(.leading, 1)
                         .padding(.trailing, 10)
-                    TextField(title, text: $queryContent)
-                        .font(.system(size: 20, weight: .light, design: .default))
-                        .textFieldStyle(.plain)
-                        .onReceive(queryContent.publisher) { _ in
-                            if queryContent.isEmpty {
+                    PaletteTextField(text: $queryContent, overruleKeyCode: handleKeyCodes)
+                        .frame(height: 20)
+                        .onChange(of: data) { newValue in
+                            if newValue.isEmpty {
                                 selectedItem = nil
                             } else {
-                                // Select the first item by default to indicate the "enter" action
                                 if selectedItem == nil {
-                                    selectedItem = data.first
-                                }
-                            }
-                        }
-                        .onSubmit {
-                            if queryContent.isEmpty {
-                                // Nothing to select!
-                                NSSound.beep()
-                            } else {
-                                // Handle enter pressed in the text view
-                                if let dataItem = selectedItem ?? data.first {
-                                    onRowClick(dataItem)
+                                    selectedItem = newValue.first
                                 }
                             }
                         }
                 }
-                .padding(.vertical, 12)
+                .padding(.vertical, 14)
                 .padding(.horizontal, 12)
                 .foregroundColor(.primary.opacity(0.85))
                 .background(EffectView(.sidebar, blendingMode: .behindWindow))
             }
             if !queryContent.isEmpty {
-                ScrollViewReader { scrollReader in
-                    ZStack {
-                        // Hide these buttons (they're just keyboard shortcuts)
-                        Button {
-                            if let selectedItem, let index = data.firstIndex(of: selectedItem) {
-                                if index > 0 {
-                                    self.selectedItem = data[index - 1]
-                                    withAnimation(.default) {
-                                        scrollReader.scrollTo(data[index - 1])
-                                    }
-                                } else {
-                                    NSSound.beep()
-                                }
-                            }
-                        } label: { EmptyView() }
-                            .opacity(0)
-                            .keyboardShortcut(.upArrow, modifiers: [])
-                            .accessibilityLabel("Select Up")
 
-                        Button {
-                            if let selectedItem, let index = data.firstIndex(of: selectedItem) {
-                                if data.count > index + 1 {
-                                    self.selectedItem = data[index + 1]
-                                    withAnimation(.default) {
-                                        scrollReader.scrollTo(data[index + 1])
-                                    }
-                                } else {
-                                    NSSound.beep()
-                                }
-                            }
-                        } label: { EmptyView() }
-                            .opacity(0)
-                            .keyboardShortcut(.downArrow, modifiers: [])
-                            .accessibilityLabel("Select Down")
-
-                        Button {
-                            onClose()
-                        } label: { EmptyView() }
-                            .opacity(0)
-                            .keyboardShortcut(.escape, modifiers: [])
-                            .accessibilityLabel("Close Overlay")
-                    }
-                    Group {
-                        // The real content.
                         Divider()
                             .padding(0)
-                        HStack(spacing: 0) {
-                            ScrollView {
-                                LazyVStack(
-                                    alignment: .leading,
-                                    spacing: 0
-                                ) {
-                                    ForEach(data) { dataItem in
-                                        rowViewBuilder(dataItem)
-                                            .onTapGesture {
-                                                onRowClick(dataItem)
-                                            }
-                                            .padding([.trailing, .vertical], 8)
-                                            .padding(.leading, 10)
-                                            .frame(maxWidth: .infinity, alignment: .leading)
-                                            .buttonStyle(.borderless)
-                                            .background(
-                                                Color(
-                                                    self.selectedItem == dataItem
-                                                    ? .selectedContentBackgroundColor : .clear
-                                                )
-                                            )
-                                            .cornerRadius(5)
-                                            .onHover { isHovering in
-                                                if isHovering {
-                                                    selectedItem = dataItem
-                                                }
-                                            }
-                                            .id(dataItem)
-                                    }
-                                }
-                                .frame(maxWidth: showsPreview ? 272 : .infinity)
-                                .padding(.horizontal, 8)
-                            }
-                            if showsPreview {
-                                Divider()
-                                if data.isEmpty {
-                                    EmptyView()
-                                        .frame(maxWidth: .infinity)
-                                } else {
-                                    if let selectedItem, let previewViewBuilder {
-                                        previewViewBuilder(selectedItem)
-                                            .frame(maxWidth: .infinity)
-                                    } else {
-                                        Text("Select a file to preview")
-                                            .frame(maxWidth: .infinity)
-                                    }
-                                }
+                HStack(spacing: 0) {
+                    NSTableViewWrapper(data: data, rowHeight: 50, selection: $selectedItem, itemView: rowViewBuilder)
+                        .frame(maxWidth: showsPreview ? 272 : .infinity)
+                    if showsPreview {
+                        Divider()
+                        if data.isEmpty {
+                            EmptyView()
+                                .frame(maxWidth: .infinity)
+                        } else {
+                            if let selectedItem, let previewViewBuilder {
+                                previewViewBuilder(selectedItem)
+                                    .frame(maxWidth: .infinity)
+                            } else {
+                                Text("Select a file to preview")
+                                    .frame(maxWidth: .infinity)
                             }
                         }
                     }
                 }
-                .frame(maxHeight: .infinity)
             }
+        }
+        .overlay {
+            Button {
+                onClose()
+            } label: { EmptyView() }
+                .opacity(0)
+                .keyboardShortcut(.escape, modifiers: [])
+                .accessibilityLabel("Close Overlay")
         }
         .background(EffectView(.sidebar, blendingMode: .behindWindow))
         .edgesIgnoringSafeArea(.vertical)
@@ -198,5 +116,38 @@ struct OverlayView<RowView: View, PreviewView: View, Data: Identifiable & Hashab
             minHeight: queryContent.isEmpty ? 19 : 400,
             maxHeight: queryContent.isEmpty ? 19 : .infinity
         )
+    }
+
+    func handleKeyCodes(keycode: Int) {
+        switch keycode {
+        case 125: // Key Down
+            guard selectedItem != data.last else {
+                return
+            }
+            if let selectedItem, let index = data.firstIndex(of: selectedItem) {
+
+                self.selectedItem = data[index+1]
+            } else {
+                selectedItem = data.first
+            }
+
+        case 126: // Key Up
+            guard selectedItem != data.first else {
+                return
+            }
+            if let selectedItem, let index = data.firstIndex(of: selectedItem) {
+                self.selectedItem = data[index-1]
+            } else {
+                selectedItem = data.first
+            }
+        case 36: // Enter
+            if let selectedItem {
+                onRowClick(selectedItem)
+            } else {
+                NSSound.beep()
+            }
+        default:
+            break
+        }
     }
 }
