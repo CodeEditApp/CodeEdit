@@ -11,6 +11,7 @@ public final class FileInspectorModel: ObservableObject {
 
     /// The base URL of the workspace
     private(set) var workspaceURL: URL
+    private var prefs: AppPreferencesModel = .shared
 
     @Published
     var fileTypeSelection: LanguageType.ID = "swift"

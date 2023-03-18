@@ -24,17 +24,18 @@ struct InspectorSidebarView: View {
 
     var body: some View {
         VStack {
-            if let path = tabManager.activeTabGroup.selected?.fileDocument?.fileURL?.path(percentEncoded: false) {
+            if let path = tabManager.activeTabGroup.selected?.fileDocument?.fileURL {
                 switch selection {
                 case 0:
                     FileInspectorView(
                         workspaceURL: workspace.fileURL!,
-                        fileURL: path
+                        fileURL: path.path(percentEncoded: false),
+                        fileType: path.pathExtension
                     )
                 case 1:
                     HistoryInspectorView(
                         workspaceURL: workspace.fileURL!,
-                        fileURL: path
+                        fileURL: path.path(percentEncoded: false)
                     )
                 case 2:
                     QuickHelpInspectorView().padding(5)

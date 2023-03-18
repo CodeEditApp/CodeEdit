@@ -10,11 +10,14 @@ struct FileInspectorView: View {
 
     @ObservedObject
     private var inspectorModel: FileInspectorModel
+    @StateObject
+    private var prefs: AppPreferencesModel = .shared
 
     /// Initialize with GitClient
     /// - Parameter gitClient: a GitClient
-    init(workspaceURL: URL, fileURL: String) {
+    init(workspaceURL: URL, fileURL: String, fileType: String) {
         self.inspectorModel = .init(workspaceURL: workspaceURL, fileURL: fileURL)
+        self.inspectorModel.fileTypeSelection = fileType
     }
 
     var body: some View {
@@ -254,9 +257,10 @@ struct FileInspectorView: View {
                     .padding(.top, 1)
                 }
             }
-            Toggle(isOn: $inspectorModel.wrapLines) {
+            Toggle(isOn: $prefs.preferences.textEditing.wrapLinesToEditorWidth) {
                 Text("Wrap lines")
-            }.toggleStyle(CheckboxToggleStyle())
+            }
+            .toggleStyle(CheckboxToggleStyle())
                 .padding(.vertical, 5)
         }
     }

@@ -11,7 +11,7 @@ import Foundation
 // TODO: Extension Name
 
 /// A collection of file types and their associated extensions,
-///  which can be selected in the inspector to override default values
+/// Which can be selected in the inspector to override default values
 final class FileTypeList {
 
     var languageTypeObjCList = [LanguageType(name: "Objective-C Preprocessed Source", id: "obj_c_pre_source"),
@@ -21,10 +21,13 @@ final class FileTypeList {
 
     var sourcecodeCList = [LanguageType(name: "C Header", id: "h"),
                            LanguageType(name: "C Preprocessed Source", id: "obj_c_source"),
+                           LanguageType(name: "C Object file", id: "o"),
                            LanguageType(name: "C Source", id: "c")]
 
     var sourcecodeCPlusList = [LanguageType(name: "C++ Header", id: "hh"),
+                               LanguageType(name: "C++ Header", id: "hpp"),
                                LanguageType(name: "C++ Preprocessed Source", id: "i"),
+                               LanguageType(name: "C++ Source", id: "cc"),
                                LanguageType(name: "C++ Source", id: "cpp")]
 
     var sourcecodeSwiftList = [LanguageType(name: "Swift Source", id: "swift")]
@@ -35,6 +38,7 @@ final class FileTypeList {
                                   LanguageType(name: "PPC Assembly", id: "obj_c_++_source")]
 
     var sourcecodeScriptList = [LanguageType(name: "AppleScript Uncompiled Source", id: "obj_c_pre_source"),
+                                LanguageType(name: "Lua source", id: "lua"),
                                 LanguageType(name: "JavaScript Source", id: "js"),
                                 LanguageType(name: "PHP Script", id: "php"),
                                 LanguageType(name: "Perl Script", id: "pl"),
@@ -101,6 +105,7 @@ final class FileTypeList {
 
     var videoList = [LanguageType(name: "AVI Video", id: "avi"),
                     LanguageType(name: "MPEG Video", id: "mpeg"),
+                    LanguageType(name: "MOV Video", id: "mov"),
                     LanguageType(name: "QuickTime Video", id: "quicktime")]
 
     var archiveList = [LanguageType(name: "AppleScript Dictionary Archivo", id: "obj_c_pre_source"),
