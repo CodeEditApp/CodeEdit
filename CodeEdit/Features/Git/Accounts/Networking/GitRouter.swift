@@ -196,7 +196,7 @@ extension GitRouter {
         }
     }
 
-    @available(*, deprecated, message: "Plase use `load` method instead")
+    @available(*, deprecated, message: "Please use `load` method instead")
     func loadJSON<T: Codable>(
         _ session: GitURLSession = URLSession.shared,
         expectedResultType: T.Type,
