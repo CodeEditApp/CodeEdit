@@ -90,7 +90,7 @@ import CodeEditKit
             workspace: self
         )
 
-        windowController.shouldCascadeWindows = false
+        windowController.shouldCascadeWindows = true
         windowController.window?.setFrameAutosaveName(self.fileURL?.absoluteString ?? "Untitled")
         self.addWindowController(windowController)
 
