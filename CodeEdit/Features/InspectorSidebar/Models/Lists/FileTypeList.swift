@@ -43,6 +43,7 @@ final class FileTypeList {
                                 LanguageType(name: "PHP Script", id: "php"),
                                 LanguageType(name: "Perl Script", id: "pl"),
                                 LanguageType(name: "Python Script", id: "py"),
+                                LanguageType(name: "C# Script", id: "cs"),
                                 LanguageType(name: "Ruby Script", id: "rb")]
 
     var sourcecodeVariousList = [LanguageType(name: "Ada Source", id: "obj_c_pre_source"),
