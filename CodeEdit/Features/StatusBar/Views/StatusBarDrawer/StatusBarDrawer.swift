@@ -18,7 +18,7 @@ struct StatusBarDrawer: View {
     private var searchText = ""
 
     var body: some View {
-        if let url = workspace.workspaceClient?.folderURL() {
+        if let url = workspace.workspaceFileManager?.folderUrl {
             VStack(spacing: 0) {
                 TerminalEmulatorView(url: url)
                 HStack(alignment: .center, spacing: 10) {

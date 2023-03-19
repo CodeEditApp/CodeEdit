@@ -8,8 +8,8 @@
 import SwiftUI
 
 protocol OutlineTableViewCellDelegate: AnyObject {
-    func moveFile(file: WorkspaceClient.FileItem, to destination: URL)
-    func copyFile(file: WorkspaceClient.FileItem, to destination: URL)
+    func moveFile(file: CEWorkspaceFile, to destination: URL)
+    func copyFile(file: CEWorkspaceFile, to destination: URL)
 }
 
 /// A `NSTableCellView` showing an ``icon`` and a ``label``
@@ -17,7 +17,7 @@ final class OutlineTableViewCell: NSTableCellView {
 
     var label: NSTextField!
     var icon: NSImageView!
-    private var fileItem: WorkspaceClient.FileItem!
+    private var fileItem: CEWorkspaceFile!
     private var delegate: OutlineTableViewCellDelegate?
 
     private let prefs = AppPreferencesModel.shared.preferences.general
@@ -29,7 +29,7 @@ final class OutlineTableViewCell: NSTableCellView {
     ///   - item: The file item the cell represents.
     ///   - isEditable: Set to true if the user should be able to edit the file name.
     init(
-        frame frameRect: NSRect, item: WorkspaceClient.FileItem?,
+        frame frameRect: NSRect, item: CEWorkspaceFile?,
         isEditable: Bool = true,
         delegate: OutlineTableViewCellDelegate? = nil
     ) {
@@ -115,23 +115,23 @@ final class OutlineTableViewCell: NSTableCellView {
     /// Generates a string based on user's file name preferences.
     /// - Parameter item: The FileItem to generate the name for.
     /// - Returns: A `String` with the name to display.
-    private func label(for item: WorkspaceClient.FileItem) -> String {
+    private func label(for item: CEWorkspaceFile) -> String {
         switch prefs.fileExtensionsVisibility {
         case .hideAll:
             return item.fileName(typeHidden: true)
         case .showAll:
             return item.fileName(typeHidden: false)
         case .showOnly:
-            return item.fileName(typeHidden: !prefs.shownFileExtensions.extensions.contains(item.fileType.rawValue))
+            return item.fileName(typeHidden: !prefs.shownFileExtensions.extensions.contains(item.type.rawValue))
         case .hideOnly:
-            return item.fileName(typeHidden: prefs.hiddenFileExtensions.extensions.contains(item.fileType.rawValue))
+            return item.fileName(typeHidden: prefs.hiddenFileExtensions.extensions.contains(item.type.rawValue))
         }
     }
 
     /// Get the appropriate color for the items icon depending on the users preferences.
     /// - Parameter item: The `FileItem` to get the color for
     /// - Returns: A `NSColor` for the given `FileItem`.
-    private func color(for item: WorkspaceClient.FileItem) -> NSColor {
+    private func color(for item: CEWorkspaceFile) -> NSColor {
         return prefs.fileIconStyle == .color
             ? item.children == nil ? NSColor(item.iconColor) : NSColor(named: "FolderBlue")!
             : .secondaryLabelColor
@@ -155,15 +155,15 @@ extension OutlineTableViewCell: NSTextFieldDelegate {
                 .appendingPathComponent(label?.stringValue ?? "")
             delegate?.moveFile(file: fileItem, to: destinationURL)
         } else {
-            label?.stringValue = fileItem.fileName
+            label?.stringValue = fileItem.name
         }
     }
 
     func validateFileName(for newName: String) -> Bool {
-        guard newName != fileItem.fileName else { return true }
+        guard newName != fileItem.name else { return true }
 
         guard newName != "" && newName.isValidFilename &&
-              !WorkspaceClient.FileItem.fileManger.fileExists(atPath:
+              !CEWorkspaceFile.fileManger.fileExists(atPath:
                     fileItem.url.deletingLastPathComponent().appendingPathComponent(newName).path)
         else { return false }
 

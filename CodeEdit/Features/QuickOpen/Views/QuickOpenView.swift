@@ -10,18 +10,18 @@ import SwiftUI
 struct QuickOpenView: View {
 
     private let onClose: () -> Void
-    private let openFile: (WorkspaceClient.FileItem) -> Void
+    private let openFile: (CEWorkspaceFile) -> Void
 
     @ObservedObject
     private var state: QuickOpenViewModel
 
     @State
-    private var selectedItem: WorkspaceClient.FileItem?
+    private var selectedItem: CEWorkspaceFile?
 
     init(
         state: QuickOpenViewModel,
         onClose: @escaping () -> Void,
-        openFile: @escaping (WorkspaceClient.FileItem) -> Void
+        openFile: @escaping (CEWorkspaceFile) -> Void
     ) {
         self.state = state
         self.onClose = onClose

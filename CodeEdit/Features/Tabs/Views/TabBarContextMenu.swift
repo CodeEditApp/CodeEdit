@@ -9,14 +9,14 @@ import Foundation
 import SwiftUI
 
 extension View {
-    func tabBarContextMenu(item: WorkspaceClient.FileItem, isTemporary: Bool) -> some View {
+    func tabBarContextMenu(item: CEWorkspaceFile, isTemporary: Bool) -> some View {
         modifier(TabBarContextMenu(item: item, isTemporary: isTemporary))
     }
 }
 
 struct TabBarContextMenu: ViewModifier {
     init(
-        item: WorkspaceClient.FileItem,
+        item: CEWorkspaceFile,
         isTemporary: Bool
     ) {
         self.item = item
@@ -31,7 +31,7 @@ struct TabBarContextMenu: ViewModifier {
 
     @Environment(\.splitEditor) var splitEditor
 
-    private var item: WorkspaceClient.FileItem
+    private var item: CEWorkspaceFile
     private var isTemporary: Bool
 
     // swiftlint:disable:next function_body_length
@@ -131,7 +131,7 @@ struct TabBarContextMenu: ViewModifier {
 
     /// Copies the absolute path of the given `FileItem`
     /// - Parameter item: The `FileItem` to use.
-    private func copyPath(item: WorkspaceClient.FileItem) {
+    private func copyPath(item: CEWorkspaceFile) {
         NSPasteboard.general.clearContents()
         NSPasteboard.general.setString(item.url.standardizedFileURL.path, forType: .string)
     }
@@ -145,8 +145,8 @@ struct TabBarContextMenu: ViewModifier {
 
     /// Copies the relative path from the workspace folder to the given file item to the pasteboard.
     /// - Parameter item: The `FileItem` to use.
-    private func copyRelativePath(item: WorkspaceClient.FileItem) {
-        guard let rootPath = workspace.workspaceClient?.folderURL() else {
+    private func copyRelativePath(item: CEWorkspaceFile) {
+        guard let rootPath = workspace.workspaceFileManager?.folderUrl else {
             return
         }
         // Calculate the relative path

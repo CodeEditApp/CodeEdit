@@ -16,7 +16,7 @@ struct WorkspaceCodeFileView: View {
     @EnvironmentObject
     private var tabgroup: TabGroupData
 
-    var file: WorkspaceClient.FileItem
+    var file: CEWorkspaceFile
 
     @StateObject
     private var prefs: AppPreferencesModel = .shared
@@ -37,7 +37,7 @@ struct WorkspaceCodeFileView: View {
             Spacer()
             VStack(spacing: 10) {
                 ProgressView()
-                Text("Opening \(file.fileName)...")
+                Text("Opening \(file.name)...")
             }
             Spacer()
         }
@@ -46,7 +46,7 @@ struct WorkspaceCodeFileView: View {
     @ViewBuilder
     private func otherFileView(
         _ otherFile: CodeFileDocument,
-        for item: WorkspaceClient.FileItem
+        for item: CEWorkspaceFile
     ) -> some View {
         VStack(spacing: 0) {
 

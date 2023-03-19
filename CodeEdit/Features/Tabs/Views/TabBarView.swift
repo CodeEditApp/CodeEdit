@@ -14,13 +14,17 @@ import SwiftUI
 // - TODO: TabBarItemView drop-outside event handler.
 struct TabBarView: View {
 
-    @Environment(\.modifierKeys) var modifierKeys
-
-    typealias TabID = WorkspaceClient.FileItem.ID
+    typealias TabID = CEWorkspaceFile.ID
 
     /// The height of tab bar.
     /// I am not making it a private variable because it may need to be used in outside views.
     static let height = 28.0
+
+    @Environment(\.modifierKeys)
+    var modifierKeys
+
+    @Environment(\.splitEditor)
+    var splitEditor
 
     @Environment(\.colorScheme)
     private var colorScheme
@@ -37,8 +41,6 @@ struct TabBarView: View {
 
     @EnvironmentObject
     private var tabgroup: TabGroupData
-
-    @Environment(\.splitEditor) var splitEditor
 
     /// The app preference.
     @StateObject
@@ -473,7 +475,7 @@ struct TabBarView: View {
                         } label: {
                             HStack {
                                 tab.icon
-                                Text(tab.fileName)
+                                Text(tab.name)
                             }
                         }
                     }
@@ -502,7 +504,7 @@ struct TabBarView: View {
                         } label: {
                             HStack {
                                 tab.icon
-                                Text(tab.fileName)
+                                Text(tab.name)
                             }
                         }
                     }

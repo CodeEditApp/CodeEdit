@@ -10,7 +10,7 @@ import CodeEditSymbols
 
 /// A view that pops up a branch picker.
 struct ToolbarBranchPicker: View {
-    private var workspace: WorkspaceClient?
+    private var workspaceFileManager: CEWorkspaceFileManager?
     private var gitClient: GitClient?
 
     @Environment(\.controlActiveState)
@@ -30,10 +30,10 @@ struct ToolbarBranchPicker: View {
     /// - Parameter workspace: An instance of the current `WorkspaceClient`
     init(
         shellClient: ShellClient,
-        workspace: WorkspaceClient?
+        workspaceFileManager: CEWorkspaceFileManager?
     ) {
-        self.workspace = workspace
-        if let folderURL = workspace?.folderURL() {
+        self.workspaceFileManager = workspaceFileManager
+        if let folderURL = workspaceFileManager?.folderUrl {
             self.gitClient = GitClient(directoryURL: folderURL, shellClient: shellClient)
         }
         self._currentBranch = State(initialValue: try? gitClient?.getCurrentBranchName())
@@ -94,7 +94,7 @@ struct ToolbarBranchPicker: View {
     }
 
     private var title: String {
-        workspace?.folderURL()?.lastPathComponent ?? "Empty"
+        workspaceFileManager?.folderUrl.lastPathComponent ?? "Empty"
     }
 
     // MARK: Popover View

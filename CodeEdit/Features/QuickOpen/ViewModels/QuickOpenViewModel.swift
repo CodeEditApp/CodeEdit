@@ -14,7 +14,7 @@ final class QuickOpenViewModel: ObservableObject {
     var openQuicklyQuery: String = ""
 
     @Published
-    var openQuicklyFiles: [WorkspaceClient.FileItem] = []
+    var openQuicklyFiles: [CEWorkspaceFile] = []
 
     @Published
     var isShowingOpenQuicklyFiles: Bool = false
@@ -56,7 +56,7 @@ final class QuickOpenViewModel: ObservableObject {
                         return false
                     }
                 }.map { url in
-                    WorkspaceClient.FileItem(url: url, children: nil)
+                    CEWorkspaceFile(url: url, children: nil)
                 }
                 DispatchQueue.main.async {
                     self.openQuicklyFiles = files

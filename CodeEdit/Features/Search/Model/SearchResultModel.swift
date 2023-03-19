@@ -9,11 +9,12 @@ import Foundation
 
 /// A struct for holding information about a file and any matches it may have for a search query.
 class SearchResultModel: Hashable {
-    var file: WorkspaceClient.FileItem
+
+    var file: CEWorkspaceFile
     var lineMatches: [SearchResultMatchModel]
 
     init(
-        file: WorkspaceClient.FileItem,
+        file: CEWorkspaceFile,
         lineMatches: [SearchResultMatchModel] = []
     ) {
         self.file = file
@@ -29,4 +30,5 @@ class SearchResultModel: Hashable {
         hasher.combine(file)
         hasher.combine(lineMatches)
     }
+
 }

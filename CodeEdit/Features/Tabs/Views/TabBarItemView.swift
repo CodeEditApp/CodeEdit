@@ -9,8 +9,6 @@ import SwiftUI
 
 struct TabBarItemView: View {
 
-    typealias Item = WorkspaceClient.FileItem
-
     @Environment(\.colorScheme)
     private var colorScheme
 
@@ -58,9 +56,9 @@ struct TabBarItemView: View {
     /// The id associating with the tab that is currently being dragged.
     ///
     /// When `nil`, then there is no tab being dragged.
-    private var draggingTabId: Item.ID?
+    private var draggingTabId: CEWorkspaceFile.ID?
 
-    private var onDragTabId: Item.ID?
+    private var onDragTabId: CEWorkspaceFile.ID?
 
     @Binding
     private var closeButtonGestureActive: Bool
@@ -71,7 +69,7 @@ struct TabBarItemView: View {
     /// The item associated with the current tab.
     ///
     /// You can get tab-related information from here, like `label`, `icon`, etc.
-    private var item: Item
+    private var item: CEWorkspaceFile
 
     var index: Int
 
@@ -120,10 +118,10 @@ struct TabBarItemView: View {
 
     init(
         expectedWidth: CGFloat,
-        item: Item,
+        item: CEWorkspaceFile,
         index: Int,
-        draggingTabId: Item.ID?,
-        onDragTabId: Item.ID?,
+        draggingTabId: CEWorkspaceFile.ID?,
+        onDragTabId: CEWorkspaceFile.ID?,
         closeButtonGestureActive: Binding<Bool>
     ) {
         self.expectedWidth = expectedWidth
@@ -155,7 +153,7 @@ struct TabBarItemView: View {
                         : .secondary
                     )
                     .frame(width: 12, height: 12)
-                Text(item.fileName)
+                Text(item.name)
                     .font(
                         isTemporary
                         ? .system(size: 11.0).italic()

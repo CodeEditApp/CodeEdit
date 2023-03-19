@@ -11,10 +11,12 @@ import DequeModule
 
 class TabManager: ObservableObject {
     /// Collection of all the tabgroups.
-    @Published var tabGroups: TabGroup
+    @Published
+    var tabGroups: TabGroup
 
     /// The TabGroup with active focus.
-    @Published var activeTabGroup: TabGroupData {
+    @Published
+    var activeTabGroup: TabGroupData {
         didSet {
             activeTabGroupHistory.prepend { [weak oldValue] in oldValue }
         }
@@ -23,7 +25,7 @@ class TabManager: ObservableObject {
     /// History of last-used tab groups.
     var activeTabGroupHistory: Deque<() -> TabGroupData?> = []
 
-    var fileDocuments: [WorkspaceClient.FileItem: CodeFileDocument] = [:]
+    var fileDocuments: [CEWorkspaceFile: CodeFileDocument] = [:]
 
     init() {
         let tab = TabGroupData()
@@ -43,7 +45,7 @@ class TabManager: ObservableObject {
     /// - Parameters:
     ///   - item: The tab to open.
     ///   - tabgroup: The tabgroup to add the tab to. If nil, it is added to the active tab group.
-    func openTab(item: WorkspaceClient.FileItem, in tabgroup: TabGroupData? = nil) {
+    func openTab(item: CEWorkspaceFile, in tabgroup: TabGroupData? = nil) {
         let tabgroup = tabgroup ?? activeTabGroup
         tabgroup.openTab(item: item)
     }
