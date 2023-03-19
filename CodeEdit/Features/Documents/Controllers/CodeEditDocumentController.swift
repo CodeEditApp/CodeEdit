@@ -76,10 +76,6 @@ final class CodeEditDocumentController: NSDocumentController {
 
     override func removeDocument(_ document: NSDocument) {
         super.removeDocument(document)
-
-        if CodeEditDocumentController.shared.documents.isEmpty {
-            NSApp.openWindow(.welcome)
-        }
     }
 
     override func clearRecentDocuments(_ sender: Any?) {
