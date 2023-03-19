@@ -18,9 +18,9 @@ CodeEdit is a code editor built by the community, for the community, written ent
 
 [![GitHub release](https://img.shields.io/github/v/release/CodeEditApp/CodeEdit?color=orange&label=latest%20release&sort=semver&style=flat-square)](https://github.com/CodeEditApp/CodeEdit/releases/latest)
 [![All Contributors](https://img.shields.io/badge/all_contributors-32-orange.svg?style=flat-square)](#contributors-)
-![GitHub Workflow Status (with branch)](https://img.shields.io/github/actions/workflow/status/CodeEditApp/CodeEdit/CI-pre-release.yml?style=flat-square)
-![GitHub Repo stars](https://img.shields.io/github/stars/CodeEditApp/CodeEdit?style=flat-square)
-![GitHub forks](https://img.shields.io/github/forks/CodeEditApp/CodeEdit?style=flat-square)
+[![GitHub Workflow Status (with branch)](https://img.shields.io/github/actions/workflow/status/CodeEditApp/CodeEdit/CI-pre-release.yml?style=flat-square)](https://github.com/CodeEditApp/CodeEdit/actions/workflows/CI-pre-release.yml)
+[![GitHub Repo stars](https://img.shields.io/github/stars/CodeEditApp/CodeEdit?style=flat-square)](https://github.com/CodeEditApp/CodeEdit/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/CodeEditApp/CodeEdit?style=flat-square)](https://github.com/CodeEditApp/CodeEdit/forks)
 [![Discord Badge](https://img.shields.io/discord/951544472238444645?color=5865F2&label=Discord&logo=discord&logoColor=white&style=flat-square)](https://discord.gg/vChUXVf9Em)
 
 | :warning: | CodeEdit is currently in development and not yet ready for production use. You can test the latest [alpha build](https://github.com/CodeEditApp/CodeEdit/releases/latest) if you would like, but be warned, you will find many bugs and incomplete features. Please file new issues [here](https://github.com/CodeEditApp/CodeEdit/issues) after searching to see if the issue already exists either in this repository or in our [related repositories](https://github.com/CodeEditApp/CodeEdit#related-repositories). [Contributors welcome](https://github.com/CodeEditApp/CodeEdit/blob/main/CONTRIBUTING.md)! |
