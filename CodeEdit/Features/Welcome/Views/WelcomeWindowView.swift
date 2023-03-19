@@ -37,5 +37,21 @@ struct WelcomeWindowView: View {
                 .frame(width: 300)
         }
         .edgesIgnoringSafeArea(.top)
+        .onDrop(of: [.fileURL], isTargeted: .constant(true)) { providers in
+            NSApp.activate(ignoringOtherApps: true)
+            providers.forEach {
+                _ = $0.loadDataRepresentation(for: .fileURL) { data, _ in
+                    if let data, let url = URL(dataRepresentation: data, relativeTo: nil) {
+                        Task {
+                            try? await CodeEditDocumentController
+                                .shared
+                                .openDocument(withContentsOf: url, display: true)
+                        }
+                    }
+                }
+            }
+            dismissWindow()
+            return true
+        }
     }
 }
