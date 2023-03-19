@@ -98,7 +98,8 @@ struct CodeFileView: View {
         }
         .disabled(!editable)
         // minHeight zero fixes a bug where the app would freeze if the contents of the file are empty.
-        .frame(minHeight: .zero, maxHeight: .infinity)
+        //if the minHeight is zero, the issue #1158  will happen. 600 is the height set in CodeFileDocument.swift
+        .frame(minHeight: 600, maxHeight: .infinity)
         .onChange(of: ThemeModel.shared.selectedTheme) { newValue in
             guard let theme = newValue else { return }
             self.selectedTheme = theme
