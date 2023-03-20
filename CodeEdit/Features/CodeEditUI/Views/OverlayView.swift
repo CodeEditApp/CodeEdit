@@ -75,8 +75,8 @@ struct OverlayView<RowView: View, PreviewView: View, Option: Identifiable & Hash
                                 NSSound.beep()
                             }
                         }
-                        .onChange(of: options) { newValue in
-                            if newValue.isEmpty {
+                        .task(id: options) {
+                            if options.isEmpty {
                                 selection = nil
                             } else {
                                 if !options.isEmpty {
