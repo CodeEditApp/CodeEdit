@@ -107,6 +107,8 @@ struct SearchResultLabel: NSViewRepresentable {
     func updateNSView(_ nsView: NSViewType, context: Context) {
         if textToMatch == "" {
             nsView.textColor = .labelColor
+        } else {
+            nsView.textColor = .secondaryLabelColor
         }
         nsView.attributedStringValue = highlight()
     }
