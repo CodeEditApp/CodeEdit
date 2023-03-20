@@ -8,46 +8,52 @@
 import Foundation
 import SwiftUI
 
-struct OverlayView<RowView: View, PreviewView: View, Data: Identifiable & Hashable>: View {
+struct OverlayView<RowView: View, PreviewView: View, Option: Identifiable & Hashable>: View {
     @ViewBuilder
-    let rowViewBuilder: ((Data) -> RowView)
+    let rowViewBuilder: ((Option) -> RowView)
 
     @ViewBuilder
-    let previewViewBuilder: ((Data) -> PreviewView)?
+    let previewViewBuilder: ((Option) -> PreviewView)?
 
     @Binding
-    var data: [Data]
+    var options: [Option]
 
     @State
-    var selectedItem: Data?
+    var selection: Option?
 
     @Binding
-    var queryContent: String
+    var text: String
     let title: String
     let image: Image
     let showsPreview: Bool
-    let onRowClick: ((Data) -> Void)
+    let onRowClick: ((Option) -> Void)
     let onClose: (() -> Void)
+    let alwaysShowOptions: Bool
+    let optionRowHeight: CGFloat
 
     init(
         title: String,
         image: Image,
-        data: Binding<[Data]>,
-        queryContent: Binding<String>,
-        content: @escaping ((Data) -> RowView),
-        preview: ((Data) -> PreviewView)? = nil,
-        onRowClick: @escaping ((Data) -> Void),
+        options: Binding<[Option]>,
+        text: Binding<String>,
+        alwaysShowOptions: Bool = false,
+        optionRowHeight: CGFloat = 30,
+        content: @escaping ((Option) -> RowView),
+        preview: ((Option) -> PreviewView)? = nil,
+        onRowClick: @escaping ((Option) -> Void),
         onClose: @escaping () -> Void
     ) {
         self.title = title
         self.image = image
-        self._data = data
-        self._queryContent = queryContent
+        self._options = options
+        self._text = text
         self.rowViewBuilder = content
         self.previewViewBuilder = preview
         self.onRowClick = onRowClick
         self.onClose = onClose
         self.showsPreview = preview != nil
+        self.alwaysShowOptions = alwaysShowOptions
+        self.optionRowHeight = optionRowHeight
     }
 
     var body: some View {
@@ -59,22 +65,22 @@ struct OverlayView<RowView: View, PreviewView: View, Data: Identifiable & Hashab
                         .foregroundColor(.secondary)
                         .padding(.leading, 1)
                         .padding(.trailing, 10)
-                    TextField(title, text: $queryContent)
+                    TextField(title, text: $text)
                         .font(.system(size: 20, weight: .light, design: .default))
                         .textFieldStyle(.plain)
                         .onSubmit {
-                            if let selectedItem {
-                                onRowClick(selectedItem)
+                            if let selection {
+                                onRowClick(selection)
                             } else {
                                 NSSound.beep()
                             }
                         }
-                        .onChange(of: data) { newValue in
+                        .onChange(of: options) { newValue in
                             if newValue.isEmpty {
-                                selectedItem = nil
+                                selection = nil
                             } else {
-                                if selectedItem == nil {
-                                    selectedItem = newValue.first
+                                if !options.isEmpty {
+                                    selection = options.first
                                 }
                             }
                         }
@@ -84,24 +90,35 @@ struct OverlayView<RowView: View, PreviewView: View, Data: Identifiable & Hashab
                 .foregroundColor(.primary.opacity(0.85))
                 .background(EffectView(.sidebar, blendingMode: .behindWindow))
             }
-            if !queryContent.isEmpty {
-
-                        Divider()
-                            .padding(0)
+            if !text.isEmpty || alwaysShowOptions == true {
+                Divider()
+                    .padding(0)
                 HStack(spacing: 0) {
-                    NSTableViewWrapper(data: data, rowHeight: 50, selection: $selectedItem, itemView: rowViewBuilder)
+                    if options.isEmpty {
+                        Text("No matching options")
+                            .font(.system(size: 17))
+                            .foregroundColor(.secondary)
+                            .frame(maxWidth: showsPreview ? 272 : .infinity, maxHeight: .infinity)
+                    } else {
+                        NSTableViewWrapper(
+                            data: options,
+                            rowHeight: optionRowHeight,
+                            selection: $selection,
+                            itemView: rowViewBuilder
+                        )
                         .frame(maxWidth: showsPreview ? 272 : .infinity)
+                    }
                     if showsPreview {
                         Divider()
-                        if data.isEmpty {
-                            EmptyView()
+                        if options.isEmpty {
+                            Spacer()
                                 .frame(maxWidth: .infinity)
                         } else {
-                            if let selectedItem, let previewViewBuilder {
-                                previewViewBuilder(selectedItem)
+                            if let selection, let previewViewBuilder {
+                                previewViewBuilder(selection)
                                     .frame(maxWidth: .infinity)
                             } else {
-                                Text("Select a file to preview")
+                                Text("Select an option to preview")
                                     .frame(maxWidth: .infinity)
                             }
                         }
@@ -116,8 +133,8 @@ struct OverlayView<RowView: View, PreviewView: View, Data: Identifiable & Hashab
         .edgesIgnoringSafeArea(.vertical)
         .frame(
             minWidth: 680,
-            minHeight: queryContent.isEmpty ? 19 : 400,
-            maxHeight: queryContent.isEmpty ? 19 : .infinity
+            minHeight: text.isEmpty && !alwaysShowOptions ? 19 : 400,
+            maxHeight: text.isEmpty && !alwaysShowOptions ? 19 : .infinity
         )
     }
 
@@ -130,27 +147,27 @@ struct OverlayView<RowView: View, PreviewView: View, Data: Identifiable & Hashab
             .keyboardShortcut(.escape, modifiers: [])
             .accessibilityLabel("Close Overlay")
         Button {
-            guard selectedItem != data.first else {
+            guard selection != options.first else {
                 return
             }
-            if let selectedItem, let index = data.firstIndex(of: selectedItem) {
-                self.selectedItem = data[index-1]
+            if let selection, let index = options.firstIndex(of: selection) {
+                self.selection = options[index-1]
             } else {
-                selectedItem = data.first
+                selection = options.first
             }
         } label: { EmptyView() }
             .opacity(0)
             .keyboardShortcut(.upArrow, modifiers: [])
             .accessibilityLabel("Select Up")
         Button {
-            guard selectedItem != data.last else {
+            guard selection != options.last else {
                 return
             }
-            if let selectedItem, let index = data.firstIndex(of: selectedItem) {
+            if let selection, let index = options.firstIndex(of: selection) {
 
-                self.selectedItem = data[index+1]
+                self.selection = options[index+1]
             } else {
-                selectedItem = data.first
+                selection = options.first
             }
         } label: { EmptyView() }
             .opacity(0)

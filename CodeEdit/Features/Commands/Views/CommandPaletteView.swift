@@ -30,6 +30,7 @@ struct CommandPaletteView: View {
     init(state: CommandPaletteViewModel, closePalette: @escaping () -> Void) {
         self.state = state
         self.closePalette = closePalette
+        state.filteredCommands = commandManager.commands
     }
 
     func callHandler(command: Command) {
@@ -49,8 +50,10 @@ struct CommandPaletteView: View {
         OverlayView<SearchResultLabel, EmptyView, Command>(
             title: "Commands",
             image: Image(systemName: "magnifyingglass"),
-            data: $state.filteredCommands,
-            queryContent: $state.commandQuery
+            options: $state.filteredCommands,
+            text: $state.commandQuery,
+            alwaysShowOptions: true,
+            optionRowHeight: 30
         ) { command in
             SearchResultLabel(labelName: command.title, textToMatch: state.commandQuery)
         } onRowClick: { command in

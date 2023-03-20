@@ -32,8 +32,9 @@ struct QuickOpenView: View {
         OverlayView(
             title: "Open Quickly",
             image: Image(systemName: "magnifyingglass"),
-            data: $state.openQuicklyFiles,
-            queryContent: $state.openQuicklyQuery
+            options: $state.openQuicklyFiles,
+            text: $state.openQuicklyQuery,
+            optionRowHeight: 40
         ) { file in
             QuickOpenItem(baseDirectory: state.fileURL, fileItem: file)
         } preview: { file in
