@@ -9,39 +9,23 @@ import SwiftUI
 import Preferences
 import CodeEditSymbols
 
-final class CodeEditApplication: NSApplication {
-    let strongDelegate = AppDelegate()
-
-    override init() {
-        super.init()
-        self.delegate = strongDelegate
-    }
-
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-}
-
-@main
 final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     var updater: SoftwareUpdater = SoftwareUpdater()
 
-    func applicationWillFinishLaunching(_ notification: Notification) {
-        _ = CodeEditDocumentController.shared
-        enableWindowSizeSaveOnQuit()
-    }
-
     func applicationDidFinishLaunching(_ notification: Notification) {
+        enableWindowSizeSaveOnQuit()
         AppPreferencesModel.shared.preferences.general.appAppearance.applyAppearance()
         checkForFilesToOpen()
+
+        NSApp.closeWindow(.welcome, .about)
 
         DispatchQueue.main.async {
             var needToHandleOpen = true
 
             // If no windows were reopened by NSQuitAlwaysKeepsWindows, do default behavior.
-            if !NSApp.windows.isEmpty {
+            // Non-WindowGroup SwiftUI Windows are still in NSApp.windows when they are closed,
+            // So we need to think about those.
+            if NSApp.windows.count > NSApp.openSwiftUIWindows {
                 needToHandleOpen = false
             }
 
@@ -71,6 +55,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
+
     }
 
     func applicationSupportsSecureRestorableState(_ app: NSApplication) -> Bool {
@@ -96,7 +81,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 
         switch behavior {
         case .welcome:
-            openWelcome(self)
+            NSApp.openWindow(.welcome)
         case .openPanel:
             CodeEditDocumentController.shared.openDocument(self)
         case .newDocument:
@@ -148,6 +133,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         return .terminateNow
     }
 
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        false
+    }
+
     // MARK: - Open windows
 
     @IBAction func openPreferences(_ sender: Any) {
@@ -155,15 +144,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     }
 
     @IBAction func openWelcome(_ sender: Any) {
-        if tryFocusWindow(of: WelcomeWindowView.self) { return }
-
-        WelcomeWindowView.openWelcomeWindow()
+        NSApp.openWindow(.welcome)
     }
 
     @IBAction func openAbout(_ sender: Any) {
-        if tryFocusWindow(of: AboutView.self) { return }
-
-        AboutView().showWindow(width: 530, height: 220)
+        NSApp.openWindow(.about)
     }
 
     @IBAction func openFeedback(_ sender: Any) {

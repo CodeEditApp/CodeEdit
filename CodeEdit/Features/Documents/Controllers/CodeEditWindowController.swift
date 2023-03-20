@@ -17,16 +17,20 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     var quickOpenPanel: OverlayPanel?
     var commandPalettePanel: OverlayPanel?
 
-    private var splitViewController: NSSplitViewController! {
-        get { contentViewController as? NSSplitViewController }
-        set { contentViewController = newValue }
-    }
+    private var splitViewController: NSSplitViewController!
 
     init(window: NSWindow, workspace: WorkspaceDocument) {
         super.init(window: window)
         self.workspace = workspace
 
         setupSplitView(with: workspace)
+
+        let view = CodeEditSplitView(controller: splitViewController).ignoresSafeArea()
+
+        // An NSHostingController is used, so the root viewController of the window is a SwiftUI-managed one.
+        // This allows us to use some SwiftUI features, like focusedSceneObject.
+        contentViewController = NSHostingController(rootView: view)
+
         setupToolbar()
         registerCommands()
     }
@@ -106,6 +110,8 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
         inspector.isCollapsed = true
         inspector.canCollapse = true
         inspector.collapseBehavior = .useConstraints
+        inspector.isSpringLoaded = true
+
         splitVC.addSplitViewItem(inspector)
 
         self.splitViewController = splitVC
@@ -218,27 +224,6 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
         super.windowDidLoad()
     }
 
-    @objc func toggleFirstPanel() {
-        guard let firstSplitView = splitViewController.splitViewItems.first else { return }
-        firstSplitView.animator().isCollapsed.toggle()
-        if let codeEditSplitVC = splitViewController as? CodeEditSplitViewController {
-            codeEditSplitVC.saveNavigatorCollapsedState(isCollapsed: firstSplitView.isCollapsed)
-        }
-    }
-
-    @objc func toggleLastPanel() {
-        guard let lastSplitView = splitViewController.splitViewItems.last else { return }
-        lastSplitView.animator().isCollapsed.toggle()
-        if lastSplitView.isCollapsed {
-            window?.toolbar?.removeItem(at: 4)
-        } else {
-            window?.toolbar?.insertItem(withItemIdentifier: .itemListTrackingSeparator, at: 4)
-        }
-        if let codeEditSplitVC = splitViewController as? CodeEditSplitViewController {
-            codeEditSplitVC.saveInspectorCollapsedState(isCollapsed: lastSplitView.isCollapsed)
-        }
-    }
-
     private func getSelectedCodeFile() -> CodeFileDocument? {
         workspace?.tabManager.activeTabGroup.selected?.fileDocument
     }
@@ -295,6 +280,38 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
                 window?.addChildWindow(panel, ordered: .above)
                 panel.makeKeyAndOrderFront(self)
             }
+        }
+    }
+}
+
+extension CodeEditWindowController {
+    @objc
+    func toggleFirstPanel() {
+        guard let firstSplitView = splitViewController.splitViewItems.first else { return }
+        firstSplitView.animator().isCollapsed.toggle()
+        if let codeEditSplitVC = splitViewController as? CodeEditSplitViewController {
+            codeEditSplitVC.saveNavigatorCollapsedState(isCollapsed: firstSplitView.isCollapsed)
+        }
+    }
+
+    @objc
+    func toggleLastPanel() {
+        guard let lastSplitView = splitViewController.splitViewItems.last else { return }
+
+        if lastSplitView.isCollapsed {
+            window?.toolbar?.insertItem(withItemIdentifier: .itemListTrackingSeparator, at: 4)
+        }
+        NSAnimationContext.runAnimationGroup { _ in
+            lastSplitView.animator().isCollapsed.toggle()
+        } completionHandler: { [weak self] in
+            if lastSplitView.isCollapsed {
+                self?.window?.animator().toolbar?.removeItem(at: 4)
+            }
+        }
+
+        if let codeEditSplitVC = splitViewController as? CodeEditSplitViewController {
+            codeEditSplitVC.saveInspectorCollapsedState(isCollapsed: lastSplitView.isCollapsed)
+            codeEditSplitVC.hideInspectorToolbarBackground()
         }
     }
 }

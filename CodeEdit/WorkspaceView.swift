@@ -57,7 +57,6 @@ struct WorkspaceView: View {
                             .frame(minHeight: 200, maxHeight: 400)
 
                     }
-
                     .edgesIgnoringSafeArea(.top)
                     .environmentObject(workspace.statusBarModel)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
