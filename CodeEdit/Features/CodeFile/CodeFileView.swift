@@ -75,7 +75,7 @@ struct CodeFileView: View {
             tabWidth: $prefs.preferences.textEditing.defaultTabWidth,
             lineHeight: $prefs.preferences.textEditing.lineHeightMultiple,
             wrapLines: $prefs.preferences.textEditing.wrapLinesToEditorWidth,
-            cursorPosition: codeFile.$cursorPosition,
+            cursorPosition: $codeFile.cursorPosition,
             useThemeBackground: prefs.preferences.theme.useThemeBackground,
             contentInsets: edgeInsets.nsEdgeInsets,
             isEditable: isEditable
