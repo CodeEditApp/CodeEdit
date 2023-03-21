@@ -20,21 +20,27 @@ struct QuickOpenItem: View {
         self.fileItem = fileItem
     }
 
+    var relativePathComponents: ArraySlice<String> {
+        return fileItem.url.pathComponents.dropFirst(baseDirectory.pathComponents.count).dropLast()
+    }
+
     var body: some View {
         HStack(spacing: 8) {
             Image(nsImage: NSWorkspace.shared.icon(forFile: fileItem.url.path))
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 32, height: 32)
+                .frame(width: 24, height: 24)
             VStack(alignment: .leading, spacing: 0) {
                 Text(fileItem.url.lastPathComponent).font(.system(size: 13))
                     .lineLimit(1)
-                Text(fileItem.url.path.replacingOccurrences(of: baseDirectory.path, with: ""))
-                    .font(.system(size: 11))
+                Text(relativePathComponents.joined(separator: " ▸ "))
+                    .font(.system(size: 10.5))
+                    .foregroundColor(.secondary)
                     .lineLimit(1)
-                    .truncationMode(.tail)
-            }.padding(.trailing, 15)
-            Spacer()
+                    .truncationMode(.middle)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
+        .frame(maxWidth: .infinity)
     }
 }

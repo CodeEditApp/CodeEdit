@@ -13,7 +13,7 @@ struct ViewCommands: Commands {
             Button("Show Command Palette") {
                 NSApp.sendAction(#selector(CodeEditWindowController.openCommandPalette(_:)), to: nil, from: nil)
             }
-            .keyboardShortcut("p")
+            .keyboardShortcut("p", modifiers: [.shift, .command])
 
             Button("Customize Toolbar...") {
 
