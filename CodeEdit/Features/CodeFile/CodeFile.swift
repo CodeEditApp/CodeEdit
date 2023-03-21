@@ -72,17 +72,18 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
     }
 
     override func makeWindowControllers() {
-        // Returns the Storyboard that contains your Document window.
-        let contentView = CodeFileView(codeFile: self)
         let window = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 1400, height: 600),
             styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
             backing: .buffered, defer: false
         )
-        window.center()
-        window.contentView = NSHostingView(rootView: contentView)
         let windowController = NSWindowController(window: window)
         addWindowController(windowController)
+
+        window.contentView = NSHostingView(rootView: WindowCodeFileView(codeFile: self))
+
+        window.makeKeyAndOrderFront(nil)
+        window.center()
     }
 
     override func data(ofType _: String) throws -> Data {
