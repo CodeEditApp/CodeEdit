@@ -45,7 +45,7 @@ final class CodeEditDocumentController: NSDocumentController {
         self.openDocument(onCompletion: { document, documentWasAlreadyOpen in
             // TODO: handle errors
 
-            guard let document = document else {
+            guard let document else {
                 print("Failed to unwrap document")
                 return
             }
@@ -62,7 +62,7 @@ final class CodeEditDocumentController: NSDocumentController {
         super.noteNewRecentDocumentURL(url)
         super.openDocument(withContentsOf: url, display: displayDocument) { document, documentWasAlreadyOpen, error in
 
-            if let document = document {
+            if let document {
                 self.addDocument(document)
                 self.updateRecent(url)
             } else {
@@ -97,12 +97,12 @@ extension NSDocumentController {
         dialog.begin { result in
             if result ==  NSApplication.ModalResponse.OK, let url = dialog.url {
                 self.openDocument(withContentsOf: url, display: true) { document, documentWasAlreadyOpen, error in
-                    if let error = error {
+                    if let error {
                         NSAlert(error: error).runModal()
                         return
                     }
 
-                    guard let document = document else {
+                    guard let document else {
                         let alert = NSAlert()
                         alert.messageText = NSLocalizedString(
                             "Failed to get document",

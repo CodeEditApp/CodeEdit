@@ -37,7 +37,7 @@ extension WorkspaceDocument {
         /// - Parameter text: The search text to search for. Pass `nil` to this parameter to clear
         ///                   the search results.
         func search(_ text: String?) { // swiftlint:disable:this function_body_length
-            guard let text = text else {
+            guard let text else {
                 searchResult = []
                 searchResultCount = 0
                 searchId = nil
@@ -115,7 +115,7 @@ extension WorkspaceDocument {
 
                 // If `fileSearchResult` isn't nil it means we've found matches in the file
                 // so we add it to the search results.
-                if let fileSearchResult = fileSearchResult {
+                if let fileSearchResult {
                     searchResult.append(fileSearchResult)
                 }
             }

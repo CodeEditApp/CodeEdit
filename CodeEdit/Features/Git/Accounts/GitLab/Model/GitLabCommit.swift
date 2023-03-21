@@ -147,11 +147,11 @@ extension GitLabAccount {
             expectedResultType: GitLabCommit.self
         ) { json, error in
 
-            if let error = error {
+            if let error {
                 completion(Result.failure(error))
             }
 
-            if let json = json {
+            if let json {
                 completion(Result.success(json))
             }
         }
@@ -177,11 +177,11 @@ extension GitLabAccount {
             expectedResultType: GitLabCommit.self
         ) { json, error in
 
-            if let error = error {
+            if let error {
                 completion(Result.failure(error))
             }
 
-            if let json = json {
+            if let json {
                 completion(Result.success(json))
             }
         }
@@ -207,11 +207,11 @@ extension GitLabAccount {
             expectedResultType: GitLabCommitDiff.self
         ) { json, error in
 
-            if let error = error {
+            if let error {
                 completion(Result.failure(error))
             }
 
-            if let json = json {
+            if let json {
                 completion(Result.success(json))
             }
         }
@@ -237,11 +237,11 @@ extension GitLabAccount {
             expectedResultType: GitLabCommitComment.self
         ) { json, error in
 
-            if let error = error {
+            if let error {
                 completion(Result.failure(error))
             }
 
-            if let json = json {
+            if let json {
                 completion(Result.success(json))
             }
         }
@@ -282,11 +282,11 @@ extension GitLabAccount {
             expectedResultType: GitLabCommitStatus.self
         ) { json, error in
 
-            if let error = error {
+            if let error {
                 completion(Result.failure(error))
             }
 
-            if let json = json {
+            if let json {
                 completion(Result.success(json))
             }
         }

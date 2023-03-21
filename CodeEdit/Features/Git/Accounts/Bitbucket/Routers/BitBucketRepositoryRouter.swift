@@ -43,7 +43,7 @@ enum BitBucketRepositoryRouter: GitRouter {
     var path: String {
         switch self {
         case .readRepositories(_, let userName, _):
-            if let userName = userName {
+            if let userName {
                 return "repositories/\(userName)"
             } else {
                 return "repositories"

@@ -628,7 +628,7 @@ struct TabBarView: View {
 
         func dropEntered(info: DropInfo) {
             isOnDragOverTabs = true
-            guard let onDragTabId = onDragTabId,
+            guard let onDragTabId,
                   currentTabId != onDragTabId,
                   let from = openedTabs.firstIndex(of: onDragTabId),
                   let toIndex = openedTabs.firstIndex(of: currentTabId)

@@ -58,7 +58,7 @@ struct ToolbarBranchPicker: View {
                     .foregroundColor(controlActive == .inactive ? inactiveColor : .primary)
                     .frame(height: 16)
                     .help(title)
-                if let currentBranch = currentBranch {
+                if let currentBranch {
                     ZStack(alignment: .trailing) {
                         Text(currentBranch)
                             .padding(.trailing)
@@ -110,7 +110,7 @@ struct ToolbarBranchPicker: View {
 
         var body: some View {
             VStack(alignment: .leading) {
-                if let currentBranch = currentBranch {
+                if let currentBranch {
                     VStack(alignment: .leading, spacing: 0) {
                         headerLabel("Current Branch")
                         BranchCell(name: currentBranch, active: true) {}

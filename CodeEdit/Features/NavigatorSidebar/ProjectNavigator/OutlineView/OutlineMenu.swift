@@ -46,7 +46,7 @@ final class OutlineMenu: NSMenu {
     /// Setup the menu and disables certain items when `isFile` is false
     /// - Parameter isFile: A flag indicating that the item is a file instead of a directory
     private func setupMenu() {
-        guard let item = item else { return }
+        guard let item else { return }
         let showInFinder = menuItem("Show in Finder", action: #selector(showInFinder))
 
         let openInTab = menuItem("Open in Tab", action: #selector(openInTab))
@@ -181,7 +181,7 @@ final class OutlineMenu: NSMenu {
     /// Action that opens the item, identical to clicking it.
     @objc
     private func openInTab() {
-        if let item = item {
+        if let item {
             workspace?.tabManager.openTab(item: item)
         }
     }

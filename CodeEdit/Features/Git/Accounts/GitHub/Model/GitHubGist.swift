@@ -75,10 +75,10 @@ extension GitHubAccount {
             expectedResultType: [GitHubGist].self
         ) { gists, error in
 
-            if let error = error {
+            if let error {
                 completion(.failure(error))
             } else {
-                if let gists = gists {
+                if let gists {
                     completion(.success(gists))
                 }
             }
@@ -110,10 +110,10 @@ extension GitHubAccount {
             expectedResultType: [GitHubGist].self
         ) { gists, error in
 
-            if let error = error {
+            if let error {
                 completion(.failure(error))
             } else {
-                if let gists = gists {
+                if let gists {
                     completion(.success(gists))
                 }
             }
@@ -141,10 +141,10 @@ extension GitHubAccount {
             expectedResultType: GitHubGist.self
         ) { gist, error in
 
-            if let error = error {
+            if let error {
                 completion(.failure(error))
             } else {
-                if let gist = gist {
+                if let gist {
                     completion(.success(gist))
                 }
             }
@@ -181,10 +181,10 @@ extension GitHubAccount {
             expectedResultType: GitHubGist.self
         ) { gist, error in
 
-            if let error = error {
+            if let error {
                 completion(.failure(error))
             } else {
-                if let gist = gist {
+                if let gist {
                     completion(.success(gist))
                 }
             }
@@ -221,10 +221,10 @@ extension GitHubAccount {
             expectedResultType: GitHubGist.self
         ) { gist, error in
 
-            if let error = error {
+            if let error {
                 completion(.failure(error))
             } else {
-                if let gist = gist {
+                if let gist {
                     completion(.success(gist))
                 }
             }

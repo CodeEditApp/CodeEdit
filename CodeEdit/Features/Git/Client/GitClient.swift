@@ -145,7 +145,7 @@ struct GitClient {
     func getCommitHistory(entries: Int?, fileLocalPath: String?) throws -> [GitCommit] {
         var entriesString = ""
         let fileLocalPath = fileLocalPath?.escapedWhiteSpaces() ?? ""
-        if let entries = entries { entriesString = "-n \(entries)" }
+        if let entries { entriesString = "-n \(entries)" }
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale.current
         dateFormatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss Z"

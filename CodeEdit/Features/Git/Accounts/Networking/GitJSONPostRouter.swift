@@ -65,14 +65,14 @@ extension GitJSONPostRouter {
             if let response = response as? HTTPURLResponse {
                 if !response.wasSuccessful {
                     var userInfo = [String: Any]()
-                    if let data = data, let json = try? JSONSerialization.jsonObject(
+                    if let data, let json = try? JSONSerialization.jsonObject(
                         with: data,
                         options: .mutableContainers
                     ) as? [String: Any] {
 
                         userInfo[gitErrorKey] = json as Any?
 
-                    } else if let data = data,
+                    } else if let data,
                               let string = String(data: data, encoding: .utf8) {
                         userInfo[gitErrorKey] = string as Any?
                     }
@@ -88,10 +88,10 @@ extension GitJSONPostRouter {
                 }
             }
 
-            if let error = error {
+            if let error {
                 completion(nil, error)
             } else {
-                if let data = data {
+                if let data {
                     do {
                         let JSON = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? T
                         completion(JSON, nil)
@@ -161,14 +161,14 @@ extension GitJSONPostRouter {
         let task = session.uploadTask(with: request, fromData: data) { data, response, error in
             if let response = response as? HTTPURLResponse, !response.wasSuccessful {
                 var userInfo = [String: Any]()
-                if let data = data, let json = try? JSONSerialization.jsonObject(
+                if let data, let json = try? JSONSerialization.jsonObject(
                     with: data,
                     options: .mutableContainers
                 ) as? [String: Any] {
 
                     userInfo[gitErrorKey] = json as Any?
 
-                } else if let data = data, let string = String(data: data, encoding: String.Encoding.utf8) {
+                } else if let data, let string = String(data: data, encoding: String.Encoding.utf8) {
                     userInfo[gitErrorKey] = string as Any?
                 }
                 let error = NSError(
@@ -182,10 +182,10 @@ extension GitJSONPostRouter {
                 return
             }
 
-            if let error = error {
+            if let error {
                 completion(nil, error)
             } else {
-                if let data = data {
+                if let data {
                     do {
                         let decoded = try decoder.decode(T.self, from: data)
                         completion(decoded, nil)

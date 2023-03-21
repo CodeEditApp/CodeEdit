@@ -99,7 +99,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 
             CodeEditDocumentController.shared
                 .openDocument(withContentsOf: filePath, display: true) { document, _, error in
-                    if let error = error {
+                    if let error {
                         NSAlert(error: error).runModal()
                         return
                     }

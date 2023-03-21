@@ -2,7 +2,7 @@ import SwiftUI
 
 extension String {
     func localized(_ custom: String? = nil) -> LocalizedStringKey {
-        if let custom = custom {
+        if let custom {
             return LocalizedStringKey(custom)
         } else {
             return LocalizedStringKey(self)

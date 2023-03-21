@@ -59,10 +59,10 @@ extension GitHubAccount {
             expectedResultType: [GitHubReview].self
         ) { pullRequests, error in
 
-            if let error = error {
+            if let error {
                 completion(.failure(error))
             } else {
-                if let pullRequests = pullRequests {
+                if let pullRequests {
                     completion(.success(pullRequests))
                 }
             }

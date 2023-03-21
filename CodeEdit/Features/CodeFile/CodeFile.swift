@@ -34,7 +34,7 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
         if !self.content.isEmpty {
             return UTType.text
         }
-        guard let fileType = fileType, let type = UTType(fileType) else {
+        guard let fileType, let type = UTType(fileType) else {
             return nil
         }
         if type.conforms(to: UTType.image) {

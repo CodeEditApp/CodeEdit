@@ -57,10 +57,10 @@ extension BitBucketAccount {
             expectedResultType: BitBucketRepositories.self
         ) { repo, error in
 
-            if let error = error {
+            if let error {
                 completion(BitbucketPaginatedResponse.failure(error))
             } else {
-                if let repo = repo {
+                if let repo {
                     completion(BitbucketPaginatedResponse.success(values: [repo], nextParameters: [:]))
                 }
             }
@@ -81,11 +81,11 @@ extension BitBucketAccount {
             expectedResultType: BitBucketRepositories.self
         ) { data, error in
 
-            if let error = error {
+            if let error {
                 completion(Result.failure(error))
             }
 
-            if let data = data {
+            if let data {
                 completion(Result.success(data))
             }
         }

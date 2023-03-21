@@ -58,10 +58,10 @@ enum GitHubIssueRouter: GitJSONPostRouter {
             return ["per_page": perPage, "page": page, "state": state.rawValue]
         case let .postIssue(_, _, _, title, body, assignee, labels):
             var params: [String: Any] = ["title": title]
-            if let body = body {
+            if let body {
                 params["body"] = body
             }
-            if let assignee = assignee {
+            if let assignee {
                 params["assignee"] = assignee
             }
             if !labels.isEmpty {
@@ -70,16 +70,16 @@ enum GitHubIssueRouter: GitJSONPostRouter {
             return params
         case let .patchIssue(_, _, _, _, title, body, assignee, state):
             var params: [String: String] = [:]
-            if let title = title {
+            if let title {
                 params["title"] = title
             }
-            if let body = body {
+            if let body {
                 params["body"] = body
             }
-            if let assignee = assignee {
+            if let assignee {
                 params["assignee"] = assignee
             }
-            if let state = state {
+            if let state {
                 params["state"] = state.rawValue
             }
             return params

@@ -35,7 +35,7 @@ struct QuickOpenPreviewView: View {
                 ofType: "public.source-code"
             ), loaded {
                 CodeFileView(codeFile: codeFile, isEditable: false)
-            } else if let error = error {
+            } else if let error {
                 Text(error)
             } else {
                 ProgressView()

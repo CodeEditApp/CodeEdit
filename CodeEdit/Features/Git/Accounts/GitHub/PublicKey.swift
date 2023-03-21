@@ -25,7 +25,7 @@ extension GitHubAccount {
             expectedResultType: [String: AnyObject].self
         ) { json, error in
 
-            if let error = error {
+            if let error {
                 completion(.failure(error))
             } else {
                 if json != nil {
