@@ -10,7 +10,7 @@ import Preferences
 import CodeEditSymbols
 
 final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
-    var updater: SoftwareUpdater = SoftwareUpdater()
+    private let updater = SoftwareUpdater()
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         enableWindowSizeSaveOnQuit()
