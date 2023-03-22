@@ -69,11 +69,11 @@ extension GitHubAccount {
             : GitHubRepositoryRouter.readAuthenticatedRepositories(configuration, page, perPage)
 
         return router.load(session, dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter), expectedResultType: [GitHubRepositories].self) { repos, error in
-            if let error = error {
+            if let error {
                 completion(.failure(error))
             }
 
-            if let repos = repos {
+            if let repos {
                 completion(.success(repos))
             }
         }
@@ -96,10 +96,10 @@ extension GitHubAccount {
         let router = GitHubRepositoryRouter.readRepository(configuration, owner, name)
 
         return router.load(session, dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter), expectedResultType: GitHubRepositories.self) { repo, error in
-            if let error = error {
+            if let error {
                 completion(.failure(error))
             } else {
-                if let repo = repo {
+                if let repo {
                     completion(.success(repo))
                 }
             }

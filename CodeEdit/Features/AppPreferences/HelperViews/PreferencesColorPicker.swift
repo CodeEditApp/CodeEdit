@@ -23,7 +23,7 @@ struct PreferencesColorPicker: View {
         HStack {
             ColorPicker(selection: $color, supportsOpacity: false) { }
                 .labelsHidden()
-            if let label = label {
+            if let label {
                 Text(label)
             }
         }

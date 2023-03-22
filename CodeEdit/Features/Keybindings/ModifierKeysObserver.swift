@@ -73,7 +73,7 @@ private extension NSEvent.Publisher {
         }
 
         deinit {
-            if let monitor = monitor {
+            if let monitor {
                 NSEvent.removeMonitor(monitor)
             }
         }
@@ -110,7 +110,7 @@ extension NSEvent.Publisher.Subscription: Combine.Subscription {
     func cancel() {
         lock.lock()
         defer { lock.unlock() }
-        guard let monitor = monitor else { return }
+        guard let monitor else { return }
 
         self.monitor = nil
         NSEvent.removeMonitor(monitor)

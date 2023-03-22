@@ -284,7 +284,7 @@ class CodeEditKeychain {
     }
 
     func addAccessGroupWhenPresent(_ items: [String: Any]) -> [String: Any] {
-        guard let accessGroup = accessGroup else { return items }
+        guard let accessGroup else { return items }
 
         var result: [String: Any] = items
         result[CodeEditKeychainConstants.accessGroup] = accessGroup

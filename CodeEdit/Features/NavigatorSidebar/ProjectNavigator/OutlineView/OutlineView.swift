@@ -54,7 +54,7 @@ struct OutlineView: NSViewControllerRepresentable {
 
             listener = workspace.listenerModel.$highlightedFileItem
                 .sink(receiveValue: { [weak self] fileItem in
-                guard let fileItem = fileItem else {
+                guard let fileItem else {
                     return
                 }
                 self?.controller?.reveal(fileItem)

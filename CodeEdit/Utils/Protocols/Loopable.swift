@@ -41,7 +41,7 @@ extension Loopable {
         }
 
         for (property, value) in mirror.children {
-            guard let property = property else {
+            guard let property else {
                 continue
             }
 

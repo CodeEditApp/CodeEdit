@@ -75,7 +75,7 @@ final class OutlineTableViewCell: NSTableCellView {
         self.label.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 1).isActive = true
         self.label.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
 
-        if let item = item {
+        if let item {
             let image = NSImage(systemSymbolName: item.systemImage, accessibilityDescription: nil)!
             fileItem = item
             icon.image = image

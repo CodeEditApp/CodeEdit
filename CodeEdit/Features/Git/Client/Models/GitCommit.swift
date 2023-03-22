@@ -21,7 +21,7 @@ struct GitCommit: Equatable, Hashable, Identifiable {
     let date: Date
 
     var commitBaseURL: URL? {
-        if let remoteURL = remoteURL {
+        if let remoteURL {
             if remoteURL.absoluteString.contains("github") {
                 return parsedRemoteUrl(domain: "https://github.com", remote: remoteURL)
             }
@@ -49,7 +49,7 @@ struct GitCommit: Equatable, Hashable, Identifiable {
     }
 
     var remoteString: String {
-        if let remoteURL = remoteURL {
+        if let remoteURL {
             if remoteURL.absoluteString.contains("github") {
                 return "GitHub"
             }

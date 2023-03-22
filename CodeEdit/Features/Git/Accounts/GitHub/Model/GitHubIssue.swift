@@ -79,10 +79,10 @@ extension GitHubAccount {
             expectedResultType: [GitHubIssue].self
         ) { issues, error in
 
-            if let error = error {
+            if let error {
                 completion(.failure(error))
             } else {
-                if let issues = issues {
+                if let issues {
                     completion(.success(issues))
                 }
             }
@@ -112,10 +112,10 @@ extension GitHubAccount {
             expectedResultType: GitHubIssue.self
         ) { issue, error in
 
-            if let error = error {
+            if let error {
                 completion(.failure(error))
             } else {
-                if let issue = issue {
+                if let issue {
                     completion(.success(issue))
                 }
             }
@@ -150,10 +150,10 @@ extension GitHubAccount {
             expectedResultType: [GitHubIssue].self
         ) { issues, error in
 
-            if let error = error {
+            if let error {
                 completion(.failure(error))
             } else {
-                if let issues = issues {
+                if let issues {
                     completion(.success(issues))
                 }
             }
@@ -197,10 +197,10 @@ extension GitHubAccount {
             expectedResultType: GitHubIssue.self
         ) { issue, error in
 
-            if let error = error {
+            if let error {
                 completion(.failure(error))
             } else {
-                if let issue = issue {
+                if let issue {
                     completion(.success(issue))
                 }
             }
@@ -242,10 +242,10 @@ extension GitHubAccount {
             expectedResultType: GitHubIssue.self
         ) { issue, error in
 
-            if let error = error {
+            if let error {
                 completion(.failure(error))
             } else {
-                if let issue = issue {
+                if let issue {
                     completion(.success(issue))
                 }
             }
@@ -281,10 +281,10 @@ extension GitHubAccount {
             expectedResultType: GitHubComment.self
         ) { issue, error in
 
-            if let error = error {
+            if let error {
                 completion(.failure(error))
             } else {
-                if let issue = issue {
+                if let issue {
                     completion(.success(issue))
                 }
             }
@@ -319,10 +319,10 @@ extension GitHubAccount {
             expectedResultType: [GitHubComment].self
         ) { comments, error in
 
-            if let error = error {
+            if let error {
                 completion(.failure(error))
             } else {
-                if let comments = comments {
+                if let comments {
                     completion(.success(comments))
                 }
             }
@@ -356,10 +356,10 @@ extension GitHubAccount {
             expectedResultType: GitHubComment.self
         ) { issue, error in
 
-            if let error = error {
+            if let error {
                 completion(.failure(error))
             } else {
-                if let issue = issue {
+                if let issue {
                     completion(.success(issue))
                 }
             }

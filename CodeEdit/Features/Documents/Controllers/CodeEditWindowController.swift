@@ -167,7 +167,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     ) -> NSToolbarItem? {
         switch itemIdentifier {
         case .itemListTrackingSeparator:
-                guard let splitViewController = splitViewController else {
+                guard let splitViewController else {
                     return nil
                 }
 
@@ -234,8 +234,8 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     }
 
     @IBAction func openCommandPalette(_ sender: Any) {
-        if let workspace = workspace, let state = workspace.commandsPaletteState {
-            if let commandPalettePanel = commandPalettePanel {
+        if let workspace, let state = workspace.commandsPaletteState {
+            if let commandPalettePanel {
                 if commandPalettePanel.isKeyWindow {
                     commandPalettePanel.close()
                     state.reset()
@@ -257,8 +257,8 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     }
 
     @IBAction func openQuickly(_ sender: Any) {
-        if let workspace = workspace, let state = workspace.quickOpenViewModel {
-            if let quickOpenPanel = quickOpenPanel {
+        if let workspace, let state = workspace.quickOpenViewModel {
+            if let quickOpenPanel {
                 if quickOpenPanel.isKeyWindow {
                     quickOpenPanel.close()
                     return

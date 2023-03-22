@@ -133,7 +133,7 @@ import CodeEditKit
         workspaceClient?
             .getFiles
             .sink { [weak self] files in
-                guard let self = self else { return }
+                guard let self else { return }
 
                 guard !self.fileItems.isEmpty else {
                     self.fileItems = files

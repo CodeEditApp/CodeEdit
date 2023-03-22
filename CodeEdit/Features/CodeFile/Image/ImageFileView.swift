@@ -17,7 +17,7 @@ struct ImageFileView: View {
 
     var body: some View {
         GeometryReader { proxy in
-            if let image = image {
+            if let image {
                 if image.size.width > proxy.size.width || image.size.height > proxy.size.height {
                     Image(nsImage: image)
                         .resizable()

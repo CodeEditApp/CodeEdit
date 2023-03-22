@@ -108,10 +108,10 @@ extension GitHubAccount {
             expectedResultType: GitHubPullRequest.self
         ) { pullRequest, error in
 
-            if let error = error {
+            if let error {
                 completion(.failure(error))
             } else {
-                if let pullRequest = pullRequest {
+                if let pullRequest {
                     completion(.success(pullRequest))
                 }
             }
@@ -158,10 +158,10 @@ extension GitHubAccount {
             expectedResultType: [GitHubPullRequest].self
         ) { pullRequests, error in
 
-            if let error = error {
+            if let error {
                 completion(.failure(error))
             } else {
-                if let pullRequests = pullRequests {
+                if let pullRequests {
                     completion(.success(pullRequests))
                 }
             }

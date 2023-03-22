@@ -86,10 +86,10 @@ extension GitHubAccount {
             dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
             expectedResultType: GitHubUser.self
         ) { user, error in
-            if let error = error {
+            if let error {
                 completion(.failure(error))
             } else {
-                if let user = user {
+                if let user {
                     completion(.success(user))
                 }
             }
@@ -113,10 +113,10 @@ extension GitHubAccount {
             dateDecodingStrategy: .formatted(GitTime.rfc3339DateFormatter),
             expectedResultType: GitHubUser.self
         ) { user, error in
-            if let error = error {
+            if let error {
                 completion(.failure(error))
             } else {
-                if let user = user {
+                if let user {
                     completion(.success(user))
                 }
             }

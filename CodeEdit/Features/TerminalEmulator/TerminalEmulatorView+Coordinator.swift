@@ -26,7 +26,7 @@ extension TerminalEmulatorView {
         func setTerminalTitle(source: LocalProcessTerminalView, title: String) {}
 
         func processTerminated(source: TerminalView, exitCode: Int32?) {
-            guard let exitCode = exitCode else {
+            guard let exitCode else {
                 return
             }
             source.feed(text: "Exit code: \(exitCode)\n\r\n")

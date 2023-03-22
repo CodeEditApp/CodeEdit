@@ -75,7 +75,7 @@ final class FindNavigatorListViewController: NSViewController {
             self.searchId = searchId
         }
 
-        if let selectedItem = selectedItem {
+        if let selectedItem {
             selectSearchResult(selectedItem)
         }
     }
@@ -170,7 +170,7 @@ extension FindNavigatorListViewController: NSOutlineViewDelegate {
     }
 
     func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
-        guard let tableColumn = tableColumn else { return nil }
+        guard let tableColumn else { return nil }
         if let item = item as? SearchResultMatchModel {
             let frameRect = NSRect(x: 0, y: 0, width: tableColumn.width, height: CGFloat.greatestFiniteMagnitude)
             return FindNavigatorListMatchCell(frame: frameRect, matchItem: item)

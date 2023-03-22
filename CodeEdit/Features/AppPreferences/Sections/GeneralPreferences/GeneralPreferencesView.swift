@@ -230,7 +230,7 @@ private extension GeneralPreferencesView {
                     }
 
                     NSWorkspace.shared.requestAuthorization(to: .createSymbolicLink) { auth, error in
-                        guard let auth = auth, error == nil else {
+                        guard let auth, error == nil else {
                             fallbackShellInstallation(commandPath: shellUrl, destinationPath: destination)
                             return
                         }

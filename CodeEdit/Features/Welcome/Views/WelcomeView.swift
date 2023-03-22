@@ -103,7 +103,7 @@ struct WelcomeView: View {
 
         copyString.append("macOS: \(macOSVersion)\n")
 
-        if let xcodeVersion = xcodeVersion {
+        if let xcodeVersion {
             copyString.append("Xcode: \(xcodeVersion)")
         }
 
