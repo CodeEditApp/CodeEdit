@@ -41,6 +41,7 @@ struct QuickOpenView: View {
             QuickOpenPreviewView(item: file)
         } onRowClick: { file in
             openFile(file)
+            state.openQuicklyQuery = ""
             onClose()
         } onClose: {
             onClose()
