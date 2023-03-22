@@ -82,9 +82,7 @@ struct OverlayView<RowView: View, PreviewView: View, Option: Identifiable & Hash
                     if hasPreview {
                         PreviewToggle(previewVisible: $previewVisible)
                             .onTapGesture {
-                                withAnimation {
-                                    previewVisible.toggle()
-                                }
+                                previewVisible.toggle()
                             }
                     }
                 }
@@ -120,7 +118,6 @@ struct OverlayView<RowView: View, PreviewView: View, Option: Identifiable & Hash
                             if let selection, let previewViewBuilder {
                                 previewViewBuilder(selection)
                                     .frame(maxWidth: .infinity)
-                                    .transition(.move(edge: .trailing))
                             } else {
                                 Text("Select an option to preview")
                                     .frame(maxWidth: .infinity)
