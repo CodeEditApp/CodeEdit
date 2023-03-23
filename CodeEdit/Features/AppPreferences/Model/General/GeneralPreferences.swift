@@ -40,7 +40,7 @@ extension AppPreferences {
         var reopenBehavior: ReopenBehavior = .welcome
 
         /// Decides what the app does after a workspace is closed
-        var reopenWindowAfterWorkspaceClose: ReopenWindowBehavior = .doNothing
+        var reopenWindowAfterClose: ReopenWindowBehavior = .doNothing
 
         /// The size of the project navigator
         var projectNavigatorSize: ProjectNavigatorSize = .medium

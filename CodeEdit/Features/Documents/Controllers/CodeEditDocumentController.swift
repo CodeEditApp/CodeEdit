@@ -80,12 +80,14 @@ final class CodeEditDocumentController: NSDocumentController {
         super.removeDocument(document)
 
         if CodeEditDocumentController.shared.documents.isEmpty {
-            if prefs.preferences.general.reopenWindowAfterWorkspaceClose == .showWelcomeWindow {
+            switch prefs.preferences.general.reopenWindowAfterClose {
+            case .showWelcomeWindow:
                 // Opens the welcome window
                 NSApp.openWindow(.welcome)
-            } else if prefs.preferences.general.reopenWindowAfterWorkspaceClose == .quit {
+            case .quit:
                 // Quits CodeEdit
                 NSApplication.shared.terminate(nil)
+            default: break
             }
         }
     }

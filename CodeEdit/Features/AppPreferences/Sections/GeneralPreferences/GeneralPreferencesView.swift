@@ -166,10 +166,10 @@ private extension GeneralPreferencesView {
     }
 
     var reopenAfterWindowCloseBehaviourSection: some View {
-        PreferencesSection("After workspace closed") {
+        PreferencesSection("After last window closed") {
             Picker(
-                "After workspace closed:",
-                selection: $prefs.preferences.general.reopenWindowAfterWorkspaceClose
+                "After last window closed:",
+                selection: $prefs.preferences.general.reopenWindowAfterClose
             ) {
                 Text("Do nothing")
                     .tag(AppPreferences.ReopenWindowBehavior.doNothing)
