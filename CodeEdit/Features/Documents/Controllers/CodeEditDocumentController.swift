@@ -87,6 +87,8 @@ final class CodeEditDocumentController: NSDocumentController {
             case .quit:
                 // Quits CodeEdit
                 NSApplication.shared.terminate(nil)
+            case .doNothing:
+                // Placeholder code
             }
         }
     }
