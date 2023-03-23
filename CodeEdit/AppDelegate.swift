@@ -50,8 +50,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                 self.handleOpen()
             }
         }
-
-        ExtensionManager.shared.refreshBundles()
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
