@@ -308,6 +308,7 @@
 		6C53AAD829A6C4FD00EE9ED6 /* SplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C53AAD729A6C4FD00EE9ED6 /* SplitView.swift */; };
 		6C5AB9D729C1496E003B5F96 /* SceneID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5AB9D629C1496E003B5F96 /* SceneID.swift */; };
 		6C5B63DE29C76213005454BA /* WindowCodeFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5B63DD29C76213005454BA /* WindowCodeFileView.swift */; };
+		6C6BD6EF29CD12E900235D17 /* ExtensionManagerWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6BD6EE29CD12E900235D17 /* ExtensionManagerWindow.swift */; };
 		6C7256D729A3D7D000C2D3E0 /* SplitViewControllerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C7256D629A3D7D000C2D3E0 /* SplitViewControllerView.swift */; };
 		6C81916729B3E80700B75C92 /* ModifierKeysObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C81916629B3E80700B75C92 /* ModifierKeysObserver.swift */; };
 		6C81916B29B41DD300B75C92 /* DequeModule in Frameworks */ = {isa = PBXBuildFile; productRef = 6C81916A29B41DD300B75C92 /* DequeModule */; };
@@ -711,6 +712,7 @@
 		6C5AB9D629C1496E003B5F96 /* SceneID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneID.swift; sourceTree = "<group>"; };
 		6C5B63DD29C76213005454BA /* WindowCodeFileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WindowCodeFileView.swift; sourceTree = "<group>"; };
 		6C6BD6EA29CD11B400235D17 /* CodeEditKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = CodeEditKit; path = ../CodeEditKit; sourceTree = "<group>"; };
+		6C6BD6EE29CD12E900235D17 /* ExtensionManagerWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionManagerWindow.swift; sourceTree = "<group>"; };
 		6C7256D629A3D7D000C2D3E0 /* SplitViewControllerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitViewControllerView.swift; sourceTree = "<group>"; };
 		6C81916629B3E80700B75C92 /* ModifierKeysObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifierKeysObserver.swift; sourceTree = "<group>"; };
 		6C82D6B229BFD88700495C54 /* NavigateCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigateCommands.swift; sourceTree = "<group>"; };
@@ -1081,11 +1083,11 @@
 				284DC84B2978B5EB00BF2770 /* Contributors */,
 				58F2EA9E292FB2B0004A9BDE /* AppPreferences */,
 				5878DAAB291D627C00DD95A3 /* PathBar */,
-				587B9D50292FC27A00AC7927 /* CodeEditExtension */,
 				587B9D7529300ABD00AC7927 /* CodeEditUI */,
 				58798244292E78D80085B254 /* CodeFile */,
 				58FD7603291EA1CB0051D6E4 /* Commands */,
 				043C321227E31FE8006AE443 /* Documents */,
+				6C6BD6ED29CD123000235D17 /* Extensions */,
 				58798228292E30B90085B254 /* Feedback */,
 				587B9E0129301D8F00AC7927 /* Git */,
 				B6EE988E27E8877C00CDD8AB /* InspectorSidebar */,
@@ -1450,14 +1452,6 @@
 			path = CodeFile;
 			sourceTree = "<group>";
 		};
-		587B9D50292FC27A00AC7927 /* CodeEditExtension */ = {
-			isa = PBXGroup;
-			children = (
-				587B9D54292FC27A00AC7927 /* FolderMonitor.swift */,
-			);
-			path = CodeEditExtension;
-			sourceTree = "<group>";
-		};
 		587B9D7529300ABD00AC7927 /* CodeEditUI */ = {
 			isa = PBXGroup;
 			children = (
@@ -1818,6 +1812,7 @@
 		58D01C85293167DC00C5B6B4 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				587B9D54292FC27A00AC7927 /* FolderMonitor.swift */,
 				6C48D8EF2972DAC300D6D205 /* Environment */,
 				58D01C87293167DC00C5B6B4 /* Extensions */,
 				58D01C8F293167DC00C5B6B4 /* KeyChain */,
@@ -2199,6 +2194,14 @@
 				6C6BD6EA29CD11B400235D17 /* CodeEditKit */,
 			);
 			name = Packages;
+			sourceTree = "<group>";
+		};
+		6C6BD6ED29CD123000235D17 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				6C6BD6EE29CD12E900235D17 /* ExtensionManagerWindow.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		6C82D6BF29C00EE300495C54 /* Utils */ = {
@@ -2807,6 +2810,7 @@
 				587B9E7C29301D8F00AC7927 /* GitHubRepositoryRouter.swift in Sources */,
 				286471AB27ED51FD0039369D /* ProjectNavigatorView.swift in Sources */,
 				6CAAF68A29BC9C2300A1F48A /* (null) in Sources */,
+				6C6BD6EF29CD12E900235D17 /* ExtensionManagerWindow.swift in Sources */,
 				6CFF967629BEBCD900182D6F /* FileCommands.swift in Sources */,
 				587B9DA629300ABD00AC7927 /* ToolbarBranchPicker.swift in Sources */,
 				58F2EB05292FB2B0004A9BDE /* AppPreferencesModel.swift in Sources */,
