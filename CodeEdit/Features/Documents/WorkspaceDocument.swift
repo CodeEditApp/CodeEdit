@@ -14,8 +14,6 @@ import CodeEditKit
 @objc(WorkspaceDocument) final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var workspaceClient: WorkspaceClient?
 
-    var extensionNavigatorData = ExtensionNavigatorData()
-
     @Published var sortFoldersOnTop: Bool = true
 
     @Published var fileItems: [WorkspaceClient.FileItem] = []
@@ -47,8 +45,6 @@ import CodeEditKit
     private let openTabsStateName: String = "\(String(describing: WorkspaceDocument.self))-OpenTabs"
     private let activeTabStateName: String = "\(String(describing: WorkspaceDocument.self))-ActiveTab"
     private var openedTabsFromState = false
-
-    @Published var targets: [Target] = []
 
     deinit {
         cancellables.forEach { $0.cancel() }
@@ -252,18 +248,5 @@ import CodeEditKit
         let opaquePtr = OpaquePointer(contextInfo)
         let mutablePointer = UnsafeMutablePointer<Bool>(opaquePtr)
         mutablePointer.pointee = shouldClose
-    }
-}
-
-// MARK: - Extensions
-extension WorkspaceDocument {
-    func target(didAdd target: Target) {
-        self.targets.append(target)
-    }
-    func target(didRemove target: Target) {
-        self.targets.removeAll { $0.id == target.id }
-    }
-    func targetDidClear() {
-        self.targets.removeAll()
     }
 }
