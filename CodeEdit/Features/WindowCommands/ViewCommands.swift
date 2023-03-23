@@ -43,6 +43,8 @@ struct ViewCommands: Commands {
             }
             .disabled(true)
 
+            Divider()
+
             Button("\(navigatorCollapsed ? "Show" : "Hide") Navigator") {
                 windowController?.toggleFirstPanel()
             }
