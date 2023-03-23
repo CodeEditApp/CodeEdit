@@ -12,6 +12,8 @@ final class CodeEditDocumentController: NSDocumentController {
         FileManager.default
     }()
 
+    private var prefs: AppPreferencesModel = .shared
+
     override func newDocument(_ sender: Any?) {
         guard let newDocumentUrl = self.newDocumentUrl else { return }
 
@@ -76,6 +78,16 @@ final class CodeEditDocumentController: NSDocumentController {
 
     override func removeDocument(_ document: NSDocument) {
         super.removeDocument(document)
+
+        if prefs.preferences.general.reopenWindowAfterWorkspaceClose == .showWelcomeWindow {
+            if CodeEditDocumentController.shared.documents.isEmpty {
+                NSApp.openWindow(.welcome)
+            }
+        } else if prefs.preferences.general.reopenWindowAfterWorkspaceClose == .quit {
+            if CodeEditDocumentController.shared.documents.isEmpty {
+                NSApplication.shared.terminate(nil)
+            }
+        }
     }
 
     override func clearRecentDocuments(_ sender: Any?) {

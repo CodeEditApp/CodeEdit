@@ -39,6 +39,10 @@ extension AppPreferences {
         /// The reopen behavior of the app
         var reopenBehavior: ReopenBehavior = .welcome
 
+        /// Decides what the app does after a workspace is closed
+        var reopenWindowAfterWorkspaceClose: ReopenWindowBehavior = .doNothing
+
+        /// The size of the project navigator
         var projectNavigatorSize: ProjectNavigatorSize = .medium
 
         /// The Find Navigator Detail line limit
@@ -96,6 +100,10 @@ extension AppPreferences {
                 ReopenBehavior.self,
                 forKey: .reopenBehavior
             ) ?? .welcome
+            self.reopenWindowAfterWorkspaceClose = try container.decodeIfPresent(
+                ReopenWindowBehavior.self,
+                forKey: .reopenWindowAfterWorkspaceClose
+            ) ?? .doNothing
             self.projectNavigatorSize = try container.decodeIfPresent(
                 ProjectNavigatorSize.self,
                 forKey: .projectNavigatorSize
@@ -210,6 +218,12 @@ extension AppPreferences {
         case welcome
         case openPanel
         case newDocument
+    }
+
+    enum ReopenWindowBehavior: String, Codable {
+        case showWelcomeWindow
+        case doNothing
+        case quit
     }
 
     enum ProjectNavigatorSize: String, Codable {
