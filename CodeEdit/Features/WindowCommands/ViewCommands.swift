@@ -9,6 +9,15 @@ import SwiftUI
 
 struct ViewCommands: Commands {
     private var prefs: AppPreferencesModel = .shared
+    @State var windowController: CodeEditWindowController?
+
+    var navigatorCollapsed: Bool {
+        windowController?.navigatorCollapsed ?? false
+    }
+
+    var inspectorCollapsed: Bool {
+        windowController?.navigatorCollapsed ?? false
+    }
 
     var body: some Commands {
         CommandGroup(after: .toolbar) {
@@ -33,6 +42,23 @@ struct ViewCommands: Commands {
 
             }
             .disabled(true)
+
+            Divider()
+
+            Button("\(navigatorCollapsed ? "Show" : "Hide") Navigator") {
+                windowController?.toggleFirstPanel()
+            }
+            .disabled(windowController == nil)
+            .keyboardShortcut("s", modifiers: [.control, .command])
+            .onReceive(NSApp.publisher(for: \.keyWindow)) { window in
+                windowController = window?.windowController as? CodeEditWindowController
+            }
+
+            Button("\(inspectorCollapsed ? "Show" : "Hide") Inspector") {
+                windowController?.toggleLastPanel()
+            }
+            .disabled(windowController == nil)
+            .keyboardShortcut("i", modifiers: [.control, .command])
         }
     }
 }

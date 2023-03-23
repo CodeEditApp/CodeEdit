@@ -8,8 +8,13 @@
 import Cocoa
 import SwiftUI
 
-final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
+final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, ObservableObject {
     static let minSidebarWidth: CGFloat = 242
+
+    @Published var navigatorCollapsed = false
+    @Published var inspectorCollapsed = false
+
+    var observers: [NSKeyValueObservation] = []
 
     private var prefs: AppPreferencesModel = .shared
 
@@ -17,7 +22,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     var quickOpenPanel: OverlayPanel?
     var commandPalettePanel: OverlayPanel?
 
-    private var splitViewController: NSSplitViewController!
+    var splitViewController: NSSplitViewController!
 
     init(window: NSWindow, workspace: WorkspaceDocument) {
         super.init(window: window)
@@ -30,6 +35,15 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
         // An NSHostingController is used, so the root viewController of the window is a SwiftUI-managed one.
         // This allows us to use some SwiftUI features, like focusedSceneObject.
         contentViewController = NSHostingController(rootView: view)
+
+        observers = [
+            splitViewController.splitViewItems.first!.observe(\.isCollapsed, changeHandler: { [weak self] item, _ in
+                self?.navigatorCollapsed = item.isCollapsed
+            }),
+            splitViewController.splitViewItems.last!.observe(\.isCollapsed, changeHandler: { [weak self] item, _ in
+                self?.navigatorCollapsed = item.isCollapsed
+            })
+        ]
 
         setupToolbar()
         registerCommands()
@@ -298,7 +312,9 @@ extension CodeEditWindowController {
     func toggleLastPanel() {
         guard let lastSplitView = splitViewController.splitViewItems.last else { return }
 
-        if lastSplitView.isCollapsed {
+        if let toolbar = window?.toolbar,
+            lastSplitView.isCollapsed,
+            !toolbar.items.map(\.itemIdentifier).contains(.itemListTrackingSeparator) {
             window?.toolbar?.insertItem(withItemIdentifier: .itemListTrackingSeparator, at: 4)
         }
         NSAnimationContext.runAnimationGroup { _ in
