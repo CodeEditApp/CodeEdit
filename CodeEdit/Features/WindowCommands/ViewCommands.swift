@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ViewCommands: Commands {
+    private var prefs: AppPreferencesModel = .shared
+
     var body: some Commands {
         CommandGroup(after: .toolbar) {
             Button("Show Command Palette") {
@@ -15,9 +17,22 @@ struct ViewCommands: Commands {
             }
             .keyboardShortcut("p", modifiers: [.shift, .command])
 
+            Button("Zoom in") {
+                prefs.preferences.textEditing.font.size += 1
+            }
+            .keyboardShortcut("+")
+
+            Button("Zoom out") {
+                if !(prefs.preferences.textEditing.font.size <= 1) {
+                    prefs.preferences.textEditing.font.size -= 1
+                }
+            }
+            .keyboardShortcut("-")
+
             Button("Customize Toolbar...") {
 
             }
+            .disabled(true)
         }
     }
 }
