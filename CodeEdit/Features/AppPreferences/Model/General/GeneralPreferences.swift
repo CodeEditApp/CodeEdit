@@ -100,9 +100,9 @@ extension AppPreferences {
                 ReopenBehavior.self,
                 forKey: .reopenBehavior
             ) ?? .welcome
-            self.reopenWindowAfterWorkspaceClose = try container.decodeIfPresent(
+            self.reopenWindowAfterClose = try container.decodeIfPresent(
                 ReopenWindowBehavior.self,
-                forKey: .reopenWindowAfterWorkspaceClose
+                forKey: .reopenWindowAfterClose
             ) ?? .doNothing
             self.projectNavigatorSize = try container.decodeIfPresent(
                 ProjectNavigatorSize.self,
