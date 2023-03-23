@@ -37,10 +37,10 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         contentViewController = NSHostingController(rootView: view)
 
         observers = [
-            splitViewController.splitViewItems.first!.observe(\.isCollapsed, changeHandler: { [weak self] item, value in
+            splitViewController.splitViewItems.first!.observe(\.isCollapsed, changeHandler: { [weak self] item, _ in
                 self?.navigatorCollapsed = item.isCollapsed
             }),
-            splitViewController.splitViewItems.last!.observe(\.isCollapsed, changeHandler: { [weak self] item, value in
+            splitViewController.splitViewItems.last!.observe(\.isCollapsed, changeHandler: { [weak self] item, _ in
                 self?.navigatorCollapsed = item.isCollapsed
             })
         ]
