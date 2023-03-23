@@ -312,8 +312,9 @@ extension CodeEditWindowController {
     func toggleLastPanel() {
         guard let lastSplitView = splitViewController.splitViewItems.last else { return }
 
-
-        if let toolbar = window?.toolbar, lastSplitView.isCollapsed, !toolbar.items.map(\.itemIdentifier).contains(.itemListTrackingSeparator) {
+        if let toolbar = window?.toolbar,
+            lastSplitView.isCollapsed,
+            !toolbar.items.map(\.itemIdentifier).contains(.itemListTrackingSeparator) {
             window?.toolbar?.insertItem(withItemIdentifier: .itemListTrackingSeparator, at: 4)
         }
         NSAnimationContext.runAnimationGroup { _ in
