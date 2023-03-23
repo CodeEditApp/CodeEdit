@@ -79,12 +79,12 @@ final class CodeEditDocumentController: NSDocumentController {
     override func removeDocument(_ document: NSDocument) {
         super.removeDocument(document)
 
-        if prefs.preferences.general.reopenWindowAfterWorkspaceClose == .showWelcomeWindow {
-            if CodeEditDocumentController.shared.documents.isEmpty {
+        if CodeEditDocumentController.shared.documents.isEmpty {
+            if prefs.preferences.general.reopenWindowAfterWorkspaceClose == .showWelcomeWindow {
+                // Opens the welcome window
                 NSApp.openWindow(.welcome)
-            }
-        } else if prefs.preferences.general.reopenWindowAfterWorkspaceClose == .quit {
-            if CodeEditDocumentController.shared.documents.isEmpty {
+            } else if prefs.preferences.general.reopenWindowAfterWorkspaceClose == .quit {
+                // Quits CodeEdit
                 NSApplication.shared.terminate(nil)
             }
         }
