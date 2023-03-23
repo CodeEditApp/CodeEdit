@@ -710,6 +710,7 @@
 		6C53AAD729A6C4FD00EE9ED6 /* SplitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitView.swift; sourceTree = "<group>"; };
 		6C5AB9D629C1496E003B5F96 /* SceneID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneID.swift; sourceTree = "<group>"; };
 		6C5B63DD29C76213005454BA /* WindowCodeFileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WindowCodeFileView.swift; sourceTree = "<group>"; };
+		6C6BD6EA29CD11B400235D17 /* CodeEditKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = CodeEditKit; path = ../CodeEditKit; sourceTree = "<group>"; };
 		6C7256D629A3D7D000C2D3E0 /* SplitViewControllerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitViewControllerView.swift; sourceTree = "<group>"; };
 		6C81916629B3E80700B75C92 /* ModifierKeysObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifierKeysObserver.swift; sourceTree = "<group>"; };
 		6C82D6B229BFD88700495C54 /* NavigateCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigateCommands.swift; sourceTree = "<group>"; };
@@ -2192,6 +2193,14 @@
 			path = Environment;
 			sourceTree = "<group>";
 		};
+		6C6BD6E929CD11B400235D17 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				6C6BD6EA29CD11B400235D17 /* CodeEditKit */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
 		6C82D6BF29C00EE300495C54 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
@@ -2237,6 +2246,7 @@
 		B658FB2327DA9E0F00EA4DBD = {
 			isa = PBXGroup;
 			children = (
+				6C6BD6E929CD11B400235D17 /* Packages */,
 				B658FB2E27DA9E0F00EA4DBD /* CodeEdit */,
 				587B60F329340A8000D5CD8F /* CodeEditTests */,
 				28052E0129730F2F00F4F90A /* Configs */,
