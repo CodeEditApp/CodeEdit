@@ -9,7 +9,6 @@ import Foundation
 import AppKit
 import SwiftUI
 import Combine
-import CodeEditKit
 
 @objc(WorkspaceDocument) final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var workspaceClient: WorkspaceClient?
