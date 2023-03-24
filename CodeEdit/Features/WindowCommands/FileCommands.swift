@@ -11,12 +11,12 @@ struct FileCommands: Commands {
     var body: some Commands {
         CommandGroup(replacing: .newItem) {
             Group {
-                Button("New") {
+                Button("New...") {
                     NSDocumentController.shared.newDocument(nil)
                 }
                 .keyboardShortcut("n")
 
-                Button("Open") {
+                Button("Open...") {
                     NSDocumentController.shared.openDocument(nil)
                 }
                 .keyboardShortcut("o")
@@ -41,19 +41,19 @@ struct FileCommands: Commands {
             }
             .keyboardShortcut("w")
 
-            Button("Close Editor...") {
+            Button("Close Editor") {
 
             }
             .disabled(true)
             .keyboardShortcut("w", modifiers: [.control, .shift, .command])
 
-            Button("Close Window...") {
+            Button("Close Window") {
 
             }
             .disabled(true)
             .keyboardShortcut("w", modifiers: [.shift, .command])
 
-            Button("Close Workspace...") {
+            Button("Close Workspace") {
 
             }
             .disabled(true)
