@@ -59,7 +59,7 @@ struct NavigateCommands: Commands {
 
                 Divider()
 
-                Button("Jump to Selection...") {
+                Button("Jump to Selection") {
 
                 }
                 .keyboardShortcut("l", modifiers: [.command, .option])
