@@ -61,7 +61,7 @@ struct SourceControlCommands: Commands {
 
                 Divider()
 
-                Button("Add Selected Files...") {
+                Button("Add Selected Files") {
 
                 }
 
@@ -69,13 +69,13 @@ struct SourceControlCommands: Commands {
 
                 }
 
-                Button("Mark Selected Files as Resolved...") {
+                Button("Mark Selected Files as Resolved") {
 
                 }
 
                 Divider()
 
-                Button("New Git Repositories...") {
+                Button("New Git Repositories") {
 
                 }
 
