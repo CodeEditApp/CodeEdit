@@ -23,7 +23,10 @@ struct FileCommands: Commands {
 
                 // Leave this empty, is done through a hidden API in WindowCommands/Utils/CommandsFixes.swift
                 // This can't be done in SwiftUI Commands yet, as they don't support images in menu items.
-                Menu("Open Recent") {}
+                Menu("Open Recent") {
+                    
+                }
+                .disabled(true)
 
                 Button("Open Quickly") {
                     NSApp.sendAction(#selector(CodeEditWindowController.openQuickly(_:)), to: nil, from: nil)
@@ -41,16 +44,19 @@ struct FileCommands: Commands {
             Button("Close Editor") {
 
             }
+            .disabled(true)
             .keyboardShortcut("w", modifiers: [.control, .shift, .command])
 
             Button("Close Window") {
 
             }
+            .disabled(true)
             .keyboardShortcut("w", modifiers: [.shift, .command])
 
             Button("Close Workspace") {
 
             }
+            .disabled(true)
             .keyboardShortcut("w", modifiers: [.control, .option, .command])
 
             Divider()

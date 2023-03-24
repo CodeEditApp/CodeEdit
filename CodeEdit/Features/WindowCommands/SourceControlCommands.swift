@@ -11,11 +11,13 @@ struct SourceControlCommands: Commands {
     var body: some Commands {
         CommandMenu("Source Control") {
             Group {
+                // Could be done with git commit or with a view
                 Button("Commit...") {
 
                 }
                 .keyboardShortcut("c", modifiers: [.option, .command])
 
+                // Could be done with git push or with a view
                 Button("Push...") {
 
                 }
@@ -52,6 +54,7 @@ struct SourceControlCommands: Commands {
             .disabled(true)
 
             Group {
+                // Could be done with git pull or a view
                 Button("Create Pull Request...") {
 
                 }
@@ -78,6 +81,7 @@ struct SourceControlCommands: Commands {
 
                 Divider()
 
+                // Could be done with GitCloneView
                 Button("Clone...") {
 
                 }
