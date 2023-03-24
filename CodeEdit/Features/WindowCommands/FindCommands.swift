@@ -20,12 +20,12 @@ struct FindCommands: Commands {
     var body: some Commands {
         CommandMenu("Find") {
             Group {
-                Button("Find...") {
+                Button("Find") {
                     send(.showFindPanel)
                 }
                 .keyboardShortcut("f")
 
-                Button("Find and Replace...") {
+                Button("Find and Replace") {
                     send(.init(rawValue: 12)!)
                 }
                 .keyboardShortcut("f", modifiers: [.option, .command])

@@ -23,7 +23,7 @@ struct FileCommands: Commands {
 
                 // Leave this empty, is done through a hidden API in WindowCommands/Utils/CommandsFixes.swift
                 // This can't be done in SwiftUI Commands yet, as they don't support images in menu items.
-                Menu("Open Recent") {
+                Menu("Open Recent...") {
                     
                 }
                 .disabled(true)
@@ -41,19 +41,19 @@ struct FileCommands: Commands {
             }
             .keyboardShortcut("w")
 
-            Button("Close Editor") {
+            Button("Close Editor...") {
 
             }
             .disabled(true)
             .keyboardShortcut("w", modifiers: [.control, .shift, .command])
 
-            Button("Close Window") {
+            Button("Close Window...") {
 
             }
             .disabled(true)
             .keyboardShortcut("w", modifiers: [.shift, .command])
 
-            Button("Close Workspace") {
+            Button("Close Workspace...") {
 
             }
             .disabled(true)

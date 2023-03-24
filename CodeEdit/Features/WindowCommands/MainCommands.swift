@@ -18,7 +18,7 @@ struct MainCommands: Commands {
                 openWindow(id: SceneID.about.rawValue)
             }
 
-            Button("Check for updates...") {
+            Button("Check for updates") {
                 NSApp.sendAction(#selector(SPUStandardUpdaterController.checkForUpdates(_:)), to: nil, from: nil)
             }
         }

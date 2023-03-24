@@ -11,17 +11,17 @@ struct NavigateCommands: Commands {
     var body: some Commands {
         CommandMenu("Navigate") {
             Group {
-                Button("Reveal in Project Navigator") {
+                Button("Reveal in Project Navigator...") {
 
                 }
                 .keyboardShortcut("j", modifiers: [.shift, .command])
 
-                Button("Reveal Changes in Navigator") {
+                Button("Reveal Changes in Navigator...") {
 
                 }
                 .keyboardShortcut("m", modifiers: [.shift, .command])
 
-                Button("Open in Next Editor") {
+                Button("Open in Next Editor...") {
 
                 }
                 .keyboardShortcut(",", modifiers: [.option, .command])
@@ -33,19 +33,19 @@ struct NavigateCommands: Commands {
 
                 Divider()
 
-                Button("Show Previous Tab") {
+                Button("Show Previous Tab...") {
 
                 }
                 .keyboardShortcut("{")
 
-                Button("Show Next Tab") {
+                Button("Show Next Tab...") {
 
                 }
                 .keyboardShortcut("}")
 
                 Divider()
 
-                Button("Go Forward") {
+                Button("Go Forward...") {
 
                 }
             }
@@ -53,38 +53,38 @@ struct NavigateCommands: Commands {
 
             Group {
 
-                Button("Go Back") {
+                Button("Go Back...") {
 
                 }
 
                 Divider()
 
-                Button("Jump to Selection") {
+                Button("Jump to Selection...") {
 
                 }
                 .keyboardShortcut("l", modifiers: [.command, .option])
 
-                Button("Jump to Definition") {
+                Button("Jump to Definition...") {
 
                 }
                 .keyboardShortcut("j")
 
-                Button("Jump to Original Source") {
+                Button("Jump to Original Source...") {
 
                 }
 
-                Button("Jump to Last Destination") {
+                Button("Jump to Last Destination...") {
 
                 }
 
                 Divider()
 
-                Button("Jump to Next Issue") {
+                Button("Jump to Next Issue...") {
 
                 }
                 .keyboardShortcut("'")
 
-                Button("Jump to Previous Issue") {
+                Button("Jump to Previous Issue...") {
 
                 }
                 .keyboardShortcut("\"")
