@@ -112,7 +112,6 @@
 		58798250292E78D80085B254 /* CodeFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58798249292E78D80085B254 /* CodeFile.swift */; };
 		58798251292E78D80085B254 /* OtherFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5879824B292E78D80085B254 /* OtherFileView.swift */; };
 		58798252292E78D80085B254 /* ImageFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5879824D292E78D80085B254 /* ImageFileView.swift */; };
-		5879826F292EC9870085B254 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = 5879826E292EC9870085B254 /* GRDB */; };
 		58798284292ED0FB0085B254 /* TerminalEmulatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58798280292ED0FB0085B254 /* TerminalEmulatorView.swift */; };
 		58798285292ED0FB0085B254 /* TerminalEmulatorView+Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58798281292ED0FB0085B254 /* TerminalEmulatorView+Coordinator.swift */; };
 		58798286292ED0FB0085B254 /* SwiftTerm+Color+Init.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58798283292ED0FB0085B254 /* SwiftTerm+Color+Init.swift */; };
@@ -778,7 +777,6 @@
 			files = (
 				58F2EB1A292FB91C004A9BDE /* Preferences in Frameworks */,
 				58F2EB17292FB74D004A9BDE /* CodeEditTextView in Frameworks */,
-				5879826F292EC9870085B254 /* GRDB in Frameworks */,
 				58F2EB1E292FB954004A9BDE /* Sparkle in Frameworks */,
 				6C147C4529A329350089B630 /* OrderedCollections in Frameworks */,
 				5879828A292ED15F0085B254 /* SwiftTerm in Frameworks */,
@@ -2366,7 +2364,6 @@
 			name = CodeEdit;
 			packageProductDependencies = (
 				2816F593280CF50500DD548B /* CodeEditSymbols */,
-				5879826E292EC9870085B254 /* GRDB */,
 				58798289292ED15F0085B254 /* SwiftTerm */,
 				58F2EB16292FB74D004A9BDE /* CodeEditTextView */,
 				58F2EB19292FB91C004A9BDE /* Preferences */,
@@ -2458,7 +2455,6 @@
 			packageReferences = (
 				2816F592280CF50500DD548B /* XCRemoteSwiftPackageReference "CodeEditSymbols" */,
 				287136B1292A407E00E9F5F4 /* XCRemoteSwiftPackageReference "SwiftLintPlugin" */,
-				5879826D292EC9870085B254 /* XCRemoteSwiftPackageReference "GRDB.swift" */,
 				58798288292ED15F0085B254 /* XCRemoteSwiftPackageReference "SwiftTerm" */,
 				58F2EB15292FB74D004A9BDE /* XCRemoteSwiftPackageReference "CodeEditTextView" */,
 				58F2EB18292FB91C004A9BDE /* XCRemoteSwiftPackageReference "Preferences" */,
@@ -3788,14 +3784,6 @@
 				version = 1.9.0;
 			};
 		};
-		5879826D292EC9870085B254 /* XCRemoteSwiftPackageReference "GRDB.swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/groue/GRDB.swift.git";
-			requirement = {
-				kind = exactVersion;
-				version = 5.22.2;
-			};
-		};
 		58798288292ED15F0085B254 /* XCRemoteSwiftPackageReference "SwiftTerm" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/migueldeicaza/SwiftTerm.git";
@@ -3809,7 +3797,7 @@
 			repositoryURL = "https://github.com/CodeEditApp/CodeEditTextView.git";
 			requirement = {
 				kind = exactVersion;
-				version = 0.5.0;
+				version = 0.5.1;
 			};
 		};
 		58F2EB18292FB91C004A9BDE /* XCRemoteSwiftPackageReference "Preferences" */ = {
@@ -3853,11 +3841,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 583E529A29361BAB001AB554 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
 			productName = SnapshotTesting;
-		};
-		5879826E292EC9870085B254 /* GRDB */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 5879826D292EC9870085B254 /* XCRemoteSwiftPackageReference "GRDB.swift" */;
-			productName = GRDB;
 		};
 		58798289292ED15F0085B254 /* SwiftTerm */ = {
 			isa = XCSwiftPackageProductDependency;

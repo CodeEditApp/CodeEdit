@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CodeEditApp/CodeEditLanguages.git",
       "state" : {
-        "revision" : "02595fb02841568b9befcbfcdaf9be88280c49aa",
-        "version" : "0.1.11"
+        "revision" : "08cb9dc04e70d1e7b9610580794ed4da774c2b84",
+        "version" : "0.1.13"
       }
     },
     {
@@ -23,17 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CodeEditApp/CodeEditTextView.git",
       "state" : {
-        "revision" : "4ff2df56b94c822e834353ce9f74836f700bff1c",
-        "version" : "0.5.0"
-      }
-    },
-    {
-      "identity" : "grdb.swift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/groue/GRDB.swift.git",
-      "state" : {
-        "revision" : "15c06e037430c8a2dc570f9199dd7bf8caa21195",
-        "version" : "5.22.2"
+        "revision" : "36a5f790153d9feae0221ba40e0b9da2a1211232",
+        "version" : "0.5.1"
       }
     },
     {
