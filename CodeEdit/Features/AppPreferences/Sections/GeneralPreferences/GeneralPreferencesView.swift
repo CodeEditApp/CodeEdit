@@ -40,7 +40,10 @@ struct GeneralPreferencesView: View {
             fileExtensionsSection
             fileIconStyleSection
             tabBarStyleSection
-            reopenBehaviorSection
+            Group {
+                reopenBehaviorSection
+                reopenAfterWindowCloseBehaviourSection
+            }
             projectNavigatorSizeSection
             findNavigatorDetailSection
             Group {
@@ -157,6 +160,24 @@ private extension GeneralPreferencesView {
                     .tag(AppPreferences.ReopenBehavior.openPanel)
                 Text("New Document")
                     .tag(AppPreferences.ReopenBehavior.newDocument)
+            }
+            .frame(width: inputWidth)
+        }
+    }
+
+    var reopenAfterWindowCloseBehaviourSection: some View {
+        PreferencesSection("After last window closed") {
+            Picker(
+                "After last window closed:",
+                selection: $prefs.preferences.general.reopenWindowAfterClose
+            ) {
+                Text("Do nothing")
+                    .tag(AppPreferences.ReopenWindowBehavior.doNothing)
+                Divider()
+                Text("Show Welcome Window")
+                    .tag(AppPreferences.ReopenWindowBehavior.showWelcomeWindow)
+                Text("Quit")
+                    .tag(AppPreferences.ReopenWindowBehavior.quit)
             }
             .frame(width: inputWidth)
         }
