@@ -11,19 +11,19 @@ struct FileCommands: Commands {
     var body: some Commands {
         CommandGroup(replacing: .newItem) {
             Group {
-                Button("New...") {
+                Button("New") {
                     NSDocumentController.shared.newDocument(nil)
                 }
                 .keyboardShortcut("n")
 
-                Button("Open...") {
+                Button("Open") {
                     NSDocumentController.shared.openDocument(nil)
                 }
                 .keyboardShortcut("o")
 
                 // Leave this empty, is done through a hidden API in WindowCommands/Utils/CommandsFixes.swift
                 // This can't be done in SwiftUI Commands yet, as they don't support images in menu items.
-                Menu("Open Recent...") {
+                Menu("Open Recent") {
                     
                 }
                 .disabled(true)
