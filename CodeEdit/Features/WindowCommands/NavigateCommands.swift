@@ -29,16 +29,19 @@ struct NavigateCommands: Commands {
                 Button("Open in...") {
 
                 }
+                .keyboardShortcut("<", modifiers: [.option, .command])
 
                 Divider()
 
                 Button("Show Previous Tab") {
 
                 }
+                .keyboardShortcut("{")
 
                 Button("Show Next Tab") {
 
                 }
+                .keyboardShortcut("}")
 
                 Divider()
 
