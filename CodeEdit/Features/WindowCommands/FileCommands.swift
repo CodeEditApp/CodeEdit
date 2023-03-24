@@ -16,7 +16,7 @@ struct FileCommands: Commands {
                 }
                 .keyboardShortcut("n")
 
-                Button("Open") {
+                Button("Open...") {
                     NSDocumentController.shared.openDocument(nil)
                 }
                 .keyboardShortcut("o")
