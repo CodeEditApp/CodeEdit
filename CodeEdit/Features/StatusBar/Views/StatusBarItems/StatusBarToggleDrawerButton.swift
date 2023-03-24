@@ -32,12 +32,8 @@ internal struct StatusBarToggleDrawerButton: View {
     }
 
     internal var body: some View {
-        Button {
+        StatusBarIcon(icon: Image(systemName: "square.bottomthird.inset.filled")) {
             togglePanel()
-            // Show/hide terminal window
-        } label: {
-            Image(systemName: "rectangle.bottomthird.inset.filled")
-                .imageScale(.medium)
         }
         .tint(collapsed ? .primary : .accentColor)
         .keyboardShortcut("Y", modifiers: [.command, .shift])
