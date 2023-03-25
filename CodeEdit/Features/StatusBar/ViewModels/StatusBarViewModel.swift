@@ -56,7 +56,7 @@ class StatusBarViewModel: ObservableObject {
     var searchText: String = ""
 
     /// Returns the font for status bar items to use
-    private(set) var toolbarFont: Font = .system(size: 11)
+    private(set) var toolbarFont: Font = .system(size: 11, weight: .medium)
 
     /// The maximum height of the drawer
     /// when isMaximized is true the height gets set to maxHeight

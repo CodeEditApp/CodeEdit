@@ -201,7 +201,7 @@
 		587D9B772933BF5700BF7490 /* Live.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587D9B712933BF5700BF7490 /* Live.swift */; };
 		587D9B782933BF5700BF7490 /* Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587D9B722933BF5700BF7490 /* Interface.swift */; };
 		58822524292C280D00E83CDE /* StatusBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822509292C280D00E83CDE /* StatusBarView.swift */; };
-		58822525292C280D00E83CDE /* StatusBarMenuLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882250B292C280D00E83CDE /* StatusBarMenuLabel.swift */; };
+		58822525292C280D00E83CDE /* StatusBarMenuStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882250B292C280D00E83CDE /* StatusBarMenuStyle.swift */; };
 		58822526292C280D00E83CDE /* StatusBarBreakpointButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882250C292C280D00E83CDE /* StatusBarBreakpointButton.swift */; };
 		58822527292C280D00E83CDE /* StatusBarIndentSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882250D292C280D00E83CDE /* StatusBarIndentSelector.swift */; };
 		58822528292C280D00E83CDE /* StatusBarEncodingSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882250E292C280D00E83CDE /* StatusBarEncodingSelector.swift */; };
@@ -340,6 +340,7 @@
 		B66A4E5129C917D5004573B4 /* AboutWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66A4E5029C917D5004573B4 /* AboutWindow.swift */; };
 		B66A4E5329C91831004573B4 /* CodeEditCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66A4E5229C91831004573B4 /* CodeEditCommands.swift */; };
 		B66A4E5629C918A0004573B4 /* SceneID.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66A4E5529C918A0004573B4 /* SceneID.swift */; };
+		B685DE7929CC9CCD002860C8 /* StatusBarIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = B685DE7829CC9CCD002860C8 /* StatusBarIcon.swift */; };
 		B6C6A42A297716A500A3D28F /* TabBarItemCloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C6A429297716A500A3D28F /* TabBarItemCloseButton.swift */; };
 		B6C6A42E29771A8D00A3D28F /* TabBarItemButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C6A42D29771A8D00A3D28F /* TabBarItemButtonStyle.swift */; };
 		B6C6A43029771F7100A3D28F /* TabBarItemBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C6A42F29771F7100A3D28F /* TabBarItemBackground.swift */; };
@@ -606,7 +607,7 @@
 		587D9B712933BF5700BF7490 /* Live.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Live.swift; sourceTree = "<group>"; };
 		587D9B722933BF5700BF7490 /* Interface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Interface.swift; sourceTree = "<group>"; };
 		58822509292C280D00E83CDE /* StatusBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarView.swift; sourceTree = "<group>"; };
-		5882250B292C280D00E83CDE /* StatusBarMenuLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarMenuLabel.swift; sourceTree = "<group>"; };
+		5882250B292C280D00E83CDE /* StatusBarMenuStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarMenuStyle.swift; sourceTree = "<group>"; };
 		5882250C292C280D00E83CDE /* StatusBarBreakpointButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarBreakpointButton.swift; sourceTree = "<group>"; };
 		5882250D292C280D00E83CDE /* StatusBarIndentSelector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarIndentSelector.swift; sourceTree = "<group>"; };
 		5882250E292C280D00E83CDE /* StatusBarEncodingSelector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarEncodingSelector.swift; sourceTree = "<group>"; };
@@ -742,6 +743,7 @@
 		B66A4E5029C917D5004573B4 /* AboutWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutWindow.swift; sourceTree = "<group>"; };
 		B66A4E5229C91831004573B4 /* CodeEditCommands.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeEditCommands.swift; sourceTree = "<group>"; };
 		B66A4E5529C918A0004573B4 /* SceneID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneID.swift; sourceTree = "<group>"; };
+		B685DE7829CC9CCD002860C8 /* StatusBarIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarIcon.swift; sourceTree = "<group>"; };
 		B6C6A429297716A500A3D28F /* TabBarItemCloseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarItemCloseButton.swift; sourceTree = "<group>"; };
 		B6C6A42D29771A8D00A3D28F /* TabBarItemButtonStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarItemButtonStyle.swift; sourceTree = "<group>"; };
 		B6C6A42F29771F7100A3D28F /* TabBarItemBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarItemBackground.swift; sourceTree = "<group>"; };
@@ -1711,6 +1713,7 @@
 				58822512292C280D00E83CDE /* StatusBarDrawer */,
 				5882250A292C280D00E83CDE /* StatusBarItems */,
 				58822509292C280D00E83CDE /* StatusBarView.swift */,
+				B685DE7829CC9CCD002860C8 /* StatusBarIcon.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1718,7 +1721,7 @@
 		5882250A292C280D00E83CDE /* StatusBarItems */ = {
 			isa = PBXGroup;
 			children = (
-				5882250B292C280D00E83CDE /* StatusBarMenuLabel.swift */,
+				5882250B292C280D00E83CDE /* StatusBarMenuStyle.swift */,
 				5882250C292C280D00E83CDE /* StatusBarBreakpointButton.swift */,
 				5882250D292C280D00E83CDE /* StatusBarIndentSelector.swift */,
 				5882250E292C280D00E83CDE /* StatusBarEncodingSelector.swift */,
@@ -2794,6 +2797,7 @@
 				286471AB27ED51FD0039369D /* ProjectNavigatorView.swift in Sources */,
 				6CAAF68A29BC9C2300A1F48A /* (null) in Sources */,
 				6CFF967629BEBCD900182D6F /* FileCommands.swift in Sources */,
+				B685DE7929CC9CCD002860C8 /* StatusBarIcon.swift in Sources */,
 				587B9DA629300ABD00AC7927 /* ToolbarBranchPicker.swift in Sources */,
 				58F2EB05292FB2B0004A9BDE /* AppPreferencesModel.swift in Sources */,
 				6CBD1BC62978DE53006639D5 /* Font+Caption3.swift in Sources */,
@@ -2870,7 +2874,7 @@
 				6C147C4029A328BC0089B630 /* SplitViewData.swift in Sources */,
 				587B9E9029301D8F00AC7927 /* BitBucketTokenRouter.swift in Sources */,
 				B6C6A42E29771A8D00A3D28F /* TabBarItemButtonStyle.swift in Sources */,
-				58822525292C280D00E83CDE /* StatusBarMenuLabel.swift in Sources */,
+				58822525292C280D00E83CDE /* StatusBarMenuStyle.swift in Sources */,
 				58F2EB11292FB2B0004A9BDE /* PreferencesToolbar.swift in Sources */,
 				6C147C4229A328C10089B630 /* TabGroupData.swift in Sources */,
 				6C2C155829B4F49100EA60A5 /* SplitViewItem.swift in Sources */,
