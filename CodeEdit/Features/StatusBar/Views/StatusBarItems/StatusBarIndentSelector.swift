@@ -31,11 +31,9 @@ struct StatusBarIndentSelector: View {
                 }
             }
         } label: {
-            StatusBarMenuLabel("\(prefs.preferences.textEditing.defaultTabWidth) Spaces")
+            Text("\(prefs.preferences.textEditing.defaultTabWidth) Spaces")
         }
-        .menuIndicator(.hidden)
-        .menuStyle(.borderlessButton)
-        .fixedSize()
+        .menuStyle(StatusBarMenuStyle())
         .onHover { isHovering($0) }
     }
 }
