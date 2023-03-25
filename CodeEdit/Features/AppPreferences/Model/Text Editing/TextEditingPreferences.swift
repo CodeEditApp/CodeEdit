@@ -8,44 +8,6 @@
 import AppKit
 import Foundation
 
-extension String.Encoding: Codable {
-    static var allAscii: [String.Encoding] = [
-        .ascii, 
-        .nonLossyASCII
-    ]
-    static var allJapanese: [String.Encoding] = [
-        .iso2022JP, 
-        .japaneseEUC
-    ]
-    static var allLatin: [String.Encoding] = [
-        .isoLatin1,
-        .isoLatin2,
-        .macOSRoman
-    ]
-    static var allUnicodes: [String.Encoding] = [
-        .unicode,
-        .utf8,
-        .utf16,
-        .utf16BigEndian,
-        .utf16LittleEndian,
-        .utf32,
-        .utf32BigEndian,
-        .utf32LittleEndian
-    ]
-    static var allWindows: [String.Encoding] = [
-        .windowsCP1250,
-        .windowsCP1251,
-        .windowsCP1252,
-        .windowsCP1253,
-        .windowsCP1254
-    ]
-    static var others: [String.Encoding] = [
-        .nextstep, 
-        .shiftJIS, 
-        .symbol
-    ]
-}
-
 extension AppPreferences {
 
     /// The global settings for text editing
@@ -99,7 +61,7 @@ extension AppPreferences {
                 Bool.self,
                 forKey: .wrapLinesToEditorWidth
             ) ?? true
-            try container.decodeIfPresent(
+            self.defaultTextEncoding = try container.decodeIfPresent(
                 String.Encoding.self,
                 forKey: .defaultTextEncoding
             ) ?? .utf8

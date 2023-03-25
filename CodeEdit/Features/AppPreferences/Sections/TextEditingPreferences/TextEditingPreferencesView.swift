@@ -134,48 +134,14 @@ struct TextEditingPreferencesView: View {
     }
 
     private var textEncoding: some View {
-        Picker("Default Text Encoding", selection: $prefs.preferences.textEditing.textEncoding) {
-            Group {
-                ForEach(String.Encoding.allUnicodes, id: \.id) { unicode in
-                    Text(unicode.description)
-                        .tag(unicode)
+        Picker("Default Text Encoding", selection: $prefs.preferences.textEditing.defaultTextEncoding) {
+            ForEach(String.Encoding.allGroups, id: \.self) { group in
+                ForEach(group, id: \.rawValue) { encoding in
+                    Text(encoding.description)
+                        .tag(encoding)
                 }
-
-                Divider()
-
-                ForEach(String.Encoding.allAscii, id: \.id) { ascii in
-                    Text(ascii.description)
-                        .tag(ascii)
-                }
-
-                Divider()
-
-                ForEach(String.Encoding.allJapanese, id: \.id) { japanese in
-                    Text(japanese.description)
-                        .tag(japanese)
-                }
-
-                Divider()
-
-                ForEach(String.Encoding.allLatin, id: \.id) { latin in
-                    Text(latin.description)
-                        .tag(latin)
-                }
-
-                Divider()
-
-                ForEach(String.Encoding.others, id: \.id) { other in
-                    Text(other.description)
-                        .tag(other)
-                }
-
-                Divider()
-            }
-
-            Group {
-                ForEach(String.Encoding.allWindows, id: \.id) { windows in
-                    Text(windows.description)
-                        .tag(windows)
+                if group != String.Encoding.allGroups.last {
+                    Divider()
                 }
             }
         }

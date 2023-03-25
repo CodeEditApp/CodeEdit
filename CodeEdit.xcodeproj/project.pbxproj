@@ -45,6 +45,7 @@
 		283BDCBD2972EEBD002AFF81 /* Package.resolved in Resources */ = {isa = PBXBuildFile; fileRef = 283BDCBC2972EEBD002AFF81 /* Package.resolved */; };
 		283BDCC52972F236002AFF81 /* AcknowledgementsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283BDCC42972F236002AFF81 /* AcknowledgementsTests.swift */; };
 		2847019E27FDDF7600F87B6B /* OutlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2847019D27FDDF7600F87B6B /* OutlineView.swift */; };
+		284D384E29CF6CC500E37E86 /* String+Encoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284D384D29CF6CC500E37E86 /* String+Encoding.swift */; };
 		284DC84F2978B7B400BF2770 /* ContributorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284DC84E2978B7B400BF2770 /* ContributorsView.swift */; };
 		284DC8512978BA2600BF2770 /* .all-contributorsrc in Resources */ = {isa = PBXBuildFile; fileRef = 284DC8502978BA2600BF2770 /* .all-contributorsrc */; };
 		285FEC7027FE4B9800E57D53 /* OutlineTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285FEC6F27FE4B9800E57D53 /* OutlineTableViewCell.swift */; };
@@ -448,6 +449,7 @@
 		283BDCBC2972EEBD002AFF81 /* Package.resolved */ = {isa = PBXFileReference; lastKnownFileType = text; name = Package.resolved; path = CodeEdit.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved; sourceTree = "<group>"; };
 		283BDCC42972F236002AFF81 /* AcknowledgementsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcknowledgementsTests.swift; sourceTree = "<group>"; };
 		2847019D27FDDF7600F87B6B /* OutlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineView.swift; sourceTree = "<group>"; };
+		284D384D29CF6CC500E37E86 /* String+Encoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Encoding.swift"; sourceTree = "<group>"; };
 		284DC84E2978B7B400BF2770 /* ContributorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContributorsView.swift; sourceTree = "<group>"; };
 		284DC8502978BA2600BF2770 /* .all-contributorsrc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ".all-contributorsrc"; sourceTree = "<group>"; };
 		285FEC6D27FE4B4A00E57D53 /* OutlineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineViewController.swift; sourceTree = "<group>"; };
@@ -1848,6 +1850,7 @@
 			isa = PBXGroup;
 			children = (
 				58D01C8E293167DC00C5B6B4 /* String+MD5.swift */,
+				284D384D29CF6CC500E37E86 /* String+Encoding.swift */,
 				D7E201AD27E8B3C000CB86D0 /* String+Ranges.swift */,
 				58D01C8D293167DC00C5B6B4 /* String+RemoveOccurrences.swift */,
 				58D01C8C293167DC00C5B6B4 /* String+SHA256.swift */,
@@ -2598,6 +2601,7 @@
 				587B9DA029300ABD00AC7927 /* PanelDivider.swift in Sources */,
 				58822534292C280D00E83CDE /* CursorLocation.swift in Sources */,
 				201169E52837B40300F92B46 /* SourceControlNavigatorRepositoriesView.swift in Sources */,
+				284D384E29CF6CC500E37E86 /* String+Encoding.swift in Sources */,
 				587B9E6A29301D8F00AC7927 /* GitLabPermissions.swift in Sources */,
 				D7DC4B76298FFBE900D6C83D /* OutlintViewController+OutlineTableViewCellDelegate.swift in Sources */,
 				587B9E9229301D8F00AC7927 /* BitBucketAccount.swift in Sources */,
