@@ -10,12 +10,12 @@ import Foundation
 extension String.Encoding: Codable {
     static var allGroups: [[String.Encoding]] {
         [
-            String.Encoding.allUnicodes,
-            String.Encoding.allAscii,
-            String.Encoding.allLatin,
-            String.Encoding.allJapanese,
-            String.Encoding.allWindows,
-            String.Encoding.others
+            Self.allUnicodes,
+            Self.allAscii,
+            Self.allLatin,
+            Self.allJapanese,
+            Self.allWindows,
+            Self.others
         ]
     }
 
