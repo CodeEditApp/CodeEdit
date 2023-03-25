@@ -16,7 +16,7 @@ struct HelpCommands: Commands {
             .disabled(true)
 
             Button("Release Notes...") {
-                
+
             }
             .disabled(true)
 
