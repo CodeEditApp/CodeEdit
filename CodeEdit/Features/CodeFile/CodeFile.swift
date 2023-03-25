@@ -100,7 +100,7 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
     override func read(from data: Data, ofType _: String) throws {
         var encoding: String.Encoding
 
-        switch prefs.preferences.textEditing.textEncoding {
+        switch prefs.preferences.textEditing.textDecoding {
         case .ascii:
             encoding = String.Encoding.ascii
         case .iso2022JP:
