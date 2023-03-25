@@ -23,6 +23,9 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
     @Published
     var content = ""
 
+    @ObservedObject
+    private var prefs: AppPreferencesModel = .shared
+
     /*
      This is the main type of the document.
      For example, if the file is end with '.png', it will be an image,
@@ -91,10 +94,53 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
         return data
     }
 
+    // swiftlint:disable cyclomatic_complexity
+    // swiftlint:disable function_body_length
     /// This function is used for decoding files.
     /// It should not throw error as unsupported files can still be opened by QLPreviewView.
     override func read(from data: Data, ofType _: String) throws {
-        guard let content = String(data: data, encoding: .utf8) else { return }
+        var encoding: String.Encoding
+
+        switch prefs.preferences.textEditing.textEncoding {
+        case .ascii:
+            encoding = String.Encoding.ascii
+        case .iso2022JP:
+            encoding = String.Encoding.iso2022JP
+        case .isoLatin1:
+            encoding = String.Encoding.isoLatin1
+        case .isoLatin2:
+            encoding = String.Encoding.isoLatin2
+        case .japaneseEUC:
+            encoding = String.Encoding.japaneseEUC
+        case .macOSRoman:
+            encoding = String.Encoding.macOSRoman
+        case .nextstep:
+            encoding = String.Encoding.nextstep
+        case .nonLossyASCII:
+            encoding = String.Encoding.nonLossyASCII
+        case .shiftJIS:
+            encoding = String.Encoding.shiftJIS
+        case .symbol:
+            encoding = String.Encoding.symbol
+        case .unicode:
+            encoding = String.Encoding.unicode
+        case .utf8:
+            encoding = String.Encoding.utf8
+        case .utf16:
+            encoding = String.Encoding.utf16
+        case .utf16be:
+            encoding = String.Encoding.utf16BigEndian
+        case .utf16le:
+            encoding = String.Encoding.utf16LittleEndian
+        case .utf32:
+            encoding = String.Encoding.utf32
+        case .utf32be:
+            encoding = String.Encoding.utf32BigEndian
+        case .utf32le:
+            encoding = String.Encoding.utf32LittleEndian
+        }
+
+        guard let content = String(data: data, encoding: encoding) else { return }
         self.content = content
     }
 }

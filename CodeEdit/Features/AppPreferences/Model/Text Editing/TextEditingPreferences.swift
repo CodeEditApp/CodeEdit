@@ -27,6 +27,9 @@ extension AppPreferences {
         /// A flag indicating whether to wrap lines to editor width
         var wrapLinesToEditorWidth: Bool = true
 
+        /// The encoding that a file is read
+        var textEncoding: TextEncodingFormats = .utf8
+
         /// A multiplier for setting the line height. Defaults to `1.45`
         var lineHeightMultiple: Double = 1.45
 
@@ -38,8 +41,14 @@ extension AppPreferences {
         /// Explicit decoder init for setting default values when key is not present in `JSON`
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
-            self.defaultTabWidth = try container.decodeIfPresent(Int.self, forKey: .defaultTabWidth) ?? 4
-            self.font = try container.decodeIfPresent(EditorFont.self, forKey: .font) ?? .init()
+            self.defaultTabWidth = try container.decodeIfPresent(
+                Int.self,
+                forKey: .defaultTabWidth
+            ) ?? 4
+            self.font = try container.decodeIfPresent(
+                EditorFont.self,
+                forKey: .font
+            ) ?? .init()
             self.enableTypeOverCompletion = try container.decodeIfPresent(
                 Bool.self,
                 forKey: .enableTypeOverCompletion
@@ -52,6 +61,10 @@ extension AppPreferences {
                 Bool.self,
                 forKey: .wrapLinesToEditorWidth
             ) ?? true
+            self.textEncoding = try container.decodeIfPresent(
+                TextEncodingFormats.self,
+                forKey: .textEncoding
+            ) ?? AppPreferences.TextEncodingFormats.utf8
             self.lineHeightMultiple = try container.decodeIfPresent(
                 Double.self,
                 forKey: .lineHeightMultiple
@@ -91,6 +104,27 @@ extension AppPreferences {
                 }
             )
         }
+    }
+
+    enum TextEncodingFormats: String, Codable {
+        case ascii
+        case iso2022JP
+        case isoLatin1
+        case isoLatin2
+        case japaneseEUC
+        case macOSRoman
+        case nextstep
+        case nonLossyASCII
+        case shiftJIS
+        case symbol
+        case unicode
+        case utf8
+        case utf16
+        case utf16be
+        case utf16le
+        case utf32
+        case utf32be
+        case utf32le
     }
 
     struct EditorFont: Codable, Equatable {

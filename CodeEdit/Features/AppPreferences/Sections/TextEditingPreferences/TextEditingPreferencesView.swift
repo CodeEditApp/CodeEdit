@@ -75,6 +75,9 @@ struct TextEditingPreferencesView: View {
             PreferencesSection("Line Wrapping") {
                 wrapLinesToEditorWidth
             }
+            PreferencesSection("Default Text Encoding") {
+                textEncoding
+            }
         }
     }
 
@@ -127,6 +130,72 @@ struct TextEditingPreferencesView: View {
         HStack {
             Toggle("Wrap lines to editor width", isOn: $prefs.preferences.textEditing.wrapLinesToEditorWidth)
             Text("Wrap lines to editor width")
+        }
+    }
+
+    private var textEncoding: some View {
+        Picker("Text encoding", selection: $prefs.preferences.textEditing.textEncoding) {
+            Group {
+                Text("ASCII")
+                    .tag(AppPreferences.TextEncodingFormats.ascii)
+                Text("Non Lossy ASCII")
+                    .tag(AppPreferences.TextEncodingFormats.nonLossyASCII)
+
+                Divider()
+
+                Text("ISO 2022 Japan")
+                    .tag(AppPreferences.TextEncodingFormats.iso2022JP)
+                Text("Japanese EUC")
+                    .tag(AppPreferences.TextEncodingFormats.japaneseEUC)
+
+                Divider()
+
+                Text("ISO Latin 1")
+                    .tag(AppPreferences.TextEncodingFormats.isoLatin1)
+                Text("ISO Latin 2")
+                    .tag(AppPreferences.TextEncodingFormats.isoLatin2)
+                Text("macOS Roman")
+                    .tag(AppPreferences.TextEncodingFormats.macOSRoman)
+            }
+
+            Group {
+                Divider()
+
+                Text("Nextstep")
+                    .tag(AppPreferences.TextEncodingFormats.nextstep)
+                Text("Shift JIS")
+                    .tag(AppPreferences.TextEncodingFormats.shiftJIS)
+                Text("Symbol")
+                    .tag(AppPreferences.TextEncodingFormats.symbol)
+
+                Divider()
+            }
+
+            Group {
+                Text("Unicode")
+                    .tag(AppPreferences.TextEncodingFormats.unicode)
+
+                Text("Unicode (UTF-8)")
+                    .tag(AppPreferences.TextEncodingFormats.utf8)
+
+                Divider()
+
+                Text("Unicode (UTF-16)")
+                    .tag(AppPreferences.TextEncodingFormats.utf16)
+                Text("Unicode (UTF-16) Big Endian")
+                    .tag(AppPreferences.TextEncodingFormats.utf16be)
+                Text("Unicode (UTF-16) Little Endian")
+                    .tag(AppPreferences.TextEncodingFormats.utf16le)
+
+                Divider()
+
+                Text("Unicode (UTF-32)")
+                    .tag(AppPreferences.TextEncodingFormats.utf32)
+                Text("Unicode (UTF-32) Big Endian")
+                    .tag(AppPreferences.TextEncodingFormats.utf32be)
+                Text("Unicode (UTF-32) Little Endian")
+                    .tag(AppPreferences.TextEncodingFormats.utf32le)
+            }
         }
     }
 
