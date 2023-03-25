@@ -28,7 +28,7 @@ extension AppPreferences {
         var wrapLinesToEditorWidth: Bool = true
 
         /// The encoding that a file is read
-        var textEncoding: TextEncodingFormats = .utf8
+        var textEncoding: TextDecodingFormats = .utf8
 
         /// A multiplier for setting the line height. Defaults to `1.45`
         var lineHeightMultiple: Double = 1.45
@@ -61,10 +61,10 @@ extension AppPreferences {
                 Bool.self,
                 forKey: .wrapLinesToEditorWidth
             ) ?? true
-            self.textEncoding = try container.decodeIfPresent(
-                TextEncodingFormats.self,
-                forKey: .textEncoding
-            ) ?? AppPreferences.TextEncodingFormats.utf8
+            self.textDecoding = try container.decodeIfPresent(
+                TextDecodingFormats.self,
+                forKey: .textDecoding
+            ) ?? AppPreferences.TextDecodingFormats.utf8
             self.lineHeightMultiple = try container.decodeIfPresent(
                 Double.self,
                 forKey: .lineHeightMultiple
@@ -106,7 +106,7 @@ extension AppPreferences {
         }
     }
 
-    enum TextEncodingFormats: String, Codable {
+    enum TextDecodingFormats: String, Codable {
         case ascii
         case iso2022JP
         case isoLatin1
