@@ -31,12 +31,13 @@ extension String.Encoding: Codable {
                                                  String.Encoding.utf32BigEndian,
                                                  String.Encoding.utf32LittleEndian
                                                 ]
-    static var allWindows: [String.Encoding] = [String.Encoding.windowsCP1250,
-                                                String.Encoding.windowsCP1251,
-                                                String.Encoding.windowsCP1252,
-                                                String.Encoding.windowsCP1253,
-                                                String.Encoding.windowsCP1254
-                                                ]
+    static var allWindows: [String.Encoding] = [
+        .windowsCP1250,
+        .windowsCP1251,
+        .windowsCP1252,
+        .windowsCP1253,
+        .windowsCP1254
+    ]
     static var others: [String.Encoding] = [
         .nextstep, 
         .shiftJIS, 
