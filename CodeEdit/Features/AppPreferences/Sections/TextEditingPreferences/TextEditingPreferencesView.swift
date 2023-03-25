@@ -76,7 +76,7 @@ struct TextEditingPreferencesView: View {
                 wrapLinesToEditorWidth
             }
             PreferencesSection("Default Text Decoding") {
-                textEncoding
+                textDecoding
             }
         }
     }
