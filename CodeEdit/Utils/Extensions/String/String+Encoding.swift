@@ -18,7 +18,7 @@ extension String.Encoding: Codable {
             String.Encoding.others
         ]
     }
-    
+
     static var allAscii: [String.Encoding] {
         [
             .ascii,
