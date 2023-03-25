@@ -14,10 +14,11 @@ extension String.Encoding: Codable {
         .nonLossyASCII
     ]
     static var allJapanese: [String.Encoding] = [String.Encoding.iso2022JP, String.Encoding.japaneseEUC]
-    static var allLatin: [String.Encoding] = [String.Encoding.isoLatin1,
-                                              String.Encoding.isoLatin2,
-                                              String.Encoding.macOSRoman
-                                            ]
+    static var allLatin: [String.Encoding] = [
+        .isoLatin1,
+        .isoLatin2,
+        .macOSRoman
+    ]
     static var allUnicodes: [String.Encoding] = [String.Encoding.unicode,
                                                  String.Encoding.utf8,
                                                  String.Encoding.utf16,
