@@ -136,6 +136,13 @@ struct TextEditingPreferencesView: View {
     private var textEncoding: some View {
         Picker("Default Text Encoding", selection: $prefs.preferences.textEditing.textEncoding) {
             Group {
+                ForEach(String.Encoding.allUnicodes, id: \.id) { unicode in
+                    Text(unicode.description)
+                        .tag(unicode)
+                }
+
+                Divider()
+
                 ForEach(String.Encoding.allAscii, id: \.id) { ascii in
                     Text(ascii.description)
                         .tag(ascii)
@@ -163,14 +170,8 @@ struct TextEditingPreferencesView: View {
                 }
 
                 Divider()
-
-                ForEach(String.Encoding.allUnicodes, id: \.id) { unicode in
-                    Text(unicode.description)
-                        .tag(unicode)
-                }
-
-                Divider()
             }
+
             Group {
                 ForEach(String.Encoding.allWindows, id: \.id) { windows in
                     Text(windows.description)
