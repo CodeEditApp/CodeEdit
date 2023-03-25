@@ -24,7 +24,7 @@ struct FileCommands: Commands {
                 // Leave this empty, is done through a hidden API in WindowCommands/Utils/CommandsFixes.swift
                 // This can't be done in SwiftUI Commands yet, as they don't support images in menu items.
                 Menu("Open Recent") {
-                    
+
                 }
                 .disabled(true)
 
