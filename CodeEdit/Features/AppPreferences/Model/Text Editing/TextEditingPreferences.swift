@@ -9,7 +9,10 @@ import AppKit
 import Foundation
 
 extension String.Encoding: Codable {
-    static var allAscii: [String.Encoding] = [String.Encoding.ascii, String.Encoding.nonLossyASCII]
+    static var allAscii: [String.Encoding] = [
+        .ascii, 
+        .nonLossyASCII
+    ]
     static var allJapanese: [String.Encoding] = [String.Encoding.iso2022JP, String.Encoding.japaneseEUC]
     static var allLatin: [String.Encoding] = [String.Encoding.isoLatin1,
                                               String.Encoding.isoLatin2,
