@@ -72,6 +72,7 @@ struct WorkspaceView: View {
                     }
                 }
             }
+            .background(EffectView(.contentBackground))
         }
     }
 }

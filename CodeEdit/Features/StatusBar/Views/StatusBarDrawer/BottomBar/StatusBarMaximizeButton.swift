@@ -16,7 +16,7 @@ struct StatusBarMaximizeButton: View {
             model.isMaximized.toggle()
         } label: {
             Image(systemName: "arrowtriangle.up.square")
-                .foregroundColor(model.isMaximized ? .accentColor : .primary)
+                .foregroundColor(model.isMaximized ? .accentColor : .secondary)
         }
         .buttonStyle(.plain)
     }
