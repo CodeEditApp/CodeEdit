@@ -75,8 +75,8 @@ struct TextEditingPreferencesView: View {
             PreferencesSection("Line Wrapping") {
                 wrapLinesToEditorWidth
             }
-            PreferencesSection("Default Text Decoding") {
-                textDecoding
+            PreferencesSection("Default Text Encoding") {
+                textEncoding
             }
         }
     }
@@ -133,68 +133,68 @@ struct TextEditingPreferencesView: View {
         }
     }
 
-    private var textDecoding: some View {
-        Picker("Text decoding", selection: $prefs.preferences.textEditing.textDecoding) {
+    private var textEncoding: some View {
+        Picker("Default Text Decoding", selection: $prefs.preferences.textEditing.textEncoding) {
             Group {
                 Text("ASCII")
-                    .tag(AppPreferences.TextDecodingFormats.ascii)
+                    .tag(String.Encoding.ascii)
                 Text("Non Lossy ASCII")
-                    .tag(AppPreferences.TextDecodingFormats.nonLossyASCII)
+                    .tag(String.Encoding.nonLossyASCII)
 
                 Divider()
 
                 Text("ISO 2022 Japan")
-                    .tag(AppPreferences.TextDecodingFormats.iso2022JP)
+                    .tag(String.Encoding.iso2022JP)
                 Text("Japanese EUC")
-                    .tag(AppPreferences.TextDecodingFormats.japaneseEUC)
+                    .tag(String.Encoding.japaneseEUC)
 
                 Divider()
 
                 Text("ISO Latin 1")
-                    .tag(AppPreferences.TextDecodingFormats.isoLatin1)
+                    .tag(String.Encoding.isoLatin1)
                 Text("ISO Latin 2")
-                    .tag(AppPreferences.TextDecodingFormats.isoLatin2)
+                    .tag(String.Encoding.isoLatin2)
                 Text("macOS Roman")
-                    .tag(AppPreferences.TextDecodingFormats.macOSRoman)
+                    .tag(String.Encoding.macOSRoman)
             }
 
             Group {
                 Divider()
 
                 Text("Nextstep")
-                    .tag(AppPreferences.TextDecodingFormats.nextstep)
+                    .tag(String.Encoding.nextstep)
                 Text("Shift JIS")
-                    .tag(AppPreferences.TextDecodingFormats.shiftJIS)
+                    .tag(String.Encoding.shiftJIS)
                 Text("Symbol")
-                    .tag(AppPreferences.TextDecodingFormats.symbol)
+                    .tag(String.Encoding.symbol)
 
                 Divider()
             }
 
             Group {
                 Text("Unicode")
-                    .tag(AppPreferences.TextDecodingFormats.unicode)
+                    .tag(String.Encoding.unicode)
 
                 Text("Unicode (UTF-8)")
-                    .tag(AppPreferences.TextDecodingFormats.utf8)
+                    .tag(String.Encoding.utf8)
 
                 Divider()
 
                 Text("Unicode (UTF-16)")
-                    .tag(AppPreferences.TextDecodingFormats.utf16)
+                    .tag(String.Encoding.utf16)
                 Text("Unicode (UTF-16) Big Endian")
-                    .tag(AppPreferences.TextDecodingFormats.utf16be)
+                    .tag(String.Encoding.utf16be)
                 Text("Unicode (UTF-16) Little Endian")
-                    .tag(AppPreferences.TextDecodingFormats.utf16le)
+                    .tag(String.Encoding.utf16le)
 
                 Divider()
 
                 Text("Unicode (UTF-32)")
-                    .tag(AppPreferences.TextDecodingFormats.utf32)
+                    .tag(String.Encoding.utf32)
                 Text("Unicode (UTF-32) Big Endian")
-                    .tag(AppPreferences.TextDecodingFormats.utf32be)
+                    .tag(String.Encoding.utf32be)
                 Text("Unicode (UTF-32) Little Endian")
-                    .tag(AppPreferences.TextDecodingFormats.utf32le)
+                    .tag(String.Encoding.utf32le)
             }
         }
     }

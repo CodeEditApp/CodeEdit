@@ -94,52 +94,10 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
         return data
     }
 
-    // swiftlint:disable cyclomatic_complexity
     /// This function is used for decoding files.
-    /// It should not throw error as unsupported files can still be opened by QLPreviewView
+    /// It should not throw error as unsupported files can still be opened by QLPreviewView.
     override func read(from data: Data, ofType _: String) throws {
-        var encoding: String.Encoding
-
-        switch prefs.preferences.textEditing.textDecoding {
-        case .ascii:
-            encoding = String.Encoding.ascii
-        case .iso2022JP:
-            encoding = String.Encoding.iso2022JP
-        case .isoLatin1:
-            encoding = String.Encoding.isoLatin1
-        case .isoLatin2:
-            encoding = String.Encoding.isoLatin2
-        case .japaneseEUC:
-            encoding = String.Encoding.japaneseEUC
-        case .macOSRoman:
-            encoding = String.Encoding.macOSRoman
-        case .nextstep:
-            encoding = String.Encoding.nextstep
-        case .nonLossyASCII:
-            encoding = String.Encoding.nonLossyASCII
-        case .shiftJIS:
-            encoding = String.Encoding.shiftJIS
-        case .symbol:
-            encoding = String.Encoding.symbol
-        case .unicode:
-            encoding = String.Encoding.unicode
-        case .utf8:
-            encoding = String.Encoding.utf8
-        case .utf16:
-            encoding = String.Encoding.utf16
-        case .utf16be:
-            encoding = String.Encoding.utf16BigEndian
-        case .utf16le:
-            encoding = String.Encoding.utf16LittleEndian
-        case .utf32:
-            encoding = String.Encoding.utf32
-        case .utf32be:
-            encoding = String.Encoding.utf32BigEndian
-        case .utf32le:
-            encoding = String.Encoding.utf32LittleEndian
-        }
-
-        guard let content = String(data: data, encoding: encoding) else { return }
+        guard let content = String(data: data, encoding: prefs.preferences.textEditing.defaultTextEncoding) else { return }
         self.content = content
     }
 }
