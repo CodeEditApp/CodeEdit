@@ -22,15 +22,16 @@ extension String.Encoding: Codable {
         .isoLatin2,
         .macOSRoman
     ]
-    static var allUnicodes: [String.Encoding] = [String.Encoding.unicode,
-                                                 String.Encoding.utf8,
-                                                 String.Encoding.utf16,
-                                                 String.Encoding.utf16BigEndian,
-                                                 String.Encoding.utf16LittleEndian,
-                                                 String.Encoding.utf32,
-                                                 String.Encoding.utf32BigEndian,
-                                                 String.Encoding.utf32LittleEndian
-                                                ]
+    static var allUnicodes: [String.Encoding] = [
+        .unicode,
+        .utf8,
+        .utf16,
+        .utf16BigEndian,
+        .utf16LittleEndian,
+        .utf32,
+        .utf32BigEndian,
+        .utf32LittleEndian
+    ]
     static var allWindows: [String.Encoding] = [
         .windowsCP1250,
         .windowsCP1251,
