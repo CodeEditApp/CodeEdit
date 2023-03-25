@@ -95,9 +95,8 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
     }
 
     // swiftlint:disable cyclomatic_complexity
-    // swiftlint:disable function_body_length
     /// This function is used for decoding files.
-    /// It should not throw error as unsupported files can still be opened by QLPreviewView.
+    /// It should not throw error as unsupported files can still be opened by QLPreviewView
     override func read(from data: Data, ofType _: String) throws {
         var encoding: String.Encoding
 
