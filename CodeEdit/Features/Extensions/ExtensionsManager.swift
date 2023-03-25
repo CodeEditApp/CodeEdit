@@ -13,10 +13,12 @@ import ConcurrencyPlus
 
 final class ExtensionManager: ObservableObject {
 
+    static var shared = ExtensionManager()
+
     @Published var extensions: [ExtensionInfo] = []
 
     init() {
-        ExtensionDiscovery.shared.$extensions.assign(to: &$extensions)
+        ExtensionDiscovery.shared.$extensions
     }
 
 }

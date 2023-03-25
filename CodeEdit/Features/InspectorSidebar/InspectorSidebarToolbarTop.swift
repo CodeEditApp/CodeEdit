@@ -8,10 +8,12 @@
 import SwiftUI
 
 struct InspectorSidebarToolbarTop: View {
-    @Binding
-    private var selection: Int
+    var items: [InspectorTab]
 
-    @State var targeted: Bool = true
+    @Binding
+    var selection: InspectorTab
+
+    @State private var targeted: Bool = true
     @State private var icons = [
         InspectorDockIcon(imageName: "doc", title: "File Inspector", id: 0),
         InspectorDockIcon(imageName: "clock", title: "History Inspector", id: 1),
@@ -22,56 +24,56 @@ struct InspectorSidebarToolbarTop: View {
     @State private var draggingItem: InspectorDockIcon?
     @State private var drugItemLocation: CGPoint?
 
-    init(selection: Binding<Int>) {
-        self._selection = selection
-    }
+//    init(selection: Binding<Int>) {
+//        self._selection = selection
+//    }
 
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
             Divider()
             HStack(spacing: 10) {
-                ForEach(icons) { icon in
-                    makeInspectorIcon(systemImage: icon.imageName, title: icon.title, id: icon.id)
-                        .opacity(draggingItem?.imageName == icon.imageName &&
-                                 hasChangedLocation &&
-                                 drugItemLocation != nil ? 0.0: 1.0)
-                        .onDrop(
-                            of: [.utf8PlainText],
-                            delegate: InspectorSidebarDockIconDelegate(
-                                item: icon,
-                                current: $draggingItem,
-                                icons: $icons,
-                                hasChangedLocation: $hasChangedLocation,
-                                drugItemLocation: $drugItemLocation
-                            )
-                        )
+                ForEach(items, id: \.self) { icon in
+                    makeInspectorIcon(tab: icon)
+//                        .opacity(draggingItem?.imageName == icon.imageName &&
+//                                 hasChangedLocation &&
+//                                 drugItemLocation != nil ? 0.0: 1.0)
+//                        .onDrop(
+//                            of: [.utf8PlainText],
+//                            delegate: InspectorSidebarDockIconDelegate(
+//                                item: icon,
+//                                current: $draggingItem,
+//                                icons: $icons,
+//                                hasChangedLocation: $hasChangedLocation,
+//                                drugItemLocation: $drugItemLocation
+//                            )
+//                        )
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-            .animation(.default, value: icons)
+            .animation(.default, value: items)
             Divider()
         }
         .frame(height: TabBarView.height)
     }
 
-    func makeInspectorIcon(systemImage: String, title: String, id: Int) -> some View {
+    func makeInspectorIcon(tab: InspectorTab) -> some View {
         Button {
-            selection = id
+            selection = tab
         } label: {
-            Image(systemName: systemImage)
-                .help(title)
-                .symbolVariant(id == selection ? .fill : .none)
-                .foregroundColor(id == selection ? .accentColor : .secondary)
+            Image(systemName: tab.systemImage)
+                .help(tab.title)
+                .symbolVariant(tab == selection ? .fill : .none)
+                .foregroundColor(tab == selection ? .accentColor : .secondary)
                 .frame(width: 16, alignment: .center)
-                .onDrag {
-                    if let index = icons.firstIndex(where: { $0.imageName == systemImage }) {
-                        draggingItem = icons[index]
-                    }
-                    return .init(object: NSString(string: systemImage))
-                } preview: {
-                    RoundedRectangle(cornerRadius: .zero)
-                        .frame(width: .zero)
-                }
+//                .onDrag {
+//                    if let index = icons.firstIndex(where: { $0.imageName == systemImage }) {
+//                        draggingItem = icons[index]
+//                    }
+//                    return .init(object: NSString(string: systemImage))
+//                } preview: {
+//                    RoundedRectangle(cornerRadius: .zero)
+//                        .frame(width: .zero)
+//                }
         }
         .buttonStyle(.plain)
     }

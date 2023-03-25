@@ -331,6 +331,7 @@
 		6C82D6B929BFE34900495C54 /* HelpCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C82D6B829BFE34900495C54 /* HelpCommands.swift */; };
 		6C82D6BC29C00CD900495C54 /* FirstResponderPropertyWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C82D6BB29C00CD900495C54 /* FirstResponderPropertyWrapper.swift */; };
 		6C82D6C629C012AD00495C54 /* NSApp+openWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C82D6C529C012AD00495C54 /* NSApp+openWindow.swift */; };
+		6C861B4029CE7593001E59EC /* InspectorTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C861B3F29CE7593001E59EC /* InspectorTab.swift */; };
 		6C91D57229B176FF0059A90D /* TabManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C91D57129B176FF0059A90D /* TabManager.swift */; };
 		6C97EBCC2978760400302F95 /* AcknowledgementsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C97EBCB2978760400302F95 /* AcknowledgementsWindowController.swift */; };
 		6CAAF68A29BC9C2300A1F48A /* (null) in Sources */ = {isa = PBXBuildFile; };
@@ -756,6 +757,7 @@
 		6C82D6B829BFE34900495C54 /* HelpCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpCommands.swift; sourceTree = "<group>"; };
 		6C82D6BB29C00CD900495C54 /* FirstResponderPropertyWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstResponderPropertyWrapper.swift; sourceTree = "<group>"; };
 		6C82D6C529C012AD00495C54 /* NSApp+openWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSApp+openWindow.swift"; sourceTree = "<group>"; };
+		6C861B3F29CE7593001E59EC /* InspectorTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorTab.swift; sourceTree = "<group>"; };
 		6C91D57129B176FF0059A90D /* TabManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabManager.swift; sourceTree = "<group>"; };
 		6C97EBCB2978760400302F95 /* AcknowledgementsWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcknowledgementsWindowController.swift; sourceTree = "<group>"; };
 		6CABB19C29C5591D00340467 /* NSTableViewWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NSTableViewWrapper.swift; path = CodeEdit/Features/QuickOpen/Views/NSTableViewWrapper.swift; sourceTree = SOURCE_ROOT; };
@@ -2359,6 +2361,7 @@
 				20EBB50B280C382800F3A5DA /* Models */,
 				20EBB4FF280C325000F3A5DA /* Views */,
 				B6EE988F27E8879A00CDD8AB /* InspectorSidebarView.swift */,
+				6C861B3F29CE7593001E59EC /* InspectorTab.swift */,
 				B6D7EA582971078500301FAC /* InspectorSection.swift */,
 				B6D7EA5B297107DD00301FAC /* InspectorField.swift */,
 				B6EE989127E887C600CDD8AB /* InspectorSidebarToolbarTop.swift */,
@@ -2909,6 +2912,7 @@
 				6C147C4929A32A080089B630 /* EditorView.swift in Sources */,
 				6C147C4129A328BF0089B630 /* TabGroup.swift in Sources */,
 				B6D7EA592971078500301FAC /* InspectorSection.swift in Sources */,
+				6C861B4029CE7593001E59EC /* InspectorTab.swift in Sources */,
 				58F2EAEF292FB2B0004A9BDE /* ThemePreferencesView.swift in Sources */,
 				B6EE989027E8879A00CDD8AB /* InspectorSidebarView.swift in Sources */,
 				587B9DA229300ABD00AC7927 /* EffectView.swift in Sources */,

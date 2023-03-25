@@ -27,9 +27,8 @@ struct ExtensionDetailView: View {
                     }
                 }
                 .formStyle(.grouped)
-//                .scrollDisabled(true)
             }
-            ExtensionSceneView(with: ext.endpoint, sceneID: "CommandMenu")
+
             Text("Extension Settings")
                 .font(.title3)
                 .fontWeight(.semibold)
