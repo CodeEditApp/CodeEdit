@@ -136,65 +136,46 @@ struct TextEditingPreferencesView: View {
     private var textEncoding: some View {
         Picker("Default Text Encoding", selection: $prefs.preferences.textEditing.textEncoding) {
             Group {
-                Text("ASCII")
-                    .tag(String.Encoding.ascii)
-                Text("Non Lossy ASCII")
-                    .tag(String.Encoding.nonLossyASCII)
+                ForEach(String.Encoding.allAscii, id: \.id) { ascii in
+                    Text(ascii.description)
+                        .tag(ascii)
+                }
 
                 Divider()
 
-                Text("ISO 2022 Japan")
-                    .tag(String.Encoding.iso2022JP)
-                Text("Japanese EUC")
-                    .tag(String.Encoding.japaneseEUC)
+                ForEach(String.Encoding.allJapanese, id: \.id) { japanese in
+                    Text(japanese.description)
+                        .tag(japanese)
+                }
 
                 Divider()
 
-                Text("ISO Latin 1")
-                    .tag(String.Encoding.isoLatin1)
-                Text("ISO Latin 2")
-                    .tag(String.Encoding.isoLatin2)
-                Text("macOS Roman")
-                    .tag(String.Encoding.macOSRoman)
+                ForEach(String.Encoding.allLatin, id: \.id) { latin in
+                    Text(latin.description)
+                        .tag(latin)
+                }
+
+                Divider()
+
+                ForEach(String.Encoding.others, id: \.id) { other in
+                    Text(other.description)
+                        .tag(other)
+                }
+
+                Divider()
+
+                ForEach(String.Encoding.allUnicodes, id: \.id) { unicode in
+                    Text(unicode.description)
+                        .tag(unicode)
+                }
+
+                Divider()
             }
-
             Group {
-                Divider()
-
-                Text("Nextstep")
-                    .tag(String.Encoding.nextstep)
-                Text("Shift JIS")
-                    .tag(String.Encoding.shiftJIS)
-                Text("Symbol")
-                    .tag(String.Encoding.symbol)
-
-                Divider()
-            }
-
-            Group {
-                Text("Unicode")
-                    .tag(String.Encoding.unicode)
-
-                Text("Unicode (UTF-8)")
-                    .tag(String.Encoding.utf8)
-
-                Divider()
-
-                Text("Unicode (UTF-16)")
-                    .tag(String.Encoding.utf16)
-                Text("Unicode (UTF-16) Big Endian")
-                    .tag(String.Encoding.utf16be)
-                Text("Unicode (UTF-16) Little Endian")
-                    .tag(String.Encoding.utf16le)
-
-                Divider()
-
-                Text("Unicode (UTF-32)")
-                    .tag(String.Encoding.utf32)
-                Text("Unicode (UTF-32) Big Endian")
-                    .tag(String.Encoding.utf32be)
-                Text("Unicode (UTF-32) Little Endian")
-                    .tag(String.Encoding.utf32le)
+                ForEach(String.Encoding.allWindows, id: \.id) { windows in
+                    Text(windows.description)
+                        .tag(windows)
+                }
             }
         }
     }

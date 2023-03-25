@@ -8,6 +8,31 @@
 import AppKit
 import Foundation
 
+extension String.Encoding: Codable {
+    static var allAscii: [String.Encoding] = [String.Encoding.ascii, String.Encoding.nonLossyASCII]
+    static var allJapanese: [String.Encoding] = [String.Encoding.iso2022JP, String.Encoding.japaneseEUC]
+    static var allLatin: [String.Encoding] = [String.Encoding.isoLatin1,
+                                              String.Encoding.isoLatin2,
+                                              String.Encoding.macOSRoman
+                                            ]
+    static var allUnicodes: [String.Encoding] = [String.Encoding.unicode,
+                                                 String.Encoding.utf8,
+                                                 String.Encoding.utf16,
+                                                 String.Encoding.utf16BigEndian,
+                                                 String.Encoding.utf16LittleEndian,
+                                                 String.Encoding.utf32,
+                                                 String.Encoding.utf32BigEndian,
+                                                 String.Encoding.utf32LittleEndian
+                                                ]
+    static var allWindows: [String.Encoding] = [String.Encoding.windowsCP1250,
+                                                String.Encoding.windowsCP1251,
+                                                String.Encoding.windowsCP1252,
+                                                String.Encoding.windowsCP1253,
+                                                String.Encoding.windowsCP1254
+                                                ]
+    static var others: [String.Encoding] = [String.Encoding.nextstep, String.Encoding.shiftJIS, String.Encoding.symbol]
+}
+
 extension AppPreferences {
 
     /// The global settings for text editing
@@ -27,7 +52,7 @@ extension AppPreferences {
         /// A flag indicating whether to wrap lines to editor width
         var wrapLinesToEditorWidth: Bool = true
 
-        /// The decoding that a file is read with
+        /// The encoding that a file is read with
         var defaultTextEncoding: String.Encoding = .utf8
 
         /// A multiplier for setting the line height. Defaults to `1.45`
@@ -61,10 +86,10 @@ extension AppPreferences {
                 Bool.self,
                 forKey: .wrapLinesToEditorWidth
             ) ?? true
-            self.defaultTextEncoding = try container.decodeIfPresent(
+            try container.decodeIfPresent(
                 String.Encoding.self,
                 forKey: .defaultTextEncoding
-            ) ?? String.Encoding.utf8
+            ) ?? .utf8
             self.lineHeightMultiple = try container.decodeIfPresent(
                 Double.self,
                 forKey: .lineHeightMultiple
