@@ -28,7 +28,7 @@ extension AppPreferences {
         var wrapLinesToEditorWidth: Bool = true
 
         /// The encoding that a file is read
-        var textEncoding: TextDecodingFormats = .utf8
+        var textDecoding: TextDecodingFormats = .utf8
 
         /// A multiplier for setting the line height. Defaults to `1.45`
         var lineHeightMultiple: Double = 1.45
