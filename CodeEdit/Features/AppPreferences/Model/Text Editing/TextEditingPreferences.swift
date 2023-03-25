@@ -37,7 +37,11 @@ extension String.Encoding: Codable {
                                                 String.Encoding.windowsCP1253,
                                                 String.Encoding.windowsCP1254
                                                 ]
-    static var others: [String.Encoding] = [String.Encoding.nextstep, String.Encoding.shiftJIS, String.Encoding.symbol]
+    static var others: [String.Encoding] = [
+        .nextstep, 
+        .shiftJIS, 
+        .symbol
+    ]
 }
 
 extension AppPreferences {
