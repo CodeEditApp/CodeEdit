@@ -146,7 +146,7 @@ struct TextEditingPreferencesView: View {
                 Text("ISO 2022 Japan")
                     .tag(AppPreferences.TextDecodingFormats.iso2022JP)
                 Text("Japanese EUC")
-                    .tag(AppPreferences.TextEncodingFormats.japaneseEUC)
+                    .tag(AppPreferences.TextDecodingFormats.japaneseEUC)
 
                 Divider()
 
