@@ -134,7 +134,7 @@ struct TextEditingPreferencesView: View {
     }
 
     private var textEncoding: some View {
-        Picker("Default Text Decoding", selection: $prefs.preferences.textEditing.textEncoding) {
+        Picker("Default Text Encoding", selection: $prefs.preferences.textEditing.textEncoding) {
             Group {
                 Text("ASCII")
                     .tag(String.Encoding.ascii)
