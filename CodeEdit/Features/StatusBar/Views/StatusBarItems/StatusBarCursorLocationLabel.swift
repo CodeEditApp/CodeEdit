@@ -24,6 +24,6 @@ struct StatusBarCursorLocationLabel: View {
     }
 
     private var foregroundColor: Color {
-        controlActive == .inactive ? Color(nsColor: .disabledControlTextColor) : .primary
+        controlActive == .inactive ? Color(nsColor: .disabledControlTextColor) : Color(nsColor: .secondaryLabelColor)
     }
 }

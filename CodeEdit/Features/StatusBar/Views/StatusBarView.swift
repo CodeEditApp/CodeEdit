@@ -26,7 +26,7 @@ struct StatusBarView: View {
     @ObservedObject
     private var prefs: AppPreferencesModel = .shared
 
-    static let height = 29.0
+    static let height = 28.0
 
     @Environment(\.colorScheme)
     private var colorScheme
@@ -40,30 +40,30 @@ struct StatusBarView: View {
 
     /// The actual status bar
     var body: some View {
-        VStack(spacing: 4) {
-            Divider()
-            HStack(spacing: 15) {
-                HStack(spacing: 5) {
-                    StatusBarBreakpointButton()
-                    Divider()
-                        .frame(maxHeight: 12)
-                        .padding(.horizontal, 7)
-                    SegmentedControl($model.selectedTab, options: StatusBarTabType.allOptions)
-                        .opacity(collapsed ? 0 : 1)
-                }
-                Spacer()
+        HStack(alignment: .center, spacing: 10) {
+            StatusBarBreakpointButton()
+            StatusBarDivider()
+            SegmentedControl($model.selectedTab, options: StatusBarTabType.allOptions)
+                .opacity(collapsed ? 0 : 1)
+            Spacer()
+            HStack(alignment: .center, spacing: 10) {
+//                StatusBarIndentSelector()
+//                StatusBarEncodingSelector()
+//                StatusBarLineEndSelector()
                 StatusBarCursorLocationLabel()
-                StatusBarIndentSelector()
-                StatusBarEncodingSelector()
-                StatusBarLineEndSelector()
-                StatusBarToggleDrawerButton(collapsed: $collapsed)
             }
-            .padding(.horizontal, 10)
-            .padding(.bottom, 3)
+            StatusBarDivider()
+            StatusBarToggleDrawerButton(collapsed: $collapsed)
         }
+        .padding(.horizontal, 10)
         .cursor(.resizeUpDown)
         .frame(height: Self.height)
         .background(.bar)
+        .padding(.top, 1)
+        .overlay(alignment: .top) {
+            Divider()
+                .overlay(Color(nsColor: colorScheme == .dark ? .black : .clear))
+        }
         .gesture(dragGesture)
         .disabled(controlActive == .inactive)
     }
@@ -74,6 +74,14 @@ struct StatusBarView: View {
             .onChanged { value in
                 proxy.setPosition(of: 0, position: value.location.y + Self.height / 2)
             }
+    }
+}
+
+struct StatusBarDivider: View {
+    var body: some View {
+        Divider()
+            .frame(maxHeight: 12)
+//            .padding(.horizontal, 7)
     }
 }
 
