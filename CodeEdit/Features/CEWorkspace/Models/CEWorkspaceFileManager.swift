@@ -105,8 +105,6 @@ final class CEWorkspaceFileManager {
                     children: subItems?.sortItems(foldersOnTop: true)
                 )
 
-                print("Loaded new file item: \(itemURL)")
-
                 // note: watcher code will be applied after the workspaceItem is created
                 newFileItem.watcherCode = { sourceFileItem in
                     self.reloadFromWatcher(sourceFileItem: sourceFileItem)
@@ -149,7 +147,6 @@ final class CEWorkspaceFileManager {
     /// running the main code body.
     /// - Parameter sourceFileItem: The `FileItem` corresponding to the file that triggered the `DispatchSource`
     func reloadFromWatcher(sourceFileItem: CEWorkspaceFile) {
-        print("Reloading from watcher: \(sourceFileItem.url)")
         // Something has changed inside the directory
         // We should reload the files.
         guard !isRunning else { // this runs when a file change is detected but is already running

@@ -51,7 +51,6 @@ final class ProjectNavigatorTableViewCell: FileSystemTableViewCell {
     }
 
     override func controlTextDidEndEditing(_ obj: Notification) {
-        print("File validity: \(validateFileName(for: label?.stringValue ?? ""))")
         label.backgroundColor = validateFileName(for: label?.stringValue ?? "") ? .none : errorRed
         if validateFileName(for: label?.stringValue ?? "") {
             let destinationURL = fileItem.url

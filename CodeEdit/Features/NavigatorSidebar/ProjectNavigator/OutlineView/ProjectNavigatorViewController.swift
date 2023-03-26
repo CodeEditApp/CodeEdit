@@ -133,7 +133,6 @@ final class ProjectNavigatorViewController: NSViewController {
 extension ProjectNavigatorViewController: NSOutlineViewDataSource {
     func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
         if let item = item as? CEWorkspaceFile {
-            print("Children for item \(item.id): \(item.children?.description ?? "none")")
             return item.children?.count ?? 0
         }
         return content.count
