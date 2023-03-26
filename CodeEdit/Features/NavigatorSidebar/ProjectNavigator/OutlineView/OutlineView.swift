@@ -27,6 +27,10 @@ struct OutlineView: NSViewControllerRepresentable {
         let controller = OutlineViewController()
         controller.workspace = workspace
         controller.iconColor = prefs.preferences.general.fileIconStyle
+        workspace.workspaceFileManager?.onRefresh = {
+            print("Refreshing!")
+            controller.outlineView.reloadData()
+        }
 
         context.coordinator.controller = controller
 

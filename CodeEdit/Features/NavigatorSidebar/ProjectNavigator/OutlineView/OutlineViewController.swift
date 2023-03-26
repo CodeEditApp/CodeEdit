@@ -69,12 +69,14 @@ final class OutlineViewController: NSViewController {
         outlineView.setDraggingSourceOperationMask(.move, forLocal: false)
         outlineView.registerForDraggedTypes([.fileURL])
 
-        self.scrollView.documentView = outlineView
-        self.scrollView.contentView.automaticallyAdjustsContentInsets = false
-        self.scrollView.contentView.contentInsets = .init(top: 10, left: 0, bottom: 0, right: 0)
+        scrollView.documentView = outlineView
+        scrollView.contentView.automaticallyAdjustsContentInsets = false
+        scrollView.contentView.contentInsets = .init(top: 10, left: 0, bottom: 0, right: 0)
+        scrollView.scrollerStyle = .overlay
+        scrollView.hasVerticalScroller = true
+        scrollView.hasHorizontalScroller = false
+        scrollView.autohidesScrollers = true
 
-        // TODO: Kai needs to replace this with his implementation of the sidebar
-//        WorkspaceClient.onRefresh = self.outlineView.reloadData
         outlineView.expandItem(outlineView.item(atRow: 0))
     }
 
@@ -125,6 +127,7 @@ final class OutlineViewController: NSViewController {
         }
     }
 
+    // TODO: File filtering
 }
 
 // MARK: - NSOutlineViewDataSource
@@ -132,6 +135,7 @@ final class OutlineViewController: NSViewController {
 extension OutlineViewController: NSOutlineViewDataSource {
     func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
         if let item = item as? CEWorkspaceFile {
+            print("Number of children for item \(item.url): \(item.children?.count ?? -1)")
             return item.children?.count ?? 0
         }
         return content.count
