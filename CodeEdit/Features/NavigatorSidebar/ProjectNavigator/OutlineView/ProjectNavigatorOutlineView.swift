@@ -9,7 +9,7 @@ import SwiftUI
 import Combine
 
 /// Wraps an ``OutlineViewController`` inside a `NSViewControllerRepresentable`
-struct OutlineView: NSViewControllerRepresentable {
+struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
 
     @EnvironmentObject
     var workspace: WorkspaceDocument
@@ -21,10 +21,10 @@ struct OutlineView: NSViewControllerRepresentable {
     @Binding
     var selection: CEWorkspaceFile?
 
-    typealias NSViewControllerType = OutlineViewController
+    typealias NSViewControllerType = ProjectNavigatorViewController
 
-    func makeNSViewController(context: Context) -> OutlineViewController {
-        let controller = OutlineViewController()
+    func makeNSViewController(context: Context) -> ProjectNavigatorViewController {
+        let controller = ProjectNavigatorViewController()
         controller.workspace = workspace
         controller.iconColor = prefs.preferences.general.fileIconStyle
         workspace.workspaceFileManager?.onRefresh = {
@@ -40,7 +40,7 @@ struct OutlineView: NSViewControllerRepresentable {
         return controller
     }
 
-    func updateNSViewController(_ nsViewController: OutlineViewController, context: Context) {
+    func updateNSViewController(_ nsViewController: ProjectNavigatorViewController, context: Context) {
         nsViewController.iconColor = prefs.preferences.general.fileIconStyle
         nsViewController.rowHeight = prefs.preferences.general.projectNavigatorSize.rowHeight
         nsViewController.fileExtensionsVisibility = prefs.preferences.general.fileExtensionsVisibility
@@ -70,7 +70,7 @@ struct OutlineView: NSViewControllerRepresentable {
 
         var listener: AnyCancellable?
         var workspace: WorkspaceDocument
-        var controller: OutlineViewController?
+        var controller: ProjectNavigatorViewController?
 
         deinit {
             listener?.cancel()

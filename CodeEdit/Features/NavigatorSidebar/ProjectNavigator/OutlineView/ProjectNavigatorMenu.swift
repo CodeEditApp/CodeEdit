@@ -9,7 +9,7 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 /// A subclass of `NSMenu` implementing the contextual menu for the project navigator
-final class OutlineMenu: NSMenu {
+final class ProjectNavigatorMenu: NSMenu {
 
     /// The item to show the contextual menu for
     var item: CEWorkspaceFile?
@@ -213,7 +213,7 @@ final class OutlineMenu: NSMenu {
     private func renameFile() {
         let row = outlineView.row(forItem: item)
         guard row > 0,
-              let cell = outlineView.view(atColumn: 0, row: row, makeIfNecessary: false) as? OutlineTableViewCell else {
+              let cell = outlineView.view(atColumn: 0, row: row, makeIfNecessary: false) as? ProjectNavigatorTableViewCell else {
             return
         }
         outlineView.window?.makeFirstResponder(cell.textField)

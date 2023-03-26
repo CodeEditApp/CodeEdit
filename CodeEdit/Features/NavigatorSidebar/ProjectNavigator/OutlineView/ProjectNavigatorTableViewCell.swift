@@ -13,7 +13,7 @@ protocol OutlineTableViewCellDelegate: AnyObject {
 }
 
 /// A `NSTableCellView` showing an ``icon`` and a ``label``
-final class OutlineTableViewCell: FileSystemTableViewCell {
+final class ProjectNavigatorTableViewCell: FileSystemTableViewCell {
     private var delegate: OutlineTableViewCellDelegate?
 
     /// Initializes the `OutlineTableViewCell` with an `icon` and `label`

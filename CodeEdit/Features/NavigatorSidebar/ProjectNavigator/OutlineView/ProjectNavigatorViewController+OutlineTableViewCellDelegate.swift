@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - OutlineTableViewCellDelegate
 
-extension OutlineViewController: OutlineTableViewCellDelegate {
+extension ProjectNavigatorViewController: OutlineTableViewCellDelegate {
     func moveFile(file: CEWorkspaceFile, to destination: URL) {
         if !file.isFolder {
             workspace?.tabManager.tabGroups.closeAllTabs(of: file)

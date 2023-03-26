@@ -11,7 +11,7 @@ import SwiftUI
 ///
 /// Adds a ``outlineView`` inside a ``scrollView`` which shows the folder structure of the
 /// currently open project.
-final class OutlineViewController: NSViewController {
+final class ProjectNavigatorViewController: NSViewController {
 
     var scrollView: NSScrollView!
     var outlineView: NSOutlineView!
@@ -56,7 +56,7 @@ final class OutlineViewController: NSViewController {
         self.outlineView.autosaveExpandedItems = true
         self.outlineView.autosaveName = workspace?.workspaceFileManager?.folderUrl.path ?? ""
         self.outlineView.headerView = nil
-        self.outlineView.menu = OutlineMenu(sender: self.outlineView)
+        self.outlineView.menu = ProjectNavigatorMenu(sender: self.outlineView)
         self.outlineView.menu?.delegate = self
         self.outlineView.doubleAction = #selector(onItemDoubleClicked)
 
@@ -130,7 +130,7 @@ final class OutlineViewController: NSViewController {
 
 // MARK: - NSOutlineViewDataSource
 
-extension OutlineViewController: NSOutlineViewDataSource {
+extension ProjectNavigatorViewController: NSOutlineViewDataSource {
     func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
         if let item = item as? CEWorkspaceFile {
             print("Children for item \(item.id): \(item.children?.description ?? "none")")
@@ -244,7 +244,7 @@ extension OutlineViewController: NSOutlineViewDataSource {
 
 // MARK: - NSOutlineViewDelegate
 
-extension OutlineViewController: NSOutlineViewDelegate {
+extension ProjectNavigatorViewController: NSOutlineViewDelegate {
     func outlineView(
         _ outlineView: NSOutlineView,
         shouldShowCellExpansionFor tableColumn: NSTableColumn?,
@@ -262,7 +262,7 @@ extension OutlineViewController: NSOutlineViewDelegate {
 
         let frameRect = NSRect(x: 0, y: 0, width: tableColumn.width, height: rowHeight)
 
-        return OutlineTableViewCell(frame: frameRect, item: item as? CEWorkspaceFile, delegate: self)
+        return ProjectNavigatorTableViewCell(frame: frameRect, item: item as? CEWorkspaceFile, delegate: self)
     }
 
     func outlineViewSelectionDidChange(_ notification: Notification) {
@@ -361,7 +361,7 @@ extension OutlineViewController: NSOutlineViewDelegate {
 
 // MARK: - NSMenuDelegate
 
-extension OutlineViewController: NSMenuDelegate {
+extension ProjectNavigatorViewController: NSMenuDelegate {
 
     /// Once a menu gets requested by a `right click` setup the menu
     ///
@@ -369,7 +369,7 @@ extension OutlineViewController: NSMenuDelegate {
     /// - Parameter menu: The menu that got requested
     func menuNeedsUpdate(_ menu: NSMenu) {
         let row = outlineView.clickedRow
-        guard let menu = menu as? OutlineMenu else { return }
+        guard let menu = menu as? ProjectNavigatorMenu else { return }
 
         if row == -1 {
             menu.item = nil
