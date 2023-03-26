@@ -21,9 +21,7 @@ final class OutlineViewController: NSViewController {
     /// Also creates a top level item "root" which represents the projects root directory and automatically expands it.
     private var content: [CEWorkspaceFile] {
         guard let folderURL = workspace?.workspaceFileManager?.folderUrl else { return [] }
-        let children = workspace?.fileItems.sortItems(foldersOnTop: true)
         guard let root = try? workspace?.workspaceFileManager?.getFileItem(folderURL.path) else { return [] }
-        root.children = children
         return [root]
     }
 
@@ -135,7 +133,7 @@ final class OutlineViewController: NSViewController {
 extension OutlineViewController: NSOutlineViewDataSource {
     func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
         if let item = item as? CEWorkspaceFile {
-            print("Number of children for item \(item.url): \(item.children?.count ?? -1)")
+            print("Children for item \(item.id): \(item.children?.description ?? "none")")
             return item.children?.count ?? 0
         }
         return content.count

@@ -17,9 +17,6 @@ import CodeEditKit
     var sortFoldersOnTop: Bool = true
 
     @Published
-    var fileItems: [CEWorkspaceFile] = []
-
-    @Published
     var targets: [Target] = []
 
     var workspaceFileManager: CEWorkspaceFileManager?
@@ -140,33 +137,6 @@ import CodeEditKit
 
     override func read(from url: URL, ofType typeName: String) throws {
         try initWorkspaceState(url)
-
-        // Initialize Workspace
-        workspaceFileManager?
-            .getFiles
-            .sink { [weak self] files in
-                guard let self = self else { return }
-
-                guard !self.fileItems.isEmpty else {
-                    self.fileItems = files
-                    return
-                }
-
-                // Instead of rebuilding the array we want to
-                // calculate the difference between the last iteration
-                // and now. If the index of the file exists in the array
-                // it means we need to remove the element, otherwise we need to append
-                // it.
-                let diff = files.difference(from: self.fileItems)
-                diff.forEach { newFile in
-                    if let index = self.fileItems.firstIndex(of: newFile) {
-                        self.fileItems.remove(at: index)
-                    } else {
-                        self.fileItems.append(newFile)
-                    }
-                }
-            }
-            .store(in: &cancellables)
     }
 
     override func write(to url: URL, ofType typeName: String) throws {}

@@ -14,6 +14,7 @@ final class CEWorkspaceFileManager {
         case fileNotExist
     }
 
+    // TODO: See if this needs to be removed, it isn't used anymore
     private var subject = CurrentValueSubject<[CEWorkspaceFile], Never>([])
     private var isRunning = false
     private var anotherInstanceRan = 0

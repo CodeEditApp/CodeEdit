@@ -29,6 +29,9 @@ struct OutlineView: NSViewControllerRepresentable {
         controller.iconColor = prefs.preferences.general.fileIconStyle
         workspace.workspaceFileManager?.onRefresh = {
             print("Refreshing!")
+            print("\t" + (workspace.workspaceFileManager?.flattenedFileItems.map({
+                "\($0.key): \($0.value.children?.map({ $0.name }) ?? [])"
+            }).joined(separator: "\n\t") ?? "no items"))
             controller.outlineView.reloadData()
         }
 
