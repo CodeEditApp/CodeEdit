@@ -43,11 +43,11 @@ struct NavigatorSidebarView: View {
             Group {
                 switch selection {
                 case 0:
-                    NavigatorSidebarToolbarBottom()
+                    ProjectNavigatorToolbarBottom()
                 case 1:
                     SourceControlToolbarBottom()
-                default:
-                    NavigatorSidebarToolbarBottom()
+                default: // TODO: As we implement more sidebars, put their bottom toolbars here.
+                    EmptyView()
                 }
             }
             .padding(.top, toolbarPadding)

@@ -39,6 +39,10 @@ import CodeEditKit
         }
     }
 
+    public var filter: String = "" {
+        didSet { workspaceFileManager?.onRefresh() }
+    }
+
     var statusBarModel = StatusBarViewModel()
     var searchState: SearchState?
     var quickOpenViewModel: QuickOpenViewModel?
