@@ -312,6 +312,7 @@
 		6C578D8C29CD372700DC73B2 /* ExtensionCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C578D8B29CD372700DC73B2 /* ExtensionCommands.swift */; };
 		6C5AB9D729C1496E003B5F96 /* SceneID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5AB9D629C1496E003B5F96 /* SceneID.swift */; };
 		6C5B63DE29C76213005454BA /* WindowCodeFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5B63DD29C76213005454BA /* WindowCodeFileView.swift */; };
+		6C66C31329D05CDC00DE9ED2 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = 6C66C31229D05CDC00DE9ED2 /* GRDB */; };
 		6C6BD6EF29CD12E900235D17 /* ExtensionManagerWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6BD6EE29CD12E900235D17 /* ExtensionManagerWindow.swift */; };
 		6C6BD6F129CD13FA00235D17 /* ExtensionDiscovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6BD6F029CD13FA00235D17 /* ExtensionDiscovery.swift */; };
 		6C6BD6F429CD142C00235D17 /* CollectionConcurrencyKit in Frameworks */ = {isa = PBXBuildFile; productRef = 6C6BD6F329CD142C00235D17 /* CollectionConcurrencyKit */; };
@@ -819,6 +820,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				58F2EB1A292FB91C004A9BDE /* Preferences in Frameworks */,
+				6C66C31329D05CDC00DE9ED2 /* GRDB in Frameworks */,
 				58F2EB17292FB74D004A9BDE /* CodeEditTextView in Frameworks */,
 				58F2EB1E292FB954004A9BDE /* Sparkle in Frameworks */,
 				6C147C4529A329350089B630 /* OrderedCollections in Frameworks */,
@@ -2440,6 +2442,7 @@
 				6C81916A29B41DD300B75C92 /* DequeModule */,
 				6C6BD6F329CD142C00235D17 /* CollectionConcurrencyKit */,
 				6C6BD6F729CD14D100235D17 /* CodeEditKit */,
+				6C66C31229D05CDC00DE9ED2 /* GRDB */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -2532,6 +2535,7 @@
 				583E529A29361BAB001AB554 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
 				6C147C4329A329350089B630 /* XCRemoteSwiftPackageReference "swift-collections" */,
 				6C6BD6F229CD142C00235D17 /* XCRemoteSwiftPackageReference "collectionconcurrencykit" */,
+				6C66C31129D05CC800DE9ED2 /* XCRemoteSwiftPackageReference "GRDB.swift" */,
 			);
 			productRefGroup = B658FB2D27DA9E0F00EA4DBD /* Products */;
 			projectDirPath = "";
@@ -3908,6 +3912,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		6C66C31129D05CC800DE9ED2 /* XCRemoteSwiftPackageReference "GRDB.swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/groue/GRDB.swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.2.0;
+			};
+		};
 		6C6BD6F229CD142C00235D17 /* XCRemoteSwiftPackageReference "collectionconcurrencykit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/johnsundell/collectionconcurrencykit";
@@ -3958,6 +3970,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6C147C4329A329350089B630 /* XCRemoteSwiftPackageReference "swift-collections" */;
 			productName = OrderedCollections;
+		};
+		6C66C31229D05CDC00DE9ED2 /* GRDB */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6C66C31129D05CC800DE9ED2 /* XCRemoteSwiftPackageReference "GRDB.swift" */;
+			productName = GRDB;
 		};
 		6C6BD6F329CD142C00235D17 /* CollectionConcurrencyKit */ = {
 			isa = XCSwiftPackageProductDependency;

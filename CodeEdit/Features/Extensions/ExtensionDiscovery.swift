@@ -56,6 +56,7 @@ final class ExtensionDiscovery: ObservableObject {
         let extensions = await endpoints.concurrentCompactMap {
             try? await ExtensionInfo(endpoint: $0)
         }
+
         await MainActor.run {
             self.extensions = extensions
         }

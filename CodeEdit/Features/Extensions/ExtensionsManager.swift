@@ -18,7 +18,7 @@ final class ExtensionManager: ObservableObject {
     @Published var extensions: [ExtensionInfo] = []
 
     init() {
-        ExtensionDiscovery.shared.$extensions
+        ExtensionDiscovery.shared.$extensions.assign(to: &$extensions)
     }
 
 }
