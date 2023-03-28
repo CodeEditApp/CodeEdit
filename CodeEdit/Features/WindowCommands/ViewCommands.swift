@@ -28,12 +28,16 @@ struct ViewCommands: Commands {
 
             Button("Zoom in") {
                 prefs.preferences.textEditing.font.size += 1
+                prefs.preferences.terminal.font.size += 1
             }
             .keyboardShortcut("+")
 
             Button("Zoom out") {
                 if !(prefs.preferences.textEditing.font.size <= 1) {
                     prefs.preferences.textEditing.font.size -= 1
+                }
+                if !(prefs.preferences.terminal.font.size <= 1) {
+                    prefs.preferences.terminal.font.size -= 1
                 }
             }
             .keyboardShortcut("-")

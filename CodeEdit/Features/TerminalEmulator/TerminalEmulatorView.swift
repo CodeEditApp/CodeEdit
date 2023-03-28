@@ -31,7 +31,7 @@ struct TerminalEmulatorView: NSViewRepresentable {
 
     private var font: NSFont {
         if !prefs.preferences.terminal.font.customFont {
-            return systemFont
+            return systemFont.withSize(CGFloat(prefs.preferences.terminal.font.size))
         }
         return NSFont(
             name: prefs.preferences.terminal.font.name,
