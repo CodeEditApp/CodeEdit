@@ -32,7 +32,7 @@ struct ViewCommands: Commands {
             .keyboardShortcut("p", modifiers: [.shift, .command])
 
             Button("Zoom in") {
-                if !(CodeEditDocumentController.shared.documents.count > 1) {
+                if CodeEditDocumentController.shared.documents.count > 1 {
                     prefs.preferences.textEditing.font.size += 1
                 }
                 prefs.preferences.terminal.font.size += 1
@@ -40,7 +40,7 @@ struct ViewCommands: Commands {
             .keyboardShortcut("+")
 
             Button("Zoom out") {
-                if !(CodeEditDocumentController.shared.documents.count > 1) {
+                if CodeEditDocumentController.shared.documents.count > 1 {
                     if !(prefs.preferences.textEditing.font.size <= 1) {
                         prefs.preferences.textEditing.font.size -= 1
                     }
