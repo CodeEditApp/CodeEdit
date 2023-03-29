@@ -8,10 +8,13 @@
 import SwiftUI
 
 struct ViewCommands: Commands {
-    let documentController: CodeEditDocumentController = CodeEditDocumentController()
-    let statusBarViewModel: StatusBarViewModel = StatusBarViewModel()
+    @ObservedObject
     private var prefs: AppPreferencesModel = .shared
+
     @State var windowController: CodeEditWindowController?
+
+    private let documentController: CodeEditDocumentController = CodeEditDocumentController()
+    private let statusBarViewModel: StatusBarViewModel = StatusBarViewModel()
 
     var navigatorCollapsed: Bool {
         windowController?.navigatorCollapsed ?? false
