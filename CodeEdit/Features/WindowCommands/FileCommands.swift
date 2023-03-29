@@ -44,12 +44,16 @@ struct FileCommands: Commands {
             .keyboardShortcut("w", modifiers: [.control, .shift, .command])
 
             Button("Close Window") {
-
+                NSApp.keyWindow?.close()
             }
             .keyboardShortcut("w", modifiers: [.shift, .command])
 
             Button("Close Workspace") {
-
+                NSDocumentController().closeAllDocuments(
+                    withDelegate: nil,
+                    didCloseAllSelector: nil,
+                    contextInfo: nil
+                )
             }
             .keyboardShortcut("w", modifiers: [.control, .option, .command])
 
