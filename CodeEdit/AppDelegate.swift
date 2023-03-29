@@ -10,7 +10,7 @@ import Preferences
 import CodeEditSymbols
 
 final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
-    var updater: SoftwareUpdater = SoftwareUpdater()
+    private let updater = SoftwareUpdater()
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         enableWindowSizeSaveOnQuit()
@@ -141,11 +141,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         preferencesWindowController.show()
     }
 
-    @IBAction func openWelcome(_ sender: Any) {
+    @IBAction private func openWelcome(_ sender: Any) {
         NSApp.openWindow(.welcome)
     }
 
-    @IBAction func openAbout(_ sender: Any) {
+    @IBAction private func openAbout(_ sender: Any) {
         NSApp.openWindow(.about)
     }
 
@@ -155,7 +155,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         FeedbackView().showWindow()
     }
 
-    @IBAction func checkForUpdates(_ sender: Any) {
+    @IBAction private func checkForUpdates(_ sender: Any) {
         updater.checkForUpdates()
     }
 
