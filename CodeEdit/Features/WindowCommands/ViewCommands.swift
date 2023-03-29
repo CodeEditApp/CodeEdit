@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ViewCommands: Commands {
+    let documentController: CodeEditDocumentController = CodeEditDocumentController()
+    let statusBarViewModel: StatusBarViewModel = StatusBarViewModel()
     private var prefs: AppPreferencesModel = .shared
     @State var windowController: CodeEditWindowController?
 
@@ -27,14 +29,18 @@ struct ViewCommands: Commands {
             .keyboardShortcut("p", modifiers: [.shift, .command])
 
             Button("Zoom in") {
-                prefs.preferences.textEditing.font.size += 1
+                if !(CodeEditDocumentController.shared.documents.count > 1) {
+                    prefs.preferences.textEditing.font.size += 1
+                }
                 prefs.preferences.terminal.font.size += 1
             }
             .keyboardShortcut("+")
 
             Button("Zoom out") {
-                if !(prefs.preferences.textEditing.font.size <= 1) {
-                    prefs.preferences.textEditing.font.size -= 1
+                if !(CodeEditDocumentController.shared.documents.count > 1) {
+                    if !(prefs.preferences.textEditing.font.size <= 1) {
+                        prefs.preferences.textEditing.font.size -= 1
+                    }
                 }
                 if !(prefs.preferences.terminal.font.size <= 1) {
                     prefs.preferences.terminal.font.size -= 1
