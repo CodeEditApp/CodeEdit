@@ -34,7 +34,7 @@ extension AppPreferences {
         var fileIconStyle: FileIconStyle = .color
 
         /// Choose between native-styled tab bar and Xcode-liked tab bar.
-        var tabBarStyle: TabBarStyle = .xcode
+        var tabBarStyle: TabBarView.TabBarStyle = .xcode
 
         /// The reopen behavior of the app
         var reopenBehavior: ReopenBehavior = .welcome
@@ -93,7 +93,7 @@ extension AppPreferences {
                 forKey: .fileIconStyle
             ) ?? .color
             self.tabBarStyle = try container.decodeIfPresent(
-                TabBarStyle.self,
+                TabBarView.TabBarStyle.self,
                 forKey: .tabBarStyle
             ) ?? .xcode
             self.reopenBehavior = try container.decodeIfPresent(
@@ -200,14 +200,6 @@ extension AppPreferences {
     enum FileIconStyle: String, Codable {
         case color
         case monochrome
-    }
-
-    /// The style for tab bar
-    /// - **native**: Native-styled tab bar (like Finder)
-    /// - **xcode**: Xcode-liked tab bar
-    enum TabBarStyle: String, Codable {
-        case native
-        case xcode
     }
 
     /// The reopen behavior of the app

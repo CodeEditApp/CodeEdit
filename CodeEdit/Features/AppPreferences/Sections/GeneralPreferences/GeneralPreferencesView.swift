@@ -142,9 +142,9 @@ private extension GeneralPreferencesView {
         PreferencesSection("Tab Bar Style") {
             Picker("Tab Bar Style:", selection: $prefs.preferences.general.tabBarStyle) {
                 Text("Xcode")
-                    .tag(AppPreferences.TabBarStyle.xcode)
+                    .tag(TabBarView.TabBarStyle.xcode)
                 Text("Native")
-                    .tag(AppPreferences.TabBarStyle.native)
+                    .tag(TabBarView.TabBarStyle.native)
             }
             .pickerStyle(.radioGroup)
         }

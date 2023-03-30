@@ -27,7 +27,7 @@ struct EditorView: View {
         VStack {
             switch tabgroup {
             case .one(let detailTabGroup):
-                WorkspaceTabGroupView(tabgroup: detailTabGroup, focus: $focus)
+                WorkspaceTabGroupView(tabGroup: detailTabGroup, focus: $focus)
                     .transformEnvironment(\.edgeInsets) { insets in
                         switch isAtEdge {
                         case .all:

@@ -9,7 +9,10 @@ import SwiftUI
 
 struct WorkspaceTabGroupView: View {
     @ObservedObject
-    var tabgroup: TabGroupData
+    var tabGroup: TabGroupData
+
+    @StateObject
+    private var prefs: AppPreferencesModel = .shared
 
     @FocusState.Binding
     var focus: TabGroupData?
@@ -19,7 +22,7 @@ struct WorkspaceTabGroupView: View {
 
     var body: some View {
         VStack {
-            if let selected = tabgroup.selected {
+            if let selected = tabGroup.selected {
                 WorkspaceCodeFileView(file: selected)
                     .transformEnvironment(\.edgeInsets) { insets in
                         insets.top += TabBarView.height + PathBarView.height + 1 + 1
@@ -37,7 +40,7 @@ struct WorkspaceTabGroupView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .contentShape(Rectangle())
                 .onTapGesture {
-                    tabManager.activeTabGroup = tabgroup
+                    tabManager.activeTabGroup = tabGroup
                 }
             }
         }
@@ -46,25 +49,25 @@ struct WorkspaceTabGroupView: View {
         .safeAreaInset(edge: .top, spacing: 0) {
             VStack(spacing: 0) {
                 TabBarView()
-                    .id("TabBarView" + tabgroup.id.uuidString)
-                    .environmentObject(tabgroup)
-
+                    .id("TabBarView" + tabGroup.id.uuidString)
+                    .environmentObject(tabGroup)
+                    .tabBarStyle(prefs.preferences.general.tabBarStyle)
                 Divider()
-                if let file = tabgroup.selected {
-                    PathBarView(file: file) { [weak tabgroup] newFile in
-                        if let index = tabgroup?.tabs.firstIndex(of: file) {
-                            tabgroup?.openTab(item: newFile, at: index)
+                if let file = tabGroup.selected {
+                    PathBarView(file: file) { [weak tabGroup] newFile in
+                        if let index = tabGroup?.tabs.firstIndex(of: file) {
+                            tabGroup?.openTab(item: newFile, at: index)
                         }
                     }
                     Divider()
                 }
             }
-            .environment(\.isActiveTabGroup, tabgroup == tabManager.activeTabGroup)
+            .environment(\.isActiveTabGroup, tabGroup == tabManager.activeTabGroup)
             .background(EffectView(.titlebar, blendingMode: .withinWindow, emphasized: false))
         }
-        .focused($focus, equals: tabgroup)
+        .focused($focus, equals: tabGroup)
         .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("CodeEditor.didBeginEditing"))) { _ in
-            tabgroup.temporaryTab = nil
+            tabGroup.temporaryTab = nil
         }
     }
 }

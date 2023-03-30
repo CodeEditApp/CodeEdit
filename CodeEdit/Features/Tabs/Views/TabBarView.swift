@@ -9,6 +9,14 @@ import SwiftUI
 
 struct TabBarView: View {
 
+    /// The style for tab bar
+    /// - **native**: Native-styled tab bar (like Finder)
+    /// - **xcode**: Xcode-liked tab bar
+    enum TabBarStyle: String, Codable {
+        case native
+        case xcode
+    }
+
     @Environment(\.modifierKeys) var modifierKeys
 
     typealias TabID = WorkspaceClient.FileItem.ID
@@ -33,6 +41,9 @@ struct TabBarView: View {
     @EnvironmentObject
     private var tabGroup: TabGroupData
 
+    @Environment(\.tabBarStyle)
+    private var tabBarStyle: TabBarStyle
+
     @Environment(\.splitEditor) var splitEditor
 
     /// The app preference.
@@ -50,13 +61,19 @@ struct TabBarView: View {
         }
         .frame(height: TabBarView.height)
         .overlay(alignment: .top) {
+            // TODO: Replace the code below with:
+            // tabBarStyle.showTopDivider
+
             // When tab bar style is `xcode`, we put the top divider as an overlay.
-            if prefs.preferences.general.tabBarStyle == .xcode {
+            if tabBarStyle == .xcode {
                 TabBarTopDivider()
             }
         }
         .background {
-            if prefs.preferences.general.tabBarStyle == .native {
+            // TODO: Replace the code below with:
+            // tabBarStyle.tabBarBackground
+
+            if tabBarStyle == .native {
                 TabBarNativeMaterial()
                     .edgesIgnoringSafeArea(.top)
             } else {
@@ -157,7 +174,10 @@ struct TabBarView: View {
         .opacity(activeState != .inactive ? 1.0 : 0.5)
         .frame(maxHeight: .infinity) // Fill out vertical spaces.
         .background {
-            if prefs.preferences.general.tabBarStyle == .native {
+            // TODO: Replace the code below with:
+            // tabBarStyle.tabBarBackground
+
+            if tabBarStyle == .native {
                 TabBarAccessoryNativeBackground(dividerAt: .trailing)
             }
         }
@@ -185,7 +205,10 @@ struct TabBarView: View {
         .opacity(activeState != .inactive ? 1.0 : 0.5)
         .frame(maxHeight: .infinity) // Fill out vertical spaces.
         .background {
-            if prefs.preferences.general.tabBarStyle == .native {
+            // TODO: Replace the code below with:
+            // tabBarStyle.tabBarBackground
+
+            if tabBarStyle == .native {
                 TabBarAccessoryNativeBackground(dividerAt: .leading)
             }
         }
@@ -227,3 +250,40 @@ struct TabBarView: View {
 
 }
 // swiftlint:enable type_body_length
+
+//struct TabBarStyleModifier: ViewModifier {
+//    let style: TabBarView.TabBarStyle
+//
+//    func body(content: Content) -> some View {
+//        content
+//            .environment(style)
+//            .overlay {
+//                Text(style == .native
+//                     ? "Native-style tabs"
+//                     : "Xcode-style tabs")
+//            }
+//    }
+//}
+//
+//extension View {
+//    func tabBarStyle(_ style: TabBarView.TabBarStyle) -> some View {
+//        self.modifier(TabBarStyleModifier(style: style))
+//    }
+//}
+
+struct TabBarStyleEnvironmentKey: EnvironmentKey {
+    static var defaultValue: TabBarView.TabBarStyle = .xcode
+}
+
+extension EnvironmentValues {
+    var tabBarStyle: TabBarStyleEnvironmentKey.Value {
+        get { self[TabBarStyleEnvironmentKey.self] }
+        set { self[TabBarStyleEnvironmentKey.self] = newValue }
+    }
+}
+
+extension View {
+  func tabBarStyle(_ style: TabBarView.TabBarStyle) -> some View {
+    self.environment(\.tabBarStyle, style)
+  }
+}

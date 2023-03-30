@@ -18,6 +18,9 @@ struct TabBarTabs: View {
     @StateObject
     private var prefs: AppPreferencesModel = .shared
 
+    @Environment(\.tabBarStyle)
+    private var tabBarStyle: TabBarView.TabBarStyle
+
     @EnvironmentObject
     private var tabGroup: TabGroupData
 
@@ -324,8 +327,11 @@ struct TabBarTabs: View {
                             }
                         }
                     }
+
+                    // TODO: Replace the code below with:
+                    // tabBarStyle.dividerStyle ???
                     // This padding is to hide dividers at two ends under the accessory view divider.
-                    .padding(.horizontal, prefs.preferences.general.tabBarStyle == .native ? -1 : 0)
+                    .padding(.horizontal, tabBarStyle == .native ? -1 : 0)
                     .onAppear {
                         openedTabs = tabGroup.tabs.map(\.id)
                         // On view appeared, compute the initial expected width for tabs.
@@ -337,8 +343,10 @@ struct TabBarTabs: View {
                         if tabs.count == newValue.count {
                             updateForTabCountChange(geometryProxy: geometryProxy)
                         } else {
+                            // TODO: Replace the code below with:
+                            // tabBarStyle.tabEnterAnimationLength
                             withAnimation(
-                                .easeOut(duration: prefs.preferences.general.tabBarStyle == .native ? 0.15 : 0.20)
+                                .easeOut(duration: tabBarStyle == .native ? 0.15 : 0.20)
                             ) {
                                 updateForTabCountChange(geometryProxy: geometryProxy)
                             }
@@ -379,13 +387,17 @@ struct TabBarTabs: View {
                 // To fill up the parent space of tab bar.
                 .frame(maxWidth: .infinity)
                 .background {
-                    if prefs.preferences.general.tabBarStyle == .native {
+                    // TODO: Replace the code below with:
+                    // tabBarStyle.tabBarInactiveBackground ???
+                    if tabBarStyle == .native {
                         TabBarNativeInactiveBackground()
                     }
                 }
             }
             .background {
-                if prefs.preferences.general.tabBarStyle == .native {
+                // TODO: Replace the code below with:
+                // tabBarStyle.tabBarBackground
+                if tabBarStyle == .native {
                     TabBarAccessoryNativeBackground(dividerAt: .none)
                 }
             }
