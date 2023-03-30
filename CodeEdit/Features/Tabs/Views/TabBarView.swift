@@ -9,14 +9,6 @@ import SwiftUI
 
 struct TabBarView: View {
 
-    /// The style for tab bar
-    /// - **native**: Native-styled tab bar (like Finder)
-    /// - **xcode**: Xcode-liked tab bar
-    enum TabBarStyle: String, Codable {
-        case native
-        case xcode
-    }
-
     @Environment(\.modifierKeys) var modifierKeys
 
     typealias TabID = WorkspaceClient.FileItem.ID
@@ -249,41 +241,51 @@ struct TabBarView: View {
     }
 
 }
-// swiftlint:enable type_body_length
-
-//struct TabBarStyleModifier: ViewModifier {
-//    let style: TabBarView.TabBarStyle
-//
-//    func body(content: Content) -> some View {
-//        content
-//            .environment(style)
-//            .overlay {
-//                Text(style == .native
-//                     ? "Native-style tabs"
-//                     : "Xcode-style tabs")
-//            }
-//    }
-//}
-//
-//extension View {
-//    func tabBarStyle(_ style: TabBarView.TabBarStyle) -> some View {
-//        self.modifier(TabBarStyleModifier(style: style))
-//    }
-//}
 
 struct TabBarStyleEnvironmentKey: EnvironmentKey {
-    static var defaultValue: TabBarView.TabBarStyle = .xcode
+    static var defaultValue: some TabBarStyle = .xcode
 }
 
 extension EnvironmentValues {
-    var tabBarStyle: TabBarStyleEnvironmentKey.Value {
+    var tabBarStyle: some TabBarStyle {
         get { self[TabBarStyleEnvironmentKey.self] }
         set { self[TabBarStyleEnvironmentKey.self] = newValue }
     }
 }
 
 extension View {
-  func tabBarStyle(_ style: TabBarView.TabBarStyle) -> some View {
+  func tabBarStyle(_ style: some TabBarStyle) -> some View {
     self.environment(\.tabBarStyle, style)
   }
 }
+
+protocol TabBarStyle {
+    associatedtype BackgroundView: View
+
+    var foregroundColor: Color { get }
+    var background: BackgroundView { get }
+}
+
+struct XcodeTabBarStyle: TabBarStyle {
+    var foregroundColor: Color = .red
+    var background: some View {
+        Text("Xcode Tab Bar Style")
+    }
+}
+
+extension TabBarStyle where Self == XcodeTabBarStyle {
+    static var xcode: Self { XcodeTabBarStyle() }
+}
+
+struct NativeTabBarStyle: TabBarStyle {
+    var foregroundColor: Color = .blue
+    var background: some View {
+        Text("Native Tab Bar Style")
+    }
+}
+
+extension TabBarStyle where Self == NativeTabBarStyle {
+    static var native: Self { NativeTabBarStyle() }
+}
+
+// swiftlint:enable type_body_length
