@@ -8,14 +8,6 @@
 import SwiftUI
 
 struct SourceControlGitView: View {
-    private let inputWidth: Double = 280
-
-    @StateObject
-    private var prefs: AppPreferencesModel = .shared
-
-    @State
-    var ignoredFileSelection: IgnoredFiles.ID?
-
     var body: some View {
         VStack {
             PreferencesSection("Author Name", hideLabels: false) {
@@ -71,6 +63,14 @@ struct SourceControlGitView: View {
         .frame(height: 350)
         .background(EffectView(.contentBackground))
     }
+
+    private let inputWidth: Double = 280
+
+    @StateObject
+    private var prefs: AppPreferencesModel = .shared
+
+    @State
+    var ignoredFileSelection: IgnoredFiles.ID?
 
     private var bottomToolbar: some View {
         HStack(spacing: 12) {
