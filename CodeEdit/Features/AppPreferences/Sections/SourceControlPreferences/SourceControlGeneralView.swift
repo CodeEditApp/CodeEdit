@@ -12,7 +12,7 @@ struct SourceControlGeneralView: View {
 
     var body: some View {
         VStack {
-            sourceControlNavigator
+            sourceControlSection
             textEditingSection
             reportingSection
             comparisonViewSection
