@@ -49,7 +49,7 @@ struct FileCommands: Commands {
             .keyboardShortcut("w", modifiers: [.shift, .command])
 
             Button("Close Workspace") {
-                if NSApp.keyWindow?.windowController.document != nil {
+                if NSApp.keyWindow?.windowController?.document != nil {
                     NSApp.keyWindow?.close()
                 }
             }
