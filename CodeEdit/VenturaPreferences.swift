@@ -127,7 +127,7 @@ struct VenturaPreferences: View {
                 Label {
                     Text(item.nameString)
                         .font(.system(size: 12))
-                        .padding(.leading, 10)
+                        .padding(.leading, 15)
                 } icon: {
                     if let icon = item.icon {
                         Group {
@@ -206,7 +206,6 @@ struct VenturaPreferences: View {
             }
             .navigationSplitViewColumnWidth(500)
         }
-        .presentedWindowToolbarStyle(.unified(showsTitle: false))
         // TODO: Make window resizable and remove window title
         .searchable(text: $filter, placement: .sidebar)
         .navigationTitle(selectedPage?.nameString ?? "Selection Error")
