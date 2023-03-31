@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Settings {
+extension AppPreferences {
 
     /// A dictionary containing the keys and associated ``Theme/Attributes`` of overridden properties
     ///

@@ -267,7 +267,7 @@
 		58F2EB07292FB2B0004A9BDE /* GeneralSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAD6292FB2B0004A9BDE /* GeneralSettings.swift */; };
 		58F2EB08292FB2B0004A9BDE /* TextEditingSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAD8292FB2B0004A9BDE /* TextEditingSettings.swift */; };
 		58F2EB09292FB2B0004A9BDE /* TerminalSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EADA292FB2B0004A9BDE /* TerminalSettings.swift */; };
-		58F2EB0A292FB2B0004A9BDE /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EADB292FB2B0004A9BDE /* Settings.swift */; };
+		58F2EB0A292FB2B0004A9BDE /* AppPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EADB292FB2B0004A9BDE /* AppPreferences.swift */; };
 		58F2EB0B292FB2B0004A9BDE /* AccountsSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EADD292FB2B0004A9BDE /* AccountsSettings.swift */; };
 		58F2EB0C292FB2B0004A9BDE /* SourceControlAccounts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EADE292FB2B0004A9BDE /* SourceControlAccounts.swift */; };
 		58F2EB0D292FB2B0004A9BDE /* ThemeSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAE0292FB2B0004A9BDE /* ThemeSettings.swift */; };
@@ -677,7 +677,7 @@
 		58F2EAD6292FB2B0004A9BDE /* GeneralSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneralSettings.swift; sourceTree = "<group>"; };
 		58F2EAD8292FB2B0004A9BDE /* TextEditingSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextEditingSettings.swift; sourceTree = "<group>"; };
 		58F2EADA292FB2B0004A9BDE /* TerminalSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TerminalSettings.swift; sourceTree = "<group>"; };
-		58F2EADB292FB2B0004A9BDE /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		58F2EADB292FB2B0004A9BDE /* AppPreferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppPreferences.swift; sourceTree = "<group>"; };
 		58F2EADD292FB2B0004A9BDE /* AccountsSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountsSettings.swift; sourceTree = "<group>"; };
 		58F2EADE292FB2B0004A9BDE /* SourceControlAccounts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SourceControlAccounts.swift; sourceTree = "<group>"; };
 		58F2EAE0292FB2B0004A9BDE /* ThemeSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeSettings.swift; sourceTree = "<group>"; };
@@ -2048,7 +2048,7 @@
 				58F2EAD9292FB2B0004A9BDE /* Terminal */,
 				58F2EAD7292FB2B0004A9BDE /* Text Editing */,
 				58F2EADF292FB2B0004A9BDE /* Theme */,
-				58F2EADB292FB2B0004A9BDE /* Settings.swift */,
+				58F2EADB292FB2B0004A9BDE /* AppPreferences.swift */,
 				58F2EAD2292FB2B0004A9BDE /* SettingsModel.swift */,
 			);
 			path = Model;
@@ -2703,7 +2703,7 @@
 				587B9E6629301D8F00AC7927 /* GitLabProjectHook.swift in Sources */,
 				587B9E9329301D8F00AC7927 /* BitBucketOAuthConfiguration.swift in Sources */,
 				6C18620A298BF5A800C663EA /* RecentProjectsListView.swift in Sources */,
-				58F2EB0A292FB2B0004A9BDE /* Settings.swift in Sources */,
+				58F2EB0A292FB2B0004A9BDE /* AppPreferences.swift in Sources */,
 				20EBB503280C327C00F3A5DA /* HistoryInspectorView.swift in Sources */,
 				587B9E7529301D8F00AC7927 /* String+QueryParameters.swift in Sources */,
 				58798219292D92370085B254 /* SearchModeModel.swift in Sources */,

@@ -8,7 +8,7 @@
 import AppKit
 import Foundation
 
-extension Settings {
+extension AppPreferences {
 
     /// The global settings for text editing
     struct TextEditingSettings: Codable {

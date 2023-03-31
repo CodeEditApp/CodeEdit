@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Settings {
+extension AppPreferences {
 
     /// The global settings for text editing
     struct AccountsSettings: Codable {

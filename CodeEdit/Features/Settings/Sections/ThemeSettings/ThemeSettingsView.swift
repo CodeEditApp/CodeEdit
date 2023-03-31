@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Settings
+import Preferences
 
 /// A view that implements the `Theme` preference section
 struct ThemeSettingsView: View {

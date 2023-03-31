@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Settings
+import Preferences
 
 struct SettingsPlaceholderView: View {
     var body: some View {

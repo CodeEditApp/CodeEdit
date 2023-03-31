@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Settings {
+extension AppPreferences {
 
     /// The global settings for the terminal emulator
     struct TerminalSettings: Codable {

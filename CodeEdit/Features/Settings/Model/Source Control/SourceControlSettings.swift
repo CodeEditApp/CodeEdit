@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Settings {
+extension AppPreferences {
     /// The global settings for source control
     struct SourceControlSettings: Codable {
         /// The general source control settings
