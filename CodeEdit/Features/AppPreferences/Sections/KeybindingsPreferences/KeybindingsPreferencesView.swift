@@ -19,15 +19,15 @@ struct KeybindingsPreferencesView: View {
 private extension KeybindingsPreferencesView {
 
     // MARK: - Sections
-    
+
     private var mainSection: some View {
         PreferencesContent {
             implementationNeededText
         }
     }
-    
+
     // MARK: - Preference Views
-    
+
     private var implementationNeededText: some View {
         Text("Implementation needed")
     }

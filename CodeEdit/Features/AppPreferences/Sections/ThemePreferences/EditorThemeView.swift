@@ -139,7 +139,7 @@ private extension EditorThemeView {
             .foregroundColor(.secondary)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
     }
-    
+
     private var syntaxText: some View {
         Text("Syntax")
             .font(.system(size: 13, weight: .semibold))

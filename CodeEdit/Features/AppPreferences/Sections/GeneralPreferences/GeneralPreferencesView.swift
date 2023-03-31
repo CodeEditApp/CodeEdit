@@ -67,7 +67,7 @@ struct GeneralPreferencesView: View {
 /// The extension of the view with all the preferences
 private extension GeneralPreferencesView {
     // MARK: - Sections
-    
+
     var appearanceSection: some View {
         PreferencesSection("Appearance") {
             Picker("Appearance", selection: $prefs.preferences.general.appAppearance) {
@@ -308,7 +308,7 @@ private extension GeneralPreferencesView {
             .toggleStyle(.checkbox)
         }
     }
-    
+
     // MARK: - Preference Views
 
     private var lastUpdatedString: String {
@@ -374,7 +374,7 @@ private extension GeneralPreferencesView {
                 .toggleStyle(.checkbox)
         }
     }
-    
+
     // MARK: - Formatters
 
     private static let formatter = configure(DateFormatter()) {

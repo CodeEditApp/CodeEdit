@@ -11,7 +11,7 @@ import SwiftUI
 struct TextEditingPreferencesView: View {
 
     // MARK: - View
-    
+
     var body: some View {
         PreferencesContent {
             tabWidthSection

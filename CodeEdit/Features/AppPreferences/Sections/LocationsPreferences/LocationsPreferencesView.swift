@@ -22,7 +22,7 @@ struct LocationsPreferencesView: View {
 }
 
 private extension LocationsPreferencesView {
-    
+
     // MARK: - Sections
 
     private var preferencesLocationSection: some View {
