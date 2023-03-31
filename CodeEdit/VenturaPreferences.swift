@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CodeEditSymbols
+import AppKit
 
 /// A struct for a Ventura-style preference
 struct VenturaPreferences: View {
@@ -151,10 +152,6 @@ struct VenturaPreferences: View {
         }
     }
 
-    func show() {
-        hidden = false
-    }
-
     var body: some View {
         NavigationSplitView {
             VStack {
@@ -172,6 +169,10 @@ struct VenturaPreferences: View {
             }
         } detail: {
             ScrollView {
+                // TODO: Align left
+                Text("General")
+                    .font(.headline)
+                    .fontWeight(.bold)
                 Group {
                     if selectedPage?.name != nil {
                         // Can force un-wrap because we just checked if it was nil
@@ -181,7 +182,8 @@ struct VenturaPreferences: View {
                                 .environmentObject(updater)
                                 .navigationTitle("General")
                         case .themePreferences:
-                            ThemePreferencesView()
+                            ThemePreferencesView() // TODO: i think this is broken when i did the refactor, try to find what's wrong
+                            // this might be a problem with fixed .frame() sizes
                                 .navigationTitle("Themes")
                         case .textEditingPreferences:
                             TextEditingPreferencesView()
@@ -203,22 +205,16 @@ struct VenturaPreferences: View {
                     }
                 }
                 .padding(20)
-                .frame(
-                      minWidth: 0,
-                      maxWidth: 715,
-                      minHeight: 0,
-                      maxHeight: 750,
-                      alignment: .leading
-                )
             }
             .navigationSplitViewColumnWidth(715)
         } .task {
             print("run")
             NSApp.windows.second?.toolbarStyle = .unifiedCompact
             NSApp.windows.second?.titleVisibility = NSWindow.TitleVisibility.hidden
+            NSApp.windows.second?.titlebarAppearsTransparent = true
             print(NSApp.windows.second?.title ?? "no title")
         }
-        // TODO: Make window resizable and remove window title
+        // TODO: Make window resizable
         .searchable(text: $searchText, placement: .sidebar, prompt: "Search")
         .frame(width: 1200, height: 750)
         .opacity(hidden ? 1 : 0)
