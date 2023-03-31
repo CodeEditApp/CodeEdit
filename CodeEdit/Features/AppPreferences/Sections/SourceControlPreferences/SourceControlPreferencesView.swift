@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct SourceControlPreferencesView: View {
+
     // MARK: - View
+
     var body: some View {
         sourceControlSelector
     }
@@ -18,7 +20,8 @@ struct SourceControlPreferencesView: View {
 }
 
 extension SourceControlPreferencesView {
-    // MARK: - Preference View
+
+    // MARK: - Preference Views
 
     private var sourceControlSelector: some View {
         VStack(alignment: .leading, spacing: 16) {

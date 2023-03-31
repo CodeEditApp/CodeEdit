@@ -7,8 +7,9 @@
 
 import SwiftUI
 
-/// A view that implements the `Theme preview` preference section
+/// A view that implements the `Theme Preview` preference section
 struct ThemePreviewIcon: View {
+
     // MARK: - View
 
     var body: some View {
@@ -29,13 +30,13 @@ struct ThemePreviewIcon: View {
 }
 
 private extension ThemePreviewIcon {
+
     // MARK: - Sections
 
     private var themePreviewIconSection: some View {
         VStack {
             ZStack(alignment: .topLeading) {
-                RoundedRectangle(cornerRadius: 3)
-                    .foregroundColor(Color(hex: colorScheme == .dark ? 0x4c4c4c : 0xbbbbbb))
+                circularRectangle
 
                 HStack(spacing: 1) {
                     sidebar
@@ -52,12 +53,7 @@ private extension ThemePreviewIcon {
                     .strokeBorder(lineWidth: 2)
                     .foregroundColor(selection == theme ? .accentColor : .clear)
             }
-            Text(theme.displayName)
-                .font(.subheadline)
-                .padding(.horizontal, 7)
-                .padding(.vertical, 2)
-                .foregroundColor(selection == theme ? .white : .primary)
-                .background(Capsule().foregroundColor(selection == theme ? .accentColor : .clear))
+            themeDisplayName
         }
         .help(theme.metadataDescription)
         .onTapGesture {
@@ -68,6 +64,21 @@ private extension ThemePreviewIcon {
     }
 
     // MARK: - Preference Views
+
+    private var circularRectangle: some View {
+        RoundedRectangle(cornerRadius: 3)
+            .foregroundColor(Color(hex: colorScheme == .dark ? 0x4c4c4c : 0xbbbbbb))
+    }
+
+    private var themeDisplayName: some View {
+        Text(theme.displayName)
+            .font(.subheadline)
+            .padding(.horizontal, 7)
+            .padding(.vertical, 2)
+            .foregroundColor(selection == theme ? .white : .primary)
+            .background(Capsule().foregroundColor(selection == theme ? .accentColor : .clear))
+    }
+
     private var sidebar: some View {
         ZStack(alignment: .topLeading) {
             Rectangle()

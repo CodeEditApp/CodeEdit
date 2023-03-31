@@ -10,7 +10,9 @@ import Preferences
 
 /// A view that implements the `Terminal` preference section
 struct TerminalPreferencesView: View {
+
     // MARK: - View
+
     var body: some View {
         PreferencesContent {
             shellSection
@@ -28,7 +30,9 @@ struct TerminalPreferencesView: View {
 }
 
 private extension TerminalPreferencesView {
+
     // MARK: - Sections
+
     private var shellSection: some View {
         PreferencesSection("Shell") {
             shellSelector
@@ -91,7 +95,7 @@ private extension TerminalPreferencesView {
         }
     }
 
-    @ViewBuilder // Required
+    @ViewBuilder
     private var fontSelector: some View {
         Picker("Font:", selection: $prefs.preferences.terminal.font.customFont) {
             Text("System Font")

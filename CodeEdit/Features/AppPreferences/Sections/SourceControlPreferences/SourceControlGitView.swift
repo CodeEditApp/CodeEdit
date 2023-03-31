@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct SourceControlGitView: View {
+
     // MARK: - View
 
     var body: some View {
@@ -31,7 +32,9 @@ struct SourceControlGitView: View {
 }
 
 private extension SourceControlGitView {
+
     // MARK: - Sections
+
     private var authorNameSection: some View {
         PreferencesSection("Author Name", hideLabels: false) {
             gitAuthorName

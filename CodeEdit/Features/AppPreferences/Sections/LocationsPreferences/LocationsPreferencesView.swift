@@ -10,7 +10,9 @@ import Preferences
 
 /// A view that implements the `Locations` preference section
 struct LocationsPreferencesView: View {
+
     // MARK: - View
+
     var body: some View {
         PreferencesContent {
             preferencesLocationSection
@@ -20,7 +22,9 @@ struct LocationsPreferencesView: View {
 }
 
 private extension LocationsPreferencesView {
+    
     // MARK: - Sections
+
     private var preferencesLocationSection: some View {
         PreferencesSection("Preferences Location") {
             preferencesLocation

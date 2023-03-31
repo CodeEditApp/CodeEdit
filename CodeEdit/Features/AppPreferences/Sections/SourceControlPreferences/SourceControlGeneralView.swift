@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct SourceControlGeneralView: View {
+
     // MARK: - View
 
     var body: some View {
@@ -36,7 +37,9 @@ struct SourceControlGeneralView: View {
 }
 
 private extension SourceControlGeneralView {
+
     // MARK: - Sections
+
     private var sourceControlSection: some View {
         PreferencesSection("Source Control", hideLabels: false) {
             enableSourceControl

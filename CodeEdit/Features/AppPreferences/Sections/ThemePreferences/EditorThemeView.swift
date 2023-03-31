@@ -9,6 +9,7 @@ import SwiftUI
 
 /// A view that implements the `Editor theme` preference section
 struct EditorThemeView: View {
+
     // MARK: - View
 
     var body: some View {
@@ -23,6 +24,7 @@ struct EditorThemeView: View {
 }
 
 private extension EditorThemeView {
+
     // MARK: - Sections
 
     private var editorThemeViewSection: some View {
@@ -47,7 +49,8 @@ private extension EditorThemeView {
                                 label: "Invisibles"
                             )
                         }
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+
                         VStack(alignment: .leading, spacing: 10) {
                             PreferencesColorPicker(
                                 $themeModel.themes[index].editor.background.swiftColor,
@@ -62,14 +65,11 @@ private extension EditorThemeView {
                                 label: "Selection"
                             )
                         }
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                            .frame(maxWidth: .infinity, alignment: .leading)
                     }
-                    .padding(.bottom, 20)
+                        .padding(.bottom, 20)
 
-                    Text("Syntax")
-                        .font(.system(size: 13, weight: .semibold))
-                        .foregroundColor(.secondary)
-                        .padding(.bottom, 10)
+                    syntaxText
                     HStack(spacing: 0) {
                         VStack(alignment: .leading, spacing: 10) {
                             PreferencesColorPicker(
@@ -93,7 +93,8 @@ private extension EditorThemeView {
                                 label: "Variables"
                             )
                         }
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+
                         VStack(alignment: .leading, spacing: 10) {
                             PreferencesColorPicker(
                                 $themeModel.themes[index].editor.values.swiftColor,
@@ -137,5 +138,12 @@ private extension EditorThemeView {
         Text("Select a Theme")
             .foregroundColor(.secondary)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+    }
+    
+    private var syntaxText: some View {
+        Text("Syntax")
+            .font(.system(size: 13, weight: .semibold))
+            .foregroundColor(.secondary)
+            .padding(.bottom, 10)
     }
 }

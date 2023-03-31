@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct AccountPreferencesView: View {
+
     // MARK: - View
+
     var body: some View {
         accountsSection
     }
@@ -28,7 +30,9 @@ struct AccountPreferencesView: View {
 
 // swiftlint:disable for_where
 private extension AccountPreferencesView {
+
     // MARK: - Sections
+
     private var accountsSection: some View {
         VStack(alignment: .leading, spacing: 16) {
             HStack(spacing: 1) {

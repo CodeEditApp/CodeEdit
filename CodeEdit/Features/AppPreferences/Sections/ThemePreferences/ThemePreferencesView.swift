@@ -10,7 +10,9 @@ import Preferences
 
 /// A view that implements the `Theme` preference section
 struct ThemePreferencesView: View {
+
     // MARK: - View
+
     var body: some View {
         themePreferencesSection
     }
@@ -29,6 +31,7 @@ struct ThemePreferencesView: View {
 }
 
 private extension ThemePreferencesView {
+
     // MARK: - Sections
 
     private var themePreferencesSection: some View {
