@@ -113,16 +113,16 @@ struct VenturaPreferences: View {
         ])
     ]
 
-    /// Variables for the selected Page, the current filter and software updater
+    /// Variables for the selected Page, the current search text and software updater
     @State private var selectedPage = pages.first?.children?.first
-    @State private var filter: String = ""
+    @State private var searchText: String = ""
     @State private var hidden: Bool = true
     let updater: SoftwareUpdater
 
     @ViewBuilder
-    /// Generates a navigationItem from a Page
+    /// Generates a NavigationItem from a Page
     private func navigationItem(item: Page) -> some View {
-        if filter.isEmpty || item.name.rawValue.lowercased().contains(filter.lowercased()) {
+        if searchText.isEmpty || item.name.rawValue.lowercased().contains(searchText.lowercased()) {
             NavigationLink(value: item) {
                 Label {
                     Text(item.nameString)
@@ -205,7 +205,7 @@ struct VenturaPreferences: View {
             .navigationSplitViewColumnWidth(500)
         }
         // TODO: Make window resizable and remove window title
-        .searchable(text: $filter, placement: .sidebar)
+        .searchable(text: $searchText, placement: .sidebar, prompt: "Search")
         .navigationTitle(selectedPage?.nameString ?? "Selection Error")
         .frame(width: 1200, height: 750)
         .opacity(hidden ? 1 : 0)
