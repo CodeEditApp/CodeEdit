@@ -49,4 +49,3 @@ struct Page: Hashable, Identifiable {
         let icon: IconResource
     }
 }
-

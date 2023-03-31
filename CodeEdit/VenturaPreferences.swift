@@ -199,4 +199,3 @@ struct VenturaSettings: View {
         .opacity(hidden ? 1 : 0)
     }
 }
-

@@ -213,6 +213,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     // MARK: - Preferences
     private lazy var preferencesWindowController = PreferencesWindowController(
         panes: [
+            // TODO: Remove this and just use VenturaPreferences()
             Preferences.Pane(
                 identifier: Preferences.PaneIdentifier("GeneralSettings"),
                 title: "General",
