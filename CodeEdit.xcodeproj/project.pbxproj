@@ -333,6 +333,7 @@
 		6CFF967C29BEBD5200182D6F /* WindowCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CFF967B29BEBD5200182D6F /* WindowCommands.swift */; };
 		850C631029D6B01D00E1444C /* VenturaPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850C630F29D6B01D00E1444C /* VenturaPreferences.swift */; };
 		850C631229D6B03400E1444C /* Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850C631129D6B03400E1444C /* Page.swift */; };
+		850C631829D6D56800E1444C /* VenturaColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850C631729D6D56800E1444C /* VenturaColors.swift */; };
 		B60BE8BD297A167600841125 /* AcknowledgementRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60BE8BC297A167600841125 /* AcknowledgementRowView.swift */; };
 		B658FB3427DA9E1000EA4DBD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3327DA9E1000EA4DBD /* Assets.xcassets */; };
 		B658FB3727DA9E1000EA4DBD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3627DA9E1000EA4DBD /* Preview Assets.xcassets */; };
@@ -733,6 +734,7 @@
 		6CFF967B29BEBD5200182D6F /* WindowCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowCommands.swift; sourceTree = "<group>"; };
 		850C630F29D6B01D00E1444C /* VenturaPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenturaPreferences.swift; sourceTree = "<group>"; };
 		850C631129D6B03400E1444C /* Page.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Page.swift; sourceTree = "<group>"; };
+		850C631729D6D56800E1444C /* VenturaColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenturaColors.swift; sourceTree = "<group>"; };
 		B60BE8BC297A167600841125 /* AcknowledgementRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcknowledgementRowView.swift; sourceTree = "<group>"; };
 		B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodeEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B658FB3127DA9E0F00EA4DBD /* WorkspaceView.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceView.swift; sourceTree = "<group>"; tabWidth = 4; };
@@ -2276,6 +2278,7 @@
 				58D01C85293167DC00C5B6B4 /* Utils */,
 				6C5AB9D629C1496E003B5F96 /* SceneID.swift */,
 				0468438427DC76E200F8E88E /* AppDelegate.swift */,
+				850C631729D6D56800E1444C /* VenturaColors.swift */,
 				850C630F29D6B01D00E1444C /* VenturaPreferences.swift */,
 				850C631129D6B03400E1444C /* Page.swift */,
 				5C4BB1E028212B1E00A92FB2 /* World.swift */,
@@ -2743,6 +2746,7 @@
 				6CFF967A29BEBD2400182D6F /* ViewCommands.swift in Sources */,
 				2072FA1E280D891500C7F8D4 /* FileLocation.swift in Sources */,
 				850C631229D6B03400E1444C /* Page.swift in Sources */,
+				850C631829D6D56800E1444C /* VenturaColors.swift in Sources */,
 				587B9E6729301D8F00AC7927 /* GitLabEventData.swift in Sources */,
 				B66A4E4529C8E86D004573B4 /* CommandsFixes.swift in Sources */,
 				5882252F292C280D00E83CDE /* StatusBarClearButton.swift in Sources */,
