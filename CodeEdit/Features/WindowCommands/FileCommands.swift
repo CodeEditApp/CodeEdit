@@ -44,13 +44,15 @@ struct FileCommands: Commands {
             .keyboardShortcut("w", modifiers: [.control, .shift, .command])
 
             Button("Close Window") {
-                NSApp.keyWindow?.close()
+                CodeEditDocumentController.shared.saveAllDocuments(nil)
+                NSApp.keyWindow?.windowController?.close()
             }
             .keyboardShortcut("w", modifiers: [.shift, .command])
 
             Button("Close Workspace") {
                 if NSApp.keyWindow?.windowController?.document != nil {
-                    NSApp.keyWindow?.close()
+                    CodeEditDocumentController.shared.saveAllDocuments(nil)
+                    NSApp.keyWindow?.windowController?.close()
                 }
             }
             .keyboardShortcut("w", modifiers: [.control, .option, .command])
