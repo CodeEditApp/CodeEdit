@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-// An enum of all the preferences tabs
+/// An enum of all the preferences tabs
 enum Name: String {
     // MARK: - App Preferences
     case appPreferencesSection = "App Preferences"
