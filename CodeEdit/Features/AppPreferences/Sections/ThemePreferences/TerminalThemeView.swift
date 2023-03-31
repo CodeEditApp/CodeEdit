@@ -7,14 +7,24 @@
 
 import SwiftUI
 
+/// A view that implements the `Terminal theme` preference section
 struct TerminalThemeView: View {
+    // MARK: - View
+    var body: some View {
+        terminalThemeView
+    }
+    
     @StateObject
     private var prefs: AppPreferencesModel = .shared
-
+    
     @StateObject
     private var themeModel: ThemeModel = .shared
+}
 
-    var body: some View {
+private extension TerminalThemeView {
+    // MARK: - Sections
+
+    private var terminalThemeView: some View {
         ZStack(alignment: .topLeading) {
             EffectView(.contentBackground)
             if themeModel.selectedTheme == nil {
@@ -31,6 +41,8 @@ struct TerminalThemeView: View {
             }
         }
     }
+
+    // MARK: - Preference Views
 
     private var topToggles: some View {
         VStack(alignment: .leading) {

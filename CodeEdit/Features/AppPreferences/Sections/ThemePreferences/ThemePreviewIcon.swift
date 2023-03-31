@@ -7,25 +7,36 @@
 
 import SwiftUI
 
+/// A view that implements the `Theme preview` preference section
 struct ThemePreviewIcon: View {
+    // MARK: - View
+
+    var body: some View {
+        themePreviewIconSection
+    }
+    
     var theme: Theme
     var colorScheme: ColorScheme
-
+    
     @Binding
     var selection: Theme?
-
+    
     init(_ theme: Theme, selection: Binding<Theme?>, colorScheme: ColorScheme) {
         self.theme = theme
         self._selection = selection
         self.colorScheme = colorScheme
     }
+}
 
-    var body: some View {
+private extension ThemePreviewIcon {
+    // MARK: - Sections
+
+    private var themePreviewIconSection: some View {
         VStack {
             ZStack(alignment: .topLeading) {
                 RoundedRectangle(cornerRadius: 3)
                     .foregroundColor(Color(hex: colorScheme == .dark ? 0x4c4c4c : 0xbbbbbb))
-
+                
                 HStack(spacing: 1) {
                     sidebar
                     content
@@ -56,6 +67,7 @@ struct ThemePreviewIcon: View {
         }
     }
 
+    // MARK: - Preference Views
     private var sidebar: some View {
         ZStack(alignment: .topLeading) {
             Rectangle()

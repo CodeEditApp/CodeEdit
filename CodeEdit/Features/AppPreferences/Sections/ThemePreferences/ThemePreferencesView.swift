@@ -10,6 +10,11 @@ import Preferences
 
 /// A view that implements the `Theme` preference section
 struct ThemePreferencesView: View {
+    // MARK: - View
+    var body: some View {
+        themePreferencesSection
+    }
+    
     @Environment(\.colorScheme)
     var colorScheme
 
@@ -21,36 +26,19 @@ struct ThemePreferencesView: View {
 
     @State
     private var listView: Bool = false
+}
 
-    var body: some View {
+private extension ThemePreferencesView {
+    // MARK: - Sections
+
+    private var themePreferencesSection: some View {
         VStack(spacing: 20) {
             frame
             HStack(alignment: .center) {
-                Toggle(
-                    "Automatically change theme based on system appearance",
-                    isOn: $prefs.preferences.theme.mirrorSystemAppearance
-                )
-                .onChange(of: prefs.preferences.theme.mirrorSystemAppearance) { value in
-                    if value {
-                        if colorScheme == .dark {
-                            themeModel.selectedTheme = themeModel.selectedDarkTheme
-                        } else {
-                            themeModel.selectedTheme = themeModel.selectedLightTheme
-                        }
-                    } else {
-                        themeModel.selectedTheme = themeModel.themes.first {
-                            $0.name == prefs.preferences.theme.selectedTheme
-                        }
-                    }
-                }
-
+                changeThemeOnSystemAppearance
                 Spacer()
-                Button("Get More Themes...") {}
-                    .disabled(true)
-                    .help("Not yet implemented")
-                HelpButton {}
-                    .disabled(true)
-                    .help("Not yet implemented")
+                getMoreThemes
+                
             }
         }
         .frame(width: 872)
@@ -59,6 +47,8 @@ struct ThemePreferencesView: View {
             try? themeModel.loadThemes()
         }
     }
+
+    // MARK: - Preference Views
 
     private var frame: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -70,6 +60,36 @@ struct ThemePreferencesView: View {
             .background(Rectangle().foregroundColor(Color(NSColor.separatorColor)))
             .frame(height: 468)
         }
+    }
+
+    private var changeThemeOnSystemAppearance: some View {
+        Toggle(
+            "Automatically change theme based on system appearance",
+            isOn: $prefs.preferences.theme.mirrorSystemAppearance
+        )
+        .onChange(of: prefs.preferences.theme.mirrorSystemAppearance) { value in
+            if value {
+                if colorScheme == .dark {
+                    themeModel.selectedTheme = themeModel.selectedDarkTheme
+                } else {
+                    themeModel.selectedTheme = themeModel.selectedLightTheme
+                }
+            } else {
+                themeModel.selectedTheme = themeModel.themes.first {
+                    $0.name == prefs.preferences.theme.selectedTheme
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var getMoreThemes: some View {
+        Button("Get More Themes...") {}
+            .disabled(true)
+            .help("Not yet implemented")
+        HelpButton {}
+            .disabled(true)
+            .help("Not yet implemented")
     }
 
     private var sidebar: some View {

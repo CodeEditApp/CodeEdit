@@ -7,11 +7,21 @@
 
 import SwiftUI
 
+/// A view that implements the `Preview theme` preference section
 struct PreviewThemeView: View {
+    // MARK: - View
+    var body: some View {
+        previewTheme
+    }
+    
     @StateObject
     private var themeModel: ThemeModel = .shared
+}
 
-    var body: some View {
+private extension PreviewThemeView {
+    // MARK: - Sections
+
+    private var previewTheme: some View {
         ZStack(alignment: .topLeading) {
             EffectView(.contentBackground)
             if themeModel.selectedTheme == nil {
