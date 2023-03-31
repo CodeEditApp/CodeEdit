@@ -8,8 +8,12 @@
 import SwiftUI
 import CodeEditSymbols
 
+/// A struct for a Ventura-style preference
 struct VenturaPreferences: View {
+
+    /// An array of navigationItem(s)
     private static let pages: [Page] = [
+        // TODO: Get correct colors for each tab
         .init(.generalSection, children: [
             .init(
                 .generalPreferences,
@@ -110,12 +114,14 @@ struct VenturaPreferences: View {
         ])
     ]
 
+    /// Variables for the selected Page, the current filter and software updater
     @State private var selectedPage = pages.first?.children?.first
     @State private var filter: String = ""
     @State private var hidden: Bool = true
     let updater: SoftwareUpdater
 
     @ViewBuilder
+    /// Generates a navigationItem from a Page
     private func navigationItem(item: Page) -> some View {
         if filter.isEmpty || item.name.rawValue.lowercased().contains(filter.lowercased()) {
             NavigationLink(value: item) {
@@ -152,6 +158,7 @@ struct VenturaPreferences: View {
             List(Self.pages, selection: $selectedPage) { category in
                 Section(category.nameString) {
                     if category.children != nil {
+                        // Can force un-wrap because we checked if it was nil
                         ForEach(category.children!) { child in
                             navigationItem(item: child)
                         }
@@ -163,22 +170,25 @@ struct VenturaPreferences: View {
             ScrollView {
                 VStack {
                     Group {
-                        switch selectedPage!.name {
-                        case .generalPreferences:
-                            GeneralPreferencesView()
-                                .environmentObject(updater)
-                        case .themePreferences:
-                            ThemePreferencesView()
-                        case .textEditingPreferences:
-                            TextEditingPreferencesView()
-                        case .terminalPreferences:
-                            TerminalPreferencesView()
-                        case .sourceControlPreferences:
-                            SourceControlPreferencesView()
-                        case .locationPreferences:
-                            LocationsPreferencesView()
-                        default:
-                            Text("Implementation Needed")
+                        if selectedPage?.name != nil {
+                            // Can force un-wrap because we just checked if it was nil
+                            switch selectedPage!.name {
+                            case .generalPreferences:
+                                GeneralPreferencesView()
+                                    .environmentObject(updater)
+                            case .themePreferences:
+                                ThemePreferencesView()
+                            case .textEditingPreferences:
+                                TextEditingPreferencesView()
+                            case .terminalPreferences:
+                                TerminalPreferencesView()
+                            case .sourceControlPreferences:
+                                SourceControlPreferencesView()
+                            case .locationPreferences:
+                                LocationsPreferencesView()
+                            default:
+                                Text("Implementation Needed")
+                            }
                         }
                     }
                 }
@@ -193,8 +203,9 @@ struct VenturaPreferences: View {
             }
             .navigationSplitViewColumnWidth(500)
         }
+        // TODO: Make window resizable and remove window title
         .searchable(text: $filter, placement: .sidebar)
-        .navigationTitle(selectedPage?.nameString ?? "Error: selection")
+        .navigationTitle(selectedPage?.nameString ?? "Selection Error")
         .frame(width: 1200, height: 750)
         .opacity(hidden ? 1 : 0)
     }

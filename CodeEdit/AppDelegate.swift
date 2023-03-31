@@ -215,8 +215,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         panes: [
             // TODO: Remove this and just use VenturaPreferences()
             Preferences.Pane(
-                identifier: Preferences.PaneIdentifier("GeneralSettings"),
-                title: "General",
+                identifier: Preferences.PaneIdentifier("Preferences"),
+                title: "Preferences",
                 toolbarIcon: NSImage(systemSymbolName: "gearshape", accessibilityDescription: nil)!
             ) {
                 VenturaPreferences(updater: updater)

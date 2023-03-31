@@ -8,7 +8,9 @@
 import Foundation
 import SwiftUI
 
+// An enum of all the preferences tabs
 enum Name: String {
+    // MARK: - General Preferences
     case generalSection = "App Preferences"
 
     case generalPreferences = "General"
@@ -25,20 +27,25 @@ enum Name: String {
     case advancedPreferences = "Advanced"
 }
 
+/// A struct for a preferences tab
 struct Page: Hashable, Identifiable {
+    /// Default intializer
     internal init(_ name: Name, icon: Icon? = nil, children: [Page] = []) {
         self.children = children
         self.name = name
+        // If no icon is found, will default to a red question mark
         self.icon = icon ?? .init(baseColor: .red, systemName: "questionmark.app", icon: .system("questionmark.app"))
     }
 
     var id: String { name.rawValue }
 
     let name: Name
+    // Optional because some Pages do not have any children
     let children: [Page]?
     var nameString: LocalizedStringKey { LocalizedStringKey(name.rawValue) }
     let icon: Icon
 
+    /// A struct for a sidebar icon, with a base color and SF Symbol
     struct Icon: Hashable {
         enum IconResource: Equatable, Hashable {
             case system(_ name: String)
