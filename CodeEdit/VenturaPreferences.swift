@@ -127,13 +127,15 @@ struct VenturaPreferences: View {
             NavigationLink(value: item) {
                 Label {
                     Text(item.nameString)
+                        .font(.system(size: 12))
+                        .padding(.leading, 10)
                 } icon: {
                     if let icon = item.icon {
                         Group {
                             Image(systemName: item.icon.systemName)
                         }
                         .foregroundColor(.primary)
-                        .frame(width: 15, height: 15)
+                        .frame(width: 20, height: 20)
                         .background(
                             RoundedRectangle(
                                 cornerRadius: 5,
@@ -141,6 +143,7 @@ struct VenturaPreferences: View {
                             )
                                 .fill(icon.baseColor.gradient)
                         )
+                            .padding(.leading, 20)
                     } else {
                         EmptyView()
                     }
@@ -188,6 +191,7 @@ struct VenturaPreferences: View {
                                 LocationsPreferencesView()
                             default:
                                 Text("Implementation Needed")
+                                    .frame(alignment: .center)
                             }
                         }
                     }
@@ -195,14 +199,15 @@ struct VenturaPreferences: View {
                 .padding(20)
                 .frame(
                       minWidth: 0,
-                      maxWidth: .infinity,
+                      maxWidth: 715,
                       minHeight: 0,
-                      maxHeight: .infinity,
+                      maxHeight: 750,
                       alignment: .leading
                 )
             }
             .navigationSplitViewColumnWidth(500)
         }
+        .presentedWindowToolbarStyle(.unified(showsTitle: false))
         // TODO: Make window resizable and remove window title
         .searchable(text: $filter, placement: .sidebar)
         .navigationTitle(selectedPage?.nameString ?? "Selection Error")
