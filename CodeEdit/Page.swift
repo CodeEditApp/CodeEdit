@@ -20,7 +20,7 @@ enum Name: String {
     case themePreferences = "Themes"
     case textEditingPreferences = "Text Editing"
     case terminalPreferences = "Terminal"
-    case keybindingsPreferences = "Key Bindings"
+    case keybindingsPreferences = "Keybindings"
     case sourceControlPreferences = "Source Control"
     case componentsPreferences = "Components"
     case locationPreferences = "Locations"

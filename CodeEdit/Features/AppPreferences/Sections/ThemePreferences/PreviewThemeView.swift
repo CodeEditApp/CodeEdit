@@ -13,7 +13,7 @@ struct PreviewThemeView: View {
     // MARK: - View
 
     var body: some View {
-        previewTheme
+        previewThemeSection
     }
 
     @StateObject
@@ -24,7 +24,7 @@ private extension PreviewThemeView {
 
     // MARK: - Sections
 
-    private var previewTheme: some View {
+    private var previewThemeSection: some View {
         ZStack(alignment: .topLeading) {
             EffectView(.contentBackground)
             if themeModel.selectedTheme == nil {

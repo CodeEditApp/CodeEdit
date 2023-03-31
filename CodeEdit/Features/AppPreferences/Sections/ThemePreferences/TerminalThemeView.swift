@@ -13,7 +13,7 @@ struct TerminalThemeView: View {
     // MARK: - View
 
     var body: some View {
-        terminalThemeView
+        terminalThemeViewSection
     }
 
     @StateObject
@@ -27,7 +27,7 @@ private extension TerminalThemeView {
 
     // MARK: - Sections
 
-    private var terminalThemeView: some View {
+    private var terminalThemeViewSection: some View {
         ZStack(alignment: .topLeading) {
             EffectView(.contentBackground)
             if themeModel.selectedTheme == nil {

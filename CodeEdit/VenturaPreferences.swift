@@ -117,7 +117,6 @@ struct VenturaPreferences: View {
     /// Variables for the selected Page, the current search text and software updater
     @State private var selectedPage = pages.first?.children?.first
     @State private var searchText: String = ""
-    @State private var hidden: Bool = true
     let updater: SoftwareUpdater
 
     @ViewBuilder
@@ -154,25 +153,24 @@ struct VenturaPreferences: View {
 
     var body: some View {
         NavigationSplitView {
-            VStack {
-                List(Self.pages, selection: $selectedPage) { category in
-                    Section(category.nameString) {
-                        if category.children != nil {
-                            // Can force un-wrap because we checked if it was nil
-                            ForEach(category.children!) { child in
-                                navigationItem(item: child)
-                            }
+            List(Self.pages, selection: $selectedPage) { category in
+                Section(category.nameString) {
+                    if category.children != nil {
+                        // Can force un-wrap because we checked if it was nil
+                        ForEach(category.children!) { child in
+                            navigationItem(item: child)
                         }
                     }
                 }
-                    .navigationSplitViewColumnWidth(215)
             }
+                .navigationSplitViewColumnWidth(215)
         } detail: {
             ScrollView {
                 // TODO: Align left
-                Text(selectedPage?.nameString ?? "No selection")
+                Text("\(selectedPage?.name.rawValue ?? "General") Preferences")
                     .font(.headline)
                     .fontWeight(.bold)
+                // TODO: Scale font size (and position) to detail: bounds
                 Group {
                     if selectedPage?.name != nil {
                         // Can force un-wrap because we just checked if it was nil
@@ -182,8 +180,7 @@ struct VenturaPreferences: View {
                                 .environmentObject(updater)
                                 .navigationTitle("General")
                         case .themePreferences:
-                            ThemePreferencesView() // TODO: i think this is broken when i did the refactor, try to find what's wrong
-                            // this might be a problem with fixed .frame() sizes
+                            ThemePreferencesView()
                                 .navigationTitle("Themes")
                         case .textEditingPreferences:
                             TextEditingPreferencesView()
@@ -194,7 +191,6 @@ struct VenturaPreferences: View {
                         case .sourceControlPreferences:
                             SourceControlPreferencesView()
                                 .navigationTitle("Source Control")
-                                .navigationSubtitle("subtitle")
                         case .locationPreferences:
                             LocationsPreferencesView()
                                 .navigationTitle("Locations")
@@ -208,15 +204,18 @@ struct VenturaPreferences: View {
             }
             .navigationSplitViewColumnWidth(715)
         } .task {
-            print("run")
-            NSApp.windows.second?.toolbarStyle = .unifiedCompact
-            NSApp.windows.second?.titleVisibility = NSWindow.TitleVisibility.hidden
-            NSApp.windows.second?.titlebarAppearsTransparent = true
-            print(NSApp.windows.second?.title ?? "no title")
+            /// Loops through all windows
+            for window in NSApp.windows where window.title == "CodeEdit Settings" {
+                /// We've found the settings page, let's apply the settings to it
+                window.toolbarStyle = .unifiedCompact
+                window.titlebarAppearsTransparent = true
+                window.titleVisibility = .hidden
+                window.styleMask.insert([NSWindow.StyleMask.fullSizeContentView, NSWindow.StyleMask.miniaturizable])
+                // TODO: This doesn't work, find out why and fix and make window vertically resizable
+                window.styleMask.insert(NSWindow.StyleMask.resizable)
+            }
         }
-        // TODO: Make window resizable
         .searchable(text: $searchText, placement: .sidebar, prompt: "Search")
         .frame(width: 1200, height: 750)
-        .opacity(hidden ? 1 : 0)
     }
 }
