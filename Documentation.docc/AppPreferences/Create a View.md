@@ -122,6 +122,7 @@ enum Name: String {
     // REMOVEME: et cetera
     case yourSection = "YourSection"
 }
+```
 
 Back in "YourSectionView.swift" implement your option like this:
 
