@@ -125,7 +125,7 @@ private extension EditorThemeView {
             }
         }
     }
-    
+
     // MARK: - Preference Views
 
     private var useThemeBackground: some View {

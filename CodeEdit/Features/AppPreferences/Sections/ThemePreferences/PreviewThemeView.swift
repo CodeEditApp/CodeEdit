@@ -13,7 +13,7 @@ struct PreviewThemeView: View {
     var body: some View {
         previewTheme
     }
-    
+
     @StateObject
     private var themeModel: ThemeModel = .shared
 }

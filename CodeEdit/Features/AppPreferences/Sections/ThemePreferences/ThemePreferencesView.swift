@@ -14,7 +14,7 @@ struct ThemePreferencesView: View {
     var body: some View {
         themePreferencesSection
     }
-    
+
     @Environment(\.colorScheme)
     var colorScheme
 
@@ -38,7 +38,7 @@ private extension ThemePreferencesView {
                 changeThemeOnSystemAppearance
                 Spacer()
                 getMoreThemes
-                
+
             }
         }
         .frame(width: 872)

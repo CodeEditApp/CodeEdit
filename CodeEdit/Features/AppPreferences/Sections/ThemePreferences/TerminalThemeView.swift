@@ -13,10 +13,10 @@ struct TerminalThemeView: View {
     var body: some View {
         terminalThemeView
     }
-    
+
     @StateObject
     private var prefs: AppPreferencesModel = .shared
-    
+
     @StateObject
     private var themeModel: ThemeModel = .shared
 }

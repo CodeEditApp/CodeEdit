@@ -14,13 +14,13 @@ struct ThemePreviewIcon: View {
     var body: some View {
         themePreviewIconSection
     }
-    
+
     var theme: Theme
     var colorScheme: ColorScheme
-    
+
     @Binding
     var selection: Theme?
-    
+
     init(_ theme: Theme, selection: Binding<Theme?>, colorScheme: ColorScheme) {
         self.theme = theme
         self._selection = selection
@@ -36,7 +36,7 @@ private extension ThemePreviewIcon {
             ZStack(alignment: .topLeading) {
                 RoundedRectangle(cornerRadius: 3)
                     .foregroundColor(Color(hex: colorScheme == .dark ? 0x4c4c4c : 0xbbbbbb))
-                
+
                 HStack(spacing: 1) {
                     sidebar
                     content

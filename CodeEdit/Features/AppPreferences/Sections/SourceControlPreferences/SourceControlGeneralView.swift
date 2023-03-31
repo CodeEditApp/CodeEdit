@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SourceControlGeneralView: View {
     // MARK: - View
-    
+
     var body: some View {
         VStack {
             sourceControlNavigator
@@ -140,7 +140,7 @@ private extension SourceControlGeneralView {
         .toggleStyle(.checkbox)
         .padding(.leading, 20)
     }
-    
+
     private var openCreatedIssueInBrowser: some View {
         Toggle(
             "Open created issue in the browser",
@@ -148,7 +148,7 @@ private extension SourceControlGeneralView {
         )
         .toggleStyle(.checkbox)
     }
-    
+
     private var comparisonView: some View {
         Picker(
             "Comparison View",
@@ -161,7 +161,7 @@ private extension SourceControlGeneralView {
         }
         .frame(width: inputWidth)
     }
-    
+
     private var sourceControlNavigator: some View {
         Picker(
             "Source Control Navigator",
@@ -174,7 +174,7 @@ private extension SourceControlGeneralView {
         }
         .frame(width: inputWidth)
     }
-    
+
     @ViewBuilder
     private var defaultBranchName: some View {
         TextField("main", text: $branchName)
