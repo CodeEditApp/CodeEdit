@@ -54,7 +54,7 @@ struct InspectorSidebarView: View {
         )
         .safeAreaInset(edge: .top, spacing: 0) {
             InspectorSidebarToolbarTop(selection: $selection)
-                .background(.ultraThinMaterial)
+                .background(EffectView(.windowBackground))
         }
     }
 }

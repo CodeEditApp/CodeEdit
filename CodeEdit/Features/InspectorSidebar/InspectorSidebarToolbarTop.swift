@@ -51,7 +51,7 @@ struct InspectorSidebarToolbarTop: View {
             .animation(.default, value: icons)
             Divider()
         }
-        .frame(height: TabBarView.height)
+        .frame(height: TabBarView.height + 1)
     }
 
     func makeInspectorIcon(systemImage: String, title: String, id: Int) -> some View {

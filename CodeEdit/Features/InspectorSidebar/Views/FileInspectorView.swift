@@ -71,7 +71,6 @@ struct FileInspectorView: View {
             }
         }
         .controlSize(.small)
-        .frame(maxWidth: 250)
         .padding(.horizontal, 8)
         .padding(.vertical, 1)
     }
