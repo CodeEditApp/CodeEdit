@@ -170,7 +170,7 @@ struct VenturaPreferences: View {
         } detail: {
             ScrollView {
                 // TODO: Align left
-                Text("General")
+                Text(selectedPage?.nameString ?? "No selection")
                     .font(.headline)
                     .fontWeight(.bold)
                 Group {
