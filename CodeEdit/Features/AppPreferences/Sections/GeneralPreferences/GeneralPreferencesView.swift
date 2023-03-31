@@ -9,29 +9,7 @@ import SwiftUI
 
 /// A view that implements the `General` preference section
 struct GeneralPreferencesView: View {
-    private let inputWidth: Double = 160
-    private let textEditorWidth: Double = 220
-    private let textEditorHeight: Double = 30
-
-    @EnvironmentObject
-    var updater: SoftwareUpdater
-
-    @StateObject
-    private var prefs: AppPreferencesModel = .shared
-
-    @State
-    private var openInCodeEdit: Bool = true
-
-    init() {
-        guard let defaults = UserDefaults.init(
-            suiteName: "austincondiff.CodeEdit.shared"
-        ) else {
-            print("Failed to get/init shared defaults")
-            return
-        }
-
-        self.openInCodeEdit = defaults.bool(forKey: "enableOpenInCE")
-    }
+    // MARK: - View
 
     var body: some View {
         PreferencesContent {
@@ -58,11 +36,38 @@ struct GeneralPreferencesView: View {
                 updaterSection
             }
         }
-        .frame(minHeight: 650)
+            .frame(width: 715)
+    }
+
+    private let inputWidth: Double = 160
+    private let textEditorWidth: Double = 220
+    private let textEditorHeight: Double = 30
+
+    @EnvironmentObject
+    var updater: SoftwareUpdater
+
+    @StateObject
+    private var prefs: AppPreferencesModel = .shared
+
+    @State
+    private var openInCodeEdit: Bool = true
+
+    init() {
+        guard let defaults = UserDefaults.init(
+            suiteName: "austincondiff.CodeEdit.shared"
+        ) else {
+            print("Failed to get/init shared defaults")
+            return
+        }
+
+        self.openInCodeEdit = defaults.bool(forKey: "enableOpenInCE")
     }
 }
 
+/// The extension of the view with all the preferences
 private extension GeneralPreferencesView {
+    // MARK: - Sections
+
     var appearanceSection: some View {
         PreferencesSection("Appearance") {
             Picker("Appearance", selection: $prefs.preferences.general.appAppearance) {
@@ -294,6 +299,18 @@ private extension GeneralPreferencesView {
         }
     }
 
+    var autoSaveSection: some View {
+        PreferencesSection("Auto Save Behavior", hideLabels: false) {
+            Toggle(
+                "Automatically save changes to disk",
+                isOn: $prefs.preferences.general.isAutoSaveOn
+            )
+            .toggleStyle(.checkbox)
+        }
+    }
+
+    // MARK: - Preference Views
+
     private var lastUpdatedString: String {
         if let lastUpdatedDate = updater.lastUpdateCheckDate {
             return Self.formatter.string(from: lastUpdatedDate)
@@ -306,21 +323,6 @@ private extension GeneralPreferencesView {
         var copy = subject
         configuration(&copy)
         return copy
-    }
-
-    private static let formatter = configure(DateFormatter()) {
-        $0.dateStyle = .medium
-        $0.timeStyle = .medium
-    }
-
-    var autoSaveSection: some View {
-        PreferencesSection("Auto Save Behavior", hideLabels: false) {
-            Toggle(
-                "Automatically save changes to disk",
-                isOn: $prefs.preferences.general.isAutoSaveOn
-            )
-            .toggleStyle(.checkbox)
-        }
     }
 
     func fallbackShellInstallation(commandPath: String, destinationPath: String) {
@@ -371,5 +373,12 @@ private extension GeneralPreferencesView {
             Toggle("Automatically Show Active File", isOn: $prefs.preferences.general.revealFileOnFocusChange)
                 .toggleStyle(.checkbox)
         }
+    }
+
+    // MARK: - Formatters
+
+    private static let formatter = configure(DateFormatter()) {
+        $0.dateStyle = .medium
+        $0.timeStyle = .medium
     }
 }

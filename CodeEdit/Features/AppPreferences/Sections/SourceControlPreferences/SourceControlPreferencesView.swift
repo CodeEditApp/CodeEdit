@@ -8,10 +8,23 @@
 import SwiftUI
 
 struct SourceControlPreferencesView: View {
-    @State
-    private var selectedSection: Int = 0
+
+    // MARK: - View
 
     var body: some View {
+        sourceControlSelector
+            .frame(width: 715)
+    }
+
+    @State
+    private var selectedSection: Int = 0
+}
+
+extension SourceControlPreferencesView {
+
+    // MARK: - Preference Views
+
+    private var sourceControlSelector: some View {
         VStack(alignment: .leading, spacing: 16) {
             VStack(spacing: 1) {
                 PreferencesToolbar {

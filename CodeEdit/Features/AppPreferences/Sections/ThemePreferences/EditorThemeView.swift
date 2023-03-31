@@ -7,21 +7,33 @@
 
 import SwiftUI
 
+/// A view that implements the `Editor theme` preference section
 struct EditorThemeView: View {
+
+    // MARK: - View
+
+    var body: some View {
+        editorThemeViewSection
+    }
+
     @StateObject
     private var themeModel: ThemeModel = .shared
 
     @StateObject
     private var prefs: AppPreferencesModel = .shared
+}
 
-    var body: some View {
+private extension EditorThemeView {
+
+    // MARK: - Sections
+
+    private var editorThemeViewSection: some View {
         ZStack(alignment: .topLeading) {
             EffectView(.contentBackground)
             if let selectedTheme = themeModel.selectedTheme,
                let index = themeModel.themes.firstIndex(of: selectedTheme) {
                 VStack(alignment: .leading, spacing: 0) {
-                    Toggle("Use theme background ", isOn: $prefs.preferences.theme.useThemeBackground)
-                        .padding(.bottom, 20)
+                    useThemeBackground
                     HStack(spacing: 0) {
                         VStack(alignment: .leading, spacing: 10) {
                             PreferencesColorPicker(
@@ -37,7 +49,8 @@ struct EditorThemeView: View {
                                 label: "Invisibles"
                             )
                         }
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+
                         VStack(alignment: .leading, spacing: 10) {
                             PreferencesColorPicker(
                                 $themeModel.themes[index].editor.background.swiftColor,
@@ -52,13 +65,11 @@ struct EditorThemeView: View {
                                 label: "Selection"
                             )
                         }
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                            .frame(maxWidth: .infinity, alignment: .leading)
                     }
-                    .padding(.bottom, 20)
-                    Text("Syntax")
-                        .font(.system(size: 13, weight: .semibold))
-                        .foregroundColor(.secondary)
-                        .padding(.bottom, 10)
+                        .padding(.bottom, 20)
+
+                    syntaxText
                     HStack(spacing: 0) {
                         VStack(alignment: .leading, spacing: 10) {
                             PreferencesColorPicker(
@@ -82,7 +93,8 @@ struct EditorThemeView: View {
                                 label: "Variables"
                             )
                         }
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+
                         VStack(alignment: .leading, spacing: 10) {
                             PreferencesColorPicker(
                                 $themeModel.themes[index].editor.values.swiftColor,
@@ -105,15 +117,33 @@ struct EditorThemeView: View {
                                 label: "Comments"
                             )
                         }
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                            .frame(maxWidth: .infinity, alignment: .leading)
                     }
+                        .padding(20)
                 }
-                .padding(20)
             } else {
-                Text("Select a Theme")
-                    .foregroundColor(.secondary)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                selectTheme
             }
         }
+    }
+
+    // MARK: - Preference Views
+
+    private var useThemeBackground: some View {
+        Toggle("Use theme background ", isOn: $prefs.preferences.theme.useThemeBackground)
+            .padding(.bottom, 20)
+    }
+
+    private var selectTheme: some View {
+        Text("Select a Theme")
+            .foregroundColor(.secondary)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+    }
+
+    private var syntaxText: some View {
+        Text("Syntax")
+            .font(.system(size: 13, weight: .semibold))
+            .foregroundColor(.secondary)
+            .padding(.bottom, 10)
     }
 }

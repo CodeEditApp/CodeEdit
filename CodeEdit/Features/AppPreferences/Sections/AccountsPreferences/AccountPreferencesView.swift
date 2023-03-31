@@ -7,8 +7,14 @@
 
 import SwiftUI
 
-// swiftlint:disable for_where
 struct AccountPreferencesView: View {
+
+    // MARK: - View
+
+    var body: some View {
+        accountsSection
+    }
+
     @StateObject
     private var prefs: AppPreferencesModel = .shared
 
@@ -20,8 +26,14 @@ struct AccountPreferencesView: View {
 
     @State
     var accountSelection: SourceControlAccounts.ID?
+}
 
-    var body: some View {
+// swiftlint:disable for_where
+private extension AccountPreferencesView {
+
+    // MARK: - Sections
+
+    private var accountsSection: some View {
         VStack(alignment: .leading, spacing: 16) {
             HStack(spacing: 1) {
                 accountSelectionView
@@ -40,6 +52,8 @@ struct AccountPreferencesView: View {
             .padding()
         }
     }
+
+    // MARK: - Preference Views
 
     private var accountSelectionView: some View {
         VStack(alignment: .leading, spacing: 1) {
@@ -159,6 +173,8 @@ struct AccountPreferencesView: View {
         .background(EffectView(.contentBackground))
     }
 
+    // MARK: - Functions
+
     private func getSourceControlAccount(selectedAccountId: String) -> SourceControlAccounts? {
         let gitAccounts = prefs.preferences.accounts.sourceControlAccounts.gitAccount
         return gitAccounts.first { $0.id == selectedAccountId }
@@ -174,5 +190,4 @@ struct AccountPreferencesView: View {
             }
         }
     }
-
 }

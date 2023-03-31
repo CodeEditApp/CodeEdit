@@ -10,29 +10,53 @@ import Preferences
 
 /// A view that implements the `Terminal` preference section
 struct TerminalPreferencesView: View {
+
+    // MARK: - View
+
+    var body: some View {
+        PreferencesContent {
+            shellSection
+            fontSection
+            cursorSection
+        }
+            .frame(width: 715)
+    }
+
     private let inputWidth: Double = 150
 
     @StateObject
     private var prefs: AppPreferencesModel = .shared
 
     init() {}
+}
 
-    var body: some View {
-        PreferencesContent {
-            PreferencesSection("Shell") {
-                shellSelector
-                optionAsMetaToggle
-            }
-            PreferencesSection("Font") {
-                fontSelector
-            }
-            PreferencesSection("Cursor") {
-                cursorStyle
-                cursorBlink
-            }
+private extension TerminalPreferencesView {
+
+    // MARK: - Sections
+
+    private var shellSection: some View {
+        PreferencesSection("Shell") {
+            shellSelector
+            optionAsMetaToggle
         }
     }
 
+    private var fontSection: some View {
+        PreferencesSection("Font") {
+            fontSelector
+        }
+    }
+
+    private var cursorSection: some View {
+        PreferencesSection("Cursor") {
+            cursorStyle
+            cursorBlink
+        }
+    }
+
+    // MARK: - Preference Views
+
+    @ViewBuilder
     private var shellSelector: some View {
         Picker("Shell:", selection: $prefs.preferences.terminal.shell) {
             Text("System Default")
@@ -45,6 +69,7 @@ struct TerminalPreferencesView: View {
         }
         .frame(width: inputWidth)
     }
+
     private var cursorStyle: some View {
         Picker("Terminal Cursor Style: ", selection: $prefs.preferences.terminal.cursorStyle) {
             Text("Block")
