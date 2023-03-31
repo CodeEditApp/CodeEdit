@@ -157,17 +157,19 @@ struct VenturaPreferences: View {
 
     var body: some View {
         NavigationSplitView {
-            List(Self.pages, selection: $selectedPage) { category in
-                Section(category.nameString) {
-                    if category.children != nil {
-                        // Can force un-wrap because we checked if it was nil
-                        ForEach(category.children!) { child in
-                            navigationItem(item: child)
+            VStack {
+                List(Self.pages, selection: $selectedPage) { category in
+                    Section(category.nameString) {
+                        if category.children != nil {
+                            // Can force un-wrap because we checked if it was nil
+                            ForEach(category.children!) { child in
+                                navigationItem(item: child)
+                            }
                         }
                     }
                 }
+                    .navigationSplitViewColumnWidth(215)
             }
-                .navigationSplitViewColumnWidth(215)
         } detail: {
             ScrollView {
                 Group {
@@ -177,16 +179,23 @@ struct VenturaPreferences: View {
                         case .generalPreferences:
                             GeneralPreferencesView()
                                 .environmentObject(updater)
+                                .navigationTitle("General")
                         case .themePreferences:
                             ThemePreferencesView()
+                                .navigationTitle("Themes")
                         case .textEditingPreferences:
                             TextEditingPreferencesView()
+                                .navigationTitle("Text Editing")
                         case .terminalPreferences:
                             TerminalPreferencesView()
+                                .navigationTitle("Terminal")
                         case .sourceControlPreferences:
                             SourceControlPreferencesView()
+                                .navigationTitle("Source Control")
+                                .navigationSubtitle("subtitle")
                         case .locationPreferences:
                             LocationsPreferencesView()
+                                .navigationTitle("Locations")
                         default:
                             Text("Implementation Needed")
                                 .frame(alignment: .center)
@@ -206,7 +215,6 @@ struct VenturaPreferences: View {
         }
         // TODO: Make window resizable and remove window title
         .searchable(text: $searchText, placement: .sidebar, prompt: "Search")
-        .navigationTitle(selectedPage?.nameString ?? "Selection Error")
         .frame(width: 1200, height: 750)
         .opacity(hidden ? 1 : 0)
     }
