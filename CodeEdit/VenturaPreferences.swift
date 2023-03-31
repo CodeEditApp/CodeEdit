@@ -211,7 +211,12 @@ struct VenturaPreferences: View {
                       alignment: .leading
                 )
             }
-            .navigationSplitViewColumnWidth(500)
+            .navigationSplitViewColumnWidth(715)
+        } .task {
+            print("run")
+            NSApp.windows.second?.toolbarStyle = .unifiedCompact
+            NSApp.windows.second?.titleVisibility = NSWindow.TitleVisibility.hidden
+            print(NSApp.windows.second?.title ?? "no title")
         }
         // TODO: Make window resizable and remove window title
         .searchable(text: $searchText, placement: .sidebar, prompt: "Search")

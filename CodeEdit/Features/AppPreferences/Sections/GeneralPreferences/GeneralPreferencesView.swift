@@ -36,7 +36,7 @@ struct GeneralPreferencesView: View {
                 updaterSection
             }
         }
-        .frame(minHeight: 650)
+            .frame(width: 715)
     }
 
     private let inputWidth: Double = 160

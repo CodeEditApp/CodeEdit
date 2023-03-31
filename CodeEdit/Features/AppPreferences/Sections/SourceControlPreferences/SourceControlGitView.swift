@@ -18,8 +18,8 @@ struct SourceControlGitView: View {
             ignoredFilesSection
             optionsSection
         }
-        .frame(height: 350)
-        .background(EffectView(.contentBackground))
+            .frame(width: 715)
+            .background(EffectView(.contentBackground))
     }
 
     private let inputWidth: Double = 280

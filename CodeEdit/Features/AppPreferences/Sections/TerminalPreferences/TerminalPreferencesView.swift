@@ -19,6 +19,7 @@ struct TerminalPreferencesView: View {
             fontSection
             cursorSection
         }
+            .frame(width: 715)
     }
 
     private let inputWidth: Double = 150

@@ -13,6 +13,7 @@ struct SourceControlPreferencesView: View {
 
     var body: some View {
         sourceControlSelector
+            .frame(width: 715)
     }
 
     @State

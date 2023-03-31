@@ -211,7 +211,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     }
 
     // MARK: - Preferences
-    private lazy var preferencesWindowController = PreferencesWindowController(
+    private lazy var preferencesWindowController: PreferencesWindowController = PreferencesWindowController(
         panes: [
             // TODO: Remove this and just use VenturaPreferences()
             Preferences.Pane(
@@ -222,7 +222,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                 VenturaPreferences(updater: updater)
             }
         ],
-        animated: false
+        animated: true
     )
 
     // MARK: NSDocumentController delegate

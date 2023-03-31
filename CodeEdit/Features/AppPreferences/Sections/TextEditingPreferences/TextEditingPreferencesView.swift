@@ -20,6 +20,7 @@ struct TextEditingPreferencesView: View {
             codeCompletionSection
             lineWrappingSection
         }
+            .frame(width: 715)
     }
 
     @StateObject
