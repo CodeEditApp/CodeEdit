@@ -219,7 +219,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                 title: "General",
                 toolbarIcon: NSImage(systemSymbolName: "gearshape", accessibilityDescription: nil)!
             ) {
-                VenturaSettings(updater: updater)
+                VenturaPreferences(updater: updater)
             }
         ],
         animated: false

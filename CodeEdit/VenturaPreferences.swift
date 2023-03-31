@@ -8,11 +8,11 @@
 import SwiftUI
 import CodeEditSymbols
 
-struct VenturaSettings: View {
+struct VenturaPreferences: View {
     private static let pages: [Page] = [
         .init(.generalSection, children: [
             .init(
-                .generalSettings,
+                .generalPreferences,
                 icon: .init(
                     baseColor: .gray,
                     systemName: "gear",
@@ -20,7 +20,7 @@ struct VenturaSettings: View {
                 )
             ),
             .init(
-                .accountSettings,
+                .accountPreferences,
                 icon: .init(
                     baseColor: .blue,
                     systemName: "at",
@@ -28,7 +28,7 @@ struct VenturaSettings: View {
                 )
             ),
             .init(
-                .behaviorSettings,
+                .behaviorPreferences,
                 icon: .init(
                     baseColor: .orange,
                     systemName: "flowchart",
@@ -36,7 +36,7 @@ struct VenturaSettings: View {
                 )
             ),
             .init(
-                .navigationSettings,
+                .navigationPreferences,
                 icon: .init(
                     baseColor: .green,
                     systemName: "arrow.triangle.turn.up.right.diamond",
@@ -44,7 +44,7 @@ struct VenturaSettings: View {
                 )
             ),
             .init(
-                .themeSettings,
+                .themePreferences,
                 icon: .init(
                     baseColor: .pink,
                     systemName: "paintbrush",
@@ -52,7 +52,7 @@ struct VenturaSettings: View {
                 )
             ),
             .init(
-                .textEditingSettings,
+                .textEditingPreferences,
                 icon: .init(
                     baseColor: .cyan,
                     systemName: "square.and.pencil",
@@ -60,7 +60,7 @@ struct VenturaSettings: View {
                 )
             ),
             .init(
-                .terminalSettings,
+                .terminalPreferences,
                 icon: .init(
                     baseColor: .cyan,
                     systemName: "terminal",
@@ -68,7 +68,7 @@ struct VenturaSettings: View {
                 )
             ),
             .init(
-                .keybindingsSettings,
+                .keybindingsPreferences,
                 icon: .init(
                     baseColor: .gray,
                     systemName: "keyboard",
@@ -76,7 +76,7 @@ struct VenturaSettings: View {
                 )
             ),
             .init(
-                .sourceControlSettings,
+                .sourceControlPreferences,
                 icon: .init(
                     baseColor: .blue,
                     systemName: "arrow.triangle.pull",
@@ -84,7 +84,7 @@ struct VenturaSettings: View {
                 )
             ),
             .init(
-                .componentsSettings,
+                .componentsPreferences,
                 icon: .init(
                     baseColor: .blue,
                     systemName: "puzzlepiece",
@@ -92,7 +92,7 @@ struct VenturaSettings: View {
                 )
             ),
             .init(
-                .locationSettings,
+                .locationPreferences,
                 icon: .init(
                     baseColor: .green,
                     systemName: "externaldrive",
@@ -100,7 +100,7 @@ struct VenturaSettings: View {
                 )
             ),
             .init(
-                .advancedSettings,
+                .advancedPreferences,
                 icon: .init(
                     baseColor: .gray,
                     systemName: "gearshape.2",
@@ -164,18 +164,18 @@ struct VenturaSettings: View {
                 VStack {
                     Group {
                         switch selectedPage!.name {
-                        case .generalSettings:
+                        case .generalPreferences:
                             GeneralPreferencesView()
                                 .environmentObject(updater)
-                        case .themeSettings:
+                        case .themePreferences:
                             ThemePreferencesView()
-                        case .textEditingSettings:
+                        case .textEditingPreferences:
                             TextEditingPreferencesView()
-                        case .terminalSettings:
+                        case .terminalPreferences:
                             TerminalPreferencesView()
-                        case .sourceControlSettings:
+                        case .sourceControlPreferences:
                             SourceControlPreferencesView()
-                        case .locationSettings:
+                        case .locationPreferences:
                             LocationsPreferencesView()
                         default:
                             Text("Implementation Needed")

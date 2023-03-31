@@ -11,18 +11,18 @@ import SwiftUI
 enum Name: String {
     case generalSection = "App Preferences"
 
-    case generalSettings = "General"
-    case accountSettings = "Accounts"
-    case behaviorSettings = "Behaviors"
-    case navigationSettings = "Navigation"
-    case themeSettings = "Themes"
-    case textEditingSettings = "Text Editing"
-    case terminalSettings = "Terminal"
-    case keybindingsSettings = "Key Bindings"
-    case sourceControlSettings = "Source Control"
-    case componentsSettings = "Components"
-    case locationSettings = "Locations"
-    case advancedSettings = "Advanced"
+    case generalPreferences = "General"
+    case accountPreferences = "Accounts"
+    case behaviorPreferences = "Behaviors"
+    case navigationPreferences = "Navigation"
+    case themePreferences = "Themes"
+    case textEditingPreferences = "Text Editing"
+    case terminalPreferences = "Terminal"
+    case keybindingsPreferences = "Key Bindings"
+    case sourceControlPreferences = "Source Control"
+    case componentsPreferences = "Components"
+    case locationPreferences = "Locations"
+    case advancedPreferences = "Advanced"
 }
 
 struct Page: Hashable, Identifiable {
