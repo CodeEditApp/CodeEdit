@@ -170,28 +170,26 @@ struct VenturaPreferences: View {
                 .navigationSplitViewColumnWidth(215)
         } detail: {
             ScrollView {
-                VStack {
-                    Group {
-                        if selectedPage?.name != nil {
-                            // Can force un-wrap because we just checked if it was nil
-                            switch selectedPage!.name {
-                            case .generalPreferences:
-                                GeneralPreferencesView()
-                                    .environmentObject(updater)
-                            case .themePreferences:
-                                ThemePreferencesView()
-                            case .textEditingPreferences:
-                                TextEditingPreferencesView()
-                            case .terminalPreferences:
-                                TerminalPreferencesView()
-                            case .sourceControlPreferences:
-                                SourceControlPreferencesView()
-                            case .locationPreferences:
-                                LocationsPreferencesView()
-                            default:
-                                Text("Implementation Needed")
-                                    .frame(alignment: .center)
-                            }
+                Group {
+                    if selectedPage?.name != nil {
+                        // Can force un-wrap because we just checked if it was nil
+                        switch selectedPage!.name {
+                        case .generalPreferences:
+                            GeneralPreferencesView()
+                                .environmentObject(updater)
+                        case .themePreferences:
+                            ThemePreferencesView()
+                        case .textEditingPreferences:
+                            TextEditingPreferencesView()
+                        case .terminalPreferences:
+                            TerminalPreferencesView()
+                        case .sourceControlPreferences:
+                            SourceControlPreferencesView()
+                        case .locationPreferences:
+                            LocationsPreferencesView()
+                        default:
+                            Text("Implementation Needed")
+                                .frame(alignment: .center)
                         }
                     }
                 }
