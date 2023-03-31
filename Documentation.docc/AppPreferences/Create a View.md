@@ -15,7 +15,7 @@ struct GeneralPreferencesView: View {
 
     // MARK: - View
 
-    public init() {}
+    init() {}
 
     var body: some View {
         PreferencesContent {
@@ -60,7 +60,7 @@ struct GeneralPreferencesView: View {
 
     // MARK: - View
 
-    public init() {}
+    init() {}
 
     var body: some View {
         PreferencesContent {
@@ -124,13 +124,13 @@ enum Name: String {
 }
 ```
 
-Back in "YourSectionView.swift" implement your option like this:
+Back in `YourSectionView.swift` implement your option like this:
 
 ```swift
 import SwiftUI
 
 struct YourSectionPreferencesView: View {
-    public var body: some View {
+    var body: some View {
         yourToggleSection
     }
 
