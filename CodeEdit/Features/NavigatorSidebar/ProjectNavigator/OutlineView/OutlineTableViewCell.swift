@@ -20,10 +20,10 @@ final class OutlineTableViewCell: NSTableCellView {
     private var fileItem: WorkspaceClient.FileItem!
     private var delegate: OutlineTableViewCellDelegate?
 
-    private let prefs = AppPreferencesModel.shared.preferences.general
+    private let prefs = SettingsModel.shared.settings.general
 
     /// Initializes the `OutlineTableViewCell` with an `icon` and `label`
-    /// Both the icon and label will be colored, and sized based on the user's preferences.
+    /// Both the icon and label will be colored, and sized based on the user's settings.
     /// - Parameters:
     ///   - frameRect: The frame of the cell.
     ///   - item: The file item the cell represents.
@@ -112,7 +112,7 @@ final class OutlineTableViewCell: NSTableCellView {
         }
     }
 
-    /// Generates a string based on user's file name preferences.
+    /// Generates a string based on user's file name settings.
     /// - Parameter item: The FileItem to generate the name for.
     /// - Returns: A `String` with the name to display.
     private func label(for item: WorkspaceClient.FileItem) -> String {
@@ -128,7 +128,7 @@ final class OutlineTableViewCell: NSTableCellView {
         }
     }
 
-    /// Get the appropriate color for the items icon depending on the users preferences.
+    /// Get the appropriate color for the items icon depending on the users settings.
     /// - Parameter item: The `FileItem` to get the color for
     /// - Returns: A `NSColor` for the given `FileItem`.
     private func color(for item: WorkspaceClient.FileItem) -> NSColor {

@@ -16,7 +16,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
 
     var observers: [NSKeyValueObservation] = []
 
-    private var prefs: AppPreferencesModel = .shared
+    private var prefs: SettingsModel = .shared
 
     var workspace: WorkspaceDocument?
     var quickOpenPanel: OverlayPanel?
@@ -138,7 +138,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         toolbar.showsBaselineSeparator = false
         self.window?.titleVisibility = .hidden
         self.window?.toolbarStyle = .unifiedCompact
-        if prefs.preferences.general.tabBarStyle == .native {
+        if prefs.settings.general.tabBarStyle == .native {
             // Set titlebar background as transparent by default in order to
             // style the toolbar background in native tab bar style.
             self.window?.titlebarSeparatorStyle = .none

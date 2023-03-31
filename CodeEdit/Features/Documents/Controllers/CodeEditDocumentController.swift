@@ -12,7 +12,7 @@ final class CodeEditDocumentController: NSDocumentController {
         FileManager.default
     }()
 
-    private var prefs: AppPreferencesModel = .shared
+    private var prefs: SettingsModel = .shared
 
     override func newDocument(_ sender: Any?) {
         guard let newDocumentUrl = self.newDocumentUrl else { return }
@@ -80,7 +80,7 @@ final class CodeEditDocumentController: NSDocumentController {
         super.removeDocument(document)
 
         if CodeEditDocumentController.shared.documents.isEmpty {
-            switch prefs.preferences.general.reopenWindowAfterClose {
+            switch prefs.settings.general.reopenWindowAfterClose {
             case .showWelcomeWindow:
                 // Opens the welcome window
                 NSApp.openWindow(.welcome)

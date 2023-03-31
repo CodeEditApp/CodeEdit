@@ -31,10 +31,10 @@ final class OutlineViewController: NSViewController {
 
     var workspace: WorkspaceDocument?
 
-    var iconColor: AppPreferences.FileIconStyle = .color
-    var fileExtensionsVisibility: AppPreferences.FileExtensionsVisibility = .showAll
-    var shownFileExtensions: AppPreferences.FileExtensions = .default
-    var hiddenFileExtensions: AppPreferences.FileExtensions = .default
+    var iconColor: Settings.FileIconStyle = .color
+    var fileExtensionsVisibility: Settings.FileExtensionsVisibility = .showAll
+    var shownFileExtensions: Settings.FileExtensions = .default
+    var hiddenFileExtensions: Settings.FileExtensions = .default
 
     var rowHeight: Double = 22 {
         didSet {
@@ -115,7 +115,7 @@ final class OutlineViewController: NSViewController {
         }
     }
 
-    /// Get the appropriate color for the items icon depending on the users preferences.
+    /// Get the appropriate color for the items icon depending on the users settings.
     /// - Parameter item: The `FileItem` to get the color for
     /// - Returns: A `NSColor` for the given `FileItem`.
     private func color(for item: Item) -> NSColor {
@@ -304,7 +304,7 @@ extension OutlineViewController: NSOutlineViewDelegate {
     private func select(by id: TabBarItemID, from collection: [Item]) {
         // If the user has set "Reveal file on selection change" to on, we need to reveal the item before
         // selecting the row.
-        if AppPreferencesModel.shared.preferences.general.revealFileOnFocusChange,
+        if SettingsModel.shared.settings.general.revealFileOnFocusChange,
            case let .codeEditor(id) = id,
            let fileItem = try? workspace?.workspaceClient?.getFileItem(id as Item.ID) as? Item {
             reveal(fileItem)

@@ -20,7 +20,7 @@ struct TabBarItemCloseButton: View {
     var colorScheme
 
     @StateObject
-    private var prefs: AppPreferencesModel = .shared
+    private var prefs: SettingsModel = .shared
 
     @State
     private var isPressingClose: Bool = false
@@ -32,7 +32,7 @@ struct TabBarItemCloseButton: View {
 
     var body: some View {
         HStack {
-            if prefs.preferences.general.tabBarStyle == .xcode {
+            if prefs.settings.general.tabBarStyle == .xcode {
                 Image(systemName: "xmark")
                     .font(.system(size: 11.5, weight: .regular, design: .rounded))
                     .foregroundColor(
@@ -52,7 +52,7 @@ struct TabBarItemCloseButton: View {
             ? Color(nsColor: .white)
                 .opacity(isPressingClose ? 0.10 : isHoveringClose ? 0.05 : 0)
             : (
-                prefs.preferences.general.tabBarStyle == .xcode
+                prefs.settings.general.tabBarStyle == .xcode
                 ? Color(nsColor: isActive ? .controlAccentColor : .black)
                     .opacity(
                         isPressingClose

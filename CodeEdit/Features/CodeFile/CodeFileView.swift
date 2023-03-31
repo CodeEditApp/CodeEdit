@@ -17,7 +17,7 @@ struct CodeFileView: View {
     private var codeFile: CodeFileDocument
 
     @ObservedObject
-    private var prefs: AppPreferencesModel = .shared
+    private var prefs: SettingsModel = .shared
 
     @Environment(\.colorScheme)
     private var colorScheme
@@ -57,7 +57,7 @@ struct CodeFileView: View {
 
     @State
     private var font: NSFont = {
-        return AppPreferencesModel.shared.preferences.textEditing.font.current()
+        return SettingsModel.shared.settings.textEditing.font.current()
     }()
 
     @Environment(\.edgeInsets)
@@ -72,24 +72,24 @@ struct CodeFileView: View {
             language: getLanguage(),
             theme: $selectedTheme.editor.editorTheme,
             font: $font,
-            tabWidth: $prefs.preferences.textEditing.defaultTabWidth,
-            lineHeight: $prefs.preferences.textEditing.lineHeightMultiple,
-            wrapLines: $prefs.preferences.textEditing.wrapLinesToEditorWidth,
+            tabWidth: $prefs.settings.textEditing.defaultTabWidth,
+            lineHeight: $prefs.settings.textEditing.lineHeightMultiple,
+            wrapLines: $prefs.settings.textEditing.wrapLinesToEditorWidth,
             cursorPosition: $codeFile.cursorPosition,
-            useThemeBackground: prefs.preferences.theme.useThemeBackground,
+            useThemeBackground: prefs.settings.theme.useThemeBackground,
             contentInsets: edgeInsets.nsEdgeInsets,
             isEditable: isEditable
         )
         .id(codeFile.fileURL)
         .background {
             if colorScheme == .dark {
-                if prefs.preferences.theme.selectedTheme == prefs.preferences.theme.selectedLightTheme {
+                if prefs.settings.theme.selectedTheme == prefs.settings.theme.selectedLightTheme {
                     Color.white
                 } else {
                     EffectView(.underPageBackground)
                 }
             } else {
-                if prefs.preferences.theme.selectedTheme == prefs.preferences.theme.selectedDarkTheme {
+                if prefs.settings.theme.selectedTheme == prefs.settings.theme.selectedDarkTheme {
                     Color.black
                 } else {
                     EffectView(.contentBackground)
@@ -104,14 +104,14 @@ struct CodeFileView: View {
             self.selectedTheme = theme
         }
         .onChange(of: colorScheme) { newValue in
-            if prefs.preferences.theme.mirrorSystemAppearance {
+            if prefs.settings.theme.mirrorSystemAppearance {
                 ThemeModel.shared.selectedTheme = newValue == .dark
                     ? ThemeModel.shared.selectedDarkTheme!
                     : ThemeModel.shared.selectedLightTheme!
             }
         }
-        .onChange(of: prefs.preferences.textEditing.font) { _ in
-            font = AppPreferencesModel.shared.preferences.textEditing.font.current()
+        .onChange(of: prefs.settings.textEditing.font) { _ in
+            font = SettingsModel.shared.settings.textEditing.font.current()
         }
     }
 

@@ -8,26 +8,26 @@
 import Foundation
 import SwiftUI
 
-/// An enum of all the preferences tabs
+/// An enum of all the settings tabs
 enum Name: String {
-    // MARK: - App Preferences
-    case appPreferencesSection = "App Preferences"
+    // MARK: - App Settings
+    case settingsSection = "Settings"
 
-    case generalPreferences = "General"
-    case accountPreferences = "Accounts"
-    case behaviorPreferences = "Behaviors"
-    case navigationPreferences = "Navigation"
-    case themePreferences = "Themes"
-    case textEditingPreferences = "Text Editing"
-    case terminalPreferences = "Terminal"
-    case keybindingsPreferences = "Key Bindings"
-    case sourceControlPreferences = "Source Control"
-    case componentsPreferences = "Components"
-    case locationPreferences = "Locations"
-    case advancedPreferences = "Advanced"
+    case generalSettings = "General"
+    case accountSettings = "Accounts"
+    case behaviorSettings = "Behaviors"
+    case navigationSettings = "Navigation"
+    case themeSettings = "Themes"
+    case textEditingSettings = "Text Editing"
+    case terminalSettings = "Terminal"
+    case keybindingsSettings = "Key Bindings"
+    case sourceControlSettings = "Source Control"
+    case componentsSettings = "Components"
+    case locationSettings = "Locations"
+    case advancedSettings = "Advanced"
 }
 
-/// A struct for a preferences tab
+/// A struct for a settings tab
 struct Page: Hashable, Identifiable {
     /// Default intializer
     internal init(_ name: Name, icon: Icon? = nil, children: [Page] = []) {

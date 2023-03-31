@@ -62,11 +62,11 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
     // MARK: - NSDocument
 
     override class var autosavesInPlace: Bool {
-        AppPreferencesModel.shared.preferences.general.isAutoSaveOn
+        SettingsModel.shared.settings.general.isAutoSaveOn
     }
 
     override var autosavingFileType: String? {
-        AppPreferencesModel.shared.preferences.general.isAutoSaveOn
+        SettingsModel.shared.settings.general.isAutoSaveOn
             ? fileType
             : nil
     }

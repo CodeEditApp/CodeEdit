@@ -11,7 +11,7 @@ public class FeedbackModel: ObservableObject {
 
     public static let shared: FeedbackModel = .init()
 
-    private var prefs: AppPreferencesModel = .shared
+    private var prefs: SettingsModel = .shared
     private let keychain = CodeEditKeychain()
 
     @Environment(\.openURL) var openIssueURL
@@ -145,7 +145,7 @@ public class FeedbackModel: ObservableObject {
         expectation: String?,
         actuallyHappened: String?
     ) {
-        let gitAccounts = prefs.preferences.accounts.sourceControlAccounts.gitAccount
+        let gitAccounts = prefs.settings.accounts.sourceControlAccounts.gitAccount
         let firstGitAccount = gitAccounts.first
 
         let config = GitHubTokenConfiguration(keychain.get(firstGitAccount!.gitAccountName))
@@ -164,7 +164,7 @@ public class FeedbackModel: ObservableObject {
         ) { response in
             switch response {
             case .success(let issue):
-                if self.prefs.preferences.sourceControl.general.openFeedbackInBrowser {
+                if self.prefs.settings.sourceControl.general.openFeedbackInBrowser {
                     self.openIssueURL(issue.htmlURL ?? URL(string: "https://github.com/CodeEditApp/CodeEdit/issues")!)
                 }
                 self.isSubmitted.toggle()

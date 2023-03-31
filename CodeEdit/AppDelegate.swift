@@ -14,7 +14,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         enableWindowSizeSaveOnQuit()
-        AppPreferencesModel.shared.preferences.general.appAppearance.applyAppearance()
+        SettingsModel.shared.settings.general.appAppearance.applyAppearance()
         checkForFilesToOpen()
 
         NSApp.closeWindow(.welcome, .about)
@@ -75,7 +75,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     }
 
     func handleOpen() {
-        let behavior = AppPreferencesModel.shared.preferences.general.reopenBehavior
+        let behavior = SettingsModel.shared.settings.general.reopenBehavior
 
         switch behavior {
         case .welcome:
@@ -210,16 +210,16 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         UserDefaults.standard.setValue(true, forKey: "NSQuitAlwaysKeepsWindows")
     }
 
-    // MARK: - Preferences
+    // MARK: - Settings
     private lazy var preferencesWindowController: PreferencesWindowController = PreferencesWindowController(
         panes: [
-            // TODO: Remove this and just use VenturaPreferences()
+            // TODO: Remove this and just use Settings()
             Preferences.Pane(
-                identifier: Preferences.PaneIdentifier("Preferences"),
+                identifier: Preferences.PaneIdentifier("Settings"),
                 title: "Preferences",
                 toolbarIcon: NSImage(systemSymbolName: "gearshape", accessibilityDescription: nil)!
             ) {
-                VenturaPreferences(updater: updater)
+                Settings(updater: updater)
             }
         ],
         animated: true

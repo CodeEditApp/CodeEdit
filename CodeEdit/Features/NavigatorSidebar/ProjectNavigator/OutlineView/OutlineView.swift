@@ -15,7 +15,7 @@ struct OutlineView: NSViewControllerRepresentable {
     var workspace: WorkspaceDocument
 
     @StateObject
-    var prefs: AppPreferencesModel = .shared
+    var prefs: SettingsModel = .shared
 
     // This is mainly just used to trigger a view update.
     @Binding
@@ -26,7 +26,7 @@ struct OutlineView: NSViewControllerRepresentable {
     func makeNSViewController(context: Context) -> OutlineViewController {
         let controller = OutlineViewController()
         controller.workspace = workspace
-        controller.iconColor = prefs.preferences.general.fileIconStyle
+        controller.iconColor = prefs.settings.general.fileIconStyle
 
         context.coordinator.controller = controller
 
@@ -34,11 +34,11 @@ struct OutlineView: NSViewControllerRepresentable {
     }
 
     func updateNSViewController(_ nsViewController: OutlineViewController, context: Context) {
-        nsViewController.iconColor = prefs.preferences.general.fileIconStyle
-        nsViewController.rowHeight = prefs.preferences.general.projectNavigatorSize.rowHeight
-        nsViewController.fileExtensionsVisibility = prefs.preferences.general.fileExtensionsVisibility
-        nsViewController.shownFileExtensions = prefs.preferences.general.shownFileExtensions
-        nsViewController.hiddenFileExtensions = prefs.preferences.general.hiddenFileExtensions
+        nsViewController.iconColor = prefs.settings.general.fileIconStyle
+        nsViewController.rowHeight = prefs.settings.general.projectNavigatorSize.rowHeight
+        nsViewController.fileExtensionsVisibility = prefs.settings.general.fileExtensionsVisibility
+        nsViewController.shownFileExtensions = prefs.settings.general.shownFileExtensions
+        nsViewController.hiddenFileExtensions = prefs.settings.general.hiddenFileExtensions
         nsViewController.updateSelection()
         return
     }

@@ -10,7 +10,7 @@ import SwiftUI
 struct StatusBarIndentSelector: View {
 
     @StateObject
-    private var prefs: AppPreferencesModel = .shared
+    private var prefs: SettingsModel = .shared
 
     var body: some View {
         Menu {
@@ -24,14 +24,14 @@ struct StatusBarIndentSelector: View {
 
             Divider()
 
-            Picker("Tab Width", selection: $prefs.preferences.textEditing.defaultTabWidth) {
+            Picker("Tab Width", selection: $prefs.settings.textEditing.defaultTabWidth) {
                 ForEach(2..<9) { index in
                     Text("\(index) Spaces")
                         .tag(index)
                 }
             }
         } label: {
-            Text("\(prefs.preferences.textEditing.defaultTabWidth) Spaces")
+            Text("\(prefs.settings.textEditing.defaultTabWidth) Spaces")
         }
         .menuStyle(StatusBarMenuStyle())
         .onHover { isHovering($0) }
