@@ -10,8 +10,8 @@ import SwiftUI
 
 // An enum of all the preferences tabs
 enum Name: String {
-    // MARK: - General Preferences
-    case generalSection = "App Preferences"
+    // MARK: - App Preferences
+    case appPreferencesSection = "App Preferences"
 
     case generalPreferences = "General"
     case accountPreferences = "Accounts"

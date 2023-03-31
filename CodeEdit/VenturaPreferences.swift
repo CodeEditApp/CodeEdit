@@ -14,7 +14,7 @@ struct VenturaPreferences: View {
     /// An array of navigationItem(s)
     private static let pages: [Page] = [
         // TODO: Get correct colors for each tab
-        .init(.generalSection, children: [
+        .init(.appPreferencesSection, children: [
             .init(
                 .generalPreferences,
                 icon: .init(
