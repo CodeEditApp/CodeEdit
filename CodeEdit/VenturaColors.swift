@@ -7,33 +7,33 @@
 
 import SwiftUI
 
-struct VenturaColors {
-    let venturaGray: Color = Color.init(
+struct Colors {
+    let gray: Color = Color.init(
         hex: "#B4B4B9",
         alpha: 1.0
     )
 
-    let venturaBlue: Color = Color.init(
+    let blue: Color = Color.init(
         hex: "#5A9FF8",
         alpha: 1.0
     )
 
-    let venturaOrange: Color = Color.init(
+    let orange: Color = Color.init(
         hex: "#EC695C",
         alpha: 1.0
     )
-    
-    let venturaPink: Color = Color.init(
+
+    let pink: Color = Color.init(
         hex: "#ED6C85",
         alpha: 1.0
     )
 
-    let venturaGreen: Color = Color.init(
+    let green: Color = Color.init(
         hex: "#82E37C",
         alpha: 1.0
     )
 
-    let venturaPurple: Color = Color.init(
+    let purple: Color = Color.init(
         hex: "#8483EF",
         alpha: 1.0
     )

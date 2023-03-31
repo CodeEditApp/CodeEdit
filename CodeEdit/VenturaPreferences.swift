@@ -13,12 +13,11 @@ struct VenturaPreferences: View {
 
     /// An array of navigationItem(s)
     private static let pages: [Page] = [
-        // TODO: Get correct colors for each tab
         .init(.appPreferencesSection, children: [
             .init(
                 .generalPreferences,
                 icon: .init(
-                    baseColor: .gray,
+                    baseColor: Colors().gray,
                     systemName: "gear",
                     icon: .system("gear")
                 )
@@ -26,7 +25,7 @@ struct VenturaPreferences: View {
             .init(
                 .accountPreferences,
                 icon: .init(
-                    baseColor: .blue,
+                    baseColor: Colors().blue,
                     systemName: "at",
                     icon: .system("at")
                 )
@@ -34,7 +33,7 @@ struct VenturaPreferences: View {
             .init(
                 .behaviorPreferences,
                 icon: .init(
-                    baseColor: .orange,
+                    baseColor: Colors().orange,
                     systemName: "flowchart",
                     icon: .system("flowchart")
                 )
@@ -42,7 +41,7 @@ struct VenturaPreferences: View {
             .init(
                 .navigationPreferences,
                 icon: .init(
-                    baseColor: .green,
+                    baseColor: Colors().green,
                     systemName: "arrow.triangle.turn.up.right.diamond",
                     icon: .system("arrow.triangle.turn.up.right.diamond")
                 )
@@ -50,7 +49,7 @@ struct VenturaPreferences: View {
             .init(
                 .themePreferences,
                 icon: .init(
-                    baseColor: .pink,
+                    baseColor: Colors().pink,
                     systemName: "paintbrush",
                     icon: .system("paintbrush")
                 )
@@ -58,7 +57,7 @@ struct VenturaPreferences: View {
             .init(
                 .textEditingPreferences,
                 icon: .init(
-                    baseColor: .cyan,
+                    baseColor: Colors().blue,
                     systemName: "square.and.pencil",
                     icon: .system("square.and.pencil")
                 )
@@ -66,7 +65,7 @@ struct VenturaPreferences: View {
             .init(
                 .terminalPreferences,
                 icon: .init(
-                    baseColor: .cyan,
+                    baseColor: Colors().blue,
                     systemName: "terminal",
                     icon: .system("terminal")
                 )
@@ -74,7 +73,7 @@ struct VenturaPreferences: View {
             .init(
                 .keybindingsPreferences,
                 icon: .init(
-                    baseColor: .gray,
+                    baseColor: Colors().gray,
                     systemName: "keyboard",
                     icon: .system("keyboard")
                 )
@@ -82,7 +81,7 @@ struct VenturaPreferences: View {
             .init(
                 .sourceControlPreferences,
                 icon: .init(
-                    baseColor: .blue,
+                    baseColor: Colors().blue,
                     systemName: "arrow.triangle.pull",
                     icon: .system("arrow.triangle.pull")
                 )
@@ -90,7 +89,7 @@ struct VenturaPreferences: View {
             .init(
                 .componentsPreferences,
                 icon: .init(
-                    baseColor: .blue,
+                    baseColor: Colors().blue,
                     systemName: "puzzlepiece",
                     icon: .system("puzzlepiece")
                 )
@@ -98,7 +97,7 @@ struct VenturaPreferences: View {
             .init(
                 .locationPreferences,
                 icon: .init(
-                    baseColor: .green,
+                    baseColor: Colors().green,
                     systemName: "externaldrive",
                     icon: .system("externaldrive")
                 )
@@ -106,7 +105,7 @@ struct VenturaPreferences: View {
             .init(
                 .advancedPreferences,
                 icon: .init(
-                    baseColor: .gray,
+                    baseColor: Colors().gray,
                     systemName: "gearshape.2",
                     icon: .system("gearshape.2")
                 )
