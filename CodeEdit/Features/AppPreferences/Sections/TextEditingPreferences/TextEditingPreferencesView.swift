@@ -9,8 +9,8 @@ import SwiftUI
 
 /// A view that implements the `Text Editing` preference section
 struct TextEditingPreferencesView: View {
-
-    // MARK: - View
+    @StateObject
+    private var prefs: AppPreferencesModel = .shared
 
     var body: some View {
         PreferencesContent {
@@ -20,17 +20,10 @@ struct TextEditingPreferencesView: View {
             codeCompletionSection
             lineWrappingSection
         }
-            .frame(width: 715)
     }
-
-    @StateObject
-    private var prefs: AppPreferencesModel = .shared
 }
 
 private extension TextEditingPreferencesView {
-
-    // MARK: - Sections
-
     private var tabWidthSection: some View {
         PreferencesSection("Default Tab Width") {
             defaultTabWidth

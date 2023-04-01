@@ -119,8 +119,8 @@ private extension EditorThemeView {
                         }
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
-                        .padding(20)
                 }
+                .padding(20)
             } else {
                 selectTheme
             }

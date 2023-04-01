@@ -10,8 +10,12 @@ import Preferences
 
 /// A view that implements the `Terminal` preference section
 struct TerminalPreferencesView: View {
+    private let inputWidth: Double = 150
 
-    // MARK: - View
+    @StateObject
+    private var prefs: AppPreferencesModel = .shared
+
+    init() {}
 
     var body: some View {
         PreferencesContent {
@@ -19,21 +23,10 @@ struct TerminalPreferencesView: View {
             fontSection
             cursorSection
         }
-            .frame(width: 715)
     }
-
-    private let inputWidth: Double = 150
-
-    @StateObject
-    private var prefs: AppPreferencesModel = .shared
-
-    init() {}
 }
 
 private extension TerminalPreferencesView {
-
-    // MARK: - Sections
-
     private var shellSection: some View {
         PreferencesSection("Shell") {
             shellSelector
@@ -53,8 +46,6 @@ private extension TerminalPreferencesView {
             cursorBlink
         }
     }
-
-    // MARK: - Preference Views
 
     @ViewBuilder
     private var shellSelector: some View {

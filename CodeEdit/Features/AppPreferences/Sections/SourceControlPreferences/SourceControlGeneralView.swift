@@ -20,8 +20,8 @@ struct SourceControlGeneralView: View {
             sourceControlNavigator
             defaultBranchNameSection
         }
-            .frame(width: 715)
-            .background(EffectView(.contentBackground))
+        .frame(height: 350)
+        .background(EffectView(.contentBackground))
     }
 
     private let inputWidth: Double = 200

@@ -10,13 +10,6 @@ import Preferences
 
 /// A view that implements the `Theme` preference section
 struct ThemePreferencesView: View {
-
-    // MARK: - View
-
-    var body: some View {
-        themePreferencesSection
-    }
-
     @Environment(\.colorScheme)
     var colorScheme
 
@@ -28,6 +21,10 @@ struct ThemePreferencesView: View {
 
     @State
     private var listView: Bool = false
+
+    var body: some View {
+        themePreferencesSection
+    }
 }
 
 private extension ThemePreferencesView {

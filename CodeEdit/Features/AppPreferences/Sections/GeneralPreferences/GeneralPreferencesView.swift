@@ -9,7 +9,29 @@ import SwiftUI
 
 /// A view that implements the `General` preference section
 struct GeneralPreferencesView: View {
-    // MARK: - View
+    private let inputWidth: Double = 160
+    private let textEditorWidth: Double = 220
+    private let textEditorHeight: Double = 30
+
+    @EnvironmentObject
+    var updater: SoftwareUpdater
+
+    @StateObject
+    private var prefs: AppPreferencesModel = .shared
+
+    @State
+    private var openInCodeEdit: Bool = true
+
+    init() {
+        guard let defaults = UserDefaults.init(
+            suiteName: "austincondiff.CodeEdit.shared"
+        ) else {
+            print("Failed to get/init shared defaults")
+            return
+        }
+
+        self.openInCodeEdit = defaults.bool(forKey: "enableOpenInCE")
+    }
 
     var body: some View {
         PreferencesContent {
@@ -36,31 +58,7 @@ struct GeneralPreferencesView: View {
                 updaterSection
             }
         }
-            .frame(width: 715)
-    }
-
-    private let inputWidth: Double = 160
-    private let textEditorWidth: Double = 220
-    private let textEditorHeight: Double = 30
-
-    @EnvironmentObject
-    var updater: SoftwareUpdater
-
-    @StateObject
-    private var prefs: AppPreferencesModel = .shared
-
-    @State
-    private var openInCodeEdit: Bool = true
-
-    init() {
-        guard let defaults = UserDefaults.init(
-            suiteName: "austincondiff.CodeEdit.shared"
-        ) else {
-            print("Failed to get/init shared defaults")
-            return
-        }
-
-        self.openInCodeEdit = defaults.bool(forKey: "enableOpenInCE")
+        .frame(minHeight: 650)
     }
 }
 

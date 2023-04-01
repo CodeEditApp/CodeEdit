@@ -1,5 +1,5 @@
 //
-//  VenturaColors.swift
+//  SettingsColors.swift
 //  CodeEdit
 //
 //  Created by Raymond Vleeshouwer on 31/03/23.

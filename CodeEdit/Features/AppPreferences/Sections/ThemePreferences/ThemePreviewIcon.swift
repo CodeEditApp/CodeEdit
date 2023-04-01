@@ -9,13 +9,6 @@ import SwiftUI
 
 /// A view that implements the `Theme Preview` preference section
 struct ThemePreviewIcon: View {
-
-    // MARK: - View
-
-    var body: some View {
-        themePreviewIconSection
-    }
-
     var theme: Theme
     var colorScheme: ColorScheme
 
@@ -27,13 +20,8 @@ struct ThemePreviewIcon: View {
         self._selection = selection
         self.colorScheme = colorScheme
     }
-}
 
-private extension ThemePreviewIcon {
-
-    // MARK: - Sections
-
-    private var themePreviewIconSection: some View {
+    var body: some View {
         VStack {
             ZStack(alignment: .topLeading) {
                 circularRectangle
@@ -62,9 +50,9 @@ private extension ThemePreviewIcon {
             }
         }
     }
+}
 
-    // MARK: - Preference Views
-
+private extension ThemePreviewIcon {
     private var circularRectangle: some View {
         RoundedRectangle(cornerRadius: 3)
             .foregroundColor(Color(hex: colorScheme == .dark ? 0x4c4c4c : 0xbbbbbb))

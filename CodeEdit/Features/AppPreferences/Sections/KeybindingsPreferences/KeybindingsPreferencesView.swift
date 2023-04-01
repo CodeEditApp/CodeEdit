@@ -8,27 +8,9 @@
 import SwiftUI
 
 struct KeybindingsPreferencesView: View {
-
-    // MARK: - View
-
     var body: some View {
-        mainSection
-    }
-}
-
-private extension KeybindingsPreferencesView {
-
-    // MARK: - Sections
-
-    private var mainSection: some View {
         PreferencesContent {
-            implementationNeededText
+            Text("Implementation needed")
         }
-    }
-
-    // MARK: - Preference Views
-
-    private var implementationNeededText: some View {
-        Text("Implementation needed")
     }
 }

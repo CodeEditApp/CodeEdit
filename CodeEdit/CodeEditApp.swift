@@ -17,18 +17,11 @@ struct CodeEditApp: App {
     }
 
     var body: some Scene {
-
         WelcomeWindow()
 
         AboutWindow()
 
-        Settings {
-            VStack {
-                Text("Hello world!")
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-        }
-        .defaultSize(width: 500, height: 500)
+        SettingsWindow()
         .commands {
             CodeEditCommands()
         }

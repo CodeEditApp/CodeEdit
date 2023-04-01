@@ -8,8 +8,13 @@
 import SwiftUI
 
 struct SourceControlGitView: View {
+    private let inputWidth: Double = 280
 
-    // MARK: - View
+    @StateObject
+    private var prefs: AppPreferencesModel = .shared
+
+    @State
+    var ignoredFileSelection: IgnoredFiles.ID?
 
     var body: some View {
         VStack {
@@ -18,23 +23,12 @@ struct SourceControlGitView: View {
             ignoredFilesSection
             optionsSection
         }
-            .frame(width: 715)
-            .background(EffectView(.contentBackground))
+        .frame(height: 350)
+        .background(EffectView(.contentBackground))
     }
-
-    private let inputWidth: Double = 280
-
-    @StateObject
-    private var prefs: AppPreferencesModel = .shared
-
-    @State
-    var ignoredFileSelection: IgnoredFiles.ID?
 }
 
 private extension SourceControlGitView {
-
-    // MARK: - Sections
-
     private var authorNameSection: some View {
         PreferencesSection("Author Name", hideLabels: false) {
             gitAuthorName
@@ -64,8 +58,6 @@ private extension SourceControlGitView {
             showMergeCommitsInPerFileLog
         }
     }
-
-    // MARK: - Preference Views
 
     private var gitAuthorName: some View {
         TextField("Git Author Name", text: $prefs.preferences.sourceControl.git.authorName)
