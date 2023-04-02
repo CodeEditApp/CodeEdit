@@ -10,6 +10,7 @@ import SwiftUI
 @main
 struct CodeEditApp: App {
     @NSApplicationDelegateAdaptor var appdelegate: AppDelegate
+    let updater: SoftwareUpdater = SoftwareUpdater()
 
     init() {
         _ = CodeEditDocumentController.shared

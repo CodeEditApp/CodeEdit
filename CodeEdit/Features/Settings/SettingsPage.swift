@@ -1,5 +1,5 @@
 //
-//  Page.swift
+//  SettingsPage.swift
 //  CodeEdit
 //
 //  Created by Raymond Vleeshouwer on 30/03/23.
