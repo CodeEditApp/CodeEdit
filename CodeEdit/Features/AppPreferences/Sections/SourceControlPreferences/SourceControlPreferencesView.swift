@@ -18,10 +18,10 @@ struct SourceControlPreferencesView: View {
                     SegmentedControl($selectedSection, options: ["General", "Git"])
                 }
                 if selectedSection == 0 {
-                    SourceControlGeneralPreferencesView(isChecked: true, branchName: "main")
+                    SourceControlGeneralView(isChecked: true, branchName: "main")
                 }
                 if selectedSection == 1 {
-                    SourceControlGitPreferencesView()
+                    SourceControlGitView()
                 }
             }
             .padding(1)

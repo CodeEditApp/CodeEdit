@@ -70,11 +70,11 @@ struct SettingsView: View {
                 case .textEditing:
                     TextEditingPreferencesView()
                 case .terminal:
-                    TerminalSettingsView()
+                    TerminalPreferencesView()
                 case .sourceControl:
-                    SourceControlSettingsView()
+                    SourceControlPreferencesView()
                 case .location:
-                    LocationSettingsView()
+                    LocationsPreferencesView()
                 default:
                     Text("Implementation Needed").frame(alignment: .center)
                 }
