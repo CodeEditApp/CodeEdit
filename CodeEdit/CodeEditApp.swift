@@ -10,6 +10,7 @@ import SwiftUI
 @main
 struct CodeEditApp: App {
     @NSApplicationDelegateAdaptor var appdelegate: AppDelegate
+    let updater: SoftwareUpdater = SoftwareUpdater()
 
     init() {
         _ = CodeEditDocumentController.shared
@@ -23,10 +24,19 @@ struct CodeEditApp: App {
         AboutWindow()
 
         Settings {
-            VStack {
-                Text("Hello world!")
+            SettingsView(updater: updater)
+            .frame(minWidth: 715, maxWidth: 715)
+            .task {
+                let window = NSApp.windows.first { $0.identifier?.rawValue == "com_apple_SwiftUI_Settings_window" }!
+                window.toolbarStyle = .unified
+                window.titlebarSeparatorStyle = .automatic
+
+                let sidebaritem = "com.apple.SwiftUI.navigationSplitView.toggleSidebar"
+                let index = window.toolbar?.items.firstIndex { $0.itemIdentifier.rawValue == sidebaritem }
+                if let index {
+                    window.toolbar?.removeItem(at: index)
+                }
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .defaultSize(width: 500, height: 500)
         .commands {
