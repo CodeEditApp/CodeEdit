@@ -26,6 +26,12 @@ struct SettingsView: View {
         .init(.components, baseColor: .blue, icon: .system("puzzlepiece")),
         .init(.location, baseColor: .green, icon: .system("externaldrive")),
         .init(.advanced, baseColor: .gray, icon: .system("gearshape.2"))
+//        .init(.extensionsSection, children: [
+//            // iterate over extensions
+//            .init(.advanced, baseColor: .gray, icon: .system("gearshape.2"))
+//            .init(.advanced, baseColor: .gray, icon: .system("gearshape.2"))
+//            .init(.advanced, baseColor: .gray, icon: .system("gearshape.2"))
+//        ])
     ]
 
     /// Variables for the selected Page, the current search text and software updater
@@ -44,7 +50,9 @@ struct SettingsView: View {
                 } else {
                     Section(item.nameString) {
                         ForEach(item.children) { child in
-                            if searchText.isEmpty || child.name.rawValue.lowercased().contains(searchText.lowercased()) {
+                            if searchText.isEmpty || child.name.rawValue.lowercased().contains(
+                                searchText.lowercased()
+                            ) {
                                 SettingsPageView(child)
                             }
                         }
@@ -53,32 +61,28 @@ struct SettingsView: View {
             }
             .navigationSplitViewColumnWidth(215)
         } detail: {
-            ScrollView {
-                Group {
-                    switch selectedPage.name {
-                    case .general:
-                        GeneralPreferencesView().environmentObject(updater)
-                    case .theme:
-                        ThemePreferencesView()
-                    case .textEditing:
-                        TextEditingPreferencesView()
-                    case .terminal:
-                        TerminalPreferencesView()
-                    case .sourceControl:
-                        SourceControlPreferencesView()
-                    case .location:
-                        LocationsPreferencesView()
-                    default:
-                        Text("Implementation Needed").frame(alignment: .center)
-                    }
-                }.padding(20)
-            }.navigationSplitViewColumnWidth(500)
+            Group {
+                switch selectedPage.name {
+                case .general:
+                    GeneralSettingsView().environmentObject(updater)
+                case .theme:
+                    ThemePreferencesView()
+                case .textEditing:
+                    TextEditingPreferencesView()
+                case .terminal:
+                    TerminalPreferencesView()
+                case .sourceControl:
+                    SourceControlPreferencesView()
+                case .location:
+                    LocationsPreferencesView()
+                default:
+                    Text("Implementation Needed").frame(alignment: .center)
+                }
+            }
+            .navigationSplitViewColumnWidth(500)
         }
         .searchable(text: $searchText, placement: .sidebar, prompt: "Search")
         .navigationTitle(selectedPage.name.rawValue)
-        .frame(minHeight: 470)
-        .task {
-            print(selectedPage)
-        }
+        
     }
 }
