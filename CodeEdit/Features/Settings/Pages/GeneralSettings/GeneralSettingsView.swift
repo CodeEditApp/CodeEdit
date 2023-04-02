@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-/// A view that implements the `General` preference section
+/// A view that implements the `General` settings page
 struct GeneralSettingsView: View {
     private let inputWidth: Double = 160
     private let textEditorWidth: Double = 220
@@ -36,33 +36,37 @@ struct GeneralSettingsView: View {
     var body: some View {
         Form {
             Section {
-                appearanceSection
-                fileIconStyleSection
-                tabBarStyleSection
+                appearance
+                fileIconStyle
+                tabBarStyle
             }
             Section {
-                showIssuesSection
+                showIssues
+                showLiveIssues
             }
             Section {
-                fileExtensionsSection
-                Group {
-                    reopenBehaviorSection
-                    reopenAfterWindowCloseBehaviourSection
-                }
-                projectNavigatorSizeSection
-                findNavigatorDetailSection
-                Group {
-                    issueNavigatorDetailSection
-                    dialogWarningsSection
-                }
-                Group {
-                    openInCodeEditToggle
-                    revealFileOnFocusChangeToggle
-                    shellCommandSection
-                    autoSaveSection
-                }
+                autoSave
+                revealFileOnFocusChangeToggle
+                reopenBehavior
+                afterWindowsCloseBehaviour
+                fileExtensions
             }
-            updaterSection
+            Section {
+                projectNavigatorSize
+                findNavigatorDetail
+                issueNavigatorDetail
+            }
+            Section {
+                openInCodeEditToggle
+                shellCommand
+                dialogWarnings
+
+            }
+            Section {
+                updateChecker
+                autoUpdateToggle
+                prereleaseToggle
+            }
         }
         .formStyle(.grouped)
     }
@@ -72,37 +76,36 @@ struct GeneralSettingsView: View {
 private extension GeneralSettingsView {
     // MARK: - Sections
 
-    var appearanceSection: some View {
-        Group {
-            Picker("Appearance", selection: $prefs.preferences.general.appAppearance) {
-                Text("System")
-                    .tag(AppPreferences.Appearances.system)
-                Divider()
-                Text("Light")
-                    .tag(AppPreferences.Appearances.light)
-                Text("Dark")
-                    .tag(AppPreferences.Appearances.dark)
-            }
-            .onChange(of: prefs.preferences.general.appAppearance) { tag in
-                tag.applyAppearance()
-            }
+    var appearance: some View {
+        Picker("Appearance", selection: $prefs.preferences.general.appAppearance) {
+            Text("System")
+                .tag(AppPreferences.Appearances.system)
+            Divider()
+            Text("Light")
+                .tag(AppPreferences.Appearances.light)
+            Text("Dark")
+                .tag(AppPreferences.Appearances.dark)
+        }
+        .onChange(of: prefs.preferences.general.appAppearance) { tag in
+            tag.applyAppearance()
         }
     }
 
     // TODO: Implement reflecting Show Issues preference and remove disabled modifier
-    var showIssuesSection: some View {
-        Group {
-            Picker("Show Issues", selection: $prefs.preferences.general.showIssues) {
-                Text("Show Inline")
-                    .tag(AppPreferences.Issues.inline)
-                Text("Show Minimized")
-                    .tag(AppPreferences.Issues.minimized)
-            }
-            Toggle("Show Live Issues", isOn: $prefs.preferences.general.showLiveIssues)
+    var showIssues: some View {
+        Picker("Show Issues", selection: $prefs.preferences.general.showIssues) {
+            Text("Show Inline")
+                .tag(AppPreferences.Issues.inline)
+            Text("Show Minimized")
+                .tag(AppPreferences.Issues.minimized)
         }
     }
 
-    var fileExtensionsSection: some View {
+    var showLiveIssues: some View {
+        Toggle("Show Live Issues", isOn: $prefs.preferences.general.showLiveIssues)
+    }
+
+    var fileExtensions: some View {
         Group {
             Picker("File Extensions", selection: $prefs.preferences.general.fileExtensionsVisibility) {
                 Text("Hide all")
@@ -117,109 +120,93 @@ private extension GeneralSettingsView {
             }
             if case .showOnly = prefs.preferences.general.fileExtensionsVisibility {
                 SettingsTextEditor(text: $prefs.preferences.general.shownFileExtensions.string)
-//                    .frame(width: textEditorWidth)
                     .frame(height: textEditorHeight)
             }
             if case .hideOnly = prefs.preferences.general.fileExtensionsVisibility {
                 SettingsTextEditor(text: $prefs.preferences.general.hiddenFileExtensions.string)
-//                .frame(width: textEditorWidth)
                 .frame(height: textEditorHeight)
             }
         }
     }
 
-    var fileIconStyleSection: some View {
-        Group {
-            Picker("File Icon Style", selection: $prefs.preferences.general.fileIconStyle) {
-                Text("Color")
-                    .tag(AppPreferences.FileIconStyle.color)
-                Text("Monochrome")
-                    .tag(AppPreferences.FileIconStyle.monochrome)
-            }
-            .pickerStyle(.radioGroup)
+    var fileIconStyle: some View {
+        Picker("File Icon Style", selection: $prefs.preferences.general.fileIconStyle) {
+            Text("Color")
+                .tag(AppPreferences.FileIconStyle.color)
+            Text("Monochrome")
+                .tag(AppPreferences.FileIconStyle.monochrome)
+        }
+        .pickerStyle(.radioGroup)
+    }
+
+    var tabBarStyle: some View {
+        Picker("Tab Bar Style", selection: $prefs.preferences.general.tabBarStyle) {
+            Text("Xcode")
+                .tag(AppPreferences.TabBarStyle.xcode)
+            Text("Native")
+                .tag(AppPreferences.TabBarStyle.native)
+        }
+        .pickerStyle(.radioGroup)
+    }
+
+    var reopenBehavior: some View {
+        Picker("Reopen Behavior", selection: $prefs.preferences.general.reopenBehavior) {
+            Text("Welcome Screen")
+                .tag(AppPreferences.ReopenBehavior.welcome)
+            Divider()
+            Text("Open Panel")
+                .tag(AppPreferences.ReopenBehavior.openPanel)
+            Text("New Document")
+                .tag(AppPreferences.ReopenBehavior.newDocument)
         }
     }
 
-    var tabBarStyleSection: some View {
-        Group {
-            Picker("Tab Bar Style", selection: $prefs.preferences.general.tabBarStyle) {
-                Text("Xcode")
-                    .tag(AppPreferences.TabBarStyle.xcode)
-                Text("Native")
-                    .tag(AppPreferences.TabBarStyle.native)
-            }
-            .pickerStyle(.radioGroup)
+    var afterWindowsCloseBehaviour: some View {
+        Picker(
+            "After the last window is closed",
+            selection: $prefs.preferences.general.reopenWindowAfterClose
+        ) {
+            Text("Do nothing")
+                .tag(AppPreferences.ReopenWindowBehavior.doNothing)
+            Divider()
+            Text("Show Welcome Window")
+                .tag(AppPreferences.ReopenWindowBehavior.showWelcomeWindow)
+            Text("Quit")
+                .tag(AppPreferences.ReopenWindowBehavior.quit)
         }
     }
 
-    var reopenBehaviorSection: some View {
-        Group {
-            Picker("Reopen Behavior", selection: $prefs.preferences.general.reopenBehavior) {
-                Text("Welcome Screen")
-                    .tag(AppPreferences.ReopenBehavior.welcome)
-                Divider()
-                Text("Open Panel")
-                    .tag(AppPreferences.ReopenBehavior.openPanel)
-                Text("New Document")
-                    .tag(AppPreferences.ReopenBehavior.newDocument)
-            }
+    var projectNavigatorSize: some View {
+        Picker("Project Navigator Size", selection: $prefs.preferences.general.projectNavigatorSize) {
+            Text("Small")
+                .tag(AppPreferences.ProjectNavigatorSize.small)
+            Text("Medium")
+                .tag(AppPreferences.ProjectNavigatorSize.medium)
+            Text("Large")
+                .tag(AppPreferences.ProjectNavigatorSize.large)
         }
     }
 
-    var reopenAfterWindowCloseBehaviourSection: some View {
-        Group {
-            Picker(
-                "After the last window is closed",
-                selection: $prefs.preferences.general.reopenWindowAfterClose
-            ) {
-                Text("Do nothing")
-                    .tag(AppPreferences.ReopenWindowBehavior.doNothing)
-                Divider()
-                Text("Show Welcome Window")
-                    .tag(AppPreferences.ReopenWindowBehavior.showWelcomeWindow)
-                Text("Quit")
-                    .tag(AppPreferences.ReopenWindowBehavior.quit)
-            }
-        }
-    }
-
-    var projectNavigatorSizeSection: some View {
-        Group {
-            Picker("Project Navigator Size", selection: $prefs.preferences.general.projectNavigatorSize) {
-                Text("Small")
-                    .tag(AppPreferences.ProjectNavigatorSize.small)
-                Text("Medium")
-                    .tag(AppPreferences.ProjectNavigatorSize.medium)
-                Text("Large")
-                    .tag(AppPreferences.ProjectNavigatorSize.large)
-            }
-        }
-    }
-
-    var findNavigatorDetailSection: some View {
-        Group {
-            Picker("Find Navigator Detail", selection: $prefs.preferences.general.findNavigatorDetail) {
-                ForEach(AppPreferences.NavigatorDetail.allCases, id: \.self) { tag in
-                    Text(tag.label).tag(tag)
-                }
+    var findNavigatorDetail: some View {
+        Picker("Find Navigator Detail", selection: $prefs.preferences.general.findNavigatorDetail) {
+            ForEach(AppPreferences.NavigatorDetail.allCases, id: \.self) { tag in
+                Text(tag.label).tag(tag)
             }
         }
     }
 
     // TODO: Implement reflecting Issue Navigator Detail preference and remove disabled modifier
-    var issueNavigatorDetailSection: some View {
-        Group {
-            Picker("Issue Navigator Detail", selection: $prefs.preferences.general.issueNavigatorDetail) {
-                ForEach(AppPreferences.NavigatorDetail.allCases, id: \.self) { tag in
-                    Text(tag.label).tag(tag)
-                }
+    var issueNavigatorDetail: some View {
+        Picker("Issue Navigator Detail", selection: $prefs.preferences.general.issueNavigatorDetail) {
+            ForEach(AppPreferences.NavigatorDetail.allCases, id: \.self) { tag in
+                Text(tag.label).tag(tag)
             }
         }
         .disabled(true)
     }
 
     // TODO: Implement reset for Don't Ask Me warnings Button and remove disabled modifier
-    var dialogWarningsSection: some View {
+    var dialogWarnings: some View {
         LabeledContent("Dialog Warnings") {
             Button(action: {
             }, label: {
@@ -230,48 +217,50 @@ private extension GeneralSettingsView {
         .disabled(true)
     }
 
-    var shellCommandSection: some View {
+    var shellCommand: some View {
         LabeledContent("Shell Command") {
-            Button(action: {
-                do {
-                    let url = Bundle.main.url(forResource: "codeedit", withExtension: nil, subdirectory: "Resources")
-                    let destination = "/usr/local/bin/codeedit"
-
-                    if FileManager.default.fileExists(atPath: destination) {
-                        try FileManager.default.removeItem(atPath: destination)
-                    }
-
-                    guard let shellUrl = url?.path else {
-                        print("Failed to get URL to shell command")
-                        return
-                    }
-
-                    NSWorkspace.shared.requestAuthorization(to: .createSymbolicLink) { auth, error in
-                        guard let auth, error == nil else {
-                            fallbackShellInstallation(commandPath: shellUrl, destinationPath: destination)
-                            return
-                        }
-
-                        do {
-                            try FileManager(authorization: auth).createSymbolicLink(
-                                atPath: destination, withDestinationPath: shellUrl
-                            )
-                        } catch {
-                            fallbackShellInstallation(commandPath: shellUrl, destinationPath: destination)
-                        }
-                    }
-                } catch {
-                    print(error)
-                }
-            }, label: {
+            Button(action: installShellCommand, label: {
                 Text("Install 'codeedit' command")
             })
-            .disabled(true)
+//            .disabled(true)
             .buttonStyle(.bordered)
         }
     }
 
-    var updaterSection: some View {
+    func installShellCommand() {
+        do {
+            let url = Bundle.main.url(forResource: "codeedit", withExtension: nil, subdirectory: "Resources")
+            let destination = "/usr/local/bin/codeedit"
+
+            if FileManager.default.fileExists(atPath: destination) {
+                try FileManager.default.removeItem(atPath: destination)
+            }
+
+            guard let shellUrl = url?.path else {
+                print("Failed to get URL to shell command")
+                return
+            }
+
+            NSWorkspace.shared.requestAuthorization(to: .createSymbolicLink) { auth, error in
+                guard let auth, error == nil else {
+                    fallbackShellInstallation(commandPath: shellUrl, destinationPath: destination)
+                    return
+                }
+
+                do {
+                    try FileManager(authorization: auth).createSymbolicLink(
+                        atPath: destination, withDestinationPath: shellUrl
+                    )
+                } catch {
+                    fallbackShellInstallation(commandPath: shellUrl, destinationPath: destination)
+                }
+            }
+        } catch {
+            print(error)
+        }
+    }
+
+    var updateChecker: some View {
         Section {
             LabeledContent {
                 Button("Check Now") {
@@ -282,14 +271,18 @@ private extension GeneralSettingsView {
                 Text("Last checked: \(lastUpdatedString)")
 
             }
-
-            Toggle("Automatically check for app updates", isOn: $updater.automaticallyChecksForUpdates)
-
-            Toggle("Include pre-release versions", isOn: $updater.includePrereleaseVersions)
         }
     }
 
-    var autoSaveSection: some View {
+    var autoUpdateToggle: some View {
+        Toggle("Automatically check for app updates", isOn: $updater.automaticallyChecksForUpdates)
+    }
+
+    var prereleaseToggle: some View {
+        Toggle("Include pre-release versions", isOn: $updater.includePrereleaseVersions)
+    }
+
+    var autoSave: some View {
         Toggle(
             "Automatically save changes to disk",
             isOn: $prefs.preferences.general.isAutoSaveOn
@@ -339,23 +332,21 @@ private extension GeneralSettingsView {
     }
 
     var openInCodeEditToggle: some View {
-        // Finder Context Menu
-            Toggle("Show “Open With CodeEdit” option", isOn: $openInCodeEdit)
-                .onChange(of: openInCodeEdit) { newValue in
-                    guard let defaults = UserDefaults.init(
-                        suiteName: "austincondiff.CodeEdit.shared"
-                    ) else {
-                        print("Failed to get/init shared defaults")
-                        return
-                    }
-
-                    defaults.set(newValue, forKey: "enableOpenInCE")
+        Toggle("Show “Open With CodeEdit” option in Finder", isOn: $openInCodeEdit)
+            .onChange(of: openInCodeEdit) { newValue in
+                guard let defaults = UserDefaults.init(
+                    suiteName: "austincondiff.CodeEdit.shared"
+                ) else {
+                    print("Failed to get/init shared defaults")
+                    return
                 }
+
+                defaults.set(newValue, forKey: "enableOpenInCE")
+            }
     }
 
     var revealFileOnFocusChangeToggle: some View {
-        // Project Navigator Behavior
-        Toggle("Automatically Show Active File", isOn: $prefs.preferences.general.revealFileOnFocusChange)
+        Toggle("Automatically reveal in project navigator", isOn: $prefs.preferences.general.revealFileOnFocusChange)
     }
 
     // MARK: - Formatters
