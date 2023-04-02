@@ -80,8 +80,7 @@ struct SettingsView: View {
             }
             .navigationSplitViewColumnWidth(500)
         }
-        .searchable(text: $searchText, placement: .sidebar, prompt: "Search")
+        // .searchable(text: $searchText, placement: .sidebar, prompt: "Search")
         .navigationTitle(selectedPage.name.rawValue)
     }
 }
-

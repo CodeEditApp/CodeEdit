@@ -70,4 +70,3 @@ private extension LocationSettingsView {
         }
     }
 }
-

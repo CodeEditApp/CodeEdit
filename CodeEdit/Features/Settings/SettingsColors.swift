@@ -38,4 +38,3 @@ struct Colors {
         alpha: 1.0
     )
 }
-

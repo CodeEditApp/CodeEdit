@@ -50,4 +50,3 @@ struct SettingsPage: Hashable, Identifiable {
     }
 
 }
-

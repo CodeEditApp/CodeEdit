@@ -46,4 +46,3 @@ struct SettingsPageView: View {
         }
     }
 }
-

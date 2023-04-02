@@ -100,4 +100,3 @@ private extension TerminalSettingsView {
         }
     }
 }
-
