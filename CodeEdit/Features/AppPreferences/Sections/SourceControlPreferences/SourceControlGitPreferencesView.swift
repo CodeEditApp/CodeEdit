@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SourceControlGitView: View {
+struct SourceControlGitPreferencesView: View {
     private let inputWidth: Double = 280
 
     @StateObject

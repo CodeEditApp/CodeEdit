@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SourceControlGeneralView: View {
+struct SourceControlGeneralPreferencesView: View {
     private let inputWidth: Double = 200
 
     @StateObject
