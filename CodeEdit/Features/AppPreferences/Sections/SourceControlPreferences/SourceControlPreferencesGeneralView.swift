@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SourceControlGeneralView: View {
+struct SourceControlPreferencesGeneralView: View {
 
     // MARK: - View
 
@@ -36,7 +36,7 @@ struct SourceControlGeneralView: View {
     var branchName: String
 }
 
-private extension SourceControlGeneralView {
+private extension SourceControlPreferencesGeneralView {
 
     // MARK: - Sections
 

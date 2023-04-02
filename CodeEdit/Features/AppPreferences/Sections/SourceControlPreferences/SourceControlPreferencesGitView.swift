@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SourceControlGitView: View {
+struct SourceControlPreferencesGitView: View {
     private let inputWidth: Double = 280
 
     @StateObject
@@ -28,7 +28,7 @@ struct SourceControlGitView: View {
     }
 }
 
-private extension SourceControlGitView {
+private extension SourceControlPreferencesGitView {
     private var authorNameSection: some View {
         PreferencesSection("Author Name", hideLabels: false) {
             gitAuthorName
