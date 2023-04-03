@@ -95,24 +95,15 @@ private extension TextEditingSettingsView {
     }
 
     private var defaultTabWidth: some View {
-        HStack(spacing: 4) {
-            TextField(
-                "Default tab width",
-                value: $prefs.preferences.textEditing.defaultTabWidth,
-                formatter: tabWidthFormatter
-            )
-            .padding(.trailing, 17)
-            .overlay(alignment: .trailing) {
-                Stepper(
-                    "",
-                    value: $prefs.preferences.textEditing.defaultTabWidth,
-                    in: 1...8
-                )
-                .padding(.trailing, 8)
-            }
-            .padding(-10)
+        LabeledContent("Default Tab Width") {
+            TextField("", value: $prefs.preferences.textEditing.defaultTabWidth, formatter: tabWidthFormatter)
+                .labelsHidden()
+            Stepper("", value: $prefs.preferences.textEditing.defaultTabWidth, in: 1...8)
+                .labelsHidden()
             Text("spaces")
+                .fixedSize(horizontal: true, vertical: false)
                 .foregroundColor(.secondary)
+                .textSelection(.disabled)
         }
     }
 
