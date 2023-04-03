@@ -22,28 +22,121 @@ struct ThemeSettingsView: View {
     @State
     private var listView: Bool = false
 
+    @State
+    private var selectedAppearance: ThemeSettingsAppearances = .dark
+
+    enum ThemeSettingsAppearances: String, CaseIterable {
+        case light = "Light Appearance"
+        case dark = "Dark Appearance"
+    }
+
     var body: some View {
         Form {
-            changeThemeOnSystemAppearance
+            Section {
+                changeThemeOnSystemAppearance
+                useThemeBackground
+            }
+            Section("Editor Theme") {
+                VStack(spacing: 0) {
+                    if prefs.preferences.theme.mirrorSystemAppearance {
+                        Picker("", selection: $selectedAppearance) {
+                            ForEach(ThemeSettingsAppearances.allCases, id: \.self) { tab in
+                                Text(tab.rawValue)
+                                    .tag(tab)
+                            }
+                        }
+                        .pickerStyle(.segmented)
+                        .labelsHidden()
+                        .padding(10)
+                    }
+                    VStack(spacing: 0) {
+                        ForEach(selectedAppearance == .dark ? themeModel.darkThemes : themeModel.lightThemes) { theme in
+                            Divider()
+                            ThemeSettingsThemeRow(
+                                theme: theme,
+                                name: theme.displayName,
+                                author: "CodeEdit",
+                                active: themeModel.selectedTheme == theme,
+                                action: { themeModel.selectedTheme = theme }
+                            )
+                        }
+                        ForEach(selectedAppearance == .dark ? themeModel.lightThemes : themeModel.darkThemes) { theme in
+                            Divider()
+                            ThemeSettingsThemeRow(
+                                theme: theme,
+                                name: theme.displayName,
+                                author: "CodeEdit",
+                                active: themeModel.selectedTheme == theme,
+                                action: { themeModel.selectedTheme = theme }
+                            )
+                        }
+                    }
+                }
+                .padding(-10)
+            }
+            Section("Terminal Theme") {
+                Toggle("Use editor theme", isOn: $prefs.preferences.terminal.useEditorTheme)
+                Toggle("Always use dark terminal appearance", isOn: $prefs.preferences.terminal.darkAppearance)
+            }
+            if !prefs.preferences.terminal.useEditorTheme {
+                Section {
+                    VStack(spacing: 0) {
+                        if prefs.preferences.theme.mirrorSystemAppearance
+                            && !prefs.preferences.terminal.darkAppearance {
+                            Picker("", selection: $selectedAppearance) {
+                                ForEach(ThemeSettingsAppearances.allCases, id: \.self) { tab in
+                                    Text(tab.rawValue)
+                                        .tag(tab)
+                                }
+                            }
+                            .pickerStyle(.segmented)
+                            .labelsHidden()
+                            .padding(10)
+                        }
+                        VStack(spacing: 0) {
+                            ForEach(
+                                selectedAppearance == .dark || prefs.preferences.terminal.darkAppearance
+                                ? themeModel.darkThemes
+                                : themeModel.lightThemes
+                            ) { theme in
+                                Divider()
+                                ThemeSettingsThemeRow(
+                                    theme: theme,
+                                    name: theme.displayName,
+                                    author: "CodeEdit",
+                                    active: themeModel.selectedTheme == theme,
+                                    action: { themeModel.selectedTheme = theme }
+                                )
+                            }
+                            if !prefs.preferences.terminal.darkAppearance {
+                                ForEach(
+                                    selectedAppearance == .dark
+                                    ? themeModel.lightThemes
+                                    : themeModel.darkThemes
+                                ) { theme in
+                                    Divider()
+                                    ThemeSettingsThemeRow(
+                                        theme: theme,
+                                        name: theme.displayName,
+                                        author: "CodeEdit",
+                                        active: themeModel.selectedTheme == theme,
+                                        action: { themeModel.selectedTheme = theme }
+                                    )
+                                }
+                            }
+                        }
+                    }
+                    .padding(-10)
+                }
+            }
         }
         .formStyle(.grouped)
     }
 }
 
 private extension ThemeSettingsView {
-
-    // MARK: - Preference Views
-
-    private var frame: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            HStack(spacing: 1) {
-                sidebar
-                settingsContent
-            }
-            .padding(1)
-            .background(Rectangle().foregroundColor(Color(NSColor.separatorColor)))
-            .frame(height: 468)
-        }
+    private var useThemeBackground: some View {
+        Toggle("Use theme background ", isOn: $prefs.preferences.theme.useThemeBackground)
     }
 
     private var changeThemeOnSystemAppearance: some View {
@@ -61,150 +154,6 @@ private extension ThemeSettingsView {
             } else {
                 themeModel.selectedTheme = themeModel.themes.first {
                     $0.name == prefs.preferences.theme.selectedTheme
-                }
-            }
-        }
-    }
-
-
-
-    private var sidebar: some View {
-        VStack(spacing: 1) {
-            PreferencesToolbar {
-                let options = [
-                    "Dark Mode",
-                    "Light Mode"
-                ]
-                SegmentedControl($themeModel.selectedAppearance, options: options)
-            }
-            if listView {
-                sidebarListView
-            } else {
-                sidebarScrollView
-            }
-            PreferencesToolbar {
-                sidebarBottomToolbar
-            }
-        }
-        .frame(width: 320)
-    }
-
-    private var sidebarListView: some View {
-        List(selection: $themeModel.selectedTheme) {
-            ForEach(themeModel.selectedAppearance == 0 ? themeModel.darkThemes : themeModel.lightThemes) { theme in
-                Button(theme.displayName) { themeModel.selectedTheme = theme }
-                    .buttonStyle(.plain)
-                    .tag(theme)
-                    .contextMenu {
-                        Button("Reset Theme") {
-                            themeModel.reset(theme)
-                        }
-                        Divider()
-                        Button("Delete Theme", role: .destructive) {
-                            themeModel.delete(theme)
-                        }
-                        .disabled(themeModel.themes.count <= 1)
-                    }
-            }
-        }
-    }
-
-    private var sidebarScrollView: some View {
-        ScrollView {
-            let grid: [GridItem] = .init(
-                repeating: .init(.fixed(130), spacing: 20, alignment: .center),
-                count: 2
-            )
-            LazyVGrid(columns: grid, alignment: .center, spacing: 20) {
-                ForEach(themeModel.selectedAppearance == 0 ? themeModel.darkThemes : themeModel.lightThemes) { theme in
-                    ThemePreviewIcon(
-                        theme,
-                        selection: $themeModel.selectedTheme,
-                        colorScheme: themeModel.selectedAppearance == 0 ? .dark : .light
-                    )
-                    .transition(.opacity)
-                    .contextMenu {
-                        Button("Reset Theme") {
-                            themeModel.reset(theme)
-                        }
-                        Divider()
-                        Button("Delete Theme", role: .destructive) {
-                            themeModel.delete(theme)
-                        }
-                        .disabled(themeModel.themes.count <= 1)
-                    }
-                }
-            }
-                      .padding(.vertical, 20)
-        }
-        .background(EffectView(.contentBackground))
-    }
-
-    private var sidebarBottomToolbar: some View {
-        HStack {
-            Button {} label: {
-                Image(systemName: "plus")
-            }
-            .disabled(true)
-            .help("Not yet implemented")
-            .buttonStyle(.plain)
-            Button {
-                themeModel.delete(themeModel.selectedTheme!)
-            } label: {
-                Image(systemName: "minus")
-            }
-            .disabled(themeModel.selectedTheme == nil || themeModel.themes.count <= 1)
-            .help("Delete selected theme")
-            .buttonStyle(.plain)
-            Divider()
-            Button { try? themeModel.loadThemes() } label: {
-                Image(systemName: "arrow.clockwise")
-            }
-            .buttonStyle(.plain)
-            Spacer()
-            Button {
-                listView = true
-            } label: {
-                Image(systemName: "list.dash")
-                    .foregroundColor(listView ? .accentColor : .primary)
-            }
-            .buttonStyle(.plain)
-            Button {
-                listView = false
-            } label: {
-                Image(systemName: "square.grid.2x2")
-                    .symbolVariant(listView ? .none : .fill)
-                    .foregroundColor(listView ? .primary : .accentColor)
-            }
-            .buttonStyle(.plain)
-        }
-    }
-
-    private var settingsContent: some View {
-        VStack(spacing: 1) {
-            let options = [
-                "Preview",
-                "Editor",
-                "Terminal"
-            ]
-            PreferencesToolbar {
-                SegmentedControl($themeModel.selectedTab, options: options)
-            }
-            switch themeModel.selectedTab {
-            case 1:
-                EditorThemeView()
-            case 2:
-                TerminalThemeView()
-            default:
-                PreviewThemeView()
-            }
-            PreferencesToolbar {
-                HStack {
-                    Spacer()
-                    Button {} label: {
-                        Image(systemName: "info.circle")
-                    }
-                    .buttonStyle(.plain)
                 }
             }
         }

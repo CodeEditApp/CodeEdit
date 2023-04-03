@@ -52,21 +52,13 @@ private extension TextEditingSettingsView {
     }
 
     private var fontSizeSelector: some View {
-        TextField(
+        Stepper(
             "Font Size",
             value: $prefs.preferences.textEditing.font.size,
-            formatter: fontSizeFormatter
+            in: 1...288,
+            step: 1
+//            format: .number
         )
-        .padding(.trailing, 15)
-        .overlay(alignment: .trailing) {
-            Stepper(
-                "",
-                value: $prefs.preferences.textEditing.font.size,
-                in: 1...288,
-                step: 1
-            )
-            .padding(.trailing, 8)
-        }
     }
 
     private var autocompleteBraces: some View {

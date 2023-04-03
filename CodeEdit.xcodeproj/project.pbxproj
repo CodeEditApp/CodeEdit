@@ -354,6 +354,10 @@
 		B6EA1FEF29DA344F001BF195 /* EditorThemeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EA1FEB29DA344F001BF195 /* EditorThemeView.swift */; };
 		B6EA1FF129DA35A7001BF195 /* ThemePreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EA1FF029DA35A7001BF195 /* ThemePreferencesView.swift */; };
 		B6EA1FF529DA380E001BF195 /* TextEditingSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EA1FF429DA380E001BF195 /* TextEditingSettingsView.swift */; };
+		B6EA1FF829DB78DB001BF195 /* ThemeSettingThemeRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EA1FF729DB78DB001BF195 /* ThemeSettingThemeRow.swift */; };
+		B6EA1FFB29DB78F6001BF195 /* ThemeSettingsThemeDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EA1FFA29DB78F6001BF195 /* ThemeSettingsThemeDetails.swift */; };
+		B6EA1FFD29DB792C001BF195 /* ThemeSettingsColorPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EA1FFC29DB792C001BF195 /* ThemeSettingsColorPreview.swift */; };
+		B6EA200029DB7966001BF195 /* SettingsColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EA1FFF29DB7966001BF195 /* SettingsColorPicker.swift */; };
 		B6EE989027E8879A00CDD8AB /* InspectorSidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EE988F27E8879A00CDD8AB /* InspectorSidebarView.swift */; };
 		B6EE989227E887C600CDD8AB /* InspectorSidebarToolbarTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EE989127E887C600CDD8AB /* InspectorSidebarToolbarTop.swift */; };
 		B6F0517029D9E36800D72287 /* LocationsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F0516F29D9E36800D72287 /* LocationsSettingsView.swift */; };
@@ -770,6 +774,10 @@
 		B6EA1FEB29DA344F001BF195 /* EditorThemeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorThemeView.swift; sourceTree = "<group>"; };
 		B6EA1FF029DA35A7001BF195 /* ThemePreferencesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemePreferencesView.swift; sourceTree = "<group>"; };
 		B6EA1FF429DA380E001BF195 /* TextEditingSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextEditingSettingsView.swift; sourceTree = "<group>"; };
+		B6EA1FF729DB78DB001BF195 /* ThemeSettingThemeRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeSettingThemeRow.swift; sourceTree = "<group>"; };
+		B6EA1FFA29DB78F6001BF195 /* ThemeSettingsThemeDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeSettingsThemeDetails.swift; sourceTree = "<group>"; };
+		B6EA1FFC29DB792C001BF195 /* ThemeSettingsColorPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeSettingsColorPreview.swift; sourceTree = "<group>"; };
+		B6EA1FFF29DB7966001BF195 /* SettingsColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsColorPicker.swift; sourceTree = "<group>"; };
 		B6EE988F27E8879A00CDD8AB /* InspectorSidebarView.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = InspectorSidebarView.swift; sourceTree = "<group>"; tabWidth = 4; };
 		B6EE989127E887C600CDD8AB /* InspectorSidebarToolbarTop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorSidebarToolbarTop.swift; sourceTree = "<group>"; };
 		B6F0516F29D9E36800D72287 /* LocationsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsSettingsView.swift; sourceTree = "<group>"; };
@@ -1967,6 +1975,9 @@
 			isa = PBXGroup;
 			children = (
 				58F2EAAF292FB2B0004A9BDE /* ThemeSettingsView.swift */,
+				B6EA1FF729DB78DB001BF195 /* ThemeSettingThemeRow.swift */,
+				B6EA1FFA29DB78F6001BF195 /* ThemeSettingsThemeDetails.swift */,
+				B6EA1FFC29DB792C001BF195 /* ThemeSettingsColorPreview.swift */,
 			);
 			path = ThemeSettings;
 			sourceTree = "<group>";
@@ -2330,6 +2341,7 @@
 		B67B270029D7868000FB9301 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				B6EA1FFE29DB7955001BF195 /* HelperViews */,
 				B61DA9DD29D929BF00BF4A43 /* Pages */,
 				850C630F29D6B01D00E1444C /* SettingsView.swift */,
 				B6041F4C29D7A4E9000F3454 /* SettingPageView.swift */,
@@ -2346,6 +2358,14 @@
 				B6EA1FF429DA380E001BF195 /* TextEditingSettingsView.swift */,
 			);
 			path = TextEditingSettings;
+			sourceTree = "<group>";
+		};
+		B6EA1FFE29DB7955001BF195 /* HelperViews */ = {
+			isa = PBXGroup;
+			children = (
+				B6EA1FFF29DB7966001BF195 /* SettingsColorPicker.swift */,
+			);
+			path = HelperViews;
 			sourceTree = "<group>";
 		};
 		B6EE988E27E8877C00CDD8AB /* InspectorSidebar */ = {
@@ -2735,6 +2755,7 @@
 				587B9D9F29300ABD00AC7927 /* SegmentedControl.swift in Sources */,
 				6C7256D729A3D7D000C2D3E0 /* SplitViewControllerView.swift in Sources */,
 				B6EA1FE529DA33DB001BF195 /* ThemeModel.swift in Sources */,
+				B6EA200029DB7966001BF195 /* SettingsColorPicker.swift in Sources */,
 				58FD7609291EA1CB0051D6E4 /* CommandPaletteView.swift in Sources */,
 				B6EA1FED29DA344F001BF195 /* TerminalThemeView.swift in Sources */,
 				58F2EAFC292FB2B0004A9BDE /* GitAccountItemView.swift in Sources */,
@@ -2922,6 +2943,7 @@
 				5878DAA8291AE76700DD95A3 /* QuickOpenItem.swift in Sources */,
 				58FD7608291EA1CB0051D6E4 /* CommandPaletteViewModel.swift in Sources */,
 				5878DA872918642F00DD95A3 /* AcknowledgementsViewModel.swift in Sources */,
+				B6EA1FFB29DB78F6001BF195 /* ThemeSettingsThemeDetails.swift in Sources */,
 				B6EA1FEF29DA344F001BF195 /* EditorThemeView.swift in Sources */,
 				587B9E7029301D8F00AC7927 /* GitLabUser.swift in Sources */,
 				04660F6A27E51E5C00477777 /* CodeEditWindowController.swift in Sources */,
@@ -2940,8 +2962,10 @@
 				B6041F4D29D7A4E9000F3454 /* SettingPageView.swift in Sources */,
 				587B9E9A29301D8F00AC7927 /* GitType.swift in Sources */,
 				58D01C97293167DC00C5B6B4 /* String+SHA256.swift in Sources */,
+				B6EA1FFD29DB792C001BF195 /* ThemeSettingsColorPreview.swift in Sources */,
 				2806E904297958B9000040F4 /* ContributorRowView.swift in Sources */,
 				B6041F5229D7D6D6000F3454 /* SettingsWindow.swift in Sources */,
+				B6EA1FF829DB78DB001BF195 /* ThemeSettingThemeRow.swift in Sources */,
 				587B9E7629301D8F00AC7927 /* GitTime.swift in Sources */,
 				2072FA16280D83A500C7F8D4 /* FileTypeList.swift in Sources */,
 				587B9E5D29301D8F00AC7927 /* GitLabUserRouter.swift in Sources */,
