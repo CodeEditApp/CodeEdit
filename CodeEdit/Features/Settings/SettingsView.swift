@@ -66,9 +66,9 @@ struct SettingsView: View {
                 case .general:
                     GeneralSettingsView().environmentObject(updater)
                 case .theme:
-                    ThemePreferencesView()
+                    ThemeSettingsView()
                 case .textEditing:
-                    TextEditingPreferencesView()
+                    TextEditingSettingsView()
                 case .terminal:
                     TerminalSettingsView()
                 case .sourceControl:
@@ -83,6 +83,5 @@ struct SettingsView: View {
         }
         .searchable(text: $searchText, placement: .sidebar, prompt: "Search")
         .navigationTitle(selectedPage.name.rawValue)
-        
     }
 }

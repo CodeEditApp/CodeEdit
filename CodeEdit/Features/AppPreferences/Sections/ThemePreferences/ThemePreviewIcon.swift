@@ -118,25 +118,8 @@ private extension ThemePreviewIcon {
                 codeStatement(theme.editor.keywords.color, length: 6)
                 codeStatement(theme.editor.variables.color, length: 6)
                 codeStatement(theme.editor.text.color, length: 1)
-                codeStatement(theme.editor.text.color, length: 1)
                 codeStatement(theme.editor.values.color, length: 8)
-                codeStatement(theme.editor.text.color, length: 1)
-                codeStatement(theme.editor.values.color, length: 8)
-                codeStatement(theme.editor.text.color, length: 1)
-                codeStatement(theme.editor.keywords.color, length: 6)
                 codeStatement(theme.editor.strings.color, length: 7)
-            }
-            HStack(spacing: 1) {
-                codeStatement(theme.editor.keywords.color, length: 6)
-                codeStatement(theme.editor.variables.color, length: 8)
-                codeStatement(theme.editor.keywords.color, length: 6)
-                codeStatement(theme.editor.strings.color, length: 12)
-                codeStatement(theme.editor.text.color, length: 1)
-            }
-            HStack(spacing: 1) {
-                codeStatement(theme.editor.keywords.color, length: 6)
-                codeStatement(theme.editor.strings.color, length: 14)
-                codeStatement(theme.editor.text.color, length: 1)
             }
         }
     }

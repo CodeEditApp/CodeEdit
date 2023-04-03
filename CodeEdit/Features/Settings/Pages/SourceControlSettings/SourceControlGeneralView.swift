@@ -8,22 +8,26 @@
 import SwiftUI
 
 struct SourceControlGeneralView: View {
-
-    // MARK: - View
-
     var body: some View {
-        Form {
+        Group {
             Section {
-                topSection
+                enableSourceControl
+                refreshLocalStatusAuto
+                fetchRefreshStatusAuto
+                addRemoveFilesAuto
+                selectFilesToCommitAuto
             }
             Section {
-                middleSection
+                showSourceControlChanges
+                includeUpstreamChanges
             }
             Section {
-                bottomSection
+                comparisonView
+                sourceControlNavigator
+                defaultBranchName
             }
         }
-        .formStyle(.grouped)
+//        .formStyle(.grouped)
     }
 
     @StateObject
@@ -34,36 +38,9 @@ struct SourceControlGeneralView: View {
 }
 
 private extension SourceControlGeneralView {
-
-    // MARK: - Sections
-
-    @ViewBuilder
-    private var topSection: some View {
-        enableSourceControl
-        refreshLocalStatusAuto
-        fetchRefreshStatusAuto
-        addRemoveFilesAuto
-        selectFilesToCommitAuto
-    }
-
-    @ViewBuilder
-    private var middleSection: some View {
-        showSourceControlChanges
-        includeUpstreamChanges
-    }
-
-    @ViewBuilder
-    private var bottomSection: some View {
-        comparisonView
-        sourceControlNavigator
-        defaultBranchName
-    }
-
-    // MARK: - Preference Views
-
     private var enableSourceControl: some View {
         Toggle(
-            "Enable Source Control",
+            "Enable source control",
             isOn: $prefs.preferences.sourceControl.general.enableSourceControl
         )
     }
@@ -82,7 +59,6 @@ private extension SourceControlGeneralView {
         )
     }
 
-    @ViewBuilder
     private var addRemoveFilesAuto: some View {
         Toggle(
             "Add and remove files automatically",
@@ -99,7 +75,7 @@ private extension SourceControlGeneralView {
 
     private var showSourceControlChanges: some View {
         Toggle(
-            "Show Source Control changes",
+            "Show source control changes",
             isOn: $prefs.preferences.sourceControl.general.showSourceControlChanges
         )
     }
@@ -113,7 +89,7 @@ private extension SourceControlGeneralView {
 
     private var comparisonView: some View {
         Picker(
-            "Comparison View",
+            "Comparison view",
             selection: $prefs.preferences.sourceControl.general.revisionComparisonLayout
         ) {
             Text("Local Revision on Left Side")
@@ -125,7 +101,7 @@ private extension SourceControlGeneralView {
 
     private var sourceControlNavigator: some View {
         Picker(
-            "Source Control Navigator",
+            "Source control navigator",
             selection: $prefs.preferences.sourceControl.general.controlNavigatorOrder
         ) {
             Text("Sort by Name")
@@ -135,11 +111,10 @@ private extension SourceControlGeneralView {
         }
     }
 
-    @ViewBuilder
     private var defaultBranchName: some View {
-        TextField("Default Branch name", text: $text)
-        Text("Branch names cannot contain spaces, backslashes, or other symbols")
-            .font(.system(size: 12))
-            .foregroundColor(.secondary)
+        TextField(text: $text) {
+            Text("Default branch name")
+            Text("Cannot contain spaces, backslashes, or other symbols")
+        }
     }
 }

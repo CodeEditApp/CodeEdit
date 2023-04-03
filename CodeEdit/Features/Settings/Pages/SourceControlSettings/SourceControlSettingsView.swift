@@ -8,16 +8,39 @@
 import SwiftUI
 
 struct SourceControlSettingsView: View {
-    var body: some View {
-        SegmentedControl($selectedSection, options: ["General", "Git"])
-        if selectedSection == 0 {
-            SourceControlGeneralView()
-        }
-        if selectedSection == 1 {
-            SourceControlGitView()
-        }
+    @State var selection: SourceControlSettingsTab = .general
+
+    enum SourceControlSettingsTab: String, CaseIterable {
+        case general = "General"
+        case git = "Git"
     }
 
-    @State
-    private var selectedSection: Int = 0
+//    var body: some View {
+//        VStack(spacing: 0) {
+//            Picker("", selection: $selection) {
+//                ForEach(SourceControlSettingsTab.allCases, id: \.self) { tab in
+//                    Text(tab.rawValue)
+//                        .tag(tab)
+//                }
+//            }
+//            .pickerStyle(.segmented)
+//            .padding(.leading, 12)
+//            .padding(.trailing, 20)
+//            .padding(.top, 20)
+//            switch selection {
+//            case .general:
+//                SourceControlGeneralView()
+//            case .git:
+//                SourceControlGitView()
+//            }
+//        }
+//    }
+
+    var body: some View {
+        Form {
+            SourceControlGeneralView()
+            SourceControlGitView()
+        }
+        .formStyle(.grouped)
+    }
 }

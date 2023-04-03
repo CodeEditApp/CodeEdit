@@ -12,8 +12,8 @@ struct SourceControlGitView: View {
     // MARK: - View
 
     var body: some View {
-        Form {
-            Section {
+        Group {
+            Section("Git") {
                 authorNameAndEmail
             }
             Section {
@@ -23,7 +23,7 @@ struct SourceControlGitView: View {
                 options
             }
         }
-        .formStyle(.grouped)
+//        .formStyle(.grouped)
     }
 
     @StateObject
