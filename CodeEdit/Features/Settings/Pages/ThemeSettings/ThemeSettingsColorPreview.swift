@@ -21,52 +21,49 @@ struct ThemeSettingsColorPreview: View {
     }
 
     var body: some View {
-        if let selectedTheme = themeModel.selectedTheme,
-           let index = themeModel.themes.firstIndex(of: selectedTheme) {
-            HStack(spacing: 5) {
-                ThemeSettingsColorPreviewColor(
-                    theme.editor.keywords.swiftColor
-                )
-                ThemeSettingsColorPreviewColor(
-                    theme.editor.commands.swiftColor
-                )
-                ThemeSettingsColorPreviewColor(
-                    theme.editor.types.swiftColor
-                )
-                ThemeSettingsColorPreviewColor(
-                    theme.editor.attributes.swiftColor
-                )
-                ThemeSettingsColorPreviewColor(
-                    theme.editor.variables.swiftColor
-                )
-                ThemeSettingsColorPreviewColor(
-                    theme.editor.values.swiftColor
-                )
-                ThemeSettingsColorPreviewColor(
-                    theme.editor.numbers.swiftColor
-                )
-                ThemeSettingsColorPreviewColor(
-                    theme.editor.strings.swiftColor
-                )
-                ThemeSettingsColorPreviewColor(
-                    theme.editor.characters.swiftColor
-                )
-                ThemeSettingsColorPreviewColor(
-                    theme.editor.comments.swiftColor
-                )
-            }
-            .padding()
-            .background(theme.editor.background.swiftColor)
-            .clipShape(Capsule())
-            .overlay {
-                ZStack {
-                    Capsule()
-                        .stroke(Color(.black).opacity(0.2), lineWidth: 0.5)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    Capsule()
-                        .strokeBorder(Color(.white).opacity(0.2), lineWidth: 0.5)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                }
+        HStack(spacing: 5) {
+            ThemeSettingsColorPreviewColor(
+                theme.editor.keywords.swiftColor
+            )
+            ThemeSettingsColorPreviewColor(
+                theme.editor.commands.swiftColor
+            )
+            ThemeSettingsColorPreviewColor(
+                theme.editor.types.swiftColor
+            )
+            ThemeSettingsColorPreviewColor(
+                theme.editor.attributes.swiftColor
+            )
+            ThemeSettingsColorPreviewColor(
+                theme.editor.variables.swiftColor
+            )
+            ThemeSettingsColorPreviewColor(
+                theme.editor.values.swiftColor
+            )
+            ThemeSettingsColorPreviewColor(
+                theme.editor.numbers.swiftColor
+            )
+            ThemeSettingsColorPreviewColor(
+                theme.editor.strings.swiftColor
+            )
+            ThemeSettingsColorPreviewColor(
+                theme.editor.characters.swiftColor
+            )
+            ThemeSettingsColorPreviewColor(
+                theme.editor.comments.swiftColor
+            )
+        }
+        .padding(12)
+        .background(theme.editor.background.swiftColor)
+        .clipShape(Capsule())
+        .overlay {
+            ZStack {
+                Capsule()
+                    .stroke(Color(.black).opacity(0.2), lineWidth: 0.5)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                Capsule()
+                    .strokeBorder(Color(.white).opacity(0.2), lineWidth: 0.5)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
     }
