@@ -114,5 +114,6 @@ struct ThemeSettingsThemeDetails: View {
             }
             .padding()
         }
+        .constrainHeightToWindow()
     }
 }

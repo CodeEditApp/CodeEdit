@@ -327,7 +327,6 @@
 		6CFF967C29BEBD5200182D6F /* WindowCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CFF967B29BEBD5200182D6F /* WindowCommands.swift */; };
 		850C631029D6B01D00E1444C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850C630F29D6B01D00E1444C /* SettingsView.swift */; };
 		850C631229D6B03400E1444C /* SettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850C631129D6B03400E1444C /* SettingsPage.swift */; };
-		850C631829D6D56800E1444C /* SettingsColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850C631729D6D56800E1444C /* SettingsColors.swift */; };
 		B6041F4D29D7A4E9000F3454 /* SettingPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6041F4C29D7A4E9000F3454 /* SettingPageView.swift */; };
 		B6041F5229D7D6D6000F3454 /* SettingsWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6041F5129D7D6D6000F3454 /* SettingsWindow.swift */; };
 		B60BE8BD297A167600841125 /* AcknowledgementRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60BE8BC297A167600841125 /* AcknowledgementRowView.swift */; };
@@ -358,6 +357,7 @@
 		B6EA1FFB29DB78F6001BF195 /* ThemeSettingsThemeDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EA1FFA29DB78F6001BF195 /* ThemeSettingsThemeDetails.swift */; };
 		B6EA1FFD29DB792C001BF195 /* ThemeSettingsColorPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EA1FFC29DB792C001BF195 /* ThemeSettingsColorPreview.swift */; };
 		B6EA200029DB7966001BF195 /* SettingsColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EA1FFF29DB7966001BF195 /* SettingsColorPicker.swift */; };
+		B6EA200229DB7F81001BF195 /* View+ConstrainHeightToWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EA200129DB7F81001BF195 /* View+ConstrainHeightToWindow.swift */; };
 		B6EE989027E8879A00CDD8AB /* InspectorSidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EE988F27E8879A00CDD8AB /* InspectorSidebarView.swift */; };
 		B6EE989227E887C600CDD8AB /* InspectorSidebarToolbarTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EE989127E887C600CDD8AB /* InspectorSidebarToolbarTop.swift */; };
 		B6F0517029D9E36800D72287 /* LocationsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F0516F29D9E36800D72287 /* LocationsSettingsView.swift */; };
@@ -742,7 +742,6 @@
 		6CFF967B29BEBD5200182D6F /* WindowCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowCommands.swift; sourceTree = "<group>"; };
 		850C630F29D6B01D00E1444C /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		850C631129D6B03400E1444C /* SettingsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPage.swift; sourceTree = "<group>"; };
-		850C631729D6D56800E1444C /* SettingsColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsColors.swift; sourceTree = "<group>"; };
 		B6041F4C29D7A4E9000F3454 /* SettingPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingPageView.swift; sourceTree = "<group>"; };
 		B6041F5129D7D6D6000F3454 /* SettingsWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWindow.swift; sourceTree = "<group>"; };
 		B60BE8BC297A167600841125 /* AcknowledgementRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcknowledgementRowView.swift; sourceTree = "<group>"; };
@@ -778,6 +777,7 @@
 		B6EA1FFA29DB78F6001BF195 /* ThemeSettingsThemeDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeSettingsThemeDetails.swift; sourceTree = "<group>"; };
 		B6EA1FFC29DB792C001BF195 /* ThemeSettingsColorPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeSettingsColorPreview.swift; sourceTree = "<group>"; };
 		B6EA1FFF29DB7966001BF195 /* SettingsColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsColorPicker.swift; sourceTree = "<group>"; };
+		B6EA200129DB7F81001BF195 /* View+ConstrainHeightToWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ConstrainHeightToWindow.swift"; sourceTree = "<group>"; };
 		B6EE988F27E8879A00CDD8AB /* InspectorSidebarView.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = InspectorSidebarView.swift; sourceTree = "<group>"; tabWidth = 4; };
 		B6EE989127E887C600CDD8AB /* InspectorSidebarToolbarTop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorSidebarToolbarTop.swift; sourceTree = "<group>"; };
 		B6F0516F29D9E36800D72287 /* LocationsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsSettingsView.swift; sourceTree = "<group>"; };
@@ -2346,8 +2346,8 @@
 				850C630F29D6B01D00E1444C /* SettingsView.swift */,
 				B6041F4C29D7A4E9000F3454 /* SettingPageView.swift */,
 				850C631129D6B03400E1444C /* SettingsPage.swift */,
-				850C631729D6D56800E1444C /* SettingsColors.swift */,
 				B6041F5129D7D6D6000F3454 /* SettingsWindow.swift */,
+				B6EA200129DB7F81001BF195 /* View+ConstrainHeightToWindow.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -2867,7 +2867,6 @@
 				6CFF967A29BEBD2400182D6F /* ViewCommands.swift in Sources */,
 				2072FA1E280D891500C7F8D4 /* FileLocation.swift in Sources */,
 				850C631229D6B03400E1444C /* SettingsPage.swift in Sources */,
-				850C631829D6D56800E1444C /* SettingsColors.swift in Sources */,
 				587B9E6729301D8F00AC7927 /* GitLabEventData.swift in Sources */,
 				B66A4E4529C8E86D004573B4 /* CommandsFixes.swift in Sources */,
 				5882252F292C280D00E83CDE /* StatusBarClearButton.swift in Sources */,
@@ -2956,6 +2955,7 @@
 				58F2EB09292FB2B0004A9BDE /* TerminalPreferences.swift in Sources */,
 				587D9B742933BF5700BF7490 /* FileItem+Array.swift in Sources */,
 				587D9B772933BF5700BF7490 /* Live.swift in Sources */,
+				B6EA200229DB7F81001BF195 /* View+ConstrainHeightToWindow.swift in Sources */,
 				6C48D8F42972DB1A00D6D205 /* Env+Window.swift in Sources */,
 				2072FA18280D871200C7F8D4 /* TextEncoding.swift in Sources */,
 				58F2EB07292FB2B0004A9BDE /* GeneralPreferences.swift in Sources */,

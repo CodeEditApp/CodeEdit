@@ -52,13 +52,17 @@ private extension TextEditingSettingsView {
     }
 
     private var fontSizeSelector: some View {
-        Stepper(
-            "Font Size",
-            value: $prefs.preferences.textEditing.font.size,
-            in: 1...288,
-            step: 1
-//            format: .number
-        )
+        LabeledContent("Font Size") {
+            TextField("", value: $prefs.preferences.textEditing.font.size, formatter: fontSizeFormatter)
+                .labelsHidden()
+            Stepper(
+                "",
+                value: $prefs.preferences.textEditing.font.size,
+                in: 1...288,
+                step: 1
+            )
+            .labelsHidden()
+        }
     }
 
     private var autocompleteBraces: some View {
@@ -77,20 +81,20 @@ private extension TextEditingSettingsView {
     }
 
     private var lineHeight: some View {
-        TextField(
-            "Line Height",
-            value: $prefs.preferences.textEditing.lineHeightMultiple,
-            formatter: lineHeightFormatter
-        )
-        .padding(.trailing, 15)
-        .overlay(alignment: .trailing) {
+        LabeledContent("Line Height") {
+            TextField(
+                "",
+                value: $prefs.preferences.textEditing.lineHeightMultiple,
+                formatter: lineHeightFormatter
+            )
+            .labelsHidden()
             Stepper(
                 "",
                 value: $prefs.preferences.textEditing.lineHeightMultiple,
                 in: 0.75...2.0,
                 step: 0.05
             )
-            .padding(.trailing, 8)
+            .labelsHidden()
         }
     }
 
