@@ -23,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CodeEditApp/CodeEditTextView.git",
       "state" : {
-        "revision" : "36a5f790153d9feae0221ba40e0b9da2a1211232",
-        "version" : "0.5.1"
+        "revision" : "cfceb13ef453a9cdf8d587d5a1fe140d37077f8e",
+        "version" : "0.6.1"
       }
     },
     {
