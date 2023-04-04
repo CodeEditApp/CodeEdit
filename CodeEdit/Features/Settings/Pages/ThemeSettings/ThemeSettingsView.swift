@@ -53,22 +53,18 @@ struct ThemeSettingsView: View {
                         ForEach(selectedAppearance == .dark ? themeModel.darkThemes : themeModel.lightThemes) { theme in
                             Divider()
                             ThemeSettingsThemeRow(
-                                theme: theme,
-                                name: theme.displayName,
-                                author: "CodeEdit",
+                                theme: $themeModel.themes[themeModel.themes.firstIndex(of: theme)!],
                                 active: themeModel.selectedTheme == theme,
                                 action: { themeModel.selectedTheme = theme }
-                            )
+                            ).id(theme)
                         }
                         ForEach(selectedAppearance == .dark ? themeModel.lightThemes : themeModel.darkThemes) { theme in
                             Divider()
                             ThemeSettingsThemeRow(
-                                theme: theme,
-                                name: theme.displayName,
-                                author: "CodeEdit",
+                                theme: $themeModel.themes[themeModel.themes.firstIndex(of: theme)!],
                                 active: themeModel.selectedTheme == theme,
                                 action: { themeModel.selectedTheme = theme }
-                            )
+                            ).id(theme)
                         }
                     }
                 }
@@ -101,12 +97,10 @@ struct ThemeSettingsView: View {
                             ) { theme in
                                 Divider()
                                 ThemeSettingsThemeRow(
-                                    theme: theme,
-                                    name: theme.displayName,
-                                    author: "CodeEdit",
+                                    theme: $themeModel.themes[themeModel.themes.firstIndex(of: theme)!],
                                     active: themeModel.selectedTheme == theme,
                                     action: { themeModel.selectedTheme = theme }
-                                )
+                                ).id(theme)
                             }
                             if !prefs.preferences.terminal.darkAppearance {
                                 ForEach(
@@ -116,12 +110,10 @@ struct ThemeSettingsView: View {
                                 ) { theme in
                                     Divider()
                                     ThemeSettingsThemeRow(
-                                        theme: theme,
-                                        name: theme.displayName,
-                                        author: "CodeEdit",
+                                        theme: $themeModel.themes[themeModel.themes.firstIndex(of: theme)!],
                                         active: themeModel.selectedTheme == theme,
                                         action: { themeModel.selectedTheme = theme }
-                                    )
+                                    ).id(theme)
                                 }
                             }
                         }

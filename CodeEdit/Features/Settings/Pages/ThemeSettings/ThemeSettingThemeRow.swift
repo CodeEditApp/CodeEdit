@@ -8,9 +8,7 @@
 import SwiftUI
 
 struct ThemeSettingsThemeRow: View {
-    var theme: Theme
-    var name: String
-    var author: String
+    @Binding var theme: Theme
     var active: Bool
     var action: () -> Void
 
@@ -24,8 +22,8 @@ struct ThemeSettingsThemeRow: View {
                 .opacity(active ? 1 : 0)
                 .font(.system(size: 10.5, weight: .bold))
             VStack(alignment: .leading) {
-                Text(name)
-                Text(author)
+                Text(theme.displayName)
+                Text("CodeEdit")
                     .foregroundColor(.secondary)
                     .font(.footnote)
             }
@@ -47,7 +45,7 @@ struct ThemeSettingsThemeRow: View {
             action()
         }
         .sheet(isPresented: $presentingDetails) {
-            ThemeSettingsThemeDetails(theme, close: { presentingDetails = false })
+            ThemeSettingsThemeDetails($theme)
         }
     }
 }
