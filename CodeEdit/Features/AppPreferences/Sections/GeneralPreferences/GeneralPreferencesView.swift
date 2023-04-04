@@ -62,7 +62,10 @@ struct GeneralPreferencesView: View {
     }
 }
 
+/// The extension of the view with all the preferences
 private extension GeneralPreferencesView {
+    // MARK: - Sections
+
     var appearanceSection: some View {
         PreferencesSection("Appearance") {
             Picker("Appearance", selection: $prefs.preferences.general.appAppearance) {
@@ -294,6 +297,18 @@ private extension GeneralPreferencesView {
         }
     }
 
+    var autoSaveSection: some View {
+        PreferencesSection("Auto Save Behavior", hideLabels: false) {
+            Toggle(
+                "Automatically save changes to disk",
+                isOn: $prefs.preferences.general.isAutoSaveOn
+            )
+            .toggleStyle(.checkbox)
+        }
+    }
+
+    // MARK: - Preference Views
+
     private var lastUpdatedString: String {
         if let lastUpdatedDate = updater.lastUpdateCheckDate {
             return Self.formatter.string(from: lastUpdatedDate)
@@ -306,21 +321,6 @@ private extension GeneralPreferencesView {
         var copy = subject
         configuration(&copy)
         return copy
-    }
-
-    private static let formatter = configure(DateFormatter()) {
-        $0.dateStyle = .medium
-        $0.timeStyle = .medium
-    }
-
-    var autoSaveSection: some View {
-        PreferencesSection("Auto Save Behavior", hideLabels: false) {
-            Toggle(
-                "Automatically save changes to disk",
-                isOn: $prefs.preferences.general.isAutoSaveOn
-            )
-            .toggleStyle(.checkbox)
-        }
     }
 
     func fallbackShellInstallation(commandPath: String, destinationPath: String) {
@@ -371,5 +371,12 @@ private extension GeneralPreferencesView {
             Toggle("Automatically Show Active File", isOn: $prefs.preferences.general.revealFileOnFocusChange)
                 .toggleStyle(.checkbox)
         }
+    }
+
+    // MARK: - Formatters
+
+    private static let formatter = configure(DateFormatter()) {
+        $0.dateStyle = .medium
+        $0.timeStyle = .medium
     }
 }

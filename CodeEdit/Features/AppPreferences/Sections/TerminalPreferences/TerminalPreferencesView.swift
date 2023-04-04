@@ -19,20 +19,35 @@ struct TerminalPreferencesView: View {
 
     var body: some View {
         PreferencesContent {
-            PreferencesSection("Shell") {
-                shellSelector
-                optionAsMetaToggle
-            }
-            PreferencesSection("Font") {
-                fontSelector
-            }
-            PreferencesSection("Cursor") {
-                cursorStyle
-                cursorBlink
-            }
+            shellSection
+            fontSection
+            cursorSection
+        }
+    }
+}
+
+private extension TerminalPreferencesView {
+    private var shellSection: some View {
+        PreferencesSection("Shell") {
+            shellSelector
+            optionAsMetaToggle
         }
     }
 
+    private var fontSection: some View {
+        PreferencesSection("Font") {
+            fontSelector
+        }
+    }
+
+    private var cursorSection: some View {
+        PreferencesSection("Cursor") {
+            cursorStyle
+            cursorBlink
+        }
+    }
+
+    @ViewBuilder
     private var shellSelector: some View {
         Picker("Shell:", selection: $prefs.preferences.terminal.shell) {
             Text("System Default")
@@ -45,6 +60,7 @@ struct TerminalPreferencesView: View {
         }
         .frame(width: inputWidth)
     }
+
     private var cursorStyle: some View {
         Picker("Terminal Cursor Style: ", selection: $prefs.preferences.terminal.cursorStyle) {
             Text("Block")

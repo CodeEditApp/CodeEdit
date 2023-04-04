@@ -12,86 +12,68 @@ struct TextEditingPreferencesView: View {
     @StateObject
     private var prefs: AppPreferencesModel = .shared
 
-    /// only allows integer values in the range of `[1...8]`
-    private var tabWidthFormatter: NumberFormatter {
-        let formatter = NumberFormatter()
-        formatter.allowsFloats = false
-        formatter.minimum = 1
-        formatter.maximum = 8
-
-        return formatter
-    }
-
-    /// only allows float values in the range of `[0.75...2.00]`
-    /// and formats to 2 decimal places.
-    private var lineHeightFormatter: NumberFormatter {
-        let formatter = NumberFormatter()
-        formatter.allowsFloats = true
-        formatter.maximumFractionDigits = 2
-        formatter.minimumFractionDigits = 2
-        formatter.minimum = 0.75
-        formatter.maximum = 2.0
-
-        return formatter
-    }
-
-    private var fontSizeFormatter: NumberFormatter {
-        let formatter = NumberFormatter()
-        formatter.allowsFloats = false
-        formatter.minimum = 1
-        formatter.maximum = 288
-
-        return formatter
-    }
-
     var body: some View {
         PreferencesContent {
-            PreferencesSection("Default Tab Width") {
-                HStack(spacing: 5) {
-                    TextField("", value: $prefs.preferences.textEditing.defaultTabWidth, formatter: tabWidthFormatter)
-                        .multilineTextAlignment(.trailing)
-                        .frame(width: 40)
-                    Stepper(
-                        "Default Tab Width:",
-                        value: $prefs.preferences.textEditing.defaultTabWidth,
-                        in: 1...8
-                    )
-                    Text("spaces")
-                }
-            }
-            PreferencesSection("Font") {
-                fontSelector
-            }
-            PreferencesSection("Font Size") {
-                fontSizeSelector
-            }
-            PreferencesSection("Line Height") {
-                lineHeight
-            }
-            PreferencesSection("Code completion") {
-                autocompleteBraces
-                enableTypeOverCompletion
-            }
-            PreferencesSection("Line Wrapping") {
-                wrapLinesToEditorWidth
-            }
+            tabWidthSection
+            fontSection
+            lineHeightSection
+            codeCompletionSection
+            lineWrappingSection
         }
     }
+}
+
+private extension TextEditingPreferencesView {
+    private var tabWidthSection: some View {
+        PreferencesSection("Default Tab Width") {
+            defaultTabWidth
+        }
+    }
+
+    private var fontSection: some View {
+        PreferencesSection("Font") {
+            fontSelector
+            fontSizeSelector
+        }
+    }
+
+    private var lineHeightSection: some View {
+        PreferencesSection("Line Height") {
+            lineHeight
+        }
+    }
+
+    private var codeCompletionSection: some View {
+        PreferencesSection("Code completion") {
+            autocompleteBraces
+            enableTypeOverCompletion
+        }
+    }
+
+    private var lineWrappingSection: some View {
+        PreferencesSection("Line Wrapping") {
+            wrapLinesToEditorWidth
+        }
+    }
+
+    // MARK: - Preference Views
 
     @ViewBuilder
     private var fontSelector: some View {
-        Picker("Font:", selection: $prefs.preferences.textEditing.font.customFont) {
-            Text("System Font")
-                .tag(false)
-            Text("Custom")
-                .tag(true)
-        }
-        .fixedSize()
-        if prefs.preferences.textEditing.font.customFont {
-            FontPicker(
-                "\(prefs.preferences.textEditing.font.name) \(prefs.preferences.textEditing.font.size)",
-                name: $prefs.preferences.textEditing.font.name, size: $prefs.preferences.textEditing.font.size
-            )
+        HStack {
+            Picker("Font:", selection: $prefs.preferences.textEditing.font.customFont) {
+                Text("System Font")
+                    .tag(false)
+                Text("Custom")
+                    .tag(true)
+            }
+            .fixedSize()
+            if prefs.preferences.textEditing.font.customFont {
+                FontPicker(
+                    "\(prefs.preferences.textEditing.font.name) \(prefs.preferences.textEditing.font.size)",
+                    name: $prefs.preferences.textEditing.font.name, size: $prefs.preferences.textEditing.font.size
+                )
+            }
         }
     }
 
@@ -142,5 +124,55 @@ struct TextEditingPreferencesView: View {
                 step: 0.05
             )
         }
+    }
+
+    private var defaultTabWidth: some View {
+        HStack(spacing: 5) {
+            TextField("", value: $prefs.preferences.textEditing.defaultTabWidth, formatter: tabWidthFormatter)
+                .multilineTextAlignment(.trailing)
+                .frame(width: 40)
+            Stepper(
+                "Default Tab Width:",
+                value: $prefs.preferences.textEditing.defaultTabWidth,
+                in: 1...8
+            )
+            Text("spaces")
+        }
+    }
+
+    // MARK: - Formatters
+
+    /// Only allows integer values in the range of `[1...8]`
+    private var tabWidthFormatter: NumberFormatter {
+        let formatter = NumberFormatter()
+        formatter.allowsFloats = false
+        formatter.minimum = 1
+        formatter.maximum = 8
+
+        return formatter
+    }
+
+    /// Only allows float values in the range of `[0.75...2.00]`
+    /// And formats to 2 decimal places.
+    private var lineHeightFormatter: NumberFormatter {
+        let formatter = NumberFormatter()
+        formatter.allowsFloats = true
+        formatter.maximumFractionDigits = 2
+        formatter.minimumFractionDigits = 2
+        formatter.minimum = 0.75
+        formatter.maximum = 2.0
+
+        return formatter
+    }
+
+    /// Formatter for the font size in the range `[1...288]`
+    /// Increases by 1
+    private var fontSizeFormatter: NumberFormatter {
+        let formatter = NumberFormatter()
+        formatter.allowsFloats = false
+        formatter.minimum = 1
+        formatter.maximum = 288
+
+        return formatter
     }
 }

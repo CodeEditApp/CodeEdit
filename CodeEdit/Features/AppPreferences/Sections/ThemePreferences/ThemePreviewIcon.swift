@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// A view that implements the `Theme Preview` preference section
 struct ThemePreviewIcon: View {
     var theme: Theme
     var colorScheme: ColorScheme
@@ -23,8 +24,7 @@ struct ThemePreviewIcon: View {
     var body: some View {
         VStack {
             ZStack(alignment: .topLeading) {
-                RoundedRectangle(cornerRadius: 3)
-                    .foregroundColor(Color(hex: colorScheme == .dark ? 0x4c4c4c : 0xbbbbbb))
+                circularRectangle
 
                 HStack(spacing: 1) {
                     sidebar
@@ -41,12 +41,7 @@ struct ThemePreviewIcon: View {
                     .strokeBorder(lineWidth: 2)
                     .foregroundColor(selection == theme ? .accentColor : .clear)
             }
-            Text(theme.displayName)
-                .font(.subheadline)
-                .padding(.horizontal, 7)
-                .padding(.vertical, 2)
-                .foregroundColor(selection == theme ? .white : .primary)
-                .background(Capsule().foregroundColor(selection == theme ? .accentColor : .clear))
+            themeDisplayName
         }
         .help(theme.metadataDescription)
         .onTapGesture {
@@ -54,6 +49,22 @@ struct ThemePreviewIcon: View {
                 self.selection = theme
             }
         }
+    }
+}
+
+private extension ThemePreviewIcon {
+    private var circularRectangle: some View {
+        RoundedRectangle(cornerRadius: 3)
+            .foregroundColor(Color(hex: colorScheme == .dark ? 0x4c4c4c : 0xbbbbbb))
+    }
+
+    private var themeDisplayName: some View {
+        Text(theme.displayName)
+            .font(.subheadline)
+            .padding(.horizontal, 7)
+            .padding(.vertical, 2)
+            .foregroundColor(selection == theme ? .white : .primary)
+            .background(Capsule().foregroundColor(selection == theme ? .accentColor : .clear))
     }
 
     private var sidebar: some View {
@@ -107,25 +118,8 @@ struct ThemePreviewIcon: View {
                 codeStatement(theme.editor.keywords.color, length: 6)
                 codeStatement(theme.editor.variables.color, length: 6)
                 codeStatement(theme.editor.text.color, length: 1)
-                codeStatement(theme.editor.text.color, length: 1)
                 codeStatement(theme.editor.values.color, length: 8)
-                codeStatement(theme.editor.text.color, length: 1)
-                codeStatement(theme.editor.values.color, length: 8)
-                codeStatement(theme.editor.text.color, length: 1)
-                codeStatement(theme.editor.keywords.color, length: 6)
                 codeStatement(theme.editor.strings.color, length: 7)
-            }
-            HStack(spacing: 1) {
-                codeStatement(theme.editor.keywords.color, length: 6)
-                codeStatement(theme.editor.variables.color, length: 8)
-                codeStatement(theme.editor.keywords.color, length: 6)
-                codeStatement(theme.editor.strings.color, length: 12)
-                codeStatement(theme.editor.text.color, length: 1)
-            }
-            HStack(spacing: 1) {
-                codeStatement(theme.editor.keywords.color, length: 6)
-                codeStatement(theme.editor.strings.color, length: 14)
-                codeStatement(theme.editor.text.color, length: 1)
             }
         }
     }

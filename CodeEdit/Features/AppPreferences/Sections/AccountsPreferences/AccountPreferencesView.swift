@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-// swiftlint:disable for_where
 struct AccountPreferencesView: View {
     @StateObject
     private var prefs: AppPreferencesModel = .shared
@@ -40,7 +39,10 @@ struct AccountPreferencesView: View {
             .padding()
         }
     }
+}
 
+// swiftlint:disable for_where
+private extension AccountPreferencesView {
     private var accountSelectionView: some View {
         VStack(alignment: .leading, spacing: 1) {
             PreferencesToolbar {
@@ -174,5 +176,4 @@ struct AccountPreferencesView: View {
             }
         }
     }
-
 }

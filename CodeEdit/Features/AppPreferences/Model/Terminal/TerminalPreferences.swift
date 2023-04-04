@@ -12,6 +12,9 @@ extension AppPreferences {
     /// The global settings for the terminal emulator
     struct TerminalPreferences: Codable {
 
+        /// If true terminal will use editor theme.
+        var useEditorTheme: Bool = true
+
         /// If true terminal appearance will always be `dark`. Otherwise it adapts to the system setting.
         var darkAppearance: Bool = false
 
