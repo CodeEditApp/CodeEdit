@@ -49,6 +49,12 @@ struct SettingsView: View {
                 }
             }
             .navigationSplitViewColumnWidth(215)
+            .safeAreaInset(edge: .top) {
+                TextField("Search", text: $searchText, prompt: Text("Search"))
+                    .textFieldStyle(.roundedBorder)
+                    .padding(.horizontal, 10)
+                    .controlSize(.large)
+            }
         } detail: {
             Group {
                 switch selectedPage.name {
@@ -75,9 +81,7 @@ struct SettingsView: View {
             .onAppear {
                 model.showingDetails = false
             }
-
         }
-        .searchable(text: $searchText, placement: .sidebar, prompt: "Search")
         .navigationTitle(selectedPage.name.rawValue)
         .toolbar {
             ToolbarItem(placement: .navigation) {
