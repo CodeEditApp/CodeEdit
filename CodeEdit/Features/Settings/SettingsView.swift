@@ -11,11 +11,12 @@ import AppKit
 
 /// A struct for settings
 struct SettingsView: View {
+    @StateObject var model = SettingsModel()
 
     /// An array of navigationItem(s)
     private static let pages: [SettingsPage] = [
         .init(.general, baseColor: .gray, icon: .system("gear")),
-        .init(.account, baseColor: .blue, icon: .system("at")),
+        .init(.accounts, baseColor: .blue, icon: .system("at")),
         .init(.behavior, baseColor: .orange, icon: .system("flowchart")),
         .init(.navigation, baseColor: .green, icon: .system("arrow.triangle.turn.up.right.diamond")),
         .init(.theme, baseColor: .pink, icon: .system("paintbrush")),
@@ -26,35 +27,23 @@ struct SettingsView: View {
         .init(.components, baseColor: .blue, icon: .system("puzzlepiece")),
         .init(.location, baseColor: .green, icon: .system("externaldrive")),
         .init(.advanced, baseColor: .gray, icon: .system("gearshape.2"))
-//        .init(.extensionsSection, children: [
-//            // iterate over extensions
-//            .init(.advanced, baseColor: .gray, icon: .system("gearshape.2"))
-//            .init(.advanced, baseColor: .gray, icon: .system("gearshape.2"))
-//            .init(.advanced, baseColor: .gray, icon: .system("gearshape.2"))
-//        ])
     ]
 
     /// Variables for the selected Page, the current search text and software updater
     @State private var selectedPage = pages.first!
     @State private var searchText: String = ""
 
+    @Environment(\.presentationMode) var presentationMode
+
     let updater: SoftwareUpdater
 
     var body: some View {
         NavigationSplitView {
-            List(Self.pages, selection: $selectedPage) { item in
-                if item.children.isEmpty {
-                    if searchText.isEmpty || item.name.rawValue.lowercased().contains(searchText.lowercased()) {
-                        SettingsPageView(item)
-                    }
-                } else {
-                    Section(item.nameString) {
-                        ForEach(item.children) { child in
-                            if searchText.isEmpty || child.name.rawValue.lowercased().contains(
-                                searchText.lowercased()
-                            ) {
-                                SettingsPageView(child)
-                            }
+            List(selection: $selectedPage) {
+                Section {
+                    ForEach(Self.pages) { item in
+                        if searchText.isEmpty || item.name.rawValue.lowercased().contains(searchText.lowercased()) {
+                            SettingsPageView(item)
                         }
                     }
                 }
@@ -65,6 +54,8 @@ struct SettingsView: View {
                 switch selectedPage.name {
                 case .general:
                     GeneralSettingsView().environmentObject(updater)
+                case .accounts:
+                    AccountsSettingsView()
                 case .theme:
                     ThemeSettingsView()
                 case .textEditing:
@@ -80,8 +71,64 @@ struct SettingsView: View {
                 }
             }
             .navigationSplitViewColumnWidth(500)
+            .hideSidebarToggle()
+            .onAppear {
+                model.showingDetails = false
+            }
+
         }
         .searchable(text: $searchText, placement: .sidebar, prompt: "Search")
         .navigationTitle(selectedPage.name.rawValue)
+        .toolbar {
+            ToolbarItem(placement: .navigation) {
+                if !model.showingDetails {
+                    Rectangle()
+                        .fill(presentationMode.wrappedValue.isPresented ? .red : .blue)
+                        .frame(width: 10)
+                        .opacity(0)
+                } else {
+                    EmptyView()
+                }
+            }
+        }
+        .environmentObject(model)
     }
+}
+
+struct SettingsDetailsView<Content: View>: View {
+    @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var model: SettingsModel
+
+    let title: String
+
+    @ViewBuilder
+    var content: Content
+
+    var body: some View {
+        content
+        .navigationTitle("")
+        .toolbar {
+            ToolbarItem(placement: .navigation) {
+                Button {
+                    print(self.presentationMode.wrappedValue)
+                    self.presentationMode.wrappedValue.dismiss()
+                } label: {
+                    Image(systemName: "chevron.left")
+                }
+                Text(title)
+            }
+        }
+        .hideSidebarToggle()
+        .task {
+            let window = NSApp.windows.first { $0.identifier?.rawValue == "com_apple_SwiftUI_Settings_window" }!
+            window.title = title
+        }
+        .onAppear {
+            model.showingDetails = true
+        }
+    }
+}
+
+class SettingsModel: ObservableObject {
+    @Published var showingDetails: Bool = false
 }

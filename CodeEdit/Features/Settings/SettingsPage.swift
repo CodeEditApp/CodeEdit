@@ -11,11 +11,12 @@ import SwiftUI
 /// A struct for a preferences tab
 struct SettingsPage: Hashable, Identifiable {
     /// Default intializer
-    internal init(_ name: Name, baseColor: Color? = nil, icon: IconResource? = nil, children: [SettingsPage] = []) {
+    internal init(_ name: Name, baseColor: Color? = nil, icon: IconResource? = nil, hideName: Bool? = false, children: [SettingsPage] = []) {
         self.children = children
         self.name = name
         self.baseColor = baseColor ?? .red
         self.icon = icon ?? .system("questionmark.app")
+        self.hideName = hideName
     }
 
     var id: String { name.rawValue }
@@ -23,6 +24,7 @@ struct SettingsPage: Hashable, Identifiable {
     let name: Name
     let baseColor: Color
     let children: [SettingsPage]
+    let hideName: Bool?
     var nameString: LocalizedStringKey { LocalizedStringKey(name.rawValue) }
     let icon: IconResource?
 
@@ -36,7 +38,7 @@ struct SettingsPage: Hashable, Identifiable {
     enum Name: String {
         // MARK: - App Preferences
         case general = "General"
-        case account = "Accounts"
+        case accounts = "Accounts"
         case behavior = "Behaviors"
         case navigation = "Navigation"
         case theme = "Themes"

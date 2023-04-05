@@ -18,7 +18,6 @@ struct SettingsPageView: View {
         NavigationLink(value: page) {
             Label {
                 Text(page.nameString)
-//                    .font(.system(size: 12))
                     .padding(.leading, 2)
             } icon: {
                 if let icon = page.icon {
