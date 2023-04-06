@@ -129,7 +129,7 @@ private extension AccountPreferencesView {
                 Image(systemName: "plus")
             }
             .sheet(isPresented: $openAccountDialog, content: {
-                AccountSelectionDialog(openAccountDialog: $openAccountDialog)
+                AccountSelectionPreferencesDialog(openAccountDialog: $openAccountDialog)
             })
             .help("Add a Git Account")
             .buttonStyle(.plain)

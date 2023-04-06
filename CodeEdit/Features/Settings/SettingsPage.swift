@@ -31,7 +31,8 @@ struct SettingsPage: Hashable, Identifiable {
     /// A struct for a sidebar icon, with a base color and SF Symbol
     enum IconResource: Equatable, Hashable {
          case system(_ name: String)
-         case asset(_ name: String)
+        case symbol(_ name: String)
+        case asset(_ name: String)
     }
 
     /// An enum of all the preferences tabs

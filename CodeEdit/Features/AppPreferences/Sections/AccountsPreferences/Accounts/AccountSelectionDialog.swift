@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AccountSelectionDialog: View {
+struct AccountSelectionPreferencesDialog: View {
     var gitProviders = [
         SourceControlProvider(name: "Bitbucket Cloud", id: "bitbucketCloud"),
         SourceControlProvider(name: "Bitbucket Server", id: "bitbucketServer"),

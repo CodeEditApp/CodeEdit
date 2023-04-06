@@ -25,11 +25,20 @@ struct SettingsPageView: View {
                         switch icon {
                         case .system(let name):
                             Image(systemName: name)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                        case .symbol(let name):
+                            Image(symbol: name)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
                         case .asset(let name):
-                            Image(name).resizable().padding(2)
+                            Image(name)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
                         }
                     }
-                    .foregroundColor(.primary)
+                    .padding(2.5)
+                    .foregroundColor(.white)
                     .frame(width: 20, height: 20)
                     .background(
                         RoundedRectangle(

@@ -17,16 +17,16 @@ struct SettingsView: View {
     private static let pages: [SettingsPage] = [
         .init(.general, baseColor: .gray, icon: .system("gear")),
         .init(.accounts, baseColor: .blue, icon: .system("at")),
-        .init(.behavior, baseColor: .orange, icon: .system("flowchart")),
-        .init(.navigation, baseColor: .green, icon: .system("arrow.triangle.turn.up.right.diamond")),
-        .init(.theme, baseColor: .pink, icon: .system("paintbrush")),
-        .init(.textEditing, baseColor: .blue, icon: .system("square.and.pencil")),
-        .init(.terminal, baseColor: .blue, icon: .system("terminal")),
-        .init(.keybindings, baseColor: .gray, icon: .system("keyboard")),
-        .init(.sourceControl, baseColor: .blue, icon: .system("arrow.triangle.pull")),
-        .init(.components, baseColor: .blue, icon: .system("puzzlepiece")),
-        .init(.location, baseColor: .green, icon: .system("externaldrive")),
-        .init(.advanced, baseColor: .gray, icon: .system("gearshape.2"))
+        .init(.behavior, baseColor: .red, icon: .system("flowchart.fill")),
+        .init(.navigation, baseColor: .green, icon: .system("arrow.triangle.turn.up.right.diamond.fill")),
+        .init(.theme, baseColor: .pink, icon: .system("paintbrush.fill")),
+        .init(.textEditing, baseColor: .blue, icon: .system("pencil.line")),
+        .init(.terminal, baseColor: .blue, icon: .system("terminal.fill")),
+        .init(.keybindings, baseColor: .gray, icon: .system("keyboard.fill")),
+        .init(.sourceControl, baseColor: .blue, icon: .symbol("vault")),
+        .init(.components, baseColor: .blue, icon: .system("puzzlepiece.fill")),
+        .init(.location, baseColor: .green, icon: .system("externaldrive.fill")),
+        .init(.advanced, baseColor: .gray, icon: .system("gearshape.2.fill"))
     ]
 
     /// Variables for the selected Page, the current search text and software updater
@@ -75,7 +75,6 @@ struct SettingsView: View {
             .onAppear {
                 model.showingDetails = false
             }
-
         }
         .searchable(text: $searchText, placement: .sidebar, prompt: "Search")
         .navigationTitle(selectedPage.name.rawValue)

@@ -75,31 +75,29 @@ struct GitHubLoginView: View {
             .padding(.top, 10)
 
             HStack {
-                HStack {
-                    Button("Create a Token on GitHub") {
-                        createToken(URL(string: "https://github.com/settings/tokens/new")!)
-                    }
+                Button {
+                    dismissDialog.toggle()
+                } label: {
+                    Text("Cancel")
+                        .frame(maxWidth: .infinity)
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                HStack {
-                    Button("Cancel") {
-                        dismissDialog.toggle()
-                    }
-                    if accountToken.isEmpty {
-                        Button("Sign In") {}
-                        .disabled(true)
-                    } else {
-                        Button("Sign In") {
-                            loginGitHub(gitAccountName: accountName)
-                        }
-                        .buttonStyle(.borderedProminent)
-                    }
+                .controlSize(.large)
+                .frame(maxWidth: .infinity)
+
+                Button {
+                    loginGitHub(gitAccountName: accountName)
+                } label: {
+                    Text("Sign In")
+                        .frame(maxWidth: .infinity)
                 }
-                .frame(maxWidth: .infinity, alignment: .trailing)
-            }.padding(.top, 10)
+                .disabled(accountName.isEmpty || accountToken.isEmpty)
+                .buttonStyle(.borderedProminent)
+                .controlSize(.large)
+            }
+            .padding(.horizontal)
+            .padding(.bottom)
         }
-        .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
-        .frame(width: 485, height: 280)
+        .frame(width: 300)
     }
 
     private func loginGitHub(gitAccountName: String) {
