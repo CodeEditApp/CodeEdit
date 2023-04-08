@@ -82,21 +82,6 @@ struct SettingsView: View {
             .onAppear {
                 model.showingDetails = false
             }
-            .safeAreaInset(edge: .top, spacing: 0) {
-                if !model.scrolledToTop {
-                    EffectView(.menu)
-                        .shadow(
-                            color: .black.opacity(colorScheme == .dark ? 1 : 0.2),
-                            radius: 0.33,
-                            x: 0,
-                            y: 0.5
-                        )
-                    //                    .opacity(model.scrolledToTop ? 0 : 1)
-                        .transition(.opacity)
-                        .ignoresSafeArea()
-                        .frame(height: 0)
-                }
-            }
         }
         .searchable(text: $searchText, placement: .sidebar, prompt: "Search")
         .navigationTitle(selectedPage.name.rawValue)
@@ -113,80 +98,6 @@ struct SettingsView: View {
             }
         }
         .environmentObject(model)
-    }
-}
-
-struct SettingsForm<Content: View>: View {
-    @EnvironmentObject var model: SettingsModel
-    @ViewBuilder var content: Content
-    @State private var offset = CGFloat.zero
-
-    var body: some View {
-            Form {
-                content
-                    .background(
-                        GeometryReader {
-                            Color.clear.preference(
-                                key: ViewOffsetKey.self,
-                                value: -$0.frame(in: .named("scroll")).origin.y
-                            )
-                        }
-                    )
-                    .onPreferenceChange(ViewOffsetKey.self) {
-                        print(model.scrolledToTop, $0)
-                        if $0 <= -30.0 && !model.scrolledToTop {
-                            model.scrolledToTop = true
-                        } else if $0 > -30.0 && model.scrolledToTop {
-                            model.scrolledToTop = false
-                        }
-                    }
-
-            }
-            .formStyle(.grouped)
-            .coordinateSpace(name: "scroll")
-            .padding(.top, -20)
-    }
-}
-
-struct ViewOffsetKey: PreferenceKey {
-    typealias Value = CGFloat
-    static var defaultValue = CGFloat.zero
-    static func reduce(value: inout Value, nextValue: () -> Value) {
-        value += nextValue()
-    }
-}
-
-struct SettingsDetailsView<Content: View>: View {
-    @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject var model: SettingsModel
-
-    let title: String
-
-    @ViewBuilder
-    var content: Content
-
-    var body: some View {
-        content
-        .navigationTitle("")
-        .toolbar {
-            ToolbarItem(placement: .navigation) {
-                Button {
-                    print(self.presentationMode.wrappedValue)
-                    self.presentationMode.wrappedValue.dismiss()
-                } label: {
-                    Image(systemName: "chevron.left")
-                }
-                Text(title)
-            }
-        }
-        .hideSidebarToggle()
-        .task {
-            let window = NSApp.windows.first { $0.identifier?.rawValue == "settings" }!
-            window.title = title
-        }
-        .onAppear {
-            model.showingDetails = true
-        }
     }
 }
 

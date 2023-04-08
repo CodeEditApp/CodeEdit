@@ -56,6 +56,7 @@ struct AccountsSettingsView: View {
                         }
                     })
                 }
+                .padding(.top, 10)
             }
         }
     }

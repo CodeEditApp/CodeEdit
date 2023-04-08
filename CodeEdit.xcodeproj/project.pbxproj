@@ -327,10 +327,12 @@
 		6CFF967C29BEBD5200182D6F /* WindowCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CFF967B29BEBD5200182D6F /* WindowCommands.swift */; };
 		850C631029D6B01D00E1444C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850C630F29D6B01D00E1444C /* SettingsView.swift */; };
 		850C631229D6B03400E1444C /* SettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850C631129D6B03400E1444C /* SettingsPage.swift */; };
-		B6041F4D29D7A4E9000F3454 /* SettingPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6041F4C29D7A4E9000F3454 /* SettingPageView.swift */; };
+		B6041F4D29D7A4E9000F3454 /* SettingsPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6041F4C29D7A4E9000F3454 /* SettingsPageView.swift */; };
 		B6041F5229D7D6D6000F3454 /* SettingsWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6041F5129D7D6D6000F3454 /* SettingsWindow.swift */; };
 		B60BE8BD297A167600841125 /* AcknowledgementRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60BE8BC297A167600841125 /* AcknowledgementRowView.swift */; };
 		B61DA9DF29D929E100BF4A43 /* GeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61DA9DE29D929E100BF4A43 /* GeneralSettingsView.swift */; };
+		B640A99E29E2184700715F20 /* SettingsForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = B640A99D29E2184700715F20 /* SettingsForm.swift */; };
+		B640A9A129E2188F00715F20 /* SettingsDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B640A9A029E2188F00715F20 /* SettingsDetailsView.swift */; };
 		B658FB3427DA9E1000EA4DBD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3327DA9E1000EA4DBD /* Assets.xcassets */; };
 		B658FB3727DA9E1000EA4DBD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3627DA9E1000EA4DBD /* Preview Assets.xcassets */; };
 		B66A4E4529C8E86D004573B4 /* CommandsFixes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66A4E4429C8E86D004573B4 /* CommandsFixes.swift */; };
@@ -749,10 +751,12 @@
 		6CFF967B29BEBD5200182D6F /* WindowCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowCommands.swift; sourceTree = "<group>"; };
 		850C630F29D6B01D00E1444C /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		850C631129D6B03400E1444C /* SettingsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPage.swift; sourceTree = "<group>"; };
-		B6041F4C29D7A4E9000F3454 /* SettingPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingPageView.swift; sourceTree = "<group>"; };
+		B6041F4C29D7A4E9000F3454 /* SettingsPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPageView.swift; sourceTree = "<group>"; };
 		B6041F5129D7D6D6000F3454 /* SettingsWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWindow.swift; sourceTree = "<group>"; };
 		B60BE8BC297A167600841125 /* AcknowledgementRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcknowledgementRowView.swift; sourceTree = "<group>"; };
 		B61DA9DE29D929E100BF4A43 /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
+		B640A99D29E2184700715F20 /* SettingsForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsForm.swift; sourceTree = "<group>"; };
+		B640A9A029E2188F00715F20 /* SettingsDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDetailsView.swift; sourceTree = "<group>"; };
 		B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodeEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B658FB3127DA9E0F00EA4DBD /* WorkspaceView.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceView.swift; sourceTree = "<group>"; tabWidth = 4; };
 		B658FB3327DA9E1000EA4DBD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -2028,8 +2032,8 @@
 			isa = PBXGroup;
 			children = (
 				58F2EABF292FB2B0004A9BDE /* Gitlab */,
-				58F2EAC2292FB2B0004A9BDE /* GitAccountItemView.swift */,
 				58F2EAC3292FB2B0004A9BDE /* Github */,
+				58F2EAC2292FB2B0004A9BDE /* GitAccountItemView.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -2295,6 +2299,14 @@
 			path = GeneralSettings;
 			sourceTree = "<group>";
 		};
+		B640A9A329E218E300715F20 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				850C631129D6B03400E1444C /* SettingsPage.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		B658FB2327DA9E0F00EA4DBD = {
 			isa = PBXGroup;
 			children = (
@@ -2356,12 +2368,14 @@
 		B67B270029D7868000FB9301 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				B640A9A329E218E300715F20 /* Models */,
 				B6EA1FFE29DB7955001BF195 /* HelperViews */,
 				B61DA9DD29D929BF00BF4A43 /* Pages */,
 				B6041F5129D7D6D6000F3454 /* SettingsWindow.swift */,
 				850C630F29D6B01D00E1444C /* SettingsView.swift */,
-				B6041F4C29D7A4E9000F3454 /* SettingPageView.swift */,
-				850C631129D6B03400E1444C /* SettingsPage.swift */,
+				B6041F4C29D7A4E9000F3454 /* SettingsPageView.swift */,
+				B640A9A029E2188F00715F20 /* SettingsDetailsView.swift */,
+				B640A99D29E2184700715F20 /* SettingsForm.swift */,
 				B6EA200129DB7F81001BF195 /* View+ConstrainHeightToWindow.swift */,
 				B6E41C7329DD40010088F9F4 /* View+HideSidebarToggle.swift */,
 			);
@@ -2816,6 +2830,7 @@
 				6C82D6BC29C00CD900495C54 /* FirstResponderPropertyWrapper.swift in Sources */,
 				58D01C9B293167DC00C5B6B4 /* CodeEditKeychainConstants.swift in Sources */,
 				58F2EB0C292FB2B0004A9BDE /* SourceControlAccounts.swift in Sources */,
+				B640A99E29E2184700715F20 /* SettingsForm.swift in Sources */,
 				20EBB50F280C389300F3A5DA /* FileInspectorModel.swift in Sources */,
 				5878DAB1291D627C00DD95A3 /* PathBarComponent.swift in Sources */,
 				58822533292C280D00E83CDE /* StatusBarTabType.swift in Sources */,
@@ -2946,6 +2961,7 @@
 				587B9E8929301D8F00AC7927 /* GitHubGist.swift in Sources */,
 				0485EB1F27E7458B00138301 /* WorkspaceCodeFileView.swift in Sources */,
 				58D01C94293167DC00C5B6B4 /* Color+HEX.swift in Sources */,
+				B640A9A129E2188F00715F20 /* SettingsDetailsView.swift in Sources */,
 				58798251292E78D80085B254 /* OtherFileView.swift in Sources */,
 				587D9B752933BF5700BF7490 /* FileItem.swift in Sources */,
 				587B9E7929301D8F00AC7927 /* GitHubIssueRouter.swift in Sources */,
@@ -3002,7 +3018,7 @@
 				6C48D8F42972DB1A00D6D205 /* Env+Window.swift in Sources */,
 				2072FA18280D871200C7F8D4 /* TextEncoding.swift in Sources */,
 				58F2EB07292FB2B0004A9BDE /* GeneralPreferences.swift in Sources */,
-				B6041F4D29D7A4E9000F3454 /* SettingPageView.swift in Sources */,
+				B6041F4D29D7A4E9000F3454 /* SettingsPageView.swift in Sources */,
 				587B9E9A29301D8F00AC7927 /* GitType.swift in Sources */,
 				58D01C97293167DC00C5B6B4 /* String+SHA256.swift in Sources */,
 				B6EA1FFD29DB792C001BF195 /* ThemeSettingsColorPreview.swift in Sources */,

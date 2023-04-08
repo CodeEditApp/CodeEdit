@@ -8,8 +8,14 @@
 import SwiftUI
 
 struct SourceControlGeneralView: View {
+    @StateObject
+    private var prefs: AppPreferencesModel = .shared
+
+    @State
+    private var text: String = "main"
+
     var body: some View {
-        Group {
+        SettingsForm {
             Section {
                 enableSourceControl
                 refreshLocalStatusAuto
@@ -27,14 +33,7 @@ struct SourceControlGeneralView: View {
                 defaultBranchName
             }
         }
-//        .formStyle(.grouped)
     }
-
-    @StateObject
-    private var prefs: AppPreferencesModel = .shared
-
-    @State
-    private var text: String = "main"
 }
 
 private extension SourceControlGeneralView {

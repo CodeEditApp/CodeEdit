@@ -14,6 +14,7 @@ struct AccountsSettingsDetailsView: View {
     @Binding var account: Account
 
     @State var cloneUsing: Bool = false
+    @State var deleteConfirmationIsPresented: Bool = false
 
     init(_ account: Binding<Account>) {
         _account = account
@@ -21,7 +22,7 @@ struct AccountsSettingsDetailsView: View {
 
     var body: some View {
         SettingsDetailsView(title: account.description) {
-            Form {
+            SettingsForm {
                 Section {
                     LabeledContent("Account") {
                         Text(account.name)
@@ -50,9 +51,24 @@ struct AccountsSettingsDetailsView: View {
                         Text("Create New...")
                         Text("Choose...")
                     }
+                } footer: {
+                    HStack {
+                        Button("Delete Account...") {
+                            deleteConfirmationIsPresented.toggle()
+                        }
+                        .alert(isPresented: $deleteConfirmationIsPresented) {
+                            Alert(
+                                title: Text("Are you sure you want to delete the account “\(account.description)”?"),
+                                message: Text("Deleting this account will remove it from CodeEdit."),
+                                primaryButton: .default(Text("OK")),
+                                secondaryButton: .default(Text("Cancel"))
+                            )
+                        }
+                        Spacer()
+                    }
+                    .padding(.top, 10)
                 }
             }
-            .formStyle(.grouped)
         }
     }
 }
