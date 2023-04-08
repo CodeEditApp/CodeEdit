@@ -39,6 +39,8 @@ private extension LocationsSettingsView {
             HStack {
                 Text(AppPreferencesModel.shared.baseURL.path)
                     .foregroundColor(.secondary)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .multilineTextAlignment(.leading)
                 Button {
                     NSWorkspace.shared.selectFile(
                         nil,
@@ -50,6 +52,7 @@ private extension LocationsSettingsView {
                 .buttonStyle(.plain)
                 .foregroundColor(.secondary)
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 
@@ -58,6 +61,8 @@ private extension LocationsSettingsView {
             HStack {
                 Text(ThemeModel.shared.themesURL.path)
                     .foregroundColor(.secondary)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .multilineTextAlignment(.leading)
                 Button {
                     NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: ThemeModel.shared.themesURL.path)
                 } label: {
@@ -66,6 +71,7 @@ private extension LocationsSettingsView {
                 .buttonStyle(.plain)
                 .foregroundColor(.secondary)
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 }
