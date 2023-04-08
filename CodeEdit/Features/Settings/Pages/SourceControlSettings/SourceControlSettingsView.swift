@@ -9,10 +9,9 @@ import SwiftUI
 
 struct SourceControlSettingsView: View {
     var body: some View {
-        Form {
+        SettingsForm {
             SourceControlGeneralView()
             SourceControlGitView()
         }
-        .formStyle(.grouped)
     }
 }

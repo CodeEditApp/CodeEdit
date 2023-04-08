@@ -13,7 +13,7 @@ struct TextEditingSettingsView: View {
     private var prefs: AppPreferencesModel = .shared
 
     var body: some View {
-        Form {
+        SettingsForm {
             Section {
                 defaultTabWidth
                 wrapLinesToEditorWidth

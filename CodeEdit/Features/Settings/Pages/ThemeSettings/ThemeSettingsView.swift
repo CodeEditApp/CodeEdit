@@ -31,7 +31,7 @@ struct ThemeSettingsView: View {
     }
 
     var body: some View {
-        Form {
+        SettingsForm {
             Section {
                 changeThemeOnSystemAppearance
                 useThemeBackground
@@ -122,7 +122,6 @@ struct ThemeSettingsView: View {
                 }
             }
         }
-        .formStyle(.grouped)
     }
 }
 

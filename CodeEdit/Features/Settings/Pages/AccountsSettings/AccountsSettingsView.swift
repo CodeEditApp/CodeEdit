@@ -30,7 +30,7 @@ struct AccountsSettingsView: View {
     }
 
     var body: some View {
-        Form {
+        SettingsForm {
             Section {
                 ForEach($accounts) { $account in
                     AccountsSettingsAccountLink($account)
@@ -56,8 +56,8 @@ struct AccountsSettingsView: View {
                         }
                     })
                 }
-            }        }
-        .formStyle(.grouped)
+            }
+        }
     }
 
     private var implementationNeeded: some View {

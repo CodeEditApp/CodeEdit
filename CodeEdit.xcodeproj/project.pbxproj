@@ -2358,10 +2358,10 @@
 			children = (
 				B6EA1FFE29DB7955001BF195 /* HelperViews */,
 				B61DA9DD29D929BF00BF4A43 /* Pages */,
+				B6041F5129D7D6D6000F3454 /* SettingsWindow.swift */,
 				850C630F29D6B01D00E1444C /* SettingsView.swift */,
 				B6041F4C29D7A4E9000F3454 /* SettingPageView.swift */,
 				850C631129D6B03400E1444C /* SettingsPage.swift */,
-				B6041F5129D7D6D6000F3454 /* SettingsWindow.swift */,
 				B6EA200129DB7F81001BF195 /* View+ConstrainHeightToWindow.swift */,
 				B6E41C7329DD40010088F9F4 /* View+HideSidebarToggle.swift */,
 			);

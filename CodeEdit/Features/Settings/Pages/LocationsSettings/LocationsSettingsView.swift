@@ -13,12 +13,11 @@ struct LocationsSettingsView: View {
     // MARK: View
 
     var body: some View {
-        Form {
+        SettingsForm {
             Section {
                 locations
             }
         }
-        .formStyle(.grouped)
     }
 }
 
@@ -28,15 +27,15 @@ private extension LocationsSettingsView {
 
     @ViewBuilder
     private var locations: some View {
-        preferencesLocation
+        settingsLocation
         themesLocation
     }
 
     // MARK: Preference Views
 
     @ViewBuilder
-    private var preferencesLocation: some View {
-        Group {
+    private var settingsLocation: some View {
+        LabeledContent("Settings Location") {
             HStack {
                 Text(AppPreferencesModel.shared.baseURL.path)
                     .foregroundColor(.secondary)
@@ -55,7 +54,7 @@ private extension LocationsSettingsView {
     }
 
     private var themesLocation: some View {
-        Group {
+        LabeledContent("Themes Location") {
             HStack {
                 Text(ThemeModel.shared.themesURL.path)
                     .foregroundColor(.secondary)

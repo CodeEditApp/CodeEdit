@@ -11,14 +11,16 @@ struct SettingsWindow: Scene {
     private let updater = SoftwareUpdater()
 
     var body: some Scene {
-        Settings {
+        Window("Settings", id: "settings") {
             SettingsView(updater: updater)
                 .frame(minWidth: 715, maxWidth: 715)
                 .task {
-                    let window = NSApp.windows.first { $0.identifier?.rawValue == "com_apple_SwiftUI_Settings_window" }!
-                    window.toolbarStyle = .unified
-                    window.titlebarSeparatorStyle = .automatic
+                    let window = NSApp.windows.first { $0.identifier?.rawValue == "settings" }!
+                    window.titlebarAppearsTransparent = true
                 }
         }
+        .windowStyle(.automatic)
+        .windowToolbarStyle(.unified)
+        .windowResizability(.contentSize)
     }
 }

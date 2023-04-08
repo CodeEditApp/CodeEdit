@@ -12,12 +12,11 @@ struct TerminalSettingsView: View {
     // MARK: View
 
     var body: some View {
-        Form {
+        SettingsForm {
             shell
             font
             cursor
         }
-            .formStyle(.grouped)
     }
 
     @StateObject

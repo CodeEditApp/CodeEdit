@@ -34,7 +34,7 @@ struct GeneralSettingsView: View {
     }
 
     var body: some View {
-        Form {
+        SettingsForm {
             Section {
                 appearance
                 fileIconStyle
@@ -68,7 +68,6 @@ struct GeneralSettingsView: View {
                 prereleaseToggle
             }
         }
-        .formStyle(.grouped)
     }
 }
 

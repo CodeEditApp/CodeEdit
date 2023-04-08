@@ -9,7 +9,7 @@ import SwiftUI
 
 extension NSWindow {
     var isSettingsWindow: Bool {
-        self.identifier?.rawValue == "com_apple_SwiftUI_Settings_window"
+        self.identifier?.rawValue == "settings"
     }
 }
 
