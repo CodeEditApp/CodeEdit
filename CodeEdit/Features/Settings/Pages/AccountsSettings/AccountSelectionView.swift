@@ -10,23 +10,24 @@ import SwiftUI
 struct AccountSelectionView: View {
     @Environment(\.dismiss) var dismiss
 
-    @Binding var signinSheetPresented: Bool
-    @Binding var providerSelection: Account.Provider
+    @Binding var selectedProvider: Account.Provider?
 
     var gitProviders = Account.Provider.allCases
 
     var body: some View {
         VStack(spacing: 0) {
             Form {
-                Section("Select an account type to add") {
+                Section {
                     VStack(alignment: .leading, spacing: 0) {
                         ForEach(gitProviders, id: \.self) { provider in
-                            AccoundsSettingsProviderRow(name: provider.name, iconName: provider.iconName)
-                                .onTapGesture {
-                                    providerSelection = provider
-                                    signinSheetPresented.toggle()
+                            AccountsSettingsProviderRow(
+                                name: provider.name,
+                                iconName: provider.iconName,
+                                action: {
+                                    selectedProvider = provider
                                     dismiss()
                                 }
+                            )
                             Divider()
                         }
                     }

@@ -13,8 +13,7 @@ struct AccountsSettingsView: View {
 
     @State private var accounts: [Account]
     @State private var addAccountSheetPresented: Bool = false
-    @State private var signinSheetPresented: Bool = false
-    @State private var providerSelection: Account.Provider = .github
+    @State private var selectedProvider: Account.Provider?
 
     init() {
         self.accounts = [
@@ -38,21 +37,16 @@ struct AccountsSettingsView: View {
             } footer: {
                 HStack {
                     Spacer()
-                    Button("Add Account...") {
-                        addAccountSheetPresented.toggle()
-                    }
+                    Button("Add Account...") { addAccountSheetPresented.toggle() }
                     .sheet(isPresented: $addAccountSheetPresented, content: {
-                        AccountSelectionView(
-                            signinSheetPresented: $signinSheetPresented,
-                            providerSelection: $providerSelection
-                        )
+                        AccountSelectionView(selectedProvider: $selectedProvider)
                     })
-                    .sheet(isPresented: $signinSheetPresented, content: {
-                        switch providerSelection {
-                        case .bitbucketCloud, .bitbucketServer:
-                            implementationNeeded
+                    .sheet(item: $selectedProvider, content: { provider in
+                        switch provider {
                         case .github, .githubEnterprise, .gitlab, .gitlabSelfHosted:
-                            AccountsSettingsSigninView(providerSelection)
+                            AccountsSettingsSigninView(provider, addAccountSheetPresented: $addAccountSheetPresented)
+                        default:
+                            implementationNeeded
                         }
                     })
                 }
@@ -66,9 +60,10 @@ struct AccountsSettingsView: View {
             Text("This git client is currently not supported.")
             HStack {
                 Button("Close") {
-                    signinSheetPresented.toggle()
+                    addAccountSheetPresented = true
+                    selectedProvider = nil
                 }
-                .buttonStyle(.borderedProminent)
+                    .buttonStyle(.borderedProminent)
             }
             .frame(maxWidth: .infinity, alignment: .trailing)
         }

@@ -12,9 +12,11 @@ struct AccountsSettingsSigninView: View {
     @Environment(\.openURL) var createToken
 
     var provider: Account.Provider
+    @Binding var addAccountSheetPresented: Bool
 
-    init(_ provider: Account.Provider) {
+    init(_ provider: Account.Provider, addAccountSheetPresented: Binding<Bool>) {
         self.provider = provider
+        self._addAccountSheetPresented = addAccountSheetPresented
     }
 
     @State var server = ""
@@ -127,6 +129,7 @@ struct AccountsSettingsSigninView: View {
             .formStyle(.grouped)
             HStack {
                 Button {
+                    addAccountSheetPresented.toggle()
                     dismiss()
                 } label: {
                     Text("Cancel")
