@@ -12,7 +12,6 @@ struct SettingsForm<Content: View>: View {
     @Environment(\.colorScheme) private var colorScheme
     @EnvironmentObject var model: SettingsModel
     @ViewBuilder var content: Content
-    @State private var offset = CGFloat.zero
 
     var body: some View {
         Form {
@@ -21,7 +20,6 @@ struct SettingsForm<Content: View>: View {
             } footer: {
                 Rectangle()
                     .frame(height: 0)
-                    .background(.red)
                     .background(
                         GeometryReader {
                             Color.clear.preference(
@@ -31,19 +29,17 @@ struct SettingsForm<Content: View>: View {
                         }
                     )
                     .onPreferenceChange(ViewOffsetKey.self) {
-                        if $0 <= 80.0 && !model.scrolledToTop {
+                        if $0 <= -20.0 && !model.scrolledToTop {
                             model.scrolledToTop = true
-                        } else if $0 > 80.0 && model.scrolledToTop {
+                        } else if $0 > -20.0 && model.scrolledToTop {
                             model.scrolledToTop = false
                         }
                     }
             }
-                .padding(.vertical, -100)
-
             content
         }
         .introspectScrollView { scrollView in
-            scrollView.scrollerInsets.top = 48
+            scrollView.scrollerInsets.top = 50
         }
         .formStyle(.grouped)
         .coordinateSpace(name: "scroll")
@@ -56,7 +52,6 @@ struct SettingsForm<Content: View>: View {
                         x: 0,
                         y: 0.5
                     )
-                    .transition(.opacity)
                     .ignoresSafeArea()
                     .frame(height: 0)
             }
