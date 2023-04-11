@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AccountsSettingsDetailsView: View {
     @ObservedObject
-    private var prefs: SettingsModel = .shared
+    private var prefs: Settings = .shared
 
     @Binding var account: Account
 

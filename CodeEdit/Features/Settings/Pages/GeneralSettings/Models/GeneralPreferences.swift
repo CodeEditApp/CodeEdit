@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-extension Settings {
+extension SettingsData {
 
     /// The general global setting
     struct GeneralPreferences: Codable {

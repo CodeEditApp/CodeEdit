@@ -11,7 +11,7 @@ struct SourceControlPreferencesGitView: View {
     private let inputWidth: Double = 280
 
     @StateObject
-    private var prefs: SettingsModel = .shared
+    private var prefs: Settings = .shared
 
     @State
     var ignoredFileSelection: IgnoredFiles.ID?

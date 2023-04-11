@@ -27,7 +27,7 @@ struct SourceControlPreferencesGeneralView: View {
     private let inputWidth: Double = 200
 
     @StateObject
-    private var prefs: SettingsModel = .shared
+    private var prefs: Settings = .shared
 
     @State
     var isChecked: Bool
@@ -158,9 +158,9 @@ private extension SourceControlPreferencesGeneralView {
             selection: $prefs.preferences.sourceControl.general.revisionComparisonLayout
         ) {
             Text("Local Revision on Left Side")
-                .tag(Settings.RevisionComparisonLayout.localLeft)
+                .tag(SettingsData.RevisionComparisonLayout.localLeft)
             Text("Local Revision on Right Side")
-                .tag(Settings.RevisionComparisonLayout.localRight)
+                .tag(SettingsData.RevisionComparisonLayout.localRight)
         }
         .frame(width: inputWidth)
     }
@@ -171,9 +171,9 @@ private extension SourceControlPreferencesGeneralView {
             selection: $prefs.preferences.sourceControl.general.controlNavigatorOrder
         ) {
             Text("Sort by Name")
-                .tag(Settings.ControlNavigatorOrder.sortByName)
+                .tag(SettingsData.ControlNavigatorOrder.sortByName)
             Text("Sort by Date")
-                .tag(Settings.ControlNavigatorOrder.sortByDate)
+                .tag(SettingsData.ControlNavigatorOrder.sortByDate)
         }
         .frame(width: inputWidth)
     }

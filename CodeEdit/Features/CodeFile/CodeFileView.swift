@@ -17,7 +17,7 @@ struct CodeFileView: View {
     private var codeFile: CodeFileDocument
 
     @ObservedObject
-    private var prefs: SettingsModel = .shared
+    private var prefs: Settings = .shared
 
     @Environment(\.colorScheme)
     private var colorScheme
@@ -57,7 +57,7 @@ struct CodeFileView: View {
 
     @State
     private var font: NSFont = {
-        return SettingsModel.shared.preferences.textEditing.font.current()
+        return Settings.shared.preferences.textEditing.font.current()
     }()
 
     @Environment(\.edgeInsets)
@@ -111,7 +111,7 @@ struct CodeFileView: View {
             }
         }
         .onChange(of: prefs.preferences.textEditing.font) { _ in
-            font = SettingsModel.shared.preferences.textEditing.font.current()
+            font = Settings.shared.preferences.textEditing.font.current()
         }
     }
 

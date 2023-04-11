@@ -12,7 +12,7 @@ struct WorkspaceCodeFileView: View {
     var file: WorkspaceClient.FileItem
 
     @StateObject
-    private var prefs: SettingsModel = .shared
+    private var prefs: Settings = .shared
 
     @ViewBuilder
     var codeView: some View {

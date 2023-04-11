@@ -10,7 +10,7 @@ import SwiftUI
 struct StatusBarIndentSelector: View {
 
     @StateObject
-    private var prefs: SettingsModel = .shared
+    private var prefs: Settings = .shared
 
     var body: some View {
         Menu {

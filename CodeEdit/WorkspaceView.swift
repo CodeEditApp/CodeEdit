@@ -20,7 +20,7 @@ struct WorkspaceView: View {
     private var tabManager: TabManager
 
     @StateObject
-    private var prefs: SettingsModel = .shared
+    private var prefs: Settings = .shared
 
     @Environment(\.window)
     private var window

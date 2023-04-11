@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Settings {
+extension SettingsData {
 
     /// The global settings for text editing
     struct KeybindingsPreferences: Codable {

@@ -16,8 +16,7 @@ struct ThemeSettingsView: View {
     @ObservedObject
     private var themeModel: ThemeModel = .shared
 
-    @ObservedObject
-    private var prefs: SettingsModel = .shared
+    @AppSettings var settings
 
     @State
     private var listView: Bool = false
@@ -38,7 +37,7 @@ struct ThemeSettingsView: View {
             }
             Section("Editor Theme") {
                 VStack(spacing: 0) {
-                    if prefs.preferences.theme.mirrorSystemAppearance {
+                    if settings.theme.mirrorSystemAppearance {
                         Picker("", selection: $selectedAppearance) {
                             ForEach(ThemeSettingsAppearances.allCases, id: \.self) { tab in
                                 Text(tab.rawValue)
@@ -71,14 +70,14 @@ struct ThemeSettingsView: View {
                 .padding(-10)
             }
             Section("Terminal Theme") {
-                Toggle("Use editor theme", isOn: $prefs.preferences.terminal.useEditorTheme)
-                Toggle("Always use dark terminal appearance", isOn: $prefs.preferences.terminal.darkAppearance)
+                Toggle("Use editor theme", isOn: $settings.terminal.useEditorTheme)
+                Toggle("Always use dark terminal appearance", isOn: $settings.terminal.darkAppearance)
             }
-            if !prefs.preferences.terminal.useEditorTheme {
+            if !settings.terminal.useEditorTheme {
                 Section {
                     VStack(spacing: 0) {
-                        if prefs.preferences.theme.mirrorSystemAppearance
-                            && !prefs.preferences.terminal.darkAppearance {
+                        if settings.theme.mirrorSystemAppearance
+                            && !settings.terminal.darkAppearance {
                             Picker("", selection: $selectedAppearance) {
                                 ForEach(ThemeSettingsAppearances.allCases, id: \.self) { tab in
                                     Text(tab.rawValue)
@@ -91,7 +90,7 @@ struct ThemeSettingsView: View {
                         }
                         VStack(spacing: 0) {
                             ForEach(
-                                selectedAppearance == .dark || prefs.preferences.terminal.darkAppearance
+                                selectedAppearance == .dark || settings.terminal.darkAppearance
                                 ? themeModel.darkThemes
                                 : themeModel.lightThemes
                             ) { theme in
@@ -102,7 +101,7 @@ struct ThemeSettingsView: View {
                                     action: { themeModel.selectedTheme = theme }
                                 ).id(theme)
                             }
-                            if !prefs.preferences.terminal.darkAppearance {
+                            if !settings.terminal.darkAppearance {
                                 ForEach(
                                     selectedAppearance == .dark
                                     ? themeModel.lightThemes
@@ -127,15 +126,15 @@ struct ThemeSettingsView: View {
 
 private extension ThemeSettingsView {
     private var useThemeBackground: some View {
-        Toggle("Use theme background ", isOn: $prefs.preferences.theme.useThemeBackground)
+        Toggle("Use theme background ", isOn: $settings.theme.useThemeBackground)
     }
 
     private var changeThemeOnSystemAppearance: some View {
         Toggle(
             "Automatically change theme based on system appearance",
-            isOn: $prefs.preferences.theme.mirrorSystemAppearance
+            isOn: $settings.theme.mirrorSystemAppearance
         )
-        .onChange(of: prefs.preferences.theme.mirrorSystemAppearance) { value in
+        .onChange(of: settings.theme.mirrorSystemAppearance) { value in
             if value {
                 if colorScheme == .dark {
                     themeModel.selectedTheme = themeModel.selectedDarkTheme
@@ -144,7 +143,7 @@ private extension ThemeSettingsView {
                 }
             } else {
                 themeModel.selectedTheme = themeModel.themes.first {
-                    $0.name == prefs.preferences.theme.selectedTheme
+                    $0.name == settings.theme.selectedTheme
                 }
             }
         }

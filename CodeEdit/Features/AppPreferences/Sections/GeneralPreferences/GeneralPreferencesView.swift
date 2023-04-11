@@ -17,7 +17,7 @@ struct GeneralPreferencesView: View {
     var updater: SoftwareUpdater
 
     @StateObject
-    private var prefs: SettingsModel = .shared
+    private var prefs: Settings = .shared
 
     @State
     private var openInCodeEdit: Bool = true
@@ -70,12 +70,12 @@ private extension GeneralPreferencesView {
         PreferencesSection("Appearance") {
             Picker("Appearance", selection: $prefs.preferences.general.appAppearance) {
                 Text("System")
-                    .tag(Settings.Appearances.system)
+                    .tag(SettingsData.Appearances.system)
                 Divider()
                 Text("Light")
-                    .tag(Settings.Appearances.light)
+                    .tag(SettingsData.Appearances.light)
                 Text("Dark")
-                    .tag(Settings.Appearances.dark)
+                    .tag(SettingsData.Appearances.dark)
             }
             .onChange(of: prefs.preferences.general.appAppearance) { tag in
                 tag.applyAppearance()
@@ -89,9 +89,9 @@ private extension GeneralPreferencesView {
         PreferencesSection("Show Issues", hideLabels: false) {
             Picker("Show Issues", selection: $prefs.preferences.general.showIssues) {
                 Text("Show Inline")
-                    .tag(Settings.Issues.inline)
+                    .tag(SettingsData.Issues.inline)
                 Text("Show Minimized")
-                    .tag(Settings.Issues.minimized)
+                    .tag(SettingsData.Issues.minimized)
             }
             .labelsHidden()
             .frame(width: inputWidth)
@@ -106,14 +106,14 @@ private extension GeneralPreferencesView {
         PreferencesSection("File Extensions") {
             Picker("File Extensions:", selection: $prefs.preferences.general.fileExtensionsVisibility) {
                 Text("Hide all")
-                    .tag(Settings.FileExtensionsVisibility.hideAll)
+                    .tag(SettingsData.FileExtensionsVisibility.hideAll)
                 Text("Show all")
-                    .tag(Settings.FileExtensionsVisibility.showAll)
+                    .tag(SettingsData.FileExtensionsVisibility.showAll)
                 Divider()
                 Text("Show only")
-                    .tag(Settings.FileExtensionsVisibility.showOnly)
+                    .tag(SettingsData.FileExtensionsVisibility.showOnly)
                 Text("Hide only")
-                    .tag(Settings.FileExtensionsVisibility.hideOnly)
+                    .tag(SettingsData.FileExtensionsVisibility.hideOnly)
             }
             .frame(width: inputWidth)
             if case .showOnly = prefs.preferences.general.fileExtensionsVisibility {
@@ -133,9 +133,9 @@ private extension GeneralPreferencesView {
         PreferencesSection("File Icon Style") {
             Picker("File Icon Style:", selection: $prefs.preferences.general.fileIconStyle) {
                 Text("Color")
-                    .tag(Settings.FileIconStyle.color)
+                    .tag(SettingsData.FileIconStyle.color)
                 Text("Monochrome")
-                    .tag(Settings.FileIconStyle.monochrome)
+                    .tag(SettingsData.FileIconStyle.monochrome)
             }
             .pickerStyle(.radioGroup)
         }
@@ -145,9 +145,9 @@ private extension GeneralPreferencesView {
         PreferencesSection("Tab Bar Style") {
             Picker("Tab Bar Style:", selection: $prefs.preferences.general.tabBarStyle) {
                 Text("Xcode")
-                    .tag(Settings.TabBarStyle.xcode)
+                    .tag(SettingsData.TabBarStyle.xcode)
                 Text("Native")
-                    .tag(Settings.TabBarStyle.native)
+                    .tag(SettingsData.TabBarStyle.native)
             }
             .pickerStyle(.radioGroup)
         }
@@ -157,12 +157,12 @@ private extension GeneralPreferencesView {
         PreferencesSection("Reopen Behavior") {
             Picker("Reopen Behavior:", selection: $prefs.preferences.general.reopenBehavior) {
                 Text("Welcome Screen")
-                    .tag(Settings.ReopenBehavior.welcome)
+                    .tag(SettingsData.ReopenBehavior.welcome)
                 Divider()
                 Text("Open Panel")
-                    .tag(Settings.ReopenBehavior.openPanel)
+                    .tag(SettingsData.ReopenBehavior.openPanel)
                 Text("New Document")
-                    .tag(Settings.ReopenBehavior.newDocument)
+                    .tag(SettingsData.ReopenBehavior.newDocument)
             }
             .frame(width: inputWidth)
         }
@@ -175,12 +175,12 @@ private extension GeneralPreferencesView {
                 selection: $prefs.preferences.general.reopenWindowAfterClose
             ) {
                 Text("Do nothing")
-                    .tag(Settings.ReopenWindowBehavior.doNothing)
+                    .tag(SettingsData.ReopenWindowBehavior.doNothing)
                 Divider()
                 Text("Show Welcome Window")
-                    .tag(Settings.ReopenWindowBehavior.showWelcomeWindow)
+                    .tag(SettingsData.ReopenWindowBehavior.showWelcomeWindow)
                 Text("Quit")
-                    .tag(Settings.ReopenWindowBehavior.quit)
+                    .tag(SettingsData.ReopenWindowBehavior.quit)
             }
             .frame(width: inputWidth)
         }
@@ -190,11 +190,11 @@ private extension GeneralPreferencesView {
         PreferencesSection("Project Navigator Size") {
             Picker("Project Navigator Size", selection: $prefs.preferences.general.projectNavigatorSize) {
                 Text("Small")
-                    .tag(Settings.ProjectNavigatorSize.small)
+                    .tag(SettingsData.ProjectNavigatorSize.small)
                 Text("Medium")
-                    .tag(Settings.ProjectNavigatorSize.medium)
+                    .tag(SettingsData.ProjectNavigatorSize.medium)
                 Text("Large")
-                    .tag(Settings.ProjectNavigatorSize.large)
+                    .tag(SettingsData.ProjectNavigatorSize.large)
             }
             .frame(width: inputWidth)
         }
@@ -203,7 +203,7 @@ private extension GeneralPreferencesView {
     var findNavigatorDetailSection: some View {
         PreferencesSection("Find Navigator Detail") {
             Picker("Find Navigator Detail", selection: $prefs.preferences.general.findNavigatorDetail) {
-                ForEach(Settings.NavigatorDetail.allCases, id: \.self) { tag in
+                ForEach(SettingsData.NavigatorDetail.allCases, id: \.self) { tag in
                     Text(tag.label).tag(tag)
                 }
             }
@@ -215,7 +215,7 @@ private extension GeneralPreferencesView {
     var issueNavigatorDetailSection: some View {
         PreferencesSection("Issue Navigator Detail") {
             Picker("Issue Navigator Detail", selection: $prefs.preferences.general.issueNavigatorDetail) {
-                ForEach(Settings.NavigatorDetail.allCases, id: \.self) { tag in
+                ForEach(SettingsData.NavigatorDetail.allCases, id: \.self) { tag in
                     Text(tag.label).tag(tag)
                 }
             }

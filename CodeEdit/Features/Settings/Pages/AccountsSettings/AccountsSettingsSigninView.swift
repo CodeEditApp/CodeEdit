@@ -24,7 +24,7 @@ struct AccountsSettingsSigninView: View {
     @State var personalAccessToken = ""
 
     @StateObject
-    private var prefs: SettingsModel = .shared
+    private var prefs: Settings = .shared
 
     private let keychain = CodeEditKeychain()
 

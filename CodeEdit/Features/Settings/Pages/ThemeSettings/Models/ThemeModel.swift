@@ -36,7 +36,7 @@ final class ThemeModel: ObservableObject {
     var selectedLightTheme: Theme? {
         didSet {
             DispatchQueue.main.async {
-                SettingsModel.shared
+                Settings.shared
                     .preferences.theme.selectedLightTheme = self.selectedLightTheme?.name ?? "Broken"
             }
         }
@@ -48,7 +48,7 @@ final class ThemeModel: ObservableObject {
     var selectedDarkTheme: Theme? {
         didSet {
             DispatchQueue.main.async {
-                SettingsModel.shared
+                Settings.shared
                     .preferences.theme.selectedDarkTheme = self.selectedDarkTheme?.name ?? "Broken"
             }
         }
@@ -80,7 +80,7 @@ final class ThemeModel: ObservableObject {
     var selectedTheme: Theme? {
         didSet {
             DispatchQueue.main.async {
-                SettingsModel.shared.preferences.theme.selectedTheme = self.selectedTheme?.name
+                Settings[\.theme].selectedTheme = self.selectedTheme?.name
             }
             updateAppearanceTheme()
         }
@@ -146,7 +146,7 @@ final class ThemeModel: ObservableObject {
         // get all filenames in themes folder that end with `.json`
         let content = try filemanager.contentsOfDirectory(atPath: url.path).filter { $0.contains(".json") }
 
-        let prefs = SettingsModel.shared.preferences
+        let prefs = Settings.shared.preferences
         // load each theme from disk
         try content.forEach { file in
             let fileURL = url.appendingPathComponent(file)
@@ -249,7 +249,7 @@ final class ThemeModel: ObservableObject {
     ///
     /// - Parameter theme: The theme to reset
     func reset(_ theme: Theme) {
-        SettingsModel.shared.preferences.theme.overrides[theme.name] = [:]
+        Settings.shared.preferences.theme.overrides[theme.name] = [:]
         do {
             try self.loadThemes()
         } catch {
@@ -273,7 +273,7 @@ final class ThemeModel: ObservableObject {
             try filemanager.removeItem(at: url)
 
             // remove from overrides in `settings.json`
-            SettingsModel.shared.preferences.theme.overrides.removeValue(forKey: theme.name)
+            Settings.shared.preferences.theme.overrides.removeValue(forKey: theme.name)
 
             // reload themes
             try self.loadThemes()
@@ -318,7 +318,7 @@ final class ThemeModel: ObservableObject {
                     }
                 }
                 DispatchQueue.main.async {
-                    SettingsModel.shared.preferences.theme.overrides[theme.name] = newAttr
+                    Settings.shared.preferences.theme.overrides[theme.name] = newAttr
                 }
 
             } catch {

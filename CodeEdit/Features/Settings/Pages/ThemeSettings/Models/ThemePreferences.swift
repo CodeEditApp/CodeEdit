@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Settings {
+extension SettingsData {
 
     /// A dictionary containing the keys and associated ``Theme/Attributes`` of overridden properties
     ///

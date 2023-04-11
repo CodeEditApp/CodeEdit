@@ -20,7 +20,7 @@ struct GitLabLoginView: View {
     @Binding var dismissParentDialog: Bool
 
     @StateObject
-    private var prefs: SettingsModel = .shared
+    private var prefs: Settings = .shared
 
     var body: some View {
         VStack {

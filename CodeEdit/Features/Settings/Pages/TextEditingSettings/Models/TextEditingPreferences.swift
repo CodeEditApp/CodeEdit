@@ -8,7 +8,7 @@
 import AppKit
 import Foundation
 
-extension Settings {
+extension SettingsData {
 
     /// The global settings for text editing
     struct TextEditingPreferences: Codable {
@@ -69,7 +69,7 @@ extension Settings {
                 title: "Toggle Type-Over Completion",
                 id: "prefs.text_editing.type_over_completion",
                 command: CommandClosureWrapper {
-                    SettingsModel.shared.preferences.textEditing.enableTypeOverCompletion.toggle()
+                    Settings.shared.preferences.textEditing.enableTypeOverCompletion.toggle()
                 }
             )
 
@@ -78,7 +78,7 @@ extension Settings {
                 title: "Toggle Autocomplete Braces",
                 id: "prefs.text_editing.autocomplete_braces",
                 command: CommandClosureWrapper {
-                    SettingsModel.shared.preferences.textEditing.autocompleteBraces.toggle()
+                    Settings.shared.preferences.textEditing.autocompleteBraces.toggle()
                 }
             )
 
@@ -87,7 +87,7 @@ extension Settings {
                 title: "Toggle Word Wrap",
                 id: "prefs.text_editing.wrap_lines_to_editor_width",
                 command: CommandClosureWrapper {
-                    SettingsModel.shared.preferences.textEditing.wrapLinesToEditorWidth.toggle()
+                    Settings[\.textEditing].wrapLinesToEditorWidth.toggle()
                 }
             )
         }

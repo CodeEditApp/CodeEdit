@@ -10,7 +10,7 @@ import SwiftUI
 /// A view that implements the `Text Editing` settings page
 struct TextEditingSettingsView: View {
     @StateObject
-    private var prefs: SettingsModel = .shared
+    private var prefs: Settings = .shared
 
     var body: some View {
         SettingsForm {

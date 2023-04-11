@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SourceControlGeneralView: View {
     @StateObject
-    private var prefs: SettingsModel = .shared
+    private var prefs: Settings = .shared
 
     @State
     private var text: String = "main"
@@ -92,9 +92,9 @@ private extension SourceControlGeneralView {
             selection: $prefs.preferences.sourceControl.general.revisionComparisonLayout
         ) {
             Text("Local Revision on Left Side")
-                .tag(Settings.RevisionComparisonLayout.localLeft)
+                .tag(SettingsData.RevisionComparisonLayout.localLeft)
             Text("Local Revision on Right Side")
-                .tag(Settings.RevisionComparisonLayout.localRight)
+                .tag(SettingsData.RevisionComparisonLayout.localRight)
         }
     }
 
@@ -104,9 +104,9 @@ private extension SourceControlGeneralView {
             selection: $prefs.preferences.sourceControl.general.controlNavigatorOrder
         ) {
             Text("Sort by Name")
-                .tag(Settings.ControlNavigatorOrder.sortByName)
+                .tag(SettingsData.ControlNavigatorOrder.sortByName)
             Text("Sort by Date")
-                .tag(Settings.ControlNavigatorOrder.sortByDate)
+                .tag(SettingsData.ControlNavigatorOrder.sortByDate)
         }
     }
 

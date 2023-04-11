@@ -16,7 +16,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
 
     var observers: [NSKeyValueObservation] = []
 
-    private var prefs: SettingsModel = .shared
+    private var prefs: Settings = .shared
 
     var workspace: WorkspaceDocument?
     var quickOpenPanel: OverlayPanel?

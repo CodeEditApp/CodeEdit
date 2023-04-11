@@ -14,7 +14,7 @@ struct FindNavigatorResultList: NSViewControllerRepresentable {
     var workspace: WorkspaceDocument
 
     @StateObject
-    var prefs: SettingsModel = .shared
+    var prefs: Settings = .shared
 
     typealias NSViewControllerType = FindNavigatorListViewController
 

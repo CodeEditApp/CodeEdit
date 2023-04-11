@@ -17,7 +17,7 @@ struct ThemePreferencesView: View {
     private var themeModel: ThemeModel = .shared
 
     @ObservedObject
-    private var prefs: SettingsModel = .shared
+    private var prefs: Settings = .shared
 
     @State
     private var listView: Bool = false

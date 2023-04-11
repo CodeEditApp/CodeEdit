@@ -18,7 +18,7 @@ struct StatusBarDrawer: View {
     private var model: StatusBarViewModel
 
     @StateObject
-    private var prefs: SettingsModel = .shared
+    private var prefs: Settings = .shared
 
     @StateObject
     private var themeModel: ThemeModel = .shared

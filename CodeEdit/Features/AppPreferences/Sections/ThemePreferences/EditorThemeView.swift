@@ -20,7 +20,7 @@ struct EditorThemeView: View {
     private var themeModel: ThemeModel = .shared
 
     @StateObject
-    private var prefs: SettingsModel = .shared
+    private var prefs: Settings = .shared
 }
 
 private extension EditorThemeView {

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AccountsSettingsView: View {
     @ObservedObject
-    private var prefs: SettingsModel = .shared
+    private var prefs: Settings = .shared
 
     @State private var accounts: [Account]
     @State private var addAccountSheetPresented: Bool = false

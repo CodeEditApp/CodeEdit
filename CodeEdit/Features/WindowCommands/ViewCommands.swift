@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ViewCommands: Commands {
     @ObservedObject
-    private var prefs: SettingsModel = .shared
+    private var prefs: Settings = .shared
 
     @State var windowController: CodeEditWindowController?
 

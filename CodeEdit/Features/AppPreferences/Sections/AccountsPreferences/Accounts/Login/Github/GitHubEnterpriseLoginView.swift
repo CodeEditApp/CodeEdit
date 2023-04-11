@@ -19,7 +19,7 @@ struct GitHubEnterpriseLoginView: View {
     @Binding var dismissParentDialog: Bool
 
     @StateObject
-    private var prefs: SettingsModel = .shared
+    private var prefs: Settings = .shared
 
     private let keychain = CodeEditKeychain()
 

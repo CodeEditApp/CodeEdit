@@ -14,12 +14,12 @@ struct LocationsPreferencesView: View {
         PreferencesContent {
             PreferencesSection("Preferences Location") {
                 HStack {
-                    Text(SettingsModel.shared.baseURL.path)
+                    Text(Settings.shared.baseURL.path)
                         .foregroundColor(.secondary)
                     Button {
                         NSWorkspace.shared.selectFile(
                             nil,
-                            inFileViewerRootedAtPath: SettingsModel.shared.baseURL.path
+                            inFileViewerRootedAtPath: Settings.shared.baseURL.path
                         )
                     } label: {
                         Image(systemName: "arrow.right.circle.fill")

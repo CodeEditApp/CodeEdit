@@ -1,63 +1,92 @@
 //
-//  Settings.swift
+//  SettingsModel.swift
 //  CodeEditModules/Settings
 //
 //  Created by Lukas Pistrol on 01.04.22.
 //
 
+import Foundation
 import SwiftUI
 
-/// # Settings
+/// The Preferences View Model. Accessible via the singleton "``SettingsModel/shared``".
 ///
-/// The model structure of settings for `CodeEdit`
-///
-/// A `JSON` representation is persisted in `~/Library/Application Support/CodeEdit/preference.json`.
-/// - Attention: Don't use `UserDefaults` for persisting user accessible settings.
-///  If a further setting is needed, extend the struct like ``GeneralPreferences``,
-///  ``ThemePreferences``,  or ``TerminalPreferences`` does.
-///
-/// - Note: Also make sure to implement the ``init(from:)`` initializer, decoding
-///  all properties with
-///  [`decodeIfPresent`](https://developer.apple.com/documentation/swift/keyeddecodingcontainer/2921389-decodeifpresent)
-///  and providing a default value. Otherwise all settings get overridden.
-struct Settings: Codable {
+/// **Usage:**
+/// ```swift
+/// @StateObject
+/// private var prefs: SettingsModel = .shared
+/// ```
+final class Settings: ObservableObject {
 
-    /// The general global setting
-    var general: GeneralPreferences = .init()
+    /// The publicly available singleton instance of ``SettingsModel``
+    static let shared: Settings = .init()
 
-    /// The global settings for text editing
-    var accounts: AccountsPreferences = .init()
+    private init() {
+        self.preferences = .init()
+        self.preferences = loadSettings()
+    }
 
-    /// The global settings for themes
-    var theme: ThemePreferences = .init()
+    static subscript<T>(_ path: WritableKeyPath<SettingsData, T>, suite: Settings = .shared) -> T {
+        get {
+            suite.preferences[keyPath: path]
+        }
+        set {
+            suite.preferences[keyPath: path] = newValue
+        }
+    }
 
-    /// The global settings for the terminal emulator
-    var terminal: TerminalPreferences = .init()
+    /// Published instance of the ``Settings`` model.
+    ///
+    /// Changes are saved automatically.
+    @Published
+    var preferences: SettingsData {
+        didSet {
+            try? savePreferences()
+        }
+    }
 
-    /// The global settings for text editing
-    var textEditing: TextEditingPreferences = .init()
+    /// Load and construct ``Settings`` model from
+    /// `~/Library/Application Support/CodeEdit/settings.json`
+    private func loadSettings() -> SettingsData {
+        if !filemanager.fileExists(atPath: settingsURL.path) {
+            try? filemanager.createDirectory(at: baseURL, withIntermediateDirectories: false)
+            return .init()
+        }
 
-    /// The global settings for text editing
-    var sourceControl: SourceControlPreferences = .init()
+        guard let json = try? Data(contentsOf: settingsURL),
+              let prefs = try? JSONDecoder().decode(SettingsData.self, from: json)
+        else {
+            return .init()
+        }
+        return prefs
+    }
 
-    /// The global settings for keybindings
-    var keybindings: KeybindingsPreferences = .init()
+    /// Save``Settings`` model to
+    /// `~/Library/Application Support/CodeEdit/settings.json`
+    private func savePreferences() throws {
+        let data = try JSONEncoder().encode(preferences)
+        let json = try JSONSerialization.jsonObject(with: data)
+        let prettyJSON = try JSONSerialization.data(withJSONObject: json, options: [.prettyPrinted])
+        try prettyJSON.write(to: settingsURL, options: .atomic)
+    }
 
-    /// Default initializer
-    init() {}
+    /// Default instance of the `FileManager`
+    private let filemanager = FileManager.default
 
-    /// Explicit decoder init for setting default values when key is not present in `JSON`
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.general = try container.decodeIfPresent(GeneralPreferences.self, forKey: .general) ?? .init()
-        self.accounts = try container.decodeIfPresent(AccountsPreferences.self, forKey: .accounts) ?? .init()
-        self.theme = try container.decodeIfPresent(ThemePreferences.self, forKey: .theme) ?? .init()
-        self.terminal = try container.decodeIfPresent(TerminalPreferences.self, forKey: .terminal) ?? .init()
-        self.textEditing = try container.decodeIfPresent(TextEditingPreferences.self, forKey: .textEditing) ?? .init()
-        self.sourceControl = try container.decodeIfPresent(
-            SourceControlPreferences.self,
-            forKey: .sourceControl
-        ) ?? .init()
-        self.keybindings = try container.decodeIfPresent(KeybindingsPreferences.self, forKey: .keybindings) ?? .init()
+    /// The base URL of settings.
+    ///
+    /// Points to `~/Library/Application Support/CodeEdit/`
+    internal var baseURL: URL {
+        filemanager
+            .homeDirectoryForCurrentUser
+            .appendingPathComponent("Library/Application Support/CodeEdit", isDirectory: true)
+    }
+
+    /// The URL of the `settings.json` settings file.
+    ///
+    /// Points to `~/Library/Application Support/CodeEdit/settings.json`
+    private var settingsURL: URL {
+        baseURL
+            .appendingPathComponent("settings")
+            .appendingPathExtension("json")
     }
 }

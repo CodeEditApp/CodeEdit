@@ -42,7 +42,7 @@ struct TabBarView: View {
 
     /// The app preference.
     @StateObject
-    private var prefs: SettingsModel = .shared
+    private var prefs: Settings = .shared
 
     /// The tab id of current dragging tab.
     ///
