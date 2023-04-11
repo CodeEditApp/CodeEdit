@@ -2292,15 +2292,10 @@
 			isa = PBXGroup;
 			children = (
 				B640A9A329E218E300715F20 /* Models */,
-				B6EA1FFE29DB7955001BF195 /* HelperViews */,
+				B6CF632A29E5436C0085880A /* Views */,
 				B61DA9DD29D929BF00BF4A43 /* Pages */,
 				B6041F5129D7D6D6000F3454 /* SettingsWindow.swift */,
 				850C630F29D6B01D00E1444C /* SettingsView.swift */,
-				B6041F4C29D7A4E9000F3454 /* SettingsPageView.swift */,
-				B640A9A029E2188F00715F20 /* SettingsDetailsView.swift */,
-				B640A99D29E2184700715F20 /* SettingsForm.swift */,
-				B6EA200129DB7F81001BF195 /* View+ConstrainHeightToWindow.swift */,
-				B6E41C7329DD40010088F9F4 /* View+HideSidebarToggle.swift */,
 				58F2EAE1292FB2B0004A9BDE /* SoftwareUpdater.swift */,
 			);
 			path = Settings;
@@ -2346,6 +2341,19 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		B6CF632A29E5436C0085880A /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B6041F4C29D7A4E9000F3454 /* SettingsPageView.swift */,
+				B640A99D29E2184700715F20 /* SettingsForm.swift */,
+				B640A9A029E2188F00715F20 /* SettingsDetailsView.swift */,
+				B6EA1FFF29DB7966001BF195 /* SettingsColorPicker.swift */,
+				B6EA200129DB7F81001BF195 /* View+ConstrainHeightToWindow.swift */,
+				B6E41C7329DD40010088F9F4 /* View+HideSidebarToggle.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		B6E41C6E29DD15540088F9F4 /* AccountsSettings */ = {
 			isa = PBXGroup;
 			children = (
@@ -2377,14 +2385,6 @@
 				B6EA1FF429DA380E001BF195 /* TextEditingSettingsView.swift */,
 			);
 			path = TextEditingSettings;
-			sourceTree = "<group>";
-		};
-		B6EA1FFE29DB7955001BF195 /* HelperViews */ = {
-			isa = PBXGroup;
-			children = (
-				B6EA1FFF29DB7966001BF195 /* SettingsColorPicker.swift */,
-			);
-			path = HelperViews;
 			sourceTree = "<group>";
 		};
 		B6EE988E27E8877C00CDD8AB /* InspectorSidebar */ = {
