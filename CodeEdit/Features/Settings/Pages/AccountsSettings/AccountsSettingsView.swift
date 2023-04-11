@@ -59,10 +59,7 @@ struct AccountsSettingsView: View {
         VStack(spacing: 20) {
             Text("This git client is currently not supported.")
             HStack {
-                Button("Close") {
-                    addAccountSheetPresented = true
-                    selectedProvider = nil
-                }
+                Button("Close") { selectedProvider = nil }
                     .buttonStyle(.borderedProminent)
             }
             .frame(maxWidth: .infinity, alignment: .trailing)
