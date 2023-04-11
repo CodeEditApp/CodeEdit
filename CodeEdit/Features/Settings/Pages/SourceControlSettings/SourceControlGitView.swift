@@ -11,6 +11,9 @@ struct SourceControlGitView: View {
     @StateObject
     private var prefs: AppPreferencesModel = .shared
 
+    @State
+    var ignoredFileSelection: IgnoredFiles.ID?
+
     var body: some View {
         SettingsForm {
             Section {
@@ -23,6 +26,7 @@ struct SourceControlGitView: View {
             Section {
                 preferToRebaseWhenPulling
                 showMergeCommitsInPerFileLog
+                ignoredFiles
             }
         }
     }
@@ -59,5 +63,42 @@ private extension SourceControlGitView {
             "Show merge commits in per-file log",
             isOn: $prefs.preferences.sourceControl.git.showMergeCommitsPerFileLog
         )
+    }
+
+    @ViewBuilder
+    private var ignoredFiles: some View {
+        List(
+            $prefs.preferences.sourceControl.git.ignoredFiles,
+            selection: $ignoredFileSelection
+        ) { ignoredFile in
+            IgnoredFileView(ignoredFile: ignoredFile)
+        }
+        .overlay(Group {
+            if prefs.preferences.sourceControl.git.ignoredFiles.isEmpty {
+                Text("No Ignored Files")
+                    .foregroundColor(.secondary)
+                    .font(.system(size: 11))
+            }
+        })
+        .frame(height: 150)
+        PreferencesToolbar(height: 22) {
+            bottomToolbar
+        }
+    }
+
+    private var bottomToolbar: some View {
+        HStack(spacing: 12) {
+            Button {} label: {
+                Image(systemName: "plus")
+                    .foregroundColor(Color.secondary)
+            }
+            .buttonStyle(.plain)
+            Button {} label: {
+                Image(systemName: "minus")
+            }
+            .disabled(true)
+            .buttonStyle(.plain)
+            Spacer()
+        }
     }
 }

@@ -1924,10 +1924,8 @@
 			isa = PBXGroup;
 			children = (
 				58F2EAE2292FB2B0004A9BDE /* HelperViews */,
-				58F2EACF292FB2B0004A9BDE /* Model */,
 				58F2EAA0292FB2B0004A9BDE /* Sections */,
 				58F2EAE6292FB2B0004A9BDE /* PreferencesPlaceholderView.swift */,
-				58F2EAE1292FB2B0004A9BDE /* SoftwareUpdater.swift */,
 			);
 			path = AppPreferences;
 			sourceTree = "<group>";
@@ -1966,8 +1964,6 @@
 		58F2EAA5292FB2B0004A9BDE /* SourceControlPreferences */ = {
 			isa = PBXGroup;
 			children = (
-				58F2EAA9292FB2B0004A9BDE /* Model */,
-				58F2EAAB292FB2B0004A9BDE /* IgnoredFileView.swift */,
 				58F2EAA6292FB2B0004A9BDE /* SourceControlPreferencesView.swift */,
 				58F2EAA7292FB2B0004A9BDE /* SourceControlPreferencesGeneralView.swift */,
 				58F2EAA8292FB2B0004A9BDE /* SourceControlPreferencesGitView.swift */,
@@ -1975,12 +1971,13 @@
 			path = SourceControlPreferences;
 			sourceTree = "<group>";
 		};
-		58F2EAA9292FB2B0004A9BDE /* Model */ = {
+		58F2EAA9292FB2B0004A9BDE /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				58F2EAD1292FB2B0004A9BDE /* SourceControlPreferences.swift */,
 				58F2EAAA292FB2B0004A9BDE /* IgnoredFiles.swift */,
 			);
-			path = Model;
+			path = Models;
 			sourceTree = "<group>";
 		};
 		58F2EAAC292FB2B0004A9BDE /* TextEditingPreferences */ = {
@@ -1994,6 +1991,7 @@
 		58F2EAAE292FB2B0004A9BDE /* ThemeSettings */ = {
 			isa = PBXGroup;
 			children = (
+				B6F0518D29DA29F900D72287 /* Models */,
 				58F2EAAF292FB2B0004A9BDE /* ThemeSettingsView.swift */,
 				B6EA1FF729DB78DB001BF195 /* ThemeSettingThemeRow.swift */,
 				B6EA1FFA29DB78F6001BF195 /* ThemeSettingsThemeDetails.swift */,
@@ -2006,18 +2004,10 @@
 			isa = PBXGroup;
 			children = (
 				58F2EABB292FB2B0004A9BDE /* Accounts */,
-				58F2EAB9292FB2B0004A9BDE /* Models */,
 				58F2EAB8292FB2B0004A9BDE /* AccountPreferencesView.swift */,
+				58F2EAAB292FB2B0004A9BDE /* IgnoredFileView.swift */,
 			);
 			path = AccountsPreferences;
-			sourceTree = "<group>";
-		};
-		58F2EAB9292FB2B0004A9BDE /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				58F2EABA292FB2B0004A9BDE /* SourceControlProvider.swift */,
-			);
-			path = Models;
 			sourceTree = "<group>";
 		};
 		58F2EABB292FB2B0004A9BDE /* Accounts */ = {
@@ -2072,79 +2062,6 @@
 				58F2EAC9292FB2B0004A9BDE /* LocationsPreferencesView.swift */,
 			);
 			path = LocationsPreferences;
-			sourceTree = "<group>";
-		};
-		58F2EACF292FB2B0004A9BDE /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				58F2EADC292FB2B0004A9BDE /* Accounts */,
-				58F2EAD5292FB2B0004A9BDE /* General */,
-				58F2EAD3292FB2B0004A9BDE /* Keybindings */,
-				58F2EAD0292FB2B0004A9BDE /* Source Control */,
-				58F2EAD9292FB2B0004A9BDE /* Terminal */,
-				58F2EAD7292FB2B0004A9BDE /* Text Editing */,
-				58F2EADF292FB2B0004A9BDE /* Theme */,
-				58F2EADB292FB2B0004A9BDE /* AppPreferences.swift */,
-				58F2EAD2292FB2B0004A9BDE /* AppPreferencesModel.swift */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		58F2EAD0292FB2B0004A9BDE /* Source Control */ = {
-			isa = PBXGroup;
-			children = (
-				58F2EAD1292FB2B0004A9BDE /* SourceControlPreferences.swift */,
-			);
-			path = "Source Control";
-			sourceTree = "<group>";
-		};
-		58F2EAD3292FB2B0004A9BDE /* Keybindings */ = {
-			isa = PBXGroup;
-			children = (
-				58F2EAD4292FB2B0004A9BDE /* KeybindingsPreferences.swift */,
-			);
-			path = Keybindings;
-			sourceTree = "<group>";
-		};
-		58F2EAD5292FB2B0004A9BDE /* General */ = {
-			isa = PBXGroup;
-			children = (
-				58F2EAD6292FB2B0004A9BDE /* GeneralPreferences.swift */,
-			);
-			path = General;
-			sourceTree = "<group>";
-		};
-		58F2EAD7292FB2B0004A9BDE /* Text Editing */ = {
-			isa = PBXGroup;
-			children = (
-				58F2EAD8292FB2B0004A9BDE /* TextEditingPreferences.swift */,
-			);
-			path = "Text Editing";
-			sourceTree = "<group>";
-		};
-		58F2EAD9292FB2B0004A9BDE /* Terminal */ = {
-			isa = PBXGroup;
-			children = (
-				58F2EADA292FB2B0004A9BDE /* TerminalPreferences.swift */,
-			);
-			path = Terminal;
-			sourceTree = "<group>";
-		};
-		58F2EADC292FB2B0004A9BDE /* Accounts */ = {
-			isa = PBXGroup;
-			children = (
-				58F2EADD292FB2B0004A9BDE /* AccountsPreferences.swift */,
-				58F2EADE292FB2B0004A9BDE /* SourceControlAccounts.swift */,
-			);
-			path = Accounts;
-			sourceTree = "<group>";
-		};
-		58F2EADF292FB2B0004A9BDE /* Theme */ = {
-			isa = PBXGroup;
-			children = (
-				58F2EAE0292FB2B0004A9BDE /* ThemePreferences.swift */,
-			);
-			path = Theme;
 			sourceTree = "<group>";
 		};
 		58F2EAE2292FB2B0004A9BDE /* HelperViews */ = {
@@ -2282,6 +2199,7 @@
 		B61DA9DD29D929BF00BF4A43 /* Pages */ = {
 			isa = PBXGroup;
 			children = (
+				B6CF632629E5417C0085880A /* Keybindings */,
 				B6E41C6E29DD15540088F9F4 /* AccountsSettings */,
 				B6EA1FF329DA37D3001BF195 /* TextEditingSettings */,
 				B6F0516E29D9E35300D72287 /* LocationsSettings */,
@@ -2296,6 +2214,7 @@
 		B61DA9E129D929F900BF4A43 /* GeneralSettings */ = {
 			isa = PBXGroup;
 			children = (
+				B6CF632529E541520085880A /* Models */,
 				B61DA9DE29D929E100BF4A43 /* GeneralSettingsView.swift */,
 			);
 			path = GeneralSettings;
@@ -2304,6 +2223,8 @@
 		B640A9A329E218E300715F20 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				58F2EADB292FB2B0004A9BDE /* AppPreferences.swift */,
+				58F2EAD2292FB2B0004A9BDE /* AppPreferencesModel.swift */,
 				850C631129D6B03400E1444C /* SettingsPage.swift */,
 			);
 			path = Models;
@@ -2380,8 +2301,49 @@
 				B640A99D29E2184700715F20 /* SettingsForm.swift */,
 				B6EA200129DB7F81001BF195 /* View+ConstrainHeightToWindow.swift */,
 				B6E41C7329DD40010088F9F4 /* View+HideSidebarToggle.swift */,
+				58F2EAE1292FB2B0004A9BDE /* SoftwareUpdater.swift */,
 			);
 			path = Settings;
+			sourceTree = "<group>";
+		};
+		B6CF632529E541520085880A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				58F2EAD6292FB2B0004A9BDE /* GeneralPreferences.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		B6CF632629E5417C0085880A /* Keybindings */ = {
+			isa = PBXGroup;
+			children = (
+				B6CF632729E5418A0085880A /* Models */,
+			);
+			path = Keybindings;
+			sourceTree = "<group>";
+		};
+		B6CF632729E5418A0085880A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				58F2EAD4292FB2B0004A9BDE /* KeybindingsPreferences.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		B6CF632829E541AC0085880A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				58F2EADA292FB2B0004A9BDE /* TerminalPreferences.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		B6CF632929E541C00085880A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				58F2EAD8292FB2B0004A9BDE /* TextEditingPreferences.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		B6E41C6E29DD15540088F9F4 /* AccountsSettings */ = {
@@ -2401,6 +2363,9 @@
 			isa = PBXGroup;
 			children = (
 				B6E41C9329DEAE260088F9F4 /* Account.swift */,
+				58F2EABA292FB2B0004A9BDE /* SourceControlProvider.swift */,
+				58F2EADD292FB2B0004A9BDE /* AccountsPreferences.swift */,
+				58F2EADE292FB2B0004A9BDE /* SourceControlAccounts.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2408,6 +2373,7 @@
 		B6EA1FF329DA37D3001BF195 /* TextEditingSettings */ = {
 			isa = PBXGroup;
 			children = (
+				B6CF632929E541C00085880A /* Models */,
 				B6EA1FF429DA380E001BF195 /* TextEditingSettingsView.swift */,
 			);
 			path = TextEditingSettings;
@@ -2437,6 +2403,7 @@
 		B6F0516C29D9E32700D72287 /* TerminalSettings */ = {
 			isa = PBXGroup;
 			children = (
+				B6CF632829E541AC0085880A /* Models */,
 				B6F0517C29D9E4B100D72287 /* TerminalSettingsView.swift */,
 			);
 			path = TerminalSettings;
@@ -2445,6 +2412,7 @@
 		B6F0516D29D9E34200D72287 /* SourceControlSettings */ = {
 			isa = PBXGroup;
 			children = (
+				58F2EAA9292FB2B0004A9BDE /* Models */,
 				B6F0517A29D9E46400D72287 /* SourceControlSettingsView.swift */,
 				B6F0517629D9E3AD00D72287 /* SourceControlGeneralView.swift */,
 				B6F0517829D9E3C900D72287 /* SourceControlGitView.swift */,
@@ -2463,7 +2431,6 @@
 		B6F0517F29DA29F900D72287 /* ThemePreferences */ = {
 			isa = PBXGroup;
 			children = (
-				B6F0518D29DA29F900D72287 /* Model */,
 				B6EA1FEB29DA344F001BF195 /* EditorThemeView.swift */,
 				B6EA1FE829DA344F001BF195 /* PreviewThemeView.swift */,
 				B6EA1FE929DA344F001BF195 /* TerminalThemeView.swift */,
@@ -2473,13 +2440,14 @@
 			path = ThemePreferences;
 			sourceTree = "<group>";
 		};
-		B6F0518D29DA29F900D72287 /* Model */ = {
+		B6F0518D29DA29F900D72287 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				58F2EAE0292FB2B0004A9BDE /* ThemePreferences.swift */,
 				B6EA1FE629DA341D001BF195 /* Theme.swift */,
 				B6EA1FE429DA33DB001BF195 /* ThemeModel.swift */,
 			);
-			path = Model;
+			path = Models;
 			sourceTree = "<group>";
 		};
 		D7012EE627E757660001E1EF /* FindNavigator */ = {
