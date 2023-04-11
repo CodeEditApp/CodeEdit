@@ -1,6 +1,6 @@
 //
 //  TextEditingPreferencesView.swift
-//  CodeEditModules/AppPreferences
+//  CodeEditModules/Settings
 //
 //  Created by Lukas Pistrol on 30.03.22.
 //
@@ -10,7 +10,7 @@ import SwiftUI
 /// A view that implements the `Text Editing` preference section
 struct TextEditingPreferencesView: View {
     @StateObject
-    private var prefs: AppPreferencesModel = .shared
+    private var prefs: SettingsModel = .shared
 
     var body: some View {
         PreferencesContent {

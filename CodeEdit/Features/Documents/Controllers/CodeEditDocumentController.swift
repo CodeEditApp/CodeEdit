@@ -12,7 +12,7 @@ final class CodeEditDocumentController: NSDocumentController {
         FileManager.default
     }()
 
-    private var prefs: AppPreferencesModel = .shared
+    private var prefs: SettingsModel = .shared
 
     override func newDocument(_ sender: Any?) {
         guard let newDocumentUrl = self.newDocumentUrl else { return }

@@ -1,6 +1,6 @@
 //
 //  GitLabHostedLoginView.swift
-//  CodeEditModules/AppPreferences
+//  CodeEditModules/Settings
 //
 //  Created by Nanashi Li on 2022/04/21.
 //
@@ -18,7 +18,7 @@ struct GitLabHostedLoginView: View {
     @Binding var dismissParentDialog: Bool
 
     @StateObject
-    private var prefs: AppPreferencesModel = .shared
+    private var prefs: SettingsModel = .shared
 
     private let keychain = CodeEditKeychain()
 

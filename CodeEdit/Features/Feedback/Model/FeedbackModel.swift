@@ -11,7 +11,7 @@ public class FeedbackModel: ObservableObject {
 
     public static let shared: FeedbackModel = .init()
 
-    private var prefs: AppPreferencesModel = .shared
+    private var prefs: SettingsModel = .shared
     private let keychain = CodeEditKeychain()
 
     @Environment(\.openURL) var openIssueURL

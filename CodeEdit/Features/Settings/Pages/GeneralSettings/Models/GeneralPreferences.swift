@@ -1,13 +1,13 @@
 //
 //  GeneralPreferences.swift
-//  CodeEditModules/AppPreferences
+//  CodeEditModules/Settings
 //
 //  Created by Nanashi Li on 2022/04/08.
 //
 
 import SwiftUI
 
-extension AppPreferences {
+extension Settings {
 
     /// The general global setting
     struct GeneralPreferences: Codable {
@@ -231,7 +231,7 @@ extension AppPreferences {
         case medium
         case large
 
-        /// Returns the row height depending on the `projectNavigatorSize` in `AppPreferences`.
+        /// Returns the row height depending on the `projectNavigatorSize` in `Settings`.
         ///
         /// * `small`: 20
         /// * `medium`: 22

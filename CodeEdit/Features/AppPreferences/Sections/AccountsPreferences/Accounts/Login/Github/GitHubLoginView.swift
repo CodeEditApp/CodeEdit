@@ -1,6 +1,6 @@
 //
 //  GitHubLoginView.swift
-//  CodeEditModules/AppPreferences
+//  CodeEditModules/Settings
 //
 //  Created by Nanshi Li on 2022/04/01.
 //
@@ -20,7 +20,7 @@ struct GitHubLoginView: View {
     @Binding var dismissParentDialog: Bool
 
     @StateObject
-    private var prefs: AppPreferencesModel = .shared
+    private var prefs: SettingsModel = .shared
 
     var body: some View {
         VStack {

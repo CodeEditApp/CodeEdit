@@ -1,6 +1,6 @@
 //
 //  Loopable.swift
-//  CodeEditModules/AppPreferences
+//  CodeEditModules/Settings
 //
 //  Created by Lukas Pistrol on 03.04.22.
 //

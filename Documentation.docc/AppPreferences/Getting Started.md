@@ -1,16 +1,16 @@
 # Getting Started
 
-There are a few things to consider when using the ``AppPreferences``.
+There are a few things to consider when using the ``Settings``.
 
 ## Reading/Writing Values
 
 The Preferences can be accessed from everywhere in the app like this:
 
 ```swift
-import AppPreferences
+import Settings
 
 @StateObject
-private var prefs: AppPreferencesModel = .shared
+private var prefs: SettingsModel = .shared
 ```
 
 Since it is a `@StateObject` we can be sure to always get up-to-date information and we can easily bind to the individual properties like this:
@@ -27,7 +27,7 @@ When implementing a new feature, we might have some options in regards to this n
 
 The preferences window is structured in different sections. Figure out in which section your new option should appear in.
 
-If the section is already populated with other options (e.g. ``AppPreferences/GeneralPreferences``), just add your new option like this:
+If the section is already populated with other options (e.g. ``Settings/GeneralPreferences``), just add your new option like this:
 
 ```swift
 struct GeneralPreferences: Codable {
@@ -55,7 +55,7 @@ struct GeneralPreferences: Codable {
 ### Create a Section
 
 In some cases in early development the section you decided on where to put your option in might not yet have been implemented. In this
-case you can create a new `struct` inside ``AppPreferences`` like this:
+case you can create a new `struct` inside ``Settings`` like this:
 
 ```swift
 public extension YourNewSection: Codable {
@@ -77,10 +77,10 @@ public extension YourNewSection: Codable {
 }
 ```
 
-Now let's add the new section to ``AppPreferences`` like this:
+Now let's add the new section to ``Settings`` like this:
 
 ```swift
-public struct AppPreferences: Codable {
+public struct Settings: Codable {
   // ...
 
   // Add your new section above the `public init() {}`
@@ -98,5 +98,5 @@ public struct AppPreferences: Codable {
 
 ### Main Components
 
-- ``AppPreferences``
-- ``AppPreferencesModel``
+- ``Settings``
+- ``SettingsModel``

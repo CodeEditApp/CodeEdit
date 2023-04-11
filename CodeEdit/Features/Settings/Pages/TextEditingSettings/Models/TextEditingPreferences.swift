@@ -1,6 +1,6 @@
 //
 //  TextEditingPreferences.swift
-//  CodeEditModules/AppPreferences
+//  CodeEditModules/Settings
 //
 //  Created by Nanashi Li on 2022/04/08.
 //
@@ -8,7 +8,7 @@
 import AppKit
 import Foundation
 
-extension AppPreferences {
+extension Settings {
 
     /// The global settings for text editing
     struct TextEditingPreferences: Codable {
@@ -69,7 +69,7 @@ extension AppPreferences {
                 title: "Toggle Type-Over Completion",
                 id: "prefs.text_editing.type_over_completion",
                 command: CommandClosureWrapper {
-                    AppPreferencesModel.shared.preferences.textEditing.enableTypeOverCompletion.toggle()
+                    SettingsModel.shared.preferences.textEditing.enableTypeOverCompletion.toggle()
                 }
             )
 
@@ -78,7 +78,7 @@ extension AppPreferences {
                 title: "Toggle Autocomplete Braces",
                 id: "prefs.text_editing.autocomplete_braces",
                 command: CommandClosureWrapper {
-                    AppPreferencesModel.shared.preferences.textEditing.autocompleteBraces.toggle()
+                    SettingsModel.shared.preferences.textEditing.autocompleteBraces.toggle()
                 }
             )
 
@@ -87,7 +87,7 @@ extension AppPreferences {
                 title: "Toggle Word Wrap",
                 id: "prefs.text_editing.wrap_lines_to_editor_width",
                 command: CommandClosureWrapper {
-                    AppPreferencesModel.shared.preferences.textEditing.wrapLinesToEditorWidth.toggle()
+                    SettingsModel.shared.preferences.textEditing.wrapLinesToEditorWidth.toggle()
                 }
             )
         }

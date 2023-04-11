@@ -13,7 +13,7 @@ struct TabDivider: View {
     var colorScheme
 
     @StateObject
-    private var prefs: AppPreferencesModel = .shared
+    private var prefs: SettingsModel = .shared
 
     let width: CGFloat = 1
 
@@ -37,7 +37,7 @@ struct TabBarTopDivider: View {
     var colorScheme
 
     @StateObject
-    private var prefs: AppPreferencesModel = .shared
+    private var prefs: SettingsModel = .shared
 
     var body: some View {
         ZStack(alignment: .top) {
@@ -59,7 +59,7 @@ struct TabBarBottomDivider: View {
     var colorScheme
 
     @StateObject
-    private var prefs: AppPreferencesModel = .shared
+    private var prefs: SettingsModel = .shared
 
     var body: some View {
         Rectangle()

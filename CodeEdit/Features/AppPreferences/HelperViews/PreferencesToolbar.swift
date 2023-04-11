@@ -1,6 +1,6 @@
 //
 //  SwiftUIView.swift
-//  CodeEditModules/AppPreferences
+//  CodeEditModules/Settings
 //
 //  Created by Lukas Pistrol on 13.04.22.
 //

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SourceControlGitView: View {
     @StateObject
-    private var prefs: AppPreferencesModel = .shared
+    private var prefs: SettingsModel = .shared
 
     @State
     var ignoredFileSelection: IgnoredFiles.ID?

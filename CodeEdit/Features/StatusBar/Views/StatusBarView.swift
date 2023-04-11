@@ -24,7 +24,7 @@ struct StatusBarView: View {
     private var model: StatusBarViewModel
 
     @ObservedObject
-    private var prefs: AppPreferencesModel = .shared
+    private var prefs: SettingsModel = .shared
 
     static let height = 28.0
 

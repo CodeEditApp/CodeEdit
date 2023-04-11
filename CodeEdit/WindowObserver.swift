@@ -20,7 +20,7 @@ struct WindowObserver<Content: View>: View {
     private var isFullscreen = false
 
     @StateObject
-    private var prefs: AppPreferencesModel = .shared
+    private var prefs: SettingsModel = .shared
 
     @State var modifierFlags: NSEvent.ModifierFlags = []
 

@@ -11,7 +11,7 @@ import AppKit
 
 /// A struct for settings
 struct SettingsView: View {
-    @StateObject var model = SettingsModel()
+    @StateObject var model = SettingsViewModel()
     @Environment(\.colorScheme) private var colorScheme
 
     /// An array of navigationItem(s)
@@ -101,7 +101,7 @@ struct SettingsView: View {
     }
 }
 
-class SettingsModel: ObservableObject {
+class SettingsViewModel: ObservableObject {
     @Published var showingDetails: Bool = false
     @Published var scrolledToTop: Bool = false
 }

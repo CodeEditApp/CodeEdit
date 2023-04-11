@@ -12,7 +12,7 @@ struct TabBarItemButtonStyle: ButtonStyle {
     var colorScheme
 
     @StateObject
-    private var prefs: AppPreferencesModel = .shared
+    private var prefs: SettingsModel = .shared
 
     @Binding
     private var isPressing: Bool

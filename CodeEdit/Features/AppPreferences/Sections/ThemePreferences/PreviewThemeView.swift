@@ -1,6 +1,6 @@
 //
 //  PreviewThemeView.swift
-//  CodeEditModules/AppPreferences
+//  CodeEditModules/Settings
 //
 //  Created by Lukas Pistrol on 31.03.22.
 //

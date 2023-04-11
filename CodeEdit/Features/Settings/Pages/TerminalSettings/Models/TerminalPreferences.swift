@@ -1,13 +1,13 @@
 //
 //  TerminalPreferences.swift
-//  CodeEditModules/AppPreferences
+//  CodeEditModules/Settings
 //
 //  Created by Nanashi Li on 2022/04/08.
 //
 
 import Foundation
 
-extension AppPreferences {
+extension Settings {
 
     /// The global settings for the terminal emulator
     struct TerminalPreferences: Codable {

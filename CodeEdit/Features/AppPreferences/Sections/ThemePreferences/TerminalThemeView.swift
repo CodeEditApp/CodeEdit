@@ -1,6 +1,6 @@
 //
 //  TerminalThemeView.swift
-//  CodeEditModules/AppPreferences
+//  CodeEditModules/Settings
 //
 //  Created by Lukas Pistrol on 31.03.22.
 //
@@ -17,7 +17,7 @@ struct TerminalThemeView: View {
     }
 
     @StateObject
-    private var prefs: AppPreferencesModel = .shared
+    private var prefs: SettingsModel = .shared
 
     @StateObject
     private var themeModel: ThemeModel = .shared

@@ -20,7 +20,7 @@ struct TerminalSettingsView: View {
     }
 
     @StateObject
-    private var prefs: AppPreferencesModel = .shared
+    private var prefs: SettingsModel = .shared
 }
 
 private extension TerminalSettingsView {
@@ -49,23 +49,23 @@ private extension TerminalSettingsView {
     private var shellSelector: some View {
         Picker("Shell", selection: $prefs.preferences.terminal.shell) {
             Text("System Default")
-                .tag(AppPreferences.TerminalShell.system)
+                .tag(Settings.TerminalShell.system)
             Divider()
             Text("ZSH")
-                .tag(AppPreferences.TerminalShell.zsh)
+                .tag(Settings.TerminalShell.zsh)
             Text("Bash")
-                .tag(AppPreferences.TerminalShell.bash)
+                .tag(Settings.TerminalShell.bash)
         }
     }
 
     private var cursorStyle: some View {
         Picker("Terminal Cursor Style", selection: $prefs.preferences.terminal.cursorStyle) {
             Text("Block")
-                .tag(AppPreferences.TerminalCursorStyle.block)
+                .tag(Settings.TerminalCursorStyle.block)
             Text("Underline")
-                .tag(AppPreferences.TerminalCursorStyle.underline)
+                .tag(Settings.TerminalCursorStyle.underline)
             Text("Bar")
-                .tag(AppPreferences.TerminalCursorStyle.bar)
+                .tag(Settings.TerminalCursorStyle.bar)
         }
     }
 

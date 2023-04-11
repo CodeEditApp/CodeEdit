@@ -1,6 +1,6 @@
 //
 //  EditorThemeView.swift
-//  CodeEditModules/AppPreferences
+//  CodeEditModules/Settings
 //
 //  Created by Lukas Pistrol on 31.03.22.
 //
@@ -20,7 +20,7 @@ struct EditorThemeView: View {
     private var themeModel: ThemeModel = .shared
 
     @StateObject
-    private var prefs: AppPreferencesModel = .shared
+    private var prefs: SettingsModel = .shared
 }
 
 private extension EditorThemeView {

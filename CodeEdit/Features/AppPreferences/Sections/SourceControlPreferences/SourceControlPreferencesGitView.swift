@@ -1,6 +1,6 @@
 //
 //  SourceControlGitView.swift
-//  CodeEditModules/AppPreferences
+//  CodeEditModules/Settings
 //
 //  Created by Nanshi Li on 2022/04/01.
 //
@@ -11,7 +11,7 @@ struct SourceControlPreferencesGitView: View {
     private let inputWidth: Double = 280
 
     @StateObject
-    private var prefs: AppPreferencesModel = .shared
+    private var prefs: SettingsModel = .shared
 
     @State
     var ignoredFileSelection: IgnoredFiles.ID?

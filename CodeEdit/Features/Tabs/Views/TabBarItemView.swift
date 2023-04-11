@@ -28,7 +28,7 @@ struct TabBarItemView: View {
 
     /// User preferences.
     @StateObject
-    private var prefs: AppPreferencesModel = .shared
+    private var prefs: SettingsModel = .shared
 
     /// Is cursor hovering over the entire tab.
     @State

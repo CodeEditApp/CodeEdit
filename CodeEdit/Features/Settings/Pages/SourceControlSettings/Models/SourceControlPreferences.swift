@@ -1,13 +1,13 @@
 //
 //  SourceControlPreferences.swift
-//  CodeEditModules/AppPreferences
+//  CodeEditModules/Settings
 //
 //  Created by Nanashi Li on 2022/04/08.
 //
 
 import Foundation
 
-extension AppPreferences {
+extension Settings {
     /// The global settings for source control
     struct SourceControlPreferences: Codable {
         /// The general source control settings

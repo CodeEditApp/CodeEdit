@@ -1,13 +1,13 @@
 //
-//  AppPreferences.swift
-//  CodeEditModules/AppPreferences
+//  Settings.swift
+//  CodeEditModules/Settings
 //
 //  Created by Lukas Pistrol on 01.04.22.
 //
 
 import SwiftUI
 
-/// # AppPreferences
+/// # Settings
 ///
 /// The model structure of settings for `CodeEdit`
 ///
@@ -20,7 +20,7 @@ import SwiftUI
 ///  all properties with
 ///  [`decodeIfPresent`](https://developer.apple.com/documentation/swift/keyeddecodingcontainer/2921389-decodeifpresent)
 ///  and providing a default value. Otherwise all settings get overridden.
-struct AppPreferences: Codable {
+struct Settings: Codable {
 
     /// The general global setting
     var general: GeneralPreferences = .init()

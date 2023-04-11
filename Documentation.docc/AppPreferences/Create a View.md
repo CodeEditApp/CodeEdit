@@ -4,7 +4,7 @@ Now that you followed the <doc:Getting-Started> guide it's time to create a view
 
 ## Add Option to existing Section
 
-In our example we added `ourNewOption` in ``AppPreferences/GeneralPreferences``.
+In our example we added `ourNewOption` in ``Settings/GeneralPreferences``.
 
 Now let's take a look at the ``GeneralPreferencesView``.
 
@@ -26,11 +26,11 @@ struct GeneralPreferencesView: View {
     }
 
     @StateObject
-    private var prefs: AppPreferencesModel = .shared
+    private var prefs: SettingsModel = .shared
 }
 ```
 
-As you can see ``AppPreferencesModel`` is already setup and ready to use.
+As you can see ``SettingsModel`` is already setup and ready to use.
 
 To add your option toggle below the other options just add something like this:
 
@@ -135,7 +135,7 @@ struct YourSectionPreferencesView: View {
     }
 
     @StateObject
-    private var prefs: AppPreferencesModel = .shared
+    private var prefs: SettingsModel = .shared
 
     public init() {}
 }

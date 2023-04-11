@@ -1,6 +1,6 @@
 //
 //  ThemeModel.swift
-//  CodeEditModules/AppPreferences
+//  CodeEditModules/Settings
 //
 //  Created by Lukas Pistrol on 31.03.22.
 //
@@ -36,7 +36,7 @@ final class ThemeModel: ObservableObject {
     var selectedLightTheme: Theme? {
         didSet {
             DispatchQueue.main.async {
-                AppPreferencesModel.shared
+                SettingsModel.shared
                     .preferences.theme.selectedLightTheme = self.selectedLightTheme?.name ?? "Broken"
             }
         }
@@ -48,7 +48,7 @@ final class ThemeModel: ObservableObject {
     var selectedDarkTheme: Theme? {
         didSet {
             DispatchQueue.main.async {
-                AppPreferencesModel.shared
+                SettingsModel.shared
                     .preferences.theme.selectedDarkTheme = self.selectedDarkTheme?.name ?? "Broken"
             }
         }
@@ -80,7 +80,7 @@ final class ThemeModel: ObservableObject {
     var selectedTheme: Theme? {
         didSet {
             DispatchQueue.main.async {
-                AppPreferencesModel.shared.preferences.theme.selectedTheme = self.selectedTheme?.name
+                SettingsModel.shared.preferences.theme.selectedTheme = self.selectedTheme?.name
             }
             updateAppearanceTheme()
         }
@@ -125,7 +125,7 @@ final class ThemeModel: ObservableObject {
     /// If no themes are available, it will create a default theme and save
     /// it to the location mentioned above.
     ///
-    /// When overrides are found in `~/Library/Application Support/CodeEdit/.preferences.json`
+    /// When overrides are found in `~/Library/Application Support/CodeEdit/.settings.json`
     /// they are applied to the loaded themes without altering the original
     /// the files in `~/Library/Application Support/CodeEdit/themes/`.
     func loadThemes() throws { // swiftlint:disable:this function_body_length
@@ -146,7 +146,7 @@ final class ThemeModel: ObservableObject {
         // get all filenames in themes folder that end with `.json`
         let content = try filemanager.contentsOfDirectory(atPath: url.path).filter { $0.contains(".json") }
 
-        let prefs = AppPreferencesModel.shared.preferences
+        let prefs = SettingsModel.shared.preferences
         // load each theme from disk
         try content.forEach { file in
             let fileURL = url.appendingPathComponent(file)
@@ -161,7 +161,7 @@ final class ThemeModel: ObservableObject {
                     throw NSError() // swiftlint:disable:this discouraged_direct_init
                 }
 
-                // check if there are any overrides in `preferences.json`
+                // check if there are any overrides in `settings.json`
                 if let overrides = prefs.theme.overrides[theme.name]?["terminal"] {
                     terminalColors.forEach { (key, _) in
                         if let attributes = overrides[key] {
@@ -180,7 +180,7 @@ final class ThemeModel: ObservableObject {
                 // add the theme to themes array
                 self.themes.append(theme)
 
-                // if there already is a selected theme in `preferences.json` select this theme
+                // if there already is a selected theme in `settings.json` select this theme
                 // otherwise take the first in the list
                 self.selectedDarkTheme = self.darkThemes.first {
                     $0.name == prefs.theme.selectedDarkTheme
@@ -241,7 +241,7 @@ final class ThemeModel: ObservableObject {
     }
 
     /// Removes all overrides of the given theme in
-    /// `~/Library/Application Support/CodeEdit/preferences.json`
+    /// `~/Library/Application Support/CodeEdit/settings.json`
     ///
     /// After removing overrides, themes are reloaded
     /// from `~/Library/Application Support/CodeEdit/themes`. See ``loadThemes()``
@@ -249,7 +249,7 @@ final class ThemeModel: ObservableObject {
     ///
     /// - Parameter theme: The theme to reset
     func reset(_ theme: Theme) {
-        AppPreferencesModel.shared.preferences.theme.overrides[theme.name] = [:]
+        SettingsModel.shared.preferences.theme.overrides[theme.name] = [:]
         do {
             try self.loadThemes()
         } catch {
@@ -272,8 +272,8 @@ final class ThemeModel: ObservableObject {
             // remove the theme from the list
             try filemanager.removeItem(at: url)
 
-            // remove from overrides in `preferences.json`
-            AppPreferencesModel.shared.preferences.theme.overrides.removeValue(forKey: theme.name)
+            // remove from overrides in `settings.json`
+            SettingsModel.shared.preferences.theme.overrides.removeValue(forKey: theme.name)
 
             // reload themes
             try self.loadThemes()
@@ -283,7 +283,7 @@ final class ThemeModel: ObservableObject {
     }
 
     /// Saves changes on theme properties to `overrides`
-    /// in `~/Library/Application Support/CodeEdit/preferences.json`.
+    /// in `~/Library/Application Support/CodeEdit/settings.json`.
     private func saveThemes() {
         let url = themesURL
         themes.forEach { theme in
@@ -304,7 +304,7 @@ final class ThemeModel: ObservableObject {
                 }
 
                 // compare the properties and if there are differences, save to overrides
-                // in `preferences.json
+                // in `settings.json
                 var newAttr: [String: [String: Theme.Attributes]] = ["terminal": [:], "editor": [:]]
                 terminalColors.forEach { (key, value) in
                     if value != oTermColors[key] {
@@ -318,7 +318,7 @@ final class ThemeModel: ObservableObject {
                     }
                 }
                 DispatchQueue.main.async {
-                    AppPreferencesModel.shared.preferences.theme.overrides[theme.name] = newAttr
+                    SettingsModel.shared.preferences.theme.overrides[theme.name] = newAttr
                 }
 
             } catch {

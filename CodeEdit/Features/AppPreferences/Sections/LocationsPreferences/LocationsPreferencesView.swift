@@ -1,6 +1,6 @@
 //
 //  LocationsPreferencesView.swift
-//  CodeEditModules/AppPreferences
+//  CodeEditModules/Settings
 //
 //  Created by Lukas Pistrol on 03.04.22.
 //
@@ -14,12 +14,12 @@ struct LocationsPreferencesView: View {
         PreferencesContent {
             PreferencesSection("Preferences Location") {
                 HStack {
-                    Text(AppPreferencesModel.shared.baseURL.path)
+                    Text(SettingsModel.shared.baseURL.path)
                         .foregroundColor(.secondary)
                     Button {
                         NSWorkspace.shared.selectFile(
                             nil,
-                            inFileViewerRootedAtPath: AppPreferencesModel.shared.baseURL.path
+                            inFileViewerRootedAtPath: SettingsModel.shared.baseURL.path
                         )
                     } label: {
                         Image(systemName: "arrow.right.circle.fill")

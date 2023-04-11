@@ -17,7 +17,7 @@ import SwiftTerm
 ///
 struct TerminalEmulatorView: NSViewRepresentable {
     @StateObject
-    private var prefs: AppPreferencesModel = .shared
+    private var prefs: SettingsModel = .shared
 
     @StateObject
     private var themeModel: ThemeModel = .shared

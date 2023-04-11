@@ -1,6 +1,6 @@
 //
 //  PreferencesPlaceholderView.swift
-//  CodeEditModules/AppPreferences
+//  CodeEditModules/Settings
 //
 //  Created by Lukas Pistrol on 30.03.22.
 //

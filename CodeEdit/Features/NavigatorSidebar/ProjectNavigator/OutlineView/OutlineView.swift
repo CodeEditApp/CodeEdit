@@ -15,7 +15,7 @@ struct OutlineView: NSViewControllerRepresentable {
     var workspace: WorkspaceDocument
 
     @StateObject
-    var prefs: AppPreferencesModel = .shared
+    var prefs: SettingsModel = .shared
 
     // This is mainly just used to trigger a view update.
     @Binding

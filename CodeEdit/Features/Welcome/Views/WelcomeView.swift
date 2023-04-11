@@ -14,7 +14,7 @@ struct WelcomeView: View {
     var colorScheme
 
     @StateObject
-    private var prefs: AppPreferencesModel = .shared
+    private var prefs: SettingsModel = .shared
 
     @State
     private var repoPath = "~/"

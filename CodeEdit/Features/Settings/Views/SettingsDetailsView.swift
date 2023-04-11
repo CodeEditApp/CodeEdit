@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SettingsDetailsView<Content: View>: View {
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject var model: SettingsModel
+    @EnvironmentObject var model: SettingsViewModel
 
     let title: String
 

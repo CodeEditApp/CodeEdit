@@ -1,6 +1,6 @@
 //
 //  AccountPreferencesView.swift
-//  CodeEditModules/AppPreferences
+//  CodeEditModules/Settings
 //
 //  Created by Nanshi Li on 2022/04/01.
 //
@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AccountPreferencesView: View {
     @StateObject
-    private var prefs: AppPreferencesModel = .shared
+    private var prefs: SettingsModel = .shared
 
     @State
     private var openAccountDialog = false

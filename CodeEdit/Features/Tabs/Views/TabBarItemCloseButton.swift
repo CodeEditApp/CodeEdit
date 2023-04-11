@@ -20,7 +20,7 @@ struct TabBarItemCloseButton: View {
     var colorScheme
 
     @StateObject
-    private var prefs: AppPreferencesModel = .shared
+    private var prefs: SettingsModel = .shared
 
     @State
     private var isPressingClose: Bool = false

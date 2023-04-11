@@ -1,6 +1,6 @@
 //
 //  TerminalPreferencesView.swift
-//  CodeEditModules/AppPreferences
+//  CodeEditModules/Settings
 //
 //  Created by Lukas Pistrol on 02.04.22.
 //
@@ -13,7 +13,7 @@ struct TerminalPreferencesView: View {
     private let inputWidth: Double = 150
 
     @StateObject
-    private var prefs: AppPreferencesModel = .shared
+    private var prefs: SettingsModel = .shared
 
     init() {}
 
@@ -51,12 +51,12 @@ private extension TerminalPreferencesView {
     private var shellSelector: some View {
         Picker("Shell:", selection: $prefs.preferences.terminal.shell) {
             Text("System Default")
-                .tag(AppPreferences.TerminalShell.system)
+                .tag(Settings.TerminalShell.system)
             Divider()
             Text("ZSH")
-                .tag(AppPreferences.TerminalShell.zsh)
+                .tag(Settings.TerminalShell.zsh)
             Text("Bash")
-                .tag(AppPreferences.TerminalShell.bash)
+                .tag(Settings.TerminalShell.bash)
         }
         .frame(width: inputWidth)
     }
@@ -64,11 +64,11 @@ private extension TerminalPreferencesView {
     private var cursorStyle: some View {
         Picker("Terminal Cursor Style: ", selection: $prefs.preferences.terminal.cursorStyle) {
             Text("Block")
-                .tag(AppPreferences.TerminalCursorStyle.block)
+                .tag(Settings.TerminalCursorStyle.block)
             Text("Underline")
-                .tag(AppPreferences.TerminalCursorStyle.underline)
+                .tag(Settings.TerminalCursorStyle.underline)
             Text("Bar")
-                .tag(AppPreferences.TerminalCursorStyle.bar)
+                .tag(Settings.TerminalCursorStyle.bar)
         }
         .frame(width: inputWidth)
     }

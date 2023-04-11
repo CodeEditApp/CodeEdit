@@ -37,14 +37,14 @@ private extension LocationsSettingsView {
     private var settingsLocation: some View {
         LabeledContent("Settings Location") {
             HStack {
-                Text(AppPreferencesModel.shared.baseURL.path)
+                Text(SettingsModel.shared.baseURL.path)
                     .foregroundColor(.secondary)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .multilineTextAlignment(.leading)
                 Button {
                     NSWorkspace.shared.selectFile(
                         nil,
-                        inFileViewerRootedAtPath: AppPreferencesModel.shared.baseURL.path
+                        inFileViewerRootedAtPath: SettingsModel.shared.baseURL.path
                     )
                 } label: {
                     Image(systemName: "arrow.right.circle.fill")

@@ -1,6 +1,6 @@
 //
 //  GeneralPreferencesView.swift
-//  CodeEditModules/AppPreferences
+//  CodeEditModules/Settings
 //
 //  Created by Lukas Pistrol on 30.03.22.
 //
@@ -17,7 +17,7 @@ struct GeneralPreferencesView: View {
     var updater: SoftwareUpdater
 
     @StateObject
-    private var prefs: AppPreferencesModel = .shared
+    private var prefs: SettingsModel = .shared
 
     @State
     private var openInCodeEdit: Bool = true
@@ -70,12 +70,12 @@ private extension GeneralPreferencesView {
         PreferencesSection("Appearance") {
             Picker("Appearance", selection: $prefs.preferences.general.appAppearance) {
                 Text("System")
-                    .tag(AppPreferences.Appearances.system)
+                    .tag(Settings.Appearances.system)
                 Divider()
                 Text("Light")
-                    .tag(AppPreferences.Appearances.light)
+                    .tag(Settings.Appearances.light)
                 Text("Dark")
-                    .tag(AppPreferences.Appearances.dark)
+                    .tag(Settings.Appearances.dark)
             }
             .onChange(of: prefs.preferences.general.appAppearance) { tag in
                 tag.applyAppearance()
@@ -89,9 +89,9 @@ private extension GeneralPreferencesView {
         PreferencesSection("Show Issues", hideLabels: false) {
             Picker("Show Issues", selection: $prefs.preferences.general.showIssues) {
                 Text("Show Inline")
-                    .tag(AppPreferences.Issues.inline)
+                    .tag(Settings.Issues.inline)
                 Text("Show Minimized")
-                    .tag(AppPreferences.Issues.minimized)
+                    .tag(Settings.Issues.minimized)
             }
             .labelsHidden()
             .frame(width: inputWidth)
@@ -106,14 +106,14 @@ private extension GeneralPreferencesView {
         PreferencesSection("File Extensions") {
             Picker("File Extensions:", selection: $prefs.preferences.general.fileExtensionsVisibility) {
                 Text("Hide all")
-                    .tag(AppPreferences.FileExtensionsVisibility.hideAll)
+                    .tag(Settings.FileExtensionsVisibility.hideAll)
                 Text("Show all")
-                    .tag(AppPreferences.FileExtensionsVisibility.showAll)
+                    .tag(Settings.FileExtensionsVisibility.showAll)
                 Divider()
                 Text("Show only")
-                    .tag(AppPreferences.FileExtensionsVisibility.showOnly)
+                    .tag(Settings.FileExtensionsVisibility.showOnly)
                 Text("Hide only")
-                    .tag(AppPreferences.FileExtensionsVisibility.hideOnly)
+                    .tag(Settings.FileExtensionsVisibility.hideOnly)
             }
             .frame(width: inputWidth)
             if case .showOnly = prefs.preferences.general.fileExtensionsVisibility {
@@ -133,9 +133,9 @@ private extension GeneralPreferencesView {
         PreferencesSection("File Icon Style") {
             Picker("File Icon Style:", selection: $prefs.preferences.general.fileIconStyle) {
                 Text("Color")
-                    .tag(AppPreferences.FileIconStyle.color)
+                    .tag(Settings.FileIconStyle.color)
                 Text("Monochrome")
-                    .tag(AppPreferences.FileIconStyle.monochrome)
+                    .tag(Settings.FileIconStyle.monochrome)
             }
             .pickerStyle(.radioGroup)
         }
@@ -145,9 +145,9 @@ private extension GeneralPreferencesView {
         PreferencesSection("Tab Bar Style") {
             Picker("Tab Bar Style:", selection: $prefs.preferences.general.tabBarStyle) {
                 Text("Xcode")
-                    .tag(AppPreferences.TabBarStyle.xcode)
+                    .tag(Settings.TabBarStyle.xcode)
                 Text("Native")
-                    .tag(AppPreferences.TabBarStyle.native)
+                    .tag(Settings.TabBarStyle.native)
             }
             .pickerStyle(.radioGroup)
         }
@@ -157,12 +157,12 @@ private extension GeneralPreferencesView {
         PreferencesSection("Reopen Behavior") {
             Picker("Reopen Behavior:", selection: $prefs.preferences.general.reopenBehavior) {
                 Text("Welcome Screen")
-                    .tag(AppPreferences.ReopenBehavior.welcome)
+                    .tag(Settings.ReopenBehavior.welcome)
                 Divider()
                 Text("Open Panel")
-                    .tag(AppPreferences.ReopenBehavior.openPanel)
+                    .tag(Settings.ReopenBehavior.openPanel)
                 Text("New Document")
-                    .tag(AppPreferences.ReopenBehavior.newDocument)
+                    .tag(Settings.ReopenBehavior.newDocument)
             }
             .frame(width: inputWidth)
         }
@@ -175,12 +175,12 @@ private extension GeneralPreferencesView {
                 selection: $prefs.preferences.general.reopenWindowAfterClose
             ) {
                 Text("Do nothing")
-                    .tag(AppPreferences.ReopenWindowBehavior.doNothing)
+                    .tag(Settings.ReopenWindowBehavior.doNothing)
                 Divider()
                 Text("Show Welcome Window")
-                    .tag(AppPreferences.ReopenWindowBehavior.showWelcomeWindow)
+                    .tag(Settings.ReopenWindowBehavior.showWelcomeWindow)
                 Text("Quit")
-                    .tag(AppPreferences.ReopenWindowBehavior.quit)
+                    .tag(Settings.ReopenWindowBehavior.quit)
             }
             .frame(width: inputWidth)
         }
@@ -190,11 +190,11 @@ private extension GeneralPreferencesView {
         PreferencesSection("Project Navigator Size") {
             Picker("Project Navigator Size", selection: $prefs.preferences.general.projectNavigatorSize) {
                 Text("Small")
-                    .tag(AppPreferences.ProjectNavigatorSize.small)
+                    .tag(Settings.ProjectNavigatorSize.small)
                 Text("Medium")
-                    .tag(AppPreferences.ProjectNavigatorSize.medium)
+                    .tag(Settings.ProjectNavigatorSize.medium)
                 Text("Large")
-                    .tag(AppPreferences.ProjectNavigatorSize.large)
+                    .tag(Settings.ProjectNavigatorSize.large)
             }
             .frame(width: inputWidth)
         }
@@ -203,7 +203,7 @@ private extension GeneralPreferencesView {
     var findNavigatorDetailSection: some View {
         PreferencesSection("Find Navigator Detail") {
             Picker("Find Navigator Detail", selection: $prefs.preferences.general.findNavigatorDetail) {
-                ForEach(AppPreferences.NavigatorDetail.allCases, id: \.self) { tag in
+                ForEach(Settings.NavigatorDetail.allCases, id: \.self) { tag in
                     Text(tag.label).tag(tag)
                 }
             }
@@ -215,7 +215,7 @@ private extension GeneralPreferencesView {
     var issueNavigatorDetailSection: some View {
         PreferencesSection("Issue Navigator Detail") {
             Picker("Issue Navigator Detail", selection: $prefs.preferences.general.issueNavigatorDetail) {
-                ForEach(AppPreferences.NavigatorDetail.allCases, id: \.self) { tag in
+                ForEach(Settings.NavigatorDetail.allCases, id: \.self) { tag in
                     Text(tag.label).tag(tag)
                 }
             }

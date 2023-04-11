@@ -1,6 +1,6 @@
 //
 //  SourceControlAccounts.swift
-//  CodeEditModules/AppPreferences
+//  CodeEditModules/Settings
 //
 //  Created by Nanashi Li on 2022/04/12.
 //

@@ -1,6 +1,6 @@
 //
 //  SourceControlGeneralView.swift
-//  CodeEditModules/AppPreferences
+//  CodeEditModules/Settings
 //
 //  Created by Nanshi Li on 2022/04/01.
 //
@@ -27,7 +27,7 @@ struct SourceControlPreferencesGeneralView: View {
     private let inputWidth: Double = 200
 
     @StateObject
-    private var prefs: AppPreferencesModel = .shared
+    private var prefs: SettingsModel = .shared
 
     @State
     var isChecked: Bool
@@ -158,9 +158,9 @@ private extension SourceControlPreferencesGeneralView {
             selection: $prefs.preferences.sourceControl.general.revisionComparisonLayout
         ) {
             Text("Local Revision on Left Side")
-                .tag(AppPreferences.RevisionComparisonLayout.localLeft)
+                .tag(Settings.RevisionComparisonLayout.localLeft)
             Text("Local Revision on Right Side")
-                .tag(AppPreferences.RevisionComparisonLayout.localRight)
+                .tag(Settings.RevisionComparisonLayout.localRight)
         }
         .frame(width: inputWidth)
     }
@@ -171,9 +171,9 @@ private extension SourceControlPreferencesGeneralView {
             selection: $prefs.preferences.sourceControl.general.controlNavigatorOrder
         ) {
             Text("Sort by Name")
-                .tag(AppPreferences.ControlNavigatorOrder.sortByName)
+                .tag(Settings.ControlNavigatorOrder.sortByName)
             Text("Sort by Date")
-                .tag(AppPreferences.ControlNavigatorOrder.sortByDate)
+                .tag(Settings.ControlNavigatorOrder.sortByDate)
         }
         .frame(width: inputWidth)
     }

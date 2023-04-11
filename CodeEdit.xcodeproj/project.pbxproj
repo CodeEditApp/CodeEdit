@@ -256,12 +256,12 @@
 		58F2EB02292FB2B0004A9BDE /* Loopable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EACD292FB2B0004A9BDE /* Loopable.swift */; };
 		58F2EB03292FB2B0004A9BDE /* Documentation.docc in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EACE292FB2B0004A9BDE /* Documentation.docc */; };
 		58F2EB04292FB2B0004A9BDE /* SourceControlPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAD1292FB2B0004A9BDE /* SourceControlPreferences.swift */; };
-		58F2EB05292FB2B0004A9BDE /* AppPreferencesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAD2292FB2B0004A9BDE /* AppPreferencesModel.swift */; };
+		58F2EB05292FB2B0004A9BDE /* SettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAD2292FB2B0004A9BDE /* SettingsModel.swift */; };
 		58F2EB06292FB2B0004A9BDE /* KeybindingsPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAD4292FB2B0004A9BDE /* KeybindingsPreferences.swift */; };
 		58F2EB07292FB2B0004A9BDE /* GeneralPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAD6292FB2B0004A9BDE /* GeneralPreferences.swift */; };
 		58F2EB08292FB2B0004A9BDE /* TextEditingPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAD8292FB2B0004A9BDE /* TextEditingPreferences.swift */; };
 		58F2EB09292FB2B0004A9BDE /* TerminalPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EADA292FB2B0004A9BDE /* TerminalPreferences.swift */; };
-		58F2EB0A292FB2B0004A9BDE /* AppPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EADB292FB2B0004A9BDE /* AppPreferences.swift */; };
+		58F2EB0A292FB2B0004A9BDE /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EADB292FB2B0004A9BDE /* Settings.swift */; };
 		58F2EB0B292FB2B0004A9BDE /* AccountsPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EADD292FB2B0004A9BDE /* AccountsPreferences.swift */; };
 		58F2EB0C292FB2B0004A9BDE /* SourceControlAccounts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EADE292FB2B0004A9BDE /* SourceControlAccounts.swift */; };
 		58F2EB0D292FB2B0004A9BDE /* ThemePreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAE0292FB2B0004A9BDE /* ThemePreferences.swift */; };
@@ -690,12 +690,12 @@
 		58F2EACD292FB2B0004A9BDE /* Loopable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Loopable.swift; sourceTree = "<group>"; };
 		58F2EACE292FB2B0004A9BDE /* Documentation.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = Documentation.docc; sourceTree = "<group>"; };
 		58F2EAD1292FB2B0004A9BDE /* SourceControlPreferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SourceControlPreferences.swift; sourceTree = "<group>"; };
-		58F2EAD2292FB2B0004A9BDE /* AppPreferencesModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppPreferencesModel.swift; sourceTree = "<group>"; };
+		58F2EAD2292FB2B0004A9BDE /* SettingsModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsModel.swift; sourceTree = "<group>"; };
 		58F2EAD4292FB2B0004A9BDE /* KeybindingsPreferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeybindingsPreferences.swift; sourceTree = "<group>"; };
 		58F2EAD6292FB2B0004A9BDE /* GeneralPreferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneralPreferences.swift; sourceTree = "<group>"; };
 		58F2EAD8292FB2B0004A9BDE /* TextEditingPreferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextEditingPreferences.swift; sourceTree = "<group>"; };
 		58F2EADA292FB2B0004A9BDE /* TerminalPreferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TerminalPreferences.swift; sourceTree = "<group>"; };
-		58F2EADB292FB2B0004A9BDE /* AppPreferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppPreferences.swift; sourceTree = "<group>"; };
+		58F2EADB292FB2B0004A9BDE /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		58F2EADD292FB2B0004A9BDE /* AccountsPreferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountsPreferences.swift; sourceTree = "<group>"; };
 		58F2EADE292FB2B0004A9BDE /* SourceControlAccounts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SourceControlAccounts.swift; sourceTree = "<group>"; };
 		58F2EAE0292FB2B0004A9BDE /* ThemePreferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemePreferences.swift; sourceTree = "<group>"; };
@@ -2223,8 +2223,8 @@
 		B640A9A329E218E300715F20 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				58F2EADB292FB2B0004A9BDE /* AppPreferences.swift */,
-				58F2EAD2292FB2B0004A9BDE /* AppPreferencesModel.swift */,
+				58F2EADB292FB2B0004A9BDE /* Settings.swift */,
+				58F2EAD2292FB2B0004A9BDE /* SettingsModel.swift */,
 				850C631129D6B03400E1444C /* SettingsPage.swift */,
 			);
 			path = Models;
@@ -2845,7 +2845,7 @@
 				587B9E6629301D8F00AC7927 /* GitLabProjectHook.swift in Sources */,
 				587B9E9329301D8F00AC7927 /* BitBucketOAuthConfiguration.swift in Sources */,
 				6C18620A298BF5A800C663EA /* RecentProjectsListView.swift in Sources */,
-				58F2EB0A292FB2B0004A9BDE /* AppPreferences.swift in Sources */,
+				58F2EB0A292FB2B0004A9BDE /* Settings.swift in Sources */,
 				B6EA1FEC29DA344F001BF195 /* PreviewThemeView.swift in Sources */,
 				20EBB503280C327C00F3A5DA /* HistoryInspectorView.swift in Sources */,
 				B6EA1FE729DA341D001BF195 /* Theme.swift in Sources */,
@@ -2963,7 +2963,7 @@
 				6CFF967629BEBCD900182D6F /* FileCommands.swift in Sources */,
 				B685DE7929CC9CCD002860C8 /* StatusBarIcon.swift in Sources */,
 				587B9DA629300ABD00AC7927 /* ToolbarBranchPicker.swift in Sources */,
-				58F2EB05292FB2B0004A9BDE /* AppPreferencesModel.swift in Sources */,
+				58F2EB05292FB2B0004A9BDE /* SettingsModel.swift in Sources */,
 				6CBD1BC62978DE53006639D5 /* Font+Caption3.swift in Sources */,
 				287776EF27E3515300D46668 /* TabBarItemView.swift in Sources */,
 				B6E41C9429DEAE260088F9F4 /* Account.swift in Sources */,

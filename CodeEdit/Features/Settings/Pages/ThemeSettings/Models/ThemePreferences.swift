@@ -1,13 +1,13 @@
 //
 //  ThemePreferences.swift
-//  CodeEditModules/AppPreferences
+//  CodeEditModules/Settings
 //
 //  Created by Nanashi Li on 2022/04/08.
 //
 
 import Foundation
 
-extension AppPreferences {
+extension Settings {
 
     /// A dictionary containing the keys and associated ``Theme/Attributes`` of overridden properties
     ///

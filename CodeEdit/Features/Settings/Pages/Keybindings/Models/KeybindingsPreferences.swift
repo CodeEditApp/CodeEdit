@@ -1,13 +1,13 @@
 //
 //  KeybindingsPreferences.swift
-//  CodeEditModules/AppPreferences
+//  CodeEditModules/Settings
 //  
 //  Created by Alex on 18.05.2022.
 //
 
 import Foundation
 
-extension AppPreferences {
+extension Settings {
 
     /// The global settings for text editing
     struct KeybindingsPreferences: Codable {

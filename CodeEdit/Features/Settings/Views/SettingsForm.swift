@@ -10,7 +10,7 @@ import Introspect
 
 struct SettingsForm<Content: View>: View {
     @Environment(\.colorScheme) private var colorScheme
-    @EnvironmentObject var model: SettingsModel
+    @EnvironmentObject var model: SettingsViewModel
     @ViewBuilder var content: Content
 
     var body: some View {

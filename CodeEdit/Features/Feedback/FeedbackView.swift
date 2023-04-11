@@ -12,7 +12,7 @@ struct FeedbackView: View {
     private var feedbackModel: FeedbackModel = .shared
 
     @StateObject
-    var prefs: AppPreferencesModel = .shared
+    var prefs: SettingsModel = .shared
 
     @State
     var showsAlert: Bool = false

@@ -1,6 +1,6 @@
 //
 //  Theme.swift
-//  CodeEditModules/AppPreferences
+//  CodeEditModules/Settings
 //
 //  Created by Lukas Pistrol on 31.03.22.
 //
@@ -50,7 +50,7 @@ struct Theme: Identifiable, Codable, Equatable, Hashable, Loopable {
 
     /// The ``ThemeType`` of the theme
     ///
-    /// Appears as `"type"` in the `preferences.json`
+    /// Appears as `"type"` in the `settings.json`
     var appearance: ThemeType
 
     /// Editor colors of the theme

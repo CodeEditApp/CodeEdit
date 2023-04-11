@@ -1,13 +1,13 @@
 //
 //  AccountsPreferences.swift
-//  CodeEditModules/AppPreferences
+//  CodeEditModules/Settings
 //
 //  Created by Nanashi Li on 2022/04/08.
 //
 
 import Foundation
 
-extension AppPreferences {
+extension Settings {
 
     /// The global settings for text editing
     struct AccountsPreferences: Codable {
