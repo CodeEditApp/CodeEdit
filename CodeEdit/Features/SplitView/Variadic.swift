@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-// swiftlint:disable identifier_name
 struct Helper<Result: View>: _VariadicView_UnaryViewRoot {
+    // swiftlint:disable:next identifier_name
     var _body: (_VariadicView.Children) -> Result
 
     func body(children: _VariadicView.Children) -> some View {
