@@ -8,6 +8,7 @@
 import SwiftUI
 import CodeEditSymbols
 import AppKit
+import Introspect
 
 /// A struct for settings
 struct SettingsView: View {
@@ -55,6 +56,17 @@ struct SettingsView: View {
 //                    .textFieldStyle(.roundedBorder)
 //                    .padding(.horizontal, 10)
 //                    .controlSize(.large)
+//                    .introspectTextField { textField in
+//                        let iconImage = NSImage(systemSymbolName: "magnifyingglass", accessibilityDescription: nil)
+//
+//                        let attachment = NSTextAttachment()
+//                        attachment.contents = iconImage
+//
+//                        let cell = NSTextAttachmentCell(imageCell: iconImage)
+//                        attachment.attachmentCell = cell
+//
+//                        textField.setCell_(NSSearchFieldCell.alloc().init())
+//                    }
 //            }
         } detail: {
             Group {
@@ -89,7 +101,6 @@ struct SettingsView: View {
             ToolbarItem(placement: .navigation) {
                 if !model.showingDetails {
                     Rectangle()
-                        .fill(presentationMode.wrappedValue.isPresented ? .red : .blue)
                         .frame(width: 10)
                         .opacity(0)
                 } else {
@@ -105,3 +116,4 @@ class SettingsViewModel: ObservableObject {
     @Published var showingDetails: Bool = false
     @Published var scrolledToTop: Bool = false
 }
+

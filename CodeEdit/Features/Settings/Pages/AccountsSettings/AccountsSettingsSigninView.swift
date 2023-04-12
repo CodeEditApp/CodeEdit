@@ -11,10 +11,10 @@ struct AccountsSettingsSigninView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.openURL) var createToken
 
-    var provider: Account.Provider
+    var provider: SourceControlAccount.Provider
     @Binding var addAccountSheetPresented: Bool
 
-    init(_ provider: Account.Provider, addAccountSheetPresented: Binding<Bool>) {
+    init(_ provider: SourceControlAccount.Provider, addAccountSheetPresented: Binding<Bool>) {
         self.provider = provider
         self._addAccountSheetPresented = addAccountSheetPresented
     }
@@ -184,26 +184,26 @@ struct AccountsSettingsSigninView: View {
     }
 
     private func handleGitRequestSuccess() {
-        let gitAccounts = prefs.preferences.accounts.sourceControlAccounts.gitAccount
+        let gitAccounts = prefs.preferences.accounts.sourceControlAccounts.gitAccounts
         let providerLink = provider.baseURL?.absoluteString ?? server
 
         if gitAccounts.contains(
             where: {
-                $0.gitProviderLink == providerLink &&
-                $0.gitAccountName.lowercased() == username.lowercased()
+                $0.serverURL == providerLink &&
+                $0.name.lowercased() == username.lowercased()
             }
         ) {
             print("Account with the same username and provider already exists!")
         } else {
-            prefs.preferences.accounts.sourceControlAccounts.gitAccount.append(
-                SourceControlAccounts(
-                    id: "\(providerLink)_\(username.lowercased())",
-                    gitProvider: provider.name,
-                    gitProviderLink: providerLink,
-                    gitProviderDescription: provider.name,
-                    gitAccountName: username,
-                    gitCloningProtocol: true,
-                    gitSSHKey: "",
+            prefs.preferences.accounts.sourceControlAccounts.gitAccounts.append(
+                SourceControlAccount(
+                    id: "\(server)_\(username.lowercased())",
+                    name: username,
+                    description: provider.name,
+                    provider: provider,
+                    serverURL: server,
+                    urlProtocol: true,
+                    sshKey: "",
                     isTokenValid: true
                 )
             )

@@ -11,12 +11,12 @@ struct AccountsSettingsDetailsView: View {
     @ObservedObject
     private var prefs: Settings = .shared
 
-    @Binding var account: Account
+    @Binding var account: SourceControlAccount
 
     @State var cloneUsing: Bool = false
     @State var deleteConfirmationIsPresented: Bool = false
 
-    init(_ account: Binding<Account>) {
+    init(_ account: Binding<SourceControlAccount>) {
         _account = account
     }
 

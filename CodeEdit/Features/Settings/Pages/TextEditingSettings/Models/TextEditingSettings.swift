@@ -11,7 +11,7 @@ import Foundation
 extension SettingsData {
 
     /// The global settings for text editing
-    struct TextEditingPreferences: Codable {
+    struct TextEditingSettings: Codable {
         /// An integer indicating how many spaces a `tab` will generate
         var defaultTabWidth: Int = 4
 

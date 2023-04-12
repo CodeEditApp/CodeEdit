@@ -145,10 +145,10 @@ public class FeedbackModel: ObservableObject {
         expectation: String?,
         actuallyHappened: String?
     ) {
-        let gitAccounts = prefs.preferences.accounts.sourceControlAccounts.gitAccount
+        let gitAccounts = prefs.preferences.accounts.sourceControlAccounts.gitAccounts
         let firstGitAccount = gitAccounts.first
 
-        let config = GitHubTokenConfiguration(keychain.get(firstGitAccount!.gitAccountName))
+        let config = GitHubTokenConfiguration(keychain.get(firstGitAccount!.name))
         GitHubAccount(config).postIssue(
             owner: "CodeEditApp",
             repository: "CodeEdit",

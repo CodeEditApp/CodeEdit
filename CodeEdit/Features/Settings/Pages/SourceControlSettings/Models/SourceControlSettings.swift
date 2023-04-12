@@ -9,7 +9,7 @@ import Foundation
 
 extension SettingsData {
     /// The global settings for source control
-    struct SourceControlPreferences: Codable {
+    struct SourceControlSettings: Codable {
         /// The general source control settings
         var general: SourceControlGeneral = .init()
         /// The source control git settings

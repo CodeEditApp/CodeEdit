@@ -11,7 +11,13 @@ import SwiftUI
 /// A struct for a preferences tab
 struct SettingsPage: Hashable, Identifiable {
     /// Default intializer
-    internal init(_ name: Name, baseColor: Color? = nil, icon: IconResource? = nil, hideName: Bool? = false, children: [SettingsPage] = []) {
+    internal init(
+        _ name: Name,
+        baseColor: Color? = nil,
+        icon: IconResource? = nil,
+        hideName: Bool? = false,
+        children: [SettingsPage] = []
+    ) {
         self.children = children
         self.name = name
         self.baseColor = baseColor ?? .red
@@ -30,7 +36,7 @@ struct SettingsPage: Hashable, Identifiable {
 
     /// A struct for a sidebar icon, with a base color and SF Symbol
     enum IconResource: Equatable, Hashable {
-         case system(_ name: String)
+        case system(_ name: String)
         case symbol(_ name: String)
         case asset(_ name: String)
     }

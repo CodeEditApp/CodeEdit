@@ -1,5 +1,5 @@
 //
-//  Account.swift
+//  SourceControlAccount.swift
 //  CodeEdit
 //
 //  Created by Austin Condiff on 4/6/23.
@@ -7,21 +7,39 @@
 
 import SwiftUI
 
-struct Account: Identifiable {
-    internal init(name: String, description: String, provider: Provider, serverURL: String) {
+struct SourceControlAccount: Codable, Identifiable, Hashable {
+    internal init(
+        id: String,
+        name: String,
+        description: String,
+        provider: Provider,
+        serverURL: String,
+        urlProtocol: Bool,
+        sshKey: String,
+        isTokenValid: Bool
+    ) {
+        self.id = id
         self.name = name
         self.description = description
         self.provider = provider
         self.serverURL = serverURL
+        self.urlProtocol = urlProtocol
+        self.sshKey = sshKey
+        self.isTokenValid = isTokenValid
     }
 
-    var id: String { name }
+    var id: String
     var name: String
     var description: String
     var provider: Provider
     var serverURL: String
+    // TODO: Should we use an enum instead of a boolean here:
+    // If true we use the HTTP protocol else if false we use SSH
+    var urlProtocol: Bool
+    var sshKey: String
+    var isTokenValid: Bool
 
-    enum Provider: CaseIterable, Identifiable {
+    enum Provider: Codable, CaseIterable, Identifiable {
         case bitbucketCloud
         case bitbucketServer
         case github

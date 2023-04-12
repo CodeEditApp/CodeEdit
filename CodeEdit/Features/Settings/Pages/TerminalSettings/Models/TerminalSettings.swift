@@ -10,7 +10,7 @@ import Foundation
 extension SettingsData {
 
     /// The global settings for the terminal emulator
-    struct TerminalPreferences: Codable {
+    struct TerminalSettings: Codable {
 
         /// If true terminal will use editor theme.
         var useEditorTheme: Bool = true

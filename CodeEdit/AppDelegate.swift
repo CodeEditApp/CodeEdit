@@ -137,10 +137,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 
     // MARK: - Open windows
 
-    @IBAction func openPreferences(_ sender: Any) {
-        preferencesWindowController.show()
-    }
-
     @IBAction private func openWelcome(_ sender: Any) {
         NSApp.openWindow(.welcome)
     }
@@ -209,102 +205,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         // This enables window restoring on normal quit (instead of only on force-quit).
         UserDefaults.standard.setValue(true, forKey: "NSQuitAlwaysKeepsWindows")
     }
-
-    // MARK: - Preferences
-    // TODO: Remove this once new Settings is complete
-    private lazy var preferencesWindowController: PreferencesWindowController = PreferencesWindowController(
-        panes: [
-            Preferences.Pane(
-                identifier: Preferences.PaneIdentifier("GeneralSettings"),
-                title: "General",
-                toolbarIcon: NSImage(systemSymbolName: "gearshape", accessibilityDescription: nil)!
-            ) {
-                GeneralPreferencesView()
-                    .environmentObject(updater)
-            },
-            Preferences.Pane(
-                identifier: Preferences.PaneIdentifier("Accounts"),
-                title: "Accounts",
-                toolbarIcon: NSImage(systemSymbolName: "at", accessibilityDescription: nil)!
-            ) {
-                AccountPreferencesView()
-            },
-            Preferences.Pane(
-                identifier: Preferences.PaneIdentifier("Behaviors"),
-                title: "Behaviors",
-                toolbarIcon: NSImage(systemSymbolName: "flowchart", accessibilityDescription: nil)!
-            ) {
-                PreferencesPlaceholderView()
-            },
-            Preferences.Pane(
-                identifier: Preferences.PaneIdentifier("Navigation"),
-                title: "Navigation",
-                toolbarIcon: NSImage(
-                    systemSymbolName: "arrow.triangle.turn.up.right.diamond",
-                    accessibilityDescription: nil
-                )!
-            ) {
-                PreferencesPlaceholderView()
-            },
-            Preferences.Pane(
-                identifier: Preferences.PaneIdentifier("Themes"),
-                title: "Themes",
-                toolbarIcon: NSImage(systemSymbolName: "paintbrush", accessibilityDescription: nil)!
-            ) {
-                ThemePreferencesView()
-            },
-            Preferences.Pane(
-                identifier: Preferences.PaneIdentifier("TextEditing"),
-                title: "Text Editing",
-                toolbarIcon: NSImage(systemSymbolName: "square.and.pencil", accessibilityDescription: nil)!
-            ) {
-                TextEditingPreferencesView()
-            },
-            Preferences.Pane(
-                identifier: Preferences.PaneIdentifier("Terminal"),
-                title: "Terminal",
-                toolbarIcon: NSImage(systemSymbolName: "terminal", accessibilityDescription: nil)!
-            ) {
-                TerminalPreferencesView()
-            },
-            Preferences.Pane(
-                identifier: Preferences.PaneIdentifier("KeyBindings"),
-                title: "Key Bindings",
-                toolbarIcon: NSImage(systemSymbolName: "keyboard", accessibilityDescription: nil)!
-            ) {
-                KeybindingsPreferencesView()
-            },
-            Preferences.Pane(
-                identifier: Preferences.PaneIdentifier("SourceControl"),
-                title: "Source Control",
-                toolbarIcon: NSImage.vault
-            ) {
-                SourceControlPreferencesView()
-            },
-            Preferences.Pane(
-                identifier: Preferences.PaneIdentifier("Components"),
-                title: "Components",
-                toolbarIcon: NSImage(systemSymbolName: "puzzlepiece", accessibilityDescription: nil)!
-            ) {
-                PreferencesPlaceholderView()
-            },
-            Preferences.Pane(
-                identifier: Preferences.PaneIdentifier("Locations"),
-                title: "Locations",
-                toolbarIcon: NSImage(systemSymbolName: "externaldrive", accessibilityDescription: nil)!
-            ) {
-                LocationsPreferencesView()
-            },
-            Preferences.Pane(
-                identifier: Preferences.PaneIdentifier("Advanced"),
-                title: "Advanced",
-                toolbarIcon: NSImage(systemSymbolName: "gearshape.2", accessibilityDescription: nil)!
-            ) {
-                PreferencesPlaceholderView()
-            }
-        ],
-        animated: false
-    )
 
     // MARK: NSDocumentController delegate
 

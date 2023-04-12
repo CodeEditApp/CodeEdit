@@ -10,7 +10,7 @@ import Foundation
 extension SettingsData {
 
     /// The global settings for text editing
-    struct AccountsPreferences: Codable {
+    struct AccountsSettings: Codable {
         /// An integer indicating how many spaces a `tab` will generate
         var sourceControlAccounts: GitAccounts = .init()
 
@@ -29,7 +29,7 @@ extension SettingsData {
 
     struct GitAccounts: Codable {
         /// This id will store the account name as the identifiable
-        var gitAccount: [SourceControlAccounts] = []
+        var gitAccounts: [SourceControlAccount] = []
 
         var sshKey: String = ""
         /// Default initializer
@@ -37,7 +37,7 @@ extension SettingsData {
         /// Explicit decoder init for setting default values when key is not present in `JSON`
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
-            self.gitAccount = try container.decodeIfPresent([SourceControlAccounts].self, forKey: .gitAccount) ?? []
+            self.gitAccounts = try container.decodeIfPresent([SourceControlAccount].self, forKey: .gitAccounts) ?? []
             self.sshKey = try container.decodeIfPresent(String.self, forKey: .sshKey) ?? ""
         }
     }

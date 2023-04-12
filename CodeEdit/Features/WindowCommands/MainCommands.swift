@@ -24,15 +24,10 @@ struct MainCommands: Commands {
         }
 
         CommandGroup(replacing: .appSettings) {
-            Button("Preferences...") {
-                NSApp.sendAction(#selector(AppDelegate.openPreferences(_:)), to: nil, from: nil)
-            }
-            .keyboardShortcut(",")
-
             Button("Settings...") {
                 openWindow(id: "settings")
             }
-            .keyboardShortcut(",", modifiers: [.command, .option, .hidden])
+            .keyboardShortcut(",")
         }
     }
 }

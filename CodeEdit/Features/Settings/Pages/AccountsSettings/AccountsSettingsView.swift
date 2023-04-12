@@ -11,28 +11,20 @@ struct AccountsSettingsView: View {
     @ObservedObject
     private var prefs: Settings = .shared
 
-    @State private var accounts: [Account]
     @State private var addAccountSheetPresented: Bool = false
-    @State private var selectedProvider: Account.Provider?
-
-    init() {
-        self.accounts = [
-            Account(name: "austincondiff", description: "GitHub", provider: .github, serverURL: ""),
-            Account(name: "austin.condiff@mycompany.com", description: "GitLab", provider: .gitlab, serverURL: ""),
-            Account(
-                name: "austin.condiff@acme.com",
-                description: "BitBucket Server",
-                provider: .bitbucketServer,
-                serverURL: "https://git.acme.com"
-            )
-        ]
-    }
+    @State private var selectedProvider: SourceControlAccount.Provider?
 
     var body: some View {
         SettingsForm {
             Section {
-                ForEach($accounts) { $account in
-                    AccountsSettingsAccountLink($account)
+                if $prefs.preferences.accounts.sourceControlAccounts.gitAccounts.isEmpty {
+                    Text("No accounts")
+                        .foregroundColor(.secondary)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                } else {
+                    ForEach($prefs.preferences.accounts.sourceControlAccounts.gitAccounts) { $account in
+                        AccountsSettingsAccountLink($account)
+                    }
                 }
             } footer: {
                 HStack {
@@ -59,7 +51,11 @@ struct AccountsSettingsView: View {
         VStack(spacing: 20) {
             Text("This git client is currently not supported.")
             HStack {
-                Button("Close") { selectedProvider = nil }
+                Button("Close") {
+                    addAccountSheetPresented.toggle()
+                    selectedProvider = nil
+
+                }
                     .buttonStyle(.borderedProminent)
             }
             .frame(maxWidth: .infinity, alignment: .trailing)
@@ -69,9 +65,9 @@ struct AccountsSettingsView: View {
 }
 
 struct AccountsSettingsAccountLink: View {
-    @Binding var account: Account
+    @Binding var account: SourceControlAccount
 
-    init(_ account: Binding<Account>) {
+    init(_ account: Binding<SourceControlAccount>) {
         _account = account
     }
 

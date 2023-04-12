@@ -10,9 +10,9 @@ import SwiftUI
 struct AccountSelectionView: View {
     @Environment(\.dismiss) var dismiss
 
-    @Binding var selectedProvider: Account.Provider?
+    @Binding var selectedProvider: SourceControlAccount.Provider?
 
-    var gitProviders = Account.Provider.allCases
+    var gitProviders = SourceControlAccount.Provider.allCases
 
     var body: some View {
         VStack(spacing: 0) {

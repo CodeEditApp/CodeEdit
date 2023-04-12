@@ -13,8 +13,8 @@ import SwiftUI
 ///
 /// A `JSON` representation is persisted in `~/Library/Application Support/CodeEdit/preference.json`.
 /// - Attention: Don't use `UserDefaults` for persisting user accessible settings.
-///  If a further setting is needed, extend the struct like ``GeneralPreferences``,
-///  ``ThemePreferences``,  or ``TerminalPreferences`` does.
+///  If a further setting is needed, extend the struct like ``GeneralSettings``,
+///  ``ThemeSettings``,  or ``TerminalSettings`` does.
 ///
 /// - Note: Also make sure to implement the ``init(from:)`` initializer, decoding
 ///  all properties with
@@ -23,25 +23,25 @@ import SwiftUI
 struct SettingsData: Codable {
 
     /// The general global setting
-    var general: GeneralPreferences = .init()
+    var general: GeneralSettings = .init()
 
     /// The global settings for text editing
-    var accounts: AccountsPreferences = .init()
+    var accounts: AccountsSettings = .init()
 
     /// The global settings for themes
-    var theme: ThemePreferences = .init()
+    var theme: ThemeSettings = .init()
 
     /// The global settings for the terminal emulator
-    var terminal: TerminalPreferences = .init()
+    var terminal: TerminalSettings = .init()
 
     /// The global settings for text editing
-    var textEditing: TextEditingPreferences = .init()
+    var textEditing: TextEditingSettings = .init()
 
     /// The global settings for text editing
-    var sourceControl: SourceControlPreferences = .init()
+    var sourceControl: SourceControlSettings = .init()
 
     /// The global settings for keybindings
-    var keybindings: KeybindingsPreferences = .init()
+    var keybindings: KeybindingsSettings = .init()
 
     /// Default initializer
     init() {}
@@ -49,15 +49,15 @@ struct SettingsData: Codable {
     /// Explicit decoder init for setting default values when key is not present in `JSON`
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.general = try container.decodeIfPresent(GeneralPreferences.self, forKey: .general) ?? .init()
-        self.accounts = try container.decodeIfPresent(AccountsPreferences.self, forKey: .accounts) ?? .init()
-        self.theme = try container.decodeIfPresent(ThemePreferences.self, forKey: .theme) ?? .init()
-        self.terminal = try container.decodeIfPresent(TerminalPreferences.self, forKey: .terminal) ?? .init()
-        self.textEditing = try container.decodeIfPresent(TextEditingPreferences.self, forKey: .textEditing) ?? .init()
+        self.general = try container.decodeIfPresent(GeneralSettings.self, forKey: .general) ?? .init()
+        self.accounts = try container.decodeIfPresent(AccountsSettings.self, forKey: .accounts) ?? .init()
+        self.theme = try container.decodeIfPresent(ThemeSettings.self, forKey: .theme) ?? .init()
+        self.terminal = try container.decodeIfPresent(TerminalSettings.self, forKey: .terminal) ?? .init()
+        self.textEditing = try container.decodeIfPresent(TextEditingSettings.self, forKey: .textEditing) ?? .init()
         self.sourceControl = try container.decodeIfPresent(
-            SourceControlPreferences.self,
+            SourceControlSettings.self,
             forKey: .sourceControl
         ) ?? .init()
-        self.keybindings = try container.decodeIfPresent(KeybindingsPreferences.self, forKey: .keybindings) ?? .init()
+        self.keybindings = try container.decodeIfPresent(KeybindingsSettings.self, forKey: .keybindings) ?? .init()
     }
 }

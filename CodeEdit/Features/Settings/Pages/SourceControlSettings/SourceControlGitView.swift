@@ -21,12 +21,8 @@ struct SourceControlGitView: View {
                 gitEmail
             }
             Section {
-                ignoredFilesText
-            }
-            Section {
                 preferToRebaseWhenPulling
                 showMergeCommitsInPerFileLog
-                ignoredFiles
             }
         }
     }
@@ -41,16 +37,6 @@ private extension SourceControlGitView {
         TextField("Author Email", text: $prefs.preferences.sourceControl.git.authorEmail)
     }
 
-    private var ignoredFilesText: some View {
-        LabeledContent("Ignored files") {
-            Button("Select files...") {
-                // TODO: Implement a view (that works) for this
-            }
-            .disabled(true)
-            .help("Not implemented yet")
-        }
-    }
-
     private var preferToRebaseWhenPulling: some View {
         Toggle(
             "Prefer to rebase when pulling",
@@ -63,27 +49,6 @@ private extension SourceControlGitView {
             "Show merge commits in per-file log",
             isOn: $prefs.preferences.sourceControl.git.showMergeCommitsPerFileLog
         )
-    }
-
-    @ViewBuilder
-    private var ignoredFiles: some View {
-        List(
-            $prefs.preferences.sourceControl.git.ignoredFiles,
-            selection: $ignoredFileSelection
-        ) { ignoredFile in
-            IgnoredFileView(ignoredFile: ignoredFile)
-        }
-        .overlay(Group {
-            if prefs.preferences.sourceControl.git.ignoredFiles.isEmpty {
-                Text("No Ignored Files")
-                    .foregroundColor(.secondary)
-                    .font(.system(size: 11))
-            }
-        })
-        .frame(height: 150)
-        PreferencesToolbar(height: 22) {
-            bottomToolbar
-        }
     }
 
     private var bottomToolbar: some View {
