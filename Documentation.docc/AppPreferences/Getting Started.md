@@ -9,14 +9,13 @@ The Preferences can be accessed from everywhere in the app like this:
 ```swift
 import Settings
 
-@StateObject
-private var prefs: SettingsModel = .shared
+@AppSettings var settings
 ```
 
 Since it is a `@StateObject` we can be sure to always get up-to-date information and we can easily bind to the individual properties like this:
 
 ```swift
-Toggle("Enable some Feature", value: $prefs.preferences.someFeature.isEnabled)
+Toggle("Enable some Feature", value: $settings.someFeature.isEnabled)
 ```
 
 ## Creating a New Preference

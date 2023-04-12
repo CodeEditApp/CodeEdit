@@ -23,8 +23,7 @@ struct AccountsSettingsSigninView: View {
     @State var username = ""
     @State var personalAccessToken = ""
 
-    @StateObject
-    private var prefs: Settings = .shared
+    @AppSettings var settings
 
     private let keychain = CodeEditKeychain()
 
@@ -184,7 +183,7 @@ struct AccountsSettingsSigninView: View {
     }
 
     private func handleGitRequestSuccess() {
-        let gitAccounts = prefs.preferences.accounts.sourceControlAccounts.gitAccounts
+        let gitAccounts = settings.accounts.sourceControlAccounts.gitAccounts
         let providerLink = provider.baseURL?.absoluteString ?? server
 
         if gitAccounts.contains(
@@ -195,7 +194,7 @@ struct AccountsSettingsSigninView: View {
         ) {
             print("Account with the same username and provider already exists!")
         } else {
-            prefs.preferences.accounts.sourceControlAccounts.gitAccounts.append(
+            settings.accounts.sourceControlAccounts.gitAccounts.append(
                 SourceControlAccount(
                     id: "\(server)_\(username.lowercased())",
                     name: username,

@@ -9,8 +9,7 @@ import SwiftUI
 
 /// A view that implements the `Text Editing` settings page
 struct TextEditingSettingsView: View {
-    @StateObject
-    private var prefs: Settings = .shared
+    @AppSettings var settings
 
     var body: some View {
         SettingsForm {
@@ -37,27 +36,27 @@ private extension TextEditingSettingsView {
 
     @ViewBuilder
     private var fontSelector: some View {
-        Picker("Font", selection: $prefs.preferences.textEditing.font.customFont) {
+        Picker("Font", selection: $settings.textEditing.font.customFont) {
             Text("System Font")
                 .tag(false)
             Text("Custom")
                 .tag(true)
         }
-        if prefs.preferences.textEditing.font.customFont {
+        if settings.textEditing.font.customFont {
             FontPicker(
-                "\(prefs.preferences.textEditing.font.name) \(prefs.preferences.textEditing.font.size)",
-                name: $prefs.preferences.textEditing.font.name, size: $prefs.preferences.textEditing.font.size
+                "\(settings.textEditing.font.name) \(settings.textEditing.font.size)",
+                name: $settings.textEditing.font.name, size: $settings.textEditing.font.size
             )
         }
     }
 
     private var fontSizeSelector: some View {
         LabeledContent("Font Size") {
-            TextField("", value: $prefs.preferences.textEditing.font.size, formatter: fontSizeFormatter)
+            TextField("", value: $settings.textEditing.font.size, formatter: fontSizeFormatter)
                 .labelsHidden()
             Stepper(
                 "",
-                value: $prefs.preferences.textEditing.font.size,
+                value: $settings.textEditing.font.size,
                 in: 1...288,
                 step: 1
             )
@@ -66,31 +65,31 @@ private extension TextEditingSettingsView {
     }
 
     private var autocompleteBraces: some View {
-        Toggle(isOn: $prefs.preferences.textEditing.autocompleteBraces) {
+        Toggle(isOn: $settings.textEditing.autocompleteBraces) {
             Text("Autocomplete braces")
             Text("Automatically insert closing braces (\"}\")")
         }
     }
 
     private var enableTypeOverCompletion: some View {
-        Toggle("Enable type-over completion", isOn: $prefs.preferences.textEditing.enableTypeOverCompletion)
+        Toggle("Enable type-over completion", isOn: $settings.textEditing.enableTypeOverCompletion)
     }
 
     private var wrapLinesToEditorWidth: some View {
-        Toggle("Wrap lines to editor width", isOn: $prefs.preferences.textEditing.wrapLinesToEditorWidth)
+        Toggle("Wrap lines to editor width", isOn: $settings.textEditing.wrapLinesToEditorWidth)
     }
 
     private var lineHeight: some View {
         LabeledContent("Line Height") {
             TextField(
                 "",
-                value: $prefs.preferences.textEditing.lineHeightMultiple,
+                value: $settings.textEditing.lineHeightMultiple,
                 formatter: lineHeightFormatter
             )
             .labelsHidden()
             Stepper(
                 "",
-                value: $prefs.preferences.textEditing.lineHeightMultiple,
+                value: $settings.textEditing.lineHeightMultiple,
                 in: 0.75...2.0,
                 step: 0.05
             )
@@ -100,9 +99,9 @@ private extension TextEditingSettingsView {
 
     private var defaultTabWidth: some View {
         LabeledContent("Default Tab Width") {
-            TextField("", value: $prefs.preferences.textEditing.defaultTabWidth, formatter: tabWidthFormatter)
+            TextField("", value: $settings.textEditing.defaultTabWidth, formatter: tabWidthFormatter)
                 .labelsHidden()
-            Stepper("", value: $prefs.preferences.textEditing.defaultTabWidth, in: 1...8)
+            Stepper("", value: $settings.textEditing.defaultTabWidth, in: 1...8)
                 .labelsHidden()
             Text("spaces")
                 .fixedSize(horizontal: true, vertical: false)

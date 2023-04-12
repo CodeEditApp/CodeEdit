@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct AccountsSettingsView: View {
-    @ObservedObject
-    private var prefs: Settings = .shared
+    @AppSettings var settings
 
     @State private var addAccountSheetPresented: Bool = false
     @State private var selectedProvider: SourceControlAccount.Provider?
@@ -17,12 +16,12 @@ struct AccountsSettingsView: View {
     var body: some View {
         SettingsForm {
             Section {
-                if $prefs.preferences.accounts.sourceControlAccounts.gitAccounts.isEmpty {
+                if $settings.accounts.sourceControlAccounts.gitAccounts.isEmpty {
                     Text("No accounts")
                         .foregroundColor(.secondary)
                         .frame(maxWidth: .infinity, alignment: .center)
                 } else {
-                    ForEach($prefs.preferences.accounts.sourceControlAccounts.gitAccounts) { $account in
+                    ForEach($settings.accounts.sourceControlAccounts.gitAccounts) { $account in
                         AccountsSettingsAccountLink($account)
                     }
                 }

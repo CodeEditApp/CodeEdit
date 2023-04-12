@@ -19,8 +19,7 @@ struct TerminalSettingsView: View {
         }
     }
 
-    @StateObject
-    private var prefs: Settings = .shared
+    @AppSettings var settings
 }
 
 private extension TerminalSettingsView {
@@ -47,7 +46,7 @@ private extension TerminalSettingsView {
 
     @ViewBuilder
     private var shellSelector: some View {
-        Picker("Shell", selection: $prefs.preferences.terminal.shell) {
+        Picker("Shell", selection: $settings.terminal.shell) {
             Text("System Default")
                 .tag(SettingsData.TerminalShell.system)
             Divider()
@@ -59,7 +58,7 @@ private extension TerminalSettingsView {
     }
 
     private var cursorStyle: some View {
-        Picker("Terminal Cursor Style", selection: $prefs.preferences.terminal.cursorStyle) {
+        Picker("Terminal Cursor Style", selection: $settings.terminal.cursorStyle) {
             Text("Block")
                 .tag(SettingsData.TerminalCursorStyle.block)
             Text("Underline")
@@ -71,30 +70,30 @@ private extension TerminalSettingsView {
 
     private var cursorBlink: some View {
         Group {
-            Toggle("Blink Cursor", isOn: $prefs.preferences.terminal.cursorBlink)
+            Toggle("Blink Cursor", isOn: $settings.terminal.cursorBlink)
         }
     }
 
     private var optionAsMetaToggle: some View {
         Group {
-            Toggle("Use \"Option\" key as \"Meta\"", isOn: $prefs.preferences.terminal.optionAsMeta)
+            Toggle("Use \"Option\" key as \"Meta\"", isOn: $settings.terminal.optionAsMeta)
         }
     }
 
     @ViewBuilder
     private var fontSelector: some View {
         Group {
-            Picker("Font", selection: $prefs.preferences.terminal.font.customFont) {
+            Picker("Font", selection: $settings.terminal.font.customFont) {
                 Text("System Font")
                     .tag(false)
                 Text("Custom")
                     .tag(true)
             }
         }
-        if prefs.preferences.terminal.font.customFont {
+        if settings.terminal.font.customFont {
             FontPicker(
-                "\(prefs.preferences.terminal.font.name) \(prefs.preferences.terminal.font.size)",
-                name: $prefs.preferences.terminal.font.name, size: $prefs.preferences.terminal.font.size
+                "\(settings.terminal.font.name) \(settings.terminal.font.size)",
+                name: $settings.terminal.font.name, size: $settings.terminal.font.size
             )
         }
     }

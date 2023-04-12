@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct AccountsSettingsDetailsView: View {
-    @ObservedObject
-    private var prefs: Settings = .shared
+    @AppSettings var settings
 
     @Binding var account: SourceControlAccount
 
@@ -46,7 +45,7 @@ struct AccountsSettingsDetailsView: View {
                     }
                     .pickerStyle(.radioGroup)
 
-                    Picker("SSH Key", selection: $prefs.preferences.accounts.sourceControlAccounts.sshKey) {
+                    Picker("SSH Key", selection: $settings.accounts.sourceControlAccounts.sshKey) {
                         Text("None")
                         Text("Create New...")
                         Text("Choose...")

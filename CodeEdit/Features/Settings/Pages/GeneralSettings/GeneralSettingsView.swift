@@ -16,8 +16,7 @@ struct GeneralSettingsView: View {
     @EnvironmentObject
     var updater: SoftwareUpdater
 
-    @StateObject
-    private var prefs: Settings = .shared
+    @AppSettings var settings
 
     @State
     private var openInCodeEdit: Bool = true
@@ -76,7 +75,7 @@ private extension GeneralSettingsView {
     // MARK: - Sections
 
     var appearance: some View {
-        Picker("Appearance", selection: $prefs.preferences.general.appAppearance) {
+        Picker("Appearance", selection: $settings.general.appAppearance) {
             Text("System")
                 .tag(SettingsData.Appearances.system)
             Divider()
@@ -85,14 +84,14 @@ private extension GeneralSettingsView {
             Text("Dark")
                 .tag(SettingsData.Appearances.dark)
         }
-        .onChange(of: prefs.preferences.general.appAppearance) { tag in
+        .onChange(of: settings.general.appAppearance) { tag in
             tag.applyAppearance()
         }
     }
 
     // TODO: Implement reflecting Show Issues preference and remove disabled modifier
     var showIssues: some View {
-        Picker("Show Issues", selection: $prefs.preferences.general.showIssues) {
+        Picker("Show Issues", selection: $settings.general.showIssues) {
             Text("Show Inline")
                 .tag(SettingsData.Issues.inline)
             Text("Show Minimized")
@@ -101,12 +100,12 @@ private extension GeneralSettingsView {
     }
 
     var showLiveIssues: some View {
-        Toggle("Show Live Issues", isOn: $prefs.preferences.general.showLiveIssues)
+        Toggle("Show Live Issues", isOn: $settings.general.showLiveIssues)
     }
 
     var fileExtensions: some View {
         Group {
-            Picker("File Extensions", selection: $prefs.preferences.general.fileExtensionsVisibility) {
+            Picker("File Extensions", selection: $settings.general.fileExtensionsVisibility) {
                 Text("Hide all")
                     .tag(SettingsData.FileExtensionsVisibility.hideAll)
                 Text("Show all")
@@ -117,19 +116,19 @@ private extension GeneralSettingsView {
                 Text("Hide only")
                     .tag(SettingsData.FileExtensionsVisibility.hideOnly)
             }
-            if case .showOnly = prefs.preferences.general.fileExtensionsVisibility {
-                SettingsTextEditor(text: $prefs.preferences.general.shownFileExtensions.string)
+            if case .showOnly = settings.general.fileExtensionsVisibility {
+                SettingsTextEditor(text: $settings.general.shownFileExtensions.string)
                     .frame(height: textEditorHeight)
             }
-            if case .hideOnly = prefs.preferences.general.fileExtensionsVisibility {
-                SettingsTextEditor(text: $prefs.preferences.general.hiddenFileExtensions.string)
+            if case .hideOnly = settings.general.fileExtensionsVisibility {
+                SettingsTextEditor(text: $settings.general.hiddenFileExtensions.string)
                 .frame(height: textEditorHeight)
             }
         }
     }
 
     var fileIconStyle: some View {
-        Picker("File Icon Style", selection: $prefs.preferences.general.fileIconStyle) {
+        Picker("File Icon Style", selection: $settings.general.fileIconStyle) {
             Text("Color")
                 .tag(SettingsData.FileIconStyle.color)
             Text("Monochrome")
@@ -139,7 +138,7 @@ private extension GeneralSettingsView {
     }
 
     var tabBarStyle: some View {
-        Picker("Tab Bar Style", selection: $prefs.preferences.general.tabBarStyle) {
+        Picker("Tab Bar Style", selection: $settings.general.tabBarStyle) {
             Text("Xcode")
                 .tag(SettingsData.TabBarStyle.xcode)
             Text("Native")
@@ -149,7 +148,7 @@ private extension GeneralSettingsView {
     }
 
     var reopenBehavior: some View {
-        Picker("Reopen Behavior", selection: $prefs.preferences.general.reopenBehavior) {
+        Picker("Reopen Behavior", selection: $settings.general.reopenBehavior) {
             Text("Welcome Screen")
                 .tag(SettingsData.ReopenBehavior.welcome)
             Divider()
@@ -163,7 +162,7 @@ private extension GeneralSettingsView {
     var afterWindowsCloseBehaviour: some View {
         Picker(
             "After the last window is closed",
-            selection: $prefs.preferences.general.reopenWindowAfterClose
+            selection: $settings.general.reopenWindowAfterClose
         ) {
             Text("Do nothing")
                 .tag(SettingsData.ReopenWindowBehavior.doNothing)
@@ -176,7 +175,7 @@ private extension GeneralSettingsView {
     }
 
     var projectNavigatorSize: some View {
-        Picker("Project Navigator Size", selection: $prefs.preferences.general.projectNavigatorSize) {
+        Picker("Project Navigator Size", selection: $settings.general.projectNavigatorSize) {
             Text("Small")
                 .tag(SettingsData.ProjectNavigatorSize.small)
             Text("Medium")
@@ -187,7 +186,7 @@ private extension GeneralSettingsView {
     }
 
     var findNavigatorDetail: some View {
-        Picker("Find Navigator Detail", selection: $prefs.preferences.general.findNavigatorDetail) {
+        Picker("Find Navigator Detail", selection: $settings.general.findNavigatorDetail) {
             ForEach(SettingsData.NavigatorDetail.allCases, id: \.self) { tag in
                 Text(tag.label).tag(tag)
             }
@@ -196,7 +195,7 @@ private extension GeneralSettingsView {
 
     // TODO: Implement reflecting Issue Navigator Detail preference and remove disabled modifier
     var issueNavigatorDetail: some View {
-        Picker("Issue Navigator Detail", selection: $prefs.preferences.general.issueNavigatorDetail) {
+        Picker("Issue Navigator Detail", selection: $settings.general.issueNavigatorDetail) {
             ForEach(SettingsData.NavigatorDetail.allCases, id: \.self) { tag in
                 Text(tag.label).tag(tag)
             }
@@ -284,7 +283,7 @@ private extension GeneralSettingsView {
     var autoSave: some View {
         Toggle(
             "Automatically save changes to disk",
-            isOn: $prefs.preferences.general.isAutoSaveOn
+            isOn: $settings.general.isAutoSaveOn
         )
     }
 
@@ -345,7 +344,7 @@ private extension GeneralSettingsView {
     }
 
     var revealFileOnFocusChangeToggle: some View {
-        Toggle("Automatically reveal in project navigator", isOn: $prefs.preferences.general.revealFileOnFocusChange)
+        Toggle("Automatically reveal in project navigator", isOn: $settings.general.revealFileOnFocusChange)
     }
 
     // MARK: - Formatters

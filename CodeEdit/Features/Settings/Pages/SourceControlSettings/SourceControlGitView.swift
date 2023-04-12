@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct SourceControlGitView: View {
-    @StateObject
-    private var prefs: Settings = .shared
+    @AppSettings var settings
 
     @State
     var ignoredFileSelection: IgnoredFiles.ID?
@@ -30,24 +29,24 @@ struct SourceControlGitView: View {
 
 private extension SourceControlGitView {
     private var gitAuthorName: some View {
-        TextField("Author Name", text: $prefs.preferences.sourceControl.git.authorName)
+        TextField("Author Name", text: $settings.sourceControl.git.authorName)
     }
 
     private var gitEmail: some View {
-        TextField("Author Email", text: $prefs.preferences.sourceControl.git.authorEmail)
+        TextField("Author Email", text: $settings.sourceControl.git.authorEmail)
     }
 
     private var preferToRebaseWhenPulling: some View {
         Toggle(
             "Prefer to rebase when pulling",
-            isOn: $prefs.preferences.sourceControl.git.preferRebaseWhenPulling
+            isOn: $settings.sourceControl.git.preferRebaseWhenPulling
         )
     }
 
     private var showMergeCommitsInPerFileLog: some View {
         Toggle(
             "Show merge commits in per-file log",
-            isOn: $prefs.preferences.sourceControl.git.showMergeCommitsPerFileLog
+            isOn: $settings.sourceControl.git.showMergeCommitsPerFileLog
         )
     }
 

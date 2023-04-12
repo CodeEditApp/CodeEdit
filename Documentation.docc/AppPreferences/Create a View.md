@@ -25,8 +25,7 @@ struct GeneralPreferencesView: View {
         }
     }
 
-    @StateObject
-    private var prefs: SettingsModel = .shared
+    @AppSettings var settings
 }
 ```
 
@@ -48,7 +47,7 @@ private extension GeneralPreferencesView {
     // MARK: - Preferences View
     
     private var yourOption: some View {
-        Toggle("Your text", isOn: $prefs.preferences.general.yourNewOption)
+        Toggle("Your text", isOn: $settings.general.yourNewOption)
     }
 }
 ```
@@ -151,7 +150,7 @@ private extension YourSectionPreferencesView {
     // MARK: - Preferences Views
 
     private var yourToggle: some View {
-        Toggle("Your option", isOn: $prefs.preferences.general.yourNewOption)
+        Toggle("Your option", isOn: $settings.general.yourNewOption)
     }
 }
 ```

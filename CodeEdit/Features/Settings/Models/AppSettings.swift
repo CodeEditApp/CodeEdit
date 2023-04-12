@@ -18,7 +18,12 @@ struct AppSettings: DynamicProperty {
     }
 
     var wrappedValue: SettingsData {
-        prefs.preferences
+        get {
+            prefs.preferences
+        }
+        nonmutating set {
+            prefs.preferences = newValue
+        }
     }
 
     var projectedValue: Binding<SettingsData> {

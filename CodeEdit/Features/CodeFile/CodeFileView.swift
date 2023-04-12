@@ -16,8 +16,7 @@ struct CodeFileView: View {
     @ObservedObject
     private var codeFile: CodeFileDocument
 
-    @ObservedObject
-    private var prefs: Settings = .shared
+    @AppSettings var settings
 
     @Environment(\.colorScheme)
     private var colorScheme
@@ -72,24 +71,24 @@ struct CodeFileView: View {
             language: getLanguage(),
             theme: $selectedTheme.editor.editorTheme,
             font: $font,
-            tabWidth: $prefs.preferences.textEditing.defaultTabWidth,
-            lineHeight: $prefs.preferences.textEditing.lineHeightMultiple,
-            wrapLines: $prefs.preferences.textEditing.wrapLinesToEditorWidth,
+            tabWidth: $settings.textEditing.defaultTabWidth,
+            lineHeight: $settings.textEditing.lineHeightMultiple,
+            wrapLines: $settings.textEditing.wrapLinesToEditorWidth,
             cursorPosition: $codeFile.cursorPosition,
-            useThemeBackground: prefs.preferences.theme.useThemeBackground,
+            useThemeBackground: settings.theme.useThemeBackground,
             contentInsets: edgeInsets.nsEdgeInsets,
             isEditable: isEditable
         )
         .id(codeFile.fileURL)
         .background {
             if colorScheme == .dark {
-                if prefs.preferences.theme.selectedTheme == prefs.preferences.theme.selectedLightTheme {
+                if settings.theme.selectedTheme == settings.theme.selectedLightTheme {
                     Color.white
                 } else {
                     EffectView(.underPageBackground)
                 }
             } else {
-                if prefs.preferences.theme.selectedTheme == prefs.preferences.theme.selectedDarkTheme {
+                if settings.theme.selectedTheme == settings.theme.selectedDarkTheme {
                     Color.black
                 } else {
                     EffectView(.contentBackground)
@@ -104,13 +103,13 @@ struct CodeFileView: View {
             self.selectedTheme = theme
         }
         .onChange(of: colorScheme) { newValue in
-            if prefs.preferences.theme.mirrorSystemAppearance {
+            if settings.theme.mirrorSystemAppearance {
                 ThemeModel.shared.selectedTheme = newValue == .dark
                     ? ThemeModel.shared.selectedDarkTheme!
                     : ThemeModel.shared.selectedLightTheme!
             }
         }
-        .onChange(of: prefs.preferences.textEditing.font) { _ in
+        .onChange(of: settings.textEditing.font) { _ in
             font = Settings.shared.preferences.textEditing.font.current()
         }
     }
