@@ -51,6 +51,12 @@ struct SettingsView: View {
                 }
             }
             .navigationSplitViewColumnWidth(215)
+            .safeAreaInset(edge: .top, spacing: 0) {
+                List {}
+                    .frame(height: 35)
+                    .searchable(text: $searchText, placement: .sidebar, prompt: "Search")
+                    .scrollDisabled(true)
+            }
 //            .safeAreaInset(edge: .top) {
 //                TextField("Search", text: $searchText, prompt: Text("Search"))
 //                    .textFieldStyle(.roundedBorder)
@@ -95,7 +101,7 @@ struct SettingsView: View {
                 model.showingDetails = false
             }
         }
-        .searchable(text: $searchText, placement: .sidebar, prompt: "Search")
+
         .navigationTitle(selectedPage.name.rawValue)
         .toolbar {
             ToolbarItem(placement: .navigation) {
