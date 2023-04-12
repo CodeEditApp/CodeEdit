@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-// swiftlint:disable for_where
 struct AccountPreferencesView: View {
     @StateObject
     private var prefs: AppPreferencesModel = .shared
@@ -167,11 +166,9 @@ struct AccountPreferencesView: View {
     private func removeSourceControlAccount(selectedAccountId: String) {
         var gitAccounts = prefs.preferences.accounts.sourceControlAccounts.gitAccount
 
-        for account in gitAccounts {
-            if account.id == selectedAccountId {
-                let index = gitAccounts.firstIndex(of: account)
-                gitAccounts.remove(at: index ?? 0)
-            }
+        for account in gitAccounts where account.id == selectedAccountId {
+            let index = gitAccounts.firstIndex(of: account)
+            gitAccounts.remove(at: index ?? 0)
         }
     }
 
