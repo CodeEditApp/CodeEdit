@@ -32,21 +32,24 @@ struct AccountSelectionView: View {
                         }
                     }
                     .padding(-10)
+                } footer: {
+                    HStack {
+                        Spacer()
+                        Button {
+                            dismiss()
+                        } label: {
+                            Text("Cancel")
+                                .padding(.horizontal)
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .controlSize(.large)
+                    }
+                    .padding(.top, 10)
                 }
             }
             .formStyle(.grouped)
-
-            Divider()
-
-            HStack {
-                Button("Cancel") {
-                    dismiss()
-                }
-                .buttonStyle(.borderedProminent)
-            }
-            .padding(20)
-            .frame(maxWidth: .infinity, alignment: .trailing)
+            .scrollDisabled(true)
         }
-        .frame(width: 400)
+        .frame(width: 300)
     }
 }
