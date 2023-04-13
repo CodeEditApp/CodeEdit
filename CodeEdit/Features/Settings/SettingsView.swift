@@ -122,4 +122,3 @@ class SettingsViewModel: ObservableObject {
     @Published var showingDetails: Bool = false
     @Published var scrolledToTop: Bool = false
 }
-

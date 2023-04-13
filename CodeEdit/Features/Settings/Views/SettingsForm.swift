@@ -10,6 +10,7 @@ import Introspect
 
 struct SettingsForm<Content: View>: View {
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.controlActiveState) private var activeState
     @EnvironmentObject var model: SettingsViewModel
     @ViewBuilder var content: Content
 
@@ -30,9 +31,13 @@ struct SettingsForm<Content: View>: View {
                     )
                     .onPreferenceChange(ViewOffsetKey.self) {
                         if $0 <= -20.0 && !model.scrolledToTop {
-                            model.scrolledToTop = true
+                            withAnimation {
+                                model.scrolledToTop = true
+                            }
                         } else if $0 > -20.0 && model.scrolledToTop {
-                            model.scrolledToTop = false
+                            withAnimation {
+                                model.scrolledToTop = false
+                            }
                         }
                     }
             }
@@ -44,17 +49,26 @@ struct SettingsForm<Content: View>: View {
         .formStyle(.grouped)
         .coordinateSpace(name: "scroll")
         .safeAreaInset(edge: .top, spacing: -50) {
-            if !model.scrolledToTop {
-                EffectView(.menu)
-                    .shadow(
-                        color: .black.opacity(colorScheme == .dark ? 1 : 0.2),
-                        radius: 0.33,
-                        x: 0,
-                        y: 0.5
+            EffectView(.menu)
+                .opacity(!model.scrolledToTop ? 1 : 0)
+                .transaction { transaction in
+                    transaction.animation = nil
+                }
+                .overlay(alignment: .bottom) {
+                    LinearGradient(
+                        gradient: Gradient(
+                            colors: [.black.opacity(colorScheme == .dark ? 1 : 0.17), .black.opacity(0)]
+                        ),
+                        startPoint: .top,
+                        endPoint: .bottom
                     )
-                    .ignoresSafeArea()
-                    .frame(height: 0)
-            }
+                    .frame(height: colorScheme == .dark || activeState == .inactive ? 1 : 2)
+                    .padding(.bottom, colorScheme == .dark || activeState == .inactive ? -1 : -2)
+                    .opacity(!model.scrolledToTop ? 1 : 0)
+                    .transition(.opacity)
+                }
+                .ignoresSafeArea()
+                .frame(height: 0)
         }
     }
 }
