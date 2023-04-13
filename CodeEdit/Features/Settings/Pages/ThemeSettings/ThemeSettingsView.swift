@@ -29,6 +29,38 @@ struct ThemeSettingsView: View {
         case dark = "Dark Appearance"
     }
 
+    func getThemeActive (_ theme: Theme) -> Bool {
+        return settings.theme.mirrorSystemAppearance
+        ? selectedAppearance == .dark
+        ? themeModel.selectedDarkTheme == theme
+        : selectedAppearance == .light
+            ? themeModel.selectedLightTheme == theme
+            : themeModel.selectedTheme == theme
+        : themeModel.selectedTheme == theme
+    }
+
+    func activateTheme (_ theme: Theme) {
+        if settings.theme.mirrorSystemAppearance {
+            if selectedAppearance == .dark {
+                themeModel.selectedDarkTheme = theme
+            } else if selectedAppearance == .light {
+                themeModel.selectedLightTheme = theme
+            }
+            if (selectedAppearance == .dark && colorScheme == .dark)
+                || (selectedAppearance == .light && colorScheme == .light) {
+                themeModel.selectedTheme = theme
+            }
+        } else {
+            themeModel.selectedTheme = theme
+            if colorScheme == .light {
+                themeModel.selectedLightTheme = theme
+            }
+            if colorScheme == .dark {
+                themeModel.selectedDarkTheme = theme
+            }
+        }
+    }
+
     var body: some View {
         SettingsForm {
             Section {
@@ -53,16 +85,16 @@ struct ThemeSettingsView: View {
                             Divider()
                             ThemeSettingsThemeRow(
                                 theme: $themeModel.themes[themeModel.themes.firstIndex(of: theme)!],
-                                active: themeModel.selectedTheme == theme,
-                                action: { themeModel.selectedTheme = theme }
+                                active: getThemeActive(theme),
+                                action: activateTheme
                             ).id(theme)
                         }
                         ForEach(selectedAppearance == .dark ? themeModel.lightThemes : themeModel.darkThemes) { theme in
                             Divider()
                             ThemeSettingsThemeRow(
                                 theme: $themeModel.themes[themeModel.themes.firstIndex(of: theme)!],
-                                active: themeModel.selectedTheme == theme,
-                                action: { themeModel.selectedTheme = theme }
+                                active: getThemeActive(theme),
+                                action: activateTheme
                             ).id(theme)
                         }
                     }
@@ -97,8 +129,8 @@ struct ThemeSettingsView: View {
                                 Divider()
                                 ThemeSettingsThemeRow(
                                     theme: $themeModel.themes[themeModel.themes.firstIndex(of: theme)!],
-                                    active: themeModel.selectedTheme == theme,
-                                    action: { themeModel.selectedTheme = theme }
+                                    active: getThemeActive(theme),
+                                    action: activateTheme
                                 ).id(theme)
                             }
                             if !settings.terminal.darkAppearance {
@@ -110,8 +142,8 @@ struct ThemeSettingsView: View {
                                     Divider()
                                     ThemeSettingsThemeRow(
                                         theme: $themeModel.themes[themeModel.themes.firstIndex(of: theme)!],
-                                        active: themeModel.selectedTheme == theme,
-                                        action: { themeModel.selectedTheme = theme }
+                                        active: getThemeActive(theme),
+                                        action: activateTheme
                                     ).id(theme)
                                 }
                             }

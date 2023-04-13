@@ -216,11 +216,11 @@ private extension GeneralSettingsView {
     }
 
     var shellCommand: some View {
-        LabeledContent("Shell Command") {
+        LabeledContent("'codeedit' Shell Command") {
             Button(action: installShellCommand, label: {
-                Text("Install 'codeedit' command")
+                Text("Install")
             })
-//            .disabled(true)
+            .disabled(true)
             .buttonStyle(.bordered)
         }
     }

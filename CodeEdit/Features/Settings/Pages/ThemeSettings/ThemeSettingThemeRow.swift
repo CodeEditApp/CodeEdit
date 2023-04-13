@@ -10,7 +10,7 @@ import SwiftUI
 struct ThemeSettingsThemeRow: View {
     @Binding var theme: Theme
     var active: Bool
-    var action: () -> Void
+    var action: (Theme) -> Void
 
     @State private var presentingDetails: Bool = false
 
@@ -42,7 +42,7 @@ struct ThemeSettingsThemeRow: View {
             isHovering = hovering
         }
         .onTapGesture {
-            action()
+            action(theme)
         }
         .sheet(isPresented: $presentingDetails) {
             ThemeSettingsThemeDetails($theme)
