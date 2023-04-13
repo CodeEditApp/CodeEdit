@@ -31,7 +31,6 @@ struct WorkspaceClient {
         self.getFiles = getFiles
         self.getFileItem = getFileItem
     }
-    // swiftlint:enable vertical_parameter_alignment
 
     enum WorkspaceClientError: Error {
         case fileNotExist

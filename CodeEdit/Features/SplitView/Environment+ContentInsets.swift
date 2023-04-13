@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct EdgeInsetsEnvironmentKey: EnvironmentKey {
-    static var defaultValue: EdgeInsets = .init()
+    static var defaultValue: EdgeInsets = EdgeInsets(top: 1, leading: 0, bottom: 0, trailing: 0)
 }
 
 extension EnvironmentValues {
