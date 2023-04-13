@@ -15,6 +15,7 @@ struct CodeEditApp: App {
     init() {
         _ = CodeEditDocumentController.shared
         NSMenuItem.swizzle()
+        NSSplitViewItem.swizzle()
     }
 
     var body: some Scene {
@@ -28,3 +29,4 @@ struct CodeEditApp: App {
         }
     }
 }
+

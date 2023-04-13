@@ -101,7 +101,6 @@ struct SettingsView: View {
                 model.showingDetails = false
             }
         }
-
         .navigationTitle(selectedPage.name.rawValue)
         .toolbar {
             ToolbarItem(placement: .navigation) {
