@@ -45,7 +45,7 @@ extension SettingsData {
         var useThemeBackground: Bool = true
 
         /// Automatically change theme based on system appearance
-        var mirrorSystemAppearance: Bool = true
+        var matchAppearance: Bool = true
 
         /// Dictionary of themes containing overrides
         ///
@@ -88,8 +88,8 @@ extension SettingsData {
             ) ?? selectedLightTheme
             self.selectedTheme = try container.decodeIfPresent(String.self, forKey: .selectedTheme)
             self.useThemeBackground = try container.decodeIfPresent(Bool.self, forKey: .useThemeBackground) ?? true
-            self.mirrorSystemAppearance = try container.decodeIfPresent(
-                Bool.self, forKey: .mirrorSystemAppearance
+            self.matchAppearance = try container.decodeIfPresent(
+                Bool.self, forKey: .matchAppearance
             ) ?? true
             self.overrides = try container.decodeIfPresent([String: ThemeOverrides].self, forKey: .overrides) ?? [:]
         }

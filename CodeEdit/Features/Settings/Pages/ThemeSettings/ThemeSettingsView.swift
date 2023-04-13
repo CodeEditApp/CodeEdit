@@ -30,17 +30,18 @@ struct ThemeSettingsView: View {
     }
 
     func getThemeActive (_ theme: Theme) -> Bool {
-        return settings.theme.mirrorSystemAppearance
-        ? selectedAppearance == .dark
-        ? themeModel.selectedDarkTheme == theme
-        : selectedAppearance == .light
-            ? themeModel.selectedLightTheme == theme
-            : themeModel.selectedTheme == theme
-        : themeModel.selectedTheme == theme
+        if settings.theme.matchAppearance {
+            return selectedAppearance == .dark
+            ? themeModel.selectedDarkTheme == theme
+            : selectedAppearance == .light
+                ? themeModel.selectedLightTheme == theme
+                : themeModel.selectedTheme == theme
+        }
+        return themeModel.selectedTheme == theme
     }
 
     func activateTheme (_ theme: Theme) {
-        if settings.theme.mirrorSystemAppearance {
+        if settings.theme.matchAppearance {
             if selectedAppearance == .dark {
                 themeModel.selectedDarkTheme = theme
             } else if selectedAppearance == .light {
@@ -69,7 +70,7 @@ struct ThemeSettingsView: View {
             }
             Section("Editor Theme") {
                 VStack(spacing: 0) {
-                    if settings.theme.mirrorSystemAppearance {
+                    if settings.theme.matchAppearance {
                         Picker("", selection: $selectedAppearance) {
                             ForEach(ThemeSettingsAppearances.allCases, id: \.self) { tab in
                                 Text(tab.rawValue)
@@ -108,7 +109,7 @@ struct ThemeSettingsView: View {
             if !settings.terminal.useEditorTheme {
                 Section {
                     VStack(spacing: 0) {
-                        if settings.theme.mirrorSystemAppearance
+                        if settings.theme.matchAppearance
                             && !settings.terminal.darkAppearance {
                             Picker("", selection: $selectedAppearance) {
                                 ForEach(ThemeSettingsAppearances.allCases, id: \.self) { tab in
@@ -164,9 +165,9 @@ private extension ThemeSettingsView {
     private var changeThemeOnSystemAppearance: some View {
         Toggle(
             "Automatically change theme based on system appearance",
-            isOn: $settings.theme.mirrorSystemAppearance
+            isOn: $settings.theme.matchAppearance
         )
-        .onChange(of: settings.theme.mirrorSystemAppearance) { value in
+        .onChange(of: settings.theme.matchAppearance) { value in
             if value {
                 if colorScheme == .dark {
                     themeModel.selectedTheme = themeModel.selectedDarkTheme

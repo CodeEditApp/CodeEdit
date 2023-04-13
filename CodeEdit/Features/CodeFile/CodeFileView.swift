@@ -103,7 +103,7 @@ struct CodeFileView: View {
             self.selectedTheme = theme
         }
         .onChange(of: colorScheme) { newValue in
-            if settings.theme.mirrorSystemAppearance {
+            if settings.theme.matchAppearance {
                 ThemeModel.shared.selectedTheme = newValue == .dark
                     ? ThemeModel.shared.selectedDarkTheme!
                     : ThemeModel.shared.selectedLightTheme!
