@@ -37,12 +37,13 @@ extension WorkspaceClient {
         var watcher: DispatchSourceFileSystemObject?
         static var watcherCode: () -> Void = {}
 
+        @discardableResult
         func activateWatcher() -> Bool {
             let descriptor = open(self.url.path, O_EVTONLY)
-            guard descriptor > 0 else { return false }
+            guard descriptor > 0 && isFolder else { return false }
             let source = DispatchSource.makeFileSystemObjectSource(
                 fileDescriptor: descriptor,
-                eventMask: .write,
+                eventMask: [.write, .delete],
                 queue: DispatchQueue.global()
             )
             source.setEventHandler { FileItem.watcherCode() }
@@ -60,6 +61,10 @@ extension WorkspaceClient {
             self.children = children
             id = url.relativePath
             uuid = UUID()
+        }
+
+        deinit {
+            watcher?.cancel()
         }
 
         required init(from decoder: Decoder) throws {
@@ -189,11 +194,11 @@ extension WorkspaceClient {
 
         /// This function allows creation of folders in the main directory or sub-folders
         /// - Parameter folderName: The name of the new folder
-        func addFolder(folderName: String) {
+        func addFolder(folderName: String, parent: FileItem?) -> FileItem {
             // check if folder, if it is create folder under self, else create on same level.
             var folderUrl = (self.isFolder ?
                              self.url.appendingPathComponent(folderName) :
-                                self.url.deletingLastPathComponent().appendingPathComponent(folderName))
+                             self.url.deletingLastPathComponent().appendingPathComponent(folderName))
 
             // if a file/folder with the same name exists, add a number to the end.
             var fileNumber = 0
@@ -209,6 +214,11 @@ extension WorkspaceClient {
                     withIntermediateDirectories: true,
                     attributes: [:]
                 )
+
+                let newFileItem = FileItem(url: folderUrl)
+                newFileItem.children = []
+                newFileItem.parent = parent
+                return newFileItem
             } catch {
                 fatalError(error.localizedDescription)
             }
@@ -217,11 +227,11 @@ extension WorkspaceClient {
         /// This function allows creating files in the selected folder or project main directory
         /// - Parameter fileName: The name of the new file
         @discardableResult
-        func addFile(fileName: String) -> String {
+        func addFile(fileName: String, parent: FileItem?) -> FileItem {
             // check if folder, if it is create file under self
             var fileUrl = (self.isFolder ?
-                       self.url.appendingPathComponent(fileName) :
-                        self.url.deletingLastPathComponent().appendingPathComponent(fileName))
+                           self.url.appendingPathComponent(fileName) :
+                           self.url.deletingLastPathComponent().appendingPathComponent(fileName))
 
             // if a file/folder with the same name exists, add a number to the end.
             var fileNumber = 0
@@ -237,11 +247,13 @@ extension WorkspaceClient {
                 attributes: [FileAttributeKey.creationDate: Date()]
             )
 
-            return fileUrl.path
+            let newFileItem = FileItem(url: fileUrl)
+            newFileItem.parent = parent
+            return newFileItem
         }
 
         /// This function deletes the item or folder from the current project
-        func delete() {
+        func delete() -> Bool {
             // this function also has to account for how the
             // file system can change outside of the editor
 
@@ -256,11 +268,14 @@ extension WorkspaceClient {
                 if FileItem.fileManger.fileExists(atPath: self.url.path) {
                     do {
                         try FileItem.fileManger.removeItem(at: self.url)
+                        return true
                     } catch {
                         fatalError(error.localizedDescription)
                     }
                 }
             }
+
+            return false
         }
 
         /// This function duplicates the item or folder

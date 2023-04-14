@@ -13,6 +13,8 @@ extension WorkspaceClient {
     static var empty = Self(
         folderURL: { nil },
         getFiles: CurrentValueSubject<[FileItem], Never>([]).eraseToAnyPublisher(),
-        getFileItem: { _ in throw WorkspaceClientError.fileNotExist }
+        getFileItem: { _ in throw WorkspaceClientError.fileNotExist },
+        addFileItem: { _, _ in },
+        removeFileItem: { _ in }
     )
 }

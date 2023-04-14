@@ -18,16 +18,7 @@ final class OutlineViewController: NSViewController {
     var scrollView: NSScrollView!
     var outlineView: NSOutlineView!
 
-    /// Gets the folder structure
-    ///
-    /// Also creates a top level item "root" which represents the projects root directory and automatically expands it.
-    private var content: [Item] {
-        guard let folderURL = workspace?.workspaceClient?.folderURL() else { return [] }
-        let children = workspace?.fileItems.sortItems(foldersOnTop: true)
-        guard let root = try? workspace?.workspaceClient?.getFileItem(folderURL.path) else { return [] }
-        root.children = children
-        return [root]
-    }
+    private var content: [Item]!
 
     var workspace: WorkspaceDocument?
 
@@ -53,7 +44,7 @@ final class OutlineViewController: NSViewController {
         self.scrollView = NSScrollView()
         self.scrollView.hasVerticalScroller = true
         self.view = scrollView
-
+        self.content = getContent()
         self.outlineView = NSOutlineView()
         self.outlineView.dataSource = self
         self.outlineView.delegate = self
@@ -85,6 +76,17 @@ final class OutlineViewController: NSViewController {
 
     required init?(coder: NSCoder) {
         fatalError()
+    }
+
+    /// Gets the folder structure
+    ///
+    /// Also creates a top level item "root" which represents the projects root directory and automatically expands it.
+    func getContent() -> [Item] {
+        guard let folderURL = workspace?.workspaceClient?.folderURL() else { return [] }
+        guard let root = try? workspace?.workspaceClient?.getFileItem(folderURL.path) else { return [] }
+        root.children = workspace?.fileItems.sortItems(foldersOnTop: true)
+        root.activateWatcher()
+        return [root]
     }
 
     /// Updates the selection of the ``outlineView`` whenever it changes.

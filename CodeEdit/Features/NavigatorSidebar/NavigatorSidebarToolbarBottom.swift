@@ -33,10 +33,13 @@ struct NavigatorSidebarToolbarBottom: View {
             Button("Add File") {
                 guard let folderURL = workspace.workspaceClient?.folderURL() else { return }
                 guard let root = try? workspace.workspaceClient?.getFileItem(folderURL.path) else { return }
-                let newFile = root.addFile(fileName: "untitled") // TODO: use currently selected file instead of root
+                // TODO: use currently selected file instead of root
+                let newFile = root.addFile(fileName: "untitled", parent: root)
+
+                workspace.workspaceClient?.addFileItem(newFile, root)
 
                 DispatchQueue.main.async {
-                    guard let newFileItem = try? workspace.workspaceClient?.getFileItem(newFile) else {
+                    guard let newFileItem = try? workspace.workspaceClient?.getFileItem(newFile.url.path) else {
                         return
                     }
                     workspace.tabManager.openTab(item: newFileItem)
@@ -46,7 +49,10 @@ struct NavigatorSidebarToolbarBottom: View {
             Button("Add Folder") {
                 guard let folderURL = workspace.workspaceClient?.folderURL() else { return }
                 guard let root = try? workspace.workspaceClient?.getFileItem(folderURL.path) else { return }
-                root.addFolder(folderName: "untitled") // TODO: use currently selected file instead of root
+                // TODO: use currently selected file instead of root
+                let newFolder = root.addFolder(folderName: "untitled", parent: root)
+
+                workspace.workspaceClient?.addFileItem(newFolder, nil)
             }
         } label: {
             Image(systemName: "plus")

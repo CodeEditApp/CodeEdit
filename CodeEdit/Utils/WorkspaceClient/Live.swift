@@ -32,21 +32,17 @@ extension WorkspaceClient {
                 // Skip file if it is in ignore list
                 guard !ignoredFilesAndFolders.contains(itemURL.lastPathComponent) else { continue }
 
-                var isDir: ObjCBool = false
+                var subItems: [FileItem]?
 
-                if fileManager.fileExists(atPath: itemURL.path, isDirectory: &isDir) {
-                    var subItems: [FileItem]?
-
-                    if isDir.boolValue {
-                        // Recursively fetch subdirectories and files if the path points to a directory
-                        subItems = try loadFiles(fromURL: itemURL)
-                    }
-
-                    let newFileItem = FileItem(url: itemURL, children: subItems?.sortItems(foldersOnTop: true))
-                    subItems?.forEach { $0.parent = newFileItem }
-                    items.append(newFileItem)
-                    flattenedFileItems[newFileItem.id] = newFileItem
+                if itemURL.hasDirectoryPath {
+                    // Recursively fetch subdirectories and files if the path points to a directory
+                    subItems = try loadFiles(fromURL: itemURL)
                 }
+
+                let newFileItem = FileItem(url: itemURL, children: subItems?.sortItems(foldersOnTop: true))
+                subItems?.forEach { $0.parent = newFileItem }
+                items.append(newFileItem)
+                flattenedFileItems[newFileItem.id] = newFileItem
             }
 
             return items
@@ -101,19 +97,16 @@ extension WorkspaceClient {
                     continue
                 }
 
-                var isDir: ObjCBool = false
-                if fileManager.fileExists(atPath: newContent.path, isDirectory: &isDir) {
-                    var subItems: [FileItem]?
+                var subItems: [FileItem]?
 
-                    if isDir.boolValue { subItems = try loadFiles(fromURL: newContent) }
+                if newContent.hasDirectoryPath { subItems = try loadFiles(fromURL: newContent) }
 
-                    let newFileItem = FileItem(url: newContent, children: subItems?.sortItems(foldersOnTop: true))
-                    subItems?.forEach { $0.parent = newFileItem }
-                    newFileItem.parent = fileItem
-                    flattenedFileItems[newFileItem.id] = newFileItem
-                    fileItem.children?.append(newFileItem)
-                    didChangeSomething = true
-                }
+                let newFileItem = FileItem(url: newContent, children: subItems?.sortItems(foldersOnTop: true))
+                subItems?.forEach { $0.parent = newFileItem }
+                newFileItem.parent = fileItem
+                flattenedFileItems[newFileItem.id] = newFileItem
+                fileItem.children?.append(newFileItem)
+                didChangeSomething = true
             }
 
             fileItem.children = fileItem.children?.sortItems(foldersOnTop: true)
@@ -159,6 +152,38 @@ extension WorkspaceClient {
             }
         }
 
+        // Adds a new item to the children of the specified item
+        func addFile(_ item: FileItem, toItem: FileItem?) {
+            var element: FileItem?
+
+            if item.isFolder {
+                element = toItem?.children?.first(where: { $0.isFolder && $0.fileName > item.fileName })
+
+                if element == nil {
+                    element = toItem?.children?.last(where: { $0.isFolder })
+                }
+            } else {
+                element = toItem?.children?.first(where: { !$0.isFolder && $0.fileName > item.fileName })
+            }
+
+            if let element, let index = toItem?.children?.lastIndex(of: element) {
+                toItem?.children?.insert(item, at: index)
+            } else if item.isFolder {
+                toItem?.children?.insert(item, at: 0)
+            } else {
+                toItem?.children?.append(item)
+            }
+        }
+
+        // Removes an item from it's parent
+        func removeFile(_ item: FileItem) {
+            if item.parent != nil {
+                if let index = item.parent?.children?.firstIndex(of: item), item.delete() {
+                    item.parent?.children?.remove(at: index)
+                }
+            }
+        }
+
         return Self(
             folderURL: { folderURL },
             getFiles: subject
@@ -172,7 +197,9 @@ extension WorkspaceClient {
                     throw WorkspaceClientError.fileNotExist
                 }
                 return item
-            }
+            },
+            addFileItem: addFile(_:toItem:),
+            removeFileItem: removeFile(_:)
         )
     }
 }

@@ -196,17 +196,31 @@ final class OutlineMenu: NSMenu {
     /// Action that creates a new untitled file
     @objc
     private func newFile() {
-        item?.addFile(fileName: "untitled")
-        outlineView.expandItem((item?.isFolder ?? true) ? item : item?.parent)
+        if let item {
+            let parent = item.isFolder ? item : item.parent
+            let newFile = item.addFile(fileName: "untitled", parent: parent)
+
+            workspace?.workspaceClient?.addFileItem(newFile, parent)
+
+            outlineView.reloadData()
+            outlineView.expandItem(parent)
+        }
     }
 
     // TODO: allow custom folder names
     /// Action that creates a new untitled folder
     @objc
     private func newFolder() {
-        item?.addFolder(folderName: "untitled")
-        outlineView.expandItem(item)
-        outlineView.expandItem((item?.isFolder ?? true) ? item : item?.parent)
+        if let item {
+            let parent = item.isFolder ? item : item.parent
+            let newFolder = item.addFolder(folderName: "untitled", parent: parent)
+
+            workspace?.workspaceClient?.addFileItem(newFolder, parent)
+
+            outlineView.reloadData()
+            outlineView.expandItem(item)
+            outlineView.expandItem(parent)
+        }
     }
 
     /// Opens the rename file dialogue on the cell this was presented from.
@@ -223,7 +237,10 @@ final class OutlineMenu: NSMenu {
     /// Action that deletes the item.
     @objc
     private func delete() {
-        item?.delete()
+        if let item {
+            workspace?.workspaceClient?.removeFileItem(item)
+            outlineView.reloadData()
+        }
     }
 
     /// Action that duplicates the item
