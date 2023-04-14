@@ -51,7 +51,10 @@ struct WorkspaceCodeFileView: View {
                         OtherFileView(otherFile)
                     } else {
                         OtherFileView(otherFile)
-                            .frame(width: proxy.size.width, height: proxy.size.height)
+                            .frame(
+                                width: proxy.size.width * (proxy.size.width / image.size.width),
+                                height: proxy.size.height
+                            )
                             .position(x: proxy.frame(in: .local).midX, y: proxy.frame(in: .local).midY)
                     }
                 }
