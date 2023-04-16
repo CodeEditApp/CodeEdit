@@ -6,15 +6,58 @@
 //
 
 import SwiftUI
+import CryptoKit
 
 struct FileCommands: Commands {
+    
+    @State var windowController: CodeEditWindowController?
+
+    /// Default instance of the `FileManager`
+    private let filemanager = FileManager.default
+
     var body: some Commands {
         CommandGroup(replacing: .newItem) {
             Group {
                 Button("New") {
-                    NSDocumentController.shared.newDocument(nil)
+                    guard let workspace = windowController?.workspace else {
+                        return
+                    }
+
+                    do {
+                        try filemanager.createDirectory(at: workspace.supportDirURL, withIntermediateDirectories: true)
+                        let fileNumbers = try filemanager.contentsOfDirectory(atPath: workspace.supportDirURL.path(percentEncoded: false))
+                            .compactMap { return $0.split(separator: "-").last }
+                            .compactMap { Int($0) }
+                            .sorted()
+
+                        var expectedNum = fileNumbers.first ?? 0
+                        for number in fileNumbers {
+                            if expectedNum != number {
+                                break
+                            }
+                            expectedNum += 1
+                        }
+
+                        let filename = "untitled-\(expectedNum)"
+                        let tempFileURL = workspace.supportDirURL.appending(path: filename, directoryHint: .notDirectory)
+                        filemanager.createFile(atPath: tempFileURL.path(percentEncoded: false), contents: nil)
+                        let file = WorkspaceClient.FileItem(url: tempFileURL)
+                        windowController?.workspace?.tabManager.openTab(item: file)
+                    } catch {
+                        print(error)
+                        let alert = NSAlert()
+                        alert.messageText = "Error"
+                        alert.informativeText = "An error occurred. Please try again later."
+                        alert.alertStyle = .critical
+                        alert.addButton(withTitle: "OK")
+                        alert.runModal()
+                    }
                 }
+                .disabled(windowController == nil)
                 .keyboardShortcut("n")
+                .onReceive(NSApp.publisher(for: \.keyWindow)) { window in
+                    windowController = window?.windowController as? CodeEditWindowController
+                }
 
                 Button("Open...") {
                     NSDocumentController.shared.openDocument(nil)

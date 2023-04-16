@@ -9,6 +9,7 @@ import Foundation
 import AppKit
 import SwiftUI
 import Combine
+import CryptoKit
 
 @objc(WorkspaceDocument) final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var workspaceClient: WorkspaceClient?
@@ -18,6 +19,16 @@ import Combine
     @Published var fileItems: [WorkspaceClient.FileItem] = []
 
     var tabManager = TabManager()
+
+    /// Default instance of the `FileManager`
+    private let filemanager = FileManager.default
+
+    /// The base support folder url `~/Library/Application Support/CodeEdit/Backup/<SHA256(fileURL)>`
+    var supportDirURL: URL {
+        filemanager.homeDirectoryForCurrentUser
+            .appending(component: "Library/Application Support/CodeEdit/Backup")
+            .appending(component: SHA256.hash(self.fileURL?.absoluteString ?? "untitled"), directoryHint: .isDirectory)
+    }
 
     var workspaceState: [String: Any] {
         get {
