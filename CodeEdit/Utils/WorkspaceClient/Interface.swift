@@ -19,7 +19,7 @@ struct WorkspaceClient {
 
     var addFileItem: (_ item: FileItem, FileItem?) -> Void
 
-    var removeFileItem: (_ item:FileItem) -> Void
+    var removeFileItem: (_ item: FileItem) -> Void
 
     /// callback function that is run when a change is detected in the file system.
     /// This usually contains a `reloadData` function.
