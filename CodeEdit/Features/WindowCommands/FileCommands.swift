@@ -9,7 +9,7 @@ import SwiftUI
 import CryptoKit
 
 struct FileCommands: Commands {
-    
+
     @State var windowController: CodeEditWindowController?
 
     /// Default instance of the `FileManager`
@@ -25,7 +25,8 @@ struct FileCommands: Commands {
 
                     do {
                         try filemanager.createDirectory(at: workspace.supportDirURL, withIntermediateDirectories: true)
-                        let fileNumbers = try filemanager.contentsOfDirectory(atPath: workspace.supportDirURL.path(percentEncoded: false))
+                        let supportPath = workspace.supportDirURL.path(percentEncoded: false)
+                        let fileNumbers = try filemanager.contentsOfDirectory(atPath: supportPath)
                             .compactMap { return $0.split(separator: "-").last }
                             .compactMap { Int($0) }
                             .sorted()
@@ -39,7 +40,7 @@ struct FileCommands: Commands {
                         }
 
                         let filename = "untitled-\(expectedNum)"
-                        let tempFileURL = workspace.supportDirURL.appending(path: filename, directoryHint: .notDirectory)
+                        let tempFileURL = workspace.supportDirURL.appending(path: filename)
                         filemanager.createFile(atPath: tempFileURL.path(percentEncoded: false), contents: nil)
                         let file = WorkspaceClient.FileItem(url: tempFileURL)
                         windowController?.workspace?.tabManager.openTab(item: file)
