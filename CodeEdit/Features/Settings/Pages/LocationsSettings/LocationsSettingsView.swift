@@ -9,69 +9,54 @@ import SwiftUI
 
 /// A view that implements the `Locations` preference section
 struct LocationsSettingsView: View {
-
-    // MARK: View
-
     var body: some View {
         SettingsForm {
             Section {
-                locations
+                applicationSupportLocation
+                settingsLocation
+                themesLocation
+                extensionsLocation
             }
         }
     }
 }
 
 private extension LocationsSettingsView {
-
-    // MARK: Sections
-
     @ViewBuilder
-    private var locations: some View {
-        settingsLocation
-        themesLocation
+    private var applicationSupportLocation: some View {
+        ExternalLink(destination: Settings.shared.baseURL) {
+            Text("Application Support")
+            Text(Settings.shared.baseURL.path)
+                .font(.footnote)
+                .foregroundColor(.secondary)
+        }
     }
 
-    // MARK: Preference Views
-
-    @ViewBuilder
     private var settingsLocation: some View {
-        LabeledContent("Settings Location") {
-            HStack {
-                Text(Settings.shared.baseURL.path)
-                    .foregroundColor(.secondary)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .multilineTextAlignment(.leading)
-                Button {
-                    NSWorkspace.shared.selectFile(
-                        nil,
-                        inFileViewerRootedAtPath: Settings.shared.baseURL.path
-                    )
-                } label: {
-                    Image(systemName: "arrow.right.circle.fill")
-                }
-                .buttonStyle(.plain)
+        ExternalLink(destination: ThemeModel.shared.settingsURL) {
+            Text("Settings")
+            Text(ThemeModel.shared.settingsURL.path)
+                .font(.footnote)
                 .foregroundColor(.secondary)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 
     private var themesLocation: some View {
-        LabeledContent("Themes Location") {
-            HStack {
-                Text(ThemeModel.shared.themesURL.path)
-                    .foregroundColor(.secondary)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .multilineTextAlignment(.leading)
-                Button {
-                    NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: ThemeModel.shared.themesURL.path)
-                } label: {
-                    Image(systemName: "arrow.right.circle.fill")
-                }
-                .buttonStyle(.plain)
+        ExternalLink(destination: ThemeModel.shared.themesURL) {
+            Text("Themes")
+            Text(ThemeModel.shared.themesURL.path)
+                .font(.footnote)
                 .foregroundColor(.secondary)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+    }
+
+    private var extensionsLocation: some View {
+        ExternalLink(destination: ThemeModel.shared.extensionsURL) {
+            Text("Extensions")
+            Text(ThemeModel.shared.extensionsURL.path)
+                .font(.footnote)
+                .foregroundColor(.secondary)
         }
     }
 }
+

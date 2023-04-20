@@ -47,17 +47,26 @@ struct StatusBarDrawer: View {
                         .frame(maxWidth: 175)
                         .padding(.leading, -2)
                     Spacer()
-                    StatusBarIcon(icon: Image(systemName: "trash")) {
+                    Button {
                         // clear logs
+                    } label: {
+                        Image(systemName: "trash")
                     }
+                    .buttonStyle(.icon)
                     Divider()
                     HStack(alignment: .center, spacing: 3.5) {
-                        StatusBarIcon(icon: Image(systemName: "square.split.2x1")) {
+                        Button {
                             // split terminal
+                        } label: {
+                            Image(systemName: "square.split.2x1")
                         }
-                        StatusBarIcon(icon: Image(systemName: "arrowtriangle.up.square"), active: model.isMaximized) {
+                        .buttonStyle(.icon)
+                        Button {
                             model.isMaximized.toggle()
+                        } label: {
+                            Image(systemName: "arrowtriangle.up.square")
                         }
+                        .buttonStyle(.icon(isActive: model.isMaximized))
                     }
                 }
                 .padding(.horizontal, 7)

@@ -551,7 +551,7 @@ struct TabBarView: View {
             .help("Enable Code Review")
             splitviewButton
         }
-        .padding(.horizontal, 7)
+        .padding(.horizontal, 5)
         .opacity(activeState != .inactive ? 1.0 : 0.5)
         .frame(maxHeight: .infinity) // Fill out vertical spaces.
         .background {

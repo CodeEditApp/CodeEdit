@@ -7,19 +7,25 @@
 
 import SwiftUI
 
+struct User: Identifiable, Hashable {
+    let id = UUID()
+    var name: String
+    var occupation: String
+    var age: Int
+}
+
 /// A view that implements the `General` settings page
 struct GeneralSettingsView: View {
     private let inputWidth: Double = 160
     private let textEditorWidth: Double = 220
     private let textEditorHeight: Double = 30
 
-    @EnvironmentObject
-    var updater: SoftwareUpdater
+    @EnvironmentObject var updater: SoftwareUpdater
+    @FocusState private var focusedField: UUID?
 
     @AppSettings var settings
 
-    @State
-    private var openInCodeEdit: Bool = true
+    @State private var openInCodeEdit: Bool = true
 
     init() {
         guard let defaults = UserDefaults.init(
@@ -72,8 +78,6 @@ struct GeneralSettingsView: View {
 
 /// The extension of the view with all the preferences
 private extension GeneralSettingsView {
-    // MARK: - Sections
-
     var appearance: some View {
         Picker("Appearance", selection: $settings.general.appAppearance) {
             Text("System")
@@ -117,12 +121,14 @@ private extension GeneralSettingsView {
                     .tag(SettingsData.FileExtensionsVisibility.hideOnly)
             }
             if case .showOnly = settings.general.fileExtensionsVisibility {
-                SettingsTextEditor(text: $settings.general.shownFileExtensions.string)
-                    .frame(height: textEditorHeight)
+                TextField("", text: $settings.general.shownFileExtensions.string, axis: .vertical)
+                    .labelsHidden()
+                    .lineLimit(1...3)
             }
             if case .hideOnly = settings.general.fileExtensionsVisibility {
-                SettingsTextEditor(text: $settings.general.hiddenFileExtensions.string)
-                .frame(height: textEditorHeight)
+                TextField("", text: $settings.general.hiddenFileExtensions.string, axis: .vertical)
+                    .labelsHidden()
+                    .lineLimit(1...3)
             }
         }
     }
@@ -347,10 +353,34 @@ private extension GeneralSettingsView {
         Toggle("Automatically reveal in project navigator", isOn: $settings.general.revealFileOnFocusChange)
     }
 
-    // MARK: - Formatters
-
     private static let formatter = configure(DateFormatter()) {
         $0.dateStyle = .medium
         $0.timeStyle = .medium
+    }
+}
+
+extension View {
+    func actionBar<Content: View>(@ViewBuilder content: () -> Content) -> some View {
+        self
+            .padding(.bottom, 24)
+            .overlay(alignment: .bottom) {
+                VStack(spacing: -1) {
+                    Divider()
+                    HStack(spacing: 0) {
+                        content()
+                            .buttonStyle(
+                                IconButtonStyle(
+                                    font: Font.system(size: 11, weight: .medium),
+                                    size: 24
+                                )
+                            )
+                    }
+                    .frame(height: 16)
+                    .padding(.vertical, 4)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                .frame(height: 24)
+                .background(.separator)
+            }
     }
 }

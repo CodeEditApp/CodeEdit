@@ -27,13 +27,10 @@ struct TextEditingSettingsView: View {
                 enableTypeOverCompletion
             }
         }
-        .formStyle(.grouped)
     }
 }
 
 private extension TextEditingSettingsView {
-    // MARK: - Preference Views
-
     @ViewBuilder
     private var fontSelector: some View {
         Picker("Font", selection: $settings.textEditing.font.customFont) {

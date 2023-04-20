@@ -30,6 +30,16 @@ final class ThemeModel: ObservableObject {
         baseURL.appendingPathComponent("themes", isDirectory: true)
     }
 
+    /// The URL of the `Extensions` folder
+    internal var extensionsURL: URL {
+        baseURL.appendingPathComponent("Extensions", isDirectory: true)
+    }
+
+    /// The URL of the `settings.json` file
+    internal var settingsURL: URL {
+        baseURL.appendingPathComponent("settings.json", isDirectory: true)
+    }
+
     /// Selected 'light' theme
     /// Used for auto-switching theme to match macOS system appearance
     @Published

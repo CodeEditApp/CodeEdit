@@ -32,12 +32,13 @@ internal struct StatusBarToggleDrawerButton: View {
     }
 
     internal var body: some View {
-        StatusBarIcon(icon: Image(systemName: "square.bottomthird.inset.filled")) {
+        Button {
             togglePanel()
+        } label: {
+            Image(systemName: "square.bottomthird.inset.filled")
         }
-        .tint(collapsed ? .primary : .accentColor)
+        .buttonStyle(.icon)
         .keyboardShortcut("Y", modifiers: [.command, .shift])
-        .buttonStyle(.borderless)
         .onHover { isHovering($0) }
     }
 }

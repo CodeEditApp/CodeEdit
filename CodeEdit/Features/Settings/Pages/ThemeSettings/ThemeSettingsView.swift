@@ -10,19 +10,12 @@ import Preferences
 
 /// A view that implements the `Theme` preference section
 struct ThemeSettingsView: View {
-    @Environment(\.colorScheme)
-    var colorScheme
-
-    @ObservedObject
-    private var themeModel: ThemeModel = .shared
-
+    @Environment(\.colorScheme) var colorScheme
+    @ObservedObject private var themeModel: ThemeModel = .shared
     @AppSettings var settings
 
-    @State
-    private var listView: Bool = false
-
-    @State
-    private var selectedAppearance: ThemeSettingsAppearances = .dark
+    @State private var listView: Bool = false
+    @State private var selectedAppearance: ThemeSettingsAppearances = .dark
 
     enum ThemeSettingsAppearances: String, CaseIterable {
         case light = "Light Appearance"
