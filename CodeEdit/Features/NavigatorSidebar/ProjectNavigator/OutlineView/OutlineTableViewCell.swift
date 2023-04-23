@@ -144,11 +144,11 @@ extension OutlineTableViewCell: NSTextFieldDelegate {
     func controlTextDidChange(_ obj: Notification) {
         print("Contents changed to \(label?.stringValue ?? "idk")")
         print("File validity: \(validateFileName(for: label?.stringValue ?? ""))")
-        label.backgroundColor = validateFileName(for: label?.stringValue ?? "") ? .none : errorRed
+        label.backgroundColor = validateFileName(for: label?.stringValue ?? "") ? .textBackgroundColor : errorRed
     }
     func controlTextDidEndEditing(_ obj: Notification) {
         print("File validity: \(validateFileName(for: label?.stringValue ?? ""))")
-        label.backgroundColor = validateFileName(for: label?.stringValue ?? "") ? .none : errorRed
+        label.backgroundColor = validateFileName(for: label?.stringValue ?? "") ? .textBackgroundColor : errorRed
         if validateFileName(for: label?.stringValue ?? "") {
             let destinationURL = fileItem.url
                 .deletingLastPathComponent()
