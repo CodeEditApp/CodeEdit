@@ -29,6 +29,16 @@ struct TerminalEmulatorView: NSViewRepresentable {
     private let systemFont: NSFont = .monospacedSystemFont(ofSize: 11, weight: .medium)
 
     private var font: NSFont {
+        if settings.terminal.useTextEditorFont {
+            if !settings.textEditing.font.customFont {
+                return systemFont.withSize(CGFloat(settings.textEditing.font.size))
+            }
+            return NSFont(
+                name: settings.textEditing.font.name,
+                size: CGFloat(settings.textEditing.font.size)
+            ) ?? systemFont
+        }
+
         if !settings.terminal.font.customFont {
             return systemFont.withSize(CGFloat(settings.terminal.font.size))
         }

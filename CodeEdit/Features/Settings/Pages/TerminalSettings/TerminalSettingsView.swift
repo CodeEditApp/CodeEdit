@@ -8,42 +8,30 @@
 import SwiftUI
 
 struct TerminalSettingsView: View {
-
-    // MARK: View
+    @AppSettings var settings
 
     var body: some View {
         SettingsForm {
-            shell
-            font
-            cursor
+            Section {
+                shellSelector
+                optionAsMetaToggle
+            }
+            Section {
+                useTextEditorFontToggle
+                if !settings.terminal.useTextEditorFont {
+                    fontSelector
+                    fontSizeSelector
+                }
+            }
+            Section {
+                cursorStyle
+                cursorBlink
+            }
         }
     }
-
-    @AppSettings var settings
 }
 
 private extension TerminalSettingsView {
-
-    // MARK: Sections
-
-    @ViewBuilder
-    private var shell: some View {
-        shellSelector
-        optionAsMetaToggle
-    }
-
-    private var font: some View {
-        fontSelector
-    }
-
-    @ViewBuilder
-    private var cursor: some View {
-        cursorStyle
-        cursorBlink
-    }
-
-    // MARK: Preference Views
-
     @ViewBuilder
     private var shellSelector: some View {
         Picker("Shell", selection: $settings.terminal.shell) {
@@ -69,32 +57,32 @@ private extension TerminalSettingsView {
     }
 
     private var cursorBlink: some View {
-        Group {
-            Toggle("Blink Cursor", isOn: $settings.terminal.cursorBlink)
-        }
+        Toggle("Blink Cursor", isOn: $settings.terminal.cursorBlink)
     }
 
     private var optionAsMetaToggle: some View {
-        Group {
-            Toggle("Use \"Option\" key as \"Meta\"", isOn: $settings.terminal.optionAsMeta)
-        }
+        Toggle("Use \"Option\" key as \"Meta\"", isOn: $settings.terminal.optionAsMeta)
+    }
+
+    private var useTextEditorFontToggle: some View {
+        Toggle("Use text editor font", isOn: $settings.terminal.useTextEditorFont)
     }
 
     @ViewBuilder
     private var fontSelector: some View {
-        Group {
-            Picker("Font", selection: $settings.terminal.font.customFont) {
-                Text("System Font")
-                    .tag(false)
-                Text("Custom")
-                    .tag(true)
+        MonospacedFontPicker(title: "Font", selectedFontName: $settings.terminal.font.name)
+            .onChange(of: settings.terminal.font.name) { fontName in
+                settings.terminal.font.customFont = fontName != "SF Mono"
             }
-        }
-        if settings.terminal.font.customFont {
-            FontPicker(
-                "\(settings.terminal.font.name) \(settings.terminal.font.size)",
-                name: $settings.terminal.font.name, size: $settings.terminal.font.size
-            )
-        }
+    }
+
+    private var fontSizeSelector: some View {
+        Stepper(
+            "Font Size",
+            value: $settings.terminal.font.size,
+            in: 1...288,
+            step: 1,
+            format: .number
+        )
     }
 }

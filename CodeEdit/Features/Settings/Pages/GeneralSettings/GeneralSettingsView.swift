@@ -7,13 +7,6 @@
 
 import SwiftUI
 
-struct User: Identifiable, Hashable {
-    let id = UUID()
-    var name: String
-    var occupation: String
-    var age: Int
-}
-
 /// A view that implements the `General` settings page
 struct GeneralSettingsView: View {
     private let inputWidth: Double = 160

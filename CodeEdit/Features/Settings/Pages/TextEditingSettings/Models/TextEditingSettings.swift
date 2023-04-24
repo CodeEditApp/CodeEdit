@@ -98,10 +98,10 @@ extension SettingsData {
         var customFont: Bool = false
 
         /// The font size for the font
-        var size: Int = 12
+        var size: Double = 12
 
         /// The name of the custom font
-        var name: String = "SFMono-Medium"
+        var name: String = "SF Mono"
 
         /// Default initializer
         init() {}
@@ -110,8 +110,8 @@ extension SettingsData {
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.customFont = try container.decodeIfPresent(Bool.self, forKey: .customFont) ?? false
-            self.size = try container.decodeIfPresent(Int.self, forKey: .size) ?? 11
-            self.name = try container.decodeIfPresent(String.self, forKey: .name) ?? "SFMono-Medium"
+            self.size = try container.decodeIfPresent(Double.self, forKey: .size) ?? 11
+            self.name = try container.decodeIfPresent(String.self, forKey: .name) ?? "SF Mono"
         }
 
         /// Returns an NSFont representation of the current configuration.
@@ -120,8 +120,8 @@ extension SettingsData {
         /// Otherwise returns a default system font monospaced.
         func current() -> NSFont {
             guard customFont,
-                  let customFont = NSFont(name: name, size: Double(size)) else {
-                return NSFont.monospacedSystemFont(ofSize: Double(size), weight: .regular)
+                  let customFont = NSFont(name: name, size: size) else {
+                return NSFont.monospacedSystemFont(ofSize: size, weight: .medium)
             }
             return customFont
         }

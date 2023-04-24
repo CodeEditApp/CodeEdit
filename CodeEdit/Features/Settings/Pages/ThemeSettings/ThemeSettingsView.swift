@@ -61,7 +61,7 @@ struct ThemeSettingsView: View {
                 changeThemeOnSystemAppearance
                 useThemeBackground
             }
-            Section("Editor Theme") {
+            Section("Text Editor Theme") {
                 VStack(spacing: 0) {
                     if settings.theme.matchAppearance {
                         Picker("", selection: $selectedAppearance) {
@@ -96,7 +96,7 @@ struct ThemeSettingsView: View {
                 .padding(-10)
             }
             Section("Terminal Theme") {
-                Toggle("Use editor theme", isOn: $settings.terminal.useEditorTheme)
+                Toggle("Use text editor theme", isOn: $settings.terminal.useEditorTheme)
                 Toggle("Always use dark terminal appearance", isOn: $settings.terminal.darkAppearance)
             }
             if !settings.terminal.useEditorTheme {
