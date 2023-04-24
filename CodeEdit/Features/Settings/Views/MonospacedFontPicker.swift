@@ -30,26 +30,30 @@ struct MonospacedFontPicker: View {
     }
 
     func getFonts() {
-        self.monospacedFontFamilyNames = NSFontManager.shared.availableFontFamilies.filter { fontFamilyName in
-            let fontNames = NSFontManager.shared.availableMembers(ofFontFamily: fontFamilyName) ?? []
-            return fontNames.contains { fontName in
-                guard let font = NSFont(name: "\(fontName[0])", size: 14) else {
-                    return false
-                }
-                return font.isFixedPitch && font.numberOfGlyphs > 26
-            }
-        }
-        .filter { $0 != "SF Mono" }
-        self.otherFontFamilyNames = NSFontManager.shared.availableFontFamilies.filter { fontFamilyName in
-            let fontNames = NSFontManager.shared.availableMembers(ofFontFamily: fontFamilyName) ?? []
-            return fontNames.contains { fontName in
-                guard let font = NSFont(name: "\(fontName[0])", size: 14) else {
-                    return false
-                }
-                return !font.isFixedPitch && font.numberOfGlyphs > 26
-            }
-        }
+        DispatchQueue.global(qos: .userInitiated).async {
+            let availableFontFamilies = NSFontManager.shared.availableFontFamilies
 
+            self.monospacedFontFamilyNames = availableFontFamilies.filter { fontFamilyName in
+                let fontNames = NSFontManager.shared.availableMembers(ofFontFamily: fontFamilyName) ?? []
+                return fontNames.contains { fontName in
+                    guard let font = NSFont(name: "\(fontName[0])", size: 14) else {
+                        return false
+                    }
+                    return font.isFixedPitch && font.numberOfGlyphs > 26
+                }
+            }
+            .filter { $0 != "SF Mono" }
+
+            self.otherFontFamilyNames = availableFontFamilies.filter { fontFamilyName in
+                let fontNames = NSFontManager.shared.availableMembers(ofFontFamily: fontFamilyName) ?? []
+                return fontNames.contains { fontName in
+                    guard let font = NSFont(name: "\(fontName[0])", size: 14) else {
+                        return false
+                    }
+                    return !font.isFixedPitch && font.numberOfGlyphs > 26
+                }
+            }
+        }
     }
 
     var body: some View {
@@ -63,15 +67,19 @@ struct MonospacedFontPicker: View {
                     Text(fontFamilyName).font(.custom(fontFamilyName, size: 13.5))
                 }
             }
-            Divider()
-            ForEach(monospacedFontFamilyNames, id: \.self) { fontFamilyName in
-                Text(fontFamilyName).font(.custom(fontFamilyName, size: 13.5))
+            if !monospacedFontFamilyNames.isEmpty {
+                Divider()
+                ForEach(monospacedFontFamilyNames, id: \.self) { fontFamilyName in
+                    Text(fontFamilyName).font(.custom(fontFamilyName, size: 13.5))
+                }
             }
-            Divider()
-            Picker(selection: $selectedFontName, label: Text("Other fonts...")) {
-                ForEach(otherFontFamilyNames, id: \.self) { fontFamilyName in
-                    Text(fontFamilyName)
-                        .font(.custom(fontFamilyName, size: 13.5))
+            if !otherFontFamilyNames.isEmpty {
+                Divider()
+                Picker(selection: $selectedFontName, label: Text("Other fonts...")) {
+                    ForEach(otherFontFamilyNames, id: \.self) { fontFamilyName in
+                        Text(fontFamilyName)
+                            .font(.custom(fontFamilyName, size: 13.5))
+                    }
                 }
             }
         }
