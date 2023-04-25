@@ -59,9 +59,12 @@ struct ThemeSettingsView: View {
         SettingsForm {
             Section {
                 changeThemeOnSystemAppearance
+                if settings.theme.matchAppearance {
+                    alwaysUseDarkTerminalAppearance
+                }
                 useThemeBackground
             }
-            Section("Text Editor Theme") {
+            Section {
                 VStack(spacing: 0) {
                     if settings.theme.matchAppearance {
                         Picker("", selection: $selectedAppearance) {
@@ -95,57 +98,6 @@ struct ThemeSettingsView: View {
                 }
                 .padding(-10)
             }
-            Section("Terminal Theme") {
-                Toggle("Use text editor theme", isOn: $settings.terminal.useEditorTheme)
-                Toggle("Always use dark terminal appearance", isOn: $settings.terminal.darkAppearance)
-            }
-            if !settings.terminal.useEditorTheme {
-                Section {
-                    VStack(spacing: 0) {
-                        if settings.theme.matchAppearance
-                            && !settings.terminal.darkAppearance {
-                            Picker("", selection: $selectedAppearance) {
-                                ForEach(ThemeSettingsAppearances.allCases, id: \.self) { tab in
-                                    Text(tab.rawValue)
-                                        .tag(tab)
-                                }
-                            }
-                            .pickerStyle(.segmented)
-                            .labelsHidden()
-                            .padding(10)
-                        }
-                        VStack(spacing: 0) {
-                            ForEach(
-                                selectedAppearance == .dark || settings.terminal.darkAppearance
-                                ? themeModel.darkThemes
-                                : themeModel.lightThemes
-                            ) { theme in
-                                Divider()
-                                ThemeSettingsThemeRow(
-                                    theme: $themeModel.themes[themeModel.themes.firstIndex(of: theme)!],
-                                    active: getThemeActive(theme),
-                                    action: activateTheme
-                                ).id(theme)
-                            }
-                            if !settings.terminal.darkAppearance {
-                                ForEach(
-                                    selectedAppearance == .dark
-                                    ? themeModel.lightThemes
-                                    : themeModel.darkThemes
-                                ) { theme in
-                                    Divider()
-                                    ThemeSettingsThemeRow(
-                                        theme: $themeModel.themes[themeModel.themes.firstIndex(of: theme)!],
-                                        active: getThemeActive(theme),
-                                        action: activateTheme
-                                    ).id(theme)
-                                }
-                            }
-                        }
-                    }
-                    .padding(-10)
-                }
-            }
         }
     }
 }
@@ -153,6 +105,10 @@ struct ThemeSettingsView: View {
 private extension ThemeSettingsView {
     private var useThemeBackground: some View {
         Toggle("Use theme background ", isOn: $settings.theme.useThemeBackground)
+    }
+
+    private var alwaysUseDarkTerminalAppearance: some View {
+        Toggle("Always use dark terminal appearance", isOn: $settings.terminal.darkAppearance)
     }
 
     private var changeThemeOnSystemAppearance: some View {

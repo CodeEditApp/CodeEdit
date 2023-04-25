@@ -82,20 +82,16 @@ struct CodeFileView: View {
         .id(codeFile.fileURL)
         .background {
             if colorScheme == .dark {
-                if settings.theme.selectedTheme == settings.theme.selectedLightTheme {
-                    Color.white
-                } else {
-                    EffectView(.underPageBackground)
-                }
+                EffectView(.underPageBackground)
             } else {
-                if settings.theme.selectedTheme == settings.theme.selectedDarkTheme {
-                    Color.black
-                } else {
-                    EffectView(.contentBackground)
-                }
-
+                EffectView(.contentBackground)
             }
         }
+        .colorScheme(
+            selectedTheme.appearance == .dark
+                ? .dark
+                : .light
+        )
         // minHeight zero fixes a bug where the app would freeze if the contents of the file are empty.
         .frame(minHeight: .zero, maxHeight: .infinity)
         .onChange(of: ThemeModel.shared.selectedTheme) { newValue in

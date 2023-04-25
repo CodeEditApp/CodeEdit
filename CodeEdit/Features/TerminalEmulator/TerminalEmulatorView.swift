@@ -116,7 +116,9 @@ struct TerminalEmulatorView: NSViewRepresentable {
 
     /// Returns the mapped array of `SwiftTerm.Color` objects of ANSI Colors
     private var colors: [SwiftTerm.Color] {
-        if let selectedTheme = themeModel.selectedTheme,
+        if let selectedTheme = Settings[\.theme].matchAppearance && Settings[\.terminal].darkAppearance
+            ? themeModel.selectedDarkTheme
+            : themeModel.selectedTheme,
            let index = themeModel.themes.firstIndex(of: selectedTheme) {
             return themeModel.themes[index].terminal.ansiColors.map { color in
                 SwiftTerm.Color(hex: color)
@@ -127,7 +129,9 @@ struct TerminalEmulatorView: NSViewRepresentable {
 
     /// Returns the `cursor` color of the selected theme
     private var cursorColor: NSColor {
-        if let selectedTheme = themeModel.selectedTheme,
+        if let selectedTheme = Settings[\.theme].matchAppearance && Settings[\.terminal].darkAppearance
+            ? themeModel.selectedDarkTheme
+            : themeModel.selectedTheme,
            let index = themeModel.themes.firstIndex(of: selectedTheme) {
             return NSColor(themeModel.themes[index].terminal.cursor.swiftColor)
         }
@@ -136,7 +140,9 @@ struct TerminalEmulatorView: NSViewRepresentable {
 
     /// Returns the `selection` color of the selected theme
     private var selectionColor: NSColor {
-        if let selectedTheme = themeModel.selectedTheme,
+        if let selectedTheme = Settings[\.theme].matchAppearance && Settings[\.terminal].darkAppearance
+            ? themeModel.selectedDarkTheme
+            : themeModel.selectedTheme,
            let index = themeModel.themes.firstIndex(of: selectedTheme) {
             return NSColor(themeModel.themes[index].terminal.selection.swiftColor)
         }
@@ -145,7 +151,9 @@ struct TerminalEmulatorView: NSViewRepresentable {
 
     /// Returns the `text` color of the selected theme
     private var textColor: NSColor {
-        if let selectedTheme = themeModel.selectedTheme,
+        if let selectedTheme = Settings[\.theme].matchAppearance && Settings[\.terminal].darkAppearance
+            ? themeModel.selectedDarkTheme
+            : themeModel.selectedTheme,
            let index = themeModel.themes.firstIndex(of: selectedTheme) {
             return NSColor(themeModel.themes[index].terminal.text.swiftColor)
         }
@@ -154,11 +162,7 @@ struct TerminalEmulatorView: NSViewRepresentable {
 
     /// Returns the `background` color of the selected theme
     private var backgroundColor: NSColor {
-        if let selectedTheme = themeModel.selectedTheme,
-           let index = themeModel.themes.firstIndex(of: selectedTheme) {
-            return NSColor(themeModel.themes[index].terminal.background.swiftColor)
-        }
-        return .windowBackgroundColor
+        return .clear
     }
 
     /// returns a `NSAppearance` based on the user setting of the terminal appearance,
