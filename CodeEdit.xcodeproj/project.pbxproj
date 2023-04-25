@@ -120,7 +120,6 @@
 		587B61012934170A00D5CD8F /* UnitTests_Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B61002934170A00D5CD8F /* UnitTests_Extensions.swift */; };
 		587B612E293419B700D5CD8F /* CodeFileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B612D293419B700D5CD8F /* CodeFileTests.swift */; };
 		587B9D57292FC27A00AC7927 /* FolderMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9D54292FC27A00AC7927 /* FolderMonitor.swift */; };
-		587B9D9E29300ABD00AC7927 /* FontPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9D8729300ABD00AC7927 /* FontPickerView.swift */; };
 		587B9D9F29300ABD00AC7927 /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9D8829300ABD00AC7927 /* SegmentedControl.swift */; };
 		587B9DA029300ABD00AC7927 /* PanelDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9D8929300ABD00AC7927 /* PanelDivider.swift */; };
 		587B9DA229300ABD00AC7927 /* EffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9D8B29300ABD00AC7927 /* EffectView.swift */; };
@@ -529,7 +528,6 @@
 		587B61002934170A00D5CD8F /* UnitTests_Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnitTests_Extensions.swift; sourceTree = "<group>"; };
 		587B612D293419B700D5CD8F /* CodeFileTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeFileTests.swift; sourceTree = "<group>"; };
 		587B9D54292FC27A00AC7927 /* FolderMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderMonitor.swift; sourceTree = "<group>"; };
-		587B9D8729300ABD00AC7927 /* FontPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontPickerView.swift; sourceTree = "<group>"; };
 		587B9D8829300ABD00AC7927 /* SegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
 		587B9D8929300ABD00AC7927 /* PanelDivider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PanelDivider.swift; sourceTree = "<group>"; };
 		587B9D8B29300ABD00AC7927 /* EffectView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EffectView.swift; sourceTree = "<group>"; };
@@ -1476,7 +1474,6 @@
 			children = (
 				6CABB1A029C5593800340467 /* OverlayView.swift */,
 				587B9D8B29300ABD00AC7927 /* EffectView.swift */,
-				587B9D8729300ABD00AC7927 /* FontPickerView.swift */,
 				587B9D9029300ABD00AC7927 /* HelpButton.swift */,
 				587B9D8D29300ABD00AC7927 /* OverlayPanel.swift */,
 				587B9D8929300ABD00AC7927 /* PanelDivider.swift */,
@@ -2705,7 +2702,6 @@
 				B66A4E5629C918A0004573B4 /* SceneID.swift in Sources */,
 				6C53AAD829A6C4FD00EE9ED6 /* SplitView.swift in Sources */,
 				B66A4E5329C91831004573B4 /* CodeEditCommands.swift in Sources */,
-				587B9D9E29300ABD00AC7927 /* FontPickerView.swift in Sources */,
 				58822529292C280D00E83CDE /* StatusBarLineEndSelector.swift in Sources */,
 				5C4BB1E128212B1E00A92FB2 /* World.swift in Sources */,
 				D7E201B227E8D50000CB86D0 /* FindNavigatorModeSelector.swift in Sources */,
