@@ -37,6 +37,7 @@ struct SettingsPageView: View {
                                 .aspectRatio(contentMode: .fit)
                         }
                     }
+                    .shadow(color: Color(NSColor.black).opacity(0.25), radius: 0.5, y: 0.5)
                     .padding(2.5)
                     .foregroundColor(.white)
                     .frame(width: 20, height: 20)
@@ -46,6 +47,7 @@ struct SettingsPageView: View {
                             style: .continuous
                         )
                         .fill(page.baseColor.gradient)
+                        .shadow(color: Color(NSColor.black).opacity(0.25), radius: 0.5, y: 0.5)
                     )
                 } else {
                     EmptyView()
