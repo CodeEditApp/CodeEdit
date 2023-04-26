@@ -390,10 +390,16 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, TabBar
         // This function also has to account for how the
         // - file system can change outside of the editor
         let deleteConfirmation = NSAlert()
-        let message = "\(String(describing: self.fileName))\(self.isFolder ? " and its children" : "")"
-        deleteConfirmation.messageText = "Do you want to move \(message) to the bin?"
+        let message: String
+        if self.isFolder || (self.children?.isEmpty ?? false) { // if its a file or an empty folder, call it by its name
+            message = String(describing: self.fileName)
+        } else {
+            message = "the \((self.children?.count ?? 0) + 1) selected items"
+        }
+        deleteConfirmation.messageText = "Do you want to move \(message) to the Trash?"
+        deleteConfirmation.informativeText = "This operation cannot be undone"
         deleteConfirmation.alertStyle = .critical
-        deleteConfirmation.addButton(withTitle: "Delete")
+        deleteConfirmation.addButton(withTitle: "Move to Trash")
         deleteConfirmation.buttons.last?.hasDestructiveAction = true
         deleteConfirmation.addButton(withTitle: "Cancel")
         if deleteConfirmation.runModal() == .alertFirstButtonReturn { // "Delete" button
