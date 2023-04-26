@@ -160,7 +160,7 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, TabBar
     /// If it has children this will return `"folder.fill"` otherwise `"folder"`.
     private func folderIcon(_ children: [CEWorkspaceFile]) -> String {
         if self.parent == nil {
-            return "square.dashed.inset.filled"
+            return "folder.fill.badge.gearshape"
         }
         if self.name == ".codeedit" {
             return "folder.fill.badge.gearshape"

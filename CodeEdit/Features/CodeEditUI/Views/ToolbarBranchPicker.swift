@@ -47,7 +47,7 @@ struct ToolbarBranchPicker: View {
                     .imageScale(.large)
                     .foregroundColor(controlActive == .inactive ? inactiveColor : .primary)
             } else {
-                Image(systemName: "square.dashed.inset.filled")
+                Image(systemName: "folder.fill.badge.gearshape")
                     .font(.title3)
                     .imageScale(.medium)
                     .foregroundColor(controlActive == .inactive ? inactiveColor : .accentColor)

@@ -108,7 +108,7 @@ class FileSystemTableViewCell: StandardTableViewCell {
         if item.children == nil && prefs.fileIconStyle == .color {
             return NSColor(item.iconColor)
         } else {
-            return .controlAccentColor
+            return NSColor(named: "FolderBlue")!
         }
     }
 }
