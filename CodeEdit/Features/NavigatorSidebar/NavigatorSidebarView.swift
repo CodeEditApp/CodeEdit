@@ -20,7 +20,7 @@ struct NavigatorSidebarView: View {
         self.workspace = workspace
     }
 
-    var sidebarAlignment: SidebarToolbarAlignment = .leading
+    var sidebarAlignment: SidebarToolbarAlignment = .top
 
     var body: some View {
         VStack {
