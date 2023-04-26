@@ -11,7 +11,7 @@ import SwiftUI
 ///
 /// Adds a ``outlineView`` inside a ``scrollView`` which shows the folder structure of the
 /// currently open project.
-final class OutlineViewController: NSViewController {
+final class ProjectNavigatorViewController: NSViewController {
 
     var scrollView: NSScrollView!
     var outlineView: NSOutlineView!
@@ -21,9 +21,7 @@ final class OutlineViewController: NSViewController {
     /// Also creates a top level item "root" which represents the projects root directory and automatically expands it.
     private var content: [CEWorkspaceFile] {
         guard let folderURL = workspace?.workspaceFileManager?.folderUrl else { return [] }
-        let children = workspace?.fileItems.sortItems(foldersOnTop: true)
         guard let root = try? workspace?.workspaceFileManager?.getFileItem(folderURL.path) else { return [] }
-        root.children = children
         return [root]
     }
 
@@ -58,7 +56,7 @@ final class OutlineViewController: NSViewController {
         self.outlineView.autosaveExpandedItems = true
         self.outlineView.autosaveName = workspace?.workspaceFileManager?.folderUrl.path ?? ""
         self.outlineView.headerView = nil
-        self.outlineView.menu = OutlineMenu(sender: self.outlineView)
+        self.outlineView.menu = ProjectNavigatorMenu(sender: self.outlineView)
         self.outlineView.menu?.delegate = self
         self.outlineView.doubleAction = #selector(onItemDoubleClicked)
 
@@ -69,12 +67,14 @@ final class OutlineViewController: NSViewController {
         outlineView.setDraggingSourceOperationMask(.move, forLocal: false)
         outlineView.registerForDraggedTypes([.fileURL])
 
-        self.scrollView.documentView = outlineView
-        self.scrollView.contentView.automaticallyAdjustsContentInsets = false
-        self.scrollView.contentView.contentInsets = .init(top: 10, left: 0, bottom: 0, right: 0)
+        scrollView.documentView = outlineView
+        scrollView.contentView.automaticallyAdjustsContentInsets = false
+        scrollView.contentView.contentInsets = .init(top: 10, left: 0, bottom: 0, right: 0)
+        scrollView.scrollerStyle = .overlay
+        scrollView.hasVerticalScroller = true
+        scrollView.hasHorizontalScroller = false
+        scrollView.autohidesScrollers = true
 
-        // TODO: Kai needs to replace this with his implementation of the sidebar
-//        WorkspaceClient.onRefresh = self.outlineView.reloadData
         outlineView.expandItem(outlineView.item(atRow: 0))
     }
 
@@ -125,11 +125,12 @@ final class OutlineViewController: NSViewController {
         }
     }
 
+    // TODO: File filtering
 }
 
 // MARK: - NSOutlineViewDataSource
 
-extension OutlineViewController: NSOutlineViewDataSource {
+extension ProjectNavigatorViewController: NSOutlineViewDataSource {
     func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
         if let item = item as? CEWorkspaceFile {
             return item.children?.count ?? 0
@@ -242,7 +243,7 @@ extension OutlineViewController: NSOutlineViewDataSource {
 
 // MARK: - NSOutlineViewDelegate
 
-extension OutlineViewController: NSOutlineViewDelegate {
+extension ProjectNavigatorViewController: NSOutlineViewDelegate {
     func outlineView(
         _ outlineView: NSOutlineView,
         shouldShowCellExpansionFor tableColumn: NSTableColumn?,
@@ -260,7 +261,7 @@ extension OutlineViewController: NSOutlineViewDelegate {
 
         let frameRect = NSRect(x: 0, y: 0, width: tableColumn.width, height: rowHeight)
 
-        return OutlineTableViewCell(frame: frameRect, item: item as? CEWorkspaceFile, delegate: self)
+        return ProjectNavigatorTableViewCell(frame: frameRect, item: item as? CEWorkspaceFile, delegate: self)
     }
 
     func outlineViewSelectionDidChange(_ notification: Notification) {
@@ -359,7 +360,7 @@ extension OutlineViewController: NSOutlineViewDelegate {
 
 // MARK: - NSMenuDelegate
 
-extension OutlineViewController: NSMenuDelegate {
+extension ProjectNavigatorViewController: NSMenuDelegate {
 
     /// Once a menu gets requested by a `right click` setup the menu
     ///
@@ -367,7 +368,7 @@ extension OutlineViewController: NSMenuDelegate {
     /// - Parameter menu: The menu that got requested
     func menuNeedsUpdate(_ menu: NSMenu) {
         let row = outlineView.clickedRow
-        guard let menu = menu as? OutlineMenu else { return }
+        guard let menu = menu as? ProjectNavigatorMenu else { return }
 
         if row == -1 {
             menu.item = nil

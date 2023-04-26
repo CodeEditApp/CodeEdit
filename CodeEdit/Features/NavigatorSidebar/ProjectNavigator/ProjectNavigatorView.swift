@@ -20,7 +20,7 @@ struct ProjectNavigatorView: View {
     var tabManager: TabManager
 
     var body: some View {
-        OutlineView(selection: $tabManager.activeTabGroup.selected)
+        ProjectNavigatorOutlineView(selection: $tabManager.activeTabGroup.selected)
     }
 
 }

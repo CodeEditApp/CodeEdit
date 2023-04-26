@@ -14,6 +14,7 @@ final class CEWorkspaceFileManager {
         case fileNotExist
     }
 
+    // TODO: See if this needs to be removed, it isn't used anymore
     private var subject = CurrentValueSubject<[CEWorkspaceFile], Never>([])
     private var isRunning = false
     private var anotherInstanceRan = 0
@@ -165,7 +166,9 @@ final class CEWorkspaceFileManager {
         }
 
         subject.send(workspaceItem.children ?? [])
-        isRunning = false
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.isRunning = false
+        }
         anotherInstanceRan = 0
 
         // reload data in outline view controller through the main thread

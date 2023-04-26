@@ -8,9 +8,11 @@
 import SwiftUI
 import CodeEditSymbols
 
-struct NavigatorSidebarToolbarTop: View {
+struct NavigatorSidebarToolbar: View {
     @Environment(\.controlActiveState)
     private var activeState
+
+    var alignment: SidebarToolbarAlignment
 
     @Binding
     private var selection: Int
@@ -30,42 +32,78 @@ struct NavigatorSidebarToolbarTop: View {
     @State private var draggingItem: SidebarDockIcon?
     @State private var drugItemLocation: CGPoint?
 
-    init(selection: Binding<Int>) {
+    init(selection: Binding<Int>, alignment: SidebarToolbarAlignment) {
         self._selection = selection
+        self.alignment = alignment
     }
 
     var body: some View {
+        if alignment == .top {
+            topBody
+        } else {
+            leadingBody
+        }
+    }
+
+    var topBody: some View {
         GeometryReader { proxy in
-            HStack(spacing: 0) {
-                ForEach(icons) { icon in
-                    makeIcon(named: icon.imageName, title: icon.title, id: icon.id, sidebarWidth: proxy.size.width)
-                        .opacity(draggingItem?.imageName == icon.imageName &&
-                                 hasChangedLocation &&
-                                 drugItemLocation != nil ? 0.0: icon.disabled ? 0.3 : 1.0)
-                        .onDrop(
-                            of: [.utf8PlainText],
-                            delegate: NavigatorSidebarDockIconDelegate(
-                                item: icon,
-                                current: $draggingItem,
-                                icons: $icons,
-                                hasChangedLocation: $hasChangedLocation,
-                                drugItemLocation: $drugItemLocation
-                            )
-                        )
-                        .disabled(icon.disabled)
+            iconsView(size: proxy.size)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .overlay(alignment: .top) {
+                    Divider()
                 }
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .overlay(alignment: .top) {
-                Divider()
-            }
-            .overlay(alignment: .bottom) {
-                Divider()
-            }
-            .animation(.default, value: icons)
+                .overlay(alignment: .bottom) {
+                    Divider()
+                }
+                .animation(.default, value: icons)
         }
         .frame(maxWidth: .infinity, idealHeight: 29)
         .fixedSize(horizontal: false, vertical: true)
+    }
+
+    var leadingBody: some View {
+        GeometryReader { proxy in
+            iconsView(size: proxy.size)
+                .padding(.vertical, 8)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .overlay(alignment: .trailing) {
+                    HStack {
+                        Divider()
+                    }
+                }
+                .animation(.default, value: icons)
+        }
+        .frame(idealWidth: 29, maxHeight: .infinity)
+        .fixedSize(horizontal: true, vertical: false)
+    }
+
+    @ViewBuilder
+    func iconsView(size: CGSize) -> some View {
+        let layout = alignment == .top ?
+                        AnyLayout(HStackLayout(spacing: 0)) :
+                        AnyLayout(VStackLayout(spacing: 10))
+        layout {
+            ForEach(icons) { icon in
+                makeIcon(named: icon.imageName, title: icon.title, id: icon.id, sidebarWidth: size.width)
+                    .opacity(draggingItem?.imageName == icon.imageName &&
+                             hasChangedLocation &&
+                             drugItemLocation != nil ? 0.0: icon.disabled ? 0.3 : 1.0)
+                    .onDrop(
+                        of: [.utf8PlainText],
+                        delegate: NavigatorSidebarDockIconDelegate(
+                            item: icon,
+                            current: $draggingItem,
+                            icons: $icons,
+                            hasChangedLocation: $hasChangedLocation,
+                            drugItemLocation: $drugItemLocation
+                        )
+                    )
+                    .disabled(icon.disabled)
+            }
+            if alignment == .leading {
+                Spacer()
+            }
+        }
     }
 
     private func makeIcon(

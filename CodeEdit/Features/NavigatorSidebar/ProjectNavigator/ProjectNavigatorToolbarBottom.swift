@@ -1,28 +1,52 @@
 //
-//  SideBarToolbarBottom.swift
+//  ProjectNavigatorToolbarBottom.swift
 //  CodeEdit
 //
-//  Created by Lukas Pistrol on 17.03.22.
+//  Created by TAY KAI QUAN on 23/7/22.
 //
 
 import SwiftUI
 
-struct NavigatorSidebarToolbarBottom: View {
+struct ProjectNavigatorToolbarBottom: View {
     @Environment(\.controlActiveState)
     private var activeState
+
+    @Environment(\.colorScheme)
+    private var colorScheme
 
     @EnvironmentObject
     var workspace: WorkspaceDocument
 
+    @State
+    var filter: String = ""
+
     var body: some View {
-        HStack(spacing: 10) {
+        HStack {
             addNewFileButton
-            Spacer()
-            sortButton
+                .frame(width: 20)
+                .padding(.leading, 10)
+            HStack {
+                sortButton
+                TextField("Filter", text: $filter)
+                    .textFieldStyle(.plain)
+                    .font(.system(size: 12))
+                if !filter.isEmpty {
+                    clearFilterButton
+                        .padding(.trailing, 5)
+                }
+            }
+            .onChange(of: filter, perform: {
+                workspace.filter = $0
+            })
+            .padding(.vertical, 3)
+            .background(colorScheme == .dark ? Color(hex: "#FFFFFF").opacity(0.1) : Color(hex: "#808080").opacity(0.2))
+            .clipShape(RoundedRectangle(cornerRadius: 6))
+            .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.gray, lineWidth: 0.5).cornerRadius(6))
+            .padding(.trailing, 5)
+            .padding(.leading, -8)
         }
-        .frame(height: 29)
+        .frame(height: 29, alignment: .center)
         .frame(maxWidth: .infinity)
-        .padding(.horizontal, 4)
         .overlay(alignment: .top) {
             Divider()
         }
@@ -65,6 +89,20 @@ struct NavigatorSidebarToolbarBottom: View {
         }
         .menuStyle(.borderlessButton)
         .frame(maxWidth: 30)
+        .opacity(activeState == .inactive ? 0.45 : 1)
+    }
+
+    /// We clear the text and remove the first responder which removes the cursor
+    /// when the user clears the filter.
+    private var clearFilterButton: some View {
+        Button {
+            filter = ""
+            NSApp.keyWindow?.makeFirstResponder(nil)
+        } label: {
+            Image(systemName: "xmark.circle.fill")
+                .symbolRenderingMode(.hierarchical)
+        }
+        .buttonStyle(.plain)
         .opacity(activeState == .inactive ? 0.45 : 1)
     }
 }
