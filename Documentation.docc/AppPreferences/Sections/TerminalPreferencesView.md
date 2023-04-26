@@ -4,4 +4,4 @@
 
 ### Model
 
-- ``AppPreferences/TerminalPreferences``
+- ``Settings/TerminalPreferences``

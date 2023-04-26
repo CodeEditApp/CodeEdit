@@ -13,7 +13,7 @@ struct GitLabTokenConfiguration: GitRouterConfiguration {
     var accessToken: String?
     let errorDomain: String? = "com.codeedit.models.accounts.gitlab"
 
-    init(_ token: String? = nil, url: String = GitURL.gitlabBaseURL) {
+    init(_ token: String? = nil, url: String? = GitURL.gitlabBaseURL) {
         apiEndpoint = url
         accessToken = token
     }
@@ -24,7 +24,7 @@ struct GitLabPrivateTokenConfiguration: GitRouterConfiguration {
     var accessToken: String?
     let errorDomain: String? = "com.codeedit.models.accounts.gitlab"
 
-    init(_ token: String? = nil, url: String = GitURL.gitlabBaseURL) {
+    init(_ token: String? = nil, url: String? = GitURL.gitlabBaseURL) {
         apiEndpoint = url
         accessToken = token
     }

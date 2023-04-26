@@ -13,15 +13,14 @@ struct FindNavigatorResultList: NSViewControllerRepresentable {
     @EnvironmentObject
     var workspace: WorkspaceDocument
 
-    @StateObject
-    var prefs: AppPreferencesModel = .shared
+    @AppSettings var settings
 
     typealias NSViewControllerType = FindNavigatorListViewController
 
     func makeNSViewController(context: Context) -> FindNavigatorListViewController {
         let controller = FindNavigatorListViewController(workspace: workspace)
         controller.setSearchResults(workspace.searchState?.searchResult ?? [])
-        controller.rowHeight = prefs.preferences.general.projectNavigatorSize.rowHeight
+        controller.rowHeight = settings.general.projectNavigatorSize.rowHeight
         context.coordinator.controller = controller
         return controller
     }
@@ -31,8 +30,8 @@ struct FindNavigatorResultList: NSViewControllerRepresentable {
             workspace.searchState?.searchResult ?? [],
             searchId: workspace.searchState?.searchId
         )
-        if nsViewController.rowHeight != prefs.preferences.general.projectNavigatorSize.rowHeight {
-            nsViewController.rowHeight = prefs.preferences.general.projectNavigatorSize.rowHeight
+        if nsViewController.rowHeight != settings.general.projectNavigatorSize.rowHeight {
+            nsViewController.rowHeight = settings.general.projectNavigatorSize.rowHeight
         }
         return
     }

@@ -4,7 +4,7 @@
 
 ### Model
 
-- ``AppPreferences/AccountsPreferences``
+- ``Settings/AccountsPreferences``
 - ``SourceControlAccounts``
 - ``SourceControlProvider``
 

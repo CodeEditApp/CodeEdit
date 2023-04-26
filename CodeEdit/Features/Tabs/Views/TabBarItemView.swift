@@ -26,9 +26,7 @@ struct TabBarItemView: View {
     @EnvironmentObject
     private var tabManager: TabManager
 
-    /// User preferences.
-    @StateObject
-    private var prefs: AppPreferencesModel = .shared
+    @AppSettings var settings
 
     /// Is cursor hovering over the entire tab.
     @State
@@ -112,7 +110,7 @@ struct TabBarItemView: View {
     func closeAction() {
         isAppeared = false
         withAnimation(
-            .easeOut(duration: prefs.preferences.general.tabBarStyle == .native ? 0.15 : 0.20)
+            .easeOut(duration: settings.general.tabBarStyle == .native ? 0.15 : 0.20)
         ) {
             tabgroup.closeTab(item: item)
         }
@@ -140,16 +138,16 @@ struct TabBarItemView: View {
             TabDivider()
                 .opacity(
                     (isActive || inHoldingState)
-                    && prefs.preferences.general.tabBarStyle == .xcode ? 0.0 : 1.0
+                    && settings.general.tabBarStyle == .xcode ? 0.0 : 1.0
                 )
-                .padding(.top, isActive && prefs.preferences.general.tabBarStyle == .native ? 1.22 : 0)
+                .padding(.top, isActive && settings.general.tabBarStyle == .native ? 1.22 : 0)
             // Tab content (icon and text).
             HStack(alignment: .center, spacing: 5) {
                 Image(systemName: item.systemImage)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .foregroundColor(
-                        prefs.preferences.general.fileIconStyle == .color
+                        settings.general.fileIconStyle == .color
                         && activeState != .inactive && isActiveTabGroup
                         ? item.iconColor
                         : .secondary
@@ -165,11 +163,11 @@ struct TabBarItemView: View {
             }
             .frame(
                 // To horizontally max-out the given width area ONLY in native tab bar style.
-                maxWidth: prefs.preferences.general.tabBarStyle == .native ? .infinity : nil,
+                maxWidth: settings.general.tabBarStyle == .native ? .infinity : nil,
                 // To max-out the parent (tab bar) area.
                 maxHeight: .infinity
             )
-            .padding(.horizontal, prefs.preferences.general.tabBarStyle == .native ? 28 : 23)
+            .padding(.horizontal, settings.general.tabBarStyle == .native ? 28 : 23)
             .overlay {
                 ZStack {
                     if isActive {
@@ -218,31 +216,31 @@ struct TabBarItemView: View {
                 ? 1.0
                 : (
                     isActive
-                    ? (prefs.preferences.general.tabBarStyle == .xcode ? 0.6 : 0.35)
-                    : (prefs.preferences.general.tabBarStyle == .xcode ? 0.4 : 0.55)
+                    ? (settings.general.tabBarStyle == .xcode ? 0.6 : 0.35)
+                    : (settings.general.tabBarStyle == .xcode ? 0.4 : 0.55)
                 )
             )
             TabDivider()
                 .opacity(
                     (isActive || inHoldingState)
-                    && prefs.preferences.general.tabBarStyle == .xcode ? 0.0 : 1.0
+                    && settings.general.tabBarStyle == .xcode ? 0.0 : 1.0
                 )
-                .padding(.top, isActive && prefs.preferences.general.tabBarStyle == .native ? 1.22 : 0)
+                .padding(.top, isActive && settings.general.tabBarStyle == .native ? 1.22 : 0)
         }
         .overlay(alignment: .top) {
             // Only show NativeTabShadow when `tabBarStyle` is native and this tab is not active.
             TabBarTopDivider()
-                .opacity(prefs.preferences.general.tabBarStyle == .native && !isActive ? 1 : 0)
+                .opacity(settings.general.tabBarStyle == .native && !isActive ? 1 : 0)
         }
         .foregroundColor(
             isActive && isActiveTabGroup
             ? (
-                prefs.preferences.general.tabBarStyle == .xcode && colorScheme != .dark
+                settings.general.tabBarStyle == .xcode && colorScheme != .dark
                 ? Color(nsColor: .controlAccentColor)
                 : .primary
             )
             : (
-                prefs.preferences.general.tabBarStyle == .xcode
+                settings.general.tabBarStyle == .xcode
                 ? .primary
                 : .secondary
             )
@@ -267,7 +265,7 @@ struct TabBarItemView: View {
                 content
             }
             .background {
-                if prefs.preferences.general.tabBarStyle == .xcode {
+                if settings.general.tabBarStyle == .xcode {
                     TabBarItemBackground(isActive: isActive, isPressing: isPressing, isDragging: isDragging)
                         .animation(.easeInOut(duration: 0.08), value: isHovering)
                 } else {
@@ -306,29 +304,29 @@ struct TabBarItemView: View {
         )
         .padding(
             // This padding is to avoid background color overlapping with top divider.
-            .top, prefs.preferences.general.tabBarStyle == .xcode ? 1 : 0
+            .top, settings.general.tabBarStyle == .xcode ? 1 : 0
         )
 //        .offset(
-//            x: isAppeared || prefs.preferences.general.tabBarStyle == .native ? 0 : -14,
+//            x: isAppeared || settings.general.tabBarStyle == .native ? 0 : -14,
 //            y: 0
 //        )
 //        .opacity(isAppeared && onDragTabId != item.id ? 1.0 : 0.0)
         .zIndex(
             isActive
-            ? (prefs.preferences.general.tabBarStyle == .native ? -1 : 2)
+            ? (settings.general.tabBarStyle == .native ? -1 : 2)
             : (isDragging ? 3 : (isPressing ? 1 : 0))
         )
         .frame(
             width: (
                 // Constrain the width of tab bar item for native tab style only.
-                prefs.preferences.general.tabBarStyle == .native
+                settings.general.tabBarStyle == .native
                 ? max(expectedWidth.isFinite ? expectedWidth : 0, 0)
                 : nil
             )
         )
         .onAppear {
             withAnimation(
-                .easeOut(duration: prefs.preferences.general.tabBarStyle == .native ? 0.15 : 0.20)
+                .easeOut(duration: settings.general.tabBarStyle == .native ? 0.15 : 0.20)
             ) {
 //                isAppeared = true
             }

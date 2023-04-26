@@ -16,8 +16,7 @@ import SwiftTerm
 /// for use in SwiftUI.
 ///
 struct TerminalEmulatorView: NSViewRepresentable {
-    @StateObject
-    private var prefs: AppPreferencesModel = .shared
+    @AppSettings var settings
 
     @StateObject
     private var themeModel: ThemeModel = .shared
@@ -30,12 +29,22 @@ struct TerminalEmulatorView: NSViewRepresentable {
     private let systemFont: NSFont = .monospacedSystemFont(ofSize: 11, weight: .medium)
 
     private var font: NSFont {
-        if !prefs.preferences.terminal.font.customFont {
-            return systemFont.withSize(CGFloat(prefs.preferences.terminal.font.size))
+        if settings.terminal.useTextEditorFont {
+            if !settings.textEditing.font.customFont {
+                return systemFont.withSize(CGFloat(settings.textEditing.font.size))
+            }
+            return NSFont(
+                name: settings.textEditing.font.name,
+                size: CGFloat(settings.textEditing.font.size)
+            ) ?? systemFont
+        }
+
+        if !settings.terminal.font.customFont {
+            return systemFont.withSize(CGFloat(settings.terminal.font.size))
         }
         return NSFont(
-            name: prefs.preferences.terminal.font.name,
-            size: CGFloat(prefs.preferences.terminal.font.size)
+            name: settings.terminal.font.name,
+            size: CGFloat(settings.terminal.font.size)
         ) ?? systemFont
     }
 
@@ -63,7 +72,7 @@ struct TerminalEmulatorView: NSViewRepresentable {
     ///    return String(cString: pwd.pw_shell)
     /// ```
     private func getShell() -> String {
-        switch prefs.preferences.terminal.shell {
+        switch settings.terminal.shell {
         case .system:
             return autoDetectDefaultShell()
         case .bash:
@@ -74,8 +83,8 @@ struct TerminalEmulatorView: NSViewRepresentable {
     }
 
     private func getTerminalCursor() -> CursorStyle {
-            let blink = prefs.preferences.terminal.cursorBlink
-            switch prefs.preferences.terminal.cursorStyle {
+            let blink = settings.terminal.cursorBlink
+            switch settings.terminal.cursorStyle {
             case .block:
                 return blink ? .blinkBlock : .steadyBlock
             case .underline:
@@ -102,12 +111,14 @@ struct TerminalEmulatorView: NSViewRepresentable {
 
     /// Returns true if the `option` key should be treated as the `meta` key.
     private var optionAsMeta: Bool {
-        prefs.preferences.terminal.optionAsMeta
+        settings.terminal.optionAsMeta
     }
 
     /// Returns the mapped array of `SwiftTerm.Color` objects of ANSI Colors
     private var colors: [SwiftTerm.Color] {
-        if let selectedTheme = themeModel.selectedTheme,
+        if let selectedTheme = Settings[\.theme].matchAppearance && Settings[\.terminal].darkAppearance
+            ? themeModel.selectedDarkTheme
+            : themeModel.selectedTheme,
            let index = themeModel.themes.firstIndex(of: selectedTheme) {
             return themeModel.themes[index].terminal.ansiColors.map { color in
                 SwiftTerm.Color(hex: color)
@@ -118,7 +129,9 @@ struct TerminalEmulatorView: NSViewRepresentable {
 
     /// Returns the `cursor` color of the selected theme
     private var cursorColor: NSColor {
-        if let selectedTheme = themeModel.selectedTheme,
+        if let selectedTheme = Settings[\.theme].matchAppearance && Settings[\.terminal].darkAppearance
+            ? themeModel.selectedDarkTheme
+            : themeModel.selectedTheme,
            let index = themeModel.themes.firstIndex(of: selectedTheme) {
             return NSColor(themeModel.themes[index].terminal.cursor.swiftColor)
         }
@@ -127,7 +140,9 @@ struct TerminalEmulatorView: NSViewRepresentable {
 
     /// Returns the `selection` color of the selected theme
     private var selectionColor: NSColor {
-        if let selectedTheme = themeModel.selectedTheme,
+        if let selectedTheme = Settings[\.theme].matchAppearance && Settings[\.terminal].darkAppearance
+            ? themeModel.selectedDarkTheme
+            : themeModel.selectedTheme,
            let index = themeModel.themes.firstIndex(of: selectedTheme) {
             return NSColor(themeModel.themes[index].terminal.selection.swiftColor)
         }
@@ -136,7 +151,9 @@ struct TerminalEmulatorView: NSViewRepresentable {
 
     /// Returns the `text` color of the selected theme
     private var textColor: NSColor {
-        if let selectedTheme = themeModel.selectedTheme,
+        if let selectedTheme = Settings[\.theme].matchAppearance && Settings[\.terminal].darkAppearance
+            ? themeModel.selectedDarkTheme
+            : themeModel.selectedTheme,
            let index = themeModel.themes.firstIndex(of: selectedTheme) {
             return NSColor(themeModel.themes[index].terminal.text.swiftColor)
         }
@@ -145,17 +162,13 @@ struct TerminalEmulatorView: NSViewRepresentable {
 
     /// Returns the `background` color of the selected theme
     private var backgroundColor: NSColor {
-        if let selectedTheme = themeModel.selectedTheme,
-           let index = themeModel.themes.firstIndex(of: selectedTheme) {
-            return NSColor(themeModel.themes[index].terminal.background.swiftColor)
-        }
-        return .windowBackgroundColor
+        return .clear
     }
 
     /// returns a `NSAppearance` based on the user setting of the terminal appearance,
     /// `nil` if app default is not overridden
     private var colorAppearance: NSAppearance? {
-        if prefs.preferences.terminal.darkAppearance {
+        if settings.terminal.darkAppearance {
             return .init(named: .darkAqua)
         }
         return nil
@@ -187,7 +200,7 @@ struct TerminalEmulatorView: NSViewRepresentable {
             terminal.caretColor = cursorColor
             terminal.selectedTextBackgroundColor = selectionColor
             terminal.nativeForegroundColor = textColor
-            terminal.nativeBackgroundColor = prefs.preferences.terminal.useThemeBackground ? backgroundColor : .clear
+            terminal.nativeBackgroundColor = settings.terminal.useThemeBackground ? backgroundColor : .clear
             terminal.cursorStyleChanged(source: terminal.getTerminal(), newStyle: getTerminalCursor())
             terminal.layer?.backgroundColor = .clear
             terminal.optionAsMetaKey = optionAsMeta
@@ -215,7 +228,7 @@ struct TerminalEmulatorView: NSViewRepresentable {
         view.caretColor = cursorColor
         view.selectedTextBackgroundColor = selectionColor
         view.nativeForegroundColor = textColor
-        view.nativeBackgroundColor = prefs.preferences.terminal.useThemeBackground ? backgroundColor : .clear
+        view.nativeBackgroundColor = settings.terminal.useThemeBackground ? backgroundColor : .clear
         view.layer?.backgroundColor = .clear
         view.optionAsMetaKey = optionAsMeta
         view.cursorStyleChanged(source: view.getTerminal(), newStyle: getTerminalCursor())

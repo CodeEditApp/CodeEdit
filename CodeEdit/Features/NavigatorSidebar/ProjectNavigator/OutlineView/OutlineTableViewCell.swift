@@ -15,12 +15,12 @@ protocol OutlineTableViewCellDelegate: AnyObject {
 /// A `NSTableCellView` showing an ``icon`` and a ``label``
 final class OutlineTableViewCell: NSTableCellView {
 
+    @AppSettings var settings
+
     var label: NSTextField!
     var icon: NSImageView!
     private var fileItem: WorkspaceClient.FileItem!
     private var delegate: OutlineTableViewCellDelegate?
-
-    private let prefs = AppPreferencesModel.shared.preferences.general
 
     /// Initializes the `OutlineTableViewCell` with an `icon` and `label`
     /// Both the icon and label will be colored, and sized based on the user's preferences.
@@ -116,6 +116,7 @@ final class OutlineTableViewCell: NSTableCellView {
     /// - Parameter item: The FileItem to generate the name for.
     /// - Returns: A `String` with the name to display.
     private func label(for item: WorkspaceClient.FileItem) -> String {
+        let prefs = Settings[\.general]
         switch prefs.fileExtensionsVisibility {
         case .hideAll:
             return item.fileName(typeHidden: true)
@@ -132,7 +133,7 @@ final class OutlineTableViewCell: NSTableCellView {
     /// - Parameter item: The `FileItem` to get the color for
     /// - Returns: A `NSColor` for the given `FileItem`.
     private func color(for item: WorkspaceClient.FileItem) -> NSColor {
-        return prefs.fileIconStyle == .color
+        return Settings[\.general.fileIconStyle] == .color
             ? item.children == nil ? NSColor(item.iconColor) : NSColor(named: "FolderBlue")!
             : .secondaryLabelColor
     }
