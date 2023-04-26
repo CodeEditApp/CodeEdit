@@ -20,6 +20,8 @@ struct NavigatorSidebarView: View {
         self.workspace = workspace
     }
 
+    var sidebarAlignment: SidebarToolbarAlignment = .leading
+
     var body: some View {
         VStack {
             switch selection {
@@ -35,9 +37,21 @@ struct NavigatorSidebarView: View {
                 Spacer()
             }
         }
+        .padding(.top, sidebarAlignment == .leading ? toolbarPadding : 0)
+        .safeAreaInset(edge: .leading) {
+            if sidebarAlignment == .leading {
+                NavigatorSidebarToolbar(selection: $selection, alignment: sidebarAlignment)
+                    .padding(.top, toolbarPadding)
+                    .padding(.trailing, toolbarPadding)
+            }
+        }
         .safeAreaInset(edge: .top) {
-            NavigatorSidebarToolbarTop(selection: $selection)
-                .padding(.bottom, toolbarPadding)
+            if sidebarAlignment == .top {
+                NavigatorSidebarToolbar(selection: $selection, alignment: sidebarAlignment)
+                    .padding(.bottom, toolbarPadding)
+            } else {
+                Divider()
+            }
         }
         .safeAreaInset(edge: .bottom) {
             Group {
@@ -54,4 +68,8 @@ struct NavigatorSidebarView: View {
         }
         .environmentObject(workspace)
     }
+}
+
+enum SidebarToolbarAlignment {
+    case top, leading
 }
