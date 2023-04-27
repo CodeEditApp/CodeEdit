@@ -197,11 +197,11 @@ struct AccountsSettingsSigninView: View {
         } else {
             settings.accounts.sourceControlAccounts.gitAccounts.append(
                 SourceControlAccount(
-                    id: "\(server)_\(username.lowercased())",
+                    id: "\(providerLink)_\(username.lowercased())",
                     name: username,
                     description: provider.name,
                     provider: provider,
-                    serverURL: server,
+                    serverURL: providerLink,
                     urlProtocol: true,
                     sshKey: "",
                     isTokenValid: true
