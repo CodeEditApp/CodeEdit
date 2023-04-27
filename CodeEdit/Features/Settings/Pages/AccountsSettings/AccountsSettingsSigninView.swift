@@ -159,7 +159,7 @@ struct AccountsSettingsSigninView: View {
 
         switch provider {
         case .github, .githubEnterprise:
-            let config = GitHubTokenConfiguration(personalAccessToken, url: configURL)
+            let config = GitHubTokenConfiguration(personalAccessToken, url: configURL ?? GitURL.githubBaseURL)
             GitHubAccount(config).me { response in
                 switch response {
                 case .success:
@@ -169,7 +169,7 @@ struct AccountsSettingsSigninView: View {
                 }
             }
         case .gitlab, .gitlabSelfHosted:
-            let config = GitLabTokenConfiguration(personalAccessToken, url: configURL)
+            let config = GitLabTokenConfiguration(personalAccessToken, url: configURL ?? GitURL.gitlabBaseURL)
             GitLabAccount(config).me { response in
                 switch response {
                 case .success:
