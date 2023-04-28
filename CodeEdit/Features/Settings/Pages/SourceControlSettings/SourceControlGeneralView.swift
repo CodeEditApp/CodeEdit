@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SourceControlGeneralView: View {
-    @AppSettings var settings
+    @AppSettings(\.sourceControl.general) var settings
 
     @State
     private var text: String = "main"
@@ -39,56 +39,56 @@ private extension SourceControlGeneralView {
     private var enableSourceControl: some View {
         Toggle(
             "Enable source control",
-            isOn: $settings.sourceControl.general.enableSourceControl
+            isOn: $settings.enableSourceControl
         )
     }
 
     private var refreshLocalStatusAuto: some View {
         Toggle(
             "Refresh local status automatically",
-            isOn: $settings.sourceControl.general.refreshStatusLocally
+            isOn: $settings.refreshStatusLocally
         )
     }
 
     private var fetchRefreshStatusAuto: some View {
         Toggle(
             "Fetch and refresh server status automatically",
-            isOn: $settings.sourceControl.general.fetchRefreshServerStatus
+            isOn: $settings.fetchRefreshServerStatus
         )
     }
 
     private var addRemoveFilesAuto: some View {
         Toggle(
             "Add and remove files automatically",
-            isOn: $settings.sourceControl.general.addRemoveAutomatically
+            isOn: $settings.addRemoveAutomatically
         )
     }
 
     private var selectFilesToCommitAuto: some View {
         Toggle(
             "Select files to commit automatically",
-            isOn: $settings.sourceControl.general.selectFilesToCommit
+            isOn: $settings.selectFilesToCommit
         )
     }
 
     private var showSourceControlChanges: some View {
         Toggle(
             "Show source control changes",
-            isOn: $settings.sourceControl.general.showSourceControlChanges
+            isOn: $settings.showSourceControlChanges
         )
     }
 
     private var includeUpstreamChanges: some View {
         Toggle(
             "Include upstream changes",
-            isOn: $settings.sourceControl.general.includeUpstreamChanges
+            isOn: $settings.includeUpstreamChanges
         )
     }
 
     private var comparisonView: some View {
         Picker(
             "Comparison view",
-            selection: $settings.sourceControl.general.revisionComparisonLayout
+            selection: $settings.revisionComparisonLayout
         ) {
             Text("Local Revision on Left Side")
                 .tag(SettingsData.RevisionComparisonLayout.localLeft)
@@ -100,7 +100,7 @@ private extension SourceControlGeneralView {
     private var sourceControlNavigator: some View {
         Picker(
             "Source control navigator",
-            selection: $settings.sourceControl.general.controlNavigatorOrder
+            selection: $settings.controlNavigatorOrder
         ) {
             Text("Sort by Name")
                 .tag(SettingsData.ControlNavigatorOrder.sortByName)
