@@ -55,14 +55,21 @@ struct AccountsSettingsDetailsView: View {
                         Button("Delete Account...") {
                             deleteConfirmationIsPresented.toggle()
                         }
-                        .alert(isPresented: $deleteConfirmationIsPresented) {
-                            Alert(
-                                title: Text("Are you sure you want to delete the account “\(account.description)”?"),
-                                message: Text("Deleting this account will remove it from CodeEdit."),
-                                primaryButton: .default(Text("OK")),
-                                secondaryButton: .default(Text("Cancel"))
-                            )
+                        .alert(
+                            Text("Are you sure you want to delete the account “\(account.description)”?"),
+                            isPresented: $deleteConfirmationIsPresented
+                        ) {
+                            Button("OK") {
+                                // Handle the account delete
+                            }
+                            Button("Cancel") {
+                                // Handle the cancel, dismiss the alert
+                                deleteConfirmationIsPresented.toggle()
+                            }
+                        } message: {
+                            Text("Deleting this account will remove it from CodeEdit.")
                         }
+
                         Spacer()
                     }
                     .padding(.top, 10)
