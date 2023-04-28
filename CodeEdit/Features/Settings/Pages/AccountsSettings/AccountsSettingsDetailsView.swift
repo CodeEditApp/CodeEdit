@@ -14,6 +14,8 @@ struct AccountsSettingsDetailsView: View {
 
     @State var cloneUsing: Bool = false
     @State var deleteConfirmationIsPresented: Bool = false
+    @State var prevSshKey: String = Settings[\.accounts].sourceControlAccounts.sshKey
+    @State var createSshKeyIsPresented: Bool = false
 
     init(_ account: Binding<SourceControlAccount>) {
         _account = account
@@ -22,9 +24,7 @@ struct AccountsSettingsDetailsView: View {
     /// Default instance of the `FileManager`
     private let filemanager = FileManager.default
 
-    /// The base URL of settings.
-    ///
-    /// Points to `~/Library/Application Support/CodeEdit/`
+    /// The URL of the users ssh folder. Points to `~/.ssh`
     internal var sshURL: URL {
         filemanager
             .homeDirectoryForCurrentUser
@@ -89,8 +89,25 @@ struct AccountsSettingsDetailsView: View {
                                 }
                             }
                             Text("Create New...")
+                                .tag("CREATE_NEW")
                             Text("Choose...")
+                                .tag("CHOOSE")
                         }
+                        .onReceive([settings.accounts.sourceControlAccounts.sshKey].publisher.first()) { value in
+                            if value == "CREATE_NEW" {
+                                print("Create a new ssh key...")
+                                createSshKeyIsPresented = true
+                                settings.accounts.sourceControlAccounts.sshKey = prevSshKey
+                            } else if value == "CHOOSE" {
+                                print("Choose a ssh key...")
+                                settings.accounts.sourceControlAccounts.sshKey = prevSshKey
+                            } else {
+                                prevSshKey = settings.accounts.sourceControlAccounts.sshKey
+                                // TODO: Validate SSH key and check if it is uploaded to git provider.
+                                // If not provide button to do so
+                            }
+                        }
+                        .sheet(isPresented: $createSshKeyIsPresented, content: { CreateSSHKeyView() })
                     }
                 } footer: {
                     HStack {
