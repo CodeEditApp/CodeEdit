@@ -11,7 +11,7 @@ import Foundation
 extension SettingsData {
 
     /// The global settings for text editing
-    struct TextEditingSettings: Codable {
+    struct TextEditingSettings: Codable, Hashable {
         /// An integer indicating how many spaces a `tab` will generate
         var defaultTabWidth: Int = 4
 
@@ -93,7 +93,7 @@ extension SettingsData {
         }
     }
 
-    struct EditorFont: Codable, Equatable {
+    struct EditorFont: Codable, Hashable {
         /// Indicates whether or not to use a custom font
         var customFont: Bool = false
 

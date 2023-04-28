@@ -35,6 +35,8 @@ struct SettingsView: View {
     @State private var selectedPage = pages.first!
     @State private var searchText: String = ""
 
+    @ObservedObject private var settings: Settings = .shared
+
     @Environment(\.presentationMode) var presentationMode
 
     let updater: SoftwareUpdater
@@ -114,6 +116,7 @@ struct SettingsView: View {
             }
         }
         .environmentObject(model)
+        .environment(\.settings, settings.preferences)
     }
 }
 

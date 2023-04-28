@@ -10,7 +10,7 @@ import SwiftUI
 extension SettingsData {
 
     /// The general global setting
-    struct GeneralSettings: Codable {
+    struct GeneralSettings: Codable, Hashable {
 
         /// The appearance of the app
         var appAppearance: Appearances = .system

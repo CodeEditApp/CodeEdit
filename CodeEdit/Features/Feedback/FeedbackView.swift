@@ -11,9 +11,6 @@ struct FeedbackView: View {
     @ObservedObject
     private var feedbackModel: FeedbackModel = .shared
 
-    @StateObject
-    var prefs: Settings = .shared
-
     @State
     var showsAlert: Bool = false
 

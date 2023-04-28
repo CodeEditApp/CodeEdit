@@ -9,24 +9,49 @@ import Foundation
 import SwiftUI
 
 @propertyWrapper
-struct AppSettings: DynamicProperty {
-    @ObservedObject
-    private var prefs: Settings
+struct AppSettings<T>: DynamicProperty where T: Equatable {
 
-    init(_ prefs: Settings = .shared) {
-        self.prefs = prefs
+    var settings: Environment<T>
+
+    let keyPath: WritableKeyPath<SettingsData, T>
+
+    @available(*, deprecated, message: "Use init(_ keyPath:) instead, otherwise the view will be reevaluated on every settings change.")
+    init() where T == SettingsData {
+        self.keyPath = \.self
+        self.settings = .init(\.settings)
     }
 
-    var wrappedValue: SettingsData {
+    init(_ keyPath: WritableKeyPath<SettingsData, T>) {
+        self.keyPath = keyPath
+        let newKeyPath = (\EnvironmentValues.settings).appending(path: keyPath)
+        self.settings = .init(newKeyPath)
+    }
+
+    var wrappedValue: T {
         get {
-            prefs.preferences
+            settings.wrappedValue
         }
         nonmutating set {
-            prefs.preferences = newValue
+            Settings.shared.preferences[keyPath: keyPath] = newValue
         }
     }
 
-    var projectedValue: Binding<SettingsData> {
-        $prefs.preferences
+    var projectedValue: Binding<T> {
+        .init {
+            settings.wrappedValue
+        } set: {
+            Settings.shared.preferences[keyPath: keyPath] = $0
+        }
+    }
+}
+
+struct SettingsDataEnvironmentKey: EnvironmentKey {
+    static var defaultValue: SettingsData = .init()
+}
+
+extension EnvironmentValues {
+    var settings: SettingsDataEnvironmentKey.Value {
+        get { self[SettingsDataEnvironmentKey.self] }
+        set { self[SettingsDataEnvironmentKey.self] = newValue }
     }
 }

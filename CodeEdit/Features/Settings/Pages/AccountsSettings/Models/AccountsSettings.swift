@@ -10,7 +10,7 @@ import Foundation
 extension SettingsData {
 
     /// The global settings for text editing
-    struct AccountsSettings: Codable {
+    struct AccountsSettings: Codable, Hashable {
         /// An integer indicating how many spaces a `tab` will generate
         var sourceControlAccounts: GitAccounts = .init()
 
@@ -27,7 +27,7 @@ extension SettingsData {
         }
     }
 
-    struct GitAccounts: Codable {
+    struct GitAccounts: Codable, Hashable {
         /// This id will store the account name as the identifiable
         var gitAccounts: [SourceControlAccount] = []
 

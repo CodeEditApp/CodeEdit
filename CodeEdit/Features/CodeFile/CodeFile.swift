@@ -80,7 +80,9 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
         let windowController = NSWindowController(window: window)
         addWindowController(windowController)
 
-        window.contentView = NSHostingView(rootView: WindowCodeFileView(codeFile: self))
+        window.contentView = NSHostingView(rootView: SettingsInjector {
+            WindowCodeFileView(codeFile: self)
+        })
 
         window.makeKeyAndOrderFront(nil)
         window.center()
