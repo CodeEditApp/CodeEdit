@@ -6,9 +6,9 @@
 
 - <doc:About-Window>
 
-### AppPreferences
+### Settings
 
-- ``AppPreferences``
+- ``Settings``
 
 ### App Window
 

@@ -54,7 +54,7 @@ struct BitBucketOAuthConfiguration: GitRouterConfiguration {
     ) {
         let request = BitBucketOAuthRouter.accessToken(self, code).URLRequest
 
-        if let request = request {
+        if let request {
             let task = session.dataTask(with: request) { data, response, _ in
                 if let response = response as? HTTPURLResponse {
                     if response.statusCode != 200 {
@@ -71,7 +71,7 @@ struct BitBucketOAuthConfiguration: GitRouterConfiguration {
     }
 
     private func configFromData(_ data: Data?) -> BitBucketTokenConfiguration? {
-        guard let data = data else { return nil }
+        guard let data else { return nil }
         do {
             guard let json = try JSONSerialization.jsonObject(
                 with: data,
@@ -102,7 +102,7 @@ struct BitBucketOAuthConfiguration: GitRouterConfiguration {
 
     func accessTokenFromResponse(_ response: String) -> String? {
         let accessTokenParam = response.components(separatedBy: "&").first
-        if let accessTokenParam = accessTokenParam {
+        if let accessTokenParam {
             return accessTokenParam.components(separatedBy: "=").last
         }
         return nil

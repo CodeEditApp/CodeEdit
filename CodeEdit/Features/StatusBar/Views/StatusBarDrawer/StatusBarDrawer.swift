@@ -14,26 +14,83 @@ struct StatusBarDrawer: View {
     @Environment(\.colorScheme)
     private var colorScheme
 
+    @EnvironmentObject
+    private var model: StatusBarViewModel
+
+    @AppSettings
+    private var settings
+
+    @StateObject
+    private var themeModel: ThemeModel = .shared
+
     @State
     private var searchText = ""
+
+    /// Returns the `background` color of the selected theme
+    private var backgroundColor: NSColor {
+        if let selectedTheme = settings.theme.matchAppearance && settings.terminal.darkAppearance
+            ? themeModel.selectedDarkTheme
+            : themeModel.selectedTheme,
+           let index = themeModel.themes.firstIndex(of: selectedTheme) {
+            return NSColor(themeModel.themes[index].terminal.background.swiftColor)
+        }
+        return .windowBackgroundColor
+    }
 
     var body: some View {
         if let url = workspace.workspaceFileManager?.folderUrl {
             VStack(spacing: 0) {
                 TerminalEmulatorView(url: url)
-                HStack(alignment: .center, spacing: 10) {
+                    .padding(.top, 10)
+                    .padding(.horizontal, 10)
+                    .contentShape(Rectangle())
+                HStack(alignment: .center, spacing: 6.5) {
                     FilterTextField(title: "Filter", text: $searchText)
-                        .frame(maxWidth: 300)
+                        .frame(maxWidth: 175)
+                        .padding(.leading, -2)
                     Spacer()
-                    StatusBarClearButton()
+                    Button {
+                        // clear logs
+                    } label: {
+                        Image(systemName: "trash")
+                    }
+                    .buttonStyle(.icon)
                     Divider()
-                    StatusBarSplitTerminalButton()
-                    StatusBarMaximizeButton()
+                    HStack(alignment: .center, spacing: 3.5) {
+                        Button {
+                            // split terminal
+                        } label: {
+                            Image(systemName: "square.split.2x1")
+                        }
+                        .buttonStyle(.icon)
+                        Button {
+                            model.isMaximized.toggle()
+                        } label: {
+                            Image(systemName: "arrowtriangle.up.square")
+                        }
+                        .buttonStyle(.icon(isActive: model.isMaximized))
+                    }
                 }
-                .padding(10)
-                .frame(maxHeight: 29)
-                .background(.bar)
+                .padding(.horizontal, 7)
+                .padding(.vertical, 8)
+                .frame(maxHeight: 28)
             }
+            .background {
+                if settings.theme.useThemeBackground {
+                    Color(nsColor: backgroundColor)
+                } else {
+                    if colorScheme == .dark {
+                        EffectView(.underPageBackground)
+                    } else {
+                        EffectView(.contentBackground)
+                    }
+                }
+            }
+            .colorScheme(
+                settings.theme.matchAppearance && settings.terminal.darkAppearance
+                ? themeModel.selectedDarkTheme?.appearance == .dark ? .dark : .light
+                : themeModel.selectedTheme?.appearance == .dark ? .dark : .light
+            )
         }
     }
 }

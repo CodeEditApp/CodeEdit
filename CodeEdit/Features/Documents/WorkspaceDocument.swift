@@ -9,19 +9,12 @@ import Foundation
 import AppKit
 import SwiftUI
 import Combine
-import CodeEditKit
 
 @objc(WorkspaceDocument) final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
 
-    @Published
-    var sortFoldersOnTop: Bool = true
-
-    @Published
-    var targets: [Target] = []
+    @Published var sortFoldersOnTop: Bool = true
 
     var workspaceFileManager: CEWorkspaceFileManager?
-
-    var extensionNavigatorData = ExtensionNavigatorData()
 
     var tabManager = TabManager()
 
@@ -95,7 +88,7 @@ import CodeEditKit
             workspace: self
         )
 
-        windowController.shouldCascadeWindows = false
+        windowController.shouldCascadeWindows = true
         windowController.window?.setFrameAutosaveName(self.fileURL?.absoluteString ?? "Untitled")
         self.addWindowController(windowController)
 
@@ -234,18 +227,5 @@ import CodeEditKit
         let opaquePtr = OpaquePointer(contextInfo)
         let mutablePointer = UnsafeMutablePointer<Bool>(opaquePtr)
         mutablePointer.pointee = shouldClose
-    }
-}
-
-// MARK: - Extensions
-extension WorkspaceDocument {
-    func target(didAdd target: Target) {
-        self.targets.append(target)
-    }
-    func target(didRemove target: Target) {
-        self.targets.removeAll { $0.id == target.id }
-    }
-    func targetDidClear() {
-        self.targets.removeAll()
     }
 }

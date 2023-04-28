@@ -51,11 +51,11 @@ extension GitLabAccount {
             expectedResultType: GitLabProject.self
         ) { json, error in
 
-            if let error = error {
+            if let error {
                 completion(Result.failure(error))
             }
 
-            if let json = json {
+            if let json {
                 completion(Result.success([json]))
             }
         }
@@ -80,11 +80,11 @@ extension GitLabAccount {
             expectedResultType: GitLabProject.self
         ) { json, error in
 
-            if let error = error {
+            if let error {
                 completion(Result.failure(error))
             }
 
-            if let json = json {
+            if let json {
                 completion(Result.success(json))
             }
         }
@@ -134,11 +134,11 @@ extension GitLabAccount {
             expectedResultType: GitLabProject.self
         ) { json, error in
 
-            if let error = error {
+            if let error {
                 completion(Result.failure(error))
             }
 
-            if let json = json {
+            if let json {
                 completion(Result.success(json))
             }
         }
@@ -188,11 +188,11 @@ extension GitLabAccount {
             expectedResultType: GitLabProject.self
         ) { json, error in
 
-            if let error = error {
+            if let error {
                 completion(Result.failure(error))
             }
 
-            if let json = json {
+            if let json {
                 completion(Result.success(json))
             }
         }
@@ -242,11 +242,11 @@ extension GitLabAccount {
             expectedResultType: GitLabProject.self
         ) { json, error in
 
-            if let error = error {
+            if let error {
                 completion(Result.failure(error))
             }
 
-            if let json = json {
+            if let json {
                 completion(Result.success(json))
             }
         }
@@ -296,11 +296,11 @@ extension GitLabAccount {
             expectedResultType: GitLabProject.self
         ) { json, error in
 
-            if let error = error {
+            if let error {
                 completion(Result.failure(error))
             }
 
-            if let json = json {
+            if let json {
                 completion(Result.success(json))
             }
         }
@@ -333,11 +333,11 @@ extension GitLabAccount {
             expectedResultType: GitLabEvent.self
         ) { json, error in
 
-            if let error = error {
+            if let error {
                 completion(Result.failure(error))
             }
 
-            if let json = json {
+            if let json {
                 completion(Result.success(json))
             }
         }

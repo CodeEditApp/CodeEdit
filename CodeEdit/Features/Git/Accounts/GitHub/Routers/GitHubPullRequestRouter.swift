@@ -46,11 +46,11 @@ enum GitHubPullRequestRouter: GitJSONPostRouter {
                 "direction": direction.rawValue
             ]
 
-            if let base = base {
+            if let base {
                 parameters["base"] = base
             }
 
-            if let head = head {
+            if let head {
                 parameters["head"] = head
             }
 

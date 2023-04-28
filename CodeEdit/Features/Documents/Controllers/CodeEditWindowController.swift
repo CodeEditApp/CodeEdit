@@ -8,16 +8,19 @@
 import Cocoa
 import SwiftUI
 
-final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
+final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, ObservableObject {
     static let minSidebarWidth: CGFloat = 242
 
-    private var prefs: AppPreferencesModel = .shared
+    @Published var navigatorCollapsed = false
+    @Published var inspectorCollapsed = false
+
+    var observers: [NSKeyValueObservation] = []
 
     var workspace: WorkspaceDocument?
     var quickOpenPanel: OverlayPanel?
     var commandPalettePanel: OverlayPanel?
 
-    private var splitViewController: NSSplitViewController!
+    var splitViewController: NSSplitViewController!
 
     init(window: NSWindow, workspace: WorkspaceDocument) {
         super.init(window: window)
@@ -30,6 +33,15 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
         // An NSHostingController is used, so the root viewController of the window is a SwiftUI-managed one.
         // This allows us to use some SwiftUI features, like focusedSceneObject.
         contentViewController = NSHostingController(rootView: view)
+
+        observers = [
+            splitViewController.splitViewItems.first!.observe(\.isCollapsed, changeHandler: { [weak self] item, _ in
+                self?.navigatorCollapsed = item.isCollapsed
+            }),
+            splitViewController.splitViewItems.last!.observe(\.isCollapsed, changeHandler: { [weak self] item, _ in
+                self?.navigatorCollapsed = item.isCollapsed
+            })
+        ]
 
         setupToolbar()
         registerCommands()
@@ -124,7 +136,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
         toolbar.showsBaselineSeparator = false
         self.window?.titleVisibility = .hidden
         self.window?.toolbarStyle = .unifiedCompact
-        if prefs.preferences.general.tabBarStyle == .native {
+        if Settings[\.general].tabBarStyle == .native {
             // Set titlebar background as transparent by default in order to
             // style the toolbar background in native tab bar style.
             self.window?.titlebarSeparatorStyle = .none
@@ -167,7 +179,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     ) -> NSToolbarItem? {
         switch itemIdentifier {
         case .itemListTrackingSeparator:
-                guard let splitViewController = splitViewController else {
+                guard let splitViewController else {
                     return nil
                 }
 
@@ -234,8 +246,8 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     }
 
     @IBAction func openCommandPalette(_ sender: Any) {
-        if let workspace = workspace, let state = workspace.commandsPaletteState {
-            if let commandPalettePanel = commandPalettePanel {
+        if let workspace, let state = workspace.commandsPaletteState {
+            if let commandPalettePanel {
                 if commandPalettePanel.isKeyWindow {
                     commandPalettePanel.close()
                     state.reset()
@@ -257,8 +269,8 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate {
     }
 
     @IBAction func openQuickly(_ sender: Any) {
-        if let workspace = workspace, let state = workspace.quickOpenViewModel {
-            if let quickOpenPanel = quickOpenPanel {
+        if let workspace, let state = workspace.quickOpenViewModel {
+            if let quickOpenPanel {
                 if quickOpenPanel.isKeyWindow {
                     quickOpenPanel.close()
                     return
@@ -298,7 +310,9 @@ extension CodeEditWindowController {
     func toggleLastPanel() {
         guard let lastSplitView = splitViewController.splitViewItems.last else { return }
 
-        if lastSplitView.isCollapsed {
+        if let toolbar = window?.toolbar,
+            lastSplitView.isCollapsed,
+            !toolbar.items.map(\.itemIdentifier).contains(.itemListTrackingSeparator) {
             window?.toolbar?.insertItem(withItemIdentifier: .itemListTrackingSeparator, at: 4)
         }
         NSAnimationContext.runAnimationGroup { _ in

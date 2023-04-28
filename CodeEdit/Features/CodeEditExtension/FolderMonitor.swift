@@ -49,7 +49,7 @@ final class FolderMonitor {
 
         // Define a cancel handler to ensure the directory is closed when the source is cancelled.
         folderMonitorSource?.setCancelHandler { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
             close(self.monitoredFolderFileDescriptor)
             self.monitoredFolderFileDescriptor = -1
             self.folderMonitorSource = nil

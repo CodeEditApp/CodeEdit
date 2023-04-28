@@ -13,25 +13,35 @@ struct FilterTextField: View {
     @Binding
     var text: String
 
+    @FocusState
+    private var isFocused: Bool
+
     var body: some View {
-        HStack {
+        HStack(spacing: 5) {
             Image(systemName: "line.3.horizontal.decrease.circle")
-                .foregroundColor(Color(nsColor: .secondaryLabelColor))
+                .foregroundColor(Color(nsColor: .labelColor))
+                .font(.system(size: 13, weight: .regular))
+                .padding(.leading, -1)
+                .padding(.trailing, -2)
             textField
             if !text.isEmpty { clearButton }
         }
         .padding(.horizontal, 5)
-        .padding(.vertical, 3)
+        .frame(height: 22)
+        .background(Color(nsColor: isFocused ? .textBackgroundColor : .quaternaryLabelColor))
+        .cornerRadius(7)
         .overlay(
-            RoundedRectangle(cornerRadius: 4)
-                .stroke(Color.gray, lineWidth: 0.5).cornerRadius(4)
+            RoundedRectangle(cornerRadius: 7)
+                .stroke(isFocused ? .secondary : .tertiary, lineWidth: 0.75).cornerRadius(7)
         )
     }
 
     private var textField: some View {
         TextField(title, text: $text)
+            .font(.system(size: 11, weight: .regular))
             .disableAutocorrection(true)
             .textFieldStyle(PlainTextFieldStyle())
+            .focused($isFocused)
     }
 
     private var clearButton: some View {

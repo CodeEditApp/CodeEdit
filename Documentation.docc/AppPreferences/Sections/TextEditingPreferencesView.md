@@ -4,4 +4,4 @@
 
 ### Model
 
-- ``AppPreferences/TextEditingPreferences``
+- ``Settings/TextEditingPreferences``

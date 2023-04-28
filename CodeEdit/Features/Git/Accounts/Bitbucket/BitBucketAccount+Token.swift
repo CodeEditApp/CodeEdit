@@ -20,12 +20,12 @@ extension BitBucketAccount {
 
         var task: GitURLSessionDataTaskProtocol?
 
-        if let request = request {
+        if let request {
             task = session.dataTask(with: request) { data, response, _ in
 
                 guard let response = response as? HTTPURLResponse else { return }
 
-                guard let data = data else { return }
+                guard let data else { return }
                 do {
                     let responseJSON = try? JSONSerialization.jsonObject(with: data, options: .allowFragments)
                     if let responseJSON = responseJSON as? [String: AnyObject] {

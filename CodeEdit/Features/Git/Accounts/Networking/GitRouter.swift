@@ -214,7 +214,7 @@ extension GitRouter {
 
         let decoder = JSONDecoder()
 
-        if let dateDecodingStrategy = dateDecodingStrategy {
+        if let dateDecodingStrategy {
             decoder.dateDecodingStrategy = dateDecodingStrategy
         }
 
@@ -235,7 +235,7 @@ extension GitRouter {
             if let response = response as? HTTPURLResponse {
                 if response.wasSuccessful == false {
                     var userInfo = [String: Any]()
-                    if let data = data, let json = try? JSONSerialization.jsonObject(
+                    if let data, let json = try? JSONSerialization.jsonObject(
                         with: data,
                         options: .mutableContainers
                     ) as? [String: Any] {
@@ -255,10 +255,10 @@ extension GitRouter {
                 }
             }
 
-            if let err = err {
+            if let err {
                 completion(nil, err)
             } else {
-                if let data = data {
+                if let data {
                     do {
                         let decoded = try decoder.decode(T.self, from: data)
                         completion(decoded, nil)
@@ -313,7 +313,7 @@ extension GitRouter {
 
         let decoder = JSONDecoder()
 
-        if let dateDecodingStrategy = dateDecodingStrategy {
+        if let dateDecodingStrategy {
             decoder.dateDecodingStrategy = dateDecodingStrategy
         }
 
@@ -333,7 +333,7 @@ extension GitRouter {
             if let response = response as? HTTPURLResponse {
                 if response.wasSuccessful == false {
                     var userInfo = [String: Any]()
-                    if let data = data, let json = try? JSONSerialization.jsonObject(
+                    if let data, let json = try? JSONSerialization.jsonObject(
                         with: data,
                         options: .mutableContainers
                     ) as? [String: Any] {

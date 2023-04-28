@@ -29,70 +29,6 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
          <TestableReference
-            skipped = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "CodeFileTests"
-               BuildableName = "CodeFileTests"
-               BlueprintName = "CodeFileTests"
-               ReferencedContainer = "container:CodeEditModules">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "WorkspaceClientTests"
-               BuildableName = "WorkspaceClientTests"
-               BlueprintName = "WorkspaceClientTests"
-               ReferencedContainer = "container:CodeEditModules">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "GitClientTests"
-               BuildableName = "GitClientTests"
-               BlueprintName = "GitClientTests"
-               ReferencedContainer = "container:CodeEditModules">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "StatusBarTests"
-               BuildableName = "StatusBarTests"
-               BlueprintName = "StatusBarTests"
-               ReferencedContainer = "container:CodeEditModules">
-            </BuildableReference>
-            <SkippedTests>
-               <Test
-                  Identifier = "StatusBarUnitTests/testStatusBarCollapsedDark()">
-               </Test>
-               <Test
-                  Identifier = "StatusBarUnitTests/testStatusBarCollapsedLight()">
-               </Test>
-               <Test
-                  Identifier = "StatusBarUnitTests/testStatusBarExpandedDark()">
-               </Test>
-               <Test
-                  Identifier = "StatusBarUnitTests/testStatusBarExpandedLight()">
-               </Test>
-            </SkippedTests>
-         </TestableReference>
-         <TestableReference
-            skipped = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "CodeEditUtilsTests"
-               BuildableName = "CodeEditUtilsTests"
-               BlueprintName = "CodeEditUtilsTests"
-               ReferencedContainer = "container:CodeEditModules">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
@@ -102,6 +38,9 @@
                ReferencedContainer = "container:CodeEdit.xcodeproj">
             </BuildableReference>
             <SkippedTests>
+               <Test
+                  Identifier = "CodeEditUIUnitTests">
+               </Test>
                <Test
                   Identifier = "CodeEditUIUnitTests/testBranchPickerDark()">
                </Test>
@@ -149,6 +88,9 @@
                </Test>
                <Test
                   Identifier = "DocumentsUnitTests/testSplitViewControllerStopSnappedWhenWidthIsHigherAppropriateRange()">
+               </Test>
+               <Test
+                  Identifier = "WelcomeModuleUnitTests">
                </Test>
                <Test
                   Identifier = "WelcomeModuleUnitTests/testRecentJSFileDarkSnapshot()">

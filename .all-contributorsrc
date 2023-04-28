@@ -565,6 +565,24 @@
         "bug",
         "code"
       ]
+    },
+    {
+      "login": "luah5",
+      "name": "luah5",
+      "avatar_url": "https://avatars.githubusercontent.com/u/128280019?v=4",
+      "profile": "https://github.com/luah5",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "evanlwang",
+      "name": "Evan Wang",
+      "avatar_url": "https://avatars.githubusercontent.com/u/71157264?v=4",
+      "profile": "https://github.com/evanlwang",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,

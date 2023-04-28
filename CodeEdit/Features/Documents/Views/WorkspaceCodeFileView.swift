@@ -19,7 +19,7 @@ struct WorkspaceCodeFileView: View {
     var file: CEWorkspaceFile
 
     @StateObject
-    private var prefs: AppPreferencesModel = .shared
+    private var prefs: Settings = .shared
 
     @ViewBuilder
     var codeView: some View {
@@ -58,7 +58,10 @@ struct WorkspaceCodeFileView: View {
                         OtherFileView(otherFile)
                     } else {
                         OtherFileView(otherFile)
-                            .frame(width: image.size.width, height: image.size.height)
+                            .frame(
+                                width: proxy.size.width * (proxy.size.width / image.size.width),
+                                height: proxy.size.height
+                            )
                             .position(x: proxy.frame(in: .local).midX, y: proxy.frame(in: .local).midY)
                     }
                 }

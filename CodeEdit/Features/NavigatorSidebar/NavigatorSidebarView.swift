@@ -31,8 +31,6 @@ struct NavigatorSidebarView: View {
                 SourceControlNavigatorView()
             case 2:
                 FindNavigatorView()
-            case 7:
-                ExtensionNavigatorView()
             default:
                 Spacer()
             }

@@ -27,10 +27,10 @@ final class ProjectNavigatorViewController: NSViewController {
 
     var workspace: WorkspaceDocument?
 
-    var iconColor: AppPreferences.FileIconStyle = .color
-    var fileExtensionsVisibility: AppPreferences.FileExtensionsVisibility = .showAll
-    var shownFileExtensions: AppPreferences.FileExtensions = .default
-    var hiddenFileExtensions: AppPreferences.FileExtensions = .default
+    var iconColor: SettingsData.FileIconStyle = .color
+    var fileExtensionsVisibility: SettingsData.FileExtensionsVisibility = .showAll
+    var shownFileExtensions: SettingsData.FileExtensions = .default
+    var hiddenFileExtensions: SettingsData.FileExtensions = .default
 
     var rowHeight: Double = 22 {
         didSet {
@@ -257,7 +257,7 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
     }
 
     func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
-        guard let tableColumn = tableColumn else { return nil }
+        guard let tableColumn else { return nil }
 
         let frameRect = NSRect(x: 0, y: 0, width: tableColumn.width, height: rowHeight)
 
@@ -304,7 +304,7 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
     private func select(by id: TabBarItemID, from collection: [CEWorkspaceFile]) {
         // If the user has set "Reveal file on selection change" to on, we need to reveal the item before
         // selecting the row.
-        if AppPreferencesModel.shared.preferences.general.revealFileOnFocusChange,
+        if Settings.shared.preferences.general.revealFileOnFocusChange,
            case let .codeEditor(id) = id,
            let fileItem = try? workspace?.workspaceFileManager?.getFileItem(id as CEWorkspaceFile.ID) as? CEWorkspaceFile {
             reveal(fileItem)

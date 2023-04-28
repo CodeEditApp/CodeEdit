@@ -41,13 +41,13 @@ struct GitLabOAuthConfiguration: GitRouterConfiguration {
         completion: @escaping (_ config: GitLabTokenConfiguration) -> Void
     ) {
         let request = GitLabOAuthRouter.accessToken(self, code, redirectURI).URLRequest
-        if let request = request {
+        if let request {
             let task = session.dataTask(with: request) { data, response, _ in
                 if let response = response as? HTTPURLResponse {
                     if response.statusCode != 200 {
                         return
                     } else {
-                        guard let data = data else {
+                        guard let data else {
                             return
                         }
                         do {
@@ -55,7 +55,7 @@ struct GitLabOAuthConfiguration: GitRouterConfiguration {
                                 with: data,
                                 options: .allowFragments
                             ) as? [String: Any]
-                            if let json = json, let accessToken = json["access_token"] as? String {
+                            if let json, let accessToken = json["access_token"] as? String {
                                 let config = GitLabTokenConfiguration(accessToken, url: self.apiEndpoint ?? "")
                                 completion(config)
                             }

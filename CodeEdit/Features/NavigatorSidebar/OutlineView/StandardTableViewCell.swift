@@ -21,7 +21,7 @@ class StandardTableViewCell: NSTableCellView {
         }
     }
 
-    private let prefs = AppPreferencesModel.shared.preferences.general
+    private let prefs = Settings.shared.preferences.general
 
     /// Initializes the `TableViewCell` with an `icon` and `label`
     /// Both the icon and label will be colored, and sized based on the user's preferences.

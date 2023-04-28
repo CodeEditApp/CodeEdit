@@ -34,7 +34,7 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
         if !self.content.isEmpty {
             return UTType.text
         }
-        guard let fileType = fileType, let type = UTType(fileType) else {
+        guard let fileType, let type = UTType(fileType) else {
             return nil
         }
         if type.conforms(to: UTType.image) {
@@ -62,27 +62,28 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
     // MARK: - NSDocument
 
     override class var autosavesInPlace: Bool {
-        AppPreferencesModel.shared.preferences.general.isAutoSaveOn
+        Settings.shared.preferences.general.isAutoSaveOn
     }
 
     override var autosavingFileType: String? {
-        AppPreferencesModel.shared.preferences.general.isAutoSaveOn
+        Settings.shared.preferences.general.isAutoSaveOn
             ? fileType
             : nil
     }
 
     override func makeWindowControllers() {
-        // Returns the Storyboard that contains your Document window.
-        let contentView = CodeFileView(codeFile: self)
         let window = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 1400, height: 600),
             styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
             backing: .buffered, defer: false
         )
-        window.center()
-        window.contentView = NSHostingView(rootView: contentView)
         let windowController = NSWindowController(window: window)
         addWindowController(windowController)
+
+        window.contentView = NSHostingView(rootView: WindowCodeFileView(codeFile: self))
+
+        window.makeKeyAndOrderFront(nil)
+        window.center()
     }
 
     override func data(ofType _: String) throws -> Data {

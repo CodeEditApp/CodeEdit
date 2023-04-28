@@ -20,7 +20,7 @@ struct PathBarComponent: View {
     private var activeState
 
     @StateObject
-    private var prefs: AppPreferencesModel = .shared
+    private var prefs: Settings = .shared
 
     @State
     var position: NSPoint?

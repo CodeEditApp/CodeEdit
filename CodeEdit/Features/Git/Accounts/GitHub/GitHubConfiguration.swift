@@ -27,7 +27,7 @@ struct GitHubTokenConfiguration: GitRouterConfiguration {
         return previewCustomHeaders
     }
 
-    init(_ token: String? = nil, url: String = GitURL.githubBaseURL, previewHeaders: [GitHubPreviewHeader] = []) {
+    init(_ token: String? = nil, url: String? = GitURL.githubBaseURL, previewHeaders: [GitHubPreviewHeader] = []) {
         apiEndpoint = url
         accessToken = token?.data(using: .utf8)!.base64EncodedString()
         previewCustomHeaders = previewHeaders.map { $0.header }
@@ -81,15 +81,15 @@ struct GitHubOAuthConfiguration: GitRouterConfiguration {
     ) {
 
         let request = GitHubOAuthRouter.accessToken(self, code).URLRequest
-        if let request = request {
+        if let request {
             let task = session.dataTask(with: request) { data, response, _ in
                 if let response = response as? HTTPURLResponse {
                     if response.statusCode != 200 {
                         return
                     } else {
-                        if let data = data, let string = String(data: data, encoding: .utf8) {
+                        if let data, let string = String(data: data, encoding: .utf8) {
                             let accessToken = self.accessTokenFromResponse(string)
-                            if let accessToken = accessToken {
+                            if let accessToken {
                                 let config = GitHubTokenConfiguration(accessToken, url: self.apiEndpoint ?? "")
                                 completion(config)
                             }
@@ -116,7 +116,7 @@ struct GitHubOAuthConfiguration: GitRouterConfiguration {
 
     func accessTokenFromResponse(_ response: String) -> String? {
         let accessTokenParam = response.components(separatedBy: "&").first
-        if let accessTokenParam = accessTokenParam {
+        if let accessTokenParam {
             return accessTokenParam.components(separatedBy: "=").last
         }
         return nil

@@ -1,21 +1,12 @@
 {
   "pins" : [
     {
-      "identity" : "codeeditkit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/CodeEditApp/CodeEditKit.git",
-      "state" : {
-        "revision" : "7bd380464313df30a70d1de4d1e221106f3e384a",
-        "version" : "0.0.1"
-      }
-    },
-    {
       "identity" : "codeeditlanguages",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CodeEditApp/CodeEditLanguages.git",
       "state" : {
-        "revision" : "02595fb02841568b9befcbfcdaf9be88280c49aa",
-        "version" : "0.1.11"
+        "revision" : "08cb9dc04e70d1e7b9610580794ed4da774c2b84",
+        "version" : "0.1.13"
       }
     },
     {
@@ -32,26 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CodeEditApp/CodeEditTextView.git",
       "state" : {
-        "revision" : "f4f2fcd856d28ba28b29574dd90a49ca27eb73ff",
-        "version" : "0.4.0"
-      }
-    },
-    {
-      "identity" : "grdb.swift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/groue/GRDB.swift.git",
-      "state" : {
-        "revision" : "15c06e037430c8a2dc570f9199dd7bf8caa21195",
-        "version" : "5.22.2"
-      }
-    },
-    {
-      "identity" : "light-swift-untar",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Light-Untar/Light-Swift-Untar.git",
-      "state" : {
-        "revision" : "fcff1f1b82373ea64b9565a364f63ffe7fdecf9f",
-        "version" : "1.0.4"
+        "revision" : "cfceb13ef453a9cdf8d587d5a1fe140d37077f8e",
+        "version" : "0.6.1"
       }
     },
     {
@@ -113,8 +86,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/lukepistrol/SwiftLintPlugin",
       "state" : {
-        "revision" : "f69b412a765396d44dc9f4788a5b79919c1ca9e3",
-        "version" : "0.2.2"
+        "revision" : "f3586ed424d7bf5d94628332fbd0edebf1f5147f",
+        "version" : "0.2.3"
       }
     },
     {
@@ -133,6 +106,15 @@
       "state" : {
         "revision" : "df25a52f72ebc5b50ae20d26d1363793408bb28b",
         "version" : "0.7.1"
+      }
+    },
+    {
+      "identity" : "swiftui-introspect",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/siteline/SwiftUI-Introspect",
+      "state" : {
+        "revision" : "c18951c747ab62af7c15e17a81bd37d4fd5a9979",
+        "version" : "0.2.3"
       }
     },
     {

@@ -74,11 +74,11 @@ extension GitLabAccount {
             expectedResultType: GitLabUser.self
         ) { data, error in
 
-            if let error = error {
+            if let error {
                 completion(Result.failure(error))
             }
 
-            if let data = data {
+            if let data {
                 completion(Result.success(data))
             }
         }

@@ -30,7 +30,7 @@ enum GitTime {
      - returns: An `NSDate` with a successful parse, otherwise `nil`
      */
     static func rfc3339Date(_ string: String?) -> Date? {
-        guard let string = string else { return nil }
+        guard let string else { return nil }
         return GitTime.rfc3339DateFormatter.date(from: string)
     }
 }

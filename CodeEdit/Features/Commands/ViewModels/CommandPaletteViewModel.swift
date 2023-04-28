@@ -28,12 +28,12 @@ final class CommandPaletteViewModel: ObservableObject {
     func reset() {
         commandQuery = ""
         selected = nil
-        filteredCommands = []
+        filteredCommands = CommandManager.shared.commands
     }
 
     func fetchMatchingCommands(val: String) {
         if val == "" {
-            self.filteredCommands = []
+            self.filteredCommands = CommandManager.shared.commands
             return
         }
         self.filteredCommands = CommandManager.shared.commands.filter { $0.title.localizedCaseInsensitiveContains(val) }

@@ -1,6 +1,6 @@
 //
 //  Loopable.swift
-//  CodeEditModules/AppPreferences
+//  CodeEditModules/Settings
 //
 //  Created by Lukas Pistrol on 03.04.22.
 //
@@ -41,7 +41,7 @@ extension Loopable {
         }
 
         for (property, value) in mirror.children {
-            guard let property = property else {
+            guard let property else {
                 continue
             }
 
