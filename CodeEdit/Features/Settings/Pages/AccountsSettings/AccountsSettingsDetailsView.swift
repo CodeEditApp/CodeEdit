@@ -19,6 +19,27 @@ struct AccountsSettingsDetailsView: View {
         _account = account
     }
 
+    /// Default instance of the `FileManager`
+    private let filemanager = FileManager.default
+
+    /// The base URL of settings.
+    ///
+    /// Points to `~/Library/Application Support/CodeEdit/`
+    internal var sshURL: URL {
+        filemanager
+            .homeDirectoryForCurrentUser
+            .appendingPathComponent(".ssh", isDirectory: true)
+    }
+
+    func isSSHKey(_ contents: String) -> Bool {
+        if contents.starts(with: "-----BEGIN OPENSSH PRIVATE KEY-----\n") &&
+           contents.hasSuffix("\n-----END OPENSSH PRIVATE KEY-----\n") {
+            return true
+        } else {
+            return false
+        }
+    }
+
     var body: some View {
         SettingsDetailsView(title: account.description) {
             SettingsForm {
@@ -44,11 +65,32 @@ struct AccountsSettingsDetailsView: View {
                                  + " using \(cloneUsing ? "SSH" : "HTTPS").")
                     }
                     .pickerStyle(.radioGroup)
-
-                    Picker("SSH Key", selection: $settings.accounts.sourceControlAccounts.sshKey) {
-                        Text("None")
-                        Text("Create New...")
-                        Text("Choose...")
+                    if cloneUsing {
+                        Picker("SSH Key", selection: $settings.accounts.sourceControlAccounts.sshKey) {
+                            Text("None")
+                                .tag("")
+                            Divider()
+                            if let sshPath = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(
+                                ".ssh",
+                                isDirectory: true
+                            ) as URL? {
+                                if let files = try? FileManager.default.contentsOfDirectory(
+                                    atPath: sshPath.path
+                                ) {
+                                    ForEach(files, id: \.self) { filename in
+                                        let fileURL = sshPath.appendingPathComponent(filename)
+                                        if let contents = try? String(contentsOf: fileURL) {
+                                            if isSSHKey(contents) {
+                                                Text(filename).tag(contents)
+                                            }
+                                        }
+                                    }
+                                    Divider()
+                                }
+                            }
+                            Text("Create New...")
+                            Text("Choose...")
+                        }
                     }
                 } footer: {
                     HStack {

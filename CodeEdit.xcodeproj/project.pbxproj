@@ -331,7 +331,7 @@
 		B6E41C7029DD157F0088F9F4 /* AccountsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E41C6F29DD157F0088F9F4 /* AccountsSettingsView.swift */; };
 		B6E41C7429DD40010088F9F4 /* View+HideSidebarToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E41C7329DD40010088F9F4 /* View+HideSidebarToggle.swift */; };
 		B6E41C7929DE02800088F9F4 /* AccountSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E41C7829DE02800088F9F4 /* AccountSelectionView.swift */; };
-		B6E41C7C29DE2B110088F9F4 /* AccoundsSettingsProviderRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E41C7B29DE2B110088F9F4 /* AccoundsSettingsProviderRow.swift */; };
+		B6E41C7C29DE2B110088F9F4 /* AccountsSettingsProviderRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E41C7B29DE2B110088F9F4 /* AccountsSettingsProviderRow.swift */; };
 		B6E41C8B29DE7AE80088F9F4 /* AccountsSettingsSigninView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E41C8A29DE7AE80088F9F4 /* AccountsSettingsSigninView.swift */; };
 		B6E41C8F29DE9CD80088F9F4 /* AccountsSettingsDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E41C8E29DE9CD80088F9F4 /* AccountsSettingsDetailsView.swift */; };
 		B6E41C9429DEAE260088F9F4 /* SourceControlAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E41C9329DEAE260088F9F4 /* SourceControlAccount.swift */; };
@@ -735,7 +735,7 @@
 		B6E41C6F29DD157F0088F9F4 /* AccountsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsSettingsView.swift; sourceTree = "<group>"; };
 		B6E41C7329DD40010088F9F4 /* View+HideSidebarToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+HideSidebarToggle.swift"; sourceTree = "<group>"; };
 		B6E41C7829DE02800088F9F4 /* AccountSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSelectionView.swift; sourceTree = "<group>"; };
-		B6E41C7B29DE2B110088F9F4 /* AccoundsSettingsProviderRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccoundsSettingsProviderRow.swift; sourceTree = "<group>"; };
+		B6E41C7B29DE2B110088F9F4 /* AccountsSettingsProviderRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsSettingsProviderRow.swift; sourceTree = "<group>"; };
 		B6E41C8A29DE7AE80088F9F4 /* AccountsSettingsSigninView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsSettingsSigninView.swift; sourceTree = "<group>"; };
 		B6E41C8E29DE9CD80088F9F4 /* AccountsSettingsDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsSettingsDetailsView.swift; sourceTree = "<group>"; };
 		B6E41C9329DEAE260088F9F4 /* SourceControlAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlAccount.swift; sourceTree = "<group>"; };
@@ -2178,7 +2178,7 @@
 			children = (
 				B6E41C9229DEAE0A0088F9F4 /* Models */,
 				B6E41C6F29DD157F0088F9F4 /* AccountsSettingsView.swift */,
-				B6E41C7B29DE2B110088F9F4 /* AccoundsSettingsProviderRow.swift */,
+				B6E41C7B29DE2B110088F9F4 /* AccountsSettingsProviderRow.swift */,
 				B6E41C7829DE02800088F9F4 /* AccountSelectionView.swift */,
 				B6E41C8A29DE7AE80088F9F4 /* AccountsSettingsSigninView.swift */,
 				B6E41C8E29DE9CD80088F9F4 /* AccountsSettingsDetailsView.swift */,
@@ -2747,7 +2747,7 @@
 				587B9E9529301D8F00AC7927 /* BitBucketUser.swift in Sources */,
 				587B9E7C29301D8F00AC7927 /* GitHubRepositoryRouter.swift in Sources */,
 				286471AB27ED51FD0039369D /* ProjectNavigatorView.swift in Sources */,
-				B6E41C7C29DE2B110088F9F4 /* AccoundsSettingsProviderRow.swift in Sources */,
+				B6E41C7C29DE2B110088F9F4 /* AccountsSettingsProviderRow.swift in Sources */,
 				6CAAF68A29BC9C2300A1F48A /* (null) in Sources */,
 				6CFF967629BEBCD900182D6F /* FileCommands.swift in Sources */,
 				B685DE7929CC9CCD002860C8 /* StatusBarIcon.swift in Sources */,
