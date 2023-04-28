@@ -12,6 +12,8 @@ struct AccountsSettingsDetailsView: View {
 
     @Binding var account: SourceControlAccount
 
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+
     @State var cloneUsing: Bool = false
     @State var deleteConfirmationIsPresented: Bool = false
 
@@ -84,5 +86,6 @@ struct AccountsSettingsDetailsView: View {
         // Delete account by finding the position of the account and remove by position
         // We can abort if it is `nil` because account should exist
         settings.accounts.sourceControlAccounts.gitAccounts.remove(at: gitAccounts.firstIndex(of: account)!)
+        self.presentationMode.wrappedValue.dismiss()
     }
 }
