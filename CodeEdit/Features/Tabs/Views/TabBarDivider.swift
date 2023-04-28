@@ -12,16 +12,16 @@ struct TabDivider: View {
     @Environment(\.colorScheme)
     var colorScheme
 
-    @AppSettings var settings
+    @AppSettings(\.general.tabBarStyle) var tabBarStyle
 
     let width: CGFloat = 1
 
     var body: some View {
         Rectangle()
             .frame(width: width)
-            .padding(.vertical, settings.general.tabBarStyle == .xcode ? 8 : 0)
+            .padding(.vertical, tabBarStyle == .xcode ? 8 : 0)
             .foregroundColor(
-                settings.general.tabBarStyle == .xcode
+                tabBarStyle == .xcode
                 ? Color(nsColor: colorScheme == .dark ? .white : .black)
                     .opacity(0.12)
                 : Color(nsColor: colorScheme == .dark ? .controlColor : .black)
@@ -35,15 +35,15 @@ struct TabBarTopDivider: View {
     @Environment(\.colorScheme)
     var colorScheme
 
-    @AppSettings var settings
+    @AppSettings(\.general.tabBarStyle) var tabBarStyle
 
     var body: some View {
         ZStack(alignment: .top) {
-            if settings.general.tabBarStyle == .native {
+            if tabBarStyle == .native {
                 // Color background overlay in native style.
                 Color(nsColor: .black)
                     .opacity(colorScheme == .dark ? 0.80 : 0.02)
-                    .frame(height: settings.general.tabBarStyle == .xcode ? 1.0 : 0.8)
+                    .frame(height: tabBarStyle == .xcode ? 1.0 : 0.8)
                 // Shadow of top divider in native style.
                 TabBarNativeShadow()
             }
@@ -56,19 +56,19 @@ struct TabBarBottomDivider: View {
     @Environment(\.colorScheme)
     var colorScheme
 
-    @AppSettings var settings
+    @AppSettings(\.general.tabBarStyle) var tabBarStyle
 
     var body: some View {
         Rectangle()
             .foregroundColor(
-                settings.general.tabBarStyle == .xcode
+                tabBarStyle == .xcode
                 ? Color(nsColor: .separatorColor)
                     .opacity(colorScheme == .dark ? 0.80 : 1)
                 : Color(nsColor: .black)
                     .opacity(colorScheme == .dark ? 0.65 : 0.13)
 
             )
-            .frame(height: settings.general.tabBarStyle == .xcode ? 1.0 : 0.8)
+            .frame(height: tabBarStyle == .xcode ? 1.0 : 0.8)
     }
 }
 
