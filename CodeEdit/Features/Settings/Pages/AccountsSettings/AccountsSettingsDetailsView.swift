@@ -61,6 +61,7 @@ struct AccountsSettingsDetailsView: View {
                         ) {
                             Button("OK") {
                                 // Handle the account delete
+                                handleAccountDelete()
                             }
                             Button("Cancel") {
                                 // Handle the cancel, dismiss the alert
@@ -76,5 +77,12 @@ struct AccountsSettingsDetailsView: View {
                 }
             }
         }
+    }
+
+    private func handleAccountDelete() {
+        let gitAccounts = settings.accounts.sourceControlAccounts.gitAccounts
+        // Delete account by finding the position of the account and remove by position
+        // We can abort if it is `nil` because account should exist
+        settings.accounts.sourceControlAccounts.gitAccounts.remove(at: gitAccounts.firstIndex(of: account)!)
     }
 }
