@@ -202,7 +202,7 @@ struct AccountsSettingsSigninView: View {
                     description: provider.name,
                     provider: provider,
                     serverURL: providerLink,
-                    urlProtocol: true,
+                    urlProtocol: .https,
                     sshKey: "",
                     isTokenValid: true
                 )

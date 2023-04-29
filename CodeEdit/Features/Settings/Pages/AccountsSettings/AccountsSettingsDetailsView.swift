@@ -12,13 +12,13 @@ struct AccountsSettingsDetailsView: View {
 
     @Binding var account: SourceControlAccount
 
-    @State var cloneUsing: Bool = false
     @State var deleteConfirmationIsPresented: Bool = false
-    @State var prevSshKey: String = Settings[\.accounts].sourceControlAccounts.sshKey
+    @State var prevSshKey: String
     @State var createSshKeyIsPresented: Bool = false
 
     init(_ account: Binding<SourceControlAccount>) {
         _account = account
+        prevSshKey = account.sshKey.wrappedValue
     }
 
     /// Default instance of the `FileManager`
@@ -31,11 +31,23 @@ struct AccountsSettingsDetailsView: View {
             .appendingPathComponent(".ssh", isDirectory: true)
     }
 
-    func isSSHKey(_ contents: String) -> Bool {
+    func isPrivateSSHKey(_ contents: String) -> Bool {
         if contents.starts(with: "-----BEGIN OPENSSH PRIVATE KEY-----\n") &&
            contents.hasSuffix("\n-----END OPENSSH PRIVATE KEY-----\n") {
             return true
         } else {
+            return false
+        }
+    }
+
+    func isPublicSSHKey(_ contents: String) -> Bool {
+        let sshKeyPattern = "^ssh-(rsa|dss|ed25519)\\s+[A-Za-z0-9+/]+[=]{0,2}(\\s+.+)?$"
+        do {
+            let regex = try NSRegularExpression(pattern: sshKeyPattern)
+            let range = NSRange(location: 0, length: contents.utf16.count)
+            return regex.firstMatch(in: contents, options: [], range: range) != nil
+        } catch {
+            print("Error creating regular expression: \(error.localizedDescription)")
             return false
         }
     }
@@ -54,19 +66,19 @@ struct AccountsSettingsDetailsView: View {
                 }
 
                 Section {
-                    Picker(selection: $cloneUsing) {
+                    Picker(selection: $account.urlProtocol) {
                         Text("HTTPS")
-                            .tag(false) // temporary
+                            .tag(SourceControlAccount.URLProtocol.https)
                         Text("SSH")
-                            .tag(true) // temporary
+                            .tag(SourceControlAccount.URLProtocol.ssh)
                     } label: {
                         Text("Clone Using")
                         Text("New repositories will be cloned from \(account.provider.name)"
-                                 + " using \(cloneUsing ? "SSH" : "HTTPS").")
+                             + " using \(account.urlProtocol.rawValue).")
                     }
                     .pickerStyle(.radioGroup)
-                    if cloneUsing {
-                        Picker("SSH Key", selection: $settings.accounts.sourceControlAccounts.sshKey) {
+                    if account.urlProtocol == .ssh {
+                        Picker("SSH Key", selection: $account.sshKey) {
                             Text("None")
                                 .tag("")
                             Divider()
@@ -80,8 +92,8 @@ struct AccountsSettingsDetailsView: View {
                                     ForEach(files, id: \.self) { filename in
                                         let fileURL = sshPath.appendingPathComponent(filename)
                                         if let contents = try? String(contentsOf: fileURL) {
-                                            if isSSHKey(contents) {
-                                                Text(filename).tag(contents)
+                                            if isPublicSSHKey(contents) {
+                                                Text(filename.replacingOccurrences(of: ".pub", with: "")).tag(contents)
                                             }
                                         }
                                     }
@@ -93,19 +105,19 @@ struct AccountsSettingsDetailsView: View {
                             Text("Choose...")
                                 .tag("CHOOSE")
                         }
-                        .onReceive([settings.accounts.sourceControlAccounts.sshKey].publisher.first()) { value in
+                        .onReceive([account.sshKey].publisher.first()) { value in
                             if value == "CREATE_NEW" {
                                 print("Create a new ssh key...")
                                 createSshKeyIsPresented = true
-                                settings.accounts.sourceControlAccounts.sshKey = prevSshKey
+                                account.sshKey = prevSshKey
                             } else if value == "CHOOSE" {
                                 print("Choose a ssh key...")
-                                settings.accounts.sourceControlAccounts.sshKey = prevSshKey
+                                account.sshKey = prevSshKey
                             } else {
-                                prevSshKey = settings.accounts.sourceControlAccounts.sshKey
                                 // TODO: Validate SSH key and check if it is uploaded to git provider.
                                 // If not provide button to do so
                             }
+                            prevSshKey = account.sshKey
                         }
                         .sheet(isPresented: $createSshKeyIsPresented, content: { CreateSSHKeyView() })
                     }
