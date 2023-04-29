@@ -12,6 +12,8 @@ struct AccountsSettingsDetailsView: View {
 
     @Binding var account: SourceControlAccount
 
+    @Environment(\.dismiss) private var dismiss
+
     @State var cloneUsing: Bool = false
     @State var deleteConfirmationIsPresented: Bool = false
 
@@ -55,19 +57,35 @@ struct AccountsSettingsDetailsView: View {
                         Button("Delete Account...") {
                             deleteConfirmationIsPresented.toggle()
                         }
-                        .alert(isPresented: $deleteConfirmationIsPresented) {
-                            Alert(
-                                title: Text("Are you sure you want to delete the account “\(account.description)”?"),
-                                message: Text("Deleting this account will remove it from CodeEdit."),
-                                primaryButton: .default(Text("OK")),
-                                secondaryButton: .default(Text("Cancel"))
-                            )
+                        .alert(
+                            Text("Are you sure you want to delete the account “\(account.description)”?"),
+                            isPresented: $deleteConfirmationIsPresented
+                        ) {
+                            Button("OK") {
+                                // Handle the account delete
+                                handleAccountDelete()
+                                dismiss()
+                            }
+                            Button("Cancel") {
+                                // Handle the cancel, dismiss the alert
+                                deleteConfirmationIsPresented.toggle()
+                            }
+                        } message: {
+                            Text("Deleting this account will remove it from CodeEdit.")
                         }
+
                         Spacer()
                     }
                     .padding(.top, 10)
                 }
             }
         }
+    }
+
+    private func handleAccountDelete() {
+        let gitAccounts = settings.accounts.sourceControlAccounts.gitAccounts
+        // Delete account by finding the position of the account and remove by position
+        // We can abort if it is `nil` because account should exist
+        settings.accounts.sourceControlAccounts.gitAccounts.remove(at: gitAccounts.firstIndex(of: account)!)
     }
 }
