@@ -23,7 +23,7 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
     @Published
     var content = ""
 
-    @AppSettings(\.sourceControl.textEditing) var settings
+    @AppSettings(\.textEditing) var settings
 
     /*
      This is the main type of the document.
