@@ -65,11 +65,11 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
     // MARK: - NSDocument
 
     override class var autosavesInPlace: Bool {
-        AppPreferencesModel.shared.preferences.general.isAutoSaveOn
+        Settings.shared.preferences.general.isAutoSaveOn
     }
 
     override var autosavingFileType: String? {
-        AppPreferencesModel.shared.preferences.general.isAutoSaveOn
+        Settings.shared.preferences.general.isAutoSaveOn
             ? fileType
             : nil
     }
@@ -83,7 +83,9 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
         let windowController = NSWindowController(window: window)
         addWindowController(windowController)
 
-        window.contentView = NSHostingView(rootView: WindowCodeFileView(codeFile: self))
+        window.contentView = NSHostingView(rootView: SettingsInjector {
+            WindowCodeFileView(codeFile: self)
+        })
 
         window.makeKeyAndOrderFront(nil)
         window.center()

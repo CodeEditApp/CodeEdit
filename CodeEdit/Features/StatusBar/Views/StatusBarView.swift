@@ -23,9 +23,6 @@ struct StatusBarView: View {
     @EnvironmentObject
     private var model: StatusBarViewModel
 
-    @ObservedObject
-    private var prefs: AppPreferencesModel = .shared
-
     static let height = 28.0
 
     @Environment(\.colorScheme)

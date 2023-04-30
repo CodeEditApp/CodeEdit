@@ -19,9 +19,6 @@ struct PathBarComponent: View {
     @Environment(\.controlActiveState)
     private var activeState
 
-    @StateObject
-    private var prefs: AppPreferencesModel = .shared
-
     @State
     var position: NSPoint?
 

@@ -17,7 +17,7 @@ final class FindNavigatorListViewController: NSViewController {
     private var searchItems: [SearchResultModel] = []
     private var scrollView: NSScrollView!
     private var outlineView: NSOutlineView!
-    private let prefs = AppPreferencesModel.shared.preferences
+    private let prefs = Settings.shared.preferences
     private var collapsedRows: Set<Int> = []
 
     var rowHeight: Double = 22 {

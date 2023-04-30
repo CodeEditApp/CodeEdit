@@ -4,7 +4,7 @@
 
 ### Model
 
-- ``AppPreferences/ThemePreferences``
+- ``Settings/ThemePreferences``
 - ``ThemeModel``
 
 ### Views

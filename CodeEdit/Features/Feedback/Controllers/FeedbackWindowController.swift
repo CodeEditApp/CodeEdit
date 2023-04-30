@@ -9,7 +9,7 @@ import SwiftUI
 
 final class FeedbackWindowController: NSWindowController, NSToolbarDelegate {
     convenience init<T: View>(view: T, size: NSSize) {
-        let hostingController = NSHostingController(rootView: view)
+        let hostingController = NSHostingController(rootView: SettingsInjector { view })
         let window = NSWindow(contentViewController: hostingController)
         self.init(window: window)
         window.title = "Feedback for CodeEdit"

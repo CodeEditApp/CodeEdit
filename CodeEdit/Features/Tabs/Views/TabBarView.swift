@@ -40,9 +40,7 @@ struct TabBarView: View {
 
     @Environment(\.splitEditor) var splitEditor
 
-    /// The app preference.
-    @StateObject
-    private var prefs: AppPreferencesModel = .shared
+    @AppSettings(\.general.tabBarStyle) var tabBarStyle
 
     /// The tab id of current dragging tab.
     ///
@@ -352,7 +350,7 @@ struct TabBarView: View {
                             }
                         }
                         // This padding is to hide dividers at two ends under the accessory view divider.
-                        .padding(.horizontal, prefs.preferences.general.tabBarStyle == .native ? -1 : 0)
+                        .padding(.horizontal, tabBarStyle == .native ? -1 : 0)
                         .onAppear {
                             openedTabs = tabgroup.tabs.map(\.id)
                             // On view appeared, compute the initial expected width for tabs.
@@ -365,7 +363,7 @@ struct TabBarView: View {
                                 updateForTabCountChange(geometryProxy: geometryProxy)
                             } else {
                                 withAnimation(
-                                    .easeOut(duration: prefs.preferences.general.tabBarStyle == .native ? 0.15 : 0.20)
+                                    .easeOut(duration: tabBarStyle == .native ? 0.15 : 0.20)
                                 ) {
                                     updateForTabCountChange(geometryProxy: geometryProxy)
                                 }
@@ -406,13 +404,13 @@ struct TabBarView: View {
                     // To fill up the parent space of tab bar.
                     .frame(maxWidth: .infinity)
                     .background {
-                        if prefs.preferences.general.tabBarStyle == .native {
+                        if tabBarStyle == .native {
                             TabBarNativeInactiveBackground()
                         }
                     }
                 }
                 .background {
-                    if prefs.preferences.general.tabBarStyle == .native {
+                    if tabBarStyle == .native {
                         TabBarAccessoryNativeBackground(dividerAt: .none)
                     }
                 }
@@ -423,12 +421,12 @@ struct TabBarView: View {
         .frame(height: TabBarView.height)
         .overlay(alignment: .top) {
             // When tab bar style is `xcode`, we put the top divider as an overlay.
-            if prefs.preferences.general.tabBarStyle == .xcode {
+            if tabBarStyle == .xcode {
                 TabBarTopDivider()
             }
         }
         .background {
-            if prefs.preferences.general.tabBarStyle == .native {
+            if tabBarStyle == .native {
                 TabBarNativeMaterial()
                     .edgesIgnoringSafeArea(.top)
             } else {
@@ -529,7 +527,7 @@ struct TabBarView: View {
         .opacity(activeState != .inactive ? 1.0 : 0.5)
         .frame(maxHeight: .infinity) // Fill out vertical spaces.
         .background {
-            if prefs.preferences.general.tabBarStyle == .native {
+            if tabBarStyle == .native {
                 TabBarAccessoryNativeBackground(dividerAt: .trailing)
             }
         }
@@ -553,11 +551,11 @@ struct TabBarView: View {
             .help("Enable Code Review")
             splitviewButton
         }
-        .padding(.horizontal, 7)
+        .padding(.horizontal, 5)
         .opacity(activeState != .inactive ? 1.0 : 0.5)
         .frame(maxHeight: .infinity) // Fill out vertical spaces.
         .background {
-            if prefs.preferences.general.tabBarStyle == .native {
+            if tabBarStyle == .native {
                 TabBarAccessoryNativeBackground(dividerAt: .leading)
             }
         }

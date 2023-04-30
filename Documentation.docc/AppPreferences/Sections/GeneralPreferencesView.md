@@ -4,4 +4,4 @@
 
 ### Model
 
-- ``AppPreferences/GeneralPreferences``
+- ``Settings/GeneralPreferences``
