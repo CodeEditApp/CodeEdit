@@ -23,6 +23,9 @@ struct AccountsSettingsSigninView: View {
     @State var username = ""
     @State var personalAccessToken = ""
 
+    @State var signinErrorAlertIsPresented: Bool = false
+    @State var signinErrorDetail: String = ""
+
     @AppSettings(\.accounts.sourceControlAccounts.gitAccounts) var gitAccounts
 
     private let keychain = CodeEditKeychain()
@@ -147,6 +150,16 @@ struct AccountsSettingsSigninView: View {
                 .disabled(username.isEmpty || personalAccessToken.isEmpty)
                 .buttonStyle(.borderedProminent)
                 .controlSize(.large)
+                .alert(
+                    Text("Unable to add account “\(username)”"),
+                    isPresented: $signinErrorAlertIsPresented
+                ) {
+                    Button("OK") {
+                        signinErrorAlertIsPresented.toggle()
+                    }
+                } message: {
+                    Text(signinErrorDetail)
+                }
             }
             .padding(.horizontal)
             .padding(.bottom)
@@ -161,32 +174,33 @@ struct AccountsSettingsSigninView: View {
                 $0.name.lowercased() == username.lowercased()
             }
         ) {
-            print("Account with the same username and provider already exists!")
+            signinErrorDetail = "Account with the same username and provider already exists!"
+            signinErrorAlertIsPresented.toggle()
         } else {
-        let configURL = provider.apiURL?.absoluteString ?? server
-        switch provider {
-        case .github, .githubEnterprise:
-            let config = GitHubTokenConfiguration(personalAccessToken, url: configURL)
-            GitHubAccount(config).me { response in
-                switch response {
-                case .success:
-                    handleGitRequestSuccess()
-                case .failure(let error):
-                    print(error)
+            let configURL = provider.apiURL?.absoluteString ?? server
+            switch provider {
+            case .github, .githubEnterprise:
+                let config = GitHubTokenConfiguration(personalAccessToken, url: configURL)
+                GitHubAccount(config).me { response in
+                    switch response {
+                    case .success:
+                        handleGitRequestSuccess()
+                    case .failure(let error):
+                        print(error)
+                    }
                 }
-            }
-        case .gitlab, .gitlabSelfHosted:
-            let config = GitLabTokenConfiguration(personalAccessToken, url: configURL)
-            GitLabAccount(config).me { response in
-                switch response {
-                case .success:
-                    handleGitRequestSuccess()
-                case .failure(let error):
-                    print(error)
+            case .gitlab, .gitlabSelfHosted:
+                let config = GitLabTokenConfiguration(personalAccessToken, url: configURL)
+                GitLabAccount(config).me { response in
+                    switch response {
+                    case .success:
+                        handleGitRequestSuccess()
+                    case .failure(let error):
+                        print(error)
+                    }
                 }
-            }
-        default:
-            print("do nothing")
+            default:
+                print("do nothing")
             }
         }
     }
@@ -194,19 +208,19 @@ struct AccountsSettingsSigninView: View {
     private func handleGitRequestSuccess() {
         let providerLink = provider.baseURL?.absoluteString ?? server
 
-            self.gitAccounts.append(
-                SourceControlAccount(
-                    id: "\(providerLink)_\(username.lowercased())",
-                    name: username,
-                    description: provider.name,
-                    provider: provider,
-                    serverURL: providerLink,
-                    urlProtocol: true,
-                    sshKey: "",
-                    isTokenValid: true
-                )
+        self.gitAccounts.append(
+            SourceControlAccount(
+                id: "\(providerLink)_\(username.lowercased())",
+                name: username,
+                description: provider.name,
+                provider: provider,
+                serverURL: providerLink,
+                urlProtocol: true,
+                sshKey: "",
+                isTokenValid: true
             )
-            keychain.set(personalAccessToken, forKey: "github_\(username)_enterprise")
-            dismiss()
+        )
+        keychain.set(personalAccessToken, forKey: "github_\(username)_enterprise")
+        dismiss()
     }
 }
