@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct AccountsSettingsDetailsView: View {
+    @Environment(\.dismiss) private var dismiss
     @AppSettings(\.accounts.sourceControlAccounts.sshKey) var sshKey
     @AppSettings(\.accounts.sourceControlAccounts.gitAccounts) var gitAccounts
-
     @Binding var account: SourceControlAccount
 
     @State var deleteConfirmationIsPresented: Bool = false
