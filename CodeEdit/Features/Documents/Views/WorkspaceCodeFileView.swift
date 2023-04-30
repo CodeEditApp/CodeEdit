@@ -11,9 +11,6 @@ import UniformTypeIdentifiers
 struct WorkspaceCodeFileView: View {
     var file: WorkspaceClient.FileItem
 
-    @StateObject
-    private var prefs: AppPreferencesModel = .shared
-
     @ViewBuilder
     var codeView: some View {
         if let document = file.fileDocument {

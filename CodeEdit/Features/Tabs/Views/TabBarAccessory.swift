@@ -23,14 +23,9 @@ struct TabBarAccessoryIcon: View {
     var body: some View {
         Button(
             action: action,
-            label: {
-                icon
-                    .font(TabBarAccessoryIcon.iconFont)
-                    .frame(height: TabBarView.height - 2)
-                    .padding(.horizontal, 4)
-                    .contentShape(Rectangle())
-            }
+            label: { icon }
         )
+        .buttonStyle(.icon(size: 24))
     }
 }
 

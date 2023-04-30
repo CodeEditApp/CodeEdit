@@ -27,7 +27,7 @@ struct GitHubTokenConfiguration: GitRouterConfiguration {
         return previewCustomHeaders
     }
 
-    init(_ token: String? = nil, url: String = GitURL.githubBaseURL, previewHeaders: [GitHubPreviewHeader] = []) {
+    init(_ token: String? = nil, url: String? = GitURL.githubBaseURL, previewHeaders: [GitHubPreviewHeader] = []) {
         apiEndpoint = url
         accessToken = token?.data(using: .utf8)!.base64EncodedString()
         previewCustomHeaders = previewHeaders.map { $0.header }

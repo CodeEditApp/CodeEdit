@@ -16,8 +16,12 @@ struct CodeFileView: View {
     @ObservedObject
     private var codeFile: CodeFileDocument
 
-    @ObservedObject
-    private var prefs: AppPreferencesModel = .shared
+    @AppSettings(\.textEditing.defaultTabWidth) var defaultTabWidth
+    @AppSettings(\.textEditing.lineHeightMultiple) var lineHeightMultiple
+    @AppSettings(\.textEditing.wrapLinesToEditorWidth) var wrapLinesToEditorWidth
+    @AppSettings(\.textEditing.font) var settingsFont
+    @AppSettings(\.theme.useThemeBackground) var useThemeBackground
+    @AppSettings(\.theme.matchAppearance) var matchAppearance
 
     @Environment(\.colorScheme)
     private var colorScheme
@@ -57,7 +61,7 @@ struct CodeFileView: View {
 
     @State
     private var font: NSFont = {
-        return AppPreferencesModel.shared.preferences.textEditing.font.current()
+        return Settings[\.textEditing].font.current()
     }()
 
     @Environment(\.edgeInsets)
@@ -70,33 +74,29 @@ struct CodeFileView: View {
         CodeEditTextView(
             $codeFile.content,
             language: getLanguage(),
-            theme: $selectedTheme.editor.editorTheme,
-            font: $font,
-            tabWidth: $prefs.preferences.textEditing.defaultTabWidth,
-            lineHeight: $prefs.preferences.textEditing.lineHeightMultiple,
-            wrapLines: $prefs.preferences.textEditing.wrapLinesToEditorWidth,
+            theme: selectedTheme.editor.editorTheme,
+            font: font,
+            tabWidth: defaultTabWidth,
+            lineHeight: lineHeightMultiple,
+            wrapLines: wrapLinesToEditorWidth,
             cursorPosition: $codeFile.cursorPosition,
-            useThemeBackground: prefs.preferences.theme.useThemeBackground,
+            useThemeBackground: useThemeBackground,
             contentInsets: edgeInsets.nsEdgeInsets,
             isEditable: isEditable
         )
         .id(codeFile.fileURL)
         .background {
             if colorScheme == .dark {
-                if prefs.preferences.theme.selectedTheme == prefs.preferences.theme.selectedLightTheme {
-                    Color.white
-                } else {
-                    EffectView(.underPageBackground)
-                }
+                EffectView(.underPageBackground)
             } else {
-                if prefs.preferences.theme.selectedTheme == prefs.preferences.theme.selectedDarkTheme {
-                    Color.black
-                } else {
-                    EffectView(.contentBackground)
-                }
-
+                EffectView(.contentBackground)
             }
         }
+        .colorScheme(
+            selectedTheme.appearance == .dark
+                ? .dark
+                : .light
+        )
         // minHeight zero fixes a bug where the app would freeze if the contents of the file are empty.
         .frame(minHeight: .zero, maxHeight: .infinity)
         .onChange(of: ThemeModel.shared.selectedTheme) { newValue in
@@ -104,14 +104,14 @@ struct CodeFileView: View {
             self.selectedTheme = theme
         }
         .onChange(of: colorScheme) { newValue in
-            if prefs.preferences.theme.mirrorSystemAppearance {
+            if matchAppearance {
                 ThemeModel.shared.selectedTheme = newValue == .dark
                     ? ThemeModel.shared.selectedDarkTheme!
                     : ThemeModel.shared.selectedLightTheme!
             }
         }
-        .onChange(of: prefs.preferences.textEditing.font) { _ in
-            font = AppPreferencesModel.shared.preferences.textEditing.font.current()
+        .onChange(of: settingsFont) { _ in
+            font = Settings.shared.preferences.textEditing.font.current()
         }
     }
 

@@ -20,8 +20,6 @@ final class OutlineTableViewCell: NSTableCellView {
     private var fileItem: WorkspaceClient.FileItem!
     private var delegate: OutlineTableViewCellDelegate?
 
-    private let prefs = AppPreferencesModel.shared.preferences.general
-
     /// Initializes the `OutlineTableViewCell` with an `icon` and `label`
     /// Both the icon and label will be colored, and sized based on the user's preferences.
     /// - Parameters:
@@ -116,6 +114,7 @@ final class OutlineTableViewCell: NSTableCellView {
     /// - Parameter item: The FileItem to generate the name for.
     /// - Returns: A `String` with the name to display.
     private func label(for item: WorkspaceClient.FileItem) -> String {
+        let prefs = Settings[\.general]
         switch prefs.fileExtensionsVisibility {
         case .hideAll:
             return item.fileName(typeHidden: true)
@@ -132,7 +131,7 @@ final class OutlineTableViewCell: NSTableCellView {
     /// - Parameter item: The `FileItem` to get the color for
     /// - Returns: A `NSColor` for the given `FileItem`.
     private func color(for item: WorkspaceClient.FileItem) -> NSColor {
-        return prefs.fileIconStyle == .color
+        return Settings[\.general.fileIconStyle] == .color
             ? item.children == nil ? NSColor(item.iconColor) : NSColor(named: "FolderBlue")!
             : .secondaryLabelColor
     }
@@ -144,11 +143,11 @@ extension OutlineTableViewCell: NSTextFieldDelegate {
     func controlTextDidChange(_ obj: Notification) {
         print("Contents changed to \(label?.stringValue ?? "idk")")
         print("File validity: \(validateFileName(for: label?.stringValue ?? ""))")
-        label.backgroundColor = validateFileName(for: label?.stringValue ?? "") ? .none : errorRed
+        label.backgroundColor = validateFileName(for: label?.stringValue ?? "") ? .textBackgroundColor : errorRed
     }
     func controlTextDidEndEditing(_ obj: Notification) {
         print("File validity: \(validateFileName(for: label?.stringValue ?? ""))")
-        label.backgroundColor = validateFileName(for: label?.stringValue ?? "") ? .none : errorRed
+        label.backgroundColor = validateFileName(for: label?.stringValue ?? "") ? .textBackgroundColor : errorRed
         if validateFileName(for: label?.stringValue ?? "") {
             let destinationURL = fileItem.url
                 .deletingLastPathComponent()

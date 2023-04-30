@@ -4,7 +4,7 @@
 
 ### Model
 
-- ``AppPreferences/SourceControlPreferences``
+- ``Settings/SourceControlPreferences``
 - ``IgnoredFiles``
 
 ### Views
