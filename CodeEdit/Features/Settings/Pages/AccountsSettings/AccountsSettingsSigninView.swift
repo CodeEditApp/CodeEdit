@@ -155,6 +155,14 @@ struct AccountsSettingsSigninView: View {
     }
 
     private func signin() {
+        if gitAccounts.contains(
+            where: {
+                $0.serverURL == provider.baseURL?.absoluteString ?? server &&
+                $0.name.lowercased() == username.lowercased()
+            }
+        ) {
+            print("Account with the same username and provider already exists!")
+        } else {
         let configURL = provider.apiURL?.absoluteString ?? server
         switch provider {
         case .github, .githubEnterprise:
@@ -179,21 +187,13 @@ struct AccountsSettingsSigninView: View {
             }
         default:
             print("do nothing")
+            }
         }
     }
 
     private func handleGitRequestSuccess() {
-        let gitAccounts = self.gitAccounts
         let providerLink = provider.baseURL?.absoluteString ?? server
 
-        if gitAccounts.contains(
-            where: {
-                $0.serverURL == providerLink &&
-                $0.name.lowercased() == username.lowercased()
-            }
-        ) {
-            print("Account with the same username and provider already exists!")
-        } else {
             self.gitAccounts.append(
                 SourceControlAccount(
                     id: "\(providerLink)_\(username.lowercased())",
@@ -208,6 +208,5 @@ struct AccountsSettingsSigninView: View {
             )
             keychain.set(personalAccessToken, forKey: "github_\(username)_enterprise")
             dismiss()
-        }
     }
 }
