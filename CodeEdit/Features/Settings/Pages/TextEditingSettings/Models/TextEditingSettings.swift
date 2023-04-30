@@ -30,6 +30,9 @@ extension SettingsData {
         /// A multiplier for setting the line height. Defaults to `1.45`
         var lineHeightMultiple: Double = 1.45
 
+        /// The default text encoding used, defaults to `.utf8`
+        var defaultTextEncoding: String.Encoding = .utf8
+
         /// Default initializer
         init() {
             self.populateCommands()

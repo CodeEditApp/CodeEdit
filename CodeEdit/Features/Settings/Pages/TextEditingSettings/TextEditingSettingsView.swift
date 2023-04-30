@@ -25,6 +25,7 @@ struct TextEditingSettingsView: View {
             Section {
                 autocompleteBraces
                 enableTypeOverCompletion
+                textEncoding
             }
         }
     }
@@ -88,6 +89,17 @@ private extension TextEditingSettingsView {
             )
             Text("spaces")
                 .foregroundColor(.secondary)
+        }
+    }
+
+    private var textEncoding: some View {
+        Picker("Default Text Encoding", selection: $textEditing.defaultTextEncoding) {
+            ForEach(String.Encoding.allGroups, id: \.self) { group in
+                ForEach(group, id: \.rawValue) { encoding in
+                    Text(encoding.description)
+                        .tag(encoding)
+                }
+            }
         }
     }
 }
