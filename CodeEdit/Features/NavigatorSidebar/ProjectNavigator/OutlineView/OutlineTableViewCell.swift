@@ -15,8 +15,6 @@ protocol OutlineTableViewCellDelegate: AnyObject {
 /// A `NSTableCellView` showing an ``icon`` and a ``label``
 final class OutlineTableViewCell: NSTableCellView {
 
-    @AppSettings var settings
-
     var label: NSTextField!
     var icon: NSImageView!
     private var fileItem: WorkspaceClient.FileItem!

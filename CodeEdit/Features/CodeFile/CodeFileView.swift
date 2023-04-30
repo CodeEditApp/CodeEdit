@@ -16,7 +16,12 @@ struct CodeFileView: View {
     @ObservedObject
     private var codeFile: CodeFileDocument
 
-    @AppSettings var settings
+    @AppSettings(\.textEditing.defaultTabWidth) var defaultTabWidth
+    @AppSettings(\.textEditing.lineHeightMultiple) var lineHeightMultiple
+    @AppSettings(\.textEditing.wrapLinesToEditorWidth) var wrapLinesToEditorWidth
+    @AppSettings(\.textEditing.font) var settingsFont
+    @AppSettings(\.theme.useThemeBackground) var useThemeBackground
+    @AppSettings(\.theme.matchAppearance) var matchAppearance
 
     @Environment(\.colorScheme)
     private var colorScheme
@@ -56,7 +61,7 @@ struct CodeFileView: View {
 
     @State
     private var font: NSFont = {
-        return Settings.shared.preferences.textEditing.font.current()
+        return Settings[\.textEditing].font.current()
     }()
 
     @Environment(\.edgeInsets)
@@ -71,11 +76,11 @@ struct CodeFileView: View {
             language: getLanguage(),
             theme: $selectedTheme.editor.editorTheme,
             font: $font,
-            tabWidth: $settings.textEditing.defaultTabWidth,
-            lineHeight: $settings.textEditing.lineHeightMultiple,
-            wrapLines: $settings.textEditing.wrapLinesToEditorWidth,
+            tabWidth: $defaultTabWidth,
+            lineHeight: $lineHeightMultiple,
+            wrapLines: $wrapLinesToEditorWidth,
             cursorPosition: $codeFile.cursorPosition,
-            useThemeBackground: settings.theme.useThemeBackground,
+            useThemeBackground: useThemeBackground,
             contentInsets: edgeInsets.nsEdgeInsets,
             isEditable: isEditable
         )
@@ -99,13 +104,13 @@ struct CodeFileView: View {
             self.selectedTheme = theme
         }
         .onChange(of: colorScheme) { newValue in
-            if settings.theme.matchAppearance {
+            if matchAppearance {
                 ThemeModel.shared.selectedTheme = newValue == .dark
                     ? ThemeModel.shared.selectedDarkTheme!
                     : ThemeModel.shared.selectedLightTheme!
             }
         }
-        .onChange(of: settings.textEditing.font) { _ in
+        .onChange(of: settingsFont) { _ in
             font = Settings.shared.preferences.textEditing.font.current()
         }
     }

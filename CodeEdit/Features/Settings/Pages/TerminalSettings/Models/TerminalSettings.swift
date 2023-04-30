@@ -10,7 +10,7 @@ import Foundation
 extension SettingsData {
 
     /// The global settings for the terminal emulator
-    struct TerminalSettings: Codable {
+    struct TerminalSettings: Codable, Hashable {
 
         /// If true terminal will use editor theme.
         var useEditorTheme: Bool = true
@@ -62,19 +62,19 @@ extension SettingsData {
     /// - **bash**: uses the default bash shell
     /// - **zsh**: uses the ZSH shell
     /// - **system**: uses the system default shell (most likely ZSH)
-    enum TerminalShell: String, Codable {
+    enum TerminalShell: String, Codable, Hashable {
         case bash
         case zsh
         case system
     }
 
-    enum TerminalCursorStyle: String, Codable {
+    enum TerminalCursorStyle: String, Codable, Hashable {
         case block
         case underline
         case bar
     }
 
-    struct TerminalFont: Codable {
+    struct TerminalFont: Codable, Hashable {
         /// Indicates whether or not to use a custom font
         var customFont: Bool = false
 

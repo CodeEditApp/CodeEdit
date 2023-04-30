@@ -9,7 +9,7 @@ import Foundation
 
 extension SettingsData {
     /// The global settings for source control
-    struct SourceControlSettings: Codable {
+    struct SourceControlSettings: Codable, Hashable {
         /// The general source control settings
         var general: SourceControlGeneral = .init()
         /// The source control git settings
@@ -24,7 +24,7 @@ extension SettingsData {
         }
     }
 
-    struct SourceControlGeneral: Codable {
+    struct SourceControlGeneral: Codable, Hashable {
         /// Indicates whether or not the source control is active
         var enableSourceControl: Bool = true
         /// Indicates whether or not we should include the upstream changes
@@ -103,7 +103,7 @@ extension SettingsData {
         case sortByDate
     }
 
-    struct SourceControlGit: Codable {
+    struct SourceControlGit: Codable, Hashable {
         /// The author name
         var authorName: String = ""
         /// The author email
