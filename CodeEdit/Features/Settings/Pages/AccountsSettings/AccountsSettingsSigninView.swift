@@ -155,11 +155,10 @@ struct AccountsSettingsSigninView: View {
     }
 
     private func signin() {
-        let configURL = provider.baseURL == nil ? server : nil
-
+        let configURL = provider.apiURL?.absoluteString ?? server
         switch provider {
         case .github, .githubEnterprise:
-            let config = GitHubTokenConfiguration(personalAccessToken, url: configURL ?? GitURL.githubBaseURL)
+            let config = GitHubTokenConfiguration(personalAccessToken, url: configURL)
             GitHubAccount(config).me { response in
                 switch response {
                 case .success:
@@ -169,7 +168,7 @@ struct AccountsSettingsSigninView: View {
                 }
             }
         case .gitlab, .gitlabSelfHosted:
-            let config = GitLabTokenConfiguration(personalAccessToken, url: configURL ?? GitURL.gitlabBaseURL)
+            let config = GitLabTokenConfiguration(personalAccessToken, url: configURL)
             GitLabAccount(config).me { response in
                 switch response {
                 case .success:

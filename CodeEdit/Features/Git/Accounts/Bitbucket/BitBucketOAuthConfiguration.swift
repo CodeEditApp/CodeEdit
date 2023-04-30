@@ -8,23 +8,24 @@
 import Foundation
 
 struct BitBucketOAuthConfiguration: GitRouterConfiguration {
+    let provider = SourceControlAccount.Provider.bitbucketCloud
     var apiEndpoint: String?
     var accessToken: String?
     let token: String
     let secret: String
     let scopes: [String]
-    let webEndpoint: String
+    let webEndpoint: String?
     let errorDomain = "com.codeedit.models.accounts.bitbucket"
 
     init(
-        _ url: String = GitURL.bitbucketBaseURL,
-        webURL: String = GitURL.bitbucketWebURL,
+        _ url: String? = nil,
+        webURL: String? = nil,
         token: String,
         secret: String,
         scopes: [String]
     ) {
-        apiEndpoint = url
-        webEndpoint = webURL
+        apiEndpoint = url ?? provider.apiURL?.absoluteString
+        webEndpoint = webURL ?? provider.baseURL?.absoluteString
         self.token = token
         self.secret = secret
         self.scopes = []

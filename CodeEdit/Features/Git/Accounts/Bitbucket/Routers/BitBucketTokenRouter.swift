@@ -45,7 +45,7 @@ enum BitBucketTokenRouter: GitRouter {
     var URLRequest: Foundation.URLRequest? {
         switch self {
         case .refreshToken(let config, _):
-            let url = URL(string: path, relativeTo: URL(string: config.webEndpoint)!)
+            let url = URL(string: path, relativeTo: URL(string: config.webEndpoint!)!)
             let components = URLComponents(url: url!, resolvingAgainstBaseURL: true)
             return request(components!, parameters: params)
         default: return nil

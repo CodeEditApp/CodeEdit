@@ -8,14 +8,15 @@
 import Foundation
 
 struct BitBucketTokenConfiguration: GitRouterConfiguration {
+    let provider = SourceControlAccount.Provider.bitbucketCloud
     var apiEndpoint: String?
     var accessToken: String?
     var refreshToken: String?
     var expirationDate: Date?
     let errorDomain = "com.codeedit.models.accounts.bitbucket"
 
-    init(json: [String: AnyObject], url: String = GitURL.bitbucketBaseURL) {
-        apiEndpoint = url
+    init(json: [String: AnyObject], url: String? = nil) {
+        apiEndpoint = url ?? provider.apiURL?.absoluteString
         accessToken = json["access_token"] as? String
         refreshToken = json["refresh_token"] as? String
         let expiresIn = json["expires_in"] as? Int
@@ -27,7 +28,7 @@ struct BitBucketTokenConfiguration: GitRouterConfiguration {
         _ token: String? = nil,
         refreshToken: String? = nil,
         expirationDate: Date? = nil,
-        url: String = GitURL.bitbucketBaseURL
+        url: String? = nil
     ) {
         apiEndpoint = url
         accessToken = token
