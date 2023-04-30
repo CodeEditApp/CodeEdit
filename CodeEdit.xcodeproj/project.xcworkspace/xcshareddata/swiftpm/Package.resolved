@@ -28,15 +28,6 @@
       }
     },
     {
-      "identity" : "preferences",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/sindresorhus/Preferences.git",
-      "state" : {
-        "revision" : "2651cd144615009242c994b087508fef99e9275c",
-        "version" : "2.6.0"
-      }
-    },
-    {
       "identity" : "rearrange",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/Rearrange",
