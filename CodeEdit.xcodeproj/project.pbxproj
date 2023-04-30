@@ -247,7 +247,6 @@
 		58F2EB0D292FB2B0004A9BDE /* ThemeSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAE0292FB2B0004A9BDE /* ThemeSettings.swift */; };
 		58F2EB0E292FB2B0004A9BDE /* SoftwareUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAE1292FB2B0004A9BDE /* SoftwareUpdater.swift */; };
 		58F2EB17292FB74D004A9BDE /* CodeEditTextView in Frameworks */ = {isa = PBXBuildFile; productRef = 58F2EB16292FB74D004A9BDE /* CodeEditTextView */; };
-		58F2EB1A292FB91C004A9BDE /* Preferences in Frameworks */ = {isa = PBXBuildFile; productRef = 58F2EB19292FB91C004A9BDE /* Preferences */; };
 		58F2EB1E292FB954004A9BDE /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 58F2EB1D292FB954004A9BDE /* Sparkle */; };
 		58FD7608291EA1CB0051D6E4 /* CommandPaletteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FD7605291EA1CB0051D6E4 /* CommandPaletteViewModel.swift */; };
 		58FD7609291EA1CB0051D6E4 /* CommandPaletteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FD7607291EA1CB0051D6E4 /* CommandPaletteView.swift */; };
@@ -297,6 +296,7 @@
 		6CB9144B29BEC7F100BC47F2 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		6CBD1BC62978DE53006639D5 /* Font+Caption3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBD1BC52978DE53006639D5 /* Font+Caption3.swift */; };
 		6CC9E4B229B5669900C97388 /* Environment+ActiveTabGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC9E4B129B5669900C97388 /* Environment+ActiveTabGroup.swift */; };
+		6CD03B6A29FC773F001BD1D0 /* SettingsInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD03B6929FC773F001BD1D0 /* SettingsInjector.swift */; };
 		6CDA84AD284C1BA000C1CC3A /* TabBarContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CDA84AC284C1BA000C1CC3A /* TabBarContextMenu.swift */; };
 		6CDEFC9629E22C2700B7C684 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = 6CDEFC9529E22C2700B7C684 /* Introspect */; };
 		6CFF967429BEBCC300182D6F /* FindCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CFF967329BEBCC300182D6F /* FindCommands.swift */; };
@@ -698,6 +698,7 @@
 		6CABB1A029C5593800340467 /* OverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverlayView.swift; sourceTree = "<group>"; };
 		6CBD1BC52978DE53006639D5 /* Font+Caption3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Caption3.swift"; sourceTree = "<group>"; };
 		6CC9E4B129B5669900C97388 /* Environment+ActiveTabGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Environment+ActiveTabGroup.swift"; sourceTree = "<group>"; };
+		6CD03B6929FC773F001BD1D0 /* SettingsInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsInjector.swift; sourceTree = "<group>"; };
 		6CDA84AC284C1BA000C1CC3A /* TabBarContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarContextMenu.swift; sourceTree = "<group>"; };
 		6CFF967329BEBCC300182D6F /* FindCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindCommands.swift; sourceTree = "<group>"; };
 		6CFF967529BEBCD900182D6F /* FileCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileCommands.swift; sourceTree = "<group>"; };
@@ -782,7 +783,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				58F2EB1A292FB91C004A9BDE /* Preferences in Frameworks */,
 				58F2EB17292FB74D004A9BDE /* CodeEditTextView in Frameworks */,
 				58F2EB1E292FB954004A9BDE /* Sparkle in Frameworks */,
 				6C147C4529A329350089B630 /* OrderedCollections in Frameworks */,
@@ -2043,6 +2043,7 @@
 				58F2EADB292FB2B0004A9BDE /* SettingsData.swift */,
 				58F2EAD2292FB2B0004A9BDE /* Settings.swift */,
 				6C5FDF7929E6160000BC08C0 /* AppSettings.swift */,
+				6CD03B6929FC773F001BD1D0 /* SettingsInjector.swift */,
 				6C0D0C6729E861B000AE4D3F /* SettingsSidebarFix.swift */,
 				850C631129D6B03400E1444C /* SettingsPage.swift */,
 			);
@@ -2321,7 +2322,6 @@
 				2816F593280CF50500DD548B /* CodeEditSymbols */,
 				58798289292ED15F0085B254 /* SwiftTerm */,
 				58F2EB16292FB74D004A9BDE /* CodeEditTextView */,
-				58F2EB19292FB91C004A9BDE /* Preferences */,
 				58F2EB1D292FB954004A9BDE /* Sparkle */,
 				6C147C4429A329350089B630 /* OrderedCollections */,
 				6C81916A29B41DD300B75C92 /* DequeModule */,
@@ -2413,7 +2413,6 @@
 				287136B1292A407E00E9F5F4 /* XCRemoteSwiftPackageReference "SwiftLintPlugin" */,
 				58798288292ED15F0085B254 /* XCRemoteSwiftPackageReference "SwiftTerm" */,
 				58F2EB15292FB74D004A9BDE /* XCRemoteSwiftPackageReference "CodeEditTextView" */,
-				58F2EB18292FB91C004A9BDE /* XCRemoteSwiftPackageReference "Preferences" */,
 				58F2EB1C292FB954004A9BDE /* XCRemoteSwiftPackageReference "Sparkle" */,
 				583E529A29361BAB001AB554 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
 				6C147C4329A329350089B630 /* XCRemoteSwiftPackageReference "swift-collections" */,
@@ -2818,6 +2817,7 @@
 				5878DAB2291D627C00DD95A3 /* PathBarView.swift in Sources */,
 				043C321627E3201F006AE443 /* WorkspaceDocument.swift in Sources */,
 				58F2EAEC292FB2B0004A9BDE /* IgnoredFiles.swift in Sources */,
+				6CD03B6A29FC773F001BD1D0 /* SettingsInjector.swift in Sources */,
 				58798236292E30B90085B254 /* FeedbackType.swift in Sources */,
 				587B9E6D29301D8F00AC7927 /* GitLabEventNote.swift in Sources */,
 				587B9E9129301D8F00AC7927 /* BitBucketOAuthRouter.swift in Sources */,
@@ -3757,15 +3757,7 @@
 			repositoryURL = "https://github.com/CodeEditApp/CodeEditTextView.git";
 			requirement = {
 				kind = exactVersion;
-				version = 0.6.1;
-			};
-		};
-		58F2EB18292FB91C004A9BDE /* XCRemoteSwiftPackageReference "Preferences" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/sindresorhus/Preferences.git";
-			requirement = {
-				kind = exactVersion;
-				version = 2.6.0;
+				version = 0.6.2;
 			};
 		};
 		58F2EB1C292FB954004A9BDE /* XCRemoteSwiftPackageReference "Sparkle" */ = {
@@ -3819,11 +3811,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 58F2EB15292FB74D004A9BDE /* XCRemoteSwiftPackageReference "CodeEditTextView" */;
 			productName = CodeEditTextView;
-		};
-		58F2EB19292FB91C004A9BDE /* Preferences */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 58F2EB18292FB91C004A9BDE /* XCRemoteSwiftPackageReference "Preferences" */;
-			productName = Preferences;
 		};
 		58F2EB1D292FB954004A9BDE /* Sparkle */ = {
 			isa = XCSwiftPackageProductDependency;

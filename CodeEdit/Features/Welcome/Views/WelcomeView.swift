@@ -13,7 +13,7 @@ struct WelcomeView: View {
     @Environment(\.colorScheme)
     var colorScheme
 
-    @AppSettings var settings
+    @AppSettings(\.general.reopenBehavior) var reopenBehavior
 
     @State
     private var repoPath = "~/"
@@ -49,9 +49,9 @@ struct WelcomeView: View {
 
     private var showWhenLaunchedBinding: Binding<Bool> {
         Binding<Bool> {
-            settings.general.reopenBehavior == .welcome
+            reopenBehavior == .welcome
         } set: { new in
-            settings.general.reopenBehavior = new ? .welcome : .openPanel
+            reopenBehavior = new ? .welcome : .openPanel
         }
     }
 
