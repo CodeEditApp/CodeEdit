@@ -97,7 +97,7 @@ struct SourceControlAccount: Codable, Identifiable, Hashable {
                 return nil
             }
         }
-        
+
         var apiURL: URL? {
             switch self {
             case .bitbucketCloud:
@@ -109,7 +109,7 @@ struct SourceControlAccount: Codable, Identifiable, Hashable {
             case .githubEnterprise:
                 return nil
             case .gitlab:
-                return URL(string: "https://gitlab.com/api/v4//")!
+                return URL(string: "https://gitlab.com/api/v4/")!
             case .gitlabSelfHosted:
                 return nil
             }
