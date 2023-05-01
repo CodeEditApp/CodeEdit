@@ -13,12 +13,14 @@ struct AccountsSettingsDetailsView: View {
     @AppSettings(\.accounts.sourceControlAccounts.gitAccounts) var gitAccounts
     @Binding var account: SourceControlAccount
 
+    @State var currentAccount: SourceControlAccount
     @State var deleteConfirmationIsPresented: Bool = false
     @State var prevSshKey: String
     @State var createSshKeyIsPresented: Bool = false
 
     init(_ account: Binding<SourceControlAccount>) {
         _account = account
+        _currentAccount = State(initialValue: account.wrappedValue)
         _prevSshKey = State(initialValue: account.sshKey.wrappedValue)
     }
 
@@ -54,32 +56,32 @@ struct AccountsSettingsDetailsView: View {
     }
 
     var body: some View {
-        SettingsDetailsView(title: account.description) {
+        SettingsDetailsView(title: currentAccount.description) {
             SettingsForm {
                 Section {
                     LabeledContent("Account") {
-                        Text(account.name)
+                        Text(currentAccount.name)
                     }
-                    TextField("Description", text: $account.description)
-                    if account.provider.baseURL == nil {
-                        TextField("Server", text: $account.serverURL)
+                    TextField("Description", text: $currentAccount.description)
+                    if currentAccount.provider.baseURL == nil {
+                        TextField("Server", text: $currentAccount.serverURL)
                     }
                 }
 
                 Section {
-                    Picker(selection: $account.urlProtocol) {
+                    Picker(selection: $currentAccount.urlProtocol) {
                         Text("HTTPS")
                             .tag(SourceControlAccount.URLProtocol.https)
                         Text("SSH")
                             .tag(SourceControlAccount.URLProtocol.ssh)
                     } label: {
                         Text("Clone Using")
-                        Text("New repositories will be cloned from \(account.provider.name)"
-                             + " using \(account.urlProtocol.rawValue).")
+                        Text("New repositories will be cloned from \(currentAccount.provider.name)"
+                             + " using \(currentAccount.urlProtocol.rawValue).")
                     }
                     .pickerStyle(.radioGroup)
-                    if account.urlProtocol == .ssh {
-                        Picker("SSH Key", selection: $account.sshKey) {
+                    if currentAccount.urlProtocol == .ssh {
+                        Picker("SSH Key", selection: $currentAccount.sshKey) {
                             Text("None")
                                 .tag("")
                             Divider()
@@ -106,19 +108,19 @@ struct AccountsSettingsDetailsView: View {
                             Text("Choose...")
                                 .tag("CHOOSE")
                         }
-                        .onReceive([account.sshKey].publisher.first()) { value in
+                        .onReceive([currentAccount.sshKey].publisher.first()) { value in
                             if value == "CREATE_NEW" {
                                 print("Create a new ssh key...")
                                 createSshKeyIsPresented = true
-                                account.sshKey = prevSshKey
+                                currentAccount.sshKey = prevSshKey
                             } else if value == "CHOOSE" {
                                 print("Choose a ssh key...")
-                                account.sshKey = prevSshKey
+                                currentAccount.sshKey = prevSshKey
                             } else {
                                 // TODO: Validate SSH key and check if it is uploaded to git provider.
                                 // If not provide button to do so
                             }
-                            prevSshKey = account.sshKey
+                            prevSshKey = currentAccount.sshKey
                         }
                         .sheet(isPresented: $createSshKeyIsPresented, content: { CreateSSHKeyView() })
                     }
@@ -148,6 +150,9 @@ struct AccountsSettingsDetailsView: View {
                     }
                     .padding(.top, 10)
                 }
+            }
+            .onChange(of: currentAccount) { newValue in
+                account = newValue
             }
         }
     }
