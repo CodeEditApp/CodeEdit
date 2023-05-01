@@ -174,6 +174,7 @@ struct AccountsSettingsSigninView: View {
                 $0.name.lowercased() == username.lowercased()
             }
         ) {
+            // Show alert when adding a duplicated account
             signinErrorDetail = "Account with the same username and provider already exists!"
             signinErrorAlertIsPresented.toggle()
         } else {
@@ -186,7 +187,7 @@ struct AccountsSettingsSigninView: View {
                     case .success:
                         handleGitRequestSuccess()
                     case .failure(let error):
-                        print(error)
+                        handleGitRequestFailed(error)
                     }
                 }
             case .gitlab, .gitlabSelfHosted:
@@ -196,7 +197,7 @@ struct AccountsSettingsSigninView: View {
                     case .success:
                         handleGitRequestSuccess()
                     case .failure(let error):
-                        print(error)
+                        handleGitRequestFailed(error)
                     }
                 }
             default:
@@ -222,5 +223,21 @@ struct AccountsSettingsSigninView: View {
         )
         keychain.set(personalAccessToken, forKey: "github_\(username)_enterprise")
         dismiss()
+    }
+
+    private func handleGitRequestFailed(_ error: Error) {
+        print("git auth failure: \(error)")
+        // Show alert if error encountered while requesting signin
+        switch error._code {
+        case -1009:
+            signinErrorDetail = error.localizedDescription
+        case 401:
+            signinErrorDetail = "Authentication Failed"
+        case 403:
+            signinErrorDetail = "API Access Forbidden"
+        default:
+            signinErrorDetail = "Unknown Error"
+        }
+        signinErrorAlertIsPresented.toggle()
     }
 }
