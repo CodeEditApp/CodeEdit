@@ -1,12 +1,11 @@
 //
-//  CodeEditorAppDelegate.swift
+//  AppDelegate.swift
 //  CodeEdit
 //
 //  Created by Pavel Kasila on 12.03.22.
 //
 
 import SwiftUI
-import Preferences
 import CodeEditSymbols
 
 final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {

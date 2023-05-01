@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import Combine
 
 /// The Preferences View Model. Accessible via the singleton "``SettingsModel/shared``".
 ///
@@ -20,9 +21,15 @@ final class Settings: ObservableObject {
     /// The publicly available singleton instance of ``SettingsModel``
     static let shared: Settings = .init()
 
+    private var storeTask: AnyCancellable!
+
     private init() {
         self.preferences = .init()
         self.preferences = loadSettings()
+
+        self.storeTask = self.$preferences.throttle(for: 2, scheduler: RunLoop.main, latest: true).sink {
+            try? self.savePreferences($0)
+        }
     }
 
     static subscript<T>(_ path: WritableKeyPath<SettingsData, T>, suite: Settings = .shared) -> T {
@@ -38,11 +45,7 @@ final class Settings: ObservableObject {
     ///
     /// Changes are saved automatically.
     @Published
-    var preferences: SettingsData {
-        didSet {
-            try? savePreferences()
-        }
-    }
+    var preferences: SettingsData
 
     /// Load and construct ``Settings`` model from
     /// `~/Library/Application Support/CodeEdit/settings.json`
@@ -62,8 +65,9 @@ final class Settings: ObservableObject {
 
     /// Save``Settings`` model to
     /// `~/Library/Application Support/CodeEdit/settings.json`
-    private func savePreferences() throws {
-        let data = try JSONEncoder().encode(preferences)
+    private func savePreferences(_ data: SettingsData) throws {
+        print("Saving...")
+        let data = try JSONEncoder().encode(data)
         let json = try JSONSerialization.jsonObject(with: data)
         let prettyJSON = try JSONSerialization.data(withJSONObject: json, options: [.prettyPrinted])
         try prettyJSON.write(to: settingsURL, options: .atomic)

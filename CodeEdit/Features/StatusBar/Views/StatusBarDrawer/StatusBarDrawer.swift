@@ -17,8 +17,9 @@ struct StatusBarDrawer: View {
     @EnvironmentObject
     private var model: StatusBarViewModel
 
-    @AppSettings
-    private var settings
+    @AppSettings(\.theme.matchAppearance) private var matchAppearance
+    @AppSettings(\.terminal.darkAppearance) private var darkAppearance
+    @AppSettings(\.theme.useThemeBackground) private var useThemeBackground
 
     @StateObject
     private var themeModel: ThemeModel = .shared
@@ -28,7 +29,7 @@ struct StatusBarDrawer: View {
 
     /// Returns the `background` color of the selected theme
     private var backgroundColor: NSColor {
-        if let selectedTheme = settings.theme.matchAppearance && settings.terminal.darkAppearance
+        if let selectedTheme = matchAppearance && darkAppearance
             ? themeModel.selectedDarkTheme
             : themeModel.selectedTheme,
            let index = themeModel.themes.firstIndex(of: selectedTheme) {
@@ -76,7 +77,7 @@ struct StatusBarDrawer: View {
                 .frame(maxHeight: 28)
             }
             .background {
-                if settings.theme.useThemeBackground {
+                if useThemeBackground {
                     Color(nsColor: backgroundColor)
                 } else {
                     if colorScheme == .dark {
@@ -87,7 +88,7 @@ struct StatusBarDrawer: View {
                 }
             }
             .colorScheme(
-                settings.theme.matchAppearance && settings.terminal.darkAppearance
+                matchAppearance && darkAppearance
                 ? themeModel.selectedDarkTheme?.appearance == .dark ? .dark : .light
                 : themeModel.selectedTheme?.appearance == .dark ? .dark : .light
             )

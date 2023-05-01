@@ -18,9 +18,6 @@ struct WorkspaceCodeFileView: View {
 
     var file: CEWorkspaceFile
 
-    @StateObject
-    private var prefs: Settings = .shared
-
     @ViewBuilder
     var codeView: some View {
         if let document = file.fileDocument {

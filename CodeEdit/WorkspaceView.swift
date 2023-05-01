@@ -19,9 +19,6 @@ struct WorkspaceView: View {
     @EnvironmentObject
     private var tabManager: TabManager
 
-    @StateObject
-    private var prefs: Settings = .shared
-
     @Environment(\.window)
     private var window
 
