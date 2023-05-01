@@ -56,106 +56,106 @@ struct AccountsSettingsDetailsView: View {
     }
 
     var body: some View {
-        SettingsDetailsView(title: currentAccount.description) {
-            SettingsForm {
-                Section {
-                    LabeledContent("Account") {
-                        Text(currentAccount.name)
-                    }
-                    TextField("Description", text: $currentAccount.description)
-                    if currentAccount.provider.baseURL == nil {
-                        TextField("Server", text: $currentAccount.serverURL)
-                    }
+        SettingsForm {
+            Section {
+                LabeledContent("Account") {
+                    Text(currentAccount.name)
                 }
+                TextField("Description", text: $currentAccount.description)
+                if currentAccount.provider.baseURL == nil {
+                    TextField("Server", text: $currentAccount.serverURL)
+                }
+            }
 
-                Section {
-                    Picker(selection: $currentAccount.urlProtocol) {
-                        Text("HTTPS")
-                            .tag(SourceControlAccount.URLProtocol.https)
-                        Text("SSH")
-                            .tag(SourceControlAccount.URLProtocol.ssh)
-                    } label: {
-                        Text("Clone Using")
-                        Text("New repositories will be cloned from \(currentAccount.provider.name)"
-                             + " using \(currentAccount.urlProtocol.rawValue).")
-                    }
-                    .pickerStyle(.radioGroup)
-                    if currentAccount.urlProtocol == .ssh {
-                        Picker("SSH Key", selection: $currentAccount.sshKey) {
-                            Text("None")
-                                .tag("")
-                            Divider()
-                            if let sshPath = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(
-                                ".ssh",
-                                isDirectory: true
-                            ) as URL? {
-                                if let files = try? FileManager.default.contentsOfDirectory(
-                                    atPath: sshPath.path
-                                ) {
-                                    ForEach(files, id: \.self) { filename in
-                                        let fileURL = sshPath.appendingPathComponent(filename)
-                                        if let contents = try? String(contentsOf: fileURL) {
-                                            if isPublicSSHKey(contents) {
-                                                Text(filename.replacingOccurrences(of: ".pub", with: ""))
-                                                    .tag(fileURL.path)
-                                            }
+            Section {
+                Picker(selection: $currentAccount.urlProtocol) {
+                    Text("HTTPS")
+                        .tag(SourceControlAccount.URLProtocol.https)
+                    Text("SSH")
+                        .tag(SourceControlAccount.URLProtocol.ssh)
+                } label: {
+                    Text("Clone Using")
+                    Text("New repositories will be cloned from \(currentAccount.provider.name)"
+                         + " using \(currentAccount.urlProtocol.rawValue).")
+                }
+                .pickerStyle(.radioGroup)
+                if currentAccount.urlProtocol == .ssh {
+                    Picker("SSH Key", selection: $currentAccount.sshKey) {
+                        Text("None")
+                            .tag("")
+                        Divider()
+                        if let sshPath = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(
+                            ".ssh",
+                            isDirectory: true
+                        ) as URL? {
+                            if let files = try? FileManager.default.contentsOfDirectory(
+                                atPath: sshPath.path
+                            ) {
+                                ForEach(files, id: \.self) { filename in
+                                    let fileURL = sshPath.appendingPathComponent(filename)
+                                    if let contents = try? String(contentsOf: fileURL) {
+                                        if isPublicSSHKey(contents) {
+                                            Text(filename.replacingOccurrences(of: ".pub", with: ""))
+                                                .tag(fileURL.path)
                                         }
                                     }
-                                    Divider()
                                 }
+                                Divider()
                             }
-                            Text("Create New...")
-                                .tag("CREATE_NEW")
-                            Text("Choose...")
-                                .tag("CHOOSE")
                         }
-                        .onReceive([currentAccount.sshKey].publisher.first()) { value in
-                            if value == "CREATE_NEW" {
-                                print("Create a new ssh key...")
-                                createSshKeyIsPresented = true
-                                currentAccount.sshKey = prevSshKey
-                            } else if value == "CHOOSE" {
-                                print("Choose a ssh key...")
-                                currentAccount.sshKey = prevSshKey
-                            } else {
-                                // TODO: Validate SSH key and check if it is uploaded to git provider.
-                                // If not provide button to do so
-                            }
-                            prevSshKey = currentAccount.sshKey
-                        }
-                        .sheet(isPresented: $createSshKeyIsPresented, content: { CreateSSHKeyView() })
+                        Text("Create New...")
+                            .tag("CREATE_NEW")
+                        Text("Choose...")
+                            .tag("CHOOSE")
                     }
-                } footer: {
-                    HStack {
-                        Button("Delete Account...") {
+                    .onReceive([currentAccount.sshKey].publisher.first()) { value in
+                        if value == "CREATE_NEW" {
+                            print("Create a new ssh key...")
+                            createSshKeyIsPresented = true
+                            currentAccount.sshKey = prevSshKey
+                        } else if value == "CHOOSE" {
+                            print("Choose a ssh key...")
+                            currentAccount.sshKey = prevSshKey
+                        } else {
+                            // TODO: Validate SSH key and check if it is uploaded to git provider.
+                            // If not provide button to do so
+                        }
+                        prevSshKey = currentAccount.sshKey
+                    }
+                    .sheet(isPresented: $createSshKeyIsPresented, content: { CreateSSHKeyView() })
+                }
+            } footer: {
+                HStack {
+                    Button("Delete Account...") {
+                        deleteConfirmationIsPresented.toggle()
+                    }
+                    .alert(
+                        Text("Are you sure you want to delete the account “\(account.description)”?"),
+                        isPresented: $deleteConfirmationIsPresented
+                    ) {
+                        Button("OK") {
+                            // Handle the account delete
+                            handleAccountDelete()
+                            dismiss()
+                        }
+                        Button("Cancel") {
+                            // Handle the cancel, dismiss the alert
                             deleteConfirmationIsPresented.toggle()
                         }
-                        .alert(
-                            Text("Are you sure you want to delete the account “\(account.description)”?"),
-                            isPresented: $deleteConfirmationIsPresented
-                        ) {
-                            Button("OK") {
-                                // Handle the account delete
-                                handleAccountDelete()
-                                dismiss()
-                            }
-                            Button("Cancel") {
-                                // Handle the cancel, dismiss the alert
-                                deleteConfirmationIsPresented.toggle()
-                            }
-                        } message: {
-                            Text("Deleting this account will remove it from CodeEdit.")
-                        }
-
-                        Spacer()
+                    } message: {
+                        Text("Deleting this account will remove it from CodeEdit.")
                     }
-                    .padding(.top, 10)
+
+                    Spacer()
                 }
-            }
-            .onChange(of: currentAccount) { newValue in
-                account = newValue
+                .padding(.top, 10)
             }
         }
+        .onChange(of: currentAccount) { newValue in
+            account = newValue
+        }
+        .navigationTitle(currentAccount.description)
+        .navigationBarBackButtonVisible()
     }
 
     private func handleAccountDelete() {

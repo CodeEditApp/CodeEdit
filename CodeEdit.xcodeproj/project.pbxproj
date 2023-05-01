@@ -313,7 +313,7 @@
 		B61A606929F4481A009B43F9 /* MonospacedFontPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61A606829F4481A009B43F9 /* MonospacedFontPicker.swift */; };
 		B61DA9DF29D929E100BF4A43 /* GeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61DA9DE29D929E100BF4A43 /* GeneralSettingsView.swift */; };
 		B640A99E29E2184700715F20 /* SettingsForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = B640A99D29E2184700715F20 /* SettingsForm.swift */; };
-		B640A9A129E2188F00715F20 /* SettingsDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B640A9A029E2188F00715F20 /* SettingsDetailsView.swift */; };
+		B640A9A129E2188F00715F20 /* View+NavigationBarBackButtonVisible.swift in Sources */ = {isa = PBXBuildFile; fileRef = B640A9A029E2188F00715F20 /* View+NavigationBarBackButtonVisible.swift */; };
 		B658FB3427DA9E1000EA4DBD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3327DA9E1000EA4DBD /* Assets.xcassets */; };
 		B658FB3727DA9E1000EA4DBD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3627DA9E1000EA4DBD /* Preview Assets.xcassets */; };
 		B66A4E4529C8E86D004573B4 /* CommandsFixes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66A4E4429C8E86D004573B4 /* CommandsFixes.swift */; };
@@ -715,7 +715,7 @@
 		B61A606829F4481A009B43F9 /* MonospacedFontPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonospacedFontPicker.swift; sourceTree = "<group>"; };
 		B61DA9DE29D929E100BF4A43 /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
 		B640A99D29E2184700715F20 /* SettingsForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsForm.swift; sourceTree = "<group>"; };
-		B640A9A029E2188F00715F20 /* SettingsDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDetailsView.swift; sourceTree = "<group>"; };
+		B640A9A029E2188F00715F20 /* View+NavigationBarBackButtonVisible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+NavigationBarBackButtonVisible.swift"; sourceTree = "<group>"; };
 		B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodeEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B658FB3127DA9E0F00EA4DBD /* WorkspaceView.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceView.swift; sourceTree = "<group>"; tabWidth = 4; };
 		B658FB3327DA9E1000EA4DBD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -2168,10 +2168,10 @@
 			children = (
 				B6041F4C29D7A4E9000F3454 /* SettingsPageView.swift */,
 				B640A99D29E2184700715F20 /* SettingsForm.swift */,
-				B640A9A029E2188F00715F20 /* SettingsDetailsView.swift */,
 				B6EA1FFF29DB7966001BF195 /* SettingsColorPicker.swift */,
 				B61A606829F4481A009B43F9 /* MonospacedFontPicker.swift */,
 				B61A606029F188AB009B43F9 /* ExternalLink.swift */,
+				B640A9A029E2188F00715F20 /* View+NavigationBarBackButtonVisible.swift */,
 				B6EA200129DB7F81001BF195 /* View+ConstrainHeightToWindow.swift */,
 				B6E41C7329DD40010088F9F4 /* View+HideSidebarToggle.swift */,
 			);
@@ -2729,7 +2729,7 @@
 				587B9E8929301D8F00AC7927 /* GitHubGist.swift in Sources */,
 				0485EB1F27E7458B00138301 /* WorkspaceCodeFileView.swift in Sources */,
 				58D01C94293167DC00C5B6B4 /* Color+HEX.swift in Sources */,
-				B640A9A129E2188F00715F20 /* SettingsDetailsView.swift in Sources */,
+				B640A9A129E2188F00715F20 /* View+NavigationBarBackButtonVisible.swift in Sources */,
 				58798251292E78D80085B254 /* OtherFileView.swift in Sources */,
 				587D9B752933BF5700BF7490 /* FileItem.swift in Sources */,
 				587B9E7929301D8F00AC7927 /* GitHubIssueRouter.swift in Sources */,

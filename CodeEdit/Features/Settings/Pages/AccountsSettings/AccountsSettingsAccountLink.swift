@@ -17,7 +17,7 @@ struct AccountsSettingsAccountLink: View {
     var body: some View {
         NavigationLink(destination: AccountsSettingsDetailsView($account)) {
             Label {
-                Text(account.provider.name)
+                Text(account.description)
                 Text(account.name)
                     .font(.footnote)
                     .foregroundColor(.secondary)

@@ -83,13 +83,13 @@ struct SettingsView: View {
             .navigationSplitViewColumnWidth(500)
             .hideSidebarToggle()
             .onAppear {
-                model.showingDetails = false
+                model.backButtonVisible = false
             }
         }
         .navigationTitle(selectedPage.name.rawValue)
         .toolbar {
             ToolbarItem(placement: .navigation) {
-                if !model.showingDetails {
+                if !model.backButtonVisible {
                     Rectangle()
                         .frame(width: 10)
                         .opacity(0)
@@ -104,6 +104,6 @@ struct SettingsView: View {
 }
 
 class SettingsViewModel: ObservableObject {
-    @Published var showingDetails: Bool = false
+    @Published var backButtonVisible: Bool = false
     @Published var scrolledToTop: Bool = false
 }
