@@ -96,7 +96,8 @@ struct AccountsSettingsDetailsView: View {
                                         let fileURL = sshPath.appendingPathComponent(filename)
                                         if let contents = try? String(contentsOf: fileURL) {
                                             if isPublicSSHKey(contents) {
-                                                Text(filename.replacingOccurrences(of: ".pub", with: "")).tag(contents)
+                                                Text(filename.replacingOccurrences(of: ".pub", with: ""))
+                                                    .tag(fileURL.path)
                                             }
                                         }
                                     }
