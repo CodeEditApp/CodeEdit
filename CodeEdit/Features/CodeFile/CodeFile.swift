@@ -23,7 +23,7 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
     @Published
     var content = ""
 
-    @AppSettings(\.textEditing) var settings
+    @AppSettings(\.textEditing.defaultTextEncoding) var defaultTextEncoding
 
     /*
      This is the main type of the document.
@@ -100,7 +100,7 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
     override func read(from data: Data, ofType _: String) throws {
         guard let content = String(
             data: data,
-            encoding: settings.defaultTextEncoding
+            encoding: defaultTextEncoding
         ) else { return }
         self.content = content
     }
