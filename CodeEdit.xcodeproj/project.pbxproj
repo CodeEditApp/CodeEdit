@@ -216,6 +216,7 @@
 		58822534292C280D00E83CDE /* CursorLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882251E292C280D00E83CDE /* CursorLocation.swift */; };
 		588847632992A2A200996D95 /* CEWorkspaceFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588847622992A2A200996D95 /* CEWorkspaceFile.swift */; };
 		588847692992ABCA00996D95 /* Array+CEWorkspaceFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588847682992ABCA00996D95 /* Array+CEWorkspaceFile.swift */; };
+		5894E59729FEF7740077E59C /* CEWorkspaceFile+Recursion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5894E59629FEF7740077E59C /* CEWorkspaceFile+Recursion.swift */; };
 		58A2E40C29C3975D005CB615 /* CEWorkspaceFileIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A2E40629C3975D005CB615 /* CEWorkspaceFileIcon.swift */; };
 		58A5DF7D2931787A00D1BD5D /* ShellClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A5DF7C2931787A00D1BD5D /* ShellClient.swift */; };
 		58A5DF8029325B5A00D1BD5D /* GitClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A5DF7F29325B5A00D1BD5D /* GitClient.swift */; };
@@ -625,6 +626,7 @@
 		5882251E292C280D00E83CDE /* CursorLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CursorLocation.swift; sourceTree = "<group>"; };
 		588847622992A2A200996D95 /* CEWorkspaceFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CEWorkspaceFile.swift; sourceTree = "<group>"; };
 		588847682992ABCA00996D95 /* Array+CEWorkspaceFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+CEWorkspaceFile.swift"; sourceTree = "<group>"; };
+		5894E59629FEF7740077E59C /* CEWorkspaceFile+Recursion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CEWorkspaceFile+Recursion.swift"; sourceTree = "<group>"; };
 		589F3E342936185400E1A4DA /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/MacOSX.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		58A2E40629C3975D005CB615 /* CEWorkspaceFileIcon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CEWorkspaceFileIcon.swift; sourceTree = "<group>"; };
 		58A5DF7C2931787A00D1BD5D /* ShellClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShellClient.swift; sourceTree = "<group>"; };
@@ -1778,6 +1780,7 @@
 			isa = PBXGroup;
 			children = (
 				588847622992A2A200996D95 /* CEWorkspaceFile.swift */,
+				5894E59629FEF7740077E59C /* CEWorkspaceFile+Recursion.swift */,
 				58A2E40629C3975D005CB615 /* CEWorkspaceFileIcon.swift */,
 				58710158298EB80000951BA4 /* CEWorkspaceFileManager.swift */,
 			);
@@ -2660,6 +2663,7 @@
 				B6C6A43029771F7100A3D28F /* TabBarItemBackground.swift in Sources */,
 				B6F0517D29D9E4B100D72287 /* TerminalSettingsView.swift in Sources */,
 				587B9E8C29301D8F00AC7927 /* GitHubOpenness.swift in Sources */,
+				5894E59729FEF7740077E59C /* CEWorkspaceFile+Recursion.swift in Sources */,
 				587B9E8229301D8F00AC7927 /* GitHubPreviewHeader.swift in Sources */,
 				58F2EB02292FB2B0004A9BDE /* Loopable.swift in Sources */,
 				28B8F884280FFE4600596236 /* NSTableView+Background.swift in Sources */,

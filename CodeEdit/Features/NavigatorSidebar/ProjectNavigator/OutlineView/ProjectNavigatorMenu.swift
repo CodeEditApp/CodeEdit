@@ -213,7 +213,11 @@ final class ProjectNavigatorMenu: NSMenu {
     private func renameFile() {
         let row = outlineView.row(forItem: item)
         guard row > 0,
-              let cell = outlineView.view(atColumn: 0, row: row, makeIfNecessary: false) as? ProjectNavigatorTableViewCell else {
+              let cell = outlineView.view(
+                atColumn: 0,
+                row: row,
+                makeIfNecessary: false
+              ) as? ProjectNavigatorTableViewCell else {
             return
         }
         outlineView.window?.makeFirstResponder(cell.textField)

@@ -56,14 +56,14 @@ struct ProjectNavigatorToolbarBottom: View {
         Menu {
             Button("Add File") {
                 guard let folderURL = workspace.workspaceFileManager?.folderUrl,
-                      let root = try? workspace.workspaceFileManager?.getFileItem(folderURL.path) else { return }
+                      let root = try? workspace.workspaceFileManager?.getFile(folderURL.path) else { return }
 
                 // TODO: use currently selected file instead of root
                 root.addFile(fileName: "untitled")
             }
             Button("Add Folder") {
                 guard let folderURL = workspace.workspaceFileManager?.folderUrl,
-                      let root = try? workspace.workspaceFileManager?.getFileItem(folderURL.path) else { return }
+                      let root = try? workspace.workspaceFileManager?.getFile(folderURL.path) else { return }
 
                 // TODO: use currently selected file instead of root
                 root.addFolder(folderName: "untitled")

@@ -122,7 +122,7 @@ final class CEWorkspaceFileManager {
     /// within the scope of the `FileSystemClient`.
     /// - Parameter id: The file's full path
     /// - Returns: The file item corresponding to the file
-    func getFileItem(_ id: String) throws -> CEWorkspaceFile {
+    func getFile(_ id: String) throws -> CEWorkspaceFile {
         guard let item = flattenedFileItems[id] else {
             throw FileSystemClientError.fileNotExist
         }

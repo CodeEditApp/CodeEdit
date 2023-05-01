@@ -57,8 +57,12 @@ class TextTableViewCell: NSTableCellView {
 
     override func resizeSubviews(withOldSize oldSize: NSSize) {
         super.resizeSubviews(withOldSize: oldSize)
-        label.frame = NSRect(x: 2, y: 2.5,
-                             width: frame.width - 4, height: 25)
+        label.frame = NSRect(
+            x: 2,
+            y: 2.5,
+            width: frame.width - 4,
+            height: 25
+        )
     }
 
     /// Returns the font size for the current row height. Defaults to `13.0`

@@ -21,7 +21,7 @@ final class ProjectNavigatorViewController: NSViewController {
     /// Also creates a top level item "root" which represents the projects root directory and automatically expands it.
     private var content: [CEWorkspaceFile] {
         guard let folderURL = workspace?.workspaceFileManager?.folderUrl else { return [] }
-        guard let root = try? workspace?.workspaceFileManager?.getFileItem(folderURL.path) else { return [] }
+        guard let root = try? workspace?.workspaceFileManager?.getFile(folderURL.path) else { return [] }
         return [root]
     }
 
@@ -198,7 +198,7 @@ extension ProjectNavigatorViewController: NSOutlineViewDataSource {
             }
 
             // Needs to come before call to .removeItem or else race condition occurs
-            var srcFileItem: CEWorkspaceFile? = try? workspace?.workspaceFileManager?.getFileItem(fileItemURL.path)
+            var srcFileItem: CEWorkspaceFile? = try? workspace?.workspaceFileManager?.getFile(fileItemURL.path)
             // If srcFileItem is nil, fileItemUrl is an external file url.
             if srcFileItem == nil {
                 srcFileItem = CEWorkspaceFile(url: URL(fileURLWithPath: fileItemURL.path))
@@ -288,7 +288,7 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
 
     func outlineView(_ outlineView: NSOutlineView, itemForPersistentObject object: Any) -> Any? {
         guard let id = object as? CEWorkspaceFile.ID,
-              let item = try? workspace?.workspaceFileManager?.getFileItem(id) else { return nil }
+              let item = try? workspace?.workspaceFileManager?.getFile(id) else { return nil }
         return item
     }
 
@@ -304,10 +304,11 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
     private func select(by id: TabBarItemID, from collection: [CEWorkspaceFile]) {
         // If the user has set "Reveal file on selection change" to on, we need to reveal the item before
         // selecting the row.
-        if Settings.shared.preferences.general.revealFileOnFocusChange,
-           case let .codeEditor(id) = id,
-           let fileItem = try? workspace?.workspaceFileManager?.getFileItem(id as CEWorkspaceFile.ID) as? CEWorkspaceFile {
-            reveal(fileItem)
+        if Settings.shared.preferences.general.revealFileOnFocusChange {
+           if case let .codeEditor(id) = id,
+              let fileItem = try? workspace?.workspaceFileManager?.getFile(id as CEWorkspaceFile.ID) {
+               reveal(fileItem)
+           }
         }
 
         guard let item = collection.first(where: { $0.tabID == id }) else {

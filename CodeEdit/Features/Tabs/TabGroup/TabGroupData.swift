@@ -33,7 +33,7 @@ final class TabGroupData: ObservableObject, Identifiable {
             }
         }
     }
-    
+
     /// The current offset in the history list.
     @Published
     var historyOffset: Int = 0 {
