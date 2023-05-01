@@ -127,6 +127,9 @@ struct AccountsSettingsSigninView: View {
             }
             .formStyle(.grouped)
             .scrollDisabled(true)
+            .onSubmit {
+                signin()
+            }
             HStack {
                 Button {
                     addAccountSheetPresented.toggle()

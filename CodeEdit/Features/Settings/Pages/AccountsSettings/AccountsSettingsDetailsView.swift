@@ -159,7 +159,8 @@ struct AccountsSettingsDetailsView: View {
 
     private func handleAccountDelete() {
         // Delete account by finding the position of the account and remove by position
-        // We can abort if it is `nil` because account should exist
-        gitAccounts.remove(at: gitAccounts.firstIndex(of: account)!)
+        if let gitAccount = gitAccounts.firstIndex(of: account) {
+            gitAccounts.remove(at: gitAccount)
+        }
     }
 }

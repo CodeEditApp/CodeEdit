@@ -59,23 +59,6 @@ struct SettingsView: View {
                     .searchable(text: $searchText, placement: .sidebar, prompt: "Search")
                     .scrollDisabled(true)
             }
-//            .safeAreaInset(edge: .top) {
-//                TextField("Search", text: $searchText, prompt: Text("Search"))
-//                    .textFieldStyle(.roundedBorder)
-//                    .padding(.horizontal, 10)
-//                    .controlSize(.large)
-//                    .introspectTextField { textField in
-//                        let iconImage = NSImage(systemSymbolName: "magnifyingglass", accessibilityDescription: nil)
-//
-//                        let attachment = NSTextAttachment()
-//                        attachment.contents = iconImage
-//
-//                        let cell = NSTextAttachmentCell(imageCell: iconImage)
-//                        attachment.attachmentCell = cell
-//
-//                        textField.setCell_(NSSearchFieldCell.alloc().init())
-//                    }
-//            }
         } detail: {
             Group {
                 switch selectedPage.name {

@@ -53,9 +53,8 @@ struct AccountsSettingsView: View {
                 Button("Close") {
                     addAccountSheetPresented.toggle()
                     selectedProvider = nil
-
                 }
-                    .buttonStyle(.borderedProminent)
+                .buttonStyle(.borderedProminent)
             }
             .frame(maxWidth: .infinity, alignment: .trailing)
         }
