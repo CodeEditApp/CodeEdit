@@ -21,7 +21,7 @@ struct AccountsSettingsView: View {
                         .foregroundColor(.secondary)
                         .frame(maxWidth: .infinity, alignment: .center)
                 } else {
-                    ForEach($gitAccounts) { $account in
+                    ForEach($gitAccounts, id: \.self) { $account in
                         AccountsSettingsAccountLink($account)
                     }
                 }
@@ -68,6 +68,7 @@ struct AccountsSettingsAccountLink: View {
 
     init(_ account: Binding<SourceControlAccount>) {
         _account = account
+        print(account.id)
     }
 
     var body: some View {

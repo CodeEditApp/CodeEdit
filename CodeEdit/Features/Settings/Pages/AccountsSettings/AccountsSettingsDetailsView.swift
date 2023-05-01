@@ -19,7 +19,7 @@ struct AccountsSettingsDetailsView: View {
 
     init(_ account: Binding<SourceControlAccount>) {
         _account = account
-        prevSshKey = account.sshKey.wrappedValue
+        _prevSshKey = State(initialValue: account.sshKey.wrappedValue)
     }
 
     /// Default instance of the `FileManager`
