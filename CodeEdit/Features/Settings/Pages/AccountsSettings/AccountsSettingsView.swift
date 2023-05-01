@@ -62,32 +62,3 @@ struct AccountsSettingsView: View {
         .padding(20)
     }
 }
-
-struct AccountsSettingsAccountLink: View {
-    @Binding var account: SourceControlAccount
-
-    init(_ account: Binding<SourceControlAccount>) {
-        _account = account
-        print(account.id)
-    }
-
-    var body: some View {
-        NavigationLink(destination: AccountsSettingsDetailsView($account)) {
-            Label {
-                Text(account.provider.name)
-                Text(account.name)
-                    .font(.footnote)
-                    .foregroundColor(.secondary)
-            } icon: {
-                Image(account.provider.iconName)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .cornerRadius(6)
-                    .frame(width: 26, height: 26)
-                    .padding(.top, 2)
-                    .padding(.bottom, 2)
-                    .padding(.leading, 2)
-            }
-        }
-    }
-}
