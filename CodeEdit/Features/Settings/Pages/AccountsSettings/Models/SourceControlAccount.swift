@@ -7,7 +7,8 @@
 
 import SwiftUI
 
-struct SourceControlAccount: Codable, Identifiable, Hashable {
+// SourceControlAccount is now a class in order to fix some UI bugs
+class SourceControlAccount: Codable, Identifiable, Hashable, ObservableObject {
     internal init(
         id: String,
         name: String,
@@ -28,9 +29,21 @@ struct SourceControlAccount: Codable, Identifiable, Hashable {
         self.isTokenValid = isTokenValid
     }
 
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try container.decode(String.self, forKey: .id)
+        self.name = try container.decode(String.self, forKey: .name)
+        self.description = try container.decode(String.self, forKey: .description)
+        self.provider = try container.decode(Provider.self, forKey: .provider)
+        self.serverURL = try container.decode(String.self, forKey: .serverURL)
+        self.urlProtocol = try container.decode(Bool.self, forKey: .urlProtocol)
+        self.sshKey = try container.decode(String.self, forKey: .sshKey)
+        self.isTokenValid = try container.decode(Bool.self, forKey: .isTokenValid)
+    }
+
     var id: String
     var name: String
-    var description: String
+    @Published var description: String
     var provider: Provider
     var serverURL: String
     // TODO: Should we use an enum instead of a boolean here:
@@ -154,5 +167,51 @@ struct SourceControlAccount: Codable, Identifiable, Hashable {
     enum AuthType {
         case token
         case password
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case description
+        case provider
+        case serverURL
+        case urlProtocol
+        case sshKey
+        case isTokenValid
+    }
+
+    static func == (lhs: SourceControlAccount, rhs: SourceControlAccount) -> Bool {
+        return
+            lhs.id == rhs.id &&
+            lhs.name == rhs.name &&
+            lhs.description == rhs.description &&
+            lhs.provider == rhs.provider &&
+            lhs.serverURL == rhs.serverURL &&
+            lhs.urlProtocol ==  rhs.urlProtocol &&
+            lhs.sshKey ==  rhs.sshKey &&
+            lhs.isTokenValid == rhs.isTokenValid
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(name, forKey: .name)
+        try container.encode(description, forKey: .description)
+        try container.encode(provider, forKey: .provider)
+        try container.encode(serverURL, forKey: .serverURL)
+        try container.encode(urlProtocol, forKey: .urlProtocol)
+        try container.encode(sshKey, forKey: .sshKey)
+        try container.encode(isTokenValid, forKey: .isTokenValid)
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(name)
+        hasher.combine(description)
+        hasher.combine(provider)
+        hasher.combine(serverURL)
+        hasher.combine(urlProtocol)
+        hasher.combine(sshKey)
+        hasher.combine(isTokenValid)
     }
 }
