@@ -37,7 +37,7 @@ struct WorkspaceView: View {
     var focusedEditor: TabGroupData?
 
     var body: some View {
-        if workspace.workspaceClient != nil {
+        if workspace.workspaceFileManager != nil {
             VStack {
                 SplitViewReader { proxy in
                     SplitView(axis: .vertical) {

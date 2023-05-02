@@ -9,11 +9,10 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 /// A subclass of `NSMenu` implementing the contextual menu for the project navigator
-final class OutlineMenu: NSMenu {
-    typealias Item = WorkspaceClient.FileItem
+final class ProjectNavigatorMenu: NSMenu {
 
     /// The item to show the contextual menu for
-    var item: Item?
+    var item: CEWorkspaceFile?
 
     /// The workspace, for opening the item
     var workspace: WorkspaceDocument?
@@ -61,7 +60,7 @@ final class OutlineMenu: NSMenu {
 
         let rename = menuItem("Rename", action: #selector(renameFile))
         let delete = menuItem("Delete", action:
-                                item.url != workspace?.workspaceClient?.folderURL()
+                                item.url != workspace?.workspaceFileManager?.folderUrl
                               ? #selector(delete) : nil)
 
         let duplicate = menuItem("Duplicate \(item.isFolder ? "Folder" : "File")", action: #selector(duplicate))
@@ -102,7 +101,7 @@ final class OutlineMenu: NSMenu {
     }
 
     /// Submenu for **Open As** menu item.
-    private func openAsMenu(item: Item) -> NSMenu {
+    private func openAsMenu(item: CEWorkspaceFile) -> NSMenu {
         let openAsMenu = NSMenu(title: "Open As")
         func getMenusItems() -> ([NSMenuItem], [NSMenuItem]) {
             // Use UTType to distinguish between bundle file and user-browsable directory
@@ -154,7 +153,7 @@ final class OutlineMenu: NSMenu {
     }
 
     /// Submenu for **Source Control** menu item.
-    private func sourceControlMenu(item: Item) -> NSMenu {
+    private func sourceControlMenu(item: CEWorkspaceFile) -> NSMenu {
         let sourceControlMenu = NSMenu(title: "Source Control")
         sourceControlMenu.addItem(withTitle: "Commit \"\(item.fileName)\"...", action: nil, keyEquivalent: "")
         sourceControlMenu.addItem(.separator())
@@ -214,7 +213,11 @@ final class OutlineMenu: NSMenu {
     private func renameFile() {
         let row = outlineView.row(forItem: item)
         guard row > 0,
-              let cell = outlineView.view(atColumn: 0, row: row, makeIfNecessary: false) as? OutlineTableViewCell else {
+              let cell = outlineView.view(
+                atColumn: 0,
+                row: row,
+                makeIfNecessary: false
+              ) as? ProjectNavigatorTableViewCell else {
             return
         }
         outlineView.window?.makeFirstResponder(cell.textField)

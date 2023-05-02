@@ -12,7 +12,6 @@ final class FindNavigatorListViewController: NSViewController {
     public var workspace: WorkspaceDocument
     public var selectedItem: Any?
 
-    typealias FileItem = WorkspaceClient.FileItem
     private var searchId: UUID?
     private var searchItems: [SearchResultModel] = []
     private var scrollView: NSScrollView!
@@ -181,7 +180,7 @@ extension FindNavigatorListViewController: NSOutlineViewDelegate {
                 width: tableColumn.width,
                 height: prefs.general.projectNavigatorSize.rowHeight
             )
-            let view = OutlineTableViewCell(
+            let view = ProjectNavigatorTableViewCell(
                 frame: frameRect,
                 item: (item as? SearchResultModel)?.file,
                 isEditable: false

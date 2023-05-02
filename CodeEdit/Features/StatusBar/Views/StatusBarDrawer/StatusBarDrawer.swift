@@ -39,7 +39,7 @@ struct StatusBarDrawer: View {
     }
 
     var body: some View {
-        if let url = workspace.workspaceClient?.folderURL() {
+        if let url = workspace.workspaceFileManager?.folderUrl {
             VStack(spacing: 0) {
                 TerminalEmulatorView(url: url)
                     .padding(.top, 10)
