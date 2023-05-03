@@ -14,8 +14,6 @@ struct NavigatorSidebarView: View {
     @State
     private var selection: Int = 0
 
-    private let toolbarPadding: Double = -8.0
-
     init(workspace: WorkspaceDocument) {
         self.workspace = workspace
     }
@@ -35,18 +33,14 @@ struct NavigatorSidebarView: View {
                 Spacer()
             }
         }
-        .padding(.top, sidebarPosition == .side ? toolbarPadding : 0)
-        .safeAreaInset(edge: .leading) {
+        .safeAreaInset(edge: .leading, spacing: 0) {
             if sidebarPosition == .side {
                 NavigatorSidebarTabBar(selection: $selection, position: sidebarPosition)
-                    .padding(.top, toolbarPadding)
-                    .padding(.trailing, toolbarPadding)
             }
         }
-        .safeAreaInset(edge: .top) {
+        .safeAreaInset(edge: .top, spacing: 0) {
             if sidebarPosition == .top {
                 NavigatorSidebarTabBar(selection: $selection, position: sidebarPosition)
-                    .padding(.bottom, toolbarPadding)
             } else {
                 Divider()
             }

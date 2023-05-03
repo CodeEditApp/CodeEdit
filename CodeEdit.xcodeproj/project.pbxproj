@@ -346,7 +346,7 @@
 		B6EA200029DB7966001BF195 /* SettingsColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EA1FFF29DB7966001BF195 /* SettingsColorPicker.swift */; };
 		B6EA200229DB7F81001BF195 /* View+ConstrainHeightToWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EA200129DB7F81001BF195 /* View+ConstrainHeightToWindow.swift */; };
 		B6EE989027E8879A00CDD8AB /* InspectorSidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EE988F27E8879A00CDD8AB /* InspectorSidebarView.swift */; };
-		B6EE989227E887C600CDD8AB /* InspectorSidebarToolbarTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EE989127E887C600CDD8AB /* InspectorSidebarToolbarTop.swift */; };
+		B6EE989227E887C600CDD8AB /* InspectorSidebarTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EE989127E887C600CDD8AB /* InspectorSidebarTabBar.swift */; };
 		B6F0517029D9E36800D72287 /* LocationsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F0516F29D9E36800D72287 /* LocationsSettingsView.swift */; };
 		B6F0517729D9E3AD00D72287 /* SourceControlGeneralView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F0517629D9E3AD00D72287 /* SourceControlGeneralView.swift */; };
 		B6F0517929D9E3C900D72287 /* SourceControlGitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F0517829D9E3C900D72287 /* SourceControlGitView.swift */; };
@@ -754,7 +754,7 @@
 		B6EA1FFF29DB7966001BF195 /* SettingsColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsColorPicker.swift; sourceTree = "<group>"; };
 		B6EA200129DB7F81001BF195 /* View+ConstrainHeightToWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ConstrainHeightToWindow.swift"; sourceTree = "<group>"; };
 		B6EE988F27E8879A00CDD8AB /* InspectorSidebarView.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = InspectorSidebarView.swift; sourceTree = "<group>"; tabWidth = 4; };
-		B6EE989127E887C600CDD8AB /* InspectorSidebarToolbarTop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorSidebarToolbarTop.swift; sourceTree = "<group>"; };
+		B6EE989127E887C600CDD8AB /* InspectorSidebarTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorSidebarTabBar.swift; sourceTree = "<group>"; };
 		B6F0516F29D9E36800D72287 /* LocationsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsSettingsView.swift; sourceTree = "<group>"; };
 		B6F0517629D9E3AD00D72287 /* SourceControlGeneralView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlGeneralView.swift; sourceTree = "<group>"; };
 		B6F0517829D9E3C900D72287 /* SourceControlGitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlGitView.swift; sourceTree = "<group>"; };
@@ -2245,7 +2245,7 @@
 				B6EE988F27E8879A00CDD8AB /* InspectorSidebarView.swift */,
 				B6D7EA582971078500301FAC /* InspectorSection.swift */,
 				B6D7EA5B297107DD00301FAC /* InspectorField.swift */,
-				B6EE989127E887C600CDD8AB /* InspectorSidebarToolbarTop.swift */,
+				B6EE989127E887C600CDD8AB /* InspectorSidebarTabBar.swift */,
 			);
 			path = InspectorSidebar;
 			sourceTree = "<group>";
@@ -2655,7 +2655,7 @@
 				2072FA1C280D874000C7F8D4 /* IndentUsing.swift in Sources */,
 				58798284292ED0FB0085B254 /* TerminalEmulatorView.swift in Sources */,
 				6C82D6B329BFD88700495C54 /* NavigateCommands.swift in Sources */,
-				B6EE989227E887C600CDD8AB /* InspectorSidebarToolbarTop.swift in Sources */,
+				B6EE989227E887C600CDD8AB /* InspectorSidebarTabBar.swift in Sources */,
 				B66A4E4C29C9179B004573B4 /* CodeEditApp.swift in Sources */,
 				4E7F066629602E7B00BB3C12 /* CodeEditSplitViewController.swift in Sources */,
 				587B9E8D29301D8F00AC7927 /* GitHubAccount.swift in Sources */,

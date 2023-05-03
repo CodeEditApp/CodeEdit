@@ -1,14 +1,13 @@
 //
-//  SideBarTabBar.swift
+//  InspectorSidebarTabBar.swift
 //  CodeEdit
 //
-//  Created by Lukas Pistrol on 17.03.22.
+//  Created by Austin Condiff on 3/21/22.
 //
 
 import SwiftUI
-import CodeEditSymbols
 
-struct NavigatorSidebarTabBar: View {
+struct InspectorSidebarTabBar: View {
     @Environment(\.controlActiveState) private var activeState
 
     var position: SettingsData.SidebarTabBarPosition
@@ -16,18 +15,13 @@ struct NavigatorSidebarTabBar: View {
     @Binding private var selection: Int
 
     @State private var icons = [
-        SidebarDockIcon(imageName: "folder", title: "Project", id: 0),
-        SidebarDockIcon(imageName: "vault", title: "Version Control", id: 1),
-        SidebarDockIcon(imageName: "magnifyingglass", title: "Search", id: 2),
-        SidebarDockIcon(imageName: "shippingbox", title: "...", id: 3, disabled: true),
-        SidebarDockIcon(imageName: "play", title: "...", id: 4, disabled: true),
-        SidebarDockIcon(imageName: "exclamationmark.triangle", title: "...", id: 5, disabled: true),
-        SidebarDockIcon(imageName: "curlybraces.square", title: "...", id: 6, disabled: true),
-        SidebarDockIcon(imageName: "puzzlepiece.extension", title: "...", id: 7, disabled: true),
-        SidebarDockIcon(imageName: "square.grid.2x2", title: "...", id: 8, disabled: true)
+        InspectorDockIcon(imageName: "doc", title: "File Inspector", id: 0),
+        InspectorDockIcon(imageName: "clock", title: "History Inspector", id: 1),
+        InspectorDockIcon(imageName: "questionmark.circle", title: "Quick Help Inspector", id: 2)
     ]
+
     @State private var hasChangedLocation: Bool = false
-    @State private var draggingItem: SidebarDockIcon?
+    @State private var draggingItem: InspectorDockIcon?
     @State private var drugItemLocation: CGPoint?
 
     init(selection: Binding<Int>, position: SettingsData.SidebarTabBarPosition) {
@@ -64,7 +58,7 @@ struct NavigatorSidebarTabBar: View {
             iconsView(size: proxy.size)
                 .padding(.vertical, 5)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .overlay(alignment: .trailing) {
+                .overlay(alignment: .leading) {
                     HStack {
                         Divider()
                     }
@@ -85,10 +79,10 @@ struct NavigatorSidebarTabBar: View {
                 makeIcon(named: icon.imageName, title: icon.title, id: icon.id, size: size)
                     .opacity(draggingItem?.imageName == icon.imageName &&
                              hasChangedLocation &&
-                             drugItemLocation != nil ? 0.0: icon.disabled ? 0.3 : 1.0)
+                             drugItemLocation != nil ? 0.0 : 1.0)
                     .onDrop(
                         of: [.utf8PlainText],
-                        delegate: NavigatorSidebarDockIconDelegate(
+                        delegate: InspectorSidebarDockIconDelegate(
                             item: icon,
                             current: $draggingItem,
                             icons: $icons,
@@ -96,7 +90,6 @@ struct NavigatorSidebarTabBar: View {
                             drugItemLocation: $drugItemLocation
                         )
                     )
-                    .disabled(icon.disabled)
             }
             if position == .side {
                 Spacer()
@@ -141,31 +134,16 @@ struct NavigatorSidebarTabBar: View {
         }
     }
 
-    struct NavigatorToolbarButtonStyle: ButtonStyle {
-        var id: Int
-        var selection: Int
-        var activeState: ControlActiveState
-        var sidebarWidth: CGFloat
-
-        func makeBody(configuration: Configuration) -> some View {
-            configuration.label
-
-                .foregroundColor(id == selection ? .accentColor : configuration.isPressed ? .primary : .secondary)
-                .opacity(activeState == .inactive ? 0.45 : 1)
-        }
-    }
-
-    private struct SidebarDockIcon: Identifiable, Equatable {
+    private struct InspectorDockIcon: Identifiable, Equatable {
         let imageName: String
         let title: String
         var id: Int
-        var disabled: Bool = false
     }
 
-    private struct NavigatorSidebarDockIconDelegate: DropDelegate {
-        let item: SidebarDockIcon
-        @Binding var current: SidebarDockIcon?
-        @Binding var icons: [SidebarDockIcon]
+    private struct InspectorSidebarDockIconDelegate: DropDelegate {
+        let item: InspectorDockIcon
+        @Binding var current: InspectorDockIcon?
+        @Binding var icons: [InspectorDockIcon]
         @Binding var hasChangedLocation: Bool
         @Binding var drugItemLocation: CGPoint?
 
@@ -176,8 +154,8 @@ struct NavigatorSidebarTabBar: View {
             }
 
             guard item != current, let current = current,
-                    let from = icons.firstIndex(of: current),
-                    let toIndex = icons.firstIndex(of: item) else { return }
+                  let from = icons.firstIndex(of: current),
+                  let toIndex = icons.firstIndex(of: item) else { return }
 
             hasChangedLocation = true
             drugItemLocation = info.location
