@@ -9,9 +9,12 @@ import Foundation
 import Combine
 
 class WorkspaceNotificationModel: ObservableObject {
+
+    @Published
+    var highlightedFileItem: CEWorkspaceFile?
+
     init() {
         highlightedFileItem = nil
     }
 
-    @Published var highlightedFileItem: WorkspaceClient.FileItem?
 }

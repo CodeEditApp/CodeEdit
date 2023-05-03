@@ -130,6 +130,9 @@ struct AccountsSettingsSigninView: View {
             }
             .formStyle(.grouped)
             .scrollDisabled(true)
+            .onSubmit {
+                signin()
+            }
             HStack {
                 Button {
                     addAccountSheetPresented.toggle()
@@ -216,11 +219,12 @@ struct AccountsSettingsSigninView: View {
                 description: provider.name,
                 provider: provider,
                 serverURL: providerLink,
-                urlProtocol: true,
+                urlProtocol: .https,
                 sshKey: "",
                 isTokenValid: true
             )
         )
+        
         keychain.set(personalAccessToken, forKey: "github_\(username)_enterprise")
         dismiss()
     }

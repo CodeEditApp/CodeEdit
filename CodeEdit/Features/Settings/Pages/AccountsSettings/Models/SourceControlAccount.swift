@@ -14,7 +14,7 @@ struct SourceControlAccount: Codable, Identifiable, Hashable {
         description: String,
         provider: Provider,
         serverURL: String,
-        urlProtocol: Bool,
+        urlProtocol: URLProtocol,
         sshKey: String,
         isTokenValid: Bool
     ) {
@@ -35,9 +35,14 @@ struct SourceControlAccount: Codable, Identifiable, Hashable {
     var serverURL: String
     // TODO: Should we use an enum instead of a boolean here:
     // If true we use the HTTP protocol else if false we use SSH
-    var urlProtocol: Bool
+    var urlProtocol: URLProtocol
     var sshKey: String
     var isTokenValid: Bool
+
+    enum URLProtocol: String, Codable, CaseIterable {
+        case https = "HTTPS"
+        case ssh = "SSH"
+    }
 
     enum Provider: Codable, CaseIterable, Identifiable {
         case bitbucketCloud

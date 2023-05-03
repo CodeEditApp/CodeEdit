@@ -9,33 +9,39 @@ import SwiftUI
 import Combine
 
 /// Wraps an ``OutlineViewController`` inside a `NSViewControllerRepresentable`
-struct OutlineView: NSViewControllerRepresentable {
+struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
 
     @EnvironmentObject
     var workspace: WorkspaceDocument
 
+    @StateObject
+    var prefs: Settings = .shared
+
     // This is mainly just used to trigger a view update.
     @Binding
-    var selection: WorkspaceClient.FileItem?
+    var selection: CEWorkspaceFile?
 
-    typealias NSViewControllerType = OutlineViewController
+    typealias NSViewControllerType = ProjectNavigatorViewController
 
-    func makeNSViewController(context: Context) -> OutlineViewController {
-        let controller = OutlineViewController()
+    func makeNSViewController(context: Context) -> ProjectNavigatorViewController {
+        let controller = ProjectNavigatorViewController()
         controller.workspace = workspace
-        controller.iconColor = Settings[\.general].fileIconStyle
+        controller.iconColor = prefs.preferences.general.fileIconStyle
+        workspace.workspaceFileManager?.onRefresh = {
+            controller.outlineView.reloadData()
+        }
 
         context.coordinator.controller = controller
 
         return controller
     }
 
-    func updateNSViewController(_ nsViewController: OutlineViewController, context: Context) {
-        nsViewController.iconColor = Settings[\.general].fileIconStyle
-        nsViewController.rowHeight = Settings[\.general].projectNavigatorSize.rowHeight
-        nsViewController.fileExtensionsVisibility = Settings[\.general].fileExtensionsVisibility
-        nsViewController.shownFileExtensions = Settings[\.general].shownFileExtensions
-        nsViewController.hiddenFileExtensions = Settings[\.general].hiddenFileExtensions
+    func updateNSViewController(_ nsViewController: ProjectNavigatorViewController, context: Context) {
+        nsViewController.iconColor = prefs.preferences.general.fileIconStyle
+        nsViewController.rowHeight = prefs.preferences.general.projectNavigatorSize.rowHeight
+        nsViewController.fileExtensionsVisibility = prefs.preferences.general.fileExtensionsVisibility
+        nsViewController.shownFileExtensions = prefs.preferences.general.shownFileExtensions
+        nsViewController.hiddenFileExtensions = prefs.preferences.general.hiddenFileExtensions
         nsViewController.updateSelection()
         return
     }
@@ -60,7 +66,7 @@ struct OutlineView: NSViewControllerRepresentable {
 
         var listener: AnyCancellable?
         var workspace: WorkspaceDocument
-        var controller: OutlineViewController?
+        var controller: ProjectNavigatorViewController?
 
         deinit {
             listener?.cancel()
