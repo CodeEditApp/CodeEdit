@@ -55,7 +55,7 @@
 		28A51002281673530087B0CC /* codeedit-xcode-light.json in Resources */ = {isa = PBXBuildFile; fileRef = 28A51000281673530087B0CC /* codeedit-xcode-light.json */; };
 		28A51005281701B40087B0CC /* codeedit-github-light.json in Resources */ = {isa = PBXBuildFile; fileRef = 28A51003281701B40087B0CC /* codeedit-github-light.json */; };
 		28A51006281701B40087B0CC /* codeedit-github-dark.json in Resources */ = {isa = PBXBuildFile; fileRef = 28A51004281701B40087B0CC /* codeedit-github-dark.json */; };
-		28B0A19827E385C300B73177 /* NavigatorSidebarToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B0A19727E385C300B73177 /* NavigatorSidebarToolbar.swift */; };
+		28B0A19827E385C300B73177 /* NavigatorSidebarTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B0A19727E385C300B73177 /* NavigatorSidebarTabBar.swift */; };
 		28B8F884280FFE4600596236 /* NSTableView+Background.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B8F883280FFE4600596236 /* NSTableView+Background.swift */; };
 		28F43DE029738792008BBA45 /* codeedit-solarized-dark.json in Resources */ = {isa = PBXBuildFile; fileRef = 28F43DDF29738792008BBA45 /* codeedit-solarized-dark.json */; };
 		28F43DE2297388C5008BBA45 /* codeedit-solarized-light.json in Resources */ = {isa = PBXBuildFile; fileRef = 28F43DE1297388C5008BBA45 /* codeedit-solarized-light.json */; };
@@ -175,7 +175,6 @@
 		587B9E8329301D8F00AC7927 /* GitHubPullRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E3929301D8F00AC7927 /* GitHubPullRequest.swift */; };
 		587B9E8429301D8F00AC7927 /* GitHubUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E3A29301D8F00AC7927 /* GitHubUser.swift */; };
 		587B9E8529301D8F00AC7927 /* GitHubReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E3B29301D8F00AC7927 /* GitHubReview.swift */; };
-		587B9E8629301D8F00AC7927 /* GitHubComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E3C29301D8F00AC7927 /* GitHubComment.swift */; };
 		587B9E8729301D8F00AC7927 /* GitHubRepositories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E3D29301D8F00AC7927 /* GitHubRepositories.swift */; };
 		587B9E8829301D8F00AC7927 /* GitHubFiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E3E29301D8F00AC7927 /* GitHubFiles.swift */; };
 		587B9E8929301D8F00AC7927 /* GitHubGist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E3F29301D8F00AC7927 /* GitHubGist.swift */; };
@@ -325,6 +324,7 @@
 		B66A4E5329C91831004573B4 /* CodeEditCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66A4E5229C91831004573B4 /* CodeEditCommands.swift */; };
 		B66A4E5629C918A0004573B4 /* SceneID.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66A4E5529C918A0004573B4 /* SceneID.swift */; };
 		B685DE7929CC9CCD002860C8 /* StatusBarIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = B685DE7829CC9CCD002860C8 /* StatusBarIcon.swift */; };
+		B68C7C212A01DEFE004EA6D6 /* GitHubComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68C7C202A01DEFE004EA6D6 /* GitHubComment.swift */; };
 		B6C6A42A297716A500A3D28F /* TabBarItemCloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C6A429297716A500A3D28F /* TabBarItemCloseButton.swift */; };
 		B6C6A42E29771A8D00A3D28F /* TabBarItemButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C6A42D29771A8D00A3D28F /* TabBarItemButtonStyle.swift */; };
 		B6C6A43029771F7100A3D28F /* TabBarItemBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C6A42F29771F7100A3D28F /* TabBarItemBackground.swift */; };
@@ -465,7 +465,7 @@
 		28A51000281673530087B0CC /* codeedit-xcode-light.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "codeedit-xcode-light.json"; sourceTree = "<group>"; };
 		28A51003281701B40087B0CC /* codeedit-github-light.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "codeedit-github-light.json"; sourceTree = "<group>"; };
 		28A51004281701B40087B0CC /* codeedit-github-dark.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "codeedit-github-dark.json"; sourceTree = "<group>"; };
-		28B0A19727E385C300B73177 /* NavigatorSidebarToolbar.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = NavigatorSidebarToolbar.swift; sourceTree = "<group>"; tabWidth = 4; };
+		28B0A19727E385C300B73177 /* NavigatorSidebarTabBar.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = NavigatorSidebarTabBar.swift; sourceTree = "<group>"; tabWidth = 4; };
 		28B8F883280FFE4600596236 /* NSTableView+Background.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTableView+Background.swift"; sourceTree = "<group>"; };
 		28F43DDF29738792008BBA45 /* codeedit-solarized-dark.json */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = text.json; path = "codeedit-solarized-dark.json"; sourceTree = "<group>"; tabWidth = 2; };
 		28F43DE1297388C5008BBA45 /* codeedit-solarized-light.json */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = text.json; path = "codeedit-solarized-light.json"; sourceTree = "<group>"; tabWidth = 2; };
@@ -732,6 +732,7 @@
 		B66A4E5229C91831004573B4 /* CodeEditCommands.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeEditCommands.swift; sourceTree = "<group>"; };
 		B66A4E5529C918A0004573B4 /* SceneID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneID.swift; sourceTree = "<group>"; };
 		B685DE7829CC9CCD002860C8 /* StatusBarIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarIcon.swift; sourceTree = "<group>"; };
+		B68C7C202A01DEFE004EA6D6 /* GitHubComment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubComment.swift; sourceTree = "<group>"; };
 		B6C6A429297716A500A3D28F /* TabBarItemCloseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarItemCloseButton.swift; sourceTree = "<group>"; };
 		B6C6A42D29771A8D00A3D28F /* TabBarItemButtonStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarItemButtonStyle.swift; sourceTree = "<group>"; };
 		B6C6A42F29771F7100A3D28F /* TabBarItemBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarItemBackground.swift; sourceTree = "<group>"; };
@@ -997,7 +998,7 @@
 				286471AC27ED52950039369D /* ProjectNavigator */,
 				201169D52837B29600F92B46 /* SourceControlNavigator */,
 				287776E627E3413200D46668 /* NavigatorSidebarView.swift */,
-				28B0A19727E385C300B73177 /* NavigatorSidebarToolbar.swift */,
+				28B0A19727E385C300B73177 /* NavigatorSidebarTabBar.swift */,
 			);
 			path = NavigatorSidebar;
 			sourceTree = "<group>";
@@ -1639,6 +1640,7 @@
 				587B9E3F29301D8F00AC7927 /* GitHubGist.swift */,
 				587B9E4029301D8F00AC7927 /* GitHubIssue.swift */,
 				587B9E4129301D8F00AC7927 /* GitHubAccount+deleteReference.swift */,
+				B68C7C202A01DEFE004EA6D6 /* GitHubComment.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -2806,6 +2808,7 @@
 				587B9E5929301D8F00AC7927 /* GitCheckoutBranchView+CheckoutBranch.swift in Sources */,
 				58F2EB09292FB2B0004A9BDE /* TerminalSettings.swift in Sources */,
 				B6EA200229DB7F81001BF195 /* View+ConstrainHeightToWindow.swift in Sources */,
+				B68C7C212A01DEFE004EA6D6 /* GitHubComment.swift in Sources */,
 				6C48D8F42972DB1A00D6D205 /* Env+Window.swift in Sources */,
 				6C5FDF7A29E6160000BC08C0 /* AppSettings.swift in Sources */,
 				2072FA18280D871200C7F8D4 /* TextEncoding.swift in Sources */,
@@ -2861,8 +2864,9 @@
 				587B9E7229301D8F00AC7927 /* GitJSONPostRouter.swift in Sources */,
 				5878DAB0291D627C00DD95A3 /* PathBarMenu.swift in Sources */,
 				587B9DA529300ABD00AC7927 /* PressActionsModifier.swift in Sources */,
-				28B0A19827E385C300B73177 /* NavigatorSidebarToolbar.swift in Sources */,
-				587B9E8629301D8F00AC7927 /* GitHubComment.swift in Sources */,
+				28B0A19827E385C300B73177 /* NavigatorSidebarTabBar.swift in Sources */,
+				28B0A19827E385C300B73177 /* NavigatorSidebarTabBar.swift in Sources */,
+				28B0A19827E385C300B73177 /* NavigatorSidebarTabBar.swift in Sources */,
 				6C147C4029A328BC0089B630 /* SplitViewData.swift in Sources */,
 				587B9E9029301D8F00AC7927 /* BitBucketTokenRouter.swift in Sources */,
 				B6C6A42E29771A8D00A3D28F /* TabBarItemButtonStyle.swift in Sources */,

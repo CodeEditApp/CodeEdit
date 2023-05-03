@@ -37,6 +37,8 @@ struct GeneralSettingsView: View {
                 appearance
                 fileIconStyle
                 tabBarStyle
+                navigatorTabBarPosition
+                inspectorTabBarPosition
             }
             Section {
                 showIssues
@@ -142,6 +144,26 @@ private extension GeneralSettingsView {
                 .tag(SettingsData.TabBarStyle.xcode)
             Text("Native")
                 .tag(SettingsData.TabBarStyle.native)
+        }
+        .pickerStyle(.radioGroup)
+    }
+
+    var navigatorTabBarPosition: some View {
+        Picker("Navigator Dock Position", selection: $settings.navigatorTabBarPosition) {
+            Text("Top")
+                .tag(SettingsData.SidebarTabBarPosition.top)
+            Text("Side")
+                .tag(SettingsData.SidebarTabBarPosition.side)
+        }
+        .pickerStyle(.radioGroup)
+    }
+
+    var inspectorTabBarPosition: some View {
+        Picker("Inspector Tab Bar Position", selection: $settings.inspectorTabBarPosition) {
+            Text("Top")
+                .tag(SettingsData.SidebarTabBarPosition.top)
+            Text("Side")
+                .tag(SettingsData.SidebarTabBarPosition.side)
         }
         .pickerStyle(.radioGroup)
     }

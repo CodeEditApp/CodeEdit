@@ -20,7 +20,7 @@ struct NavigatorSidebarView: View {
         self.workspace = workspace
     }
 
-    var sidebarAlignment: SidebarToolbarAlignment = .top
+    @AppSettings(\.general.navigatorTabBarPosition) var sidebarPosition: SettingsData.SidebarTabBarPosition
 
     var body: some View {
         VStack {
@@ -35,39 +35,22 @@ struct NavigatorSidebarView: View {
                 Spacer()
             }
         }
-        .padding(.top, sidebarAlignment == .leading ? toolbarPadding : 0)
+        .padding(.top, sidebarPosition == .side ? toolbarPadding : 0)
         .safeAreaInset(edge: .leading) {
-            if sidebarAlignment == .leading {
-                NavigatorSidebarToolbar(selection: $selection, alignment: sidebarAlignment)
+            if sidebarPosition == .side {
+                NavigatorSidebarTabBar(selection: $selection, position: sidebarPosition)
                     .padding(.top, toolbarPadding)
                     .padding(.trailing, toolbarPadding)
             }
         }
         .safeAreaInset(edge: .top) {
-            if sidebarAlignment == .top {
-                NavigatorSidebarToolbar(selection: $selection, alignment: sidebarAlignment)
+            if sidebarPosition == .top {
+                NavigatorSidebarTabBar(selection: $selection, position: sidebarPosition)
                     .padding(.bottom, toolbarPadding)
             } else {
                 Divider()
             }
         }
-        .safeAreaInset(edge: .bottom) {
-            Group {
-                switch selection {
-                case 0:
-                    ProjectNavigatorToolbarBottom()
-                case 1:
-                    SourceControlToolbarBottom()
-                default: // TODO: As we implement more sidebars, put their bottom toolbars here.
-                    EmptyView()
-                }
-            }
-            .padding(.top, toolbarPadding)
-        }
         .environmentObject(workspace)
     }
-}
-
-enum SidebarToolbarAlignment {
-    case top, leading
 }

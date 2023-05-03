@@ -16,11 +16,13 @@ import SwiftUI
 ///
 struct ProjectNavigatorView: View {
 
-    @EnvironmentObject
-    var tabManager: TabManager
+    @EnvironmentObject var tabManager: TabManager
 
     var body: some View {
         ProjectNavigatorOutlineView(selection: $tabManager.activeTabGroup.selected)
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                ProjectNavigatorToolbarBottom()
+            }
     }
 
 }
