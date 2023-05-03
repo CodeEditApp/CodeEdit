@@ -110,7 +110,11 @@ struct InspectorSidebarTabBar: View {
             getSafeImage(named: named, accessibilityDescription: title)
                 .font(.system(size: 12.5))
                 .symbolVariant(id == selection ? .fill : .none)
-                .frame(width: position == .side ? 40 : (size.width < 272 ? 24 : 30), height: position == .side ? 28 : size.height, alignment: .center)
+                .frame(
+                    width: position == .side ? 40 : 24,
+                    height: position == .side ? 28 : size.height,
+                    alignment: .center
+                )
                 .help(title)
                 .onDrag {
                     if let index = icons.firstIndex(where: { $0.imageName == named }) {

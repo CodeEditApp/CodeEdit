@@ -47,12 +47,8 @@ struct NavigatorSidebarTabBar: View {
         GeometryReader { proxy in
             iconsView(size: proxy.size)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .overlay(alignment: .top) {
-                    Divider()
-                }
-                .overlay(alignment: .bottom) {
-                    Divider()
-                }
+                .overlay(alignment: .top) { Divider() }
+                .overlay(alignment: .bottom) { Divider() }
                 .animation(.default, value: icons)
         }
         .frame(maxWidth: .infinity, idealHeight: 29)
@@ -65,9 +61,7 @@ struct NavigatorSidebarTabBar: View {
                 .padding(.vertical, 5)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .overlay(alignment: .trailing) {
-                    HStack {
-                        Divider()
-                    }
+                    HStack { Divider() }
                 }
                 .animation(.default, value: icons)
         }
@@ -117,7 +111,11 @@ struct NavigatorSidebarTabBar: View {
             getSafeImage(named: named, accessibilityDescription: title)
                 .font(.system(size: 12.5))
                 .symbolVariant(id == selection ? .fill : .none)
-                .frame(width: position == .side ? 40 : (size.width < 272 ? 24 : 30), height: position == .side ? 28 : size.height, alignment: .center)
+                .frame(
+                    width: position == .side ? 40 : (size.width < 272 ? 24 : 30),
+                    height: position == .side ? 28 : size.height,
+                    alignment: .center
+                )
                 .help(title)
                 .onDrag {
                     if let index = icons.firstIndex(where: { $0.imageName == named }) {
@@ -149,7 +147,6 @@ struct NavigatorSidebarTabBar: View {
 
         func makeBody(configuration: Configuration) -> some View {
             configuration.label
-
                 .foregroundColor(id == selection ? .accentColor : configuration.isPressed ? .primary : .secondary)
                 .opacity(activeState == .inactive ? 0.45 : 1)
         }
