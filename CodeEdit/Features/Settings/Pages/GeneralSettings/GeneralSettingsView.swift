@@ -302,10 +302,7 @@ private extension GeneralSettingsView {
     }
 
     var autoSave: some View {
-        Toggle(
-            "Automatically save changes to disk",
-            isOn: $settings.isAutoSaveOn
-        )
+        Toggle("Automatically save changes to disk", isOn: $settings.isAutoSaveOn)
     }
 
     // MARK: - Preference Views
@@ -383,12 +380,7 @@ extension View {
                     Divider()
                     HStack(spacing: 0) {
                         content()
-                            .buttonStyle(
-                                IconButtonStyle(
-                                    font: Font.system(size: 11, weight: .medium),
-                                    size: 24
-                                )
-                            )
+                            .buttonStyle(.icon(font: Font.system(size: 11, weight: .medium), size: 24))
                     }
                     .frame(height: 16)
                     .padding(.vertical, 4)
