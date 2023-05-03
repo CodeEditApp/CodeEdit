@@ -149,7 +149,7 @@ private extension GeneralSettingsView {
     }
 
     var navigatorTabBarPosition: some View {
-        Picker("Navigator Dock Position", selection: $settings.navigatorTabBarPosition) {
+        Picker("Navigator Tab Bar Position", selection: $settings.navigatorTabBarPosition) {
             Text("Top")
                 .tag(SettingsData.SidebarTabBarPosition.top)
             Text("Side")
