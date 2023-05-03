@@ -11,9 +11,7 @@ import SwiftUI
 ///
 /// Adds a ``outlineView`` inside a ``scrollView`` which shows the folder structure of the
 /// currently open project.
-final class OutlineViewController: NSViewController {
-
-    typealias Item = WorkspaceClient.FileItem
+final class ProjectNavigatorViewController: NSViewController {
 
     var scrollView: NSScrollView!
     var outlineView: NSOutlineView!
@@ -21,11 +19,9 @@ final class OutlineViewController: NSViewController {
     /// Gets the folder structure
     ///
     /// Also creates a top level item "root" which represents the projects root directory and automatically expands it.
-    private var content: [Item] {
-        guard let folderURL = workspace?.workspaceClient?.folderURL() else { return [] }
-        let children = workspace?.fileItems.sortItems(foldersOnTop: true)
-        guard let root = try? workspace?.workspaceClient?.getFileItem(folderURL.path) else { return [] }
-        root.children = children
+    private var content: [CEWorkspaceFile] {
+        guard let folderURL = workspace?.workspaceFileManager?.folderUrl else { return [] }
+        guard let root = try? workspace?.workspaceFileManager?.getFile(folderURL.path) else { return [] }
         return [root]
     }
 
@@ -58,9 +54,9 @@ final class OutlineViewController: NSViewController {
         self.outlineView.dataSource = self
         self.outlineView.delegate = self
         self.outlineView.autosaveExpandedItems = true
-        self.outlineView.autosaveName = workspace?.workspaceClient?.folderURL()?.path ?? ""
+        self.outlineView.autosaveName = workspace?.workspaceFileManager?.folderUrl.path ?? ""
         self.outlineView.headerView = nil
-        self.outlineView.menu = OutlineMenu(sender: self.outlineView)
+        self.outlineView.menu = ProjectNavigatorMenu(sender: self.outlineView)
         self.outlineView.menu?.delegate = self
         self.outlineView.doubleAction = #selector(onItemDoubleClicked)
 
@@ -71,11 +67,14 @@ final class OutlineViewController: NSViewController {
         outlineView.setDraggingSourceOperationMask(.move, forLocal: false)
         outlineView.registerForDraggedTypes([.fileURL])
 
-        self.scrollView.documentView = outlineView
-        self.scrollView.contentView.automaticallyAdjustsContentInsets = false
-        self.scrollView.contentView.contentInsets = .init(top: 10, left: 0, bottom: 0, right: 0)
+        scrollView.documentView = outlineView
+        scrollView.contentView.automaticallyAdjustsContentInsets = false
+        scrollView.contentView.contentInsets = .init(top: 10, left: 0, bottom: 0, right: 0)
+        scrollView.scrollerStyle = .overlay
+        scrollView.hasVerticalScroller = true
+        scrollView.hasHorizontalScroller = false
+        scrollView.autohidesScrollers = true
 
-        WorkspaceClient.onRefresh = self.outlineView.reloadData
         outlineView.expandItem(outlineView.item(atRow: 0))
     }
 
@@ -102,7 +101,7 @@ final class OutlineViewController: NSViewController {
     /// Expand or collapse the folder on double click
     @objc
     private func onItemDoubleClicked() {
-        guard let item = outlineView.item(atRow: outlineView.clickedRow) as? Item else { return }
+        guard let item = outlineView.item(atRow: outlineView.clickedRow) as? CEWorkspaceFile else { return }
 
         if item.children != nil {
             if outlineView.isItemExpanded(item) {
@@ -118,7 +117,7 @@ final class OutlineViewController: NSViewController {
     /// Get the appropriate color for the items icon depending on the users preferences.
     /// - Parameter item: The `FileItem` to get the color for
     /// - Returns: A `NSColor` for the given `FileItem`.
-    private func color(for item: Item) -> NSColor {
+    private func color(for item: CEWorkspaceFile) -> NSColor {
         if item.children == nil && iconColor == .color {
             return NSColor(item.iconColor)
         } else {
@@ -126,20 +125,21 @@ final class OutlineViewController: NSViewController {
         }
     }
 
+    // TODO: File filtering
 }
 
 // MARK: - NSOutlineViewDataSource
 
-extension OutlineViewController: NSOutlineViewDataSource {
+extension ProjectNavigatorViewController: NSOutlineViewDataSource {
     func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
-        if let item = item as? Item {
+        if let item = item as? CEWorkspaceFile {
             return item.children?.count ?? 0
         }
         return content.count
     }
 
     func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
-        if let item = item as? Item,
+        if let item = item as? CEWorkspaceFile,
            let children = item.children {
             return children[index]
         }
@@ -147,7 +147,7 @@ extension OutlineViewController: NSOutlineViewDataSource {
     }
 
     func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool {
-        if let item = item as? Item {
+        if let item = item as? CEWorkspaceFile {
             return item.children != nil
         }
         return false
@@ -155,7 +155,7 @@ extension OutlineViewController: NSOutlineViewDataSource {
 
     /// write dragged file(s) to pasteboard
     func outlineView(_ outlineView: NSOutlineView, pasteboardWriterForItem item: Any) -> NSPasteboardWriting? {
-        guard let fileItem = item as? Item else { return nil }
+        guard let fileItem = item as? CEWorkspaceFile else { return nil }
         return fileItem.url as NSURL
     }
 
@@ -166,7 +166,7 @@ extension OutlineViewController: NSOutlineViewDataSource {
         proposedItem item: Any?,
         proposedChildIndex index: Int
     ) -> NSDragOperation {
-        guard let fileItem = item as? Item else { return [] }
+        guard let fileItem = item as? CEWorkspaceFile else { return [] }
         // -1 index indicates that we are hovering over a row in outline view (folder or file)
         if index == -1 {
             if !fileItem.isFolder {
@@ -187,7 +187,7 @@ extension OutlineViewController: NSOutlineViewDataSource {
         guard let pasteboardItems = info.draggingPasteboard.readObjects(forClasses: [NSURL.self]) else { return false }
         let fileItemURLS = pasteboardItems.compactMap { $0 as? URL }
 
-        guard let fileItemDestination = item as? Item else { return false }
+        guard let fileItemDestination = item as? CEWorkspaceFile else { return false }
         let destParentURL = fileItemDestination.url
 
         for fileItemURL in fileItemURLS {
@@ -198,23 +198,23 @@ extension OutlineViewController: NSOutlineViewDataSource {
             }
 
             // Needs to come before call to .removeItem or else race condition occurs
-            var srcFileItem: WorkspaceClient.FileItem? = try? workspace?.workspaceClient?.getFileItem(fileItemURL.path)
+            var srcFileItem: CEWorkspaceFile? = try? workspace?.workspaceFileManager?.getFile(fileItemURL.path)
             // If srcFileItem is nil, fileItemUrl is an external file url.
             if srcFileItem == nil {
-                srcFileItem = WorkspaceClient.FileItem(url: URL(fileURLWithPath: fileItemURL.path))
+                srcFileItem = CEWorkspaceFile(url: URL(fileURLWithPath: fileItemURL.path))
             }
 
             guard let srcFileItem else {
                 return false
             }
 
-            if WorkspaceClient.FileItem.fileManger.fileExists(atPath: destURL.path) {
+            if CEWorkspaceFile.fileManger.fileExists(atPath: destURL.path) {
                 let shouldReplace = replaceFileDialog(fileName: fileItemURL.lastPathComponent)
                 guard shouldReplace else {
                     return false
                 }
                 do {
-                    try WorkspaceClient.FileItem.fileManger.removeItem(at: destURL)
+                    try CEWorkspaceFile.fileManger.removeItem(at: destURL)
                 } catch {
                     fatalError(error.localizedDescription)
                 }
@@ -243,7 +243,7 @@ extension OutlineViewController: NSOutlineViewDataSource {
 
 // MARK: - NSOutlineViewDelegate
 
-extension OutlineViewController: NSOutlineViewDelegate {
+extension ProjectNavigatorViewController: NSOutlineViewDelegate {
     func outlineView(
         _ outlineView: NSOutlineView,
         shouldShowCellExpansionFor tableColumn: NSTableColumn?,
@@ -261,7 +261,7 @@ extension OutlineViewController: NSOutlineViewDelegate {
 
         let frameRect = NSRect(x: 0, y: 0, width: tableColumn.width, height: rowHeight)
 
-        return OutlineTableViewCell(frame: frameRect, item: item as? Item, delegate: self)
+        return ProjectNavigatorTableViewCell(frame: frameRect, item: item as? CEWorkspaceFile, delegate: self)
     }
 
     func outlineViewSelectionDidChange(_ notification: Notification) {
@@ -271,7 +271,7 @@ extension OutlineViewController: NSOutlineViewDelegate {
 
         let selectedIndex = outlineView.selectedRow
 
-        guard let item = outlineView.item(atRow: selectedIndex) as? Item else { return }
+        guard let item = outlineView.item(atRow: selectedIndex) as? CEWorkspaceFile else { return }
 
         if item.children == nil && shouldSendSelectionUpdate {
             workspace?.tabManager.activeTabGroup.openTab(item: item, asTemporary: true)
@@ -287,13 +287,13 @@ extension OutlineViewController: NSOutlineViewDelegate {
     func outlineViewItemDidCollapse(_ notification: Notification) {}
 
     func outlineView(_ outlineView: NSOutlineView, itemForPersistentObject object: Any) -> Any? {
-        guard let id = object as? Item.ID,
-              let item = try? workspace?.workspaceClient?.getFileItem(id) else { return nil }
+        guard let id = object as? CEWorkspaceFile.ID,
+              let item = try? workspace?.workspaceFileManager?.getFile(id) else { return nil }
         return item
     }
 
     func outlineView(_ outlineView: NSOutlineView, persistentObjectForItem item: Any?) -> Any? {
-        guard let item = item as? Item else { return nil }
+        guard let item = item as? CEWorkspaceFile else { return nil }
         return item.id
     }
 
@@ -301,13 +301,14 @@ extension OutlineViewController: NSOutlineViewDelegate {
     /// - Parameters:
     ///   - id: the id of the item item
     ///   - collection: the array to search for
-    private func select(by id: TabBarItemID, from collection: [Item]) {
+    private func select(by id: TabBarItemID, from collection: [CEWorkspaceFile]) {
         // If the user has set "Reveal file on selection change" to on, we need to reveal the item before
         // selecting the row.
-        if Settings.shared.preferences.general.revealFileOnFocusChange,
-           case let .codeEditor(id) = id,
-           let fileItem = try? workspace?.workspaceClient?.getFileItem(id as Item.ID) as? Item {
-            reveal(fileItem)
+        if Settings.shared.preferences.general.revealFileOnFocusChange {
+           if case let .codeEditor(id) = id,
+              let fileItem = try? workspace?.workspaceFileManager?.getFile(id as CEWorkspaceFile.ID) {
+               reveal(fileItem)
+           }
         }
 
         guard let item = collection.first(where: { $0.tabID == id }) else {
@@ -328,7 +329,7 @@ extension OutlineViewController: NSOutlineViewDelegate {
     /// Reveals the given `fileItem` in the outline view by expanding all the parent directories of the file.
     /// If the file is not found, it will present an alert saying so.
     /// - Parameter fileItem: The file to reveal.
-    public func reveal(_ fileItem: Item) {
+    public func reveal(_ fileItem: CEWorkspaceFile) {
         if let parent = fileItem.parent {
             expandParent(item: parent)
         }
@@ -350,8 +351,8 @@ extension OutlineViewController: NSOutlineViewDelegate {
 
     /// Method for recursively expanding a file's parent directories.
     /// - Parameter item:
-    private func expandParent(item: Item) {
-        if let parent = item.parent as Item? {
+    private func expandParent(item: CEWorkspaceFile) {
+        if let parent = item.parent as CEWorkspaceFile? {
             expandParent(item: parent)
         }
         outlineView.expandItem(item)
@@ -360,7 +361,7 @@ extension OutlineViewController: NSOutlineViewDelegate {
 
 // MARK: - NSMenuDelegate
 
-extension OutlineViewController: NSMenuDelegate {
+extension ProjectNavigatorViewController: NSMenuDelegate {
 
     /// Once a menu gets requested by a `right click` setup the menu
     ///
@@ -368,12 +369,12 @@ extension OutlineViewController: NSMenuDelegate {
     /// - Parameter menu: The menu that got requested
     func menuNeedsUpdate(_ menu: NSMenu) {
         let row = outlineView.clickedRow
-        guard let menu = menu as? OutlineMenu else { return }
+        guard let menu = menu as? ProjectNavigatorMenu else { return }
 
         if row == -1 {
             menu.item = nil
         } else {
-            if let item = outlineView.item(atRow: row) as? Item {
+            if let item = outlineView.item(atRow: row) as? CEWorkspaceFile {
                 menu.item = item
                 menu.workspace = workspace
             } else {

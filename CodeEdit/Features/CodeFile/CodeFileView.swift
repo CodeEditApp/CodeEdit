@@ -26,6 +26,9 @@ struct CodeFileView: View {
     @Environment(\.colorScheme)
     private var colorScheme
 
+    @StateObject
+    private var themeModel: ThemeModel = .shared
+
     private var cancellables = [AnyCancellable]()
 
     private let isEditable: Bool
@@ -99,15 +102,15 @@ struct CodeFileView: View {
         )
         // minHeight zero fixes a bug where the app would freeze if the contents of the file are empty.
         .frame(minHeight: .zero, maxHeight: .infinity)
-        .onChange(of: ThemeModel.shared.selectedTheme) { newValue in
+        .onChange(of: themeModel.selectedTheme) { newValue in
             guard let theme = newValue else { return }
             self.selectedTheme = theme
         }
         .onChange(of: colorScheme) { newValue in
             if matchAppearance {
-                ThemeModel.shared.selectedTheme = newValue == .dark
-                    ? ThemeModel.shared.selectedDarkTheme!
-                    : ThemeModel.shared.selectedLightTheme!
+                themeModel.selectedTheme = newValue == .dark
+                    ? themeModel.selectedDarkTheme
+                : themeModel.selectedLightTheme
             }
         }
         .onChange(of: settingsFont) { _ in

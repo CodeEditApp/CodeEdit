@@ -9,7 +9,14 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct WorkspaceCodeFileView: View {
-    var file: WorkspaceClient.FileItem
+
+    @EnvironmentObject
+    private var tabManager: TabManager
+
+    @EnvironmentObject
+    private var tabgroup: TabGroupData
+
+    var file: CEWorkspaceFile
 
     @ViewBuilder
     var codeView: some View {
@@ -27,7 +34,7 @@ struct WorkspaceCodeFileView: View {
             Spacer()
             VStack(spacing: 10) {
                 ProgressView()
-                Text("Opening \(file.fileName)...")
+                Text("Opening \(file.name)...")
             }
             Spacer()
         }
@@ -36,7 +43,7 @@ struct WorkspaceCodeFileView: View {
     @ViewBuilder
     private func otherFileView(
         _ otherFile: CodeFileDocument,
-        for item: WorkspaceClient.FileItem
+        for item: CEWorkspaceFile
     ) -> some View {
         VStack(spacing: 0) {
 
