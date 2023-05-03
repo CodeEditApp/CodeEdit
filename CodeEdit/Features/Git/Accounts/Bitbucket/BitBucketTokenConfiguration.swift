@@ -30,7 +30,7 @@ struct BitBucketTokenConfiguration: GitRouterConfiguration {
         expirationDate: Date? = nil,
         url: String? = nil
     ) {
-        apiEndpoint = url
+        apiEndpoint = url ?? provider.apiURL?.absoluteString
         accessToken = token
         self.expirationDate = expirationDate
         self.refreshToken = refreshToken
