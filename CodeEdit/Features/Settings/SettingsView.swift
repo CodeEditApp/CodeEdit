@@ -59,23 +59,6 @@ struct SettingsView: View {
                     .searchable(text: $searchText, placement: .sidebar, prompt: "Search")
                     .scrollDisabled(true)
             }
-//            .safeAreaInset(edge: .top) {
-//                TextField("Search", text: $searchText, prompt: Text("Search"))
-//                    .textFieldStyle(.roundedBorder)
-//                    .padding(.horizontal, 10)
-//                    .controlSize(.large)
-//                    .introspectTextField { textField in
-//                        let iconImage = NSImage(systemSymbolName: "magnifyingglass", accessibilityDescription: nil)
-//
-//                        let attachment = NSTextAttachment()
-//                        attachment.contents = iconImage
-//
-//                        let cell = NSTextAttachmentCell(imageCell: iconImage)
-//                        attachment.attachmentCell = cell
-//
-//                        textField.setCell_(NSSearchFieldCell.alloc().init())
-//                    }
-//            }
         } detail: {
             Group {
                 switch selectedPage.name {
@@ -100,13 +83,13 @@ struct SettingsView: View {
             .navigationSplitViewColumnWidth(500)
             .hideSidebarToggle()
             .onAppear {
-                model.showingDetails = false
+                model.backButtonVisible = false
             }
         }
         .navigationTitle(selectedPage.name.rawValue)
         .toolbar {
             ToolbarItem(placement: .navigation) {
-                if !model.showingDetails {
+                if !model.backButtonVisible {
                     Rectangle()
                         .frame(width: 10)
                         .opacity(0)
@@ -121,6 +104,6 @@ struct SettingsView: View {
 }
 
 class SettingsViewModel: ObservableObject {
-    @Published var showingDetails: Bool = false
+    @Published var backButtonVisible: Bool = false
     @Published var scrolledToTop: Bool = false
 }
