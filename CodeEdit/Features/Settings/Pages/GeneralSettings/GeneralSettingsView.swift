@@ -37,6 +37,8 @@ struct GeneralSettingsView: View {
                 appearance
                 fileIconStyle
                 tabBarStyle
+                navigatorTabBarPosition
+                inspectorTabBarPosition
             }
             Section {
                 showIssues
@@ -142,6 +144,26 @@ private extension GeneralSettingsView {
                 .tag(SettingsData.TabBarStyle.xcode)
             Text("Native")
                 .tag(SettingsData.TabBarStyle.native)
+        }
+        .pickerStyle(.radioGroup)
+    }
+
+    var navigatorTabBarPosition: some View {
+        Picker("Navigator Tab Bar Position", selection: $settings.navigatorTabBarPosition) {
+            Text("Top")
+                .tag(SettingsData.SidebarTabBarPosition.top)
+            Text("Side")
+                .tag(SettingsData.SidebarTabBarPosition.side)
+        }
+        .pickerStyle(.radioGroup)
+    }
+
+    var inspectorTabBarPosition: some View {
+        Picker("Inspector Tab Bar Position", selection: $settings.inspectorTabBarPosition) {
+            Text("Top")
+                .tag(SettingsData.SidebarTabBarPosition.top)
+            Text("Side")
+                .tag(SettingsData.SidebarTabBarPosition.side)
         }
         .pickerStyle(.radioGroup)
     }
@@ -280,10 +302,7 @@ private extension GeneralSettingsView {
     }
 
     var autoSave: some View {
-        Toggle(
-            "Automatically save changes to disk",
-            isOn: $settings.isAutoSaveOn
-        )
+        Toggle("Automatically save changes to disk", isOn: $settings.isAutoSaveOn)
     }
 
     // MARK: - Preference Views
@@ -361,12 +380,7 @@ extension View {
                     Divider()
                     HStack(spacing: 0) {
                         content()
-                            .buttonStyle(
-                                IconButtonStyle(
-                                    font: Font.system(size: 11, weight: .medium),
-                                    size: 24
-                                )
-                            )
+                            .buttonStyle(.icon(font: Font.system(size: 11, weight: .medium), size: 24))
                     }
                     .frame(height: 16)
                     .padding(.vertical, 4)
