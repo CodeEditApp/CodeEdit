@@ -224,7 +224,7 @@ struct AccountsSettingsSigninView: View {
                 isTokenValid: true
             )
         )
-        
+
         keychain.set(personalAccessToken, forKey: "github_\(username)_enterprise")
         dismiss()
     }
