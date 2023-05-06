@@ -23,6 +23,9 @@ struct AccountsSettingsSigninView: View {
     @State var username = ""
     @State var personalAccessToken = ""
 
+    @State var signinErrorAlertIsPresented: Bool = false
+    @State var signinErrorDetail: String = ""
+
     @AppSettings(\.accounts.sourceControlAccounts.gitAccounts) var gitAccounts
 
     private let keychain = CodeEditKeychain()
@@ -150,6 +153,16 @@ struct AccountsSettingsSigninView: View {
                 .disabled(username.isEmpty || personalAccessToken.isEmpty)
                 .buttonStyle(.borderedProminent)
                 .controlSize(.large)
+                .alert(
+                    Text("Unable to add account “\(username)”"),
+                    isPresented: $signinErrorAlertIsPresented
+                ) {
+                    Button("OK") {
+                        signinErrorAlertIsPresented.toggle()
+                    }
+                } message: {
+                    Text(signinErrorDetail)
+                }
             }
             .padding(.horizontal)
             .padding(.bottom)
@@ -158,60 +171,77 @@ struct AccountsSettingsSigninView: View {
     }
 
     private func signin() {
-        let configURL = provider.baseURL == nil ? server : nil
-
-        switch provider {
-        case .github, .githubEnterprise:
-            let config = GitHubTokenConfiguration(personalAccessToken, url: configURL ?? GitURL.githubBaseURL)
-            GitHubAccount(config).me { response in
-                switch response {
-                case .success:
-                    handleGitRequestSuccess()
-                case .failure(let error):
-                    print(error)
-                }
+        if gitAccounts.contains(
+            where: {
+                $0.serverURL == provider.baseURL?.absoluteString ?? server &&
+                $0.name.lowercased() == username.lowercased()
             }
-        case .gitlab, .gitlabSelfHosted:
-            let config = GitLabTokenConfiguration(personalAccessToken, url: configURL ?? GitURL.gitlabBaseURL)
-            GitLabAccount(config).me { response in
-                switch response {
-                case .success:
-                    handleGitRequestSuccess()
-                case .failure(let error):
-                    print(error)
+        ) {
+            // Show alert when adding a duplicated account
+            signinErrorDetail = "Account with the same username and provider already exists!"
+            signinErrorAlertIsPresented.toggle()
+        } else {
+            let configURL = provider.apiURL?.absoluteString ?? server
+            switch provider {
+            case .github, .githubEnterprise:
+                let config = GitHubTokenConfiguration(personalAccessToken, url: configURL)
+                GitHubAccount(config).me { response in
+                    switch response {
+                    case .success:
+                        handleGitRequestSuccess()
+                    case .failure(let error):
+                        handleGitRequestFailed(error)
+                    }
                 }
+            case .gitlab, .gitlabSelfHosted:
+                let config = GitLabTokenConfiguration(personalAccessToken, url: configURL)
+                GitLabAccount(config).me { response in
+                    switch response {
+                    case .success:
+                        handleGitRequestSuccess()
+                    case .failure(let error):
+                        handleGitRequestFailed(error)
+                    }
+                }
+            default:
+                print("do nothing")
             }
-        default:
-            print("do nothing")
         }
     }
 
     private func handleGitRequestSuccess() {
-        let gitAccounts = self.gitAccounts
         let providerLink = provider.baseURL?.absoluteString ?? server
 
-        if gitAccounts.contains(
-            where: {
-                $0.serverURL == providerLink &&
-                $0.name.lowercased() == username.lowercased()
-            }
-        ) {
-            print("Account with the same username and provider already exists!")
-        } else {
-            self.gitAccounts.append(
-                SourceControlAccount(
-                    id: "\(providerLink)_\(username.lowercased())",
-                    name: username,
-                    description: provider.name,
-                    provider: provider,
-                    serverURL: providerLink,
-                    urlProtocol: .https,
-                    sshKey: "",
-                    isTokenValid: true
-                )
+        self.gitAccounts.append(
+            SourceControlAccount(
+                id: "\(providerLink)_\(username.lowercased())",
+                name: username,
+                description: provider.name,
+                provider: provider,
+                serverURL: providerLink,
+                urlProtocol: .https,
+                sshKey: "",
+                isTokenValid: true
             )
-            keychain.set(personalAccessToken, forKey: "github_\(username)_enterprise")
-            dismiss()
+        )
+
+        keychain.set(personalAccessToken, forKey: "github_\(username)_enterprise")
+        dismiss()
+    }
+
+    private func handleGitRequestFailed(_ error: Error) {
+        print("git auth failure: \(error)")
+        // Show alert if error encountered while requesting signin
+        switch error._code {
+        case -1009:
+            signinErrorDetail = error.localizedDescription
+        case 401:
+            signinErrorDetail = "Authentication Failed"
+        case 403:
+            signinErrorDetail = "API Access Forbidden"
+        default:
+            signinErrorDetail = "Unknown Error"
         }
+        signinErrorAlertIsPresented.toggle()
     }
 }

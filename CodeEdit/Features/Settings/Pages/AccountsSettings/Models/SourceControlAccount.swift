@@ -103,6 +103,23 @@ struct SourceControlAccount: Codable, Identifiable, Hashable {
             }
         }
 
+        var apiURL: URL? {
+            switch self {
+            case .bitbucketCloud:
+                return URL(string: "https://api.bitbucket.org/2.0/")!
+            case .bitbucketServer:
+                return nil
+            case .github:
+                return URL(string: "https://api.github.com/")!
+            case .githubEnterprise:
+                return nil
+            case .gitlab:
+                return URL(string: "https://gitlab.com/api/v4/")!
+            case .gitlabSelfHosted:
+                return nil
+            }
+        }
+
         var iconName: String {
             switch self {
             case .bitbucketCloud:
