@@ -63,6 +63,9 @@ struct ThemeSettingsView: View {
                     alwaysUseDarkTerminalAppearance
                 }
                 useThemeBackground
+                if settings.useThemeBackground {
+                    allowThemeWindowTintingToggle
+                }
             }
             Section {
                 VStack(spacing: 0) {
@@ -104,7 +107,11 @@ struct ThemeSettingsView: View {
 
 private extension ThemeSettingsView {
     private var useThemeBackground: some View {
-        Toggle("Use theme background ", isOn: $settings.useThemeBackground)
+        Toggle("Use theme background", isOn: $settings.useThemeBackground)
+    }
+
+    private var allowThemeWindowTintingToggle: some View {
+        Toggle("Allow theme to tint window", isOn: $settings.allowThemeWindowTinting)
     }
 
     private var alwaysUseDarkTerminalAppearance: some View {

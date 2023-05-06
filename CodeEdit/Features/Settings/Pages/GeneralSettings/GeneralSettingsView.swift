@@ -39,6 +39,7 @@ struct GeneralSettingsView: View {
                 tabBarStyle
                 navigatorTabBarPosition
                 inspectorTabBarPosition
+                useSidebarVibrancyEffectToggle
             }
             Section {
                 showIssues
@@ -166,6 +167,10 @@ private extension GeneralSettingsView {
                 .tag(SettingsData.SidebarTabBarPosition.side)
         }
         .pickerStyle(.radioGroup)
+    }
+
+    var useSidebarVibrancyEffectToggle: some View {
+        Toggle("Use vibrancy effect in navigator sidebar", isOn: $settings.useSidebarVibrancyEffect)
     }
 
     var reopenBehavior: some View {

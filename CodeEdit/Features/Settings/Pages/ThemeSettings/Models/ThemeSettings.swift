@@ -44,6 +44,9 @@ extension SettingsData {
         /// Use the system background that matches the appearance setting
         var useThemeBackground: Bool = true
 
+        /// Use the system background that matches the appearance setting
+        var allowThemeWindowTinting: Bool = false
+
         /// Automatically change theme based on system appearance
         var matchAppearance: Bool = true
 
@@ -88,6 +91,7 @@ extension SettingsData {
             ) ?? selectedLightTheme
             self.selectedTheme = try container.decodeIfPresent(String.self, forKey: .selectedTheme)
             self.useThemeBackground = try container.decodeIfPresent(Bool.self, forKey: .useThemeBackground) ?? true
+            self.allowThemeWindowTinting = try container.decodeIfPresent(Bool.self, forKey: .allowThemeWindowTinting) ?? false
             self.matchAppearance = try container.decodeIfPresent(
                 Bool.self, forKey: .matchAppearance
             ) ?? true

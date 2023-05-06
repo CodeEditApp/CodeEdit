@@ -42,6 +42,9 @@ extension SettingsData {
         /// The position for the inspector sidebar tab bar
         var inspectorTabBarPosition: SidebarTabBarPosition = .top
 
+        /// Enables or disables vibrancy effect in navigator sidebar
+        var useSidebarVibrancyEffect: Bool = true
+
         /// The reopen behavior of the app
         var reopenBehavior: ReopenBehavior = .welcome
 
@@ -110,6 +113,10 @@ extension SettingsData {
                 SidebarTabBarPosition.self,
                 forKey: .inspectorTabBarPosition
             ) ?? .top
+            self.useSidebarVibrancyEffect = try container.decodeIfPresent(
+                Bool.self,
+                forKey: .useSidebarVibrancyEffect
+            ) ?? true
             self.reopenBehavior = try container.decodeIfPresent(
                 ReopenBehavior.self,
                 forKey: .reopenBehavior

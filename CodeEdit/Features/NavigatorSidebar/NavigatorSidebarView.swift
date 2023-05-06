@@ -11,8 +11,17 @@ struct NavigatorSidebarView: View {
     @ObservedObject
     private var workspace: WorkspaceDocument
 
+    @AppSettings(\.general.useSidebarVibrancyEffect) var useSidebarVibrancyEffect: Bool
+    @AppSettings(\.theme.allowThemeWindowTinting) var allowThemeWindowTinting: Bool
+
+    @State
+    private var selectedTheme = ThemeModel.shared.selectedTheme ?? ThemeModel.shared.themes.first!
+
     @State
     private var selection: Int = 0
+
+    @StateObject
+    private var themeModel: ThemeModel = .shared
 
     init(workspace: WorkspaceDocument) {
         self.workspace = workspace
@@ -46,5 +55,19 @@ struct NavigatorSidebarView: View {
             }
         }
         .environmentObject(workspace)
+        .background(
+            allowThemeWindowTinting
+            ? Color(nsColor: selectedTheme.editor.background.nsColor).opacity(0.5).ignoresSafeArea()
+            : nil
+        )
+        .background(
+            !useSidebarVibrancyEffect
+            ? EffectView(.windowBackground, blendingMode: .withinWindow).ignoresSafeArea()
+            : nil
+        )
+        .onChange(of: themeModel.selectedTheme) { newValue in
+            guard let theme = newValue else { return }
+            self.selectedTheme = theme
+        }
     }
 }
