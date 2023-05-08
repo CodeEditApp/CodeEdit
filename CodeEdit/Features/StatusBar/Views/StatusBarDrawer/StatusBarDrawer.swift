@@ -97,7 +97,6 @@ struct StatusBarDrawer: View {
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                         }
                     }
-
                     .background {
                         if useThemeBackground {
                             Color(nsColor: backgroundColor)
@@ -121,7 +120,6 @@ struct StatusBarDrawer: View {
                     Image(systemName: "square.leadingthird.inset.filled")
                 }
                 .buttonStyle(.icon(isActive: !model.debuggerSidebarIsCollapsed, size: 29))
-                
             }
         }
     }
