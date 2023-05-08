@@ -114,12 +114,28 @@ struct StatusBarDrawer: View {
                         : themeModel.selectedTheme?.appearance == .dark ? .dark : .light
                     )
                 }
-                Button {
-                    model.debuggerSidebarIsCollapsed.toggle()
-                } label: {
-                    Image(systemName: "square.leadingthird.inset.filled")
+                HStack {
+                    Button {
+                        model.debuggerSidebarIsCollapsed.toggle()
+                    } label: {
+                        Image(systemName: "square.leadingthird.inset.filled")
+                    }
+                    .buttonStyle(.icon(isActive: !model.debuggerSidebarIsCollapsed, size: 29))
+                    Divider()
+                        .frame(height: 12)
+                    Button {
+                        // fix me
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+                    .buttonStyle(.icon(size: 29))
+                    Button {
+                        // fix me
+                    } label: {
+                        Image(systemName: "minus")
+                    }
+                    .buttonStyle(.icon(size: 29))
                 }
-                .buttonStyle(.icon(isActive: !model.debuggerSidebarIsCollapsed, size: 29))
             }
         }
     }

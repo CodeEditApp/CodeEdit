@@ -54,10 +54,12 @@ class StatusBarViewModel: ObservableObject {
     /// Search value to filter in drawer
     @Published
     var searchText: String = ""
-    
+
+    /// Indicates whether debugger sidebar is collapse or not
     @Published
     var debuggerSidebarIsCollapsed: Bool = false
-    
+
+    /// Returns the current selected debugger tab type
     @Published
     var debuggerTabSelection: StatusBarTabType = .terminal
 
