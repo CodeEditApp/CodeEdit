@@ -54,6 +54,12 @@ class StatusBarViewModel: ObservableObject {
     /// Search value to filter in drawer
     @Published
     var searchText: String = ""
+    
+    @Published
+    var debuggerSidebarIsCollapsed: Bool = false
+    
+    @Published
+    var debuggerTabSelection: StatusBarTabType = .terminal
 
     /// Returns the font for status bar items to use
     private(set) var toolbarFont: Font = .system(size: 11, weight: .medium)

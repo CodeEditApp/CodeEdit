@@ -40,58 +40,89 @@ struct StatusBarDrawer: View {
 
     var body: some View {
         if let url = workspace.workspaceFileManager?.folderUrl {
-            VStack(spacing: 0) {
-                TerminalEmulatorView(url: url)
-                    .padding(.top, 10)
-                    .padding(.horizontal, 10)
-                    .contentShape(Rectangle())
-                HStack(alignment: .center, spacing: 6.5) {
-                    FilterTextField(title: "Filter", text: $searchText)
-                        .frame(maxWidth: 175)
-                        .padding(.leading, -2)
-                    Spacer()
-                    Button {
-                        // clear logs
-                    } label: {
-                        Image(systemName: "trash")
+            ZStack(alignment: .bottomLeading) {
+                SplitView(axis: .horizontal) {
+                    List(selection: $model.debuggerTabSelection) {
+                        Label("Terminal", systemImage: "terminal")
+                            .tag(StatusBarTabType.terminal)
+                        Label("Output", systemImage: "list.bullet.indent")
+                            .tag(StatusBarTabType.output)
+                        Label("Debugger", systemImage: "ladybug")
+                            .tag(StatusBarTabType.debugger)
                     }
-                    .buttonStyle(.icon)
-                    Divider()
-                    HStack(alignment: .center, spacing: 3.5) {
-                        Button {
-                            // split terminal
-                        } label: {
-                            Image(systemName: "square.split.2x1")
+                    .collapsable()
+                    .collapsed($model.debuggerSidebarIsCollapsed)
+                    .frame(minWidth: 200, idealWidth: 240, maxWidth: 400)
+                    VStack(spacing: 0) {
+                        switch model.debuggerTabSelection {
+                        case .terminal:
+                            TerminalEmulatorView(url: url)
+                                .padding(.top, 10)
+                                .padding(.horizontal, 10)
+                                .contentShape(Rectangle())
+                            HStack(alignment: .center, spacing: 6.5) {
+                                FilterTextField(title: "Filter", text: $searchText)
+                                    .frame(maxWidth: 175)
+                                    .padding(.leading, -2)
+                                Spacer()
+                                Button {
+                                    // clear logs
+                                } label: {
+                                    Image(systemName: "trash")
+                                }
+                                .buttonStyle(.icon)
+                                Divider()
+                                HStack(alignment: .center, spacing: 3.5) {
+                                    Button {
+                                        // split terminal
+                                    } label: {
+                                        Image(systemName: "square.split.2x1")
+                                    }
+                                    .buttonStyle(.icon)
+                                    Button {
+                                        model.isMaximized.toggle()
+                                    } label: {
+                                        Image(systemName: "arrowtriangle.up.square")
+                                    }
+                                    .buttonStyle(.icon(isActive: model.isMaximized))
+                                }
+                            }
+                            .padding(.horizontal, 7)
+                            .padding(.vertical, 8)
+                            .padding(.leading, model.debuggerSidebarIsCollapsed ? 29 : 0)
+                            .animation(.default, value: model.debuggerSidebarIsCollapsed)
+                            .frame(maxHeight: 28)
+                        default:
+                            Text("implement me!")
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
                         }
-                        .buttonStyle(.icon)
-                        Button {
-                            model.isMaximized.toggle()
-                        } label: {
-                            Image(systemName: "arrowtriangle.up.square")
+                    }
+
+                    .background {
+                        if useThemeBackground {
+                            Color(nsColor: backgroundColor)
+                        } else {
+                            if colorScheme == .dark {
+                                EffectView(.underPageBackground)
+                            } else {
+                                EffectView(.contentBackground)
+                            }
                         }
-                        .buttonStyle(.icon(isActive: model.isMaximized))
                     }
+                    .colorScheme(
+                        matchAppearance && darkAppearance
+                        ? themeModel.selectedDarkTheme?.appearance == .dark ? .dark : .light
+                        : themeModel.selectedTheme?.appearance == .dark ? .dark : .light
+                    )
                 }
-                .padding(.horizontal, 7)
-                .padding(.vertical, 8)
-                .frame(maxHeight: 28)
-            }
-            .background {
-                if useThemeBackground {
-                    Color(nsColor: backgroundColor)
-                } else {
-                    if colorScheme == .dark {
-                        EffectView(.underPageBackground)
-                    } else {
-                        EffectView(.contentBackground)
-                    }
+                Button {
+                    model.debuggerSidebarIsCollapsed.toggle()
+                } label: {
+                    Image(systemName: "square.leadingthird.inset.filled")
                 }
+                .buttonStyle(.icon(isActive: !model.debuggerSidebarIsCollapsed, size: 29))
+                
             }
-            .colorScheme(
-                matchAppearance && darkAppearance
-                ? themeModel.selectedDarkTheme?.appearance == .dark ? .dark : .light
-                : themeModel.selectedTheme?.appearance == .dark ? .dark : .light
-            )
         }
     }
 }

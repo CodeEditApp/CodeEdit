@@ -40,8 +40,8 @@ struct StatusBarView: View {
         HStack(alignment: .center, spacing: 10) {
             StatusBarBreakpointButton()
             StatusBarDivider()
-            SegmentedControl($model.selectedTab, options: StatusBarTabType.allOptions)
-                .opacity(collapsed ? 0 : 1)
+            //SegmentedControl($model.selectedTab, options: StatusBarTabType.allOptions)
+                 //.opacity(collapsed ? 0 : 1)
             Spacer()
             HStack(alignment: .center, spacing: 10) {
 //                StatusBarIndentSelector()
