@@ -43,6 +43,7 @@ struct WorkspaceView: View {
                     SplitView(axis: .vertical) {
 
                         EditorView(tabgroup: tabManager.tabGroups, focus: $focusedEditor)
+                            .frame(minHeight: 170 + 29 + 29)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                             .safeAreaInset(edge: .bottom, spacing: 0) {
                                 StatusBarView(proxy: proxy, collapsed: $terminalCollapsed)
@@ -51,7 +52,8 @@ struct WorkspaceView: View {
                         StatusBarDrawer()
                             .collapsable()
                             .collapsed($terminalCollapsed)
-                            .frame(minHeight: 200, maxHeight: 400)
+                            .frame(idealHeight: 260)
+                            .frame(minHeight: 100)
 
                     }
                     .edgesIgnoringSafeArea(.top)

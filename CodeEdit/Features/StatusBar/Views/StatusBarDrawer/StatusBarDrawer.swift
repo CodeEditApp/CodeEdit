@@ -53,6 +53,23 @@ struct StatusBarDrawer: View {
                     .collapsable()
                     .collapsed($model.debuggerSidebarIsCollapsed)
                     .frame(minWidth: 200, idealWidth: 240, maxWidth: 400)
+                    .safeAreaInset(edge: .bottom, alignment: .leading) {
+                        HStack(spacing: 0) {
+                            Button {
+                                // fix me
+                            } label: {
+                                Image(systemName: "plus")
+                            }
+                            .buttonStyle(.icon(size: 29))
+                            Button {
+                                // fix me
+                            } label: {
+                                Image(systemName: "minus")
+                            }
+                            .buttonStyle(.icon(size: 29))
+                        }
+                        .padding(.leading, 29)
+                    }
                     VStack(spacing: 0) {
                         switch model.debuggerTabSelection {
                         case .terminal:
@@ -114,7 +131,7 @@ struct StatusBarDrawer: View {
                         : themeModel.selectedTheme?.appearance == .dark ? .dark : .light
                     )
                 }
-                HStack {
+                HStack(spacing: 0) {
                     Button {
                         model.debuggerSidebarIsCollapsed.toggle()
                     } label: {
@@ -123,18 +140,6 @@ struct StatusBarDrawer: View {
                     .buttonStyle(.icon(isActive: !model.debuggerSidebarIsCollapsed, size: 29))
                     Divider()
                         .frame(height: 12)
-                    Button {
-                        // fix me
-                    } label: {
-                        Image(systemName: "plus")
-                    }
-                    .buttonStyle(.icon(size: 29))
-                    Button {
-                        // fix me
-                    } label: {
-                        Image(systemName: "minus")
-                    }
-                    .buttonStyle(.icon(size: 29))
                 }
             }
         }
