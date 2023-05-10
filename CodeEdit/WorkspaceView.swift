@@ -41,10 +41,10 @@ struct WorkspaceView: View {
             VStack {
                 SplitViewReader { proxy in
                     SplitView(axis: .vertical) {
-
                         EditorView(tabgroup: tabManager.tabGroups, focus: $focusedEditor)
                             .frame(minHeight: 170 + 29 + 29)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .holdingPriority(.init(10))
                             .safeAreaInset(edge: .bottom, spacing: 0) {
                                 StatusBarView(proxy: proxy, collapsed: $terminalCollapsed)
                             }
@@ -52,9 +52,9 @@ struct WorkspaceView: View {
                         StatusBarDrawer()
                             .collapsable()
                             .collapsed($terminalCollapsed)
+                            .holdingPriority(.init(20))
                             .frame(idealHeight: 260)
                             .frame(minHeight: 100)
-
                     }
                     .edgesIgnoringSafeArea(.top)
                     .environmentObject(workspace.statusBarModel)

@@ -19,6 +19,10 @@ struct SplitViewItemCanCollapseViewTraitKey: _ViewTraitKey {
     static var defaultValue: Bool = false
 }
 
+struct SplitViewHoldingPriorityTraitKey: _ViewTraitKey {
+    static var defaultValue: NSLayoutConstraint.Priority = .defaultLow
+}
+
 extension View {
     func collapsed(_ value: Binding<Bool>) -> some View {
         self
@@ -33,5 +37,10 @@ extension View {
     func collapsable() -> some View {
         self
             ._trait(SplitViewItemCanCollapseViewTraitKey.self, true)
+    }
+
+    func holdingPriority(_ priority: NSLayoutConstraint.Priority) -> some View {
+        self
+            ._trait(SplitViewHoldingPriorityTraitKey.self, priority)
     }
 }
