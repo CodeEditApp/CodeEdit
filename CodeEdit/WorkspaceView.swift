@@ -44,6 +44,7 @@ struct WorkspaceView: View {
 
                         EditorView(tabgroup: tabManager.tabGroups, focus: $focusedEditor)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .holdingPriority(.init(10))
                             .safeAreaInset(edge: .bottom, spacing: 0) {
                                 StatusBarView(proxy: proxy, collapsed: $terminalCollapsed)
                             }
@@ -51,6 +52,7 @@ struct WorkspaceView: View {
                         StatusBarDrawer()
                             .collapsable()
                             .collapsed($terminalCollapsed)
+                            .holdingPriority(.init(20))
                             .frame(minHeight: 200, maxHeight: 400)
 
                     }
