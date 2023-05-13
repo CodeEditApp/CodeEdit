@@ -58,8 +58,23 @@ final class QuickOpenViewModel: ObservableObject {
                 }.map { url in
                     WorkspaceClient.FileItem(url: url, children: nil)
                 }
+                
                 DispatchQueue.main.async {
-                    self.openQuicklyFiles = files
+                    let filteredFiles = filePaths.filter { url in
+                        let file = url.lastPathComponent.lowercased()
+                        do {
+                            let values = try url.resourceValues(forKeys: [.isRegularFileKey])
+                            return (values.isRegularFile ?? false)
+                        } catch {
+                            return false
+                        }
+                    }
+                    let ordertFiles = FuzzySearch.search(query: self.openQuicklyQuery, in: filteredFiles)
+                        
+                    .map { url in
+                        WorkspaceClient.FileItem(url: url, children: nil)
+                    }
+                    self.openQuicklyFiles = ordertFiles
                     self.isShowingOpenQuicklyFiles = !self.openQuicklyFiles.isEmpty
                 }
             }
