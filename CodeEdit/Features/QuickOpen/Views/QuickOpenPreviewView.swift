@@ -28,10 +28,12 @@ struct QuickOpenPreviewView: View {
     }
 
     var body: some View {
-        if document.fileURL?.isImage() != nil {
-            OtherFileView(document)
-        } else {
-            CodeFileView(codeFile: document, isEditable: false)
+        if document.fileURL != nil {
+            if document.fileURL!.isImage() {
+                OtherFileView(document)
+            } else {
+                CodeFileView(codeFile: document, isEditable: false)
+            }
         }
     }
 }
