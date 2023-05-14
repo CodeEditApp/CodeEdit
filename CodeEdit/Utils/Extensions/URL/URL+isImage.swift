@@ -21,7 +21,12 @@ extension URL {
             "pdf",
             "heic",
             "webp",
-            "tiff"
+            "tiff",
+            "gif",
+            "tga",
+            "avif",
+            "psd",
+            "svg"
         ]
 
         if quickLookImageFileTypes.contains(ext) {
