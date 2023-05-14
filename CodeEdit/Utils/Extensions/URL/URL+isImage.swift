@@ -9,7 +9,7 @@ import Foundation
 
 extension URL {
     func isImage() -> Bool {
-        let ext: String = self.pathExtension
+        let ext: String = self.pathExtension.lowercased()
 
         // A list of supported file types by QLPreviewItem
         // Some of the image file types (in UTType) are not supported by QLPreviewItem
