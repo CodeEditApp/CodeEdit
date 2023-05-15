@@ -28,10 +28,9 @@ struct QuickOpenPreviewView: View {
     }
 
     var body: some View {
-        if document.fileURL != nil {
-            if document.fileURL!.isImage() {
-                if let url = document.fileURL,
-                   let image = NSImage(contentsOf: url) {
+        if let url = document.fileURL {
+            if url.isImage() {
+                if let image = NSImage(contentsOf: url) {
                     GeometryReader { proxy in
                         if image.size.width > proxy.size.width || image.size.height > proxy.size.height {
                             OtherFileView(document)
