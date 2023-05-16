@@ -50,8 +50,11 @@ struct StatusBarDrawer: View {
                         Label("Debugger", systemImage: "ladybug")
                             .tag(StatusBarTabType.debugger)
                     }
+                    .listStyle(.automatic)
+                    .accentColor(.secondary)
                     .collapsable()
                     .collapsed($model.debuggerSidebarIsCollapsed)
+                    .holdingPriority(.init(2))
                     .frame(minWidth: 200, idealWidth: 240, maxWidth: 400)
                     .safeAreaInset(edge: .bottom, alignment: .leading) {
                         HStack(spacing: 0) {
@@ -114,6 +117,7 @@ struct StatusBarDrawer: View {
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                         }
                     }
+                    .holdingPriority(.init(1))
                     .background {
                         if useThemeBackground {
                             Color(nsColor: backgroundColor)
