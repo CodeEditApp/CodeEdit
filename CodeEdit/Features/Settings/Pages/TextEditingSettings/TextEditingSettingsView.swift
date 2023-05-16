@@ -21,6 +21,7 @@ struct TextEditingSettingsView: View {
                 fontSelector
                 fontSizeSelector
                 lineHeight
+                letterSpacing
             }
             Section {
                 autocompleteBraces
@@ -89,5 +90,15 @@ private extension TextEditingSettingsView {
             Text("spaces")
                 .foregroundColor(.secondary)
         }
+    }
+
+    private var letterSpacing: some View {
+        Stepper(
+            "Letter Spacing",
+            value: $textEditing.letterSpacing,
+            in: 1.0...2.0,
+            step: 0.05,
+            format: .number
+        )
     }
 }

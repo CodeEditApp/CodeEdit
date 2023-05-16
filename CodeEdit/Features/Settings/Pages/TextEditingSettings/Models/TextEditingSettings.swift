@@ -30,6 +30,10 @@ extension SettingsData {
         /// A multiplier for setting the line height. Defaults to `1.45`
         var lineHeightMultiple: Double = 1.45
 
+        /// A multiplier for setting the letter spacing, `1` being no spacing and
+        /// `2` is a character of spacing between letters, defaults to `1`.
+        var letterSpacing: Double = 1.0
+
         /// Default initializer
         init() {
             self.populateCommands()
@@ -56,6 +60,10 @@ extension SettingsData {
                 Double.self,
                 forKey: .lineHeightMultiple
             ) ?? 1.45
+            self.letterSpacing = try container.decodeIfPresent(
+                Double.self,
+                forKey: .letterSpacing
+            ) ?? 1
 
             self.populateCommands()
         }

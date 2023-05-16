@@ -18,6 +18,7 @@ struct CodeFileView: View {
 
     @AppSettings(\.textEditing.defaultTabWidth) var defaultTabWidth
     @AppSettings(\.textEditing.lineHeightMultiple) var lineHeightMultiple
+    @AppSettings(\.textEditing.letterSpacing) var letterSpacing
     @AppSettings(\.textEditing.wrapLinesToEditorWidth) var wrapLinesToEditorWidth
     @AppSettings(\.textEditing.font) var settingsFont
     @AppSettings(\.theme.useThemeBackground) var useThemeBackground
@@ -85,7 +86,8 @@ struct CodeFileView: View {
             cursorPosition: $codeFile.cursorPosition,
             useThemeBackground: useThemeBackground,
             contentInsets: edgeInsets.nsEdgeInsets,
-            isEditable: isEditable
+            isEditable: isEditable,
+            letterSpacing: letterSpacing
         )
         .id(codeFile.fileURL)
         .background {
