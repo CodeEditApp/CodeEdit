@@ -31,7 +31,7 @@ extension SettingsData {
         var lineHeightMultiple: Double = 1.45
 
         /// A multiplier for setting the letter spacing, `1` being no spacing and
-        /// `2` is a character of spacing between letters, defaults to `1`.
+        /// `2` is one character of spacing between letters, defaults to `1`.
         var letterSpacing: Double = 1.0
 
         /// Default initializer
