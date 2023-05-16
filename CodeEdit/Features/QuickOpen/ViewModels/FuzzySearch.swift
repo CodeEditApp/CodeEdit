@@ -7,24 +7,24 @@
 
 import Foundation
 
-struct FuzzySearch {
+enum FuzzySearch {
     /// Searches an array of view models for occurrences of a fuzzy search query.
     ///
-    /// This function takes a fuzzy search `query` and an array of `ViewModel` objects, and returns a new array that contains only
-    /// those view models that match the query. The function uses the `score` function to calculate a score for each view model's
-    /// `name` and `description` properties, and includes only those view models whose scores are greater than 0.0.
-    /// The resulting array is then sorted by name score and description score, in descending order.
+    /// This function takes a fuzzy search `query` and an array of `URL`s, and returns a new array that contains only
+    /// those url's that match the query.
+    /// The function uses the `score` function to calculate a score for each url and includes only those url's whose scores are greater than 0.0.
+    /// The resulting array is then sorted by a score, in descending order.
     ///
     /// - Parameters:
     ///   - query: A `String` value representing the fuzzy search query.
-    ///   - array: An array of `ViewModel` objects to search within.
-    /// - Returns: An array of `ViewModel` objects that match the fuzzy search query, sorted by name score and description score.
+    ///   - urls: An array of `URL`s, each representing a file, to search within.
+    /// - Returns: An array of `URL`s that match the fuzzy search query, sorted by score.
     static func search(query: String, in urls: [URL]) -> [URL] {
         let filteredResult = urls.filter { url -> Bool in
             let nameScore = score(query: query, url: url)
             return nameScore > 0.0
         }
-        
+
         let sortedResult = filteredResult.sorted { url1, url2 -> Bool in
             let nameScore1 = score(query: query, url: url1)
             let nameScore2 = score(query: query, url: url2)
@@ -36,15 +36,16 @@ struct FuzzySearch {
                 return false
             }
         }
-        
+
         return sortedResult
     }
 
     /// Calculates the score of the fuzzy search query against a text string.
     ///
-    /// This function takes a fuzzy search `query` and a `text` string, and calculates a score based on how well the `query`
-    /// matches the `text`. The function is case-insensitive and calculates the score by iterating through each token in the
-    /// `query`, finding all occurrences of the token in the `text`, and calculating a proximity score for each occurrence.
+    /// This function takes a fuzzy search `query` and a `text` string,
+    /// and calculates a score based on how well the `query` matches the `text`.
+    /// The function is case-insensitive and calculates the score by iterating through each token in the `query`,
+    /// finding all occurrences of the token in the `text`, and calculating a proximity score for each occurrence.
     /// The final score is the average of all token scores weighted by their proximity scores.
     ///
     /// - Parameters:
@@ -62,18 +63,18 @@ struct FuzzySearch {
             if !ranges.isEmpty {
                 let tokenScore = Double(token.count) / Double(text.count)
                 let proximityScore = proximityScoreForRanges(ranges)
-                let levenshteinScore = Double(levenshteinDistance(from: String(token), to: text)) / Double(token.count)
+                let levenshteinScore = Double(levenshteinDistance(from: String(token), to: text)) / Double(text.count)
                 score += (tokenScore * proximityScore) * (1 - levenshteinScore)
             }
         }
-        
+
         if let date = getLastModifiedDate(for: url.path) {
             return (score / Double(queryTokens.count)) * Double(calculateDateScore(for: date))
         } else {
             return (score / Double(queryTokens.count))
         }
     }
-    
+
     /// Calculates the proximity score based on an array of ranges.
     ///
     /// This function takes an array of `Range<String.Index>` objects and calculates a proximity score.
@@ -84,7 +85,7 @@ struct FuzzySearch {
     private static func proximityScoreForRanges(_ ranges: [Range<String.Index>]) -> Double {
         let sortedRanges = ranges.sorted(by: { $0.lowerBound < $1.lowerBound })
         var score: Double = 1.0
-        
+
         for index in 1..<sortedRanges.count {
             let previousRange = sortedRanges[index - 1]
             let currentRange = sortedRanges[index]
@@ -94,7 +95,7 @@ struct FuzzySearch {
         }
         return score / Double(sortedRanges.count)
     }
-    
+
     /// Retrieve the last modification date for a given file path.
     ///
     /// This function attempts to retrieve the last modification date of a file located at the specified file path.
@@ -114,7 +115,7 @@ struct FuzzySearch {
             return nil
         }
     }
-    
+
     /// Calculate the date score for a given file's modification date.
     ///
     /// This function calculates the date score based on the time difference between the current date and the file's modification date,
@@ -131,50 +132,54 @@ struct FuzzySearch {
         let score = exp(-decayFactor * timeDiff)
         return score
     }
-    
-    /// Levenshtein distance algorithm
+
+    /// Calculates the Levenshtein distance between two input strings.
     ///
+    /// - Parameters:
+        /// - sourceString: The source string to compare against the target string;
+        /// - targetString: The target string to compare against the source string.
+    /// - Returns: The Levenshtein distance between `sourceString` and `targetString`.
+    /// An integer representing the minimum number of insertions, deletions, or substitutions required to transform the source string into the target string.
     private static func levenshteinDistance(from sourceString: String, to targetString: String) -> Int {
         let source = Array(sourceString)
-        let target = Array(sourceString)
-        
+        let target = Array(targetString)
+
         let sourceCount = source.count
         let targetCount = target.count
-        
+
         guard sourceCount > 0 else {
             return targetCount
         }
-        
+
         guard targetCount > 0 else {
             return sourceCount
         }
-        
+
         var distanceMatrix = Array(repeating: Array(repeating: 0, count: targetCount + 1), count: sourceCount + 1)
-        
+
         for rowIndex in 0...sourceCount {
             distanceMatrix[rowIndex][0] = rowIndex
         }
-        
+
         for columnIndex in 0...targetCount {
             distanceMatrix[0][columnIndex] = columnIndex
         }
-        
+
         for rowIndex in 1...sourceCount {
             for columnIndex in 1...targetCount {
                 let cost = source[rowIndex - 1] == target[columnIndex - 1] ? 0 : 1
-                
+
                 let deletionCost = distanceMatrix[rowIndex - 1][columnIndex] + 1
                 let insertionCost = distanceMatrix[rowIndex][columnIndex - 1] + 1
                 let substitutionCost = distanceMatrix[rowIndex - 1][columnIndex - 1] + cost
-                
+
                 distanceMatrix[rowIndex][columnIndex] = min(deletionCost, insertionCost, substitutionCost)
             }
         }
-        
+
         return distanceMatrix[sourceCount][targetCount]
     }
 }
-
 
 /// Adds a new function to the `String` type that searches for all occurrences of a given substring within the original string.
 ///

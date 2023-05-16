@@ -47,19 +47,8 @@ final class QuickOpenViewModel: ObservableObject {
                 ]
             )
             if let filePaths = enumerator?.allObjects as? [URL] {
-                let files = filePaths.filter { url in
-                    let state1 = url.lastPathComponent.lowercased().contains(self.openQuicklyQuery.lowercased())
-                    do {
-                        let values = try url.resourceValues(forKeys: [.isRegularFileKey])
-                        return state1 && (values.isRegularFile ?? false)
-                    } catch {
-                        return false
-                    }
-                }.map { url in
-                    WorkspaceClient.FileItem(url: url, children: nil)
-                }
-                
                 DispatchQueue.main.async {
+                    /// removes all filePaths which aren't regular files
                     let filteredFiles = filePaths.filter { url in
                         let file = url.lastPathComponent.lowercased()
                         do {
@@ -69,11 +58,13 @@ final class QuickOpenViewModel: ObservableObject {
                             return false
                         }
                     }
+
+                    /// sorts the filtered filePaths with the FuzzySearch
                     let ordertFiles = FuzzySearch.search(query: self.openQuicklyQuery, in: filteredFiles)
-                        
-                    .map { url in
-                        WorkspaceClient.FileItem(url: url, children: nil)
-                    }
+                        .map { url in
+                            WorkspaceClient.FileItem(url: url, children: nil)
+                        }
+
                     self.openQuicklyFiles = ordertFiles
                     self.isShowingOpenQuicklyFiles = !self.openQuicklyFiles.isEmpty
                 }
