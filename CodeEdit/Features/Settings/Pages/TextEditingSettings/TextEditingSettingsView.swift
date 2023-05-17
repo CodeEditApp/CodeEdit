@@ -96,7 +96,7 @@ private extension TextEditingSettingsView {
         Stepper(
             "Letter Spacing",
             value: $textEditing.letterSpacing,
-            in: 1.0...2.0,
+            in: 0.5...2.0,
             step: 0.05,
             format: .number
         )
