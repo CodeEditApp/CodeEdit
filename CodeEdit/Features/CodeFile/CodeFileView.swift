@@ -19,13 +19,12 @@ struct CodeFileView: View {
     @AppSettings(\.textEditing.defaultTabWidth) var defaultTabWidth
     @AppSettings(\.textEditing.indentOption) var settingsIndentOption
     @AppSettings(\.textEditing.lineHeightMultiple) var lineHeightMultiple
-    @AppSettings(\.textEditing.letterSpacing) var letterSpacing
     @AppSettings(\.textEditing.wrapLinesToEditorWidth) var wrapLinesToEditorWidth
     @AppSettings(\.textEditing.font) var settingsFont
     @AppSettings(\.theme.useThemeBackground) var useThemeBackground
     @AppSettings(\.theme.matchAppearance) var matchAppearance
     @AppSettings(\.textEditing.letterSpacing) var letterSpacing
-   @AppSettings(\.textEditing.bracketHighlight) var bracketHighlight
+    @AppSettings(\.textEditing.bracketHighlight) var bracketHighlight
 
     @Environment(\.colorScheme)
     private var colorScheme

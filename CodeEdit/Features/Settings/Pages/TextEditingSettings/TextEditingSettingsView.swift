@@ -14,6 +14,7 @@ struct TextEditingSettingsView: View {
     var body: some View {
         SettingsForm {
             Section {
+                indentOption
                 defaultTabWidth
                 wrapLinesToEditorWidth
             }
@@ -43,6 +44,7 @@ private extension TextEditingSettingsView {
             }
     }
 
+    @ViewBuilder
     private var fontSizeSelector: some View {
         Stepper(
             "Font Size",
@@ -53,6 +55,7 @@ private extension TextEditingSettingsView {
         )
     }
 
+    @ViewBuilder
     private var autocompleteBraces: some View {
         Toggle(isOn: $textEditing.autocompleteBraces) {
             Text("Autocomplete braces")
@@ -60,14 +63,17 @@ private extension TextEditingSettingsView {
         }
     }
 
+    @ViewBuilder
     private var enableTypeOverCompletion: some View {
         Toggle("Enable type-over completion", isOn: $textEditing.enableTypeOverCompletion)
     }
 
+    @ViewBuilder
     private var wrapLinesToEditorWidth: some View {
         Toggle("Wrap lines to editor width", isOn: $textEditing.wrapLinesToEditorWidth)
     }
 
+    @ViewBuilder
     private var lineHeight: some View {
         Stepper(
             "Line Height",
@@ -78,10 +84,36 @@ private extension TextEditingSettingsView {
         )
     }
 
+    @ViewBuilder
+    private var indentOption: some View {
+        Group {
+            Picker("Prefer Indent Using", selection: $textEditing.indentOption.indentType) {
+                Text("Tabs")
+                    .tag(SettingsData.TextEditingSettings.IndentOption.IndentType.tab)
+                Text("Spaces")
+                    .tag(SettingsData.TextEditingSettings.IndentOption.IndentType.spaces)
+            }
+            if textEditing.indentOption.indentType == .spaces {
+                Stepper(
+                    "Indent Width",
+                    value: Binding<Double>(
+                        get: { Double(textEditing.indentOption.spaceCount) },
+                        set: { textEditing.indentOption.spaceCount = Int($0) }
+                    ),
+                    in: 0...10,
+                    step: 1,
+                    format: .number
+                )
+                .help("The number of spaces to insert when the tab key is pressed.")
+            }
+        }
+    }
+
+    @ViewBuilder
     private var defaultTabWidth: some View {
         HStack(alignment: .top) {
             Stepper(
-                "Default Tab Width",
+                "Tab Width",
                 value: Binding<Double>(
                     get: { Double(textEditing.defaultTabWidth) },
                     set: { textEditing.defaultTabWidth = Int($0) }
@@ -93,8 +125,10 @@ private extension TextEditingSettingsView {
             Text("spaces")
                 .foregroundColor(.secondary)
         }
+        .help("The visual width of tabs.")
     }
 
+    @ViewBuilder
     private var letterSpacing: some View {
         Stepper(
             "Letter Spacing",
@@ -104,7 +138,8 @@ private extension TextEditingSettingsView {
             format: .number
         )
     }
-    
+
+    @ViewBuilder
     private var bracketPairHighlight: some View {
         Group {
             Picker(
