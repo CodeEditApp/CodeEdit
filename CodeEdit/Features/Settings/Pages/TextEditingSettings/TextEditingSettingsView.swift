@@ -27,6 +27,9 @@ struct TextEditingSettingsView: View {
                 autocompleteBraces
                 enableTypeOverCompletion
             }
+            Section {
+                bracketPairHighlight
+            }
         }
     }
 }
@@ -100,5 +103,33 @@ private extension TextEditingSettingsView {
             step: 0.05,
             format: .number
         )
+    }
+    
+    private var bracketPairHighlight: some View {
+        Group {
+            Picker(
+                "Braket Pair Highlight",
+                selection: $textEditing.bracketHighlight.highlightType
+            ) {
+                Text("Disabled").tag(SettingsData.TextEditingSettings.BracketPairHighlight.HighlightType.disabled)
+                Divider()
+                Text("Bordered").tag(SettingsData.TextEditingSettings.BracketPairHighlight.HighlightType.bordered)
+                Text("Flash").tag(SettingsData.TextEditingSettings.BracketPairHighlight.HighlightType.flash)
+                Text("Underline").tag(SettingsData.TextEditingSettings.BracketPairHighlight.HighlightType.underline)
+            }
+            if [.bordered, .underline].contains(textEditing.bracketHighlight.highlightType) {
+                Toggle("Use Custom Color", isOn: $textEditing.bracketHighlight.useCustomColor)
+                SettingsColorPicker(
+                    "Braket Pair Highlight Color",
+                    color: $textEditing.bracketHighlight.color.swiftColor
+                )
+                .foregroundColor(
+                    textEditing.bracketHighlight.useCustomColor
+                        ? Color(NSColor.labelColor)
+                        : Color(NSColor.secondaryLabelColor)
+                )
+                .disabled(!textEditing.bracketHighlight.useCustomColor)
+            }
+        }
     }
 }

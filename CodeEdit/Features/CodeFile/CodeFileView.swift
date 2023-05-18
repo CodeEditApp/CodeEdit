@@ -17,12 +17,15 @@ struct CodeFileView: View {
     private var codeFile: CodeFileDocument
 
     @AppSettings(\.textEditing.defaultTabWidth) var defaultTabWidth
+    @AppSettings(\.textEditing.indentOption) var settingsIndentOption
     @AppSettings(\.textEditing.lineHeightMultiple) var lineHeightMultiple
     @AppSettings(\.textEditing.letterSpacing) var letterSpacing
     @AppSettings(\.textEditing.wrapLinesToEditorWidth) var wrapLinesToEditorWidth
     @AppSettings(\.textEditing.font) var settingsFont
     @AppSettings(\.theme.useThemeBackground) var useThemeBackground
     @AppSettings(\.theme.matchAppearance) var matchAppearance
+    @AppSettings(\.textEditing.letterSpacing) var letterSpacing
+   @AppSettings(\.textEditing.bracketHighlight) var bracketHighlight
 
     @Environment(\.colorScheme)
     private var colorScheme
@@ -37,6 +40,12 @@ struct CodeFileView: View {
     init(codeFile: CodeFileDocument, isEditable: Bool = true) {
         self.codeFile = codeFile
         self.isEditable = isEditable
+        switch Settings[\.textEditing].indentOption.indentType {
+        case .tab:
+            self.indentOption = .tab
+        case .spaces:
+            self.indentOption = .spaces(count: Settings[\.textEditing].indentOption.spaceCount)
+        }
 
         codeFile
             .$content
@@ -68,6 +77,28 @@ struct CodeFileView: View {
         return Settings[\.textEditing].font.current()
     }()
 
+   @State
+   private var bracketPairHighlight: BracketPairHighlight? = {
+       let theme = ThemeModel.shared.selectedTheme ?? ThemeModel.shared.themes.first!
+       let color = Settings[\.textEditing].bracketHighlight.useCustomColor
+                   ? Settings[\.textEditing].bracketHighlight.color.nsColor
+                   : theme.editor.text.nsColor.withAlphaComponent(0.8)
+       switch Settings[\.textEditing].bracketHighlight.highlightType {
+       case .disabled:
+           return nil
+       case .flash:
+           return .flash
+       case .bordered:
+           return .bordered(color: color)
+       case .underline:
+           return .underline(color: color)
+       }
+   }()
+
+    // Tab is a placeholder value, is overriden immediately in `init`.
+    @State
+    private var indentOption: IndentOption = .tab
+
     @Environment(\.edgeInsets)
     private var edgeInsets
 
@@ -81,13 +112,15 @@ struct CodeFileView: View {
             theme: selectedTheme.editor.editorTheme,
             font: font,
             tabWidth: defaultTabWidth,
+            indentOption: indentOption,
             lineHeight: lineHeightMultiple,
             wrapLines: wrapLinesToEditorWidth,
             cursorPosition: $codeFile.cursorPosition,
             useThemeBackground: useThemeBackground,
             contentInsets: edgeInsets.nsEdgeInsets,
             isEditable: isEditable,
-            letterSpacing: letterSpacing
+            letterSpacing: letterSpacing,
+            bracketPairHighlight: bracketPairHighlight
         )
         .id(codeFile.fileURL)
         .background {
@@ -118,6 +151,17 @@ struct CodeFileView: View {
         .onChange(of: settingsFont) { _ in
             font = Settings.shared.preferences.textEditing.font.current()
         }
+       .onChange(of: bracketHighlight) { _ in
+           bracketPairHighlight = getBracketPairHighlight()
+       }
+        .onChange(of: settingsIndentOption) { option in
+            switch option.indentType {
+            case .tab:
+                self.indentOption = .tab
+            case .spaces:
+                self.indentOption = .spaces(count: option.spaceCount)
+            }
+        }
     }
 
     private func getLanguage() -> CodeLanguage {
@@ -126,4 +170,21 @@ struct CodeFileView: View {
         }
         return .detectLanguageFrom(url: url)
     }
+
+   private func getBracketPairHighlight() -> BracketPairHighlight? {
+       let theme = ThemeModel.shared.selectedTheme ?? ThemeModel.shared.themes.first!
+       let color = Settings[\.textEditing].bracketHighlight.useCustomColor
+                   ? Settings[\.textEditing].bracketHighlight.color.nsColor
+                   : theme.editor.text.nsColor.withAlphaComponent(0.8)
+       switch Settings[\.textEditing].bracketHighlight.highlightType {
+       case .disabled:
+           return nil
+       case .flash:
+           return .flash
+       case .bordered:
+           return .bordered(color: color)
+       case .underline:
+           return .underline(color: color)
+       }
+   }
 }

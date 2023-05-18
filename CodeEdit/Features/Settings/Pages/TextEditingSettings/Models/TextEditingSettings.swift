@@ -12,8 +12,12 @@ extension SettingsData {
 
     /// The global settings for text editing
     struct TextEditingSettings: Codable, Hashable {
-        /// An integer indicating how many spaces a `tab` will generate
+        /// An integer indicating how many spaces a `tab` will appear as visually.
         var defaultTabWidth: Int = 4
+
+        /// The behavior of a `tab` keypress. If `.tab`, will insert a tab character. If `.spaces` will insert
+        /// `.spaceCount` spaces instead.
+        var indentOption: IndentOption = IndentOption(indentType: .spaces, spaceCount: 4)
 
         /// The font to use in editor.
         var font: EditorFont = .init()
@@ -34,6 +38,9 @@ extension SettingsData {
         /// `2` is one character of spacing between letters, defaults to `1`.
         var letterSpacing: Double = 1.0
 
+        /// The behavior of bracket pair highlights.
+        var bracketHighlight: BracketPairHighlight = BracketPairHighlight()
+
         /// Default initializer
         init() {
             self.populateCommands()
@@ -43,6 +50,10 @@ extension SettingsData {
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.defaultTabWidth = try container.decodeIfPresent(Int.self, forKey: .defaultTabWidth) ?? 4
+            self.indentOption = try container.decodeIfPresent(
+                IndentOption.self,
+                forKey: .indentOption
+            ) ?? IndentOption(indentType: .spaces, spaceCount: 4)
             self.font = try container.decodeIfPresent(EditorFont.self, forKey: .font) ?? .init()
             self.enableTypeOverCompletion = try container.decodeIfPresent(
                 Bool.self,
@@ -64,6 +75,10 @@ extension SettingsData {
                 Double.self,
                 forKey: .letterSpacing
             ) ?? 1
+            self.bracketHighlight = try container.decodeIfPresent(
+                BracketPairHighlight.self,
+                forKey: .bracketHighlight
+            ) ?? BracketPairHighlight()
 
             self.populateCommands()
         }
@@ -98,6 +113,33 @@ extension SettingsData {
                     Settings[\.textEditing].wrapLinesToEditorWidth.toggle()
                 }
             )
+        }
+
+        struct IndentOption: Codable, Hashable {
+            var indentType: IndentType
+            // Kept even when `indentType` is `.tab` to retain the user's
+            // settings when changing `indentType`.
+            var spaceCount: Int = 4
+
+            enum IndentType: String, Codable {
+                case tab
+                case spaces
+            }
+        }
+
+        struct BracketPairHighlight: Codable, Hashable {
+            /// The type of highlight to use
+            var highlightType: HighlightType = .flash
+            var useCustomColor: Bool = false
+            /// The color to use for the highlight.
+            var color: Theme.Attributes = Theme.Attributes(color: "FFFFFF")
+
+            enum HighlightType: String, Codable {
+                case disabled
+                case bordered
+                case flash
+                case underline
+            }
         }
     }
 
