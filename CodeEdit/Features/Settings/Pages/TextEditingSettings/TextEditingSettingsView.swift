@@ -94,16 +94,20 @@ private extension TextEditingSettingsView {
                     .tag(SettingsData.TextEditingSettings.IndentOption.IndentType.spaces)
             }
             if textEditing.indentOption.indentType == .spaces {
-                Stepper(
-                    "Indent Width",
-                    value: Binding<Double>(
-                        get: { Double(textEditing.indentOption.spaceCount) },
-                        set: { textEditing.indentOption.spaceCount = Int($0) }
-                    ),
-                    in: 0...10,
-                    step: 1,
-                    format: .number
-                )
+                HStack {
+                    Stepper(
+                        "Indent Width",
+                        value: Binding<Double>(
+                            get: { Double(textEditing.indentOption.spaceCount) },
+                            set: { textEditing.indentOption.spaceCount = Int($0) }
+                        ),
+                        in: 0...10,
+                        step: 1,
+                        format: .number
+                    )
+                    Text("spaces")
+                        .foregroundColor(.secondary)
+                }
                 .help("The number of spaces to insert when the tab key is pressed.")
             }
         }
