@@ -16,13 +16,7 @@ final class CommandPaletteViewModel: ObservableObject {
     var commandQuery: String = ""
 
     @Published
-    var selected: Command?
-
-    @Published
     var isShowingCommandsList: Bool = true
-
-    @Published
-    var filteredCommands: [Command] = []
 
     @Published
     var filteredMenuCommands: [CodeEditCommand] = []
@@ -41,7 +35,6 @@ final class CommandPaletteViewModel: ObservableObject {
 
     func reset() {
         commandQuery = ""
-        selected = nil
     }
 
     static func aggregateAllMenuBarCommands() -> [CodeEditCommand] {

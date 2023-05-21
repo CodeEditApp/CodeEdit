@@ -44,42 +44,11 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         ]
 
         setupToolbar()
-        registerCommands()
     }
 
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    /// These are example items that added as commands to command palette
-    func registerCommands() {
-        CommandManager.shared.addCommand(
-            name: "Quick Open",
-            title: "Quick Open",
-            id: "quick_open",
-            command: CommandClosureWrapper(closure: {
-                self.openQuickly(self)
-            })
-        )
-
-        CommandManager.shared.addCommand(
-            name: "Toggle Left Sidebar",
-            title: "Toggle Left Sidebar",
-            id: "toggle_left_sidebar",
-            command: CommandClosureWrapper(closure: {
-                self.toggleFirstPanel()
-            })
-        )
-
-        CommandManager.shared.addCommand(
-            name: "Toggle Right Sidebar",
-            title: "Toggle Right Sidebar",
-            id: "toggle_right_sidebar",
-            command: CommandClosureWrapper(closure: {
-                self.toggleLastPanel()
-            })
-        )
     }
 
     private func setupSplitView(with workspace: WorkspaceDocument) {

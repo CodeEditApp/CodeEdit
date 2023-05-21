@@ -35,9 +35,7 @@ extension SettingsData {
         var letterSpacing: Double = 1.0
 
         /// Default initializer
-        init() {
-            self.populateCommands()
-        }
+        init() {}
 
         /// Explicit decoder init for setting default values when key is not present in `JSON`
         init(from decoder: Decoder) throws {
@@ -64,40 +62,6 @@ extension SettingsData {
                 Double.self,
                 forKey: .letterSpacing
             ) ?? 1
-
-            self.populateCommands()
-        }
-
-        /// Adds toggle-able preferences to the command palette via shared `CommandManager`
-        private func populateCommands() {
-            let mgr = CommandManager.shared
-
-            mgr.addCommand(
-                name: "Toggle Type-Over Completion",
-                title: "Toggle Type-Over Completion",
-                id: "prefs.text_editing.type_over_completion",
-                command: CommandClosureWrapper {
-                    Settings.shared.preferences.textEditing.enableTypeOverCompletion.toggle()
-                }
-            )
-
-            mgr.addCommand(
-                name: "Toggle Autocomplete Braces",
-                title: "Toggle Autocomplete Braces",
-                id: "prefs.text_editing.autocomplete_braces",
-                command: CommandClosureWrapper {
-                    Settings.shared.preferences.textEditing.autocompleteBraces.toggle()
-                }
-            )
-
-            mgr.addCommand(
-                name: "Toggle Word Wrap",
-                title: "Toggle Word Wrap",
-                id: "prefs.text_editing.wrap_lines_to_editor_width",
-                command: CommandClosureWrapper {
-                    Settings[\.textEditing].wrapLinesToEditorWidth.toggle()
-                }
-            )
         }
     }
 

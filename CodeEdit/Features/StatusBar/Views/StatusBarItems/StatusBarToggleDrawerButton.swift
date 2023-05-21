@@ -16,12 +16,6 @@ internal struct StatusBarToggleDrawerButton: View {
 
     init(collapsed: Binding<Bool>) {
         self._collapsed = collapsed
-        CommandManager.shared.addCommand(
-            name: "Toggle Drawer",
-            title: "Toggle Drawer",
-            id: "open.drawer",
-            command: CommandClosureWrapper.init(closure: togglePanel)
-        )
     }
 
     func togglePanel() {

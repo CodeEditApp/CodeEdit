@@ -16,29 +16,14 @@ struct CommandPaletteView: View {
     @ObservedObject
     private var state: CommandPaletteViewModel
 
-    @ObservedObject
-    private var commandManager: CommandManager = .shared
-
     @State
     private var monitor: Any?
-
-    @State
-    private var selectedItem: Command?
 
     private let closePalette: () -> Void
 
     init(state: CommandPaletteViewModel, closePalette: @escaping () -> Void) {
         self.state = state
         self.closePalette = closePalette
-        state.filteredCommands = commandManager.commands
-    }
-
-    func callHandler(command: Command) {
-        closePalette()
-        command.closureWrapper.call()
-        selectedItem = nil
-        state.commandQuery = ""
-        state.filteredCommands = []
     }
 
     var body: some View {
