@@ -233,6 +233,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
                     commandPalettePanel.makeKeyAndOrderFront(self)
                 }
             } else {
+                state.updateMenuBarCommands()
                 let panel = OverlayPanel()
                 self.commandPalettePanel = panel
                 let contentView = CommandPaletteView(state: state, closePalette: panel.close)

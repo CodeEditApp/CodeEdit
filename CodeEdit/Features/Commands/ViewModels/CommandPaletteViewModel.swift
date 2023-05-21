@@ -16,9 +16,6 @@ final class CommandPaletteViewModel: ObservableObject {
     var commandQuery: String = ""
 
     @Published
-    var isShowingCommandsList: Bool = true
-
-    @Published
     var filteredMenuCommands: [CodeEditCommand] = []
 
     var menubarWatcher: AnyCancellable?
@@ -35,6 +32,10 @@ final class CommandPaletteViewModel: ObservableObject {
 
     func reset() {
         commandQuery = ""
+    }
+
+    func updateMenuBarCommands() {
+        commands = Self.aggregateAllMenuBarCommands()
     }
 
     static func aggregateAllMenuBarCommands() -> [CodeEditCommand] {
