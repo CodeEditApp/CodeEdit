@@ -252,6 +252,7 @@
 		58FD7608291EA1CB0051D6E4 /* CommandPaletteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FD7605291EA1CB0051D6E4 /* CommandPaletteViewModel.swift */; };
 		58FD7609291EA1CB0051D6E4 /* CommandPaletteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FD7607291EA1CB0051D6E4 /* CommandPaletteView.swift */; };
 		5C4BB1E128212B1E00A92FB2 /* World.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4BB1E028212B1E00A92FB2 /* World.swift */; };
+		6C0004D02A1A8D340051D080 /* ModifierFlags+UnicodeSymbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C0004CF2A1A8D340051D080 /* ModifierFlags+UnicodeSymbol.swift */; };
 		6C05A8AF284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C05A8AE284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift */; };
 		6C0D0C6829E861B000AE4D3F /* SettingsSidebarFix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C0D0C6729E861B000AE4D3F /* SettingsSidebarFix.swift */; };
 		6C147C4029A328BC0089B630 /* SplitViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C147C3F29A328560089B630 /* SplitViewData.swift */; };
@@ -300,6 +301,7 @@
 		6CD03B6A29FC773F001BD1D0 /* SettingsInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD03B6929FC773F001BD1D0 /* SettingsInjector.swift */; };
 		6CDA84AD284C1BA000C1CC3A /* TabBarContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CDA84AC284C1BA000C1CC3A /* TabBarContextMenu.swift */; };
 		6CDEFC9629E22C2700B7C684 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = 6CDEFC9529E22C2700B7C684 /* Introspect */; };
+		6CF335DA2A198E9E0052CB12 /* CodeEditCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CF335D92A198E9E0052CB12 /* CodeEditCommand.swift */; };
 		6CFF967429BEBCC300182D6F /* FindCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CFF967329BEBCC300182D6F /* FindCommands.swift */; };
 		6CFF967629BEBCD900182D6F /* FileCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CFF967529BEBCD900182D6F /* FileCommands.swift */; };
 		6CFF967829BEBCF600182D6F /* MainCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CFF967729BEBCF600182D6F /* MainCommands.swift */; };
@@ -665,6 +667,7 @@
 		58FD7605291EA1CB0051D6E4 /* CommandPaletteViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandPaletteViewModel.swift; sourceTree = "<group>"; };
 		58FD7607291EA1CB0051D6E4 /* CommandPaletteView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandPaletteView.swift; sourceTree = "<group>"; };
 		5C4BB1E028212B1E00A92FB2 /* World.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = World.swift; sourceTree = "<group>"; };
+		6C0004CF2A1A8D340051D080 /* ModifierFlags+UnicodeSymbol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ModifierFlags+UnicodeSymbol.swift"; sourceTree = "<group>"; };
 		6C05A8AE284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkspaceDocument+Listeners.swift"; sourceTree = "<group>"; };
 		6C0D0C6729E861B000AE4D3F /* SettingsSidebarFix.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSidebarFix.swift; sourceTree = "<group>"; };
 		6C147C3D29A3281D0089B630 /* TabGroupData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabGroupData.swift; sourceTree = "<group>"; };
@@ -706,6 +709,7 @@
 		6CC9E4B129B5669900C97388 /* Environment+ActiveTabGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Environment+ActiveTabGroup.swift"; sourceTree = "<group>"; };
 		6CD03B6929FC773F001BD1D0 /* SettingsInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsInjector.swift; sourceTree = "<group>"; };
 		6CDA84AC284C1BA000C1CC3A /* TabBarContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarContextMenu.swift; sourceTree = "<group>"; };
+		6CF335D92A198E9E0052CB12 /* CodeEditCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditCommand.swift; sourceTree = "<group>"; };
 		6CFF967329BEBCC300182D6F /* FindCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindCommands.swift; sourceTree = "<group>"; };
 		6CFF967529BEBCD900182D6F /* FileCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileCommands.swift; sourceTree = "<group>"; };
 		6CFF967729BEBCF600182D6F /* MainCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCommands.swift; sourceTree = "<group>"; };
@@ -1941,6 +1945,8 @@
 			isa = PBXGroup;
 			children = (
 				58FD7605291EA1CB0051D6E4 /* CommandPaletteViewModel.swift */,
+				6CF335D92A198E9E0052CB12 /* CodeEditCommand.swift */,
+				6C0004CF2A1A8D340051D080 /* ModifierFlags+UnicodeSymbol.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -2604,6 +2610,7 @@
 				587B9E9229301D8F00AC7927 /* BitBucketAccount.swift in Sources */,
 				DE513F52281B672D002260B9 /* TabBarAccessory.swift in Sources */,
 				2813F93927ECC4C300E305E4 /* NavigatorSidebarView.swift in Sources */,
+				6CF335DA2A198E9E0052CB12 /* CodeEditCommand.swift in Sources */,
 				587B9E8A29301D8F00AC7927 /* GitHubIssue.swift in Sources */,
 				6CAAF69429BCD78600A1F48A /* (null) in Sources */,
 				DE513F54281DE5D0002260B9 /* TabBarXcode.swift in Sources */,
@@ -2650,6 +2657,7 @@
 				6CFF967429BEBCC300182D6F /* FindCommands.swift in Sources */,
 				587B9E6529301D8F00AC7927 /* GitLabGroupAccess.swift in Sources */,
 				6C91D57229B176FF0059A90D /* TabManager.swift in Sources */,
+				6C0004D02A1A8D340051D080 /* ModifierFlags+UnicodeSymbol.swift in Sources */,
 				6C82D6BC29C00CD900495C54 /* FirstResponderPropertyWrapper.swift in Sources */,
 				58D01C9B293167DC00C5B6B4 /* CodeEditKeychainConstants.swift in Sources */,
 				B640A99E29E2184700715F20 /* SettingsForm.swift in Sources */,

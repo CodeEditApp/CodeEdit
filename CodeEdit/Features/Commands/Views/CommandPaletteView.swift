@@ -41,28 +41,27 @@ struct CommandPaletteView: View {
         state.filteredCommands = []
     }
 
-    func onQueryChange(text: String) {
-        state.commandQuery = text
-        state.fetchMatchingCommands(val: text)
-    }
-
     var body: some View {
-        OverlayView<SearchResultLabel, EmptyView, Command>(
+        OverlayView<SearchResultLabel, EmptyView, CodeEditCommand>(
             title: "Commands",
             image: Image(systemName: "magnifyingglass"),
-            options: $state.filteredCommands,
+            options: $state.filteredMenuCommands,
             text: $state.commandQuery,
             alwaysShowOptions: true,
             optionRowHeight: 30
         ) { command in
-            SearchResultLabel(labelName: command.title, textToMatch: state.commandQuery)
-        } onRowClick: { command in
-            callHandler(command: command)
+            if let shortcut = command.shortcut {
+                return SearchResultLabel(labelName: "\(command.title) (\(shortcut))", textToMatch: state.commandQuery)
+            } else {
+                return SearchResultLabel(labelName: command.title, textToMatch: state.commandQuery)
+            }
+        } onRowClick: {
+            $0.runAction()
         } onClose: {
             closePalette()
         }
         .onReceive(state.$commandQuery.debounce(for: 0.2, scheduler: DispatchQueue.main)) { _ in
-            state.fetchMatchingCommands(val: state.commandQuery)
+            state.fetchMatchingCommands(filter: state.commandQuery)
         }
     }
 }
