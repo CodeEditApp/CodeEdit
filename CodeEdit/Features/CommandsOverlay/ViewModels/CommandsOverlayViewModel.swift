@@ -1,5 +1,5 @@
 //
-//  CommandPaletteViewModel.swift
+//  CommandsOverlayViewModel.swift
 //  CodeEdit
 //
 //  Created by Alex on 25.05.2022.
@@ -8,9 +8,9 @@
 import AppKit
 import Combine
 
-/// Simple state class for command palette view. Contains currently selected command,
+/// Simple state class for commands overlay view. Contains currently selected command,
 /// query text and list of filtered commands
-final class CommandPaletteViewModel: ObservableObject {
+final class CommandsOverlayViewModel: ObservableObject {
 
     @Published
     var commandQuery: String = ""

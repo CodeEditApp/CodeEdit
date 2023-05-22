@@ -18,7 +18,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
 
     var workspace: WorkspaceDocument?
     var quickOpenPanel: OverlayPanel?
-    var commandPalettePanel: OverlayPanel?
+    var commandsOverlayPanel: OverlayPanel?
 
     var splitViewController: NSSplitViewController!
 
@@ -220,23 +220,23 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         workspace?.tabManager.activeTabGroup.temporaryTab = nil
     }
 
-    @IBAction func openCommandPalette(_ sender: Any) {
-        if let workspace, let state = workspace.commandsPaletteState {
-            if let commandPalettePanel {
-                if commandPalettePanel.isKeyWindow {
-                    commandPalettePanel.close()
+    @IBAction func openCommandsOverlay(_ sender: Any) {
+        if let workspace, let state = workspace.commandsOverlayState {
+            if let commandsOverlayPanel {
+                if commandsOverlayPanel.isKeyWindow {
+                    commandsOverlayPanel.close()
                     state.reset()
                     return
                 } else {
                     state.reset()
-                    window?.addChildWindow(commandPalettePanel, ordered: .above)
-                    commandPalettePanel.makeKeyAndOrderFront(self)
+                    window?.addChildWindow(commandsOverlayPanel, ordered: .above)
+                    commandsOverlayPanel.makeKeyAndOrderFront(self)
                 }
             } else {
                 state.updateMenuBarCommands()
                 let panel = OverlayPanel()
-                self.commandPalettePanel = panel
-                let contentView = CommandPaletteView(state: state, closePalette: panel.close)
+                self.commandsOverlayPanel = panel
+                let contentView = CommandsOverlayView(state: state, closeOverlay: panel.close)
                 panel.contentView = NSHostingView(rootView: SettingsInjector { contentView })
                 window?.addChildWindow(panel, ordered: .above)
                 panel.makeKeyAndOrderFront(self)
@@ -258,7 +258,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
                 let panel = OverlayPanel()
                 self.quickOpenPanel = panel
 
-                let contentView = QuickOpenView(state: state) {
+                let contentView = OpenQuicklyOverlayView(state: state) {
                     panel.close()
                 } openFile: { file in
                     workspace.tabManager.openTab(item: file)

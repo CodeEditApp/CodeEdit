@@ -1,5 +1,5 @@
 //
-//  CommandPaletteView.swift
+//  CommandsOverlayView.swift
 //  CodeEdit
 //
 //  Created by Alex Sinelnikov on 24.05.2022.
@@ -7,27 +7,27 @@
 
 import SwiftUI
 
-/// Command palette view
-struct CommandPaletteView: View {
+/// Commands overlay view
+struct CommandsOverlayView: View {
 
     @Environment(\.colorScheme)
     private var colorScheme: ColorScheme
 
     @ObservedObject
-    private var state: CommandPaletteViewModel
+    private var state: CommandsOverlayViewModel
 
     @State
     private var monitor: Any?
 
-    private let closePalette: () -> Void
+    private let closeOverlay: () -> Void
 
-    init(state: CommandPaletteViewModel, closePalette: @escaping () -> Void) {
+    init(state: CommandsOverlayViewModel, closeOverlay: @escaping () -> Void) {
         self.state = state
-        self.closePalette = closePalette
+        self.closeOverlay = closeOverlay
     }
 
     var body: some View {
-        OverlayView<CommandPaletteItem, EmptyView, CodeEditCommand>(
+        OverlayView<CommandsOverlayItem, EmptyView, CodeEditCommand>(
             title: "Commands",
             image: Image(systemName: "magnifyingglass"),
             options: $state.filteredMenuCommands,
@@ -35,11 +35,11 @@ struct CommandPaletteView: View {
             alwaysShowOptions: true,
             optionRowHeight: 30
         ) { command, selected in
-            CommandPaletteItem(command: command, textToMatch: state.commandQuery, selected: selected)
+            CommandsOverlayItem(command: command, textToMatch: state.commandQuery, selected: selected)
         } onRowClick: {
             $0.runAction()
         } onClose: {
-            closePalette()
+            closeOverlay()
         }
         .onReceive(state.$commandQuery.debounce(for: 0.2, scheduler: DispatchQueue.main)) { _ in
             state.fetchMatchingCommands(filter: state.commandQuery)
@@ -47,7 +47,7 @@ struct CommandPaletteView: View {
     }
 }
 
-struct CommandPaletteItem: View {
+struct CommandsOverlayItem: View {
     let command: CodeEditCommand
     let textToMatch: String?
     let selected: Bool
@@ -66,7 +66,7 @@ struct CommandPaletteItem: View {
     }
 }
 
-/// Implementation of command palette entity. While swiftui does not allow to use NSMutableAttributeStrings,
+/// Implementation of commands overlay entity. While swiftui does not allow to use NSMutableAttributeStrings,
 /// the only way to fallback to UIKit and have NSViewRepresentable to be a bridge between UIKit and SwiftUI.
 /// Highlights currently entered text query
 struct SearchResultLabel: NSViewRepresentable {

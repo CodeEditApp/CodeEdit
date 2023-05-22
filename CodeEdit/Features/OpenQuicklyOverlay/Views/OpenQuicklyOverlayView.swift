@@ -1,5 +1,5 @@
 //
-//  QuickOpenView.swift
+//  OpenQuicklyView.swift
 //  CodeEditModules/QuickOpen
 //
 //  Created by Pavel Kasila on 20.03.22.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct QuickOpenView: View {
+struct OpenQuicklyOverlayView: View {
 
     private let onClose: () -> Void
     private let openFile: (CEWorkspaceFile) -> Void
@@ -36,9 +36,9 @@ struct QuickOpenView: View {
             text: $state.openQuicklyQuery,
             optionRowHeight: 40
         ) { file, _  in
-            QuickOpenItem(baseDirectory: state.fileURL, fileItem: file)
+            OpenQuicklyOverlayItem(baseDirectory: state.fileURL, fileItem: file)
         } preview: { file in
-            QuickOpenPreviewView(item: file)
+            OpenQuicklyOverlayPreviewView(item: file)
         } onRowClick: { file in
             openFile(file)
             state.openQuicklyQuery = ""

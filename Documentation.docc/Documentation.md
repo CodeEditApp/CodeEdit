@@ -30,10 +30,10 @@
 - ``CodeFileDocument``
 - ``CodeFileError``
 
-### CommandPalette
+### CommandsOverlay
 
-- ``CommandPaletteView``
-- ``CommandPaletteViewModel``
+- ``CommandsOverlayView``
+- ``CommandsOverlayViewModel``
 
 ### Documents
 

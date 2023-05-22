@@ -1,5 +1,5 @@
 //
-//  QuickOpenItem.swift
+//  OpenQuicklyItem.swift
 //  CodeEditModules/QuickOpen
 //
 //  Created by Pavel Kasila on 20.03.22.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct QuickOpenItem: View {
+struct OpenQuicklyOverlayItem: View {
 
     private let baseDirectory: URL
     private let fileItem: CEWorkspaceFile

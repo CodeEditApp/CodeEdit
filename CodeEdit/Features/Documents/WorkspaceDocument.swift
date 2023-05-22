@@ -36,7 +36,7 @@ import Combine
     var statusBarModel = StatusBarViewModel()
     var searchState: SearchState?
     var quickOpenViewModel: QuickOpenViewModel?
-    var commandsPaletteState: CommandPaletteViewModel?
+    var commandsOverlayState: CommandsOverlayViewModel?
     var listenerModel: WorkspaceNotificationModel = .init()
 
     override init() {
@@ -125,7 +125,7 @@ import Combine
         )
         self.searchState = .init(self)
         self.quickOpenViewModel = .init(fileURL: url)
-        self.commandsPaletteState = .init()
+        self.commandsOverlayState = .init()
     }
 
     override func read(from url: URL, ofType typeName: String) throws {

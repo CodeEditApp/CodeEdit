@@ -94,10 +94,10 @@
 		5878DA82291863F900DD95A3 /* AcknowledgementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5878DA81291863F900DD95A3 /* AcknowledgementsView.swift */; };
 		5878DA842918642000DD95A3 /* ParsePackagesResolved.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5878DA832918642000DD95A3 /* ParsePackagesResolved.swift */; };
 		5878DA872918642F00DD95A3 /* AcknowledgementsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5878DA862918642F00DD95A3 /* AcknowledgementsViewModel.swift */; };
-		5878DAA5291AE76700DD95A3 /* QuickOpenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5878DAA1291AE76700DD95A3 /* QuickOpenView.swift */; };
-		5878DAA6291AE76700DD95A3 /* QuickOpenPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5878DAA2291AE76700DD95A3 /* QuickOpenPreviewView.swift */; };
-		5878DAA7291AE76700DD95A3 /* QuickOpenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5878DAA3291AE76700DD95A3 /* QuickOpenViewModel.swift */; };
-		5878DAA8291AE76700DD95A3 /* QuickOpenItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5878DAA4291AE76700DD95A3 /* QuickOpenItem.swift */; };
+		5878DAA5291AE76700DD95A3 /* OpenQuicklyOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5878DAA1291AE76700DD95A3 /* OpenQuicklyOverlayView.swift */; };
+		5878DAA6291AE76700DD95A3 /* OpenQuicklyOverlayPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5878DAA2291AE76700DD95A3 /* OpenQuicklyOverlayPreviewView.swift */; };
+		5878DAA7291AE76700DD95A3 /* OpenQuicklyOverlayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5878DAA3291AE76700DD95A3 /* OpenQuicklyOverlayViewModel.swift */; };
+		5878DAA8291AE76700DD95A3 /* OpenQuicklyOverlayItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5878DAA4291AE76700DD95A3 /* OpenQuicklyOverlayItem.swift */; };
 		5878DAB0291D627C00DD95A3 /* PathBarMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5878DAAD291D627C00DD95A3 /* PathBarMenu.swift */; };
 		5878DAB1291D627C00DD95A3 /* PathBarComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5878DAAE291D627C00DD95A3 /* PathBarComponent.swift */; };
 		5878DAB2291D627C00DD95A3 /* PathBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5878DAAF291D627C00DD95A3 /* PathBarView.swift */; };
@@ -247,8 +247,8 @@
 		58F2EB0D292FB2B0004A9BDE /* ThemeSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAE0292FB2B0004A9BDE /* ThemeSettings.swift */; };
 		58F2EB0E292FB2B0004A9BDE /* SoftwareUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAE1292FB2B0004A9BDE /* SoftwareUpdater.swift */; };
 		58F2EB1E292FB954004A9BDE /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 58F2EB1D292FB954004A9BDE /* Sparkle */; };
-		58FD7608291EA1CB0051D6E4 /* CommandPaletteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FD7605291EA1CB0051D6E4 /* CommandPaletteViewModel.swift */; };
-		58FD7609291EA1CB0051D6E4 /* CommandPaletteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FD7607291EA1CB0051D6E4 /* CommandPaletteView.swift */; };
+		58FD7608291EA1CB0051D6E4 /* CommandsOverlayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FD7605291EA1CB0051D6E4 /* CommandsOverlayViewModel.swift */; };
+		58FD7609291EA1CB0051D6E4 /* CommandsOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FD7607291EA1CB0051D6E4 /* CommandsOverlayView.swift */; };
 		5C4BB1E128212B1E00A92FB2 /* World.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4BB1E028212B1E00A92FB2 /* World.swift */; };
 		6C0004D02A1A8D340051D080 /* ModifierFlags+UnicodeSymbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C0004CF2A1A8D340051D080 /* ModifierFlags+UnicodeSymbol.swift */; };
 		6C05A8AF284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C05A8AE284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift */; };
@@ -509,10 +509,10 @@
 		5878DA81291863F900DD95A3 /* AcknowledgementsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AcknowledgementsView.swift; sourceTree = "<group>"; };
 		5878DA832918642000DD95A3 /* ParsePackagesResolved.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParsePackagesResolved.swift; sourceTree = "<group>"; };
 		5878DA862918642F00DD95A3 /* AcknowledgementsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AcknowledgementsViewModel.swift; sourceTree = "<group>"; };
-		5878DAA1291AE76700DD95A3 /* QuickOpenView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickOpenView.swift; sourceTree = "<group>"; };
-		5878DAA2291AE76700DD95A3 /* QuickOpenPreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickOpenPreviewView.swift; sourceTree = "<group>"; };
-		5878DAA3291AE76700DD95A3 /* QuickOpenViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickOpenViewModel.swift; sourceTree = "<group>"; };
-		5878DAA4291AE76700DD95A3 /* QuickOpenItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickOpenItem.swift; sourceTree = "<group>"; };
+		5878DAA1291AE76700DD95A3 /* OpenQuicklyOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenQuicklyOverlayView.swift; sourceTree = "<group>"; };
+		5878DAA2291AE76700DD95A3 /* OpenQuicklyOverlayPreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenQuicklyOverlayPreviewView.swift; sourceTree = "<group>"; };
+		5878DAA3291AE76700DD95A3 /* OpenQuicklyOverlayViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenQuicklyOverlayViewModel.swift; sourceTree = "<group>"; };
+		5878DAA4291AE76700DD95A3 /* OpenQuicklyOverlayItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenQuicklyOverlayItem.swift; sourceTree = "<group>"; };
 		5878DAAD291D627C00DD95A3 /* PathBarMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PathBarMenu.swift; sourceTree = "<group>"; };
 		5878DAAE291D627C00DD95A3 /* PathBarComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PathBarComponent.swift; sourceTree = "<group>"; };
 		5878DAAF291D627C00DD95A3 /* PathBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PathBarView.swift; sourceTree = "<group>"; };
@@ -662,8 +662,8 @@
 		58F2EADD292FB2B0004A9BDE /* AccountsSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountsSettings.swift; sourceTree = "<group>"; };
 		58F2EAE0292FB2B0004A9BDE /* ThemeSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeSettings.swift; sourceTree = "<group>"; };
 		58F2EAE1292FB2B0004A9BDE /* SoftwareUpdater.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoftwareUpdater.swift; sourceTree = "<group>"; };
-		58FD7605291EA1CB0051D6E4 /* CommandPaletteViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandPaletteViewModel.swift; sourceTree = "<group>"; };
-		58FD7607291EA1CB0051D6E4 /* CommandPaletteView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandPaletteView.swift; sourceTree = "<group>"; };
+		58FD7605291EA1CB0051D6E4 /* CommandsOverlayViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandsOverlayViewModel.swift; sourceTree = "<group>"; };
+		58FD7607291EA1CB0051D6E4 /* CommandsOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandsOverlayView.swift; sourceTree = "<group>"; };
 		5C4BB1E028212B1E00A92FB2 /* World.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = World.swift; sourceTree = "<group>"; };
 		6C0004CF2A1A8D340051D080 /* ModifierFlags+UnicodeSymbol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ModifierFlags+UnicodeSymbol.swift"; sourceTree = "<group>"; };
 		6C05A8AE284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkspaceDocument+Listeners.swift"; sourceTree = "<group>"; };
@@ -701,7 +701,7 @@
 		6C82D6C529C012AD00495C54 /* NSApp+openWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSApp+openWindow.swift"; sourceTree = "<group>"; };
 		6C91D57129B176FF0059A90D /* TabManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabManager.swift; sourceTree = "<group>"; };
 		6C97EBCB2978760400302F95 /* AcknowledgementsWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcknowledgementsWindowController.swift; sourceTree = "<group>"; };
-		6CABB19C29C5591D00340467 /* NSTableViewWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NSTableViewWrapper.swift; path = CodeEdit/Features/QuickOpen/Views/NSTableViewWrapper.swift; sourceTree = SOURCE_ROOT; };
+		6CABB19C29C5591D00340467 /* NSTableViewWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NSTableViewWrapper.swift; path = CodeEdit/Features/OpenQuicklyOverlay/Views/NSTableViewWrapper.swift; sourceTree = SOURCE_ROOT; };
 		6CABB1A029C5593800340467 /* OverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverlayView.swift; sourceTree = "<group>"; };
 		6CBD1BC52978DE53006639D5 /* Font+Caption3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Caption3.swift"; sourceTree = "<group>"; };
 		6CC9E4B129B5669900C97388 /* Environment+ActiveTabGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Environment+ActiveTabGroup.swift"; sourceTree = "<group>"; };
@@ -1109,7 +1109,7 @@
 				587B9D50292FC27A00AC7927 /* CodeEditExtension */,
 				587B9D7529300ABD00AC7927 /* CodeEditUI */,
 				58798244292E78D80085B254 /* CodeFile */,
-				58FD7603291EA1CB0051D6E4 /* Commands */,
+				58FD7603291EA1CB0051D6E4 /* CommandsOverlay */,
 				284DC84B2978B5EB00BF2770 /* Contributors */,
 				043C321227E31FE8006AE443 /* Documents */,
 				58798228292E30B90085B254 /* Feedback */,
@@ -1118,7 +1118,7 @@
 				58A5DF9D29339F6400D1BD5D /* Keybindings */,
 				287776EA27E350A100D46668 /* NavigatorSidebar */,
 				5878DAAB291D627C00DD95A3 /* PathBar */,
-				5878DAA0291AE76700DD95A3 /* QuickOpen */,
+				5878DAA0291AE76700DD95A3 /* OpenQuicklyOverlay */,
 				58798210292D92370085B254 /* Search */,
 				B67B270029D7868000FB9301 /* Settings */,
 				6C147C4729A329E50089B630 /* SplitView */,
@@ -1286,22 +1286,22 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
-		5878DAA0291AE76700DD95A3 /* QuickOpen */ = {
+		5878DAA0291AE76700DD95A3 /* OpenQuicklyOverlay */ = {
 			isa = PBXGroup;
 			children = (
 				5878DAAA291D5CAA00DD95A3 /* ViewModels */,
 				5878DAA9291D5CA100DD95A3 /* Views */,
 			);
-			path = QuickOpen;
+			path = OpenQuicklyOverlay;
 			sourceTree = "<group>";
 		};
 		5878DAA9291D5CA100DD95A3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				6CABB19C29C5591D00340467 /* NSTableViewWrapper.swift */,
-				5878DAA1291AE76700DD95A3 /* QuickOpenView.swift */,
-				5878DAA2291AE76700DD95A3 /* QuickOpenPreviewView.swift */,
-				5878DAA4291AE76700DD95A3 /* QuickOpenItem.swift */,
+				5878DAA1291AE76700DD95A3 /* OpenQuicklyOverlayView.swift */,
+				5878DAA2291AE76700DD95A3 /* OpenQuicklyOverlayPreviewView.swift */,
+				5878DAA4291AE76700DD95A3 /* OpenQuicklyOverlayItem.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1309,7 +1309,7 @@
 		5878DAAA291D5CAA00DD95A3 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				5878DAA3291AE76700DD95A3 /* QuickOpenViewModel.swift */,
+				5878DAA3291AE76700DD95A3 /* OpenQuicklyOverlayViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -1921,19 +1921,19 @@
 			path = ThemeSettings;
 			sourceTree = "<group>";
 		};
-		58FD7603291EA1CB0051D6E4 /* Commands */ = {
+		58FD7603291EA1CB0051D6E4 /* CommandsOverlay */ = {
 			isa = PBXGroup;
 			children = (
 				58FD7604291EA1CB0051D6E4 /* ViewModels */,
 				58FD7606291EA1CB0051D6E4 /* Views */,
 			);
-			path = Commands;
+			path = CommandsOverlay;
 			sourceTree = "<group>";
 		};
 		58FD7604291EA1CB0051D6E4 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				58FD7605291EA1CB0051D6E4 /* CommandPaletteViewModel.swift */,
+				58FD7605291EA1CB0051D6E4 /* CommandsOverlayViewModel.swift */,
 				6CF335D92A198E9E0052CB12 /* CodeEditCommand.swift */,
 				6C0004CF2A1A8D340051D080 /* ModifierFlags+UnicodeSymbol.swift */,
 			);
@@ -1943,7 +1943,7 @@
 		58FD7606291EA1CB0051D6E4 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				58FD7607291EA1CB0051D6E4 /* CommandPaletteView.swift */,
+				58FD7607291EA1CB0051D6E4 /* CommandsOverlayView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2629,7 +2629,7 @@
 				6C7256D729A3D7D000C2D3E0 /* SplitViewControllerView.swift in Sources */,
 				B6EA1FE529DA33DB001BF195 /* ThemeModel.swift in Sources */,
 				B6EA200029DB7966001BF195 /* SettingsColorPicker.swift in Sources */,
-				58FD7609291EA1CB0051D6E4 /* CommandPaletteView.swift in Sources */,
+				58FD7609291EA1CB0051D6E4 /* CommandsOverlayView.swift in Sources */,
 				58A2E40C29C3975D005CB615 /* CEWorkspaceFileIcon.swift in Sources */,
 				587B9E8F29301D8F00AC7927 /* BitBucketUserRouter.swift in Sources */,
 				B66A4E5129C917D5004573B4 /* AboutWindow.swift in Sources */,
@@ -2642,7 +2642,7 @@
 				587B9E6B29301D8F00AC7927 /* GitLabAvatarURL.swift in Sources */,
 				58798233292E30B90085B254 /* FeedbackToolbar.swift in Sources */,
 				587B9E6829301D8F00AC7927 /* GitLabAccountModel.swift in Sources */,
-				5878DAA7291AE76700DD95A3 /* QuickOpenViewModel.swift in Sources */,
+				5878DAA7291AE76700DD95A3 /* OpenQuicklyOverlayViewModel.swift in Sources */,
 				6CFF967429BEBCC300182D6F /* FindCommands.swift in Sources */,
 				587B9E6529301D8F00AC7927 /* GitLabGroupAccess.swift in Sources */,
 				6C91D57229B176FF0059A90D /* TabManager.swift in Sources */,
@@ -2808,8 +2808,8 @@
 				B6E41C9429DEAE260088F9F4 /* SourceControlAccount.swift in Sources */,
 				2806E9022979588B000040F4 /* Contributor.swift in Sources */,
 				58D01C98293167DC00C5B6B4 /* String+RemoveOccurrences.swift in Sources */,
-				5878DAA8291AE76700DD95A3 /* QuickOpenItem.swift in Sources */,
-				58FD7608291EA1CB0051D6E4 /* CommandPaletteViewModel.swift in Sources */,
+				5878DAA8291AE76700DD95A3 /* OpenQuicklyOverlayItem.swift in Sources */,
+				58FD7608291EA1CB0051D6E4 /* CommandsOverlayViewModel.swift in Sources */,
 				5878DA872918642F00DD95A3 /* AcknowledgementsViewModel.swift in Sources */,
 				B6E41C7929DE02800088F9F4 /* AccountSelectionView.swift in Sources */,
 				B6EA1FFB29DB78F6001BF195 /* ThemeSettingsThemeDetails.swift in Sources */,
@@ -2851,7 +2851,7 @@
 				6C97EBCC2978760400302F95 /* AcknowledgementsWindowController.swift in Sources */,
 				284DC84F2978B7B400BF2770 /* ContributorsView.swift in Sources */,
 				58798250292E78D80085B254 /* CodeFile.swift in Sources */,
-				5878DAA5291AE76700DD95A3 /* QuickOpenView.swift in Sources */,
+				5878DAA5291AE76700DD95A3 /* OpenQuicklyOverlayView.swift in Sources */,
 				201169D72837B2E300F92B46 /* SourceControlNavigatorView.swift in Sources */,
 				B6F0517929D9E3C900D72287 /* SourceControlGitView.swift in Sources */,
 				587B9E8329301D8F00AC7927 /* GitHubPullRequest.swift in Sources */,
@@ -2874,7 +2874,7 @@
 				043BCF03281DA18A000AC47C /* WorkspaceDocument+Search.swift in Sources */,
 				58822527292C280D00E83CDE /* StatusBarIndentSelector.swift in Sources */,
 				587B9E9629301D8F00AC7927 /* BitBucketRepositories.swift in Sources */,
-				5878DAA6291AE76700DD95A3 /* QuickOpenPreviewView.swift in Sources */,
+				5878DAA6291AE76700DD95A3 /* OpenQuicklyOverlayPreviewView.swift in Sources */,
 				58798286292ED0FB0085B254 /* SwiftTerm+Color+Init.swift in Sources */,
 				6CFF967C29BEBD5200182D6F /* WindowCommands.swift in Sources */,
 				587B9E7229301D8F00AC7927 /* GitJSONPostRouter.swift in Sources */,
