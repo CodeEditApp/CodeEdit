@@ -75,12 +75,12 @@ struct InspectorSidebarView: View {
         )
         .safeAreaInset(edge: .trailing, spacing: 0) {
             if sidebarPosition == .side {
-                InspectorSidebarTabBar(selection: $selection, position: sidebarPosition)
+                InspectorSidebarTabBar(items: items, selection: $selection, position: sidebarPosition)
             }
         }
         .safeAreaInset(edge: .top, spacing: 0) {
             if sidebarPosition == .top {
-                InspectorSidebarTabBar(selection: $selection, position: sidebarPosition)
+                InspectorSidebarTabBar(items: items, selection: $selection, position: sidebarPosition)
             } else {
                 Divider()
             }

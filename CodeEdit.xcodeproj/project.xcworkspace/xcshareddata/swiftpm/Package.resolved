@@ -30,10 +30,10 @@
     {
       "identity" : "codeedittextview",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/CodeEditApp/CodeEditTextView.git",
+      "location" : "https://github.com/CodeEditApp/CodeEditTextView",
       "state" : {
-        "revision" : "36a5f790153d9feae0221ba40e0b9da2a1211232",
-        "version" : "0.5.1"
+        "revision" : "1dfd0b535e4d80fd8037298a30020bbfd7b5fb9c",
+        "version" : "0.6.3"
       }
     },
     {
@@ -118,15 +118,6 @@
       }
     },
     {
-      "identity" : "preferences",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/sindresorhus/Preferences.git",
-      "state" : {
-        "revision" : "2651cd144615009242c994b087508fef99e9275c",
-        "version" : "2.6.0"
-      }
-    },
-    {
       "identity" : "processenv",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/ProcessEnv",
@@ -176,8 +167,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/krzyzanowskim/STTextView.git",
       "state" : {
-        "revision" : "77a37aed80277467990c2c8d224ed951899446f0",
-        "version" : "0.6.0"
+        "revision" : "6c6243ae790247368aea258e4fb3642523759bec",
+        "version" : "0.5.3"
       }
     },
     {
@@ -223,6 +214,15 @@
       "state" : {
         "revision" : "df25a52f72ebc5b50ae20d26d1363793408bb28b",
         "version" : "0.7.1"
+      }
+    },
+    {
+      "identity" : "swiftui-introspect",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/siteline/SwiftUI-Introspect",
+      "state" : {
+        "revision" : "5b3f3996c7a2a84d5f4ba0e03cd7d584154778f2",
+        "version" : "0.3.1"
       }
     },
     {

@@ -10,25 +10,16 @@ import SwiftUI
 struct InspectorSidebarTabBar: View {
     @Environment(\.controlActiveState) private var activeState
 
-    var position: SettingsData.SidebarTabBarPosition
+    var items: [InspectorTab]
 
     @Binding
     var selection: InspectorTab
 
-    @State private var icons = [
-        InspectorDockIcon(imageName: "doc", title: "File Inspector", id: 0),
-        InspectorDockIcon(imageName: "clock", title: "History Inspector", id: 1),
-        InspectorDockIcon(imageName: "questionmark.circle", title: "Quick Help Inspector", id: 2)
-    ]
+    var position: SettingsData.SidebarTabBarPosition
 
     @State private var hasChangedLocation: Bool = false
     @State private var draggingItem: InspectorDockIcon?
     @State private var drugItemLocation: CGPoint?
-
-    init(selection: Binding<InspectorTab>, position: SettingsData.SidebarTabBarPosition) {
-        self._selection = selection
-        self.position = position
-    }
 
     var body: some View {
         if position == .top {
@@ -48,7 +39,7 @@ struct InspectorSidebarTabBar: View {
                 .overlay(alignment: .bottom) {
                     Divider()
                 }
-                .animation(.default, value: icons)
+                .animation(.default, value: items)
         }
         .frame(maxWidth: .infinity, idealHeight: 29)
         .fixedSize(horizontal: false, vertical: true)
@@ -64,7 +55,7 @@ struct InspectorSidebarTabBar: View {
                         Divider()
                     }
                 }
-                .animation(.default, value: icons)
+                .animation(.default, value: items)
         }
         .frame(idealWidth: 40, maxHeight: .infinity)
         .fixedSize(horizontal: true, vertical: false)
@@ -76,21 +67,21 @@ struct InspectorSidebarTabBar: View {
             ? AnyLayout(HStackLayout(spacing: 0))
             : AnyLayout(VStackLayout(spacing: 0))
         layout {
-            ForEach(icons) { icon in
-                makeIcon(named: icon.imageName, title: icon.title, id: icon.id, size: size)
-                    .opacity(draggingItem?.imageName == icon.imageName &&
+            ForEach(items, id: \.self) { icon in
+                makeIcon(tab: icon, size: size)
+                    .opacity(draggingItem?.imageName == icon.systemImage &&
                              hasChangedLocation &&
                              drugItemLocation != nil ? 0.0 : 1.0)
-                    .onDrop(
-                        of: [.utf8PlainText],
-                        delegate: InspectorSidebarDockIconDelegate(
-                            item: icon,
-                            current: $draggingItem,
-                            icons: $icons,
-                            hasChangedLocation: $hasChangedLocation,
-                            drugItemLocation: $drugItemLocation
-                        )
-                    )
+//                    .onDrop(
+//                        of: [.utf8PlainText],
+//                        delegate: InspectorSidebarDockIconDelegate(
+//                            item: icon,
+//                            current: $draggingItem,
+//                            icons: $icons,
+//                            hasChangedLocation: $hasChangedLocation,
+//                            drugItemLocation: $drugItemLocation
+//                        )
+//                    )
             }
             if position == .side {
                 Spacer()
@@ -99,35 +90,33 @@ struct InspectorSidebarTabBar: View {
     }
 
     private func makeIcon(
-        named: String,
-        title: String,
-        id: Int,
+        tab: InspectorTab,
         scale: Image.Scale = .medium,
         size: CGSize
     ) -> some View {
         Button {
-            selection = id
+            selection = tab
         } label: {
-            getSafeImage(named: named, accessibilityDescription: title)
+            getSafeImage(named: tab.systemImage, accessibilityDescription: tab.title)
                 .font(.system(size: 12.5))
-                .symbolVariant(id == selection ? .fill : .none)
+                .symbolVariant(tab == selection ? .fill : .none)
                 .frame(
                     width: position == .side ? 40 : 24,
                     height: position == .side ? 28 : size.height,
                     alignment: .center
                 )
-                .help(title)
-                .onDrag {
-                    if let index = icons.firstIndex(where: { $0.imageName == named }) {
-                        draggingItem = icons[index]
-                    }
-                    return .init(object: NSString(string: named))
-                } preview: {
-                    RoundedRectangle(cornerRadius: .zero)
-                        .frame(width: .zero)
-                }
+                .help(tab.title)
+//                .onDrag {
+//                    if let index = icons.firstIndex(where: { $0.imageName == named }) {
+//                        draggingItem = icons[index]
+//                    }
+//                    return .init(object: NSString(string: named))
+//                } preview: {
+//                    RoundedRectangle(cornerRadius: .zero)
+//                        .frame(width: .zero)
+//                }
         }
-        .buttonStyle(.icon(isActive: id == selection, size: nil))
+        .buttonStyle(.icon(isActive: tab == selection, size: nil))
     }
 
     private func getSafeImage(named: String, accessibilityDescription: String?) -> Image {
