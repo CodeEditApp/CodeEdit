@@ -40,8 +40,8 @@ struct StatusBarDrawer: View {
 
     var body: some View {
         switch model.selectedTab {
-        case 2:
-            ExtensionOutputView()
+        case .output(let extensionInfo):
+            ExtensionOutputView(ext: extensionInfo)
         default:
             
             if let url = workspace.workspaceFileManager?.folderUrl {

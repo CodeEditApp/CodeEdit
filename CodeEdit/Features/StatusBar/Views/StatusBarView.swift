@@ -23,6 +23,8 @@ struct StatusBarView: View {
     @EnvironmentObject
     private var model: StatusBarViewModel
 
+    @ObservedObject var extensionManager = ExtensionManager.shared
+
     static let height = 28.0
 
     @Environment(\.colorScheme)
@@ -40,7 +42,17 @@ struct StatusBarView: View {
         HStack(alignment: .center, spacing: 10) {
 //            StatusBarBreakpointButton()
 //            StatusBarDivider()
-            SegmentedControl($model.selectedTab, options: StatusBarTabType.allOptions)
+//            SegmentedControl(.constant(1), options: StatusBarTabType.allOptions)
+
+            SegmentedControlV2(selection: $model.selectedTab, prominent: true) {
+                Text("Terminal").segmentedTag(StatusBarViewModel.Tab.terminal)
+                Text("Debugger").segmentedTag(StatusBarViewModel.Tab.debugger)
+
+                ForEach(extensionManager.extensions) {
+                    Text("Output - \($0.name)")
+                        .segmentedTag(StatusBarViewModel.Tab.output($0))
+                }
+            }
                 .opacity(collapsed ? 0 : 1)
             Spacer()
             HStack(alignment: .center, spacing: 10) {

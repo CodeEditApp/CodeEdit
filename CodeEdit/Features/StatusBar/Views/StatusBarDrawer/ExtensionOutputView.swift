@@ -13,6 +13,8 @@ struct ExtensionOutputView: View {
 
     @State var output: [LogMessage] = []
 
+    var ext: ExtensionInfo
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading) {
@@ -33,8 +35,9 @@ struct ExtensionOutputView: View {
         }
         .rotationEffect(.radians(.pi))
         .scaleEffect(x: -1, y: 1, anchor: .center)
-        .task(id: extensionManager.extensions.map(\.pid)) {
-            for await item in LogStream.logs(for: extensionManager.extensions.map(\.pid), flags: [.info, .historical, .processOnly]) {
+        .task(id: ext.pid) {
+            output = []
+            for await item in LogStream.logs(for: ext.pid, flags: [.info, .historical, .processOnly]) {
                 output.append(item)
             }
         }
