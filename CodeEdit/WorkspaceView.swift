@@ -51,7 +51,6 @@ struct WorkspaceView: View {
                         StatusBarDrawer()
                             .collapsable()
                             .collapsed($terminalCollapsed)
-                            .holdingPriority(.init(20))
                             .frame(idealHeight: 260)
                             .frame(minHeight: 100)
                     }

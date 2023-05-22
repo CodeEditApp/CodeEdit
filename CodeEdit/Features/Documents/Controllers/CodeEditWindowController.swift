@@ -98,7 +98,6 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         navigator.titlebarSeparatorStyle = .none
         navigator.minimumThickness = Self.minSidebarWidth
         navigator.collapseBehavior = .useConstraints
-        navigator.holdingPriority = .init(100)
 
         splitVC.addSplitViewItem(navigator)
 
@@ -133,7 +132,6 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         inspector.canCollapse = true
         inspector.collapseBehavior = .useConstraints
         inspector.isSpringLoaded = true
-        inspector.holdingPriority = .init(75)
 
         splitVC.addSplitViewItem(inspector)
 

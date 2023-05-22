@@ -54,7 +54,6 @@ struct StatusBarDrawer: View {
                     .accentColor(.secondary)
                     .collapsable()
                     .collapsed($model.debuggerSidebarIsCollapsed)
-                    .holdingPriority(.init(2))
                     .frame(minWidth: 200, idealWidth: 240, maxWidth: 400)
                     .safeAreaInset(edge: .bottom, alignment: .leading) {
                         HStack(spacing: 0) {
