@@ -14,13 +14,17 @@ import SwiftUI
 // - TODO: TabBarItemView drop-outside event handler.
 struct TabBarView: View {
 
-    @Environment(\.modifierKeys) var modifierKeys
-
-    typealias TabID = WorkspaceClient.FileItem.ID
+    typealias TabID = CEWorkspaceFile.ID
 
     /// The height of tab bar.
     /// I am not making it a private variable because it may need to be used in outside views.
     static let height = 28.0
+
+    @Environment(\.modifierKeys)
+    var modifierKeys
+
+    @Environment(\.splitEditor)
+    var splitEditor
 
     @Environment(\.colorScheme)
     private var colorScheme
@@ -38,9 +42,7 @@ struct TabBarView: View {
     @EnvironmentObject
     private var tabgroup: TabGroupData
 
-    @Environment(\.splitEditor) var splitEditor
-
-    @AppSettings var settings
+    @AppSettings(\.general.tabBarStyle) var tabBarStyle
 
     /// The tab id of current dragging tab.
     ///
@@ -350,7 +352,7 @@ struct TabBarView: View {
                             }
                         }
                         // This padding is to hide dividers at two ends under the accessory view divider.
-                        .padding(.horizontal, settings.general.tabBarStyle == .native ? -1 : 0)
+                        .padding(.horizontal, tabBarStyle == .native ? -1 : 0)
                         .onAppear {
                             openedTabs = tabgroup.tabs.map(\.id)
                             // On view appeared, compute the initial expected width for tabs.
@@ -363,7 +365,7 @@ struct TabBarView: View {
                                 updateForTabCountChange(geometryProxy: geometryProxy)
                             } else {
                                 withAnimation(
-                                    .easeOut(duration: settings.general.tabBarStyle == .native ? 0.15 : 0.20)
+                                    .easeOut(duration: tabBarStyle == .native ? 0.15 : 0.20)
                                 ) {
                                     updateForTabCountChange(geometryProxy: geometryProxy)
                                 }
@@ -404,13 +406,13 @@ struct TabBarView: View {
                     // To fill up the parent space of tab bar.
                     .frame(maxWidth: .infinity)
                     .background {
-                        if settings.general.tabBarStyle == .native {
+                        if tabBarStyle == .native {
                             TabBarNativeInactiveBackground()
                         }
                     }
                 }
                 .background {
-                    if settings.general.tabBarStyle == .native {
+                    if tabBarStyle == .native {
                         TabBarAccessoryNativeBackground(dividerAt: .none)
                     }
                 }
@@ -421,12 +423,12 @@ struct TabBarView: View {
         .frame(height: TabBarView.height)
         .overlay(alignment: .top) {
             // When tab bar style is `xcode`, we put the top divider as an overlay.
-            if settings.general.tabBarStyle == .xcode {
+            if tabBarStyle == .xcode {
                 TabBarTopDivider()
             }
         }
         .background {
-            if settings.general.tabBarStyle == .native {
+            if tabBarStyle == .native {
                 TabBarNativeMaterial()
                     .edgesIgnoringSafeArea(.top)
             } else {
@@ -471,7 +473,7 @@ struct TabBarView: View {
                         } label: {
                             HStack {
                                 tab.icon
-                                Text(tab.fileName)
+                                Text(tab.name)
                             }
                         }
                     }
@@ -500,7 +502,7 @@ struct TabBarView: View {
                         } label: {
                             HStack {
                                 tab.icon
-                                Text(tab.fileName)
+                                Text(tab.name)
                             }
                         }
                     }
@@ -527,7 +529,7 @@ struct TabBarView: View {
         .opacity(activeState != .inactive ? 1.0 : 0.5)
         .frame(maxHeight: .infinity) // Fill out vertical spaces.
         .background {
-            if settings.general.tabBarStyle == .native {
+            if tabBarStyle == .native {
                 TabBarAccessoryNativeBackground(dividerAt: .trailing)
             }
         }
@@ -535,27 +537,13 @@ struct TabBarView: View {
 
     private var trailingAccessories: some View {
         HStack(spacing: 2) {
-            TabBarAccessoryIcon(
-                icon: .init(systemName: "ellipsis.circle"),
-                action: {} // TODO: Implement
-            )
-            .foregroundColor(.secondary)
-            .buttonStyle(.plain)
-            .help("Options")
-            TabBarAccessoryIcon(
-                icon: .init(systemName: "arrow.left.arrow.right.square"),
-                action: {} // TODO: Implement
-            )
-            .foregroundColor(.secondary)
-            .buttonStyle(.plain)
-            .help("Enable Code Review")
             splitviewButton
         }
-        .padding(.horizontal, 5)
+        .padding(.horizontal, 10)
         .opacity(activeState != .inactive ? 1.0 : 0.5)
         .frame(maxHeight: .infinity) // Fill out vertical spaces.
         .background {
-            if settings.general.tabBarStyle == .native {
+            if tabBarStyle == .native {
                 TabBarAccessoryNativeBackground(dividerAt: .leading)
             }
         }
@@ -565,14 +553,18 @@ struct TabBarView: View {
         Group {
             switch (tabgroup.parent?.axis, modifierKeys.contains(.option)) {
             case (.horizontal, true), (.vertical, false):
-                TabBarAccessoryIcon(icon: Image(systemName: "square.split.1x2")) {
+                Button {
                     split(edge: .bottom)
+                } label: {
+                    Image(systemName: "square.split.1x2")
                 }
                 .help("Split Vertically")
 
             case (.vertical, true), (.horizontal, false):
-                TabBarAccessoryIcon(icon: Image(systemName: "square.split.2x1")) {
+                Button {
                     split(edge: .trailing)
+                } label: {
+                    Image(systemName: "square.split.2x1")
                 }
                 .help("Split Horizontally")
 
@@ -580,8 +572,7 @@ struct TabBarView: View {
                 EmptyView()
             }
         }
-        .foregroundColor(.secondary)
-        .buttonStyle(.plain)
+        .buttonStyle(.icon)
     }
 
     func split(edge: Edge) {

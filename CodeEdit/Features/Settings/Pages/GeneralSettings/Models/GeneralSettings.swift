@@ -10,7 +10,7 @@ import SwiftUI
 extension SettingsData {
 
     /// The general global setting
-    struct GeneralSettings: Codable {
+    struct GeneralSettings: Codable, Hashable {
 
         /// The appearance of the app
         var appAppearance: Appearances = .system
@@ -35,6 +35,12 @@ extension SettingsData {
 
         /// Choose between native-styled tab bar and Xcode-liked tab bar.
         var tabBarStyle: TabBarStyle = .xcode
+
+        /// The position for the navigator sidebar tab bar
+        var navigatorTabBarPosition: SidebarTabBarPosition = .top
+
+        /// The position for the inspector sidebar tab bar
+        var inspectorTabBarPosition: SidebarTabBarPosition = .top
 
         /// The reopen behavior of the app
         var reopenBehavior: ReopenBehavior = .welcome
@@ -96,6 +102,14 @@ extension SettingsData {
                 TabBarStyle.self,
                 forKey: .tabBarStyle
             ) ?? .xcode
+            self.navigatorTabBarPosition = try container.decodeIfPresent(
+                SidebarTabBarPosition.self,
+                forKey: .navigatorTabBarPosition
+            ) ?? .top
+            self.inspectorTabBarPosition = try container.decodeIfPresent(
+                SidebarTabBarPosition.self,
+                forKey: .inspectorTabBarPosition
+            ) ?? .top
             self.reopenBehavior = try container.decodeIfPresent(
                 ReopenBehavior.self,
                 forKey: .reopenBehavior
@@ -208,6 +222,13 @@ extension SettingsData {
     enum TabBarStyle: String, Codable {
         case native
         case xcode
+    }
+
+    /// The position for a sidebar tab bar
+    /// - **top**: Tab bar is positioned at the top of the sidebar
+    /// - **side**: Tab bar is positioned to the side of the sidebar
+    enum SidebarTabBarPosition: String, Codable {
+        case top, side
     }
 
     /// The reopen behavior of the app

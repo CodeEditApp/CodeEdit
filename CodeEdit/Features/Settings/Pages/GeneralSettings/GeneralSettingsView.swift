@@ -16,7 +16,7 @@ struct GeneralSettingsView: View {
     @EnvironmentObject var updater: SoftwareUpdater
     @FocusState private var focusedField: UUID?
 
-    @AppSettings var settings
+    @AppSettings(\.general) var settings
 
     @State private var openInCodeEdit: Bool = true
 
@@ -37,6 +37,8 @@ struct GeneralSettingsView: View {
                 appearance
                 fileIconStyle
                 tabBarStyle
+                navigatorTabBarPosition
+                inspectorTabBarPosition
             }
             Section {
                 showIssues
@@ -72,7 +74,7 @@ struct GeneralSettingsView: View {
 /// The extension of the view with all the preferences
 private extension GeneralSettingsView {
     var appearance: some View {
-        Picker("Appearance", selection: $settings.general.appAppearance) {
+        Picker("Appearance", selection: $settings.appAppearance) {
             Text("System")
                 .tag(SettingsData.Appearances.system)
             Divider()
@@ -81,14 +83,14 @@ private extension GeneralSettingsView {
             Text("Dark")
                 .tag(SettingsData.Appearances.dark)
         }
-        .onChange(of: settings.general.appAppearance) { tag in
+        .onChange(of: settings.appAppearance) { tag in
             tag.applyAppearance()
         }
     }
 
     // TODO: Implement reflecting Show Issues preference and remove disabled modifier
     var showIssues: some View {
-        Picker("Show Issues", selection: $settings.general.showIssues) {
+        Picker("Show Issues", selection: $settings.showIssues) {
             Text("Show Inline")
                 .tag(SettingsData.Issues.inline)
             Text("Show Minimized")
@@ -97,12 +99,12 @@ private extension GeneralSettingsView {
     }
 
     var showLiveIssues: some View {
-        Toggle("Show Live Issues", isOn: $settings.general.showLiveIssues)
+        Toggle("Show Live Issues", isOn: $settings.showLiveIssues)
     }
 
     var fileExtensions: some View {
         Group {
-            Picker("File Extensions", selection: $settings.general.fileExtensionsVisibility) {
+            Picker("File Extensions", selection: $settings.fileExtensionsVisibility) {
                 Text("Hide all")
                     .tag(SettingsData.FileExtensionsVisibility.hideAll)
                 Text("Show all")
@@ -113,13 +115,13 @@ private extension GeneralSettingsView {
                 Text("Hide only")
                     .tag(SettingsData.FileExtensionsVisibility.hideOnly)
             }
-            if case .showOnly = settings.general.fileExtensionsVisibility {
-                TextField("", text: $settings.general.shownFileExtensions.string, axis: .vertical)
+            if case .showOnly = settings.fileExtensionsVisibility {
+                TextField("", text: $settings.shownFileExtensions.string, axis: .vertical)
                     .labelsHidden()
                     .lineLimit(1...3)
             }
-            if case .hideOnly = settings.general.fileExtensionsVisibility {
-                TextField("", text: $settings.general.hiddenFileExtensions.string, axis: .vertical)
+            if case .hideOnly = settings.fileExtensionsVisibility {
+                TextField("", text: $settings.hiddenFileExtensions.string, axis: .vertical)
                     .labelsHidden()
                     .lineLimit(1...3)
             }
@@ -127,7 +129,7 @@ private extension GeneralSettingsView {
     }
 
     var fileIconStyle: some View {
-        Picker("File Icon Style", selection: $settings.general.fileIconStyle) {
+        Picker("File Icon Style", selection: $settings.fileIconStyle) {
             Text("Color")
                 .tag(SettingsData.FileIconStyle.color)
             Text("Monochrome")
@@ -137,7 +139,7 @@ private extension GeneralSettingsView {
     }
 
     var tabBarStyle: some View {
-        Picker("Tab Bar Style", selection: $settings.general.tabBarStyle) {
+        Picker("Tab Bar Style", selection: $settings.tabBarStyle) {
             Text("Xcode")
                 .tag(SettingsData.TabBarStyle.xcode)
             Text("Native")
@@ -146,8 +148,28 @@ private extension GeneralSettingsView {
         .pickerStyle(.radioGroup)
     }
 
+    var navigatorTabBarPosition: some View {
+        Picker("Navigator Tab Bar Position", selection: $settings.navigatorTabBarPosition) {
+            Text("Top")
+                .tag(SettingsData.SidebarTabBarPosition.top)
+            Text("Side")
+                .tag(SettingsData.SidebarTabBarPosition.side)
+        }
+        .pickerStyle(.radioGroup)
+    }
+
+    var inspectorTabBarPosition: some View {
+        Picker("Inspector Tab Bar Position", selection: $settings.inspectorTabBarPosition) {
+            Text("Top")
+                .tag(SettingsData.SidebarTabBarPosition.top)
+            Text("Side")
+                .tag(SettingsData.SidebarTabBarPosition.side)
+        }
+        .pickerStyle(.radioGroup)
+    }
+
     var reopenBehavior: some View {
-        Picker("Reopen Behavior", selection: $settings.general.reopenBehavior) {
+        Picker("Reopen Behavior", selection: $settings.reopenBehavior) {
             Text("Welcome Screen")
                 .tag(SettingsData.ReopenBehavior.welcome)
             Divider()
@@ -161,7 +183,7 @@ private extension GeneralSettingsView {
     var afterWindowsCloseBehaviour: some View {
         Picker(
             "After the last window is closed",
-            selection: $settings.general.reopenWindowAfterClose
+            selection: $settings.reopenWindowAfterClose
         ) {
             Text("Do nothing")
                 .tag(SettingsData.ReopenWindowBehavior.doNothing)
@@ -174,7 +196,7 @@ private extension GeneralSettingsView {
     }
 
     var projectNavigatorSize: some View {
-        Picker("Project Navigator Size", selection: $settings.general.projectNavigatorSize) {
+        Picker("Project Navigator Size", selection: $settings.projectNavigatorSize) {
             Text("Small")
                 .tag(SettingsData.ProjectNavigatorSize.small)
             Text("Medium")
@@ -185,7 +207,7 @@ private extension GeneralSettingsView {
     }
 
     var findNavigatorDetail: some View {
-        Picker("Find Navigator Detail", selection: $settings.general.findNavigatorDetail) {
+        Picker("Find Navigator Detail", selection: $settings.findNavigatorDetail) {
             ForEach(SettingsData.NavigatorDetail.allCases, id: \.self) { tag in
                 Text(tag.label).tag(tag)
             }
@@ -194,7 +216,7 @@ private extension GeneralSettingsView {
 
     // TODO: Implement reflecting Issue Navigator Detail preference and remove disabled modifier
     var issueNavigatorDetail: some View {
-        Picker("Issue Navigator Detail", selection: $settings.general.issueNavigatorDetail) {
+        Picker("Issue Navigator Detail", selection: $settings.issueNavigatorDetail) {
             ForEach(SettingsData.NavigatorDetail.allCases, id: \.self) { tag in
                 Text(tag.label).tag(tag)
             }
@@ -280,10 +302,7 @@ private extension GeneralSettingsView {
     }
 
     var autoSave: some View {
-        Toggle(
-            "Automatically save changes to disk",
-            isOn: $settings.general.isAutoSaveOn
-        )
+        Toggle("Automatically save changes to disk", isOn: $settings.isAutoSaveOn)
     }
 
     // MARK: - Preference Views
@@ -343,7 +362,7 @@ private extension GeneralSettingsView {
     }
 
     var revealFileOnFocusChangeToggle: some View {
-        Toggle("Automatically reveal in project navigator", isOn: $settings.general.revealFileOnFocusChange)
+        Toggle("Automatically reveal in project navigator", isOn: $settings.revealFileOnFocusChange)
     }
 
     private static let formatter = configure(DateFormatter()) {
@@ -361,12 +380,7 @@ extension View {
                     Divider()
                     HStack(spacing: 0) {
                         content()
-                            .buttonStyle(
-                                IconButtonStyle(
-                                    font: Font.system(size: 11, weight: .medium),
-                                    size: 24
-                                )
-                            )
+                            .buttonStyle(.icon(font: Font.system(size: 11, weight: .medium), size: 24))
                     }
                     .frame(height: 16)
                     .padding(.vertical, 4)

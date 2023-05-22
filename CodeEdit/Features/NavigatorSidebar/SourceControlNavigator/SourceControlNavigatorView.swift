@@ -40,5 +40,8 @@ struct SourceControlNavigatorView: View {
                 SourceControlNavigatorRepositoriesView()
             }
         }
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+            SourceControlToolbarBottom()
+        }
     }
 }

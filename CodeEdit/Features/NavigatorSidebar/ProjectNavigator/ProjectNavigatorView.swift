@@ -19,6 +19,10 @@ struct ProjectNavigatorView: View {
     @EnvironmentObject var tabManager: TabManager
 
     var body: some View {
-        OutlineView(selection: $tabManager.activeTabGroup.selected)
+        ProjectNavigatorOutlineView(selection: $tabManager.activeTabGroup.selected)
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                ProjectNavigatorToolbarBottom()
+            }
     }
+
 }

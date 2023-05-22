@@ -65,11 +65,11 @@ enum GitLabOAuthRouter: GitRouter {
     var URLRequest: Foundation.URLRequest? {
         switch self {
         case .authorize(let config, _):
-            let url = URL(string: path, relativeTo: URL(string: config.webEndpoint)!)
+            let url = URL(string: path, relativeTo: URL(string: config.webEndpoint!)!)
             let components = URLComponents(url: url!, resolvingAgainstBaseURL: true)
             return request(components!, parameters: params)
         case .accessToken(let config, _, _):
-            let url = URL(string: path, relativeTo: URL(string: config.webEndpoint)!)
+            let url = URL(string: path, relativeTo: URL(string: config.webEndpoint!)!)
             let components = URLComponents(url: url!, resolvingAgainstBaseURL: true)
             return request(components!, parameters: params)
         }

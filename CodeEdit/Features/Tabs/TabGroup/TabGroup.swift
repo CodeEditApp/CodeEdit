@@ -14,7 +14,7 @@ enum TabGroup {
 
     /// Closes all tabs which present the given file
     /// - Parameter file: a file.
-    func closeAllTabs(of file: WorkspaceClient.FileItem) {
+    func closeAllTabs(of file: CEWorkspaceFile) {
         switch self {
         case .one(let tabGroupData):
             tabGroupData.tabs.remove(file)
@@ -45,7 +45,7 @@ enum TabGroup {
     }
 
     /// Forms a set of all files currently represented by tabs.
-    func gatherOpenFiles() -> Set<WorkspaceClient.FileItem> {
+    func gatherOpenFiles() -> Set<CEWorkspaceFile> {
         switch self {
         case .one(let tabGroupData):
             return Set(tabGroupData.tabs)

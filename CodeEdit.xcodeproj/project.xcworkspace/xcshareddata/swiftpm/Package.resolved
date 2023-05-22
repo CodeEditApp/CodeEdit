@@ -21,19 +21,10 @@
     {
       "identity" : "codeedittextview",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/CodeEditApp/CodeEditTextView.git",
+      "location" : "https://github.com/CodeEditApp/CodeEditTextView",
       "state" : {
-        "revision" : "cfceb13ef453a9cdf8d587d5a1fe140d37077f8e",
-        "version" : "0.6.1"
-      }
-    },
-    {
-      "identity" : "preferences",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/sindresorhus/Preferences.git",
-      "state" : {
-        "revision" : "2651cd144615009242c994b087508fef99e9275c",
-        "version" : "2.6.0"
+        "revision" : "1dfd0b535e4d80fd8037298a30020bbfd7b5fb9c",
+        "version" : "0.6.3"
       }
     },
     {
@@ -59,8 +50,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/krzyzanowskim/STTextView.git",
       "state" : {
-        "revision" : "d6bec568df43028352c4062215fc3b5fab07c2d2",
-        "version" : "0.4.3"
+        "revision" : "6c6243ae790247368aea258e4fb3642523759bec",
+        "version" : "0.5.3"
       }
     },
     {

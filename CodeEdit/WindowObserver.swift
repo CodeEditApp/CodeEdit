@@ -19,7 +19,7 @@ struct WindowObserver<Content: View>: View {
     @State
     private var isFullscreen = false
 
-    @AppSettings var settings
+    @AppSettings(\.general.tabBarStyle) var tabBarStyle
 
     @State var modifierFlags: NSEvent.ModifierFlags = []
 
@@ -38,7 +38,7 @@ struct WindowObserver<Content: View>: View {
                 self.isFullscreen = false
             }
             // When tab bar style is changed, update NSWindow configuration as follows.
-            .onChange(of: settings.general.tabBarStyle) { newStyle in
+            .onChange(of: tabBarStyle) { newStyle in
                 DispatchQueue.main.async {
                     if newStyle == .native {
                         window.titlebarSeparatorStyle = .none

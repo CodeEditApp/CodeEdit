@@ -89,7 +89,6 @@ struct IconButtonStyle: ButtonStyle {
                 )
                 .frame(width: size, height: size)
                 .contentShape(Rectangle())
-                .opacity(isEnabled ? 1 : 0.5)
                 .brightness(
                     configuration.isPressed
                         ? colorScheme == .dark

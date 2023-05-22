@@ -23,9 +23,6 @@ struct StatusBarView: View {
     @EnvironmentObject
     private var model: StatusBarViewModel
 
-    @ObservedObject
-    private var prefs: Settings = .shared
-
     static let height = 28.0
 
     @Environment(\.colorScheme)
@@ -41,8 +38,8 @@ struct StatusBarView: View {
     /// The actual status bar
     var body: some View {
         HStack(alignment: .center, spacing: 10) {
-            StatusBarBreakpointButton()
-            StatusBarDivider()
+//            StatusBarBreakpointButton()
+//            StatusBarDivider()
             SegmentedControl($model.selectedTab, options: StatusBarTabType.allOptions)
                 .opacity(collapsed ? 0 : 1)
             Spacer()

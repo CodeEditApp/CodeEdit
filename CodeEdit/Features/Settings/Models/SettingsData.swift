@@ -20,7 +20,7 @@ import SwiftUI
 ///  all properties with
 ///  [`decodeIfPresent`](https://developer.apple.com/documentation/swift/keyeddecodingcontainer/2921389-decodeifpresent)
 ///  and providing a default value. Otherwise all settings get overridden.
-struct SettingsData: Codable {
+struct SettingsData: Codable, Hashable {
 
     /// The general global setting
     var general: GeneralSettings = .init()

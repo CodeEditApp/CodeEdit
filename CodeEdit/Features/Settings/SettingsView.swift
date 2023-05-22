@@ -19,21 +19,23 @@ struct SettingsView: View {
     private static let pages: [SettingsPage] = [
         .init(.general, baseColor: .gray, icon: .system("gear")),
         .init(.accounts, baseColor: .blue, icon: .system("at")),
-        .init(.behavior, baseColor: .red, icon: .system("flowchart.fill")),
-        .init(.navigation, baseColor: .green, icon: .system("arrow.triangle.turn.up.right.diamond.fill")),
+//        .init(.behaviors, baseColor: .red, icon: .system("flowchart.fill")),
+//        .init(.navigation, baseColor: .green, icon: .system("arrow.triangle.turn.up.right.diamond.fill")),
         .init(.theme, baseColor: .pink, icon: .system("paintbrush.fill")),
         .init(.textEditing, baseColor: .blue, icon: .system("pencil.line")),
         .init(.terminal, baseColor: .blue, icon: .system("terminal.fill")),
-        .init(.keybindings, baseColor: .gray, icon: .system("keyboard.fill")),
+//        .init(.keybindings, baseColor: .gray, icon: .system("keyboard.fill")),
         .init(.sourceControl, baseColor: .blue, icon: .symbol("vault")),
-        .init(.components, baseColor: .blue, icon: .system("puzzlepiece.fill")),
+//        .init(.components, baseColor: .blue, icon: .system("puzzlepiece.fill")),
         .init(.location, baseColor: .green, icon: .system("externaldrive.fill")),
-        .init(.advanced, baseColor: .gray, icon: .system("gearshape.2.fill"))
+//        .init(.advanced, baseColor: .gray, icon: .system("gearshape.2.fill"))
     ]
 
     /// Variables for the selected Page, the current search text and software updater
     @State private var selectedPage = pages.first!
     @State private var searchText: String = ""
+
+    @ObservedObject private var settings: Settings = .shared
 
     @Environment(\.presentationMode) var presentationMode
 
@@ -57,23 +59,6 @@ struct SettingsView: View {
                     .searchable(text: $searchText, placement: .sidebar, prompt: "Search")
                     .scrollDisabled(true)
             }
-//            .safeAreaInset(edge: .top) {
-//                TextField("Search", text: $searchText, prompt: Text("Search"))
-//                    .textFieldStyle(.roundedBorder)
-//                    .padding(.horizontal, 10)
-//                    .controlSize(.large)
-//                    .introspectTextField { textField in
-//                        let iconImage = NSImage(systemSymbolName: "magnifyingglass", accessibilityDescription: nil)
-//
-//                        let attachment = NSTextAttachment()
-//                        attachment.contents = iconImage
-//
-//                        let cell = NSTextAttachmentCell(imageCell: iconImage)
-//                        attachment.attachmentCell = cell
-//
-//                        textField.setCell_(NSSearchFieldCell.alloc().init())
-//                    }
-//            }
         } detail: {
             Group {
                 switch selectedPage.name {
@@ -98,13 +83,13 @@ struct SettingsView: View {
             .navigationSplitViewColumnWidth(500)
             .hideSidebarToggle()
             .onAppear {
-                model.showingDetails = false
+                model.backButtonVisible = false
             }
         }
         .navigationTitle(selectedPage.name.rawValue)
         .toolbar {
             ToolbarItem(placement: .navigation) {
-                if !model.showingDetails {
+                if !model.backButtonVisible {
                     Rectangle()
                         .frame(width: 10)
                         .opacity(0)
@@ -114,10 +99,11 @@ struct SettingsView: View {
             }
         }
         .environmentObject(model)
+        .environment(\.settings, settings.preferences)
     }
 }
 
 class SettingsViewModel: ObservableObject {
-    @Published var showingDetails: Bool = false
+    @Published var backButtonVisible: Bool = false
     @Published var scrolledToTop: Bool = false
 }

@@ -8,24 +8,24 @@
 import Foundation
 
 struct GitLabOAuthConfiguration: GitRouterConfiguration {
-
+    let provider = SourceControlAccount.Provider.gitlab
     var apiEndpoint: String?
     var accessToken: String?
     let token: String
     let secret: String
     let redirectURI: String
-    let webEndpoint: String
+    let webEndpoint: String?
     let errorDomain = "com.codeedit.models.accounts.gitlab"
 
     init(
-        _ url: String = GitURL.gitlabBaseURL,
-        webURL: String = GitURL.gitlabWebURL,
+        _ url: String? = nil,
+        webURL: String? = nil,
         token: String,
         secret: String,
         redirectURI: String
     ) {
-        apiEndpoint = url
-        webEndpoint = webURL
+        apiEndpoint = url ?? provider.apiURL?.absoluteString
+        webEndpoint = webURL ?? provider.baseURL?.absoluteString
         self.token = token
         self.secret = secret
         self.redirectURI = redirectURI

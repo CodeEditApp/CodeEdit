@@ -14,11 +14,11 @@ struct NavigatorSidebarView: View {
     @State
     private var selection: Int = 0
 
-    private let toolbarPadding: Double = -8.0
-
     init(workspace: WorkspaceDocument) {
         self.workspace = workspace
     }
+
+    @AppSettings(\.general.navigatorTabBarPosition) var sidebarPosition: SettingsData.SidebarTabBarPosition
 
     var body: some View {
         VStack {
@@ -33,22 +33,17 @@ struct NavigatorSidebarView: View {
                 Spacer()
             }
         }
-        .safeAreaInset(edge: .top) {
-            NavigatorSidebarToolbarTop(selection: $selection)
-                .padding(.bottom, toolbarPadding)
-        }
-        .safeAreaInset(edge: .bottom) {
-            Group {
-                switch selection {
-                case 0:
-                    NavigatorSidebarToolbarBottom()
-                case 1:
-                    SourceControlToolbarBottom()
-                default:
-                    NavigatorSidebarToolbarBottom()
-                }
+        .safeAreaInset(edge: .leading, spacing: 0) {
+            if sidebarPosition == .side {
+                NavigatorSidebarTabBar(selection: $selection, position: sidebarPosition)
             }
-            .padding(.top, toolbarPadding)
+        }
+        .safeAreaInset(edge: .top, spacing: 0) {
+            if sidebarPosition == .top {
+                NavigatorSidebarTabBar(selection: $selection, position: sidebarPosition)
+            } else {
+                Divider()
+            }
         }
         .environmentObject(workspace)
     }

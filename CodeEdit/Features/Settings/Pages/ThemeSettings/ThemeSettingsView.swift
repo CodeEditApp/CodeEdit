@@ -6,13 +6,13 @@
 //
 
 import SwiftUI
-import Preferences
 
 /// A view that implements the `Theme` preference section
 struct ThemeSettingsView: View {
     @Environment(\.colorScheme) var colorScheme
     @ObservedObject private var themeModel: ThemeModel = .shared
-    @AppSettings var settings
+    @AppSettings(\.theme) var settings
+    @AppSettings(\.terminal.darkAppearance) var useDarkTerminalAppearance
 
     @State private var listView: Bool = false
     @State private var selectedAppearance: ThemeSettingsAppearances = .dark
@@ -23,7 +23,7 @@ struct ThemeSettingsView: View {
     }
 
     func getThemeActive (_ theme: Theme) -> Bool {
-        if settings.theme.matchAppearance {
+        if settings.matchAppearance {
             return selectedAppearance == .dark
             ? themeModel.selectedDarkTheme == theme
             : selectedAppearance == .light
@@ -34,7 +34,7 @@ struct ThemeSettingsView: View {
     }
 
     func activateTheme (_ theme: Theme) {
-        if settings.theme.matchAppearance {
+        if settings.matchAppearance {
             if selectedAppearance == .dark {
                 themeModel.selectedDarkTheme = theme
             } else if selectedAppearance == .light {
@@ -59,14 +59,14 @@ struct ThemeSettingsView: View {
         SettingsForm {
             Section {
                 changeThemeOnSystemAppearance
-                if settings.theme.matchAppearance {
+                if settings.matchAppearance {
                     alwaysUseDarkTerminalAppearance
                 }
                 useThemeBackground
             }
             Section {
                 VStack(spacing: 0) {
-                    if settings.theme.matchAppearance {
+                    if settings.matchAppearance {
                         Picker("", selection: $selectedAppearance) {
                             ForEach(ThemeSettingsAppearances.allCases, id: \.self) { tab in
                                 Text(tab.rawValue)
@@ -104,19 +104,19 @@ struct ThemeSettingsView: View {
 
 private extension ThemeSettingsView {
     private var useThemeBackground: some View {
-        Toggle("Use theme background ", isOn: $settings.theme.useThemeBackground)
+        Toggle("Use theme background ", isOn: $settings.useThemeBackground)
     }
 
     private var alwaysUseDarkTerminalAppearance: some View {
-        Toggle("Always use dark terminal appearance", isOn: $settings.terminal.darkAppearance)
+        Toggle("Always use dark terminal appearance", isOn: $useDarkTerminalAppearance)
     }
 
     private var changeThemeOnSystemAppearance: some View {
         Toggle(
             "Automatically change theme based on system appearance",
-            isOn: $settings.theme.matchAppearance
+            isOn: $settings.matchAppearance
         )
-        .onChange(of: settings.theme.matchAppearance) { value in
+        .onChange(of: settings.matchAppearance) { value in
             if value {
                 if colorScheme == .dark {
                     themeModel.selectedTheme = themeModel.selectedDarkTheme
@@ -125,7 +125,7 @@ private extension ThemeSettingsView {
                 }
             } else {
                 themeModel.selectedTheme = themeModel.themes.first {
-                    $0.name == settings.theme.selectedTheme
+                    $0.name == settings.selectedTheme
                 }
             }
         }
