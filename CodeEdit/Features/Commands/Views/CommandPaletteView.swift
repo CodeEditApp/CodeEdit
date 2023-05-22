@@ -27,19 +27,15 @@ struct CommandPaletteView: View {
     }
 
     var body: some View {
-        OverlayView<SearchResultLabel, EmptyView, CodeEditCommand>(
+        OverlayView<CommandPaletteItem, EmptyView, CodeEditCommand>(
             title: "Commands",
             image: Image(systemName: "magnifyingglass"),
             options: $state.filteredMenuCommands,
             text: $state.commandQuery,
             alwaysShowOptions: true,
             optionRowHeight: 30
-        ) { command in
-            if let shortcut = command.shortcut {
-                return SearchResultLabel(labelName: "\(command.title) (\(shortcut))", textToMatch: state.commandQuery)
-            } else {
-                return SearchResultLabel(labelName: command.title, textToMatch: state.commandQuery)
-            }
+        ) { command, selected in
+            CommandPaletteItem(command: command, textToMatch: state.commandQuery, selected: selected)
         } onRowClick: {
             $0.runAction()
         } onClose: {
@@ -51,12 +47,29 @@ struct CommandPaletteView: View {
     }
 }
 
+struct CommandPaletteItem: View {
+    let command: CodeEditCommand
+    let textToMatch: String?
+    let selected: Bool
+
+    var body: some View {
+        HStack(spacing: 8) {
+            VStack(alignment: .leading, spacing: 0) {
+                SearchResultLabel(labelName: command.title, textToMatch: textToMatch ?? "")
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            Spacer()
+            Text(command.shortcut ?? "")
+                .foregroundColor(selected ? .primary : .secondary)
+        }
+        .frame(maxWidth: .infinity)
+    }
+}
+
 /// Implementation of command palette entity. While swiftui does not allow to use NSMutableAttributeStrings,
 /// the only way to fallback to UIKit and have NSViewRepresentable to be a bridge between UIKit and SwiftUI.
 /// Highlights currently entered text query
-
 struct SearchResultLabel: NSViewRepresentable {
-
     var labelName: String
     var textToMatch: String
 
@@ -92,5 +105,4 @@ struct SearchResultLabel: NSViewRepresentable {
         nsView.textColor = textToMatch.isEmpty ? .labelColor : .secondaryLabelColor
         nsView.attributedStringValue = highlight()
     }
-
 }

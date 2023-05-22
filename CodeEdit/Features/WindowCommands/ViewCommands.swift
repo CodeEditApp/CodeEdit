@@ -28,7 +28,7 @@ struct ViewCommands: Commands {
             Button("Show Command Palette") {
                 NSApp.sendAction(#selector(CodeEditWindowController.openCommandPalette(_:)), to: nil, from: nil)
             }
-            .keyboardShortcut("p", modifiers: [.shift, .command])
+            .keyboardShortcut("k")
 
             Button("Increase font size") {
                 if CodeEditDocumentController.shared.documents.count > 1 {

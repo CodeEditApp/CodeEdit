@@ -15,7 +15,7 @@ struct NSTableViewWrapper<Content: View, Item: Identifiable & Hashable>: NSViewR
 
     @Binding var selection: Item?
 
-    var itemView: (Item) -> Content
+    var itemView: (Item, Bool) -> Content
 
     class NonRespondingScrollView: NSScrollView {
         override var acceptsFirstResponder: Bool { false }
@@ -91,7 +91,12 @@ struct NSTableViewWrapper<Content: View, Item: Identifiable & Hashable>: NSViewR
         }
 
         func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
-            let view = NSHostingView(rootView: parent.itemView(parent.data[row]))
+            let view = NSHostingView(
+                rootView: parent.itemView(
+                    parent.data[row],
+                    parent.selection == parent.data[row]
+                )
+            )
             view.translatesAutoresizingMaskIntoConstraints = false
 
             let cell = NSTableCellView()

@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct OverlayView<RowView: View, PreviewView: View, Option: Identifiable & Hashable>: View {
-    @ViewBuilder let rowViewBuilder: ((Option) -> RowView)
+    @ViewBuilder let rowViewBuilder: ((Option, Bool) -> RowView)
     @ViewBuilder let previewViewBuilder: ((Option) -> PreviewView)?
 
     @Binding var options: [Option]
@@ -33,7 +33,7 @@ struct OverlayView<RowView: View, PreviewView: View, Option: Identifiable & Hash
         text: Binding<String>,
         alwaysShowOptions: Bool = false,
         optionRowHeight: CGFloat = 30,
-        content: @escaping ((Option) -> RowView),
+        content: @escaping ((Option, Bool) -> RowView),
         preview: ((Option) -> PreviewView)? = nil,
         onRowClick: @escaping ((Option) -> Void),
         onClose: @escaping () -> Void
@@ -168,7 +168,6 @@ struct OverlayView<RowView: View, PreviewView: View, Option: Identifiable & Hash
                 return
             }
             if let selection, let index = options.firstIndex(of: selection) {
-
                 self.selection = options[index+1]
             } else {
                 selection = options.first

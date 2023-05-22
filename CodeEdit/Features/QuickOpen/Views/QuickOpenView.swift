@@ -35,7 +35,7 @@ struct QuickOpenView: View {
             options: $state.openQuicklyFiles,
             text: $state.openQuicklyQuery,
             optionRowHeight: 40
-        ) { file in
+        ) { file, _  in
             QuickOpenItem(baseDirectory: state.fileURL, fileItem: file)
         } preview: { file in
             QuickOpenPreviewView(item: file)
