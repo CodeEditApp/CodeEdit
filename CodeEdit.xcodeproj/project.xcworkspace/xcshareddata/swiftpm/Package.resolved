@@ -104,8 +104,17 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/LanguageServerProtocol",
       "state" : {
-        "revision" : "9293fd8a3b4298bab12475ff46f793a6d4055f0e",
-        "version" : "0.9.0"
+        "revision" : "192bcfdcf7a013da49c6fa1b95de66254ce7c614",
+        "version" : "0.9.1"
+      }
+    },
+    {
+      "identity" : "logstream",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/CodeEditApp/LogStream",
+      "state" : {
+        "revision" : "71c743b55be0161cd51ac4585305bbf2b22c75d4",
+        "version" : "1.2.0"
       }
     },
     {
@@ -167,8 +176,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/krzyzanowskim/STTextView.git",
       "state" : {
-        "revision" : "d6bec568df43028352c4062215fc3b5fab07c2d2",
-        "version" : "0.4.3"
+        "revision" : "77a37aed80277467990c2c8d224ed951899446f0",
+        "version" : "0.6.0"
       }
     },
     {
@@ -194,8 +203,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/lukepistrol/SwiftLintPlugin",
       "state" : {
-        "revision" : "f69b412a765396d44dc9f4788a5b79919c1ca9e3",
-        "version" : "0.2.2"
+        "revision" : "f3586ed424d7bf5d94628332fbd0edebf1f5147f",
+        "version" : "0.2.3"
       }
     },
     {

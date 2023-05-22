@@ -56,7 +56,7 @@ struct InspectorSidebarView: View {
                     )
                 case .quickhelp:
                     QuickHelpInspectorView().padding(5)
-                case .uiExtension(let endpoint, let data):
+                case let .uiExtension(endpoint, data):
                     ExtensionSceneView(with: endpoint, sceneID: data.sceneID)
                 }
             } else {

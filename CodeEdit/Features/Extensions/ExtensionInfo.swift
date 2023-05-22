@@ -31,12 +31,35 @@ struct ExtensionInfo: Identifiable, Hashable {
         self.endpoint = endpoint
         self.availableFeatures = try await Self.getAvailableFeatures(endpoint: endpoint)
         self.bundleURL = try await Self.getBundleURL(endpoint: endpoint)
+        self.pid = try await Self.getProcessIdentifier(endpoint: endpoint)
         self.bundle = Bundle(url: bundleURL)
     }
 
     var bundleURL: URL
 
     var bundle: Bundle?
+
+    var pid: Int32
+
+    private static func getProcessIdentifier(endpoint: AppExtensionIdentity) async throws -> Int32 {
+        let process = try await AppExtensionProcess(configuration: .init(appExtensionIdentity: endpoint))
+
+        let connection = try process.makeXPCConnection()
+        connection.remoteObjectInterface = .init(with: XPCWrappable.self)
+        connection.resume()
+
+        defer {
+            connection.invalidate()
+        }
+
+        let identifier = try await connection.withContinuation { (service: XPCWrappable, continuation) in
+            service.getExtensionProcessIdentifier {
+                continuation.resumingHandler($0, .none)
+            }
+        }
+
+        return identifier
+    }
 
     private static func getBundleURL(endpoint: AppExtensionIdentity) async throws -> URL {
         let process = try await AppExtensionProcess(configuration: .init(appExtensionIdentity: endpoint))
