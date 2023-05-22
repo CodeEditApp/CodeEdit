@@ -246,7 +246,6 @@
 		58F2EB0B292FB2B0004A9BDE /* AccountsSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EADD292FB2B0004A9BDE /* AccountsSettings.swift */; };
 		58F2EB0D292FB2B0004A9BDE /* ThemeSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAE0292FB2B0004A9BDE /* ThemeSettings.swift */; };
 		58F2EB0E292FB2B0004A9BDE /* SoftwareUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EAE1292FB2B0004A9BDE /* SoftwareUpdater.swift */; };
-		58F2EB17292FB74D004A9BDE /* CodeEditTextView in Frameworks */ = {isa = PBXBuildFile; productRef = 58F2EB16292FB74D004A9BDE /* CodeEditTextView */; };
 		58F2EB1E292FB954004A9BDE /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 58F2EB1D292FB954004A9BDE /* Sparkle */; };
 		58FD7608291EA1CB0051D6E4 /* CommandPaletteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FD7605291EA1CB0051D6E4 /* CommandPaletteViewModel.swift */; };
 		58FD7609291EA1CB0051D6E4 /* CommandPaletteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FD7607291EA1CB0051D6E4 /* CommandPaletteView.swift */; };
@@ -296,6 +295,7 @@
 		6CABB1A129C5593800340467 /* OverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CABB1A029C5593800340467 /* OverlayView.swift */; };
 		6CB9144B29BEC7F100BC47F2 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		6CBD1BC62978DE53006639D5 /* Font+Caption3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBD1BC52978DE53006639D5 /* Font+Caption3.swift */; };
+		6CC81CEC2A16BB8F00487975 /* CodeEditTextView in Frameworks */ = {isa = PBXBuildFile; productRef = 6CC81CEB2A16BB8F00487975 /* CodeEditTextView */; };
 		6CC9E4B229B5669900C97388 /* Environment+ActiveTabGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC9E4B129B5669900C97388 /* Environment+ActiveTabGroup.swift */; };
 		6CD03B6A29FC773F001BD1D0 /* SettingsInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD03B6929FC773F001BD1D0 /* SettingsInjector.swift */; };
 		6CDA84AD284C1BA000C1CC3A /* TabBarContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CDA84AC284C1BA000C1CC3A /* TabBarContextMenu.swift */; };
@@ -794,8 +794,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				58F2EB17292FB74D004A9BDE /* CodeEditTextView in Frameworks */,
 				58F2EB1E292FB954004A9BDE /* Sparkle in Frameworks */,
+				6CC81CEC2A16BB8F00487975 /* CodeEditTextView in Frameworks */,
 				6C147C4529A329350089B630 /* OrderedCollections in Frameworks */,
 				5879828A292ED15F0085B254 /* SwiftTerm in Frameworks */,
 				6CDEFC9629E22C2700B7C684 /* Introspect in Frameworks */,
@@ -1781,7 +1781,6 @@
 			isa = PBXGroup;
 			children = (
 				588847652992A35800996D95 /* Models */,
-				588847662992A36100996D95 /* Views */,
 			);
 			path = CEWorkspace;
 			sourceTree = "<group>";
@@ -1795,13 +1794,6 @@
 				58710158298EB80000951BA4 /* CEWorkspaceFileManager.swift */,
 			);
 			path = Models;
-			sourceTree = "<group>";
-		};
-		588847662992A36100996D95 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Views;
 			sourceTree = "<group>";
 		};
 		588847672992AAB800996D95 /* Array */ = {
@@ -2370,11 +2362,11 @@
 			packageProductDependencies = (
 				2816F593280CF50500DD548B /* CodeEditSymbols */,
 				58798289292ED15F0085B254 /* SwiftTerm */,
-				58F2EB16292FB74D004A9BDE /* CodeEditTextView */,
 				58F2EB1D292FB954004A9BDE /* Sparkle */,
 				6C147C4429A329350089B630 /* OrderedCollections */,
 				6C81916A29B41DD300B75C92 /* DequeModule */,
 				6CDEFC9529E22C2700B7C684 /* Introspect */,
+				6CC81CEB2A16BB8F00487975 /* CodeEditTextView */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -2461,11 +2453,11 @@
 				2816F592280CF50500DD548B /* XCRemoteSwiftPackageReference "CodeEditSymbols" */,
 				287136B1292A407E00E9F5F4 /* XCRemoteSwiftPackageReference "SwiftLintPlugin" */,
 				58798288292ED15F0085B254 /* XCRemoteSwiftPackageReference "SwiftTerm" */,
-				58F2EB15292FB74D004A9BDE /* XCRemoteSwiftPackageReference "CodeEditTextView" */,
 				58F2EB1C292FB954004A9BDE /* XCRemoteSwiftPackageReference "Sparkle" */,
 				583E529A29361BAB001AB554 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
 				6C147C4329A329350089B630 /* XCRemoteSwiftPackageReference "swift-collections" */,
 				6CDEFC9429E22C2700B7C684 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
+				6CC81CEA2A16BB8F00487975 /* XCRemoteSwiftPackageReference "CodeEditTextView" */,
 			);
 			productRefGroup = B658FB2D27DA9E0F00EA4DBD /* Products */;
 			projectDirPath = "";
@@ -3813,7 +3805,7 @@
 			repositoryURL = "https://github.com/CodeEditApp/CodeEditTextView.git";
 			requirement = {
 				kind = exactVersion;
-				version = 0.6.2;
+				version = 0.6.3;
 			};
 		};
 		58F2EB1C292FB954004A9BDE /* XCRemoteSwiftPackageReference "Sparkle" */ = {
@@ -3830,6 +3822,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.0.0;
+			};
+		};
+		6CC81CEA2A16BB8F00487975 /* XCRemoteSwiftPackageReference "CodeEditTextView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/CodeEditApp/CodeEditTextView";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.6.2;
 			};
 		};
 		6CDEFC9429E22C2700B7C684 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
@@ -3863,11 +3863,6 @@
 			package = 58798288292ED15F0085B254 /* XCRemoteSwiftPackageReference "SwiftTerm" */;
 			productName = SwiftTerm;
 		};
-		58F2EB16292FB74D004A9BDE /* CodeEditTextView */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 58F2EB15292FB74D004A9BDE /* XCRemoteSwiftPackageReference "CodeEditTextView" */;
-			productName = CodeEditTextView;
-		};
 		58F2EB1D292FB954004A9BDE /* Sparkle */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 58F2EB1C292FB954004A9BDE /* XCRemoteSwiftPackageReference "Sparkle" */;
@@ -3882,6 +3877,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6C147C4329A329350089B630 /* XCRemoteSwiftPackageReference "swift-collections" */;
 			productName = DequeModule;
+		};
+		6CC81CEB2A16BB8F00487975 /* CodeEditTextView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6CC81CEA2A16BB8F00487975 /* XCRemoteSwiftPackageReference "CodeEditTextView" */;
+			productName = CodeEditTextView;
 		};
 		6CDEFC9529E22C2700B7C684 /* Introspect */ = {
 			isa = XCSwiftPackageProductDependency;
