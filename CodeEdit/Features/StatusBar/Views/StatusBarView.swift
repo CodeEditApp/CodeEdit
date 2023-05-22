@@ -38,8 +38,8 @@ struct StatusBarView: View {
     /// The actual status bar
     var body: some View {
         HStack(alignment: .center, spacing: 10) {
-            StatusBarBreakpointButton()
-            StatusBarDivider()
+//            StatusBarBreakpointButton()
+//            StatusBarDivider()
             Spacer()
             HStack(alignment: .center, spacing: 10) {
 //                StatusBarIndentSelector()
