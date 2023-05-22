@@ -537,23 +537,9 @@ struct TabBarView: View {
 
     private var trailingAccessories: some View {
         HStack(spacing: 2) {
-            TabBarAccessoryIcon(
-                icon: .init(systemName: "ellipsis.circle"),
-                action: {} // TODO: Implement
-            )
-            .foregroundColor(.secondary)
-            .buttonStyle(.plain)
-            .help("Options")
-            TabBarAccessoryIcon(
-                icon: .init(systemName: "arrow.left.arrow.right.square"),
-                action: {} // TODO: Implement
-            )
-            .foregroundColor(.secondary)
-            .buttonStyle(.plain)
-            .help("Enable Code Review")
             splitviewButton
         }
-        .padding(.horizontal, 5)
+        .padding(.horizontal, 10)
         .opacity(activeState != .inactive ? 1.0 : 0.5)
         .frame(maxHeight: .infinity) // Fill out vertical spaces.
         .background {
@@ -567,14 +553,18 @@ struct TabBarView: View {
         Group {
             switch (tabgroup.parent?.axis, modifierKeys.contains(.option)) {
             case (.horizontal, true), (.vertical, false):
-                TabBarAccessoryIcon(icon: Image(systemName: "square.split.1x2")) {
+                Button {
                     split(edge: .bottom)
+                } label: {
+                    Image(systemName: "square.split.1x2")
                 }
                 .help("Split Vertically")
 
             case (.vertical, true), (.horizontal, false):
-                TabBarAccessoryIcon(icon: Image(systemName: "square.split.2x1")) {
+                Button {
                     split(edge: .trailing)
+                } label: {
+                    Image(systemName: "square.split.2x1")
                 }
                 .help("Split Horizontally")
 
@@ -582,8 +572,7 @@ struct TabBarView: View {
                 EmptyView()
             }
         }
-        .foregroundColor(.secondary)
-        .buttonStyle(.plain)
+        .buttonStyle(.icon)
     }
 
     func split(edge: Edge) {
