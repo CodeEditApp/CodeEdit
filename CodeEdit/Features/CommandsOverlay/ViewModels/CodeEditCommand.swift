@@ -55,7 +55,7 @@ struct CodeEditCommand: Hashable, Identifiable, CustomDebugStringConvertible {
         self.title = menuItem.title
 
         if !menuItem.keyEquivalent.isEmpty {
-            self.shortcut = menuItem.keyEquivalentModifierMask.unicodeSymbol + menuItem.keyEquivalent.uppercased()
+            self.shortcut = menuItem.keyEquivalentModifierMask.unicodeSymbol + " " + menuItem.keyEquivalent.uppercased()
         } else {
             self.shortcut = nil
         }

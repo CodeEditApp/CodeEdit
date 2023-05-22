@@ -11,10 +11,6 @@ extension NSEvent.ModifierFlags {
     var unicodeSymbol: String {
         var symbols: [String] = []
 
-        if self.contains(.command) {
-            symbols.append("⌘") // Command symbol
-        }
-
         if self.contains(.control) {
             symbols.append("⌃") // Control symbol
         }
@@ -27,10 +23,14 @@ extension NSEvent.ModifierFlags {
             symbols.append("⇧") // Shift symbol
         }
 
+        if self.contains(.command) {
+            symbols.append("⌘") // Command symbol
+        }
+
         if self.contains(.function) {
             symbols.append("fn") // Function symbol
         }
 
-        return symbols.joined()
+        return symbols.joined(separator: " ")
     }
 }

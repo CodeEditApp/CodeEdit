@@ -60,7 +60,7 @@ struct CommandsOverlayItem: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             Spacer()
             Text(command.shortcut ?? "")
-                .foregroundColor(selected ? .primary : .secondary)
+                .foregroundColor(selected ? Color(.labelColor) : Color(.tertiaryLabelColor))
         }
         .frame(maxWidth: .infinity)
     }
@@ -80,7 +80,7 @@ struct SearchResultLabel: NSViewRepresentable {
         label.textColor = .labelColor
         label.isEditable = false
         label.isSelectable = false
-        label.font = .labelFont(ofSize: 13)
+        label.font = .labelFont(ofSize: 13.5)
         label.allowsDefaultTighteningForTruncation = false
         label.cell?.truncatesLastVisibleLine = true
         label.cell?.wraps = true
