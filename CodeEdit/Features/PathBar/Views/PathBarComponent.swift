@@ -10,8 +10,8 @@ import Combine
 
 struct PathBarComponent: View {
 
-    private let fileItem: WorkspaceClient.FileItem
-    private let tappedOpenFile: (WorkspaceClient.FileItem) -> Void
+    private let fileItem: CEWorkspaceFile
+    private let tappedOpenFile: (CEWorkspaceFile) -> Void
 
     @Environment(\.colorScheme)
     var colorScheme
@@ -19,25 +19,22 @@ struct PathBarComponent: View {
     @Environment(\.controlActiveState)
     private var activeState
 
-    @StateObject
-    private var prefs: AppPreferencesModel = .shared
-
     @State
     var position: NSPoint?
 
     @State
-    var selection: WorkspaceClient.FileItem
+    var selection: CEWorkspaceFile
 
     init(
-        fileItem: WorkspaceClient.FileItem,
-        tappedOpenFile: @escaping (WorkspaceClient.FileItem) -> Void
+        fileItem: CEWorkspaceFile,
+        tappedOpenFile: @escaping (CEWorkspaceFile) -> Void
     ) {
         self.fileItem = fileItem
         self._selection = .init(wrappedValue: fileItem)
         self.tappedOpenFile = tappedOpenFile
     }
 
-    var siblings: [WorkspaceClient.FileItem] {
+    var siblings: [CEWorkspaceFile] {
         if let siblings = fileItem.parent?.children?.sortItems(foldersOnTop: true), !siblings.isEmpty {
             return siblings
         } else {

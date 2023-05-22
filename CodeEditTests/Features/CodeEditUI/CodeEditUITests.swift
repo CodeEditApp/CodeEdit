@@ -65,24 +65,6 @@ final class CodeEditUIUnitTests: XCTestCase {
         assertSnapshot(matching: hosting, as: .image)
     }
 
-    // MARK: FontPickerView
-
-    func testFontPickerViewLight() throws {
-        let view = FontPicker("Font", name: .constant("SF-Mono"), size: .constant(13))
-        let hosting = NSHostingView(rootView: view)
-        hosting.appearance = .init(named: .aqua)
-        hosting.frame = CGRect(origin: .zero, size: .init(width: 120, height: 30))
-        assertSnapshot(matching: hosting, as: .image)
-    }
-
-    func testFontPickerViewDark() throws {
-        let view = FontPicker("Font", name: .constant("SF-Mono"), size: .constant(13))
-        let hosting = NSHostingView(rootView: view)
-        hosting.appearance = .init(named: .darkAqua)
-        hosting.frame = CGRect(origin: .zero, size: .init(width: 120, height: 30))
-        assertSnapshot(matching: hosting, as: .image)
-    }
-
     // MARK: EffectView
 
     func testEffectViewLight() throws {
@@ -106,7 +88,7 @@ final class CodeEditUIUnitTests: XCTestCase {
     func testBranchPickerLight() throws {
         let view = ToolbarBranchPicker(
             shellClient: ShellClient(),
-            workspace: nil
+            workspaceFileManager: nil
         )
         let hosting = NSHostingView(rootView: view)
         hosting.appearance = .init(named: .aqua)
@@ -117,7 +99,7 @@ final class CodeEditUIUnitTests: XCTestCase {
     func testBranchPickerDark() throws {
         let view = ToolbarBranchPicker(
             shellClient: ShellClient(),
-            workspace: nil
+            workspaceFileManager: nil
         )
         let hosting = NSHostingView(rootView: view)
         hosting.appearance = .init(named: .darkAqua)

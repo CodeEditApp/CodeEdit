@@ -4,4 +4,4 @@
 
 ### Model
 
-- ``AppPreferences/KeybindingsPreferences``
+- ``Settings/KeybindingsPreferences``

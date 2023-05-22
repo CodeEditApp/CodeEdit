@@ -9,8 +9,8 @@ import SwiftUI
 
 struct PathBarView: View {
 
-    private let file: WorkspaceClient.FileItem
-    private let tappedOpenFile: (WorkspaceClient.FileItem) -> Void
+    private let file: CEWorkspaceFile
+    private let tappedOpenFile: (CEWorkspaceFile) -> Void
 
     @Environment(\.colorScheme)
     private var colorScheme
@@ -24,16 +24,16 @@ struct PathBarView: View {
     static let height = 27.0
 
     init(
-        file: WorkspaceClient.FileItem,
-        tappedOpenFile: @escaping (WorkspaceClient.FileItem) -> Void
+        file: CEWorkspaceFile,
+        tappedOpenFile: @escaping (CEWorkspaceFile) -> Void
     ) {
         self.file = file
         self.tappedOpenFile = tappedOpenFile
     }
 
-    var fileItems: [WorkspaceClient.FileItem] {
-        var treePath: [WorkspaceClient.FileItem] = []
-        var currentFile: WorkspaceClient.FileItem? = file
+    var fileItems: [CEWorkspaceFile] {
+        var treePath: [CEWorkspaceFile] = []
+        var currentFile: CEWorkspaceFile? = file
 
         while let currentFileLoop = currentFile {
             treePath.insert(currentFileLoop, at: 0)

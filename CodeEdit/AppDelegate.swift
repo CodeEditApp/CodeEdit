@@ -1,20 +1,19 @@
 //
-//  CodeEditorAppDelegate.swift
+//  AppDelegate.swift
 //  CodeEdit
 //
 //  Created by Pavel Kasila on 12.03.22.
 //
 
 import SwiftUI
-import Preferences
 import CodeEditSymbols
 
 final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
-    var updater: SoftwareUpdater = SoftwareUpdater()
+    private let updater = SoftwareUpdater()
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         enableWindowSizeSaveOnQuit()
-        AppPreferencesModel.shared.preferences.general.appAppearance.applyAppearance()
+        Settings.shared.preferences.general.appAppearance.applyAppearance()
         checkForFilesToOpen()
 
         NSApp.closeWindow(.welcome, .about)
@@ -75,7 +74,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     }
 
     func handleOpen() {
-        let behavior = AppPreferencesModel.shared.preferences.general.reopenBehavior
+        let behavior = Settings.shared.preferences.general.reopenBehavior
 
         switch behavior {
         case .welcome:
@@ -137,15 +136,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 
     // MARK: - Open windows
 
-    @IBAction func openPreferences(_ sender: Any) {
-        preferencesWindowController.show()
-    }
-
-    @IBAction func openWelcome(_ sender: Any) {
+    @IBAction private func openWelcome(_ sender: Any) {
         NSApp.openWindow(.welcome)
     }
 
-    @IBAction func openAbout(_ sender: Any) {
+    @IBAction private func openAbout(_ sender: Any) {
         NSApp.openWindow(.about)
     }
 
@@ -155,7 +150,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         FeedbackView().showWindow()
     }
 
-    @IBAction func checkForUpdates(_ sender: Any) {
+    @IBAction private func checkForUpdates(_ sender: Any) {
         updater.checkForUpdates()
     }
 
@@ -209,101 +204,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         // This enables window restoring on normal quit (instead of only on force-quit).
         UserDefaults.standard.setValue(true, forKey: "NSQuitAlwaysKeepsWindows")
     }
-
-    // MARK: - Preferences
-    private lazy var preferencesWindowController = PreferencesWindowController(
-        panes: [
-            Preferences.Pane(
-                identifier: Preferences.PaneIdentifier("GeneralSettings"),
-                title: "General",
-                toolbarIcon: NSImage(systemSymbolName: "gearshape", accessibilityDescription: nil)!
-            ) {
-                GeneralPreferencesView()
-                    .environmentObject(updater)
-            },
-            Preferences.Pane(
-                identifier: Preferences.PaneIdentifier("Accounts"),
-                title: "Accounts",
-                toolbarIcon: NSImage(systemSymbolName: "at", accessibilityDescription: nil)!
-            ) {
-                AccountPreferencesView()
-            },
-            Preferences.Pane(
-                identifier: Preferences.PaneIdentifier("Behaviors"),
-                title: "Behaviors",
-                toolbarIcon: NSImage(systemSymbolName: "flowchart", accessibilityDescription: nil)!
-            ) {
-                PreferencesPlaceholderView()
-            },
-            Preferences.Pane(
-                identifier: Preferences.PaneIdentifier("Navigation"),
-                title: "Navigation",
-                toolbarIcon: NSImage(
-                    systemSymbolName: "arrow.triangle.turn.up.right.diamond",
-                    accessibilityDescription: nil
-                )!
-            ) {
-                PreferencesPlaceholderView()
-            },
-            Preferences.Pane(
-                identifier: Preferences.PaneIdentifier("Themes"),
-                title: "Themes",
-                toolbarIcon: NSImage(systemSymbolName: "paintbrush", accessibilityDescription: nil)!
-            ) {
-                ThemePreferencesView()
-            },
-            Preferences.Pane(
-                identifier: Preferences.PaneIdentifier("TextEditing"),
-                title: "Text Editing",
-                toolbarIcon: NSImage(systemSymbolName: "square.and.pencil", accessibilityDescription: nil)!
-            ) {
-                TextEditingPreferencesView()
-            },
-            Preferences.Pane(
-                identifier: Preferences.PaneIdentifier("Terminal"),
-                title: "Terminal",
-                toolbarIcon: NSImage(systemSymbolName: "terminal", accessibilityDescription: nil)!
-            ) {
-                TerminalPreferencesView()
-            },
-            Preferences.Pane(
-                identifier: Preferences.PaneIdentifier("KeyBindings"),
-                title: "Key Bindings",
-                toolbarIcon: NSImage(systemSymbolName: "keyboard", accessibilityDescription: nil)!
-            ) {
-                KeybindingsPreferencesView()
-            },
-            Preferences.Pane(
-                identifier: Preferences.PaneIdentifier("SourceControl"),
-                title: "Source Control",
-                toolbarIcon: NSImage.vault
-            ) {
-                SourceControlPreferencesView()
-            },
-            Preferences.Pane(
-                identifier: Preferences.PaneIdentifier("Components"),
-                title: "Components",
-                toolbarIcon: NSImage(systemSymbolName: "puzzlepiece", accessibilityDescription: nil)!
-            ) {
-                PreferencesPlaceholderView()
-            },
-            Preferences.Pane(
-                identifier: Preferences.PaneIdentifier("Locations"),
-                title: "Locations",
-                toolbarIcon: NSImage(systemSymbolName: "externaldrive", accessibilityDescription: nil)!
-            ) {
-                LocationsPreferencesView()
-            },
-            Preferences.Pane(
-                identifier: Preferences.PaneIdentifier("Advanced"),
-                title: "Advanced",
-                toolbarIcon: NSImage(systemSymbolName: "gearshape.2", accessibilityDescription: nil)!
-            ) {
-                PreferencesPlaceholderView()
-            }
-        ],
-        animated: false
-    )
 
     // MARK: NSDocumentController delegate
 

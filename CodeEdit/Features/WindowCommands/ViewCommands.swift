@@ -8,8 +8,12 @@
 import SwiftUI
 
 struct ViewCommands: Commands {
-    private var prefs: AppPreferencesModel = .shared
+    @AppSettings(\.textEditing.font) var font
+
     @State var windowController: CodeEditWindowController?
+
+    private let documentController: CodeEditDocumentController = CodeEditDocumentController()
+    private let statusBarViewModel: StatusBarViewModel = StatusBarViewModel()
 
     var navigatorCollapsed: Bool {
         windowController?.navigatorCollapsed ?? false
@@ -26,14 +30,22 @@ struct ViewCommands: Commands {
             }
             .keyboardShortcut("p", modifiers: [.shift, .command])
 
-            Button("Zoom in") {
-                prefs.preferences.textEditing.font.size += 1
+            Button("Increase font size") {
+                if CodeEditDocumentController.shared.documents.count > 1 {
+                    font.size += 1
+                }
+                font.size += 1
             }
             .keyboardShortcut("+")
 
-            Button("Zoom out") {
-                if !(prefs.preferences.textEditing.font.size <= 1) {
-                    prefs.preferences.textEditing.font.size -= 1
+            Button("Decrease font size") {
+                if CodeEditDocumentController.shared.documents.count > 1 {
+                    if !(font.size <= 1) {
+                        font.size -= 1
+                    }
+                }
+                if !(font.size <= 1) {
+                    font.size -= 1
                 }
             }
             .keyboardShortcut("-")

@@ -74,7 +74,7 @@ extension WorkspaceDocument {
             // - Lazily load strings using `FileHandle.AsyncBytes`
             //   https://developer.apple.com/documentation/foundation/filehandle/3766681-bytes
             filePaths.map { url in
-                WorkspaceClient.FileItem(url: url, children: nil)
+                CEWorkspaceFile(url: url, children: nil)
             }.forEach { fileItem in
                 guard let data = try? Data(contentsOf: fileItem.url),
                       let string = String(data: data, encoding: .utf8) else { return }
@@ -122,7 +122,7 @@ extension WorkspaceDocument {
         }
 
         // see if the line contains search term, obeying selectedMode
-        // swiftlint:disable cyclomatic_complexity
+        // swiftlint:disable:next cyclomatic_complexity
         func lineContainsSearchTerm(line rawLine: String, term searchterm: String) -> Bool {
             var line = rawLine
             if line.hasSuffix(" ") { line.removeLast() }
@@ -170,7 +170,7 @@ extension WorkspaceDocument {
                 return foundMatch
             } else if findMode == .RegularExpression {
                 guard let regex = try? NSRegularExpression(pattern: searchterm) else { return false }
-                // swiftlint:disable legacy_constructor
+                // swiftlint:disable:next legacy_constructor
                 return regex.firstMatch(in: String(line), range: NSMakeRange(0, line.utf16.count)) != nil
             }
 

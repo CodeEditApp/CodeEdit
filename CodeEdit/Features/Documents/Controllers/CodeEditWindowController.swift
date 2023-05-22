@@ -16,8 +16,6 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
 
     var observers: [NSKeyValueObservation] = []
 
-    private var prefs: AppPreferencesModel = .shared
-
     var workspace: WorkspaceDocument?
     var quickOpenPanel: OverlayPanel?
     var commandPalettePanel: OverlayPanel?
@@ -88,9 +86,11 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         let feedbackPerformer = NSHapticFeedbackManager.defaultPerformer
         let splitVC = CodeEditSplitViewController(workspace: workspace, feedbackPerformer: feedbackPerformer)
 
-        let navigatorView = NavigatorSidebarView(workspace: workspace)
-            .environmentObject(workspace)
-            .environmentObject(workspace.tabManager)
+        let navigatorView = SettingsInjector {
+            NavigatorSidebarView(workspace: workspace)
+                .environmentObject(workspace)
+                .environmentObject(workspace.tabManager)
+        }
 
         let navigator = NSSplitViewItem(
             sidebarWithViewController: NSHostingController(rootView: navigatorView)
@@ -100,10 +100,12 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         navigator.collapseBehavior = .useConstraints
         splitVC.addSplitViewItem(navigator)
 
-        let workspaceView = WindowObserver(window: window!) {
-            WorkspaceView()
-                .environmentObject(workspace)
-                .environmentObject(workspace.tabManager)
+        let workspaceView = SettingsInjector {
+            WindowObserver(window: window!) {
+                WorkspaceView()
+                    .environmentObject(workspace)
+                    .environmentObject(workspace.tabManager)
+            }
         }
 
         let mainContent = NSSplitViewItem(
@@ -112,9 +114,11 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         mainContent.titlebarSeparatorStyle = .line
         splitVC.addSplitViewItem(mainContent)
 
-        let inspectorView = InspectorSidebarView(workspace: workspace)
-            .environmentObject(workspace)
-            .environmentObject(workspace.tabManager)
+        let inspectorView = SettingsInjector {
+            InspectorSidebarView(workspace: workspace)
+                .environmentObject(workspace)
+                .environmentObject(workspace.tabManager)
+        }
 
         let inspector = NSSplitViewItem(
             viewController: NSHostingController(rootView: inspectorView)
@@ -138,7 +142,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         toolbar.showsBaselineSeparator = false
         self.window?.titleVisibility = .hidden
         self.window?.toolbarStyle = .unifiedCompact
-        if prefs.preferences.general.tabBarStyle == .native {
+        if Settings[\.general].tabBarStyle == .native {
             // Set titlebar background as transparent by default in order to
             // style the toolbar background in native tab bar style.
             self.window?.titlebarSeparatorStyle = .none
@@ -223,7 +227,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
             let view = NSHostingView(
                 rootView: ToolbarBranchPicker(
                     shellClient: currentWorld.shellClient,
-                    workspace: workspace?.workspaceClient
+                    workspaceFileManager: workspace?.workspaceFileManager
                 )
             )
             toolbarItem.view = view
@@ -263,7 +267,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
                 let panel = OverlayPanel()
                 self.commandPalettePanel = panel
                 let contentView = CommandPaletteView(state: state, closePalette: panel.close)
-                panel.contentView = NSHostingView(rootView: contentView)
+                panel.contentView = NSHostingView(rootView: SettingsInjector { contentView })
                 window?.addChildWindow(panel, ordered: .above)
                 panel.makeKeyAndOrderFront(self)
             }
@@ -290,7 +294,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
                     workspace.tabManager.openTab(item: file)
                 }
 
-                panel.contentView = NSHostingView(rootView: contentView)
+                panel.contentView = NSHostingView(rootView: SettingsInjector { contentView })
                 window?.addChildWindow(panel, ordered: .above)
                 panel.makeKeyAndOrderFront(self)
             }

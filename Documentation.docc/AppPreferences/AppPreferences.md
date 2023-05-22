@@ -1,4 +1,4 @@
-# ``CodeEdit/AppPreferences``
+# ``CodeEdit/Settings``
 
 ## Topics
 
@@ -9,7 +9,7 @@
 
 ### Preferences Model
 
-- ``AppPreferencesModel``
+- ``SettingsModel``
 - ``SoftwareUpdater``
 
 ### Preferences Section Views

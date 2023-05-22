@@ -8,24 +8,25 @@
 import Foundation
 
 struct GitLabTokenConfiguration: GitRouterConfiguration {
-
+    let provider = SourceControlAccount.Provider.gitlab
     var apiEndpoint: String?
     var accessToken: String?
     let errorDomain: String? = "com.codeedit.models.accounts.gitlab"
 
-    init(_ token: String? = nil, url: String = GitURL.gitlabBaseURL) {
-        apiEndpoint = url
+    init(_ token: String? = nil, url: String? = nil) {
+        apiEndpoint = url ?? provider.apiURL?.absoluteString
         accessToken = token
     }
 }
 
 struct GitLabPrivateTokenConfiguration: GitRouterConfiguration {
+    let provider = SourceControlAccount.Provider.gitlab
     var apiEndpoint: String?
     var accessToken: String?
     let errorDomain: String? = "com.codeedit.models.accounts.gitlab"
 
-    init(_ token: String? = nil, url: String = GitURL.gitlabBaseURL) {
-        apiEndpoint = url
+    init(_ token: String? = nil, url: String? = nil) {
+        apiEndpoint = url ?? provider.apiURL?.absoluteString
         accessToken = token
     }
 

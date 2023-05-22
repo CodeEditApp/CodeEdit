@@ -16,11 +16,21 @@ struct CodeFileView: View {
     @ObservedObject
     private var codeFile: CodeFileDocument
 
-    @ObservedObject
-    private var prefs: AppPreferencesModel = .shared
+    @AppSettings(\.textEditing.defaultTabWidth) var defaultTabWidth
+    @AppSettings(\.textEditing.indentOption) var settingsIndentOption
+    @AppSettings(\.textEditing.lineHeightMultiple) var lineHeightMultiple
+    @AppSettings(\.textEditing.wrapLinesToEditorWidth) var wrapLinesToEditorWidth
+    @AppSettings(\.textEditing.font) var settingsFont
+    @AppSettings(\.theme.useThemeBackground) var useThemeBackground
+    @AppSettings(\.theme.matchAppearance) var matchAppearance
+    @AppSettings(\.textEditing.letterSpacing) var letterSpacing
+    @AppSettings(\.textEditing.bracketHighlight) var bracketHighlight
 
     @Environment(\.colorScheme)
     private var colorScheme
+
+    @StateObject
+    private var themeModel: ThemeModel = .shared
 
     private var cancellables = [AnyCancellable]()
 
@@ -57,7 +67,36 @@ struct CodeFileView: View {
 
     @State
     private var font: NSFont = {
-        return AppPreferencesModel.shared.preferences.textEditing.font.current()
+        return Settings[\.textEditing].font.current()
+    }()
+
+    @State
+    private var bracketPairHighlight: BracketPairHighlight? = {
+        let theme = ThemeModel.shared.selectedTheme ?? ThemeModel.shared.themes.first!
+        let color = Settings[\.textEditing].bracketHighlight.useCustomColor
+        ? Settings[\.textEditing].bracketHighlight.color.nsColor
+        : theme.editor.text.nsColor.withAlphaComponent(0.8)
+        switch Settings[\.textEditing].bracketHighlight.highlightType {
+        case .disabled:
+            return nil
+        case .flash:
+            return .flash
+        case .bordered:
+            return .bordered(color: color)
+        case .underline:
+            return .underline(color: color)
+        }
+    }()
+
+    // Tab is a placeholder value, is overriden immediately in `init`.
+    @State
+    private var indentOption: IndentOption = {
+        switch Settings[\.textEditing].indentOption.indentType {
+        case .tab:
+            return .tab
+        case .spaces:
+            return .spaces(count: Settings[\.textEditing].indentOption.spaceCount)
+        }
     }()
 
     @Environment(\.edgeInsets)
@@ -70,48 +109,58 @@ struct CodeFileView: View {
         CodeEditTextView(
             $codeFile.content,
             language: getLanguage(),
-            theme: $selectedTheme.editor.editorTheme,
-            font: $font,
-            tabWidth: $prefs.preferences.textEditing.defaultTabWidth,
-            lineHeight: $prefs.preferences.textEditing.lineHeightMultiple,
-            wrapLines: $prefs.preferences.textEditing.wrapLinesToEditorWidth,
+            theme: selectedTheme.editor.editorTheme,
+            font: font,
+            tabWidth: defaultTabWidth,
+            indentOption: indentOption,
+            lineHeight: lineHeightMultiple,
+            wrapLines: wrapLinesToEditorWidth,
             cursorPosition: $codeFile.cursorPosition,
-            useThemeBackground: prefs.preferences.theme.useThemeBackground,
+            useThemeBackground: useThemeBackground,
             contentInsets: edgeInsets.nsEdgeInsets,
-            isEditable: isEditable
+            isEditable: isEditable,
+            letterSpacing: letterSpacing,
+            bracketPairHighlight: bracketPairHighlight
         )
         .id(codeFile.fileURL)
         .background {
             if colorScheme == .dark {
-                if prefs.preferences.theme.selectedTheme == prefs.preferences.theme.selectedLightTheme {
-                    Color.white
-                } else {
-                    EffectView(.underPageBackground)
-                }
+                EffectView(.underPageBackground)
             } else {
-                if prefs.preferences.theme.selectedTheme == prefs.preferences.theme.selectedDarkTheme {
-                    Color.black
-                } else {
-                    EffectView(.contentBackground)
-                }
-
+                EffectView(.contentBackground)
             }
         }
+        .colorScheme(
+            selectedTheme.appearance == .dark
+            ? .dark
+            : .light
+        )
         // minHeight zero fixes a bug where the app would freeze if the contents of the file are empty.
         .frame(minHeight: .zero, maxHeight: .infinity)
-        .onChange(of: ThemeModel.shared.selectedTheme) { newValue in
+        .onChange(of: themeModel.selectedTheme) { newValue in
             guard let theme = newValue else { return }
             self.selectedTheme = theme
         }
         .onChange(of: colorScheme) { newValue in
-            if prefs.preferences.theme.mirrorSystemAppearance {
-                ThemeModel.shared.selectedTheme = newValue == .dark
-                    ? ThemeModel.shared.selectedDarkTheme!
-                    : ThemeModel.shared.selectedLightTheme!
+            if matchAppearance {
+                themeModel.selectedTheme = newValue == .dark
+                ? themeModel.selectedDarkTheme
+                : themeModel.selectedLightTheme
             }
         }
-        .onChange(of: prefs.preferences.textEditing.font) { _ in
-            font = AppPreferencesModel.shared.preferences.textEditing.font.current()
+        .onChange(of: settingsFont) { _ in
+            font = Settings.shared.preferences.textEditing.font.current()
+        }
+        .onChange(of: bracketHighlight) { _ in
+            bracketPairHighlight = getBracketPairHighlight()
+        }
+        .onChange(of: settingsIndentOption) { option in
+            switch option.indentType {
+            case .tab:
+                self.indentOption = .tab
+            case .spaces:
+                self.indentOption = .spaces(count: option.spaceCount)
+            }
         }
     }
 
@@ -120,5 +169,22 @@ struct CodeFileView: View {
             return .default
         }
         return .detectLanguageFrom(url: url)
+    }
+
+    private func getBracketPairHighlight() -> BracketPairHighlight? {
+        let theme = ThemeModel.shared.selectedTheme ?? ThemeModel.shared.themes.first!
+        let color = Settings[\.textEditing].bracketHighlight.useCustomColor
+        ? Settings[\.textEditing].bracketHighlight.color.nsColor
+        : theme.editor.text.nsColor.withAlphaComponent(0.8)
+        switch Settings[\.textEditing].bracketHighlight.highlightType {
+        case .disabled:
+            return nil
+        case .flash:
+            return .flash
+        case .bordered:
+            return .bordered(color: color)
+        case .underline:
+            return .underline(color: color)
+        }
     }
 }

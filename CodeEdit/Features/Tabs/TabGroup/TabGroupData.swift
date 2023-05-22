@@ -10,10 +10,11 @@ import OrderedCollections
 import DequeModule
 
 final class TabGroupData: ObservableObject, Identifiable {
-    typealias Tab = WorkspaceClient.FileItem
+    typealias Tab = CEWorkspaceFile
 
     /// Set of open tabs.
-    @Published var tabs: OrderedSet<Tab> = [] {
+    @Published
+    var tabs: OrderedSet<Tab> = [] {
         didSet {
             let change = tabs.symmetricDifference(oldValue)
 
@@ -33,11 +34,9 @@ final class TabGroupData: ObservableObject, Identifiable {
         }
     }
 
-    /// History of tab switching.
-    @Published var history: Deque<Tab> = []
-
     /// The current offset in the history list.
-    @Published var historyOffset: Int = 0 {
+    @Published
+    var historyOffset: Int = 0 {
         didSet {
             let tab = history[historyOffset]
 
@@ -52,10 +51,16 @@ final class TabGroupData: ObservableObject, Identifiable {
         }
     }
 
-    /// Currently selected tab.
-    @Published var selected: Tab?
+    /// History of tab switching.
+    @Published
+    var history: Deque<Tab> = []
 
-    @Published var temporaryTab: Tab?
+    /// Currently selected tab.
+    @Published
+    var selected: Tab?
+
+    @Published
+    var temporaryTab: Tab?
 
     let id = UUID()
 

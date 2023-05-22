@@ -40,6 +40,8 @@ struct InspectorSidebarView: View {
         self.workspace = workspace
     }
 
+    @AppSettings(\.general.inspectorTabBarPosition) var sidebarPosition: SettingsData.SidebarTabBarPosition
+
     var body: some View {
         VStack {
             if let path = tabManager.activeTabGroup.selected?.fileDocument?.fileURL?.path(percentEncoded: false) {
@@ -63,6 +65,7 @@ struct InspectorSidebarView: View {
                 NoSelectionInspectorView()
             }
         }
+        .clipShape(Rectangle())
         .frame(
             minWidth: CodeEditWindowController.minSidebarWidth,
             idealWidth: 260,
@@ -70,9 +73,17 @@ struct InspectorSidebarView: View {
             maxHeight: .infinity,
             alignment: .top
         )
+        .safeAreaInset(edge: .trailing, spacing: 0) {
+            if sidebarPosition == .side {
+                InspectorSidebarTabBar(selection: $selection, position: sidebarPosition)
+            }
+        }
         .safeAreaInset(edge: .top, spacing: 0) {
-            InspectorSidebarToolbarTop(items: items, selection: $selection)
-                .background(.ultraThinMaterial)
+            if sidebarPosition == .top {
+                InspectorSidebarTabBar(selection: $selection, position: sidebarPosition)
+            } else {
+                Divider()
+            }
         }
     }
 }

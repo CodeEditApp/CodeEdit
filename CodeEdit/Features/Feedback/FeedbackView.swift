@@ -11,9 +11,6 @@ struct FeedbackView: View {
     @ObservedObject
     private var feedbackModel: FeedbackModel = .shared
 
-    @StateObject
-    var prefs: AppPreferencesModel = .shared
-
     @State
     var showsAlert: Bool = false
 
@@ -202,12 +199,12 @@ struct FeedbackView: View {
             }
             .padding(.top)
 
-            // swiftlint:disable line_length
             VStack(alignment: .leading) {
                 Text("What actually happened?")
                 TextEditor(text: $feedbackModel.whatHappenedDescription)
                            .frame(minHeight: 60, alignment: .leading)
                            .border(Color(NSColor.separatorColor))
+                // swiftlint:disable:next line_length
                 Text("Example: The autocomplete window flickered on screen and CodeEdit crashed. See attached crashlog.")
                     .font(.system(size: 10))
                     .foregroundColor(.secondary)

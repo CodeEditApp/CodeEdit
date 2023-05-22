@@ -25,6 +25,7 @@ class SplitViewItem: ObservableObject {
         self.collapsed = child[SplitViewItemCollapsedViewTraitKey.self]
         self.item.canCollapse = child[SplitViewItemCanCollapseViewTraitKey.self]
         self.item.isCollapsed = self.collapsed.wrappedValue
+        self.item.holdingPriority = child[SplitViewHoldingPriorityTraitKey.self]
         self.observers = createObservers()
     }
 
@@ -44,6 +45,7 @@ class SplitViewItem: ObservableObject {
         DispatchQueue.main.async {
             self.observers = []
             self.item.animator().isCollapsed = child[SplitViewItemCollapsedViewTraitKey.self].wrappedValue
+            self.item.holdingPriority = child[SplitViewHoldingPriorityTraitKey.self]
             self.observers = self.createObservers()
         }
     }

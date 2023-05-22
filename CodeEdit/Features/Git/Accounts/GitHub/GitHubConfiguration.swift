@@ -11,6 +11,7 @@ import FoundationNetworking
 #endif
 
 struct GitHubTokenConfiguration: GitRouterConfiguration {
+    let provider = SourceControlAccount.Provider.github
     var apiEndpoint: String?
     var accessToken: String?
     let errorDomain: String? = "com.codeedit.models.accounts.github"
@@ -27,20 +28,21 @@ struct GitHubTokenConfiguration: GitRouterConfiguration {
         return previewCustomHeaders
     }
 
-    init(_ token: String? = nil, url: String = GitURL.githubBaseURL, previewHeaders: [GitHubPreviewHeader] = []) {
-        apiEndpoint = url
+    init(_ token: String? = nil, url: String? = nil, previewHeaders: [GitHubPreviewHeader] = []) {
+        apiEndpoint = url ?? provider.apiURL?.absoluteString
         accessToken = token?.data(using: .utf8)!.base64EncodedString()
         previewCustomHeaders = previewHeaders.map { $0.header }
     }
 }
 
 struct GitHubOAuthConfiguration: GitRouterConfiguration {
+    let provider = SourceControlAccount.Provider.github
     var apiEndpoint: String?
     var accessToken: String?
     let token: String
     let secret: String
     let scopes: [String]
-    let webEndpoint: String
+    let webEndpoint: String?
     let errorDomain = "com.codeedit.models.accounts.github"
 
     /// Custom `Accept` header for API previews.
@@ -55,15 +57,15 @@ struct GitHubOAuthConfiguration: GitRouterConfiguration {
     }
 
     init(
-        _ url: String = GitURL.githubBaseURL,
-        webURL: String = GitURL.githubWebURL,
+        _ url: String? = nil,
+        webURL: String? = nil,
         token: String,
         secret: String,
         scopes: [String],
         previewHeaders: [GitHubPreviewHeader] = []
     ) {
-        apiEndpoint = url
-        webEndpoint = webURL
+        apiEndpoint = url ?? provider.apiURL?.absoluteString
+        webEndpoint = webURL ?? provider.baseURL?.absoluteString
         self.token = token
         self.secret = secret
         self.scopes = scopes
@@ -180,11 +182,11 @@ enum GitHubOAuthRouter: GitRouter {
     var URLRequest: FoundationURLRequestType? {
         switch self {
         case let .authorize(config):
-            let url = URL(string: path, relativeTo: URL(string: config.webEndpoint)!)
+            let url = URL(string: path, relativeTo: URL(string: config.webEndpoint!)!)
             let components = URLComponents(url: url!, resolvingAgainstBaseURL: true)
             return request(components!, parameters: params)
         case let .accessToken(config, _):
-            let url = URL(string: path, relativeTo: URL(string: config.webEndpoint)!)
+            let url = URL(string: path, relativeTo: URL(string: config.webEndpoint!)!)
             let components = URLComponents(url: url!, resolvingAgainstBaseURL: true)
             return request(components!, parameters: params)
         }

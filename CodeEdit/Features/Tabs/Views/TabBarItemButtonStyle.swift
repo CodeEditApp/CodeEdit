@@ -11,9 +11,6 @@ struct TabBarItemButtonStyle: ButtonStyle {
     @Environment(\.colorScheme)
     var colorScheme
 
-    @StateObject
-    private var prefs: AppPreferencesModel = .shared
-
     @Binding
     private var isPressing: Bool
 

@@ -34,13 +34,12 @@ final class WorkspaceClientUnitTests: XCTestCase {
                 .appendingPathComponent($0)
             try fakeData!.write(to: fileUrl)
         }
-        let client: WorkspaceClient = try .default(
-            fileManager: .default,
-            folderURL: directory,
+        let client = CEWorkspaceFileManager(
+            folderUrl: directory,
             ignoredFilesAndFolders: []
         )
 
-        var newFiles: [WorkspaceClient.FileItem] = []
+        var newFiles: [CEWorkspaceFile] = []
 
         cancellable = client
             .getFiles
@@ -80,13 +79,12 @@ final class WorkspaceClientUnitTests: XCTestCase {
             try fakeData!.write(to: fileUrl)
         }
 
-        let client: WorkspaceClient = try .default(
-            fileManager: .default,
-            folderURL: directory,
+        let client = CEWorkspaceFileManager(
+            folderUrl: directory,
             ignoredFilesAndFolders: []
         )
 
-        var newFiles: [WorkspaceClient.FileItem] = []
+        var newFiles: [CEWorkspaceFile] = []
 
         cancellable = client
             .getFiles

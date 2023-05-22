@@ -9,6 +9,8 @@ import SwiftUI
 
 struct WelcomeWindow: Scene {
 
+    @ObservedObject var settings = Settings.shared
+
     var body: some Scene {
         Window("Welcome To CodeEdit", id: SceneID.welcome.rawValue) {
             ContentView()
@@ -21,6 +23,7 @@ struct WelcomeWindow: Scene {
                         window.isMovableByWindowBackground = true
                     }
                 }
+                .environment(\.settings, settings.preferences)
         }
         .windowStyle(.hiddenTitleBar)
         .windowResizability(.contentSize)
