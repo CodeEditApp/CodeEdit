@@ -14,7 +14,7 @@ final class QuickOpenViewModel: ObservableObject {
     var openQuicklyQuery: String = ""
 
     @Published
-    var openQuicklyFiles: [WorkspaceClient.FileItem] = []
+    var openQuicklyFiles: [CEWorkspaceFile] = []
 
     @Published
     var isShowingOpenQuicklyFiles: Bool = false
@@ -62,7 +62,7 @@ final class QuickOpenViewModel: ObservableObject {
                     /// sorts the filtered filePaths with the FuzzySearch
                     let ordertFiles = FuzzySearch.search(query: self.openQuicklyQuery, in: filteredFiles)
                         .map { url in
-                            WorkspaceClient.FileItem(url: url, children: nil)
+                            CEWorkspaceFile(url: url, children: nil)
                         }
 
                     self.openQuicklyFiles = ordertFiles
