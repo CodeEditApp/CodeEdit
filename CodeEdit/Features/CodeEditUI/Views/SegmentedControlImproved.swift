@@ -37,6 +37,8 @@ struct XcodeButtonStyle: ButtonStyle {
                     RoundedRectangle(cornerRadius: 5)
                         .foregroundColor(.accentColor)
                         .opacity(configuration.isPressed ? (prominent ? 0.75 : 0.5) : (prominent ? 1 : 0.75))
+                        .matchedGeometryEffect(id: "xcodebuttonbackground", in: namespace)
+
                 } else if isHovering {
                     RoundedRectangle(cornerRadius: 5)
                         .foregroundColor(.gray)
@@ -46,6 +48,7 @@ struct XcodeButtonStyle: ButtonStyle {
                 }
             }
             .opacity(activeState == .inactive ? 0.6 : 1)
+            .animation(.interpolatingSpring(stiffness: 600, damping: 50), value: isActive)
     }
 
     var fontSize: Font {
@@ -66,7 +69,7 @@ struct XcodeButtonStyle: ButtonStyle {
         case .small:
             return (2, 4)
         case .regular:
-            return (4, 8)
+            return (3, 8)
         case .large:
             return (6, 12)
         @unknown default:
@@ -120,6 +123,7 @@ struct SegmentedControlV2<Selection: Hashable, Content: View>: View {
                     .onHover { hover in
                         hoveringOver = hover ? tag : nil
                     }
+                    .animation(.interpolatingSpring(stiffness: 600, damping: 50), value: selection)
                 }
             }
         }
