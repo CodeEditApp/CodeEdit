@@ -77,8 +77,6 @@ extension SettingsData {
                 BracketPairHighlight.self,
                 forKey: .bracketHighlight
             ) ?? BracketPairHighlight()
-
-            self.populateCommands()
         }
 
         struct IndentOption: Codable, Hashable {
