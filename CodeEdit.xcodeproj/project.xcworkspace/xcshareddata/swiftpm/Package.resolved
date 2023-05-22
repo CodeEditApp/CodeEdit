@@ -113,8 +113,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CodeEditApp/LogStream",
       "state" : {
-        "revision" : "71c743b55be0161cd51ac4585305bbf2b22c75d4",
-        "version" : "1.2.0"
+        "revision" : "afd2422c65c12822f26606408b4e39b9549c5e1a",
+        "version" : "1.2.1"
       }
     },
     {
@@ -221,8 +221,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/siteline/SwiftUI-Introspect",
       "state" : {
-        "revision" : "5b3f3996c7a2a84d5f4ba0e03cd7d584154778f2",
-        "version" : "0.3.1"
+        "revision" : "c18951c747ab62af7c15e17a81bd37d4fd5a9979",
+        "version" : "0.2.3"
       }
     },
     {
