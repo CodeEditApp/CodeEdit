@@ -3150,7 +3150,7 @@
 				SWIFT_VERSION = 5.0;
 				SYSTEM_FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
+					"$(DEVELOPER_SDK_DIR)/MacOSX.sdk/System/Library/PrivateFrameworks",
 				);
 			};
 			name = Alpha;
@@ -3340,7 +3340,7 @@
 				SWIFT_VERSION = 5.0;
 				SYSTEM_FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
+					"$(DEVELOPER_SDK_DIR)/MacOSX.sdk/System/Library/PrivateFrameworks",
 				);
 			};
 			name = Beta;
@@ -3663,7 +3663,7 @@
 				SWIFT_VERSION = 5.0;
 				SYSTEM_FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
+					"$(DEVELOPER_SDK_DIR)/MacOSX.sdk/System/Library/PrivateFrameworks",
 				);
 			};
 			name = Debug;
@@ -3703,7 +3703,7 @@
 				SWIFT_VERSION = 5.0;
 				SYSTEM_FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
+					"$(DEVELOPER_SDK_DIR)/MacOSX.sdk/System/Library/PrivateFrameworks",
 				);
 			};
 			name = Release;
