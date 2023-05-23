@@ -91,7 +91,7 @@ struct ExtensionSceneView: NSViewControllerRepresentable {
 
         public func hostViewControllerWillDeactivate(_ viewController: EXHostViewController, error: Error?) {
             isOnline = false
-            print("Host will deactivate", error)
+            print("Host will deactivate", error as Any)
         }
 
         public func hostViewControllerDidActivate(_ viewController: EXHostViewController) {
@@ -104,7 +104,7 @@ struct ExtensionSceneView: NSViewControllerRepresentable {
                 connection?.remoteObjectInterface = .init(with: EnvironmentPublisherObjc.self)
                 connection?.resume()
                 if let toPublish {
-                    print("Sending first environment: \(String(data: toPublish, encoding: .utf8))")
+                    print("Sending first environment: \(String(describing: String(data: toPublish, encoding: .utf8)))")
                     Task {
                         try? await connection?.withService { (service: EnvironmentPublisherObjc) in
                             service.publishEnvironment(data: toPublish)
