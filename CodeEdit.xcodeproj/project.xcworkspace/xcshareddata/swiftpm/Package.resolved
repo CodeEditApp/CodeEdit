@@ -10,6 +10,15 @@
       }
     },
     {
+      "identity" : "codeeditkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/CodeEditApp/CodeEditKit",
+      "state" : {
+        "branch" : "dev/foundation",
+        "revision" : "faa2a7be8706efdffca3676a5030241b0cca002b"
+      }
+    },
+    {
       "identity" : "codeeditlanguages",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CodeEditApp/CodeEditLanguages.git",
@@ -142,15 +151,6 @@
       "state" : {
         "revision" : "8f97f721d8a08c6e01ab9f7460e53819bef72dfa",
         "version" : "1.5.3"
-      }
-    },
-    {
-      "identity" : "sequencebuilder",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/andtie/SequenceBuilder",
-      "state" : {
-        "branch" : "main",
-        "revision" : "54d3d1eff31a7e35122f616840fff11899ea85b4"
       }
     },
     {

@@ -253,6 +253,7 @@
 		5C4BB1E128212B1E00A92FB2 /* World.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4BB1E028212B1E00A92FB2 /* World.swift */; };
 		6C05A8AF284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C05A8AE284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift */; };
 		6C0D0C6829E861B000AE4D3F /* SettingsSidebarFix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C0D0C6729E861B000AE4D3F /* SettingsSidebarFix.swift */; };
+		6C0F3A3C2A1D0D5000223D19 /* CodeEditKit in Frameworks */ = {isa = PBXBuildFile; productRef = 6C0F3A3B2A1D0D5000223D19 /* CodeEditKit */; };
 		6C147C4029A328BC0089B630 /* SplitViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C147C3F29A328560089B630 /* SplitViewData.swift */; };
 		6C147C4129A328BF0089B630 /* TabGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C147C3E29A3281D0089B630 /* TabGroup.swift */; };
 		6C147C4229A328C10089B630 /* TabGroupData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C147C3D29A3281D0089B630 /* TabGroupData.swift */; };
@@ -731,7 +732,6 @@
 		6C5AB9D629C1496E003B5F96 /* SceneID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneID.swift; sourceTree = "<group>"; };
 		6C5B63DD29C76213005454BA /* WindowCodeFileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WindowCodeFileView.swift; sourceTree = "<group>"; };
 		6C5FDF7929E6160000BC08C0 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
-		6C6BD6EA29CD11B400235D17 /* CodeEditKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = CodeEditKit; path = ../CodeEditKit; sourceTree = "<group>"; };
 		6C6BD6EE29CD12E900235D17 /* ExtensionManagerWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionManagerWindow.swift; sourceTree = "<group>"; };
 		6C6BD6F029CD13FA00235D17 /* ExtensionDiscovery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDiscovery.swift; sourceTree = "<group>"; };
 		6C6BD6F529CD145F00235D17 /* ExtensionInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionInfo.swift; sourceTree = "<group>"; };
@@ -843,6 +843,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6C0F3A3C2A1D0D5000223D19 /* CodeEditKit in Frameworks */,
 				6C66C31329D05CDC00DE9ED2 /* GRDB in Frameworks */,
 				58F2EB1E292FB954004A9BDE /* Sparkle in Frameworks */,
 				6C2149412A1BB9AB00748382 /* LogStream in Frameworks */,
@@ -2052,14 +2053,6 @@
 			path = Environment;
 			sourceTree = "<group>";
 		};
-		6C6BD6E929CD11B400235D17 /* Packages */ = {
-			isa = PBXGroup;
-			children = (
-				6C6BD6EA29CD11B400235D17 /* CodeEditKit */,
-			);
-			name = Packages;
-			sourceTree = "<group>";
-		};
 		6C6BD6ED29CD123000235D17 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -2168,7 +2161,6 @@
 		B658FB2327DA9E0F00EA4DBD = {
 			isa = PBXGroup;
 			children = (
-				6C6BD6E929CD11B400235D17 /* Packages */,
 				B658FB2E27DA9E0F00EA4DBD /* CodeEdit */,
 				587B60F329340A8000D5CD8F /* CodeEditTests */,
 				28052E0129730F2F00F4F90A /* Configs */,
@@ -2448,6 +2440,7 @@
 				6C2149402A1BB9AB00748382 /* LogStream */,
 				6CDEFC9529E22C2700B7C684 /* Introspect */,
 				6CC81CEB2A16BB8F00487975 /* CodeEditTextView */,
+				6C0F3A3B2A1D0D5000223D19 /* CodeEditKit */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -2542,6 +2535,7 @@
 				6C21493F2A1BB9AB00748382 /* XCRemoteSwiftPackageReference "LogStream" */,
 				6CDEFC9429E22C2700B7C684 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 				6CC81CEA2A16BB8F00487975 /* XCRemoteSwiftPackageReference "CodeEditTextView" */,
+				6C0F3A3A2A1D0D5000223D19 /* XCRemoteSwiftPackageReference "CodeEditKit" */,
 			);
 			productRefGroup = B658FB2D27DA9E0F00EA4DBD /* Products */;
 			projectDirPath = "";
@@ -3926,6 +3920,14 @@
 				version = 2.3.0;
 			};
 		};
+		6C0F3A3A2A1D0D5000223D19 /* XCRemoteSwiftPackageReference "CodeEditKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/CodeEditApp/CodeEditKit";
+			requirement = {
+				branch = dev/foundation;
+				kind = branch;
+			};
+		};
 		6C147C4329A329350089B630 /* XCRemoteSwiftPackageReference "swift-collections" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/swift-collections.git";
@@ -3996,6 +3998,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 58F2EB1C292FB954004A9BDE /* XCRemoteSwiftPackageReference "Sparkle" */;
 			productName = Sparkle;
+		};
+		6C0F3A3B2A1D0D5000223D19 /* CodeEditKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6C0F3A3A2A1D0D5000223D19 /* XCRemoteSwiftPackageReference "CodeEditKit" */;
+			productName = CodeEditKit;
 		};
 		6C147C4429A329350089B630 /* OrderedCollections */ = {
 			isa = XCSwiftPackageProductDependency;
