@@ -47,7 +47,6 @@ final class QuickOpenViewModel: ObservableObject {
                 ]
             )
             if let filePaths = enumerator?.allObjects as? [URL] {
-                DispatchQueue.main.async {
                     /// removes all filePaths which aren't regular files
                     let filteredFiles = filePaths.filter { url in
                         let file = url.lastPathComponent.lowercased()
@@ -65,6 +64,7 @@ final class QuickOpenViewModel: ObservableObject {
                             CEWorkspaceFile(url: url, children: nil)
                         }
 
+                DispatchQueue.main.async {
                     self.openQuicklyFiles = ordertFiles
                     self.isShowingOpenQuicklyFiles = !self.openQuicklyFiles.isEmpty
                 }
