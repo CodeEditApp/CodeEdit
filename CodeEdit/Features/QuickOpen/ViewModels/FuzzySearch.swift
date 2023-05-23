@@ -12,7 +12,8 @@ enum FuzzySearch {
     ///
     /// This function takes a fuzzy search `query` and an array of `URL`s, and returns a new array that contains only
     /// those url's that match the query.
-    /// The function uses the `score` function to calculate a score for each url and includes only those url's whose scores are greater than 0.0.
+    /// The function uses the `score` function to calculate a score for each url and
+    /// includes only those url's whose scores are greater than 0.0.
     /// The resulting array is then sorted by a score, in descending order.
     ///
     /// - Parameters:
@@ -104,7 +105,8 @@ enum FuzzySearch {
     /// If an error occurs or the file path is invalid, the function returns `nil`.
     ///
     /// - Parameter filePath: The file path for which to retrieve the last modification date.
-    /// - Returns: The last modification date as a `Date?` (optional) value, or `nil` if an error occurs or the file path is invalid.
+    /// - Returns: The last modification date as a `Date?` (optional) value,
+    ///  or `nil` if an error occurs or the file path is invalid.
     private static func getLastModifiedDate(for filePath: String) -> Date? {
         let fileManger = FileManager.default
         do {
@@ -118,7 +120,8 @@ enum FuzzySearch {
 
     /// Calculate the date score for a given file's modification date.
     ///
-    /// This function calculates the date score based on the time difference between the current date and the file's modification date,
+    /// This function calculates the date score based on the time difference
+    /// between the current date and the file's modification date,
     /// using an exponential decay function with a half-life of 3600 seconds (1 hour).
     /// The score will be higher for more recently modified files.
     ///
@@ -139,7 +142,8 @@ enum FuzzySearch {
         /// - sourceString: The source string to compare against the target string;
         /// - targetString: The target string to compare against the source string.
     /// - Returns: The Levenshtein distance between `sourceString` and `targetString`.
-    /// An integer representing the minimum number of insertions, deletions, or substitutions required to transform the source string into the target string.
+    /// An integer representing the minimum number of
+    ///  insertions, deletions, or substitutions required to transform the source string into the target string.
     private static func levenshteinDistance(from sourceString: String, to targetString: String) -> Int {
         let source = Array(sourceString)
         let target = Array(targetString)
