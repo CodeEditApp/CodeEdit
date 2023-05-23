@@ -8,7 +8,12 @@
 import SwiftUI
 
 extension ButtonStyle where Self == XcodeButtonStyle {
-    static func xcodeButton(isActive: Bool, prominent: Bool, isHovering: Bool, namespace: Namespace.ID = Namespace().wrappedValue) -> XcodeButtonStyle {
+    static func xcodeButton(
+        isActive: Bool,
+        prominent: Bool,
+        isHovering: Bool,
+        namespace: Namespace.ID = Namespace().wrappedValue
+    ) -> XcodeButtonStyle {
         XcodeButtonStyle(isActive: isActive, prominent: prominent, isHovering: isHovering, namespace: namespace)
     }
 }
@@ -86,7 +91,7 @@ struct XcodeButtonStyle: ButtonStyle {
     }
 }
 
-fileprivate struct MyTag: _ViewTraitKey {
+private struct MyTag: _ViewTraitKey {
     static var defaultValue: AnyHashable? = Optional<Int>.none
 }
 
@@ -106,7 +111,6 @@ struct SegmentedControlV2<Selection: Hashable, Content: View>: View {
     @Namespace var namespace
 
     var body: some View {
-
         content.variadic { children in
             HStack(spacing: 8) {
                 ForEach(children, id: \.id) { option in
@@ -119,7 +123,14 @@ struct SegmentedControlV2<Selection: Hashable, Content: View>: View {
                     } label: {
                         option
                     }
-                    .buttonStyle(.xcodeButton(isActive: tag == selection, prominent: prominent, isHovering: tag == hoveringOver, namespace: namespace))
+                    .buttonStyle(
+                        .xcodeButton(
+                            isActive: tag == selection,
+                            prominent: prominent,
+                            isHovering: tag == hoveringOver,
+                            namespace: namespace
+                        )
+                    )
                     .onHover { hover in
                         hoveringOver = hover ? tag : nil
                     }

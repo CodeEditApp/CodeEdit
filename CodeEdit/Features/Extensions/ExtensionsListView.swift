@@ -39,7 +39,7 @@ struct ExtensionsListView: View {
             }
             .swipeActions(edge: .leading) {
                 Button("Enable") {
-                    
+
                 }
             }
         }

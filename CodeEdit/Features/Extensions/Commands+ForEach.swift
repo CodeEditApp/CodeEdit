@@ -52,3 +52,5 @@ public struct CommandsForEach<Data, Content>: Commands where Data: RandomAccessC
         }
     }
 }
+
+// swiftlint:enable line_length

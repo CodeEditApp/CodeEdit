@@ -43,7 +43,6 @@ struct StatusBarDrawer: View {
         case .output(let extensionInfo):
             ExtensionOutputView(ext: extensionInfo)
         default:
-            
             if let url = workspace.workspaceFileManager?.folderUrl {
                 VStack(spacing: 0) {
                     TerminalEmulatorView(url: url)

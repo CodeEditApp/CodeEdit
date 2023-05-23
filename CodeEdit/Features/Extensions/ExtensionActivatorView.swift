@@ -27,4 +27,3 @@ struct ExtensionActivatorView_Previews: PreviewProvider {
         ExtensionActivatorView()
     }
 }
-

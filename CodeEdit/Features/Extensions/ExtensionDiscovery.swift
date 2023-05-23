@@ -120,16 +120,17 @@ final class ExtensionDiscovery: ObservableObject {
         }
     }
 
-    // swiftlint:disable line_length
     private func activateUnapprovedExtensions(with identifiers: [(bundleID: String, devID: String)]) async throws {
         let dbQueue = try DatabaseQueue(path: Self.dbURL.path())
 
         return try await dbQueue.write { table in
             try identifiers.map { identifier in
                 SettingsStoreRecord(
+                    // swiftlint:disable:next line_length
                     identifier: "\(Bundle.main.bundleIdentifier!)::\(Self.endPointIdentifier):\(identifier.bundleID):\(identifier.devID)",
                     timestamp: String(Date.now.description.dropLast(6)),
-                    userElection: 1)
+                    userElection: 1
+                )
             }.forEach {
                 try $0.save(table)
             }
