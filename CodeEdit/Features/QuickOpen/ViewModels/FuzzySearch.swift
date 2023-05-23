@@ -31,8 +31,6 @@ enum FuzzySearch {
             let nameScore2 = score(query: query, url: url2)
             if nameScore1 > nameScore2 {
                 return true
-            } else if nameScore1 < nameScore2 {
-                return false
             } else {
                 return false
             }
@@ -185,15 +183,17 @@ enum FuzzySearch {
     }
 }
 
-/// Adds a new function to the `String` type that searches for all occurrences of a given substring within the original string.
-///
-/// This function is case-insensitive and returns an array of `Range<String.Index>` objects representing
-/// the positions of all occurrences of the `searchString` within the original string.
-/// The function starts searching from the beginning of the string and continues until the end is reached.
-///
-/// - Parameter searchString: A `String` value to search for within the original string.
-/// - Returns: An array of `Range<String.Index>` objects representing the positions of all occurrences of `searchString`.
 extension String {
+    /// Adds a new function to the `String` type that searches for all occurrences
+    /// of a given substring within the original string.
+    ///
+    /// This function is case-insensitive and returns an array of `Range<String.Index>` objects representing
+    /// the positions of all occurrences of the `searchString` within the original string.
+    /// The function starts searching from the beginning of the string and continues until the end is reached.
+    ///
+    /// - Parameter searchString: A `String` value to search for within the original string.
+    /// - Returns: An array of `Range<String.Index>` objects representing the
+    /// positions of all occurrences of `searchString`.
     func ranges(of searchString: String) -> [Range<String.Index>] {
         var result: [Range<String.Index>] = []
         var searchStartIndex = startIndex
