@@ -1,28 +1,28 @@
 //
-//  InspectorTab.swift
+//  NavigatorTab.swift
 //  CodeEdit
 //
-//  Created by Wouter Hennen on 25/03/2023.
+//  Created by Wouter Hennen on 23/05/2023.
 //
 
 import Foundation
 import CodeEditKit
 import ExtensionKit
 
-enum InspectorTab: Hashable, Identifiable {
-    case file
-    case gitHistory
-    case quickhelp
+enum NavigatorTab: Hashable, Identifiable {
+    case fileTree
+    case sourceControl
+    case search
     case uiExtension(endpoint: AppExtensionIdentity, data: ResolvedSidebar.SidebarStore)
 
     var systemImage: String {
         switch self {
-        case .file:
-            return "doc"
-        case .gitHistory:
-            return "clock"
-        case .quickhelp:
-            return "questionmark.circle"
+        case .fileTree:
+            return "folder"
+        case .sourceControl:
+            return "vault"
+        case .search:
+            return "magnifyingglass"
         case .uiExtension(_, let data):
             return data.icon ?? "e.square"
         }
@@ -37,12 +37,12 @@ enum InspectorTab: Hashable, Identifiable {
 
     var title: String {
         switch self {
-        case .file:
-            return "File Inspector"
-        case .gitHistory:
-            return "History Inspector"
-        case .quickhelp:
-            return "Quick Help Inspector"
+        case .fileTree:
+            return "Project"
+        case .sourceControl:
+            return "Version Control"
+        case .search:
+            return "Search"
         case .uiExtension(_, let data):
             return data.help ?? data.sceneID
         }

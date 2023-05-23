@@ -14,8 +14,6 @@ struct ExtensionSceneView: NSViewControllerRepresentable {
 
     @Environment(\.openWindow) var openWindow
 
-//    @ObservedObject var extensionsManager = ExtensionManager.shared
-
     let appExtension: AppExtensionIdentity
     let sceneID: String
 
