@@ -13,7 +13,7 @@ struct InspectorSidebarTabBar: View {
     var items: [InspectorTab]
 
     @Binding
-    var selection: InspectorTab
+    var selection: InspectorTab.ID
 
     var position: SettingsData.SidebarTabBarPosition
 
@@ -67,7 +67,7 @@ struct InspectorSidebarTabBar: View {
             ? AnyLayout(HStackLayout(spacing: 0))
             : AnyLayout(VStackLayout(spacing: 0))
         layout {
-            ForEach(items, id: \.self) { icon in
+            ForEach(items) { icon in
                 makeIcon(tab: icon, size: size)
                     .opacity(draggingItem?.imageName == icon.systemImage &&
                              hasChangedLocation &&
@@ -95,11 +95,11 @@ struct InspectorSidebarTabBar: View {
         size: CGSize
     ) -> some View {
         Button {
-            selection = tab
+            selection = tab.id
         } label: {
             getSafeImage(named: tab.systemImage, accessibilityDescription: tab.title)
                 .font(.system(size: 12.5))
-                .symbolVariant(tab == selection ? .fill : .none)
+                .symbolVariant(tab.id == selection ? .fill : .none)
                 .frame(
                     width: position == .side ? 40 : 24,
                     height: position == .side ? 28 : size.height,
@@ -116,7 +116,7 @@ struct InspectorSidebarTabBar: View {
 //                        .frame(width: .zero)
 //                }
         }
-        .buttonStyle(.icon(isActive: tab == selection, size: nil))
+        .buttonStyle(.icon(isActive: tab.id == selection, size: nil))
     }
 
     private func getSafeImage(named: String, accessibilityDescription: String?) -> Image {

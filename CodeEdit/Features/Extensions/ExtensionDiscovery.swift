@@ -45,20 +45,28 @@ final class ExtensionDiscovery: ObservableObject {
             let sequence = try AppExtensionIdentity.matching(appExtensionPointIDs: Self.endPointIdentifier)
 
             for await endpoints in sequence {
-                await updateExtensions(endpoints: endpoints)
+                await updateExtensions(endpoints: endpoints, shouldRestartExisting: true)
             }
         } catch {
             print("Error while searching for extensions: \(error.localizedDescription)")
         }
     }
 
-    private func updateExtensions(endpoints: [AppExtensionIdentity]) async {
+    private func updateExtensions(endpoints: [AppExtensionIdentity], shouldRestartExisting: Bool = false) async {
         let extensions = await endpoints.concurrentCompactMap {
             try? await ExtensionInfo(endpoint: $0)
         }
 
         await MainActor.run {
             self.extensions = extensions
+        }
+
+        if shouldRestartExisting {
+            self.extensions.filter(\.isDebug)
+                .forEach {
+                    print("Restarting \($0.name)...")
+                    $0.restart()
+                }
         }
     }
 

@@ -9,7 +9,7 @@ import Foundation
 import CodeEditKit
 import ExtensionKit
 
-enum InspectorTab: Hashable {
+enum InspectorTab: Hashable, Identifiable {
     case file
     case gitHistory
     case quickhelp
@@ -25,6 +25,15 @@ enum InspectorTab: Hashable {
             return "questionmark.circle"
         case .uiExtension(_, let data):
             return data.icon ?? "e.square"
+        }
+    }
+
+    var id: String {
+        switch self {
+        case .file, .gitHistory, .quickhelp:
+            return title
+        case .uiExtension(let endpoint, let data):
+            return endpoint.bundleIdentifier + data.sceneID
         }
     }
 

@@ -14,10 +14,13 @@ struct ExtensionSceneView: NSViewControllerRepresentable {
 
     @Environment(\.openWindow) var openWindow
 
+//    @ObservedObject var extensionsManager = ExtensionManager.shared
+
     let appExtension: AppExtensionIdentity
     let sceneID: String
 
     init(with appExtension: AppExtensionIdentity, sceneID: String) {
+        print("Setting appextension to", appExtension)
         self.appExtension = appExtension
         self.sceneID = sceneID
     }
@@ -32,7 +35,7 @@ struct ExtensionSceneView: NSViewControllerRepresentable {
     }
 
     func updateNSViewController(_ nsViewController: EXHostViewController, context: Context) {
-        print("Updating....")
+        print("Updating....", appExtension, sceneID)
         nsViewController.configuration = .init(appExtension: appExtension, sceneID: sceneID)
         context.coordinator.updateEnvironment(context.environment._ceEnvironment)
     }
@@ -90,7 +93,7 @@ struct ExtensionSceneView: NSViewControllerRepresentable {
 
         public func hostViewControllerWillDeactivate(_ viewController: EXHostViewController, error: Error?) {
             isOnline = false
-            print("Host will deactivate")
+            print("Host will deactivate", error)
         }
 
         public func hostViewControllerDidActivate(_ viewController: EXHostViewController) {

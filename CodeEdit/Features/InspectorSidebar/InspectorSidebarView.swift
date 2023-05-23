@@ -19,7 +19,7 @@ struct InspectorSidebarView: View {
     private var tabManager: TabManager
 
     @State
-    private var selection: InspectorTab = .file
+    private var selection: InspectorTab.ID = InspectorTab.file.id
 
     private var items: [InspectorTab] {
         [.file, .gitHistory, .quickhelp]
@@ -45,7 +45,7 @@ struct InspectorSidebarView: View {
     var body: some View {
         VStack {
             if let path = tabManager.activeTabGroup.selected?.fileDocument?.fileURL?.path(percentEncoded: false) {
-                switch selection {
+                switch items.first(where: { $0.id == selection }) {
                 case .file:
                     FileInspectorView(
                         workspaceURL: workspace.fileURL!,
@@ -60,6 +60,8 @@ struct InspectorSidebarView: View {
                     QuickHelpInspectorView().padding(5)
                 case let .uiExtension(endpoint, data):
                     ExtensionSceneView(with: endpoint, sceneID: data.sceneID)
+                case .none:
+                    NoSelectionInspectorView()
                 }
             } else {
                 NoSelectionInspectorView()

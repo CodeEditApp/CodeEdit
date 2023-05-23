@@ -15,6 +15,8 @@ struct ExtensionInfo: Identifiable, Hashable {
 
     let availableFeatures: [ExtensionKind]
 
+    let isDebug: Bool
+
     var id: String {
         endpoint.bundleIdentifier
     }
@@ -27,21 +29,19 @@ struct ExtensionInfo: Identifiable, Hashable {
         bundle?.infoDictionary?["CFBundleShortVersionString"] as? String
     }
 
-    init(endpoint: AppExtensionIdentity) async throws {
-        self.endpoint = endpoint
-        self.availableFeatures = try await Self.getAvailableFeatures(endpoint: endpoint)
-        self.bundleURL = try await Self.getBundleURL(endpoint: endpoint)
-        self.pid = try await Self.getProcessIdentifier(endpoint: endpoint)
-        self.bundle = Bundle(url: bundleURL)
-    }
-
     var bundleURL: URL
 
     var bundle: Bundle?
 
     var pid: Int32
 
-    private static func getProcessIdentifier(endpoint: AppExtensionIdentity) async throws -> Int32 {
+    func restart() {
+        kill(pid, SIGKILL)
+    }
+
+    init(endpoint: AppExtensionIdentity) async throws {
+        self.endpoint = endpoint
+
         let process = try await AppExtensionProcess(configuration: .init(appExtensionIdentity: endpoint))
 
         let connection = try process.makeXPCConnection()
@@ -52,49 +52,30 @@ struct ExtensionInfo: Identifiable, Hashable {
             connection.invalidate()
         }
 
-        let identifier = try await connection.withContinuation { (service: XPCWrappable, continuation) in
+        self.pid = try await connection.withContinuation { (service: XPCWrappable, continuation) in
             service.getExtensionProcessIdentifier {
                 continuation.resumingHandler($0, .none)
             }
         }
 
-        return identifier
-    }
-
-    private static func getBundleURL(endpoint: AppExtensionIdentity) async throws -> URL {
-        let process = try await AppExtensionProcess(configuration: .init(appExtensionIdentity: endpoint))
-
-        let connection = try process.makeXPCConnection()
-        connection.remoteObjectInterface = .init(with: XPCWrappable.self)
-        connection.resume()
-
-        defer {
-            connection.invalidate()
+        self.isDebug = try await connection.withContinuation { (service: XPCWrappable, continuation) in
+            service.isDebug {
+                continuation.resumingHandler($0, .none)
+            }
         }
 
-        let encoded = try await connection.withContinuation { (service: XPCWrappable, continuation) in
-            service.getExtensionURL(reply: continuation.resumingHandler)
-        }
-
-        return try JSONDecoder().decode(URL.self, from: encoded)
-    }
-
-    static func getAvailableFeatures(endpoint: AppExtensionIdentity) async throws -> [ExtensionKind] {
-        let process = try await AppExtensionProcess(configuration: .init(appExtensionIdentity: endpoint))
-
-        let connection = try process.makeXPCConnection()
-        connection.remoteObjectInterface = .init(with: XPCWrappable.self)
-        connection.resume()
-
-        defer {
-            connection.invalidate()
-        }
-
-        let encoded = try await connection.withContinuation { (service: XPCWrappable, continuation) in
+        let encodedAvailableFeatures = try await connection.withContinuation { (service: XPCWrappable, continuation) in
             service.getExtensionKinds(reply: continuation.resumingHandler)
         }
 
-        return try JSONDecoder().decode([ExtensionKind].self, from: encoded)
+        self.availableFeatures = try JSONDecoder().decode([ExtensionKind].self, from: encodedAvailableFeatures)
+
+        let bundleURLEncoded = try await connection.withContinuation { (service: XPCWrappable, continuation) in
+            service.getExtensionURL(reply: continuation.resumingHandler)
+        }
+
+        self.bundleURL = try JSONDecoder().decode(URL.self, from: bundleURLEncoded)
+        self.bundle = Bundle(url: bundleURL)
     }
 }
 
