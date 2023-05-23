@@ -41,7 +41,7 @@ struct CommandsOverlayView: View {
         } onClose: {
             closeOverlay()
         }
-        .onReceive(state.$commandQuery.debounce(for: 0.2, scheduler: DispatchQueue.main)) { _ in
+        .onReceive(state.$commandQuery.debounce(for: 0.05, scheduler: DispatchQueue.main)) { _ in
             state.fetchMatchingCommands(filter: state.commandQuery)
         }
     }
@@ -55,12 +55,12 @@ struct CommandsOverlayItem: View {
     var body: some View {
         HStack(spacing: 8) {
             VStack(alignment: .leading, spacing: 0) {
-                SearchResultLabel(labelName: command.title, textToMatch: textToMatch ?? "")
+                SearchResultLabel(labelName: command.title, textToMatch: textToMatch ?? "", selected: selected)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             Spacer()
             Text(command.shortcut ?? "")
-                .foregroundColor(selected ? Color(.labelColor) : Color(.tertiaryLabelColor))
+                .foregroundColor(selected ? Color(.selectedMenuItemTextColor) : Color(.labelColor.withSystemEffect(.disabled)))
         }
         .frame(maxWidth: .infinity)
     }
@@ -72,12 +72,13 @@ struct CommandsOverlayItem: View {
 struct SearchResultLabel: NSViewRepresentable {
     var labelName: String
     var textToMatch: String
+    var selected: Bool
 
     public func makeNSView(context: Context) -> some NSTextField {
         let label = NSTextField(wrappingLabelWithString: labelName)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.drawsBackground = false
-        label.textColor = .labelColor
+        label.textColor = selected ? .selectedMenuItemTextColor : .labelColor
         label.isEditable = false
         label.isSelectable = false
         label.font = .labelFont(ofSize: 13.5)
@@ -95,14 +96,14 @@ struct SearchResultLabel: NSViewRepresentable {
             of: self.textToMatch,
             options: NSString.CompareOptions.caseInsensitive
         )
-        attribText.addAttribute(.foregroundColor, value: NSColor(Color(.labelColor)), range: range)
+        attribText.addAttribute(.foregroundColor, value: NSColor(Color(selected ? .selectedMenuItemTextColor : .labelColor)), range: range)
         attribText.addAttribute(.font, value: NSFont.boldSystemFont(ofSize: NSFont.systemFontSize), range: range)
 
         return attribText
     }
 
     func updateNSView(_ nsView: NSViewType, context: Context) {
-        nsView.textColor = textToMatch.isEmpty ? .labelColor : .secondaryLabelColor
+        nsView.textColor = selected ? .selectedMenuItemTextColor : textToMatch.isEmpty ? .labelColor : .secondaryLabelColor
         nsView.attributedStringValue = highlight()
     }
 }

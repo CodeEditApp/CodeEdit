@@ -25,7 +25,6 @@ final class CommandsOverlayViewModel: ObservableObject {
     init() {
         commands = Self.aggregateAllMenuBarCommands()
         menubarWatcher = NSApp.publisher(for: \.mainMenu).sink { [weak self] _ in
-            print("menu updated")
             self?.commands = Self.aggregateAllMenuBarCommands()
         }
     }
