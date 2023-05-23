@@ -30,7 +30,7 @@ struct CommandsOverlayView: View {
         OverlayView<CommandsOverlayItem, EmptyView, CodeEditCommand>(
             title: "Commands",
             image: Image(systemName: "magnifyingglass"),
-            options: $state.filteredMenuCommands,
+            options: state.filteredMenuCommands.filter(\.isEnabled),
             text: $state.commandQuery,
             alwaysShowOptions: true,
             optionRowHeight: 30

@@ -41,8 +41,7 @@ final class CommandsOverlayViewModel: ObservableObject {
         if let mainMenu = NSApp.mainMenu {
             return mainMenu
                 .items
-                .indices
-                .compactMap { CodeEditCommand(\.items[$0]).subItems }
+                .compactMap { CodeEditCommand(\.items[match: \.title, to: $0.title])?.subItems }
                 .reduce([], +)
         }
         return []

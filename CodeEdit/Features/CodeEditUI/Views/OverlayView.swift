@@ -12,7 +12,7 @@ struct OverlayView<RowView: View, PreviewView: View, Option: Identifiable & Hash
     @ViewBuilder let rowViewBuilder: ((Option, Bool) -> RowView)
     @ViewBuilder let previewViewBuilder: ((Option) -> PreviewView)?
 
-    @Binding var options: [Option]
+    var options: [Option]
     @Binding var text: String
 
     @State var selection: Option?
@@ -29,7 +29,7 @@ struct OverlayView<RowView: View, PreviewView: View, Option: Identifiable & Hash
     init(
         title: String,
         image: Image,
-        options: Binding<[Option]>,
+        options: [Option],
         text: Binding<String>,
         alwaysShowOptions: Bool = false,
         optionRowHeight: CGFloat = 30,
@@ -40,7 +40,7 @@ struct OverlayView<RowView: View, PreviewView: View, Option: Identifiable & Hash
     ) {
         self.title = title
         self.image = image
-        self._options = options
+        self.options = options
         self._text = text
         self.rowViewBuilder = content
         self.previewViewBuilder = preview

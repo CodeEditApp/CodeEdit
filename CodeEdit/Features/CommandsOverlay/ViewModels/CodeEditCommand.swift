@@ -8,6 +8,12 @@
 import AppKit
 import Combine
 
+extension [NSMenuItem] {
+    subscript<T: Equatable>(match path: KeyPath<NSMenuItem, T>, to value: T) -> NSMenuItem? {
+        first { $0[keyPath: path] == value }
+    }
+}
+
 struct CodeEditCommand: Hashable, Identifiable, CustomDebugStringConvertible {
 
     let subItems: [CodeEditCommand]?
@@ -16,14 +22,18 @@ struct CodeEditCommand: Hashable, Identifiable, CustomDebugStringConvertible {
 
     let shortcut: String?
 
-    let keyPath: KeyPath<NSMenu, NSMenuItem>
+    let keyPath: KeyPath<NSMenu, NSMenuItem?>
 
     var id: String {
         title
     }
 
-    var menuItem: NSMenuItem {
+    var menuItem: NSMenuItem? {
         NSApp.mainMenu![keyPath: keyPath]
+    }
+
+    var isEnabled: Bool {
+        menuItem?.isEnabled ?? false
     }
 
     var debugDescription: String {
@@ -37,16 +47,17 @@ struct CodeEditCommand: Hashable, Identifiable, CustomDebugStringConvertible {
         }
     }
 
-    init(_ keyPath: KeyPath<NSMenu, NSMenuItem>) {
-        let menuItem = NSApp.mainMenu![keyPath: keyPath]
+    init?(_ keyPath: KeyPath<NSMenu, NSMenuItem?>) {
+        guard let menuItem = NSApp.mainMenu![keyPath: keyPath] else {
+            return nil
+        }
         self.keyPath = keyPath
 
         if let items = menuItem.submenu?.items {
             self.subItems = items
-                .enumerated()
-                .filter { !$1.isSeparatorItem }
-                .map { index, _ in
-                    CodeEditCommand(keyPath.appending(path: \.submenu!.items[index]))
+                .filter { !$0.isSeparatorItem }
+                .compactMap {
+                    CodeEditCommand(keyPath.appending(path: \.?.submenu?.items[match: \.title, to: $0.title]))
                 }
         } else {
             self.subItems = nil
@@ -62,9 +73,10 @@ struct CodeEditCommand: Hashable, Identifiable, CustomDebugStringConvertible {
     }
 
     func runAction() {
-        let menuItem = menuItem
-        if let action = menuItem.action {
-            NSApp.sendAction(action, to: menuItem.representedObject, from: nil)
+        if let menuItem = menuItem {
+            if let action = menuItem.action {
+                NSApp.sendAction(action, to: menuItem.representedObject, from: nil)
+            }
         }
     }
 

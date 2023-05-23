@@ -32,7 +32,7 @@ struct OpenQuicklyOverlayView: View {
         OverlayView(
             title: "Open Quickly",
             image: Image(systemName: "magnifyingglass"),
-            options: $state.openQuicklyFiles,
+            options: state.openQuicklyFiles,
             text: $state.openQuicklyQuery,
             optionRowHeight: 40
         ) { file, _  in
