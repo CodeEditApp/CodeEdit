@@ -60,7 +60,11 @@ struct CommandsOverlayItem: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             Spacer()
             Text(command.shortcut ?? "")
-                .foregroundColor(selected ? Color(.selectedMenuItemTextColor) : Color(.labelColor.withSystemEffect(.disabled)))
+                .foregroundColor(
+                    selected
+                        ? Color(.selectedMenuItemTextColor)
+                        : Color(.labelColor.withSystemEffect(.disabled))
+                )
         }
         .frame(maxWidth: .infinity)
     }
@@ -96,14 +100,22 @@ struct SearchResultLabel: NSViewRepresentable {
             of: self.textToMatch,
             options: NSString.CompareOptions.caseInsensitive
         )
-        attribText.addAttribute(.foregroundColor, value: NSColor(Color(selected ? .selectedMenuItemTextColor : .labelColor)), range: range)
+        attribText.addAttribute(
+            .foregroundColor,
+            value: NSColor(Color(selected ? .selectedMenuItemTextColor : .labelColor)),
+            range: range
+        )
         attribText.addAttribute(.font, value: NSFont.boldSystemFont(ofSize: NSFont.systemFontSize), range: range)
 
         return attribText
     }
 
     func updateNSView(_ nsView: NSViewType, context: Context) {
-        nsView.textColor = selected ? .selectedMenuItemTextColor : textToMatch.isEmpty ? .labelColor : .secondaryLabelColor
+        nsView.textColor = selected
+            ? .selectedMenuItemTextColor
+            : textToMatch.isEmpty
+                ? .labelColor
+                : .secondaryLabelColor
         nsView.attributedStringValue = highlight()
     }
 }
