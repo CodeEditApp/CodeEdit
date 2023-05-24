@@ -26,11 +26,17 @@ struct CommandsOverlayView: View {
         self.closeOverlay = closeOverlay
     }
 
+    var shownCommands: [CodeEditCommand] {
+        state.filteredMenuCommands.filter {
+            $0.isEnabled && !$0.isTopLevel && !$0.isMenu
+        }
+    }
+
     var body: some View {
         OverlayView<CommandsOverlayItem, EmptyView, CodeEditCommand>(
             title: "Commands",
             image: Image(systemName: "magnifyingglass"),
-            options: state.filteredMenuCommands.filter(\.isEnabled),
+            options: shownCommands,
             text: $state.commandQuery,
             alwaysShowOptions: true,
             optionRowHeight: 30

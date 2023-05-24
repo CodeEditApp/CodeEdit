@@ -16,7 +16,7 @@ extension [NSMenuItem] {
 
 struct CodeEditCommand: Hashable, Identifiable, CustomDebugStringConvertible {
 
-    let subItems: [CodeEditCommand]?
+    var subItems: [CodeEditCommand]?
 
     let title: String
 
@@ -36,6 +36,14 @@ struct CodeEditCommand: Hashable, Identifiable, CustomDebugStringConvertible {
         menuItem?.isEnabled ?? false
     }
 
+    var isTopLevel: Bool {
+        menuItem?.menu == NSApp.mainMenu
+    }
+
+    var isMenu: Bool {
+        menuItem?.hasSubmenu ?? false
+    }
+
     var debugDescription: String {
         if let subItems {
             return """
@@ -48,20 +56,15 @@ struct CodeEditCommand: Hashable, Identifiable, CustomDebugStringConvertible {
     }
 
     init?(_ keyPath: KeyPath<NSMenu, NSMenuItem?>) {
-        guard let menuItem = NSApp.mainMenu![keyPath: keyPath] else {
+        guard let menuItem = NSApp.mainMenu![keyPath: keyPath],
+              !CommandsOverlayViewModel.excludedTitles.contains(menuItem.title) else {
             return nil
         }
-        self.keyPath = keyPath
-
-        if let items = menuItem.submenu?.items {
-            self.subItems = items
-                .filter { !$0.isSeparatorItem }
-                .compactMap {
-                    CodeEditCommand(keyPath.appending(path: \.?.submenu?.items[match: \.title, to: $0.title]))
-                }
-        } else {
-            self.subItems = nil
+        if let id = menuItem.identifier, CommandsOverlayViewModel.excludedIdentifiers.contains(id) {
+            return nil
         }
+        
+        self.keyPath = keyPath
 
         self.title = menuItem.title
 
@@ -70,6 +73,8 @@ struct CodeEditCommand: Hashable, Identifiable, CustomDebugStringConvertible {
         } else {
             self.shortcut = nil
         }
+
+        updateSubmenus()
     }
 
     func runAction() {
@@ -80,17 +85,28 @@ struct CodeEditCommand: Hashable, Identifiable, CustomDebugStringConvertible {
         }
     }
 
-    func matchingFilter(_ filter: String) -> [CodeEditCommand] {
-        var commands: [CodeEditCommand] = []
+    var nestedCommands: [CodeEditCommand] {
+        [self] + (subItems?.flatMap(\.nestedCommands) ?? [])
+    }
 
-        if filter.isEmpty || self.title.lowercased().contains(filter.lowercased()) {
-            commands.append(self)
+    /// All submenus present in this NSMenu nested tree
+    var nestedSubmenus: [NSMenu] {
+        var menus = subItems?.flatMap(\.nestedSubmenus) ?? []
+        if let menu = menuItem?.menu {
+            menus.append(menu)
         }
+        return menus
+    }
 
-        if let subItems {
-            commands.append(contentsOf: subItems.map { $0.matchingFilter(filter) }.reduce([], +))
-        }
+    func matchingFilter(_ filter: String) -> Bool {
+        self.title.lowercased().contains(filter.lowercased())
+    }
 
-        return commands
+    mutating func updateSubmenus() {
+        self.subItems = menuItem?.submenu?.items
+            .filter { !$0.isSeparatorItem }
+            .compactMap {
+                CodeEditCommand(keyPath.appending(path: \.?.submenu?.items[match: \.title, to: $0.title]))
+            }
     }
 }
