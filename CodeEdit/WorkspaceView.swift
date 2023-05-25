@@ -48,7 +48,7 @@ struct WorkspaceView: View {
                             .safeAreaInset(edge: .bottom, spacing: 0) {
                                 StatusBarView(proxy: proxy, collapsed: $terminalCollapsed)
                             }
-                        StatusBarDrawer()
+                        DebugAreaView()
                             .collapsable()
                             .collapsed($terminalCollapsed)
                             .frame(idealHeight: 260)

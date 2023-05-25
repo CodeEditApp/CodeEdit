@@ -12,10 +12,10 @@ import SwiftUI
 /// A model class to host and manage data for the ``StatusBarView``
 ///
 class StatusBarViewModel: ObservableObject {
-    private let isStatusBarDrawerCollapsedStateName: String
-        = "\(String(describing: StatusBarViewModel.self))-IsStatusBarDrawerCollapsed"
+    private let isDebugAreaViewCollapsedStateName: String
+        = "\(String(describing: StatusBarViewModel.self))-IsDebugAreaViewCollapsed"
     private let statusBarDrawerHeightStateName: String
-        = "\(String(describing: StatusBarViewModel.self))-StatusBarDrawerHeight"
+        = "\(String(describing: StatusBarViewModel.self))-DebugAreaViewHeight"
 
     // TODO: Implement logic for updating values
     // TODO: Add @Published vars for indentation, encoding, linebreak
@@ -58,10 +58,6 @@ class StatusBarViewModel: ObservableObject {
     /// Indicates whether debugger sidebar is collapse or not
     @Published
     var debuggerSidebarIsCollapsed: Bool = false
-
-    /// Returns the current selected debugger tab type
-    @Published
-    var debuggerTabSelection: StatusBarTabType = .terminal
 
     /// Returns the font for status bar items to use
     private(set) var toolbarFont: Font = .system(size: 11, weight: .medium)
