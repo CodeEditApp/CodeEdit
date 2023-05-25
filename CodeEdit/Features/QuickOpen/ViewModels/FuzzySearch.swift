@@ -61,7 +61,7 @@ enum FuzzySearch {
             let ranges = text.ranges(of: token)
             if !ranges.isEmpty {
                 let tokenScore = Double(token.count) / Double(text.count)
-                let proximityScore = proximityScoreForRanges(ranges)
+                let proximityScore = proximityScoreForRanges(ranges, text: text)
                 let levenshteinScore = Double(levenshteinDistance(from: String(token), to: text)) / Double(text.count)
                 score += (tokenScore * proximityScore) * (1 - levenshteinScore)
             }
@@ -81,14 +81,15 @@ enum FuzzySearch {
     ///
     /// - Parameter ranges: An array of `Range<String.Index>` objects representing the positions of matched substrings.
     /// - Returns: A `Double` value representing the proximity score.
-    private static func proximityScoreForRanges(_ ranges: [Range<String.Index>]) -> Double {
+    private static func proximityScoreForRanges(_ ranges: [Range<String.Index>], text: String) -> Double {
         let sortedRanges = ranges.sorted(by: { $0.lowerBound < $1.lowerBound })
         var score: Double = 1.0
 
         for index in 1..<sortedRanges.count {
             let previousRange = sortedRanges[index - 1]
             let currentRange = sortedRanges[index]
-            let distance = currentRange.lowerBound.encodedOffset - previousRange.upperBound.encodedOffset
+            let distance = currentRange.lowerBound.utf16Offset(in: text)
+            - previousRange.upperBound.utf16Offset(in: text)
             let proximity = 1.0 / Double(distance)
             score += proximity
         }
