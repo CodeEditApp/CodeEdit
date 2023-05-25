@@ -31,18 +31,21 @@ extension Color {
         self.init(.sRGB, red: Double(red) / 255, green: Double(green) / 255, blue: Double(blue) / 255, opacity: alpha)
     }
 
+    var hex: Int {
+        guard let components = cgColor?.components, components.count >= 3 else { return 0 }
+
+        let red = lround((Double(components[0]) * 255.0)) << 16
+        let green = lround((Double(components[1]) * 255.0)) << 8
+        let blue = lround((Double(components[2]) * 255.0))
+
+        return red | green | blue
+    }
+
     /// Returns a HEX String representing the `Color` (e.g.: #112233)
     var hexString: String {
-        if let color = self.cgColor {
-            let components = color.components ?? []
-            let red = UInt8(components[0] * 255)
-            let green = UInt8(components[1] * 255)
-            let blue = UInt8(components[2] * 255)
+        let color = self.hex
 
-            return String(format: "#%02X%02X%02X", red, green, blue)
-        }
-
-        return "#000000" /// Return black color hex string as default
+        return "#" + String(format: "%06x", color)
     }
 
     /// The alpha (opacity) component of the Color (0.0 - 1.0)
