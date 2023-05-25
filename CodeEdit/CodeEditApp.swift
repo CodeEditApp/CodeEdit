@@ -25,7 +25,7 @@ struct CodeEditApp: App {
 
         SettingsWindow()
         .commands {
-            CodeEditCommands()
+            Menus()
         }
     }
 }

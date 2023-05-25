@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct FindCommands: Commands {
+struct FindMenu: Commands {
 
     @FirstResponder var responder
 

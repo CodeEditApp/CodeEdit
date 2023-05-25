@@ -25,16 +25,27 @@ struct WorkspaceView: View {
     private var keybindings: KeybindingManager =  .shared
 
     @State
+    private var windowController: CodeEditWindowController?
+
+    @State
     private var showingAlert = false
 
     @Environment(\.colorScheme)
     private var colorScheme
 
-    @State
-    private var terminalCollapsed = true
+    var debugAreaCollapsed: Bool {
+        windowController?.debugAreaCollapsed ?? true
+    }
 
     @FocusState
     var focusedEditor: TabGroupData?
+
+    private var collapsedBinding: Binding<Bool> {
+        Binding<Bool>(
+            get: { debugAreaCollapsed },
+            set: { _ in }
+        )
+    }
 
     var body: some View {
         if workspace.workspaceFileManager != nil {
@@ -46,12 +57,16 @@ struct WorkspaceView: View {
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                             .holdingPriority(.init(10))
                             .safeAreaInset(edge: .bottom, spacing: 0) {
-                                StatusBarView(proxy: proxy, collapsed: $terminalCollapsed)
+                                StatusBarView(
+                                    proxy: proxy,
+                                    collapsed: debugAreaCollapsed,
+                                    toggleVisibility: windowController?.toggleDebugAreaVisibility ?? {}
+                                )
                             }
 
                         StatusBarDrawer()
                             .collapsable()
-                            .collapsed($terminalCollapsed)
+                            .collapsed(collapsedBinding)
                             .holdingPriority(.init(20))
                             .frame(minHeight: 200, maxHeight: 400)
 
@@ -72,6 +87,14 @@ struct WorkspaceView: View {
                 }
             }
             .background(EffectView(.contentBackground))
+            .onReceive(NSApp.publisher(for: \.keyWindow)) { window in
+                windowController = window?.windowController as? CodeEditWindowController
+                CommandManager.shared.register(
+                    "workspace.toggle.debug.area",
+                    label: "Toggle Debug Area",
+                    action: windowController?.toggleDebugAreaVisibility ?? {}
+                )
+            }
         }
     }
 }

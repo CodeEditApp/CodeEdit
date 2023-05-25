@@ -30,8 +30,9 @@ struct StatusBarView: View {
 
     var proxy: SplitViewProxy
 
-    @Binding
     var collapsed: Bool
+
+    var toggleVisibility: () -> Void
 
     static let statusbarID = "statusbarID"
 
@@ -50,7 +51,7 @@ struct StatusBarView: View {
                 StatusBarCursorLocationLabel()
             }
             StatusBarDivider()
-            StatusBarToggleDrawerButton(collapsed: $collapsed)
+            StatusBarToggleDrawerButton(collapsed: collapsed, toggleVisibility: toggleVisibility)
         }
         .padding(.horizontal, 10)
         .cursor(.resizeUpDown)

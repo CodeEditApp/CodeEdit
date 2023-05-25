@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SourceControlCommands: Commands {
+struct SourceControlMenu: Commands {
     var body: some Commands {
         CommandMenu("Source Control") {
             Group {

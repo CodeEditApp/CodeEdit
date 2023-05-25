@@ -13,6 +13,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
 
     @Published var navigatorCollapsed = false
     @Published var inspectorCollapsed = false
+    @Published var debugAreaCollapsed = false
 
     var observers: [NSKeyValueObservation] = []
 
@@ -233,7 +234,6 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
                     commandsOverlayPanel.makeKeyAndOrderFront(self)
                 }
             } else {
-                state.updateMenuBarCommands()
                 let panel = OverlayPanel()
                 self.commandsOverlayPanel = panel
                 let contentView = CommandsOverlayView(state: state, closeOverlay: panel.close)
@@ -268,6 +268,12 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
                 window?.addChildWindow(panel, ordered: .above)
                 panel.makeKeyAndOrderFront(self)
             }
+        }
+    }
+
+    func toggleDebugAreaVisibility() {
+        withAnimation {
+            debugAreaCollapsed.toggle()
         }
     }
 }

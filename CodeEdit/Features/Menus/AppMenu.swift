@@ -8,7 +8,7 @@
 import SwiftUI
 import Sparkle
 
-struct MainCommands: Commands {
+struct AppMenu: Commands {
 
     @Environment(\.openWindow) var openWindow
 

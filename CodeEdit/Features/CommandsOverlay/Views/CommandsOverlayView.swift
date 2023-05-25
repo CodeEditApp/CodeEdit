@@ -26,14 +26,12 @@ struct CommandsOverlayView: View {
         self.closeOverlay = closeOverlay
     }
 
-    var shownCommands: [CodeEditCommand] {
-        state.filteredMenuCommands.filter {
-            $0.isEnabled && !$0.isTopLevel && !$0.isMenu
-        }
+    var shownCommands: [CECommand] {
+        state.filteredMenuCommands
     }
 
     var body: some View {
-        OverlayView<CommandsOverlayItem, EmptyView, CodeEditCommand>(
+        OverlayView<CommandsOverlayItemView, EmptyView, CECommand>(
             title: "Commands",
             image: Image(systemName: "magnifyingglass"),
             options: shownCommands,
@@ -41,9 +39,9 @@ struct CommandsOverlayView: View {
             alwaysShowOptions: true,
             optionRowHeight: 30
         ) { command, selected in
-            CommandsOverlayItem(command: command, textToMatch: state.commandQuery, selected: selected)
+            CommandsOverlayItemView(command: command, textToMatch: state.commandQuery, selected: selected)
         } onRowClick: {
-            $0.runAction()
+            $0.action()
         } onClose: {
             closeOverlay()
         }
@@ -53,19 +51,19 @@ struct CommandsOverlayView: View {
     }
 }
 
-struct CommandsOverlayItem: View {
-    let command: CodeEditCommand
+struct CommandsOverlayItemView: View {
+    let command: CECommand
     let textToMatch: String?
     let selected: Bool
 
     var body: some View {
         HStack(spacing: 8) {
             VStack(alignment: .leading, spacing: 0) {
-                SearchResultLabel(labelName: command.title, textToMatch: textToMatch ?? "", selected: selected)
+                SearchResultLabel(labelName: command.label, textToMatch: textToMatch ?? "", selected: selected)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             Spacer()
-            Text(command.shortcut ?? "")
+            Text("")
                 .foregroundColor(
                     selected
                         ? Color(.selectedMenuItemTextColor)

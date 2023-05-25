@@ -11,23 +11,15 @@ internal struct StatusBarToggleDrawerButton: View {
     @EnvironmentObject
     private var model: StatusBarViewModel
 
-    @Binding
+    let commandManager = CommandManager.shared
+
     var collapsed: Bool
 
-    init(collapsed: Binding<Bool>) {
-        self._collapsed = collapsed
-    }
-
-    func togglePanel() {
-        withAnimation {
-            model.isExpanded.toggle()
-            collapsed.toggle()
-        }
-    }
+    var toggleVisibility: () -> Void
 
     internal var body: some View {
         Button {
-            togglePanel()
+            commandManager.execute("workspace.toggle.debug.area")
         } label: {
             Image(systemName: "square.bottomthird.inset.filled")
         }

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct HelpCommands: Commands {
+struct HelpMenu: Commands {
     var body: some Commands {
         CommandGroup(after: .help) {
             Button("What's New in CodeEdit") {

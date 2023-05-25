@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct NavigateCommands: Commands {
+struct NavigateMenu: Commands {
     var body: some Commands {
         CommandMenu("Navigate") {
             Group {

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct WindowCommands: Commands {
+struct WindowMenu: Commands {
 
     @Environment(\.openWindow) var openWindow
 
