@@ -94,12 +94,19 @@ struct DebugAreaTerminalView: View {
         return .windowBackgroundColor
     }
 
+    func moveItems(from source: IndexSet, to destination: Int) {
+        terminals.move(fromOffsets: source, toOffset: destination)
+    }
+
     var body: some View {
         ZStack(alignment: .bottom) {
             SplitView(axis: .horizontal) {
-                List(terminals, id: \.self.id, selection: $terminalTabSelection) { terminal in
-                    Label(terminal.title, systemImage: "terminal")
-                        .tag(terminal.id)
+                List(selection: $terminalTabSelection) {
+                    ForEach($terminals, id: \.self.id) { $terminal in
+                        DebugAreaTerminalTab(terminal: $terminal, removeTerminal: removeTerminal)
+                            .tag(terminal.id)
+                    }
+                    .onMove(perform: moveItems)
                 }
                 .listStyle(.automatic)
                 .accentColor(.secondary)
@@ -200,5 +207,33 @@ struct DebugAreaTerminalView: View {
             }
         }
         .onAppear(perform: initializeTerminals)
+    }
+}
+
+struct DebugAreaTerminalTab: View {
+    @Binding
+    var terminal: DebugAreaTerminal
+
+    var removeTerminal: (_ id: UUID) -> Void
+
+    @FocusState
+    private var isFocused: Bool
+
+    var body: some View {
+        Label {
+            TextField("Name", text: $terminal.title)
+                .focused($isFocused)
+                .padding(.leading, -8)
+        } icon: {
+            Image(systemName: "terminal")
+        }
+        .contextMenu {
+            Button("Rename...") {
+                isFocused = true
+            }
+            Button("Kill Terminal") {
+                removeTerminal(terminal.id)
+            }
+        }
     }
 }
