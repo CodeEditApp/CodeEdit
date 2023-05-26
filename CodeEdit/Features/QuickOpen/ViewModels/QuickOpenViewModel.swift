@@ -50,7 +50,7 @@ final class QuickOpenViewModel: ObservableObject {
                 let filteredFiles = filePaths.filter { url in
                     do {
                         let values = try url.resourceValues(forKeys: [.isRegularFileKey])
-                        return (values.isRegularFile ?? false)
+                        return (values.isRegularFile ?? false) && !url.absoluteString.contains(".git")
                     } catch {
                         return false
                     }
