@@ -7,14 +7,13 @@
 
 import SwiftUI
 
-// swiftlint:disable line_length
-
-// A custom ForEach struct is created instead of using the SwiftUI.ForEach one, as we can't create a new initializer due to a swift
-// limitation. Instead, this CommandsForEach struct is used, which functions equally.
+// A custom ForEach struct is created instead of using the SwiftUI.ForEach one,
+// as we can't create a new initializer due to a swift limitation.
+// Instead, this CommandsForEach struct is used, which functions equally.
 
 /// A structure that builds commandmenus on demand from an underlying collection of data.
 /// Maximum 10 items are supported.
-public struct CommandsForEach<Data, Content>: Commands where Data: RandomAccessCollection, Data.Index == Int, Content: Commands {
+public struct CommandsForEach<Data: RandomAccessCollection, Content: Commands>: Commands where Data.Index == Int {
 
     public var data: Data
 
@@ -38,19 +37,68 @@ public struct CommandsForEach<Data, Content>: Commands where Data: RandomAccessC
         case 4:
             CommandsBuilder.buildBlock(content(data[0]), content(data[1]), content(data[2]), content(data[3]))
         case 5:
-            CommandsBuilder.buildBlock(content(data[0]), content(data[1]), content(data[2]), content(data[3]), content(data[4]))
+            CommandsBuilder.buildBlock(
+                content(data[0]),
+                content(data[1]),
+                content(data[2]),
+                content(data[3]),
+                content(data[4])
+            )
         case 6:
-            CommandsBuilder.buildBlock(content(data[0]), content(data[1]), content(data[2]), content(data[3]), content(data[4]), content(data[5]))
+            CommandsBuilder.buildBlock(
+                content(data[0]),
+                content(data[1]),
+                content(data[2]),
+                content(data[3]),
+                content(data[4]),
+                content(data[5])
+            )
         case 7:
-            CommandsBuilder.buildBlock(content(data[0]), content(data[1]), content(data[2]), content(data[3]), content(data[4]), content(data[5]), content(data[6]))
+            CommandsBuilder.buildBlock(
+                content(data[0]),
+                content(data[1]),
+                content(data[2]),
+                content(data[3]),
+                content(data[4]),
+                content(data[5]),
+                content(data[6])
+            )
         case 8:
-            CommandsBuilder.buildBlock(content(data[0]), content(data[1]), content(data[2]), content(data[3]), content(data[4]), content(data[5]), content(data[6]), content(data[7]))
+            CommandsBuilder.buildBlock(
+                content(data[0]),
+                content(data[1]),
+                content(data[2]),
+                content(data[3]),
+                content(data[4]),
+                content(data[5]),
+                content(data[6]),
+                content(data[7])
+            )
         case 9:
-            CommandsBuilder.buildBlock(content(data[0]), content(data[1]), content(data[2]), content(data[3]), content(data[4]), content(data[5]), content(data[6]), content(data[7]), content(data[8]))
+            CommandsBuilder.buildBlock(
+                content(data[0]),
+                content(data[1]),
+                content(data[2]),
+                content(data[3]),
+                content(data[4]),
+                content(data[5]),
+                content(data[6]),
+                content(data[7]),
+                content(data[8])
+            )
         default:
-            CommandsBuilder.buildBlock(content(data[0]), content(data[1]), content(data[2]), content(data[3]), content(data[4]), content(data[5]), content(data[6]), content(data[7]), content(data[8]), content(data[9]))
+            CommandsBuilder.buildBlock(
+                content(data[0]),
+                content(data[1]),
+                content(data[2]),
+                content(data[3]),
+                content(data[4]),
+                content(data[5]),
+                content(data[6]),
+                content(data[7]),
+                content(data[8]),
+                content(data[9])
+            )
         }
     }
 }
-
-// swiftlint:enable line_length
