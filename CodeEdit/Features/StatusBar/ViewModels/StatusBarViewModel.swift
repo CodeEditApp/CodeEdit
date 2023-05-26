@@ -28,13 +28,6 @@ class StatusBarViewModel: ObservableObject {
     private let statusBarDrawerHeightStateName: String
         = "\(String(describing: StatusBarViewModel.self))-StatusBarDrawerHeight"
 
-    // TODO: Implement logic for updating values
-    // TODO: Add @Published vars for indentation, encoding, linebreak
-
-    /// The selected tab in the main section.
-    /// - **0**: Terminal
-    /// - **1**: Debugger
-    /// - **2**: Output
     @Published
     var selectedTab: Tab = .terminal
 

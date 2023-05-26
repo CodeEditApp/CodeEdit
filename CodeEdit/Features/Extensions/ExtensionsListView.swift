@@ -31,17 +31,6 @@ struct ExtensionsListView: View {
                 }
             }
             .frame(height: 40)
-
-            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                Button("Remove", role: .destructive) {
-
-                }
-            }
-            .swipeActions(edge: .leading) {
-                Button("Enable") {
-
-                }
-            }
         }
 
         .toolbar {

@@ -55,7 +55,7 @@ struct StatusBarDrawer: View {
                             .padding(.leading, -2)
                         Spacer()
                         Button {
-                            // clear logs
+                            // TODO: clear logs
                         } label: {
                             Image(systemName: "trash")
                         }
@@ -63,7 +63,7 @@ struct StatusBarDrawer: View {
                         Divider()
                         HStack(alignment: .center, spacing: 3.5) {
                             Button {
-                                // split terminal
+                                // TODO: split terminal
                             } label: {
                                 Image(systemName: "square.split.2x1")
                             }
