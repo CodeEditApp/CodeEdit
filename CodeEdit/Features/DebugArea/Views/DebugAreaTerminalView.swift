@@ -162,7 +162,7 @@ struct DebugAreaTerminalView: View {
                 VStack(spacing: 0) {
                     ZStack {
                         ForEach(terminals) { terminal in
-                            TerminalEmulatorView(url: terminal.url!,shellType: terminal.shell)
+                            TerminalEmulatorView(url: terminal.url!, shellType: terminal.shell)
                                 .padding(.top, 10)
                                 .padding(.horizontal, 10)
                                 .contentShape(Rectangle())
