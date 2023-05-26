@@ -318,6 +318,8 @@
 		B62AEDB32A1FD95B009A9F52 /* DebugAreaTerminalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62AEDB22A1FD95B009A9F52 /* DebugAreaTerminalView.swift */; };
 		B62AEDB52A1FE295009A9F52 /* DebugAreaDebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62AEDB42A1FE295009A9F52 /* DebugAreaDebugView.swift */; };
 		B62AEDB82A1FE2DC009A9F52 /* DebugAreaOutputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62AEDB72A1FE2DC009A9F52 /* DebugAreaOutputView.swift */; };
+		B62AEDBC2A210DBB009A9F52 /* DebugAreaTerminalTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62AEDBB2A210DBB009A9F52 /* DebugAreaTerminalTab.swift */; };
+		B62AEDBF2A213CD5009A9F52 /* BorderlessPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62AEDBE2A213CD5009A9F52 /* BorderlessPicker.swift */; };
 		B640A99E29E2184700715F20 /* SettingsForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = B640A99D29E2184700715F20 /* SettingsForm.swift */; };
 		B640A9A129E2188F00715F20 /* View+NavigationBarBackButtonVisible.swift in Sources */ = {isa = PBXBuildFile; fileRef = B640A9A029E2188F00715F20 /* View+NavigationBarBackButtonVisible.swift */; };
 		B658FB3427DA9E1000EA4DBD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3327DA9E1000EA4DBD /* Assets.xcassets */; };
@@ -728,6 +730,8 @@
 		B62AEDB22A1FD95B009A9F52 /* DebugAreaTerminalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugAreaTerminalView.swift; sourceTree = "<group>"; };
 		B62AEDB42A1FE295009A9F52 /* DebugAreaDebugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugAreaDebugView.swift; sourceTree = "<group>"; };
 		B62AEDB72A1FE2DC009A9F52 /* DebugAreaOutputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugAreaOutputView.swift; sourceTree = "<group>"; };
+		B62AEDBB2A210DBB009A9F52 /* DebugAreaTerminalTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugAreaTerminalTab.swift; sourceTree = "<group>"; };
+		B62AEDBE2A213CD5009A9F52 /* BorderlessPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderlessPicker.swift; sourceTree = "<group>"; };
 		B640A99D29E2184700715F20 /* SettingsForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsForm.swift; sourceTree = "<group>"; };
 		B640A9A029E2188F00715F20 /* View+NavigationBarBackButtonVisible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+NavigationBarBackButtonVisible.swift"; sourceTree = "<group>"; };
 		B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodeEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2096,6 +2100,8 @@
 			children = (
 				58822514292C280D00E83CDE /* Toolbar */,
 				B62AEDB22A1FD95B009A9F52 /* DebugAreaTerminalView.swift */,
+				B62AEDBE2A213CD5009A9F52 /* BorderlessPicker.swift */,
+				B62AEDBB2A210DBB009A9F52 /* DebugAreaTerminalTab.swift */,
 				B62AEDB42A1FE295009A9F52 /* DebugAreaDebugView.swift */,
 				B62AEDB72A1FE2DC009A9F52 /* DebugAreaOutputView.swift */,
 			);
@@ -2631,6 +2637,7 @@
 				6C14CEB028777D3C001468FE /* FindNavigatorListViewController.swift in Sources */,
 				587B9E7F29301D8F00AC7927 /* GitHubUserRouter.swift in Sources */,
 				20EBB50D280C383700F3A5DA /* LanguageType.swift in Sources */,
+				B62AEDBC2A210DBB009A9F52 /* DebugAreaTerminalTab.swift in Sources */,
 				B61A606129F188AB009B43F9 /* ExternalLink.swift in Sources */,
 				587B9E9729301D8F00AC7927 /* BitBucketAccount+Token.swift in Sources */,
 				587B9E7729301D8F00AC7927 /* String+PercentEncoding.swift in Sources */,
@@ -2642,6 +2649,7 @@
 				6C5B63DE29C76213005454BA /* WindowCodeFileView.swift in Sources */,
 				58F2EB08292FB2B0004A9BDE /* TextEditingSettings.swift in Sources */,
 				201169DB2837B34000F92B46 /* SourceControlNavigatorChangedFileView.swift in Sources */,
+				B62AEDBF2A213CD5009A9F52 /* BorderlessPicker.swift in Sources */,
 				5882252E292C280D00E83CDE /* StatusBarMaximizeButton.swift in Sources */,
 				6C4104E9297C970F00F472BA /* AboutDefaultView.swift in Sources */,
 				587B9E6F29301D8F00AC7927 /* GitLabProjectAccess.swift in Sources */,

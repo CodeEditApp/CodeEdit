@@ -35,14 +35,14 @@ struct DebugAreaTerminalView: View {
     @EnvironmentObject
     private var model: StatusBarViewModel
 
+    @State
+    private var sidebarIsCollapsed = false
+
     @StateObject
     private var themeModel: ThemeModel = .shared
 
     @State
     var terminals: [DebugAreaTerminal] = []
-
-    @State
-    private var searchText = ""
 
     @State
     private var terminalTabSelection: UUID = UUID()
@@ -54,7 +54,7 @@ struct DebugAreaTerminalView: View {
     private var popoverSource: CGRect = .zero
 
     private func initializeTerminals() {
-        var id = UUID()
+        let id = UUID()
 
         terminals = [
             DebugAreaTerminal(
@@ -69,7 +69,7 @@ struct DebugAreaTerminalView: View {
     }
 
     private func addTerminal(shell: String? = nil) {
-        var id = UUID()
+        let id = UUID()
 
         terminals.append(
             DebugAreaTerminal(
@@ -93,6 +93,12 @@ struct DebugAreaTerminalView: View {
         return terminals.first(where: { $0.id == id }) ?? nil
     }
 
+    private func updateTerminalTitle(_ id: UUID, _ title: String) {
+        var terminal = terminals.first(where: { $0.id == id }) ?? nil
+
+        terminal?.title = title
+    }
+
     /// Returns the `background` color of the selected theme
     private var backgroundColor: NSColor {
         if let selectedTheme = matchAppearance && darkAppearance
@@ -113,15 +119,19 @@ struct DebugAreaTerminalView: View {
             SplitView(axis: .horizontal) {
                 List(selection: $terminalTabSelection) {
                     ForEach($terminals, id: \.self.id) { $terminal in
-                        DebugAreaTerminalTab(terminal: $terminal, removeTerminal: removeTerminal)
-                            .tag(terminal.id)
+                        DebugAreaTerminalTab(
+                            terminal: $terminal,
+                            removeTerminal: removeTerminal,
+                            isSelected: terminal.id == terminalTabSelection
+                        )
+                        .tag(terminal.id)
                     }
                     .onMove(perform: moveItems)
                 }
                 .listStyle(.automatic)
                 .accentColor(.secondary)
                 .collapsable()
-                .collapsed($model.debuggerSidebarIsCollapsed)
+                .collapsed($sidebarIsCollapsed)
                 .frame(minWidth: 200, idealWidth: 240, maxWidth: 400)
                 .contextMenu {
                     Button("New Terminal") {
@@ -171,9 +181,16 @@ struct DebugAreaTerminalView: View {
                         }
                     }
                     HStack(alignment: .center, spacing: 6.5) {
-                        FilterTextField(title: "Filter", text: $searchText)
-                            .frame(maxWidth: 175)
-                            .padding(.leading, -2)
+                        Picker("Terminal Tab", selection: $terminalTabSelection) {
+                            ForEach(terminals, id: \.self.id) { terminal in
+                                Text(terminal.title)
+                                    .tag(terminal.id)
+                            }
+                        }
+                        .buttonStyle(.borderless)
+                        .labelsHidden()
+                        .controlSize(.small)
+                        .opacity(sidebarIsCollapsed ? 1 : 0)
                         Spacer()
                         Button {
                             // clear logs
@@ -199,8 +216,8 @@ struct DebugAreaTerminalView: View {
                     }
                     .padding(.horizontal, 7)
                     .padding(.vertical, 8)
-                    .padding(.leading, model.debuggerSidebarIsCollapsed ? 29 : 0)
-                    .animation(.default, value: model.debuggerSidebarIsCollapsed)
+                    .padding(.leading, sidebarIsCollapsed ? 29 : 0)
+                    .animation(.default, value: sidebarIsCollapsed)
                     .frame(maxHeight: 28)
                 }
                 .holdingPriority(.init(1))
@@ -223,7 +240,7 @@ struct DebugAreaTerminalView: View {
             }
             HStack(spacing: 0) {
                 Button {
-                    model.debuggerSidebarIsCollapsed.toggle()
+                    sidebarIsCollapsed.toggle()
                 } label: {
                     Image(systemName: "square.leadingthird.inset.filled")
                 }
@@ -237,30 +254,3 @@ struct DebugAreaTerminalView: View {
     }
 }
 
-struct DebugAreaTerminalTab: View {
-    @Binding
-    var terminal: DebugAreaTerminal
-
-    var removeTerminal: (_ id: UUID) -> Void
-
-    @FocusState
-    private var isFocused: Bool
-
-    var body: some View {
-        Label {
-            TextField("Name", text: $terminal.title)
-                .focused($isFocused)
-                .padding(.leading, -8)
-        } icon: {
-            Image(systemName: "terminal")
-        }
-        .contextMenu {
-            Button("Rename...") {
-                isFocused = true
-            }
-            Button("Kill Terminal") {
-                removeTerminal(terminal.id)
-            }
-        }
-    }
-}
