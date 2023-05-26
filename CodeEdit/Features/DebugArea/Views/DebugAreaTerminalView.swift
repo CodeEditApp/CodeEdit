@@ -11,11 +11,13 @@ struct DebugAreaTerminal: Identifiable {
     var id: UUID
     var url: URL?
     var title: String
+    var shell: String
 
-    init(id: UUID, url: URL, title: String) {
+    init(id: UUID, url: URL, title: String, shell: String) {
         self.id = id
         self.title = title
         self.url = url
+        self.shell = shell
     }
 }
 
@@ -45,6 +47,12 @@ struct DebugAreaTerminalView: View {
     @State
     private var terminalTabSelection: UUID = UUID()
 
+    @State
+    private var isMenuVisible = false
+
+    @State
+    private var popoverSource: CGRect = .zero
+
     private func initializeTerminals() {
         var id = UUID()
 
@@ -52,21 +60,23 @@ struct DebugAreaTerminalView: View {
             DebugAreaTerminal(
                 id: id,
                 url: workspace.workspaceFileManager?.folderUrl ?? URL(filePath: "/"),
-                title: "bash"
+                title: "bash",
+                shell: ""
             )
         ]
 
         terminalTabSelection = id
     }
 
-    private func addTerminal() {
+    private func addTerminal(shell: String? = nil) {
         var id = UUID()
 
         terminals.append(
             DebugAreaTerminal(
                 id: id,
                 url: URL(filePath: "\(id)"),
-                title: "bash"
+                title: "bash",
+                shell: shell ?? ""
             )
         )
 
@@ -113,6 +123,23 @@ struct DebugAreaTerminalView: View {
                 .collapsable()
                 .collapsed($model.debuggerSidebarIsCollapsed)
                 .frame(minWidth: 200, idealWidth: 240, maxWidth: 400)
+                .contextMenu {
+                    Button("New Terminal") {
+                        addTerminal()
+                    }
+                    Menu("New Terminal With Profile") {
+                        Button("Default") {
+                            addTerminal()
+                        }
+                        Divider()
+                        Button("Bash") {
+                            addTerminal(shell: "/bin/bash")
+                        }
+                        Button("ZSH") {
+                            addTerminal(shell: "/bin/zsh")
+                        }
+                    }
+                }
                 .safeAreaInset(edge: .bottom, alignment: .leading) {
                     HStack(spacing: 0) {
                         Button {
@@ -135,7 +162,7 @@ struct DebugAreaTerminalView: View {
                 VStack(spacing: 0) {
                     ZStack {
                         ForEach(terminals) { terminal in
-                            TerminalEmulatorView(url: terminal.url!)
+                            TerminalEmulatorView(url: terminal.url!,shellType: terminal.shell)
                                 .padding(.top, 10)
                                 .padding(.horizontal, 10)
                                 .contentShape(Rectangle())

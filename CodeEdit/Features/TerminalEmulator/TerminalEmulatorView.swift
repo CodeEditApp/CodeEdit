@@ -51,9 +51,12 @@ struct TerminalEmulatorView: NSViewRepresentable {
 
     private var url: URL
 
-    init(url: URL) {
+    public var shellType: String
+
+    init(url: URL, shellType: String? = nil) {
         self.url = url
         self._terminal = State(initialValue: TerminalEmulatorView.lastTerminal[url.path] ?? .init(frame: .zero))
+        self.shellType = shellType ?? ""
     }
 
     /// Returns a string of a shell path to use
@@ -73,6 +76,9 @@ struct TerminalEmulatorView: NSViewRepresentable {
     ///    return String(cString: pwd.pw_shell)
     /// ```
     private func getShell() -> String {
+        if shellType != ""{
+            return shellType
+        }
         switch terminalSettings.shell {
         case .system:
             return autoDetectDefaultShell()
