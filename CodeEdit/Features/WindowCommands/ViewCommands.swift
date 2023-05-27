@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct ViewCommands: Commands {
-    @AppSettings(\.textEditing.font) var font
+    @AppSettings(\.textEditing.font) var editorFont
+    @AppSettings(\.terminal.font) var terminalFont
 
     @State var windowController: CodeEditWindowController?
 
@@ -31,21 +32,17 @@ struct ViewCommands: Commands {
             .keyboardShortcut("p", modifiers: [.shift, .command])
 
             Button("Increase font size") {
-                if CodeEditDocumentController.shared.documents.count > 1 {
-                    font.size += 1
-                }
-                font.size += 1
+                editorFont.size += 1
+                terminalFont.size += 1
             }
             .keyboardShortcut("+")
 
             Button("Decrease font size") {
-                if CodeEditDocumentController.shared.documents.count > 1 {
-                    if !(font.size <= 1) {
-                        font.size -= 1
-                    }
+                if !(editorFont.size <= 1) {
+                    editorFont.size -= 1
                 }
-                if !(font.size <= 1) {
-                    font.size -= 1
+                if !(terminalFont.size <= 1) {
+                    terminalFont.size -= 1
                 }
             }
             .keyboardShortcut("-")
