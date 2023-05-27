@@ -36,6 +36,7 @@ struct ViewCommands: Commands {
                 terminalFontSize += 1
             }
             .keyboardShortcut("+")
+            .disabled(windowController == nil)
 
             Button("Decrease font size") {
                 if !(editorFontSize <= 1) {
@@ -46,6 +47,7 @@ struct ViewCommands: Commands {
                 }
             }
             .keyboardShortcut("-")
+            .disabled(windowController == nil)
 
             Button("Customize Toolbar...") {
 
