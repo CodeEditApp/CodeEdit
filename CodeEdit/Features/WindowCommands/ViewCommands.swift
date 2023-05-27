@@ -32,8 +32,12 @@ struct ViewCommands: Commands {
             .keyboardShortcut("p", modifiers: [.shift, .command])
 
             Button("Increase font size") {
-                editorFontSize += 1
-                terminalFontSize += 1
+                if !(editorFontSize >= 288) {
+                    editorFontSize += 1
+                }
+                if !(terminalFontSize >= 288) {
+                    terminalFontSize += 1
+                }
             }
             .keyboardShortcut("+")
             .disabled(windowController == nil)
