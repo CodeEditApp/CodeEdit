@@ -31,19 +31,11 @@ struct ViewCommands: Commands {
             .keyboardShortcut("p", modifiers: [.shift, .command])
 
             Button("Increase font size") {
-                if CodeEditDocumentController.shared.documents.count > 1 {
-                    font.size += 1
-                }
                 font.size += 1
             }
             .keyboardShortcut("+")
 
             Button("Decrease font size") {
-                if CodeEditDocumentController.shared.documents.count > 1 {
-                    if !(font.size <= 1) {
-                        font.size -= 1
-                    }
-                }
                 if !(font.size <= 1) {
                     font.size -= 1
                 }
