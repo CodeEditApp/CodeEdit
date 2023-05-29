@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CodeEditApp/CodeEditKit",
       "state" : {
-        "branch" : "dev/foundation",
-        "revision" : "b0e0c5be9ff5d2cff56bb0cda3df5c0d9c4e029b"
+        "revision" : "9ba3343ac53eb66a213a0a525604e297d8584a45",
+        "version" : "0.1.0"
       }
     },
     {
@@ -59,8 +59,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/ConcurrencyPlus",
       "state" : {
-        "branch" : "main",
-        "revision" : "8dc56499412a373d617d50d059116bccf44b9874"
+        "revision" : "b5ba8d5ea6bfe9e43ccc44aa63f9b458057fa0f4",
+        "version" : "0.4.1"
       }
     },
     {
