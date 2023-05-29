@@ -21,7 +21,7 @@ final class QuickOpenViewModel: ObservableObject {
 
     let fileURL: URL
 
-    private let queue = DispatchQueue(label: "austincondiff.CodeEdit.quickOpen.searchFiles")
+    private let queue = DispatchQueue(label: "com.codeedit.CodeEdit.quickOpen.searchFiles")
 
     init(fileURL: URL) {
         self.fileURL = fileURL
