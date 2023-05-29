@@ -18,13 +18,11 @@ struct ExtensionSceneView: NSViewControllerRepresentable {
     let sceneID: String
 
     init(with appExtension: AppExtensionIdentity, sceneID: String) {
-        print("Setting appextension to", appExtension)
         self.appExtension = appExtension
         self.sceneID = sceneID
     }
 
     func makeNSViewController(context: Context) -> EXHostViewController {
-        print("Making...")
         let controller = EXHostViewController()
         controller.delegate = context.coordinator
         controller.configuration = .some(.init(appExtension: appExtension, sceneID: sceneID))
@@ -33,7 +31,6 @@ struct ExtensionSceneView: NSViewControllerRepresentable {
     }
 
     func updateNSViewController(_ nsViewController: EXHostViewController, context: Context) {
-        print("Updating....", appExtension, sceneID)
         nsViewController.configuration = .init(appExtension: appExtension, sceneID: sceneID)
         context.coordinator.updateEnvironment(context.environment._ceEnvironment)
     }
@@ -47,7 +44,7 @@ struct ExtensionSceneView: NSViewControllerRepresentable {
         }
     }
 
-    public class Coordinator: NSObject, EXHostViewControllerDelegate, EnvironmentPublisherObjc {
+    class Coordinator: NSObject, EXHostViewControllerDelegate, EnvironmentPublisherObjc {
         var isOnline: Bool = false
         var toPublish: Data?
         var openWindow: (String) -> Void
@@ -56,11 +53,10 @@ struct ExtensionSceneView: NSViewControllerRepresentable {
             self.openWindow = openWindow
         }
 
-        public var connection: NSXPCConnection?
+        var connection: NSXPCConnection?
 
-        public func publishEnvironment(data: Data) {
+        func publishEnvironment(data: Data) {
             @Decoded<Callbacks> var data = data
-            print("RECEIVED DATA")
             guard let $data else { return }
             switch $data {
             case .openWindow(let id):
@@ -68,15 +64,13 @@ struct ExtensionSceneView: NSViewControllerRepresentable {
             }
         }
 
-        public func updateEnvironment(@Encoded _ value: _CEEnvironment) {
+        func updateEnvironment(@Encoded _ value: _CEEnvironment) {
             guard let $value else { return }
 
             guard isOnline else {
                 toPublish = $value
                 return
             }
-
-            print("update: sending...")
 
             Task {
                 do {
@@ -89,13 +83,12 @@ struct ExtensionSceneView: NSViewControllerRepresentable {
             }
         }
 
-        public func hostViewControllerWillDeactivate(_ viewController: EXHostViewController, error: Error?) {
+        func hostViewControllerWillDeactivate(_ viewController: EXHostViewController, error: Error?) {
             isOnline = false
             print("Host will deactivate", error as Any)
         }
 
-        public func hostViewControllerDidActivate(_ viewController: EXHostViewController) {
-            print("Host will activate")
+        func hostViewControllerDidActivate(_ viewController: EXHostViewController) {
             isOnline = true
             do {
                 self.connection = try viewController.makeXPCConnection()
@@ -104,7 +97,6 @@ struct ExtensionSceneView: NSViewControllerRepresentable {
                 connection?.remoteObjectInterface = .init(with: EnvironmentPublisherObjc.self)
                 connection?.resume()
                 if let toPublish {
-                    print("Sending first environment: \(String(describing: String(data: toPublish, encoding: .utf8)))")
                     Task {
                         try? await connection?.withService { (service: EnvironmentPublisherObjc) in
                             service.publishEnvironment(data: toPublish)

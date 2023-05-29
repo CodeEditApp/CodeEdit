@@ -13,18 +13,18 @@ import SwiftUI
 
 /// A structure that builds commandmenus on demand from an underlying collection of data.
 /// Maximum 10 items are supported.
-public struct CommandsForEach<Data: RandomAccessCollection, Content: Commands>: Commands where Data.Index == Int {
+struct CommandsForEach<Data: RandomAccessCollection, Content: Commands>: Commands where Data.Index == Int {
 
-    public var data: Data
+    var data: Data
 
-    public var content: (Data.Element) -> Content
+    var content: (Data.Element) -> Content
 
-    public init(_ data: Data, @CommandsBuilder content: @escaping (Data.Element) -> Content) {
+    init(_ data: Data, @CommandsBuilder content: @escaping (Data.Element) -> Content) {
         self.data = data
         self.content = content
     }
 
-    public var body: some Commands {
+    var body: some Commands {
         switch data.count {
         case 0:
             EmptyCommands()
