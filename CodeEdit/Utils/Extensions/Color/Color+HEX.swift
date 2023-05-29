@@ -31,6 +31,7 @@ extension Color {
         self.init(.sRGB, red: Double(red) / 255, green: Double(green) / 255, blue: Double(blue) / 255, opacity: alpha)
     }
 
+    /// Returns an Int representing the `Color` in hex format (e.g.: 0x112233)
     var hex: Int {
         guard let components = cgColor?.components, components.count >= 3 else { return 0 }
 
