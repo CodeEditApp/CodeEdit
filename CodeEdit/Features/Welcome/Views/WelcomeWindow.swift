@@ -23,7 +23,6 @@ struct WelcomeWindow: Scene {
                         window.isMovableByWindowBackground = true
                     }
                 }
-                .environment(\.settings, settings.preferences)
         }
         .windowStyle(.hiddenTitleBar)
         .windowResizability(.contentSize)
