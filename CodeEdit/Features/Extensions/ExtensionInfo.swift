@@ -62,7 +62,7 @@ struct ExtensionInfo: Identifiable, Hashable {
 
 // Functions to get basic information about extension
 extension ExtensionInfo {
-    static private func getProcessID(_ connection: NSXPCConnection) async throws -> pid_t {
+    private static func getProcessID(_ connection: NSXPCConnection) async throws -> pid_t {
         try await connection.withContinuation { (service: XPCWrappable, continuation) in
             service.getExtensionProcessIdentifier {
                 continuation.resumingHandler($0, .none)
@@ -70,7 +70,7 @@ extension ExtensionInfo {
         }
     }
 
-    static private func getDebugState(_ connection: NSXPCConnection) async throws -> Bool {
+    private static func getDebugState(_ connection: NSXPCConnection) async throws -> Bool {
         try await connection.withContinuation { (service: XPCWrappable, continuation) in
             service.isDebug {
                 continuation.resumingHandler($0, .none)
@@ -78,14 +78,14 @@ extension ExtensionInfo {
         }
     }
 
-    static private func getAvailableFeatures(_ connection: NSXPCConnection) async throws -> [ExtensionKind] {
+    private static func getAvailableFeatures(_ connection: NSXPCConnection) async throws -> [ExtensionKind] {
         let encodedAvailableFeatures = try await connection.withContinuation { (service: XPCWrappable, continuation) in
             service.getExtensionKinds(reply: continuation.resumingHandler)
         }
         return try JSONDecoder().decode([ExtensionKind].self, from: encodedAvailableFeatures)
     }
 
-    static private func getBundleURL(_ connection: NSXPCConnection) async throws -> URL {
+    private static func getBundleURL(_ connection: NSXPCConnection) async throws -> URL {
         let bundleURLEncoded = try await connection.withContinuation { (service: XPCWrappable, continuation) in
             service.getExtensionURL(reply: continuation.resumingHandler)
         }
