@@ -24,6 +24,9 @@ struct CodeEditApp: App {
             WelcomeWindow()
                 .keyboardShortcut("1", modifiers: [.command, .shift])
 
+            ExtensionManagerWindow()
+                .keyboardShortcut("2", modifiers: [.command, .shift])
+
             AboutWindow()
 
             SettingsWindow()

@@ -39,59 +39,64 @@ struct StatusBarDrawer: View {
     }
 
     var body: some View {
-        if let url = workspace.workspaceFileManager?.folderUrl {
-            VStack(spacing: 0) {
-                TerminalEmulatorView(url: url)
-                    .padding(.top, 10)
-                    .padding(.horizontal, 10)
-                    .contentShape(Rectangle())
-                HStack(alignment: .center, spacing: 6.5) {
-                    FilterTextField(title: "Filter", text: $searchText)
-                        .frame(maxWidth: 175)
-                        .padding(.leading, -2)
-                    Spacer()
-                    Button {
-                        // clear logs
-                    } label: {
-                        Image(systemName: "trash")
-                    }
-                    .buttonStyle(.icon)
-                    Divider()
-                    HStack(alignment: .center, spacing: 3.5) {
+        switch model.selectedTab {
+        case .output(let extensionInfo):
+            ExtensionOutputView(ext: extensionInfo)
+        default:
+            if let url = workspace.workspaceFileManager?.folderUrl {
+                VStack(spacing: 0) {
+                    TerminalEmulatorView(url: url)
+                        .padding(.top, 10)
+                        .padding(.horizontal, 10)
+                        .contentShape(Rectangle())
+                    HStack(alignment: .center, spacing: 6.5) {
+                        FilterTextField(title: "Filter", text: $searchText)
+                            .frame(maxWidth: 175)
+                            .padding(.leading, -2)
+                        Spacer()
                         Button {
-                            // split terminal
+                            // TODO: clear logs
                         } label: {
-                            Image(systemName: "square.split.2x1")
+                            Image(systemName: "trash")
                         }
                         .buttonStyle(.icon)
-                        Button {
-                            model.isMaximized.toggle()
-                        } label: {
-                            Image(systemName: "arrowtriangle.up.square")
+                        Divider()
+                        HStack(alignment: .center, spacing: 3.5) {
+                            Button {
+                                // TODO: split terminal
+                            } label: {
+                                Image(systemName: "square.split.2x1")
+                            }
+                            .buttonStyle(.icon)
+                            Button {
+                                model.isMaximized.toggle()
+                            } label: {
+                                Image(systemName: "arrowtriangle.up.square")
+                            }
+                            .buttonStyle(.icon(isActive: model.isMaximized))
                         }
-                        .buttonStyle(.icon(isActive: model.isMaximized))
                     }
+                    .padding(.horizontal, 7)
+                    .padding(.vertical, 8)
+                    .frame(maxHeight: 28)
                 }
-                .padding(.horizontal, 7)
-                .padding(.vertical, 8)
-                .frame(maxHeight: 28)
-            }
-            .background {
-                if useThemeBackground {
-                    Color(nsColor: backgroundColor)
-                } else {
-                    if colorScheme == .dark {
-                        EffectView(.underPageBackground)
+                .background {
+                    if useThemeBackground {
+                        Color(nsColor: backgroundColor)
                     } else {
-                        EffectView(.contentBackground)
+                        if colorScheme == .dark {
+                            EffectView(.underPageBackground)
+                        } else {
+                            EffectView(.contentBackground)
+                        }
                     }
                 }
+                .colorScheme(
+                    matchAppearance && darkAppearance
+                    ? themeModel.selectedDarkTheme?.appearance == .dark ? .dark : .light
+                    : themeModel.selectedTheme?.appearance == .dark ? .dark : .light
+                )
             }
-            .colorScheme(
-                matchAppearance && darkAppearance
-                ? themeModel.selectedDarkTheme?.appearance == .dark ? .dark : .light
-                : themeModel.selectedTheme?.appearance == .dark ? .dark : .light
-            )
         }
     }
 }

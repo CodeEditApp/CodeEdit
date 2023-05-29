@@ -25,7 +25,6 @@ struct WelcomeWindow: Scene {
                 }
         }
         .windowStyle(.hiddenTitleBar)
-        .keyboardShortcut("1", modifiers: [.command, .shift])
         .windowResizability(.contentSize)
     }
 
