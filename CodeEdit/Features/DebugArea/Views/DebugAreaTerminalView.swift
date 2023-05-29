@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct DebugAreaTerminal: Identifiable {
+struct DebugAreaTerminal: Identifiable, Equatable {
     var id: UUID
     var url: URL?
     var title: String
@@ -33,7 +33,7 @@ struct DebugAreaTerminalView: View {
     private var workspace: WorkspaceDocument
 
     @EnvironmentObject
-    private var model: StatusBarViewModel
+    private var model: DebugAreaViewModel
 
     @State
     private var sidebarIsCollapsed = false
@@ -45,7 +45,7 @@ struct DebugAreaTerminalView: View {
     var terminals: [DebugAreaTerminal] = []
 
     @State
-    private var terminalTabSelection: UUID = UUID()
+    private var selectedIDs: Set<UUID> = [UUID()]
 
     @State
     private var isMenuVisible = false
@@ -65,7 +65,7 @@ struct DebugAreaTerminalView: View {
             )
         ]
 
-        terminalTabSelection = id
+        selectedIDs = [id]
     }
 
     private func addTerminal(shell: String? = nil) {
@@ -80,13 +80,15 @@ struct DebugAreaTerminalView: View {
             )
         )
 
-        terminalTabSelection = id
+        selectedIDs = [id]
     }
 
-    private func removeTerminal(_ id: UUID) {
-        terminals.removeAll(where: { $0.id == id })
+    private func removeTerminals(_ ids: Set<UUID>) {
+        terminals.removeAll(where: { terminal in
+            ids.contains(terminal.id)
+        })
 
-        terminalTabSelection = terminals.last?.id ?? UUID()
+        selectedIDs = [terminals.last?.id ?? UUID()]
     }
 
     private func getTerminal(_ id: UUID) -> DebugAreaTerminal? {
@@ -117,12 +119,13 @@ struct DebugAreaTerminalView: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             SplitView(axis: .horizontal) {
-                List(selection: $terminalTabSelection) {
+                List(selection: $selectedIDs) {
                     ForEach($terminals, id: \.self.id) { $terminal in
                         DebugAreaTerminalTab(
                             terminal: $terminal,
-                            removeTerminal: removeTerminal,
-                            isSelected: terminal.id == terminalTabSelection
+                            removeTerminals: removeTerminals,
+                            isSelected: selectedIDs.contains(terminal.id),
+                            selectedIDs: selectedIDs
                         )
                         .tag(terminal.id)
                     }
@@ -150,6 +153,11 @@ struct DebugAreaTerminalView: View {
                         }
                     }
                 }
+                .onChange(of: terminals) { newValue in
+                    if newValue.isEmpty {
+                        addTerminal()
+                    }
+                }
                 .safeAreaInset(edge: .bottom, alignment: .leading) {
                     HStack(spacing: 0) {
                         Button {
@@ -159,7 +167,7 @@ struct DebugAreaTerminalView: View {
                         }
                         .buttonStyle(.icon(size: 29))
                         Button {
-                            removeTerminal(terminalTabSelection)
+                            removeTerminals(selectedIDs)
                         } label: {
                             Image(systemName: "minus")
                         }
@@ -169,27 +177,26 @@ struct DebugAreaTerminalView: View {
                     }
                     .padding(.leading, 29)
                 }
-                VStack(spacing: 0) {
-                    ZStack {
-                        ForEach(terminals) { terminal in
-                            TerminalEmulatorView(url: terminal.url!, shellType: terminal.shell)
-                                .padding(.top, 10)
-                                .padding(.horizontal, 10)
-                                .contentShape(Rectangle())
-                                .disabled(terminal.id != terminalTabSelection)
-                                .opacity(terminal.id == terminalTabSelection ? 1 : 0)
-                        }
+                ZStack {
+                    if selectedIDs.isEmpty {
+                        Text("No Selection")
+                            .font(.system(size: 16))
+                            .foregroundColor(.secondary)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .background(EffectView(.contentBackground).ignoresSafeArea())
                     }
+                    ForEach(terminals) { terminal in
+                        TerminalEmulatorView(url: terminal.url!, shellType: terminal.shell)
+                            .padding(.top, 10)
+                            .padding(.horizontal, 10)
+                            .contentShape(Rectangle())
+                            .disabled(terminal.id != selectedIDs.first)
+                            .opacity(terminal.id == selectedIDs.first ? 1 : 0)
+                    }
+                }
+                .safeAreaInset(edge: .bottom, spacing: 0) {
                     HStack(alignment: .center, spacing: 6.5) {
-                        Picker("Terminal Tab", selection: $terminalTabSelection) {
-                            ForEach(terminals, id: \.self.id) { terminal in
-                                Text(terminal.title)
-                                    .tag(terminal.id)
-                            }
-                        }
-                        .buttonStyle(.borderless)
-                        .labelsHidden()
-                        .controlSize(.small)
+                        DebugAreaTerminalPicker(selectedIDs: $selectedIDs, terminals: terminals)
                         .opacity(sidebarIsCollapsed ? 1 : 0)
                         Spacer()
                         Button {
@@ -244,7 +251,7 @@ struct DebugAreaTerminalView: View {
                 } label: {
                     Image(systemName: "square.leadingthird.inset.filled")
                 }
-                .buttonStyle(.icon(isActive: !model.debuggerSidebarIsCollapsed, size: 29))
+                .buttonStyle(.icon(isActive: !sidebarIsCollapsed, size: 29))
                 Divider()
                     .frame(height: 12)
                 Spacer()
@@ -254,3 +261,31 @@ struct DebugAreaTerminalView: View {
     }
 }
 
+struct DebugAreaTerminalPicker: View {
+    @Binding var selectedIDs: Set<UUID>
+    var terminals: [DebugAreaTerminal]
+
+    var selectedID: Binding<UUID?> {
+        Binding<UUID?>(
+            get: {
+                selectedIDs.first
+            },
+            set: { newValue in
+                if let selectedID = newValue {
+                    selectedIDs = [selectedID]
+                }
+            }
+        )
+    }
+
+    var body: some View {
+        Picker("Terminal Tab", selection: selectedID) {
+            ForEach(terminals, id: \.self.id) { terminal in
+                Text(terminal.title)
+                    .tag(terminal.id as UUID?)
+            }
+        }
+        .labelsHidden()
+        .controlSize(.small)
+    }
+}

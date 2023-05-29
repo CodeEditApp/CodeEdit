@@ -9,10 +9,13 @@ import SwiftUI
 
 struct DebugAreaOutputView: View {
     @EnvironmentObject
-    private var model: StatusBarViewModel
+    private var model: DebugAreaViewModel
     
     @State
     private var searchText = ""
+
+    @State
+    private var selectedOutputSourceId = "ALL_SOURCES"
 
     var body: some View {
         VStack(spacing: 0) {
@@ -21,6 +24,17 @@ struct DebugAreaOutputView: View {
                 .foregroundColor(.secondary)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             HStack(alignment: .center, spacing: 6.5) {
+                Picker("Output Source", selection: $selectedOutputSourceId) {
+                    Text("All Sources")
+                        .tag("ALL_SOURCES")
+//                    ForEach(outputSources, id: \.self.id) { source in
+//                        Text(source.title)
+//                            .tag(source.id)
+//                    }
+                }
+                .buttonStyle(.borderless)
+                .labelsHidden()
+                .controlSize(.small)
                 Spacer()
                 FilterTextField(title: "Filter", text: $searchText)
                     .frame(maxWidth: 175)

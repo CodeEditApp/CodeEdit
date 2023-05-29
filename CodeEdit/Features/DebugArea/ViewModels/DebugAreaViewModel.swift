@@ -11,11 +11,11 @@ import SwiftUI
 ///
 /// A model class to host and manage data for the ``StatusBarView``
 ///
-class StatusBarViewModel: ObservableObject {
+class DebugAreaViewModel: ObservableObject {
     private let isDebugAreaViewCollapsedStateName: String
-        = "\(String(describing: StatusBarViewModel.self))-IsDebugAreaViewCollapsed"
+        = "\(String(describing: DebugAreaViewModel.self))-IsDebugAreaViewCollapsed"
     private let statusBarDrawerHeightStateName: String
-        = "\(String(describing: StatusBarViewModel.self))-DebugAreaViewHeight"
+        = "\(String(describing: DebugAreaViewModel.self))-DebugAreaViewHeight"
 
     // TODO: Implement logic for updating values
     // TODO: Add @Published vars for indentation, encoding, linebreak
@@ -31,9 +31,9 @@ class StatusBarViewModel: ObservableObject {
     @Published
     var cursorLocation: CursorLocation = .init(line: 1, column: 1) // Implementation needed!!
 
-    /// Returns true when the drawer is visible
+    /// Indicates whether debugger is collapse or not
     @Published
-    var isExpanded: Bool = false
+    var isCollapsed: Bool = false
 
     /// Returns true when the drawer is visible
     @Published
@@ -54,10 +54,6 @@ class StatusBarViewModel: ObservableObject {
     /// Search value to filter in drawer
     @Published
     var searchText: String = ""
-
-    /// Indicates whether debugger sidebar is collapse or not
-    @Published
-    var debuggerSidebarIsCollapsed: Bool = false
 
     /// Returns the font for status bar items to use
     private(set) var toolbarFont: Font = .system(size: 11, weight: .medium)

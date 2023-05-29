@@ -11,9 +11,11 @@ struct DebugAreaTerminalTab: View {
     @Binding
     var terminal: DebugAreaTerminal
 
-    var removeTerminal: (_ id: UUID) -> Void
+    var removeTerminals: (_ ids: Set<UUID>) -> Void
 
     var isSelected: Bool
+
+    var selectedIDs: Set<UUID>
 
     @FocusState
     private var isFocused: Bool
@@ -26,7 +28,7 @@ struct DebugAreaTerminalTab: View {
                 .background {
                     if isSelected {
                         Button("Kill Terminal") {
-                            removeTerminal(terminal.id)
+                            removeTerminals(selectedIDs)
                         }
                         .keyboardShortcut(.delete, modifiers: [.command])
                         .frame(width: 0, height: 0)
@@ -42,7 +44,7 @@ struct DebugAreaTerminalTab: View {
                 isFocused = true
             }
             Button("Kill Terminal") {
-                if isSelected { removeTerminal(terminal.id) }
+                if isSelected { removeTerminals([terminal.id]) }
             }
             .keyboardShortcut(.delete, modifiers: [.command])
         }

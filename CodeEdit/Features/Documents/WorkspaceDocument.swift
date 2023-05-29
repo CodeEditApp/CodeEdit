@@ -33,14 +33,19 @@ import Combine
         didSet { workspaceFileManager?.onRefresh() }
     }
 
-    var statusBarModel = StatusBarViewModel()
+    var debugAreaModel = DebugAreaViewModel()
     var searchState: SearchState?
     var quickOpenViewModel: QuickOpenViewModel?
     var commandsPaletteState: CommandPaletteViewModel?
     var listenerModel: WorkspaceNotificationModel = .init()
 
+    var anyCancellable: AnyCancellable? = nil
+
     override init() {
         super.init()
+        anyCancellable = debugAreaModel.objectWillChange.sink { (_) in
+            self.objectWillChange.send()
+        }
     }
 
     private var cancellables = Set<AnyCancellable>()

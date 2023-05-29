@@ -13,7 +13,7 @@ struct ViewCommands: Commands {
     @State var windowController: CodeEditWindowController?
 
     private let documentController: CodeEditDocumentController = CodeEditDocumentController()
-    private let statusBarViewModel: StatusBarViewModel = StatusBarViewModel()
+    private let statusBarViewModel: DebugAreaViewModel = DebugAreaViewModel()
 
     var navigatorCollapsed: Bool {
         windowController?.navigatorCollapsed ?? false

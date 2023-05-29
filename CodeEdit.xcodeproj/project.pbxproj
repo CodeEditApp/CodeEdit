@@ -210,7 +210,7 @@
 		5882252F292C280D00E83CDE /* StatusBarClearButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822517292C280D00E83CDE /* StatusBarClearButton.swift */; };
 		58822530292C280D00E83CDE /* FilterTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822518292C280D00E83CDE /* FilterTextField.swift */; };
 		58822531292C280D00E83CDE /* View+isHovering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882251A292C280D00E83CDE /* View+isHovering.swift */; };
-		58822532292C280D00E83CDE /* StatusBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882251C292C280D00E83CDE /* StatusBarViewModel.swift */; };
+		58822532292C280D00E83CDE /* DebugAreaViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882251C292C280D00E83CDE /* DebugAreaViewModel.swift */; };
 		58822533292C280D00E83CDE /* DebugAreaTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882251D292C280D00E83CDE /* DebugAreaTab.swift */; };
 		58822534292C280D00E83CDE /* CursorLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882251E292C280D00E83CDE /* CursorLocation.swift */; };
 		588847632992A2A200996D95 /* CEWorkspaceFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588847622992A2A200996D95 /* CEWorkspaceFile.swift */; };
@@ -630,7 +630,7 @@
 		58822517292C280D00E83CDE /* StatusBarClearButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarClearButton.swift; sourceTree = "<group>"; };
 		58822518292C280D00E83CDE /* FilterTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterTextField.swift; sourceTree = "<group>"; };
 		5882251A292C280D00E83CDE /* View+isHovering.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+isHovering.swift"; sourceTree = "<group>"; };
-		5882251C292C280D00E83CDE /* StatusBarViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarViewModel.swift; sourceTree = "<group>"; };
+		5882251C292C280D00E83CDE /* DebugAreaViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugAreaViewModel.swift; sourceTree = "<group>"; };
 		5882251D292C280D00E83CDE /* DebugAreaTab.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugAreaTab.swift; sourceTree = "<group>"; };
 		5882251E292C280D00E83CDE /* CursorLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CursorLocation.swift; sourceTree = "<group>"; };
 		588847622992A2A200996D95 /* CEWorkspaceFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CEWorkspaceFile.swift; sourceTree = "<group>"; };
@@ -1720,7 +1720,6 @@
 			isa = PBXGroup;
 			children = (
 				5882251B292C280D00E83CDE /* Models */,
-				58822539292C333600E83CDE /* ViewModels */,
 				58822508292C280D00E83CDE /* Views */,
 			);
 			path = StatusBar;
@@ -1753,6 +1752,7 @@
 		58822512292C280D00E83CDE /* DebugArea */ = {
 			isa = PBXGroup;
 			children = (
+				58822539292C333600E83CDE /* ViewModels */,
 				B62AEDB12A1FD7F0009A9F52 /* Views */,
 				B62AEDAB2A1FCD3C009A9F52 /* Models */,
 				58822513292C280D00E83CDE /* DebugAreaView.swift */,
@@ -1783,7 +1783,7 @@
 		58822539292C333600E83CDE /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				5882251C292C280D00E83CDE /* StatusBarViewModel.swift */,
+				5882251C292C280D00E83CDE /* DebugAreaViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -2906,7 +2906,7 @@
 				587B9E6D29301D8F00AC7927 /* GitLabEventNote.swift in Sources */,
 				587B9E9129301D8F00AC7927 /* BitBucketOAuthRouter.swift in Sources */,
 				B6E41C7429DD40010088F9F4 /* View+HideSidebarToggle.swift in Sources */,
-				58822532292C280D00E83CDE /* StatusBarViewModel.swift in Sources */,
+				58822532292C280D00E83CDE /* DebugAreaViewModel.swift in Sources */,
 				043BCF03281DA18A000AC47C /* WorkspaceDocument+Search.swift in Sources */,
 				58822527292C280D00E83CDE /* StatusBarIndentSelector.swift in Sources */,
 				587B9E9629301D8F00AC7927 /* BitBucketRepositories.swift in Sources */,

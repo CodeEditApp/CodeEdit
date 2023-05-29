@@ -33,6 +33,9 @@ struct WorkspaceView: View {
     @State
     private var terminalCollapsed = true
 
+    @State
+    private var editorCollapsed = false
+
     @FocusState
     var focusedEditor: TabGroupData?
 
@@ -42,20 +45,22 @@ struct WorkspaceView: View {
                 SplitViewReader { proxy in
                     SplitView(axis: .vertical) {
                         EditorView(tabgroup: tabManager.tabGroups, focus: $focusedEditor)
+                            .collapsable()
+                            .collapsed($workspace.debugAreaModel.isMaximized)
                             .frame(minHeight: 170 + 29 + 29)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                             .holdingPriority(.init(10))
                             .safeAreaInset(edge: .bottom, spacing: 0) {
-                                StatusBarView(proxy: proxy, collapsed: $terminalCollapsed)
+                                StatusBarView(proxy: proxy)
                             }
                         DebugAreaView()
                             .collapsable()
-                            .collapsed($terminalCollapsed)
+                            .collapsed($workspace.debugAreaModel.isCollapsed)
                             .frame(idealHeight: 260)
                             .frame(minHeight: 100)
                     }
                     .edgesIgnoringSafeArea(.top)
-                    .environmentObject(workspace.statusBarModel)
+                    .environmentObject(workspace.debugAreaModel)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .onChange(of: focusedEditor) { newValue in
                         if let newValue {

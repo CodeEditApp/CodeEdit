@@ -21,7 +21,7 @@ struct StatusBarView: View {
     private var controlActive
 
     @EnvironmentObject
-    private var model: StatusBarViewModel
+    private var model: DebugAreaViewModel
 
     static let height = 28.0
 
@@ -29,9 +29,6 @@ struct StatusBarView: View {
     private var colorScheme
 
     var proxy: SplitViewProxy
-
-    @Binding
-    var collapsed: Bool
 
     static let statusbarID = "statusbarID"
 
@@ -48,7 +45,7 @@ struct StatusBarView: View {
                 StatusBarCursorLocationLabel()
             }
             StatusBarDivider()
-            StatusBarToggleDrawerButton(collapsed: $collapsed)
+            StatusBarToggleDrawerButton()
         }
         .padding(.horizontal, 10)
         .cursor(.resizeUpDown)
