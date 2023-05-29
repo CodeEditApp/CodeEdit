@@ -275,7 +275,6 @@
 		6C48D8F72972E5F300D6D205 /* WindowObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C48D8F62972E5F300D6D205 /* WindowObserver.swift */; };
 		6C5228B529A868BD00AC48F6 /* Environment+ContentInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5228B429A868BD00AC48F6 /* Environment+ContentInsets.swift */; };
 		6C53AAD829A6C4FD00EE9ED6 /* SplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C53AAD729A6C4FD00EE9ED6 /* SplitView.swift */; };
-		6C5AB9D729C1496E003B5F96 /* SceneID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5AB9D629C1496E003B5F96 /* SceneID.swift */; };
 		6C5B63DE29C76213005454BA /* WindowCodeFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5B63DD29C76213005454BA /* WindowCodeFileView.swift */; };
 		6C5FDF7A29E6160000BC08C0 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5FDF7929E6160000BC08C0 /* AppSettings.swift */; };
 		6C7256D729A3D7D000C2D3E0 /* SplitViewControllerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C7256D629A3D7D000C2D3E0 /* SplitViewControllerView.swift */; };
@@ -319,7 +318,6 @@
 		B62AEDB52A1FE295009A9F52 /* DebugAreaDebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62AEDB42A1FE295009A9F52 /* DebugAreaDebugView.swift */; };
 		B62AEDB82A1FE2DC009A9F52 /* DebugAreaOutputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62AEDB72A1FE2DC009A9F52 /* DebugAreaOutputView.swift */; };
 		B62AEDBC2A210DBB009A9F52 /* DebugAreaTerminalTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62AEDBB2A210DBB009A9F52 /* DebugAreaTerminalTab.swift */; };
-		B62AEDBF2A213CD5009A9F52 /* BorderlessPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62AEDBE2A213CD5009A9F52 /* BorderlessPicker.swift */; };
 		B640A99E29E2184700715F20 /* SettingsForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = B640A99D29E2184700715F20 /* SettingsForm.swift */; };
 		B640A9A129E2188F00715F20 /* View+NavigationBarBackButtonVisible.swift in Sources */ = {isa = PBXBuildFile; fileRef = B640A9A029E2188F00715F20 /* View+NavigationBarBackButtonVisible.swift */; };
 		B658FB3427DA9E1000EA4DBD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3327DA9E1000EA4DBD /* Assets.xcassets */; };
@@ -731,7 +729,6 @@
 		B62AEDB42A1FE295009A9F52 /* DebugAreaDebugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugAreaDebugView.swift; sourceTree = "<group>"; };
 		B62AEDB72A1FE2DC009A9F52 /* DebugAreaOutputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugAreaOutputView.swift; sourceTree = "<group>"; };
 		B62AEDBB2A210DBB009A9F52 /* DebugAreaTerminalTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugAreaTerminalTab.swift; sourceTree = "<group>"; };
-		B62AEDBE2A213CD5009A9F52 /* BorderlessPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderlessPicker.swift; sourceTree = "<group>"; };
 		B640A99D29E2184700715F20 /* SettingsForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsForm.swift; sourceTree = "<group>"; };
 		B640A9A029E2188F00715F20 /* View+NavigationBarBackButtonVisible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+NavigationBarBackButtonVisible.swift"; sourceTree = "<group>"; };
 		B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodeEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2100,7 +2097,6 @@
 			children = (
 				58822514292C280D00E83CDE /* Toolbar */,
 				B62AEDB22A1FD95B009A9F52 /* DebugAreaTerminalView.swift */,
-				B62AEDBE2A213CD5009A9F52 /* BorderlessPicker.swift */,
 				B62AEDBB2A210DBB009A9F52 /* DebugAreaTerminalTab.swift */,
 				B62AEDB42A1FE295009A9F52 /* DebugAreaDebugView.swift */,
 				B62AEDB72A1FE2DC009A9F52 /* DebugAreaOutputView.swift */,
@@ -2452,7 +2448,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1330;
-				LastUpgradeCheck = 1410;
+				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					2BE487EB28245162003F3F64 = {
 						CreatedOnToolsVersion = 13.3.1;
@@ -2649,7 +2645,6 @@
 				6C5B63DE29C76213005454BA /* WindowCodeFileView.swift in Sources */,
 				58F2EB08292FB2B0004A9BDE /* TextEditingSettings.swift in Sources */,
 				201169DB2837B34000F92B46 /* SourceControlNavigatorChangedFileView.swift in Sources */,
-				B62AEDBF2A213CD5009A9F52 /* BorderlessPicker.swift in Sources */,
 				5882252E292C280D00E83CDE /* StatusBarMaximizeButton.swift in Sources */,
 				6C4104E9297C970F00F472BA /* AboutDefaultView.swift in Sources */,
 				587B9E6F29301D8F00AC7927 /* GitLabProjectAccess.swift in Sources */,
@@ -2798,7 +2793,6 @@
 				587B9E7429301D8F00AC7927 /* URL+URLParameters.swift in Sources */,
 				581BFB6B2926431000D251EC /* RecentProjectItem.swift in Sources */,
 				587FB99029C1246400B519DD /* TabBarItemView.swift in Sources */,
-				6C5AB9D729C1496E003B5F96 /* SceneID.swift in Sources */,
 				587B9DA429300ABD00AC7927 /* OverlayPanel.swift in Sources */,
 				58D01C95293167DC00C5B6B4 /* Bundle+Info.swift in Sources */,
 				B6C6A42A297716A500A3D28F /* TabBarItemCloseButton.swift in Sources */,
@@ -2916,8 +2910,6 @@
 				587B9E7229301D8F00AC7927 /* GitJSONPostRouter.swift in Sources */,
 				5878DAB0291D627C00DD95A3 /* PathBarMenu.swift in Sources */,
 				587B9DA529300ABD00AC7927 /* PressActionsModifier.swift in Sources */,
-				28B0A19827E385C300B73177 /* NavigatorSidebarTabBar.swift in Sources */,
-				28B0A19827E385C300B73177 /* NavigatorSidebarTabBar.swift in Sources */,
 				28B0A19827E385C300B73177 /* NavigatorSidebarTabBar.swift in Sources */,
 				6C147C4029A328BC0089B630 /* SplitViewData.swift in Sources */,
 				587B9E9029301D8F00AC7927 /* BitBucketTokenRouter.swift in Sources */,

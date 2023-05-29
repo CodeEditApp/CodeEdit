@@ -39,7 +39,7 @@ import Combine
     var commandsPaletteState: CommandPaletteViewModel?
     var listenerModel: WorkspaceNotificationModel = .init()
 
-    var anyCancellable: AnyCancellable? = nil
+    var anyCancellable: AnyCancellable?
 
     override init() {
         super.init()

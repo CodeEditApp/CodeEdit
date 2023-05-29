@@ -10,7 +10,7 @@ import SwiftUI
 struct DebugAreaOutputView: View {
     @EnvironmentObject
     private var model: DebugAreaViewModel
-    
+
     @State
     private var searchText = ""
 
