@@ -60,7 +60,7 @@ struct DebugAreaTerminalView: View {
             DebugAreaTerminal(
                 id: id,
                 url: workspace.workspaceFileManager?.folderUrl ?? URL(filePath: "/"),
-                title: "bash",
+                title: "terminal",
                 shell: ""
             )
         ]
@@ -75,7 +75,7 @@ struct DebugAreaTerminalView: View {
             DebugAreaTerminal(
                 id: id,
                 url: URL(filePath: "\(id)"),
-                title: "bash",
+                title: "terminal",
                 shell: shell ?? ""
             )
         )
@@ -287,5 +287,6 @@ struct DebugAreaTerminalPicker: View {
         }
         .labelsHidden()
         .controlSize(.small)
+        .buttonStyle(.borderless)
     }
 }
