@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct ViewCommands: Commands {
-    @AppSettings(\.textEditing.font) var font
+    @AppSettings(\.textEditing.font.size) var editorFontSize
+    @AppSettings(\.terminal.font.size) var terminalFontSize
 
     @State var windowController: CodeEditWindowController?
 
-    private let documentController: CodeEditDocumentController = CodeEditDocumentController()
     private let statusBarViewModel: StatusBarViewModel = StatusBarViewModel()
 
     var navigatorCollapsed: Bool {
@@ -31,24 +31,26 @@ struct ViewCommands: Commands {
             .keyboardShortcut("p", modifiers: [.shift, .command])
 
             Button("Increase font size") {
-                if CodeEditDocumentController.shared.documents.count > 1 {
-                    font.size += 1
+                if !(editorFontSize >= 288) {
+                    editorFontSize += 1
                 }
-                font.size += 1
+                if !(terminalFontSize >= 288) {
+                    terminalFontSize += 1
+                }
             }
             .keyboardShortcut("+")
+            .disabled(windowController == nil)
 
             Button("Decrease font size") {
-                if CodeEditDocumentController.shared.documents.count > 1 {
-                    if !(font.size <= 1) {
-                        font.size -= 1
-                    }
+                if !(editorFontSize <= 1) {
+                    editorFontSize -= 1
                 }
-                if !(font.size <= 1) {
-                    font.size -= 1
+                if !(terminalFontSize <= 1) {
+                    terminalFontSize -= 1
                 }
             }
             .keyboardShortcut("-")
+            .disabled(windowController == nil)
 
             Button("Customize Toolbar...") {
 
