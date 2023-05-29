@@ -29,11 +29,7 @@ enum FuzzySearch {
         let sortedResult = filteredResult.sorted { url1, url2 -> Bool in
             let nameScore1 = score(query: query, url: url1)
             let nameScore2 = score(query: query, url: url2)
-            if nameScore1 > nameScore2 {
-                return true
-            } else {
-                return false
-            }
+            return nameScore1 > nameScore2
         }
 
         return sortedResult
