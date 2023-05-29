@@ -26,13 +26,11 @@ struct FindNavigatorView: View {
 
     @State var currentFilter: String = ""
 
-    private var foundFilesCount: Int {
-        state.searchResult.count
-    }
+    @State
+    private var foundFilesCount: Int = 0
 
-    private var foundResultsCount: Int {
-        state.searchResult.count
-    }
+    @State
+    private var searchResultCount: Int = 0
 
     var body: some View {
         VStack {
@@ -82,7 +80,7 @@ struct FindNavigatorView: View {
             .padding(.vertical, 5)
             Divider()
             HStack(alignment: .center) {
-                Text("\(state.searchResultCount) results in \(foundFilesCount) files")
+                Text("\(self.searchResultCount) results in \(self.foundFilesCount) files")
                     .font(.system(size: 10))
             }
             Divider()
@@ -90,6 +88,10 @@ struct FindNavigatorView: View {
         }
         .onSubmit {
             state.search(searchText)
+        }
+        .onReceive(state.objectWillChange) { _ in
+            self.searchResultCount = state.searchResultCount
+            self.foundFilesCount = state.searchResult.count
         }
     }
 }
