@@ -39,9 +39,6 @@ struct StatusBarView: View {
 //            StatusBarDivider()
             Spacer()
             HStack(alignment: .center, spacing: 10) {
-//                StatusBarIndentSelector()
-//                StatusBarEncodingSelector()
-//                StatusBarLineEndSelector()
                 StatusBarCursorLocationLabel()
             }
             StatusBarDivider()

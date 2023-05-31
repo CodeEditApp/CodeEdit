@@ -17,9 +17,6 @@ extension WorkspaceDocument {
         ]
         @Published var searchResult: [SearchResultModel] = []
         @Published var searchResultCount: Int = 0
-        /// A unique ID for the current search results. Used to "re-search" with the same
-        /// search text but refresh results and UI.
-        @Published var searchId: UUID?
 
         var ignoreCase: Bool = true
 
@@ -40,13 +37,12 @@ extension WorkspaceDocument {
             guard let text else {
                 searchResult = []
                 searchResultCount = 0
-                searchId = nil
                 return
             }
 
             let textToCompare = ignoreCase ? text.lowercased() : text
             self.searchResult = []
-            self.searchId = UUID()
+            self.searchResultCount = 0
             guard let url = self.workspace.fileURL else { return }
             let enumerator = FileManager.default.enumerator(
                 at: url,
@@ -109,7 +105,7 @@ extension WorkspaceDocument {
                                 lineMatches: matches
                             )
                         }
-                        searchResultCount += 1
+                        searchResultCount += matches.count
                     }
                 }
 

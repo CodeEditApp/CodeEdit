@@ -49,7 +49,6 @@ struct WorkspaceView: View {
                             .collapsed($workspace.debugAreaModel.isMaximized)
                             .frame(minHeight: 170 + 29 + 29)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            .holdingPriority(.init(10))
                             .safeAreaInset(edge: .bottom, spacing: 0) {
                                 StatusBarView(proxy: proxy)
                             }
@@ -72,6 +71,7 @@ struct WorkspaceView: View {
                             focusedEditor = newValue
                         }
                     }
+
                 }
             }
             .background(EffectView(.contentBackground))

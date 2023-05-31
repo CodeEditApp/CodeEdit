@@ -18,5 +18,6 @@ struct CodeEditCommands: Commands {
         SourceControlCommands()
         WindowCommands()
         HelpCommands()
+        ExtensionCommands()
     }
 }

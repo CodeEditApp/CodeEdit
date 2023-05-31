@@ -10,13 +10,31 @@ import SwiftUI
 struct InspectorSidebarView: View {
 
     @ObservedObject
+    private var extensionManager = ExtensionManager.shared
+
+    @ObservedObject
     private var workspace: WorkspaceDocument
 
     @EnvironmentObject
     private var tabManager: TabManager
 
     @State
-    private var selection: Int = 0
+    private var selection: InspectorTab.ID = InspectorTab.file.id
+
+    private var items: [InspectorTab] {
+        [.file, .gitHistory, .quickhelp]
+        + extensionManager
+            .extensions
+            .map { ext in
+                ext.availableFeatures.compactMap {
+                    if case .sidebarItem(let data) = $0, data.kind == .inspector {
+                        return InspectorTab.uiExtension(endpoint: ext.endpoint, data: data)
+                    }
+                    return nil
+                }
+            }
+            .joined()
+    }
 
     init(workspace: WorkspaceDocument) {
         self.workspace = workspace
@@ -27,20 +45,22 @@ struct InspectorSidebarView: View {
     var body: some View {
         VStack {
             if let path = tabManager.activeTabGroup.selected?.fileDocument?.fileURL?.path(percentEncoded: false) {
-                switch selection {
-                case 0:
+                switch items.first(where: { $0.id == selection }) {
+                case .file:
                     FileInspectorView(
                         workspaceURL: workspace.fileURL!,
                         fileURL: path
                     )
-                case 1:
+                case .gitHistory:
                     HistoryInspectorView(
                         workspaceURL: workspace.fileURL!,
                         fileURL: path
                     )
-                case 2:
+                case .quickhelp:
                     QuickHelpInspectorView().padding(5)
-                default:
+                case let .uiExtension(endpoint, data):
+                    ExtensionSceneView(with: endpoint, sceneID: data.sceneID)
+                case .none:
                     NoSelectionInspectorView()
                 }
             } else {
@@ -57,12 +77,12 @@ struct InspectorSidebarView: View {
         )
         .safeAreaInset(edge: .trailing, spacing: 0) {
             if sidebarPosition == .side {
-                InspectorSidebarTabBar(selection: $selection, position: sidebarPosition)
+                InspectorSidebarTabBar(items: items, selection: $selection, position: sidebarPosition)
             }
         }
         .safeAreaInset(edge: .top, spacing: 0) {
             if sidebarPosition == .top {
-                InspectorSidebarTabBar(selection: $selection, position: sidebarPosition)
+                InspectorSidebarTabBar(items: items, selection: $selection, position: sidebarPosition)
             } else {
                 Divider()
             }

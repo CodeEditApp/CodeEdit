@@ -1,13 +1,13 @@
 //
-//  StatusBarModel.swift
-//  CodeEditModules/StatusBar
+//  DebugAreaViewModel.swift
+//  CodeEdit
 //
 //  Created by Lukas Pistrol on 20.03.22.
 //
 
 import SwiftUI
 
-/// # StatusBarModel
+/// # DebugAreaViewModel
 ///
 /// A model class to host and manage data for the ``StatusBarView``
 ///
@@ -16,16 +16,6 @@ class DebugAreaViewModel: ObservableObject {
         = "\(String(describing: DebugAreaViewModel.self))-IsDebugAreaViewCollapsed"
     private let statusBarDrawerHeightStateName: String
         = "\(String(describing: DebugAreaViewModel.self))-DebugAreaViewHeight"
-
-    // TODO: Implement logic for updating values
-    // TODO: Add @Published vars for indentation, encoding, linebreak
-
-    /// The selected tab in the main section.
-    /// - **0**: Terminal
-    /// - **1**: Debugger
-    /// - **2**: Output
-    @Published
-    var selectedTab: Int = 0
 
     /// Returns the current location of the cursor in an editing view
     @Published

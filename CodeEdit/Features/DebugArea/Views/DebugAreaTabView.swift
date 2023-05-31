@@ -166,5 +166,3 @@ struct PaneToolbarSection<Content: View>: View {
         }
     }
 }
-
-

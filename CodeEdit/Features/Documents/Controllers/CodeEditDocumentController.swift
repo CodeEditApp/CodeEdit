@@ -92,7 +92,7 @@ final class CodeEditDocumentController: NSDocumentController {
 
     override func clearRecentDocuments(_ sender: Any?) {
         super.clearRecentDocuments(sender)
-        UserDefaults.standard.set([], forKey: "recentProjectPaths")
+        UserDefaults.standard.set([Any](), forKey: "recentProjectPaths")
     }
 }
 

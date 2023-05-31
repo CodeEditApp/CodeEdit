@@ -10,6 +10,7 @@ import SwiftUI
 @main
 struct CodeEditApp: App {
     @NSApplicationDelegateAdaptor var appdelegate: AppDelegate
+    @ObservedObject var settings = Settings.shared
     let updater: SoftwareUpdater = SoftwareUpdater()
 
     init() {
@@ -19,13 +20,20 @@ struct CodeEditApp: App {
     }
 
     var body: some Scene {
-        WelcomeWindow()
+        Group {
+            WelcomeWindow()
+                .keyboardShortcut("1", modifiers: [.command, .shift])
 
-        AboutWindow()
+            ExtensionManagerWindow()
+                .keyboardShortcut("2", modifiers: [.command, .shift])
 
-        SettingsWindow()
-        .commands {
-            CodeEditCommands()
+            AboutWindow()
+
+            SettingsWindow()
+                .commands {
+                    CodeEditCommands()
+                }
         }
+        .environment(\.settings, settings.preferences) // Add settings to each window environment
     }
 }
