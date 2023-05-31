@@ -318,6 +318,10 @@
 		B62AEDB52A1FE295009A9F52 /* DebugAreaDebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62AEDB42A1FE295009A9F52 /* DebugAreaDebugView.swift */; };
 		B62AEDB82A1FE2DC009A9F52 /* DebugAreaOutputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62AEDB72A1FE2DC009A9F52 /* DebugAreaOutputView.swift */; };
 		B62AEDBC2A210DBB009A9F52 /* DebugAreaTerminalTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62AEDBB2A210DBB009A9F52 /* DebugAreaTerminalTab.swift */; };
+		B62AEDC92A2704F3009A9F52 /* DebugAreaTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62AEDC82A2704F3009A9F52 /* DebugAreaTabView.swift */; };
+		B62AEDD12A27B264009A9F52 /* View+paneToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62AEDD02A27B264009A9F52 /* View+paneToolbar.swift */; };
+		B62AEDD42A27B29F009A9F52 /* PaneToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62AEDD32A27B29F009A9F52 /* PaneToolbar.swift */; };
+		B62AEDD72A27B3D0009A9F52 /* DebugAreaTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62AEDD62A27B3D0009A9F52 /* DebugAreaTabViewModel.swift */; };
 		B640A99E29E2184700715F20 /* SettingsForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = B640A99D29E2184700715F20 /* SettingsForm.swift */; };
 		B640A9A129E2188F00715F20 /* View+NavigationBarBackButtonVisible.swift in Sources */ = {isa = PBXBuildFile; fileRef = B640A9A029E2188F00715F20 /* View+NavigationBarBackButtonVisible.swift */; };
 		B658FB3427DA9E1000EA4DBD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3327DA9E1000EA4DBD /* Assets.xcassets */; };
@@ -729,6 +733,10 @@
 		B62AEDB42A1FE295009A9F52 /* DebugAreaDebugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugAreaDebugView.swift; sourceTree = "<group>"; };
 		B62AEDB72A1FE2DC009A9F52 /* DebugAreaOutputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugAreaOutputView.swift; sourceTree = "<group>"; };
 		B62AEDBB2A210DBB009A9F52 /* DebugAreaTerminalTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugAreaTerminalTab.swift; sourceTree = "<group>"; };
+		B62AEDC82A2704F3009A9F52 /* DebugAreaTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugAreaTabView.swift; sourceTree = "<group>"; };
+		B62AEDD02A27B264009A9F52 /* View+paneToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+paneToolbar.swift"; sourceTree = "<group>"; };
+		B62AEDD32A27B29F009A9F52 /* PaneToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaneToolbar.swift; sourceTree = "<group>"; };
+		B62AEDD62A27B3D0009A9F52 /* DebugAreaTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugAreaTabViewModel.swift; sourceTree = "<group>"; };
 		B640A99D29E2184700715F20 /* SettingsForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsForm.swift; sourceTree = "<group>"; };
 		B640A9A029E2188F00715F20 /* View+NavigationBarBackButtonVisible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+NavigationBarBackButtonVisible.swift"; sourceTree = "<group>"; };
 		B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodeEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1753,6 +1761,8 @@
 				B62AEDB12A1FD7F0009A9F52 /* Views */,
 				B62AEDAB2A1FCD3C009A9F52 /* Models */,
 				58822513292C280D00E83CDE /* DebugAreaView.swift */,
+				B62AEDD02A27B264009A9F52 /* View+paneToolbar.swift */,
+				B62AEDD32A27B29F009A9F52 /* PaneToolbar.swift */,
 				B62AEDA92A1FCBE5009A9F52 /* DebugAreaTabBar.swift */,
 			);
 			path = DebugArea;
@@ -1781,6 +1791,7 @@
 			isa = PBXGroup;
 			children = (
 				5882251C292C280D00E83CDE /* DebugAreaViewModel.swift */,
+				B62AEDD62A27B3D0009A9F52 /* DebugAreaTabViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -2095,6 +2106,7 @@
 		B62AEDB12A1FD7F0009A9F52 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				B62AEDC82A2704F3009A9F52 /* DebugAreaTabView.swift */,
 				58822514292C280D00E83CDE /* Toolbar */,
 				B62AEDB22A1FD95B009A9F52 /* DebugAreaTerminalView.swift */,
 				B62AEDBB2A210DBB009A9F52 /* DebugAreaTerminalTab.swift */,
@@ -2677,6 +2689,7 @@
 				58D01C9B293167DC00C5B6B4 /* CodeEditKeychainConstants.swift in Sources */,
 				B640A99E29E2184700715F20 /* SettingsForm.swift in Sources */,
 				20EBB50F280C389300F3A5DA /* FileInspectorModel.swift in Sources */,
+				B62AEDD12A27B264009A9F52 /* View+paneToolbar.swift in Sources */,
 				5878DAB1291D627C00DD95A3 /* PathBarComponent.swift in Sources */,
 				58822533292C280D00E83CDE /* DebugAreaTab.swift in Sources */,
 				587B9E6E29301D8F00AC7927 /* GitLabProject.swift in Sources */,
@@ -2725,6 +2738,7 @@
 				B6EA1FE729DA341D001BF195 /* Theme.swift in Sources */,
 				587B9E7529301D8F00AC7927 /* String+QueryParameters.swift in Sources */,
 				58798219292D92370085B254 /* SearchModeModel.swift in Sources */,
+				B62AEDD72A27B3D0009A9F52 /* DebugAreaTabViewModel.swift in Sources */,
 				B66A4E4F29C917B8004573B4 /* WelcomeWindow.swift in Sources */,
 				58D01C9D293167DC00C5B6B4 /* KeychainSwiftAccessOptions.swift in Sources */,
 				B6E41C8B29DE7AE80088F9F4 /* AccountsSettingsSigninView.swift in Sources */,
@@ -2783,6 +2797,7 @@
 				58822529292C280D00E83CDE /* StatusBarLineEndSelector.swift in Sources */,
 				5C4BB1E128212B1E00A92FB2 /* World.swift in Sources */,
 				581550D029FBD30400684881 /* FileSystemTableViewCell.swift in Sources */,
+				B62AEDD42A27B29F009A9F52 /* PaneToolbar.swift in Sources */,
 				D7E201B227E8D50000CB86D0 /* FindNavigatorModeSelector.swift in Sources */,
 				287776E927E34BC700D46668 /* TabBarView.swift in Sources */,
 				B60BE8BD297A167600841125 /* AcknowledgementRowView.swift in Sources */,
@@ -2879,6 +2894,7 @@
 				587B9DA229300ABD00AC7927 /* EffectView.swift in Sources */,
 				6C97EBCC2978760400302F95 /* AcknowledgementsWindowController.swift in Sources */,
 				284DC84F2978B7B400BF2770 /* ContributorsView.swift in Sources */,
+				B62AEDC92A2704F3009A9F52 /* DebugAreaTabView.swift in Sources */,
 				58798250292E78D80085B254 /* CodeFile.swift in Sources */,
 				5878DAA5291AE76700DD95A3 /* QuickOpenView.swift in Sources */,
 				201169D72837B2E300F92B46 /* SourceControlNavigatorView.swift in Sources */,

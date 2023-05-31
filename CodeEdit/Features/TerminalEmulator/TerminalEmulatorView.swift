@@ -53,10 +53,13 @@ struct TerminalEmulatorView: NSViewRepresentable {
 
     public var shellType: String
 
-    init(url: URL, shellType: String? = nil) {
+    public var onTitleChange: (_ title: String) -> Void
+
+    init(url: URL, shellType: String? = nil, onTitleChange: @escaping (_ title: String) -> Void) {
         self.url = url
-        self._terminal = State(initialValue: TerminalEmulatorView.lastTerminal[url.path] ?? .init(frame: .zero))
         self.shellType = shellType ?? ""
+        self.onTitleChange = onTitleChange
+        self._terminal = State(initialValue: TerminalEmulatorView.lastTerminal[url.path] ?? .init(frame: .zero))
     }
 
     /// Returns a string of a shell path to use

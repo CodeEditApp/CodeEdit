@@ -18,54 +18,33 @@ struct DebugAreaOutputView: View {
     private var selectedOutputSourceId = "ALL_SOURCES"
 
     var body: some View {
-        VStack(spacing: 0) {
+        DebugAreaTabView { _ in
             Text("No output")
                 .font(.system(size: 16))
                 .foregroundColor(.secondary)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-            HStack(alignment: .center, spacing: 6.5) {
-                Picker("Output Source", selection: $selectedOutputSourceId) {
-                    Text("All Sources")
-                        .tag("ALL_SOURCES")
-//                    ForEach(outputSources, id: \.self.id) { source in
-//                        Text(source.title)
-//                            .tag(source.id)
-//                    }
-                }
-                .buttonStyle(.borderless)
-                .labelsHidden()
-                .controlSize(.small)
-                Spacer()
-                FilterTextField(title: "Filter", text: $searchText)
-                    .frame(maxWidth: 175)
-                    .padding(.leading, -2)
-                Button {
-                    // clear logs
-                } label: {
-                    Image(systemName: "trash")
-                }
-                .buttonStyle(.icon)
-                Divider()
-                HStack(alignment: .center, spacing: 3.5) {
-                    Button {
-                        // split terminal
-                    } label: {
-                        Image(systemName: "square.split.2x1")
+                .paneToolbar {
+                    Picker("Output Source", selection: $selectedOutputSourceId) {
+                        Text("All Sources")
+                            .tag("ALL_SOURCES")
+//                        ForEach(outputSources, id: \.self.id) { source in
+//                            Text(source.title)
+//                                .tag(source.id)
+//                        }
                     }
-                    .buttonStyle(.icon)
+                    .buttonStyle(.borderless)
+                    .labelsHidden()
+                    .controlSize(.small)
+                    Spacer()
+                    FilterTextField(title: "Filter", text: $searchText)
+                        .frame(maxWidth: 175)
+                        .padding(.leading, -2)
                     Button {
-                        model.isMaximized.toggle()
+                        // clear logs
                     } label: {
-                        Image(systemName: "arrowtriangle.up.square")
+                        Image(systemName: "trash")
                     }
-                    .buttonStyle(.icon(isActive: model.isMaximized))
                 }
-            }
-            .padding(.horizontal, 7)
-            .padding(.vertical, 8)
-//            .padding(.leading, model.debuggerSidebarIsCollapsed ? 29 : 0)
-//            .animation(.default, value: model.debuggerSidebarIsCollapsed)
-            .frame(maxHeight: 28)
         }
     }
 }

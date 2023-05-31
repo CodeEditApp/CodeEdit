@@ -95,10 +95,24 @@ struct DebugAreaTerminalView: View {
         return terminals.first(where: { $0.id == id }) ?? nil
     }
 
-    private func updateTerminalTitle(_ id: UUID, _ title: String) {
-        var terminal = terminals.first(where: { $0.id == id }) ?? nil
+    private func updateTerminal(_ id: UUID, title: String? = nil) {
+        let terminalIndex = terminals.firstIndex(where: { $0.id == id })
+        if terminalIndex != nil {
+            updateTerminalByReference(of: &terminals[terminalIndex!], title: title)
+        }
+    }
 
-        terminal?.title = title
+    func updateTerminalByReference(
+        of terminal: inout DebugAreaTerminal,
+        title: String? = nil
+    ) {
+        if let newTitle = title {
+            terminal.title = newTitle
+        }
+    }
+
+    func handleTitleChange(id: UUID, title: String) {
+        updateTerminal(id, title: title)
     }
 
     /// Returns the `background` color of the selected theme
@@ -117,143 +131,117 @@ struct DebugAreaTerminalView: View {
     }
 
     var body: some View {
-        ZStack(alignment: .bottom) {
-            SplitView(axis: .horizontal) {
-                List(selection: $selectedIDs) {
-                    ForEach($terminals, id: \.self.id) { $terminal in
-                        DebugAreaTerminalTab(
-                            terminal: $terminal,
-                            removeTerminals: removeTerminals,
-                            isSelected: selectedIDs.contains(terminal.id),
-                            selectedIDs: selectedIDs
-                        )
-                        .tag(terminal.id)
-                    }
-                    .onMove(perform: moveItems)
+        DebugAreaTabView { tabState in
+            ZStack {
+                if selectedIDs.isEmpty {
+                    Text("No Selection")
+                        .font(.system(size: 16))
+                        .foregroundColor(.secondary)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .background(EffectView(.contentBackground).ignoresSafeArea())
                 }
-                .listStyle(.automatic)
-                .accentColor(.secondary)
-                .collapsable()
-                .collapsed($sidebarIsCollapsed)
-                .frame(minWidth: 200, idealWidth: 240, maxWidth: 400)
-                .contextMenu {
-                    Button("New Terminal") {
-                        addTerminal()
-                    }
-                    Menu("New Terminal With Profile") {
-                        Button("Default") {
-                            addTerminal()
+                ForEach(terminals) { terminal in
+                    TerminalEmulatorView(
+                        url: terminal.url!,
+                        shellType: terminal.shell,
+                        onTitleChange: { newTitle in
+                            handleTitleChange(id: terminal.id, title: newTitle)
                         }
-                        Divider()
-                        Button("Bash") {
-                            addTerminal(shell: "/bin/bash")
-                        }
-                        Button("ZSH") {
-                            addTerminal(shell: "/bin/zsh")
-                        }
-                    }
+                    )
+                    .padding(.top, 10)
+                    .padding(.horizontal, 10)
+                    .contentShape(Rectangle())
+                    .disabled(terminal.id != selectedIDs.first)
+                    .opacity(terminal.id == selectedIDs.first ? 1 : 0)
                 }
-                .onChange(of: terminals) { newValue in
-                    if newValue.isEmpty {
-                        addTerminal()
-                    }
-                }
-                .safeAreaInset(edge: .bottom, alignment: .leading) {
-                    HStack(spacing: 0) {
-                        Button {
-                            addTerminal()
-                        } label: {
-                            Image(systemName: "plus")
-                        }
-                        .buttonStyle(.icon(size: 29))
-                        Button {
-                            removeTerminals(selectedIDs)
-                        } label: {
-                            Image(systemName: "minus")
-                        }
-                        .disabled(terminals.count <= 1)
-                        .opacity(terminals.count <= 1 ? 0.5 : 1)
-                        .buttonStyle(.icon(size: 29))
-                    }
-                    .padding(.leading, 29)
-                }
-                ZStack {
-                    if selectedIDs.isEmpty {
-                        Text("No Selection")
-                            .font(.system(size: 16))
-                            .foregroundColor(.secondary)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            .background(EffectView(.contentBackground).ignoresSafeArea())
-                    }
-                    ForEach(terminals) { terminal in
-                        TerminalEmulatorView(url: terminal.url!, shellType: terminal.shell)
-                            .padding(.top, 10)
-                            .padding(.horizontal, 10)
-                            .contentShape(Rectangle())
-                            .disabled(terminal.id != selectedIDs.first)
-                            .opacity(terminal.id == selectedIDs.first ? 1 : 0)
-                    }
-                }
-                .safeAreaInset(edge: .bottom, spacing: 0) {
-                    HStack(alignment: .center, spacing: 6.5) {
-                        DebugAreaTerminalPicker(selectedIDs: $selectedIDs, terminals: terminals)
-                        .opacity(sidebarIsCollapsed ? 1 : 0)
-                        Spacer()
-                        Button {
-                            // clear logs
-                        } label: {
-                            Image(systemName: "trash")
-                        }
-                        .buttonStyle(.icon)
-                        Divider()
-                        HStack(alignment: .center, spacing: 3.5) {
-                            Button {
-                                // split terminal
-                            } label: {
-                                Image(systemName: "square.split.2x1")
-                            }
-                            .buttonStyle(.icon)
-                            Button {
-                                model.isMaximized.toggle()
-                            } label: {
-                                Image(systemName: "arrowtriangle.up.square")
-                            }
-                            .buttonStyle(.icon(isActive: model.isMaximized))
-                        }
-                    }
-                    .padding(.horizontal, 7)
-                    .padding(.vertical, 8)
-                    .padding(.leading, sidebarIsCollapsed ? 29 : 0)
-                    .animation(.default, value: sidebarIsCollapsed)
-                    .frame(maxHeight: 28)
-                }
-                .holdingPriority(.init(1))
-                .background {
-                    if useThemeBackground {
-                        Color(nsColor: backgroundColor)
-                    } else {
-                        if colorScheme == .dark {
-                            EffectView(.underPageBackground)
-                        } else {
-                            EffectView(.contentBackground)
-                        }
-                    }
-                }
-                .colorScheme(
-                    matchAppearance && darkAppearance
-                    ? themeModel.selectedDarkTheme?.appearance == .dark ? .dark : .light
-                    : themeModel.selectedTheme?.appearance == .dark ? .dark : .light
-                )
             }
-            HStack(spacing: 0) {
-                Button {
-                    sidebarIsCollapsed.toggle()
-                } label: {
-                    Image(systemName: "square.leadingthird.inset.filled")
+            .paneToolbar {
+                PaneToolbarSection {
+                    DebugAreaTerminalPicker(selectedIDs: $selectedIDs, terminals: terminals)
+                        .opacity(tabState.leadingSidebarIsCollapsed ? 1 : 0)
                 }
-                .buttonStyle(.icon(isActive: !sidebarIsCollapsed, size: 29))
-                Divider()
-                    .frame(height: 12)
+                Spacer()
+                PaneToolbarSection {
+                    Button {
+                        // clear logs
+                    } label: {
+                        Image(systemName: "trash")
+                    }
+                    Button {
+                        // split terminal
+                    } label: {
+                        Image(systemName: "square.split.2x1")
+                    }
+                }
+            }
+            .background {
+                if useThemeBackground {
+                    Color(nsColor: backgroundColor)
+                } else {
+                    if colorScheme == .dark {
+                        EffectView(.underPageBackground)
+                    } else {
+                        EffectView(.contentBackground)
+                    }
+                }
+            }
+            .colorScheme(
+                matchAppearance && darkAppearance
+                ? themeModel.selectedDarkTheme?.appearance == .dark ? .dark : .light
+                : themeModel.selectedTheme?.appearance == .dark ? .dark : .light
+            )
+        } leadingSidebar: { _ in
+            List(selection: $selectedIDs) {
+                ForEach($terminals, id: \.self.id) { $terminal in
+                    DebugAreaTerminalTab(
+                        terminal: $terminal,
+                        removeTerminals: removeTerminals,
+                        isSelected: selectedIDs.contains(terminal.id),
+                        selectedIDs: selectedIDs
+                    )
+                    .tag(terminal.id)
+                }
+                .onMove(perform: moveItems)
+            }
+            .listStyle(.automatic)
+            .accentColor(.secondary)
+            .contextMenu {
+                Button("New Terminal") {
+                    addTerminal()
+                }
+                Menu("New Terminal With Profile") {
+                    Button("Default") {
+                        addTerminal()
+                    }
+                    Divider()
+                    Button("Bash") {
+                        addTerminal(shell: "/bin/bash")
+                    }
+                    Button("ZSH") {
+                        addTerminal(shell: "/bin/zsh")
+                    }
+                }
+            }
+            .onChange(of: terminals) { newValue in
+                if newValue.isEmpty {
+                    addTerminal()
+                }
+            }
+            .paneToolbar {
+                PaneToolbarSection {
+                    Button {
+                        addTerminal()
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+                    Button {
+                        removeTerminals(selectedIDs)
+                    } label: {
+                        Image(systemName: "minus")
+                    }
+                    .disabled(terminals.count <= 1)
+                    .opacity(terminals.count <= 1 ? 0.5 : 1)
+                }
                 Spacer()
             }
         }
