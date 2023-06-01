@@ -138,7 +138,6 @@ struct DebugAreaTerminalView: View {
                         .font(.system(size: 16))
                         .foregroundColor(.secondary)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .background(EffectView(.contentBackground).ignoresSafeArea())
                 }
                 ForEach(terminals) { terminal in
                     TerminalEmulatorView(
@@ -175,7 +174,9 @@ struct DebugAreaTerminalView: View {
                 }
             }
             .background {
-                if useThemeBackground {
+                if selectedIDs.isEmpty {
+                    EffectView(.contentBackground)
+                } else if useThemeBackground {
                     Color(nsColor: backgroundColor)
                 } else {
                     if colorScheme == .dark {
@@ -186,9 +187,11 @@ struct DebugAreaTerminalView: View {
                 }
             }
             .colorScheme(
-                matchAppearance && darkAppearance
-                ? themeModel.selectedDarkTheme?.appearance == .dark ? .dark : .light
-                : themeModel.selectedTheme?.appearance == .dark ? .dark : .light
+                selectedIDs.isEmpty
+                    ? colorScheme
+                    : matchAppearance && darkAppearance
+                    ? themeModel.selectedDarkTheme?.appearance == .dark ? .dark : .light
+                    : themeModel.selectedTheme?.appearance == .dark ? .dark : .light
             )
         } leadingSidebar: { _ in
             List(selection: $selectedIDs) {
