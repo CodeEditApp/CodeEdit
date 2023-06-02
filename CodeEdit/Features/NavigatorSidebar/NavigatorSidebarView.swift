@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import CodeEditKit
 
 struct NavigatorSidebarView: View {
     @ObservedObject
@@ -15,12 +14,19 @@ struct NavigatorSidebarView: View {
     @ObservedObject
     private var extensionManager = ExtensionManager.shared
 
+    @AppSettings(\.general.navigatorTabBarPosition)
+    var sidebarPosition: SettingsData.SidebarTabBarPosition
+
     @State
-    private var selection: NavigatorTab.ID = NavigatorTab.fileTree.id
+    private var selection: NavigatorTab? = .project
+
+    init(workspace: WorkspaceDocument) {
+        self.workspace = workspace
+    }
 
     private var items: [NavigatorTab] {
-        [.fileTree, .sourceControl, .search]
-        + extensionManager
+        [.project, .sourceControl, .search] +
+        extensionManager
             .extensions
             .map { ext in
                 ext.availableFeatures.compactMap {
@@ -33,35 +39,29 @@ struct NavigatorSidebarView: View {
             .joined()
     }
 
-    init(workspace: WorkspaceDocument) {
-        self.workspace = workspace
-    }
-
-    @AppSettings(\.general.navigatorTabBarPosition) var sidebarPosition: SettingsData.SidebarTabBarPosition
-
     var body: some View {
         VStack {
-            switch items.first(where: { $0.id == selection }) {
-            case .fileTree:
-                ProjectNavigatorView()
-            case .sourceControl:
-                SourceControlNavigatorView()
-            case .search:
-                FindNavigatorView()
-            case let .uiExtension(endpoint, data):
-                ExtensionSceneView(with: endpoint, sceneID: data.sceneID)
-            case .none:
+            if let selection {
+                selection
+            } else {
                 NoSelectionInspectorView()
             }
         }
         .safeAreaInset(edge: .leading, spacing: 0) {
             if sidebarPosition == .side {
-                NavigatorSidebarTabBar(items: items, selection: $selection, position: sidebarPosition)
+                HStack(spacing: 0) {
+                    AreaTabBar(items: items, selection: $selection, position: sidebarPosition)
+                    Divider()
+                }
             }
         }
         .safeAreaInset(edge: .top, spacing: 0) {
             if sidebarPosition == .top {
-                NavigatorSidebarTabBar(items: items, selection: $selection, position: sidebarPosition)
+                VStack(spacing: 0) {
+                    Divider()
+                    AreaTabBar(items: items, selection: $selection, position: sidebarPosition)
+                    Divider()
+                }
             } else {
                 Divider()
             }

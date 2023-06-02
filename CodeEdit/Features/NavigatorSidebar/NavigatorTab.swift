@@ -2,22 +2,22 @@
 //  NavigatorTab.swift
 //  CodeEdit
 //
-//  Created by Wouter Hennen on 23/05/2023.
+//  Created by Wouter Hennen on 02/06/2023.
 //
 
-import Foundation
+import SwiftUI
 import CodeEditKit
-import ExtensionKit
+import ExtensionFoundation
 
-enum NavigatorTab: Hashable, Identifiable {
-    case fileTree
+enum NavigatorTab: AreaTab {
+    case project
     case sourceControl
     case search
     case uiExtension(endpoint: AppExtensionIdentity, data: ResolvedSidebar.SidebarStore)
 
     var systemImage: String {
         switch self {
-        case .fileTree:
+        case .project:
             return "folder"
         case .sourceControl:
             return "vault"
@@ -37,7 +37,7 @@ enum NavigatorTab: Hashable, Identifiable {
 
     var title: String {
         switch self {
-        case .fileTree:
+        case .project:
             return "Project"
         case .sourceControl:
             return "Version Control"
@@ -45,6 +45,19 @@ enum NavigatorTab: Hashable, Identifiable {
             return "Search"
         case .uiExtension(_, let data):
             return data.help ?? data.sceneID
+        }
+    }
+
+    var body: some View {
+        switch self {
+        case .project:
+            ProjectNavigatorView()
+        case .sourceControl:
+            SourceControlNavigatorView()
+        case .search:
+            FindNavigatorView()
+        case let .uiExtension(endpoint, data):
+            ExtensionSceneView(with: endpoint, sceneID: data.sceneID)
         }
     }
 }
