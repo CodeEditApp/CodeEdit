@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import CodeEditKit
 
 struct NavigatorSidebarView: View {
     @ObservedObject
@@ -19,43 +18,31 @@ struct NavigatorSidebarView: View {
     var sidebarPosition: SettingsData.SidebarTabBarPosition
 
     @State
-    private var selection: AreaTab?
-
-    private var items: [AreaTab] {
-        [
-            .init(id: "project", title: "Project Navigator", systemImage: "folder") {
-                ProjectNavigatorView()
-            },
-            .init(id: "history", title: "Source Control Navigator", systemImage: "vault") {
-                SourceControlNavigatorView()
-            },
-            .init(id: "find", title: "Find Navigator", systemImage: "magnifyingglass") {
-                FindNavigatorView()
-            },
-        ] + extensionManager.extensions.flatMap { ext in
-            ext.availableFeatures.compactMap { feature in
-                if case .sidebarItem(let data) = feature, data.kind == .navigator {
-                    return AreaTab(
-                        id: "ext:\(ext.endpoint.bundleIdentifier)(\(data.sceneID))",
-                        title: data.help ?? data.sceneID,
-                        systemImage: data.icon
-                    ) {
-                        ExtensionSceneView(with: ext.endpoint, sceneID: data.sceneID)
-                    }
-                }
-                return nil
-            }
-        }
-    }
+    private var selection: NavigatorTab? = .fileTree
 
     init(workspace: WorkspaceDocument) {
         self.workspace = workspace
     }
 
+    private var items: [NavigatorTab] {
+        [.fileTree, .search, .sourceControl] +
+        extensionManager
+            .extensions
+            .map { ext in
+                ext.availableFeatures.compactMap {
+                    if case .sidebarItem(let data) = $0, data.kind == .navigator {
+                        return NavigatorTab.uiExtension(endpoint: ext.endpoint, data: data)
+                    }
+                    return nil
+                }
+            }
+            .joined()
+    }
+
     var body: some View {
         VStack {
-            if selection != nil {
-                selection!.contentView()
+            if let selection {
+                selection
             } else {
                 NoSelectionInspectorView()
             }
@@ -80,8 +67,5 @@ struct NavigatorSidebarView: View {
             }
         }
         .environmentObject(workspace)
-        .onAppear {
-            selection = items.first!
-        }
     }
 }

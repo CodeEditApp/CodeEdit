@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-struct AreaTabBar: View {
+struct AreaTabBar<Tab: TabBar>: View {
     @Environment(\.controlActiveState) private var activeState
 
-    var items: [AreaTab]
+    var items: [Tab]
 
-    @Binding var selection: AreaTab?
+    @Binding var selection: Tab?
 
     var position: SettingsData.SidebarTabBarPosition
 
@@ -78,7 +78,7 @@ struct AreaTabBar: View {
     }
 
     private func makeIcon(
-        tab: AreaTab,
+        tab: Tab,
         scale: Image.Scale = .medium,
         size: CGSize
     ) -> some View {

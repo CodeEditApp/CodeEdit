@@ -118,7 +118,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         splitVC.addSplitViewItem(mainContent)
 
         let inspectorView = SettingsInjector {
-            InspectorSidebarView(workspace: workspace)
+            InspectorSidebarView()
                 .environmentObject(workspace)
                 .environmentObject(workspace.tabManager)
         }

@@ -7,24 +7,9 @@
 
 import SwiftUI
 
-struct AreaTab: Identifiable, Equatable {
-    var id: String
-    var title: String
-    var systemImage: String? = "e.square"
-    var contentView: () -> AnyView
-
-    init<Content: View>(id: String, title: String, systemImage: String? = "e.square", @ViewBuilder content: @escaping () -> Content) {
-        self.id = id
-        self.title = title
-        self.systemImage = systemImage
-        self.contentView = { AnyView(content()) }
-    }
-
-    static func == (lhs: AreaTab, rhs: AreaTab) -> Bool {
-        lhs.id == rhs.id &&
-        lhs.title == rhs.title &&
-        lhs.systemImage == rhs.systemImage
-    }
+protocol TabBar: View, Identifiable, Hashable {
+    var title: String { get }
+    var systemImage: String { get }
 }
 
 struct DebugAreaView: View {
@@ -34,26 +19,12 @@ struct DebugAreaView: View {
     @EnvironmentObject
     private var model: DebugAreaViewModel
 
-    @State var selection: AreaTab?
-
-    private var items: [AreaTab] {
-        [
-            .init(id: "terminal", title: "Terminal", systemImage: "terminal") {
-                DebugAreaTerminalView()
-            },
-            .init(id: "debug.console", title: "Debug Console", systemImage: "ladybug") {
-                DebugAreaDebugView()
-            },
-            .init(id: "output", title: "Output", systemImage: "list.bullet.indent") {
-                DebugAreaOutputView()
-            },
-        ]
-    }
+    @State var selection: DebugAreaTab? = .terminal
 
     var body: some View {
         VStack(spacing: 0) {
-            if selection != nil {
-                selection!.contentView()
+            if let selection {
+                selection
             } else {
                 Text("Tab not found")
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -61,7 +32,7 @@ struct DebugAreaView: View {
         }
         .safeAreaInset(edge: .leading, spacing: 0) {
             HStack(spacing: 0) {
-                AreaTabBar(items: items, selection: $selection, position: .side)
+                AreaTabBar(items: DebugAreaTab.allCases, selection: $selection, position: .side)
                 Divider()
                     .overlay(Color(nsColor: colorScheme == .dark ? .black : .clear))
             }
@@ -81,9 +52,6 @@ struct DebugAreaView: View {
             .padding(.horizontal, 5)
             .padding(.vertical, 8)
             .frame(maxHeight: 27)
-        }
-        .onAppear {
-            selection = items.first!
         }
     }
 }

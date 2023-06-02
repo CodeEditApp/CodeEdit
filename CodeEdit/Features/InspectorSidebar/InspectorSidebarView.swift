@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct InspectorSidebarView: View {
-    @ObservedObject
+    @EnvironmentObject
     private var workspace: WorkspaceDocument
 
     @ObservedObject
@@ -21,46 +21,35 @@ struct InspectorSidebarView: View {
     var sidebarPosition: SettingsData.SidebarTabBarPosition
 
     @State
-    private var selection: AreaTab?
+    private var selection: InspectorTab? = .quickhelp
 
     var path: String? { tabManager.activeTabGroup.selected?.fileDocument?.fileURL?.path(percentEncoded: false)
     }
 
-    private var items: [AreaTab] {
-        [
-            .init(id: "file", title: "File Inspector", systemImage: "doc") {
-                FileInspectorView(
-                    workspaceURL: workspace.fileURL!,
-                    fileURL: path ?? ""
-                )
-            },
-            .init(id: "history", title: "History Inspector", systemImage: "clock") {
-                HistoryInspectorView(
-                    workspaceURL: workspace.fileURL!,
-                    fileURL: path ?? ""
-                )
-            },
-            .init(id: "quick.help", title: "Quick Help Inspector", systemImage: "questionmark.circle") {
-                QuickHelpInspectorView().padding(5)
-            },
-        ] + extensionManager.extensions.flatMap { ext in
-            ext.availableFeatures.compactMap { feature in
-                if case .sidebarItem(let data) = feature, data.kind == .inspector {
-                    return AreaTab(
-                        id: "ext:\(ext.endpoint.bundleIdentifier)(\(data.sceneID))",
-                        title: data.help ?? data.sceneID,
-                        systemImage: data.icon
-                    ) {
-                        ExtensionSceneView(with: ext.endpoint, sceneID: data.sceneID)
-                    }
-                }
-                return nil
-            }
+    var fileTreeAndGitHistory: [InspectorTab] {
+        guard let workspaceURL = workspace.fileURL, let path else {
+            return []
         }
+
+        return [
+            .file(workspaceURL: workspaceURL, fileURL: path),
+            .gitHistory(workspaceURL: workspaceURL, fileURL: path)
+        ]
     }
 
-    init(workspace: WorkspaceDocument) {
-        self.workspace = workspace
+    private var items: [InspectorTab] {
+        fileTreeAndGitHistory + [InspectorTab.quickhelp] +
+        extensionManager
+            .extensions
+            .map { ext in
+                ext.availableFeatures.compactMap {
+                    if case .sidebarItem(let data) = $0, data.kind == .inspector {
+                        return InspectorTab.uiExtension(endpoint: ext.endpoint, data: data)
+                    }
+                    return nil
+                }
+            }
+            .joined()
     }
 
     func getExtension(_ id: String) -> ExtensionInfo? {
@@ -71,8 +60,8 @@ struct InspectorSidebarView: View {
 
     var body: some View {
         VStack {
-            if path != nil && selection != nil {
-                selection!.contentView()
+            if let selection {
+                selection
             } else {
                 NoSelectionInspectorView()
             }
@@ -103,9 +92,6 @@ struct InspectorSidebarView: View {
             } else {
                 Divider()
             }
-        }
-        .onAppear {
-            selection = items.first!
         }
     }
 }
