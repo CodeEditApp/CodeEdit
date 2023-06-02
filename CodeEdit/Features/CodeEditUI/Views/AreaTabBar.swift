@@ -1,5 +1,5 @@
 //
-//  DebugAreaTabBar.swift
+//  AreaTabBar.swift
 //  CodeEdit
 //
 //  Created by Austin Condiff on 5/25/23.
@@ -7,13 +7,12 @@
 
 import SwiftUI
 
-struct DebugAreaTabBar: View {
+struct AreaTabBar: View {
     @Environment(\.controlActiveState) private var activeState
-    @Environment(\.colorScheme) private var colorScheme
 
-    var items: [DebugAreaTab]
+    var items: [AreaTab]
 
-    @Binding var selection: DebugAreaTab.ID
+    @Binding var selection: AreaTab?
 
     var position: SettingsData.SidebarTabBarPosition
 
@@ -33,11 +32,9 @@ struct DebugAreaTabBar: View {
         GeometryReader { proxy in
             iconsView(size: proxy.size)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .overlay(alignment: .top) { Divider() }
-                .overlay(alignment: .bottom) { Divider() }
                 .animation(.default, value: items)
         }
-        .frame(maxWidth: .infinity, idealHeight: 29)
+        .frame(maxWidth: .infinity, idealHeight: 27)
         .fixedSize(horizontal: false, vertical: true)
     }
 
@@ -46,12 +43,6 @@ struct DebugAreaTabBar: View {
             iconsView(size: proxy.size)
                 .padding(.vertical, 5)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .overlay(alignment: .trailing) {
-                    HStack {
-                        Divider()
-                            .overlay(Color(nsColor: colorScheme == .dark ? .black : .clear))
-                    }
-                }
                 .animation(.default, value: items)
         }
         .frame(idealWidth: 40, maxHeight: .infinity)
@@ -87,16 +78,16 @@ struct DebugAreaTabBar: View {
     }
 
     private func makeIcon(
-        tab: DebugAreaTab,
+        tab: AreaTab,
         scale: Image.Scale = .medium,
         size: CGSize
     ) -> some View {
         Button {
-            selection = tab.id
+            selection = tab
         } label: {
-            getSafeImage(named: tab.systemImage, accessibilityDescription: tab.title)
+            getSafeImage(named: tab.systemImage ?? "e.square", accessibilityDescription: tab.title)
                 .font(.system(size: 12.5))
-                .symbolVariant(tab.id == selection ? .fill : .none)
+                .symbolVariant(tab == selection ? .fill : .none)
                 .frame(
                     width: position == .side ? 40 : 24,
                     height: position == .side ? 28 : size.height,
@@ -113,7 +104,7 @@ struct DebugAreaTabBar: View {
             //                        .frame(width: .zero)
             //                }
         }
-        .buttonStyle(.icon(isActive: tab.id == selection, size: nil))
+        .buttonStyle(.icon(isActive: tab == selection, size: nil))
     }
 
     private func getSafeImage(named: String, accessibilityDescription: String?) -> Image {

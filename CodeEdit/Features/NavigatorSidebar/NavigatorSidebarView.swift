@@ -15,57 +15,73 @@ struct NavigatorSidebarView: View {
     @ObservedObject
     private var extensionManager = ExtensionManager.shared
 
-    @State
-    private var selection: NavigatorTab.ID = NavigatorTab.fileTree.id
+    @AppSettings(\.general.navigatorTabBarPosition)
+    var sidebarPosition: SettingsData.SidebarTabBarPosition
 
-    private var items: [NavigatorTab] {
-        [.fileTree, .sourceControl, .search]
-        + extensionManager
-            .extensions
-            .map { ext in
-                ext.availableFeatures.compactMap {
-                    if case .sidebarItem(let data) = $0, data.kind == .navigator {
-                        return NavigatorTab.uiExtension(endpoint: ext.endpoint, data: data)
+    @State
+    private var selection: AreaTab?
+
+    private var items: [AreaTab] {
+        [
+            .init(id: "project", title: "Project Navigator", systemImage: "folder") {
+                ProjectNavigatorView()
+            },
+            .init(id: "history", title: "Source Control Navigator", systemImage: "vault") {
+                SourceControlNavigatorView()
+            },
+            .init(id: "find", title: "Find Navigator", systemImage: "magnifyingglass") {
+                FindNavigatorView()
+            },
+        ] + extensionManager.extensions.flatMap { ext in
+            ext.availableFeatures.compactMap { feature in
+                if case .sidebarItem(let data) = feature, data.kind == .navigator {
+                    return AreaTab(
+                        id: "ext:\(ext.endpoint.bundleIdentifier)(\(data.sceneID))",
+                        title: data.help ?? data.sceneID,
+                        systemImage: data.icon
+                    ) {
+                        ExtensionSceneView(with: ext.endpoint, sceneID: data.sceneID)
                     }
-                    return nil
                 }
+                return nil
             }
-            .joined()
+        }
     }
 
     init(workspace: WorkspaceDocument) {
         self.workspace = workspace
     }
 
-    @AppSettings(\.general.navigatorTabBarPosition) var sidebarPosition: SettingsData.SidebarTabBarPosition
-
     var body: some View {
         VStack {
-            switch items.first(where: { $0.id == selection }) {
-            case .fileTree:
-                ProjectNavigatorView()
-            case .sourceControl:
-                SourceControlNavigatorView()
-            case .search:
-                FindNavigatorView()
-            case let .uiExtension(endpoint, data):
-                ExtensionSceneView(with: endpoint, sceneID: data.sceneID)
-            case .none:
+            if selection != nil {
+                selection!.contentView()
+            } else {
                 NoSelectionInspectorView()
             }
         }
         .safeAreaInset(edge: .leading, spacing: 0) {
             if sidebarPosition == .side {
-                NavigatorSidebarTabBar(items: items, selection: $selection, position: sidebarPosition)
+                HStack(spacing: 0) {
+                    AreaTabBar(items: items, selection: $selection, position: sidebarPosition)
+                    Divider()
+                }
             }
         }
         .safeAreaInset(edge: .top, spacing: 0) {
             if sidebarPosition == .top {
-                NavigatorSidebarTabBar(items: items, selection: $selection, position: sidebarPosition)
+                VStack(spacing: 0) {
+                    Divider()
+                    AreaTabBar(items: items, selection: $selection, position: sidebarPosition)
+                    Divider()
+                }
             } else {
                 Divider()
             }
         }
         .environmentObject(workspace)
+        .onAppear {
+            selection = items.first!
+        }
     }
 }

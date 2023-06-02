@@ -7,33 +7,64 @@
 
 import SwiftUI
 
+struct AreaTab: Identifiable, Equatable {
+    var id: String
+    var title: String
+    var systemImage: String? = "e.square"
+    var contentView: () -> AnyView
+
+    init<Content: View>(id: String, title: String, systemImage: String? = "e.square", @ViewBuilder content: @escaping () -> Content) {
+        self.id = id
+        self.title = title
+        self.systemImage = systemImage
+        self.contentView = { AnyView(content()) }
+    }
+
+    static func == (lhs: AreaTab, rhs: AreaTab) -> Bool {
+        lhs.id == rhs.id &&
+        lhs.title == rhs.title &&
+        lhs.systemImage == rhs.systemImage
+    }
+}
+
 struct DebugAreaView: View {
+    @Environment(\.colorScheme)
+    private var colorScheme
+
     @EnvironmentObject
     private var model: DebugAreaViewModel
 
-    private var items: [DebugAreaTab] {
-        [.terminal, .debug, .output]
-    }
+    @State var selection: AreaTab?
 
-    @State
-    private var selection: DebugAreaTab.ID = DebugAreaTab.terminal.id
+    private var items: [AreaTab] {
+        [
+            .init(id: "terminal", title: "Terminal", systemImage: "terminal") {
+                DebugAreaTerminalView()
+            },
+            .init(id: "debug.console", title: "Debug Console", systemImage: "ladybug") {
+                DebugAreaDebugView()
+            },
+            .init(id: "output", title: "Output", systemImage: "list.bullet.indent") {
+                DebugAreaOutputView()
+            },
+        ]
+    }
 
     var body: some View {
         VStack(spacing: 0) {
-            switch items.first(where: { $0.id == selection }) {
-            case .terminal:
-                DebugAreaTerminalView()
-            case .debug:
-                DebugAreaDebugView()
-            case .output:
-                DebugAreaOutputView()
-            default:
+            if selection != nil {
+                selection!.contentView()
+            } else {
                 Text("Tab not found")
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
         .safeAreaInset(edge: .leading, spacing: 0) {
-            DebugAreaTabBar(items: items, selection: $selection, position: .side)
+            HStack(spacing: 0) {
+                AreaTabBar(items: items, selection: $selection, position: .side)
+                Divider()
+                    .overlay(Color(nsColor: colorScheme == .dark ? .black : .clear))
+            }
         }
         .overlay(alignment: .bottomTrailing) {
             HStack(spacing: 5) {
@@ -50,6 +81,9 @@ struct DebugAreaView: View {
             .padding(.horizontal, 5)
             .padding(.vertical, 8)
             .frame(maxHeight: 27)
+        }
+        .onAppear {
+            selection = items.first!
         }
     }
 }

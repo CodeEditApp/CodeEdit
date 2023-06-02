@@ -8,61 +8,71 @@
 import SwiftUI
 
 struct InspectorSidebarView: View {
+    @ObservedObject
+    private var workspace: WorkspaceDocument
 
     @ObservedObject
     private var extensionManager = ExtensionManager.shared
 
-    @ObservedObject
-    private var workspace: WorkspaceDocument
-
     @EnvironmentObject
     private var tabManager: TabManager
 
-    @State
-    private var selection: InspectorTab.ID = InspectorTab.file.id
+    @AppSettings(\.general.inspectorTabBarPosition)
+    var sidebarPosition: SettingsData.SidebarTabBarPosition
 
-    private var items: [InspectorTab] {
-        [.file, .gitHistory, .quickhelp]
-        + extensionManager
-            .extensions
-            .map { ext in
-                ext.availableFeatures.compactMap {
-                    if case .sidebarItem(let data) = $0, data.kind == .inspector {
-                        return InspectorTab.uiExtension(endpoint: ext.endpoint, data: data)
+    @State
+    private var selection: AreaTab?
+
+    var path: String? { tabManager.activeTabGroup.selected?.fileDocument?.fileURL?.path(percentEncoded: false)
+    }
+
+    private var items: [AreaTab] {
+        [
+            .init(id: "file", title: "File Inspector", systemImage: "doc") {
+                FileInspectorView(
+                    workspaceURL: workspace.fileURL!,
+                    fileURL: path ?? ""
+                )
+            },
+            .init(id: "history", title: "History Inspector", systemImage: "clock") {
+                HistoryInspectorView(
+                    workspaceURL: workspace.fileURL!,
+                    fileURL: path ?? ""
+                )
+            },
+            .init(id: "quick.help", title: "Quick Help Inspector", systemImage: "questionmark.circle") {
+                QuickHelpInspectorView().padding(5)
+            },
+        ] + extensionManager.extensions.flatMap { ext in
+            ext.availableFeatures.compactMap { feature in
+                if case .sidebarItem(let data) = feature, data.kind == .inspector {
+                    return AreaTab(
+                        id: "ext:\(ext.endpoint.bundleIdentifier)(\(data.sceneID))",
+                        title: data.help ?? data.sceneID,
+                        systemImage: data.icon
+                    ) {
+                        ExtensionSceneView(with: ext.endpoint, sceneID: data.sceneID)
                     }
-                    return nil
                 }
+                return nil
             }
-            .joined()
+        }
     }
 
     init(workspace: WorkspaceDocument) {
         self.workspace = workspace
     }
 
-    @AppSettings(\.general.inspectorTabBarPosition) var sidebarPosition: SettingsData.SidebarTabBarPosition
+    func getExtension(_ id: String) -> ExtensionInfo? {
+        return extensionManager.extensions.first(
+            where: { $0.endpoint.bundleIdentifier == id }
+        )
+    }
 
     var body: some View {
         VStack {
-            if let path = tabManager.activeTabGroup.selected?.fileDocument?.fileURL?.path(percentEncoded: false) {
-                switch items.first(where: { $0.id == selection }) {
-                case .file:
-                    FileInspectorView(
-                        workspaceURL: workspace.fileURL!,
-                        fileURL: path
-                    )
-                case .gitHistory:
-                    HistoryInspectorView(
-                        workspaceURL: workspace.fileURL!,
-                        fileURL: path
-                    )
-                case .quickhelp:
-                    QuickHelpInspectorView().padding(5)
-                case let .uiExtension(endpoint, data):
-                    ExtensionSceneView(with: endpoint, sceneID: data.sceneID)
-                case .none:
-                    NoSelectionInspectorView()
-                }
+            if path != nil && selection != nil {
+                selection!.contentView()
             } else {
                 NoSelectionInspectorView()
             }
@@ -77,15 +87,25 @@ struct InspectorSidebarView: View {
         )
         .safeAreaInset(edge: .trailing, spacing: 0) {
             if sidebarPosition == .side {
-                InspectorSidebarTabBar(items: items, selection: $selection, position: sidebarPosition)
+                HStack(spacing: 0) {
+                    Divider()
+                    AreaTabBar(items: items, selection: $selection, position: sidebarPosition)
+                }
             }
         }
         .safeAreaInset(edge: .top, spacing: 0) {
             if sidebarPosition == .top {
-                InspectorSidebarTabBar(items: items, selection: $selection, position: sidebarPosition)
+                VStack(spacing: 0) {
+                    Divider()
+                    AreaTabBar(items: items, selection: $selection, position: sidebarPosition)
+                    Divider()
+                }
             } else {
                 Divider()
             }
+        }
+        .onAppear {
+            selection = items.first!
         }
     }
 }
