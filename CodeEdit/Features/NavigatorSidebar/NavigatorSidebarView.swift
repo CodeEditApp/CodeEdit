@@ -18,14 +18,14 @@ struct NavigatorSidebarView: View {
     var sidebarPosition: SettingsData.SidebarTabBarPosition
 
     @State
-    private var selection: NavigatorTab? = .fileTree
+    private var selection: NavigatorTab? = .project
 
     init(workspace: WorkspaceDocument) {
         self.workspace = workspace
     }
 
     private var items: [NavigatorTab] {
-        [.fileTree, .search, .sourceControl] +
+        [.project, .sourceControl, .search] +
         extensionManager
             .extensions
             .map { ext in

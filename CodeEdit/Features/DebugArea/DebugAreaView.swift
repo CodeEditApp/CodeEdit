@@ -7,11 +7,6 @@
 
 import SwiftUI
 
-protocol TabBar: View, Identifiable, Hashable {
-    var title: String { get }
-    var systemImage: String { get }
-}
-
 struct DebugAreaView: View {
     @Environment(\.colorScheme)
     private var colorScheme

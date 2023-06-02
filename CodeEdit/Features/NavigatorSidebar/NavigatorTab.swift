@@ -9,15 +9,15 @@ import SwiftUI
 import CodeEditKit
 import ExtensionFoundation
 
-enum NavigatorTab: TabBar {
-    case fileTree
+enum NavigatorTab: AreaTab {
+    case project
     case sourceControl
     case search
     case uiExtension(endpoint: AppExtensionIdentity, data: ResolvedSidebar.SidebarStore)
 
     var systemImage: String {
         switch self {
-        case .fileTree:
+        case .project:
             return "folder"
         case .sourceControl:
             return "vault"
@@ -37,7 +37,7 @@ enum NavigatorTab: TabBar {
 
     var title: String {
         switch self {
-        case .fileTree:
+        case .project:
             return "Project"
         case .sourceControl:
             return "Version Control"
@@ -50,7 +50,7 @@ enum NavigatorTab: TabBar {
 
     var body: some View {
         switch self {
-        case .fileTree:
+        case .project:
             ProjectNavigatorView()
         case .sourceControl:
             SourceControlNavigatorView()

@@ -7,7 +7,12 @@
 
 import SwiftUI
 
-struct AreaTabBar<Tab: TabBar>: View {
+protocol AreaTab: View, Identifiable, Hashable {
+    var title: String { get }
+    var systemImage: String { get }
+}
+
+struct AreaTabBar<Tab: AreaTab>: View {
     @Environment(\.controlActiveState) private var activeState
 
     var items: [Tab]
@@ -85,7 +90,7 @@ struct AreaTabBar<Tab: TabBar>: View {
         Button {
             selection = tab
         } label: {
-            getSafeImage(named: tab.systemImage ?? "e.square", accessibilityDescription: tab.title)
+            getSafeImage(named: tab.systemImage, accessibilityDescription: tab.title)
                 .font(.system(size: 12.5))
                 .symbolVariant(tab == selection ? .fill : .none)
                 .frame(

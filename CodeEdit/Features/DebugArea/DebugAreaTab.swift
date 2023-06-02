@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum DebugAreaTab: TabBar, CaseIterable {
+enum DebugAreaTab: AreaTab, CaseIterable {
     var id: Self { self }
 
     case terminal

@@ -9,7 +9,7 @@ import SwiftUI
 import CodeEditKit
 import ExtensionFoundation
 
-enum InspectorTab: TabBar {
+enum InspectorTab: AreaTab {
     case file(workspaceURL: URL, fileURL: String)
     case gitHistory(workspaceURL: URL, fileURL: String)
     case quickhelp
