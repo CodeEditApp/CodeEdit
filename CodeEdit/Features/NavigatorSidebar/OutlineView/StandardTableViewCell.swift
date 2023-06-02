@@ -195,10 +195,22 @@ class StandardTableViewCell: NSTableCellView {
                     to: stringValue.lastIndex(of: ".") ?? stringValue.endIndex
                 )
             )
-            selectText(nil)
+            selectText(self)
             let editor = currentEditor()
             editor?.selectedRange = range
             return true
+        }
+
+        override func textDidBeginEditing(_ notification: Notification) {
+            super.textDidBeginEditing(notification)
+            wantsLayer = true
+            layer?.backgroundColor = NSColor.textBackgroundColor.cgColor
+        }
+
+        override func textDidEndEditing(_ notification: Notification) {
+            super.textDidEndEditing(notification)
+            wantsLayer = false
+            layer?.backgroundColor = nil
         }
     }
 }
