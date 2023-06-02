@@ -187,12 +187,18 @@ class StandardTableViewCell: NSTableCellView {
     }
 
     class SpecialSelectTextField: NSTextField {
-//        override func becomeFirstResponder() -> Bool {
-            // TODO: Set text range
-            // this is the code to get the text range, however I cannot find a way to select it :(
-//            NSRange(location: 0, length: stringValue.distance(from: stringValue.startIndex,
-//                to: stringValue.lastIndex(of: ".") ?? stringValue.endIndex))
-//            return true
-//        }
+        override func becomeFirstResponder() -> Bool {
+            let range = NSRange(
+                location: 0,
+                length: stringValue.distance(
+                    from: stringValue.startIndex,
+                    to: stringValue.lastIndex(of: ".") ?? stringValue.endIndex
+                )
+            )
+            selectText(nil)
+            let editor = currentEditor()
+            editor?.selectedRange = range
+            return true
+        }
     }
 }
