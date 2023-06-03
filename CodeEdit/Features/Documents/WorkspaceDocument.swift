@@ -39,15 +39,6 @@ import Combine
     var commandsPaletteState: CommandPaletteViewModel?
     var listenerModel: WorkspaceNotificationModel = .init()
 
-    var anyCancellable: AnyCancellable?
-
-    override init() {
-        super.init()
-        anyCancellable = debugAreaModel.objectWillChange.sink { (_) in
-            self.objectWillChange.send()
-        }
-    }
-
     private var cancellables = Set<AnyCancellable>()
     private let openTabsStateName: String = "\(String(describing: WorkspaceDocument.self))-OpenTabs"
     private let activeTabStateName: String = "\(String(describing: WorkspaceDocument.self))-ActiveTab"

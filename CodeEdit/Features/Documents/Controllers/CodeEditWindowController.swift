@@ -106,6 +106,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
                 WorkspaceView()
                     .environmentObject(workspace)
                     .environmentObject(workspace.tabManager)
+                    .environmentObject(workspace.debugAreaModel)
             }
         }
 

@@ -19,6 +19,9 @@ struct WorkspaceView: View {
     @EnvironmentObject
     private var tabManager: TabManager
 
+    @EnvironmentObject
+    private var debugAreaModel: DebugAreaViewModel
+
     @Environment(\.window)
     private var window
 
@@ -46,7 +49,7 @@ struct WorkspaceView: View {
                     SplitView(axis: .vertical) {
                         EditorView(tabgroup: tabManager.tabGroups, focus: $focusedEditor)
                             .collapsable()
-                            .collapsed($workspace.debugAreaModel.isMaximized)
+                            .collapsed($debugAreaModel.isMaximized)
                             .frame(minHeight: 170 + 29 + 29)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                             .holdingPriority(.init(1))
@@ -55,12 +58,11 @@ struct WorkspaceView: View {
                             }
                         DebugAreaView()
                             .collapsable()
-                            .collapsed($workspace.debugAreaModel.isCollapsed)
+                            .collapsed($debugAreaModel.isCollapsed)
                             .frame(idealHeight: 260)
                             .frame(minHeight: 100)
                     }
                     .edgesIgnoringSafeArea(.top)
-                    .environmentObject(workspace.debugAreaModel)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .onChange(of: focusedEditor) { newValue in
                         if let newValue {
