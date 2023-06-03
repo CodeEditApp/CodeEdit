@@ -89,8 +89,9 @@ final class ProjectNavigatorViewController: NSViewController {
     /// Updates the selection of the ``outlineView`` whenever it changes.
     ///
     /// Most importantly when the `id` changes from an external view.
-    func updateSelection() {
-        guard let itemID = workspace?.tabManager.activeTabGroup.selected?.id else {
+    /// - Parameter itemID: The id of the file or folder.
+    func updateSelection(itemID: String?) {
+        guard let itemID else {
             outlineView.deselectRow(outlineView.selectedRow)
             return
         }
@@ -310,11 +311,7 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
                reveal(fileItem)
            }
         }
-
-        guard let item = collection.first(where: { $0.tabID == id }) else {
-            for item in collection {
-                select(by: id, from: item.children ?? [])
-            }
+        guard let item = collection.find(by: id) else {
             return
         }
         let row = outlineView.row(forItem: item)
