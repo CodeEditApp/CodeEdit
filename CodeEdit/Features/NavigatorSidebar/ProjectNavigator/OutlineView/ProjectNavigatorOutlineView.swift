@@ -61,7 +61,6 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
                 })
                 .store(in: &cancellables)
             workspace.tabManager.tabBarItemIdSubject
-                .removeDuplicates()
                 .sink { [weak self] itemID in
                     self?.controller?.updateSelection(itemID: itemID)
                 }

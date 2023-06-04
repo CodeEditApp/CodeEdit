@@ -284,8 +284,16 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
     }
 
     func outlineViewItemDidExpand(_ notification: Notification) {
-        /// select active file under collapsed folder
-        updateSelection(itemID: workspace?.tabManager.activeTabGroup.selected?.id)
+        guard
+            let id = workspace?.tabManager.activeTabGroup.selected?.id,
+            let item = content.find(by: .codeEditor(id))
+        else {
+            return
+        }
+        /// select active file under collapsed folder only if its parent is expanding
+        if outlineView.isItemExpanded(item.parent) {
+            updateSelection(itemID: item.id)
+        }
     }
 
     func outlineViewItemDidCollapse(_ notification: Notification) {}
