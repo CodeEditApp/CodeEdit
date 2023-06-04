@@ -12,7 +12,7 @@ struct StatusBarCursorLocationLabel: View {
     private var controlActive
 
     @EnvironmentObject
-    private var model: StatusBarViewModel
+    private var model: DebugAreaViewModel
 
     var body: some View {
         Text("Line: \(model.cursorLocation.line)  Col: \(model.cursorLocation.column)")

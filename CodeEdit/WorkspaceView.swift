@@ -19,6 +19,9 @@ struct WorkspaceView: View {
     @EnvironmentObject
     private var tabManager: TabManager
 
+    @EnvironmentObject
+    private var debugAreaModel: DebugAreaViewModel
+
     @Environment(\.window)
     private var window
 
@@ -33,6 +36,9 @@ struct WorkspaceView: View {
     @State
     private var terminalCollapsed = true
 
+    @State
+    private var editorCollapsed = false
+
     @FocusState
     var focusedEditor: TabGroupData?
 
@@ -41,22 +47,22 @@ struct WorkspaceView: View {
             VStack {
                 SplitViewReader { proxy in
                     SplitView(axis: .vertical) {
-
                         EditorView(tabgroup: tabManager.tabGroups, focus: $focusedEditor)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            .safeAreaInset(edge: .bottom, spacing: 0) {
-                                StatusBarView(proxy: proxy, collapsed: $terminalCollapsed)
-                            }
-
-                        StatusBarDrawer()
                             .collapsable()
-                            .collapsed($terminalCollapsed)
-                            .holdingPriority(.init(20))
-                            .frame(minHeight: 200, maxHeight: 400)
-                            .frame(maxWidth: .infinity)
+                            .collapsed($debugAreaModel.isMaximized)
+                            .frame(minHeight: 170 + 29 + 29)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .holdingPriority(.init(1))
+                            .safeAreaInset(edge: .bottom, spacing: 0) {
+                                StatusBarView(proxy: proxy)
+                            }
+                        DebugAreaView()
+                            .collapsable()
+                            .collapsed($debugAreaModel.isCollapsed)
+                            .frame(idealHeight: 260)
+                            .frame(minHeight: 100)
                     }
                     .edgesIgnoringSafeArea(.top)
-                    .environmentObject(workspace.statusBarModel)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .onChange(of: focusedEditor) { newValue in
                         if let newValue {
