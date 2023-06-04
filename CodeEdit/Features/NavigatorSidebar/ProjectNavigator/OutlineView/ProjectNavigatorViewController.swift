@@ -306,6 +306,10 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
     ///   - id: the id of the item item
     ///   - collection: the array to search for
     private func select(by id: TabBarItemID, from collection: [CEWorkspaceFile]) {
+        print("[DEBUG] - \(id.id)")
+        guard let item = collection.find(by: id) else {
+            return
+        }
         // If the user has set "Reveal file on selection change" to on, we need to reveal the item before
         // selecting the row.
         if Settings.shared.preferences.general.revealFileOnFocusChange {
