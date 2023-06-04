@@ -283,7 +283,10 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
         rowHeight // This can be changed to 20 to match Xcode's row height.
     }
 
-    func outlineViewItemDidExpand(_ notification: Notification) {}
+    func outlineViewItemDidExpand(_ notification: Notification) {
+        /// select active file under collapsed folder
+        updateSelection(itemID: workspace?.tabManager.activeTabGroup.selected?.id)
+    }
 
     func outlineViewItemDidCollapse(_ notification: Notification) {}
 
