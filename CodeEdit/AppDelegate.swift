@@ -20,7 +20,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 
         let upgradeAlert = NSAlert()
         upgradeAlert.messageText = "Upgrade Available"
-        upgradeAlert.informativeText = "A new CodeEdit update is available, but can't be auto-updated. Please download the latest version to keep receiving the latest updates."
+        upgradeAlert.informativeText = """
+A new CodeEdit update is available, but can't be auto-updated.\
+ Please download the latest version to keep receiving the latest updates.
+"""
         upgradeAlert.addButton(withTitle: "Download New Version")
         switch upgradeAlert.runModal() {
         case .alertFirstButtonReturn:
