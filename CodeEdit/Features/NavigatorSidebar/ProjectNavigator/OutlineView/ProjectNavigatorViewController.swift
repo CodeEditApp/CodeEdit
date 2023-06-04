@@ -313,13 +313,7 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
         // If the user has set "Reveal file on selection change" to on, we need to reveal the item before
         // selecting the row.
         if Settings.shared.preferences.general.revealFileOnFocusChange {
-           if case let .codeEditor(id) = id,
-              let fileItem = try? workspace?.workspaceFileManager?.getFile(id as CEWorkspaceFile.ID) {
-               reveal(fileItem)
-           }
-        }
-        guard let item = collection.find(by: id) else {
-            return
+           reveal(item)
         }
         let row = outlineView.row(forItem: item)
         if row == -1 {
