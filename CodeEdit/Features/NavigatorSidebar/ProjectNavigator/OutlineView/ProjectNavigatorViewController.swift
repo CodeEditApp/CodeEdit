@@ -306,7 +306,6 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
     ///   - id: the id of the item item
     ///   - collection: the array to search for
     private func select(by id: TabBarItemID, from collection: [CEWorkspaceFile]) {
-        print("[DEBUG] - \(id.id)")
         guard let item = collection.find(by: id) else {
             return
         }
