@@ -3991,7 +3991,7 @@
 			repositoryURL = "https://github.com/CodeEditApp/CodeEditTextView";
 			requirement = {
 				kind = exactVersion;
-				version = 0.6.3;
+				version = 0.6.4;
 			};
 		};
 		6CDEFC9429E22C2700B7C684 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
