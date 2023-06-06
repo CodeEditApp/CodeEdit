@@ -251,6 +251,6 @@ struct TerminalEmulatorView: NSViewRepresentable {
     }
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(url: url)
+        Coordinator(url: url, onTitleChange: onTitleChange)
     }
 }
