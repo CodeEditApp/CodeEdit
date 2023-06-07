@@ -195,9 +195,9 @@ struct TerminalEmulatorView: NSViewRepresentable {
         terminal.getTerminal().silentLog = true
         if TerminalEmulatorView.lastTerminal[url.path] == nil {
             let shell = getShell()
-            // This might be temporary as it might not work with shell other than zsh and bash
-            onTitleChange(shell.replacingOccurrences(of: "/bin/", with: ""))
-            let shellIdiom = "-" + NSString(string: shell).lastPathComponent
+            let shellName = NSString(string: shell).lastPathComponent
+            onTitleChange(shellName)
+            let shellIdiom = "-" + shellName
 
             // changes working directory to project root
             // TODO: Get rid of FileManager shared instance to prevent problems
