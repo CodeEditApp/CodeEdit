@@ -25,6 +25,7 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
         controller.iconColor = prefs.preferences.general.fileIconStyle
         workspace.workspaceFileManager?.onRefresh = {
             controller.outlineView.reloadData()
+            controller.updateSelection(itemID: workspace.tabManager.activeTabGroup.selected?.id)
         }
 
         context.coordinator.controller = controller
