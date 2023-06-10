@@ -21,7 +21,7 @@ struct StatusBarView: View {
     private var controlActive
 
     @EnvironmentObject
-    private var model: DebugAreaViewModel
+    private var model: StatusBarViewModel
 
     static let height = 28.0
 
@@ -30,6 +30,9 @@ struct StatusBarView: View {
 
     var proxy: SplitViewProxy
 
+    @Binding
+    var collapsed: Bool
+
     static let statusbarID = "statusbarID"
 
     /// The actual status bar
@@ -37,12 +40,17 @@ struct StatusBarView: View {
         HStack(alignment: .center, spacing: 10) {
 //            StatusBarBreakpointButton()
 //            StatusBarDivider()
+            SegmentedControl($model.selectedTab, options: StatusBarTabType.allOptions)
+                .opacity(collapsed ? 0 : 1)
             Spacer()
             HStack(alignment: .center, spacing: 10) {
+//                StatusBarIndentSelector()
+//                StatusBarEncodingSelector()
+//                StatusBarLineEndSelector()
                 StatusBarCursorLocationLabel()
             }
             StatusBarDivider()
-            StatusBarToggleDrawerButton()
+            StatusBarToggleDrawerButton(collapsed: $collapsed)
         }
         .padding(.horizontal, 10)
         .cursor(.resizeUpDown)

@@ -7,7 +7,6 @@
 import SwiftUI
 
 struct QuickHelpInspectorView: View {
-
     var body: some View {
         VStack(alignment: .leading) {
             Text("Quick Help")

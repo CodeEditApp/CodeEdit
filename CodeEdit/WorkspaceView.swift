@@ -19,9 +19,6 @@ struct WorkspaceView: View {
     @EnvironmentObject
     private var tabManager: TabManager
 
-    @EnvironmentObject
-    private var debugAreaModel: DebugAreaViewModel
-
     @Environment(\.window)
     private var window
 
@@ -36,9 +33,6 @@ struct WorkspaceView: View {
     @State
     private var terminalCollapsed = true
 
-    @State
-    private var editorCollapsed = false
-
     @FocusState
     var focusedEditor: TabGroupData?
 
@@ -47,22 +41,23 @@ struct WorkspaceView: View {
             VStack {
                 SplitViewReader { proxy in
                     SplitView(axis: .vertical) {
+
                         EditorView(tabgroup: tabManager.tabGroups, focus: $focusedEditor)
-                            .collapsable()
-                            .collapsed($debugAreaModel.isMaximized)
-                            .frame(minHeight: 170 + 29 + 29)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            .holdingPriority(.init(1))
+                            .holdingPriority(.init(10))
                             .safeAreaInset(edge: .bottom, spacing: 0) {
-                                StatusBarView(proxy: proxy)
+                                StatusBarView(proxy: proxy, collapsed: $terminalCollapsed)
                             }
-                        DebugAreaView()
+
+                        StatusBarDrawer()
                             .collapsable()
-                            .collapsed($debugAreaModel.isCollapsed)
-                            .frame(idealHeight: 260)
-                            .frame(minHeight: 100)
+                            .collapsed($terminalCollapsed)
+                            .holdingPriority(.init(20))
+                            .frame(minHeight: 200, maxHeight: 400)
+
                     }
                     .edgesIgnoringSafeArea(.top)
+                    .environmentObject(workspace.statusBarModel)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .onChange(of: focusedEditor) { newValue in
                         if let newValue {
@@ -74,7 +69,6 @@ struct WorkspaceView: View {
                             focusedEditor = newValue
                         }
                     }
-
                 }
             }
             .background(EffectView(.contentBackground))

@@ -23,8 +23,10 @@ struct WelcomeWindow: Scene {
                         window.isMovableByWindowBackground = true
                     }
                 }
+                .environment(\.settings, settings.preferences)
         }
         .windowStyle(.hiddenTitleBar)
+        .keyboardShortcut("1", modifiers: [.command, .shift])
         .windowResizability(.contentSize)
     }
 

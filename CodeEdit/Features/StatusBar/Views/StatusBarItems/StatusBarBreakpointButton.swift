@@ -10,7 +10,7 @@ import CodeEditSymbols
 
 struct StatusBarBreakpointButton: View {
     @EnvironmentObject
-    private var model: DebugAreaViewModel
+    private var model: StatusBarViewModel
 
     var body: some View {
         Button {

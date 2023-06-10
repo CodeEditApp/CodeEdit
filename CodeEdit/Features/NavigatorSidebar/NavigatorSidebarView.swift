@@ -11,57 +11,36 @@ struct NavigatorSidebarView: View {
     @ObservedObject
     private var workspace: WorkspaceDocument
 
-    @ObservedObject
-    private var extensionManager = ExtensionManager.shared
-
-    @AppSettings(\.general.navigatorTabBarPosition)
-    var sidebarPosition: SettingsData.SidebarTabBarPosition
-
     @State
-    private var selection: NavigatorTab? = .project
+    private var selection: Int = 0
 
     init(workspace: WorkspaceDocument) {
         self.workspace = workspace
     }
 
-    private var items: [NavigatorTab] {
-        [.project, .sourceControl, .search] +
-        extensionManager
-            .extensions
-            .map { ext in
-                ext.availableFeatures.compactMap {
-                    if case .sidebarItem(let data) = $0, data.kind == .navigator {
-                        return NavigatorTab.uiExtension(endpoint: ext.endpoint, data: data)
-                    }
-                    return nil
-                }
-            }
-            .joined()
-    }
+    @AppSettings(\.general.navigatorTabBarPosition) var sidebarPosition: SettingsData.SidebarTabBarPosition
 
     var body: some View {
         VStack {
-            if let selection {
-                selection
-            } else {
-                NoSelectionInspectorView()
+            switch selection {
+            case 0:
+                ProjectNavigatorView()
+            case 1:
+                SourceControlNavigatorView()
+            case 2:
+                FindNavigatorView()
+            default:
+                Spacer()
             }
         }
         .safeAreaInset(edge: .leading, spacing: 0) {
             if sidebarPosition == .side {
-                HStack(spacing: 0) {
-                    AreaTabBar(items: items, selection: $selection, position: sidebarPosition)
-                    Divider()
-                }
+                NavigatorSidebarTabBar(selection: $selection, position: sidebarPosition)
             }
         }
         .safeAreaInset(edge: .top, spacing: 0) {
             if sidebarPosition == .top {
-                VStack(spacing: 0) {
-                    Divider()
-                    AreaTabBar(items: items, selection: $selection, position: sidebarPosition)
-                    Divider()
-                }
+                NavigatorSidebarTabBar(selection: $selection, position: sidebarPosition)
             } else {
                 Divider()
             }

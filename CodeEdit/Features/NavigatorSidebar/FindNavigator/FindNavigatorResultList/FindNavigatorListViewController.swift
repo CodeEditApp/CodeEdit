@@ -12,6 +12,7 @@ final class FindNavigatorListViewController: NSViewController {
     public var workspace: WorkspaceDocument
     public var selectedItem: Any?
 
+    private var searchId: UUID?
     private var searchItems: [SearchResultModel] = []
     private var scrollView: NSScrollView!
     private var outlineView: NSOutlineView!
@@ -63,10 +64,15 @@ final class FindNavigatorListViewController: NSViewController {
 
     /// Updates the view with new search results and updates the UI.
     /// - Parameter searchItems: The search items to set.
-    public func updateNewSearchResults(_ searchItems: [SearchResultModel]) {
-        self.searchItems = searchItems
-        outlineView.reloadData()
-        outlineView.expandItem(nil, expandChildren: true)
+    /// - Parameter searchText: The search text, used to preserve result deletions across view updates.
+    public func updateNewSearchResults(_ searchItems: [SearchResultModel], searchId: UUID?) {
+        if searchId != self.searchId {
+            self.searchItems = searchItems
+            outlineView.reloadData()
+            outlineView.expandItem(nil, expandChildren: true)
+
+            self.searchId = searchId
+        }
 
         if let selectedItem {
             selectSearchResult(selectedItem)

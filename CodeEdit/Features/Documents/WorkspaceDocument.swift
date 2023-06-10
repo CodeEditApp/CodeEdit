@@ -33,11 +33,15 @@ import Combine
         didSet { workspaceFileManager?.onRefresh() }
     }
 
-    var debugAreaModel = DebugAreaViewModel()
+    var statusBarModel = StatusBarViewModel()
     var searchState: SearchState?
     var quickOpenViewModel: QuickOpenViewModel?
     var commandsPaletteState: CommandPaletteViewModel?
     var listenerModel: WorkspaceNotificationModel = .init()
+
+    override init() {
+        super.init()
+    }
 
     private var cancellables = Set<AnyCancellable>()
     private let openTabsStateName: String = "\(String(describing: WorkspaceDocument.self))-OpenTabs"

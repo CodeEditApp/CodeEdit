@@ -9,7 +9,7 @@ import SwiftUI
 
 struct StatusBarClearButton: View {
     @EnvironmentObject
-    private var model: DebugAreaViewModel
+    private var model: StatusBarViewModel
 
     var body: some View {
         Button {

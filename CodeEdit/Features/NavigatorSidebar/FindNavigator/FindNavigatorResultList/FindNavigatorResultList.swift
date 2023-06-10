@@ -27,7 +27,8 @@ struct FindNavigatorResultList: NSViewControllerRepresentable {
 
     func updateNSViewController(_ nsViewController: FindNavigatorListViewController, context: Context) {
         nsViewController.updateNewSearchResults(
-            workspace.searchState?.searchResult ?? []
+            workspace.searchState?.searchResult ?? [],
+            searchId: workspace.searchState?.searchId
         )
         if nsViewController.rowHeight != projectNavigatorSize.rowHeight {
             nsViewController.rowHeight = projectNavigatorSize.rowHeight
@@ -47,9 +48,12 @@ struct FindNavigatorResultList: NSViewControllerRepresentable {
             self.controller = controller
             super.init()
             self.listener = state?
-                .$searchResult
+                .searchResult
+                .publisher
+                .receive(on: RunLoop.main)
+                .collect()
                 .sink(receiveValue: { [weak self] searchResults in
-                    self?.controller?.updateNewSearchResults(searchResults)
+                    self?.controller?.updateNewSearchResults(searchResults, searchId: state?.searchId)
                 })
         }
 
