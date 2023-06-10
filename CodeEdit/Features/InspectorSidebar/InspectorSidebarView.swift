@@ -8,41 +8,60 @@
 import SwiftUI
 
 struct InspectorSidebarView: View {
+    @EnvironmentObject
+    private var workspace: WorkspaceDocument
 
     @ObservedObject
-    private var workspace: WorkspaceDocument
+    private var extensionManager = ExtensionManager.shared
 
     @EnvironmentObject
     private var tabManager: TabManager
 
-    @State
-    private var selection: Int = 0
+    @AppSettings(\.general.inspectorTabBarPosition)
+    var sidebarPosition: SettingsData.SidebarTabBarPosition
 
-    init(workspace: WorkspaceDocument) {
-        self.workspace = workspace
+    @State
+    private var selection: InspectorTab? = .quickhelp
+
+    var path: String? { tabManager.activeTabGroup.selected?.fileDocument?.fileURL?.path(percentEncoded: false)
     }
 
-    @AppSettings(\.general.inspectorTabBarPosition) var sidebarPosition: SettingsData.SidebarTabBarPosition
+    var fileTreeAndGitHistory: [InspectorTab] {
+        guard let workspaceURL = workspace.fileURL, let path else {
+            return []
+        }
+
+        return [
+            .file(workspaceURL: workspaceURL, fileURL: path),
+            .gitHistory(workspaceURL: workspaceURL, fileURL: path)
+        ]
+    }
+
+    private var items: [InspectorTab] {
+        fileTreeAndGitHistory + [InspectorTab.quickhelp] +
+        extensionManager
+            .extensions
+            .map { ext in
+                ext.availableFeatures.compactMap {
+                    if case .sidebarItem(let data) = $0, data.kind == .inspector {
+                        return InspectorTab.uiExtension(endpoint: ext.endpoint, data: data)
+                    }
+                    return nil
+                }
+            }
+            .joined()
+    }
+
+    func getExtension(_ id: String) -> ExtensionInfo? {
+        return extensionManager.extensions.first(
+            where: { $0.endpoint.bundleIdentifier == id }
+        )
+    }
 
     var body: some View {
         VStack {
-            if let path = tabManager.activeTabGroup.selected?.fileDocument?.fileURL?.path(percentEncoded: false) {
-                switch selection {
-                case 0:
-                    FileInspectorView(
-                        workspaceURL: workspace.fileURL!,
-                        fileURL: path
-                    )
-                case 1:
-                    HistoryInspectorView(
-                        workspaceURL: workspace.fileURL!,
-                        fileURL: path
-                    )
-                case 2:
-                    QuickHelpInspectorView().padding(5)
-                default:
-                    NoSelectionInspectorView()
-                }
+            if let selection {
+                selection
             } else {
                 NoSelectionInspectorView()
             }
@@ -57,12 +76,19 @@ struct InspectorSidebarView: View {
         )
         .safeAreaInset(edge: .trailing, spacing: 0) {
             if sidebarPosition == .side {
-                InspectorSidebarTabBar(selection: $selection, position: sidebarPosition)
+                HStack(spacing: 0) {
+                    Divider()
+                    AreaTabBar(items: items, selection: $selection, position: sidebarPosition)
+                }
             }
         }
         .safeAreaInset(edge: .top, spacing: 0) {
             if sidebarPosition == .top {
-                InspectorSidebarTabBar(selection: $selection, position: sidebarPosition)
+                VStack(spacing: 0) {
+                    Divider()
+                    AreaTabBar(items: items, selection: $selection, position: sidebarPosition)
+                    Divider()
+                }
             } else {
                 Divider()
             }
