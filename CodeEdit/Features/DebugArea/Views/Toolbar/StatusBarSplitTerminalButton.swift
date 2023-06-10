@@ -9,7 +9,7 @@ import SwiftUI
 
 struct StatusBarSplitTerminalButton: View {
     @EnvironmentObject
-    private var model: StatusBarViewModel
+    private var model: DebugAreaViewModel
 
     var body: some View {
         Button {
