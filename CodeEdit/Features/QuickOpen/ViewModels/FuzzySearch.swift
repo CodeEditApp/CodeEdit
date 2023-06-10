@@ -128,7 +128,7 @@ enum FuzzySearch {
         let halfLife: Double = 3600 // decay half-life in seconds
         let decayFactor = log(2) / halfLife
         let score = exp(-decayFactor * timeDiff)
-        return score
+        return score + 0.01
     }
 
     /// Calculates the Levenshtein distance between two input strings.
