@@ -18,94 +18,57 @@ struct FileInspectorView: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 5) {
-            InspectorSection("Identity and Type") {
-                InspectorField("Name") {
-                    TextField("", text: $inspectorModel.fileName)
-                }
-                InspectorField("Type") {
-                    fileType
-                }
-                Divider()
-                InspectorField("Location") {
-                    location
-                    HStack {
-                        Text(inspectorModel.fileName)
-                            .font(.system(size: 11))
-                        Spacer()
-                        Image(systemName: "folder.fill")
-                            .resizable()
-                            .foregroundColor(.secondary)
-                            .frame(width: 12, height: 10)
-                    }
-                }
-                InspectorField("Full Path") {
-                    HStack(alignment: .bottom) {
-                        Text(inspectorModel.fileURL)
-                            .foregroundColor(.primary)
-                            .fontWeight(.regular)
-                            .font(.system(size: 11))
-                            .lineLimit(4)
-                        Image(systemName: "arrow.forward.circle.fill")
-                            .resizable()
-                            .foregroundColor(.secondary)
-                            .frame(width: 10, height: 10)
-                    }
-                    .padding(.top, 2)
-                }
+        Form {
+            Section("Identity and Type") {
+                fileName
+                fileType
             }
-            InspectorSection("Text Settings") {
-                InspectorField("Text Encoding") {
-                    textEncoding
-                }
-                InspectorField("Line Endings") {
-                    lineEndings
-                }
-                Divider()
-                InspectorField("Indent Using") {
-                    indentUsing
-                }
-                InspectorField("Widths") {
-                    tabWidths
-                }
+            Section {
+                location
+            }
+            Section("Text Settings") {
+                textEncoding
+                lineEndings
+            }
+            Section {
+                indentUsing
+                tabWidths
+                wrapLines
             }
         }
-        .controlSize(.small)
-        .padding(.horizontal, 8)
-        .padding(.vertical, 1)
+        .formStyle(.grouped)
+    }
+
+    private var fileName: some View {
+        TextField("Name", text: $inspectorModel.fileName)
     }
 
     private var fileType: some View {
-        Picker("", selection: $inspectorModel.fileTypeSelection) {
+        Picker("Type", selection: $inspectorModel.fileTypeSelection) {
             Group {
                 Section(header: Text("Sourcecode Objective-C")) {
                     ForEach(inspectorModel.languageTypeObjCList) {
                         Text($0.name)
-                            .font(.system(size: 11))
                     }
                 }
                 Section(header: Text("Sourcecode C")) {
                     ForEach(inspectorModel.sourcecodeCList) {
                         Text($0.name)
-                            .font(.system(size: 11))
                     }
                 }
                 Section(header: Text("Sourcecode C++")) {
                     ForEach(inspectorModel.sourcecodeCPlusList) {
                         Text($0.name)
-                            .font(.system(size: 11))
                     }
                 }
                 Section(header: Text("Sourcecode Swift")) {
                     ForEach(inspectorModel.sourcecodeSwiftList) {
                         Text($0.name)
-                            .font(.system(size: 11))
                     }
                 }
                 Section(header: Text("Sourcecode Assembly")) {
                     ForEach(inspectorModel.sourcecodeAssemblyList) {
                         Text($0.name)
-                            .font(.system(size: 11))
                     }
                 }
             }
@@ -113,31 +76,26 @@ struct FileInspectorView: View {
                 Section(header: Text("Sourcecode Objective-C")) {
                     ForEach(inspectorModel.sourcecodeScriptList) {
                         Text($0.name)
-                            .font(.system(size: 11))
                     }
                 }
                 Section(header: Text("Property List / XML")) {
                     ForEach(inspectorModel.propertyList) {
                         Text($0.name)
-                            .font(.system(size: 11))
                     }
                 }
                 Section(header: Text("Shell Script")) {
                     ForEach(inspectorModel.shellList) {
                         Text($0.name)
-                            .font(.system(size: 11))
                     }
                 }
                 Section(header: Text("Mach-O")) {
                     ForEach(inspectorModel.machOList) {
                         Text($0.name)
-                            .font(.system(size: 11))
                     }
                 }
                 Section(header: Text("Text")) {
                     ForEach(inspectorModel.textList) {
                         Text($0.name)
-                            .font(.system(size: 11))
                     }
                 }
             }
@@ -145,118 +103,107 @@ struct FileInspectorView: View {
                 Section(header: Text("Audio")) {
                     ForEach(inspectorModel.audioList) {
                         Text($0.name)
-                            .font(.system(size: 11))
                     }
                 }
                 Section(header: Text("Image")) {
                     ForEach(inspectorModel.imageList) {
                         Text($0.name)
-                            .font(.system(size: 11))
                     }
                 }
                 Section(header: Text("Video")) {
                     ForEach(inspectorModel.videoList) {
                         Text($0.name)
-                            .font(.system(size: 11))
                     }
                 }
                 Section(header: Text("Archive")) {
                     ForEach(inspectorModel.archiveList) {
                         Text($0.name)
-                            .font(.system(size: 11))
                     }
                 }
                 Section(header: Text("Other")) {
                     ForEach(inspectorModel.otherList) {
                         Text($0.name)
-                            .font(.system(size: 11))
                     }
                 }
             }
         }
-        .labelsHidden()
     }
 
     private var location: some View {
-        Picker("", selection: $inspectorModel.locationSelection) {
-            ForEach(inspectorModel.locationList) {
-                Text($0.name)
-                    .font(.system(size: 11))
+        Group {
+            LabeledContent("Location") {
+                Button("Choose...") {
+                    // open open dialog
+                }
+            }
+            ExternalLink(showInFinder: true, destination: URL(fileURLWithPath: inspectorModel.fileURL)) {
+                Text(inspectorModel.fileURL)
+                    .font(.footnote)
+                    .foregroundColor(.secondary)
             }
         }
-        .labelsHidden()
     }
 
     private var textEncoding: some View {
-        Picker("", selection: $inspectorModel.textEncodingSelection) {
+        Picker("Text Encoding", selection: $inspectorModel.textEncodingSelection) {
             ForEach(inspectorModel.textEncodingList) {
                 Text($0.name)
-                    .font(.system(size: 11))
             }
         }
-        .labelsHidden()
     }
 
     private var lineEndings: some View {
-        Picker("", selection: $inspectorModel.lineEndingsSelection) {
+        Picker("Line Endings", selection: $inspectorModel.lineEndingsSelection) {
             ForEach(inspectorModel.lineEndingsList) {
                 Text($0.name)
-                    .font(.system(size: 11))
             }
         }
-        .labelsHidden()
     }
 
     private var indentUsing: some View {
-        Picker("", selection: $inspectorModel.indentUsingSelection) {
+        Picker("Indent Using", selection: $inspectorModel.indentUsingSelection) {
             ForEach(inspectorModel.indentUsingList) {
                 Text($0.name)
-                    .font(.system(size: 11))
             }
         }
-        .labelsHidden()
     }
 
     private var tabWidths: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            HStack {
-                HStack(alignment: .top, spacing: 2) {
-                    VStack(alignment: .center, spacing: 0) {
-                        TextField("", value: $inspectorModel.tabWidth, formatter: NumberFormatter())
-                            .labelsHidden()
-                            .frame(maxWidth: .infinity)
-                            .multilineTextAlignment(.trailing)
-                        Text("Tab")
-                            .foregroundColor(.primary)
-                            .fontWeight(.regular)
-                            .font(.system(size: 10))
-                    }
-                    Stepper(value: $inspectorModel.tabWidth, in: 1...8) {
-                        EmptyView()
-                    }
-                    .padding(.top, 1)
+        LabeledContent("Widths") {
+            HStack(spacing: 5) {
+                VStack(alignment: .center, spacing: 0) {
+                    Stepper(
+                        "",
+                        value: $inspectorModel.tabWidth,
+                        in: 1...8,
+                        step: 1,
+                        format: .number
+                    )
+                    .labelsHidden()
+                    Text("Tab")
+                        .foregroundColor(.primary)
+                        .font(.footnote)
                 }
-                HStack(alignment: .top, spacing: 2) {
-                    VStack(alignment: .center, spacing: 0) {
-                        TextField("", value: $inspectorModel.indentWidth, formatter: NumberFormatter())
-                            .labelsHidden()
-                            .frame(maxWidth: .infinity)
-                            .multilineTextAlignment(.trailing)
-                        Text("Indent")
-                            .foregroundColor(.primary)
-                            .fontWeight(.regular)
-                            .font(.system(size: 10))
-                    }
-                    Stepper(value: $inspectorModel.indentWidth, in: 1...8) {
-                        EmptyView()
-                    }
-                    .padding(.top, 1)
+                VStack(alignment: .center, spacing: 0) {
+                    Stepper(
+                        "",
+                        value: $inspectorModel.indentWidth,
+                        in: 1...8,
+                        step: 1,
+                        format: .number
+                    )
+                    .labelsHidden()
+                    Text("Indent")
+                        .foregroundColor(.primary)
+                        .font(.footnote)
                 }
             }
-            Toggle(isOn: $inspectorModel.wrapLines) {
-                Text("Wrap lines")
-            }.toggleStyle(CheckboxToggleStyle())
-                .padding(.vertical, 5)
+        }
+    }
+
+    private var wrapLines: some View {
+        Toggle(isOn: $inspectorModel.wrapLines) {
+            Text("Wrap lines")
         }
     }
 }
