@@ -8,14 +8,13 @@
 import SwiftUI
 import CodeEditSymbols
 import AppKit
-import Introspect
 
 /// A struct for settings
 struct SettingsView: View {
     @StateObject var model = SettingsViewModel()
     @Environment(\.colorScheme) private var colorScheme
-    @ObservedObject private var settings: Settings = .shared
 
+    // TODO: Find an alternate/better way of getting the children settings
     /// An array of navigationItems
     private static let pages: [SettingsPage] = [
         .init(
@@ -24,7 +23,12 @@ struct SettingsView: View {
             icon: .system("gear"),
             childrenSettings: SettingsData().propertiesOf(SettingsData().general)
         ),
-        .init(.accounts, baseColor: .blue, icon: .system("at"), childrenSettings: SettingsData().propertiesOf(SettingsData().accounts)),
+        .init(
+            .accounts,
+            baseColor: .blue,
+            icon: .system("at"),
+            childrenSettings: SettingsData().propertiesOf(SettingsData().accounts)
+        ),
 //        .init(.behaviors, baseColor: .red, icon: .system("flowchart.fill")),
 //        .init(.navigation, baseColor: .green, icon: .system("arrow.triangle.turn.up.right.diamond.fill")),
         .init(
@@ -66,6 +70,7 @@ struct SettingsView: View {
     @State private var searchText: String = ""
 
     @Environment(\.presentationMode) var presentationMode
+    @ObservedObject private var settings: Settings = .shared
 
     let updater: SoftwareUpdater
 
@@ -74,14 +79,16 @@ struct SettingsView: View {
             List(selection: $selectedPage) {
                 Section {
                     ForEach(Self.pages) { item in
-                        let lowercasedSearchText: String = searchText.lowercased()
                         if !searchText.isEmpty {
-                            SettingsPageView(item)
-
-                            ForEach(item.childrenSettings) { setting in
-                                if setting.nameString.lowercased().contains(lowercasedSearchText) {
-                                    NavigationLink(value: item) {
-                                        Text("    \(setting.nameString.capitalized)")
+                            if item.name.rawValue.lowercased().contains(searchText.lowercased()) {
+                                SettingsPageView(item)
+                            } else {
+                                ForEach(item.childrenSettings) { setting in
+                                    if setting.nameString.lowercased().contains(searchText.lowercased()) {
+                                        SettingsPageView(item)
+                                        NavigationLink(value: item) {
+                                            Text("    \(setting.nameString.capitalized)")
+                                        }
                                     }
                                 }
                             }
