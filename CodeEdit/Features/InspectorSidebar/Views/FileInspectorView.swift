@@ -174,7 +174,10 @@ struct FileInspectorView: View {
                 VStack(alignment: .center, spacing: 0) {
                     Stepper(
                         "",
-                        value: $inspectorModel.tabWidth,
+                        value: Binding<Double>(
+                            get: { Double(inspectorModel.tabWidth) },
+                            set: { inspectorModel.tabWidth = Int($0) }
+                        ),
                         in: 1...8,
                         step: 1,
                         format: .number
@@ -187,7 +190,10 @@ struct FileInspectorView: View {
                 VStack(alignment: .center, spacing: 0) {
                     Stepper(
                         "",
-                        value: $inspectorModel.indentWidth,
+                        value: Binding<Double>(
+                            get: { Double(inspectorModel.indentWidth) },
+                            set: { inspectorModel.indentWidth = Int($0) }
+                        ),
                         in: 1...8,
                         step: 1,
                         format: .number

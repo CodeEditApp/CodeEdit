@@ -85,10 +85,10 @@ public final class FileInspectorModel: ObservableObject {
                            IndentUsing(name: "Tabs", id: "tabs")]
 
     @Published
-    var tabWidth: Double = 4
+    var tabWidth: Int = 4
 
     @Published
-    var indentWidth: Double = 4
+    var indentWidth: Int = 4
 
     @Published
     var wrapLines: Bool = true
