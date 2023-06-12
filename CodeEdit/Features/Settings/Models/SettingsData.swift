@@ -60,4 +60,24 @@ struct SettingsData: Codable, Hashable {
         ) ?? .init()
         self.keybindings = try container.decodeIfPresent(KeybindingsSettings.self, forKey: .keybindings) ?? .init()
     }
+
+    func propertiesOf(_ value: Any) -> [SettingsPageSetting] {
+        var properties: [SettingsPageSetting] = []
+        let mirror = Mirror(reflecting: value)
+
+        guard let style = mirror.displayStyle, style == .struct else {
+            // Throw some error
+            return [.init(nameString: "Error")]
+        }
+
+        for (possibleLabel, _) in mirror.children {
+            guard let label = possibleLabel else {
+                continue
+            }
+
+            properties.append(.init(nameString: label.camelCaseToProperWord()))
+        }
+
+        return properties
+    }
 }

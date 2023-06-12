@@ -8,21 +8,23 @@
 import Foundation
 import SwiftUI
 
-/// A struct for a preferences tab
-struct SettingsPage: Hashable, Identifiable {
+/// A struct for a settings page
+struct SettingsPage: Hashable, Equatable, Identifiable {
     /// Default intializer
     internal init(
         _ name: Name,
         baseColor: Color? = nil,
         icon: IconResource? = nil,
         hideName: Bool? = false,
-        children: [SettingsPage] = []
+        children: [SettingsPage] = [],
+        childrenSettings: [SettingsPageSetting] = []
     ) {
         self.children = children
         self.name = name
         self.baseColor = baseColor ?? .red
         self.icon = icon ?? .system("questionmark.app")
         self.hideName = hideName
+        self.childrenSettings = childrenSettings
     }
 
     var id: String { name.rawValue }
@@ -30,6 +32,7 @@ struct SettingsPage: Hashable, Identifiable {
     let name: Name
     let baseColor: Color
     let children: [SettingsPage]
+    let childrenSettings: [SettingsPageSetting]
     let hideName: Bool?
     var nameString: LocalizedStringKey { LocalizedStringKey(name.rawValue) }
     let icon: IconResource?
@@ -57,5 +60,4 @@ struct SettingsPage: Hashable, Identifiable {
         case location = "Locations"
         case advanced = "Advanced"
     }
-
 }

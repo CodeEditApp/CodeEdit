@@ -328,6 +328,8 @@
 		6CFF967C29BEBD5200182D6F /* WindowCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CFF967B29BEBD5200182D6F /* WindowCommands.swift */; };
 		850C631029D6B01D00E1444C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850C630F29D6B01D00E1444C /* SettingsView.swift */; };
 		850C631229D6B03400E1444C /* SettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850C631129D6B03400E1444C /* SettingsPage.swift */; };
+		85745D5B2A377CA400089AAB /* SettingsPageSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85745D5A2A377CA400089AAB /* SettingsPageSetting.swift */; };
+		85745D5D2A379FEC00089AAB /* String+camelCaseToProperWord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85745D5C2A379FEC00089AAB /* String+camelCaseToProperWord.swift */; };
 		85CD0C5F2A10CC3200E531FD /* URL+isImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CD0C5E2A10CC3200E531FD /* URL+isImage.swift */; };
 		B6041F4D29D7A4E9000F3454 /* SettingsPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6041F4C29D7A4E9000F3454 /* SettingsPageView.swift */; };
 		B6041F5229D7D6D6000F3454 /* SettingsWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6041F5129D7D6D6000F3454 /* SettingsWindow.swift */; };
@@ -770,6 +772,8 @@
 		6CFF967B29BEBD5200182D6F /* WindowCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowCommands.swift; sourceTree = "<group>"; };
 		850C630F29D6B01D00E1444C /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		850C631129D6B03400E1444C /* SettingsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPage.swift; sourceTree = "<group>"; };
+		85745D5A2A377CA400089AAB /* SettingsPageSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPageSetting.swift; sourceTree = "<group>"; };
+		85745D5C2A379FEC00089AAB /* String+camelCaseToProperWord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+camelCaseToProperWord.swift"; sourceTree = "<group>"; };
 		85CD0C5E2A10CC3200E531FD /* URL+isImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+isImage.swift"; sourceTree = "<group>"; };
 		B6041F4C29D7A4E9000F3454 /* SettingsPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPageView.swift; sourceTree = "<group>"; };
 		B6041F5129D7D6D6000F3454 /* SettingsWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWindow.swift; sourceTree = "<group>"; };
@@ -1955,6 +1959,7 @@
 				D7E201AD27E8B3C000CB86D0 /* String+Ranges.swift */,
 				58D01C8D293167DC00C5B6B4 /* String+RemoveOccurrences.swift */,
 				58D01C8C293167DC00C5B6B4 /* String+SHA256.swift */,
+				85745D5C2A379FEC00089AAB /* String+camelCaseToProperWord.swift */,
 			);
 			path = String;
 			sourceTree = "<group>";
@@ -2185,6 +2190,7 @@
 				6CD03B6929FC773F001BD1D0 /* SettingsInjector.swift */,
 				6C0D0C6729E861B000AE4D3F /* SettingsSidebarFix.swift */,
 				850C631129D6B03400E1444C /* SettingsPage.swift */,
+				85745D5A2A377CA400089AAB /* SettingsPageSetting.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2973,6 +2979,7 @@
 				58822530292C280D00E83CDE /* FilterTextField.swift in Sources */,
 				6C82D6B929BFE34900495C54 /* HelpCommands.swift in Sources */,
 				6C147C4929A32A080089B630 /* EditorView.swift in Sources */,
+				85745D5B2A377CA400089AAB /* SettingsPageSetting.swift in Sources */,
 				6C147C4129A328BF0089B630 /* TabGroup.swift in Sources */,
 				B6D7EA592971078500301FAC /* InspectorSection.swift in Sources */,
 				58F2EAEF292FB2B0004A9BDE /* ThemeSettingsView.swift in Sources */,
@@ -3012,6 +3019,7 @@
 				6CFF967C29BEBD5200182D6F /* WindowCommands.swift in Sources */,
 				587B9E7229301D8F00AC7927 /* GitJSONPostRouter.swift in Sources */,
 				5878DAB0291D627C00DD95A3 /* PathBarMenu.swift in Sources */,
+				85745D5D2A379FEC00089AAB /* String+camelCaseToProperWord.swift in Sources */,
 				587B9DA529300ABD00AC7927 /* PressActionsModifier.swift in Sources */,
 				6C147C4029A328BC0089B630 /* SplitViewData.swift in Sources */,
 				587B9E9029301D8F00AC7927 /* BitBucketTokenRouter.swift in Sources */,
