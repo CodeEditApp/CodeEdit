@@ -66,13 +66,24 @@ struct SettingsView: View {
     ]
 
     /// Variables for the selected Page, the current search text and software updater
-    @State private var selectedPage = pages.first!
+    @State private var selectedPage: SettingsPage = pages.first!
     @State private var searchText: String = ""
 
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject private var settings: Settings = .shared
 
     let updater: SoftwareUpdater
+
+    /// Just checks if a setting exists in a particular SettingsPage
+    private func resultFound(_ page: SettingsPage) -> Bool {
+        var lowercasedSearchText: String = searchText.lowercased()
+
+        for setting in page.childrenSettings where setting.nameString.lowercased().contains(lowercasedSearchText) {
+            return true
+        }
+
+        return false
+    }
 
     var body: some View {
         NavigationSplitView {
@@ -82,12 +93,24 @@ struct SettingsView: View {
                         if !searchText.isEmpty {
                             if item.name.rawValue.lowercased().contains(searchText.lowercased()) {
                                 SettingsPageView(item)
-                            } else {
+                                // TODO: Reduce duplication
+                                if resultFound(item) {
+                                    ForEach(item.childrenSettings) { setting in
+                                        if setting.nameString.lowercased().contains(searchText.lowercased()) {
+                                            NavigationLink(value: item) {
+                                                Text(setting.nameString.capitalized)
+                                                    .padding(.leading, 22.5)
+                                            }
+                                        }
+                                    }
+                                }
+                            } else if resultFound(item) {
+                                SettingsPageView(item)
                                 ForEach(item.childrenSettings) { setting in
                                     if setting.nameString.lowercased().contains(searchText.lowercased()) {
-                                        SettingsPageView(item)
                                         NavigationLink(value: item) {
-                                            Text("    \(setting.nameString.capitalized)")
+                                            Text(setting.nameString.capitalized)
+                                                .padding(.leading, 22.5)
                                         }
                                     }
                                 }
