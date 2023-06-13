@@ -62,7 +62,7 @@
 		2B7AC06B282452FB0082A5B8 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B7AC06A282452FB0082A5B8 /* Media.xcassets */; };
 		2BE487EF28245162003F3F64 /* FinderSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE487EE28245162003F3F64 /* FinderSync.swift */; };
 		2BE487F428245162003F3F64 /* OpenWithCodeEdit.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 2BE487EC28245162003F3F64 /* OpenWithCodeEdit.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		3E0196732A3921AC002648D8 /* codeedit-shell_Integration.zsh in Resources */ = {isa = PBXBuildFile; fileRef = 3E0196722A3921AC002648D8 /* codeedit-shell_Integration.zsh */; };
+		3E0196732A3921AC002648D8 /* codeedit_shell_integration.zsh in Resources */ = {isa = PBXBuildFile; fileRef = 3E0196722A3921AC002648D8 /* codeedit_shell_integration.zsh */; };
 		474397C52893AC4B00518C8C /* codeedit-midnight.json in Resources */ = {isa = PBXBuildFile; fileRef = 474397C42893AC4B00518C8C /* codeedit-midnight.json */; };
 		4E7F066629602E7B00BB3C12 /* CodeEditSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7F066529602E7B00BB3C12 /* CodeEditSplitViewController.swift */; };
 		4EE96ECB2960565E00FFBEA8 /* DocumentsUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE96ECA2960565E00FFBEA8 /* DocumentsUnitTests.swift */; };
@@ -518,7 +518,7 @@
 		2BE487EC28245162003F3F64 /* OpenWithCodeEdit.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OpenWithCodeEdit.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BE487EE28245162003F3F64 /* FinderSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderSync.swift; sourceTree = "<group>"; };
 		2BE487F028245162003F3F64 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		3E0196722A3921AC002648D8 /* codeedit-shell_Integration.zsh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "codeedit-shell_Integration.zsh"; sourceTree = "<group>"; };
+		3E0196722A3921AC002648D8 /* codeedit_shell_integration.zsh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = codeedit_shell_integration.zsh; sourceTree = "<group>"; };
 		474397C42893AC4B00518C8C /* codeedit-midnight.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "codeedit-midnight.json"; sourceTree = "<group>"; };
 		4E7F066529602E7B00BB3C12 /* CodeEditSplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditSplitViewController.swift; sourceTree = "<group>"; };
 		4EE96ECA2960565E00FFBEA8 /* DocumentsUnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsUnitTests.swift; sourceTree = "<group>"; };
@@ -1104,7 +1104,7 @@
 		3E0196712A392170002648D8 /* ShellIntegration */ = {
 			isa = PBXGroup;
 			children = (
-				3E0196722A3921AC002648D8 /* codeedit-shell_Integration.zsh */,
+				3E0196722A3921AC002648D8 /* codeedit_shell_integration.zsh */,
 			);
 			path = ShellIntegration;
 			sourceTree = "<group>";
@@ -2605,7 +2605,7 @@
 				283BDCBD2972EEBD002AFF81 /* Package.resolved in Resources */,
 				B658FB3727DA9E1000EA4DBD /* Preview Assets.xcassets in Resources */,
 				28A51006281701B40087B0CC /* codeedit-github-dark.json in Resources */,
-				3E0196732A3921AC002648D8 /* codeedit-shell_Integration.zsh in Resources */,
+				3E0196732A3921AC002648D8 /* codeedit_shell_integration.zsh in Resources */,
 				28F43DE029738792008BBA45 /* codeedit-solarized-dark.json in Resources */,
 				58A5DFA529339F6400D1BD5D /* default_keybindings.json in Resources */,
 				28A51002281673530087B0CC /* codeedit-xcode-light.json in Resources */,

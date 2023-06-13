@@ -93,7 +93,7 @@ struct TerminalEmulatorView: NSViewRepresentable {
     }
 
     private func setupShellTitle(shell: String) {
-        if let shellSetupScript = Bundle.main.url(forResource: "codeedit-shell_Integration", withExtension: shell) {
+        if let shellSetupScript = Bundle.main.url(forResource: "codeedit_shell_integration", withExtension: shell) {
             let scriptPath = (shellSetupScript.absoluteString[7..<shellSetupScript.absoluteString.count]) ?? ""
             terminal.send(txt: "source \(scriptPath)\n")
         }
