@@ -92,8 +92,8 @@ struct TerminalEmulatorView: NSViewRepresentable {
         }
     }
 
-    private func setupZshTitle() {
-        if let shellSetupScript = Bundle.main.url(forResource: "codeedit-shell_Integration", withExtension: "zsh") {
+    private func setupShellTitle(shell: String) {
+        if let shellSetupScript = Bundle.main.url(forResource: "codeedit-shell_Integration", withExtension: shell) {
             let scriptPath = (shellSetupScript.absoluteString[7..<shellSetupScript.absoluteString.count]) ?? ""
             terminal.send(txt: "source \(scriptPath)\n")
         }
@@ -226,13 +226,7 @@ struct TerminalEmulatorView: NSViewRepresentable {
             terminal.layer?.backgroundColor = .clear
             terminal.optionAsMetaKey = optionAsMeta
 
-            switch shellName {
-            case "zsh":
-                setupZshTitle()
-                return
-            default:
-                return
-            }
+            setupShellTitle(shell: shellName)
         }
         terminal.appearance = colorAppearance
         scroller?.isHidden = true
