@@ -93,11 +93,11 @@ struct TerminalEmulatorView: NSViewRepresentable {
     }
 
     private func setupZshTitle() {
-        terminal.send(txt: "autoload -U add-zsh-hook;")
-        terminal.send(txt: "__codeedit_preexec () { echo -n \"\\033]0;${1}\\007\" };")
-        terminal.send(txt: "__codeedit_precmd () { echo -n \"\\033]0;zsh\\007\" };")
-        terminal.send(txt: "add-zsh-hook preexec __codeedit_preexec;")
-        terminal.send(txt: "add-zsh-hook precmd __codeedit_precmd\n")
+        if let shellSetupScript = Bundle.main.url(forResource: "codeedit-shell_Integration", withExtension: "zsh") {
+            let scriptPath = (shellSetupScript.absoluteString[7..<shellSetupScript.absoluteString.count]) ?? ""
+            terminal.send(txt: "source \(scriptPath)\n")
+        }
+
         terminal.send(txt: "clear\n")
     }
 
