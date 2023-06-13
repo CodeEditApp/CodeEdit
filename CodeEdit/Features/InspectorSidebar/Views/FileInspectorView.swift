@@ -36,7 +36,6 @@ struct FileInspectorView: View {
                 wrapLines
             }
         }
-        .formStyle(.grouped)
     }
 
     private var fileName: some View {
