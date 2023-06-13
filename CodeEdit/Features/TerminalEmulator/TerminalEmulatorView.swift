@@ -92,6 +92,15 @@ struct TerminalEmulatorView: NSViewRepresentable {
         }
     }
 
+    private func setupZshTitle() {
+        terminal.send(txt: "autoload -U add-zsh-hook;")
+        terminal.send(txt: "__codeedit_preexec () { echo -n \"\\033]0;${1}\\007\" };")
+        terminal.send(txt: "__codeedit_precmd () { echo -n \"\\033]0;zsh\\007\" };")
+        terminal.send(txt: "add-zsh-hook preexec __codeedit_preexec;")
+        terminal.send(txt: "add-zsh-hook precmd __codeedit_precmd\n")
+        terminal.send(txt: "clear\n")
+    }
+
     private func getTerminalCursor() -> CursorStyle {
             let blink = terminalSettings.cursorBlink
             switch terminalSettings.cursorStyle {
@@ -216,6 +225,14 @@ struct TerminalEmulatorView: NSViewRepresentable {
             terminal.cursorStyleChanged(source: terminal.getTerminal(), newStyle: getTerminalCursor())
             terminal.layer?.backgroundColor = .clear
             terminal.optionAsMetaKey = optionAsMeta
+
+            switch shellName {
+            case "zsh":
+                setupZshTitle()
+                return
+            default:
+                return
+            }
         }
         terminal.appearance = colorAppearance
         scroller?.isHidden = true
