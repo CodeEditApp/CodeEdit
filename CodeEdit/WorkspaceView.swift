@@ -65,7 +65,8 @@ struct WorkspaceView: View {
                     .edgesIgnoringSafeArea(.top)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .onChange(of: focusedEditor) { newValue in
-                        if let newValue {
+                        /// update active tab group only if the new one is not the same with it.
+                        if let newValue, tabManager.activeTabGroup != newValue {
                             tabManager.activeTabGroup = newValue
                         }
                     }

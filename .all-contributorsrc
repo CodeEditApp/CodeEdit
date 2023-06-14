@@ -516,7 +516,8 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/72877496?v=4",
       "profile": "https://cubik65536.top",
       "contributions": [
-        "bug"
+        "bug",
+        "code"
       ]
     },
     {
@@ -583,6 +584,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "dscyrescotti",
+      "name": "Dscyre Scotti",
+      "avatar_url": "https://avatars.githubusercontent.com/u/67727096?v=4",
+      "profile": "https://github.com/dscyrescotti",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
@@ -591,5 +601,6 @@
   "repoType": "github",
   "repoHost": "https://github.com",
   "skipCi": true,
-  "commitConvention": "angular"
+  "commitConvention": "angular",
+  "commitType": "docs"
 }

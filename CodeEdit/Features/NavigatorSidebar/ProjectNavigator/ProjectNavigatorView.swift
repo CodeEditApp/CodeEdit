@@ -15,14 +15,10 @@ import SwiftUI
 /// When selecting a file it will open in the editor.
 ///
 struct ProjectNavigatorView: View {
-
-    @EnvironmentObject var tabManager: TabManager
-
     var body: some View {
-        ProjectNavigatorOutlineView(selection: $tabManager.activeTabGroup.selected)
+        ProjectNavigatorOutlineView()
             .safeAreaInset(edge: .bottom, spacing: 0) {
                 ProjectNavigatorToolbarBottom()
             }
     }
-
 }

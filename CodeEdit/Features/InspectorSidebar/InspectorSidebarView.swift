@@ -69,7 +69,7 @@ struct InspectorSidebarView: View {
         .clipShape(Rectangle())
         .frame(
             minWidth: CodeEditWindowController.minSidebarWidth,
-            idealWidth: 260,
+            idealWidth: 300,
             minHeight: 0,
             maxHeight: .infinity,
             alignment: .top
@@ -93,5 +93,6 @@ struct InspectorSidebarView: View {
                 Divider()
             }
         }
+        .formStyle(.grouped)
     }
 }

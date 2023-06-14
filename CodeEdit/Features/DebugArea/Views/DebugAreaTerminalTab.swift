@@ -21,8 +21,22 @@ struct DebugAreaTerminalTab: View {
     private var isFocused: Bool
 
     var body: some View {
+        var terminalTitle = Binding<String>(
+            get: {
+                self.terminal.title
+            }, set: {
+                if $0.trimmingCharacters(in: .whitespaces) == "" && !isFocused {
+                    self.terminal.title = self.terminal.terminalTitle
+                    self.terminal.customTitle = false
+                } else {
+                    self.terminal.title = $0
+                    self.terminal.customTitle = true
+                }
+            }
+        )
+
         Label {
-            TextField("Name", text: $terminal.title)
+            TextField("Name", text: terminalTitle)
                 .focused($isFocused)
                 .padding(.leading, -8)
                 .background {
