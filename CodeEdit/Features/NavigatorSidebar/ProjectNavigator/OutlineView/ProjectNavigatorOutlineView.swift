@@ -39,7 +39,7 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
         nsViewController.fileExtensionsVisibility = prefs.preferences.general.fileExtensionsVisibility
         nsViewController.shownFileExtensions = prefs.preferences.general.shownFileExtensions
         nsViewController.hiddenFileExtensions = prefs.preferences.general.hiddenFileExtensions
-        /// if the window becomes active from background, it will restores the selection to outline view.
+        /// if the window becomes active from background, it will restore the selection to outline view.
         nsViewController.updateSelection(itemID: workspace.tabManager.activeTabGroup.selected?.id)
         return
     }
