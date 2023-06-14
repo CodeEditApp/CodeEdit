@@ -72,7 +72,6 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
         var workspace: WorkspaceDocument
         var controller: ProjectNavigatorViewController?
 
-        deinit {
             cancellables.forEach { $0.cancel() }
             cancellables.removeAll()
         }
