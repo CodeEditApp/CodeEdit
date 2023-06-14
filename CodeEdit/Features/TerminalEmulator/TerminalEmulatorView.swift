@@ -92,6 +92,15 @@ struct TerminalEmulatorView: NSViewRepresentable {
         }
     }
 
+    private func setupShellTitle(shell: String) {
+        if let shellSetupScript = Bundle.main.url(forResource: "codeedit_shell_integration", withExtension: shell) {
+            let scriptPath = (shellSetupScript.absoluteString[7..<shellSetupScript.absoluteString.count]) ?? ""
+            terminal.send(txt: "source \(scriptPath)\n")
+        }
+
+        terminal.send(txt: "clear\n")
+    }
+
     private func getTerminalCursor() -> CursorStyle {
             let blink = terminalSettings.cursorBlink
             switch terminalSettings.cursorStyle {
@@ -195,7 +204,9 @@ struct TerminalEmulatorView: NSViewRepresentable {
         terminal.getTerminal().silentLog = true
         if TerminalEmulatorView.lastTerminal[url.path] == nil {
             let shell = getShell()
-            let shellIdiom = "-" + NSString(string: shell).lastPathComponent
+            let shellName = NSString(string: shell).lastPathComponent
+            onTitleChange(shellName)
+            let shellIdiom = "-" + shellName
 
             // changes working directory to project root
             // TODO: Get rid of FileManager shared instance to prevent problems
@@ -214,6 +225,8 @@ struct TerminalEmulatorView: NSViewRepresentable {
             terminal.cursorStyleChanged(source: terminal.getTerminal(), newStyle: getTerminalCursor())
             terminal.layer?.backgroundColor = .clear
             terminal.optionAsMetaKey = optionAsMeta
+
+            setupShellTitle(shell: shellName)
         }
         terminal.appearance = colorAppearance
         scroller?.isHidden = true
@@ -251,6 +264,6 @@ struct TerminalEmulatorView: NSViewRepresentable {
     }
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(url: url)
+        Coordinator(url: url, onTitleChange: onTitleChange)
     }
 }

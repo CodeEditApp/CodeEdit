@@ -11,13 +11,17 @@ struct DebugAreaTerminal: Identifiable, Equatable {
     var id: UUID
     var url: URL?
     var title: String
+    var terminalTitle: String
     var shell: String
+    var customTitle: Bool
 
     init(id: UUID, url: URL, title: String, shell: String) {
         self.id = id
         self.title = title
+        self.terminalTitle = title
         self.url = url
         self.shell = shell
+        self.customTitle = false
     }
 }
 
@@ -107,7 +111,10 @@ struct DebugAreaTerminalView: View {
         title: String? = nil
     ) {
         if let newTitle = title {
-            terminal.title = newTitle
+            if !terminal.customTitle {
+                terminal.title = newTitle
+            }
+            terminal.terminalTitle = newTitle
         }
     }
 
