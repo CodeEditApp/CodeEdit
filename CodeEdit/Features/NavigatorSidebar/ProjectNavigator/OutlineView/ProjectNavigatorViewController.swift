@@ -89,8 +89,9 @@ final class ProjectNavigatorViewController: NSViewController {
     /// Updates the selection of the ``outlineView`` whenever it changes.
     ///
     /// Most importantly when the `id` changes from an external view.
-    func updateSelection() {
-        guard let itemID = workspace?.tabManager.activeTabGroup.selected?.id else {
+    /// - Parameter itemID: The id of the file or folder.
+    func updateSelection(itemID: String?) {
+        guard let itemID else {
             outlineView.deselectRow(outlineView.selectedRow)
             return
         }
@@ -282,7 +283,18 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
         rowHeight // This can be changed to 20 to match Xcode's row height.
     }
 
-    func outlineViewItemDidExpand(_ notification: Notification) {}
+    func outlineViewItemDidExpand(_ notification: Notification) {
+        guard
+            let id = workspace?.tabManager.activeTabGroup.selected?.id,
+            let item = content.find(by: .codeEditor(id))
+        else {
+            return
+        }
+        /// select active file under collapsed folder only if its parent is expanding
+        if outlineView.isItemExpanded(item.parent) {
+            updateSelection(itemID: item.id)
+        }
+    }
 
     func outlineViewItemDidCollapse(_ notification: Notification) {}
 
@@ -302,20 +314,13 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
     ///   - id: the id of the item item
     ///   - collection: the array to search for
     private func select(by id: TabBarItemID, from collection: [CEWorkspaceFile]) {
+        guard let item = collection.find(by: id) else {
+            return
+        }
         // If the user has set "Reveal file on selection change" to on, we need to reveal the item before
         // selecting the row.
         if Settings.shared.preferences.general.revealFileOnFocusChange {
-           if case let .codeEditor(id) = id,
-              let fileItem = try? workspace?.workspaceFileManager?.getFile(id as CEWorkspaceFile.ID) {
-               reveal(fileItem)
-           }
-        }
-
-        guard let item = collection.first(where: { $0.tabID == id }) else {
-            for item in collection {
-                select(by: id, from: item.children ?? [])
-            }
-            return
+           reveal(item)
         }
         let row = outlineView.row(forItem: item)
         if row == -1 {
