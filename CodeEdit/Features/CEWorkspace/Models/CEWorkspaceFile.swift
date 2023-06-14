@@ -361,17 +361,3 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, TabBar
     }
 
 }
-
-extension Array where Element == CEWorkspaceFile {
-    func find(by tabID: TabBarItemID) -> CEWorkspaceFile? {
-        guard let item = first(where: { $0.tabID == tabID }) else {
-            for element in self {
-                if let item = element.children?.find(by: tabID) {
-                    return item
-                }
-            }
-            return nil
-        }
-        return item
-    }
-}
