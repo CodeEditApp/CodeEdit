@@ -98,7 +98,7 @@ struct SettingsView: View {
                                     ForEach(item.childrenSettings) { setting in
                                         if setting.nameString.lowercased().contains(searchText.lowercased()) {
                                             NavigationLink(value: item) {
-                                                Text(setting.nameString.capitalized)
+                                                setting.nameString.capitalized.highlightOccurrences(searchText)
                                                     .padding(.leading, 22.5)
                                             }
                                         }
@@ -109,7 +109,7 @@ struct SettingsView: View {
                                 ForEach(item.childrenSettings) { setting in
                                     if setting.nameString.lowercased().contains(searchText.lowercased()) {
                                         NavigationLink(value: item) {
-                                            Text(setting.nameString.capitalized)
+                                            setting.nameString.capitalized.highlightOccurrences(searchText)
                                                 .padding(.leading, 22.5)
                                         }
                                     }
