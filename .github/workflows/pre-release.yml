@@ -86,6 +86,7 @@ jobs:
             --app-drop-link 600 185 \
             --codesign "$CODESIGN_SIGN" \
             --notarize "CodeEdit" \
+            --skip-jenkins \
             "$RUNNER_TEMP/CodeEdit-$REV.dmg" \
             "$RUNNER_TEMP/CodeEdit.xcarchive/Products/Applications/"
           security lock-keychain
