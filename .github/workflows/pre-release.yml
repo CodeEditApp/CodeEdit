@@ -118,7 +118,7 @@ jobs:
           APP_VERSION: ${{ env.APP_VERSION }}
           APP_BUILD: ${{ env.APP_BUILD }}
         run: |
-          SPARKLE_BIN="$RUNNER_TEMP/DerivedData/SourcePackages/artifacts/sparkle/bin"
+          SPARKLE_BIN="$RUNNER_TEMP/DerivedData/SourcePackages/artifacts/sparkle/Sparkle/bin"
           SPARKLE_ARCHIVE="$RUNNER_TEMP/Sparkle_Archive"
           echo -n "$SPARKLE_KEY" | tee "$RUNNER_TEMP/sparkle_key"
           mkdir "$SPARKLE_ARCHIVE"
