@@ -42,24 +42,28 @@ final class QuickOpenViewModel: ObservableObject {
                     .isRegularFileKey
                 ],
                 options: [
-                    .skipsHiddenFiles,
                     .skipsPackageDescendants
                 ]
             )
             if let filePaths = enumerator?.allObjects as? [URL] {
-                let files = filePaths.filter { url in
-                    let state1 = url.lastPathComponent.lowercased().contains(self.openQuicklyQuery.lowercased())
+                /// removes all filePaths which aren't regular files
+                let filteredFiles = filePaths.filter { url in
                     do {
                         let values = try url.resourceValues(forKeys: [.isRegularFileKey])
-                        return state1 && (values.isRegularFile ?? false)
+                        return (values.isRegularFile ?? false)
                     } catch {
                         return false
                     }
-                }.map { url in
-                    CEWorkspaceFile(url: url, children: nil)
                 }
+
+                /// sorts the filtered filePaths with the FuzzySearch
+                let orderedFiles = FuzzySearch.search(query: self.openQuicklyQuery, in: filteredFiles)
+                    .map { url in
+                        CEWorkspaceFile(url: url, children: nil)
+                    }
+
                 DispatchQueue.main.async {
-                    self.openQuicklyFiles = files
+                    self.openQuicklyFiles = orderedFiles
                     self.isShowingOpenQuicklyFiles = !self.openQuicklyFiles.isEmpty
                 }
             }

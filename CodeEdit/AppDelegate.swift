@@ -18,6 +18,20 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 
         NSApp.closeWindow(.welcome, .about)
 
+        let upgradeAlert = NSAlert()
+        upgradeAlert.messageText = "Upgrade Available"
+        upgradeAlert.informativeText = """
+A new CodeEdit update is available, but can't be auto-updated.\
+ Please download the latest version to keep receiving the latest updates.
+"""
+        upgradeAlert.addButton(withTitle: "Download New Version")
+        switch upgradeAlert.runModal() {
+        case .alertFirstButtonReturn:
+            NSWorkspace.shared.open(URL(string: "https://github.com/CodeEditApp/CodeEdit/releases/latest")!)
+        default:
+            break
+        }
+
         DispatchQueue.main.async {
             var needToHandleOpen = true
 

@@ -9,13 +9,9 @@ import SwiftUI
 
 internal struct StatusBarToggleDrawerButton: View {
     @EnvironmentObject
-    private var model: StatusBarViewModel
+    private var model: DebugAreaViewModel
 
-    @Binding
-    var collapsed: Bool
-
-    init(collapsed: Binding<Bool>) {
-        self._collapsed = collapsed
+    init() {
         CommandManager.shared.addCommand(
             name: "Toggle Drawer",
             title: "Toggle Drawer",
@@ -26,8 +22,7 @@ internal struct StatusBarToggleDrawerButton: View {
 
     func togglePanel() {
         withAnimation {
-            model.isExpanded.toggle()
-            collapsed.toggle()
+            model.isCollapsed.toggle()
         }
     }
 

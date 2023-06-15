@@ -27,6 +27,20 @@ extension Array where Element == CEWorkspaceFile {
         }
     }
 
+    /// Search for the `CEWorkspaceFile` element that matches the specified `tabID`.
+    /// - Parameter tabID: A `tabID` to search for.
+    /// - Returns: The `CEWorkspaceFile` element with a matching `tabID` if available.
+    func find(by tabID: TabBarItemID) -> CEWorkspaceFile? {
+        guard let item = first(where: { $0.tabID == tabID }) else {
+            for element in self {
+                if let item = element.children?.find(by: tabID) {
+                    return item
+                }
+            }
+            return nil
+        }
+        return item
+    }
 }
 
 extension Array where Element: Hashable {

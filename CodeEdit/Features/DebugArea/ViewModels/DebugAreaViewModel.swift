@@ -1,43 +1,29 @@
 //
-//  StatusBarModel.swift
-//  CodeEditModules/StatusBar
+//  DebugAreaViewModel.swift
+//  CodeEdit
 //
 //  Created by Lukas Pistrol on 20.03.22.
 //
 
 import SwiftUI
 
-/// # StatusBarModel
+/// # DebugAreaViewModel
 ///
 /// A model class to host and manage data for the ``StatusBarView``
 ///
-class StatusBarViewModel: ObservableObject {
-
-    enum Tab: Hashable {
-        case terminal
-        case debugger
-        case output(ExtensionInfo)
-
-        static func allCases(extensions: [ExtensionInfo]) -> [Tab] {
-            [.terminal, .debugger] + extensions.map { .output($0) }
-        }
-    }
-
-    private let isStatusBarDrawerCollapsedStateName: String
-        = "\(String(describing: StatusBarViewModel.self))-IsStatusBarDrawerCollapsed"
+class DebugAreaViewModel: ObservableObject {
+    private let isDebugAreaViewCollapsedStateName: String
+        = "\(String(describing: DebugAreaViewModel.self))-IsDebugAreaViewCollapsed"
     private let statusBarDrawerHeightStateName: String
-        = "\(String(describing: StatusBarViewModel.self))-StatusBarDrawerHeight"
-
-    @Published
-    var selectedTab: Tab = .terminal
+        = "\(String(describing: DebugAreaViewModel.self))-DebugAreaViewHeight"
 
     /// Returns the current location of the cursor in an editing view
     @Published
     var cursorLocation: CursorLocation = .init(line: 1, column: 1) // Implementation needed!!
 
-    /// Returns true when the drawer is visible
+    /// Indicates whether debugger is collapse or not
     @Published
-    var isExpanded: Bool = false
+    var isCollapsed: Bool = false
 
     /// Returns true when the drawer is visible
     @Published

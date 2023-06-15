@@ -8,22 +8,38 @@
 import SwiftUI
 
 struct InspectorSidebarView: View {
+    @EnvironmentObject
+    private var workspace: WorkspaceDocument
 
     @ObservedObject
     private var extensionManager = ExtensionManager.shared
 
-    @ObservedObject
-    private var workspace: WorkspaceDocument
-
     @EnvironmentObject
     private var tabManager: TabManager
 
+    @AppSettings(\.general.inspectorTabBarPosition)
+    var sidebarPosition: SettingsData.SidebarTabBarPosition
+
     @State
-    private var selection: InspectorTab.ID = InspectorTab.file.id
+    private var selection: InspectorTab? = .quickhelp
+
+    var path: String? { tabManager.activeTabGroup.selected?.fileDocument?.fileURL?.path(percentEncoded: false)
+    }
+
+    var fileTreeAndGitHistory: [InspectorTab] {
+        guard let workspaceURL = workspace.fileURL, let path else {
+            return []
+        }
+
+        return [
+            .file(workspaceURL: workspaceURL, fileURL: path),
+            .gitHistory(workspaceURL: workspaceURL, fileURL: path)
+        ]
+    }
 
     private var items: [InspectorTab] {
-        [.file, .gitHistory, .quickhelp]
-        + extensionManager
+        fileTreeAndGitHistory + [InspectorTab.quickhelp] +
+        extensionManager
             .extensions
             .map { ext in
                 ext.availableFeatures.compactMap {
@@ -36,33 +52,16 @@ struct InspectorSidebarView: View {
             .joined()
     }
 
-    init(workspace: WorkspaceDocument) {
-        self.workspace = workspace
+    func getExtension(_ id: String) -> ExtensionInfo? {
+        return extensionManager.extensions.first(
+            where: { $0.endpoint.bundleIdentifier == id }
+        )
     }
-
-    @AppSettings(\.general.inspectorTabBarPosition) var sidebarPosition: SettingsData.SidebarTabBarPosition
 
     var body: some View {
         VStack {
-            if let path = tabManager.activeTabGroup.selected?.fileDocument?.fileURL?.path(percentEncoded: false) {
-                switch items.first(where: { $0.id == selection }) {
-                case .file:
-                    FileInspectorView(
-                        workspaceURL: workspace.fileURL!,
-                        fileURL: path
-                    )
-                case .gitHistory:
-                    HistoryInspectorView(
-                        workspaceURL: workspace.fileURL!,
-                        fileURL: path
-                    )
-                case .quickhelp:
-                    QuickHelpInspectorView().padding(5)
-                case let .uiExtension(endpoint, data):
-                    ExtensionSceneView(with: endpoint, sceneID: data.sceneID)
-                case .none:
-                    NoSelectionInspectorView()
-                }
+            if let selection {
+                selection
             } else {
                 NoSelectionInspectorView()
             }
@@ -70,22 +69,30 @@ struct InspectorSidebarView: View {
         .clipShape(Rectangle())
         .frame(
             minWidth: CodeEditWindowController.minSidebarWidth,
-            idealWidth: 260,
+            idealWidth: 300,
             minHeight: 0,
             maxHeight: .infinity,
             alignment: .top
         )
         .safeAreaInset(edge: .trailing, spacing: 0) {
             if sidebarPosition == .side {
-                InspectorSidebarTabBar(items: items, selection: $selection, position: sidebarPosition)
+                HStack(spacing: 0) {
+                    Divider()
+                    AreaTabBar(items: items, selection: $selection, position: sidebarPosition)
+                }
             }
         }
         .safeAreaInset(edge: .top, spacing: 0) {
             if sidebarPosition == .top {
-                InspectorSidebarTabBar(items: items, selection: $selection, position: sidebarPosition)
+                VStack(spacing: 0) {
+                    Divider()
+                    AreaTabBar(items: items, selection: $selection, position: sidebarPosition)
+                    Divider()
+                }
             } else {
                 Divider()
             }
         }
+        .formStyle(.grouped)
     }
 }
