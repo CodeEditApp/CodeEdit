@@ -25,7 +25,7 @@ struct SettingsData: Codable, Hashable {
     /// The general global setting
     var general: GeneralSettings = .init()
 
-    /// The global settings for text editing
+    /// The global settings for source control accounts
     var accounts: AccountsSettings = .init()
 
     /// The global settings for themes
@@ -37,7 +37,7 @@ struct SettingsData: Codable, Hashable {
     /// The global settings for text editing
     var textEditing: TextEditingSettings = .init()
 
-    /// The global settings for text editing
+    /// The global settings for source control
     var sourceControl: SourceControlSettings = .init()
 
     /// The global settings for keybindings

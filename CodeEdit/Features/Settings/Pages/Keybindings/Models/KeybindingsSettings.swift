@@ -9,7 +9,7 @@ import Foundation
 
 extension SettingsData {
 
-    /// The global settings for text editing
+    /// The global settings for keybindings
     struct KeybindingsSettings: Codable, Hashable {
         /// An integer indicating how many spaces a `tab` will generate
         var keybindings: [String: KeyboardShortcutWrapper] = .init()

@@ -9,7 +9,7 @@ import Foundation
 
 extension SettingsData {
 
-    /// The global settings for text editing
+    /// The global settings for source control accounts
     struct AccountsSettings: Codable, Hashable {
         /// An integer indicating how many spaces a `tab` will generate
         var sourceControlAccounts: GitAccounts = .init()
