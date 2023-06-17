@@ -9,23 +9,12 @@ import Foundation
 
 extension String {
     func camelCaseToProperWord() -> String {
-        var newString: String = ""
-        var index: Int = 0
-
-        for character in self {
-            let char: String = String(describing: character)
-
-            if character.isLowercase && index != 0 {
-                newString += char
-            } else if character.isUppercase {
-                newString += " \(char)"
-            } else if index == 0 {
-                newString += char.uppercased()
-            }
-
-            index += 1
+        let result = unicodeScalars.dropFirst().reduce(String(prefix(1))) { result, scalar in
+            return CharacterSet.uppercaseLetters.contains(scalar)
+                ? result + " " + String(scalar)
+                : result + String(scalar)
         }
 
-        return newString
+        return result.prefix(1).uppercased() + result.dropFirst()
     }
 }

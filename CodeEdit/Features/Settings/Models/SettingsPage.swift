@@ -16,25 +16,19 @@ struct SettingsPage: Hashable, Equatable, Identifiable {
         baseColor: Color? = nil,
         icon: IconResource? = nil,
         isSetting: Bool = false,
-        displayName: String = "",
-        children: [SettingsPage] = [],
-        childrenSettings: [SettingsPageSetting] = []
+        displayName: String = ""
     ) {
-        self.children = children
         self.name = name
         self.baseColor = baseColor ?? .red
         self.icon = icon ?? .system("questionmark.app")
         self.isSetting = isSetting
         self.displayName = displayName
-        self.childrenSettings = childrenSettings
     }
 
     var id: String { name.rawValue }
 
     let name: Name
     let baseColor: Color
-    let children: [SettingsPage]
-    let childrenSettings: [SettingsPageSetting]
     let isSetting: Bool
     let displayName: String
     var nameString: LocalizedStringKey { LocalizedStringKey(name.rawValue) }

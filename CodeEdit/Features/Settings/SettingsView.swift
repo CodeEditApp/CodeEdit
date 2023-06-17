@@ -12,60 +12,10 @@ import CodeEditSymbols
 struct SettingsView: View {
     @StateObject var model = SettingsViewModel()
     @Environment(\.colorScheme) private var colorScheme
-
-    // TODO: Find an alternate/better way of getting the children settings
-    /// An array of navigationItems
-    private static let pages: [SettingsPage] = [
-        .init(
-            .general,
-            baseColor: .gray,
-            icon: .system("gear"),
-            childrenSettings: SettingsData().propertiesOf(SettingsData().general)
-        ),
-        .init(
-            .accounts,
-            baseColor: .blue,
-            icon: .system("at"),
-            childrenSettings: SettingsData().propertiesOf(SettingsData().accounts)
-        ),
-//        .init(.behaviors, baseColor: .red, icon: .system("flowchart.fill")),
-//        .init(.navigation, baseColor: .green, icon: .system("arrow.triangle.turn.up.right.diamond.fill")),
-        .init(
-            .theme,
-            baseColor: .pink,
-            icon: .system("paintbrush.fill"),
-            childrenSettings: SettingsData().propertiesOf(SettingsData().theme)
-        ),
-        .init(
-            .textEditing,
-            baseColor: .blue,
-            icon: .system("pencil.line"),
-            childrenSettings: SettingsData().propertiesOf(SettingsData().textEditing)
-        ),
-        .init(
-            .terminal,
-            baseColor: .blue,
-            icon: .system("terminal.fill"),
-            childrenSettings: SettingsData().propertiesOf(SettingsData().terminal)
-        ),
-//        .init(.keybindings, baseColor: .gray, icon: .system("keyboard.fill")),
-        .init(
-            .sourceControl,
-            baseColor: .blue,
-            icon: .symbol("vault"),
-            childrenSettings: SettingsData().propertiesOf(SettingsData().sourceControl)
-        ),
-//        .init(.components, baseColor: .blue, icon: .system("puzzlepiece.fill")),
-        .init(
-            .location,
-            baseColor: .green,
-            icon: .system("externaldrive.fill")
-        )
-//        .init(.advanced, baseColor: .gray, icon: .system("gearshape.2.fill"))
-    ]
+    @State private var count: Int = 1
 
     /// Variables for the selected Page, the current search text and software updater
-    @State private var selectedPage: SettingsPage = pages.first!
+    @State private var selectedPage: SettingsPage = .init(.general, baseColor: .gray, icon: .system("gear"))
     @State private var searchText: String = ""
 
     @Environment(\.presentationMode) var presentationMode
@@ -88,10 +38,14 @@ struct SettingsView: View {
         var lowercasedSearchText: String = searchText.lowercased()
         var returnedPages: [SettingsPage] = []
 
-        for item in pages where item.displayName.lowercased().contains(lowercasedSearchText) && item.displayName != "" {
+        for item in pages where
+            item.displayName.lowercased().contains(lowercasedSearchText) &&
+            item.displayName != "" &&
+            item.name == page.name &&
+            item.isSetting
+        {
             returnedPages.append(item)
         }
-        print(returnedPages, "cool b")
 
         return returnedPages
     }
@@ -164,18 +118,15 @@ struct SettingsView: View {
             List(selection: $selectedPage) {
                 Section {
                     ForEach(pages) { item in
-                        let results = resultFound2(item, pages: pages)
-                        if !results.isEmpty {
+                        // Text("\(String(describing: item.id))\(item.displayName)")
+                        if !resultFound2(item, pages: pages).isEmpty && !item.isSetting {
                             if !item.isSetting {
                                 SettingsPageView(item)
                             }
 
+                            let results = resultFound2(item, pages: pages)
                             ForEach(results, id: \.displayName) { setting in
-                                if
-                                    setting.displayName.lowercased().contains(searchText.lowercased()) &&
-                                    setting.isSetting &&
-                                    setting.name == item.name
-                                {
+                                if setting.displayName.lowercased().contains(searchText.lowercased()) {
                                     NavigationLink(value: setting) {
                                         setting.displayName.capitalized.highlightOccurrences(searchText)
                                             .padding(.leading, 22.5)
