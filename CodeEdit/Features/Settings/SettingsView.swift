@@ -7,7 +7,6 @@
 
 import SwiftUI
 import CodeEditSymbols
-import AppKit
 
 /// A struct for settings
 struct SettingsView: View {
@@ -85,37 +84,105 @@ struct SettingsView: View {
         return false
     }
 
+    func resultFound2(_ page: SettingsPage, pages: [SettingsPage]) -> [SettingsPage] {
+        var lowercasedSearchText: String = searchText.lowercased()
+        var returnedPages: [SettingsPage] = []
+
+        for item in pages where item.displayName.lowercased().contains(lowercasedSearchText) && item.displayName != "" {
+            returnedPages.append(item)
+        }
+        print(returnedPages, "cool b")
+
+        return returnedPages
+    }
+
+    func createPageAndSettings(
+        _ settingsStruct: Any,
+        parent: SettingsPage,
+        prePages: [SettingsPage]
+    ) -> [SettingsPage] {
+        var pages: [SettingsPage] = prePages
+        pages.append(parent)
+
+        for setting in SettingsData().propertiesOf(settingsStruct) {
+            pages.append(
+                SettingsPage(
+                    parent.name,
+                    baseColor: parent.baseColor,
+                    icon: parent.icon,
+                    isSetting: true,
+                    displayName: setting.nameString
+                )
+            )
+        }
+
+        return pages
+    }
+
+    private func populatePages() -> [SettingsPage] {
+        var pages: [SettingsPage] = []
+        let settingsData: SettingsData = SettingsData()
+
+        pages = createPageAndSettings(
+            settingsData.general,
+            parent: SettingsPage(.general, baseColor: .gray, icon: .system("gear"), isSetting: false),
+            prePages: pages
+        )
+        pages = createPageAndSettings(
+            settingsData.accounts,
+            parent: SettingsPage(.accounts, baseColor: .blue, icon: .system("at")),
+            prePages: pages
+        )
+        pages = createPageAndSettings(
+            settingsData.theme,
+            parent: SettingsPage(.theme, baseColor: .pink, icon: .system("paintbrush.fill")),
+            prePages: pages
+        )
+        pages = createPageAndSettings(
+            settingsData.textEditing,
+            parent: SettingsPage(.textEditing, baseColor: .blue, icon: .system("pencil.line")),
+            prePages: pages
+        )
+        pages = createPageAndSettings(
+            settingsData.terminal,
+            parent: SettingsPage(.terminal, baseColor: .blue, icon: .system("terminal.fill")),
+            prePages: pages
+        )
+        pages = createPageAndSettings(
+            settingsData.sourceControl,
+            parent: SettingsPage(.sourceControl, baseColor: .blue, icon: .symbol("vault")),
+            prePages: pages
+        )
+        pages.append(SettingsPage(.location, baseColor: .green, icon: .system("externaldrive.fill")))
+
+        return pages
+    }
+
     var body: some View {
+        let pages: [SettingsPage] = populatePages()
         NavigationSplitView {
             List(selection: $selectedPage) {
                 Section {
-                    ForEach(Self.pages) { item in
-                        if !searchText.isEmpty {
-                            if item.name.rawValue.lowercased().contains(searchText.lowercased()) {
+                    ForEach(pages) { item in
+                        let results = resultFound2(item, pages: pages)
+                        if !results.isEmpty {
+                            if !item.isSetting {
                                 SettingsPageView(item)
-                                // TODO: Reduce duplication
-                                if resultFound(item) {
-                                    ForEach(item.childrenSettings) { setting in
-                                        if setting.nameString.lowercased().contains(searchText.lowercased()) {
-                                            NavigationLink(value: item) {
-                                                setting.nameString.capitalized.highlightOccurrences(searchText)
-                                                    .padding(.leading, 22.5)
-                                            }
-                                        }
-                                    }
-                                }
-                            } else if resultFound(item) {
-                                SettingsPageView(item)
-                                ForEach(item.childrenSettings) { setting in
-                                    if setting.nameString.lowercased().contains(searchText.lowercased()) {
-                                        NavigationLink(value: item) {
-                                            setting.nameString.capitalized.highlightOccurrences(searchText)
-                                                .padding(.leading, 22.5)
-                                        }
+                            }
+
+                            ForEach(results, id: \.displayName) { setting in
+                                if
+                                    setting.displayName.lowercased().contains(searchText.lowercased()) &&
+                                    setting.isSetting &&
+                                    setting.name == item.name
+                                {
+                                    NavigationLink(value: setting) {
+                                        setting.displayName.capitalized.highlightOccurrences(searchText)
+                                            .padding(.leading, 22.5)
                                     }
                                 }
                             }
-                        } else {
+                        } else if !item.isSetting {
                             SettingsPageView(item)
                         }
                     }

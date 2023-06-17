@@ -25,7 +25,7 @@ struct SettingsData: Codable, Hashable {
     /// The general global setting
     var general: GeneralSettings = .init()
 
-    /// The global settings for text editing
+    /// The global settings for accounts
     var accounts: AccountsSettings = .init()
 
     /// The global settings for themes
@@ -37,7 +37,7 @@ struct SettingsData: Codable, Hashable {
     /// The global settings for text editing
     var textEditing: TextEditingSettings = .init()
 
-    /// The global settings for text editing
+    /// The global settings for source control
     var sourceControl: SourceControlSettings = .init()
 
     /// The global settings for keybindings
@@ -66,8 +66,7 @@ struct SettingsData: Codable, Hashable {
         let mirror = Mirror(reflecting: value)
 
         guard let style = mirror.displayStyle, style == .struct else {
-            // Throw some error
-            return [.init(nameString: "Error")]
+            return [SettingsPageSetting(nameString: "Error")]
         }
 
         for (possibleLabel, _) in mirror.children {
@@ -75,7 +74,7 @@ struct SettingsData: Codable, Hashable {
                 continue
             }
 
-            properties.append(.init(nameString: label.camelCaseToProperWord()))
+            properties.append(SettingsPageSetting(nameString: label.camelCaseToProperWord()))
         }
 
         return properties
