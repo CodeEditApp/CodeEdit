@@ -25,7 +25,8 @@ struct SettingsPage: Hashable, Equatable, Identifiable {
         self.displayName = displayName
     }
 
-    var id: String { name.rawValue }
+    // TODO: This is a very hacky fix, find out if there is a better way to do this
+    var id: Int = Int.random(in: 0...1000000)
 
     let name: Name
     let baseColor: Color

@@ -23,21 +23,11 @@ struct SettingsView: View {
 
     let updater: SoftwareUpdater
 
-    /// Just checks if a setting exists in a particular SettingsPage
-    private func resultFound(_ page: SettingsPage) -> Bool {
-        var lowercasedSearchText: String = searchText.lowercased()
-
-        for setting in page.childrenSettings where setting.nameString.lowercased().contains(lowercasedSearchText) {
-            return true
-        }
-
-        return false
-    }
-
-    func resultFound2(_ page: SettingsPage, pages: [SettingsPage]) -> [SettingsPage] {
+    func resultFound(_ page: SettingsPage, pages: [SettingsPage]) -> [SettingsPage] {
         var lowercasedSearchText: String = searchText.lowercased()
         var returnedPages: [SettingsPage] = []
 
+        // swiftlint:disable opening_brace
         for item in pages where
             item.displayName.lowercased().contains(lowercasedSearchText) &&
             item.displayName != "" &&
@@ -117,14 +107,13 @@ struct SettingsView: View {
         NavigationSplitView {
             List(selection: $selectedPage) {
                 Section {
-                    ForEach(pages) { item in
-                        // Text("\(String(describing: item.id))\(item.displayName)")
-                        if !resultFound2(item, pages: pages).isEmpty && !item.isSetting {
-                            if !item.isSetting {
-                                SettingsPageView(item)
+                    ForEach(pages) { page in
+                        let results = resultFound(page, pages: pages)
+                        if !results.isEmpty && !page.isSetting {
+                            if !page.isSetting {
+                                SettingsPageView(page)
                             }
 
-                            let results = resultFound2(item, pages: pages)
                             ForEach(results, id: \.displayName) { setting in
                                 if setting.displayName.lowercased().contains(searchText.lowercased()) {
                                     NavigationLink(value: setting) {
@@ -133,8 +122,8 @@ struct SettingsView: View {
                                     }
                                 }
                             }
-                        } else if !item.isSetting {
-                            SettingsPageView(item)
+                        } else if !page.isSetting {
+                            SettingsPageView(page)
                         }
                     }
                 }
@@ -193,3 +182,4 @@ class SettingsViewModel: ObservableObject {
     @Published var backButtonVisible: Bool = false
     @Published var scrolledToTop: Bool = false
 }
+// swiftlint:enable opening_brace
