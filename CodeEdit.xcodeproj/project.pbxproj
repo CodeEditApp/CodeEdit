@@ -283,6 +283,9 @@
 		6C578D8929CD36E400DC73B2 /* Commands+ForEach.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C578D8829CD36E400DC73B2 /* Commands+ForEach.swift */; };
 		6C578D8C29CD372700DC73B2 /* ExtensionCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C578D8B29CD372700DC73B2 /* ExtensionCommands.swift */; };
 		6C5B63DE29C76213005454BA /* WindowCodeFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5B63DD29C76213005454BA /* WindowCodeFileView.swift */; };
+		6C5BE51C2A3D542B002DA0FC /* FeatureFlagsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5BE51B2A3D542B002DA0FC /* FeatureFlagsSettingsView.swift */; };
+		6C5BE51E2A3D545F002DA0FC /* FeatureFlagsSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5BE51D2A3D545F002DA0FC /* FeatureFlagsSettings.swift */; };
+		6C5BE5222A3D5666002DA0FC /* WindowManagement in Frameworks */ = {isa = PBXBuildFile; productRef = 6C5BE5212A3D5666002DA0FC /* WindowManagement */; };
 		6C5FDF7A29E6160000BC08C0 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5FDF7929E6160000BC08C0 /* AppSettings.swift */; };
 		6C66C31329D05CDC00DE9ED2 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = 6C66C31229D05CDC00DE9ED2 /* GRDB */; };
 		6C6BD6EF29CD12E900235D17 /* ExtensionManagerWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6BD6EE29CD12E900235D17 /* ExtensionManagerWindow.swift */; };
@@ -739,6 +742,8 @@
 		6C578D8B29CD372700DC73B2 /* ExtensionCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionCommands.swift; sourceTree = "<group>"; };
 		6C5AB9D629C1496E003B5F96 /* SceneID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneID.swift; sourceTree = "<group>"; };
 		6C5B63DD29C76213005454BA /* WindowCodeFileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WindowCodeFileView.swift; sourceTree = "<group>"; };
+		6C5BE51B2A3D542B002DA0FC /* FeatureFlagsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagsSettingsView.swift; sourceTree = "<group>"; };
+		6C5BE51D2A3D545F002DA0FC /* FeatureFlagsSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagsSettings.swift; sourceTree = "<group>"; };
 		6C5FDF7929E6160000BC08C0 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		6C6BD6EE29CD12E900235D17 /* ExtensionManagerWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionManagerWindow.swift; sourceTree = "<group>"; };
 		6C6BD6F029CD13FA00235D17 /* ExtensionDiscovery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDiscovery.swift; sourceTree = "<group>"; };
@@ -863,6 +868,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6C0F3A3C2A1D0D5000223D19 /* CodeEditKit in Frameworks */,
+				6C5BE5222A3D5666002DA0FC /* WindowManagement in Frameworks */,
 				6C66C31329D05CDC00DE9ED2 /* GRDB in Frameworks */,
 				58F2EB1E292FB954004A9BDE /* Sparkle in Frameworks */,
 				6C2149412A1BB9AB00748382 /* LogStream in Frameworks */,
@@ -2083,6 +2089,15 @@
 			path = Environment;
 			sourceTree = "<group>";
 		};
+		6C5BE51A2A3D5419002DA0FC /* FeatureFlags */ = {
+			isa = PBXGroup;
+			children = (
+				6C5BE51B2A3D542B002DA0FC /* FeatureFlagsSettingsView.swift */,
+				6C5BE51D2A3D545F002DA0FC /* FeatureFlagsSettings.swift */,
+			);
+			path = FeatureFlags;
+			sourceTree = "<group>";
+		};
 		6C6BD6ED29CD123000235D17 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -2154,6 +2169,7 @@
 		B61DA9DD29D929BF00BF4A43 /* Pages */ = {
 			isa = PBXGroup;
 			children = (
+				6C5BE51A2A3D5419002DA0FC /* FeatureFlags */,
 				B6CF632629E5417C0085880A /* Keybindings */,
 				B6E41C6E29DD15540088F9F4 /* AccountsSettings */,
 				B6EA1FF329DA37D3001BF195 /* TextEditingSettings */,
@@ -2487,6 +2503,7 @@
 				6CDEFC9529E22C2700B7C684 /* Introspect */,
 				6CC81CEB2A16BB8F00487975 /* CodeEditTextView */,
 				6C0F3A3B2A1D0D5000223D19 /* CodeEditKit */,
+				6C5BE5212A3D5666002DA0FC /* WindowManagement */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -2582,6 +2599,7 @@
 				6CDEFC9429E22C2700B7C684 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 				6CC81CEA2A16BB8F00487975 /* XCRemoteSwiftPackageReference "CodeEditTextView" */,
 				6C0F3A3A2A1D0D5000223D19 /* XCRemoteSwiftPackageReference "CodeEditKit" */,
+				6C5BE5202A3D5666002DA0FC /* XCRemoteSwiftPackageReference "SwiftUI-WindowManagement" */,
 			);
 			productRefGroup = B658FB2D27DA9E0F00EA4DBD /* Products */;
 			projectDirPath = "";
@@ -2752,6 +2770,7 @@
 				587B9E5E29301D8F00AC7927 /* GitLabCommitRouter.swift in Sources */,
 				58F2EB0D292FB2B0004A9BDE /* ThemeSettings.swift in Sources */,
 				85CD0C5F2A10CC3200E531FD /* URL+isImage.swift in Sources */,
+				6C5BE51E2A3D545F002DA0FC /* FeatureFlagsSettings.swift in Sources */,
 				587B9D9F29300ABD00AC7927 /* SegmentedControl.swift in Sources */,
 				6C7256D729A3D7D000C2D3E0 /* SplitViewControllerView.swift in Sources */,
 				B6EA1FE529DA33DB001BF195 /* ThemeModel.swift in Sources */,
@@ -2901,6 +2920,7 @@
 				285FEC7027FE4B9800E57D53 /* ProjectNavigatorTableViewCell.swift in Sources */,
 				6CB9144B29BEC7F100BC47F2 /* (null) in Sources */,
 				587B9E7429301D8F00AC7927 /* URL+URLParameters.swift in Sources */,
+				6C5BE51C2A3D542B002DA0FC /* FeatureFlagsSettingsView.swift in Sources */,
 				581BFB6B2926431000D251EC /* RecentProjectItem.swift in Sources */,
 				587FB99029C1246400B519DD /* TabBarItemView.swift in Sources */,
 				587B9DA429300ABD00AC7927 /* OverlayPanel.swift in Sources */,
@@ -3990,6 +4010,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		6C5BE5202A3D5666002DA0FC /* XCRemoteSwiftPackageReference "SwiftUI-WindowManagement" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Wouter01/SwiftUI-WindowManagement";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.1.0;
+			};
+		};
 		6C66C31129D05CC800DE9ED2 /* XCRemoteSwiftPackageReference "GRDB.swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/groue/GRDB.swift.git";
@@ -4059,6 +4087,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6C21493F2A1BB9AB00748382 /* XCRemoteSwiftPackageReference "LogStream" */;
 			productName = LogStream;
+		};
+		6C5BE5212A3D5666002DA0FC /* WindowManagement */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6C5BE5202A3D5666002DA0FC /* XCRemoteSwiftPackageReference "SwiftUI-WindowManagement" */;
+			productName = WindowManagement;
 		};
 		6C66C31229D05CDC00DE9ED2 /* GRDB */ = {
 			isa = XCSwiftPackageProductDependency;
