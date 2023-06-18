@@ -333,6 +333,7 @@
 		85745D5B2A377CA400089AAB /* SettingsPageSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85745D5A2A377CA400089AAB /* SettingsPageSetting.swift */; };
 		85745D5D2A379FEC00089AAB /* String+camelCaseToProperWord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85745D5C2A379FEC00089AAB /* String+camelCaseToProperWord.swift */; };
 		85745D632A38F8D900089AAB /* String+highlightContainingWord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85745D622A38F8D900089AAB /* String+highlightContainingWord.swift */; };
+		85773E1E2A3E0A1F00C5D926 /* SettingsSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85773E1D2A3E0A1F00C5D926 /* SettingsSearchResult.swift */; };
 		85CD0C5F2A10CC3200E531FD /* URL+isImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CD0C5E2A10CC3200E531FD /* URL+isImage.swift */; };
 		B6041F4D29D7A4E9000F3454 /* SettingsPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6041F4C29D7A4E9000F3454 /* SettingsPageView.swift */; };
 		B6041F5229D7D6D6000F3454 /* SettingsWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6041F5129D7D6D6000F3454 /* SettingsWindow.swift */; };
@@ -780,6 +781,7 @@
 		85745D5A2A377CA400089AAB /* SettingsPageSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPageSetting.swift; sourceTree = "<group>"; };
 		85745D5C2A379FEC00089AAB /* String+camelCaseToProperWord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+camelCaseToProperWord.swift"; sourceTree = "<group>"; };
 		85745D622A38F8D900089AAB /* String+highlightContainingWord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+highlightContainingWord.swift"; sourceTree = "<group>"; };
+		85773E1D2A3E0A1F00C5D926 /* SettingsSearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSearchResult.swift; sourceTree = "<group>"; };
 		85CD0C5E2A10CC3200E531FD /* URL+isImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+isImage.swift"; sourceTree = "<group>"; };
 		B6041F4C29D7A4E9000F3454 /* SettingsPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPageView.swift; sourceTree = "<group>"; };
 		B6041F5129D7D6D6000F3454 /* SettingsWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWindow.swift; sourceTree = "<group>"; };
@@ -2207,6 +2209,7 @@
 				6C0D0C6729E861B000AE4D3F /* SettingsSidebarFix.swift */,
 				850C631129D6B03400E1444C /* SettingsPage.swift */,
 				85745D5A2A377CA400089AAB /* SettingsPageSetting.swift */,
+				85773E1D2A3E0A1F00C5D926 /* SettingsSearchResult.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2839,6 +2842,7 @@
 				587B9E7529301D8F00AC7927 /* String+QueryParameters.swift in Sources */,
 				58798219292D92370085B254 /* SearchModeModel.swift in Sources */,
 				B62AEDD72A27B3D0009A9F52 /* DebugAreaTabViewModel.swift in Sources */,
+				85773E1E2A3E0A1F00C5D926 /* SettingsSearchResult.swift in Sources */,
 				B66A4E4F29C917B8004573B4 /* WelcomeWindow.swift in Sources */,
 				58D01C9D293167DC00C5B6B4 /* KeychainSwiftAccessOptions.swift in Sources */,
 				B6E41C8B29DE7AE80088F9F4 /* AccountsSettingsSigninView.swift in Sources */,

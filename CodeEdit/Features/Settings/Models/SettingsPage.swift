@@ -10,30 +10,29 @@ import SwiftUI
 
 /// A struct for a settings page
 struct SettingsPage: Hashable, Equatable, Identifiable {
-    /// Default intializer
+    /// Default initializer
     internal init(
         _ name: Name,
-        baseColor: Color? = nil,
-        icon: IconResource? = nil,
+        baseColor: Color,
+        icon: IconResource,
         isSetting: Bool = false,
         displayName: String = ""
     ) {
         self.name = name
-        self.baseColor = baseColor ?? .red
-        self.icon = icon ?? .system("questionmark.app")
+        self.baseColor = baseColor
+        self.icon = icon
         self.isSetting = isSetting
         self.displayName = displayName
     }
 
-    // TODO: This is a very hacky fix, find out if there is a better way to do this
-    var id: Int = Int.random(in: 0...1000000)
+    let id: UUID = UUID()
 
     let name: Name
     let baseColor: Color
     let isSetting: Bool
     let displayName: String
     var nameString: LocalizedStringKey { LocalizedStringKey(name.rawValue) }
-    let icon: IconResource?
+    let icon: IconResource
 
     /// A struct for a sidebar icon, with a base color and SF Symbol
     enum IconResource: Equatable, Hashable {

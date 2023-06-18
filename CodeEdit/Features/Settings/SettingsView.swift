@@ -23,24 +23,30 @@ struct SettingsView: View {
 
     let updater: SoftwareUpdater
 
-    func resultFound(_ page: SettingsPage, pages: [SettingsPage]) -> [SettingsPage] {
-        var lowercasedSearchText: String = searchText.lowercased()
+    /// Searches through an array of pages to check if a page name exists in the array
+    private func resultFound(_ page: SettingsPage, pages: [SettingsPage]) -> SettingsSearchResult {
+        let lowercasedSearchText: String = searchText.lowercased()
         var returnedPages: [SettingsPage] = []
+        var foundPage: Bool = false
 
         // swiftlint:disable opening_brace
         for item in pages where
             item.displayName.lowercased().contains(lowercasedSearchText) &&
             item.displayName != "" &&
-            item.name == page.name &&
-            item.isSetting
+            item.name == page.name
         {
-            returnedPages.append(item)
+            if item.isSetting {
+                returnedPages.append(item)
+            } else {
+                foundPage = true
+            }
         }
 
-        return returnedPages
+        return SettingsSearchResult(pageFound: foundPage, pages: returnedPages)
     }
 
-    func createPageAndSettings(
+    /// Creates a SettingsPage and it's respective child settings
+    private func createPageAndSettings(
         _ settingsStruct: Any,
         parent: SettingsPage,
         prePages: [SettingsPage]
@@ -63,13 +69,14 @@ struct SettingsView: View {
         return pages
     }
 
+    /// Creates all the neccessary pages
     private func populatePages() -> [SettingsPage] {
         var pages: [SettingsPage] = []
         let settingsData: SettingsData = SettingsData()
 
         pages = createPageAndSettings(
             settingsData.general,
-            parent: SettingsPage(.general, baseColor: .gray, icon: .system("gear"), isSetting: false),
+            parent: SettingsPage(.general, baseColor: .gray, icon: .system("gear")),
             prePages: pages
         )
         pages = createPageAndSettings(
@@ -108,22 +115,30 @@ struct SettingsView: View {
             List(selection: $selectedPage) {
                 Section {
                     ForEach(pages) { page in
-                        let results = resultFound(page, pages: pages)
-                        if !results.isEmpty && !page.isSetting {
-                            if !page.isSetting {
-                                SettingsPageView(page)
-                            }
+                        if !searchText.isEmpty {
+                            let results: SettingsSearchResult = resultFound(page, pages: pages)
 
-                            ForEach(results, id: \.displayName) { setting in
-                                if setting.displayName.lowercased().contains(searchText.lowercased()) {
-                                    NavigationLink(value: setting) {
-                                        setting.displayName.capitalized.highlightOccurrences(searchText)
-                                            .padding(.leading, 22.5)
+                            if !results.pages.isEmpty && !page.isSetting {
+                                if
+                                    !results.pageFound ||
+                                        page.name.rawValue.lowercased().contains(searchText.lowercased())
+                                {
+                                    SettingsPageView(page, searchText: searchText)
+                                }
+
+                                ForEach(results.pages, id: \.displayName) { setting in
+                                    if setting.displayName.lowercased().contains(searchText.lowercased()) {
+                                        NavigationLink(value: setting) {
+                                            setting.displayName.capitalized.highlightOccurrences(searchText)
+                                                .padding(.leading, 22.5)
+                                        }
                                     }
                                 }
+                            } else if !page.isSetting && !results.pages.isEmpty {
+                                SettingsPageView(page, searchText: searchText)
                             }
                         } else if !page.isSetting {
-                            SettingsPageView(page)
+                            SettingsPageView(page, searchText: searchText)
                         }
                     }
                 }
