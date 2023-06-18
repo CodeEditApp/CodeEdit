@@ -12,60 +12,66 @@ struct WindowSplitView: View {
     @StateObject var workspace: WorkspaceDocument
     @State var visibility: NavigationSplitViewVisibility = .all
     @State var showInspector = true
-
+    @State var window: NSWindow = .init()
 
     var body: some View {
-
-        NavigationSplitView(columnVisibility: $visibility) {
-            NavigatorSidebarView(workspace: workspace)
-                .toolbar {
-                    ToolbarItem {
-                        Button {
-                            withAnimation(.linear(duration: 0)) {
-                                if visibility == .detailOnly {
-                                    visibility = .all
-                                } else {
-                                    visibility = .detailOnly
-                                }
-                            }
-                        } label: {
-                            Image(systemName: "sidebar.left")
-                                .imageScale(.large)
-                        }
-                    }
-                }
-        } detail: {
-            if #available(macOS 14.0, *) {
-                WorkspaceView()
+        WindowObserver(window: window) {
+            NavigationSplitView(columnVisibility: $visibility) {
+                NavigatorSidebarView(workspace: workspace)
                     .toolbar {
-                        ToolbarItem(id: "com.apple.SwiftUI.navigationSplitView.toggleSidebar") {
-                            ToolbarBranchPicker(
-                                shellClient: currentWorld.shellClient,
-                                workspaceFileManager: workspace.workspaceFileManager
-                            )
-                        }
-                        .defaultCustomization(.hidden, options: [])
-                    }
-                    .inspector(isPresented: $showInspector) {
-                        InspectorSidebarView()
-                            .inspectorColumnWidth(min: 100, ideal: 200, max: 400)
-                            .toolbar {
-                                Spacer()
-                                Button {
-                                    showInspector.toggle()
-                                } label: {
-                                    Image(systemName: "sidebar.right")
-                                        .imageScale(.large)
+                        ToolbarItem {
+                            Button {
+                                withAnimation(.linear(duration: 0)) {
+                                    if visibility == .detailOnly {
+                                        visibility = .all
+                                    } else {
+                                        visibility = .detailOnly
+                                    }
                                 }
+                            } label: {
+                                Image(systemName: "sidebar.left")
+                                    .imageScale(.large)
                             }
+                        }
                     }
-            } else {
-                WorkspaceView()
+            } detail: {
+                if #available(macOS 14.0, *) {
+                    WorkspaceView()
+                        .toolbar {
+                            ToolbarItem(id: "com.apple.SwiftUI.navigationSplitView.toggleSidebar") {
+                                ToolbarBranchPicker(
+                                    shellClient: currentWorld.shellClient,
+                                    workspaceFileManager: workspace.workspaceFileManager
+                                )
+                            }
+                            .defaultCustomization(.hidden, options: [])
+                        }
+                        .inspector(isPresented: $showInspector) {
+                            InspectorSidebarView()
+                                .inspectorColumnWidth(min: 100, ideal: 200, max: 400)
+                                .toolbar {
+                                    Spacer()
+                                    Button {
+                                        showInspector.toggle()
+                                    } label: {
+                                        Image(systemName: "sidebar.right")
+                                            .imageScale(.large)
+                                    }
+                                }
+                        }
+                } else {
+                    WorkspaceView()
+                }
             }
         }
         .environmentObject(workspace)
         .environmentObject(workspace.tabManager)
         .environmentObject(workspace.debugAreaModel)
+        .task {
+            if let newWindow = workspace.windowControllers.first?.window {
+                window = newWindow
+            }
+        }
     }
 }
 
