@@ -103,11 +103,7 @@ struct CodeEditApp: App {
             SettingsWindow()
 
             NSDocumentGroup(for: WorkspaceDocument.self) { workspace in
-//                WindowObserver(window: workspace.windowControllers.first!.window!) {
-                    WindowSplitView(workspace: workspace)
-                        .injectWindow(.document(WorkspaceDocument.self))
-//                }
-
+                WindowSplitView(workspace: workspace)
             } defaultAction: {
                 openWindow(id: SceneID.welcome.rawValue)
             }
