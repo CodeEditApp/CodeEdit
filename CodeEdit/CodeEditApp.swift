@@ -95,9 +95,6 @@ struct CodeEditApp: App {
             AboutWindow()
 
             SettingsWindow()
-                .commands {
-                    CodeEditCommands()
-                }
 
             NSDocumentGroup(for: WorkspaceDocument.self) { workspace in
 //                WindowObserver(window: workspace.windowControllers.first!.window!) {
@@ -112,6 +109,9 @@ struct CodeEditApp: App {
             .transition(.documentWindow)
             .windowToolbarStyle(.unifiedCompact(showsTitle: false))
             .enableOpenWindow()
+            .commands {
+                CodeEditCommands()
+            }
         }
         .environment(\.settings, settings.preferences) // Add settings to each window environment
     }
