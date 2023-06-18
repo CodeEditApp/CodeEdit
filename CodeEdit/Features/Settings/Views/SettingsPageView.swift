@@ -17,7 +17,7 @@ struct SettingsPageView: View {
     }
 
     var body: some View {
-        NavigationLink(value: page) {
+        NavigationLink(value: page.name) {
             Label {
                 page.name.rawValue.highlightOccurrences(self.searchText)
                     .padding(.leading, 2)

@@ -12,10 +12,9 @@ import CodeEditSymbols
 struct SettingsView: View {
     @StateObject var model = SettingsViewModel()
     @Environment(\.colorScheme) private var colorScheme
-    @State private var count: Int = 1
 
     /// Variables for the selected Page, the current search text and software updater
-    @State private var selectedPage: SettingsPage = .init(.general, baseColor: .gray, icon: .system("gear"))
+    @State private var selectedPage: SettingsPage.Name = .general
     @State private var searchText: String = ""
 
     @Environment(\.presentationMode) var presentationMode
@@ -33,7 +32,6 @@ struct SettingsView: View {
             if item.isSetting && item.displayName.lowercased().contains(lowercasedSearchText) {
                 returnedPages.append(item)
             } else if item.name.rawValue.contains(lowercasedSearchText) && !item.isSetting {
-                print("found page for page:", String(describing: item))
                 foundPage = true
             }
         }
@@ -118,7 +116,7 @@ struct SettingsView: View {
                                 SettingsPageView(page, searchText: searchText)
 
                                 ForEach(results.pages, id: \.displayName) { setting in
-                                    NavigationLink(value: setting) {
+                                    NavigationLink(value: setting.name) {
                                         setting.displayName.capitalized.highlightOccurrences(searchText)
                                             .padding(.leading, 22.5)
                                     }
@@ -144,7 +142,7 @@ struct SettingsView: View {
             }
         } detail: {
             Group {
-                switch selectedPage.name {
+                switch selectedPage {
                 case .general:
                     GeneralSettingsView().environmentObject(updater)
                 case .accounts:
@@ -169,7 +167,7 @@ struct SettingsView: View {
                 model.backButtonVisible = false
             }
         }
-        .navigationTitle(selectedPage.name.rawValue)
+        .navigationTitle(selectedPage.rawValue)
         .toolbar {
             ToolbarItem(placement: .navigation) {
                 if !model.backButtonVisible {
