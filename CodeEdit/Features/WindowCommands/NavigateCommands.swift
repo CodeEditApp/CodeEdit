@@ -60,42 +60,6 @@ struct NavigateCommands: Commands {
                 .disabled(!(tabgroup?.canGoToPreviousTab ?? false))
             }
             .disabled(tabgroup == nil)
-
-            Group {
-
-                Divider()
-
-                Button("Jump to Selection") {
-
-                }
-                .keyboardShortcut("l", modifiers: [.command, .option])
-
-                Button("Jump to Definition") {
-
-                }
-                .keyboardShortcut("j")
-
-                Button("Jump to Original Source") {
-
-                }
-
-                Button("Jump to Last Destination") {
-
-                }
-
-                Divider()
-
-                Button("Jump to Next Issue") {
-
-                }
-                .keyboardShortcut("'")
-
-                Button("Jump to Previous Issue") {
-
-                }
-                .keyboardShortcut("\"")
-            }
-//            .disabled(true)
         }
     }
 }
