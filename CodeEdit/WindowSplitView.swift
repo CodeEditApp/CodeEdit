@@ -65,6 +65,8 @@ struct WindowSplitView: View {
                 }
             }
         }
+        .focusedSceneValue(\.navigationSplitViewVisibility, $visibility)
+        .focusedSceneValue(\.inspectorVisibility, $showInspector)
         .environmentObject(workspace)
         .environmentObject(workspace.tabManager)
         .environmentObject(workspace.debugAreaModel)
