@@ -141,13 +141,6 @@ struct CodeFileView: View {
             guard let theme = newValue else { return }
             self.selectedTheme = theme
         }
-        .onChange(of: colorScheme) { newValue in
-            if matchAppearance {
-                themeModel.selectedTheme = newValue == .dark
-                ? themeModel.selectedDarkTheme
-                : themeModel.selectedLightTheme
-            }
-        }
         .onChange(of: settingsFont) { _ in
             font = Settings.shared.preferences.textEditing.font.current()
         }

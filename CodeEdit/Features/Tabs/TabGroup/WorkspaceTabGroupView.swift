@@ -17,6 +17,12 @@ struct WorkspaceTabGroupView: View {
     @EnvironmentObject
     private var tabManager: TabManager
 
+    @Environment(\.colorScheme)
+    private var colorScheme
+    @AppSettings(\.theme.matchAppearance) var matchAppearance
+    @StateObject
+    private var themeModel: ThemeModel = .shared
+
     var body: some View {
         VStack {
             if let selected = tabgroup.selected {
@@ -65,6 +71,13 @@ struct WorkspaceTabGroupView: View {
         .focused($focus, equals: tabgroup)
         .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("CodeEditor.didBeginEditing"))) { _ in
             tabgroup.temporaryTab = nil
+        }
+        .onChange(of: colorScheme) { newValue in
+            if matchAppearance {
+                themeModel.selectedTheme = newValue == .dark
+                ? themeModel.selectedDarkTheme
+                : themeModel.selectedLightTheme
+            }
         }
     }
 }
