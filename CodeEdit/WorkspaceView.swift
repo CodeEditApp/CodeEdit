@@ -21,7 +21,7 @@ struct WorkspaceView: View {
 
     @EnvironmentObject
     private var debugAreaModel: DebugAreaViewModel
-    
+
     private var keybindings: KeybindingManager =  .shared
 
     @State

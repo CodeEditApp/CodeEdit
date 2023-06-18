@@ -15,7 +15,12 @@ struct FeatureFlagsSettingsView: View {
         Form {
             VStack(alignment: .leading) {
                 Toggle("New Windowing System", isOn: $useNewWindowingSystem)
-                Text("Active workspaces must be reopened in order to take effect. Inspector only works on macOS Sonoma.")
+                Text(
+                    """
+                    Active workspaces must be reopened in order to take effect.
+                    Inspector only works on macOS Sonoma.
+                    """
+                )
                     .font(.footnote)
                     .foregroundStyle(.secondary)
             }

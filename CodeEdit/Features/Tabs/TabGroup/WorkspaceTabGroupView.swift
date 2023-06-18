@@ -7,12 +7,6 @@
 
 import SwiftUI
 
-extension View {
-    func focusedValue<Value>(_ keyPath: WritableKeyPath<FocusedValues, Value?>, disabled: Bool, _ value: Value) -> some View {
-        focusedValue(keyPath, disabled ? nil : value)
-    }
-}
-
 struct WorkspaceTabGroupView: View {
     @ObservedObject
     var tabgroup: TabGroupData

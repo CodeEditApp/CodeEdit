@@ -90,7 +90,7 @@ import WindowManagement
                 window: window,
                 workspace: self
             )
-            
+
             windowController.shouldCascadeWindows = true
             windowController.window?.setFrameAutosaveName(self.fileURL?.absoluteString ?? "Untitled")
             self.addWindowController(windowController)
