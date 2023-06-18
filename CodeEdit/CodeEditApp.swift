@@ -40,10 +40,10 @@ struct CodeEditApp: App {
             } defaultAction: {
                 openWindow(id: SceneID.welcome.rawValue)
             }
-            .register(.document(WorkspaceDocument.self))
+            .register(.document(WorkspaceDocument.self)) // Required to make transition modifier work
             .transition(.documentWindow)
             .windowToolbarStyle(.unifiedCompact(showsTitle: false))
-            .enableOpenWindow()
+            .enableOpenWindow() // Required for opening windows through NSApp
             .commands {
                 CodeEditCommands()
             }
