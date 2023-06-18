@@ -45,6 +45,7 @@ struct WindowSplitView: View {
                             }
                             .defaultCustomization(.hidden, options: [])
                         }
+#if swift(>=5.9) // Fix build on Xcode 14
                         .inspector(isPresented: $showInspector) {
                             InspectorSidebarView()
                                 .inspectorColumnWidth(min: 100, ideal: 200, max: 400)
@@ -58,6 +59,7 @@ struct WindowSplitView: View {
                                     }
                                 }
                         }
+#endif
                 } else {
                     WorkspaceView()
                 }
