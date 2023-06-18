@@ -160,6 +160,9 @@ For issues we want to focus on that are most relevant at any given time, please 
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/evanlwang"><img src="https://avatars.githubusercontent.com/u/71157264?v=4?s=100" width="100px;" alt="Evan Wang"/><br /><sub><b>Evan Wang</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=evanlwang" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/dscyrescotti"><img src="https://avatars.githubusercontent.com/u/67727096?v=4?s=100" width="100px;" alt="Dscyre Scotti"/><br /><sub><b>Dscyre Scotti</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=dscyrescotti" title="Code">💻</a></td>
     </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="http://tomasboda.com"><img src="https://avatars.githubusercontent.com/u/40064599?v=4?s=100" width="100px;" alt="Tomáš Boďa"/><br /><sub><b>Tomáš Boďa</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3Advandyy" title="Bug reports">🐛</a></td>
+    </tr>
   </tbody>
 </table>
 
