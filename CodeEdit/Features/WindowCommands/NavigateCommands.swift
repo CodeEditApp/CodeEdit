@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct NavigateCommands: Commands {
+
+    @FocusedObject var tabgroup: TabGroupData?
+
     var body: some Commands {
         CommandMenu("Navigate") {
             Group {
@@ -42,17 +45,23 @@ struct NavigateCommands: Commands {
 
                 Divider()
 
-                Button("Go Forward") {
-
-                }
             }
             .disabled(true)
 
             Group {
+                Button("Go Forward") {
+                    tabgroup?.goToNextTab()
+                }
+                .disabled(!(tabgroup?.canGoToNextTab ?? false))
 
                 Button("Go Back") {
-
+                    tabgroup?.goToPreviousTab()
                 }
+                .disabled(!(tabgroup?.canGoToPreviousTab ?? false))
+            }
+            .disabled(tabgroup == nil)
+
+            Group {
 
                 Divider()
 
@@ -86,7 +95,7 @@ struct NavigateCommands: Commands {
                 }
                 .keyboardShortcut("\"")
             }
-            .disabled(true)
+//            .disabled(true)
         }
     }
 }

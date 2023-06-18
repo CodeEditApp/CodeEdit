@@ -207,6 +207,30 @@ final class TabGroupData: ObservableObject, Identifiable {
         CodeEditDocumentController.shared.addDocument(codeFile)
         print("Opening file for item: ", item.url)
     }
+
+    func goToPreviousTab() {
+        if canGoToPreviousTab {
+            historyOffset += 1
+        }
+    }
+
+    func goToNextTab() {
+        if canGoToNextTab {
+            historyOffset -= 1
+        }
+    }
+
+    // TODO: move to @Observable so this works better
+    /// Warning: NOT published!
+    var canGoToPreviousTab: Bool {
+        historyOffset != history.count-1 && !history.isEmpty
+    }
+
+    // TODO: move to @Observable so this works better
+    /// Warning: NOT published!
+    var canGoToNextTab: Bool {
+        historyOffset != 0
+    }
 }
 
 extension TabGroupData: Equatable, Hashable {

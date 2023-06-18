@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct FileCommands: Commands {
+
+    @FocusedObject var debugAreaManager: DebugAreaViewModel?
+
     var body: some Commands {
         CommandGroup(replacing: .newItem) {
             Group {
@@ -52,6 +55,13 @@ struct FileCommands: Commands {
 
             }
             .keyboardShortcut("w", modifiers: [.control, .option, .command])
+
+            if let debugAreaManager {
+                Button("Close Terminal") {
+                    debugAreaManager.removeTerminals(debugAreaManager.selectedTerminals)
+                }
+                .keyboardShortcut(.delete)
+            }
 
             Divider()
 
