@@ -20,7 +20,7 @@ struct EditorView: View {
     private var isAtEdge
 
     var toolbarHeight: CGFloat {
-        40
+        window.contentView?.safeAreaInsets.top ?? .zero
     }
 
     var body: some View {
