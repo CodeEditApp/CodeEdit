@@ -33,6 +33,11 @@ struct WorkspaceView: View {
     @Environment(\.colorScheme)
     private var colorScheme
 
+    @AppSettings(\.theme.matchAppearance) var matchAppearance
+
+    @StateObject
+    private var themeModel: ThemeModel = .shared
+
     @State
     private var terminalCollapsed = true
 
@@ -75,7 +80,13 @@ struct WorkspaceView: View {
                             focusedEditor = newValue
                         }
                     }
-
+                    .onChange(of: colorScheme) { newValue in
+                        if matchAppearance {
+                            themeModel.selectedTheme = newValue == .dark
+                            ? themeModel.selectedDarkTheme
+                            : themeModel.selectedLightTheme
+                        }
+                    }
                 }
             }
             .background(EffectView(.contentBackground))
