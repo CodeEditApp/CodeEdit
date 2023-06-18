@@ -19,8 +19,13 @@ struct SettingsPageView: View {
     var body: some View {
         NavigationLink(value: page.name) {
             Label {
-                page.name.rawValue.highlightOccurrences(self.searchText)
-                    .padding(.leading, 2)
+                if searchText.isEmpty {
+                    Text(page.name.rawValue)
+                        .padding(.leading, 2)
+                } else {
+                    page.name.rawValue.highlightOccurrences(self.searchText)
+                        .padding(.leading, 2)
+                }
             } icon: {
                 Group {
                     switch page.icon {

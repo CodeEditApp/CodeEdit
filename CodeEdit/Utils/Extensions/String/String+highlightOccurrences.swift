@@ -1,5 +1,5 @@
 //
-//  String+highlightContainingWord.swift
+//  String+highlightOccurrences.swift
 //  CodeEdit
 //
 //  Created by Raymond Vleeshouwer on 13/06/23.
