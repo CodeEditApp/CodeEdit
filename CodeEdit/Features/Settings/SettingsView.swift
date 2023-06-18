@@ -29,15 +29,11 @@ struct SettingsView: View {
         var returnedPages: [SettingsPage] = []
         var foundPage: Bool = false
 
-        // swiftlint:disable opening_brace
-        for item in pages where
-            item.displayName.lowercased().contains(lowercasedSearchText) &&
-            item.displayName != "" &&
-            item.name == page.name
-        {
-            if item.isSetting {
+        for item in pages where item.name == page.name {
+            if item.isSetting && item.displayName.lowercased().contains(lowercasedSearchText) {
                 returnedPages.append(item)
-            } else {
+            } else if item.name.rawValue.contains(lowercasedSearchText) && !item.isSetting {
+                print("found page for page:", String(describing: item))
                 foundPage = true
             }
         }
@@ -119,22 +115,18 @@ struct SettingsView: View {
                             let results: SettingsSearchResult = resultFound(page, pages: pages)
 
                             if !results.pages.isEmpty && !page.isSetting {
-                                if
-                                    !results.pageFound ||
-                                        page.name.rawValue.lowercased().contains(searchText.lowercased())
-                                {
-                                    SettingsPageView(page, searchText: searchText)
-                                }
+                                SettingsPageView(page, searchText: searchText)
 
                                 ForEach(results.pages, id: \.displayName) { setting in
-                                    if setting.displayName.lowercased().contains(searchText.lowercased()) {
-                                        NavigationLink(value: setting) {
-                                            setting.displayName.capitalized.highlightOccurrences(searchText)
-                                                .padding(.leading, 22.5)
-                                        }
+                                    NavigationLink(value: setting) {
+                                        setting.displayName.capitalized.highlightOccurrences(searchText)
+                                            .padding(.leading, 22.5)
                                     }
                                 }
-                            } else if !page.isSetting && !results.pages.isEmpty {
+                            } else if
+                                page.name.rawValue.lowercased().contains(searchText.lowercased()) &&
+                                !page.isSetting
+                            {
                                 SettingsPageView(page, searchText: searchText)
                             }
                         } else if !page.isSetting {
@@ -197,4 +189,3 @@ class SettingsViewModel: ObservableObject {
     @Published var backButtonVisible: Bool = false
     @Published var scrolledToTop: Bool = false
 }
-// swiftlint:enable opening_brace
