@@ -35,6 +35,10 @@ struct NavigateCommands: Commands {
 
                 Divider()
 
+            }
+            .disabled(true)
+
+            Group {
                 Button("Show Previous Tab") {
 
                 }
@@ -45,19 +49,15 @@ struct NavigateCommands: Commands {
 
                 Divider()
 
-            }
-            .disabled(true)
-
-            Group {
                 Button("Go Forward") {
-                    tabgroup?.goToNextTab()
+                    tabgroup?.goForwardInHistory()
                 }
-                .disabled(!(tabgroup?.canGoToNextTab ?? false))
+                .disabled(!(tabgroup?.canGoForwardInHistory ?? false))
 
                 Button("Go Back") {
-                    tabgroup?.goToPreviousTab()
+                    tabgroup?.goBackInHistory()
                 }
-                .disabled(!(tabgroup?.canGoToPreviousTab ?? false))
+                .disabled(!(tabgroup?.canGoBackInHistory ?? false))
             }
             .disabled(tabgroup == nil)
         }

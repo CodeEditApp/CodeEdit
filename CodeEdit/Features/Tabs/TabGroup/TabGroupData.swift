@@ -208,27 +208,27 @@ final class TabGroupData: ObservableObject, Identifiable {
         print("Opening file for item: ", item.url)
     }
 
-    func goToPreviousTab() {
-        if canGoToPreviousTab {
+    func goBackInHistory() {
+        if canGoBackInHistory {
             historyOffset += 1
         }
     }
 
-    func goToNextTab() {
-        if canGoToNextTab {
+    func goForwardInHistory() {
+        if canGoForwardInHistory {
             historyOffset -= 1
         }
     }
 
     // TODO: move to @Observable so this works better
     /// Warning: NOT published!
-    var canGoToPreviousTab: Bool {
+    var canGoBackInHistory: Bool {
         historyOffset != history.count-1 && !history.isEmpty
     }
 
     // TODO: move to @Observable so this works better
     /// Warning: NOT published!
-    var canGoToNextTab: Bool {
+    var canGoForwardInHistory: Bool {
         historyOffset != 0
     }
 }
