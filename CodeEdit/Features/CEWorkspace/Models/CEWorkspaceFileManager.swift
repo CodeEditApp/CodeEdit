@@ -14,8 +14,6 @@ final class CEWorkspaceFileManager {
         case fileNotExist
     }
 
-    // TODO: See if this needs to be removed, it isn't used anymore
-    private var subject = CurrentValueSubject<[CEWorkspaceFile], Never>([])
     private var isRunning = false
     private var anotherInstanceRan = 0
 
@@ -24,8 +22,6 @@ final class CEWorkspaceFileManager {
     private(set) var flattenedFileItems: [String: CEWorkspaceFile]
 
     var onRefresh: () -> Void = {}
-    var getFiles: AnyPublisher<[CEWorkspaceFile], Never> =
-        CurrentValueSubject<[CEWorkspaceFile], Never>([]).eraseToAnyPublisher()
 
     let folderUrl: URL
     let workspaceItem: CEWorkspaceFile
@@ -55,21 +51,6 @@ final class CEWorkspaceFileManager {
         workspaceFiles.forEach { item in
             item.parent = workspaceFile
         }
-
-        // By using `CurrentValueSubject` we can define a starting value.
-        // The value passed during init it's going to be send as soon as the
-        // consumer subscribes to the publisher.
-        let subject = CurrentValueSubject<[CEWorkspaceFile], Never>(workspaceFiles)
-
-        self.getFiles = subject
-            .handleEvents(receiveCancel: {
-                for item in self.flattenedFileItems.values {
-                    item.watcher?.cancel()
-                    item.watcher = nil
-                }
-            })
-            .receive(on: RunLoop.main)
-            .eraseToAnyPublisher()
 
         workspaceFile.watcherCode = { sourceFileItem in
             self.reloadFromWatcher(sourceFileItem: sourceFileItem)
@@ -165,7 +146,7 @@ final class CEWorkspaceFileManager {
             anotherInstanceRan = !(somethingChanged ?? false) ? 0 : anotherInstanceRan - 1
         }
 
-        subject.send(workspaceItem.children ?? [])
+//        subject.send(workspaceItem.children ?? [])
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.isRunning = false
         }
