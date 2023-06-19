@@ -232,47 +232,58 @@ import Combine
     private var buildFileTreeTask: Task<Void, Error>?
 
     override func presentedSubitem(at oldURL: URL, didMoveTo newURL: URL) {
-        guard let baseURL = fileURL else { return }
+        guard let basePath = fileURL?.path() else { return }
 
-        let basePath = baseURL.path()
+        // We need to apply this weird trick as oldURL and newURL might differ in URL formatting.
         let oldPath = oldURL.path().split(separator: basePath).last ?? ""
         let newPath = newURL.path().split(separator: basePath).last ?? ""
 
+        // The old resource location
         let oldPathComponents = oldPath.split(separator: "/").map { String($0) }
+
+        // The folder where the resource will be placed in
         let newPathComponents = newPath.split(separator: "/").dropLast().map { String($0) }
 
-        let resolved = fileTree?.resolveItem(components: oldPathComponents)
-        guard let resolved else { return }
-        
-        resolved.parentFolder?.removeChild(resolved)
-
-        let newParentFolder = fileTree?.resolveItem(components: newPathComponents)
-
-        guard let newParentFolder = newParentFolder as? Folder else { return }
-
-        newParentFolder.children.append(resolved)
-
-        resolved.parentFolder = newParentFolder
-
-        if let newName = try? newURL.resourceValues(forKeys: [.nameKey]).name {
-            resolved.name = newName
+        // Get resource and parent folder
+        guard let resolved = fileTree?.resolveItem(components: oldPathComponents), let parentFolder = resolved.parentFolder else {
+            showError(FileError.couldNotResolveFile)
+            return
         }
 
+        // Get new parent folder
+        guard let newParentFolder = fileTree?.resolveItem(components: newPathComponents) as? Folder else {
+            showError(FileError.couldNotResolveFile)
+            return
+        }
 
-        dump(fileTree)
+        // Move resource from old to new folder
+        parentFolder.removeChild(resolved)
+        newParentFolder.children.append(resolved)
+        resolved.parentFolder = newParentFolder
 
+        do {
+            if let newName = try newURL.resourceValues(forKeys: [.nameKey]).name {
+                resolved.name = newName
+            } else {
+                showError(FileError.noFileName)
+            }
+        } catch {
+            showError(error)
+        }
     }
 
-//    func relativeURLPathComponents(base: URL, extended: URL) -> [String] {
-//        let fullPath = extended.path()
-//        let basePath = base.path()
-//
-//        fullPath.split(separator: basePath)
-//    }
+    enum FileError: Error {
+        case couldNotResolveFile
+        case noFileName
+    }
 
-//    func urlToKeyPath(_ url: URL) -> KeyPath<Resource, Resource> {
-//
-//    }
+    @MainActor
+    func showError(_ error: any Error) {
+        let alert = NSAlert()
+        alert.informativeText = error.localizedDescription
+        alert.messageText = "Error"
+        alert.runModal()
+    }
 
     func buildFileTree(root: URL) {
         buildFileTreeTask = Task {
