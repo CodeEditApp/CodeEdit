@@ -56,9 +56,9 @@ struct FileCommands: Commands {
             }
             .keyboardShortcut("w", modifiers: [.control, .option, .command])
 
-            if let debugAreaManager {
+            if let debugAreaViewModel {
                 Button("Close Terminal") {
-                    debugAreaManager.removeTerminals(debugAreaManager.selectedTerminals)
+                    debugAreaViewModel.removeTerminals(debugAreaViewModel.selectedTerminals)
                 }
                 .keyboardShortcut(.delete)
             }
