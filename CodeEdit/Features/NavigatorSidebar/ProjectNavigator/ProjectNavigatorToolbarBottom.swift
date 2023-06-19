@@ -35,9 +35,6 @@ struct ProjectNavigatorToolbarBottom: View {
                         .padding(.trailing, 5)
                 }
             }
-            .onChange(of: filter, perform: {
-                workspace.filter = $0
-            })
             .padding(.vertical, 3)
             .background(colorScheme == .dark ? Color(hex: "#FFFFFF").opacity(0.1) : Color(hex: "#808080").opacity(0.2))
             .clipShape(RoundedRectangle(cornerRadius: 6))

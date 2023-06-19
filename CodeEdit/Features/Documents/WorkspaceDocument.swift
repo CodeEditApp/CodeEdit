@@ -29,10 +29,6 @@ import Combine
         }
     }
 
-    public var filter: String = "" {
-        didSet { workspaceFileManager?.onRefresh() }
-    }
-
     var debugAreaModel = DebugAreaViewModel()
     var searchState: SearchState?
     var quickOpenViewModel: QuickOpenViewModel?
