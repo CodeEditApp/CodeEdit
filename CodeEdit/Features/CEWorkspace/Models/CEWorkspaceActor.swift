@@ -9,7 +9,7 @@ import Foundation
 import AppKit
 
 protocol ResourceData: AnyObject, Identifiable {
-    var name: String { get }
+    var name: String { get set }
     var url: URL { get }
 
     var parentFolder: Folder? { get set }
@@ -28,7 +28,7 @@ extension ResourceData {
 
 class File: ResourceData {
     let url: URL
-    let name: String
+    var name: String
 
     weak var parentFolder: Folder?
 
@@ -49,7 +49,7 @@ class File: ResourceData {
 
 class SymLink: ResourceData {
     let url: URL
-    let name: String
+    var name: String
 
     weak var parentFolder: Folder?
 
@@ -69,7 +69,7 @@ class SymLink: ResourceData {
 class Folder: ResourceData {
     var children: [any ResourceData] = []
     let url: URL
-    let name: String
+    var name: String
 
     weak var parentFolder: Folder?
 

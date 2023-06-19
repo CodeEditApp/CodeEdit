@@ -233,8 +233,6 @@ import Combine
 
     override func presentedSubitem(at oldURL: URL, didMoveTo newURL: URL) {
         guard let baseURL = fileURL else { return }
-        Swift.print("Move!", newURL.path())
-        Swift.print("Move!", oldURL.path())
 
         let basePath = baseURL.path()
         let oldPath = oldURL.path().split(separator: basePath).last ?? ""
@@ -245,7 +243,6 @@ import Combine
 
         let resolved = fileTree?.resolveItem(components: oldPathComponents)
         guard let resolved else { return }
-
         
         resolved.parentFolder?.removeChild(resolved)
 
@@ -256,6 +253,11 @@ import Combine
         newParentFolder.children.append(resolved)
 
         resolved.parentFolder = newParentFolder
+
+        if let newName = try? newURL.resourceValues(forKeys: [.nameKey]).name {
+            resolved.name = newName
+        }
+
 
         dump(fileTree)
 
