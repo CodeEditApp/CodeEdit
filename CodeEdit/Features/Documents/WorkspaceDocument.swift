@@ -15,7 +15,6 @@ import Combine
     @Published var sortFoldersOnTop: Bool = true
 
     var workspaceFileManager: CEWorkspaceFileManager?
-    var fileManager: CEWorkspaceFileActor!
 
     var tabManager = TabManager()
 
@@ -224,10 +223,10 @@ import Combine
     }
 
     @Published
-    var fileTree: Resource?
+    var fileTree: (any ResourceData)?
 
     var ignoredResources: Set<Resource.Ignored> = [
-        .name(".DS_Store")
+        .file(name: ".DS_Store")
     ]
 
     private var buildFileTreeTask: Task<Void, Error>?
@@ -241,8 +240,24 @@ import Combine
         let oldPath = oldURL.path().split(separator: basePath).last ?? ""
         let newPath = newURL.path().split(separator: basePath).last ?? ""
 
-        let oldPathComponents = oldPath.split(separator: "/")
-        let newPathComponents = newPath.split(separator: "/")
+        let oldPathComponents = oldPath.split(separator: "/").map { String($0) }
+        let newPathComponents = newPath.split(separator: "/").dropLast().map { String($0) }
+
+        let resolved = fileTree?.resolveItem(components: oldPathComponents)
+        guard let resolved else { return }
+
+        
+        resolved.parentFolder?.removeChild(resolved)
+
+        let newParentFolder = fileTree?.resolveItem(components: newPathComponents)
+
+        guard let newParentFolder = newParentFolder as? Folder else { return }
+
+        newParentFolder.children.append(resolved)
+
+        resolved.parentFolder = newParentFolder
+
+        dump(fileTree)
 
     }
 
@@ -263,7 +278,7 @@ import Combine
         }
     }
 
-    nonisolated func buildingFileTree(root: URL, ignoring: Set<Resource.Ignored>) async throws -> Resource {
+    nonisolated func buildingFileTree(root: URL, ignoring: Set<Resource.Ignored>) async throws -> any ResourceData {
         let fileProperties: Set<URLResourceKey> = [.isRegularFileKey, .isDirectoryKey, .isSymbolicLinkKey, .nameKey, .fileResourceIdentifierKey]
         let enumerator = FileManager.default.enumerator(at: root, includingPropertiesForKeys: Array(fileProperties))
 
@@ -273,6 +288,7 @@ import Combine
 
         var folderStack = [rootFolder]
         var currentLevel = 1
+        var possibleNewFolder: Folder?
 
         for case let url as URL in enumerator {
             guard !Task.isCancelled else { throw CancellationError() }
@@ -285,35 +301,39 @@ import Combine
 
             let level = enumerator.level
 
-            if level > currentLevel {
-                _ = folderStack.dropLast(level - currentLevel)
+            if level < currentLevel {
+                folderStack.removeLast(currentLevel - level)
                 currentLevel = level
+            } else if level > currentLevel, let newCurrent = possibleNewFolder {
+                folderStack.append(newCurrent)
+                possibleNewFolder = nil
+                currentLevel += 1
             }
 
-            guard !ignoring.contains(.name(name)) && !ignoring.contains(.url(url)) else {
-                enumerator.skipDescendants()
+            guard !ignoring.contains(.file(name: name)) && !ignoring.contains(.url(url)) else {
+//                enumerator.skipDescendants()
                 continue
             }
 
-            let resource: Resource
+            let resource: any ResourceData
             let currentFolder = folderStack.last!
 
             if isFile {
-                resource = .file(File(url: url, name: name))
+                resource = File(url: url, name: name)
             } else if isFolder {
                 let newFolder = Folder(url: url, name: name)
-                resource = .folder(newFolder)
-                folderStack.append(newFolder)
-                currentLevel += 1
+                resource = newFolder
+                possibleNewFolder = newFolder
             } else if isSymLink {
-                resource = .symlink(SymLink(url: url, name: name))
+                resource = SymLink(url: url, name: name)
             } else {
                 continue
             }
 
+            resource.parentFolder = currentFolder
             currentFolder.children.append(resource)
         }
 
-        return .folder(rootFolder)
+        return rootFolder
     }
 }
