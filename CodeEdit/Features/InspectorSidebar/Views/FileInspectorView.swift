@@ -74,9 +74,13 @@ struct FileInspectorView: View {
                         if !file.isFolder {
                             tabManager.tabGroups.closeAllTabs(of: file)
                         }
-                        file.move(to: destinationURL)
-                        if !file.isFolder {
-                            tabManager.openTab(item: file)
+                        DispatchQueue.main.async {
+                            file.move(to: destinationURL)
+                            let newItem = CEWorkspaceFile(url: destinationURL)
+                            newItem.parent = file.parent
+                            if !newItem.isFolder {
+                                tabManager.openTab(item: newItem)
+                            }
                         }
                     } else {
                         fileName = file.labelFileName()
