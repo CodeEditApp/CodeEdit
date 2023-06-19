@@ -324,7 +324,11 @@ import Combine
             }
 
             guard !ignoring.contains(.file(name: name)) && !ignoring.contains(.url(url)) else {
-//                enumerator.skipDescendants()
+                continue
+            }
+
+            guard !ignoring.contains(.folder(name: name)) else {
+                enumerator.skipDescendants()
                 continue
             }
 
