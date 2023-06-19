@@ -45,7 +45,7 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, TabBar
     /// Returns a parent ``FileSystemClient/FileSystemClient/FileItem``.
     ///
     /// If the item already is the top-level ``FileSystemClient/FileSystemClient/FileItem`` this returns `nil`.
-    var parent: CEWorkspaceFile?
+    weak var parent: CEWorkspaceFile?
 
     var fileDocument: CodeFileDocument?
 
