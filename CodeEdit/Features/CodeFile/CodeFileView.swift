@@ -122,6 +122,7 @@ struct CodeFileView: View {
             letterSpacing: letterSpacing,
             bracketPairHighlight: bracketPairHighlight
         )
+
         .id(codeFile.fileURL)
         .background {
             if colorScheme == .dark {
@@ -161,7 +162,11 @@ struct CodeFileView: View {
         guard let url = codeFile.fileURL else {
             return .default
         }
-        return .detectLanguageFrom(url: url)
+        return codeFile.language ?? CodeLanguage.detectLanguageFrom(
+            url: url,
+            prefixBuffer: codeFile.content.getFirstLines(5),
+            suffixBuffer: codeFile.content.getLastLines(5)
+        )
     }
 
     private func getBracketPairHighlight() -> BracketPairHighlight? {

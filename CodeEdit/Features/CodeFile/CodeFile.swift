@@ -10,6 +10,7 @@ import Foundation
 import SwiftUI
 import UniformTypeIdentifiers
 import QuickLookUI
+import CodeEditLanguages
 
 enum CodeFileError: Error {
     case failedToDecode
@@ -22,6 +23,10 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
 
     @Published
     var content = ""
+
+    /// Used to override detected languages.
+    @Published
+    var language: CodeLanguage?
 
     /*
      This is the main type of the document.
