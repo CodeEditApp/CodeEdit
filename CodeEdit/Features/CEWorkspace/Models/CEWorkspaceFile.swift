@@ -360,4 +360,7 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, TabBar
         hasher.combine(id)
     }
 
+    deinit {
+        print("DEiniting \(name)")
+    }
 }

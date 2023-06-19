@@ -15,6 +15,7 @@ import Combine
     @Published var sortFoldersOnTop: Bool = true
 
     var workspaceFileManager: CEWorkspaceFileManager?
+    var fileManager: CEWorkspaceFileActor!
 
     var tabManager = TabManager()
 
@@ -106,11 +107,7 @@ import Combine
     // MARK: Set Up Workspace
 
     private func initWorkspaceState(_ url: URL) throws {
-//        self.workspaceClient = try .default(
-//            fileManager: .default,
-//            folderURL: url,
-//            ignoredFilesAndFolders: ignoredFilesAndDirectory
-//        )
+//        self.fileManager = CEWorkspaceFileActor(root: url, ignoring: Set(ignoredFilesAndDirectory.map { .name($0) }))
         self.workspaceFileManager = .init(
             folderUrl: url,
             ignoredFilesAndFolders: ignoredFilesAndDirectory
@@ -122,6 +119,7 @@ import Combine
 
     override func read(from url: URL, ofType typeName: String) throws {
         try initWorkspaceState(url)
+        buildFileTree(root: url)
     }
 
     override func write(to url: URL, ofType typeName: String) throws {}
@@ -219,5 +217,103 @@ import Combine
         let opaquePtr = OpaquePointer(contextInfo)
         let mutablePointer = UnsafeMutablePointer<Bool>(opaquePtr)
         mutablePointer.pointee = shouldClose
+    }
+
+    enum FileManagerError: Error {
+        case rootFileEnumeration
+    }
+
+    @Published
+    var fileTree: Resource?
+
+    var ignoredResources: Set<Resource.Ignored> = [
+        .name(".DS_Store")
+    ]
+
+    private var buildFileTreeTask: Task<Void, Error>?
+
+    override func presentedSubitem(at oldURL: URL, didMoveTo newURL: URL) {
+        guard let baseURL = fileURL else { return }
+        Swift.print("Move!", newURL.path())
+        Swift.print("Move!", oldURL.path())
+
+        let basePath = baseURL.path()
+        let oldPath = oldURL.path().split(separator: basePath).last ?? ""
+        let newPath = newURL.path().split(separator: basePath).last ?? ""
+
+        let oldPathComponents = oldPath.split(separator: "/")
+        let newPathComponents = newPath.split(separator: "/")
+
+    }
+
+//    func relativeURLPathComponents(base: URL, extended: URL) -> [String] {
+//        let fullPath = extended.path()
+//        let basePath = base.path()
+//
+//        fullPath.split(separator: basePath)
+//    }
+
+//    func urlToKeyPath(_ url: URL) -> KeyPath<Resource, Resource> {
+//
+//    }
+
+    func buildFileTree(root: URL) {
+        buildFileTreeTask = Task {
+            fileTree = try await buildingFileTree(root: root, ignoring: ignoredResources)
+        }
+    }
+
+    nonisolated func buildingFileTree(root: URL, ignoring: Set<Resource.Ignored>) async throws -> Resource {
+        let fileProperties: Set<URLResourceKey> = [.isRegularFileKey, .isDirectoryKey, .isSymbolicLinkKey, .nameKey, .fileResourceIdentifierKey]
+        let enumerator = FileManager.default.enumerator(at: root, includingPropertiesForKeys: Array(fileProperties))
+
+        guard let enumerator else { throw FileManagerError.rootFileEnumeration }
+
+        let rootFolder = Folder(url: root, name: root.lastPathComponent)
+
+        var folderStack = [rootFolder]
+        var currentLevel = 1
+
+        for case let url as URL in enumerator {
+            guard !Task.isCancelled else { throw CancellationError() }
+            let properties = try url.resourceValues(forKeys: fileProperties)
+
+            let name = properties.name!
+            let isFile = properties.isRegularFile!
+            let isFolder = properties.isDirectory!
+            let isSymLink = properties.isSymbolicLink!
+
+            let level = enumerator.level
+
+            if level > currentLevel {
+                _ = folderStack.dropLast(level - currentLevel)
+                currentLevel = level
+            }
+
+            guard !ignoring.contains(.name(name)) && !ignoring.contains(.url(url)) else {
+                enumerator.skipDescendants()
+                continue
+            }
+
+            let resource: Resource
+            let currentFolder = folderStack.last!
+
+            if isFile {
+                resource = .file(File(url: url, name: name))
+            } else if isFolder {
+                let newFolder = Folder(url: url, name: name)
+                resource = .folder(newFolder)
+                folderStack.append(newFolder)
+                currentLevel += 1
+            } else if isSymLink {
+                resource = .symlink(SymLink(url: url, name: name))
+            } else {
+                continue
+            }
+
+            currentFolder.children.append(resource)
+        }
+
+        return .folder(rootFolder)
     }
 }

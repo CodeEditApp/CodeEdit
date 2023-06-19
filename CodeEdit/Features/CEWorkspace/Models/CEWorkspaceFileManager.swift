@@ -39,7 +39,11 @@ final class CEWorkspaceFileManager {
     private func setup() {
         // initial load
         var workspaceFiles: [CEWorkspaceFile]
+        let clock = ContinuousClock()
         do {
+            print(try clock.measure {
+                try loadFiles(fromUrl: self.folderUrl)
+            })
             workspaceFiles = try loadFiles(fromUrl: self.folderUrl)
         } catch {
             fatalError("Failed to loadFiles")
@@ -128,6 +132,7 @@ final class CEWorkspaceFileManager {
     /// running the main code body.
     /// - Parameter sourceFileItem: The `FileItem` corresponding to the file that triggered the `DispatchSource`
     func reloadFromWatcher(sourceFileItem: CEWorkspaceFile) {
+        print("Rebuilding...")
         // Something has changed inside the directory
         // We should reload the files.
         guard !isRunning else { // this runs when a file change is detected but is already running

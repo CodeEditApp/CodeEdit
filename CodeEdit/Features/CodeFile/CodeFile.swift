@@ -99,4 +99,16 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
         guard let content = String(data: data, encoding: .utf8) else { return }
         self.content = content
     }
+
+    override nonisolated func presentedItemDidChange() {
+        Swift.print("File Changed!")
+        if let url = fileURL {
+            guard let content = String(data: url.dataRepresentation, encoding: .utf8) else { return }
+            Task {
+                await MainActor.run {
+                    self.content = content
+                }
+            }
+        }
+    }
 }
