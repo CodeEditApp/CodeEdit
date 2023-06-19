@@ -299,7 +299,6 @@
 		6C81916729B3E80700B75C92 /* ModifierKeysObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C81916629B3E80700B75C92 /* ModifierKeysObserver.swift */; };
 		6C81916B29B41DD300B75C92 /* DequeModule in Frameworks */ = {isa = PBXBuildFile; productRef = 6C81916A29B41DD300B75C92 /* DequeModule */; };
 		6C82D6B329BFD88700495C54 /* NavigateCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C82D6B229BFD88700495C54 /* NavigateCommands.swift */; };
-		6C82D6B629BFDB5100495C54 /* SourceControlCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C82D6B529BFDB5100495C54 /* SourceControlCommands.swift */; };
 		6C82D6B929BFE34900495C54 /* HelpCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C82D6B829BFE34900495C54 /* HelpCommands.swift */; };
 		6C82D6BC29C00CD900495C54 /* FirstResponderPropertyWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C82D6BB29C00CD900495C54 /* FirstResponderPropertyWrapper.swift */; };
 		6C82D6C629C012AD00495C54 /* NSApp+openWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C82D6C529C012AD00495C54 /* NSApp+openWindow.swift */; };
@@ -749,7 +748,6 @@
 		6C7256D629A3D7D000C2D3E0 /* SplitViewControllerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitViewControllerView.swift; sourceTree = "<group>"; };
 		6C81916629B3E80700B75C92 /* ModifierKeysObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifierKeysObserver.swift; sourceTree = "<group>"; };
 		6C82D6B229BFD88700495C54 /* NavigateCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigateCommands.swift; sourceTree = "<group>"; };
-		6C82D6B529BFDB5100495C54 /* SourceControlCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlCommands.swift; sourceTree = "<group>"; };
 		6C82D6B829BFE34900495C54 /* HelpCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpCommands.swift; sourceTree = "<group>"; };
 		6C82D6BB29C00CD900495C54 /* FirstResponderPropertyWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstResponderPropertyWrapper.swift; sourceTree = "<group>"; };
 		6C82D6C529C012AD00495C54 /* NSApp+openWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSApp+openWindow.swift"; sourceTree = "<group>"; };
@@ -2126,7 +2124,6 @@
 				6CFF967929BEBD2400182D6F /* ViewCommands.swift */,
 				6CFF967329BEBCC300182D6F /* FindCommands.swift */,
 				6C82D6B229BFD88700495C54 /* NavigateCommands.swift */,
-				6C82D6B529BFDB5100495C54 /* SourceControlCommands.swift */,
 				6CFF967B29BEBD5200182D6F /* WindowCommands.swift */,
 				6C82D6B829BFE34900495C54 /* HelpCommands.swift */,
 				6C578D8B29CD372700DC73B2 /* ExtensionCommands.swift */,
@@ -2710,7 +2707,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				58798285292ED0FB0085B254 /* TerminalEmulatorView+Coordinator.swift in Sources */,
-				6C82D6B629BFDB5100495C54 /* SourceControlCommands.swift in Sources */,
 				587B9E7D29301D8F00AC7927 /* GitHubPullRequestRouter.swift in Sources */,
 				5878DA842918642000DD95A3 /* ParsePackagesResolved.swift in Sources */,
 				5879824F292E78D80085B254 /* CodeFileView.swift in Sources */,
