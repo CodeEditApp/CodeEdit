@@ -9,11 +9,9 @@ import Foundation
 import SwiftUI
 
 struct SettingsTextEditor: View {
-    @State
-    private var isFocus: Bool = false
+    @State private var isFocus: Bool = false
 
-    @Binding
-    var text: String
+    @Binding var text: String
 
     init(text: Binding<String>) {
         self._text = text

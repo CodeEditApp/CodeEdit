@@ -11,13 +11,9 @@ import Search
 import AppPreferences
 
 struct FindNavigatorResultFileItem: View {
-    @ObservedObject
-    private var state: WorkspaceDocument.SearchState
-    @StateObject
-    private var prefs: AppPreferencesModel = .shared
-
-    @State
-    private var isExpanded: Bool = true
+    @ObservedObject private var state: WorkspaceDocument.SearchState
+    @StateObject private var prefs: AppPreferencesModel = .shared
+    @State private var isExpanded: Bool = true
 
     private var fileItem: WorkspaceClient.FileItem
     private var results: [SearchResultModel]

@@ -9,7 +9,8 @@ import SwiftUI
 
 /// A view that implements the `Text Editing` settings page
 struct TextEditingSettingsView: View {
-    @AppSettings(\.textEditing) var textEditing
+    @AppSettings(\.textEditing)
+    var textEditing
 
     var body: some View {
         SettingsForm {
@@ -36,16 +37,14 @@ struct TextEditingSettingsView: View {
 }
 
 private extension TextEditingSettingsView {
-    @ViewBuilder
-    private var fontSelector: some View {
+    @ViewBuilder private var fontSelector: some View {
         MonospacedFontPicker(title: "Font", selectedFontName: $textEditing.font.name)
             .onChange(of: textEditing.font.name) { fontName in
                 textEditing.font.customFont = fontName != "SF Mono"
             }
     }
 
-    @ViewBuilder
-    private var fontSizeSelector: some View {
+    @ViewBuilder private var fontSizeSelector: some View {
         Stepper(
             "Font Size",
             value: $textEditing.font.size,
@@ -55,26 +54,22 @@ private extension TextEditingSettingsView {
         )
     }
 
-    @ViewBuilder
-    private var autocompleteBraces: some View {
+    @ViewBuilder private var autocompleteBraces: some View {
         Toggle(isOn: $textEditing.autocompleteBraces) {
             Text("Autocomplete braces")
             Text("Automatically insert closing braces (\"}\")")
         }
     }
 
-    @ViewBuilder
-    private var enableTypeOverCompletion: some View {
+    @ViewBuilder private var enableTypeOverCompletion: some View {
         Toggle("Enable type-over completion", isOn: $textEditing.enableTypeOverCompletion)
     }
 
-    @ViewBuilder
-    private var wrapLinesToEditorWidth: some View {
+    @ViewBuilder private var wrapLinesToEditorWidth: some View {
         Toggle("Wrap lines to editor width", isOn: $textEditing.wrapLinesToEditorWidth)
     }
 
-    @ViewBuilder
-    private var lineHeight: some View {
+    @ViewBuilder private var lineHeight: some View {
         Stepper(
             "Line Height",
             value: $textEditing.lineHeightMultiple,
@@ -84,8 +79,7 @@ private extension TextEditingSettingsView {
         )
     }
 
-    @ViewBuilder
-    private var indentOption: some View {
+    @ViewBuilder private var indentOption: some View {
         Group {
             Picker("Prefer Indent Using", selection: $textEditing.indentOption.indentType) {
                 Text("Tabs")
@@ -113,8 +107,7 @@ private extension TextEditingSettingsView {
         }
     }
 
-    @ViewBuilder
-    private var defaultTabWidth: some View {
+    @ViewBuilder private var defaultTabWidth: some View {
         HStack(alignment: .top) {
             Stepper(
                 "Tab Width",
@@ -132,8 +125,7 @@ private extension TextEditingSettingsView {
         .help("The visual width of tabs.")
     }
 
-    @ViewBuilder
-    private var letterSpacing: some View {
+    @ViewBuilder private var letterSpacing: some View {
         Stepper(
             "Letter Spacing",
             value: $textEditing.letterSpacing,
@@ -143,8 +135,7 @@ private extension TextEditingSettingsView {
         )
     }
 
-    @ViewBuilder
-    private var bracketPairHighlight: some View {
+    @ViewBuilder private var bracketPairHighlight: some View {
         Group {
             Picker(
                 "Braket Pair Highlight",

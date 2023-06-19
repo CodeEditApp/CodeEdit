@@ -10,7 +10,8 @@ import AppKit
 import SwiftUI
 import Combine
 
-@objc(WorkspaceDocument) final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
+@objc(WorkspaceDocument)
+final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
 
     @Published var sortFoldersOnTop: Bool = true
 
@@ -215,7 +216,8 @@ import Combine
     ///      `shouldClose` becomes false if the user selects cancel, otherwise true.
     ///   - contextInfo: The additional info which will be set `shouldClose`.
     ///       `contextInfo` must be `UnsafeMutablePointer<Bool>`.
-    @objc func document(
+    @objc
+    func document(
         _ document: NSDocument,
         shouldClose: Bool,
         contextInfo: UnsafeMutableRawPointer

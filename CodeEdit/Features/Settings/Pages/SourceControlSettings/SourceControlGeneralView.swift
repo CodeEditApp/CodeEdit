@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct SourceControlGeneralView: View {
-    @AppSettings(\.sourceControl.general) var settings
+    @AppSettings(\.sourceControl.general)
+    var settings
 
-    @State
-    private var text: String = "main"
+    @State private var text: String = "main"
 
     var body: some View {
         SettingsForm {

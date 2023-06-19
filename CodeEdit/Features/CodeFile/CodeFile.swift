@@ -20,8 +20,7 @@ enum CodeFileError: Error {
 @objc(CodeFileDocument)
 final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
 
-    @Published
-    var content = ""
+    @Published var content = ""
 
     /*
      This is the main type of the document.
@@ -56,8 +55,7 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
         fileURL
     }
 
-    @Published
-    var cursorPosition = (1, 1)
+    @Published var cursorPosition = (1, 1)
 
     // MARK: - NSDocument
 

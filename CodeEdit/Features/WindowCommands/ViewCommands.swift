@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct ViewCommands: Commands {
-    @AppSettings(\.textEditing.font.size) var editorFontSize
-    @AppSettings(\.terminal.font.size) var terminalFontSize
+    @AppSettings(\.textEditing.font.size)
+    var editorFontSize
+    @AppSettings(\.terminal.font.size)
+    var terminalFontSize
 
     @State var windowController: CodeEditWindowController?
 

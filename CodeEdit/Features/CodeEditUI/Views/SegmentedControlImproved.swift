@@ -24,11 +24,14 @@ struct XcodeButtonStyle: ButtonStyle {
     var isHovering: Bool
     var namespace: Namespace.ID
 
-    @Environment(\.controlSize) var controlSize
+    @Environment(\.controlSize)
+    var controlSize
 
-    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.colorScheme)
+    var colorScheme
 
-    @Environment(\.controlActiveState) private var activeState
+    @Environment(\.controlActiveState)
+    private var activeState
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label

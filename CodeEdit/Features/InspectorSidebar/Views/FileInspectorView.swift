@@ -8,8 +8,7 @@ import SwiftUI
 
 struct FileInspectorView: View {
 
-    @ObservedObject
-    private var inspectorModel: FileInspectorModel
+    @ObservedObject private var inspectorModel: FileInspectorModel
 
     /// Initialize with GitClient
     /// - Parameter gitClient: a GitClient

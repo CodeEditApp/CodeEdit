@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct CreateSSHKeyView: View {
-    @Environment(\.dismiss) private var dismiss
+    @Environment(\.dismiss)
+    private var dismiss
 
     enum KeyType: String, CaseIterable {
         case ed25519 = "ED25519"

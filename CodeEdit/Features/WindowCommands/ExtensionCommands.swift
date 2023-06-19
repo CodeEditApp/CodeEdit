@@ -11,7 +11,8 @@ import CodeEditKit
 struct ExtensionCommands: Commands {
     @FocusedObject var manager: ExtensionManager?
 
-    @Environment(\.openWindow) var openWindow
+    @Environment(\.openWindow)
+    var openWindow
 
     var body: some Commands {
         CommandMenu("Extensions") {

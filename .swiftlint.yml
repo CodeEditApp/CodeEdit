@@ -17,6 +17,7 @@ excluded:
   - CodeEditModules/.build # Where Swift Package Manager checks out dependency sources
   - DerivedData  
 opt_in_rules:
+  - attributes
   - empty_count
   - closure_spacing
   - contains_over_first_not_nil

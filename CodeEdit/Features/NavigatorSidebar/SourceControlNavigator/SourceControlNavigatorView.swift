@@ -9,11 +9,9 @@ import SwiftUI
 
 struct SourceControlNavigatorView: View {
 
-    @EnvironmentObject
-    private var workspace: WorkspaceDocument
+    @EnvironmentObject private var workspace: WorkspaceDocument
 
-    @State
-    private var selectedSection: Int = 0
+    @State private var selectedSection: Int = 0
 
     var body: some View {
         VStack {

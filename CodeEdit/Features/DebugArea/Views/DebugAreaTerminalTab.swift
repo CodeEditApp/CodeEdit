@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct DebugAreaTerminalTab: View {
-    @Binding
-    var terminal: DebugAreaTerminal
+    @Binding var terminal: DebugAreaTerminal
 
     var removeTerminals: (_ ids: Set<UUID>) -> Void
 
@@ -17,8 +16,7 @@ struct DebugAreaTerminalTab: View {
 
     var selectedIDs: Set<UUID>
 
-    @FocusState
-    private var isFocused: Bool
+    @FocusState private var isFocused: Bool
 
     var body: some View {
         var terminalTitle = Binding<String>(

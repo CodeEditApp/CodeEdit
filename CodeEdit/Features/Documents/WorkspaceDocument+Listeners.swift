@@ -10,8 +10,7 @@ import Combine
 
 class WorkspaceNotificationModel: ObservableObject {
 
-    @Published
-    var highlightedFileItem: CEWorkspaceFile?
+    @Published var highlightedFileItem: CEWorkspaceFile?
 
     init() {
         highlightedFileItem = nil

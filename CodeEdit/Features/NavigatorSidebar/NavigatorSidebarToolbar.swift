@@ -14,8 +14,7 @@ struct NavigatorSidebarToolbar: View {
 
     var alignment: SidebarToolbarAlignment
 
-    @Binding
-    private var selection: Int
+    @Binding private var selection: Int
 
     @State private var icons = [
         SidebarDockIcon(imageName: "folder", title: "Project", id: 0),

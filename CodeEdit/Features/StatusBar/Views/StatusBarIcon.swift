@@ -69,8 +69,10 @@ struct IconButtonStyle: ButtonStyle {
         var isActive: Bool
         var font: Font
         var size: CGFloat?
-        @Environment(\.isEnabled) private var isEnabled: Bool
-        @Environment(\.colorScheme) private var colorScheme
+        @Environment(\.isEnabled)
+        private var isEnabled: Bool
+        @Environment(\.colorScheme)
+        private var colorScheme
 
         init(configuration: ButtonStyle.Configuration, isActive: Bool?, font: Font?, size: CGFloat?) {
             self.configuration = configuration

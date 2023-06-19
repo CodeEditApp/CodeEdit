@@ -9,7 +9,8 @@ import SwiftUI
 
 struct WindowCommands: Commands {
 
-    @Environment(\.openWindow) var openWindow
+    @Environment(\.openWindow)
+    var openWindow
 
     var body: some Commands {
         CommandGroup(after: .windowArrangement) {

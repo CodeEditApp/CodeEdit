@@ -19,11 +19,9 @@ struct PathBarComponent: View {
     @Environment(\.controlActiveState)
     private var activeState
 
-    @State
-    var position: NSPoint?
+    @State var position: NSPoint?
 
-    @State
-    var selection: CEWorkspaceFile
+    @State var selection: CEWorkspaceFile
 
     init(
         fileItem: CEWorkspaceFile,
@@ -57,8 +55,7 @@ struct PathBarComponent: View {
     }
 
     struct NSPopUpButtonView<ItemType>: NSViewRepresentable where ItemType: Equatable {
-        @Binding
-        var selection: ItemType
+        @Binding var selection: ItemType
 
         var popupCreator: () -> NSPopUpButton
 

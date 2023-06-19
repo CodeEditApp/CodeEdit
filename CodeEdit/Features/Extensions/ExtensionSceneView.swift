@@ -12,7 +12,8 @@ import ExtensionFoundation
 
 struct ExtensionSceneView: NSViewControllerRepresentable {
 
-    @Environment(\.openWindow) var openWindow
+    @Environment(\.openWindow)
+    var openWindow
 
     let appExtension: AppExtensionIdentity
     let sceneID: String

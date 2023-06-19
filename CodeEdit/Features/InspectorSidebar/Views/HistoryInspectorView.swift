@@ -8,8 +8,7 @@ import SwiftUI
 
 struct HistoryInspectorView: View {
 
-    @ObservedObject
-    private var model: HistoryInspectorModel
+    @ObservedObject private var model: HistoryInspectorModel
 
     @State var selectedCommitHistory: GitCommit?
 
