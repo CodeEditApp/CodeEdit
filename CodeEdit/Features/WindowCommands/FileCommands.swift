@@ -9,7 +9,7 @@ import SwiftUI
 
 struct FileCommands: Commands {
 
-    @FocusedObject var debugAreaManager: DebugAreaViewModel?
+    @FocusedObject var debugAreaViewModel: DebugAreaViewModel?
 
     var body: some Commands {
         CommandGroup(replacing: .newItem) {
