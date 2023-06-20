@@ -29,14 +29,23 @@ class File: Resource {
 
     func update(with url: URL) throws {
         self.url = url
-        let values = try url.resourceValues(forKeys: [.nameKey])
-        self.name = values.name!
-        self.displayName = self.name.split(separator: ".").dropLast().joined(separator: ".")
-
-        if let last = self.name.split(separator: ".").last {
-            self.fileType = FileIcon.FileType.init(rawValue: String(last))
-        }
+        (self.name, self.displayName, self.fileType) = try Self.update(with: url)
     }
+
+    // swiftlint:disable large_tuple
+    fileprivate static func update(with url: URL) throws -> (String, String, FileIcon.FileType?) {
+        let values = try url.resourceValues(forKeys: [.nameKey])
+        let name = values.name!
+        let displayName = name.split(separator: ".").dropLast().joined(separator: ".")
+
+        var fileType: FileIcon.FileType?
+        if let last = name.split(separator: ".").last {
+            fileType = FileIcon.FileType.init(rawValue: String(last))
+        }
+
+        return (name, displayName, fileType)
+    }
+    // swiftlint:enable large_tuple
 
     var type: FileIcon.FileType { .init(rawValue: url.pathExtension) ?? .txt }
 
@@ -46,13 +55,7 @@ class File: Resource {
 
     init(url: URL, name: String) throws {
         self.url = url
-        let values = try url.resourceValues(forKeys: [.nameKey])
-        self.name = values.name!
-        self.displayName = self.name.split(separator: ".").dropLast().joined(separator: ".")
-
-        if let last = self.name.split(separator: ".").last {
-            self.fileType = FileIcon.FileType.init(rawValue: String(last))
-        }
+        (self.name, self.displayName, self.fileType) = try Self.update(with: url)
     }
 
     func resolveItem(components: [String]) -> any Resource {
