@@ -5,178 +5,182 @@
 //  Created by Nanashi Li on 2022/03/24.
 //
 import SwiftUI
+import CodeEditLanguages
 
 struct FileInspectorView: View {
+    @EnvironmentObject private var workspace: WorkspaceDocument
 
-    @ObservedObject private var inspectorModel: FileInspectorModel
+    @EnvironmentObject private var tabManager: TabManager
 
-    /// Initialize with GitClient
-    /// - Parameter gitClient: a GitClient
-    init(workspaceURL: URL, fileURL: String) {
-        self.inspectorModel = .init(workspaceURL: workspaceURL, fileURL: fileURL)
-    }
+    @AppSettings(\.textEditing)
+    private var textEditing
+
+    @State private var file: CEWorkspaceFile?
+
+    @State private var fileName: String = ""
+
+    // File settings overrides
+
+    @State private var language: CodeLanguage?
+
+    @State var indentOption: SettingsData.TextEditingSettings.IndentOption = .init(indentType: .tab)
+
+    @State var defaultTabWidth: Int = 0
+
+    @State var wrapLines: Bool = false
 
     var body: some View {
-        Form {
-            Section("Identity and Type") {
-                fileName
-                fileType
+        Group {
+            if file != nil {
+                Form {
+                    Section("Identity and Type") {
+                        fileNameField
+                        fileType
+                    }
+                    Section {
+                        location
+                    }
+                    Section("Text Settings") {
+                        indentUsing
+                        widthOptions
+                        wrapLinesToggle
+                    }
+                }
+            } else {
+                NoSelectionInspectorView()
             }
-            Section {
-                location
-            }
-            Section("Text Settings") {
-                textEncoding
-                lineEndings
-            }
-            Section {
-                indentUsing
-                tabWidths
-                wrapLines
-            }
+        }
+        .onReceive(tabManager.activeTabGroup.objectWillChange) { _ in
+            file = tabManager.activeTabGroup.selected
+            fileName = file?.name ?? ""
+            language = file?.fileDocument?.language
+            indentOption = file?.fileDocument?.indentOption ?? textEditing.indentOption
+            defaultTabWidth = file?.fileDocument?.defaultTabWidth ?? textEditing.defaultTabWidth
+            wrapLines = file?.fileDocument?.wrapLines ?? textEditing.wrapLinesToEditorWidth
+        }
+        .onAppear {
+            file = tabManager.activeTabGroup.selected
+            fileName = file?.name ?? ""
+            language = file?.fileDocument?.language
+            indentOption = file?.fileDocument?.indentOption ?? textEditing.indentOption
+            defaultTabWidth = file?.fileDocument?.defaultTabWidth ?? textEditing.defaultTabWidth
+            wrapLines = file?.fileDocument?.wrapLines ?? textEditing.wrapLinesToEditorWidth
+        }
+        .onChange(of: textEditing) { newValue in
+            indentOption = file?.fileDocument?.indentOption ?? newValue.indentOption
+            defaultTabWidth = file?.fileDocument?.defaultTabWidth ?? newValue.defaultTabWidth
+            wrapLines = file?.fileDocument?.wrapLines ?? newValue.wrapLinesToEditorWidth
         }
     }
 
-    private var fileName: some View {
-        TextField("Name", text: $inspectorModel.fileName)
+    @ViewBuilder
+    private var fileNameField: some View {
+        if let file {
+            TextField("Name", text: $fileName)
+                .background(
+                    file.validateFileName(for: fileName) ? Color.clear : Color(errorRed)
+                )
+                .onSubmit {
+                    if file.validateFileName(for: fileName) {
+                        let destinationURL = file.url
+                            .deletingLastPathComponent()
+                            .appendingPathComponent(fileName)
+                        if !file.isFolder {
+                            tabManager.tabGroups.closeAllTabs(of: file)
+                        }
+                        DispatchQueue.main.async {
+                            file.move(to: destinationURL)
+                            let newItem = CEWorkspaceFile(url: destinationURL)
+                            newItem.parent = file.parent
+                            if !newItem.isFolder {
+                                tabManager.openTab(item: newItem)
+                            }
+                        }
+                    } else {
+                        fileName = file.labelFileName()
+                    }
+                }
+        }
     }
 
+    @ViewBuilder
     private var fileType: some View {
-        Picker("Type", selection: $inspectorModel.fileTypeSelection) {
-            Group {
-                Section(header: Text("Sourcecode Objective-C")) {
-                    ForEach(inspectorModel.languageTypeObjCList) {
-                        Text($0.name)
-                    }
-                }
-                Section(header: Text("Sourcecode C")) {
-                    ForEach(inspectorModel.sourcecodeCList) {
-                        Text($0.name)
-                    }
-                }
-                Section(header: Text("Sourcecode C++")) {
-                    ForEach(inspectorModel.sourcecodeCPlusList) {
-                        Text($0.name)
-                    }
-                }
-                Section(header: Text("Sourcecode Swift")) {
-                    ForEach(inspectorModel.sourcecodeSwiftList) {
-                        Text($0.name)
-                    }
-                }
-                Section(header: Text("Sourcecode Assembly")) {
-                    ForEach(inspectorModel.sourcecodeAssemblyList) {
-                        Text($0.name)
-                    }
-                }
+        Picker(
+            "Type",
+            selection: $language
+        ) {
+            Text("Default - Detected").tag(nil as CodeLanguage?)
+            Divider()
+            ForEach(CodeLanguage.allLanguages, id: \.id) { language in
+                Text(language.id.rawValue.capitalized).tag(language as CodeLanguage?)
             }
-            Group {
-                Section(header: Text("Sourcecode Objective-C")) {
-                    ForEach(inspectorModel.sourcecodeScriptList) {
-                        Text($0.name)
-                    }
-                }
-                Section(header: Text("Property List / XML")) {
-                    ForEach(inspectorModel.propertyList) {
-                        Text($0.name)
-                    }
-                }
-                Section(header: Text("Shell Script")) {
-                    ForEach(inspectorModel.shellList) {
-                        Text($0.name)
-                    }
-                }
-                Section(header: Text("Mach-O")) {
-                    ForEach(inspectorModel.machOList) {
-                        Text($0.name)
-                    }
-                }
-                Section(header: Text("Text")) {
-                    ForEach(inspectorModel.textList) {
-                        Text($0.name)
-                    }
-                }
-            }
-            Group {
-                Section(header: Text("Audio")) {
-                    ForEach(inspectorModel.audioList) {
-                        Text($0.name)
-                    }
-                }
-                Section(header: Text("Image")) {
-                    ForEach(inspectorModel.imageList) {
-                        Text($0.name)
-                    }
-                }
-                Section(header: Text("Video")) {
-                    ForEach(inspectorModel.videoList) {
-                        Text($0.name)
-                    }
-                }
-                Section(header: Text("Archive")) {
-                    ForEach(inspectorModel.archiveList) {
-                        Text($0.name)
-                    }
-                }
-                Section(header: Text("Other")) {
-                    ForEach(inspectorModel.otherList) {
-                        Text($0.name)
-                    }
-                }
-            }
+        }
+        .onChange(of: language) { newValue in
+            file?.fileDocument?.language = newValue
         }
     }
 
     private var location: some View {
         Group {
-            LabeledContent("Location") {
-                Button("Choose...") {
-                    // open open dialog
+            if let file {
+                LabeledContent("Location") {
+                    Button("Choose...") {
+                        guard let newURL = chooseNewFileLocation() else {
+                            return
+                        }
+                        if !file.isFolder {
+                            tabManager.tabGroups.closeAllTabs(of: file)
+                        }
+                        // This is ugly but if the tab is opened at the same time as closing the others, it doesn't open
+                        // And if the files are re-built at the same time as the tab is opened, it causes a memory error
+                        DispatchQueue.main.async {
+                            file.move(to: newURL)
+                            // If the parent directory doesn't exist in the workspace, don't open it in a tab.
+                            if let newParent = try? workspace.workspaceFileManager?.getFile(
+                                newURL.deletingLastPathComponent().path
+                            ) {
+                                let newItem = CEWorkspaceFile(url: newURL)
+                                newItem.parent = newParent
+                                if !file.isFolder {
+                                    tabManager.openTab(item: newItem)
+                                }
+                                DispatchQueue.main.async {
+                                    _ = try? workspace.workspaceFileManager?.rebuildFiles(fromItem: newParent)
+                                }
+                            }
+                        }
+                    }
                 }
-            }
-            ExternalLink(showInFinder: true, destination: URL(fileURLWithPath: inspectorModel.fileURL)) {
-                Text(inspectorModel.fileURL)
-                    .font(.footnote)
-                    .foregroundColor(.secondary)
-            }
-        }
-    }
-
-    private var textEncoding: some View {
-        Picker("Text Encoding", selection: $inspectorModel.textEncodingSelection) {
-            ForEach(inspectorModel.textEncodingList) {
-                Text($0.name)
-            }
-        }
-    }
-
-    private var lineEndings: some View {
-        Picker("Line Endings", selection: $inspectorModel.lineEndingsSelection) {
-            ForEach(inspectorModel.lineEndingsList) {
-                Text($0.name)
+                ExternalLink(showInFinder: true, destination: file.url) {
+                    Text(file.url.path(percentEncoded: false))
+                        .font(.footnote)
+                        .foregroundColor(.secondary)
+                }
             }
         }
     }
 
     private var indentUsing: some View {
-        Picker("Indent Using", selection: $inspectorModel.indentUsingSelection) {
-            ForEach(inspectorModel.indentUsingList) {
-                Text($0.name)
-            }
+        Picker("Indent using", selection: $indentOption.indentType) {
+            Text("Spaces").tag(SettingsData.TextEditingSettings.IndentOption.IndentType.spaces)
+            Text("Tabs").tag(SettingsData.TextEditingSettings.IndentOption.IndentType.tab)
+        }
+        .onChange(of: indentOption) { newValue in
+            file?.fileDocument?.indentOption = newValue == textEditing.indentOption ? nil : newValue
         }
     }
 
-    private var tabWidths: some View {
+    private var widthOptions: some View {
         LabeledContent("Widths") {
             HStack(spacing: 5) {
                 VStack(alignment: .center, spacing: 0) {
                     Stepper(
                         "",
                         value: Binding<Double>(
-                            get: { Double(inspectorModel.tabWidth) },
-                            set: { inspectorModel.tabWidth = Int($0) }
+                            get: { Double(defaultTabWidth) },
+                            set: { defaultTabWidth = Int($0) }
                         ),
-                        in: 1...8,
+                        in: 1...16,
                         step: 1,
                         format: .number
                     )
@@ -185,14 +189,15 @@ struct FileInspectorView: View {
                         .foregroundColor(.primary)
                         .font(.footnote)
                 }
+                .help("The visual width of tab characters")
                 VStack(alignment: .center, spacing: 0) {
                     Stepper(
                         "",
                         value: Binding<Double>(
-                            get: { Double(inspectorModel.indentWidth) },
-                            set: { inspectorModel.indentWidth = Int($0) }
+                            get: { Double(indentOption.spaceCount) },
+                            set: { indentOption.spaceCount = Int($0) }
                         ),
-                        in: 1...8,
+                        in: 1...10,
                         step: 1,
                         format: .number
                     )
@@ -201,13 +206,31 @@ struct FileInspectorView: View {
                         .foregroundColor(.primary)
                         .font(.footnote)
                 }
+                .help("The number of spaces to insert when the tab key is pressed.")
             }
+        }
+        .onChange(of: defaultTabWidth) { newValue in
+            file?.fileDocument?.defaultTabWidth = newValue == textEditing.defaultTabWidth ? nil : newValue
         }
     }
 
-    private var wrapLines: some View {
-        Toggle(isOn: $inspectorModel.wrapLines) {
-            Text("Wrap lines")
+    private var wrapLinesToggle: some View {
+        Toggle("Wrap lines", isOn: $wrapLines)
+            .onChange(of: wrapLines) { newValue in
+                file?.fileDocument?.wrapLines = newValue == textEditing.wrapLinesToEditorWidth ? nil : newValue
+            }
+    }
+
+    private func chooseNewFileLocation() -> URL? {
+        guard let file else { return nil }
+        let dialogue = NSSavePanel()
+        dialogue.title = "Save File"
+        dialogue.directoryURL = file.url.deletingLastPathComponent()
+        dialogue.nameFieldStringValue = file.name
+        if dialogue.runModal() == .OK {
+            return dialogue.url
+        } else {
+            return nil
         }
     }
 }

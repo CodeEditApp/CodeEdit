@@ -18,7 +18,7 @@ struct CodeFileView: View {
     @AppSettings(\.textEditing.defaultTabWidth)
     var defaultTabWidth
     @AppSettings(\.textEditing.indentOption)
-    var settingsIndentOption
+    var indentOption
     @AppSettings(\.textEditing.lineHeightMultiple)
     var lineHeightMultiple
     @AppSettings(\.textEditing.wrapLinesToEditorWidth)
@@ -94,16 +94,6 @@ struct CodeFileView: View {
         }
     }()
 
-    // Tab is a placeholder value, is overriden immediately in `init`.
-    @State private var indentOption: IndentOption = {
-        switch Settings[\.textEditing].indentOption.indentType {
-        case .tab:
-            return .tab
-        case .spaces:
-            return .spaces(count: Settings[\.textEditing].indentOption.spaceCount)
-        }
-    }()
-
     @Environment(\.edgeInsets)
     private var edgeInsets
 
@@ -115,10 +105,10 @@ struct CodeFileView: View {
             language: getLanguage(),
             theme: selectedTheme.editor.editorTheme,
             font: font,
-            tabWidth: defaultTabWidth,
-            indentOption: indentOption,
+            tabWidth: codeFile.defaultTabWidth ?? defaultTabWidth,
+            indentOption: (codeFile.indentOption ?? indentOption).textViewOption(),
             lineHeight: lineHeightMultiple,
-            wrapLines: wrapLinesToEditorWidth,
+            wrapLines: codeFile.wrapLines ?? wrapLinesToEditorWidth,
             cursorPosition: $codeFile.cursorPosition,
             useThemeBackground: useThemeBackground,
             contentInsets: edgeInsets.nsEdgeInsets,
@@ -126,6 +116,7 @@ struct CodeFileView: View {
             letterSpacing: letterSpacing,
             bracketPairHighlight: bracketPairHighlight
         )
+
         .id(codeFile.fileURL)
         .background {
             if colorScheme == .dark {
@@ -154,21 +145,17 @@ struct CodeFileView: View {
         .onChange(of: bracketHighlight) { _ in
             bracketPairHighlight = getBracketPairHighlight()
         }
-        .onChange(of: settingsIndentOption) { option in
-            switch option.indentType {
-            case .tab:
-                self.indentOption = .tab
-            case .spaces:
-                self.indentOption = .spaces(count: option.spaceCount)
-            }
-        }
     }
 
     private func getLanguage() -> CodeLanguage {
         guard let url = codeFile.fileURL else {
             return .default
         }
-        return .detectLanguageFrom(url: url)
+        return codeFile.language ?? CodeLanguage.detectLanguageFrom(
+            url: url,
+            prefixBuffer: codeFile.content.getFirstLines(5),
+            suffixBuffer: codeFile.content.getLastLines(5)
+        )
     }
 
     private func getBracketPairHighlight() -> BracketPairHighlight? {
@@ -185,6 +172,19 @@ struct CodeFileView: View {
             return .bordered(color: color)
         case .underline:
             return .underline(color: color)
+        }
+    }
+}
+
+// This extension is kept here because it should not be used elsewhere in the app and may cause confusion
+// due to the similar type name from the CETV module.
+private extension SettingsData.TextEditingSettings.IndentOption {
+    func textViewOption() -> IndentOption {
+        switch self.indentType {
+        case .spaces:
+            return IndentOption.spaces(count: spaceCount)
+        case .tab:
+            return IndentOption.tab
         }
     }
 }

@@ -115,7 +115,7 @@ private extension TextEditingSettingsView {
                     get: { Double(textEditing.defaultTabWidth) },
                     set: { textEditing.defaultTabWidth = Int($0) }
                 ),
-                in: 1...8,
+                in: 1...16,
                 step: 1,
                 format: .number
             )
