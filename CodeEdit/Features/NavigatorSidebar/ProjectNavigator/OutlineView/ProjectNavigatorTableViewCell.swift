@@ -24,7 +24,7 @@ final class ProjectNavigatorTableViewCell: FileSystemTableViewCell {
     ///   - isEditable: Set to true if the user should be able to edit the file name.
     init(
         frame frameRect: NSRect,
-        item: CEWorkspaceFile?,
+        item: (any ResourceData)?,
         isEditable: Bool = true,
         delegate: OutlineTableViewCellDelegate? = nil
     ) {
@@ -51,14 +51,15 @@ final class ProjectNavigatorTableViewCell: FileSystemTableViewCell {
     }
 
     override func controlTextDidEndEditing(_ obj: Notification) {
-        label.backgroundColor = validateFileName(for: label?.stringValue ?? "") ? .none : errorRed
-        if validateFileName(for: label?.stringValue ?? "") {
-            let destinationURL = fileItem.url
-                .deletingLastPathComponent()
-                .appendingPathComponent(label?.stringValue ?? "")
-            delegate?.moveFile(file: fileItem, to: destinationURL)
-        } else {
-            label?.stringValue = fileItem.name
-        }
+        // FIXME: 
+//        label.backgroundColor = validateFileName(for: label?.stringValue ?? "") ? .none : errorRed
+//        if validateFileName(for: label?.stringValue ?? "") {
+//            let destinationURL = fileItem.url
+//                .deletingLastPathComponent()
+//                .appendingPathComponent(label?.stringValue ?? "")
+//            delegate?.moveFile(file: fileItem, to: destinationURL)
+//        } else {
+//            label?.stringValue = fileItem.name
+//        }
     }
 }

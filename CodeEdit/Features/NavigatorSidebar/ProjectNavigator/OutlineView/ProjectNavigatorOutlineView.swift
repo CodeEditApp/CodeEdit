@@ -23,11 +23,15 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
         let controller = ProjectNavigatorViewController()
         controller.workspace = workspace
         controller.iconColor = prefs.preferences.general.fileIconStyle
-        workspace.workspaceFileManager?.onRefresh = {
+        workspace.onRefresh = {
+            print("Refreshing!!!")
             controller.outlineView.reloadData()
             controller.updateSelection(itemID: workspace.tabManager.activeTabGroup.selected?.id)
         }
-
+//        workspace.workspaceFileManager?.onRefresh = {
+//            controller.outlineView.reloadData()
+//            controller.updateSelection(itemID: workspace.tabManager.activeTabGroup.selected?.id)
+//        }
         context.coordinator.controller = controller
 
         return controller
@@ -53,14 +57,15 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
             self.workspace = workspace
             super.init()
 
-            workspace.listenerModel.$highlightedFileItem
-                .sink(receiveValue: { [weak self] fileItem in
-                    guard let fileItem else {
-                        return
-                    }
-                    self?.controller?.reveal(fileItem)
-                })
-                .store(in: &cancellables)
+            // FIXME: 
+//            workspace.listenerModel.$highlightedFileItem
+//                .sink(receiveValue: { [weak self] fileItem in
+//                    guard let fileItem else {
+//                        return
+//                    }
+//                    self?.controller?.reveal(fileItem)
+//                })
+//                .store(in: &cancellables)
             workspace.tabManager.tabBarItemIdSubject
                 .sink { [weak self] itemID in
                     self?.controller?.updateSelection(itemID: itemID)

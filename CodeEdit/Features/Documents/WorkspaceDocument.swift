@@ -119,6 +119,12 @@ import Combine
     override func read(from url: URL, ofType typeName: String) throws {
         try initWorkspaceState(url)
         buildFileTree(root: url)
+        self.fileTree = try Folder(url: url)
+        Task {
+            await MainActor.run {
+                onRefresh?()
+            }
+        }
     }
 
     override func write(to url: URL, ofType typeName: String) throws {}
@@ -223,13 +229,30 @@ import Combine
     }
 
     @Published
-    var fileTree: (any ResourceData)?
+    var fileTree: (any ResourceData)!
+
+    @MainActor
+    var onRefresh: (() -> Void)?
 
     var ignoredResources: Set<Resource.Ignored> = [
         .file(name: ".DS_Store")
     ]
 
     private var buildFileTreeTask: Task<Void, Error>?
+
+    func find(url: URL) -> (any ResourceData)? {
+        find(url: url, in: fileTree)
+    }
+
+    func find(url: URL, in resource: any ResourceData) -> (any ResourceData)? {
+        if resource.id == url {
+            return resource
+        }
+        if let item = resource as? Folder {
+            return item.children.compactMap { find(url: url, in: $0) }.first
+        }
+        return nil
+    }
 
     override func presentedSubitem(at oldURL: URL, didMoveTo newURL: URL) {
         guard let basePath = fileURL?.path() else { return }
@@ -270,6 +293,11 @@ import Combine
         } catch {
             showError(error)
         }
+        Task {
+            await MainActor.run {
+                onRefresh?()
+            }
+        }
     }
 
     enum FileError: Error {
@@ -297,7 +325,7 @@ import Combine
 
         guard let enumerator else { throw FileManagerError.rootFileEnumeration }
 
-        let rootFolder = Folder(url: root, name: root.lastPathComponent)
+        let rootFolder = try Folder(url: root)
 
         var folderStack = [rootFolder]
         var currentLevel = 1
@@ -336,9 +364,9 @@ import Combine
             let currentFolder = folderStack.last!
 
             if isFile {
-                resource = File(url: url, name: name)
+                resource = try File(url: url, name: name)
             } else if isFolder {
-                let newFolder = Folder(url: url, name: name)
+                let newFolder = try Folder(url: url)
                 resource = newFolder
                 possibleNewFolder = newFolder
             } else if isSymLink {

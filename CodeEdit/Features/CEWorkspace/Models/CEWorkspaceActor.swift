@@ -7,14 +7,23 @@
 
 import Foundation
 import AppKit
+import SwiftUI
 
 protocol ResourceData: AnyObject, Identifiable {
     var name: String { get set }
-    var url: URL { get }
+    var url: URL { get set }
 
     var parentFolder: Folder? { get set }
 
     func resolveItem(components: [String]) -> any ResourceData
+
+    func update(with url: URL) throws
+
+    var iconColor: Color { get }
+
+    var systemImage: String { get }
+
+    func fileName(typeHidden: Bool) -> String
 }
 
 extension ResourceData {
@@ -27,16 +36,51 @@ extension ResourceData {
 }
 
 class File: ResourceData {
-    let url: URL
+    
+    var url: URL
     var name: String
+    var displayName: String
+    var fileType: FileIcon.FileType?
+
+    var iconColor: Color {
+        guard let fileType else { return .accentColor }
+        return FileIcon.iconColor(fileType: fileType)
+    }
+
+    var systemImage: String {
+        FileIcon.fileIcon(fileType: fileType ?? .txt)
+    }
+
+    func fileName(typeHidden: Bool) -> String {
+        typeHidden ? displayName : name
+    }
+
+    func update(with url: URL) throws {
+        self.url = url
+        let values = try url.resourceValues(forKeys: [.nameKey])
+        self.name = values.name!
+        self.displayName = self.name.split(separator: ".").dropLast().joined(separator: ".")
+
+        if let last = self.name.split(separator: ".").last {
+            self.fileType = FileIcon.FileType.init(rawValue: String(last))
+        }
+    }
+
+    var type: FileIcon.FileType { .init(rawValue: url.pathExtension) ?? .txt }
 
     weak var parentFolder: Folder?
 
     var document: CodeFileDocument?
 
-    init(url: URL, name: String) {
+    init(url: URL, name: String) throws {
         self.url = url
-        self.name = name
+        let values = try url.resourceValues(forKeys: [.nameKey])
+        self.name = values.name!
+        self.displayName = self.name.split(separator: ".").dropLast().joined(separator: ".")
+
+        if let last = self.name.split(separator: ".").last {
+            self.fileType = FileIcon.FileType.init(rawValue: String(last))
+        }
     }
 
     func resolveItem(components: [String]) -> any ResourceData {
@@ -48,14 +92,28 @@ class File: ResourceData {
 }
 
 class SymLink: ResourceData {
-    let url: URL
+    var url: URL
     var name: String
 
     weak var parentFolder: Folder?
 
+    var systemImage: String = "link"
+
     init(url: URL, name: String) {
         self.url = url
         self.name = name
+    }
+
+    func fileName(typeHidden: Bool) -> String {
+        name
+    }
+
+    var iconColor: Color = .accentColor
+
+    func update(with url: URL) throws {
+        self.url = url
+        let values = try url.resourceValues(forKeys: [.nameKey])
+        self.name = values.name!
     }
 
     func resolveItem(components: [String]) -> any ResourceData {
@@ -68,14 +126,37 @@ class SymLink: ResourceData {
 
 class Folder: ResourceData {
     var children: [any ResourceData] = []
-    let url: URL
+    var url: URL
     var name: String
+
+    var systemImage: String {
+        if parentFolder == nil {
+            return "folder.fill.badge.gearshape"
+        }
+        if name == ".codeedit" {
+            return "folder.fill.badge.gearshape"
+        }
+        return children.isEmpty ? "folder" : "folder.fill"
+    }
 
     weak var parentFolder: Folder?
 
-    init(url: URL, name: String) {
+    var iconColor: Color = Color(nsColor: .secondaryLabelColor)
+
+    init(url: URL) throws {
         self.url = url
-        self.name = name
+        let values = try url.resourceValues(forKeys: [.nameKey])
+        self.name = values.name!
+    }
+
+    func fileName(typeHidden: Bool) -> String {
+        name
+    }
+
+    func update(with url: URL) throws {
+        self.url = url
+        let values = try url.resourceValues(forKeys: [.nameKey])
+        self.name = values.name!
     }
 
     func resolveItem(components: [String]) -> any ResourceData {

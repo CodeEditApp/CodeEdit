@@ -15,7 +15,24 @@ import SwiftUI
 /// When selecting a file it will open in the editor.
 ///
 struct ProjectNavigatorView: View {
+    @EnvironmentObject var workspace: WorkspaceDocument
+
+    var root: (any ResourceData)? {
+        workspace.fileTree
+    }
+
     var body: some View {
+
+//        List {
+//            if let root {
+//                OutlineGroup(root, id: \.id, children: \.children2) {
+//                    Text($0.name)
+//                }
+//            }
+////            ForEach(root.children, id: \.id) {
+////                Text($0.name)
+////            }
+//        }
         ProjectNavigatorOutlineView()
             .safeAreaInset(edge: .bottom, spacing: 0) {
                 ProjectNavigatorToolbarBottom()
