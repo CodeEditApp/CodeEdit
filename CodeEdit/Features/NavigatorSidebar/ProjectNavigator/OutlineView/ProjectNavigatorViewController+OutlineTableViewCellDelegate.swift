@@ -16,7 +16,7 @@ extension ProjectNavigatorViewController: OutlineTableViewCellDelegate {
         }
         file.move(to: destination)
         if !file.isFolder {
-            workspace?.tabManager.openTab(item: file)
+            workspace?.tabManager.openTab(item: .init(url: destination))
         }
     }
 
