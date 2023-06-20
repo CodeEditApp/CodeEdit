@@ -37,17 +37,6 @@ struct DebugAreaTerminalTab: View {
             TextField("Name", text: terminalTitle)
                 .focused($isFocused)
                 .padding(.leading, -8)
-                .background {
-                    if isSelected {
-                        Button("Kill Terminal") {
-                            removeTerminals(selectedIDs)
-                        }
-                        .keyboardShortcut(.delete, modifiers: [.command])
-                        .frame(width: 0, height: 0)
-                        .clipped()
-                        .opacity(0)
-                    }
-                }
         } icon: {
             Image(systemName: "terminal")
         }
@@ -58,7 +47,6 @@ struct DebugAreaTerminalTab: View {
             Button("Kill Terminal") {
                 if isSelected { removeTerminals([terminal.id]) }
             }
-            .keyboardShortcut(.delete, modifiers: [.command])
         }
     }
 }

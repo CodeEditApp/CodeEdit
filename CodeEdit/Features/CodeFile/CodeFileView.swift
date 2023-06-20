@@ -43,6 +43,8 @@ struct CodeFileView: View {
 
     private let isEditable: Bool
 
+    private let systemFont: NSFont = .monospacedSystemFont(ofSize: 11, weight: .medium)
+
     init(codeFile: CodeFileDocument, isEditable: Bool = true) {
         self.codeFile = codeFile
         self.isEditable = isEditable
@@ -144,7 +146,10 @@ struct CodeFileView: View {
             self.selectedTheme = theme
         }
         .onChange(of: settingsFont) { _ in
-            font = Settings.shared.preferences.textEditing.font.current()
+            font = NSFont(
+                name: settingsFont.name,
+                size: CGFloat(settingsFont.size)
+            ) ?? systemFont
         }
         .onChange(of: bracketHighlight) { _ in
             bracketPairHighlight = getBracketPairHighlight()

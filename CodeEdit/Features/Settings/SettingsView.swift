@@ -29,6 +29,7 @@ struct SettingsView: View {
         .init(.sourceControl, baseColor: .blue, icon: .symbol("vault")),
 //        .init(.components, baseColor: .blue, icon: .system("puzzlepiece.fill")),
         .init(.location, baseColor: .green, icon: .system("externaldrive.fill")),
+        .init(.featureFlags, baseColor: .cyan, icon: .system("flag.2.crossed.fill"))
 //        .init(.advanced, baseColor: .gray, icon: .system("gearshape.2.fill"))
     ]
 
@@ -78,6 +79,8 @@ struct SettingsView: View {
                     SourceControlSettingsView()
                 case .location:
                     LocationsSettingsView()
+                case .featureFlags:
+                    FeatureFlagsSettingsView()
                 default:
                     Text("Implementation Needed").frame(alignment: .center)
                 }

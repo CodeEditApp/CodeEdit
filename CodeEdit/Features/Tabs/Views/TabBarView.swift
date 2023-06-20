@@ -470,7 +470,7 @@ struct TabBarView: View {
                         )
                 } primaryAction: {
                     tabManager.activeTabGroup = tabgroup
-                    tabgroup.historyOffset += 1
+                    tabgroup.goBackInHistory()
                 }
                 .disabled(tabgroup.historyOffset == tabgroup.history.count-1 || tabgroup.history.isEmpty)
                 .help("Navigate back")
@@ -496,7 +496,7 @@ struct TabBarView: View {
                         .opacity(tabgroup.historyOffset == 0 ? 0.5 : 1.0)
                 } primaryAction: {
                     tabManager.activeTabGroup = tabgroup
-                    tabgroup.historyOffset -= 1
+                    tabgroup.goForwardInHistory()
                 }
                 .disabled(tabgroup.historyOffset == 0)
                 .help("Navigate forward")

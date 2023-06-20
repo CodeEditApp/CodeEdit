@@ -20,6 +20,12 @@ class DebugAreaViewModel: ObservableObject {
     /// Returns the current location of the cursor in an editing view
     @Published var cursorLocation: CursorLocation = .init(line: 1, column: 1) // Implementation needed!!
 
+    @Published
+    var terminals: [DebugAreaTerminal] = []
+
+    @Published
+    var selectedTerminals: Set<DebugAreaTerminal.ID> = []
+
     /// Indicates whether debugger is collapse or not
     @Published var isCollapsed: Bool = false
 
@@ -50,6 +56,14 @@ class DebugAreaViewModel: ObservableObject {
 
     /// The minimum height of the drawer
     private(set) var minHeight: Double = 100
+
+    func removeTerminals(_ ids: Set<UUID>) {
+        terminals.removeAll(where: { terminal in
+            ids.contains(terminal.id)
+        })
+
+        selectedTerminals = [terminals.last?.id ?? UUID()]
+    }
 
     init() {
         // !!!: Lots of things in this class can be removed, such as maxHeight, as they are defined in the UI.
