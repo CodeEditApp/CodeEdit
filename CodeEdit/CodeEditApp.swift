@@ -13,7 +13,8 @@ struct CodeEditApp: App {
     @NSApplicationDelegateAdaptor var appdelegate: AppDelegate
     @ObservedObject var settings = Settings.shared
 
-    @Environment(\.openWindow) var openWindow
+    @Environment(\.openWindow)
+    var openWindow
 
     let updater: SoftwareUpdater = SoftwareUpdater()
 
