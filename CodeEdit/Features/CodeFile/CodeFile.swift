@@ -25,20 +25,16 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
     @Published var content = ""
 
     /// Used to override detected languages.
-    @Published
-    var language: CodeLanguage?
+    @Published var language: CodeLanguage?
 
     /// Document-specific overriden indent option.
-    @Published
-    var indentOption: SettingsData.TextEditingSettings.IndentOption?
+    @Published var indentOption: SettingsData.TextEditingSettings.IndentOption?
 
     /// Document-specific overriden tab width.
-    @Published
-    var defaultTabWidth: Int?
+    @Published var defaultTabWidth: Int?
 
     /// Document-specific overriden line wrap preference.
-    @Published
-    var wrapLines: Bool?
+    @Published var wrapLines: Bool?
 
     /*
      This is the main type of the document.

@@ -73,8 +73,7 @@ struct FileInspectorView: View {
         }
     }
 
-    @ViewBuilder
-    private var fileNameField: some View {
+    @ViewBuilder private var fileNameField: some View {
         if let file {
             TextField("Name", text: $fileName)
                 .background(
@@ -103,8 +102,7 @@ struct FileInspectorView: View {
         }
     }
 
-    @ViewBuilder
-    private var fileType: some View {
+    @ViewBuilder private var fileType: some View {
         Picker(
             "Type",
             selection: $language

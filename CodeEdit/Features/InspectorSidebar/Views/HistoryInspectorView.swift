@@ -7,11 +7,9 @@
 import SwiftUI
 
 struct HistoryInspectorView: View {
-    @EnvironmentObject
-    private var workspace: WorkspaceDocument
+    @EnvironmentObject private var workspace: WorkspaceDocument
 
-    @EnvironmentObject
-    private var tabManager: TabManager
+    @EnvironmentObject private var tabManager: TabManager
 
     @ObservedObject private var model: HistoryInspectorModel
 
