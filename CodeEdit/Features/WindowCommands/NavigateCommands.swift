@@ -9,7 +9,7 @@ import SwiftUI
 
 struct NavigateCommands: Commands {
 
-    @FocusedObject var tabgroup: TabGroupData?
+    @FocusedObject var tabGroup: TabGroupData?
 
     var body: some Commands {
         CommandMenu("Navigate") {
@@ -50,16 +50,16 @@ struct NavigateCommands: Commands {
                 Divider()
 
                 Button("Go Forward") {
-                    tabgroup?.goForwardInHistory()
+                    tabGroup?.goForwardInHistory()
                 }
-                .disabled(!(tabgroup?.canGoForwardInHistory ?? false))
+                .disabled(!(tabGroup?.canGoForwardInHistory ?? false))
 
                 Button("Go Back") {
-                    tabgroup?.goBackInHistory()
+                    tabGroup?.goBackInHistory()
                 }
-                .disabled(!(tabgroup?.canGoBackInHistory ?? false))
+                .disabled(!(tabGroup?.canGoBackInHistory ?? false))
             }
-            .disabled(tabgroup == nil)
+            .disabled(tabGroup == nil)
         }
     }
 }
