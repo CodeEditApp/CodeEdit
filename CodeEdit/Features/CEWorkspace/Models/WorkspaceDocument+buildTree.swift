@@ -9,6 +9,7 @@ import Foundation
 
 extension WorkspaceDocument {
     func buildFileTree(root: URL) {
+        buildFileTreeTask?.cancel()
         buildFileTreeTask = Task {
             fileTree = try await buildingFileTree(root: root, ignoring: ignoredResources)
         }
@@ -74,6 +75,7 @@ extension WorkspaceDocument {
             currentFolder.children.append(resource)
         }
 
+        guard !Task.isCancelled else { throw CancellationError() }
         return rootFolder
     }
 }
