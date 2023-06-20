@@ -15,7 +15,6 @@ struct CodeEditCommands: Commands {
         ViewCommands()
         FindCommands()
         NavigateCommands()
-        SourceControlCommands()
         WindowCommands()
         HelpCommands()
         ExtensionCommands()

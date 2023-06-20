@@ -226,6 +226,15 @@
       }
     },
     {
+      "identity" : "swiftui-windowmanagement",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Wouter01/SwiftUI-WindowManagement",
+      "state" : {
+        "revision" : "03642ad06a3aa51e8284eb22146a208269cdc1ca",
+        "version" : "2.1.0"
+      }
+    },
+    {
       "identity" : "textformation",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/TextFormation",

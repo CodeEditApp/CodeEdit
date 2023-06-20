@@ -6,11 +6,15 @@
 //
 
 import SwiftUI
+import WindowManagement
 
 @main
 struct CodeEditApp: App {
     @NSApplicationDelegateAdaptor var appdelegate: AppDelegate
     @ObservedObject var settings = Settings.shared
+
+    @Environment(\.openWindow) var openWindow
+
     let updater: SoftwareUpdater = SoftwareUpdater()
 
     init() {
@@ -30,9 +34,19 @@ struct CodeEditApp: App {
             AboutWindow()
 
             SettingsWindow()
-                .commands {
-                    CodeEditCommands()
-                }
+
+            NSDocumentGroup(for: WorkspaceDocument.self) { workspace in
+                WindowSplitView(workspace: workspace)
+            } defaultAction: {
+                openWindow(id: SceneID.welcome.rawValue)
+            }
+            .register(.document(WorkspaceDocument.self)) // Required to make transition modifier work
+            .transition(.documentWindow)
+            .windowToolbarStyle(.unifiedCompact(showsTitle: false))
+            .enableOpenWindow() // Required for opening windows through NSApp
+            .commands {
+                CodeEditCommands()
+            }
         }
         .environment(\.settings, settings.preferences) // Add settings to each window environment
     }
