@@ -116,17 +116,12 @@ import Combine
         self.commandsPaletteState = .init()
     }
 
-    override func read(from url: URL, ofType typeName: String) throws {
-        try initWorkspaceState(url)
+    override nonisolated func read(from url: URL, ofType typeName: String) throws {
+        Task { @MainActor in
+            try initWorkspaceState(url)
+            self.fileTree = try Folder(url: url)
 
-        self.fileTree = try Folder(url: url)
-
-        buildFileTree(root: url)
-        Task {
-//            await
-            await MainActor.run {
-                onRefresh?()
-            }
+            buildFileTree(root: url)
         }
     }
 
