@@ -23,7 +23,8 @@ struct InspectorSidebarView: View {
     @State
     private var selection: InspectorTab? = .quickhelp
 
-    var path: String? { tabManager.activeTabGroup.selected?.fileDocument?.fileURL?.path(percentEncoded: false)
+    var path: String? {
+        tabManager.activeTabGroup.selected?.fileDocument?.fileURL?.path(percentEncoded: false)
     }
 
     var fileTreeAndGitHistory: [InspectorTab] {

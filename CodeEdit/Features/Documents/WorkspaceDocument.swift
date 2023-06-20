@@ -9,6 +9,7 @@ import Foundation
 import AppKit
 import SwiftUI
 import Combine
+import WindowManagement
 
 @objc(WorkspaceDocument) final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
 
@@ -72,22 +73,28 @@ import Combine
     }
 
     override func makeWindowControllers() {
-        let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 800, height: 600),
-            styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
-            backing: .buffered, defer: false
-        )
-        window.center()
-        window.minSize = .init(width: 1000, height: 600)
-        let windowController = CodeEditWindowController(
-            window: window,
-            workspace: self
-        )
+        if Settings[\.featureFlags.useNewWindowingSystem] {
+            let window = NSApp.openDocument(self)
+            if let windowController = window?.windowController {
+                self.addWindowController(windowController)
+            }
+        } else {
+            let window = NSWindow(
+                contentRect: NSRect(x: 0, y: 0, width: 800, height: 600),
+                styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
+                backing: .buffered, defer: false
+            )
+            window.center()
+            window.minSize = .init(width: 1000, height: 600)
+            let windowController = CodeEditWindowController(
+                window: window,
+                workspace: self
+            )
 
-        windowController.shouldCascadeWindows = true
-        windowController.window?.setFrameAutosaveName(self.fileURL?.absoluteString ?? "Untitled")
-        self.addWindowController(windowController)
-
+            windowController.shouldCascadeWindows = true
+            windowController.window?.setFrameAutosaveName(self.fileURL?.absoluteString ?? "Untitled")
+            self.addWindowController(windowController)
+        }
         // TODO: Fix restoration
 //        var activeTabID: TabBarItemID?
 //        var activeTabInState = self.getFromWorkspaceState(key: activeTabStateName) as? String ?? ""
