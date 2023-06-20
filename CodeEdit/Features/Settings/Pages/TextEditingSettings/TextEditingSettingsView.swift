@@ -86,26 +86,12 @@ private extension TextEditingSettingsView {
 
     @ViewBuilder
     private var indentOption: some View {
-        IndentOptionView()
+        IndentOptionView(indentOption: $textEditing.indentOption)
     }
 
     @ViewBuilder
     private var defaultTabWidth: some View {
-        HStack(alignment: .top) {
-            Stepper(
-                "Tab Width",
-                value: Binding<Double>(
-                    get: { Double(textEditing.defaultTabWidth) },
-                    set: { textEditing.defaultTabWidth = Int($0) }
-                ),
-                in: 1...8,
-                step: 1,
-                format: .number
-            )
-            Text("spaces")
-                .foregroundColor(.secondary)
-        }
-        .help("The visual width of tabs.")
+        TabWidthOptionView(defaultTabWidth: $textEditing.defaultTabWidth)
     }
 
     @ViewBuilder

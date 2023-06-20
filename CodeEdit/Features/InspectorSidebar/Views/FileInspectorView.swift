@@ -23,8 +23,19 @@ struct FileInspectorView: View {
     @State
     private var fileName: String = ""
 
+    // File settings overrides
+
     @State
     private var language: CodeLanguage?
+
+    @State
+    var indentOption: SettingsData.TextEditingSettings.IndentOption = .init(indentType: .tab)
+
+    @State
+    var defaultTabWidth: Int = 0
+
+    @State
+    var wrapLines: Bool = false
 
     var body: some View {
         Group {
@@ -40,7 +51,7 @@ struct FileInspectorView: View {
                     Section("Text Settings") {
                         indentUsing
                         tabWidths
-                        wrapLines
+                        wrapLinesToggle
                     }
                 }
             } else {
@@ -51,11 +62,22 @@ struct FileInspectorView: View {
             file = tabManager.activeTabGroup.selected
             fileName = file?.name ?? ""
             language = file?.fileDocument?.language
+            indentOption = file?.fileDocument?.indentOption ?? textEditing.indentOption
+            defaultTabWidth = file?.fileDocument?.defaultTabWidth ?? textEditing.defaultTabWidth
+            wrapLines = file?.fileDocument?.wrapLines ?? textEditing.wrapLinesToEditorWidth
         }
         .onAppear {
             file = tabManager.activeTabGroup.selected
             fileName = file?.name ?? ""
             language = file?.fileDocument?.language
+            indentOption = file?.fileDocument?.indentOption ?? textEditing.indentOption
+            defaultTabWidth = file?.fileDocument?.defaultTabWidth ?? textEditing.defaultTabWidth
+            wrapLines = file?.fileDocument?.wrapLines ?? textEditing.wrapLinesToEditorWidth
+        }
+        .onChange(of: textEditing) { newValue in
+            indentOption = file?.fileDocument?.indentOption ?? newValue.indentOption
+            defaultTabWidth = file?.fileDocument?.defaultTabWidth ?? newValue.defaultTabWidth
+            wrapLines = file?.fileDocument?.wrapLines ?? newValue.wrapLinesToEditorWidth
         }
     }
 
@@ -147,15 +169,24 @@ struct FileInspectorView: View {
     }
 
     private var indentUsing: some View {
-        IndentOptionView()
+        IndentOptionView(indentOption: $indentOption)
+            .onChange(of: indentOption) { newValue in
+                file?.fileDocument?.indentOption = newValue == textEditing.indentOption ? nil : newValue
+            }
     }
 
     private var tabWidths: some View {
-        TabWidthOptionView()
+        TabWidthOptionView(defaultTabWidth: $defaultTabWidth)
+            .onChange(of: defaultTabWidth) { newValue in
+                file?.fileDocument?.defaultTabWidth = newValue == textEditing.defaultTabWidth ? nil : newValue
+            }
     }
 
-    private var wrapLines: some View {
-        Toggle("Wrap lines to editor width", isOn: $textEditing.wrapLinesToEditorWidth)
+    private var wrapLinesToggle: some View {
+        Toggle("Wrap lines to editor width", isOn: $wrapLines)
+            .onChange(of: wrapLines) { newValue in
+                file?.fileDocument?.wrapLines = newValue == textEditing.wrapLinesToEditorWidth ? nil : newValue
+            }
     }
 
     private func chooseNewFileLocation() -> URL? {

@@ -8,23 +8,23 @@
 import SwiftUI
 
 struct IndentOptionView: View {
-    @AppSettings(\.textEditing) private var textEditing
+    @Binding var indentOption: SettingsData.TextEditingSettings.IndentOption
 
     var body: some View {
         Group {
-            Picker("Prefer Indent Using", selection: $textEditing.indentOption.indentType) {
+            Picker("Prefer Indent Using", selection: $indentOption.indentType) {
                 Text("Tabs")
                     .tag(SettingsData.TextEditingSettings.IndentOption.IndentType.tab)
                 Text("Spaces")
                     .tag(SettingsData.TextEditingSettings.IndentOption.IndentType.spaces)
             }
-            if textEditing.indentOption.indentType == .spaces {
+            if indentOption.indentType == .spaces {
                 HStack {
                     Stepper(
                         "Indent Width",
                         value: Binding<Double>(
-                            get: { Double(textEditing.indentOption.spaceCount) },
-                            set: { textEditing.indentOption.spaceCount = Int($0) }
+                            get: { Double(indentOption.spaceCount) },
+                            set: { indentOption.spaceCount = Int($0) }
                         ),
                         in: 0...10,
                         step: 1,
