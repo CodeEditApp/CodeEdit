@@ -13,10 +13,7 @@ class Folder: ResourceData {
     var name: String
 
     var systemImage: String {
-        if parentFolder == nil {
-            return "folder.fill.badge.gearshape"
-        }
-        if name == ".codeedit" {
+        if parentFolder == nil || name == ".codeedit" {
             return "folder.fill.badge.gearshape"
         }
         return children.isEmpty ? "folder" : "folder.fill"
@@ -24,7 +21,8 @@ class Folder: ResourceData {
 
     weak var parentFolder: Folder?
 
-    var iconColor: Color = Color(nsColor: .secondaryLabelColor)
+    // TODO: Change this to Color(.folderBlue) once Xcode 15 is released
+    var iconColor: Color = Color(nsColor: NSColor(named: "FolderBlue")!)
 
     init(url: URL) throws {
         self.url = url
