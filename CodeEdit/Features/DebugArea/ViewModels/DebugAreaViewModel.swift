@@ -20,11 +20,9 @@ class DebugAreaViewModel: ObservableObject {
     /// Returns the current location of the cursor in an editing view
     @Published var cursorLocation: CursorLocation = .init(line: 1, column: 1) // Implementation needed!!
 
-    @Published
-    var terminals: [DebugAreaTerminal] = []
+    @Published var terminals: [DebugAreaTerminal] = []
 
-    @Published
-    var selectedTerminals: Set<DebugAreaTerminal.ID> = []
+    @Published var selectedTerminals: Set<DebugAreaTerminal.ID> = []
 
     /// Indicates whether debugger is collapse or not
     @Published var isCollapsed: Bool = false
