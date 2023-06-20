@@ -261,11 +261,10 @@
 		6C2C155A29B4F4CC00EA60A5 /* Variadic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C2C155929B4F4CC00EA60A5 /* Variadic.swift */; };
 		6C2C155D29B4F4E500EA60A5 /* SplitViewReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C2C155C29B4F4E500EA60A5 /* SplitViewReader.swift */; };
 		6C2C156129B4F52F00EA60A5 /* SplitViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C2C156029B4F52F00EA60A5 /* SplitViewModifiers.swift */; };
-		6C2C20172A4016FF0047EDF2 /* CodeEditTextView in Frameworks */ = {isa = PBXBuildFile; productRef = 6C2C20162A4016FF0047EDF2 /* CodeEditTextView */; };
+		6C2C20172A4016FF0047EDF2 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		6C4104E3297C87A000F472BA /* BlurButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C4104E2297C87A000F472BA /* BlurButtonStyle.swift */; };
 		6C4104E6297C884F00F472BA /* AboutDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C4104E5297C884F00F472BA /* AboutDetailView.swift */; };
 		6C4104E9297C970F00F472BA /* AboutDefaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C4104E8297C970F00F472BA /* AboutDefaultView.swift */; };
-		6C46B5D92A3B4FEA005A6C9F /* CodeEditTextView in Frameworks */ = {isa = PBXBuildFile; productRef = 6C46B5D82A3B4FEA005A6C9F /* CodeEditTextView */; };
 		6C48D8F22972DAFC00D6D205 /* Env+IsFullscreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C48D8F12972DAFC00D6D205 /* Env+IsFullscreen.swift */; };
 		6C48D8F42972DB1A00D6D205 /* Env+Window.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C48D8F32972DB1A00D6D205 /* Env+Window.swift */; };
 		6C48D8F72972E5F300D6D205 /* WindowObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C48D8F62972E5F300D6D205 /* WindowObserver.swift */; };
@@ -315,6 +314,7 @@
 		6CC9E4B229B5669900C97388 /* Environment+ActiveTabGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC9E4B129B5669900C97388 /* Environment+ActiveTabGroup.swift */; };
 		6CD0375F2A3504540071C4DA /* FuzzySearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD0375E2A3504540071C4DA /* FuzzySearch.swift */; };
 		6CD03B6A29FC773F001BD1D0 /* SettingsInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD03B6929FC773F001BD1D0 /* SettingsInjector.swift */; };
+		6CD601B52A420E0900E8C324 /* CodeEditTextView in Frameworks */ = {isa = PBXBuildFile; productRef = 6CD601B42A420E0900E8C324 /* CodeEditTextView */; };
 		6CDA84AD284C1BA000C1CC3A /* TabBarContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CDA84AC284C1BA000C1CC3A /* TabBarContextMenu.swift */; };
 		6CDEFC9629E22C2700B7C684 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = 6CDEFC9529E22C2700B7C684 /* Introspect */; };
 		6CE622692A2A174A0013085C /* InspectorTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE622682A2A174A0013085C /* InspectorTab.swift */; };
@@ -859,6 +859,7 @@
 				6C0F3A3C2A1D0D5000223D19 /* CodeEditKit in Frameworks */,
 				6C5BE5222A3D5666002DA0FC /* WindowManagement in Frameworks */,
 				6C66C31329D05CDC00DE9ED2 /* GRDB in Frameworks */,
+				6CD601B52A420E0900E8C324 /* CodeEditTextView in Frameworks */,
 				58F2EB1E292FB954004A9BDE /* Sparkle in Frameworks */,
 				6C2149412A1BB9AB00748382 /* LogStream in Frameworks */,
 				6C147C4529A329350089B630 /* OrderedCollections in Frameworks */,
@@ -867,7 +868,7 @@
 				6CDEFC9629E22C2700B7C684 /* Introspect in Frameworks */,
 				2816F594280CF50500DD548B /* CodeEditSymbols in Frameworks */,
 				6C6BD6F829CD14D100235D17 /* CodeEditKit in Frameworks */,
-				6C2C20172A4016FF0047EDF2 /* CodeEditTextView in Frameworks */,
+				6C2C20172A4016FF0047EDF2 /* (null) in Frameworks */,
 				6C81916B29B41DD300B75C92 /* DequeModule in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2478,6 +2479,7 @@
 				6CDEFC9529E22C2700B7C684 /* Introspect */,
 				6C0F3A3B2A1D0D5000223D19 /* CodeEditKit */,
 				6C5BE5212A3D5666002DA0FC /* WindowManagement */,
+				6CD601B42A420E0900E8C324 /* CodeEditTextView */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -2573,6 +2575,7 @@
 				6CDEFC9429E22C2700B7C684 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 				6C0F3A3A2A1D0D5000223D19 /* XCRemoteSwiftPackageReference "CodeEditKit" */,
 				6C5BE5202A3D5666002DA0FC /* XCRemoteSwiftPackageReference "SwiftUI-WindowManagement" */,
+				6CD601B32A420E0900E8C324 /* XCRemoteSwiftPackageReference "CodeEditTextView" */,
 			);
 			productRefGroup = B658FB2D27DA9E0F00EA4DBD /* Products */;
 			projectDirPath = "";
@@ -4004,6 +4007,14 @@
 				minimumVersion = 0.2.0;
 			};
 		};
+		6CD601B32A420E0900E8C324 /* XCRemoteSwiftPackageReference "CodeEditTextView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/CodeEditApp/CodeEditTextView";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.6.6;
+			};
+		};
 		6CDEFC9429E22C2700B7C684 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/siteline/SwiftUI-Introspect";
@@ -4078,6 +4089,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6C147C4329A329350089B630 /* XCRemoteSwiftPackageReference "swift-collections" */;
 			productName = DequeModule;
+		};
+		6CD601B42A420E0900E8C324 /* CodeEditTextView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6CD601B32A420E0900E8C324 /* XCRemoteSwiftPackageReference "CodeEditTextView" */;
+			productName = CodeEditTextView;
 		};
 		6CDEFC9529E22C2700B7C684 /* Introspect */ = {
 			isa = XCSwiftPackageProductDependency;
