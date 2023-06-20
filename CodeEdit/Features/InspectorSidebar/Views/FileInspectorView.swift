@@ -50,7 +50,7 @@ struct FileInspectorView: View {
                     }
                     Section("Text Settings") {
                         indentUsing
-                        tabWidths
+                        widthOptions
                         wrapLinesToggle
                     }
                 }
@@ -169,21 +169,61 @@ struct FileInspectorView: View {
     }
 
     private var indentUsing: some View {
-        IndentOptionView(indentOption: $indentOption)
-            .onChange(of: indentOption) { newValue in
-                file?.fileDocument?.indentOption = newValue == textEditing.indentOption ? nil : newValue
-            }
+        Picker("Indent using", selection: $indentOption.indentType) {
+            Text("Spaces").tag(SettingsData.TextEditingSettings.IndentOption.IndentType.spaces)
+            Text("Tabs").tag(SettingsData.TextEditingSettings.IndentOption.IndentType.tab)
+        }
+        .onChange(of: indentOption) { newValue in
+            file?.fileDocument?.indentOption = newValue == textEditing.indentOption ? nil : newValue
+        }
     }
 
-    private var tabWidths: some View {
-        TabWidthOptionView(defaultTabWidth: $defaultTabWidth)
-            .onChange(of: defaultTabWidth) { newValue in
-                file?.fileDocument?.defaultTabWidth = newValue == textEditing.defaultTabWidth ? nil : newValue
+    private var widthOptions: some View {
+        LabeledContent("Widths") {
+            HStack(spacing: 5) {
+                VStack(alignment: .center, spacing: 0) {
+                    Stepper(
+                        "",
+                        value: Binding<Double>(
+                            get: { Double(defaultTabWidth) },
+                            set: { defaultTabWidth = Int($0) }
+                        ),
+                        in: 1...16,
+                        step: 1,
+                        format: .number
+                    )
+                    .labelsHidden()
+                    Text("Tab")
+                        .foregroundColor(.primary)
+                        .font(.footnote)
+                }
+                .help("The visual width of tab characters")
+                VStack(alignment: .center, spacing: 0) {
+                    Stepper(
+                        "",
+                        value: Binding<Double>(
+                            get: { Double(indentOption.spaceCount) },
+                            set: { indentOption.spaceCount = Int($0) }
+                        ),
+                        in: 1...10,
+                        step: 1,
+                        format: .number
+                    )
+                    .labelsHidden()
+                    Text("Indent")
+                        .foregroundColor(.primary)
+                        .font(.footnote)
+                }
+                .help("The number of spaces to insert when the tab key is pressed.")
             }
+        }
+        .onChange(of: defaultTabWidth) { newValue in
+            file?.fileDocument?.defaultTabWidth = newValue == textEditing.defaultTabWidth ? nil : newValue
+        }
     }
 
     private var wrapLinesToggle: some View {
-        Toggle("Wrap lines to editor width", isOn: $wrapLines)
+        Toggle("Wrap lines", isOn: $wrapLines)
             .onChange(of: wrapLines) { newValue in
                 file?.fileDocument?.wrapLines = newValue == textEditing.wrapLinesToEditorWidth ? nil : newValue
             }

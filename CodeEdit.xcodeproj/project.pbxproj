@@ -261,8 +261,6 @@
 		6C2C155A29B4F4CC00EA60A5 /* Variadic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C2C155929B4F4CC00EA60A5 /* Variadic.swift */; };
 		6C2C155D29B4F4E500EA60A5 /* SplitViewReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C2C155C29B4F4E500EA60A5 /* SplitViewReader.swift */; };
 		6C2C156129B4F52F00EA60A5 /* SplitViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C2C156029B4F52F00EA60A5 /* SplitViewModifiers.swift */; };
-		6C2C200C2A3FF8C40047EDF2 /* IndentOptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C2C200B2A3FF8C40047EDF2 /* IndentOptionView.swift */; };
-		6C2C200F2A3FF9300047EDF2 /* TabWidthOptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C2C200E2A3FF9300047EDF2 /* TabWidthOptionView.swift */; };
 		6C2C20172A4016FF0047EDF2 /* CodeEditTextView in Frameworks */ = {isa = PBXBuildFile; productRef = 6C2C20162A4016FF0047EDF2 /* CodeEditTextView */; };
 		6C4104E3297C87A000F472BA /* BlurButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C4104E2297C87A000F472BA /* BlurButtonStyle.swift */; };
 		6C4104E6297C884F00F472BA /* AboutDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C4104E5297C884F00F472BA /* AboutDetailView.swift */; };
@@ -712,8 +710,6 @@
 		6C2C155929B4F4CC00EA60A5 /* Variadic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Variadic.swift; sourceTree = "<group>"; };
 		6C2C155C29B4F4E500EA60A5 /* SplitViewReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitViewReader.swift; sourceTree = "<group>"; };
 		6C2C156029B4F52F00EA60A5 /* SplitViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitViewModifiers.swift; sourceTree = "<group>"; };
-		6C2C200B2A3FF8C40047EDF2 /* IndentOptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndentOptionView.swift; sourceTree = "<group>"; };
-		6C2C200E2A3FF9300047EDF2 /* TabWidthOptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabWidthOptionView.swift; sourceTree = "<group>"; };
 		6C4104E2297C87A000F472BA /* BlurButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurButtonStyle.swift; sourceTree = "<group>"; };
 		6C4104E5297C884F00F472BA /* AboutDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutDetailView.swift; sourceTree = "<group>"; };
 		6C4104E8297C970F00F472BA /* AboutDefaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutDefaultView.swift; sourceTree = "<group>"; };
@@ -2051,15 +2047,6 @@
 			path = FindNavigatorResultList;
 			sourceTree = "<group>";
 		};
-		6C2C200A2A3FF8BB0047EDF2 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				6C2C200B2A3FF8C40047EDF2 /* IndentOptionView.swift */,
-				6C2C200E2A3FF9300047EDF2 /* TabWidthOptionView.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
 		6C48D8EF2972DAC300D6D205 /* Environment */ = {
 			isa = PBXGroup;
 			children = (
@@ -2343,7 +2330,6 @@
 		B6EA1FF329DA37D3001BF195 /* TextEditingSettings */ = {
 			isa = PBXGroup;
 			children = (
-				6C2C200A2A3FF8BB0047EDF2 /* Views */,
 				B6CF632929E541C00085880A /* Models */,
 				B6EA1FF429DA380E001BF195 /* TextEditingSettingsView.swift */,
 			);
@@ -2853,7 +2839,6 @@
 				DE6F77872813625500D00A76 /* TabBarDivider.swift in Sources */,
 				6CABB1A129C5593800340467 /* OverlayView.swift in Sources */,
 				D7211D4327E066CE008F2ED7 /* Localized+Ex.swift in Sources */,
-				6C2C200C2A3FF8C40047EDF2 /* IndentOptionView.swift in Sources */,
 				581BFB692926431000D251EC /* WelcomeActionView.swift in Sources */,
 				20D839AE280E0CA700B27357 /* HistoryPopoverView.swift in Sources */,
 				B6E41C7029DD157F0088F9F4 /* AccountsSettingsView.swift in Sources */,
@@ -3018,7 +3003,6 @@
 				6C147C4229A328C10089B630 /* TabGroupData.swift in Sources */,
 				6C2C155829B4F49100EA60A5 /* SplitViewItem.swift in Sources */,
 				6CDA84AD284C1BA000C1CC3A /* TabBarContextMenu.swift in Sources */,
-				6C2C200F2A3FF9300047EDF2 /* TabWidthOptionView.swift in Sources */,
 				6C81916729B3E80700B75C92 /* ModifierKeysObserver.swift in Sources */,
 				587B9E8129301D8F00AC7927 /* PublicKey.swift in Sources */,
 				58F2EB0B292FB2B0004A9BDE /* AccountsSettings.swift in Sources */,
