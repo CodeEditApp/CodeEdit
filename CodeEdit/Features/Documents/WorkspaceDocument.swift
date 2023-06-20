@@ -107,10 +107,10 @@ import Combine
 
     private func initWorkspaceState(_ url: URL) throws {
 //        self.fileManager = CEWorkspaceFileActor(root: url, ignoring: Set(ignoredFilesAndDirectory.map { .name($0) }))
-        self.workspaceFileManager = .init(
-            folderUrl: url,
-            ignoredFilesAndFolders: ignoredFilesAndDirectory
-        )
+//        self.workspaceFileManager = .init(
+//            folderUrl: url,
+//            ignoredFilesAndFolders: ignoredFilesAndDirectory
+//        )
         self.searchState = .init(self)
         self.quickOpenViewModel = .init(fileURL: url)
         self.commandsPaletteState = .init()
@@ -118,9 +118,12 @@ import Combine
 
     override func read(from url: URL, ofType typeName: String) throws {
         try initWorkspaceState(url)
-        buildFileTree(root: url)
+
         self.fileTree = try Folder(url: url)
+
+        buildFileTree(root: url)
         Task {
+//            await
             await MainActor.run {
                 onRefresh?()
             }
@@ -238,7 +241,7 @@ import Combine
         .file(name: ".DS_Store")
     ]
 
-    private var buildFileTreeTask: Task<Void, Error>?
+    var buildFileTreeTask: Task<Void, Error>?
 
     func find(url: URL) -> (any ResourceData)? {
         find(url: url, in: fileTree)
@@ -254,51 +257,7 @@ import Combine
         return nil
     }
 
-    override func presentedSubitem(at oldURL: URL, didMoveTo newURL: URL) {
-        guard let basePath = fileURL?.path() else { return }
 
-        // We need to apply this weird trick as oldURL and newURL might differ in URL formatting.
-        let oldPath = oldURL.path().split(separator: basePath).last ?? ""
-        let newPath = newURL.path().split(separator: basePath).last ?? ""
-
-        // The old resource location
-        let oldPathComponents = oldPath.split(separator: "/").map { String($0) }
-
-        // The folder where the resource will be placed in
-        let newPathComponents = newPath.split(separator: "/").dropLast().map { String($0) }
-
-        // Get resource and parent folder
-        guard let resolved = fileTree?.resolveItem(components: oldPathComponents), let parentFolder = resolved.parentFolder else {
-            showError(FileError.couldNotResolveFile)
-            return
-        }
-
-        // Get new parent folder
-        guard let newParentFolder = fileTree?.resolveItem(components: newPathComponents) as? Folder else {
-            showError(FileError.couldNotResolveFile)
-            return
-        }
-
-        // Move resource from old to new folder
-        parentFolder.removeChild(resolved)
-        newParentFolder.children.append(resolved)
-        resolved.parentFolder = newParentFolder
-
-        do {
-            if let newName = try newURL.resourceValues(forKeys: [.nameKey]).name {
-                resolved.name = newName
-            } else {
-                showError(FileError.noFileName)
-            }
-        } catch {
-            showError(error)
-        }
-        Task {
-            await MainActor.run {
-                onRefresh?()
-            }
-        }
-    }
 
     enum FileError: Error {
         case couldNotResolveFile
@@ -311,74 +270,5 @@ import Combine
         alert.informativeText = error.localizedDescription
         alert.messageText = "Error"
         alert.runModal()
-    }
-
-    func buildFileTree(root: URL) {
-        buildFileTreeTask = Task {
-            fileTree = try await buildingFileTree(root: root, ignoring: ignoredResources)
-        }
-    }
-
-    nonisolated func buildingFileTree(root: URL, ignoring: Set<Resource.Ignored>) async throws -> any ResourceData {
-        let fileProperties: Set<URLResourceKey> = [.isRegularFileKey, .isDirectoryKey, .isSymbolicLinkKey, .nameKey, .fileResourceIdentifierKey]
-        let enumerator = FileManager.default.enumerator(at: root, includingPropertiesForKeys: Array(fileProperties))
-
-        guard let enumerator else { throw FileManagerError.rootFileEnumeration }
-
-        let rootFolder = try Folder(url: root)
-
-        var folderStack = [rootFolder]
-        var currentLevel = 1
-        var possibleNewFolder: Folder?
-
-        for case let url as URL in enumerator {
-            guard !Task.isCancelled else { throw CancellationError() }
-            let properties = try url.resourceValues(forKeys: fileProperties)
-
-            let name = properties.name!
-            let isFile = properties.isRegularFile!
-            let isFolder = properties.isDirectory!
-            let isSymLink = properties.isSymbolicLink!
-
-            let level = enumerator.level
-
-            if level < currentLevel {
-                folderStack.removeLast(currentLevel - level)
-                currentLevel = level
-            } else if level > currentLevel, let newCurrent = possibleNewFolder {
-                folderStack.append(newCurrent)
-                possibleNewFolder = nil
-                currentLevel += 1
-            }
-
-            guard !ignoring.contains(.file(name: name)) && !ignoring.contains(.url(url)) else {
-                continue
-            }
-
-            guard !ignoring.contains(.folder(name: name)) else {
-                enumerator.skipDescendants()
-                continue
-            }
-
-            let resource: any ResourceData
-            let currentFolder = folderStack.last!
-
-            if isFile {
-                resource = try File(url: url, name: name)
-            } else if isFolder {
-                let newFolder = try Folder(url: url)
-                resource = newFolder
-                possibleNewFolder = newFolder
-            } else if isSymLink {
-                resource = SymLink(url: url, name: name)
-            } else {
-                continue
-            }
-
-            resource.parentFolder = currentFolder
-            currentFolder.children.append(resource)
-        }
-
-        return rootFolder
     }
 }
