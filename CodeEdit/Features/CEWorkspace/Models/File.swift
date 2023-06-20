@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class File: ResourceData {
+class File: Resource {
 
     var url: URL
     var name: String
@@ -55,7 +55,7 @@ class File: ResourceData {
         }
     }
 
-    func resolveItem(components: [String]) -> any ResourceData {
+    func resolveItem(components: [String]) -> any Resource {
         if !components.isEmpty {
             NSLog("Warning: Failed to resolve path. Continuing silently...")
         }

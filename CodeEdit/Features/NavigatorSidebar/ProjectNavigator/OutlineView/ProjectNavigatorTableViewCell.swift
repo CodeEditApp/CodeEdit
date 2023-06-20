@@ -24,7 +24,7 @@ final class ProjectNavigatorTableViewCell: FileSystemTableViewCell {
     ///   - isEditable: Set to true if the user should be able to edit the file name.
     init(
         frame frameRect: NSRect,
-        item: (any ResourceData)?,
+        item: (any Resource)?,
         isEditable: Bool = true,
         delegate: OutlineTableViewCellDelegate? = nil
     ) {

@@ -21,7 +21,7 @@ extension WorkspaceDocument {
         }
     }
 
-    nonisolated func buildingFileTree(root: URL, ignoring: Set<Resource.Ignored>) async throws -> any ResourceData {
+    nonisolated func buildingFileTree(root: URL, ignoring: Set<Ignored>) async throws -> any Resource {
         let fileProperties: Set<URLResourceKey> = [.isRegularFileKey, .isDirectoryKey, .isSymbolicLinkKey, .nameKey, .fileResourceIdentifierKey]
         let enumerator = FileManager.default.enumerator(at: root, includingPropertiesForKeys: Array(fileProperties))
 
@@ -62,7 +62,7 @@ extension WorkspaceDocument {
                 continue
             }
 
-            let resource: any ResourceData
+            let resource: any Resource
             let currentFolder = folderStack.last!
 
             if isFile {

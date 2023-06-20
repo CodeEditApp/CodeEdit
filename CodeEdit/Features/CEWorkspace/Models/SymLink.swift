@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class SymLink: ResourceData {
+class SymLink: Resource {
     var url: URL
     var name: String
 
@@ -32,7 +32,7 @@ class SymLink: ResourceData {
         self.name = values.name!
     }
 
-    func resolveItem(components: [String]) -> any ResourceData {
+    func resolveItem(components: [String]) -> any Resource {
         if !components.isEmpty {
             NSLog("Warning: Failed to resolve path. Continuing silently...")
         }

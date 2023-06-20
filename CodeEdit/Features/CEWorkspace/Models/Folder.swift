@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-class Folder: ResourceData {
-    var children: [any ResourceData] = []
+class Folder: Resource {
+    var children: [any Resource] = []
     var url: URL
     var name: String
 
@@ -40,7 +40,7 @@ class Folder: ResourceData {
         self.name = values.name!
     }
 
-    func resolveItem(components: [String]) -> any ResourceData {
+    func resolveItem(components: [String]) -> any Resource {
         if components.isEmpty {
             return self
         }
@@ -56,11 +56,11 @@ class Folder: ResourceData {
         return child.resolveItem(components: Array(components.dropFirst()))
     }
 
-    func removeChild(_ child: any ResourceData) {
+    func removeChild(_ child: any Resource) {
         children.removeAll { $0 === child }
     }
 
-    func addChild(_ child: any ResourceData) {
+    func addChild(_ child: any Resource) {
         children.append(child)
     }
 }

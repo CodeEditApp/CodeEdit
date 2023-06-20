@@ -17,7 +17,7 @@ import SwiftUI
 struct ProjectNavigatorView: View {
     @EnvironmentObject var workspace: WorkspaceDocument
 
-    var root: (any ResourceData)? {
+    var root: (any Resource)? {
         workspace.fileTree
     }
 

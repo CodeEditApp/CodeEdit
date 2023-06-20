@@ -19,7 +19,7 @@ final class ProjectNavigatorViewController: NSViewController {
     /// Gets the folder structure
     ///
     /// Also creates a top level item "root" which represents the projects root directory and automatically expands it.
-    private var content: [any ResourceData] {
+    private var content: [any Resource] {
 //        guard let folderURL = workspace?.workspaceFileManager?.folderUrl else { return [] }
 //        guard let root = try? workspace?.workspaceFileManager?.getFile(folderURL.path) else { return [] }
 //        return [root]
@@ -123,7 +123,7 @@ final class ProjectNavigatorViewController: NSViewController {
     /// Get the appropriate color for the items icon depending on the users preferences.
     /// - Parameter item: The `FileItem` to get the color for
     /// - Returns: A `NSColor` for the given `FileItem`.
-    private func color(for item: any ResourceData) -> NSColor {
+    private func color(for item: any Resource) -> NSColor {
         iconColor == .color ? NSColor(item.iconColor) : .secondaryLabelColor
     }
 
@@ -155,7 +155,7 @@ extension ProjectNavigatorViewController: NSOutlineViewDataSource {
 
     /// write dragged file(s) to pasteboard
     func outlineView(_ outlineView: NSOutlineView, pasteboardWriterForItem item: Any) -> NSPasteboardWriting? {
-        (item as? any ResourceData)?.url as NSURL?
+        (item as? any Resource)?.url as NSURL?
     }
 
     /// declare valid drop target
@@ -167,7 +167,7 @@ extension ProjectNavigatorViewController: NSOutlineViewDataSource {
     ) -> NSDragOperation {
         guard index == -1 else { return [] }
 
-        if let item = item as? any ResourceData, !(item is Folder) {
+        if let item = item as? any Resource, !(item is Folder) {
             outlineView.setDropItem(item.parentFolder, dropChildIndex: index)
         }
 
@@ -259,7 +259,7 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
 
         let frameRect = NSRect(x: 0, y: 0, width: tableColumn.width, height: rowHeight)
 
-        return ProjectNavigatorTableViewCell(frame: frameRect, item: item as? any ResourceData, delegate: self)
+        return ProjectNavigatorTableViewCell(frame: frameRect, item: item as? any Resource, delegate: self)
     }
 
     func outlineViewSelectionDidChange(_ notification: Notification) {
@@ -312,7 +312,7 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
     /// - Parameters:
     ///   - id: the id of the item item
     ///   - collection: the array to search for
-    private func select(by id: TabBarItemID, from collection: [any ResourceData]) {
+    private func select(by id: TabBarItemID, from collection: [any Resource]) {
         print(id)
         // FIXME:
 //        guard let item = collection.find(by: id) else {

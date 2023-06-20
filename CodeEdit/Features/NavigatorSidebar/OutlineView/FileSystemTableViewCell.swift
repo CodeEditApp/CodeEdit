@@ -9,7 +9,7 @@ import SwiftUI
 
 class FileSystemTableViewCell: StandardTableViewCell {
 
-    var fileItem: (any ResourceData)!
+    var fileItem: (any Resource)!
 
     var changeLabelLargeWidth: NSLayoutConstraint!
     var changeLabelSmallWidth: NSLayoutConstraint!
@@ -22,7 +22,7 @@ class FileSystemTableViewCell: StandardTableViewCell {
     ///   - frameRect: The frame of the cell.
     ///   - item: The file item the cell represents.
     ///   - isEditable: Set to true if the user should be able to edit the file name.
-    init(frame frameRect: NSRect, item: (any ResourceData)?, isEditable: Bool = true) {
+    init(frame frameRect: NSRect, item: (any Resource)?, isEditable: Bool = true) {
         super.init(frame: frameRect, isEditable: isEditable)
 
         if let item = item {
@@ -36,7 +36,7 @@ class FileSystemTableViewCell: StandardTableViewCell {
         label.delegate = self
     }
 
-    func addIcon(item: any ResourceData) {
+    func addIcon(item: any Resource) {
         var imageName = item.systemImage
 //        if item.watcherCode == nil {
 //            imageName = "exclamationmark.arrow.triangle.2.circlepath"
@@ -89,7 +89,7 @@ class FileSystemTableViewCell: StandardTableViewCell {
     /// Generates a string based on user's file name preferences.
     /// - Parameter item: The FileItem to generate the name for.
     /// - Returns: A `String` with the name to display.
-    func label(for item: any ResourceData) -> String {
+    func label(for item: any Resource) -> String {
         switch prefs.fileExtensionsVisibility {
         case .hideAll:
             return item.fileName(typeHidden: true)
@@ -105,7 +105,7 @@ class FileSystemTableViewCell: StandardTableViewCell {
     /// Get the appropriate color for the items icon depending on the users preferences.
     /// - Parameter item: The `FileItem` to get the color for
     /// - Returns: A `NSColor` for the given `FileItem`.
-    func color(for item: any ResourceData) -> NSColor {
+    func color(for item: any Resource) -> NSColor {
         prefs.fileIconStyle == .color ? NSColor(item.iconColor) : .secondaryLabelColor
     }
 }

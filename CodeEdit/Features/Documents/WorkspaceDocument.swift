@@ -28,6 +28,7 @@ import Combine
             UserDefaults.standard.set(newValue, forKey: key)
         }
     }
+    
 
     var debugAreaModel = DebugAreaViewModel()
     var searchState: SearchState?
@@ -65,6 +66,12 @@ import Combine
 
     override var isDocumentEdited: Bool {
         false
+    }
+
+    enum Ignored: Hashable {
+        case file(name: String)
+        case folder(name: String)
+        case url(URL)
     }
 
     override func makeWindowControllers() {
@@ -227,22 +234,22 @@ import Combine
     }
 
     @Published
-    var fileTree: (any ResourceData)!
+    var fileTree: (any Resource)!
 
     @MainActor
     var onRefresh: (() -> Void)?
 
-    var ignoredResources: Set<Resource.Ignored> = [
+    var ignoredResources: Set<Ignored> = [
         .file(name: ".DS_Store")
     ]
 
     var buildFileTreeTask: Task<Void, Error>?
 
-    func find(url: URL) -> (any ResourceData)? {
+    func find(url: URL) -> (any Resource)? {
         find(url: url, in: fileTree)
     }
 
-    func find(url: URL, in resource: any ResourceData) -> (any ResourceData)? {
+    func find(url: URL, in resource: any Resource) -> (any Resource)? {
         if resource.id == url {
             return resource
         }
@@ -251,8 +258,6 @@ import Combine
         }
         return nil
     }
-
-
 
     enum FileError: Error {
         case couldNotResolveFile
