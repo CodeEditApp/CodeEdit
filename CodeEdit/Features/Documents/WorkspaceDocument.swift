@@ -259,9 +259,18 @@ import Combine
         return nil
     }
 
-    enum FileError: Error {
+    enum FileError: LocalizedError {
         case couldNotResolveFile
         case noFileName
+
+        var errorDescription: String? {
+            switch self {
+            case .couldNotResolveFile:
+                return "Could not resolve file to move"
+            case .noFileName:
+                return "No file name found"
+            }
+        }
     }
 
     @MainActor

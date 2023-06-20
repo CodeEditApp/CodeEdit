@@ -8,7 +8,14 @@
 import SwiftUI
 
 extension WorkspaceDocument {
-    override func presentedSubitem(at oldURL: URL, didMoveTo newURL: URL) {
+    override nonisolated func presentedSubitem(at oldURL: URL, didMoveTo newURL: URL) {
+        Task { @MainActor in
+            moveFile(at: oldURL, didMoveTo: newURL)
+        }
+    }
+
+    @MainActor
+    fileprivate func moveFile(at oldURL: URL, didMoveTo newURL: URL) {
         guard let basePath = fileURL?.path() else { return }
 
         // We need to apply this weird trick as oldURL and newURL might differ in URL formatting.
@@ -21,14 +28,12 @@ extension WorkspaceDocument {
         // The folder where the resource will be placed in
         let newPathComponents = newPath.split(separator: "/").dropLast().map { String($0) }
 
-        // Get resource and parent folder
-        guard let resolved = fileTree?.resolveItem(components: oldPathComponents), let parentFolder = resolved.parentFolder else {
-            showError(FileError.couldNotResolveFile)
-            return
-        }
-
-        // Get new parent folder
-        guard let newParentFolder = fileTree?.resolveItem(components: newPathComponents) as? Folder else {
+        // Get resource, parent folder and new parent folder
+        guard
+            let resolved = fileTree?.resolveItem(components: oldPathComponents),
+            let parentFolder = resolved.parentFolder,
+            let newParentFolder = fileTree?.resolveItem(components: newPathComponents) as? Folder
+        else {
             showError(FileError.couldNotResolveFile)
             return
         }
@@ -47,10 +52,6 @@ extension WorkspaceDocument {
         } catch {
             showError(error)
         }
-        Task {
-            await MainActor.run {
-                onRefresh?()
-            }
-        }
+        onRefresh?()
     }
 }
