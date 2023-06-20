@@ -20,9 +20,11 @@ struct ViewCommands: Commands {
     private let documentController: CodeEditDocumentController = CodeEditDocumentController()
     private let statusBarViewModel: DebugAreaViewModel = DebugAreaViewModel()
 
-    @FocusedBinding(\.navigationSplitViewVisibility) var navigationSplitViewVisibility
+    @FocusedBinding(\.navigationSplitViewVisibility)
+    var navigationSplitViewVisibility
 
-    @FocusedBinding(\.inspectorVisibility) var inspectorVisibility
+    @FocusedBinding(\.inspectorVisibility)
+    var inspectorVisibility
 
     var navigatorCollapsed: Bool {
         windowController?.navigatorCollapsed ?? false
