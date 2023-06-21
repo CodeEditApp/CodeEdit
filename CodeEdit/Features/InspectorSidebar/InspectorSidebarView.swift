@@ -27,17 +27,6 @@ struct InspectorSidebarView: View {
         tabManager.activeTabGroup.selected?.document?.fileURL?.path(percentEncoded: false)
     }
 
-    var fileTreeAndGitHistory: [InspectorTab] {
-        guard let workspaceURL = workspace.fileURL, let path else {
-            return []
-        }
-
-        return [
-            .file(workspaceURL: workspaceURL, fileURL: path),
-            .gitHistory(workspaceURL: workspaceURL, fileURL: path)
-        ]
-    }
-
     private var items: [InspectorTab] {
         [
             .file,

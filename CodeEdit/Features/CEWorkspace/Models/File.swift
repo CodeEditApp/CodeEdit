@@ -73,4 +73,18 @@ class File: Resource, Identifiable, Hashable {
         }
         return self
     }
+
+    func labelFileName() -> String {
+        let prefs = Settings.shared.preferences.general
+        switch prefs.fileExtensionsVisibility {
+        case .hideAll:
+            return self.fileName(typeHidden: true)
+        case .showAll:
+            return self.fileName(typeHidden: false)
+        case .showOnly:
+            return self.fileName(typeHidden: !prefs.shownFileExtensions.extensions.contains(self.fileType?.rawValue ?? FileIcon.FileType.txt.rawValue))
+        case .hideOnly:
+            return self.fileName(typeHidden: prefs.hiddenFileExtensions.extensions.contains(self.fileType?.rawValue ?? FileIcon.FileType.txt.rawValue))
+        }
+    }
 }

@@ -24,6 +24,8 @@ protocol Resource: AnyObject, Identifiable {
     var systemImage: String { get }
 
     func fileName(typeHidden: Bool) -> String
+
+    func labelFileName() -> String
 }
 
 extension Resource {
@@ -38,4 +40,20 @@ extension Resource {
     }
 
     var icon: Image { Image(systemName: systemImage) }
+
+    func labelFileName() -> String {
+        name
+    }
+
+    func validateFileName(for newName: String) -> Bool {
+        guard newName != labelFileName() else { return true }
+
+        guard !newName.isEmpty && newName.isValidFilename &&
+                !FileManager.default.fileExists(
+                    atPath: self.url.deletingLastPathComponent().appendingPathComponent(newName).path
+                )
+        else { return false }
+
+        return true
+    }
 }

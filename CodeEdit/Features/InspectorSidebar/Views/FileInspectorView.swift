@@ -18,7 +18,7 @@ struct FileInspectorView: View {
     private var textEditing
 
     @State
-    private var file: CEWorkspaceFile?
+    private var file: File?
 
     @State
     private var fileName: String = ""
@@ -58,26 +58,18 @@ struct FileInspectorView: View {
                 NoSelectionInspectorView()
             }
         }
-        .onReceive(tabManager.activeTabGroup.objectWillChange) { _ in
+        .task(id: tabManager.activeTabGroup) {
             file = tabManager.activeTabGroup.selected
             fileName = file?.name ?? ""
-            language = file?.fileDocument?.language
-            indentOption = file?.fileDocument?.indentOption ?? textEditing.indentOption
-            defaultTabWidth = file?.fileDocument?.defaultTabWidth ?? textEditing.defaultTabWidth
-            wrapLines = file?.fileDocument?.wrapLines ?? textEditing.wrapLinesToEditorWidth
-        }
-        .onAppear {
-            file = tabManager.activeTabGroup.selected
-            fileName = file?.name ?? ""
-            language = file?.fileDocument?.language
-            indentOption = file?.fileDocument?.indentOption ?? textEditing.indentOption
-            defaultTabWidth = file?.fileDocument?.defaultTabWidth ?? textEditing.defaultTabWidth
-            wrapLines = file?.fileDocument?.wrapLines ?? textEditing.wrapLinesToEditorWidth
+            language = file?.document?.language
+            indentOption = file?.document?.indentOption ?? textEditing.indentOption
+            defaultTabWidth = file?.document?.defaultTabWidth ?? textEditing.defaultTabWidth
+            wrapLines = file?.document?.wrapLines ?? textEditing.wrapLinesToEditorWidth
         }
         .onChange(of: textEditing) { newValue in
-            indentOption = file?.fileDocument?.indentOption ?? newValue.indentOption
-            defaultTabWidth = file?.fileDocument?.defaultTabWidth ?? newValue.defaultTabWidth
-            wrapLines = file?.fileDocument?.wrapLines ?? newValue.wrapLinesToEditorWidth
+            indentOption = file?.document?.indentOption ?? newValue.indentOption
+            defaultTabWidth = file?.document?.defaultTabWidth ?? newValue.defaultTabWidth
+            wrapLines = file?.document?.wrapLines ?? newValue.wrapLinesToEditorWidth
         }
     }
 
@@ -90,20 +82,21 @@ struct FileInspectorView: View {
                 )
                 .onSubmit {
                     if file.validateFileName(for: fileName) {
-                        let destinationURL = file.url
-                            .deletingLastPathComponent()
-                            .appendingPathComponent(fileName)
-                        if !file.isFolder {
-                            tabManager.tabGroups.closeAllTabs(of: file)
-                        }
-                        DispatchQueue.main.async {
-                            file.move(to: destinationURL)
-                            let newItem = CEWorkspaceFile(url: destinationURL)
-                            newItem.parent = file.parent
-                            if !newItem.isFolder {
-                                tabManager.openTab(item: newItem)
-                            }
-                        }
+                        // FIXME:
+//                        let destinationURL = file.url
+//                            .deletingLastPathComponent()
+//                            .appendingPathComponent(fileName)
+//
+//                        tabManager.tabGroups.closeAllTabs(of: file)
+//
+//                        DispatchQueue.main.async {
+//                            file.move(to: destinationURL)
+//                            let newItem = CEWorkspaceFile(url: destinationURL)
+//                            newItem.parent = file.parent
+//                            if !newItem.isFolder {
+//                                tabManager.openTab(item: newItem)
+//                            }
+//                        }
                     } else {
                         fileName = file.labelFileName()
                     }
@@ -124,7 +117,7 @@ struct FileInspectorView: View {
             }
         }
         .onChange(of: language) { newValue in
-            file?.fileDocument?.language = newValue
+            file?.document?.language = newValue
         }
     }
 
@@ -136,27 +129,28 @@ struct FileInspectorView: View {
                         guard let newURL = chooseNewFileLocation() else {
                             return
                         }
-                        if !file.isFolder {
-                            tabManager.tabGroups.closeAllTabs(of: file)
-                        }
+
+                        tabManager.tabGroups.closeAllTabs(of: file)
+
                         // This is ugly but if the tab is opened at the same time as closing the others, it doesn't open
                         // And if the files are re-built at the same time as the tab is opened, it causes a memory error
-                        DispatchQueue.main.async {
-                            file.move(to: newURL)
-                            // If the parent directory doesn't exist in the workspace, don't open it in a tab.
-                            if let newParent = try? workspace.workspaceFileManager?.getFile(
-                                newURL.deletingLastPathComponent().path
-                            ) {
-                                let newItem = CEWorkspaceFile(url: newURL)
-                                newItem.parent = newParent
-                                if !file.isFolder {
-                                    tabManager.openTab(item: newItem)
-                                }
-                                DispatchQueue.main.async {
-                                    _ = try? workspace.workspaceFileManager?.rebuildFiles(fromItem: newParent)
-                                }
-                            }
-                        }
+                        // FIXME:
+//                        DispatchQueue.main.async {
+//                            file.move(to: newURL)
+//                            // If the parent directory doesn't exist in the workspace, don't open it in a tab.
+//                            if let newParent = try? workspace.workspaceFileManager?.getFile(
+//                                newURL.deletingLastPathComponent().path
+//                            ) {
+//                                let newItem = CEWorkspaceFile(url: newURL)
+//                                newItem.parent = newParent
+//                                if !file.isFolder {
+//                                    tabManager.openTab(item: newItem)
+//                                }
+//                                DispatchQueue.main.async {
+//                                    _ = try? workspace.workspaceFileManager?.rebuildFiles(fromItem: newParent)
+//                                }
+//                            }
+//                        }
                     }
                 }
                 ExternalLink(showInFinder: true, destination: file.url) {
@@ -174,7 +168,7 @@ struct FileInspectorView: View {
             Text("Tabs").tag(SettingsData.TextEditingSettings.IndentOption.IndentType.tab)
         }
         .onChange(of: indentOption) { newValue in
-            file?.fileDocument?.indentOption = newValue == textEditing.indentOption ? nil : newValue
+            file?.document?.indentOption = newValue == textEditing.indentOption ? nil : newValue
         }
     }
 
@@ -218,14 +212,14 @@ struct FileInspectorView: View {
             }
         }
         .onChange(of: defaultTabWidth) { newValue in
-            file?.fileDocument?.defaultTabWidth = newValue == textEditing.defaultTabWidth ? nil : newValue
+            file?.document?.defaultTabWidth = newValue == textEditing.defaultTabWidth ? nil : newValue
         }
     }
 
     private var wrapLinesToggle: some View {
         Toggle("Wrap lines", isOn: $wrapLines)
             .onChange(of: wrapLines) { newValue in
-                file?.fileDocument?.wrapLines = newValue == textEditing.wrapLinesToEditorWidth ? nil : newValue
+                file?.document?.wrapLines = newValue == textEditing.wrapLinesToEditorWidth ? nil : newValue
             }
     }
 
