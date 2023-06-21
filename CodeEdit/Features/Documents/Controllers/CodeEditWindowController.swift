@@ -247,7 +247,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
     }
 
     private func getSelectedCodeFile() -> CodeFileDocument? {
-        workspace?.tabManager.activeTabGroup.selected?.fileDocument
+        workspace?.tabManager.activeTabGroup.selected?.document
     }
 
     @IBAction func saveDocument(_ sender: Any) {
@@ -295,7 +295,8 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
                 let contentView = QuickOpenView(state: state) {
                     panel.close()
                 } openFile: { file in
-                    workspace.tabManager.openTab(item: file)
+                    // FIXME: 
+//                    workspace.tabManager.openTab(item: file)
                 }
 
                 panel.contentView = NSHostingView(rootView: SettingsInjector { contentView })

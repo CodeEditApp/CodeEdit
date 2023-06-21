@@ -56,9 +56,9 @@ struct TabBarItemView: View {
     /// The id associating with the tab that is currently being dragged.
     ///
     /// When `nil`, then there is no tab being dragged.
-    private var draggingTabId: CEWorkspaceFile.ID?
+    private var draggingTabId: TabGroupData.Tab.ID?
 
-    private var onDragTabId: CEWorkspaceFile.ID?
+    private var onDragTabId: TabGroupData.Tab.ID?
 
     @Binding
     private var closeButtonGestureActive: Bool
@@ -69,7 +69,7 @@ struct TabBarItemView: View {
     /// The item associated with the current tab.
     ///
     /// You can get tab-related information from here, like `label`, `icon`, etc.
-    private var item: CEWorkspaceFile
+    private var item: TabGroupData.Tab
 
     var index: Int
 
@@ -118,10 +118,10 @@ struct TabBarItemView: View {
 
     init(
         expectedWidth: CGFloat,
-        item: CEWorkspaceFile,
+        item: TabGroupData.Tab,
         index: Int,
-        draggingTabId: CEWorkspaceFile.ID?,
-        onDragTabId: CEWorkspaceFile.ID?,
+        draggingTabId: TabGroupData.Tab.ID?,
+        onDragTabId: TabGroupData.Tab.ID?,
         closeButtonGestureActive: Binding<Bool>
     ) {
         self.expectedWidth = expectedWidth

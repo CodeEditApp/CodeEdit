@@ -10,7 +10,7 @@ import OrderedCollections
 import DequeModule
 
 final class TabGroupData: ObservableObject, Identifiable {
-    typealias Tab = CEWorkspaceFile
+    typealias Tab = File
 
     /// Set of open tabs.
     @Published
@@ -95,7 +95,7 @@ final class TabGroupData: ObservableObject, Identifiable {
             history.prepend(selected)
         }
 
-        guard let file = item.fileDocument else { return }
+        guard let file = item.document else { return }
 
         if file.isDocumentEdited {
             let shouldClose = UnsafeMutablePointer<Bool>.allocate(capacity: 1)
@@ -193,7 +193,7 @@ final class TabGroupData: ObservableObject, Identifiable {
     }
 
     private func openFile(item: Tab) throws {
-        guard item.fileDocument == nil else {
+        guard item.document == nil else {
             return
         }
 
@@ -203,7 +203,7 @@ final class TabGroupData: ObservableObject, Identifiable {
             withContentsOf: item.url,
             ofType: contentType?.identifier ?? ""
         )
-        item.fileDocument = codeFile
+        item.document = codeFile
         CodeEditDocumentController.shared.addDocument(codeFile)
         print("Opening file for item: ", item.url)
     }

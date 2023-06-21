@@ -16,11 +16,11 @@ struct WorkspaceCodeFileView: View {
     @EnvironmentObject
     private var tabgroup: TabGroupData
 
-    var file: CEWorkspaceFile
+    var file: File
 
     @ViewBuilder
     var codeView: some View {
-        if let document = file.fileDocument {
+        if let document = file.document {
             Group {
                 switch document.typeOfFile {
                 case .some(.text), .some(.data):
@@ -43,7 +43,7 @@ struct WorkspaceCodeFileView: View {
     @ViewBuilder
     private func otherFileView(
         _ otherFile: CodeFileDocument,
-        for item: CEWorkspaceFile
+        for item: File
     ) -> some View {
         VStack(spacing: 0) {
 

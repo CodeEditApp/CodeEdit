@@ -185,7 +185,8 @@ final class ProjectNavigatorMenu: NSMenu {
     @objc
     private func openInTab() {
         if let item {
-            workspace?.tabManager.openTab(item: item)
+            // FIXME: 
+//            workspace?.tabManager.openTab(item: item)
         }
     }
 

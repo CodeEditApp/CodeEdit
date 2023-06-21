@@ -14,7 +14,7 @@ import SwiftUI
 // - TODO: TabBarItemView drop-outside event handler.
 struct TabBarView: View {
 
-    typealias TabID = CEWorkspaceFile.ID
+    typealias TabID = TabGroupData.Tab.ID
 
     /// The height of tab bar.
     /// I am not making it a private variable because it may need to be used in outside views.

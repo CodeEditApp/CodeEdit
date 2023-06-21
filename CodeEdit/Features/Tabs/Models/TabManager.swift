@@ -30,7 +30,7 @@ class TabManager: ObservableObject {
     var fileDocuments: [CEWorkspaceFile: CodeFileDocument] = [:]
 
     /// notify listeners whenever tab selection changes on the active tab group.
-    var tabBarItemIdSubject = PassthroughSubject<String?, Never>()
+    var tabBarItemIdSubject = PassthroughSubject<TabGroupData.Tab.ID?, Never>()
     var cancellable: AnyCancellable?
 
     init() {
@@ -52,7 +52,7 @@ class TabManager: ObservableObject {
     /// - Parameters:
     ///   - item: The tab to open.
     ///   - tabgroup: The tabgroup to add the tab to. If nil, it is added to the active tab group.
-    func openTab(item: CEWorkspaceFile, in tabgroup: TabGroupData? = nil) {
+    func openTab(item: TabGroupData.Tab, in tabgroup: TabGroupData? = nil) {
         let tabgroup = tabgroup ?? activeTabGroup
         tabgroup.openTab(item: item)
     }

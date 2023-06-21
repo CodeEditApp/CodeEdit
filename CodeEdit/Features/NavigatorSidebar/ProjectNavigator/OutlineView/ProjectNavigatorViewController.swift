@@ -16,6 +16,8 @@ final class ProjectNavigatorViewController: NSViewController {
     var scrollView: NSScrollView!
     var outlineView: NSOutlineView!
 
+    typealias Item = any Resource
+
     /// Gets the folder structure
     ///
     /// Also creates a top level item "root" which represents the projects root directory and automatically expands it.
@@ -92,7 +94,7 @@ final class ProjectNavigatorViewController: NSViewController {
     ///
     /// Most importantly when the `id` changes from an external view.
     /// - Parameter itemID: The id of the file or folder.
-    func updateSelection(itemID: String?) {
+    func updateSelection(itemID: (any Hashable)?) {
         guard let itemID else {
             outlineView.deselectRow(outlineView.selectedRow)
             return
@@ -113,9 +115,7 @@ final class ProjectNavigatorViewController: NSViewController {
                 outlineView.expandItem(item)
             }
         case let item as File:
-            break
-            // FIXME:
-//            workspace?.tabManager.activeTabGroup.openTab(item: item, asTemporary: false)
+            workspace?.tabManager.activeTabGroup.openTab(item: item, asTemporary: false)
         default: break
         }
     }

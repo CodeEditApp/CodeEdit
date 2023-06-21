@@ -29,8 +29,13 @@ protocol Resource: AnyObject, Identifiable {
 extension Resource {
     var id: URL { url }
 
-    var children2: [any Resource]? {
-        guard let self = self as? Folder else { return nil }
-        return self.children
+    func showInFinder() {
+        NSWorkspace.shared.activateFileViewerSelecting([url])
     }
+
+    func openWithExternalEditor() {
+        NSWorkspace.shared.open(url)
+    }
+
+    var icon: Image { Image(systemName: systemImage) }
 }

@@ -183,7 +183,7 @@ import WindowManagement
         // Save unsaved changes before closing
         let editedCodeFiles = tabManager.tabGroups
             .gatherOpenFiles()
-            .compactMap(\.fileDocument)
+            .compactMap(\.document)
             .filter(\.isDocumentEdited)
 
         for editedCodeFile in editedCodeFiles {
@@ -211,7 +211,7 @@ import WindowManagement
             to: (@convention(c)(Any, Selector, Any, Bool, UnsafeMutableRawPointer?) -> Void).self
         )
         let areAllOpenedCodeFilesClean = tabManager.tabGroups.gatherOpenFiles()
-            .compactMap(\.fileDocument)
+            .compactMap(\.document)
             .allSatisfy { !$0.isDocumentEdited }
         function(object, shouldCloseSelector, self, areAllOpenedCodeFilesClean, contextInfo)
     }

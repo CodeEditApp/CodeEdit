@@ -9,8 +9,8 @@ import SwiftUI
 
 struct PathBarView: View {
 
-    private let file: CEWorkspaceFile
-    private let tappedOpenFile: (CEWorkspaceFile) -> Void
+    private let file: TabGroupData.Tab
+    private let tappedOpenFile: (TabGroupData.Tab) -> Void
 
     @Environment(\.colorScheme)
     private var colorScheme
@@ -24,20 +24,20 @@ struct PathBarView: View {
     static let height = 27.0
 
     init(
-        file: CEWorkspaceFile,
-        tappedOpenFile: @escaping (CEWorkspaceFile) -> Void
+        file: TabGroupData.Tab,
+        tappedOpenFile: @escaping (TabGroupData.Tab) -> Void
     ) {
         self.file = file
         self.tappedOpenFile = tappedOpenFile
     }
 
-    var fileItems: [CEWorkspaceFile] {
-        var treePath: [CEWorkspaceFile] = []
-        var currentFile: CEWorkspaceFile? = file
+    var fileItems: [any Resource] {
+        var treePath: [any Resource] = []
+        var currentFile: (any Resource)? = file
 
         while let currentFileLoop = currentFile {
             treePath.insert(currentFileLoop, at: 0)
-            currentFile = currentFileLoop.parent
+            currentFile = currentFileLoop.parentFolder
         }
 
         return treePath
@@ -46,13 +46,14 @@ struct PathBarView: View {
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 1.5) {
-                ForEach(fileItems, id: \.self) { fileItem in
-                    if fileItem.parent != nil {
-                        chevron
-                    }
-                    PathBarComponent(fileItem: fileItem, tappedOpenFile: tappedOpenFile)
-                        .padding(.leading, 2.5)
-                }
+                // FIXME:
+//                ForEach(fileItems, id: \.self) { fileItem in
+//                    if fileItem.parent != nil {
+//                        chevron
+//                    }
+//                    PathBarComponent(fileItem: fileItem, tappedOpenFile: tappedOpenFile)
+//                        .padding(.leading, 2.5)
+//                }
             }
             .padding(.horizontal, 10)
         }

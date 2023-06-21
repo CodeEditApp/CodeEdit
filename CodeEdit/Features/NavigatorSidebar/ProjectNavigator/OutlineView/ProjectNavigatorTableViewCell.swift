@@ -8,8 +8,8 @@
 import SwiftUI
 
 protocol OutlineTableViewCellDelegate: AnyObject {
-    func moveFile(file: CEWorkspaceFile, to destination: URL)
-    func copyFile(file: CEWorkspaceFile, to destination: URL)
+    func moveFile(file: any Resource, to destination: URL)
+    func copyFile(file: any Resource, to destination: URL)
 }
 
 /// A `NSTableCellView` showing an ``icon`` and a ``label``
