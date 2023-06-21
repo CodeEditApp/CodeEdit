@@ -7,12 +7,20 @@
 
 import SwiftUI
 
-class File: Resource {
-
+class File: Resource, Identifiable, Hashable {
+    var id: UInt64
     var url: URL
     var name: String
     var displayName: String
     var fileType: FileIcon.FileType?
+
+    static func == (lhs: File, rhs: File) -> Bool {
+        lhs.id == rhs.id
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
 
     var iconColor: Color {
         guard let fileType else { return .accentColor }
@@ -29,13 +37,14 @@ class File: Resource {
 
     func update(with url: URL) throws {
         self.url = url
-        (self.name, self.displayName, self.fileType) = try Self.update(with: url)
+        (self.name, self.id, self.displayName, self.fileType) = try Self.update(with: url)
     }
 
     // swiftlint:disable large_tuple
-    fileprivate static func update(with url: URL) throws -> (String, String, FileIcon.FileType?) {
-        let values = try url.resourceValues(forKeys: [.nameKey])
+    fileprivate static func update(with url: URL) throws -> (String, UInt64, String, FileIcon.FileType?) {
+        let values = try url.resourceValues(forKeys: [.nameKey, .fileIdentifierKey])
         let name = values.name!
+        let id = values.fileIdentifier!
         let displayName = name.split(separator: ".").dropLast().joined(separator: ".")
 
         var fileType: FileIcon.FileType?
@@ -43,7 +52,7 @@ class File: Resource {
             fileType = FileIcon.FileType.init(rawValue: String(last))
         }
 
-        return (name, displayName, fileType)
+        return (name, id, displayName, fileType)
     }
     // swiftlint:enable large_tuple
 
@@ -55,7 +64,7 @@ class File: Resource {
 
     init(url: URL, name: String) throws {
         self.url = url
-        (self.name, self.displayName, self.fileType) = try Self.update(with: url)
+        (self.name, self.id, self.displayName, self.fileType) = try Self.update(with: url)
     }
 
     func resolveItem(components: [String]) -> any Resource {
