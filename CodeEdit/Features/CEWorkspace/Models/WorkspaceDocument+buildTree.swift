@@ -22,7 +22,7 @@ extension WorkspaceDocument {
     }
 
     nonisolated func buildingFileTree(root: URL, ignoring: Set<Ignored>) async throws -> any Resource {
-        let fileProperties: Set<URLResourceKey> = [.isRegularFileKey, .isDirectoryKey, .isSymbolicLinkKey, .nameKey, .fileResourceIdentifierKey]
+        let fileProperties: Set<URLResourceKey> = [.fileResourceTypeKey, .nameKey]
         let enumerator = FileManager.default.enumerator(at: root, includingPropertiesForKeys: Array(fileProperties))
 
         guard let enumerator else { throw FileManagerError.rootFileEnumeration }
@@ -38,9 +38,7 @@ extension WorkspaceDocument {
             let properties = try url.resourceValues(forKeys: fileProperties)
 
             let name = properties.name!
-            let isFile = properties.isRegularFile!
-            let isFolder = properties.isDirectory!
-            let isSymLink = properties.isSymbolicLink!
+            let resourceType = properties.fileResourceType!
 
             let level = enumerator.level
 
@@ -65,15 +63,16 @@ extension WorkspaceDocument {
             let resource: any Resource
             let currentFolder = folderStack.last!
 
-            if isFile {
+            switch resourceType {
+            case .regular:
                 resource = try File(url: url, name: name)
-            } else if isFolder {
+            case .directory:
                 let newFolder = try Folder(url: url)
                 resource = newFolder
                 possibleNewFolder = newFolder
-            } else if isSymLink {
+            case .symbolicLink:
                 resource = SymLink(url: url, name: name)
-            } else {
+            default:
                 continue
             }
 
