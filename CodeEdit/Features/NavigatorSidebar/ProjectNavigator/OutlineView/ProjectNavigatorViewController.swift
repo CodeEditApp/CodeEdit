@@ -290,6 +290,10 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
         else {
             return
         }
+        /// update outline selection only if the parent of selected item match with expanded item
+        guard item.parent === notification.userInfo?["NSObject"] as? CEWorkspaceFile else {
+            return
+        }
         /// select active file under collapsed folder only if its parent is expanding
         if outlineView.isItemExpanded(item.parent) {
             updateSelection(itemID: item.id)
@@ -350,7 +354,13 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
             alert.runModal()
             return
         } else {
-            outlineView.scrollRowToVisible(row)
+            let visibleRect = scrollView.contentView.visibleRect
+            let visibleRows = outlineView.rows(in: visibleRect)
+            guard !visibleRows.contains(row) else { return }
+            let rowRect = outlineView.rect(ofRow: row)
+            let centerY = rowRect.midY - (visibleRect.height / 2)
+            let center = NSPoint(x: 0, y: centerY)
+            outlineView.scroll(center)
         }
     }
 
