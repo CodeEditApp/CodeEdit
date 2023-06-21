@@ -42,8 +42,7 @@ final class ThemeModel: ObservableObject {
 
     /// Selected 'light' theme
     /// Used for auto-switching theme to match macOS system appearance
-    @Published
-    var selectedLightTheme: Theme? {
+    @Published var selectedLightTheme: Theme? {
         didSet {
             DispatchQueue.main.async {
                 Settings.shared
@@ -54,8 +53,7 @@ final class ThemeModel: ObservableObject {
 
     /// Selected 'dark' theme
     /// Used for auto-switching theme to match macOS system appearance
-    @Published
-    var selectedDarkTheme: Theme? {
+    @Published var selectedDarkTheme: Theme? {
         didSet {
             DispatchQueue.main.async {
                 Settings.shared
@@ -67,27 +65,23 @@ final class ThemeModel: ObservableObject {
     /// The selected appearance in the sidebar.
     /// - **0**: dark mode themes
     /// - **1**: light mode themes
-    @Published
-    var selectedAppearance: Int = 0
+    @Published var selectedAppearance: Int = 0
 
     /// The selected tab in the main section.
     /// - **0**: Preview
     /// - **1**: Editor
     /// - **2**: Terminal
-    @Published
-    var selectedTab: Int = 1
+    @Published var selectedTab: Int = 1
 
     /// An array of loaded ``Theme``.
-    @Published
-    var themes: [Theme] = [] {
+    @Published var themes: [Theme] = [] {
         didSet {
             saveThemes()
         }
     }
 
     /// The currently selected ``Theme``.
-    @Published
-    var selectedTheme: Theme? {
+    @Published var selectedTheme: Theme? {
         didSet {
             DispatchQueue.main.async {
                 Settings[\.theme].selectedTheme = self.selectedTheme?.name

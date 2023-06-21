@@ -8,20 +8,16 @@
 import SwiftUI
 
 struct InspectorSidebarView: View {
-    @EnvironmentObject
-    private var workspace: WorkspaceDocument
+    @EnvironmentObject private var workspace: WorkspaceDocument
 
-    @ObservedObject
-    private var extensionManager = ExtensionManager.shared
+    @ObservedObject private var extensionManager = ExtensionManager.shared
 
-    @EnvironmentObject
-    private var tabManager: TabManager
+    @EnvironmentObject private var tabManager: TabManager
 
     @AppSettings(\.general.inspectorTabBarPosition)
     var sidebarPosition: SettingsData.SidebarTabBarPosition
 
-    @State
-    private var selection: InspectorTab? = .file
+    @State private var selection: InspectorTab? = .file
 
     private var items: [InspectorTab] {
         [

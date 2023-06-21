@@ -11,16 +11,13 @@ struct FindNavigatorSearchBar: View {
     @Environment(\.colorScheme)
     var colorScheme
 
-    @ObservedObject
-    private var state: WorkspaceDocument.SearchState
+    @ObservedObject private var state: WorkspaceDocument.SearchState
 
-    @FocusState
-    private var isFocused: Bool
+    @FocusState private var isFocused: Bool
 
     private let title: String
 
-    @Binding
-    private var text: String
+    @Binding private var text: String
 
     @Environment(\.controlActiveState)
     private var controlActive

@@ -13,17 +13,13 @@ struct CommandPaletteView: View {
     @Environment(\.colorScheme)
     private var colorScheme: ColorScheme
 
-    @ObservedObject
-    private var state: CommandPaletteViewModel
+    @ObservedObject private var state: CommandPaletteViewModel
 
-    @ObservedObject
-    private var commandManager: CommandManager = .shared
+    @ObservedObject private var commandManager: CommandManager = .shared
 
-    @State
-    private var monitor: Any?
+    @State private var monitor: Any?
 
-    @State
-    private var selectedItem: Command?
+    @State private var selectedItem: Command?
 
     private let closePalette: () -> Void
 

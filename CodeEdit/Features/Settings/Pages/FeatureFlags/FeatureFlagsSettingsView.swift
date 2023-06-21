@@ -9,7 +9,8 @@ import SwiftUI
 
 struct FeatureFlagsSettingsView: View {
 
-    @AppSettings(\.featureFlags.useNewWindowingSystem) var useNewWindowingSystem
+    @AppSettings(\.featureFlags.useNewWindowingSystem)
+    var useNewWindowingSystem
 
     var body: some View {
         Form {

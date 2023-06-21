@@ -13,36 +13,29 @@ struct WorkspaceView: View {
     let tabBarHeight = 28.0
     private var path: String = ""
 
-    @EnvironmentObject
-    private var workspace: WorkspaceDocument
+    @EnvironmentObject private var workspace: WorkspaceDocument
 
-    @EnvironmentObject
-    private var tabManager: TabManager
+    @EnvironmentObject private var tabManager: TabManager
 
-    @EnvironmentObject
-    private var debugAreaModel: DebugAreaViewModel
+    @EnvironmentObject private var debugAreaModel: DebugAreaViewModel
 
     private var keybindings: KeybindingManager =  .shared
 
-    @State
-    private var showingAlert = false
+    @State private var showingAlert = false
 
     @Environment(\.colorScheme)
     private var colorScheme
 
-    @AppSettings(\.theme.matchAppearance) var matchAppearance
+    @AppSettings(\.theme.matchAppearance)
+    var matchAppearance
 
-    @StateObject
-    private var themeModel: ThemeModel = .shared
+    @StateObject private var themeModel: ThemeModel = .shared
 
-    @State
-    private var terminalCollapsed = true
+    @State private var terminalCollapsed = true
 
-    @State
-    private var editorCollapsed = false
+    @State private var editorCollapsed = false
 
-    @FocusState
-    var focusedEditor: TabGroupData?
+    @FocusState var focusedEditor: TabGroupData?
 
     var body: some View {
         if workspace.workspaceFileManager != nil {

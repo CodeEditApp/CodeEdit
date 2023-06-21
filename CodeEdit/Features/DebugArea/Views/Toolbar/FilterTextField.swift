@@ -10,11 +10,9 @@ import SwiftUI
 struct FilterTextField: View {
     let title: String
 
-    @Binding
-    var text: String
+    @Binding var text: String
 
-    @FocusState
-    private var isFocused: Bool
+    @FocusState private var isFocused: Bool
 
     var body: some View {
         HStack(spacing: 5) {

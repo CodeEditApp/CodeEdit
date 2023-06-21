@@ -12,12 +12,10 @@ import OrderedCollections
 
 class TabManager: ObservableObject {
     /// Collection of all the tabgroups.
-    @Published
-    var tabGroups: TabGroup
+    @Published var tabGroups: TabGroup
 
     /// The TabGroup with active focus.
-    @Published
-    var activeTabGroup: TabGroupData {
+    @Published var activeTabGroup: TabGroupData {
         didSet {
             activeTabGroupHistory.prepend { [weak oldValue] in oldValue }
             switchToActiveTabGroup()

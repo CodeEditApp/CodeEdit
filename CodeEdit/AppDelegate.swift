@@ -207,7 +207,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 
     // MARK: NSDocumentController delegate
 
-    @objc func documentController(_ docController: NSDocumentController, didCloseAll: Bool, contextInfo: Any) {
+    @objc
+    func documentController(_ docController: NSDocumentController, didCloseAll: Bool, contextInfo: Any) {
         NSApplication.shared.reply(toApplicationShouldTerminate: didCloseAll)
     }
 }

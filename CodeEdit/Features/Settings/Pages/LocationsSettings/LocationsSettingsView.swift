@@ -22,8 +22,7 @@ struct LocationsSettingsView: View {
 }
 
 private extension LocationsSettingsView {
-    @ViewBuilder
-    private var applicationSupportLocation: some View {
+    @ViewBuilder private var applicationSupportLocation: some View {
         ExternalLink(destination: Settings.shared.baseURL) {
             Text("Application Support")
             Text(Settings.shared.baseURL.path)

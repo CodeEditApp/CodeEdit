@@ -9,14 +9,11 @@ import SwiftUI
 
  struct SourceControlNavigatorChangedFileView: View {
 
-     @State
-     var changedFile: GitChangedFile
+     @State var changedFile: GitChangedFile
 
-     @Binding
-     var selection: GitChangedFile.ID?
+     @Binding var selection: GitChangedFile.ID?
 
-     @State
-     var workspaceURL: URL
+     @State var workspaceURL: URL
 
      var body: some View {
          HStack {

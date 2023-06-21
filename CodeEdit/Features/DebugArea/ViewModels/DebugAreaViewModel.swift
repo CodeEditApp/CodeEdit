@@ -18,38 +18,29 @@ class DebugAreaViewModel: ObservableObject {
         = "\(String(describing: DebugAreaViewModel.self))-DebugAreaViewHeight"
 
     /// Returns the current location of the cursor in an editing view
-    @Published
-    var cursorLocation: CursorLocation = .init(line: 1, column: 1) // Implementation needed!!
+    @Published var cursorLocation: CursorLocation = .init(line: 1, column: 1) // Implementation needed!!
 
-    @Published
-    var terminals: [DebugAreaTerminal] = []
+    @Published var terminals: [DebugAreaTerminal] = []
 
-    @Published
-    var selectedTerminals: Set<DebugAreaTerminal.ID> = []
+    @Published var selectedTerminals: Set<DebugAreaTerminal.ID> = []
 
     /// Indicates whether debugger is collapse or not
-    @Published
-    var isCollapsed: Bool = false
+    @Published var isCollapsed: Bool = false
 
     /// Returns true when the drawer is visible
-    @Published
-    var isMaximized: Bool = false
+    @Published var isMaximized: Bool = false
 
     /// The current height of the drawer. Zero if hidden
-    @Published
-    var currentHeight: Double = 0
+    @Published var currentHeight: Double = 0
 
     /// Indicates whether the drawer is being resized or not
-    @Published
-    var isDragging: Bool = false
+    @Published var isDragging: Bool = false
 
     /// Indicates whether the breakpoint is enabled or not
-    @Published
-    var isBreakpointEnabled: Bool = true
+    @Published var isBreakpointEnabled: Bool = true
 
     /// Search value to filter in drawer
-    @Published
-    var searchText: String = ""
+    @Published var searchText: String = ""
 
     /// Returns the font for status bar items to use
     private(set) var toolbarFont: Font = .system(size: 11, weight: .medium)

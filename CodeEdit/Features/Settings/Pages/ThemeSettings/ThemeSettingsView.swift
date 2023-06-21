@@ -9,10 +9,13 @@ import SwiftUI
 
 /// A view that implements the `Theme` preference section
 struct ThemeSettingsView: View {
-    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.colorScheme)
+    var colorScheme
     @ObservedObject private var themeModel: ThemeModel = .shared
-    @AppSettings(\.theme) var settings
-    @AppSettings(\.terminal.darkAppearance) var useDarkTerminalAppearance
+    @AppSettings(\.theme)
+    var settings
+    @AppSettings(\.terminal.darkAppearance)
+    var useDarkTerminalAppearance
 
     @State private var listView: Bool = false
     @State private var selectedAppearance: ThemeSettingsAppearances = .dark

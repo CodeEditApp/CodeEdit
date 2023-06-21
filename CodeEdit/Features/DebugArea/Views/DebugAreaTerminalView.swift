@@ -26,30 +26,27 @@ struct DebugAreaTerminal: Identifiable, Equatable {
 }
 
 struct DebugAreaTerminalView: View {
-    @AppSettings(\.theme.matchAppearance) private var matchAppearance
-    @AppSettings(\.terminal.darkAppearance) private var darkAppearance
-    @AppSettings(\.theme.useThemeBackground) private var useThemeBackground
+    @AppSettings(\.theme.matchAppearance)
+    private var matchAppearance
+    @AppSettings(\.terminal.darkAppearance)
+    private var darkAppearance
+    @AppSettings(\.theme.useThemeBackground)
+    private var useThemeBackground
 
     @Environment(\.colorScheme)
     private var colorScheme
 
-    @EnvironmentObject
-    private var workspace: WorkspaceDocument
+    @EnvironmentObject private var workspace: WorkspaceDocument
 
-    @EnvironmentObject
-    private var model: DebugAreaViewModel
+    @EnvironmentObject private var model: DebugAreaViewModel
 
-    @State
-    private var sidebarIsCollapsed = false
+    @State private var sidebarIsCollapsed = false
 
-    @StateObject
-    private var themeModel: ThemeModel = .shared
+    @StateObject private var themeModel: ThemeModel = .shared
 
-    @State
-    private var isMenuVisible = false
+    @State private var isMenuVisible = false
 
-    @State
-    private var popoverSource: CGRect = .zero
+    @State private var popoverSource: CGRect = .zero
 
     private func initializeTerminals() {
         let id = UUID()

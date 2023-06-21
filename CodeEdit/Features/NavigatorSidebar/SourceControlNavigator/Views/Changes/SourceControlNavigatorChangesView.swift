@@ -9,11 +9,9 @@ import SwiftUI
 
 struct SourceControlNavigatorChangesView: View {
 
-    @ObservedObject
-    var model: SourceControlModel
+    @ObservedObject var model: SourceControlModel
 
-    @State
-    var selectedFile: GitChangedFile.ID?
+    @State var selectedFile: GitChangedFile.ID?
 
     /// Initialize with GitClient
     /// - Parameter gitClient: a GitClient
