@@ -21,7 +21,7 @@ struct InspectorSidebarView: View {
     var sidebarPosition: SettingsData.SidebarTabBarPosition
 
     @State
-    private var selection: InspectorTab? = .quickhelp
+    private var selection: InspectorTab? = .file
 
     var path: String? {
         tabManager.activeTabGroup.selected?.document?.fileURL?.path(percentEncoded: false)
@@ -39,8 +39,11 @@ struct InspectorSidebarView: View {
     }
 
     private var items: [InspectorTab] {
-        fileTreeAndGitHistory + [InspectorTab.quickhelp] +
-        extensionManager
+        [
+            .file,
+            .gitHistory
+        ]
+        + extensionManager
             .extensions
             .map { ext in
                 ext.availableFeatures.compactMap {

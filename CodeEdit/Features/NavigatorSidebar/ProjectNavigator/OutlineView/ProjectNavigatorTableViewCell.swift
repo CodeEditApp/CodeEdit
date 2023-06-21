@@ -59,7 +59,7 @@ final class ProjectNavigatorTableViewCell: FileSystemTableViewCell {
 //                .appendingPathComponent(label?.stringValue ?? "")
 //            delegate?.moveFile(file: fileItem, to: destinationURL)
 //        } else {
-//            label?.stringValue = fileItem.name
+//            label?.stringValue = fileItem.labelFileName()
 //        }
     }
 }

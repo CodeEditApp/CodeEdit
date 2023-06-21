@@ -49,8 +49,8 @@ class FileSystemTableViewCell: StandardTableViewCell {
         fileItem = item
         icon.image = image
         icon.contentTintColor = color(for: item)
-        toolTip = label(for: item)
-        label.stringValue = label(for: item)
+        toolTip = item.labelFileName()
+        label.stringValue = item.labelFileName()
     }
 
     func addModel() {
@@ -113,28 +113,17 @@ class FileSystemTableViewCell: StandardTableViewCell {
 let errorRed = NSColor(red: 1, green: 0, blue: 0, alpha: 0.2)
 extension FileSystemTableViewCell: NSTextFieldDelegate {
     func controlTextDidChange(_ obj: Notification) {
-        label.backgroundColor = validateFileName(for: label?.stringValue ?? "") ? .none : errorRed
+        label.backgroundColor = fileItem.validateFileName(for: label?.stringValue ?? "") ? .none : errorRed
     }
     func controlTextDidEndEditing(_ obj: Notification) {
-        label.backgroundColor = validateFileName(for: label?.stringValue ?? "") ? .none : errorRed
+        label.backgroundColor = fileItem.validateFileName(for: label?.stringValue ?? "") ? .none : errorRed
         // FIXME: 
 //        if validateFileName(for: label?.stringValue ?? "") {
 //            fileItem.move(to: fileItem.url.deletingLastPathComponent()
 //                .appendingPathComponent(label?.stringValue ?? ""))
 //        } else {
-//            label?.stringValue = label(for: fileItem)
+//            label?.stringValue = fileItem.labelFileName()
 //        }
-    }
-
-    func validateFileName(for newName: String) -> Bool {
-        guard newName != label(for: fileItem) else { return true }
-
-        guard !newName.isEmpty && newName.isValidFilename &&
-                !FileManager.default.fileExists(atPath:
-                    fileItem.url.deletingLastPathComponent().appendingPathComponent(newName).path)
-        else { return false }
-
-        return true
     }
 }
 

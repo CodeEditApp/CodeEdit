@@ -10,9 +10,8 @@ import CodeEditKit
 import ExtensionFoundation
 
 enum InspectorTab: AreaTab {
-    case file(workspaceURL: URL, fileURL: String)
-    case gitHistory(workspaceURL: URL, fileURL: String)
-    case quickhelp
+    case file
+    case gitHistory
     case uiExtension(endpoint: AppExtensionIdentity, data: ResolvedSidebar.SidebarStore)
 
     var systemImage: String {
@@ -21,8 +20,6 @@ enum InspectorTab: AreaTab {
             return "doc"
         case .gitHistory:
             return "clock"
-        case .quickhelp:
-            return "questionmark.circle"
         case .uiExtension(_, let data):
             return data.icon ?? "e.square"
         }
@@ -41,8 +38,6 @@ enum InspectorTab: AreaTab {
             return "File Inspector"
         case .gitHistory:
             return "History Inspector"
-        case .quickhelp:
-            return "Quick Help Inspector"
         case .uiExtension(_, let data):
             return data.help ?? data.sceneID
         }
@@ -50,12 +45,10 @@ enum InspectorTab: AreaTab {
 
     var body: some View {
         switch self {
-        case let .file(workspaceURL, fileURL):
-            FileInspectorView(workspaceURL: workspaceURL, fileURL: fileURL)
-        case let .gitHistory(workspaceURL, fileURL):
-            HistoryInspectorView(workspaceURL: workspaceURL, fileURL: fileURL)
-        case .quickhelp:
-            QuickHelpInspectorView().padding(5)
+        case .file:
+            FileInspectorView()
+        case .gitHistory:
+            HistoryInspectorView()
         case let .uiExtension(endpoint, data):
             ExtensionSceneView(with: endpoint, sceneID: data.sceneID)
         }
