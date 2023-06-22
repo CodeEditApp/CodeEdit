@@ -356,10 +356,18 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
         } else {
             let visibleRect = scrollView.contentView.visibleRect
             let visibleRows = outlineView.rows(in: visibleRect)
-            guard !visibleRows.contains(row) else { return }
+            guard !visibleRows.contains(row) else {
+                /// in case that the selected file is not fully visible (some parts are out of the visible rect),
+                /// `scrollRowToVisible(_:)` method brings the file where it can be fully visible.
+                outlineView.scrollRowToVisible(row)
+                return
+            }
             let rowRect = outlineView.rect(ofRow: row)
             let centerY = rowRect.midY - (visibleRect.height / 2)
             let center = NSPoint(x: 0, y: centerY)
+            /// `scroll(_:)` method alone doesn't bring the selected file to the center in some cases.
+            /// calling `scrollRowToVisible(_:)` method before it makes the file reveal in the center more correctly.
+            outlineView.scrollRowToVisible(row)
             outlineView.scroll(center)
         }
     }
