@@ -138,7 +138,7 @@ private extension TextEditingSettingsView {
     @ViewBuilder private var bracketPairHighlight: some View {
         Group {
             Picker(
-                "Braket Pair Highlight",
+                "Bracket Pair Highlight",
                 selection: $textEditing.bracketHighlight.highlightType
             ) {
                 Text("Disabled").tag(SettingsData.TextEditingSettings.BracketPairHighlight.HighlightType.disabled)
@@ -150,7 +150,7 @@ private extension TextEditingSettingsView {
             if [.bordered, .underline].contains(textEditing.bracketHighlight.highlightType) {
                 Toggle("Use Custom Color", isOn: $textEditing.bracketHighlight.useCustomColor)
                 SettingsColorPicker(
-                    "Braket Pair Highlight Color",
+                    "Bracket Pair Highlight Color",
                     color: $textEditing.bracketHighlight.color.swiftColor
                 )
                 .foregroundColor(
