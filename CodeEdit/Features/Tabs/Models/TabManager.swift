@@ -5,20 +5,20 @@
 //  Created by Wouter Hennen on 03/03/2023.
 //
 
+import Combine
 import Foundation
-import OrderedCollections
 import DequeModule
+import OrderedCollections
 
 class TabManager: ObservableObject {
     /// Collection of all the tabgroups.
-    @Published
-    var tabGroups: TabGroup
+    @Published var tabGroups: TabGroup
 
     /// The TabGroup with active focus.
-    @Published
-    var activeTabGroup: TabGroupData {
+    @Published var activeTabGroup: TabGroupData {
         didSet {
             activeTabGroupHistory.prepend { [weak oldValue] in oldValue }
+            switchToActiveTabGroup()
         }
     }
 
@@ -27,11 +27,16 @@ class TabManager: ObservableObject {
 
     var fileDocuments: [CEWorkspaceFile: CodeFileDocument] = [:]
 
+    /// notify listeners whenever tab selection changes on the active tab group.
+    var tabBarItemIdSubject = PassthroughSubject<String?, Never>()
+    var cancellable: AnyCancellable?
+
     init() {
         let tab = TabGroupData()
         self.activeTabGroup = tab
         self.activeTabGroupHistory.prepend { [weak tab] in tab }
         self.tabGroups = .horizontal(.init(.horizontal, tabgroups: [.one(tab)]))
+        switchToActiveTabGroup()
     }
 
     /// Flattens the splitviews.
@@ -48,5 +53,15 @@ class TabManager: ObservableObject {
     func openTab(item: CEWorkspaceFile, in tabgroup: TabGroupData? = nil) {
         let tabgroup = tabgroup ?? activeTabGroup
         tabgroup.openTab(item: item)
+    }
+
+    /// bind active tap group to listen to file selection changes.
+    func switchToActiveTabGroup() {
+        cancellable?.cancel()
+        cancellable = nil
+        cancellable = activeTabGroup.$selected
+            .sink { [weak self] tab in
+                self?.tabBarItemIdSubject.send(tab?.id)
+            }
     }
 }

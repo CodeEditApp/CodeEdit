@@ -11,15 +11,9 @@ import Combine
 /// Wraps an ``OutlineViewController`` inside a `NSViewControllerRepresentable`
 struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
 
-    @EnvironmentObject
-    var workspace: WorkspaceDocument
+    @EnvironmentObject var workspace: WorkspaceDocument
 
-    @StateObject
-    var prefs: Settings = .shared
-
-    // This is mainly just used to trigger a view update.
-    @Binding
-    var selection: CEWorkspaceFile?
+    @StateObject var prefs: Settings = .shared
 
     typealias NSViewControllerType = ProjectNavigatorViewController
 
@@ -29,6 +23,7 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
         controller.iconColor = prefs.preferences.general.fileIconStyle
         workspace.workspaceFileManager?.onRefresh = {
             controller.outlineView.reloadData()
+            controller.updateSelection(itemID: workspace.tabManager.activeTabGroup.selected?.id)
         }
 
         context.coordinator.controller = controller
@@ -42,7 +37,8 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
         nsViewController.fileExtensionsVisibility = prefs.preferences.general.fileExtensionsVisibility
         nsViewController.shownFileExtensions = prefs.preferences.general.shownFileExtensions
         nsViewController.hiddenFileExtensions = prefs.preferences.general.hiddenFileExtensions
-        nsViewController.updateSelection()
+        /// if the window becomes active from background, it will restore the selection to outline view.
+        nsViewController.updateSelection(itemID: workspace.tabManager.activeTabGroup.selected?.id)
         return
     }
 
@@ -55,21 +51,24 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
             self.workspace = workspace
             super.init()
 
-            listener = workspace.listenerModel.$highlightedFileItem
+            workspace.listenerModel.$highlightedFileItem
                 .sink(receiveValue: { [weak self] fileItem in
-                guard let fileItem else {
-                    return
+                    guard let fileItem else {
+                        return
+                    }
+                    self?.controller?.reveal(fileItem)
+                })
+                .store(in: &cancellables)
+            workspace.tabManager.tabBarItemIdSubject
+                .sink { [weak self] itemID in
+                    self?.controller?.updateSelection(itemID: itemID)
                 }
-                self?.controller?.reveal(fileItem)
-            })
+                .store(in: &cancellables)
         }
 
-        var listener: AnyCancellable?
+        var cancellables: Set<AnyCancellable> = []
         var workspace: WorkspaceDocument
         var controller: ProjectNavigatorViewController?
 
-        deinit {
-            listener?.cancel()
-        }
     }
 }

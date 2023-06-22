@@ -9,9 +9,7 @@ import Foundation
 import AppKit
 
 extension NSSplitViewItem {
-
-    @objc
-    fileprivate var canCollapseSwizzled: Bool {
+    @objc fileprivate var canCollapseSwizzled: Bool {
         if let check = self.viewController.view.window?.isSettingsWindow, check {
             return false
         }

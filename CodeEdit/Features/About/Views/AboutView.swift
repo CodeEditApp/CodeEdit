@@ -14,9 +14,12 @@ enum AboutMode: String, CaseIterable {
 }
 
 public struct AboutView: View {
-    @Environment(\.openURL) private var openURL
-    @Environment(\.colorScheme) private var colorScheme
-    @Environment(\.dismiss) private var dismiss
+    @Environment(\.openURL)
+    private var openURL
+    @Environment(\.colorScheme)
+    private var colorScheme
+    @Environment(\.dismiss)
+    private var dismiss
 
     @State var aboutMode: AboutMode = .about
 

@@ -24,7 +24,8 @@ struct HistoryInspectorItemView: View {
         }
     }
 
-    @Environment(\.openURL) private var openCommit
+    @Environment(\.openURL)
+    private var openCommit
 
     init(commit: GitCommit, selection: Binding<GitCommit?>) {
         self.commit = commit

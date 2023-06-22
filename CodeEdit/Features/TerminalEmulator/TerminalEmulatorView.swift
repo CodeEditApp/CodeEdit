@@ -16,16 +16,16 @@ import SwiftTerm
 /// for use in SwiftUI.
 ///
 struct TerminalEmulatorView: NSViewRepresentable {
-    @AppSettings(\.terminal) var terminalSettings
-    @AppSettings(\.textEditing.font) var fontSettings
+    @AppSettings(\.terminal)
+    var terminalSettings
+    @AppSettings(\.textEditing.font)
+    var fontSettings
 
-    @StateObject
-    private var themeModel: ThemeModel = .shared
+    @StateObject private var themeModel: ThemeModel = .shared
 
     static var lastTerminal: [String: LocalProcessTerminalView] = [:]
 
-    @State
-    var terminal: LocalProcessTerminalView
+    @State var terminal: LocalProcessTerminalView
 
     private let systemFont: NSFont = .monospacedSystemFont(ofSize: 11, weight: .medium)
 
@@ -51,8 +51,14 @@ struct TerminalEmulatorView: NSViewRepresentable {
 
     private var url: URL
 
-    init(url: URL) {
+    public var shellType: String
+
+    public var onTitleChange: (_ title: String) -> Void
+
+    init(url: URL, shellType: String? = nil, onTitleChange: @escaping (_ title: String) -> Void) {
         self.url = url
+        self.shellType = shellType ?? ""
+        self.onTitleChange = onTitleChange
         self._terminal = State(initialValue: TerminalEmulatorView.lastTerminal[url.path] ?? .init(frame: .zero))
     }
 
@@ -73,6 +79,9 @@ struct TerminalEmulatorView: NSViewRepresentable {
     ///    return String(cString: pwd.pw_shell)
     /// ```
     private func getShell() -> String {
+        if shellType != ""{
+            return shellType
+        }
         switch terminalSettings.shell {
         case .system:
             return autoDetectDefaultShell()
@@ -81,6 +90,15 @@ struct TerminalEmulatorView: NSViewRepresentable {
         case .zsh:
             return "/bin/zsh"
         }
+    }
+
+    private func setupShellTitle(shell: String) {
+        if let shellSetupScript = Bundle.main.url(forResource: "codeedit_shell_integration", withExtension: shell) {
+            let scriptPath = (shellSetupScript.absoluteString[7..<shellSetupScript.absoluteString.count]) ?? ""
+            terminal.send(txt: "source \(scriptPath)\n")
+        }
+
+        terminal.send(txt: "clear\n")
     }
 
     private func getTerminalCursor() -> CursorStyle {
@@ -186,7 +204,9 @@ struct TerminalEmulatorView: NSViewRepresentable {
         terminal.getTerminal().silentLog = true
         if TerminalEmulatorView.lastTerminal[url.path] == nil {
             let shell = getShell()
-            let shellIdiom = "-" + NSString(string: shell).lastPathComponent
+            let shellName = NSString(string: shell).lastPathComponent
+            onTitleChange(shellName)
+            let shellIdiom = "-" + shellName
 
             // changes working directory to project root
             // TODO: Get rid of FileManager shared instance to prevent problems
@@ -205,6 +225,8 @@ struct TerminalEmulatorView: NSViewRepresentable {
             terminal.cursorStyleChanged(source: terminal.getTerminal(), newStyle: getTerminalCursor())
             terminal.layer?.backgroundColor = .clear
             terminal.optionAsMetaKey = optionAsMeta
+
+            setupShellTitle(shell: shellName)
         }
         terminal.appearance = colorAppearance
         scroller?.isHidden = true
@@ -242,6 +264,6 @@ struct TerminalEmulatorView: NSViewRepresentable {
     }
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(url: url)
+        Coordinator(url: url, onTitleChange: onTitleChange)
     }
 }

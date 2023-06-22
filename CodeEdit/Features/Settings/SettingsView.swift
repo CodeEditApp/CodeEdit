@@ -13,22 +13,24 @@ import Introspect
 /// A struct for settings
 struct SettingsView: View {
     @StateObject var model = SettingsViewModel()
-    @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.colorScheme)
+    private var colorScheme
 
     /// An array of navigationItem(s)
     private static let pages: [SettingsPage] = [
         .init(.general, baseColor: .gray, icon: .system("gear")),
         .init(.accounts, baseColor: .blue, icon: .system("at")),
-        .init(.behavior, baseColor: .red, icon: .system("flowchart.fill")),
-        .init(.navigation, baseColor: .green, icon: .system("arrow.triangle.turn.up.right.diamond.fill")),
+//        .init(.behaviors, baseColor: .red, icon: .system("flowchart.fill")),
+//        .init(.navigation, baseColor: .green, icon: .system("arrow.triangle.turn.up.right.diamond.fill")),
         .init(.theme, baseColor: .pink, icon: .system("paintbrush.fill")),
         .init(.textEditing, baseColor: .blue, icon: .system("pencil.line")),
         .init(.terminal, baseColor: .blue, icon: .system("terminal.fill")),
-        .init(.keybindings, baseColor: .gray, icon: .system("keyboard.fill")),
+//        .init(.keybindings, baseColor: .gray, icon: .system("keyboard.fill")),
         .init(.sourceControl, baseColor: .blue, icon: .symbol("vault")),
-        .init(.components, baseColor: .blue, icon: .system("puzzlepiece.fill")),
+//        .init(.components, baseColor: .blue, icon: .system("puzzlepiece.fill")),
         .init(.location, baseColor: .green, icon: .system("externaldrive.fill")),
-        .init(.advanced, baseColor: .gray, icon: .system("gearshape.2.fill"))
+        .init(.featureFlags, baseColor: .cyan, icon: .system("flag.2.crossed.fill"))
+//        .init(.advanced, baseColor: .gray, icon: .system("gearshape.2.fill"))
     ]
 
     /// Variables for the selected Page, the current search text and software updater
@@ -37,7 +39,8 @@ struct SettingsView: View {
 
     @ObservedObject private var settings: Settings = .shared
 
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.presentationMode)
+    var presentationMode
 
     let updater: SoftwareUpdater
 
@@ -76,6 +79,8 @@ struct SettingsView: View {
                     SourceControlSettingsView()
                 case .location:
                     LocationsSettingsView()
+                case .featureFlags:
+                    FeatureFlagsSettingsView()
                 default:
                     Text("Implementation Needed").frame(alignment: .center)
                 }
@@ -99,7 +104,6 @@ struct SettingsView: View {
             }
         }
         .environmentObject(model)
-        .environment(\.settings, settings.preferences)
     }
 }
 

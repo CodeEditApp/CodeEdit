@@ -8,11 +8,9 @@
 import SwiftUI
 
 struct FindNavigatorModeSelector: View {
-    @ObservedObject
-    private var state: WorkspaceDocument.SearchState
+    @ObservedObject private var state: WorkspaceDocument.SearchState
 
-    @State
-    private var selectedMode: [SearchModeModel] {
+    @State private var selectedMode: [SearchModeModel] {
         didSet {
             // sync the variables, as selectedMode is an array
             // and cannot be synced directly with @ObservedObject

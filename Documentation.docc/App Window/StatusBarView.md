@@ -20,7 +20,7 @@
 
 ### Drawer
 
-- ``StatusBarDrawer``
+- ``DebugAreaView``
 - ``StatusBarSplitTerminalButton``
 - ``StatusBarMaximizeButton``
 - ``StatusBarClearButton``

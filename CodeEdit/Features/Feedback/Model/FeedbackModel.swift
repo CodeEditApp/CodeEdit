@@ -13,43 +13,37 @@ public class FeedbackModel: ObservableObject {
 
     private let keychain = CodeEditKeychain()
 
-    @Environment(\.openURL) var openIssueURL
+    @Environment(\.openURL)
+    var openIssueURL
 
-    @Published
-    var isSubmitted: Bool = false
-    @Published
-    var failedToSubmit: Bool = false
-    @Published
-    var feedbackTitle: String = ""
-    @Published
-    var issueDescription: String = ""
-    @Published
-    var stepsReproduceDescription: String = ""
-    @Published
-    var expectationDescription: String = ""
-    @Published
-    var whatHappenedDescription: String = ""
-    @Published
-    var issueAreaListSelection: FeedbackIssueArea.ID = "none"
-    @Published
-    var feedbackTypeListSelection: FeedbackType.ID = "none"
+    @Published var isSubmitted: Bool = false
+    @Published var failedToSubmit: Bool = false
+    @Published var feedbackTitle: String = ""
+    @Published var issueDescription: String = ""
+    @Published var stepsReproduceDescription: String = ""
+    @Published var expectationDescription: String = ""
+    @Published var whatHappenedDescription: String = ""
+    @Published var issueAreaListSelection: FeedbackIssueArea.ID = "none"
+    @Published var feedbackTypeListSelection: FeedbackType.ID = "none"
 
-    @Published
-    var feedbackTypeList = [FeedbackType(name: "Choose...", id: "none"),
-                            FeedbackType(name: "Incorrect/Unexpected Behaviour", id: "behaviour"),
-                            FeedbackType(name: "Application Crash", id: "crash"),
-                            FeedbackType(name: "Application Slow/Unresponsive", id: "unresponsive"),
-                            FeedbackType(name: "Suggestion", id: "suggestions"),
-                            FeedbackType(name: "Other", id: "other")]
+    @Published var feedbackTypeList = [
+        FeedbackType(name: "Choose...", id: "none"),
+        FeedbackType(name: "Incorrect/Unexpected Behaviour", id: "behaviour"),
+        FeedbackType(name: "Application Crash", id: "crash"),
+        FeedbackType(name: "Application Slow/Unresponsive", id: "unresponsive"),
+        FeedbackType(name: "Suggestion", id: "suggestions"),
+        FeedbackType(name: "Other", id: "other")
+    ]
 
-    @Published
-    var issueAreaList = [FeedbackIssueArea(name: "Please select the problem area", id: "none"),
-                         FeedbackIssueArea(name: "Project Navigator", id: "projectNavigator"),
-                         FeedbackIssueArea(name: "Extensions", id: "extensions"),
-                         FeedbackIssueArea(name: "Git", id: "git"),
-                         FeedbackIssueArea(name: "Debugger", id: "debugger"),
-                         FeedbackIssueArea(name: "Editor", id: "editor"),
-                         FeedbackIssueArea(name: "Other", id: "other")]
+    @Published var issueAreaList = [
+        FeedbackIssueArea(name: "Please select the problem area", id: "none"),
+        FeedbackIssueArea(name: "Project Navigator", id: "projectNavigator"),
+        FeedbackIssueArea(name: "Extensions", id: "extensions"),
+        FeedbackIssueArea(name: "Git", id: "git"),
+        FeedbackIssueArea(name: "Debugger", id: "debugger"),
+        FeedbackIssueArea(name: "Editor", id: "editor"),
+        FeedbackIssueArea(name: "Other", id: "other")
+    ]
 
     /// Gets the ID of the selected issue type and then
     /// cross references it to select the right Label based on the type

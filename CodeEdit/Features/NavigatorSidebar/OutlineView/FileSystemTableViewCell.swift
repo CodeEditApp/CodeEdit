@@ -52,8 +52,8 @@ class FileSystemTableViewCell: StandardTableViewCell {
         fileItem = item
         icon.image = image
         icon.contentTintColor = color(for: item)
-        toolTip = label(for: item)
-        label.stringValue = label(for: item)
+        toolTip = item.labelFileName()
+        label.stringValue = item.labelFileName()
     }
 
     func addModel() {
@@ -88,22 +88,6 @@ class FileSystemTableViewCell: StandardTableViewCell {
         }
     }
 
-    /// Generates a string based on user's file name preferences.
-    /// - Parameter item: The FileItem to generate the name for.
-    /// - Returns: A `String` with the name to display.
-    func label(for item: CEWorkspaceFile) -> String {
-        switch prefs.fileExtensionsVisibility {
-        case .hideAll:
-            return item.fileName(typeHidden: true)
-        case .showAll:
-            return item.fileName(typeHidden: false)
-        case .showOnly:
-            return item.fileName(typeHidden: !prefs.shownFileExtensions.extensions.contains(item.type.rawValue))
-        case .hideOnly:
-            return item.fileName(typeHidden: prefs.hiddenFileExtensions.extensions.contains(item.type.rawValue))
-        }
-    }
-
     /// Get the appropriate color for the items icon depending on the users preferences.
     /// - Parameter item: The `FileItem` to get the color for
     /// - Returns: A `NSColor` for the given `FileItem`.
@@ -119,27 +103,16 @@ class FileSystemTableViewCell: StandardTableViewCell {
 let errorRed = NSColor(red: 1, green: 0, blue: 0, alpha: 0.2)
 extension FileSystemTableViewCell: NSTextFieldDelegate {
     func controlTextDidChange(_ obj: Notification) {
-        label.backgroundColor = validateFileName(for: label?.stringValue ?? "") ? .none : errorRed
+        label.backgroundColor = fileItem.validateFileName(for: label?.stringValue ?? "") ? .none : errorRed
     }
     func controlTextDidEndEditing(_ obj: Notification) {
-        label.backgroundColor = validateFileName(for: label?.stringValue ?? "") ? .none : errorRed
-        if validateFileName(for: label?.stringValue ?? "") {
+        label.backgroundColor = fileItem.validateFileName(for: label?.stringValue ?? "") ? .none : errorRed
+        if fileItem.validateFileName(for: label?.stringValue ?? "") {
             fileItem.move(to: fileItem.url.deletingLastPathComponent()
                 .appendingPathComponent(label?.stringValue ?? ""))
         } else {
-            label?.stringValue = label(for: fileItem)
+            label?.stringValue = fileItem.labelFileName()
         }
-    }
-
-    func validateFileName(for newName: String) -> Bool {
-        guard newName != label(for: fileItem) else { return true }
-
-        guard !newName.isEmpty && newName.isValidFilename &&
-                !FileManager.default.fileExists(atPath:
-                    fileItem.url.deletingLastPathComponent().appendingPathComponent(newName).path)
-        else { return false }
-
-        return true
     }
 }
 

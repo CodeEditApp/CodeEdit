@@ -1,12 +1,30 @@
 {
   "pins" : [
     {
+      "identity" : "anycodable",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Flight-School/AnyCodable",
+      "state" : {
+        "revision" : "862808b2070cd908cb04f9aafe7de83d35f81b05",
+        "version" : "0.6.7"
+      }
+    },
+    {
+      "identity" : "codeeditkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/CodeEditApp/CodeEditKit",
+      "state" : {
+        "revision" : "9ba3343ac53eb66a213a0a525604e297d8584a45",
+        "version" : "0.1.0"
+      }
+    },
+    {
       "identity" : "codeeditlanguages",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CodeEditApp/CodeEditLanguages.git",
       "state" : {
-        "revision" : "08cb9dc04e70d1e7b9610580794ed4da774c2b84",
-        "version" : "0.1.13"
+        "revision" : "aa7d922b2aa783ae6f2a1a2cb7010ae62b700e17",
+        "version" : "0.1.16"
       }
     },
     {
@@ -21,10 +39,109 @@
     {
       "identity" : "codeedittextview",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/CodeEditApp/CodeEditTextView.git",
+      "location" : "https://github.com/CodeEditApp/CodeEditTextView",
       "state" : {
-        "revision" : "045bd359ef9c4addf2a5bf51e22ba660d69c5d10",
-        "version" : "0.6.2"
+        "revision" : "cc28ae52c8083c313b650784706e339b727646d9",
+        "version" : "0.6.6"
+      }
+    },
+    {
+      "identity" : "collectionconcurrencykit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/johnsundell/collectionconcurrencykit",
+      "state" : {
+        "revision" : "b4f23e24b5a1bff301efc5e70871083ca029ff95",
+        "version" : "0.2.0"
+      }
+    },
+    {
+      "identity" : "concurrencyplus",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ChimeHQ/ConcurrencyPlus",
+      "state" : {
+        "revision" : "8dc56499412a373d617d50d059116bccf44b9874",
+        "version" : "0.4.2"
+      }
+    },
+    {
+      "identity" : "fseventswrapper",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Frizlab/FSEventsWrapper",
+      "state" : {
+        "revision" : "e0c59a2ce2775e5f6642da6d19207445f10112d0",
+        "version" : "1.0.2"
+      }
+    },
+    {
+      "identity" : "glob",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Bouke/Glob",
+      "state" : {
+        "revision" : "deda6e163d2ff2a8d7e138e2c3326dbd71157faf",
+        "version" : "1.0.5"
+      }
+    },
+    {
+      "identity" : "grdb.swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/groue/GRDB.swift.git",
+      "state" : {
+        "revision" : "dd7e7f39e8e4d7a22d258d9809a882f914690b01",
+        "version" : "5.26.1"
+      }
+    },
+    {
+      "identity" : "jsonrpc",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ChimeHQ/JSONRPC",
+      "state" : {
+        "revision" : "aa785ad404bdcf7ec692908b3905dd4c87e87141",
+        "version" : "0.7.1"
+      }
+    },
+    {
+      "identity" : "languageclient",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ChimeHQ/LanguageClient",
+      "state" : {
+        "revision" : "92beeecd0bb783da52227839ba6c55e43fc866ec",
+        "version" : "0.5.1"
+      }
+    },
+    {
+      "identity" : "languageserverprotocol",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ChimeHQ/LanguageServerProtocol",
+      "state" : {
+        "revision" : "cae01173f45b0518ae5533b083edd153633af984",
+        "version" : "0.9.2"
+      }
+    },
+    {
+      "identity" : "logstream",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/CodeEditApp/LogStream",
+      "state" : {
+        "revision" : "afd2422c65c12822f26606408b4e39b9549c5e1a",
+        "version" : "1.2.1"
+      }
+    },
+    {
+      "identity" : "processenv",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ChimeHQ/ProcessEnv",
+      "state" : {
+        "revision" : "29487b6581bb785c372c611c943541ef4309d051",
+        "version" : "0.3.1"
+      }
+    },
+    {
+      "identity" : "processservice",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ChimeHQ/ProcessService",
+      "state" : {
+        "revision" : "369fb0379983d3b43c7d7ad62c4e91ee020e347c",
+        "version" : "0.2.6"
       }
     },
     {
@@ -50,8 +167,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/krzyzanowskim/STTextView.git",
       "state" : {
-        "revision" : "a0135973aca7fb11a2de7164e85dc1f46a16297a",
-        "version" : "0.6.1"
+        "revision" : "5abb0867a3882b7687218b0b69d8264de59f4a05",
+        "version" : "0.6.7"
       }
     },
     {
@@ -77,8 +194,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/lukepistrol/SwiftLintPlugin",
       "state" : {
-        "revision" : "f69b412a765396d44dc9f4788a5b79919c1ca9e3",
-        "version" : "0.2.2"
+        "revision" : "d3ec7fb242ebe1d8e23bf17e58a1e27d43125994",
+        "version" : "0.2.6"
       }
     },
     {
@@ -104,8 +221,17 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/siteline/SwiftUI-Introspect",
       "state" : {
-        "revision" : "5b3f3996c7a2a84d5f4ba0e03cd7d584154778f2",
-        "version" : "0.3.1"
+        "revision" : "84196bab1c7f05ad8c3c2a5bfb3058b1211e189f",
+        "version" : "0.6.1"
+      }
+    },
+    {
+      "identity" : "swiftui-windowmanagement",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Wouter01/SwiftUI-WindowManagement",
+      "state" : {
+        "revision" : "03642ad06a3aa51e8284eb22146a208269cdc1ca",
+        "version" : "2.1.0"
       }
     },
     {

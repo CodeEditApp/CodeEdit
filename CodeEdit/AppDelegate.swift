@@ -168,7 +168,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     // MARK: - Open With CodeEdit (Extension) functions
     private func checkForFilesToOpen() {
         guard let defaults = UserDefaults.init(
-            suiteName: "austincondiff.CodeEdit.shared"
+            suiteName: "app.codeedit.CodeEdit.shared"
         ) else {
             print("Failed to get/init shared defaults")
             return
@@ -207,7 +207,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 
     // MARK: NSDocumentController delegate
 
-    @objc func documentController(_ docController: NSDocumentController, didCloseAll: Bool, contextInfo: Any) {
+    @objc
+    func documentController(_ docController: NSDocumentController, didCloseAll: Bool, contextInfo: Any) {
         NSApplication.shared.reply(toApplicationShouldTerminate: didCloseAll)
     }
 }

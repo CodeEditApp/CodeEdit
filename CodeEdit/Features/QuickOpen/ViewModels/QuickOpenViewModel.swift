@@ -10,18 +10,15 @@ import Foundation
 
 final class QuickOpenViewModel: ObservableObject {
 
-    @Published
-    var openQuicklyQuery: String = ""
+    @Published var openQuicklyQuery: String = ""
 
-    @Published
-    var openQuicklyFiles: [CEWorkspaceFile] = []
+    @Published var openQuicklyFiles: [CEWorkspaceFile] = []
 
-    @Published
-    var isShowingOpenQuicklyFiles: Bool = false
+    @Published var isShowingOpenQuicklyFiles: Bool = false
 
     let fileURL: URL
 
-    private let queue = DispatchQueue(label: "austincondiff.CodeEdit.quickOpen.searchFiles")
+    private let queue = DispatchQueue(label: "app.codeedit.CodeEdit.quickOpen.searchFiles")
 
     init(fileURL: URL) {
         self.fileURL = fileURL
@@ -42,24 +39,28 @@ final class QuickOpenViewModel: ObservableObject {
                     .isRegularFileKey
                 ],
                 options: [
-                    .skipsHiddenFiles,
                     .skipsPackageDescendants
                 ]
             )
             if let filePaths = enumerator?.allObjects as? [URL] {
-                let files = filePaths.filter { url in
-                    let state1 = url.lastPathComponent.lowercased().contains(self.openQuicklyQuery.lowercased())
+                /// removes all filePaths which aren't regular files
+                let filteredFiles = filePaths.filter { url in
                     do {
                         let values = try url.resourceValues(forKeys: [.isRegularFileKey])
-                        return state1 && (values.isRegularFile ?? false)
+                        return (values.isRegularFile ?? false)
                     } catch {
                         return false
                     }
-                }.map { url in
-                    CEWorkspaceFile(url: url, children: nil)
                 }
+
+                /// sorts the filtered filePaths with the FuzzySearch
+                let orderedFiles = FuzzySearch.search(query: self.openQuicklyQuery, in: filteredFiles)
+                    .map { url in
+                        CEWorkspaceFile(url: url, children: nil)
+                    }
+
                 DispatchQueue.main.async {
-                    self.openQuicklyFiles = files
+                    self.openQuicklyFiles = orderedFiles
                     self.isShowingOpenQuicklyFiles = !self.openQuicklyFiles.isEmpty
                 }
             }

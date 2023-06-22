@@ -29,17 +29,20 @@ import SwiftUI
 struct ExternalLink<Content: View, Icon: View>: View {
     let title: String?
     let subtitle: String?
+    let showInFinder: Bool
     let destination: URL
     let icon: (() -> Icon)?
     let content: () -> Content
 
     init(
         _ title: String,
+        showInFinder: Bool = false,
         destination: URL,
         subtitle: String? = nil,
         icon: (() -> Icon)? = nil
     ) where Content == EmptyView, Icon == EmptyView {
         self.title = title
+        self.showInFinder = showInFinder
         self.subtitle = subtitle
         self.destination = destination
         self.icon = icon
@@ -47,12 +50,14 @@ struct ExternalLink<Content: View, Icon: View>: View {
     }
 
     init(
+        showInFinder: Bool = false,
         destination: URL,
         @ViewBuilder content: @escaping () -> Content,
         title: String? = nil,
         subtitle: String? = nil,
         @ViewBuilder icon: @escaping() -> Icon = { EmptyView() }
     ) {
+        self.showInFinder = showInFinder
         self.title = title
         self.subtitle = subtitle
         self.destination = destination
@@ -61,7 +66,13 @@ struct ExternalLink<Content: View, Icon: View>: View {
     }
 
     var body: some View {
-        Button(action: { NSWorkspace.shared.open(destination) }, label: {
+        Button(action: {
+            if showInFinder {
+                NSWorkspace.shared.activateFileViewerSelecting([destination])
+            } else {
+                NSWorkspace.shared.open(destination)
+            }
+        }, label: {
             HStack(spacing: 8) {
                 icon?()
                 VStack(alignment: .leading, spacing: 2) {

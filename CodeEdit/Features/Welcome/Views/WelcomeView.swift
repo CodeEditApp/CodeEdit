@@ -13,22 +13,18 @@ struct WelcomeView: View {
     @Environment(\.colorScheme)
     var colorScheme
 
-    @AppSettings(\.general.reopenBehavior) var reopenBehavior
+    @AppSettings(\.general.reopenBehavior)
+    var reopenBehavior
 
-    @State
-    private var repoPath = "~/"
+    @State private var repoPath = "~/"
 
-    @State
-    var showGitClone = false
+    @State var showGitClone = false
 
-    @State
-    var showCheckoutBranch = false
+    @State var showCheckoutBranch = false
 
-    @State
-    var isHovering: Bool = false
+    @State var isHovering: Bool = false
 
-    @State
-    var isHoveringCloseButton: Bool = false
+    @State var isHoveringCloseButton: Bool = false
 
     private let openDocument: (URL?, @escaping () -> Void) -> Void
     private let newDocument: () -> Void

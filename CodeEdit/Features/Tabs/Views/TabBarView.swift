@@ -33,84 +33,71 @@ struct TabBarView: View {
     private var activeState
 
     /// The workspace document.
-    @EnvironmentObject
-    private var workspace: WorkspaceDocument
+    @EnvironmentObject private var workspace: WorkspaceDocument
 
-    @EnvironmentObject
-    private var tabManager: TabManager
+    @EnvironmentObject private var tabManager: TabManager
 
-    @EnvironmentObject
-    private var tabgroup: TabGroupData
+    @EnvironmentObject private var tabgroup: TabGroupData
 
-    @AppSettings(\.general.tabBarStyle) var tabBarStyle
+    @AppSettings(\.general.tabBarStyle)
+    var tabBarStyle
 
     /// The tab id of current dragging tab.
     ///
     /// It will be `nil` when there is no tab dragged currently.
-    @State
-    private var draggingTabId: TabID?
+    @State private var draggingTabId: TabID?
 
-    @State
-    private var onDragTabId: TabID?
+    @State private var onDragTabId: TabID?
 
     /// The start location of dragging.
     ///
     /// When there is no tab being dragged, it will be `nil`.
     /// - TODO: Check if I can use `value.startLocation` trustfully.
-    @State
-    private var draggingStartLocation: CGFloat?
+    @State private var draggingStartLocation: CGFloat?
 
     /// The last location of dragging.
     ///
     /// This is used to determine the dragging direction.
     /// - TODO: Check if I can use `value.translation` instead.
-    @State
-    private var draggingLastLocation: CGFloat?
+    @State private var draggingLastLocation: CGFloat?
 
     /// Current opened tabs.
     ///
     /// This is a copy of `workspace.selectionState.openedTabs`.
     /// I am making a copy of it because using state will hugely improve the dragging performance.
     /// Updating ObservedObject too often will generate lags.
-    @State
-    private var openedTabs: [TabID] = []
+    @State private var openedTabs: [TabID] = []
 
     /// A map of tab width.
     ///
     /// All width are measured dynamically (so it can also fit the Xcode tab bar style).
     /// This is used to be added on the offset of current dragging tab in order to make a smooth
     /// dragging experience.
-    @State
-    private var tabWidth: [TabID: CGFloat] = [:]
+    @State private var tabWidth: [TabID: CGFloat] = [:]
 
     /// A map of tab location (CGRect).
     ///
     /// All locations are measured dynamically.
     /// This is used to compute when we should swap two tabs based on current cursor location.
-    @State
-    private var tabLocations: [TabID: CGRect] = [:]
+    @State private var tabLocations: [TabID: CGRect] = [:]
 
     /// A map of tab offsets.
     ///
     /// This is used to determine the tab offset of every tab (by their tab id) while dragging.
-    @State
-    private var tabOffsets: [TabID: CGFloat] = [:]
+    @State private var tabOffsets: [TabID: CGFloat] = [:]
 
     /// The expected tab width in native tab bar style.
     ///
     /// This is computed by the total width of tab bar. It is updated automatically.
-    @State
-    private var expectedTabWidth: CGFloat = 0
+    @State private var expectedTabWidth: CGFloat = 0
 
     /// This state is used to detect if the mouse is hovering over tabs.
     /// If it is true, then we do not update the expected tab width immediately.
-    @State
-    private var isHoveringOverTabs: Bool = false
+    @State private var isHoveringOverTabs: Bool = false
 
     /// This state is used to detect if the dragging type should be changed from DragGesture to OnDrag.
     /// It is basically switched when vertical displacement is exceeding the threshold.
-    @State
-    private var shouldOnDrag: Bool = false
+    @State private var shouldOnDrag: Bool = false
 
     /// Is current `onDrag` over tabs?
     ///
@@ -118,17 +105,14 @@ struct TabBarView: View {
     /// When it is false, then the dragging cursor is outside the tab bar, then we should shrink the space.
     ///
     /// - TODO: The change of this state is overall incorrect. Should move it into workspace state.
-    @State
-    private var isOnDragOverTabs: Bool = false
+    @State private var isOnDragOverTabs: Bool = false
 
     /// The last location of `onDrag`.
     ///
     /// It can be used on reordering algorithm of `onDrag` (detecting when should we switch two tabs).
-    @State
-    private var onDragLastLocation: CGPoint?
+    @State private var onDragLastLocation: CGPoint?
 
-    @State
-    private var closeButtonGestureActive: Bool = false
+    @State private var closeButtonGestureActive: Bool = false
 
     /// Update the expected tab width when corresponding UI state is updated.
     ///
@@ -486,7 +470,7 @@ struct TabBarView: View {
                         )
                 } primaryAction: {
                     tabManager.activeTabGroup = tabgroup
-                    tabgroup.historyOffset += 1
+                    tabgroup.goBackInHistory()
                 }
                 .disabled(tabgroup.historyOffset == tabgroup.history.count-1 || tabgroup.history.isEmpty)
                 .help("Navigate back")
@@ -512,7 +496,7 @@ struct TabBarView: View {
                         .opacity(tabgroup.historyOffset == 0 ? 0.5 : 1.0)
                 } primaryAction: {
                     tabManager.activeTabGroup = tabgroup
-                    tabgroup.historyOffset -= 1
+                    tabgroup.goForwardInHistory()
                 }
                 .disabled(tabgroup.historyOffset == 0)
                 .help("Navigate forward")
@@ -537,23 +521,9 @@ struct TabBarView: View {
 
     private var trailingAccessories: some View {
         HStack(spacing: 2) {
-            TabBarAccessoryIcon(
-                icon: .init(systemName: "ellipsis.circle"),
-                action: {} // TODO: Implement
-            )
-            .foregroundColor(.secondary)
-            .buttonStyle(.plain)
-            .help("Options")
-            TabBarAccessoryIcon(
-                icon: .init(systemName: "arrow.left.arrow.right.square"),
-                action: {} // TODO: Implement
-            )
-            .foregroundColor(.secondary)
-            .buttonStyle(.plain)
-            .help("Enable Code Review")
             splitviewButton
         }
-        .padding(.horizontal, 5)
+        .padding(.horizontal, 10)
         .opacity(activeState != .inactive ? 1.0 : 0.5)
         .frame(maxHeight: .infinity) // Fill out vertical spaces.
         .background {
@@ -567,14 +537,18 @@ struct TabBarView: View {
         Group {
             switch (tabgroup.parent?.axis, modifierKeys.contains(.option)) {
             case (.horizontal, true), (.vertical, false):
-                TabBarAccessoryIcon(icon: Image(systemName: "square.split.1x2")) {
+                Button {
                     split(edge: .bottom)
+                } label: {
+                    Image(systemName: "square.split.1x2")
                 }
                 .help("Split Vertically")
 
             case (.vertical, true), (.horizontal, false):
-                TabBarAccessoryIcon(icon: Image(systemName: "square.split.2x1")) {
+                Button {
                     split(edge: .trailing)
+                } label: {
+                    Image(systemName: "square.split.2x1")
                 }
                 .help("Split Horizontally")
 
@@ -582,8 +556,7 @@ struct TabBarView: View {
                 EmptyView()
             }
         }
-        .foregroundColor(.secondary)
-        .buttonStyle(.plain)
+        .buttonStyle(.icon)
     }
 
     func split(edge: Edge) {
@@ -599,16 +572,11 @@ struct TabBarView: View {
 
     private struct TabBarItemOnDropDelegate: DropDelegate {
         private let currentTabId: TabID
-        @Binding
-        private var openedTabs: [TabID]
-        @Binding
-        private var onDragTabId: TabID?
-        @Binding
-        private var onDragLastLocation: CGPoint?
-        @Binding
-        private var isOnDragOverTabs: Bool
-        @Binding
-        private var tabWidth: [TabID: CGFloat]
+        @Binding private var openedTabs: [TabID]
+        @Binding private var onDragTabId: TabID?
+        @Binding private var onDragLastLocation: CGPoint?
+        @Binding private var isOnDragOverTabs: Bool
+        @Binding private var tabWidth: [TabID: CGFloat]
 
         public init(
             currentTabId: TabID,

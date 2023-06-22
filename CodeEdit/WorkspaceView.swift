@@ -13,60 +13,68 @@ struct WorkspaceView: View {
     let tabBarHeight = 28.0
     private var path: String = ""
 
-    @EnvironmentObject
-    private var workspace: WorkspaceDocument
+    @EnvironmentObject private var workspace: WorkspaceDocument
 
-    @EnvironmentObject
-    private var tabManager: TabManager
+    @EnvironmentObject private var tabManager: TabManager
 
-    @Environment(\.window)
-    private var window
+    @EnvironmentObject private var debugAreaModel: DebugAreaViewModel
 
     private var keybindings: KeybindingManager =  .shared
 
-    @State
-    private var showingAlert = false
+    @State private var showingAlert = false
 
     @Environment(\.colorScheme)
     private var colorScheme
 
-    @State
-    private var terminalCollapsed = true
+    @AppSettings(\.theme.matchAppearance)
+    var matchAppearance
 
-    @FocusState
-    var focusedEditor: TabGroupData?
+    @StateObject private var themeModel: ThemeModel = .shared
+
+    @State private var terminalCollapsed = true
+
+    @State private var editorCollapsed = false
+
+    @FocusState var focusedEditor: TabGroupData?
 
     var body: some View {
         if workspace.workspaceFileManager != nil {
             VStack {
                 SplitViewReader { proxy in
                     SplitView(axis: .vertical) {
-
                         EditorView(tabgroup: tabManager.tabGroups, focus: $focusedEditor)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            .holdingPriority(.init(10))
-                            .safeAreaInset(edge: .bottom, spacing: 0) {
-                                StatusBarView(proxy: proxy, collapsed: $terminalCollapsed)
-                            }
-
-                        StatusBarDrawer()
                             .collapsable()
-                            .collapsed($terminalCollapsed)
-                            .holdingPriority(.init(20))
-                            .frame(minHeight: 200, maxHeight: 400)
-
+                            .collapsed($debugAreaModel.isMaximized)
+                            .frame(minHeight: 170 + 29 + 29)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .holdingPriority(.init(1))
+                            .safeAreaInset(edge: .bottom, spacing: 0) {
+                                StatusBarView(proxy: proxy)
+                            }
+                        DebugAreaView()
+                            .collapsable()
+                            .collapsed($debugAreaModel.isCollapsed)
+                            .frame(idealHeight: 260)
+                            .frame(minHeight: 100)
                     }
                     .edgesIgnoringSafeArea(.top)
-                    .environmentObject(workspace.statusBarModel)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .onChange(of: focusedEditor) { newValue in
-                        if let newValue {
+                        /// update active tab group only if the new one is not the same with it.
+                        if let newValue, tabManager.activeTabGroup != newValue {
                             tabManager.activeTabGroup = newValue
                         }
                     }
                     .onChange(of: tabManager.activeTabGroup) { newValue in
                         if newValue != focusedEditor {
                             focusedEditor = newValue
+                        }
+                    }
+                    .onChange(of: colorScheme) { newValue in
+                        if matchAppearance {
+                            themeModel.selectedTheme = newValue == .dark
+                            ? themeModel.selectedDarkTheme
+                            : themeModel.selectedLightTheme
                         }
                     }
                 }

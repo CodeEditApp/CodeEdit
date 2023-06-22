@@ -15,8 +15,7 @@ struct SourceControlSearchToolbar: View {
     @Environment(\.controlActiveState)
     private var controlActive
 
-    @State
-    private var text = ""
+    @State private var text = ""
 
     var body: some View {
         HStack {

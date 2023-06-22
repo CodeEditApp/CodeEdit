@@ -171,6 +171,34 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, TabBar
         typeHidden ? url.deletingPathExtension().lastPathComponent : name
     }
 
+    /// Generates a string based on user's file name preferences.
+    /// - Returns: A `String` suitable for display.
+    func labelFileName() -> String {
+        let prefs = Settings.shared.preferences.general
+        switch prefs.fileExtensionsVisibility {
+        case .hideAll:
+            return self.fileName(typeHidden: true)
+        case .showAll:
+            return self.fileName(typeHidden: false)
+        case .showOnly:
+            return self.fileName(typeHidden: !prefs.shownFileExtensions.extensions.contains(self.type.rawValue))
+        case .hideOnly:
+            return self.fileName(typeHidden: prefs.hiddenFileExtensions.extensions.contains(self.type.rawValue))
+        }
+    }
+
+    func validateFileName(for newName: String) -> Bool {
+        guard newName != labelFileName() else { return true }
+
+        guard !newName.isEmpty && newName.isValidFilename &&
+                !FileManager.default.fileExists(
+                    atPath: self.url.deletingLastPathComponent().appendingPathComponent(newName).path
+                )
+        else { return false }
+
+        return true
+    }
+
     // MARK: Statics
     /// The default `FileManager` instance
     static let fileManager = FileManager.default

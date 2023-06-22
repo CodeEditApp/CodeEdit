@@ -23,16 +23,16 @@ struct WelcomeWindow: Scene {
                         window.isMovableByWindowBackground = true
                     }
                 }
-                .environment(\.settings, settings.preferences)
         }
         .windowStyle(.hiddenTitleBar)
-        .keyboardShortcut("1", modifiers: [.command, .shift])
         .windowResizability(.contentSize)
     }
 
     struct ContentView: View {
-        @Environment(\.dismiss) var dismiss
-        @Environment(\.openWindow) var openWindow
+        @Environment(\.dismiss)
+        var dismiss
+        @Environment(\.openWindow)
+        var openWindow
 
         var body: some View {
             WelcomeWindowView(shellClient: currentWorld.shellClient) { url, opened in

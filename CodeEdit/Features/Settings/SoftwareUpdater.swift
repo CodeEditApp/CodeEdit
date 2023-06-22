@@ -13,18 +13,15 @@ class SoftwareUpdater: NSObject, ObservableObject, SPUUpdaterDelegate {
     private var automaticallyChecksForUpdatesObservation: NSKeyValueObservation?
     private var lastUpdateCheckDateObservation: NSKeyValueObservation?
 
-    @Published
-    var automaticallyChecksForUpdates = false {
+    @Published var automaticallyChecksForUpdates = false {
         didSet {
             updater?.automaticallyChecksForUpdates = automaticallyChecksForUpdates
         }
     }
 
-    @Published
-    var lastUpdateCheckDate: Date?
+    @Published var lastUpdateCheckDate: Date?
 
-    @Published
-    var includePrereleaseVersions = false {
+    @Published var includePrereleaseVersions = false {
         didSet {
             UserDefaults.standard.setValue(includePrereleaseVersions, forKey: "includePrereleaseVersions")
         }

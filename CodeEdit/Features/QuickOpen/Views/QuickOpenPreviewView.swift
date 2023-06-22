@@ -9,11 +9,10 @@ import SwiftUI
 
 struct QuickOpenPreviewView: View {
 
-    private let queue = DispatchQueue(label: "austincondiff.CodeEdit.quickOpen.preview")
+    private let queue = DispatchQueue(label: "app.codeedit.CodeEdit.quickOpen.preview")
     private let item: CEWorkspaceFile
 
-    @ObservedObject
-    var document: CodeFileDocument
+    @ObservedObject var document: CodeFileDocument
 
     init(
         item: CEWorkspaceFile

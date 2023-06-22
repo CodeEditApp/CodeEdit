@@ -59,7 +59,7 @@ jobs:
         run: |
           REV=$(git rev-parse --short HEAD)
           echo "REV=$REV" >> $GITHUB_ENV
-          codesign --sign "$CODESIGN_SIGN" -vvv --verbose --strict --options=runtime --prefix austincondiff.CodeEdit. --force --deep --timestamp "$RUNNER_TEMP/CodeEdit.xcarchive/Products/Applications/CodeEdit.app"
+          codesign --sign "$CODESIGN_SIGN" -vvv --verbose --strict --options=runtime --prefix app.codeedit.CodeEdit. --force --deep --timestamp "$RUNNER_TEMP/CodeEdit.xcarchive/Products/Applications/CodeEdit.app"
 
       ############################
       # DMG & Notarize
@@ -86,6 +86,7 @@ jobs:
             --app-drop-link 600 185 \
             --codesign "$CODESIGN_SIGN" \
             --notarize "CodeEdit" \
+            --skip-jenkins \
             "$RUNNER_TEMP/CodeEdit-$REV.dmg" \
             "$RUNNER_TEMP/CodeEdit.xcarchive/Products/Applications/"
           security lock-keychain
@@ -117,7 +118,7 @@ jobs:
           APP_VERSION: ${{ env.APP_VERSION }}
           APP_BUILD: ${{ env.APP_BUILD }}
         run: |
-          SPARKLE_BIN="$RUNNER_TEMP/DerivedData/SourcePackages/artifacts/sparkle/bin"
+          SPARKLE_BIN="$RUNNER_TEMP/DerivedData/SourcePackages/artifacts/sparkle/Sparkle/bin"
           SPARKLE_ARCHIVE="$RUNNER_TEMP/Sparkle_Archive"
           echo -n "$SPARKLE_KEY" | tee "$RUNNER_TEMP/sparkle_key"
           mkdir "$SPARKLE_ARCHIVE"

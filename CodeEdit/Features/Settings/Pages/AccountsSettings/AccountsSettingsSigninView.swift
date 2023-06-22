@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct AccountsSettingsSigninView: View {
-    @Environment(\.dismiss) var dismiss
-    @Environment(\.openURL) var createToken
+    @Environment(\.dismiss)
+    var dismiss
+    @Environment(\.openURL)
+    var createToken
 
     var provider: SourceControlAccount.Provider
     @Binding var addAccountSheetPresented: Bool
@@ -26,7 +28,8 @@ struct AccountsSettingsSigninView: View {
     @State var signinErrorAlertIsPresented: Bool = false
     @State var signinErrorDetail: String = ""
 
-    @AppSettings(\.accounts.sourceControlAccounts.gitAccounts) var gitAccounts
+    @AppSettings(\.accounts.sourceControlAccounts.gitAccounts)
+    var gitAccounts
 
     private let keychain = CodeEditKeychain()
 

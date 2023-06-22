@@ -43,6 +43,9 @@ struct SettingsData: Codable, Hashable {
     /// The global settings for keybindings
     var keybindings: KeybindingsSettings = .init()
 
+    /// Featureflags settings
+    var featureFlags: FeatureFlagsSettings = .init()
+
     /// Default initializer
     init() {}
 
@@ -59,5 +62,6 @@ struct SettingsData: Codable, Hashable {
             forKey: .sourceControl
         ) ?? .init()
         self.keybindings = try container.decodeIfPresent(KeybindingsSettings.self, forKey: .keybindings) ?? .init()
+        self.featureFlags = try container.decodeIfPresent(FeatureFlagsSettings.self, forKey: .featureFlags) ?? .init()
     }
 }

@@ -11,11 +11,13 @@ import SwiftTerm
 extension TerminalEmulatorView {
     final class Coordinator: NSObject, LocalProcessTerminalViewDelegate {
 
-        @State
-        private var url: URL
+        @State private var url: URL
 
-        init(url: URL) {
+        public var onTitleChange: (_ title: String) -> Void
+
+        init(url: URL, onTitleChange: @escaping (_ title: String) -> Void) {
             self._url = .init(wrappedValue: url)
+            self.onTitleChange = onTitleChange
             super.init()
         }
 
@@ -23,7 +25,9 @@ extension TerminalEmulatorView {
 
         func sizeChanged(source: LocalProcessTerminalView, newCols: Int, newRows: Int) {}
 
-        func setTerminalTitle(source: LocalProcessTerminalView, title: String) {}
+        func setTerminalTitle(source: LocalProcessTerminalView, title: String) {
+            onTitleChange(title)
+        }
 
         func processTerminated(source: TerminalView, exitCode: Int32?) {
             guard let exitCode else {

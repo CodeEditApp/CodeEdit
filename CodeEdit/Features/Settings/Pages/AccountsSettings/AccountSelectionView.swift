@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct AccountSelectionView: View {
-    @Environment(\.dismiss) var dismiss
+    @Environment(\.dismiss)
+    var dismiss
 
     @Binding var selectedProvider: SourceControlAccount.Provider?
 

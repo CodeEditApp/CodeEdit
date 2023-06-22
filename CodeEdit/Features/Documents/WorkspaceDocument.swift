@@ -9,8 +9,10 @@ import Foundation
 import AppKit
 import SwiftUI
 import Combine
+import WindowManagement
 
-@objc(WorkspaceDocument) final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
+@objc(WorkspaceDocument)
+final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
 
     @Published var sortFoldersOnTop: Bool = true
 
@@ -33,15 +35,11 @@ import Combine
         didSet { workspaceFileManager?.onRefresh() }
     }
 
-    var statusBarModel = StatusBarViewModel()
+    var debugAreaModel = DebugAreaViewModel()
     var searchState: SearchState?
     var quickOpenViewModel: QuickOpenViewModel?
     var commandsPaletteState: CommandPaletteViewModel?
     var listenerModel: WorkspaceNotificationModel = .init()
-
-    override init() {
-        super.init()
-    }
 
     private var cancellables = Set<AnyCancellable>()
     private let openTabsStateName: String = "\(String(describing: WorkspaceDocument.self))-OpenTabs"
@@ -76,22 +74,28 @@ import Combine
     }
 
     override func makeWindowControllers() {
-        let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 800, height: 600),
-            styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
-            backing: .buffered, defer: false
-        )
-        window.center()
-        window.minSize = .init(width: 1000, height: 600)
-        let windowController = CodeEditWindowController(
-            window: window,
-            workspace: self
-        )
+        if Settings[\.featureFlags.useNewWindowingSystem] {
+            let window = NSApp.openDocument(self)
+            if let windowController = window?.windowController {
+                self.addWindowController(windowController)
+            }
+        } else {
+            let window = NSWindow(
+                contentRect: NSRect(x: 0, y: 0, width: 800, height: 600),
+                styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
+                backing: .buffered, defer: false
+            )
+            window.center()
+            window.minSize = .init(width: 1000, height: 600)
+            let windowController = CodeEditWindowController(
+                window: window,
+                workspace: self
+            )
 
-        windowController.shouldCascadeWindows = true
-        windowController.window?.setFrameAutosaveName(self.fileURL?.absoluteString ?? "Untitled")
-        self.addWindowController(windowController)
-
+            windowController.shouldCascadeWindows = true
+            windowController.window?.setFrameAutosaveName(self.fileURL?.absoluteString ?? "Untitled")
+            self.addWindowController(windowController)
+        }
         // TODO: Fix restoration
 //        var activeTabID: TabBarItemID?
 //        var activeTabInState = self.getFromWorkspaceState(key: activeTabStateName) as? String ?? ""
@@ -219,7 +223,8 @@ import Combine
     ///      `shouldClose` becomes false if the user selects cancel, otherwise true.
     ///   - contextInfo: The additional info which will be set `shouldClose`.
     ///       `contextInfo` must be `UnsafeMutablePointer<Bool>`.
-    @objc func document(
+    @objc
+    func document(
         _ document: NSDocument,
         shouldClose: Bool,
         contextInfo: UnsafeMutableRawPointer

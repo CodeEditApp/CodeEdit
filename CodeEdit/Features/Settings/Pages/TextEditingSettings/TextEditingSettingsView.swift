@@ -9,11 +9,13 @@ import SwiftUI
 
 /// A view that implements the `Text Editing` settings page
 struct TextEditingSettingsView: View {
-    @AppSettings(\.textEditing) var textEditing
+    @AppSettings(\.textEditing)
+    var textEditing
 
     var body: some View {
         SettingsForm {
             Section {
+                indentOption
                 defaultTabWidth
                 wrapLinesToEditorWidth
             }
@@ -27,20 +29,22 @@ struct TextEditingSettingsView: View {
                 autocompleteBraces
                 enableTypeOverCompletion
             }
+            Section {
+                bracketPairHighlight
+            }
         }
     }
 }
 
 private extension TextEditingSettingsView {
-    @ViewBuilder
-    private var fontSelector: some View {
+    @ViewBuilder private var fontSelector: some View {
         MonospacedFontPicker(title: "Font", selectedFontName: $textEditing.font.name)
             .onChange(of: textEditing.font.name) { fontName in
                 textEditing.font.customFont = fontName != "SF Mono"
             }
     }
 
-    private var fontSizeSelector: some View {
+    @ViewBuilder private var fontSizeSelector: some View {
         Stepper(
             "Font Size",
             value: $textEditing.font.size,
@@ -50,22 +54,22 @@ private extension TextEditingSettingsView {
         )
     }
 
-    private var autocompleteBraces: some View {
+    @ViewBuilder private var autocompleteBraces: some View {
         Toggle(isOn: $textEditing.autocompleteBraces) {
             Text("Autocomplete braces")
             Text("Automatically insert closing braces (\"}\")")
         }
     }
 
-    private var enableTypeOverCompletion: some View {
+    @ViewBuilder private var enableTypeOverCompletion: some View {
         Toggle("Enable type-over completion", isOn: $textEditing.enableTypeOverCompletion)
     }
 
-    private var wrapLinesToEditorWidth: some View {
+    @ViewBuilder private var wrapLinesToEditorWidth: some View {
         Toggle("Wrap lines to editor width", isOn: $textEditing.wrapLinesToEditorWidth)
     }
 
-    private var lineHeight: some View {
+    @ViewBuilder private var lineHeight: some View {
         Stepper(
             "Line Height",
             value: $textEditing.lineHeightMultiple,
@@ -75,24 +79,53 @@ private extension TextEditingSettingsView {
         )
     }
 
-    private var defaultTabWidth: some View {
+    @ViewBuilder private var indentOption: some View {
+        Group {
+            Picker("Prefer Indent Using", selection: $textEditing.indentOption.indentType) {
+                Text("Tabs")
+                    .tag(SettingsData.TextEditingSettings.IndentOption.IndentType.tab)
+                Text("Spaces")
+                    .tag(SettingsData.TextEditingSettings.IndentOption.IndentType.spaces)
+            }
+            if textEditing.indentOption.indentType == .spaces {
+                HStack {
+                    Stepper(
+                        "Indent Width",
+                        value: Binding<Double>(
+                            get: { Double(textEditing.indentOption.spaceCount) },
+                            set: { textEditing.indentOption.spaceCount = Int($0) }
+                        ),
+                        in: 0...10,
+                        step: 1,
+                        format: .number
+                    )
+                    Text("spaces")
+                        .foregroundColor(.secondary)
+                }
+                .help("The number of spaces to insert when the tab key is pressed.")
+            }
+        }
+    }
+
+    @ViewBuilder private var defaultTabWidth: some View {
         HStack(alignment: .top) {
             Stepper(
-                "Default Tab Width",
+                "Tab Width",
                 value: Binding<Double>(
                     get: { Double(textEditing.defaultTabWidth) },
                     set: { textEditing.defaultTabWidth = Int($0) }
                 ),
-                in: 1...8,
+                in: 1...16,
                 step: 1,
                 format: .number
             )
             Text("spaces")
                 .foregroundColor(.secondary)
         }
+        .help("The visual width of tabs.")
     }
 
-    private var letterSpacing: some View {
+    @ViewBuilder private var letterSpacing: some View {
         Stepper(
             "Letter Spacing",
             value: $textEditing.letterSpacing,
@@ -100,5 +133,33 @@ private extension TextEditingSettingsView {
             step: 0.05,
             format: .number
         )
+    }
+
+    @ViewBuilder private var bracketPairHighlight: some View {
+        Group {
+            Picker(
+                "Braket Pair Highlight",
+                selection: $textEditing.bracketHighlight.highlightType
+            ) {
+                Text("Disabled").tag(SettingsData.TextEditingSettings.BracketPairHighlight.HighlightType.disabled)
+                Divider()
+                Text("Bordered").tag(SettingsData.TextEditingSettings.BracketPairHighlight.HighlightType.bordered)
+                Text("Flash").tag(SettingsData.TextEditingSettings.BracketPairHighlight.HighlightType.flash)
+                Text("Underline").tag(SettingsData.TextEditingSettings.BracketPairHighlight.HighlightType.underline)
+            }
+            if [.bordered, .underline].contains(textEditing.bracketHighlight.highlightType) {
+                Toggle("Use Custom Color", isOn: $textEditing.bracketHighlight.useCustomColor)
+                SettingsColorPicker(
+                    "Braket Pair Highlight Color",
+                    color: $textEditing.bracketHighlight.color.swiftColor
+                )
+                .foregroundColor(
+                    textEditing.bracketHighlight.useCustomColor
+                        ? Color(NSColor.labelColor)
+                        : Color(NSColor.secondaryLabelColor)
+                )
+                .disabled(!textEditing.bracketHighlight.useCustomColor)
+            }
+        }
     }
 }

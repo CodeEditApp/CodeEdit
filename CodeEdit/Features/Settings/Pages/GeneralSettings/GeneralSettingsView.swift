@@ -16,13 +16,14 @@ struct GeneralSettingsView: View {
     @EnvironmentObject var updater: SoftwareUpdater
     @FocusState private var focusedField: UUID?
 
-    @AppSettings(\.general) var settings
+    @AppSettings(\.general)
+    var settings
 
     @State private var openInCodeEdit: Bool = true
 
     init() {
         guard let defaults = UserDefaults.init(
-            suiteName: "austincondiff.CodeEdit.shared"
+            suiteName: "app.codeedit.CodeEdit.shared"
         ) else {
             print("Failed to get/init shared defaults")
             return
@@ -351,7 +352,7 @@ private extension GeneralSettingsView {
         Toggle("Show “Open With CodeEdit” option in Finder", isOn: $openInCodeEdit)
             .onChange(of: openInCodeEdit) { newValue in
                 guard let defaults = UserDefaults.init(
-                    suiteName: "austincondiff.CodeEdit.shared"
+                    suiteName: "app.codeedit.CodeEdit.shared"
                 ) else {
                     print("Failed to get/init shared defaults")
                     return
