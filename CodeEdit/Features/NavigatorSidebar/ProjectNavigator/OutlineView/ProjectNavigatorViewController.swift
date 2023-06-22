@@ -86,6 +86,10 @@ final class ProjectNavigatorViewController: NSViewController {
         fatalError()
     }
 
+    @objc func revealFile(_ sender: Any) {
+        updateSelection(itemID: workspace?.tabManager.activeTabGroup.selected?.id)
+    }
+
     /// Updates the selection of the ``outlineView`` whenever it changes.
     ///
     /// Most importantly when the `id` changes from an external view.

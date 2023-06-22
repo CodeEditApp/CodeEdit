@@ -12,7 +12,7 @@ struct NavigateCommands: Commands {
         CommandMenu("Navigate") {
             Group {
                 Button("Reveal in Project Navigator") {
-
+                    NSApp.sendAction(#selector(ProjectNavigatorViewController.revealFile(_:)), to: nil, from: nil)
                 }
                 .keyboardShortcut("j", modifiers: [.shift, .command])
 
