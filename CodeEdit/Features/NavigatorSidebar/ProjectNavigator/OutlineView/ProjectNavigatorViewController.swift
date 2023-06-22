@@ -208,13 +208,13 @@ extension ProjectNavigatorViewController: NSOutlineViewDataSource {
                 return false
             }
 
-            if CEWorkspaceFile.fileManger.fileExists(atPath: destURL.path) {
+            if CEWorkspaceFile.fileManager.fileExists(atPath: destURL.path) {
                 let shouldReplace = replaceFileDialog(fileName: fileItemURL.lastPathComponent)
                 guard shouldReplace else {
                     return false
                 }
                 do {
-                    try CEWorkspaceFile.fileManger.removeItem(at: destURL)
+                    try CEWorkspaceFile.fileManager.removeItem(at: destURL)
                 } catch {
                     fatalError(error.localizedDescription)
                 }

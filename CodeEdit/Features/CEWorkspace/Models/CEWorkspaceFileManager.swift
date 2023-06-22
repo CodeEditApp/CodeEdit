@@ -19,7 +19,6 @@ final class CEWorkspaceFileManager {
     private var isRunning = false
     private var anotherInstanceRan = 0
 
-    private(set) var fileManager = FileManager.default
     private(set) var ignoredFilesAndFolders: [String]
     private(set) var flattenedFileItems: [String: CEWorkspaceFile]
 
@@ -50,7 +49,10 @@ final class CEWorkspaceFileManager {
         }
 
         // workspace fileItem
-        let workspaceFile = CEWorkspaceFile(url: self.folderUrl, children: workspaceFiles)
+        let workspaceFile = CEWorkspaceFile(
+            url: self.folderUrl,
+            children: workspaceFiles.sortItems(foldersOnTop: true)
+        )
         flattenedFileItems[workspaceFile.id] = workspaceFile
         workspaceFiles.forEach { item in
             item.parent = workspaceFile
@@ -74,51 +76,47 @@ final class CEWorkspaceFileManager {
         workspaceFile.watcherCode = { sourceFileItem in
             self.reloadFromWatcher(sourceFileItem: sourceFileItem)
         }
-        reloadFromWatcher(sourceFileItem: workspaceFile)
     }
 
-    /// Recursive loading of files into `FileItem`s
+    /// Recursive loading of files into `CEWorkspaceFile`s
     /// - Parameter url: The URL of the directory to load the items of
-    /// - Returns: `[FileItem]` representing the contents of the directory
+    /// - Returns: `[CEWorkspaceFile]` representing the contents of the directory
     private func loadFiles(fromUrl url: URL) throws -> [CEWorkspaceFile] {
-        let directoryContents = try fileManager.contentsOfDirectory(
-            at: url.resolvingSymlinksInPath(),
-            includingPropertiesForKeys: nil
+        let enumerator = CEWorkspaceFile.fileManager.enumerator(
+            at: url,
+            includingPropertiesForKeys: nil,
+            options: .skipsSubdirectoryDescendants
         )
         var items: [CEWorkspaceFile] = []
 
-        for itemURL in directoryContents {
+        while let itemURL = enumerator?.nextObject() as? URL {
             guard !ignoredFilesAndFolders.contains(itemURL.lastPathComponent) else { continue }
 
-            var isDir: ObjCBool = false
+            var subItems: [CEWorkspaceFile]?
 
-            if fileManager.fileExists(atPath: itemURL.path, isDirectory: &isDir) {
-                var subItems: [CEWorkspaceFile]?
-
-                if isDir.boolValue {
-                    // Recursively fetch subdirectories and files if the path points to a directory
-                    subItems = try loadFiles(fromUrl: itemURL)
-                }
-
-                let newFileItem = CEWorkspaceFile(
-                    url: itemURL,
-                    children: subItems?.sortItems(foldersOnTop: true)
-                )
-
-                // note: watcher code will be applied after the workspaceItem is created
-                newFileItem.watcherCode = { sourceFileItem in
-                    self.reloadFromWatcher(sourceFileItem: sourceFileItem)
-                }
-                subItems?.forEach { $0.parent = newFileItem }
-                items.append(newFileItem)
-                flattenedFileItems[newFileItem.id] = newFileItem
+            if itemURL.hasDirectoryPath {
+                // Recursively fetch subdirectories and files if the path points to a directory
+                subItems = try loadFiles(fromUrl: itemURL)
             }
+
+            let newFileItem = CEWorkspaceFile(
+                url: itemURL,
+                children: subItems?.sortItems(foldersOnTop: true)
+            )
+
+            newFileItem.watcherCode = { sourceFileItem in
+                self.reloadFromWatcher(sourceFileItem: sourceFileItem)
+            }
+
+            subItems?.forEach { $0.parent = newFileItem }
+            items.append(newFileItem)
+            flattenedFileItems[newFileItem.id] = newFileItem
         }
 
         return items
     }
 
-    /// A function that, given a file's path, returns a `FileItem` if it exists
+    /// A function that, given a file's path, returns a `CEWorkspaceFile` if it exists
     /// within the scope of the `FileSystemClient`.
     /// - Parameter id: The file's full path
     /// - Returns: The file item corresponding to the file
@@ -191,18 +189,23 @@ final class CEWorkspaceFileManager {
     }
 
     /// Recursive function similar to `loadFiles`, but creates or deletes children of the
-    /// `FileItem` so that they are accurate with the file system, instead of creating an
+    /// `CEWorkspaceFile` so that they are accurate with the file system, instead of creating an
     /// entirely new `FileItem`, to prevent the `OutlineView` from going crazy with folding.
-    /// - Parameter fileItem: The `FileItem` to correct the children of
+    /// - Parameter fileItem: The `CEWorkspaceFile` to correct the children of
     @discardableResult
     func rebuildFiles(fromItem fileItem: CEWorkspaceFile) throws -> Bool {
         var didChangeSomething = false
 
         // get the actual directory children
-        let directoryContentsUrls = try fileManager.contentsOfDirectory(
-            at: fileItem.url.resolvingSymlinksInPath(),
-            includingPropertiesForKeys: nil
-        )
+        guard let enumerator = CEWorkspaceFile.fileManager.enumerator(
+             at: fileItem.url,
+             includingPropertiesForKeys: nil,
+             options: .skipsSubdirectoryDescendants
+        ) else { return didChangeSomething }
+
+        guard let directoryContentsUrls = enumerator.allObjects as? [URL] else {
+            return didChangeSomething
+        }
 
         // test for deleted children, and remove them from the index
         for oldContent in fileItem.children ?? [] where !directoryContentsUrls.contains(oldContent.url) {
@@ -221,28 +224,25 @@ final class CEWorkspaceFileManager {
             // if the child has already been indexed, continue to the next item.
             guard !(fileItem.children?.map({ $0.url }).contains(newContent) ?? false) else { continue }
 
-            var isDir: ObjCBool = false
-            if fileManager.fileExists(atPath: newContent.path, isDirectory: &isDir) {
-                var subItems: [CEWorkspaceFile]?
+            var subItems: [CEWorkspaceFile]?
 
-                if isDir.boolValue { subItems = try loadFiles(fromUrl: newContent) }
+            if newContent.hasDirectoryPath { subItems = try loadFiles(fromUrl: newContent) }
 
-                let newFileItem = CEWorkspaceFile(
-                    url: newContent,
-                    children: subItems?.sortItems(foldersOnTop: true)
-                )
+            let newFileItem = CEWorkspaceFile(
+                url: newContent,
+                children: subItems?.sortItems(foldersOnTop: true)
+            )
 
-                newFileItem.watcherCode = { sourceFileItem in
-                    self.reloadFromWatcher(sourceFileItem: sourceFileItem)
-                }
-
-                subItems?.forEach { $0.parent = newFileItem }
-
-                newFileItem.parent = fileItem
-                flattenedFileItems[newFileItem.id] = newFileItem
-                fileItem.children?.append(newFileItem)
-                didChangeSomething = true
+            newFileItem.watcherCode = { sourceFileItem in
+                self.reloadFromWatcher(sourceFileItem: sourceFileItem)
             }
+
+            subItems?.forEach { $0.parent = newFileItem }
+
+            newFileItem.parent = fileItem
+            flattenedFileItems[newFileItem.id] = newFileItem
+            fileItem.children?.append(newFileItem)
+            didChangeSomething = true
         }
 
         fileItem.children = fileItem.children?.sortItems(foldersOnTop: true)
@@ -256,5 +256,4 @@ final class CEWorkspaceFileManager {
 
         return didChangeSomething
     }
-
 }

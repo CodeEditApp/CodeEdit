@@ -38,13 +38,16 @@ class FileSystemTableViewCell: StandardTableViewCell {
 
     func addIcon(item: CEWorkspaceFile) {
         var imageName = item.systemImage
-        if item.watcherCode == nil {
-            imageName = "exclamationmark.arrow.triangle.2.circlepath"
+
+        if item.isFolder {
+            if item.watcherCode == nil {
+                imageName = "exclamationmark.arrow.triangle.2.circlepath"
+            } else if item.watcher == nil && !item.activateWatcher() {
+                // watcher failed to activate
+                imageName = "eye.trianglebadge.exclamationmark"
+            }
         }
-        if item.watcher == nil && !item.activateWatcher() {
-            // watcher failed to activate
-            imageName = "eye.trianglebadge.exclamationmark"
-        }
+
         let image = NSImage(systemSymbolName: imageName, accessibilityDescription: nil)!
         fileItem = item
         icon.image = image

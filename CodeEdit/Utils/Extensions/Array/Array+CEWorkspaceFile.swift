@@ -8,7 +8,6 @@
 import Foundation
 
 extension Array where Element == CEWorkspaceFile {
-
     /// Sorts the elements in alphabetical order.
     /// - Parameter foldersOnTop: if set to `true` folders will always be on top of files.
     /// - Returns: A sorted array of ``FileSystemClient/FileSystemClient/FileItem``
@@ -27,6 +26,35 @@ extension Array where Element == CEWorkspaceFile {
         }
     }
 
+    /// Appends file to collection in a sorted way
+    /// - Parameter newFile: The new file to be added
+    /// - Parameter foldersOnTop: if set to `true` folders will always be on top of files.
+    mutating func appendSorted(_ newFile: CEWorkspaceFile, foldersOnTop: Bool) {
+        if newFile.isFolder {
+            var insertionIndex = 0
+
+            if let firstIndex = self.firstIndex(where: { $0.isFolder && $0.name > newFile.name }) {
+                insertionIndex = firstIndex
+            } else if let lastIndex = self.lastIndex(where: { $0.isFolder }) {
+                insertionIndex = lastIndex
+            }
+
+            self.insert(newFile, at: insertionIndex)
+        } else if let firstIndex = self.firstIndex(where: { !$0.isFolder && $0.name > newFile.name }) {
+            self.insert(newFile, at: firstIndex)
+        } else {
+            self.append(newFile)
+        }
+    }
+
+    /// Removes file from collection
+    /// - Parameter file: The new file to be removed
+    mutating func remove(_ file: CEWorkspaceFile) {
+        if let index = self.firstIndex(of: file) {
+            self.remove(at: index)
+        }
+    }
+
 }
 
 extension Array where Element: Hashable {
@@ -39,5 +67,4 @@ extension Array where Element: Hashable {
         let otherSet = Set(other)
         return Array(thisSet.symmetricDifference(otherSet))
     }
-
 }
