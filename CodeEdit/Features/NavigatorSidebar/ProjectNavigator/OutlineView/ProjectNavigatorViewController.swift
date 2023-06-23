@@ -86,21 +86,23 @@ final class ProjectNavigatorViewController: NSViewController {
         fatalError()
     }
 
+    /// Forces to reveal the selected file through the command regardless of the auto reveal setting
     @objc func revealFile(_ sender: Any) {
-        updateSelection(itemID: workspace?.tabManager.activeTabGroup.selected?.id)
+        updateSelection(itemID: workspace?.tabManager.activeTabGroup.selected?.id, forcesReveal: true)
     }
 
     /// Updates the selection of the ``outlineView`` whenever it changes.
     ///
     /// Most importantly when the `id` changes from an external view.
     /// - Parameter itemID: The id of the file or folder.
-    func updateSelection(itemID: String?) {
+    /// - Parameter forcesReveal: The boolean to indicates whether or not it should force to reveal the selected file.
+    func updateSelection(itemID: String?, forcesReveal: Bool = false) {
         guard let itemID else {
             outlineView.deselectRow(outlineView.selectedRow)
             return
         }
 
-        select(by: .codeEditor(itemID), from: content)
+        select(by: .codeEditor(itemID), from: content, forcesReveal: forcesReveal)
     }
 
     /// Expand or collapse the folder on double click
@@ -321,13 +323,13 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
     /// - Parameters:
     ///   - id: the id of the item item
     ///   - collection: the array to search for
-    private func select(by id: TabBarItemID, from collection: [CEWorkspaceFile]) {
+    private func select(by id: TabBarItemID, from collection: [CEWorkspaceFile], forcesReveal: Bool) {
         guard let item = collection.find(by: id) else {
             return
         }
-        // If the user has set "Reveal file on selection change" to on, we need to reveal the item before
-        // selecting the row.
-        if Settings.shared.preferences.general.revealFileOnFocusChange {
+        // If the user has set "Reveal file on selection change" to on or it is forced to reveal,
+        // we need to reveal the item before selecting the row.
+        if Settings.shared.preferences.general.revealFileOnFocusChange || forcesReveal {
            reveal(item)
         }
         let row = outlineView.row(forItem: item)
