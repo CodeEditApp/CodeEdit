@@ -87,7 +87,8 @@ final class ProjectNavigatorViewController: NSViewController {
     }
 
     /// Forces to reveal the selected file through the command regardless of the auto reveal setting
-    @objc func revealFile(_ sender: Any) {
+    @objc
+    func revealFile(_ sender: Any) {
         updateSelection(itemID: workspace?.tabManager.activeTabGroup.selected?.id, forcesReveal: true)
     }
 
@@ -101,7 +102,6 @@ final class ProjectNavigatorViewController: NSViewController {
             outlineView.deselectRow(outlineView.selectedRow)
             return
         }
-
         select(by: .codeEditor(itemID), from: content, forcesReveal: forcesReveal)
     }
 
@@ -249,7 +249,6 @@ extension ProjectNavigatorViewController: NSOutlineViewDataSource {
 }
 
 // MARK: - NSOutlineViewDelegate
-
 extension ProjectNavigatorViewController: NSOutlineViewDelegate {
     func outlineView(
         _ outlineView: NSOutlineView,
@@ -386,31 +385,5 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
             expandParent(item: parent)
         }
         outlineView.expandItem(item)
-    }
-}
-
-// MARK: - NSMenuDelegate
-
-extension ProjectNavigatorViewController: NSMenuDelegate {
-
-    /// Once a menu gets requested by a `right click` setup the menu
-    ///
-    /// If the right click happened outside a row this will result in no menu being shown.
-    /// - Parameter menu: The menu that got requested
-    func menuNeedsUpdate(_ menu: NSMenu) {
-        let row = outlineView.clickedRow
-        guard let menu = menu as? ProjectNavigatorMenu else { return }
-
-        if row == -1 {
-            menu.item = nil
-        } else {
-            if let item = outlineView.item(atRow: row) as? CEWorkspaceFile {
-                menu.item = item
-                menu.workspace = workspace
-            } else {
-                menu.item = nil
-            }
-        }
-        menu.update()
     }
 }
