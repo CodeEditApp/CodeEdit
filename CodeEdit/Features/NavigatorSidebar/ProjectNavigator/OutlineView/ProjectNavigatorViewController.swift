@@ -323,6 +323,7 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
     /// - Parameters:
     ///   - id: the id of the item item
     ///   - collection: the array to search for
+    ///   - forcesReveal: The boolean to indicates whether or not it should force to reveal the selected file.
     private func select(by id: TabBarItemID, from collection: [CEWorkspaceFile], forcesReveal: Bool) {
         guard let item = collection.find(by: id) else {
             return

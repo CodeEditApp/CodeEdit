@@ -20,33 +20,38 @@ struct NavigateCommands: Commands {
 
                 }
                 .keyboardShortcut("m", modifiers: [.shift, .command])
+                .disabled(true)
 
                 Button("Open in Next Editor") {
 
                 }
                 .keyboardShortcut(",", modifiers: [.option, .command])
+                .disabled(true)
 
                 Button("Open in...") {
 
                 }
+                .disabled(true)
 
                 Divider()
 
                 Button("Show Previous Tab") {
 
                 }
+                .disabled(true)
 
                 Button("Show Next Tab") {
 
                 }
+                .disabled(true)
 
                 Divider()
 
                 Button("Go Forward") {
 
                 }
+                .disabled(true)
             }
-            .disabled(true)
 
             Group {
 
