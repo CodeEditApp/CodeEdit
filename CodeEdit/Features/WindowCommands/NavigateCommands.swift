@@ -15,7 +15,7 @@ struct NavigateCommands: Commands {
         CommandMenu("Navigate") {
             Group {
                 Button("Reveal in Project Navigator") {
-
+                    NSApp.sendAction(#selector(ProjectNavigatorViewController.revealFile(_:)), to: nil, from: nil)
                 }
                 .keyboardShortcut("j", modifiers: [.shift, .command])
 
@@ -23,29 +23,33 @@ struct NavigateCommands: Commands {
 
                 }
                 .keyboardShortcut("m", modifiers: [.shift, .command])
+                .disabled(true)
 
                 Button("Open in Next Editor") {
 
                 }
                 .keyboardShortcut(",", modifiers: [.option, .command])
+                .disabled(true)
 
                 Button("Open in...") {
 
                 }
+                .disabled(true)
 
                 Divider()
 
             }
-            .disabled(true)
 
             Group {
                 Button("Show Previous Tab") {
 
                 }
+                .disabled(true)
 
                 Button("Show Next Tab") {
 
                 }
+                .disabled(true)
 
                 Divider()
 
