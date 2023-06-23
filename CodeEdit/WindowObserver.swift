@@ -11,15 +11,14 @@ struct WindowObserver<Content: View>: View {
 
     var window: NSWindow
 
-    @ViewBuilder
-    var content: Content
+    @ViewBuilder var content: Content
 
     /// The fullscreen state of the NSWindow.
     /// This will be passed into all child views as an environment variable.
-    @State
-    private var isFullscreen = false
+    @State private var isFullscreen = false
 
-    @AppSettings(\.general.tabBarStyle) var tabBarStyle
+    @AppSettings(\.general.tabBarStyle)
+    var tabBarStyle
 
     @State var modifierFlags: NSEvent.ModifierFlags = []
 

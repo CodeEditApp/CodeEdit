@@ -8,19 +8,17 @@
 import SwiftUI
 
 struct WorkspaceTabGroupView: View {
-    @ObservedObject
-    var tabgroup: TabGroupData
+    @ObservedObject var tabgroup: TabGroupData
 
-    @FocusState.Binding
-    var focus: TabGroupData?
+    @FocusState.Binding var focus: TabGroupData?
 
-    @EnvironmentObject
-    private var tabManager: TabManager
+    @EnvironmentObject private var tabManager: TabManager
 
     var body: some View {
         VStack {
             if let selected = tabgroup.selected {
                 WorkspaceCodeFileView(file: selected)
+                    .focusedObject(tabgroup)
                     .transformEnvironment(\.edgeInsets) { insets in
                         insets.top += TabBarView.height + PathBarView.height + 1 + 1
                     }

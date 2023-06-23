@@ -9,8 +9,8 @@ import SwiftUI
 import Sparkle
 
 struct MainCommands: Commands {
-
-    @Environment(\.openWindow) var openWindow
+    @Environment(\.openWindow)
+    var openWindow
 
     var body: some Commands {
         CommandGroup(replacing: .appInfo) {

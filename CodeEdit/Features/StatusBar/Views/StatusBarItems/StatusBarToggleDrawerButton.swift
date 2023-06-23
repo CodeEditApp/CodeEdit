@@ -8,8 +8,7 @@
 import SwiftUI
 
 internal struct StatusBarToggleDrawerButton: View {
-    @EnvironmentObject
-    private var model: DebugAreaViewModel
+    @EnvironmentObject private var model: DebugAreaViewModel
 
     init() {
         CommandManager.shared.addCommand(

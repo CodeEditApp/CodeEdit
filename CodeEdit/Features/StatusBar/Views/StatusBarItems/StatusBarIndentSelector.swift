@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct StatusBarIndentSelector: View {
-    @AppSettings(\.textEditing.defaultTabWidth) var defaultTabWidth
+    @AppSettings(\.textEditing.defaultTabWidth)
+    var defaultTabWidth
 
     var body: some View {
         Menu {

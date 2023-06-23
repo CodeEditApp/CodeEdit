@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct TerminalSettingsView: View {
-    @AppSettings(\.terminal) var settings
+    @AppSettings(\.terminal)
+    var settings
 
     var body: some View {
         SettingsForm {
@@ -32,8 +33,7 @@ struct TerminalSettingsView: View {
 }
 
 private extension TerminalSettingsView {
-    @ViewBuilder
-    private var shellSelector: some View {
+    @ViewBuilder private var shellSelector: some View {
         Picker("Shell", selection: $settings.shell) {
             Text("System Default")
                 .tag(SettingsData.TerminalShell.system)
@@ -68,8 +68,7 @@ private extension TerminalSettingsView {
         Toggle("Use text editor font", isOn: $settings.useTextEditorFont)
     }
 
-    @ViewBuilder
-    private var fontSelector: some View {
+    @ViewBuilder private var fontSelector: some View {
         MonospacedFontPicker(title: "Font", selectedFontName: $settings.font.name)
             .onChange(of: settings.font.name) { fontName in
                 settings.font.customFont = fontName != "SF Mono"

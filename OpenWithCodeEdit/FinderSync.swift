@@ -43,7 +43,8 @@ class CEOpenWith: FIFinderSync {
 
     /// Open in CodeEdit (menu) action
     /// - Parameter sender: sender
-    @objc func openInCodeEditAction(_ sender: AnyObject?) {
+    @objc
+    func openInCodeEditAction(_ sender: AnyObject?) {
         guard let items = FIFinderSyncController.default().selectedItemURLs(),
               let defaults = UserDefaults.init(suiteName: "app.codeedit.CodeEdit.shared") else {
             return

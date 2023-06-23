@@ -11,8 +11,7 @@ struct DebugAreaView: View {
     @Environment(\.colorScheme)
     private var colorScheme
 
-    @EnvironmentObject
-    private var model: DebugAreaViewModel
+    @EnvironmentObject private var model: DebugAreaViewModel
 
     @State var selection: DebugAreaTab? = .terminal
 

@@ -29,8 +29,10 @@ struct WelcomeWindow: Scene {
     }
 
     struct ContentView: View {
-        @Environment(\.dismiss) var dismiss
-        @Environment(\.openWindow) var openWindow
+        @Environment(\.dismiss)
+        var dismiss
+        @Environment(\.openWindow)
+        var openWindow
 
         var body: some View {
             WelcomeWindowView(shellClient: currentWorld.shellClient) { url, opened in

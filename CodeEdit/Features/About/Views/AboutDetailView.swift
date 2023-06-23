@@ -14,8 +14,7 @@ struct AboutDetailView<Content: View>: View {
 
     var namespace: Namespace.ID
 
-    @ViewBuilder
-    var content: Content
+    @ViewBuilder var content: Content
 
     let smallTitlebarHeight: CGFloat = 28
     let mediumTitlebarHeight: CGFloat = 113

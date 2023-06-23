@@ -9,20 +9,15 @@ import SwiftUI
 import LogStream
 
 struct DebugAreaOutputView: View {
-    @EnvironmentObject
-    private var model: DebugAreaViewModel
+    @EnvironmentObject private var model: DebugAreaViewModel
 
-    @ObservedObject
-    var extensionManager = ExtensionManager.shared
+    @ObservedObject var extensionManager = ExtensionManager.shared
 
-    @State
-    var output: [LogMessage] = []
+    @State var output: [LogMessage] = []
 
-    @State
-    private var filterText = ""
+    @State private var filterText = ""
 
-    @State
-    var selectedOutputSource: ExtensionInfo?
+    @State var selectedOutputSource: ExtensionInfo?
 
     var filteredOutput: [LogMessage] {
         output.filter { item in

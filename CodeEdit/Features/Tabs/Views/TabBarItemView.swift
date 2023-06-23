@@ -21,34 +21,30 @@ struct TabBarItemView: View {
     @Environment(\.isFullscreen)
     private var isFullscreen
 
-    @EnvironmentObject
-    private var tabManager: TabManager
+    @EnvironmentObject private var tabManager: TabManager
 
-    @AppSettings(\.general.tabBarStyle) var tabBarStyle
+    @AppSettings(\.general.tabBarStyle)
+    var tabBarStyle
 
-    @AppSettings(\.general.fileIconStyle) var fileIconStyle
+    @AppSettings(\.general.fileIconStyle)
+    var fileIconStyle
 
     /// Is cursor hovering over the entire tab.
-    @State
-    private var isHovering: Bool = false
+    @State private var isHovering: Bool = false
 
     /// Is cursor hovering over the close button.
-    @State
-    private var isHoveringClose: Bool = false
+    @State private var isHoveringClose: Bool = false
 
     /// Is entire tab being pressed.
-    @State
-    private var isPressing: Bool = false
+    @State private var isPressing: Bool = false
 
     /// Is close button being pressed.
-    @State
-    private var isPressingClose: Bool = false
+    @State private var isPressingClose: Bool = false
 
     /// A bool state for going-in animation.
     ///
     /// By default, this value is `false`. When the root view is appeared, it turns `true`.
-    @State
-    private var isAppeared: Bool = false
+    @State private var isAppeared: Bool = false
 
     /// The expected tab width in native tab bar style.
     private var expectedWidth: CGFloat
@@ -60,11 +56,9 @@ struct TabBarItemView: View {
 
     private var onDragTabId: CEWorkspaceFile.ID?
 
-    @Binding
-    private var closeButtonGestureActive: Bool
+    @Binding private var closeButtonGestureActive: Bool
 
-    @EnvironmentObject
-    private var tabgroup: TabGroupData
+    @EnvironmentObject private var tabgroup: TabGroupData
 
     /// The item associated with the current tab.
     ///
@@ -132,8 +126,7 @@ struct TabBarItemView: View {
         self._closeButtonGestureActive = closeButtonGestureActive
     }
 
-    @ViewBuilder
-    var content: some View {
+    @ViewBuilder var content: some View {
         HStack(spacing: 0.0) {
             TabDivider()
                 .opacity(

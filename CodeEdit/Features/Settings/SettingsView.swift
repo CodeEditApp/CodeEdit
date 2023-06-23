@@ -13,7 +13,8 @@ import Introspect
 /// A struct for settings
 struct SettingsView: View {
     @StateObject var model = SettingsViewModel()
-    @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.colorScheme)
+    private var colorScheme
 
     /// An array of navigationItem(s)
     private static let pages: [SettingsPage] = [
@@ -28,6 +29,7 @@ struct SettingsView: View {
         .init(.sourceControl, baseColor: .blue, icon: .symbol("vault")),
 //        .init(.components, baseColor: .blue, icon: .system("puzzlepiece.fill")),
         .init(.location, baseColor: .green, icon: .system("externaldrive.fill")),
+        .init(.featureFlags, baseColor: .cyan, icon: .system("flag.2.crossed.fill"))
 //        .init(.advanced, baseColor: .gray, icon: .system("gearshape.2.fill"))
     ]
 
@@ -37,7 +39,8 @@ struct SettingsView: View {
 
     @ObservedObject private var settings: Settings = .shared
 
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.presentationMode)
+    var presentationMode
 
     let updater: SoftwareUpdater
 
@@ -76,6 +79,8 @@ struct SettingsView: View {
                     SourceControlSettingsView()
                 case .location:
                     LocationsSettingsView()
+                case .featureFlags:
+                    FeatureFlagsSettingsView()
                 default:
                     Text("Implementation Needed").frame(alignment: .center)
                 }

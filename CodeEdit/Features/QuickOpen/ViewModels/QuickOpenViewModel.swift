@@ -10,14 +10,11 @@ import Foundation
 
 final class QuickOpenViewModel: ObservableObject {
 
-    @Published
-    var openQuicklyQuery: String = ""
+    @Published var openQuicklyQuery: String = ""
 
-    @Published
-    var openQuicklyFiles: [CEWorkspaceFile] = []
+    @Published var openQuicklyFiles: [CEWorkspaceFile] = []
 
-    @Published
-    var isShowingOpenQuicklyFiles: Bool = false
+    @Published var isShowingOpenQuicklyFiles: Bool = false
 
     let fileURL: URL
 

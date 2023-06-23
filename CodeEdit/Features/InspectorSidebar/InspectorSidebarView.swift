@@ -8,38 +8,23 @@
 import SwiftUI
 
 struct InspectorSidebarView: View {
-    @EnvironmentObject
-    private var workspace: WorkspaceDocument
+    @EnvironmentObject private var workspace: WorkspaceDocument
 
-    @ObservedObject
-    private var extensionManager = ExtensionManager.shared
+    @ObservedObject private var extensionManager = ExtensionManager.shared
 
-    @EnvironmentObject
-    private var tabManager: TabManager
+    @EnvironmentObject private var tabManager: TabManager
 
     @AppSettings(\.general.inspectorTabBarPosition)
     var sidebarPosition: SettingsData.SidebarTabBarPosition
 
-    @State
-    private var selection: InspectorTab? = .quickhelp
-
-    var path: String? { tabManager.activeTabGroup.selected?.fileDocument?.fileURL?.path(percentEncoded: false)
-    }
-
-    var fileTreeAndGitHistory: [InspectorTab] {
-        guard let workspaceURL = workspace.fileURL, let path else {
-            return []
-        }
-
-        return [
-            .file(workspaceURL: workspaceURL, fileURL: path),
-            .gitHistory(workspaceURL: workspaceURL, fileURL: path)
-        ]
-    }
+    @State private var selection: InspectorTab? = .file
 
     private var items: [InspectorTab] {
-        fileTreeAndGitHistory + [InspectorTab.quickhelp] +
-        extensionManager
+        [
+            .file,
+            .gitHistory
+        ]
+        + extensionManager
             .extensions
             .map { ext in
                 ext.availableFeatures.compactMap {

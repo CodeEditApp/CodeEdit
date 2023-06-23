@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct AccountsSettingsView: View {
-    @AppSettings(\.accounts.sourceControlAccounts.gitAccounts) var gitAccounts
+    @AppSettings(\.accounts.sourceControlAccounts.gitAccounts)
+    var gitAccounts
 
     @State private var addAccountSheetPresented: Bool = false
     @State private var selectedProvider: SourceControlAccount.Provider?

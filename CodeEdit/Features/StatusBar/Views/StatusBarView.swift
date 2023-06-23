@@ -20,8 +20,7 @@ struct StatusBarView: View {
     @Environment(\.controlActiveState)
     private var controlActive
 
-    @EnvironmentObject
-    private var model: DebugAreaViewModel
+    @EnvironmentObject private var model: DebugAreaViewModel
 
     static let height = 28.0
 

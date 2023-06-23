@@ -10,10 +10,10 @@ import Combine
 
 struct FindNavigatorResultList: NSViewControllerRepresentable {
 
-    @EnvironmentObject
-    var workspace: WorkspaceDocument
+    @EnvironmentObject var workspace: WorkspaceDocument
 
-    @AppSettings(\.general.projectNavigatorSize) var projectNavigatorSize
+    @AppSettings(\.general.projectNavigatorSize)
+    var projectNavigatorSize
 
     typealias NSViewControllerType = FindNavigatorListViewController
 

@@ -9,15 +9,13 @@ import SwiftUI
 
 struct FindNavigatorView: View {
 
-    @EnvironmentObject
-    private var workspace: WorkspaceDocument
+    @EnvironmentObject private var workspace: WorkspaceDocument
 
     private var state: WorkspaceDocument.SearchState {
         workspace.searchState ?? .init(workspace)
     }
 
-    @State
-    private var searchText: String = ""
+    @State private var searchText: String = ""
 
     enum Filters: String {
         case ignoring = "Ignoring Case"
@@ -26,11 +24,9 @@ struct FindNavigatorView: View {
 
     @State var currentFilter: String = ""
 
-    @State
-    private var foundFilesCount: Int = 0
+    @State private var foundFilesCount: Int = 0
 
-    @State
-    private var searchResultCount: Int = 0
+    @State private var searchResultCount: Int = 0
 
     var body: some View {
         VStack {

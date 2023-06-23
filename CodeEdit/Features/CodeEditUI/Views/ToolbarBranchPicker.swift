@@ -16,14 +16,11 @@ struct ToolbarBranchPicker: View {
     @Environment(\.controlActiveState)
     private var controlActive
 
-    @State
-    private var isHovering: Bool = false
+    @State private var isHovering: Bool = false
 
-    @State
-    private var displayPopover: Bool = false
+    @State private var displayPopover: Bool = false
 
-    @State
-    private var currentBranch: String?
+    @State private var currentBranch: String?
 
     /// Initializes the ``ToolbarBranchPicker`` with an instance of a `WorkspaceClient`
     /// - Parameter shellClient: An instance of the current `ShellClient`
@@ -105,8 +102,7 @@ struct ToolbarBranchPicker: View {
     private struct PopoverView: View {
         var gitClient: GitClient?
 
-        @Binding
-        var currentBranch: String?
+        @Binding var currentBranch: String?
 
         var body: some View {
             VStack(alignment: .leading) {
@@ -154,8 +150,7 @@ struct ToolbarBranchPicker: View {
             @Environment(\.dismiss)
             private var dismiss
 
-            @State
-            private var isHovering: Bool = false
+            @State private var isHovering: Bool = false
 
             var body: some View {
                 Button {

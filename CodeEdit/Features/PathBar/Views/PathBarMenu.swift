@@ -94,7 +94,8 @@ final class PathBarMenuItem: NSMenuItem {
         fatalError("init(coder:) has not been implemented")
     }
 
-    @objc func openFile() {
+    @objc
+    func openFile() {
         tappedOpenFile(fileItem)
     }
 }
