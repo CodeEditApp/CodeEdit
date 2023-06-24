@@ -39,7 +39,7 @@
     {
       "identity" : "codeedittextview",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/CodeEditApp/CodeEditTextView",
+      "location" : "https://github.com/CodeEditApp/CodeEditTextView.git",
       "state" : {
         "revision" : "cc28ae52c8083c313b650784706e339b727646d9",
         "version" : "0.6.6"
@@ -59,8 +59,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/ConcurrencyPlus",
       "state" : {
-        "revision" : "8dc56499412a373d617d50d059116bccf44b9874",
-        "version" : "0.4.2"
+        "revision" : "b5ba8d5ea6bfe9e43ccc44aa63f9b458057fa0f4",
+        "version" : "0.4.1"
       }
     },
     {
@@ -221,8 +221,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/siteline/SwiftUI-Introspect",
       "state" : {
-        "revision" : "84196bab1c7f05ad8c3c2a5bfb3058b1211e189f",
-        "version" : "0.6.1"
+        "revision" : "5b3f3996c7a2a84d5f4ba0e03cd7d584154778f2",
+        "version" : "0.3.1"
       }
     },
     {

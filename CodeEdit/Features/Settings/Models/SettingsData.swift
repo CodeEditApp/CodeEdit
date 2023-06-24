@@ -25,7 +25,7 @@ struct SettingsData: Codable, Hashable {
     /// The general global setting
     var general: GeneralSettings = .init()
 
-    /// The global settings for text editing
+    /// The global settings for accounts
     var accounts: AccountsSettings = .init()
 
     /// The global settings for themes
@@ -37,7 +37,7 @@ struct SettingsData: Codable, Hashable {
     /// The global settings for text editing
     var textEditing: TextEditingSettings = .init()
 
-    /// The global settings for text editing
+    /// The global settings for source control
     var sourceControl: SourceControlSettings = .init()
 
     /// The global settings for keybindings
@@ -45,6 +45,10 @@ struct SettingsData: Codable, Hashable {
 
     /// Featureflags settings
     var featureFlags: FeatureFlagsSettings = .init()
+
+    /// The global settings for locations
+    var locations: LocationsSettings = .init()
+
 
     /// Default initializer
     init() {}
@@ -61,7 +65,34 @@ struct SettingsData: Codable, Hashable {
             SourceControlSettings.self,
             forKey: .sourceControl
         ) ?? .init()
-        self.keybindings = try container.decodeIfPresent(KeybindingsSettings.self, forKey: .keybindings) ?? .init()
+        self.keybindings = try container.decodeIfPresent(
+            KeybindingsSettings.self,
+            forKey: .keybindings
+        ) ?? .init()
         self.featureFlags = try container.decodeIfPresent(FeatureFlagsSettings.self, forKey: .featureFlags) ?? .init()
+        self.locations = try container.decodeIfPresent(
+            LocationsSettings.self,
+            forKey: .locations
+        ) ?? .init()
+    }
+
+    func propertiesOf(_ value: Any) -> [SettingsPageSetting] {
+        var properties: [SettingsPageSetting] = []
+        let mirror: Mirror = Mirror(reflecting: value)
+        let translator: ModelNameToSettingName = .init()
+
+        guard let style = mirror.displayStyle, style == .struct else {
+            return [SettingsPageSetting(nameString: "Error")]
+        }
+
+        for (possibleLabel, _) in mirror.children {
+            guard let label = possibleLabel else {
+                continue
+            }
+
+            properties.append(SettingsPageSetting(nameString: translator.translate(label)))
+        }
+
+        return properties
     }
 }

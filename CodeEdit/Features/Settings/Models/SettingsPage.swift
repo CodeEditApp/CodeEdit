@@ -8,31 +8,31 @@
 import Foundation
 import SwiftUI
 
-/// A struct for a preferences tab
-struct SettingsPage: Hashable, Identifiable {
-    /// Default intializer
+/// A struct for a settings page
+struct SettingsPage: Hashable, Equatable, Identifiable {
+    /// Default initializer
     internal init(
         _ name: Name,
-        baseColor: Color? = nil,
-        icon: IconResource? = nil,
-        hideName: Bool? = false,
-        children: [SettingsPage] = []
+        baseColor: Color,
+        icon: IconResource,
+        isSetting: Bool = false,
+        displayName: String = ""
     ) {
-        self.children = children
         self.name = name
-        self.baseColor = baseColor ?? .red
-        self.icon = icon ?? .system("questionmark.app")
-        self.hideName = hideName
+        self.baseColor = baseColor
+        self.icon = icon
+        self.isSetting = isSetting
+        self.displayName = displayName
     }
 
-    var id: String { name.rawValue }
+    let id: UUID = UUID()
 
     let name: Name
     let baseColor: Color
-    let children: [SettingsPage]
-    let hideName: Bool?
+    let isSetting: Bool
+    let displayName: String
     var nameString: LocalizedStringKey { LocalizedStringKey(name.rawValue) }
-    let icon: IconResource?
+    let icon: IconResource
 
     /// A struct for a sidebar icon, with a base color and SF Symbol
     enum IconResource: Equatable, Hashable {
@@ -58,5 +58,4 @@ struct SettingsPage: Hashable, Identifiable {
         case featureFlags = "Feature Flags"
         case advanced = "Advanced"
     }
-
 }
