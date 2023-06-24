@@ -11,7 +11,7 @@ extension WorkspaceDocument {
     @MainActor
     func buildFileTree(root: URL) {
         buildFileTreeTask?.cancel()
-        buildFileTreeTask = Task.detached { [weak self] in
+        buildFileTreeTask = Task.detached(priority: .high) { [weak self] in
             guard let self else { return }
             let tree = try await buildingFileTree(root: root, ignoring: ignoredResources)
             await MainActor.run { [weak self] in
