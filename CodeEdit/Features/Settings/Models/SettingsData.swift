@@ -43,6 +43,9 @@ struct SettingsData: Codable, Hashable {
     /// The global settings for keybindings
     var keybindings: KeybindingsSettings = .init()
 
+    /// The global settings for locations
+    var locations: LocationsSettings = .init()
+
     /// Default initializer
     init() {}
 
@@ -58,12 +61,20 @@ struct SettingsData: Codable, Hashable {
             SourceControlSettings.self,
             forKey: .sourceControl
         ) ?? .init()
-        self.keybindings = try container.decodeIfPresent(KeybindingsSettings.self, forKey: .keybindings) ?? .init()
+        self.keybindings = try container.decodeIfPresent(
+            KeybindingsSettings.self,
+            forKey: .keybindings
+        ) ?? .init()
+        self.locations = try container.decodeIfPresent(
+            LocationsSettings.self,
+            forKey: .locations
+        ) ?? .init()
     }
 
     func propertiesOf(_ value: Any) -> [SettingsPageSetting] {
         var properties: [SettingsPageSetting] = []
-        let mirror = Mirror(reflecting: value)
+        let mirror: Mirror = Mirror(reflecting: value)
+        let translator: ModelNameToSettingName = .init()
 
         guard let style = mirror.displayStyle, style == .struct else {
             return [SettingsPageSetting(nameString: "Error")]
@@ -74,7 +85,7 @@ struct SettingsData: Codable, Hashable {
                 continue
             }
 
-            properties.append(SettingsPageSetting(nameString: label.camelCaseToProperWord()))
+            properties.append(SettingsPageSetting(nameString: translator.translate(label)))
         }
 
         return properties

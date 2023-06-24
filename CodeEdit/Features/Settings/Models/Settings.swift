@@ -89,8 +89,6 @@ final class Settings: ObservableObject {
     ///
     /// Points to `~/Library/Application Support/CodeEdit/settings.json`
     private var settingsURL: URL {
-        baseURL
-            .appendingPathComponent("settings")
-            .appendingPathExtension("json")
+        SettingsData.LocationsSettings().settingsURL
     }
 }
