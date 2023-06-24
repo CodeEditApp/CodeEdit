@@ -21,8 +21,7 @@ struct SettingsView: View {
     @Environment(\.presentationMode)
     var presentationMode
 
-    @ObservedObject
-    private var settings: Settings = .shared
+    @ObservedObject private var settings: Settings = .shared
 
     let updater: SoftwareUpdater
 
