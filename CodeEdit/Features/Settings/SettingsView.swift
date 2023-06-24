@@ -7,8 +7,6 @@
 
 import SwiftUI
 import CodeEditSymbols
-import AppKit
-import Introspect
 
 /// A struct for settings
 struct SettingsView: View {
@@ -16,7 +14,7 @@ struct SettingsView: View {
     @Environment(\.colorScheme)
     private var colorScheme
 
-    /// An array of navigationItem(s)
+    /// An array of navigationItems
     private static let pages: [SettingsPage] = [
         .init(.general, baseColor: .gray, icon: .system("gear")),
         .init(.accounts, baseColor: .blue, icon: .system("at")),
