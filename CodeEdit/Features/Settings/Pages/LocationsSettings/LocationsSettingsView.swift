@@ -9,7 +9,8 @@ import SwiftUI
 
 /// A view that implements the `Locations` preference section
 struct LocationsSettingsView: View {
-    @AppSettings(\.locations) var locations
+    @AppSettings(\.locations)
+    var locations
 
     var body: some View {
         SettingsForm {

@@ -18,8 +18,11 @@ struct SettingsView: View {
     @State private var selectedPage: SettingsPage.Name = .general
     @State private var searchText: String = ""
 
-    @Environment(\.presentationMode) var presentationMode
-    @ObservedObject private var settings: Settings = .shared
+    @Environment(\.presentationMode)
+    var presentationMode
+
+    @ObservedObject
+    private var settings: Settings = .shared
 
     let updater: SoftwareUpdater
 

@@ -49,7 +49,6 @@ struct SettingsData: Codable, Hashable {
     /// The global settings for locations
     var locations: LocationsSettings = .init()
 
-
     /// Default initializer
     init() {}
 
