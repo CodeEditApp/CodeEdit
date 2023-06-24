@@ -10,7 +10,8 @@ import SwiftUI
 struct PaneToolbar<Content: View>: View {
     @ViewBuilder var content: Content
     @EnvironmentObject var model: DebugAreaTabViewModel
-    @Environment(\.paneArea) var paneArea: PaneArea?
+    @Environment(\.paneArea)
+    var paneArea: PaneArea?
 
     var body: some View {
         HStack(spacing: 5) {

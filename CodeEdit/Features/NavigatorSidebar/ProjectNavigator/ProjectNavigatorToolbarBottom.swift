@@ -14,11 +14,9 @@ struct ProjectNavigatorToolbarBottom: View {
     @Environment(\.colorScheme)
     private var colorScheme
 
-    @EnvironmentObject
-    var workspace: WorkspaceDocument
+    @EnvironmentObject var workspace: WorkspaceDocument
 
-    @State
-    var filter: String = ""
+    @State var filter: String = ""
 
     var body: some View {
         HStack {

@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct ThemeSettingsThemeDetails: View {
-    @Environment(\.dismiss) var dismiss
+    @Environment(\.dismiss)
+    var dismiss
 
     @Binding var theme: Theme
 
     @State private var initialTheme: Theme
 
-    @StateObject
-    private var themeModel: ThemeModel = .shared
+    @StateObject private var themeModel: ThemeModel = .shared
 
     init(_ theme: Binding<Theme>) {
         _theme = theme

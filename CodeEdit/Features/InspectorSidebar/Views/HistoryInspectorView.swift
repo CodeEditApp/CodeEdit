@@ -7,32 +7,47 @@
 import SwiftUI
 
 struct HistoryInspectorView: View {
+    @EnvironmentObject private var workspace: WorkspaceDocument
 
-    @ObservedObject
-    private var model: HistoryInspectorModel
+    @EnvironmentObject private var tabManager: TabManager
+
+    @ObservedObject private var model: HistoryInspectorModel
 
     @State var selectedCommitHistory: GitCommit?
 
     /// Initialize with GitClient
     /// - Parameter gitClient: a GitClient
-    init(workspaceURL: URL, fileURL: String) {
-        self.model = .init(workspaceURL: workspaceURL, fileURL: fileURL)
+    init() {
+        self.model = .init()
     }
 
     var body: some View {
-        VStack {
-            if model.commitHistory.isEmpty {
-                HistoryInspectorNoHistoryView()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-            } else {
-                List(selection: $selectedCommitHistory) {
-                    ForEach(model.commitHistory) { commit in
-                        HistoryInspectorItemView(commit: commit, selection: $selectedCommitHistory)
-                            .tag(commit)
+        Group {
+            if model.gitClient != nil {
+                VStack {
+                    if model.commitHistory.isEmpty {
+                        HistoryInspectorNoHistoryView()
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    } else {
+                        List(selection: $selectedCommitHistory) {
+                            ForEach(model.commitHistory) { commit in
+                                HistoryInspectorItemView(commit: commit, selection: $selectedCommitHistory)
+                                    .tag(commit)
+                            }
+                        }
+                        .listStyle(.inset)
                     }
                 }
-                .listStyle(.inset)
+            } else {
+                NoSelectionInspectorView()
             }
+        }
+        .onReceive(tabManager.activeTabGroup.objectWillChange) { _ in
+            model.setFile(url: tabManager.activeTabGroup.selected?.url.path)
+        }
+        .onAppear {
+            model.setWorkspace(url: workspace.fileURL)
+            model.setFile(url: tabManager.activeTabGroup.selected?.url.path)
         }
     }
 }

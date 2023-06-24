@@ -22,7 +22,9 @@ struct AboutDefaultView: View {
 
     @Binding var aboutMode: AboutMode
     var namespace: Namespace.ID
-    @Environment(\.colorScheme) var colorScheme
+
+    @Environment(\.colorScheme)
+    var colorScheme
 
     private static var licenseURL = URL(string: "https://github.com/CodeEditApp/CodeEdit/blob/main/LICENSE.md")!
 

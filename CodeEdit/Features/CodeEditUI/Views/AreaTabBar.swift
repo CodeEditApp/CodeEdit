@@ -13,7 +13,8 @@ protocol AreaTab: View, Identifiable, Hashable {
 }
 
 struct AreaTabBar<Tab: AreaTab>: View {
-    @Environment(\.controlActiveState) private var activeState
+    @Environment(\.controlActiveState)
+    private var activeState
 
     var items: [Tab]
 

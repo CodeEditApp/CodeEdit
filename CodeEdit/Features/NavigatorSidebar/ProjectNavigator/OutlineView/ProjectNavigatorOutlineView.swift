@@ -11,11 +11,9 @@ import Combine
 /// Wraps an ``OutlineViewController`` inside a `NSViewControllerRepresentable`
 struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
 
-    @EnvironmentObject
-    var workspace: WorkspaceDocument
+    @EnvironmentObject var workspace: WorkspaceDocument
 
-    @StateObject
-    var prefs: Settings = .shared
+    @StateObject var prefs: Settings = .shared
 
     typealias NSViewControllerType = ProjectNavigatorViewController
 

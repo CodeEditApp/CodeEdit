@@ -44,8 +44,7 @@ final class Settings: ObservableObject {
     /// Published instance of the ``Settings`` model.
     ///
     /// Changes are saved automatically.
-    @Published
-    var preferences: SettingsData
+    @Published var preferences: SettingsData
 
     /// Load and construct ``Settings`` model from
     /// `~/Library/Application Support/CodeEdit/settings.json`

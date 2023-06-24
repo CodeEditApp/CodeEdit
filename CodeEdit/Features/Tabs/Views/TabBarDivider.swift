@@ -12,7 +12,8 @@ struct TabDivider: View {
     @Environment(\.colorScheme)
     var colorScheme
 
-    @AppSettings(\.general.tabBarStyle) var tabBarStyle
+    @AppSettings(\.general.tabBarStyle)
+    var tabBarStyle
 
     let width: CGFloat = 1
 
@@ -35,7 +36,8 @@ struct TabBarTopDivider: View {
     @Environment(\.colorScheme)
     var colorScheme
 
-    @AppSettings(\.general.tabBarStyle) var tabBarStyle
+    @AppSettings(\.general.tabBarStyle)
+    var tabBarStyle
 
     var body: some View {
         ZStack(alignment: .top) {
@@ -56,7 +58,8 @@ struct TabBarBottomDivider: View {
     @Environment(\.colorScheme)
     var colorScheme
 
-    @AppSettings(\.general.tabBarStyle) var tabBarStyle
+    @AppSettings(\.general.tabBarStyle)
+    var tabBarStyle
 
     var body: some View {
         Rectangle()

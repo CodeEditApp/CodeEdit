@@ -9,8 +9,10 @@ import SwiftUI
 import Introspect
 
 struct SettingsForm<Content: View>: View {
-    @Environment(\.colorScheme) private var colorScheme
-    @Environment(\.controlActiveState) private var activeState
+    @Environment(\.colorScheme)
+    private var colorScheme
+    @Environment(\.controlActiveState)
+    private var activeState
     @EnvironmentObject var model: SettingsViewModel
     @ViewBuilder var content: Content
 

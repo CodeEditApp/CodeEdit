@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct NavigationBarBackButtonVisible: ViewModifier {
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.presentationMode)
+    var presentationMode
     @EnvironmentObject var model: SettingsViewModel
 
     func body(content: Content) -> some View {

@@ -13,34 +13,29 @@ struct WorkspaceView: View {
     let tabBarHeight = 28.0
     private var path: String = ""
 
-    @EnvironmentObject
-    private var workspace: WorkspaceDocument
+    @EnvironmentObject private var workspace: WorkspaceDocument
 
-    @EnvironmentObject
-    private var tabManager: TabManager
+    @EnvironmentObject private var tabManager: TabManager
 
-    @EnvironmentObject
-    private var debugAreaModel: DebugAreaViewModel
-
-    @Environment(\.window)
-    private var window
+    @EnvironmentObject private var debugAreaModel: DebugAreaViewModel
 
     private var keybindings: KeybindingManager =  .shared
 
-    @State
-    private var showingAlert = false
+    @State private var showingAlert = false
 
     @Environment(\.colorScheme)
     private var colorScheme
 
-    @State
-    private var terminalCollapsed = true
+    @AppSettings(\.theme.matchAppearance)
+    var matchAppearance
 
-    @State
-    private var editorCollapsed = false
+    @StateObject private var themeModel: ThemeModel = .shared
 
-    @FocusState
-    var focusedEditor: TabGroupData?
+    @State private var terminalCollapsed = true
+
+    @State private var editorCollapsed = false
+
+    @FocusState var focusedEditor: TabGroupData?
 
     var body: some View {
         if workspace.workspaceFileManager != nil {
@@ -75,7 +70,13 @@ struct WorkspaceView: View {
                             focusedEditor = newValue
                         }
                     }
-
+                    .onChange(of: colorScheme) { newValue in
+                        if matchAppearance {
+                            themeModel.selectedTheme = newValue == .dark
+                            ? themeModel.selectedDarkTheme
+                            : themeModel.selectedLightTheme
+                        }
+                    }
                 }
             }
             .background(EffectView(.contentBackground))

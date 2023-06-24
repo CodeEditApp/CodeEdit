@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct AcknowledgementRowView: View {
-    @Environment(\.openURL) private var openURL
+    @Environment(\.openURL)
+    private var openURL
 
     let acknowledgement: AcknowledgementDependency
 

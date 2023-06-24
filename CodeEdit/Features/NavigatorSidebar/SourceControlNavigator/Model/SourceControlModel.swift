@@ -18,8 +18,7 @@ final class SourceControlModel: ObservableObject {
     let workspaceURL: URL
 
     /// A list of changed files
-    @Published
-    var changed: [GitChangedFile]
+    @Published var changed: [GitChangedFile]
 
     /// Initialize with a GitClient
     /// - Parameter workspaceURL: the current workspace URL we also need this to open files in finder

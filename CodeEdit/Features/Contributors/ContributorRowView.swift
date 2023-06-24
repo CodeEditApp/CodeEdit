@@ -66,7 +66,8 @@ struct ContributorRowView: View {
     }
 
     private struct ActionButton: View {
-        @Environment(\.openURL) private var openURL
+        @Environment(\.openURL)
+        private var openURL
         @State private var hovering = false
 
         let url: URL

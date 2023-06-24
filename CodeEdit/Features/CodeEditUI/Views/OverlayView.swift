@@ -142,8 +142,7 @@ struct OverlayView<RowView: View, PreviewView: View, Option: Identifiable & Hash
         )
     }
 
-    @ViewBuilder
-    var keyHandlers: some View {
+    @ViewBuilder var keyHandlers: some View {
         Button {
             onClose()
         } label: { EmptyView() }

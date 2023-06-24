@@ -11,7 +11,8 @@ import CodeEditSymbols
 /// A struct for settings
 struct SettingsView: View {
     @StateObject var model = SettingsViewModel()
-    @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.colorScheme)
+    private var colorScheme
 
     /// Variables for the selected Page, the current search text and software updater
     @State private var selectedPage: SettingsPage.Name = .general
@@ -157,6 +158,8 @@ struct SettingsView: View {
                     SourceControlSettingsView()
                 case .location:
                     LocationsSettingsView()
+                case .featureFlags:
+                    FeatureFlagsSettingsView()
                 default:
                     Text("Implementation Needed").frame(alignment: .center)
                 }

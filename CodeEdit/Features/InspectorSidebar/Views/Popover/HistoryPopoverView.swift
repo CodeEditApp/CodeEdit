@@ -86,10 +86,10 @@ struct HistoryPopoverView: View {
         private var image: String
         private var action: () -> Void
 
-        @State
-        private var isHovering: Bool = false
+        @State private var isHovering: Bool = false
 
-        @Environment(\.isEnabled) private var isEnabled
+        @Environment(\.isEnabled)
+        private var isEnabled
 
         init(_ title: String, systemImage: String, action: @escaping () -> Void) {
             self.title = title

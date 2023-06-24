@@ -12,8 +12,7 @@ struct SegmentedControl: View {
     private var options: [String]
     private var prominent: Bool
 
-    @Binding
-    private var preselectedIndex: Int
+    @Binding private var preselectedIndex: Int
 
     /// A view that creates a segmented control from an array of text labels.
     /// - Parameters:
@@ -62,11 +61,9 @@ struct SegmentedControlItem: View {
     @Environment(\.controlActiveState)
     private var activeState
 
-    @State
-    var isHovering: Bool = false
+    @State var isHovering: Bool = false
 
-    @State
-    var isPressing: Bool = false
+    @State var isPressing: Bool = false
 
     var body: some View {
         Text(label)
@@ -113,8 +110,7 @@ struct SegmentedControlItem: View {
         }
     }
 
-    @ViewBuilder
-    private var background: some View {
+    @ViewBuilder private var background: some View {
         if prominent {
             if active {
                 Color.accentColor.opacity(activeState != .inactive ? 1 : 0.5)

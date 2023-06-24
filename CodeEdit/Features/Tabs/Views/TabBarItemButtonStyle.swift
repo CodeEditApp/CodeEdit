@@ -11,8 +11,7 @@ struct TabBarItemButtonStyle: ButtonStyle {
     @Environment(\.colorScheme)
     var colorScheme
 
-    @Binding
-    private var isPressing: Bool
+    @Binding private var isPressing: Bool
 
     init(isPressing: Binding<Bool>) {
         self._isPressing = isPressing

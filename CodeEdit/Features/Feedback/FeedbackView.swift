@@ -8,14 +8,11 @@
 import SwiftUI
 
 struct FeedbackView: View {
-    @ObservedObject
-    private var feedbackModel: FeedbackModel = .shared
+    @ObservedObject private var feedbackModel: FeedbackModel = .shared
 
-    @State
-    var showsAlert: Bool = false
+    @State var showsAlert: Bool = false
 
-    @State
-    var isSubmitButtonPressed: Bool = false
+    @State var isSubmitButtonPressed: Bool = false
 
     var body: some View {
         VStack {

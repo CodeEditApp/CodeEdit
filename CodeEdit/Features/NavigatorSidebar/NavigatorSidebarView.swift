@@ -8,17 +8,14 @@
 import SwiftUI
 
 struct NavigatorSidebarView: View {
-    @ObservedObject
-    private var workspace: WorkspaceDocument
+    @ObservedObject private var workspace: WorkspaceDocument
 
-    @ObservedObject
-    private var extensionManager = ExtensionManager.shared
+    @ObservedObject private var extensionManager = ExtensionManager.shared
 
     @AppSettings(\.general.navigatorTabBarPosition)
     var sidebarPosition: SettingsData.SidebarTabBarPosition
 
-    @State
-    private var selection: NavigatorTab? = .project
+    @State private var selection: NavigatorTab? = .project
 
     init(workspace: WorkspaceDocument) {
         self.workspace = workspace

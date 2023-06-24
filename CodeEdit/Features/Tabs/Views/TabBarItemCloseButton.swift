@@ -13,19 +13,17 @@ struct TabBarItemCloseButton: View {
     var isDragging: Bool
     var closeAction: () -> Void
 
-    @Binding
-    var closeButtonGestureActive: Bool
+    @Binding var closeButtonGestureActive: Bool
 
     @Environment(\.colorScheme)
     var colorScheme
 
-    @AppSettings(\.general.tabBarStyle) var tabBarStyle
+    @AppSettings(\.general.tabBarStyle)
+    var tabBarStyle
 
-    @State
-    private var isPressingClose: Bool = false
+    @State private var isPressingClose: Bool = false
 
-    @State
-    private var isHoveringClose: Bool = false
+    @State private var isHoveringClose: Bool = false
 
     let buttonSize: CGFloat = 16
 

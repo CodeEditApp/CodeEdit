@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct SourceControlGitView: View {
-    @AppSettings(\.sourceControl.git) var git
+    @AppSettings(\.sourceControl.git)
+    var git
 
-    @State
-    var ignoredFileSelection: IgnoredFiles.ID?
+    @State var ignoredFileSelection: IgnoredFiles.ID?
 
     var body: some View {
         SettingsForm {

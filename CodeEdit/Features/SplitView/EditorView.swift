@@ -10,8 +10,7 @@ import SwiftUI
 struct EditorView: View {
     var tabgroup: TabGroup
 
-    @FocusState.Binding
-    var focus: TabGroupData?
+    @FocusState.Binding var focus: TabGroupData?
 
     @Environment(\.window)
     private var window
