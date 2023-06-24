@@ -10,8 +10,10 @@ import Combine
 
 struct PathBarComponent: View {
 
-    private let fileItem: CEWorkspaceFile
-    private let tappedOpenFile: (CEWorkspaceFile) -> Void
+    typealias Item = PathBarMenu.Item
+
+    private let fileItem: Item
+    private let tappedOpenFile: (File) -> Void
 
     @Environment(\.colorScheme)
     var colorScheme
@@ -21,19 +23,20 @@ struct PathBarComponent: View {
 
     @State var position: NSPoint?
 
-    @State var selection: CEWorkspaceFile
+    @State var selection: Item
 
     init(
-        fileItem: CEWorkspaceFile,
-        tappedOpenFile: @escaping (CEWorkspaceFile) -> Void
+        fileItem: Item,
+        tappedOpenFile: @escaping (File) -> Void
     ) {
         self.fileItem = fileItem
         self._selection = .init(wrappedValue: fileItem)
         self.tappedOpenFile = tappedOpenFile
     }
 
-    var siblings: [CEWorkspaceFile] {
-        if let siblings = fileItem.parent?.children?.sortItems(foldersOnTop: true), !siblings.isEmpty {
+    var siblings: [Item] {
+        // FIXME: Sort so that folders are on top
+        if let siblings = fileItem.parentFolder?.children, !siblings.isEmpty {
             return siblings
         } else {
             return [fileItem]
@@ -54,7 +57,7 @@ struct PathBarComponent: View {
         .padding(.trailing, -3)
     }
 
-    struct NSPopUpButtonView<ItemType>: NSViewRepresentable where ItemType: Equatable {
+    struct NSPopUpButtonView<ItemType>: NSViewRepresentable {
         @Binding var selection: ItemType
 
         var popupCreator: () -> NSPopUpButton
@@ -77,7 +80,7 @@ struct PathBarComponent: View {
         func setPopUpFromSelection(_ button: NSPopUpButton, selection: ItemType) {
             let itemsList = button.itemArray
             let matchedMenuItem = itemsList.filter {
-                ($0.representedObject as? ItemType) == selection
+                ($0.representedObject as? AnyHashable) == selection as? AnyHashable
             }.first
             if matchedMenuItem != nil {
                 button.select(matchedMenuItem)

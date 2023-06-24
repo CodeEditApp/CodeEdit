@@ -47,13 +47,14 @@ struct PathBarView: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 1.5) {
                 // FIXME:
-//                ForEach(fileItems, id: \.self) { fileItem in
-//                    if fileItem.parent != nil {
-//                        chevron
-//                    }
-//                    PathBarComponent(fileItem: fileItem, tappedOpenFile: tappedOpenFile)
-//                        .padding(.leading, 2.5)
-//                }
+                ForEach(fileItems, id: \.id) { fileItem in
+                    if fileItem.parentFolder != nil {
+                        chevron
+                    }
+
+                    PathBarComponent(fileItem: fileItem, tappedOpenFile: tappedOpenFile)
+                        .padding(.leading, 2.5)
+                }
             }
             .padding(.horizontal, 10)
         }
