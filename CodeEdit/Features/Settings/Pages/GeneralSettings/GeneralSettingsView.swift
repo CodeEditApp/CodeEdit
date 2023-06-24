@@ -16,7 +16,8 @@ struct GeneralSettingsView: View {
     @EnvironmentObject var updater: SoftwareUpdater
     @FocusState private var focusedField: UUID?
 
-    @AppSettings(\.general) var settings
+    @AppSettings(\.general)
+    var settings
 
     @State private var openInCodeEdit: Bool = true
 

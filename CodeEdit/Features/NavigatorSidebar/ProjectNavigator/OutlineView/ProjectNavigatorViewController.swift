@@ -90,18 +90,25 @@ final class ProjectNavigatorViewController: NSViewController {
         fatalError()
     }
 
+    /// Forces to reveal the selected file through the command regardless of the auto reveal setting
+    @objc
+    func revealFile(_ sender: Any) {
+        updateSelection(itemID: workspace?.tabManager.activeTabGroup.selected?.id, forcesReveal: true)
+    }
+
     /// Updates the selection of the ``outlineView`` whenever it changes.
     ///
     /// Most importantly when the `id` changes from an external view.
     /// - Parameter itemID: The id of the file or folder.
-    func updateSelection(itemID: (any Hashable)?) {
+    /// - Parameter forcesReveal: The boolean to indicates whether or not it should force to reveal the selected file.
+    func updateSelection(itemID: (any Hashable)?, forcesReveal: Bool = false) {
         guard let itemID else {
             outlineView.deselectRow(outlineView.selectedRow)
             return
         }
 
         // FIXME:
-//        select(by: .codeEditor(itemID), from: content)
+//        select(by: .codeEditor(itemID), from: content, forcesReveal: forcesReveal)
     }
 
     /// Expand or collapse the folder on double click
@@ -240,7 +247,6 @@ extension ProjectNavigatorViewController: NSOutlineViewDataSource {
 }
 
 // MARK: - NSOutlineViewDelegate
-
 extension ProjectNavigatorViewController: NSOutlineViewDelegate {
     func outlineView(
         _ outlineView: NSOutlineView,
@@ -282,17 +288,21 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
     }
 
     func outlineViewItemDidExpand(_ notification: Notification) {
-        // FIXME:
-//        guard
-//            let id = workspace?.tabManager.activeTabGroup.selected?.id,
-//            let item = content.find(by: .codeEditor(id))
-//        else {
-//            return
-//        }
-//        /// select active file under collapsed folder only if its parent is expanding
-//        if outlineView.isItemExpanded(item.parent) {
-//            updateSelection(itemID: item.id)
-//        }
+        // FIXME: 
+        // guard
+        //     let id = workspace?.tabManager.activeTabGroup.selected?.id,
+        //     let item = content.find(by: .codeEditor(id))
+        // else {
+        //     return
+        // }
+        // /// update outline selection only if the parent of selected item match with expanded item
+        // guard item.parent === notification.userInfo?["NSObject"] as? CEWorkspaceFile else {
+        //     return
+        // }
+        // /// select active file under collapsed folder only if its parent is expanding
+        // if outlineView.isItemExpanded(item.parent) {
+        //     updateSelection(itemID: item.id)
+        // }
     }
 
     func outlineViewItemDidCollapse(_ notification: Notification) {}
@@ -312,24 +322,24 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
     /// - Parameters:
     ///   - id: the id of the item item
     ///   - collection: the array to search for
-    private func select(by id: TabBarItemID, from collection: [any Resource]) {
-        print(id)
-        // FIXME:
-//        guard let item = collection.find(by: id) else {
-//            return
-//        }
-//        // If the user has set "Reveal file on selection change" to on, we need to reveal the item before
-//        // selecting the row.
-//        if Settings.shared.preferences.general.revealFileOnFocusChange {
-//           reveal(item)
-//        }
-//        let row = outlineView.row(forItem: item)
-//        if row == -1 {
-//            outlineView.deselectRow(outlineView.selectedRow)
-//        }
-//        shouldSendSelectionUpdate = false
-//        outlineView.selectRowIndexes(.init(integer: row), byExtendingSelection: false)
-//        shouldSendSelectionUpdate = true
+    ///   - forcesReveal: The boolean to indicates whether or not it should force to reveal the selected file.
+    private func select(by id: TabBarItemID, from collection: [any Resource], forcesReveal: Bool) {
+        // FIXME: 
+        // guard let item = collection.find(by: id) else {
+        //     return
+        // }
+        // // If the user has set "Reveal file on selection change" to on or it is forced to reveal,
+        // // we need to reveal the item before selecting the row.
+        // if Settings.shared.preferences.general.revealFileOnFocusChange || forcesReveal {
+        //    reveal(item)
+        // }
+        // let row = outlineView.row(forItem: item)
+        // if row == -1 {
+        //     outlineView.deselectRow(outlineView.selectedRow)
+        // }
+        // shouldSendSelectionUpdate = false
+        // outlineView.selectRowIndexes(.init(integer: row), byExtendingSelection: false)
+        // shouldSendSelectionUpdate = true
     }
 
     /// Reveals the given `fileItem` in the outline view by expanding all the parent directories of the file.
@@ -351,7 +361,21 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
             alert.runModal()
             return
         } else {
+            let visibleRect = scrollView.contentView.visibleRect
+            let visibleRows = outlineView.rows(in: visibleRect)
+            guard !visibleRows.contains(row) else {
+                /// in case that the selected file is not fully visible (some parts are out of the visible rect),
+                /// `scrollRowToVisible(_:)` method brings the file where it can be fully visible.
+                outlineView.scrollRowToVisible(row)
+                return
+            }
+            let rowRect = outlineView.rect(ofRow: row)
+            let centerY = rowRect.midY - (visibleRect.height / 2)
+            let center = NSPoint(x: 0, y: centerY)
+            /// `scroll(_:)` method alone doesn't bring the selected file to the center in some cases.
+            /// calling `scrollRowToVisible(_:)` method before it makes the file reveal in the center more correctly.
             outlineView.scrollRowToVisible(row)
+            outlineView.scroll(center)
         }
     }
 
@@ -362,31 +386,5 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
             expandParent(item: parentFolder)
         }
         outlineView.expandItem(item)
-    }
-}
-
-// MARK: - NSMenuDelegate
-
-extension ProjectNavigatorViewController: NSMenuDelegate {
-
-    /// Once a menu gets requested by a `right click` setup the menu
-    ///
-    /// If the right click happened outside a row this will result in no menu being shown.
-    /// - Parameter menu: The menu that got requested
-    func menuNeedsUpdate(_ menu: NSMenu) {
-        let row = outlineView.clickedRow
-        guard let menu = menu as? ProjectNavigatorMenu else { return }
-
-        if row == -1 {
-            menu.item = nil
-        } else {
-            if let item = outlineView.item(atRow: row) as? CEWorkspaceFile {
-                menu.item = item
-                menu.workspace = workspace
-            } else {
-                menu.item = nil
-            }
-        }
-        menu.update()
     }
 }

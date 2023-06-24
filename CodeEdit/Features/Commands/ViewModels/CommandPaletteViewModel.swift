@@ -11,17 +11,13 @@ import Foundation
 /// query text and list of filtered commands
 final class CommandPaletteViewModel: ObservableObject {
 
-    @Published
-    var commandQuery: String = ""
+    @Published var commandQuery: String = ""
 
-    @Published
-    var selected: Command?
+    @Published var selected: Command?
 
-    @Published
-    var isShowingCommandsList: Bool = true
+    @Published var isShowingCommandsList: Bool = true
 
-    @Published
-    var filteredCommands: [Command] = []
+    @Published var filteredCommands: [Command] = []
 
     init() {}
 

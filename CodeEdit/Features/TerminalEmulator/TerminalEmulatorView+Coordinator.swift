@@ -11,8 +11,7 @@ import SwiftTerm
 extension TerminalEmulatorView {
     final class Coordinator: NSObject, LocalProcessTerminalViewDelegate {
 
-        @State
-        private var url: URL
+        @State private var url: URL
 
         public var onTitleChange: (_ title: String) -> Void
 

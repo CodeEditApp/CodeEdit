@@ -9,8 +9,7 @@ import SwiftUI
 import CodeEditSymbols
 
 struct StatusBarBreakpointButton: View {
-    @EnvironmentObject
-    private var model: DebugAreaViewModel
+    @EnvironmentObject private var model: DebugAreaViewModel
 
     var body: some View {
         Button {

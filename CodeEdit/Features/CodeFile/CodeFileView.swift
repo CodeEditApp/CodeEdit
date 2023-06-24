@@ -13,24 +13,31 @@ import Combine
 
 /// CodeFileView is just a wrapper of the `CodeEditor` dependency
 struct CodeFileView: View {
-    @ObservedObject
-    private var codeFile: CodeFileDocument
+    @ObservedObject private var codeFile: CodeFileDocument
 
-    @AppSettings(\.textEditing.defaultTabWidth) var defaultTabWidth
-    @AppSettings(\.textEditing.indentOption) var indentOption
-    @AppSettings(\.textEditing.lineHeightMultiple) var lineHeightMultiple
-    @AppSettings(\.textEditing.wrapLinesToEditorWidth) var wrapLinesToEditorWidth
-    @AppSettings(\.textEditing.font) var settingsFont
-    @AppSettings(\.theme.useThemeBackground) var useThemeBackground
-    @AppSettings(\.theme.matchAppearance) var matchAppearance
-    @AppSettings(\.textEditing.letterSpacing) var letterSpacing
-    @AppSettings(\.textEditing.bracketHighlight) var bracketHighlight
+    @AppSettings(\.textEditing.defaultTabWidth)
+    var defaultTabWidth
+    @AppSettings(\.textEditing.indentOption)
+    var indentOption
+    @AppSettings(\.textEditing.lineHeightMultiple)
+    var lineHeightMultiple
+    @AppSettings(\.textEditing.wrapLinesToEditorWidth)
+    var wrapLinesToEditorWidth
+    @AppSettings(\.textEditing.font)
+    var settingsFont
+    @AppSettings(\.theme.useThemeBackground)
+    var useThemeBackground
+    @AppSettings(\.theme.matchAppearance)
+    var matchAppearance
+    @AppSettings(\.textEditing.letterSpacing)
+    var letterSpacing
+    @AppSettings(\.textEditing.bracketHighlight)
+    var bracketHighlight
 
     @Environment(\.colorScheme)
     private var colorScheme
 
-    @StateObject
-    private var themeModel: ThemeModel = .shared
+    @StateObject private var themeModel: ThemeModel = .shared
 
     private var cancellables = [AnyCancellable]()
 
@@ -64,16 +71,13 @@ struct CodeFileView: View {
             .store(in: &cancellables)
     }
 
-    @State
-    private var selectedTheme = ThemeModel.shared.selectedTheme ?? ThemeModel.shared.themes.first!
+    @State private var selectedTheme = ThemeModel.shared.selectedTheme ?? ThemeModel.shared.themes.first!
 
-    @State
-    private var font: NSFont = {
+    @State private var font: NSFont = {
         return Settings[\.textEditing].font.current()
     }()
 
-    @State
-    private var bracketPairHighlight: BracketPairHighlight? = {
+    @State private var bracketPairHighlight: BracketPairHighlight? = {
         let theme = ThemeModel.shared.selectedTheme ?? ThemeModel.shared.themes.first!
         let color = Settings[\.textEditing].bracketHighlight.useCustomColor
         ? Settings[\.textEditing].bracketHighlight.color.nsColor
@@ -93,8 +97,7 @@ struct CodeFileView: View {
     @Environment(\.edgeInsets)
     private var edgeInsets
 
-    @EnvironmentObject
-    private var tabgroup: TabGroupData
+    @EnvironmentObject private var tabgroup: TabGroupData
 
     var body: some View {
         CodeEditTextView(

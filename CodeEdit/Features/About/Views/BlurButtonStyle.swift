@@ -12,7 +12,8 @@ extension ButtonStyle where Self == BlurButtonStyle {
 }
 
 struct BlurButtonStyle: ButtonStyle {
-    @Environment(\.controlSize) var controlSize
+    @Environment(\.controlSize)
+    var controlSize
 
     var height: CGFloat {
         switch controlSize {
@@ -23,7 +24,8 @@ struct BlurButtonStyle: ButtonStyle {
         }
     }
 
-    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.colorScheme)
+    var colorScheme
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label

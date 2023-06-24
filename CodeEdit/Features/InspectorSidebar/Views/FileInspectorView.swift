@@ -8,34 +8,26 @@ import SwiftUI
 import CodeEditLanguages
 
 struct FileInspectorView: View {
-    @EnvironmentObject
-    private var workspace: WorkspaceDocument
+    @EnvironmentObject private var workspace: WorkspaceDocument
 
-    @EnvironmentObject
-    private var tabManager: TabManager
+    @EnvironmentObject private var tabManager: TabManager
 
     @AppSettings(\.textEditing)
     private var textEditing
 
-    @State
-    private var file: File?
+    @State private var file: File?
 
-    @State
-    private var fileName: String = ""
+    @State private var fileName: String = ""
 
     // File settings overrides
 
-    @State
-    private var language: CodeLanguage?
+    @State private var language: CodeLanguage?
 
-    @State
-    var indentOption: SettingsData.TextEditingSettings.IndentOption = .init(indentType: .tab)
+    @State var indentOption: SettingsData.TextEditingSettings.IndentOption = .init(indentType: .tab)
 
-    @State
-    var defaultTabWidth: Int = 0
+    @State var defaultTabWidth: Int = 0
 
-    @State
-    var wrapLines: Bool = false
+    @State var wrapLines: Bool = false
 
     var body: some View {
         Group {
@@ -73,8 +65,7 @@ struct FileInspectorView: View {
         }
     }
 
-    @ViewBuilder
-    private var fileNameField: some View {
+    @ViewBuilder private var fileNameField: some View {
         if let file {
             TextField("Name", text: $fileName)
                 .background(
@@ -104,8 +95,7 @@ struct FileInspectorView: View {
         }
     }
 
-    @ViewBuilder
-    private var fileType: some View {
+    @ViewBuilder private var fileType: some View {
         Picker(
             "Type",
             selection: $language

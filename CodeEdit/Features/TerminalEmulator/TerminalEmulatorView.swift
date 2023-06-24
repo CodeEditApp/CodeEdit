@@ -16,16 +16,16 @@ import SwiftTerm
 /// for use in SwiftUI.
 ///
 struct TerminalEmulatorView: NSViewRepresentable {
-    @AppSettings(\.terminal) var terminalSettings
-    @AppSettings(\.textEditing.font) var fontSettings
+    @AppSettings(\.terminal)
+    var terminalSettings
+    @AppSettings(\.textEditing.font)
+    var fontSettings
 
-    @StateObject
-    private var themeModel: ThemeModel = .shared
+    @StateObject private var themeModel: ThemeModel = .shared
 
     static var lastTerminal: [String: LocalProcessTerminalView] = [:]
 
-    @State
-    var terminal: LocalProcessTerminalView
+    @State var terminal: LocalProcessTerminalView
 
     private let systemFont: NSFont = .monospacedSystemFont(ofSize: 11, weight: .medium)
 

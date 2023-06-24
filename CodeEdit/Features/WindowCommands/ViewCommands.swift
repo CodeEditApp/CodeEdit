@@ -8,18 +8,23 @@
 import SwiftUI
 
 struct ViewCommands: Commands {
-    @AppSettings(\.textEditing.font.size) var editorFontSize
-    @AppSettings(\.terminal.font.size) var terminalFontSize
-    @AppSettings(\.featureFlags.useNewWindowingSystem) var useNewWindowingSystem
+    @AppSettings(\.textEditing.font.size)
+    var editorFontSize
+    @AppSettings(\.terminal.font.size)
+    var terminalFontSize
+    @AppSettings(\.featureFlags.useNewWindowingSystem)
+    var useNewWindowingSystem
 
     @State var windowController: CodeEditWindowController?
 
     private let documentController: CodeEditDocumentController = CodeEditDocumentController()
     private let statusBarViewModel: DebugAreaViewModel = DebugAreaViewModel()
 
-    @FocusedBinding(\.navigationSplitViewVisibility) var navigationSplitViewVisibility
+    @FocusedBinding(\.navigationSplitViewVisibility)
+    var navigationSplitViewVisibility
 
-    @FocusedBinding(\.inspectorVisibility) var inspectorVisibility
+    @FocusedBinding(\.inspectorVisibility)
+    var inspectorVisibility
 
     var navigatorCollapsed: Bool {
         windowController?.navigatorCollapsed ?? false

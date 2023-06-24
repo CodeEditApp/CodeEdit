@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct DebugAreaTabView<Content: View, LeadingSidebar: View, TrailingSidebar: View>: View {
-    @ObservedObject
-    var model: DebugAreaTabViewModel = DebugAreaTabViewModel.shared
+    @ObservedObject var model: DebugAreaTabViewModel = DebugAreaTabViewModel.shared
 
     let content: (DebugAreaTabViewModel) -> Content
     let leadingSidebar: (DebugAreaTabViewModel) -> LeadingSidebar?

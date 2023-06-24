@@ -23,13 +23,12 @@ struct TabBarContextMenu: ViewModifier {
         self.isTemporary = isTemporary
     }
 
-    @EnvironmentObject
-    var workspace: WorkspaceDocument
+    @EnvironmentObject var workspace: WorkspaceDocument
 
-    @EnvironmentObject
-    var tabs: TabGroupData
+    @EnvironmentObject var tabs: TabGroupData
 
-    @Environment(\.splitEditor) var splitEditor
+    @Environment(\.splitEditor)
+    var splitEditor
 
     private var item: TabGroupData.Tab
     private var isTemporary: Bool

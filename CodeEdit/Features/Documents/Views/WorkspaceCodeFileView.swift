@@ -10,16 +10,13 @@ import UniformTypeIdentifiers
 
 struct WorkspaceCodeFileView: View {
 
-    @EnvironmentObject
-    private var tabManager: TabManager
+    @EnvironmentObject private var tabManager: TabManager
 
-    @EnvironmentObject
-    private var tabgroup: TabGroupData
+    @EnvironmentObject private var tabgroup: TabGroupData
 
     var file: File
 
-    @ViewBuilder
-    var codeView: some View {
+    @ViewBuilder var codeView: some View {
         if let document = file.document {
             Group {
                 switch document.typeOfFile {
