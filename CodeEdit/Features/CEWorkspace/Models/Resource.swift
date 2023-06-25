@@ -8,12 +8,15 @@
 import Foundation
 import AppKit
 import SwiftUI
+import UniformTypeIdentifiers
 
 protocol Resource: AnyObject, Identifiable<UInt64> {
     var name: String { get set }
     var url: URL { get set }
 
     var id: ID { get }
+
+    var contentType: UTType { get set }
 
     var parentFolder: Folder? { get set }
 

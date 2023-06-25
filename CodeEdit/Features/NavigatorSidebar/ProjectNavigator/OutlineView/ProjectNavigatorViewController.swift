@@ -21,7 +21,7 @@ final class ProjectNavigatorViewController: NSViewController {
     /// Gets the folder structure
     ///
     /// Also creates a top level item "root" which represents the projects root directory and automatically expands it.
-    private var content: [any Resource] {
+    private var content: [Item] {
         //        guard let folderURL = workspace?.workspaceFileManager?.folderUrl else { return [] }
         //        guard let root = try? workspace?.workspaceFileManager?.getFile(folderURL.path) else { return [] }
         //        return [root]
@@ -109,7 +109,6 @@ final class ProjectNavigatorViewController: NSViewController {
             return
         }
 
-        // FIXME:
         select(by: itemID, from: content, forcesReveal: forcesReveal)
     }
 
@@ -132,7 +131,7 @@ final class ProjectNavigatorViewController: NSViewController {
     /// Get the appropriate color for the items icon depending on the users preferences.
     /// - Parameter item: The `FileItem` to get the color for
     /// - Returns: A `NSColor` for the given `FileItem`.
-    private func color(for item: any Resource) -> NSColor {
+    private func color(for item: Item) -> NSColor {
         iconColor == .color ? NSColor(item.iconColor) : .secondaryLabelColor
     }
 
@@ -164,7 +163,7 @@ extension ProjectNavigatorViewController: NSOutlineViewDataSource {
 
     /// write dragged file(s) to pasteboard
     func outlineView(_ outlineView: NSOutlineView, pasteboardWriterForItem item: Any) -> NSPasteboardWriting? {
-        (item as? any Resource)?.url as NSURL?
+        (item as? Item)?.url as NSURL?
     }
 
     /// declare valid drop target
@@ -176,7 +175,7 @@ extension ProjectNavigatorViewController: NSOutlineViewDataSource {
     ) -> NSDragOperation {
         guard index == -1 else { return [] }
 
-        if let item = item as? any Resource, !(item is Folder) {
+        if let item = item as? Item, !(item is Folder) {
             outlineView.setDropItem(item.parentFolder, dropChildIndex: index)
         }
 
@@ -267,7 +266,7 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
 
         let frameRect = NSRect(x: 0, y: 0, width: tableColumn.width, height: rowHeight)
 
-        return ProjectNavigatorTableViewCell(frame: frameRect, item: item as? any Resource, delegate: self)
+        return ProjectNavigatorTableViewCell(frame: frameRect, item: item as? Item, delegate: self)
     }
 
     func outlineViewSelectionDidChange(_ notification: Notification) {
@@ -280,7 +279,6 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
         guard shouldSendSelectionUpdate else { return }
 
         if let item = outlineView.item(atRow: selectedIndex) as? File {
-            // FIXME:
             workspace?.tabManager.activeTabGroup.openTab(item: item, asTemporary: true)
         }
     }
@@ -324,7 +322,7 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
     ///   - id: the id of the item item
     ///   - collection: the array to search for
     ///   - forcesReveal: The boolean to indicates whether or not it should force to reveal the selected file.
-    private func select(by id: ItemID, from collection: [any Resource], forcesReveal: Bool) {
+    private func select(by id: ItemID, from collection: [Item], forcesReveal: Bool) {
         guard let item = collection.find(id: id) else {
             return
         }

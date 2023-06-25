@@ -56,14 +56,14 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
             super.init()
 
             // FIXME: 
-//            workspace.listenerModel.$highlightedFileItem
-//                .sink(receiveValue: { [weak self] fileItem in
-//                    guard let fileItem else {
-//                        return
-//                    }
-//                    self?.controller?.reveal(fileItem)
-//                })
-//                .store(in: &cancellables)
+            workspace.listenerModel.$highlightedFileItem
+                .sink(receiveValue: { [weak self] fileItem in
+                    guard let fileItem else {
+                        return
+                    }
+                    self?.controller?.reveal(fileItem)
+                })
+                .store(in: &cancellables)
             workspace.tabManager.tabBarItemIdSubject
                 .sink { [weak self] itemID in
                     self?.controller?.updateSelection(itemID: itemID)

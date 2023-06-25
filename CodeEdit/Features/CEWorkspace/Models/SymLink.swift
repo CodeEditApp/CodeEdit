@@ -6,10 +6,12 @@
 //
 
 import SwiftUI
+import UniformTypeIdentifiers
 
 class SymLink: Resource {
     var url: URL
     var name: String
+    var contentType: UTType
 
     weak var parentFolder: Folder?
 
@@ -17,9 +19,10 @@ class SymLink: Resource {
 
     init(url: URL) throws {
         self.url = url
-        let values = try url.resourceValues(forKeys: [.nameKey, .fileIdentifierKey])
+        let values = try url.resourceValues(forKeys: [.nameKey, .fileIdentifierKey, .contentTypeKey])
         self.name = values.name!
         self.id = values.fileIdentifier!
+        self.contentType = values.contentType!
     }
 
     var id: UInt64
@@ -32,9 +35,10 @@ class SymLink: Resource {
 
     func update(with url: URL) throws {
         self.url = url
-        let values = try url.resourceValues(forKeys: [.nameKey, .fileIdentifierKey])
+        let values = try url.resourceValues(forKeys: [.nameKey, .fileIdentifierKey, .contentTypeKey])
         self.name = values.name!
         self.id = values.fileIdentifier!
+        self.contentType = values.contentType!
     }
 
     func resolveItem(components: [String]) -> any Resource {

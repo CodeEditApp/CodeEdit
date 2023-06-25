@@ -11,8 +11,10 @@ import UniformTypeIdentifiers
 /// A subclass of `NSMenu` implementing the contextual menu for the project navigator
 final class ProjectNavigatorMenu: NSMenu {
 
+    typealias Item = ProjectNavigatorViewController.Item
+
     /// The item to show the contextual menu for
-    var item: CEWorkspaceFile?
+    var item: Item?
 
     /// The workspace, for opening the item
     var workspace: WorkspaceDocument?
@@ -63,13 +65,13 @@ final class ProjectNavigatorMenu: NSMenu {
                                 item.url != workspace?.workspaceFileManager?.folderUrl
                               ? #selector(delete) : nil)
 
-        let duplicate = menuItem("Duplicate \(item.isFolder ? "Folder" : "File")", action: #selector(duplicate))
+        let duplicate = menuItem("Duplicate \(item is Folder ? "Folder" : "File")", action: #selector(duplicate))
 
         let sortByName = menuItem("Sort by Name", action: nil)
-        sortByName.isEnabled = item.isFolder
+        sortByName.isEnabled = item is Folder
 
         let sortByType = menuItem("Sort by Type", action: nil)
-        sortByType.isEnabled = item.isFolder
+        sortByType.isEnabled = item is Folder
 
         let sourceControl = menuItem("Source Control", action: nil)
 
@@ -101,12 +103,12 @@ final class ProjectNavigatorMenu: NSMenu {
     }
 
     /// Submenu for **Open As** menu item.
-    private func openAsMenu(item: CEWorkspaceFile) -> NSMenu {
+    private func openAsMenu(item: Item) -> NSMenu {
         let openAsMenu = NSMenu(title: "Open As")
         func getMenusItems() -> ([NSMenuItem], [NSMenuItem]) {
             // Use UTType to distinguish between bundle file and user-browsable directory
             // The isDirectory property is not accurate on this.
-            guard let type = item.contentType else { return ([.none()], []) }
+            let type = item.contentType
             if type.conforms(to: .folder) {
                 return ([.none()], [])
             }
@@ -153,10 +155,10 @@ final class ProjectNavigatorMenu: NSMenu {
     }
 
     /// Submenu for **Source Control** menu item.
-    private func sourceControlMenu(item: CEWorkspaceFile) -> NSMenu {
+    private func sourceControlMenu(item: Item) -> NSMenu {
         let sourceControlMenu = NSMenu(title: "Source Control")
         sourceControlMenu.addItem(
-            withTitle: "Commit \"\(String(describing: item.fileName))\"...",
+            withTitle: "Commit \"\(String(describing: item.name))\"...",
             action: nil,
             keyEquivalent: ""
         )
@@ -184,9 +186,8 @@ final class ProjectNavigatorMenu: NSMenu {
     /// Action that opens the item, identical to clicking it.
     @objc
     private func openInTab() {
-        if let item {
-            // FIXME: 
-//            workspace?.tabManager.openTab(item: item)
+        if let item = item as? File {
+            workspace?.tabManager.openTab(item: item)
         }
     }
 
@@ -200,17 +201,21 @@ final class ProjectNavigatorMenu: NSMenu {
     /// Action that creates a new untitled file
     @objc
     private func newFile() {
-        item?.addFile(fileName: "untitled")
-        outlineView.expandItem((item?.isFolder ?? true) ? item : item?.parent)
+        guard let item else { return }
+        // FIXME:
+//        item.addFile(fileName: "untitled")
+        outlineView.expandItem(item is Folder ? item : item.parentFolder)
     }
 
     // TODO: allow custom folder names
     /// Action that creates a new untitled folder
     @objc
     private func newFolder() {
-        item?.addFolder(folderName: "untitled")
+        guard let item else { return }
+        // FIXME:
+//        item.addFolder(folderName: "untitled")
         outlineView.expandItem(item)
-        outlineView.expandItem((item?.isFolder ?? true) ? item : item?.parent)
+        outlineView.expandItem(item is Folder ? item : item.parentFolder)
     }
 
     /// Opens the rename file dialogue on the cell this was presented from.
@@ -231,13 +236,15 @@ final class ProjectNavigatorMenu: NSMenu {
     /// Action that deletes the item.
     @objc
     private func delete() {
-        item?.delete()
+        // FIXME:
+//        item?.delete()
     }
 
     /// Action that duplicates the item
     @objc
     private func duplicate() {
-        item?.duplicate()
+        // FIXME:
+//        item?.duplicate()
     }
 }
 

@@ -6,11 +6,13 @@
 //
 
 import SwiftUI
+import UniformTypeIdentifiers
 
 class Folder: Resource {
     var children: [any Resource] = []
     var url: URL
     var id: UInt64
+    var contentType: UTType
     var name: String
 
     var systemImage: String {
@@ -27,9 +29,10 @@ class Folder: Resource {
 
     init(url: URL) throws {
         self.url = url
-        let values = try url.resourceValues(forKeys: [.nameKey, .fileIdentifierKey])
+        let values = try url.resourceValues(forKeys: [.nameKey, .fileIdentifierKey, .contentTypeKey])
         self.name = values.name!
         self.id = values.fileIdentifier!
+        self.contentType = values.contentType!
     }
 
     func fileName(typeHidden: Bool) -> String {
@@ -38,9 +41,10 @@ class Folder: Resource {
 
     func update(with url: URL) throws {
         self.url = url
-        let values = try url.resourceValues(forKeys: [.nameKey, .fileIdentifierKey])
+        let values = try url.resourceValues(forKeys: [.nameKey, .fileIdentifierKey, .contentTypeKey])
         self.name = values.name!
         self.id = values.fileIdentifier!
+        self.contentType = values.contentType!
     }
 
     func resolveItem(components: [String]) -> any Resource {

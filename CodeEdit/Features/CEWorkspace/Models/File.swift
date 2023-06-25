@@ -11,6 +11,7 @@ import UniformTypeIdentifiers
 class File: Resource, Identifiable, Hashable {
     var id: UInt64
     var url: URL
+    var contentType: UTType
     var name: String
     var displayName: String
     var fileType: FileIcon.FileType?
@@ -38,14 +39,15 @@ class File: Resource, Identifiable, Hashable {
 
     func update(with url: URL) throws {
         self.url = url
-        (self.name, self.id, self.displayName, self.fileType) = try Self.update(with: url)
+        (self.name, self.id, self.contentType, self.displayName, self.fileType) = try Self.update(with: url)
     }
 
     // swiftlint:disable large_tuple
-    fileprivate static func update(with url: URL) throws -> (String, UInt64, String, FileIcon.FileType?) {
-        let values = try url.resourceValues(forKeys: [.nameKey, .fileIdentifierKey])
+    fileprivate static func update(with url: URL) throws -> (String, UInt64, UTType, String, FileIcon.FileType?) {
+        let values = try url.resourceValues(forKeys: [.nameKey, .fileIdentifierKey, .contentTypeKey])
         let name = values.name!
         let id = values.fileIdentifier!
+        let contentType = values.contentType!
         let displayName = name.split(separator: ".").dropLast().joined(separator: ".")
 
         var fileType: FileIcon.FileType?
@@ -53,7 +55,7 @@ class File: Resource, Identifiable, Hashable {
             fileType = FileIcon.FileType.init(rawValue: String(last))
         }
 
-        return (name, id, displayName, fileType)
+        return (name, id, contentType, displayName, fileType)
     }
     // swiftlint:enable large_tuple
 
@@ -67,13 +69,13 @@ class File: Resource, Identifiable, Hashable {
         document = try CodeFileDocument(
             for: url,
             withContentsOf: url,
-            ofType: UTType.text.identifier
+            ofType: contentType.identifier
         )
     }
 
     init(url: URL) throws {
         self.url = url
-        (self.name, self.id, self.displayName, self.fileType) = try Self.update(with: url)
+        (self.name, self.id, self.contentType, self.displayName, self.fileType) = try Self.update(with: url)
     }
 
     func resolveItem(components: [String]) -> any Resource {
