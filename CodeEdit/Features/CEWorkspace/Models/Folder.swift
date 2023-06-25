@@ -10,6 +10,7 @@ import SwiftUI
 class Folder: Resource {
     var children: [any Resource] = []
     var url: URL
+    var id: UInt64
     var name: String
 
     var systemImage: String {
@@ -26,8 +27,9 @@ class Folder: Resource {
 
     init(url: URL) throws {
         self.url = url
-        let values = try url.resourceValues(forKeys: [.nameKey])
+        let values = try url.resourceValues(forKeys: [.nameKey, .fileIdentifierKey])
         self.name = values.name!
+        self.id = values.fileIdentifier!
     }
 
     func fileName(typeHidden: Bool) -> String {
@@ -36,8 +38,9 @@ class Folder: Resource {
 
     func update(with url: URL) throws {
         self.url = url
-        let values = try url.resourceValues(forKeys: [.nameKey])
+        let values = try url.resourceValues(forKeys: [.nameKey, .fileIdentifierKey])
         self.name = values.name!
+        self.id = values.fileIdentifier!
     }
 
     func resolveItem(components: [String]) -> any Resource {

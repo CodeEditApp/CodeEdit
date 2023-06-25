@@ -71,7 +71,7 @@ class File: Resource, Identifiable, Hashable {
         )
     }
 
-    init(url: URL, name: String) throws {
+    init(url: URL) throws {
         self.url = url
         (self.name, self.id, self.displayName, self.fileType) = try Self.update(with: url)
     }

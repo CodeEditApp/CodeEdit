@@ -65,13 +65,13 @@ extension WorkspaceDocument {
 
             switch resourceType {
             case .regular:
-                resource = try File(url: url, name: name)
+                resource = try File(url: url)
             case .directory:
                 let newFolder = try Folder(url: url)
                 resource = newFolder
                 possibleNewFolder = newFolder
             case .symbolicLink:
-                resource = SymLink(url: url, name: name)
+                resource = try SymLink(url: url)
             default:
                 continue
             }

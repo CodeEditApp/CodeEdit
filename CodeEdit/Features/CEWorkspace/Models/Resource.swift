@@ -9,19 +9,21 @@ import Foundation
 import AppKit
 import SwiftUI
 
-protocol Resource: AnyObject, Identifiable {
+protocol Resource: AnyObject, Identifiable<UInt64> {
     var name: String { get set }
     var url: URL { get set }
 
+    var id: ID { get }
+
     var parentFolder: Folder? { get set }
-
-    func resolveItem(components: [String]) -> any Resource
-
-    func update(with url: URL) throws
 
     var iconColor: Color { get }
 
     var systemImage: String { get }
+
+    func resolveItem(components: [String]) -> any Resource
+
+    func update(with url: URL) throws
 
     func fileName(typeHidden: Bool) -> String
 
@@ -29,7 +31,6 @@ protocol Resource: AnyObject, Identifiable {
 }
 
 extension Resource {
-    var id: URL { url }
 
     func showInFinder() {
         NSWorkspace.shared.activateFileViewerSelecting([url])

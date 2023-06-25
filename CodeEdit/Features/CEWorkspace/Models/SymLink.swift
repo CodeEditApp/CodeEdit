@@ -15,10 +15,14 @@ class SymLink: Resource {
 
     var systemImage: String = "link"
 
-    init(url: URL, name: String) {
+    init(url: URL) throws {
         self.url = url
-        self.name = name
+        let values = try url.resourceValues(forKeys: [.nameKey, .fileIdentifierKey])
+        self.name = values.name!
+        self.id = values.fileIdentifier!
     }
+
+    var id: UInt64
 
     func fileName(typeHidden: Bool) -> String {
         name
@@ -28,8 +32,9 @@ class SymLink: Resource {
 
     func update(with url: URL) throws {
         self.url = url
-        let values = try url.resourceValues(forKeys: [.nameKey])
+        let values = try url.resourceValues(forKeys: [.nameKey, .fileIdentifierKey])
         self.name = values.name!
+        self.id = values.fileIdentifier!
     }
 
     func resolveItem(components: [String]) -> any Resource {

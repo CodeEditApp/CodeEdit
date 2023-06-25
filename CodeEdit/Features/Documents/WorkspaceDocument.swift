@@ -12,7 +12,7 @@ import Combine
 import WindowManagement
 
 extension [any Resource] {
-    func find(id: URL) -> (any Resource)? {
+    func find(id: UInt64) -> (any Resource)? {
         compactMap {
             if $0.id == id {
                 return $0
@@ -258,11 +258,9 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         case rootFileEnumeration
     }
 
-    @Published
-    var fileTree: (any Resource)!
+    @Published var fileTree: (any Resource)!
 
-    @MainActor
-    var onRefresh: (() -> Void)?
+    @MainActor var onRefresh: (() -> Void)?
 
     var ignoredResources: Set<Ignored> = [
         .file(name: ".DS_Store")
@@ -275,7 +273,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     }
 
     func find(url: URL, in resource: any Resource) -> (any Resource)? {
-        if resource.id == url {
+        if resource.url == url {
             return resource
         }
         if let item = resource as? Folder {

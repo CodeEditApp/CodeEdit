@@ -96,19 +96,21 @@ final class ProjectNavigatorViewController: NSViewController {
         updateSelection(itemID: workspace?.tabManager.activeTabGroup.selected?.id, forcesReveal: true)
     }
 
+    typealias ItemID = UInt64
+
     /// Updates the selection of the ``outlineView`` whenever it changes.
     ///
     /// Most importantly when the `id` changes from an external view.
     /// - Parameter itemID: The id of the file or folder.
     /// - Parameter forcesReveal: The boolean to indicates whether or not it should force to reveal the selected file.
-    func updateSelection(itemID: (any Hashable)?, forcesReveal: Bool = false) {
+    func updateSelection(itemID: ItemID?, forcesReveal: Bool = false) {
         guard let itemID else {
             outlineView.deselectRow(outlineView.selectedRow)
             return
         }
 
         // FIXME:
-        //        select(by: .codeEditor(itemID), from: content, forcesReveal: forcesReveal)
+        select(by: itemID, from: content, forcesReveal: forcesReveal)
     }
 
     /// Expand or collapse the folder on double click
@@ -289,7 +291,7 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
 
     func outlineViewItemDidExpand(_ notification: Notification) {
         guard
-            let id = workspace?.tabManager.activeTabGroup.selected?.url,
+            let id = workspace?.tabManager.activeTabGroup.selected?.id,
             let item = content.find(id: id)
         else {
             return
@@ -322,7 +324,7 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
     ///   - id: the id of the item item
     ///   - collection: the array to search for
     ///   - forcesReveal: The boolean to indicates whether or not it should force to reveal the selected file.
-    private func select(by id: URL, from collection: [any Resource], forcesReveal: Bool) {
+    private func select(by id: ItemID, from collection: [any Resource], forcesReveal: Bool) {
         guard let item = collection.find(id: id) else {
             return
         }
