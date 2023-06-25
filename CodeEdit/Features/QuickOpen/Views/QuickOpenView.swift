@@ -9,17 +9,19 @@ import SwiftUI
 
 struct QuickOpenView: View {
 
+    typealias Item = QuickOpenViewModel.Item
+
     private let onClose: () -> Void
-    private let openFile: (CEWorkspaceFile) -> Void
+    private let openFile: (File) -> Void
 
     @ObservedObject private var state: QuickOpenViewModel
 
-    @State private var selectedItem: CEWorkspaceFile?
+    @State private var selectedItem: Item?
 
     init(
         state: QuickOpenViewModel,
         onClose: @escaping () -> Void,
-        openFile: @escaping (CEWorkspaceFile) -> Void
+        openFile: @escaping (File) -> Void
     ) {
         self.state = state
         self.onClose = onClose
@@ -34,7 +36,7 @@ struct QuickOpenView: View {
             text: $state.openQuicklyQuery,
             optionRowHeight: 40
         ) { file in
-            QuickOpenItem(baseDirectory: state.fileURL, fileItem: file)
+            QuickOpenItem(fileItem: file)
         } preview: { file in
             QuickOpenPreviewView(item: file)
         } onRowClick: { file in
@@ -44,8 +46,9 @@ struct QuickOpenView: View {
         } onClose: {
             onClose()
         }
-        .onReceive(state.$openQuicklyQuery.debounce(for: 0.2, scheduler: DispatchQueue.main)) { _ in
-            state.fetchOpenQuickly()
+        .task(id: state.openQuicklyQuery) {
+            try? await Task.sleep(for: .milliseconds(200))
+            await state.fetchOpenQuickly()
         }
     }
 }

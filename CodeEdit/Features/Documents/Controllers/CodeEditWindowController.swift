@@ -292,12 +292,11 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
                 let panel = OverlayPanel()
                 self.quickOpenPanel = panel
 
-                let contentView = QuickOpenView(state: state) {
-                    panel.close()
-                } openFile: { file in
-                    // FIXME: 
-//                    workspace.tabManager.openTab(item: file)
+                let contentView = QuickOpenView(state: state, onClose: panel.close) {
+                    workspace.tabManager.openTab(item: $0)
                 }
+                .environmentObject(workspace)
+                .environmentObject(workspace.tabManager)
 
                 panel.contentView = NSHostingView(rootView: SettingsInjector { contentView })
                 window?.addChildWindow(panel, ordered: .above)

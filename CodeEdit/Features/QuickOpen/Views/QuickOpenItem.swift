@@ -9,19 +9,13 @@ import SwiftUI
 
 struct QuickOpenItem: View {
 
-    private let baseDirectory: URL
-    private let fileItem: CEWorkspaceFile
+    @EnvironmentObject var workspace: WorkspaceDocument
 
-    init(
-        baseDirectory: URL,
-        fileItem: CEWorkspaceFile
-    ) {
-        self.baseDirectory = baseDirectory
-        self.fileItem = fileItem
-    }
+    let fileItem: File
 
     var relativePathComponents: ArraySlice<String> {
-        return fileItem.url.pathComponents.dropFirst(baseDirectory.pathComponents.count).dropLast()
+        guard let base = workspace.fileURL else { return [] }
+        return fileItem.url.pathComponents.dropFirst(base.pathComponents.count).dropLast()
     }
 
     var body: some View {

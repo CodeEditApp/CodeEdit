@@ -10,20 +10,17 @@ import SwiftUI
 struct QuickOpenPreviewView: View {
 
     private let queue = DispatchQueue(label: "app.codeedit.CodeEdit.quickOpen.preview")
-    private let item: CEWorkspaceFile
+    private let item: File
 
     @ObservedObject var document: CodeFileDocument
 
     init(
-        item: CEWorkspaceFile
+        item: File
     ) {
         self.item = item
-        let doc = try? CodeFileDocument(
-            for: item.url,
-            withContentsOf: item.url,
-            ofType: "public.source-code"
-        )
-        self._document = .init(wrappedValue: doc ?? .init())
+
+        // FIXME: Open document when needed
+        self._document = .init(wrappedValue: item.document!)
     }
 
     var body: some View {

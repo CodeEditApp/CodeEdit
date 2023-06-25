@@ -127,7 +127,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
 //            ignoredFilesAndFolders: ignoredFilesAndDirectory
 //        )
         self.searchState = .init(self)
-        self.quickOpenViewModel = .init(fileURL: url)
+        self.quickOpenViewModel = .init(workspace: self)
         self.commandsPaletteState = .init()
     }
 
@@ -266,6 +266,26 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
             return item.children.compactMap { find(url: url, in: $0) }.first
         }
         return nil
+    }
+
+    func flattenedTree() -> [any Resource] {
+        switch fileTree {
+        case let fileTree as File:
+            return [fileTree]
+        case let fileTree as Folder:
+            return flattenedTree(for: fileTree)
+        default:
+            return []
+        }
+    }
+
+    func flattenedTree(for folder: Folder) -> [any Resource] {
+        [folder] + folder.children.flatMap { item in
+            if let item = item as? Folder {
+                return flattenedTree(for: item)
+            }
+            return [item]
+        }
     }
 
     enum FileError: LocalizedError {

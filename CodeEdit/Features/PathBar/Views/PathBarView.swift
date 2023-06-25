@@ -46,7 +46,6 @@ struct PathBarView: View {
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 1.5) {
-                // FIXME:
                 ForEach(fileItems, id: \.id) { fileItem in
                     if fileItem.parentFolder != nil {
                         chevron
