@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UniformTypeIdentifiers
 
 class File: Resource, Identifiable, Hashable {
     var id: UInt64
@@ -61,6 +62,14 @@ class File: Resource, Identifiable, Hashable {
     weak var parentFolder: Folder?
 
     var document: CodeFileDocument?
+
+    func loadDocument() throws {
+        document = try CodeFileDocument(
+            for: url,
+            withContentsOf: url,
+            ofType: UTType.text.identifier
+        )
+    }
 
     init(url: URL, name: String) throws {
         self.url = url

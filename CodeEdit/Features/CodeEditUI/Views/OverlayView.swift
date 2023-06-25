@@ -10,7 +10,7 @@ import SwiftUI
 
 struct OverlayView<RowView: View, PreviewView: View, Option: Identifiable & Hashable>: View {
     @ViewBuilder let rowViewBuilder: ((Option) -> RowView)
-    @ViewBuilder let previewViewBuilder: ((Option) -> PreviewView)?
+    var previewViewBuilder: ((Option) -> PreviewView)?
 
     @Binding var options: [Option]
     @Binding var text: String
@@ -20,7 +20,7 @@ struct OverlayView<RowView: View, PreviewView: View, Option: Identifiable & Hash
 
     let title: String
     let image: Image
-    let hasPreview: Bool
+    var hasPreview: Bool
     let onRowClick: ((Option) -> Void)
     let onClose: (() -> Void)
     let alwaysShowOptions: Bool
@@ -34,7 +34,33 @@ struct OverlayView<RowView: View, PreviewView: View, Option: Identifiable & Hash
         alwaysShowOptions: Bool = false,
         optionRowHeight: CGFloat = 30,
         content: @escaping ((Option) -> RowView),
-        preview: ((Option) -> PreviewView)? = nil,
+        @ViewBuilder preview: @escaping (Option) -> PreviewView,
+        onRowClick: @escaping ((Option) -> Void),
+        onClose: @escaping () -> Void
+    ) {
+        self.init(
+            title: title,
+            image: image,
+            options: options,
+            text: text,
+            alwaysShowOptions: alwaysShowOptions,
+            optionRowHeight: optionRowHeight,
+            content: content,
+            onRowClick: onRowClick,
+            onClose: onClose
+        )
+        self.previewViewBuilder = preview
+        self.hasPreview = true
+    }
+
+    init(
+        title: String,
+        image: Image,
+        options: Binding<[Option]>,
+        text: Binding<String>,
+        alwaysShowOptions: Bool = false,
+        optionRowHeight: CGFloat = 30,
+        content: @escaping ((Option) -> RowView),
         onRowClick: @escaping ((Option) -> Void),
         onClose: @escaping () -> Void
     ) {
@@ -43,10 +69,10 @@ struct OverlayView<RowView: View, PreviewView: View, Option: Identifiable & Hash
         self._options = options
         self._text = text
         self.rowViewBuilder = content
-        self.previewViewBuilder = preview
+        self.previewViewBuilder = nil
         self.onRowClick = onRowClick
         self.onClose = onClose
-        self.hasPreview = preview != nil
+        self.hasPreview = false
         self.alwaysShowOptions = alwaysShowOptions
         self.optionRowHeight = optionRowHeight
     }

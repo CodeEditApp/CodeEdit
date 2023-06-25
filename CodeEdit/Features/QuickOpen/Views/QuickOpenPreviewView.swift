@@ -14,12 +14,13 @@ struct QuickOpenPreviewView: View {
 
     @ObservedObject var document: CodeFileDocument
 
-    init(
-        item: File
-    ) {
+    init(item: File) throws {
         self.item = item
 
-        // FIXME: Open document when needed
+        if item.document == nil {
+            try item.loadDocument()
+        }
+
         self._document = .init(wrappedValue: item.document!)
     }
 

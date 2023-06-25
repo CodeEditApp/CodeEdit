@@ -38,7 +38,17 @@ struct QuickOpenView: View {
         ) { file in
             QuickOpenItem(fileItem: file)
         } preview: { file in
-            QuickOpenPreviewView(item: file)
+            let result = Result {
+                try QuickOpenPreviewView(item: file)
+            }
+
+            switch result {
+            case .success(let success):
+                success
+            case .failure(let failure):
+                Text("There was an error opening the file: \(failure.localizedDescription)")
+            }
+
         } onRowClick: { file in
             openFile(file)
             state.openQuicklyQuery = ""
