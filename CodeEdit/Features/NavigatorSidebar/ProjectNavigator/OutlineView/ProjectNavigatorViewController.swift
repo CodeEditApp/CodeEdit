@@ -22,9 +22,9 @@ final class ProjectNavigatorViewController: NSViewController {
     ///
     /// Also creates a top level item "root" which represents the projects root directory and automatically expands it.
     private var content: [any Resource] {
-//        guard let folderURL = workspace?.workspaceFileManager?.folderUrl else { return [] }
-//        guard let root = try? workspace?.workspaceFileManager?.getFile(folderURL.path) else { return [] }
-//        return [root]
+        //        guard let folderURL = workspace?.workspaceFileManager?.folderUrl else { return [] }
+        //        guard let root = try? workspace?.workspaceFileManager?.getFile(folderURL.path) else { return [] }
+        //        return [root]
         guard let fileTree = workspace?.fileTree else { return [] }
         return [fileTree]
     }
@@ -108,7 +108,7 @@ final class ProjectNavigatorViewController: NSViewController {
         }
 
         // FIXME:
-//        select(by: .codeEditor(itemID), from: content, forcesReveal: forcesReveal)
+        //        select(by: .codeEditor(itemID), from: content, forcesReveal: forcesReveal)
     }
 
     /// Expand or collapse the folder on double click
@@ -192,44 +192,44 @@ extension ProjectNavigatorViewController: NSOutlineViewDataSource {
         let fileItemURLS = pasteboardItems.compactMap { $0 as? URL }
 
         // FIXME:
-//        guard let fileItemDestination = item as? CEWorkspaceFile else { return false }
-//        let destParentURL = fileItemDestination.url
-//
-//        for fileItemURL in fileItemURLS {
-//            let destURL = destParentURL.appendingPathComponent(fileItemURL.lastPathComponent)
-//            // cancel dropping file item on self or in parent directory
-//            if fileItemURL == destURL || fileItemURL == destParentURL {
-//                return false
-//            }
-//
-//            // Needs to come before call to .removeItem or else race condition occurs
-//            var srcFileItem: CEWorkspaceFile? = try? workspace?.workspaceFileManager?.getFile(fileItemURL.path)
-//            // If srcFileItem is nil, fileItemUrl is an external file url.
-//            if srcFileItem == nil {
-//                srcFileItem = CEWorkspaceFile(url: URL(fileURLWithPath: fileItemURL.path))
-//            }
-//
-//            guard let srcFileItem else {
-//                return false
-//            }
-//
-//            if CEWorkspaceFile.fileManger.fileExists(atPath: destURL.path) {
-//                let shouldReplace = replaceFileDialog(fileName: fileItemURL.lastPathComponent)
-//                guard shouldReplace else {
-//                    return false
-//                }
-//                do {
-//                    try CEWorkspaceFile.fileManger.removeItem(at: destURL)
-//                } catch {
-//                    fatalError(error.localizedDescription)
-//                }
-//            }
-//            if info.draggingSourceOperationMask == .copy {
-//                self.copyFile(file: srcFileItem, to: destURL)
-//            } else {
-//                self.moveFile(file: srcFileItem, to: destURL)
-//            }
-//        }
+        //        guard let fileItemDestination = item as? CEWorkspaceFile else { return false }
+        //        let destParentURL = fileItemDestination.url
+        //
+        //        for fileItemURL in fileItemURLS {
+        //            let destURL = destParentURL.appendingPathComponent(fileItemURL.lastPathComponent)
+        //            // cancel dropping file item on self or in parent directory
+        //            if fileItemURL == destURL || fileItemURL == destParentURL {
+        //                return false
+        //            }
+        //
+        //            // Needs to come before call to .removeItem or else race condition occurs
+        //            var srcFileItem: CEWorkspaceFile? = try? workspace?.workspaceFileManager?.getFile(fileItemURL.path)
+        //            // If srcFileItem is nil, fileItemUrl is an external file url.
+        //            if srcFileItem == nil {
+        //                srcFileItem = CEWorkspaceFile(url: URL(fileURLWithPath: fileItemURL.path))
+        //            }
+        //
+        //            guard let srcFileItem else {
+        //                return false
+        //            }
+        //
+        //            if CEWorkspaceFile.fileManger.fileExists(atPath: destURL.path) {
+        //                let shouldReplace = replaceFileDialog(fileName: fileItemURL.lastPathComponent)
+        //                guard shouldReplace else {
+        //                    return false
+        //                }
+        //                do {
+        //                    try CEWorkspaceFile.fileManger.removeItem(at: destURL)
+        //                } catch {
+        //                    fatalError(error.localizedDescription)
+        //                }
+        //            }
+        //            if info.draggingSourceOperationMask == .copy {
+        //                self.copyFile(file: srcFileItem, to: destURL)
+        //            } else {
+        //                self.moveFile(file: srcFileItem, to: destURL)
+        //            }
+        //        }
         return true
     }
 
@@ -278,8 +278,8 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
         guard shouldSendSelectionUpdate else { return }
 
         if let item = outlineView.item(atRow: selectedIndex) as? File {
-            // FIXME: 
-//            workspace?.tabManager.activeTabGroup.openTab(item: item, asTemporary: true)
+            // FIXME:
+            workspace?.tabManager.activeTabGroup.openTab(item: item, asTemporary: true)
         }
     }
 
@@ -288,58 +288,56 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
     }
 
     func outlineViewItemDidExpand(_ notification: Notification) {
-        // FIXME: 
-        // guard
-        //     let id = workspace?.tabManager.activeTabGroup.selected?.id,
-        //     let item = content.find(by: .codeEditor(id))
-        // else {
-        //     return
-        // }
-        // /// update outline selection only if the parent of selected item match with expanded item
-        // guard item.parent === notification.userInfo?["NSObject"] as? CEWorkspaceFile else {
-        //     return
-        // }
-        // /// select active file under collapsed folder only if its parent is expanding
-        // if outlineView.isItemExpanded(item.parent) {
-        //     updateSelection(itemID: item.id)
-        // }
+        guard
+            let id = workspace?.tabManager.activeTabGroup.selected?.url,
+            let item = content.find(id: id)
+        else {
+            return
+        }
+        /// update outline selection only if the parent of selected item match with expanded item
+        guard item.parentFolder === notification.userInfo?["NSObject"] as? Folder else {
+            return
+        }
+        /// select active file under collapsed folder only if its parent is expanding
+        if outlineView.isItemExpanded(item.parentFolder) {
+            updateSelection(itemID: item.id)
+        }
     }
 
     func outlineViewItemDidCollapse(_ notification: Notification) {}
 
-//    func outlineView(_ outlineView: NSOutlineView, itemForPersistentObject object: Any) -> Any? {
-//        guard let id = object as? URL,
-//              let item = workspace?.find(url: id) else { return nil }
-//        return item
-//    }
-//
-//    func outlineView(_ outlineView: NSOutlineView, persistentObjectForItem item: Any?) -> Any? {
-//        guard let item = item as? any ResourceData else { return nil }
-//        return item.id
-//    }
+    //    func outlineView(_ outlineView: NSOutlineView, itemForPersistentObject object: Any) -> Any? {
+    //        guard let id = object as? URL,
+    //              let item = workspace?.find(url: id) else { return nil }
+    //        return item
+    //    }
+    //
+    //    func outlineView(_ outlineView: NSOutlineView, persistentObjectForItem item: Any?) -> Any? {
+    //        guard let item = item as? any ResourceData else { return nil }
+    //        return item.id
+    //    }
 
     /// Recursively gets and selects an ``Item`` from an array of ``Item`` and their `children` based on the `id`.
     /// - Parameters:
     ///   - id: the id of the item item
     ///   - collection: the array to search for
     ///   - forcesReveal: The boolean to indicates whether or not it should force to reveal the selected file.
-    private func select(by id: TabBarItemID, from collection: [any Resource], forcesReveal: Bool) {
-        // FIXME: 
-        // guard let item = collection.find(by: id) else {
-        //     return
-        // }
-        // // If the user has set "Reveal file on selection change" to on or it is forced to reveal,
-        // // we need to reveal the item before selecting the row.
-        // if Settings.shared.preferences.general.revealFileOnFocusChange || forcesReveal {
-        //    reveal(item)
-        // }
-        // let row = outlineView.row(forItem: item)
-        // if row == -1 {
-        //     outlineView.deselectRow(outlineView.selectedRow)
-        // }
-        // shouldSendSelectionUpdate = false
-        // outlineView.selectRowIndexes(.init(integer: row), byExtendingSelection: false)
-        // shouldSendSelectionUpdate = true
+    private func select(by id: URL, from collection: [any Resource], forcesReveal: Bool) {
+        guard let item = collection.find(id: id) else {
+            return
+        }
+        // If the user has set "Reveal file on selection change" to on or it is forced to reveal,
+        // we need to reveal the item before selecting the row.
+        if let item = item as? File, Settings.shared.preferences.general.revealFileOnFocusChange || forcesReveal {
+            reveal(item)
+        }
+        let row = outlineView.row(forItem: item)
+        if row == -1 {
+            outlineView.deselectRow(outlineView.selectedRow)
+        }
+        shouldSendSelectionUpdate = false
+        outlineView.selectRowIndexes(.init(integer: row), byExtendingSelection: false)
+        shouldSendSelectionUpdate = true
     }
 
     /// Reveals the given `fileItem` in the outline view by expanding all the parent directories of the file.

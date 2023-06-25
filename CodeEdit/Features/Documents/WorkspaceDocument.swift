@@ -11,6 +11,22 @@ import SwiftUI
 import Combine
 import WindowManagement
 
+extension [any Resource] {
+    func find(id: URL) -> (any Resource)? {
+        compactMap {
+            if $0.id == id {
+                return $0
+            }
+
+            if let item = $0 as? Folder {
+                return item.children.find(id: id)
+            }
+
+            return nil
+        }.first
+    }
+}
+
 @objc(WorkspaceDocument)
 final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
 
