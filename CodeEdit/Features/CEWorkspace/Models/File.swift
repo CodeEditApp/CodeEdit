@@ -66,11 +66,14 @@ class File: Resource, Identifiable, Hashable {
     var document: CodeFileDocument?
 
     func loadDocument() throws {
-        document = try CodeFileDocument(
+        guard document == nil else { return }
+        let doc = try CodeFileDocument(
             for: url,
             withContentsOf: url,
             ofType: contentType.identifier
         )
+        document = doc
+        CodeEditDocumentController.shared.addDocument(doc)
     }
 
     init(url: URL) throws {

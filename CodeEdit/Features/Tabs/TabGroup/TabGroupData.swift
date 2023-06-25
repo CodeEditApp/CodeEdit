@@ -188,19 +188,7 @@ final class TabGroupData: ObservableObject, Identifiable {
     }
 
     private func openFile(item: Tab) throws {
-        guard item.document == nil else {
-            return
-        }
-
-        let contentType = try item.url.resourceValues(forKeys: [.contentTypeKey]).contentType
-        let codeFile = try CodeFileDocument(
-            for: item.url,
-            withContentsOf: item.url,
-            ofType: contentType?.identifier ?? ""
-        )
-        item.document = codeFile
-        CodeEditDocumentController.shared.addDocument(codeFile)
-        print("Opening file for item: ", item.url)
+        try item.loadDocument()
     }
 
     func goBackInHistory() {
