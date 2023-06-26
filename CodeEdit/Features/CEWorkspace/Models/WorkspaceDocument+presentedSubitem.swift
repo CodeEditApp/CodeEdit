@@ -8,7 +8,37 @@
 import SwiftUI
 
 extension WorkspaceDocument {
-    override nonisolated func presentedSubitem(at oldURL: URL, didMoveTo newURL: URL) {
+
+    override nonisolated func presentedItemDidMove(to newURL: URL) {
+        Swift.print("Did move!", newURL)
+    }
+
+    override func presentedSubitemDidAppear(at url: URL) {
+    }
+
+    override func presentedSubitem(at url: URL, didGain version: NSFileVersion) {
+        Swift.print("Appear", fileURL, url)
+
+    }
+
+    override func presentedSubitem(at url: URL, didResolve version: NSFileVersion) {
+        Swift.print("Appear", fileURL, url)
+
+    }
+
+    override func presentedSubitemDidChange(at url: URL) {
+
+        // File already exists in tree, ignore
+        guard !fileMap.keys.contains(url) else {
+            return
+        }
+
+        Swift.print("Compare", fileURL, url)
+    }
+
+    override func presentedSubitem(at oldURL: URL, didMoveTo newURL: URL) {
+        Swift.print("Move")
+//        super.presentedSubitem(at: oldURL, didMoveTo: newURL)
         Task { @MainActor in
             moveFile(at: oldURL, didMoveTo: newURL)
         }
@@ -16,6 +46,7 @@ extension WorkspaceDocument {
 
     @MainActor
     fileprivate func moveFile(at oldURL: URL, didMoveTo newURL: URL) {
+        Swift.print(oldURL, newURL)
         guard let basePath = fileURL?.path() else { return }
 
         // We need to apply this weird trick as oldURL and newURL might differ in URL formatting.

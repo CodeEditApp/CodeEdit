@@ -260,6 +260,8 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
 
     @Published var fileTree: (any Resource)!
 
+    @Published var fileMap: [URL: any Resource]!
+
     @MainActor var onRefresh: (() -> Void)?
 
     var ignoredResources: Set<Ignored> = [

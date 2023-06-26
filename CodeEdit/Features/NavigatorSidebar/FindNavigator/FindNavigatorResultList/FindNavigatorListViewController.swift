@@ -199,7 +199,7 @@ extension FindNavigatorListViewController: NSOutlineViewDelegate {
             let selectedMatch = self.selectedItem as? SearchResultMatchModel
             if selectedItem == nil || selectedMatch != item {
                 self.selectedItem = item
-                // FIXME:
+                // FIXME: 
 //                workspace.tabManager.openTab(item: item.file)
             }
         } else if let item = outlineView.item(atRow: selectedIndex) as? SearchResultModel {

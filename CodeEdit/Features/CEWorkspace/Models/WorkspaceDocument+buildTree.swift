@@ -15,19 +15,21 @@ extension WorkspaceDocument {
             guard let self else { return }
             let tree = try await buildingFileTree(root: root, ignoring: ignoredResources)
             await MainActor.run { [weak self] in
-                self?.fileTree = tree
-                self?.onRefresh?()
+                guard let self else { return }
+                (fileTree, fileMap) = tree
+                onRefresh?()
             }
         }
     }
 
-    nonisolated func buildingFileTree(root: URL, ignoring: Set<Ignored>) async throws -> any Resource {
+    nonisolated func buildingFileTree(root: URL, ignoring: Set<Ignored>) async throws -> (any Resource, [URL: any Resource]) {
         let fileProperties: Set<URLResourceKey> = [.fileResourceTypeKey, .nameKey]
         let enumerator = FileManager.default.enumerator(at: root, includingPropertiesForKeys: Array(fileProperties))
 
         guard let enumerator else { throw FileManagerError.rootFileEnumeration }
 
         let rootFolder = try Folder(url: root)
+        var map: [URL: any Resource] = [:]
 
         var folderStack = [rootFolder]
         var currentLevel = 1
@@ -78,9 +80,10 @@ extension WorkspaceDocument {
 
             resource.parentFolder = currentFolder
             currentFolder.children.append(resource)
+            map[url] = resource
         }
 
         guard !Task.isCancelled else { throw CancellationError() }
-        return rootFolder
+        return (rootFolder, map)
     }
 }
