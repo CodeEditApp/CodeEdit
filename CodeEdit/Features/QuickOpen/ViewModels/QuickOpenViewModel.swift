@@ -35,20 +35,17 @@ final class QuickOpenViewModel: ObservableObject {
 
         guard let workspace else { return }
 
-        let allFiles = await workspace
-            .flattenedTree()
-            .compactMap { $0 as? File }
-
-        let urls = allFiles.map(\.url)
+        let urls = await workspace.fileMap.compactMap { $1 is File ? $0 : .none }
 
         /// sorts the filtered filePaths with the FuzzySearch
         let orderedURLs = FuzzySearch.search(query: self.openQuicklyQuery, in: urls)
+        let orderedFiles = await Task { @MainActor in
+            orderedURLs.compactMap { workspace.fileMap[$0] as? File }
+        }.result
 
-        let orderedFiles = orderedURLs.compactMap { url in
-            allFiles.first { $0.url == url }
+        if case .success(let success) = orderedFiles {
+            self.openQuicklyFiles = success
+            self.isShowingOpenQuicklyFiles = !self.openQuicklyFiles.isEmpty
         }
-
-        self.openQuicklyFiles = orderedFiles
-        self.isShowingOpenQuicklyFiles = !self.openQuicklyFiles.isEmpty
     }
 }
