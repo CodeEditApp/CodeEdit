@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CollectionConcurrencyKit
 
 enum FuzzySearch {
     /// Searches an array of view models for occurrences of a fuzzy search query.
@@ -20,19 +21,14 @@ enum FuzzySearch {
     ///   - query: A `String` value representing the fuzzy search query.
     ///   - urls: An array of `URL`s, each representing a file, to search within.
     /// - Returns: An array of `URL`s that match the fuzzy search query, sorted by score.
-    static func search(query: String, in urls: [URL]) -> [URL] {
-        let filteredResult = urls.filter { url -> Bool in
-            let nameScore = score(query: query, url: url)
-            return nameScore > 0.0
-        }
+    static func search(query: String, in urls: [URL]) async -> [URL] {
+        let queryTokens = query.lowercased().components(separatedBy: .whitespacesAndNewlines)
 
-        let sortedResult = filteredResult.sorted { url1, url2 -> Bool in
-            let nameScore1 = score(query: query, url: url1)
-            let nameScore2 = score(query: query, url: url2)
-            return nameScore1 > nameScore2
-        }
-
-        return sortedResult
+        return await urls
+            .concurrentMap { (url: $0, score: score(tokens: queryTokens, url: $0)) }
+            .filter { $0.score > .zero }
+            .sorted { $0.score > $1.score }
+            .map(\.url)
     }
 
     /// Calculates the score of the fuzzy search query against a text string.
@@ -47,13 +43,11 @@ enum FuzzySearch {
     ///   - query: A `String` value representing the fuzzy search query.
     ///   - url: A `URL` value representing the filePath to search within.
     /// - Returns: A `Double` value representing the calculated score.
-    private static func score(query: String, url: URL) -> Double {
-        let query = query.lowercased()
+    private static func score(tokens: [String], url: URL) -> Double {
         let text = url.lastPathComponent.lowercased()
-        let queryTokens = query.split(separator: " ")
         var score: Double = 0.0
 
-        for token in queryTokens {
+        for token in tokens {
             let ranges = text.ranges(of: token)
             if !ranges.isEmpty {
                 let tokenScore = Double(token.count) / Double(text.count)
@@ -64,9 +58,9 @@ enum FuzzySearch {
         }
 
         if let date = getLastModifiedDate(for: url.path) {
-            return (score / Double(queryTokens.count)) * Double(calculateDateScore(for: date))
+            return (score / Double(tokens.count)) * Double(calculateDateScore(for: date))
         } else {
-            return (score / Double(queryTokens.count))
+            return (score / Double(tokens.count))
         }
     }
 

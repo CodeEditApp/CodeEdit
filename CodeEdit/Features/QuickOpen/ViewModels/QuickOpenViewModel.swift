@@ -54,14 +54,16 @@ final class QuickOpenViewModel: ObservableObject {
                 }
 
                 /// sorts the filtered filePaths with the FuzzySearch
-                let orderedFiles = FuzzySearch.search(query: self.openQuicklyQuery, in: filteredFiles)
-                    .map { url in
-                        CEWorkspaceFile(url: url, children: nil)
-                    }
+                Task {
+                    let orderedFiles = await FuzzySearch.search(query: self.openQuicklyQuery, in: filteredFiles)
+                        .map { url in
+                            CEWorkspaceFile(url: url, children: nil)
+                        }
 
-                DispatchQueue.main.async {
-                    self.openQuicklyFiles = orderedFiles
-                    self.isShowingOpenQuicklyFiles = !self.openQuicklyFiles.isEmpty
+                    DispatchQueue.main.async {
+                        self.openQuicklyFiles = orderedFiles
+                        self.isShowingOpenQuicklyFiles = !self.openQuicklyFiles.isEmpty
+                    }
                 }
             }
         }
