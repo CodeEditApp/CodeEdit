@@ -2083,8 +2083,8 @@
 		6C5BE51A2A3D5419002DA0FC /* FeatureFlags */ = {
 			isa = PBXGroup;
 			children = (
+				85AEE8D42A474EEC009507BC /* Models */,
 				6C5BE51B2A3D542B002DA0FC /* FeatureFlagsSettingsView.swift */,
-				6C5BE51D2A3D545F002DA0FC /* FeatureFlagsSettings.swift */,
 			);
 			path = FeatureFlags;
 			sourceTree = "<group>";
@@ -2146,6 +2146,14 @@
 				6CBD1BC52978DE53006639D5 /* Font+Caption3.swift */,
 			);
 			path = Text;
+			sourceTree = "<group>";
+		};
+		85AEE8D42A474EEC009507BC /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				6C5BE51D2A3D545F002DA0FC /* FeatureFlagsSettings.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		85CD0C5D2A10CC2500E531FD /* URL */ = {
@@ -2923,7 +2931,7 @@
 				6CB9144B29BEC7F100BC47F2 /* (null) in Sources */,
 				587B9E7429301D8F00AC7927 /* URL+URLParameters.swift in Sources */,
 				6C5BE51C2A3D542B002DA0FC /* FeatureFlagsSettingsView.swift in Sources */,
-        85E412252A46BA7B00183F2B /* ModelNameToSettingName.swift in Sources */,
+				85E412252A46BA7B00183F2B /* ModelNameToSettingName.swift in Sources */,
 				581BFB6B2926431000D251EC /* RecentProjectItem.swift in Sources */,
 				587FB99029C1246400B519DD /* TabBarItemView.swift in Sources */,
 				587B9DA429300ABD00AC7927 /* OverlayPanel.swift in Sources */,

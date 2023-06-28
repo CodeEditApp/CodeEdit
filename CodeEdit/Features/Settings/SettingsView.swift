@@ -68,40 +68,32 @@ struct SettingsView: View {
 
     /// Creates all the neccessary pages
     private func populatePages() -> [SettingsPage] {
-        var pages: [SettingsPage] = []
-        let settingsData: SettingsData = SettingsData()
+        var pages = [SettingsPage]()
+        let settingsData = SettingsData()
 
-        pages = createPageAndSettings(
-            settingsData.general,
-            parent: SettingsPage(.general, baseColor: .gray, icon: .system("gear")),
-            prePages: pages
-        )
-        pages = createPageAndSettings(
-            settingsData.accounts,
-            parent: SettingsPage(.accounts, baseColor: .blue, icon: .system("at")),
-            prePages: pages
-        )
-        pages = createPageAndSettings(
-            settingsData.theme,
-            parent: SettingsPage(.theme, baseColor: .pink, icon: .system("paintbrush.fill")),
-            prePages: pages
-        )
-        pages = createPageAndSettings(
-            settingsData.textEditing,
-            parent: SettingsPage(.textEditing, baseColor: .blue, icon: .system("pencil.line")),
-            prePages: pages
-        )
-        pages = createPageAndSettings(
-            settingsData.terminal,
-            parent: SettingsPage(.terminal, baseColor: .blue, icon: .system("terminal.fill")),
-            prePages: pages
-        )
-        pages = createPageAndSettings(
-            settingsData.sourceControl,
-            parent: SettingsPage(.sourceControl, baseColor: .blue, icon: .symbol("vault")),
-            prePages: pages
-        )
-        pages.append(SettingsPage(.location, baseColor: .green, icon: .system("externaldrive.fill")))
+        let generalSettings = SettingsPage(.general, baseColor: .gray, icon: .system("gear"))
+        pages = createPageAndSettings(settingsData.general, parent: generalSettings, prePages: pages)
+
+        let accountsSettings = SettingsPage(.accounts, baseColor: .blue, icon: .system("at"))
+        pages = createPageAndSettings(settingsData.accounts, parent: accountsSettings, prePages: pages)
+
+        let themesSettings = SettingsPage(.theme, baseColor: .pink, icon: .system("paintbrush.fill"))
+        pages = createPageAndSettings(settingsData.theme, parent: themesSettings, prePages: pages)
+
+        let textEditingSettings = SettingsPage(.textEditing, baseColor: .blue, icon: .system("pencil.line"))
+        pages = createPageAndSettings(settingsData.textEditing, parent: textEditingSettings, prePages: pages)
+
+        let terminalSettings = SettingsPage(.terminal, baseColor: .blue, icon: .system("terminal.fill"))
+        pages = createPageAndSettings(settingsData.terminal, parent: terminalSettings, prePages: pages)
+
+        let sourceControlSettings = SettingsPage(.sourceControl, baseColor: .blue, icon: .symbol("vault"))
+        pages = createPageAndSettings(settingsData.sourceControl, parent: sourceControlSettings, prePages: pages)
+
+        let locationsSettings = SettingsPage(.location, baseColor: .green, icon: .system("externaldrive.fill"))
+        pages = createPageAndSettings(settingsData.sourceControl, parent: locationsSettings, prePages: pages)
+
+        let featureFlags = SettingsPage(.featureFlags, baseColor: .cyan, icon: .system("flag.2.crossed.fill"))
+        pages = createPageAndSettings(settingsData.featureFlags, parent: featureFlags, prePages: pages)
 
         return pages
     }

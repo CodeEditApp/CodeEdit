@@ -43,11 +43,11 @@ struct SettingsData: Codable, Hashable {
     /// The global settings for keybindings
     var keybindings: KeybindingsSettings = .init()
 
-    /// Featureflags settings
-    var featureFlags: FeatureFlagsSettings = .init()
-
     /// The global settings for locations
     var locations: LocationsSettings = .init()
+
+    /// Feature Flags settings
+    var featureFlags: FeatureFlagsSettings = .init()
 
     /// Default initializer
     init() {}
@@ -68,11 +68,11 @@ struct SettingsData: Codable, Hashable {
             KeybindingsSettings.self,
             forKey: .keybindings
         ) ?? .init()
-        self.featureFlags = try container.decodeIfPresent(FeatureFlagsSettings.self, forKey: .featureFlags) ?? .init()
         self.locations = try container.decodeIfPresent(
             LocationsSettings.self,
             forKey: .locations
         ) ?? .init()
+        self.featureFlags = try container.decodeIfPresent(FeatureFlagsSettings.self, forKey: .featureFlags) ?? .init()
     }
 
     func propertiesOf(_ value: Any) -> [SettingsPageSetting] {

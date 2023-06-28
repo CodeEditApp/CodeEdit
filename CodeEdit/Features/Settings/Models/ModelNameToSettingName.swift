@@ -62,6 +62,8 @@ struct ModelNameToSettingName {
         "settingsURL": NSLocalizedString("Settings Location", comment: ""),
         "themesURL": NSLocalizedString("Themes Location", comment: ""),
         "extensionsURL": NSLocalizedString("Extensions Location", comment: ""),
+        // MARK: - Feature Flags
+        "useNewWindowingSystem": NSLocalizedString("New Windowing System", comment: "")
     ]
 
     func translate(_ modelName: String) -> String {
