@@ -27,15 +27,17 @@ struct SettingsView: View {
 
     /// Searches through an array of pages to check if a page name exists in the array
     private func resultFound(_ page: SettingsPage, pages: [SettingsPage]) -> SettingsSearchResult {
-        let lowercasedSearchText: String = searchText.lowercased()
+        let lowercasedSearchText = searchText.lowercased()
         var returnedPages: [SettingsPage] = []
-        var foundPage: Bool = false
+        var foundPage = false
 
-        for item in pages where item.name == page.name {
-            if item.isSetting && item.displayName.lowercased().contains(lowercasedSearchText) {
-                returnedPages.append(item)
-            } else if item.name.rawValue.contains(lowercasedSearchText) && !item.isSetting {
-                foundPage = true
+        for item in pages {
+            if item.name == page.name {
+                if item.isSetting && item.displayName.lowercased().contains(lowercasedSearchText) {
+                    returnedPages.append(item)
+                } else if item.name.rawValue.contains(lowercasedSearchText) && !item.isSetting {
+                    foundPage = true
+                }
             }
         }
 

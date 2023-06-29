@@ -59,8 +59,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/ConcurrencyPlus",
       "state" : {
-        "revision" : "b5ba8d5ea6bfe9e43ccc44aa63f9b458057fa0f4",
-        "version" : "0.4.1"
+        "revision" : "8dc56499412a373d617d50d059116bccf44b9874",
+        "version" : "0.4.2"
       }
     },
     {
@@ -221,8 +221,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/siteline/SwiftUI-Introspect",
       "state" : {
-        "revision" : "5b3f3996c7a2a84d5f4ba0e03cd7d584154778f2",
-        "version" : "0.3.1"
+        "revision" : "6dce3c8f5bfa8bc20120c7497da27e984a8813aa",
+        "version" : "0.7.0"
       }
     },
     {

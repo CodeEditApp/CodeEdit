@@ -9,7 +9,6 @@ import Foundation
 import SwiftUI
 
 extension String {
-    // swiftlint:disable shorthand_operator
     func highlightOccurrences(_ ofSearch: String) -> some View {
         let ranges = self.rangesOfSubstring(ofSearch.lowercased())
 
@@ -20,6 +19,7 @@ extension String {
             let nonHighlightedText = self[currentIndex..<range.lowerBound]
             let highlightedSubstring = self[range]
 
+            // swiftlint:disable shorthand_operator
             highlightedText = highlightedText + Text(nonHighlightedText).foregroundColor(.secondary)
             highlightedText = highlightedText + Text(highlightedSubstring).foregroundColor(.primary)
 
@@ -29,6 +29,7 @@ extension String {
         let remainingText = self[currentIndex..<self.endIndex]
 
         return highlightedText + Text(remainingText).foregroundColor(.secondary)
+        // swiftlint:enable shorthand_operator
     }
 
     private func rangesOfSubstring(_ substring: String) -> [Range<Index>] {
@@ -48,4 +49,3 @@ extension String {
         return ranges
     }
 }
-// swiftlint:enable shorthand_operator
