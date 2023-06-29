@@ -7,31 +7,31 @@
 - <doc:Getting-Started>
 - <doc:Create-a-View>
 
-### Preferences Model
+### Settings Model
 
 - ``SettingsModel``
 - ``SoftwareUpdater``
 
-### Preferences Section Views
+### Settings Section Views
 
-- ``GeneralPreferencesView``
-- ``ThemePreferencesView``
-- ``TextEditingPreferencesView``
-- ``TerminalPreferencesView``
-- ``LocationsPreferencesView``
-- ``KeybindingsPreferencesView``
-- ``AccountPreferencesView``
-- ``SourceControlPreferencesView``
-- ``PreferencesPlaceholderView``
+- ``GeneralSettingsView``
+- ``ThemeSettingsView``
+- ``TextEditingSettingsView``
+- ``TerminalSettingsView``
+- ``LocationsSettingsView``
+- ``KeybindingsSettingsView``
+- ``AccountSettingsView``
+- ``SourceControlSettingsView``
+- ``SettingsPlaceholderView``
 
 ### Helper Views
 
-- ``PreferencesContent``
-- ``PreferencesSection``
-- ``PreferencesColorPicker``
-- ``PreferencesToolbar``
+- ``SettingsContent``
+- ``SettingsSection``
+- ``SettingsColorPicker``
+- ``SettingsToolbar``
 
-### Theme Preferences Model
+### Theme Settings Model
 
 - ``Theme``
 - ``ThemeModel``

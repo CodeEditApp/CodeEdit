@@ -1,7 +1,7 @@
-# ``CodeEdit/TextEditingPreferencesView``
+# ``CodeEdit/TextEditingSettingsView``
 
 ## Topics
 
 ### Model
 
-- ``Settings/TextEditingPreferences``
+- ``Settings/TextEditingSettings``

@@ -70,7 +70,9 @@ struct ModelNameToSettingName {
         if translator[modelName] != nil {
             return translator[modelName]!
         } else {
-            return "Error"
+            fatalError("""
+Please add the new setting to the above translator array, and add it correctly as mentioned in the docs.
+""")
         }
     }
 

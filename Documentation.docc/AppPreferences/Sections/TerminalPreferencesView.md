@@ -1,7 +1,7 @@
-# ``CodeEdit/TerminalPreferencesView``
+# ``CodeEdit/TerminalSettingsView``
 
 ## Topics
 
 ### Model
 
-- ``Settings/TerminalPreferences``
+- ``Settings/TerminalSettings``

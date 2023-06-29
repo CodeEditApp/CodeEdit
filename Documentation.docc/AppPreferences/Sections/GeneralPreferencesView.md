@@ -1,7 +1,7 @@
-# ``CodeEdit/GeneralPreferencesView``
+# ``CodeEdit/GeneralSettingsView``
 
 ## Topics
 
 ### Model
 
-- ``Settings/GeneralPreferences``
+- ``Settings/GeneralSettings``

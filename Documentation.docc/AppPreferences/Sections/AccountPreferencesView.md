@@ -1,10 +1,10 @@
-# ``CodeEdit/AccountPreferencesView``
+# ``CodeEdit/AccountSettingsView``
 
 ## Topics
 
 ### Model
 
-- ``Settings/AccountsPreferences``
+- ``Settings/AccountsSettings``
 - ``SourceControlAccounts``
 - ``SourceControlProvider``
 

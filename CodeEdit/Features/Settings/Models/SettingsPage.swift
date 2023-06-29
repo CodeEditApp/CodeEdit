@@ -43,7 +43,6 @@ struct SettingsPage: Hashable, Equatable, Identifiable {
 
     /// An enum of all the preferences tabs
     enum Name: String {
-        // MARK: - App Preferences
         case general = "General"
         case accounts = "Accounts"
         case behavior = "Behaviors"

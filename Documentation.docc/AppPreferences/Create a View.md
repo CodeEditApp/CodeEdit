@@ -2,30 +2,31 @@
 
 Now that you followed the <doc:Getting-Started> guide it's time to create a view.
 
-## Add Option to existing Section
+## Add setting to existing Section
 
-In our example we added `ourNewOption` in ``Settings/GeneralPreferences``.
+In our example we added `ourNewOption` in ``Settings/GeneralSettings``.
 
-Now let's take a look at the ``GeneralPreferencesView``.
+Now let's take a look at the ``GeneralSettingsView``.
 
 ```swift
 import SwiftUI
 
-struct GeneralPreferencesView: View {
-
-    // MARK: - View
-
-    init() {}
+struct GeneralSettingsView: View {
+    @AppSettings(\.general)
+    var settings
 
     var body: some View {
-        PreferencesContent {
-            appearanceSection
-            showIssuesSection
-            fileExtensionsSection
+        SettingsForm {
+            Section {
+                appearance
+                fileIconStyle
+                tabBarStyle
+                navigatorTabBarPosition
+                inspectorTabBarPosition
+                ...
+            }
         }
     }
-
-    @AppSettings var settings
 }
 ```
 
@@ -34,20 +35,11 @@ As you can see ``SettingsModel`` is already setup and ready to use.
 To add your option toggle below the other options just add something like this:
 
 ```swift
-private extension GeneralPreferencesView {
-    
-    // MARK: - Sections
-
-    private var yourOptionSection: some View {
-        PreferencesSection("Your Option") {
-            yourOption
-        }
-    }
-
-    // MARK: - Preferences View
+private extension GeneralSettingsView {
+    // MARK: - Settings View
     
     private var yourOption: some View {
-        Toggle("Your text", isOn: $settings.general.yourNewOption)
+        Toggle("Your text", isOn: $general.yourNewOption)
     }
 }
 ```
@@ -55,19 +47,16 @@ private extension GeneralPreferencesView {
 Then add it to `var body: some View`
 
 ```swift
-struct GeneralPreferencesView: View {
-
-    // MARK: - View
-
-    init() {}
-
+struct GeneralSettingsView: View {
     var body: some View {
-        PreferencesContent {
-            appearanceSection
-            showIssuesSection
-            fileExtensionsSection
-            // REMOVEME: et cetera
-            yourOptionSection
+        SettingsForm {
+            Section {
+                appearanceSection
+                showIssuesSection
+                fileExtensionsSection
+                // REMOVEME: et cetera
+                yourOptionSection
+            }
         }
     }
 }
@@ -75,50 +64,27 @@ struct GeneralPreferencesView: View {
 
 And now you're done!
 
-## Implement new Section
+## Implement a new section
 
 > Tip: Rename YourSection to the section name that you want
 
-To implement a new section first create a new folder inside the `Sections` folder and name it accordingly.
+To implement a new section first create a new folder inside the `Pages` folder and name it accordingly.
 
-Inside the folder create a new SwiftUI view and name it "PreferencesYourSectionView.swift".
+Inside the folder create a new SwiftUI view and name it "YourSectionSettingsView.swift".
 
-Then find `VenturaPreferences.swift` by searching in the filter field at the bottom of the file explorer, then create a new page for your view like so:
+Then create a new folder inside called `Models` and inside of it create a file named "YourSectionSettings.swift"
+
 
 > Tip: The order that pages are arranged in the array is the same as in the settings window, the first array member will be the top item
-
-```swift
-private static let pages: [Page] = [
-    .init(.appPreferencesSection, children: [
-        .init(
-            .generalPreferences,
-            icon: .init(
-                baseColor: Colors().gray,
-                systemName: "gear",
-                icon: .system("gear")
-            )
-        ),
-        .init(
-              .yourSection,
-              icon: .init(
-                baseColor: Colors().yourColor
-                systemName: "// REMOVEME: Find an SF Symbol that is similar to the icon you imagined"
-                icon: .system("// REMOVEME: Find an SF Symbol that is similar to the icon you imagined")
-            )
-        )
-    ]
-]
 ```
 
-Then find the file `Page.swift` and add `YourSection` to the `enum Name` like this:
+Then find the file `SettingsPage.swift` and add `YourSection` to the `enum Name` like this:
 
 ```swift
 enum Name: String {
-    case appPreferencesSection = "App Preferences"
-
-    case generalPreferences = "General"
-    case advancedPreferences = "Advanced"
-    // REMOVEME: et cetera
+    case general = "General"
+    case advanced = "Advanced"
+    // et cetera
     case yourSection = "YourSection"
 }
 ```
@@ -128,45 +94,77 @@ Back in `YourSectionView.swift` implement your option like this:
 ```swift
 import SwiftUI
 
-struct YourSectionPreferencesView: View {
+struct YourSectionSettingsView: View {
+    @AppSettings(\.yourSection)
+    var yourSection
+
     var body: some View {
-        yourToggleSection
+        SettingsForm {
+            Section {
+                yourToggleSection
+            }
+        }
     }
-
-    @StateObject
-    private var prefs: SettingsModel = .shared
-
-    public init() {}
 }
 
-private extension YourSectionPreferencesView {
-    
-    // MARK: - Sections
-
-    private var yourToggleSection: some View {
-        yourToggle
-    }
-
-    // MARK: - Preferences Views
+private extension YourSectionSettingsView {
+    // MARK: - Settings Views
 
     private var yourToggle: some View {
-        Toggle("Your option", isOn: $settings.general.yourNewOption)
+        Toggle("Your option", isOn: $yourSection.yourNewOption)
     }
 }
 ```
 
-When you are done, add `YourSectionView` to `VenturaPreferences.swift`:
+There are 3 more steps, almost done.
+
+Open `ModelNameToSettingName.swift` and add your translated search result:
 
 ```swift
-if selectedPage?.name != nil {
-    // Can force un-wrap because we just checked if it was nil
-    switch selectedPage!.name {
-    case .generalPreferences:
-        GeneralPreferencesView()
-            .environmentObject(updater)
-    case .themePreferences:
-        ThemePreferencesView()
-    // REMOVEME: et cetera
+let translator: [String: String] = [
+    // MARK: - General Settings
+    "appAppearance": NSLocalizedString("Appearance", comment: ""),
+    "fileIconStyle": NSLocalizedString("File Icon Style", comment: ""),
+    // etc
+    // MARK: - Your Section
+    "yourOption": NSLocalizedString("Your Option", comment: "Your translation comment")
+]
+```
+
+Now, open `SettingsView.swift` and add your section to the `populatePages()` method:
+
+```swift
+/// Creates all the neccessary pages
+private func populatePages() -> [SettingsPage] {
+    var pages = [SettingsPage]()
+    let settingsData = SettingsData()
+
+    let generalSettings = SettingsPage(.general, baseColor: .gray, icon: .system("gear"))
+    pages = createPageAndSettings(settingsData.general, parent: generalSettings, prePages: pages)
+
+    let accountsSettings = SettingsPage(.accounts, baseColor: .blue, icon: .system("at"))
+    pages = createPageAndSettings(settingsData.accounts, parent: accountsSettings, prePages: pages)
+
+    // etc
+    let yourSectionSettings = SettingsPage(.yourSection, baseColor: /* add color here */, icon: /* add icon */)
+    pages = createPageAndSettings(settingsData.yourSection, parent: yourSectionSettings, prePages: pages)
+
+    return pages
+}
+```
+
+
+When you are done, add `YourSectionSettingsView` to `SettingsView.swift`:
+
+```swift
+Group {
+    switch selectedPage {
+    case .general:
+        GeneralSettingsView().environmentObject(updater)
     case .yourSection:
-        YourSectionPreferencesView()
+        YourSectionSettingsView()
+    default:
+        Text("Implementation Needed").frame(alignment: .center)
+    }
+}
 ```

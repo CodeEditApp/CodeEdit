@@ -4,32 +4,29 @@ There are a few things to consider when using the ``Settings``.
 
 ## Reading/Writing Values
 
-The Preferences can be accessed from everywhere in the app like this:
+The Settings can be accessed from everywhere in the app like this:
 
 ```swift
-import Settings
-
-@AppSettings var settings
+@AppSettings(\.settingName)
+var setting
 ```
 
-Since it is a `@StateObject` we can be sure to always get up-to-date information and we can easily bind to the individual properties like this:
-
 ```swift
-Toggle("Enable some Feature", value: $settings.someFeature.isEnabled)
+Toggle("Enable some Feature", value: $setting)
 ```
 
 ## Creating a New Preference
 
-When implementing a new feature, we might have some options in regards to this new feature we want to show the user in the apps Preferences Window.
+When implementing a new feature, we might have some options in regards to this new feature we want to show the user in the apps Settings Window.
 
 ### Find a Section
 
-The preferences window is structured in different sections. Figure out in which section your new option should appear in.
+The settings window is structured in different sections. Figure out in which section your new option should appear in.
 
-If the section is already populated with other options (e.g. ``Settings/GeneralPreferences``), just add your new option like this:
+If the section is already populated with other options (e.g. ``Settings/GeneralSettings``), just add your new option like this:
 
 ```swift
-struct GeneralPreferences: Codable {
+struct GeneralSettings: Codable, Hashable {
 
   // ...
 

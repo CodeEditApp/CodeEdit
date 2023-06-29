@@ -1,10 +1,10 @@
-# ``CodeEdit/ThemePreferencesView``
+# ``CodeEdit/ThemeSettingsView``
 
 ## Topics
 
 ### Model
 
-- ``Settings/ThemePreferences``
+- ``Settings/ThemeSettings``
 - ``ThemeModel``
 
 ### Views
