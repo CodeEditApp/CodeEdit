@@ -21,10 +21,7 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
         let controller = ProjectNavigatorViewController()
         controller.workspace = workspace
         controller.iconColor = prefs.preferences.general.fileIconStyle
-        workspace.workspaceFileManager?.onRefresh = {
-            controller.outlineView.reloadData()
-            controller.updateSelection(itemID: workspace.tabManager.activeTabGroup.selected?.id)
-        }
+        workspace.workspaceFileManager?.addObserver(context.coordinator)
 
         context.coordinator.controller = controller
 
@@ -46,7 +43,7 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
         Coordinator(workspace)
     }
 
-    class Coordinator: NSObject {
+    class Coordinator: NSObject, CEWorkspaceFileManagerObserver {
         init(_ workspace: WorkspaceDocument) {
             self.workspace = workspace
             super.init()
@@ -70,5 +67,13 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
         var workspace: WorkspaceDocument
         var controller: ProjectNavigatorViewController?
 
+        func fileManagerUpdated() {
+            controller?.outlineView.reloadData()
+            controller?.updateSelection(itemID: workspace.tabManager.activeTabGroup.selected?.id)
+        }
+
+        deinit {
+            workspace.workspaceFileManager?.removeObserver(self)
+        }
     }
 }

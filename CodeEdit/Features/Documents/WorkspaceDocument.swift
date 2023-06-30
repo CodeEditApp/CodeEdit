@@ -32,7 +32,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     }
 
     public var filter: String = "" {
-        didSet { workspaceFileManager?.onRefresh() }
+        didSet { workspaceFileManager?.notifyObservers() }
     }
 
     var debugAreaModel = DebugAreaViewModel()
@@ -118,14 +118,9 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     // MARK: Set Up Workspace
 
     private func initWorkspaceState(_ url: URL) throws {
-//        self.workspaceClient = try .default(
-//            fileManager: .default,
-//            folderURL: url,
-//            ignoredFilesAndFolders: ignoredFilesAndDirectory
-//        )
         self.workspaceFileManager = .init(
             folderUrl: url,
-            ignoredFilesAndFolders: ignoredFilesAndDirectory
+            ignoredFilesAndFolders: Set(ignoredFilesAndDirectory)
         )
         self.searchState = .init(self)
         self.quickOpenViewModel = .init(fileURL: url)

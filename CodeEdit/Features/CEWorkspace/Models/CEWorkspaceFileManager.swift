@@ -8,29 +8,27 @@
 import Combine
 import Foundation
 
+protocol CEWorkspaceFileManagerObserver: AnyObject {
+    func fileManagerUpdated()
+}
+
 /// This class is used to load the files of the machine into a CodeEdit workspace.
 final class CEWorkspaceFileManager {
-    enum FileSystemClientError: Error {
-        case fileNotExist
-    }
-
-    // TODO: See if this needs to be removed, it isn't used anymore
-    private var subject = CurrentValueSubject<[CEWorkspaceFile], Never>([])
-    private var isRunning = false
-    private var anotherInstanceRan = 0
+    private var lock: NSLock = NSLock()
 
     private(set) var fileManager = FileManager.default
-    private(set) var ignoredFilesAndFolders: [String]
+    private(set) var ignoredFilesAndFolders: Set<String>
     private(set) var flattenedFileItems: [String: CEWorkspaceFile]
+    private var fsEventStream: DirectoryEventStream?
 
-    var onRefresh: () -> Void = {}
-    var getFiles: AnyPublisher<[CEWorkspaceFile], Never> =
-        CurrentValueSubject<[CEWorkspaceFile], Never>([]).eraseToAnyPublisher()
+    private var observers: NSHashTable<AnyObject>
 
     let folderUrl: URL
     let workspaceItem: CEWorkspaceFile
 
-    init(folderUrl: URL, ignoredFilesAndFolders: [String]) {
+    init(folderUrl: URL, ignoredFilesAndFolders: Set<String>) {
+        self.observers = NSHashTable<AnyObject>.weakObjects()
+
         self.folderUrl = folderUrl
         self.ignoredFilesAndFolders = ignoredFilesAndFolders
 
@@ -41,7 +39,7 @@ final class CEWorkspaceFileManager {
     }
 
     private func setup() {
-        // initial load
+        // initial load, get all files & directories under workspace URL
         var workspaceFiles: [CEWorkspaceFile]
         do {
             workspaceFiles = try loadFiles(fromUrl: self.folderUrl)
@@ -49,32 +47,16 @@ final class CEWorkspaceFileManager {
             fatalError("Failed to loadFiles")
         }
 
-        // workspace fileItem
-        let workspaceFile = CEWorkspaceFile(url: self.folderUrl, children: workspaceFiles)
+        fsEventStream = DirectoryEventStream(directory: self.folderUrl.path) { [weak self] path, event, deepRebuild in
+            self?.fileSystemEventReceived(directory: path, event: event, deepRebuild: deepRebuild)
+        }
+
+        // Root workspace fileItem
+        let workspaceFile = CEWorkspaceFile(url: self.folderUrl, children: workspaceFiles.sortItems(foldersOnTop: true))
         flattenedFileItems[workspaceFile.id] = workspaceFile
         workspaceFiles.forEach { item in
             item.parent = workspaceFile
         }
-
-        // By using `CurrentValueSubject` we can define a starting value.
-        // The value passed during init it's going to be send as soon as the
-        // consumer subscribes to the publisher.
-        let subject = CurrentValueSubject<[CEWorkspaceFile], Never>(workspaceFiles)
-
-        self.getFiles = subject
-            .handleEvents(receiveCancel: {
-                for item in self.flattenedFileItems.values {
-                    item.watcher?.cancel()
-                    item.watcher = nil
-                }
-            })
-            .receive(on: RunLoop.main)
-            .eraseToAnyPublisher()
-
-        workspaceFile.watcherCode = { sourceFileItem in
-            self.reloadFromWatcher(sourceFileItem: sourceFileItem)
-        }
-        reloadFromWatcher(sourceFileItem: workspaceFile)
     }
 
     /// Recursive loading of files into `FileItem`s
@@ -105,10 +87,6 @@ final class CEWorkspaceFileManager {
                     children: subItems?.sortItems(foldersOnTop: true)
                 )
 
-                // note: watcher code will be applied after the workspaceItem is created
-                newFileItem.watcherCode = { sourceFileItem in
-                    self.reloadFromWatcher(sourceFileItem: sourceFileItem)
-                }
                 subItems?.forEach { $0.parent = newFileItem }
                 items.append(newFileItem)
                 flattenedFileItems[newFileItem.id] = newFileItem
@@ -120,84 +98,51 @@ final class CEWorkspaceFileManager {
 
     /// A function that, given a file's path, returns a `FileItem` if it exists
     /// within the scope of the `FileSystemClient`.
-    /// - Parameter id: The file's full path
+    /// - Parameter path: The file's full path
     /// - Returns: The file item corresponding to the file
-    func getFile(_ id: String) throws -> CEWorkspaceFile {
-        guard let item = flattenedFileItems[id] else {
-            throw FileSystemClientError.fileNotExist
-        }
-
-        return item
+    func getFile(_ path: String) -> CEWorkspaceFile? {
+        flattenedFileItems[path]
     }
 
     /// Usually run when the owner of the `FileSystemClient` doesn't need it anymore.
     /// This de-inits most functions in the `FileSystemClient`, so that in case it isn't de-init'd it does not use up
     /// significant amounts of RAM.
     func cleanUp() {
-        stopListeningToDirectory()
+        fsEventStream?.cancel()
         workspaceItem.children = []
         flattenedFileItems = [workspaceItem.id: workspaceItem]
-        print("Cleaned up watchers and file items")
     }
 
-    // run by dispatchsource watchers. Multiple instances may be concurrent,
-    // so we need to be careful to avoid EXC_BAD_ACCESS errors.
-    /// This is a function run by `DispatchSource` file watchers. Due to the nature of watchers, multiple
-    /// instances may be running concurrently, so the function prevents more than one instance of it from
-    /// running the main code body.
-    /// - Parameter sourceFileItem: The `FileItem` corresponding to the file that triggered the `DispatchSource`
-    func reloadFromWatcher(sourceFileItem: CEWorkspaceFile) {
-        // Something has changed inside the directory
-        // We should reload the files.
-        guard !isRunning else { // this runs when a file change is detected but is already running
-            anotherInstanceRan += 1
-            return
-        }
-        isRunning = true
-
-        // inital reload of files
-        _ = try? rebuildFiles(fromItem: sourceFileItem)
-
-        // re-reload if another instance tried to run while this instance was running
-        // TODO: optimise
-        while anotherInstanceRan > 0 {
-            let somethingChanged = try? rebuildFiles(fromItem: workspaceItem)
-            anotherInstanceRan = !(somethingChanged ?? false) ? 0 : anotherInstanceRan - 1
-        }
-
-        subject.send(workspaceItem.children ?? [])
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            self.isRunning = false
-        }
-        anotherInstanceRan = 0
-
-        // reload data in outline view controller through the main thread
+    /// Called by `fsEventStream` when an event occurs.
+    ///
+    /// This method can be called by separate threads, though measures are taken to minimize instances where this is
+    /// called more than once at a time.
+    /// This will always obtain a lock before modifying any of the file tree.
+    /// - Parameters:
+    ///   - directory: The directory where the event occurred.
+    ///   - event: The event that occurred.
+    ///   - deepRebuild: Whether or not the directory needs to be recursively rebuilt.
+    private func fileSystemEventReceived(directory: String, event: FSEvent, deepRebuild: Bool) {
         DispatchQueue.main.async {
-            self.onRefresh()
-        }
-    }
-
-    /// A function to kill the watcher of a specific directory, or all directories.
-    /// - Parameter directory: The directory to stop watching, or nil to stop watching everything.
-    func stopListeningToDirectory(directory: URL? = nil) {
-        if directory != nil {
-            flattenedFileItems[directory!.relativePath]?.watcher?.cancel()
-        } else {
-            for item in flattenedFileItems.values {
-                item.watcher?.cancel()
-                item.watcher = nil
+            var directory = directory
+            if directory.last == "/" {
+                directory.removeLast()
             }
+            guard let item = self.getFile(directory) else {
+                return
+            }
+            try? self.rebuildFiles(fromItem: item)
+            self.notifyObservers()
         }
     }
 
-    /// Recursive function similar to `loadFiles`, but creates or deletes children of the
+    /// Similar to `loadFiles`, but creates or deletes children of the
     /// `FileItem` so that they are accurate with the file system, instead of creating an
-    /// entirely new `FileItem`, to prevent the `OutlineView` from going crazy with folding.
-    /// - Parameter fileItem: The `FileItem` to correct the children of
-    @discardableResult
-    func rebuildFiles(fromItem fileItem: CEWorkspaceFile) throws -> Bool {
-        var didChangeSomething = false
-
+    /// entirely new `FileItem`. Can optionally run a deep rebuild.
+    /// - Parameters:
+    ///   - fileItem: The `FileItem` to correct the children of
+    ///   - deep: Set to `true` if this should perform the rebuild recursively.
+    func rebuildFiles(fromItem fileItem: CEWorkspaceFile, deep: Bool = false) throws {
         // get the actual directory children
         let directoryContentsUrls = try fileManager.contentsOfDirectory(
             at: fileItem.url.resolvingSymlinksInPath(),
@@ -207,10 +152,8 @@ final class CEWorkspaceFileManager {
         // test for deleted children, and remove them from the index
         for oldContent in fileItem.children ?? [] where !directoryContentsUrls.contains(oldContent.url) {
             if let removeAt = fileItem.children?.firstIndex(of: oldContent) {
-                fileItem.children?[removeAt].watcher?.cancel()
                 fileItem.children?.remove(at: removeAt)
                 flattenedFileItems.removeValue(forKey: oldContent.id)
-                didChangeSomething = true
             }
         }
 
@@ -232,29 +175,44 @@ final class CEWorkspaceFileManager {
                     children: subItems?.sortItems(foldersOnTop: true)
                 )
 
-                newFileItem.watcherCode = { sourceFileItem in
-                    self.reloadFromWatcher(sourceFileItem: sourceFileItem)
-                }
-
                 subItems?.forEach { $0.parent = newFileItem }
 
                 newFileItem.parent = fileItem
                 flattenedFileItems[newFileItem.id] = newFileItem
                 fileItem.children?.append(newFileItem)
-                didChangeSomething = true
             }
         }
 
         fileItem.children = fileItem.children?.sortItems(foldersOnTop: true)
         fileItem.children?.forEach({
             if $0.isFolder {
-                let childChanged = try? rebuildFiles(fromItem: $0)
-                didChangeSomething = (childChanged ?? false) ? true : didChangeSomething
+                try? rebuildFiles(fromItem: $0, deep: deep)
             }
-            flattenedFileItems[$0.id] = $0
+            if deep {
+                flattenedFileItems[$0.id] = $0
+            }
         })
-
-        return didChangeSomething
     }
 
+    func notifyObservers() {
+        observers.allObjects.reversed().forEach { delegate in
+            guard let delegate = delegate as? CEWorkspaceFileManagerObserver else {
+                observers.remove(delegate)
+                return
+            }
+            delegate.fileManagerUpdated()
+        }
+    }
+
+    func addObserver(_ observer: CEWorkspaceFileManagerObserver) {
+        observers.add(observer as AnyObject)
+    }
+
+    func removeObserver(_ observer: CEWorkspaceFileManagerObserver) {
+        observers.remove(observer as AnyObject)
+    }
+
+    deinit {
+        observers.removeAllObjects()
+    }
 }
