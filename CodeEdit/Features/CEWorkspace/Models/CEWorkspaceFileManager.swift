@@ -14,8 +14,6 @@ protocol CEWorkspaceFileManagerObserver: AnyObject {
 
 /// This class is used to load the files of the machine into a CodeEdit workspace.
 final class CEWorkspaceFileManager {
-    private var lock: NSLock = NSLock()
-
     private(set) var fileManager = FileManager.default
     private(set) var ignoredFilesAndFolders: Set<String>
     private(set) var flattenedFileItems: [String: CEWorkspaceFile]
@@ -115,9 +113,8 @@ final class CEWorkspaceFileManager {
 
     /// Called by `fsEventStream` when an event occurs.
     ///
-    /// This method can be called by separate threads, though measures are taken to minimize instances where this is
-    /// called more than once at a time.
-    /// This will always obtain a lock before modifying any of the file tree.
+    /// This method may be called on a background thread, but all work done by this function will be queued on the main
+    /// thread.
     /// - Parameters:
     ///   - directory: The directory where the event occurred.
     ///   - event: The event that occurred.
