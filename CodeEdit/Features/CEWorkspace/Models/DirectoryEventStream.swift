@@ -18,14 +18,32 @@ enum FSEvent {
     case itemRenamed
 }
 
+/// Creates a stream of events using the File System Events API.
+///
+/// The stream of events is started immediately upon initialization, and will only be stopped when either `cancel`
+/// is called, or the object is deallocated. The stream is also configured to debounce notifications to happen
+/// according to the `debounceDuration` parameter. This directly corresponds with the `latency` parameter in
+/// `FSEventStreamCreate`, which will delay notifications until `latency` has passed at which point it will send all
+/// the notifications built up during that period of time.
+///
+/// Use the `callback` parameter to listen for notifications.
+/// Notifications are automatically filtered to include certain events, but the FS event API doesn't always correctly
+/// flag events so use caution when handling events as they can come frequently.
 class DirectoryEventStream {
     typealias EventCallback = (String, FSEvent, Bool) -> Void
 
     private var streamRef: FSEventStreamRef?
     private var callback: EventCallback
-    private let debounceDuration: TimeInterval = 0.05
+    private let debounceDuration: TimeInterval
 
-    init(directory: String, callback: @escaping EventCallback) {
+    /// Initialize the event stream and begin listening for events.
+    /// - Parameters:
+    ///   - directory: The directory to monitor. The listener may receive a `FSEvent.rootChanged` event if this
+    ///   directory is modified or moved.
+    ///   - debounceDuration: The duration to delay notifications for to let the FS events API accumulates events.
+    ///   - callback: A callback provided that `DirectoryEventStream` will send events to.
+    init(directory: String, debounceDuration: TimeInterval = 0.05, callback: @escaping EventCallback) {
+        self.debounceDuration = debounceDuration
         self.callback = callback
         let selfPtr = UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque())
 
@@ -61,18 +79,28 @@ class DirectoryEventStream {
             )
         ) {
             self.streamRef = ref
-            FSEventStreamSetDispatchQueue(ref, DispatchQueue(label: "com.CodeEdit.app.fseventsqueue", qos: .default))
+            FSEventStreamSetDispatchQueue(ref, DispatchQueue.global(qos: .default))
             FSEventStreamStart(ref)
         }
     }
 
     deinit {
+        if let streamRef {
+            FSEventStreamStop(streamRef)
+            FSEventStreamInvalidate(streamRef)
+            FSEventStreamRelease(streamRef)
+        }
         streamRef = nil
     }
 
-    /// Cancels the fs events watcher.
+    /// Cancels the events watcher.
     /// This class will have to be re-initialized to begin streaming events again.
     public func cancel() {
+        if let streamRef {
+            FSEventStreamStop(streamRef)
+            FSEventStreamInvalidate(streamRef)
+            FSEventStreamRelease(streamRef)
+        }
         streamRef = nil
     }
 
@@ -99,6 +127,12 @@ class DirectoryEventStream {
         }
     }
 
+    /// Parses an `FSEvent` from the raw flag value.
+    ///
+    /// This more often than not returns `.changeInDirectory` as `FSEventStream` more often than not
+    /// returns `kFSEventStreamEventFlagNone (0x00000000)`.
+    /// - Parameter raw: The int value received from the FSEventStream
+    /// - Returns: An FSEvent if a valid one was found.
     func getEventFromFlags(_ raw: FSEventStreamEventFlags) -> FSEvent? {
         if raw == 0 {
             return .changeInDirectory

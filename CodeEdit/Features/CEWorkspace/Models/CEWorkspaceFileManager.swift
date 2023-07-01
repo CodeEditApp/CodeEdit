@@ -182,12 +182,10 @@ final class CEWorkspaceFileManager {
 
         fileItem.children = fileItem.children?.sortItems(foldersOnTop: true)
         fileItem.children?.forEach({
-            if $0.isFolder {
+            if deep && $0.isFolder {
                 try? rebuildFiles(fromItem: $0, deep: deep)
             }
-            if deep {
-                flattenedFileItems[$0.id] = $0
-            }
+            flattenedFileItems[$0.id] = $0
         })
     }
 
