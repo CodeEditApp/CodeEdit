@@ -11,21 +11,38 @@ import XCTest
 
 final class WorkspaceClientUnitTests: XCTestCase {
     let typeOfExtensions = ["json", "txt", "swift", "js", "py", "md"]
+    var directory: URL!
 
-    func testListFile() throws {
-        let directory = try FileManager.default.url(
+    class DummyObserver: CEWorkspaceFileManagerObserver {
+        var completion: (() -> Void)?
+
+        init(completion: @escaping () -> Void) {
+            self.completion = completion
+        }
+
+        func fileManagerUpdated() {
+            completion?()
+        }
+    }
+
+    override func setUp() async throws {
+        directory = try FileManager.default.url(
             for: .developerApplicationDirectory,
             in: .userDomainMask,
             appropriateFor: nil,
             create: true
         )
-            .appendingPathComponent("CodeEdit", isDirectory: true)
-            .appendingPathComponent("WorkspaceClientTests", isDirectory: true)
+        .appendingPathComponent("CodeEdit", isDirectory: true)
+        .appendingPathComponent("WorkspaceClientTests", isDirectory: true)
         try? FileManager.default.removeItem(at: directory)
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+    }
 
-        var cancellable: AnyCancellable?
-        let expectation = expectation(description: "wait for files")
+    override func tearDown() async throws {
+        try? FileManager.default.removeItem(at: directory)
+    }
+
+    func testListFile() throws {
         let randomCount = Int.random(in: 1 ... 100)
         let files = generateRandomFiles(amount: randomCount)
         try files.forEach {
@@ -39,63 +56,30 @@ final class WorkspaceClientUnitTests: XCTestCase {
             ignoredFilesAndFolders: []
         )
 
-        var newFiles: [CEWorkspaceFile] = []
-
-        cancellable = client
-            .getFiles
-            .sink { files in
-                newFiles = files
-                expectation.fulfill()
-            }
-
-        waitForExpectations(timeout: 0.5)
-
-        XCTAssertEqual(files.count, newFiles.count)
+        // Compare to flattened files - 1 cause root is in there
+        XCTAssertEqual(files.count, client.flattenedFileItems.count - 1)
         try FileManager.default.removeItem(at: directory)
-        cancellable?.cancel()
     }
 
     func testDirectoryChanges() throws {
-        let directory = try FileManager.default.url(
-            for: .developerApplicationDirectory,
-            in: .userDomainMask,
-            appropriateFor: nil,
-            create: true
-        )
-            .appendingPathComponent("CodeEdit", isDirectory: true)
-            .appendingPathComponent("WorkspaceClientTests", isDirectory: true)
-        try? FileManager.default.removeItem(at: directory)
-        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-
-        var cancellable: AnyCancellable?
-        let expectation = XCTestExpectation(description: "wait for files")
-
-        let randomCount = Int.random(in: 1 ... 100)
-        var files = generateRandomFiles(amount: randomCount)
-        try files.forEach {
-            let fakeData = "fake string".data(using: .utf8)
-            let fileUrl = directory
-                .appendingPathComponent($0)
-            try fakeData!.write(to: fileUrl)
-        }
-
         let client = CEWorkspaceFileManager(
             folderUrl: directory,
             ignoredFilesAndFolders: []
         )
 
-        var newFiles: [CEWorkspaceFile] = []
+        let newFile = generateRandomFiles(amount: 1)[0]
+        let expectation = XCTestExpectation(description: "wait for files")
 
-        cancellable = client
-            .getFiles
-            .sink { files in
-                newFiles = files
+        let observer = DummyObserver {
+            let url = client.folderUrl.appending(path: newFile).path
+            if client.flattenedFileItems[url] != nil {
                 expectation.fulfill()
             }
-        wait(for: [expectation], timeout: 0.5)
+        }
+        client.addObserver(observer)
 
-        let nextBatchOfFiles = generateRandomFiles(amount: 1)
-        files.append(contentsOf: nextBatchOfFiles)
+        var files = client.flattenedFileItems.map { $0.value.name }
+        files.append(newFile)
         try files.forEach {
             let fakeData = "fake string".data(using: .utf8)
             let fileUrl = directory
@@ -103,9 +87,10 @@ final class WorkspaceClientUnitTests: XCTestCase {
             try fakeData!.write(to: fileUrl)
         }
 
-        XCTAssertEqual(files.count, newFiles.count + 1)
+        wait(for: [expectation])
+        XCTAssertEqual(files.count, client.flattenedFileItems.count - 1)
         try FileManager.default.removeItem(at: directory)
-        cancellable?.cancel()
+        client.removeObserver(observer)
     }
 
     func generateRandomFiles(amount: Int) -> [String] {

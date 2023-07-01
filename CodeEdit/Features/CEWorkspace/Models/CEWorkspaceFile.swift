@@ -51,9 +51,6 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, TabBar
 
     var fileIdentifier = UUID().uuidString
 
-    var watcher: DispatchSourceFileSystemObject?
-    var watcherCode: ((CEWorkspaceFile) -> Void)?
-
     /// Returns the Git status of a file as ``GitType``
     var gitStatus: GitType?
 
@@ -122,33 +119,6 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, TabBar
         try container.encode(url, forKey: .url)
         try container.encode(children, forKey: .children)
         try container.encode(gitStatus, forKey: .changeType)
-    }
-
-    func activateWatcher() -> Bool {
-        guard let watcherCode else { return false }
-
-        let descriptor = open(self.url.path, O_EVTONLY)
-        guard descriptor > 0 else { return false }
-
-        // create the source
-        let source = DispatchSource.makeFileSystemObjectSource(
-            fileDescriptor: descriptor,
-            eventMask: .write,
-            queue: DispatchQueue.global()
-        )
-
-        if descriptor > 2000 {
-            print("Watcher \(descriptor) used up on \(url.path)")
-        }
-
-        source.setEventHandler { watcherCode(self) }
-        source.setCancelHandler { close(descriptor) }
-        source.resume()
-        self.watcher = source
-
-        // TODO: reindex the current item, because the files in the item may have changed
-        // since the initial load on startup.
-        return true
     }
 
     /// Returns a string describing a SFSymbol for folders
