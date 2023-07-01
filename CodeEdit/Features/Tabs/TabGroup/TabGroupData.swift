@@ -81,6 +81,10 @@ final class TabGroupData: ObservableObject, Identifiable {
     /// This will also write any changes to the file on disk and will add the tab to the tab history.
     /// - Parameter item: the tab to close.
     func closeTab(item: Tab) {
+        if temporaryTab == item {
+            temporaryTab = nil
+        }
+
         historyOffset = 0
         if item != selected {
             history.prepend(item)
@@ -200,7 +204,6 @@ final class TabGroupData: ObservableObject, Identifiable {
         )
         item.fileDocument = codeFile
         CodeEditDocumentController.shared.addDocument(codeFile)
-        print("Opening file for item: ", item.url)
     }
 
     func goBackInHistory() {
