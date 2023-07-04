@@ -20,7 +20,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
 
     var tabManager = TabManager()
 
-    var workspaceState: [String: Any] {
+    private var workspaceState: [String: Any] {
         get {
             let key = "workspaceState-\(self.fileURL?.absoluteString ?? "")"
             return UserDefaults.standard.object(forKey: key) as? [String: Any] ?? [:]
@@ -42,21 +42,22 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var listenerModel: WorkspaceNotificationModel = .init()
 
     private var cancellables = Set<AnyCancellable>()
-    private let openTabsStateName: String = "\(String(describing: WorkspaceDocument.self))-OpenTabs"
-    private let activeTabStateName: String = "\(String(describing: WorkspaceDocument.self))-ActiveTab"
-    private var openedTabsFromState = false
 
     deinit {
         cancellables.forEach { $0.cancel() }
         NotificationCenter.default.removeObserver(self)
     }
 
-    func getFromWorkspaceState(key: String) -> Any? {
-        return workspaceState[key]
+    func getFromWorkspaceState(_ key: WorkspaceStateKey) -> Any? {
+        return workspaceState[key.rawValue]
     }
 
-    func addToWorkspaceState(key: String, value: Any) {
-        workspaceState.updateValue(value, forKey: key)
+    func addToWorkspaceState(key: WorkspaceStateKey, value: Any?) {
+        if let value {
+            workspaceState.updateValue(value, forKey: key.rawValue)
+        } else {
+            workspaceState.removeValue(forKey: key.rawValue)
+        }
     }
 
     // MARK: NSDocument
@@ -96,23 +97,6 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
             windowController.window?.setFrameAutosaveName(self.fileURL?.absoluteString ?? "Untitled")
             self.addWindowController(windowController)
         }
-        // TODO: Fix restoration
-//        var activeTabID: TabBarItemID?
-//        var activeTabInState = self.getFromWorkspaceState(key: activeTabStateName) as? String ?? ""
-//        var openTabsInState = self.getFromWorkspaceState(key: openTabsStateName) as? [String] ?? []
-//        for openTab in openTabsInState {
-//            let tabUrl = URL(string: openTab)!
-//            if FileManager.default.fileExists(atPath: tabUrl.path) {
-//                let item = WorkspaceClient.FileItem(url: tabUrl)
-//                self.tabManager.openTab(item: item)
-//                self.convertTemporaryTab()
-//                if activeTabInState == openTab {
-//                    activeTabID = item.tabID
-//                }
-//            }
-//        }
-
-        self.openedTabsFromState = true
     }
 
     // MARK: Set Up Workspace
@@ -125,6 +109,15 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         self.searchState = .init(self)
         self.quickOpenViewModel = .init(fileURL: url)
         self.commandsPaletteState = .init()
+
+        if let restoredTabState = try? tabManager.restoreFromData(
+            getFromWorkspaceState(.openTabs) as? Data ?? Data(),
+            fileManager: workspaceFileManager!
+        ) {
+            tabManager.tabGroups = restoredTabState
+            tabManager.switchToActiveTabGroup()
+        }
+        debugAreaModel.restoreFromState(self)
     }
 
     override func read(from url: URL, ofType typeName: String) throws {
@@ -136,6 +129,16 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     // MARK: Close Workspace
 
     override func close() {
+        // Save tab restoration state before closing
+        do {
+            addToWorkspaceState(
+                key: .openTabs,
+                value: try tabManager.captureRestorationState()
+            )
+        } catch {
+            addToWorkspaceState(key: .openTabs, value: nil)
+        }
+        debugAreaModel.saveRestorationState(self)
         super.close()
     }
 

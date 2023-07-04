@@ -26,6 +26,11 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         super.init(window: window)
         self.workspace = workspace
 
+        self.shouldCascadeWindows = false
+        if let workspaceURL = workspace.workspaceFileManager?.workspaceItem.url {
+            self.windowFrameAutosaveName = workspaceURL.path
+        }
+
         setupSplitView(with: workspace)
 
         let view = CodeEditSplitView(controller: splitViewController).ignoresSafeArea()

@@ -64,4 +64,33 @@ class TabManager: ObservableObject {
                 self?.tabBarItemIdSubject.send(tab?.id)
             }
     }
+
+    func restoreFromData(_ data: Data, fileManager: CEWorkspaceFileManager) throws -> TabGroup {
+        let state = try JSONDecoder().decode(TabGroup.self, from: data)
+        try fixRestoredTabGroup(state, fileManager: fileManager)
+        return state
+    }
+
+    private func fixRestoredTabGroup(_ group: TabGroup, fileManager: CEWorkspaceFileManager) throws {
+        switch group {
+        case let .one(data):
+            data.tabs = OrderedSet(data.tabs.compactMap { fileManager.getFile($0.url.path) })
+            if let selected = data.selected {
+                data.selected = fileManager.getFile(selected.url.path)
+            }
+        case let .vertical(splitData):
+            try splitData.tabgroups.forEach { group in
+                try fixRestoredTabGroup(group, fileManager: fileManager)
+            }
+        case let .horizontal(splitData):
+            try splitData.tabgroups.forEach { group in
+                try fixRestoredTabGroup(group, fileManager: fileManager)
+            }
+        }
+    }
+
+    func captureRestorationState() throws -> Data {
+        let encoder = JSONEncoder()
+        return try encoder.encode(tabGroups)
+    }
 }

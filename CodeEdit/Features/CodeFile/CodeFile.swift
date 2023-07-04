@@ -90,6 +90,10 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
             backing: .buffered, defer: false
         )
         let windowController = NSWindowController(window: window)
+        if let fileURL {
+            windowController.shouldCascadeWindows = false
+            windowController.windowFrameAutosaveName = fileURL.path
+        }
         addWindowController(windowController)
 
         window.contentView = NSHostingView(rootView: SettingsInjector {
