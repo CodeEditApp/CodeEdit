@@ -57,7 +57,7 @@ final class TabGroupData: ObservableObject, Identifiable {
 
     @Published var temporaryTab: Tab?
 
-    let id = UUID()
+    var id = UUID()
 
     weak var parent: SplitViewData?
 

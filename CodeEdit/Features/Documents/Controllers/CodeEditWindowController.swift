@@ -25,12 +25,6 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
     init(window: NSWindow, workspace: WorkspaceDocument) {
         super.init(window: window)
         self.workspace = workspace
-
-        self.shouldCascadeWindows = false
-        if let workspaceURL = workspace.workspaceFileManager?.workspaceItem.url {
-            self.windowFrameAutosaveName = workspaceURL.path
-        }
-
         setupSplitView(with: workspace)
 
         let view = CodeEditSplitView(controller: splitViewController).ignoresSafeArea()
@@ -194,15 +188,15 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
     ) -> NSToolbarItem? {
         switch itemIdentifier {
         case .itemListTrackingSeparator:
-                guard let splitViewController else {
-                    return nil
-                }
+            guard let splitViewController else {
+                return nil
+            }
 
-                return NSTrackingSeparatorToolbarItem(
-                    identifier: .itemListTrackingSeparator,
-                    splitView: splitViewController.splitView,
-                    dividerIndex: 1
-                )
+            return NSTrackingSeparatorToolbarItem(
+                identifier: .itemListTrackingSeparator,
+                splitView: splitViewController.splitView,
+                dividerIndex: 1
+            )
         case .toggleFirstSidebarItem:
             let toolbarItem = NSToolbarItem(itemIdentifier: NSToolbarItem.Identifier.toggleFirstSidebarItem)
             toolbarItem.label = "Navigator Sidebar"
@@ -245,10 +239,6 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         default:
             return NSToolbarItem(itemIdentifier: itemIdentifier)
         }
-    }
-
-    override func windowDidLoad() {
-        super.windowDidLoad()
     }
 
     private func getSelectedCodeFile() -> CodeFileDocument? {

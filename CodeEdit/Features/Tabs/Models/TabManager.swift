@@ -65,32 +65,61 @@ class TabManager: ObservableObject {
             }
     }
 
-    func restoreFromData(_ data: Data, fileManager: CEWorkspaceFileManager) throws -> TabGroup {
-        let state = try JSONDecoder().decode(TabGroup.self, from: data)
-        try fixRestoredTabGroup(state, fileManager: fileManager)
-        return state
+    /// Restores the tab manager from a captured state obtained using `saveRestorationState`
+    /// - Parameter workspace: The workspace to retrieve state from.
+    func restoreFromState(_ workspace: WorkspaceDocument) {
+        guard let fileManager = workspace.workspaceFileManager,
+              let data = workspace.getFromWorkspaceState(.openTabs) as? Data,
+              let state = try? JSONDecoder().decode(TabRestorationState.self, from: data) else {
+            return
+        }
+        fixTabGroupData(state.focus, fileManager: fileManager)
+        self.activeTabGroup = state.focus
+        fixRestoredTabGroup(state.groups, fileManager: fileManager)
+        self.tabGroups = state.groups
+        switchToActiveTabGroup()
     }
 
-    private func fixRestoredTabGroup(_ group: TabGroup, fileManager: CEWorkspaceFileManager) throws {
+    /// Fix any hanging files after restoring from saved state.
+    ///
+    /// After decoding the state, we're left with `CEWorkspaceFile`s that don't exist in the file manager
+    /// so this function maps all those to 'real' files. Works recursively on all the tab groups.
+    /// - Parameters:
+    ///   - group: The tab group to fix.
+    ///   - fileManager: The file manager to use to map files.
+    private func fixRestoredTabGroup(_ group: TabGroup, fileManager: CEWorkspaceFileManager) {
         switch group {
         case let .one(data):
-            data.tabs = OrderedSet(data.tabs.compactMap { fileManager.getFile($0.url.path) })
-            if let selected = data.selected {
-                data.selected = fileManager.getFile(selected.url.path)
-            }
+            fixTabGroupData(data, fileManager: fileManager)
         case let .vertical(splitData):
-            try splitData.tabgroups.forEach { group in
-                try fixRestoredTabGroup(group, fileManager: fileManager)
+            splitData.tabgroups.forEach { group in
+                fixRestoredTabGroup(group, fileManager: fileManager)
             }
         case let .horizontal(splitData):
-            try splitData.tabgroups.forEach { group in
-                try fixRestoredTabGroup(group, fileManager: fileManager)
+            splitData.tabgroups.forEach { group in
+                fixRestoredTabGroup(group, fileManager: fileManager)
             }
         }
     }
 
-    func captureRestorationState() throws -> Data {
-        let encoder = JSONEncoder()
-        return try encoder.encode(tabGroups)
+    /// Fixes any hanging files after restoring from saved state.
+    /// - Parameters:
+    ///   - data: The tab group to fix.
+    ///   - fileManager: The file manager to use to map files.a
+    private func fixTabGroupData(_ data: TabGroupData, fileManager: CEWorkspaceFileManager) {
+        data.tabs = OrderedSet(data.tabs.compactMap { fileManager.getFile($0.url.path) })
+        if let selected = data.selected {
+            data.selected = fileManager.getFile(selected.url.path)
+        }
+    }
+
+    func saveRestorationState(_ workspace: WorkspaceDocument) {
+        if let data = try? JSONEncoder().encode(
+            TabRestorationState(focus: activeTabGroup, groups: tabGroups)
+        ) {
+            workspace.addToWorkspaceState(key: .openTabs, value: data)
+        } else {
+            workspace.addToWorkspaceState(key: .openTabs, value: nil)
+        }
     }
 }

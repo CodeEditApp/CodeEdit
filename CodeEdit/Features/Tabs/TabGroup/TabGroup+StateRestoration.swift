@@ -9,9 +9,12 @@ import Foundation
 import SwiftUI
 import OrderedCollections
 
-extension TabGroup: Codable {
-    
+struct TabRestorationState: Codable {
+    var focus: TabGroupData
+    var groups: TabGroup
+}
 
+extension TabGroup: Codable {
     fileprivate enum TabGroupType: String, Codable {
         case one
         case vertical
@@ -97,22 +100,26 @@ extension TabGroupData: Codable {
     enum CodingKeys: String, CodingKey {
         case tabs
         case selected
+        case id
     }
 
     convenience init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let fileURLs = try container.decode([URL].self, forKey: .tabs)
         let selected = try? container.decode(URL.self, forKey: .selected)
+        let id = try container.decode(UUID.self, forKey: .id)
         self.init(
             files: OrderedSet(fileURLs.map { CEWorkspaceFile(url: $0) }),
             selected: selected == nil ? nil : CEWorkspaceFile(url: selected!),
             parent: nil
         )
+        self.id = id
     }
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(tabs.map { $0.url }, forKey: .tabs)
         try container.encode(selected?.url, forKey: .selected)
+        try container.encode(id, forKey: .id)
     }
 }

@@ -82,19 +82,30 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
             }
         } else {
             let window = NSWindow(
-                contentRect: NSRect(x: 0, y: 0, width: 800, height: 600),
+                contentRect: NSRect(x: 0, y: 0, width: 1400, height: 900),
                 styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
-                backing: .buffered, defer: false
+                backing: .buffered,
+                defer: false
             )
-            window.center()
-            window.minSize = .init(width: 1000, height: 600)
+            // Setting the "min size" like this is hacky, but SwiftUI overrides the contentRect and
+            // any of the built-in window size functions & autosave stuff. So we have to set it like this.
+            // SwiftUI also ignores this value, so it just manages to set the initial window size. *Hopefully* this
+            // is fixed in the future.
+            if let rectString = getFromWorkspaceState(.workspaceWindowSize) as? String {
+                window.minSize = NSRectFromString(rectString).size
+            } else {
+                window.minSize = .init(width: 1400, height: 900)
+            }
             let windowController = CodeEditWindowController(
                 window: window,
                 workspace: self
             )
 
-            windowController.shouldCascadeWindows = true
-            windowController.window?.setFrameAutosaveName(self.fileURL?.absoluteString ?? "Untitled")
+            if let rectString = getFromWorkspaceState(.workspaceWindowSize) as? String {
+                window.setFrameOrigin(NSRectFromString(rectString).origin)
+            } else {
+                window.center()
+            }
             self.addWindowController(windowController)
         }
     }
@@ -102,6 +113,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     // MARK: Set Up Workspace
 
     private func initWorkspaceState(_ url: URL) throws {
+        self.fileURL = url
         self.workspaceFileManager = .init(
             folderUrl: url,
             ignoredFilesAndFolders: Set(ignoredFilesAndDirectory)
@@ -110,13 +122,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         self.quickOpenViewModel = .init(fileURL: url)
         self.commandsPaletteState = .init()
 
-        if let restoredTabState = try? tabManager.restoreFromData(
-            getFromWorkspaceState(.openTabs) as? Data ?? Data(),
-            fileManager: workspaceFileManager!
-        ) {
-            tabManager.tabGroups = restoredTabState
-            tabManager.switchToActiveTabGroup()
-        }
+        tabManager.restoreFromState(self)
         debugAreaModel.restoreFromState(self)
     }
 
@@ -129,15 +135,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     // MARK: Close Workspace
 
     override func close() {
-        // Save tab restoration state before closing
-        do {
-            addToWorkspaceState(
-                key: .openTabs,
-                value: try tabManager.captureRestorationState()
-            )
-        } catch {
-            addToWorkspaceState(key: .openTabs, value: nil)
-        }
+        tabManager.saveRestorationState(self)
         debugAreaModel.saveRestorationState(self)
         super.close()
     }
