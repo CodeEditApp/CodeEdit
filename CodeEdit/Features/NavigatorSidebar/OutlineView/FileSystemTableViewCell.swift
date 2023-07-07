@@ -37,15 +37,7 @@ class FileSystemTableViewCell: StandardTableViewCell {
     }
 
     func addIcon(item: CEWorkspaceFile) {
-        var imageName = item.systemImage
-        if item.watcherCode == nil {
-            imageName = "exclamationmark.arrow.triangle.2.circlepath"
-        }
-        if item.watcher == nil && !item.activateWatcher() {
-            // watcher failed to activate
-            imageName = "eye.trianglebadge.exclamationmark"
-        }
-        let image = NSImage(systemSymbolName: imageName, accessibilityDescription: nil)!
+        let image = NSImage(systemSymbolName: item.systemImage, accessibilityDescription: nil)!
         fileItem = item
         icon.image = image
         icon.contentTintColor = color(for: item)

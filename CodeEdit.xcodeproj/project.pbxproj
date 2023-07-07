@@ -243,7 +243,9 @@
 		58FD7608291EA1CB0051D6E4 /* CommandPaletteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FD7605291EA1CB0051D6E4 /* CommandPaletteViewModel.swift */; };
 		58FD7609291EA1CB0051D6E4 /* CommandPaletteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FD7607291EA1CB0051D6E4 /* CommandPaletteView.swift */; };
 		5C4BB1E128212B1E00A92FB2 /* World.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4BB1E028212B1E00A92FB2 /* World.swift */; };
+		6C049A372A49E2DB00D42923 /* DirectoryEventStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C049A362A49E2DB00D42923 /* DirectoryEventStream.swift */; };
 		6C05A8AF284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C05A8AE284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift */; };
+		6C092EC62A4E803300489202 /* CodeEditTextView in Frameworks */ = {isa = PBXBuildFile; productRef = 6C092EC52A4E803300489202 /* CodeEditTextView */; };
 		6C0D0C6829E861B000AE4D3F /* SettingsSidebarFix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C0D0C6729E861B000AE4D3F /* SettingsSidebarFix.swift */; };
 		6C0F3A3C2A1D0D5000223D19 /* CodeEditKit in Frameworks */ = {isa = PBXBuildFile; productRef = 6C0F3A3B2A1D0D5000223D19 /* CodeEditKit */; };
 		6C147C4029A328BC0089B630 /* SplitViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C147C3F29A328560089B630 /* SplitViewData.swift */; };
@@ -314,7 +316,6 @@
 		6CC9E4B229B5669900C97388 /* Environment+ActiveTabGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC9E4B129B5669900C97388 /* Environment+ActiveTabGroup.swift */; };
 		6CD0375F2A3504540071C4DA /* FuzzySearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD0375E2A3504540071C4DA /* FuzzySearch.swift */; };
 		6CD03B6A29FC773F001BD1D0 /* SettingsInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD03B6929FC773F001BD1D0 /* SettingsInjector.swift */; };
-		6CD601B52A420E0900E8C324 /* CodeEditTextView in Frameworks */ = {isa = PBXBuildFile; productRef = 6CD601B42A420E0900E8C324 /* CodeEditTextView */; };
 		6CDA84AD284C1BA000C1CC3A /* TabBarContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CDA84AC284C1BA000C1CC3A /* TabBarContextMenu.swift */; };
 		6CDEFC9629E22C2700B7C684 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = 6CDEFC9529E22C2700B7C684 /* Introspect */; };
 		6CE622692A2A174A0013085C /* InspectorTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE622682A2A174A0013085C /* InspectorTab.swift */; };
@@ -705,6 +706,7 @@
 		58FD7605291EA1CB0051D6E4 /* CommandPaletteViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandPaletteViewModel.swift; sourceTree = "<group>"; };
 		58FD7607291EA1CB0051D6E4 /* CommandPaletteView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandPaletteView.swift; sourceTree = "<group>"; };
 		5C4BB1E028212B1E00A92FB2 /* World.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = World.swift; sourceTree = "<group>"; };
+		6C049A362A49E2DB00D42923 /* DirectoryEventStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryEventStream.swift; sourceTree = "<group>"; };
 		6C05A8AE284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkspaceDocument+Listeners.swift"; sourceTree = "<group>"; };
 		6C0D0C6729E861B000AE4D3F /* SettingsSidebarFix.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSidebarFix.swift; sourceTree = "<group>"; };
 		6C147C3D29A3281D0089B630 /* TabGroupData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabGroupData.swift; sourceTree = "<group>"; };
@@ -871,7 +873,7 @@
 				6C0F3A3C2A1D0D5000223D19 /* CodeEditKit in Frameworks */,
 				6C5BE5222A3D5666002DA0FC /* WindowManagement in Frameworks */,
 				6C66C31329D05CDC00DE9ED2 /* GRDB in Frameworks */,
-				6CD601B52A420E0900E8C324 /* CodeEditTextView in Frameworks */,
+				6C092EC62A4E803300489202 /* CodeEditTextView in Frameworks */,
 				58F2EB1E292FB954004A9BDE /* Sparkle in Frameworks */,
 				6C2149412A1BB9AB00748382 /* LogStream in Frameworks */,
 				6C147C4529A329350089B630 /* OrderedCollections in Frameworks */,
@@ -1866,6 +1868,7 @@
 				5894E59629FEF7740077E59C /* CEWorkspaceFile+Recursion.swift */,
 				58A2E40629C3975D005CB615 /* CEWorkspaceFileIcon.swift */,
 				58710158298EB80000951BA4 /* CEWorkspaceFileManager.swift */,
+				6C049A362A49E2DB00D42923 /* DirectoryEventStream.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2513,7 +2516,7 @@
 				6CDEFC9529E22C2700B7C684 /* Introspect */,
 				6C0F3A3B2A1D0D5000223D19 /* CodeEditKit */,
 				6C5BE5212A3D5666002DA0FC /* WindowManagement */,
-				6CD601B42A420E0900E8C324 /* CodeEditTextView */,
+				6C092EC52A4E803300489202 /* CodeEditTextView */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -2609,7 +2612,7 @@
 				6CDEFC9429E22C2700B7C684 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 				6C0F3A3A2A1D0D5000223D19 /* XCRemoteSwiftPackageReference "CodeEditKit" */,
 				6C5BE5202A3D5666002DA0FC /* XCRemoteSwiftPackageReference "SwiftUI-WindowManagement" */,
-				6CD601B32A420E0900E8C324 /* XCRemoteSwiftPackageReference "CodeEditTextView" */,
+				6C092EC42A4E803300489202 /* XCRemoteSwiftPackageReference "CodeEditTextView" */,
 			);
 			productRefGroup = B658FB2D27DA9E0F00EA4DBD /* Products */;
 			projectDirPath = "";
@@ -2969,6 +2972,7 @@
 				286471AB27ED51FD0039369D /* ProjectNavigatorView.swift in Sources */,
 				B6E41C7C29DE2B110088F9F4 /* AccountsSettingsProviderRow.swift in Sources */,
 				B62AEDB52A1FE295009A9F52 /* DebugAreaDebugView.swift in Sources */,
+				6C049A372A49E2DB00D42923 /* DirectoryEventStream.swift in Sources */,
 				6CAAF68A29BC9C2300A1F48A /* (null) in Sources */,
 				6C6BD6EF29CD12E900235D17 /* ExtensionManagerWindow.swift in Sources */,
 				6CFF967629BEBCD900182D6F /* FileCommands.swift in Sources */,
@@ -3999,6 +4003,14 @@
 				version = 2.3.0;
 			};
 		};
+		6C092EC42A4E803300489202 /* XCRemoteSwiftPackageReference "CodeEditTextView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/CodeEditApp/CodeEditTextView";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.6.6;
+			};
+		};
 		6C0F3A3A2A1D0D5000223D19 /* XCRemoteSwiftPackageReference "CodeEditKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/CodeEditApp/CodeEditKit";
@@ -4047,14 +4059,6 @@
 				minimumVersion = 0.2.0;
 			};
 		};
-		6CD601B32A420E0900E8C324 /* XCRemoteSwiftPackageReference "CodeEditTextView" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/CodeEditApp/CodeEditTextView";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.6.6;
-			};
-		};
 		6CDEFC9429E22C2700B7C684 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/siteline/SwiftUI-Introspect";
@@ -4085,6 +4089,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 58F2EB1C292FB954004A9BDE /* XCRemoteSwiftPackageReference "Sparkle" */;
 			productName = Sparkle;
+		};
+		6C092EC52A4E803300489202 /* CodeEditTextView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6C092EC42A4E803300489202 /* XCRemoteSwiftPackageReference "CodeEditTextView" */;
+			productName = CodeEditTextView;
 		};
 		6C0F3A3B2A1D0D5000223D19 /* CodeEditKit */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -4129,11 +4138,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6C147C4329A329350089B630 /* XCRemoteSwiftPackageReference "swift-collections" */;
 			productName = DequeModule;
-		};
-		6CD601B42A420E0900E8C324 /* CodeEditTextView */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 6CD601B32A420E0900E8C324 /* XCRemoteSwiftPackageReference "CodeEditTextView" */;
-			productName = CodeEditTextView;
 		};
 		6CDEFC9529E22C2700B7C684 /* Introspect */ = {
 			isa = XCSwiftPackageProductDependency;

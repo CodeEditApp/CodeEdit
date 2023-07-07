@@ -26,7 +26,10 @@ class SplitViewItem: ObservableObject {
         self.item.canCollapse = child[SplitViewItemCanCollapseViewTraitKey.self]
         self.item.isCollapsed = self.collapsed.wrappedValue
         self.item.holdingPriority = child[SplitViewHoldingPriorityTraitKey.self]
-        self.observers = createObservers()
+        // Skip the initial observation via a dispatch to avoid a "updating during view update" error
+        DispatchQueue.main.async {
+            self.observers = self.createObservers()
+        }
     }
 
     private func createObservers() -> [NSKeyValueObservation] {
