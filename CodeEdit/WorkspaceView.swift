@@ -16,7 +16,8 @@ struct WorkspaceView: View {
     @EnvironmentObject private var workspace: WorkspaceDocument
     @EnvironmentObject private var tabManager: TabManager
     @EnvironmentObject private var debugAreaModel: DebugAreaViewModel
-    @Environment(\.window) private var window: NSWindow
+    @Environment(\.window)
+    private var window: NSWindow
 
     private var keybindings: KeybindingManager =  .shared
 

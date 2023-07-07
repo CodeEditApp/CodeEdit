@@ -280,7 +280,9 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
         guard let item = outlineView.item(atRow: selectedIndex) as? CEWorkspaceFile else { return }
 
         if item.children == nil && shouldSendSelectionUpdate {
-            workspace?.tabManager.activeTabGroup.openTab(item: item, asTemporary: true)
+            DispatchQueue.main.async {
+                self.workspace?.tabManager.activeTabGroup.openTab(item: item, asTemporary: true)
+            }
         }
     }
 

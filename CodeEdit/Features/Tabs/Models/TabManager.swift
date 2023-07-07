@@ -73,10 +73,12 @@ class TabManager: ObservableObject {
               let state = try? JSONDecoder().decode(TabRestorationState.self, from: data) else {
             return
         }
-        fixTabGroupData(state.focus, fileManager: fileManager)
-        self.activeTabGroup = state.focus
         fixRestoredTabGroup(state.groups, fileManager: fileManager)
         self.tabGroups = state.groups
+        self.activeTabGroup = findTabGroup(
+            group: state.groups,
+            searchFor: state.focus.id
+        ) ?? tabGroups.findSomeTabGroup()!
         switchToActiveTabGroup()
     }
 
@@ -99,6 +101,17 @@ class TabManager: ObservableObject {
             splitData.tabgroups.forEach { group in
                 fixRestoredTabGroup(group, fileManager: fileManager)
             }
+        }
+    }
+
+    private func findTabGroup(group: TabGroup, searchFor id: UUID) -> TabGroupData? {
+        switch group {
+        case let .one(data):
+            return data.id == id ? data : nil
+        case let .vertical(splitData):
+            return splitData.tabgroups.compactMap { findTabGroup(group: $0, searchFor: id) }.first
+        case let .horizontal(splitData):
+            return splitData.tabgroups.compactMap { findTabGroup(group: $0, searchFor: id) }.first
         }
     }
 
