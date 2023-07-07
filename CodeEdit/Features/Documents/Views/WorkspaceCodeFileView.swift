@@ -16,6 +16,8 @@ struct WorkspaceCodeFileView: View {
 
     var file: CEWorkspaceFile
 
+    @State private var update: Bool = false
+
     @ViewBuilder var codeView: some View {
         if let document = file.fileDocument {
             Group {
@@ -28,12 +30,30 @@ struct WorkspaceCodeFileView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         } else {
+            if update {
+                Spacer()
+            }
             Spacer()
             VStack(spacing: 10) {
                 ProgressView()
                 Text("Opening \(file.name)...")
             }
             Spacer()
+                .onAppear {
+                    Task.detached {
+                        let contentType = try await file.url.resourceValues(forKeys: [.contentTypeKey]).contentType
+                        let codeFile = try await CodeFileDocument(
+                            for: file.url,
+                            withContentsOf: file.url,
+                            ofType: contentType?.identifier ?? ""
+                        )
+                        await MainActor.run {
+                            file.fileDocument = codeFile
+                            CodeEditDocumentController.shared.addDocument(codeFile)
+                            update.toggle()
+                        }
+                    }
+                }
         }
     }
 

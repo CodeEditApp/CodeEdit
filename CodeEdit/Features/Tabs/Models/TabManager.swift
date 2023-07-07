@@ -64,4 +64,75 @@ class TabManager: ObservableObject {
                 self?.tabBarItemIdSubject.send(tab?.id)
             }
     }
+
+    /// Restores the tab manager from a captured state obtained using `saveRestorationState`
+    /// - Parameter workspace: The workspace to retrieve state from.
+    func restoreFromState(_ workspace: WorkspaceDocument) {
+        guard let fileManager = workspace.workspaceFileManager,
+              let data = workspace.getFromWorkspaceState(.openTabs) as? Data,
+              let state = try? JSONDecoder().decode(TabRestorationState.self, from: data) else {
+            return
+        }
+        fixRestoredTabGroup(state.groups, fileManager: fileManager)
+        self.tabGroups = state.groups
+        self.activeTabGroup = findTabGroup(
+            group: state.groups,
+            searchFor: state.focus.id
+        ) ?? tabGroups.findSomeTabGroup()!
+        switchToActiveTabGroup()
+    }
+
+    /// Fix any hanging files after restoring from saved state.
+    ///
+    /// After decoding the state, we're left with `CEWorkspaceFile`s that don't exist in the file manager
+    /// so this function maps all those to 'real' files. Works recursively on all the tab groups.
+    /// - Parameters:
+    ///   - group: The tab group to fix.
+    ///   - fileManager: The file manager to use to map files.
+    private func fixRestoredTabGroup(_ group: TabGroup, fileManager: CEWorkspaceFileManager) {
+        switch group {
+        case let .one(data):
+            fixTabGroupData(data, fileManager: fileManager)
+        case let .vertical(splitData):
+            splitData.tabgroups.forEach { group in
+                fixRestoredTabGroup(group, fileManager: fileManager)
+            }
+        case let .horizontal(splitData):
+            splitData.tabgroups.forEach { group in
+                fixRestoredTabGroup(group, fileManager: fileManager)
+            }
+        }
+    }
+
+    private func findTabGroup(group: TabGroup, searchFor id: UUID) -> TabGroupData? {
+        switch group {
+        case let .one(data):
+            return data.id == id ? data : nil
+        case let .vertical(splitData):
+            return splitData.tabgroups.compactMap { findTabGroup(group: $0, searchFor: id) }.first
+        case let .horizontal(splitData):
+            return splitData.tabgroups.compactMap { findTabGroup(group: $0, searchFor: id) }.first
+        }
+    }
+
+    /// Fixes any hanging files after restoring from saved state.
+    /// - Parameters:
+    ///   - data: The tab group to fix.
+    ///   - fileManager: The file manager to use to map files.a
+    private func fixTabGroupData(_ data: TabGroupData, fileManager: CEWorkspaceFileManager) {
+        data.tabs = OrderedSet(data.tabs.compactMap { fileManager.getFile($0.url.path) })
+        if let selected = data.selected {
+            data.selected = fileManager.getFile(selected.url.path)
+        }
+    }
+
+    func saveRestorationState(_ workspace: WorkspaceDocument) {
+        if let data = try? JSONEncoder().encode(
+            TabRestorationState(focus: activeTabGroup, groups: tabGroups)
+        ) {
+            workspace.addToWorkspaceState(key: .openTabs, value: data)
+        } else {
+            workspace.addToWorkspaceState(key: .openTabs, value: nil)
+        }
+    }
 }

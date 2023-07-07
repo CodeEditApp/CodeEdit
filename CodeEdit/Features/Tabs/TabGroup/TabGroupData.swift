@@ -57,7 +57,7 @@ final class TabGroupData: ObservableObject, Identifiable {
 
     @Published var temporaryTab: Tab?
 
-    let id = UUID()
+    var id = UUID()
 
     weak var parent: SplitViewData?
 
@@ -112,15 +112,6 @@ final class TabGroupData: ObservableObject, Identifiable {
                 return
             }
         }
-
-        // TODO: Fix state
-//        if openedTabsFromState {
-//            var openTabsInState = self.getFromWorkspaceState(key: openTabsStateName) as? [String] ?? []
-//            if let index = openTabsInState.firstIndex(of: item.url.absoluteString) {
-//                openTabsInState.remove(at: index)
-//                self.addToWorkspaceState(key: openTabsStateName, value: openTabsInState)
-//            }
-//        }
     }
 
     /// Opens a tab in the tabgroup.

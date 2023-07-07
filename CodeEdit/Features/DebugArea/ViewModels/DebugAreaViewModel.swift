@@ -12,11 +12,6 @@ import SwiftUI
 /// A model class to host and manage data for the ``StatusBarView``
 ///
 class DebugAreaViewModel: ObservableObject {
-    private let isDebugAreaViewCollapsedStateName: String
-        = "\(String(describing: DebugAreaViewModel.self))-IsDebugAreaViewCollapsed"
-    private let statusBarDrawerHeightStateName: String
-        = "\(String(describing: DebugAreaViewModel.self))-DebugAreaViewHeight"
-
     /// Returns the current location of the cursor in an editing view
     @Published var cursorLocation: CursorLocation = .init(line: 1, column: 1) // Implementation needed!!
 
@@ -45,16 +40,6 @@ class DebugAreaViewModel: ObservableObject {
     /// Returns the font for status bar items to use
     private(set) var toolbarFont: Font = .system(size: 11, weight: .medium)
 
-    /// The maximum height of the drawer
-    /// when isMaximized is true the height gets set to maxHeight
-    private(set) var maxHeight: Double = 5000
-
-    /// The default height of the drawer
-    private(set) var standardHeight: Double = 300
-
-    /// The minimum height of the drawer
-    private(set) var minHeight: Double = 100
-
     func removeTerminals(_ ids: Set<UUID>) {
         terminals.removeAll(where: { terminal in
             ids.contains(terminal.id)
@@ -63,7 +48,15 @@ class DebugAreaViewModel: ObservableObject {
         selectedTerminals = [terminals.last?.id ?? UUID()]
     }
 
-    init() {
-        // !!!: Lots of things in this class can be removed, such as maxHeight, as they are defined in the UI.
+    func restoreFromState(_ workspace: WorkspaceDocument) {
+        isCollapsed = workspace.getFromWorkspaceState(.debugAreaCollapsed) as? Bool ?? false
+        currentHeight = workspace.getFromWorkspaceState(.debugAreaHeight) as? Double ?? 300.0
+        isMaximized = workspace.getFromWorkspaceState(.debugAreaMaximized) as? Bool ?? false
+    }
+
+    func saveRestorationState(_ workspace: WorkspaceDocument) {
+        workspace.addToWorkspaceState(key: .debugAreaCollapsed, value: isCollapsed)
+        workspace.addToWorkspaceState(key: .debugAreaHeight, value: currentHeight)
+        workspace.addToWorkspaceState(key: .debugAreaMaximized, value: isMaximized)
     }
 }

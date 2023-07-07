@@ -14,10 +14,10 @@ struct WorkspaceView: View {
     private var path: String = ""
 
     @EnvironmentObject private var workspace: WorkspaceDocument
-
     @EnvironmentObject private var tabManager: TabManager
-
     @EnvironmentObject private var debugAreaModel: DebugAreaViewModel
+    @Environment(\.window)
+    private var window: NSWindow
 
     private var keybindings: KeybindingManager =  .shared
 
@@ -75,6 +75,14 @@ struct WorkspaceView: View {
                             themeModel.selectedTheme = newValue == .dark
                             ? themeModel.selectedDarkTheme
                             : themeModel.selectedLightTheme
+                        }
+                    }
+                    .onReceive(NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)) { output in
+                        if let window = output.object as? NSWindow, self.window == window {
+                            workspace.addToWorkspaceState(
+                                key: .workspaceWindowSize,
+                                value: NSStringFromRect(window.frame)
+                            )
                         }
                     }
                 }

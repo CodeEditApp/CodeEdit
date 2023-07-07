@@ -85,11 +85,15 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
 
     override func makeWindowControllers() {
         let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 1400, height: 600),
+            contentRect: NSRect(x: 0, y: 0, width: 750, height: 800),
             styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
             backing: .buffered, defer: false
         )
         let windowController = NSWindowController(window: window)
+        if let fileURL {
+            windowController.shouldCascadeWindows = false
+            windowController.windowFrameAutosaveName = fileURL.path
+        }
         addWindowController(windowController)
 
         window.contentView = NSHostingView(rootView: SettingsInjector {
@@ -97,7 +101,10 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
         })
 
         window.makeKeyAndOrderFront(nil)
-        window.center()
+
+        if let fileURL, UserDefaults.standard.object(forKey: "NSWindow Frame \(fileURL.path)") == nil {
+            window.center()
+        }
     }
 
     override func data(ofType _: String) throws -> Data {

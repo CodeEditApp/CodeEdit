@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class SplitViewData: ObservableObject {
+final class SplitViewData: ObservableObject {
     @Published var tabgroups: [TabGroup]
 
     var axis: Axis
