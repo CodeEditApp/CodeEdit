@@ -10,30 +10,6 @@ import SwiftUI
 
 /// A struct for a settings page
 struct SettingsPage: Hashable, Equatable, Identifiable {
-    /// Default initializer
-    internal init(
-        _ name: Name,
-        baseColor: Color,
-        icon: IconResource,
-        isSetting: Bool = false,
-        displayName: String = ""
-    ) {
-        self.name = name
-        self.baseColor = baseColor
-        self.icon = icon
-        self.isSetting = isSetting
-        self.displayName = displayName
-    }
-
-    let id: UUID = UUID()
-
-    let name: Name
-    let baseColor: Color
-    let isSetting: Bool
-    let displayName: String
-    var nameString: LocalizedStringKey { LocalizedStringKey(name.rawValue) }
-    let icon: IconResource
-
     /// A struct for a sidebar icon, with a base color and SF Symbol
     enum IconResource: Equatable, Hashable {
         case system(_ name: String)
@@ -41,7 +17,7 @@ struct SettingsPage: Hashable, Equatable, Identifiable {
         case asset(_ name: String)
     }
 
-    /// An enum of all the preferences tabs
+    /// An enum of all the settings pages
     enum Name: String {
         case general = "General"
         case accounts = "Accounts"
@@ -56,5 +32,29 @@ struct SettingsPage: Hashable, Equatable, Identifiable {
         case location = "Locations"
         case featureFlags = "Feature Flags"
         case advanced = "Advanced"
+    }
+
+    let id: UUID = UUID()
+
+    let name: Name
+    let baseColor: Color
+    let isSetting: Bool
+    let displayName: String
+    var nameString: LocalizedStringKey { LocalizedStringKey(name.rawValue) }
+    let icon: IconResource
+
+    /// Default initializer
+    internal init(
+        _ name: Name,
+        baseColor: Color,
+        icon: IconResource,
+        isSetting: Bool = false,
+        displayName: String = ""
+    ) {
+        self.name = name
+        self.baseColor = baseColor
+        self.icon = icon
+        self.isSetting = isSetting
+        self.displayName = displayName
     }
 }
