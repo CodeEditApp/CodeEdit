@@ -134,7 +134,10 @@ struct DebugAreaTerminalView: View {
                         url: terminal.url!,
                         shellType: terminal.shell,
                         onTitleChange: { newTitle in
-                            handleTitleChange(id: terminal.id, title: newTitle)
+                            // This can be called whenever, even in a view update so it needs to be dispatched.
+                            DispatchQueue.main.async {
+                                handleTitleChange(id: terminal.id, title: newTitle)
+                            }
                         }
                     )
                     .padding(.top, 10)
