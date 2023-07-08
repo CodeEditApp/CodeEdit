@@ -9,13 +9,25 @@ import Foundation
 
 extension SettingsData {
     /// The global settings for source control
-    struct SourceControlSettings: Codable, Hashable {
+    struct SourceControlSettings: Codable, Hashable, SearchableSettingsPage {
+
+        static var searchKeys: [String] {
+            [
+                "General",
+                "Git"
+            ]
+            .map { NSLocalizedString($0, comment: "") }
+        }
+
         /// The general source control settings
         var general: SourceControlGeneral = .init()
+
         /// The source control git settings
         var git: SourceControlGit = .init()
+
         /// Default initializer
         init() {}
+
         /// Explicit decoder init for setting default values when key is not present in `JSON`
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)

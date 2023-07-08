@@ -20,9 +20,24 @@ final class ThemeModel: ObservableObject {
     /// Default instance of the `FileManager`
     private let filemanager = FileManager.default
 
+    /// The base folder url `~/Library/Application Support/CodeEdit/`
+    private var baseURL: URL {
+        filemanager.homeDirectoryForCurrentUser.appendingPathComponent("Library/Application Support/CodeEdit")
+    }
+
     /// The URL of the `themes` folder
     internal var themesURL: URL {
-        SettingsData.LocationsSettings().themesURL
+        baseURL.appendingPathComponent("themes", isDirectory: true)
+    }
+
+    /// The URL of the `Extensions` folder
+    internal var extensionsURL: URL {
+        baseURL.appendingPathComponent("Extensions", isDirectory: true)
+    }
+
+    /// The URL of the `settings.json` file
+    internal var settingsURL: URL {
+        baseURL.appendingPathComponent("settings.json", isDirectory: true)
     }
 
     /// Selected 'light' theme

@@ -1,5 +1,5 @@
 //
-//  String+highlightOccurrences.swift
+//  String+HighlightOccurrences.swift
 //  CodeEdit
 //
 //  Created by Raymond Vleeshouwer on 13/06/23.
@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 
 extension String {
+    /// Highlights occurences of a substring in a string and returns text highlighted as such
     func highlightOccurrences(_ ofSearch: String) -> some View {
         let ranges = self.rangesOfSubstring(ofSearch.lowercased())
 

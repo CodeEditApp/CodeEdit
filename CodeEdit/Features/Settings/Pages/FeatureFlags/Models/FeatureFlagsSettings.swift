@@ -9,7 +9,14 @@ import Foundation
 
 extension SettingsData {
 
-    struct FeatureFlagsSettings: Codable, Hashable {
+    struct FeatureFlagsSettings: Codable, Hashable, SearchableSettingsPage {
+
+        static var searchKeys: [String] {
+            [
+                "New Windowing System"
+            ]
+        }
+
         var useNewWindowingSystem = false
     }
 }

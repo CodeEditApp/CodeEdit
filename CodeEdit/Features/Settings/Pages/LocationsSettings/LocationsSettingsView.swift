@@ -7,11 +7,8 @@
 
 import SwiftUI
 
-/// A view that implements the `Locations` preference section
+/// A view that implements the `Locations` settings section
 struct LocationsSettingsView: View {
-    @AppSettings(\.locations)
-    var locations
-
     var body: some View {
         SettingsForm {
             Section {
@@ -35,27 +32,27 @@ private extension LocationsSettingsView {
     }
 
     private var settingsLocation: some View {
-        ExternalLink(destination: locations.settingsURL) {
+        ExternalLink(destination: ThemeModel.shared.settingsURL) {
             Text("Settings")
-            Text(locations.settingsURL.path)
+            Text(ThemeModel.shared.settingsURL.path)
                 .font(.footnote)
                 .foregroundColor(.secondary)
         }
     }
 
     private var themesLocation: some View {
-        ExternalLink(destination: locations.themesURL) {
+        ExternalLink(destination: ThemeModel.shared.themesURL) {
             Text("Themes")
-            Text(locations.themesURL.path)
+            Text(ThemeModel.shared.themesURL.path)
                 .font(.footnote)
                 .foregroundColor(.secondary)
         }
     }
 
     private var extensionsLocation: some View {
-        ExternalLink(destination: locations.extensionsURL) {
+        ExternalLink(destination: ThemeModel.shared.extensionsURL) {
             Text("Extensions")
-            Text(locations.extensionsURL.path)
+            Text(ThemeModel.shared.extensionsURL.path())
                 .font(.footnote)
                 .foregroundColor(.secondary)
         }

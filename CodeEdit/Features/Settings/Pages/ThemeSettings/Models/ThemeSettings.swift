@@ -30,7 +30,15 @@ extension SettingsData {
     typealias ThemeOverrides = [String: [String: Theme.Attributes]]
 
     /// The global settings for themes
-    struct ThemeSettings: Codable, Hashable {
+    struct ThemeSettings: Codable, Hashable, SearchableSettingsPage {
+
+        static var searchKeys: [String] {
+            [
+                "Automatically Change theme based on system appearance",
+                "Use theme background"
+            ]
+            .map { NSLocalizedString($0, comment: "") }
+        }
 
         /// The name of the currently selected dark theme
         var selectedDarkTheme: String = "codeedit-xcode-dark"

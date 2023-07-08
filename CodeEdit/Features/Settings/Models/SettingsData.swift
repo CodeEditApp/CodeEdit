@@ -22,7 +22,7 @@ import SwiftUI
 ///  and providing a default value. Otherwise all settings get overridden.
 struct SettingsData: Codable, Hashable {
 
-    /// The general global setting
+    /// The general global settings
     var general: GeneralSettings = .init()
 
     /// The global settings for accounts
@@ -42,9 +42,6 @@ struct SettingsData: Codable, Hashable {
 
     /// The global settings for keybindings
     var keybindings: KeybindingsSettings = .init()
-
-    /// The global settings for locations
-    var locations: LocationsSettings = .init()
 
     /// Feature Flags settings
     var featureFlags: FeatureFlagsSettings = .init()
@@ -68,28 +65,24 @@ struct SettingsData: Codable, Hashable {
             KeybindingsSettings.self,
             forKey: .keybindings
         ) ?? .init()
-        self.locations = try container.decodeIfPresent(
-            LocationsSettings.self,
-            forKey: .locations
-        ) ?? .init()
         self.featureFlags = try container.decodeIfPresent(FeatureFlagsSettings.self, forKey: .featureFlags) ?? .init()
     }
 
     func propertiesOf(_ value: Any) -> [SettingsPageSetting] {
         var properties: [SettingsPageSetting] = []
         let mirror: Mirror = Mirror(reflecting: value)
-        let translator: ModelNameToSettingName = .init()
 
-        guard let style = mirror.displayStyle, style == .struct else {
+        guard let style = mirror.displayStyle, (style == .struct || style == .enum) else {
             return [SettingsPageSetting(nameString: "Error")]
         }
 
-        for (possibleLabel, _) in mirror.children {
-            guard let label = possibleLabel else {
-                continue
+        mirror.children.forEach {
+            if
+                String(describing: $0.label) == "searchKeys",
+                let value = $0.value as? [String]
+            {
+                value.forEach { properties.append(SettingsPageSetting(nameString: $0)) }
             }
-
-            properties.append(SettingsPageSetting(nameString: translator.translate(label)))
         }
 
         return properties
