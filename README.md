@@ -23,7 +23,7 @@ CodeEdit is a code editor built by the community, for the community, written ent
 [![GitHub forks](https://img.shields.io/github/forks/CodeEditApp/CodeEdit?style=flat-square)](https://github.com/CodeEditApp/CodeEdit/forks)
 [![Discord Badge](https://img.shields.io/discord/951544472238444645?color=5865F2&label=Discord&logo=discord&logoColor=white&style=flat-square)](https://discord.gg/vChUXVf9Em)
 
-| :warning: | CodeEdit is currently in development and not yet ready for production use. You can test the latest [alpha build](https://github.com/CodeEditApp/CodeEdit/releases/latest) if you would like, but be warned, you will find many bugs and incomplete features. Please file new issues [here](https://github.com/CodeEditApp/CodeEdit/issues) after searching to see if the issue already exists either in this repository or in our [related repositories](https://github.com/CodeEditApp/CodeEdit#related-repositories). [Contributors welcome](https://github.com/CodeEditApp/CodeEdit/blob/main/CONTRIBUTING.md)! |
+| :warning: | CodeEdit is currently in development and not yet ready for production use. You are welcome to test the latest [alpha build](https://github.com/CodeEditApp/CodeEdit/releases/latest) at your own risk. Please leave any feedback [here](https://github.com/CodeEditApp/CodeEdit/issues). |
 | - |:-|
 
 ## Table of Contents
@@ -47,17 +47,19 @@ This raised the question, what if such an editor existed? This led to the creati
 
 ## Mission
 
-It is our commitment to keep CodeEdit open source, free forever, and supported by the community.
+It is our commitment to keep CodeEdit open source and free forever, supported by the community.
 
 ![github-equation](https://user-images.githubusercontent.com/806104/194004377-4b7e12a1-e3b1-409f-ba63-d7c6d2c53a1d.png)
 
-Our aim is to maintain a lightweight experience similar to TextEdit while being able to scale up to a more feature-rich experience comparable to Xcode as projects demands increase.
+Our goal is to maintain a lightweight experience, similar to TextEdit, while being able to scale up to a more feature-rich experience, comparable to Xcode, as necessary.
 
-We strive to develop an app that aligns seamlessly with Apple's human interface guidelines and development patterns, ensuring it looks and feels like a application developed by Apple themselves which includes a meticulous attention to detail.
+We strive to remain true Apple's human interface guidelines and development patterns, ensuring CodeEdit looks and feels like an application developed by Apple themselves, which includes a meticulous attention to detail.
 
 ## Community
 
 Join our growing community on [Discord](https://discord.gg/vChUXVf9Em) and [GitHub Discussions](https://github.com/orgs/CodeEditApp/discussions) where we discuss and collaborate on all things CodeEdit. Don't be shy, jump right in and be part of the discussion!
+
+We also hold a weekly meetup on Discord every Saturday at 3pm UTC. Join [here](https://discord.gg/AY7DUgZgms).
 
 ## Contributing
 
@@ -68,7 +70,6 @@ This project spans [multiple repositories](https://github.com/CodeEditApp/CodeEd
 For issues we want to focus on that are most relevant at any given time, please see the issues scoped to our current iteration [here](https://github.com/orgs/CodeEditApp/projects/3/views/13).
 
 ## Contributors
-
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
