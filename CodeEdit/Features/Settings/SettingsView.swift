@@ -65,7 +65,7 @@ struct SettingsView: View {
                 ForEach(results.pages, id: \.settingName) { setting in
                     NavigationLink(value: setting) {
                         setting.settingName.capitalized.highlightOccurrences(searchText)
-                            .padding(.leading, 22.5)
+                            .padding(.leading, 22)
                     }
                 }
             } else if

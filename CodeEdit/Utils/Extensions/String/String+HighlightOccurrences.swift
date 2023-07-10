@@ -12,7 +12,7 @@ extension String {
     /// Highlights occurences of a substring in a string and returns text highlighted as such
     func highlightOccurrences(_ ofSearch: String, font: Font = .system(size: 11)) -> some View {
         if ofSearch.isEmpty {
-            return Text(self).font(font).foregroundColor(.primary)
+            return Text(self).font(font)
         }
 
         let ranges = self.rangesOfSubstring(ofSearch.lowercased())
