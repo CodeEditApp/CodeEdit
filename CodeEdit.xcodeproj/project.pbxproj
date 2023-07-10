@@ -330,7 +330,7 @@
 		850C631029D6B01D00E1444C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850C630F29D6B01D00E1444C /* SettingsView.swift */; };
 		850C631229D6B03400E1444C /* SettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850C631129D6B03400E1444C /* SettingsPage.swift */; };
 		852C7E332A587279006BA599 /* SearchableSettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852C7E322A587279006BA599 /* SearchableSettingsPage.swift */; };
-		85745D5B2A377CA400089AAB /* SettingsPageSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85745D5A2A377CA400089AAB /* SettingsPageSetting.swift */; };
+		852E62012A5C17E500447138 /* PageAndSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852E62002A5C17E500447138 /* PageAndSettings.swift */; };
 		85745D632A38F8D900089AAB /* String+HighlightOccurrences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85745D622A38F8D900089AAB /* String+HighlightOccurrences.swift */; };
 		85773E1E2A3E0A1F00C5D926 /* SettingsSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85773E1D2A3E0A1F00C5D926 /* SettingsSearchResult.swift */; };
 		85CD0C5F2A10CC3200E531FD /* URL+isImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CD0C5E2A10CC3200E531FD /* URL+isImage.swift */; };
@@ -777,7 +777,7 @@
 		850C630F29D6B01D00E1444C /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		850C631129D6B03400E1444C /* SettingsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPage.swift; sourceTree = "<group>"; };
 		852C7E322A587279006BA599 /* SearchableSettingsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchableSettingsPage.swift; sourceTree = "<group>"; };
-		85745D5A2A377CA400089AAB /* SettingsPageSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPageSetting.swift; sourceTree = "<group>"; };
+		852E62002A5C17E500447138 /* PageAndSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageAndSettings.swift; sourceTree = "<group>"; };
 		85745D622A38F8D900089AAB /* String+HighlightOccurrences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+HighlightOccurrences.swift"; sourceTree = "<group>"; };
 		85773E1D2A3E0A1F00C5D926 /* SettingsSearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSearchResult.swift; sourceTree = "<group>"; };
 		85CD0C5E2A10CC3200E531FD /* URL+isImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+isImage.swift"; sourceTree = "<group>"; };
@@ -2224,8 +2224,8 @@
 				6CD03B6929FC773F001BD1D0 /* SettingsInjector.swift */,
 				6C0D0C6729E861B000AE4D3F /* SettingsSidebarFix.swift */,
 				850C631129D6B03400E1444C /* SettingsPage.swift */,
-				85745D5A2A377CA400089AAB /* SettingsPageSetting.swift */,
 				85773E1D2A3E0A1F00C5D926 /* SettingsSearchResult.swift */,
+				852E62002A5C17E500447138 /* PageAndSettings.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2747,6 +2747,7 @@
 				6C0D0C6829E861B000AE4D3F /* SettingsSidebarFix.swift in Sources */,
 				587B9E8429301D8F00AC7927 /* GitHubUser.swift in Sources */,
 				2072FA13280D74ED00C7F8D4 /* HistoryInspectorModel.swift in Sources */,
+				852E62012A5C17E500447138 /* PageAndSettings.swift in Sources */,
 				587B9DA029300ABD00AC7927 /* PanelDivider.swift in Sources */,
 				58822534292C280D00E83CDE /* CursorLocation.swift in Sources */,
 				201169E52837B40300F92B46 /* SourceControlNavigatorRepositoriesView.swift in Sources */,
@@ -3021,7 +3022,6 @@
 				58822530292C280D00E83CDE /* FilterTextField.swift in Sources */,
 				6C82D6B929BFE34900495C54 /* HelpCommands.swift in Sources */,
 				6C147C4929A32A080089B630 /* EditorView.swift in Sources */,
-				85745D5B2A377CA400089AAB /* SettingsPageSetting.swift in Sources */,
 				6C147C4129A328BF0089B630 /* TabGroup.swift in Sources */,
 				B6D7EA592971078500301FAC /* InspectorSection.swift in Sources */,
 				58F2EAEF292FB2B0004A9BDE /* ThemeSettingsView.swift in Sources */,

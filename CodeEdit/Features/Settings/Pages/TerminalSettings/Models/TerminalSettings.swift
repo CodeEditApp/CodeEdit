@@ -12,11 +12,14 @@ extension SettingsData {
     /// The global settings for the terminal emulator
     struct TerminalSettings: Codable, Hashable, SearchableSettingsPage {
 
-        static var searchKeys: [String] {
+        /// The search keys
+        var searchKeys: [String] {
             [
                 "Shell",
                 "Use \"Option\" key as \"Meta\"",
                 "Use text editor font",
+                "Font",
+                "Font Size",
                 "Terminal Cursor Style",
                 "Blink Cursor"
             ]

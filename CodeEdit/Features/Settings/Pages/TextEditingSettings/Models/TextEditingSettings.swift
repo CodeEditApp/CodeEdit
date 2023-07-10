@@ -13,11 +13,13 @@ extension SettingsData {
     /// The global settings for text editing
     struct TextEditingSettings: Codable, Hashable, SearchableSettingsPage {
 
-        static var searchKeys: [String] {
+        var searchKeys: [String] {
             [
                 "Prefer Indent Using",
                 "Tab Width",
                 "Wrap lines to editor width",
+                "Font",
+                "Font Size",
                 "Line Height",
                 "Letter Spacing",
                 "Autocomplete braces",

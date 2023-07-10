@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Foundation
 
 /// # Settings
 ///
@@ -31,11 +32,11 @@ struct SettingsData: Codable, Hashable {
     /// The global settings for themes
     var theme: ThemeSettings = .init()
 
-    /// The global settings for the terminal emulator
-    var terminal: TerminalSettings = .init()
-
     /// The global settings for text editing
     var textEditing: TextEditingSettings = .init()
+
+    /// The global settings for the terminal emulator
+    var terminal: TerminalSettings = .init()
 
     /// The global settings for source control
     var sourceControl: SourceControlSettings = .init()
@@ -68,23 +69,35 @@ struct SettingsData: Codable, Hashable {
         self.featureFlags = try container.decodeIfPresent(FeatureFlagsSettings.self, forKey: .featureFlags) ?? .init()
     }
 
-    func propertiesOf(_ value: Any) -> [SettingsPageSetting] {
-        var properties: [SettingsPageSetting] = []
-        let mirror: Mirror = Mirror(reflecting: value)
+    // swiftlint:disable cyclomatic_complexity
+    func propertiesOf(_ name: SettingsPage.Name) -> [SettingsPage] {
+        var settings: [SettingsPage] = []
 
-        guard let style = mirror.displayStyle, (style == .struct || style == .enum) else {
-            return [SettingsPageSetting(nameString: "Error")]
+        switch name {
+        case .general:
+            general.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
+        case .accounts:
+            accounts.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
+        case .theme:
+            theme.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
+        case .textEditing:
+            textEditing.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
+        case .terminal:
+            terminal.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
+        case .sourceControl:
+            sourceControl.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
+        case .location:
+            LocationsSettings().searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
+        case .featureFlags:
+            featureFlags.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
+        case .behavior: return [.init(name, settingName: "Error")]
+        case .navigation: return [.init(name, settingName: "Error")]
+        case .components: return [.init(name, settingName: "Error")]
+        case .keybindings: return [.init(name, settingName: "Error")]
+        case .advanced: return [.init(name, settingName: "Error")]
         }
 
-        mirror.children.forEach {
-            if
-                String(describing: $0.label) == "searchKeys",
-                let value = $0.value as? [String]
-            {
-                value.forEach { properties.append(SettingsPageSetting(nameString: $0)) }
-            }
-        }
-
-        return properties
+        return settings
     }
+    // swiftlint:enable cyclomatic_complexity
 }

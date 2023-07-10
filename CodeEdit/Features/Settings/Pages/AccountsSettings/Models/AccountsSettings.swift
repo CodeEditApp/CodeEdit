@@ -14,10 +14,14 @@ extension SettingsData {
         /// An integer indicating how many spaces a `tab` will generate
         var sourceControlAccounts: GitAccounts = .init()
 
-        static var searchKeys: [String] {
+        /// The search keys
+        var searchKeys: [String] {
             [
-                "Source Control Accounts"
+                "Accounts",
+                "Delete Account...",
+                "Add account..."
             ]
+            .map { NSLocalizedString($0, comment: "") }
         }
 
         /// Default initializer

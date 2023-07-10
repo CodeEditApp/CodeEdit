@@ -15,11 +15,22 @@ struct SettingsView: View {
     private var colorScheme
 
     /// Variables for the selected Page, the current search text and software updater
-    @State private var selectedPage: SettingsPage.Name = .general
+    @State private var selectedPage: SettingsPage = .init(.general, baseColor: .gray, icon: .system("gear"))
     @State private var searchText: String = ""
 
     @Environment(\.presentationMode)
     var presentationMode
+
+    static var pages: [PageAndSettings] = [
+        .init(SettingsPage(.general, baseColor: .gray, icon: .system("gear"))),
+        .init(SettingsPage(.accounts, baseColor: .blue, icon: .system("at"))),
+        .init(SettingsPage(.theme, baseColor: .pink, icon: .system("paintbrush.fill"))),
+        .init(SettingsPage(.textEditing, baseColor: .blue, icon: .system("pencil.line"))),
+        .init(SettingsPage(.terminal, baseColor: .blue, icon: .system("terminal.fill"))),
+        .init(SettingsPage(.sourceControl, baseColor: .blue, icon: .symbol("vault"))),
+        .init(SettingsPage(.location, baseColor: .green, icon: .system("externaldrive.fill"))),
+        .init(SettingsPage(.featureFlags, baseColor: .cyan, icon: .system("flag.2.crossed.fill")))
+    ]
 
     @ObservedObject private var settings: Settings = .shared
 
@@ -32,7 +43,7 @@ struct SettingsView: View {
         var foundPage = false
 
         for item in pages where item.name == page.name {
-            if item.isSetting && item.displayName.lowercased().contains(lowercasedSearchText) {
+            if item.isSetting && item.settingName.lowercased().contains(lowercasedSearchText) {
                 returnedPages.append(item)
             } else if item.name.rawValue.contains(lowercasedSearchText) && !item.isSetting {
                 foundPage = true
@@ -42,89 +53,38 @@ struct SettingsView: View {
         return SettingsSearchResult(pageFound: foundPage, pages: returnedPages)
     }
 
-    /// Creates a SettingsPage and it's respective child settings
-    private func createPageAndSettings(
-        _ settingsStruct: Any,
-        parent: SettingsPage,
-        prePages: [SettingsPage]
-    ) -> [SettingsPage] {
-        var pages: [SettingsPage] = prePages
-        pages.append(parent)
+    /// Gets search results from a settings page and an array of settings
+    @ViewBuilder
+    private func results(_ page: SettingsPage, _ settings: [SettingsPage]) -> some View {
+        if !searchText.isEmpty {
+            let results: SettingsSearchResult = resultFound(page, pages: settings)
 
-        for setting in SettingsData().propertiesOf(settingsStruct) {
-            pages.append(
-                SettingsPage(
-                    parent.name,
-                    baseColor: parent.baseColor,
-                    icon: parent.icon,
-                    isSetting: true,
-                    displayName: setting.nameString
-                )
-            )
+            if !results.pages.isEmpty && !page.isSetting {
+                SettingsPageView(page, searchText: searchText)
+
+                ForEach(results.pages, id: \.settingName) { setting in
+                    NavigationLink(value: setting) {
+                        setting.settingName.capitalized.highlightOccurrences(searchText)
+                            .padding(.leading, 22.5)
+                    }
+                }
+            } else if
+                page.name.rawValue.lowercased().contains(searchText.lowercased()) &&
+                !page.isSetting
+            {
+                SettingsPageView(page, searchText: searchText)
+            }
+        } else if !page.isSetting {
+            SettingsPageView(page, searchText: searchText)
         }
-
-        return pages
-    }
-
-    /// Creates all the neccessary pages
-    private func populatePages() -> [SettingsPage] {
-        var pages = [SettingsPage]()
-        let settingsData = SettingsData()
-
-        let generalSettings = SettingsPage(.general, baseColor: .gray, icon: .system("gear"))
-        pages = createPageAndSettings(settingsData.general, parent: generalSettings, prePages: pages)
-
-        let accountsSettings = SettingsPage(.accounts, baseColor: .blue, icon: .system("at"))
-        pages = createPageAndSettings(settingsData.accounts, parent: accountsSettings, prePages: pages)
-
-        let themesSettings = SettingsPage(.theme, baseColor: .pink, icon: .system("paintbrush.fill"))
-        pages = createPageAndSettings(settingsData.theme, parent: themesSettings, prePages: pages)
-
-        let textEditingSettings = SettingsPage(.textEditing, baseColor: .blue, icon: .system("pencil.line"))
-        pages = createPageAndSettings(settingsData.textEditing, parent: textEditingSettings, prePages: pages)
-
-        let terminalSettings = SettingsPage(.terminal, baseColor: .blue, icon: .system("terminal.fill"))
-        pages = createPageAndSettings(settingsData.terminal, parent: terminalSettings, prePages: pages)
-
-        let sourceControlSettings = SettingsPage(.sourceControl, baseColor: .blue, icon: .symbol("vault"))
-        pages = createPageAndSettings(settingsData.sourceControl, parent: sourceControlSettings, prePages: pages)
-
-        let locationsSettings = SettingsPage(.location, baseColor: .green, icon: .system("externaldrive.fill"))
-        pages = createPageAndSettings(settingsData.sourceControl, parent: locationsSettings, prePages: pages)
-
-        let featureFlags = SettingsPage(.featureFlags, baseColor: .cyan, icon: .system("flag.2.crossed.fill"))
-        pages = createPageAndSettings(settingsData.featureFlags, parent: featureFlags, prePages: pages)
-
-        return pages
     }
 
     var body: some View {
-        let pages: [SettingsPage] = populatePages()
         NavigationSplitView {
             List(selection: $selectedPage) {
                 Section {
-                    ForEach(pages) { page in
-                        if !searchText.isEmpty {
-                            let results: SettingsSearchResult = resultFound(page, pages: pages)
-
-                            if !results.pages.isEmpty && !page.isSetting {
-                                SettingsPageView(page, searchText: searchText)
-
-                                ForEach(results.pages, id: \.displayName) { setting in
-                                    NavigationLink(value: setting.name) {
-                                        setting.displayName.capitalized.highlightOccurrences(searchText)
-                                            .padding(.leading, 22.5)
-                                    }
-                                }
-                            } else if
-                                page.name.rawValue.lowercased().contains(searchText.lowercased()) &&
-                                !page.isSetting
-                            {
-                                SettingsPageView(page, searchText: searchText)
-                            }
-                        } else if !page.isSetting {
-                            SettingsPageView(page, searchText: searchText)
-                        }
+                    ForEach(Self.pages) { pageAndSettings in
+                        results(pageAndSettings.page, pageAndSettings.settings)
                     }
                 }
             }
@@ -137,7 +97,7 @@ struct SettingsView: View {
             }
         } detail: {
             Group {
-                switch selectedPage {
+                switch selectedPage.name {
                 case .general:
                     GeneralSettingsView().environmentObject(updater)
                 case .accounts:
@@ -164,7 +124,7 @@ struct SettingsView: View {
                 model.backButtonVisible = false
             }
         }
-        .navigationTitle(selectedPage.rawValue)
+        .navigationTitle(selectedPage.name.rawValue)
         .toolbar {
             ToolbarItem(placement: .navigation) {
                 if !model.backButtonVisible {

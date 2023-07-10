@@ -9,22 +9,16 @@ import Foundation
 
 extension SettingsData {
 
-    enum LocationsSettings: SearchableSettingsPage {
-        static var searchKeys: [String] {
+    struct LocationsSettings: SearchableSettingsPage {
+
+        /// The search keys
+        var searchKeys: [String] {
             [
                 "Settings Location",
                 "Themes Location",
                 "Extensions Location"
             ]
+            .map { NSLocalizedString($0, comment: "") }
         }
-
-        /// The URL of the `settings.json` file
-        case settingsURL
-
-        /// The URL of the `themes` folder
-        case themesURL
-
-        /// The URL of the `Extensions` folder
-        case extensionsURL
     }
 }

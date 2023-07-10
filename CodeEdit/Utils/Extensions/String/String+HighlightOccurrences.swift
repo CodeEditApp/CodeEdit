@@ -10,7 +10,11 @@ import SwiftUI
 
 extension String {
     /// Highlights occurences of a substring in a string and returns text highlighted as such
-    func highlightOccurrences(_ ofSearch: String) -> some View {
+    func highlightOccurrences(_ ofSearch: String, font: Font = .system(size: 11)) -> some View {
+        if ofSearch.isEmpty {
+            return Text(self).font(font).foregroundColor(.primary)
+        }
+
         let ranges = self.rangesOfSubstring(ofSearch.lowercased())
 
         var currentIndex = self.startIndex
@@ -21,8 +25,8 @@ extension String {
             let highlightedSubstring = self[range]
 
             // swiftlint:disable shorthand_operator
-            highlightedText = highlightedText + Text(nonHighlightedText).foregroundColor(.secondary)
-            highlightedText = highlightedText + Text(highlightedSubstring).foregroundColor(.primary)
+            highlightedText = highlightedText + Text(nonHighlightedText).font(font).foregroundColor(.secondary)
+            highlightedText = highlightedText + Text(highlightedSubstring).font(font).foregroundColor(.primary)
 
             currentIndex = range.upperBound
         }

@@ -11,10 +11,12 @@ extension SettingsData {
 
     struct FeatureFlagsSettings: Codable, Hashable, SearchableSettingsPage {
 
-        static var searchKeys: [String] {
+        /// The search keys
+        var searchKeys: [String] {
             [
                 "New Windowing System"
             ]
+            .map { NSLocalizedString($0, comment: "") }
         }
 
         var useNewWindowingSystem = false

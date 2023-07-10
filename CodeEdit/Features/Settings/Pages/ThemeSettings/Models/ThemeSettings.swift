@@ -32,10 +32,19 @@ extension SettingsData {
     /// The global settings for themes
     struct ThemeSettings: Codable, Hashable, SearchableSettingsPage {
 
-        static var searchKeys: [String] {
+        var searchKeys: [String] {
             [
                 "Automatically Change theme based on system appearance",
-                "Use theme background"
+                "Always use dark terminal appearance",
+                "Use theme background",
+                "Light Appearance",
+                "GitHub Light",
+                "Xcode Light",
+                "Solarized Light",
+                "Solarized Dark",
+                "Midnight",
+                "Xcode Dark",
+                "GitHub Dark"
             ]
             .map { NSLocalizedString($0, comment: "") }
         }

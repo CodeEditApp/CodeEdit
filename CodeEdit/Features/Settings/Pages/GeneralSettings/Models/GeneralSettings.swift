@@ -12,7 +12,17 @@ extension SettingsData {
     /// The general global setting
     struct GeneralSettings: Codable, Hashable, SearchableSettingsPage {
 
-        static var searchKeys: [String] {
+        /// The appearance of the app
+        var appAppearance: Appearances = .system
+
+        /// The show issues behavior of the app
+        var showIssues: Issues = .inline
+
+        /// The show live issues behavior of the app
+        var showLiveIssues: Bool = true
+
+        /// The search keys
+        var searchKeys: [String] {
             [
                 "Appearance",
                 "File Icon Style",
@@ -32,15 +42,6 @@ extension SettingsData {
             ]
             .map { NSLocalizedString($0, comment: "") }
         }
-
-        /// The appearance of the app
-        var appAppearance: Appearances = .system
-
-        /// The show issues behavior of the app
-        var showIssues: Issues = .inline
-
-        /// The show live issues behavior of the app
-        var showLiveIssues: Bool = true
 
         /// The show file extensions behavior of the app
         var fileExtensionsVisibility: FileExtensionsVisibility = .showAll

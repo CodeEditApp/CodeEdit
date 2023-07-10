@@ -8,5 +8,5 @@
 import Foundation
 
 protocol SearchableSettingsPage {
-    static var searchKeys: [String] { get }
+    var searchKeys: [String] { get }
 }

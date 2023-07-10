@@ -17,15 +17,10 @@ struct SettingsPageView: View {
     }
 
     var body: some View {
-        NavigationLink(value: page.name) {
+        NavigationLink(value: page) {
             Label {
-                if searchText.isEmpty {
-                    Text(page.name.rawValue)
-                        .padding(.leading, 2)
-                } else {
-                    page.name.rawValue.highlightOccurrences(self.searchText)
-                        .padding(.leading, 2)
-                }
+                page.name.rawValue.highlightOccurrences(self.searchText)
+                    .padding(.leading, 2)
             } icon: {
                 Group {
                     switch page.icon {
@@ -41,6 +36,7 @@ struct SettingsPageView: View {
                         Image(name)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
+                    case .none: EmptyView()
                     }
                 }
                 .shadow(color: Color(NSColor.black).opacity(0.25), radius: 0.5, y: 0.5)
@@ -52,7 +48,7 @@ struct SettingsPageView: View {
                         cornerRadius: 5,
                         style: .continuous
                     )
-                    .fill(page.baseColor.gradient)
+                    .fill((page.baseColor ?? .white).gradient)
                     .shadow(color: Color(NSColor.black).opacity(0.25), radius: 0.5, y: 0.5)
                 )
             }

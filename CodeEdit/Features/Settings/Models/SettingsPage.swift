@@ -37,24 +37,24 @@ struct SettingsPage: Hashable, Equatable, Identifiable {
     let id: UUID = UUID()
 
     let name: Name
-    let baseColor: Color
+    let baseColor: Color?
     let isSetting: Bool
-    let displayName: String
+    let settingName: String
     var nameString: LocalizedStringKey { LocalizedStringKey(name.rawValue) }
-    let icon: IconResource
+    let icon: IconResource?
 
     /// Default initializer
     internal init(
         _ name: Name,
-        baseColor: Color,
-        icon: IconResource,
+        baseColor: Color? = nil,
+        icon: IconResource? = nil,
         isSetting: Bool = false,
-        displayName: String = ""
+        settingName: String = ""
     ) {
         self.name = name
         self.baseColor = baseColor
         self.icon = icon
         self.isSetting = isSetting
-        self.displayName = displayName
+        self.settingName = settingName
     }
 }
