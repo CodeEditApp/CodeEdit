@@ -43,7 +43,7 @@ Most editors in use today rely on Electron or other cross-platform frameworks, l
 
 We think developers working on projects not written for Apple platforms deserve that same macOS-native experience we get with Xcode while unlocking the full potential of the Mac. 
 
-This raised the question, what if such an editor existed? This led to the creation of [this concept](https://www.figma.com/proto/qj6raZbQsZpGO0NAVi4qsv/CodeEdit-Concept?node-id=1%3A870) which our project aims to make a reality.
+This raised the question "what if such an editor existed?", a question that led to the creation of [this concept](https://www.figma.com/proto/qj6raZbQsZpGO0NAVi4qsv/CodeEdit-Concept?node-id=1%3A870) which our project aims to make a reality.
 
 ## Mission
 
