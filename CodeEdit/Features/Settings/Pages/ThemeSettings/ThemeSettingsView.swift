@@ -89,14 +89,6 @@ struct ThemeSettingsView: View {
                                 action: activateTheme
                             ).id(theme)
                         }
-                        ForEach(selectedAppearance == .dark ? themeModel.lightThemes : themeModel.darkThemes) { theme in
-                            Divider()
-                            ThemeSettingsThemeRow(
-                                theme: $themeModel.themes[themeModel.themes.firstIndex(of: theme)!],
-                                active: getThemeActive(theme),
-                                action: activateTheme
-                            ).id(theme)
-                        }
                     }
                 }
                 .padding(-10)
