@@ -426,14 +426,18 @@ struct TabBarView: View {
 
     private var leadingAccessories: some View {
         HStack(spacing: 2) {
-            if tabManager.tabGroups.findSomeTabGroup(except: tabgroup) != nil {
+            if let otherGroup = tabManager.tabGroups.findSomeTabGroup(except: tabgroup) {
                 TabBarAccessoryIcon(
                     icon: .init(systemName: "multiply"),
                     action: { [weak tabgroup] in
                         tabgroup?.close()
                         if tabManager.activeTabGroup == tabgroup {
                             tabManager.activeTabGroupHistory.removeAll { $0() == nil || $0() == tabgroup }
-                            tabManager.activeTabGroup = tabManager.activeTabGroupHistory.removeFirst()()!
+                            if tabManager.activeTabGroupHistory.isEmpty {
+                                tabManager.activeTabGroup = otherGroup
+                            } else {
+                                tabManager.activeTabGroup = tabManager.activeTabGroupHistory.removeFirst()()!
+                            }
                         }
                         tabManager.flatten()
                     }
