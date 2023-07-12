@@ -12,7 +12,7 @@
   </a>
 </p>
 
-CodeEdit is a code editor built by the community, for the community, written entirely and unapologetically for macOS. Features include syntax highlighting, code completion, project find and replace, snippets, terminal, task running, debugging, git integration, code review, extensions, and more. 
+CodeEdit is a code editor built by the community, for the community, written entirely and unapologetically for macOS. Features include syntax highlighting, code completion, project find and replace, snippets, terminal, task running, debugging, git integration, code review, extensions, and more.
 
 <img width="1012" alt="github-banner" src="https://user-images.githubusercontent.com/806104/194004176-3143d19f-1ad9-449c-bd41-8c4f9998f44b.png">
 
@@ -23,7 +23,7 @@ CodeEdit is a code editor built by the community, for the community, written ent
 [![GitHub forks](https://img.shields.io/github/forks/CodeEditApp/CodeEdit?style=flat-square)](https://github.com/CodeEditApp/CodeEdit/forks)
 [![Discord Badge](https://img.shields.io/discord/951544472238444645?color=5865F2&label=Discord&logo=discord&logoColor=white&style=flat-square)](https://discord.gg/vChUXVf9Em)
 
-| :warning: | CodeEdit is currently in development and not yet ready for production use. You can test the latest [alpha build](https://github.com/CodeEditApp/CodeEdit/releases/latest) if you would like, but be warned, you will find many bugs and incomplete features. Please file new issues [here](https://github.com/CodeEditApp/CodeEdit/issues) after searching to see if the issue already exists either in this repository or in our [related repositories](https://github.com/CodeEditApp/CodeEdit#related-repositories). [Contributors welcome](https://github.com/CodeEditApp/CodeEdit/blob/main/CONTRIBUTING.md)! |
+| :warning: | CodeEdit is currently in development and not yet ready for production use. You are welcome to test the latest [alpha build](https://github.com/CodeEditApp/CodeEdit/releases/latest) at your own risk. Please leave any feedback [here](https://github.com/CodeEditApp/CodeEdit/issues). |
 | - |:-|
 
 ## Table of Contents
@@ -39,40 +39,37 @@ CodeEdit is a code editor built by the community, for the community, written ent
 
 ## Motivation
 
-Developers that use a Mac should be able to use an editor that feels at home on the Mac. Comparable editors are built on Electron. This is a huge limitation because it cannot utilize system resources to their fullest potential.
+Most editors in use today rely on Electron or other cross-platform frameworks, limiting their ability to fully utilize system resources. While Xcode provides a native experience, it is specifically designed for projects targeting Apple platforms. 
 
-Electron requires a Chromium instance to run. This can mean massive performance losses and high RAM usage even for small apps built on it. Additionally, the overall code footprint is much larger and animations are slower. More frames are lost and things like window resizing feels laggy. Native apps are smooth as butter and utilize system resources much more efficiently for better performance and reliability. For more information on this, we'll point you to [a fantastic article](https://www.remotion.com/blog/why-remotion-is-a-native-macos-app-not-electron) by the nice folks at Remotion.
+We think developers working on projects not written for Apple platforms deserve that same macOS-native experience we get with Xcode while unlocking the full potential of the Mac. 
 
-Xcode offers this great native experience however it mostly supports projects written specifically for Apple platforms. There are many projects not written for Apple platforms that deserve that same macOS-native experience that developers get with Xcode.
-
-This raised the question, what if such an editor existed? We think developers deserve a native experience. This led to the creation of [this concept](https://www.figma.com/proto/qj6raZbQsZpGO0NAVi4qsv/CodeEdit-Concept?node-id=1%3A870) which our project aims to make a reality.
+This raised the question "what if such an editor existed?", a question that led to the creation of [this concept](https://www.figma.com/proto/qj6raZbQsZpGO0NAVi4qsv/CodeEdit-Concept?node-id=1%3A870), which our project aims to make a reality.
 
 ## Mission
 
-We think there is room to streamline the developer experience. To gain maximum adoption, CodeEdit should be open source, free to use, and supported by the community. 
+It is our commitment to keep CodeEdit open source and free forever, supported by the community.
 
 ![github-equation](https://user-images.githubusercontent.com/806104/194004377-4b7e12a1-e3b1-409f-ba63-d7c6d2c53a1d.png)
 
-We'd like to keep our application light as TextEdit, but provide an experience similar to Xcode. In other words, we'd like to offer developers the power of a full IDE while remaining lightweight.
+Our goal is to maintain a lightweight experience, similar to TextEdit, while being able to scale up to a more feature-rich experience, comparable to Xcode, as necessary.
 
-Our goal is to develop an app that looks and feels like it was designed and developed by Apple and to closely stick to their design standards and development patterns even down to the application icon and naming strategy.
-
-It might sound crazy, but it is our hope that at some point Apple adopts this project or at least feels like they could.
+We strive to remain true to Apple's human interface guidelines and development patterns, ensuring CodeEdit looks and feels like an application developed by Apple themselves, which includes a meticulous attention to detail.
 
 ## Community
 
 Join our growing community on [Discord](https://discord.gg/vChUXVf9Em) and [GitHub Discussions](https://github.com/orgs/CodeEditApp/discussions) where we discuss and collaborate on all things CodeEdit. Don't be shy, jump right in and be part of the discussion!
 
+We also hold a weekly meetup on Discord every Saturday at 3pm UTC. Join [here](https://discord.gg/AY7DUgZgms).
+
 ## Contributing
 
 Be part of the next revolution in code editing by contributing to the project. This is a community-led effort, so we welcome as many contributors who can help. Read the [Contribution Guide](https://github.com/CodeEditApp/CodeEdit/blob/main/CONTRIBUTING.md) for more information.
 
-This project spans [multiple repositories](https://github.com/CodeEditApp/CodeEdit#related-repositories) so instead of browsing issues in the issues tab, it may be helpful to find an issue to in our [project board](https://github.com/orgs/CodeEditApp/projects/3/views/1).
+This project spans [multiple repositories](https://github.com/CodeEditApp/CodeEdit#related-repositories) so instead of browsing issues in the issues tab, it may be helpful to find an issue to get started on in our [project board](https://github.com/orgs/CodeEditApp/projects/3/views/1).
 
 For issues we want to focus on that are most relevant at any given time, please see the issues scoped to our current iteration [here](https://github.com/orgs/CodeEditApp/projects/3/views/13).
 
 ## Contributors
-
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
