@@ -12,7 +12,11 @@ struct StatusBarClearButton: View {
 
     var body: some View {
         Button {
-            // Clear terminal
+            model.terminals.forEach {
+                if model.selectedTerminals.contains($0.id) {
+                    $0.terminalEmulatorView.terminal.send(txt: "clear\n")
+                }
+            }
         } label: {
             Image(systemName: "trash")
                 .foregroundColor(.secondary)
