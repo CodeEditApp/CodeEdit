@@ -8,20 +8,36 @@
 import SwiftUI
 
 struct DebugAreaTerminal: Identifiable, Equatable {
+    static func == (lhs: DebugAreaTerminal, rhs: DebugAreaTerminal) -> Bool {
+        lhs.id == rhs.id
+    }
+
     var id: UUID
     var url: URL?
     var title: String
     var terminalTitle: String
     var shell: String
     var customTitle: Bool
+    var terminalEmulatorView: TerminalEmulatorView
 
-    init(id: UUID, url: URL, title: String, shell: String) {
+    init(
+        id: UUID,
+        url: URL,
+        title: String,
+        shell: String,
+        titleChange: @escaping (_ title: String) -> Void
+    ) {
         self.id = id
         self.title = title
         self.terminalTitle = title
         self.url = url
         self.shell = shell
         self.customTitle = false
+        self.terminalEmulatorView = TerminalEmulatorView(
+            url: url,
+            shellType: shell,
+            onTitleChange: titleChange
+        )
     }
 }
 
@@ -56,7 +72,13 @@ struct DebugAreaTerminalView: View {
                 id: id,
                 url: workspace.workspaceFileManager?.folderUrl ?? URL(filePath: "/"),
                 title: "terminal",
-                shell: ""
+                shell: "",
+                titleChange: { newTitle in
+                    // This can be called whenever, even in a view update so it needs to be dispatched.
+                    DispatchQueue.main.async {
+                        handleTitleChange(id: id, title: newTitle)
+                    }
+                }
             )
         ]
 
@@ -71,7 +93,13 @@ struct DebugAreaTerminalView: View {
                 id: id,
                 url: URL(filePath: "\(id)"),
                 title: "terminal",
-                shell: shell ?? ""
+                shell: shell ?? "",
+                titleChange: { newTitle in
+                    // This can be called whenever, even in a view update so it needs to be dispatched.
+                    DispatchQueue.main.async {
+                        handleTitleChange(id: id, title: newTitle)
+                    }
+                }
             )
         )
 
@@ -130,21 +158,12 @@ struct DebugAreaTerminalView: View {
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
                 ForEach(model.terminals) { terminal in
-                    TerminalEmulatorView(
-                        url: terminal.url!,
-                        shellType: terminal.shell,
-                        onTitleChange: { newTitle in
-                            // This can be called whenever, even in a view update so it needs to be dispatched.
-                            DispatchQueue.main.async {
-                                handleTitleChange(id: terminal.id, title: newTitle)
-                            }
-                        }
-                    )
-                    .padding(.top, 10)
-                    .padding(.horizontal, 10)
-                    .contentShape(Rectangle())
-                    .disabled(terminal.id != model.selectedTerminals.first)
-                    .opacity(terminal.id == model.selectedTerminals.first ? 1 : 0)
+                    terminal.terminalEmulatorView
+                        .padding(.top, 10)
+                        .padding(.horizontal, 10)
+                        .contentShape(Rectangle())
+                        .disabled(terminal.id != model.selectedTerminals.first)
+                        .opacity(terminal.id == model.selectedTerminals.first ? 1 : 0)
                 }
             }
             .paneToolbar {
@@ -159,6 +178,18 @@ struct DebugAreaTerminalView: View {
                     } label: {
                         Image(systemName: "trash")
                     }
+                    Button {
+                        // clear terminal and scroll backbuffer
+                        model.terminals.forEach {
+                            if model.selectedTerminals.contains($0.id) {
+                                $0.terminalEmulatorView.terminal.send(txt: "clear\n")
+                            }
+                        }
+                    } label: {
+                        Image(systemName: "clear")
+                    }
+                    .help("Clear terminal")
+                    .keyboardShortcut("k")
                     Button {
                         // split terminal
                     } label: {
