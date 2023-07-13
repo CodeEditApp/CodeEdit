@@ -182,7 +182,7 @@ struct DebugAreaTerminalView: View {
                         // clear terminal and scroll backbuffer
                         model.terminals.forEach {
                             if model.selectedTerminals.contains($0.id) {
-                                $0.terminalEmulatorView.terminal.send(txt: "clear\n")
+                                $0.terminalEmulatorView.terminal.send(txt: "printf '\\33c\\e[3J'\n")
                             }
                         }
                     } label: {
