@@ -22,5 +22,6 @@ struct StatusBarClearButton: View {
                 .foregroundColor(.secondary)
         }
         .buttonStyle(.plain)
+        .help("Clear terminal")
     }
 }
