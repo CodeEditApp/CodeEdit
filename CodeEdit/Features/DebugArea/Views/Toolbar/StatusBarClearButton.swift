@@ -23,5 +23,6 @@ struct StatusBarClearButton: View {
         }
         .buttonStyle(.plain)
         .help("Clear terminal")
+        .keyboardShortcut("k")
     }
 }
