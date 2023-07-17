@@ -103,11 +103,7 @@ struct TabBarItemView: View {
     /// Close the current tab.
     func closeAction() {
         isAppeared = false
-        withAnimation(
-            .easeOut(duration: tabBarStyle == .native ? 0.15 : 0.20)
-        ) {
-            tabgroup.closeTab(item: item)
-        }
+        tabgroup.closeTab(item: item)
     }
 
     init(
