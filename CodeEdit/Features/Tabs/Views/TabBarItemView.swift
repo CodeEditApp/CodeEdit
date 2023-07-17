@@ -167,7 +167,7 @@ struct TabBarItemView: View {
                         // Close Tab Shortcut:
                         // Using an invisible button to contain the keyboard shortcut is simply
                         // because the keyboard shortcut has an unexpected bug when working with
-                        // custom buttonStyle. This is an workaround and it works as expected.
+                        // custom buttonStyle. This is a workaround and it works as expected.
                         Button(
                             action: closeAction,
                             label: { EmptyView() }

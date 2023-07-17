@@ -36,13 +36,8 @@ struct FileCommands: Commands {
         }
 
         CommandGroup(replacing: .saveItem) {
-            Button("Close Tab") {
-                NSApp.sendAction(#selector(NSWindow.close), to: nil, from: nil)
-            }
-            .keyboardShortcut("w")
-
             Button("Close Editor") {
-
+                NSApp.sendAction(#selector(NSWindow.close), to: nil, from: nil)
             }
             .keyboardShortcut("w", modifiers: [.control, .shift, .command])
 
