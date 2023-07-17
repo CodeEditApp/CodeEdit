@@ -190,7 +190,7 @@ struct TabBarItemView: View {
                             KeyEquivalent(Character(String(index))),
                             modifiers: [.command]
                         )
-                        .hidden()
+                        .opacity(0)
                     }
                     // Close Button
                     TabBarItemCloseButton(
