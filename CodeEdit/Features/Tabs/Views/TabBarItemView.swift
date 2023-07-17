@@ -191,6 +191,7 @@ struct TabBarItemView: View {
                             modifiers: [.command]
                         )
                         .opacity(0)
+                        .allowsHitTesting(false)
                     }
                     // Close Button
                     TabBarItemCloseButton(
