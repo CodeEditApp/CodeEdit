@@ -174,7 +174,7 @@ struct TabBarItemView: View {
                         )
                         .frame(width: 0, height: 0)
                         .keyboardShortcut("w", modifiers: [.command])
-                        .hidden()
+                        .opacity(0)
                     }
                     // Switch Tab Shortcut:
                     // Using an invisible button to contain the keyboard shortcut is simply
