@@ -114,6 +114,15 @@ final class TabGroupData: ObservableObject, Identifiable {
         }
     }
 
+    /// Closes the currently opened tab in the tab group.
+    func closeCurrentTab() {
+        guard let selectedTab = selected else {
+            return
+        }
+
+        closeTab(item: selectedTab)
+    }
+
     /// Opens a tab in the tabgroup.
     /// If a tab for the item already exists, it is used instead.
     /// - Parameters:
