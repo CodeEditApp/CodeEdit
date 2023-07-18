@@ -299,6 +299,10 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
             }
         }
     }
+
+    @IBAction func closeCurrentTab(_ sender: Any) {
+        workspace?.tabManager.activeTabGroup.closeCurrentTab()
+    }
 }
 
 extension CodeEditWindowController {

@@ -163,19 +163,6 @@ struct TabBarItemView: View {
             .padding(.horizontal, tabBarStyle == .native ? 28 : 23)
             .overlay {
                 ZStack {
-                    if isActive {
-                        // Close Tab Shortcut:
-                        // Using an invisible button to contain the keyboard shortcut is simply
-                        // because the keyboard shortcut has an unexpected bug when working with
-                        // custom buttonStyle. This is a workaround and it works as expected.
-                        Button(
-                            action: closeAction,
-                            label: { EmptyView() }
-                        )
-                        .frame(width: 0, height: 0)
-                        .keyboardShortcut("w", modifiers: [.command])
-                        .opacity(0)
-                    }
                     // Switch Tab Shortcut:
                     // Using an invisible button to contain the keyboard shortcut is simply
                     // because the keyboard shortcut has an unexpected bug when working with
