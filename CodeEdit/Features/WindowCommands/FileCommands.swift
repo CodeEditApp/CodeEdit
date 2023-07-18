@@ -39,7 +39,7 @@ struct FileCommands: Commands {
             Button("Close Tab") {
                 NSApp.sendAction(#selector(CodeEditWindowController.closeCurrentTab(_:)), to: nil, from: nil)
             }
-            .keyboardShortcut("w", modifiers: [.command])
+            .keyboardShortcut("w")
 
             Button("Close Editor") {
                 NSApp.sendAction(#selector(NSWindow.close), to: nil, from: nil)
