@@ -214,7 +214,9 @@ struct TerminalEmulatorView: NSViewRepresentable {
             // multiple workspaces. This works for now but most probably will need
             // to be changed later on
             FileManager.default.changeCurrentDirectoryPath(url.path)
-            terminal.startProcess(executable: shell, execName: shellIdiom)
+            var terminalEnvironment: [String] = Terminal.getEnvironmentVariables()
+            terminalEnvironment.append("TERM_PROGRAM=CodeEditApp_Terminal")
+            terminal.startProcess(executable: shell, environment: terminalEnvironment, execName: shellIdiom)
             terminal.font = font
             terminal.configureNativeColors()
             terminal.installColors(self.colors)
