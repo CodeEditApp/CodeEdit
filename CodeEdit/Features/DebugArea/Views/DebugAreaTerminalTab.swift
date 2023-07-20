@@ -19,7 +19,7 @@ struct DebugAreaTerminalTab: View {
     @FocusState private var isFocused: Bool
 
     var body: some View {
-        var terminalTitle = Binding<String>(
+        let terminalTitle = Binding<String>(
             get: {
                 self.terminal.title
             }, set: {
