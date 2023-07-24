@@ -88,7 +88,6 @@ struct ViewCommands: Commands {
                 }
                 .disabled(inspectorVisibility == nil)
                 .keyboardShortcut("i", modifiers: [.control, .command])
-
             } else {
                 Button("\(navigatorCollapsed ? "Show" : "Hide") Navigator") {
                     windowController?.toggleFirstPanel()
@@ -104,6 +103,28 @@ struct ViewCommands: Commands {
                 }
                 .disabled(windowController == nil)
                 .keyboardShortcut("i", modifiers: [.control, .command])
+            }
+
+            Divider()
+
+            Menu("Navigators") {
+                Button("Project") {
+//                    windowController?.navigatorSidebarView?.setNavigatorTab(tab:.project)
+//                    print(windowController?.navigatorSidebarView as Any)
+                    
+                    windowController?.navigatorSidebarViewModel?.setNavigatorTab(tab: .project)
+                    print(windowController)
+                    print(windowController?.navigatorSidebarViewModel)
+                }
+                .keyboardShortcut("1")
+                Button("Source Control") {
+                    windowController?.navigatorSidebarViewModel?.setNavigatorTab(tab: .sourceControl)
+                }
+                .keyboardShortcut("2")
+                Button("Find") {
+                    windowController?.navigatorSidebarViewModel?.setNavigatorTab(tab: .search)
+                }
+                .keyboardShortcut("4")
             }
         }
     }

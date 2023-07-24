@@ -9,6 +9,7 @@ import SwiftUI
 
 struct WindowSplitView: View {
     @StateObject var workspace: WorkspaceDocument
+    @StateObject var navigatorViewModel = NavigatorSidebarViewModel()
     @State var visibility: NavigationSplitViewVisibility = .all
     @State var showInspector = true
     @State var window: NSWindow = .init()
@@ -16,7 +17,7 @@ struct WindowSplitView: View {
     var body: some View {
         WindowObserver(window: window) {
             NavigationSplitView(columnVisibility: $visibility) {
-                NavigatorSidebarView(workspace: workspace)
+                NavigatorSidebarView(workspace: workspace, viewModel: navigatorViewModel)
                     .toolbar {
                         ToolbarItem {
                             Button {

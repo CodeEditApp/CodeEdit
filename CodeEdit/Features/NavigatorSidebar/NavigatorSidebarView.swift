@@ -9,16 +9,15 @@ import SwiftUI
 
 struct NavigatorSidebarView: View {
     @ObservedObject private var workspace: WorkspaceDocument
-
     @ObservedObject private var extensionManager = ExtensionManager.shared
+    @ObservedObject public var viewModel: NavigatorSidebarViewModel
 
     @AppSettings(\.general.navigatorTabBarPosition)
     var sidebarPosition: SettingsData.SidebarTabBarPosition
 
-    @State private var selection: NavigatorTab? = .project
-
-    init(workspace: WorkspaceDocument) {
+    init(workspace: WorkspaceDocument, viewModel: NavigatorSidebarViewModel) {
         self.workspace = workspace
+        self.viewModel = viewModel
     }
 
     private var items: [NavigatorTab] {
@@ -38,7 +37,7 @@ struct NavigatorSidebarView: View {
 
     var body: some View {
         VStack {
-            if let selection {
+            if let selection = viewModel.selectedTab {
                 selection
             } else {
                 NoSelectionInspectorView()
@@ -47,7 +46,7 @@ struct NavigatorSidebarView: View {
         .safeAreaInset(edge: .leading, spacing: 0) {
             if sidebarPosition == .side {
                 HStack(spacing: 0) {
-                    AreaTabBar(items: items, selection: $selection, position: sidebarPosition)
+                    AreaTabBar(items: items, selection: $viewModel.selectedTab, position: sidebarPosition)
                     Divider()
                 }
             }
@@ -56,7 +55,7 @@ struct NavigatorSidebarView: View {
             if sidebarPosition == .top {
                 VStack(spacing: 0) {
                     Divider()
-                    AreaTabBar(items: items, selection: $selection, position: sidebarPosition)
+                    AreaTabBar(items: items, selection: $viewModel.selectedTab, position: sidebarPosition)
                     Divider()
                 }
             } else {
