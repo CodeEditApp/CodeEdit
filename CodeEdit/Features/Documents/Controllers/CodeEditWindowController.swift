@@ -88,12 +88,11 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
 
         let navigatorViewModel = NavigatorSidebarViewModel()
         navigatorSidebarViewModel = navigatorViewModel
-        
+
         let settingsView = SettingsInjector {
             NavigatorSidebarView(workspace: workspace, viewModel: navigatorViewModel)
                 .environmentObject(workspace)
                 .environmentObject(workspace.tabManager)
-                .environmentObject(navigatorViewModel)
         }
 
         let navigator = NSSplitViewItem(
