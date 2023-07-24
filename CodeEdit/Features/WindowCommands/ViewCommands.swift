@@ -109,12 +109,7 @@ struct ViewCommands: Commands {
 
             Menu("Navigators") {
                 Button("Project") {
-//                    windowController?.navigatorSidebarView?.setNavigatorTab(tab:.project)
-//                    print(windowController?.navigatorSidebarView as Any)
-                    
                     windowController?.navigatorSidebarViewModel?.setNavigatorTab(tab: .project)
-                    print(windowController)
-                    print(windowController?.navigatorSidebarViewModel)
                 }
                 .keyboardShortcut("1")
                 Button("Source Control") {
