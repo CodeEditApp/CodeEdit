@@ -235,19 +235,4 @@ struct WelcomeView: View {
         .padding(13)
         .transition(AnyTransition.opacity.animation(.easeInOut(duration: 0.25)))
     }
-
-    private var showWhenLaunchedCheckbox: some View {
-        VStack(alignment: .center) {
-            Spacer()
-            Toggle(
-                "Show this window when CodeEdit launches",
-                isOn: showWhenLaunchedBinding
-            )
-            .toggleStyle(.checkbox)
-        }
-        .frame(maxWidth: .infinity)
-        .padding(.horizontal, 56)
-        .padding(.bottom, 16)
-        .transition(AnyTransition.opacity.animation(.easeInOut(duration: 0.25)))
-    }
 }
