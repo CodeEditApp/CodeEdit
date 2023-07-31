@@ -23,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CodeEditApp/CodeEditLanguages.git",
       "state" : {
-        "revision" : "aa7d922b2aa783ae6f2a1a2cb7010ae62b700e17",
-        "version" : "0.1.16"
+        "revision" : "af29ab4a15474a0a38ef88ef65c20e58a0812e43",
+        "version" : "0.1.17"
       }
     },
     {
@@ -41,8 +41,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CodeEditApp/CodeEditTextView",
       "state" : {
-        "revision" : "cc28ae52c8083c313b650784706e339b727646d9",
-        "version" : "0.6.6"
+        "revision" : "7f130bd50bb9eb6bacf6a42700cce571ec82bd64",
+        "version" : "0.6.7"
       }
     },
     {
@@ -176,8 +176,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/krzyzanowskim/STTextView.git",
       "state" : {
-        "revision" : "5abb0867a3882b7687218b0b69d8264de59f4a05",
-        "version" : "0.6.7"
+        "revision" : "1046965bd62dc05cf17beb4b4e901cdae851395e",
+        "version" : "0.8.7"
       }
     },
     {
