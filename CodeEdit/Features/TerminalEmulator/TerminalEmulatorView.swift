@@ -120,7 +120,7 @@ struct TerminalEmulatorView: NSViewRepresentable {
     }
 
     /// Check if the source command for shell integration already exists
-    /// Returns true if it already exists or encountered an error, so no new commands will be added to user's source file
+    /// Returns true if it already exists or encountered an error, no new commands will be added to user's source file
     /// Returns false if it's not there, new commands will be added to user's source file
     private func shellIntegrationInstalled(sourceScriptPath: String, command: String) -> Bool {
         do {
@@ -169,7 +169,7 @@ struct TerminalEmulatorView: NSViewRepresentable {
             let shellIntegrationScriptPath = (
                 shellIntegrationScript.absoluteString[7..<shellIntegrationScript.absoluteString.count]
             ) ?? ""
-            
+
             // Get the path of user's shell's source file
             // Only zsh and bash are supported for now
             var sourceScriptPath: String = ""
@@ -286,7 +286,7 @@ struct TerminalEmulatorView: NSViewRepresentable {
 
             var terminalEnvironment: [String] = Terminal.getEnvironmentVariables()
             terminalEnvironment.append("TERM_PROGRAM=CodeEditApp_Terminal")
-
+            
             setupShellIntegration(shell: shellName, environment: terminalEnvironment)
 
             terminal.startProcess(executable: shell, environment: terminalEnvironment, execName: shellIdiom)
