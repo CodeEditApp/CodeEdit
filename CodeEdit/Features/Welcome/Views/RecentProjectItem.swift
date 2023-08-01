@@ -37,9 +37,8 @@ struct RecentProjectItem: View {
                     .lineLimit(1)
                     .truncationMode(.head)
             }
-            .padding(.trailing, 15)
-            Spacer()
         }
+        .frame(height: 36)
         .contentShape(Rectangle())
     }
 }
