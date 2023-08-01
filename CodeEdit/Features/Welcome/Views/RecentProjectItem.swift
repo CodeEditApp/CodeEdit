@@ -28,6 +28,7 @@ struct RecentProjectItem: View {
                 .frame(width: 32, height: 32)
             VStack(alignment: .leading) {
                 Text(projectPath.lastPathComponent)
+                    .foregroundColor(.primary)
                     .font(.system(size: 13, weight: .semibold))
                     .lineLimit(1)
                 Text(projectPath.deletingLastPathComponent().path(percentEncoded: false).abbreviatingWithTildeInPath())
@@ -35,7 +36,8 @@ struct RecentProjectItem: View {
                     .font(.system(size: 11))
                     .lineLimit(1)
                     .truncationMode(.head)
-            }.padding(.trailing, 15)
+            }
+            .padding(.trailing, 15)
             Spacer()
         }
         .contentShape(Rectangle())
