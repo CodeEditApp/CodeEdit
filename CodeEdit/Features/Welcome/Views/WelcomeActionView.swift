@@ -20,7 +20,7 @@ struct WelcomeActionView: View {
 
     var body: some View {
         Button(action: action, label: {
-            HStack(spacing: 7.5) {
+            HStack(spacing: 7) {
                 Image(systemName: iconName)
                     .aspectRatio(contentMode: .fit)
                     .foregroundColor(.secondary)
@@ -39,9 +39,9 @@ struct WelcomeActionButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .contentShape(Rectangle())
-            .padding(7.5)
+            .padding(7)
             .frame(height: 36)
             .background(Color(.labelColor).opacity(configuration.isPressed ? 0.1 : 0.05))
-            .cornerRadius(7.5)
+            .cornerRadius(8)
     }
 }

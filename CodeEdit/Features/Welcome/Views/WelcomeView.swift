@@ -152,7 +152,7 @@ struct WelcomeView: View {
                     .frame(width: 128, height: 128)
             }
             Text(NSLocalizedString("CodeEdit", comment: ""))
-                .font(.system(size: 38, weight: .bold))
+                .font(.system(size: 36, weight: .bold))
             Text(
                 String(
                     format: NSLocalizedString("Version %@%@ (%@)", comment: ""),
@@ -163,7 +163,7 @@ struct WelcomeView: View {
             )
             .textSelection(.enabled)
             .foregroundColor(.secondary)
-            .font(.system(size: 13))
+            .font(.system(size: 13.5))
             .onHover { hover in
                 if hover {
                     NSCursor.pointingHand.push()
@@ -232,7 +232,7 @@ struct WelcomeView: View {
                 isHoveringCloseButton = hover
             }
         }
-        .padding(13)
+        .padding(10)
         .transition(AnyTransition.opacity.animation(.easeInOut(duration: 0.25)))
     }
 }
