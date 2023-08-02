@@ -1142,11 +1142,11 @@
 		581BFB562926431000D251EC /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				6C186209298BF5A800C663EA /* RecentProjectsListView.swift */,
+				B66A4E4E29C917B8004573B4 /* WelcomeWindow.swift */,
 				581BFB5A2926431000D251EC /* WelcomeWindowView.swift */,
 				581BFB5B2926431000D251EC /* WelcomeView.swift */,
 				581BFB5C2926431000D251EC /* WelcomeActionView.swift */,
-				B66A4E4E29C917B8004573B4 /* WelcomeWindow.swift */,
+				6C186209298BF5A800C663EA /* RecentProjectsListView.swift */,
 				581BFB5E2926431000D251EC /* RecentProjectItem.swift */,
 			);
 			path = Views;
@@ -3995,8 +3995,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/CodeEditApp/CodeEditTextView";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.6.6;
+				kind = exactVersion;
+				version = 0.6.7;
 			};
 		};
 		6C0F3A3A2A1D0D5000223D19 /* XCRemoteSwiftPackageReference "CodeEditKit" */ = {

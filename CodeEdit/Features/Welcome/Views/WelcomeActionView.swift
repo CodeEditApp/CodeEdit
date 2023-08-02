@@ -10,30 +10,38 @@ import SwiftUI
 struct WelcomeActionView: View {
     var iconName: String
     var title: String
-    var subtitle: String
+    var action: () -> Void
 
-    init(iconName: String, title: String, subtitle: String) {
+    init(iconName: String, title: String, action: @escaping () -> Void) {
         self.iconName = iconName
         self.title = title
-        self.subtitle = subtitle
+        self.action = action
     }
 
     var body: some View {
-        HStack(spacing: 16) {
-            Image(systemName: iconName)
-                .aspectRatio(contentMode: .fit)
-                .foregroundColor(.accentColor)
-                .font(.system(size: 30, weight: .light))
-                .frame(width: 24)
-            VStack(alignment: .leading) {
+        Button(action: action, label: {
+            HStack(spacing: 7) {
+                Image(systemName: iconName)
+                    .aspectRatio(contentMode: .fit)
+                    .foregroundColor(.secondary)
+                    .font(.system(size: 20))
+                    .frame(width: 24)
                 Text(title)
-                    .bold()
-                    .font(.system(size: 13))
-                Text(subtitle)
-                    .font(.system(size: 12))
+                    .font(.system(size: 13, weight: .semibold))
+                Spacer()
             }
-            Spacer()
-        }
-        .contentShape(Rectangle())
+        })
+        .buttonStyle(WelcomeActionButtonStyle())
+    }
+}
+
+struct WelcomeActionButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .contentShape(Rectangle())
+            .padding(7)
+            .frame(height: 36)
+            .background(Color(.labelColor).opacity(configuration.isPressed ? 0.1 : 0.05))
+            .cornerRadius(8)
     }
 }
