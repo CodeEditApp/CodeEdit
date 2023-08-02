@@ -286,7 +286,7 @@ struct TerminalEmulatorView: NSViewRepresentable {
 
             var terminalEnvironment: [String] = Terminal.getEnvironmentVariables()
             terminalEnvironment.append("TERM_PROGRAM=CodeEditApp_Terminal")
-            
+
             setupShellIntegration(shell: shellName, environment: terminalEnvironment)
 
             terminal.startProcess(executable: shell, environment: terminalEnvironment, execName: shellIdiom)
