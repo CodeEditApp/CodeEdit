@@ -45,6 +45,7 @@ struct CodeEditApp: App {
             .transition(.documentWindow)
             .windowToolbarStyle(.unifiedCompact(showsTitle: false))
             .enableOpenWindow() // Required for opening windows through NSApp
+            .handlesExternalEvents(matching: [])
             .commands {
                 CodeEditCommands()
             }
