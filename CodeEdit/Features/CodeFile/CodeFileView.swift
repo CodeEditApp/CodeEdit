@@ -152,10 +152,20 @@ struct CodeFileView: View {
             return .default
         }
         return codeFile.language ?? CodeLanguage.detectLanguageFrom(
-            url: url,
+            url: updatedURL(for: url),
             prefixBuffer: codeFile.content.getFirstLines(5),
             suffixBuffer: codeFile.content.getLastLines(5)
         )
+    }
+    // To solve the issue of not highlighting text of files with `c++` extensions
+    // as it doesn't recognize it as `cpp` files
+    private func updatedURL(for url: URL) -> URL {
+        switch url.pathExtension {
+        case "c++":
+            return url.deletingPathExtension().appendingPathExtension("cpp")
+        default:
+            return url
+        }
     }
 
     private func getBracketPairHighlight() -> BracketPairHighlight? {
