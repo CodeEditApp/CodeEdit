@@ -136,11 +136,11 @@ struct CodeFileView: View {
             guard let theme = newValue else { return }
             self.selectedTheme = theme
         }
-        .onChange(of: settingsFont) { _ in
+        .onChange(of: settingsFont) { newValue in
             font = NSFont(
                 name: settingsFont.name,
-                size: CGFloat(settingsFont.size)
-            ) ?? systemFont
+                size: CGFloat(newValue.size)
+            ) ?? systemFont.withSize(CGFloat(newValue.size))
         }
         .onChange(of: bracketHighlight) { _ in
             bracketPairHighlight = getBracketPairHighlight()
