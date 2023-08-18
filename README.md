@@ -159,7 +159,7 @@ For issues we want to focus on that are most relevant at any given time, please 
     </tr>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="http://tomasboda.com"><img src="https://avatars.githubusercontent.com/u/40064599?v=4?s=100" width="100px;" alt="Tomáš Boďa"/><br /><sub><b>Tomáš Boďa</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3Advandyy" title="Bug reports">🐛</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Ahattalla"><img src="https://avatars.githubusercontent.com/u/53402452?v=4?s=100" width="100px;" alt="Ahmed Attalla"/><br /><sub><b>Ahmed Attalla</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3AAhattalla" title="Bug reports">🐛</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Ahattalla"><img src="https://avatars.githubusercontent.com/u/53402452?v=4?s=100" width="100px;" alt="Ahmed Attalla"/><br /><sub><b>Ahmed Attalla</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3AAhattalla" title="Bug reports">🐛</a> <a href="https://github.com/CodeEditApp/CodeEdit/commits?author=Ahattalla" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
