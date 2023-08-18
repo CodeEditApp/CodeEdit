@@ -42,17 +42,18 @@ struct FileCommands: Commands {
             .keyboardShortcut("w")
 
             Button("Close Editor") {
-                NSApp.sendAction(#selector(NSWindow.close), to: nil, from: nil)
+                NSApp.sendAction(#selector(CodeEditWindowController.closeActiveTabGroup(_:)), to: nil, from: nil)
             }
             .keyboardShortcut("w", modifiers: [.control, .shift, .command])
 
             Button("Close Window") {
-
+                NSApp.sendAction(#selector(NSWindow.close), to: nil, from: nil)
             }
             .keyboardShortcut("w", modifiers: [.shift, .command])
 
             Button("Close Workspace") {
-
+                // TODO: Determine how this is different than the "Close Window" command and adjust accordingly
+                NSApp.sendAction(#selector(NSWindow.close), to: nil, from: nil)
             }
             .keyboardShortcut("w", modifiers: [.control, .option, .command])
 

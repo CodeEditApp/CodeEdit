@@ -442,7 +442,7 @@ struct TabBarView: View {
                         tabManager.flatten()
                     }
                 )
-                .help("Close Tab Group")
+                .help("Close this Editor")
 
                 Divider()
                     .frame(height: 10)

@@ -301,7 +301,19 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
     }
 
     @IBAction func closeCurrentTab(_ sender: Any) {
-        workspace?.tabManager.activeTabGroup.closeCurrentTab()
+        if (workspace?.tabManager.activeTabGroup.tabs ?? []).isEmpty {
+            self.closeActiveTabGroup(self)
+        } else {
+            workspace?.tabManager.activeTabGroup.closeCurrentTab()
+        }
+    }
+
+    @IBAction func closeActiveTabGroup(_ sender: Any) {
+        if workspace?.tabManager.tabGroups.findSomeTabGroup(except: workspace?.tabManager.activeTabGroup) == nil {
+            NSApp.sendAction(#selector(NSWindow.close), to: nil, from: nil)
+        } else {
+            workspace?.tabManager.activeTabGroup.close()
+        }
     }
 }
 
