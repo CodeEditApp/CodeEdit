@@ -28,15 +28,17 @@ struct RecentProjectItem: View {
                 .frame(width: 32, height: 32)
             VStack(alignment: .leading) {
                 Text(projectPath.lastPathComponent)
-                    .font(.system(size: 13))
+                    .foregroundColor(.primary)
+                    .font(.system(size: 13, weight: .semibold))
                     .lineLimit(1)
-                Text(projectPath.path(percentEncoded: false).abbreviatingWithTildeInPath())
+                Text(projectPath.deletingLastPathComponent().path(percentEncoded: false).abbreviatingWithTildeInPath())
+                    .foregroundColor(.secondary)
                     .font(.system(size: 11))
                     .lineLimit(1)
                     .truncationMode(.head)
-            }.padding(.trailing, 15)
-            Spacer()
+            }
         }
+        .frame(height: 36)
         .contentShape(Rectangle())
     }
 }

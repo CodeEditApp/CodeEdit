@@ -14,7 +14,7 @@ struct WelcomeWindow: Scene {
     var body: some Scene {
         Window("Welcome To CodeEdit", id: SceneID.welcome.rawValue) {
             ContentView()
-                .frame(width: 795, height: 460)
+                .frame(width: 740, height: 432)
                 .task {
                     if let window = NSApp.findWindow(.welcome) {
                         window.standardWindowButton(.closeButton)?.isHidden = true

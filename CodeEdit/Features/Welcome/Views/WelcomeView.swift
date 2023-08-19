@@ -13,6 +13,9 @@ struct WelcomeView: View {
     @Environment(\.colorScheme)
     var colorScheme
 
+    @Environment(\.controlActiveState)
+    var controlActiveState
+
     @AppSettings(\.general.reopenBehavior)
     var reopenBehavior
 
@@ -110,13 +113,7 @@ struct WelcomeView: View {
     var body: some View {
         ZStack(alignment: .topLeading) {
             mainContent
-
-            if isHovering {
-                dismissButton
-            }
-            if isHovering {
-                showWhenLaunchedCheckbox
-            }
+            dismissButton
         }
         .onHover { isHovering in
             self.isHovering = isHovering
@@ -139,13 +136,23 @@ struct WelcomeView: View {
     }
 
     private var mainContent: some View {
-        VStack(spacing: 8) {
-            Spacer().frame(height: 12)
-            Image(nsImage: NSApp.applicationIconImage)
-                .resizable()
-                .frame(width: 128, height: 128)
-            Text(NSLocalizedString("Welcome to CodeEdit", comment: ""))
-                .font(.system(size: 38))
+        VStack(spacing: 0) {
+            Spacer().frame(height: 32)
+            ZStack {
+                if colorScheme == .dark {
+                    Rectangle()
+                        .frame(width: 104, height: 104)
+                        .foregroundColor(.accentColor)
+                        .cornerRadius(24)
+                        .blur(radius: 64)
+                        .opacity(0.5)
+                }
+                Image(nsImage: NSApp.applicationIconImage)
+                    .resizable()
+                    .frame(width: 128, height: 128)
+            }
+            Text(NSLocalizedString("CodeEdit", comment: ""))
+                .font(.system(size: 36, weight: .bold))
             Text(
                 String(
                     format: NSLocalizedString("Version %@%@ (%@)", comment: ""),
@@ -154,8 +161,9 @@ struct WelcomeView: View {
                     appBuild
                 )
             )
+            .textSelection(.enabled)
             .foregroundColor(.secondary)
-            .font(.system(size: 13))
+            .font(.system(size: 13.5))
             .onHover { hover in
                 if hover {
                     NSCursor.pointingHand.push()
@@ -168,86 +176,63 @@ struct WelcomeView: View {
             }
             .help("Copy System Information to Clipboard")
 
-            Spacer().frame(height: 20)
+            Spacer().frame(height: 40)
             HStack {
-                VStack(alignment: .leading, spacing: 15) {
+                VStack(alignment: .leading, spacing: 8) {
                     WelcomeActionView(
                         iconName: "plus.square",
-                        title: NSLocalizedString("Create a new file", comment: ""),
-                        subtitle: NSLocalizedString("Create a new file", comment: "")
+                        title: NSLocalizedString("Create New File...", comment: ""),
+                        action: {
+                            newDocument()
+                            dismissWindow()
+                        }
                     )
-                    .onTapGesture {
-                        newDocument()
-                        dismissWindow()
-                    }
+                    WelcomeActionView(
+                        iconName: "square.and.arrow.down.on.square",
+                        title: NSLocalizedString("Clone Git Repository...", comment: ""),
+                        action: {
+                            showGitClone = true
+                        }
+                    )
                     WelcomeActionView(
                         iconName: "folder",
-                        title: NSLocalizedString("Open a file or folder", comment: ""),
-                        subtitle: NSLocalizedString(
-                            "Open an existing file or folder on your Mac",
-                            comment: ""
-                        )
+                        title: NSLocalizedString("Open File or Folder...", comment: ""),
+                        action: {
+                            openDocument(nil, dismissWindow)
+                        }
                     )
-                    .onTapGesture {
-                        openDocument(nil, dismissWindow)
-                    }
-                    WelcomeActionView(
-                        iconName: "plus.square.on.square",
-                        title: NSLocalizedString("Clone an existing project", comment: ""),
-                        subtitle: NSLocalizedString(
-                            "Start working on something from a Git repository",
-                            comment: ""
-                        )
-                    )
-                    .onTapGesture {
-                        showGitClone = true
-                    }
                 }
             }
             Spacer()
         }
-        .frame(width: 384)
         .padding(.top, 20)
         .padding(.horizontal, 56)
         .padding(.bottom, 16)
-        .background(Color(colorScheme == .dark ? NSColor.windowBackgroundColor : .white))
+        .frame(width: 460)
+        .background(
+            colorScheme == .dark
+            ? Color(.black).opacity(0.2)
+            : Color(.white).opacity(controlActiveState == .inactive ? 1.0 : 0.5)
+        )
+        .background(EffectView(.underWindowBackground, blendingMode: .behindWindow))
     }
 
     private var dismissButton: some View {
         Button(
             action: dismissWindow,
             label: {
-                Circle()
-                    .foregroundColor(isHoveringCloseButton ? .secondary : .clear)
-                    .frame(width: 13, height: 13)
-                    .overlay(
-                        Image(systemName: "xmark")
-                            .font(.system(size: 8.5, weight: .heavy, design: .rounded))
-                            .foregroundColor(isHoveringCloseButton ? Color(.windowBackgroundColor) : .secondary)
-                    )
+                Image(systemName: "xmark.circle.fill")
+                    .foregroundColor(isHoveringCloseButton ? Color(.secondaryLabelColor) : Color(.tertiaryLabelColor))
             }
         )
         .buttonStyle(.plain)
         .accessibilityLabel(Text("Close"))
         .onHover { hover in
-            isHoveringCloseButton = hover
+            withAnimation(.linear(duration: 0.15)) {
+                isHoveringCloseButton = hover
+            }
         }
-        .padding(13)
-        .transition(AnyTransition.opacity.animation(.easeInOut(duration: 0.25)))
-    }
-
-    private var showWhenLaunchedCheckbox: some View {
-        VStack(alignment: .center) {
-            Spacer()
-            Toggle(
-                "Show this window when CodeEdit launches",
-                isOn: showWhenLaunchedBinding
-            )
-            .toggleStyle(.checkbox)
-        }
-        .frame(maxWidth: .infinity)
-        .padding(.horizontal, 56)
-        .padding(.bottom, 16)
+        .padding(10)
         .transition(AnyTransition.opacity.animation(.easeInOut(duration: 0.25)))
     }
 }

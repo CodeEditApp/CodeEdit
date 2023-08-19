@@ -1275,7 +1275,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>35</string>
+	<string>36</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>${CE_COPYRIGHT}</string>
 	<key>SUEnableInstallerLauncherService</key>
