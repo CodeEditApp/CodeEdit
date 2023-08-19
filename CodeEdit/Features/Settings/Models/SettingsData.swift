@@ -69,6 +69,7 @@ struct SettingsData: Codable, Hashable {
         self.featureFlags = try container.decodeIfPresent(FeatureFlagsSettings.self, forKey: .featureFlags) ?? .init()
     }
 
+    // swiftlint:disable cyclomatic_complexity
     func propertiesOf(_ name: SettingsPage.Name) -> [SettingsPage] {
         var settings: [SettingsPage] = []
 
@@ -98,4 +99,5 @@ struct SettingsData: Codable, Hashable {
 
         return settings
     }
+    // swiftlint:enable cyclomatic_complexity
 }
