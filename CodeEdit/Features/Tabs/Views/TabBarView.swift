@@ -294,13 +294,15 @@ struct TabBarView: View {
             leadingAccessories
                 .background(.clear)
                 .overlay(alignment: .trailing) {
-                    TabBarShadow(
-                        width: colorScheme == .dark ? 5 : 7,
-                        startPoint: .leading,
-                        endPoint: .trailing
-                    )
-                    .offset(x: colorScheme == .dark ? 5 : 7)
-                    .opacity(scrollOffset >= 0 ? 0 : 1)
+                    if tabBarStyle == .xcode {
+                        TabBarShadow(
+                            width: colorScheme == .dark ? 5 : 7,
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                        .offset(x: colorScheme == .dark ? 5 : 7)
+                        .opacity(scrollOffset >= 0 ? 0 : 1)
+                    }
                 }
                 .zIndex(1)
             // Tab bar items.
@@ -401,7 +403,7 @@ struct TabBarView: View {
                         }
                         .frame(height: TabBarView.height)
                     }
-                    
+
                     // To fill up the parent space of tab bar.
                     .frame(maxWidth: .infinity)
                     .background {
@@ -419,13 +421,15 @@ struct TabBarView: View {
             // Tab bar tools (e.g. split view).
             trailingAccessories
                 .overlay(alignment: .leading) {
-                    TabBarShadow(
-                        width: colorScheme == .dark ? 5 : 7,
-                        startPoint: .trailing,
-                        endPoint: .leading
-                    )
-                    .offset(x: colorScheme == .dark ? -5 : -7)
-                    .opacity((scrollTrailingOffset ?? 0) <= 0 ? 0 : 1)
+                    if tabBarStyle == .xcode {
+                        TabBarShadow(
+                            width: colorScheme == .dark ? 5 : 7,
+                            startPoint: .trailing,
+                            endPoint: .leading
+                        )
+                        .offset(x: colorScheme == .dark ? -5 : -7)
+                        .opacity((scrollTrailingOffset ?? 0) <= 0 ? 0 : 1)
+                    }
                 }
                 .zIndex(1)
         }
