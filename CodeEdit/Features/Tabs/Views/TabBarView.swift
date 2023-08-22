@@ -307,7 +307,12 @@ struct TabBarView: View {
                 .zIndex(1)
             // Tab bar items.
             GeometryReader { geometryProxy in
-                TrackableScrollView(.horizontal, showIndicators: false, contentOffset: $scrollOffset, contentTrailingOffset: $scrollTrailingOffset) {
+                TrackableScrollView(
+                    .horizontal,
+                    showIndicators: false,
+                    contentOffset: $scrollOffset,
+                    contentTrailingOffset: $scrollTrailingOffset
+                ) {
                     ScrollViewReader { scrollReader in
                         HStack(
                             alignment: .center,
@@ -384,7 +389,7 @@ struct TabBarView: View {
                                 scrollReader.scrollTo(newValue?.id)
                             }
                         }
-                        
+
                         // When window size changes, re-compute the expected tab width.
                         .onChange(of: geometryProxy.size.width) { _ in
                             updateExpectedTabWidth(proxy: geometryProxy)
