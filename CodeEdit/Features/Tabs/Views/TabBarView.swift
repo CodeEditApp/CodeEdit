@@ -114,6 +114,10 @@ struct TabBarView: View {
 
     @State private var closeButtonGestureActive: Bool = false
 
+    @State private var scrollOffset: CGFloat = 0
+
+    @State private var scrollTrailingOffset: CGFloat? = 0
+
     /// Update the expected tab width when corresponding UI state is updated.
     ///
     /// This function will be called when the number of tabs or the parent size is changed.
@@ -288,9 +292,20 @@ struct TabBarView: View {
         HStack(alignment: .center, spacing: 0) {
             // Tab bar navigation control.
             leadingAccessories
+                .background(.clear)
+                .overlay(alignment: .trailing) {
+                    TabBarShadow(
+                        width: colorScheme == .dark ? 5 : 7,
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                    .offset(x: colorScheme == .dark ? 5 : 7)
+                    .opacity(scrollOffset >= 0 ? 0 : 1)
+                }
+                .zIndex(1)
             // Tab bar items.
             GeometryReader { geometryProxy in
-                ScrollView(.horizontal, showsIndicators: false) {
+                TrackableScrollView(.horizontal, showIndicators: false, contentOffset: $scrollOffset, contentTrailingOffset: $scrollTrailingOffset) {
                     ScrollViewReader { scrollReader in
                         HStack(
                             alignment: .center,
@@ -367,7 +382,7 @@ struct TabBarView: View {
                                 scrollReader.scrollTo(newValue?.id)
                             }
                         }
-
+                        
                         // When window size changes, re-compute the expected tab width.
                         .onChange(of: geometryProxy.size.width) { _ in
                             updateExpectedTabWidth(proxy: geometryProxy)
@@ -386,7 +401,7 @@ struct TabBarView: View {
                         }
                         .frame(height: TabBarView.height)
                     }
-
+                    
                     // To fill up the parent space of tab bar.
                     .frame(maxWidth: .infinity)
                     .background {
@@ -403,6 +418,16 @@ struct TabBarView: View {
             }
             // Tab bar tools (e.g. split view).
             trailingAccessories
+                .overlay(alignment: .leading) {
+                    TabBarShadow(
+                        width: colorScheme == .dark ? 5 : 7,
+                        startPoint: .trailing,
+                        endPoint: .leading
+                    )
+                    .offset(x: colorScheme == .dark ? -5 : -7)
+                    .opacity((scrollTrailingOffset ?? 0) <= 0 ? 0 : 1)
+                }
+                .zIndex(1)
         }
         .frame(height: TabBarView.height)
         .overlay(alignment: .top) {
