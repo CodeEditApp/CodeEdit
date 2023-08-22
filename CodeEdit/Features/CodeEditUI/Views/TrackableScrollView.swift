@@ -20,14 +20,14 @@ private struct ScrollViewOffsetPreferenceKey: PreferenceKey {
     }
 }
 
-public struct TrackableScrollView<Content>: View where Content: View {
+struct TrackableScrollView<Content>: View where Content: View {
     let axes: Axis.Set
     let showIndicators: Bool
     @Binding var contentOffset: CGFloat
     @Binding var contentTrailingOffset: CGFloat?
     let content: Content
 
-    public init(
+    init(
         _ axes: Axis.Set = .vertical,
         showIndicators: Bool = true,
         contentOffset: Binding<CGFloat>,
@@ -40,7 +40,7 @@ public struct TrackableScrollView<Content>: View where Content: View {
         self.content = content()
     }
 
-    public init(
+    init(
         _ axes: Axis.Set = .vertical,
         showIndicators: Bool = true,
         contentOffset: Binding<CGFloat>,
@@ -54,7 +54,7 @@ public struct TrackableScrollView<Content>: View where Content: View {
         self.content = content()
     }
 
-    public var body: some View {
+    var body: some View {
         GeometryReader { outsideProxy in
             ScrollView(self.axes, showsIndicators: self.showIndicators) {
                 ZStack(alignment: self.axes == .vertical ? .top : .leading) {
