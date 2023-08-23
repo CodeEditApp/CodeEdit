@@ -13,19 +13,23 @@ struct TabBarAccessoryIcon: View {
     static let iconFont = Font.system(size: 14, weight: .regular, design: .default)
 
     private let icon: Image
+    private let isActive: Bool
     private let action: () -> Void
 
-    init(icon: Image, action: @escaping () -> Void) {
+    init(icon: Image, isActive: Bool = false, action: @escaping () -> Void) {
         self.icon = icon
+        self.isActive = isActive
         self.action = action
     }
 
     var body: some View {
         Button(
             action: action,
-            label: { icon }
+            label: {
+                icon
+            }
         )
-        .buttonStyle(.icon(size: 24))
+        .buttonStyle(.icon(isActive: isActive, size: 24))
     }
 }
 

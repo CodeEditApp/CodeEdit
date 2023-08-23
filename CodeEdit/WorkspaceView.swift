@@ -42,15 +42,20 @@ struct WorkspaceView: View {
             VStack {
                 SplitViewReader { proxy in
                     SplitView(axis: .vertical) {
-                        EditorView(tabgroup: tabManager.tabGroups, focus: $focusedEditor)
-                            .collapsable()
-                            .collapsed($debugAreaModel.isMaximized)
-                            .frame(minHeight: 170 + 29 + 29)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            .holdingPriority(.init(1))
-                            .safeAreaInset(edge: .bottom, spacing: 0) {
-                                StatusBarView(proxy: proxy)
-                            }
+                        EditorView(
+                            tabgroup: tabManager.focusActive
+                            ? tabManager.activeTabGroup.getTabGroup() ?? tabManager.tabGroups
+                            : tabManager.tabGroups,
+                            focus: $focusedEditor
+                        )
+                        .collapsable()
+                        .collapsed($debugAreaModel.isMaximized)
+                        .frame(minHeight: 170 + 29 + 29)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .holdingPriority(.init(1))
+                        .safeAreaInset(edge: .bottom, spacing: 0) {
+                            StatusBarView(proxy: proxy)
+                        }
                         DebugAreaView()
                             .collapsable()
                             .collapsed($debugAreaModel.isCollapsed)

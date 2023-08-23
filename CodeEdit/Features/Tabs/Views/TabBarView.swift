@@ -477,6 +477,28 @@ struct TabBarView: View {
                     }
                 )
                 .help("Close this Editor")
+                .disabled(tabManager.focusActive)
+                .opacity(tabManager.focusActive ? 0.5 : 1)
+
+                TabBarAccessoryIcon(
+                    icon: .init(
+                        systemName: tabManager.focusActive
+                        ? "arrow.down.forward.and.arrow.up.backward"
+                        : "arrow.up.left.and.arrow.down.right"
+                    ),
+                    isActive: tabManager.focusActive,
+                    action: {
+                        if !tabManager.focusActive {
+                            tabManager.activeTabGroup = tabgroup
+                        }
+                        tabManager.focusActive.toggle()
+                    }
+                )
+                .help(
+                    tabManager.focusActive
+                      ? "Unfocus this Editor"
+                      : "Focus this Editor"
+                )
 
                 Divider()
                     .frame(height: 10)
@@ -595,6 +617,8 @@ struct TabBarView: View {
             }
         }
         .buttonStyle(.icon)
+        .disabled(tabManager.focusActive)
+        .opacity(tabManager.focusActive ? 0.5 : 1)
     }
 
     func split(edge: Edge) {
