@@ -459,7 +459,7 @@ struct TabBarView: View {
     // MARK: Accessories
 
     private var leadingAccessories: some View {
-        HStack(spacing: 2) {
+        HStack(spacing: 0) {
             if let otherGroup = tabManager.tabGroups.findSomeTabGroup(except: tabgroup) {
                 TabBarAccessoryIcon(
                     icon: .init(systemName: "multiply"),
@@ -569,7 +569,7 @@ struct TabBarView: View {
         }
         .foregroundColor(.secondary)
         .buttonStyle(.plain)
-        .padding(.horizontal, 7)
+        .padding(.horizontal, 5)
         .opacity(activeState != .inactive ? 1.0 : 0.5)
         .frame(maxHeight: .infinity) // Fill out vertical spaces.
         .background {
@@ -580,10 +580,10 @@ struct TabBarView: View {
     }
 
     private var trailingAccessories: some View {
-        HStack(spacing: 2) {
+        HStack(spacing: 0) {
             splitviewButton
         }
-        .padding(.horizontal, 10)
+        .padding(.horizontal, 7)
         .opacity(activeState != .inactive ? 1.0 : 0.5)
         .frame(maxHeight: .infinity) // Fill out vertical spaces.
         .background {
