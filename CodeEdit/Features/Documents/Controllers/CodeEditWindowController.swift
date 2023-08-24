@@ -83,9 +83,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
                 .environmentObject(workspace.tabManager)
         }
 
-        let navigator = NSSplitViewItem(
-            sidebarWithViewController: NSHostingController(rootView: navigatorView)
-        )
+        let navigator = NSSplitViewItem(sidebarWithViewController: NSHostingController(rootView: navigatorView))
         navigator.titlebarSeparatorStyle = .none
         navigator.minimumThickness = Self.minSidebarWidth
         navigator.collapseBehavior = .useConstraints
@@ -101,9 +99,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
             }
         }
 
-        let mainContent = NSSplitViewItem(
-            viewController: NSHostingController(rootView: workspaceView)
-        )
+        let mainContent = NSSplitViewItem(viewController: NSHostingController(rootView: workspaceView))
         mainContent.titlebarSeparatorStyle = .line
         mainContent.holdingPriority = .init(50)
 
@@ -115,9 +111,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
                 .environmentObject(workspace.tabManager)
         }
 
-        let inspector = NSSplitViewItem(
-            viewController: NSHostingController(rootView: inspectorView)
-        )
+        let inspector = NSSplitViewItem(viewController: NSHostingController(rootView: inspectorView))
         inspector.titlebarSeparatorStyle = .none
         inspector.minimumThickness = Self.minSidebarWidth
         inspector.isCollapsed = true
