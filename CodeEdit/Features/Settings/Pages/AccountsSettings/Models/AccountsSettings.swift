@@ -19,7 +19,7 @@ extension SettingsData {
             [
                 "Accounts",
                 "Delete Account...",
-                "Add account..."
+                "Add Account..."
             ]
             .map { NSLocalizedString($0, comment: "") }
         }
