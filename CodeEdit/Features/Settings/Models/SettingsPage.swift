@@ -44,7 +44,7 @@ struct SettingsPage: Hashable, Equatable, Identifiable {
     let icon: IconResource?
 
     /// Default initializer
-    internal init(
+    init(
         _ name: Name,
         baseColor: Color? = nil,
         icon: IconResource? = nil,
