@@ -43,7 +43,7 @@ struct WorkspaceView: View {
                 SplitViewReader { proxy in
                     SplitView(axis: .vertical) {
                         EditorView(
-                            tabgroup: tabManager.focusActive
+                            tabgroup: tabManager.isFocusingActiveTabGroup
                             ? tabManager.activeTabGroup.getTabGroup() ?? tabManager.tabGroups
                             : tabManager.tabGroups,
                             focus: $focusedEditor

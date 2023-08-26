@@ -477,25 +477,25 @@ struct TabBarView: View {
                     }
                 )
                 .help("Close this Editor")
-                .disabled(tabManager.focusActive)
-                .opacity(tabManager.focusActive ? 0.5 : 1)
+                .disabled(tabManager.isFocusingActiveTabGroup)
+                .opacity(tabManager.isFocusingActiveTabGroup ? 0.5 : 1)
 
                 TabBarAccessoryIcon(
                     icon: .init(
-                        systemName: tabManager.focusActive
+                        systemName: tabManager.isFocusingActiveTabGroup
                         ? "arrow.down.forward.and.arrow.up.backward"
                         : "arrow.up.left.and.arrow.down.right"
                     ),
-                    isActive: tabManager.focusActive,
+                    isActive: tabManager.isFocusingActiveTabGroup,
                     action: {
-                        if !tabManager.focusActive {
+                        if !tabManager.isFocusingActiveTabGroup {
                             tabManager.activeTabGroup = tabgroup
                         }
-                        tabManager.focusActive.toggle()
+                        tabManager.isFocusingActiveTabGroup.toggle()
                     }
                 )
                 .help(
-                    tabManager.focusActive
+                    tabManager.isFocusingActiveTabGroup
                       ? "Unfocus this Editor"
                       : "Focus this Editor"
                 )
@@ -617,8 +617,8 @@ struct TabBarView: View {
             }
         }
         .buttonStyle(.icon)
-        .disabled(tabManager.focusActive)
-        .opacity(tabManager.focusActive ? 0.5 : 1)
+        .disabled(tabManager.isFocusingActiveTabGroup)
+        .opacity(tabManager.isFocusingActiveTabGroup ? 0.5 : 1)
     }
 
     func split(edge: Edge) {
