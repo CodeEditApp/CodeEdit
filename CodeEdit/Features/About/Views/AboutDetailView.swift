@@ -38,9 +38,7 @@ struct AboutDetailView<Content: View>: View {
     var body: some View {
         VStack {
             Spacer(minLength: smallTitlebarHeight + 1)
-            OffsettableScrollView(showsIndicator: false) { offset in
-                scrollOffset = offset.y
-            } content: {
+            TrackableScrollView(showIndicators: false, contentOffset: $scrollOffset) {
                 Spacer(minLength: mediumTitlebarHeight - smallTitlebarHeight - 1 + 8)
                 content
                     .padding(.horizontal)
