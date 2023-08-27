@@ -105,21 +105,20 @@ struct ViewCommands: Commands {
                 .keyboardShortcut("i", modifiers: [.control, .command])
             }
 
-            Divider()
+            if let windowController = windowController {
+                Divider()
 
-            Menu("Navigators") {
-                Button("Project") {
-                    windowController?.navigatorSidebarViewModel?.setNavigatorTab(tab: .project)
-                }
-                .keyboardShortcut("1")
-                Button("Source Control") {
-                    windowController?.navigatorSidebarViewModel?.setNavigatorTab(tab: .sourceControl)
-                }
-                .keyboardShortcut("2")
-                Button("Find") {
-                    windowController?.navigatorSidebarViewModel?.setNavigatorTab(tab: .search)
-                }
-                .keyboardShortcut("4")
+                Menu("Navigators", content: {
+                    ForEach(
+                        Array((windowController.navigatorSidebarViewModel?.items ?? []).enumerated()),
+                        id: \.element
+                    ) { index, tab in
+                        Button(tab.title, action: {
+                            windowController.navigatorSidebarViewModel?.setNavigatorTab(tab: tab)
+                        })
+                        .keyboardShortcut(KeyEquivalent(Character(String(index + 1))))
+                    }
+                })
             }
         }
     }

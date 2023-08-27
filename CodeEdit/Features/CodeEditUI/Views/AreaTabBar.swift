@@ -16,15 +16,31 @@ struct AreaTabBar<Tab: AreaTab>: View {
     @Environment(\.controlActiveState)
     private var activeState
 
-    var items: [Tab]
+    @State var items: [Tab]
 
     @Binding var selection: Tab?
 
     var position: SettingsData.SidebarTabBarPosition
 
-    @State private var hasChangedLocation: Bool = false
-    @State private var draggingItem: SidebarDockIcon?
-    @State private var drugItemLocation: CGPoint?
+    @State private var tabLocations: [Tab: CGRect] = [:]
+    @State private var tabWidth: [Tab: CGFloat] = [:]
+    @State private var tabOffsets: [Tab: CGFloat] = [:]
+
+    /// The tab currently being dragged.
+    ///
+    /// It will be `nil` when there is no tab dragged currently.
+    @State private var draggingTab: Tab?
+
+    /// The start location of dragging.
+    ///
+    /// When there is no tab being dragged, it will be `nil`.
+    @State private var draggingStartLocation: CGFloat?
+
+    /// The last location of dragging.
+    ///
+    /// This is used to determine the dragging direction.
+    /// - TODO: Check if I can use `value.translation` instead.
+    @State private var draggingLastLocation: CGFloat?
 
     var body: some View {
         if position == .top {
@@ -63,19 +79,12 @@ struct AreaTabBar<Tab: AreaTab>: View {
         layout {
             ForEach(items) { icon in
                 makeIcon(tab: icon, size: size)
-                    .opacity(draggingItem?.imageName == icon.systemImage &&
-                             hasChangedLocation &&
-                             drugItemLocation != nil ? 0.0 : 1.0)
-                //                    .onDrop(
-                //                        of: [.utf8PlainText],
-                //                        delegate: InspectorSidebarDockIconDelegate(
-                //                            item: icon,
-                //                            current: $draggingItem,
-                //                            icons: $icons,
-                //                            hasChangedLocation: $hasChangedLocation,
-                //                            drugItemLocation: $drugItemLocation
-                //                        )
-                //                    )
+                    .offset(
+                        x: (position == .top) ? (tabOffsets[icon] ?? 0) : 0,
+                        y: (position == .side) ? (tabOffsets[icon] ?? 0) : 0
+                    )
+                    .background(makeTabItemGeometryReader(tab: icon))
+                    .simultaneousGesture(makeAreaTabDragGesture(tab: icon))
             }
             if position == .side {
                 Spacer()
@@ -100,17 +109,157 @@ struct AreaTabBar<Tab: AreaTab>: View {
                     alignment: .center
                 )
                 .help(tab.title)
-            //                .onDrag {
-            //                    if let index = icons.firstIndex(where: { $0.imageName == named }) {
-            //                        draggingItem = icons[index]
-            //                    }
-            //                    return .init(object: NSString(string: named))
-            //                } preview: {
-            //                    RoundedRectangle(cornerRadius: .zero)
-            //                        .frame(width: .zero)
-            //                }
         }
         .buttonStyle(.icon(isActive: tab == selection, size: nil))
+    }
+
+    private func makeAreaTabDragGesture(tab: Tab) -> some Gesture {
+        DragGesture(minimumDistance: 2, coordinateSpace: .global)
+            .onChanged({ value in
+                if draggingTab != tab {
+                    initializeDragGesture(value: value, for: tab)
+                }
+
+                // Get the current cursor location
+                let currentLocation = (position == .top) ? value.location.x : value.location.y
+                guard let startLocation = draggingStartLocation,
+                      let currentIndex = items.firstIndex(of: tab),
+                      let currentTabWidth = tabWidth[tab],
+                      let lastLocation = draggingLastLocation
+                else { return }
+
+                let dragDifference = currentLocation - lastLocation
+                let previousIndex = currentIndex > 0 ? currentIndex - 1 : nil
+                let nextIndex = currentIndex < items.count - 1 ? currentIndex + 1 : nil
+
+                tabOffsets[tab] = currentLocation - startLocation
+
+                swapWithPreviousTab(
+                    tab: tab,
+                    currentIndex: currentIndex,
+                    currentLocation: currentLocation,
+                    dragDifference: dragDifference,
+                    currentTabWidth: currentTabWidth
+                )
+                swapWithNextTab(
+                    tab: tab,
+                    currentIndex: currentIndex,
+                    currentLocation: currentLocation,
+                    dragDifference: dragDifference,
+                    currentTabWidth: currentTabWidth
+                )
+
+                // Update the last dragging location if there's enough offset
+                let currentLocationOnAxis = ((position == .top) ? value.location.x : value.location.y)
+                if draggingLastLocation == nil || abs(currentLocationOnAxis - draggingLastLocation!) >= 10 {
+                    draggingLastLocation = (position == .top) ? value.location.x : value.location.y
+                }
+            })
+            .onEnded({ _ in
+                draggingStartLocation = nil
+                draggingLastLocation = nil
+                withAnimation(.easeInOut(duration: 0.25)) {
+                    tabOffsets = [:]
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                    draggingTab = nil
+                }
+            })
+    }
+
+    private func initializeDragGesture(value: DragGesture.Value, for tab: Tab) {
+        draggingTab = tab
+        let initialLocation = position == .top ? value.startLocation.x : value.startLocation.y
+        draggingStartLocation = initialLocation
+        draggingLastLocation = initialLocation
+    }
+
+    private func swapWithPreviousTab(
+        tab: Tab, currentIndex: Int, currentLocation: CGFloat, dragDifference: CGFloat, currentTabWidth: CGFloat
+    ) {
+        guard let previousIndex = currentIndex > 0 ? currentIndex - 1 : nil,
+              dragDifference < 0 else { return }
+
+        let previousTab = items[previousIndex]
+        guard let previousTabLocation = tabLocations[previousTab],
+              let previousTabWidth = tabWidth[previousTab]
+        else { return }
+
+        var isWithinBounds = false
+
+        if position == .top {
+            isWithinBounds = currentLocation < max(
+                previousTabLocation.maxX - previousTabWidth * 0.1,
+                previousTabLocation.minX + previousTabWidth * 0.9
+            )
+        } else {
+            isWithinBounds = currentLocation < max(
+                previousTabLocation.maxY - previousTabWidth * 0.1,
+                previousTabLocation.minY + previousTabWidth * 0.9
+            )
+        }
+
+        if isWithinBounds {
+            let changing = previousTabWidth - 1
+            draggingStartLocation! -= changing
+            withAnimation {
+                tabOffsets[tab]! += changing
+                items.swapAt(currentIndex, previousIndex)
+            }
+            return
+        }
+    }
+
+    private func swapWithNextTab(
+        tab: Tab, currentIndex: Int, currentLocation: CGFloat, dragDifference: CGFloat, currentTabWidth: CGFloat
+    ) {
+        guard let nextIndex = currentIndex < items.count - 1 ? currentIndex + 1 : nil,
+              dragDifference > 0 else { return }
+
+        let nextTab = items[nextIndex]
+        guard let nextTabLocation = tabLocations[nextTab],
+              let nextTabWidth = tabWidth[nextTab]
+        else { return }
+
+        var isWithinBounds = false
+
+        if position == .top {
+            isWithinBounds = currentLocation > min(
+                nextTabLocation.minX + nextTabWidth * 0.1,
+                nextTabLocation.maxX - currentTabWidth * 0.9
+            )
+        } else {
+            isWithinBounds = currentLocation > min(
+                nextTabLocation.minY + nextTabWidth * 0.1,
+                nextTabLocation.maxY - currentTabWidth * 0.9
+            )
+        }
+
+        if isWithinBounds {
+            let changing = nextTabWidth - 1
+            draggingStartLocation! += changing
+            withAnimation {
+                tabOffsets[tab]! -= changing
+                items.swapAt(currentIndex, nextIndex)
+            }
+        }
+    }
+
+    private func makeTabItemGeometryReader(tab: Tab) -> some View {
+        GeometryReader { geometry in
+            Rectangle()
+                .foregroundColor(.clear)
+                .onAppear {
+                    self.tabWidth[tab] = geometry.size.width
+                    self.tabLocations[tab] = geometry.frame(in: .global)
+                }
+                .onChange(of: geometry.frame(in: .global)) { newFrame in
+                    self.tabLocations[tab] = newFrame
+                }
+                .onChange(of: geometry.size.width) { newWidth in
+                    self.tabWidth[tab] = newWidth
+                }
+        }
     }
 
     private func getSafeImage(named: String, accessibilityDescription: String?) -> Image {
@@ -119,66 +268,6 @@ struct AreaTabBar<Tab: AreaTab>: View {
             return Image(systemName: named)
         } else {
             return Image(symbol: named)
-        }
-    }
-
-    struct NavigatorToolbarButtonStyle: ButtonStyle {
-        var id: Int
-        var selection: Int
-        var activeState: ControlActiveState
-        var sidebarWidth: CGFloat
-
-        func makeBody(configuration: Configuration) -> some View {
-            configuration.label
-                .foregroundColor(id == selection ? .accentColor : configuration.isPressed ? .primary : .secondary)
-        }
-    }
-
-    private struct SidebarDockIcon: Identifiable, Equatable {
-        let imageName: String
-        let title: String
-        var id: Int
-        var disabled: Bool = false
-    }
-
-    private struct NavigatorSidebarDockIconDelegate: DropDelegate {
-        let item: SidebarDockIcon
-        @Binding var current: SidebarDockIcon?
-        @Binding var icons: [SidebarDockIcon]
-        @Binding var hasChangedLocation: Bool
-        @Binding var drugItemLocation: CGPoint?
-
-        func dropEntered(info: DropInfo) {
-            if current == nil {
-                current = item
-                drugItemLocation = info.location
-            }
-
-            guard item != current, let current = current,
-                    let from = icons.firstIndex(of: current),
-                    let toIndex = icons.firstIndex(of: item) else { return }
-
-            hasChangedLocation = true
-            drugItemLocation = info.location
-
-            if icons[toIndex] != current {
-                icons.move(fromOffsets: IndexSet(integer: from), toOffset: toIndex > from ? toIndex + 1 : toIndex)
-            }
-        }
-
-        func dropExited(info: DropInfo) {
-            drugItemLocation = nil
-        }
-
-        func dropUpdated(info: DropInfo) -> DropProposal? {
-            DropProposal(operation: .move)
-        }
-
-        func performDrop(info: DropInfo) -> Bool {
-            hasChangedLocation = false
-            drugItemLocation = nil
-            current = nil
-            return true
         }
     }
 }
