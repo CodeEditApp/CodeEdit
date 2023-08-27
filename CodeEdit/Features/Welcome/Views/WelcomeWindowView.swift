@@ -34,7 +34,7 @@ struct WelcomeWindowView: View {
                 dismissWindow: dismissWindow
             )
             RecentProjectsListView(openDocument: openDocument, dismissWindow: dismissWindow)
-                .frame(width: 300)
+                .frame(width: 280)
         }
         .edgesIgnoringSafeArea(.top)
         .onDrop(of: [.fileURL], isTargeted: .constant(true)) { providers in

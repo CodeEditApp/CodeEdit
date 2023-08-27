@@ -92,15 +92,6 @@ struct TerminalEmulatorView: NSViewRepresentable {
         }
     }
 
-    private func setupShellTitle(shell: String) {
-        if let shellSetupScript = Bundle.main.url(forResource: "codeedit_shell_integration", withExtension: shell) {
-            let scriptPath = (shellSetupScript.absoluteString[7..<shellSetupScript.absoluteString.count]) ?? ""
-            terminal.send(txt: "source \(scriptPath)\n")
-        }
-
-        terminal.send(txt: "clear\n")
-    }
-
     private func getTerminalCursor() -> CursorStyle {
             let blink = terminalSettings.cursorBlink
             switch terminalSettings.cursorStyle {
@@ -126,6 +117,84 @@ struct TerminalEmulatorView: NSViewRepresentable {
 
         if getpwuid_r(getuid(), &pwd, buffer, bufsize, &result) != 0 { return "/bin/bash" }
         return String(cString: pwd.pw_shell)
+    }
+
+    /// Check if the source command for shell integration already exists
+    /// Returns true if it already exists or encountered an error, no new commands will be added to user's source file
+    /// Returns false if it's not there, new commands will be added to user's source file
+    private func shellIntegrationInstalled(sourceScriptPath: String, command: String) -> Bool {
+        do {
+            // Get user's shell's source file
+            let sourceScript = try String(contentsOfFile: sourceScriptPath)
+            let sourceScriptSeperatedByLines = sourceScript.components(separatedBy: .newlines)
+            // Check line by line
+            for line in sourceScriptSeperatedByLines where line == command {
+                // If one line matches the command, no new commands are needed
+                return true
+            }
+            // If no line matches the command, new command is needed
+            return false
+        } catch {
+            if let error = error as NSError? {
+                switch error._code {
+                case 260:
+                    // If error 260 is thrown, it's just the source file is missing
+                    // Create a new file and add new command
+                    FileManager.default.createFile(atPath: sourceScriptPath, contents: nil, attributes: nil)
+                    return false
+                default:
+                    // Otherwise just abort the shell integration setup
+                    print("Cannot setup shell integration, error: \(error)")
+                    return true
+                }
+            }
+        }
+    }
+
+    /// Configure shell integration script
+    private func setupShellIntegration(shell: String, environment: [String]) {
+        // Get user's home dir
+        var homePath: String = ""
+        environment.forEach { value in
+            if value.starts(with: "HOME=") {
+                homePath = value
+            }
+        }
+        homePath.removeSubrange(homePath.startIndex..<homePath.index(homePath.startIndex, offsetBy: 5))
+
+        if let shellIntegrationScript = Bundle.main.url(
+            forResource: "codeedit_shell_integration", withExtension: shell
+        ) {
+            // Get the path of shell integration script
+            let shellIntegrationScriptPath = (
+                shellIntegrationScript.absoluteString[7..<shellIntegrationScript.absoluteString.count]
+            ) ?? ""
+
+            // Get the path of user's shell's source file
+            // Only zsh and bash are supported for now
+            var sourceScriptPath: String = ""
+            switch shell {
+            case "bash":
+                sourceScriptPath = homePath + "/.profile"
+            case "zsh":
+                sourceScriptPath = homePath + "/.zshrc"
+            default:
+                return
+            }
+
+            // Get the command for setting up shell integration
+            let sourceCommand = "[[ \"$TERM_PROGRAM\" == \"CodeEditApp_Terminal\" ]] &&"
+                            + " . \"\(shellIntegrationScriptPath)\""
+
+            // Add the shell integration setup command if needed
+            if !shellIntegrationInstalled(sourceScriptPath: sourceScriptPath, command: sourceCommand) {
+                if let handle = FileHandle(forWritingAtPath: sourceScriptPath) {
+                    handle.seekToEndOfFile()
+                    handle.write("\n\(sourceCommand)\n".data(using: .utf8)!)
+                    handle.closeFile()
+                }
+            }
+        }
     }
 
     /// Returns true if the `option` key should be treated as the `meta` key.
@@ -214,7 +283,13 @@ struct TerminalEmulatorView: NSViewRepresentable {
             // multiple workspaces. This works for now but most probably will need
             // to be changed later on
             FileManager.default.changeCurrentDirectoryPath(url.path)
-            terminal.startProcess(executable: shell, execName: shellIdiom)
+
+            var terminalEnvironment: [String] = Terminal.getEnvironmentVariables()
+            terminalEnvironment.append("TERM_PROGRAM=CodeEditApp_Terminal")
+
+            setupShellIntegration(shell: shellName, environment: terminalEnvironment)
+
+            terminal.startProcess(executable: shell, environment: terminalEnvironment, execName: shellIdiom)
             terminal.font = font
             terminal.configureNativeColors()
             terminal.installColors(self.colors)
@@ -225,8 +300,6 @@ struct TerminalEmulatorView: NSViewRepresentable {
             terminal.cursorStyleChanged(source: terminal.getTerminal(), newStyle: getTerminalCursor())
             terminal.layer?.backgroundColor = .clear
             terminal.optionAsMetaKey = optionAsMeta
-
-            setupShellTitle(shell: shellName)
         }
         terminal.appearance = colorAppearance
         scroller?.isHidden = true
