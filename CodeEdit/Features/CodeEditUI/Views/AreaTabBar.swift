@@ -129,11 +129,9 @@ struct AreaTabBar<Tab: AreaTab>: View {
                 else { return }
 
                 let dragDifference = currentLocation - lastLocation
-                let previousIndex = currentIndex > 0 ? currentIndex - 1 : nil
-                let nextIndex = currentIndex < items.count - 1 ? currentIndex + 1 : nil
-
                 tabOffsets[tab] = currentLocation - startLocation
 
+                // Check for swaps between adjacent tabs
                 swapWithPreviousTab(
                     tab: tab,
                     currentIndex: currentIndex,
@@ -180,13 +178,14 @@ struct AreaTabBar<Tab: AreaTab>: View {
         guard let previousIndex = currentIndex > 0 ? currentIndex - 1 : nil,
               dragDifference < 0 else { return }
 
+        // Get info about the previous tab
         let previousTab = items[previousIndex]
         guard let previousTabLocation = tabLocations[previousTab],
               let previousTabWidth = tabWidth[previousTab]
         else { return }
 
+        // Did we pass the threshold to swap positions with the previous tab?
         var isWithinBounds = false
-
         if position == .top {
             isWithinBounds = currentLocation < max(
                 previousTabLocation.maxX - previousTabWidth * 0.1,
@@ -199,6 +198,7 @@ struct AreaTabBar<Tab: AreaTab>: View {
             )
         }
 
+        // Swap tab positions
         if isWithinBounds {
             let changing = previousTabWidth - 1
             draggingStartLocation! -= changing
@@ -216,13 +216,14 @@ struct AreaTabBar<Tab: AreaTab>: View {
         guard let nextIndex = currentIndex < items.count - 1 ? currentIndex + 1 : nil,
               dragDifference > 0 else { return }
 
+        // Get info about the next tab
         let nextTab = items[nextIndex]
         guard let nextTabLocation = tabLocations[nextTab],
               let nextTabWidth = tabWidth[nextTab]
         else { return }
 
+        // Did we pass the threshold to swap positions with the next tab?
         var isWithinBounds = false
-
         if position == .top {
             isWithinBounds = currentLocation > min(
                 nextTabLocation.minX + nextTabWidth * 0.1,
@@ -235,6 +236,7 @@ struct AreaTabBar<Tab: AreaTab>: View {
             )
         }
 
+        // Swap tab positions
         if isWithinBounds {
             let changing = nextTabWidth - 1
             draggingStartLocation! += changing
