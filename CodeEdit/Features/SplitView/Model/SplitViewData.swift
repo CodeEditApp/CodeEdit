@@ -66,6 +66,18 @@ final class SplitViewData: ObservableObject {
         }
     }
 
+    func getTabGroup(with id: TabGroupData.ID) -> TabGroup? {
+        for tabgroup in tabgroups {
+            if case .one(let tabGroupData) = tabgroup {
+                if tabGroupData.id == id {
+                    return tabgroup
+                }
+            }
+        }
+
+        return nil
+    }
+
     /// Flattens the splitviews.
     func flatten() {
         for index in tabgroups.indices {

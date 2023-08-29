@@ -14,6 +14,8 @@ class TabManager: ObservableObject {
     /// Collection of all the tabgroups.
     @Published var tabGroups: TabGroup
 
+    @Published var isFocusingActiveTabGroup: Bool
+
     /// The TabGroup with active focus.
     @Published var activeTabGroup: TabGroupData {
         didSet {
@@ -36,6 +38,7 @@ class TabManager: ObservableObject {
         self.activeTabGroup = tab
         self.activeTabGroupHistory.prepend { [weak tab] in tab }
         self.tabGroups = .horizontal(.init(.horizontal, tabgroups: [.one(tab)]))
+        self.isFocusingActiveTabGroup = false
         switchToActiveTabGroup()
     }
 

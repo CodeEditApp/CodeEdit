@@ -459,7 +459,7 @@ struct TabBarView: View {
     // MARK: Accessories
 
     private var leadingAccessories: some View {
-        HStack(spacing: 2) {
+        HStack(spacing: 0) {
             if let otherGroup = tabManager.tabGroups.findSomeTabGroup(except: tabgroup) {
                 TabBarAccessoryIcon(
                     icon: .init(systemName: "multiply"),
@@ -477,6 +477,28 @@ struct TabBarView: View {
                     }
                 )
                 .help("Close this Editor")
+                .disabled(tabManager.isFocusingActiveTabGroup)
+                .opacity(tabManager.isFocusingActiveTabGroup ? 0.5 : 1)
+
+                TabBarAccessoryIcon(
+                    icon: .init(
+                        systemName: tabManager.isFocusingActiveTabGroup
+                        ? "arrow.down.forward.and.arrow.up.backward"
+                        : "arrow.up.left.and.arrow.down.right"
+                    ),
+                    isActive: tabManager.isFocusingActiveTabGroup,
+                    action: {
+                        if !tabManager.isFocusingActiveTabGroup {
+                            tabManager.activeTabGroup = tabgroup
+                        }
+                        tabManager.isFocusingActiveTabGroup.toggle()
+                    }
+                )
+                .help(
+                    tabManager.isFocusingActiveTabGroup
+                      ? "Unfocus this Editor"
+                      : "Focus this Editor"
+                )
 
                 Divider()
                     .frame(height: 10)
@@ -547,7 +569,7 @@ struct TabBarView: View {
         }
         .foregroundColor(.secondary)
         .buttonStyle(.plain)
-        .padding(.horizontal, 7)
+        .padding(.horizontal, 5)
         .opacity(activeState != .inactive ? 1.0 : 0.5)
         .frame(maxHeight: .infinity) // Fill out vertical spaces.
         .background {
@@ -558,10 +580,10 @@ struct TabBarView: View {
     }
 
     private var trailingAccessories: some View {
-        HStack(spacing: 2) {
+        HStack(spacing: 0) {
             splitviewButton
         }
-        .padding(.horizontal, 10)
+        .padding(.horizontal, 7)
         .opacity(activeState != .inactive ? 1.0 : 0.5)
         .frame(maxHeight: .infinity) // Fill out vertical spaces.
         .background {
@@ -595,6 +617,8 @@ struct TabBarView: View {
             }
         }
         .buttonStyle(.icon)
+        .disabled(tabManager.isFocusingActiveTabGroup)
+        .opacity(tabManager.isFocusingActiveTabGroup ? 0.5 : 1)
     }
 
     func split(edge: Edge) {

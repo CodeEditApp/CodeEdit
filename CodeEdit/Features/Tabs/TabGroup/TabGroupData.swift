@@ -77,6 +77,11 @@ final class TabGroupData: ObservableObject, Identifiable {
         parent?.closeTabGroup(with: id)
     }
 
+    /// Gets the tabgroup.
+    func getTabGroup() -> TabGroup? {
+        return parent?.getTabGroup(with: id)
+    }
+
     /// Closes a tab in the tabgroup.
     /// This will also write any changes to the file on disk and will add the tab to the tab history.
     /// - Parameter item: the tab to close.
