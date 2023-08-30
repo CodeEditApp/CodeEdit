@@ -105,21 +105,27 @@ struct ViewCommands: Commands {
                 .keyboardShortcut("i", modifiers: [.control, .command])
             }
 
-            if let windowController = windowController {
+            if let model = windowController?.navigatorSidebarViewModel {
                 Divider()
-
-                Menu("Navigators", content: {
-                    ForEach(
-                        Array((windowController.navigatorSidebarViewModel?.items ?? []).enumerated()),
-                        id: \.element
-                    ) { index, tab in
-                        Button(tab.title, action: {
-                            windowController.navigatorSidebarViewModel?.setNavigatorTab(tab: tab)
-                        })
-                        .keyboardShortcut(KeyEquivalent(Character(String(index + 1))))
-                    }
-                })
+                NavigatorCommands(model: model)
             }
+        }
+    }
+}
+
+extension ViewCommands {
+    struct NavigatorCommands: View {
+        @ObservedObject var model: NavigatorSidebarViewModel
+
+        var body: some View {
+            Menu("Navigators", content: {
+                ForEach(Array(model.items.enumerated()), id: \.element) { index, tab in
+                    Button(tab.title) {
+                        model.setNavigatorTab(tab: tab)
+                    }
+                    .keyboardShortcut(KeyEquivalent(Character(String(index + 1))))
+                }
+            })
         }
     }
 }
