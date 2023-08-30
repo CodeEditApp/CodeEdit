@@ -16,8 +16,7 @@ struct AreaTabBar<Tab: AreaTab>: View {
     @Environment(\.controlActiveState)
     private var activeState
 
-    @State var items: [Tab]
-
+    @Binding var items: [Tab]
     @Binding var selection: Tab?
 
     var position: SettingsData.SidebarTabBarPosition

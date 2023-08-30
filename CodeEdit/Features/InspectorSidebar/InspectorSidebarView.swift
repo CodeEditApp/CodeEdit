@@ -18,13 +18,10 @@ struct InspectorSidebarView: View {
     var sidebarPosition: SettingsData.SidebarTabBarPosition
 
     @State private var selection: InspectorTab? = .file
+    @State private var items: [InspectorTab] = [.file, .gitHistory]
 
-    private var items: [InspectorTab] {
-        [
-            .file,
-            .gitHistory
-        ]
-        + extensionManager
+    init() {
+        items += extensionManager
             .extensions
             .map { ext in
                 ext.availableFeatures.compactMap {
@@ -63,7 +60,7 @@ struct InspectorSidebarView: View {
             if sidebarPosition == .side {
                 HStack(spacing: 0) {
                     Divider()
-                    AreaTabBar(items: items, selection: $selection, position: sidebarPosition)
+                    AreaTabBar(items: $items, selection: $selection, position: sidebarPosition)
                 }
             }
         }
@@ -71,7 +68,7 @@ struct InspectorSidebarView: View {
             if sidebarPosition == .top {
                 VStack(spacing: 0) {
                     Divider()
-                    AreaTabBar(items: items, selection: $selection, position: sidebarPosition)
+                    AreaTabBar(items: $items, selection: $selection, position: sidebarPosition)
                     Divider()
                 }
             } else {

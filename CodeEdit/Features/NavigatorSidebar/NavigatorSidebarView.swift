@@ -44,7 +44,7 @@ struct NavigatorSidebarView: View {
         .safeAreaInset(edge: .leading, spacing: 0) {
             if sidebarPosition == .side {
                 HStack(spacing: 0) {
-                    AreaTabBar(items: viewModel.items, selection: $viewModel.selectedTab, position: sidebarPosition)
+                    AreaTabBar(items: $viewModel.items, selection: $viewModel.selectedTab, position: sidebarPosition)
                     Divider()
                 }
             }
@@ -53,7 +53,7 @@ struct NavigatorSidebarView: View {
             if sidebarPosition == .top {
                 VStack(spacing: 0) {
                     Divider()
-                    AreaTabBar(items: viewModel.items, selection: $viewModel.selectedTab, position: sidebarPosition)
+                    AreaTabBar(items: $viewModel.items, selection: $viewModel.selectedTab, position: sidebarPosition)
                     Divider()
                 }
             } else {
