@@ -119,7 +119,7 @@ extension ViewCommands {
 
         var body: some View {
             Menu("Navigators", content: {
-                ForEach(Array(model.items.enumerated()), id: \.element) { index, tab in
+                ForEach(Array(model.items.prefix(9).enumerated()), id: \.element) { index, tab in
                     Button(tab.title) {
                         model.setNavigatorTab(tab: tab)
                     }
