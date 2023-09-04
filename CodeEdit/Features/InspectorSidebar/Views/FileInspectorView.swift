@@ -29,6 +29,20 @@ struct FileInspectorView: View {
 
     @State var wrapLines: Bool = false
 
+    func updateFileOptions(_ textEditingOverride: SettingsData.TextEditingSettings? = nil) {
+        let textEditingSettings = textEditingOverride ?? textEditing
+        indentOption = file?.fileDocument?.indentOption ?? textEditingSettings.indentOption
+        defaultTabWidth = file?.fileDocument?.defaultTabWidth ?? textEditingSettings.defaultTabWidth
+        wrapLines = file?.fileDocument?.wrapLines ?? textEditingSettings.wrapLinesToEditorWidth
+    }
+
+    func updateInspectorSource() {
+        file = tabManager.activeTabGroup.selected
+        fileName = file?.name ?? ""
+        language = file?.fileDocument?.language
+        updateFileOptions()
+    }
+
     var body: some View {
         Group {
             if file != nil {
@@ -50,26 +64,20 @@ struct FileInspectorView: View {
                 NoSelectionInspectorView()
             }
         }
-        .onReceive(tabManager.activeTabGroup.objectWillChange) { _ in
-            file = tabManager.activeTabGroup.selected
-            fileName = file?.name ?? ""
-            language = file?.fileDocument?.language
-            indentOption = file?.fileDocument?.indentOption ?? textEditing.indentOption
-            defaultTabWidth = file?.fileDocument?.defaultTabWidth ?? textEditing.defaultTabWidth
-            wrapLines = file?.fileDocument?.wrapLines ?? textEditing.wrapLinesToEditorWidth
-        }
         .onAppear {
-            file = tabManager.activeTabGroup.selected
-            fileName = file?.name ?? ""
-            language = file?.fileDocument?.language
-            indentOption = file?.fileDocument?.indentOption ?? textEditing.indentOption
-            defaultTabWidth = file?.fileDocument?.defaultTabWidth ?? textEditing.defaultTabWidth
-            wrapLines = file?.fileDocument?.wrapLines ?? textEditing.wrapLinesToEditorWidth
+            updateInspectorSource()
+        }
+        .onReceive(tabManager.activeTabGroup.objectWillChange) { _ in
+            updateInspectorSource()
+        }
+        .onChange(of: tabManager.activeTabGroup) { _ in
+            updateInspectorSource()
+        }
+        .onChange(of: tabManager.activeTabGroup.selected) { _ in
+            updateInspectorSource()
         }
         .onChange(of: textEditing) { newValue in
-            indentOption = file?.fileDocument?.indentOption ?? newValue.indentOption
-            defaultTabWidth = file?.fileDocument?.defaultTabWidth ?? newValue.defaultTabWidth
-            wrapLines = file?.fileDocument?.wrapLines ?? newValue.wrapLinesToEditorWidth
+            updateFileOptions(newValue)
         }
     }
 
