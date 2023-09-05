@@ -14,8 +14,8 @@ struct WorkspaceView: View {
     private var path: String = ""
 
     @EnvironmentObject private var workspace: WorkspaceDocument
-    @EnvironmentObject private var tabManager: TabManager
-    @EnvironmentObject private var debugAreaModel: DebugAreaViewModel
+    @EnvironmentObject private var editorManager: EditorManager
+    @EnvironmentObject private var utilityAreaModel: UtilityAreaViewModel
     @Environment(\.window)
     private var window: NSWindow
 
@@ -35,7 +35,7 @@ struct WorkspaceView: View {
 
     @State private var editorCollapsed = false
 
-    @FocusState var focusedEditor: TabGroupData?
+    @FocusState var focusedEditor: Editor?
 
     var body: some View {
         if workspace.workspaceFileManager != nil {
@@ -43,22 +43,22 @@ struct WorkspaceView: View {
                 SplitViewReader { proxy in
                     SplitView(axis: .vertical) {
                         EditorView(
-                            tabgroup: tabManager.isFocusingActiveTabGroup
-                            ? tabManager.activeTabGroup.getTabGroup() ?? tabManager.tabGroups
-                            : tabManager.tabGroups,
+                            layout: editorManager.isFocusingActiveEditor
+                            ? editorManager.activeEditor.getEditorLayout() ?? editorManager.editorLayout
+                            : editorManager.editorLayout,
                             focus: $focusedEditor
                         )
                         .collapsable()
-                        .collapsed($debugAreaModel.isMaximized)
+                        .collapsed($utilityAreaModel.isMaximized)
                         .frame(minHeight: 170 + 29 + 29)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .holdingPriority(.init(1))
                         .safeAreaInset(edge: .bottom, spacing: 0) {
                             StatusBarView(proxy: proxy)
                         }
-                        DebugAreaView()
+                        UtilityAreaView()
                             .collapsable()
-                            .collapsed($debugAreaModel.isCollapsed)
+                            .collapsed($utilityAreaModel.isCollapsed)
                             .frame(idealHeight: 260)
                             .frame(minHeight: 100)
                     }
@@ -66,11 +66,11 @@ struct WorkspaceView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .onChange(of: focusedEditor) { newValue in
                         /// update active tab group only if the new one is not the same with it.
-                        if let newValue, tabManager.activeTabGroup != newValue {
-                            tabManager.activeTabGroup = newValue
+                        if let newValue, editorManager.activeEditor != newValue {
+                            editorManager.activeEditor = newValue
                         }
                     }
-                    .onChange(of: tabManager.activeTabGroup) { newValue in
+                    .onChange(of: editorManager.activeEditor) { newValue in
                         if newValue != focusedEditor {
                             focusedEditor = newValue
                         }

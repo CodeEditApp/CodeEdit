@@ -9,7 +9,7 @@ import SwiftUI
 
 struct FileCommands: Commands {
 
-    @FocusedObject var debugAreaViewModel: DebugAreaViewModel?
+    @FocusedObject var utilityAreaViewModel: UtilityAreaViewModel?
 
     var body: some Commands {
         CommandGroup(replacing: .newItem) {
@@ -42,7 +42,7 @@ struct FileCommands: Commands {
             .keyboardShortcut("w")
 
             Button("Close Editor") {
-                NSApp.sendAction(#selector(CodeEditWindowController.closeActiveTabGroup(_:)), to: nil, from: nil)
+                NSApp.sendAction(#selector(CodeEditWindowController.closeActiveEditor(_:)), to: nil, from: nil)
             }
             .keyboardShortcut("w", modifiers: [.control, .shift, .command])
 
@@ -57,9 +57,9 @@ struct FileCommands: Commands {
             }
             .keyboardShortcut("w", modifiers: [.control, .option, .command])
 
-            if let debugAreaViewModel {
+            if let utilityAreaViewModel {
                 Button("Close Terminal") {
-                    debugAreaViewModel.removeTerminals(debugAreaViewModel.selectedTerminals)
+                    utilityAreaViewModel.removeTerminals(utilityAreaViewModel.selectedTerminals)
                 }
                 .keyboardShortcut(.delete)
             }

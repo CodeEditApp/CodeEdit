@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct EditorView: View {
-    var tabgroup: TabGroup
+    var layout: EditorLayout
 
-    @FocusState.Binding var focus: TabGroupData?
+    @FocusState.Binding var focus: Editor?
 
     @Environment(\.window)
     private var window
@@ -24,9 +24,9 @@ struct EditorView: View {
 
     var body: some View {
         VStack {
-            switch tabgroup {
-            case .one(let detailTabGroup):
-                WorkspaceTabGroupView(tabgroup: detailTabGroup, focus: $focus)
+            switch layout {
+            case .one(let detailEditor):
+                WorkspaceEditorView(editor: detailEditor, focus: $focus)
                     .transformEnvironment(\.edgeInsets) { insets in
                         switch isAtEdge {
                         case .all:
@@ -49,7 +49,7 @@ struct EditorView: View {
     struct SubEditorView: View {
         @ObservedObject var data: SplitViewData
 
-        @FocusState.Binding var focus: TabGroupData?
+        @FocusState.Binding var focus: Editor?
 
         var body: some View {
             SplitView(axis: data.axis) {
@@ -59,21 +59,21 @@ struct EditorView: View {
         }
 
         var splitView: some View {
-            ForEach(Array(data.tabgroups.enumerated()), id: \.offset) { index, item in
-                EditorView(tabgroup: item, focus: $focus)
+            ForEach(Array(data.editorLayouts.enumerated()), id: \.offset) { index, item in
+                EditorView(layout: item, focus: $focus)
                     .transformEnvironment(\.isAtEdge) { belowToolbar in
                         calcIsAtEdge(current: &belowToolbar, index: index)
                     }
-                    .environment(\.splitEditor) { [weak data] edge, newTabGroup in
-                        data?.split(edge, at: index, new: newTabGroup)
+                    .environment(\.splitEditor) { [weak data] edge, newEditor in
+                        data?.split(edge, at: index, new: newEditor)
                     }
             }
         }
 
         func calcIsAtEdge(current: inout VerticalEdge.Set, index: Int) {
             if case .vertical = data.axis {
-                guard data.tabgroups.count != 1 else { return }
-                if index == data.tabgroups.count - 1 {
+                guard data.editorLayouts.count != 1 else { return }
+                if index == data.editorLayouts.count - 1 {
                     current.remove(.top)
                 } else if index == 0 {
                     current.remove(.bottom)

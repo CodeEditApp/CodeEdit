@@ -18,7 +18,7 @@ struct ViewCommands: Commands {
     @State var windowController: CodeEditWindowController?
 
     private let documentController: CodeEditDocumentController = CodeEditDocumentController()
-    private let statusBarViewModel: DebugAreaViewModel = DebugAreaViewModel()
+    private let statusBarViewModel: UtilityAreaViewModel = UtilityAreaViewModel()
 
     @FocusedBinding(\.navigationSplitViewVisibility)
     var navigationSplitViewVisibility

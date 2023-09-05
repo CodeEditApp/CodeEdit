@@ -16,7 +16,7 @@ struct WindowSplitView: View {
     var body: some View {
         WindowObserver(window: window) {
             NavigationSplitView(columnVisibility: $visibility) {
-                NavigatorSidebarView(workspace: workspace)
+                NavigatorAreaView(workspace: workspace)
                     .toolbar {
                         ToolbarItem {
                             Button {
@@ -68,8 +68,8 @@ struct WindowSplitView: View {
         .focusedSceneValue(\.navigationSplitViewVisibility, $visibility)
         .focusedSceneValue(\.inspectorVisibility, $showInspector)
         .environmentObject(workspace)
-        .environmentObject(workspace.tabManager)
-        .environmentObject(workspace.debugAreaModel)
+        .environmentObject(workspace.editorManager)
+        .environmentObject(workspace.utilityAreaModel)
         .task {
             if let newWindow = workspace.windowControllers.first?.window {
                 window = newWindow

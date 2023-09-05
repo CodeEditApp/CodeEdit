@@ -8,7 +8,7 @@
 import SwiftUI
 
 internal struct StatusBarToggleDrawerButton: View {
-    @EnvironmentObject private var model: DebugAreaViewModel
+    @EnvironmentObject private var model: UtilityAreaViewModel
 
     init() {
         CommandManager.shared.addCommand(
@@ -33,6 +33,7 @@ internal struct StatusBarToggleDrawerButton: View {
         }
         .buttonStyle(.icon)
         .keyboardShortcut("Y", modifiers: [.command, .shift])
+        .help(model.isCollapsed ? "Show the Utility area" : "Hide the Utility area")
         .onHover { isHovering($0) }
     }
 }

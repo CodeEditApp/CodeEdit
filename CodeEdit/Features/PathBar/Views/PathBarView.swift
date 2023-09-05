@@ -15,8 +15,8 @@ struct PathBarView: View {
     @Environment(\.colorScheme)
     private var colorScheme
 
-    @Environment(\.isActiveTabGroup)
-    private var isActiveTabGroup
+    @Environment(\.isActiveEditor)
+    private var isActiveEditor
 
     @Environment(\.controlActiveState)
     private var activeState
@@ -58,7 +58,7 @@ struct PathBarView: View {
         }
         .frame(height: Self.height, alignment: .center)
         .opacity(activeState == .inactive ? 0.8 : 1.0)
-        .grayscale(isActiveTabGroup ? 0.0 : 1.0)
+        .grayscale(isActiveEditor ? 0.0 : 1.0)
         .background(EffectView(.headerView).frame(height: Self.height))
     }
 
