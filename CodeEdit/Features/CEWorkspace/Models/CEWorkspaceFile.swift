@@ -17,7 +17,7 @@ enum FileItemCodingKeys: String, CodingKey {
 }
 
 /// An object containing all necessary information and actions for a specific file in the workspace
-final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, TabBarItemRepresentable {
+final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, TabBarTabRepresentable {
 
     /// The id of the ``FileSystemClient/FileSystemClient/FileItem``.
     ///
@@ -54,8 +54,8 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, TabBar
     /// Returns the Git status of a file as ``GitType``
     var gitStatus: GitType?
 
-    /// Returns the `id` in ``TabBarItemID`` enum form
-    var tabID: TabBarItemID { .codeEditor(id) }
+    /// Returns the `id` in ``TabBarTabID`` enum form
+    var tabID: TabBarTabID { .codeEditor(id) }
 
     /// Returns a boolean that is true if ``children`` is not `nil`
     var isFolder: Bool { url.hasDirectoryPath }

@@ -320,7 +320,7 @@ struct TabBarView: View {
                         ) {
                             ForEach(Array(openedTabs.enumerated()), id: \.element) { index, id in
                                 if let item = editor.tabs.first(where: { $0.id == id }) {
-                                    TabBarItemView(
+                                    TabBarTabView(
                                         expectedWidth: expectedTabWidth,
                                         item: item,
                                         index: index,
@@ -345,7 +345,7 @@ struct TabBarView: View {
                                     // Detect the drop action of each tab.
                                     .onDrop(
                                         of: [.utf8PlainText], // TODO: Make a unique type for it.
-                                        delegate: TabBarItemOnDropDelegate(
+                                        delegate: TabBarTabOnDropDelegate(
                                             currentTabId: id,
                                             openedTabs: $openedTabs,
                                             onDragTabId: $onDragTabId,
@@ -632,7 +632,7 @@ struct TabBarView: View {
         editorManager.activeEditor = newEditor
     }
 
-    private struct TabBarItemOnDropDelegate: DropDelegate {
+    private struct TabBarTabOnDropDelegate: DropDelegate {
         private let currentTabId: TabID
         @Binding private var openedTabs: [TabID]
         @Binding private var onDragTabId: TabID?

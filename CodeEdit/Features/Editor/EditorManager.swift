@@ -30,7 +30,7 @@ class EditorManager: ObservableObject {
     var fileDocuments: [CEWorkspaceFile: CodeFileDocument] = [:]
 
     /// notify listeners whenever tab selection changes on the active editor.
-    var tabBarItemIdSubject = PassthroughSubject<String?, Never>()
+    var tabBarTabIdSubject = PassthroughSubject<String?, Never>()
     var cancellable: AnyCancellable?
 
     init() {
@@ -64,7 +64,7 @@ class EditorManager: ObservableObject {
         cancellable = nil
         cancellable = activeEditor.$selectedTab
             .sink { [weak self] tab in
-                self?.tabBarItemIdSubject.send(tab?.id)
+                self?.tabBarTabIdSubject.send(tab?.id)
             }
     }
 

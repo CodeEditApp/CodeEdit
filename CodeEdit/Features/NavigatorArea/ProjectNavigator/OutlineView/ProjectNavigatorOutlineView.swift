@@ -56,7 +56,7 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
                     self?.controller?.reveal(fileItem)
                 })
                 .store(in: &cancellables)
-            workspace.editorManager.tabBarItemIdSubject
+            workspace.editorManager.tabBarTabIdSubject
                 .sink { [weak self] itemID in
                     self?.controller?.updateSelection(itemID: itemID)
                 }

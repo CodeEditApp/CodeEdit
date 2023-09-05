@@ -1,5 +1,5 @@
 //
-//  TabBarItemBackground.swift
+//  TabBarTabBackground.swift
 //  CodeEdit
 //
 //  Created by Austin Condiff on 1/17/23.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TabBarItemBackground: View {
+struct TabBarTabBackground: View {
     var isActive: Bool
     var isPressing: Bool
     var isDragging: Bool
@@ -61,8 +61,8 @@ struct TabBarItemBackground: View {
     }
 }
 
-struct TabBarItemBackground_Previews: PreviewProvider {
+struct TabBarTabBackground_Previews: PreviewProvider {
     static var previews: some View {
-        TabBarItemBackground(isActive: false, isPressing: false, isDragging: false)
+        TabBarTabBackground(isActive: false, isPressing: false, isDragging: false)
     }
 }

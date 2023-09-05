@@ -176,7 +176,7 @@ struct TabBarTabView: View {
                         .hidden()
                     }
                     // Close Button
-                    TabBarItemCloseButton(
+                    TabBarTabCloseButton(
                         isActive: isActive,
                         isHoveringTab: isHovering,
                         isDragging: draggingTabId != nil || onDragTabId != nil,
@@ -242,7 +242,7 @@ struct TabBarTabView: View {
             }
             .background {
                 if tabBarStyle == .xcode {
-                    TabBarItemBackground(isActive: isActive, isPressing: isPressing, isDragging: isDragging)
+                    TabBarTabBackground(isActive: isActive, isPressing: isPressing, isDragging: isDragging)
                         .animation(.easeInOut(duration: 0.08), value: isHovering)
                 } else {
                     if isFullscreen && isActive {
@@ -269,7 +269,7 @@ struct TabBarTabView: View {
             //                return .init(object: NSString(string: "\(item.tabID)"))
             //            })
         }
-        .buttonStyle(TabBarItemButtonStyle(isPressing: $isPressing))
+        .buttonStyle(TabBarTabButtonStyle(isPressing: $isPressing))
         .simultaneousGesture(
             TapGesture(count: 2)
                 .onEnded { _ in
