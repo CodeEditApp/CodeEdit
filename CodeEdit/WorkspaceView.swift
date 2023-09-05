@@ -6,36 +6,30 @@
 //
 
 import SwiftUI
-import AppKit
 
 struct WorkspaceView: View {
-
-    let tabBarHeight = 28.0
-    private var path: String = ""
-
-    @EnvironmentObject private var workspace: WorkspaceDocument
-    @EnvironmentObject private var editorManager: EditorManager
-    @EnvironmentObject private var utilityAreaModel: UtilityAreaViewModel
     @Environment(\.window)
     private var window: NSWindow
-
-    private var keybindings: KeybindingManager =  .shared
-
-    @State private var showingAlert = false
 
     @Environment(\.colorScheme)
     private var colorScheme
 
+    @FocusState var focusedEditor: Editor?
+
     @AppSettings(\.theme.matchAppearance)
     var matchAppearance
 
+    @EnvironmentObject private var workspace: WorkspaceDocument
+    @EnvironmentObject private var editorManager: EditorManager
+    @EnvironmentObject private var utilityAreaModel: UtilityAreaViewModel
+
     @StateObject private var themeModel: ThemeModel = .shared
 
+    @State private var showingAlert = false
     @State private var terminalCollapsed = true
-
     @State private var editorCollapsed = false
 
-    @FocusState var focusedEditor: Editor?
+    private var keybindings: KeybindingManager =  .shared
 
     var body: some View {
         if workspace.workspaceFileManager != nil {

@@ -735,7 +735,6 @@
 		6C578D8629CD345900DC73B2 /* ExtensionSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionSceneView.swift; sourceTree = "<group>"; };
 		6C578D8829CD36E400DC73B2 /* Commands+ForEach.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Commands+ForEach.swift"; sourceTree = "<group>"; };
 		6C578D8B29CD372700DC73B2 /* ExtensionCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionCommands.swift; sourceTree = "<group>"; };
-		6C5AB9D629C1496E003B5F96 /* SceneID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneID.swift; sourceTree = "<group>"; };
 		6C5B63DD29C76213005454BA /* WindowCodeFileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WindowCodeFileView.swift; sourceTree = "<group>"; };
 		6C5BE51B2A3D542B002DA0FC /* FeatureFlagsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagsSettingsView.swift; sourceTree = "<group>"; };
 		6C5BE51D2A3D545F002DA0FC /* FeatureFlagsSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagsSettings.swift; sourceTree = "<group>"; };
@@ -1927,13 +1926,13 @@
 		58D01C85293167DC00C5B6B4 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				6C5C891A2A3F736500A94FE1 /* FocusedValues.swift */,
-				587B9D54292FC27A00AC7927 /* FolderMonitor.swift */,
 				6C48D8EF2972DAC300D6D205 /* Environment */,
 				58D01C87293167DC00C5B6B4 /* Extensions */,
 				58D01C8F293167DC00C5B6B4 /* KeyChain */,
 				5831E3C92933E83400D5A6D2 /* Protocols */,
 				5875680E29316BDC00C965A3 /* ShellClient */,
+				6C5C891A2A3F736500A94FE1 /* FocusedValues.swift */,
+				587B9D54292FC27A00AC7927 /* FolderMonitor.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -2256,23 +2255,22 @@
 		B658FB2E27DA9E0F00EA4DBD /* CodeEdit */ = {
 			isa = PBXGroup;
 			children = (
-				3E0196712A392170002648D8 /* ShellIntegration */,
+				28069DA527F5BD320016BC47 /* DefaultThemes */,
 				5831E3C52933E6CB00D5A6D2 /* Features */,
 				D7211D4427E066D4008F2ED7 /* Localization */,
 				B658FB3527DA9E1000EA4DBD /* Preview Content */,
+				3E0196712A392170002648D8 /* ShellIntegration */,
 				58D01C85293167DC00C5B6B4 /* Utils */,
-				6C5AB9D629C1496E003B5F96 /* SceneID.swift */,
+				B66A4E5529C918A0004573B4 /* SceneID.swift */,
 				0468438427DC76E200F8E88E /* AppDelegate.swift */,
-				5C4BB1E028212B1E00A92FB2 /* World.swift */,
 				B658FB3327DA9E1000EA4DBD /* Assets.xcassets */,
 				B658FB3827DA9E1000EA4DBD /* CodeEdit.entitlements */,
 				B66A4E4B29C9179B004573B4 /* CodeEditApp.swift */,
-				6C7F38002A3EA71400217B83 /* WindowSplitView.swift */,
 				04660F6027E3A68A00477777 /* Info.plist */,
-				B66A4E5529C918A0004573B4 /* SceneID.swift */,
-				B658FB3127DA9E0F00EA4DBD /* WorkspaceView.swift */,
 				6C48D8F62972E5F300D6D205 /* WindowObserver.swift */,
-				28069DA527F5BD320016BC47 /* DefaultThemes */,
+				6C7F38002A3EA71400217B83 /* WindowSplitView.swift */,
+				B658FB3127DA9E0F00EA4DBD /* WorkspaceView.swift */,
+				5C4BB1E028212B1E00A92FB2 /* World.swift */,
 			);
 			path = CodeEdit;
 			sourceTree = "<group>";
