@@ -1,5 +1,5 @@
 //
-//  WorkspaceEditorView.swift
+//  EditorView.swift
 //  CodeEdit
 //
 //  Created by Wouter Hennen on 16/02/2023.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct WorkspaceEditorView: View {
+struct EditorView: View {
     @ObservedObject var editor: Editor
 
     @FocusState.Binding var focus: Editor?

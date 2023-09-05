@@ -1,5 +1,5 @@
 //
-//  EditorView.swift
+//  EditorLayoutView.swift
 //  CodeEdit
 //
 //  Created by Wouter Hennen on 20/02/2023.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct EditorView: View {
+struct EditorLayoutView: View {
     var layout: EditorLayout
 
     @FocusState.Binding var focus: Editor?
@@ -26,7 +26,7 @@ struct EditorView: View {
         VStack {
             switch layout {
             case .one(let detailEditor):
-                WorkspaceEditorView(editor: detailEditor, focus: $focus)
+                EditorView(editor: detailEditor, focus: $focus)
                     .transformEnvironment(\.edgeInsets) { insets in
                         switch isAtEdge {
                         case .all:
@@ -41,12 +41,12 @@ struct EditorView: View {
                         }
                     }
             case .vertical(let data), .horizontal(let data):
-                SubEditorView(data: data, focus: $focus)
+                SubEditorLayoutView(data: data, focus: $focus)
             }
         }
     }
 
-    struct SubEditorView: View {
+    struct SubEditorLayoutView: View {
         @ObservedObject var data: SplitViewData
 
         @FocusState.Binding var focus: Editor?
@@ -60,7 +60,7 @@ struct EditorView: View {
 
         var splitView: some View {
             ForEach(Array(data.editorLayouts.enumerated()), id: \.offset) { index, item in
-                EditorView(layout: item, focus: $focus)
+                EditorLayoutView(layout: item, focus: $focus)
                     .transformEnvironment(\.isAtEdge) { belowToolbar in
                         calcIsAtEdge(current: &belowToolbar, index: index)
                     }

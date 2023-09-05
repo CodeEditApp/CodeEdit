@@ -42,7 +42,7 @@ struct WorkspaceView: View {
             VStack {
                 SplitViewReader { proxy in
                     SplitView(axis: .vertical) {
-                        EditorView(
+                        EditorLayoutView(
                             layout: editorManager.isFocusingActiveEditor
                             ? editorManager.activeEditor.getEditorLayout() ?? editorManager.editorLayout
                             : editorManager.editorLayout,
