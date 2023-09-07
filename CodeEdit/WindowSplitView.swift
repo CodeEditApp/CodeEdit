@@ -47,7 +47,7 @@ struct WindowSplitView: View {
                         }
 #if swift(>=5.9) // Fix build on Xcode 14
                         .inspector(isPresented: $showInspector) {
-                            InspectorSidebarView()
+                            InspectorAreaView()
                                 .inspectorColumnWidth(min: 100, ideal: 200, max: 400)
                                 .toolbar {
                                     Spacer()
