@@ -1,10 +1,10 @@
-# ``CodeEdit/InspectorSidebarView``
+# ``CodeEdit/InspectorAreaView``
 
 ## Topics
 
 ### Toolbars
 
-- ``InspectorSidebarToolbarTop``
+- ``InspectorAreaToolbarTop``
 
 ### File Inspector
 
