@@ -20,7 +20,7 @@ struct EditorView: View {
                 WorkspaceCodeFileView(file: selected)
                     .focusedObject(editor)
                     .transformEnvironment(\.edgeInsets) { insets in
-                        insets.top += TabBarView.height + PathBarView.height + 1 + 1
+                        insets.top += TabBarView.height + EditorPathBarView.height + 1 + 1
                     }
             } else {
                 VStack {
@@ -49,7 +49,7 @@ struct EditorView: View {
 
                 Divider()
                 if let file = editor.selectedTab {
-                    PathBarView(file: file) { [weak editor] newFile in
+                    EditorPathBarView(file: file) { [weak editor] newFile in
                         if let index = editor?.tabs.firstIndex(of: file) {
                             editor?.openTab(item: newFile, at: index)
                         }

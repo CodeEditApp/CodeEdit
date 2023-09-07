@@ -8,7 +8,7 @@
 import SwiftUI
 import Combine
 
-struct PathBarComponent: View {
+struct EditorPathBarComponent: View {
 
     private let fileItem: CEWorkspaceFile
     private let tappedOpenFile: (CEWorkspaceFile) -> Void
@@ -43,7 +43,7 @@ struct PathBarComponent: View {
     var body: some View {
         NSPopUpButtonView(selection: $selection) {
             let button = NSPopUpButton()
-            button.menu = PathBarMenu(fileItems: siblings, tappedOpenFile: tappedOpenFile)
+            button.menu = EditorPathBarMenu(fileItems: siblings, tappedOpenFile: tappedOpenFile)
             button.font = .systemFont(ofSize: NSFont.systemFontSize(for: .small))
             button.isBordered = false
             (button.cell as? NSPopUpButtonCell)?.arrowPosition = .noArrow

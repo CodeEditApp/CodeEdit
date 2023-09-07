@@ -11,7 +11,7 @@ import SwiftUI
 // It has the gesture implementation and its animations.
 // I am now also disabling `file_length` rule because the dragging algorithm (with UX) is complex.
 // swiftlint:disable file_length type_body_length
-// - TODO: TabBarTabView drop-outside event handler.
+// - TODO: EditorTabView drop-outside event handler.
 struct TabBarView: View {
 
     typealias TabID = CEWorkspaceFile.ID
@@ -320,7 +320,7 @@ struct TabBarView: View {
                         ) {
                             ForEach(Array(openedTabs.enumerated()), id: \.element) { index, id in
                                 if let item = editor.tabs.first(where: { $0.id == id }) {
-                                    TabBarTabView(
+                                    EditorTabView(
                                         expectedWidth: expectedTabWidth,
                                         item: item,
                                         index: index,
@@ -345,7 +345,7 @@ struct TabBarView: View {
                                     // Detect the drop action of each tab.
                                     .onDrop(
                                         of: [.utf8PlainText], // TODO: Make a unique type for it.
-                                        delegate: TabBarTabOnDropDelegate(
+                                        delegate: EditorTabOnDropDelegate(
                                             currentTabId: id,
                                             openedTabs: $openedTabs,
                                             onDragTabId: $onDragTabId,
@@ -632,7 +632,7 @@ struct TabBarView: View {
         editorManager.activeEditor = newEditor
     }
 
-    private struct TabBarTabOnDropDelegate: DropDelegate {
+    private struct EditorTabOnDropDelegate: DropDelegate {
         private let currentTabId: TabID
         @Binding private var openedTabs: [TabID]
         @Binding private var onDragTabId: TabID?

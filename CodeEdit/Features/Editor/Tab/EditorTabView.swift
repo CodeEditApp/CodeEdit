@@ -1,5 +1,5 @@
 //
-//  TabBarTabView.swift
+//  EditorTabView.swift
 //  CodeEdit
 //
 //  Created by Lukas Pistrol on 17.03.22.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TabBarTabView: View {
+struct EditorTabView: View {
 
     @Environment(\.colorScheme)
     private var colorScheme
@@ -176,7 +176,7 @@ struct TabBarTabView: View {
                         .hidden()
                     }
                     // Close Button
-                    TabBarTabCloseButton(
+                    EditorTabCloseButton(
                         isActive: isActive,
                         isHoveringTab: isHovering,
                         isDragging: draggingTabId != nil || onDragTabId != nil,
@@ -242,7 +242,7 @@ struct TabBarTabView: View {
             }
             .background {
                 if tabBarStyle == .xcode {
-                    TabBarTabBackground(isActive: isActive, isPressing: isPressing, isDragging: isDragging)
+                    EditorTabBackground(isActive: isActive, isPressing: isPressing, isDragging: isDragging)
                         .animation(.easeInOut(duration: 0.08), value: isHovering)
                 } else {
                     if isFullscreen && isActive {
@@ -269,7 +269,7 @@ struct TabBarTabView: View {
             //                return .init(object: NSString(string: "\(item.tabID)"))
             //            })
         }
-        .buttonStyle(TabBarTabButtonStyle(isPressing: $isPressing))
+        .buttonStyle(EditorTabButtonStyle(isPressing: $isPressing))
         .simultaneousGesture(
             TapGesture(count: 2)
                 .onEnded { _ in

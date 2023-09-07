@@ -1,5 +1,5 @@
 //
-//  TabBarTabCloseButton.swift
+//  EditorTabCloseButton.swift
 //  CodeEdit
 //
 //  Created by Austin Condiff on 1/17/23.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TabBarTabCloseButton: View {
+struct EditorTabCloseButton: View {
     var isActive: Bool
     var isHoveringTab: Bool
     var isDragging: Bool
@@ -91,11 +91,11 @@ struct TabBarTabCloseButton: View {
     }
 }
 
-struct TabBarTabCloseButton_Previews: PreviewProvider {
+struct EditorTabCloseButton_Previews: PreviewProvider {
     @State static var closeButtonGestureActive = true
 
     static var previews: some View {
-        TabBarTabCloseButton(
+        EditorTabCloseButton(
             isActive: false,
             isHoveringTab: false,
             isDragging: false,

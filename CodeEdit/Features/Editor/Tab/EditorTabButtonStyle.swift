@@ -1,5 +1,5 @@
 //
-//  TabBarTabButtonStyle.swift
+//  EditorTabButtonStyle.swift
 //  CodeEdit
 //
 //  Created by Khan Winter on 6/4/22.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TabBarTabButtonStyle: ButtonStyle {
+struct EditorTabButtonStyle: ButtonStyle {
     @Environment(\.colorScheme)
     var colorScheme
 

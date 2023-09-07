@@ -1,5 +1,5 @@
 //
-//  TabBarTabRepresentable.swift
+//  EditorTabRepresentable.swift
 //  
 //
 //  Created by Pavel Kasila on 30.04.22.
@@ -7,10 +7,10 @@
 
 import SwiftUI
 
-/// Protocol for data passed to TabBarTabView to conform to
-protocol TabBarTabRepresentable {
+/// Protocol for data passed to EditorTabView to conform to
+protocol EditorTabRepresentable {
     /// Unique tab identifier
-    var tabID: TabBarTabID { get }
+    var tabID: EditorTabID { get }
     /// String to be shown as tab's title
     var name: String { get }
     /// Image to be shown as tab's icon

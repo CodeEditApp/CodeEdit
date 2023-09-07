@@ -1,5 +1,5 @@
 //
-//  TabBarTabBackground.swift
+//  EditorTabBackground.swift
 //  CodeEdit
 //
 //  Created by Austin Condiff on 1/17/23.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TabBarTabBackground: View {
+struct EditorTabBackground: View {
     var isActive: Bool
     var isPressing: Bool
     var isDragging: Bool
@@ -61,8 +61,8 @@ struct TabBarTabBackground: View {
     }
 }
 
-struct TabBarTabBackground_Previews: PreviewProvider {
+struct EditorTabBackground_Previews: PreviewProvider {
     static var previews: some View {
-        TabBarTabBackground(isActive: false, isPressing: false, isDragging: false)
+        EditorTabBackground(isActive: false, isPressing: false, isDragging: false)
     }
 }

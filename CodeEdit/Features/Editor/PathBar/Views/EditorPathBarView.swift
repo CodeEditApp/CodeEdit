@@ -1,5 +1,5 @@
 //
-//  PathBarView.swift
+//  EditorPathBarView.swift
 //  CodeEditModules/PathBar
 //
 //  Created by Lukas Pistrol on 17.03.22.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct PathBarView: View {
+struct EditorPathBarView: View {
 
     private let file: CEWorkspaceFile
     private let tappedOpenFile: (CEWorkspaceFile) -> Void
@@ -50,7 +50,7 @@ struct PathBarView: View {
                     if fileItem.parent != nil {
                         chevron
                     }
-                    PathBarComponent(fileItem: fileItem, tappedOpenFile: tappedOpenFile)
+                    EditorPathBarComponent(fileItem: fileItem, tappedOpenFile: tappedOpenFile)
                         .padding(.leading, 2.5)
                 }
             }

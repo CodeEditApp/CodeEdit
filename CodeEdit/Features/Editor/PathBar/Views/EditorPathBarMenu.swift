@@ -1,5 +1,5 @@
 //
-//  PathBarMenu.swift
+//  EditorPathBarMenu.swift
 //  CodeEditModules/PathBar
 //
 //  Created by Ziyuan Zhao on 2022/3/29.
@@ -7,7 +7,7 @@
 
 import AppKit
 
-final class PathBarMenu: NSMenu, NSMenuDelegate {
+final class EditorPathBarMenu: NSMenu, NSMenuDelegate {
     private let fileItems: [CEWorkspaceFile]
     private let tappedOpenFile: (CEWorkspaceFile) -> Void
 
@@ -44,9 +44,9 @@ final class PathBarMenu: NSMenu, NSMenuDelegate {
         }
     }
 
-    private func generateSubmenu(_ fileItem: CEWorkspaceFile) -> PathBarMenu? {
+    private func generateSubmenu(_ fileItem: CEWorkspaceFile) -> EditorPathBarMenu? {
         if let children = fileItem.children {
-            let menu = PathBarMenu(
+            let menu = EditorPathBarMenu(
                 fileItems: children,
                 tappedOpenFile: tappedOpenFile
             )
