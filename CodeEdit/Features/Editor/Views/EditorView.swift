@@ -46,16 +46,13 @@ struct EditorView: View {
                 TabBarView()
                     .id("TabBarView" + editor.id.uuidString)
                     .environmentObject(editor)
-
                 Divider()
-                if let file = editor.selectedTab {
-                    EditorPathBarView(file: file) { [weak editor] newFile in
-                        if let index = editor?.tabs.firstIndex(of: file) {
-                            editor?.openTab(item: newFile, at: index)
-                        }
+                EditorPathBarView(file: editor.selectedTab) { [weak editor] newFile in
+                    if let file = editor?.selectedTab, let index = editor?.tabs.firstIndex(of: file) {
+                        editor?.openTab(item: newFile, at: index)
                     }
-                    Divider()
                 }
+                Divider()
             }
             .environment(\.isActiveEditor, editor == editorManager.activeEditor)
             .background(EffectView(.titlebar, blendingMode: .withinWindow, emphasized: false))

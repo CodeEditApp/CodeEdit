@@ -9,7 +9,7 @@ import SwiftUI
 
 struct EditorPathBarView: View {
 
-    private let file: CEWorkspaceFile
+    private let file: CEWorkspaceFile?
     private let tappedOpenFile: (CEWorkspaceFile) -> Void
 
     @Environment(\.colorScheme)
@@ -24,10 +24,10 @@ struct EditorPathBarView: View {
     static let height = 27.0
 
     init(
-        file: CEWorkspaceFile,
+        file: CEWorkspaceFile?,
         tappedOpenFile: @escaping (CEWorkspaceFile) -> Void
     ) {
-        self.file = file
+        self.file = file ?? nil
         self.tappedOpenFile = tappedOpenFile
     }
 
@@ -46,12 +46,22 @@ struct EditorPathBarView: View {
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 1.5) {
-                ForEach(fileItems, id: \.self) { fileItem in
-                    if fileItem.parent != nil {
-                        chevron
+                if file == nil {
+                    Text("No Selection")
+                        .font(.system(size: 11, weight: .regular))
+                        .foregroundColor(
+                            activeState != .inactive
+                            ? isActiveEditor ? .primary : .secondary
+                            : Color(nsColor: .tertiaryLabelColor)
+                        )
+                } else {
+                    ForEach(fileItems, id: \.self) { fileItem in
+                        if fileItem.parent != nil {
+                            chevron
+                        }
+                        EditorPathBarComponent(fileItem: fileItem, tappedOpenFile: tappedOpenFile)
+                            .padding(.leading, 2.5)
                     }
-                    EditorPathBarComponent(fileItem: fileItem, tappedOpenFile: tappedOpenFile)
-                        .padding(.leading, 2.5)
                 }
             }
             .padding(.horizontal, 10)
