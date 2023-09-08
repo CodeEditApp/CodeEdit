@@ -472,8 +472,4 @@ struct EditorTabs: View {
     }
 }
 
-struct EditorTabs_Previews: PreviewProvider {
-    static var previews: some View {
-        EditorTabs()
-    }
-}
+// swiftlint:enable file_length type_body_length
