@@ -81,7 +81,7 @@ struct ViewCommands: Commands {
                     }
                 }
                 .disabled(navigationSplitViewVisibility == nil)
-                .keyboardShortcut("s", modifiers: [.control, .command])
+                .keyboardShortcut("0", modifiers: [.command])
 
                 Button("\(inspectorVisibility == false ? "Show" : "Hide") Inspector") {
                     inspectorVisibility?.toggle()
@@ -93,7 +93,7 @@ struct ViewCommands: Commands {
                     windowController?.toggleFirstPanel()
                 }
                 .disabled(windowController == nil)
-                .keyboardShortcut("s", modifiers: [.control, .command])
+                .keyboardShortcut("0", modifiers: [.command])
                 .onReceive(NSApp.publisher(for: \.keyWindow)) { window in
                     windowController = window?.windowController as? CodeEditWindowController
                 }
