@@ -72,7 +72,7 @@ struct EditorTabBarAccessoryNativeBackground: View {
 
     var body: some View {
         ZStack(alignment: getAlignment()) {
-            EditorTabBarNativeInactiveBackgroundColor()
+            EditorTabBarNativeInactiveBgColor()
                 .padding(getPaddingDirection(), dividerPosition == .none ? 0 : 1)
             EditorTabDivider()
                 .opacity(dividerPosition == .none ? 0 : 1)

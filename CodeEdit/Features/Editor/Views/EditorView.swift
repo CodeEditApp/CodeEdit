@@ -23,7 +23,12 @@ struct EditorView: View {
                 WorkspaceCodeFileView(file: selected)
                     .focusedObject(editor)
                     .transformEnvironment(\.edgeInsets) { insets in
-                        insets.top += (EditorTabBarView.height + 1) + (showEditorPathBar ? (EditorPathBarView.height + 1) : 0)
+                        insets.top +=
+                        (EditorTabBarView.height + 1)
+                        + (showEditorPathBar
+                           ? (EditorPathBarView.height + 1)
+                           : 0
+                        )
                     }
             } else {
                 VStack {

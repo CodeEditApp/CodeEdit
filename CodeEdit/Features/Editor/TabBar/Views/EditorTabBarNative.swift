@@ -13,7 +13,7 @@ import SwiftUI
 struct EditorTabBarNativeInactiveBackground: View {
     var body: some View {
         ZStack(alignment: .top) {
-            EditorTabBarNativeInactiveBackgroundColor()
+            EditorTabBarNativeInactiveBgColor()
             // When tab bar style is `native`, we put the top divider beneath tabs.
             EditorTabBarTopDivider()
         }
@@ -21,7 +21,7 @@ struct EditorTabBarNativeInactiveBackground: View {
 }
 
 /// Native style background color for tab bar.
-struct EditorTabBarNativeInactiveBackgroundColor: View {
+struct EditorTabBarNativeInactiveBgColor: View {
     @Environment(\.colorScheme)
     private var colorScheme
 

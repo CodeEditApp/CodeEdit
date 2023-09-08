@@ -252,7 +252,7 @@ struct EditorTabView: View {
                     }
                     ZStack {
                         // Native inactive tab background dim.
-                        EditorTabBarNativeInactiveBackgroundColor()
+                        EditorTabBarNativeInactiveBgColor()
                         // Native inactive tab hover state.
                         Color(nsColor: colorScheme == .dark ? .white : .black)
                             .opacity(isHovering ? (colorScheme == .dark ? 0.08 : 0.05) : 0.0)
