@@ -1,5 +1,5 @@
 //
-//  TabBarShadow.swift
+//  EditorTabsOverflowShadow.swift
 //  CodeEdit
 //
 //  Created by Austin Condiff on 8/22/23.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TabBarShadow: View {
+struct EditorTabsOverflowShadow: View {
     var width: CGFloat
     var startPoint: UnitPoint
     var endPoint: UnitPoint

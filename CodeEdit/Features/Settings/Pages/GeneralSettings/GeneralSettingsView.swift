@@ -38,6 +38,7 @@ struct GeneralSettingsView: View {
                 appearance
                 fileIconStyle
                 tabBarStyle
+                showEditorPathBar
                 navigatorTabBarPosition
                 inspectorTabBarPosition
             }
@@ -101,6 +102,10 @@ private extension GeneralSettingsView {
 
     var showLiveIssues: some View {
         Toggle("Show Live Issues", isOn: $settings.showLiveIssues)
+    }
+
+    var showEditorPathBar: some View {
+        Toggle("Show Path Bar", isOn: $settings.showEditorPathBar)
     }
 
     var fileExtensions: some View {

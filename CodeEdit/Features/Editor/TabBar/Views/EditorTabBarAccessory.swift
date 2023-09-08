@@ -8,7 +8,7 @@
 import SwiftUI
 
 /// Accessory icon's view for tab bar.
-struct TabBarAccessoryIcon: View {
+struct EditorTabBarAccessoryIcon: View {
     /// Unifies icon font for tab bar accessories.
     static let iconFont = Font.system(size: 14, weight: .regular, design: .default)
 
@@ -34,7 +34,7 @@ struct TabBarAccessoryIcon: View {
 }
 
 /// Tab bar accessory area background for native tab bar style.
-struct TabBarAccessoryNativeBackground: View {
+struct EditorTabBarAccessoryNativeBackground: View {
     enum DividerPosition {
         case none
         case leading
@@ -72,11 +72,11 @@ struct TabBarAccessoryNativeBackground: View {
 
     var body: some View {
         ZStack(alignment: getAlignment()) {
-            TabBarNativeInactiveBackgroundColor()
+            EditorTabBarNativeInactiveBackgroundColor()
                 .padding(getPaddingDirection(), dividerPosition == .none ? 0 : 1)
-            TabDivider()
+            EditorTabDivider()
                 .opacity(dividerPosition == .none ? 0 : 1)
-            TabBarTopDivider()
+            EditorTabBarTopDivider()
                 .frame(maxHeight: .infinity, alignment: .top)
         }
     }

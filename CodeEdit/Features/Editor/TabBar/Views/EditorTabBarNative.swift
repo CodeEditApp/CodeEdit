@@ -10,18 +10,18 @@
 import SwiftUI
 
 /// Native style background view (including color and shadow divider) for tab bar.
-struct TabBarNativeInactiveBackground: View {
+struct EditorTabBarNativeInactiveBackground: View {
     var body: some View {
         ZStack(alignment: .top) {
-            TabBarNativeInactiveBackgroundColor()
+            EditorTabBarNativeInactiveBackgroundColor()
             // When tab bar style is `native`, we put the top divider beneath tabs.
-            TabBarTopDivider()
+            EditorTabBarTopDivider()
         }
     }
 }
 
 /// Native style background color for tab bar.
-struct TabBarNativeInactiveBackgroundColor: View {
+struct EditorTabBarNativeInactiveBackgroundColor: View {
     @Environment(\.colorScheme)
     private var colorScheme
 
@@ -33,7 +33,7 @@ struct TabBarNativeInactiveBackgroundColor: View {
 
 /// Native style background material for active tab bar in fullscreen.
 /// This view is only used in fullscreen (to match the material of toolbar).
-struct TabBarNativeActiveMaterial: View {
+struct EditorTabBarNativeActiveMaterial: View {
     @Environment(\.colorScheme)
     private var colorScheme
 
@@ -57,7 +57,7 @@ struct TabBarNativeActiveMaterial: View {
 }
 
 /// Native style background material for tab bar.
-struct TabBarNativeMaterial: View {
+struct EditorTabBarNativeMaterial: View {
     var body: some View {
         EffectView(
             NSVisualEffectView.Material.titlebar,

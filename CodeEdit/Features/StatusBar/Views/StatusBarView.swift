@@ -41,7 +41,7 @@ struct StatusBarView: View {
                 StatusBarCursorLocationLabel()
             }
             StatusBarDivider()
-            StatusBarToggleDrawerButton()
+            StatusBarToggleUtilityAreaButton()
         }
         .padding(.horizontal, 10)
         .cursor(.resizeUpDown)

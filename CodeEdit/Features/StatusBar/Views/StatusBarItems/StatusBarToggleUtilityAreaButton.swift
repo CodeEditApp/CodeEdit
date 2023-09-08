@@ -1,5 +1,5 @@
 //
-//  StatusBarToggleDrawerButton.swift
+//  StatusBarToggleUtilityAreaButton.swift
 //  CodeEditModules/StatusBar
 //
 //  Created by Lukas Pistrol on 22.03.22.
@@ -7,15 +7,15 @@
 
 import SwiftUI
 
-internal struct StatusBarToggleDrawerButton: View {
+internal struct StatusBarToggleUtilityAreaButton: View {
     @EnvironmentObject private var model: UtilityAreaViewModel
 
     init() {
         CommandManager.shared.addCommand(
-            name: "Toggle Drawer",
-            title: "Toggle Drawer",
+            name: "Toggle Utility Area",
+            title: "Toggle Utility Area",
             id: "open.drawer",
-            command: CommandClosureWrapper.init(closure: togglePanel)
+            command: CommandClosureWrapper.init(closure: self.togglePanel)
         )
     }
 
