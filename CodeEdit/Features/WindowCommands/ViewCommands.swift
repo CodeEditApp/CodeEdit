@@ -36,9 +36,6 @@ struct ViewCommands: Commands {
         windowController?.navigatorCollapsed ?? false
     }
 
-//    @EnvironmentObject private var model: UtilityAreaViewModel
-
-
     var body: some Commands {
         CommandGroup(after: .toolbar) {
             Button("Show Command Palette") {
