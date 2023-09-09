@@ -8,26 +8,14 @@
 import SwiftUI
 
 internal struct StatusBarToggleUtilityAreaButton: View {
+    @Environment(\.controlActiveState)
+    var controlActiveState
+
     @EnvironmentObject private var model: UtilityAreaViewModel
-
-    init() {
-        CommandManager.shared.addCommand(
-            name: "Toggle Utility Area",
-            title: "Toggle Utility Area",
-            id: "open.drawer",
-            command: CommandClosureWrapper.init(closure: self.togglePanel)
-        )
-    }
-
-    func togglePanel() {
-        withAnimation {
-            model.isCollapsed.toggle()
-        }
-    }
 
     internal var body: some View {
         Button {
-            togglePanel()
+            model.togglePanel()
         } label: {
             Image(systemName: "square.bottomthird.inset.filled")
         }
@@ -35,5 +23,23 @@ internal struct StatusBarToggleUtilityAreaButton: View {
         .keyboardShortcut("Y", modifiers: [.command, .shift])
         .help(model.isCollapsed ? "Show the Utility area" : "Hide the Utility area")
         .onHover { isHovering($0) }
+        .onChange(of: controlActiveState) { newValue in
+            if newValue == .key {
+                CommandManager.shared.addCommand(
+                    name: "Toggle Utility Area",
+                    title: "Toggle Utility Area",
+                    id: "open.drawer",
+                    command: CommandClosureWrapper.init(closure: model.togglePanel)
+                )
+            }
+        }
+        .onAppear {
+            CommandManager.shared.addCommand(
+                name: "Toggle Utility Area",
+                title: "Toggle Utility Area",
+                id: "open.drawer",
+                command: CommandClosureWrapper.init(closure: model.togglePanel)
+            )
+        }
     }
 }

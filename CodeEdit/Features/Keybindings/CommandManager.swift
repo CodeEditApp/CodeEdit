@@ -18,7 +18,7 @@ let wrap = CommandClosureWrapper.init(closure: {
 })
 
 mgr.addCommand(name: "test", command: wrap)
-mgr.executeCommand(name: "test")
+mgr.executeCommand("test")
  ```
  */
 
