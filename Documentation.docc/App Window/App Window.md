@@ -28,7 +28,7 @@ A collection of all the views that make up the main app window.
 
 ### Inspector Sidebar
 
-- ``InspectorSidebarView``
+- ``InspectorAreaView``
 
 ### Status Bar
 

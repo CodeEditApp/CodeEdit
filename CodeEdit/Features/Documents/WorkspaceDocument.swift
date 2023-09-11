@@ -18,7 +18,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
 
     var workspaceFileManager: CEWorkspaceFileManager?
 
-    var tabManager = TabManager()
+    var editorManager = EditorManager()
 
     private var workspaceState: [String: Any] {
         get {
@@ -35,7 +35,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         didSet { workspaceFileManager?.notifyObservers() }
     }
 
-    var debugAreaModel = DebugAreaViewModel()
+    var utilityAreaModel = UtilityAreaViewModel()
     var searchState: SearchState?
     var quickOpenViewModel: QuickOpenViewModel?
     var commandsPaletteState: CommandPaletteViewModel?
@@ -122,8 +122,8 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         self.quickOpenViewModel = .init(fileURL: url)
         self.commandsPaletteState = .init()
 
-        tabManager.restoreFromState(self)
-        debugAreaModel.restoreFromState(self)
+        editorManager.restoreFromState(self)
+        utilityAreaModel.restoreFromState(self)
     }
 
     override func read(from url: URL, ofType typeName: String) throws {
@@ -135,8 +135,8 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     // MARK: Close Workspace
 
     override func close() {
-        tabManager.saveRestorationState(self)
-        debugAreaModel.saveRestorationState(self)
+        editorManager.saveRestorationState(self)
+        utilityAreaModel.saveRestorationState(self)
         super.close()
     }
 
@@ -174,7 +174,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
             return
         }
         // Save unsaved changes before closing
-        let editedCodeFiles = tabManager.tabGroups
+        let editedCodeFiles = editorManager.editorLayout
             .gatherOpenFiles()
             .compactMap(\.fileDocument)
             .filter(\.isDocumentEdited)
@@ -203,7 +203,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
             implementation,
             to: (@convention(c)(Any, Selector, Any, Bool, UnsafeMutableRawPointer?) -> Void).self
         )
-        let areAllOpenedCodeFilesClean = tabManager.tabGroups.gatherOpenFiles()
+        let areAllOpenedCodeFilesClean = editorManager.editorLayout.gatherOpenFiles()
             .compactMap(\.fileDocument)
             .allSatisfy { !$0.isDocumentEdited }
         function(object, shouldCloseSelector, self, areAllOpenedCodeFilesClean, contextInfo)

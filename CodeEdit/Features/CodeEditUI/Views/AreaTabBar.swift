@@ -68,7 +68,7 @@ struct AreaTabBar<Tab: AreaTab>: View {
                              drugItemLocation != nil ? 0.0 : 1.0)
                 //                    .onDrop(
                 //                        of: [.utf8PlainText],
-                //                        delegate: InspectorSidebarDockIconDelegate(
+                //                        delegate: InspectorAreaDockIconDelegate(
                 //                            item: icon,
                 //                            current: $draggingItem,
                 //                            icons: $icons,

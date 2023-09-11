@@ -78,9 +78,9 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         let splitVC = CodeEditSplitViewController(workspace: workspace, feedbackPerformer: feedbackPerformer)
 
         let navigatorView = SettingsInjector {
-            NavigatorSidebarView(workspace: workspace)
+            NavigatorAreaView(workspace: workspace)
                 .environmentObject(workspace)
-                .environmentObject(workspace.tabManager)
+                .environmentObject(workspace.editorManager)
         }
 
         let navigator = NSSplitViewItem(sidebarWithViewController: NSHostingController(rootView: navigatorView))
@@ -94,8 +94,8 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
             WindowObserver(window: window!) {
                 WorkspaceView()
                     .environmentObject(workspace)
-                    .environmentObject(workspace.tabManager)
-                    .environmentObject(workspace.debugAreaModel)
+                    .environmentObject(workspace.editorManager)
+                    .environmentObject(workspace.utilityAreaModel)
             }
         }
 
@@ -106,9 +106,9 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         splitVC.addSplitViewItem(mainContent)
 
         let inspectorView = SettingsInjector {
-            InspectorSidebarView()
+            InspectorAreaView()
                 .environmentObject(workspace)
-                .environmentObject(workspace.tabManager)
+                .environmentObject(workspace.editorManager)
         }
 
         let inspector = NSSplitViewItem(viewController: NSHostingController(rootView: inspectorView))
@@ -228,12 +228,12 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
     }
 
     private func getSelectedCodeFile() -> CodeFileDocument? {
-        workspace?.tabManager.activeTabGroup.selected?.fileDocument
+        workspace?.editorManager.activeEditor.selectedTab?.fileDocument
     }
 
     @IBAction func saveDocument(_ sender: Any) {
         getSelectedCodeFile()?.save(sender)
-        workspace?.tabManager.activeTabGroup.temporaryTab = nil
+        workspace?.editorManager.activeEditor.temporaryTab = nil
     }
 
     @IBAction func openCommandPalette(_ sender: Any) {
@@ -276,7 +276,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
                 let contentView = QuickOpenView(state: state) {
                     panel.close()
                 } openFile: { file in
-                    workspace.tabManager.openTab(item: file)
+                    workspace.editorManager.openTab(item: file)
                 }
 
                 panel.contentView = NSHostingView(rootView: SettingsInjector { contentView })
@@ -287,18 +287,18 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
     }
 
     @IBAction func closeCurrentTab(_ sender: Any) {
-        if (workspace?.tabManager.activeTabGroup.tabs ?? []).isEmpty {
-            self.closeActiveTabGroup(self)
+        if (workspace?.editorManager.activeEditor.tabs ?? []).isEmpty {
+            self.closeActiveEditor(self)
         } else {
-            workspace?.tabManager.activeTabGroup.closeCurrentTab()
+            workspace?.editorManager.activeEditor.closeSelectedTab()
         }
     }
 
-    @IBAction func closeActiveTabGroup(_ sender: Any) {
-        if workspace?.tabManager.tabGroups.findSomeTabGroup(except: workspace?.tabManager.activeTabGroup) == nil {
+    @IBAction func closeActiveEditor(_ sender: Any) {
+        if workspace?.editorManager.editorLayout.findSomeEditor(except: workspace?.editorManager.activeEditor) == nil {
             NSApp.sendAction(#selector(NSWindow.close), to: nil, from: nil)
         } else {
-            workspace?.tabManager.activeTabGroup.close()
+            workspace?.editorManager.activeEditor.close()
         }
     }
 }
