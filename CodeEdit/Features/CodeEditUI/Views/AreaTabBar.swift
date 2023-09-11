@@ -131,19 +131,23 @@ struct AreaTabBar<Tab: AreaTab>: View {
                 tabOffsets[tab] = currentLocation - startLocation
 
                 // Check for swaps between adjacent tabs
-                swapWithPreviousTab(
+                // Left tab
+                swapTab(
                     tab: tab,
                     currentIndex: currentIndex,
                     currentLocation: currentLocation,
                     dragDifference: dragDifference,
-                    currentTabWidth: currentTabWidth
+                    currentTabWidth: currentTabWidth,
+                    direction: .previous
                 )
-                swapWithNextTab(
+                // Right tab
+                swapTab(
                     tab: tab,
                     currentIndex: currentIndex,
                     currentLocation: currentLocation,
                     dragDifference: dragDifference,
-                    currentTabWidth: currentTabWidth
+                    currentTabWidth: currentTabWidth,
+                    direction: .next
                 )
 
                 // Update the last dragging location if there's enough offset
@@ -171,79 +175,94 @@ struct AreaTabBar<Tab: AreaTab>: View {
         draggingLastLocation = initialLocation
     }
 
-    private func swapWithPreviousTab(
-        tab: Tab, currentIndex: Int, currentLocation: CGFloat, dragDifference: CGFloat, currentTabWidth: CGFloat
-    ) {
-        guard let previousIndex = currentIndex > 0 ? currentIndex - 1 : nil,
-              dragDifference < 0 else { return }
+    enum SwapDirection {
+        case previous
+        case next
+    }
 
-        // Get info about the previous tab
-        let previousTab = items[previousIndex]
-        guard let previousTabLocation = tabLocations[previousTab],
-              let previousTabWidth = tabWidth[previousTab]
+    private func swapTab(
+        tab: Tab, currentIndex: Int, currentLocation: CGFloat, dragDifference: CGFloat,
+        currentTabWidth: CGFloat, direction: SwapDirection
+    ) {
+        // Determine the index to swap with based on direction
+        var swapIndex: Int?
+        if direction == .previous {
+            if currentIndex > 0 {
+                swapIndex = currentIndex - 1
+            }
+        } else {
+            if currentIndex < items.count - 1 {
+                swapIndex = currentIndex + 1
+            }
+        }
+
+        // Validate the drag direction
+        let isValidDragDir = (direction == .previous && dragDifference < 0) ||
+                             (direction == .next && dragDifference > 0)
+        guard let swapIndex = swapIndex, isValidDragDir else { return }
+
+        // Get info about the tab to swap with
+        let swapTab = items[swapIndex]
+        guard let swapTabLocation = tabLocations[swapTab],
+              let swapTabWidth = tabWidth[swapTab]
         else { return }
 
-        // Did we pass the threshold to swap positions with the previous tab?
-        var isWithinBounds = false
+        let isWithinBounds: Bool
         if position == .top {
-            isWithinBounds = currentLocation < max(
-                previousTabLocation.maxX - previousTabWidth * 0.1,
-                previousTabLocation.minX + previousTabWidth * 0.9
-            )
+            isWithinBounds = direction == .previous ?
+                isWithinPrevTopBounds(currentLocation, swapTabLocation, swapTabWidth) :
+                isWithinNextTopBounds(currentLocation, swapTabLocation, swapTabWidth, currentTabWidth)
         } else {
-            isWithinBounds = currentLocation < max(
-                previousTabLocation.maxY - previousTabWidth * 0.1,
-                previousTabLocation.minY + previousTabWidth * 0.9
-            )
+            isWithinBounds = direction == .previous ?
+                isWithinPrevBottomBounds(currentLocation, swapTabLocation, swapTabWidth) :
+                isWithinNextBottomBounds(currentLocation, swapTabLocation, swapTabWidth, currentTabWidth)
         }
 
         // Swap tab positions
         if isWithinBounds {
-            let changing = previousTabWidth - 1
-            draggingStartLocation! -= changing
+            let changing = swapTabWidth - 1
+            draggingStartLocation! += direction == .previous ? -changing : changing
             withAnimation {
-                tabOffsets[tab]! += changing
-                items.swapAt(currentIndex, previousIndex)
+                tabOffsets[tab]! += direction == .previous ? changing : -changing
+                items.swapAt(currentIndex, swapIndex)
             }
-            return
         }
     }
 
-    private func swapWithNextTab(
-        tab: Tab, currentIndex: Int, currentLocation: CGFloat, dragDifference: CGFloat, currentTabWidth: CGFloat
-    ) {
-        guard let nextIndex = currentIndex < items.count - 1 ? currentIndex + 1 : nil,
-              dragDifference > 0 else { return }
+    private func isWithinPrevTopBounds(
+        _ curLocation: CGFloat, _ swapLocation: CGRect, _ swapWidth: CGFloat
+    ) -> Bool {
+        return curLocation < max(
+            swapLocation.maxX - swapWidth * 0.1,
+            swapLocation.minX + swapWidth * 0.9
+        )
+    }
 
-        // Get info about the next tab
-        let nextTab = items[nextIndex]
-        guard let nextTabLocation = tabLocations[nextTab],
-              let nextTabWidth = tabWidth[nextTab]
-        else { return }
+    private func isWithinNextTopBounds(
+        _ curLocation: CGFloat, _ swapLocation: CGRect, _ swapWidth: CGFloat, _ curWidth: CGFloat
+    ) -> Bool {
+        return curLocation > min(
+            swapLocation.minX + swapWidth * 0.1,
+            swapLocation.maxX - curWidth * 0.9
+        )
+    }
 
-        // Did we pass the threshold to swap positions with the next tab?
-        var isWithinBounds = false
-        if position == .top {
-            isWithinBounds = currentLocation > min(
-                nextTabLocation.minX + nextTabWidth * 0.1,
-                nextTabLocation.maxX - currentTabWidth * 0.9
-            )
-        } else {
-            isWithinBounds = currentLocation > min(
-                nextTabLocation.minY + nextTabWidth * 0.1,
-                nextTabLocation.maxY - currentTabWidth * 0.9
-            )
-        }
+    private func isWithinPrevBottomBounds(
+        _ curLocation: CGFloat, _ swapLocation: CGRect, _ swapWidth: CGFloat
+    ) -> Bool {
+        return curLocation < max(
+            swapLocation.maxY - swapWidth * 0.1,
+            swapLocation.minY + swapWidth * 0.9
+        )
+    }
 
-        // Swap tab positions
-        if isWithinBounds {
-            let changing = nextTabWidth - 1
-            draggingStartLocation! += changing
-            withAnimation {
-                tabOffsets[tab]! -= changing
-                items.swapAt(currentIndex, nextIndex)
-            }
-        }
+    private func isWithinNextBottomBounds(
+        _ curLocation: CGFloat, _ swapLocation: CGRect, _ swapWidth: CGFloat, _ curWidth: CGFloat
+    ) -> Bool {
+        return curLocation > min(
+            swapLocation.minY + swapWidth * 0.1,
+            swapLocation.maxY - curWidth * 0.9
+        )
     }
 
     private func makeTabItemGeometryReader(tab: Tab) -> some View {
