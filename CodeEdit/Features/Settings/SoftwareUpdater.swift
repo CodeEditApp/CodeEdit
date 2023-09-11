@@ -12,6 +12,9 @@ class SoftwareUpdater: NSObject, ObservableObject, SPUUpdaterDelegate {
     private var updater: SPUUpdater?
     private var automaticallyChecksForUpdatesObservation: NSKeyValueObservation?
     private var lastUpdateCheckDateObservation: NSKeyValueObservation?
+    private var appcastURL = URL(
+        string: "https://github.com/CodeEditApp/CodeEdit/releases/download/latest/appcast.xml"
+    )!
 
     @Published var automaticallyChecksForUpdates = false {
         didSet {
@@ -34,16 +37,16 @@ class SoftwareUpdater: NSObject, ObservableObject, SPUUpdaterDelegate {
         let request = URLRequest(url: url)
         guard let data = try? await URLSession.shared.data(for: request),
               let result = try? JSONDecoder().decode(GHAPIResult.self, from: data.0) else {
-            DispatchQueue.main.async {
+            await MainActor.run {
                 self.updater?.setFeedURL(nil)
             }
             return
         }
-        URL.appcast = URL(
-            string: "https://github.com/CodeEditApp/CodeEdit/releases/download/\(result.tagName)/appcast.xml"
-        )!
-        DispatchQueue.main.async {
-            self.updater?.setFeedURL(.appcast)
+        await MainActor.run {
+            appcastURL = URL(
+                string: "https://github.com/CodeEditApp/CodeEdit/releases/download/\(result.tagName)/appcast.xml"
+            )!
+            self.updater?.setFeedURL(appcastURL)
         }
     }
 
@@ -102,11 +105,3 @@ class SoftwareUpdater: NSObject, ObservableObject, SPUUpdaterDelegate {
         var tagName: String
     }
 }
-
-extension URL {
-    static var appcast = URL(
-        string: "https://github.com/CodeEditApp/CodeEdit/releases/download/latest/appcast.xml"
-    )!
-}
-
-// https://github.com/CodeEditApp/CodeEdit/releases/download/0.0.1-alpha.10/appcast.xml
