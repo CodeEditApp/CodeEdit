@@ -63,11 +63,6 @@ struct Command: Identifiable, Hashable {
     let id: String
     let title: String
     let closureWrapper: CommandClosureWrapper
-    init(id: String, title: String, closureWrapper: CommandClosureWrapper) {
-        self.id = id
-        self.title = title
-        self.closureWrapper = closureWrapper
-    }
 }
 
 /// A simple wrapper for command closure

@@ -16,8 +16,8 @@ struct SettingsView: View {
 
     /// Variables for the selected Page, the current search text and software updater
     @State private var selectedPage: SettingsPage = .init(
-        .general, 
-        baseColor: .gray, 
+        .general,
+        baseColor: .gray,
         icon: .system("gear")
     )
     @State private var searchText: String = ""
@@ -26,45 +26,61 @@ struct SettingsView: View {
     var presentationMode
 
     static var pages: [PageAndSettings] = [
-        .init(SettingsPage(
-            .general, 
-            baseColor: .gray, 
+        .init(
+            SettingsPage(
+            .general,
+            baseColor: .gray,
             icon: .system("gear")
-        )),
-        .init(SettingsPage(
-            .accounts, 
-            baseColor: .blue, 
+        )
+        ),
+        .init(
+            SettingsPage(
+            .accounts,
+            baseColor: .blue,
             icon: .system("at")
-        )),
-        .init(SettingsPage(
-            .theme, 
-            baseColor: .pink, 
+        )
+        ),
+        .init(
+            SettingsPage(
+            .theme,
+            baseColor: .pink,
             icon: .system("paintbrush.fill")
-        )),
-        .init(SettingsPage(
+        )
+        ),
+        .init(
+            SettingsPage(
             .textEditing,
             baseColor: .blue,
-            icon: .system("pencil.line"))
+            icon: .system("pencil.line")
+            )
         ),
-        .init(SettingsPage(
+        .init(
+            SettingsPage(
             .terminal,
             baseColor: .blue,
-            icon: .system("terminal.fill"))
+            icon: .system("terminal.fill")
+            )
         ),
-        .init(SettingsPage(
+        .init(
+            SettingsPage(
             .sourceControl,
             baseColor: .blue,
-            icon: .symbol("vault"))
+            icon: .symbol("vault")
+            )
         ),
-        .init(SettingsPage(
+        .init(
+            SettingsPage(
             .location,
             baseColor: .green,
-            icon: .system("externaldrive.fill"))
+            icon: .system("externaldrive.fill")
+            )
         ),
-        .init(SettingsPage(
+        .init(
+            SettingsPage(
             .featureFlags,
             baseColor: .cyan,
-            icon: .system("flag.2.crossed.fill"))
+            icon: .system("flag.2.crossed.fill")
+            )
         )
     ]
 
