@@ -16,6 +16,8 @@ struct ProjectNavigatorToolbarBottom: View {
 
     @EnvironmentObject var workspace: WorkspaceDocument
 
+    @EnvironmentObject var editorManager: EditorManager
+
     @State var filter: String = ""
 
     var body: some View {
@@ -50,21 +52,56 @@ struct ProjectNavigatorToolbarBottom: View {
         }
     }
 
+    /// Retrieves the active tab URL from the underlying editor instance, if theres no
+    /// active tab, fallbacks to the workspace's root directory
+    private func activeTabURL() -> URL? {
+        if let selectedTab = editorManager.activeEditor.selectedTab {
+            if selectedTab.isFolder {
+                return selectedTab.url
+            }
+
+            // If the current active tab belongs to a file, pop the filename from
+            // the path URL to retrieve the folder URL
+            let activeTabFileURL = selectedTab.url
+
+            if var components = URLComponents(url: activeTabFileURL, resolvingAgainstBaseURL: false) {
+                var pathComponents = activeTabFileURL.pathComponents
+                pathComponents.removeLast()
+
+                let fileURL = NSURL.fileURL(withPathComponents: pathComponents)! as URL
+                return fileURL
+            }
+        }
+
+        if let workspaceFileManager = workspace.workspaceFileManager {
+            let folderURL = workspaceFileManager.folderUrl
+            if let root = workspaceFileManager.getFile(folderURL.path) {
+                return root.url
+            }
+        }
+
+        return nil
+    }
+
     private var addNewFileButton: some View {
         Menu {
             Button("Add File") {
-                guard let folderURL = workspace.workspaceFileManager?.folderUrl,
-                      let root = try? workspace.workspaceFileManager?.getFile(folderURL.path) else { return }
+                if let filePathURL = activeTabURL() {
+                    guard let workspace = workspace.workspaceFileManager?.getFile(filePathURL.path) else { return }
 
-                // TODO: use currently selected file instead of root
-                root.addFile(fileName: "untitled")
+                    workspace.addFile(fileName: "untitled")
+                }
+
+                // TODO: Render inactive path warning or perhaps Finder to create file?
             }
             Button("Add Folder") {
-                guard let folderURL = workspace.workspaceFileManager?.folderUrl,
-                      let root = try? workspace.workspaceFileManager?.getFile(folderURL.path) else { return }
+                if let filePathURL = activeTabURL() {
+                    guard let workspace = workspace.workspaceFileManager?.getFile(filePathURL.path) else { return }
 
-                // TODO: use currently selected file instead of root
-                root.addFolder(folderName: "untitled")
+                    workspace.addFolder(folderName: "untitled")
+                }
+
+                // TODO: Render inactive path warning or perhaps Finder to create directory?
             }
         } label: {
             Image(systemName: "plus")
