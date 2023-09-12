@@ -40,7 +40,9 @@ struct SettingsPage: Hashable, Equatable, Identifiable {
     let baseColor: Color?
     let isSetting: Bool
     let settingName: String
-    var nameString: LocalizedStringKey { LocalizedStringKey(name.rawValue) }
+    var nameString: LocalizedStringKey {
+        LocalizedStringKey(name.rawValue)
+    }
     let icon: IconResource?
 
     /// Default initializer

@@ -47,7 +47,9 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
     }
 
     @available(*, unavailable)
-    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     /// These are example items that added as commands to command palette
     func registerCommands() {

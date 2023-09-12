@@ -15,21 +15,57 @@ struct SettingsView: View {
     private var colorScheme
 
     /// Variables for the selected Page, the current search text and software updater
-    @State private var selectedPage: SettingsPage = .init(.general, baseColor: .gray, icon: .system("gear"))
+    @State private var selectedPage: SettingsPage = .init(
+        .general, 
+        baseColor: .gray, 
+        icon: .system("gear")
+    )
     @State private var searchText: String = ""
 
     @Environment(\.presentationMode)
     var presentationMode
 
     static var pages: [PageAndSettings] = [
-        .init(SettingsPage(.general, baseColor: .gray, icon: .system("gear"))),
-        .init(SettingsPage(.accounts, baseColor: .blue, icon: .system("at"))),
-        .init(SettingsPage(.theme, baseColor: .pink, icon: .system("paintbrush.fill"))),
-        .init(SettingsPage(.textEditing, baseColor: .blue, icon: .system("pencil.line"))),
-        .init(SettingsPage(.terminal, baseColor: .blue, icon: .system("terminal.fill"))),
-        .init(SettingsPage(.sourceControl, baseColor: .blue, icon: .symbol("vault"))),
-        .init(SettingsPage(.location, baseColor: .green, icon: .system("externaldrive.fill"))),
-        .init(SettingsPage(.featureFlags, baseColor: .cyan, icon: .system("flag.2.crossed.fill")))
+        .init(SettingsPage(
+            .general, 
+            baseColor: .gray, 
+            icon: .system("gear")
+        )),
+        .init(SettingsPage(
+            .accounts, 
+            baseColor: .blue, 
+            icon: .system("at")
+        )),
+        .init(SettingsPage(
+            .theme, 
+            baseColor: .pink, 
+            icon: .system("paintbrush.fill")
+        )),
+        .init(SettingsPage(
+            .textEditing,
+            baseColor: .blue,
+            icon: .system("pencil.line"))
+        ),
+        .init(SettingsPage(
+            .terminal,
+            baseColor: .blue,
+            icon: .system("terminal.fill"))
+        ),
+        .init(SettingsPage(
+            .sourceControl,
+            baseColor: .blue,
+            icon: .symbol("vault"))
+        ),
+        .init(SettingsPage(
+            .location,
+            baseColor: .green,
+            icon: .system("externaldrive.fill"))
+        ),
+        .init(SettingsPage(
+            .featureFlags,
+            baseColor: .cyan,
+            icon: .system("flag.2.crossed.fill"))
+        )
     ]
 
     @ObservedObject private var settings: Settings = .shared

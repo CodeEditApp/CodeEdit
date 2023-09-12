@@ -26,7 +26,7 @@ extension String {
 
             // swiftlint:disable shorthand_operator
             highlightedText = highlightedText + Text(nonHighlightedText).foregroundColor(.secondary)
-            highlightedText = highlightedText + Text(highlightedSubstring).foregroundColor(.primary)
+            highlightedText = highlightedText + Text(highlightedSubstring).foregroundColor(.primary).bold()
 
             currentIndex = range.upperBound
         }
