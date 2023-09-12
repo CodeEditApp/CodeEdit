@@ -124,7 +124,7 @@ struct EditorTabView: View {
 
     @ViewBuilder var content: some View {
         HStack(spacing: 0.0) {
-            TabDivider()
+            EditorTabDivider()
                 .opacity(
                     (isActive || inHoldingState)
                     && tabBarStyle == .xcode ? 0.0 : 1.0
@@ -196,7 +196,7 @@ struct EditorTabView: View {
                     : (tabBarStyle == .xcode ? 0.4 : 0.55)
                 )
             )
-            TabDivider()
+            EditorTabDivider()
                 .opacity(
                     (isActive || inHoldingState)
                     && tabBarStyle == .xcode ? 0.0 : 1.0
@@ -205,7 +205,7 @@ struct EditorTabView: View {
         }
         .overlay(alignment: .top) {
             // Only show NativeTabShadow when `tabBarStyle` is native and this tab is not active.
-            TabBarTopDivider()
+            EditorTabBarTopDivider()
                 .opacity(tabBarStyle == .native && !isActive ? 1 : 0)
         }
         .foregroundColor(
@@ -246,13 +246,13 @@ struct EditorTabView: View {
                         .animation(.easeInOut(duration: 0.08), value: isHovering)
                 } else {
                     if isFullscreen && isActive {
-                        TabBarNativeActiveMaterial()
+                        EditorTabBarNativeActiveMaterial()
                     } else {
-                        TabBarNativeMaterial()
+                        EditorTabBarNativeMaterial()
                     }
                     ZStack {
                         // Native inactive tab background dim.
-                        TabBarNativeInactiveBackgroundColor()
+                        EditorTabBarNativeInactiveBgColor()
                         // Native inactive tab hover state.
                         Color(nsColor: colorScheme == .dark ? .white : .black)
                             .opacity(isHovering ? (colorScheme == .dark ? 0.08 : 0.05) : 0.0)

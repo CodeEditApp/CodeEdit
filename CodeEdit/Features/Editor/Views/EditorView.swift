@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct EditorView: View {
+    @AppSettings(\.general.showEditorPathBar)
+    var showEditorPathBar
+
     @ObservedObject var editor: Editor
 
     @FocusState.Binding var focus: Editor?
@@ -20,7 +23,12 @@ struct EditorView: View {
                 WorkspaceCodeFileView(file: selected)
                     .focusedObject(editor)
                     .transformEnvironment(\.edgeInsets) { insets in
-                        insets.top += TabBarView.height + EditorPathBarView.height + 1 + 1
+                        insets.top +=
+                        (EditorTabBarView.height + 1)
+                        + (showEditorPathBar
+                           ? (EditorPathBarView.height + 1)
+                           : 0
+                        )
                     }
             } else {
                 VStack {
@@ -43,19 +51,21 @@ struct EditorView: View {
         .ignoresSafeArea(.all)
         .safeAreaInset(edge: .top, spacing: 0) {
             VStack(spacing: 0) {
-                TabBarView()
+                EditorTabBarView()
                     .id("TabBarView" + editor.id.uuidString)
                     .environmentObject(editor)
                 Divider()
-                EditorPathBarView(file: editor.selectedTab) { [weak editor] newFile in
-                    if let file = editor?.selectedTab, let index = editor?.tabs.firstIndex(of: file) {
-                        editor?.openTab(item: newFile, at: index)
+                if showEditorPathBar {
+                    EditorPathBarView(file: editor.selectedTab) { [weak editor] newFile in
+                        if let file = editor?.selectedTab, let index = editor?.tabs.firstIndex(of: file) {
+                            editor?.openTab(item: newFile, at: index)
+                        }
                     }
+                    Divider()
                 }
-                Divider()
             }
             .environment(\.isActiveEditor, editor == editorManager.activeEditor)
-            .background(EffectView(.titlebar, blendingMode: .withinWindow, emphasized: false))
+            .background(EffectView(.headerView))
         }
         .focused($focus, equals: editor)
         .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("CodeEditor.didBeginEditing"))) { _ in

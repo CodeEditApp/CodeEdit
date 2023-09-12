@@ -59,4 +59,10 @@ class UtilityAreaViewModel: ObservableObject {
         workspace.addToWorkspaceState(key: .utilityAreaHeight, value: currentHeight)
         workspace.addToWorkspaceState(key: .utilityAreaMaximized, value: isMaximized)
     }
+
+    func togglePanel() {
+        withAnimation {
+            self.isCollapsed.toggle()
+        }
+    }
 }

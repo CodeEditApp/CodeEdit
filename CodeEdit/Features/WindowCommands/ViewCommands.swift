@@ -14,6 +14,8 @@ struct ViewCommands: Commands {
     var terminalFontSize
     @AppSettings(\.featureFlags.useNewWindowingSystem)
     var useNewWindowingSystem
+    @AppSettings(\.general.showEditorPathBar)
+    var showEditorPathBar
 
     @State var windowController: CodeEditWindowController?
 
@@ -104,6 +106,20 @@ struct ViewCommands: Commands {
                 }
                 .disabled(windowController == nil)
                 .keyboardShortcut("i", modifiers: [.control, .command])
+
+                Button("\(inspectorCollapsed ? "Show" : "Hide") Utility Area") {
+                    CommandManager.shared.executeCommand("open.drawer")
+                }
+                .disabled(windowController == nil)
+                .keyboardShortcut("y", modifiers: [.shift, .command])
+
+                Divider()
+
+                Button("\(showEditorPathBar ? "Hide" : "Show") Path Bar") {
+                    showEditorPathBar.toggle()
+                }
+
+                Divider()
             }
         }
     }
