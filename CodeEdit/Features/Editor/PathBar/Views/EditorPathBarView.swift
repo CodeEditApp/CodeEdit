@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct EditorPathBarView: View {
-
     private let file: CEWorkspaceFile?
     private let tappedOpenFile: (CEWorkspaceFile) -> Void
 
@@ -69,7 +68,6 @@ struct EditorPathBarView: View {
         .frame(height: Self.height, alignment: .center)
         .opacity(activeState == .inactive ? 0.8 : 1.0)
         .grayscale(isActiveEditor ? 0.0 : 1.0)
-        .background(EffectView(.headerView).frame(height: Self.height))
     }
 
     private var chevron: some View {

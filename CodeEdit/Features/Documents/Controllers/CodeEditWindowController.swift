@@ -61,15 +61,15 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         )
 
         CommandManager.shared.addCommand(
-            name: "Toggle Left Sidebar",
-            title: "Toggle Left Sidebar",
+            name: "Toggle Navigator",
+            title: "Toggle Navigator",
             id: "toggle_left_sidebar",
             command: CommandClosureWrapper(closure: { self.toggleFirstPanel() })
         )
 
         CommandManager.shared.addCommand(
-            name: "Toggle Right Sidebar",
-            title: "Toggle Right Sidebar",
+            name: "Toggle Inspector",
+            title: "Toggle Inspector",
             id: "toggle_right_sidebar",
             command: CommandClosureWrapper(closure: { self.toggleLastPanel() })
         )

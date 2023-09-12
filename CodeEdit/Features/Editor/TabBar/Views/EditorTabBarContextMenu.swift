@@ -1,5 +1,5 @@
 //
-//  TabBarContextMenu.swift
+//  EditorTabBarContextMenu.swift
 //  CodeEdit
 //
 //  Created by Khan Winter on 6/4/22.
@@ -10,11 +10,11 @@ import SwiftUI
 
 extension View {
     func tabBarContextMenu(item: CEWorkspaceFile, isTemporary: Bool) -> some View {
-        modifier(TabBarContextMenu(item: item, isTemporary: isTemporary))
+        modifier(EditorTabBarContextMenu(item: item, isTemporary: isTemporary))
     }
 }
 
-struct TabBarContextMenu: ViewModifier {
+struct EditorTabBarContextMenu: ViewModifier {
     init(
         item: CEWorkspaceFile,
         isTemporary: Bool

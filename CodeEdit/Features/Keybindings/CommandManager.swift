@@ -18,7 +18,7 @@ let wrap = CommandClosureWrapper.init(closure: {
 })
 
 mgr.addCommand(name: "test", command: wrap)
-mgr.executeCommand(name: "test")
+mgr.executeCommand("test")
  ```
  */
 
@@ -40,8 +40,8 @@ final class CommandManager: ObservableObject {
         return commandsList.map { $0.value }
     }
 
-    func executeCommand(name: String) {
-        commandsList[name]?.closureWrapper.call()
+    func executeCommand(_ id: String) {
+        commandsList[id]?.closureWrapper.call()
     }
 }
 

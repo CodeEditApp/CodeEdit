@@ -37,7 +37,7 @@ extension SettingsData {
                 name: "Send test to console",
                 title: "Send test to console", id: "codeedit.test", command: wrap
             )
-            mgr.executeCommand(name: "test")
+            mgr.executeCommand("test")
         }
 
         /// Adds new keybindings if they were added to default_keybindings.json.

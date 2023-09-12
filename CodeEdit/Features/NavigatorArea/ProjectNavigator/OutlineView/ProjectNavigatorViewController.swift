@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-/// A `NSViewController` that handles the **ProjectNavigatorView** in the **NavigatorSideabr**.
+/// A `NSViewController` that handles the **ProjectNavigatorView** in the **NavigatorArea**.
 ///
 /// Adds a ``outlineView`` inside a ``scrollView`` which shows the folder structure of the
 /// currently open project.

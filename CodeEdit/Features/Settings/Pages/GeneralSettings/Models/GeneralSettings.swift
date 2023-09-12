@@ -43,6 +43,9 @@ extension SettingsData {
             .map { NSLocalizedString($0, comment: "") }
         }
 
+        /// Show editor path bar
+        var showEditorPathBar: Bool = true
+
         /// The show file extensions behavior of the app
         var fileExtensionsVisibility: FileExtensionsVisibility = .showAll
 
@@ -103,6 +106,10 @@ extension SettingsData {
             self.showLiveIssues = try container.decodeIfPresent(
                 Bool.self,
                 forKey: .showLiveIssues
+            ) ?? true
+            self.showEditorPathBar = try container.decodeIfPresent(
+                Bool.self,
+                forKey: .showEditorPathBar
             ) ?? true
             self.fileExtensionsVisibility = try container.decodeIfPresent(
                 FileExtensionsVisibility.self,
