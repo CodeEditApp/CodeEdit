@@ -97,7 +97,7 @@ struct CodeFileView: View {
     @Environment(\.edgeInsets)
     private var edgeInsets
 
-    @EnvironmentObject private var tabgroup: TabGroupData
+    @EnvironmentObject private var editor: Editor
 
     var body: some View {
         CodeEditTextView(

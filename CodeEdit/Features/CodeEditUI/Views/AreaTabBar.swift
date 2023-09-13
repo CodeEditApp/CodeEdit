@@ -84,6 +84,9 @@ struct AreaTabBar<Tab: AreaTab>: View {
                     )
                     .background(makeTabItemGeometryReader(tab: icon))
                     .simultaneousGesture(makeAreaTabDragGesture(tab: icon))
+//                    .opacity(draggingItem?.imageName == icon.systemImage &&
+//                             hasChangedLocation &&
+//                             drugItemLocation != nil ? 0.0 : 1.0)
             }
             if position == .side {
                 Spacer()

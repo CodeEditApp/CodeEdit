@@ -8,17 +8,17 @@
 import SwiftUI
 
 final class SplitViewData: ObservableObject {
-    @Published var tabgroups: [TabGroup]
+    @Published var editorLayouts: [EditorLayout]
 
     var axis: Axis
 
-    init(_ axis: Axis, tabgroups: [TabGroup] = []) {
-        self.tabgroups = tabgroups
+    init(_ axis: Axis, editorLayouts: [EditorLayout] = []) {
+        self.editorLayouts = editorLayouts
         self.axis = axis
 
-        tabgroups.forEach {
-            if case .one(let tabGroupData) = $0 {
-                tabGroupData.parent = self
+        editorLayouts.forEach {
+            if case .one(let editor) = $0 {
+                editor.parent = self
             }
         }
     }
@@ -29,47 +29,60 @@ final class SplitViewData: ObservableObject {
     ///   If the direction is the same as the ancestor direction,
     ///   the editor is added to the ancestor instead of creating a new split container.
     ///   - index: index where the divider will be added.
-    ///   - tabgroup: new tabgroup class that will be used for the editor.
-    func split(_ direction: Edge, at index: Int, new tabgroup: TabGroupData) {
-        tabgroup.parent = self
+    ///   - editor: new editor class that will be used for the editor.
+    func split(_ direction: Edge, at index: Int, new editor: Editor) {
+        editor.parent = self
         switch (axis, direction) {
         case (.horizontal, .trailing), (.vertical, .bottom):
-            tabgroups.insert(.one(tabgroup), at: index+1)
+            editorLayouts.insert(.one(editor), at: index+1)
 
         case (.horizontal, .leading), (.vertical, .top):
-            tabgroups.insert(.one(tabgroup), at: index)
+            editorLayouts.insert(.one(editor), at: index)
 
         case (.horizontal, .top):
-            tabgroups[index] = .vertical(.init(.vertical, tabgroups: [.one(tabgroup), tabgroups[index]]))
+            editorLayouts[index] = .vertical(.init(.vertical, editorLayouts: [.one(editor), editorLayouts[index]]))
 
         case (.horizontal, .bottom):
-            tabgroups[index] = .vertical(.init(.vertical, tabgroups: [tabgroups[index], .one(tabgroup)]))
+            editorLayouts[index] = .vertical(.init(.vertical, editorLayouts: [editorLayouts[index], .one(editor)]))
 
         case (.vertical, .leading):
-            tabgroups[index] = .horizontal(.init(.horizontal, tabgroups: [.one(tabgroup), tabgroups[index]]))
+            editorLayouts[index] = .horizontal(.init(.horizontal, editorLayouts: [.one(editor), editorLayouts[index]]))
 
         case (.vertical, .trailing):
-            tabgroups[index] = .horizontal(.init(.horizontal, tabgroups: [tabgroups[index], .one(tabgroup)]))
+            editorLayouts[index] = .horizontal(.init(.horizontal, editorLayouts: [editorLayouts[index], .one(editor)]))
         }
     }
 
-    /// Closes a TabGroup.
-    /// - Parameter id: ID of the TabGroup.
-    func closeTabGroup(with id: TabGroupData.ID) {
-        tabgroups.removeAll { tabgroup in
-            if case .one(let tabGroupData) = tabgroup {
-                if tabGroupData.id == id {
+    /// Closes an Editor.
+    /// - Parameter id: ID of the Editor.
+    func closeEditor(with id: Editor.ID) {
+        editorLayouts.removeAll { editorLayout in
+            if case .one(let editor) = editorLayout {
+                if editor.id == id {
                     return true
                 }
             }
+
             return false
         }
     }
 
+    func getEditorLayout(with id: Editor.ID) -> EditorLayout? {
+        for editorLayout in editorLayouts {
+            if case .one(let editor) = editorLayout {
+                if editor.id == id {
+                    return editorLayout
+                }
+            }
+        }
+
+        return nil
+    }
+
     /// Flattens the splitviews.
     func flatten() {
-        for index in tabgroups.indices {
-            tabgroups[index].flatten(parent: self)
+        for index in editorLayouts.indices {
+            editorLayouts[index].flatten(parent: self)
         }
     }
 }

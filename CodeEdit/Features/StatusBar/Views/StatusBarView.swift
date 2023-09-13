@@ -20,7 +20,7 @@ struct StatusBarView: View {
     @Environment(\.controlActiveState)
     private var controlActive
 
-    @EnvironmentObject private var model: DebugAreaViewModel
+    @EnvironmentObject private var model: UtilityAreaViewModel
 
     static let height = 28.0
 
@@ -41,7 +41,7 @@ struct StatusBarView: View {
                 StatusBarCursorLocationLabel()
             }
             StatusBarDivider()
-            StatusBarToggleDrawerButton()
+            StatusBarToggleUtilityAreaButton()
         }
         .padding(.horizontal, 10)
         .cursor(.resizeUpDown)

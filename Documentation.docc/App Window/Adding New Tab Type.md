@@ -5,12 +5,12 @@ This article is about how to add a new tab type to `TabBar`
 ## Overview
 
 First of all, each data type to be represented as tab in the UI should conform to
-``TabBarItemRepresentable`` protocol. For example, this is how it is done for
+``EditorTabRepresentable`` protocol. For example, this is how it is done for
 `FileItem`:
 
 ```swift
-final class FileItem: Identifiable, Codable, TabBarItemRepresentable {
-    public var tabID: TabBarItemID {
+final class FileItem: Identifiable, Codable, EditorTabRepresentable {
+    public var tabID: EditorTabID {
         .codeEditor(id)
     }
 
@@ -34,7 +34,7 @@ final class FileItem: Identifiable, Codable, TabBarItemRepresentable {
 
 Each new tab type must have new identifier case, for example:
 ```swift
-public enum TabBarItemID: Codable, Identifiable, Hashable {
+public enum EditorTabID: Codable, Identifiable, Hashable {
     public var id: String {
         switch self {
         ...
@@ -51,8 +51,8 @@ public enum TabBarItemID: Codable, Identifiable, Hashable {
 ### Opening and closing new tab types
 
 Tabs are opened using ``WorkspaceDocument/openTab(item:)`` method. It does a set of common
-things for all tabs. But also it calls a private method based on the ``TabBarItemID`` of the
-item. The private method for your ``TabBarItemRepresentable`` MUST persist this item
+things for all tabs. But also it calls a private method based on the ``EditorTabID`` of the
+item. The private method for your ``EditorTabRepresentable`` MUST persist this item
 somewhere (I recommend persisting them in ``WorkspaceSelectionState``).
 
 The same is for closing tabs using ``WorkspaceDocument/closeTab(item:)`` method.

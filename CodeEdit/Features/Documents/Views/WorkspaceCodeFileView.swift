@@ -10,9 +10,9 @@ import UniformTypeIdentifiers
 
 struct WorkspaceCodeFileView: View {
 
-    @EnvironmentObject private var tabManager: TabManager
+    @EnvironmentObject private var editorManager: EditorManager
 
-    @EnvironmentObject private var tabgroup: TabGroupData
+    @EnvironmentObject private var editor: Editor
 
     var file: CEWorkspaceFile
 

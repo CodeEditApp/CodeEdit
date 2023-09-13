@@ -8,14 +8,14 @@
 
 ### Model
 
-- ``TabBarItemID``
-- ``TabBarItemRepresentable``
+- ``EditorTabID``
+- ``EditorTabRepresentable``
 
 ### Components
 
-- ``TabBarItemView``
+- ``EditorTabView``
 - ``TabBarContextMenu``
-- ``TabBarItemButtonStyle``
+- ``EditorTabButtonStyle``
 - ``TabDivider``
 - ``TabBarTopDivider``
 - ``TabBarBottomDivider``

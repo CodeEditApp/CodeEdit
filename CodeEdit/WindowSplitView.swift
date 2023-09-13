@@ -16,7 +16,7 @@ struct WindowSplitView: View {
     var body: some View {
         WindowObserver(window: window) {
             NavigationSplitView(columnVisibility: $visibility) {
-                NavigatorSidebarView(workspace: workspace, viewModel: NavigatorSidebarViewModel())
+                NavigatorAreaView(workspace: workspace, viewModel: NavigatorSidebarViewModel())
                     .toolbar {
                         ToolbarItem {
                             Button {
@@ -47,7 +47,7 @@ struct WindowSplitView: View {
                         }
 #if swift(>=5.9) // Fix build on Xcode 14
                         .inspector(isPresented: $showInspector) {
-                            InspectorSidebarView()
+                            InspectorAreaView()
                                 .inspectorColumnWidth(min: 100, ideal: 200, max: 400)
                                 .toolbar {
                                     Spacer()
@@ -68,8 +68,8 @@ struct WindowSplitView: View {
         .focusedSceneValue(\.navigationSplitViewVisibility, $visibility)
         .focusedSceneValue(\.inspectorVisibility, $showInspector)
         .environmentObject(workspace)
-        .environmentObject(workspace.tabManager)
-        .environmentObject(workspace.debugAreaModel)
+        .environmentObject(workspace.editorManager)
+        .environmentObject(workspace.utilityAreaModel)
         .task {
             if let newWindow = workspace.windowControllers.first?.window {
                 window = newWindow
