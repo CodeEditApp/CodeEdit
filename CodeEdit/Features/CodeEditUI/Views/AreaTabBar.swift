@@ -183,9 +183,14 @@ struct AreaTabBar<Tab: AreaTab>: View {
         case next
     }
 
+    // swiftlint: disable function_parameter_count
     private func swapTab(
-        tab: Tab, currentIndex: Int, currentLocation: CGFloat, dragDifference: CGFloat,
-        currentTabWidth: CGFloat, direction: SwapDirection
+        tab: Tab,
+        currentIndex: Int,
+        currentLocation: CGFloat,
+        dragDifference: CGFloat,
+        currentTabWidth: CGFloat,
+        direction: SwapDirection
     ) {
         // Determine the index to swap with based on direction
         var swapIndex: Int?
@@ -231,6 +236,7 @@ struct AreaTabBar<Tab: AreaTab>: View {
             }
         }
     }
+    // swiftlint: enable function_parameter_count
 
     private func isWithinPrevTopBounds(
         _ curLocation: CGFloat, _ swapLocation: CGRect, _ swapWidth: CGFloat
