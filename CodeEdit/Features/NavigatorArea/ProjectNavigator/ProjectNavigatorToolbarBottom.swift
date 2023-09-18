@@ -54,7 +54,7 @@ struct ProjectNavigatorToolbarBottom: View {
 
     /// Retrieves the active tab URL from the underlying editor instance, if theres no
     /// active tab, fallbacks to the workspace's root directory
-    private func activeTabURL() -> URL? {
+    private func activeTabURL() -> URL {
         if let selectedTab = editorManager.activeEditor.selectedTab {
             if selectedTab.isFolder {
                 return selectedTab.url
@@ -64,7 +64,7 @@ struct ProjectNavigatorToolbarBottom: View {
             // the path URL to retrieve the folder URL
             let activeTabFileURL = selectedTab.url
 
-            if var components = URLComponents(url: activeTabFileURL, resolvingAgainstBaseURL: false) {
+            if URLComponents(url: activeTabFileURL, resolvingAgainstBaseURL: false) != nil {
                 var pathComponents = activeTabFileURL.pathComponents
                 pathComponents.removeLast()
 
@@ -73,35 +73,22 @@ struct ProjectNavigatorToolbarBottom: View {
             }
         }
 
-        if let workspaceFileManager = workspace.workspaceFileManager {
-            let folderURL = workspaceFileManager.folderUrl
-            if let root = workspaceFileManager.getFile(folderURL.path) {
-                return root.url
-            }
-        }
-
-        return nil
+        return workspace.workspaceFileManager.unsafelyUnwrapped.folderUrl
     }
 
     private var addNewFileButton: some View {
         Menu {
             Button("Add File") {
-                if let filePathURL = activeTabURL() {
-                    guard let workspace = workspace.workspaceFileManager?.getFile(filePathURL.path) else { return }
+                let filePathURL = activeTabURL()
+                guard let workspace = workspace.workspaceFileManager?.getFile(filePathURL.path) else { return }
 
-                    workspace.addFile(fileName: "untitled")
-                }
-
-                // TODO: Render inactive path warning or perhaps Finder to create file?
+                workspace.addFile(fileName: "untitled")
             }
             Button("Add Folder") {
-                if let filePathURL = activeTabURL() {
-                    guard let workspace = workspace.workspaceFileManager?.getFile(filePathURL.path) else { return }
+                let filePathURL = activeTabURL()
+                guard let workspace = workspace.workspaceFileManager?.getFile(filePathURL.path) else { return }
 
-                    workspace.addFolder(folderName: "untitled")
-                }
-
-                // TODO: Render inactive path warning or perhaps Finder to create directory?
+                workspace.addFolder(folderName: "untitled")
             }
         } label: {
             Image(systemName: "plus")
