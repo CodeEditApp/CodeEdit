@@ -16,6 +16,8 @@ struct ViewCommands: Commands {
     var useNewWindowingSystem
     @AppSettings(\.general.showEditorPathBar)
     var showEditorPathBar
+    @AppSettings(\.general.dimEditorsWithoutFocus)
+    var dimEditorsWithoutFocus
 
     @State var windowController: CodeEditWindowController?
 
@@ -118,6 +120,8 @@ struct ViewCommands: Commands {
                 Button("\(showEditorPathBar ? "Hide" : "Show") Path Bar") {
                     showEditorPathBar.toggle()
                 }
+
+                Toggle("Dim editors without focus", isOn: $dimEditorsWithoutFocus)
 
                 Divider()
             }

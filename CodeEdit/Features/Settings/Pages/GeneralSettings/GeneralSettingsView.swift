@@ -39,6 +39,7 @@ struct GeneralSettingsView: View {
                 fileIconStyle
                 tabBarStyle
                 showEditorPathBar
+                dimEditorsWithoutFocus
                 navigatorTabBarPosition
                 inspectorTabBarPosition
             }
@@ -106,6 +107,10 @@ private extension GeneralSettingsView {
 
     var showEditorPathBar: some View {
         Toggle("Show Path Bar", isOn: $settings.showEditorPathBar)
+    }
+
+    var dimEditorsWithoutFocus: some View {
+        Toggle("Dim editors without focus", isOn: $settings.dimEditorsWithoutFocus)
     }
 
     var fileExtensions: some View {
