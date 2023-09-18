@@ -365,6 +365,7 @@
 		B6AB09A12AAABAAE0003A3A6 /* EditorTabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AB09A02AAABAAE0003A3A6 /* EditorTabs.swift */; };
 		B6AB09A32AAABFEC0003A3A6 /* EditorTabBarLeadingAccessories.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AB09A22AAABFEC0003A3A6 /* EditorTabBarLeadingAccessories.swift */; };
 		B6AB09A52AAAC00F0003A3A6 /* EditorTabBarTrailingAccessories.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AB09A42AAAC00F0003A3A6 /* EditorTabBarTrailingAccessories.swift */; };
+		B6AB09B32AB919CF0003A3A6 /* View+actionBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AB09B22AB919CF0003A3A6 /* View+actionBar.swift */; };
 		B6C6A42A297716A500A3D28F /* EditorTabCloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C6A429297716A500A3D28F /* EditorTabCloseButton.swift */; };
 		B6C6A42E29771A8D00A3D28F /* EditorTabButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C6A42D29771A8D00A3D28F /* EditorTabButtonStyle.swift */; };
 		B6C6A43029771F7100A3D28F /* EditorTabBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C6A42F29771F7100A3D28F /* EditorTabBackground.swift */; };
@@ -816,6 +817,7 @@
 		B6AB09A02AAABAAE0003A3A6 /* EditorTabs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorTabs.swift; sourceTree = "<group>"; };
 		B6AB09A22AAABFEC0003A3A6 /* EditorTabBarLeadingAccessories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorTabBarLeadingAccessories.swift; sourceTree = "<group>"; };
 		B6AB09A42AAAC00F0003A3A6 /* EditorTabBarTrailingAccessories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorTabBarTrailingAccessories.swift; sourceTree = "<group>"; };
+		B6AB09B22AB919CF0003A3A6 /* View+actionBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+actionBar.swift"; sourceTree = "<group>"; };
 		B6C6A429297716A500A3D28F /* EditorTabCloseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorTabCloseButton.swift; sourceTree = "<group>"; };
 		B6C6A42D29771A8D00A3D28F /* EditorTabButtonStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorTabButtonStyle.swift; sourceTree = "<group>"; };
 		B6C6A42F29771F7100A3D28F /* EditorTabBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorTabBackground.swift; sourceTree = "<group>"; };
@@ -2179,6 +2181,7 @@
 			children = (
 				B6CF632529E541520085880A /* Models */,
 				B61DA9DE29D929E100BF4A43 /* GeneralSettingsView.swift */,
+				B6AB09B22AB919CF0003A3A6 /* View+actionBar.swift */,
 			);
 			path = GeneralSettings;
 			sourceTree = "<group>";
@@ -3170,6 +3173,7 @@
 				B6AB09A12AAABAAE0003A3A6 /* EditorTabs.swift in Sources */,
 				04C3255B2801F86400C8DA2D /* ProjectNavigatorViewController.swift in Sources */,
 				587B9E6029301D8F00AC7927 /* GitLabOAuthRouter.swift in Sources */,
+				B6AB09B32AB919CF0003A3A6 /* View+actionBar.swift in Sources */,
 				6C05A8AF284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift in Sources */,
 				588847632992A2A200996D95 /* CEWorkspaceFile.swift in Sources */,
 				6C2C155D29B4F4E500EA60A5 /* SplitViewReader.swift in Sources */,
