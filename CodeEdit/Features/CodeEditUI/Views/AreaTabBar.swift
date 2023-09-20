@@ -83,6 +83,7 @@ struct AreaTabBar<Tab: AreaTab>: View {
                         y: (position == .side) ? (tabOffsets[icon] ?? 0) : 0
                     )
                     .background(makeTabItemGeometryReader(tab: icon))
+                    .simultaneousGesture(makeAreaTabDragGesture(tab: icon))
             }
             if position == .side {
                 Spacer()

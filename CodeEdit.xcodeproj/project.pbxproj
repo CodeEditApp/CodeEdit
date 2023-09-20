@@ -1063,11 +1063,11 @@
 		287776EA27E350A100D46668 /* NavigatorArea */ = {
 			isa = PBXGroup;
 			children = (
+				307AC4CB2ABABD9800163376 /* ViewModels */,
 				D7012EE627E757660001E1EF /* FindNavigator */,
 				581550CB29FBD30400684881 /* OutlineView */,
 				286471AC27ED52950039369D /* ProjectNavigator */,
 				201169D52837B29600F92B46 /* SourceControlNavigator */,
-				30E6D0002A6E505200A58B20 /* NavigatorSidebarViewModel.swift */,
 				B67660682AA972D400CD56B0 /* Models */,
 				B67660692AA972DC00CD56B0 /* Views */,
 			);
@@ -1092,6 +1092,14 @@
 				2B15CA0028254139004E8F22 /* OpenWithCodeEdit.entitlements */,
 			);
 			path = OpenWithCodeEdit;
+			sourceTree = "<group>";
+		};
+		307AC4CB2ABABD9800163376 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				30E6D0002A6E505200A58B20 /* NavigatorSidebarViewModel.swift */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		3E0196712A392170002648D8 /* ShellIntegration */ = {
