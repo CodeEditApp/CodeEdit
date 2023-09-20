@@ -39,6 +39,7 @@ struct GeneralSettingsView: View {
                 fileIconStyle
                 tabBarStyle
                 showEditorPathBar
+                dimEditorsWithoutFocus
                 navigatorTabBarPosition
                 inspectorTabBarPosition
             }
@@ -106,6 +107,10 @@ private extension GeneralSettingsView {
 
     var showEditorPathBar: some View {
         Toggle("Show Path Bar", isOn: $settings.showEditorPathBar)
+    }
+
+    var dimEditorsWithoutFocus: some View {
+        Toggle("Dim editors without focus", isOn: $settings.dimEditorsWithoutFocus)
     }
 
     var fileExtensions: some View {
@@ -374,26 +379,5 @@ private extension GeneralSettingsView {
     private static let formatter = configure(DateFormatter()) {
         $0.dateStyle = .medium
         $0.timeStyle = .medium
-    }
-}
-
-extension View {
-    func actionBar<Content: View>(@ViewBuilder content: () -> Content) -> some View {
-        self
-            .padding(.bottom, 24)
-            .overlay(alignment: .bottom) {
-                VStack(spacing: -1) {
-                    Divider()
-                    HStack(spacing: 0) {
-                        content()
-                            .buttonStyle(.icon(font: Font.system(size: 11, weight: .medium), size: 24))
-                    }
-                    .frame(height: 16)
-                    .padding(.vertical, 4)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                }
-                .frame(height: 24)
-                .background(.separator)
-            }
     }
 }

@@ -11,6 +11,9 @@ struct EditorView: View {
     @AppSettings(\.general.showEditorPathBar)
     var showEditorPathBar
 
+    @AppSettings(\.general.dimEditorsWithoutFocus)
+    var dimEditorsWithoutFocus
+
     @ObservedObject var editor: Editor
 
     @FocusState.Binding var focus: Editor?
@@ -30,6 +33,7 @@ struct EditorView: View {
                            : 0
                         )
                     }
+                    .opacity(dimEditorsWithoutFocus && editor != editorManager.activeEditor ? 0.5 : 1)
             } else {
                 VStack {
                     Spacer()

@@ -24,6 +24,9 @@ extension SettingsData {
         /// Show editor path bar
         var showEditorPathBar: Bool = true
 
+        /// Dims editors without focus
+        var dimEditorsWithoutFocus: Bool = false
+
         /// The show file extensions behavior of the app
         var fileExtensionsVisibility: FileExtensionsVisibility = .showAll
 
@@ -89,6 +92,10 @@ extension SettingsData {
                 Bool.self,
                 forKey: .showEditorPathBar
             ) ?? true
+            self.dimEditorsWithoutFocus = try container.decodeIfPresent(
+                Bool.self,
+                forKey: .dimEditorsWithoutFocus
+            ) ?? false
             self.fileExtensionsVisibility = try container.decodeIfPresent(
                 FileExtensionsVisibility.self,
                 forKey: .fileExtensionsVisibility
