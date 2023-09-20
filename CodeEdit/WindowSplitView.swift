@@ -16,7 +16,7 @@ struct WindowSplitView: View {
     var body: some View {
         WindowObserver(window: window) {
             NavigationSplitView(columnVisibility: $visibility) {
-                NavigatorAreaView(workspace: workspace)
+                NavigatorAreaView(workspace: workspace, viewModel: NavigatorSidebarViewModel())
                     .toolbar {
                         ToolbarItem {
                             Button {

@@ -85,20 +85,19 @@ struct ViewCommands: Commands {
                     }
                 }
                 .disabled(navigationSplitViewVisibility == nil)
-                .keyboardShortcut("s", modifiers: [.control, .command])
+                .keyboardShortcut("0", modifiers: [.command])
 
                 Button("\(inspectorVisibility == false ? "Show" : "Hide") Inspector") {
                     inspectorVisibility?.toggle()
                 }
                 .disabled(inspectorVisibility == nil)
                 .keyboardShortcut("i", modifiers: [.control, .command])
-
             } else {
                 Button("\(navigatorCollapsed ? "Show" : "Hide") Navigator") {
                     windowController?.toggleFirstPanel()
                 }
                 .disabled(windowController == nil)
-                .keyboardShortcut("s", modifiers: [.control, .command])
+                .keyboardShortcut("0", modifiers: [.command])
                 .onReceive(NSApp.publisher(for: \.keyWindow)) { window in
                     windowController = window?.windowController as? CodeEditWindowController
                 }
@@ -125,6 +124,28 @@ struct ViewCommands: Commands {
 
                 Divider()
             }
+
+            if let model = windowController?.navigatorSidebarViewModel {
+                Divider()
+                NavigatorCommands(model: model)
+            }
+        }
+    }
+}
+
+extension ViewCommands {
+    struct NavigatorCommands: View {
+        @ObservedObject var model: NavigatorSidebarViewModel
+
+        var body: some View {
+            Menu("Navigators", content: {
+                ForEach(Array(model.items.prefix(9).enumerated()), id: \.element) { index, tab in
+                    Button(tab.title) {
+                        model.setNavigatorTab(tab: tab)
+                    }
+                    .keyboardShortcut(KeyEquivalent(Character(String(index + 1))))
+                }
+            })
         }
     }
 }

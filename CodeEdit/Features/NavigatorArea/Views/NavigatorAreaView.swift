@@ -9,20 +9,17 @@ import SwiftUI
 
 struct NavigatorAreaView: View {
     @ObservedObject private var workspace: WorkspaceDocument
-
     @ObservedObject private var extensionManager = ExtensionManager.shared
+    @ObservedObject public var viewModel: NavigatorSidebarViewModel
 
     @AppSettings(\.general.navigatorTabBarPosition)
     var sidebarPosition: SettingsData.SidebarTabBarPosition
 
-    @State private var selection: NavigatorTab? = .project
-
-    init(workspace: WorkspaceDocument) {
+    init(workspace: WorkspaceDocument, viewModel: NavigatorSidebarViewModel) {
         self.workspace = workspace
-    }
+        self.viewModel = viewModel
 
-    private var items: [NavigatorTab] {
-        [.project, .sourceControl, .search] +
+        viewModel.items = [.project, .sourceControl, .search] +
         extensionManager
             .extensions
             .map { ext in
@@ -38,7 +35,7 @@ struct NavigatorAreaView: View {
 
     var body: some View {
         VStack {
-            if let selection {
+            if let selection = viewModel.selectedTab {
                 selection
             } else {
                 NoSelectionInspectorView()
@@ -47,7 +44,7 @@ struct NavigatorAreaView: View {
         .safeAreaInset(edge: .leading, spacing: 0) {
             if sidebarPosition == .side {
                 HStack(spacing: 0) {
-                    AreaTabBar(items: items, selection: $selection, position: sidebarPosition)
+                    AreaTabBar(items: $viewModel.items, selection: $viewModel.selectedTab, position: sidebarPosition)
                     Divider()
                 }
             }
@@ -56,7 +53,7 @@ struct NavigatorAreaView: View {
             if sidebarPosition == .top {
                 VStack(spacing: 0) {
                     Divider()
-                    AreaTabBar(items: items, selection: $selection, position: sidebarPosition)
+                    AreaTabBar(items: $viewModel.items, selection: $viewModel.selectedTab, position: sidebarPosition)
                     Divider()
                 }
             } else {

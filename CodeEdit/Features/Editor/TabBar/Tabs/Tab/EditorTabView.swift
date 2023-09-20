@@ -159,22 +159,6 @@ struct EditorTabView: View {
             .padding(.horizontal, tabBarStyle == .native ? 28 : 23)
             .overlay {
                 ZStack {
-                    // Switch Tab Shortcut:
-                    // Using an invisible button to contain the keyboard shortcut is simply
-                    // because the keyboard shortcut has an unexpected bug when working with
-                    // custom buttonStyle. This is an workaround and it works as expected.
-                    if index < 10 {
-                        Button(
-                            action: switchAction,
-                            label: { EmptyView() }
-                        )
-                        .frame(width: 0, height: 0)
-                        .keyboardShortcut(
-                            KeyEquivalent(Character(String(index))),
-                            modifiers: [.command]
-                        )
-                        .hidden()
-                    }
                     // Close Button
                     EditorTabCloseButton(
                         isActive: isActive,

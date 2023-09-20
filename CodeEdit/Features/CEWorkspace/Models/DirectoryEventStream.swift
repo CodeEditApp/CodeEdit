@@ -111,7 +111,7 @@ class DirectoryEventStream {
         _ eventFlags: UnsafePointer<FSEventStreamEventFlags>,
         _ eventIds: UnsafePointer<FSEventStreamEventId>
     ) {
-        var eventPaths = eventPaths.bindMemory(to: UnsafePointer<CChar>.self, capacity: numEvents)
+        let eventPaths = eventPaths.bindMemory(to: UnsafePointer<CChar>.self, capacity: numEvents)
         for idx in 0..<numEvents {
             let pathPtr = eventPaths.advanced(by: idx).pointee
             let path = String(cString: pathPtr)

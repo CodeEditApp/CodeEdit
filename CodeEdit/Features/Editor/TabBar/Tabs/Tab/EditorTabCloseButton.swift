@@ -70,6 +70,8 @@ struct EditorTabCloseButton: View {
                     closeButtonGestureActive = true
                 })
                 .onEnded({ value in
+                    // If the final position of the mouse is within the bounds of the
+                    // close button then close the tab
                     if value.location.x > 0
                         && value.location.x < buttonSize
                         && value.location.y > 0

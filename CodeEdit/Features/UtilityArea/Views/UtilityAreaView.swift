@@ -26,7 +26,7 @@ struct UtilityAreaView: View {
         }
         .safeAreaInset(edge: .leading, spacing: 0) {
             HStack(spacing: 0) {
-                AreaTabBar(items: UtilityAreaTab.allCases, selection: $selection, position: .side)
+                AreaTabBar(items: $model.tabItems, selection: $selection, position: .side)
                 Divider()
                     .overlay(Color(nsColor: colorScheme == .dark ? .black : .clear))
             }

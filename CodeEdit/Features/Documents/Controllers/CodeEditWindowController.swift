@@ -19,6 +19,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
     var workspace: WorkspaceDocument?
     var quickOpenPanel: OverlayPanel?
     var commandPalettePanel: OverlayPanel?
+    var navigatorSidebarViewModel: NavigatorSidebarViewModel?
 
     var splitViewController: NSSplitViewController!
 
@@ -79,13 +80,18 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         let feedbackPerformer = NSHapticFeedbackManager.defaultPerformer
         let splitVC = CodeEditSplitViewController(workspace: workspace, feedbackPerformer: feedbackPerformer)
 
-        let navigatorView = SettingsInjector {
-            NavigatorAreaView(workspace: workspace)
+        let navigatorViewModel = NavigatorSidebarViewModel()
+        navigatorSidebarViewModel = navigatorViewModel
+
+        let settingsView = SettingsInjector {
+            NavigatorAreaView(workspace: workspace, viewModel: navigatorViewModel)
                 .environmentObject(workspace)
                 .environmentObject(workspace.editorManager)
         }
 
-        let navigator = NSSplitViewItem(sidebarWithViewController: NSHostingController(rootView: navigatorView))
+        let navigator = NSSplitViewItem(
+            sidebarWithViewController: NSHostingController(rootView: settingsView)
+        )
         navigator.titlebarSeparatorStyle = .none
         navigator.minimumThickness = Self.minSidebarWidth
         navigator.collapseBehavior = .useConstraints
