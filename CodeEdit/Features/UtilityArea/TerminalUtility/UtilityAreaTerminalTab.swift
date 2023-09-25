@@ -34,9 +34,16 @@ struct UtilityAreaTerminalTab: View {
         )
 
         Label {
-            TextField("Name", text: terminalTitle)
-                .focused($isFocused)
-                .padding(.leading, -8)
+            if #available(macOS 14, *) {
+                // Fix the icon misplacement issue introduced since macOS 14
+                TextField("Name", text: terminalTitle)
+                    .focused($isFocused)
+            } else {
+                // A padding is needed for macOS 13
+                TextField("Name", text: terminalTitle)
+                    .focused($isFocused)
+                    .padding(.leading, -8)
+            }
         } icon: {
             Image(systemName: "terminal")
         }
