@@ -55,6 +55,7 @@ struct AreaTabBar<Tab: AreaTab>: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .animation(.default, value: items)
         }
+        .clipped()
         .frame(maxWidth: .infinity, idealHeight: 27)
         .fixedSize(horizontal: false, vertical: true)
     }
@@ -66,6 +67,7 @@ struct AreaTabBar<Tab: AreaTab>: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .animation(.default, value: items)
         }
+        .clipped()
         .frame(idealWidth: 40, maxHeight: .infinity)
         .fixedSize(horizontal: true, vertical: false)
     }
@@ -227,10 +229,8 @@ struct AreaTabBar<Tab: AreaTab>: View {
         if isWithinBounds {
             let changing = swapTabWidth - 1
             draggingStartLocation! += direction == .previous ? -changing : changing
-            withAnimation {
-                tabOffsets[tab]! += direction == .previous ? changing : -changing
-                items.swapAt(currentIndex, swapIndex)
-            }
+            tabOffsets[tab]! += direction == .previous ? changing : -changing
+            items.swapAt(currentIndex, swapIndex)
         }
     }
     // swiftlint: enable function_parameter_count
@@ -276,7 +276,7 @@ struct AreaTabBar<Tab: AreaTab>: View {
             Rectangle()
                 .foregroundColor(.clear)
                 .onAppear {
-                    self.tabWidth[tab] = geometry.size.width
+                    self.tabWidth[tab] = (position == .top) ? geometry.size.width : geometry.size.height
                     self.tabLocations[tab] = geometry.frame(in: .global)
                 }
                 .onChange(of: geometry.frame(in: .global)) { newFrame in

@@ -19,7 +19,7 @@ struct NavigatorAreaView: View {
         self.workspace = workspace
         self.viewModel = viewModel
 
-        viewModel.items = [.project, .sourceControl, .search] +
+        viewModel.tabItems = [.project, .sourceControl, .search] +
         extensionManager
             .extensions
             .map { ext in
@@ -44,7 +44,7 @@ struct NavigatorAreaView: View {
         .safeAreaInset(edge: .leading, spacing: 0) {
             if sidebarPosition == .side {
                 HStack(spacing: 0) {
-                    AreaTabBar(items: $viewModel.items, selection: $viewModel.selectedTab, position: sidebarPosition)
+                    AreaTabBar(items: $viewModel.tabItems, selection: $viewModel.selectedTab, position: sidebarPosition)
                     Divider()
                 }
             }
@@ -53,7 +53,7 @@ struct NavigatorAreaView: View {
             if sidebarPosition == .top {
                 VStack(spacing: 0) {
                     Divider()
-                    AreaTabBar(items: $viewModel.items, selection: $viewModel.selectedTab, position: sidebarPosition)
+                    AreaTabBar(items: $viewModel.tabItems, selection: $viewModel.selectedTab, position: sidebarPosition)
                     Divider()
                 }
             } else {

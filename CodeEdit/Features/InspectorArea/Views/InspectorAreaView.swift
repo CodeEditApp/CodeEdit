@@ -11,6 +11,7 @@ struct InspectorAreaView: View {
     @EnvironmentObject private var workspace: WorkspaceDocument
 
     @ObservedObject private var extensionManager = ExtensionManager.shared
+    @ObservedObject public var viewModel: InspectorAreaViewModel
 
     @EnvironmentObject private var editorManager: EditorManager
 
@@ -18,10 +19,12 @@ struct InspectorAreaView: View {
     var sidebarPosition: SettingsData.SidebarTabBarPosition
 
     @State private var selection: InspectorTab? = .file
-    @State private var items: [InspectorTab] = [.file, .gitHistory]
 
-    init() {
-        items += extensionManager
+    init(viewModel: InspectorAreaViewModel) {
+        self.viewModel = viewModel
+
+        viewModel.tabItems = [.file, .gitHistory]
+        viewModel.tabItems += extensionManager
             .extensions
             .map { ext in
                 ext.availableFeatures.compactMap {
@@ -60,7 +63,7 @@ struct InspectorAreaView: View {
             if sidebarPosition == .side {
                 HStack(spacing: 0) {
                     Divider()
-                    AreaTabBar(items: $items, selection: $selection, position: sidebarPosition)
+                    AreaTabBar(items: $viewModel.tabItems, selection: $selection, position: sidebarPosition)
                 }
             }
         }
@@ -68,7 +71,7 @@ struct InspectorAreaView: View {
             if sidebarPosition == .top {
                 VStack(spacing: 0) {
                     Divider()
-                    AreaTabBar(items: $items, selection: $selection, position: sidebarPosition)
+                    AreaTabBar(items: $viewModel.tabItems, selection: $selection, position: sidebarPosition)
                     Divider()
                 }
             } else {
