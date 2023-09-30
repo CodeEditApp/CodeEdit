@@ -9,13 +9,39 @@ import Foundation
 
 extension SettingsData {
     /// The global settings for source control
-    struct SourceControlSettings: Codable, Hashable {
+    struct SourceControlSettings: Codable, Hashable, SearchableSettingsPage {
+
+        var searchKeys: [String] {
+            [
+                "General",
+                "Enable source control",
+                "Refresh local status automatically",
+                "Fetch and refresh server status automatically",
+                "Add and remove files automatically",
+                "Select files to commit automatically",
+                "Show source control changes",
+                "Include upstream changes",
+                "Comparison view",
+                "Source control navigator",
+                "Default branch name",
+                "Git",
+                "Author Name",
+                "Author Email",
+                "Prefer to rebase when pulling",
+                "Show merge commits in per-file log"
+            ]
+            .map { NSLocalizedString($0, comment: "") }
+        }
+
         /// The general source control settings
         var general: SourceControlGeneral = .init()
+
         /// The source control git settings
         var git: SourceControlGit = .init()
+
         /// Default initializer
         init() {}
+
         /// Explicit decoder init for setting default values when key is not present in `JSON`
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)

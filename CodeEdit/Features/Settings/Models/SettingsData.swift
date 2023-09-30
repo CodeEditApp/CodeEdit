@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Foundation
 
 /// # Settings
 ///
@@ -22,28 +23,28 @@ import SwiftUI
 ///  and providing a default value. Otherwise all settings get overridden.
 struct SettingsData: Codable, Hashable {
 
-    /// The general global setting
+    /// The general global settings
     var general: GeneralSettings = .init()
 
-    /// The global settings for text editing
+    /// The global settings for accounts
     var accounts: AccountsSettings = .init()
 
     /// The global settings for themes
     var theme: ThemeSettings = .init()
 
-    /// The global settings for the terminal emulator
-    var terminal: TerminalSettings = .init()
-
     /// The global settings for text editing
     var textEditing: TextEditingSettings = .init()
 
-    /// The global settings for text editing
+    /// The global settings for the terminal emulator
+    var terminal: TerminalSettings = .init()
+
+    /// The global settings for source control
     var sourceControl: SourceControlSettings = .init()
 
     /// The global settings for keybindings
     var keybindings: KeybindingsSettings = .init()
 
-    /// Featureflags settings
+    /// Feature Flags settings
     var featureFlags: FeatureFlagsSettings = .init()
 
     /// Default initializer
@@ -61,7 +62,42 @@ struct SettingsData: Codable, Hashable {
             SourceControlSettings.self,
             forKey: .sourceControl
         ) ?? .init()
-        self.keybindings = try container.decodeIfPresent(KeybindingsSettings.self, forKey: .keybindings) ?? .init()
+        self.keybindings = try container.decodeIfPresent(
+            KeybindingsSettings.self,
+            forKey: .keybindings
+        ) ?? .init()
         self.featureFlags = try container.decodeIfPresent(FeatureFlagsSettings.self, forKey: .featureFlags) ?? .init()
     }
+
+    // swiftlint:disable cyclomatic_complexity
+    func propertiesOf(_ name: SettingsPage.Name) -> [SettingsPage] {
+        var settings: [SettingsPage] = []
+
+        switch name {
+        case .general:
+            general.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
+        case .accounts:
+            accounts.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
+        case .theme:
+            theme.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
+        case .textEditing:
+            textEditing.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
+        case .terminal:
+            terminal.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
+        case .sourceControl:
+            sourceControl.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
+        case .location:
+            LocationsSettings().searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
+        case .featureFlags:
+            featureFlags.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
+        case .behavior: return [.init(name, settingName: "Error")]
+        case .navigation: return [.init(name, settingName: "Error")]
+        case .components: return [.init(name, settingName: "Error")]
+        case .keybindings: return [.init(name, settingName: "Error")]
+        case .advanced: return [.init(name, settingName: "Error")]
+        }
+
+        return settings
+    }
+    // swiftlint:enable cyclomatic_complexity
 }

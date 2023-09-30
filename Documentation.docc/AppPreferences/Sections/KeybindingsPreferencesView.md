@@ -1,7 +1,7 @@
-# ``CodeEdit/KeybindingsPreferencesView``
+# ``CodeEdit/KeybindingsSettingsView``
 
 ## Topics
 
 ### Model
 
-- ``Settings/KeybindingsPreferences``
+- ``Settings/KeybindingsSettings``

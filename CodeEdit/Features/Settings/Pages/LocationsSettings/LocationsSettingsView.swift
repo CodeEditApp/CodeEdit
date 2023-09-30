@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-/// A view that implements the `Locations` preference section
+/// A view that implements the `Locations` settings section
 struct LocationsSettingsView: View {
     var body: some View {
         SettingsForm {
@@ -52,7 +52,7 @@ private extension LocationsSettingsView {
     private var extensionsLocation: some View {
         ExternalLink(destination: ThemeModel.shared.extensionsURL) {
             Text("Extensions")
-            Text(ThemeModel.shared.extensionsURL.path)
+            Text(ThemeModel.shared.extensionsURL.path())
                 .font(.footnote)
                 .foregroundColor(.secondary)
         }

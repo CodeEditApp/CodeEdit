@@ -1,10 +1,10 @@
-# ``CodeEdit/SourceControlPreferencesView``
+# ``CodeEdit/SourceControlSettingsView``
 
 ## Topics
 
 ### Model
 
-- ``Settings/SourceControlPreferences``
+- ``Settings/SourceControlSettings``
 - ``IgnoredFiles``
 
 ### Views

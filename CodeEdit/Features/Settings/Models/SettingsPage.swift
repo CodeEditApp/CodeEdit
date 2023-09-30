@@ -8,32 +8,8 @@
 import Foundation
 import SwiftUI
 
-/// A struct for a preferences tab
-struct SettingsPage: Hashable, Identifiable {
-    /// Default intializer
-    internal init(
-        _ name: Name,
-        baseColor: Color? = nil,
-        icon: IconResource? = nil,
-        hideName: Bool? = false,
-        children: [SettingsPage] = []
-    ) {
-        self.children = children
-        self.name = name
-        self.baseColor = baseColor ?? .red
-        self.icon = icon ?? .system("questionmark.app")
-        self.hideName = hideName
-    }
-
-    var id: String { name.rawValue }
-
-    let name: Name
-    let baseColor: Color
-    let children: [SettingsPage]
-    let hideName: Bool?
-    var nameString: LocalizedStringKey { LocalizedStringKey(name.rawValue) }
-    let icon: IconResource?
-
+/// A struct for a settings page
+struct SettingsPage: Hashable, Equatable, Identifiable {
     /// A struct for a sidebar icon, with a base color and SF Symbol
     enum IconResource: Equatable, Hashable {
         case system(_ name: String)
@@ -41,9 +17,8 @@ struct SettingsPage: Hashable, Identifiable {
         case asset(_ name: String)
     }
 
-    /// An enum of all the preferences tabs
+    /// An enum of all the settings pages
     enum Name: String {
-        // MARK: - App Preferences
         case general = "General"
         case accounts = "Accounts"
         case behavior = "Behaviors"
@@ -59,4 +34,29 @@ struct SettingsPage: Hashable, Identifiable {
         case advanced = "Advanced"
     }
 
+    let id: UUID = UUID()
+
+    let name: Name
+    let baseColor: Color?
+    let isSetting: Bool
+    let settingName: String
+    var nameString: LocalizedStringKey {
+        LocalizedStringKey(name.rawValue)
+    }
+    let icon: IconResource?
+
+    /// Default initializer
+    init(
+        _ name: Name,
+        baseColor: Color? = nil,
+        icon: IconResource? = nil,
+        isSetting: Bool = false,
+        settingName: String = ""
+    ) {
+        self.name = name
+        self.baseColor = baseColor
+        self.icon = icon
+        self.isSetting = isSetting
+        self.settingName = settingName
+    }
 }

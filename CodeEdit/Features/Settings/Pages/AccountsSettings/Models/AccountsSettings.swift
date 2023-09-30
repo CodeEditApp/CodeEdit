@@ -10,9 +10,19 @@ import Foundation
 extension SettingsData {
 
     /// The global settings for text editing
-    struct AccountsSettings: Codable, Hashable {
+    struct AccountsSettings: Codable, Hashable, SearchableSettingsPage {
         /// An integer indicating how many spaces a `tab` will generate
         var sourceControlAccounts: GitAccounts = .init()
+
+        /// The search keys
+        var searchKeys: [String] {
+            [
+                "Accounts",
+                "Delete Account...",
+                "Add Account..."
+            ]
+            .map { NSLocalizedString($0, comment: "") }
+        }
 
         /// Default initializer
         init() {}

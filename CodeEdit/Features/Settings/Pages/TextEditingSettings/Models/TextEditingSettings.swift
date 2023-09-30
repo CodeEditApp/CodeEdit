@@ -11,7 +11,24 @@ import Foundation
 extension SettingsData {
 
     /// The global settings for text editing
-    struct TextEditingSettings: Codable, Hashable {
+    struct TextEditingSettings: Codable, Hashable, SearchableSettingsPage {
+
+        var searchKeys: [String] {
+            [
+                "Prefer Indent Using",
+                "Tab Width",
+                "Wrap lines to editor width",
+                "Font",
+                "Font Size",
+                "Line Height",
+                "Letter Spacing",
+                "Autocomplete braces",
+                "Enable type-over completion",
+                "Bracket Pair Highlight"
+            ]
+            .map { NSLocalizedString($0, comment: "") }
+        }
+
         /// An integer indicating how many spaces a `tab` will appear as visually.
         var defaultTabWidth: Int = 4
 

@@ -21,10 +21,6 @@ enum GitHTTPEncoding: Int {
 struct GitHTTPHeader {
     var headerField: String
     var value: String
-    init(headerField: String, value: String) {
-        self.headerField = headerField
-        self.value = value
-    }
 }
 
 protocol GitRouterConfiguration {

@@ -10,7 +10,7 @@ import SwiftUI
 extension SettingsData {
 
     /// The general global setting
-    struct GeneralSettings: Codable, Hashable {
+    struct GeneralSettings: Codable, Hashable, SearchableSettingsPage {
 
         /// The appearance of the app
         var appAppearance: Appearances = .system
@@ -20,6 +20,28 @@ extension SettingsData {
 
         /// The show live issues behavior of the app
         var showLiveIssues: Bool = true
+
+        /// The search keys
+        var searchKeys: [String] {
+            [
+                "Appearance",
+                "File Icon Style",
+                "Tab Bar Style",
+                "Navigator Tab Bar Position",
+                "Inspector Tab Bar Position",
+                "Show Issues",
+                "Show Live Issues",
+                "Automatically save change to disk",
+                "Automatically reveal in project navigator",
+                "Reopen Behavior",
+                "After the last window is closed",
+                "File Extensions",
+                "Project Navigator Size",
+                "Find Navigator Detail",
+                "Issue Navigator Detail"
+            ]
+            .map { NSLocalizedString($0, comment: "") }
+        }
 
         /// Show editor path bar
         var showEditorPathBar: Bool = true

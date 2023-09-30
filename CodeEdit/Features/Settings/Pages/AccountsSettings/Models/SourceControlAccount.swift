@@ -8,25 +8,6 @@
 import SwiftUI
 
 struct SourceControlAccount: Codable, Identifiable, Hashable {
-    internal init(
-        id: String,
-        name: String,
-        description: String,
-        provider: Provider,
-        serverURL: String,
-        urlProtocol: URLProtocol,
-        sshKey: String,
-        isTokenValid: Bool
-    ) {
-        self.id = id
-        self.name = name
-        self.description = description
-        self.provider = provider
-        self.serverURL = serverURL
-        self.urlProtocol = urlProtocol
-        self.sshKey = sshKey
-        self.isTokenValid = isTokenValid
-    }
 
     var id: String
     var name: String
