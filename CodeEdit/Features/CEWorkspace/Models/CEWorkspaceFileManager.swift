@@ -17,6 +17,8 @@ final class CEWorkspaceFileManager {
     private(set) var fileManager = FileManager.default
     private(set) var ignoredFilesAndFolders: Set<String>
     private(set) var flattenedFileItems: [String: CEWorkspaceFile]
+    /// Maps all directories to it's children's paths.
+    private var childrenMap: [String: [String]] = [:]
     private var fsEventStream: DirectoryEventStream?
 
     private var observers: NSHashTable<AnyObject>
@@ -30,84 +32,96 @@ final class CEWorkspaceFileManager {
         self.folderUrl = folderUrl
         self.ignoredFilesAndFolders = ignoredFilesAndFolders
 
-        self.workspaceItem = CEWorkspaceFile(url: folderUrl, children: [])
+        self.workspaceItem = CEWorkspaceFile(url: folderUrl)
         self.flattenedFileItems = [workspaceItem.id: workspaceItem]
-
-        self.setup()
-    }
-
-    private func setup() {
-        // initial load, get all files & directories under workspace URL
-        var workspaceFiles: [CEWorkspaceFile]
-        do {
-            workspaceFiles = try loadFiles(fromUrl: self.folderUrl)
-        } catch {
-            fatalError("Failed to loadFiles")
-        }
 
         fsEventStream = DirectoryEventStream(directory: self.folderUrl.path) { [weak self] path, event, deepRebuild in
             self?.fileSystemEventReceived(directory: path, event: event, deepRebuild: deepRebuild)
         }
-
-        // Root workspace fileItem
-        let workspaceFile = CEWorkspaceFile(url: self.folderUrl, children: workspaceFiles.sortItems(foldersOnTop: true))
-        flattenedFileItems[workspaceFile.id] = workspaceFile
-        workspaceFiles.forEach { item in
-            item.parent = workspaceFile
-        }
     }
 
-    /// Recursive loading of files into `FileItem`s
-    /// - Parameter url: The URL of the directory to load the items of
-    /// - Returns: `[FileItem]` representing the contents of the directory
-    private func loadFiles(fromUrl url: URL) throws -> [CEWorkspaceFile] {
-        let directoryContents = try fileManager.contentsOfDirectory(
-            at: url.resolvingSymlinksInPath(),
-            includingPropertiesForKeys: nil
-        )
-        var items: [CEWorkspaceFile] = []
-
-        for itemURL in directoryContents {
-            guard !ignoredFilesAndFolders.contains(itemURL.lastPathComponent) else { continue }
-
-            var isDir: ObjCBool = false
-
-            if fileManager.fileExists(atPath: itemURL.path, isDirectory: &isDir) {
-                var subItems: [CEWorkspaceFile]?
-
-                if isDir.boolValue {
-                    // Recursively fetch subdirectories and files if the path points to a directory
-                    subItems = try loadFiles(fromUrl: itemURL)
-                }
-
-                let newFileItem = CEWorkspaceFile(
-                    url: itemURL,
-                    children: subItems?.sortItems(foldersOnTop: true)
-                )
-
-                subItems?.forEach { $0.parent = newFileItem }
-                items.append(newFileItem)
-                flattenedFileItems[newFileItem.id] = newFileItem
-            }
-        }
-
-        return items
-    }
+    // MARK: - Public API
 
     /// A function that, given a file's path, returns a `FileItem` if it exists
     /// within the scope of the `FileSystemClient`.
-    /// - Parameter path: The file's full path
+    /// - Parameters:
+    ///   - path: The file's relative path.
+    ///   - createIfNotFound: Set to true if the function should index any intermediate directories to find the file,
+    ///                       as well as index the file if it is not already.
     /// - Returns: The file item corresponding to the file
-    func getFile(_ path: String) -> CEWorkspaceFile? {
-        flattenedFileItems[path]
+    func getFile(
+        _ path: String,
+        createIfNotFound: Bool = false
+    ) -> CEWorkspaceFile? {
+        if let file = flattenedFileItems[path] {
+            return file
+        } else if createIfNotFound {
+            let url = URL(fileURLWithPath: path, relativeTo: folderUrl)
+
+            // Drill down towards the file, indexing any directories needed. If file is not in the `folderURL` or
+            // subdirectories, exit.
+            guard url.absoluteString.starts(with: folderUrl.absoluteString),
+                  url.pathComponents.count > folderUrl.pathComponents.count else {
+                return nil
+            }
+            let pathComponents = url.pathComponents.dropFirst(folderUrl.pathComponents.count)
+            var currentURL = folderUrl
+
+            for component in pathComponents {
+                currentURL.append(component: component)
+
+                if let file = flattenedFileItems[currentURL.relativePath], childrenMap[file.id] == nil {
+                    loadChildrenForFile(file)
+                }
+            }
+
+            return flattenedFileItems[url.relativePath]
+        }
+
+        return nil
     }
+
+    func childrenOfFile(_ file: CEWorkspaceFile) -> [CEWorkspaceFile]? {
+        if file.isFolder {
+            if childrenMap[file.id] == nil {
+                // Load the children
+                loadChildrenForFile(file)
+            }
+
+            return childrenMap[file.id]?.compactMap { flattenedFileItems[$0] }
+        }
+        return nil
+    }
+
+    private func loadChildrenForFile(_ file: CEWorkspaceFile) {
+        guard let children = urlsForDirectory(file) else {
+            return
+        }
+        for child in children {
+            let newFileItem = CEWorkspaceFile(url: child)
+            newFileItem.parent = file
+            flattenedFileItems[newFileItem.id] = newFileItem
+        }
+        childrenMap[file.id] = children.map { $0.relativePath }
+    }
+
+    private func urlsForDirectory(_ file: CEWorkspaceFile) -> [URL]? {
+        try? fileManager.contentsOfDirectory(
+            at: file.url,
+            includingPropertiesForKeys: [.isDirectoryKey],
+            options: [.includesDirectoriesPostOrder, .skipsSubdirectoryDescendants]
+        )
+        .map { URL(filePath: $0.path(), relativeTo: folderUrl) }
+        .sortItems(foldersOnTop: true)
+    }
+
+    // MARK: - Directory Events
 
     /// Usually run when the owner of the `FileSystemClient` doesn't need it anymore.
     /// This de-inits most functions in the `FileSystemClient`, so that in case it isn't de-init'd it does not use up
     /// significant amounts of RAM.
     func cleanUp() {
         fsEventStream?.cancel()
-        workspaceItem.children = []
         flattenedFileItems = [workspaceItem.id: workspaceItem]
     }
 
@@ -140,6 +154,9 @@ final class CEWorkspaceFileManager {
     ///   - fileItem: The `FileItem` to correct the children of
     ///   - deep: Set to `true` if this should perform the rebuild recursively.
     func rebuildFiles(fromItem fileItem: CEWorkspaceFile, deep: Bool = false) throws {
+        // Do not index directories that are not already loaded.
+        guard childrenMap[fileItem.id] != nil else { return }
+
         // get the actual directory children
         let directoryContentsUrls = try fileManager.contentsOfDirectory(
             at: fileItem.url.resolvingSymlinksInPath(),
@@ -147,46 +164,37 @@ final class CEWorkspaceFileManager {
         )
 
         // test for deleted children, and remove them from the index
-        for oldContent in fileItem.children ?? [] where !directoryContentsUrls.contains(oldContent.url) {
-            if let removeAt = fileItem.children?.firstIndex(of: oldContent) {
-                fileItem.children?.remove(at: removeAt)
-                flattenedFileItems.removeValue(forKey: oldContent.id)
-            }
+        for (idx, oldURL) in (childrenMap[fileItem.id] ?? []).map({ URL(filePath: $0) }).enumerated().reversed()
+        where !directoryContentsUrls.contains(oldURL) {
+            flattenedFileItems.removeValue(forKey: oldURL.relativePath)
+            childrenMap[fileItem.id]?.remove(at: idx)
         }
 
         // test for new children, and index them using loadFiles
         for newContent in directoryContentsUrls {
-            guard !ignoredFilesAndFolders.contains(newContent.lastPathComponent) else { continue }
-
             // if the child has already been indexed, continue to the next item.
-            guard !(fileItem.children?.map({ $0.url }).contains(newContent) ?? false) else { continue }
+            guard !ignoredFilesAndFolders.contains(newContent.lastPathComponent) &&
+                  !(childrenMap[fileItem.id]?.contains(newContent.relativePath) ?? true) else { continue }
 
-            var isDir: ObjCBool = false
-            if fileManager.fileExists(atPath: newContent.path, isDirectory: &isDir) {
-                var subItems: [CEWorkspaceFile]?
-
-                if isDir.boolValue { subItems = try loadFiles(fromUrl: newContent) }
-
-                let newFileItem = CEWorkspaceFile(
-                    url: newContent,
-                    children: subItems?.sortItems(foldersOnTop: true)
-                )
-
-                subItems?.forEach { $0.parent = newFileItem }
+            if fileManager.fileExists(atPath: newContent.path) {
+                let newFileItem = CEWorkspaceFile(url: newContent)
 
                 newFileItem.parent = fileItem
                 flattenedFileItems[newFileItem.id] = newFileItem
-                fileItem.children?.append(newFileItem)
+                childrenMap[fileItem.id]?.append(newFileItem.id)
             }
         }
 
-        fileItem.children = fileItem.children?.sortItems(foldersOnTop: true)
-        fileItem.children?.forEach({
-            if deep && $0.isFolder {
-                try? rebuildFiles(fromItem: $0, deep: deep)
+        childrenMap[fileItem.id] = childrenMap[fileItem.id]?
+            .map { URL(filePath: $0) }
+            .sortItems(foldersOnTop: true)
+            .map { $0.relativePath }
+
+        if deep && childrenMap[fileItem.id] != nil {
+            for child in (childrenMap[fileItem.id] ?? []).compactMap({ flattenedFileItems[$0] }) {
+                try? rebuildFiles(fromItem: child)
             }
-            flattenedFileItems[$0.id] = $0
-        })
+        }
     }
 
     func notifyObservers() {

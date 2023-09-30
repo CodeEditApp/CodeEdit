@@ -19,6 +19,8 @@ struct EditorPathBarComponent: View {
     @Environment(\.controlActiveState)
     private var activeState
 
+    @EnvironmentObject var workspace: WorkspaceDocument
+
     @State var position: NSPoint?
 
     @State var selection: CEWorkspaceFile
@@ -33,7 +35,11 @@ struct EditorPathBarComponent: View {
     }
 
     var siblings: [CEWorkspaceFile] {
-        if let siblings = fileItem.parent?.children?.sortItems(foldersOnTop: true), !siblings.isEmpty {
+        guard let fileManager = workspace.workspaceFileManager,
+              let parent = fileItem.parent else {
+            return [fileItem]
+        }
+        if let siblings = fileManager.childrenOfFile(parent), !siblings.isEmpty {
             return siblings
         } else {
             return [fileItem]
@@ -42,8 +48,13 @@ struct EditorPathBarComponent: View {
 
     var body: some View {
         NSPopUpButtonView(selection: $selection) {
+            guard let fileManager = workspace.workspaceFileManager else { return NSPopUpButton() }
             let button = NSPopUpButton()
-            button.menu = EditorPathBarMenu(fileItems: siblings, tappedOpenFile: tappedOpenFile)
+            button.menu = EditorPathBarMenu(
+                fileItems: siblings,
+                fileManager: fileManager,
+                tappedOpenFile: tappedOpenFile
+            )
             button.font = .systemFont(ofSize: NSFont.systemFontSize(for: .small))
             button.isBordered = false
             (button.cell as? NSPopUpButtonCell)?.arrowPosition = .noArrow

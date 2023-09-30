@@ -9,7 +9,7 @@ import Foundation
 
 extension WorkspaceDocument {
     final class SearchState: ObservableObject {
-        var workspace: WorkspaceDocument
+        unowned var workspace: WorkspaceDocument
         var selectedMode: [SearchModeModel] = [
             .Find,
             .Text,
@@ -56,7 +56,6 @@ extension WorkspaceDocument {
             )
             guard let filePaths = enumerator?.allObjects as? [URL] else { return }
 
-            // TODO: Optimization
             // This could be optimized further by doing a couple things:
             // - Making sure strings and indexes are using UTF8 everywhere possible
             //   (this will increase matching speed and time taken to calculate byte offsets for string indexes)
@@ -64,15 +63,10 @@ extension WorkspaceDocument {
             //   enumerator object to lazily enumerate through files would drop time.
             // - Loop through each character instead of each line to find matches, then return the line if needed.
             //   This could help in cases when the file is one *massive* line (eg: a minified JS document).
-            //   In that case this method would load that entire file into memory to find matches. To speed
-            //   this up we could enumerate through each character instead of each line and when a match
-            //   is found only copy a couple characters into the result object.
             // - Lazily load strings using `FileHandle.AsyncBytes`
             //   https://developer.apple.com/documentation/foundation/filehandle/3766681-bytes
-            filePaths.map { url in
-                CEWorkspaceFile(url: url, children: nil)
-            }.forEach { fileItem in
-                guard let data = try? Data(contentsOf: fileItem.url),
+            filePaths.forEach { url in
+                guard let data = try? Data(contentsOf: url),
                       let string = String(data: data, encoding: .utf8) else { return }
                 var fileSearchResult: SearchResultModel?
 
@@ -89,7 +83,7 @@ extension WorkspaceDocument {
                         let matches = noSpaceLine.ranges(of: textToCompare).map { range in
                             return SearchResultMatchModel(
                                 lineNumber: lineNumber,
-                                file: fileItem,
+                                file: CEWorkspaceFile(url: url),
                                 lineContent: String(noSpaceLine),
                                 keywordRange: range
                             )
@@ -101,7 +95,7 @@ extension WorkspaceDocument {
                         } else {
                             // We haven't found anything in this file yet, record a new one
                             fileSearchResult = SearchResultModel(
-                                file: fileItem,
+                                file: CEWorkspaceFile(url: url),
                                 lineMatches: matches
                             )
                         }

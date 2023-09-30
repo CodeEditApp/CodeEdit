@@ -7,17 +7,23 @@
 
 import Foundation
 
-extension Array where Element == CEWorkspaceFile {
+fileprivate extension URL {
+    var isFolder: Bool {
+        (try? resourceValues(forKeys: [.isDirectoryKey]).isDirectory) ?? false
+    }
+}
+
+extension Array where Element == URL {
 
     /// Sorts the elements in alphabetical order.
     /// - Parameter foldersOnTop: if set to `true` folders will always be on top of files.
-    /// - Returns: A sorted array of ``FileSystemClient/FileSystemClient/FileItem``
+    /// - Returns: A sorted array of `URL`
     func sortItems(foldersOnTop: Bool) -> Self {
-        var alphabetically = sorted { $0.name < $1.name }
+        var alphabetically = sorted { $0.lastPathComponent < $1.lastPathComponent }
 
         if foldersOnTop {
-            var foldersOnTop = alphabetically.filter { $0.children != nil }
-            alphabetically.removeAll { $0.children != nil }
+            var foldersOnTop = alphabetically.filter { $0.isFolder }
+            alphabetically.removeAll { $0.isFolder }
 
             foldersOnTop.append(contentsOf: alphabetically)
 
@@ -25,21 +31,6 @@ extension Array where Element == CEWorkspaceFile {
         } else {
             return alphabetically
         }
-    }
-
-    /// Search for the `CEWorkspaceFile` element that matches the specified `tabID`.
-    /// - Parameter tabID: A `tabID` to search for.
-    /// - Returns: The `CEWorkspaceFile` element with a matching `tabID` if available.
-    func find(by tabID: EditorTabID) -> CEWorkspaceFile? {
-        guard let item = first(where: { $0.tabID == tabID }) else {
-            for element in self {
-                if let item = element.children?.find(by: tabID) {
-                    return item
-                }
-            }
-            return nil
-        }
-        return item
     }
 }
 

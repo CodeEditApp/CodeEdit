@@ -285,7 +285,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
                     panel.close()
                 } openFile: { file in
                     workspace.editorManager.openTab(item: file)
-                }
+                }.environmentObject(workspace)
 
                 panel.contentView = NSHostingView(rootView: SettingsInjector { contentView })
                 window?.addChildWindow(panel, ordered: .above)

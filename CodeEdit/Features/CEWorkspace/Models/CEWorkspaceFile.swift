@@ -36,12 +36,6 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
     /// Return the icon of the file as `Image`
     var icon: Image { Image(systemName: systemImage) }
 
-    /// Returns the children of the current ``FileSystemClient/FileSystemClient/FileItem``.
-    ///
-    /// If the current ``FileSystemClient/FileSystemClient/FileItem`` is a file this will be `nil`.
-    /// If it is an empty folder this will be an empty array.
-    var children: [CEWorkspaceFile]?
-
     /// Returns a parent ``FileSystemClient/FileSystemClient/FileItem``.
     ///
     /// If the item already is the top-level ``FileSystemClient/FileSystemClient/FileItem`` this returns `nil`.
@@ -57,14 +51,27 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
     /// Returns the `id` in ``EditorTabID`` enum form
     var tabID: EditorTabID { .codeEditor(id) }
 
-    /// Returns a boolean that is true if ``children`` is not `nil`
-    var isFolder: Bool { url.hasDirectoryPath }
+    /// Returns a boolean that is true if the resource represented by this object is a directory.
+    lazy var isFolder: Bool = {
+        (try? url.resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory == true
+    }()
+
+    /// Returns a boolean that is true if the contents of the directory at this path are
+    ///
+    /// Does not indicate if this is a folder, see ``isFolder`` to first check if this object is also a directory.
+    var isEmptyFolder: Bool {
+        (try? CEWorkspaceFile.fileManager.contentsOfDirectory(
+            at: url,
+            includingPropertiesForKeys: nil,
+            options: .skipsSubdirectoryDescendants
+        ).isEmpty) ?? true
+    }
 
     /// Returns a boolean that is true if the file item is the root folder of the workspace.
     var isRoot: Bool { parent == nil }
 
     /// Returns a boolean that is true if the file item actually exists in the file system
-    var doesExist: Bool { CEWorkspaceFile.fileManger.fileExists(atPath: self.url.path) }
+    var doesExist: Bool { CEWorkspaceFile.fileManager.fileExists(atPath: self.url.path) }
 
     /// Returns a string describing a SFSymbol for the current ``FileSystemClient/FileSystemClient/FileItem``
     ///
@@ -73,9 +80,9 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
     /// Image(systemName: item.systemImage)
     /// ```
     var systemImage: String {
-        if let children = children {
+        if isFolder {
             // item is a folder
-            return folderIcon(children)
+            return folderIcon()
         } else {
             // item is a file
             return FileIcon.fileIcon(fileType: type)
@@ -98,18 +105,15 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
 
     init(
         url: URL,
-        children: [CEWorkspaceFile]? = nil,
         changeType: GitType? = nil
     ) {
         self.url = url
-        self.children = children
         self.gitStatus = changeType
     }
 
     required init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: FileItemCodingKeys.self)
         url = try values.decode(URL.self, forKey: .url)
-        children = try values.decode([CEWorkspaceFile]?.self, forKey: .children)
         gitStatus = try values.decode(GitType.self, forKey: .changeType)
     }
 
@@ -117,7 +121,6 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
         var container = encoder.container(keyedBy: FileItemCodingKeys.self)
         try container.encode(id, forKey: .id)
         try container.encode(url, forKey: .url)
-        try container.encode(children, forKey: .children)
         try container.encode(gitStatus, forKey: .changeType)
     }
 
@@ -126,14 +129,14 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
     /// If it is the top-level folder this will return `"square.dashed.inset.filled"`.
     /// If it is a `.codeedit` folder this will return `"folder.fill.badge.gearshape"`.
     /// If it has children this will return `"folder.fill"` otherwise `"folder"`.
-    private func folderIcon(_ children: [CEWorkspaceFile]) -> String {
+    private func folderIcon() -> String {
         if self.parent == nil {
             return "folder.fill.badge.gearshape"
         }
         if self.name == ".codeedit" {
             return "folder.fill.badge.gearshape"
         }
-        return children.isEmpty ? "folder" : "folder.fill"
+        return isEmptyFolder ? "folder" : "folder.fill"
     }
 
     /// Returns the file name with optional extension (e.g.: `Package.swift`)
@@ -171,7 +174,7 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
 
     // MARK: Statics
     /// The default `FileManager` instance
-    static let fileManger = FileManager.default
+    static let fileManager = FileManager.default
 
     // MARK: Intents
     /// Allows the user to view the file or folder in the finder application
@@ -194,14 +197,14 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
 
         // If a file/folder with the same name exists, add a number to the end.
         var fileNumber = 0
-        while CEWorkspaceFile.fileManger.fileExists(atPath: folderUrl.path) {
+        while CEWorkspaceFile.fileManager.fileExists(atPath: folderUrl.path) {
             fileNumber += 1
             folderUrl = folderUrl.deletingLastPathComponent().appendingPathComponent("\(folderName)\(fileNumber)")
         }
 
         // Create the folder
         do {
-            try CEWorkspaceFile.fileManger.createDirectory(
+            try CEWorkspaceFile.fileManager.createDirectory(
                 at: folderUrl,
                 withIntermediateDirectories: true,
                 attributes: [:]
@@ -240,14 +243,14 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
         var fileUrl = nearestFolder.appendingPathComponent("\(fileName)\(idealExtension)")
         // If a file/folder with the same name exists, add a number to the end.
         var fileNumber = 0
-        while CEWorkspaceFile.fileManger.fileExists(atPath: fileUrl.path) {
+        while CEWorkspaceFile.fileManager.fileExists(atPath: fileUrl.path) {
             fileNumber += 1
             fileUrl = fileUrl.deletingLastPathComponent()
                 .appendingPathComponent("\(fileName)\(fileNumber)\(idealExtension)")
         }
 
         // Create the file
-        CEWorkspaceFile.fileManger.createFile(
+        CEWorkspaceFile.fileManager.createFile(
             atPath: fileUrl.path,
             contents: nil,
             attributes: [FileAttributeKey.creationDate: Date()]
@@ -267,10 +270,14 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
         // - file system can change outside of the editor
         let deleteConfirmation = NSAlert()
         let message: String
-        if self.isFolder || (self.children?.isEmpty ?? false) { // if its a file or an empty folder, call it by its name
+        if !isFolder || isEmptyFolder { // if its a file or an empty folder, call it by its name
             message = String(describing: self.fileName)
         } else {
-            message = "the \((self.children?.count ?? 0) + 1) selected items"
+            let childrenCount = try? CEWorkspaceFile.fileManager.contentsOfDirectory(
+                at: url,
+                includingPropertiesForKeys: nil
+            ).count
+            message = "the \((childrenCount ?? 0) + 1) selected items"
         }
         deleteConfirmation.messageText = "Do you want to move \(message) to the Trash?"
         deleteConfirmation.informativeText = "This operation cannot be undone"
@@ -279,9 +286,9 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
         deleteConfirmation.buttons.last?.hasDestructiveAction = true
         deleteConfirmation.addButton(withTitle: "Cancel")
         if deleteConfirmation.runModal() == .alertFirstButtonReturn { // "Delete" button
-            if CEWorkspaceFile.fileManger.fileExists(atPath: self.url.path) {
+            if CEWorkspaceFile.fileManager.fileExists(atPath: self.url.path) {
                 do {
-                    try CEWorkspaceFile.fileManger.removeItem(at: self.url)
+                    try CEWorkspaceFile.fileManager.removeItem(at: self.url)
                 } catch {
                     fatalError(error.localizedDescription)
                 }
@@ -293,7 +300,7 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
     func duplicate() {
         // If a file/folder with the same name exists, add "copy" to the end
         var fileUrl = self.url
-        while CEWorkspaceFile.fileManger.fileExists(atPath: fileUrl.path) {
+        while CEWorkspaceFile.fileManager.fileExists(atPath: fileUrl.path) {
             let previousName = fileUrl.lastPathComponent
             let fileExtension = fileUrl.pathExtension.isEmpty ? "" : ".\(fileUrl.pathExtension)"
             let fileName = fileExtension.isEmpty ? previousName :
@@ -301,9 +308,9 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
             fileUrl = fileUrl.deletingLastPathComponent().appendingPathComponent("\(fileName) copy\(fileExtension)")
         }
 
-        if CEWorkspaceFile.fileManger.fileExists(atPath: self.url.path) {
+        if CEWorkspaceFile.fileManager.fileExists(atPath: self.url.path) {
             do {
-                try CEWorkspaceFile.fileManger.copyItem(at: self.url, to: fileUrl)
+                try CEWorkspaceFile.fileManager.copyItem(at: self.url, to: fileUrl)
             } catch {
                 fatalError(error.localizedDescription)
             }
@@ -312,24 +319,24 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
 
     /// This function moves the item or folder if possible
     func move(to newLocation: URL) {
-        guard !CEWorkspaceFile.fileManger.fileExists(atPath: newLocation.path) else { return }
+        guard !CEWorkspaceFile.fileManager.fileExists(atPath: newLocation.path) else { return }
         createMissingParentDirectory(for: newLocation.deletingLastPathComponent())
 
         do {
-            try CEWorkspaceFile.fileManger.moveItem(at: self.url, to: newLocation)
+            try CEWorkspaceFile.fileManager.moveItem(at: self.url, to: newLocation)
         } catch { fatalError(error.localizedDescription) }
 
         // This function recursively creates missing directories if the file is moved to a directory that does not exist
         func createMissingParentDirectory(for url: URL, createSelf: Bool = true) {
             // if the folder's parent folder doesn't exist, create it.
-            if !CEWorkspaceFile.fileManger.fileExists(atPath: url.deletingLastPathComponent().path) {
+            if !CEWorkspaceFile.fileManager.fileExists(atPath: url.deletingLastPathComponent().path) {
                 createMissingParentDirectory(for: url.deletingLastPathComponent())
             }
             // if the folder doesn't exist and the function was ordered to create it, create it.
-            if createSelf && !CEWorkspaceFile.fileManger.fileExists(atPath: url.path) {
+            if createSelf && !CEWorkspaceFile.fileManager.fileExists(atPath: url.path) {
                 // Create the folder
                 do {
-                    try CEWorkspaceFile.fileManger.createDirectory(
+                    try CEWorkspaceFile.fileManager.createDirectory(
                         at: url,
                         withIntermediateDirectories: true,
                         attributes: [:]

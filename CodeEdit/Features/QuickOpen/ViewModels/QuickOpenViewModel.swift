@@ -12,13 +12,13 @@ final class QuickOpenViewModel: ObservableObject {
 
     @Published var openQuicklyQuery: String = ""
 
-    @Published var openQuicklyFiles: [CEWorkspaceFile] = []
+    @Published var openQuicklyFiles: [URL] = []
 
     @Published var isShowingOpenQuicklyFiles: Bool = false
 
     let fileURL: URL
 
-    private let queue = DispatchQueue(label: "app.codeedit.CodeEdit.quickOpen.searchFiles")
+    var runningTask: Task<Void, Never>?
 
     init(fileURL: URL) {
         self.fileURL = fileURL
@@ -31,8 +31,9 @@ final class QuickOpenViewModel: ObservableObject {
             return
         }
 
-        queue.async { [weak self] in
-            guard let self else { return }
+        runningTask?.cancel()
+        runningTask = Task.detached(priority: .userInitiated) {
+            print("new Task!")
             let enumerator = FileManager.default.enumerator(
                 at: self.fileURL,
                 includingPropertiesForKeys: [
@@ -43,6 +44,7 @@ final class QuickOpenViewModel: ObservableObject {
                 ]
             )
             if let filePaths = enumerator?.allObjects as? [URL] {
+                guard !Task.isCancelled else { return }
                 /// removes all filePaths which aren't regular files
                 let filteredFiles = filePaths.filter { url in
                     do {
@@ -54,16 +56,12 @@ final class QuickOpenViewModel: ObservableObject {
                 }
 
                 /// sorts the filtered filePaths with the FuzzySearch
-                Task {
-                    let orderedFiles = await FuzzySearch.search(query: self.openQuicklyQuery, in: filteredFiles)
-                        .map { url in
-                            CEWorkspaceFile(url: url, children: nil)
-                        }
+                let orderedFiles = await FuzzySearch.search(query: self.openQuicklyQuery, in: filteredFiles)
 
-                    DispatchQueue.main.async {
-                        self.openQuicklyFiles = orderedFiles
-                        self.isShowingOpenQuicklyFiles = !self.openQuicklyFiles.isEmpty
-                    }
+                guard !Task.isCancelled else { return }
+                await MainActor.run {
+                    self.openQuicklyFiles = orderedFiles
+                    self.isShowingOpenQuicklyFiles = !self.openQuicklyFiles.isEmpty
                 }
             }
         }
