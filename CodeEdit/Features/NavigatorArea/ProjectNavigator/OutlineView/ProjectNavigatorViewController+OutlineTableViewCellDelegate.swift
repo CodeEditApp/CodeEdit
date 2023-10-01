@@ -21,6 +21,6 @@ extension ProjectNavigatorViewController: OutlineTableViewCellDelegate {
     }
 
     func copyFile(file: CEWorkspaceFile, to destination: URL) {
-        workspace?.workspaceFileManager?.duplicate(file: file)
+        workspace?.workspaceFileManager?.copy(file: file, to: destination)
     }
 }
