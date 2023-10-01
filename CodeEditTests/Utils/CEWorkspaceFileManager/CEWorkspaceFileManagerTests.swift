@@ -20,7 +20,7 @@ final class CEWorkspaceFileManagerUnitTests: XCTestCase {
             self.completion = completion
         }
 
-        func fileManagerUpdated() {
+        func fileManagerUpdated(updatedItems: Set<CEWorkspaceFile>) {
             completion?()
         }
     }
