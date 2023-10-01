@@ -71,7 +71,7 @@ final class CEWorkspaceFileManager {
     // MARK: - Public API
 
     /// A function that, given a file's path, returns a `FileItem` if it exists
-    /// within the scope of the `FileSystemClient`.
+    /// within the scope of the `FileSystemClient`. 
     /// - Parameters:
     ///   - path: The file's relative path.
     ///   - createIfNotFound: Set to true if the function should index any intermediate directories to find the file,
@@ -187,6 +187,7 @@ final class CEWorkspaceFileManager {
     /// - Parameter events: An array of events that occurred.
     private func fileSystemEventReceived(events: [DirectoryEventStream.Event]) {
         DispatchQueue.main.async {
+            var eventHandledCount = 0
             for event in events {
                 var directory = event.directory
                 if directory.last == "/" {
@@ -209,8 +210,11 @@ final class CEWorkspaceFileManager {
                         try? self.rebuildFiles(fromItem: item)
                     }
                 }
+                eventHandledCount += 1
             }
-            self.notifyObservers(updatedItems: Set(events.compactMap { self.getFile($0.directory) }))
+            if eventHandledCount > 0 {
+                self.notifyObservers(updatedItems: Set(events.compactMap { self.getFile($0.directory) }))
+            }
         }
     }
 
