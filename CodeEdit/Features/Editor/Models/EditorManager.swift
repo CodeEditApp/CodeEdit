@@ -123,9 +123,9 @@ class EditorManager: ObservableObject {
     ///   - data: The tab group to fix.
     ///   - fileManager: The file manager to use to map files.a
     private func fixEditor(_ editor: Editor, fileManager: CEWorkspaceFileManager) {
-        editor.tabs = OrderedSet(editor.tabs.compactMap { fileManager.getFile($0.url.path) })
+        editor.tabs = OrderedSet(editor.tabs.compactMap { fileManager.getFile($0.url.path, createIfNotFound: true) })
         if let selectedTab = editor.selectedTab {
-            editor.selectedTab = fileManager.getFile(selectedTab.url.path)
+            editor.selectedTab = fileManager.getFile(selectedTab.url.path, createIfNotFound: true)
         }
     }
 

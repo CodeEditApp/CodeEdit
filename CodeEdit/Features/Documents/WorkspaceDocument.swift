@@ -31,10 +31,6 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         }
     }
 
-    public var filter: String = "" {
-        didSet { workspaceFileManager?.notifyObservers() }
-    }
-
     var utilityAreaModel = UtilityAreaViewModel()
     var searchState: SearchState?
     var quickOpenViewModel: QuickOpenViewModel?

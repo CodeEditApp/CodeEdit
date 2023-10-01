@@ -97,8 +97,8 @@ extension FileSystemTableViewCell: NSTextFieldDelegate {
     func controlTextDidEndEditing(_ obj: Notification) {
         label.backgroundColor = fileItem.validateFileName(for: label?.stringValue ?? "") ? .none : errorRed
         if fileItem.validateFileName(for: label?.stringValue ?? "") {
-            fileItem.move(to: fileItem.url.deletingLastPathComponent()
-                .appendingPathComponent(label?.stringValue ?? ""))
+            let newURL = fileItem.url.deletingLastPathComponent().appendingPathComponent(label?.stringValue ?? "")
+            workspace?.workspaceFileManager?.move(file: fileItem, to: newURL)
         } else {
             label?.stringValue = fileItem.labelFileName()
         }

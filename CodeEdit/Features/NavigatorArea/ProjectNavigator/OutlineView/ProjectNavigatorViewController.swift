@@ -5,6 +5,7 @@
 //  Created by Lukas Pistrol on 07.04.22.
 //
 
+import AppKit
 import SwiftUI
 
 /// A `NSViewController` that handles the **ProjectNavigatorView** in the **NavigatorArea**.
@@ -33,9 +34,11 @@ final class ProjectNavigatorViewController: NSViewController {
     var hiddenFileExtensions: SettingsData.FileExtensions = .default
 
     var rowHeight: Double = 22 {
-        didSet {
-            outlineView.rowHeight = rowHeight
-            outlineView.reloadData()
+        willSet {
+            if newValue != rowHeight {
+                outlineView.rowHeight = newValue
+                outlineView.reloadData()
+            }
         }
     }
 
@@ -102,7 +105,7 @@ final class ProjectNavigatorViewController: NSViewController {
             outlineView.deselectRow(outlineView.selectedRow)
             return
         }
-        select(by: .codeEditor(itemID), from: content, forcesReveal: forcesReveal)
+        select(by: .codeEditor(itemID), forcesReveal: forcesReveal)
     }
 
     /// Expand or collapse the folder on double click
@@ -311,7 +314,7 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
 
     func outlineView(_ outlineView: NSOutlineView, itemForPersistentObject object: Any) -> Any? {
         guard let id = object as? CEWorkspaceFile.ID,
-              let item = workspace?.workspaceFileManager?.getFile(id) else { return nil }
+              let item = workspace?.workspaceFileManager?.getFile(id, createIfNotFound: true) else { return nil }
         return item
     }
 
@@ -325,24 +328,23 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
     ///   - id: the id of the item item
     ///   - collection: the array to search for
     ///   - forcesReveal: The boolean to indicates whether or not it should force to reveal the selected file.
-    private func select(by id: EditorTabID, from collection: [CEWorkspaceFile], forcesReveal: Bool) {
-        print(#function, id)
-        workspace?.workspaceFileManager?.getFile(id.id)
-//        guard let item = collection.find(by: id) else {
-//            return
-//        }
-//        // If the user has set "Reveal file on selection change" to on or it is forced to reveal,
-//        // we need to reveal the item before selecting the row.
-//        if Settings.shared.preferences.general.revealFileOnFocusChange || forcesReveal {
-//           reveal(item)
-//        }
-//        let row = outlineView.row(forItem: item)
-//        if row == -1 {
-//            outlineView.deselectRow(outlineView.selectedRow)
-//        }
-//        shouldSendSelectionUpdate = false
-//        outlineView.selectRowIndexes(.init(integer: row), byExtendingSelection: false)
-//        shouldSendSelectionUpdate = true
+    private func select(by id: EditorTabID, forcesReveal: Bool) {
+        guard case .codeEditor(let path) = id,
+              let item = workspace?.workspaceFileManager?.getFile(path, createIfNotFound: true) else {
+            return
+        }
+        // If the user has set "Reveal file on selection change" to on or it is forced to reveal,
+        // we need to reveal the item before selecting the row.
+        if Settings.shared.preferences.general.revealFileOnFocusChange || forcesReveal {
+           reveal(item)
+        }
+        let row = outlineView.row(forItem: item)
+        if row == -1 {
+            outlineView.deselectRow(outlineView.selectedRow)
+        }
+        shouldSendSelectionUpdate = false
+        outlineView.selectRowIndexes(.init(integer: row), byExtendingSelection: false)
+        shouldSendSelectionUpdate = true
     }
 
     /// Reveals the given `fileItem` in the outline view by expanding all the parent directories of the file.

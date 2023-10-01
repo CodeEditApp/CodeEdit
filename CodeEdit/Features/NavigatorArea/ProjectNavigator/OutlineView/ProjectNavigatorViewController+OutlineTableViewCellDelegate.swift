@@ -14,13 +14,13 @@ extension ProjectNavigatorViewController: OutlineTableViewCellDelegate {
         if !file.isFolder {
             workspace?.editorManager.editorLayout.closeAllTabs(of: file)
         }
-        file.move(to: destination)
+        workspace?.workspaceFileManager?.move(file: file, to: destination)
         if !file.isFolder {
             workspace?.editorManager.openTab(item: .init(url: destination))
         }
     }
 
     func copyFile(file: CEWorkspaceFile, to destination: URL) {
-        file.duplicate()
+        workspace?.workspaceFileManager?.duplicate(file: file)
     }
 }
