@@ -33,7 +33,6 @@ final class QuickOpenViewModel: ObservableObject {
 
         runningTask?.cancel()
         runningTask = Task.detached(priority: .userInitiated) {
-            print("new Task!")
             let enumerator = FileManager.default.enumerator(
                 at: self.fileURL,
                 includingPropertiesForKeys: [
