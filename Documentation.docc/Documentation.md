@@ -16,8 +16,6 @@
 
 ### CodeEditExtension
 
-- ``CodeEditAPI``
-- ``CodeEditTargetsAPI``
 - ``ExtensionManager``
 - ``FolderMonitor``
 
@@ -37,23 +35,14 @@
 
 ### Documents
 
+- <doc:FileManagement>
 - ``WorkspaceDocument``
+- ``CEWorkspaceFile``
+- ``CEWorkspaceFileManager``
+- ``CodeFileDocument``
 - ``CodeEditDocumentController``
 - ``WorkspaceCodeFileView``
-- ``WorkspaceSelectionState``
 - ``WorkspaceNotificationModel``
-
-### ExtensionsStore
-
-- ``ExtensionsManager``
-- ``ExtensionsStoreAgent``
-- ``ExtensionsStoreAPI``
-- ``ExtensionsStoreAPIError``
-- ``Plugin``
-- ``PluginRelease``
-- ``APIPage``
-- ``APIResponse``
-- ``DownloadedPlugin``
 
 ### Feedback
 
@@ -98,7 +87,6 @@
 
 - ``CodeEditKeychain``
 - ``ShellClient``
-- ``WorkspaceClient``
 - ``FileIcon``
 
 ### Welcome

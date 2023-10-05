@@ -29,20 +29,32 @@ enum FSEvent {
 /// Use the `callback` parameter to listen for notifications.
 /// Notifications are automatically filtered to include certain events, but the FS event API doesn't always correctly
 /// flag events so use caution when handling events as they can come frequently.
+///
+/// The `callback` function will be called with all events that happened since the last event notification,
+/// effectively batching all notifications every `debounceDuration`. This callback may not be called on a
+/// predictable dispatch queue.
 class DirectoryEventStream {
-    typealias EventCallback = (String, FSEvent, Bool) -> Void
+    typealias EventCallback = ([Event]) -> Void
 
     private var streamRef: FSEventStreamRef?
     private var callback: EventCallback
     private let debounceDuration: TimeInterval
 
+    struct Event {
+        let directory: String
+        let eventType: FSEvent
+        let deepRebuild: Bool
+    }
+
     /// Initialize the event stream and begin listening for events.
     /// - Parameters:
-    ///   - directory: The directory to monitor. The listener may receive a `FSEvent.rootChanged` event if this
+    ///   - directory: The directory to monitor. The listener may receive a ``FSEvent/rootChanged`` event if this
     ///   directory is modified or moved.
     ///   - debounceDuration: The duration to delay notifications for to let the FS events API accumulates events.
-    ///   - callback: A callback provided that `DirectoryEventStream` will send events to.
-    init(directory: String, debounceDuration: TimeInterval = 0.05, callback: @escaping EventCallback) {
+    ///                       defaults to 0.1s.
+    ///   - callback: A callback provided that the ``DirectoryEventStream`` will send events to. See
+    ///               ``DirectoryEventStream``'s documentation for detailed information.
+    init(directory: String, debounceDuration: TimeInterval = 0.1, callback: @escaping EventCallback) {
         self.debounceDuration = debounceDuration
         self.callback = callback
         let selfPtr = UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque())
@@ -104,6 +116,7 @@ class DirectoryEventStream {
         streamRef = nil
     }
 
+    /// Handler for the fs event stream.
     private func eventStreamHandler(
         _ streamRef: ConstFSEventStreamRef,
         _ numEvents: Int,
@@ -112,27 +125,26 @@ class DirectoryEventStream {
         _ eventIds: UnsafePointer<FSEventStreamEventId>
     ) {
         let eventPaths = eventPaths.bindMemory(to: UnsafePointer<CChar>.self, capacity: numEvents)
+        var events: [Event] = []
         for idx in 0..<numEvents {
             let pathPtr = eventPaths.advanced(by: idx).pointee
             let path = String(cString: pathPtr)
             let flags = eventFlags.advanced(by: idx).pointee
+            let deepScan = Int(flags) & kFSEventStreamEventFlagMustScanSubDirs > 0 ? true : false // Deep scan?
             guard let event = getEventFromFlags(flags) else {
                 continue
             }
-            callback(
-                path,
-                event,
-                Int(flags) & kFSEventStreamEventFlagMustScanSubDirs > 0 ? true : false // Deep scan?
-            )
+            events.append(Event(directory: path, eventType: event, deepRebuild: deepScan))
         }
+        callback(events)
     }
 
-    /// Parses an `FSEvent` from the raw flag value.
+    /// Parses an ``FSEvent`` from the raw flag value.
     ///
-    /// This more often than not returns `.changeInDirectory` as `FSEventStream` more often than not
-    /// returns `kFSEventStreamEventFlagNone (0x00000000)`.
+    /// Often returns ``FSEvent/changeInDirectory`` as `FSEventStream` returns
+    /// `kFSEventStreamEventFlagNone (0x00000000)` frequently without more information.
     /// - Parameter raw: The int value received from the FSEventStream
-    /// - Returns: An FSEvent if a valid one was found.
+    /// - Returns: An ``FSEvent`` if a valid one was found, or `nil` otherwise.
     func getEventFromFlags(_ raw: FSEventStreamEventFlags) -> FSEvent? {
         if raw == 0 {
             return .changeInDirectory

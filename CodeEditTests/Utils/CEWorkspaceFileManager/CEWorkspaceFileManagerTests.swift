@@ -9,7 +9,7 @@ import Foundation
 import XCTest
 @testable import CodeEdit
 
-final class WorkspaceClientUnitTests: XCTestCase {
+final class CEWorkspaceFileManagerUnitTests: XCTestCase {
     let typeOfExtensions = ["json", "txt", "swift", "js", "py", "md"]
     var directory: URL!
 
@@ -20,7 +20,7 @@ final class WorkspaceClientUnitTests: XCTestCase {
             self.completion = completion
         }
 
-        func fileManagerUpdated() {
+        func fileManagerUpdated(updatedItems: Set<CEWorkspaceFile>) {
             completion?()
         }
     }
@@ -105,5 +105,44 @@ final class WorkspaceClientUnitTests: XCTestCase {
     func randomString(length: Int) -> String {
         let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
         return String((0 ..< length).map { _ in letters.randomElement()! })
+    }
+
+    func testGetFile() throws {
+        let testDirectoryURL = directory.appending(path: "level1/level-2/level3")
+        let testFileURL = directory.appending(path: "level1/level-2/level3/file.txt")
+        try FileManager.default.createDirectory(at: testDirectoryURL, withIntermediateDirectories: true)
+        try "".write(to: testFileURL, atomically: true, encoding: .utf8)
+
+        let fileManger = CEWorkspaceFileManager(folderUrl: directory, ignoredFilesAndFolders: [])
+
+        XCTAssert(fileManger.getFile(testFileURL.path()) == nil)
+        XCTAssert(fileManger.childrenOfFile(CEWorkspaceFile(url: testFileURL)) == nil)
+        XCTAssert(fileManger.getFile(testFileURL.path(), createIfNotFound: true) != nil)
+        XCTAssert(fileManger.childrenOfFile(CEWorkspaceFile(url: testDirectoryURL)) != nil)
+    }
+
+    func testDeleteFile() throws {
+        let testFileURL = directory.appending(path: "file.txt")
+        try "".write(to: testFileURL, atomically: true, encoding: .utf8)
+
+        let fileManger = CEWorkspaceFileManager(folderUrl: directory, ignoredFilesAndFolders: [])
+        XCTAssert(fileManger.getFile(testFileURL.path()) != nil)
+        XCTAssert(FileManager.default.fileExists(atPath: testFileURL.path()) == true)
+        fileManger.delete(file: CEWorkspaceFile(url: testFileURL), confirmDelete: false)
+        XCTAssert(FileManager.default.fileExists(atPath: testFileURL.path()) == false)
+    }
+
+    func testDuplicateFile() throws {
+        let testFileURL = directory.appending(path: "file.txt")
+        let testDuplicatedFileURL = directory.appendingPathComponent("file copy.txt")
+        try "😄".write(to: testFileURL, atomically: true, encoding: .utf8)
+
+        let fileManger = CEWorkspaceFileManager(folderUrl: directory, ignoredFilesAndFolders: [])
+        XCTAssert(fileManger.getFile(testFileURL.path()) != nil)
+        XCTAssert(FileManager.default.fileExists(atPath: testFileURL.path()) == true)
+        fileManger.duplicate(file: CEWorkspaceFile(url: testFileURL))
+        XCTAssert(FileManager.default.fileExists(atPath: testFileURL.path()) == true)
+        XCTAssert(FileManager.default.fileExists(atPath: testDuplicatedFileURL.path(percentEncoded: false)) == true)
+        XCTAssert(try String(contentsOf: testDuplicatedFileURL) == "😄")
     }
 }

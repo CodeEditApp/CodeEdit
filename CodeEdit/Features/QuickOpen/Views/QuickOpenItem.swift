@@ -8,30 +8,29 @@
 import SwiftUI
 
 struct QuickOpenItem: View {
-
     private let baseDirectory: URL
-    private let fileItem: CEWorkspaceFile
+    private let fileURL: URL
 
     init(
         baseDirectory: URL,
-        fileItem: CEWorkspaceFile
+        fileURL: URL
     ) {
         self.baseDirectory = baseDirectory
-        self.fileItem = fileItem
+        self.fileURL = fileURL
     }
 
     var relativePathComponents: ArraySlice<String> {
-        return fileItem.url.pathComponents.dropFirst(baseDirectory.pathComponents.count).dropLast()
+        return fileURL.pathComponents.dropFirst(baseDirectory.pathComponents.count).dropLast()
     }
 
     var body: some View {
         HStack(spacing: 8) {
-            Image(nsImage: NSWorkspace.shared.icon(forFile: fileItem.url.path))
+            Image(nsImage: NSWorkspace.shared.icon(forFile: fileURL.path))
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 24, height: 24)
             VStack(alignment: .leading, spacing: 0) {
-                Text(fileItem.url.lastPathComponent).font(.system(size: 13))
+                Text(fileURL.lastPathComponent).font(.system(size: 13))
                     .lineLimit(1)
                 Text(relativePathComponents.joined(separator: " ▸ "))
                     .font(.system(size: 10.5))

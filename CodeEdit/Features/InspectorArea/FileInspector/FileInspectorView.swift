@@ -96,7 +96,7 @@ struct FileInspectorView: View {
                             editorManager.editorLayout.closeAllTabs(of: file)
                         }
                         DispatchQueue.main.async {
-                            file.move(to: destinationURL)
+                            workspace.workspaceFileManager?.move(file: file, to: destinationURL)
                             let newItem = CEWorkspaceFile(url: destinationURL)
                             newItem.parent = file.parent
                             if !newItem.isFolder {
@@ -140,9 +140,9 @@ struct FileInspectorView: View {
                         // This is ugly but if the tab is opened at the same time as closing the others, it doesn't open
                         // And if the files are re-built at the same time as the tab is opened, it causes a memory error
                         DispatchQueue.main.async {
-                            file.move(to: newURL)
+                            workspace.workspaceFileManager?.move(file: file, to: newURL)
                             // If the parent directory doesn't exist in the workspace, don't open it in a tab.
-                            if let newParent = try? workspace.workspaceFileManager?.getFile(
+                            if let newParent = workspace.workspaceFileManager?.getFile(
                                 newURL.deletingLastPathComponent().path
                             ) {
                                 let newItem = CEWorkspaceFile(url: newURL)

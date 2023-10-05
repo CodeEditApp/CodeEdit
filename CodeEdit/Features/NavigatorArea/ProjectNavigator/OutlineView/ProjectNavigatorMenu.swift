@@ -199,17 +199,19 @@ final class ProjectNavigatorMenu: NSMenu {
     /// Action that creates a new untitled file
     @objc
     private func newFile() {
-        item?.addFile(fileName: "untitled")
-        outlineView.expandItem((item?.isFolder ?? true) ? item : item?.parent)
+        guard let item else { return }
+        workspace?.workspaceFileManager?.addFile(fileName: "untitled", toFile: item)
+        outlineView.expandItem(item.isFolder ? item : item.parent)
     }
 
     // TODO: allow custom folder names
     /// Action that creates a new untitled folder
     @objc
     private func newFolder() {
-        item?.addFolder(folderName: "untitled")
+        guard let item else { return }
+        workspace?.workspaceFileManager?.addFolder(folderName: "untitled", toFile: item)
         outlineView.expandItem(item)
-        outlineView.expandItem((item?.isFolder ?? true) ? item : item?.parent)
+        outlineView.expandItem(item.isFolder ? item : item.parent)
     }
 
     /// Opens the rename file dialogue on the cell this was presented from.
@@ -230,13 +232,15 @@ final class ProjectNavigatorMenu: NSMenu {
     /// Action that deletes the item.
     @objc
     private func delete() {
-        item?.delete()
+        guard let item else { return }
+        workspace?.workspaceFileManager?.delete(file: item)
     }
 
     /// Action that duplicates the item
     @objc
     private func duplicate() {
-        item?.duplicate()
+        guard let item else { return }
+        workspace?.workspaceFileManager?.duplicate(file: item)
     }
 }
 

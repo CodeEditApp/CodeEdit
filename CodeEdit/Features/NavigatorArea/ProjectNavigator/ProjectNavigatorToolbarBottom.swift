@@ -35,9 +35,10 @@ struct ProjectNavigatorToolbarBottom: View {
                         .padding(.trailing, 5)
                 }
             }
-            .onChange(of: filter, perform: {
-                workspace.filter = $0
-            })
+//            .onChange(of: filter, perform: {
+                // TODO: Filter Workspace Files
+//                workspace.filter = $0
+//            })
             .padding(.vertical, 3)
             .background(colorScheme == .dark ? Color(hex: "#FFFFFF").opacity(0.1) : Color(hex: "#808080").opacity(0.2))
             .clipShape(RoundedRectangle(cornerRadius: 6))
@@ -80,15 +81,13 @@ struct ProjectNavigatorToolbarBottom: View {
         Menu {
             Button("Add File") {
                 let filePathURL = activeTabURL()
-                guard let workspace = workspace.workspaceFileManager?.getFile(filePathURL.path) else { return }
-
-                workspace.addFile(fileName: "untitled")
+                guard let rootFile = workspace.workspaceFileManager?.getFile(filePathURL.path) else { return }
+                workspace.workspaceFileManager?.addFile(fileName: "untitled", toFile: rootFile)
             }
             Button("Add Folder") {
                 let filePathURL = activeTabURL()
-                guard let workspace = workspace.workspaceFileManager?.getFile(filePathURL.path) else { return }
-
-                workspace.addFolder(folderName: "untitled")
+                guard let rootFile = workspace.workspaceFileManager?.getFile(filePathURL.path) else { return }
+                workspace.workspaceFileManager?.addFolder(folderName: "untitled", toFile: rootFile)
             }
         } label: {
             Image(systemName: "plus")

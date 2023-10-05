@@ -7,16 +7,15 @@ The About Window displays general information about the app and acknowledgements
 ### About View
 
 - ``AboutView``
-- ``AboutViewWindowController``
+- ``AboutWindow``
 
 ### Acknowledgements
 
 - ``AcknowledgementsView``
 - ``AcknowledgementsViewModel``
 - ``AcknowledgementsViewWindowController``
-- ``AcknowledgementRow``
+- ``AcknowledgementRowView``
 
-- ``AcknowledgementRootObject``
 - ``AcknowledgementObject``
 - ``AcknowledgementDependency``
 - ``AcknowledgementPackageState``

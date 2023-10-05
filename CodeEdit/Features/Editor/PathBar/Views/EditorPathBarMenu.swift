@@ -9,22 +9,21 @@ import AppKit
 
 final class EditorPathBarMenu: NSMenu, NSMenuDelegate {
     private let fileItems: [CEWorkspaceFile]
+    private weak var fileManager: CEWorkspaceFileManager?
     private let tappedOpenFile: (CEWorkspaceFile) -> Void
 
     init(
         fileItems: [CEWorkspaceFile],
+        fileManager: CEWorkspaceFileManager,
         tappedOpenFile: @escaping (CEWorkspaceFile) -> Void
     ) {
         self.fileItems = fileItems
+        self.fileManager = fileManager
         self.tappedOpenFile = tappedOpenFile
         super.init(title: "")
         delegate = self
         fileItems.forEach { item in
-            let menuItem = PathBarMenuItem(
-                fileItem: item
-            ) { item in
-                tappedOpenFile(item)
-            }
+            let menuItem = PathBarMenuItem(fileItem: item, tappedOpenFile: tappedOpenFile)
             self.addItem(menuItem)
         }
         autoenablesItems = false
@@ -45,9 +44,11 @@ final class EditorPathBarMenu: NSMenu, NSMenuDelegate {
     }
 
     private func generateSubmenu(_ fileItem: CEWorkspaceFile) -> EditorPathBarMenu? {
-        if let children = fileItem.children {
+        if let fileManager = fileManager,
+           let children = fileManager.childrenOfFile(fileItem) {
             let menu = EditorPathBarMenu(
                 fileItems: children,
+                fileManager: fileManager,
                 tappedOpenFile: tappedOpenFile
             )
             return menu
@@ -72,10 +73,9 @@ final class PathBarMenuItem: NSMenuItem {
         var color = NSColor(fileItem.iconColor)
         isEnabled = true
         target = self
-        if fileItem.children != nil {
+        if fileItem.isFolder {
             let subMenu = NSMenu()
             submenu = subMenu
-            icon = fileItem.systemImage
             color = NSColor(named: "FolderBlue") ?? NSColor(.secondary)
         }
         let image = NSImage(

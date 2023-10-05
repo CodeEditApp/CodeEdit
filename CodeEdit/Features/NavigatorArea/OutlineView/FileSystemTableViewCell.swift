@@ -81,7 +81,7 @@ class FileSystemTableViewCell: StandardTableViewCell {
     /// - Parameter item: The `FileItem` to get the color for
     /// - Returns: A `NSColor` for the given `FileItem`.
     func color(for item: CEWorkspaceFile) -> NSColor {
-        if item.children == nil && prefs.fileIconStyle == .color {
+        if !item.isFolder && prefs.fileIconStyle == .color {
             return NSColor(item.iconColor)
         } else {
             return NSColor(named: "FolderBlue")!
@@ -97,8 +97,8 @@ extension FileSystemTableViewCell: NSTextFieldDelegate {
     func controlTextDidEndEditing(_ obj: Notification) {
         label.backgroundColor = fileItem.validateFileName(for: label?.stringValue ?? "") ? .none : errorRed
         if fileItem.validateFileName(for: label?.stringValue ?? "") {
-            fileItem.move(to: fileItem.url.deletingLastPathComponent()
-                .appendingPathComponent(label?.stringValue ?? ""))
+            let newURL = fileItem.url.deletingLastPathComponent().appendingPathComponent(label?.stringValue ?? "")
+            workspace?.workspaceFileManager?.move(file: fileItem, to: newURL)
         } else {
             label?.stringValue = fileItem.labelFileName()
         }
