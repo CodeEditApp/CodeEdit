@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct EditorTabView: View {
 
@@ -45,6 +46,8 @@ struct EditorTabView: View {
     ///
     /// By default, this value is `false`. When the root view is appeared, it turns `true`.
     @State private var isAppeared: Bool = false
+
+    @State private var isDirty: Bool = false
 
     /// The expected tab width in native tab bar style.
     private var expectedWidth: CGFloat
@@ -165,10 +168,14 @@ struct EditorTabView: View {
                         isHoveringTab: isHovering,
                         isDragging: draggingTabId != nil || onDragTabId != nil,
                         closeAction: closeAction,
-                        closeButtonGestureActive: $closeButtonGestureActive
+                        closeButtonGestureActive: $closeButtonGestureActive,
+                        isDirty: isDirty
                     )
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .onReceive(item.fileDocument?.$isDirty.eraseToAnyPublisher() ?? Empty().eraseToAnyPublisher()) { _ in
+                    isDirty = item.fileDocument?.isDirty ?? false
+                }
             }
             .opacity(
                 // Inactive states for tab bar item content.

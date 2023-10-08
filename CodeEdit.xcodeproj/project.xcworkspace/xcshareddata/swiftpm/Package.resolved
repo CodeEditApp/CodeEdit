@@ -39,7 +39,7 @@
     {
       "identity" : "codeedittextview",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/CodeEditApp/CodeEditTextView.git",
+      "location" : "https://github.com/CodeEditApp/CodeEditTextView",
       "state" : {
         "revision" : "7f130bd50bb9eb6bacf6a42700cce571ec82bd64",
         "version" : "0.6.7"
@@ -239,8 +239,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Wouter01/SwiftUI-WindowManagement",
       "state" : {
-        "revision" : "03642ad06a3aa51e8284eb22146a208269cdc1ca",
-        "version" : "2.1.0"
+        "revision" : "adbebf5d7df325f3d7bf07dc832e5e162a9003f5",
+        "version" : "2.1.1"
       }
     },
     {

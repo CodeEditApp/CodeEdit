@@ -12,8 +12,8 @@ struct EditorTabCloseButton: View {
     var isHoveringTab: Bool
     var isDragging: Bool
     var closeAction: () -> Void
-
     @Binding var closeButtonGestureActive: Bool
+    var isDirty: Bool = false
 
     @Environment(\.colorScheme)
     var colorScheme
@@ -22,24 +22,22 @@ struct EditorTabCloseButton: View {
     var tabBarStyle
 
     @State private var isPressingClose: Bool = false
-
     @State private var isHoveringClose: Bool = false
 
     let buttonSize: CGFloat = 16
 
     var body: some View {
-        HStack {
+        HStack(alignment: .center) {
             if tabBarStyle == .xcode {
-                Image(systemName: "xmark")
-                    .font(.system(size: 11.5, weight: .regular, design: .rounded))
+                Image(systemName: isDirty && !isHoveringTab ? "circlebadge.fill" : "xmark")
+                    .font(.system(size: isDirty && !isHoveringTab ? 9.5 : 11.5, weight: .regular, design: .rounded))
                     .foregroundColor(
                         isActive
                         ? colorScheme == .dark ? .primary : Color(.controlAccentColor)
                         : .secondary
                     )
-                    .padding(.top, -0.5)
             } else {
-                Image(systemName: "xmark")
+                Image(systemName: isDirty && !isHoveringTab ? "circlebadge.fill" : "xmark")
                     .font(.system(size: 9.5, weight: .medium, design: .rounded))
             }
         }
@@ -87,7 +85,7 @@ struct EditorTabCloseButton: View {
         }
         .accessibilityLabel(Text("Close"))
         // Only show when the mouse is hovering and there is no tab dragging.
-        .opacity(isHoveringTab && !isDragging ? 1 : 0)
+        .opacity((isHoveringTab || isDirty == true) && !isDragging ? 1 : 0)
         .animation(.easeInOut(duration: 0.08), value: isHoveringTab)
         .padding(.leading, 4)
     }

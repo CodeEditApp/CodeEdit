@@ -71,6 +71,8 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
 
     @Published var cursorPosition = (1, 1)
 
+    @Published var isDirty: Bool = false
+
     // MARK: - NSDocument
 
     override class var autosavesInPlace: Bool {
