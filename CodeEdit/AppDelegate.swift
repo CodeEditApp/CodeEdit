@@ -75,10 +75,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 
     func handleOpen() {
         let behavior = Settings.shared.preferences.general.reopenBehavior
-
         switch behavior {
         case .welcome:
-            NSApp.openWindow(.welcome)
+            if !tryFocusWindow(id: .welcome) {
+                NSApp.openWindow(.welcome)
+            }
         case .openPanel:
             CodeEditDocumentController.shared.openDocument(self)
         case .newDocument:
@@ -161,6 +162,17 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         guard let window = NSApp.windows.filter({ ($0.contentView as? NSHostingView<T>) != nil }).first
         else { return false }
 
+        window.makeKeyAndOrderFront(self)
+        return true
+    }
+    
+    /// Tries to focus a window with specified sceneId
+    /// - Parameter type: Id of a window to be focused.
+    /// - Returns: `true` if window exist and focused, otherwise - `false`
+    private func tryFocusWindow(id: SceneID) -> Bool {
+        guard let window = NSApp.windows.filter({ $0.identifier?.rawValue == id.rawValue }).first
+        else { return false }
+        
         window.makeKeyAndOrderFront(self)
         return true
     }
