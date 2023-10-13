@@ -54,14 +54,6 @@ struct CodeFileView: View {
         codeFile
             .$content
             .dropFirst()
-            .sink { _ in
-                codeFile.isDirty = true
-            }
-            .store(in: &cancellables)
-
-        codeFile
-            .$content
-            .dropFirst()
             .debounce(
                 for: 0.25,
                 scheduler: DispatchQueue.main

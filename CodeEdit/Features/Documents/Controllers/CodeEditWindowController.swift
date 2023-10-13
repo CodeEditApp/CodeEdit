@@ -242,7 +242,6 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
     @IBAction func saveDocument(_ sender: Any) {
         guard let codeFile = getSelectedCodeFile() else { return }
         codeFile.save(sender)
-        codeFile.isDirty = false
         workspace?.editorManager.activeEditor.temporaryTab = nil
     }
 
