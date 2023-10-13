@@ -55,7 +55,10 @@ struct CodeFileView: View {
             .$content
             .dropFirst()
             .sink { _ in
-                codeFile.isDirty = true
+                // Publish only when changed
+                if !codeFile.isDirty {
+                    codeFile.isDirty = true
+                }
             }
             .store(in: &cancellables)
 

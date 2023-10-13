@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import UniformTypeIdentifiers
+import Combine
 
 /// An object containing all necessary information and actions for a specific file in the workspace
 ///
@@ -54,7 +55,16 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
     /// If the item already is the top-level ``CEWorkspaceFile`` this returns `nil`.
     var parent: CEWorkspaceFile?
 
-    var fileDocument: CodeFileDocument?
+    var fileDocument: CodeFileDocument? {
+        didSet {
+            fileDocumentSubject.send()
+        }
+    }
+    
+    var fileDocumentPublisher: AnyPublisher<Void, Never> {
+        fileDocumentSubject.eraseToAnyPublisher()
+    }
+    let fileDocumentSubject = PassthroughSubject<Void, Never>()
 
     var fileIdentifier = UUID().uuidString
 
