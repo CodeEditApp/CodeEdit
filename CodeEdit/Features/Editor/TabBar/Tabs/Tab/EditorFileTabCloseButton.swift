@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import Combine
 
-struct FileEditorTabCloseButton: View {
+struct EditorFileTabCloseButton: View {
     var isActive: Bool
     var isHoveringTab: Bool
     var isDragging: Bool
