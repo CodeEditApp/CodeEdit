@@ -13,7 +13,7 @@ struct EditorTabCloseButton: View {
     var isDragging: Bool
     var closeAction: () -> Void
     @Binding var closeButtonGestureActive: Bool
-    var isDirty: Bool = false
+    var isDocumentEdited: Bool = false
 
     @Environment(\.colorScheme)
     var colorScheme
@@ -29,15 +29,21 @@ struct EditorTabCloseButton: View {
     var body: some View {
         HStack(alignment: .center) {
             if tabBarStyle == .xcode {
-                Image(systemName: isDirty && !isHoveringTab ? "circlebadge.fill" : "xmark")
-                    .font(.system(size: isDirty && !isHoveringTab ? 9.5 : 11.5, weight: .regular, design: .rounded))
+                Image(systemName: isDocumentEdited && !isHoveringTab ? "circlebadge.fill" : "xmark")
+                    .font(
+                        .system(
+                            size: isDocumentEdited && !isHoveringTab ? 9.5 : 11.5,
+                            weight: .regular,
+                            design: .rounded
+                        )
+                    )
                     .foregroundColor(
                         isActive
                         ? colorScheme == .dark ? .primary : Color(.controlAccentColor)
                         : .secondary
                     )
             } else {
-                Image(systemName: isDirty && !isHoveringTab ? "circlebadge.fill" : "xmark")
+                Image(systemName: isDocumentEdited && !isHoveringTab ? "circlebadge.fill" : "xmark")
                     .font(.system(size: 9.5, weight: .medium, design: .rounded))
             }
         }
@@ -85,7 +91,7 @@ struct EditorTabCloseButton: View {
         }
         .accessibilityLabel(Text("Close"))
         // Only show when the mouse is hovering and there is no tab dragging.
-        .opacity((isHoveringTab || isDirty == true) && !isDragging ? 1 : 0)
+        .opacity((isHoveringTab || isDocumentEdited == true) && !isDragging ? 1 : 0)
         .animation(.easeInOut(duration: 0.08), value: isHoveringTab)
         .padding(.leading, 4)
     }

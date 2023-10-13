@@ -60,11 +60,12 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
             fileDocumentSubject.send()
         }
     }
-    
+
+    /// Publisher for fileDocument property
     var fileDocumentPublisher: AnyPublisher<Void, Never> {
         fileDocumentSubject.eraseToAnyPublisher()
     }
-    let fileDocumentSubject = PassthroughSubject<Void, Never>()
+    private let fileDocumentSubject = PassthroughSubject<Void, Never>()
 
     var fileIdentifier = UUID().uuidString
 

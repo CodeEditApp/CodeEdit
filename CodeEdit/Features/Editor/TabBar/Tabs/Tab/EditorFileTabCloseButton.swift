@@ -17,7 +17,7 @@ struct EditorFileTabCloseButton: View {
     @Binding var closeButtonGestureActive: Bool
     var item: CEWorkspaceFile
 
-    @State private var isDirty: Bool = false
+    @State private var isDocumentEdited: Bool = false
     @State private var id: Int = 0
 
     var body: some View {
@@ -27,18 +27,18 @@ struct EditorFileTabCloseButton: View {
             isDragging: isDragging,
             closeAction: closeAction,
             closeButtonGestureActive: $closeButtonGestureActive,
-            isDirty: isDirty
+            isDocumentEdited: isDocumentEdited
         )
         .id(id)
         // Detects if file document changed, when this view created item.fileDocument is nil
         .onReceive(item.fileDocumentPublisher, perform: { _ in
-            // Force rerender so isDirty publisher is updated
+            // Force rerender so isDocumentEdited publisher is updated
             self.id += 1
         })
         .onReceive(
-            item.fileDocument?.$isDirty.eraseToAnyPublisher() ?? Empty().eraseToAnyPublisher()
+            item.fileDocument?.isDocumentEditedPublisher.eraseToAnyPublisher() ?? Empty().eraseToAnyPublisher()
         ) { newValue in
-            self.isDirty = newValue
+            self.isDocumentEdited = newValue
         }
     }
 }
