@@ -621,6 +621,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "avinizhanov",
+      "name": "avinizhanov",
+      "avatar_url": "https://avatars.githubusercontent.com/u/42622715?v=4",
+      "profile": "https://github.com/avinizhanov",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
