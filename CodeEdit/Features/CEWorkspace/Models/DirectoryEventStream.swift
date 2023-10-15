@@ -86,7 +86,11 @@ class DirectoryEventStream {
             debounceDuration,
             FSEventStreamCreateFlags(
                 kFSEventStreamCreateFlagUseCFTypes
+                // This will listen for file changes
                 | kFSEventStreamCreateFlagFileEvents
+                // This provides additional information, like fileId,
+                // it is useful when file renamed, because it's firing to separate events with old and new path,
+                // but they can be linked by file id
                 | kFSEventStreamCreateFlagUseExtendedData
             )
         ) {
@@ -131,6 +135,7 @@ class DirectoryEventStream {
         var events: [Event] = []
 
         for (index, dictionary) in eventDictionaries.enumerated() {
+            // Get get file id use dictionary[kFSEventStreamEventExtendedFileIDKey] as? UInt64
             guard let path = dictionary[kFSEventStreamEventExtendedDataPathKey] as? String,
                   let event = getEventFromFlags(eventFlags[index])
             else {

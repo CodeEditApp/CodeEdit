@@ -189,6 +189,7 @@ final class CEWorkspaceFileManager {
         DispatchQueue.main.async {
             var files: Set<CEWorkspaceFile> = []
             for event in events {
+                // Event returns file/folder that was changed, but in tree we need to update it's parent
                 let parent = "/" + event.path.split(separator: "/").dropLast().joined(separator: "/")
                 guard let parentItem = self.getFile(parent) else {
                     return
@@ -196,7 +197,7 @@ final class CEWorkspaceFileManager {
 
                 switch event.eventType {
                 case .changeInDirectory, .itemChangedOwner, .itemModified:
-                    // Can be ignored for now
+                    // Can be ignored for now, these I think not related to tree changes
                     continue
                 case .rootChanged:
                     // TODO: Handle workspace root changing.
