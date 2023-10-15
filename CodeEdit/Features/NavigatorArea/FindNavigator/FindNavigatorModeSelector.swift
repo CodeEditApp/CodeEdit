@@ -39,7 +39,7 @@ struct FindNavigatorModeSelector: View {
             if let firstMode = selectedMode.first {
                 newSelectedMode.append(contentsOf: [firstMode, searchMode])
                 if let thirdMode = searchMode.children.first {
-                    if let selectedThirdMode = selectedMode.third, (searchMode.children.contains(selectedThirdMode)) {
+                    if let selectedThirdMode = selectedMode.third, searchMode.children.contains(selectedThirdMode) {
                         newSelectedMode.append(selectedThirdMode)
                     } else {
                         newSelectedMode.append(thirdMode)
