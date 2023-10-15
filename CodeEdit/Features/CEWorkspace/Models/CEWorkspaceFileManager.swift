@@ -187,33 +187,27 @@ final class CEWorkspaceFileManager {
     /// - Parameter events: An array of events that occurred.
     private func fileSystemEventReceived(events: [DirectoryEventStream.Event]) {
         DispatchQueue.main.async {
-            var eventHandledCount = 0
+            var files: Set<CEWorkspaceFile> = []
             for event in events {
-                var directory = event.directory
-                if directory.last == "/" {
-                    directory.removeLast()
-                }
-                guard let item = self.getFile(directory) else {
+                let parent = "/" + event.path.split(separator: "/").dropLast().joined(separator: "/")
+                guard let parentItem = self.getFile(parent) else {
                     return
                 }
+
                 switch event.eventType {
-                case .changeInDirectory, .itemChangedOwner, .itemCloned, .itemModified, .itemRenamed, .itemCreated:
-                    try? self.rebuildFiles(fromItem: item)
+                case .changeInDirectory, .itemChangedOwner, .itemModified:
+                    // Can be ignored for now
+                    continue
                 case .rootChanged:
                     // TODO: Handle workspace root changing.
                     continue
-                case .itemRemoved:
-                    // Update the file's parent.
-                    if let parent = item.parent {
-                        try? self.rebuildFiles(fromItem: parent)
-                    } else {
-                        try? self.rebuildFiles(fromItem: item)
-                    }
+                case .itemCreated, .itemCloned, .itemRemoved, .itemRenamed:
+                    try? self.rebuildFiles(fromItem: parentItem)
+                    files.insert(parentItem)
                 }
-                eventHandledCount += 1
             }
-            if eventHandledCount > 0 {
-                self.notifyObservers(updatedItems: Set(events.compactMap { self.getFile($0.directory) }))
+            if !files.isEmpty {
+                self.notifyObservers(updatedItems: files)
             }
         }
     }
@@ -237,8 +231,10 @@ final class CEWorkspaceFileManager {
         )
 
         // test for deleted children, and remove them from the index
+        // Folders may or may not have slash at the end, this will normalize check
+        let directoryContentsUrlsRelativePaths = directoryContentsUrls.map({ $0.relativePath })
         for (idx, oldURL) in (childrenMap[fileItem.id] ?? []).map({ URL(filePath: $0) }).enumerated().reversed()
-        where !directoryContentsUrls.contains(oldURL) {
+        where !directoryContentsUrlsRelativePaths.contains(oldURL.relativePath) {
             flattenedFileItems.removeValue(forKey: oldURL.relativePath)
             childrenMap[fileItem.id]?.remove(at: idx)
         }

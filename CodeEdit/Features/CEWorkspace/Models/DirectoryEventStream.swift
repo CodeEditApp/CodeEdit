@@ -41,9 +41,8 @@ class DirectoryEventStream {
     private let debounceDuration: TimeInterval
 
     struct Event {
-        let directory: String
+        let path: String
         let eventType: FSEvent
-        let deepRebuild: Bool
     }
 
     /// Initialize the event stream and begin listening for events.
@@ -85,9 +84,10 @@ class DirectoryEventStream {
             pathsToWatch,
             UInt64(kFSEventStreamEventIdSinceNow),
             debounceDuration,
-            UInt32(
-                kFSEventStreamCreateFlagNoDefer
-                & kFSEventStreamCreateFlagWatchRoot
+            FSEventStreamCreateFlags(
+                kFSEventStreamCreateFlagUseCFTypes
+                | kFSEventStreamCreateFlagFileEvents
+                | kFSEventStreamCreateFlagUseExtendedData
             )
         ) {
             self.streamRef = ref
@@ -124,18 +124,22 @@ class DirectoryEventStream {
         _ eventFlags: UnsafePointer<FSEventStreamEventFlags>,
         _ eventIds: UnsafePointer<FSEventStreamEventId>
     ) {
-        let eventPaths = eventPaths.bindMemory(to: UnsafePointer<CChar>.self, capacity: numEvents)
+        guard let eventDictionaries = unsafeBitCast(eventPaths, to: NSArray.self) as? [NSDictionary] else {
+            return
+        }
+
         var events: [Event] = []
-        for idx in 0..<numEvents {
-            let pathPtr = eventPaths.advanced(by: idx).pointee
-            let path = String(cString: pathPtr)
-            let flags = eventFlags.advanced(by: idx).pointee
-            let deepScan = Int(flags) & kFSEventStreamEventFlagMustScanSubDirs > 0 ? true : false // Deep scan?
-            guard let event = getEventFromFlags(flags) else {
+
+        for (index, dictionary) in eventDictionaries.enumerated() {
+            guard let path = dictionary[kFSEventStreamEventExtendedDataPathKey] as? String,
+                  let event = getEventFromFlags(eventFlags[index])
+            else {
                 continue
             }
-            events.append(Event(directory: path, eventType: event, deepRebuild: deepScan))
+
+            events.append(.init(path: path, eventType: event))
         }
+
         callback(events)
     }
 
