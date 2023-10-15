@@ -47,6 +47,8 @@ struct CodeFileView: View {
 
     private let systemFont: NSFont = .monospacedSystemFont(ofSize: 11, weight: .medium)
 
+    private let undoManager = CEUndoManager()
+
     init(codeFile: CodeFileDocument, isEditable: Bool = true) {
         self.codeFile = codeFile
         self.isEditable = isEditable
@@ -64,13 +66,7 @@ struct CodeFileView: View {
             }
             .store(in: &cancellables)
 
-        codeFile
-            .$content
-            .dropFirst()
-            .sink { _ in
-                codeFile.updateChangeCount(.changeDone)
-            }
-            .store(in: &cancellables)
+        codeFile.undoManager = self.undoManager.manager
     }
 
     @State private var selectedTheme = ThemeModel.shared.selectedTheme ?? ThemeModel.shared.themes.first!
@@ -116,7 +112,8 @@ struct CodeFileView: View {
             contentInsets: edgeInsets.nsEdgeInsets,
             isEditable: isEditable,
             letterSpacing: letterSpacing,
-            bracketPairHighlight: bracketPairHighlight
+            bracketPairHighlight: bracketPairHighlight,
+            undoManager: undoManager
         )
 
         .id(codeFile.fileURL)
