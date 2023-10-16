@@ -68,9 +68,12 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
         var controller: ProjectNavigatorViewController?
 
         func fileManagerUpdated(updatedItems: Set<CEWorkspaceFile>) {
+            guard let outlineView = controller?.outlineView else { return }
+
             for item in updatedItems {
-                controller?.outlineView?.reloadItem(item)
+                outlineView.reloadItem(item, reloadChildren: true)
             }
+
             controller?.updateSelection(itemID: workspace.editorManager.activeEditor.selectedTab?.id)
         }
 
