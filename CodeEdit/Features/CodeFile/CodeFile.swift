@@ -72,11 +72,12 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
 
     @Published var cursorPosition = (1, 1)
 
+    private let isDocumentEditedSubject = PassthroughSubject<Bool, Never>()
+
     /// Publisher for isDocumentEdited property
     var isDocumentEditedPublisher: AnyPublisher<Bool, Never> {
         isDocumentEditedSubject.eraseToAnyPublisher()
     }
-    private let isDocumentEditedSubject = PassthroughSubject<Bool, Never>()
 
     // MARK: - NSDocument
 

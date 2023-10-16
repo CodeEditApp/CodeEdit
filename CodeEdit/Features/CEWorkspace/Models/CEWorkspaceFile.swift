@@ -55,6 +55,8 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
     /// If the item already is the top-level ``CEWorkspaceFile`` this returns `nil`.
     var parent: CEWorkspaceFile?
 
+    private let fileDocumentSubject = PassthroughSubject<Void, Never>()
+
     var fileDocument: CodeFileDocument? {
         didSet {
             fileDocumentSubject.send()
@@ -65,7 +67,6 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
     var fileDocumentPublisher: AnyPublisher<Void, Never> {
         fileDocumentSubject.eraseToAnyPublisher()
     }
-    private let fileDocumentSubject = PassthroughSubject<Void, Never>()
 
     var fileIdentifier = UUID().uuidString
 
