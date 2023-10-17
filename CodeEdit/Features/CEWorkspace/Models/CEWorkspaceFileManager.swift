@@ -192,7 +192,7 @@ final class CEWorkspaceFileManager {
                 // Event returns file/folder that was changed, but in tree we need to update it's parent
                 let parent = "/" + event.path.split(separator: "/").dropLast().joined(separator: "/")
                 guard let parentItem = self.getFile(parent) else {
-                    return
+                    continue
                 }
 
                 switch event.eventType {
