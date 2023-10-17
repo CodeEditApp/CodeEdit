@@ -8,6 +8,7 @@
 import Foundation
 import OrderedCollections
 import DequeModule
+import AppKit
 
 final class Editor: ObservableObject, Identifiable {
     typealias Tab = CEWorkspaceFile
@@ -86,8 +87,15 @@ final class Editor: ObservableObject, Identifiable {
     /// This will also write any changes to the file on disk and will add the tab to the tab history.
     /// - Parameter item: the tab to close.
     func closeTab(item: Tab) {
+        guard canCloseTab(item: item) else { return }
+
         if temporaryTab == item {
             temporaryTab = nil
+        } else {
+            // When tab actually closed (not changed from temporary to normal)
+            // we need to set fileDocument to nil, otherwise it will keep file in memory
+            // and not reload content on next openTabFile with same id
+            item.fileDocument = nil
         }
 
         historyOffset = 0
@@ -97,25 +105,6 @@ final class Editor: ObservableObject, Identifiable {
         tabs.remove(item)
         if let selectedTab {
             history.prepend(selectedTab)
-        }
-
-        guard let file = item.fileDocument else { return }
-
-        if file.isDocumentEdited {
-            let shouldClose = UnsafeMutablePointer<Bool>.allocate(capacity: 1)
-            shouldClose.initialize(to: true)
-            defer {
-                _ = shouldClose.move()
-                shouldClose.deallocate()
-            }
-            file.canClose(
-                withDelegate: self,
-                shouldClose: #selector(WorkspaceDocument.document(_:shouldClose:contextInfo:)),
-                contextInfo: shouldClose
-            )
-            guard shouldClose.pointee else {
-                return
-            }
         }
     }
 
@@ -233,6 +222,49 @@ final class Editor: ObservableObject, Identifiable {
     /// Warning: NOT published!
     var canGoForwardInHistory: Bool {
         historyOffset != 0
+    }
+
+    /// Check if tab can be closed
+    /// If document edited it will show dialog where user can save document before closing or cancel.
+    private func canCloseTab(item: Tab) -> Bool {
+        guard let file = item.fileDocument else { return true }
+
+        if file.isDocumentEdited {
+            let shouldClose = UnsafeMutablePointer<Bool>.allocate(capacity: 1)
+            shouldClose.initialize(to: true)
+            defer {
+                _ = shouldClose.move()
+                shouldClose.deallocate()
+            }
+            file.canClose(
+                withDelegate: self,
+                shouldClose: #selector(document(_:shouldClose:contextInfo:)),
+                contextInfo: shouldClose
+            )
+
+            return shouldClose.pointee
+        }
+
+        return true
+    }
+
+    /// Receives result of `canClose` and then, set `shouldClose` to `contextInfo`'s `pointee`.
+    ///
+    /// - Parameters:
+    ///   - document: The document may be closed.
+    ///   - shouldClose: The result of user selection.
+    ///      `shouldClose` becomes false if the user selects cancel, otherwise true.
+    ///   - contextInfo: The additional info which will be set `shouldClose`.
+    ///       `contextInfo` must be `UnsafeMutablePointer<Bool>`.
+    @objc
+    func document(
+        _ document: NSDocument,
+        shouldClose: Bool,
+        contextInfo: UnsafeMutableRawPointer
+    ) {
+        let opaquePtr = OpaquePointer(contextInfo)
+        let mutablePointer = UnsafeMutablePointer<Bool>(opaquePtr)
+        mutablePointer.pointee = shouldClose
     }
 }
 
