@@ -12,6 +12,7 @@ import UniformTypeIdentifiers
 import QuickLookUI
 import CodeEditTextView
 import CodeEditLanguages
+import Combine
 
 enum CodeFileError: Error {
     case failedToDecode
@@ -71,6 +72,13 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
 
     @Published var cursorPosition = (1, 1)
 
+    private let isDocumentEditedSubject = PassthroughSubject<Bool, Never>()
+
+    /// Publisher for isDocumentEdited property
+    var isDocumentEditedPublisher: AnyPublisher<Bool, Never> {
+        isDocumentEditedSubject.eraseToAnyPublisher()
+    }
+
     // MARK: - NSDocument
 
     override class var autosavesInPlace: Bool {
@@ -117,5 +125,27 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
     override func read(from data: Data, ofType _: String) throws {
         guard let content = String(data: data, encoding: .utf8) else { return }
         self.content = content
+    }
+
+    /// Triggered when change occured
+    override func updateChangeCount(_ change: NSDocument.ChangeType) {
+        super.updateChangeCount(change)
+
+        if CodeFileDocument.autosavesInPlace {
+            return
+        }
+
+        self.isDocumentEditedSubject.send(self.isDocumentEdited)
+    }
+
+    /// Triggered when changes saved
+    override func updateChangeCount(withToken changeCountToken: Any, for saveOperation: NSDocument.SaveOperationType) {
+        super.updateChangeCount(withToken: changeCountToken, for: saveOperation)
+
+        if CodeFileDocument.autosavesInPlace {
+            return
+        }
+
+        self.isDocumentEditedSubject.send(self.isDocumentEdited)
     }
 }

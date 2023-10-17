@@ -13,6 +13,7 @@
 		04540D5E27DD08C300E91B77 /* WorkspaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B658FB3127DA9E0F00EA4DBD /* WorkspaceView.swift */; };
 		04660F6A27E51E5C00477777 /* CodeEditWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04660F6927E51E5C00477777 /* CodeEditWindowController.swift */; };
 		0485EB1F27E7458B00138301 /* WorkspaceCodeFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0485EB1E27E7458B00138301 /* WorkspaceCodeFileView.swift */; };
+		04BC1CDE2AD9B4B000A83EA5 /* EditorFileTabCloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BC1CDD2AD9B4B000A83EA5 /* EditorFileTabCloseButton.swift */; };
 		04C3255B2801F86400C8DA2D /* ProjectNavigatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285FEC6D27FE4B4A00E57D53 /* ProjectNavigatorViewController.swift */; };
 		04C3255C2801F86900C8DA2D /* ProjectNavigatorMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285FEC7127FE4EEF00E57D53 /* ProjectNavigatorMenu.swift */; };
 		200412EF280F3EAC00BCAF5C /* HistoryInspectorNoHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200412EE280F3EAC00BCAF5C /* HistoryInspectorNoHistoryView.swift */; };
@@ -343,6 +344,7 @@
 		B6041F4D29D7A4E9000F3454 /* SettingsPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6041F4C29D7A4E9000F3454 /* SettingsPageView.swift */; };
 		B6041F5229D7D6D6000F3454 /* SettingsWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6041F5129D7D6D6000F3454 /* SettingsWindow.swift */; };
 		B60BE8BD297A167600841125 /* AcknowledgementRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60BE8BC297A167600841125 /* AcknowledgementRowView.swift */; };
+		B6152B802ADAE421004C6012 /* CodeEditWindowControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6152B7F2ADAE421004C6012 /* CodeEditWindowControllerExtensions.swift */; };
 		B61A606129F188AB009B43F9 /* ExternalLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61A606029F188AB009B43F9 /* ExternalLink.swift */; };
 		B61A606929F4481A009B43F9 /* MonospacedFontPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61A606829F4481A009B43F9 /* MonospacedFontPicker.swift */; };
 		B61DA9DF29D929E100BF4A43 /* GeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61DA9DE29D929E100BF4A43 /* GeneralSettingsView.swift */; };
@@ -482,6 +484,7 @@
 		04660F6927E51E5C00477777 /* CodeEditWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditWindowController.swift; sourceTree = "<group>"; };
 		0468438427DC76E200F8E88E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0485EB1E27E7458B00138301 /* WorkspaceCodeFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceCodeFileView.swift; sourceTree = "<group>"; };
+		04BC1CDD2AD9B4B000A83EA5 /* EditorFileTabCloseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorFileTabCloseButton.swift; sourceTree = "<group>"; };
 		200412EE280F3EAC00BCAF5C /* HistoryInspectorNoHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryInspectorNoHistoryView.swift; sourceTree = "<group>"; };
 		201169D62837B2E300F92B46 /* SourceControlNavigatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlNavigatorView.swift; sourceTree = "<group>"; };
 		201169D82837B31200F92B46 /* SourceControlSearchToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlSearchToolbar.swift; sourceTree = "<group>"; };
@@ -798,6 +801,7 @@
 		B6041F4C29D7A4E9000F3454 /* SettingsPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPageView.swift; sourceTree = "<group>"; };
 		B6041F5129D7D6D6000F3454 /* SettingsWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWindow.swift; sourceTree = "<group>"; };
 		B60BE8BC297A167600841125 /* AcknowledgementRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcknowledgementRowView.swift; sourceTree = "<group>"; };
+		B6152B7F2ADAE421004C6012 /* CodeEditWindowControllerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditWindowControllerExtensions.swift; sourceTree = "<group>"; };
 		B61A606029F188AB009B43F9 /* ExternalLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalLink.swift; sourceTree = "<group>"; };
 		B61A606829F4481A009B43F9 /* MonospacedFontPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonospacedFontPicker.swift; sourceTree = "<group>"; };
 		B61DA9DE29D929E100BF4A43 /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
@@ -1295,6 +1299,7 @@
 			children = (
 				043C321327E31FF6006AE443 /* CodeEditDocumentController.swift */,
 				04660F6927E51E5C00477777 /* CodeEditWindowController.swift */,
+				B6152B7F2ADAE421004C6012 /* CodeEditWindowControllerExtensions.swift */,
 				4E7F066529602E7B00BB3C12 /* CodeEditSplitViewController.swift */,
 			);
 			path = Controllers;
@@ -2330,6 +2335,7 @@
 				58AFAA272933C65C00482B53 /* Models */,
 				B6C6A42F29771F7100A3D28F /* EditorTabBackground.swift */,
 				B6C6A42D29771A8D00A3D28F /* EditorTabButtonStyle.swift */,
+				04BC1CDD2AD9B4B000A83EA5 /* EditorFileTabCloseButton.swift */,
 				B6C6A429297716A500A3D28F /* EditorTabCloseButton.swift */,
 				587FB98F29C1246400B519DD /* EditorTabView.swift */,
 			);
@@ -3037,6 +3043,7 @@
 				587B9DA329300ABD00AC7927 /* SettingsTextEditor.swift in Sources */,
 				B6F0517B29D9E46400D72287 /* SourceControlSettingsView.swift in Sources */,
 				6C147C4D29A32AA30089B630 /* EditorView.swift in Sources */,
+				B6152B802ADAE421004C6012 /* CodeEditWindowControllerExtensions.swift in Sources */,
 				587B9E7B29301D8F00AC7927 /* GitHubRouter.swift in Sources */,
 				201169E22837B3D800F92B46 /* SourceControlNavigatorChangesView.swift in Sources */,
 				850C631029D6B01D00E1444C /* SettingsView.swift in Sources */,
@@ -3204,6 +3211,7 @@
 				58D01C99293167DC00C5B6B4 /* String+MD5.swift in Sources */,
 				20EBB505280C329800F3A5DA /* HistoryInspectorItemView.swift in Sources */,
 				5878DAB2291D627C00DD95A3 /* EditorPathBarView.swift in Sources */,
+				04BC1CDE2AD9B4B000A83EA5 /* EditorFileTabCloseButton.swift in Sources */,
 				6C6BD70129CD172700235D17 /* ExtensionsListView.swift in Sources */,
 				043C321627E3201F006AE443 /* WorkspaceDocument.swift in Sources */,
 				58F2EAEC292FB2B0004A9BDE /* IgnoredFiles.swift in Sources */,
@@ -4145,8 +4153,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/pointfreeco/swift-snapshot-testing.git";
 			requirement = {
-				kind = exactVersion;
-				version = 1.9.0;
+				kind = upToNextMinorVersion;
+				minimumVersion = 1.14.2;
 			};
 		};
 		58798288292ED15F0085B254 /* XCRemoteSwiftPackageReference "SwiftTerm" */ = {
@@ -4170,7 +4178,7 @@
 			repositoryURL = "https://github.com/CodeEditApp/CodeEditTextView";
 			requirement = {
 				kind = exactVersion;
-				version = 0.6.7;
+				version = 0.6.8;
 			};
 		};
 		6C0F3A3A2A1D0D5000223D19 /* XCRemoteSwiftPackageReference "CodeEditKit" */ = {

@@ -39,10 +39,10 @@
     {
       "identity" : "codeedittextview",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/CodeEditApp/CodeEditTextView.git",
+      "location" : "https://github.com/CodeEditApp/CodeEditTextView",
       "state" : {
-        "revision" : "7f130bd50bb9eb6bacf6a42700cce571ec82bd64",
-        "version" : "0.6.7"
+        "revision" : "6a04ca72975b25b28829e419a43cce5cabb97891",
+        "version" : "0.6.8"
       }
     },
     {
@@ -194,8 +194,17 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-snapshot-testing.git",
       "state" : {
-        "revision" : "f8a9c997c3c1dab4e216a8ec9014e23144cbab37",
-        "version" : "1.9.0"
+        "revision" : "bb0ea08db8e73324fe6c3727f755ca41a23ff2f4",
+        "version" : "1.14.2"
+      }
+    },
+    {
+      "identity" : "swift-syntax",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-syntax.git",
+      "state" : {
+        "revision" : "74203046135342e4a4a627476dd6caf8b28fe11b",
+        "version" : "509.0.0"
       }
     },
     {
@@ -239,8 +248,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Wouter01/SwiftUI-WindowManagement",
       "state" : {
-        "revision" : "03642ad06a3aa51e8284eb22146a208269cdc1ca",
-        "version" : "2.1.0"
+        "revision" : "adbebf5d7df325f3d7bf07dc832e5e162a9003f5",
+        "version" : "2.1.1"
       }
     },
     {

@@ -159,13 +159,14 @@ struct EditorTabView: View {
             .padding(.horizontal, tabBarStyle == .native ? 28 : 23)
             .overlay {
                 ZStack {
-                    // Close Button
-                    EditorTabCloseButton(
+                    // Close Button with is file changed indicator
+                    EditorFileTabCloseButton(
                         isActive: isActive,
                         isHoveringTab: isHovering,
                         isDragging: draggingTabId != nil || onDragTabId != nil,
                         closeAction: closeAction,
-                        closeButtonGestureActive: $closeButtonGestureActive
+                        closeButtonGestureActive: $closeButtonGestureActive,
+                        item: item
                     )
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)

@@ -13,28 +13,32 @@ struct WindowSplitView: View {
     @State var showInspector = true
     @State var window: NSWindow = .init()
 
-    var body: some View {
-        WindowObserver(window: window) {
-            NavigationSplitView(columnVisibility: $visibility) {
-                NavigatorAreaView(workspace: workspace, viewModel: NavigatorSidebarViewModel())
-                    .toolbar {
-                        ToolbarItem {
-                            Button {
-                                withAnimation(.linear(duration: 0)) {
-                                    if visibility == .detailOnly {
-                                        visibility = .all
-                                    } else {
-                                        visibility = .detailOnly
-                                    }
-                                }
-                            } label: {
-                                Image(systemName: "sidebar.left")
-                                    .imageScale(.large)
+    var navigatorAreaView: some View {
+        NavigatorAreaView(workspace: workspace, viewModel: NavigatorSidebarViewModel())
+            .toolbar {
+                ToolbarItem {
+                    Button {
+                        withAnimation(.linear(duration: 0)) {
+                            if visibility == .detailOnly {
+                                visibility = .all
+                            } else {
+                                visibility = .detailOnly
                             }
                         }
+                    } label: {
+                        Image(systemName: "sidebar.left")
+                            .imageScale(.large)
                     }
-            } detail: {
-                if #available(macOS 14.0, *) {
+                }
+            }
+    }
+
+    var body: some View {
+        WindowObserver(window: window) {
+            if #available(macOS 14.0, *) {
+                NavigationSplitView(columnVisibility: $visibility) {
+                    navigatorAreaView
+                } detail: {
                     WorkspaceView()
                         .toolbar {
                             ToolbarItem(id: "com.apple.SwiftUI.navigationSplitView.toggleSidebar") {
@@ -45,22 +49,26 @@ struct WindowSplitView: View {
                             }
                             .defaultCustomization(.hidden, options: [])
                         }
-#if swift(>=5.9) // Fix build on Xcode 14
-                        .inspector(isPresented: $showInspector) {
-                            InspectorAreaView(viewModel: InspectorAreaViewModel())
-                                .inspectorColumnWidth(min: 100, ideal: 200, max: 400)
-                                .toolbar {
-                                    Spacer()
-                                    Button {
-                                        showInspector.toggle()
-                                    } label: {
-                                        Image(systemName: "sidebar.right")
-                                            .imageScale(.large)
-                                    }
-                                }
+                }
+#if swift(>=5.9) // Fixes build on Xcode 14
+                .inspector(isPresented: $showInspector) {
+                    InspectorAreaView(viewModel: InspectorAreaViewModel())
+                        .inspectorColumnWidth(min: 100, ideal: 200, max: 400)
+                        .toolbar {
+                            Spacer()
+                            Button {
+                                showInspector.toggle()
+                            } label: {
+                                Image(systemName: "sidebar.right")
+                                    .imageScale(.large)
+                            }
                         }
+                }
 #endif
-                } else {
+            } else {
+                NavigationSplitView(columnVisibility: $visibility) {
+                    navigatorAreaView
+                } detail: {
                     WorkspaceView()
                 }
             }
