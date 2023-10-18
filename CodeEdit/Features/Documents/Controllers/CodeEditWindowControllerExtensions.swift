@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 extension CodeEditWindowController {
     @objc
@@ -62,6 +63,53 @@ extension CodeEditWindowController {
             id: "toggle_right_sidebar",
             command: CommandClosureWrapper(closure: { self.toggleLastPanel() })
         )
+    }
+
+    // Listen to changes in all tabs/files
+    internal func listenToDocumentEdited(workspace: WorkspaceDocument) {
+        workspace.editorManager.$activeEditor
+            .flatMap({ editor in
+                editor.$tabs
+            })
+            .compactMap({ tab in
+                Publishers.MergeMany(tab.elements.compactMap({ $0.fileDocumentPublisher }))
+            })
+            .switchToLatest()
+            .compactMap({ fileDocument in
+                fileDocument?.isDocumentEditedPublisher
+            })
+            .flatMap({ $0 })
+            .sink { isDocumentEdited in
+                if isDocumentEdited {
+                    self.setDocumentEdited(true)
+                    return
+                }
+
+                self.updateDocumentEdited(workspace: workspace)
+            }
+            .store(in: &cancellables)
+
+        // Listen to change of tabs, if closed tab without saving content,
+        // we also need to recalculate isDocumentEdited
+        workspace.editorManager.$activeEditor
+            .flatMap({ editor in
+                editor.$tabs
+            })
+            .sink { _ in
+                self.updateDocumentEdited(workspace: workspace)
+            }
+            .store(in: &cancellables)
+    }
+
+    // Recalculate documentEdited by checking if any tab/file is edited
+    private func updateDocumentEdited(workspace: WorkspaceDocument) {
+        let hasEditedDocuments = !workspace
+            .editorManager
+            .editorLayout
+            .gatherOpenFiles()
+            .filter({ $0.fileDocument?.isDocumentEdited == true })
+            .isEmpty
+        self.setDocumentEdited(hasEditedDocuments)
     }
 }
 

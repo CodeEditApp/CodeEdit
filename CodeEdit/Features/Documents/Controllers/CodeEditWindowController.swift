@@ -7,6 +7,7 @@
 
 import Cocoa
 import SwiftUI
+import Combine
 
 final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, ObservableObject {
     static let minSidebarWidth: CGFloat = 242
@@ -22,6 +23,8 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
     var navigatorSidebarViewModel: NavigatorSidebarViewModel?
 
     var splitViewController: NSSplitViewController!
+
+    internal var cancellables = [AnyCancellable]()
 
     init(window: NSWindow, workspace: WorkspaceDocument) {
         super.init(window: window)
@@ -45,6 +48,10 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
 
         setupToolbar()
         registerCommands()
+    }
+
+    deinit {
+        cancellables.forEach({ $0.cancel() })
     }
 
     @available(*, unavailable)
@@ -106,6 +113,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         splitVC.addSplitViewItem(inspector)
 
         self.splitViewController = splitVC
+        self.listenToDocumentEdited(workspace: workspace)
     }
 
     private func setupToolbar() {
