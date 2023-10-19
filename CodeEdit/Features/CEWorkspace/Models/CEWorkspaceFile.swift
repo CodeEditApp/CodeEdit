@@ -55,16 +55,16 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
     /// If the item already is the top-level ``CEWorkspaceFile`` this returns `nil`.
     var parent: CEWorkspaceFile?
 
-    private let fileDocumentSubject = PassthroughSubject<Void, Never>()
+    private let fileDocumentSubject = PassthroughSubject<CodeFileDocument?, Never>()
 
     var fileDocument: CodeFileDocument? {
         didSet {
-            fileDocumentSubject.send()
+            fileDocumentSubject.send(fileDocument)
         }
     }
 
     /// Publisher for fileDocument property
-    var fileDocumentPublisher: AnyPublisher<Void, Never> {
+    var fileDocumentPublisher: AnyPublisher<CodeFileDocument?, Never> {
         fileDocumentSubject.eraseToAnyPublisher()
     }
 
