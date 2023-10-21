@@ -8,39 +8,43 @@
 import SwiftUI
 
 struct SourceControlNavigatorChangesView: View {
+    @ObservedObject var sourceControlManager: SourceControlManager
 
-    @ObservedObject var model: SourceControlModel
-
-    @State var selectedFile: GitChangedFile.ID?
-
-    /// Initialize with GitClient
-    /// - Parameter gitClient: a GitClient
-    init(workspaceURL: URL) {
-        self.model = .init(workspaceURL: workspaceURL)
+    var showSyncView: Bool {
+        sourceControlManager.numberOfUnsyncedCommits > 0 ||
+            (sourceControlManager.currentBranch != nil && sourceControlManager.currentBranch?.upstream == nil)
     }
 
     var body: some View {
         VStack(alignment: .center) {
-            if model.changed.isEmpty {
-                Text("No Changes")
-                    .font(.system(size: 16))
-                    .foregroundColor(.secondary)
+            if sourceControlManager.changedFiles.isEmpty {
+                if showSyncView {
+                    SourceControlNavigatorSyncView(sourceControlManager: sourceControlManager)
+                } else {
+                    Text("No Changes")
+                        .font(.system(size: 16))
+                        .foregroundColor(.secondary)
+                }
             } else {
-                List(selection: $selectedFile) {
-                    Section("Local Changes") {
-                        ForEach(model.changed) { file in
+                SourceControlNavigatorChangesCommitView(
+                    sourceControlManager: sourceControlManager
+                )
+                ScrollView {
+                    LazyVStack(spacing: 0) {
+                        ForEach(sourceControlManager.changedFiles) { file in
                             SourceControlNavigatorChangedFileView(
-                                changedFile: file,
-                                selection: $selectedFile,
-                                workspaceURL: model.workspaceURL
+                                sourceControlManager: sourceControlManager,
+                                changedFile: file
                             )
                         }
                     }
-                    .foregroundColor(.secondary)
                 }
-                .listStyle(.sidebar)
             }
         }
         .frame(maxHeight: .infinity)
+        .task {
+            await sourceControlManager.refresAllChangesFiles()
+            await sourceControlManager.refreshNumberOfUnsyncedCommits()
+        }
     }
 }

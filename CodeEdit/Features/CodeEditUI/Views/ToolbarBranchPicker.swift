@@ -7,33 +7,27 @@
 
 import SwiftUI
 import CodeEditSymbols
+import Combine
 
 /// A view that pops up a branch picker.
 struct ToolbarBranchPicker: View {
     private var workspaceFileManager: CEWorkspaceFileManager?
-    private var gitClient: GitClient?
+    private var sourceControlManager: SourceControlManager?
 
     @Environment(\.controlActiveState)
     private var controlActive
 
     @State private var isHovering: Bool = false
-
     @State private var displayPopover: Bool = false
-
-    @State private var currentBranch: String?
+    @State private var currentBranch: GitBranch?
 
     /// Initializes the ``ToolbarBranchPicker`` with an instance of a `WorkspaceClient`
-    /// - Parameter shellClient: An instance of the current `ShellClient`
     /// - Parameter workspace: An instance of the current `WorkspaceClient`
     init(
-        shellClient: ShellClient,
         workspaceFileManager: CEWorkspaceFileManager?
     ) {
         self.workspaceFileManager = workspaceFileManager
-        if let folderURL = workspaceFileManager?.folderUrl {
-            self.gitClient = GitClient(directoryURL: folderURL, shellClient: shellClient)
-        }
-        self._currentBranch = State(initialValue: try? gitClient?.getCurrentBranchName())
+        self.sourceControlManager = workspaceFileManager?.sourceControlManager
     }
 
     var body: some View {
@@ -57,7 +51,7 @@ struct ToolbarBranchPicker: View {
                     .help(title)
                 if let currentBranch {
                     ZStack(alignment: .trailing) {
-                        Text(currentBranch)
+                        Text(currentBranch.name)
                             .padding(.trailing)
                         if isHovering {
                             Image(systemName: "chevron.down")
@@ -79,10 +73,23 @@ struct ToolbarBranchPicker: View {
             isHovering = active
         }
         .popover(isPresented: $displayPopover, arrowEdge: .bottom) {
-            PopoverView(gitClient: gitClient, currentBranch: $currentBranch)
+            if let sourceControlManager = workspaceFileManager?.sourceControlManager {
+                PopoverView(sourceControlManager: sourceControlManager)
+            }
         }
         .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { (_) in
-            currentBranch = try? gitClient?.getCurrentBranchName()
+            Task {
+                await sourceControlManager?.refreshCurrentBranch()
+            }
+        }
+        .onReceive(
+            self.sourceControlManager?.$currentBranch.eraseToAnyPublisher() ??
+            Empty().eraseToAnyPublisher()
+        ) { branch in
+            self.currentBranch = branch
+        }
+        .task {
+            await self.sourceControlManager?.refreshCurrentBranch()
         }
     }
 
@@ -100,28 +107,24 @@ struct ToolbarBranchPicker: View {
     ///
     /// It displays the currently checked-out branch and all other local branches.
     private struct PopoverView: View {
-        var gitClient: GitClient?
-
-        @Binding var currentBranch: String?
+        @ObservedObject var sourceControlManager: SourceControlManager
 
         var body: some View {
             VStack(alignment: .leading) {
-                if let currentBranch {
+                if let currentBranch = sourceControlManager.currentBranch {
                     VStack(alignment: .leading, spacing: 0) {
                         headerLabel("Current Branch")
-                        BranchCell(name: currentBranch, active: true) {}
+                        BranchCell(sourceControlManager: sourceControlManager, branch: currentBranch, active: true)
                     }
                 }
-                if !branchNames.isEmpty {
-                    ScrollView {
-                        VStack(alignment: .leading, spacing: 0) {
-                            headerLabel("Branches")
-                            ForEach(branchNames, id: \.self) { branch in
-                                BranchCell(name: branch) {
-                                    try? gitClient?.checkoutBranch(branch)
-                                    currentBranch = try? gitClient?.getCurrentBranchName()
-                                }
-                            }
+
+                let branches = sourceControlManager.branches
+                    .filter({ $0.isLocal && $0 != sourceControlManager.currentBranch })
+                if !branches.isEmpty {
+                    VStack(alignment: .leading, spacing: 0) {
+                        headerLabel("Branches")
+                        ForEach(branches, id: \.self) { branch in
+                            BranchCell(sourceControlManager: sourceControlManager, branch: branch)
                         }
                     }
                 }
@@ -129,6 +132,9 @@ struct ToolbarBranchPicker: View {
             .padding(.top, 10)
             .padding(5)
             .frame(width: 340)
+            .task {
+                await sourceControlManager.refreshBranches()
+            }
         }
 
         func headerLabel(_ title: String) -> some View {
@@ -143,9 +149,9 @@ struct ToolbarBranchPicker: View {
 
         /// A Button Cell that represents a branch in the branch picker
         struct BranchCell: View {
-            var name: String
+            let sourceControlManager: SourceControlManager
+            var branch: GitBranch
             var active: Bool = false
-            var action: () -> Void
 
             @Environment(\.dismiss)
             private var dismiss
@@ -154,12 +160,11 @@ struct ToolbarBranchPicker: View {
 
             var body: some View {
                 Button {
-                    action()
-                    dismiss()
+                    switchBranch()
                 } label: {
                     HStack {
                         Label {
-                            Text(name)
+                            Text(branch.name)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                         } icon: {
                             Image.checkout
@@ -184,10 +189,19 @@ struct ToolbarBranchPicker: View {
                     isHovering = active
                 }
             }
-        }
 
-        var branchNames: [String] {
-            ((try? gitClient?.getBranches(false)) ?? []).filter { $0 != currentBranch }
+            func switchBranch() {
+                Task {
+                    do {
+                        try await sourceControlManager.checkoutBranch(branch: branch)
+                        await MainActor.run {
+                            dismiss()
+                        }
+                    } catch {
+                        await sourceControlManager.showAlertForError(title: "Failed to checkout", error: error)
+                    }
+                }
+            }
         }
     }
 }

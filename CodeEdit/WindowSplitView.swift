@@ -43,7 +43,6 @@ struct WindowSplitView: View {
                         .toolbar {
                             ToolbarItem(id: "com.apple.SwiftUI.navigationSplitView.toggleSidebar") {
                                 ToolbarBranchPicker(
-                                    shellClient: currentWorld.shellClient,
                                     workspaceFileManager: workspace.workspaceFileManager
                                 )
                             }

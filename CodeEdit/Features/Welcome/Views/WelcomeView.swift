@@ -19,11 +19,9 @@ struct WelcomeView: View {
     @AppSettings(\.general.reopenBehavior)
     var reopenBehavior
 
-    @State private var repoPath = "~/"
-
     @State var showGitClone = false
 
-    @State var showCheckoutBranch = false
+    @State var showCheckoutBranchItem: URL?
 
     @State var isHovering: Bool = false
 
@@ -32,15 +30,12 @@ struct WelcomeView: View {
     private let openDocument: (URL?, @escaping () -> Void) -> Void
     private let newDocument: () -> Void
     private let dismissWindow: () -> Void
-    private let shellClient: ShellClient
 
     init(
-        shellClient: ShellClient,
         openDocument: @escaping (URL?, @escaping () -> Void) -> Void,
         newDocument: @escaping () -> Void,
         dismissWindow: @escaping () -> Void
     ) {
-        self.shellClient = shellClient
         self.openDocument = openDocument
         self.newDocument = newDocument
         self.dismissWindow = dismissWindow
@@ -120,19 +115,22 @@ struct WelcomeView: View {
         }
         .sheet(isPresented: $showGitClone) {
             GitCloneView(
-                shellClient: shellClient,
-                isPresented: $showGitClone,
-                showCheckout: $showCheckoutBranch,
-                repoPath: $repoPath
+                openBranchView: { url in
+                    showCheckoutBranchItem = url
+                },
+                openDocument: { url in
+                    openDocument(url, dismissWindow)
+                }
             )
         }
-        .sheet(isPresented: $showCheckoutBranch) {
+        .sheet(item: $showCheckoutBranchItem, content: { repoPath in
             GitCheckoutBranchView(
-                isPresented: $showCheckoutBranch,
-                repoPath: $repoPath,
-                shellClient: shellClient
+                repoLocalPath: repoPath,
+                openDocument: { url in
+                    openDocument(url, dismissWindow)
+                }
             )
-        }
+        })
     }
 
     private var mainContent: some View {

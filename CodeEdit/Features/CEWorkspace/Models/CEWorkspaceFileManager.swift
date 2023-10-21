@@ -48,18 +48,24 @@ final class CEWorkspaceFileManager {
 
     let folderUrl: URL
     let workspaceItem: CEWorkspaceFile
+    var sourceControlManager: SourceControlManager?
 
     /// Create a file  manager object with a root and a set of files to ignore.
     /// - Parameters:
     ///   - folderUrl: The folder to use as the root of the file manager.
     ///   - ignoredFilesAndFolders: A set of files to ignore. These should not be paths, but rather file names
     ///                             like `.DS_Store`
-    init(folderUrl: URL, ignoredFilesAndFolders: Set<String>) {
+    init(
+        folderUrl: URL,
+        ignoredFilesAndFolders: Set<String>,
+        sourceControlManager: SourceControlManager?
+    ) {
         self.folderUrl = folderUrl
         self.ignoredFilesAndFolders = ignoredFilesAndFolders
 
         self.workspaceItem = CEWorkspaceFile(url: folderUrl)
         self.flattenedFileItems = [workspaceItem.id: workspaceItem]
+        self.sourceControlManager = sourceControlManager
 
         self.loadChildrenForFile(self.workspaceItem)
 
@@ -142,6 +148,9 @@ final class CEWorkspaceFileManager {
             flattenedFileItems[newFileItem.id] = newFileItem
         }
         childrenMap[file.id] = children.map { $0.relativePath }
+        Task {
+            await sourceControlManager?.refresAllChangesFiles()
+        }
     }
 
     /// Creates an ordered array of all files and directories at the given file object.
@@ -209,6 +218,14 @@ final class CEWorkspaceFileManager {
             }
             if !files.isEmpty {
                 self.notifyObservers(updatedItems: files)
+            }
+
+            // Ignore changes to .git folder
+            let notGitChanges = events.filter({ !$0.path.contains(".git/") })
+            if !notGitChanges.isEmpty {
+                Task {
+                    await self.sourceControlManager?.refresAllChangesFiles()
+                }
             }
         }
     }

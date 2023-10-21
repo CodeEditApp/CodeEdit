@@ -9,19 +9,18 @@ import Foundation
 import SwiftUI
 
 struct GitCheckoutBranchView: View {
-    let shellClient: ShellClient
-    @Binding var isPresented: Bool
-    @Binding var repoPath: String
-    // TODO: This has to be derived from git
-    @State var selectedBranch = "main"
+    @Environment(\.dismiss)
+    private var dismiss
+
+    @StateObject private var viewModel: GitCheckoutBranchViewModel
+    private var openDocument: (URL) -> Void
+
     init(
-        isPresented: Binding<Bool>,
-        repoPath: Binding<String>,
-        shellClient: ShellClient
+        repoLocalPath: URL,
+        openDocument: @escaping (URL) -> Void
     ) {
-        self.shellClient = shellClient
-        self._isPresented = isPresented
-        self._repoPath = repoPath
+        _viewModel = .init(wrappedValue: GitCheckoutBranchViewModel(repoPath: repoLocalPath))
+        self.openDocument = openDocument
     }
     var body: some View {
         VStack(spacing: 8) {
@@ -40,24 +39,26 @@ struct GitCheckoutBranchView: View {
                         .alignmentGuide(.trailing) { context in
                         context[.trailing]
                     }
-                    Menu {
-                        ForEach(getBranches().filter { !$0.contains("HEAD") }, id: \.self) { branch in
-                            Button {
-                                    guard selectedBranch != branch else { return }
-                                    selectedBranch = branch
-                            } label: {
-                                Text(branch)
-                            }.disabled(selectedBranch == branch)
+                    Picker("", selection: $viewModel.selectedBranch, content: {
+                        ForEach(viewModel.branches, id: \.self) { branch in
+                            Text(branch.name)
+                                .tag(branch as GitBranch?)
                         }
-                    } label: {
-                        Text(selectedBranch)
-                    }
+                    })
+                    .labelsHidden()
+
                     HStack {
                         Button("Cancel") {
-                            isPresented = false
+                            dismiss()
                         }
                         Button("Checkout") {
-                            checkoutBranch()
+                            Task {
+                                await viewModel.checkoutBranch()
+                                await MainActor.run {
+                                    dismiss()
+                                    openDocument(viewModel.repoPath)
+                                }
+                            }
                         }
                         .keyboardShortcut(.defaultAction)
                     }
@@ -71,6 +72,9 @@ struct GitCheckoutBranchView: View {
             .padding(.horizontal, 20)
             .padding(.bottom, 16)
             .frame(width: 400)
+            .task {
+                await viewModel.loadBranches()
+            }
         }
     }
 }
