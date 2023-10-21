@@ -15,6 +15,10 @@ extension GitClient {
             command += " --set-upstream origin \(upstream)"
         }
 
-        _ = try await self.run(command)
+        let output = try await self.run(command)
+
+        if output.contains("rejected") {
+            throw GitClientError.outputError(output)
+        }
     }
 }

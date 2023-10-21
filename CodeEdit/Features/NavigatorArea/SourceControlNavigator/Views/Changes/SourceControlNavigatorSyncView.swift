@@ -60,7 +60,7 @@ struct SourceControlNavigatorSyncView: View {
             do {
                 try await sourceControlManager.push()
             } catch {
-                // TODO: Handle errors
+                await sourceControlManager.showAlertForError(title: "Failed to sync", error: error)
             }
             self.isSyncing = false
         }
