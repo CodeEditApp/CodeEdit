@@ -122,29 +122,29 @@ struct UtilityAreaTerminalView: View {
 
     var body: some View {
         UtilityAreaTabView { tabState in
-            ZStack {
-                if model.selectedTerminals.isEmpty {
+            Group {
+                if model.terminals.isEmpty {
                     Text("No Selection")
                         .font(.system(size: 16))
                         .foregroundColor(.secondary)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
-                }
-                ForEach(model.terminals) { terminal in
-                    TerminalEmulatorView(
-                        url: terminal.url!,
-                        shellType: terminal.shell,
-                        onTitleChange: { newTitle in
-                            // This can be called whenever, even in a view update so it needs to be dispatched.
-                            DispatchQueue.main.async {
-                                handleTitleChange(id: terminal.id, title: newTitle)
-                            }
+                } else {
+                    BasicTabView(selection: .constant(model.selectedTerminals.first), tabPosition: .side) {
+                        ForEach(model.terminals) { terminal in
+                            TerminalEmulatorView(
+                                url: terminal.url!,
+                                shellType: terminal.shell,
+                                onTitleChange: { newTitle in
+                                    // This can be called whenever, even in a view update so it needs to be dispatched.
+                                    DispatchQueue.main.async {
+                                        handleTitleChange(id: terminal.id, title: newTitle)
+                                    }
+                                }
+                            )
+                            .padding(.top, 10)
+                            .padding(.horizontal, 10)
                         }
-                    )
-                    .padding(.top, 10)
-                    .padding(.horizontal, 10)
-                    .contentShape(Rectangle())
-                    .disabled(terminal.id != model.selectedTerminals.first)
-                    .opacity(terminal.id == model.selectedTerminals.first ? 1 : 0)
+                    }
                 }
             }
             .paneToolbar {

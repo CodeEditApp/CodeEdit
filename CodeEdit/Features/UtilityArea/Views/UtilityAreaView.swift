@@ -16,14 +16,27 @@ struct UtilityAreaView: View {
     @State var selection: UtilityAreaTab? = .terminal
 
     var body: some View {
-        VStack(spacing: 0) {
-            if let selection {
-                selection
-            } else {
-                Text("Tab not found")
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+        BasicTabView(selection: $selection, tabPosition: .side) {
+            ForEach(UtilityAreaTab.allCases) {
+                $0
+                    .tabIcon(Image(systemName: $0.systemImage))
+                    .tabTitle($0.title)
+            }
+            .onMove { _, _ in
+                
             }
         }
+        .onMoveTab { _, _ in
+            
+        }
+//        VStack(spacing: 0) {
+//            if let selection {
+//                selection
+//            } else {
+//                Text("Tab not found")
+//                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+//            }
+//        }
         .safeAreaInset(edge: .leading, spacing: 0) {
             HStack(spacing: 0) {
                 AreaTabBar(items: $model.tabItems, selection: $selection, position: .side)

@@ -8,7 +8,7 @@
 import Foundation
 
 class NavigatorSidebarViewModel: ObservableObject {
-    @Published var selectedTab: NavigatorTab? = .project
+    @Published var selectedTab: NavigatorTab = .project
     /// The tab bar items in the Navigator
     @Published var tabItems: [NavigatorTab] = []
 

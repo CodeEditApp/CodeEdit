@@ -33,33 +33,66 @@ struct NavigatorAreaView: View {
             .joined()
     }
 
+    @State var items = [NavigatorTab.project, .search, .sourceControl]
+    
     var body: some View {
-        VStack {
-            if let selection = viewModel.selectedTab {
-                selection
+        Group {
+            if items.isEmpty {
+                Text("Tab not found")
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
-                NoSelectionInspectorView()
-            }
-        }
-        .safeAreaInset(edge: .leading, spacing: 0) {
-            if sidebarPosition == .side {
-                HStack(spacing: 0) {
-                    AreaTabBar(items: $viewModel.tabItems, selection: $viewModel.selectedTab, position: sidebarPosition)
+                VStack(spacing: .zero) {
                     Divider()
+                    BasicTabView(selection: $viewModel.selectedTab, tabPosition: sidebarPosition) {
+                        Text("Hello")
+                            .tabTitle("Title")
+                            .tabIcon(Image(systemName: "square.and.arrow.up"))
+                            .tag("Test")
+                        ForEach([0, 1], id: \.self) { _ in
+                            ForEach(items) { item in
+                                let image = if item.systemImage == "vault" {
+                                    Image(symbol: "vault")
+                                } else {
+                                    Image(systemName: item.systemImage)
+                                }
+                                item
+                                    .tabTitle(item.title)
+                                    .tabIcon(image)
+                                    .tag(item)
+                            }
+                            .onMove { indexset, index in
+                                items.move(fromOffsets: indexset, toOffset: index)
+                            }
+                            
+                        }
+                        Text("Hello2")
+                            .tabTitle("Title")
+                            .tabIcon(Image(systemName: "square.and.arrow.down"))
+                            .tag("Test2")
+                    }
                 }
             }
         }
-        .safeAreaInset(edge: .top, spacing: 0) {
-            if sidebarPosition == .top {
-                VStack(spacing: 0) {
-                    Divider()
-                    AreaTabBar(items: $viewModel.tabItems, selection: $viewModel.selectedTab, position: sidebarPosition)
-                    Divider()
-                }
-            } else {
-                Divider()
-            }
-        }
+        
+//        .safeAreaInset(edge: .leading, spacing: 0) {
+//            if sidebarPosition == .side {
+//                HStack(spacing: 0) {
+//                    AreaTabBar(items: $viewModel.tabItems, selection: $viewModel.selectedTab, position: sidebarPosition)
+//                    Divider()
+//                }
+//            }
+//        }
+//        .safeAreaInset(edge: .top, spacing: 0) {
+//            if sidebarPosition == .top {
+//                VStack(spacing: 0) {
+//                    Divider()
+//                    AreaTabBar(items: $viewModel.tabItems, selection: $viewModel.selectedTab, position: sidebarPosition)
+//                    Divider()
+//                }
+//            } else {
+//                Divider()
+//            }
+//        }
         .environmentObject(workspace)
     }
 }
