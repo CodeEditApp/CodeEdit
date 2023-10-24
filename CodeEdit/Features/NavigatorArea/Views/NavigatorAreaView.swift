@@ -34,7 +34,8 @@ struct NavigatorAreaView: View {
     }
 
     @State var items = [NavigatorTab.project, .search, .sourceControl]
-    
+    @State var items2 = [NavigatorTab.project, .search, .sourceControl]
+    @State var selection: NavigatorTab = .project
     var body: some View {
         Group {
             if items.isEmpty {
@@ -59,12 +60,83 @@ struct NavigatorAreaView: View {
                                     .tabTitle(item.title)
                                     .tabIcon(image)
                                     .tag(item)
+
                             }
                             .onMove { indexset, index in
-                                items.move(fromOffsets: indexset, toOffset: index)
+//                                withAnimation(.spring) {
+                                    items.move(fromOffsets: indexset, toOffset: index)
+//                                }
                             }
-                            
+                            .onDelete { offsets in
+                                withAnimation(.spring) {
+                                    items.remove(atOffsets: offsets)
+                                }
+                            }
+                            .onInsert(of: [.text]) { index, items in
+                                Task {
+                                    let newItems = await items.concurrentCompactMap { item in
+                                        try? await withCheckedThrowingContinuation { continuation in
+                                            _ = item.loadTransferable(type: NavigatorTab.self) { result in
+                                                continuation.resume(with: result)
+                                            }
+                                        }
+                                    }
+                                    withAnimation(.spring) {
+                                        self.items.insert(contentsOf: newItems, at: index)
+                                    }
+                                }
+                            }
+
                         }
+                        Text("Hello2")
+                            .tabTitle("Title")
+                            .tabIcon(Image(systemName: "square.and.arrow.down"))
+                            .tag("Test2")
+                    }
+                    BasicTabView(selection: $selection, tabPosition: sidebarPosition) {
+                        Text("Hello")
+                            .tabTitle("Title")
+                            .tabIcon(Image(systemName: "square.and.arrow.up"))
+                            .tag("Test")
+
+                            ForEach(items2) { item in
+                                let image = if item.systemImage == "vault" {
+                                    Image(symbol: "vault")
+                                } else {
+                                    Image(systemName: item.systemImage)
+                                }
+                                item
+                                    .tabTitle(item.title)
+                                    .tabIcon(image)
+                                    .tag(item)
+
+                            }
+                            .onMove { indexset, index in
+                                withAnimation(.spring) {
+                                    items2.move(fromOffsets: indexset, toOffset: index)
+                                }
+                            }
+                            .onDelete { offsets in
+                                withAnimation(.spring) {
+                                    items2.remove(atOffsets: offsets)
+                                }
+                            }
+                            .onInsert(of: [.text]) { index, items in
+                                Task {
+                                    let newItems = await items.concurrentCompactMap { item in
+                                        try? await withCheckedThrowingContinuation { continuation in
+                                            _ = item.loadTransferable(type: NavigatorTab.self) { result in
+                                                continuation.resume(with: result)
+                                            }
+                                        }
+                                    }
+                                    withAnimation(.spring) {
+                                        self.items2.insert(contentsOf: newItems, at: index)
+                                    }
+                                }
+                            }
+
+//                        }
                         Text("Hello2")
                             .tabTitle("Title")
                             .tabIcon(Image(systemName: "square.and.arrow.down"))

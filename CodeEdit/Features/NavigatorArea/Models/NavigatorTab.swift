@@ -9,7 +9,18 @@ import SwiftUI
 import CodeEditKit
 import ExtensionFoundation
 
-enum NavigatorTab: AreaTab {
+enum NavigatorTab: AreaTab, Transferable {
+    static var transferRepresentation: some TransferRepresentation {
+        ProxyRepresentation(exporting: \.title) { transferable in
+            switch transferable {
+            case "Project": .project
+            case "Version Control": .sourceControl
+            case "Search": .search
+            default: throw XPCError.extensionDoesNotExist(description: "")
+            }
+        }
+    }
+    
     case project
     case sourceControl
     case search
@@ -60,4 +71,10 @@ enum NavigatorTab: AreaTab {
             ExtensionSceneView(with: endpoint, sceneID: data.sceneID)
         }
     }
+}
+
+import UniformTypeIdentifiers
+
+extension UTType {
+    static let navigatorTab: UTType = UTType(exportedAs: "navigatorTab")
 }

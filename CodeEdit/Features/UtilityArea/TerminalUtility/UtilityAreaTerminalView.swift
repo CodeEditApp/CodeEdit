@@ -129,22 +129,22 @@ struct UtilityAreaTerminalView: View {
                         .foregroundColor(.secondary)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                 } else {
-                    BasicTabView(selection: .constant(model.selectedTerminals.first), tabPosition: .side) {
-                        ForEach(model.terminals) { terminal in
-                            TerminalEmulatorView(
-                                url: terminal.url!,
-                                shellType: terminal.shell,
-                                onTitleChange: { newTitle in
-                                    // This can be called whenever, even in a view update so it needs to be dispatched.
-                                    DispatchQueue.main.async {
-                                        handleTitleChange(id: terminal.id, title: newTitle)
-                                    }
-                                }
-                            )
-                            .padding(.top, 10)
-                            .padding(.horizontal, 10)
-                        }
-                    }
+//                    BasicTabView(selection: .constant(model.selectedTerminals.first), tabPosition: .side) {
+//                        ForEach(model.terminals) { terminal in
+//                            TerminalEmulatorView(
+//                                url: terminal.url!,
+//                                shellType: terminal.shell,
+//                                onTitleChange: { newTitle in
+//                                    // This can be called whenever, even in a view update so it needs to be dispatched.
+//                                    DispatchQueue.main.async {
+//                                        handleTitleChange(id: terminal.id, title: newTitle)
+//                                    }
+//                                }
+//                            )
+//                            .padding(.top, 10)
+//                            .padding(.horizontal, 10)
+//                        }
+//                    }
                 }
             }
             .paneToolbar {

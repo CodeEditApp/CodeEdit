@@ -16,19 +16,20 @@ struct UtilityAreaView: View {
     @State var selection: UtilityAreaTab? = .terminal
 
     var body: some View {
-        BasicTabView(selection: $selection, tabPosition: .side) {
-            ForEach(UtilityAreaTab.allCases) {
-                $0
-                    .tabIcon(Image(systemName: $0.systemImage))
-                    .tabTitle($0.title)
-            }
-            .onMove { _, _ in
-                
-            }
-        }
-        .onMoveTab { _, _ in
-            
-        }
+//        BasicTabView(selection: $selection, tabPosition: .side) {
+//            ForEach(UtilityAreaTab.allCases) {
+//                $0
+//                    .tabIcon(Image(systemName: $0.systemImage))
+//                    .tabTitle($0.title)
+//            }
+//            .onMove { _, _ in
+//                
+//            }
+//        }
+//        .onMoveTab { _, _ in
+//            
+//        }
+        VStack{}
 //        VStack(spacing: 0) {
 //            if let selection {
 //                selection

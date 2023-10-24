@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Engine
+import UniformTypeIdentifiers
 
 struct BasicTabView<Content: View, Selected: Hashable>: View {
     @Binding var selection: Selected
@@ -29,6 +30,8 @@ struct BasicTabView<Content: View, Selected: Hashable>: View {
                         id: $0.id,
                         tag: $0.tag(as: Selected.self),
                         onMove: $0.onMove(),
+                        onDelete: $0.onDelete,
+                        onInsert: $0.onInsert,
                         dynamicViewID: $0.dynamicViewContentID,
                         dynamicViewContentOffset: $0.contentOffset
                     )
@@ -53,6 +56,18 @@ extension AnyVariadicView.Subview {
         self["s7SwiftUI14OnMoveTraitKeyV", as: ((IndexSet, Int) -> Void).self]
     }
     
+    var onDelete: ((IndexSet) -> Void)? {
+        self["s7SwiftUI16OnDeleteTraitKeyV", as: ((IndexSet) -> Void).self]
+    }
+    
+    var onInsert: OnInsertConfiguration? {
+        let name = "s7SwiftUI16OnInsertTraitKeyV"
+        let type = swift_getTypeByMangledNameInContext(name, UInt(name.count), genericContext: nil, genericArguments: nil)!
+        let item = self["s7SwiftUI16OnInsertTraitKeyV", as: Any.self]
+
+        return unsafePartialBitCast(item, to: OnInsertConfiguration?.self)
+    }
+    
     var contentOffset: Int? {
         self["s7SwiftUI32DynamicViewContentOffsetTraitKeyV", as: Int.self]
     }
@@ -60,6 +75,14 @@ extension AnyVariadicView.Subview {
     var dynamicViewContentID: Int? {
         self["s7SwiftUI28DynamicViewContentIDTraitKeyV", as: Int.self]
     }
+}
+
+struct OnInsertConfiguration {
+     
+    var supportedContentTypes: [UTType] = []
+    var action: (Int, [NSItemProvider]) -> Void
+//    var index: Int = 0
+
 }
 
 private struct TabIcon: _ViewTraitKey {
@@ -77,6 +100,15 @@ struct OnMoveTab: EnvironmentKey {
 private struct OnMoveTabE: _ViewTraitKey {
     static var defaultValue: ((Int, Int) -> Void)?
 }
+
+@_silgen_name("swift_getTypeByMangledNameInContext")
+private func swift_getTypeByMangledNameInContext(
+  _ name: UnsafePointer<UInt8>,
+  _ nameLength: UInt,
+  genericContext: UnsafeRawPointer?,
+  genericArguments: UnsafeRawPointer?
+)
+  -> Any.Type?
 
 extension EnvironmentValues {
     var onMoveTab: OnMoveTab.Value {
