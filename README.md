@@ -1,7 +1,8 @@
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/806104/163099605-4eaedd33-8441-4125-9ca1-a7ccb2f62a74.png" height="128">
+  <img src="https://github.com/CodeEditApp/CodeEdit/assets/806104/4ad9a29c-d9c6-44b4-88b3-0944b75fc81e" height="128">
   <h1 align="center">CodeEdit for macOS</h1>
 </p>
+
 
 <p align="center">
   <a aria-label="Follow CodeEdit on Twitter" href="https://twitter.com/CodeEditApp" target="_blank">
