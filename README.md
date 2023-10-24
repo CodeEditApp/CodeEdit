@@ -50,7 +50,7 @@ This raised the question "what if such an editor existed?", a question that led 
 
 It is our commitment to keep CodeEdit open source and free forever, supported by the community.
 
-![github-equation](https://user-images.githubusercontent.com/806104/194004377-4b7e12a1-e3b1-409f-ba63-d7c6d2c53a1d.png)
+<img width="1012" alt="TextEdit plus Xcode equals CodeEdit" src="https://github.com/CodeEditApp/CodeEdit/assets/806104/a9379df0-ab26-4ef8-98a9-2e2b4bd8c7b4">
 
 Our goal is to maintain a lightweight experience, similar to TextEdit, while being able to scale up to a more feature-rich experience, comparable to Xcode, as necessary.
 
