@@ -11,7 +11,7 @@ import AppKit
 class GitCloneViewModel: ObservableObject {
     @Published var repoUrlStr = ""
     @Published var isCloning: Bool = false
-    @Published var cloningProgress: Double = 0
+    @Published var cloningProgress: GitClient.CloneProgress = .init(progress: 0, state: .initialState)
 
     var gitClient: GitClient?
     var cloningTask: Task<Void, Error>?
@@ -118,6 +118,9 @@ class GitCloneViewModel: ObservableObject {
             }
 
             if Task.isCancelled {
+                await MainActor.run {
+                    deleteTemporaryFolder(localPath: localPath)
+                }
                 return
             }
 

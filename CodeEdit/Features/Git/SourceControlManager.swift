@@ -10,7 +10,6 @@ import AppKit
 
 /// This model handle the fetching and adding of changes etc... 
 final class SourceControlManager: ObservableObject {
-    /// A GitClient instance
     let gitClient: GitClient
 
     /// The base URL of the workspace
@@ -189,10 +188,10 @@ final class SourceControlManager: ObservableObject {
         guard let currentBranch else { return }
 
         if currentBranch.upstream == nil {
-            try await gitClient.push(upstream: currentBranch.name)
+            try await gitClient.pushToRemote(upstream: currentBranch.name)
             await refreshCurrentBranch()
         } else {
-            try await gitClient.push()
+            try await gitClient.pushToRemote()
         }
 
         await self.refreshNumberOfUnsyncedCommits()

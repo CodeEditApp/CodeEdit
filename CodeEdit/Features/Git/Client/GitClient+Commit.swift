@@ -18,8 +18,7 @@ extension GitClient {
             try await add(file)
         }
 
-        let command = "commit \(files.map({ $0.url.relativePath }).joined(separator: " "))" +
-            " --message=\"\(message)\""
+        let command = "commit \(files.map { $0.url.relativePath }.joined(separator: " ")) --message=\"\(message)\""
 
         _ = try await run(command)
     }

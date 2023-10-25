@@ -11,9 +11,9 @@ struct SourceControlNavigatorNewBranchView: View {
     @Environment(\.dismiss)
     var dismiss
 
+    @State var name: String = ""
     let sourceControlManager: SourceControlManager
     let fromBranch: GitBranch
-    @State var name: String = ""
 
     var body: some View {
         NavigationStack {

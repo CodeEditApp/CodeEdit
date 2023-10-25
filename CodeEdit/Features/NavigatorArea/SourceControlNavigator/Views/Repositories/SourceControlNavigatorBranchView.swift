@@ -9,8 +9,8 @@ import SwiftUI
 
 struct SourceControlNavigatorBranchView: View {
     @ObservedObject var sourceControlManager: SourceControlManager
-    let branch: GitBranch
     @State var showNewBranch: Bool = false
+    let branch: GitBranch
 
     var body: some View {
         HStack {

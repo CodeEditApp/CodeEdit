@@ -73,7 +73,11 @@ struct GitCloneView: View {
             .sheet(isPresented: $viewModel.isCloning) {
                 NavigationStack {
                     VStack {
-                        ProgressView("Cloning...", value: viewModel.cloningProgress, total: 100)
+                        ProgressView(
+                            viewModel.cloningProgress.state.label,
+                            value: viewModel.cloningProgress.progress,
+                            total: 100
+                        )
                     }
                 }
                 .toolbar {

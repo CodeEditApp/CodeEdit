@@ -9,7 +9,7 @@ import Foundation
 
 extension GitClient {
     /// Push changes to remote
-    func push(upstream: String? = nil) async throws {
+    func pushToRemote(upstream: String? = nil) async throws {
         var command = "push"
         if let upstream {
             command += " --set-upstream origin \(upstream)"

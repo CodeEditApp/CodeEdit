@@ -977,7 +977,6 @@
 		201169D52837B29600F92B46 /* SourceControlNavigator */ = {
 			isa = PBXGroup;
 			children = (
-				201169DF2837B3CB00F92B46 /* Model */,
 				201169DE2837B3C700F92B46 /* Views */,
 				201169D62837B2E300F92B46 /* SourceControlNavigatorView.swift */,
 				201169D82837B31200F92B46 /* SourceControlSearchToolbar.swift */,
@@ -993,13 +992,6 @@
 				201169E02837B3D100F92B46 /* Changes */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		201169DF2837B3CB00F92B46 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
 			sourceTree = "<group>";
 		};
 		201169E02837B3D100F92B46 /* Changes */ = {
