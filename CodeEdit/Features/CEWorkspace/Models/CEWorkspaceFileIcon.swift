@@ -43,6 +43,7 @@ enum FileIcon {
         case mod
         case Makefile
         case ts
+        case rs
     }
     // swiftlint:enable identifier_name
 
@@ -92,6 +93,8 @@ enum FileIcon {
             return "m.square"
         case .Makefile:
             return "terminal"
+        case .rs:
+            return "r.square"
         default:
             return "doc"
         }
@@ -112,17 +115,19 @@ enum FileIcon {
         case .sh:
             return .green
         case .vue:
-            return Color(red: 0.255, green: 0.722, blue: 0.514, opacity: 1.000)
+            return Color(red: 0.255, green: 0.722, blue: 0.514, opacity: 1.0)
         case .h:
-            return Color(red: 0.667, green: 0.031, blue: 0.133, opacity: 1.000)
+            return Color(red: 0.667, green: 0.031, blue: 0.133, opacity: 1.0)
         case .m:
-            return Color(red: 0.271, green: 0.106, blue: 0.525, opacity: 1.000)
+            return Color(red: 0.271, green: 0.106, blue: 0.525, opacity: 1.0)
         case .go:
             return Color(red: 0.02, green: 0.675, blue: 0.757, opacity: 1.0)
         case .sum, .mod:
             return Color(red: 0.925, green: 0.251, blue: 0.478, opacity: 1.0)
         case .Makefile:
             return Color(red: 0.937, green: 0.325, blue: 0.314, opacity: 1.0)
+        case .rs:
+            return .orange
         default:
             return .accentColor
         }
