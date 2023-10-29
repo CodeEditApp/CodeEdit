@@ -102,7 +102,8 @@ struct GitCloneView: View {
             guard let gitClient = viewModel.gitClient else { return }
 
             Task {
-                let branches = (try? await  gitClient.getBranches()) ?? []
+                let branches = ((try? await  gitClient.getBranches()) ?? [])
+                    .filter({ $0.isRemote })
                 if branches.count > 1 {
                     openBranchView(localPath)
                     return
