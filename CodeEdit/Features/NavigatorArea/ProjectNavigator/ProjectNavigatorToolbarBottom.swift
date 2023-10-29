@@ -27,6 +27,7 @@ struct ProjectNavigatorToolbarBottom: View {
                 .padding(.leading, 10)
             HStack {
                 sortButton
+                    .padding(.leading, 5)
                 TextField("Filter", text: $filter)
                     .textFieldStyle(.plain)
                     .font(.system(size: 12))
