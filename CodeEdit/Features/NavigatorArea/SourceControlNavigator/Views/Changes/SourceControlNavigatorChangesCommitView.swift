@@ -32,6 +32,7 @@ struct SourceControlNavigatorChangesCommitView: View {
                     RoundedRectangle(cornerRadius: 5)
                         .stroke(Color(NSColor.separatorColor), lineWidth: 0.5)
                 )
+                .font(.body)
 
                 Button {
                     Task {

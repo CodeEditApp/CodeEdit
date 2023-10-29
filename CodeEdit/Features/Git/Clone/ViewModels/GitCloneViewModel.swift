@@ -155,8 +155,8 @@ class GitCloneViewModel: ObservableObject {
 
     private func getPath(saveName: String) -> URL? {
         let dialog = NSSavePanel()
-        dialog.showsResizeIndicator    = true
-        dialog.showsHiddenFiles        = false
+        dialog.showsResizeIndicator = true
+        dialog.showsHiddenFiles = false
         dialog.showsTagField = false
         dialog.prompt = "Clone"
         dialog.nameFieldStringValue = saveName
@@ -164,8 +164,9 @@ class GitCloneViewModel: ObservableObject {
         dialog.title = "Clone"
 
         guard dialog.runModal() == NSApplication.ModalResponse.OK,
-            let result = dialog.url
-        else { return nil }
+              let result = dialog.url else {
+            return nil
+        }
 
         return result
     }

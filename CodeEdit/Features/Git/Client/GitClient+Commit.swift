@@ -18,6 +18,7 @@ extension GitClient {
             try await add(file)
         }
 
+        let message = message.replacingOccurrences(of: #"""#, with: #"\""#)
         let command = "commit \(files.map { $0.url.relativePath }.joined(separator: " ")) --message=\"\(message)\""
 
         _ = try await run(command)

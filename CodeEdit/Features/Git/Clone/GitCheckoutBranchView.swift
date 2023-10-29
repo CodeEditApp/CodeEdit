@@ -41,7 +41,7 @@ struct GitCheckoutBranchView: View {
                     }
                     Picker("", selection: $viewModel.selectedBranch, content: {
                         ForEach(viewModel.branches, id: \.self) { branch in
-                            Text(branch.name)
+                            Text(branch.name.replacingOccurrences(of: "origin/", with: ""))
                                 .tag(branch as GitBranch?)
                         }
                     })

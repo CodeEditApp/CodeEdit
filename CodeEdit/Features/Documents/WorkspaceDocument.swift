@@ -120,6 +120,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
             ignoredFilesAndFolders: Set(ignoredFilesAndDirectory),
             sourceControlManager: sourceControlManager
         )
+        self.sourceControlManager = sourceControlManager
         sourceControlManager.fileManager = workspaceFileManager
         self.searchState = .init(self)
         self.quickOpenViewModel = .init(fileURL: url)

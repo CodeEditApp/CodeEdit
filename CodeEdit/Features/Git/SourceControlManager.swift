@@ -16,7 +16,7 @@ final class SourceControlManager: ObservableObject {
     let workspaceURL: URL
 
     let editorManager: EditorManager
-    var fileManager: CEWorkspaceFileManager?
+    weak var fileManager: CEWorkspaceFileManager?
 
     /// A list of changed files
     @Published var changedFiles: [CEWorkspaceFile] = []

@@ -20,10 +20,14 @@ class GitCheckoutBranchViewModel: ObservableObject {
     }
 
     func loadBranches() async {
-        branches = ((try? await gitClient.getBranches()) ?? [])
+        let branches = ((try? await gitClient.getBranches()) ?? [])
+            .filter({ $0.isRemote })
 
-        if selectedBranch == nil {
-            selectedBranch = branches.first
+        await MainActor.run {
+            self.branches = branches
+            if selectedBranch == nil {
+                selectedBranch = branches.first
+            }
         }
     }
 

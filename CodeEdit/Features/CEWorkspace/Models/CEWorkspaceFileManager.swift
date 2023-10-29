@@ -48,7 +48,7 @@ final class CEWorkspaceFileManager {
 
     let folderUrl: URL
     let workspaceItem: CEWorkspaceFile
-    var sourceControlManager: SourceControlManager?
+    weak var sourceControlManager: SourceControlManager?
 
     /// Create a file  manager object with a root and a set of files to ignore.
     /// - Parameters:
