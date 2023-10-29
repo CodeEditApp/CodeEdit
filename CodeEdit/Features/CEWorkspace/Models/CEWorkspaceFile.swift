@@ -122,6 +122,10 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
         try? url.resourceValues(forKeys: [.contentTypeKey]).contentType
     }
 
+    var isDraft: Bool {
+        url.absoluteString.contains(/\/Users\/[0-9a-zA-Z]+\/Library\/Application%20Support\/CodeEdit/)
+    }
+
     /// Returns a `Color` for a specific `fileType`
     ///
     /// If not specified otherwise this will return `Color.accentColor`

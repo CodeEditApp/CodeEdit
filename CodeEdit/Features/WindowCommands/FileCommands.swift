@@ -100,7 +100,7 @@ struct FileCommands: Commands {
             print("Saving new file at: \(tempFileURL.path)")
 
             let file = CEWorkspaceFile(url: tempFileURL)
-            windowController.workspace?.tabManager.openTab(item: file)
+            windowController.workspace?.editorManager.openTab(item: file)
         } catch {
             print(error)
             let alert = NSAlert()

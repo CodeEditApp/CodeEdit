@@ -223,8 +223,15 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
     }
 
     @IBAction func saveDocument(_ sender: Any) {
-        guard let codeFile = getSelectedCodeFile() else { return }
-        codeFile.save(sender)
+        guard let codeFile = getCurrentWorkspaceFile() else { return }
+        print(codeFile.isDraft)
+        print(codeFile.url.absoluteString)
+        if codeFile.isDraft {
+            codeFile.fileDocument?.saveAs(sender)
+            // TODO: Need to replace the content of that saved tab with the newly saved file
+            return
+        }
+        codeFile.fileDocument?.save(sender)
         workspace?.editorManager.activeEditor.temporaryTab = nil
     }
 
