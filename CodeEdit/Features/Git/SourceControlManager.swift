@@ -73,20 +73,19 @@ final class SourceControlManager: ObservableObject {
 
         var updatedStatusFor: Set<CEWorkspaceFile> = []
         // Refresh status of file manager files
-        for (_, file) in fileManager.flattenedFileItems {
-            if let changed = changedFiles.first(where: { $0.id == file.id }) {
-                if file.gitStatus != changed.gitStatus {
-                    file.gitStatus = changed.gitStatus
-                    updatedStatusFor.insert(file)
-                }
-
+        for changedFile in changedFiles {
+            guard let file = fileManager.flattenedFileItems[changedFile.id] else {
                 continue
             }
-
-            if file.gitStatus != nil {
-                file.gitStatus = nil
+            if file.gitStatus != changedFile.gitStatus {
+                file.gitStatus = changedFile.gitStatus
                 updatedStatusFor.insert(file)
             }
+        }
+        for (_, file) in fileManager.flattenedFileItems
+        where !updatedStatusFor.contains(file) && file.gitStatus != nil {
+            file.gitStatus = nil
+            updatedStatusFor.insert(file)
         }
 
         if updatedStatusFor.isEmpty {
