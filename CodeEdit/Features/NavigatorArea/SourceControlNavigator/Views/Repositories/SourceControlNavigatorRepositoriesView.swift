@@ -8,10 +8,30 @@
 import SwiftUI
 
 struct SourceControlNavigatorRepositoriesView: View {
+    @ObservedObject var sourceControlManager: SourceControlManager
+
     var body: some View {
-        VStack(alignment: .center) {
-            Text("Needs Implementation")
+        ScrollView {
+            VStack(spacing: 0) {
+                SourceControlNavigatorBranchGroupView(
+                    sourceControlManager: sourceControlManager,
+                    branches: sourceControlManager.branches.filter({ $0.isLocal }),
+                    name: "Branches",
+                    isExpanded: true
+                )
+
+                SourceControlNavigatorBranchGroupView(
+                    sourceControlManager: sourceControlManager,
+                    branches: sourceControlManager.branches.filter({ $0.isRemote }),
+                    name: "Remotes",
+                    icon: "globe"
+                )
+            }
         }
         .frame(maxHeight: .infinity)
+        .padding(.horizontal)
+        .task {
+            await sourceControlManager.refreshBranches()
+        }
     }
 }

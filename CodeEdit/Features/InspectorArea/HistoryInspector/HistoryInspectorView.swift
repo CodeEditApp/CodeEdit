@@ -23,7 +23,7 @@ struct HistoryInspectorView: View {
 
     var body: some View {
         Group {
-            if model.gitClient != nil {
+            if model.sourceControlManager != nil {
                 VStack {
                     if model.commitHistory.isEmpty {
                         HistoryInspectorNoHistoryView()
@@ -42,12 +42,19 @@ struct HistoryInspectorView: View {
                 NoSelectionInspectorView()
             }
         }
-        .onReceive(editorManager.activeEditor.objectWillChange) { _ in
-            model.setFile(url: editorManager.activeEditor.selectedTab?.url.path)
+        .onChange(of: editorManager.activeEditor) { _ in
+            Task {
+                await model.setFile(url: editorManager.activeEditor.selectedTab?.url.path)
+            }
         }
-        .onAppear {
-            model.setWorkspace(url: workspace.fileURL)
-            model.setFile(url: editorManager.activeEditor.selectedTab?.url.path)
+        .onChange(of: editorManager.activeEditor.selectedTab) { _ in
+            Task {
+                await model.setFile(url: editorManager.activeEditor.selectedTab?.url.path)
+            }
+        }
+        .task {
+            await model.setWorkspace(sourceControlManager: workspace.sourceControlManager)
+            await model.setFile(url: editorManager.activeEditor.selectedTab?.url.path)
         }
     }
 }

@@ -7,62 +7,104 @@
 
 import SwiftUI
 
- struct SourceControlNavigatorChangedFileView: View {
+struct SourceControlNavigatorChangedFileView: View {
+    @ObservedObject var sourceControlManager: SourceControlManager
+    var changedFile: CEWorkspaceFile
 
-     @State var changedFile: GitChangedFile
+    var folder: String? {
+        let rootPath = sourceControlManager.gitClient.directoryURL.relativePath
+        let filePath = changedFile.url.relativePath
 
-     @Binding var selection: GitChangedFile.ID?
+        // Should not happen, but just in case
+        if !filePath.hasPrefix(rootPath) {
+            return nil
+        }
 
-     @State var workspaceURL: URL
+        let relativePath = filePath
+            .dropFirst(rootPath.count + 1) // Drop root folder
+            .dropLast(changedFile.name.count + 1) // Drop file name
+        return relativePath.isEmpty ? nil : String(relativePath)
+    }
 
-     var body: some View {
-         HStack {
-             Image(systemName: changedFile.systemImage)
-                 .frame(width: 11, height: 11)
-                 .foregroundColor(selection == changedFile.id ? .white : changedFile.iconColor)
+    var body: some View {
+        HStack(spacing: 5) {
+            Toggle("", isOn: .init(get: getSelectedFileState, set: setSelectedFile))
+                .labelsHidden()
 
-             Text(changedFile.fileName)
-                 .font(.system(size: 11))
-                 .foregroundColor(selection == changedFile.id ? .white : .secondary)
+            HStack(spacing: 5) {
+                Image(systemName: changedFile.systemImage)
+                    .frame(width: 22)
+                    .foregroundColor(changedFile.iconColor)
 
-             Text(changedFile.changeTypeValue)
-                 .font(.system(size: 11))
-                 .foregroundColor(selection == changedFile.id ? .white : .secondary)
-                 .frame(maxWidth: .infinity, alignment: .trailing)
-         }
-         .contextMenu {
-             Group {
-                 Button("View in Finder") {
-                     changedFile.showInFinder(workspaceURL: workspaceURL)
-                 }
-                 Button("Reveal in Project Navigator") {}
-                     .disabled(true) // TODO: Implementation Needed
-                 Divider()
-             }
-             Group {
-                 Button("Open in New Tab") {}
-                     .disabled(true) // TODO: Implementation Needed
-                 Button("Open in New Window") {}
-                     .disabled(true) // TODO: Implementation Needed
-                 Button("Open with External Editor") {}
-                     .disabled(true) // TODO: Implementation Needed
-             }
-             Group {
-                 Divider()
-                 Button("Commit \(changedFile.fileName)...") {}
-                     .disabled(true) // TODO: Implementation Needed
-                 Divider()
-                 Button("Discard Changes in \(changedFile.fileName)...") {}
-                     .disabled(true) // TODO: Implementation Needed
-                 Divider()
-             }
-             Group {
-                 Button("Add \(changedFile.fileName)") {}
-                     .disabled(true) // TODO: Implementation Needed
-                 Button("Mark \(changedFile.fileName) as Resolved") {}
-                     .disabled(true) // TODO: Implementation Needed
-             }
-         }
-         .padding(.leading, 15)
-     }
- }
+                Text(changedFile.name)
+                    .font(.system(size: 13))
+
+                if let folder {
+                    Text(folder)
+                        .font(.system(size: 11))
+                        .foregroundStyle(.secondary)
+                }
+
+                Spacer()
+
+                Text(changedFile.gitStatus?.description ?? "")
+                    .font(.system(size: 13))
+                    .foregroundColor(.secondary)
+            }
+            .clipShape(Rectangle())
+            .onTapGesture {
+                toggleSelectedFileState()
+            }
+        }
+        .frame(height: 25)
+        .contextMenu {
+            Group {
+                Button("View in Finder") {
+                    changedFile.showInFinder()
+                }
+                Button("Reveal in Project Navigator") {}
+                    .disabled(true) // TODO: Implementation Needed
+                Divider()
+            }
+            Group {
+                Button("Open in New Tab") {}
+                    .disabled(true) // TODO: Implementation Needed
+                Button("Open in New Window") {}
+                    .disabled(true) // TODO: Implementation Needed
+                Button("Open with External Editor") {}
+                    .disabled(true) // TODO: Implementation Needed
+            }
+            if changedFile.gitStatus == .modified {
+                Group {
+                    Divider()
+                    Button("Discard Changes in \(changedFile.name)...") {
+                        sourceControlManager.discardChanges(for: changedFile)
+                    }
+                    Divider()
+                }
+            }
+        }
+        .padding(.horizontal)
+    }
+
+    func toggleSelectedFileState() {
+        setSelectedFile(!getSelectedFileState())
+    }
+
+    func getSelectedFileState() -> Bool {
+        return sourceControlManager.filesToCommit.contains(changedFile.id)
+    }
+
+    func setSelectedFile(_ newValue: Bool) {
+        if newValue {
+            sourceControlManager.filesToCommit.append(changedFile.id)
+            return
+        }
+
+        guard let index = sourceControlManager.filesToCommit.firstIndex(of: changedFile.id) else {
+            return
+        }
+
+        sourceControlManager.filesToCommit.remove(at: index)
+    }
+}

@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct SourceControlNavigatorView: View {
-
     @EnvironmentObject private var workspace: WorkspaceDocument
 
     @State private var selectedSection: Int = 0
@@ -28,14 +27,18 @@ struct SourceControlNavigatorView: View {
                 Divider()
             }
 
-            if selectedSection == 0 {
-                if let urlString = workspace.fileURL {
-                    SourceControlNavigatorChangesView(workspaceURL: urlString)
+            if let sourceControlManager = workspace.workspaceFileManager?.sourceControlManager {
+                if selectedSection == 0 {
+                    SourceControlNavigatorChangesView(
+                        sourceControlManager: sourceControlManager
+                    )
                 }
-            }
 
-            if selectedSection == 1 {
-                SourceControlNavigatorRepositoriesView()
+                if selectedSection == 1 {
+                    SourceControlNavigatorRepositoriesView(
+                        sourceControlManager: sourceControlManager
+                    )
+                }
             }
         }
         .safeAreaInset(edge: .bottom, spacing: 0) {

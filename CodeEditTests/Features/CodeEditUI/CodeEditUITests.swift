@@ -87,7 +87,6 @@ final class CodeEditUIUnitTests: XCTestCase {
 
     func testBranchPickerLight() throws {
         let view = ToolbarBranchPicker(
-            shellClient: ShellClient(),
             workspaceFileManager: nil
         )
         let hosting = NSHostingView(rootView: view)
@@ -98,7 +97,6 @@ final class CodeEditUIUnitTests: XCTestCase {
 
     func testBranchPickerDark() throws {
         let view = ToolbarBranchPicker(
-            shellClient: ShellClient(),
             workspaceFileManager: nil
         )
         let hosting = NSHostingView(rootView: view)
