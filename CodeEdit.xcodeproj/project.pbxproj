@@ -394,6 +394,7 @@
 		B66A4E5129C917D5004573B4 /* AboutWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66A4E5029C917D5004573B4 /* AboutWindow.swift */; };
 		B66A4E5329C91831004573B4 /* CodeEditCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66A4E5229C91831004573B4 /* CodeEditCommands.swift */; };
 		B66A4E5629C918A0004573B4 /* SceneID.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66A4E5529C918A0004573B4 /* SceneID.swift */; };
+		B67DB0EF2AF3E381002DC647 /* SidebarTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DB0EE2AF3E381002DC647 /* SidebarTextField.swift */; };
 		B685DE7929CC9CCD002860C8 /* StatusBarIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = B685DE7829CC9CCD002860C8 /* StatusBarIcon.swift */; };
 		B68C7C212A01DEFE004EA6D6 /* GitHubComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68C7C202A01DEFE004EA6D6 /* GitHubComment.swift */; };
 		B697937A29FF5668002027EC /* AccountsSettingsAccountLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = B697937929FF5668002027EC /* AccountsSettingsAccountLink.swift */; };
@@ -434,8 +435,7 @@
 		D7211D4727E06BFE008F2ED7 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D7211D4927E06BFE008F2ED7 /* Localizable.strings */; };
 		D7DC4B76298FFBE900D6C83D /* ProjectNavigatorViewController+OutlineTableViewCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7DC4B75298FFBE900D6C83D /* ProjectNavigatorViewController+OutlineTableViewCellDelegate.swift */; };
 		D7E201AE27E8B3C000CB86D0 /* String+Ranges.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201AD27E8B3C000CB86D0 /* String+Ranges.swift */; };
-		D7E201B027E8C07300CB86D0 /* FindNavigatorSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201AF27E8C07300CB86D0 /* FindNavigatorSearchBar.swift */; };
-		D7E201B227E8D50000CB86D0 /* FindNavigatorModeSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201B127E8D50000CB86D0 /* FindNavigatorModeSelector.swift */; };
+		D7E201B227E8D50000CB86D0 /* FindNavigatorForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201B127E8D50000CB86D0 /* FindNavigatorForm.swift */; };
 		DE513F52281B672D002260B9 /* EditorTabBarAccessory.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE513F51281B672D002260B9 /* EditorTabBarAccessory.swift */; };
 		DE6405A62817734700881FDF /* EditorTabBarNative.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6405A52817734700881FDF /* EditorTabBarNative.swift */; };
 		DE6F77872813625500D00A76 /* EditorTabBarDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6F77862813625500D00A76 /* EditorTabBarDivider.swift */; };
@@ -882,6 +882,7 @@
 		B66A4E5029C917D5004573B4 /* AboutWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutWindow.swift; sourceTree = "<group>"; };
 		B66A4E5229C91831004573B4 /* CodeEditCommands.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeEditCommands.swift; sourceTree = "<group>"; };
 		B66A4E5529C918A0004573B4 /* SceneID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneID.swift; sourceTree = "<group>"; };
+		B67DB0EE2AF3E381002DC647 /* SidebarTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarTextField.swift; sourceTree = "<group>"; };
 		B685DE7829CC9CCD002860C8 /* StatusBarIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarIcon.swift; sourceTree = "<group>"; };
 		B68C7C202A01DEFE004EA6D6 /* GitHubComment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubComment.swift; sourceTree = "<group>"; };
 		B697937929FF5668002027EC /* AccountsSettingsAccountLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsSettingsAccountLink.swift; sourceTree = "<group>"; };
@@ -922,8 +923,7 @@
 		D7211D4827E06BFE008F2ED7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		D7DC4B75298FFBE900D6C83D /* ProjectNavigatorViewController+OutlineTableViewCellDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProjectNavigatorViewController+OutlineTableViewCellDelegate.swift"; sourceTree = "<group>"; };
 		D7E201AD27E8B3C000CB86D0 /* String+Ranges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ranges.swift"; sourceTree = "<group>"; };
-		D7E201AF27E8C07300CB86D0 /* FindNavigatorSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindNavigatorSearchBar.swift; sourceTree = "<group>"; };
-		D7E201B127E8D50000CB86D0 /* FindNavigatorModeSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindNavigatorModeSelector.swift; sourceTree = "<group>"; };
+		D7E201B127E8D50000CB86D0 /* FindNavigatorForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindNavigatorForm.swift; sourceTree = "<group>"; };
 		D7E201B327E9989900CB86D0 /* FindNavigatorResultList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindNavigatorResultList.swift; sourceTree = "<group>"; };
 		DE513F51281B672D002260B9 /* EditorTabBarAccessory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorTabBarAccessory.swift; sourceTree = "<group>"; };
 		DE6405A52817734700881FDF /* EditorTabBarNative.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorTabBarNative.swift; sourceTree = "<group>"; };
@@ -1671,6 +1671,7 @@
 				2897E1C62979A29200741E32 /* TrackableScrollView.swift */,
 				6CBA0D502A1BF524002C6FAA /* SegmentedControlImproved.swift */,
 				B62AEDA92A1FCBE5009A9F52 /* AreaTabBar.swift */,
+				B67DB0EE2AF3E381002DC647 /* SidebarTextField.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2692,8 +2693,7 @@
 			isa = PBXGroup;
 			children = (
 				D7012EE727E757850001E1EF /* FindNavigatorView.swift */,
-				D7E201AF27E8C07300CB86D0 /* FindNavigatorSearchBar.swift */,
-				D7E201B127E8D50000CB86D0 /* FindNavigatorModeSelector.swift */,
+				D7E201B127E8D50000CB86D0 /* FindNavigatorForm.swift */,
 				6C14CEB12877A5BE001468FE /* FindNavigatorResultList */,
 			);
 			path = FindNavigator;
@@ -2987,6 +2987,7 @@
 			files = (
 				58798285292ED0FB0085B254 /* TerminalEmulatorView+Coordinator.swift in Sources */,
 				587B9E7D29301D8F00AC7927 /* GitHubPullRequestRouter.swift in Sources */,
+				B67DB0EF2AF3E381002DC647 /* SidebarTextField.swift in Sources */,
 				5878DA842918642000DD95A3 /* ParsePackagesResolved.swift in Sources */,
 				5879824F292E78D80085B254 /* CodeFileView.swift in Sources */,
 				6C0D0C6829E861B000AE4D3F /* SettingsSidebarFix.swift in Sources */,
@@ -3073,7 +3074,6 @@
 				6C2C156129B4F52F00EA60A5 /* SplitViewModifiers.swift in Sources */,
 				201169DD2837B3AC00F92B46 /* SourceControlToolbarBottom.swift in Sources */,
 				587B9E8B29301D8F00AC7927 /* GitHubAccount+deleteReference.swift in Sources */,
-				D7E201B027E8C07300CB86D0 /* FindNavigatorSearchBar.swift in Sources */,
 				58798237292E30B90085B254 /* FeedbackView.swift in Sources */,
 				587B9E9829301D8F00AC7927 /* GitCommit.swift in Sources */,
 				6C5228B529A868BD00AC48F6 /* Environment+ContentInsets.swift in Sources */,
@@ -3190,7 +3190,7 @@
 				5C4BB1E128212B1E00A92FB2 /* World.swift in Sources */,
 				581550D029FBD30400684881 /* FileSystemTableViewCell.swift in Sources */,
 				B62AEDD42A27B29F009A9F52 /* PaneToolbar.swift in Sources */,
-				D7E201B227E8D50000CB86D0 /* FindNavigatorModeSelector.swift in Sources */,
+				D7E201B227E8D50000CB86D0 /* FindNavigatorForm.swift in Sources */,
 				287776E927E34BC700D46668 /* EditorTabBarView.swift in Sources */,
 				B60BE8BD297A167600841125 /* AcknowledgementRowView.swift in Sources */,
 				B6F0517029D9E36800D72287 /* LocationsSettingsView.swift in Sources */,

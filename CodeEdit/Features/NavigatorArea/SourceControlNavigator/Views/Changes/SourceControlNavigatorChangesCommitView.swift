@@ -14,27 +14,16 @@ struct SourceControlNavigatorChangesCommitView: View {
 
     var body: some View {
         VStack {
-            VStack {
-                Text("Commit")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                VStack {
-                    TextEditor(text: $message)
-                        .scrollContentBackground(.hidden)
-                }
-                .padding(.vertical, 10)
-                .padding(.horizontal, 5)
-                .frame(height: 60)
-                .background()
-                .clipShape(.rect(cornerRadius: 5))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 5)
-                        .stroke(Color(NSColor.separatorColor), lineWidth: 0.5)
+            VStack(spacing: 6) {
+                SidebarTextField(
+                    "Commit message (required)",
+                    text: $message
                 )
-                .font(.body)
-
-                Button {
+                Menu(isCommiting ? "Committing..." : "Commit") {
+                    Button("Commit and Push...") {
+                        print("Commit and Push...")
+                    }
+                } primaryAction: {
                     Task {
                         self.isCommiting = true
                         do {
@@ -45,16 +34,6 @@ struct SourceControlNavigatorChangesCommitView: View {
                         }
                         self.isCommiting = false
                     }
-                } label: {
-                    HStack {
-                        Spacer()
-                        Text(
-                            isCommiting
-                            ? "Committing..."
-                            : "Commit"
-                        )
-                        Spacer()
-                    }
                 }
                 .disabled(
                     message.isEmpty ||
@@ -62,8 +41,7 @@ struct SourceControlNavigatorChangesCommitView: View {
                     isCommiting
                 )
             }
-            .padding(.horizontal)
-            .padding(.vertical, 5)
+            .padding(.horizontal, 8)
             Divider()
         }
     }

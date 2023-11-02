@@ -94,7 +94,7 @@ struct CodeFileView: View {
 
     @Environment(\.edgeInsets)
     private var edgeInsets
-//
+
     @EnvironmentObject private var editor: Editor
 
     var body: some View {

@@ -53,7 +53,31 @@ struct StatusBarIconButtonStyle: ButtonStyle {
 struct IconButtonStyle: ButtonStyle {
     var isActive: Bool?
     var font: Font?
-    var size: CGFloat?
+    var size: CGSize?
+
+    init() {
+        self.isActive = nil
+        self.font = nil
+        self.size = nil
+    }
+
+    init(isActive: Bool? = nil, font: Font? = nil, size: CGFloat? = nil) {
+        self.isActive = isActive
+        self.font = font
+        self.size = size == nil ? nil : CGSize(width: size ?? 0, height: size ?? 0)
+    }
+
+    init(isActive: Bool? = nil, font: Font? = nil, size: CGSize? = nil) {
+        self.isActive = isActive
+        self.font = font
+        self.size = size
+    }
+
+    init(isActive: Bool? = nil, font: Font? = nil) {
+        self.isActive = isActive
+        self.font = font
+        self.size = nil
+    }
 
     func makeBody(configuration: ButtonStyle.Configuration) -> some View {
         IconButton(
@@ -68,7 +92,7 @@ struct IconButtonStyle: ButtonStyle {
         let configuration: ButtonStyle.Configuration
         var isActive: Bool
         var font: Font
-        var size: CGFloat?
+        var size: CGSize?
         @Environment(\.isEnabled)
         private var isEnabled: Bool
         @Environment(\.colorScheme)
@@ -78,7 +102,21 @@ struct IconButtonStyle: ButtonStyle {
             self.configuration = configuration
             self.isActive = isActive ?? false
             self.font = font ?? Font.system(size: 14.5, weight: .regular, design: .default)
+            self.size = size == nil ? nil : CGSize(width: size ?? 0, height: size ?? 0)
+        }
+
+        init(configuration: ButtonStyle.Configuration, isActive: Bool?, font: Font?, size: CGSize?) {
+            self.configuration = configuration
+            self.isActive = isActive ?? false
+            self.font = font ?? Font.system(size: 14.5, weight: .regular, design: .default)
             self.size = size ?? nil
+        }
+
+        init(configuration: ButtonStyle.Configuration, isActive: Bool?, font: Font?) {
+            self.configuration = configuration
+            self.isActive = isActive ?? false
+            self.font = font ?? Font.system(size: 14.5, weight: .regular, design: .default)
+            self.size = nil
         }
 
         var body: some View {
@@ -89,7 +127,7 @@ struct IconButtonStyle: ButtonStyle {
                         ? Color(.controlAccentColor)
                         : Color(.secondaryLabelColor)
                 )
-                .frame(width: size, height: size)
+                .frame(width: size?.width, height: size?.height, alignment: .center)
                 .contentShape(Rectangle())
                 .brightness(
                     configuration.isPressed
@@ -109,6 +147,19 @@ extension ButtonStyle where Self == IconButtonStyle {
         size: CGFloat? = 24
     ) -> IconButtonStyle {
         return IconButtonStyle(isActive: isActive, font: font, size: size)
+    }
+    static func icon(
+        isActive: Bool? = false,
+        font: Font? = Font.system(size: 14.5, weight: .regular, design: .default),
+        size: CGSize? = CGSize(width: 24, height: 24)
+    ) -> IconButtonStyle {
+        return IconButtonStyle(isActive: isActive, font: font, size: size)
+    }
+    static func icon(
+        isActive: Bool? = false,
+        font: Font? = Font.system(size: 14.5, weight: .regular, design: .default)
+    ) -> IconButtonStyle {
+        return IconButtonStyle(isActive: isActive, font: font)
     }
     static var icon: IconButtonStyle { .init() }
 }

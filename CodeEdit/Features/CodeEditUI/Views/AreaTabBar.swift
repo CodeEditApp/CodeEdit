@@ -104,14 +104,17 @@ struct AreaTabBar<Tab: AreaTab>: View {
             getSafeImage(named: tab.systemImage, accessibilityDescription: tab.title)
                 .font(.system(size: 12.5))
                 .symbolVariant(tab == selection ? .fill : .none)
-                .frame(
-                    width: position == .side ? 40 : 24,
-                    height: position == .side ? 28 : size.height,
-                    alignment: .center
-                )
                 .help(tab.title)
         }
-        .buttonStyle(.icon(isActive: tab == selection, size: nil))
+        .buttonStyle(
+            .icon(
+                isActive: tab == selection,
+                size: CGSize(
+                    width: position == .side ? 40 : 24,
+                    height: position == .side ? 28 : size.height
+                )
+            )
+        )
     }
 
     private func makeAreaTabDragGesture(tab: Tab) -> some Gesture {
