@@ -18,17 +18,29 @@ struct SourceControlSearchToolbar: View {
     @State private var text = ""
 
     var body: some View {
-        HStack {
-            Image(systemName: "line.3.horizontal.decrease.circle")
-                .foregroundColor(.secondary)
-            textField
-            if !text.isEmpty { clearButton }
-        }
-        .padding(.horizontal, 5)
-        .padding(.vertical, 3)
-        .background(.ultraThinMaterial)
-        .clipShape(RoundedRectangle(cornerRadius: 6))
-        .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.gray, lineWidth: 0.5).cornerRadius(6))
+        SidebarTextField(
+            "Filter",
+            text: $text,
+            leadingAccessories: {
+                Image(systemName: "line.3.horizontal.decrease.circle")
+                    .foregroundColor(.secondary)
+                    .padding(.leading, 4)
+            },
+            trailingAccessories: {
+                if !text.isEmpty { clearButton }
+            }
+        )
+//        HStack {
+//            Image(systemName: "line.3.horizontal.decrease.circle")
+//                .foregroundColor(.secondary)
+//            textField
+//            if !text.isEmpty { clearButton }
+//        }
+//        .padding(.horizontal, 5)
+//        .padding(.vertical, 3)
+//        .background(.ultraThinMaterial)
+//        .clipShape(RoundedRectangle(cornerRadius: 6))
+//        .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.gray, lineWidth: 0.5).cornerRadius(6))
     }
 
     private var textField: some View {

@@ -11,15 +11,16 @@ struct SourceControlToolbarBottom: View {
     @EnvironmentObject private var workspace: WorkspaceDocument
 
     var body: some View {
-        HStack(spacing: 0) {
-            sourceControlMenu
-            SourceControlSearchToolbar()
-        }
+        SourceControlSearchToolbar()
+            .safeAreaInset(edge: .leading, spacing: 2) {
+                sourceControlMenu
+            }
         .frame(height: 29, alignment: .center)
         .frame(maxWidth: .infinity)
         .padding(.horizontal, 4)
         .overlay(alignment: .top) {
             Divider()
+                .opacity(0)
         }
     }
 
@@ -38,10 +39,11 @@ struct SourceControlToolbarBottom: View {
                 .disabled(true) // TODO: Implementation Needed
         } label: {
             Image(systemName: "ellipsis.circle")
+                .frame(width: 30, alignment: .center)
         }
         .menuStyle(.borderlessButton)
         .menuIndicator(.hidden)
-        .frame(maxWidth: 30)
+        .frame(maxWidth: 22, alignment: .center)
     }
 
     /// Renders a Discard Changes Dialog

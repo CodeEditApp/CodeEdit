@@ -187,7 +187,11 @@ struct FindNavigatorForm: View {
                         } label: {
                             Text("AB")
                                 .font(.system(size: 12, design: .rounded))
-                                .foregroundStyle(preserveCase ? Color(.controlAccentColor) : Color(.secondaryLabelColor))
+                                .foregroundStyle(
+                                    preserveCase
+                                    ? Color(.controlAccentColor)
+                                    : Color(.secondaryLabelColor)
+                                )
                         }
                     }
                 )
@@ -211,12 +215,16 @@ struct FindNavigatorForm: View {
                             scopedToOpenEditors.toggle()
                         } label: {
                             Image(systemName: "doc.plaintext")
-                                .foregroundStyle(scopedToOpenEditors ? Color(.controlAccentColor) : Color(.secondaryLabelColor))
+                                .foregroundStyle(
+                                    scopedToOpenEditors
+                                    ? Color(.controlAccentColor)
+                                    : Color(.secondaryLabelColor)
+                                )
                         }
                     }
                 )
                 SidebarTextField(
-                    "Not in folders",
+                    "Excluding folders",
                     text: $excludesText,
                     leadingAccessories: {
                         Image(systemName: "minus")
@@ -233,7 +241,11 @@ struct FindNavigatorForm: View {
                             excludeSettings.toggle()
                         } label: {
                             Image(systemName: "gearshape")
-                                .foregroundStyle(excludeSettings ? Color(.controlAccentColor) : Color(.secondaryLabelColor))
+                                .foregroundStyle(
+                                    excludeSettings
+                                    ? Color(.controlAccentColor)
+                                    : Color(.secondaryLabelColor)
+                                )
                         }
                     }
                 )
