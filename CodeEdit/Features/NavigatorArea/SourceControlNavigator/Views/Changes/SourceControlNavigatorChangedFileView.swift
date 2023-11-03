@@ -8,7 +8,10 @@
 import SwiftUI
 
 struct SourceControlNavigatorChangedFileView: View {
+    @EnvironmentObject var workspace: WorkspaceDocument
+
     @ObservedObject var sourceControlManager: SourceControlManager
+
     var changedFile: CEWorkspaceFile
 
     var folder: String? {
@@ -67,8 +70,9 @@ struct SourceControlNavigatorChangedFileView: View {
                 Divider()
             }
             Group {
-                Button("Open in New Tab") {}
-                    .disabled(true) // TODO: Implementation Needed
+                Button("Open in New Tab") {
+                    openInTemporaryTab()
+                }
                 Button("Open in New Window") {}
                     .disabled(true) // TODO: Implementation Needed
                 Button("Open with External Editor") {}
@@ -85,6 +89,11 @@ struct SourceControlNavigatorChangedFileView: View {
             }
         }
         .padding(.horizontal)
+    }
+
+    /// Opens the file in a new temporary tab
+    func openInTemporaryTab() {
+        self.workspace.editorManager.activeEditor.openTab(item: self.changedFile, asTemporary: true)
     }
 
     func toggleSelectedFileState() {
