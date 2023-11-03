@@ -90,7 +90,7 @@ struct SourceControlNavigatorChangedFileView: View {
         }
         .padding(.horizontal)
     }
-    
+
     /// Opens the file in a new temporary tab
     func openInTemporaryTab() {
         self.workspace.editorManager.activeEditor.openTab(item: self.changedFile, asTemporary: true)
