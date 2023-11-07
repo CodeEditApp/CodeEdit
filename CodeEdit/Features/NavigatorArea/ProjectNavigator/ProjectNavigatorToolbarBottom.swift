@@ -21,11 +21,11 @@ struct ProjectNavigatorToolbarBottom: View {
     @State var filter: String = ""
 
     var body: some View {
-        HStack {
+        HStack(spacing: 0) {
             addNewFileButton
                 .frame(width: 20)
-                .padding(.leading, 10)
-            HStack {
+                .padding(.leading, 3)
+            HStack(spacing: 0) {
                 sortButton
                     .padding(.leading, 5)
                 TextField("Filter", text: $filter)
@@ -33,7 +33,7 @@ struct ProjectNavigatorToolbarBottom: View {
                     .font(.system(size: 12))
                 if !filter.isEmpty {
                     clearFilterButton
-                        .padding(.trailing, 5)
+                        .padding(.horizontal, 3)
                 }
             }
 //            .onChange(of: filter, perform: {
@@ -44,8 +44,7 @@ struct ProjectNavigatorToolbarBottom: View {
             .background(colorScheme == .dark ? Color(hex: "#FFFFFF").opacity(0.1) : Color(hex: "#808080").opacity(0.2))
             .clipShape(RoundedRectangle(cornerRadius: 6))
             .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.gray, lineWidth: 0.5).cornerRadius(6))
-            .padding(.trailing, 5)
-            .padding(.leading, -8)
+            .padding(.trailing, 3)
         }
         .frame(height: 29, alignment: .center)
         .frame(maxWidth: .infinity)
@@ -107,7 +106,11 @@ struct ProjectNavigatorToolbarBottom: View {
                 Text(workspace.sortFoldersOnTop ? "Alphabetically" : "Folders on top")
             }
         } label: {
-            Image(systemName: "line.3.horizontal.decrease.circle")
+            HStack {
+                Image(systemName: "line.3.horizontal.decrease")
+
+                Image(systemName: "chevron.down")
+            }
         }
         .menuStyle(.borderlessButton)
         .frame(maxWidth: 30)
