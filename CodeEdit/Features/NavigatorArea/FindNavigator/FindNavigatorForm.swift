@@ -90,16 +90,6 @@ struct FindNavigatorForm: View {
             .imageScale(.large)
     }
 
-    private var clearButton: some View {
-        Button {
-            self.searchText = ""
-            state.search(nil)
-        } label: {
-            Image(systemName: "xmark.circle.fill")
-        }
-        .foregroundColor(.secondary)
-    }
-
     var body: some View {
         VStack {
             HStack {
@@ -135,7 +125,9 @@ struct FindNavigatorForm: View {
                         scoped.toggle()
                     }
             }
-            SidebarTextField(
+            TextField("Test", text: $searchText)
+                .textFieldStyle(.pane)
+            PaneTextField(
                 state.selectedMode[1].title,
                 text: $searchText,
                 leadingAccessories: {
@@ -146,15 +138,6 @@ struct FindNavigatorForm: View {
                         .frame(width: 16, height: 16)
                 },
                 trailingAccessories: {
-                    clearButton
-                        .opacity(searchText.isEmpty ? 0 : 1)
-//                    Divider()
-//                    Button {
-//                        //
-//                    } label: {
-//                        Text(".*")
-//                            .font(.system(size: 12, design: .monospaced))
-//                    }
                     Divider()
                     Button {
                         caseSensitive.toggle()
@@ -162,13 +145,17 @@ struct FindNavigatorForm: View {
                         Image(systemName: "textformat")
                             .foregroundStyle(caseSensitive ? Color(.controlAccentColor) : Color(.secondaryLabelColor))
                     }
+                },
+                clearable: true,
+                onClear: {
+                    state.search(nil)
                 }
             )
             .onSubmit {
                 state.search(searchText)
             }
             if selectedMode[0] == SearchModeModel.Replace {
-                SidebarTextField(
+                PaneTextField(
                     "With",
                     text: $replaceText,
                     leadingAccessories: {
@@ -179,8 +166,6 @@ struct FindNavigatorForm: View {
                             .frame(width: 16, height: 16)
                     },
                     trailingAccessories: {
-                        clearButton
-                            .opacity(replaceText.isEmpty ? 0 : 1)
                         Divider()
                         Button {
                             preserveCase.toggle()
@@ -193,11 +178,12 @@ struct FindNavigatorForm: View {
                                     : Color(.secondaryLabelColor)
                                 )
                         }
-                    }
+                    },
+                    clearable: true
                 )
             }
             if scoped {
-                SidebarTextField(
+                PaneTextField(
                     "Only in folders",
                     text: $includesText,
                     leadingAccessories: {
@@ -208,8 +194,6 @@ struct FindNavigatorForm: View {
                             .frame(width: 16, height: 16)
                     },
                     trailingAccessories: {
-                        clearButton
-                            .opacity(includesText.isEmpty ? 0 : 1)
                         Divider()
                         Button {
                             scopedToOpenEditors.toggle()
@@ -221,9 +205,10 @@ struct FindNavigatorForm: View {
                                     : Color(.secondaryLabelColor)
                                 )
                         }
-                    }
+                    },
+                    clearable: true
                 )
-                SidebarTextField(
+                PaneTextField(
                     "Excluding folders",
                     text: $excludesText,
                     leadingAccessories: {
@@ -234,8 +219,6 @@ struct FindNavigatorForm: View {
                             .frame(width: 16, height: 16)
                     },
                     trailingAccessories: {
-                        clearButton
-                            .opacity(excludesText.isEmpty ? 0 : 1)
                         Divider()
                         Button {
                             excludeSettings.toggle()
@@ -247,7 +230,8 @@ struct FindNavigatorForm: View {
                                     : Color(.secondaryLabelColor)
                                 )
                         }
-                    }
+                    },
+                    clearable: true
                 )
             }
             if selectedMode[0] == SearchModeModel.Replace {

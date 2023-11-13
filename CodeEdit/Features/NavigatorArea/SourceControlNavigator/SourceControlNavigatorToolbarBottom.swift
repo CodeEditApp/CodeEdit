@@ -1,5 +1,5 @@
 //
-//  SourceControlToolbarBottom.swift
+//  SourceControlNavigatorToolbarBottom.swift
 //  CodeEdit
 //
 //  Created by Nanashi Li on 2022/05/20.
@@ -7,17 +7,36 @@
 
 import SwiftUI
 
-struct SourceControlToolbarBottom: View {
+struct SourceControlNavigatorToolbarBottom: View {
     @EnvironmentObject private var workspace: WorkspaceDocument
 
+    @State private var text = ""
+
     var body: some View {
-        SourceControlSearchToolbar()
-            .safeAreaInset(edge: .leading, spacing: 2) {
-                sourceControlMenu
-            }
-        .frame(height: 29, alignment: .center)
+        HStack(spacing: 5) {
+            sourceControlMenu
+            PaneTextField(
+                "Filter",
+                text: $text,
+                leadingAccessories: {
+                    Image(
+                        systemName: text.isEmpty
+                        ? "line.3.horizontal.decrease.circle"
+                        : "line.3.horizontal.decrease.circle.fill"
+                    )
+                    .foregroundStyle(
+                        text.isEmpty
+                        ? Color(nsColor: .secondaryLabelColor)
+                        : Color(nsColor: .controlAccentColor)
+                    )
+                    .padding(.leading, 4)
+                },
+                clearable: true
+            )
+        }
+        .frame(height: 28, alignment: .center)
         .frame(maxWidth: .infinity)
-        .padding(.horizontal, 4)
+        .padding(.horizontal, 5)
         .overlay(alignment: .top) {
             Divider()
                 .opacity(0)
@@ -37,13 +56,13 @@ struct SourceControlToolbarBottom: View {
                 .disabled(true) // TODO: Implementation Needed
             Button("Create Pull Request...") {}
                 .disabled(true) // TODO: Implementation Needed
-        } label: {
+        } label: {}
+        .background {
             Image(systemName: "ellipsis.circle")
-                .frame(width: 30, alignment: .center)
         }
         .menuStyle(.borderlessButton)
         .menuIndicator(.hidden)
-        .frame(maxWidth: 22, alignment: .center)
+        .frame(maxWidth: 18, alignment: .center)
     }
 
     /// Renders a Discard Changes Dialog

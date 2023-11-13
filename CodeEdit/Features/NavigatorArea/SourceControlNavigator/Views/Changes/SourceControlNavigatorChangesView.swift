@@ -10,13 +10,15 @@ import SwiftUI
 struct SourceControlNavigatorChangesView: View {
     @ObservedObject var sourceControlManager: SourceControlManager
 
+    @State var selection = Set<CEWorkspaceFile>()
+
     var showSyncView: Bool {
         sourceControlManager.numberOfUnsyncedCommits > 0 ||
             (sourceControlManager.currentBranch != nil && sourceControlManager.currentBranch?.upstream == nil)
     }
 
     var body: some View {
-        VStack(alignment: .center) {
+        VStack(alignment: .center, spacing: 0) {
             if sourceControlManager.changedFiles.isEmpty {
                 if showSyncView {
                     SourceControlNavigatorSyncView(sourceControlManager: sourceControlManager)
@@ -29,15 +31,12 @@ struct SourceControlNavigatorChangesView: View {
                 SourceControlNavigatorChangesCommitView(
                     sourceControlManager: sourceControlManager
                 )
-                ScrollView {
-                    LazyVStack(spacing: 0) {
-                        ForEach(sourceControlManager.changedFiles) { file in
-                            SourceControlNavigatorChangedFileView(
-                                sourceControlManager: sourceControlManager,
-                                changedFile: file
-                            )
-                        }
-                    }
+                List(sourceControlManager.changedFiles, id: \.self, selection: $selection) { file in
+                    SourceControlNavigatorChangedFileView(
+                        sourceControlManager: sourceControlManager,
+                        changedFile: file
+                    )
+                    .listRowSeparator(.hidden)
                 }
             }
         }

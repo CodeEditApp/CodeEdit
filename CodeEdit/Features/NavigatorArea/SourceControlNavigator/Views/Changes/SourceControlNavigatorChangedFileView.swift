@@ -33,33 +33,26 @@ struct SourceControlNavigatorChangedFileView: View {
         HStack(spacing: 5) {
             Toggle("", isOn: .init(get: getSelectedFileState, set: setSelectedFile))
                 .labelsHidden()
-
             HStack(spacing: 5) {
                 Image(systemName: changedFile.systemImage)
                     .frame(width: 22)
                     .foregroundColor(changedFile.iconColor)
-
                 Text(changedFile.name)
-                    .font(.system(size: 13))
-
-                if let folder {
-                    Text(folder)
-                        .font(.system(size: 11))
-                        .foregroundStyle(.secondary)
-                }
-
+                    .lineLimit(1)
+//                if let folder {
+//                    Text(folder)
+//                        .font(.system(size: 11))
+//                        .foregroundStyle(.secondary)
+//                        .lineLimit(1)
+//                }
                 Spacer()
-
                 Text(changedFile.gitStatus?.description ?? "")
-                    .font(.system(size: 13))
+                    .font(.system(size: 11, weight: .bold))
                     .foregroundColor(.secondary)
-            }
-            .clipShape(Rectangle())
-            .onTapGesture {
-                toggleSelectedFileState()
+                    .frame(minWidth: 10, alignment: .center)
             }
         }
-        .frame(height: 25)
+        .help("\(folder ?? "")\(changedFile.name)")
         .contextMenu {
             Group {
                 Button("View in Finder") {
@@ -88,7 +81,6 @@ struct SourceControlNavigatorChangedFileView: View {
                 }
             }
         }
-        .padding(.horizontal)
     }
 
     /// Opens the file in a new temporary tab

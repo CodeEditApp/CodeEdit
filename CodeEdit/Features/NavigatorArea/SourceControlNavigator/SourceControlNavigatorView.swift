@@ -42,7 +42,7 @@ struct SourceControlNavigatorView: View {
             }
         }
         .safeAreaInset(edge: .bottom, spacing: 0) {
-            SourceControlToolbarBottom()
+            SourceControlNavigatorToolbarBottom()
         }
     }
 }

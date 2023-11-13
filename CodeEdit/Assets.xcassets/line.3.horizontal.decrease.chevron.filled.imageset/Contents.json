@@ -1,0 +1,16 @@
+{
+  "images" : [
+    {
+      "filename" : "line.3.horizontal.decrease.chevron.filled.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "preserves-vector-representation" : true,
+    "template-rendering-intent" : "template"
+  }
+}
