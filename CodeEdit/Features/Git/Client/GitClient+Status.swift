@@ -38,4 +38,9 @@ extension GitClient {
     func discardChanges(for file: URL) async throws {
         _ = try await run("restore \(file.relativePath)")
     }
+
+    /// Discard unstaged changes
+    func discardAllChanges() async throws {
+        _ = try await run("restore .")
+    }
 }

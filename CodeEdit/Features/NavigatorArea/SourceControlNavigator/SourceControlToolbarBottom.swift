@@ -27,7 +27,7 @@ struct SourceControlToolbarBottom: View {
         Menu {
             Button("Discard Changes...") {
                 if discardChangesDialog() {
-                    print("Discard Changes")
+                    workspace.sourceControlManager?.discardAllChanges()
                 }
             }
             Button("Stash Changes...") {}
