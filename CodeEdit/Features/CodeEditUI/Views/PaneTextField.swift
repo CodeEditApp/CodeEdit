@@ -102,24 +102,30 @@ struct PaneTextField<LeadingAccessories: View, TrailingAccessories: View>: View 
                 trailing
             }
         }
+
         .fixedSize(horizontal: false, vertical: true)
         .buttonStyle(.icon(font: .system(size: 11, weight: .semibold), size: CGSize(width: 28, height: 20)))
         .padding(0.5)
-        .background(selectionBackground(isFocused))
-        .clipShape(RoundedRectangle(cornerRadius: 6))
+        .background(
+            selectionBackground(isFocused)
+                .clipShape(RoundedRectangle(cornerRadius: 6))
+                .edgesIgnoringSafeArea(.all)
+        )
         .overlay(
             RoundedRectangle(cornerRadius: 6)
                 .stroke(isFocused || !text.isEmpty || hasValue ? .tertiary : .quaternary, lineWidth: 1.25)
                 .cornerRadius(6)
                 .disabled(true)
+                .edgesIgnoringSafeArea(.all)
         )
+
         .onTapGesture {
             isFocused = true
         }
     }
 }
 
-// experimental, may not work - will probably remove if we can't get this working
+// EXPERIMENTAL: may not work - we should remove if we can't get this working
 
 extension TextFieldStyle where Self == PaneTextFieldStyle {
     static func pane(hasValue: Bool) -> PaneTextFieldStyle {
@@ -201,7 +207,11 @@ struct PaneTextFieldStyle: TextFieldStyle {
         .clipShape(RoundedRectangle(cornerRadius: 6))
         .overlay(
             RoundedRectangle(cornerRadius: 6)
-                .stroke(isFocused || !textBinding.wrappedValue.isEmpty || hasValue ? .tertiary : .quaternary, lineWidth: 1.25)
+                .stroke(
+                    isFocused
+                    || !textBinding.wrappedValue.isEmpty
+                    || hasValue ? .tertiary : .quaternary, lineWidth: 1.25
+                )
                 .cornerRadius(6)
                 .disabled(true)
         )

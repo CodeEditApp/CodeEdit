@@ -39,12 +39,7 @@ struct SourceControlNavigatorChangedFileView: View {
                     .foregroundColor(changedFile.iconColor)
                 Text(changedFile.name)
                     .lineLimit(1)
-//                if let folder {
-//                    Text(folder)
-//                        .font(.system(size: 11))
-//                        .foregroundStyle(.secondary)
-//                        .lineLimit(1)
-//                }
+                    .truncationMode(.middle)
                 Spacer()
                 Text(changedFile.gitStatus?.description ?? "")
                     .font(.system(size: 11, weight: .bold))
@@ -53,34 +48,6 @@ struct SourceControlNavigatorChangedFileView: View {
             }
         }
         .help("\(folder ?? "")\(changedFile.name)")
-        .contextMenu {
-            Group {
-                Button("View in Finder") {
-                    changedFile.showInFinder()
-                }
-                Button("Reveal in Project Navigator") {}
-                    .disabled(true) // TODO: Implementation Needed
-                Divider()
-            }
-            Group {
-                Button("Open in New Tab") {
-                    openInTemporaryTab()
-                }
-                Button("Open in New Window") {}
-                    .disabled(true) // TODO: Implementation Needed
-                Button("Open with External Editor") {}
-                    .disabled(true) // TODO: Implementation Needed
-            }
-            if changedFile.gitStatus == .modified {
-                Group {
-                    Divider()
-                    Button("Discard Changes in \(changedFile.name)...") {
-                        sourceControlManager.discardChanges(for: changedFile)
-                    }
-                    Divider()
-                }
-            }
-        }
     }
 
     /// Opens the file in a new temporary tab

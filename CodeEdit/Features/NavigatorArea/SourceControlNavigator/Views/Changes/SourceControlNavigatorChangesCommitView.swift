@@ -15,6 +15,12 @@ struct SourceControlNavigatorChangesCommitView: View {
     @State private var showDetails: Bool = false
     @State private var isCommiting: Bool = false
 
+    var allFilesStaged: Bool {
+        let listSet = Set(sourceControlManager.changedFiles.map { $0.id })
+        let findListSet = Set(sourceControlManager.filesToCommit)
+        return listSet.isSubset(of: findListSet)
+    }
+
     var body: some View {
         VStack {
             VStack(spacing: 0) {
@@ -22,16 +28,34 @@ struct SourceControlNavigatorChangesCommitView: View {
                     "Commit message (required)",
                     text: $message
                 )
+                .safeAreaInset(edge: .bottom, spacing: 0) {
+                    if showDetails {
+                        VStack {
+                            TextField(
+                                "Detailed description",
+                                text: $details,
+                                axis: .vertical
+                            )
+                            .textFieldStyle(.plain)
+                            .controlSize(.small)
+                            .lineLimit(3...5)
+
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 3.5)
+                        .overlay(alignment: .top) {
+                            VStack {
+                                Divider()
+                            }
+                        }
+                    }
+                }
                 VStack {
                     if showDetails {
                         VStack(spacing: 8) {
-                            PaneTextField(
-                                "Detailed description",
-                                text: $details
-                            )
-                            .lineLimit(3...5)
                             Toggle(isOn: $ammend) {
-                                Text("Ammend")
+                                Text("Amend")
                                     .frame(maxWidth: .infinity, alignment: .leading)
                             }
                             .toggleStyle(.switch)
@@ -45,9 +69,11 @@ struct SourceControlNavigatorChangesCommitView: View {
                 .clipped()
                 HStack(spacing: 8) {
                     Button {
-                        // stage all
+                        sourceControlManager.filesToCommit = allFilesStaged
+                        ? []
+                        : sourceControlManager.changedFiles.map { $0.id }
                     } label: {
-                        Text("Stage All")
+                        Text(allFilesStaged ? "Unstage All" : "Stage All")
                             .frame(maxWidth: .infinity)
                     }
                     Menu(isCommiting ? "Committing..." : "Commit") {

@@ -234,7 +234,8 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
     // MARK: Hashable
 
     func hash(into hasher: inout Hasher) {
-        hasher.combine(fileIdentifier)
+// TODO: Causing crashes, needs a better solution and should be fixed before merging.
+//        hasher.combine(fileIdentifier)
         hasher.combine(id)
     }
 
