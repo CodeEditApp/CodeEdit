@@ -125,8 +125,6 @@ struct FindNavigatorForm: View {
                         scoped.toggle()
                     }
             }
-            TextField("Test", text: $searchText)
-                .textFieldStyle(.pane)
             PaneTextField(
                 state.selectedMode[1].title,
                 text: $searchText,

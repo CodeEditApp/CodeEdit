@@ -27,9 +27,6 @@ final class SourceControlManager: ObservableObject {
     /// All branches, local and remote
     @Published var branches: [GitBranch] = []
 
-    /// Files user selected to commit
-    @Published var filesToCommit: [CEWorkspaceFile.ID] = []
-
     /// Number of unsynced commits with remote in current branch
     @Published var numberOfUnsyncedCommits: Int = 0
 
@@ -43,13 +40,25 @@ final class SourceControlManager: ObservableObject {
     }
 
     /// Refresh all changed files and refresh status in file manager
-    func refresAllChangesFiles() async {
+    func refreshAllChangedFiles() async {
         do {
-            var changedFiles: [CEWorkspaceFile] = []
+            var fileDictionary = [URL: CEWorkspaceFile]()
 
+            // Process changed files
             for item in try await gitClient.getChangedFiles() {
-                changedFiles.append(.init(url: item.fileLink, changeType: item.changeType))
+                fileDictionary[item.fileLink] = CEWorkspaceFile(
+                    url: item.fileLink,
+                    changeType: item.changeType,
+                    staged: false
+                )
             }
+
+            // Update staged status
+            for item in try await gitClient.getStagedFiles() {
+                fileDictionary[item.fileLink]?.staged = true
+            }
+
+            let changedFiles = Array(fileDictionary.values.sorted())
 
             await setChangedFiles(changedFiles)
             await refreshStatusInFileManager()
@@ -167,23 +176,18 @@ final class SourceControlManager: ObservableObject {
 
     /// Commit files selected by user
     func commit(message: String) async throws {
-        var filesToCommit: [CEWorkspaceFile] = []
-        for file in changedFiles where self.filesToCommit.contains(file.id) {
-            filesToCommit.append(file)
-        }
+        try await gitClient.commit(message)
 
-        if filesToCommit.isEmpty {
-            return
-        }
-
-        try await gitClient.commit(filesToCommit, message: message)
-
-        await MainActor.run {
-            self.filesToCommit = []
-        }
-
-        await self.refresAllChangesFiles()
+        await self.refreshAllChangedFiles()
         await self.refreshNumberOfUnsyncedCommits()
+    }
+
+    func add(_ files: [CEWorkspaceFile]) async throws {
+        try await gitClient.add(files)
+    }
+
+    func reset(_ files: [CEWorkspaceFile]) async throws {
+        try await gitClient.reset(files)
     }
 
     /// Refresh number of unsynced commits

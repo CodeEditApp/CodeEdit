@@ -11,8 +11,19 @@ struct SourceControlNavigatorChangedFileView: View {
     @EnvironmentObject var workspace: WorkspaceDocument
 
     @ObservedObject var sourceControlManager: SourceControlManager
+<<<<<<< HEAD
 
     var changedFile: CEWorkspaceFile
+=======
+    @Binding var changedFile: CEWorkspaceFile
+    @State var staged: Bool
+
+    init(sourceControlManager: SourceControlManager, changedFile: Binding<CEWorkspaceFile>) {
+        self.sourceControlManager = sourceControlManager
+        self._changedFile = changedFile
+        _staged = State(initialValue: changedFile.wrappedValue.staged ?? false)
+    }
+>>>>>>> d7ecf00d (Checking and unchecking changed files now performs a git add/reset command. Checked state is synced with staged git status even when stage occurs externally.)
 
     var folder: String? {
         let rootPath = sourceControlManager.gitClient.directoryURL.relativePath
@@ -31,48 +42,34 @@ struct SourceControlNavigatorChangedFileView: View {
 
     var body: some View {
         HStack(spacing: 5) {
-            Toggle("", isOn: .init(get: getSelectedFileState, set: setSelectedFile))
+            Toggle("", isOn: $staged)
                 .labelsHidden()
-            HStack(spacing: 5) {
-                Image(systemName: changedFile.systemImage)
-                    .frame(width: 22)
-                    .foregroundColor(changedFile.iconColor)
-                Text(changedFile.name)
-                    .lineLimit(1)
-                    .truncationMode(.middle)
-                Spacer()
-                Text(changedFile.gitStatus?.description ?? "")
-                    .font(.system(size: 11, weight: .bold))
-                    .foregroundColor(.secondary)
-                    .frame(minWidth: 10, alignment: .center)
-            }
+                .onChange(of: staged) { newStaged in
+                    Task {
+                        if changedFile.staged != newStaged {
+                            if newStaged {
+                                try await sourceControlManager.add([changedFile])
+                            } else {
+                                try await sourceControlManager.reset([changedFile])
+                            }
+                        }
+                    }
+                }
+            Image(systemName: changedFile.systemImage)
+                .frame(width: 22)
+                .foregroundColor(changedFile.iconColor)
+            Text(changedFile.name)
+                .lineLimit(1)
+                .truncationMode(.middle)
+            Spacer()
+            Text(changedFile.gitStatus?.description ?? "")
+                .font(.system(size: 11, weight: .bold))
+                .foregroundColor(.secondary)
+                .frame(minWidth: 10, alignment: .center)
         }
         .help("\(folder ?? "")\(changedFile.name)")
-    }
-
-    /// Opens the file in a new temporary tab
-    func openInTemporaryTab() {
-        self.workspace.editorManager.activeEditor.openTab(item: self.changedFile, asTemporary: true)
-    }
-
-    func toggleSelectedFileState() {
-        setSelectedFile(!getSelectedFileState())
-    }
-
-    func getSelectedFileState() -> Bool {
-        return sourceControlManager.filesToCommit.contains(changedFile.id)
-    }
-
-    func setSelectedFile(_ newValue: Bool) {
-        if newValue {
-            sourceControlManager.filesToCommit.append(changedFile.id)
-            return
+        .onChange(of: changedFile.staged) { newStaged in
+            staged = newStaged ?? false
         }
-
-        guard let index = sourceControlManager.filesToCommit.firstIndex(of: changedFile.id) else {
-            return
-        }
-
-        sourceControlManager.filesToCommit.remove(at: index)
     }
 }

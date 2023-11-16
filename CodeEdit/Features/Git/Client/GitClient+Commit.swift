@@ -8,30 +8,26 @@
 import Foundation
 
 extension GitClient {
-    /// Commit files, if file is untracked, it will be added
+    /// Commit files
     /// - Parameters:
-    ///   - files: Files to commit
     ///   - message: Commit message
-    func commit(_ files: [CEWorkspaceFile], message: String) async throws {
-        // Add untracked files
-        for file in files where file.gitStatus == .untracked {
-            try await add(file)
-        }
-
+    func commit(_ message: String) async throws {
         let message = message.replacingOccurrences(of: #"""#, with: #"\""#)
-        let command = "commit \(files.map { $0.url.relativePath }.joined(separator: " ")) --message=\"\(message)\""
+        let command = "commit --message=\"\(message)\""
 
         _ = try await run(command)
     }
 
     /// Add file to git
     /// - Parameter file: File to add
-    func add(_ file: CEWorkspaceFile) async throws {
-        if file.gitStatus != .untracked {
-            return
-        }
+    func add(_ files: [CEWorkspaceFile]) async throws {
+        _ = try await run("add \(files.map { $0.url.relativePath }.joined(separator: " "))")
+    }
 
-        _ = try await run("add \(file.url.relativePath)")
+    /// Add file to git
+    /// - Parameter file: File to add
+    func reset(_ files: [CEWorkspaceFile]) async throws {
+        _ = try await run("reset \(files.map { $0.url.relativePath }.joined(separator: " "))")
     }
 
     func numberOfUnsyncedCommits() async throws -> Int {

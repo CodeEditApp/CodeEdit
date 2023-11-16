@@ -33,10 +33,10 @@ struct SourceControlNavigatorChangesView: View {
                 SourceControlNavigatorChangesCommitView(
                     sourceControlManager: sourceControlManager
                 )
-                List(sourceControlManager.changedFiles, id: \.self, selection: $selection) { file in
+                List($sourceControlManager.changedFiles, id: \.self, selection: $selection) { $file in
                     SourceControlNavigatorChangedFileView(
                         sourceControlManager: sourceControlManager,
-                        changedFile: file
+                        changedFile: $file
                     )
                     .listRowSeparator(.hidden)
                 }
@@ -90,7 +90,7 @@ struct SourceControlNavigatorChangesView: View {
         }
         .frame(maxHeight: .infinity)
         .task {
-            await sourceControlManager.refresAllChangesFiles()
+            await sourceControlManager.refreshAllChangedFiles()
             await sourceControlManager.refreshNumberOfUnsyncedCommits()
         }
         .onChange(of: selection) { newSelection in

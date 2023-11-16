@@ -16,9 +16,11 @@ struct SourceControlNavigatorChangesCommitView: View {
     @State private var isCommiting: Bool = false
 
     var allFilesStaged: Bool {
-        let listSet = Set(sourceControlManager.changedFiles.map { $0.id })
-        let findListSet = Set(sourceControlManager.filesToCommit)
-        return listSet.isSubset(of: findListSet)
+        sourceControlManager.changedFiles.allSatisfy { $0.staged ?? false }
+    }
+
+    var anyFilesStaged: Bool {
+        sourceControlManager.changedFiles.contains { $0.staged ?? false }
     }
 
     var body: some View {
@@ -69,9 +71,13 @@ struct SourceControlNavigatorChangesCommitView: View {
                 .clipped()
                 HStack(spacing: 8) {
                     Button {
-                        sourceControlManager.filesToCommit = allFilesStaged
-                        ? []
-                        : sourceControlManager.changedFiles.map { $0.id }
+                        Task {
+                            if allFilesStaged {
+                                try await sourceControlManager.reset(sourceControlManager.changedFiles)
+                            } else {
+                                try await sourceControlManager.add(sourceControlManager.changedFiles)
+                            }
+                        }
                     } label: {
                         Text(allFilesStaged ? "Unstage All" : "Stage All")
                             .frame(maxWidth: .infinity)
@@ -94,7 +100,7 @@ struct SourceControlNavigatorChangesCommitView: View {
                     }
                     .disabled(
                         message.isEmpty ||
-                        sourceControlManager.filesToCommit.isEmpty ||
+                        !anyFilesStaged ||
                         isCommiting
                     )
                 }

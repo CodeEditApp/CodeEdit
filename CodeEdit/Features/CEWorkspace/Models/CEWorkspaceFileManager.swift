@@ -149,7 +149,7 @@ final class CEWorkspaceFileManager {
         }
         childrenMap[file.id] = children.map { $0.relativePath }
         Task {
-            await sourceControlManager?.refresAllChangesFiles()
+            await sourceControlManager?.refreshAllChangedFiles()
         }
     }
 
@@ -220,11 +220,16 @@ final class CEWorkspaceFileManager {
                 self.notifyObservers(updatedItems: files)
             }
 
-            // Ignore changes to .git folder
+            // Changes excluding .git folder
             let notGitChanges = events.filter({ !$0.path.contains(".git/") })
-            if !notGitChanges.isEmpty {
+            
+            // Change made to staged files by looking at .git/index
+            let gitIndexChange = events.first(where: { $0.path == "\(self.folderUrl.relativePath)/.git/index" })
+            
+            // If changes were made to project OR files were staged, refresh our changes
+            if !notGitChanges.isEmpty || gitIndexChange != nil {
                 Task {
-                    await self.sourceControlManager?.refresAllChangesFiles()
+                    await self.sourceControlManager?.refreshAllChangedFiles()
                 }
             }
         }

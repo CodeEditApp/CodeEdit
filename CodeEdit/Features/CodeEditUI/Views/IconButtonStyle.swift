@@ -50,6 +50,8 @@ struct IconButtonStyle: ButtonStyle {
         var isActive: Bool
         var font: Font
         var size: CGSize?
+        @Environment(\.controlActiveState)
+        private var controlActiveState
         @Environment(\.isEnabled)
         private var isEnabled: Bool
         @Environment(\.colorScheme)
@@ -93,6 +95,7 @@ struct IconButtonStyle: ButtonStyle {
                     : isActive ? -0.25 : -0.75
                     : 0
                 )
+                .opacity(controlActiveState == .inactive ? 0.5 : 1)
                 .symbolVariant(isActive ? .fill : .none)
         }
     }
