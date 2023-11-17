@@ -24,7 +24,7 @@ struct SourceControlNavigatorChangesCommitView: View {
     }
 
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             VStack(spacing: 0) {
                 PaneTextField(
                     "Commit message (required)",
@@ -53,16 +53,14 @@ struct SourceControlNavigatorChangesCommitView: View {
                         }
                     }
                 }
-                VStack {
+                VStack(spacing: 0) {
                     if showDetails {
-                        VStack(spacing: 8) {
-                            Toggle(isOn: $ammend) {
-                                Text("Amend")
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                            }
-                            .toggleStyle(.switch)
-                            .controlSize(.mini)
+                        Toggle(isOn: $ammend) {
+                            Text("Amend")
+                                .frame(maxWidth: .infinity, alignment: .leading)
                         }
+                        .toggleStyle(.switch)
+                        .controlSize(.mini)
                         .padding(.top, 8)
                         .transition(.move(edge: .top).combined(with: .opacity))
                     }
@@ -112,6 +110,7 @@ struct SourceControlNavigatorChangesCommitView: View {
                     showDetails = !message.isEmpty
                 }
             }
+            .padding(.vertical, 8)
             .padding(.horizontal, 10)
             Divider()
         }

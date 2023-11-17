@@ -38,7 +38,7 @@ protocol CEWorkspaceFileManagerObserver: AnyObject {
 /// ``CEWorkspaceFileManagerObserver`` protocol. Use the ``CEWorkspaceFileManager/addObserver(_:)``
 /// and ``CEWorkspaceFileManager/removeObserver(_:)`` to add or remove observers. Observers are kept as weak references.
 final class CEWorkspaceFileManager {
-    private(set) var fileManager = FileManager.default
+    private(set) var fileManager: FileManager
     private(set) var ignoredFilesAndFolders: Set<String>
     private(set) var flattenedFileItems: [String: CEWorkspaceFile]
     /// Maps all directories to it's children's paths.
@@ -58,6 +58,7 @@ final class CEWorkspaceFileManager {
     init(
         folderUrl: URL,
         ignoredFilesAndFolders: Set<String>,
+        fileManager: FileManager = FileManager.default,
         sourceControlManager: SourceControlManager?
     ) {
         self.folderUrl = folderUrl
@@ -66,12 +67,15 @@ final class CEWorkspaceFileManager {
         self.workspaceItem = CEWorkspaceFile(url: folderUrl)
         self.flattenedFileItems = [workspaceItem.id: workspaceItem]
         self.sourceControlManager = sourceControlManager
+        self.fileManager = fileManager
 
         self.loadChildrenForFile(self.workspaceItem)
 
         fsEventStream = DirectoryEventStream(directory: self.folderUrl.path) { [weak self] events in
             self?.fileSystemEventReceived(events: events)
         }
+
+        sourceControlManager?.isGitRepository = fileManager.fileExists(atPath: "\(folderUrl.relativePath)/.git")
     }
 
     // MARK: - Public API
@@ -222,7 +226,10 @@ final class CEWorkspaceFileManager {
 
             // Changes excluding .git folder
             let notGitChanges = events.filter({ !$0.path.contains(".git/") })
-            
+
+            // .git folder was changed
+            let gitFolderChange = events.first(where: { $0.path == "\(self.folderUrl.relativePath)/.git"})
+
             // Change made to staged files by looking at .git/index
             let gitIndexChange = events.first(where: { $0.path == "\(self.folderUrl.relativePath)/.git/index" })
             
@@ -230,6 +237,14 @@ final class CEWorkspaceFileManager {
             if !notGitChanges.isEmpty || gitIndexChange != nil {
                 Task {
                     await self.sourceControlManager?.refreshAllChangedFiles()
+                }
+            }
+
+            if gitFolderChange != nil {
+                if gitFolderChange?.eventType == .itemCreated {
+                    self.sourceControlManager?.isGitRepository = true
+                } else {
+                    self.sourceControlManager?.isGitRepository = false
                 }
             }
         }

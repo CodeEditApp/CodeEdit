@@ -30,6 +30,8 @@ final class SourceControlManager: ObservableObject {
     /// Number of unsynced commits with remote in current branch
     @Published var numberOfUnsyncedCommits: Int = 0
 
+    @Published var isGitRepository: Bool = false
+
     init(
         workspaceURL: URL,
         editorManager: EditorManager
@@ -211,6 +213,11 @@ final class SourceControlManager: ObservableObject {
         }
 
         await self.refreshNumberOfUnsyncedCommits()
+    }
+
+    /// Initiate repository
+    func initiate() async throws {
+        try await gitClient.initiate()
     }
 
     /// Show alert for error

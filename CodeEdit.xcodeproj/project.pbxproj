@@ -400,6 +400,7 @@
 		B685DE7929CC9CCD002860C8 /* StatusBarIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = B685DE7829CC9CCD002860C8 /* StatusBarIcon.swift */; };
 		B68C7C212A01DEFE004EA6D6 /* GitHubComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68C7C202A01DEFE004EA6D6 /* GitHubComment.swift */; };
 		B697937A29FF5668002027EC /* AccountsSettingsAccountLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = B697937929FF5668002027EC /* AccountsSettingsAccountLink.swift */; };
+		B69BFDC72B0686910050D9A6 /* GitClient+Initiate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69BFDC62B0686910050D9A6 /* GitClient+Initiate.swift */; };
 		B6A43C5D29FC4AF00027E0E0 /* CreateSSHKeyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A43C5C29FC4AF00027E0E0 /* CreateSSHKeyView.swift */; };
 		B6AB09A12AAABAAE0003A3A6 /* EditorTabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AB09A02AAABAAE0003A3A6 /* EditorTabs.swift */; };
 		B6AB09A32AAABFEC0003A3A6 /* EditorTabBarLeadingAccessories.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AB09A22AAABFEC0003A3A6 /* EditorTabBarLeadingAccessories.swift */; };
@@ -890,6 +891,7 @@
 		B685DE7829CC9CCD002860C8 /* StatusBarIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarIcon.swift; sourceTree = "<group>"; };
 		B68C7C202A01DEFE004EA6D6 /* GitHubComment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubComment.swift; sourceTree = "<group>"; };
 		B697937929FF5668002027EC /* AccountsSettingsAccountLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsSettingsAccountLink.swift; sourceTree = "<group>"; };
+		B69BFDC62B0686910050D9A6 /* GitClient+Initiate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GitClient+Initiate.swift"; sourceTree = "<group>"; };
 		B6A43C5C29FC4AF00027E0E0 /* CreateSSHKeyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateSSHKeyView.swift; sourceTree = "<group>"; };
 		B6AB09A02AAABAAE0003A3A6 /* EditorTabs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorTabs.swift; sourceTree = "<group>"; };
 		B6AB09A22AAABFEC0003A3A6 /* EditorTabBarLeadingAccessories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorTabBarLeadingAccessories.swift; sourceTree = "<group>"; };
@@ -1865,6 +1867,7 @@
 				04BA7C182AE2D7C600584E1C /* GitClient+Branches.swift */,
 				04BA7C1B2AE2D84100584E1C /* GitClient+Commit.swift */,
 				04BA7C1D2AE2D8A000584E1C /* GitClient+Clone.swift */,
+				B69BFDC62B0686910050D9A6 /* GitClient+Initiate.swift */,
 				04BA7C1F2AE2D92B00584E1C /* GitClient+Status.swift */,
 				04BA7C212AE2D95E00584E1C /* GitClient+CommitHistory.swift */,
 				04BA7C262AE2E9F100584E1C /* GitClient+Push.swift */,
@@ -3306,6 +3309,7 @@
 				6C147C4129A328BF0089B630 /* EditorLayout.swift in Sources */,
 				B6D7EA592971078500301FAC /* InspectorSection.swift in Sources */,
 				B6AB09A32AAABFEC0003A3A6 /* EditorTabBarLeadingAccessories.swift in Sources */,
+				B69BFDC72B0686910050D9A6 /* GitClient+Initiate.swift in Sources */,
 				58F2EAEF292FB2B0004A9BDE /* ThemeSettingsView.swift in Sources */,
 				85745D632A38F8D900089AAB /* String+HighlightOccurrences.swift in Sources */,
 				B6EE989027E8879A00CDD8AB /* InspectorAreaView.swift in Sources */,

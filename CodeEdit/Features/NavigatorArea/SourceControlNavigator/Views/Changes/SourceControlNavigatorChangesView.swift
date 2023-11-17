@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SourceControlNavigatorChangesView: View {
     @ObservedObject var sourceControlManager: SourceControlManager
-    
+
     @EnvironmentObject var workspace: WorkspaceDocument
 
     @State var selection = Set<CEWorkspaceFile>()

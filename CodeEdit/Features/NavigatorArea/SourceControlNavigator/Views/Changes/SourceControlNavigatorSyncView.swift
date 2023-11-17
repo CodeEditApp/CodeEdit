@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SourceControlNavigatorSyncView: View {
     @ObservedObject var sourceControlManager: SourceControlManager
-    @State private var isSyncing: Bool = false
+    @State private var isPushing: Bool = false
 
     var body: some View {
         VStack {
@@ -18,51 +18,39 @@ struct SourceControlNavigatorSyncView: View {
             } label: {
                 HStack {
                     Spacer()
-                    if isSyncing {
-                        Text("Syncing...")
+                    if isPushing {
+                        Text("Pushing...")
                     } else {
-                        Label(
-                            title,
-                            systemImage: icon
-                        )
+                        Text(title)
                     }
                     Spacer()
                 }
             }
-            .buttonStyle(.borderedProminent)
-            .disabled(isSyncing)
+            .disabled(isPushing)
 
             Spacer()
         }
-        .padding(.horizontal)
-        .padding(.vertical, 5)
+        .padding(.horizontal, 10)
+        .padding(.vertical, 8)
     }
 
     var title: String {
         if sourceControlManager.numberOfUnsyncedCommits > 0 {
-            return "Sync Changes \(sourceControlManager.numberOfUnsyncedCommits)"
+            return "Push \(sourceControlManager.numberOfUnsyncedCommits) Commits"
         }
 
-        return "Publish Branch"
-    }
-
-    var icon: String {
-        if sourceControlManager.numberOfUnsyncedCommits > 0 {
-            return "arrow.triangle.2.circlepath"
-        }
-
-        return "arrowshape.up.circle"
+        return "Push Branch"
     }
 
     func sync() {
         Task(priority: .background) {
-            self.isSyncing = true
+            self.isPushing = true
             do {
                 try await sourceControlManager.push()
             } catch {
-                await sourceControlManager.showAlertForError(title: "Failed to sync", error: error)
+                await sourceControlManager.showAlertForError(title: "Failed to push", error: error)
             }
-            self.isSyncing = false
+            self.isPushing = false
         }
     }
 }
