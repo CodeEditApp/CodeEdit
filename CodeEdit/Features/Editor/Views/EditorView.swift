@@ -20,35 +20,29 @@ struct EditorView: View {
 
     @EnvironmentObject private var editorManager: EditorManager
 
+    var editorInsetAmount: Double {
+        (EditorTabBarView.height + 1)
+        + (showEditorPathBar
+           ? (EditorPathBarView.height + 1)
+           : 0
+        )
+    }
+
     var body: some View {
         VStack {
             if let selected = editor.selectedTab {
                 WorkspaceCodeFileView(file: selected)
                     .focusedObject(editor)
                     .transformEnvironment(\.edgeInsets) { insets in
-                        insets.top +=
-                        (EditorTabBarView.height + 1)
-                        + (showEditorPathBar
-                           ? (EditorPathBarView.height + 1)
-                           : 0
-                        )
+                        insets.top += editorInsetAmount
                     }
                     .opacity(dimEditorsWithoutFocus && editor != editorManager.activeEditor ? 0.5 : 1)
             } else {
-                VStack {
-                    Spacer()
-                    Text("No Editor")
-                        .font(.system(size: 17))
-                        .foregroundColor(.secondary)
-                        .frame(minHeight: 0)
-                        .clipped()
-                    Spacer()
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .contentShape(Rectangle())
-                .onTapGesture {
-                    editorManager.activeEditor = editor
-                }
+                CEContentUnavailableView("No Editor")
+                    .padding(.top, editorInsetAmount)
+                    .onTapGesture {
+                        editorManager.activeEditor = editor
+                    }
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)

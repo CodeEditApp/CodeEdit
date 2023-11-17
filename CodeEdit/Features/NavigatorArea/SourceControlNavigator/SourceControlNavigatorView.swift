@@ -48,17 +48,18 @@ struct SourcControlNavigatorTabs: View {
                 )
             }
         } else {
-            VStack {
-                Text("Not a repository")
-                    .font(.system(size: 16))
-                    .foregroundColor(.secondary)
-                Button("Initiate") {
-                    Task {
-                        try await sourceControlManager.initiate()
+            CEContentUnavailableView(
+                "No Repository",
+                 description: "This project is not a git repository.",
+                 systemImage: "externaldrive.fill",
+                 actions: {
+                    Button("Initiate Repository") {
+                        Task {
+                            try await sourceControlManager.initiate()
+                        }
                     }
                 }
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            )
         }
     }
 }
