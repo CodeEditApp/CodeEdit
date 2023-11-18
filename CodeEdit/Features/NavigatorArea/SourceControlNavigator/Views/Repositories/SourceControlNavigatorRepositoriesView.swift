@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SourceControlNavigatorRepositoriesView: View {
-    @ObservedObject var sourceControlManager: SourceControlManager
+    @EnvironmentObject var sourceControlManager: SourceControlManager
 
     var body: some View {
         ScrollView {

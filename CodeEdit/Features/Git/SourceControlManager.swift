@@ -27,8 +27,11 @@ final class SourceControlManager: ObservableObject {
     /// All branches, local and remote
     @Published var branches: [GitBranch] = []
 
+    /// All remotes
+    @Published var remotes: [GitRemote] = []
+
     /// Number of unsynced commits with remote in current branch
-    @Published var numberOfUnsyncedCommits: Int = 0
+    @Published var numberOfUnpushedCommits: Int = 0
 
     @Published var isGitRepository: Bool = false
 
@@ -197,7 +200,20 @@ final class SourceControlManager: ObservableObject {
         let numberOfUnsyncedCommits = (try? await gitClient.numberOfUnsyncedCommits()) ?? 0
 
         await MainActor.run {
-            self.numberOfUnsyncedCommits = numberOfUnsyncedCommits
+            self.numberOfUnpushedCommits = numberOfUnsyncedCommits
+        }
+    }
+
+    /// Add existing remote to git
+    func addRemote(name: String, location: String) async throws {
+        try await gitClient.addRemote(name: name, location: location)
+    }
+
+    /// Get all remotes
+    func refreshRemotes() async throws {
+        let remotes = (try? await gitClient.getRemotes()) ?? []
+        await MainActor.run {
+            self.remotes = remotes
         }
     }
 

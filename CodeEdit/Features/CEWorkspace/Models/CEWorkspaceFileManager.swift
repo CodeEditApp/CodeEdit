@@ -232,11 +232,20 @@ final class CEWorkspaceFileManager {
 
             // Change made to staged files by looking at .git/index
             let gitIndexChange = events.first(where: { $0.path == "\(self.folderUrl.relativePath)/.git/index" })
-            
+
+            // Change made to remotes by looking at .git/config
+            let gitConfigChange = events.first(where: { $0.path == "\(self.folderUrl.relativePath)/.git/config" })
+
             // If changes were made to project OR files were staged, refresh our changes
             if !notGitChanges.isEmpty || gitIndexChange != nil {
                 Task {
                     await self.sourceControlManager?.refreshAllChangedFiles()
+                }
+            }
+
+            if gitConfigChange != nil {
+                Task {
+                    try await self.sourceControlManager?.refreshRemotes()
                 }
             }
 

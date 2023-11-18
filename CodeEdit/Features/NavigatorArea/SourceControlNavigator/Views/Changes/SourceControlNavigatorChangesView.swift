@@ -8,84 +8,48 @@
 import SwiftUI
 
 struct SourceControlNavigatorChangesView: View {
-    @ObservedObject var sourceControlManager: SourceControlManager
+    @EnvironmentObject var sourceControlManager: SourceControlManager
 
-    @EnvironmentObject var workspace: WorkspaceDocument
+    var hasRemotes: Bool {
+        !sourceControlManager.remotes.isEmpty
+    }
 
-    @State var selection = Set<CEWorkspaceFile>()
+    var hasUnpushedCommits: Bool {
+        sourceControlManager.numberOfUnpushedCommits > 0
+    }
 
-    var showSyncView: Bool {
-        sourceControlManager.numberOfUnsyncedCommits > 0 ||
-            (sourceControlManager.currentBranch != nil && sourceControlManager.currentBranch?.upstream == nil)
+    var hasCurrentBranch: Bool {
+        (sourceControlManager.currentBranch != nil && sourceControlManager.currentBranch?.upstream == nil)
+    }
+
+    var hasChanges: Bool {
+        !sourceControlManager.changedFiles.isEmpty
     }
 
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
-            if sourceControlManager.changedFiles.isEmpty {
-                if showSyncView {
-                    SourceControlNavigatorSyncView(sourceControlManager: sourceControlManager)
-                } else {
-                    Text("No Changes")
-                        .font(.system(size: 16))
-                        .foregroundColor(.secondary)
-                }
-            } else {
-                SourceControlNavigatorChangesCommitView(
-                    sourceControlManager: sourceControlManager
-                )
-                List($sourceControlManager.changedFiles, id: \.self, selection: $selection) { $file in
-                    SourceControlNavigatorChangedFileView(
-                        sourceControlManager: sourceControlManager,
-                        changedFile: $file
-                    )
-                    .listRowSeparator(.hidden)
-                }
-                .contextMenu(
-                    forSelectionType: CEWorkspaceFile.self,
-                    menu: { selectedFiles in
-                        if !selectedFiles.isEmpty,
-                           selectedFiles.count == 1,
-                           let file = selectedFiles.first {
-                            Group {
-                                Button("View in Finder") {
-                                    file.showInFinder()
-                                }
-                                Button("Reveal in Project Navigator") {}
-                                    .disabled(true) // TODO: Implementation Needed
-                                Divider()
-                            }
-                            Group {
-                                Button("Open in New Tab") {
-                                    DispatchQueue.main.async {
-                                        workspace.editorManager.activeEditor.openTab(item: file, asTemporary: true)
-                                    }
-                                }
-                                Button("Open in New Window") {}
-                                    .disabled(true) // TODO: Implementation Needed
-                            }
-                            if file.gitStatus == .modified {
-                                Group {
-                                    Divider()
-                                    Button("Discard Changes in \(file.name)...") {
-                                        sourceControlManager.discardChanges(for: file)
-                                    }
-                                    Divider()
-                                }
-                            }
-                        } else {
-                            EmptyView()
+            if hasChanges || !hasRemotes || (!hasChanges && (hasUnpushedCommits || hasCurrentBranch)) {
+                VStack(spacing: 8) {
+                    Divided {
+                        if hasChanges {
+                            SourceControlNavigatorChangesCommitView()
                         }
-                    },
-                    primaryAction: { selectedFiles in
-                        if !selectedFiles.isEmpty,
-                           selectedFiles.count == 1,
-                           let file = selection.first {
-                            DispatchQueue.main.async {
-                                workspace.editorManager.activeEditor.openTab(item: file, asTemporary: false)
-                            }
+                        if !hasRemotes {
+                            SourceControlNavigatorNoRemotesView()
+                        }
+                        if !hasChanges && (hasUnpushedCommits || hasCurrentBranch) {
+                            SourceControlNavigatorPushView(sourceControlManager: sourceControlManager)
                         }
                     }
-                )
+                }
+                .padding(.horizontal, 10)
+                .padding(.vertical, 8)
+                Divider()
+            }
+            if hasChanges {
+                SourceControlNavigatorChangesList()
+            } else {
+                CEContentUnavailableView("No Changes")
             }
         }
         .frame(maxHeight: .infinity)
@@ -93,14 +57,6 @@ struct SourceControlNavigatorChangesView: View {
             await sourceControlManager.refreshAllChangedFiles()
             await sourceControlManager.refreshNumberOfUnsyncedCommits()
         }
-        .onChange(of: selection) { newSelection in
-            if !newSelection.isEmpty,
-                newSelection.count == 1,
-                let file = newSelection.first {
-                DispatchQueue.main.async {
-                    workspace.editorManager.activeEditor.openTab(item: file, asTemporary: true)
-                }
-            }
-        }
+
     }
 }

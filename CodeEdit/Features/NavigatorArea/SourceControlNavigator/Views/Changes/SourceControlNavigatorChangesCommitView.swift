@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SourceControlNavigatorChangesCommitView: View {
-    @ObservedObject var sourceControlManager: SourceControlManager
+    @EnvironmentObject var sourceControlManager: SourceControlManager
     @State private var message: String = ""
     @State private var details: String = ""
     @State private var ammend: Bool = false
@@ -110,9 +110,6 @@ struct SourceControlNavigatorChangesCommitView: View {
                     showDetails = !message.isEmpty
                 }
             }
-            .padding(.vertical, 8)
-            .padding(.horizontal, 10)
-            Divider()
         }
     }
 }

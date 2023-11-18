@@ -25,7 +25,7 @@
 		04BA7C1E2AE2D8A000584E1C /* GitClient+Clone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BA7C1D2AE2D8A000584E1C /* GitClient+Clone.swift */; };
 		04BA7C202AE2D92B00584E1C /* GitClient+Status.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BA7C1F2AE2D92B00584E1C /* GitClient+Status.swift */; };
 		04BA7C222AE2D95E00584E1C /* GitClient+CommitHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BA7C212AE2D95E00584E1C /* GitClient+CommitHistory.swift */; };
-		04BA7C242AE2E7CD00584E1C /* SourceControlNavigatorSyncView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BA7C232AE2E7CD00584E1C /* SourceControlNavigatorSyncView.swift */; };
+		04BA7C242AE2E7CD00584E1C /* SourceControlNavigatorPushView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BA7C232AE2E7CD00584E1C /* SourceControlNavigatorPushView.swift */; };
 		04BA7C272AE2E9F100584E1C /* GitClient+Push.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BA7C262AE2E9F100584E1C /* GitClient+Push.swift */; };
 		04BC1CDE2AD9B4B000A83EA5 /* EditorFileTabCloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BC1CDD2AD9B4B000A83EA5 /* EditorFileTabCloseButton.swift */; };
 		04C3255B2801F86400C8DA2D /* ProjectNavigatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285FEC6D27FE4B4A00E57D53 /* ProjectNavigatorViewController.swift */; };
@@ -388,6 +388,12 @@
 		B658FB3427DA9E1000EA4DBD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3327DA9E1000EA4DBD /* Assets.xcassets */; };
 		B658FB3727DA9E1000EA4DBD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B658FB3627DA9E1000EA4DBD /* Preview Assets.xcassets */; };
 		B65B10EC2B073913002852CF /* CEContentUnavailableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65B10EB2B073913002852CF /* CEContentUnavailableView.swift */; };
+		B65B10EF2B07C454002852CF /* GitClient+Remote.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65B10EE2B07C454002852CF /* GitClient+Remote.swift */; };
+		B65B10F22B07D34F002852CF /* GitRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65B10F12B07D34F002852CF /* GitRemote.swift */; };
+		B65B10F52B081A0C002852CF /* SourceControlAddRemoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65B10F42B081A0C002852CF /* SourceControlAddRemoteView.swift */; };
+		B65B10F82B081A34002852CF /* SourceControlNavigatorNoRemotesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65B10F72B081A34002852CF /* SourceControlNavigatorNoRemotesView.swift */; };
+		B65B10FB2B08B054002852CF /* Divided.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65B10FA2B08B054002852CF /* Divided.swift */; };
+		B65B10FE2B08B07D002852CF /* SourceControlNavigatorChangesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65B10FD2B08B07D002852CF /* SourceControlNavigatorChangesList.swift */; };
 		B66A4E4529C8E86D004573B4 /* CommandsFixes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66A4E4429C8E86D004573B4 /* CommandsFixes.swift */; };
 		B66A4E4C29C9179B004573B4 /* CodeEditApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66A4E4B29C9179B004573B4 /* CodeEditApp.swift */; };
 		B66A4E4F29C917B8004573B4 /* WelcomeWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66A4E4E29C917B8004573B4 /* WelcomeWindow.swift */; };
@@ -526,7 +532,7 @@
 		04BA7C1D2AE2D8A000584E1C /* GitClient+Clone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GitClient+Clone.swift"; sourceTree = "<group>"; };
 		04BA7C1F2AE2D92B00584E1C /* GitClient+Status.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GitClient+Status.swift"; sourceTree = "<group>"; };
 		04BA7C212AE2D95E00584E1C /* GitClient+CommitHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GitClient+CommitHistory.swift"; sourceTree = "<group>"; };
-		04BA7C232AE2E7CD00584E1C /* SourceControlNavigatorSyncView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlNavigatorSyncView.swift; sourceTree = "<group>"; };
+		04BA7C232AE2E7CD00584E1C /* SourceControlNavigatorPushView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlNavigatorPushView.swift; sourceTree = "<group>"; };
 		04BA7C262AE2E9F100584E1C /* GitClient+Push.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GitClient+Push.swift"; sourceTree = "<group>"; };
 		04BC1CDD2AD9B4B000A83EA5 /* EditorFileTabCloseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorFileTabCloseButton.swift; sourceTree = "<group>"; };
 		200412EE280F3EAC00BCAF5C /* HistoryInspectorNoHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryInspectorNoHistoryView.swift; sourceTree = "<group>"; };
@@ -880,6 +886,12 @@
 		B658FB3D27DA9E1000EA4DBD /* CodeEditTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CodeEditTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B658FB4727DA9E1000EA4DBD /* CodeEditUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CodeEditUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B65B10EB2B073913002852CF /* CEContentUnavailableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CEContentUnavailableView.swift; sourceTree = "<group>"; };
+		B65B10EE2B07C454002852CF /* GitClient+Remote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GitClient+Remote.swift"; sourceTree = "<group>"; };
+		B65B10F12B07D34F002852CF /* GitRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitRemote.swift; sourceTree = "<group>"; };
+		B65B10F42B081A0C002852CF /* SourceControlAddRemoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlAddRemoteView.swift; sourceTree = "<group>"; };
+		B65B10F72B081A34002852CF /* SourceControlNavigatorNoRemotesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlNavigatorNoRemotesView.swift; sourceTree = "<group>"; };
+		B65B10FA2B08B054002852CF /* Divided.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Divided.swift; sourceTree = "<group>"; };
+		B65B10FD2B08B07D002852CF /* SourceControlNavigatorChangesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlNavigatorChangesList.swift; sourceTree = "<group>"; };
 		B66A4E4429C8E86D004573B4 /* CommandsFixes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandsFixes.swift; sourceTree = "<group>"; };
 		B66A4E4B29C9179B004573B4 /* CodeEditApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeEditApp.swift; sourceTree = "<group>"; };
 		B66A4E4E29C917B8004573B4 /* WelcomeWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeWindow.swift; sourceTree = "<group>"; };
@@ -1037,7 +1049,10 @@
 				201169E12837B3D800F92B46 /* SourceControlNavigatorChangesView.swift */,
 				201169DA2837B34000F92B46 /* SourceControlNavigatorChangedFileView.swift */,
 				04BA7C0D2AE2A76E00584E1C /* SourceControlNavigatorChangesCommitView.swift */,
-				04BA7C232AE2E7CD00584E1C /* SourceControlNavigatorSyncView.swift */,
+				04BA7C232AE2E7CD00584E1C /* SourceControlNavigatorPushView.swift */,
+				B65B10F42B081A0C002852CF /* SourceControlAddRemoteView.swift */,
+				B65B10F72B081A34002852CF /* SourceControlNavigatorNoRemotesView.swift */,
+				B65B10FD2B08B07D002852CF /* SourceControlNavigatorChangesList.swift */,
 			);
 			path = Changes;
 			sourceTree = "<group>";
@@ -1682,6 +1697,7 @@
 				B67DB0F82AFDF638002DC647 /* IconButtonStyle.swift */,
 				B67DB0FB2AFDF71F002DC647 /* IconToggleStyle.swift */,
 				B65B10EB2B073913002852CF /* CEContentUnavailableView.swift */,
+				B65B10FA2B08B054002852CF /* Divided.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1874,6 +1890,7 @@
 				04BA7C1F2AE2D92B00584E1C /* GitClient+Status.swift */,
 				04BA7C212AE2D95E00584E1C /* GitClient+CommitHistory.swift */,
 				04BA7C262AE2E9F100584E1C /* GitClient+Push.swift */,
+				B65B10EE2B07C454002852CF /* GitClient+Remote.swift */,
 			);
 			path = Client;
 			sourceTree = "<group>";
@@ -1885,6 +1902,7 @@
 				587B9E5429301D8F00AC7927 /* GitChangedFile.swift */,
 				587B9E5529301D8F00AC7927 /* GitType.swift */,
 				04BA7C0A2AE2A2D100584E1C /* GitBranch.swift */,
+				B65B10F12B07D34F002852CF /* GitRemote.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -3006,6 +3024,7 @@
 				587B9E8429301D8F00AC7927 /* GitHubUser.swift in Sources */,
 				04BA7C1C2AE2D84100584E1C /* GitClient+Commit.swift in Sources */,
 				B65B10EC2B073913002852CF /* CEContentUnavailableView.swift in Sources */,
+				B65B10FB2B08B054002852CF /* Divided.swift in Sources */,
 				2072FA13280D74ED00C7F8D4 /* HistoryInspectorModel.swift in Sources */,
 				852E62012A5C17E500447138 /* PageAndSettings.swift in Sources */,
 				587B9DA029300ABD00AC7927 /* PanelDivider.swift in Sources */,
@@ -3056,6 +3075,7 @@
 				58A2E40C29C3975D005CB615 /* CEWorkspaceFileIcon.swift in Sources */,
 				587B9E8F29301D8F00AC7927 /* BitBucketUserRouter.swift in Sources */,
 				B66A4E5129C917D5004573B4 /* AboutWindow.swift in Sources */,
+				B65B10FE2B08B07D002852CF /* SourceControlNavigatorChangesList.swift in Sources */,
 				58F2EB03292FB2B0004A9BDE /* Documentation.docc in Sources */,
 				611192042B08CCED00D4459B /* SearchIndexer+ProgressivSearch.swift in Sources */,
 				611192022B08CCDC00D4459B /* SearchIndexer+Search.swift in Sources */,
@@ -3290,6 +3310,7 @@
 				04BA7C1E2AE2D8A000584E1C /* GitClient+Clone.swift in Sources */,
 				58F2EB09292FB2B0004A9BDE /* TerminalSettings.swift in Sources */,
 				6C578D8429CD343800DC73B2 /* ExtensionDetailView.swift in Sources */,
+				B65B10F22B07D34F002852CF /* GitRemote.swift in Sources */,
 				B6A43C5D29FC4AF00027E0E0 /* CreateSSHKeyView.swift in Sources */,
 				B6EA200229DB7F81001BF195 /* View+ConstrainHeightToWindow.swift in Sources */,
 				B68C7C212A01DEFE004EA6D6 /* GitHubComment.swift in Sources */,
@@ -3298,6 +3319,7 @@
 				58F2EB07292FB2B0004A9BDE /* GeneralSettings.swift in Sources */,
 				B6041F4D29D7A4E9000F3454 /* SettingsPageView.swift in Sources */,
 				587B9E9A29301D8F00AC7927 /* GitType.swift in Sources */,
+				B65B10F82B081A34002852CF /* SourceControlNavigatorNoRemotesView.swift in Sources */,
 				58D01C97293167DC00C5B6B4 /* String+SHA256.swift in Sources */,
 				B6EA1FFD29DB792C001BF195 /* ThemeSettingsColorPreview.swift in Sources */,
 				2806E904297958B9000040F4 /* ContributorRowView.swift in Sources */,
@@ -3332,6 +3354,7 @@
 				B62AEDAA2A1FCBE5009A9F52 /* AreaTabBar.swift in Sources */,
 				20D839AB280DEB2900B27357 /* NoSelectionInspectorView.swift in Sources */,
 				587B9E5A29301D8F00AC7927 /* GitCloneView.swift in Sources */,
+				B65B10F52B081A0C002852CF /* SourceControlAddRemoteView.swift in Sources */,
 				58D01C99293167DC00C5B6B4 /* String+MD5.swift in Sources */,
 				20EBB505280C329800F3A5DA /* HistoryInspectorItemView.swift in Sources */,
 				5878DAB2291D627C00DD95A3 /* EditorPathBarView.swift in Sources */,
@@ -3354,7 +3377,7 @@
 				6CFF967C29BEBD5200182D6F /* WindowCommands.swift in Sources */,
 				587B9E7229301D8F00AC7927 /* GitJSONPostRouter.swift in Sources */,
 				5878DAB0291D627C00DD95A3 /* EditorPathBarMenu.swift in Sources */,
-				04BA7C242AE2E7CD00584E1C /* SourceControlNavigatorSyncView.swift in Sources */,
+				04BA7C242AE2E7CD00584E1C /* SourceControlNavigatorPushView.swift in Sources */,
 				587B9DA529300ABD00AC7927 /* PressActionsModifier.swift in Sources */,
 				6C147C4029A328BC0089B630 /* SplitViewData.swift in Sources */,
 				587B9E9029301D8F00AC7927 /* BitBucketTokenRouter.swift in Sources */,
@@ -3377,6 +3400,7 @@
 				6C05A8AF284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift in Sources */,
 				588847632992A2A200996D95 /* CEWorkspaceFile.swift in Sources */,
 				6C2C155D29B4F4E500EA60A5 /* SplitViewReader.swift in Sources */,
+				B65B10EF2B07C454002852CF /* GitClient+Remote.swift in Sources */,
 				58AFAA2F2933C69E00482B53 /* EditorItemID.swift in Sources */,
 				6C4104E3297C87A000F472BA /* BlurButtonStyle.swift in Sources */,
 			);

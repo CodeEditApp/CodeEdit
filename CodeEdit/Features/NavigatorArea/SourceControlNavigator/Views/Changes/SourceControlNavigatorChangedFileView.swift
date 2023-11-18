@@ -8,22 +8,14 @@
 import SwiftUI
 
 struct SourceControlNavigatorChangedFileView: View {
-    @EnvironmentObject var workspace: WorkspaceDocument
-
-    @ObservedObject var sourceControlManager: SourceControlManager
-<<<<<<< HEAD
-
-    var changedFile: CEWorkspaceFile
-=======
+    @EnvironmentObject var sourceControlManager: SourceControlManager
     @Binding var changedFile: CEWorkspaceFile
     @State var staged: Bool
 
-    init(sourceControlManager: SourceControlManager, changedFile: Binding<CEWorkspaceFile>) {
-        self.sourceControlManager = sourceControlManager
+    init(changedFile: Binding<CEWorkspaceFile>) {
         self._changedFile = changedFile
         _staged = State(initialValue: changedFile.wrappedValue.staged ?? false)
     }
->>>>>>> d7ecf00d (Checking and unchecking changed files now performs a git add/reset command. Checked state is synced with staged git status even when stage occurs externally.)
 
     var folder: String? {
         let rootPath = sourceControlManager.gitClient.directoryURL.relativePath

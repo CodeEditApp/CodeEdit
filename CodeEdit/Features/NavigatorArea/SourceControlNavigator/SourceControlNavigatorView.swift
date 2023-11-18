@@ -13,7 +13,8 @@ struct SourceControlNavigatorView: View {
     var body: some View {
         VStack(spacing: 0) {
             if let sourceControlManager = workspace.workspaceFileManager?.sourceControlManager {
-                SourcControlNavigatorTabs(sourceControlManager: sourceControlManager)
+                SourcControlNavigatorTabs()
+                    .environmentObject(sourceControlManager)
             }
         }
         .safeAreaInset(edge: .bottom, spacing: 0) {
@@ -23,7 +24,7 @@ struct SourceControlNavigatorView: View {
 }
 
 struct SourcControlNavigatorTabs: View {
-    @ObservedObject var sourceControlManager: SourceControlManager
+    @EnvironmentObject var sourceControlManager: SourceControlManager
     @State private var selectedSection: Int = 0
 
     var body: some View {
@@ -36,16 +37,17 @@ struct SourcControlNavigatorTabs: View {
             .frame(maxWidth: .infinity)
             .frame(height: 26)
             .padding(.horizontal, 8)
+            .task {
+                Task {
+                    try await sourceControlManager.refreshRemotes()
+                }
+            }
             Divider()
             if selectedSection == 0 {
-                SourceControlNavigatorChangesView(
-                    sourceControlManager: sourceControlManager
-                )
+                SourceControlNavigatorChangesView()
             }
             if selectedSection == 1 {
-                SourceControlNavigatorRepositoriesView(
-                    sourceControlManager: sourceControlManager
-                )
+                SourceControlNavigatorRepositoriesView()
             }
         } else {
             CEContentUnavailableView(
