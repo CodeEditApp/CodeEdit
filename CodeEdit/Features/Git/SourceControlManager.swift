@@ -151,7 +151,7 @@ final class SourceControlManager: ObservableObject {
             }
         }
     }
-    
+
     /// Discard changes for repository
     func discardAllChanges() {
         Task {
