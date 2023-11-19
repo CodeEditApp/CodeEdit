@@ -30,14 +30,28 @@ extension GitClient {
         _ = try await run("reset \(files.map { $0.url.relativePath }.joined(separator: " "))")
     }
 
-    func numberOfUnsyncedCommits() async throws -> Int {
-        let output = try await run("log --oneline origin/$(git rev-parse --abbrev-ref HEAD)..HEAD | wc -l")
+    /// Returns tuple of unsynced commits both ahead and behind
+    func numberOfUnsyncedCommits() async throws -> (ahead: Int, behind: Int) {
+        let output = try await run("for-each-ref --format=\"%(push:track)\" refs/heads")
             .trimmingCharacters(in: .whitespacesAndNewlines)
 
-        if let number = Int(output) {
-            return number
-        }
-
-        return 0
+        return parseUnsyncedCommitsOutput(from: output)
     }
+}
+
+func parseUnsyncedCommitsOutput(from string: String) -> (ahead: Int, behind: Int) {
+    let pattern = "\\[ahead (\\d+)?, behind (\\d+)?\\]|\\[ahead (\\d+)?\\]|\\[behind (\\d+)?\\]"
+    let regex = try? NSRegularExpression(pattern: pattern, options: [])
+
+    if let match = regex?.firstMatch(in: string, options: [], range: NSRange(location: 0, length: string.utf16.count)) {
+        let aheadRange = Range(match.range(at: 1), in: string) ?? Range(match.range(at: 3), in: string)
+        let behindRange = Range(match.range(at: 2), in: string) ?? Range(match.range(at: 4), in: string)
+
+        let aheadNumber = aheadRange.flatMap { Int(String(string[$0])) } ?? 0
+        let behindNumber = behindRange.flatMap { Int(String(string[$0])) } ?? 0
+
+        return (ahead: aheadNumber, behind: behindNumber)
+    }
+
+    return (ahead: 0, behind: 0)
 }

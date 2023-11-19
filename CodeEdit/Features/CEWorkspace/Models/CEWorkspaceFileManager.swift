@@ -228,7 +228,7 @@ final class CEWorkspaceFileManager {
             let notGitChanges = events.filter({ !$0.path.contains(".git/") })
 
             // .git folder was changed
-            let gitFolderChange = events.first(where: { $0.path == "\(self.folderUrl.relativePath)/.git"})
+            let gitFolderChange = events.first(where: { $0.path == "\(self.folderUrl.relativePath)/.git" })
 
             // Change made to staged files by looking at .git/index
             let gitIndexChange = events.first(where: { $0.path == "\(self.folderUrl.relativePath)/.git/index" })
@@ -250,11 +250,9 @@ final class CEWorkspaceFileManager {
             }
 
             if gitFolderChange != nil {
-                if gitFolderChange?.eventType == .itemCreated {
-                    self.sourceControlManager?.isGitRepository = true
-                } else {
-                    self.sourceControlManager?.isGitRepository = false
-                }
+                self.sourceControlManager?.isGitRepository = self.fileManager.fileExists(
+                    atPath: "\(self.folderUrl.relativePath)/.git"
+                )
             }
         }
     }

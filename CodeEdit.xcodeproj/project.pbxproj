@@ -25,7 +25,7 @@
 		04BA7C1E2AE2D8A000584E1C /* GitClient+Clone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BA7C1D2AE2D8A000584E1C /* GitClient+Clone.swift */; };
 		04BA7C202AE2D92B00584E1C /* GitClient+Status.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BA7C1F2AE2D92B00584E1C /* GitClient+Status.swift */; };
 		04BA7C222AE2D95E00584E1C /* GitClient+CommitHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BA7C212AE2D95E00584E1C /* GitClient+CommitHistory.swift */; };
-		04BA7C242AE2E7CD00584E1C /* SourceControlNavigatorPushView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BA7C232AE2E7CD00584E1C /* SourceControlNavigatorPushView.swift */; };
+		04BA7C242AE2E7CD00584E1C /* SourceControlNavigatorSyncView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BA7C232AE2E7CD00584E1C /* SourceControlNavigatorSyncView.swift */; };
 		04BA7C272AE2E9F100584E1C /* GitClient+Push.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BA7C262AE2E9F100584E1C /* GitClient+Push.swift */; };
 		04BC1CDE2AD9B4B000A83EA5 /* EditorFileTabCloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BC1CDD2AD9B4B000A83EA5 /* EditorFileTabCloseButton.swift */; };
 		04C3255B2801F86400C8DA2D /* ProjectNavigatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285FEC6D27FE4B4A00E57D53 /* ProjectNavigatorViewController.swift */; };
@@ -394,6 +394,8 @@
 		B65B10F82B081A34002852CF /* SourceControlNavigatorNoRemotesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65B10F72B081A34002852CF /* SourceControlNavigatorNoRemotesView.swift */; };
 		B65B10FB2B08B054002852CF /* Divided.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65B10FA2B08B054002852CF /* Divided.swift */; };
 		B65B10FE2B08B07D002852CF /* SourceControlNavigatorChangesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65B10FD2B08B07D002852CF /* SourceControlNavigatorChangesList.swift */; };
+		B65B11012B09D5D4002852CF /* GitClient+Pull.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65B11002B09D5D4002852CF /* GitClient+Pull.swift */; };
+		B65B11042B09DB1C002852CF /* GitClient+Fetch.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65B11032B09DB1C002852CF /* GitClient+Fetch.swift */; };
 		B66A4E4529C8E86D004573B4 /* CommandsFixes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66A4E4429C8E86D004573B4 /* CommandsFixes.swift */; };
 		B66A4E4C29C9179B004573B4 /* CodeEditApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66A4E4B29C9179B004573B4 /* CodeEditApp.swift */; };
 		B66A4E4F29C917B8004573B4 /* WelcomeWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66A4E4E29C917B8004573B4 /* WelcomeWindow.swift */; };
@@ -532,7 +534,7 @@
 		04BA7C1D2AE2D8A000584E1C /* GitClient+Clone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GitClient+Clone.swift"; sourceTree = "<group>"; };
 		04BA7C1F2AE2D92B00584E1C /* GitClient+Status.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GitClient+Status.swift"; sourceTree = "<group>"; };
 		04BA7C212AE2D95E00584E1C /* GitClient+CommitHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GitClient+CommitHistory.swift"; sourceTree = "<group>"; };
-		04BA7C232AE2E7CD00584E1C /* SourceControlNavigatorPushView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlNavigatorPushView.swift; sourceTree = "<group>"; };
+		04BA7C232AE2E7CD00584E1C /* SourceControlNavigatorSyncView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlNavigatorSyncView.swift; sourceTree = "<group>"; };
 		04BA7C262AE2E9F100584E1C /* GitClient+Push.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GitClient+Push.swift"; sourceTree = "<group>"; };
 		04BC1CDD2AD9B4B000A83EA5 /* EditorFileTabCloseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorFileTabCloseButton.swift; sourceTree = "<group>"; };
 		200412EE280F3EAC00BCAF5C /* HistoryInspectorNoHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryInspectorNoHistoryView.swift; sourceTree = "<group>"; };
@@ -892,6 +894,8 @@
 		B65B10F72B081A34002852CF /* SourceControlNavigatorNoRemotesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlNavigatorNoRemotesView.swift; sourceTree = "<group>"; };
 		B65B10FA2B08B054002852CF /* Divided.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Divided.swift; sourceTree = "<group>"; };
 		B65B10FD2B08B07D002852CF /* SourceControlNavigatorChangesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlNavigatorChangesList.swift; sourceTree = "<group>"; };
+		B65B11002B09D5D4002852CF /* GitClient+Pull.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GitClient+Pull.swift"; sourceTree = "<group>"; };
+		B65B11032B09DB1C002852CF /* GitClient+Fetch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GitClient+Fetch.swift"; sourceTree = "<group>"; };
 		B66A4E4429C8E86D004573B4 /* CommandsFixes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandsFixes.swift; sourceTree = "<group>"; };
 		B66A4E4B29C9179B004573B4 /* CodeEditApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeEditApp.swift; sourceTree = "<group>"; };
 		B66A4E4E29C917B8004573B4 /* WelcomeWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeWindow.swift; sourceTree = "<group>"; };
@@ -1049,7 +1053,7 @@
 				201169E12837B3D800F92B46 /* SourceControlNavigatorChangesView.swift */,
 				201169DA2837B34000F92B46 /* SourceControlNavigatorChangedFileView.swift */,
 				04BA7C0D2AE2A76E00584E1C /* SourceControlNavigatorChangesCommitView.swift */,
-				04BA7C232AE2E7CD00584E1C /* SourceControlNavigatorPushView.swift */,
+				04BA7C232AE2E7CD00584E1C /* SourceControlNavigatorSyncView.swift */,
 				B65B10F42B081A0C002852CF /* SourceControlAddRemoteView.swift */,
 				B65B10F72B081A34002852CF /* SourceControlNavigatorNoRemotesView.swift */,
 				B65B10FD2B08B07D002852CF /* SourceControlNavigatorChangesList.swift */,
@@ -1889,8 +1893,10 @@
 				B69BFDC62B0686910050D9A6 /* GitClient+Initiate.swift */,
 				04BA7C1F2AE2D92B00584E1C /* GitClient+Status.swift */,
 				04BA7C212AE2D95E00584E1C /* GitClient+CommitHistory.swift */,
+				B65B11002B09D5D4002852CF /* GitClient+Pull.swift */,
 				04BA7C262AE2E9F100584E1C /* GitClient+Push.swift */,
 				B65B10EE2B07C454002852CF /* GitClient+Remote.swift */,
+				B65B11032B09DB1C002852CF /* GitClient+Fetch.swift */,
 			);
 			path = Client;
 			sourceTree = "<group>";
@@ -3025,6 +3031,7 @@
 				04BA7C1C2AE2D84100584E1C /* GitClient+Commit.swift in Sources */,
 				B65B10EC2B073913002852CF /* CEContentUnavailableView.swift in Sources */,
 				B65B10FB2B08B054002852CF /* Divided.swift in Sources */,
+				B65B11012B09D5D4002852CF /* GitClient+Pull.swift in Sources */,
 				2072FA13280D74ED00C7F8D4 /* HistoryInspectorModel.swift in Sources */,
 				852E62012A5C17E500447138 /* PageAndSettings.swift in Sources */,
 				587B9DA029300ABD00AC7927 /* PanelDivider.swift in Sources */,
@@ -3296,6 +3303,7 @@
 				58D01C98293167DC00C5B6B4 /* String+RemoveOccurrences.swift in Sources */,
 				5878DAA8291AE76700DD95A3 /* QuickOpenItem.swift in Sources */,
 				58FD7608291EA1CB0051D6E4 /* CommandPaletteViewModel.swift in Sources */,
+				B65B11042B09DB1C002852CF /* GitClient+Fetch.swift in Sources */,
 				5878DA872918642F00DD95A3 /* AcknowledgementsViewModel.swift in Sources */,
 				B6E41C7929DE02800088F9F4 /* AccountSelectionView.swift in Sources */,
 				B6EA1FFB29DB78F6001BF195 /* ThemeSettingsThemeDetails.swift in Sources */,
@@ -3377,7 +3385,7 @@
 				6CFF967C29BEBD5200182D6F /* WindowCommands.swift in Sources */,
 				587B9E7229301D8F00AC7927 /* GitJSONPostRouter.swift in Sources */,
 				5878DAB0291D627C00DD95A3 /* EditorPathBarMenu.swift in Sources */,
-				04BA7C242AE2E7CD00584E1C /* SourceControlNavigatorPushView.swift in Sources */,
+				04BA7C242AE2E7CD00584E1C /* SourceControlNavigatorSyncView.swift in Sources */,
 				587B9DA529300ABD00AC7927 /* PressActionsModifier.swift in Sources */,
 				6C147C4029A328BC0089B630 /* SplitViewData.swift in Sources */,
 				587B9E9029301D8F00AC7927 /* BitBucketTokenRouter.swift in Sources */,

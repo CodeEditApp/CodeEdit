@@ -41,9 +41,6 @@ struct FindNavigatorView: View {
         .safeAreaInset(edge: .bottom, spacing: 0) {
             FindNavigatorToolbarBottom()
         }
-        .safeAreaInset(edge: .bottom, spacing: 0) {
-            FindNavigatorToolbarBottom()
-        }
         .onReceive(state.objectWillChange) { _ in
             self.searchResultCount = state.searchResultsCount
             self.foundFilesCount = state.searchResult.count

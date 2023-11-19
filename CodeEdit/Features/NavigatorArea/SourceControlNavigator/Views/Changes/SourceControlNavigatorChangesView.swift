@@ -14,8 +14,9 @@ struct SourceControlNavigatorChangesView: View {
         !sourceControlManager.remotes.isEmpty
     }
 
-    var hasUnpushedCommits: Bool {
-        sourceControlManager.numberOfUnpushedCommits > 0
+    var hasUnsyncedCommits: Bool {
+        sourceControlManager.numberOfUnsyncedCommits.ahead > 0
+        || sourceControlManager.numberOfUnsyncedCommits.behind > 0
     }
 
     var hasCurrentBranch: Bool {
@@ -28,7 +29,7 @@ struct SourceControlNavigatorChangesView: View {
 
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
-            if hasChanges || !hasRemotes || (!hasChanges && (hasUnpushedCommits || hasCurrentBranch)) {
+            if hasChanges || !hasRemotes || (!hasChanges && (hasUnsyncedCommits || hasCurrentBranch)) {
                 VStack(spacing: 8) {
                     Divided {
                         if hasChanges {
@@ -37,8 +38,8 @@ struct SourceControlNavigatorChangesView: View {
                         if !hasRemotes {
                             SourceControlNavigatorNoRemotesView()
                         }
-                        if !hasChanges && (hasUnpushedCommits || hasCurrentBranch) {
-                            SourceControlNavigatorPushView(sourceControlManager: sourceControlManager)
+                        if !hasChanges && (hasUnsyncedCommits || hasCurrentBranch) {
+                            SourceControlNavigatorSyncView(sourceControlManager: sourceControlManager)
                         }
                     }
                 }

@@ -15,6 +15,12 @@ struct SourceControlNavigatorView: View {
             if let sourceControlManager = workspace.workspaceFileManager?.sourceControlManager {
                 SourcControlNavigatorTabs()
                     .environmentObject(sourceControlManager)
+                    .onAppear {
+                        sourceControlManager.startPeriodicFetch(interval: 10)
+                    }
+                    .onDisappear {
+                        sourceControlManager.stopPeriodicFetch()
+                    }
             }
         }
         .safeAreaInset(edge: .bottom, spacing: 0) {

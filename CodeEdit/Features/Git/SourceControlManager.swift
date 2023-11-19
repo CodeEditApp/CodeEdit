@@ -18,6 +18,9 @@ final class SourceControlManager: ObservableObject {
     let editorManager: EditorManager
     weak var fileManager: CEWorkspaceFileManager?
 
+    // Timer for periodic fetch
+    private var fetchTimer: Timer?
+
     /// A list of changed files
     @Published var changedFiles: [CEWorkspaceFile] = []
 
@@ -31,9 +34,10 @@ final class SourceControlManager: ObservableObject {
     @Published var remotes: [GitRemote] = []
 
     /// Number of unsynced commits with remote in current branch
-    @Published var numberOfUnpushedCommits: Int = 0
+    @Published var numberOfUnsyncedCommits: (ahead: Int, behind: Int) = (ahead: 0, behind: 0)
 
     @Published var isGitRepository: Bool = false
+    
 
     init(
         workspaceURL: URL,
@@ -107,6 +111,29 @@ final class SourceControlManager: ObservableObject {
         }
 
         fileManager.notifyObservers(updatedItems: updatedStatusFor)
+    }
+
+    /// Start periodic fetch with a specified interval
+    func startPeriodicFetch(interval: TimeInterval) {
+        fetchTimer?.invalidate() // Invalidate any existing timer
+        fetch()
+        fetchTimer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { [weak self] _ in
+            self?.fetch()
+        }
+    }
+
+    /// Fetch from remote
+    func fetch() {
+        Task {
+            try await gitClient.fetchFromRemote()
+            await self.refreshNumberOfUnsyncedCommits()
+        }
+    }
+
+    /// Stops the periodic fetch
+    func stopPeriodicFetch() {
+        fetchTimer?.invalidate()
+        fetchTimer = nil
     }
 
     /// Refresh current branch
@@ -197,10 +224,10 @@ final class SourceControlManager: ObservableObject {
 
     /// Refresh number of unsynced commits
     func refreshNumberOfUnsyncedCommits() async {
-        let numberOfUnsyncedCommits = (try? await gitClient.numberOfUnsyncedCommits()) ?? 0
+        let numberOfUnpushedCommits = (try? await gitClient.numberOfUnsyncedCommits()) ?? (ahead: 0, behind: 0)
 
         await MainActor.run {
-            self.numberOfUnpushedCommits = numberOfUnsyncedCommits
+            self.numberOfUnsyncedCommits = numberOfUnpushedCommits
         }
     }
 
@@ -215,6 +242,13 @@ final class SourceControlManager: ObservableObject {
         await MainActor.run {
             self.remotes = remotes
         }
+    }
+
+    /// Pull changes from remote
+    func pull() async throws {
+        try await gitClient.pullFromRemote()
+
+        await self.refreshNumberOfUnsyncedCommits()
     }
 
     /// Push changes to remote
