@@ -90,7 +90,10 @@ struct SourceControlNavigatorChangesCommitView: View {
                                     try await sourceControlManager.commit(message: message)
                                     self.message = ""
                                 } catch {
-                                    await sourceControlManager.showAlertForError(title: "Failed to commit", error: error)
+                                    await sourceControlManager.showAlertForError(
+                                        title: "Failed to commit",
+                                        error: error
+                                    )
                                 }
                                 do {
                                     try await sourceControlManager.push()
