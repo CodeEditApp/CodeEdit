@@ -128,6 +128,7 @@ struct FindNavigatorForm: View {
             PaneTextField(
                 state.selectedMode[1].title,
                 text: $searchText,
+                axis: .vertical,
                 leadingAccessories: {
                     Image(systemName: "magnifyingglass")
                         .padding(.leading, 8)
@@ -156,6 +157,7 @@ struct FindNavigatorForm: View {
                 PaneTextField(
                     "With",
                     text: $replaceText,
+                    axis: .vertical,
                     leadingAccessories: {
                         Image(systemName: "arrow.2.squarepath")
                             .padding(.leading, 8)
@@ -184,6 +186,7 @@ struct FindNavigatorForm: View {
                 PaneTextField(
                     "Only in folders",
                     text: $includesText,
+                    axis: .vertical,
                     leadingAccessories: {
                         Image(systemName: "plus")
                             .padding(.leading, 8)
@@ -209,6 +212,7 @@ struct FindNavigatorForm: View {
                 PaneTextField(
                     "Excluding folders",
                     text: $excludesText,
+                    axis: .vertical,
                     leadingAccessories: {
                         Image(systemName: "minus")
                             .padding(.leading, 8)
@@ -243,6 +247,7 @@ struct FindNavigatorForm: View {
         }
         .padding(.horizontal, 10)
         .padding(.vertical, 5)
+        .lineLimit(1...5)
     }
 }
 

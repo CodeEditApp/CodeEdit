@@ -22,6 +22,8 @@ struct PaneTextField<LeadingAccessories: View, TrailingAccessories: View>: View 
 
     @Binding private var text: String
 
+    let axis: Axis
+
     let leadingAccessories: LeadingAccessories?
 
     let trailingAccessories: TrailingAccessories?
@@ -35,6 +37,7 @@ struct PaneTextField<LeadingAccessories: View, TrailingAccessories: View>: View 
     init(
         _ label: String,
         text: Binding<String>,
+        axis: Axis? = .horizontal,
         @ViewBuilder leadingAccessories: () -> LeadingAccessories? = { EmptyView() },
         @ViewBuilder trailingAccessories: () -> TrailingAccessories? = { EmptyView() },
         clearable: Bool? = false,
@@ -43,6 +46,7 @@ struct PaneTextField<LeadingAccessories: View, TrailingAccessories: View>: View 
     ) {
         self.label = label
         _text = text
+        self.axis = axis ?? .horizontal
         self.leadingAccessories = leadingAccessories()
         self.trailingAccessories = trailingAccessories()
         self.clearable = clearable ?? false
@@ -79,7 +83,7 @@ struct PaneTextField<LeadingAccessories: View, TrailingAccessories: View>: View 
                 leading
             }
             VStack {
-                TextField(label, text: $text, axis: .vertical)
+                TextField(label, text: $text, axis: axis)
                     .textFieldStyle(.plain)
                     .focused($isFocused)
                     .controlSize(.small)

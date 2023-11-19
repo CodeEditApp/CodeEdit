@@ -28,8 +28,10 @@ struct SourceControlNavigatorChangesCommitView: View {
             VStack(spacing: 0) {
                 PaneTextField(
                     "Commit message (required)",
-                    text: $message
+                    text: $message,
+                    axis: .vertical
                 )
+                .lineLimit(1...3)
                 .safeAreaInset(edge: .bottom, spacing: 0) {
                     if showDetails {
                         VStack {
@@ -82,7 +84,21 @@ struct SourceControlNavigatorChangesCommitView: View {
                     }
                     Menu(isCommiting ? "Committing..." : "Commit") {
                         Button("Commit and Push...") {
-                            print("Commit and Push...")
+                            Task {
+                                self.isCommiting = true
+                                do {
+                                    try await sourceControlManager.commit(message: message)
+                                    self.message = ""
+                                } catch {
+                                    await sourceControlManager.showAlertForError(title: "Failed to commit", error: error)
+                                }
+                                do {
+                                    try await sourceControlManager.push()
+                                } catch {
+                                    await sourceControlManager.showAlertForError(title: "Failed to push", error: error)
+                                }
+                                self.isCommiting = false
+                            }
                         }
                     } primaryAction: {
                         Task {
