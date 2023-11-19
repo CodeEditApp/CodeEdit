@@ -37,7 +37,6 @@ final class SourceControlManager: ObservableObject {
     @Published var numberOfUnsyncedCommits: (ahead: Int, behind: Int) = (ahead: 0, behind: 0)
 
     @Published var isGitRepository: Bool = false
-    
 
     init(
         workspaceURL: URL,
