@@ -90,7 +90,8 @@ struct FindNavigatorView: View {
         }
         .onSubmit {
 //            state.search(searchText)
-            state.searchIndex(searchText)
+//            state.searchIndex(searchText)
+            state.searchIndexAsync(searchText)
         }
         .onReceive(state.objectWillChange) { _ in
             self.searchResultCount = state.searchResultCount

@@ -70,16 +70,75 @@ extension WorkspaceDocument {
             var newSearchResults = [SearchResultModel]()
             let results = indexer.search(query, limit: 20)
             for result in results {
-                let newResult = SearchResultModel(file: CEWorkspaceFile(url: result.url))
-
+                var newResult = SearchResultModel(file: CEWorkspaceFile(url: result.url))
+//                evaluateResults(query: query, searchResults: &newResult)
                 newSearchResults.append(newResult)
             }
+
+
 
             evaluateResults(query: query, searchResults: &newSearchResults)
 
             searchResult = newSearchResults
-//            fatalError("\(Date().timeIntervalSince(startTime))")
+            fatalError("\(Date().timeIntervalSince(startTime))")
         }
+
+        func searchIndexAsync(_ query: String) {
+            let startTime = Date()
+            guard let indexer = indexer else {
+                return
+            }
+
+            let group = DispatchGroup()
+
+            var tempSearchResults = [SearchResultModel]()
+            let results = indexer.search(query)
+            for result in results {
+                DispatchQueue.main.async(group: group) {
+                    group.enter()
+                    var newResult = SearchResultModel(file: CEWorkspaceFile(url: result.url))
+                    self.evaluateResult(query: query, searchResult: &newResult)
+                    tempSearchResults.append(newResult)
+                    group.leave()
+                }
+            }
+
+            group.notify(queue: .main) {
+                self.searchResult = tempSearchResults
+                fatalError("\(Date().timeIntervalSince(startTime))")
+            }
+        }
+
+        private func evaluateResult(query: String, searchResult: inout SearchResultModel) {
+            var newMatches = [SearchResultMatchModel]()
+            guard let data = try? Data(contentsOf: searchResult.file.url), let string = String(data: data, encoding: .utf8) else {
+                return
+            }
+
+            for (lineNumber, line) in string.split(separator: "\n").lazy.enumerated() {
+                let rawNoSapceLine = line.trimmingCharacters(in: .whitespacesAndNewlines)
+                let noSpaceLine = rawNoSapceLine.lowercased()
+
+                if lineContainsSearchTerm2(line: noSpaceLine, query: query) {
+                    let matches = noSpaceLine.ranges(of: query).map { range in
+                        return [lineNumber, noSpaceLine, range]
+                    }
+
+                    for match in matches {
+                        if let lineNumber = match[0] as? Int,
+                           let lineContent = match[1] as? String,
+                           let keywordRange = match[2] as? Range<String.Index> {
+                            let matchModel = SearchResultMatchModel(lineNumber: lineNumber, file: searchResult.file, lineContent: lineContent, keywordRange: keywordRange)
+                            newMatches.append(matchModel)
+                        } else {
+                            fatalError("Failed to parse match model")
+                        }
+                    }
+                }
+            }
+            searchResult.lineMatches = newMatches
+        }
+
 
         /// Addes line matchings to a `SearchResultsViewModel` array.
         /// That means if a search result is a file, and the search term appears in the file,
