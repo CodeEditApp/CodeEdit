@@ -19,10 +19,158 @@ extension WorkspaceDocument {
         @Published var searchResultCount: Int = 0
 
         var ignoreCase: Bool = true
+        var indexer: SearchIndexer?
 
         init(_ workspace: WorkspaceDocument) {
             self.workspace = workspace
+            self.indexer = SearchIndexer.Memory.create()
+            addProjectToIndex()
         }
+
+        func addProjectToIndex() {
+            guard let indexer = indexer else {
+                return
+            }
+
+            guard let url = self.workspace.fileURL else { return }
+            let enumerator = FileManager.default.enumerator(
+                at: url,
+                includingPropertiesForKeys: [
+                    .isRegularFileKey
+                ],
+                options: [
+                    .skipsHiddenFiles,
+                    .skipsPackageDescendants
+                ]
+            )
+            guard let filePaths = enumerator?.allObjects as? [URL] else { return }
+
+            let asyncController = SearchIndexer.AsyncManager(index: indexer)
+
+            Task {
+                var textFiles = [SearchIndexer.AsyncManager.TextFile]()
+
+                for file in filePaths {
+                    if let content = try? String(contentsOf: file) {
+                        textFiles.append(
+                            SearchIndexer.AsyncManager.TextFile(url: file.standardizedFileURL, text: content)
+                        )
+                    }
+                }
+
+                _ = await asyncController.addText(files: textFiles, flushWhenComplete: true)
+            }
+        }
+
+        func searchIndex(_ query: String) {
+            let startTime = Date()
+            guard let indexer = indexer else {
+                return
+            }
+            var newSearchResults = [SearchResultModel]()
+            let results = indexer.search(query, limit: 20)
+            for result in results {
+                let newResult = SearchResultModel(file: CEWorkspaceFile(url: result.url))
+
+                newSearchResults.append(newResult)
+            }
+
+            evaluateResults(query: query, searchResults: &newSearchResults)
+
+            searchResult = newSearchResults
+//            fatalError("\(Date().timeIntervalSince(startTime))")
+        }
+
+        /// Addes line matchings to a `SearchResultsViewModel` array.
+        /// That means if a search result is a file, and the search term appears in the file,
+        /// the function will add the line number, line content, and keyword range to the `SearchResultsViewModel`.
+        ///
+        /// - Parameters:
+        ///   - query: The search query string.
+        ///   - searchResults: An inout parameter containing the array of `SearchResultsViewModel` to be evaluated. 
+        ///   It will be modified to include line matches.
+        private func evaluateResults(query: String, searchResults: inout [SearchResultModel]) {
+            searchResults = searchResults.map { result in
+                var newResult = result
+                var newMatches = [SearchResultMatchModel]()
+                guard let data = try? Data(contentsOf: result.file.url), 
+                        let string = String(data: data, encoding: .utf8) else {
+                    fatalError("Failed to read file: \(result.file.url.absoluteString)")
+                    return newResult
+                }
+
+                for (lineNumber, line) in string.split(separator: "\n").lazy.enumerated() {
+                    let rawNoSapceLine = line.trimmingCharacters(in: .whitespacesAndNewlines)
+                    let noSpaceLine = rawNoSapceLine.lowercased()
+
+                    if lineContainsSearchTerm2(line: noSpaceLine, query: query) {
+                        let matches = noSpaceLine.ranges(of: query).map { range in
+                            return [lineNumber, noSpaceLine, range]
+                        }
+                        for match in matches {
+                            if let lineNumber = match[0] as? Int,
+                               let lineContent = match[1] as? String,
+                               let keywordRange = match[2] as? Range<String.Index> {
+                                let matchModel = SearchResultMatchModel(lineNumber: lineNumber, file: result.file, lineContent: lineContent, keywordRange: keywordRange)
+                                newMatches.append(matchModel)
+                            } else {
+                                fatalError("Failed to parse match model")
+                            }
+                        }
+                    }
+                }
+                newMatches.forEach { match in
+                    newResult.lineMatches.append(match)
+                }
+                return newResult
+            }
+        }
+
+        func lineContainsSearchTerm2(line: String, query: String) -> Bool {
+            var line = line
+            if line.hasPrefix(" ") { line.removeFirst() }
+            if line.hasSuffix(" ") { line.removeLast() }
+
+            let textContainsSearchTerm = line.contains(query)
+            guard textContainsSearchTerm else { return false }
+
+            let appearances = line.appearancesOfSubstring(substring: query, toLeft: 1, toRight: 1)
+            var foundMatch = false
+            for appearance in appearances {
+                let appearanceString = String(line[appearance])
+                guard appearanceString.count >= 2 else { continue }
+
+                var startsWith = false
+                var endsWith = false
+                if appearanceString.hasPrefix(query) ||
+                    !appearanceString.first!.isLetter ||
+                    !appearanceString.character(at: 2).isLetter {
+                    startsWith = true
+                }
+                if appearanceString.hasSuffix(query) ||
+                    !appearanceString.last!.isLetter ||
+                    !appearanceString.character(at: appearanceString.count-2).isLetter {
+                    endsWith = true
+                }
+
+                // only matching for now
+                return startsWith && endsWith ? true : false
+
+                //            switch textMatching {
+                //            case .MatchingWord:
+                //                foundMatch = startsWith && endsWith ? true : foundMatch
+                //            case .StartingWith:
+                //                foundMatch = startsWith ? true : foundMatch
+                //            case .EndingWith:
+                //                foundMatch = endsWith ? true : foundMatch
+                //            default: continue
+                //            }
+            }
+
+            return false
+        }
+
+
 
         /// Searches the entire workspace for the given string, using the ``selectedMode`` modifiers
         /// to modify the search if needed.
@@ -148,13 +296,13 @@ extension WorkspaceDocument {
                     }
 
                     switch textMatching {
-                    case .MatchingWord:
-                        foundMatch = startsWith && endsWith ? true : foundMatch
-                    case .StartingWith:
-                        foundMatch = startsWith ? true : foundMatch
-                    case .EndingWith:
-                        foundMatch = endsWith ? true : foundMatch
-                    default: continue
+                        case .MatchingWord:
+                            foundMatch = startsWith && endsWith ? true : foundMatch
+                        case .StartingWith:
+                            foundMatch = startsWith ? true : foundMatch
+                        case .EndingWith:
+                            foundMatch = endsWith ? true : foundMatch
+                        default: continue
                     }
                 }
                 return foundMatch
