@@ -29,7 +29,7 @@ struct SourceControlNavigatorChangedFileView: View {
         let relativePath = filePath
             .dropFirst(rootPath.count + 1) // Drop root folder
             .dropLast(changedFile.name.count + 1) // Drop file name
-        return relativePath.isEmpty ? nil : String(relativePath)
+        return relativePath.isEmpty ? nil : "\(relativePath)/"
     }
 
     var body: some View {
