@@ -61,7 +61,7 @@ struct SourcControlNavigatorTabs: View {
                  description: "This project is not a git repository.",
                  systemImage: "externaldrive.fill",
                  actions: {
-                    Button("Initiate Repository") {
+                    Button("Initialize") {
                         Task {
                             try await sourceControlManager.initiate()
                         }
