@@ -44,7 +44,7 @@ struct SourceControlToolbarBottom: View {
         .frame(maxWidth: 30)
     }
 
-    /// Renders a Discarh Changes Dialog
+    /// Renders a Discard Changes Dialog
     func discardChangesDialog() -> Bool {
         let alert = NSAlert()
 
