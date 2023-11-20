@@ -25,7 +25,7 @@ struct SourceControlToolbarBottom: View {
 
     private var sourceControlMenu: some View {
         Menu {
-            Button("Discard Changes...") {
+            Button("Discard All Changes...") {
                 if discardChangesDialog() {
                     workspace.sourceControlManager?.discardAllChanges()
                 }
