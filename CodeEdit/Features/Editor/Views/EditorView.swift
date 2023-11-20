@@ -21,11 +21,9 @@ struct EditorView: View {
     @EnvironmentObject private var editorManager: EditorManager
 
     var editorInsetAmount: Double {
-        (EditorTabBarView.height + 1)
-        + (showEditorPathBar
-           ? (EditorPathBarView.height + 1)
-           : 0
-        )
+        let tabBarHeight = EditorTabBarView.height + 1
+        let pathBarHeight = showEditorPathBar ? (EditorPathBarView.height + 1) : 0
+        return tabBarHeight + pathBarHeight
     }
 
     var body: some View {

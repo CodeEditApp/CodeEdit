@@ -10,8 +10,8 @@ import Foundation
 extension GitClient {
     /// Push changes to remote
     func fetchFromRemote() async throws {
-        var command = "fetch"
+        let command = "fetch"
 
-        let output = try await self.run(command)
+        _ = try await self.run(command)
     }
 }
