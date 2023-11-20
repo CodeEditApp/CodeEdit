@@ -8,7 +8,7 @@
 import Foundation
 
 extension GitClient {
-    /// Push changes to remote
+    /// Fetch changes to remote
     func fetchFromRemote() async throws {
         let command = "fetch"
 
