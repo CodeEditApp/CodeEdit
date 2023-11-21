@@ -13,42 +13,43 @@ struct SourceControlNavigatorNewBranchView: View {
 
     @State var name: String = ""
     let sourceControlManager: SourceControlManager
-    let fromBranch: GitBranch
+    let fromBranch: GitBranch?
 
     var body: some View {
-        NavigationStack {
-            TextField("New Branch Name", text: $name)
-                .textFieldStyle(.roundedBorder)
-                .padding()
-        }
-        .navigationTitle("Create Branch from \(fromBranch.name)")
-        .toolbar {
-            ToolbarItem(placement: .cancellationAction) {
-                Button("Cancel") {
-                    dismiss()
+        if let branch = fromBranch ?? sourceControlManager.currentBranch {
+            NavigationStack {
+                TextField("New Branch Name", text: $name)
+                    .textFieldStyle(.roundedBorder)
+                    .padding()
+            }
+            .navigationTitle("Create Branch from \(branch.name)")
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") {
+                        dismiss()
+                    }
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Create") {
+                        Task {
+                            do {
+                                try await sourceControlManager.newBranch(name: name, from: branch)
+                                await MainActor.run {
+                                    dismiss()
+                                }
+                            } catch {
+                                await sourceControlManager.showAlertForError(
+                                    title: "Failed to create branch",
+                                    error: error
+                                )
+                            }
+                        }
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .disabled(name.isEmpty)
                 }
             }
-            ToolbarItem(placement: .confirmationAction) {
-                Button("Create") {
-                    createBranch()
-                }
-                .buttonStyle(.borderedProminent)
-                .disabled(name.isEmpty)
-            }
-        }
-        .frame(width: 300)
-    }
-
-    func createBranch() {
-        Task {
-            do {
-                try await sourceControlManager.newBranch(name: name, from: fromBranch)
-                await MainActor.run {
-                    dismiss()
-                }
-            } catch {
-                await sourceControlManager.showAlertForError(title: "Failed to create branch", error: error)
-            }
+            .frame(width: 300)
         }
     }
 }

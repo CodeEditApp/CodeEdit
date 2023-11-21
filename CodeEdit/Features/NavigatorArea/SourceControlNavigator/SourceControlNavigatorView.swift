@@ -46,6 +46,7 @@ struct SourcControlNavigatorTabs: View {
             .task {
                 Task {
                     try await sourceControlManager.refreshRemotes()
+                    try await sourceControlManager.refreshStashEntries()
                 }
             }
             Divider()

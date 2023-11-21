@@ -33,6 +33,9 @@ final class SourceControlManager: ObservableObject {
     /// All remotes
     @Published var remotes: [GitRemote] = []
 
+    /// All stash ebtrues
+    @Published var stashEntries: [GitStashEntry] = []
+
     /// Number of unsynced commits with remote in current branch
     @Published var numberOfUnsyncedCommits: (ahead: Int, behind: Int) = (ahead: 0, behind: 0)
 
@@ -240,6 +243,13 @@ final class SourceControlManager: ObservableObject {
         let remotes = (try? await gitClient.getRemotes()) ?? []
         await MainActor.run {
             self.remotes = remotes
+        }
+    }
+
+    func refreshStashEntries() async throws {
+        let stashEntries = (try? await gitClient.stashList()) ?? []
+        await MainActor.run {
+            self.stashEntries = stashEntries
         }
     }
 

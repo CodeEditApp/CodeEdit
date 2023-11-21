@@ -197,6 +197,7 @@ struct UtilityAreaTerminalView: View {
                         selectedIDs: model.selectedTerminals
                     )
                     .tag(terminal.id)
+                    .listRowSeparator(.hidden)
                 }
                 .onMove(perform: moveItems)
             }
