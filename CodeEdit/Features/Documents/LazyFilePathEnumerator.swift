@@ -34,7 +34,7 @@ class LazyFilePathEnumerator {
     func getNextFilePath() -> URL? {
         if enumerator == nil {
             enumerator = FileManager.default.enumerator(
-                at: directoryURL, 
+                at: directoryURL,
                 includingPropertiesForKeys: nil,
                 options: .skipsHiddenFiles
             )
