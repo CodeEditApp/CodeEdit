@@ -69,6 +69,7 @@ final class SourceControlManager: ObservableObject {
                 fileDictionary[item.fileLink]?.staged = true
             }
 
+            // TODO:  Profile
             let changedFiles = Array(fileDictionary.values.sorted())
 
             await setChangedFiles(changedFiles)
