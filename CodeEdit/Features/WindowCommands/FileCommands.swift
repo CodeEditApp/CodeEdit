@@ -16,7 +16,6 @@ struct FileCommands: Commands {
             Group {
                 Button("New") {
                     createNewFile()
-//                    NSDocumentController.shared.newDocument(nil)
                 }
                 .keyboardShortcut("n")
 

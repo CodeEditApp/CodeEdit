@@ -9,6 +9,7 @@ import Cocoa
 import SwiftUI
 import Combine
 
+// swiftlint:disable type_body_length
 final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, ObservableObject {
     static let minSidebarWidth: CGFloat = 242
 
@@ -222,25 +223,26 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         workspace?.editorManager.activeEditor.selectedTab?.file.fileDocument
     }
 
-    private func saveDocumentAs(_ file: CEWorkspaceFile) {
+    private func saveDocumentAs(_ file: CEWorkspaceFile, _ sender: Any) {
+        file.fileDocument?.save(sender)
         let dialog = NSSavePanel()
 
         if dialog.runModal() == .OK {
             if let url = dialog.url {
                 print(url.path)
-                workspace?.workspaceFileManager?.move(file: file, to: url)
                 workspace?.editorManager.activeEditor.closeSelectedTab()
-                workspace?.editorManager.activeEditor.openTab(item: CEWorkspaceFile(url: url), asTemporary: false)
+                workspace?.workspaceFileManager?.move(file: file, to: url)
+                workspace?.editorManager.openTab(item: CEWorkspaceFile(url: url))
             }
         }
     }
 
     @IBAction func saveDocument(_ sender: Any) {
         guard let codeFile = getCurrentWorkspaceFile() else { return }
-        codeFile.fileDocument?.save(sender)
         if codeFile.isDraft {
-            saveDocumentAs(codeFile)
-            return
+            saveDocumentAs(codeFile, sender)
+        } else {
+            codeFile.fileDocument?.save(sender)
         }
         workspace?.editorManager.activeEditor.temporaryTab = nil
     }
@@ -311,3 +313,5 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         }
     }
 }
+
+// swiftlint:enable type_body_length
