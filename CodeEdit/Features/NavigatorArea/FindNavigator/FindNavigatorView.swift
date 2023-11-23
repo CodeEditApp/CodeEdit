@@ -43,19 +43,14 @@ struct FindNavigatorView: View {
                         Button {
                             currentFilter = Filters.ignoring.rawValue
                             state.ignoreCase = true
-                            state.search(searchText)
+//                            state.search(searchText)
                         } label: {
                             Text(Filters.ignoring.rawValue)
                         }
                         Button {
-                            state.addProjectToIndex()
-                        } label: {
-                            Text("index")
-                        }
-                        Button {
                             currentFilter = Filters.matching.rawValue
                             state.ignoreCase = false
-                            state.search(searchText)
+//                            state.search(searchText)
                         } label: {
                             Text(Filters.matching.rawValue)
                         }
@@ -89,8 +84,6 @@ struct FindNavigatorView: View {
             FindNavigatorResultList() // TODO: Replace with SwiftUI implementation
         }
         .onSubmit {
-//            state.search(searchText)
-//            state.searchIndex(searchText)
             state.searchIndexAsync(searchText)
         }
         .onReceive(state.objectWillChange) { _ in

@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 /// A class for lazily enumerating file paths in a directory.
 
 /// - Parameters:
@@ -34,7 +33,11 @@ class LazyFilePathEnumerator {
 
     func getNextFilePath() -> URL? {
         if enumerator == nil {
-            enumerator = FileManager.default.enumerator(at: directoryURL, includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
+            enumerator = FileManager.default.enumerator(
+                at: directoryURL, 
+                includingPropertiesForKeys: nil,
+                options: .skipsHiddenFiles
+            )
         }
 
         return enumerator?.nextObject() as? URL
