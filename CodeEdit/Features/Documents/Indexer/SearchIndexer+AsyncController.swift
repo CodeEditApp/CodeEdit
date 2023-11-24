@@ -12,8 +12,8 @@ extension SearchIndexer {
     class AsyncManager {
         /// An instance of the SearchIndexer
         let index: SearchIndexer
-        private let addQueue = DispatchQueue(label: "com.SearchkitDemo.addQueue", attributes: .concurrent)
-        private let searchQueue = DispatchQueue(label: "com.SearchkitDemo.searchQueue", attributes: .concurrent)
+        private let addQueue = DispatchQueue(label: "app.codeedit.CodeEdit.AddFilesToIndex", attributes: .concurrent)
+        private let searchQueue = DispatchQueue(label: "app.codeedit.CodeEdit.SearchIndex", attributes: .concurrent)
 
         init(index: SearchIndexer) {
             self.index = index
@@ -35,8 +35,6 @@ extension SearchIndexer {
         }
 
         // MARK: - Search
-
-        // TODO: utilise concurrency instead of completion handler
         func search(
             query: String,
             _ maxResults: Int,
@@ -60,7 +58,6 @@ extension SearchIndexer {
         func addText(
             files: [TextFile],
             flushWhenComplete: Bool = false
-            //            complete: @escaping ([Bool]) -> Void
         ) async -> [Bool] {
 
             var addedFiles = [Bool]()

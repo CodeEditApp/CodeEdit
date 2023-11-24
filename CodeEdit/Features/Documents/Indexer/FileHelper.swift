@@ -7,7 +7,7 @@
 
 import Foundation
 
-class FileHelper {
+enum FileHelper {
     static func urlIsFolder(_ url: URL) -> Bool {
         var isDirectory: ObjCBool = false
         let exists = FileManager.default.fileExists(atPath: url.path, isDirectory: &isDirectory)

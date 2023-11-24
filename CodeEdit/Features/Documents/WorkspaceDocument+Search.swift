@@ -33,12 +33,10 @@ extension WorkspaceDocument {
         /// That means that the contents of the workspace will be indexed and searchable.
         func addProjectToIndex() {
             guard let indexer = indexer else {
-                // Handle error
                 return
             }
 
             guard let url = workspace.fileURL else {
-                // Handle error
                 return
             }
 
@@ -117,7 +115,6 @@ extension WorkspaceDocument {
         ///
         /// - Parameter query: The search query to search for.
         func search(_ query: String) async {
-            let startTime = Date()
             let searchQuery = getSearchTerm(query)
             guard let indexer = indexer else {
                 return
@@ -126,7 +123,7 @@ extension WorkspaceDocument {
             let asyncController = SearchIndexer.AsyncManager(index: indexer)
 
             let evaluateResultGroup = DispatchGroup()
-            let evaluateSearchQueue = DispatchQueue(label: "search")
+            let evaluateSearchQueue = DispatchQueue(label: "app.codeedit.CodeEdit.EvaluateSearch")
 
             let searchStream = await asyncController.search(query: searchQuery, 20)
             for try await result in searchStream {
@@ -152,7 +149,6 @@ extension WorkspaceDocument {
 
             evaluateResultGroup.notify(queue: evaluateSearchQueue) {
                     self.setSearchResults()
-//                    fatalError("\(Date().timeIntervalSince(startTime))")
             }
         }
 
@@ -219,8 +215,6 @@ extension WorkspaceDocument {
                                     )
 
                                     return matchModel
-                                } else {
-                                    fatalError("Failed to parse match model")
                                 }
                             }
                         }
@@ -292,43 +286,5 @@ extension WorkspaceDocument {
             return false
             // TODO: references and definitions
         }
-    }
-}
-
-extension String {
-    /// Retrieves the character at the specified index within the string.
-    /// - Parameter index: The index of the character to retrieve.
-    /// - Returns: The character at the specified index.
-    func character(at index: Int) -> Character {
-        return self[self.index(self.startIndex, offsetBy: index)]
-    }
-
-    /// Finds the appearances of a substring within the string.
-    /// - Parameters:
-    ///   - substring: The substring to search for within the string.
-    ///   - toLeft: The optional number of characters to include to the left of each found substring appearance.
-    ///   - toRight: The optional number of characters to include to the right of each found substring appearance.
-    ///
-    ///   - Returns: An array of ranges representing the appearances of the substring within the string.
-    func appearancesOfSubstring(substring: String, toLeft: Int=0, toRight: Int=0) -> [Range<String.Index>] {
-        guard !substring.isEmpty && self.contains(substring) else { return [] }
-        var appearances: [Range<String.Index>] = []
-        for (index, character) in self.enumerated() where character == substring.first {
-            let startOfFoundCharacter = self.index(self.startIndex, offsetBy: index)
-            guard index + substring.count < self.count else { continue }
-            let lengthOfFoundCharacter = self.index(self.startIndex, offsetBy: (substring.count + index))
-            if self[startOfFoundCharacter..<lengthOfFoundCharacter] == substring {
-                let startIndex = self.index(
-                    self.startIndex,
-                    offsetBy: index - (toLeft <= index ? toLeft : 0)
-                )
-                let endIndex = self.index(
-                    self.startIndex,
-                    offsetBy: substring.count + index + (substring.count+index+toRight <= self.count ? toRight : 0)
-                )
-                appearances.append(startIndex..<endIndex)
-            }
-        }
-        return appearances
     }
 }

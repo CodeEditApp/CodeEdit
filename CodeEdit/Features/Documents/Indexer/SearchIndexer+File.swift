@@ -59,7 +59,7 @@ extension SearchIndexer {
             }
             return nil
         }
-        
+
         /// Create an indexer using a new data container for the store
         ////
         /// - Parameters:

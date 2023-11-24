@@ -9,6 +9,7 @@ import Foundation
 import UniformTypeIdentifiers
 
 extension SearchIndexer {
+    /// A "typealias" for a document ID, using a struct becasue swift lint doesn't allow typealiases for 3 types
     public struct DocumentID {
         let url: URL
         let docuemnt: SKDocument

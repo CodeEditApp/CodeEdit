@@ -269,6 +269,8 @@
 		611192082B08CCFD00D4459B /* SearchIndexer+Terms.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611192072B08CCFD00D4459B /* SearchIndexer+Terms.swift */; };
 		6111920C2B08CD0B00D4459B /* SearchIndexer+InternalMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6111920B2B08CD0B00D4459B /* SearchIndexer+InternalMethods.swift */; };
 		613DF55E2B08DD5D00E9D902 /* FileHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613DF55D2B08DD5D00E9D902 /* FileHelper.swift */; };
+		61538B902B111FE800A88846 /* String+AppearancesOfSubstring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61538B8F2B111FE800A88846 /* String+AppearancesOfSubstring.swift */; };
+		61538B932B11201900A88846 /* String+Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61538B922B11201900A88846 /* String+Character.swift */; };
 		615AA21A2B0CFD480013FCCC /* LazyStringLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 615AA2192B0CFD480013FCCC /* LazyStringLoader.swift */; };
 		6C049A372A49E2DB00D42923 /* DirectoryEventStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C049A362A49E2DB00D42923 /* DirectoryEventStream.swift */; };
 		6C05A8AF284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C05A8AE284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift */; };
@@ -767,6 +769,8 @@
 		611192072B08CCFD00D4459B /* SearchIndexer+Terms.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchIndexer+Terms.swift"; sourceTree = "<group>"; };
 		6111920B2B08CD0B00D4459B /* SearchIndexer+InternalMethods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchIndexer+InternalMethods.swift"; sourceTree = "<group>"; };
 		613DF55D2B08DD5D00E9D902 /* FileHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileHelper.swift; sourceTree = "<group>"; };
+		61538B8F2B111FE800A88846 /* String+AppearancesOfSubstring.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+AppearancesOfSubstring.swift"; sourceTree = "<group>"; };
+		61538B922B11201900A88846 /* String+Character.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Character.swift"; sourceTree = "<group>"; };
 		615AA2192B0CFD480013FCCC /* LazyStringLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyStringLoader.swift; sourceTree = "<group>"; };
 		6C049A362A49E2DB00D42923 /* DirectoryEventStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryEventStream.swift; sourceTree = "<group>"; };
 		6C05A8AE284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkspaceDocument+Listeners.swift"; sourceTree = "<group>"; };
@@ -984,6 +988,8 @@
 				615AA2192B0CFD480013FCCC /* LazyStringLoader.swift */,
 				6C05A8AE284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift */,
 				6C092EDF2A53BFCF00489202 /* WorkspaceStateKey.swift */,
+				61538B8F2B111FE800A88846 /* String+AppearancesOfSubstring.swift */,
+				61538B922B11201900A88846 /* String+Character.swift */,
 				611191F82B08CC8000D4459B /* Indexer */,
 			);
 			path = Documents;
@@ -3143,6 +3149,7 @@
 				581550CF29FBD30400684881 /* StandardTableViewCell.swift in Sources */,
 				B62AEDB82A1FE2DC009A9F52 /* UtilityAreaOutputView.swift in Sources */,
 				587B9E5C29301D8F00AC7927 /* Parameters.swift in Sources */,
+				61538B932B11201900A88846 /* String+Character.swift in Sources */,
 				613DF55E2B08DD5D00E9D902 /* FileHelper.swift in Sources */,
 				58798235292E30B90085B254 /* FeedbackModel.swift in Sources */,
 				04C3255C2801F86900C8DA2D /* ProjectNavigatorMenu.swift in Sources */,
@@ -3192,6 +3199,7 @@
 				285FEC7027FE4B9800E57D53 /* ProjectNavigatorTableViewCell.swift in Sources */,
 				6CB9144B29BEC7F100BC47F2 /* (null) in Sources */,
 				587B9E7429301D8F00AC7927 /* URL+URLParameters.swift in Sources */,
+				61538B902B111FE800A88846 /* String+AppearancesOfSubstring.swift in Sources */,
 				6C5BE51C2A3D542B002DA0FC /* FeatureFlagsSettingsView.swift in Sources */,
 				581BFB6B2926431000D251EC /* RecentProjectItem.swift in Sources */,
 				587FB99029C1246400B519DD /* EditorTabView.swift in Sources */,

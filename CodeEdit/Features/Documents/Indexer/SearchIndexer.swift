@@ -9,7 +9,7 @@ import Foundation
 
 /// Indexer using SKIndex
 public class SearchIndexer {
-    let modifiyIndexQueue = DispatchQueue(label: "com.activcoding.SearchKitDemo")
+    let modifiyIndexQueue = DispatchQueue(label: "app.codeedit.CodeEdit.ModifySearchIndex")
 
     var index: SKIndex?
 
