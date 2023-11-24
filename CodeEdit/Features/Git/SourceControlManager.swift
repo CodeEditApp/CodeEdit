@@ -152,6 +152,19 @@ final class SourceControlManager: ObservableObject {
         }
     }
 
+    /// Discard changes for repository
+    func discardAllChanges() {
+        Task {
+            do {
+                try await gitClient.discardAllChanges()
+                // TODO: Refresh content of active and unmodified document,
+                // requires CodeEditTextView changes
+            } catch {
+                await showAlertForError(title: "Failed to discard changes", error: error)
+            }
+        }
+    }
+
     /// Commit files selected by user
     func commit(message: String) async throws {
         var filesToCommit: [CEWorkspaceFile] = []
