@@ -14,6 +14,7 @@ extension WorkspaceDocument {
         @Published var searchResultCount: Int = 0
 
         unowned var workspace: WorkspaceDocument
+        var tempSearchResults = [SearchResultModel]()
         var ignoreCase: Bool = true
         var indexer: SearchIndexer?
         var selectedMode: [SearchModeModel] = [
@@ -28,72 +29,94 @@ extension WorkspaceDocument {
             addProjectToIndex()
         }
 
+        /// Adds the contents of the current worksapce URL to the search index.
+        /// That means that the contents of the workspace will be indexed and searchable.
         func addProjectToIndex() {
             guard let indexer = indexer else {
+                // Handle error
                 return
             }
 
-            guard let url = self.workspace.fileURL else { return }
-            let enumerator = FileManager.default.enumerator(
-                at: url,
-                includingPropertiesForKeys: [
-                    .isRegularFileKey
-                ],
-                options: [
-                    .skipsHiddenFiles,
-                    .skipsPackageDescendants
-                ]
-            )
-            guard let filePaths = enumerator?.allObjects as? [URL] else { return }
+            guard let url = workspace.fileURL else {
+                // Handle error
+                return
+            }
 
-            let asyncController = SearchIndexer.AsyncManager(index: indexer)
-
+            let filePaths = getFileURLs(at: url)
             Task {
-                var textFiles = [SearchIndexer.AsyncManager.TextFile]()
-
-                for file in filePaths {
-                    if let content = try? String(contentsOf: file) {
-                        textFiles.append(
-                            SearchIndexer.AsyncManager.TextFile(url: file.standardizedFileURL, text: content)
-                        )
-                    }
-                }
-
+                let textFiles = await getFileContents(from: filePaths)
+                let asyncController = SearchIndexer.AsyncManager(index: indexer)
                 _ = await asyncController.addText(files: textFiles, flushWhenComplete: true)
             }
         }
 
+        /// Retrieves an array of file URLs within the specified directory URL.
+        ///
+        /// - Parameter url: The URL of the directory to search for files.
+        ///
+        /// - Returns: An array of file URLs found within the specified directory.
+        func getFileURLs(at url: URL) -> [URL] {
+            let enumerator = FileManager.default.enumerator(
+                at: url,
+                includingPropertiesForKeys: [.isRegularFileKey],
+                options: [.skipsHiddenFiles, .skipsPackageDescendants]
+            )
+            return enumerator?.allObjects as? [URL] ?? []
+        }
+
+        /// Retrieves the contents of a files  from the specified file paths.
+        ///
+        /// - Parameter filePaths: An array of file URLs representing the paths of the files.
+        ///
+        /// - Returns: An array of `TextFile` objects containing the standardized file URLs and text content.
+        func getFileContents(from filePaths: [URL]) async -> [SearchIndexer.AsyncManager.TextFile] {
+            var textFiles = [SearchIndexer.AsyncManager.TextFile]()
+            for file in filePaths {
+                if let content = try? String(contentsOf: file) {
+                    textFiles.append(
+                        SearchIndexer.AsyncManager.TextFile(url: file.standardizedFileURL, text: content)
+                    )
+                }
+            }
+            return textFiles
+        }
+
+        /// Creates a search term based on the given query and search mode.
+        ///
+        /// - Parameter query: The original user query string.
+        ///
+        /// - Returns: A modified search term according to the specified search mode.
         func getSearchTerm(_ query: String) -> String {
             let newQuery = ignoreCase ? query.lowercased() : query
-            if selectedMode.third == .Containing {
+            guard let mode = selectedMode.third else {
+                return newQuery
+            }
+            switch mode {
+            case .Containing:
                 return "*\(newQuery)*"
-            } else if selectedMode.third == .StartingWith {
+            case .StartingWith:
                 return "\(newQuery)*"
-            } else if selectedMode.third == .EndingWith {
+            case .EndingWith:
                 return "*\(newQuery)"
-            } else {
+            default:
                 return newQuery
             }
         }
 
-        let appendQueue = DispatchQueue(label: "append")
-        var tempSearchResults = [SearchResultModel]()
-
-        // TODO: Wirte proper documentation
         /// Searches the entire workspace for the given string, using the
         /// ``WorkspaceDocument/SearchState-swift.class/selectedMode`` modifiers
-        /// to modify the search if needed.
+        /// to modify the search if needed. This is done by filtering out files with SearchKit and then searching
+        /// within each file for the given string.
         ///
         /// This method will update
-        /// ``WorkspaceDocument/SearchState-swift.class/searchResult``
+        /// ``WorkspaceDocument/SearchState-swift.class/searchResult``, 
+        /// ``WorkspaceDocument/SearchState-swift.class/searchResultsFileCount``
         /// and ``WorkspaceDocument/SearchState-swift.class/searchResultCount`` with any matched
-        /// search results. See `Search.SearchResultModel` and `Search.SearchResultMatchModel`
+        /// search results. See ``SearchResultModel`` and ``SearchResultMatchModel``
         /// for more information on search results and matches.
         ///
-        /// - Parameter text: The search text to search for. Pass `nil` to this parameter to clear
-        ///                   the search results.
-        ///
-        func searchIndexAsync(_ query: String) async {
+        /// - Parameter query: The search query to search for.
+        func search(_ query: String) async {
             let startTime = Date()
             let searchQuery = getSearchTerm(query)
             guard let indexer = indexer else {
@@ -102,46 +125,60 @@ extension WorkspaceDocument {
 
             let asyncController = SearchIndexer.AsyncManager(index: indexer)
 
-            let group = DispatchGroup()
-            let queue = DispatchQueue(label: "search")
+            let evaluateResultGroup = DispatchGroup()
+            let evaluateSearchQueue = DispatchQueue(label: "search")
 
             let searchStream = await asyncController.search(query: searchQuery, 20)
             for try await result in searchStream {
-                let urls = result.results.map {
-                    $0.url
+                let urls2: [(URL, Float)] = result.results.map {
+                    ($0.url, $0.score)
                 }
-                for url in urls {
-                    queue.async(group: group) {
-                        group.enter()
+
+                for (url, score) in urls2 {
+                    evaluateSearchQueue.async(group: evaluateResultGroup) {
+                        evaluateResultGroup.enter()
                         Task {
-                            var newResult = SearchResultModel(file: CEWorkspaceFile(url: url))
-                            await self.evaluateResult(query: query, searchResult: &newResult)
-                            self.tempSearchResults.append(newResult) // this doesn't work due to some error in swift 6
-                            group.leave()
+                            var newResult = SearchResultModel(file: CEWorkspaceFile(url: url), score: score)
+                            await self.evaluateResult(query: query.lowercased(), searchResult: &newResult)
+
+                            // The funciton needs to be called because,
+                            // we are trying to modify the array from within a concurrent context.
+                            self.appendNewResultsToTempResults(newResult: newResult)
+                            evaluateResultGroup.leave()
                         }
                     }
                 }
             }
 
-            group.notify(queue: queue) {
-                DispatchQueue.main.async {
-                    self.searchResult = self.tempSearchResults
-                    self.searchResultCount = self.tempSearchResults.map { $0.lineMatches.count }.reduce(0, +)
-                    self.searchResultsFileCount = self.tempSearchResults.count
-                    //                                        fatalError("\(Date().timeIntervalSince(startTime))")
-                }
+            evaluateResultGroup.notify(queue: evaluateSearchQueue) {
+                    self.setSearchResults()
+//                    fatalError("\(Date().timeIntervalSince(startTime))")
             }
         }
 
-        // This could be optimized further by doing a couple things:
-        // - Making sure strings and indexes are using UTF8 everywhere possible
-        //   (this will increase matching speed and time taken to calculate byte offsets for string indexes)
-        // - Lazily fetching file paths. Right now we do `enumerator.allObjects`, but using an actual
-        //   enumerator object to lazily enumerate through files would drop time.
-        // - Loop through each character instead of each line to find matches, then return the line if needed.
-        //   This could help in cases when the file is one *massive* line (eg: a minified JS document).
-        // - Lazily load strings using `FileHandle.AsyncBytes`
-        //   https://developer.apple.com/documentation/foundation/filehandle/3766681-bytes
+        /// Appends a new search result to the temporary search results array on the main thread.
+        ///
+        /// - Parameters:
+        ///   - newResult: The `SearchResultModel` to be appended to the temporary search results.
+        func appendNewResultsToTempResults(newResult: SearchResultModel) {
+            DispatchQueue.main.async {
+                self.tempSearchResults.append(newResult)
+            }
+        }
+
+        /// Sets the search results by updating various properties on the main thread.
+        /// This function updates `searchResult`, `searchResultCount`, and `searchResultsFileCount`
+        /// and sets the `tempSearchResults` to an empty array.
+        /// - Important: Call this function when you are ready to
+        /// display or use the final search results.
+        func setSearchResults() {
+            DispatchQueue.main.async {
+                self.searchResult = self.tempSearchResults.sorted { $0.score > $1.score }
+                self.searchResultCount = self.tempSearchResults.map { $0.lineMatches.count }.reduce(0, +)
+                self.searchResultsFileCount = self.tempSearchResults.count
+                self.tempSearchResults = []
+            }
+        }
 
         /// Addes line matchings to a `SearchResultsViewModel` array.
         /// That means if a search result is a file, and the search term appears in the file,
@@ -259,10 +296,20 @@ extension WorkspaceDocument {
 }
 
 extension String {
+    /// Retrieves the character at the specified index within the string.
+    /// - Parameter index: The index of the character to retrieve.
+    /// - Returns: The character at the specified index.
     func character(at index: Int) -> Character {
         return self[self.index(self.startIndex, offsetBy: index)]
     }
 
+    /// Finds the appearances of a substring within the string.
+    /// - Parameters:
+    ///   - substring: The substring to search for within the string.
+    ///   - toLeft: The optional number of characters to include to the left of each found substring appearance.
+    ///   - toRight: The optional number of characters to include to the right of each found substring appearance.
+    ///
+    ///   - Returns: An array of ranges representing the appearances of the substring within the string.
     func appearancesOfSubstring(substring: String, toLeft: Int=0, toRight: Int=0) -> [Range<String.Index>] {
         guard !substring.isEmpty && self.contains(substring) else { return [] }
         var appearances: [Range<String.Index>] = []

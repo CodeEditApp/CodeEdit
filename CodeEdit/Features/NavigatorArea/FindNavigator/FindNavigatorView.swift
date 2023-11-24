@@ -85,17 +85,12 @@ struct FindNavigatorView: View {
         }
         .onSubmit {
             Task {
-               await state.searchIndexAsync(searchText)
+               await state.search(searchText)
             }
         }
         .onReceive(state.objectWillChange) { _ in
             self.searchResultCount = state.searchResultCount
             self.foundFilesCount = state.searchResult.count
-        }
-        .onChange(of: searchText) { newValue in
-            Task {
-                await state.searchIndexAsync(newValue)
-            }
         }
     }
 }
