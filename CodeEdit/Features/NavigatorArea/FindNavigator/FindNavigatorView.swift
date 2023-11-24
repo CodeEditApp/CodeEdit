@@ -84,11 +84,18 @@ struct FindNavigatorView: View {
             FindNavigatorResultList() // TODO: Replace with SwiftUI implementation
         }
         .onSubmit {
-            state.searchIndexAsync(searchText)
+            Task {
+               await state.searchIndexAsync(searchText)
+            }
         }
         .onReceive(state.objectWillChange) { _ in
             self.searchResultCount = state.searchResultCount
             self.foundFilesCount = state.searchResult.count
+        }
+        .onChange(of: searchText) { newValue in
+            Task {
+                await state.searchIndexAsync(newValue)
+            }
         }
     }
 }

@@ -76,12 +76,15 @@ extension WorkspaceDocument {
             }
         }
 
+        let appendQueue = DispatchQueue(label: "append")
+        var tempSearchResults = [SearchResultModel]()
+
         // TODO: Wirte proper documentation
-        /// Searches the entire workspace for the given string, using the 
+        /// Searches the entire workspace for the given string, using the
         /// ``WorkspaceDocument/SearchState-swift.class/selectedMode`` modifiers
         /// to modify the search if needed.
         ///
-        /// This method will update 
+        /// This method will update
         /// ``WorkspaceDocument/SearchState-swift.class/searchResult``
         /// and ``WorkspaceDocument/SearchState-swift.class/searchResultCount`` with any matched
         /// search results. See `Search.SearchResultModel` and `Search.SearchResultMatchModel`
@@ -89,37 +92,43 @@ extension WorkspaceDocument {
         ///
         /// - Parameter text: The search text to search for. Pass `nil` to this parameter to clear
         ///                   the search results.
-        func searchIndexAsync(_ query: String) {
+        ///
+        func searchIndexAsync(_ query: String) async {
             let startTime = Date()
             let searchQuery = getSearchTerm(query)
             guard let indexer = indexer else {
                 return
             }
 
+            let asyncController = SearchIndexer.AsyncManager(index: indexer)
+
             let group = DispatchGroup()
             let queue = DispatchQueue(label: "search")
 
-            var tempSearchResults = [SearchResultModel]()
-            let results = indexer.search(searchQuery)
-            for result in results {
-                queue.async(group: group) {
-                    group.enter()
-                    var newResult = SearchResultModel(file: CEWorkspaceFile(url: result.url))
-                    Task {
-                        await self.evaluateResult(query: query, searchResult: &newResult)
-//                        tempSearchResults.append(newResult) // this doesn't work due to some error in swift 6
-                        group.leave()
+            let searchStream = await asyncController.search(query: searchQuery, 20)
+            for try await result in searchStream {
+                let urls = result.results.map {
+                    $0.url
+                }
+                for url in urls {
+                    queue.async(group: group) {
+                        group.enter()
+                        Task {
+                            var newResult = SearchResultModel(file: CEWorkspaceFile(url: url))
+                            await self.evaluateResult(query: query, searchResult: &newResult)
+                            self.tempSearchResults.append(newResult) // this doesn't work due to some error in swift 6
+                            group.leave()
+                        }
                     }
-                    tempSearchResults.append(newResult) // this should not work, but it does...
                 }
             }
 
             group.notify(queue: queue) {
                 DispatchQueue.main.async {
-                    self.searchResult = tempSearchResults
-                    self.searchResultCount = tempSearchResults.map { $0.lineMatches.count }.reduce(0, +)
-                    self.searchResultsFileCount = tempSearchResults.count
-//                  fatalError("\(Date().timeIntervalSince(startTime))")
+                    self.searchResult = self.tempSearchResults
+                    self.searchResultCount = self.tempSearchResults.map { $0.lineMatches.count }.reduce(0, +)
+                    self.searchResultsFileCount = self.tempSearchResults.count
+                    //                                        fatalError("\(Date().timeIntervalSince(startTime))")
                 }
             }
         }
@@ -147,7 +156,7 @@ extension WorkspaceDocument {
             var newMatches = [SearchResultMatchModel]()
 
             guard let data = try? Data(contentsOf: searchResult.file.url),
-                    let string = String(data: data, encoding: .utf8) else {
+                  let string = String(data: data, encoding: .utf8) else {
                 return
             }
 

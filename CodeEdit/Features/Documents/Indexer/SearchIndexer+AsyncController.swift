@@ -40,20 +40,18 @@ extension SearchIndexer {
         func search(
             query: String,
             _ maxResults: Int,
-            timeout: TimeInterval = 1.0,
-            complete: @escaping (SearchIndexer.ProgressivSearch.Results) -> Void
-        ) {
+            timeout: TimeInterval = 1.0
+        ) async -> AsyncStream<SearchIndexer.ProgressivSearch.Results> {
             let search = index.progressiveSearch(query: query)
-            searchQueue.async {
-                let results = search.getNextSearchResultsChunk(limit: maxResults, timeout: timeout)
-                let searchResults = SearchIndexer.ProgressivSearch.Results(
-                    moreResultsAvailable: results.moreResultsAvailable,
-                    results: results.results
-                )
 
-                DispatchQueue.main.async {
-                    complete(searchResults)
+            return AsyncStream { configuration in
+                var moreResultsAvailable = true
+                while moreResultsAvailable {
+                    let results = search.getNextSearchResultsChunk(limit: maxResults, timeout: timeout)
+                    moreResultsAvailable = results.moreResultsAvailable
+                    configuration.yield(results)
                 }
+                configuration.finish()
             }
         }
 
