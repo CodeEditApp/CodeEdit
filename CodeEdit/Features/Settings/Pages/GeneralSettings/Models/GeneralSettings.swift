@@ -1,5 +1,5 @@
 //
-//  GeneralPreferences.swift
+//  GeneralSettings.swift
 //  CodeEditModules/Settings
 //
 //  Created by Nanashi Li on 2022/04/08.
@@ -27,6 +27,8 @@ extension SettingsData {
                 "Appearance",
                 "File Icon Style",
                 "Tab Bar Style",
+                "Show Path Bar",
+                "Dim editors without focus",
                 "Navigator Tab Bar Position",
                 "Inspector Tab Bar Position",
                 "Show Issues",
@@ -38,7 +40,13 @@ extension SettingsData {
                 "File Extensions",
                 "Project Navigator Size",
                 "Find Navigator Detail",
-                "Issue Navigator Detail"
+                "Issue Navigator Detail",
+                "Show “Open With CodeEdit“ option in Finder",
+                "'codeedit' Shell command",
+                "Dialog Warnings",
+                "Check for updates",
+                "Automatically check for app updates",
+                "Include pre-release versions"
             ]
             .map { NSLocalizedString($0, comment: "") }
         }
