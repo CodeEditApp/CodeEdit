@@ -99,7 +99,7 @@ extension CEWorkspaceFileManager {
         let deleteConfirmation = NSAlert()
         let message: String
         if !file.isFolder || file.isEmptyFolder { // if its a file or an empty folder, call it by its name
-            message = String(describing: file.fileName())
+            message = file.fileName()
         } else {
             let childrenCount = try? fileManager.contentsOfDirectory(
                 at: file.url,
