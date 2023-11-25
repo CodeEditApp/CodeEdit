@@ -18,7 +18,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
 
     var workspaceFileManager: CEWorkspaceFileManager?
 
-    var editorManager: EditorManager
+    var editorManager = EditorManager()
 
     private var workspaceState: [String: Any] {
         get {
@@ -39,12 +39,6 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var sourceControlManager: SourceControlManager?
 
     private var cancellables = Set<AnyCancellable>()
-
-    override init() {
-        self.editorManager = EditorManager()
-        super.init()
-
-    }
 
     deinit {
         cancellables.forEach { $0.cancel() }
