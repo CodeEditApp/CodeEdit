@@ -39,6 +39,9 @@ class UtilityAreaViewModel: ObservableObject {
 
     /// The tab bar items for the DebugAreaView
     @Published var tabItems: [UtilityAreaTab] = UtilityAreaTab.allCases
+    
+    /// The tab bar view model for UtilityAreaTabView
+    @Published var tabViewModel = UtilityAreaTabViewModel()
 
     /// Returns the font for status bar items to use
     private(set) var toolbarFont: Font = .system(size: 11, weight: .medium)

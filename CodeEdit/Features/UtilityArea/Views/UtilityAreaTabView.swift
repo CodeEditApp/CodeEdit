@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct UtilityAreaTabView<Content: View, LeadingSidebar: View, TrailingSidebar: View>: View {
-    @ObservedObject var model: UtilityAreaTabViewModel = UtilityAreaTabViewModel.shared
+    @ObservedObject var model: UtilityAreaTabViewModel
 
     let content: (UtilityAreaTabViewModel) -> Content
     let leadingSidebar: (UtilityAreaTabViewModel) -> LeadingSidebar?
@@ -18,12 +18,15 @@ struct UtilityAreaTabView<Content: View, LeadingSidebar: View, TrailingSidebar: 
     let hasTrailingSidebar: Bool
 
     init(
+        model: UtilityAreaTabViewModel,
         @ViewBuilder content: @escaping (UtilityAreaTabViewModel) -> Content,
         @ViewBuilder leadingSidebar: @escaping (UtilityAreaTabViewModel) -> LeadingSidebar,
         @ViewBuilder trailingSidebar: @escaping (UtilityAreaTabViewModel) -> TrailingSidebar,
         hasLeadingSidebar: Bool = true,
         hasTrailingSidebar: Bool = true
     ) {
+        self.model = model
+
         self.content = content
         self.leadingSidebar = leadingSidebar
         self.trailingSidebar = trailingSidebar
@@ -32,10 +35,14 @@ struct UtilityAreaTabView<Content: View, LeadingSidebar: View, TrailingSidebar: 
         self.hasTrailingSidebar = hasTrailingSidebar
     }
 
-    init(@ViewBuilder content: @escaping (UtilityAreaTabViewModel) -> Content) where
+    init(
+        model: UtilityAreaTabViewModel,
+        @ViewBuilder content: @escaping (UtilityAreaTabViewModel) -> Content
+    ) where
         LeadingSidebar == EmptyView,
         TrailingSidebar == EmptyView {
         self.init(
+            model: model,
             content: content,
             leadingSidebar: { _ in EmptyView() },
             trailingSidebar: { _ in EmptyView() },
@@ -45,10 +52,12 @@ struct UtilityAreaTabView<Content: View, LeadingSidebar: View, TrailingSidebar: 
     }
 
     init(
+        model: UtilityAreaTabViewModel,
         @ViewBuilder content: @escaping (UtilityAreaTabViewModel) -> Content,
         @ViewBuilder leadingSidebar: @escaping (UtilityAreaTabViewModel) -> LeadingSidebar
     ) where TrailingSidebar == EmptyView {
         self.init(
+            model: model,
             content: content,
             leadingSidebar: leadingSidebar,
             trailingSidebar: { _ in EmptyView() },
@@ -57,10 +66,12 @@ struct UtilityAreaTabView<Content: View, LeadingSidebar: View, TrailingSidebar: 
     }
 
     init(
+        model: UtilityAreaTabViewModel,
         @ViewBuilder content: @escaping (UtilityAreaTabViewModel) -> Content,
         @ViewBuilder trailingSidebar: @escaping (UtilityAreaTabViewModel) -> TrailingSidebar
     ) where LeadingSidebar == EmptyView {
         self.init(
+            model: model,
             content: content,
             leadingSidebar: { _ in EmptyView() },
             trailingSidebar: trailingSidebar,

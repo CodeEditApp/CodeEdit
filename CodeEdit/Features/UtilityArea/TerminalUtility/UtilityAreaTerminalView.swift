@@ -121,7 +121,7 @@ struct UtilityAreaTerminalView: View {
     }
 
     var body: some View {
-        UtilityAreaTabView { tabState in
+        UtilityAreaTabView(model: model.tabViewModel) { tabState in
             ZStack {
                 if model.selectedTerminals.isEmpty {
                     Text("No Selection")
