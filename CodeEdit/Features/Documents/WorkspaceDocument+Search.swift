@@ -84,7 +84,7 @@ extension WorkspaceDocument {
                             return SearchResultMatchModel(
                                 lineNumber: lineNumber,
                                 file: CEWorkspaceFile(url: url),
-                                lineContent: String(noSpaceLine),
+                                lineContent: String(rawNoSpaceLine),
                                 keywordRange: range
                             )
                         }
