@@ -167,7 +167,7 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
     }
 
     /// Returns the file name with optional extension (e.g.: `Package.swift`)
-    func fileName(typeHidden: Bool) -> String {
+    func fileName(typeHidden: Bool = false) -> String {
         typeHidden ? url.deletingPathExtension().lastPathComponent : name
     }
 
