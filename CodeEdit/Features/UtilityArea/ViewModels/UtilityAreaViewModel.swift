@@ -39,7 +39,7 @@ class UtilityAreaViewModel: ObservableObject {
 
     /// The tab bar items for the DebugAreaView
     @Published var tabItems: [UtilityAreaTab] = UtilityAreaTab.allCases
-    
+
     /// The tab bar view model for UtilityAreaTabView
     @Published var tabViewModel = UtilityAreaTabViewModel()
 
