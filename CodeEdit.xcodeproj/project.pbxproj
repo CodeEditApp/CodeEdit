@@ -368,6 +368,7 @@
 		B6041F5229D7D6D6000F3454 /* SettingsWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6041F5129D7D6D6000F3454 /* SettingsWindow.swift */; };
 		B607181D2B0C5BE3009CDAB4 /* GitClient+Stash.swift in Sources */ = {isa = PBXBuildFile; fileRef = B607181C2B0C5BE3009CDAB4 /* GitClient+Stash.swift */; };
 		B60718202B0C6CE7009CDAB4 /* GitStashEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = B607181F2B0C6CE7009CDAB4 /* GitStashEntry.swift */; };
+		B60718312B15A9A3009CDAB4 /* CEOutlineGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60718302B15A9A3009CDAB4 /* CEOutlineGroup.swift */; };
 		B60BE8BD297A167600841125 /* AcknowledgementRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60BE8BC297A167600841125 /* AcknowledgementRowView.swift */; };
 		B6152B802ADAE421004C6012 /* CodeEditWindowControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6152B7F2ADAE421004C6012 /* CodeEditWindowControllerExtensions.swift */; };
 		B61A606129F188AB009B43F9 /* ExternalLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61A606029F188AB009B43F9 /* ExternalLink.swift */; };
@@ -863,6 +864,7 @@
 		B6041F5129D7D6D6000F3454 /* SettingsWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWindow.swift; sourceTree = "<group>"; };
 		B607181C2B0C5BE3009CDAB4 /* GitClient+Stash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GitClient+Stash.swift"; sourceTree = "<group>"; };
 		B607181F2B0C6CE7009CDAB4 /* GitStashEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitStashEntry.swift; sourceTree = "<group>"; };
+		B60718302B15A9A3009CDAB4 /* CEOutlineGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CEOutlineGroup.swift; sourceTree = "<group>"; };
 		B60BE8BC297A167600841125 /* AcknowledgementRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcknowledgementRowView.swift; sourceTree = "<group>"; };
 		B6152B7F2ADAE421004C6012 /* CodeEditWindowControllerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditWindowControllerExtensions.swift; sourceTree = "<group>"; };
 		B61A606029F188AB009B43F9 /* ExternalLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalLink.swift; sourceTree = "<group>"; };
@@ -1700,6 +1702,7 @@
 				587B9D8C29300ABD00AC7927 /* SettingsTextEditor.swift */,
 				587B9D8F29300ABD00AC7927 /* ToolbarBranchPicker.swift */,
 				2897E1C62979A29200741E32 /* TrackableScrollView.swift */,
+				B60718302B15A9A3009CDAB4 /* CEOutlineGroup.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -3160,6 +3163,7 @@
 				20EBB503280C327C00F3A5DA /* HistoryInspectorView.swift in Sources */,
 				B6EA1FE729DA341D001BF195 /* Theme.swift in Sources */,
 				587B9E7529301D8F00AC7927 /* String+QueryParameters.swift in Sources */,
+				B60718312B15A9A3009CDAB4 /* CEOutlineGroup.swift in Sources */,
 				58798219292D92370085B254 /* SearchModeModel.swift in Sources */,
 				6C5C891B2A3F736500A94FE1 /* FocusedValues.swift in Sources */,
 				611192062B08CCF600D4459B /* SearchIndexer+Add.swift in Sources */,
@@ -4298,7 +4302,7 @@
 			repositoryURL = "https://github.com/CodeEditApp/CodeEditSymbols";
 			requirement = {
 				kind = exactVersion;
-				version = 0.1.2;
+				version = 0.1.3;
 			};
 		};
 		287136B1292A407E00E9F5F4 /* XCRemoteSwiftPackageReference "SwiftLintPlugin" */ = {

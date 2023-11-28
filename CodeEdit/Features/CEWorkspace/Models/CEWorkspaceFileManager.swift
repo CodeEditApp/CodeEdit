@@ -236,6 +236,10 @@ final class CEWorkspaceFileManager {
             // Change made to git stash file by looking at .git/refs/stash
             let gitStashChange = events.first(where: { $0.path == "\(self.folderUrl.relativePath)/.git/refs/stash" })
 
+            let gitBranchChange = events.first(where: { $0.path.contains("\(self.folderUrl.relativePath)/.git/refs/heads" )})
+
+            let gitHeadChange = events.first(where: { $0.path.contains("\(self.folderUrl.relativePath)/.git/HEAD" )})
+
             // Change made to remotes by looking at .git/config
             let gitConfigChange = events.first(where: { $0.path == "\(self.folderUrl.relativePath)/.git/config" })
 
@@ -250,6 +254,19 @@ final class CEWorkspaceFileManager {
             if gitStashChange != nil {
                 Task {
                     try await self.sourceControlManager?.refreshStashEntries()
+                }
+            }
+
+            // If changeds were stashed, refresh our changes
+            if gitBranchChange != nil {
+                Task {
+                    await self.sourceControlManager?.refreshBranches()
+                }
+            }
+
+            if gitHeadChange != nil {
+                Task {
+                    await self.sourceControlManager?.refreshCurrentBranch()
                 }
             }
 

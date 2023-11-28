@@ -17,7 +17,9 @@ struct SourceControlNavigatorChangesList: View {
         List($sourceControlManager.changedFiles, id: \.self, selection: $selection) { $file in
             SourceControlNavigatorChangedFileView(changedFile: $file)
                 .listRowSeparator(.hidden)
+                .padding(.vertical, -1)
         }
+        .environment(\.defaultMinListRowHeight, 22)
         .contextMenu(
             forSelectionType: CEWorkspaceFile.self,
             menu: { selectedFiles in

@@ -33,7 +33,7 @@ struct SourceControlNavigatorChangedFileView: View {
     }
 
     var body: some View {
-        HStack(spacing: 5) {
+        HStack(spacing: 6) {
             Toggle("", isOn: $staged)
                 .labelsHidden()
                 .onChange(of: staged) { newStaged in
@@ -47,12 +47,14 @@ struct SourceControlNavigatorChangedFileView: View {
                         }
                     }
                 }
-            Image(systemName: changedFile.systemImage)
-                .frame(width: 22)
-                .foregroundColor(changedFile.iconColor)
-            Text(changedFile.name)
-                .lineLimit(1)
-                .truncationMode(.middle)
+            Label(title: {
+                Text(changedFile.name)
+                    .lineLimit(1)
+                    .truncationMode(.middle)
+            }, icon: {
+                Image(systemName: changedFile.systemImage)
+            })
+            .accentColor(changedFile.iconColor)
             Spacer()
             Text(changedFile.gitStatus?.description ?? "")
                 .font(.system(size: 11, weight: .bold))
