@@ -24,6 +24,7 @@ struct FindNavigatorForm: View {
     @State private var excludesText: String = ""
     @State private var scoped: Bool = false
     @State private var caseSensitive: Bool = false
+    @State private var matchWholeWord: Bool = false
     @State private var preserveCase: Bool = false
     @State private var scopedToOpenEditors: Bool = false
     @State private var excludeSettings: Bool = true
@@ -138,12 +139,23 @@ struct FindNavigatorForm: View {
                 },
                 trailingAccessories: {
                     Divider()
-                    Button {
-                        caseSensitive.toggle()
-                    } label: {
+                    Toggle(
+                        isOn: $caseSensitive,
+                        label: {
                         Image(systemName: "textformat")
                             .foregroundStyle(caseSensitive ? Color(.controlAccentColor) : Color(.secondaryLabelColor))
-                    }
+                        }
+                    )
+                    .help("Match Case")
+                    Divider()
+                    Toggle(
+                        isOn: $matchWholeWord,
+                        label: {
+                            Image(systemName: "textformat.abc.dottedunderline")
+                                .foregroundStyle(matchWholeWord ? Color(.controlAccentColor) : Color(.secondaryLabelColor))
+                        }
+                    )
+                    .help("Match Whole Word")
                 },
                 clearable: true,
                 onClear: {
@@ -167,17 +179,19 @@ struct FindNavigatorForm: View {
                     },
                     trailingAccessories: {
                         Divider()
-                        Button {
-                            preserveCase.toggle()
-                        } label: {
-                            Text("AB")
-                                .font(.system(size: 12, design: .rounded))
-                                .foregroundStyle(
-                                    preserveCase
-                                    ? Color(.controlAccentColor)
-                                    : Color(.secondaryLabelColor)
-                                )
-                        }
+                        Toggle(
+                            isOn: $preserveCase,
+                            label: {
+                                Text("AB")
+                                    .font(.system(size: 12, design: .rounded))
+                                    .foregroundStyle(
+                                        preserveCase
+                                        ? Color(.controlAccentColor)
+                                        : Color(.secondaryLabelColor)
+                                    )
+                            }
+                        )
+                        .help("Preserve Case")
                     },
                     clearable: true
                 )
@@ -196,16 +210,18 @@ struct FindNavigatorForm: View {
                     },
                     trailingAccessories: {
                         Divider()
-                        Button {
-                            scopedToOpenEditors.toggle()
-                        } label: {
-                            Image(systemName: "doc.plaintext")
-                                .foregroundStyle(
-                                    scopedToOpenEditors
-                                    ? Color(.controlAccentColor)
-                                    : Color(.secondaryLabelColor)
-                                )
-                        }
+                        Toggle(
+                            isOn: $scopedToOpenEditors,
+                            label: {
+                                Image(systemName: "doc.plaintext")
+                                    .foregroundStyle(
+                                        scopedToOpenEditors
+                                        ? Color(.controlAccentColor)
+                                        : Color(.secondaryLabelColor)
+                                    )
+                            }
+                        )
+                        .help("Search only in Open Editors")
                     },
                     clearable: true
                 )
@@ -222,16 +238,18 @@ struct FindNavigatorForm: View {
                     },
                     trailingAccessories: {
                         Divider()
-                        Button {
-                            excludeSettings.toggle()
-                        } label: {
-                            Image(systemName: "gearshape")
-                                .foregroundStyle(
-                                    excludeSettings
-                                    ? Color(.controlAccentColor)
-                                    : Color(.secondaryLabelColor)
-                                )
-                        }
+                        Toggle(
+                            isOn: $excludeSettings,
+                            label: {
+                                Image(systemName: "gearshape")
+                                    .foregroundStyle(
+                                        excludeSettings
+                                        ? Color(.controlAccentColor)
+                                        : Color(.secondaryLabelColor)
+                                    )
+                            }
+                        )
+                        .help("Use Exclude Settings and Ignore Files")
                     },
                     clearable: true
                 )

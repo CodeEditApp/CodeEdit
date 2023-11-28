@@ -106,10 +106,10 @@ struct PaneTextField<LeadingAccessories: View, TrailingAccessories: View>: View 
                 trailing
             }
         }
-
         .fixedSize(horizontal: false, vertical: true)
         .buttonStyle(.icon(font: .system(size: 11, weight: .semibold), size: CGSize(width: 28, height: 20)))
-        .padding(0.5)
+        .toggleStyle(.icon(font: .system(size: 11, weight: .semibold), size: CGSize(width: 28, height: 20)))
+        .frame(minHeight: 22)
         .background(
             selectionBackground(isFocused)
                 .clipShape(RoundedRectangle(cornerRadius: 6))
