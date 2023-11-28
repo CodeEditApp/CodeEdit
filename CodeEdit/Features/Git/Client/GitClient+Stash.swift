@@ -30,6 +30,11 @@ extension GitClient {
 
         return stashEntries
     }
+
+    /// Delete stash
+    func deleteStashEntry(_ index: Int) async throws {
+        _ = try await run("stash drop stash@{\(index)}")
+    }
 }
 
 func parseGitStashEntries(_ input: String) -> [GitStashEntry] {

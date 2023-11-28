@@ -9,8 +9,7 @@ import SwiftUI
 
 struct SourceControlAddRemoteView: View {
     @EnvironmentObject var sourceControlManager: SourceControlManager
-
-    @Binding var isPresented: Bool
+    @Environment(\.dismiss) private var dismiss
 
     @State private var name: String = ""
     @State private var location: String = ""
@@ -27,7 +26,7 @@ struct SourceControlAddRemoteView: View {
                 try await sourceControlManager.addRemote(name: name, location: location)
                 name = ""
                 location = ""
-                isPresented = false
+                dismiss()
             } catch {
                 await sourceControlManager.showAlertForError(title: "Failed to add remote", error: error)
             }
@@ -51,7 +50,7 @@ struct SourceControlAddRemoteView: View {
             HStack {
                 Spacer()
                 Button("Cancel") {
-                    isPresented = false
+                    dismiss()
                     name = ""
                     location = ""
                 }

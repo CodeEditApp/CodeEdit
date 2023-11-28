@@ -224,63 +224,84 @@ final class CEWorkspaceFileManager {
                 self.notifyObservers(updatedItems: files)
             }
 
-            // Changes excluding .git folder
-            let notGitChanges = events.filter({ !$0.path.contains(".git/") })
+            self.handleGitEvents(events: events)
+        }
+    }
 
-            // .git folder was changed
-            let gitFolderChange = events.first(where: { $0.path == "\(self.folderUrl.relativePath)/.git" })
+    func handleGitEvents(events: [DirectoryEventStream.Event]) {
+        // Changes excluding .git folder
+        let notGitChanges = events.filter({ !$0.path.contains(".git/") })
 
-            // Change made to staged files by looking at .git/index
-            let gitIndexChange = events.first(where: { $0.path == "\(self.folderUrl.relativePath)/.git/index" })
+        // .git folder was changed
+        let gitFolderChange = events.first(where: {
+            $0.path == "\(self.folderUrl.relativePath)/.git"
+        })
 
-            // Change made to git stash file by looking at .git/refs/stash
-            let gitStashChange = events.first(where: { $0.path == "\(self.folderUrl.relativePath)/.git/refs/stash" })
+        // Change made to git index file, staged/unstaged files
+        let gitIndexChange = events.first(where: {
+            $0.path == "\(self.folderUrl.relativePath)/.git/index"
+        })
 
-            let gitBranchChange = events.first(where: { $0.path.contains("\(self.folderUrl.relativePath)/.git/refs/heads" )})
+        // Change made to git stash
+        let gitStashChange = events.first(where: {
+            $0.path == "\(self.folderUrl.relativePath)/.git/refs/stash"
+        })
 
-            let gitHeadChange = events.first(where: { $0.path.contains("\(self.folderUrl.relativePath)/.git/HEAD" )})
+        // Changes made to git branches
+        let gitBranchChange = events.first(where: {
+            $0.path.contains("\(self.folderUrl.relativePath)/.git/refs/heads")
+        })
 
-            // Change made to remotes by looking at .git/config
-            let gitConfigChange = events.first(where: { $0.path == "\(self.folderUrl.relativePath)/.git/config" })
+        // Changes made to git HEAD - current branch changed
+        let gitHeadChange = events.first(where: {
+            $0.path.contains("\(self.folderUrl.relativePath)/.git/HEAD")
+        })
 
-            // If changes were made to project OR files were staged, refresh our changes
-            if !notGitChanges.isEmpty || gitIndexChange != nil {
-                Task {
-                    await self.sourceControlManager?.refreshAllChangedFiles()
-                }
+        // Change made to remotes by looking at .git/config
+        let gitConfigChange = events.first(where: {
+            $0.path == "\(self.folderUrl.relativePath)/.git/config"
+        })
+
+        // If changes were made to project OR files were staged, refresh changes
+        if !notGitChanges.isEmpty || gitIndexChange != nil {
+            Task {
+                await self.sourceControlManager?.refreshAllChangedFiles()
             }
+        }
 
-            // If changeds were stashed, refresh our changes
-            if gitStashChange != nil {
-                Task {
-                    try await self.sourceControlManager?.refreshStashEntries()
-                }
+        // If changes were stashed, refresh stashed entries
+        if gitStashChange != nil {
+            Task {
+                try await self.sourceControlManager?.refreshStashEntries()
             }
+        }
 
-            // If changeds were stashed, refresh our changes
-            if gitBranchChange != nil {
-                Task {
-                    await self.sourceControlManager?.refreshBranches()
-                }
+        // If branches were added or removed, refresh branches
+        if gitBranchChange != nil {
+            Task {
+                await self.sourceControlManager?.refreshBranches()
             }
+        }
 
-            if gitHeadChange != nil {
-                Task {
-                    await self.sourceControlManager?.refreshCurrentBranch()
-                }
+        // If HEAD was changed, refresh the current branch
+        if gitHeadChange != nil {
+            Task {
+                await self.sourceControlManager?.refreshCurrentBranch()
             }
+        }
 
-            if gitConfigChange != nil {
-                Task {
-                    try await self.sourceControlManager?.refreshRemotes()
-                }
+        // If git config changed, refresh remotes
+        if gitConfigChange != nil {
+            Task {
+                try await self.sourceControlManager?.refreshRemotes()
             }
+        }
 
-            if gitFolderChange != nil {
-                self.sourceControlManager?.isGitRepository = self.fileManager.fileExists(
-                    atPath: "\(self.folderUrl.relativePath)/.git"
-                )
-            }
+        // If .git folder was added or removed, refresh isGitRepository
+        if gitFolderChange != nil {
+            self.sourceControlManager?.isGitRepository = self.fileManager.fileExists(
+                atPath: "\(self.folderUrl.relativePath)/.git"
+            )
         }
     }
 

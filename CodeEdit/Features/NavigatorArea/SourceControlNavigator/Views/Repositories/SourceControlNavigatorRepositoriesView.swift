@@ -17,6 +17,8 @@ struct RepoOutlineGroupItem: Hashable, Identifiable {
     var imageColor: Color?
     var children: [RepoOutlineGroupItem]?
     var branch: GitBranch?
+    var stashEntry: GitStashEntry?
+    var remote: GitRemote?
 }
 
 struct SourceControlNavigatorRepositoriesItem: View {
@@ -67,6 +69,13 @@ struct SourceControlNavigatorRepositoriesView: View {
     @State var showNewBranch: Bool = false
     @State var fromBranch: GitBranch?
     @State var expandedIds = [String: Bool]()
+    @State var addRemoteIsPresented: Bool = false
+    @State var isPresentingConfirmDeleteBranch: Bool = false
+    @State var branchToDelete: GitBranch?
+    @State var isPresentingConfirmDeleteStashEntry: Bool = false
+    @State var stashEntryToDelete: GitStashEntry?
+    @State var isPresentingConfirmDeleteRemote: Bool = false
+    @State var remoteToDelete: GitRemote?
 
     var data: [RepoOutlineGroupItem] {
         [
@@ -104,7 +113,8 @@ struct SourceControlNavigatorRepositoriesView: View {
                                 .minute(.twoDigits)
                         ),
                         systemImage: "tray",
-                        imageColor: .orange
+                        imageColor: .orange,
+                        stashEntry: stashEntry
                     )
                 }
             ),
@@ -118,7 +128,8 @@ struct SourceControlNavigatorRepositoriesView: View {
                         id: "Remote\(remote.hashValue)",
                         label: remote.name,
                         symbolImage: "vault",
-                        imageColor: .teal
+                        imageColor: .teal,
+                        remote: remote
                     )
                 }
             )
@@ -177,28 +188,114 @@ struct SourceControlNavigatorRepositoriesView: View {
                     }
                     .disabled(item.branch == nil || sourceControlManager.currentBranch == item.branch)
                     Divider()
-                    Button("New Branch from \"\(branch.name)\"") {
+                    Button(
+                        item.branch == nil && item.id != "BranchesGroup"
+                           ? "New Branch"
+                           : "New Branch from \"\(branch.name)\""
+                    ) {
                         showNewBranch = true
-                        fromBranch = item.branch
+                        fromBranch =  item.branch
                     }
+                    .disabled(item.branch == nil && item.id != "BranchesGroup")
+                    Divider()
+                    Button("Add Existing Remote...") {
+                        addRemoteIsPresented = true
+                    }
+                    .disabled(item.id != "RemotesGroup")
                     Divider()
                     Button("Delete...") {
-                        Task {
-                            do {
-                                try await sourceControlManager.deleteBranch(branch: branch)
-                            } catch {
-                                await sourceControlManager.showAlertForError(title: "Failed to delete", error: error)
-                            }
+                        if item.branch != nil {
+                            isPresentingConfirmDeleteBranch = true
+                            branchToDelete = item.branch
+                        }
+                        if item.stashEntry != nil {
+                            isPresentingConfirmDeleteStashEntry = true
+                            stashEntryToDelete = item.stashEntry
+                        }
+                        if item.remote != nil {
+                            isPresentingConfirmDeleteRemote = true
+                            remoteToDelete = item.remote
                         }
                     }
                     .disabled(
-                        item.branch == nil
+                        (item.branch == nil
                         || item.branch?.isLocal == false
-                        || sourceControlManager.currentBranch == item.branch
+                        || sourceControlManager.currentBranch == item.branch)
+                        && item.stashEntry == nil
+                        && item.remote == nil
                     )
                 }
             }
         )
+        .sheet(isPresented: $addRemoteIsPresented) {
+            SourceControlAddRemoteView()
+        }
+        .confirmationDialog(
+            "Do you want to delete the branch “\(branchToDelete?.name ?? "")”?",
+            isPresented: $isPresentingConfirmDeleteBranch
+        ) {
+            Button("Delete") {
+                if let branch = branchToDelete {
+                    Task {
+                        do {
+                            try await sourceControlManager.deleteBranch(branch: branch)
+                        } catch {
+                            await sourceControlManager.showAlertForError(
+                                title: "Failed to delete",
+                                error: error
+                            )
+                        }
+                        branchToDelete = nil
+                    }
+                }
+            }
+        } message: {
+            Text("The branch will be removed from the repository. You can’t undo this action.")
+        }
+        .confirmationDialog(
+            "Do you want to delete the stash “\(stashEntryToDelete?.message ?? "")”?",
+            isPresented: $isPresentingConfirmDeleteStashEntry
+        ) {
+            Button("Delete") {
+                if let stashEntry = stashEntryToDelete {
+                    Task {
+                        do {
+                            try await sourceControlManager.deleteStashEntry(stashEntry: stashEntry)
+                        } catch {
+                            await sourceControlManager.showAlertForError(
+                                title: "Failed to delete",
+                                error: error
+                            )
+                        }
+                        stashEntryToDelete = nil
+                    }
+                }
+            }
+        } message: {
+            Text("The stash will be removed from the repository. You can’t undo this action.")
+        }
+        .confirmationDialog(
+            "Do you want to delete the remote “\(remoteToDelete?.name ?? "")”?",
+            isPresented: $isPresentingConfirmDeleteRemote
+        ) {
+            Button("Delete") {
+                if let remote = remoteToDelete {
+                    Task {
+                        do {
+                            try await sourceControlManager.deleteRemote(remote: remote)
+                        } catch {
+                            await sourceControlManager.showAlertForError(
+                                title: "Failed to delete",
+                                error: error
+                            )
+                        }
+                        remoteToDelete = nil
+                    }
+                }
+            }
+        } message: {
+            Text("The remote will be removed from the repository. You can’t undo this action.")
+        }
         .frame(maxHeight: .infinity)
         .task {
             await sourceControlManager.refreshBranches()

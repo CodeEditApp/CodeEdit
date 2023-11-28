@@ -183,6 +183,18 @@ final class SourceControlManager: ObservableObject {
         await refreshBranches()
     }
 
+    /// Delete stash entry
+    func deleteStashEntry(stashEntry: GitStashEntry) async throws {
+        try await gitClient.deleteStashEntry(stashEntry.index)
+        try await refreshStashEntries()
+    }
+
+    /// Delete remote
+    func deleteRemote(remote: GitRemote) async throws {
+        try await gitClient.removeRemote(name: remote.name)
+        try await refreshRemotes()
+    }
+
     /// Discard changes for file
     func discardChanges(for file: CEWorkspaceFile) {
         Task {
