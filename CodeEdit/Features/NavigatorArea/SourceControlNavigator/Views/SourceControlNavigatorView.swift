@@ -37,7 +37,7 @@ struct SourcControlNavigatorTabs: View {
         if sourceControlManager.isGitRepository {
             SegmentedControl(
                 $selectedSection,
-                options: ["Changes", "Repositories"],
+                options: ["Changes", "Repository"],
                 prominent: true
             )
             .frame(maxWidth: .infinity)
@@ -56,7 +56,7 @@ struct SourcControlNavigatorTabs: View {
                 SourceControlNavigatorChangesView()
             }
             if selectedSection == 1 {
-                SourceControlNavigatorRepositoriesView()
+                SourceControlNavigatorRepositoryView()
             }
         } else {
             CEContentUnavailableView(

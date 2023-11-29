@@ -58,6 +58,5 @@ struct SourceControlNavigatorChangesView: View {
             await sourceControlManager.refreshAllChangedFiles()
             await sourceControlManager.refreshNumberOfUnsyncedCommits()
         }
-
     }
 }

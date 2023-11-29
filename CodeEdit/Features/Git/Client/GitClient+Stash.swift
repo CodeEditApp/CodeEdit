@@ -31,6 +31,15 @@ extension GitClient {
         return stashEntries
     }
 
+    /// Apply stash
+    func applyStashEntry(_ index: Int?) async throws {
+        if let idx = index {
+            _ = try await run("stash apply stash@{\(idx)}")
+        } else {
+            _ = try await run("stash apply")
+        }
+    }
+
     /// Delete stash
     func deleteStashEntry(_ index: Int) async throws {
         _ = try await run("stash drop stash@{\(index)}")

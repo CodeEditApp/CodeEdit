@@ -195,6 +195,12 @@ final class SourceControlManager: ObservableObject {
         try await refreshStashEntries()
     }
 
+    /// Apply stash entry
+    func applyStashEntry(stashEntry: GitStashEntry?) async throws {
+        try await gitClient.applyStashEntry(stashEntry?.index)
+        try await refreshStashEntries()
+    }
+
     /// Delete remote
     func deleteRemote(remote: GitRemote) async throws {
         try await gitClient.removeRemote(name: remote.name)
