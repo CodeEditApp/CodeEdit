@@ -78,9 +78,10 @@ struct PaneTextField<LeadingAccessories: View, TrailingAccessories: View>: View 
     }
 
     var body: some View {
-        HStack(alignment: .center, spacing: 0) {
+        HStack(alignment: .top, spacing: 0) {
             if let leading = leadingAccessories {
                 leading
+                    .frame(height: 20)
             }
             VStack {
                 TextField(label, text: $text, axis: axis)

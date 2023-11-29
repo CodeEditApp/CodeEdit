@@ -67,6 +67,7 @@ struct SourceControlNavigatorRepositoriesView: View {
 
     @State var selection = Set<String>()
     @State var showNewBranch: Bool = false
+    @State var showRenameBranch: Bool = false
     @State var fromBranch: GitBranch?
     @State var expandedIds = [String: Bool]()
     @State var addRemoteIsPresented: Bool = false
@@ -170,6 +171,12 @@ struct SourceControlNavigatorRepositoriesView: View {
                 fromBranch: fromBranch
             )
         })
+        .sheet(isPresented: $showRenameBranch, content: {
+            SourceControlNavigatorRenameBranchView(
+                sourceControlManager: sourceControlManager,
+                fromBranch: fromBranch
+            )
+        })
         .contextMenu(
             forSelectionType: RepoOutlineGroupItem.ID.self,
             menu: { items in
@@ -190,13 +197,22 @@ struct SourceControlNavigatorRepositoriesView: View {
                     Divider()
                     Button(
                         item.branch == nil && item.id != "BranchesGroup"
-                           ? "New Branch"
-                           : "New Branch from \"\(branch.name)\""
+                        ? "New Branch..."
+                        : "New Branch from \"\(branch.name)\"..."
                     ) {
                         showNewBranch = true
                         fromBranch =  item.branch
                     }
                     .disabled(item.branch == nil && item.id != "BranchesGroup")
+                    Button(
+                        item.branch == nil
+                        ? "Rename Branch..."
+                        : "Rename \"\(branch.name)\""
+                    ) {
+                        showRenameBranch = true
+                        fromBranch = item.branch
+                    }
+                    .disabled(item.branch == nil)
                     Divider()
                     Button("Add Existing Remote...") {
                         addRemoteIsPresented = true

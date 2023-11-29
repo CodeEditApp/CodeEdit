@@ -173,6 +173,12 @@ final class SourceControlManager: ObservableObject {
         await refreshCurrentBranch()
     }
 
+    /// Rename branch
+    func renameBranch(from: String, to: String) async throws {
+        try await gitClient.renameBranch(from: from, to: to)
+        await refreshBranches()
+    }
+
     /// Delete branch if it's local and not current
     func deleteBranch(branch: GitBranch) async throws {
         if !branch.isLocal || branch == currentBranch {

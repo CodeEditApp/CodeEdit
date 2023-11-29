@@ -135,7 +135,7 @@ struct FindNavigatorForm: View {
                         .padding(.leading, 8)
                         .foregroundStyle(.tertiary)
                         .font(.system(size: 12))
-                        .frame(width: 16, height: 16)
+                        .frame(width: 16, height: 20)
                 },
                 trailingAccessories: {
                     Divider()
@@ -160,7 +160,8 @@ struct FindNavigatorForm: View {
                 clearable: true,
                 onClear: {
                     state.search(nil)
-                }
+                },
+                hasValue: caseSensitive || matchWholeWord
             )
             .onSubmit {
                 state.search(searchText)
@@ -175,7 +176,7 @@ struct FindNavigatorForm: View {
                             .padding(.leading, 8)
                             .foregroundStyle(.tertiary)
                             .font(.system(size: 12))
-                            .frame(width: 16, height: 16)
+                            .frame(width: 16, height: 20)
                     },
                     trailingAccessories: {
                         Divider()
@@ -193,7 +194,8 @@ struct FindNavigatorForm: View {
                         )
                         .help("Preserve Case")
                     },
-                    clearable: true
+                    clearable: true,
+                    hasValue: preserveCase
                 )
             }
             if scoped {
@@ -202,11 +204,11 @@ struct FindNavigatorForm: View {
                     text: $includesText,
                     axis: .vertical,
                     leadingAccessories: {
-                        Image(systemName: "plus")
+                        Image(systemName: "folder.badge.plus")
                             .padding(.leading, 8)
                             .foregroundStyle(.tertiary)
                             .font(.system(size: 12))
-                            .frame(width: 16, height: 16)
+                            .frame(width: 16, height: 20)
                     },
                     trailingAccessories: {
                         Divider()
@@ -223,18 +225,19 @@ struct FindNavigatorForm: View {
                         )
                         .help("Search only in Open Editors")
                     },
-                    clearable: true
+                    clearable: true,
+                    hasValue: scopedToOpenEditors
                 )
                 PaneTextField(
                     "Excluding folders",
                     text: $excludesText,
                     axis: .vertical,
                     leadingAccessories: {
-                        Image(systemName: "minus")
+                        Image(systemName: "folder.badge.minus")
                             .padding(.leading, 8)
                             .foregroundStyle(.tertiary)
                             .font(.system(size: 12))
-                            .frame(width: 16, height: 16)
+                            .frame(width: 16, height: 20)
                     },
                     trailingAccessories: {
                         Divider()
@@ -251,7 +254,8 @@ struct FindNavigatorForm: View {
                         )
                         .help("Use Exclude Settings and Ignore Files")
                     },
-                    clearable: true
+                    clearable: true,
+                    hasValue: excludeSettings
                 )
             }
             if selectedMode[0] == SearchModeModel.Replace {

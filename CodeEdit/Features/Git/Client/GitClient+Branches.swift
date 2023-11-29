@@ -65,6 +65,13 @@ extension GitClient {
         _ = try await run("checkout -b \(name) \(from.name)")
     }
 
+    /// Rename branch
+    /// - Parameter from: Name of the branch to rename
+    /// - Parameter to: New name for branch
+    func renameBranch(from: String, to: String) async throws {
+        _ = try await run("branch -m \(from) \(to)")
+    }
+
     /// Checkout branch
     /// - Parameter branch: Branch to checkout
     func checkoutBranch(_ branch: GitBranch, forceLocal: Bool = false) async throws {
