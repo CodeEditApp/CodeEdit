@@ -45,7 +45,7 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
     var type: FileIcon.FileType { .init(rawValue: url.pathExtension) ?? .txt }
 
     /// Returns the URL of the ``CEWorkspaceFile``
-    var url: URL
+    let url: URL
 
     /// Return the icon of the file as `Image`
     var icon: Image { Image(systemName: systemImage) }
@@ -242,8 +242,9 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
     // MARK: Hashable
 
     func hash(into hasher: inout Hasher) {
-// TODO: Causing crashes, needs a better solution and should be fixed before merging.
+// TODO: This was causing crashes, needs a better solution and should be fixed
 //        hasher.combine(fileIdentifier)
+        hasher.combine(url)
         hasher.combine(id)
     }
 
