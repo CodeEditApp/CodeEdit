@@ -204,11 +204,7 @@ struct SourceControlNavigatorRepositoriesView: View {
                         fromBranch =  item.branch
                     }
                     .disabled(item.branch == nil && item.id != "BranchesGroup")
-                    Button(
-                        item.branch == nil
-                        ? "Rename Branch..."
-                        : "Rename \"\(branch.name)\""
-                    ) {
+                    Button(item.branch == nil ? "Rename Branch..." : "Rename \"\(branch.name)\"") {
                         showRenameBranch = true
                         fromBranch = item.branch
                     }

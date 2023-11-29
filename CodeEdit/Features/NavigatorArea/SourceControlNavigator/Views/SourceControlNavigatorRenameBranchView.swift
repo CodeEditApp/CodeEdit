@@ -18,7 +18,7 @@ struct SourceControlNavigatorRenameBranchView: View {
     func submit(_ branch: GitBranch) {
         Task {
             do {
-                try await sourceControlManager.renameBranch(from: branch.name, to: name)
+                try await sourceControlManager.renameBranch(oldName: branch.name, newName: name)
                 await MainActor.run {
                     dismiss()
                 }

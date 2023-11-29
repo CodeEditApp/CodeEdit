@@ -9,7 +9,8 @@ import SwiftUI
 
 struct SourceControlAddRemoteView: View {
     @EnvironmentObject var sourceControlManager: SourceControlManager
-    @Environment(\.dismiss) private var dismiss
+    @Environment(\.dismiss)
+    private var dismiss
 
     @State private var name: String = ""
     @State private var location: String = ""

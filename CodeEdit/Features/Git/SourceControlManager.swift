@@ -174,8 +174,8 @@ final class SourceControlManager: ObservableObject {
     }
 
     /// Rename branch
-    func renameBranch(from: String, to: String) async throws {
-        try await gitClient.renameBranch(from: from, to: to)
+    func renameBranch(oldName: String, newName: String) async throws {
+        try await gitClient.renameBranch(oldName: oldName, newName: newName)
         await refreshBranches()
     }
 

@@ -152,7 +152,9 @@ struct FindNavigatorForm: View {
                         isOn: $matchWholeWord,
                         label: {
                             Image(systemName: "textformat.abc.dottedunderline")
-                                .foregroundStyle(matchWholeWord ? Color(.controlAccentColor) : Color(.secondaryLabelColor))
+                                .foregroundStyle(
+                                    matchWholeWord ? Color(.controlAccentColor) : Color(.secondaryLabelColor)
+                                )
                         }
                     )
                     .help("Match Whole Word")
@@ -186,9 +188,7 @@ struct FindNavigatorForm: View {
                                 Text("AB")
                                     .font(.system(size: 12, design: .rounded))
                                     .foregroundStyle(
-                                        preserveCase
-                                        ? Color(.controlAccentColor)
-                                        : Color(.secondaryLabelColor)
+                                        preserveCase ? Color(.controlAccentColor) : Color(.secondaryLabelColor)
                                     )
                             }
                         )
@@ -217,9 +217,7 @@ struct FindNavigatorForm: View {
                             label: {
                                 Image(systemName: "doc.plaintext")
                                     .foregroundStyle(
-                                        scopedToOpenEditors
-                                        ? Color(.controlAccentColor)
-                                        : Color(.secondaryLabelColor)
+                                        scopedToOpenEditors ? Color(.controlAccentColor) : Color(.secondaryLabelColor)
                                     )
                             }
                         )
@@ -246,9 +244,7 @@ struct FindNavigatorForm: View {
                             label: {
                                 Image(systemName: "gearshape")
                                     .foregroundStyle(
-                                        excludeSettings
-                                        ? Color(.controlAccentColor)
-                                        : Color(.secondaryLabelColor)
+                                        excludeSettings ? Color(.controlAccentColor) : Color(.secondaryLabelColor)
                                     )
                             }
                         )

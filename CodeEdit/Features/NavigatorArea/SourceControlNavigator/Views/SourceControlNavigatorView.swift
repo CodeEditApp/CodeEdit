@@ -44,9 +44,11 @@ struct SourcControlNavigatorTabs: View {
             .frame(height: 26)
             .padding(.horizontal, 8)
             .task {
-                Task {
+                do {
                     try await sourceControlManager.refreshRemotes()
                     try await sourceControlManager.refreshStashEntries()
+                } catch {
+                    await sourceControlManager.showAlertForError(title: "Error refreshing Git data", error: error)
                 }
             }
             Divider()
