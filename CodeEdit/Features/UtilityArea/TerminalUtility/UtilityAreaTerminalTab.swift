@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct UtilityAreaTerminalTab: View {
-    @Binding var terminal: UtilityAreaTerminal
+    @ObservedObject var terminal: UtilityAreaTerminal
 
     var removeTerminals: (_ ids: Set<UUID>) -> Void
 

@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-struct UtilityAreaTerminal: Identifiable, Equatable {
-    var id: UUID
-    var url: URL?
-    var title: String
-    var terminalTitle: String
-    var shell: String
-    var customTitle: Bool
+final class UtilityAreaTerminal: ObservableObject, Identifiable, Equatable {
+    let id: UUID
+    @Published var url: URL?
+    @Published var title: String
+    @Published var terminalTitle: String
+    @Published var shell: String
+    @Published var customTitle: Bool
 
     init(id: UUID, url: URL, title: String, shell: String) {
         self.id = id
@@ -22,6 +22,10 @@ struct UtilityAreaTerminal: Identifiable, Equatable {
         self.url = url
         self.shell = shell
         self.customTitle = false
+    }
+
+    static func == (lhs: UtilityAreaTerminal, rhs: UtilityAreaTerminal) -> Bool {
+        lhs.id == rhs.id
     }
 }
 
@@ -188,9 +192,9 @@ struct UtilityAreaTerminalView: View {
             )
         } leadingSidebar: { _ in
             List(selection: $model.selectedTerminals) {
-                ForEach($model.terminals, id: \.self.id) { $terminal in
+                ForEach(model.terminals, id: \.self.id) { terminal in
                     UtilityAreaTerminalTab(
-                        terminal: $terminal,
+                        terminal: terminal,
                         removeTerminals: model.removeTerminals,
                         isSelected: model.selectedTerminals.contains(terminal.id),
                         selectedIDs: model.selectedTerminals
