@@ -75,7 +75,9 @@ final class CEWorkspaceFileManager {
             self?.fileSystemEventReceived(events: events)
         }
 
-        sourceControlManager?.isGitRepository = fileManager.fileExists(atPath: "\(folderUrl.relativePath)/.git")
+        Task {
+            try await self.sourceControlManager?.validate()
+        }
     }
 
     // MARK: - Public API
@@ -297,11 +299,11 @@ final class CEWorkspaceFileManager {
             }
         }
 
-        // If .git folder was added or removed, refresh isGitRepository
+        // If .git folder was added or removed, check if repository is valid
         if gitFolderChange != nil {
-            self.sourceControlManager?.isGitRepository = self.fileManager.fileExists(
-                atPath: "\(self.folderUrl.relativePath)/.git"
-            )
+            Task {
+                try await self.sourceControlManager?.validate()
+            }
         }
     }
 

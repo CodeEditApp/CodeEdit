@@ -312,6 +312,16 @@ final class SourceControlManager: ObservableObject {
         try await gitClient.initiate()
     }
 
+    /// Validate repository
+    func validate() async throws {
+        Task {
+            let isGitRepository = try await gitClient.validate()
+            await MainActor.run {
+                self.isGitRepository = isGitRepository
+            }
+        }
+    }
+
     /// Show alert for error
     func showAlertForError(title: String, error: Error) async {
         if let error = error as? GitClient.GitClientError {
