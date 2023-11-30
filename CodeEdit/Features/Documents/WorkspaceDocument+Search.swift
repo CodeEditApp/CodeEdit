@@ -138,9 +138,12 @@ extension WorkspaceDocument {
                             var newResult = SearchResultModel(file: CEWorkspaceFile(url: url), score: score)
                             await self.evaluateResult(query: query.lowercased(), searchResult: &newResult)
 
-                            // The function needs to be called because,
-                            // we are trying to modify the array from within a concurrent context.
-                            self.appendNewResultsToTempResults(newResult: newResult)
+                            // Check if the new result has any line matches.
+                            if !newResult.lineMatches.isEmpty {
+                                // The function needs to be called because,
+                                // we are trying to modify the array from within a concurrent context.
+                                self.appendNewResultsToTempResults(newResult: newResult)
+                            }
                             evaluateResultGroup.leave()
                         }
                     }
