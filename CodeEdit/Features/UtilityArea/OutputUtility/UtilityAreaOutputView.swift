@@ -26,7 +26,7 @@ struct UtilityAreaOutputView: View {
     }
 
     var body: some View {
-        UtilityAreaTabView { _ in
+        UtilityAreaTabView(model: model.tabViewModel) { _ in
             Group {
                 if selectedOutputSource == nil {
                     Text("No output")
