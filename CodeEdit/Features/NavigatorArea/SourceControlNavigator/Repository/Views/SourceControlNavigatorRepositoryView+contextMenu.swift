@@ -52,11 +52,12 @@ extension SourceControlNavigatorRepositoryView {
         Button(
             item.branch == nil
             ? "Rename Branch..."
-            : "Rename \"\(branch.name)\"...") {
-                showRenameBranch = true
-                fromBranch = item.branch
-            }
-            .disabled(item.branch == nil)
+            : "Rename \"\(branch.name)\"..."
+        ) {
+            showRenameBranch = true
+            fromBranch = item.branch
+        }
+        .disabled(item.branch == nil)
         Divider()
         Button("Add Existing Remote...") {
             addRemoteIsPresented = true
