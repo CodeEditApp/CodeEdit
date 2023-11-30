@@ -65,7 +65,7 @@ extension SearchIndexer {
             await withTaskGroup(of: Bool.self) { taskGroup in
                 for file in files {
                     taskGroup.addTask {
-                        return self.index.addFileWithText(file.url, text: file.text, canReplace: false)
+                        return self.index.addFileWithText(file.url, text: file.text, canReplace: true)
                     }
                 }
 
@@ -88,7 +88,7 @@ extension SearchIndexer {
             await withTaskGroup(of: Bool.self) { taskGroup in
                 for url in urls {
                     taskGroup.addTask {
-                        return self.index.addFile(fileURL: url, canReplace: false)
+                        return self.index.addFile(fileURL: url, canReplace: true)
                     }
                 }
 
@@ -126,7 +126,7 @@ extension SearchIndexer {
                 } else {
                     addQueue.async { [weak self] in
                         guard let self = self else { return }
-                        _ = self.index.addFile(fileURL: fileURL, canReplace: false)
+                        _ = self.index.addFile(fileURL: fileURL, canReplace: true)
                         dispatchGroup.leave()
                     }
                 }

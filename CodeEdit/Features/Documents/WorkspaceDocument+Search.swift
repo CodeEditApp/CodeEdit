@@ -200,7 +200,7 @@ extension WorkspaceDocument {
                         let noSpaceLine = rawNoSpaceLine.lowercased()
                         if self.lineContainsSearchTerm(line: noSpaceLine, term: query) {
                             let matches = noSpaceLine.ranges(of: query).map { range in
-                                return [lineNumber, rawNoSapceLine, range]
+                                return [lineNumber, rawNoSpaceLine, range]
                             }
 
                             for match in matches {
