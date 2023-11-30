@@ -11,7 +11,7 @@ extension WorkspaceDocument {
     final class SearchState: ObservableObject {
         @Published var searchResult: [SearchResultModel] = []
         @Published var searchResultsFileCount: Int = 0
-        @Published var searchResultCount: Int = 0
+        @Published var searchResultsCount: Int = 0
 
         unowned var workspace: WorkspaceDocument
         var tempSearchResults = [SearchResultModel]()
@@ -170,7 +170,7 @@ extension WorkspaceDocument {
         func setSearchResults() {
             DispatchQueue.main.async {
                 self.searchResult = self.tempSearchResults.sorted { $0.score > $1.score }
-                self.searchResultCount = self.tempSearchResults.map { $0.lineMatches.count }.reduce(0, +)
+                self.searchResultsCount = self.tempSearchResults.map { $0.lineMatches.count }.reduce(0, +)
                 self.searchResultsFileCount = self.tempSearchResults.count
                 self.tempSearchResults = []
             }
@@ -285,6 +285,15 @@ extension WorkspaceDocument {
 
             return false
             // TODO: references and definitions
+        }
+
+        /// Resets the search results along with counts for overall results and file-specific results.
+        func clearResults() {
+            DispatchQueue.main.async {
+                self.searchResult.removeAll()
+                self.searchResultsCount = 0
+                self.searchResultsFileCount = 0
+            }
         }
     }
 }

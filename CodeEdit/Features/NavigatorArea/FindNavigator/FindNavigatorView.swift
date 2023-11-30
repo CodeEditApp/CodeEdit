@@ -43,14 +43,12 @@ struct FindNavigatorView: View {
                         Button {
                             currentFilter = Filters.ignoring.rawValue
                             state.ignoreCase = true
-//                            state.search(searchText)
                         } label: {
                             Text(Filters.ignoring.rawValue)
                         }
                         Button {
                             currentFilter = Filters.matching.rawValue
                             state.ignoreCase = false
-//                            state.search(searchText)
                         } label: {
                             Text(Filters.matching.rawValue)
                         }
@@ -81,7 +79,7 @@ struct FindNavigatorView: View {
             }
             Divider()
 
-            FindNavigatorResultList() // TODO: Replace with SwiftUI implementation
+            FindNavigatorResultList()
         }
         .onSubmit {
             Task {
@@ -89,7 +87,7 @@ struct FindNavigatorView: View {
             }
         }
         .onReceive(state.objectWillChange) { _ in
-            self.searchResultCount = state.searchResultCount
+            self.searchResultCount = state.searchResultsCount
             self.foundFilesCount = state.searchResult.count
         }
     }

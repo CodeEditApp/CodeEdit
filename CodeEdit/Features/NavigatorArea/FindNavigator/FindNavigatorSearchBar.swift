@@ -83,8 +83,7 @@ struct FindNavigatorSearchBar: View {
     private var clearButton: some View {
         Button {
             self.text = ""
-//            state.search(nil)
-            // TODO: Set search results to nil
+            state.clearResults()
         } label: {
             Image(systemName: "xmark.circle.fill")
         }
