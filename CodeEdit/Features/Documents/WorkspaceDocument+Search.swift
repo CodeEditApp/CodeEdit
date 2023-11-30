@@ -138,7 +138,7 @@ extension WorkspaceDocument {
                             var newResult = SearchResultModel(file: CEWorkspaceFile(url: url), score: score)
                             await self.evaluateResult(query: query.lowercased(), searchResult: &newResult)
 
-                            // The funciton needs to be called because,
+                            // The function needs to be called because,
                             // we are trying to modify the array from within a concurrent context.
                             self.appendNewResultsToTempResults(newResult: newResult)
                             evaluateResultGroup.leave()
@@ -196,8 +196,8 @@ extension WorkspaceDocument {
             await withTaskGroup(of: SearchResultMatchModel?.self) { group in
                 for (lineNumber, line) in string.split(separator: "\n").lazy.enumerated() {
                     group.addTask {
-                        let rawNoSapceLine = line.trimmingCharacters(in: .whitespacesAndNewlines)
-                        let noSpaceLine = rawNoSapceLine.lowercased()
+                        let rawNoSpaceLine = line.trimmingCharacters(in: .whitespacesAndNewlines)
+                        let noSpaceLine = rawNoSpaceLine.lowercased()
                         if self.lineContainsSearchTerm(line: noSpaceLine, term: query) {
                             let matches = noSpaceLine.ranges(of: query).map { range in
                                 return [lineNumber, rawNoSapceLine, range]
