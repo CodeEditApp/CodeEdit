@@ -9,8 +9,11 @@ import SwiftUI
 
 struct SourceControlNavigatorToolbarBottom: View {
     @EnvironmentObject private var workspace: WorkspaceDocument
+    @EnvironmentObject var sourceControlManager: SourceControlManager
 
     @State private var text = ""
+    @State private var stashChangesIsPresented: Bool = false
+    @State private var noChangesToStashIsPresented: Bool = false
 
     var body: some View {
         HStack(spacing: 5) {
@@ -50,12 +53,13 @@ struct SourceControlNavigatorToolbarBottom: View {
                     workspace.sourceControlManager?.discardAllChanges()
                 }
             }
-            Button("Stash Changes...") {}
-                .disabled(true) // TODO: Implementation Needed
-            Button("Commit...") {}
-                .disabled(true) // TODO: Implementation Needed
-            Button("Create Pull Request...") {}
-                .disabled(true) // TODO: Implementation Needed
+            Button("Stash Changes...") {
+                if sourceControlManager.changedFiles.isEmpty {
+                    noChangesToStashIsPresented = true
+                } else {
+                    stashChangesIsPresented = true
+                }
+            }
         } label: {}
         .background {
             Image(systemName: "ellipsis.circle")
@@ -63,6 +67,14 @@ struct SourceControlNavigatorToolbarBottom: View {
         .menuStyle(.borderlessButton)
         .menuIndicator(.hidden)
         .frame(maxWidth: 18, alignment: .center)
+        .sheet(isPresented: $stashChangesIsPresented) {
+            SourceControlStashChangesView()
+        }
+        .alert("Cannot Stash Changes", isPresented: $noChangesToStashIsPresented) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text("There are no uncommitted changes in the local repository for this project.")
+        }
     }
 
     /// Renders a Discard Changes Dialog

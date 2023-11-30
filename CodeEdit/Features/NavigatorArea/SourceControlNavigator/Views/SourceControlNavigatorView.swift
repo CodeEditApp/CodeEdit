@@ -11,8 +11,8 @@ struct SourceControlNavigatorView: View {
     @EnvironmentObject private var workspace: WorkspaceDocument
 
     var body: some View {
-        VStack(spacing: 0) {
-            if let sourceControlManager = workspace.workspaceFileManager?.sourceControlManager {
+        if let sourceControlManager = workspace.workspaceFileManager?.sourceControlManager {
+            VStack(spacing: 0) {
                 SourcControlNavigatorTabs()
                     .environmentObject(sourceControlManager)
                     .onAppear {
@@ -22,9 +22,10 @@ struct SourceControlNavigatorView: View {
                         sourceControlManager.stopPeriodicFetch()
                     }
             }
-        }
-        .safeAreaInset(edge: .bottom, spacing: 0) {
-            SourceControlNavigatorToolbarBottom()
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                SourceControlNavigatorToolbarBottom()
+                    .environmentObject(sourceControlManager)
+            }
         }
     }
 }

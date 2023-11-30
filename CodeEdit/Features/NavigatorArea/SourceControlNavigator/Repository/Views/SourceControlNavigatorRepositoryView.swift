@@ -28,6 +28,7 @@ struct SourceControlNavigatorRepositoryView: View {
     @State var stashEntryToDelete: GitStashEntry?
     @State var isPresentingConfirmDeleteRemote: Bool = false
     @State var remoteToDelete: GitRemote?
+    @State var keepStashAfterApplying: Bool = true
 
     func findItem(by id: String, in items: [RepoOutlineGroupItem]) -> RepoOutlineGroupItem? {
         for item in items {
@@ -90,14 +91,26 @@ struct SourceControlNavigatorRepositoryView: View {
             isPresented: $applyStashedChangesIsPresented
         ) {
             if sourceControlManager.changedFiles.isEmpty {
-                Button("Cancel", role: .cancel) {}
                 Button("Apply") {
-                    Task {
-                        try await sourceControlManager.applyStashEntry(stashEntry: stashEntryToApply)
-                        applyStashedChangesIsPresented = false
-                        stashEntryToApply = nil
+                    if let stashEntry = stashEntryToApply {
+                        Task {
+                            try await sourceControlManager.applyStashEntry(stashEntry: stashEntryToApply)
+                            applyStashedChangesIsPresented = false
+                            stashEntryToApply = nil
+                        }
                     }
                 }
+                Button("Apply and Delete") {
+                    if let stashEntry = stashEntryToApply {
+                        Task {
+                            try await sourceControlManager.applyStashEntry(stashEntry: stashEntry)
+                            try await sourceControlManager.deleteStashEntry(stashEntry: stashEntry)
+                            applyStashedChangesIsPresented = false
+                            stashEntryToApply = nil
+                        }
+                    }
+                }
+                Button("Cancel", role: .cancel) {}
             } else {
                 Button("Okay", role: .cancel) {}
             }

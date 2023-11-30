@@ -370,11 +370,11 @@
 		B60718202B0C6CE7009CDAB4 /* GitStashEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = B607181F2B0C6CE7009CDAB4 /* GitStashEntry.swift */; };
 		B60718312B15A9A3009CDAB4 /* CEOutlineGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60718302B15A9A3009CDAB4 /* CEOutlineGroup.swift */; };
 		B60718372B170638009CDAB4 /* SourceControlNavigatorRenameBranchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60718362B170638009CDAB4 /* SourceControlNavigatorRenameBranchView.swift */; };
-		B607183C2B17A0FF009CDAB4 /* SourceControlApplyStashedChangesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B607183B2B17A0FF009CDAB4 /* SourceControlApplyStashedChangesView.swift */; };
 		B607183F2B17DB07009CDAB4 /* SourceControlNavigatorRepositoryView+contextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = B607183E2B17DB07009CDAB4 /* SourceControlNavigatorRepositoryView+contextMenu.swift */; };
 		B60718422B17DB93009CDAB4 /* SourceControlNavigatorRepositoryView+outlineGroupData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60718412B17DB93009CDAB4 /* SourceControlNavigatorRepositoryView+outlineGroupData.swift */; };
 		B60718442B17DBE5009CDAB4 /* SourceControlNavigatorRepositoryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60718432B17DBE5009CDAB4 /* SourceControlNavigatorRepositoryItem.swift */; };
 		B60718462B17DC15009CDAB4 /* RepoOutlineGroupItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60718452B17DC15009CDAB4 /* RepoOutlineGroupItem.swift */; };
+		B607184C2B17E037009CDAB4 /* SourceControlStashChangesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B607184B2B17E037009CDAB4 /* SourceControlStashChangesView.swift */; };
 		B60BE8BD297A167600841125 /* AcknowledgementRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60BE8BC297A167600841125 /* AcknowledgementRowView.swift */; };
 		B6152B802ADAE421004C6012 /* CodeEditWindowControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6152B7F2ADAE421004C6012 /* CodeEditWindowControllerExtensions.swift */; };
 		B61A606129F188AB009B43F9 /* ExternalLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61A606029F188AB009B43F9 /* ExternalLink.swift */; };
@@ -872,11 +872,11 @@
 		B607181F2B0C6CE7009CDAB4 /* GitStashEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitStashEntry.swift; sourceTree = "<group>"; };
 		B60718302B15A9A3009CDAB4 /* CEOutlineGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CEOutlineGroup.swift; sourceTree = "<group>"; };
 		B60718362B170638009CDAB4 /* SourceControlNavigatorRenameBranchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlNavigatorRenameBranchView.swift; sourceTree = "<group>"; };
-		B607183B2B17A0FF009CDAB4 /* SourceControlApplyStashedChangesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlApplyStashedChangesView.swift; sourceTree = "<group>"; };
 		B607183E2B17DB07009CDAB4 /* SourceControlNavigatorRepositoryView+contextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SourceControlNavigatorRepositoryView+contextMenu.swift"; sourceTree = "<group>"; };
 		B60718412B17DB93009CDAB4 /* SourceControlNavigatorRepositoryView+outlineGroupData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SourceControlNavigatorRepositoryView+outlineGroupData.swift"; sourceTree = "<group>"; };
 		B60718432B17DBE5009CDAB4 /* SourceControlNavigatorRepositoryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlNavigatorRepositoryItem.swift; sourceTree = "<group>"; };
 		B60718452B17DC15009CDAB4 /* RepoOutlineGroupItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoOutlineGroupItem.swift; sourceTree = "<group>"; };
+		B607184B2B17E037009CDAB4 /* SourceControlStashChangesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlStashChangesView.swift; sourceTree = "<group>"; };
 		B60BE8BC297A167600841125 /* AcknowledgementRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcknowledgementRowView.swift; sourceTree = "<group>"; };
 		B6152B7F2ADAE421004C6012 /* CodeEditWindowControllerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditWindowControllerExtensions.swift; sourceTree = "<group>"; };
 		B61A606029F188AB009B43F9 /* ExternalLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalLink.swift; sourceTree = "<group>"; };
@@ -1058,7 +1058,7 @@
 				201169D62837B2E300F92B46 /* SourceControlNavigatorView.swift */,
 				201169DC2837B3AC00F92B46 /* SourceControlNavigatorToolbarBottom.swift */,
 				B65B10F42B081A0C002852CF /* SourceControlAddRemoteView.swift */,
-				B607183B2B17A0FF009CDAB4 /* SourceControlApplyStashedChangesView.swift */,
+				B607184B2B17E037009CDAB4 /* SourceControlStashChangesView.swift */,
 				041FC6AC2AE437CE00C1F65A /* SourceControlNavigatorNewBranchView.swift */,
 				B60718362B170638009CDAB4 /* SourceControlNavigatorRenameBranchView.swift */,
 			);
@@ -3321,6 +3321,7 @@
 				587B9E7129301D8F00AC7927 /* GitURLSession.swift in Sources */,
 				5882252C292C280D00E83CDE /* UtilityAreaView.swift in Sources */,
 				2847019E27FDDF7600F87B6B /* ProjectNavigatorOutlineView.swift in Sources */,
+				B607184C2B17E037009CDAB4 /* SourceControlStashChangesView.swift in Sources */,
 				6C14CEB32877A68F001468FE /* FindNavigatorMatchListCell.swift in Sources */,
 				20EBB501280C325D00F3A5DA /* FileInspectorView.swift in Sources */,
 				58822531292C280D00E83CDE /* View+isHovering.swift in Sources */,
@@ -3381,7 +3382,6 @@
 				B65B10F82B081A34002852CF /* SourceControlNavigatorNoRemotesView.swift in Sources */,
 				58D01C97293167DC00C5B6B4 /* String+SHA256.swift in Sources */,
 				B6EA1FFD29DB792C001BF195 /* ThemeSettingsColorPreview.swift in Sources */,
-				B607183C2B17A0FF009CDAB4 /* SourceControlApplyStashedChangesView.swift in Sources */,
 				2806E904297958B9000040F4 /* ContributorRowView.swift in Sources */,
 				6C578D8C29CD372700DC73B2 /* ExtensionCommands.swift in Sources */,
 				B6041F5229D7D6D6000F3454 /* SettingsWindow.swift in Sources */,

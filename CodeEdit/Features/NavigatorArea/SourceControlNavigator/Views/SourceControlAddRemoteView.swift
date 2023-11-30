@@ -58,8 +58,8 @@ struct SourceControlAddRemoteView: View {
                 Button("Add", action: submit)
                     .buttonStyle(.borderedProminent)
             }
-            .padding(.horizontal)
-            .padding(.bottom)
+            .padding(.horizontal, 20)
+            .padding(.bottom, 20)
         }
         .frame(minWidth: 480)
         .onAppear {
