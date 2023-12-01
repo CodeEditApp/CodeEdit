@@ -197,7 +197,7 @@ extension WorkspaceDocument {
             }
 
             await withTaskGroup(of: SearchResultMatchModel?.self) { group in
-                for (lineNumber, line) in string.split(separator: "\n").lazy.enumerated() {
+                for (lineNumber, line) in string.components(separatedBy: .whitespacesAndNewlines).lazy.enumerated() {
                     group.addTask {
                         let rawNoSpaceLine = line.trimmingCharacters(in: .whitespacesAndNewlines)
                         let noSpaceLine = rawNoSpaceLine.lowercased()
