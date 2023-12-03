@@ -247,8 +247,8 @@ final class Editor: ObservableObject, Identifiable {
     private func canCloseTab(file: CEWorkspaceFile) -> Bool {
         guard let codeFile = file.fileDocument else { return true }
 
-        if codeFile.isDocumentEdited {
-            if item.isDraft {
+        if file.isDocumentEdited {
+            if item.isScratch {
                 return openDraftSavePanel(for: item)
             }
 
@@ -267,6 +267,18 @@ final class Editor: ObservableObject, Identifiable {
             return shouldClose.pointee
         }
 
+        if item.isScratch {
+            let fileManager = FileManager.default
+
+            if fileManager.fileExists(atPath: item.url.path) {
+                do {
+                    try fileManager.removeItem(at: item.url)
+                } catch {
+                    fatalError(error.localizedDescription)
+                }
+            }
+        }
+
         return true
     }
 
@@ -279,18 +291,17 @@ final class Editor: ObservableObject, Identifiable {
         guard let currentWindow = NSApp.keyWindow else { return false }
 
         let alert = NSAlert()
-        alert.messageText = "Do you want to save the contens of the draft file “untitled-1”?"
+        alert.messageText = "Do you want to save the contens of the scratch file \"\(file.name)\"?"
         alert.informativeText = "Your changes will be lost if you don’t save them."
         alert.addButton(withTitle: "Save")
         alert.addButton(withTitle: "Don't save").hasDestructiveAction = true
         alert.addButton(withTitle: "Cancel")
         let response = alert.runModal()
         if response == NSApplication.ModalResponse.alertFirstButtonReturn {
-            print("Save file")
             NSApp.sendAction(#selector(CodeEditWindowController.saveDocument(_:)), to: nil, from: nil)
             return true
-        } else if response == NSApplication.ModalResponse.alertSecondButtonReturn {
-            print("Remove file")
+        }
+        if response == NSApplication.ModalResponse.alertSecondButtonReturn {
             let fileManager = FileManager.default
 
             if fileManager.fileExists(atPath: file.url.path) {

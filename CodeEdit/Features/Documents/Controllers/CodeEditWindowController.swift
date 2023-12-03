@@ -239,7 +239,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
 
     @IBAction func saveDocument(_ sender: Any) {
         guard let codeFile = getCurrentWorkspaceFile() else { return }
-        if codeFile.isDraft {
+        if codeFile.isScratch {
             saveDocumentAs(codeFile, sender)
         } else {
             codeFile.fileDocument?.save(sender)
