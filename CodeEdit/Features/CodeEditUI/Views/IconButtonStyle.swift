@@ -12,12 +12,6 @@ struct IconButtonStyle: ButtonStyle {
     var font: Font?
     var size: CGSize?
 
-    init() {
-        self.isActive = nil
-        self.font = nil
-        self.size = nil
-    }
-
     init(isActive: Bool? = nil, font: Font? = nil, size: CGFloat? = nil) {
         self.isActive = isActive
         self.font = font

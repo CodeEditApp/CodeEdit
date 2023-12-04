@@ -13,11 +13,6 @@ struct IconToggleStyle: ToggleStyle {
 
     @State var isPressing = false
 
-    init() {
-        self.font = nil
-        self.size = nil
-    }
-
     init(font: Font? = nil, size: CGFloat? = nil) {
         self.font = font
         self.size = size == nil ? nil : CGSize(width: size ?? 0, height: size ?? 0)
