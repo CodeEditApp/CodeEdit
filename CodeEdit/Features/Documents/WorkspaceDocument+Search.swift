@@ -115,6 +115,7 @@ extension WorkspaceDocument {
         ///
         /// - Parameter query: The search query to search for.
         func search(_ query: String) async {
+            let startTime = Date()
             let searchQuery = getSearchTerm(query)
             guard let indexer = indexer else {
                 return
@@ -152,6 +153,7 @@ extension WorkspaceDocument {
 
             evaluateResultGroup.notify(queue: evaluateSearchQueue) {
                     self.setSearchResults()
+                fatalError("\(Date().timeIntervalSince(startTime))")
             }
         }
 
@@ -195,42 +197,66 @@ extension WorkspaceDocument {
                   let string = String(data: data, encoding: .utf8) else {
                 return
             }
+            guard let regex = try? NSRegularExpression(pattern: query, options: [.caseInsensitive]) else {
+                return
+            }
 
-            await withTaskGroup(of: SearchResultMatchModel?.self) { group in
-                for (lineNumber, line) in string.components(separatedBy: .whitespacesAndNewlines).lazy.enumerated() {
-                    group.addTask {
-                        let rawNoSpaceLine = line.trimmingCharacters(in: .whitespacesAndNewlines)
-                        let noSpaceLine = rawNoSpaceLine.lowercased()
-                        if self.lineContainsSearchTerm(line: noSpaceLine, term: query) {
-                            let matches = noSpaceLine.ranges(of: query).map { range in
-                                return [lineNumber, rawNoSpaceLine, range]
-                            }
+            let matches = regex.matches(in: string, range: NSRange(location: 0, length: string.utf16.count))
 
-                            for match in matches {
-                                if let lineNumber = match[0] as? Int,
-                                   let lineContent = match[1] as? String,
-                                   let keywordRange = match[2] as? Range<String.Index> {
-                                    let matchModel = SearchResultMatchModel(
-                                        lineNumber: lineNumber,
-                                        file: searchResultCopy.file,
-                                        lineContent: lineContent,
-                                        keywordRange: keywordRange
-                                    )
-
-                                    return matchModel
-                                }
-                            }
-                        }
-                        return nil
+            for match in matches {
+                if let matchRange = Range(match.range, in: string) {
+                    let lineRange = string.lineRange(for: matchRange)
+                    let lineContent = string[lineRange]
+                    let matchRangeWithInLine = lineContent.lowercased().ranges(of: query).map { range in
+                        return range
                     }
-                    for await groupRes in group {
-                        if let groupRes {
-                            newMatches.append(groupRes)
-                        }
-                    }
+
+                    let matchModel = SearchResultMatchModel(
+                        lineNumber: 0,
+                        file: searchResultCopy.file,
+                        lineContent: String(lineContent),
+                        keywordRange: matchRangeWithInLine.first!
+                    )
+                    newMatches.append(matchModel)
                 }
             }
+
             searchResult.lineMatches = newMatches
+//            await withTaskGroup(of: SearchResultMatchModel?.self) { group in
+//                for (lineNumber, line) in string.components(separatedBy: .newlines).lazy.enumerated() {
+//                    group.addTask {
+//                        let rawNoSpaceLine = line.trimmingCharacters(in: .whitespacesAndNewlines)
+//                        let noSpaceLine = rawNoSpaceLine.lowercased()
+//                        if self.lineContainsSearchTerm(line: noSpaceLine, term: query) {
+//                            let matches = noSpaceLine.ranges(of: query).map { range in
+//                                return [lineNumber, rawNoSpaceLine, range]
+//                            }
+//
+//                            for match in matches {
+//                                if let lineNumber = match[0] as? Int,
+//                                   let lineContent = match[1] as? String,
+//                                   let keywordRange = match[2] as? Range<String.Index> {
+//                                    let matchModel = SearchResultMatchModel(
+//                                        lineNumber: lineNumber,
+//                                        file: searchResultCopy.file,
+//                                        lineContent: lineContent,
+//                                        keywordRange: keywordRange
+//                                    )
+//
+//                                    return matchModel
+//                                }
+//                            }
+//                        }
+//                        return nil
+//                    }
+//                    for await groupRes in group {
+//                        if let groupRes {
+//                            newMatches.append(groupRes)
+//                        }
+//                    }
+//                }
+//            }
+
         }
 
         // see if the line contains search term, obeying selectedMode
