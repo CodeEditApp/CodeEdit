@@ -32,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CodeEditApp/CodeEditSymbols",
       "state" : {
-        "revision" : "2aaa311e16b5166e3131ac8cd8005e187795133a",
-        "version" : "0.1.3"
+        "revision" : "26cab264914f2648ab70ab6833eef331c2f3a38a",
+        "version" : "0.1.4"
       }
     },
     {
