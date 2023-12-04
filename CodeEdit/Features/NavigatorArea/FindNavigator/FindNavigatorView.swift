@@ -43,14 +43,12 @@ struct FindNavigatorView: View {
                         Button {
                             currentFilter = Filters.ignoring.rawValue
                             state.ignoreCase = true
-                            state.search(searchText)
                         } label: {
                             Text(Filters.ignoring.rawValue)
                         }
                         Button {
                             currentFilter = Filters.matching.rawValue
                             state.ignoreCase = false
-                            state.search(searchText)
                         } label: {
                             Text(Filters.matching.rawValue)
                         }
@@ -80,13 +78,16 @@ struct FindNavigatorView: View {
                     .font(.system(size: 10))
             }
             Divider()
+
             FindNavigatorResultList()
         }
         .onSubmit {
-            state.search(searchText)
+            Task {
+               await state.search(searchText)
+            }
         }
         .onReceive(state.objectWillChange) { _ in
-            self.searchResultCount = state.searchResultCount
+            self.searchResultCount = state.searchResultsCount
             self.foundFilesCount = state.searchResult.count
         }
     }

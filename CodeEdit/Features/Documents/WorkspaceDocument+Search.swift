@@ -9,106 +9,228 @@ import Foundation
 
 extension WorkspaceDocument {
     final class SearchState: ObservableObject {
+        @Published var searchResult: [SearchResultModel] = []
+        @Published var searchResultsFileCount: Int = 0
+        @Published var searchResultsCount: Int = 0
+
         unowned var workspace: WorkspaceDocument
+        var tempSearchResults = [SearchResultModel]()
+        var ignoreCase: Bool = true
+        var indexer: SearchIndexer?
         var selectedMode: [SearchModeModel] = [
             .Find,
             .Text,
             .Containing
         ]
-        @Published var searchResult: [SearchResultModel] = []
-        @Published var searchResultCount: Int = 0
-
-        var ignoreCase: Bool = true
 
         init(_ workspace: WorkspaceDocument) {
             self.workspace = workspace
+            self.indexer = SearchIndexer.Memory.create()
+            addProjectToIndex()
         }
 
-        /// Searches the entire workspace for the given string, using the ``selectedMode`` modifiers
-        /// to modify the search if needed.
-        ///
-        /// This method will update ``searchResult`` and ``searchResultCount`` with any matched
-        /// search results. See `Search.SearchResultModel` and `Search.SearchResultMatchModel`
-        /// for more information on search results and matches.
-        ///
-        /// - Parameter text: The search text to search for. Pass `nil` to this parameter to clear
-        ///                   the search results.
-        func search(_ text: String?) { // swiftlint:disable:this function_body_length
-            guard let text else {
-                searchResult = []
-                searchResultCount = 0
+        /// Adds the contents of the current worksapce URL to the search index.
+        /// That means that the contents of the workspace will be indexed and searchable.
+        func addProjectToIndex() {
+            guard let indexer = indexer else {
                 return
             }
 
-            let textToCompare = ignoreCase ? text.lowercased() : text
-            self.searchResult = []
-            self.searchResultCount = 0
-            guard let url = self.workspace.fileURL else { return }
+            guard let url = workspace.fileURL else {
+                return
+            }
+
+            let filePaths = getFileURLs(at: url)
+            Task {
+                let textFiles = await getFileContents(from: filePaths)
+                let asyncController = SearchIndexer.AsyncManager(index: indexer)
+                _ = await asyncController.addText(files: textFiles, flushWhenComplete: true)
+            }
+        }
+
+        /// Retrieves an array of file URLs within the specified directory URL.
+        ///
+        /// - Parameter url: The URL of the directory to search for files.
+        ///
+        /// - Returns: An array of file URLs found within the specified directory.
+        func getFileURLs(at url: URL) -> [URL] {
             let enumerator = FileManager.default.enumerator(
                 at: url,
-                includingPropertiesForKeys: [
-                    .isRegularFileKey
-                ],
-                options: [
-                    .skipsHiddenFiles,
-                    .skipsPackageDescendants
-                ]
+                includingPropertiesForKeys: [.isRegularFileKey],
+                options: [.skipsHiddenFiles, .skipsPackageDescendants]
             )
-            guard let filePaths = enumerator?.allObjects as? [URL] else { return }
+            return enumerator?.allObjects as? [URL] ?? []
+        }
 
-            // This could be optimized further by doing a couple things:
-            // - Making sure strings and indexes are using UTF8 everywhere possible
-            //   (this will increase matching speed and time taken to calculate byte offsets for string indexes)
-            // - Lazily fetching file paths. Right now we do `enumerator.allObjects`, but using an actual
-            //   enumerator object to lazily enumerate through files would drop time.
-            // - Loop through each character instead of each line to find matches, then return the line if needed.
-            //   This could help in cases when the file is one *massive* line (eg: a minified JS document).
-            // - Lazily load strings using `FileHandle.AsyncBytes`
-            //   https://developer.apple.com/documentation/foundation/filehandle/3766681-bytes
-            filePaths.forEach { url in
-                guard let data = try? Data(contentsOf: url),
-                      let string = String(data: data, encoding: .utf8) else { return }
-                var fileSearchResult: SearchResultModel?
-
-                // Loop through each line and look for any matches
-                // If one is found we create a `SearchResultModel` and add any lines
-                // with matches, and any information we may need to display or navigate
-                // to them.
-                for (lineNumber, line) in string.split(separator: "\n").lazy.enumerated() {
-                    let rawNoSpaceLine = line.trimmingCharacters(in: .whitespacesAndNewlines)
-                    let noSpaceLine = ignoreCase ? rawNoSpaceLine.lowercased() : rawNoSpaceLine
-
-                    if lineContainsSearchTerm(line: noSpaceLine, term: textToCompare) {
-                        // We've got a match
-                        let matches = noSpaceLine.ranges(of: textToCompare).map { range in
-                            return SearchResultMatchModel(
-                                lineNumber: lineNumber,
-                                file: CEWorkspaceFile(url: url),
-                                lineContent: String(noSpaceLine),
-                                keywordRange: range
-                            )
-                        }
-                        if fileSearchResult != nil {
-                            // We've already found something in this file, add the rest
-                            // of the matches
-                            fileSearchResult?.lineMatches.append(contentsOf: matches)
-                        } else {
-                            // We haven't found anything in this file yet, record a new one
-                            fileSearchResult = SearchResultModel(
-                                file: CEWorkspaceFile(url: url),
-                                lineMatches: matches
-                            )
-                        }
-                        searchResultCount += matches.count
-                    }
-                }
-
-                // If `fileSearchResult` isn't nil it means we've found matches in the file
-                // so we add it to the search results.
-                if let fileSearchResult {
-                    searchResult.append(fileSearchResult)
+        /// Retrieves the contents of a files  from the specified file paths.
+        ///
+        /// - Parameter filePaths: An array of file URLs representing the paths of the files.
+        ///
+        /// - Returns: An array of `TextFile` objects containing the standardized file URLs and text content.
+        func getFileContents(from filePaths: [URL]) async -> [SearchIndexer.AsyncManager.TextFile] {
+            var textFiles = [SearchIndexer.AsyncManager.TextFile]()
+            for file in filePaths {
+                if let content = try? String(contentsOf: file) {
+                    textFiles.append(
+                        SearchIndexer.AsyncManager.TextFile(url: file.standardizedFileURL, text: content)
+                    )
                 }
             }
+            return textFiles
+        }
+
+        /// Creates a search term based on the given query and search mode.
+        ///
+        /// - Parameter query: The original user query string.
+        ///
+        /// - Returns: A modified search term according to the specified search mode.
+        func getSearchTerm(_ query: String) -> String {
+            let newQuery = ignoreCase ? query.lowercased() : query
+            guard let mode = selectedMode.third else {
+                return newQuery
+            }
+            switch mode {
+            case .Containing:
+                return "*\(newQuery)*"
+            case .StartingWith:
+                return "\(newQuery)*"
+            case .EndingWith:
+                return "*\(newQuery)"
+            default:
+                return newQuery
+            }
+        }
+
+        /// Searches the entire workspace for the given string, using the
+        /// ``WorkspaceDocument/SearchState-swift.class/selectedMode`` modifiers
+        /// to modify the search if needed. This is done by filtering out files with SearchKit and then searching
+        /// within each file for the given string.
+        ///
+        /// This method will update
+        /// ``WorkspaceDocument/SearchState-swift.class/searchResult``, 
+        /// ``WorkspaceDocument/SearchState-swift.class/searchResultsFileCount``
+        /// and ``WorkspaceDocument/SearchState-swift.class/searchResultCount`` with any matched
+        /// search results. See ``SearchResultModel`` and ``SearchResultMatchModel``
+        /// for more information on search results and matches.
+        ///
+        /// - Parameter query: The search query to search for.
+        func search(_ query: String) async {
+            let searchQuery = getSearchTerm(query)
+            guard let indexer = indexer else {
+                return
+            }
+
+            let asyncController = SearchIndexer.AsyncManager(index: indexer)
+
+            let evaluateResultGroup = DispatchGroup()
+            let evaluateSearchQueue = DispatchQueue(label: "app.codeedit.CodeEdit.EvaluateSearch")
+
+            let searchStream = await asyncController.search(query: searchQuery, 20)
+            for try await result in searchStream {
+                let urls2: [(URL, Float)] = result.results.map {
+                    ($0.url, $0.score)
+                }
+
+                for (url, score) in urls2 {
+                    evaluateSearchQueue.async(group: evaluateResultGroup) {
+                        evaluateResultGroup.enter()
+                        Task {
+                            var newResult = SearchResultModel(file: CEWorkspaceFile(url: url), score: score)
+                            await self.evaluateResult(query: query.lowercased(), searchResult: &newResult)
+
+                            // Check if the new result has any line matches.
+                            if !newResult.lineMatches.isEmpty {
+                                // The function needs to be called because,
+                                // we are trying to modify the array from within a concurrent context.
+                                self.appendNewResultsToTempResults(newResult: newResult)
+                            }
+                            evaluateResultGroup.leave()
+                        }
+                    }
+                }
+            }
+
+            evaluateResultGroup.notify(queue: evaluateSearchQueue) {
+                    self.setSearchResults()
+            }
+        }
+
+        /// Appends a new search result to the temporary search results array on the main thread.
+        ///
+        /// - Parameters:
+        ///   - newResult: The `SearchResultModel` to be appended to the temporary search results.
+        func appendNewResultsToTempResults(newResult: SearchResultModel) {
+            DispatchQueue.main.async {
+                self.tempSearchResults.append(newResult)
+            }
+        }
+
+        /// Sets the search results by updating various properties on the main thread.
+        /// This function updates `searchResult`, `searchResultCount`, and `searchResultsFileCount`
+        /// and sets the `tempSearchResults` to an empty array.
+        /// - Important: Call this function when you are ready to
+        /// display or use the final search results.
+        func setSearchResults() {
+            DispatchQueue.main.async {
+                self.searchResult = self.tempSearchResults.sorted { $0.score > $1.score }
+                self.searchResultsCount = self.tempSearchResults.map { $0.lineMatches.count }.reduce(0, +)
+                self.searchResultsFileCount = self.tempSearchResults.count
+                self.tempSearchResults = []
+            }
+        }
+
+        /// Addes line matchings to a `SearchResultsViewModel` array.
+        /// That means if a search result is a file, and the search term appears in the file,
+        /// the function will add the line number, line content, and keyword range to the `SearchResultsViewModel`.
+        ///
+        /// - Parameters:
+        ///   - query: The search query string.
+        ///   - searchResults: An inout parameter containing the array of `SearchResultsViewModel` to be evaluated.
+        ///   It will be modified to include line matches.
+        private func evaluateResult(query: String, searchResult: inout SearchResultModel) async {
+            let searchResultCopy = searchResult
+            var newMatches = [SearchResultMatchModel]()
+
+            guard let data = try? Data(contentsOf: searchResult.file.url),
+                  let string = String(data: data, encoding: .utf8) else {
+                return
+            }
+
+            await withTaskGroup(of: SearchResultMatchModel?.self) { group in
+                for (lineNumber, line) in string.components(separatedBy: .whitespacesAndNewlines).lazy.enumerated() {
+                    group.addTask {
+                        let rawNoSpaceLine = line.trimmingCharacters(in: .whitespacesAndNewlines)
+                        let noSpaceLine = rawNoSpaceLine.lowercased()
+                        if self.lineContainsSearchTerm(line: noSpaceLine, term: query) {
+                            let matches = noSpaceLine.ranges(of: query).map { range in
+                                return [lineNumber, rawNoSpaceLine, range]
+                            }
+
+                            for match in matches {
+                                if let lineNumber = match[0] as? Int,
+                                   let lineContent = match[1] as? String,
+                                   let keywordRange = match[2] as? Range<String.Index> {
+                                    let matchModel = SearchResultMatchModel(
+                                        lineNumber: lineNumber,
+                                        file: searchResultCopy.file,
+                                        lineContent: lineContent,
+                                        keywordRange: keywordRange
+                                    )
+
+                                    return matchModel
+                                }
+                            }
+                        }
+                        return nil
+                    }
+                    for await groupRes in group {
+                        if let groupRes {
+                            newMatches.append(groupRes)
+                        }
+                    }
+                }
+            }
+            searchResult.lineMatches = newMatches
         }
 
         // see if the line contains search term, obeying selectedMode
@@ -138,12 +260,12 @@ extension WorkspaceDocument {
                     var endsWith = false
                     if appearanceString.hasPrefix(searchterm) ||
                         !appearanceString.first!.isLetter ||
-                        !appearanceString.character(at: 2).isLetter {
+                        !(appearanceString.character(at: 2)?.isLetter ?? false) {
                         startsWith = true
                     }
                     if appearanceString.hasSuffix(searchterm) ||
                         !appearanceString.last!.isLetter ||
-                        !appearanceString.character(at: appearanceString.count-2).isLetter {
+                        !(appearanceString.character(at: appearanceString.count-2)?.isLetter ?? false) {
                         endsWith = true
                     }
 
@@ -165,36 +287,16 @@ extension WorkspaceDocument {
             }
 
             return false
-
             // TODO: references and definitions
         }
-    }
-}
 
-extension String {
-    func character(at index: Int) -> Character {
-        return self[self.index(self.startIndex, offsetBy: index)]
-    }
-
-    func appearancesOfSubstring(substring: String, toLeft: Int=0, toRight: Int=0) -> [Range<String.Index>] {
-        guard !substring.isEmpty && self.contains(substring) else { return [] }
-        var appearances: [Range<String.Index>] = []
-        for (index, character) in self.enumerated() where character == substring.first {
-            let startOfFoundCharacter = self.index(self.startIndex, offsetBy: index)
-            guard index + substring.count < self.count else { continue }
-            let lengthOfFoundCharacter = self.index(self.startIndex, offsetBy: (substring.count + index))
-            if self[startOfFoundCharacter..<lengthOfFoundCharacter] == substring {
-                let startIndex = self.index(
-                    self.startIndex,
-                    offsetBy: index - (toLeft <= index ? toLeft : 0)
-                )
-                let endIndex = self.index(
-                    self.startIndex,
-                    offsetBy: substring.count + index + (substring.count+index+toRight <= self.count ? toRight : 0)
-                )
-                appearances.append(startIndex..<endIndex)
+        /// Resets the search results along with counts for overall results and file-specific results.
+        func clearResults() {
+            DispatchQueue.main.async {
+                self.searchResult.removeAll()
+                self.searchResultsCount = 0
+                self.searchResultsFileCount = 0
             }
         }
-        return appearances
     }
 }

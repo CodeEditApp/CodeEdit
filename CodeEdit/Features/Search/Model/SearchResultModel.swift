@@ -11,13 +11,19 @@ import Foundation
 class SearchResultModel: Hashable {
 
     var file: CEWorkspaceFile
+    // The score represents how well the file matches the search query.
+    // The higher the score is, the better the file matches the search query.
+    // The score is assign by Search Kit.
+    var score: Float
     var lineMatches: [SearchResultMatchModel]
 
     init(
         file: CEWorkspaceFile,
+        score: Float,
         lineMatches: [SearchResultMatchModel] = []
     ) {
         self.file = file
+        self.score = score
         self.lineMatches = lineMatches
     }
 
