@@ -260,12 +260,12 @@ extension WorkspaceDocument {
                     var endsWith = false
                     if appearanceString.hasPrefix(searchterm) ||
                         !appearanceString.first!.isLetter ||
-                        !appearanceString.character(at: 2).isLetter {
+                        !(appearanceString.character(at: 2)?.isLetter ?? false) {
                         startsWith = true
                     }
                     if appearanceString.hasSuffix(searchterm) ||
                         !appearanceString.last!.isLetter ||
-                        !appearanceString.character(at: appearanceString.count-2).isLetter {
+                        !(appearanceString.character(at: appearanceString.count-2)?.isLetter ?? false) {
                         endsWith = true
                     }
 
