@@ -161,12 +161,14 @@ struct FindNavigatorForm: View {
                 },
                 clearable: true,
                 onClear: {
-                    state.search(nil)
+                    state.clearResults()
                 },
                 hasValue: caseSensitive || matchWholeWord
             )
             .onSubmit {
-                state.search(searchText)
+                Task {
+                    await state.search(searchText)
+                }
             }
             if selectedMode[0] == SearchModeModel.Replace {
                 PaneTextField(
