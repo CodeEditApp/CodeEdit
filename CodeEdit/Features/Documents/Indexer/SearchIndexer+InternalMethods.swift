@@ -73,13 +73,13 @@ extension SearchIndexer {
         if isLeaf, inParentDocument != nil,
            kSKDocumentStateNotIndexed != SKIndexGetDocumentState(index, inParentDocument) {
             if let temp = SKDocumentCopyURL(inParentDocument) {
-                let baseURL = temp.takeUnretainedValue()
+                let baseURL = temp.takeUnretainedValue() as URL
                 let documentID = SKIndexGetDocumentID(index, inParentDocument)
                 docs.append(
                     DocumentID(
-                        url: temp.takeRetainedValue() as URL,
+                        url: baseURL,
                         docuemnt: inParentDocument!,
-                        documentID: SKIndexGetDocumentID(index, inParentDocument)
+                        documentID: documentID
                     )
                 )
             }
