@@ -33,6 +33,7 @@ struct FindNavigatorView: View {
             VStack {
                 FindNavigatorModeSelector(state: state)
                 FindNavigatorSearchBar(state: state, title: "", text: $searchText)
+                FindNavigatorIndexBar(state: state)
                 HStack {
                     Button {} label: {
                         Text("In Workspace")

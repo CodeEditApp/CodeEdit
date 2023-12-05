@@ -9,9 +9,17 @@ import Foundation
 
 extension WorkspaceDocument {
     final class SearchState: ObservableObject {
+        enum IndexStatus {
+            case none
+            case indexing(progress: Double)
+            case done
+        }
+
         @Published var searchResult: [SearchResultModel] = []
         @Published var searchResultsFileCount: Int = 0
         @Published var searchResultsCount: Int = 0
+
+        @Published var indexStatus: IndexStatus = .none
 
         unowned var workspace: WorkspaceDocument
         var tempSearchResults = [SearchResultModel]()
@@ -29,7 +37,7 @@ extension WorkspaceDocument {
             addProjectToIndex()
         }
 
-        /// Adds the contents of the current worksapce URL to the search index.
+        /// Adds the contents of the current workspace URL to the search index.
         /// That means that the contents of the workspace will be indexed and searchable.
         func addProjectToIndex() {
             guard let indexer = indexer else {
@@ -40,11 +48,31 @@ extension WorkspaceDocument {
                 return
             }
 
-            let filePaths = getFileURLs(at: url)
-            Task {
-                let textFiles = await getFileContents(from: filePaths)
+            indexStatus = .indexing(progress: 0.0)
+
+            Task.detached {
+                let filePaths = self.getFileURLs(at: url)
                 let asyncController = SearchIndexer.AsyncManager(index: indexer)
-                _ = await asyncController.addText(files: textFiles, flushWhenComplete: true)
+                var lastProgress: Double = 0
+
+                for await (file, index) in AsyncFileIterator(fileURLs: filePaths) {
+                    _ = await asyncController.addText(files: [file], flushWhenComplete: false)
+                    let progress = Double(index) / Double(filePaths.count)
+
+                    // Send only if difference is > 0.5%, to keep updates from sending too frequently
+                    if progress - lastProgress > 0.005 || index == filePaths.count - 1 {
+                        lastProgress = progress
+                        await MainActor.run {
+                            self.indexStatus = .indexing(progress: progress)
+                        }
+                    }
+                }
+                asyncController.index.flush()
+                asyncController.index.compact()
+
+                await MainActor.run {
+                    self.indexStatus = .done
+                }
             }
         }
 
@@ -60,23 +88,6 @@ extension WorkspaceDocument {
                 options: [.skipsHiddenFiles, .skipsPackageDescendants]
             )
             return enumerator?.allObjects as? [URL] ?? []
-        }
-
-        /// Retrieves the contents of a files  from the specified file paths.
-        ///
-        /// - Parameter filePaths: An array of file URLs representing the paths of the files.
-        ///
-        /// - Returns: An array of `TextFile` objects containing the standardized file URLs and text content.
-        func getFileContents(from filePaths: [URL]) async -> [SearchIndexer.AsyncManager.TextFile] {
-            var textFiles = [SearchIndexer.AsyncManager.TextFile]()
-            for file in filePaths {
-                if let content = try? String(contentsOf: file) {
-                    textFiles.append(
-                        SearchIndexer.AsyncManager.TextFile(url: file.standardizedFileURL, text: content)
-                    )
-                }
-            }
-            return textFiles
         }
 
         /// Creates a search term based on the given query and search mode.
@@ -115,6 +126,12 @@ extension WorkspaceDocument {
         ///
         /// - Parameter query: The search query to search for.
         func search(_ query: String) async {
+            await MainActor.run {
+                searchResult = []
+                searchResultsCount = 0
+                searchResultsFileCount = 0
+            }
+
             let searchQuery = getSearchTerm(query)
             guard let indexer = indexer else {
                 return
@@ -151,7 +168,7 @@ extension WorkspaceDocument {
             }
 
             evaluateResultGroup.notify(queue: evaluateSearchQueue) {
-                    self.setSearchResults()
+                self.setSearchResults()
             }
         }
 
@@ -179,7 +196,7 @@ extension WorkspaceDocument {
             }
         }
 
-        /// Addes line matchings to a `SearchResultsViewModel` array.
+        /// Adds line matchings to a `SearchResultsViewModel` array.
         /// That means if a search result is a file, and the search term appears in the file,
         /// the function will add the line number, line content, and keyword range to the `SearchResultsViewModel`.
         ///
