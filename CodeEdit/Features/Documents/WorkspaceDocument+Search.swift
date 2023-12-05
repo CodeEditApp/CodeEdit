@@ -42,7 +42,7 @@ extension WorkspaceDocument {
 
             let filePaths = getFileURLs(at: url)
             Task {
-                let textFiles = await getFileContents(from: filePaths)
+                let textFiles = await getfileContent(from: filePaths)
                 let asyncController = SearchIndexer.AsyncManager(index: indexer)
                 _ = await asyncController.addText(files: textFiles, flushWhenComplete: true)
             }
@@ -67,7 +67,7 @@ extension WorkspaceDocument {
         /// - Parameter filePaths: An array of file URLs representing the paths of the files.
         ///
         /// - Returns: An array of `TextFile` objects containing the standardized file URLs and text content.
-        func getFileContents(from filePaths: [URL]) async -> [SearchIndexer.AsyncManager.TextFile] {
+        func getfileContent(from filePaths: [URL]) async -> [SearchIndexer.AsyncManager.TextFile] {
             var textFiles = [SearchIndexer.AsyncManager.TextFile]()
             for file in filePaths {
                 if let content = try? String(contentsOf: file) {
@@ -153,7 +153,8 @@ extension WorkspaceDocument {
 
             evaluateResultGroup.notify(queue: evaluateSearchQueue) {
                     self.setSearchResults()
-                fatalError("\(Date().timeIntervalSince(startTime))")
+                let timest = Date().timeIntervalSince(startTime)
+                wait()
             }
         }
 
@@ -181,6 +182,7 @@ extension WorkspaceDocument {
             }
         }
 
+        
         /// Addes line matchings to a `SearchResultsViewModel` array.
         /// That means if a search result is a file, and the search term appears in the file,
         /// the function will add the line number, line content, and keyword range to the `SearchResultsViewModel`.
@@ -190,23 +192,33 @@ extension WorkspaceDocument {
         ///   - searchResults: An inout parameter containing the array of `SearchResultsViewModel` to be evaluated.
         ///   It will be modified to include line matches.
         private func evaluateResult(query: String, searchResult: inout SearchResultModel) async {
+            let startTime = Date()
             let searchResultCopy = searchResult
             var newMatches = [SearchResultMatchModel]()
 
             guard let data = try? Data(contentsOf: searchResult.file.url),
-                  let string = String(data: data, encoding: .utf8) else {
+                  let fileContent = String(data: data, encoding: .utf8) else {
                 return
             }
             guard let regex = try? NSRegularExpression(pattern: query, options: [.caseInsensitive]) else {
                 return
             }
 
-            let matches = regex.matches(in: string, range: NSRange(location: 0, length: string.utf16.count))
+            let matches = regex.matches(in: fileContent, range: NSRange(location: 0, length: fileContent.utf16.count))
 
             for match in matches {
-                if let matchRange = Range(match.range, in: string) {
-                    let lineRange = string.lineRange(for: matchRange)
-                    let lineContent = string[lineRange]
+                if let matchRange = Range(match.range, in: fileContent) {
+                    let preSearchRangeStart = fileContent.index(matchRange.lowerBound, offsetBy: -60, limitedBy: fileContent.startIndex) ?? fileContent.startIndex
+                    let preSearchRangeEnd = matchRange.lowerBound
+                    let preSearchRange = preSearchRangeStart..<preSearchRangeEnd
+
+                    let postSearchRangeStart = matchRange.upperBound
+                    let postSearchRangeEnd = fileContent.index(matchRange.upperBound, offsetBy: 60, limitedBy: fileContent.endIndex) ?? fileContent.endIndex
+                    let postSearchRange = postSearchRangeStart..<postSearchRangeEnd
+                    let start = fileContent[preSearchRange].lastIndex(of: "\n") ?? preSearchRangeStart
+                    let end = fileContent[postSearchRange].firstIndex(of: "\n") ?? postSearchRangeEnd
+                    let lineContent = fileContent[start..<end].removingAllExtraNewLines.trimmingCharacters(in: .whitespaces)
+
                     let matchRangeWithInLine = lineContent.lowercased().ranges(of: query).map { range in
                         return range
                     }
@@ -220,7 +232,10 @@ extension WorkspaceDocument {
                     newMatches.append(matchModel)
                 }
             }
-
+            if Date().timeIntervalSince(startTime) > 0.5 {
+                let timest = Date().timeIntervalSince(startTime)
+                let file = searchResult.file.url
+            }
             searchResult.lineMatches = newMatches
 //            await withTaskGroup(of: SearchResultMatchModel?.self) { group in
 //                for (lineNumber, line) in string.components(separatedBy: .newlines).lazy.enumerated() {
@@ -325,4 +340,9 @@ extension WorkspaceDocument {
             }
         }
     }
+}
+
+extension StringProtocol {
+    var lines: [SubSequence] { split(whereSeparator: \.isNewline) }
+    var removingAllExtraNewLines: String { lines.joined(separator: "\n") }
 }
