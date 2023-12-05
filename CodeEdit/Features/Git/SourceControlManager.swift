@@ -242,8 +242,8 @@ final class SourceControlManager: ObservableObject {
     }
 
     /// Commit files selected by user
-    func commit(message: String) async throws {
-        try await gitClient.commit(message)
+    func commit(message: String, details: String? = nil) async throws {
+        try await gitClient.commit(message: message, details: details)
 
         await self.refreshAllChangedFiles()
         await self.refreshNumberOfUnsyncedCommits()

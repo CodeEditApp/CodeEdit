@@ -87,8 +87,9 @@ struct SourceControlNavigatorChangesCommitView: View {
                             Task {
                                 self.isCommiting = true
                                 do {
-                                    try await sourceControlManager.commit(message: message)
+                                    try await sourceControlManager.commit(message: message, details: details)
                                     self.message = ""
+                                    self.details = ""
                                 } catch {
                                     await sourceControlManager.showAlertForError(
                                         title: "Failed to commit",
@@ -107,8 +108,9 @@ struct SourceControlNavigatorChangesCommitView: View {
                         Task {
                             self.isCommiting = true
                             do {
-                                try await sourceControlManager.commit(message: message)
+                                try await sourceControlManager.commit(message: message, details: details)
                                 self.message = ""
+                                self.details = ""
                             } catch {
                                 await sourceControlManager.showAlertForError(title: "Failed to commit", error: error)
                             }

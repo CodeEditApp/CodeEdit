@@ -6,14 +6,21 @@
 //
 
 import Foundation
+import RegexBuilder
 
 extension GitClient {
     /// Commit files
     /// - Parameters:
     ///   - message: Commit message
-    func commit(_ message: String) async throws {
+    func commit(message: String, details: String?) async throws {
         let message = message.replacingOccurrences(of: #"""#, with: #"\""#)
-        let command = "commit --message=\"\(message)\""
+        let command: String
+
+        if let msgDetails = details {
+            command = "commit --message=\"\(message + (msgDetails.isEmpty ? "" : ("\n\n" + msgDetails)))\""
+        } else {
+            command = "commit --message=\"\(message)\""
+        }
 
         _ = try await run(command)
     }
@@ -32,26 +39,32 @@ extension GitClient {
 
     /// Returns tuple of unsynced commits both ahead and behind
     func numberOfUnsyncedCommits() async throws -> (ahead: Int, behind: Int) {
-        let output = try await run("for-each-ref --format=\"%(push:track)\" refs/heads")
-            .trimmingCharacters(in: .whitespacesAndNewlines)
-
-        return parseUnsyncedCommitsOutput(from: output)
-    }
-}
-
-func parseUnsyncedCommitsOutput(from string: String) -> (ahead: Int, behind: Int) {
-    let pattern = "\\[ahead (\\d+)?, behind (\\d+)?\\]|\\[ahead (\\d+)?\\]|\\[behind (\\d+)?\\]"
-    let regex = try? NSRegularExpression(pattern: pattern, options: [])
-
-    if let match = regex?.firstMatch(in: string, options: [], range: NSRange(location: 0, length: string.utf16.count)) {
-        let aheadRange = Range(match.range(at: 1), in: string) ?? Range(match.range(at: 3), in: string)
-        let behindRange = Range(match.range(at: 2), in: string) ?? Range(match.range(at: 4), in: string)
-
-        let aheadNumber = aheadRange.flatMap { Int(String(string[$0])) } ?? 0
-        let behindNumber = behindRange.flatMap { Int(String(string[$0])) } ?? 0
-
-        return (ahead: aheadNumber, behind: behindNumber)
+        let output = try await run("status -sb --porcelain=v2").trimmingCharacters(in: .whitespacesAndNewlines)
+        return try parseUnsyncedCommitsOutput(from: output)
     }
 
-    return (ahead: 0, behind: 0)
+    private func parseUnsyncedCommitsOutput(from string: String) throws -> (ahead: Int, behind: Int) {
+        let components = string.components(separatedBy: .newlines)
+        guard var abLine = components.first(where: { $0.starts(with: "# branch.ab") }) else {
+            // We're using --porcelain, this shouldn't happen
+            return (ahead: 0, behind: 0)
+        }
+        abLine = String(abLine.dropFirst("# branch.ab ".count))
+        let regex = Regex {
+            One("+")
+            Capture {
+                OneOrMore(.digit)
+            } transform: { Int($0) }
+            One(" -")
+            Capture {
+                OneOrMore(.digit)
+            } transform: { Int($0) }
+        }
+        guard let match = try regex.firstMatch(in: abLine),
+              let ahead = match.output.1,
+              let behind = match.output.2 else {
+            return (ahead: 0, behind: 0)
+        }
+        return (ahead: ahead, behind: behind)
+    }
 }
