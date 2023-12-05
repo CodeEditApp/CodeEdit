@@ -29,6 +29,8 @@ struct FindNavigatorIndexBar: View {
                                 .animation(.none)
                         }
                     }
+                    // swiftlint:disable:next line_length
+                    .help("Indexing current workspace files for search. Searches performed while indexing may return incomplete results.")
                 }
                 .transition(.asymmetric(insertion: .identity, removal: .move(edge: .top).combined(with: .opacity)))
             }
@@ -59,7 +61,7 @@ struct FindNavigatorIndexBar: View {
                 }
             case .done:
                 self.progress = 1.0
-                withAnimation(.default.delay(0.3)) {
+                withAnimation(.default.delay(0.75)) {
                     shouldShow = false
                 }
             }
