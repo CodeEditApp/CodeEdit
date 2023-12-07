@@ -55,7 +55,11 @@ struct EditorPathBarView: View {
                         )
                 } else {
                     ForEach(fileItems, id: \.self) { fileItem in
-                        EditorPathBarComponent(fileItem: fileItem, tappedOpenFile: tappedOpenFile, isLastItem: fileItems.last == fileItem)
+                        EditorPathBarComponent(
+                            fileItem: fileItem,
+                            tappedOpenFile: tappedOpenFile,
+                            isLastItem: fileItems.last == fileItem
+                        )
                     }
                 }
             }
