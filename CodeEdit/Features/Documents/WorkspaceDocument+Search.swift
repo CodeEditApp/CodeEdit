@@ -182,7 +182,6 @@ extension WorkspaceDocument {
             }
         }
 
-        
         /// Addes line matchings to a `SearchResultsViewModel` array.
         /// That means if a search result is a file, and the search term appears in the file,
         /// the function will add the line number, line content, and keyword range to the `SearchResultsViewModel`.
@@ -208,26 +207,58 @@ extension WorkspaceDocument {
 
             for match in matches {
                 if let matchRange = Range(match.range, in: fileContent) {
-                    let preSearchRangeStart = fileContent.index(matchRange.lowerBound, offsetBy: -60, limitedBy: fileContent.startIndex) ?? fileContent.startIndex
+                    let preSearchRangeStart = fileContent.index(
+                        matchRange.lowerBound,
+                        offsetBy: -60,
+                        limitedBy: fileContent.startIndex
+                    ) ?? fileContent.startIndex
+
                     let preSearchRangeEnd = matchRange.lowerBound
                     let preSearchRange = preSearchRangeStart..<preSearchRangeEnd
 
                     let postSearchRangeStart = matchRange.upperBound
-                    let postSearchRangeEnd = fileContent.index(matchRange.upperBound, offsetBy: 60, limitedBy: fileContent.endIndex) ?? fileContent.endIndex
+                    let postSearchRangeEnd = fileContent.index(
+                        matchRange.upperBound,
+                        offsetBy: 60,
+                        limitedBy: fileContent.endIndex
+                    ) ?? fileContent.endIndex
                     let postSearchRange = postSearchRangeStart..<postSearchRangeEnd
+
                     let start = fileContent[preSearchRange].lastIndex(of: "\n") ?? preSearchRangeStart
                     let end = fileContent[postSearchRange].firstIndex(of: "\n") ?? postSearchRangeEnd
-                    let lineContent = fileContent[start..<end].removingAllExtraNewLines.trimmingCharacters(in: .whitespaces)
 
-                    let matchRangeWithInLine = lineContent.lowercased().ranges(of: query).map { range in
-                        return range
-                    }
+                    let lineStartDistance = fileContent.distance(from: fileContent.startIndex, to: start)
+                    let adjustedLineLowerBound = fileContent.index(matchRange.lowerBound, offsetBy: -lineStartDistance)
+                    let adjustedLineUpperBound = fileContent.index(matchRange.upperBound, offsetBy: -lineStartDistance)
+                    let adjustedLineMatchRange = adjustedLineLowerBound..<adjustedLineUpperBound
+
+                    let lineContent = fileContent[start..<end]
+                    let finalLineContent = lineContent
+                        .trimmingPrefix { char in
+                            char.isWhitespace
+                        }
+//                        .trimmingCharacters(in: .whitespacesWithoutNewlines)
+                    //                        .removingAllExtraNewLines
+
+                    let origianlLineContentLenght = lineContent.count
+                    let trimmedLenght = finalLineContent.count
+                    var trimOffset = origianlLineContentLenght - trimmedLenght
+
+                    let adjustedLowerBound = fileContent.index(
+                        adjustedLineLowerBound,
+                        offsetBy: -trimOffset
+                    )
+                    let adjustedUpperBound = fileContent.index(
+                        adjustedLineMatchRange.upperBound,
+                        offsetBy: -trimOffset
+                    )
+                    let finalMatchRange = adjustedLowerBound..<adjustedUpperBound
 
                     let matchModel = SearchResultMatchModel(
                         lineNumber: 0,
                         file: searchResultCopy.file,
-                        lineContent: String(lineContent),
-                        keywordRange: matchRangeWithInLine.first!
+                        lineContent: String(finalLineContent),
+                        keywordRange: finalMatchRange
                     )
                     newMatches.append(matchModel)
                 }
@@ -237,41 +268,6 @@ extension WorkspaceDocument {
                 let file = searchResult.file.url
             }
             searchResult.lineMatches = newMatches
-//            await withTaskGroup(of: SearchResultMatchModel?.self) { group in
-//                for (lineNumber, line) in string.components(separatedBy: .newlines).lazy.enumerated() {
-//                    group.addTask {
-//                        let rawNoSpaceLine = line.trimmingCharacters(in: .whitespacesAndNewlines)
-//                        let noSpaceLine = rawNoSpaceLine.lowercased()
-//                        if self.lineContainsSearchTerm(line: noSpaceLine, term: query) {
-//                            let matches = noSpaceLine.ranges(of: query).map { range in
-//                                return [lineNumber, rawNoSpaceLine, range]
-//                            }
-//
-//                            for match in matches {
-//                                if let lineNumber = match[0] as? Int,
-//                                   let lineContent = match[1] as? String,
-//                                   let keywordRange = match[2] as? Range<String.Index> {
-//                                    let matchModel = SearchResultMatchModel(
-//                                        lineNumber: lineNumber,
-//                                        file: searchResultCopy.file,
-//                                        lineContent: lineContent,
-//                                        keywordRange: keywordRange
-//                                    )
-//
-//                                    return matchModel
-//                                }
-//                            }
-//                        }
-//                        return nil
-//                    }
-//                    for await groupRes in group {
-//                        if let groupRes {
-//                            newMatches.append(groupRes)
-//                        }
-//                    }
-//                }
-//            }
-
         }
 
         // see if the line contains search term, obeying selectedMode
