@@ -7,11 +7,12 @@
 
 import SwiftUI
 import Combine
+import CodeEditSymbols
 
 struct EditorPathBarComponent: View {
-
     private let fileItem: CEWorkspaceFile
     private let tappedOpenFile: (CEWorkspaceFile) -> Void
+    private let isLastItem: Bool
 
     @Environment(\.colorScheme)
     var colorScheme
@@ -22,16 +23,19 @@ struct EditorPathBarComponent: View {
     @EnvironmentObject var workspace: WorkspaceDocument
 
     @State var position: NSPoint?
-
     @State var selection: CEWorkspaceFile
+    @State var isHovering: Bool = false
+    @State private var button: NSPopUpButton?
 
     init(
         fileItem: CEWorkspaceFile,
-        tappedOpenFile: @escaping (CEWorkspaceFile) -> Void
+        tappedOpenFile: @escaping (CEWorkspaceFile) -> Void,
+        isLastItem: Bool
     ) {
         self.fileItem = fileItem
         self._selection = .init(wrappedValue: fileItem)
         self.tappedOpenFile = tappedOpenFile
+        self.isLastItem = isLastItem
     }
 
     var siblings: [CEWorkspaceFile] {
@@ -58,11 +62,52 @@ struct EditorPathBarComponent: View {
             button.font = .systemFont(ofSize: NSFont.systemFontSize(for: .small))
             button.isBordered = false
             (button.cell as? NSPopUpButtonCell)?.arrowPosition = .noArrow
+            DispatchQueue.main.async {
+                self.button = button
+            }
             return button
         }
-        .padding(.top, -0.5)
-        .padding(.leading, -5)
-        .padding(.trailing, -3)
+        .padding(.trailing, 11)
+        .background {
+            Color(nsColor: colorScheme == .dark ? .white : .black)
+                .opacity(isHovering ? 0.05 : 0)
+                .clipShape(RoundedRectangle(cornerSize: CGSize(width: 4, height: 4)))
+            HStack {
+                Spacer()
+                if isHovering {
+                    chevronUpDown
+                        .padding(.trailing, 4)
+                } else if !isLastItem {
+                    chevron
+                        .padding(.trailing, 3)
+                }
+            }
+        }
+        .padding(.vertical, 3)
+        .onHover { hover in
+            isHovering = hover
+        }
+        .onTapGesture {
+            button?.performClick(nil)
+        }
+        .opacity(activeState != .inactive ? 1 : 0.75)
+    }
+
+    private var chevron: some View {
+        Image(systemName: "chevron.compact.right")
+            .font(.system(size: 9, weight: activeState != .inactive ? .medium : .bold, design: .default))
+            .foregroundStyle(.secondary)
+            .scaleEffect(x: 1.30, y: 1.0, anchor: .center)
+            .imageScale(.large)
+    }
+
+    private var chevronUpDown: some View {
+        VStack(spacing: 1) {
+            Image(systemName: "chevron.up")
+            Image(systemName: "chevron.down")
+        }
+        .font(.system(size: 6, weight: .bold, design: .default))
+        .padding(.top, 0.5)
     }
 
     struct NSPopUpButtonView<ItemType>: NSViewRepresentable where ItemType: Equatable {
