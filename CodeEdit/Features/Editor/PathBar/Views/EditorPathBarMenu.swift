@@ -45,8 +45,24 @@ final class EditorPathBarMenu: NSMenu, NSMenuDelegate {
         }
 
         // Highlight the current item
-        if let pathBarItem = item as? PathBarMenuItem {
+        if let pathBarItem = (item ?? menu.highlightedItem) as? PathBarMenuItem {
+            print(pathBarItem)
             pathBarItem.updateIconColor(isHighlighted: true)
+        }
+
+        // If the item has a child menu with a selected item, recolor the icon
+        if let parentItem = item?.parent {
+            if let fileItem = item?.parent?.representedObject as? CEWorkspaceFile {
+                let icon = fileItem.systemImage
+                var color = NSColor(fileItem.iconColor)
+                if fileItem.isFolder {
+                    color = NSColor(named: "FolderBlue") ?? NSColor(.secondary)
+                }
+                parentItem.image = NSImage(
+                    systemSymbolName: icon,
+                    accessibilityDescription: icon
+                )?.withSymbolConfiguration(.init(paletteColors: [color]))
+            }
         }
 
         if let highlightedItem = item, let submenuItems = highlightedItem.submenu?.items, submenuItems.isEmpty {
