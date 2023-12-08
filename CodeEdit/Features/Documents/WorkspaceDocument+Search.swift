@@ -191,7 +191,8 @@ extension WorkspaceDocument {
         ///   - searchResults: An inout parameter containing the array of `SearchResultsViewModel` to be evaluated.
         ///   It will be modified to include line matches.
         private func evaluateResult(query: String, searchResult: inout SearchResultModel) async {
-            let startTime = Date()
+            var startTime = Date()
+
             let searchResultCopy = searchResult
             var newMatches = [SearchResultMatchModel]()
 
@@ -204,15 +205,18 @@ extension WorkspaceDocument {
             }
 
             let matches = regex.matches(in: fileContent, range: NSRange(location: 0, length: fileContent.utf16.count))
+            let findTime = Date().timeIntervalSince(startTime)
+            let wholeTime = Date()
+            var times: [(Substring, Double)] = []
 
             for match in matches {
+                startTime = Date()
                 if let matchRange = Range(match.range, in: fileContent) {
                     let preSearchRangeStart = fileContent.index(
                         matchRange.lowerBound,
                         offsetBy: -60,
                         limitedBy: fileContent.startIndex
                     ) ?? fileContent.startIndex
-
                     let preSearchRangeEnd = matchRange.lowerBound
                     let preSearchRange = preSearchRangeStart..<preSearchRangeEnd
 
@@ -224,22 +228,24 @@ extension WorkspaceDocument {
                     ) ?? fileContent.endIndex
                     let postSearchRange = postSearchRangeStart..<postSearchRangeEnd
 
+                    let newMatchTime = Date().timeIntervalSince(startTime)
+
                     let start = fileContent[preSearchRange].lastIndex(of: "\n") ?? preSearchRangeStart
                     let end = fileContent[postSearchRange].firstIndex(of: "\n") ?? postSearchRangeEnd
-
-                    let lineStartDistance = fileContent.distance(from: fileContent.startIndex, to: start)
-                    let adjustedLineLowerBound = fileContent.index(matchRange.lowerBound, offsetBy: -lineStartDistance)
-                    let adjustedLineUpperBound = fileContent.index(matchRange.upperBound, offsetBy: -lineStartDistance)
+                    let test = start
+//                    let lineStartDistance = fileContent.distance(from: fileContent.startIndex, to: start)
+                    let adjustedLineLowerBound = fileContent.index(matchRange.lowerBound, offsetBy: -start.utf16Offset(in: fileContent))
+                    let adjustedLineUpperBound = fileContent.index(matchRange.upperBound, offsetBy: -start.utf16Offset(in: fileContent))
                     let adjustedLineMatchRange = adjustedLineLowerBound..<adjustedLineUpperBound
-
+//
+//                    let adjustTime = Date().timeIntervalSince(startTime)
+//
                     let lineContent = fileContent[start..<end]
                     let finalLineContent = lineContent
                         .trimmingPrefix { char in
                             char.isWhitespace
                         }
-//                        .trimmingCharacters(in: .whitespacesWithoutNewlines)
-                    //                        .removingAllExtraNewLines
-
+//
                     let origianlLineContentLenght = lineContent.count
                     let trimmedLenght = finalLineContent.count
                     var trimOffset = origianlLineContentLenght - trimmedLenght
@@ -253,7 +259,7 @@ extension WorkspaceDocument {
                         offsetBy: -trimOffset
                     )
                     let finalMatchRange = adjustedLowerBound..<adjustedUpperBound
-
+                    let finalTime = Date().timeIntervalSince(startTime)
                     let matchModel = SearchResultMatchModel(
                         lineNumber: 0,
                         file: searchResultCopy.file,
@@ -261,10 +267,14 @@ extension WorkspaceDocument {
                         keywordRange: finalMatchRange
                     )
                     newMatches.append(matchModel)
+                    times.append((lineContent, Date().timeIntervalSince(startTime)))
                 }
             }
-            if Date().timeIntervalSince(startTime) > 0.5 {
-                let timest = Date().timeIntervalSince(startTime)
+            let loopTime = Date().timeIntervalSince(wholeTime)
+            if  loopTime > 0.2 {
+                let maxValue = times.sorted {
+                    $0.1 > $1.1
+                }
                 let file = searchResult.file.url
             }
             searchResult.lineMatches = newMatches
