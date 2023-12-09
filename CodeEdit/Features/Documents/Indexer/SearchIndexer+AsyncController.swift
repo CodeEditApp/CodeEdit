@@ -35,7 +35,7 @@ extension SearchIndexer {
         }
 
         // MARK: - Search
-        
+
         /// Performs an asynchronous progressive search on the index for the specified query.
         ///
         /// - Parameters:
@@ -46,9 +46,12 @@ extension SearchIndexer {
         /// - Returns: An asynchronous stream (`AsyncStream`) of search results in chunks.
         /// The search results are returned in the form of a `SearchIndexer.ProgressivSearch.Results` object.
         ///
-        /// This function initiates a progressive search on the index for the specified query and asynchronously yields search results in chunks using an `AsyncStream`. The search continues until there are no more results or the specified timeout is reached.
+        /// This function initiates a progressive search on the index for the specified query
+        /// and asynchronously yields search results in chunks using an `AsyncStream`.
+        /// The search continues until there are no more results or the specified timeout is reached.
         ///
-        /// - Warning: Prior to calling this function, ensure that the `index` has been flushed to search within the most up-to-date data.
+        /// - Warning: Prior to calling this function,
+        /// ensure that the `index` has been flushed to search within the most up-to-date data.
         ///
         /// Example usage:
         /// ```swift
@@ -82,7 +85,8 @@ extension SearchIndexer {
         ///
         /// - Parameters:
         ///   - files: An array of TextFile objects containing the information about the files to be added.
-        ///   - flushWhenComplete: A boolean flag indicating whether to flush the index when the operation is complete. Default is `false`.
+        ///   - flushWhenComplete: A boolean flag indicating whether to flush 
+        ///   the index when the operation is complete. Default is `false`.
         ///
         /// - Returns: An array of booleans indicating the success of adding each file to the index.
         func addText(
@@ -117,10 +121,12 @@ extension SearchIndexer {
         ///
         /// - Parameters:
         ///   - urls: An array of URLs representing the file locations to be added to the index.
-        ///   - flushWhenComplete: A boolean flag indicating whether to flush the index when the operation is complete. Default is `false`.
+        ///   - flushWhenComplete: A boolean flag indicating whether to flush
+        ///   the index when the operation is complete. Default is `false`.
         ///
         /// - Returns: An array of booleans indicating the success of adding each file to the index.
-        /// - Warning: Prefer using `addText` when possible as SearchKit does not have the ability to read every file type. For example, it is often not possible to read Swift files.
+        /// - Warning: Prefer using `addText` when possible as SearchKit does not have the ability
+        ///  to read every file type. For example, it is often not possible to read Swift files.
         func addFiles(
             urls: [URL],
             flushWhenComplete: Bool = false
@@ -146,9 +152,10 @@ extension SearchIndexer {
         ///
         /// - Parameters:
         ///   - url: The URL of the folder containing files to be added to the index.
-        ///   - flushWhenComplete: A boolean flag indicating whether to flush the index when the operation is complete. Default is `false`.
+        ///   - flushWhenComplete: A boolean flag indicating whether to flush 
+        ///   the index when the operation is complete. Default is `false`.
         ///
-        /// This function uses asynchronous processing to add files from the specified folder to the index. It employs a DispatchGroup to track the completion of tasks.
+        /// This function uses asynchronous processing to add files from the specified folder to the index.
         ///
         /// - Note: Subfolders within the specified folder are also processed.
         func addFolder(

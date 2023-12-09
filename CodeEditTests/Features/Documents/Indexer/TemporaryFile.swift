@@ -11,7 +11,7 @@ class TemporaryFile {
     let url: URL = {
         let folder = NSTemporaryDirectory()
         let name = UUID().uuidString
-        
+
         return NSURL.fileURL(withPathComponents: [folder, name])! as URL
     }()
 
@@ -32,10 +32,14 @@ class TempFolderManager {
     deinit {
         cleanup()
     }
-    
+
     func createCustomFolder() {
         do {
-            try FileManager.default.createDirectory(at: customFolderURL, withIntermediateDirectories: true, attributes: nil)
+            try FileManager.default.createDirectory(
+                at: customFolderURL,
+                withIntermediateDirectories: true,
+                attributes: nil
+            )
         } catch {
             print("Error creating directory: \(error)")
         }
