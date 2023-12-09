@@ -35,6 +35,29 @@ extension SearchIndexer {
         }
 
         // MARK: - Search
+        
+        /// Performs an asynchronous progressive search on the index for the specified query.
+        ///
+        /// - Parameters:
+        ///   - query: The search query string.
+        ///   - maxResults: The maximum number of results to retrieve in each chunk.
+        ///   - timeout: The timeout duration for each search operation. Default is 1.0 second.
+        ///
+        /// - Returns: An asynchronous stream (`AsyncStream`) of search results in chunks.
+        /// The search results are returned in the form of a `SearchIndexer.ProgressivSearch.Results` object.
+        ///
+        /// This function initiates a progressive search on the index for the specified query and asynchronously yields search results in chunks using an `AsyncStream`. The search continues until there are no more results or the specified timeout is reached.
+        ///
+        /// - Warning: Prior to calling this function, ensure that the `index` has been flushed to search within the most up-to-date data.
+        ///
+        /// Example usage:
+        /// ```swift
+        /// let searchStream = await asyncController.search(query: searchQuery, 20)
+        /// for try await result in searchStream {
+        ///     // Process each result
+        ///     print(result)
+        /// }
+        /// ```
         func search(
             query: String,
             _ maxResults: Int,
@@ -55,6 +78,13 @@ extension SearchIndexer {
 
         // MARK: - Add
 
+        /// Adds files from an array of TextFile objects to the index asynchronously.
+        ///
+        /// - Parameters:
+        ///   - files: An array of TextFile objects containing the information about the files to be added.
+        ///   - flushWhenComplete: A boolean flag indicating whether to flush the index when the operation is complete. Default is `false`.
+        ///
+        /// - Returns: An array of booleans indicating the success of adding each file to the index.
         func addText(
             files: [TextFile],
             flushWhenComplete: Bool = false
@@ -62,9 +92,11 @@ extension SearchIndexer {
 
             var addedFiles = [Bool]()
 
+            // Asynchronously iterate through the provided files using a task group
             await withTaskGroup(of: Bool.self) { taskGroup in
                 for file in files {
                     taskGroup.addTask {
+                        // Add the file to the index and return the success status
                         return self.index.addFileWithText(file.url, text: file.text, canReplace: true)
                     }
                 }
@@ -73,12 +105,22 @@ extension SearchIndexer {
                     addedFiles.append(result)
                 }
             }
+
             if flushWhenComplete {
                 index.flush()
             }
+
             return addedFiles
         }
 
+        /// Adds files from an array of URLs to the index asynchronously.
+        ///
+        /// - Parameters:
+        ///   - urls: An array of URLs representing the file locations to be added to the index.
+        ///   - flushWhenComplete: A boolean flag indicating whether to flush the index when the operation is complete. Default is `false`.
+        ///
+        /// - Returns: An array of booleans indicating the success of adding each file to the index.
+        /// - Warning: Prefer using `addText` when possible as SearchKit does not have the ability to read every file type. For example, it is often not possible to read Swift files.
         func addFiles(
             urls: [URL],
             flushWhenComplete: Bool = false
@@ -100,6 +142,15 @@ extension SearchIndexer {
             return addedURLs
         }
 
+        /// Adds files from a folder specified by the given URL to the index asynchronously.
+        ///
+        /// - Parameters:
+        ///   - url: The URL of the folder containing files to be added to the index.
+        ///   - flushWhenComplete: A boolean flag indicating whether to flush the index when the operation is complete. Default is `false`.
+        ///
+        /// This function uses asynchronous processing to add files from the specified folder to the index. It employs a DispatchGroup to track the completion of tasks.
+        ///
+        /// - Note: Subfolders within the specified folder are also processed.
         func addFolder(
             url: URL,
             flushWhenComplete: Bool = false
