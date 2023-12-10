@@ -19,6 +19,10 @@ extension SettingsData {
             .map { NSLocalizedString($0, comment: "") }
         }
 
-        var ignoreGlobPatterns: Array<String> = []
+        var ignoreGlobPatterns: Array<String> = [
+            "**/node_modules",
+            "**/bower_components",
+            "**/*.code-search"
+        ]
     }
 }

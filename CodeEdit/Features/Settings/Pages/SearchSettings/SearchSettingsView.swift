@@ -11,6 +11,8 @@ struct SearchSettingsView: View {
 
     @AppSettings(\.search.ignoreGlobPatterns)
     var ignoreGlobPatterns
+    
+    @State private var addIgnoreGlobPatternPresented: Bool = false
 
     var body: some View {
         SettingsForm {
@@ -21,12 +23,16 @@ struct SearchSettingsView: View {
                         .frame(maxWidth: .infinity, alignment: .center)
                 } else {
                     ForEach($ignoreGlobPatterns, id: \.self) { pattern in
-                        SearchIgnoreGlobPattern(globPattern: pattern)
+                        SearchSettingsIgnoreGlobPatternItemView(globPattern: pattern)
                     }
                 }
             } footer: {
                 HStack {
                     Spacer()
+                    Button("Add ignore glob pattern...") { addIgnoreGlobPatternPresented.toggle() }
+                    .sheet(isPresented: $addIgnoreGlobPatternPresented, content: {
+                        SearchSettingsIgnoreGlobPatternAddView()
+                    })
                 }
                 .padding(.top, 10)
             }

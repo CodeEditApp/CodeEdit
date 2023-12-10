@@ -249,7 +249,8 @@
 		58FD7609291EA1CB0051D6E4 /* CommandPaletteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FD7607291EA1CB0051D6E4 /* CommandPaletteView.swift */; };
 		5B698A0A2B262FA000DE9392 /* SearchSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B698A092B262FA000DE9392 /* SearchSettingsView.swift */; };
 		5B698A0D2B26327800DE9392 /* SearchSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B698A0C2B26327800DE9392 /* SearchSettings.swift */; };
-		5B698A0F2B2636A700DE9392 /* SearchIgnoreGlobPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B698A0E2B2636A700DE9392 /* SearchIgnoreGlobPattern.swift */; };
+		5B698A0F2B2636A700DE9392 /* SearchSettingsIgnoreGlobPatternItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B698A0E2B2636A700DE9392 /* SearchSettingsIgnoreGlobPatternItemView.swift */; };
+		5B698A132B2638ED00DE9392 /* SearchSettingsIgnoreGlobPatternAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B698A122B2638ED00DE9392 /* SearchSettingsIgnoreGlobPatternAddView.swift */; };
 		5C4BB1E128212B1E00A92FB2 /* World.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4BB1E028212B1E00A92FB2 /* World.swift */; };
 		610C0FDA2B44438F00A01CA7 /* WorkspaceDocument+FindAndReplace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 610C0FD92B44438F00A01CA7 /* WorkspaceDocument+FindAndReplace.swift */; };
 		611191FA2B08CC9000D4459B /* SearchIndexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611191F92B08CC9000D4459B /* SearchIndexer.swift */; };
@@ -802,7 +803,8 @@
 		58FD7607291EA1CB0051D6E4 /* CommandPaletteView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandPaletteView.swift; sourceTree = "<group>"; };
 		5B698A092B262FA000DE9392 /* SearchSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSettingsView.swift; sourceTree = "<group>"; };
 		5B698A0C2B26327800DE9392 /* SearchSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSettings.swift; sourceTree = "<group>"; };
-		5B698A0E2B2636A700DE9392 /* SearchIgnoreGlobPattern.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchIgnoreGlobPattern.swift; sourceTree = "<group>"; };
+		5B698A0E2B2636A700DE9392 /* SearchSettingsIgnoreGlobPatternItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSettingsIgnoreGlobPatternItemView.swift; sourceTree = "<group>"; };
+		5B698A122B2638ED00DE9392 /* SearchSettingsIgnoreGlobPatternAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSettingsIgnoreGlobPatternAddView.swift; sourceTree = "<group>"; };
 		5C4BB1E028212B1E00A92FB2 /* World.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = World.swift; sourceTree = "<group>"; };
 		610C0FD92B44438F00A01CA7 /* WorkspaceDocument+FindAndReplace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkspaceDocument+FindAndReplace.swift"; sourceTree = "<group>"; };
 		611191F92B08CC9000D4459B /* SearchIndexer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchIndexer.swift; sourceTree = "<group>"; };
@@ -2267,7 +2269,8 @@
 			children = (
 				5B698A0B2B26326000DE9392 /* Models */,
 				5B698A092B262FA000DE9392 /* SearchSettingsView.swift */,
-				5B698A0E2B2636A700DE9392 /* SearchIgnoreGlobPattern.swift */,
+				5B698A0E2B2636A700DE9392 /* SearchSettingsIgnoreGlobPatternItemView.swift */,
+				5B698A122B2638ED00DE9392 /* SearchSettingsIgnoreGlobPatternAddView.swift */,
 			);
 			path = SearchSettings;
 			sourceTree = "<group>";
@@ -3243,7 +3246,8 @@
 				587B9E9229301D8F00AC7927 /* BitBucketAccount.swift in Sources */,
 				DE513F52281B672D002260B9 /* EditorTabBarAccessory.swift in Sources */,
 				2813F93927ECC4C300E305E4 /* NavigatorAreaView.swift in Sources */,
-				5B698A0F2B2636A700DE9392 /* SearchIgnoreGlobPattern.swift in Sources */,
+				5B698A132B2638ED00DE9392 /* SearchSettingsIgnoreGlobPatternAddView.swift in Sources */,
+				5B698A0F2B2636A700DE9392 /* SearchSettingsIgnoreGlobPatternItemView.swift in Sources */,
 				587B9E8A29301D8F00AC7927 /* GitHubIssue.swift in Sources */,
 				EC0870F72A455F6400EB8692 /* ProjectNavigatorViewController+NSMenuDelegate.swift in Sources */,
 				B60718202B0C6CE7009CDAB4 /* GitStashEntry.swift in Sources */,
