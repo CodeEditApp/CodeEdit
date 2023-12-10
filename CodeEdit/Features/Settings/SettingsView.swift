@@ -59,6 +59,13 @@ struct SettingsView: View {
         ),
         .init(
             SettingsPage(
+                .search,
+                baseColor: .blue,
+                icon: .system("magnifyingglass")
+            )
+        ),
+        .init(
+            SettingsPage(
                 .sourceControl,
                 baseColor: .blue,
                 icon: .symbol("vault")
@@ -151,6 +158,8 @@ struct SettingsView: View {
                     TextEditingSettingsView()
                 case .terminal:
                     TerminalSettingsView()
+                case .search:
+                    SearchSettingsView()
                 case .sourceControl:
                     SourceControlSettingsView()
                 case .location:
