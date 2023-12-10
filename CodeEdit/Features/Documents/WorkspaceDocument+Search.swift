@@ -68,7 +68,6 @@ extension WorkspaceDocument {
                     }
                 }
                 asyncController.index.flush()
-                asyncController.index.compact()
 
                 await MainActor.run {
                     self.indexStatus = .done
@@ -126,7 +125,7 @@ extension WorkspaceDocument {
         ///
         /// - Parameter query: The search query to search for.
         func search(_ query: String) async {
-clearResults()
+            clearResults()
             let searchQuery = getSearchTerm(query)
             guard let indexer = indexer else {
                 return

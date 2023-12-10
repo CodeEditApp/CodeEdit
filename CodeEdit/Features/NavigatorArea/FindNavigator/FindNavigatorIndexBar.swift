@@ -46,24 +46,24 @@ struct FindNavigatorIndexBar: View {
     /// Updates the bar with a new status update.
     /// - Parameter status: The new status.
     private func updateWithNewStatus(_ status: WorkspaceDocument.SearchState.IndexStatus) {
-            switch status {
-            case .none:
-                self.progress = 0.0
-                shouldShow = false
-            case .indexing(let progress):
-                if shouldShow {
-                    withAnimation {
-                        self.progress = progress
-                    }
-                } else {
-                    shouldShow = true
+        switch status {
+        case .none:
+            self.progress = 0.0
+            shouldShow = false
+        case .indexing(let progress):
+            if shouldShow {
+                withAnimation {
                     self.progress = progress
                 }
-            case .done:
-                self.progress = 1.0
-                withAnimation(.default.delay(0.75)) {
-                    shouldShow = false
-                }
+            } else {
+                shouldShow = true
+                self.progress = progress
             }
+        case .done:
+            self.progress = 1.0
+            withAnimation(.default.delay(0.75)) {
+                shouldShow = false
+            }
+        }
     }
 }
