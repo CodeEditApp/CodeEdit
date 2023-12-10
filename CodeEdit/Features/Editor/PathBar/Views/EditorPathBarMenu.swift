@@ -69,7 +69,7 @@ final class PathBarMenuItem: NSMenuItem {
         self.tappedOpenFile = tappedOpenFile
         super.init(title: fileItem.name, action: #selector(openFile), keyEquivalent: "")
 
-        var icon = fileItem.systemImage
+        let icon = fileItem.systemImage
         var color = NSColor(fileItem.iconColor)
         isEnabled = true
         target = self

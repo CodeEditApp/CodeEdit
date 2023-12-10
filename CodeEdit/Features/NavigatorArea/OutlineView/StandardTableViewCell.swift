@@ -90,7 +90,7 @@ class StandardTableViewCell: NSTableCellView {
         secondaryLabel.isEditable = false
         secondaryLabel.isSelectable = false
         secondaryLabel.layer?.cornerRadius = 10.0
-        secondaryLabel.font = .systemFont(ofSize: fontSize)
+        secondaryLabel.font = .systemFont(ofSize: fontSize-2, weight: .bold)
         secondaryLabel.alignment = .center
         secondaryLabel.textColor = NSColor(Color.secondary)
     }

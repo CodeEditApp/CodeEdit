@@ -128,10 +128,7 @@ struct UtilityAreaTerminalView: View {
         UtilityAreaTabView(model: model.tabViewModel) { tabState in
             ZStack {
                 if model.selectedTerminals.isEmpty {
-                    Text("No Selection")
-                        .font(.system(size: 16))
-                        .foregroundColor(.secondary)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    CEContentUnavailableView("No Selection")
                 }
                 ForEach(model.terminals) { terminal in
                     TerminalEmulatorView(
@@ -200,6 +197,7 @@ struct UtilityAreaTerminalView: View {
                         selectedIDs: model.selectedTerminals
                     )
                     .tag(terminal.id)
+                    .listRowSeparator(.hidden)
                 }
                 .onMove(perform: moveItems)
             }
