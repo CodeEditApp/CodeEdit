@@ -15,9 +15,15 @@ struct SearchSettingsView: View {
     var body: some View {
         SettingsForm {
             Section {
-                Text("No accounts")
-                    .foregroundColor(.secondary)
-                    .frame(maxWidth: .infinity, alignment: .center)
+                if $ignoreGlobPatterns.isEmpty {
+                    Text("No ignore patterns")
+                        .foregroundColor(.secondary)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                } else {
+                    ForEach($ignoreGlobPatterns, id: \.self) { pattern in
+                        SearchIgnoreGlobPattern(globPattern: pattern)
+                    }
+                }
             } footer: {
                 HStack {
                     Spacer()
