@@ -26,7 +26,7 @@ final class SearchSettingsModel: ObservableObject {
     }
 
     /// The URL of the `search` folder
-    internal var themesURL: URL {
+    internal var searchURL: URL {
         baseURL.appendingPathComponent("search", isDirectory: true)
     }
 
