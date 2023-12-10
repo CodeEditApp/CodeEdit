@@ -126,12 +126,7 @@ extension WorkspaceDocument {
         ///
         /// - Parameter query: The search query to search for.
         func search(_ query: String) async {
-            await MainActor.run {
-                searchResult = []
-                searchResultsCount = 0
-                searchResultsFileCount = 0
-            }
-
+clearResults()
             let searchQuery = getSearchTerm(query)
             guard let indexer = indexer else {
                 return
