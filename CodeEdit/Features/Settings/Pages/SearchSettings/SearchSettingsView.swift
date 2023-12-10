@@ -11,7 +11,7 @@ struct SearchSettingsView: View {
 
     @AppSettings(\.search.ignoreGlobPatterns)
     var ignoreGlobPatterns
-    
+
     @State private var addIgnoreGlobPatternPresented: Bool = false
 
     var body: some View {

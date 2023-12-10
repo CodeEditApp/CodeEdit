@@ -11,12 +11,22 @@ struct SearchSettingsIgnoreGlobPatternAddView: View {
     @Environment(\.dismiss)
     var dismiss
 
+    @State private var globPattern: String = ""
+    @FocusState private var globPatternIsFocused: Bool
+
     var body: some View {
         VStack(spacing: 0) {
             Form {
                 Section {
                     VStack(alignment: .leading, spacing: 0) {
-                        Text("Add here!")
+                        TextField(
+                                "Glob Pattern",
+                                text: $globPattern
+                            )
+                            .focused($globPatternIsFocused)
+                            .onSubmit {
+                                print($globPattern)
+                            }
                     }
                 } footer: {
                     HStack {
