@@ -25,7 +25,12 @@ struct FindNavigatorView: View {
 
     var body: some View {
         VStack {
-            FindNavigatorForm(state: state)
+            VStack {
+                FindNavigatorForm(state: state)
+                FindNavigatorIndexBar(state: state)
+            }
+            .padding(.horizontal, 10)
+            .padding(.vertical, 5)
             Divider()
             HStack(alignment: .center) {
                 Text("\(self.searchResultCount) results in \(self.foundFilesCount) files")

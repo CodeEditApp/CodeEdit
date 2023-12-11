@@ -44,7 +44,7 @@ extension SearchIndexer {
 
             return AsyncStream { configuration in
                 var moreResultsAvailable = true
-                while moreResultsAvailable {
+                while moreResultsAvailable && !Task.isCancelled {
                     let results = search.getNextSearchResultsChunk(limit: maxResults, timeout: timeout)
                     moreResultsAvailable = results.moreResultsAvailable
                     configuration.yield(results)

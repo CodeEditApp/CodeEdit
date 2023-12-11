@@ -265,8 +265,6 @@ struct FindNavigatorForm: View {
                 }
             }
         }
-        .padding(.horizontal, 10)
-        .padding(.vertical, 5)
         .lineLimit(1...5)
     }
 }

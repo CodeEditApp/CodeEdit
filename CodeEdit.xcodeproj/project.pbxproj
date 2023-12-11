@@ -286,6 +286,8 @@
 		6C14CEB028777D3C001468FE /* FindNavigatorListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C14CEAF28777D3C001468FE /* FindNavigatorListViewController.swift */; };
 		6C14CEB32877A68F001468FE /* FindNavigatorMatchListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C14CEB22877A68F001468FE /* FindNavigatorMatchListCell.swift */; };
 		6C18620A298BF5A800C663EA /* RecentProjectsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C186209298BF5A800C663EA /* RecentProjectsListView.swift */; };
+		6C1CC9982B1E770B0002349B /* AsyncFileIterator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C1CC9972B1E770B0002349B /* AsyncFileIterator.swift */; };
+		6C1CC99B2B1E7CBC0002349B /* FindNavigatorIndexBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C1CC99A2B1E7CBC0002349B /* FindNavigatorIndexBar.swift */; };
 		6C2149412A1BB9AB00748382 /* LogStream in Frameworks */ = {isa = PBXBuildFile; productRef = 6C2149402A1BB9AB00748382 /* LogStream */; };
 		6C2C155829B4F49100EA60A5 /* SplitViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C2C155729B4F49100EA60A5 /* SplitViewItem.swift */; };
 		6C2C155A29B4F4CC00EA60A5 /* Variadic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C2C155929B4F4CC00EA60A5 /* Variadic.swift */; };
@@ -803,6 +805,8 @@
 		6C14CEAF28777D3C001468FE /* FindNavigatorListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindNavigatorListViewController.swift; sourceTree = "<group>"; };
 		6C14CEB22877A68F001468FE /* FindNavigatorMatchListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindNavigatorMatchListCell.swift; sourceTree = "<group>"; };
 		6C186209298BF5A800C663EA /* RecentProjectsListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentProjectsListView.swift; sourceTree = "<group>"; };
+		6C1CC9972B1E770B0002349B /* AsyncFileIterator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncFileIterator.swift; sourceTree = "<group>"; };
+		6C1CC99A2B1E7CBC0002349B /* FindNavigatorIndexBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindNavigatorIndexBar.swift; sourceTree = "<group>"; };
 		6C2C155729B4F49100EA60A5 /* SplitViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitViewItem.swift; sourceTree = "<group>"; };
 		6C2C155929B4F4CC00EA60A5 /* Variadic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Variadic.swift; sourceTree = "<group>"; };
 		6C2C155C29B4F4E500EA60A5 /* SplitViewReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitViewReader.swift; sourceTree = "<group>"; };
@@ -2187,6 +2191,7 @@
 		611191F82B08CC8000D4459B /* Indexer */ = {
 			isa = PBXGroup;
 			children = (
+				6C1CC9972B1E770B0002349B /* AsyncFileIterator.swift */,
 				611191F92B08CC9000D4459B /* SearchIndexer.swift */,
 				611191FB2B08CCB800D4459B /* SearchIndexer+AsyncController.swift */,
 				611191FF2B08CCD700D4459B /* SearchIndexer+Memory.swift */,
@@ -2776,6 +2781,7 @@
 			isa = PBXGroup;
 			children = (
 				D7012EE727E757850001E1EF /* FindNavigatorView.swift */,
+				6C1CC99A2B1E7CBC0002349B /* FindNavigatorIndexBar.swift */,
 				D7E201B127E8D50000CB86D0 /* FindNavigatorForm.swift */,
 				6C14CEB12877A5BE001468FE /* FindNavigatorResultList */,
 				B67DB0F52AFC2A7A002DC647 /* FindNavigatorToolbarBottom.swift */,
@@ -3290,6 +3296,7 @@
 				B6F0517029D9E36800D72287 /* LocationsSettingsView.swift in Sources */,
 				B62AEDDC2A27C1B3009A9F52 /* OSLogType+Color.swift in Sources */,
 				587B9E6329301D8F00AC7927 /* GitLabAccount.swift in Sources */,
+				6C1CC99B2B1E7CBC0002349B /* FindNavigatorIndexBar.swift in Sources */,
 				285FEC7027FE4B9800E57D53 /* ProjectNavigatorTableViewCell.swift in Sources */,
 				6CB9144B29BEC7F100BC47F2 /* (null) in Sources */,
 				587B9E7429301D8F00AC7927 /* URL+URLParameters.swift in Sources */,
@@ -3444,6 +3451,7 @@
 				04BA7C242AE2E7CD00584E1C /* SourceControlNavigatorSyncView.swift in Sources */,
 				587B9DA529300ABD00AC7927 /* PressActionsModifier.swift in Sources */,
 				6C147C4029A328BC0089B630 /* SplitViewData.swift in Sources */,
+				6C1CC9982B1E770B0002349B /* AsyncFileIterator.swift in Sources */,
 				587B9E9029301D8F00AC7927 /* BitBucketTokenRouter.swift in Sources */,
 				B6C6A42E29771A8D00A3D28F /* EditorTabButtonStyle.swift in Sources */,
 				58822525292C280D00E83CDE /* StatusBarMenuStyle.swift in Sources */,
