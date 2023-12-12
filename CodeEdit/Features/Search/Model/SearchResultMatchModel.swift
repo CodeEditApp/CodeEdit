@@ -11,32 +11,28 @@ import Cocoa
 /// A struct for holding information about a search match.
 class SearchResultMatchModel: Hashable, Identifiable {
     init(
-        lineNumber: Int,
+        rangeWithinFile: Range<String.Index>,
         file: CEWorkspaceFile,
         lineContent: String,
         keywordRange: Range<String.Index>
     ) {
         self.id = UUID()
         self.file = file
-        self.lineNumber = lineNumber
+        self.rangeWithinFile = rangeWithinFile
         self.lineContent = lineContent
         self.keywordRange = keywordRange
     }
 
     var id: UUID
     var file: CEWorkspaceFile
-    var lineNumber: Int
+    var rangeWithinFile: Range<String.Index>
     var lineContent: String
     var keywordRange: Range<String.Index>
-
-    var hasKeywordInfo: Bool {
-        lineNumber >= 0 && !lineContent.isEmpty && !keywordRange.isEmpty
-    }
 
     static func == (lhs: SearchResultMatchModel, rhs: SearchResultMatchModel) -> Bool {
         return lhs.id == rhs.id
         && lhs.file == rhs.file
-        && lhs.lineNumber == rhs.lineNumber
+        && lhs.rangeWithinFile == rhs.rangeWithinFile
         && lhs.lineContent == rhs.lineContent
         && lhs.keywordRange == rhs.keywordRange
     }
@@ -44,7 +40,7 @@ class SearchResultMatchModel: Hashable, Identifiable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
         hasher.combine(file)
-        hasher.combine(lineNumber)
+        hasher.combine(rangeWithinFile)
         hasher.combine(lineContent)
         hasher.combine(keywordRange)
     }
@@ -53,7 +49,6 @@ class SearchResultMatchModel: Hashable, Identifiable {
     /// Will only return 60 characters before and after the matched result.
     /// - Returns: The formatted `NSAttributedString`
     func attributedLabel() -> NSAttributedString {
-
         // By default `NSTextView` will ignore any paragraph wrapping set to the label when it's
         // using an `NSAttributedString` so we need to set the wrap mode here.
         let paragraphStyle = NSMutableParagraphStyle()
@@ -77,14 +72,9 @@ class SearchResultMatchModel: Hashable, Identifiable {
         ]
 
         // Set up the search result string with the matched search in bold.
-        // We also limit the result to 60 characters before and after the
-        // match to reduce *massive* results in the search result list, and for
-        // cases where a file may be formatted in one line (eg: a minimized JS file).
-        let lowerIndex = lineContent.safeOffset(keywordRange.lowerBound, offsetBy: -60)
-        let upperIndex = lineContent.safeOffset(keywordRange.upperBound, offsetBy: 60)
-        let prefix = String(lineContent[lowerIndex..<keywordRange.lowerBound])
-        let searchMatch = String(lineContent[keywordRange.lowerBound..<keywordRange.upperBound])
-        let postfix = String(lineContent[keywordRange.upperBound..<upperIndex])
+        let prefix = String(lineContent[..<keywordRange.lowerBound])
+        let searchMatch = String(lineContent[keywordRange])
+        let postfix = String(lineContent[keywordRange.upperBound...])
 
         let attributedString = NSMutableAttributedString(
             string: prefix,
