@@ -107,7 +107,6 @@ extension WorkspaceDocument {
             return textFiles
         }
 
-
         /// Creates a search term based on the given query and search mode.
         ///
         /// - Parameter query: The original user query string.
@@ -238,7 +237,6 @@ extension WorkspaceDocument {
             guard let regex = try? NSRegularExpression(pattern: query, options: [.caseInsensitive]) else {
                 return
             }
-
 
             // Find all matches of the query within the file content using the regular expression
             let matches = regex.matches(in: fileContent, range: NSRange(location: 0, length: fileContent.utf16.count))
