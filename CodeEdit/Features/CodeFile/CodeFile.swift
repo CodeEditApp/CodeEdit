@@ -10,7 +10,7 @@ import Foundation
 import SwiftUI
 import UniformTypeIdentifiers
 import QuickLookUI
-import CodeEditTextView
+import CodeEditSourceEditor
 import CodeEditLanguages
 import Combine
 
@@ -70,7 +70,7 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
         fileURL
     }
 
-    @Published var cursorPosition = (1, 1)
+    @Published var cursorPositions = [CursorPosition]()
 
     private let isDocumentEditedSubject = PassthroughSubject<Bool, Never>()
 

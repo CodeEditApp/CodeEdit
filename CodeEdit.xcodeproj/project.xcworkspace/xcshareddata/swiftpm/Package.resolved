@@ -39,10 +39,10 @@
     {
       "identity" : "codeedittextview",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/CodeEditApp/CodeEditTextView",
+      "location" : "https://github.com/CodeEditApp/CodeEditTextView.git",
       "state" : {
-        "revision" : "6a04ca72975b25b28829e419a43cce5cabb97891",
-        "version" : "0.6.8"
+        "revision" : "c867fed329b2b4ce91a13742e20626f50cf233bb",
+        "version" : "0.7.0"
       }
     },
     {
@@ -172,15 +172,6 @@
       }
     },
     {
-      "identity" : "sttextview",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/krzyzanowskim/STTextView.git",
-      "state" : {
-        "revision" : "1046965bd62dc05cf17beb4b4e901cdae851395e",
-        "version" : "0.8.7"
-      }
-    },
-    {
       "identity" : "swift-collections",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-collections.git",
@@ -257,8 +248,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/TextFormation",
       "state" : {
-        "revision" : "b4987856bc860643ac2c9cdbc7d5f3e9ade68377",
-        "version" : "0.8.1"
+        "revision" : "f6faed6abd768ae95b70d10113d4008a7cac57a7",
+        "version" : "0.8.2"
       }
     },
     {
