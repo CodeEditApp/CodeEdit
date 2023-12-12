@@ -9,9 +9,17 @@ import Foundation
 
 extension WorkspaceDocument {
     final class SearchState: ObservableObject {
+        enum IndexStatus {
+            case none
+            case indexing(progress: Double)
+            case done
+        }
+
         @Published var searchResult: [SearchResultModel] = []
         @Published var searchResultsFileCount: Int = 0
         @Published var searchResultsCount: Int = 0
+
+        @Published var indexStatus: IndexStatus = .none
 
         unowned var workspace: WorkspaceDocument
         var tempSearchResults = [SearchResultModel]()
@@ -29,7 +37,7 @@ extension WorkspaceDocument {
             addProjectToIndex()
         }
 
-        /// Adds the contents of the current worksapce URL to the search index.
+        /// Adds the contents of the current workspace URL to the search index.
         /// That means that the contents of the workspace will be indexed and searchable.
         func addProjectToIndex() {
             guard let indexer = indexer else {
@@ -40,11 +48,31 @@ extension WorkspaceDocument {
                 return
             }
 
-            let filePaths = getFileURLs(at: url)
-            Task {
-                let textFiles = await getfileContent(from: filePaths)
+            indexStatus = .indexing(progress: 0.0)
+
+            Task.detached {
+                let filePaths = self.getFileURLs(at: url)
+
                 let asyncController = SearchIndexer.AsyncManager(index: indexer)
-                _ = await asyncController.addText(files: textFiles, flushWhenComplete: true)
+                var lastProgress: Double = 0
+
+                for await (file, index) in AsyncFileIterator(fileURLs: filePaths) {
+                    _ = await asyncController.addText(files: [file], flushWhenComplete: false)
+                    let progress = Double(index) / Double(filePaths.count)
+
+                    // Send only if difference is > 0.5%, to keep updates from sending too frequently
+                    if progress - lastProgress > 0.005 || index == filePaths.count - 1 {
+                        lastProgress = progress
+                        await MainActor.run {
+                            self.indexStatus = .indexing(progress: progress)
+                        }
+                    }
+                }
+                asyncController.index.flush()
+
+                await MainActor.run {
+                    self.indexStatus = .done
+                }
             }
         }
 
@@ -78,6 +106,7 @@ extension WorkspaceDocument {
             }
             return textFiles
         }
+
 
         /// Creates a search term based on the given query and search mode.
         ///
@@ -115,6 +144,7 @@ extension WorkspaceDocument {
         ///
         /// - Parameter query: The search query to search for.
         func search(_ query: String) async {
+            clearResults()
             let searchQuery = getSearchTerm(query)
             guard let indexer = indexer else {
                 return
@@ -208,6 +238,7 @@ extension WorkspaceDocument {
             guard let regex = try? NSRegularExpression(pattern: query, options: [.caseInsensitive]) else {
                 return
             }
+
 
             // Find all matches of the query within the file content using the regular expression
             let matches = regex.matches(in: fileContent, range: NSRange(location: 0, length: fileContent.utf16.count))

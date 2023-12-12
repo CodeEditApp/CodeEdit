@@ -18,6 +18,9 @@ final class SourceControlManager: ObservableObject {
     let editorManager: EditorManager
     weak var fileManager: CEWorkspaceFileManager?
 
+    // Timer for periodic fetch
+    private var fetchTimer: Timer?
+
     /// A list of changed files
     @Published var changedFiles: [CEWorkspaceFile] = []
 
@@ -27,11 +30,16 @@ final class SourceControlManager: ObservableObject {
     /// All branches, local and remote
     @Published var branches: [GitBranch] = []
 
-    /// Files user selected to commit
-    @Published var filesToCommit: [CEWorkspaceFile.ID] = []
+    /// All remotes
+    @Published var remotes: [GitRemote] = []
+
+    /// All stash ebtrues
+    @Published var stashEntries: [GitStashEntry] = []
 
     /// Number of unsynced commits with remote in current branch
-    @Published var numberOfUnsyncedCommits: Int = 0
+    @Published var numberOfUnsyncedCommits: (ahead: Int, behind: Int) = (ahead: 0, behind: 0)
+
+    @Published var isGitRepository: Bool = false
 
     init(
         workspaceURL: URL,
@@ -43,13 +51,26 @@ final class SourceControlManager: ObservableObject {
     }
 
     /// Refresh all changed files and refresh status in file manager
-    func refresAllChangesFiles() async {
+    func refreshAllChangedFiles() async {
         do {
-            var changedFiles: [CEWorkspaceFile] = []
+            var fileDictionary = [URL: CEWorkspaceFile]()
 
+            // Process changed files
             for item in try await gitClient.getChangedFiles() {
-                changedFiles.append(.init(url: item.fileLink, changeType: item.changeType))
+                fileDictionary[item.fileLink] = CEWorkspaceFile(
+                    url: item.fileLink,
+                    changeType: item.changeType,
+                    staged: false
+                )
             }
+
+            // Update staged status
+            for item in try await gitClient.getStagedFiles() {
+                fileDictionary[item.fileLink]?.staged = true
+            }
+
+            // TODO:  Profile
+            let changedFiles = Array(fileDictionary.values.sorted())
 
             await setChangedFiles(changedFiles)
             await refreshStatusInFileManager()
@@ -95,6 +116,29 @@ final class SourceControlManager: ObservableObject {
         fileManager.notifyObservers(updatedItems: updatedStatusFor)
     }
 
+    /// Start periodic fetch with a specified interval
+    func startPeriodicFetch(interval: TimeInterval) {
+        fetchTimer?.invalidate() // Invalidate any existing timer
+        fetch()
+        fetchTimer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { [weak self] _ in
+            self?.fetch()
+        }
+    }
+
+    /// Fetch from remote
+    func fetch() {
+        Task {
+            try await gitClient.fetchFromRemote()
+            await self.refreshNumberOfUnsyncedCommits()
+        }
+    }
+
+    /// Stops the periodic fetch
+    func stopPeriodicFetch() {
+        fetchTimer?.invalidate()
+        fetchTimer = nil
+    }
+
     /// Refresh current branch
     func refreshCurrentBranch() async {
         let currentBranch = try? await gitClient.getCurrentBranch()
@@ -129,6 +173,12 @@ final class SourceControlManager: ObservableObject {
         await refreshCurrentBranch()
     }
 
+    /// Rename branch
+    func renameBranch(oldName: String, newName: String) async throws {
+        try await gitClient.renameBranch(oldName: oldName, newName: newName)
+        await refreshBranches()
+    }
+
     /// Delete branch if it's local and not current
     func deleteBranch(branch: GitBranch) async throws {
         if !branch.isLocal || branch == currentBranch {
@@ -137,6 +187,32 @@ final class SourceControlManager: ObservableObject {
 
         try await gitClient.deleteBranch(branch)
         await refreshBranches()
+    }
+
+    /// Delete stash entry
+    func deleteStashEntry(stashEntry: GitStashEntry) async throws {
+        try await gitClient.deleteStashEntry(stashEntry.index)
+        try await refreshStashEntries()
+    }
+
+    /// Apply stash entry
+    func applyStashEntry(stashEntry: GitStashEntry?) async throws {
+        try await gitClient.applyStashEntry(stashEntry?.index)
+        try await refreshStashEntries()
+        await refreshAllChangedFiles()
+    }
+
+    /// Stash changes
+    func stashChanges(message: String?) async throws {
+        try await gitClient.stash(message: message)
+        try await refreshStashEntries()
+        await refreshAllChangedFiles()
+    }
+
+    /// Delete remote
+    func deleteRemote(remote: GitRemote) async throws {
+        try await gitClient.removeRemote(name: remote.name)
+        try await refreshRemotes()
     }
 
     /// Discard changes for file
@@ -166,33 +242,55 @@ final class SourceControlManager: ObservableObject {
     }
 
     /// Commit files selected by user
-    func commit(message: String) async throws {
-        var filesToCommit: [CEWorkspaceFile] = []
-        for file in changedFiles where self.filesToCommit.contains(file.id) {
-            filesToCommit.append(file)
-        }
+    func commit(message: String, details: String? = nil) async throws {
+        try await gitClient.commit(message: message, details: details)
 
-        if filesToCommit.isEmpty {
-            return
-        }
-
-        try await gitClient.commit(filesToCommit, message: message)
-
-        await MainActor.run {
-            self.filesToCommit = []
-        }
-
-        await self.refresAllChangesFiles()
+        await self.refreshAllChangedFiles()
         await self.refreshNumberOfUnsyncedCommits()
+    }
+
+    func add(_ files: [CEWorkspaceFile]) async throws {
+        try await gitClient.add(files)
+    }
+
+    func reset(_ files: [CEWorkspaceFile]) async throws {
+        try await gitClient.reset(files)
     }
 
     /// Refresh number of unsynced commits
     func refreshNumberOfUnsyncedCommits() async {
-        let numberOfUnsyncedCommits = (try? await gitClient.numberOfUnsyncedCommits()) ?? 0
+        let numberOfUnpushedCommits = (try? await gitClient.numberOfUnsyncedCommits()) ?? (ahead: 0, behind: 0)
 
         await MainActor.run {
-            self.numberOfUnsyncedCommits = numberOfUnsyncedCommits
+            self.numberOfUnsyncedCommits = numberOfUnpushedCommits
         }
+    }
+
+    /// Add existing remote to git
+    func addRemote(name: String, location: String) async throws {
+        try await gitClient.addRemote(name: name, location: location)
+    }
+
+    /// Get all remotes
+    func refreshRemotes() async throws {
+        let remotes = (try? await gitClient.getRemotes()) ?? []
+        await MainActor.run {
+            self.remotes = remotes
+        }
+    }
+
+    func refreshStashEntries() async throws {
+        let stashEntries = (try? await gitClient.stashList()) ?? []
+        await MainActor.run {
+            self.stashEntries = stashEntries
+        }
+    }
+
+    /// Pull changes from remote
+    func pull() async throws {
+        try await gitClient.pullFromRemote()
+
+        await self.refreshNumberOfUnsyncedCommits()
     }
 
     /// Push changes to remote
@@ -207,6 +305,21 @@ final class SourceControlManager: ObservableObject {
         }
 
         await self.refreshNumberOfUnsyncedCommits()
+    }
+
+    /// Initiate repository
+    func initiate() async throws {
+        try await gitClient.initiate()
+    }
+
+    /// Validate repository
+    func validate() async throws {
+        Task {
+            let isGitRepository = try await gitClient.validate()
+            await MainActor.run {
+                self.isGitRepository = isGitRepository
+            }
+        }
     }
 
     /// Show alert for error

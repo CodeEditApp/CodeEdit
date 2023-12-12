@@ -15,39 +15,55 @@ struct ProjectNavigatorToolbarBottom: View {
     private var colorScheme
 
     @EnvironmentObject var workspace: WorkspaceDocument
-
     @EnvironmentObject var editorManager: EditorManager
 
     @State var filter: String = ""
+    @State var recentsFilter: Bool = false
+    @State var sourceControlFilter: Bool = false
 
     var body: some View {
-        HStack {
+        HStack(spacing: 5) {
             addNewFileButton
-                .frame(width: 20)
-                .padding(.leading, 10)
-            HStack {
-                sortButton
-                    .padding(.leading, 5)
-                TextField("Filter", text: $filter)
-                    .textFieldStyle(.plain)
-                    .font(.system(size: 12))
-                if !filter.isEmpty {
-                    clearFilterButton
-                        .padding(.trailing, 5)
-                }
-            }
-//            .onChange(of: filter, perform: {
-                // TODO: Filter Workspace Files
-//                workspace.filter = $0
-//            })
-            .padding(.vertical, 3)
-            .background(colorScheme == .dark ? Color(hex: "#FFFFFF").opacity(0.1) : Color(hex: "#808080").opacity(0.2))
-            .clipShape(RoundedRectangle(cornerRadius: 6))
-            .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.gray, lineWidth: 0.5).cornerRadius(6))
-            .padding(.trailing, 5)
-            .padding(.leading, -8)
+            PaneTextField(
+                "Filter",
+                text: $filter,
+                leadingAccessories: {
+                    FilterDropDownIconButton(menu: {
+                        Button {
+                            workspace.sortFoldersOnTop.toggle()
+                        } label: {
+                            Text(workspace.sortFoldersOnTop ? "Alphabetically" : "Folders on top")
+                        }
+                    }, isOn: !filter.isEmpty)
+                    .padding(.leading, 4)
+                    .foregroundStyle(
+                        filter.isEmpty
+                        ? Color(nsColor: .secondaryLabelColor)
+                        : Color(nsColor: .controlAccentColor)
+                    )
+                },
+                trailingAccessories: {
+                    HStack(spacing: 0) {
+                        Toggle(isOn: $recentsFilter) {
+                            Image(systemName: "clock")
+                        }
+                        Toggle(isOn: $sourceControlFilter) {
+                            Image(systemName: "plusminus.circle")
+                        }
+                    }
+                    .toggleStyle(.icon(font: .system(size: 14), size: CGSize(width: 18, height: 20)))
+                    .padding(.trailing, 2.5)
+                },
+                clearable: true,
+                hasValue: !filter.isEmpty || recentsFilter || sourceControlFilter
+            )
+            //            .onChange(of: filter, perform: {
+            // TODO: Filter Workspace Files
+            //                workspace.filter = $0
+            //            })
         }
-        .frame(height: 29, alignment: .center)
+        .padding(.horizontal, 5)
+        .frame(height: 28, alignment: .center)
         .frame(maxWidth: .infinity)
         .overlay(alignment: .top) {
             Divider()
@@ -90,27 +106,13 @@ struct ProjectNavigatorToolbarBottom: View {
                 guard let rootFile = workspace.workspaceFileManager?.getFile(filePathURL.path) else { return }
                 workspace.workspaceFileManager?.addFolder(folderName: "untitled", toFile: rootFile)
             }
-        } label: {
+        } label: {}
+        .background {
             Image(systemName: "plus")
         }
         .menuStyle(.borderlessButton)
         .menuIndicator(.hidden)
-        .frame(maxWidth: 30)
-        .opacity(activeState == .inactive ? 0.45 : 1)
-    }
-
-    private var sortButton: some View {
-        Menu {
-            Button {
-                workspace.sortFoldersOnTop.toggle()
-            } label: {
-                Text(workspace.sortFoldersOnTop ? "Alphabetically" : "Folders on top")
-            }
-        } label: {
-            Image(systemName: "line.3.horizontal.decrease.circle")
-        }
-        .menuStyle(.borderlessButton)
-        .frame(maxWidth: 30)
+        .frame(maxWidth: 18, alignment: .center)
         .opacity(activeState == .inactive ? 0.45 : 1)
     }
 
@@ -126,5 +128,30 @@ struct ProjectNavigatorToolbarBottom: View {
         }
         .buttonStyle(.plain)
         .opacity(activeState == .inactive ? 0.45 : 1)
+    }
+}
+
+struct FilterDropDownIconButton<MenuView: View>: View {
+    @Environment(\.controlActiveState)
+    private var activeState
+
+    var menu: () -> MenuView
+
+    var isOn: Bool?
+
+    var body: some View {
+        Menu { menu() } label: {}
+            .background {
+                if isOn == true {
+                    Image("line.3.horizontal.decrease.chevron.filled")
+                        .foregroundStyle(.tint)
+                } else {
+                    Image("line.3.horizontal.decrease.chevron")
+                }
+            }
+            .menuStyle(.borderlessButton)
+            .menuIndicator(.hidden)
+            .frame(width: 26, height: 13)
+            .clipShape(.rect(cornerRadius: 6.5))
     }
 }

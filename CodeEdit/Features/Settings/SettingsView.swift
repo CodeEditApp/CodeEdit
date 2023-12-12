@@ -15,11 +15,7 @@ struct SettingsView: View {
     private var colorScheme
 
     /// Variables for the selected Page, the current search text and software updater
-    @State private var selectedPage: SettingsPage = .init(
-        .general,
-        baseColor: .gray,
-        icon: .system("gear")
-    )
+    @State private var selectedPage: SettingsPage = SettingsPage(.general)
     @State private var searchText: String = ""
 
     @Environment(\.presentationMode)
@@ -28,58 +24,58 @@ struct SettingsView: View {
     static var pages: [PageAndSettings] = [
         .init(
             SettingsPage(
-            .general,
-            baseColor: .gray,
-            icon: .system("gear")
-        )
-        ),
-        .init(
-            SettingsPage(
-            .accounts,
-            baseColor: .blue,
-            icon: .system("at")
-        )
-        ),
-        .init(
-            SettingsPage(
-            .theme,
-            baseColor: .pink,
-            icon: .system("paintbrush.fill")
-        )
-        ),
-        .init(
-            SettingsPage(
-            .textEditing,
-            baseColor: .blue,
-            icon: .system("pencil.line")
+                .general,
+                baseColor: .gray,
+                icon: .system("gear")
             )
         ),
         .init(
             SettingsPage(
-            .terminal,
-            baseColor: .blue,
-            icon: .system("terminal.fill")
+                .accounts,
+                baseColor: .blue,
+                icon: .system("at")
             )
         ),
         .init(
             SettingsPage(
-            .sourceControl,
-            baseColor: .blue,
-            icon: .symbol("vault")
+                .theme,
+                baseColor: .pink,
+                icon: .system("paintbrush.fill")
             )
         ),
         .init(
             SettingsPage(
-            .location,
-            baseColor: .green,
-            icon: .system("externaldrive.fill")
+                .textEditing,
+                baseColor: .blue,
+                icon: .system("pencil.line")
             )
         ),
         .init(
             SettingsPage(
-            .featureFlags,
-            baseColor: .cyan,
-            icon: .system("flag.2.crossed.fill")
+                .terminal,
+                baseColor: .blue,
+                icon: .system("terminal.fill")
+            )
+        ),
+        .init(
+            SettingsPage(
+                .sourceControl,
+                baseColor: .blue,
+                icon: .symbol("vault")
+            )
+        ),
+        .init(
+            SettingsPage(
+                .location,
+                baseColor: .green,
+                icon: .system("externaldrive.fill")
+            )
+        ),
+        .init(
+            SettingsPage(
+                .featureFlags,
+                baseColor: .cyan,
+                icon: .system("flag.2.crossed.fill")
             )
         )
     ]
@@ -189,6 +185,9 @@ struct SettingsView: View {
             }
         }
         .environmentObject(model)
+        .onAppear {
+            selectedPage = Self.pages[0].page
+        }
     }
 }
 

@@ -6,42 +6,65 @@
 //
 
 import Foundation
+import RegexBuilder
 
 extension GitClient {
-    /// Commit files, if file is untracked, it will be added
+    /// Commit files
     /// - Parameters:
-    ///   - files: Files to commit
     ///   - message: Commit message
-    func commit(_ files: [CEWorkspaceFile], message: String) async throws {
-        // Add untracked files
-        for file in files where file.gitStatus == .untracked {
-            try await add(file)
-        }
-
+    func commit(message: String, details: String?) async throws {
         let message = message.replacingOccurrences(of: #"""#, with: #"\""#)
-        let command = "commit \(files.map { $0.url.relativePath }.joined(separator: " ")) --message=\"\(message)\""
+        let command: String
+
+        if let msgDetails = details {
+            command = "commit --message=\"\(message + (msgDetails.isEmpty ? "" : ("\n\n" + msgDetails)))\""
+        } else {
+            command = "commit --message=\"\(message)\""
+        }
 
         _ = try await run(command)
     }
 
     /// Add file to git
     /// - Parameter file: File to add
-    func add(_ file: CEWorkspaceFile) async throws {
-        if file.gitStatus != .untracked {
-            return
-        }
-
-        _ = try await run("add \(file.url.relativePath)")
+    func add(_ files: [CEWorkspaceFile]) async throws {
+        _ = try await run("add \(files.map { $0.url.relativePath }.joined(separator: " "))")
     }
 
-    func numberOfUnsyncedCommits() async throws -> Int {
-        let output = try await run("log --oneline origin/$(git rev-parse --abbrev-ref HEAD)..HEAD | wc -l")
-            .trimmingCharacters(in: .whitespacesAndNewlines)
+    /// Add file to git
+    /// - Parameter file: File to add
+    func reset(_ files: [CEWorkspaceFile]) async throws {
+        _ = try await run("reset \(files.map { $0.url.relativePath }.joined(separator: " "))")
+    }
 
-        if let number = Int(output) {
-            return number
+    /// Returns tuple of unsynced commits both ahead and behind
+    func numberOfUnsyncedCommits() async throws -> (ahead: Int, behind: Int) {
+        let output = try await run("status -sb --porcelain=v2").trimmingCharacters(in: .whitespacesAndNewlines)
+        return try parseUnsyncedCommitsOutput(from: output)
+    }
+
+    private func parseUnsyncedCommitsOutput(from string: String) throws -> (ahead: Int, behind: Int) {
+        let components = string.components(separatedBy: .newlines)
+        guard var abLine = components.first(where: { $0.starts(with: "# branch.ab") }) else {
+            // We're using --porcelain, this shouldn't happen
+            return (ahead: 0, behind: 0)
         }
-
-        return 0
+        abLine = String(abLine.dropFirst("# branch.ab ".count))
+        let regex = Regex {
+            One("+")
+            Capture {
+                OneOrMore(.digit)
+            } transform: { Int($0) }
+            One(" -")
+            Capture {
+                OneOrMore(.digit)
+            } transform: { Int($0) }
+        }
+        guard let match = try regex.firstMatch(in: abLine),
+              let ahead = match.output.1,
+              let behind = match.output.2 else {
+            return (ahead: 0, behind: 0)
+        }
+        return (ahead: ahead, behind: behind)
     }
 }
