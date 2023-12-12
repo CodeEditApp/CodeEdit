@@ -179,17 +179,26 @@ extension WorkspaceDocument {
             }
         }
 
-        /// Addes line matchings to a `SearchResultsViewModel` array.
-        /// That means if a search result is a file, and the search term appears in the file,
-        /// the function will add the line number, line content, and keyword range to the `SearchResultsViewModel`.
+        /// Evaluates a search query within the content of a file and updates 
+        /// the provided `SearchResultModel` with matching occurrences.
         ///
         /// - Parameters:
-        ///   - query: The search query string.
-        ///   - searchResults: An inout parameter containing the array of `SearchResultsViewModel` to be evaluated.
-        ///   It will be modified to include line matches.
+        ///   - query: The search query to be evaluated, potentially containing a regular expression.
+        ///   - searchResult: The `SearchResultModel` object to be updated with the matching occurrences.
+        ///
+        /// This function retrieves the content of a file specified in the `searchResult` parameter
+        /// and applies a search query using a regular expression.
+        /// It then iterates over the matches found in the file content,
+        /// creating `SearchResultMatchModel` instances for each match.
+        /// The resulting matches are appended to the `lineMatches` property of the `searchResult`.
+        /// Line matches are the preview lines that are shown in the search results.
+        ///
+        /// # Example Usage
+        /// ```swift
+        /// var resultModel = SearchResultModel()
+        /// await evaluateFile(query: "example", searchResult: &resultModel)
+        /// ```
         private func evaluateFile(query: String, searchResult: inout SearchResultModel) async {
-            var newMatches = [SearchResultMatchModel]()
-
             guard let data = try? Data(contentsOf: searchResult.file.url),
                   let fileContent = String(data: data, encoding: .utf8) else {
                 return
@@ -203,77 +212,139 @@ extension WorkspaceDocument {
             // Find all matches of the query within the file content using the regular expression
             let matches = regex.matches(in: fileContent, range: NSRange(location: 0, length: fileContent.utf16.count))
 
+            var newMatches = [SearchResultMatchModel]()
+
             // Process each match and add it to the array of `newMatches`
             for match in matches {
                 if let matchRange = Range(match.range, in: fileContent) {
-                    // Extract the length of the entire match, i.e., the part that appears in bold
-                    let matchWordLenght = match.range.length
-
-                    // MARK: - Pre Range
-                    // Extract the range before the result, including the search term
-                    let preRangeStart = fileContent.index(
-                        matchRange.lowerBound,
-                        offsetBy: -60,
-                        limitedBy: fileContent.startIndex
-                    ) ?? fileContent.startIndex // TODO: Better error handling
-                    let preRangeEnd = matchRange.upperBound
-                    let preRange = preRangeStart..<preRangeEnd
-
-                    // Clip the range of the preview to the last occurrence of a new line,
-                    // displaying only the line in which the search term appears
-                    let preLineWithNewLines = fileContent[preRange]
-                    let lastNewLineIndexInPreLine = preLineWithNewLines
-                        .lastIndex(of: "\n") ?? preLineWithNewLines.startIndex
-                    let preLineWithNewLinesPrefix = preLineWithNewLines[lastNewLineIndexInPreLine...]
-                    let preLine = preLineWithNewLinesPrefix
-                        .trimmingCharacters(in: .whitespacesAndNewlines)
-                    // Convert SubString to String, necessary for the next step
-                    let preLineString = String(preLine)
-
-                    // Get the range of the search term within the pre line
-                    let keywordLowerbound = preLineString.index(
-                        preLineString.endIndex,
-                        offsetBy: -matchWordLenght,
-                        limitedBy: preLineString.startIndex
-                    ) ?? preLineString.endIndex
-                    let keywordUpperbound = preLineString.endIndex
-                    let keywordRange = keywordLowerbound..<keywordUpperbound
-
-                    // MARK: - Post Range
-                    // Extract the range after the search term, limiting to 60 characters
-                    let postRangeStart = matchRange.upperBound
-                    let postRangeEnd = fileContent.index(
-                        matchRange.upperBound,
-                        offsetBy: 60,
-                        limitedBy: fileContent.endIndex
-                    ) ?? fileContent.endIndex // TODO: Better error handling
-                    let postRange = postRangeStart..<postRangeEnd
-                    let postLineWithNewLines = fileContent[postRange]
-
-                    // Clip the range to the first occurrence of a new line
-                    let firstNewLineIndexInPostLine = postLineWithNewLines
-                        .firstIndex(of: "\n") ?? postLineWithNewLines.endIndex
-                    let postLine = postLineWithNewLines[..<firstNewLineIndexInPostLine]
-                    let postLineString = String(postLine)
-
-                    // Join the pre and post range to get the final line
-                    // The search term stays at the same range because
-                    // it is included in the `postLineString`
-                    let finalLine = preLineString + postLineString
-
-                    // Create a SearchResultMatchModel and append it to the list of new matches
-                    let matchModel = SearchResultMatchModel(
-                        rangeWithinFile: matchRange,
+                    let matchWordLength = match.range.length
+                    let matchModel = createMatchModel(
+                        from: matchRange,
+                        fileContent: fileContent,
                         file: searchResult.file,
-                        lineContent: finalLine,
-                        keywordRange: keywordRange
+                        matchWordLength: matchWordLength
                     )
                     newMatches.append(matchModel)
                 }
             }
 
-            // Update the search result model with the new matches
             searchResult.lineMatches = newMatches
+        }
+
+        /// Creates a `SearchResultMatchModel` instance based on the provided parameters, 
+        /// representing a matching occurrence within a file.
+        ///
+        /// - Parameters:
+        ///   - matchRange: The range of the matched substring within the entire file content.
+        ///   - fileContent: The content of the file where the match was found.
+        ///   - file: The `CEWorkspaceFile` object representing the file containing the match.
+        ///   - matchWordLength: The length of the matched substring.
+        ///
+        /// - Returns: A `SearchResultMatchModel` instance representing the matching occurrence.
+        ///
+        /// This function is responsible for constructing a `SearchResultMatchModel` 
+        /// based on the provided parameters. It extracts the relevant portions of the file content,
+        /// including the lines before and after the match, and combines them into a final line.
+        /// The resulting model includes information about the match's range within the file,
+        /// the file itself, the content of the line containing the match, 
+        /// and the range of the matched keyword within that line.
+        private func createMatchModel(
+            from matchRange: Range<String.Index>,
+            fileContent: String,
+            file: CEWorkspaceFile,
+            matchWordLength: Int
+        ) -> SearchResultMatchModel {
+            let preLine = extractPreLine(from: matchRange, fileContent: fileContent)
+            let keywordRange = extractKeywordRange(from: preLine, matchWordLength: matchWordLength)
+            let postLine = extractPostLine(from: matchRange, fileContent: fileContent)
+
+            let finalLine = preLine + postLine
+
+            return SearchResultMatchModel(
+                rangeWithinFile: matchRange,
+                file: file,
+                lineContent: finalLine,
+                keywordRange: keywordRange
+            )
+        }
+
+        /// Extracts the line preceding a matching occurrence within a file.
+        ///
+        /// - Parameters:
+        ///   - matchRange: The range of the matched substring within the entire file content.
+        ///   - fileContent: The content of the file where the match was found.
+        ///
+        /// - Returns: A string representing the line preceding the match.
+        ///
+        /// This function retrieves the line preceding a matching occurrence within the provided file content. 
+        /// It considers a context of up to 60 characters before the match and clips the result to the last
+        /// occurrence of a newline character, ensuring that only the line containing the search term is displayed.
+        /// The extracted line is then trimmed of leading and trailing whitespaces and
+        /// newline characters before being returned.
+        private func extractPreLine(from matchRange: Range<String.Index>, fileContent: String) -> String {
+            let preRangeStart = fileContent.index(
+                matchRange.lowerBound,
+                offsetBy: -60,
+                limitedBy: fileContent.startIndex
+            ) ?? fileContent.startIndex
+
+            let preRangeEnd = matchRange.upperBound
+            let preRange = preRangeStart..<preRangeEnd
+
+            let preLineWithNewLines = fileContent[preRange]
+            // Clip the range of the preview to the last occurrence of a new line
+            let lastNewLineIndexInPreLine = preLineWithNewLines.lastIndex(of: "\n") ?? preLineWithNewLines.startIndex
+            let preLineWithNewLinesPrefix = preLineWithNewLines[lastNewLineIndexInPreLine...]
+            return preLineWithNewLinesPrefix.trimmingCharacters(in: .whitespacesAndNewlines)
+        }
+
+        /// Extracts the range of the search term within the line preceding a matching occurrence.
+        ///
+        /// - Parameters:
+        ///   - preLine: The line preceding the matching occurrence within the file content.
+        ///   - matchWordLength: The length of the search term.
+        ///
+        /// - Returns: A range representing the position of the search term within the `preLine`.
+        ///
+        /// This function calculates the range of the search term within 
+        /// the provided line preceding a matching occurrence.
+        /// It considers the length of the search term to determine 
+        /// the lower and upper bounds of the keyword range within the line.
+        private func extractKeywordRange(from preLine: String, matchWordLength: Int) -> Range<String.Index> {
+            let keywordLowerbound = preLine.index(
+                preLine.endIndex,
+                offsetBy: -matchWordLength,
+                limitedBy: preLine.startIndex
+            ) ?? preLine.endIndex
+            let keywordUpperbound = preLine.endIndex
+            return keywordLowerbound..<keywordUpperbound
+        }
+
+        /// Extracts the line following a matching occurrence within a file.
+        ///
+        /// - Parameters:
+        ///   - matchRange: The range of the matched substring within the entire file content.
+        ///   - fileContent: The content of the file where the match was found.
+        ///
+        /// - Returns: A string representing the line following the match.
+        ///
+        /// This function retrieves the line following a matching occurrence within the provided file content.
+        /// It considers a context of up to 60 characters after the match and clips the result to the first 
+        /// occurrence of a newline character, ensuring that only the relevant portion of the line is displayed.
+        /// The extracted line is then converted to a string before being returned.
+        private func extractPostLine(from matchRange: Range<String.Index>, fileContent: String) -> String {
+            let postRangeStart = matchRange.upperBound
+            let postRangeEnd = fileContent.index(
+                matchRange.upperBound,
+                offsetBy: 60,
+                limitedBy: fileContent.endIndex
+            ) ?? fileContent.endIndex
+
+            let postRange = postRangeStart..<postRangeEnd
+            let postLineWithNewLines = fileContent[postRange]
+
+            let firstNewLineIndexInPostLine = postLineWithNewLines.firstIndex(of: "\n") ?? postLineWithNewLines.endIndex
+            return String(postLineWithNewLines[..<firstNewLineIndexInPostLine])
         }
 
         /// Resets the search results along with counts for overall results and file-specific results.
@@ -285,9 +356,4 @@ extension WorkspaceDocument {
             }
         }
     }
-}
-
-extension StringProtocol {
-    var lines: [SubSequence] { split(whereSeparator: \.isNewline) }
-    var removingAllExtraNewLines: String { lines.joined(separator: "\n") }
 }
