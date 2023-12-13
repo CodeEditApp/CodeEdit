@@ -221,7 +221,7 @@ final class SourceControlManager: ObservableObject {
             do {
                 try await gitClient.discardChanges(for: file.url)
                 // TODO: Refresh content of active and unmodified document,
-                // requires CodeEditTextView changes
+                // requires CodeEditSourceEditor changes
             } catch {
                 await showAlertForError(title: "Failed to discard changes", error: error)
             }
@@ -234,7 +234,7 @@ final class SourceControlManager: ObservableObject {
             do {
                 try await gitClient.discardAllChanges()
                 // TODO: Refresh content of active and unmodified document,
-                // requires CodeEditTextView changes
+                // requires CodeEditSourceEditor changes
             } catch {
                 await showAlertForError(title: "Failed to discard changes", error: error)
             }
