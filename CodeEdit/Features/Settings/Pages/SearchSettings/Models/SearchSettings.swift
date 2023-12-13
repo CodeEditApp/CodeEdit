@@ -14,11 +14,15 @@ extension SettingsData {
         /// The search keys
         var searchKeys: [String] {
             [
-                "Ignore Glob Patterns"
+                "Ignore Glob Patterns",
+                "Ignore Patterns"
             ]
             .map { NSLocalizedString($0, comment: "") }
         }
 
-        var ignoreGlobPatterns: Array<String> = []
+        /// List of Glob Patterns that determine which files or directories to ignore
+        var ignoreGlobPatterns: [String] = [
+            "Testing"
+        ]
     }
 }

@@ -41,7 +41,7 @@ final class SearchSettingsModel: ObservableObject {
     }
 
     /// The currently existent Search Ignore Glob Patterns.
-    @Published var ignoreGlobPatterns: Array<String> {
+    @Published var ignoreGlobPatterns: [String] {
         didSet {
             DispatchQueue.main.async {
                 Settings[\.search].ignoreGlobPatterns = self.ignoreGlobPatterns
@@ -50,10 +50,6 @@ final class SearchSettingsModel: ObservableObject {
     }
 
     private init() {
-        self.ignoreGlobPatterns = [
-            "**/node_modules",
-            "**/bower_components",
-            "**/*.code-search"
-        ]
+        self.ignoreGlobPatterns = []
     }
 }
