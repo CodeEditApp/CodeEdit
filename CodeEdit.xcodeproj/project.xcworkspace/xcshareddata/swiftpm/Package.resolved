@@ -28,6 +28,15 @@
       }
     },
     {
+      "identity" : "codeeditsourceeditor",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/CodeEditApp/CodeEditSourceEditor.git",
+      "state" : {
+        "revision" : "e08a43ea07861e42d42f317899df69bf8f0a0a54",
+        "version" : "0.7.0"
+      }
+    },
+    {
       "identity" : "codeeditsymbols",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CodeEditApp/CodeEditSymbols",
