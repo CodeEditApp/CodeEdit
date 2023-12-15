@@ -15,11 +15,15 @@ struct SourceControlNavigatorView: View {
             VStack(spacing: 0) {
                 SourcControlNavigatorTabs()
                     .environmentObject(sourceControlManager)
-                    .onAppear {
-                        sourceControlManager.startPeriodicFetch(interval: 10)
-                    }
-                    .onDisappear {
-                        sourceControlManager.stopPeriodicFetch()
+                    .task {
+                        do {
+                            while true {
+                                try await sourceControlManager.fetch()
+                                try await Task.sleep(for: .seconds(10))
+                            }
+                        } catch {
+                            // TODO: if source fetching fails, display message
+                        }
                     }
             }
             .safeAreaInset(edge: .bottom, spacing: 0) {
