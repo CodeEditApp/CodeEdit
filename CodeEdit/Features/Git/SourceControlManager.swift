@@ -294,11 +294,9 @@ final class SourceControlManager: ObservableObject {
 
     /// Validate repository
     func validate() async throws {
-        Task {
-            let isGitRepository = try await gitClient.validate()
-            await MainActor.run {
-                self.isGitRepository = isGitRepository
-            }
+        let isGitRepository = await gitClient.validate()
+        await MainActor.run {
+            self.isGitRepository = isGitRepository
         }
     }
 
