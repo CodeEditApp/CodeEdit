@@ -18,9 +18,6 @@ final class SourceControlManager: ObservableObject {
     let editorManager: EditorManager
     weak var fileManager: CEWorkspaceFileManager?
 
-    // Timer for periodic fetch
-    private var fetchTimer: Timer?
-
     /// A list of changed files
     @Published var changedFiles: [CEWorkspaceFile] = []
 
@@ -116,27 +113,10 @@ final class SourceControlManager: ObservableObject {
         fileManager.notifyObservers(updatedItems: updatedStatusFor)
     }
 
-    /// Start periodic fetch with a specified interval
-    func startPeriodicFetch(interval: TimeInterval) {
-        fetchTimer?.invalidate() // Invalidate any existing timer
-        fetch()
-        fetchTimer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { [weak self] _ in
-            self?.fetch()
-        }
-    }
-
     /// Fetch from remote
-    func fetch() {
-        Task {
-            try await gitClient.fetchFromRemote()
-            await self.refreshNumberOfUnsyncedCommits()
-        }
-    }
-
-    /// Stops the periodic fetch
-    func stopPeriodicFetch() {
-        fetchTimer?.invalidate()
-        fetchTimer = nil
+    func fetch() async throws {
+        try await gitClient.fetchFromRemote()
+        await self.refreshNumberOfUnsyncedCommits()
     }
 
     /// Refresh current branch
@@ -314,11 +294,9 @@ final class SourceControlManager: ObservableObject {
 
     /// Validate repository
     func validate() async throws {
-        Task {
-            let isGitRepository = try await gitClient.validate()
-            await MainActor.run {
-                self.isGitRepository = isGitRepository
-            }
+        let isGitRepository = await gitClient.validate()
+        await MainActor.run {
+            self.isGitRepository = isGitRepository
         }
     }
 
