@@ -37,34 +37,6 @@ final class EditorPathBarMenu: NSMenu, NSMenuDelegate {
 
     /// Only when menu item is highlighted then generate its submenu
     func menu(_ menu: NSMenu, willHighlight item: NSMenuItem?) {
-        // Reset all items' icon color
-        menu.items.forEach { menuItem in
-            if let pathBarItem = menuItem as? PathBarMenuItem {
-                pathBarItem.updateIconColor(isHighlighted: false)
-            }
-        }
-
-        // Highlight the current item
-        if let pathBarItem = (item ?? menu.highlightedItem) as? PathBarMenuItem {
-            print(pathBarItem)
-            pathBarItem.updateIconColor(isHighlighted: true)
-        }
-
-        // If the item has a child menu with a selected item, recolor the icon
-        if let parentItem = item?.parent {
-            if let fileItem = item?.parent?.representedObject as? CEWorkspaceFile {
-                let icon = fileItem.systemImage
-                var color = NSColor(fileItem.iconColor)
-                if fileItem.isFolder {
-                    color = NSColor(named: "FolderBlue") ?? NSColor(.secondary)
-                }
-                parentItem.image = NSImage(
-                    systemSymbolName: icon,
-                    accessibilityDescription: icon
-                )?.withSymbolConfiguration(.init(paletteColors: [color]))
-            }
-        }
-
         if let highlightedItem = item, let submenuItems = highlightedItem.submenu?.items, submenuItems.isEmpty {
             if let highlightedFileItem = highlightedItem.representedObject as? CEWorkspaceFile {
                 highlightedItem.submenu = generateSubmenu(highlightedFileItem)
@@ -116,24 +88,6 @@ final class PathBarMenuItem: NSMenuItem {
         if fileItem.isFolder {
             self.action = nil
         }
-    }
-
-    func updateIconColor(isHighlighted: Bool) {
-        var color: NSColor
-
-        if isHighlighted {
-            color = NSColor.white
-        } else if fileItem.isFolder {
-            color = NSColor(named: "FolderBlue") ?? NSColor(.secondary)
-        } else {
-            color = NSColor(fileItem.iconColor)
-        }
-
-        let image = NSImage(
-            systemSymbolName: fileItem.systemImage,
-            accessibilityDescription: fileItem.systemImage
-        )?.withSymbolConfiguration(.init(paletteColors: [color]))
-        self.image = image
     }
 
     @available(*, unavailable)
