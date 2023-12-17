@@ -52,6 +52,7 @@ extension WorkspaceDocument {
 
             Task.detached {
                 let filePaths = self.getFileURLs(at: url)
+
                 let asyncController = SearchIndexer.AsyncManager(index: indexer)
                 var lastProgress: Double = 0
 
@@ -89,6 +90,23 @@ extension WorkspaceDocument {
             return enumerator?.allObjects as? [URL] ?? []
         }
 
+        /// Retrieves the contents of a files  from the specified file paths.
+        ///
+        /// - Parameter filePaths: An array of file URLs representing the paths of the files.
+        ///
+        /// - Returns: An array of `TextFile` objects containing the standardized file URLs and text content.
+        func getfileContent(from filePaths: [URL]) async -> [SearchIndexer.AsyncManager.TextFile] {
+            var textFiles = [SearchIndexer.AsyncManager.TextFile]()
+            for file in filePaths {
+                if let content = try? String(contentsOf: file) {
+                    textFiles.append(
+                        SearchIndexer.AsyncManager.TextFile(url: file.standardizedFileURL, text: content)
+                    )
+                }
+            }
+            return textFiles
+        }
+
         /// Creates a search term based on the given query and search mode.
         ///
         /// - Parameter query: The original user query string.
@@ -117,7 +135,7 @@ extension WorkspaceDocument {
         /// within each file for the given string.
         ///
         /// This method will update
-        /// ``WorkspaceDocument/SearchState-swift.class/searchResult``, 
+        /// ``WorkspaceDocument/SearchState-swift.class/searchResult``,
         /// ``WorkspaceDocument/SearchState-swift.class/searchResultsFileCount``
         /// and ``WorkspaceDocument/SearchState-swift.class/searchResultCount`` with any matched
         /// search results. See ``SearchResultModel`` and ``SearchResultMatchModel``
@@ -138,16 +156,16 @@ extension WorkspaceDocument {
 
             let searchStream = await asyncController.search(query: searchQuery, 20)
             for try await result in searchStream {
-                let urls2: [(URL, Float)] = result.results.map {
+                let urls: [(URL, Float)] = result.results.map {
                     ($0.url, $0.score)
                 }
 
-                for (url, score) in urls2 {
+                for (url, score) in urls {
                     evaluateSearchQueue.async(group: evaluateResultGroup) {
                         evaluateResultGroup.enter()
                         Task {
                             var newResult = SearchResultModel(file: CEWorkspaceFile(url: url), score: score)
-                            await self.evaluateResult(query: query.lowercased(), searchResult: &newResult)
+                            await self.evaluateFile(query: query.lowercased(), searchResult: &newResult)
 
                             // Check if the new result has any line matches.
                             if !newResult.lineMatches.isEmpty {
@@ -190,115 +208,172 @@ extension WorkspaceDocument {
             }
         }
 
-        /// Adds line matchings to a `SearchResultsViewModel` array.
-        /// That means if a search result is a file, and the search term appears in the file,
-        /// the function will add the line number, line content, and keyword range to the `SearchResultsViewModel`.
+        /// Evaluates a search query within the content of a file and updates 
+        /// the provided `SearchResultModel` with matching occurrences.
         ///
         /// - Parameters:
-        ///   - query: The search query string.
-        ///   - searchResults: An inout parameter containing the array of `SearchResultsViewModel` to be evaluated.
-        ///   It will be modified to include line matches.
-        private func evaluateResult(query: String, searchResult: inout SearchResultModel) async {
-            let searchResultCopy = searchResult
-            var newMatches = [SearchResultMatchModel]()
-
+        ///   - query: The search query to be evaluated, potentially containing a regular expression.
+        ///   - searchResult: The `SearchResultModel` object to be updated with the matching occurrences.
+        ///
+        /// This function retrieves the content of a file specified in the `searchResult` parameter
+        /// and applies a search query using a regular expression.
+        /// It then iterates over the matches found in the file content,
+        /// creating `SearchResultMatchModel` instances for each match.
+        /// The resulting matches are appended to the `lineMatches` property of the `searchResult`.
+        /// Line matches are the preview lines that are shown in the search results.
+        ///
+        /// # Example Usage
+        /// ```swift
+        /// var resultModel = SearchResultModel()
+        /// await evaluateFile(query: "example", searchResult: &resultModel)
+        /// ```
+        private func evaluateFile(query: String, searchResult: inout SearchResultModel) async {
             guard let data = try? Data(contentsOf: searchResult.file.url),
-                  let string = String(data: data, encoding: .utf8) else {
+                  let fileContent = String(data: data, encoding: .utf8) else {
                 return
             }
 
-            await withTaskGroup(of: SearchResultMatchModel?.self) { group in
-                for (lineNumber, line) in string.components(separatedBy: .newlines).lazy.enumerated() {
-                    group.addTask {
-                        let rawNoSpaceLine = line.trimmingCharacters(in: .whitespacesAndNewlines)
-                        let noSpaceLine = rawNoSpaceLine.lowercased()
-                        if self.lineContainsSearchTerm(line: noSpaceLine, term: query) {
-                            let matches = noSpaceLine.ranges(of: query).map { range in
-                                return [lineNumber, rawNoSpaceLine, range]
-                            }
+            // Attempt to create a regular expression from the provided query
+            guard let regex = try? NSRegularExpression(pattern: query, options: [.caseInsensitive]) else {
+                return
+            }
 
-                            for match in matches {
-                                if let lineNumber = match[0] as? Int,
-                                   let lineContent = match[1] as? String,
-                                   let keywordRange = match[2] as? Range<String.Index> {
-                                    let matchModel = SearchResultMatchModel(
-                                        lineNumber: lineNumber,
-                                        file: searchResultCopy.file,
-                                        lineContent: lineContent,
-                                        keywordRange: keywordRange
-                                    )
+            // Find all matches of the query within the file content using the regular expression
+            let matches = regex.matches(in: fileContent, range: NSRange(location: 0, length: fileContent.utf16.count))
 
-                                    return matchModel
-                                }
-                            }
-                        }
-                        return nil
-                    }
-                    for await groupRes in group {
-                        if let groupRes {
-                            newMatches.append(groupRes)
-                        }
-                    }
+            var newMatches = [SearchResultMatchModel]()
+
+            // Process each match and add it to the array of `newMatches`
+            for match in matches {
+                if let matchRange = Range(match.range, in: fileContent) {
+                    let matchWordLength = match.range.length
+                    let matchModel = createMatchModel(
+                        from: matchRange,
+                        fileContent: fileContent,
+                        file: searchResult.file,
+                        matchWordLength: matchWordLength
+                    )
+                    newMatches.append(matchModel)
                 }
             }
+
             searchResult.lineMatches = newMatches
         }
 
-        // see if the line contains search term, obeying selectedMode
-        // swiftlint:disable:next cyclomatic_complexity
-        func lineContainsSearchTerm(line rawLine: String, term searchterm: String) -> Bool {
-            var line = rawLine
-            if line.hasSuffix(" ") { line.removeLast() }
-            if line.hasPrefix(" ") { line.removeFirst() }
+        /// Creates a `SearchResultMatchModel` instance based on the provided parameters, 
+        /// representing a matching occurrence within a file.
+        ///
+        /// - Parameters:
+        ///   - matchRange: The range of the matched substring within the entire file content.
+        ///   - fileContent: The content of the file where the match was found.
+        ///   - file: The `CEWorkspaceFile` object representing the file containing the match.
+        ///   - matchWordLength: The length of the matched substring.
+        ///
+        /// - Returns: A `SearchResultMatchModel` instance representing the matching occurrence.
+        ///
+        /// This function is responsible for constructing a `SearchResultMatchModel` 
+        /// based on the provided parameters. It extracts the relevant portions of the file content,
+        /// including the lines before and after the match, and combines them into a final line.
+        /// The resulting model includes information about the match's range within the file,
+        /// the file itself, the content of the line containing the match, 
+        /// and the range of the matched keyword within that line.
+        private func createMatchModel(
+            from matchRange: Range<String.Index>,
+            fileContent: String,
+            file: CEWorkspaceFile,
+            matchWordLength: Int
+        ) -> SearchResultMatchModel {
+            let preLine = extractPreLine(from: matchRange, fileContent: fileContent)
+            let keywordRange = extractKeywordRange(from: preLine, matchWordLength: matchWordLength)
+            let postLine = extractPostLine(from: matchRange, fileContent: fileContent)
 
-            // Text
-            let findMode = selectedMode[1]
-            if findMode == .Text {
-                let textMatching = selectedMode[2]
-                let textContainsSearchTerm = line.contains(searchterm)
-                guard textContainsSearchTerm == true else { return false }
-                guard textMatching != .Containing else { return textContainsSearchTerm }
+            let finalLine = preLine + postLine
 
-                // get the index of the search term's appearance in the line
-                // and get the characters to the left and right
-                let appearances = line.appearancesOfSubstring(substring: searchterm, toLeft: 1, toRight: 1)
-                var foundMatch = false
-                for appearance in appearances {
-                    let appearanceString = String(line[appearance])
-                    guard appearanceString.count >= 2 else { continue }
+            return SearchResultMatchModel(
+                rangeWithinFile: matchRange,
+                file: file,
+                lineContent: finalLine,
+                keywordRange: keywordRange
+            )
+        }
 
-                    var startsWith = false
-                    var endsWith = false
-                    if appearanceString.hasPrefix(searchterm) ||
-                        !appearanceString.first!.isLetter ||
-                        !(appearanceString.character(at: 2)?.isLetter ?? false) {
-                        startsWith = true
-                    }
-                    if appearanceString.hasSuffix(searchterm) ||
-                        !appearanceString.last!.isLetter ||
-                        !(appearanceString.character(at: appearanceString.count-2)?.isLetter ?? false) {
-                        endsWith = true
-                    }
+        /// Extracts the line preceding a matching occurrence within a file.
+        ///
+        /// - Parameters:
+        ///   - matchRange: The range of the matched substring within the entire file content.
+        ///   - fileContent: The content of the file where the match was found.
+        ///
+        /// - Returns: A string representing the line preceding the match.
+        ///
+        /// This function retrieves the line preceding a matching occurrence within the provided file content. 
+        /// It considers a context of up to 60 characters before the match and clips the result to the last
+        /// occurrence of a newline character, ensuring that only the line containing the search term is displayed.
+        /// The extracted line is then trimmed of leading and trailing whitespaces and
+        /// newline characters before being returned.
+        private func extractPreLine(from matchRange: Range<String.Index>, fileContent: String) -> String {
+            let preRangeStart = fileContent.index(
+                matchRange.lowerBound,
+                offsetBy: -60,
+                limitedBy: fileContent.startIndex
+            ) ?? fileContent.startIndex
 
-                    switch textMatching {
-                    case .MatchingWord:
-                        foundMatch = startsWith && endsWith ? true : foundMatch
-                    case .StartingWith:
-                        foundMatch = startsWith ? true : foundMatch
-                    case .EndingWith:
-                        foundMatch = endsWith ? true : foundMatch
-                    default: continue
-                    }
-                }
-                return foundMatch
-            } else if findMode == .RegularExpression {
-                guard let regex = try? NSRegularExpression(pattern: searchterm) else { return false }
-                // swiftlint:disable:next legacy_constructor
-                return regex.firstMatch(in: String(line), range: NSMakeRange(0, line.utf16.count)) != nil
-            }
+            let preRangeEnd = matchRange.upperBound
+            let preRange = preRangeStart..<preRangeEnd
 
-            return false
-            // TODO: references and definitions
+            let preLineWithNewLines = fileContent[preRange]
+            // Clip the range of the preview to the last occurrence of a new line
+            let lastNewLineIndexInPreLine = preLineWithNewLines.lastIndex(of: "\n") ?? preLineWithNewLines.startIndex
+            let preLineWithNewLinesPrefix = preLineWithNewLines[lastNewLineIndexInPreLine...]
+            return preLineWithNewLinesPrefix.trimmingCharacters(in: .whitespacesAndNewlines)
+        }
+
+        /// Extracts the range of the search term within the line preceding a matching occurrence.
+        ///
+        /// - Parameters:
+        ///   - preLine: The line preceding the matching occurrence within the file content.
+        ///   - matchWordLength: The length of the search term.
+        ///
+        /// - Returns: A range representing the position of the search term within the `preLine`.
+        ///
+        /// This function calculates the range of the search term within 
+        /// the provided line preceding a matching occurrence.
+        /// It considers the length of the search term to determine 
+        /// the lower and upper bounds of the keyword range within the line.
+        private func extractKeywordRange(from preLine: String, matchWordLength: Int) -> Range<String.Index> {
+            let keywordLowerbound = preLine.index(
+                preLine.endIndex,
+                offsetBy: -matchWordLength,
+                limitedBy: preLine.startIndex
+            ) ?? preLine.endIndex
+            let keywordUpperbound = preLine.endIndex
+            return keywordLowerbound..<keywordUpperbound
+        }
+
+        /// Extracts the line following a matching occurrence within a file.
+        ///
+        /// - Parameters:
+        ///   - matchRange: The range of the matched substring within the entire file content.
+        ///   - fileContent: The content of the file where the match was found.
+        ///
+        /// - Returns: A string representing the line following the match.
+        ///
+        /// This function retrieves the line following a matching occurrence within the provided file content.
+        /// It considers a context of up to 60 characters after the match and clips the result to the first 
+        /// occurrence of a newline character, ensuring that only the relevant portion of the line is displayed.
+        /// The extracted line is then converted to a string before being returned.
+        private func extractPostLine(from matchRange: Range<String.Index>, fileContent: String) -> String {
+            let postRangeStart = matchRange.upperBound
+            let postRangeEnd = fileContent.index(
+                matchRange.upperBound,
+                offsetBy: 60,
+                limitedBy: fileContent.endIndex
+            ) ?? fileContent.endIndex
+
+            let postRange = postRangeStart..<postRangeEnd
+            let postLineWithNewLines = fileContent[postRange]
+
+            let firstNewLineIndexInPostLine = postLineWithNewLines.firstIndex(of: "\n") ?? postLineWithNewLines.endIndex
+            return String(postLineWithNewLines[..<firstNewLineIndexInPostLine])
         }
 
         /// Resets the search results along with counts for overall results and file-specific results.
