@@ -265,6 +265,10 @@
 		611192062B08CCF600D4459B /* SearchIndexer+Add.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611192052B08CCF600D4459B /* SearchIndexer+Add.swift */; };
 		611192082B08CCFD00D4459B /* SearchIndexer+Terms.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611192072B08CCFD00D4459B /* SearchIndexer+Terms.swift */; };
 		6111920C2B08CD0B00D4459B /* SearchIndexer+InternalMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6111920B2B08CD0B00D4459B /* SearchIndexer+InternalMethods.swift */; };
+		6130535C2B23933D00D767E3 /* MemoryIndexingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6130535B2B23933D00D767E3 /* MemoryIndexingTests.swift */; };
+		6130535F2B23A31300D767E3 /* MemorySearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6130535E2B23A31300D767E3 /* MemorySearchTests.swift */; };
+		613053652B23A49300D767E3 /* TemporaryFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613053642B23A49300D767E3 /* TemporaryFile.swift */; };
+		6130536B2B24722C00D767E3 /* AsyncIndexingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6130536A2B24722C00D767E3 /* AsyncIndexingTests.swift */; };
 		613DF55E2B08DD5D00E9D902 /* FileHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613DF55D2B08DD5D00E9D902 /* FileHelper.swift */; };
 		61538B902B111FE800A88846 /* String+AppearancesOfSubstring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61538B8F2B111FE800A88846 /* String+AppearancesOfSubstring.swift */; };
 		61538B932B11201900A88846 /* String+Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61538B922B11201900A88846 /* String+Character.swift */; };
@@ -787,6 +791,10 @@
 		611192052B08CCF600D4459B /* SearchIndexer+Add.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchIndexer+Add.swift"; sourceTree = "<group>"; };
 		611192072B08CCFD00D4459B /* SearchIndexer+Terms.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchIndexer+Terms.swift"; sourceTree = "<group>"; };
 		6111920B2B08CD0B00D4459B /* SearchIndexer+InternalMethods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchIndexer+InternalMethods.swift"; sourceTree = "<group>"; };
+		6130535B2B23933D00D767E3 /* MemoryIndexingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryIndexingTests.swift; sourceTree = "<group>"; };
+		6130535E2B23A31300D767E3 /* MemorySearchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemorySearchTests.swift; sourceTree = "<group>"; };
+		613053642B23A49300D767E3 /* TemporaryFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemporaryFile.swift; sourceTree = "<group>"; };
+		6130536A2B24722C00D767E3 /* AsyncIndexingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncIndexingTests.swift; sourceTree = "<group>"; };
 		613DF55D2B08DD5D00E9D902 /* FileHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileHelper.swift; sourceTree = "<group>"; };
 		61538B8F2B111FE800A88846 /* String+AppearancesOfSubstring.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+AppearancesOfSubstring.swift"; sourceTree = "<group>"; };
 		61538B922B11201900A88846 /* String+Character.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Character.swift"; sourceTree = "<group>"; };
@@ -1245,6 +1253,7 @@
 			children = (
 				4EE96ECC296059D200FFBEA8 /* Mocks */,
 				4EE96ECA2960565E00FFBEA8 /* DocumentsUnitTests.swift */,
+				613053582B23916D00D767E3 /* Indexer */,
 			);
 			path = Documents;
 			sourceTree = "<group>";
@@ -2202,6 +2211,17 @@
 				611192072B08CCFD00D4459B /* SearchIndexer+Terms.swift */,
 				6111920B2B08CD0B00D4459B /* SearchIndexer+InternalMethods.swift */,
 				613DF55D2B08DD5D00E9D902 /* FileHelper.swift */,
+			);
+			path = Indexer;
+			sourceTree = "<group>";
+		};
+		613053582B23916D00D767E3 /* Indexer */ = {
+			isa = PBXGroup;
+			children = (
+				6130535B2B23933D00D767E3 /* MemoryIndexingTests.swift */,
+				6130535E2B23A31300D767E3 /* MemorySearchTests.swift */,
+				6130536A2B24722C00D767E3 /* AsyncIndexingTests.swift */,
+				613053642B23A49300D767E3 /* TemporaryFile.swift */,
 			);
 			path = Indexer;
 			sourceTree = "<group>";
@@ -3483,11 +3503,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				583E528C29361B39001AB554 /* CodeEditUITests.swift in Sources */,
+				613053652B23A49300D767E3 /* TemporaryFile.swift in Sources */,
 				587B60F82934124200D5CD8F /* CEWorkspaceFileManagerTests.swift in Sources */,
+				6130535F2B23A31300D767E3 /* MemorySearchTests.swift in Sources */,
 				587B61012934170A00D5CD8F /* UnitTests_Extensions.swift in Sources */,
 				283BDCC52972F236002AFF81 /* AcknowledgementsTests.swift in Sources */,
 				4EE96ECB2960565E00FFBEA8 /* DocumentsUnitTests.swift in Sources */,
 				4EE96ECE296059E000FFBEA8 /* NSHapticFeedbackPerformerMock.swift in Sources */,
+				6130535C2B23933D00D767E3 /* MemoryIndexingTests.swift in Sources */,
+				6130536B2B24722C00D767E3 /* AsyncIndexingTests.swift in Sources */,
 				587B612E293419B700D5CD8F /* CodeFileTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
