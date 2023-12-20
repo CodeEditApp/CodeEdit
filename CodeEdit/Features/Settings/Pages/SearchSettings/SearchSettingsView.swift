@@ -7,51 +7,36 @@
 
 import SwiftUI
 
-struct GlobPattern: Identifiable, Hashable {
-    /// Ephimeral UUID used to track its representation in the UI
-    let id = UUID()
-    
-    /// The Glob Pattern to render
-    var value: String
-}
-
 struct SearchSettingsView: View {
 
-    @AppSettings(\.search.ignoreGlobPatterns)
-    var ignoreGlobPatterns
+    @ObservedObject private var searchSettingsModel: SearchSettingsModel = .shared
 
     @FocusState private var focusedField: String?
     @State private var selection: Set<String> = []
 
-    @State var globPatterns: [GlobPattern] = []
-
-    init() {
-        globPatterns = ignoreGlobPatterns.map {
-            GlobPattern(value: $0)
-        }
-    }
-
     func addIgnoreGlobPattern() {
-        globPatterns.append(.init(value: ""))
+        searchSettingsModel.ignoreGlobPatterns.append(GlobPattern(value: ""))
     }
 
     var body: some View {
         SettingsForm {
             Section {
-                List($globPatterns, id: \.self, selection: $selection) { $globPattern in
-                    TextField("", text: $globPattern.value)
-                        .focused($focusedField, equals: globPattern.id.uuidString)
+                List($searchSettingsModel.ignoreGlobPatterns, selection: $selection) { ignorePattern in
+                    TextField("", text: ignorePattern.value)
+                        .disableAutocorrection(true)
+                        .autocorrectionDisabled()
+                        .focused($focusedField, equals: ignorePattern.id.uuidString)
                         .labelsHidden()
                         .onAppear {
-                            if globPatterns.isEmpty {
+                            if $searchSettingsModel.ignoreGlobPatterns.isEmpty {
                                 addIgnoreGlobPattern()
                             }
                         }
                         .onSubmit {
-                            if globPattern.value.isEmpty {
-                                print("Remove \(globPattern)")
+                            if $searchSettingsModel.ignoreGlobPatterns.isEmpty {
+                                print("Remove \(ignorePattern)")
                             } else {
-                                if globPattern == globPatterns.last {
+                                if ignorePattern.id == $searchSettingsModel.ignoreGlobPatterns.last?.id {
                                     addIgnoreGlobPattern()
                                 }
                             }
@@ -69,7 +54,7 @@ struct SearchSettingsView: View {
                     } label: {
                         Image(systemName: "minus")
                     }
-                    .disabled(ignoreGlobPatterns.isEmpty)
+                    .disabled($searchSettingsModel.ignoreGlobPatterns.isEmpty)
                     Spacer()
                     Button {
                         print("More")
