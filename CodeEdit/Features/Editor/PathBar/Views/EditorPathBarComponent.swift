@@ -85,9 +85,9 @@ struct EditorPathBarComponent: View {
         .onHover { hover in
             isHovering = hover
         }
-        .pressAction(onPress: {
+        .onLongPressGesture(minimumDuration: 0) {
             button.performClick(nil)
-        })
+        }
         .opacity(activeState != .inactive ? 1 : 0.75)
     }
 
