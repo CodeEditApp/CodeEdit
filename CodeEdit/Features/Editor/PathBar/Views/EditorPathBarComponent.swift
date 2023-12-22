@@ -25,7 +25,7 @@ struct EditorPathBarComponent: View {
     @State var position: NSPoint?
     @State var selection: CEWorkspaceFile
     @State var isHovering: Bool = false
-    @State private var button: NSPopUpButton?
+    @State var button = NSPopUpButton()
 
     init(
         fileItem: CEWorkspaceFile,
@@ -53,7 +53,7 @@ struct EditorPathBarComponent: View {
     var body: some View {
         NSPopUpButtonView(selection: $selection) {
             guard let fileManager = workspace.workspaceFileManager else { return NSPopUpButton() }
-            let button = NSPopUpButton()
+
             button.menu = EditorPathBarMenu(
                 fileItems: siblings,
                 fileManager: fileManager,
@@ -62,9 +62,7 @@ struct EditorPathBarComponent: View {
             button.font = .systemFont(ofSize: NSFont.systemFontSize(for: .small))
             button.isBordered = false
             (button.cell as? NSPopUpButtonCell)?.arrowPosition = .noArrow
-            DispatchQueue.main.async {
-                self.button = button
-            }
+
             return button
         }
         .padding(.trailing, 11)
@@ -87,9 +85,9 @@ struct EditorPathBarComponent: View {
         .onHover { hover in
             isHovering = hover
         }
-        .onTapGesture {
-            button?.performClick(nil)
-        }
+        .pressAction(onPress: {
+            button.performClick(nil)
+        })
         .opacity(activeState != .inactive ? 1 : 0.75)
     }
 
