@@ -1,17 +1,18 @@
 //
-//  PathBar.swift
-//  CodeEditModules/PathBar
+//  FindModePicker.swift
+//  CodeEdit
 //
-//  Created by Lukas Pistrol on 18.03.22.
+//  Created by Austin Condiff on 12/7/23.
 //
 
 import SwiftUI
 import Combine
-import CodeEditSymbols
 
-struct EditorPathBarComponent: View {
-    private let fileItem: CEWorkspaceFile
-    private let tappedOpenFile: (CEWorkspaceFile) -> Void
+struct FindModePicker: View {
+    var modes: [SearchModeModel]
+    private let onSelect: (SearchModeModel) -> Void
+    @Binding var selection: SearchModeModel
+
     private let isLastItem: Bool
 
     @Environment(\.colorScheme)
@@ -23,48 +24,38 @@ struct EditorPathBarComponent: View {
     @EnvironmentObject var workspace: WorkspaceDocument
 
     @State var position: NSPoint?
-    @State var selection: CEWorkspaceFile
     @State var isHovering: Bool = false
-    @State var button = NSPopUpButton()
+    @State private var button: NSPopUpButton?
 
     init(
-        fileItem: CEWorkspaceFile,
-        tappedOpenFile: @escaping (CEWorkspaceFile) -> Void,
+        modes: [SearchModeModel],
+        selection: Binding<SearchModeModel>,
+        onSelect: @escaping (SearchModeModel) -> Void,
         isLastItem: Bool
     ) {
-        self.fileItem = fileItem
-        self._selection = .init(wrappedValue: fileItem)
-        self.tappedOpenFile = tappedOpenFile
+        self.modes = modes
+        self._selection = selection
+        self.onSelect = onSelect
         self.isLastItem = isLastItem
     }
 
-    var siblings: [CEWorkspaceFile] {
-        guard let fileManager = workspace.workspaceFileManager,
-              let parent = fileItem.parent else {
-            return [fileItem]
-        }
-        if let siblings = fileManager.childrenOfFile(parent), !siblings.isEmpty {
-            return siblings
-        } else {
-            return [fileItem]
-        }
-    }
-
     var body: some View {
-        NSPopUpButtonView(selection: $selection) {
-            guard let fileManager = workspace.workspaceFileManager else { return NSPopUpButton() }
-
-            button.menu = EditorPathBarMenu(
-                fileItems: siblings,
-                fileManager: fileManager,
-                tappedOpenFile: tappedOpenFile
+        NSPopUpButtonView(selection: $selection, isOn: selection != modes.first) {
+            let button = NSPopUpButton()
+            button.menu = FindModeMenu(
+                modes: modes,
+                onSelect: onSelect
             )
             button.font = .systemFont(ofSize: NSFont.systemFontSize(for: .small))
             button.isBordered = false
             (button.cell as? NSPopUpButtonCell)?.arrowPosition = .noArrow
-
+            DispatchQueue.main.async {
+                self.button = button
+            }
             return button
         }
+        .fixedSize()
+        .frame(height: 21)
         .padding(.trailing, 11)
         .background {
             Color(nsColor: colorScheme == .dark ? .white : .black)
@@ -85,8 +76,8 @@ struct EditorPathBarComponent: View {
         .onHover { hover in
             isHovering = hover
         }
-        .onLongPressGesture(minimumDuration: 0) {
-            button.performClick(nil)
+        .onTapGesture {
+            button?.performClick(nil)
         }
         .opacity(activeState != .inactive ? 1 : 0.75)
     }
@@ -110,7 +101,7 @@ struct EditorPathBarComponent: View {
 
     struct NSPopUpButtonView<ItemType>: NSViewRepresentable where ItemType: Equatable {
         @Binding var selection: ItemType
-
+        var isOn: Bool
         var popupCreator: () -> NSPopUpButton
 
         typealias NSViewType = NSPopUpButton
@@ -126,6 +117,7 @@ struct EditorPathBarComponent: View {
 
         func updateNSView(_ nsView: NSPopUpButton, context: NSViewRepresentableContext<NSPopUpButtonView>) {
             setPopUpFromSelection(nsView, selection: selection)
+            nsView.contentTintColor = isOn ? .controlAccentColor : .controlTextColor
         }
 
         func setPopUpFromSelection(_ button: NSPopUpButton, selection: ItemType) {
@@ -163,5 +155,56 @@ struct EditorPathBarComponent: View {
                     }
             }
         }
+    }
+}
+
+final class FindModeMenu: NSMenu, NSMenuDelegate {
+    private let modes: [SearchModeModel]
+    private let onSelect: (SearchModeModel) -> Void
+
+    init(
+        modes: [SearchModeModel],
+        onSelect: @escaping (SearchModeModel) -> Void
+    ) {
+        self.modes = modes
+        self.onSelect = onSelect
+        super.init(title: "")
+        delegate = self
+        modes.forEach { mode in
+            let menuItem = FindModeMenuItem(mode: mode, onSelect: onSelect)
+            menuItem.onStateImage = nil
+            self.addItem(menuItem)
+        }
+    }
+
+    @available(*, unavailable)
+    required init(coder _: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+final class FindModeMenuItem: NSMenuItem {
+    private let mode: SearchModeModel
+    private let onSelect: (SearchModeModel) -> Void
+
+    init(
+        mode: SearchModeModel,
+        onSelect: @escaping (SearchModeModel) -> Void
+    ) {
+        self.mode = mode
+        self.onSelect = onSelect
+        super.init(title: mode.title, action: #selector(handleSelect), keyEquivalent: "")
+        target = self
+        representedObject = mode
+    }
+
+    @available(*, unavailable)
+    required init(coder _: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    @objc
+    func handleSelect() {
+        onSelect(mode)
     }
 }

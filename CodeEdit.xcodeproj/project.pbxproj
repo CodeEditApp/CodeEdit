@@ -387,6 +387,7 @@
 		B61A606929F4481A009B43F9 /* MonospacedFontPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61A606829F4481A009B43F9 /* MonospacedFontPicker.swift */; };
 		B61DA9DF29D929E100BF4A43 /* GeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61DA9DE29D929E100BF4A43 /* GeneralSettingsView.swift */; };
 		B628B7932B18369800F9775A /* GitClient+Validate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B628B7922B18369800F9775A /* GitClient+Validate.swift */; };
+		B628B7B72B223BAD00F9775A /* FindModePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B628B7B62B223BAD00F9775A /* FindModePicker.swift */; };
 		B62AEDAA2A1FCBE5009A9F52 /* AreaTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62AEDA92A1FCBE5009A9F52 /* AreaTabBar.swift */; };
 		B62AEDB32A1FD95B009A9F52 /* UtilityAreaTerminalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62AEDB22A1FD95B009A9F52 /* UtilityAreaTerminalView.swift */; };
 		B62AEDB52A1FE295009A9F52 /* UtilityAreaDebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62AEDB42A1FE295009A9F52 /* UtilityAreaDebugView.swift */; };
@@ -896,6 +897,7 @@
 		B61A606829F4481A009B43F9 /* MonospacedFontPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonospacedFontPicker.swift; sourceTree = "<group>"; };
 		B61DA9DE29D929E100BF4A43 /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
 		B628B7922B18369800F9775A /* GitClient+Validate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GitClient+Validate.swift"; sourceTree = "<group>"; };
+		B628B7B62B223BAD00F9775A /* FindModePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindModePicker.swift; sourceTree = "<group>"; };
 		B62AEDA92A1FCBE5009A9F52 /* AreaTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AreaTabBar.swift; sourceTree = "<group>"; };
 		B62AEDB22A1FD95B009A9F52 /* UtilityAreaTerminalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityAreaTerminalView.swift; sourceTree = "<group>"; };
 		B62AEDB42A1FE295009A9F52 /* UtilityAreaDebugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityAreaDebugView.swift; sourceTree = "<group>"; };
@@ -2805,6 +2807,7 @@
 				D7E201B127E8D50000CB86D0 /* FindNavigatorForm.swift */,
 				6C14CEB12877A5BE001468FE /* FindNavigatorResultList */,
 				B67DB0F52AFC2A7A002DC647 /* FindNavigatorToolbarBottom.swift */,
+				B628B7B62B223BAD00F9775A /* FindModePicker.swift */,
 			);
 			path = FindNavigator;
 			sourceTree = "<group>";
@@ -3184,6 +3187,7 @@
 				B640A99E29E2184700715F20 /* SettingsForm.swift in Sources */,
 				B62AEDD12A27B264009A9F52 /* View+paneToolbar.swift in Sources */,
 				5878DAB1291D627C00DD95A3 /* EditorPathBarComponent.swift in Sources */,
+				B628B7B72B223BAD00F9775A /* FindModePicker.swift in Sources */,
 				587B9E6E29301D8F00AC7927 /* GitLabProject.swift in Sources */,
 				58798234292E30B90085B254 /* FeedbackIssueArea.swift in Sources */,
 				852C7E332A587279006BA599 /* SearchableSettingsPage.swift in Sources */,
