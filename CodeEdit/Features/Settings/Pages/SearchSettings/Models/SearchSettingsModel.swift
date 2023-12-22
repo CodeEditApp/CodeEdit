@@ -48,7 +48,8 @@ final class SearchSettingsModel: ObservableObject {
         baseURL.appendingPathComponent("settings.json", isDirectory: true)
     }
 
-    /// The currently existent Search Ignore Glob Patterns.
+    /// Stores the new values from the Search Settings Model into the settings.json whenever
+    /// `ignoreGlobPatterns` is updated
     @Published var ignoreGlobPatterns: [GlobPattern] {
         didSet {
             DispatchQueue.main.async {
@@ -57,7 +58,10 @@ final class SearchSettingsModel: ObservableObject {
         }
     }
 
+    /// Reads settings file for Search Settings and updates the values in this model
+    /// correspondingly
     private init() {
-        self.ignoreGlobPatterns = []
+        let value = Settings[\.search].ignoreGlobPatterns
+        self.ignoreGlobPatterns = value
     }
 }
