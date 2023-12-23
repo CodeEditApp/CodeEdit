@@ -154,7 +154,7 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
 
     class RangeTranslator: TextViewCoordinator {
         private weak var textViewController: TextViewController?
-        
+
         /// Returns the lines contained in the given range.
         /// - Parameter range: The range to use.
         /// - Returns: The number of lines contained by the given range. Or `0` if the text view could not be found,
@@ -166,7 +166,7 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
                   let textView = scrollView.documentView as? TextView,
                   // Find the lines at the beginning and end of the range
                   let startTextLine = textView.layoutManager.textLineForOffset(range.location),
-                  let endTextLine = textView.layoutManager.textLineForOffset(range.upperBound)else {
+                  let endTextLine = textView.layoutManager.textLineForOffset(range.upperBound) else {
                 return 0
             }
             return (endTextLine.index - startTextLine.index) + 1
