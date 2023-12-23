@@ -114,7 +114,8 @@ struct CodeFileView: View {
             isEditable: isEditable,
             letterSpacing: letterSpacing,
             bracketPairHighlight: bracketPairHighlight,
-            undoManager: undoManager
+            undoManager: undoManager,
+            coordinators: [codeFile.rangeTranslator]
         )
 
         .id(codeFile.fileURL)
