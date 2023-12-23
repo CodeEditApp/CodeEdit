@@ -11,6 +11,7 @@ import SwiftUI
 import UniformTypeIdentifiers
 import QuickLookUI
 import CodeEditSourceEditor
+import CodeEditTextView
 import CodeEditLanguages
 import Combine
 
@@ -71,6 +72,8 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
     }
 
     @Published var cursorPositions = [CursorPosition]()
+
+    var rangeTranslator: RangeTranslator = RangeTranslator()
 
     private let isDocumentEditedSubject = PassthroughSubject<Bool, Never>()
 
@@ -147,5 +150,34 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
         }
 
         self.isDocumentEditedSubject.send(self.isDocumentEdited)
+    }
+
+    class RangeTranslator: TextViewCoordinator {
+        private weak var textViewController: TextViewController?
+        
+        /// Returns the lines contained in the given range.
+        /// - Parameter range: The range to use.
+        /// - Returns: The number of lines contained by the given range. Or `0` if the text view could not be found,
+        ///            or lines could not be found for the given range.
+        func linesInRange(_ range: NSRange) -> Int {
+            // TODO: textView should be public, workaround for now
+            guard let controller = textViewController,
+                  let scrollView = controller.view as? NSScrollView,
+                  let textView = scrollView.documentView as? TextView,
+                  // Find the lines at the beginning and end of the range
+                  let startTextLine = textView.layoutManager.textLineForOffset(range.location),
+                  let endTextLine = textView.layoutManager.textLineForOffset(range.upperBound)else {
+                return 0
+            }
+            return (endTextLine.index - startTextLine.index) + 1
+        }
+
+        func prepareCoordinator(controller: TextViewController) {
+            self.textViewController = controller
+        }
+
+        func destroy() {
+            self.textViewController = nil
+        }
     }
 }

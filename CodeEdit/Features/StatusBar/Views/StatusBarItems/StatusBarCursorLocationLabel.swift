@@ -24,10 +24,7 @@ struct StatusBarCursorLocationLabel: View {
 
     func getLines(_ range: NSRange) -> Int {
         if let fileDocument = file?.fileDocument {
-            let selection = fileDocument.content[range] ?? ""
-            let lines = selection.components(separatedBy: "\n")
-
-            return lines.count
+            return fileDocument.rangeTranslator.linesInRange(range)
         }
 
         return 0
