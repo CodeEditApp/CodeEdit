@@ -12,10 +12,16 @@ struct SearchSettingsView: View {
     @ObservedObject private var searchSettingsModel: SearchSettingsModel = .shared
 
     @FocusState private var focusedField: String?
-    @State private var selection: Set<String> = []
+    @State private var selection: Set<GlobPattern> = []
 
     func addIgnoreGlobPattern() {
         searchSettingsModel.ignoreGlobPatterns.append(GlobPattern(value: ""))
+    }
+
+    func removeSelection(_ selection: Set<GlobPattern>) {
+        searchSettingsModel.ignoreGlobPatterns.removeAll {
+            selection.contains($0)
+        }
     }
 
     var body: some View {
@@ -50,7 +56,7 @@ struct SearchSettingsView: View {
                     }
                     Divider()
                     Button {
-                        print("Remove")
+                        removeSelection(selection)
                     } label: {
                         Image(systemName: "minus")
                     }
@@ -64,7 +70,7 @@ struct SearchSettingsView: View {
                     }
                 }
                 .onDeleteCommand {
-                    print("Remove selection")
+                    removeSelection(selection)
                 }
             }
         }
