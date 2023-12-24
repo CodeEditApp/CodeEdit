@@ -15,9 +15,9 @@ class UtilityAreaViewModel: ObservableObject {
     /// Returns the current location of the cursor in an editing view
     @Published var cursorLocation: CursorLocation = .init(line: 1, column: 1) // Implementation needed!!
 
-    @Published var terminals: [UtilityAreaTerminal] = []
+    @Published var terminalGroups: [UtilityAreaTerminalGroup] = []
 
-    @Published var selectedTerminals: Set<UtilityAreaTerminal.ID> = []
+    @Published var selectedTerminals: Set<TerminalEmulator> = []
 
     /// Indicates whether debugger is collapse or not
     @Published var isCollapsed: Bool = false
@@ -46,12 +46,24 @@ class UtilityAreaViewModel: ObservableObject {
     /// Returns the font for status bar items to use
     private(set) var toolbarFont: Font = .system(size: 11, weight: .medium)
 
-    func removeTerminals(_ ids: Set<UUID>) {
-        terminals.removeAll(where: { terminal in
-            ids.contains(terminal.id)
-        })
+    func removeTerminals(_ ids: some Collection<UtilityAreaTerminalGroup>) {
+        for index in terminalGroups.indices.reversed() where ids.contains(terminalGroups[index]) {
+            terminalGroups.remove(at: index)
+        }
+    }
 
-        selectedTerminals = [terminals.last?.id ?? UUID()]
+    func removeTerminals(_ ids: some Collection<TerminalEmulator>) {
+        for terminal in ids {
+            for terminalGroup in terminalGroups {
+                if let index = terminalGroup.children.firstIndex(of: terminal) {
+                    terminalGroup.children.remove(at: index)
+                    break
+                }
+            }
+        }
+        for index in terminalGroups.indices.reversed() where terminalGroups[index].children.isEmpty {
+            terminalGroups.remove(at: index)
+        }
     }
 
     func restoreFromState(_ workspace: WorkspaceDocument) {
