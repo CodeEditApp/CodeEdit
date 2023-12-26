@@ -15,9 +15,11 @@ class UtilityAreaViewModel: ObservableObject {
     /// Returns the current location of the cursor in an editing view
     @Published var cursorLocation: CursorLocation = .init(line: 1, column: 1) // Implementation needed!!
 
-    @Published var terminalGroups: [UtilityAreaTerminalGroup] = []
+    @Published var terminalGroups: [TerminalGroup] = []
 
-    @Published var selectedTerminals: Set<TerminalEmulator> = []
+    @Published var focusedTerminal: TerminalEmulator?
+
+    @Published var selectedTerminals: Set<UtilityAreaTerminalSelection> = []
 
     /// Indicates whether debugger is collapse or not
     @Published var isCollapsed: Bool = false
@@ -46,7 +48,24 @@ class UtilityAreaViewModel: ObservableObject {
     /// Returns the font for status bar items to use
     private(set) var toolbarFont: Font = .system(size: 11, weight: .medium)
 
-    func removeTerminals(_ ids: some Collection<UtilityAreaTerminalGroup>) {
+    func removeTerminals(_ ids: some Collection<UtilityAreaTerminalSelection>) {
+        let groups = ids.compactMap {
+            switch $0 {
+            case let .group(group): return group
+            default: return nil
+            }
+        }
+        let terminals = ids.compactMap {
+            switch $0 {
+            case let .terminal(terminal): return terminal
+            default: return nil
+            }
+        }
+        removeTerminals(groups)
+        removeTerminals(terminals)
+    }
+
+    func removeTerminals(_ ids: some Collection<TerminalGroup>) {
         for index in terminalGroups.indices.reversed() where ids.contains(terminalGroups[index]) {
             terminalGroups.remove(at: index)
         }

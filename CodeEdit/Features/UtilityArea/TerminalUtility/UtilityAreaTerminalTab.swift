@@ -9,13 +9,11 @@ import SwiftUI
 
 struct UtilityAreaTerminalTab: View {
 
-    @ObservedObject var group: UtilityAreaTerminalGroup
-
-    @FocusState private var isFocused: Bool
+    @ObservedObject var group: TerminalGroup
 
     let onRemoveTerminal: ([TerminalEmulator]) -> Void
 
-    init(group: UtilityAreaTerminalGroup, onRemoveTerminal: @escaping ([TerminalEmulator]) -> Void) {
+    init(group: TerminalGroup, onRemoveTerminal: @escaping ([TerminalEmulator]) -> Void) {
         self.group = group
         self.onRemoveTerminal = onRemoveTerminal
     }
@@ -24,23 +22,37 @@ struct UtilityAreaTerminalTab: View {
         Group {
             if group.children.count == 1 {
                 TerminalItem(terminal: group.children[0], onKill: onRemoveTerminal)
-                    .tag(group.children[0])
+                    .tag(UtilityAreaTerminalSelection.terminal(group.children[0]))
+                    .dropDestination(for: TerminalEmulator.self) { items, _ in
+                        onRemoveTerminal(items)
+                        for terminal in items {
+                            terminal.move(to: group)
+                        }
+                        return true
+                    }
                     .id(group.children[0])
             } else {
-                DisclosureGroup {
+                DisclosureGroup(isExpanded: $group.isExpanded) {
                     ForEach(group.children) { terminal in
                         TerminalItem(terminal: terminal, onKill: onRemoveTerminal)
-                            .tag(terminal)
+                            .tag(UtilityAreaTerminalSelection.terminal(terminal))
+                    }
+                    .onMove { indices, destination in
+                        group.children.move(fromOffsets: indices, toOffset: destination)
                     }
                 } label: {
                     TerminalGroupItem(group: group, onKill: onRemoveTerminal)
+                        .tag(UtilityAreaTerminalSelection.group(group))
+                        .dropDestination(for: TerminalGroup.self) { items, _ in
+                            let terminals = items.flatMap(\.children)
+                            onRemoveTerminal(terminals)
+                            for terminal in terminals {
+                                terminal.move(to: group)
+                            }
+                            return true
+                        }
                 }
             }
-        }
-        .dropDestination(for: TerminalEmulator.self) { items, _ in
-            onRemoveTerminal(items)
-            group.children.append(contentsOf: items)
-            return true
         }
     }
 }
@@ -91,7 +103,7 @@ private struct TerminalItem: View {
 }
 
 private struct TerminalGroupItem: View {
-    @ObservedObject var group: UtilityAreaTerminalGroup
+    @ObservedObject var group: TerminalGroup
     let onKill: ([TerminalEmulator]) -> Void
 
     @FocusState private var isRenaming: Bool

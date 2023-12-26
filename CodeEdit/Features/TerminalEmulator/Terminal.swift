@@ -7,6 +7,7 @@
 
 import SwiftUI
 import UniformTypeIdentifiers
+import Combine
 import SwiftTerm
 
 final class TerminalEmulator: ObservableObject, Identifiable {
@@ -19,6 +20,22 @@ final class TerminalEmulator: ObservableObject, Identifiable {
 
     /// The terminal's custom title, set by the user
     @Published var customTitle: String?
+
+    @Published private var groupWorkaround = NoPropertyWrappersWithWeakWorkaround()
+
+    public var groupPublisher: AnyPublisher<TerminalGroup?, Never> {
+        $groupWorkaround.map(\.group).eraseToAnyPublisher()
+    }
+
+    /// The terminal's current group, if any
+    public var group: TerminalGroup? {
+        get { groupWorkaround.group }
+        set { groupWorkaround.group = newValue }
+    }
+
+    private struct NoPropertyWrappersWithWeakWorkaround {
+        weak var group: TerminalGroup?
+    }
 
     /// The terminal's shell
     let shell: String
@@ -40,6 +57,14 @@ final class TerminalEmulator: ObservableObject, Identifiable {
 
     var title: String {
         customTitle ?? activity ?? "terminal"
+    }
+
+    func move(to newGroup: TerminalGroup) {
+        if let group, let index = group.children.firstIndex(of: self) {
+            group.children.remove(at: index)
+        }
+        newGroup.children.append(self)
+        group = newGroup
     }
 
     // MARK: - Cache

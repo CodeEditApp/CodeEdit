@@ -40,9 +40,12 @@ struct UtilityAreaTerminalView: View {
             shell: shell
         )
 
-        let terminalGroup = UtilityAreaTerminalGroup(children: [terminal])
+        let terminalGroup = TerminalGroup(children: [terminal])
+        terminal.group = terminalGroup
+
         model.terminalGroups.append(terminalGroup)
-        model.selectedTerminals = [terminal]
+        model.selectedTerminals = [.terminal(terminal)]
+        model.focusedTerminal = terminal
     }
 
     /// Returns the `background` color of the selected theme
@@ -57,29 +60,27 @@ struct UtilityAreaTerminalView: View {
     }
 
     func moveItems(from source: IndexSet, to destination: Int) {
+        // re-calculate indices according to groups
+        print("Moving \(source) to \(destination)")
         model.terminalGroups.move(fromOffsets: source, toOffset: destination)
     }
 
     var body: some View {
         UtilityAreaTabView(model: model.tabViewModel) { tabState in
             ZStack {
-                switch model.selectedTerminals.count {
-                case 0:
+                if let group = model.focusedTerminal?.group {
+                    UtilityAreaTerminalGroupView(group, selection: $model.focusedTerminal)
+                } else {
                     CEContentUnavailableView("No Selection")
-                case 1:
-                    let group = model.terminalGroups.first { $0.children.contains(model.selectedTerminals.first!)
-                    }
-                    if let group {
-                        UtilityAreaTerminalGroupView(group, selection: $model.selectedTerminals)
-                    }
-                default:
-                    CEContentUnavailableView("Multiple Selection")
                 }
             }
             .paneToolbar {
                 PaneToolbarSection {
-                    UtilityAreaTerminalPicker(selection: $model.selectedTerminals, terminalGroups: model.terminalGroups)
-                        .opacity(tabState.leadingSidebarIsCollapsed ? 1 : 0)
+                    UtilityAreaTerminalPicker(
+                        focusedTerminal: $model.focusedTerminal,
+                        terminalGroups: model.terminalGroups
+                    )
+                    .opacity(tabState.leadingSidebarIsCollapsed ? 1 : 0)
                 }
                 Spacer()
                 PaneToolbarSection {
@@ -96,7 +97,7 @@ struct UtilityAreaTerminalView: View {
                 }
             }
             .background {
-                if model.selectedTerminals.isEmpty {
+                if model.focusedTerminal == nil {
                     EffectView(.contentBackground)
                 } else if useThemeBackground {
                     Color(nsColor: backgroundColor)
@@ -167,14 +168,24 @@ struct UtilityAreaTerminalView: View {
             }
         }
         .onAppear(perform: initializeTerminals)
+        .onChange(of: model.selectedTerminals) { _ in
+            model.focusedTerminal = model.selectedTerminals.lazy
+                .compactMap {
+                    switch $0 {
+                    case let .terminal(terminal): return terminal
+                    case let .group(group): return group.children.first
+                    }
+                }
+                .first
+        }
     }
 }
 
 private struct UtilityAreaTerminalGroupView: View {
-    @ObservedObject private var group: UtilityAreaTerminalGroup
-    @Binding private var selection: Set<TerminalEmulator>
+    @ObservedObject private var group: TerminalGroup
+    @Binding private var selection: TerminalEmulator?
 
-    init(_ group: UtilityAreaTerminalGroup, selection: Binding<Set<TerminalEmulator>>) {
+    init(_ group: TerminalGroup, selection: Binding<TerminalEmulator?>) {
         self.group = group
         _selection = selection
     }
@@ -186,8 +197,12 @@ private struct UtilityAreaTerminalGroupView: View {
             }
         }
         .onAppear {
-            if !group.children.contains(where: selection.contains) {
-                selection = group.children.first.map { [$0] } ?? []
+            guard let selection else {
+                selection = group.children.first
+                return
+            }
+            if !group.children.contains(selection) {
+                self.selection = group.children.first
             }
         }
         .id(group)
@@ -196,16 +211,16 @@ private struct UtilityAreaTerminalGroupView: View {
 
 private struct UtilityAreaTerminalTerminalView: View {
     @ObservedObject var terminal: TerminalEmulator
-    @Binding var selection: Set<TerminalEmulator>
+    @Binding var selection: TerminalEmulator?
     @FocusState private var isFocused: Bool
 
-    init(_ terminal: TerminalEmulator, selection: Binding<Set<TerminalEmulator>>) {
+    init(_ terminal: TerminalEmulator, selection: Binding<TerminalEmulator?>) {
         self.terminal = terminal
         _selection = selection
     }
 
     var body: some View {
-        let isSelected = selection.contains(terminal)
+        let isSelected = selection == terminal
         // SwiftTerm's underlying NSView will glitch and render outside its frame
         // you also can't click-to-focus but seems to override tap gestures
         TerminalEmulatorView(terminal)
@@ -218,26 +233,18 @@ private struct UtilityAreaTerminalTerminalView: View {
 }
 
 struct UtilityAreaTerminalPicker: View {
-    @Binding var selection: Set<TerminalEmulator>
-    var terminalGroups: [UtilityAreaTerminalGroup]
-
-    var selectedTerminal: Binding<TerminalEmulator?> {
-        Binding<TerminalEmulator?> {
-            selection.first
-        } set: {
-            if let newValue = $0 {
-                selection = [newValue]
-            }
-        }
-    }
+    @Binding var focusedTerminal: TerminalEmulator?
+    var terminalGroups: [TerminalGroup]
 
     var body: some View {
-        Picker("Terminal Tab", selection: selectedTerminal) {
+        Picker("Terminal Tab", selection: $focusedTerminal) {
+            Text("-")
+                .tag(TerminalEmulator?.none)
             ForEach(terminalGroups) { group in
                 Section {
                     ForEach(group.children) { terminal in
                         Text(terminal.title)
-                            .tag(terminal)
+                            .tag(terminal as TerminalEmulator?)
                     }
                 } header: {
                     if group.children.count > 1 {
