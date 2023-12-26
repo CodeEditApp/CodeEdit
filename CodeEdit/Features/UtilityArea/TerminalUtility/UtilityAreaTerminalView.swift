@@ -60,8 +60,6 @@ struct UtilityAreaTerminalView: View {
     }
 
     func moveItems(from source: IndexSet, to destination: Int) {
-        // re-calculate indices according to groups
-        print("Moving \(source) to \(destination)")
         model.terminalGroups.move(fromOffsets: source, toOffset: destination)
     }
 
