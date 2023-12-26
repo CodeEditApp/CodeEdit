@@ -60,7 +60,10 @@ We strive to remain true to Apple's human interface guidelines and development p
 
 Join our growing community on [Discord](https://discord.gg/vChUXVf9Em) and [GitHub Discussions](https://github.com/orgs/CodeEditApp/discussions) where we discuss and collaborate on all things CodeEdit. Don't be shy, jump right in and be part of the discussion!
 
-We also hold a weekly meetup on Discord every Saturday at 3pm UTC. Join [here](https://discord.gg/AY7DUgZgms).
+> [!NOTE]
+> We hold a weekly meetup on Discord **every Saturday at 3pm UTC** where we discuss latests development, feature requests, goals, and priorities.
+> 
+> [**Join us**](https://discord.gg/KvdE3wYKNR?event=1189275961456336937)
 
 ## Contributing
 
