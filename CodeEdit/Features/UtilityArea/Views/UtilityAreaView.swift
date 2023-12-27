@@ -42,7 +42,7 @@ struct UtilityAreaView: View {
         }
     }
 
-    func move(indices: IndexSet, from index: Int) {
+    func move(from indices: IndexSet, to index: Int) {
         model.tabItems.move(fromOffsets: indices, toOffset: index)
     }
 }

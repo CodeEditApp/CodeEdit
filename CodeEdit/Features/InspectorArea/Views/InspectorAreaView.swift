@@ -80,7 +80,7 @@ struct InspectorAreaView: View {
         )
     }
 
-    func move(indices: IndexSet, from index: Int) {
+    func move(from indices: IndexSet, to index: Int) {
         viewModel.tabItems.move(fromOffsets: indices, toOffset: index)
     }
 }
