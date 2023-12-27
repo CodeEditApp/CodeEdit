@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditSourceEditor
 import CodeEditSymbols
 
 final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
@@ -102,7 +103,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                         return
                     }
                     if line > 0, let document = document as? CodeFileDocument {
-                        document.cursorPosition = (line, column > 0 ? column : 1)
+                        document.cursorPositions = [CursorPosition(line: line, column: column > 0 ? column : 1)]
                     }
                 }
         }

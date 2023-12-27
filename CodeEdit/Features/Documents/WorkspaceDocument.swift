@@ -36,6 +36,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var quickOpenViewModel: QuickOpenViewModel?
     var commandsPaletteState: CommandPaletteViewModel?
     var listenerModel: WorkspaceNotificationModel = .init()
+    var sourceControlManager: SourceControlManager?
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -110,10 +111,17 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
 
     private func initWorkspaceState(_ url: URL) throws {
         self.fileURL = url
+        let sourceControlManager = SourceControlManager(
+            workspaceURL: url,
+            editorManager: editorManager
+        )
         self.workspaceFileManager = .init(
             folderUrl: url,
-            ignoredFilesAndFolders: Set(ignoredFilesAndDirectory)
+            ignoredFilesAndFolders: Set(ignoredFilesAndDirectory),
+            sourceControlManager: sourceControlManager
         )
+        self.sourceControlManager = sourceControlManager
+        sourceControlManager.fileManager = workspaceFileManager
         self.searchState = .init(self)
         self.quickOpenViewModel = .init(fileURL: url)
         self.commandsPaletteState = .init()

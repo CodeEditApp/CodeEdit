@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import CodeEditSourceEditor
 import CodeEditTextView
 import CodeEditLanguages
 import Combine
@@ -98,7 +99,7 @@ struct CodeFileView: View {
     @EnvironmentObject private var editor: Editor
 
     var body: some View {
-        CodeEditTextView(
+        CodeEditSourceEditor(
             $codeFile.content,
             language: getLanguage(),
             theme: selectedTheme.editor.editorTheme,
@@ -107,13 +108,14 @@ struct CodeFileView: View {
             indentOption: (codeFile.indentOption ?? indentOption).textViewOption(),
             lineHeight: lineHeightMultiple,
             wrapLines: codeFile.wrapLines ?? wrapLinesToEditorWidth,
-            cursorPosition: $codeFile.cursorPosition,
+            cursorPositions: $codeFile.cursorPositions,
             useThemeBackground: useThemeBackground,
             contentInsets: edgeInsets.nsEdgeInsets,
             isEditable: isEditable,
             letterSpacing: letterSpacing,
             bracketPairHighlight: bracketPairHighlight,
-            undoManager: undoManager
+            undoManager: undoManager,
+            coordinators: [codeFile.rangeTranslator]
         )
 
         .id(codeFile.fileURL)

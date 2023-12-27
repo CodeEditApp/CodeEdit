@@ -45,7 +45,7 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
     var type: FileIcon.FileType { .init(rawValue: url.pathExtension) ?? .txt }
 
     /// Returns the URL of the ``CEWorkspaceFile``
-    var url: URL
+    let url: URL
 
     /// Return the icon of the file as `Image`
     var icon: Image { Image(systemName: systemImage) }
@@ -72,6 +72,9 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
 
     /// Returns the Git status of a file as ``GitType``
     var gitStatus: GitType?
+
+    /// Returns a boolean that is true if the file is staged for commit
+    var staged: Bool?
 
     /// Returns the `id` in ``EditorTabID`` enum form
     var tabID: EditorTabID { .codeEditor(id) }
@@ -128,27 +131,32 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
 
     init(
         url: URL,
-        changeType: GitType? = nil
+        changeType: GitType? = nil,
+        staged: Bool? = false
     ) {
         self.url = url
         self.gitStatus = changeType
+        self.staged = staged
     }
 
     enum CodingKeys: String, CodingKey {
         case url
         case changeType
+        case staged
     }
 
     required init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         url = try values.decode(URL.self, forKey: .url)
         gitStatus = try values.decode(GitType.self, forKey: .changeType)
+        staged = try values.decode(Bool.self, forKey: .staged)
     }
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(url, forKey: .url)
         try container.encode(gitStatus, forKey: .changeType)
+        try container.encode(staged, forKey: .staged)
     }
 
     /// Returns a string describing a SFSymbol for folders
@@ -167,7 +175,7 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
     }
 
     /// Returns the file name with optional extension (e.g.: `Package.swift`)
-    func fileName(typeHidden: Bool) -> String {
+    func fileName(typeHidden: Bool = false) -> String {
         typeHidden ? url.deletingPathExtension().lastPathComponent : name
     }
 
@@ -234,7 +242,7 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
     // MARK: Hashable
 
     func hash(into hasher: inout Hasher) {
-        hasher.combine(fileIdentifier)
+        hasher.combine(url)
         hasher.combine(id)
     }
 

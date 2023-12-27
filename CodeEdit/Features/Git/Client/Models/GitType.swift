@@ -9,7 +9,7 @@ import Foundation
 
 enum GitType: String, Codable {
     case modified = "M"
-    case unknown = "??"
+    case untracked = "??"
     case fileTypeChange = "T"
     case added = "A"
     case deleted = "D"
@@ -20,7 +20,7 @@ enum GitType: String, Codable {
     var description: String {
         switch self {
         case .modified: return "M"
-        case .unknown: return "?"
+        case .untracked: return "U"
         case .fileTypeChange: return "T"
         case .added: return "A"
         case .deleted: return "D"

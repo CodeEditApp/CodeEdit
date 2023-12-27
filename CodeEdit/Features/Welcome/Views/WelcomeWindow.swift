@@ -35,7 +35,7 @@ struct WelcomeWindow: Scene {
         var openWindow
 
         var body: some View {
-            WelcomeWindowView(shellClient: currentWorld.shellClient) { url, opened in
+            WelcomeWindowView { url, opened in
                 if let url {
                     CodeEditDocumentController.shared.openDocument(withContentsOf: url, display: true) { doc, _, _ in
                         if doc != nil {

@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-struct UtilityAreaTerminal: Identifiable, Equatable {
-    var id: UUID
-    var url: URL?
-    var title: String
-    var terminalTitle: String
-    var shell: String
-    var customTitle: Bool
+final class UtilityAreaTerminal: ObservableObject, Identifiable, Equatable {
+    let id: UUID
+    @Published var url: URL?
+    @Published var title: String
+    @Published var terminalTitle: String
+    @Published var shell: String
+    @Published var customTitle: Bool
 
     init(id: UUID, url: URL, title: String, shell: String) {
         self.id = id
@@ -22,6 +22,10 @@ struct UtilityAreaTerminal: Identifiable, Equatable {
         self.url = url
         self.shell = shell
         self.customTitle = false
+    }
+
+    static func == (lhs: UtilityAreaTerminal, rhs: UtilityAreaTerminal) -> Bool {
+        lhs.id == rhs.id
     }
 }
 
@@ -121,30 +125,27 @@ struct UtilityAreaTerminalView: View {
     }
 
     var body: some View {
-        UtilityAreaTabView { tabState in
-            Group {
-                if model.terminals.isEmpty {
-                    Text("No Selection")
-                        .font(.system(size: 16))
-                        .foregroundColor(.secondary)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                } else {
-//                    BasicTabView(selection: .constant(model.selectedTerminals.first), tabPosition: .side) {
-//                        ForEach(model.terminals) { terminal in
-//                            TerminalEmulatorView(
-//                                url: terminal.url!,
-//                                shellType: terminal.shell,
-//                                onTitleChange: { newTitle in
-//                                    // This can be called whenever, even in a view update so it needs to be dispatched.
-//                                    DispatchQueue.main.async {
-//                                        handleTitleChange(id: terminal.id, title: newTitle)
-//                                    }
-//                                }
-//                            )
-//                            .padding(.top, 10)
-//                            .padding(.horizontal, 10)
-//                        }
-//                    }
+        UtilityAreaTabView(model: model.tabViewModel) { tabState in
+            ZStack {
+                if model.selectedTerminals.isEmpty {
+                    CEContentUnavailableView("No Selection")
+                }
+                ForEach(model.terminals) { terminal in
+                    TerminalEmulatorView(
+                        url: terminal.url!,
+                        shellType: terminal.shell,
+                        onTitleChange: { newTitle in
+                            // This can be called whenever, even in a view update so it needs to be dispatched.
+                            DispatchQueue.main.async {
+                                handleTitleChange(id: terminal.id, title: newTitle)
+                            }
+                        }
+                    )
+                    .padding(.top, 10)
+                    .padding(.horizontal, 10)
+                    .contentShape(Rectangle())
+                    .disabled(terminal.id != model.selectedTerminals.first)
+                    .opacity(terminal.id == model.selectedTerminals.first ? 1 : 0)
                 }
             }
             .paneToolbar {
@@ -188,14 +189,15 @@ struct UtilityAreaTerminalView: View {
             )
         } leadingSidebar: { _ in
             List(selection: $model.selectedTerminals) {
-                ForEach($model.terminals, id: \.self.id) { $terminal in
+                ForEach(model.terminals, id: \.self.id) { terminal in
                     UtilityAreaTerminalTab(
-                        terminal: $terminal,
+                        terminal: terminal,
                         removeTerminals: model.removeTerminals,
                         isSelected: model.selectedTerminals.contains(terminal.id),
                         selectedIDs: model.selectedTerminals
                     )
                     .tag(terminal.id)
+                    .listRowSeparator(.hidden)
                 }
                 .onMove(perform: moveItems)
             }

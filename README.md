@@ -1,7 +1,8 @@
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/806104/163099605-4eaedd33-8441-4125-9ca1-a7ccb2f62a74.png" height="128">
+  <img src="https://github.com/CodeEditApp/CodeEdit/blob/main/.github/CodeEdit-Icon-128@2x.png?raw=true" height="128">
   <h1 align="center">CodeEdit for macOS</h1>
 </p>
+
 
 <p align="center">
   <a aria-label="Follow CodeEdit on Twitter" href="https://twitter.com/CodeEditApp" target="_blank">
@@ -23,8 +24,8 @@ CodeEdit is a code editor built by the community, for the community, written ent
 [![GitHub forks](https://img.shields.io/github/forks/CodeEditApp/CodeEdit?style=flat-square)](https://github.com/CodeEditApp/CodeEdit/forks)
 [![Discord Badge](https://img.shields.io/discord/951544472238444645?color=5865F2&label=Discord&logo=discord&logoColor=white&style=flat-square)](https://discord.gg/vChUXVf9Em)
 
-| :warning: | CodeEdit is currently in development and not yet ready for production use. You are welcome to test the latest [alpha build](https://github.com/CodeEditApp/CodeEdit/releases/latest) at your own risk. Please leave any feedback [here](https://github.com/CodeEditApp/CodeEdit/issues). |
-| - |:-|
+> [!IMPORTANT]
+> CodeEdit is currently in development and not yet ready for production use. You are welcome to test the latest [alpha build](https://github.com/CodeEditApp/CodeEdit/releases/latest) at your own risk. Please leave any feedback [here](https://github.com/CodeEditApp/CodeEdit/issues). 
 
 ## Table of Contents
 
@@ -49,7 +50,7 @@ This raised the question "what if such an editor existed?", a question that led 
 
 It is our commitment to keep CodeEdit open source and free forever, supported by the community.
 
-![github-equation](https://user-images.githubusercontent.com/806104/194004377-4b7e12a1-e3b1-409f-ba63-d7c6d2c53a1d.png)
+<img width="1012" alt="TextEdit plus Xcode equals CodeEdit" src="https://github.com/CodeEditApp/CodeEdit/assets/806104/a9379df0-ab26-4ef8-98a9-2e2b4bd8c7b4">
 
 Our goal is to maintain a lightweight experience, similar to TextEdit, while being able to scale up to a more feature-rich experience, comparable to Xcode, as necessary.
 
@@ -59,7 +60,10 @@ We strive to remain true to Apple's human interface guidelines and development p
 
 Join our growing community on [Discord](https://discord.gg/vChUXVf9Em) and [GitHub Discussions](https://github.com/orgs/CodeEditApp/discussions) where we discuss and collaborate on all things CodeEdit. Don't be shy, jump right in and be part of the discussion!
 
-We also hold a weekly meetup on Discord every Saturday at 3pm UTC. Join [here](https://discord.gg/AY7DUgZgms).
+> [!NOTE]
+> We hold a weekly meetup on Discord **every Saturday at 3pm UTC** where we discuss latests development, feature requests, goals, and priorities.
+> 
+> [**Join us**](https://discord.gg/KvdE3wYKNR?event=1189275961456336937)
 
 ## Contributing
 
@@ -162,6 +166,7 @@ For issues we want to focus on that are most relevant at any given time, please 
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Ahattalla"><img src="https://avatars.githubusercontent.com/u/53402452?v=4?s=100" width="100px;" alt="Ahmed Attalla"/><br /><sub><b>Ahmed Attalla</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3AAhattalla" title="Bug reports">🐛</a> <a href="https://github.com/CodeEditApp/CodeEdit/commits?author=Ahattalla" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://estebanborai.com"><img src="https://avatars.githubusercontent.com/u/34756077?v=4?s=100" width="100px;" alt="Esteban Borai"/><br /><sub><b>Esteban Borai</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=EstebanBorai" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/avinizhanov"><img src="https://avatars.githubusercontent.com/u/42622715?v=4?s=100" width="100px;" alt="avinizhanov"/><br /><sub><b>avinizhanov</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3Aavinizhanov" title="Bug reports">🐛</a> <a href="https://github.com/CodeEditApp/CodeEdit/commits?author=avinizhanov" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/kmohsin11"><img src="https://avatars.githubusercontent.com/u/28269317?v=4?s=100" width="100px;" alt="kmohsin11"/><br /><sub><b>kmohsin11</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3Akmohsin11" title="Bug reports">🐛</a></td>
     </tr>
   </tbody>
 </table>
@@ -217,27 +222,33 @@ Licensed under the [MIT license](https://github.com/CodeEditApp/CodeEdit/blob/ma
   <tr>
     <td align="center">
       <a href="https://github.com/CodeEditApp/CodeEditKit">
-        <img src="https://user-images.githubusercontent.com/806104/193877051-c60d255d-0b6a-408c-bb21-6fabc5e0e60c.png" height="128">
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;CodeEditKit&nbsp;&nbsp;&nbsp;&nbsp;</p>
+        <img src="https://github.com/CodeEditApp/CodeEditKit/blob/main/.github/CodeEditKit-Icon-128@2x.png?raw=true" height="128">
       </a>
+      <p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://github.com/CodeEditApp/CodeEditKit">CodeEditKit</a>&nbsp;&nbsp;&nbsp;&nbsp;</p>
     </td>
     <td align="center">
       <a href="https://github.com/CodeEditApp/CodeEditTextView">
-        <img src="https://user-images.githubusercontent.com/806104/175655252-d77cef62-31f5-4f40-a2ad-c1406a6dd1b9.png" height="128">
-        <p>CodeEditTextView</p>
+        <img src="https://github.com/CodeEditApp/CodeEditTextView/blob/main/.github/CodeEditTextView-Icon-128@2x.png?raw=true" height="128">
       </a>
+      <p><a href="https://github.com/CodeEditApp/CodeEditTextView">CodeEditTextView</a></p>
+    </td>
+    <td align="center">
+      <a href="https://github.com/CodeEditApp/CodeEditSourceEditor">
+        <img src="https://github.com/CodeEditApp/CodeEditTextView/blob/main/.github/CodeEditSourceEditor-Icon-128@2x.png?raw=true" height="128">
+      </a>
+      <p><a href="https://github.com/CodeEditApp/CodeEditSourceEditor">CodeEditSourceEditor</a></p>
     </td>
     <td align="center">
       <a href="https://github.com/CodeEditApp/CodeEditLanguages">
-        <img src="https://user-images.githubusercontent.com/806104/201497920-d6aace8d-f0dc-49f6-bcd7-6a3b64cc384c.png" height="128">
-        <p>CodeEditLanguages</p>
+        <img src="https://github.com/CodeEditApp/CodeEditLanguages/blob/main/.github/CodeEditLanguages-Icon-128@2x.png?raw=true" height="128">
       </a>
+      <p><a href="https://github.com/CodeEditApp/CodeEditLanguages">CodeEditLanguages</a></p>
     </td>
     <td align="center">
       <a href="https://github.com/CodeEditApp/CodeEditCLI">
-        <img src="https://user-images.githubusercontent.com/806104/205848006-f2654778-21f1-4f97-b292-32849cc1eff6.png" height="128">
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;CodeEdit&nbsp;CLI&nbsp;&nbsp;&nbsp;&nbsp;</p>
+        <img src="https://github.com/CodeEditApp/CodeEditCLI/blob/main/.github/CodeEditCLI-Icon-128@2x.png?raw=true" height="128">
       </a>
+      <p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://github.com/CodeEditApp/CodeEditCLI">CodeEditCLI</a>&nbsp;&nbsp;&nbsp;&nbsp;</p>
     </td>
   </tr>
 </table>

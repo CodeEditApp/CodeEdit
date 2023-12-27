@@ -4,6 +4,7 @@
 //
 //  Created by Wouter Hennen on 18/06/2023.
 //
+//
 
 import SwiftUI
 
@@ -43,7 +44,6 @@ struct WindowSplitView: View {
                         .toolbar {
                             ToolbarItem(id: "com.apple.SwiftUI.navigationSplitView.toggleSidebar") {
                                 ToolbarBranchPicker(
-                                    shellClient: currentWorld.shellClient,
                                     workspaceFileManager: workspace.workspaceFileManager
                                 )
                             }

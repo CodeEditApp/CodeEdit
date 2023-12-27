@@ -8,7 +8,7 @@
 import Foundation
 
 // TODO: DOCS (Ziyuan Zhao)
-struct SearchModeModel {
+struct SearchModeModel: Hashable {
     let title: String
     let children: [SearchModeModel]
     let needSelectionHighlight: Bool

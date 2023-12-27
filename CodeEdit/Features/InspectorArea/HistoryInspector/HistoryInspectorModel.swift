@@ -8,9 +8,7 @@
 import Foundation
 
 final class HistoryInspectorModel: ObservableObject {
-
-    /// A GitClient instance
-    private(set) var gitClient: GitClient?
+    private(set) var sourceControlManager: SourceControlManager?
 
     /// The base URL of the workspace
     private(set) var workspaceURL: URL?
@@ -21,31 +19,36 @@ final class HistoryInspectorModel: ObservableObject {
     /// The selected branch from the GitClient
     @Published var commitHistory: [GitCommit] = []
 
-    func setWorkspace(url: URL?) {
-        if workspaceURL != url {
-            workspaceURL = url
-            updateCommitHistory()
-        }
+    func setWorkspace(sourceControlManager: SourceControlManager?) async {
+        self.sourceControlManager = sourceControlManager
+        await updateCommitHistory()
     }
 
-    func setFile(url: String?) {
+    func setFile(url: String?) async {
         if fileURL != url {
             fileURL = url
-            updateCommitHistory()
+            await updateCommitHistory()
         }
     }
 
-    func updateCommitHistory() {
-        guard let workspaceURL, let fileURL else {
-            commitHistory = []
+    func updateCommitHistory() async {
+        guard let sourceControlManager, let fileURL else {
+            await setCommitHistory([])
             return
         }
-        gitClient = GitClient(directoryURL: workspaceURL, shellClient: currentWorld.shellClient)
+
         do {
-            let commitHistory = try gitClient?.getCommitHistory(entries: 40, fileLocalPath: fileURL)
-            self.commitHistory = commitHistory ?? []
+            let commitHistory = try await sourceControlManager
+                .gitClient
+                .getCommitHistory(entries: 40, fileLocalPath: fileURL)
+            await setCommitHistory(commitHistory)
         } catch {
-            commitHistory = []
+            await setCommitHistory([])
         }
+    }
+
+    @MainActor
+    private func setCommitHistory(_ history: [GitCommit]) {
+        self.commitHistory = history
     }
 }

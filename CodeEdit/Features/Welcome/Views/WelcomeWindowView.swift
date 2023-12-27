@@ -11,15 +11,12 @@ struct WelcomeWindowView: View {
     private let openDocument: (URL?, @escaping () -> Void) -> Void
     private let newDocument: () -> Void
     private let dismissWindow: () -> Void
-    private let shellClient: ShellClient
 
     init(
-        shellClient: ShellClient,
         openDocument: @escaping (URL?, @escaping () -> Void) -> Void,
         newDocument: @escaping () -> Void,
         dismissWindow: @escaping () -> Void
     ) {
-        self.shellClient = shellClient
         self.openDocument = openDocument
         self.newDocument = newDocument
         self.dismissWindow = dismissWindow
@@ -28,7 +25,6 @@ struct WelcomeWindowView: View {
     var body: some View {
         HStack(spacing: 0) {
             WelcomeView(
-                shellClient: shellClient,
                 openDocument: openDocument,
                 newDocument: newDocument,
                 dismissWindow: dismissWindow
