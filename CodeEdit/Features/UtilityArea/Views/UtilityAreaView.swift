@@ -13,37 +13,16 @@ struct UtilityAreaView: View {
 
     @EnvironmentObject private var model: UtilityAreaViewModel
 
-    @State var selection: UtilityAreaTab? = .terminal
+    @State var selection: UtilityAreaTab = .terminal
 
     var body: some View {
-//        BasicTabView(selection: $selection, tabPosition: .side) {
-//            ForEach(UtilityAreaTab.allCases) {
-//                $0
-//                    .tabIcon(Image(systemName: $0.systemImage))
-//                    .tabTitle($0.title)
-//            }
-//            .onMove { _, _ in
-//                
-//            }
-//        }
-//        .onMoveTab { _, _ in
-//            
-//        }
-        VStack{}
-//        VStack(spacing: 0) {
-//            if let selection {
-//                selection
-//            } else {
-//                Text("Tab not found")
-//                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-//            }
-//        }
-        .safeAreaInset(edge: .leading, spacing: 0) {
-            HStack(spacing: 0) {
-                AreaTabBar(items: $model.tabItems, selection: $selection, position: .side)
-                Divider()
-                    .overlay(Color(nsColor: colorScheme == .dark ? .black : .clear))
+        BasicTabView(selection: $selection, tabPosition: .leading) {
+            ForEach(model.tabItems) {
+                $0
+                    .tabIcon(Image(systemName: $0.systemImage))
+                    .tabTitle($0.title)
             }
+            .onMove(perform: move)
         }
         .overlay(alignment: .bottomTrailing) {
             HStack(spacing: 5) {
@@ -61,5 +40,9 @@ struct UtilityAreaView: View {
             .padding(.vertical, 8)
             .frame(maxHeight: 27)
         }
+    }
+
+    func move(indices: IndexSet, from index: Int) {
+        model.tabItems.move(fromOffsets: indices, toOffset: index)
     }
 }

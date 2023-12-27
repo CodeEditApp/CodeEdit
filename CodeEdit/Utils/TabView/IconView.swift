@@ -19,7 +19,7 @@ extension TabViewTabBar {
                     selection = tag
                 }
             } label: {
-                tab.image
+                let label = tab.image
                     .accessibilityLabel(tab.title ?? "")
                     .font(.system(size: 12.5))
                     .symbolVariant(tab.tag == selection ? .fill : .none)
@@ -29,14 +29,20 @@ extension TabViewTabBar {
                         alignment: .center
                     )
                     .help(tab.title ?? "")
-                    .draggable { () -> String in
-                        if let offset = tab.dynamicViewContentOffset {
-                            withAnimation(.spring) {
-                                tab.onDelete?(IndexSet(integer: offset))
+
+                if let onDelete = tab.onDelete {
+                    label
+                        .draggable { () -> String in
+                            if let offset = tab.dynamicViewContentOffset {
+                                withAnimation(.spring) {
+                                    onDelete(IndexSet(integer: offset))
+                                }
                             }
+                            return tab.title ?? ""
                         }
-                        return tab.title ?? ""
-                    }
+                } else {
+                    label
+                }
             }
             .buttonStyle(.icon(isActive: tab.tag == selection, size: CGFloat?.none))
         }

@@ -11,7 +11,7 @@ extension TabViewTabBar {
     struct MultiView: View {
         let items: [Tab]
         let size: CGSize
-        let position: SettingsData.SidebarTabBarPosition
+        let axis: Axis
 
         @Binding var selection: TabID
 
@@ -27,7 +27,7 @@ extension TabViewTabBar {
 
         /// The offset of the item that is being dragged.
         @State var draggedItemOffset: (CGFloat, Tab.ID?) = (.zero, nil)
-        
+
         /// The tab for which the local drag gesture is disabled.
         /// This is used so that the system drag gesture can be enabled.
         @State var disableLocalDragGestureForTab: Tab.ID?
@@ -66,9 +66,9 @@ extension TabViewTabBar {
             return mapped
         }
 
-
         var body: some View {
-            let layout = position == .top
+            let isHorizontal = axis == .horizontal
+            let layout = isHorizontal
                 ? AnyLayout(HStackLayout(spacing: 0))
                 : AnyLayout(VStackLayout(spacing: 0))
 
@@ -76,10 +76,10 @@ extension TabViewTabBar {
                 ForEach(Array(tabs.enumerated()), id: \.element) { index, icon in
                     switch icon {
                     case .tab(let icon):
-                        IconView(tab: icon, size: size, selection: $selection, isVertical: position == .side)
+                        IconView(tab: icon, size: size, selection: $selection, isVertical: !isHorizontal)
                             .offset(
-                                x: position == .top && draggedItemOffset.1 == icon.id ? draggedItemOffset.0 : 0,
-                                y: position == .side && draggedItemOffset.1 == icon.id ? draggedItemOffset.0 : 0
+                                x: isHorizontal && draggedItemOffset.1 == icon.id ? draggedItemOffset.0 : 0,
+                                y: !isHorizontal && draggedItemOffset.1 == icon.id ? draggedItemOffset.0 : 0
                             )
                             .background(makeTabItemGeometryReader(tab: icon))
                             .highPriorityGesture(
@@ -95,6 +95,7 @@ extension TabViewTabBar {
                     }
                 }
             }
+            .padding(axis == .horizontal ? .horizontal : .vertical, 5)
             .coordinateSpace(name: "TabBarItems")
             .animation(.easeInOut, value: draggedItems)
             .onDrop(
@@ -114,7 +115,7 @@ extension TabViewTabBar {
         private func tabDragGesture(index: Int, tab: Tab) -> some Gesture {
             DragGesture(minimumDistance: 2, coordinateSpace: .named("TabBarItems"))
                 .onChanged { value in
-                    let (signedTranslation, perpendicularSignedTranslation) = position == .top ?
+                    let (signedTranslation, perpendicularSignedTranslation) = axis == .horizontal ?
                     (value.translation.width, value.translation.height) :
                     (value.translation.height, value.translation.width)
 
@@ -169,7 +170,7 @@ extension TabViewTabBar {
 
         private func makeTabItemGeometryReader(tab: Tab) -> some View {
             GeometryReader { geometry in
-                let width: CGFloat = position == .top ? geometry.size.width : geometry.size.height
+                let width: CGFloat = axis == .horizontal ? geometry.size.width : geometry.size.height
 
                 Rectangle()
                     .hidden()

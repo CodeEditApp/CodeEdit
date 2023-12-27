@@ -20,12 +20,12 @@ enum NavigatorTab: AreaTab, Transferable {
             }
         }
     }
-    
+
     case project
     case sourceControl
     case search
     case uiExtension(endpoint: AppExtensionIdentity, data: ResolvedSidebar.SidebarStore)
-    
+
     var icon: Image {
         switch self {
         case .project:
@@ -34,7 +34,7 @@ enum NavigatorTab: AreaTab, Transferable {
             return Image(symbol: "vault")
         case .search:
             return Image(systemName: "magnifyingglass")
-        case .uiExtension(let endpoint, let data):
+        case .uiExtension(_, let data):
             return Image(systemName: data.icon ?? "e.square")
         }
     }

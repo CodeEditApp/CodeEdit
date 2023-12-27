@@ -12,7 +12,7 @@ import UniformTypeIdentifiers
 struct BasicTabView<Content: View, Selected: Hashable>: View {
     @Binding var selection: Selected
 
-    var tabPosition: SettingsData.SidebarTabBarPosition = .top
+    var tabPosition: Edge = .top
 
     @ViewBuilder var content: Content
 
@@ -37,16 +37,28 @@ struct BasicTabView<Content: View, Selected: Hashable>: View {
                     )
                 }
 
-                let layout = tabPosition == .side ?
-                AnyLayout(HStackLayout(spacing: .zero)) :
-                AnyLayout(VStackLayout(spacing: .zero))
+                let layout = tabPosition == .bottom || tabPosition == .top ?
+                AnyLayout(VStackLayout(spacing: .zero)) :
+                AnyLayout(HStackLayout(spacing: .zero))
+
+                // Flip the axis.
+                // When the tabbar position is top or bottom, it's axis (orientation) will be horizontal (HStack)
+                let tabBarAxis: Axis = tabPosition == .bottom || tabPosition == .top ? .horizontal : .vertical
 
                 layout {
-                    TabViewTabBar(items: items, selection: $selection, position: tabPosition)
-                    Divider()
+                    if tabPosition == .top || tabPosition == .leading {
+                        TabViewTabBar(items: items, selection: $selection, axis: tabBarAxis)
+                        Divider()
+                    }
+
                     InternalBasicTabView(children: children, selected: children.firstIndex {
                         $0.tag(as: Selected.self) == self.selection
                     })
+
+                    if tabPosition == .bottom || tabPosition == .trailing {
+                        Divider()
+                        TabViewTabBar(items: items, selection: $selection, axis: tabBarAxis)
+                    }
                 }
             }
         }

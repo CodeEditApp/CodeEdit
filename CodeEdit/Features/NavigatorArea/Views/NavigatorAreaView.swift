@@ -11,14 +11,14 @@ struct NavigatorAreaView: View {
     @ObservedObject private var workspace: WorkspaceDocument
     @ObservedObject private var extensionManager = ExtensionManager.shared
     @ObservedObject public var viewModel: NavigatorSidebarViewModel
-    
+
     @AppSettings(\.general.navigatorTabBarPosition)
     var sidebarPosition: SettingsData.SidebarTabBarPosition
-    
+
     init(workspace: WorkspaceDocument, viewModel: NavigatorSidebarViewModel) {
         self.workspace = workspace
         self.viewModel = viewModel
-        
+
         viewModel.tabItems = [.project, .sourceControl, .search] +
         extensionManager
             .extensions
@@ -32,21 +32,26 @@ struct NavigatorAreaView: View {
             }
             .joined()
     }
-    
-    @State var items = [NavigatorTab.project, .search, .sourceControl]
-    @State var items2 = [NavigatorTab.project, .search, .sourceControl]
-    @State var selection: NavigatorTab = .project
-    
+
+    var sidebarPositionEdge: Edge {
+        switch sidebarPosition {
+        case .top:
+            return .top
+        case .side:
+            return .leading
+        }
+    }
+
     var body: some View {
         Group {
-            if items.isEmpty {
+            if viewModel.tabItems.isEmpty {
                 Text("Tab not found")
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
                 VStack(spacing: .zero) {
                     Divider()
-                    BasicTabView(selection: $viewModel.selectedTab, tabPosition: sidebarPosition) {
-                        ForEach(items) { item in
+                    BasicTabView(selection: $viewModel.selectedTab, tabPosition: sidebarPositionEdge) {
+                        ForEach(viewModel.tabItems) { item in
                             item
                                 .tabTitle(item.title)
                                 .tabIcon(item.icon)
@@ -59,36 +64,16 @@ struct NavigatorAreaView: View {
                 }
             }
         }
-        
-        //        .safeAreaInset(edge: .leading, spacing: 0) {
-        //            if sidebarPosition == .side {
-        //                HStack(spacing: 0) {
-        //                    AreaTabBar(items: $viewModel.tabItems, selection: $viewModel.selectedTab, position: sidebarPosition)
-        //                    Divider()
-        //                }
-        //            }
-        //        }
-        //        .safeAreaInset(edge: .top, spacing: 0) {
-        //            if sidebarPosition == .top {
-        //                VStack(spacing: 0) {
-        //                    Divider()
-        //                    AreaTabBar(items: $viewModel.tabItems, selection: $viewModel.selectedTab, position: sidebarPosition)
-        //                    Divider()
-        //                }
-        //            } else {
-        //                Divider()
-        //            }
-        //        }
         .environmentObject(workspace)
     }
 
     func move(indices: IndexSet, from index: Int) {
-        items.move(fromOffsets: indices, toOffset: index)
+        viewModel.tabItems.move(fromOffsets: indices, toOffset: index)
     }
 
     func delete(indices: IndexSet) {
         withAnimation(.spring) {
-            items.remove(atOffsets: indices)
+            viewModel.tabItems.remove(atOffsets: indices)
         }
     }
 
@@ -102,7 +87,7 @@ struct NavigatorAreaView: View {
                 }
             }
             withAnimation(.spring) {
-                self.items.insert(contentsOf: newItems, at: index)
+                viewModel.tabItems.insert(contentsOf: newItems, at: index)
             }
         }
     }

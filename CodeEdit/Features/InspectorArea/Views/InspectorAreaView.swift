@@ -18,8 +18,6 @@ struct InspectorAreaView: View {
     @AppSettings(\.general.inspectorTabBarPosition)
     var sidebarPosition: SettingsData.SidebarTabBarPosition
 
-    @State private var selection: InspectorTab? = .file
-
     init(viewModel: InspectorAreaViewModel) {
         self.viewModel = viewModel
 
@@ -43,15 +41,36 @@ struct InspectorAreaView: View {
         )
     }
 
+    var sidebarPositionEdge: Edge {
+        switch sidebarPosition {
+        case .top:
+            return .top
+        case .side:
+            return .trailing
+        }
+    }
+
     var body: some View {
-        VStack {
-            if let selection {
-                selection
+        Group {
+            if viewModel.tabItems.isEmpty {
+                Text("Tab not found")
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
-                NoSelectionInspectorView()
+                VStack(spacing: .zero) {
+                    Divider()
+                    BasicTabView(selection: $viewModel.selectedTab, tabPosition: sidebarPositionEdge) {
+                        ForEach(viewModel.tabItems) { item in
+                            item
+                                .tabTitle(item.title)
+                                .tabIcon(Image(systemName: item.systemImage))
+                                .tag(InspectorTab?.some(item))
+                        }
+                        .onMove(perform: move)
+                    }
+                    .formStyle(.grouped)
+                }
             }
         }
-        .clipShape(Rectangle())
         .frame(
             minWidth: CodeEditWindowController.minSidebarWidth,
             idealWidth: 300,
@@ -59,25 +78,9 @@ struct InspectorAreaView: View {
             maxHeight: .infinity,
             alignment: .top
         )
-        .safeAreaInset(edge: .trailing, spacing: 0) {
-            if sidebarPosition == .side {
-                HStack(spacing: 0) {
-                    Divider()
-                    AreaTabBar(items: $viewModel.tabItems, selection: $selection, position: sidebarPosition)
-                }
-            }
-        }
-        .safeAreaInset(edge: .top, spacing: 0) {
-            if sidebarPosition == .top {
-                VStack(spacing: 0) {
-                    Divider()
-                    AreaTabBar(items: $viewModel.tabItems, selection: $selection, position: sidebarPosition)
-                    Divider()
-                }
-            } else {
-                Divider()
-            }
-        }
-        .formStyle(.grouped)
+    }
+
+    func move(indices: IndexSet, from index: Int) {
+        viewModel.tabItems.move(fromOffsets: indices, toOffset: index)
     }
 }
