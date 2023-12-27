@@ -9,14 +9,17 @@ import SwiftUI
 
 extension TabViewTabBar {
     struct MultiView: View {
-        let icons: [Tab]
+        let items: [Tab]
         let size: CGSize
         let position: SettingsData.SidebarTabBarPosition
 
         @Binding var selection: TabID
 
-        @State var tempIndex: Int?
+        /// Indicates the index for the new drop target.
+        /// The index is calculated based on where the item would be dropped in the view.
+        @State var dropTargetIndex: Int?
 
+        /// Widths of all tabs
         @State private var tabWidth: [Tab: CGFloat] = [:]
 
         /// The original index and current destination index of the dragged item.
@@ -24,6 +27,10 @@ extension TabViewTabBar {
 
         /// The offset of the item that is being dragged.
         @State var draggedItemOffset: (CGFloat, Tab.ID?) = (.zero, nil)
+        
+        /// The tab for which the local drag gesture is disabled.
+        /// This is used so that the system drag gesture can be enabled.
+        @State var disableLocalDragGestureForTab: Tab.ID?
 
         enum TabOrSpacer: Identifiable, Hashable {
             case tab(Tab)
@@ -39,21 +46,26 @@ extension TabViewTabBar {
             }
         }
 
+        /// If an icon is currently being dragged, this will return the items rearranged accordingly.
+        /// If no drag occurs, this just returns the items.
         var draggedItems: [Tab] {
-            guard let itemOffset else { return icons }
-            guard itemOffset.1 >= 0 && itemOffset.1 <= icons.count else { return icons }
-            var items = self.icons
+            guard let itemOffset else { return items }
+            guard itemOffset.1 >= 0 && itemOffset.1 <= items.count else { return items }
+            var items = self.items
             let indexSet = IndexSet(integer: itemOffset.0)
             items.move(fromOffsets: indexSet, toOffset: itemOffset.1)
             return items
         }
 
+        /// All tabs plus an inserted spacer, which is used when a new drop target enters the view.
         var tabs: [TabOrSpacer] {
-            guard let tempIndex else { return draggedItems.map { .tab($0) } }
-            return draggedItems[..<tempIndex].map { .tab($0) } + [.spacer] + draggedItems[tempIndex...].map { .tab($0) }
+            var mapped: [TabOrSpacer] = draggedItems.map { .tab($0) }
+            if let dropTargetIndex {
+                mapped.insert(.spacer, at: dropTargetIndex)
+            }
+            return mapped
         }
 
-        @State var disableGesture: Tab.ID?
 
         var body: some View {
             let layout = position == .top
@@ -64,16 +76,21 @@ extension TabViewTabBar {
                 ForEach(Array(tabs.enumerated()), id: \.element) { index, icon in
                     switch icon {
                     case .tab(let icon):
-                        makeIcon(tab: icon, size: size)
+                        IconView(tab: icon, size: size, selection: $selection, isVertical: position == .side)
                             .offset(
                                 x: position == .top && draggedItemOffset.1 == icon.id ? draggedItemOffset.0 : 0,
                                 y: position == .side && draggedItemOffset.1 == icon.id ? draggedItemOffset.0 : 0
                             )
                             .background(makeTabItemGeometryReader(tab: icon))
-                            .highPriorityGesture(icon.onMove == nil || disableGesture == icon.id ? nil : makeAreaTabDragGesture(index: index, tab: icon))
+                            .highPriorityGesture(
+                                icon.onMove == nil || disableLocalDragGestureForTab == icon.id ? nil : tabDragGesture(
+                                    index: index,
+                                    tab: icon
+                                )
+                            )
                     case .spacer:
                         Rectangle()
-                            .frame(width: 20)
+                            .frame(width: 20, height: 20)
                             .hidden()
                     }
                 }
@@ -81,19 +98,26 @@ extension TabViewTabBar {
             .coordinateSpace(name: "TabBarItems")
             .animation(.easeInOut, value: draggedItems)
             .onDrop(
-                of: icons[0].onInsert?.supportedContentTypes ?? [],
-                delegate: Delegate(tabwidths: icons.map { tabWidth[$0] }, onInsert: icons[0].onInsert, tempIndex: $tempIndex)
+                of: items[0].onInsert?.supportedContentTypes ?? [],
+                delegate: Delegate(
+                    tabwidths: items.map { tabWidth[$0] },
+                    onInsert: items[0].onInsert,
+                    tempIndex: $dropTargetIndex
+                )
             )
         }
 
         func dynamicViewCount(with id: Int) -> Int {
-            icons.filter { $0.dynamicViewID == id }.count
+            items.filter { $0.dynamicViewID == id }.count
         }
 
-        private func makeAreaTabDragGesture(index: Int, tab: Tab) -> some Gesture {
-            return DragGesture(minimumDistance: 2, coordinateSpace: .named("TabBarItems"))
-                .onChanged({ value in
-                    let signedTranslation = position == .top ? value.translation.width : value.translation.height
+        private func tabDragGesture(index: Int, tab: Tab) -> some Gesture {
+            DragGesture(minimumDistance: 2, coordinateSpace: .named("TabBarItems"))
+                .onChanged { value in
+                    let (signedTranslation, perpendicularSignedTranslation) = position == .top ?
+                    (value.translation.width, value.translation.height) :
+                    (value.translation.height, value.translation.width)
+
                     var translation = abs(signedTranslation)
                     let originalIndex = itemOffset?.0 ?? index
                     var endIndex = originalIndex
@@ -120,18 +144,18 @@ extension TabViewTabBar {
                         draggedItemOffset = (signedTranslation, tab.id)
                     }
 
-                    if abs(value.translation.height) > 50 {
-                        disableGesture = tab.id
+                    if abs(perpendicularSignedTranslation) > 50 {
+                        disableLocalDragGestureForTab = tab.id
 
                         self.itemOffset = nil
                         withAnimation(.spring) {
                             draggedItemOffset = (.zero, nil)
                         }
                     }
-                })
-                .onEnded({ _ in
+                }
+                .onEnded { _ in
                     if let itemOffset, let dynamicViewID = tab.dynamicViewID {
-                        let firstindex = icons.firstIndex { $0.dynamicViewID == tab.dynamicViewID } ?? 0
+                        let firstindex = items.firstIndex { $0.dynamicViewID == tab.dynamicViewID } ?? 0
                         var toIndex = itemOffset.1 - firstindex
                         toIndex = max(0, min(toIndex, dynamicViewCount(with: dynamicViewID)))
                         tab.onMove?(IndexSet(integer: itemOffset.0 - firstindex), toIndex)
@@ -140,40 +164,7 @@ extension TabViewTabBar {
                     withAnimation(.spring) {
                         draggedItemOffset = (.zero, nil)
                     }
-                })
-        }
-
-        private func makeIcon(
-            tab: Tab,
-            scale: Image.Scale = .medium,
-            size: CGSize
-        ) -> some View {
-            Button {
-                if let tag = tab.tag {
-                    selection = tag
                 }
-            } label: {
-                tab.image
-                    .accessibilityLabel(tab.title ?? "")
-                    .font(.system(size: 12.5))
-                    .symbolVariant(tab.tag == selection ? .fill : .none)
-                    .frame(
-                        width: position == .side ? 40 : 24,
-                        height: position == .side ? 28 : size.height,
-                        alignment: .center
-                    )
-                    .help(tab.title ?? "")
-                    .draggable {
-                        print("Started dragging")
-                        if let offset = tab.dynamicViewContentOffset {
-                            withAnimation(.spring) {
-                                tab.onDelete?(IndexSet(integer: offset))
-                            }
-                        }
-                        return tab.title ?? ""
-                    }
-            }
-            .buttonStyle(.icon(isActive: tab.tag == selection, size: CGFloat?.none))
         }
 
         private func makeTabItemGeometryReader(tab: Tab) -> some View {

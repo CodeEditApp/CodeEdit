@@ -98,7 +98,7 @@ struct TabViewTabBar<TabID: Hashable>: View {
                 case .single(let icon):
                     IconView(tab: icon, size: size, selection: $selection, isVertical: position == .side)
                 case .multi(_, let icons):
-                    MultiView(icons: icons, size: size, position: position, selection: $selection)
+                    MultiView(items: icons, size: size, position: position, selection: $selection)
                 }
             }
 

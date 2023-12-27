@@ -30,7 +30,6 @@ extension TabViewTabBar {
                     )
                     .help(tab.title ?? "")
                     .draggable { () -> String in
-                        print("Started dragging")
                         if let offset = tab.dynamicViewContentOffset {
                             withAnimation(.spring) {
                                 tab.onDelete?(IndexSet(integer: offset))
