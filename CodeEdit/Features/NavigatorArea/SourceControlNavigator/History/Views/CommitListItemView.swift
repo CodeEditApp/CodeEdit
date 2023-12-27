@@ -31,14 +31,14 @@ struct CommitListItemView: View {
             Spacer()
             VStack(alignment: .trailing, spacing: 5) {
                 Text(commit.hash)
-                    .font(.system(size: 10))
+                    .font(.system(size: 10, design: .monospaced))
                     .background(
                         RoundedRectangle(cornerRadius: 3)
-                            .padding(.trailing, -5)
-                            .padding(.leading, -5)
+                            .padding(.vertical, -1)
+                            .padding(.horizontal, -2.5)
                             .foregroundColor(Color(nsColor: .quaternaryLabelColor))
                     )
-                    .padding(.trailing, 5)
+                    .padding(.trailing, 2.5)
                 Text(commit.date.relativeStringToNow())
                     .font(.system(size: 11))
                     .foregroundColor(.secondary)

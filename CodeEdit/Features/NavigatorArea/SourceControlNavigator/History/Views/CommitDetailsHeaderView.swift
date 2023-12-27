@@ -32,7 +32,7 @@ struct CommitDetailsHeaderView: View {
         if commit.committerEmail == "noreply@github.com" {
             return ""
         } else if commit.authorEmail != commit.committerEmail {
-            return "Co-authored-by: \(commit.committer)\n<\(commit.committerEmail)>"
+            return "Co-authored by: \(commit.committer)\n<\(commit.committerEmail)>"
         }
         return ""
     }
@@ -88,7 +88,6 @@ struct CommitDetailsHeaderView: View {
                 Spacer()
 
                 Text(commit.hash)
-//                    .font(.system(size: 12))
                     .font(.subheadline)
                     .fontDesign(.monospaced)
                     .background(
