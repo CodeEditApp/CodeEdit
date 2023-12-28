@@ -8,7 +8,7 @@
 import SwiftUI
 import Engine
 
-extension BasicTabView {
+extension ReorderableTabView {
     struct InternalBasicTabView: NSViewControllerRepresentable {
 
         let children: AnyVariadicView

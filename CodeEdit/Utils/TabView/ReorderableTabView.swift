@@ -9,7 +9,7 @@ import SwiftUI
 import Engine
 import UniformTypeIdentifiers
 
-struct BasicTabView<Content: View, Selected: Hashable>: View {
+struct ReorderableTabView<Content: View, Selected: Hashable>: View {
     @Binding var selection: Selected
 
     var tabPosition: Edge = .top

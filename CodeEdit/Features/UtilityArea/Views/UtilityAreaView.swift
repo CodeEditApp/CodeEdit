@@ -16,7 +16,7 @@ struct UtilityAreaView: View {
     @State var selection: UtilityAreaTab = .terminal
 
     var body: some View {
-        BasicTabView(selection: $selection, tabPosition: .leading) {
+        ReorderableTabView(selection: $selection, tabPosition: .leading) {
             ForEach(model.tabItems) {
                 $0
                     .tabIcon(Image(systemName: $0.systemImage))

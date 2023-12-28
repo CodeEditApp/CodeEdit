@@ -50,7 +50,7 @@ struct NavigatorAreaView: View {
             } else {
                 VStack(spacing: .zero) {
                     Divider()
-                    BasicTabView(selection: $viewModel.selectedTab, tabPosition: sidebarPositionEdge) {
+                    ReorderableTabView(selection: $viewModel.selectedTab, tabPosition: sidebarPositionEdge) {
                         ForEach(viewModel.tabItems) { item in
                             item
                                 .tabTitle(item.title)

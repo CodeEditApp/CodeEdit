@@ -9,7 +9,7 @@ import SwiftUI
 import CodeEditKit
 import ExtensionFoundation
 
-enum NavigatorTab: AreaTab, Transferable {
+enum NavigatorTab: Identifiable, Hashable, View, Transferable {
     static var transferRepresentation: some TransferRepresentation {
         ProxyRepresentation(exporting: \.title) { transferable in
             switch transferable {
