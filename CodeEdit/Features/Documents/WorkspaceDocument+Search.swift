@@ -156,15 +156,11 @@ extension WorkspaceDocument {
 
             let searchStream = await asyncController.search(query: searchQuery, 20)
             for try await result in searchStream {
-                let urls: [(URL, Float)] = result.results.map {
-                    ($0.url, $0.score)
-                }
-
-                for (url, score) in urls {
+                for file in result.results {
                     evaluateSearchQueue.async(group: evaluateResultGroup) {
                         evaluateResultGroup.enter()
                         Task {
-                            var newResult = SearchResultModel(file: CEWorkspaceFile(url: url), score: score)
+                            var newResult = SearchResultModel(file: CEWorkspaceFile(url: file.url), score: file.score)
                             await self.evaluateFile(query: query.lowercased(), searchResult: &newResult)
 
                             // Check if the new result has any line matches.
@@ -382,6 +378,204 @@ extension WorkspaceDocument {
                 self.searchResult.removeAll()
                 self.searchResultsCount = 0
                 self.searchResultsFileCount = 0
+            }
+        }
+
+        /// Performs a search and replace operation in a collection of files based on the provided query.
+        ///
+        /// - Parameters:
+        ///   - query: The search query to look for in the files.
+        ///   - replacingTerm: The term to replace the matched query with.
+        ///
+        /// - Important: This function relies on an indexer and assumes that it has been previously set. 
+        /// If the indexer is not available, the function will return early.
+        func searchAndReplace(query: String, replacingTerm: String) async {
+            clearResults()
+            let searchQuery = getSearchTerm(query)
+            guard let indexer = indexer else {
+                return
+            }
+
+            let asyncController = SearchIndexer.AsyncManager(index: indexer)
+
+            var replaceOptions = NSString.CompareOptions()
+            if selectedMode.second == .RegularExpression {
+                replaceOptions.insert(.regularExpression)
+            }
+            if ignoreCase {
+                replaceOptions.insert(.caseInsensitive)
+            }
+
+            let searchStream = await asyncController.search(query: searchQuery, 20)
+            for try await result in searchStream {
+                for file in result.results {
+                    // Considerration: Read file line by line to avoid loading the entire file into memory;
+                    guard let fileContent = try? String(contentsOf: file.url, encoding: .utf8) else {
+                        continue
+                    }
+                    let updatedContent = fileContent.replacingOccurrences(
+                        of: query,
+                        with: replacingTerm,
+                        options: replaceOptions
+                    )
+
+                    do {
+                        try updatedContent.write(to: file.url, atomically: true, encoding: .utf8)
+                    } catch {
+                        fatalError("An error occured: \(error)")
+                        // TODO: Add error handling
+                    }
+                }
+            }
+        }
+
+        func searchAndReplace2(query: String, replacingTerm: String) async throws {
+            clearResults()
+            let searchQuery = getSearchTerm(query)
+            guard let indexer = indexer else {
+                return
+            }
+
+            let asyncController = SearchIndexer.AsyncManager(index: indexer)
+
+            var replaceOptions: NSString.CompareOptions = []
+            if selectedMode.second == .RegularExpression {
+                replaceOptions.insert(.regularExpression)
+            }
+            if ignoreCase {
+                replaceOptions.insert(.caseInsensitive)
+            }
+
+            let searchStream = await asyncController.search(query: searchQuery, 20)
+            for try await result in searchStream {
+                for file in result.results {
+                    let fileHandle = try FileHandle(forReadingFrom: file.url)
+                    let data = fileHandle.readDataToEndOfFile()
+                    fileHandle.closeFile()
+
+                    guard let fileContent = String(data: data, encoding: .utf8) else {
+                        continue
+                    }
+
+                    let updatedContent = fileContent.replacingOccurrences(
+                        of: query,
+                        with: replacingTerm,
+                        options: replaceOptions
+                    )
+
+                    if let data = updatedContent.data(using: .utf8) {
+                        let writeHandle = try FileHandle(forWritingTo: file.url)
+                        writeHandle.write(data)
+                        writeHandle.closeFile()
+                    } else {
+                        throw NSError(domain: "Unable to convert updated content to data", code: 1, userInfo: nil)
+                    }
+                }
+            }
+        }
+
+        enum SearchAndReplaceError: Error {
+            case unableToConvertStringToData
+        }
+
+        func searchAndReplace3(query: String, replacingTerm: String) async throws {
+            clearResults()
+            let searchQuery = getSearchTerm(query)
+            guard let indexer = indexer else {
+                return
+            }
+
+            let asyncController = SearchIndexer.AsyncManager(index: indexer)
+
+            let searchStream = await asyncController.search(query: searchQuery, 20)
+            for try await result in searchStream {
+                await withThrowingTaskGroup(of: Void.self) { group in
+                    for file in result.results {
+                        group.addTask {
+                            var replaceOptions: NSString.CompareOptions = []
+                            if self.selectedMode.second == .RegularExpression {
+                                replaceOptions.insert(.regularExpression)
+                            }
+                            if self.ignoreCase {
+                                replaceOptions.insert(.caseInsensitive)
+                            }
+                            try await self.processFile(
+                                file: file.url,
+                                query: query,
+                                replacingTerm: replacingTerm,
+                                options: replaceOptions
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
+        func processFile(
+            file: URL,
+            query: String,
+            replacingTerm: String,
+            options: NSString.CompareOptions
+        ) async throws {
+            let fileContent = try String(contentsOf: file, encoding: .utf8)
+            let updatedContent = fileContent.replacingOccurrences(
+                of: query,
+                with: replacingTerm,
+                options: options
+            )
+
+            guard let data = updatedContent.data(using: .utf8) else {
+                throw SearchAndReplaceError.unableToConvertStringToData
+            }
+
+            try data.write(to: file, options: .atomic)
+        }
+
+        /// Replaces a specified range of text within a file with a new string.
+        ///
+        /// - Parameters:
+        ///   - file: The URL of the file to be modified.
+        ///   - searchTerm: The string to be replaced within the specified range.
+        ///   - replacingTerm: The string to replace the specified searchTerm.
+        ///   - keywordRange: The range within which the replacement should occur.
+        ///
+        /// - Note: This function  can be utilized for two specific use cases:
+        ///         1. To replace a particular occurrence of a string within a file, 
+        ///         provide the range of the keyword to be replaced.
+        ///         2. To replace all occurrences of the string within the file, 
+        ///         pass the start and end index covering the entire range.
+        ///
+        func replaceRange(
+            file: URL,
+            searchTerm: String,
+            replacingTerm: String,
+            keywordRange: Range<String.Index>
+        ) {
+            guard let fileContent = try? String(contentsOf: file, encoding: .utf8) else {
+                // TODO: Add error handling
+                return
+            }
+
+            var replaceOptions = NSString.CompareOptions()
+            if selectedMode.second == .RegularExpression {
+                replaceOptions = [.regularExpression]
+            }
+            if ignoreCase {
+                replaceOptions = [.caseInsensitive]
+            }
+
+            let updatedContent = fileContent.replacingOccurrences(
+                of: searchTerm,
+                with: replacingTerm,
+                options: replaceOptions,
+                range: keywordRange
+            )
+
+            do {
+                try updatedContent.write(to: file, atomically: true, encoding: .utf8)
+            } catch {
+                fatalError("An error occured: \(error)")
+                // TODO: Add error handling
             }
         }
     }

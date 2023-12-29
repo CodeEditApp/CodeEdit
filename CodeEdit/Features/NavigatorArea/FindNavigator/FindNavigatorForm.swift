@@ -258,7 +258,13 @@ struct FindNavigatorForm: View {
             }
             if selectedMode[0] == SearchModeModel.Replace {
                 Button {
-                    // replace all
+                    Task {
+                        let startTime = Date()
+//                        await state.searchAndReplace(query: searchText, replacingTerm: replaceText)
+//                        try? await state.searchAndReplace2(query: searchText, replacingTerm: replaceText)
+                        try? await state.searchAndReplace3(query: searchText, replacingTerm: replaceText)
+                        print(Date().timeIntervalSince(startTime))
+                    }
                 } label: {
                     Text("Replace All")
                         .frame(maxWidth: .infinity)
