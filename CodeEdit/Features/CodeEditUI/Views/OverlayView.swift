@@ -119,6 +119,7 @@ struct OverlayView<RowView: View, PreviewView: View, Option: Identifiable & Hash
                         } else {
                             if let selection, let previewViewBuilder {
                                 previewViewBuilder(selection)
+                                    .clipped()
                                     .frame(maxWidth: .infinity)
                                     .transition(.move(edge: .trailing))
                             } else {
