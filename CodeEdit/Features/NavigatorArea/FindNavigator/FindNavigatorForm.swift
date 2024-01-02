@@ -260,9 +260,7 @@ struct FindNavigatorForm: View {
                 Button {
                     Task {
                         let startTime = Date()
-//                        await state.searchAndReplace(query: searchText, replacingTerm: replaceText)
-//                        try? await state.searchAndReplace2(query: searchText, replacingTerm: replaceText)
-                        try? await state.searchAndReplace3(query: searchText, replacingTerm: replaceText)
+                        try? await state.findAndReplace(query: searchText, replacingTerm: replaceText)
                         print(Date().timeIntervalSince(startTime))
                     }
                 } label: {
