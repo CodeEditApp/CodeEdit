@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import AppKit
 
 extension WorkspaceDocument.SearchState {
     /// Performs a search and replace operation in a collection of files based on the provided query.
@@ -37,7 +38,16 @@ extension WorkspaceDocument.SearchState {
                                 replacingTerm: replacingTerm
                             )
                         } catch {
-                            // TODO: Add error Handling
+                            await MainActor.run {
+                                let alert = NSAlert()
+                                alert.messageText = "Error"
+                                alert.informativeText = """
+                                    An error occurred while replacing: \(error.localizedDescription)
+                                """
+                                alert.alertStyle = .critical
+                                alert.addButton(withTitle: "OK")
+                                alert.runModal()
+                            }
                         }
                     }
                 }
@@ -90,7 +100,13 @@ extension WorkspaceDocument.SearchState {
         keywordRange: Range<String.Index>
     ) {
         guard let fileContent = try? String(contentsOf: file, encoding: .utf8) else {
-            // TODO: Add error handling
+            let alert = NSAlert()
+            alert.messageText = "Error"
+            alert.informativeText = "An error occured while reading file contents of: \(file)"
+            alert.alertStyle = .critical
+            alert.addButton(withTitle: "OK")
+            alert.runModal()
+
             return
         }
 
@@ -112,8 +128,12 @@ extension WorkspaceDocument.SearchState {
         do {
             try updatedContent.write(to: file, atomically: true, encoding: .utf8)
         } catch {
-            fatalError("An error occured: \(error)")
-            // TODO: Add error handling
+            let alert = NSAlert()
+            alert.messageText = "Error"
+            alert.informativeText = "An error occurred while writing to: \(error.localizedDescription)"
+            alert.alertStyle = .critical
+            alert.addButton(withTitle: "OK")
+            alert.runModal()
         }
     }
 }
