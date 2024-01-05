@@ -29,7 +29,10 @@ struct EditorView: View {
     var body: some View {
         VStack {
             if let selected = editor.selectedTab {
-                WorkspaceCodeFileView(file: selected.file, textViewCoordinators: [selected])
+                WorkspaceCodeFileView(
+                    file: selected.file,
+                    textViewCoordinators: [selected.rangeTranslator].compactMap({ $0 })
+                )
                     .focusedObject(editor)
                     .transformEnvironment(\.edgeInsets) { insets in
                         insets.top += editorInsetAmount

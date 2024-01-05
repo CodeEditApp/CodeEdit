@@ -27,7 +27,7 @@ struct StatusBarCursorLocationLabel: View {
     /// - Parameter range: The range to query.
     /// - Returns: The number of lines in the range.
     func getLines(_ range: NSRange) -> Int {
-        return tab?.linesInRange(range) ?? 0
+        return tab?.rangeTranslator?.linesInRange(range) ?? 0
     }
 
     /// Create a label string for cursor positions.
@@ -65,7 +65,7 @@ struct StatusBarCursorLocationLabel: View {
                         EmptyView()
                     }
                 }
-                .onReceive(currentTab.$cursorPositions) { val in
+                .onReceive(currentTab.cursorPositions) { val in
                     cursorPositions = val
                 }
             } else {

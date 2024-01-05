@@ -13,16 +13,31 @@ import CodeEditSourceEditor
 
 /// A single instance of an editor in a group with a published ``EditorInstance/cursorPositions`` variable to publish
 /// the user's current location in a file.
-class EditorInstance: ObservableObject, Hashable {
-    let file: CEWorkspaceFile
-    @Published var cursorPositions: [CursorPosition]
+class EditorInstance: Hashable {
+    // Public
 
-    public var rangeTranslator: RangeTranslator?
+    /// The file presented in this editor instance.
+    let file: CEWorkspaceFile
+
+    /// A publisher for the user's current location in a file.
+    var cursorPositions: AnyPublisher<[CursorPosition], Never> {
+        cursorSubject.eraseToAnyPublisher()
+    }
+
+    // Public TextViewCoordinator APIs
+
+    var rangeTranslator: RangeTranslator?
+
+    // Internal Combine subjects
+
+    private let cursorSubject = CurrentValueSubject<[CursorPosition], Never>([])
+
+    // MARK: - Init, Hashable, Equatable
 
     init(file: CEWorkspaceFile, cursorPositions: [CursorPosition] = []) {
         self.file = file
-        self.cursorPositions = cursorPositions
-        self.rangeTranslator = RangeTranslator(cursorPositions: $cursorPositions.eraseToAnyPublisher())
+        self.cursorSubject.send(cursorPositions)
+        self.rangeTranslator = RangeTranslator(cursorSubject: cursorSubject)
     }
 
     func hash(into hasher: inout Hasher) {
@@ -33,12 +48,28 @@ class EditorInstance: ObservableObject, Hashable {
         lhs.file == rhs.file
     }
 
+    // MARK: - RangeTranslator
+
+    /// Translates ranges (eg: from a cursor position) to other information like the number of lines in a range.
     class RangeTranslator: TextViewCoordinator {
         private weak var textViewController: TextViewController?
-        private var cursorPositions: AnyPublisher<[CursorPosition], Never>
+        private var cursorSubject: CurrentValueSubject<[CursorPosition], Never>
 
-        init(cursorPositions: AnyPublisher<[CursorPosition], Never>) {
-            self.cursorPositions = cursorPositions
+        init(cursorSubject: CurrentValueSubject<[CursorPosition], Never>) {
+            self.cursorSubject = cursorSubject
+        }
+
+        func textViewDidChangeSelection(controller: TextViewController, newPositions: [CursorPosition]) {
+            self.cursorSubject.send(controller.cursorPositions)
+        }
+
+        func prepareCoordinator(controller: TextViewController) {
+            self.textViewController = controller
+            self.cursorSubject.send(controller.cursorPositions)
+        }
+
+        func destroy() {
+            self.textViewController = nil
         }
 
         /// Returns the lines contained in the given range.
@@ -56,14 +87,6 @@ class EditorInstance: ObservableObject, Hashable {
                 return 0
             }
             return (endTextLine.index - startTextLine.index) + 1
-        }
-
-        func prepareCoordinator(controller: TextViewController) {
-            self.textViewController = controller
-        }
-
-        func destroy() {
-            self.textViewController = nil
         }
     }
 }

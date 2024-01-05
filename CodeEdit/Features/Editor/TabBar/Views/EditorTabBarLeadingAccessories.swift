@@ -77,7 +77,7 @@ struct EditorTabBarLeadingAccessories: View {
                         } label: {
                             HStack {
                                 tab.file.icon
-                                Text(tab.name)
+                                Text(tab.file.name)
                             }
                         }
                     }
@@ -105,8 +105,8 @@ struct EditorTabBarLeadingAccessories: View {
                             editor.historyOffset -= index + 1
                         } label: {
                             HStack {
-                                tab.icon
-                                Text(tab.name)
+                                tab.file.icon
+                                Text(tab.file.name)
                             }
                         }
                     }
