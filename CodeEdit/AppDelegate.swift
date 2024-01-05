@@ -103,7 +103,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                         return
                     }
                     if line > 0, let document = document as? CodeFileDocument {
-                        document.cursorPositions = [CursorPosition(line: line, column: column > 0 ? column : 1)]
+                        document.openOptions = CodeFileDocument.OpenOptions(
+                            cursorPositions: [CursorPosition(line: line, column: column > 0 ? column : 1)]
+                        )
                     }
                 }
         }

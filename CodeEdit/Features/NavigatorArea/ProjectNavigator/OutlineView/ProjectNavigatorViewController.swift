@@ -92,7 +92,7 @@ final class ProjectNavigatorViewController: NSViewController {
     /// Forces to reveal the selected file through the command regardless of the auto reveal setting
     @objc
     func revealFile(_ sender: Any) {
-        updateSelection(itemID: workspace?.editorManager.activeEditor.selectedTab?.id, forcesReveal: true)
+        updateSelection(itemID: workspace?.editorManager.activeEditor.selectedTab?.file.id, forcesReveal: true)
     }
 
     /// Updates the selection of the ``outlineView`` whenever it changes.
@@ -120,7 +120,7 @@ final class ProjectNavigatorViewController: NSViewController {
                 outlineView.expandItem(item)
             }
         } else {
-            workspace?.editorManager.activeEditor.openTab(item: item, asTemporary: false)
+            workspace?.editorManager.activeEditor.openTab(file: item, asTemporary: false)
         }
     }
 
@@ -284,7 +284,7 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
 
         if !item.isFolder && shouldSendSelectionUpdate {
             DispatchQueue.main.async {
-                self.workspace?.editorManager.activeEditor.openTab(item: item, asTemporary: true)
+                self.workspace?.editorManager.activeEditor.openTab(file: item, asTemporary: true)
             }
         }
     }
@@ -295,7 +295,7 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
 
     func outlineViewItemDidExpand(_ notification: Notification) {
         guard
-            let id = workspace?.editorManager.activeEditor.selectedTab?.id,
+            let id = workspace?.editorManager.activeEditor.selectedTab?.file.id,
             let item = workspace?.workspaceFileManager?.getFile(id, createIfNotFound: true)
         else {
             return

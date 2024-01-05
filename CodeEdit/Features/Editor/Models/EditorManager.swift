@@ -55,7 +55,7 @@ class EditorManager: ObservableObject {
     ///   - editor: The editor to add the tab to. If nil, it is added to the active tab group.
     func openTab(item: CEWorkspaceFile, in editor: Editor? = nil) {
         let editor = editor ?? activeEditor
-        editor.openTab(item: item)
+        editor.openTab(file: item)
     }
 
     /// bind active tap group to listen to file selection changes.
@@ -64,7 +64,7 @@ class EditorManager: ObservableObject {
         cancellable = nil
         cancellable = activeEditor.$selectedTab
             .sink { [weak self] tab in
-                self?.tabBarTabIdSubject.send(tab?.id)
+                self?.tabBarTabIdSubject.send(tab?.file.id)
             }
     }
 
@@ -123,9 +123,17 @@ class EditorManager: ObservableObject {
     ///   - data: The tab group to fix.
     ///   - fileManager: The file manager to use to map files.a
     private func fixEditor(_ editor: Editor, fileManager: CEWorkspaceFileManager) {
-        editor.tabs = OrderedSet(editor.tabs.compactMap { fileManager.getFile($0.url.path, createIfNotFound: true) })
-        if let selectedTab = editor.selectedTab {
-            editor.selectedTab = fileManager.getFile(selectedTab.url.path, createIfNotFound: true)
+        editor.tabs = OrderedSet(
+            editor
+                .tabs
+                .compactMap({ fileManager.getFile($0.file.url.path, createIfNotFound: true) })
+                .map({ EditorInstance(file: $0) })
+        )
+        if let selectedTab = editor.selectedTab,
+            let file = fileManager.getFile(selectedTab.file.url.path, createIfNotFound: true) {
+            editor.selectedTab = EditorInstance(file: file)
+        } else {
+            editor.selectedTab = nil
         }
     }
 

@@ -16,6 +16,12 @@ import Combine
 struct CodeFileView: View {
     @ObservedObject private var codeFile: CodeFileDocument
 
+    /// The current cursor positions in the view
+    @State private var cursorPositions: [CursorPosition] = []
+
+    /// Any coordinators passed to the view.
+    private var textViewCoordinators: [TextViewCoordinator]
+
     @AppSettings(\.textEditing.defaultTabWidth)
     var defaultTabWidth
     @AppSettings(\.textEditing.indentOption)
@@ -50,9 +56,15 @@ struct CodeFileView: View {
 
     private let undoManager = CEUndoManager()
 
-    init(codeFile: CodeFileDocument, isEditable: Bool = true) {
+    init(codeFile: CodeFileDocument, textViewCoordinators: [TextViewCoordinator] = [], isEditable: Bool = true) {
         self.codeFile = codeFile
+        self.textViewCoordinators = textViewCoordinators
         self.isEditable = isEditable
+
+        if let openOptions = codeFile.openOptions {
+            codeFile.openOptions = nil
+            self.cursorPositions = openOptions.cursorPositions
+        }
 
         codeFile
             .$content
@@ -108,14 +120,14 @@ struct CodeFileView: View {
             indentOption: (codeFile.indentOption ?? indentOption).textViewOption(),
             lineHeight: lineHeightMultiple,
             wrapLines: codeFile.wrapLines ?? wrapLinesToEditorWidth,
-            cursorPositions: $codeFile.cursorPositions,
+            cursorPositions: $cursorPositions,
             useThemeBackground: useThemeBackground,
             contentInsets: edgeInsets.nsEdgeInsets,
             isEditable: isEditable,
             letterSpacing: letterSpacing,
             bracketPairHighlight: bracketPairHighlight,
             undoManager: undoManager,
-            coordinators: [codeFile.rangeTranslator]
+            coordinators: textViewCoordinators
         )
 
         .id(codeFile.fileURL)

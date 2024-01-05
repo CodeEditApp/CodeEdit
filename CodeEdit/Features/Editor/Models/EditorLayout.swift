@@ -17,7 +17,7 @@ enum EditorLayout {
     func closeAllTabs(of file: CEWorkspaceFile) {
         switch self {
         case .one(let editor):
-            editor.tabs.remove(file)
+            editor.removeTab(file)
         case .vertical(let data), .horizontal(let data):
             data.editorLayouts.forEach {
                 $0.closeAllTabs(of: file)
@@ -48,7 +48,7 @@ enum EditorLayout {
     func gatherOpenFiles() -> Set<CEWorkspaceFile> {
         switch self {
         case .one(let editor):
-            return Set(editor.tabs)
+            return Set(editor.tabs.map { $0.file })
         case .vertical(let data), .horizontal(let data):
             return data.editorLayouts.map { $0.gatherOpenFiles() }.reduce(into: []) { $0.formUnion($1) }
         }

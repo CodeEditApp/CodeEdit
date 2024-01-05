@@ -37,7 +37,7 @@ struct FileInspectorView: View {
     }
 
     func updateInspectorSource() {
-        file = editorManager.activeEditor.selectedTab
+        file = editorManager.activeEditor.selectedTab?.file
         fileName = file?.name ?? ""
         language = file?.fileDocument?.language
         updateFileOptions()

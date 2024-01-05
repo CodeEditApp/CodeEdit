@@ -76,7 +76,7 @@ struct EditorTabBarLeadingAccessories: View {
                             editor.historyOffset += index + 1
                         } label: {
                             HStack {
-                                tab.icon
+                                tab.file.icon
                                 Text(tab.name)
                             }
                         }
