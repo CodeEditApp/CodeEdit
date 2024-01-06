@@ -15,7 +15,7 @@ struct SettingsView: View {
     private var colorScheme
 
     /// Variables for the selected Page, the current search text and software updater
-    @State private var selectedPage: SettingsPage = SettingsPage(.general)
+    @State private var selectedPage: SettingsPage = Self.pages[0].page
     @State private var searchText: String = ""
 
     @Environment(\.presentationMode)
@@ -136,13 +136,8 @@ struct SettingsView: View {
                     }
                 }
             }
+            .searchable(text: $searchText, placement: .sidebar, prompt: "Search")
             .navigationSplitViewColumnWidth(215)
-            .safeAreaInset(edge: .top, spacing: 0) {
-                List {}
-                    .frame(height: 35)
-                    .searchable(text: $searchText, placement: .sidebar, prompt: "Search")
-                    .scrollDisabled(true)
-            }
         } detail: {
             Group {
                 switch selectedPage.name {
