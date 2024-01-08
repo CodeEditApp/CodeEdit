@@ -5,9 +5,19 @@ on:
   workflow_call:
 
 jobs:
+  update_release_draft:
+    runs-on: ubuntu-latest
+    outputs:
+      release_draft: ${{ steps.release.outputs.body }}
+    steps:
+      - id: release
+        uses: release-drafter/release-drafter@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   pre-release:
     name: Build and Publish Pre-release
     runs-on: [self-hosted, macOS]
+    needs: [update_release_draft]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -117,7 +127,9 @@ jobs:
           SPARKLE_LINK: "https://github.com/CodeEditApp/CodeEdit"
           APP_VERSION: ${{ env.APP_VERSION }}
           APP_BUILD: ${{ env.APP_BUILD }}
+          RELEASE_NOTE: ${{needs.update_release_draft.outputs.release_draft}}
         run: |
+          echo "${{ env.RELEASE_NOTE }}"
           SPARKLE_BIN="$RUNNER_TEMP/DerivedData/SourcePackages/artifacts/sparkle/Sparkle/bin"
           SPARKLE_ARCHIVE="$RUNNER_TEMP/Sparkle_Archive"
           echo -n "$SPARKLE_KEY" | tee "$RUNNER_TEMP/sparkle_key"

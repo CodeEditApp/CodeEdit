@@ -8,7 +8,10 @@ on:
 jobs:
   update_release_draft:
     runs-on: ubuntu-latest
+    outputs:
+      release_draft: ${{ steps.release.outputs.body }}
     steps:
-      - uses: release-drafter/release-drafter@v5
+      - id: release
+        uses: release-drafter/release-drafter@v5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
