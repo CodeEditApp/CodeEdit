@@ -25,32 +25,35 @@ struct CommitDetailsView: View {
     }
 
     var body: some View {
-        VStack(spacing: 0) {
-            Button {
-                commit = nil
-            } label: {
-                HStack(spacing: 2.5) {
+        VStack(alignment: .leading, spacing: 0) {
+            HStack {
+                Button {
+                    commit = nil
+                } label: {
                     Image(systemName: "chevron.backward")
-                        .foregroundStyle(.secondary)
-                    Text("History")
-                        .font(.subheadline)
-                    Spacer()
                 }
-                .padding(.horizontal, 10)
-                .padding(.vertical, 5)
-                .contentShape(Rectangle())
+                .buttonStyle(SidebarButtonStyle())
+                Text("Commit Details")
+                    .font(.system(size: 13, weight: .bold))
             }
-            .buttonStyle(.plain)
+            .padding(10)
             Divider()
+
             if let commit = commit {
                 CommitDetailsHeaderView(commit: commit)
-                    .padding(10)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 16)
                 Divider()
+
                 if !commitChanges.isEmpty {
-                    List($commitChanges, id: \.self, selection: $selection) { $file in
-                        CommitChangedFileListItemView(changedFile: $file)
-                            .listRowSeparator(.hidden)
-                            .padding(.vertical, -1)
+                    List(selection: $selection) {
+                                ForEach($commitChanges, id: \.self) { $file in
+                                    CommitChangedFileListItemView(changedFile: $file)
+                                        .fixedSize(horizontal: false, vertical: true)
+                                        .listRowSeparator(.hidden)
+                                        .padding(.vertical, -1)
+                                }
+
                     }
                     .environment(\.defaultMinListRowHeight, 22)
                 } else {
@@ -65,5 +68,47 @@ struct CommitDetailsView: View {
                 try await updateCommitChanges()
             }
         }
+    }
+}
+
+struct SidebarButtonStyle: ButtonStyle {
+    var isActive: Bool = false
+
+    @Environment(\.colorScheme)
+    private var colorScheme
+
+    @Environment(\.controlActiveState)
+    private var activeState
+
+    @State var isHovering: Bool = false
+
+    private var textOpacity: Double {
+        return activeState != .inactive ? 1 : 0.3
+    }
+
+    func makeBody(configuration: Self.Configuration) -> some View {
+        configuration.label
+            .font(.body)
+            .foregroundColor(configuration.isPressed ? .primary : .secondary)
+            .opacity(textOpacity)
+            .frame(height: 20)
+            .padding(.horizontal, 5)
+            .background(
+                RoundedRectangle(cornerSize: CGSize(width: 5, height: 5))
+                    .strokeBorder(.separator, lineWidth: 1)
+                    .background(
+                        RoundedRectangle(cornerSize: CGSize(width: 4, height: 4))
+                            .fill(
+                                Color(nsColor: colorScheme == .dark ? .white : .black)
+                                    .opacity(configuration.isPressed ? 0.10 : isHovering ? 0.05 : 0)
+                            )
+                            .padding(1)
+                    )
+                    .opacity(activeState != .inactive ? 1 : 0.3)
+
+            )
+            .onHover { hover in
+                isHovering = hover
+            }
     }
 }
