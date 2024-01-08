@@ -11,7 +11,7 @@ import SnapshotTesting
 import SwiftUI
 import XCTest
 
-final class EditorLayoutViewUITests: XCTestCase {
+final class EditorLayoutViewTests: XCTestCase {
     struct FocusWrapper: View {
         @FocusState var focus: Editor?
         var editorView: (FocusState<Editor?>.Binding) -> EditorLayoutView
@@ -21,6 +21,7 @@ final class EditorLayoutViewUITests: XCTestCase {
         }
     }
 
+    private var app: XCUIApplication!
     private var directory: URL!
     private var files: [CEWorkspaceFile] = []
     private var mockWorkspace: WorkspaceDocument!
@@ -75,7 +76,7 @@ final class EditorLayoutViewUITests: XCTestCase {
 
     // MARK: - Split Editor
 
-    func testSplitEditorHorizontalLight() {
+    func testSplitEditorHorizontal() {
         let editorLeft = Editor(files: [], selectedTab: nil)
         let editorRight = Editor(files: [], selectedTab: nil)
         let layout: EditorLayout = .horizontal(.init(.horizontal, editorLayouts: [.one(editorLeft), .one(editorRight)]))
@@ -88,28 +89,14 @@ final class EditorLayoutViewUITests: XCTestCase {
 
         let hosting = NSHostingView(rootView: view)
         hosting.appearance = .init(named: .aqua)
-        hosting.frame = CGRect(origin: .zero, size: .init(width: 800, height: 800))
-        assertSnapshot(of: hosting, as: .image)
-    }
+        hosting.frame = CGRect(origin: .zero, size: .init(width: 600, height: 150))
+        assertSnapshot(of: hosting, as: .image, named: "Light")
 
-    func testSplitEditorHorizontalDark() {
-        let editorLeft = Editor(files: [], selectedTab: nil)
-        let editorRight = Editor(files: [], selectedTab: nil)
-        let layout: EditorLayout = .horizontal(.init(.horizontal, editorLayouts: [.one(editorLeft), .one(editorRight)]))
-
-        let view = FocusWrapper { focus in
-            EditorLayoutView(layout: layout, focus: focus)
-        }
-            .environmentObject(mockWorkspace)
-            .environmentObject(EditorManager())
-
-        let hosting = NSHostingView(rootView: view)
         hosting.appearance = .init(named: .darkAqua)
-        hosting.frame = CGRect(origin: .zero, size: .init(width: 800, height: 800))
-        assertSnapshot(of: hosting, as: .image)
+        assertSnapshot(of: hosting, as: .image, named: "Dark")
     }
 
-    func testSplitEditorVerticalLight() {
+    func testSplitEditorVertical() {
         let editorLeft = Editor(files: [], selectedTab: nil)
         let editorRight = Editor(files: [], selectedTab: nil)
         let layout: EditorLayout = .vertical(.init(.vertical, editorLayouts: [.one(editorLeft), .one(editorRight)]))
@@ -122,30 +109,61 @@ final class EditorLayoutViewUITests: XCTestCase {
 
         let hosting = NSHostingView(rootView: view)
         hosting.appearance = .init(named: .aqua)
-        hosting.frame = CGRect(origin: .zero, size: .init(width: 800, height: 800))
-        assertSnapshot(of: hosting, as: .image)
-    }
+        hosting.frame = CGRect(origin: .zero, size: .init(width: 300, height: 400))
+        assertSnapshot(of: hosting, as: .image, named: "Light")
 
-    func testSplitEditorVerticalDark() {
-        let editorLeft = Editor(files: [], selectedTab: nil)
-        let editorRight = Editor(files: [], selectedTab: nil)
-        let layout: EditorLayout = .vertical(.init(.vertical, editorLayouts: [.one(editorLeft), .one(editorRight)]))
-
-        let view = FocusWrapper { focus in
-            EditorLayoutView(layout: layout, focus: focus)
-        }
-            .environmentObject(mockWorkspace)
-            .environmentObject(EditorManager())
-
-        let hosting = NSHostingView(rootView: view)
         hosting.appearance = .init(named: .darkAqua)
-        hosting.frame = CGRect(origin: .zero, size: .init(width: 800, height: 800))
-        assertSnapshot(of: hosting, as: .image)
+        assertSnapshot(of: hosting, as: .image, named: "Dark")
     }
 
     // MARK: - Split Editor Single Selection
 
+    func testSplitEditorHorizontalSingleTab() {
+        let editorLeft = Editor(files: [files[0]], selectedTab: files[0])
+        let editorRight = Editor(files: [files[1]], selectedTab: files[1])
+        let layout: EditorLayout = .horizontal(.init(.horizontal, editorLayouts: [.one(editorLeft), .one(editorRight)]))
+
+        let view = FocusWrapper { focus in
+            EditorLayoutView(layout: layout, focus: focus)
+        }
+            .environmentObject(mockWorkspace)
+            .environmentObject(EditorManager())
+
+        let hosting = NSHostingView(rootView: view)
+        hosting.appearance = .init(named: .aqua)
+        hosting.frame = CGRect(origin: .zero, size: .init(width: 800, height: 800))
+        assertSnapshot(of: hosting, as: .image, named: "Light")
+
+        hosting.appearance = .init(named: .darkAqua)
+        assertSnapshot(of: hosting, as: .image, named: "Dark")
+    }
+
+    func testSplitEditorVerticalSingleTab() {
+        let editorLeft = Editor(files: [files[0]], selectedTab: files[0])
+        let editorRight = Editor(files: [files[1]], selectedTab: files[1])
+        let layout: EditorLayout = .vertical(.init(.vertical, editorLayouts: [.one(editorLeft), .one(editorRight)]))
+
+        let view = FocusWrapper { focus in
+            EditorLayoutView(layout: layout, focus: focus)
+        }
+            .environmentObject(mockWorkspace)
+            .environmentObject(EditorManager())
+
+        let hosting = NSHostingView(rootView: view)
+        hosting.appearance = .init(named: .aqua)
+        hosting.frame = CGRect(origin: .zero, size: .init(width: 800, height: 800))
+        assertSnapshot(of: hosting, as: .image, named: "Light")
+
+        hosting.appearance = .init(named: .darkAqua)
+        assertSnapshot(of: hosting, as: .image, named: "Dark")
+    }
+
     // MARK: - Split Editor Multiple Tabs
 
+
+
     // MARK: - Split Editor Different Tab Selections
+
+
+
 }

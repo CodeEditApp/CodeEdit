@@ -11,7 +11,7 @@ import SnapshotTesting
 import SwiftUI
 import XCTest
 
-final class EditorViewUITests: XCTestCase {
+final class EditorViewTests: XCTestCase {
 
     struct FocusWrapper: View {
         @FocusState var focus: Editor?
@@ -76,29 +76,23 @@ final class EditorViewUITests: XCTestCase {
 
     // MARK: - Empty Editor
 
-    func testEmptyEditorLight() throws {
+    func testEmptyEditor() throws {
         let view = FocusWrapper { focus in
             EditorView(editor: Editor(), focus: focus)
         }.environmentObject(EditorManager())
+
         let hosting = NSHostingView(rootView: view)
         hosting.appearance = .init(named: .aqua)
-        hosting.frame = CGRect(origin: .zero, size: .init(width: 650, height: 800))
-        assertSnapshot(of: hosting, as: .image)
-    }
+        hosting.frame = CGRect(origin: .zero, size: .init(width: 400, height: 250))
+        assertSnapshot(of: hosting, as: .image, named: "Light")
 
-    func testEmptyEditorDark() throws {
-        let view = FocusWrapper { focus in
-            EditorView(editor: Editor(), focus: focus)
-        }.environmentObject(EditorManager())
-        let hosting = NSHostingView(rootView: view)
         hosting.appearance = .init(named: .darkAqua)
-        hosting.frame = CGRect(origin: .zero, size: .init(width: 650, height: 800))
-        assertSnapshot(of: hosting, as: .image)
+        assertSnapshot(of: hosting, as: .image, named: "Dark")
     }
 
     // MARK: - Editor With Single Selection
 
-    func testSingleTabLight() throws {
+    func testSingleTab() throws {
         let tab = CEWorkspaceFile(url: directory.appending(path: "File 1.txt"))
 
         let view = FocusWrapper { focus in
@@ -109,28 +103,16 @@ final class EditorViewUITests: XCTestCase {
 
         let hosting = NSHostingView(rootView: view)
         hosting.appearance = .init(named: .aqua)
-        hosting.frame = CGRect(origin: .zero, size: .init(width: 650, height: 800))
-        assertSnapshot(of: hosting, as: .image)
-    }
+        hosting.frame = CGRect(origin: .zero, size: .init(width: 500, height: 250))
+        assertSnapshot(of: hosting, as: .image, named: "Light")
 
-    func testSingleTabDark() throws {
-        let tab = CEWorkspaceFile(url: directory.appending(path: "File 1.txt"))
-
-        let view = FocusWrapper { focus in
-            EditorView(editor: Editor(files: [tab], selectedTab: tab), focus: focus)
-        }
-            .environmentObject(mockWorkspace)
-            .environmentObject(EditorManager())
-
-        let hosting = NSHostingView(rootView: view)
         hosting.appearance = .init(named: .darkAqua)
-        hosting.frame = CGRect(origin: .zero, size: .init(width: 650, height: 800))
-        assertSnapshot(of: hosting, as: .image)
+        assertSnapshot(of: hosting, as: .image, named: "Dark")
     }
 
     // MARK: - Editor With Multiple Tabs
 
-    func testMultipleTabLight() throws {
+    func testMultipleTab() throws {
         var view = FocusWrapper { focus in
             EditorView(editor: Editor(files: .init(self.files), selectedTab: self.files[2]), focus: focus)
         }
@@ -138,9 +120,22 @@ final class EditorViewUITests: XCTestCase {
             .environmentObject(EditorManager())
 
         var hosting = NSHostingView(rootView: view)
+        hosting.frame = CGRect(origin: .zero, size: .init(width: 600, height: 250))
+
+        // Test multiple tabs in dark and light modes.
         hosting.appearance = .init(named: .aqua)
-        hosting.frame = CGRect(origin: .zero, size: .init(width: 650, height: 800))
-        assertSnapshot(of: hosting, as: .image, named: "Tab 1")
+        assertSnapshot(of: hosting, as: .image, named: "Tab 1 - Light")
+
+        hosting.appearance = .init(named: .darkAqua)
+        assertSnapshot(of: hosting, as: .image, named: "Tab 1 - Dark")
+
+        // Test overflow
+        hosting.frame = CGRect(origin: .zero, size: .init(width: 300, height: 250))
+        hosting.appearance = .init(named: .aqua)
+        assertSnapshot(of: hosting, as: .image, named: "Tab 1 - Light - Overflow")
+
+        hosting.appearance = .init(named: .darkAqua)
+        assertSnapshot(of: hosting, as: .image, named: "Tab 1 - Dark - Overflow")
 
         view = FocusWrapper { focus in
             EditorView(editor: Editor(files: .init(self.files), selectedTab: self.files[1]), focus: focus)
@@ -149,39 +144,28 @@ final class EditorViewUITests: XCTestCase {
         .environmentObject(EditorManager())
 
         hosting = NSHostingView(rootView: view)
+        hosting.frame = CGRect(origin: .zero, size: .init(width: 600, height: 250))
+
+        // Test multiple tabs in dark and light modes.
         hosting.appearance = .init(named: .aqua)
-        hosting.frame = CGRect(origin: .zero, size: .init(width: 650, height: 800))
-        assertSnapshot(of: hosting, as: .image, named: "Tab 2")
-    }
+        assertSnapshot(of: hosting, as: .image, named: "Tab 2 - Light")
 
-    func testMultipleTabDark() throws {
-        var view = FocusWrapper { focus in
-            EditorView(editor: Editor(files: .init(self.files), selectedTab: self.files[2]), focus: focus)
-        }
-            .environmentObject(mockWorkspace)
-            .environmentObject(EditorManager())
-
-        var hosting = NSHostingView(rootView: view)
         hosting.appearance = .init(named: .darkAqua)
-        hosting.frame = CGRect(origin: .zero, size: .init(width: 650, height: 800))
-        assertSnapshot(of: hosting, as: .image, named: "Tab 1")
+        assertSnapshot(of: hosting, as: .image, named: "Tab 2 - Dark")
 
-        view = FocusWrapper { focus in
-            EditorView(editor: Editor(files: .init(self.files), selectedTab: self.files[1]), focus: focus)
-        }
-        .environmentObject(mockWorkspace)
-        .environmentObject(EditorManager())
+        // Test overflow
+        hosting.frame = CGRect(origin: .zero, size: .init(width: 300, height: 250))
+        hosting.appearance = .init(named: .aqua)
+        assertSnapshot(of: hosting, as: .image, named: "Tab 2 - Light - Overflow")
 
-        hosting = NSHostingView(rootView: view)
         hosting.appearance = .init(named: .darkAqua)
-        hosting.frame = CGRect(origin: .zero, size: .init(width: 650, height: 800))
-        assertSnapshot(of: hosting, as: .image, named: "Tab 2")
+        assertSnapshot(of: hosting, as: .image, named: "Tab 2 - Dark - Overflow")
     }
 
     // MARK: - Temporary Tab
 
-    func testTemporaryTabLight() throws {
-        var editor = Editor(files: .init(self.files), selectedTab: self.files[2])
+    func testTemporaryTab() throws {
+        let editor = Editor(files: .init(self.files), selectedTab: self.files[2])
         editor.temporaryTab = self.files[2]
 
         var view = FocusWrapper { focus in
@@ -192,8 +176,11 @@ final class EditorViewUITests: XCTestCase {
 
         var hosting = NSHostingView(rootView: view)
         hosting.appearance = .init(named: .aqua)
-        hosting.frame = CGRect(origin: .zero, size: .init(width: 650, height: 800))
-        assertSnapshot(of: hosting, as: .image, named: "Tab 1")
+        hosting.frame = CGRect(origin: .zero, size: .init(width: 600, height: 250))
+        assertSnapshot(of: hosting, as: .image, named: "Tab 1 - Light")
+
+        hosting.appearance = .init(named: .darkAqua)
+        assertSnapshot(of: hosting, as: .image, named: "Tab 1 - Dark")
 
         editor.temporaryTab = self.files[1]
         view = FocusWrapper { focus in
@@ -204,35 +191,10 @@ final class EditorViewUITests: XCTestCase {
 
         hosting = NSHostingView(rootView: view)
         hosting.appearance = .init(named: .aqua)
-        hosting.frame = CGRect(origin: .zero, size: .init(width: 650, height: 800))
-        assertSnapshot(of: hosting, as: .image, named: "Tab 2")
-    }
+        hosting.frame = CGRect(origin: .zero, size: .init(width: 600, height: 250))
+        assertSnapshot(of: hosting, as: .image, named: "Tab 2 - Light")
 
-    func testTemporaryTabDark() throws {
-        var editor = Editor(files: .init(self.files), selectedTab: self.files[2])
-        editor.temporaryTab = self.files[2]
-
-        var view = FocusWrapper { focus in
-            EditorView(editor: editor, focus: focus)
-        }
-            .environmentObject(mockWorkspace)
-            .environmentObject(EditorManager())
-
-        var hosting = NSHostingView(rootView: view)
         hosting.appearance = .init(named: .darkAqua)
-        hosting.frame = CGRect(origin: .zero, size: .init(width: 650, height: 800))
-        assertSnapshot(of: hosting, as: .image, named: "Tab 1")
-
-        editor.temporaryTab = self.files[1]
-        view = FocusWrapper { focus in
-            EditorView(editor: editor, focus: focus)
-        }
-        .environmentObject(mockWorkspace)
-        .environmentObject(EditorManager())
-
-        hosting = NSHostingView(rootView: view)
-        hosting.appearance = .init(named: .darkAqua)
-        hosting.frame = CGRect(origin: .zero, size: .init(width: 650, height: 800))
-        assertSnapshot(of: hosting, as: .image, named: "Tab 2")
+        assertSnapshot(of: hosting, as: .image, named: "Tab 2 - Dark")
     }
 }
