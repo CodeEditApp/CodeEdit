@@ -21,6 +21,7 @@ extension EditorManager {
 
         guard !state.groups.isEmpty else {
             logger.warning("Empty Editor State found, restoring to clean editor state.")
+            initCleanState()
             return
         }
 
