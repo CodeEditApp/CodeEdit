@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum EditorLayout {
+enum EditorLayout: Equatable {
     case one(Editor)
     case vertical(SplitViewData)
     case horizontal(SplitViewData)
@@ -69,6 +69,30 @@ enum EditorLayout {
             } else {
                 data.flatten()
             }
+        }
+    }
+
+    var isEmpty: Bool {
+        switch self {
+        case .one:
+            return false
+        case .vertical(let splitViewData), .horizontal(let splitViewData):
+            return splitViewData.editorLayouts.allSatisfy { editorLayout in
+                editorLayout.isEmpty
+            }
+        }
+    }
+
+    static func == (lhs: EditorLayout, rhs: EditorLayout) -> Bool {
+        switch (lhs, rhs) {
+        case let (.one(lhs), .one(rhs)):
+            return lhs == rhs
+        case let (.vertical(lhs), .vertical(rhs)):
+            return lhs.editorLayouts == rhs.editorLayouts
+        case let (.horizontal(lhs), .horizontal(rhs)):
+            return lhs.editorLayouts == rhs.editorLayouts
+        default:
+            return false
         }
     }
 }
