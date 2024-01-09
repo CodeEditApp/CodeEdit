@@ -7,28 +7,6 @@
 
 import SwiftUI
 
-final class UtilityAreaTerminal: ObservableObject, Identifiable, Equatable {
-    let id: UUID
-    @Published var url: URL?
-    @Published var title: String
-    @Published var terminalTitle: String
-    @Published var shell: String
-    @Published var customTitle: Bool
-
-    init(id: UUID, url: URL, title: String, shell: String) {
-        self.id = id
-        self.title = title
-        self.terminalTitle = title
-        self.url = url
-        self.shell = shell
-        self.customTitle = false
-    }
-
-    static func == (lhs: UtilityAreaTerminal, rhs: UtilityAreaTerminal) -> Bool {
-        lhs.id == rhs.id
-    }
-}
-
 struct UtilityAreaTerminalView: View {
     @AppSettings(\.theme.matchAppearance)
     private var matchAppearance
@@ -53,60 +31,21 @@ struct UtilityAreaTerminalView: View {
     @State private var popoverSource: CGRect = .zero
 
     private func initializeTerminals() {
-        let id = UUID()
-
-        model.terminals = [
-            UtilityAreaTerminal(
-                id: id,
-                url: workspace.workspaceFileManager?.folderUrl ?? URL(filePath: "/"),
-                title: "terminal",
-                shell: ""
-            )
-        ]
-
-        model.selectedTerminals = [id]
+        addTerminal()
     }
 
-    private func addTerminal(shell: String? = nil) {
-        let id = UUID()
-
-        model.terminals.append(
-            UtilityAreaTerminal(
-                id: id,
-                url: URL(filePath: "\(id)"),
-                title: "terminal",
-                shell: shell ?? ""
-            )
+    private func addTerminal(url: URL? = nil, shell: String? = nil) {
+        let terminal = TerminalEmulator(
+            at: url ?? workspace.workspaceFileManager?.folderUrl ?? URL(filePath: "/"),
+            shell: shell
         )
 
-        model.selectedTerminals = [id]
-    }
+        let terminalGroup = TerminalGroup(children: [terminal])
+        terminal.group = terminalGroup
 
-    private func getTerminal(_ id: UUID) -> UtilityAreaTerminal? {
-        return model.terminals.first(where: { $0.id == id }) ?? nil
-    }
-
-    private func updateTerminal(_ id: UUID, title: String? = nil) {
-        let terminalIndex = model.terminals.firstIndex(where: { $0.id == id })
-        if terminalIndex != nil {
-            updateTerminalByReference(of: &model.terminals[terminalIndex!], title: title)
-        }
-    }
-
-    func updateTerminalByReference(
-        of terminal: inout UtilityAreaTerminal,
-        title: String? = nil
-    ) {
-        if let newTitle = title {
-            if !terminal.customTitle {
-                terminal.title = newTitle
-            }
-            terminal.terminalTitle = newTitle
-        }
-    }
-
-    func handleTitleChange(id: UUID, title: String) {
-        updateTerminal(id, title: title)
+        model.terminalGroups.append(terminalGroup)
+        model.selectedTerminals = [.terminal(terminal)]
+        model.focusedTerminal = terminal
     }
 
     /// Returns the `background` color of the selected theme
@@ -121,37 +60,25 @@ struct UtilityAreaTerminalView: View {
     }
 
     func moveItems(from source: IndexSet, to destination: Int) {
-        model.terminals.move(fromOffsets: source, toOffset: destination)
+        model.terminalGroups.move(fromOffsets: source, toOffset: destination)
     }
 
     var body: some View {
         UtilityAreaTabView(model: model.tabViewModel) { tabState in
             ZStack {
-                if model.selectedTerminals.isEmpty {
+                if let group = model.focusedTerminal?.group {
+                    UtilityAreaTerminalGroupView(group, selection: $model.focusedTerminal)
+                } else {
                     CEContentUnavailableView("No Selection")
-                }
-                ForEach(model.terminals) { terminal in
-                    TerminalEmulatorView(
-                        url: terminal.url!,
-                        shellType: terminal.shell,
-                        onTitleChange: { newTitle in
-                            // This can be called whenever, even in a view update so it needs to be dispatched.
-                            DispatchQueue.main.async {
-                                handleTitleChange(id: terminal.id, title: newTitle)
-                            }
-                        }
-                    )
-                    .padding(.top, 10)
-                    .padding(.horizontal, 10)
-                    .contentShape(Rectangle())
-                    .disabled(terminal.id != model.selectedTerminals.first)
-                    .opacity(terminal.id == model.selectedTerminals.first ? 1 : 0)
                 }
             }
             .paneToolbar {
                 PaneToolbarSection {
-                    UtilityAreaTerminalPicker(selectedIDs: $model.selectedTerminals, terminals: model.terminals)
-                        .opacity(tabState.leadingSidebarIsCollapsed ? 1 : 0)
+                    UtilityAreaTerminalPicker(
+                        focusedTerminal: $model.focusedTerminal,
+                        terminalGroups: model.terminalGroups
+                    )
+                    .opacity(tabState.leadingSidebarIsCollapsed ? 1 : 0)
                 }
                 Spacer()
                 PaneToolbarSection {
@@ -168,7 +95,7 @@ struct UtilityAreaTerminalView: View {
                 }
             }
             .background {
-                if model.selectedTerminals.isEmpty {
+                if model.focusedTerminal == nil {
                     EffectView(.contentBackground)
                 } else if useThemeBackground {
                     Color(nsColor: backgroundColor)
@@ -189,15 +116,9 @@ struct UtilityAreaTerminalView: View {
             )
         } leadingSidebar: { _ in
             List(selection: $model.selectedTerminals) {
-                ForEach(model.terminals, id: \.self.id) { terminal in
-                    UtilityAreaTerminalTab(
-                        terminal: terminal,
-                        removeTerminals: model.removeTerminals,
-                        isSelected: model.selectedTerminals.contains(terminal.id),
-                        selectedIDs: model.selectedTerminals
-                    )
-                    .tag(terminal.id)
-                    .listRowSeparator(.hidden)
+                ForEach(model.terminalGroups) { terminalGroup in
+                    UtilityAreaTerminalTab(group: terminalGroup, onRemoveTerminal: model.removeTerminals)
+                        .listRowSeparator(.hidden)
                 }
                 .onMove(perform: moveItems)
             }
@@ -221,7 +142,7 @@ struct UtilityAreaTerminalView: View {
                     }
                 }
             }
-            .onChange(of: model.terminals) { newValue in
+            .onChange(of: model.terminalGroups) { newValue in
                 if newValue.isEmpty {
                     addTerminal()
                 }
@@ -238,38 +159,96 @@ struct UtilityAreaTerminalView: View {
                     } label: {
                         Image(systemName: "minus")
                     }
-                    .disabled(model.terminals.count <= 1)
-                    .opacity(model.terminals.count <= 1 ? 0.5 : 1)
+                    .disabled(model.terminalGroups.count <= 1)
+                    .opacity(model.terminalGroups.count <= 1 ? 0.5 : 1)
                 }
                 Spacer()
             }
         }
         .onAppear(perform: initializeTerminals)
+        .onChange(of: model.selectedTerminals) { _ in
+            model.focusedTerminal = model.selectedTerminals.lazy
+                .compactMap {
+                    switch $0 {
+                    case let .terminal(terminal): return terminal
+                    case let .group(group): return group.children.first
+                    }
+                }
+                .first
+        }
+    }
+}
+
+private struct UtilityAreaTerminalGroupView: View {
+    @ObservedObject private var group: TerminalGroup
+    @Binding private var selection: TerminalEmulator?
+
+    init(_ group: TerminalGroup, selection: Binding<TerminalEmulator?>) {
+        self.group = group
+        _selection = selection
+    }
+
+    var body: some View {
+        HStack {
+            ForEach(group.children) { terminal in
+                UtilityAreaTerminalTerminalView(terminal, selection: $selection)
+            }
+        }
+        .onAppear {
+            guard let selection else {
+                selection = group.children.first
+                return
+            }
+            if !group.children.contains(selection) {
+                self.selection = group.children.first
+            }
+        }
+        .id(group)
+    }
+}
+
+private struct UtilityAreaTerminalTerminalView: View {
+    @ObservedObject var terminal: TerminalEmulator
+    @Binding var selection: TerminalEmulator?
+    @FocusState private var isFocused: Bool
+
+    init(_ terminal: TerminalEmulator, selection: Binding<TerminalEmulator?>) {
+        self.terminal = terminal
+        _selection = selection
+    }
+
+    var body: some View {
+        let isSelected = selection == terminal
+        // SwiftTerm's underlying NSView will glitch and render outside its frame
+        // you also can't click-to-focus but seems to override tap gestures
+        TerminalEmulatorView(terminal)
+            .clipped()
+            .padding(.top, 10)
+            .padding(.horizontal, 10)
+            .contentShape(Rectangle())
+            .opacity(isSelected ? 1 : 0.5)
     }
 }
 
 struct UtilityAreaTerminalPicker: View {
-    @Binding var selectedIDs: Set<UUID>
-    var terminals: [UtilityAreaTerminal]
-
-    var selectedID: Binding<UUID?> {
-        Binding<UUID?>(
-            get: {
-                selectedIDs.first
-            },
-            set: { newValue in
-                if let selectedID = newValue {
-                    selectedIDs = [selectedID]
-                }
-            }
-        )
-    }
+    @Binding var focusedTerminal: TerminalEmulator?
+    var terminalGroups: [TerminalGroup]
 
     var body: some View {
-        Picker("Terminal Tab", selection: selectedID) {
-            ForEach(terminals, id: \.self.id) { terminal in
-                Text(terminal.title)
-                    .tag(terminal.id as UUID?)
+        Picker("Terminal Tab", selection: $focusedTerminal) {
+            Text("-")
+                .tag(TerminalEmulator?.none)
+            ForEach(terminalGroups) { group in
+                Section {
+                    ForEach(group.children) { terminal in
+                        Text(terminal.title)
+                            .tag(terminal as TerminalEmulator?)
+                    }
+                } header: {
+                    if group.children.count > 1 {
+                        Text(group.title)
+                    }
+                }
             }
         }
         .labelsHidden()
