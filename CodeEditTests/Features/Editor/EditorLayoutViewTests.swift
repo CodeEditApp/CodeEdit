@@ -202,5 +202,4 @@ final class EditorLayoutViewTests: XCTestCase {
 
     // MARK: - Split Editor Different Tab Selections
 
-
 }
