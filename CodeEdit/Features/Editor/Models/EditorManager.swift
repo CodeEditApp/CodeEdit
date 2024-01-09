@@ -46,7 +46,7 @@ class EditorManager: ObservableObject {
         self.isFocusingActiveEditor = false
         switchToActiveEditor()
     }
-    
+
     /// Initializes the editor manager's state to the "initial" state.
     ///
     /// Functionally identical to the initializer for this class.
