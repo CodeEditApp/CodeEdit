@@ -17,3 +17,7 @@ jobs:
     needs: [swiftlint, test]
     uses: ./.github/workflows/pre-release.yml
     secrets: inherit
+  ReleaseDrafter:
+    name: Release Drafter
+    needs: [swiftlint, test, deploy]
+    uses: ./.github/workflows/release-drafter.yml

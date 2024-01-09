@@ -8,8 +8,6 @@ on:
 jobs:
   update_release_draft:
     runs-on: ubuntu-latest
-    outputs:
-      release_draft: ${{ steps.release.outputs.body }}
     steps:
       - id: release
         uses: release-drafter/release-drafter@v5
