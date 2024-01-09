@@ -137,6 +137,7 @@ jobs:
           cp "$RUNNER_TEMP/CodeEdit-$REV.dmg" "$SPARKLE_ARCHIVE"
           SPARKLE_SIG=$("$SPARKLE_BIN/sign_update" --ed-key-file "$RUNNER_TEMP/sparkle_key" "$SPARKLE_ARCHIVE/CodeEdit-$REV.dmg" | cut -d\" -f2)
           "$SPARKLE_BIN/generate_appcast" --ed-key-file "$RUNNER_TEMP/sparkle_key" --download-url-prefix "${{ env.SPARKLE_DL_PREFIX }}/${{ env.APP_VERSION }}-alpha.${{ env.APP_BUILD }}/" --link "$SPARKLE_LINK" --channel "$SPARKLE_CHANNEL" --maximum-deltas 0 "$SPARKLE_ARCHIVE"
+          xmlstarlet ed --inplace -s //item -t elem -n description\ sparkle:format='"plain-text"' -v "${{ env.RELEASE_NOTE }}" ${{ RUNNER.TEMP }}/Sparkle_Archive/appcast.xml
 
       ############################
       # Publish Pre Release
