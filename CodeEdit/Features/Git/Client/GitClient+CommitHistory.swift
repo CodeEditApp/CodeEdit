@@ -8,7 +8,12 @@
 import Foundation
 
 extension GitClient {
-    // Gets the commit history log for the specified branch or file
+    /// Gets the commit history log for the specified branch or file
+    /// - Parameters:
+    ///   - branchName: Name of the branch
+    ///   - maxCount: Maximum amount of entries to get
+    ///   - fileLocalPath: Optional path of file to get history for
+    /// - Returns: Array of git commits
     func getCommitHistory(
         branchName: String? = nil,
         maxCount: Int? = nil,

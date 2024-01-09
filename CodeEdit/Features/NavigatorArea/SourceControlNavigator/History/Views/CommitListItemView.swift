@@ -54,8 +54,11 @@ struct CommitListItemView: View {
                     pasteboard.clearContents()
                     pasteboard.setString(commit.message, forType: .string)
                 }
-                Button("Copy Identifier") {}
-                    .disabled(true) // TODO: Implementation Needed
+                Button("Copy Identifier") {
+                    let pasteboard = NSPasteboard.general
+                    pasteboard.clearContents()
+                    pasteboard.setString(commit.commitHash, forType: .string)
+                }
                 Button("Email \(commit.author)...") {
                     let service = NSSharingService(named: NSSharingService.Name.composeEmail)
                     service?.recipients = [commit.authorEmail]
