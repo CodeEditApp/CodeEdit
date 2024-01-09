@@ -67,6 +67,7 @@ struct EditorLayoutView: View {
                     .environment(\.splitEditor) { [weak data] edge, newEditor in
                         data?.split(edge, at: index, new: newEditor)
                     }
+                    .accessibilityIdentifier("SubEditorLayoutView \(index)")
             }
         }
 

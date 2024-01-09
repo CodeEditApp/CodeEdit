@@ -48,6 +48,7 @@ struct EditorTabBarTrailingAccessories: View {
                     Image(systemName: "square.split.1x2")
                 }
                 .help("Split Vertically")
+                .accessibilityLabel("Split Vertically")
 
             case (.vertical, true), (.horizontal, false):
                 Button {
@@ -56,6 +57,7 @@ struct EditorTabBarTrailingAccessories: View {
                     Image(systemName: "square.split.2x1")
                 }
                 .help("Split Horizontally")
+                .accessibilityLabel("Split Horizontally")
 
             default:
                 EmptyView()

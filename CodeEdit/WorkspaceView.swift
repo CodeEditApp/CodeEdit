@@ -50,11 +50,13 @@ struct WorkspaceView: View {
                         .safeAreaInset(edge: .bottom, spacing: 0) {
                             StatusBarView(proxy: proxy)
                         }
+                        .accessibilityIdentifier("Workspace Editor")
                         UtilityAreaView()
                             .collapsable()
                             .collapsed($utilityAreaModel.isCollapsed)
                             .frame(idealHeight: 260)
                             .frame(minHeight: 100)
+                            .accessibilityIdentifier("Utility Area")
                     }
                     .edgesIgnoringSafeArea(.top)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)

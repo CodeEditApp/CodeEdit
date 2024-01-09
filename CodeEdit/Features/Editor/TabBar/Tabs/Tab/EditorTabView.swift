@@ -293,6 +293,7 @@ struct EditorTabView: View {
             }
         }
         .id(item.id)
+        .accessibilityIdentifier("EditorTabView" + item.id)
         .tabBarContextMenu(item: item, isTemporary: isTemporary)
     }
 }

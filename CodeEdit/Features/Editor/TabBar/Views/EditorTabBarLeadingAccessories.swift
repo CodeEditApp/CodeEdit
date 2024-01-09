@@ -39,6 +39,7 @@ struct EditorTabBarLeadingAccessories: View {
                 .help("Close this Editor")
                 .disabled(editorManager.isFocusingActiveEditor)
                 .opacity(editorManager.isFocusingActiveEditor ? 0.5 : 1)
+                .accessibilityLabel("Close this Editor")
 
                 EditorTabBarAccessoryIcon(
                     icon: .init(
@@ -55,6 +56,11 @@ struct EditorTabBarLeadingAccessories: View {
                     }
                 )
                 .help(
+                    editorManager.isFocusingActiveEditor
+                    ? "Unfocus this Editor"
+                    : "Focus this Editor"
+                )
+                .accessibilityLabel(
                     editorManager.isFocusingActiveEditor
                     ? "Unfocus this Editor"
                     : "Focus this Editor"
@@ -94,6 +100,7 @@ struct EditorTabBarLeadingAccessories: View {
                 }
                 .disabled(editor.historyOffset == editor.history.count-1 || editor.history.isEmpty)
                 .help("Navigate back")
+                .accessibilityLabel("Navigate Back")
 
                 Menu {
                     ForEach(
@@ -120,6 +127,7 @@ struct EditorTabBarLeadingAccessories: View {
                 }
                 .disabled(editor.historyOffset == 0)
                 .help("Navigate forward")
+                .accessibilityLabel("Navigate Forward")
             }
             .controlSize(.small)
             .font(EditorTabBarAccessoryIcon.iconFont)
