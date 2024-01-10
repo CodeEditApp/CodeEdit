@@ -33,33 +33,62 @@ struct NavigatorAreaView: View {
             .joined()
     }
 
+    var sidebarPositionEdge: Edge {
+        switch sidebarPosition {
+        case .top:
+            return .top
+        case .side:
+            return .leading
+        }
+    }
+
     var body: some View {
-        VStack {
-            if let selection = viewModel.selectedTab {
-                selection
+        Group {
+            if viewModel.tabItems.isEmpty {
+                Text("Tab not found")
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
-                NoSelectionInspectorView()
-            }
-        }
-        .safeAreaInset(edge: .leading, spacing: 0) {
-            if sidebarPosition == .side {
-                HStack(spacing: 0) {
-                    AreaTabBar(items: $viewModel.tabItems, selection: $viewModel.selectedTab, position: sidebarPosition)
+                VStack(spacing: .zero) {
                     Divider()
+                    ReorderableTabView(selection: $viewModel.selectedTab, tabPosition: sidebarPositionEdge) {
+                        ForEach(viewModel.tabItems) { item in
+                            item
+                                .tabTitle(item.title)
+                                .tabIcon(item.icon)
+                                .tag(item)
+                        }
+                        .onMove(perform: move)
+                        .onDelete(perform: delete)
+                        .onInsert(of: [.text], perform: insert)
+                    }
                 }
-            }
-        }
-        .safeAreaInset(edge: .top, spacing: 0) {
-            if sidebarPosition == .top {
-                VStack(spacing: 0) {
-                    Divider()
-                    AreaTabBar(items: $viewModel.tabItems, selection: $viewModel.selectedTab, position: sidebarPosition)
-                    Divider()
-                }
-            } else {
-                Divider()
             }
         }
         .environmentObject(workspace)
+    }
+
+    func move(from indices: IndexSet, to index: Int) {
+        viewModel.tabItems.move(fromOffsets: indices, toOffset: index)
+    }
+
+    func delete(indices: IndexSet) {
+        withAnimation(.spring) {
+            viewModel.tabItems.remove(atOffsets: indices)
+        }
+    }
+
+    func insert(index: Int, items: [NSItemProvider]) {
+        Task {
+            let newItems = await items.concurrentCompactMap { item in
+                try? await withCheckedThrowingContinuation { continuation in
+                    _ = item.loadTransferable(type: NavigatorTab.self) { result in
+                        continuation.resume(with: result)
+                    }
+                }
+            }
+            withAnimation(.spring) {
+                viewModel.tabItems.insert(contentsOf: newItems, at: index)
+            }
+        }
     }
 }

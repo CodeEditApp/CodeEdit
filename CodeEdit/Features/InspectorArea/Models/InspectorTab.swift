@@ -9,7 +9,7 @@ import SwiftUI
 import CodeEditKit
 import ExtensionFoundation
 
-enum InspectorTab: AreaTab {
+enum InspectorTab: Identifiable, Hashable, View {
     case file
     case gitHistory
     case uiExtension(endpoint: AppExtensionIdentity, data: ResolvedSidebar.SidebarStore)

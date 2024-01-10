@@ -9,11 +9,35 @@ import SwiftUI
 import CodeEditKit
 import ExtensionFoundation
 
-enum NavigatorTab: AreaTab {
+enum NavigatorTab: Identifiable, Hashable, View, Transferable {
+    static var transferRepresentation: some TransferRepresentation {
+        ProxyRepresentation(exporting: \.title) { transferable in
+            switch transferable {
+            case "Project": .project
+            case "Version Control": .sourceControl
+            case "Search": .search
+            default: throw XPCError.extensionDoesNotExist(description: "")
+            }
+        }
+    }
+
     case project
     case sourceControl
     case search
     case uiExtension(endpoint: AppExtensionIdentity, data: ResolvedSidebar.SidebarStore)
+
+    var icon: Image {
+        switch self {
+        case .project:
+            return Image(systemName: "folder")
+        case .sourceControl:
+            return Image(symbol: "vault")
+        case .search:
+            return Image(systemName: "magnifyingglass")
+        case .uiExtension(_, let data):
+            return Image(systemName: data.icon ?? "e.square")
+        }
+    }
 
     var systemImage: String {
         switch self {
@@ -60,4 +84,10 @@ enum NavigatorTab: AreaTab {
             ExtensionSceneView(with: endpoint, sceneID: data.sceneID)
         }
     }
+}
+
+import UniformTypeIdentifiers
+
+extension UTType {
+    static let navigatorTab: UTType = UTType(exportedAs: "navigatorTab")
 }
