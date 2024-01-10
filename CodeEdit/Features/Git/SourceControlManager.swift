@@ -76,6 +76,28 @@ final class SourceControlManager: ObservableObject {
         }
     }
 
+    /// Get all changed files for a commit
+    func getCommitChangedFiles(commitSHA: String) async -> [CEWorkspaceFile] {
+        do {
+            var fileDictionary = [URL: CEWorkspaceFile]()
+
+            // Process changed files
+            for item in try await gitClient.getCommitChangedFiles(commitSHA: commitSHA) {
+                fileDictionary[item.fileLink] = CEWorkspaceFile(
+                    url: item.fileLink,
+                    changeType: item.changeType
+                )
+            }
+
+            // TODO:  Profile
+            let changedFiles = Array(fileDictionary.values.sorted())
+
+            return changedFiles
+        } catch {
+            return []
+        }
+    }
+
     /// Set changed files on main actor
     @MainActor
     private func setChangedFiles(_ files: [CEWorkspaceFile]) {

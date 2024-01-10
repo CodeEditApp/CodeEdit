@@ -42,7 +42,7 @@ struct SourcControlNavigatorTabs: View {
         if sourceControlManager.isGitRepository {
             SegmentedControl(
                 $selectedSection,
-                options: ["Changes", "Repository"],
+                options: ["Changes", "History", "Repository"],
                 prominent: true
             )
             .frame(maxWidth: .infinity)
@@ -61,6 +61,9 @@ struct SourcControlNavigatorTabs: View {
                 SourceControlNavigatorChangesView()
             }
             if selectedSection == 1 {
+                SourceControlNavigatorHistoryView()
+            }
+            if selectedSection == 2 {
                 SourceControlNavigatorRepositoryView()
             }
         } else {

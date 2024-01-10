@@ -43,6 +43,36 @@ extension GitClient {
         return try parseUnsyncedCommitsOutput(from: output)
     }
 
+    func getCommitChangedFiles(commitSHA: String) async throws -> [GitChangedFile] {
+        do {
+            let output = try await run("diff-tree --no-commit-id --name-status -r \(commitSHA)")
+            let data = output
+                .trimmingCharacters(in: .newlines)
+                .components(separatedBy: "\n")
+            return try data.compactMap { line in
+                let components = line.split(separator: "\t")
+                guard components.count == 2 else { return nil }
+                let changeType = String(components[0])
+                let pathName = String(components[1])
+
+                guard let url = URL(string: pathName ) else {
+                    throw GitClientError.failedToDecodeURL
+                }
+
+                let gitType: GitType? = .init(rawValue: changeType)
+                let fullLink = self.directoryURL.appending(path: url.relativePath)
+
+                return GitChangedFile(
+                    changeType: gitType,
+                    fileLink: fullLink
+                )
+            }
+        } catch {
+            print("Error: \(error)")
+            return []
+        }
+    }
+
     private func parseUnsyncedCommitsOutput(from string: String) throws -> (ahead: Int, behind: Int) {
         let components = string.components(separatedBy: .newlines)
         guard var abLine = components.first(where: { $0.starts(with: "# branch.ab") }) else {
