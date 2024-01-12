@@ -45,26 +45,35 @@ struct ViewCommands: Commands {
             }
             .keyboardShortcut("p", modifiers: [.shift, .command])
 
-            Button("Increase font size") {
-                if !(editorFontSize >= 288) {
-                    editorFontSize += 1
+            Menu("Font Size") {
+                Button("Increase") {
+                    if !(editorFontSize >= 288) {
+                        editorFontSize += 1
+                    }
+                    if !(terminalFontSize >= 288) {
+                        terminalFontSize += 1
+                    }
                 }
-                if !(terminalFontSize >= 288) {
-                    terminalFontSize += 1
-                }
-            }
-            .keyboardShortcut("+")
-            .disabled(windowController == nil)
+                .keyboardShortcut("+")
 
-            Button("Decrease font size") {
-                if !(editorFontSize <= 1) {
-                    editorFontSize -= 1
+                Button("Decrease") {
+                    if !(editorFontSize <= 1) {
+                        editorFontSize -= 1
+                    }
+                    if !(terminalFontSize <= 1) {
+                        terminalFontSize -= 1
+                    }
                 }
-                if !(terminalFontSize <= 1) {
-                    terminalFontSize -= 1
+                .keyboardShortcut("-")
+
+                Divider()
+
+                Button("Reset") {
+                    editorFontSize = 12
+                    terminalFontSize = 12
                 }
+                .keyboardShortcut("0", modifiers: [.command, .control])
             }
-            .keyboardShortcut("-")
             .disabled(windowController == nil)
 
             Button("Customize Toolbar...") {
@@ -149,3 +158,4 @@ extension ViewCommands {
         }
     }
 }
+// swiftlint:enable shorthand_operator
