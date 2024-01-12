@@ -158,4 +158,3 @@ extension ViewCommands {
         }
     }
 }
-// swiftlint:enable shorthand_operator
