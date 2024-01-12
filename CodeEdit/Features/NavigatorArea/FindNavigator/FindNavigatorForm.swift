@@ -147,6 +147,9 @@ struct FindNavigatorForm: View {
                         }
                     )
                     .help("Match Case")
+                    .onChange(of: caseSensitive) { newValue in
+                        state.caseSensitive = newValue
+                    }
                     Divider()
                     Toggle(
                         isOn: $matchWholeWord,
@@ -166,8 +169,14 @@ struct FindNavigatorForm: View {
                 hasValue: caseSensitive || matchWholeWord
             )
             .onSubmit {
-                Task {
-                    await state.search(searchText)
+                if !searchText.isEmpty {
+                    Task {
+                        await state.search(searchText)
+                    }
+                } else {
+                    // If a user performs a search with an empty string, the search results will be cleared.
+                    // This behavior aligns with Xcode's handling of empty search queries.
+                    state.clearResults()
                 }
             }
             if selectedMode[0] == SearchModeModel.Replace {

@@ -19,10 +19,15 @@ extension WorkspaceDocument.SearchState {
     /// If the indexer is not available, the function will return early.
     /// Also make sure to flush any pending changes to the index before calling this function.
     func findAndReplace(query: String, replacingTerm: String) async throws {
+        await setStatus(.replacing)
         let searchQuery = getSearchTerm(query)
         guard let indexer = indexer else {
             return
         }
+
+        var updatedFilesCount: Int = 0
+        var finishWithError: Bool = false
+        var errorMessage: String = ""
 
         let asyncController = SearchIndexer.AsyncManager(index: indexer)
 
@@ -30,6 +35,8 @@ extension WorkspaceDocument.SearchState {
         for try await result in searchStream {
             await withThrowingTaskGroup(of: Void.self) { group in
                 for file in result.results {
+                    updatedFilesCount += 1
+                    var finishWIthError = false
                     group.addTask {
                         do {
                             try await self.replaceOccurrencesInFile(
@@ -38,20 +45,29 @@ extension WorkspaceDocument.SearchState {
                                 replacingTerm: replacingTerm
                             )
                         } catch {
-                            await MainActor.run {
-                                let alert = NSAlert()
-                                alert.messageText = "Error"
-                                alert.informativeText = """
-                                    An error occurred while replacing: \(error.localizedDescription)
-                                """
-                                alert.alertStyle = .critical
-                                alert.addButton(withTitle: "OK")
-                                alert.runModal()
-                            }
+                            await self.setStatus(.failed(errorMessage: error.localizedDescription))
+//                            finishWIthError = false
+
+//                            await MainActor.run {
+//                                let alert = NSAlert()
+//                                alert.messageText = "Error"
+//                                alert.informativeText = """
+//                                    An error occurred while replacing: \(error.localizedDescription)
+//                                """
+//                                alert.alertStyle = .critical
+//                                alert.addButton(withTitle: "OK")
+//                                alert.runModal()
+//                            }
                         }
                     }
                 }
             }
+        }
+
+        // This is a sneaky workaround to display the error message,
+        // because else you'd get the following error: Mutation of captured var 'errorMessage' in concurrently-executing code
+        if findNavigatorStatus == .replacing {
+            await setStatus(.replaced(updatedFiles: updatedFilesCount))
         }
     }
 
@@ -61,7 +77,7 @@ extension WorkspaceDocument.SearchState {
     ///     - fileURL: The URL of the file to be processed.
     ///     - query:  The string to be searched for and replaced.
     ///     - replacingTerm: The string to replace occurrences of the query.
-    ///     - options: The options for the search and replace operation. 
+    ///     - options: The options for the search and replace operation.
     ///             You can use options such as regular expression or case-insensitivity.
     ///
     /// The function performs the replacement in memory and then writes the modified content back to the file
@@ -70,6 +86,7 @@ extension WorkspaceDocument.SearchState {
         query: String,
         replacingTerm: String
     ) async throws {
+//        throw NSError(domain: "Not implemented", code: 0, userInfo: nil)
         let fileContent = try String(contentsOf: fileURL, encoding: .utf8)
         let updatedContent = fileContent.replacingOccurrences(
             of: query,
@@ -114,7 +131,7 @@ extension WorkspaceDocument.SearchState {
         if selectedMode.second == .RegularExpression {
             replaceOptions = [.regularExpression]
         }
-        if ignoreCase {
+        if !caseSensitive {
             replaceOptions = [.caseInsensitive]
         }
 
@@ -134,6 +151,12 @@ extension WorkspaceDocument.SearchState {
             alert.alertStyle = .critical
             alert.addButton(withTitle: "OK")
             alert.runModal()
+        }
+    }
+
+    func setStatus(_ status: FindNavigatorStatus) async {
+        await MainActor.run {
+            self.findNavigatorStatus = status
         }
     }
 }

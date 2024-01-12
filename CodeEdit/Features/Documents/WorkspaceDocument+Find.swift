@@ -14,7 +14,7 @@ extension WorkspaceDocument.SearchState {
     ///
     /// - Returns: A modified search term according to the specified search mode.
     func getSearchTerm(_ query: String) -> String {
-        let newQuery = ignoreCase ? query.lowercased() : query
+        let newQuery = caseSensitive ? query : query.lowercased()
         guard let mode = selectedMode.third else {
             return newQuery
         }
@@ -45,6 +45,13 @@ extension WorkspaceDocument.SearchState {
     /// - Parameter query: The search query to search for.
     func search(_ query: String) async {
         clearResults()
+
+        // TODO: Optional: move to a seperate funciton
+        await MainActor.run {
+            self.searchQuery = query
+            self.findNavigatorStatus = .searching
+        }
+
         let searchQuery = getSearchTerm(query)
         guard let indexer = indexer else {
             return
@@ -62,7 +69,7 @@ extension WorkspaceDocument.SearchState {
                     evaluateResultGroup.enter()
                     Task {
                         var newResult = SearchResultModel(file: CEWorkspaceFile(url: file.url), score: file.score)
-                        await self.evaluateFile(query: query.lowercased(), searchResult: &newResult)
+                        await self.evaluateFile(query: query, searchResult: &newResult)
 
                         // Check if the new result has any line matches.
                         if !newResult.lineMatches.isEmpty {
@@ -92,12 +99,13 @@ extension WorkspaceDocument.SearchState {
     }
 
     /// Sets the search results by updating various properties on the main thread.
-    /// This function updates `searchResult`, `searchResultCount`, and `searchResultsFileCount`
+    /// This function updates `findNavigatorStatus`, `searchResult`, `searchResultCount`, and `searchResultsFileCount`
     /// and sets the `tempSearchResults` to an empty array.
     /// - Important: Call this function when you are ready to
     /// display or use the final search results.
     func setSearchResults() {
         DispatchQueue.main.async {
+            self.findNavigatorStatus = .found
             self.searchResult = self.tempSearchResults.sorted { $0.score > $1.score }
             self.searchResultsCount = self.tempSearchResults.map { $0.lineMatches.count }.reduce(0, +)
             self.searchResultsFileCount = self.tempSearchResults.count
@@ -131,7 +139,10 @@ extension WorkspaceDocument.SearchState {
         }
 
         // Attempt to create a regular expression from the provided query
-        guard let regex = try? NSRegularExpression(pattern: query, options: [.caseInsensitive]) else {
+        guard let regex = try? NSRegularExpression(
+            pattern: query,
+            options: caseSensitive ? [] : [.caseInsensitive]
+        ) else {
             return
         }
 
@@ -221,6 +232,7 @@ extension WorkspaceDocument.SearchState {
         // Clip the range of the preview to the last occurrence of a new line
         let lastNewLineIndexInPreLine = preLineWithNewLines.lastIndex(of: "\n") ?? preLineWithNewLines.startIndex
         let preLineWithNewLinesPrefix = preLineWithNewLines[lastNewLineIndexInPreLine...]
+
         return preLineWithNewLinesPrefix.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
@@ -243,6 +255,7 @@ extension WorkspaceDocument.SearchState {
             limitedBy: preLine.startIndex
         ) ?? preLine.endIndex
         let keywordUpperbound = preLine.endIndex
+
         return keywordLowerbound..<keywordUpperbound
     }
 
@@ -279,6 +292,7 @@ extension WorkspaceDocument.SearchState {
             self.searchResult.removeAll()
             self.searchResultsCount = 0
             self.searchResultsFileCount = 0
+            self.findNavigatorStatus = .none
         }
     }
 }
