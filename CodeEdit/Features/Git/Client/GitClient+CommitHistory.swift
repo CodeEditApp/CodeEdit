@@ -8,16 +8,29 @@
 import Foundation
 
 extension GitClient {
-    // Gets the commit history log of the current file opened
-    // in the workspace.
-    func getCommitHistory(entries: Int?, fileLocalPath: String?) async throws -> [GitCommit] {
-        var entriesString = ""
+    /// Gets the commit history log for the specified branch or file
+    /// - Parameters:
+    ///   - branchName: Name of the branch
+    ///   - maxCount: Maximum amount of entries to get
+    ///   - fileLocalPath: Optional path of file to get history for
+    /// - Returns: Array of git commits
+    func getCommitHistory(
+        branchName: String? = nil,
+        maxCount: Int? = nil,
+        fileLocalPath: String? = nil
+    ) async throws -> [GitCommit] {
+        var branchNameString = ""
+        var maxCountString = ""
         let fileLocalPath = fileLocalPath?.escapedWhiteSpaces() ?? ""
-        if let entries { entriesString = "-n \(entries)" }
+        if let branchName { branchNameString = "--first-parent \(branchName)" }
+        if let maxCount { maxCountString = "-n \(maxCount)" }
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale.current
         dateFormatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss Z"
-        let output = try await run("log --pretty=%h¦%H¦%s¦%aN¦%ae¦%cn¦%ce¦%aD¦ \(entriesString) \(fileLocalPath)")
+        let output = try await run(
+            "log --pretty=%h¦%H¦%s¦%aN¦%ae¦%cn¦%ce¦%aD¦ \(maxCountString) \(branchNameString) \(fileLocalPath)"
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+        )
         let remote = try await run("ls-remote --get-url")
         let remoteURL = URL(string: remote.trimmingCharacters(in: .whitespacesAndNewlines))
 
