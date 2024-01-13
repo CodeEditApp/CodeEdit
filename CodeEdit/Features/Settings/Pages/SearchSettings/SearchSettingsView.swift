@@ -73,7 +73,6 @@ struct ExcludedGlobPatternList: View {
                         focusedField = ignorePattern.id.uuidString
                     }
                 }
-
             }
             .onMove { fromOffsets, toOffset in
                 searchSettingsModel.ignoreGlobPatterns.move(fromOffsets: fromOffsets, toOffset: toOffset)
