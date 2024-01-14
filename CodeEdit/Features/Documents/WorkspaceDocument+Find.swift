@@ -30,6 +30,35 @@ extension WorkspaceDocument.SearchState {
         }
     }
 
+    /// Generates a regular expression pattern based on the specified query and search mode.
+    ///
+    /// - Parameter query: The original user query string.
+    ///
+    /// - Returns: A string representing the regular expression pattern based on the selected search mode.
+    ///
+    /// - Note: This funciton is creating simmilar patterns to the 
+    /// ``WorkspaceDocument/SearchState-swift.class/getSearchTerm(_:)`` function,
+    /// Except its using the word boundary anchor(\b) instead of the asterisk(\*).
+    /// This is needed to heightlight the search results correctly.
+    func getRegeXPattern(_ query: String) -> String {
+        guard let mode = selectedMode.third else {
+            return query
+        }
+
+        switch mode {
+        case .Containing:
+            return "\(query)"
+        case .StartingWith:
+            return "\\b\(query)"
+        case .EndingWith:
+            return "\(query)\\b"
+        case .MatchingWord:
+            return "\\b\(query)\\b"
+        default:
+            return query
+        }
+    }
+
     /// Searches the entire workspace for the given string, using the
     /// ``WorkspaceDocument/SearchState-swift.class/selectedMode`` modifiers
     /// to modify the search if needed. This is done by filtering out files with SearchKit and then searching
@@ -46,14 +75,19 @@ extension WorkspaceDocument.SearchState {
     func search(_ query: String) async {
         clearResults()
 
-        // TODO: Optional: move to a seperate funciton
         await MainActor.run {
             self.searchQuery = query
             self.findNavigatorStatus = .searching
         }
 
         let searchQuery = getSearchTerm(query)
+
+        // The regeXPattern is only used for the evaluateFile funciton
+        // to ensure that the search terms are heightlighted correctly
+        let regeXPattern = getRegeXPattern(query)
+
         guard let indexer = indexer else {
+            await setStatus(.failed(errorMessage: "No index found. Try rebuilding the index."))
             return
         }
 
@@ -69,7 +103,7 @@ extension WorkspaceDocument.SearchState {
                     evaluateResultGroup.enter()
                     Task {
                         var newResult = SearchResultModel(file: CEWorkspaceFile(url: file.url), score: file.score)
-                        await self.evaluateFile(query: query, searchResult: &newResult)
+                        await self.evaluateFile(query: regeXPattern, searchResult: &newResult)
 
                         // Check if the new result has any line matches.
                         if !newResult.lineMatches.isEmpty {
@@ -143,6 +177,7 @@ extension WorkspaceDocument.SearchState {
             pattern: query,
             options: caseSensitive ? [] : [.caseInsensitive]
         ) else {
+            await setStatus(.failed(errorMessage: "Invalid regualar expression."))
             return
         }
 
