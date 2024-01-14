@@ -24,7 +24,6 @@ struct FindNavigatorForm: View {
     @State private var excludesText: String = ""
     @State private var scoped: Bool = false
     @State private var caseSensitive: Bool = false
-    @State private var matchWholeWord: Bool = false
     @State private var preserveCase: Bool = false
     @State private var scopedToOpenEditors: Bool = false
     @State private var excludeSettings: Bool = true
@@ -150,23 +149,12 @@ struct FindNavigatorForm: View {
                     .onChange(of: caseSensitive) { newValue in
                         state.caseSensitive = newValue
                     }
-                    Divider()
-                    Toggle(
-                        isOn: $matchWholeWord,
-                        label: {
-                            Image(systemName: "textformat.abc.dottedunderline")
-                                .foregroundStyle(
-                                    matchWholeWord ? Color(.controlAccentColor) : Color(.secondaryLabelColor)
-                                )
-                        }
-                    )
-                    .help("Match Whole Word")
                 },
                 clearable: true,
                 onClear: {
                     state.clearResults()
                 },
-                hasValue: caseSensitive || matchWholeWord
+                hasValue: caseSensitive
             )
             .onSubmit {
                 if !searchText.isEmpty {
