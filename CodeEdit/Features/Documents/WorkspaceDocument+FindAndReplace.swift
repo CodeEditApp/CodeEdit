@@ -36,7 +36,7 @@ extension WorkspaceDocument.SearchState {
             await withThrowingTaskGroup(of: Void.self) { group in
                 for file in result.results {
                     updatedFilesCount += 1
-                    var finishWIthError = false
+
                     group.addTask {
                         do {
                             try await self.replaceOccurrencesInFile(
@@ -45,19 +45,10 @@ extension WorkspaceDocument.SearchState {
                                 replacingTerm: replacingTerm
                             )
                         } catch {
+                            // Should set `finishWithError` and `errorMessage` here,
+                            // This isn't possible due to:
+                            // `Mutation of captured var 'errorMessage' in concurrently-executing code`
                             await self.setStatus(.failed(errorMessage: error.localizedDescription))
-//                            finishWIthError = false
-
-//                            await MainActor.run {
-//                                let alert = NSAlert()
-//                                alert.messageText = "Error"
-//                                alert.informativeText = """
-//                                    An error occurred while replacing: \(error.localizedDescription)
-//                                """
-//                                alert.alertStyle = .critical
-//                                alert.addButton(withTitle: "OK")
-//                                alert.runModal()
-//                            }
                         }
                     }
                 }
@@ -65,9 +56,14 @@ extension WorkspaceDocument.SearchState {
         }
 
         // This is a sneaky workaround to display the error message,
-        // because else you'd get the following error: Mutation of captured var 'errorMessage' in concurrently-executing code
+        // because else you'd get the following error: 
+        // `Mutation of captured var 'errorMessage' in concurrently-executing code`
         if findNavigatorStatus == .replacing {
-            await setStatus(.replaced(updatedFiles: updatedFilesCount))
+            if updatedFilesCount == 0 {
+                await setStatus(.failed(errorMessage: "No files in the workspaced matched: \(query)"))
+            } else {
+                await setStatus(.replaced(updatedFiles: updatedFilesCount))
+            }
         }
     }
 
@@ -86,7 +82,6 @@ extension WorkspaceDocument.SearchState {
         query: String,
         replacingTerm: String
     ) async throws {
-//        throw NSError(domain: "Not implemented", code: 0, userInfo: nil)
         let fileContent = try String(contentsOf: fileURL, encoding: .utf8)
         let updatedContent = fileContent.replacingOccurrences(
             of: query,

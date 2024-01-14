@@ -29,7 +29,7 @@ struct FindNavigatorView: View {
             .padding(.vertical, 5)
 
             Divider()
-            
+
             if findNavigatorStatus == .found {
                 HStack(alignment: .center) {
                     Text("\(self.searchResultCount) results in \(self.foundFilesCount) files")
