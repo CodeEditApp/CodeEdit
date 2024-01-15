@@ -18,7 +18,7 @@ extension CommandLine {
             }
         }
     }
-    
+
     /// Is the app in UI testing mode. Only enabled for debug builds.
     static var isUITest: Bool {
         #if DEBUG

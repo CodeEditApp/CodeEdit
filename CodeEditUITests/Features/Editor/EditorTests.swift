@@ -12,7 +12,6 @@ final class EditorTests: XCTestCase {
     var workspaceURL: URL!
 
     override func setUpWithError() throws {
-//        isRecording = true
         continueAfterFailure = false
 
         try workspaceURL = TestWorkspace.setUp()
