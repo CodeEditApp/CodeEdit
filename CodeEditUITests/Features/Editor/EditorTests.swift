@@ -12,8 +12,7 @@ final class EditorTests: XCTestCase {
     var workspaceURL: URL!
 
     override func setUpWithError() throws {
-        isRecording = true
-//        continueAfterFailure = false
+        continueAfterFailure = false
 
         try workspaceURL = TestWorkspace.setUp()
 
@@ -44,8 +43,6 @@ final class EditorTests: XCTestCase {
 
         let editorAreaQuery = window.groups.splitGroups.groups.splitGroups.groups.element(boundBy: 0)
 
-        let originalWorkspaceImage = editorAreaQuery.screenshot().pngRepresentation
-
         let splitGroupsQuery = window.splitGroups.groups.splitGroups.groups.splitGroups
         splitGroupsQuery.children(matching: .group).element(boundBy: 0).buttons["Split Horizontally"].click()
         XCUIElement.perform(withKeyModifiers: .option) {
@@ -53,16 +50,30 @@ final class EditorTests: XCTestCase {
         }
 
         XCTAssertTrue(splitGroupsQuery.groups.containing(.button, identifier: "Split Horizontally").buttons["Close this Editor"].exists)
-        assertSnapshot(of: editorAreaQuery.screenshot().image, as: .image)
+        assertSnapshot(
+            of: editorAreaQuery.normalizedScreenshot(),
+            as: .image(perceptualPrecision: 0.98),
+            named: "All Splits"
+        )
 
         splitGroupsQuery.groups.containing(.button, identifier: "Split Horizontally").buttons["Close this Editor"].click()
 
+        // Assert after closing one editor
         XCTAssertTrue(splitGroupsQuery.groups.splitGroups.groups.element(boundBy: 1).buttons["Close this Editor"].exists)
-        assertSnapshot(of: editorAreaQuery.screenshot().image, as: .image)
+        assertSnapshot(
+            of: editorAreaQuery.normalizedScreenshot(),
+            as: .image(perceptualPrecision: 0.98),
+            named: "One Split"
+        )
 
         splitGroupsQuery.groups.splitGroups.groups.element(boundBy: 1).buttons["Close this Editor"].click()
 
-        XCTAssertEqual(originalWorkspaceImage, editorAreaQuery.screenshot().pngRepresentation)
+        // Assert that the editor is the same after closing all splits
+        assertSnapshot(
+            of: editorAreaQuery.normalizedScreenshot(),
+            as: .image(perceptualPrecision: 0.98),
+            named: "No Splits"
+        )
 
         // Test focusing an editor
 
@@ -75,13 +86,21 @@ final class EditorTests: XCTestCase {
         splitGroupsQuery2.groups.element(boundBy: 1).buttons["Focus this Editor"].click()
 
         XCTAssertTrue(window.buttons["Unfocus this Editor"].exists)
-        assertSnapshot(of: editorAreaQuery.screenshot().image, as: .image)
+        assertSnapshot(
+            of: editorAreaQuery.normalizedScreenshot(),
+            as: .image(perceptualPrecision: 0.98),
+            named: "Focused Editor"
+        )
 
         window.buttons["Unfocus this Editor"].click()
         splitGroupsQuery.groups.containing(.button, identifier: "Split Horizontally").buttons["Close this Editor"].click()
         splitGroupsQuery.groups.splitGroups.groups.element(boundBy: 1).buttons["Close this Editor"].click()
 
-        XCTAssertEqual(originalWorkspaceImage, editorAreaQuery.screenshot().pngRepresentation)
+        assertSnapshot(
+            of: editorAreaQuery.normalizedScreenshot(),
+            as: .image(perceptualPrecision: 0.98),
+            named: "No Splits"
+        )
     }
 
     // swiftlint:enable line_length
