@@ -817,6 +817,8 @@
 		6C48D8F12972DAFC00D6D205 /* Env+IsFullscreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Env+IsFullscreen.swift"; sourceTree = "<group>"; };
 		6C48D8F32972DB1A00D6D205 /* Env+Window.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Env+Window.swift"; sourceTree = "<group>"; };
 		6C48D8F62972E5F300D6D205 /* WindowObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowObserver.swift; sourceTree = "<group>"; };
+		6C4B441D2B5504F200BE3B9D /* Unit.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = Unit.xctestplan; sourceTree = "<group>"; };
+		6C4B441E2B55050600BE3B9D /* UI.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = UI.xctestplan; sourceTree = "<group>"; };
 		6C5228B429A868BD00AC48F6 /* Environment+ContentInsets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Environment+ContentInsets.swift"; sourceTree = "<group>"; };
 		6C53AAD729A6C4FD00EE9ED6 /* SplitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitView.swift; sourceTree = "<group>"; };
 		6C578D8029CD294800DC73B2 /* ExtensionActivatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionActivatorView.swift; sourceTree = "<group>"; };
@@ -2385,6 +2387,15 @@
 			path = Welcome;
 			sourceTree = "<group>";
 		};
+		6CC1EDFE2B5503B600472EE0 /* TestPlans */ = {
+			isa = PBXGroup;
+			children = (
+				6C4B441D2B5504F200BE3B9D /* Unit.xctestplan */,
+				6C4B441E2B55050600BE3B9D /* UI.xctestplan */,
+			);
+			path = TestPlans;
+			sourceTree = "<group>";
+		};
 		6CF602CD2B4A79B3004A3A4A /* CommandLine */ = {
 			isa = PBXGroup;
 			children = (
@@ -2510,6 +2521,7 @@
 				587B60F329340A8000D5CD8F /* CodeEditTests */,
 				6C769F952B49BF1600ADF98B /* CodeEditUITests */,
 				28052E0129730F2F00F4F90A /* Configs */,
+				6CC1EDFE2B5503B600472EE0 /* TestPlans */,
 				58F2EACE292FB2B0004A9BDE /* Documentation.docc */,
 				2BE487ED28245162003F3F64 /* OpenWithCodeEdit */,
 				284DC8502978BA2600BF2770 /* .all-contributorsrc */,

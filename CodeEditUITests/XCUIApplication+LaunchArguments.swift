@@ -8,16 +8,7 @@
 import XCTest
 
 extension XCUIApplication {
-    func enableTestMode() {
-        launchArguments += ["-UITest"]
-    }
-
-    func speedUpAnimations() {
-        launchArguments += ["-disableAnimations"]
-    }
-
     func openTestWorkspace(root: URL) {
-        print(root.standardizedFileURL.path())
         launchArguments += ["--open", root.standardizedFileURL.path()]
     }
 }

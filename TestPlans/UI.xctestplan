@@ -1,0 +1,31 @@
+{
+  "configurations" : [
+    {
+      "id" : "4BBCBED3-4FB2-4A03-8F70-E96581492F4E",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "commandLineArgumentEntries" : [
+      {
+        "argument" : "-UITest"
+      },
+      {
+        "argument" : "-disableAnimations"
+      }
+    ]
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:CodeEdit.xcodeproj",
+        "identifier" : "6C769F932B49BF1600ADF98B",
+        "name" : "CodeEditUITests"
+      }
+    }
+  ],
+  "version" : 1
+}

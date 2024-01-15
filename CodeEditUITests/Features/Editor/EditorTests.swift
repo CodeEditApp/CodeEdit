@@ -17,8 +17,6 @@ final class EditorTests: XCTestCase {
         try workspaceURL = TestWorkspace.setUp()
 
         let app = XCUIApplication()
-        app.enableTestMode()
-        app.speedUpAnimations()
         app.openTestWorkspace(root: workspaceURL)
         app.launch()
     }
