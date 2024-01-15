@@ -90,27 +90,6 @@
                <Test
                   Identifier = "DocumentsUnitTests/testSplitViewControllerStopSnappedWhenWidthIsHigherAppropriateRange()">
                </Test>
-               <Test
-                  Identifier = "WelcomeModuleUnitTests">
-               </Test>
-               <Test
-                  Identifier = "WelcomeModuleUnitTests/testRecentJSFileDarkSnapshot()">
-               </Test>
-               <Test
-                  Identifier = "WelcomeModuleUnitTests/testRecentJSFileLightSnapshot()">
-               </Test>
-               <Test
-                  Identifier = "WelcomeModuleUnitTests/testRecentProjectItemDarkSnapshot()">
-               </Test>
-               <Test
-                  Identifier = "WelcomeModuleUnitTests/testRecentProjectItemLightSnapshot()">
-               </Test>
-               <Test
-                  Identifier = "WelcomeModuleUnitTests/testWelcomeActionViewDarkSnapshot()">
-               </Test>
-               <Test
-                  Identifier = "WelcomeModuleUnitTests/testWelcomeActionViewLightSnapshot()">
-               </Test>
             </SkippedTests>
          </TestableReference>
          <TestableReference

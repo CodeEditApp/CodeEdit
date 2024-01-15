@@ -51,7 +51,7 @@ struct CEContentUnavailableView<Actions: View>: View {
         .controlSize(.small)
         .accessibilityLabel(label)
         .accessibilityHint(description ?? "")
-        .accessibilityElement(children: .ignore)
+        .accessibilityElement(children: .combine)
         .accessibilityIdentifier("CEContentUnavailableView " + label)
     }
 

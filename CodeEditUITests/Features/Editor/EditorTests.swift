@@ -12,6 +12,7 @@ final class EditorTests: XCTestCase {
     var workspaceURL: URL!
 
     override func setUpWithError() throws {
+//        isRecording = true
         continueAfterFailure = false
 
         try workspaceURL = TestWorkspace.setUp()
@@ -67,6 +68,7 @@ final class EditorTests: XCTestCase {
         )
 
         splitGroupsQuery.groups.splitGroups.groups.element(boundBy: 1).buttons["Close this Editor"].click()
+        window.staticTexts["No Editor"].click()
 
         // Assert that the editor is the same after closing all splits
         assertSnapshot(
