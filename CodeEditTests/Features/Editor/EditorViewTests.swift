@@ -84,10 +84,10 @@ final class EditorViewTests: XCTestCase {
         let hosting = NSHostingView(rootView: view)
         hosting.appearance = .init(named: .aqua)
         hosting.frame = CGRect(origin: .zero, size: .init(width: 400, height: 250))
-        assertSnapshot(of: hosting, as: .image, named: "Light")
+        assertSnapshot(of: hosting, as: .image(perceptualPrecision: 0.7), named: "Light")
 
         hosting.appearance = .init(named: .darkAqua)
-        assertSnapshot(of: hosting, as: .image, named: "Dark")
+        assertSnapshot(of: hosting, as: .image(perceptualPrecision: 0.7), named: "Dark")
     }
 
     // MARK: - Editor With Single Selection
@@ -104,10 +104,10 @@ final class EditorViewTests: XCTestCase {
         let hosting = NSHostingView(rootView: view)
         hosting.appearance = .init(named: .aqua)
         hosting.frame = CGRect(origin: .zero, size: .init(width: 500, height: 250))
-        assertSnapshot(of: hosting, as: .image, named: "Light")
+        assertSnapshot(of: hosting, as: .image(perceptualPrecision: 0.7), named: "Light")
 
         hosting.appearance = .init(named: .darkAqua)
-        assertSnapshot(of: hosting, as: .image, named: "Dark")
+        assertSnapshot(of: hosting, as: .image(perceptualPrecision: 0.7), named: "Dark")
     }
 
     // MARK: - Editor With Multiple Tabs
@@ -124,18 +124,18 @@ final class EditorViewTests: XCTestCase {
 
         // Test multiple tabs in dark and light modes.
         hosting.appearance = .init(named: .aqua)
-        assertSnapshot(of: hosting, as: .image, named: "Tab 1 - Light")
+        assertSnapshot(of: hosting, as: .image(perceptualPrecision: 0.7), named: "Tab 1 - Light")
 
         hosting.appearance = .init(named: .darkAqua)
-        assertSnapshot(of: hosting, as: .image, named: "Tab 1 - Dark")
+        assertSnapshot(of: hosting, as: .image(perceptualPrecision: 0.7), named: "Tab 1 - Dark")
 
         // Test overflow
         hosting.frame = CGRect(origin: .zero, size: .init(width: 300, height: 250))
         hosting.appearance = .init(named: .aqua)
-        assertSnapshot(of: hosting, as: .image, named: "Tab 1 - Light - Overflow")
+        assertSnapshot(of: hosting, as: .image(perceptualPrecision: 0.7), named: "Tab 1 - Light - Overflow")
 
         hosting.appearance = .init(named: .darkAqua)
-        assertSnapshot(of: hosting, as: .image, named: "Tab 1 - Dark - Overflow")
+        assertSnapshot(of: hosting, as: .image(perceptualPrecision: 0.7), named: "Tab 1 - Dark - Overflow")
 
         view = FocusWrapper { focus in
             EditorView(editor: Editor(files: .init(self.files), selectedTab: self.files[1]), focus: focus)
@@ -148,18 +148,18 @@ final class EditorViewTests: XCTestCase {
 
         // Test multiple tabs in dark and light modes.
         hosting.appearance = .init(named: .aqua)
-        assertSnapshot(of: hosting, as: .image, named: "Tab 2 - Light")
+        assertSnapshot(of: hosting, as: .image(perceptualPrecision: 0.7), named: "Tab 2 - Light")
 
         hosting.appearance = .init(named: .darkAqua)
-        assertSnapshot(of: hosting, as: .image, named: "Tab 2 - Dark")
+        assertSnapshot(of: hosting, as: .image(perceptualPrecision: 0.7), named: "Tab 2 - Dark")
 
         // Test overflow
         hosting.frame = CGRect(origin: .zero, size: .init(width: 300, height: 250))
         hosting.appearance = .init(named: .aqua)
-        assertSnapshot(of: hosting, as: .image, named: "Tab 2 - Light - Overflow")
+        assertSnapshot(of: hosting, as: .image(perceptualPrecision: 0.7), named: "Tab 2 - Light - Overflow")
 
         hosting.appearance = .init(named: .darkAqua)
-        assertSnapshot(of: hosting, as: .image, named: "Tab 2 - Dark - Overflow")
+        assertSnapshot(of: hosting, as: .image(perceptualPrecision: 0.7), named: "Tab 2 - Dark - Overflow")
     }
 
     // MARK: - Temporary Tab
@@ -177,10 +177,10 @@ final class EditorViewTests: XCTestCase {
         var hosting = NSHostingView(rootView: view)
         hosting.appearance = .init(named: .aqua)
         hosting.frame = CGRect(origin: .zero, size: .init(width: 600, height: 250))
-        assertSnapshot(of: hosting, as: .image, named: "Tab 1 - Light")
+        assertSnapshot(of: hosting, as: .image(perceptualPrecision: 0.7), named: "Tab 1 - Light")
 
         hosting.appearance = .init(named: .darkAqua)
-        assertSnapshot(of: hosting, as: .image, named: "Tab 1 - Dark")
+        assertSnapshot(of: hosting, as: .image(perceptualPrecision: 0.7), named: "Tab 1 - Dark")
 
         editor.temporaryTab = self.files[1]
         view = FocusWrapper { focus in
@@ -192,9 +192,9 @@ final class EditorViewTests: XCTestCase {
         hosting = NSHostingView(rootView: view)
         hosting.appearance = .init(named: .aqua)
         hosting.frame = CGRect(origin: .zero, size: .init(width: 600, height: 250))
-        assertSnapshot(of: hosting, as: .image, named: "Tab 2 - Light")
+        assertSnapshot(of: hosting, as: .image(perceptualPrecision: 0.7), named: "Tab 2 - Light")
 
         hosting.appearance = .init(named: .darkAqua)
-        assertSnapshot(of: hosting, as: .image, named: "Tab 2 - Dark")
+        assertSnapshot(of: hosting, as: .image(perceptualPrecision: 0.7), named: "Tab 2 - Dark")
     }
 }

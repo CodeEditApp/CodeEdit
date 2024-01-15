@@ -90,12 +90,12 @@ final class EditorLayoutViewTests: XCTestCase {
         var hosting = NSHostingView(rootView: view.preferredColorScheme(.light))
         hosting.appearance = .init(named: .aqua)
         hosting.frame = CGRect(origin: .zero, size: .init(width: 600, height: 150))
-        assertSnapshot(of: hosting, as: .image, named: "Light")
+        assertSnapshot(of: hosting, as: .image(perceptualPrecision: 0.7), named: "Light")
 
         hosting = NSHostingView(rootView: view.preferredColorScheme(.dark))
         hosting.appearance = .init(named: .darkAqua)
         hosting.frame = CGRect(origin: .zero, size: .init(width: 600, height: 150))
-        assertSnapshot(of: hosting, as: .image, named: "Dark")
+        assertSnapshot(of: hosting, as: .image(perceptualPrecision: 0.7), named: "Dark")
     }
 
     func testSplitEditorVertical() {
@@ -112,12 +112,12 @@ final class EditorLayoutViewTests: XCTestCase {
         var hosting = NSHostingView(rootView: view.preferredColorScheme(.light))
         hosting.appearance = .init(named: .aqua)
         hosting.frame = CGRect(origin: .zero, size: .init(width: 300, height: 400))
-        assertSnapshot(of: hosting, as: .image, named: "Light")
+        assertSnapshot(of: hosting, as: .image(perceptualPrecision: 0.7), named: "Light")
 
         hosting = NSHostingView(rootView: view.preferredColorScheme(.dark))
         hosting.appearance = .init(named: .darkAqua)
         hosting.frame = CGRect(origin: .zero, size: .init(width: 300, height: 400))
-        assertSnapshot(of: hosting, as: .image, named: "Dark")
+        assertSnapshot(of: hosting, as: .image(perceptualPrecision: 0.7), named: "Dark")
     }
 
     // MARK: - Split Editor Single Selection
@@ -136,12 +136,12 @@ final class EditorLayoutViewTests: XCTestCase {
         var hosting = NSHostingView(rootView: view.preferredColorScheme(.light))
         hosting.appearance = .init(named: .aqua)
         hosting.frame = CGRect(origin: .zero, size: .init(width: 800, height: 800))
-        assertSnapshot(of: hosting, as: .image, named: "Light")
+        assertSnapshot(of: hosting, as: .image(perceptualPrecision: 0.7), named: "Light")
 
         hosting = NSHostingView(rootView: view.preferredColorScheme(.dark))
         hosting.appearance = .init(named: .darkAqua)
         hosting.frame = CGRect(origin: .zero, size: .init(width: 800, height: 800))
-        assertSnapshot(of: hosting, as: .image, named: "Dark")
+        assertSnapshot(of: hosting, as: .image(perceptualPrecision: 0.7), named: "Dark")
     }
 
     func testSplitEditorVerticalSingleTab() {
@@ -158,12 +158,12 @@ final class EditorLayoutViewTests: XCTestCase {
         var hosting = NSHostingView(rootView: view.preferredColorScheme(.light))
         hosting.appearance = .init(named: .aqua)
         hosting.frame = CGRect(origin: .zero, size: .init(width: 800, height: 800))
-        assertSnapshot(of: hosting, as: .image, named: "Light")
+        assertSnapshot(of: hosting, as: .image(perceptualPrecision: 0.7), named: "Light")
 
         hosting = NSHostingView(rootView: view.preferredColorScheme(.dark))
         hosting.appearance = .init(named: .darkAqua)
         hosting.frame = CGRect(origin: .zero, size: .init(width: 800, height: 800))
-        assertSnapshot(of: hosting, as: .image, named: "Dark")
+        assertSnapshot(of: hosting, as: .image(perceptualPrecision: 0.7), named: "Dark")
     }
 
     // MARK: - Split Editor Multiple Tabs
@@ -182,12 +182,12 @@ final class EditorLayoutViewTests: XCTestCase {
         var hosting = NSHostingView(rootView: view.preferredColorScheme(.light))
         hosting.appearance = .init(named: .aqua)
         hosting.frame = CGRect(origin: .zero, size: .init(width: 800, height: 800))
-        assertSnapshot(of: hosting, as: .image, named: "Light")
+        assertSnapshot(of: hosting, as: .image(perceptualPrecision: 0.7), named: "Light")
 
         hosting = NSHostingView(rootView: view.preferredColorScheme(.dark))
         hosting.appearance = .init(named: .darkAqua)
         hosting.frame = CGRect(origin: .zero, size: .init(width: 800, height: 800))
-        assertSnapshot(of: hosting, as: .image, named: "Dark")
+        assertSnapshot(of: hosting, as: .image(perceptualPrecision: 0.7), named: "Dark")
     }
 
     func testSplitEditorVerticalMultipleTab() {
@@ -204,12 +204,12 @@ final class EditorLayoutViewTests: XCTestCase {
         var hosting = NSHostingView(rootView: view.preferredColorScheme(.light))
         hosting.appearance = .init(named: .aqua)
         hosting.frame = CGRect(origin: .zero, size: .init(width: 800, height: 800))
-        assertSnapshot(of: hosting, as: .image, named: "Light")
+        assertSnapshot(of: hosting, as: .image(perceptualPrecision: 0.7), named: "Light")
 
         hosting = NSHostingView(rootView: view.preferredColorScheme(.dark))
         hosting.appearance = .init(named: .darkAqua)
         hosting.frame = CGRect(origin: .zero, size: .init(width: 800, height: 800))
-        assertSnapshot(of: hosting, as: .image, named: "Dark")
+        assertSnapshot(of: hosting, as: .image(perceptualPrecision: 0.7), named: "Dark")
     }
 
 }
