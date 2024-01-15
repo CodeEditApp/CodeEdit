@@ -12,7 +12,8 @@ final class EditorTests: XCTestCase {
     var workspaceURL: URL!
 
     override func setUpWithError() throws {
-        continueAfterFailure = false
+        isRecording = true
+//        continueAfterFailure = false
 
         try workspaceURL = TestWorkspace.setUp()
 
@@ -35,41 +36,52 @@ final class EditorTests: XCTestCase {
 
         window.toolbars.element.click()
 
+        // Open a file
+        // Needs bugfix PR first.
+        //        window.outlines.children(matching: .outlineRow).element(boundBy: 2).cells.element.click()
+
         // Test splitting the editor
 
-        window.buttons["SubEditorLayoutView 0"].click()
+        let editorAreaQuery = window.groups.splitGroups.groups.splitGroups.groups.element(boundBy: 0)
+
+        let originalWorkspaceImage = editorAreaQuery.screenshot().pngRepresentation
 
         let splitGroupsQuery = window.splitGroups.groups.splitGroups.groups.splitGroups
+        splitGroupsQuery.children(matching: .group).element(boundBy: 0).buttons["Split Horizontally"].click()
         XCUIElement.perform(withKeyModifiers: .option) {
-            splitGroupsQuery.groups.containing(.button, identifier: "SubEditorLayoutView 1").buttons["Split Vertically"].click()
+            splitGroupsQuery.children(matching: .group).element(boundBy: 0).buttons["Split Vertically"].click()
         }
 
+        XCTAssertTrue(splitGroupsQuery.groups.containing(.button, identifier: "Split Horizontally").buttons["Close this Editor"].exists)
+        assertSnapshot(of: editorAreaQuery.screenshot().image, as: .image)
+
         splitGroupsQuery.groups.containing(.button, identifier: "Split Horizontally").buttons["Close this Editor"].click()
-        splitGroupsQuery.groups.splitGroups.groups.containing(.button, identifier: "SubEditorLayoutView 1").buttons["Close this Editor"].click()
+
+        XCTAssertTrue(splitGroupsQuery.groups.splitGroups.groups.element(boundBy: 1).buttons["Close this Editor"].exists)
+        assertSnapshot(of: editorAreaQuery.screenshot().image, as: .image)
+
+        splitGroupsQuery.groups.splitGroups.groups.element(boundBy: 1).buttons["Close this Editor"].click()
+
+        XCTAssertEqual(originalWorkspaceImage, editorAreaQuery.screenshot().pngRepresentation)
 
         // Test focusing an editor
 
-        window.buttons["SubEditorLayoutView 0"].click()
-
+        splitGroupsQuery.children(matching: .group).element(boundBy: 0).buttons["Split Horizontally"].click()
         XCUIElement.perform(withKeyModifiers: .option) {
-            splitGroupsQuery.groups.containing(.button, identifier: "SubEditorLayoutView 1").buttons["Split Vertically"].click()
+            splitGroupsQuery.children(matching: .group).element(boundBy: 0).buttons["Split Vertically"].click()
         }
 
         let splitGroupsQuery2 = splitGroupsQuery.groups.splitGroups
-        splitGroupsQuery2.groups.containing(.button, identifier: "SubEditorLayoutView 0").buttons["Focus this Editor"].click()
+        splitGroupsQuery2.groups.element(boundBy: 1).buttons["Focus this Editor"].click()
+
+        XCTAssertTrue(window.buttons["Unfocus this Editor"].exists)
+        assertSnapshot(of: editorAreaQuery.screenshot().image, as: .image)
+
         window.buttons["Unfocus this Editor"].click()
-        splitGroupsQuery2.groups.containing(.button, identifier: "SubEditorLayoutView 1").buttons["Close this Editor"].click()
-        splitGroupsQuery.groups.containing(.button, identifier: "SubEditorLayoutView 0").buttons["Close this Editor"].click()
+        splitGroupsQuery.groups.containing(.button, identifier: "Split Horizontally").buttons["Close this Editor"].click()
+        splitGroupsQuery.groups.splitGroups.groups.element(boundBy: 1).buttons["Close this Editor"].click()
 
-        // Open a file
-
-        window.outlines.children(matching: .outlineRow).element(boundBy: 2).cells.element.click()
-
-        // Close the temporary file
-
-        // Open the file again, make it permanent and open another file
-
-        //
+        XCTAssertEqual(originalWorkspaceImage, editorAreaQuery.screenshot().pngRepresentation)
     }
 
     // swiftlint:enable line_length

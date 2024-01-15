@@ -49,6 +49,10 @@ struct CEContentUnavailableView<Actions: View>: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .contentShape(Rectangle())
         .controlSize(.small)
+        .accessibilityLabel(label)
+        .accessibilityHint(description ?? "")
+        .accessibilityElement(children: .ignore)
+        .accessibilityIdentifier("CEContentUnavailableView " + label)
     }
 
     var body: some View {

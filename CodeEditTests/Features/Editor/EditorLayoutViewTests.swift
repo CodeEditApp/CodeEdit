@@ -87,12 +87,14 @@ final class EditorLayoutViewTests: XCTestCase {
             .environmentObject(mockWorkspace)
             .environmentObject(EditorManager())
 
-        let hosting = NSHostingView(rootView: view)
+        var hosting = NSHostingView(rootView: view.preferredColorScheme(.light))
         hosting.appearance = .init(named: .aqua)
         hosting.frame = CGRect(origin: .zero, size: .init(width: 600, height: 150))
         assertSnapshot(of: hosting, as: .image, named: "Light")
 
+        hosting = NSHostingView(rootView: view.preferredColorScheme(.dark))
         hosting.appearance = .init(named: .darkAqua)
+        hosting.frame = CGRect(origin: .zero, size: .init(width: 600, height: 150))
         assertSnapshot(of: hosting, as: .image, named: "Dark")
     }
 
@@ -107,12 +109,14 @@ final class EditorLayoutViewTests: XCTestCase {
             .environmentObject(mockWorkspace)
             .environmentObject(EditorManager())
 
-        let hosting = NSHostingView(rootView: view)
+        var hosting = NSHostingView(rootView: view.preferredColorScheme(.light))
         hosting.appearance = .init(named: .aqua)
         hosting.frame = CGRect(origin: .zero, size: .init(width: 300, height: 400))
         assertSnapshot(of: hosting, as: .image, named: "Light")
 
+        hosting = NSHostingView(rootView: view.preferredColorScheme(.dark))
         hosting.appearance = .init(named: .darkAqua)
+        hosting.frame = CGRect(origin: .zero, size: .init(width: 300, height: 400))
         assertSnapshot(of: hosting, as: .image, named: "Dark")
     }
 
@@ -129,12 +133,14 @@ final class EditorLayoutViewTests: XCTestCase {
             .environmentObject(mockWorkspace)
             .environmentObject(EditorManager())
 
-        let hosting = NSHostingView(rootView: view)
+        var hosting = NSHostingView(rootView: view.preferredColorScheme(.light))
         hosting.appearance = .init(named: .aqua)
         hosting.frame = CGRect(origin: .zero, size: .init(width: 800, height: 800))
         assertSnapshot(of: hosting, as: .image, named: "Light")
 
+        hosting = NSHostingView(rootView: view.preferredColorScheme(.dark))
         hosting.appearance = .init(named: .darkAqua)
+        hosting.frame = CGRect(origin: .zero, size: .init(width: 800, height: 800))
         assertSnapshot(of: hosting, as: .image, named: "Dark")
     }
 
@@ -149,12 +155,14 @@ final class EditorLayoutViewTests: XCTestCase {
             .environmentObject(mockWorkspace)
             .environmentObject(EditorManager())
 
-        let hosting = NSHostingView(rootView: view)
+        var hosting = NSHostingView(rootView: view.preferredColorScheme(.light))
         hosting.appearance = .init(named: .aqua)
         hosting.frame = CGRect(origin: .zero, size: .init(width: 800, height: 800))
         assertSnapshot(of: hosting, as: .image, named: "Light")
 
+        hosting = NSHostingView(rootView: view.preferredColorScheme(.dark))
         hosting.appearance = .init(named: .darkAqua)
+        hosting.frame = CGRect(origin: .zero, size: .init(width: 800, height: 800))
         assertSnapshot(of: hosting, as: .image, named: "Dark")
     }
 
@@ -171,12 +179,14 @@ final class EditorLayoutViewTests: XCTestCase {
             .environmentObject(mockWorkspace)
             .environmentObject(EditorManager())
 
-        let hosting = NSHostingView(rootView: view)
+        var hosting = NSHostingView(rootView: view.preferredColorScheme(.light))
         hosting.appearance = .init(named: .aqua)
         hosting.frame = CGRect(origin: .zero, size: .init(width: 800, height: 800))
         assertSnapshot(of: hosting, as: .image, named: "Light")
 
+        hosting = NSHostingView(rootView: view.preferredColorScheme(.dark))
         hosting.appearance = .init(named: .darkAqua)
+        hosting.frame = CGRect(origin: .zero, size: .init(width: 800, height: 800))
         assertSnapshot(of: hosting, as: .image, named: "Dark")
     }
 
@@ -191,15 +201,15 @@ final class EditorLayoutViewTests: XCTestCase {
             .environmentObject(mockWorkspace)
             .environmentObject(EditorManager())
 
-        let hosting = NSHostingView(rootView: view)
+        var hosting = NSHostingView(rootView: view.preferredColorScheme(.light))
         hosting.appearance = .init(named: .aqua)
         hosting.frame = CGRect(origin: .zero, size: .init(width: 800, height: 800))
         assertSnapshot(of: hosting, as: .image, named: "Light")
 
+        hosting = NSHostingView(rootView: view.preferredColorScheme(.dark))
         hosting.appearance = .init(named: .darkAqua)
+        hosting.frame = CGRect(origin: .zero, size: .init(width: 800, height: 800))
         assertSnapshot(of: hosting, as: .image, named: "Dark")
     }
-
-    // MARK: - Split Editor Different Tab Selections
 
 }

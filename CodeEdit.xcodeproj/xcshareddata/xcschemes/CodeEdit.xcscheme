@@ -26,7 +26,8 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES">
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      codeCoverageEnabled = "YES">
       <Testables>
          <TestableReference
             skipped = "NO">
@@ -116,7 +117,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B658FB4627DA9E1000EA4DBD"
+               BlueprintIdentifier = "6C769F932B49BF1600ADF98B"
                BuildableName = "CodeEditUITests.xctest"
                BlueprintName = "CodeEditUITests"
                ReferencedContainer = "container:CodeEdit.xcodeproj">

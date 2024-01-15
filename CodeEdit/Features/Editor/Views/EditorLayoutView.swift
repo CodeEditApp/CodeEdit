@@ -44,6 +44,7 @@ struct EditorLayoutView: View {
                 SubEditorLayoutView(data: data, focus: $focus)
             }
         }
+        .accessibilityIdentifier("EditorLayoutView")
     }
 
     struct SubEditorLayoutView: View {
@@ -56,6 +57,7 @@ struct EditorLayoutView: View {
                 splitView
             }
             .edgesIgnoringSafeArea([.top, .bottom])
+            .accessibilityIdentifier("SubEditorLayoutView " + data.axis.description)
         }
 
         var splitView: some View {
@@ -67,7 +69,6 @@ struct EditorLayoutView: View {
                     .environment(\.splitEditor) { [weak data] edge, newEditor in
                         data?.split(edge, at: index, new: newEditor)
                     }
-                    .accessibilityIdentifier("SubEditorLayoutView \(index)")
             }
         }
 

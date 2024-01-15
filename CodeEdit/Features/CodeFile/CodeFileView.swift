@@ -117,7 +117,6 @@ struct CodeFileView: View {
             undoManager: undoManager,
             coordinators: [codeFile.rangeTranslator]
         )
-
         .id(codeFile.fileURL)
         .background {
             if colorScheme == .dark {
@@ -146,6 +145,7 @@ struct CodeFileView: View {
         .onChange(of: bracketHighlight) { _ in
             bracketPairHighlight = getBracketPairHighlight()
         }
+        .accessibilityIdentifier("CodeFileView")
     }
 
     private func getLanguage() -> CodeLanguage {

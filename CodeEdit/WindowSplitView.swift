@@ -83,5 +83,6 @@ struct WindowSplitView: View {
                 window = newWindow
             }
         }
+        .accessibilityIdentifier("WindowSplitView")
     }
 }

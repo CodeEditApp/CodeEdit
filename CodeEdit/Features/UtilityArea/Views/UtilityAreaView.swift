@@ -47,5 +47,6 @@ struct UtilityAreaView: View {
             .padding(.vertical, 8)
             .frame(maxHeight: 27)
         }
+        .accessibilityIdentifier("UtilityAreaView")
     }
 }
