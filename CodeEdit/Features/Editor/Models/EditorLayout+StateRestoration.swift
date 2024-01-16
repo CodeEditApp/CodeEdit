@@ -65,13 +65,25 @@ extension EditorManager {
     }
 
     /// Fixes any hanging files after restoring from saved state.
+    ///
+    /// Resolves all file references with the workspace's file manager to ensure any referenced files use their shared
+    /// object representation.
+    ///
     /// - Parameters:
     ///   - data: The tab group to fix.
     ///   - fileManager: The file manager to use to map files.a
     private func fixEditor(_ editor: Editor, fileManager: CEWorkspaceFileManager) {
-        editor.tabs = OrderedSet(editor.tabs.compactMap { fileManager.getFile($0.url.path, createIfNotFound: true) })
+        let resolvedTabs = editor
+            .tabs
+            .compactMap({ fileManager.getFile($0.file.url.path(), createIfNotFound: true) })
+            .map({ EditorInstance(file: $0) })
+        editor.tabs = OrderedSet(resolvedTabs)
         if let selectedTab = editor.selectedTab {
-            editor.selectedTab = fileManager.getFile(selectedTab.url.path, createIfNotFound: true)
+            if let resolvedFile = fileManager.getFile(selectedTab.file.url.path(), createIfNotFound: true) {
+                editor.selectedTab = EditorInstance(file: resolvedFile)
+            } else {
+                editor.selectedTab = nil
+            }
         }
     }
 
