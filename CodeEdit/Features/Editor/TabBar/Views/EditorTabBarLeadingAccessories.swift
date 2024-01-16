@@ -15,25 +15,19 @@ struct EditorTabBarLeadingAccessories: View {
 
     @EnvironmentObject private var editor: Editor
 
+    @State private var otherEditor: Editor?
+
     @AppSettings(\.general.tabBarStyle)
     var tabBarStyle
 
     var body: some View {
         HStack(spacing: 0) {
-            if let otherGroup = editorManager.editorLayout.findSomeEditor(except: editor) {
+            if let otherEditor {
                 EditorTabBarAccessoryIcon(
                     icon: .init(systemName: "multiply"),
                     action: { [weak editor] in
-                        editor?.close()
-                        if editorManager.activeEditor == editor {
-                            editorManager.activeEditorHistory.removeAll { $0() == nil || $0() == editor }
-                            if editorManager.activeEditorHistory.isEmpty {
-                                editorManager.activeEditor = otherGroup
-                            } else {
-                                editorManager.activeEditor = editorManager.activeEditorHistory.removeFirst()()!
-                            }
-                        }
-                        editorManager.flatten()
+                        guard let editor else { return }
+                        editorManager.closeEditor(editor)
                     }
                 )
                 .help("Close this Editor")
@@ -48,10 +42,7 @@ struct EditorTabBarLeadingAccessories: View {
                     ),
                     isActive: editorManager.isFocusingActiveEditor,
                     action: {
-                        if !editorManager.isFocusingActiveEditor {
-                            editorManager.activeEditor = editor
-                        }
-                        editorManager.isFocusingActiveEditor.toggle()
+                        editorManager.toggleFocusingEditor(from: editor)
                     }
                 )
                 .help(
@@ -136,6 +127,12 @@ struct EditorTabBarLeadingAccessories: View {
             if tabBarStyle == .native {
                 EditorTabBarAccessoryNativeBackground(dividerAt: .trailing)
             }
+        }
+        .onAppear {
+            otherEditor = editorManager.editorLayout.findSomeEditor(except: editor)
+        }
+        .onReceive(editorManager.objectWillChange) { _ in
+            otherEditor = editorManager.editorLayout.findSomeEditor(except: editor)
         }
     }
 }

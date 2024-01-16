@@ -13,7 +13,7 @@ struct HistoryInspectorView: View {
 
     @ObservedObject private var model: HistoryInspectorModel
 
-    @State var selectedCommitHistory: GitCommit?
+    @State var selection: GitCommit?
 
     /// Initialize with GitClient
     /// - Parameter gitClient: a GitClient
@@ -26,16 +26,15 @@ struct HistoryInspectorView: View {
             if model.sourceControlManager != nil {
                 VStack {
                     if model.commitHistory.isEmpty {
-                        HistoryInspectorNoHistoryView()
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        CEContentUnavailableView("No History")
                     } else {
-                        List(selection: $selectedCommitHistory) {
+                        List(selection: $selection) {
                             ForEach(model.commitHistory) { commit in
-                                HistoryInspectorItemView(commit: commit, selection: $selectedCommitHistory)
+                                HistoryInspectorItemView(commit: commit, selection: $selection)
                                     .tag(commit)
+                                    .listRowSeparator(.hidden)
                             }
                         }
-                        .listStyle(.inset)
                     }
                 }
             } else {

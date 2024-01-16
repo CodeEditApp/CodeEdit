@@ -40,7 +40,7 @@ final class HistoryInspectorModel: ObservableObject {
         do {
             let commitHistory = try await sourceControlManager
                 .gitClient
-                .getCommitHistory(entries: 40, fileLocalPath: fileURL)
+                .getCommitHistory(maxCount: 40, fileLocalPath: fileURL)
             await setCommitHistory(commitHistory)
         } catch {
             await setCommitHistory([])
