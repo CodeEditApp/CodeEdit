@@ -39,36 +39,36 @@ struct EditorTabBarContextMenu: ViewModifier {
             Group {
                 Button("Close Tab") {
                     withAnimation {
-                        tabs.closeTab(item: item)
+                        tabs.closeTab(file: item)
                     }
                 }
                 .keyboardShortcut("w", modifiers: [.command])
 
                 Button("Close Other Tabs") {
                     withAnimation {
-                        tabs.tabs.forEach { file in
+                        tabs.tabs.map({ $0.file }).forEach { file in
                             if file != item {
-                                tabs.closeTab(item: file)
+                                tabs.closeTab(file: file)
                             }
                         }
                     }
                 }
                 Button("Close Tabs to the Right") {
                     withAnimation {
-                        if let index = tabs.tabs.firstIndex(of: item) {
+                        if let index = tabs.tabs.firstIndex(where: { $0.file == item }) {
                             tabs.tabs[index...].forEach {
-                                tabs.closeTab(item: $0)
+                                tabs.closeTab(file: $0.file)
                             }
                         }
                     }
                 }
                 // Disable this option when current tab is the last one.
-                .disabled(tabs.tabs.last == item)
+                .disabled(tabs.tabs.last?.file == item)
 
                 Button("Close All") {
                     withAnimation {
                         tabs.tabs.forEach {
-                            tabs.closeTab(item: $0)
+                            tabs.closeTab(file: $0.file)
                         }
                     }
                 }
@@ -138,7 +138,7 @@ struct EditorTabBarContextMenu: ViewModifier {
     func moveToNewSplit(_ edge: Edge) {
         let newEditor = Editor(files: [item])
         splitEditor(edge, newEditor)
-        tabs.closeTab(item: item)
+        tabs.closeTab(file: item)
         workspace.editorManager.activeEditor = newEditor
     }
 

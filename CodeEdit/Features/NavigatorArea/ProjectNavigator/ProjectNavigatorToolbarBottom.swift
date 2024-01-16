@@ -74,13 +74,13 @@ struct ProjectNavigatorToolbarBottom: View {
     /// active tab, fallbacks to the workspace's root directory
     private func activeTabURL() -> URL {
         if let selectedTab = editorManager.activeEditor.selectedTab {
-            if selectedTab.isFolder {
-                return selectedTab.url
+            if selectedTab.file.isFolder {
+                return selectedTab.file.url
             }
 
             // If the current active tab belongs to a file, pop the filename from
             // the path URL to retrieve the folder URL
-            let activeTabFileURL = selectedTab.url
+            let activeTabFileURL = selectedTab.file.url
 
             if URLComponents(url: activeTabFileURL, resolvingAgainstBaseURL: false) != nil {
                 var pathComponents = activeTabFileURL.pathComponents

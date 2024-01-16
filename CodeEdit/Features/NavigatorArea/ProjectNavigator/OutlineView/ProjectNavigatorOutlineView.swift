@@ -35,7 +35,7 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
         nsViewController.shownFileExtensions = prefs.preferences.general.shownFileExtensions
         nsViewController.hiddenFileExtensions = prefs.preferences.general.hiddenFileExtensions
         /// if the window becomes active from background, it will restore the selection to outline view.
-        nsViewController.updateSelection(itemID: workspace.editorManager.activeEditor.selectedTab?.id)
+        nsViewController.updateSelection(itemID: workspace.editorManager.activeEditor.selectedTab?.file.id)
         return
     }
 
@@ -74,7 +74,7 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
                 outlineView.reloadItem(item, reloadChildren: true)
             }
 
-            controller?.updateSelection(itemID: workspace.editorManager.activeEditor.selectedTab?.id)
+            controller?.updateSelection(itemID: workspace.editorManager.activeEditor.selectedTab?.file.id)
         }
 
         deinit {

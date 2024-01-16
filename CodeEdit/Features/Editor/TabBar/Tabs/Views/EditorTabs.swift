@@ -224,7 +224,7 @@ struct EditorTabs: View {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.40) {
                     if draggingStartLocation == nil {
                         editor.tabs = .init(openedTabs.compactMap { id in
-                            editor.tabs.first { $0.id == id }
+                            editor.tabs.first { $0.file.id == id }
                         })
                         // workspace.reorderedTabs(openedTabs: openedTabs)
                         // TODO: Fix save state
@@ -261,7 +261,7 @@ struct EditorTabs: View {
     /// Called when the tab count changes or the temporary tab changes.
     /// - Parameter geometryProxy: The geometry proxy to calculate the new width using.
     private func updateForTabCountChange(geometryProxy: GeometryProxy) {
-        openedTabs = editor.tabs.map(\.id)
+        openedTabs = editor.tabs.map(\.file.id)
 
         // Only update the expected width when user is not hovering over tabs.
         // This should give users a better experience on closing multiple tabs continuously.
@@ -288,10 +288,10 @@ struct EditorTabs: View {
                         spacing: -1 // Negative spacing for overlapping the divider.
                     ) {
                         ForEach(Array(openedTabs.enumerated()), id: \.element) { index, id in
-                            if let item = editor.tabs.first(where: { $0.id == id }) {
+                            if let item = editor.tabs.first(where: { $0.file.id == id }) {
                                 EditorTabView(
                                     expectedWidth: expectedTabWidth,
-                                    item: item,
+                                    item: item.file,
                                     index: index,
                                     draggingTabId: draggingTabId,
                                     onDragTabId: onDragTabId,
@@ -329,7 +329,7 @@ struct EditorTabs: View {
                     // This padding is to hide dividers at two ends under the accessory view divider.
                     .padding(.horizontal, tabBarStyle == .native ? -1 : 0)
                     .onAppear {
-                        openedTabs = editor.tabs.map(\.id)
+                        openedTabs = editor.tabs.map(\.file.id)
                         // On view appeared, compute the initial expected width for tabs.
                         updateExpectedTabWidth(proxy: geometryProxy)
                         // On first tab appeared, jump to the corresponding position.
@@ -348,14 +348,14 @@ struct EditorTabs: View {
                         Task {
                             try? await Task.sleep(for: .milliseconds(300))
                             withAnimation {
-                                scrollReader.scrollTo(editor.selectedTab?.id)
+                                scrollReader.scrollTo(editor.selectedTab?.file.id)
                             }
                         }
                     }
                     // When selected tab is changed, scroll to it if possible.
                     .onChange(of: editor.selectedTab) { newValue in
                         withAnimation {
-                            scrollReader.scrollTo(newValue?.id)
+                            scrollReader.scrollTo(newValue?.file.id)
                         }
                     }
 
@@ -363,7 +363,7 @@ struct EditorTabs: View {
                     .onChange(of: geometryProxy.size.width) { _ in
                         updateExpectedTabWidth(proxy: geometryProxy)
                         withAnimation {
-                            scrollReader.scrollTo(editor.selectedTab?.id)
+                            scrollReader.scrollTo(editor.selectedTab?.file.id)
                         }
                     }
                     // When user is not hovering anymore, re-compute the expected tab width immediately.

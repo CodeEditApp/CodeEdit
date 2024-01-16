@@ -74,7 +74,7 @@ class EditorManager: ObservableObject {
     ///   - editor: The editor to add the tab to. If nil, it is added to the active tab group.
     func openTab(item: CEWorkspaceFile, in editor: Editor? = nil) {
         let editor = editor ?? activeEditor
-        editor.openTab(item: item)
+        editor.openTab(file: item)
     }
 
     /// bind active tap group to listen to file selection changes.
@@ -83,7 +83,7 @@ class EditorManager: ObservableObject {
         cancellable = nil
         cancellable = activeEditor.$selectedTab
             .sink { [weak self] tab in
-                self?.tabBarTabIdSubject.send(tab?.id)
+                self?.tabBarTabIdSubject.send(tab?.file.id)
             }
     }
 

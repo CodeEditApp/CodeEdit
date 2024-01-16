@@ -65,13 +65,25 @@ extension EditorManager {
     }
 
     /// Fixes any hanging files after restoring from saved state.
+    ///
+    /// Resolves all file references with the workspace's file manager to ensure any referenced files use their shared
+    /// object representation.
+    ///
     /// - Parameters:
     ///   - data: The tab group to fix.
     ///   - fileManager: The file manager to use to map files.a
     private func fixEditor(_ editor: Editor, fileManager: CEWorkspaceFileManager) {
-        editor.tabs = OrderedSet(editor.tabs.compactMap { fileManager.getFile($0.url.path, createIfNotFound: true) })
+        let resolvedTabs = editor
+            .tabs
+            .compactMap({ fileManager.getFile($0.file.url.path(), createIfNotFound: true) })
+            .map({ EditorInstance(file: $0) })
+        editor.tabs = OrderedSet(resolvedTabs)
         if let selectedTab = editor.selectedTab {
-            editor.selectedTab = fileManager.getFile(selectedTab.url.path, createIfNotFound: true)
+            if let resolvedFile = fileManager.getFile(selectedTab.file.url.path(), createIfNotFound: true) {
+                editor.selectedTab = EditorInstance(file: resolvedFile)
+            } else {
+                editor.selectedTab = nil
+            }
         }
     }
 
@@ -187,7 +199,7 @@ extension Editor: Codable {
         let id = try container.decode(UUID.self, forKey: .id)
         self.init(
             files: OrderedSet(fileURLs.map { CEWorkspaceFile(url: $0) }),
-            selectedTab: selectedTab == nil ? nil : CEWorkspaceFile(url: selectedTab!),
+            selectedTab: selectedTab == nil ? nil : EditorInstance(file: CEWorkspaceFile(url: selectedTab!)),
             parent: nil
         )
         self.id = id
@@ -195,8 +207,8 @@ extension Editor: Codable {
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(tabs.map { $0.url }, forKey: .tabs)
-        try container.encode(selectedTab?.url, forKey: .selectedTab)
+        try container.encode(tabs.map { $0.file.url }, forKey: .tabs)
+        try container.encode(selectedTab?.file.url, forKey: .selectedTab)
         try container.encode(id, forKey: .id)
     }
 }
