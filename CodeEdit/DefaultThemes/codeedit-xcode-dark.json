@@ -9,52 +9,52 @@
     "description" : "Xcode dark theme.",
     "editor" : {
         "strings" : {
-            "color" : "#FC6A5D"
+            "color" : "#FF8A7A"
         },
         "comments" : {
-            "color" : "#73A74E"
+            "color" : "#8DBF67"
         },
         "numbers" : {
-            "color" : "#D0BF69"
+            "color" : "#D9C668"
         },
         "commands" : {
-            "color" : "#67B7A4"
+            "color" : "#83C9BC"
         },
         "lineHighlight" : {
-            "color" : "#23252B"
+            "color" : "#2F3139"
         },
         "values" : {
-            "color" : "#A167E6"
+            "color" : "#CDA1FF"
         },
         "background" : {
-            "color" : "#1F1F24"
+            "color" : "#201E24"
         },
         "keywords" : {
-            "color" : "#FF7AB3"
+            "color" : "#FF85B8"
         },
         "text" : {
-            "color" : "#D9D9D9"
+            "color" : "#FFFFFF"
         },
         "insertionPoint" : {
-            "color" : "#D9D9D9"
+            "color" : "#FFFFFF"
         },
         "selection" : {
-            "color" : "#515B70"
+            "color" : "#434D5D"
         },
         "types" : {
-            "color" : "#5DD8FF"
+            "color" : "#6BDFFF"
         },
         "variables" : {
-            "color" : "#41A1C0"
+            "color" : "#4EC4E6"
         },
         "attributes" : {
-            "color" : "#D0A8FF"
+            "color" : "#E8B68B"
         },
         "characters" : {
-            "color" : "#D0BF69"
+            "color" : "#D9C668"
         },
         "invisibles" : {
-            "color" : "#424D5B"
+            "color" : "#53606E"
         }
     },
     "terminal" : {
@@ -83,13 +83,13 @@
             "color" : "#28CD41"
         },
         "background" : {
-            "color" : "#1F2024"
+            "color" : "#1F1F24"
         },
         "cursor" : {
-            "color" : "#D9D9D9"
+            "color" : "#FFFFFF"
         },
         "selection" : {
-            "color" : "#515B70"
+            "color" : "#646F83"
         },
         "magenta" : {
             "color" : "#AF52DE"
@@ -98,7 +98,7 @@
             "color" : "#1F2024"
         },
         "text" : {
-            "color" : "#D9D9D9"
+            "color" : "#FFFFFF"
         },
         "brightWhite" : {
             "color" : "#FFFFFF"
