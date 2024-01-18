@@ -15,7 +15,8 @@ struct FileCommands: Commands {
         CommandGroup(replacing: .newItem) {
             Group {
                 Button("New") {
-                    NSDocumentController.shared.newDocument(nil)
+                    createNewFile()
+//                    NSDocumentController.shared.newDocument(nil)
                 }
                 .keyboardShortcut("n")
 
@@ -72,4 +73,79 @@ struct FileCommands: Commands {
             .keyboardShortcut("s")
         }
     }
+
+    // TODO: This logic needs to become a command, not a function bound to the MenuBar
+    private func createNewFile() {
+        guard let windowController = getCurrentCEWindowController() else { return }
+
+        let fileManager = FileManager.default
+        let workspaceName = windowController.workspace?.workspaceFileManager?.folderUrl.lastPathComponent
+
+        var hashedWorkspaceName = "no-workspace".md5()
+        if let workspaceName {
+            hashedWorkspaceName = workspaceName.md5()
+        }
+
+        let tempStorageDir = CodeEditApp.applicationSupportURL
+            .appendingPathComponent("workspaces/\(hashedWorkspaceName)", isDirectory: true)
+
+        do {
+            try createDirectoryIfNotExists(atPath: tempStorageDir.path)
+
+            let probableNumber = try predictNextTempFileNumber(in: tempStorageDir)
+
+            let filename = "untitled-\(probableNumber)"
+            let tempFileURL = tempStorageDir.appending(path: filename)
+            fileManager.createFile(atPath: tempFileURL.path(percentEncoded: false), contents: nil)
+            print("Saving new file at: \(tempFileURL.path)")
+
+            let file = CEWorkspaceFile(url: tempFileURL)
+            windowController.workspace?.tabManager.openTab(item: file)
+        } catch {
+            print(error)
+            let alert = NSAlert()
+            alert.messageText = "Error"
+            alert.informativeText = "An error occurred. Please try again later."
+            alert.alertStyle = .critical
+            alert.addButton(withTitle: "OK")
+            alert.runModal()
+        }
+    }
+
+    private func getCurrentCEWindowController() -> CodeEditWindowController? {
+        return NSApp.keyWindow?.windowController as? CodeEditWindowController
+    }
+
+    /// Creates a directory at a given path if it's not present
+    /// - Parameter path: The path where the directory should be created
+    private func createDirectoryIfNotExists(atPath path: String) throws {
+        let fileManager = FileManager.default
+
+        var isDir: ObjCBool = true
+        let directoryExists = fileManager.fileExists(atPath: path, isDirectory: &isDir)
+
+        if !directoryExists {
+            try fileManager.createDirectory(atPath: path, withIntermediateDirectories: true)
+        }
+    }
+
+    private func predictNextTempFileNumber(in tempStorageDir: URL) throws -> Int {
+        let fileManager = FileManager.default
+
+        let fileNumbers = try fileManager.contentsOfDirectory(atPath: tempStorageDir.path)
+            .compactMap { return $0.split(separator: "-").last }
+            .compactMap { Int($0) }
+            .sorted()
+
+        var probableNumber = fileNumbers.first ?? 1
+        for number in fileNumbers {
+            if probableNumber != number {
+                break
+            }
+            probableNumber += 1
+        }
+
+        return probableNumber
+    }
+
 }

@@ -50,7 +50,7 @@ final class Settings: ObservableObject {
     /// `~/Library/Application Support/CodeEdit/settings.json`
     private func loadSettings() -> SettingsData {
         if !filemanager.fileExists(atPath: settingsURL.path) {
-            try? filemanager.createDirectory(at: baseURL, withIntermediateDirectories: false)
+            try? filemanager.createDirectory(at: CodeEditApp.applicationSupportURL, withIntermediateDirectories: false)
             return .init()
         }
 
@@ -65,7 +65,7 @@ final class Settings: ObservableObject {
     /// Save``Settings`` model to
     /// `~/Library/Application Support/CodeEdit/settings.json`
     private func savePreferences(_ data: SettingsData) throws {
-        print("Saving...")
+        print("Saving preferences...")
         let data = try JSONEncoder().encode(data)
         let json = try JSONSerialization.jsonObject(with: data)
         let prettyJSON = try JSONSerialization.data(withJSONObject: json, options: [.prettyPrinted])
@@ -75,20 +75,11 @@ final class Settings: ObservableObject {
     /// Default instance of the `FileManager`
     private let filemanager = FileManager.default
 
-    /// The base URL of settings.
-    ///
-    /// Points to `~/Library/Application Support/CodeEdit/`
-    internal var baseURL: URL {
-        filemanager
-            .homeDirectoryForCurrentUser
-            .appendingPathComponent("Library/Application Support/CodeEdit", isDirectory: true)
-    }
-
     /// The URL of the `settings.json` settings file.
     ///
     /// Points to `~/Library/Application Support/CodeEdit/settings.json`
     private var settingsURL: URL {
-        baseURL
+        CodeEditApp.applicationSupportURL
             .appendingPathComponent("settings")
             .appendingPathExtension("json")
     }
