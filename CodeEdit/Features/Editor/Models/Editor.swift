@@ -247,9 +247,9 @@ final class Editor: ObservableObject, Identifiable {
     private func canCloseTab(file: CEWorkspaceFile) -> Bool {
         guard let codeFile = file.fileDocument else { return true }
 
-        if file.isDocumentEdited {
-            if item.isScratch {
-                return openDraftSavePanel(for: item)
+        if codeFile.isDocumentEdited {
+            if file.isScratch {
+                return openDraftSavePanel(for: file)
             }
 
             let shouldClose = UnsafeMutablePointer<Bool>.allocate(capacity: 1)
@@ -267,12 +267,12 @@ final class Editor: ObservableObject, Identifiable {
             return shouldClose.pointee
         }
 
-        if item.isScratch {
+        if file.isScratch {
             let fileManager = FileManager.default
 
-            if fileManager.fileExists(atPath: item.url.path) {
+            if fileManager.fileExists(atPath: file.url.path) {
                 do {
-                    try fileManager.removeItem(at: item.url)
+                    try fileManager.removeItem(at: file.url)
                 } catch {
                     fatalError(error.localizedDescription)
                 }

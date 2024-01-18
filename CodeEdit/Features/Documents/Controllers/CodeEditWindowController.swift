@@ -219,8 +219,8 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         }
     }
 
-    private func getSelectedCodeFile() -> CodeFileDocument? {
-        workspace?.editorManager.activeEditor.selectedTab?.file.fileDocument
+    private func getCurrentWorkspaceFile() -> CEWorkspaceFile? {
+        return workspace?.editorManager.activeEditor.selectedTab?.file
     }
 
     private func saveDocumentAs(_ file: CEWorkspaceFile, _ sender: Any) {
