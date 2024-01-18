@@ -286,6 +286,8 @@ final class Editor: ObservableObject, Identifiable {
     ///
     /// (A draft file is a file that has been created
     /// but is not saved anywhere outside the CodeEdit 'Application Support' folder)
+    ///  - Parameters:
+    ///     - file: The draft file to be sa
     /// - Returns: A boolean that tells whether the tab can be closed
     private func openDraftSavePanel(for file: CEWorkspaceFile) -> Bool {
         guard let currentWindow = NSApp.keyWindow else { return false }

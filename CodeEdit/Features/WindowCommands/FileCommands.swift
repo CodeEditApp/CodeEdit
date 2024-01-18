@@ -73,17 +73,13 @@ struct FileCommands: Commands {
         }
     }
 
-    // TODO: This logic needs to become a command, not a function bound to the MenuBar
     private func createNewFile() {
         guard let windowController = getCurrentCEWindowController() else { return }
 
         let fileManager = FileManager.default
         let workspaceName = windowController.workspace?.workspaceFileManager?.folderUrl.lastPathComponent
 
-        var hashedWorkspaceName = "no-workspace".md5()
-        if let workspaceName {
-            hashedWorkspaceName = workspaceName.md5()
-        }
+        var hashedWorkspaceName = (workspaceName ?? "no-workspace").md5()
 
         let tempStorageDir = CodeEditApp.applicationSupportURL
             .appendingPathComponent("workspaces/\(hashedWorkspaceName)", isDirectory: true)
@@ -104,7 +100,7 @@ struct FileCommands: Commands {
             print(error)
             let alert = NSAlert()
             alert.messageText = "Error"
-            alert.informativeText = "An error occurred. Please try again later."
+            alert.informativeText = "An error occurred: \(error.localizedDescription)."
             alert.alertStyle = .critical
             alert.addButton(withTitle: "OK")
             alert.runModal()
