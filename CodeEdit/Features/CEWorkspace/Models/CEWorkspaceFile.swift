@@ -122,6 +122,12 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
         try? url.resourceValues(forKeys: [.contentTypeKey]).contentType
     }
 
+    /// When a file is created directly into the editor, it will be stored in a temporary folder. 
+    /// With this variable it is possible to check if this file is such a temporal file
+    var isScratch: Bool {
+        url.absoluteString.contains(/\/Users\/[0-9a-zA-Z]+\/Library\/Application%20Support\/CodeEdit/)
+    }
+
     /// Returns a `Color` for a specific `fileType`
     ///
     /// If not specified otherwise this will return `Color.accentColor`

@@ -10,11 +10,22 @@ import WindowManagement
 
 @main
 struct CodeEditApp: App {
-    @NSApplicationDelegateAdaptor var appdelegate: AppDelegate
+
+    /// The base URL of CodeEdit
+    ///
+    /// Points to `~/Library/Application Support/CodeEdit/`
+    static var applicationSupportURL: URL {
+        FileManager
+            .default
+            .homeDirectoryForCurrentUser
+            .appendingPathComponent("Library/Application Support/CodeEdit", isDirectory: true)
+    }
+
     @ObservedObject var settings = Settings.shared
+    @NSApplicationDelegateAdaptor var appDelegate: AppDelegate
 
     @Environment(\.openWindow)
-    var openWindow
+    private var openWindow
 
     let updater: SoftwareUpdater = SoftwareUpdater()
 

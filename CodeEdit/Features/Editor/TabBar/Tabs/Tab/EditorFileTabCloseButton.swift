@@ -36,7 +36,7 @@ struct EditorFileTabCloseButton: View {
             self.id += 1
         })
         .onReceive(
-            item.fileDocument?.isDocumentEditedPublisher.eraseToAnyPublisher() ?? Empty().eraseToAnyPublisher()
+            item.fileDocument?.isDocumentEditedPublisher ?? Empty().eraseToAnyPublisher()
         ) { newValue in
             self.isDocumentEdited = newValue
         }

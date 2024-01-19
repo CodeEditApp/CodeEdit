@@ -5,10 +5,10 @@
 //  Created by Wouter Hennen on 16/02/2023.
 //
 
+import AppKit
+import DequeModule
 import Foundation
 import OrderedCollections
-import DequeModule
-import AppKit
 
 final class Editor: ObservableObject, Identifiable {
     typealias Tab = EditorInstance
@@ -248,6 +248,10 @@ final class Editor: ObservableObject, Identifiable {
         guard let codeFile = file.fileDocument else { return true }
 
         if codeFile.isDocumentEdited {
+            if file.isScratch {
+                return openDraftSavePanel(for: file)
+            }
+
             let shouldClose = UnsafeMutablePointer<Bool>.allocate(capacity: 1)
             shouldClose.initialize(to: true)
             defer {
@@ -263,7 +267,55 @@ final class Editor: ObservableObject, Identifiable {
             return shouldClose.pointee
         }
 
+        if file.isScratch {
+            let fileManager = FileManager.default
+
+            if fileManager.fileExists(atPath: file.url.path) {
+                do {
+                    try fileManager.removeItem(at: file.url)
+                } catch {
+                    fatalError(error.localizedDescription)
+                }
+            }
+        }
+
         return true
+    }
+
+    /// Opens a custom NSAlert for saving a draft file
+    ///
+    /// (A draft file is a file that has been created
+    /// but is not saved anywhere outside the CodeEdit 'Application Support' folder)
+    ///  - Parameters:
+    ///     - file: The draft file to be sa
+    /// - Returns: A boolean that tells whether the tab can be closed
+    private func openDraftSavePanel(for file: CEWorkspaceFile) -> Bool {
+        guard let currentWindow = NSApp.keyWindow else { return false }
+
+        let alert = NSAlert()
+        alert.messageText = "Do you want to save the contens of the scratch file \"\(file.name)\"?"
+        alert.informativeText = "Your changes will be lost if you don’t save them."
+        alert.addButton(withTitle: "Save")
+        alert.addButton(withTitle: "Don't save").hasDestructiveAction = true
+        alert.addButton(withTitle: "Cancel")
+        let response = alert.runModal()
+        if response == NSApplication.ModalResponse.alertFirstButtonReturn {
+            NSApp.sendAction(#selector(CodeEditWindowController.saveDocument(_:)), to: nil, from: nil)
+            return true
+        }
+        if response == NSApplication.ModalResponse.alertSecondButtonReturn {
+            let fileManager = FileManager.default
+
+            if fileManager.fileExists(atPath: file.url.path) {
+                do {
+                    try fileManager.removeItem(at: file.url)
+                } catch {
+                    fatalError(error.localizedDescription)
+                }
+            }
+            return true
+        }
+        return false
     }
 
     /// Receives result of `canClose` and then, set `shouldClose` to `contextInfo`'s `pointee`.
@@ -275,7 +327,7 @@ final class Editor: ObservableObject, Identifiable {
     ///   - contextInfo: The additional info which will be set `shouldClose`.
     ///       `contextInfo` must be `UnsafeMutablePointer<Bool>`.
     @objc
-    func document(
+    private func document(
         _ document: NSDocument,
         shouldClose: Bool,
         contextInfo: UnsafeMutableRawPointer
