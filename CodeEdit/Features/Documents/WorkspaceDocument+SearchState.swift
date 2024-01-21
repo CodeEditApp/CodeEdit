@@ -2,7 +2,7 @@
 //  WorkspaceDocument+SearchState.swift
 //  CodeEdit
 //
-//  Created by Tom Ludwig on 30.04.22.
+//  Created by Tom Ludwig on 16.01.24.
 //
 
 import Foundation

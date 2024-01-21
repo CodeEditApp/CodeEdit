@@ -43,9 +43,25 @@ struct FindNavigatorView: View {
             case .none:
                 Spacer()
             case .searching:
-                CEContentUnavailableView("Searching...")
+                VStack {
+                    ProgressView()
+                        .padding()
+
+                    Text("Searching")
+                        .foregroundStyle(.tertiary)
+                        .font(.title3)
+                }
+                .frame(maxHeight: .infinity)
             case .replacing:
-                CEContentUnavailableView("Replacing...")
+                VStack {
+                    ProgressView()
+                        .padding()
+
+                    Text("Replacing")
+                        .foregroundStyle(.tertiary)
+                        .font(.title3)
+                }
+                .frame(maxHeight: .infinity)
             case .found:
                 if self.searchResultCount == 0 {
                     CEContentUnavailableView(
@@ -60,7 +76,7 @@ struct FindNavigatorView: View {
                 CEContentUnavailableView(
                     "Replaced",
                     description: "Successfully replaced terms across \(updatedFiles) files",
-                    systemImage: "checkmark.diamond.fill"
+                    systemImage: "checkmark.circle.fill"
                 )
             case .failed(let errorMessage):
                 CEContentUnavailableView(
