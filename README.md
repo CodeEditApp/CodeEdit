@@ -32,6 +32,7 @@ CodeEdit is a code editor built by the community, for the community, written ent
 - [Motivation](#motivation)
 - [Mission](#mission)
 - [Community](#community)
+- [Activity](#activity)
 - [Contributing](#contributing)
 - [Contributors](#contributors)
 - [Sponsors](#sponsors)
@@ -64,6 +65,10 @@ Join our growing community on [Discord](https://discord.gg/vChUXVf9Em) and [GitH
 > We hold a weekly meetup on Discord **every Saturday at 3pm UTC** where we discuss latests development, feature requests, goals, and priorities.
 > 
 > [**Join us**](https://discord.gg/KvdE3wYKNR?event=1189275961456336937)
+> 
+## Activity
+
+<img src="https://repobeats.axiom.co/api/embed/acd5eeb654fc98f6ffbce26b09fd0e3603edf1fd.svg" alt="CodeEdit Repository Activity" width="100%" />
 
 ## Contributing
 
