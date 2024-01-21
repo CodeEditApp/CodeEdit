@@ -1,15 +1,15 @@
 //
-//  WorkspaceDocument+Search.swift
+//  WorkspaceDocument+SearchState.swift
 //  CodeEdit
 //
-//  Created by Pavel Kasila on 30.04.22.
+//  Created by Tom Ludwig on 30.04.22.
 //
 
 import Foundation
 
 extension WorkspaceDocument {
     final class SearchState: ObservableObject {
-        enum IndexStatus {
+        enum IndexStatus: Equatable {
             case none
             case indexing(progress: Double)
             case done

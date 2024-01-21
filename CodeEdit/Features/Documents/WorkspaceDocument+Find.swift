@@ -36,11 +36,11 @@ extension WorkspaceDocument.SearchState {
     ///
     /// - Returns: A string representing the regular expression pattern based on the selected search mode.
     ///
-    /// - Note: This funciton is creating simmilar patterns to the 
+    /// - Note: This function is creating similar patterns to the
     /// ``WorkspaceDocument/SearchState-swift.class/getSearchTerm(_:)`` function,
     /// Except its using the word boundary anchor(\b) instead of the asterisk(\*).
-    /// This is needed to heightlight the search results correctly.
-    func getRegeXPattern(_ query: String) -> String {
+    /// This is needed to highlight the search results correctly.
+    func getRegexPattern(_ query: String) -> String {
         guard let mode = selectedMode.third else {
             return query
         }
@@ -82,9 +82,9 @@ extension WorkspaceDocument.SearchState {
 
         let searchQuery = getSearchTerm(query)
 
-        // The regeXPattern is only used for the evaluateFile funciton
-        // to ensure that the search terms are heightlighted correctly
-        let regeXPattern = getRegeXPattern(query)
+        // The regexPattern is only used for the evaluateFile function
+        // to ensure that the search terms are highlighted correctly
+        let regexPattern = getRegexPattern(query)
 
         guard let indexer = indexer else {
             await setStatus(.failed(errorMessage: "No index found. Try rebuilding the index."))
@@ -103,7 +103,7 @@ extension WorkspaceDocument.SearchState {
                     evaluateResultGroup.enter()
                     Task {
                         var newResult = SearchResultModel(file: CEWorkspaceFile(url: file.url), score: file.score)
-                        await self.evaluateFile(query: regeXPattern, searchResult: &newResult)
+                        await self.evaluateFile(query: regexPattern, searchResult: &newResult)
 
                         // Check if the new result has any line matches.
                         if !newResult.lineMatches.isEmpty {
@@ -177,7 +177,7 @@ extension WorkspaceDocument.SearchState {
             pattern: query,
             options: caseSensitive ? [] : [.caseInsensitive]
         ) else {
-            await setStatus(.failed(errorMessage: "Invalid regualar expression."))
+            await setStatus(.failed(errorMessage: "Invalid regular expression."))
             return
         }
 
@@ -284,14 +284,14 @@ extension WorkspaceDocument.SearchState {
     /// It considers the length of the search term to determine
     /// the lower and upper bounds of the keyword range within the line.
     private func extractKeywordRange(from preLine: String, matchWordLength: Int) -> Range<String.Index> {
-        let keywordLowerbound = preLine.index(
+        let keywordLowerBound = preLine.index(
             preLine.endIndex,
             offsetBy: -matchWordLength,
             limitedBy: preLine.startIndex
         ) ?? preLine.endIndex
-        let keywordUpperbound = preLine.endIndex
+        let keywordUpperBound = preLine.endIndex
 
-        return keywordLowerbound..<keywordUpperbound
+        return keywordLowerBound..<keywordUpperBound
     }
 
     /// Extracts the line following a matching occurrence within a file.

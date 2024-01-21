@@ -21,49 +21,64 @@ extension WorkspaceDocument.SearchState {
     func findAndReplace(query: String, replacingTerm: String) async throws {
         await setStatus(.replacing)
         let searchQuery = getSearchTerm(query)
-        guard let indexer = indexer else {
-            return
-        }
+        guard let indexer = indexer else { return }
 
-        var updatedFilesCount: Int = 0
-        var finishWithError: Bool = false
-        var errorMessage: String = ""
-
+        var errorCount: Int = 0, updatedFilesCount: Int = 0
         let asyncController = SearchIndexer.AsyncManager(index: indexer)
 
         let searchStream = await asyncController.search(query: searchQuery, 20)
-        for try await result in searchStream {
-            await withThrowingTaskGroup(of: Void.self) { group in
-                for file in result.results {
-                    updatedFilesCount += 1
 
-                    group.addTask {
+        for try await result in searchStream {
+            await withTaskGroup(of: Bool.self) { taskGroup in
+                for file in result.results {
+                    taskGroup.addTask {
                         do {
                             try await self.replaceOccurrencesInFile(
                                 fileURL: file.url,
                                 query: query,
                                 replacingTerm: replacingTerm
                             )
+                            return true
                         } catch {
-                            // Should set `finishWithError` and `errorMessage` here,
-                            // This isn't possible due to:
-                            // `Mutation of captured var 'errorMessage' in concurrently-executing code`
-                            await self.setStatus(.failed(errorMessage: error.localizedDescription))
+                            // TODO: Write log; issue number: #0000
+                            return false
                         }
+                    }
+                }
+
+                for await taskGroupResults in taskGroup {
+                    if taskGroupResults {
+                        updatedFilesCount += 1
+                    } else {
+                        errorCount += 1
                     }
                 }
             }
         }
 
-        // This is a sneaky workaround to display the error message,
-        // because else you'd get the following error: 
-        // `Mutation of captured var 'errorMessage' in concurrently-executing code`
-        if findNavigatorStatus == .replacing {
-            if updatedFilesCount == 0 {
-                await setStatus(.failed(errorMessage: "No files in the workspaced matched: \(query)"))
-            } else {
-                await setStatus(.replaced(updatedFiles: updatedFilesCount))
-            }
+        // Display the replacing results to the user
+        if updatedFilesCount == 0 && errorCount == 0 {
+            // No results where found
+            await setStatus(.failed(errorMessage: "No files in the workspace matched: \(query)"))
+        } else if updatedFilesCount == 0 && errorCount > 0 {
+            // All files failed to updated
+            await setStatus(
+                .failed(
+                    errorMessage: "All files failed to update. (\(errorCount)) " +
+                    "errors occurred. Check logs for more information"
+                )
+            )
+        } else if updatedFilesCount > 0 && errorCount > 0 {
+            // Some files updated successfully, some failed
+            await setStatus(
+                .failed(
+                    errorMessage: "\(updatedFilesCount) successfully updated, " +
+                    "\(errorCount) errors occurred. Please check logs for more information."
+                )
+            )
+        } else {
+            // Each files updated successfully
+            await setStatus(.replaced(updatedFiles: updatedFilesCount))
         }
     }
 
@@ -100,7 +115,7 @@ extension WorkspaceDocument.SearchState {
     ///   - replacingTerm: The string to replace the specified searchTerm.
     ///   - keywordRange: The range within which the replacement should occur.
     ///
-    /// - Note: This function  can be utilized for two specific use cases:
+    /// - Note: This function  can be utilised for two specific use cases:
     ///         1. To replace a particular occurrence of a string within a file,
     ///         provide the range of the keyword to be replaced.
     ///         2. To replace all occurrences of the string within the file,
@@ -114,7 +129,7 @@ extension WorkspaceDocument.SearchState {
         guard let fileContent = try? String(contentsOf: file, encoding: .utf8) else {
             let alert = NSAlert()
             alert.messageText = "Error"
-            alert.informativeText = "An error occured while reading file contents of: \(file)"
+            alert.informativeText = "An error occurred while reading file contents of: \(file)"
             alert.alertStyle = .critical
             alert.addButton(withTitle: "OK")
             alert.runModal()
