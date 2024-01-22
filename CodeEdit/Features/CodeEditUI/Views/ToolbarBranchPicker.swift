@@ -31,44 +31,40 @@ struct ToolbarBranchPicker: View {
     }
 
     var body: some View {
-        Menu(content: {
-            if let sourceControlManager = workspaceFileManager?.sourceControlManager {
-                PopoverView(sourceControlManager: sourceControlManager)
+        HStack(alignment: .center, spacing: 5) {
+            if currentBranch != nil {
+                Image.checkout
+                    .font(.title3)
+                    .imageScale(.large)
+                    .foregroundColor(controlActive == .inactive ? inactiveColor : .primary)
+            } else {
+                Image(systemName: "folder.fill.badge.gearshape")
+                    .font(.title3)
+                    .imageScale(.medium)
+                    .foregroundColor(controlActive == .inactive ? inactiveColor : .accentColor)
             }
-        }, label: {
-            HStack(alignment: .center, spacing: 5) {
-                if currentBranch != nil {
-                    Image.checkout
-                        .font(.title3)
-                        .imageScale(.large)
-                        .foregroundColor(controlActive == .inactive ? inactiveColor : .primary)
-                } else {
-                    Image(systemName: "folder.fill.badge.gearshape")
-                        .font(.title3)
-                        .imageScale(.medium)
-                        .foregroundColor(controlActive == .inactive ? inactiveColor : .accentColor)
-                }
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(title)
-                        .font(.headline)
-                        .foregroundColor(controlActive == .inactive ? inactiveColor : .primary)
-                        .frame(height: 16)
-                        .help(title)
-                    if let currentBranch {
-                        ZStack(alignment: .trailing) {
-                            Text(currentBranch.name)
-                                .padding(.trailing)
-                            if isHovering {
-                                Image(systemName: "chevron.down")
-                            }
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title)
+                    .font(.headline)
+                    .foregroundColor(controlActive == .inactive ? inactiveColor : .primary)
+                    .frame(height: 16)
+                    .help(title)
+                if let currentBranch {
+                    Menu(content: {
+                        if let sourceControlManager = workspaceFileManager?.sourceControlManager {
+                            PopoverView(sourceControlManager: sourceControlManager)
                         }
-                        .font(.subheadline)
-                        .foregroundColor(controlActive == .inactive ? inactiveColor : .secondary)
-                        .frame(height: 11)
-                    }
+                    }, label: {
+                        Text(currentBranch.name)
+                            .font(.subheadline)
+                            .foregroundColor(controlActive == .inactive ? inactiveColor : .secondary)
+                            .frame(height: 11)
+                    })
+                    .buttonStyle(.borderless)
+                    .padding(.leading, -3)
                 }
             }
-        })
+        }
         .onHover { active in
             isHovering = active
         }
