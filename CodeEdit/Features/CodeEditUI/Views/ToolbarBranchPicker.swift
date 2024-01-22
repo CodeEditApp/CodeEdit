@@ -50,32 +50,23 @@ struct ToolbarBranchPicker: View {
                     .frame(height: 16)
                     .help(title)
                 if let currentBranch {
-                    ZStack(alignment: .trailing) {
-                        Text(currentBranch.name)
-                            .padding(.trailing)
-                        if isHovering {
-                            Image(systemName: "chevron.down")
+                    Menu(content: {
+                        if let sourceControlManager = workspaceFileManager?.sourceControlManager {
+                            PopoverView(sourceControlManager: sourceControlManager)
                         }
-                    }
-                    .font(.subheadline)
-                    .foregroundColor(controlActive == .inactive ? inactiveColor : .secondary)
-                    .frame(height: 11)
+                    }, label: {
+                        Text(currentBranch.name)
+                            .font(.subheadline)
+                            .foregroundColor(controlActive == .inactive ? inactiveColor : .secondary)
+                            .frame(height: 11)
+                    })
+                    .buttonStyle(.borderless)
+                    .padding(.leading, -3)
                 }
-            }
-        }
-        .contentShape(Rectangle())
-        .onTapGesture {
-            if currentBranch != nil {
-                displayPopover.toggle()
             }
         }
         .onHover { active in
             isHovering = active
-        }
-        .popover(isPresented: $displayPopover, arrowEdge: .bottom) {
-            if let sourceControlManager = workspaceFileManager?.sourceControlManager {
-                PopoverView(sourceControlManager: sourceControlManager)
-            }
         }
         .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { (_) in
             Task {
