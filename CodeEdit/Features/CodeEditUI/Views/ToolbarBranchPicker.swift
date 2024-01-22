@@ -111,11 +111,43 @@ struct ToolbarBranchPicker: View {
 
                 let branches = sourceControlManager.branches
                     .filter({ $0.isLocal && $0 != sourceControlManager.currentBranch })
+                let branchesGroups = branches.reduce(into: [String: GitBranchesGroup]()) { result, branch in
+                    guard let branchPrefix = branch.name.components(separatedBy: "/").first else {
+                        return
+                    }
+
+                    result[
+                        branchPrefix,
+                        default: GitBranchesGroup(name: branchPrefix, branches: [])
+                    ].branches.append(branch)
+                }
+
                 if !branches.isEmpty {
                     VStack(alignment: .leading, spacing: 0) {
                         headerLabel("Branches")
-                        ForEach(branches, id: \.self) { branch in
-                            BranchCell(sourceControlManager: sourceControlManager, branch: branch)
+                        ForEach(branchesGroups.keys.sorted(), id: \.self) { branchGroupPrefix in
+                            if let group = branchesGroups[branchGroupPrefix] {
+                                if !group.shouldNest {
+                                    BranchCell(
+                                        sourceControlManager: sourceControlManager,
+                                        branch: group.branches.first!
+                                    )
+                                } else {
+                                    Menu(content: {
+                                        ForEach(group.branches, id: \.self) { branch in
+                                            BranchCell(
+                                                sourceControlManager: sourceControlManager,
+                                                branch: branch,
+                                                title: String(
+                                                    branch.name.suffix(branch.name.count - branchGroupPrefix.count - 1)
+                                                )
+                                            )
+                                        }
+                                    }, label: {
+                                        Text(group.name)
+                                    })
+                                }
+                            }
                         }
                     }
                 }
@@ -142,7 +174,20 @@ struct ToolbarBranchPicker: View {
         struct BranchCell: View {
             let sourceControlManager: SourceControlManager
             var branch: GitBranch
+            let title: String?
             var active: Bool = false
+
+            init(
+                sourceControlManager: SourceControlManager,
+                branch: GitBranch,
+                active: Bool = false,
+                title: String? = nil
+            ) {
+                self.sourceControlManager = sourceControlManager
+                self.branch = branch
+                self.active = active
+                self.title = title
+            }
 
             @Environment(\.dismiss)
             private var dismiss
@@ -155,7 +200,7 @@ struct ToolbarBranchPicker: View {
                 } label: {
                     HStack {
                         Label {
-                            Text(branch.name)
+                            Text(self.title ?? branch.name)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                         } icon: {
                             Image.checkout
