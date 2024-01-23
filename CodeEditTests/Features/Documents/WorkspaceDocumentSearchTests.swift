@@ -9,7 +9,6 @@ import XCTest
 @testable import CodeEdit
 
 final class WorkspaceDocumentSearchTests: XCTestCase {
-    private var app: XCUIApplication!
     private var directory: URL!
     private var files: [CEWorkspaceFile] = []
     private var mockWorkspace: WorkspaceDocument!
@@ -71,17 +70,7 @@ final class WorkspaceDocumentSearchTests: XCTestCase {
 
         await mockWorkspace.searchState?.addProjectToIndex()
 
-        print("Set up finished")
-    }
-
-    // MARK: - Tear down
-    /// The mock directory along with the mock files will be removed
-    override func tearDown() async throws {
-        try? FileManager.default.removeItem(at: directory)
-    }
-
-    /// Tests the successful addition of the workspace to the index.
-    func testAddProjectToIndex() async {
+        // The following code also tests whether the workspace is indexed correctly
         // Wait until the index is up to date and flushed
         while searchState.indexStatus != .done {
             // Check every 0.1 seconds for index completion
@@ -98,25 +87,16 @@ final class WorkspaceDocumentSearchTests: XCTestCase {
         XCTAssertEqual(documentsInIndex.count, 3)
     }
 
+    // MARK: - Tear down
+    /// The mock directory along with the mock files will be removed
+    override func tearDown() async throws {
+        try? FileManager.default.removeItem(at: directory)
+    }
+
     /// Tests the search functionality of the `WorkspaceDocument.SearchState` and `SearchIndexer`.
     func testSearch() async {
         let searchExpectation = XCTestExpectation(description: "Search for 'Ipsum'")
         let searchExpectation2 = XCTestExpectation(description: "Search for 'asperiores'")
-
-        // wait until the index is up to date and flushed
-        while searchState.indexStatus != .done {
-            // a check is performed every 0.1 seconds
-            try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
-        }
-
-        // Retrieve indexed documents from the indexer
-        guard let indexedDocuments = searchState.indexer?.documents() else {
-            XCTFail("No documents are in the index")
-            return
-        }
-
-        // Verify that the setup function added 3 mock files to the index
-        XCTAssertEqual(indexedDocuments.count, 3)
 
         Task {
             await searchState.search("Ipsum")
@@ -144,21 +124,6 @@ final class WorkspaceDocumentSearchTests: XCTestCase {
     func testSearchWithOptionContaining() async {
         let searchExpectation = XCTestExpectation(description: "Search for 'psu'")
         let searchExpectation2 = XCTestExpectation(description: "Search for 'erio'")
-
-        // wait until the index is up to date and flushed
-        while searchState.indexStatus != .done {
-            // a check is performed every 0.1 seconds
-            try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
-        }
-
-        // Retrieve indexed documents from the indexer
-        guard let indexedDocuments = searchState.indexer?.documents() else {
-            XCTFail("No documents are in the index")
-            return
-        }
-
-        // Verify that the setup function added 3 mock files to the index
-        XCTAssertEqual(indexedDocuments.count, 3)
 
         Task {
             await searchState.search("psu")
@@ -191,21 +156,6 @@ final class WorkspaceDocumentSearchTests: XCTestCase {
         let searchExpectation = XCTestExpectation(description: "Search for 'Ipsum'")
         let searchExpectation2 = XCTestExpectation(description: "Search for 'perior'")
 
-        // wait until the index is up to date and flushed
-        while searchState.indexStatus != .done {
-            // a check is performed every 0.1 seconds
-            try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
-        }
-
-        // Retrieve indexed documents from the indexer
-        guard let indexedDocuments = searchState.indexer?.documents() else {
-            XCTFail("No documents are in the index")
-            return
-        }
-
-        // Verify that the setup function added 3 mock files to the index
-        XCTAssertEqual(indexedDocuments.count, 3)
-
         // Set the search option to 'Matching Word'
         searchState.selectedMode[2] = .MatchingWord
 
@@ -236,21 +186,6 @@ final class WorkspaceDocumentSearchTests: XCTestCase {
         let searchExpectation = XCTestExpectation(description: "Search for 'Ip'")
         let searchExpectation2 = XCTestExpectation(description: "Search for 'res'")
 
-        // wait until the index is up to date and flushed
-        while searchState.indexStatus != .done {
-            // a check is performed every 0.1 seconds
-            try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
-        }
-
-        // Retrieve indexed documents from the indexer
-        guard let indexedDocuments = searchState.indexer?.documents() else {
-            XCTFail("No documents are in the index")
-            return
-        }
-
-        // Verify that the setup function added 3 mock files to the index
-        XCTAssertEqual(indexedDocuments.count, 3)
-
         // Set the search option to 'Matching Word'
         searchState.selectedMode[2] = .StartingWith
 
@@ -280,21 +215,6 @@ final class WorkspaceDocumentSearchTests: XCTestCase {
     func testSearchWithOptionEndingWith() async {
         let searchExpectation = XCTestExpectation(description: "Search for 'um'")
         let searchExpectation2 = XCTestExpectation(description: "Search for 'res'")
-
-        // wait until the index is up to date and flushed
-        while searchState.indexStatus != .done {
-            // a check is performed every 0.1 seconds
-            try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
-        }
-
-        // Retrieve indexed documents from the indexer
-        guard let indexedDocuments = searchState.indexer?.documents() else {
-            XCTFail("No documents are in the index")
-            return
-        }
-
-        // Verify that the setup function added 3 mock files to the index
-        XCTAssertEqual(indexedDocuments.count, 3)
 
         // Set the search option to 'Ending with'
         searchState.selectedMode[2] = .EndingWith
