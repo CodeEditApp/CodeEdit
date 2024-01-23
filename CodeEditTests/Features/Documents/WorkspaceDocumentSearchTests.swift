@@ -242,6 +242,36 @@ final class WorkspaceDocumentSearchTests: XCTestCase {
         XCTAssertEqual(searchResults2.count, 0)
     }
 
+    func testSearchWithOptionCaseSensitive() async {
+        let searchExpectation = XCTestExpectation(description: "Search for 'Ipsum'")
+        let searchExpectation2 = XCTestExpectation(description: "Search for 'asperiores'")
+
+        searchState.caseSensitive = true
+        Task {
+            await searchState.search("ipsum")
+            searchExpectation.fulfill()
+        }
+
+        // Wait for the first search expectation to be fulfilled
+        await fulfillment(of: [searchExpectation], timeout: 10)
+        // Retrieve the search results after the first search
+        let searchResults = searchState.searchResult
+
+        // Expecting a result count of 0 due to the intentional use of a lowercase 'i'
+        XCTAssertEqual(searchResults.count, 0)
+
+        Task {
+            await searchState.search("Asperiores")
+            searchExpectation2.fulfill()
+        }
+
+        await fulfillment(of: [searchExpectation2], timeout: 10)
+        let searchResults2 = searchState.searchResult
+
+        // Anticipating zero results since the search is case-sensitive and we used an uppercase 'A'
+        XCTAssertEqual(searchResults2.count, 0)
+    }
+
     func testSearchWithOptionRegularExpression() async { }
 
     func testFindAndReplace() async { }
