@@ -141,13 +141,186 @@ final class WorkspaceDocumentSearchTests: XCTestCase {
         XCTAssertEqual(searchResults2.count, 1)
     }
 
-    func testSearchWithOptionContaining() async { }
+    func testSearchWithOptionContaining() async {
+        let searchExpectation = XCTestExpectation(description: "Search for 'psu'")
+        let searchExpectation2 = XCTestExpectation(description: "Search for 'erio'")
 
-    func testSearchWithOptionMatchingWord() async { }
+        // wait until the index is up to date and flushed
+        while searchState.indexStatus != .done {
+            // a check is performed every 0.1 seconds
+            try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
+        }
 
-    func testSearchWithOptionStartingWith() async { }
+        // Retrieve indexed documents from the indexer
+        guard let indexedDocuments = searchState.indexer?.documents() else {
+            XCTFail("No documents are in the index")
+            return
+        }
 
-    func testSearchWithOptionEndingWith() async { }
+        // Verify that the setup function added 3 mock files to the index
+        XCTAssertEqual(indexedDocuments.count, 3)
+
+        Task {
+            await searchState.search("psu")
+            searchExpectation.fulfill()
+        }
+
+        // Wait for the first search expectation to be fulfilled
+        await fulfillment(of: [searchExpectation], timeout: 10)
+        // Retrieve the search results after the first search
+        let searchResults = searchState.searchResult
+
+        XCTAssertEqual(searchResults.count, 2)
+
+        Task {
+            await searchState.search("erio")
+            searchExpectation2.fulfill()
+        }
+
+        await fulfillment(of: [searchExpectation2], timeout: 10)
+        let searchResults2 = searchState.searchResult
+
+        XCTAssertEqual(searchResults2.count, 1)
+    }
+
+    /// This test verifies the accuracy of the word search feature.
+    /// It first checks for the presence of 'Ipsum,' as done in previous tests.
+    /// Following that, it examines the occurrence of the fragment 'perior,'
+    /// which is not a complete word in any of the documents
+    func testSearchWithOptionMatchingWord() async {
+        let searchExpectation = XCTestExpectation(description: "Search for 'Ipsum'")
+        let searchExpectation2 = XCTestExpectation(description: "Search for 'perior'")
+
+        // wait until the index is up to date and flushed
+        while searchState.indexStatus != .done {
+            // a check is performed every 0.1 seconds
+            try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
+        }
+
+        // Retrieve indexed documents from the indexer
+        guard let indexedDocuments = searchState.indexer?.documents() else {
+            XCTFail("No documents are in the index")
+            return
+        }
+
+        // Verify that the setup function added 3 mock files to the index
+        XCTAssertEqual(indexedDocuments.count, 3)
+
+        // Set the search option to 'Matching Word'
+        searchState.selectedMode[2] = .MatchingWord
+
+        Task {
+            await searchState.search("Ipsum")
+            searchExpectation.fulfill()
+        }
+
+        // Wait for the first search expectation to be fulfilled
+        await fulfillment(of: [searchExpectation], timeout: 10)
+        // Retrieve the search results after the first search
+        let searchResults = searchState.searchResult
+
+        XCTAssertEqual(searchResults.count, 2)
+
+        Task {
+            await searchState.search("perior")
+            searchExpectation2.fulfill()
+        }
+
+        await fulfillment(of: [searchExpectation2], timeout: 10)
+        let searchResults2 = searchState.searchResult
+
+        XCTAssertEqual(searchResults2.count, 0)
+    }
+
+    func testSearchWithOptionStartingWith() async {
+        let searchExpectation = XCTestExpectation(description: "Search for 'Ip'")
+        let searchExpectation2 = XCTestExpectation(description: "Search for 'res'")
+
+        // wait until the index is up to date and flushed
+        while searchState.indexStatus != .done {
+            // a check is performed every 0.1 seconds
+            try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
+        }
+
+        // Retrieve indexed documents from the indexer
+        guard let indexedDocuments = searchState.indexer?.documents() else {
+            XCTFail("No documents are in the index")
+            return
+        }
+
+        // Verify that the setup function added 3 mock files to the index
+        XCTAssertEqual(indexedDocuments.count, 3)
+
+        // Set the search option to 'Matching Word'
+        searchState.selectedMode[2] = .StartingWith
+
+        Task {
+            await searchState.search("Ip")
+            searchExpectation.fulfill()
+        }
+
+        // Wait for the first search expectation to be fulfilled
+        await fulfillment(of: [searchExpectation], timeout: 10)
+        // Retrieve the search results after the first search
+        let searchResults = searchState.searchResult
+
+        XCTAssertEqual(searchResults.count, 2)
+
+        Task {
+            await searchState.search("res")
+            searchExpectation2.fulfill()
+        }
+
+        await fulfillment(of: [searchExpectation2], timeout: 10)
+        let searchResults2 = searchState.searchResult
+
+        XCTAssertEqual(searchResults2.count, 0)
+    }
+
+    func testSearchWithOptionEndingWith() async {
+        let searchExpectation = XCTestExpectation(description: "Search for 'um'")
+        let searchExpectation2 = XCTestExpectation(description: "Search for 'res'")
+
+        // wait until the index is up to date and flushed
+        while searchState.indexStatus != .done {
+            // a check is performed every 0.1 seconds
+            try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
+        }
+
+        // Retrieve indexed documents from the indexer
+        guard let indexedDocuments = searchState.indexer?.documents() else {
+            XCTFail("No documents are in the index")
+            return
+        }
+
+        // Verify that the setup function added 3 mock files to the index
+        XCTAssertEqual(indexedDocuments.count, 3)
+
+        // Set the search option to 'Ending with'
+        searchState.selectedMode[2] = .EndingWith
+
+        Task {
+            await searchState.search("um")
+            searchExpectation.fulfill()
+        }
+
+        // Wait for the first search expectation to be fulfilled
+        await fulfillment(of: [searchExpectation], timeout: 10)
+        // Retrieve the search results after the first search
+        let searchResults = searchState.searchResult
+
+        XCTAssertEqual(searchResults.count, 2)
+
+        Task {
+            await searchState.search("asperi")
+            searchExpectation2.fulfill()
+        }
+
+        await fulfillment(of: [searchExpectation2], timeout: 10)
+        let searchResults2 = searchState.searchResult
+
+        XCTAssertEqual(searchResults2.count, 0)
+    }
 
     func testSearchWithOptionRegularExpression() async { }
 
