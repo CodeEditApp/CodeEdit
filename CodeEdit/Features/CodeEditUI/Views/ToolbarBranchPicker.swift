@@ -33,7 +33,7 @@ struct ToolbarBranchPicker: View {
     var body: some View {
         HStack(alignment: .center, spacing: 5) {
             if currentBranch != nil {
-                Image.checkout
+                Image.branch
                     .font(.title3)
                     .imageScale(.large)
                     .foregroundColor(controlActive == .inactive ? inactiveColor : .primary)
@@ -103,7 +103,7 @@ struct ToolbarBranchPicker: View {
         var body: some View {
             VStack(alignment: .leading) {
                 if let currentBranch = sourceControlManager.currentBranch {
-                    VStack(alignment: .leading, spacing: 0) {
+                    Section {
                         headerLabel("Current Branch")
                         BranchCell(sourceControlManager: sourceControlManager, branch: currentBranch, active: true)
                     }
@@ -123,7 +123,7 @@ struct ToolbarBranchPicker: View {
                 }
 
                 if !branches.isEmpty {
-                    VStack(alignment: .leading, spacing: 0) {
+                    Section {
                         headerLabel("Branches")
                         ForEach(branchesGroups.keys.sorted(), id: \.self) { branchGroupPrefix in
                             if let group = branchesGroups[branchGroupPrefix] {
@@ -144,7 +144,10 @@ struct ToolbarBranchPicker: View {
                                             )
                                         }
                                     }, label: {
-                                        Text(group.name)
+                                        HStack {
+                                            Image(systemName: "folder")
+                                            Text(group.name)
+                                        }
                                     })
                                 }
                             }
@@ -173,9 +176,9 @@ struct ToolbarBranchPicker: View {
         /// A Button Cell that represents a branch in the branch picker
         struct BranchCell: View {
             let sourceControlManager: SourceControlManager
-            var branch: GitBranch
+            let branch: GitBranch
+            let active: Bool
             let title: String?
-            var active: Bool = false
 
             init(
                 sourceControlManager: SourceControlManager,
@@ -192,37 +195,18 @@ struct ToolbarBranchPicker: View {
             @Environment(\.dismiss)
             private var dismiss
 
-            @State private var isHovering: Bool = false
-
             var body: some View {
                 Button {
                     switchBranch()
                 } label: {
                     HStack {
-                        Label {
-                            Text(self.title ?? branch.name)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                        } icon: {
-                            Image.checkout
-                                .imageScale(.large)
-                        }
-                        .foregroundColor(isHovering ? .white : .secondary)
                         if active {
                             Image(systemName: "checkmark.circle.fill")
-                                .foregroundColor(isHovering ? .white : .green)
+                        } else {
+                            Image.branch
                         }
+                        Text(self.title ?? branch.name)
                     }
-                    .contentShape(Rectangle())
-                }
-                .buttonStyle(.plain)
-                .padding(.horizontal)
-                .padding(.vertical, 10)
-                .background(
-                    EffectView.selectionBackground(isHovering)
-                )
-                .clipShape(RoundedRectangle(cornerRadius: 4))
-                .onHover { active in
-                    isHovering = active
                 }
             }
 
