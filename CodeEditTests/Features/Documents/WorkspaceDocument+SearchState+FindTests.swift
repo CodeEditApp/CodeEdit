@@ -1,14 +1,14 @@
 //
-//  WorkspaceDocumentSearchTests.swift
+//  WorkspaceDocument+SearchState+FindTests.swift
 //  CodeEditTests
 //
-//  Created by Tommy Ludwig on 03.01.24.
+//  Created by Tommy Ludwig on 26.01.24.
 //
 
 import XCTest
 @testable import CodeEdit
 
-final class WorkspaceDocumentSearchTests: XCTestCase {
+final class FindTests: XCTestCase {
     private var directory: URL!
     private var files: [CEWorkspaceFile] = []
     private var mockWorkspace: WorkspaceDocument!
@@ -51,10 +51,6 @@ final class WorkspaceDocumentSearchTests: XCTestCase {
             folder2.appending(path: "Makefile")
         ]
 
-//        for url in fileURLs {
-//            try String("Loren Ipsum").write(to: url, atomically: true, encoding: .utf8)
-//        }
-
         for index in 0..<fileURLs.count {
             if index % 2 == 0 {
                 try String("Loren Ipsum").write(to: fileURLs[index], atomically: true, encoding: .utf8)
@@ -92,6 +88,7 @@ final class WorkspaceDocumentSearchTests: XCTestCase {
     override func tearDown() async throws {
         try? FileManager.default.removeItem(at: directory)
     }
+
 
     /// Tests the search functionality of the `WorkspaceDocument.SearchState` and `SearchIndexer`.
     func testSearch() async {
@@ -272,17 +269,6 @@ final class WorkspaceDocumentSearchTests: XCTestCase {
         XCTAssertEqual(searchResults2.count, 0)
     }
 
+    // this is not implemented yet
     func testSearchWithOptionRegularExpression() async { }
-
-    func testFindAndReplace() async { }
-
-    func testFindAndReplaceWithOptionContaining() async { }
-
-    func testFindAndReplaceWithOptionMatchingWord() async { }
-
-    func testFindAndReplaceWithOptionStartingWith() async { }
-
-    func testFindAndReplaceWithOptionEndingWith() async { }
-
-    func testFindAndReplaceWithOptionRegularExpression() async { }
 }

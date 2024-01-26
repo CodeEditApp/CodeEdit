@@ -139,10 +139,10 @@ extension WorkspaceDocument.SearchState {
     /// display or use the final search results.
     func setSearchResults() {
         DispatchQueue.main.async {
-            self.findNavigatorStatus = .found
             self.searchResult = self.tempSearchResults.sorted { $0.score > $1.score }
             self.searchResultsCount = self.tempSearchResults.map { $0.lineMatches.count }.reduce(0, +)
             self.searchResultsFileCount = self.tempSearchResults.count
+            self.findNavigatorStatus = .found
             self.tempSearchResults = []
         }
     }

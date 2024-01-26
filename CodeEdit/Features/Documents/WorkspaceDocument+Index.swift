@@ -65,7 +65,7 @@ extension WorkspaceDocument.SearchState {
     ///
     /// - Parameter filePaths: An array of file URLs representing the paths of the files.
     ///
-    /// - Returns: An array of `TextFile` objects containing the standardized file URLs and text content.
+    /// - Returns: An array of `TextFile` objects containing the standardised file URLs and text content.
     func getFileContent(from filePaths: [URL]) async -> [SearchIndexer.AsyncManager.TextFile] {
         var textFiles = [SearchIndexer.AsyncManager.TextFile]()
         for file in filePaths {
