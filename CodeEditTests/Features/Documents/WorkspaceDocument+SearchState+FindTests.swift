@@ -89,7 +89,6 @@ final class FindTests: XCTestCase {
         try? FileManager.default.removeItem(at: directory)
     }
 
-
     /// Tests the search functionality of the `WorkspaceDocument.SearchState` and `SearchIndexer`.
     func testSearch() async {
         let searchExpectation = XCTestExpectation(description: "Search for 'Ipsum'")

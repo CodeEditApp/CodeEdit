@@ -8,6 +8,7 @@
 import XCTest
 @testable import CodeEdit
 
+// swiftlint:disable:next type_body_length
 final class FindAndReplaceTests: XCTestCase {
     private var directory: URL!
     private var files: [CEWorkspaceFile] = []
