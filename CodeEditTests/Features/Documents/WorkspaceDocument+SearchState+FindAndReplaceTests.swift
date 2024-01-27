@@ -67,8 +67,8 @@ final class FindAndReplaceTests: XCTestCase {
 
         await mockWorkspace.searchState?.addProjectToIndex()
 
-        // The following code also tests whether the workspace is indexed correctly
-        // Wait until the index is up to date and flushed
+        // NOTE: This is a temporary solution. In the future, a file watcher should track file updates
+        // and trigger an index update.
         while searchState.indexStatus != .done {
             // Check every 0.1 seconds for index completion
             try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
@@ -145,13 +145,9 @@ final class FindAndReplaceTests: XCTestCase {
 
         await fulfillment(of: [findAndReplaceExpectation], timeout: 2)
 
-        // IMPORTANT:
-        // This is only a temporary solution, in the feature a file watcher would track the file update
-        // and trigger a index update.
         searchState.addProjectToIndex()
         while searchState.indexStatus != .done {
-            // Check every 0.1 seconds for index completion
-            try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
+            try? await Task.sleep(nanoseconds: 100_000_000)
         }
 
         let searchExpectation = XCTestExpectation(
@@ -166,7 +162,6 @@ final class FindAndReplaceTests: XCTestCase {
         await fulfillment(of: [searchExpectation], timeout: 2)
         let searchResults = searchState.searchResult
 
-        // Expecting a result count of 0 due to the intentional use of a lowercase 'i'
         XCTAssertEqual(searchResults.count, 2)
     }
 
@@ -373,7 +368,7 @@ final class FindAndReplaceTests: XCTestCase {
         )
 
         Task {
-            // Note that we are searching for '000m' instead of '000' to test that the whole word did not got replaced
+            // Test that the entire word 'Ipsum' is not replaced by searching for 'Ip000'.
             await searchState.search("IpOOO")
             searchExpectation2.fulfill()
         }
@@ -384,6 +379,6 @@ final class FindAndReplaceTests: XCTestCase {
         XCTAssertEqual(searchResults2.count, 2)
     }
 
-    // this is not implemented yet
+    // Not implemented
     func testFindAndReplaceWithOptionRegularExpression() async { }
 }

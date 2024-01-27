@@ -117,6 +117,8 @@ final class FindTests: XCTestCase {
         XCTAssertEqual(searchResults2.count, 1)
     }
 
+    /// Checks if the search still returns proper results,
+    /// if the search term isn't a complete word
     func testSearchWithOptionContaining() async {
         let searchExpectation = XCTestExpectation(description: "Search for 'psu'")
         let searchExpectation2 = XCTestExpectation(description: "Search for 'erio'")
@@ -126,9 +128,8 @@ final class FindTests: XCTestCase {
             searchExpectation.fulfill()
         }
 
-        // Wait for the first search expectation to be fulfilled
         await fulfillment(of: [searchExpectation], timeout: 10)
-        // Retrieve the search results after the first search
+
         let searchResults = searchState.searchResult
 
         XCTAssertEqual(searchResults.count, 2)
@@ -160,13 +161,13 @@ final class FindTests: XCTestCase {
             searchExpectation.fulfill()
         }
 
-        // Wait for the first search expectation to be fulfilled
         await fulfillment(of: [searchExpectation], timeout: 10)
-        // Retrieve the search results after the first search
+
         let searchResults = searchState.searchResult
 
         XCTAssertEqual(searchResults.count, 2)
 
+        // Check if incomplete words return no search results.
         Task {
             await searchState.search("perior")
             searchExpectation2.fulfill()
@@ -182,7 +183,7 @@ final class FindTests: XCTestCase {
         let searchExpectation = XCTestExpectation(description: "Search for 'Ip'")
         let searchExpectation2 = XCTestExpectation(description: "Search for 'res'")
 
-        // Set the search option to 'Matching Word'
+        // Set the search option to 'Starting With'
         searchState.selectedMode[2] = .StartingWith
 
         Task {
@@ -190,9 +191,8 @@ final class FindTests: XCTestCase {
             searchExpectation.fulfill()
         }
 
-        // Wait for the first search expectation to be fulfilled
         await fulfillment(of: [searchExpectation], timeout: 10)
-        // Retrieve the search results after the first search
+
         let searchResults = searchState.searchResult
 
         XCTAssertEqual(searchResults.count, 2)
@@ -220,9 +220,8 @@ final class FindTests: XCTestCase {
             searchExpectation.fulfill()
         }
 
-        // Wait for the first search expectation to be fulfilled
         await fulfillment(of: [searchExpectation], timeout: 10)
-        // Retrieve the search results after the first search
+
         let searchResults = searchState.searchResult
 
         XCTAssertEqual(searchResults.count, 2)
@@ -268,6 +267,6 @@ final class FindTests: XCTestCase {
         XCTAssertEqual(searchResults2.count, 0)
     }
 
-    // this is not implemented yet
+    // Not implemented yet
     func testSearchWithOptionRegularExpression() async { }
 }

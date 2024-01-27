@@ -102,5 +102,5 @@ final class WorkspaceDocumentIndexTests: XCTestCase {
     }
 
     // The SearchState+Indexing file isn't complete yet
-    // So as it expands more tests will be written here
+    // So as it expands more tests will be added here
 }
