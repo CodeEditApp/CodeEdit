@@ -74,6 +74,7 @@ struct CodeFileView: View {
                 scheduler: DispatchQueue.main
             )
             .sink { _ in
+                codeFile.updateChangeCount(.changeDone)
                 codeFile.autosave(withImplicitCancellability: false) { _ in
                 }
             }
