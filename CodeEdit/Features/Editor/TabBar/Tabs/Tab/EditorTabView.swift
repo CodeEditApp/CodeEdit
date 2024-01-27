@@ -68,12 +68,12 @@ struct EditorTabView: View {
     var index: Int
 
     private var isTemporary: Bool {
-        editor.temporaryTab == item
+        editor.temporaryTab?.file == item
     }
 
     /// Is the current tab the active tab.
     private var isActive: Bool {
-        item == editor.selectedTab
+        item == editor.selectedTab?.file
     }
 
     /// Is the current tab being dragged.
@@ -92,10 +92,11 @@ struct EditorTabView: View {
     private func switchAction() {
         // Only set the `selectedId` when they are not equal to avoid performance issue for now.
         editorManager.activeEditor = editor
-        if editor.selectedTab != item {
-            editor.selectedTab = item
+        if editor.selectedTab?.file != item {
+            let tabItem = EditorInstance(file: item)
+            editor.selectedTab = tabItem
             editor.history.removeFirst(editor.historyOffset)
-            editor.history.prepend(item)
+            editor.history.prepend(tabItem)
             editor.historyOffset = 0
         }
     }
@@ -103,7 +104,7 @@ struct EditorTabView: View {
     /// Close the current tab.
     func closeAction() {
         isAppeared = false
-        editor.closeTab(item: item)
+        editor.closeTab(file: item)
     }
 
     init(

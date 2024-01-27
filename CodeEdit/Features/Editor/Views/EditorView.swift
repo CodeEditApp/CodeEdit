@@ -29,7 +29,10 @@ struct EditorView: View {
     var body: some View {
         VStack {
             if let selected = editor.selectedTab {
-                WorkspaceCodeFileView(file: selected)
+                WorkspaceCodeFileView(
+                    file: selected.file,
+                    textViewCoordinators: [selected.rangeTranslator].compactMap({ $0 })
+                )
                     .focusedObject(editor)
                     .transformEnvironment(\.edgeInsets) { insets in
                         insets.top += editorInsetAmount
@@ -52,9 +55,9 @@ struct EditorView: View {
                     .environmentObject(editor)
                 Divider()
                 if showEditorPathBar {
-                    EditorPathBarView(file: editor.selectedTab) { [weak editor] newFile in
+                    EditorPathBarView(file: editor.selectedTab?.file) { [weak editor] newFile in
                         if let file = editor?.selectedTab, let index = editor?.tabs.firstIndex(of: file) {
-                            editor?.openTab(item: newFile, at: index)
+                            editor?.openTab(file: newFile, at: index)
                         }
                     }
                     Divider()

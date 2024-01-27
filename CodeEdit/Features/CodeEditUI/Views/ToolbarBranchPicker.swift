@@ -33,7 +33,7 @@ struct ToolbarBranchPicker: View {
     var body: some View {
         HStack(alignment: .center, spacing: 5) {
             if currentBranch != nil {
-                Image.checkout
+                Image.branch
                     .font(.title3)
                     .imageScale(.large)
                     .foregroundColor(controlActive == .inactive ? inactiveColor : .primary)
@@ -50,32 +50,23 @@ struct ToolbarBranchPicker: View {
                     .frame(height: 16)
                     .help(title)
                 if let currentBranch {
-                    ZStack(alignment: .trailing) {
-                        Text(currentBranch.name)
-                            .padding(.trailing)
-                        if isHovering {
-                            Image(systemName: "chevron.down")
+                    Menu(content: {
+                        if let sourceControlManager = workspaceFileManager?.sourceControlManager {
+                            PopoverView(sourceControlManager: sourceControlManager)
                         }
-                    }
-                    .font(.subheadline)
-                    .foregroundColor(controlActive == .inactive ? inactiveColor : .secondary)
-                    .frame(height: 11)
+                    }, label: {
+                        Text(currentBranch.name)
+                            .font(.subheadline)
+                            .foregroundColor(controlActive == .inactive ? inactiveColor : .secondary)
+                            .frame(height: 11)
+                    })
+                    .buttonStyle(.borderless)
+                    .padding(.leading, -3)
                 }
-            }
-        }
-        .contentShape(Rectangle())
-        .onTapGesture {
-            if currentBranch != nil {
-                displayPopover.toggle()
             }
         }
         .onHover { active in
             isHovering = active
-        }
-        .popover(isPresented: $displayPopover, arrowEdge: .bottom) {
-            if let sourceControlManager = workspaceFileManager?.sourceControlManager {
-                PopoverView(sourceControlManager: sourceControlManager)
-            }
         }
         .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { (_) in
             Task {
@@ -112,7 +103,7 @@ struct ToolbarBranchPicker: View {
         var body: some View {
             VStack(alignment: .leading) {
                 if let currentBranch = sourceControlManager.currentBranch {
-                    VStack(alignment: .leading, spacing: 0) {
+                    Section {
                         headerLabel("Current Branch")
                         BranchCell(sourceControlManager: sourceControlManager, branch: currentBranch, active: true)
                     }
@@ -120,11 +111,46 @@ struct ToolbarBranchPicker: View {
 
                 let branches = sourceControlManager.branches
                     .filter({ $0.isLocal && $0 != sourceControlManager.currentBranch })
+                let branchesGroups = branches.reduce(into: [String: GitBranchesGroup]()) { result, branch in
+                    guard let branchPrefix = branch.name.components(separatedBy: "/").first else {
+                        return
+                    }
+
+                    result[
+                        branchPrefix,
+                        default: GitBranchesGroup(name: branchPrefix, branches: [])
+                    ].branches.append(branch)
+                }
+
                 if !branches.isEmpty {
-                    VStack(alignment: .leading, spacing: 0) {
+                    Section {
                         headerLabel("Branches")
-                        ForEach(branches, id: \.self) { branch in
-                            BranchCell(sourceControlManager: sourceControlManager, branch: branch)
+                        ForEach(branchesGroups.keys.sorted(), id: \.self) { branchGroupPrefix in
+                            if let group = branchesGroups[branchGroupPrefix] {
+                                if !group.shouldNest {
+                                    BranchCell(
+                                        sourceControlManager: sourceControlManager,
+                                        branch: group.branches.first!
+                                    )
+                                } else {
+                                    Menu(content: {
+                                        ForEach(group.branches, id: \.self) { branch in
+                                            BranchCell(
+                                                sourceControlManager: sourceControlManager,
+                                                branch: branch,
+                                                title: String(
+                                                    branch.name.suffix(branch.name.count - branchGroupPrefix.count - 1)
+                                                )
+                                            )
+                                        }
+                                    }, label: {
+                                        HStack {
+                                            Image(systemName: "folder")
+                                            Text(group.name)
+                                        }
+                                    })
+                                }
+                            }
                         }
                     }
                 }
@@ -150,43 +176,37 @@ struct ToolbarBranchPicker: View {
         /// A Button Cell that represents a branch in the branch picker
         struct BranchCell: View {
             let sourceControlManager: SourceControlManager
-            var branch: GitBranch
-            var active: Bool = false
+            let branch: GitBranch
+            let active: Bool
+            let title: String?
+
+            init(
+                sourceControlManager: SourceControlManager,
+                branch: GitBranch,
+                active: Bool = false,
+                title: String? = nil
+            ) {
+                self.sourceControlManager = sourceControlManager
+                self.branch = branch
+                self.active = active
+                self.title = title
+            }
 
             @Environment(\.dismiss)
             private var dismiss
-
-            @State private var isHovering: Bool = false
 
             var body: some View {
                 Button {
                     switchBranch()
                 } label: {
                     HStack {
-                        Label {
-                            Text(branch.name)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                        } icon: {
-                            Image.checkout
-                                .imageScale(.large)
-                        }
-                        .foregroundColor(isHovering ? .white : .secondary)
                         if active {
                             Image(systemName: "checkmark.circle.fill")
-                                .foregroundColor(isHovering ? .white : .green)
+                        } else {
+                            Image.branch
                         }
+                        Text(self.title ?? branch.name)
                     }
-                    .contentShape(Rectangle())
-                }
-                .buttonStyle(.plain)
-                .padding(.horizontal)
-                .padding(.vertical, 10)
-                .background(
-                    EffectView.selectionBackground(isHovering)
-                )
-                .clipShape(RoundedRectangle(cornerRadius: 4))
-                .onHover { active in
-                    isHovering = active
                 }
             }
 

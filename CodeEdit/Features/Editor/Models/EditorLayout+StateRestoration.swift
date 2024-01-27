@@ -9,6 +9,95 @@ import Foundation
 import SwiftUI
 import OrderedCollections
 
+extension EditorManager {
+    /// Restores the tab manager from a captured state obtained using `saveRestorationState`
+    /// - Parameter workspace: The workspace to retrieve state from.
+    func restoreFromState(_ workspace: WorkspaceDocument) {
+        guard let fileManager = workspace.workspaceFileManager,
+              let data = workspace.getFromWorkspaceState(.openTabs) as? Data,
+              let state = try? JSONDecoder().decode(EditorRestorationState.self, from: data) else {
+            return
+        }
+
+        guard !state.groups.isEmpty else {
+            logger.warning("Empty Editor State found, restoring to clean editor state.")
+            initCleanState()
+            return
+        }
+
+        fixRestoredEditorLayout(state.groups, fileManager: fileManager)
+        self.editorLayout = state.groups
+        self.activeEditor = activeEditor
+        switchToActiveEditor()
+    }
+
+    /// Fix any hanging files after restoring from saved state.
+    ///
+    /// After decoding the state, we're left with `CEWorkspaceFile`s that don't exist in the file manager
+    /// so this function maps all those to 'real' files. Works recursively on all the tab groups.
+    /// - Parameters:
+    ///   - group: The tab group to fix.
+    ///   - fileManager: The file manager to use to map files.
+    private func fixRestoredEditorLayout(_ group: EditorLayout, fileManager: CEWorkspaceFileManager) {
+        switch group {
+        case let .one(data):
+            fixEditor(data, fileManager: fileManager)
+        case let .vertical(splitData):
+            splitData.editorLayouts.forEach { group in
+                fixRestoredEditorLayout(group, fileManager: fileManager)
+            }
+        case let .horizontal(splitData):
+            splitData.editorLayouts.forEach { group in
+                fixRestoredEditorLayout(group, fileManager: fileManager)
+            }
+        }
+    }
+
+    private func findEditorLayout(group: EditorLayout, searchFor id: UUID) -> Editor? {
+        switch group {
+        case let .one(data):
+            return data.id == id ? data : nil
+        case let .vertical(splitData):
+            return splitData.editorLayouts.compactMap { findEditorLayout(group: $0, searchFor: id) }.first
+        case let .horizontal(splitData):
+            return splitData.editorLayouts.compactMap { findEditorLayout(group: $0, searchFor: id) }.first
+        }
+    }
+
+    /// Fixes any hanging files after restoring from saved state.
+    ///
+    /// Resolves all file references with the workspace's file manager to ensure any referenced files use their shared
+    /// object representation.
+    ///
+    /// - Parameters:
+    ///   - data: The tab group to fix.
+    ///   - fileManager: The file manager to use to map files.a
+    private func fixEditor(_ editor: Editor, fileManager: CEWorkspaceFileManager) {
+        let resolvedTabs = editor
+            .tabs
+            .compactMap({ fileManager.getFile($0.file.url.path(), createIfNotFound: true) })
+            .map({ EditorInstance(file: $0) })
+        editor.tabs = OrderedSet(resolvedTabs)
+        if let selectedTab = editor.selectedTab {
+            if let resolvedFile = fileManager.getFile(selectedTab.file.url.path(), createIfNotFound: true) {
+                editor.selectedTab = EditorInstance(file: resolvedFile)
+            } else {
+                editor.selectedTab = nil
+            }
+        }
+    }
+
+    func saveRestorationState(_ workspace: WorkspaceDocument) {
+        if let data = try? JSONEncoder().encode(
+            EditorRestorationState(focus: activeEditor, groups: editorLayout)
+        ) {
+            workspace.addToWorkspaceState(key: .openTabs, value: data)
+        } else {
+            workspace.addToWorkspaceState(key: .openTabs, value: nil)
+        }
+    }
+}
+
 struct EditorRestorationState: Codable {
     var focus: Editor
     var groups: EditorLayout
@@ -110,7 +199,7 @@ extension Editor: Codable {
         let id = try container.decode(UUID.self, forKey: .id)
         self.init(
             files: OrderedSet(fileURLs.map { CEWorkspaceFile(url: $0) }),
-            selectedTab: selectedTab == nil ? nil : CEWorkspaceFile(url: selectedTab!),
+            selectedTab: selectedTab == nil ? nil : EditorInstance(file: CEWorkspaceFile(url: selectedTab!)),
             parent: nil
         )
         self.id = id
@@ -118,8 +207,8 @@ extension Editor: Codable {
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(tabs.map { $0.url }, forKey: .tabs)
-        try container.encode(selectedTab?.url, forKey: .selectedTab)
+        try container.encode(tabs.map { $0.file.url }, forKey: .tabs)
+        try container.encode(selectedTab?.file.url, forKey: .selectedTab)
         try container.encode(id, forKey: .id)
     }
 }

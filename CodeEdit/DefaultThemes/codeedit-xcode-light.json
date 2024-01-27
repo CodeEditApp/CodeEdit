@@ -9,52 +9,52 @@
     "description" : "Xcode light theme.",
     "editor" : {
         "strings" : {
-            "color" : "#C41A16"
+            "color" : "#AD1805"
         },
         "comments" : {
-            "color" : "#267507"
+            "color" : "#1F6300"
         },
         "numbers" : {
-            "color" : "#1C00CF"
+            "color" : "#272AD8"
         },
         "commands" : {
-            "color" : "#326D74"
+            "color" : "#294B4E"
         },
         "lineHighlight" : {
-            "color" : "#E8F2FF"
+            "color" : "#ECF5FF"
         },
         "values" : {
-            "color" : "#6C36A9"
+            "color" : "#330090"
         },
         "background" : {
             "color" : "#FFFFFF"
         },
         "keywords" : {
-            "color" : "#9B2393"
+            "color" : "#9C2191"
         },
         "text" : {
-            "color" : "#262626"
+            "color" : "#000000"
         },
         "insertionPoint" : {
-            "color" : "#262626"
+            "color" : "#000000"
         },
         "selection" : {
-            "color" : "#A4CDFF"
+            "color" : "#B2D7FF"
         },
         "types" : {
-            "color" : "#0B4F79"
+            "color" : "#003F73"
         },
         "variables" : {
-            "color" : "#0F68A0"
+            "color" : "#0058A1"
         },
         "attributes" : {
-            "color" : "#3900A0"
+            "color" : "#6E5400"
         },
         "characters" : {
-            "color" : "#1C00CF"
+            "color" : "#272AD8"
         },
         "invisibles" : {
-            "color" : "#CCCCCC"
+            "color" : "#D6D6D6"
         }
     },
     "terminal" : {
@@ -86,10 +86,10 @@
             "color" : "#FFFFFF"
         },
         "cursor" : {
-            "color" : "#262626"
+            "color" : "#000000"
         },
         "selection" : {
-            "color" : "#A4CDFF"
+            "color" : "#B2D7FF"
         },
         "magenta" : {
             "color" : "#AF52DE"
@@ -98,7 +98,7 @@
             "color" : "#1F2024"
         },
         "text" : {
-            "color" : "#262626"
+            "color" : "#000000"
         },
         "brightWhite" : {
             "color" : "#FFFFFF"

@@ -44,7 +44,7 @@ struct EditorPathBarView: View {
 
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 1.5) {
+            HStack(spacing: 0) {
                 if file == nil {
                     Text("No Selection")
                         .font(.system(size: 11, weight: .regular))
@@ -55,11 +55,11 @@ struct EditorPathBarView: View {
                         )
                 } else {
                     ForEach(fileItems, id: \.self) { fileItem in
-                        if fileItem.parent != nil {
-                            chevron
-                        }
-                        EditorPathBarComponent(fileItem: fileItem, tappedOpenFile: tappedOpenFile)
-                            .padding(.leading, 2.5)
+                        EditorPathBarComponent(
+                            fileItem: fileItem,
+                            tappedOpenFile: tappedOpenFile,
+                            isLastItem: fileItems.last == fileItem
+                        )
                     }
                 }
             }
@@ -68,14 +68,5 @@ struct EditorPathBarView: View {
         .frame(height: Self.height, alignment: .center)
         .opacity(activeState == .inactive ? 0.8 : 1.0)
         .grayscale(isActiveEditor ? 0.0 : 1.0)
-    }
-
-    private var chevron: some View {
-        Image(systemName: "chevron.compact.right")
-            .font(.system(size: 14, weight: .thin, design: .default))
-            .foregroundStyle(.primary)
-            .scaleEffect(x: 1.30, y: 1.0, anchor: .center)
-            .imageScale(.large)
-            .opacity(activeState != .inactive ? 0.8 : 0.5)
     }
 }

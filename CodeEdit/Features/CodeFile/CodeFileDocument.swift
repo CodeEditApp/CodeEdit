@@ -11,6 +11,7 @@ import SwiftUI
 import UniformTypeIdentifiers
 import QuickLookUI
 import CodeEditSourceEditor
+import CodeEditTextView
 import CodeEditLanguages
 import Combine
 
@@ -22,6 +23,9 @@ enum CodeFileError: Error {
 
 @objc(CodeFileDocument)
 final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
+    struct OpenOptions {
+        let cursorPositions: [CursorPosition]
+    }
 
     @Published var content = ""
 
@@ -70,7 +74,9 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
         fileURL
     }
 
-    @Published var cursorPositions = [CursorPosition]()
+    /// Specify options for opening the file such as the initial cursor positions.
+    /// Nulled by ``CodeFileView`` on first load.
+    var openOptions: OpenOptions?
 
     private let isDocumentEditedSubject = PassthroughSubject<Bool, Never>()
 

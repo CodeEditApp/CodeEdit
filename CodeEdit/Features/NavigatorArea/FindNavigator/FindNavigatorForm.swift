@@ -95,25 +95,21 @@ struct FindNavigatorForm: View {
             HStack {
                 HStack(spacing: 0) {
                     ForEach(0..<selectedMode.count, id: \.self) { index in
-                        if index > 0 {
-                            chevron
-                        }
-                        Menu {
-                            ForEach(getMenuList(index), id: \.title) { (searchMode: SearchModeModel) in
-                                Button(searchMode.title) {
+                        FindModePicker(
+                            modes: getMenuList(index),
+                            selection: Binding(
+                                get: {
+                                    selectedMode[index]
+                                },
+                                set: { searchMode in
                                     onSelectMenuItem(index, searchMode: searchMode)
                                 }
-                            }
-                        } label: {
-                            Text(selectedMode[index].title)
-                                .foregroundColor(
-                                    selectedMode[index].needSelectionHighlight
-                                    ? Color.accentColor
-                                    : .primary
-                                )
-                                .font(.system(size: 11))
-                        }
-                        .searchModeMenu()
+                            ),
+                            onSelect: { searchMode in
+                                onSelectMenuItem(index, searchMode: searchMode)
+                            },
+                            isLastItem: index == selectedMode.count-1
+                        )
                     }
                     Spacer()
                 }
@@ -125,6 +121,8 @@ struct FindNavigatorForm: View {
                         scoped.toggle()
                     }
             }
+            .padding(.top, -5)
+            .padding(.bottom, -8)
             PaneTextField(
                 state.selectedMode[1].title,
                 text: $searchText,
@@ -277,13 +275,5 @@ extension Array {
 
     var third: Element? {
         self.count > 2 ? self[2] : nil
-    }
-}
-
-extension View {
-    func searchModeMenu() -> some View {
-        menuStyle(.borderlessButton)
-            .fixedSize()
-            .menuIndicator(.hidden)
     }
 }

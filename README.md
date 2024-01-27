@@ -32,6 +32,7 @@ CodeEdit is a code editor built by the community, for the community, written ent
 - [Motivation](#motivation)
 - [Mission](#mission)
 - [Community](#community)
+- [Activity](#activity)
 - [Contributing](#contributing)
 - [Contributors](#contributors)
 - [Sponsors](#sponsors)
@@ -60,7 +61,14 @@ We strive to remain true to Apple's human interface guidelines and development p
 
 Join our growing community on [Discord](https://discord.gg/vChUXVf9Em) and [GitHub Discussions](https://github.com/orgs/CodeEditApp/discussions) where we discuss and collaborate on all things CodeEdit. Don't be shy, jump right in and be part of the discussion!
 
-We also hold a weekly meetup on Discord every Saturday at 3pm UTC. Join [here](https://discord.gg/AY7DUgZgms).
+> [!NOTE]
+> We hold a weekly meetup on Discord **every Saturday at 3pm UTC** where we discuss latests development, feature requests, goals, and priorities.
+> 
+> [**Join us**](https://discord.gg/KvdE3wYKNR?event=1189275961456336937)
+> 
+## Activity
+
+<img src="https://repobeats.axiom.co/api/embed/acd5eeb654fc98f6ffbce26b09fd0e3603edf1fd.svg" alt="CodeEdit Repository Activity" width="100%" />
 
 ## Contributing
 
@@ -164,6 +172,8 @@ For issues we want to focus on that are most relevant at any given time, please 
       <td align="center" valign="top" width="14.28%"><a href="http://estebanborai.com"><img src="https://avatars.githubusercontent.com/u/34756077?v=4?s=100" width="100px;" alt="Esteban Borai"/><br /><sub><b>Esteban Borai</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=EstebanBorai" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/avinizhanov"><img src="https://avatars.githubusercontent.com/u/42622715?v=4?s=100" width="100px;" alt="avinizhanov"/><br /><sub><b>avinizhanov</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3Aavinizhanov" title="Bug reports">🐛</a> <a href="https://github.com/CodeEditApp/CodeEdit/commits?author=avinizhanov" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/kmohsin11"><img src="https://avatars.githubusercontent.com/u/28269317?v=4?s=100" width="100px;" alt="kmohsin11"/><br /><sub><b>kmohsin11</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3Akmohsin11" title="Bug reports">🐛</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/armartinez"><img src="https://avatars.githubusercontent.com/u/1909987?v=4?s=100" width="100px;" alt="Axel Martinez"/><br /><sub><b>Axel Martinez</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3Aarmartinez" title="Bug reports">🐛</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://nivora.app"><img src="https://avatars.githubusercontent.com/u/5382443?v=4?s=100" width="100px;" alt="Federico Zivolo"/><br /><sub><b>Federico Zivolo</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=FezVrasta" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>

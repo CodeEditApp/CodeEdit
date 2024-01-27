@@ -13,7 +13,7 @@ struct HistoryInspectorView: View {
 
     @ObservedObject private var model: HistoryInspectorModel
 
-    @State var selectedCommitHistory: GitCommit?
+    @State var selection: GitCommit?
 
     /// Initialize with GitClient
     /// - Parameter gitClient: a GitClient
@@ -26,16 +26,15 @@ struct HistoryInspectorView: View {
             if model.sourceControlManager != nil {
                 VStack {
                     if model.commitHistory.isEmpty {
-                        HistoryInspectorNoHistoryView()
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        CEContentUnavailableView("No History")
                     } else {
-                        List(selection: $selectedCommitHistory) {
+                        List(selection: $selection) {
                             ForEach(model.commitHistory) { commit in
-                                HistoryInspectorItemView(commit: commit, selection: $selectedCommitHistory)
+                                HistoryInspectorItemView(commit: commit, selection: $selection)
                                     .tag(commit)
+                                    .listRowSeparator(.hidden)
                             }
                         }
-                        .listStyle(.inset)
                     }
                 }
             } else {
@@ -44,17 +43,17 @@ struct HistoryInspectorView: View {
         }
         .onChange(of: editorManager.activeEditor) { _ in
             Task {
-                await model.setFile(url: editorManager.activeEditor.selectedTab?.url.path)
+                await model.setFile(url: editorManager.activeEditor.selectedTab?.file.url.path())
             }
         }
         .onChange(of: editorManager.activeEditor.selectedTab) { _ in
             Task {
-                await model.setFile(url: editorManager.activeEditor.selectedTab?.url.path)
+                await model.setFile(url: editorManager.activeEditor.selectedTab?.file.url.path())
             }
         }
         .task {
             await model.setWorkspace(sourceControlManager: workspace.sourceControlManager)
-            await model.setFile(url: editorManager.activeEditor.selectedTab?.url.path)
+            await model.setFile(url: editorManager.activeEditor.selectedTab?.file.url.path)
         }
     }
 }

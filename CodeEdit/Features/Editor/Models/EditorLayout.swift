@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum EditorLayout {
+enum EditorLayout: Equatable {
     case one(Editor)
     case vertical(SplitViewData)
     case horizontal(SplitViewData)
@@ -17,7 +17,7 @@ enum EditorLayout {
     func closeAllTabs(of file: CEWorkspaceFile) {
         switch self {
         case .one(let editor):
-            editor.tabs.remove(file)
+            editor.removeTab(file)
         case .vertical(let data), .horizontal(let data):
             data.editorLayouts.forEach {
                 $0.closeAllTabs(of: file)
@@ -48,7 +48,7 @@ enum EditorLayout {
     func gatherOpenFiles() -> Set<CEWorkspaceFile> {
         switch self {
         case .one(let editor):
-            return Set(editor.tabs)
+            return Set(editor.tabs.map { $0.file })
         case .vertical(let data), .horizontal(let data):
             return data.editorLayouts.map { $0.gatherOpenFiles() }.reduce(into: []) { $0.formUnion($1) }
         }
@@ -69,6 +69,30 @@ enum EditorLayout {
             } else {
                 data.flatten()
             }
+        }
+    }
+
+    var isEmpty: Bool {
+        switch self {
+        case .one:
+            return false
+        case .vertical(let splitViewData), .horizontal(let splitViewData):
+            return splitViewData.editorLayouts.allSatisfy { editorLayout in
+                editorLayout.isEmpty
+            }
+        }
+    }
+
+    static func == (lhs: EditorLayout, rhs: EditorLayout) -> Bool {
+        switch (lhs, rhs) {
+        case let (.one(lhs), .one(rhs)):
+            return lhs == rhs
+        case let (.vertical(lhs), .vertical(rhs)):
+            return lhs.editorLayouts == rhs.editorLayouts
+        case let (.horizontal(lhs), .horizontal(rhs)):
+            return lhs.editorLayouts == rhs.editorLayouts
+        default:
+            return false
         }
     }
 }

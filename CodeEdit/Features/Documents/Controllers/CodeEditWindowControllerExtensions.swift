@@ -72,7 +72,7 @@ extension CodeEditWindowController {
                 editor.$tabs
             })
             .compactMap({ tab in
-                Publishers.MergeMany(tab.elements.compactMap({ $0.fileDocumentPublisher }))
+                Publishers.MergeMany(tab.elements.compactMap({ $0.file.fileDocumentPublisher }))
             })
             .switchToLatest()
             .compactMap({ fileDocument in

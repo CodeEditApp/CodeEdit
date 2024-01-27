@@ -8,26 +8,22 @@
 import SwiftUI
 
 struct PressActions: ViewModifier {
-     var onPress: () -> Void
-     var onRelease: () -> Void
+    var onPress: () -> Void
+    var onRelease: (() -> Void)?
 
-     init(onPress: @escaping () -> Void, onRelease: @escaping () -> Void) {
-         self.onPress = onPress
-         self.onRelease = onRelease
-     }
+    init(onPress: @escaping () -> Void, onRelease: (() -> Void)? = nil) {
+        self.onPress = onPress
+        self.onRelease = onRelease
+    }
 
-     func body(content: Content) -> some View {
-         content
-             .simultaneousGesture(
-                 DragGesture(minimumDistance: 0)
-                     .onChanged({ _ in
-                         onPress()
-                     })
-                     .onEnded({ _ in
-                         onRelease()
-                     })
-             )
-     }
+    func body(content: Content) -> some View {
+        content
+            .simultaneousGesture(
+                DragGesture(minimumDistance: 0)
+                    .onChanged({ _ in onPress() })
+                    .onEnded({ _ in onRelease?() })
+            )
+    }
 }
 
 extension View {
@@ -37,11 +33,7 @@ extension View {
     ///   - onPress: Action to perform once the view is pressed.
     ///   - onRelease: Action to perform once the view press is released.
     /// - Returns: some View
-    func pressAction(onPress: @escaping (() -> Void), onRelease: @escaping (() -> Void)) -> some View {
-        modifier(PressActions(onPress: {
-            onPress()
-        }, onRelease: {
-            onRelease()
-        }))
+    func pressAction(onPress: @escaping (() -> Void), onRelease: (() -> Void)? = nil) -> some View {
+        modifier(PressActions(onPress: onPress, onRelease: onRelease))
     }
 }
