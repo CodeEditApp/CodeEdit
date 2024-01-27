@@ -69,9 +69,15 @@ final class FindAndReplaceTests: XCTestCase {
 
         // NOTE: This is a temporary solution. In the future, a file watcher should track file updates
         // and trigger an index update.
+        let startTime = Date()
+        let timeoutInSeconds = 2.0
         while searchState.indexStatus != .done {
             // Check every 0.1 seconds for index completion
             try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
+            if Date().timeIntervalSince(startTime) > timeoutInSeconds {
+                XCTFail("TIMEOUT: Indexing took to long or did not complete.")
+                return
+            }
         }
 
         // Retrieve indexed documents from the indexer
@@ -109,9 +115,14 @@ final class FindAndReplaceTests: XCTestCase {
         // This is only a temporary solution, in the feature a file watcher would track the file update
         // and trigger a index update.
         searchState.addProjectToIndex()
+        let startTime = Date()
         while searchState.indexStatus != .done {
             // Check every 0.1 seconds for index completion
             try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
+            if Date().timeIntervalSince(startTime) > 2.0 {
+                XCTFail("TIMEOUT: Indexing took to long or did not complete.")
+                return
+            }
         }
 
         let searchExpectation = XCTestExpectation(
@@ -146,8 +157,14 @@ final class FindAndReplaceTests: XCTestCase {
         await fulfillment(of: [findAndReplaceExpectation], timeout: 2)
 
         searchState.addProjectToIndex()
+
+        let startTime = Date()
         while searchState.indexStatus != .done {
             try? await Task.sleep(nanoseconds: 100_000_000)
+            if Date().timeIntervalSince(startTime) > 2.0 {
+                XCTFail("TIMEOUT: Indexing took to long or did not complete.")
+                return
+            }
         }
 
         let searchExpectation = XCTestExpectation(
@@ -185,9 +202,14 @@ final class FindAndReplaceTests: XCTestCase {
         await fulfillment(of: [failedFindAndReplaceExpectation], timeout: 2)
 
         searchState.addProjectToIndex()
+        var startTime = Date()
         while searchState.indexStatus != .done {
             // Check every 0.1 seconds for index completion
             try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
+            if Date().timeIntervalSince(startTime) > 2.0 {
+                XCTFail("TIMEOUT: Indexing took to long or did not complete.")
+                return
+            }
         }
 
         let searchExpectation = XCTestExpectation(description: "Search for replaced word.")
@@ -217,8 +239,13 @@ final class FindAndReplaceTests: XCTestCase {
         await fulfillment(of: [successfulFindAndReplaceExpectation])
 
         searchState.addProjectToIndex()
+        startTime = Date()
         while searchState.indexStatus != .done {
             try? await Task.sleep(nanoseconds: 100_000_000)
+            if Date().timeIntervalSince(startTime) > 2.0 {
+                XCTFail("TIMEOUT: Indexing took to long or did not complete.")
+                return
+            }
         }
 
         let searchExpectation2 = XCTestExpectation(
@@ -257,8 +284,13 @@ final class FindAndReplaceTests: XCTestCase {
         await fulfillment(of: [failedFindAndReplaceExpectation], timeout: 2)
 
         searchState.addProjectToIndex()
+        var startTime = Date()
         while searchState.indexStatus != .done {
             try? await Task.sleep(nanoseconds: 100_000_000)
+            if Date().timeIntervalSince(startTime) > 2.0 {
+                XCTFail("TIMEOUT: Indexing took to long or did not complete.")
+                return
+            }
         }
 
         let searchExpectation = XCTestExpectation(description: "Search for replaced word.")
@@ -288,8 +320,13 @@ final class FindAndReplaceTests: XCTestCase {
         await fulfillment(of: [successfulFindAndReplaceExpectation])
 
         searchState.addProjectToIndex()
+        startTime = Date()
         while searchState.indexStatus != .done {
             try? await Task.sleep(nanoseconds: 100_000_000)
+            if Date().timeIntervalSince(startTime) > 2.0 {
+                XCTFail("TIMEOUT: Indexing took to long or did not complete.")
+                return
+            }
         }
 
         let searchExpectation2 = XCTestExpectation(
@@ -328,8 +365,13 @@ final class FindAndReplaceTests: XCTestCase {
         await fulfillment(of: [failedFindAndReplaceExpectation], timeout: 2)
 
         searchState.addProjectToIndex()
+        var startTime = Date()
         while searchState.indexStatus != .done {
             try? await Task.sleep(nanoseconds: 100_000_000)
+            if Date().timeIntervalSince(startTime) > 2.0 {
+                XCTFail("TIMEOUT: Indexing took to long or did not complete.")
+                return
+            }
         }
 
         let searchExpectation = XCTestExpectation(description: "Search for replaced word.")
@@ -359,8 +401,13 @@ final class FindAndReplaceTests: XCTestCase {
         await fulfillment(of: [successfulFindAndReplaceExpectation])
 
         searchState.addProjectToIndex()
+        startTime = Date()
         while searchState.indexStatus != .done {
             try? await Task.sleep(nanoseconds: 100_000_000)
+            if Date().timeIntervalSince(startTime) > 2.0 {
+                XCTFail("TIMEOUT: Indexing took to long or did not complete.")
+                return
+            }
         }
 
         let searchExpectation2 = XCTestExpectation(
