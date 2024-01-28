@@ -25,6 +25,7 @@ final class QuickOpenViewModel: ObservableObject {
     }
 
     func fetchOpenQuickly() {
+        let startdate = Date()
         guard openQuicklyQuery != "" else {
             openQuicklyFiles = []
             self.isShowingOpenQuicklyFiles = !openQuicklyFiles.isEmpty
@@ -55,14 +56,24 @@ final class QuickOpenViewModel: ObservableObject {
                 }
 
                 /// sorts the filtered filePaths with the FuzzySearch
-                let orderedFiles = await FuzzySearch.search(query: self.openQuicklyQuery, in: filteredFiles)
+//                let orderedFiles = await FuzzySearch.search(query: self.openQuicklyQuery, in: filteredFiles)
+                let files = filteredFiles.fuzzySearch(query: self.openQuicklyQuery.trimmingCharacters(in: .whitespaces)).map {
+                    $0.item
+                }
 
                 guard !Task.isCancelled else { return }
                 await MainActor.run {
-                    self.openQuicklyFiles = orderedFiles
+                    self.openQuicklyFiles = files
                     self.isShowingOpenQuicklyFiles = !self.openQuicklyFiles.isEmpty
+                    print(Date().timeIntervalSince(startdate))
                 }
             }
         }
+    }
+}
+
+extension URL: FuzzySearchable {
+    var searchableString: String {
+        return String(self.lastPathComponent.split(separator: ".")[0])
     }
 }

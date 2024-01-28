@@ -272,6 +272,11 @@
 		61538B902B111FE800A88846 /* String+AppearancesOfSubstring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61538B8F2B111FE800A88846 /* String+AppearancesOfSubstring.swift */; };
 		61538B932B11201900A88846 /* String+Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61538B922B11201900A88846 /* String+Character.swift */; };
 		615AA21A2B0CFD480013FCCC /* LazyStringLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 615AA2192B0CFD480013FCCC /* LazyStringLoader.swift */; };
+		61E0904A2B657C500072D899 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E090492B657C500072D899 /* Models.swift */; };
+		61E0904C2B657D410072D899 /* String+Normalise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E0904B2B657D410072D899 /* String+Normalise.swift */; };
+		61E0904E2B6584AC0072D899 /* String+HasPrefix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E0904D2B6584AC0072D899 /* String+HasPrefix.swift */; };
+		61E090502B6587630072D899 /* FuzzySearchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E0904F2B6587630072D899 /* FuzzySearchable.swift */; };
+		61E090522B658AB00072D899 /* Collection+FuzzySearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E090512B658AB00072D899 /* Collection+FuzzySearch.swift */; };
 		6C049A372A49E2DB00D42923 /* DirectoryEventStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C049A362A49E2DB00D42923 /* DirectoryEventStream.swift */; };
 		6C05A8AF284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C05A8AE284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift */; };
 		6C092EDA2A53A58600489202 /* EditorLayout+StateRestoration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C092ED92A53A58600489202 /* EditorLayout+StateRestoration.swift */; };
@@ -805,6 +810,11 @@
 		61538B8F2B111FE800A88846 /* String+AppearancesOfSubstring.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+AppearancesOfSubstring.swift"; sourceTree = "<group>"; };
 		61538B922B11201900A88846 /* String+Character.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Character.swift"; sourceTree = "<group>"; };
 		615AA2192B0CFD480013FCCC /* LazyStringLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyStringLoader.swift; sourceTree = "<group>"; };
+		61E090492B657C500072D899 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		61E0904B2B657D410072D899 /* String+Normalise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Normalise.swift"; sourceTree = "<group>"; };
+		61E0904D2B6584AC0072D899 /* String+HasPrefix.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+HasPrefix.swift"; sourceTree = "<group>"; };
+		61E0904F2B6587630072D899 /* FuzzySearchable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FuzzySearchable.swift; sourceTree = "<group>"; };
+		61E090512B658AB00072D899 /* Collection+FuzzySearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+FuzzySearch.swift"; sourceTree = "<group>"; };
 		6C049A362A49E2DB00D42923 /* DirectoryEventStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryEventStream.swift; sourceTree = "<group>"; };
 		6C05A8AE284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkspaceDocument+Listeners.swift"; sourceTree = "<group>"; };
 		6C092ED92A53A58600489202 /* EditorLayout+StateRestoration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EditorLayout+StateRestoration.swift"; sourceTree = "<group>"; };
@@ -1571,6 +1581,7 @@
 		58798210292D92370085B254 /* Search */ = {
 			isa = PBXGroup;
 			children = (
+				61E090482B657C360072D899 /* FuzzySearch */,
 				58798212292D92370085B254 /* Extensions */,
 				58798214292D92370085B254 /* Model */,
 			);
@@ -2240,6 +2251,18 @@
 				613053642B23A49300D767E3 /* TemporaryFile.swift */,
 			);
 			path = Indexer;
+			sourceTree = "<group>";
+		};
+		61E090482B657C360072D899 /* FuzzySearch */ = {
+			isa = PBXGroup;
+			children = (
+				61E090492B657C500072D899 /* Models.swift */,
+				61E0904B2B657D410072D899 /* String+Normalise.swift */,
+				61E0904D2B6584AC0072D899 /* String+HasPrefix.swift */,
+				61E0904F2B6587630072D899 /* FuzzySearchable.swift */,
+				61E090512B658AB00072D899 /* Collection+FuzzySearch.swift */,
+			);
+			path = FuzzySearch;
 			sourceTree = "<group>";
 		};
 		6C092EDC2A53A63E00489202 /* Views */ = {
@@ -3180,6 +3203,7 @@
 				5882252E292C280D00E83CDE /* StatusBarMaximizeButton.swift in Sources */,
 				6C4104E9297C970F00F472BA /* AboutDefaultView.swift in Sources */,
 				587B9E6F29301D8F00AC7927 /* GitLabProjectAccess.swift in Sources */,
+				61E0904C2B657D410072D899 /* String+Normalise.swift in Sources */,
 				587B9E6929301D8F00AC7927 /* GitLabEvent.swift in Sources */,
 				B60718442B17DBE5009CDAB4 /* SourceControlNavigatorRepositoryItem.swift in Sources */,
 				B67DB0F92AFDF638002DC647 /* IconButtonStyle.swift in Sources */,
@@ -3235,6 +3259,7 @@
 				587B9E9829301D8F00AC7927 /* GitCommit.swift in Sources */,
 				6C5228B529A868BD00AC48F6 /* Environment+ContentInsets.swift in Sources */,
 				587B9E9429301D8F00AC7927 /* BitBucketTokenConfiguration.swift in Sources */,
+				61E090522B658AB00072D899 /* Collection+FuzzySearch.swift in Sources */,
 				04BA7C222AE2D95E00584E1C /* GitClient+CommitHistory.swift in Sources */,
 				581BFB672926431000D251EC /* WelcomeWindowView.swift in Sources */,
 				58A5DFA329339F6400D1BD5D /* CommandManager.swift in Sources */,
@@ -3303,6 +3328,7 @@
 				6C147C4D29A32AA30089B630 /* EditorView.swift in Sources */,
 				B6152B802ADAE421004C6012 /* CodeEditWindowControllerExtensions.swift in Sources */,
 				587B9E7B29301D8F00AC7927 /* GitHubRouter.swift in Sources */,
+				61E0904A2B657C500072D899 /* Models.swift in Sources */,
 				201169E22837B3D800F92B46 /* SourceControlNavigatorChangesView.swift in Sources */,
 				850C631029D6B01D00E1444C /* SettingsView.swift in Sources */,
 				DE6405A62817734700881FDF /* EditorTabBarNative.swift in Sources */,
@@ -3435,6 +3461,7 @@
 				587B9E7029301D8F00AC7927 /* GitLabUser.swift in Sources */,
 				04660F6A27E51E5C00477777 /* CodeEditWindowController.swift in Sources */,
 				58798218292D92370085B254 /* String+SafeOffset.swift in Sources */,
+				61E0904E2B6584AC0072D899 /* String+HasPrefix.swift in Sources */,
 				6C6BD70429CD17B600235D17 /* ExtensionsManager.swift in Sources */,
 				587B9E6129301D8F00AC7927 /* GitLabOAuthConfiguration.swift in Sources */,
 				587B9E6229301D8F00AC7927 /* GitLabConfiguration.swift in Sources */,
@@ -3449,6 +3476,7 @@
 				B6EA200229DB7F81001BF195 /* View+ConstrainHeightToWindow.swift in Sources */,
 				B68C7C212A01DEFE004EA6D6 /* GitHubComment.swift in Sources */,
 				6C48D8F42972DB1A00D6D205 /* Env+Window.swift in Sources */,
+				61E090502B6587630072D899 /* FuzzySearchable.swift in Sources */,
 				6C5FDF7A29E6160000BC08C0 /* AppSettings.swift in Sources */,
 				58F2EB07292FB2B0004A9BDE /* GeneralSettings.swift in Sources */,
 				B6041F4D29D7A4E9000F3454 /* SettingsPageView.swift in Sources */,
