@@ -107,11 +107,6 @@ final class Editor: ObservableObject, Identifiable {
 
         if temporaryTab?.file == file {
             temporaryTab = nil
-        } else {
-            // When tab actually closed (not changed from temporary to normal)
-            // we need to set fileDocument to nil, otherwise it will keep file in memory
-            // and not reload content on next openTabFile with same id
-            file.fileDocument = nil
         }
 
         historyOffset = 0
@@ -122,6 +117,10 @@ final class Editor: ObservableObject, Identifiable {
         if let selectedTab {
             history.prepend(selectedTab)
         }
+        // Reset change count to 0
+        file.fileDocument?.updateChangeCount(.changeCleared)
+        // remove file from memory
+        file.fileDocument = nil
     }
 
     /// Closes the currently opened tab in the tab group.
