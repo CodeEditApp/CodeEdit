@@ -29,7 +29,7 @@ extension FuzzySearchable {
         for (index, character) in compareString.enumerated() {
             if let prefixLength = searchString.lengthOfMatchingPrefix(prefix: character, startingAt: patternIndex) {
                 patternIndex += prefixLength
-                currentScore += 1 + currentScore
+                currentScore += 1 + currentScore // TODO: double check this!!!
                 currentMatchedPart.length += 1
             } else {
                 currentScore = 0

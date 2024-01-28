@@ -74,6 +74,6 @@ final class QuickOpenViewModel: ObservableObject {
 
 extension URL: FuzzySearchable {
     var searchableString: String {
-        return String(self.lastPathComponent.split(separator: ".")[0])
+        return self.lastPathComponent
     }
 }

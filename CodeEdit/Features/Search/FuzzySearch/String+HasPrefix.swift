@@ -20,10 +20,8 @@ extension String {
 
         let searchString = self.suffix(from: stringIndex)
 
-        for prefix in [prefix.content, prefix.normalisedContent] {
-            if searchString.hasPrefix(prefix) {
-                return prefix.count
-            }
+        for prefix in [prefix.content, prefix.normalisedContent] where searchString.hasPrefix(prefix) {
+            return prefix.count
         }
 
         return nil
