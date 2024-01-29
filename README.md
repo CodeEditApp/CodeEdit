@@ -175,6 +175,9 @@ For issues we want to focus on that are most relevant at any given time, please 
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/armartinez"><img src="https://avatars.githubusercontent.com/u/1909987?v=4?s=100" width="100px;" alt="Axel Martinez"/><br /><sub><b>Axel Martinez</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3Aarmartinez" title="Bug reports">🐛</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://nivora.app"><img src="https://avatars.githubusercontent.com/u/5382443?v=4?s=100" width="100px;" alt="Federico Zivolo"/><br /><sub><b>Federico Zivolo</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=FezVrasta" title="Code">💻</a></td>
     </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/ElvisWong213"><img src="https://avatars.githubusercontent.com/u/40566101?v=4?s=100" width="100px;" alt="Elvis Wong"/><br /><sub><b>Elvis Wong</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3AElvisWong213" title="Bug reports">🐛</a></td>
+    </tr>
   </tbody>
 </table>
 

@@ -658,6 +658,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "ElvisWong213",
+      "name": "Elvis Wong",
+      "avatar_url": "https://avatars.githubusercontent.com/u/40566101?v=4",
+      "profile": "https://github.com/ElvisWong213",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
