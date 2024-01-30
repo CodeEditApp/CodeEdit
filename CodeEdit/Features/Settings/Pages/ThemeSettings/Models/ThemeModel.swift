@@ -117,8 +117,10 @@ final class ThemeModel: ObservableObject {
             let json = try Data(contentsOf: url)
             // decode the json into ``Theme``
             let theme = try JSONDecoder().decode(Theme.self, from: json)
+            
             return theme
         } catch {
+            print(error)
             try filemanager.removeItem(at: url)
             return nil
         }
@@ -147,8 +149,8 @@ final class ThemeModel: ObservableObject {
 
         try loadBundledThemes()
 
-        // get all filenames in themes folder that end with `.json`
-        let content = try filemanager.contentsOfDirectory(atPath: url.path).filter { $0.contains(".json") }
+        // get all filenames in themes folder that end with `.cetheme`
+        let content = try filemanager.contentsOfDirectory(atPath: url.path).filter { $0.contains(".cetheme") }
 
         let prefs = Settings.shared.preferences
         // load each theme from disk
@@ -221,16 +223,27 @@ final class ThemeModel: ObservableObject {
 
     private func loadBundledThemes() throws {
         let bundledThemeNames: [String] = [
-            "codeedit-xcode-dark",
-            "codeedit-xcode-light",
-            "codeedit-github-dark",
-            "codeedit-github-light",
-            "codeedit-midnight",
-            "codeedit-solarized-dark",
-            "codeedit-solarized-light"
+            "Basic",
+            "Civic",
+            "Classic (Dark)",
+            "Classic (Light)",
+            "Default (Dark)",
+            "Default (Light)",
+            "Dusk",
+            "GitHub (Dark)",
+            "GitHub (Light)",
+            "High Contrast (Dark)",
+            "High Contrast (Light)",
+            "Low Key",
+            "Midnight",
+            "Presentation (Dark)",
+            "Presentation (Light)",
+            "Solarized (Dark)",
+            "Solarized (Light)",
+            "Sunset"
         ]
         for themeName in bundledThemeNames {
-            guard let defaultUrl = Bundle.main.url(forResource: themeName, withExtension: "json") else {
+            guard let defaultUrl = Bundle.main.url(forResource: themeName, withExtension: "cetheme") else {
                 return
             }
             let json = try Data(contentsOf: defaultUrl)
@@ -240,7 +253,7 @@ final class ThemeModel: ObservableObject {
                 options: .prettyPrinted
             )
 
-            try prettyJSON.write(to: themesURL.appendingPathComponent("\(themeName).json"), options: .atomic)
+            try prettyJSON.write(to: themesURL.appendingPathComponent("\(themeName).cetheme"), options: .atomic)
         }
     }
 
@@ -271,7 +284,7 @@ final class ThemeModel: ObservableObject {
     func delete(_ theme: Theme) {
         let url = themesURL
             .appendingPathComponent(theme.name)
-            .appendingPathExtension("json")
+            .appendingPathExtension("cetheme")
         do {
             // remove the theme from the list
             try filemanager.removeItem(at: url)
@@ -293,7 +306,7 @@ final class ThemeModel: ObservableObject {
         themes.forEach { theme in
             do {
                 // load the original theme from `~/Library/Application Support/CodeEdit/themes/`
-                let originalUrl = url.appendingPathComponent(theme.name).appendingPathExtension("json")
+                let originalUrl = url.appendingPathComponent(theme.name).appendingPathExtension("cetheme")
                 let originalData = try Data(contentsOf: originalUrl)
                 let originalTheme = try JSONDecoder().decode(Theme.self, from: originalData)
 
