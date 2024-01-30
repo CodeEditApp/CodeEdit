@@ -20,9 +20,9 @@ final class MemoryIndexSearchTests: XCTestCase {
         let indexResults = index.addFileWithText(filePath, text: "Hello, World!")
         XCTAssert(indexResults)
         index.flush()
-        let progressivSearch = index.progressiveSearch(query: "hello")
-        let progressivSearchResults = progressivSearch.getNextSearchResultsChunk(limit: 10)
-        XCTAssertEqual(progressivSearchResults.results.count, 1)
+        let progressiveSearch = index.progressiveSearch(query: "hello")
+        let progressiveSearchResults = progressiveSearch.getNextSearchResultsChunk(limit: 10)
+        XCTAssertEqual(progressiveSearchResults.results.count, 1)
     }
 
     func testIndexFolderSearch() {
@@ -50,9 +50,9 @@ final class MemoryIndexSearchTests: XCTestCase {
         let indexResults = index.addFileWithText(filePath, text: "Hello, World!")
         XCTAssert(indexResults)
         index.flush()
-        let progressivSearch = index.progressiveSearch(query: "*ll*")
-        let progressivSearchResults = progressivSearch.getNextSearchResultsChunk(limit: 10)
-        XCTAssertEqual(progressivSearchResults.results.count, 1)
+        let progressiveSearch = index.progressiveSearch(query: "*ll*")
+        let progressiveSearchResults = progressiveSearch.getNextSearchResultsChunk(limit: 10)
+        XCTAssertEqual(progressiveSearchResults.results.count, 1)
     }
 
     func testIndexRemoveDocument() {

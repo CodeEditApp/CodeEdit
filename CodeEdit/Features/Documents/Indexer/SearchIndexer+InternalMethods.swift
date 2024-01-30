@@ -9,10 +9,10 @@ import Foundation
 import UniformTypeIdentifiers
 
 extension SearchIndexer {
-    /// A "typealias" for a document ID, using a struct becasue swift lint doesn't allow typealiases for 3 types
+    /// A "typealias" for a document ID, using a struct because swift lint doesn't allow type-aliases for 3 types
     public struct DocumentID {
         let url: URL
-        let docuemnt: SKDocument
+        let document: SKDocument
         let documentID: SKDocumentID
     }
     /// Returns the mime type for the url, or nil if the mime type couldn't be ascertained from the extension
@@ -21,8 +21,8 @@ extension SearchIndexer {
     /// - Returns: the mime type of the url if able to detect, nil otherwise
     func detectMimeType(_ url: URL) -> String? {
         if let type = UTType(filenameExtension: url.pathExtension) {
-            if let mimetype = type.preferredMIMEType {
-                return mimetype
+            if let mimeType = type.preferredMIMEType {
+                return mimeType
             }
         }
         return nil
@@ -33,7 +33,7 @@ extension SearchIndexer {
     /// i. e. the index does not need to get flushed.
     func remove(document: SKDocument) -> Bool {
         if let index = self.index {
-            return modifiyIndexQueue.sync {
+            return modifyIndexQueue.sync {
                 SKIndexRemoveDocument(index, document)
             }
         }
@@ -78,7 +78,7 @@ extension SearchIndexer {
                 docs.append(
                     DocumentID(
                         url: baseURL,
-                        docuemnt: inParentDocument!,
+                        document: inParentDocument!,
                         documentID: documentID
                     )
                 )
@@ -88,8 +88,8 @@ extension SearchIndexer {
 
     /// Return an array of all the documents contained within the index
     ///
-    /// - Parameter termState: the termstate of documents to be returned (eg. all, empty only, non-empty only)
-    /// - Returns: An array containing all the documents matching the termstate
+    /// - Parameter termState: the TermState of documents to be returned (eg. all, empty only, non-empty only)
+    /// - Returns: An array containing all the documents matching the TermState
     func fullDocuments(termState: TermState = .all) -> [DocumentID] {
         guard let index = self.index else {
             return []

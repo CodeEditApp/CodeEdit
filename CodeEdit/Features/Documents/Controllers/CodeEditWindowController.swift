@@ -128,7 +128,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
             // style the toolbar background in native tab bar style.
             self.window?.titlebarSeparatorStyle = .none
         } else {
-            // In xcode tab bar style, we use default toolbar background with
+            // In Xcode tab bar style, we use default toolbar background with
             // line separator.
             self.window?.titlebarSeparatorStyle = .automatic
         }

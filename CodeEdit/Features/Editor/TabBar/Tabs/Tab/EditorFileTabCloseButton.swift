@@ -32,7 +32,7 @@ struct EditorFileTabCloseButton: View {
         .id(id)
         // Detects if file document changed, when this view created item.fileDocument is nil
         .onReceive(item.fileDocumentPublisher, perform: { _ in
-            // Force rerender so isDocumentEdited publisher is updated
+            // Force re-render so isDocumentEdited publisher is updated
             self.id += 1
         })
         .onReceive(

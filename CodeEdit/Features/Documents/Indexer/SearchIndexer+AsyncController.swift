@@ -8,7 +8,7 @@
 import Foundation
 
 extension SearchIndexer {
-    /// Manager for SearchIndexer objct that supports async calls to the index
+    /// Manager for SearchIndexer object that supports async calls to the index
     class AsyncManager {
         /// An instance of the SearchIndexer
         let index: SearchIndexer
@@ -44,7 +44,7 @@ extension SearchIndexer {
         ///   - timeout: The timeout duration for each search operation. Default is 1.0 second.
         ///
         /// - Returns: An asynchronous stream (`AsyncStream`) of search results in chunks.
-        /// The search results are returned in the form of a `SearchIndexer.ProgressivSearch.Results` object.
+        /// The search results are returned in the form of a `SearchIndexer.ProgressiveSearch.Results` object.
         ///
         /// This function initiates a progressive search on the index for the specified query
         /// and asynchronously yields search results in chunks using an `AsyncStream`.
@@ -65,7 +65,7 @@ extension SearchIndexer {
             query: String,
             _ maxResults: Int,
             timeout: TimeInterval = 1.0
-        ) async -> AsyncStream<SearchIndexer.ProgressivSearch.Results> {
+        ) async -> AsyncStream<SearchIndexer.ProgressiveSearch.Results> {
             let search = index.progressiveSearch(query: query)
 
             return AsyncStream { configuration in

@@ -1,5 +1,5 @@
 //
-//  SearchIndexer+ProgressivSearch.swift
+//  SearchIndexer+ProgressiveSearch.swift
 //  CodeEdit
 //
 //  Created by Tommy Ludwig on 18.11.23.
@@ -8,12 +8,12 @@
 import Foundation
 
 extension SearchIndexer {
-    /// Object representaitng the search results
+    /// Object representing the search results
     public class SearchResult {
         /// The identifying url for the document
         let url: URL
 
-        /// The search score for the codument result, Heigher means more relevant
+        /// The search score for the document, higher means more relevant
         let score: Float
 
         init(url: URL, score: Float) {
@@ -26,13 +26,13 @@ extension SearchIndexer {
     public func progressiveSearch(
         query: String,
         options: SKSearchOptions = SKSearchOptions(kSKSearchOptionDefault)
-    ) -> ProgressivSearch {
-        return ProgressivSearch(options: options, index: self, query: query)
+    ) -> ProgressiveSearch {
+        return ProgressiveSearch(options: options, index: self, query: query)
     }
 
     /// A class for creating and managing a progressive search.
     /// A search starts on creation and can be cancelled at any time.
-    public class ProgressivSearch {
+    public class ProgressiveSearch {
         /// A class representing the results of a search request.
         public class Results {
             /// Create a search result
@@ -78,7 +78,7 @@ extension SearchIndexer {
         public func getNextSearchResultsChunk(
             limit: Int = 10,
             timeout: TimeInterval = 1.0
-        ) -> (ProgressivSearch.Results) {
+        ) -> (ProgressiveSearch.Results) {
             guard self.index.index != nil else {
                 return Results(moreResultsAvailable: false, results: [])
             }

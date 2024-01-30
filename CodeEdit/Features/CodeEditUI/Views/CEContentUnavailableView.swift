@@ -25,7 +25,7 @@ struct CEContentUnavailableView<Actions: View>: View {
         self.actions = actions()
     }
 
-    var contentUnavaiableView: some View {
+    var contentUnavailableView: some View {
         VStack(spacing: 14) {
             VStack(spacing: 5) {
                 if systemImage != nil {
@@ -53,10 +53,10 @@ struct CEContentUnavailableView<Actions: View>: View {
 
     var body: some View {
         if #available(macOS 14, *) {
-            contentUnavaiableView
+            contentUnavailableView
                 .buttonStyle(.accessoryBarAction)
         } else {
-            contentUnavaiableView
+            contentUnavailableView
         }
     }
 }

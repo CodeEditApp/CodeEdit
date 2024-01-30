@@ -9,7 +9,7 @@ import Foundation
 
 /// Indexer using SKIndex
 public class SearchIndexer {
-    let modifiyIndexQueue = DispatchQueue(label: "app.codeedit.CodeEdit.ModifySearchIndex")
+    let modifyIndexQueue = DispatchQueue(label: "app.codeedit.CodeEdit.ModifySearchIndex")
 
     var index: SKIndex?
 
@@ -42,7 +42,7 @@ public class SearchIndexer {
         let allDocs = self.fullDocuments(termState: .empty)
         var removedCount = 0
         for docID in allDocs {
-            _ = self.remove(document: docID.docuemnt)
+            _ = self.remove(document: docID.document)
             removedCount += 1
         }
         return removedCount
@@ -90,7 +90,7 @@ public class SearchIndexer {
     /// - `indexType`: The type of the index to be created.
     ///     Options include `.unknown`, `.inverted`, `.vector` or `.invertedVector`
     /// - `proximityIndexing`: A Boolean flag indicating whether or not Search Kit should use proximity indexing.
-    /// - `stopWords`: A set of stopwords — words not to index.
+    /// - `stopWords`: A set of stop-words — words not to index.
     /// - `minTermLength`: The minimum term length to index (defaults to 1).
     public class CreateProperties {
         /// The type of the index to be created
@@ -107,18 +107,18 @@ public class SearchIndexer {
         /// - Parameters:
         ///   - indexType: The type of index
         ///   - proximityIndexing: A Boolean flag indicating whether or not Search Kit should use proximity indexing
-        ///   - stopWords: A set of stopwords — words not to index
+        ///   - stopWords: A set of stop-words — words not to index
         ///   - minTermLength: The minimum term length to index (defaults to 1)
         public init(
             indexType: SearchIndexer.IndexType = .inverted,
             proximityIndexing: Bool = false,
             stopWords: Set<String> = [],
-            minTermLengh: UInt = 1
+            minTermLength: UInt = 1
         ) {
             self.indexType = SKIndexType(indexType.rawValue)
             self.proximityIndexing = proximityIndexing
             self.stopWords = stopWords
-            self.minTermLength = minTermLengh
+            self.minTermLength = minTermLength
         }
 
         /// Returns a CFDictionary object to use for the call to SKIndexCreate
