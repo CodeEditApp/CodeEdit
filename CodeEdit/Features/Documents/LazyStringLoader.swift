@@ -11,7 +11,7 @@ class LazyStringLoader {
     let fileURL: URL
     var fileHandle: FileHandle?
     let chunkSize: Int
-    let queue = DispatchQueue(label: "com.CodeEdit.LayzLoader")
+    let queue = DispatchQueue(label: "com.CodeEdit.LazyLoader")
 
     init(fileURL: URL, chunkSize: Int = 1024) {
         self.fileURL = fileURL

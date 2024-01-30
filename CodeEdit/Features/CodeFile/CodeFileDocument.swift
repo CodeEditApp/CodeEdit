@@ -32,13 +32,13 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
     /// Used to override detected languages.
     @Published var language: CodeLanguage?
 
-    /// Document-specific overriden indent option.
+    /// Document-specific overridden indent option.
     @Published var indentOption: SettingsData.TextEditingSettings.IndentOption?
 
-    /// Document-specific overriden tab width.
+    /// Document-specific overridden tab width.
     @Published var defaultTabWidth: Int?
 
-    /// Document-specific overriden line wrap preference.
+    /// Document-specific overridden line wrap preference.
     @Published var wrapLines: Bool?
 
     /*
@@ -133,7 +133,7 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
         self.content = content
     }
 
-    /// Triggered when change occured
+    /// Triggered when change occurred
     override func updateChangeCount(_ change: NSDocument.ChangeType) {
         super.updateChangeCount(change)
 

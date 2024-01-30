@@ -7,12 +7,12 @@
 
 import Foundation
 extension SearchIndexer {
-    /// Memory based indxing using NSMutable
+    /// Memory based indexing using NSMutable
     public class Memory: SearchIndexer {
         // The data index store
         private var store = NSMutableData()
 
-        /// Creat a new in-memory index
+        /// Create a new in-memory index
         /// - Parameter properties: the properties to use in the index
         public init?(properties: CreateProperties = CreateProperties()) {
             let data = NSMutableData()

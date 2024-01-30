@@ -261,7 +261,7 @@
 		611191FE2B08CCD200D4459B /* SearchIndexer+File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611191FD2B08CCD200D4459B /* SearchIndexer+File.swift */; };
 		611192002B08CCD700D4459B /* SearchIndexer+Memory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611191FF2B08CCD700D4459B /* SearchIndexer+Memory.swift */; };
 		611192022B08CCDC00D4459B /* SearchIndexer+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611192012B08CCDC00D4459B /* SearchIndexer+Search.swift */; };
-		611192042B08CCED00D4459B /* SearchIndexer+ProgressivSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611192032B08CCED00D4459B /* SearchIndexer+ProgressivSearch.swift */; };
+		611192042B08CCED00D4459B /* SearchIndexer+ProgressiveSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611192032B08CCED00D4459B /* SearchIndexer+ProgressiveSearch.swift */; };
 		611192062B08CCF600D4459B /* SearchIndexer+Add.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611192052B08CCF600D4459B /* SearchIndexer+Add.swift */; };
 		611192082B08CCFD00D4459B /* SearchIndexer+Terms.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611192072B08CCFD00D4459B /* SearchIndexer+Terms.swift */; };
 		6111920C2B08CD0B00D4459B /* SearchIndexer+InternalMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6111920B2B08CD0B00D4459B /* SearchIndexer+InternalMethods.swift */; };
@@ -800,7 +800,7 @@
 		611191FD2B08CCD200D4459B /* SearchIndexer+File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchIndexer+File.swift"; sourceTree = "<group>"; };
 		611191FF2B08CCD700D4459B /* SearchIndexer+Memory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchIndexer+Memory.swift"; sourceTree = "<group>"; };
 		611192012B08CCDC00D4459B /* SearchIndexer+Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchIndexer+Search.swift"; sourceTree = "<group>"; };
-		611192032B08CCED00D4459B /* SearchIndexer+ProgressivSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchIndexer+ProgressivSearch.swift"; sourceTree = "<group>"; };
+		611192032B08CCED00D4459B /* SearchIndexer+ProgressiveSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchIndexer+ProgressiveSearch.swift"; sourceTree = "<group>"; };
 		611192052B08CCF600D4459B /* SearchIndexer+Add.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchIndexer+Add.swift"; sourceTree = "<group>"; };
 		611192072B08CCFD00D4459B /* SearchIndexer+Terms.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchIndexer+Terms.swift"; sourceTree = "<group>"; };
 		6111920B2B08CD0B00D4459B /* SearchIndexer+InternalMethods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchIndexer+InternalMethods.swift"; sourceTree = "<group>"; };
@@ -2240,7 +2240,7 @@
 				611191FF2B08CCD700D4459B /* SearchIndexer+Memory.swift */,
 				611191FD2B08CCD200D4459B /* SearchIndexer+File.swift */,
 				611192012B08CCDC00D4459B /* SearchIndexer+Search.swift */,
-				611192032B08CCED00D4459B /* SearchIndexer+ProgressivSearch.swift */,
+				611192032B08CCED00D4459B /* SearchIndexer+ProgressiveSearch.swift */,
 				611192052B08CCF600D4459B /* SearchIndexer+Add.swift */,
 				611192072B08CCFD00D4459B /* SearchIndexer+Terms.swift */,
 				6111920B2B08CD0B00D4459B /* SearchIndexer+InternalMethods.swift */,
@@ -3217,7 +3217,7 @@
 				B6C4F2A62B3CABD200B2B140 /* HistoryInspectorItemView.swift in Sources */,
 				B65B10FE2B08B07D002852CF /* SourceControlNavigatorChangesList.swift in Sources */,
 				58F2EB03292FB2B0004A9BDE /* Documentation.docc in Sources */,
-				611192042B08CCED00D4459B /* SearchIndexer+ProgressivSearch.swift in Sources */,
+				611192042B08CCED00D4459B /* SearchIndexer+ProgressiveSearch.swift in Sources */,
 				611192022B08CCDC00D4459B /* SearchIndexer+Search.swift in Sources */,
 				04BA7C272AE2E9F100584E1C /* GitClient+Push.swift in Sources */,
 				2B7A583527E4BA0100D25D4E /* AppDelegate.swift in Sources */,
