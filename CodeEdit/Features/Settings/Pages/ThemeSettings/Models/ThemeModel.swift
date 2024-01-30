@@ -117,7 +117,6 @@ final class ThemeModel: ObservableObject {
             let json = try Data(contentsOf: url)
             // decode the json into ``Theme``
             let theme = try JSONDecoder().decode(Theme.self, from: json)
-            
             return theme
         } catch {
             print(error)
