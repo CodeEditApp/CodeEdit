@@ -55,7 +55,7 @@ extension WorkspaceDocument {
         ///
         /// The `replaceOptions` property is a lazy, computed property that dynamically calculates
         /// the compare options based on the values of `selectedMode` and `ignoreCase`. It is used
-        /// for controlling string replacement behaviour for the find and replace functions.
+        /// for controlling string replacement behavior for the find and replace functions.
         ///
         /// - Note: This property is implemented as a lazy property in the main class body because
         /// extensions cannot contain stored properties directly.
