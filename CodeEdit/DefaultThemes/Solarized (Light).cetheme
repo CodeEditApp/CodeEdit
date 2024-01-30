@@ -58,7 +58,6 @@
     }
   },
   "terminal": {
-  "editor": {
     "background": {
       "color": "#FDF6E3"
     },
