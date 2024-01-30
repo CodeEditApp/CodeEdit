@@ -14,14 +14,10 @@ struct FindNavigatorView: View {
         workspace.searchState ?? .init(workspace)
     }
 
-    @State var currentFilter: String = ""
     @State private var foundFilesCount: Int = 0
     @State private var searchResultCount: Int = 0
-
-    enum Filters: String {
-        case ignoring = "Ignoring Case"
-        case matching = "Matching Case"
-    }
+    @State private var findNavigatorStatus: WorkspaceDocument.SearchState.FindNavigatorStatus = .none
+    @State private var findResultMessage: String?
 
     var body: some View {
         VStack {
@@ -31,16 +27,63 @@ struct FindNavigatorView: View {
             }
             .padding(.horizontal, 10)
             .padding(.vertical, 5)
+
             Divider()
-            HStack(alignment: .center) {
-                Text("\(self.searchResultCount) results in \(self.foundFilesCount) files")
-                    .font(.system(size: 10))
+
+            if findNavigatorStatus == .found {
+                HStack(alignment: .center) {
+                    Text("\(self.searchResultCount) results in \(self.foundFilesCount) files")
+                        .font(.system(size: 10))
+                }
+
+                Divider()
             }
-            Divider()
-            if state.searchResultsCount == 0 {
-                CEContentUnavailableView("No Results")
-            } else {
-                FindNavigatorResultList()
+
+            switch self.findNavigatorStatus {
+            case .none:
+                Spacer()
+            case .searching:
+                VStack {
+                    ProgressView()
+                        .padding()
+
+                    Text("Searching")
+                        .foregroundStyle(.tertiary)
+                        .font(.title3)
+                }
+                .frame(maxHeight: .infinity)
+            case .replacing:
+                VStack {
+                    ProgressView()
+                        .padding()
+
+                    Text("Replacing")
+                        .foregroundStyle(.tertiary)
+                        .font(.title3)
+                }
+                .frame(maxHeight: .infinity)
+            case .found:
+                if self.searchResultCount == 0 {
+                    CEContentUnavailableView(
+                        "No Results",
+                        description: "No Results for \"\(state.searchQuery)\" in Project",
+                        systemImage: "exclamationmark.magnifyingglass"
+                    )
+                } else {
+                    FindNavigatorResultList()
+                }
+            case .replaced(let updatedFiles):
+                CEContentUnavailableView(
+                    "Replaced",
+                    description: "Successfully replaced terms across \(updatedFiles) files",
+                    systemImage: "checkmark.circle.fill"
+                )
+            case .failed(let errorMessage):
+                CEContentUnavailableView(
+                    "An Error Occurred",
+                    description: "\(errorMessage)",
+                    systemImage: "xmark.octagon.fill"
+                )
             }
         }
         .safeAreaInset(edge: .bottom, spacing: 0) {
@@ -50,5 +93,8 @@ struct FindNavigatorView: View {
             self.searchResultCount = state.searchResultsCount
             self.foundFilesCount = state.searchResult.count
         }
+        .onReceive(state.$findNavigatorStatus, perform: { value in
+            self.findNavigatorStatus = value
+        })
     }
 }
