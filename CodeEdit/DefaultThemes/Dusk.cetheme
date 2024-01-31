@@ -1,0 +1,125 @@
+{
+  "name": "Dusk",
+  "displayName": "Dusk",
+  "description": "Xcode dark theme.",
+  "author": "CodeEdit",
+  "version": "0.0.1",
+  "license": "MIT",
+  "distributionURL": "https://github.com/CodeEditApp/CodeEdit",
+  "type": "dark",
+  "editor": {
+    "background": {
+      "color": "#282B35"
+    },
+    "selection": {
+      "color": "#67675C"
+    },
+    "insertionPoint": {
+      "color": "#FFFFFF"
+    },
+    "lineHighlight": {
+      "color": "#3B3B3C"
+    },
+    "invisibles": {
+      "color": "#5F5F5F"
+    },
+    "text": {
+      "color": "#FFFFFF"
+    },
+    "comments": {
+      "color": "#41B645"
+    },
+    "strings": {
+      "color": "#DB2C38"
+    },
+    "characters": {
+      "color": "#786DC4"
+    },
+    "numbers": {
+      "color": "#786DC4"
+    },
+    "keywords": {
+      "color": "#B21889"
+    },
+    "attributes": {
+      "color": "#55747C"
+    },
+    "types": {
+      "color": "#5DD8FF"
+    },
+    "variables": {
+      "color": "#41A1C0"
+    },
+    "commands": {
+      "color": "#83C057"
+    },
+    "values": {
+      "color": "#00A0BE"
+    }
+  },
+  "terminal": {
+    "background": {
+      "color": "#282B35"
+    },
+    "selection": {
+      "color": "#67675C"
+    },
+    "cursor": {
+      "color": "#FFFFFF"
+    },
+    "text": {
+      "color": "#FFFFFF"
+    },
+    "boldText": {
+      "color": "#D9D9D9"
+    },
+    "black": {
+      "color": "#1F2024"
+    },
+    "red": {
+      "color": "#FF3B30"
+    },
+    "green": {
+      "color": "#28CD41"
+    },
+    "yellow": {
+      "color": "#FFCC00"
+    },
+    "blue": {
+      "color": "#007AFF"
+    },
+    "magenta": {
+      "color": "#AF52DE"
+    },
+    "cyan": {
+      "color": "#59ADC4"
+    },
+    "white": {
+      "color": "#D9D9D9"
+    },
+    "brightBlack": {
+      "color": "#8E8E93"
+    },
+    "brightRed": {
+      "color": "#FF3B30"
+    },
+    "brightGreen": {
+      "color": "#28CD41"
+    },
+    "brightYellow": {
+      "color": "#FFFF00"
+    },
+    "brightBlue": {
+      "color": "#007AFF"
+    },
+    "brightMagenta": {
+      "color": "#AF52DE"
+    },
+    "brightCyan": {
+      "color": "#55BEF0"
+    },
+    "brightWhite": {
+      "color": "#FFFFFF"
+    }
+  }
+}
