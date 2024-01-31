@@ -140,8 +140,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mattmassicotte/MainOffender",
       "state" : {
-        "revision" : "343cc3797618c29b48b037b4e2beea0664e75315",
-        "version" : "0.1.0"
+        "revision" : "750730d33acec0f79edc836221937389e7455bae",
+        "version" : "0.2.0"
       }
     },
     {
@@ -167,8 +167,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/Rearrange",
       "state" : {
-        "revision" : "0fb658e721c68495f6340c211cc6d4719e6b52d8",
-        "version" : "1.6.0"
+        "revision" : "5ff7f3363f7a08f77e0d761e38e6add31c2136e1",
+        "version" : "1.8.1"
       }
     },
     {

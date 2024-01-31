@@ -361,6 +361,14 @@
 		6CFF967829BEBCF600182D6F /* MainCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CFF967729BEBCF600182D6F /* MainCommands.swift */; };
 		6CFF967A29BEBD2400182D6F /* ViewCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CFF967929BEBD2400182D6F /* ViewCommands.swift */; };
 		6CFF967C29BEBD5200182D6F /* WindowCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CFF967B29BEBD5200182D6F /* WindowCommands.swift */; };
+		774830612B7554400003B8F0 /* TestTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774830602B7554400003B8F0 /* TestTask.swift */; };
+		775A8F692B63EC69009B40CC /* ActivityViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775A8F682B63EC69009B40CC /* ActivityViewer.swift */; };
+		77617E5B2B6FD21500601128 /* CETaskRun.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77617E5A2B6FD21500601128 /* CETaskRun.swift */; };
+		7786FF522B7A79640021C653 /* DropdownMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7786FF512B7A79640021C653 /* DropdownMenu.swift */; };
+		7798922C2B6CCF100007510B /* CRTaskStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7798922B2B6CCF100007510B /* CRTaskStatus.swift */; };
+		7798922E2B6D29580007510B /* TaskManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7798922D2B6D29580007510B /* TaskManager.swift */; };
+		779892322B6D2C500007510B /* CETask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 779892312B6D2C4F0007510B /* CETask.swift */; };
+		779A686D2B7E109200A4BBBF /* DropdownMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 779A686C2B7E109200A4BBBF /* DropdownMenuItem.swift */; };
 		850C631029D6B01D00E1444C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850C630F29D6B01D00E1444C /* SettingsView.swift */; };
 		850C631229D6B03400E1444C /* SettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850C631129D6B03400E1444C /* SettingsPage.swift */; };
 		852C7E332A587279006BA599 /* SearchableSettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852C7E322A587279006BA599 /* SearchableSettingsPage.swift */; };
@@ -894,6 +902,14 @@
 		6CFF967729BEBCF600182D6F /* MainCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCommands.swift; sourceTree = "<group>"; };
 		6CFF967929BEBD2400182D6F /* ViewCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewCommands.swift; sourceTree = "<group>"; };
 		6CFF967B29BEBD5200182D6F /* WindowCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowCommands.swift; sourceTree = "<group>"; };
+		774830602B7554400003B8F0 /* TestTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestTask.swift; sourceTree = "<group>"; };
+		775A8F682B63EC69009B40CC /* ActivityViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityViewer.swift; sourceTree = "<group>"; };
+		77617E5A2B6FD21500601128 /* CETaskRun.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CETaskRun.swift; sourceTree = "<group>"; };
+		7786FF512B7A79640021C653 /* DropdownMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropdownMenu.swift; sourceTree = "<group>"; };
+		7798922B2B6CCF100007510B /* CRTaskStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CRTaskStatus.swift; sourceTree = "<group>"; };
+		7798922D2B6D29580007510B /* TaskManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskManager.swift; sourceTree = "<group>"; };
+		779892312B6D2C4F0007510B /* CETask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CETask.swift; sourceTree = "<group>"; };
+		779A686C2B7E109200A4BBBF /* DropdownMenuItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropdownMenuItem.swift; sourceTree = "<group>"; };
 		850C630F29D6B01D00E1444C /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		850C631129D6B03400E1444C /* SettingsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPage.swift; sourceTree = "<group>"; };
 		852C7E322A587279006BA599 /* SearchableSettingsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchableSettingsPage.swift; sourceTree = "<group>"; };
@@ -1406,6 +1422,7 @@
 				B67B270029D7868000FB9301 /* Settings */,
 				6C147C4729A329E50089B630 /* SplitView */,
 				588224FF292C280D00E83CDE /* StatusBar */,
+				779892262B6CC7DC0007510B /* Tasks */,
 				5879827E292ED0FB0085B254 /* TerminalEmulator */,
 				58822512292C280D00E83CDE /* UtilityArea */,
 				581BFB4B2926431000D251EC /* Welcome */,
@@ -1776,9 +1793,12 @@
 		587B9D8629300ABD00AC7927 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				775A8F682B63EC69009B40CC /* ActivityViewer.swift */,
 				B62AEDA92A1FCBE5009A9F52 /* AreaTabBar.swift */,
 				B65B10EB2B073913002852CF /* CEContentUnavailableView.swift */,
 				B65B10FA2B08B054002852CF /* Divided.swift */,
+				7786FF512B7A79640021C653 /* DropdownMenu.swift */,
+				779A686C2B7E109200A4BBBF /* DropdownMenuItem.swift */,
 				587B9D8B29300ABD00AC7927 /* EffectView.swift */,
 				587B9D9029300ABD00AC7927 /* HelpButton.swift */,
 				B67DB0F82AFDF638002DC647 /* IconButtonStyle.swift */,
@@ -2421,6 +2441,34 @@
 				6CBD1BC52978DE53006639D5 /* Font+Caption3.swift */,
 			);
 			path = Text;
+			sourceTree = "<group>";
+		};
+		774830632B7554470003B8F0 /* Tasks */ = {
+			isa = PBXGroup;
+			children = (
+				774830602B7554400003B8F0 /* TestTask.swift */,
+			);
+			path = Tasks;
+			sourceTree = "<group>";
+		};
+		779892262B6CC7DC0007510B /* Tasks */ = {
+			isa = PBXGroup;
+			children = (
+				779892302B6D2C180007510B /* Models */,
+				7798922D2B6D29580007510B /* TaskManager.swift */,
+			);
+			path = Tasks;
+			sourceTree = "<group>";
+		};
+		779892302B6D2C180007510B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				774830632B7554470003B8F0 /* Tasks */,
+				779892312B6D2C4F0007510B /* CETask.swift */,
+				77617E5A2B6FD21500601128 /* CETaskRun.swift */,
+				7798922B2B6CCF100007510B /* CRTaskStatus.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		85AEE8D42A474EEC009507BC /* Models */ = {
@@ -3250,6 +3298,7 @@
 				85CD0C5F2A10CC3200E531FD /* URL+isImage.swift in Sources */,
 				6C5BE51E2A3D545F002DA0FC /* FeatureFlagsSettings.swift in Sources */,
 				587B9D9F29300ABD00AC7927 /* SegmentedControl.swift in Sources */,
+				779A686D2B7E109200A4BBBF /* DropdownMenuItem.swift in Sources */,
 				6C7256D729A3D7D000C2D3E0 /* SplitViewControllerView.swift in Sources */,
 				B6EA1FE529DA33DB001BF195 /* ThemeModel.swift in Sources */,
 				6CD0375F2A3504540071C4DA /* FuzzySearch.swift in Sources */,
@@ -3284,6 +3333,8 @@
 				B640A99E29E2184700715F20 /* SettingsForm.swift in Sources */,
 				B62AEDD12A27B264009A9F52 /* View+paneToolbar.swift in Sources */,
 				5878DAB1291D627C00DD95A3 /* EditorPathBarComponent.swift in Sources */,
+				77617E5B2B6FD21500601128 /* CETaskRun.swift in Sources */,
+				7798922E2B6D29580007510B /* TaskManager.swift in Sources */,
 				B628B7B72B223BAD00F9775A /* FindModePicker.swift in Sources */,
 				587B9E6E29301D8F00AC7927 /* GitLabProject.swift in Sources */,
 				58798234292E30B90085B254 /* FeedbackIssueArea.swift in Sources */,
@@ -3305,6 +3356,7 @@
 				B6C4F2AC2B3CC4D000B2B140 /* CommitChangedFileListItemView.swift in Sources */,
 				6C82D6B329BFD88700495C54 /* NavigateCommands.swift in Sources */,
 				B66A4E4C29C9179B004573B4 /* CodeEditApp.swift in Sources */,
+				775A8F692B63EC69009B40CC /* ActivityViewer.swift in Sources */,
 				4E7F066629602E7B00BB3C12 /* CodeEditSplitViewController.swift in Sources */,
 				587B9E8D29301D8F00AC7927 /* GitHubAccount.swift in Sources */,
 				201169E72837B5CA00F92B46 /* SourceControlManager.swift in Sources */,
@@ -3316,6 +3368,7 @@
 				6C578D8129CD294800DC73B2 /* ExtensionActivatorView.swift in Sources */,
 				B6F0517D29D9E4B100D72287 /* TerminalSettingsView.swift in Sources */,
 				587B9E8C29301D8F00AC7927 /* GitHubOpenness.swift in Sources */,
+				7786FF522B7A79640021C653 /* DropdownMenu.swift in Sources */,
 				5894E59729FEF7740077E59C /* CEWorkspaceFile+Recursion.swift in Sources */,
 				9D36E1BF2B5E7D7500443C41 /* GitBranchesGroup.swift in Sources */,
 				587B9E8229301D8F00AC7927 /* GitHubPreviewHeader.swift in Sources */,
@@ -3402,6 +3455,7 @@
 				6CE622692A2A174A0013085C /* InspectorTab.swift in Sources */,
 				58F2EB04292FB2B0004A9BDE /* SourceControlSettings.swift in Sources */,
 				58710159298EB80000951BA4 /* CEWorkspaceFileManager.swift in Sources */,
+				774830612B7554400003B8F0 /* TestTask.swift in Sources */,
 				582213F0291834A500EFE361 /* AboutView.swift in Sources */,
 				6CC9E4B229B5669900C97388 /* Environment+ActiveEditor.swift in Sources */,
 				58822526292C280D00E83CDE /* StatusBarBreakpointButton.swift in Sources */,
@@ -3468,6 +3522,7 @@
 				587B9E9529301D8F00AC7927 /* BitBucketUser.swift in Sources */,
 				587B9E7C29301D8F00AC7927 /* GitHubRepositoryRouter.swift in Sources */,
 				286471AB27ED51FD0039369D /* ProjectNavigatorView.swift in Sources */,
+				7798922C2B6CCF100007510B /* CRTaskStatus.swift in Sources */,
 				B6E41C7C29DE2B110088F9F4 /* AccountsSettingsProviderRow.swift in Sources */,
 				B62AEDB52A1FE295009A9F52 /* UtilityAreaDebugView.swift in Sources */,
 				6C049A372A49E2DB00D42923 /* DirectoryEventStream.swift in Sources */,
@@ -3589,6 +3644,7 @@
 				6CDA84AD284C1BA000C1CC3A /* EditorTabBarContextMenu.swift in Sources */,
 				6C81916729B3E80700B75C92 /* ModifierKeysObserver.swift in Sources */,
 				611192002B08CCD700D4459B /* SearchIndexer+Memory.swift in Sources */,
+				779892322B6D2C500007510B /* CETask.swift in Sources */,
 				587B9E8129301D8F00AC7927 /* PublicKey.swift in Sources */,
 				611191FE2B08CCD200D4459B /* SearchIndexer+File.swift in Sources */,
 				6CB52DC92AC8DC3E002E75B3 /* CEWorkspaceFileManager+FileManagement.swift in Sources */,

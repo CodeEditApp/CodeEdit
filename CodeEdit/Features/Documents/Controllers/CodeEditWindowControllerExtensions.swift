@@ -20,25 +20,20 @@ extension CodeEditWindowController {
 
     @objc
     func toggleLastPanel() {
-        guard let lastSplitView = splitViewController.splitViewItems.last else { return }
+        guard let codeEditSplitVC = splitViewController as? CodeEditSplitViewController else { return }
+        guard let lastSplitView = codeEditSplitVC.splitViewItems.last else { return }
 
-        if let toolbar = window?.toolbar,
-           lastSplitView.isCollapsed,
-           !toolbar.items.map(\.itemIdentifier).contains(.itemListTrackingSeparator) {
-            window?.toolbar?.insertItem(withItemIdentifier: .itemListTrackingSeparator, at: 4)
-        }
         NSAnimationContext.runAnimationGroup { _ in
             lastSplitView.animator().isCollapsed.toggle()
-        } completionHandler: { [weak self] in
+        } completionHandler: {
             if lastSplitView.isCollapsed {
-                self?.window?.animator().toolbar?.removeItem(at: 4)
+                codeEditSplitVC.removeToolbarItemIfNeeded()
             }
         }
 
-        if let codeEditSplitVC = splitViewController as? CodeEditSplitViewController {
-            codeEditSplitVC.saveInspectorCollapsedState(isCollapsed: lastSplitView.isCollapsed)
-            codeEditSplitVC.hideInspectorToolbarBackground()
-        }
+        codeEditSplitVC.insertToolbarItemIfNeeded()
+        codeEditSplitVC.saveInspectorCollapsedState(isCollapsed: lastSplitView.isCollapsed)
+        codeEditSplitVC.hideInspectorToolbarBackground()
     }
 
     /// These are example items that added as commands to command palette
@@ -116,6 +111,10 @@ extension CodeEditWindowController {
 extension NSToolbarItem.Identifier {
     static let toggleFirstSidebarItem: NSToolbarItem.Identifier = NSToolbarItem.Identifier("ToggleFirstSidebarItem")
     static let toggleLastSidebarItem: NSToolbarItem.Identifier = NSToolbarItem.Identifier("ToggleLastSidebarItem")
+    static let addSidebarItem: NSToolbarItem.Identifier = NSToolbarItem.Identifier("AddSidebarItem")
+    static let stopTaskSidebarItem: NSToolbarItem.Identifier = NSToolbarItem.Identifier("StopTaskSidebarItem")
+    static let startTaskSidebarItem: NSToolbarItem.Identifier = NSToolbarItem.Identifier("StartTaskSidebarItem")
     static let itemListTrackingSeparator = NSToolbarItem.Identifier("ItemListTrackingSeparator")
     static let branchPicker: NSToolbarItem.Identifier = NSToolbarItem.Identifier("BranchPicker")
+    static let activityViewer: NSToolbarItem.Identifier = NSToolbarItem.Identifier("ActivityViewer")
 }

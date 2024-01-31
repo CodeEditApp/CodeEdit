@@ -15,6 +15,8 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
     @Published var navigatorCollapsed = false
     @Published var inspectorCollapsed = false
 
+    private var taskManager = TaskManager()
+
     var observers: [NSKeyValueObservation] = []
 
     var workspace: WorkspaceDocument?
@@ -28,7 +30,9 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
 
     init(window: NSWindow, workspace: WorkspaceDocument) {
         super.init(window: window)
+
         self.workspace = workspace
+
         setupSplitView(with: workspace)
 
         let view = CodeEditSplitView(controller: splitViewController).ignoresSafeArea()
@@ -140,10 +144,15 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
     func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
         [
             .toggleFirstSidebarItem,
+            .flexibleSpace,
+            .stopTaskSidebarItem,
+            .startTaskSidebarItem,
             .sidebarTrackingSeparator,
             .branchPicker,
             .flexibleSpace,
+            .activityViewer,
             .flexibleSpace,
+            .addSidebarItem,
             .toggleLastSidebarItem
         ]
     }
@@ -155,7 +164,9 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
             .flexibleSpace,
             .itemListTrackingSeparator,
             .toggleLastSidebarItem,
-            .branchPicker
+            .branchPicker,
+            .activityViewer,
+            .addSidebarItem
         ]
     }
 
@@ -169,53 +180,98 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
             guard let splitViewController else {
                 return nil
             }
-
             return NSTrackingSeparatorToolbarItem(
                 identifier: .itemListTrackingSeparator,
                 splitView: splitViewController.splitView,
                 dividerIndex: 1
             )
         case .toggleFirstSidebarItem:
-            let toolbarItem = NSToolbarItem(itemIdentifier: NSToolbarItem.Identifier.toggleFirstSidebarItem)
-            toolbarItem.label = "Navigator Sidebar"
-            toolbarItem.paletteLabel = " Navigator Sidebar"
-            toolbarItem.toolTip = "Hide or show the Navigator"
-            toolbarItem.isBordered = true
-            toolbarItem.target = self
-            toolbarItem.action = #selector(self.toggleFirstPanel)
-            toolbarItem.image = NSImage(
-                systemSymbolName: "sidebar.leading",
-                accessibilityDescription: nil
-            )?.withSymbolConfiguration(.init(scale: .large))
-
-            return toolbarItem
+            return toolbarItem(
+                identifier: itemIdentifier,
+                label: "Navigator Sidebar",
+                tooltip: "Hide or show the Navigator",
+                icon: "sidebar.leading",
+                action: #selector(self.toggleFirstPanel)
+            )
         case .toggleLastSidebarItem:
-            let toolbarItem = NSToolbarItem(itemIdentifier: NSToolbarItem.Identifier.toggleLastSidebarItem)
-            toolbarItem.label = "Inspector Sidebar"
-            toolbarItem.paletteLabel = "Inspector Sidebar"
-            toolbarItem.toolTip = "Hide or show the Inspectors"
-            toolbarItem.isBordered = true
-            toolbarItem.target = self
-            toolbarItem.action = #selector(self.toggleLastPanel)
-            toolbarItem.image = NSImage(
-                systemSymbolName: "sidebar.trailing",
-                accessibilityDescription: nil
-            )?.withSymbolConfiguration(.init(scale: .large))
-
-            return toolbarItem
+            return toolbarItem(
+                identifier: itemIdentifier,
+                label: "Inspector Sidebar",
+                tooltip: "Hide or show the Inspectors",
+                icon: "sidebar.trailing",
+                action: #selector(self.toggleLastPanel)
+            )
+        case .stopTaskSidebarItem:
+            return toolbarItem(
+                identifier: itemIdentifier,
+                label: "Stop",
+                tooltip: "Stop execution of task",
+                icon: "stop.fill",
+                action: nil
+            )
+        case .startTaskSidebarItem:
+            return toolbarItem(
+                identifier: itemIdentifier,
+                label: "Start",
+                tooltip: "Start execution of task",
+                icon: "play.fill",
+                action: #selector(self.runActiveTask)
+            )
+        case .addSidebarItem:
+            return toolbarItem(
+                identifier: itemIdentifier,
+                label: "Add",
+                tooltip: "Add",
+                icon: "plus",
+                action: nil
+            )
         case .branchPicker:
             let toolbarItem = NSToolbarItem(itemIdentifier: .branchPicker)
-            let view = NSHostingView(
+            toolbarItem.view = NSHostingView(
                 rootView: ToolbarBranchPicker(
                     workspaceFileManager: workspace?.workspaceFileManager
                 )
             )
-            toolbarItem.view = view
-
+            return toolbarItem
+        case .activityViewer:
+            let toolbarItem = NSToolbarItem(itemIdentifier: .activityViewer)
+            toolbarItem.view = NSHostingView(
+                rootView: ActivityViewer(
+                    workspaceFileManager: workspace?.workspaceFileManager,
+                    taskManager: taskManager
+                )
+            )
             return toolbarItem
         default:
             return NSToolbarItem(itemIdentifier: itemIdentifier)
         }
+    }
+
+    private func toolbarItem(
+        identifier: NSToolbarItem.Identifier,
+        label: String,
+        tooltip: String,
+        icon: String,
+        action: Selector?
+    ) -> NSToolbarItem {
+        let toolbarItem = NSToolbarItem(itemIdentifier: identifier)
+        toolbarItem.label = label
+        toolbarItem.paletteLabel = label
+        toolbarItem.toolTip = tooltip
+        toolbarItem.isBordered = true
+        toolbarItem.target = self
+        toolbarItem.action = action
+        toolbarItem.image = NSImage(
+            systemSymbolName: icon,
+            accessibilityDescription: nil
+        )?.withSymbolConfiguration(.init(scale: .large))
+
+        return toolbarItem
+    }
+
+    @objc
+    private func runActiveTask() {
+        taskManager.executeActiveTask()
     }
 
     private func getSelectedCodeFile() -> CodeFileDocument? {

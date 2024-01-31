@@ -141,23 +141,33 @@ final class CodeEditSplitViewController: NSSplitViewController {
 
     /// Quick fix for list tracking separator needing to be added again after closing,
     /// then opening the inspector with a drag.
-    private func insertToolbarItemIfNeeded() {
-        guard !(
-            view.window?.toolbar?.items.contains(where: { $0.itemIdentifier == .itemListTrackingSeparator }) ?? true
-        ) else {
+    func insertToolbarItemIfNeeded() {
+        guard !(splitViewItems.last?.isCollapsed ?? true),
+              let toolbar = view.window?.toolbar,
+              let addIndex = toolbar.items.firstIndex(where: {
+                  $0.itemIdentifier == .addSidebarItem
+              }) else {
             return
         }
-        view.window?.toolbar?.insertItem(withItemIdentifier: .itemListTrackingSeparator, at: 4)
+
+        toolbar.insertItem(withItemIdentifier: .itemListTrackingSeparator, at: addIndex+1)
+        toolbar.insertItem(withItemIdentifier: .flexibleSpace, at: addIndex+2)
     }
 
     /// Quick fix for list tracking separator needing to be removed after closing the inspector with a drag
-    private func removeToolbarItemIfNeeded() {
-        guard let index = view.window?.toolbar?.items.firstIndex(
-                where: { $0.itemIdentifier == .itemListTrackingSeparator }
-              ) else {
+    func removeToolbarItemIfNeeded() {
+        guard let toolbar = view.window?.toolbar,
+              let separatorIndex = toolbar.items.firstIndex(where: {
+                  $0.itemIdentifier == .itemListTrackingSeparator
+              }),
+              let flexibleSpaceIndex = toolbar.items.lastIndex(where: {
+                  $0.itemIdentifier == .flexibleSpace
+              }) else {
             return
         }
-        view.window?.toolbar?.removeItem(at: index)
+
+        toolbar.removeItem(at: flexibleSpaceIndex)
+        toolbar.removeItem(at: separatorIndex)
     }
 
     func hideInspectorToolbarBackground() {
