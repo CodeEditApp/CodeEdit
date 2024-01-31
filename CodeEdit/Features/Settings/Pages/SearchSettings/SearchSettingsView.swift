@@ -92,7 +92,9 @@ struct ExcludedGlobPatternList: View {
                     }
                     Divider()
                     Button("Remove") {
-                        removePattern(pattern)
+                        if !searchSettingsModel.ignoreGlobPatterns.isEmpty {
+                            removePattern(pattern)
+                        }
                     }
                 }
             },
