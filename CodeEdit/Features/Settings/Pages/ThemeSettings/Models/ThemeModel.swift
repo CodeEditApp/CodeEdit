@@ -25,6 +25,10 @@ final class ThemeModel: ObservableObject {
         filemanager.homeDirectoryForCurrentUser.appendingPathComponent("Library/Application Support/CodeEdit")
     }
 
+    internal var bundledThemesURL: URL? {
+        Bundle.main.resourceURL?.appendingPathComponent("DefaultThemes", isDirectory: true) ?? nil
+    }
+
     /// The URL of the `themes` folder
     internal var themesURL: URL {
         baseURL.appendingPathComponent("themes", isDirectory: true)
@@ -120,7 +124,6 @@ final class ThemeModel: ObservableObject {
             return theme
         } catch {
             print(error)
-            try filemanager.removeItem(at: url)
             return nil
         }
     }
@@ -134,77 +137,85 @@ final class ThemeModel: ObservableObject {
     /// they are applied to the loaded themes without altering the original
     /// the files in `~/Library/Application Support/CodeEdit/themes/`.
     func loadThemes() throws { // swiftlint:disable:this function_body_length
-        // remove all themes from memory
-        themes.removeAll()
+        if let bundledThemesURL = bundledThemesURL {
+            // remove all themes from memory
+            themes.removeAll()
 
-        let url = themesURL
+            var isDir: ObjCBool = false
 
-        var isDir: ObjCBool = false
+            // check if a themes directory exists, otherwise create one
+            if !filemanager.fileExists(atPath: themesURL.path, isDirectory: &isDir) {
+                try filemanager.createDirectory(at: themesURL, withIntermediateDirectories: true)
+            }
 
-        // check if a themes directory exists, otherwise create one
-        if !filemanager.fileExists(atPath: url.path, isDirectory: &isDir) {
-            try filemanager.createDirectory(at: url, withIntermediateDirectories: true)
-        }
+            // get all URLs in users themes folder that end with `.cetheme`
+            let userDefinedThemeFilenames = try filemanager.contentsOfDirectory(atPath: themesURL.path).filter { $0.contains(".cetheme") }
+            let userDefinedThemeURLs = userDefinedThemeFilenames.map { themesURL.appendingPathComponent($0) }
 
-        try loadBundledThemes()
+            // get all bundled theme URLs
+            let bundledThemeFilenames = try filemanager.contentsOfDirectory(atPath: bundledThemesURL.path).filter { $0.contains(".cetheme") }
+            let bundledThemeURLs = bundledThemeFilenames.map { bundledThemesURL.appendingPathComponent($0) }
 
-        // get all filenames in themes folder that end with `.cetheme`
-        let content = try filemanager.contentsOfDirectory(atPath: url.path).filter { $0.contains(".cetheme") }
+            // combine user theme URLs with bundled theme URLs
+            let themeURLs = userDefinedThemeURLs + bundledThemeURLs
 
-        let prefs = Settings.shared.preferences
-        // load each theme from disk
-        try content.forEach { file in
-            let fileURL = url.appendingPathComponent(file)
-            if var theme = try load(from: fileURL) {
+            let prefs = Settings.shared.preferences
 
-                // get all properties of terminal and editor colors
-                guard let terminalColors = try theme.terminal.allProperties() as? [String: Theme.Attributes],
-                      let editorColors = try theme.editor.allProperties() as? [String: Theme.Attributes]
-                else {
-                    print("error")
-                    // TODO: Throw a proper error
-                    throw NSError() // swiftlint:disable:this discouraged_direct_init
-                }
+            // load each theme from disk and store in memory
+            try themeURLs.forEach { fileURL in
+                if var theme = try load(from: fileURL) {
 
-                // check if there are any overrides in `settings.json`
-                if let overrides = prefs.theme.overrides[theme.name]?["terminal"] {
-                    terminalColors.forEach { (key, _) in
-                        if let attributes = overrides[key] {
-                            theme.terminal[key] = attributes
+                    // get all properties of terminal and editor colors
+                    guard let terminalColors = try theme.terminal.allProperties() as? [String: Theme.Attributes],
+                          let editorColors = try theme.editor.allProperties() as? [String: Theme.Attributes]
+                    else {
+                        print("error")
+                        // TODO: Throw a proper error
+                        throw NSError() // swiftlint:disable:this discouraged_direct_init
+                    }
+
+                    // check if there are any overrides in `settings.json`
+                    if let overrides = prefs.theme.overrides[theme.name]?["terminal"] {
+                        terminalColors.forEach { (key, _) in
+                            if let attributes = overrides[key] {
+                                theme.terminal[key] = attributes
+                            }
                         }
                     }
-                }
-                if let overrides = prefs.theme.overrides[theme.name]?["editor"] {
-                    editorColors.forEach { (key, _) in
-                        if let attributes = overrides[key] {
-                            theme.editor[key] = attributes
+
+                    if let overrides = prefs.theme.overrides[theme.name]?["editor"] {
+                        editorColors.forEach { (key, _) in
+                            if let attributes = overrides[key] {
+                                theme.editor[key] = attributes
+                            }
                         }
                     }
-                }
 
-                // add the theme to themes array
-                self.themes.append(theme)
+                    // add the theme to themes array
+                    self.themes.append(theme)
 
-                // if there already is a selected theme in `settings.json` select this theme
-                // otherwise take the first in the list
-                self.selectedDarkTheme = self.darkThemes.first {
-                    $0.name == prefs.theme.selectedDarkTheme
-                } ?? self.darkThemes.first
+                    // if there already is a selected theme in `settings.json` select this theme
+                    // otherwise take the first in the list
+                    self.selectedDarkTheme = self.darkThemes.first {
+                        $0.name == prefs.theme.selectedDarkTheme
+                    } ?? self.darkThemes.first
 
-                self.selectedLightTheme = self.lightThemes.first {
-                    $0.name == prefs.theme.selectedLightTheme
-                } ?? self.lightThemes.first
+                    self.selectedLightTheme = self.lightThemes.first {
+                        $0.name == prefs.theme.selectedLightTheme
+                    } ?? self.lightThemes.first
 
-                // For selecting the default theme, doing it correctly on startup requires some more logic
-                let userSelectedTheme = self.themes.first { $0.name == prefs.theme.selectedTheme }
-                let systemAppearance = NSAppearance.currentDrawing().name
-                if userSelectedTheme != nil {
-                    self.selectedTheme = userSelectedTheme
-                } else {
-                    if systemAppearance == .darkAqua {
-                        self.selectedTheme = self.selectedDarkTheme
+                    // For selecting the default theme, doing it correctly on startup requires some more logic
+                    let userSelectedTheme = self.themes.first { $0.name == prefs.theme.selectedTheme }
+                    let systemAppearance = NSAppearance.currentDrawing().name
+
+                    if userSelectedTheme != nil {
+                        self.selectedTheme = userSelectedTheme
                     } else {
-                        self.selectedTheme = self.selectedLightTheme
+                        if systemAppearance == .darkAqua {
+                            self.selectedTheme = self.selectedDarkTheme
+                        } else {
+                            self.selectedTheme = self.selectedLightTheme
+                        }
                     }
                 }
             }
@@ -217,42 +228,6 @@ final class ThemeModel: ObservableObject {
             self.selectedDarkTheme = self.selectedTheme
         } else if self.selectedTheme?.appearance == .light {
             self.selectedLightTheme = self.selectedTheme
-        }
-    }
-
-    private func loadBundledThemes() throws {
-        let bundledThemeNames: [String] = [
-            "Basic",
-            "Civic",
-            "Classic (Dark)",
-            "Classic (Light)",
-            "Default (Dark)",
-            "Default (Light)",
-            "Dusk",
-            "GitHub (Dark)",
-            "GitHub (Light)",
-            "High Contrast (Dark)",
-            "High Contrast (Light)",
-            "Low Key",
-            "Midnight",
-            "Presentation (Dark)",
-            "Presentation (Light)",
-            "Solarized (Dark)",
-            "Solarized (Light)",
-            "Sunset"
-        ]
-        for themeName in bundledThemeNames {
-            guard let defaultUrl = Bundle.main.url(forResource: themeName, withExtension: "cetheme") else {
-                return
-            }
-            let json = try Data(contentsOf: defaultUrl)
-            let jsonObject = try JSONSerialization.jsonObject(with: json)
-            let prettyJSON = try JSONSerialization.data(
-                withJSONObject: jsonObject,
-                options: .prettyPrinted
-            )
-
-            try prettyJSON.write(to: themesURL.appendingPathComponent("\(themeName).cetheme"), options: .atomic)
         }
     }
 

@@ -1,98 +1,98 @@
 {
-  "name": "Midnight",
-  "displayName": "Midnight",
-  "description": "Midnight theme.",
+  "name": "github.light",
+  "displayName": "GitHub (Light)",
+  "description": "CodeEdit bundled theme.",
   "author": "CodeEdit",
   "version": "0.0.1",
   "license": "MIT",
   "distributionURL": "https://github.com/CodeEditApp/CodeEdit",
-  "type": "dark",
+  "type": "light",
   "editor": {
     "background": {
-      "color": "#000000"
+      "color": "#FFFFFF"
     },
     "selection": {
-      "color": "#5D5952"
+      "color": "#B4D6F5"
     },
     "insertionPoint": {
-      "color": "#FFFFFF"
+      "color": "#24292F"
     },
     "lineHighlight": {
-      "color": "#232121"
+      "color": "#E8F2FF"
     },
     "invisibles": {
-      "color": "#424242"
+      "color": "#CCCCCC"
     },
     "text": {
-      "color": "#FFFFFF"
+      "color": "#24292F"
     },
     "comments": {
-      "color": "#41CC45"
+      "color": "#6E7781"
     },
     "strings": {
-      "color": "#FF2C38"
+      "color": "#0A3069"
     },
     "characters": {
-      "color": "#786DFF"
+      "color": "#0550AE"
     },
     "numbers": {
-      "color": "#786DFF"
+      "color": "#0550AE"
     },
     "keywords": {
-      "color": "#D31895"
+      "color": "#CF222E"
     },
     "attributes": {
-      "color": "#2D449B"
+      "color": "#0550AE"
     },
     "types": {
-      "color": "#5DD8FF"
+      "color": "#0550AE"
     },
     "variables": {
-      "color": "#41A1C0"
+      "color": "#8250DF"
     },
     "commands": {
-      "color": "#23FF83"
+      "color": "#8250df"
     },
     "values": {
-      "color": "#00A0FF"
+      "color": "#0550AE"
     }
   },
   "terminal": {
     "background": {
-      "color": "#000000"
-    },
-    "selection": {
-      "color": "#5D5952"
-    },
-    "cursor": {
       "color": "#FFFFFF"
     },
+    "selection": {
+      "color": "#B4D6F5"
+    },
+    "cursor": {
+      "color": "#24292F"
+    },
     "text": {
-      "color": "#D9D9D9"
+      "color": "#24292f"
     },
     "boldText": {
-      "color": "#D9D9D9"
+      "color": "#24292F"
     },
     "black": {
       "color": "#1F2024"
     },
     "red": {
-      "color": "#FF3B30"
+      "color": "#CF222E"
     },
     "green": {
-      "color": "#28CD41"
+      "color": "#7EE787"
     },
     "yellow": {
-      "color": "#FFCC00"
+      "color": "#F2CC60"
     },
     "blue": {
-      "color": "#007AFF"
+      "color": "#79C0FF"
     },
     "magenta": {
-      "color": "#AF52DE"
+      "color": "#8250DF"
     },
     "cyan": {
-      "color": "#59ADC4"
+      "color": "#0550AE"
     },
     "white": {
       "color": "#D9D9D9"
@@ -101,22 +101,22 @@
       "color": "#8E8E93"
     },
     "brightRed": {
-      "color": "#FF3B30"
+      "color": "#CF222E"
     },
     "brightGreen": {
-      "color": "#28CD41"
+      "color": "#116329"
     },
     "brightYellow": {
-      "color": "#FFFF00"
+      "color": "#B38300"
     },
     "brightBlue": {
-      "color": "#007AFF"
+      "color": "#79C0FF"
     },
     "brightMagenta": {
-      "color": "#AF52DE"
+      "color": "#8250DF"
     },
     "brightCyan": {
-      "color": "#55BEF0"
+      "color": "#0550AE"
     },
     "brightWhite": {
       "color": "#FFFFFF"
