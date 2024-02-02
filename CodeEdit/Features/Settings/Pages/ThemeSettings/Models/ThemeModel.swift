@@ -149,12 +149,20 @@ final class ThemeModel: ObservableObject {
             }
 
             // get all URLs in users themes folder that end with `.cetheme`
-            let userDefinedThemeFilenames = try filemanager.contentsOfDirectory(atPath: themesURL.path).filter { $0.contains(".cetheme") }
-            let userDefinedThemeURLs = userDefinedThemeFilenames.map { themesURL.appendingPathComponent($0) }
+            let userDefinedThemeFilenames = try filemanager.contentsOfDirectory(atPath: themesURL.path).filter {
+                $0.contains(".cetheme")
+            }
+            let userDefinedThemeURLs = userDefinedThemeFilenames.map {
+                themesURL.appendingPathComponent($0)
+            }
 
             // get all bundled theme URLs
-            let bundledThemeFilenames = try filemanager.contentsOfDirectory(atPath: bundledThemesURL.path).filter { $0.contains(".cetheme") }
-            let bundledThemeURLs = bundledThemeFilenames.map { bundledThemesURL.appendingPathComponent($0) }
+            let bundledThemeFilenames = try filemanager.contentsOfDirectory(atPath: bundledThemesURL.path).filter {
+                $0.contains(".cetheme")
+            }
+            let bundledThemeURLs = bundledThemeFilenames.map {
+                bundledThemesURL.appendingPathComponent($0)
+            }
 
             // combine user theme URLs with bundled theme URLs
             let themeURLs = userDefinedThemeURLs + bundledThemeURLs
