@@ -1714,6 +1714,7 @@
 			children = (
 				283BDCC22972F211002AFF81 /* Acknowledgements */,
 				4EE96EC82960562000FFBEA8 /* Documents */,
+				61D97F342B6C0F0D006723E0 /* Search */,
 				583E527429361B39001AB554 /* CodeEditUI */,
 				587B612C2934199800D5CD8F /* CodeFile */,
 			);
@@ -2254,6 +2255,21 @@
 				613053642B23A49300D767E3 /* TemporaryFile.swift */,
 			);
 			path = Indexer;
+			sourceTree = "<group>";
+		};
+		61D97F342B6C0F0D006723E0 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				61D97F352B6C0F25006723E0 /* FuzzySearch */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
+		61D97F352B6C0F25006723E0 /* FuzzySearch */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = FuzzySearch;
 			sourceTree = "<group>";
 		};
 		61E090482B657C360072D899 /* FuzzySearch */ = {

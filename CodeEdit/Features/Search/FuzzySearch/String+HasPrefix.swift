@@ -25,20 +25,5 @@ extension String {
         }
 
         return nil
-
-//        guard index >= 0, index < count else {
-//            return nil
-//        }
-//
-//        let searchStartIndex = self.index(self.startIndex, offsetBy: index)
-//        let searchString = self.suffix(from: searchStartIndex)
-//
-//        let prefixesToCheck = [prefix.content, prefix.normalisedContent]
-//
-//        if let matchedPrefix = prefixesToCheck.first(where: { searchString.hasPrefix($0) }) {
-//            return matchedPrefix.count
-//        }
-//
-//        return nil
     }
 }

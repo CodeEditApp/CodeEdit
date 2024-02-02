@@ -9,16 +9,13 @@ import Foundation
 import CollectionConcurrencyKit
 
 extension Collection where Iterator.Element: FuzzySearchable {
-    func fuzzySearch(query: String) async -> [Iterator.Element] {
-//    [(result: FuzzySearchMatchResult, item: Iterator.Element)] {
+    func fuzzySearch(query: String) async -> [(result: FuzzySearchMatchResult, item: Iterator.Element)] {
         return await concurrentMap {
             (result: $0.fuzzyMatch(query: query), item: $0)
         }.filter {
             $0.result.weight > 0
         }.sorted {
             $0.result.weight > $1.result.weight
-        }.map {
-            $0.item
         }
     }
 }
