@@ -1,7 +1,7 @@
 {
-  "name": "Sunset",
-  "displayName": "Sunset",
-  "description": "Solarized light theme.",
+  "name": "high.contrast.light",
+  "displayName": "High Contrast (Light)",
+  "description": "CodeEdit bundled theme.",
   "author": "CodeEdit",
   "version": "0.0.1",
   "license": "MIT",
@@ -9,117 +9,117 @@
   "type": "light",
   "editor": {
     "background": {
-      "color": "#FFFCEA"
+      "color": "#FFFFFF"
     },
     "selection": {
-      "color": "#FBE4AC"
+      "color": "#B2D7FF"
     },
     "insertionPoint": {
       "color": "#000000"
     },
     "lineHighlight": {
-      "color": "#FEF6DB"
+      "color": "#ECF5FF"
     },
     "invisibles": {
-      "color": "#DACFB3"
+      "color": "#D6D6D6"
     },
     "text": {
       "color": "#000000"
     },
     "comments": {
-      "color": "#C3741C"
+      "color": "#1F6300"
     },
     "strings": {
-      "color": "#DF0700"
+      "color": "#AD1805"
     },
     "characters": {
-      "color": "#294277"
+      "color": "#272AD8"
     },
     "numbers": {
-      "color": "#294277"
+      "color": "#272AD8"
     },
     "keywords": {
-      "color": "#294277"
+      "color": "#9C2191"
     },
     "attributes": {
-      "color": "#2C329D"
+      "color": "#6E5400"
     },
     "types": {
-      "color": "#0B4F79"
+      "color": "#003F73"
     },
     "variables": {
-      "color": "#0F68A0"
+      "color": "#0058A1"
     },
     "commands": {
-      "color": "#476A97"
+      "color": "#294B4E"
     },
     "values": {
-      "color": "#476A97"
+      "color": "#330090"
     }
   },
   "terminal": {
     "background": {
-      "color": "#FFFCEA"
+      "color": "#FFFFFF"
     },
     "selection": {
-      "color": "#FBE4AC"
+      "color": "#B2D7FF"
     },
-    "insertionPoint": {
+    "cursor": {
       "color": "#000000"
     },
     "text": {
-      "color": "#657B83"
+      "color": "#000000"
     },
     "boldText": {
-      "color": "#586E75"
+      "color": "#262626"
     },
     "black": {
-      "color": "#073642"
+      "color": "#1F2024"
     },
     "red": {
-      "color": "#DC322F"
+      "color": "#AD1805"
     },
     "green": {
-      "color": "#859900"
+      "color": "#1F6300"
     },
     "yellow": {
-      "color": "#B58900"
+      "color": "#6E5400"
     },
     "blue": {
-      "color": "#268BD2"
+      "color": "#272AD8"
     },
     "magenta": {
-      "color": "#D33682"
+      "color": "#9C2191"
     },
     "cyan": {
-      "color": "#2AA198"
+      "color": "#0058A1"
     },
     "white": {
-      "color": "#EEE8D5"
+      "color": "#D9D9D9"
     },
     "brightBlack": {
-      "color": "#002B36"
+      "color": "#8E8E93"
     },
     "brightRed": {
-      "color": "#CB4B16"
+      "color": "#AD1805"
     },
     "brightGreen": {
-      "color": "#586E75"
+      "color": "#1F6300"
     },
     "brightYellow": {
-      "color": "#657B83"
+      "color": "#6E5400"
     },
     "brightBlue": {
-      "color": "#839496"
+      "color": "#272AD8"
     },
     "brightMagenta": {
-      "color": "#6C71C4"
+      "color": "#9C2191"
     },
     "brightCyan": {
-      "color": "#93A1A1"
+      "color": "#0058A1"
     },
     "brightWhite": {
-      "color": "#FDF6E3"
+      "color": "#FFFFFF"
     }
   }
 }

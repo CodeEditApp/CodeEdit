@@ -1,125 +1,125 @@
 {
-  "name": "Dusk",
-  "displayName": "Dusk",
-  "description": "Xcode dark theme.",
+  "name": "basic",
+  "displayName": "Basic",
+  "description": "CodeEdit bundled theme.",
   "author": "CodeEdit",
   "version": "0.0.1",
   "license": "MIT",
   "distributionURL": "https://github.com/CodeEditApp/CodeEdit",
-  "type": "dark",
+  "type": "light",
   "editor": {
     "background": {
-      "color": "#282B35"
+      "color": "#FFFFFF"
     },
     "selection": {
-      "color": "#67675C"
+      "color": "#B2D7FF"
     },
     "insertionPoint": {
-      "color": "#FFFFFF"
+      "color": "#000000"
     },
     "lineHighlight": {
-      "color": "#3B3B3C"
+      "color": "#F5F5F6"
     },
     "invisibles": {
-      "color": "#5F5F5F"
+      "color": "#D6D6D6"
     },
     "text": {
-      "color": "#FFFFFF"
+      "color": "#000000"
     },
     "comments": {
-      "color": "#41B645"
+      "color": "#008F00"
     },
     "strings": {
-      "color": "#DB2C38"
+      "color": "#B4261A"
     },
     "characters": {
-      "color": "#786DC4"
+      "color": "#000000"
     },
     "numbers": {
-      "color": "#786DC4"
+      "color": "#000000"
     },
     "keywords": {
-      "color": "#B21889"
+      "color": "#0433FF"
     },
     "attributes": {
-      "color": "#55747C"
+      "color": "#000000"
     },
     "types": {
-      "color": "#5DD8FF"
+      "color": "#02638C"
     },
     "variables": {
-      "color": "#41A1C0"
+      "color": "#057CB0"
     },
     "commands": {
-      "color": "#83C057"
+      "color": "#3495AF"
     },
     "values": {
-      "color": "#00A0BE"
+      "color": "#3495AF"
     }
   },
   "terminal": {
     "background": {
-      "color": "#282B35"
+      "color": "#FFFFFF"
     },
     "selection": {
-      "color": "#67675C"
+      "color": "#B2D7FF"
     },
     "cursor": {
-      "color": "#FFFFFF"
+      "color": "#000000"
     },
     "text": {
-      "color": "#FFFFFF"
+      "color": "#000000"
     },
     "boldText": {
-      "color": "#D9D9D9"
+      "color": "#000000"
     },
     "black": {
-      "color": "#1F2024"
+      "color": "#000000"
     },
     "red": {
-      "color": "#FF3B30"
+      "color": "#990000"
     },
     "green": {
-      "color": "#28CD41"
+      "color": "#00A600"
     },
     "yellow": {
-      "color": "#FFCC00"
+      "color": "#999900"
     },
     "blue": {
-      "color": "#007AFF"
+      "color": "#0000B2"
     },
     "magenta": {
-      "color": "#AF52DE"
+      "color": "#B200B2"
     },
     "cyan": {
-      "color": "#59ADC4"
+      "color": "#00A6B2"
     },
     "white": {
-      "color": "#D9D9D9"
+      "color": "#BFBFBF"
     },
     "brightBlack": {
-      "color": "#8E8E93"
+      "color": "#666666"
     },
     "brightRed": {
-      "color": "#FF3B30"
+      "color": "#E50000"
     },
     "brightGreen": {
-      "color": "#28CD41"
+      "color": "#00D900"
     },
     "brightYellow": {
-      "color": "#FFFF00"
+      "color": "#E5E500"
     },
     "brightBlue": {
-      "color": "#007AFF"
+      "color": "#0000FF"
     },
     "brightMagenta": {
-      "color": "#AF52DE"
+      "color": "#E500E5"
     },
     "brightCyan": {
-      "color": "#55BEF0"
+      "color": "#00E5E5"
     },
     "brightWhite": {
-      "color": "#FFFFFF"
+      "color": "#E5E5E5"
     }
   }
 }
