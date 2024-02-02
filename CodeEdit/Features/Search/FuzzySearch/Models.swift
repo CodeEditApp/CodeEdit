@@ -14,11 +14,12 @@ struct FuzzySearchCharacter {
     let normalisedContent: String
 }
 
-/// FuzzySearchString is just made up by multiple characters
+/// FuzzySearchString is just made up by multiple characters, similar to a string, but also with normalised characters
 struct FuzzySearchString {
     var characters: [FuzzySearchCharacter]
 }
 
+/// FuzzySearchMatchResult represents an object that has undergone a fuzzy search using the fuzzyMatch function.
 struct FuzzySearchMatchResult {
     let weight: Int
     let matchedParts: [NSRange]
