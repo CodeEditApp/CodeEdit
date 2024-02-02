@@ -273,6 +273,7 @@
 		61538B932B11201900A88846 /* String+Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61538B922B11201900A88846 /* String+Character.swift */; };
 		615AA21A2B0CFD480013FCCC /* LazyStringLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 615AA2192B0CFD480013FCCC /* LazyStringLoader.swift */; };
 		61C5981E2B696DC000C2832C /* URL+FuzzySearchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C5981D2B696DC000C2832C /* URL+FuzzySearchable.swift */; };
+		61D97F3B2B6D034D006723E0 /* FuzzySearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D97F3A2B6D034D006723E0 /* FuzzySearchTests.swift */; };
 		61E0904A2B657C500072D899 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E090492B657C500072D899 /* Models.swift */; };
 		61E0904C2B657D410072D899 /* String+Normalise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E0904B2B657D410072D899 /* String+Normalise.swift */; };
 		61E0904E2B6584AC0072D899 /* String+HasPrefix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E0904D2B6584AC0072D899 /* String+HasPrefix.swift */; };
@@ -812,6 +813,7 @@
 		61538B922B11201900A88846 /* String+Character.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Character.swift"; sourceTree = "<group>"; };
 		615AA2192B0CFD480013FCCC /* LazyStringLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyStringLoader.swift; sourceTree = "<group>"; };
 		61C5981D2B696DC000C2832C /* URL+FuzzySearchable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+FuzzySearchable.swift"; sourceTree = "<group>"; };
+		61D97F3A2B6D034D006723E0 /* FuzzySearchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FuzzySearchTests.swift; sourceTree = "<group>"; };
 		61E090492B657C500072D899 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		61E0904B2B657D410072D899 /* String+Normalise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Normalise.swift"; sourceTree = "<group>"; };
 		61E0904D2B6584AC0072D899 /* String+HasPrefix.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+HasPrefix.swift"; sourceTree = "<group>"; };
@@ -2268,6 +2270,7 @@
 		61D97F352B6C0F25006723E0 /* FuzzySearch */ = {
 			isa = PBXGroup;
 			children = (
+				61D97F3A2B6D034D006723E0 /* FuzzySearchTests.swift */,
 			);
 			path = FuzzySearch;
 			sourceTree = "<group>";
@@ -3596,6 +3599,7 @@
 			files = (
 				583E528C29361B39001AB554 /* CodeEditUITests.swift in Sources */,
 				613053652B23A49300D767E3 /* TemporaryFile.swift in Sources */,
+				61D97F3B2B6D034D006723E0 /* FuzzySearchTests.swift in Sources */,
 				587B60F82934124200D5CD8F /* CEWorkspaceFileManagerTests.swift in Sources */,
 				6130535F2B23A31300D767E3 /* MemorySearchTests.swift in Sources */,
 				587B61012934170A00D5CD8F /* UnitTests_Extensions.swift in Sources */,
