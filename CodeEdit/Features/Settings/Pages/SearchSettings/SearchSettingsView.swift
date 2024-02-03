@@ -55,7 +55,6 @@ struct ExcludedGlobPatternList: View {
             }
         }
         .frame(minHeight: 96)
-
         .contextMenu(
             forSelectionType: GlobPattern.self,
             menu: { selection in
