@@ -90,7 +90,7 @@ struct StatusBarCursorLocationLabel: View {
         .fixedSize()
         .lineLimit(1)
         .onHover { isHovering($0) }
-        
+
         .onAppear {
             updateSource()
         }
