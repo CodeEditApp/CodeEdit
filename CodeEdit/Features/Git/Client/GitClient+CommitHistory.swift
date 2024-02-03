@@ -25,7 +25,8 @@ extension GitClient {
         if let branchName { branchNameString = "--first-parent \(branchName)" }
         if let maxCount { maxCountString = "-n \(maxCount)" }
         let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale.current
+        dateFormatter.locale = Locale(identifier: Locale.current.identifier)
+//        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         dateFormatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss Z"
         let output = try await run(
             "log --pretty=%h¦%H¦%s¦%aN¦%ae¦%cn¦%ce¦%aD¦ \(maxCountString) \(branchNameString) \(fileLocalPath)"

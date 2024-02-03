@@ -35,8 +35,8 @@ struct ToolbarBranchPicker: View {
             if currentBranch != nil {
                 Image.branch
                     .font(.title3)
-                    .imageScale(.large)
-                    .foregroundColor(controlActive == .inactive ? inactiveColor : .primary)
+                    .imageScale(.medium)
+                    .foregroundColor(controlActive == .inactive ? inactiveColor : .gray)
             } else {
                 Image(systemName: "folder.fill.badge.gearshape")
                     .font(.title3)
@@ -57,9 +57,10 @@ struct ToolbarBranchPicker: View {
                     }, label: {
                         Text(currentBranch.name)
                             .font(.subheadline)
-                            .foregroundColor(controlActive == .inactive ? inactiveColor : .secondary)
+                            .foregroundColor(controlActive == .inactive ? inactiveColor : .gray)
                             .frame(height: 11)
                     })
+                    .menuIndicator(isHovering ? .visible : .hidden)
                     .buttonStyle(.borderless)
                     .padding(.leading, -3)
                 }
