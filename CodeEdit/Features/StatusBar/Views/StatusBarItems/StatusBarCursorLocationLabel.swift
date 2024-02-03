@@ -9,8 +9,8 @@ import SwiftUI
 import CodeEditSourceEditor
 
 struct StatusBarCursorLocationLabel: View {
-    @Environment(\.controlActiveState)
-    private var controlActive
+    @Environment(\.controlActiveState) private var controlActive
+    @Environment(\.modifierKeys) private var modifierKeys
 
     @EnvironmentObject private var model: UtilityAreaViewModel
     @EnvironmentObject private var editorManager: EditorManager
@@ -38,11 +38,18 @@ struct StatusBarCursorLocationLabel: View {
             return ""
         }
 
+        // More than one selection, display the number of selections.
         if cursorPositions.count > 1 {
             return "\(cursorPositions.count) selected ranges"
         }
 
+        // If the selection is more than just a cursor, return the length.
         if cursorPositions[0].range.length > 0 {
+            // When the option key is pressed display the character range.
+            if modifierKeys.contains(.option) {
+                return "Char: \(cursorPositions[0].range.location) Len: \(cursorPositions[0].range.length)"
+            }
+
             let lineCount = getLines(cursorPositions[0].range)
 
             if lineCount > 1 {
@@ -52,6 +59,12 @@ struct StatusBarCursorLocationLabel: View {
             return "\(cursorPositions[0].range.length) characters"
         }
 
+        // When the option key is pressed display the character offset.
+        if modifierKeys.contains(.option) {
+            return "Char: \(cursorPositions[0].range.location) Len: 0"
+        }
+
+        // When there's a single cursor, display the line and column.
         return "Line: \(cursorPositions[0].line)  Col: \(cursorPositions[0].column)"
     }
 
@@ -77,6 +90,7 @@ struct StatusBarCursorLocationLabel: View {
         .fixedSize()
         .lineLimit(1)
         .onHover { isHovering($0) }
+        
         .onAppear {
             updateSource()
         }
