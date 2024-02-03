@@ -8,7 +8,6 @@
 import Foundation
 
 extension SettingsData {
-
     struct SearchSettings: Codable, Hashable, SearchableSettingsPage {
 
         /// The search keys
