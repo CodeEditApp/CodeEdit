@@ -23,6 +23,13 @@ struct GlobPattern: Identifiable, Hashable, Decodable, Encodable {
 /// private var searchSettigs: SearchSettingsModel = .shared
 /// ```
 final class SearchSettingsModel: ObservableObject {
+    /// Reads settings file for Search Settings and updates the values in this model
+    /// correspondingly
+    private init() {
+        let value = Settings[\.search].ignoreGlobPatterns
+        self.ignoreGlobPatterns = value
+    }
+
     static let shared: SearchSettingsModel = .init()
 
     /// Default instance of the `FileManager`
@@ -56,12 +63,5 @@ final class SearchSettingsModel: ObservableObject {
                 Settings[\.search].ignoreGlobPatterns = self.ignoreGlobPatterns
             }
         }
-    }
-
-    /// Reads settings file for Search Settings and updates the values in this model
-    /// correspondingly
-    private init() {
-        let value = Settings[\.search].ignoreGlobPatterns
-        self.ignoreGlobPatterns = value
     }
 }
