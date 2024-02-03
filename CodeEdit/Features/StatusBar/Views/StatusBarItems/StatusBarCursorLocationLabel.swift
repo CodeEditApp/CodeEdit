@@ -9,8 +9,10 @@ import SwiftUI
 import CodeEditSourceEditor
 
 struct StatusBarCursorLocationLabel: View {
-    @Environment(\.controlActiveState) private var controlActive
-    @Environment(\.modifierKeys) private var modifierKeys
+    @Environment(\.controlActiveState)
+    private var controlActive
+    @Environment(\.modifierKeys)
+    private var modifierKeys
 
     @EnvironmentObject private var model: UtilityAreaViewModel
     @EnvironmentObject private var editorManager: EditorManager
@@ -90,7 +92,6 @@ struct StatusBarCursorLocationLabel: View {
         .fixedSize()
         .lineLimit(1)
         .onHover { isHovering($0) }
-
         .onAppear {
             updateSource()
         }
