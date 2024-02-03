@@ -47,6 +47,9 @@ struct SettingsData: Codable, Hashable {
     /// Feature Flags settings
     var featureFlags: FeatureFlagsSettings = .init()
 
+    /// Searh Settings
+    var search: SearchSettings = .init()
+
     /// Default initializer
     init() {}
 
@@ -58,6 +61,7 @@ struct SettingsData: Codable, Hashable {
         self.theme = try container.decodeIfPresent(ThemeSettings.self, forKey: .theme) ?? .init()
         self.terminal = try container.decodeIfPresent(TerminalSettings.self, forKey: .terminal) ?? .init()
         self.textEditing = try container.decodeIfPresent(TextEditingSettings.self, forKey: .textEditing) ?? .init()
+        self.search = try container.decodeIfPresent(SearchSettings.self, forKey: .search) ?? .init()
         self.sourceControl = try container.decodeIfPresent(
             SourceControlSettings.self,
             forKey: .sourceControl
@@ -84,6 +88,8 @@ struct SettingsData: Codable, Hashable {
             textEditing.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
         case .terminal:
             terminal.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
+        case .search:
+            search.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
         case .sourceControl:
             sourceControl.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
         case .location:
