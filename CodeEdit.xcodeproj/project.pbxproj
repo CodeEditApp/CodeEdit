@@ -267,6 +267,13 @@
 		6130535F2B23A31300D767E3 /* MemorySearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6130535E2B23A31300D767E3 /* MemorySearchTests.swift */; };
 		613053652B23A49300D767E3 /* TemporaryFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613053642B23A49300D767E3 /* TemporaryFile.swift */; };
 		6130536B2B24722C00D767E3 /* AsyncIndexingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6130536A2B24722C00D767E3 /* AsyncIndexingTests.swift */; };
+		613899B12B6E6FDC00A5CAF6 /* Collection+FuzzySearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613899B02B6E6FDC00A5CAF6 /* Collection+FuzzySearch.swift */; };
+		613899B32B6E6FEE00A5CAF6 /* FuzzySearchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613899B22B6E6FEE00A5CAF6 /* FuzzySearchable.swift */; };
+		613899B52B6E700300A5CAF6 /* FuzzySearchModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613899B42B6E700300A5CAF6 /* FuzzySearchModels.swift */; };
+		613899B72B6E702F00A5CAF6 /* String+LengthOfMatchingPrefix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613899B62B6E702F00A5CAF6 /* String+LengthOfMatchingPrefix.swift */; };
+		613899B92B6E704500A5CAF6 /* String+Normalise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613899B82B6E704500A5CAF6 /* String+Normalise.swift */; };
+		613899BC2B6E709C00A5CAF6 /* URL+FuzzySearchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613899BB2B6E709C00A5CAF6 /* URL+FuzzySearchable.swift */; };
+		613899C02B6E70FE00A5CAF6 /* FuzzySearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613899BF2B6E70FE00A5CAF6 /* FuzzySearchTests.swift */; };
 		613DF55E2B08DD5D00E9D902 /* FileHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613DF55D2B08DD5D00E9D902 /* FileHelper.swift */; };
 		61538B902B111FE800A88846 /* String+AppearancesOfSubstring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61538B8F2B111FE800A88846 /* String+AppearancesOfSubstring.swift */; };
 		61538B932B11201900A88846 /* String+Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61538B922B11201900A88846 /* String+Character.swift */; };
@@ -352,7 +359,6 @@
 		6CBA0D512A1BF524002C6FAA /* SegmentedControlImproved.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBA0D502A1BF524002C6FAA /* SegmentedControlImproved.swift */; };
 		6CBD1BC62978DE53006639D5 /* Font+Caption3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBD1BC52978DE53006639D5 /* Font+Caption3.swift */; };
 		6CC9E4B229B5669900C97388 /* Environment+ActiveEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC9E4B129B5669900C97388 /* Environment+ActiveEditor.swift */; };
-		6CD0375F2A3504540071C4DA /* FuzzySearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD0375E2A3504540071C4DA /* FuzzySearch.swift */; };
 		6CD03B6A29FC773F001BD1D0 /* SettingsInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD03B6929FC773F001BD1D0 /* SettingsInjector.swift */; };
 		6CDA84AD284C1BA000C1CC3A /* EditorTabBarContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CDA84AC284C1BA000C1CC3A /* EditorTabBarContextMenu.swift */; };
 		6CDEFC9629E22C2700B7C684 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = 6CDEFC9529E22C2700B7C684 /* Introspect */; };
@@ -822,6 +828,13 @@
 		6130535E2B23A31300D767E3 /* MemorySearchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemorySearchTests.swift; sourceTree = "<group>"; };
 		613053642B23A49300D767E3 /* TemporaryFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemporaryFile.swift; sourceTree = "<group>"; };
 		6130536A2B24722C00D767E3 /* AsyncIndexingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncIndexingTests.swift; sourceTree = "<group>"; };
+		613899B02B6E6FDC00A5CAF6 /* Collection+FuzzySearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+FuzzySearch.swift"; sourceTree = "<group>"; };
+		613899B22B6E6FEE00A5CAF6 /* FuzzySearchable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FuzzySearchable.swift; sourceTree = "<group>"; };
+		613899B42B6E700300A5CAF6 /* FuzzySearchModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FuzzySearchModels.swift; sourceTree = "<group>"; };
+		613899B62B6E702F00A5CAF6 /* String+LengthOfMatchingPrefix.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+LengthOfMatchingPrefix.swift"; sourceTree = "<group>"; };
+		613899B82B6E704500A5CAF6 /* String+Normalise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Normalise.swift"; sourceTree = "<group>"; };
+		613899BB2B6E709C00A5CAF6 /* URL+FuzzySearchable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+FuzzySearchable.swift"; sourceTree = "<group>"; };
+		613899BF2B6E70FE00A5CAF6 /* FuzzySearchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FuzzySearchTests.swift; sourceTree = "<group>"; };
 		613DF55D2B08DD5D00E9D902 /* FileHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileHelper.swift; sourceTree = "<group>"; };
 		61538B8F2B111FE800A88846 /* String+AppearancesOfSubstring.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+AppearancesOfSubstring.swift"; sourceTree = "<group>"; };
 		61538B922B11201900A88846 /* String+Character.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Character.swift"; sourceTree = "<group>"; };
@@ -892,7 +905,6 @@
 		6CBA0D502A1BF524002C6FAA /* SegmentedControlImproved.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControlImproved.swift; sourceTree = "<group>"; };
 		6CBD1BC52978DE53006639D5 /* Font+Caption3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Caption3.swift"; sourceTree = "<group>"; };
 		6CC9E4B129B5669900C97388 /* Environment+ActiveEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Environment+ActiveEditor.swift"; sourceTree = "<group>"; };
-		6CD0375E2A3504540071C4DA /* FuzzySearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FuzzySearch.swift; sourceTree = "<group>"; };
 		6CD03B6929FC773F001BD1D0 /* SettingsInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsInjector.swift; sourceTree = "<group>"; };
 		6CDA84AC284C1BA000C1CC3A /* EditorTabBarContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorTabBarContextMenu.swift; sourceTree = "<group>"; };
 		6CE622682A2A174A0013085C /* InspectorTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorTab.swift; sourceTree = "<group>"; };
@@ -1605,8 +1617,8 @@
 		5878DAAA291D5CAA00DD95A3 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				6CD0375E2A3504540071C4DA /* FuzzySearch.swift */,
 				5878DAA3291AE76700DD95A3 /* QuickOpenViewModel.swift */,
+				613899BB2B6E709C00A5CAF6 /* URL+FuzzySearchable.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -1632,6 +1644,7 @@
 		58798210292D92370085B254 /* Search */ = {
 			isa = PBXGroup;
 			children = (
+				613899AF2B6E6FB800A5CAF6 /* FuzzySearch */,
 				58798212292D92370085B254 /* Extensions */,
 				58798214292D92370085B254 /* Model */,
 			);
@@ -1759,6 +1772,7 @@
 		587B60FE293416C900D5CD8F /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				613899BD2B6E70E200A5CAF6 /* Search */,
 				283BDCC22972F211002AFF81 /* Acknowledgements */,
 				4EE96EC82960562000FFBEA8 /* Documents */,
 				583E527429361B39001AB554 /* CodeEditUI */,
@@ -2321,6 +2335,34 @@
 				613053642B23A49300D767E3 /* TemporaryFile.swift */,
 			);
 			path = Indexer;
+			sourceTree = "<group>";
+		};
+		613899AF2B6E6FB800A5CAF6 /* FuzzySearch */ = {
+			isa = PBXGroup;
+			children = (
+				613899B02B6E6FDC00A5CAF6 /* Collection+FuzzySearch.swift */,
+				613899B22B6E6FEE00A5CAF6 /* FuzzySearchable.swift */,
+				613899B42B6E700300A5CAF6 /* FuzzySearchModels.swift */,
+				613899B62B6E702F00A5CAF6 /* String+LengthOfMatchingPrefix.swift */,
+				613899B82B6E704500A5CAF6 /* String+Normalise.swift */,
+			);
+			path = FuzzySearch;
+			sourceTree = "<group>";
+		};
+		613899BD2B6E70E200A5CAF6 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				613899BE2B6E70EA00A5CAF6 /* FuzzySearch */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
+		613899BE2B6E70EA00A5CAF6 /* FuzzySearch */ = {
+			isa = PBXGroup;
+			children = (
+				613899BF2B6E70FE00A5CAF6 /* FuzzySearchTests.swift */,
+			);
+			path = FuzzySearch;
 			sourceTree = "<group>";
 		};
 		6C092EDC2A53A63E00489202 /* Views */ = {
@@ -3266,6 +3308,7 @@
 				587B9E7729301D8F00AC7927 /* String+PercentEncoding.swift in Sources */,
 				587B9E5B29301D8F00AC7927 /* GitCheckoutBranchView.swift in Sources */,
 				2813F93827ECC4AA00E305E4 /* FindNavigatorResultList.swift in Sources */,
+				613899B92B6E704500A5CAF6 /* String+Normalise.swift in Sources */,
 				04BA7C192AE2D7C600584E1C /* GitClient+Branches.swift in Sources */,
 				587B9E8829301D8F00AC7927 /* GitHubFiles.swift in Sources */,
 				587B9DA729300ABD00AC7927 /* HelpButton.swift in Sources */,
@@ -3285,7 +3328,6 @@
 				587B9D9F29300ABD00AC7927 /* SegmentedControl.swift in Sources */,
 				6C7256D729A3D7D000C2D3E0 /* SplitViewControllerView.swift in Sources */,
 				B6EA1FE529DA33DB001BF195 /* ThemeModel.swift in Sources */,
-				6CD0375F2A3504540071C4DA /* FuzzySearch.swift in Sources */,
 				B6EA200029DB7966001BF195 /* SettingsColorPicker.swift in Sources */,
 				58FD7609291EA1CB0051D6E4 /* CommandPaletteView.swift in Sources */,
 				58A2E40C29C3975D005CB615 /* CEWorkspaceFileIcon.swift in Sources */,
@@ -3365,6 +3407,7 @@
 				B6D7EA5C297107DD00301FAC /* InspectorField.swift in Sources */,
 				043C321427E31FF6006AE443 /* CodeEditDocumentController.swift in Sources */,
 				85E4122A2A46C8CA00183F2B /* LocationsSettings.swift in Sources */,
+				613899B12B6E6FDC00A5CAF6 /* Collection+FuzzySearch.swift in Sources */,
 				581550D129FBD30400684881 /* TextTableViewCell.swift in Sources */,
 				587B9E6629301D8F00AC7927 /* GitLabProjectHook.swift in Sources */,
 				587B9E9329301D8F00AC7927 /* BitBucketOAuthConfiguration.swift in Sources */,
@@ -3472,6 +3515,7 @@
 				0485EB1F27E7458B00138301 /* WorkspaceCodeFileView.swift in Sources */,
 				6C092EDA2A53A58600489202 /* EditorLayout+StateRestoration.swift in Sources */,
 				6C092EE02A53BFCF00489202 /* WorkspaceStateKey.swift in Sources */,
+				613899B52B6E700300A5CAF6 /* FuzzySearchModels.swift in Sources */,
 				58D01C94293167DC00C5B6B4 /* Color+HEX.swift in Sources */,
 				6C578D8729CD345900DC73B2 /* ExtensionSceneView.swift in Sources */,
 				B640A9A129E2188F00715F20 /* View+NavigationBarBackButtonVisible.swift in Sources */,
@@ -3511,6 +3555,7 @@
 				6C6BD6EF29CD12E900235D17 /* ExtensionManagerWindow.swift in Sources */,
 				6CFF967629BEBCD900182D6F /* FileCommands.swift in Sources */,
 				B60718462B17DC15009CDAB4 /* RepoOutlineGroupItem.swift in Sources */,
+				613899B32B6E6FEE00A5CAF6 /* FuzzySearchable.swift in Sources */,
 				B697937A29FF5668002027EC /* AccountsSettingsAccountLink.swift in Sources */,
 				5B698A0D2B26327800DE9392 /* SearchSettings.swift in Sources */,
 				B685DE7929CC9CCD002860C8 /* StatusBarIcon.swift in Sources */,
@@ -3548,6 +3593,7 @@
 				B6A43C5D29FC4AF00027E0E0 /* CreateSSHKeyView.swift in Sources */,
 				B6EA200229DB7F81001BF195 /* View+ConstrainHeightToWindow.swift in Sources */,
 				B68C7C212A01DEFE004EA6D6 /* GitHubComment.swift in Sources */,
+				613899B72B6E702F00A5CAF6 /* String+LengthOfMatchingPrefix.swift in Sources */,
 				6C48D8F42972DB1A00D6D205 /* Env+Window.swift in Sources */,
 				6C5FDF7A29E6160000BC08C0 /* AppSettings.swift in Sources */,
 				58F2EB07292FB2B0004A9BDE /* GeneralSettings.swift in Sources */,
@@ -3623,6 +3669,7 @@
 				6C2C155829B4F49100EA60A5 /* SplitViewItem.swift in Sources */,
 				6CDA84AD284C1BA000C1CC3A /* EditorTabBarContextMenu.swift in Sources */,
 				6C81916729B3E80700B75C92 /* ModifierKeysObserver.swift in Sources */,
+				613899BC2B6E709C00A5CAF6 /* URL+FuzzySearchable.swift in Sources */,
 				611192002B08CCD700D4459B /* SearchIndexer+Memory.swift in Sources */,
 				587B9E8129301D8F00AC7927 /* PublicKey.swift in Sources */,
 				611191FE2B08CCD200D4459B /* SearchIndexer+File.swift in Sources */,
@@ -3658,6 +3705,7 @@
 				6130535C2B23933D00D767E3 /* MemoryIndexingTests.swift in Sources */,
 				6195E3112B640485007261CA /* WorkspaceDocument+SearchState+IndexTests.swift in Sources */,
 				6130536B2B24722C00D767E3 /* AsyncIndexingTests.swift in Sources */,
+				613899C02B6E70FE00A5CAF6 /* FuzzySearchTests.swift in Sources */,
 				6195E30D2B64044F007261CA /* WorkspaceDocument+SearchState+FindTests.swift in Sources */,
 				6195E30F2B640474007261CA /* WorkspaceDocument+SearchState+FindAndReplaceTests.swift in Sources */,
 				587B612E293419B700D5CD8F /* CodeFileTests.swift in Sources */,
