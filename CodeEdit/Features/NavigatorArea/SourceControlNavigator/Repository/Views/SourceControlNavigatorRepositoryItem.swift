@@ -29,12 +29,13 @@ struct SourceControlNavigatorRepositoryItem: View {
                 if item.symbolImage != nil {
                     Image(symbol: item.symbolImage ?? "")
                         .opacity(controlActiveState == .inactive ? 0.5 : 1)
+                        .foregroundStyle(item.imageColor ?? .accentColor)
                 } else {
                     Image(systemName: item.systemImage ?? "")
                         .opacity(controlActiveState == .inactive ? 0.5 : 1)
+                        .foregroundStyle(item.imageColor ?? .accentColor)
                 }
             })
-            .accentColor(item.imageColor ?? .accentColor)
             .padding(.leading, 1)
             .padding(.vertical, -1)
         } else {

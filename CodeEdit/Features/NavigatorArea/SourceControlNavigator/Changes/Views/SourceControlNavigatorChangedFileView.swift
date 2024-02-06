@@ -53,8 +53,9 @@ struct SourceControlNavigatorChangedFileView: View {
                     .truncationMode(.middle)
             }, icon: {
                 Image(systemName: changedFile.systemImage)
+                    .foregroundStyle(changedFile.iconColor)
             })
-            .accentColor(changedFile.iconColor)
+
             Spacer()
             Text(changedFile.gitStatus?.description ?? "")
                 .font(.system(size: 11, weight: .bold))
