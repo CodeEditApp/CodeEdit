@@ -13,22 +13,38 @@ extension EditorManager {
     /// Restores the tab manager from a captured state obtained using `saveRestorationState`
     /// - Parameter workspace: The workspace to retrieve state from.
     func restoreFromState(_ workspace: WorkspaceDocument) {
-        guard let fileManager = workspace.workspaceFileManager,
-              let data = workspace.getFromWorkspaceState(.openTabs) as? Data,
-              let state = try? JSONDecoder().decode(EditorRestorationState.self, from: data) else {
-            return
-        }
+        do {
+            guard let fileManager = workspace.workspaceFileManager,
+                  let data = workspace.getFromWorkspaceState(.openTabs) as? Data else {
+                return
+            }
 
-        guard !state.groups.isEmpty else {
-            logger.warning("Empty Editor State found, restoring to clean editor state.")
-            initCleanState()
-            return
-        }
+            let state = try JSONDecoder().decode(EditorRestorationState.self, from: data)
 
-        fixRestoredEditorLayout(state.groups, fileManager: fileManager)
-        self.editorLayout = state.groups
-        self.activeEditor = activeEditor
-        switchToActiveEditor()
+            guard !state.groups.isEmpty else {
+                logger.warning("Empty Editor State found, restoring to clean editor state.")
+                initCleanState()
+                return
+            }
+
+            guard let activeEditor = state.groups.find(
+                editor: state.activeEditor
+            ) ?? state.groups.findSomeEditor() else {
+                logger.warning("Editor state could not restore active editor.")
+                initCleanState()
+                return
+            }
+
+            fixRestoredEditorLayout(state.groups, fileManager: fileManager)
+
+            self.editorLayout = state.groups
+            self.activeEditor = activeEditor
+            switchToActiveEditor()
+        } catch {
+            logger.warning(
+                "Could not restore editor state from saved data: \(error.localizedDescription, privacy: .public)"
+            )
+        }
     }
 
     /// Fix any hanging files after restoring from saved state.
@@ -89,7 +105,7 @@ extension EditorManager {
 
     func saveRestorationState(_ workspace: WorkspaceDocument) {
         if let data = try? JSONEncoder().encode(
-            EditorRestorationState(focus: activeEditor, groups: editorLayout)
+            EditorRestorationState(activeEditor: activeEditor.id, groups: editorLayout)
         ) {
             workspace.addToWorkspaceState(key: .openTabs, value: data)
         } else {
@@ -99,7 +115,7 @@ extension EditorManager {
 }
 
 struct EditorRestorationState: Codable {
-    var focus: Editor
+    var activeEditor: UUID
     var groups: EditorLayout
 }
 
