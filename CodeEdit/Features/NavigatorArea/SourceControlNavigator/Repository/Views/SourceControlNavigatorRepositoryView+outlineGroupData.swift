@@ -27,6 +27,21 @@ extension SourceControlNavigatorRepositoryView {
                 }
             ),
             .init(
+                id: "TagsGroup",
+                label: "Tags",
+                systemImage: "tag.square.fill",
+                imageColor: Color(nsColor: .secondaryLabelColor),
+                children: sourceControlManager.tags.map { tag in
+                        .init(
+                            id: "Tag \(tag)",
+                            label: tag,
+                            description: tag,
+                            symbolImage: "tag.fill",
+                            imageColor: .blue
+                        )
+                }
+            ),
+            .init(
                 id: "StashedChangesGroup",
                 label: "Stashed Changes",
                 systemImage: "tray.2.fill",

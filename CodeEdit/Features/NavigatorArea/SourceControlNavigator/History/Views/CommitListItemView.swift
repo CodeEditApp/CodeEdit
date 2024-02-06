@@ -68,7 +68,7 @@ struct CommitListItemView: View {
             }
             Group {
                 Button("Tag \(commit.hash)...") {}
-                    .disabled(true) // TODO: Implementation Needed
+                    // .disabled(true) // TODO: Implementation Needed
                 Button("New Branch from \(commit.hash)...") {}
                     .disabled(true) // TODO: Implementation Needed
                 Button("Cherry-Pick \(commit.hash)...") {}

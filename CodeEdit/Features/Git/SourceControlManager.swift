@@ -33,6 +33,9 @@ final class SourceControlManager: ObservableObject {
     /// All stash ebtrues
     @Published var stashEntries: [GitStashEntry] = []
 
+    /// All Tags
+    @Published var tags: [String] = []
+
     /// Number of unsynced commits with remote in current branch
     @Published var numberOfUnsyncedCommits: (ahead: Int, behind: Int) = (ahead: 0, behind: 0)
 
@@ -330,6 +333,12 @@ final class SourceControlManager: ObservableObject {
         }
 
         await showAlert(title: title, message: error.localizedDescription)
+    }
+
+    /// Gets all tags
+    func getTags() async throws {
+        let tags = (try? await gitClient.fetchTags()) ?? []
+        self.tags = tags
     }
 
     private func showAlert(title: String, message: String) async {
