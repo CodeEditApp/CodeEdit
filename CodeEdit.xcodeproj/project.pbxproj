@@ -60,6 +60,9 @@
 		2BE487EF28245162003F3F64 /* FinderSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE487EE28245162003F3F64 /* FinderSync.swift */; };
 		2BE487F428245162003F3F64 /* OpenWithCodeEdit.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 2BE487EC28245162003F3F64 /* OpenWithCodeEdit.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		3026F50F2AC006C80061227E /* InspectorAreaViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3026F50E2AC006C80061227E /* InspectorAreaViewModel.swift */; };
+		3039C8DD2B738D5A00C8B4F8 /* LanguageClient in Frameworks */ = {isa = PBXBuildFile; productRef = 3039C8DC2B738D5A00C8B4F8 /* LanguageClient */; };
+		305811812B73832B0049C9AA /* LanguageServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 305811802B73832B0049C9AA /* LanguageServer.swift */; };
+		305811832B73834F0049C9AA /* LSPCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 305811822B73834F0049C9AA /* LSPCache.swift */; };
 		30E6D0012A6E505200A58B20 /* NavigatorSidebarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E6D0002A6E505200A58B20 /* NavigatorSidebarViewModel.swift */; };
 		3E0196732A3921AC002648D8 /* codeedit_shell_integration.zsh in Resources */ = {isa = PBXBuildFile; fileRef = 3E0196722A3921AC002648D8 /* codeedit_shell_integration.zsh */; };
 		3E01967A2A392B45002648D8 /* codeedit_shell_integration.bash in Resources */ = {isa = PBXBuildFile; fileRef = 3E0196792A392B45002648D8 /* codeedit_shell_integration.bash */; };
@@ -305,7 +308,6 @@
 		6C2C155A29B4F4CC00EA60A5 /* Variadic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C2C155929B4F4CC00EA60A5 /* Variadic.swift */; };
 		6C2C155D29B4F4E500EA60A5 /* SplitViewReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C2C155C29B4F4E500EA60A5 /* SplitViewReader.swift */; };
 		6C2C156129B4F52F00EA60A5 /* SplitViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C2C156029B4F52F00EA60A5 /* SplitViewModifiers.swift */; };
-		6C2C20172A4016FF0047EDF2 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		6C4104E3297C87A000F472BA /* BlurButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C4104E2297C87A000F472BA /* BlurButtonStyle.swift */; };
 		6C4104E6297C884F00F472BA /* AboutDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C4104E5297C884F00F472BA /* AboutDetailView.swift */; };
 		6C4104E9297C970F00F472BA /* AboutDefaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C4104E8297C970F00F472BA /* AboutDefaultView.swift */; };
@@ -620,6 +622,8 @@
 		2BE487EE28245162003F3F64 /* FinderSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderSync.swift; sourceTree = "<group>"; };
 		2BE487F028245162003F3F64 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3026F50E2AC006C80061227E /* InspectorAreaViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorAreaViewModel.swift; sourceTree = "<group>"; };
+		305811802B73832B0049C9AA /* LanguageServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageServer.swift; sourceTree = "<group>"; };
+		305811822B73834F0049C9AA /* LSPCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LSPCache.swift; sourceTree = "<group>"; };
 		30E6D0002A6E505200A58B20 /* NavigatorSidebarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigatorSidebarViewModel.swift; sourceTree = "<group>"; };
 		3E0196722A3921AC002648D8 /* codeedit_shell_integration.zsh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = codeedit_shell_integration.zsh; sourceTree = "<group>"; };
 		3E0196792A392B45002648D8 /* codeedit_shell_integration.bash */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = codeedit_shell_integration.bash; sourceTree = "<group>"; };
@@ -1075,7 +1079,7 @@
 				6CDEFC9629E22C2700B7C684 /* Introspect in Frameworks */,
 				2816F594280CF50500DD548B /* CodeEditSymbols in Frameworks */,
 				6C6BD6F829CD14D100235D17 /* CodeEditKit in Frameworks */,
-				6C2C20172A4016FF0047EDF2 /* (null) in Frameworks */,
+				3039C8DD2B738D5A00C8B4F8 /* LanguageClient in Frameworks */,
 				6C81916B29B41DD300B75C92 /* DequeModule in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1314,6 +1318,15 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
+		3058117F2B7383090049C9AA /* LSP */ = {
+			isa = PBXGroup;
+			children = (
+				305811802B73832B0049C9AA /* LanguageServer.swift */,
+				305811822B73834F0049C9AA /* LSPCache.swift */,
+			);
+			path = LSP;
+			sourceTree = "<group>";
+		};
 		307AC4CB2ABABD9800163376 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
@@ -1420,6 +1433,7 @@
 				587B9E0129301D8F00AC7927 /* Git */,
 				B6EE988E27E8877C00CDD8AB /* InspectorArea */,
 				58A5DF9D29339F6400D1BD5D /* Keybindings */,
+				3058117F2B7383090049C9AA /* LSP */,
 				287776EA27E350A100D46668 /* NavigatorArea */,
 				5878DAA0291AE76700DD95A3 /* QuickOpen */,
 				58798210292D92370085B254 /* Search */,
@@ -3030,6 +3044,7 @@
 				6CDEFC9529E22C2700B7C684 /* Introspect */,
 				6C5BE5212A3D5666002DA0FC /* WindowManagement */,
 				6CE952E22B29433500C29C31 /* CodeEditSourceEditor */,
+				3039C8DC2B738D5A00C8B4F8 /* LanguageClient */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -3126,6 +3141,8 @@
 				6C5BE5202A3D5666002DA0FC /* XCRemoteSwiftPackageReference "SwiftUI-WindowManagement" */,
 				6CE952E12B29433500C29C31 /* XCRemoteSwiftPackageReference "CodeEditSourceEditor" */,
 				30AAFCD02B7380EF007177DC /* XCLocalSwiftPackageReference "../CodeEditKit" */,
+				30E1AAB12B73856500420274 /* XCLocalSwiftPackageReference "../LanguageClient" */,
+				3039C8DF2B738D9B00C8B4F8 /* XCLocalSwiftPackageReference "../LanguageServerProtocol" */,
 			);
 			productRefGroup = B658FB2D27DA9E0F00EA4DBD /* Products */;
 			projectDirPath = "";
@@ -3464,6 +3481,7 @@
 				6111920C2B08CD0B00D4459B /* SearchIndexer+InternalMethods.swift in Sources */,
 				6CABB1A129C5593800340467 /* OverlayView.swift in Sources */,
 				D7211D4327E066CE008F2ED7 /* Localized+Ex.swift in Sources */,
+				305811832B73834F0049C9AA /* LSPCache.swift in Sources */,
 				581BFB692926431000D251EC /* WelcomeActionView.swift in Sources */,
 				20D839AE280E0CA700B27357 /* HistoryPopoverView.swift in Sources */,
 				B6E41C7029DD157F0088F9F4 /* AccountsSettingsView.swift in Sources */,
@@ -3481,6 +3499,7 @@
 				58D01C96293167DC00C5B6B4 /* Date+Formatted.swift in Sources */,
 				B66A4E5629C918A0004573B4 /* SceneID.swift in Sources */,
 				6C53AAD829A6C4FD00EE9ED6 /* SplitView.swift in Sources */,
+				305811812B73832B0049C9AA /* LanguageServer.swift in Sources */,
 				B66A4E5329C91831004573B4 /* CodeEditCommands.swift in Sources */,
 				58822529292C280D00E83CDE /* StatusBarLineEndSelector.swift in Sources */,
 				5C4BB1E128212B1E00A92FB2 /* World.swift in Sources */,
@@ -4578,9 +4597,17 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
+		3039C8DF2B738D9B00C8B4F8 /* XCLocalSwiftPackageReference "../LanguageServerProtocol" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../LanguageServerProtocol;
+		};
 		30AAFCD02B7380EF007177DC /* XCLocalSwiftPackageReference "../CodeEditKit" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../CodeEditKit;
+		};
+		30E1AAB12B73856500420274 /* XCLocalSwiftPackageReference "../LanguageClient" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../LanguageClient;
 		};
 /* End XCLocalSwiftPackageReference section */
 
@@ -4688,6 +4715,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 2816F592280CF50500DD548B /* XCRemoteSwiftPackageReference "CodeEditSymbols" */;
 			productName = CodeEditSymbols;
+		};
+		3039C8DC2B738D5A00C8B4F8 /* LanguageClient */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 30E1AAB12B73856500420274 /* XCLocalSwiftPackageReference "../LanguageClient" */;
+			productName = LanguageClient;
 		};
 		583E529B29361BAB001AB554 /* SnapshotTesting */ = {
 			isa = XCSwiftPackageProductDependency;
