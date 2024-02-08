@@ -30,7 +30,7 @@
     {
       "identity" : "codeeditsourceeditor",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/CodeEditApp/CodeEditSourceEditor.git",
+      "location" : "https://github.com/CodeEditApp/CodeEditSourceEditor",
       "state" : {
         "revision" : "e08a43ea07861e42d42f317899df69bf8f0a0a54",
         "version" : "0.7.0"
@@ -140,8 +140,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mattmassicotte/MainOffender",
       "state" : {
-        "revision" : "343cc3797618c29b48b037b4e2beea0664e75315",
-        "version" : "0.1.0"
+        "revision" : "8de872d9256ff7f9913cbc5dd560568ab164be45",
+        "version" : "0.2.1"
       }
     },
     {
@@ -167,8 +167,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/Rearrange",
       "state" : {
-        "revision" : "0fb658e721c68495f6340c211cc6d4719e6b52d8",
-        "version" : "1.6.0"
+        "revision" : "5ff7f3363f7a08f77e0d761e38e6add31c2136e1",
+        "version" : "1.8.1"
       }
     },
     {
@@ -203,8 +203,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-syntax.git",
       "state" : {
-        "revision" : "6ad4ea24b01559dde0773e3d091f1b9e36175036",
-        "version" : "509.0.2"
+        "revision" : "43c802fb7f96e090dde015344a94b5e85779eff1",
+        "version" : "509.1.0"
       }
     },
     {

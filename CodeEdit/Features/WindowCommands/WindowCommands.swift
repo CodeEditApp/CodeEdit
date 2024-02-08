@@ -13,6 +13,23 @@ struct WindowCommands: Commands {
     var openWindow
 
     var body: some Commands {
+        CommandGroup(replacing: .singleWindowList) {
+            Button("Welcome to CodeEdit") {
+                NSApp.openWindow(.welcome)
+            }
+            .keyboardShortcut("1", modifiers: [.shift, .command])
+
+            Button("About CodeEdit") {
+                NSApp.openWindow(.about)
+            }
+            .keyboardShortcut("2", modifiers: [.shift, .command])
+
+            Button("Manage Extensions") {
+                NSApp.openWindow(.extensions)
+            }
+            .keyboardShortcut("3", modifiers: [.shift, .command])
+        }
+
         CommandGroup(after: .windowArrangement) {
             // This command is used to open SwiftUI windows from AppKit.
             // It should not be used by the user.
