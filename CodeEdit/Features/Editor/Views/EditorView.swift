@@ -70,5 +70,6 @@ struct EditorView: View {
         .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("CodeEditor.didBeginEditing"))) { _ in
             editor.temporaryTab = nil
         }
+        .accessibilityIdentifier("EditorView")
     }
 }

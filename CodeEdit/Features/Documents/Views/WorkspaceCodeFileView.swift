@@ -98,5 +98,6 @@ struct WorkspaceCodeFileView: View {
                     }
                 }
             }
+            .accessibilityIdentifier("WorkspaceCodeFileView " + file.id)
     }
 }
