@@ -342,7 +342,7 @@ final class SourceControlManager: ObservableObject {
             self.tags = tags
         }
     }
-    
+
     func newTag(tagName: String, commitHash: String, message: String?) async throws{
         try await gitClient.createTag(tagName: tagName, commitHash: commitHash, message: message ?? "")
         try await refreshTags()

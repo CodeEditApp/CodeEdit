@@ -34,16 +34,14 @@ struct SourceControlNavigatorNewTagView: View {
             VStack(spacing: 0) {
                 Form {
                     Section {
-                        LabeledContent("From", value: commitHash)
-                        TextField("To", text: $name)
+                        LabeledContent("Revision:", value: commitHash)
+                        TextField("Tag:", text: $name)
+                        TextField("Message:", text: $message)
                     } header: {
-                        Text("Create a new tag")
-                        Text(
-                            "Create a new tag from the current commit"
-                        )
+                        Text("Create a new tag from revision")
                     }
                 }
-                .formStyle(.grouped)
+                //.formStyle(.grouped)
                 .scrollDisabled(true)
                 .scrollContentBackground(.hidden)
                 .onSubmit { submit() }

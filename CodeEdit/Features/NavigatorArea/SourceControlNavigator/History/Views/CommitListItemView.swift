@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CommitListItemView: View {
-
+    @EnvironmentObject var sourceControlManager: SourceControlManager
     var commit: GitCommit
 
     @Environment(\.openURL)
@@ -32,15 +32,28 @@ struct CommitListItemView: View {
             }
             Spacer()
             VStack(alignment: .trailing, spacing: 5) {
-                Text(commit.hash)
-                    .font(.system(size: 10, design: .monospaced))
-                    .background(
-                        RoundedRectangle(cornerRadius: 3)
-                            .padding(.vertical, -1)
-                            .padding(.horizontal, -2.5)
-                            .foregroundColor(Color(nsColor: .quaternaryLabelColor))
-                    )
-                    .padding(.trailing, 2.5)
+                HStack {
+                    if let matchingTag = sourceControlManager.tags.first(where: { $0.hash == commit.commitHash }) {
+                        (Text(Image(systemName: "tag")) + Text(matchingTag.name))
+                            .font(.system(size: 10, design: .monospaced))
+                            .background(
+                                RoundedRectangle(cornerRadius: 3)
+                                    .padding(.vertical, -1)
+                                    .padding(.horizontal, -2.5)
+                                    .foregroundColor(Color(nsColor: .systemPurple))
+                            )
+                            .padding(.trailing, 2.5)
+                    }
+                    Text(commit.hash)
+                        .font(.system(size: 10, design: .monospaced))
+                        .background(
+                            RoundedRectangle(cornerRadius: 3)
+                                .padding(.vertical, -1)
+                                .padding(.horizontal, -2.5)
+                                .foregroundColor(Color(nsColor: .quaternaryLabelColor))
+                        )
+                        .padding(.trailing, 2.5)
+                }
                 Text(commit.date.relativeStringToNow())
                     .font(.system(size: 11))
                     .foregroundColor(.secondary)
@@ -72,7 +85,7 @@ struct CommitListItemView: View {
                 Divider()
             }
             Group {
-                Button("New Tag from \(commit.hash)...") {
+                Button("Tag \(commit.hash)...") {
                     showNewTag = true
                 }
                     // .disabled(true) // TODO: Implementation Needed
