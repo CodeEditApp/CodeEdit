@@ -44,6 +44,23 @@ enum EditorLayout: Equatable {
         }
     }
 
+    func find(editor id: UUID) -> Editor? {
+        switch self {
+        case .one(let editor):
+            if editor.id == id {
+                return editor
+            }
+        case .vertical(let splitViewData), .horizontal(let splitViewData):
+            for layout in splitViewData.editorLayouts {
+                if let editor = layout.find(editor: id) {
+                    return editor
+                }
+            }
+        }
+
+        return nil
+    }
+
     /// Forms a set of all files currently represented by tabs.
     func gatherOpenFiles() -> Set<CEWorkspaceFile> {
         switch self {
