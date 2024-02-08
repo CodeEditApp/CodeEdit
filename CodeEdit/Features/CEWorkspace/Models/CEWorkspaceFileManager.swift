@@ -263,13 +263,13 @@ final class CEWorkspaceFileManager {
         let gitConfigChange = events.first(where: {
             $0.path == "\(self.folderUrl.relativePath)/.git/config"
         })
-        
+
         let gitTagsChange = events.first(where: {
             $0.path == "\(self.folderUrl.relativePath)/.git/packed-refs"
         })
-        
+
         let gitTagsChange2 = events.first(where: {
-            $0.path == "\(self.folderUrl.relativePath)/.git/refs/tags"
+            $0.path.contains("\(self.folderUrl.relativePath)/.git/refs/tags")
         })
 
         // If changes were made to project OR files were staged, refresh changes
@@ -316,7 +316,7 @@ final class CEWorkspaceFileManager {
         
         if gitTagsChange != nil || gitTagsChange2 != nil {
             Task {
-                try await self.sourceControlManager?.getTags()
+                try await self.sourceControlManager?.refreshTags()
             }
         }
     }

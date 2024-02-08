@@ -380,6 +380,8 @@
 		85773E1E2A3E0A1F00C5D926 /* SettingsSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85773E1D2A3E0A1F00C5D926 /* SettingsSearchResult.swift */; };
 		85CD0C5F2A10CC3200E531FD /* URL+isImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CD0C5E2A10CC3200E531FD /* URL+isImage.swift */; };
 		85E4122A2A46C8CA00183F2B /* LocationsSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85E412292A46C8CA00183F2B /* LocationsSettings.swift */; };
+		8B46FD062B732DAA00573116 /* GitTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B46FD052B732DAA00573116 /* GitTag.swift */; };
+		8B46FD0A2B7521E300573116 /* SourceControlNavigatorAddTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B46FD092B7521E300573116 /* SourceControlNavigatorAddTagView.swift */; };
 		8E6377942B72C48D00E2403F /* GitClient+Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E6377932B72C48D00E2403F /* GitClient+Tag.swift */; };
 		9D36E1BF2B5E7D7500443C41 /* GitBranchesGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D36E1BE2B5E7D7500443C41 /* GitBranchesGroup.swift */; };
 		B6041F4D29D7A4E9000F3454 /* SettingsPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6041F4C29D7A4E9000F3454 /* SettingsPageView.swift */; };
@@ -925,6 +927,8 @@
 		85773E1D2A3E0A1F00C5D926 /* SettingsSearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSearchResult.swift; sourceTree = "<group>"; };
 		85CD0C5E2A10CC3200E531FD /* URL+isImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+isImage.swift"; sourceTree = "<group>"; };
 		85E412292A46C8CA00183F2B /* LocationsSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsSettings.swift; sourceTree = "<group>"; };
+		8B46FD052B732DAA00573116 /* GitTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitTag.swift; sourceTree = "<group>"; };
+		8B46FD092B7521E300573116 /* SourceControlNavigatorAddTagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlNavigatorAddTagView.swift; sourceTree = "<group>"; };
 		8E6377932B72C48D00E2403F /* GitClient+Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GitClient+Tag.swift"; sourceTree = "<group>"; };
 		9D36E1BE2B5E7D7500443C41 /* GitBranchesGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitBranchesGroup.swift; sourceTree = "<group>"; };
 		B6041F4C29D7A4E9000F3454 /* SettingsPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPageView.swift; sourceTree = "<group>"; };
@@ -2026,6 +2030,7 @@
 			isa = PBXGroup;
 			children = (
 				587B9E5329301D8F00AC7927 /* GitCommit.swift */,
+				8B46FD052B732DAA00573116 /* GitTag.swift */,
 				587B9E5429301D8F00AC7927 /* GitChangedFile.swift */,
 				587B9E5529301D8F00AC7927 /* GitType.swift */,
 				04BA7C0A2AE2A2D100584E1C /* GitBranch.swift */,
@@ -2680,6 +2685,7 @@
 			children = (
 				B6C4F2A02B3CA37500B2B140 /* SourceControlNavigatorHistoryView.swift */,
 				20EBB504280C329800F3A5DA /* CommitListItemView.swift */,
+				8B46FD092B7521E300573116 /* SourceControlNavigatorAddTagView.swift */,
 				B6C4F2A22B3CA74800B2B140 /* CommitDetailsView.swift */,
 				B6C4F2A82B3CB00100B2B140 /* CommitDetailsHeaderView.swift */,
 				B6C4F2AB2B3CC4D000B2B140 /* CommitChangedFileListItemView.swift */,
@@ -3357,6 +3363,7 @@
 				6CFF967429BEBCC300182D6F /* FindCommands.swift in Sources */,
 				587B9E6529301D8F00AC7927 /* GitLabGroupAccess.swift in Sources */,
 				6C91D57229B176FF0059A90D /* EditorManager.swift in Sources */,
+				8B46FD062B732DAA00573116 /* GitTag.swift in Sources */,
 				6C82D6BC29C00CD900495C54 /* FirstResponderPropertyWrapper.swift in Sources */,
 				58D01C9B293167DC00C5B6B4 /* CodeEditKeychainConstants.swift in Sources */,
 				B640A99E29E2184700715F20 /* SettingsForm.swift in Sources */,
@@ -3558,6 +3565,7 @@
 				6CAAF68A29BC9C2300A1F48A /* (null) in Sources */,
 				6C6BD6EF29CD12E900235D17 /* ExtensionManagerWindow.swift in Sources */,
 				6CFF967629BEBCD900182D6F /* FileCommands.swift in Sources */,
+				8B46FD0A2B7521E300573116 /* SourceControlNavigatorAddTagView.swift in Sources */,
 				B60718462B17DC15009CDAB4 /* RepoOutlineGroupItem.swift in Sources */,
 				613899B32B6E6FEE00A5CAF6 /* FuzzySearchable.swift in Sources */,
 				B697937A29FF5668002027EC /* AccountsSettingsAccountLink.swift in Sources */,

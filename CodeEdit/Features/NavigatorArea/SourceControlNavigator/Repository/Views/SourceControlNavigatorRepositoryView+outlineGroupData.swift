@@ -34,10 +34,10 @@ extension SourceControlNavigatorRepositoryView {
                 children: sourceControlManager.tags.map { tag in
                         .init(
                             id: "Tag \(tag)",
-                            label: tag,
-                            description: tag,
-                            symbolImage: "tag.fill",
-                            imageColor: .blue
+                            label: tag.name,
+                            description: tag.dateCreated,
+                            systemImage: "tag",
+                            imageColor: .purple
                         )
                 }
             ),

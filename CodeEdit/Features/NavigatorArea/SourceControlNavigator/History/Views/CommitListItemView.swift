@@ -13,6 +13,8 @@ struct CommitListItemView: View {
 
     @Environment(\.openURL)
     private var openCommit
+    
+    @State var showNewTag: Bool = false
 
     init(commit: GitCommit) {
         self.commit = commit
@@ -45,6 +47,9 @@ struct CommitListItemView: View {
             }
             .padding(.top, 1)
         }
+        .sheet(isPresented: $showNewTag) {
+            SourceControlNavigatorNewTagView(commitHash: commit.hash)
+        }
         .padding(.vertical, 1)
         .contentShape(Rectangle())
         .contextMenu {
@@ -67,7 +72,9 @@ struct CommitListItemView: View {
                 Divider()
             }
             Group {
-                Button("Tag \(commit.hash)...") {}
+                Button("New Tag from \(commit.hash)...") {
+                    showNewTag = true
+                }
                     // .disabled(true) // TODO: Implementation Needed
                 Button("New Branch from \(commit.hash)...") {}
                     .disabled(true) // TODO: Implementation Needed

@@ -52,6 +52,7 @@ struct SourcControlNavigatorTabs: View {
                 do {
                     try await sourceControlManager.refreshRemotes()
                     try await sourceControlManager.refreshStashEntries()
+                    try await sourceControlManager.refreshTags()
                 } catch {
                     await sourceControlManager.showAlertForError(title: "Error refreshing Git data", error: error)
                 }
