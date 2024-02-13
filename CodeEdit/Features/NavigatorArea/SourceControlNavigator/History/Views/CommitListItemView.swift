@@ -10,6 +10,38 @@ import SwiftUI
 struct CommitListItemView: View {
 
     var commit: GitCommit
+    
+    private var defaultAvatar: some View {
+        Image(systemName: "person.crop.circle.fill")
+            .symbolRenderingMode(.hierarchical)
+            .resizable()
+            .foregroundColor(avatarColor)
+            .frame(width: 32, height: 32)
+    }
+    
+    private func generateAvatarHash() -> String {
+        let hash = commit.authorEmail.md5(trim: true, caseSensitive: false)
+        return "\(hash)?d=404&s=64" // send 404 if no image available, image size 64x64 (32x32 @2x)
+    }
+    
+    private var avatarColor: Color {
+        let hash = generateAvatarHash().hash
+        switch hash % 12 {
+        case 0: return .red
+        case 1: return .orange
+        case 2: return .yellow
+        case 3: return .green
+        case 4: return .mint
+        case 5: return .teal
+        case 6: return .cyan
+        case 7: return .blue
+        case 8: return .indigo
+        case 9: return .purple
+        case 10: return .brown
+        case 11: return .pink
+        default: return .teal
+        }
+    }
 
     @Environment(\.openURL)
     private var openCommit
@@ -20,11 +52,58 @@ struct CommitListItemView: View {
 
     var body: some View {
         HStack(alignment: .top) {
+            AsyncImage(url: URL(string: "https://www.gravatar.com/avatar/\(generateAvatarHash())")) { phase in
+                if let image = phase.image {
+                    image
+                        .resizable()
+                        .clipShape(Circle())
+                        .frame(width: 32, height: 32)
+                } else if phase.error != nil {
+                    defaultAvatar
+                } else {
+                    defaultAvatar
+                }
+            }
             VStack(alignment: .leading, spacing: 0) {
                 Text(commit.author)
                     .fontWeight(.bold)
                     .font(.system(size: 11))
-                Text(commit.message)
+              
+                if !commit.ref.isEmpty {
+                    HStack {
+                        Image.branch
+                            .imageScale(.small)
+                            .foregroundColor(.primary)
+                        Text(commit.ref)
+                            .font(.system(size: 10, design: .monospaced))
+                    }
+                    .background(
+                        RoundedRectangle(cornerRadius: 3)
+                            .padding(.vertical, -1)
+                            .padding(.horizontal, -2.5)
+                            .foregroundColor(Color(nsColor: .quaternaryLabelColor))
+                    )
+                    .padding(.trailing, 2.5)
+                }
+                
+                if !commit.tag.isEmpty {
+                    HStack {
+                        Image.breakpoint
+                            .imageScale(.small)
+                            .foregroundColor(.primary)
+                        Text(commit.tag)
+                            .font(.system(size: 10, design: .monospaced))
+                    }
+                    .background(
+                        RoundedRectangle(cornerRadius: 3)
+                            .padding(.vertical, -1)
+                            .padding(.horizontal, -2.5)
+                            .foregroundColor(Color(nsColor: .selectedContentBackgroundColor))
+                    )
+                    .padding(.trailing, 2.5)
+                }
+                
+                Text("\(commit.message) \(commit.body)")
                     .font(.system(size: 11))
                     .lineLimit(2)
             }

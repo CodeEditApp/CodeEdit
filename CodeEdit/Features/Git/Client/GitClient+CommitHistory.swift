@@ -31,7 +31,7 @@ extension GitClient {
         dateFormatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss Z"
 
         let output = try await run(
-            "log --pretty=%h¦%H¦%s¦%aN¦%ae¦%cn¦%ce¦%aD¦ \(maxCountString) \(branchNameString) \(fileLocalPath)"
+            "log --pretty=%h¦%H¦%s¦%aN¦%ae¦%cn¦%ce¦%aD¦%b¦%D¦ \(maxCountString) \(branchNameString) \(fileLocalPath)"
                 .trimmingCharacters(in: .whitespacesAndNewlines)
         )
         let remote = try await run("ls-remote --get-url")
@@ -41,6 +41,20 @@ extension GitClient {
             .split(separator: "\n")
             .map { line -> GitCommit in
                 let parameters = line.components(separatedBy: "¦")
+                let infoRef = parameters[safe: 9]
+                
+                var ref = ""
+                var tag = ""
+                
+                if let infoRef = infoRef {
+                    if infoRef.contains("tag:") {
+                        tag = infoRef.components(separatedBy: "tag:")[1].trimmingCharacters(in: .whitespaces)
+                    } else {
+                        let refs = infoRef.split(separator: ",")
+                        ref = refs.count > 1 ? String(refs[1]).trimmingCharacters(in: .whitespaces) : ""
+                    }
+                }
+
                 return GitCommit(
                     hash: parameters[safe: 0] ?? "",
                     commitHash: parameters[safe: 1] ?? "",
@@ -49,6 +63,9 @@ extension GitClient {
                     authorEmail: parameters[safe: 4] ?? "",
                     committer: parameters[safe: 5] ?? "",
                     committerEmail: parameters[safe: 6] ?? "",
+                    body: parameters[safe: 8] ?? "",
+                    ref: ref,
+                    tag: tag,
                     remoteURL: remoteURL,
                     date: dateFormatter.date(from: parameters[safe: 7] ?? "") ?? Date()
                 )
