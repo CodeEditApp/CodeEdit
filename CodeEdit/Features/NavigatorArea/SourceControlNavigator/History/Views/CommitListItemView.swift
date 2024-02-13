@@ -10,7 +10,7 @@ import SwiftUI
 struct CommitListItemView: View {
 
     var commit: GitCommit
-    
+
     private var defaultAvatar: some View {
         Image(systemName: "person.crop.circle.fill")
             .symbolRenderingMode(.hierarchical)
@@ -18,12 +18,12 @@ struct CommitListItemView: View {
             .foregroundColor(avatarColor)
             .frame(width: 32, height: 32)
     }
-    
+
     private func generateAvatarHash() -> String {
         let hash = commit.authorEmail.md5(trim: true, caseSensitive: false)
         return "\(hash)?d=404&s=64" // send 404 if no image available, image size 64x64 (32x32 @2x)
     }
-    
+
     private var avatarColor: Color {
         let hash = generateAvatarHash().hash
         switch hash % 12 {
@@ -68,7 +68,7 @@ struct CommitListItemView: View {
                 Text(commit.author)
                     .fontWeight(.bold)
                     .font(.system(size: 11))
-              
+
                 if !commit.ref.isEmpty {
                     HStack {
                         Image.branch
@@ -85,7 +85,7 @@ struct CommitListItemView: View {
                     )
                     .padding(.trailing, 2.5)
                 }
-                
+
                 if !commit.tag.isEmpty {
                     HStack {
                         Image.breakpoint
@@ -102,7 +102,7 @@ struct CommitListItemView: View {
                     )
                     .padding(.trailing, 2.5)
                 }
-                
+
                 Text("\(commit.message) \(commit.body)")
                     .font(.system(size: 11))
                     .lineLimit(2)

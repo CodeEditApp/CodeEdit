@@ -42,10 +42,10 @@ extension GitClient {
             .map { line -> GitCommit in
                 let parameters = line.components(separatedBy: "¦")
                 let infoRef = parameters[safe: 9]
-                
+
                 var ref = ""
                 var tag = ""
-                
+
                 if let infoRef = infoRef {
                     if infoRef.contains("tag:") {
                         tag = infoRef.components(separatedBy: "tag:")[1].trimmingCharacters(in: .whitespaces)

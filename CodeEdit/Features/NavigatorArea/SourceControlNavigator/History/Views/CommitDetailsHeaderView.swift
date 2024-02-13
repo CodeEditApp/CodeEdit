@@ -101,12 +101,12 @@ struct CommitDetailsHeaderView: View {
             .padding(.horizontal, 16)
 
             Divider()
-            
+
             Text(commitDetails())
                 .fontWeight(.bold)
                 .padding(.horizontal, 16)
                 .frame(alignment: .leading)
-            
+
             if !commit.body.isEmpty {
                 Text(commit.body)
                     .padding(.horizontal, 16)
