@@ -44,10 +44,12 @@ struct ContributorRowView: View {
                 .resizable()
                 .frame(width: 32, height: 32)
                 .clipShape(Circle())
+                .help(contributor.name)
         } placeholder: {
             Image(systemName: "person.circle.fill")
                 .resizable()
                 .frame(width: 32, height: 32)
+                .help(contributor.name)
         }
     }
 

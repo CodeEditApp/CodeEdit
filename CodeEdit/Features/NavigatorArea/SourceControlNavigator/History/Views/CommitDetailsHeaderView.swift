@@ -70,10 +70,13 @@ struct CommitDetailsHeaderView: View {
                             .resizable()
                             .clipShape(Circle())
                             .frame(width: 32, height: 32)
+                            .help(commit.author)
                     } else if phase.error != nil {
                         defaultAvatar
+                            .help(commit.author)
                     } else {
                         defaultAvatar
+                            .help(commit.author)
                     }
                 }
 
