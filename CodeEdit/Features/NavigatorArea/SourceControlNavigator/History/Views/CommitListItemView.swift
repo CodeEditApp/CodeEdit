@@ -10,6 +10,7 @@ import SwiftUI
 struct CommitListItemView: View {
 
     var commit: GitCommit
+    var width: CGFloat?
 
     private var defaultAvatar: some View {
         Image(systemName: "person.crop.circle.fill")
@@ -48,6 +49,8 @@ struct CommitListItemView: View {
 
     init(commit: GitCommit) {
         self.commit = commit
+        //self.width = width
+        //print("CGFloat", width)
     }
 
     var body: some View {
@@ -68,42 +71,47 @@ struct CommitListItemView: View {
                 }
             }
             VStack(alignment: .leading, spacing: 0) {
-                Text(commit.author)
-                    .fontWeight(.bold)
-                    .font(.system(size: 11))
-
-                if !commit.ref.isEmpty {
-                    HStack {
-                        Image.branch
-                            .imageScale(.small)
-                            .foregroundColor(.primary)
-                        Text(commit.ref)
-                            .font(.system(size: 10, design: .monospaced))
+                HStack {
+                    Text(commit.author)
+                        .fontWeight(.bold)
+                        .font(.system(size: 11))
+                    if !commit.refs.isEmpty {
+                        HStack {
+                            ForEach(commit.refs, id: \.self) { ref in
+                                HStack {
+                                    Image.branch
+                                        .imageScale(.small)
+                                        .foregroundColor(.primary)
+                                    Text(ref)
+                                        .font(.system(size: 10, design: .monospaced))
+                                }
+                                .background(
+                                    RoundedRectangle(cornerRadius: 3)
+                                        .padding(.vertical, -1)
+                                        .padding(.horizontal, -2.5)
+                                        .foregroundColor(Color(nsColor: .quaternaryLabelColor))
+                                )
+                                .padding(.trailing, 2.5)
+                            }
+                        }
                     }
-                    .background(
-                        RoundedRectangle(cornerRadius: 3)
-                            .padding(.vertical, -1)
-                            .padding(.horizontal, -2.5)
-                            .foregroundColor(Color(nsColor: .quaternaryLabelColor))
-                    )
-                    .padding(.trailing, 2.5)
-                }
 
-                if !commit.tag.isEmpty {
-                    HStack {
-                        Image.breakpoint
-                            .imageScale(.small)
-                            .foregroundColor(.primary)
-                        Text(commit.tag)
-                            .font(.system(size: 10, design: .monospaced))
+                    if !commit.tag.isEmpty {
+                        HStack {
+                            Image.breakpoint
+                                .imageScale(.small)
+                                .foregroundColor(.primary)
+                            Text(commit.tag)
+                                .font(.system(size: 10, design: .monospaced))
+                        }
+                        .background(
+                            RoundedRectangle(cornerRadius: 3)
+                                .padding(.vertical, -1)
+                                .padding(.horizontal, -2.5)
+                                .foregroundColor(Color(nsColor: .selectedContentBackgroundColor))
+                        )
+                        .padding(.trailing, 2.5)
                     }
-                    .background(
-                        RoundedRectangle(cornerRadius: 3)
-                            .padding(.vertical, -1)
-                            .padding(.horizontal, -2.5)
-                            .foregroundColor(Color(nsColor: .selectedContentBackgroundColor))
-                    )
-                    .padding(.trailing, 2.5)
                 }
 
                 Text("\(commit.message) \(commit.body)")

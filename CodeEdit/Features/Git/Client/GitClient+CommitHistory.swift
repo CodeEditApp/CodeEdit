@@ -40,18 +40,20 @@ extension GitClient {
         return output
             .split(separator: "\n")
             .map { line -> GitCommit in
-                let parameters = line.components(separatedBy: "¦")
+                let parameters = String(line).components(separatedBy: "¦")
                 let infoRef = parameters[safe: 9]
-
-                var ref = ""
+                var refs: [String] = []
                 var tag = ""
-
                 if let infoRef = infoRef {
                     if infoRef.contains("tag:") {
                         tag = infoRef.components(separatedBy: "tag:")[1].trimmingCharacters(in: .whitespaces)
                     } else {
-                        let refs = infoRef.split(separator: ",")
-                        ref = refs.count > 1 ? String(refs[1]).trimmingCharacters(in: .whitespaces) : ""
+                        refs = infoRef.split(separator: ",").compactMap {
+                            var element = String($0)
+                            if element.contains("origin/HEAD") { return nil }
+                            if element.contains("HEAD -> ") { element = element.replacingOccurrences(of: "HEAD -> ", with: "") }
+                            return element.trimmingCharacters(in: .whitespaces)
+                        }
                     }
                 }
 
@@ -64,7 +66,7 @@ extension GitClient {
                     committer: parameters[safe: 5] ?? "",
                     committerEmail: parameters[safe: 6] ?? "",
                     body: parameters[safe: 8] ?? "",
-                    ref: ref,
+                    refs: refs,
                     tag: tag,
                     remoteURL: remoteURL,
                     date: dateFormatter.date(from: parameters[safe: 7] ?? "") ?? Date()

@@ -21,6 +21,7 @@ struct SourceControlNavigatorHistoryView: View {
     @State var commitHistory: [GitCommit] = []
 
     @State var selection: GitCommit?
+    @State var width: CGFloat?
 
     func updateCommitHistory() async {
         do {
@@ -55,17 +56,23 @@ struct SourceControlNavigatorHistoryView: View {
                 if commitHistory.isEmpty {
                     CEContentUnavailableView("No History")
                 } else {
-                    ZStack {
-                        List(selection: $selection) {
-                            ForEach(commitHistory) { commit in
-                                CommitListItemView(commit: commit)
-                                    .tag(commit)
-                                    .listRowSeparator(.hidden)
+                    GeometryReader { geometry in
+                        ZStack {
+                            List(selection: $selection) {
+                                ForEach(commitHistory) { commit in
+                                    CommitListItemView(commit: commit)
+                                        .tag(commit)
+                                        .listRowSeparator(.hidden)
+                                }
+                            }
+                            .opacity(selection == nil ? 1 : 0)
+                            if selection != nil {
+                                CommitDetailsView(commit: $selection)
                             }
                         }
-                        .opacity(selection == nil ? 1 : 0)
-                        if selection != nil {
-                            CommitDetailsView(commit: $selection)
+                        .onChange(of: geometry.size.width) { newWidth in
+                            width = newWidth
+                            print(newWidth)
                         }
                     }
                 }
@@ -94,3 +101,14 @@ struct SourceControlNavigatorHistoryView: View {
         }
     }
 }
+/*
+ .gesture(
+     DragGesture(minimumDistance: 0)
+         .onChanged({ value in
+             print(value)
+         })
+         .onEnded({ value in
+             print(value)
+         })
+ )
+ */
