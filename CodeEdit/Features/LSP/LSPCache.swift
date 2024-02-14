@@ -78,7 +78,7 @@ class LSPCache {
             self.evictIfNeeded()
         }
     }
-    
+
     private func evictIfNeeded() {
         evictionQueue.async(flags: .barrier) {
             while self.cacheEntriesOrder.count > self.cacheSizeLimit {

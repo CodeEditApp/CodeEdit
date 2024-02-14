@@ -10,6 +10,8 @@ import JSONRPC
 import LanguageClient
 import LanguageServerProtocol
 
+// TODO: ADD ACTIVATION EVENTS
+
 struct LanguageServer {
     let languageId: LanguageIdentifier
     let binary: LanguageServerBinary
@@ -50,7 +52,6 @@ struct LanguageServer {
     }
 
     private static func getInitParams(projectURL: URL) -> InitializingServer.InitializeParamsProvider {
-        // TODO: FILL THIS OUT PROPERLY
         let provider: InitializingServer.InitializeParamsProvider = {
             // Text Document Capabilities
             let textDocumentCapabilities = TextDocumentClientCapabilities(
@@ -141,11 +142,15 @@ struct LanguageServer {
 }
 
 /// Represents a language server binary.
-struct LanguageServerBinary {
+struct LanguageServerBinary: Codable {
     /// The path to the language server binary.
     let execPath: String
     /// The arguments to pass to the language server binary.
     let args: [String]
     /// The environment variables to pass to the language server binary.
     let env: [String: String]?
+}
+
+enum LSPError: Error {
+    case binaryNotFound
 }

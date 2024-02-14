@@ -59,8 +59,34 @@
 		2B7AC06B282452FB0082A5B8 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B7AC06A282452FB0082A5B8 /* Media.xcassets */; };
 		2BE487EF28245162003F3F64 /* FinderSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE487EE28245162003F3F64 /* FinderSync.swift */; };
 		2BE487F428245162003F3F64 /* OpenWithCodeEdit.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 2BE487EC28245162003F3F64 /* OpenWithCodeEdit.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		3007CE302B7859F500700D41 /* LanguageClient in Frameworks */ = {isa = PBXBuildFile; productRef = 3007CE2F2B7859F500700D41 /* LanguageClient */; };
 		3026F50F2AC006C80061227E /* InspectorAreaViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3026F50E2AC006C80061227E /* InspectorAreaViewModel.swift */; };
-		3039C8DD2B738D5A00C8B4F8 /* LanguageClient in Frameworks */ = {isa = PBXBuildFile; productRef = 3039C8DC2B738D5A00C8B4F8 /* LanguageClient */; };
+		3039C8E12B738E9600C8B4F8 /* LanguageServerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3039C8E02B738E9600C8B4F8 /* LanguageServerManager.swift */; };
+		3039C8E42B738EB900C8B4F8 /* LanguageClient+TypeDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3039C8E32B738EB900C8B4F8 /* LanguageClient+TypeDefinition.swift */; };
+		3039C8E62B738EF600C8B4F8 /* LanguageClient+SignatureHelp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3039C8E52B738EF600C8B4F8 /* LanguageClient+SignatureHelp.swift */; };
+		3039C8E82B738F2800C8B4F8 /* LanguageClient+SemanticTokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3039C8E72B738F2800C8B4F8 /* LanguageClient+SemanticTokens.swift */; };
+		3039C8EA2B738F4E00C8B4F8 /* LanguageClient+SelectionRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3039C8E92B738F4E00C8B4F8 /* LanguageClient+SelectionRange.swift */; };
+		3039C8EC2B738F6600C8B4F8 /* LanguageClient+Rename.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3039C8EB2B738F6600C8B4F8 /* LanguageClient+Rename.swift */; };
+		3039C8EE2B738F9100C8B4F8 /* LanguageClient+References.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3039C8ED2B738F9100C8B4F8 /* LanguageClient+References.swift */; };
+		3039C8F02B738FAB00C8B4F8 /* LanguageClient+InlayHint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3039C8EF2B738FAB00C8B4F8 /* LanguageClient+InlayHint.swift */; };
+		3039C8F22B738FC700C8B4F8 /* LanguageClient+Implementation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3039C8F12B738FC700C8B4F8 /* LanguageClient+Implementation.swift */; };
+		3039C8F42B738FE500C8B4F8 /* LanguageClient+Hover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3039C8F32B738FE500C8B4F8 /* LanguageClient+Hover.swift */; };
+		3039C8F62B738FF700C8B4F8 /* LanguageClient+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3039C8F52B738FF700C8B4F8 /* LanguageClient+Formatting.swift */; };
+		3039C8F82B73900A00C8B4F8 /* LanguageClient+FoldingRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3039C8F72B73900A00C8B4F8 /* LanguageClient+FoldingRange.swift */; };
+		3039C8FA2B73901E00C8B4F8 /* LanguageClient+DocumentUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3039C8F92B73901E00C8B4F8 /* LanguageClient+DocumentUtil.swift */; };
+		3039C8FC2B73904100C8B4F8 /* LanguageClient+DocumentSymbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3039C8FB2B73904100C8B4F8 /* LanguageClient+DocumentSymbol.swift */; };
+		3039C8FE2B73905800C8B4F8 /* LanguageClient+DocumentLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3039C8FD2B73905800C8B4F8 /* LanguageClient+DocumentLink.swift */; };
+		3039C9002B73907500C8B4F8 /* LanguageClient+DocumentHighlight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3039C8FF2B73907500C8B4F8 /* LanguageClient+DocumentHighlight.swift */; };
+		3039C9022B73908800C8B4F8 /* LanguageClient+DocumentColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3039C9012B73908800C8B4F8 /* LanguageClient+DocumentColor.swift */; };
+		3039C9042B73909B00C8B4F8 /* LanguageClient+Diagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3039C9032B73909B00C8B4F8 /* LanguageClient+Diagnostics.swift */; };
+		3039C9062B7390AA00C8B4F8 /* LanguageClient+Definition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3039C9052B7390AA00C8B4F8 /* LanguageClient+Definition.swift */; };
+		3039C9082B7390C000C8B4F8 /* LanguageClient+Declaration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3039C9072B7390C000C8B4F8 /* LanguageClient+Declaration.swift */; };
+		3039C90A2B7390D200C8B4F8 /* LanguageClient+Completion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3039C9092B7390D200C8B4F8 /* LanguageClient+Completion.swift */; };
+		3039C90C2B73910300C8B4F8 /* LanguageClient+ColorPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3039C90B2B73910300C8B4F8 /* LanguageClient+ColorPresentation.swift */; };
+		3039C90E2B73911D00C8B4F8 /* LanguageClient+CodeLens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3039C90D2B73911D00C8B4F8 /* LanguageClient+CodeLens.swift */; };
+		3039C9102B73912F00C8B4F8 /* LanguageClient+CallHierarchy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3039C90F2B73912F00C8B4F8 /* LanguageClient+CallHierarchy.swift */; };
+		3039C9172B7850B900C8B4F8 /* LanguageConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3039C9162B7850B900C8B4F8 /* LanguageConfiguration.swift */; };
+		3039C91A2B78588A00C8B4F8 /* LSPUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3039C9192B78588A00C8B4F8 /* LSPUtil.swift */; };
 		305811812B73832B0049C9AA /* LanguageServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 305811802B73832B0049C9AA /* LanguageServer.swift */; };
 		305811832B73834F0049C9AA /* LSPCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 305811822B73834F0049C9AA /* LSPCache.swift */; };
 		30E6D0012A6E505200A58B20 /* NavigatorSidebarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E6D0002A6E505200A58B20 /* NavigatorSidebarViewModel.swift */; };
@@ -622,6 +648,32 @@
 		2BE487EE28245162003F3F64 /* FinderSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderSync.swift; sourceTree = "<group>"; };
 		2BE487F028245162003F3F64 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3026F50E2AC006C80061227E /* InspectorAreaViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorAreaViewModel.swift; sourceTree = "<group>"; };
+		3039C8E02B738E9600C8B4F8 /* LanguageServerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageServerManager.swift; sourceTree = "<group>"; };
+		3039C8E32B738EB900C8B4F8 /* LanguageClient+TypeDefinition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LanguageClient+TypeDefinition.swift"; sourceTree = "<group>"; };
+		3039C8E52B738EF600C8B4F8 /* LanguageClient+SignatureHelp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LanguageClient+SignatureHelp.swift"; sourceTree = "<group>"; };
+		3039C8E72B738F2800C8B4F8 /* LanguageClient+SemanticTokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LanguageClient+SemanticTokens.swift"; sourceTree = "<group>"; };
+		3039C8E92B738F4E00C8B4F8 /* LanguageClient+SelectionRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LanguageClient+SelectionRange.swift"; sourceTree = "<group>"; };
+		3039C8EB2B738F6600C8B4F8 /* LanguageClient+Rename.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LanguageClient+Rename.swift"; sourceTree = "<group>"; };
+		3039C8ED2B738F9100C8B4F8 /* LanguageClient+References.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LanguageClient+References.swift"; sourceTree = "<group>"; };
+		3039C8EF2B738FAB00C8B4F8 /* LanguageClient+InlayHint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LanguageClient+InlayHint.swift"; sourceTree = "<group>"; };
+		3039C8F12B738FC700C8B4F8 /* LanguageClient+Implementation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LanguageClient+Implementation.swift"; sourceTree = "<group>"; };
+		3039C8F32B738FE500C8B4F8 /* LanguageClient+Hover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LanguageClient+Hover.swift"; sourceTree = "<group>"; };
+		3039C8F52B738FF700C8B4F8 /* LanguageClient+Formatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LanguageClient+Formatting.swift"; sourceTree = "<group>"; };
+		3039C8F72B73900A00C8B4F8 /* LanguageClient+FoldingRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LanguageClient+FoldingRange.swift"; sourceTree = "<group>"; };
+		3039C8F92B73901E00C8B4F8 /* LanguageClient+DocumentUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LanguageClient+DocumentUtil.swift"; sourceTree = "<group>"; };
+		3039C8FB2B73904100C8B4F8 /* LanguageClient+DocumentSymbol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LanguageClient+DocumentSymbol.swift"; sourceTree = "<group>"; };
+		3039C8FD2B73905800C8B4F8 /* LanguageClient+DocumentLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LanguageClient+DocumentLink.swift"; sourceTree = "<group>"; };
+		3039C8FF2B73907500C8B4F8 /* LanguageClient+DocumentHighlight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LanguageClient+DocumentHighlight.swift"; sourceTree = "<group>"; };
+		3039C9012B73908800C8B4F8 /* LanguageClient+DocumentColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LanguageClient+DocumentColor.swift"; sourceTree = "<group>"; };
+		3039C9032B73909B00C8B4F8 /* LanguageClient+Diagnostics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LanguageClient+Diagnostics.swift"; sourceTree = "<group>"; };
+		3039C9052B7390AA00C8B4F8 /* LanguageClient+Definition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LanguageClient+Definition.swift"; sourceTree = "<group>"; };
+		3039C9072B7390C000C8B4F8 /* LanguageClient+Declaration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LanguageClient+Declaration.swift"; sourceTree = "<group>"; };
+		3039C9092B7390D200C8B4F8 /* LanguageClient+Completion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LanguageClient+Completion.swift"; sourceTree = "<group>"; };
+		3039C90B2B73910300C8B4F8 /* LanguageClient+ColorPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LanguageClient+ColorPresentation.swift"; sourceTree = "<group>"; };
+		3039C90D2B73911D00C8B4F8 /* LanguageClient+CodeLens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LanguageClient+CodeLens.swift"; sourceTree = "<group>"; };
+		3039C90F2B73912F00C8B4F8 /* LanguageClient+CallHierarchy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LanguageClient+CallHierarchy.swift"; sourceTree = "<group>"; };
+		3039C9162B7850B900C8B4F8 /* LanguageConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageConfiguration.swift; sourceTree = "<group>"; };
+		3039C9192B78588A00C8B4F8 /* LSPUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LSPUtil.swift; sourceTree = "<group>"; };
 		305811802B73832B0049C9AA /* LanguageServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageServer.swift; sourceTree = "<group>"; };
 		305811822B73834F0049C9AA /* LSPCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LSPCache.swift; sourceTree = "<group>"; };
 		30E6D0002A6E505200A58B20 /* NavigatorSidebarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigatorSidebarViewModel.swift; sourceTree = "<group>"; };
@@ -1070,6 +1122,7 @@
 			files = (
 				6C5BE5222A3D5666002DA0FC /* WindowManagement in Frameworks */,
 				6C66C31329D05CDC00DE9ED2 /* GRDB in Frameworks */,
+				3007CE302B7859F500700D41 /* LanguageClient in Frameworks */,
 				58F2EB1E292FB954004A9BDE /* Sparkle in Frameworks */,
 				6C2149412A1BB9AB00748382 /* LogStream in Frameworks */,
 				6C147C4529A329350089B630 /* OrderedCollections in Frameworks */,
@@ -1079,7 +1132,6 @@
 				6CDEFC9629E22C2700B7C684 /* Introspect in Frameworks */,
 				2816F594280CF50500DD548B /* CodeEditSymbols in Frameworks */,
 				6C6BD6F829CD14D100235D17 /* CodeEditKit in Frameworks */,
-				3039C8DD2B738D5A00C8B4F8 /* LanguageClient in Frameworks */,
 				6C81916B29B41DD300B75C92 /* DequeModule in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1321,8 +1373,34 @@
 		3058117F2B7383090049C9AA /* LSP */ = {
 			isa = PBXGroup;
 			children = (
-				305811802B73832B0049C9AA /* LanguageServer.swift */,
 				305811822B73834F0049C9AA /* LSPCache.swift */,
+				3039C9162B7850B900C8B4F8 /* LanguageConfiguration.swift */,
+				305811802B73832B0049C9AA /* LanguageServer.swift */,
+				3039C8E02B738E9600C8B4F8 /* LanguageServerManager.swift */,
+				3039C90F2B73912F00C8B4F8 /* LanguageClient+CallHierarchy.swift */,
+				3039C90D2B73911D00C8B4F8 /* LanguageClient+CodeLens.swift */,
+				3039C90B2B73910300C8B4F8 /* LanguageClient+ColorPresentation.swift */,
+				3039C9092B7390D200C8B4F8 /* LanguageClient+Completion.swift */,
+				3039C9072B7390C000C8B4F8 /* LanguageClient+Declaration.swift */,
+				3039C9052B7390AA00C8B4F8 /* LanguageClient+Definition.swift */,
+				3039C9032B73909B00C8B4F8 /* LanguageClient+Diagnostics.swift */,
+				3039C9012B73908800C8B4F8 /* LanguageClient+DocumentColor.swift */,
+				3039C8FF2B73907500C8B4F8 /* LanguageClient+DocumentHighlight.swift */,
+				3039C8FD2B73905800C8B4F8 /* LanguageClient+DocumentLink.swift */,
+				3039C8FB2B73904100C8B4F8 /* LanguageClient+DocumentSymbol.swift */,
+				3039C8F92B73901E00C8B4F8 /* LanguageClient+DocumentUtil.swift */,
+				3039C8F72B73900A00C8B4F8 /* LanguageClient+FoldingRange.swift */,
+				3039C8F52B738FF700C8B4F8 /* LanguageClient+Formatting.swift */,
+				3039C8F32B738FE500C8B4F8 /* LanguageClient+Hover.swift */,
+				3039C8F12B738FC700C8B4F8 /* LanguageClient+Implementation.swift */,
+				3039C8EF2B738FAB00C8B4F8 /* LanguageClient+InlayHint.swift */,
+				3039C8ED2B738F9100C8B4F8 /* LanguageClient+References.swift */,
+				3039C8EB2B738F6600C8B4F8 /* LanguageClient+Rename.swift */,
+				3039C8E92B738F4E00C8B4F8 /* LanguageClient+SelectionRange.swift */,
+				3039C8E72B738F2800C8B4F8 /* LanguageClient+SemanticTokens.swift */,
+				3039C8E52B738EF600C8B4F8 /* LanguageClient+SignatureHelp.swift */,
+				3039C8E32B738EB900C8B4F8 /* LanguageClient+TypeDefinition.swift */,
+				3039C9192B78588A00C8B4F8 /* LSPUtil.swift */,
 			);
 			path = LSP;
 			sourceTree = "<group>";
@@ -3044,7 +3122,7 @@
 				6CDEFC9529E22C2700B7C684 /* Introspect */,
 				6C5BE5212A3D5666002DA0FC /* WindowManagement */,
 				6CE952E22B29433500C29C31 /* CodeEditSourceEditor */,
-				3039C8DC2B738D5A00C8B4F8 /* LanguageClient */,
+				3007CE2F2B7859F500700D41 /* LanguageClient */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -3305,7 +3383,9 @@
 				587B9E9229301D8F00AC7927 /* BitBucketAccount.swift in Sources */,
 				DE513F52281B672D002260B9 /* EditorTabBarAccessory.swift in Sources */,
 				2813F93927ECC4C300E305E4 /* NavigatorAreaView.swift in Sources */,
+				3039C8F22B738FC700C8B4F8 /* LanguageClient+Implementation.swift in Sources */,
 				5B698A0F2B2636A700DE9392 /* SearchSettingsIgnoreGlobPatternItemView.swift in Sources */,
+				3039C90C2B73910300C8B4F8 /* LanguageClient+ColorPresentation.swift in Sources */,
 				587B9E8A29301D8F00AC7927 /* GitHubIssue.swift in Sources */,
 				EC0870F72A455F6400EB8692 /* ProjectNavigatorViewController+NSMenuDelegate.swift in Sources */,
 				B60718202B0C6CE7009CDAB4 /* GitStashEntry.swift in Sources */,
@@ -3314,10 +3394,12 @@
 				6C82D6C629C012AD00495C54 /* NSApp+openWindow.swift in Sources */,
 				6C14CEB028777D3C001468FE /* FindNavigatorListViewController.swift in Sources */,
 				587B9E7F29301D8F00AC7927 /* GitHubUserRouter.swift in Sources */,
+				3039C90E2B73911D00C8B4F8 /* LanguageClient+CodeLens.swift in Sources */,
 				B62AEDBC2A210DBB009A9F52 /* UtilityAreaTerminalTab.swift in Sources */,
 				B67DB0F62AFC2A7A002DC647 /* FindNavigatorToolbarBottom.swift in Sources */,
 				04BA7C142AE2AA7300584E1C /* GitCloneViewModel.swift in Sources */,
 				B61A606129F188AB009B43F9 /* ExternalLink.swift in Sources */,
+				3039C9102B73912F00C8B4F8 /* LanguageClient+CallHierarchy.swift in Sources */,
 				587B9E9729301D8F00AC7927 /* BitBucketAccount+Token.swift in Sources */,
 				587B9E7729301D8F00AC7927 /* String+PercentEncoding.swift in Sources */,
 				587B9E5B29301D8F00AC7927 /* GitCheckoutBranchView.swift in Sources */,
@@ -3330,6 +3412,7 @@
 				58F2EB08292FB2B0004A9BDE /* TextEditingSettings.swift in Sources */,
 				201169DB2837B34000F92B46 /* SourceControlNavigatorChangedFileView.swift in Sources */,
 				5882252E292C280D00E83CDE /* StatusBarMaximizeButton.swift in Sources */,
+				3039C91A2B78588A00C8B4F8 /* LSPUtil.swift in Sources */,
 				6C4104E9297C970F00F472BA /* AboutDefaultView.swift in Sources */,
 				587B9E6F29301D8F00AC7927 /* GitLabProjectAccess.swift in Sources */,
 				587B9E6929301D8F00AC7927 /* GitLabEvent.swift in Sources */,
@@ -3352,6 +3435,7 @@
 				58F2EB03292FB2B0004A9BDE /* Documentation.docc in Sources */,
 				611192042B08CCED00D4459B /* SearchIndexer+ProgressiveSearch.swift in Sources */,
 				611192022B08CCDC00D4459B /* SearchIndexer+Search.swift in Sources */,
+				3039C8E42B738EB900C8B4F8 /* LanguageClient+TypeDefinition.swift in Sources */,
 				04BA7C272AE2E9F100584E1C /* GitClient+Push.swift in Sources */,
 				2B7A583527E4BA0100D25D4E /* AppDelegate.swift in Sources */,
 				D7012EE827E757850001E1EF /* FindNavigatorView.swift in Sources */,
@@ -3366,6 +3450,7 @@
 				587B9E6829301D8F00AC7927 /* GitLabAccountModel.swift in Sources */,
 				5878DAA7291AE76700DD95A3 /* QuickOpenViewModel.swift in Sources */,
 				6CFF967429BEBCC300182D6F /* FindCommands.swift in Sources */,
+				3039C8F42B738FE500C8B4F8 /* LanguageClient+Hover.swift in Sources */,
 				587B9E6529301D8F00AC7927 /* GitLabGroupAccess.swift in Sources */,
 				6C91D57229B176FF0059A90D /* EditorManager.swift in Sources */,
 				6C82D6BC29C00CD900495C54 /* FirstResponderPropertyWrapper.swift in Sources */,
@@ -3384,6 +3469,7 @@
 				201169DD2837B3AC00F92B46 /* SourceControlNavigatorToolbarBottom.swift in Sources */,
 				587B9E8B29301D8F00AC7927 /* GitHubAccount+deleteReference.swift in Sources */,
 				58798237292E30B90085B254 /* FeedbackView.swift in Sources */,
+				3039C9042B73909B00C8B4F8 /* LanguageClient+Diagnostics.swift in Sources */,
 				587B9E9829301D8F00AC7927 /* GitCommit.swift in Sources */,
 				6C5228B529A868BD00AC48F6 /* Environment+ContentInsets.swift in Sources */,
 				587B9E9429301D8F00AC7927 /* BitBucketTokenConfiguration.swift in Sources */,
@@ -3392,7 +3478,9 @@
 				58A5DFA329339F6400D1BD5D /* CommandManager.swift in Sources */,
 				58798284292ED0FB0085B254 /* TerminalEmulatorView.swift in Sources */,
 				B6C4F2AC2B3CC4D000B2B140 /* CommitChangedFileListItemView.swift in Sources */,
+				3039C8EE2B738F9100C8B4F8 /* LanguageClient+References.swift in Sources */,
 				6C82D6B329BFD88700495C54 /* NavigateCommands.swift in Sources */,
+				3039C8E12B738E9600C8B4F8 /* LanguageServerManager.swift in Sources */,
 				B66A4E4C29C9179B004573B4 /* CodeEditApp.swift in Sources */,
 				4E7F066629602E7B00BB3C12 /* CodeEditSplitViewController.swift in Sources */,
 				587B9E8D29301D8F00AC7927 /* GitHubAccount.swift in Sources */,
@@ -3401,8 +3489,10 @@
 				6C7F37FE2A3EA6FA00217B83 /* View+focusedValue.swift in Sources */,
 				B6C4F2A12B3CA37500B2B140 /* SourceControlNavigatorHistoryView.swift in Sources */,
 				B6C6A43029771F7100A3D28F /* EditorTabBackground.swift in Sources */,
+				3039C8EA2B738F4E00C8B4F8 /* LanguageClient+SelectionRange.swift in Sources */,
 				B60718372B170638009CDAB4 /* SourceControlNavigatorRenameBranchView.swift in Sources */,
 				6C578D8129CD294800DC73B2 /* ExtensionActivatorView.swift in Sources */,
+				3039C90A2B7390D200C8B4F8 /* LanguageClient+Completion.swift in Sources */,
 				B6F0517D29D9E4B100D72287 /* TerminalSettingsView.swift in Sources */,
 				587B9E8C29301D8F00AC7927 /* GitHubOpenness.swift in Sources */,
 				5894E59729FEF7740077E59C /* CEWorkspaceFile+Recursion.swift in Sources */,
@@ -3423,6 +3513,7 @@
 				85E4122A2A46C8CA00183F2B /* LocationsSettings.swift in Sources */,
 				613899B12B6E6FDC00A5CAF6 /* Collection+FuzzySearch.swift in Sources */,
 				581550D129FBD30400684881 /* TextTableViewCell.swift in Sources */,
+				3039C8F82B73900A00C8B4F8 /* LanguageClient+FoldingRange.swift in Sources */,
 				587B9E6629301D8F00AC7927 /* GitLabProjectHook.swift in Sources */,
 				587B9E9329301D8F00AC7927 /* BitBucketOAuthConfiguration.swift in Sources */,
 				6C18620A298BF5A800C663EA /* RecentProjectsListView.swift in Sources */,
@@ -3483,6 +3574,7 @@
 				D7211D4327E066CE008F2ED7 /* Localized+Ex.swift in Sources */,
 				305811832B73834F0049C9AA /* LSPCache.swift in Sources */,
 				581BFB692926431000D251EC /* WelcomeActionView.swift in Sources */,
+				3039C8FC2B73904100C8B4F8 /* LanguageClient+DocumentSymbol.swift in Sources */,
 				20D839AE280E0CA700B27357 /* HistoryPopoverView.swift in Sources */,
 				B6E41C7029DD157F0088F9F4 /* AccountsSettingsView.swift in Sources */,
 				6CFF967A29BEBD2400182D6F /* ViewCommands.swift in Sources */,
@@ -3508,8 +3600,10 @@
 				B62AEDD42A27B29F009A9F52 /* PaneToolbar.swift in Sources */,
 				D7E201B227E8D50000CB86D0 /* FindNavigatorForm.swift in Sources */,
 				287776E927E34BC700D46668 /* EditorTabBarView.swift in Sources */,
+				3039C8FA2B73901E00C8B4F8 /* LanguageClient+DocumentUtil.swift in Sources */,
 				B60BE8BD297A167600841125 /* AcknowledgementRowView.swift in Sources */,
 				B6F0517029D9E36800D72287 /* LocationsSettingsView.swift in Sources */,
+				3039C9002B73907500C8B4F8 /* LanguageClient+DocumentHighlight.swift in Sources */,
 				B62AEDDC2A27C1B3009A9F52 /* OSLogType+Color.swift in Sources */,
 				587B9E6329301D8F00AC7927 /* GitLabAccount.swift in Sources */,
 				6C1CC99B2B1E7CBC0002349B /* FindNavigatorIndexBar.swift in Sources */,
@@ -3525,6 +3619,9 @@
 				B6C6A42A297716A500A3D28F /* EditorTabCloseButton.swift in Sources */,
 				B60718422B17DB93009CDAB4 /* SourceControlNavigatorRepositoryView+outlineGroupData.swift in Sources */,
 				58A5DF7D2931787A00D1BD5D /* ShellClient.swift in Sources */,
+				3039C8E82B738F2800C8B4F8 /* LanguageClient+SemanticTokens.swift in Sources */,
+				3039C8F62B738FF700C8B4F8 /* LanguageClient+Formatting.swift in Sources */,
+				3039C8EC2B738F6600C8B4F8 /* LanguageClient+Rename.swift in Sources */,
 				5879821A292D92370085B254 /* SearchResultModel.swift in Sources */,
 				B6F0517729D9E3AD00D72287 /* SourceControlGeneralView.swift in Sources */,
 				587B9E8929301D8F00AC7927 /* GitHubGist.swift in Sources */,
@@ -3547,6 +3644,7 @@
 				581BFB682926431000D251EC /* WelcomeView.swift in Sources */,
 				6CFF967829BEBCF600182D6F /* MainCommands.swift in Sources */,
 				587B9E7129301D8F00AC7927 /* GitURLSession.swift in Sources */,
+				3039C8E62B738EF600C8B4F8 /* LanguageClient+SignatureHelp.swift in Sources */,
 				610C0FDA2B44438F00A01CA7 /* WorkspaceDocument+FindAndReplace.swift in Sources */,
 				5882252C292C280D00E83CDE /* UtilityAreaView.swift in Sources */,
 				2847019E27FDDF7600F87B6B /* ProjectNavigatorOutlineView.swift in Sources */,
@@ -3564,6 +3662,7 @@
 				286471AB27ED51FD0039369D /* ProjectNavigatorView.swift in Sources */,
 				B6E41C7C29DE2B110088F9F4 /* AccountsSettingsProviderRow.swift in Sources */,
 				B62AEDB52A1FE295009A9F52 /* UtilityAreaDebugView.swift in Sources */,
+				3039C9062B7390AA00C8B4F8 /* LanguageClient+Definition.swift in Sources */,
 				6C049A372A49E2DB00D42923 /* DirectoryEventStream.swift in Sources */,
 				04BA7C0E2AE2A76E00584E1C /* SourceControlNavigatorChangesCommitView.swift in Sources */,
 				615AA21A2B0CFD480013FCCC /* LazyStringLoader.swift in Sources */,
@@ -3581,6 +3680,7 @@
 				58F2EB05292FB2B0004A9BDE /* Settings.swift in Sources */,
 				6CBD1BC62978DE53006639D5 /* Font+Caption3.swift in Sources */,
 				30E6D0012A6E505200A58B20 /* NavigatorSidebarViewModel.swift in Sources */,
+				3039C8FE2B73905800C8B4F8 /* LanguageClient+DocumentLink.swift in Sources */,
 				B6E41C9429DEAE260088F9F4 /* SourceControlAccount.swift in Sources */,
 				2806E9022979588B000040F4 /* Contributor.swift in Sources */,
 				58D01C98293167DC00C5B6B4 /* String+RemoveOccurrences.swift in Sources */,
@@ -3624,11 +3724,13 @@
 				B6EA1FF829DB78DB001BF195 /* ThemeSettingThemeRow.swift in Sources */,
 				587B9E7629301D8F00AC7927 /* GitTime.swift in Sources */,
 				587B9E5D29301D8F00AC7927 /* GitLabUserRouter.swift in Sources */,
+				3039C9022B73908800C8B4F8 /* LanguageClient+DocumentColor.swift in Sources */,
 				588847692992ABCA00996D95 /* Array+SortURLs.swift in Sources */,
 				58822530292C280D00E83CDE /* FilterTextField.swift in Sources */,
 				6C82D6B929BFE34900495C54 /* HelpCommands.swift in Sources */,
 				6C147C4929A32A080089B630 /* EditorLayoutView.swift in Sources */,
 				6C147C4129A328BF0089B630 /* EditorLayout.swift in Sources */,
+				3039C8F02B738FAB00C8B4F8 /* LanguageClient+InlayHint.swift in Sources */,
 				B6D7EA592971078500301FAC /* InspectorSection.swift in Sources */,
 				B6AB09A32AAABFEC0003A3A6 /* EditorTabBarLeadingAccessories.swift in Sources */,
 				B69BFDC72B0686910050D9A6 /* GitClient+Initiate.swift in Sources */,
@@ -3636,6 +3738,7 @@
 				85745D632A38F8D900089AAB /* String+HighlightOccurrences.swift in Sources */,
 				B6EE989027E8879A00CDD8AB /* InspectorAreaView.swift in Sources */,
 				587B9DA229300ABD00AC7927 /* EffectView.swift in Sources */,
+				3039C9172B7850B900C8B4F8 /* LanguageConfiguration.swift in Sources */,
 				6C97EBCC2978760400302F95 /* AcknowledgementsWindowController.swift in Sources */,
 				284DC84F2978B7B400BF2770 /* ContributorsView.swift in Sources */,
 				B62AEDC92A2704F3009A9F52 /* UtilityAreaTabView.swift in Sources */,
@@ -3696,6 +3799,7 @@
 				B6AB09A12AAABAAE0003A3A6 /* EditorTabs.swift in Sources */,
 				04C3255B2801F86400C8DA2D /* ProjectNavigatorViewController.swift in Sources */,
 				587B9E6029301D8F00AC7927 /* GitLabOAuthRouter.swift in Sources */,
+				3039C9082B7390C000C8B4F8 /* LanguageClient+Declaration.swift in Sources */,
 				B6AB09B32AB919CF0003A3A6 /* View+actionBar.swift in Sources */,
 				6C05A8AF284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift in Sources */,
 				588847632992A2A200996D95 /* CEWorkspaceFile.swift in Sources */,
@@ -4716,7 +4820,7 @@
 			package = 2816F592280CF50500DD548B /* XCRemoteSwiftPackageReference "CodeEditSymbols" */;
 			productName = CodeEditSymbols;
 		};
-		3039C8DC2B738D5A00C8B4F8 /* LanguageClient */ = {
+		3007CE2F2B7859F500700D41 /* LanguageClient */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 30E1AAB12B73856500420274 /* XCLocalSwiftPackageReference "../LanguageClient" */;
 			productName = LanguageClient;

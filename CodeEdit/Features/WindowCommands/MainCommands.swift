@@ -25,7 +25,8 @@ struct MainCommands: Commands {
 
         CommandGroup(replacing: .appSettings) {
             Button("Settings...") {
-                openWindow(id: "settings")
+//                openWindow(id: "about")
+                NSApp.openWindow(.about)
             }
             .keyboardShortcut(",")
         }

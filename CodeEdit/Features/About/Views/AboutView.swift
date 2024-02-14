@@ -44,13 +44,16 @@ public struct AboutView: View {
         // if anyone knows of a better way to do this feel free to refactor
         .background(.regularMaterial.opacity(0))
         .background(EffectView(.popover, blendingMode: .behindWindow).ignoresSafeArea())
-        .background {
-            Button("") {
-                dismiss()
-            }
-            .keyboardShortcut(.escape, modifiers: [])
-            .hidden()
-        }
+//        .background {
+//            Button("") {
+//                dismiss()
+//            }
+//            .keyboardShortcut(.escape, modifiers: [])
+//            .hidden()
+//        }
+        .onExitCommand(perform: {
+            dismiss()
+        })
         .task {
             if let window = NSApp.findWindow(.about) {
                 window.styleMask = [.closable, .fullSizeContentView, .titled, .nonactivatingPanel]
