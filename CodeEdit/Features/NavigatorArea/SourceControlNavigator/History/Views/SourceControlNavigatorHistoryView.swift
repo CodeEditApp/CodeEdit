@@ -21,7 +21,7 @@ struct SourceControlNavigatorHistoryView: View {
     @State var commitHistory: [GitCommit] = []
 
     @State var selection: GitCommit?
-    @State var width: CGFloat?
+    @State private var width: CGFloat = CGFloat.zero
 
     func updateCommitHistory() async {
         do {
@@ -60,7 +60,7 @@ struct SourceControlNavigatorHistoryView: View {
                         ZStack {
                             List(selection: $selection) {
                                 ForEach(commitHistory) { commit in
-                                    CommitListItemView(commit: commit)
+                                    CommitListItemView(commit: commit, showRef: true, width: width)
                                         .tag(commit)
                                         .listRowSeparator(.hidden)
                                 }
@@ -70,9 +70,11 @@ struct SourceControlNavigatorHistoryView: View {
                                 CommitDetailsView(commit: $selection)
                             }
                         }
+                        .onAppear {
+                            self.width = geometry.size.width
+                        }
                         .onChange(of: geometry.size.width) { newWidth in
-                            width = newWidth
-                            print(newWidth)
+                            self.width = newWidth
                         }
                     }
                 }

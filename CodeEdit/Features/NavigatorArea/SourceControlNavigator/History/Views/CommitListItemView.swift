@@ -10,7 +10,8 @@ import SwiftUI
 struct CommitListItemView: View {
 
     var commit: GitCommit
-    var width: CGFloat?
+    var showRef: Bool
+    var width: CGFloat
 
     private var defaultAvatar: some View {
         Image(systemName: "person.crop.circle.fill")
@@ -47,27 +48,35 @@ struct CommitListItemView: View {
     @Environment(\.openURL)
     private var openCommit
 
-    init(commit: GitCommit) {
+    init(commit: GitCommit, showRef: Bool) {
         self.commit = commit
-        //self.width = width
-        //print("CGFloat", width)
+        self.showRef = showRef
+        self.width = 0
+    }
+
+    init(commit: GitCommit, showRef: Bool, width: CGFloat) {
+        self.commit = commit
+        self.showRef = showRef
+        self.width = width
     }
 
     var body: some View {
         HStack(alignment: .top) {
-            AsyncImage(url: URL(string: "https://www.gravatar.com/avatar/\(generateAvatarHash())")) { phase in
-                if let image = phase.image {
-                    image
-                        .resizable()
-                        .clipShape(Circle())
-                        .frame(width: 32, height: 32)
-                        .help(commit.author)
-                } else if phase.error != nil {
-                    defaultAvatar
-                        .help(commit.author)
-                } else {
-                    defaultAvatar
-                        .help(commit.author)
+            if width > 360 {
+                AsyncImage(url: URL(string: "https://www.gravatar.com/avatar/\(generateAvatarHash())")) { phase in
+                    if let image = phase.image {
+                        image
+                            .resizable()
+                            .clipShape(Circle())
+                            .frame(width: 32, height: 32)
+                            .help(commit.author)
+                    } else if phase.error != nil {
+                        defaultAvatar
+                            .help(commit.author)
+                    } else {
+                        defaultAvatar
+                            .help(commit.author)
+                    }
                 }
             }
             VStack(alignment: .leading, spacing: 0) {
@@ -75,42 +84,44 @@ struct CommitListItemView: View {
                     Text(commit.author)
                         .fontWeight(.bold)
                         .font(.system(size: 11))
-                    if !commit.refs.isEmpty {
-                        HStack {
-                            ForEach(commit.refs, id: \.self) { ref in
-                                HStack {
-                                    Image.branch
-                                        .imageScale(.small)
-                                        .foregroundColor(.primary)
-                                    Text(ref)
-                                        .font(.system(size: 10, design: .monospaced))
+                    if showRef {
+                        if !commit.refs.isEmpty {
+                            HStack {
+                                ForEach(commit.refs, id: \.self) { ref in
+                                        HStack {
+                                            Image.branch
+                                                .imageScale(.small)
+                                                .foregroundColor(.primary)
+                                            Text(ref)
+                                                .font(.system(size: 10, design: .monospaced))
+                                        }
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 3)
+                                                .padding(.vertical, -1)
+                                                .padding(.horizontal, -2.5)
+                                                .foregroundColor(Color(nsColor: .quaternaryLabelColor))
+                                        )
+                                        .padding(.trailing, 2.5)
                                 }
-                                .background(
-                                    RoundedRectangle(cornerRadius: 3)
-                                        .padding(.vertical, -1)
-                                        .padding(.horizontal, -2.5)
-                                        .foregroundColor(Color(nsColor: .quaternaryLabelColor))
-                                )
-                                .padding(.trailing, 2.5)
                             }
                         }
-                    }
-
-                    if !commit.tag.isEmpty {
-                        HStack {
-                            Image.breakpoint
-                                .imageScale(.small)
-                                .foregroundColor(.primary)
-                            Text(commit.tag)
-                                .font(.system(size: 10, design: .monospaced))
+                        
+                        if !commit.tag.isEmpty {
+                            HStack {
+                                Image.breakpoint
+                                    .imageScale(.small)
+                                    .foregroundColor(.primary)
+                                Text(commit.tag)
+                                    .font(.system(size: 10, design: .monospaced))
+                            }
+                            .background(
+                                RoundedRectangle(cornerRadius: 3)
+                                    .padding(.vertical, -1)
+                                    .padding(.horizontal, -2.5)
+                                    .foregroundColor(Color(nsColor: .selectedContentBackgroundColor))
+                            )
+                            .padding(.trailing, 2.5)
                         }
-                        .background(
-                            RoundedRectangle(cornerRadius: 3)
-                                .padding(.vertical, -1)
-                                .padding(.horizontal, -2.5)
-                                .foregroundColor(Color(nsColor: .selectedContentBackgroundColor))
-                        )
-                        .padding(.trailing, 2.5)
                     }
                 }
 
