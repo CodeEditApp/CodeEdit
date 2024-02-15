@@ -103,14 +103,3 @@ struct SourceControlNavigatorHistoryView: View {
         }
     }
 }
-/*
- .gesture(
-     DragGesture(minimumDistance: 0)
-         .onChanged({ value in
-             print(value)
-         })
-         .onEnded({ value in
-             print(value)
-         })
- )
- */
