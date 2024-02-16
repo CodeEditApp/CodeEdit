@@ -111,6 +111,8 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
 
     private func initWorkspaceState(_ url: URL) throws {
         self.fileURL = url
+        self.displayName = url.lastPathComponent
+
         let sourceControlManager = SourceControlManager(
             workspaceURL: url,
             editorManager: editorManager

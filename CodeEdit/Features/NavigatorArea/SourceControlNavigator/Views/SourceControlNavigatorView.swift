@@ -13,7 +13,7 @@ struct SourceControlNavigatorView: View {
     var body: some View {
         if let sourceControlManager = workspace.workspaceFileManager?.sourceControlManager {
             VStack(spacing: 0) {
-                SourcControlNavigatorTabs()
+                SourceControlNavigatorTabs()
                     .environmentObject(sourceControlManager)
                     .task {
                         do {
@@ -34,7 +34,7 @@ struct SourceControlNavigatorView: View {
     }
 }
 
-struct SourcControlNavigatorTabs: View {
+struct SourceControlNavigatorTabs: View {
     @EnvironmentObject var sourceControlManager: SourceControlManager
     @State private var selectedSection: Int = 0
 
