@@ -92,9 +92,11 @@ struct CommitListItemView: View {
                                             Image.branch
                                                 .imageScale(.small)
                                                 .foregroundColor(.primary)
+                                                .help(ref)
                                             Text(ref)
                                                 .font(.system(size: 10, design: .monospaced))
                                         }
+                                        .frame(height: 13)
                                         .background(
                                             RoundedRectangle(cornerRadius: 3)
                                                 .padding(.vertical, -1)
@@ -105,15 +107,17 @@ struct CommitListItemView: View {
                                 }
                             }
                         }
-                        
+
                         if !commit.tag.isEmpty {
                             HStack {
                                 Image.breakpoint
                                     .imageScale(.small)
                                     .foregroundColor(.primary)
+                                    .help(commit.tag)
                                 Text(commit.tag)
                                     .font(.system(size: 10, design: .monospaced))
                             }
+                            .frame(height: 13)
                             .background(
                                 RoundedRectangle(cornerRadius: 3)
                                     .padding(.vertical, -1)
