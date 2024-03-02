@@ -31,7 +31,7 @@ extension GitClient {
 
     /// Get current branch
     func getCurrentBranch() async throws -> GitBranch? {
-        let branchName = try await run("rev-parse --abbrev-ref HEAD").trimmingCharacters(in: .whitespacesAndNewlines)
+        let branchName = try await run("branch --show-current").trimmingCharacters(in: .whitespacesAndNewlines)
         let components = try await run(
             "for-each-ref --format=\"%(refname)|%(upstream:short)\" refs/heads/\(branchName)"
         )
