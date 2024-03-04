@@ -64,7 +64,7 @@
     "selection": {
       "color": "#FBE4AC"
     },
-    "insertionPoint": {
+    "cursor": {
       "color": "#000000"
     },
     "text": {

@@ -29,9 +29,9 @@ final class ThemeModel: ObservableObject {
         Bundle.main.resourceURL?.appendingPathComponent("DefaultThemes", isDirectory: true) ?? nil
     }
 
-    /// The URL of the `themes` folder
+    /// The URL of the `Themes` folder
     internal var themesURL: URL {
-        baseURL.appendingPathComponent("themes", isDirectory: true)
+        baseURL.appendingPathComponent("Themes", isDirectory: true)
     }
 
     /// The URL of the `Extensions` folder
@@ -128,14 +128,14 @@ final class ThemeModel: ObservableObject {
         }
     }
 
-    /// Loads all available themes from `~/Library/Application Support/CodeEdit/themes/`
+    /// Loads all available themes from `~/Library/Application Support/CodeEdit/Themes/`
     ///
     /// If no themes are available, it will create a default theme and save
     /// it to the location mentioned above.
     ///
-    /// When overrides are found in `~/Library/Application Support/CodeEdit/.settings.json`
+    /// When overrides are found in `~/Library/Application Support/CodeEdit/settings.json`
     /// they are applied to the loaded themes without altering the original
-    /// the files in `~/Library/Application Support/CodeEdit/themes/`.
+    /// the files in `~/Library/Application Support/CodeEdit/Themes/`.
     func loadThemes() throws { // swiftlint:disable:this function_body_length
         if let bundledThemesURL = bundledThemesURL {
             // remove all themes from memory
@@ -243,7 +243,7 @@ final class ThemeModel: ObservableObject {
     /// `~/Library/Application Support/CodeEdit/settings.json`
     ///
     /// After removing overrides, themes are reloaded
-    /// from `~/Library/Application Support/CodeEdit/themes`. See ``loadThemes()``
+    /// from `~/Library/Application Support/CodeEdit/Themes`. See ``loadThemes()``
     /// for more information.
     ///
     /// - Parameter theme: The theme to reset
@@ -259,7 +259,7 @@ final class ThemeModel: ObservableObject {
     /// Removes the given theme from `–/Library/Application Support/CodeEdit/themes`
     ///
     /// After removing the theme, themes are reloaded
-    /// from `~/Library/Application Support/CodeEdit/themes`. See ``loadThemes()``
+    /// from `~/Library/Application Support/CodeEdit/Themes`. See ``loadThemes()``
     /// for more information.
     ///
     /// - Parameter theme: The theme to delete
@@ -287,7 +287,7 @@ final class ThemeModel: ObservableObject {
         let url = themesURL
         themes.forEach { theme in
             do {
-                // load the original theme from `~/Library/Application Support/CodeEdit/themes/`
+                // load the original theme from `~/Library/Application Support/CodeEdit/Themes/`
                 let originalUrl = url.appendingPathComponent(theme.name).appendingPathExtension("cetheme")
                 let originalData = try Data(contentsOf: originalUrl)
                 let originalTheme = try JSONDecoder().decode(Theme.self, from: originalData)
