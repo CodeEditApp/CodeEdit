@@ -136,9 +136,3 @@ struct EditorTabBarLeadingAccessories: View {
         }
     }
 }
-
-struct TabBarLeadingAccessories_Previews: PreviewProvider {
-    static var previews: some View {
-        EditorTabBarLeadingAccessories()
-    }
-}

@@ -422,6 +422,8 @@
 		B65B10FE2B08B07D002852CF /* SourceControlNavigatorChangesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65B10FD2B08B07D002852CF /* SourceControlNavigatorChangesList.swift */; };
 		B65B11012B09D5D4002852CF /* GitClient+Pull.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65B11002B09D5D4002852CF /* GitClient+Pull.swift */; };
 		B65B11042B09DB1C002852CF /* GitClient+Fetch.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65B11032B09DB1C002852CF /* GitClient+Fetch.swift */; };
+		B664C3B02B965F6C00816B4E /* NavigationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B664C3AF2B965F6C00816B4E /* NavigationSettings.swift */; };
+		B664C3B32B96634F00816B4E /* NavigationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B664C3B22B96634F00816B4E /* NavigationSettingsView.swift */; };
 		B66A4E4529C8E86D004573B4 /* CommandsFixes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66A4E4429C8E86D004573B4 /* CommandsFixes.swift */; };
 		B66A4E4C29C9179B004573B4 /* CodeEditApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66A4E4B29C9179B004573B4 /* CodeEditApp.swift */; };
 		B66A4E4F29C917B8004573B4 /* WelcomeWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66A4E4E29C917B8004573B4 /* WelcomeWindow.swift */; };
@@ -970,6 +972,8 @@
 		B65B10FD2B08B07D002852CF /* SourceControlNavigatorChangesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlNavigatorChangesList.swift; sourceTree = "<group>"; };
 		B65B11002B09D5D4002852CF /* GitClient+Pull.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GitClient+Pull.swift"; sourceTree = "<group>"; };
 		B65B11032B09DB1C002852CF /* GitClient+Fetch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GitClient+Fetch.swift"; sourceTree = "<group>"; };
+		B664C3AF2B965F6C00816B4E /* NavigationSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationSettings.swift; sourceTree = "<group>"; };
+		B664C3B22B96634F00816B4E /* NavigationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationSettingsView.swift; sourceTree = "<group>"; };
 		B66A4E4429C8E86D004573B4 /* CommandsFixes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandsFixes.swift; sourceTree = "<group>"; };
 		B66A4E4B29C9179B004573B4 /* CodeEditApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeEditApp.swift; sourceTree = "<group>"; };
 		B66A4E4E29C917B8004573B4 /* WelcomeWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeWindow.swift; sourceTree = "<group>"; };
@@ -1277,13 +1281,13 @@
 		287776EA27E350A100D46668 /* NavigatorArea */ = {
 			isa = PBXGroup;
 			children = (
-				307AC4CB2ABABD9800163376 /* ViewModels */,
 				D7012EE627E757660001E1EF /* FindNavigator */,
 				581550CB29FBD30400684881 /* OutlineView */,
 				286471AC27ED52950039369D /* ProjectNavigator */,
 				201169D52837B29600F92B46 /* SourceControlNavigator */,
 				B67660682AA972D400CD56B0 /* Models */,
 				B67660692AA972DC00CD56B0 /* Views */,
+				307AC4CB2ABABD9800163376 /* ViewModels */,
 			);
 			path = NavigatorArea;
 			sourceTree = "<group>";
@@ -2553,16 +2557,17 @@
 		B61DA9DD29D929BF00BF4A43 /* Pages */ = {
 			isa = PBXGroup;
 			children = (
+				B664C3AD2B965F4500816B4E /* NavigationSettings */,
+				B61DA9E129D929F900BF4A43 /* GeneralSettings */,
+				B6E41C6E29DD15540088F9F4 /* AccountsSettings */,
+				58F2EAAE292FB2B0004A9BDE /* ThemeSettings */,
+				B6EA1FF329DA37D3001BF195 /* TextEditingSettings */,
 				5B698A082B262F8400DE9392 /* SearchSettings */,
 				6C5BE51A2A3D5419002DA0FC /* FeatureFlags */,
 				B6CF632629E5417C0085880A /* Keybindings */,
-				B6E41C6E29DD15540088F9F4 /* AccountsSettings */,
-				B6EA1FF329DA37D3001BF195 /* TextEditingSettings */,
 				B6F0516E29D9E35300D72287 /* LocationsSettings */,
 				B6F0516D29D9E34200D72287 /* SourceControlSettings */,
 				B6F0516C29D9E32700D72287 /* TerminalSettings */,
-				58F2EAAE292FB2B0004A9BDE /* ThemeSettings */,
-				B61DA9E129D929F900BF4A43 /* GeneralSettings */,
 			);
 			path = Pages;
 			sourceTree = "<group>";
@@ -2661,6 +2666,23 @@
 				B658FB3627DA9E1000EA4DBD /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		B664C3AD2B965F4500816B4E /* NavigationSettings */ = {
+			isa = PBXGroup;
+			children = (
+				B664C3AE2B965F5500816B4E /* Models */,
+				B664C3B22B96634F00816B4E /* NavigationSettingsView.swift */,
+			);
+			path = NavigationSettings;
+			sourceTree = "<group>";
+		};
+		B664C3AE2B965F5500816B4E /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B664C3AF2B965F6C00816B4E /* NavigationSettings.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		B66DD19E2B3C0E0C0004FFEC /* History */ = {
@@ -3291,6 +3313,7 @@
 				587B9E9229301D8F00AC7927 /* BitBucketAccount.swift in Sources */,
 				DE513F52281B672D002260B9 /* EditorTabBarAccessory.swift in Sources */,
 				2813F93927ECC4C300E305E4 /* NavigatorAreaView.swift in Sources */,
+				B664C3B02B965F6C00816B4E /* NavigationSettings.swift in Sources */,
 				5B698A0F2B2636A700DE9392 /* SearchSettingsIgnoreGlobPatternItemView.swift in Sources */,
 				587B9E8A29301D8F00AC7927 /* GitHubIssue.swift in Sources */,
 				EC0870F72A455F6400EB8692 /* ProjectNavigatorViewController+NSMenuDelegate.swift in Sources */,
@@ -3339,6 +3362,7 @@
 				611192042B08CCED00D4459B /* SearchIndexer+ProgressiveSearch.swift in Sources */,
 				611192022B08CCDC00D4459B /* SearchIndexer+Search.swift in Sources */,
 				04BA7C272AE2E9F100584E1C /* GitClient+Push.swift in Sources */,
+				B664C3B32B96634F00816B4E /* NavigationSettingsView.swift in Sources */,
 				2B7A583527E4BA0100D25D4E /* AppDelegate.swift in Sources */,
 				D7012EE827E757850001E1EF /* FindNavigatorView.swift in Sources */,
 				58A5DF8029325B5A00D1BD5D /* GitClient.swift in Sources */,

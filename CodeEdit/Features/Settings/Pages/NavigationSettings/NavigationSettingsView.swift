@@ -8,11 +8,25 @@
 import SwiftUI
 
 struct NavigationSettingsView: View {
+    @AppSettings(\.navigation)
+    var settings
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        SettingsForm {
+            Section {
+                navigationStyle
+            }
+        }
     }
 }
 
-#Preview {
-    NavigationSettingsView()
+private extension NavigationSettingsView {
+    private var navigationStyle: some View {
+        Picker("Navigation Style", selection: $settings.navigationStyle) {
+            Text("Open in Tabs")
+                .tag(SettingsData.NavigationStyle.openInTabs)
+            Text("Open in Place")
+                .tag(SettingsData.NavigationStyle.openInPlace)
+        }
+    }
 }

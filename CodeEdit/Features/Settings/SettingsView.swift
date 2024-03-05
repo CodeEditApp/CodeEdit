@@ -38,6 +38,13 @@ struct SettingsView: View {
         ),
         .init(
             SettingsPage(
+                .navigation,
+                baseColor: .green,
+                icon: .system("arrow.triangle.turn.up.right.diamond.fill")
+            )
+        ),
+        .init(
+            SettingsPage(
                 .theme,
                 baseColor: .pink,
                 icon: .system("paintbrush.fill")
@@ -152,6 +159,8 @@ struct SettingsView: View {
                     GeneralSettingsView().environmentObject(updater)
                 case .accounts:
                     AccountsSettingsView()
+                case .navigation:
+                    NavigationSettingsView()
                 case .theme:
                     ThemeSettingsView()
                 case .textEditing:
