@@ -36,6 +36,17 @@ class EditorManager: ObservableObject {
     var tabBarTabIdSubject = PassthroughSubject<String?, Never>()
     var cancellable: AnyCancellable?
 
+    // This caching mechanism is a temporary solution and is not optimized
+    var updateCachedFlattenedEditors: Bool = true
+    var cachedFlettenedEditors: [Editor] = []
+    var flattenedEditors: [Editor] {
+        if updateCachedFlattenedEditors {
+            cachedFlettenedEditors = self.getFlattened()
+            updateCachedFlattenedEditors = false
+        }
+        return cachedFlettenedEditors
+    }
+
     // MARK: - Init
 
     init() {
@@ -66,6 +77,16 @@ class EditorManager: ObservableObject {
         } else if case .vertical(let data) = editorLayout {
             data.flatten()
         }
+    }
+
+    /// Returns and array of flattened splitviews.
+    func getFlattened() -> [Editor] {
+        if case .horizontal(let data) = editorLayout {
+            return data.getFlattened()
+        } else if case .vertical(let data) = editorLayout {
+            return data.getFlattened()
+        }
+        return []
     }
 
     /// Opens a new tab in a editor.

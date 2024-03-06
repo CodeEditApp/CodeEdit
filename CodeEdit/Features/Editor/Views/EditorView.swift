@@ -26,8 +26,10 @@ struct EditorView: View {
     // TODO: If ANY editor has permanent tabs, show tab bar, not just this editor (is this the most efficient place to do this check?)
     var shouldShowTabBar: Bool {
         return navigationStyle == .openInTabs
-        || (editor.temporaryTab == nil && !editor.tabs.isEmpty)
-        || (editor.temporaryTab != nil && editor.tabs.count > 1)
+        || editorManager.flattenedEditors.contains { editor in
+            (editor.temporaryTab == nil && !editor.tabs.isEmpty)
+            || (editor.temporaryTab != nil && editor.tabs.count > 1)
+        }
     }
 
     var editorInsetAmount: Double {
@@ -88,6 +90,9 @@ struct EditorView: View {
             if navigationStyle == .openInTabs {
                 editor.temporaryTab = nil
             }
+        }
+        .onChange(of: editorManager.flattenedEditors) { newValue in
+            print(newValue)
         }
     }
 }
