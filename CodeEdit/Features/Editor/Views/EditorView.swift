@@ -23,7 +23,6 @@ struct EditorView: View {
 
     @EnvironmentObject private var editorManager: EditorManager
 
-    // TODO: If ANY editor has permanent tabs, show tab bar, not just this editor (is this the most efficient place to do this check?)
     var shouldShowTabBar: Bool {
         return navigationStyle == .openInTabs
         || editorManager.flattenedEditors.contains { editor in
