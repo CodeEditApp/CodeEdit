@@ -90,8 +90,10 @@ struct EditorView: View {
                 editor.temporaryTab = nil
             }
         }
-        .onChange(of: editorManager.flattenedEditors) { newValue in
-            print(newValue)
+        .onChange(of: navigationStyle) { newValue in
+            if newValue == .openInPlace && editor.tabs.count == 1 {
+                editor.temporaryTab = editor.tabs[0]
+            }
         }
     }
 }
