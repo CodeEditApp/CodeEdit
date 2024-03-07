@@ -67,7 +67,7 @@ struct EditorPathBarView: View {
                 }
             }
         }
-        .padding(.horizontal, shouldShowTabBar ? file == nil ? 10 : 4 : 0)
+        .padding(.horizontal, shouldShowTabBar ? (file == nil ? 10 : 4) : 0)
         .safeAreaInset(edge: .leading, spacing: 0) {
             if !shouldShowTabBar {
                 EditorTabBarLeadingAccessories()

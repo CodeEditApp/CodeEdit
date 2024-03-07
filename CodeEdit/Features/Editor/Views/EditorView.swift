@@ -23,21 +23,21 @@ struct EditorView: View {
 
     @EnvironmentObject private var editorManager: EditorManager
 
-    var shouldShowTabBar: Bool {
-        return navigationStyle == .openInTabs
-        || editorManager.flattenedEditors.contains { editor in
-            (editor.temporaryTab == nil && !editor.tabs.isEmpty)
-            || (editor.temporaryTab != nil && editor.tabs.count > 1)
-        }
-    }
-
-    var editorInsetAmount: Double {
-        let tabBarHeight = shouldShowTabBar ? (EditorTabBarView.height + 1) : 0
-        let pathBarHeight = showEditorPathBar ? (EditorPathBarView.height + 1) : 0
-        return tabBarHeight + pathBarHeight
-    }
-
     var body: some View {
+        var shouldShowTabBar: Bool {
+            return navigationStyle == .openInTabs
+            || editorManager.flattenedEditors.contains { editor in
+                (editor.temporaryTab == nil && !editor.tabs.isEmpty)
+                || (editor.temporaryTab != nil && editor.tabs.count > 1)
+            }
+        }
+
+        var editorInsetAmount: Double {
+            let tabBarHeight = shouldShowTabBar ? (EditorTabBarView.height + 1) : 0
+            let pathBarHeight = showEditorPathBar ? (EditorPathBarView.height + 1) : 0
+            return tabBarHeight + pathBarHeight
+        }
+
         VStack {
             if let selected = editor.selectedTab {
                 WorkspaceCodeFileView(

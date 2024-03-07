@@ -37,7 +37,7 @@ class EditorManager: ObservableObject {
     var cancellable: AnyCancellable?
 
     // This caching mechanism is a temporary solution and is not optimized
-    var updateCachedFlattenedEditors: Bool = true
+    @Published var updateCachedFlattenedEditors: Bool = true
     var cachedFlettenedEditors: [Editor] = []
     var flattenedEditors: [Editor] {
         if updateCachedFlattenedEditors {
@@ -120,6 +120,7 @@ class EditorManager: ObservableObject {
 
         flatten()
         objectWillChange.send()
+        updateCachedFlattenedEditors = true
     }
 
     /// Set a new active editor.
