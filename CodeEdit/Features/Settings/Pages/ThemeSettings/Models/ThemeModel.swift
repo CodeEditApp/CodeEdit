@@ -25,7 +25,7 @@ final class ThemeModel: ObservableObject {
         filemanager.homeDirectoryForCurrentUser.appendingPathComponent("Library/Application Support/CodeEdit")
     }
 
-    internal var bundledThemesURL: URL? {
+    var bundledThemesURL: URL? {
         Bundle.main.resourceURL?.appendingPathComponent("DefaultThemes", isDirectory: true) ?? nil
     }
 
