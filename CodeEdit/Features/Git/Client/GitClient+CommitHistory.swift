@@ -34,8 +34,13 @@ extension GitClient {
             "log --pretty=%h¦%H¦%s¦%aN¦%ae¦%cn¦%ce¦%aD¦ \(maxCountString) \(branchNameString) \(fileLocalPath)"
                 .trimmingCharacters(in: .whitespacesAndNewlines)
         )
-        let remote = try await run("ls-remote --get-url")
-        let remoteURL = URL(string: remote.trimmingCharacters(in: .whitespacesAndNewlines))
+
+        let remote = try? await run("ls-remote --get-url")
+        let remoteURL: URL? = if let remote {
+             URL(string: remote.trimmingCharacters(in: .whitespacesAndNewlines))
+        } else {
+            nil
+        }
 
         return output
             .split(separator: "\n")
