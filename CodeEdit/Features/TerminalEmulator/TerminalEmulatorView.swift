@@ -27,26 +27,12 @@ struct TerminalEmulatorView: NSViewRepresentable {
 
     @State var terminal: LocalProcessTerminalView
 
-    private let systemFont: NSFont = .monospacedSystemFont(ofSize: 11, weight: .medium)
-
     private var font: NSFont {
         if terminalSettings.useTextEditorFont {
-            if !fontSettings.customFont {
-                return systemFont.withSize(CGFloat(fontSettings.size))
-            }
-            return NSFont(
-                name: fontSettings.name,
-                size: CGFloat(fontSettings.size)
-            ) ?? systemFont
+            return fontSettings.current
+        } else {
+            return terminalSettings.font.current
         }
-
-        if !terminalSettings.font.customFont {
-            return systemFont.withSize(CGFloat(terminalSettings.font.size))
-        }
-        return NSFont(
-            name: terminalSettings.font.name,
-            size: CGFloat(terminalSettings.font.size)
-        ) ?? systemFont
     }
 
     private var url: URL
