@@ -1,7 +1,7 @@
 {
-  "name": "GitHub (Light)",
+  "name": "github.light",
   "displayName": "GitHub (Light)",
-  "description": "GitHub light theme.",
+  "description": "CodeEdit bundled theme.",
   "author": "CodeEdit",
   "version": "0.0.1",
   "license": "MIT",

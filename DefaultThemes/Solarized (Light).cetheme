@@ -1,7 +1,7 @@
 {
-  "name": "Sunset",
-  "displayName": "Sunset",
-  "description": "Solarized light theme.",
+  "name": "solarized.light",
+  "displayName": "Solarized (Light)",
+  "description": "CodeEdit bundled theme.",
   "author": "CodeEdit",
   "version": "0.0.1",
   "license": "MIT",
@@ -9,63 +9,63 @@
   "type": "light",
   "editor": {
     "background": {
-      "color": "#FFFCEA"
+      "color": "#FDF6E3"
     },
     "selection": {
-      "color": "#FBE4AC"
+      "color": "#93A1A1"
     },
     "insertionPoint": {
-      "color": "#000000"
+      "color": "#657B83"
     },
     "lineHighlight": {
-      "color": "#FEF6DB"
+      "color": "#EEE8D5"
     },
     "invisibles": {
-      "color": "#DACFB3"
+      "color": "#EEE8D5"
     },
     "text": {
-      "color": "#000000"
+      "color": "#657B83"
     },
     "comments": {
-      "color": "#C3741C"
+      "color": "#93A1A1"
     },
     "strings": {
-      "color": "#DF0700"
+      "color": "#2AA198"
     },
     "characters": {
-      "color": "#294277"
+      "color": "#DC322F"
     },
     "numbers": {
-      "color": "#294277"
+      "color": "#DC322F"
     },
     "keywords": {
-      "color": "#294277"
+      "color": "#859900"
     },
     "attributes": {
-      "color": "#2C329D"
+      "color": "#6C71C4"
     },
     "types": {
-      "color": "#0B4F79"
+      "color": "#268BD2"
     },
     "variables": {
-      "color": "#0F68A0"
+      "color": "#B58900"
     },
     "commands": {
-      "color": "#476A97"
+      "color": "#CB4B16"
     },
     "values": {
-      "color": "#476A97"
+      "color": "#D33682"
     }
   },
   "terminal": {
     "background": {
-      "color": "#FFFCEA"
+      "color": "#FDF6E3"
     },
     "selection": {
-      "color": "#FBE4AC"
+      "color": "#93A1A1"
     },
-    "insertionPoint": {
-      "color": "#000000"
+    "cursor": {
+      "color": "#657B83"
     },
     "text": {
       "color": "#657B83"
