@@ -8,10 +8,18 @@
 import SwiftUI
 
 struct UtilityAreaView: View {
+    @AppSettings(\.theme.matchAppearance)
+    private var matchAppearance
+
+    @AppSettings(\.terminal.darkAppearance)
+    private var darkAppearance
+
     @Environment(\.colorScheme)
     private var colorScheme
-    @Environment(\.controlActiveState)
-    private var controlActiveState
+
+    @EnvironmentObject private var model: UtilityAreaViewModel
+
+    @StateObject private var themeModel: ThemeModel = .shared
 
     @EnvironmentObject private var model: UtilityAreaViewModel
 
