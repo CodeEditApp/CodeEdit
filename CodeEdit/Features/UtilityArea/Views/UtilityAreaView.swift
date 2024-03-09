@@ -51,9 +51,16 @@ struct UtilityAreaView: View {
                             .opacity(controlActiveState == .inactive ? 0.5 : 1)
                             .symbolVariant(model.isMaximized ? .fill : .none)
                     }
-                    .buttonStyle(HighlightPressButtonStyle())
+                    .buttonStyle(.icon(isActive: model.isMaximized, size: 24))
                 }
             }
+            .colorScheme(
+                model.selectedTerminals.isEmpty
+                ? colorScheme
+                : matchAppearance && darkAppearance
+                ? themeModel.selectedDarkTheme?.appearance == .dark ? .dark : .light
+                : themeModel.selectedTheme?.appearance == .dark ? .dark : .light
+            )
             .padding(.horizontal, 5)
             .padding(.vertical, 8)
             .frame(maxHeight: 27)
