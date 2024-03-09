@@ -8,10 +8,18 @@
 import SwiftUI
 
 struct UtilityAreaView: View {
+    @AppSettings(\.theme.matchAppearance)
+    private var matchAppearance
+
+    @AppSettings(\.terminal.darkAppearance)
+    private var darkAppearance
+
     @Environment(\.colorScheme)
     private var colorScheme
 
     @EnvironmentObject private var model: UtilityAreaViewModel
+
+    @StateObject private var themeModel: ThemeModel = .shared
 
     @State var selection: UtilityAreaTab? = .terminal
 
@@ -43,6 +51,13 @@ struct UtilityAreaView: View {
                     .buttonStyle(.icon(isActive: model.isMaximized, size: 24))
                 }
             }
+            .colorScheme(
+                model.selectedTerminals.isEmpty
+                ? colorScheme
+                : matchAppearance && darkAppearance
+                ? themeModel.selectedDarkTheme?.appearance == .dark ? .dark : .light
+                : themeModel.selectedTheme?.appearance == .dark ? .dark : .light
+            )
             .padding(.horizontal, 5)
             .padding(.vertical, 8)
             .frame(maxHeight: 27)
