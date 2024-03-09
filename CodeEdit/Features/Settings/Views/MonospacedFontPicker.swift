@@ -10,9 +10,9 @@ import SwiftUI
 struct MonospacedFontPicker: View {
     var title: String
     @Binding var selectedFontName: String
-    @State var recentFonts: [String]
-    @State var monospacedFontFamilyNames: [String] = []
-    @State var otherFontFamilyNames: [String] = []
+    @State private var recentFonts: [String]
+    @State private var monospacedFontFamilyNames: [String] = []
+    @State private var otherFontFamilyNames: [String] = []
 
     init(title: String, selectedFontName: Binding<String>) {
         self.title = title
@@ -29,29 +29,41 @@ struct MonospacedFontPicker: View {
         UserDefaults.standard.set(recentFonts, forKey: "recentFonts")
     }
 
-    func getFonts() {
-        DispatchQueue.global(qos: .userInitiated).async {
-            let availableFontFamilies = NSFontManager.shared.availableFontFamilies
+    nonisolated func getFonts() async {
+        let availableFontFamilies = NSFontManager.shared.availableFontFamilies
 
-            self.monospacedFontFamilyNames = availableFontFamilies.filter { fontFamilyName in
-                let fontNames = NSFontManager.shared.availableMembers(ofFontFamily: fontFamilyName) ?? []
-                return fontNames.contains { fontName in
-                    guard let font = NSFont(name: "\(fontName[0])", size: 14) else {
-                        return false
-                    }
-                    return font.isFixedPitch && font.numberOfGlyphs > 26
-                }
+        self.monospacedFontFamilyNames = availableFontFamilies.filter { fontName in
+            // exclude the font if it is in recentFonts to prevent ForEach conflict
+            if recentFonts.contains(fontName) {
+                return false
             }
-            .filter { $0 != "SF Mono" }
 
-            self.otherFontFamilyNames = availableFontFamilies.filter { fontFamilyName in
-                let fontNames = NSFontManager.shared.availableMembers(ofFontFamily: fontFamilyName) ?? []
-                return fontNames.contains { fontName in
-                    guard let font = NSFont(name: "\(fontName[0])", size: 14) else {
-                        return false
-                    }
-                    return !font.isFixedPitch && font.numberOfGlyphs > 26
-                }
+            // exclude default font
+            if fontName == "SF Mono" {
+                return false
+            }
+
+            // include the font which is fixedPitch
+            // include the font which numberOfGlyphs is greater than 26
+            if let font = NSFont(name: fontName, size: 14) {
+                return font.isFixedPitch && font.numberOfGlyphs > 26
+            } else {
+                return false
+            }
+        }
+
+        self.otherFontFamilyNames = availableFontFamilies.filter { fontName in
+            // exclude the font if it is in recentFonts to prevent ForEach conflict
+            if recentFonts.contains(fontName) {
+                return false
+            }
+
+            // include the font which is NOT fixedPitch
+            // include the font which numberOfGlyphs is greater than 26
+            if let font = NSFont(name: fontName, size: 14) {
+                return !font.isFixedPitch && font.numberOfGlyphs > 26
+            } else {
+                return false
             }
         }
     }
@@ -64,13 +76,17 @@ struct MonospacedFontPicker: View {
             if !recentFonts.isEmpty {
                 Divider()
                 ForEach(recentFonts, id: \.self) { fontFamilyName in
-                    Text(fontFamilyName).font(.custom(fontFamilyName, size: 13.5))
+                    Text(fontFamilyName)
+                        .font(.custom(fontFamilyName, size: 13.5))
+                        .tag(fontFamilyName) // to prevent picker invalid and does not have an associated tag error.
                 }
             }
             if !monospacedFontFamilyNames.isEmpty {
                 Divider()
                 ForEach(monospacedFontFamilyNames, id: \.self) { fontFamilyName in
-                    Text(fontFamilyName).font(.custom(fontFamilyName, size: 13.5))
+                    Text(fontFamilyName)
+                        .font(.custom(fontFamilyName, size: 13.5))
+                        .tag(fontFamilyName)
                 }
             }
             if !otherFontFamilyNames.isEmpty {
@@ -79,6 +95,7 @@ struct MonospacedFontPicker: View {
                     ForEach(otherFontFamilyNames, id: \.self) { fontFamilyName in
                         Text(fontFamilyName)
                             .font(.custom(fontFamilyName, size: 13.5))
+                            .tag(fontFamilyName)
                     }
                 }
             }
@@ -86,8 +103,14 @@ struct MonospacedFontPicker: View {
         .onChange(of: selectedFontName) { _ in
             if selectedFontName != "SF Mono" {
                 pushIntoRecentFonts(selectedFontName)
+
+                // remove the font to prevent ForEach conflict
+                monospacedFontFamilyNames.removeAll { $0 == selectedFontName }
+                otherFontFamilyNames.removeAll { $0 == selectedFontName }
             }
         }
-        .onAppear(perform: getFonts)
+        .task {
+            await getFonts()
+        }
     }
 }
