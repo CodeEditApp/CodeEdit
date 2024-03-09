@@ -21,8 +21,6 @@ struct UtilityAreaView: View {
 
     @StateObject private var themeModel: ThemeModel = .shared
 
-    @EnvironmentObject private var model: UtilityAreaViewModel
-
     @State var selection: UtilityAreaTab? = .terminal
 
     var body: some View {
@@ -56,7 +54,6 @@ struct UtilityAreaView: View {
                             )
                             .frame(width: 24, height: 24, alignment: .center)
                             .contentShape(Rectangle())
-                            .opacity(controlActiveState == .inactive ? 0.5 : 1)
                             .symbolVariant(model.isMaximized ? .fill : .none)
                     }
                     .buttonStyle(.icon(isActive: model.isMaximized, size: 24))
