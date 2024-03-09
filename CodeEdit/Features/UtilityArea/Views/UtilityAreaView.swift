@@ -47,14 +47,6 @@ struct UtilityAreaView: View {
                         model.isMaximized.toggle()
                     } label: {
                         Image(systemName: "arrowtriangle.up.square")
-                            .foregroundColor(
-                                model.isMaximized
-                                ? Color(.controlAccentColor)
-                                : model.selectedTerminals.isEmpty ? Color(.secondaryLabelColor) : .gray
-                            )
-                            .frame(width: 24, height: 24, alignment: .center)
-                            .contentShape(Rectangle())
-                            .symbolVariant(model.isMaximized ? .fill : .none)
                     }
                     .buttonStyle(.icon(isActive: model.isMaximized, size: 24))
                 }
