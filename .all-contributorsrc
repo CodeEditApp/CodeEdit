@@ -667,6 +667,15 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "ibrahimcetin",
+      "name": "İbrahim Çetin",
+      "avatar_url": "https://avatars.githubusercontent.com/u/33904390?v=4",
+      "profile": "http://ibrahimcetin.dev",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
