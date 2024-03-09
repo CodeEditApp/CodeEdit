@@ -75,10 +75,3 @@ struct UtilityAreaView: View {
         }
     }
 }
-
-private struct HighlightPressButtonStyle: ButtonStyle {
-  func makeBody(configuration: Self.Configuration) -> some View {
-    configuration.label
-          .brightness(configuration.isPressed ? 0.5 : 0)
-  }
-}
