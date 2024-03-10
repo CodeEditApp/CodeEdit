@@ -47,20 +47,20 @@ struct ViewCommands: Commands {
 
             Menu("Font Size") {
                 Button("Increase") {
-                    if !(editorFontSize >= 288) {
+                    if editorFontSize < 288 {
                         editorFontSize += 1
                     }
-                    if !(terminalFontSize >= 288) {
+                    if terminalFontSize < 288 {
                         terminalFontSize += 1
                     }
                 }
                 .keyboardShortcut("+")
 
                 Button("Decrease") {
-                    if !(editorFontSize <= 1) {
+                    if editorFontSize > 1 {
                         editorFontSize -= 1
                     }
-                    if !(terminalFontSize <= 1) {
+                    if terminalFontSize > 1 {
                         terminalFontSize -= 1
                     }
                 }
