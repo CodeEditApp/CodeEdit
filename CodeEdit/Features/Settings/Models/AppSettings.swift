@@ -28,13 +28,13 @@ Use init(_ keyPath:) instead, otherwise the view will be reevaluated on every se
 
     init(_ keyPath: WritableKeyPath<SettingsData, T>) {
         self.keyPath = keyPath
-        let newKeyPath = (\EnvironmentValues.settings).appending(path: keyPath)
-        self.settings = .init(newKeyPath)
+        let settingsKeyPath = (\EnvironmentValues.settings).appending(path: keyPath)
+        self.settings = Environment(settingsKeyPath)
     }
 
     var wrappedValue: T {
         get {
-            settings.wrappedValue
+            Settings.shared.preferences[keyPath: keyPath]
         }
         nonmutating set {
             Settings.shared.preferences[keyPath: keyPath] = newValue
@@ -42,8 +42,8 @@ Use init(_ keyPath:) instead, otherwise the view will be reevaluated on every se
     }
 
     var projectedValue: Binding<T> {
-        .init {
-            settings.wrappedValue
+        Binding {
+            Settings.shared.preferences[keyPath: keyPath]
         } set: {
             Settings.shared.preferences[keyPath: keyPath] = $0
         }
