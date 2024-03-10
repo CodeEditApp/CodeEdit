@@ -15,17 +15,6 @@ struct AppSettings<T>: DynamicProperty where T: Equatable {
 
     let keyPath: WritableKeyPath<SettingsData, T>
 
-    @available(*,
-                deprecated,
-                message: """
-Use init(_ keyPath:) instead, otherwise the view will be reevaluated on every settings change.
-"""
-    )
-    init() where T == SettingsData {
-        self.keyPath = \.self
-        self.settings = .init(\.settings)
-    }
-
     init(_ keyPath: WritableKeyPath<SettingsData, T>) {
         self.keyPath = keyPath
         let settingsKeyPath = (\EnvironmentValues.settings).appending(path: keyPath)
