@@ -79,11 +79,12 @@ jobs:
           create-dmg \
             --volname "CodeEdit" \
             --window-pos 200 120 \
-            --window-size 800 400 \
-            --icon-size 100 \
-            --icon "CodeEdit.app" 200 190 \
+            --window-size 699 518 \
+            --background "$RUNNER_TEMP/CodeEdit-background.png" \
+            --icon-size 128 \
+            --icon "CodeEdit.app" 170 210 \
             --hide-extension "CodeEdit.app" \
-            --app-drop-link 600 185 \
+            --app-drop-link 530 210 \
             --codesign "$CODESIGN_SIGN" \
             --notarize "CodeEdit" \
             --skip-jenkins \
