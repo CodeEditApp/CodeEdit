@@ -72,21 +72,22 @@ class EditorManager: ObservableObject {
 
     /// Flattens the splitviews.
     func flatten() {
-        if case .horizontal(let data) = editorLayout {
+        switch editorLayout {
+        case .horizontal(let data), .vertical(let data):
             data.flatten()
-        } else if case .vertical(let data) = editorLayout {
-            data.flatten()
+        default:
+            break
         }
     }
 
     /// Returns and array of flattened splitviews.
     func getFlattened() -> [Editor] {
-        if case .horizontal(let data) = editorLayout {
+        switch editorLayout {
+        case .horizontal(let data), .vertical(let data):
             return data.getFlattened()
-        } else if case .vertical(let data) = editorLayout {
-            return data.getFlattened()
+        default:
+            return []
         }
-        return []
     }
 
     /// Opens a new tab in a editor.

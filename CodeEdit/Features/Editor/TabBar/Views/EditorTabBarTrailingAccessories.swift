@@ -69,7 +69,7 @@ struct EditorTabBarTrailingAccessories: View {
     func split(edge: Edge) {
         let newEditor: Editor
         if let tab = editor.selectedTab {
-            newEditor = .init(files: [tab])
+            newEditor = .init(files: [tab], temporaryTab: tab)
         } else {
             newEditor = .init()
         }

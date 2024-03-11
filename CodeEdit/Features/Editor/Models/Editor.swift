@@ -64,29 +64,34 @@ final class Editor: ObservableObject, Identifiable {
 
     init() {
         self.tabs = []
+        self.temporaryTab = nil
         self.parent = nil
     }
 
     init(
         files: OrderedSet<CEWorkspaceFile> = [],
         selectedTab: Tab? = nil,
+        temporaryTab: Tab? = nil,
         parent: SplitViewData? = nil
     ) {
         self.tabs = []
         self.parent = parent
         files.forEach { openTab(file: $0) }
         self.selectedTab = selectedTab ?? (files.isEmpty ? nil : Tab(file: files.first!))
+        self.temporaryTab = temporaryTab
     }
 
     init(
         files: OrderedSet<Tab> = [],
         selectedTab: Tab? = nil,
+        temporaryTab: Tab? = nil,
         parent: SplitViewData? = nil
     ) {
         self.tabs = []
         self.parent = parent
         files.forEach { openTab(file: $0.file) }
         self.selectedTab = selectedTab ?? tabs.first
+        self.temporaryTab = temporaryTab
     }
 
     /// Closes the editor.
