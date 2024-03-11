@@ -97,6 +97,7 @@ final class Editor: ObservableObject, Identifiable {
     /// Closes the editor.
     func close() {
         parent?.closeEditor(with: id)
+        editorManager.updateCachedFlattenedEditors = true
     }
 
     /// Gets the editor layout.
