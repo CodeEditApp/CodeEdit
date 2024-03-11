@@ -40,11 +40,11 @@ final class Editor: ObservableObject, Identifiable {
             let tab = history[historyOffset]
 
             if !tabs.contains(tab) {
-                if let selectedTab {
-                    openTab(file: tab.file, at: tabs.firstIndex(of: selectedTab), fromHistory: true)
-                } else {
-                    openTab(file: tab.file, fromHistory: true)
+                if let temporaryTab, tabs.contains(temporaryTab) {
+                    closeTab(file: temporaryTab.file, fromHistory: true)
                 }
+                temporaryTab = tab
+                openTab(file: tab.file, fromHistory: true)
             }
             selectedTab = tab
         }
@@ -107,14 +107,15 @@ final class Editor: ObservableObject, Identifiable {
     /// Closes a tab in the editor.
     /// This will also write any changes to the file on disk and will add the tab to the tab history.
     /// - Parameter item: the tab to close.
-    func closeTab(file: CEWorkspaceFile) {
+    func closeTab(file: CEWorkspaceFile, fromHistory: Bool = false) {
         guard canCloseTab(file: file) else { return }
 
         if temporaryTab?.file == file {
             temporaryTab = nil
         }
-
-        historyOffset = 0
+        if !fromHistory {
+            historyOffset = 0
+        }
         if file != selectedTab?.file {
             history.prepend(EditorInstance(file: file))
         }
@@ -154,7 +155,9 @@ final class Editor: ObservableObject, Identifiable {
         switch (temporaryTab, asTemporary) {
         case (.some(let tab), true):
             if let index = tabs.firstIndex(of: tab) {
+                history.removeFirst(historyOffset)
                 history.prepend(item)
+                historyOffset = 0
                 tabs.remove(tab)
                 tabs.insert(item, at: index)
                 self.selectedTab = item
