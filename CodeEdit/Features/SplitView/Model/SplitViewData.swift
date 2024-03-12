@@ -85,4 +85,13 @@ final class SplitViewData: ObservableObject {
             editorLayouts[index].flatten(parent: self)
         }
     }
+
+    /// Gets flattened splitviews.
+    func getFlattened() -> [Editor] {
+        var arr: [Editor] = []
+        for index in editorLayouts.indices {
+            arr += editorLayouts[index].getFlattened(parent: self)
+        }
+        return arr
+    }
 }

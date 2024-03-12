@@ -29,6 +29,7 @@ final class ProjectNavigatorViewController: NSViewController {
     var workspace: WorkspaceDocument?
 
     var iconColor: SettingsData.FileIconStyle = .color
+
     var fileExtensionsVisibility: SettingsData.FileExtensionsVisibility = .showAll
     var shownFileExtensions: SettingsData.FileExtensions = .default
     var hiddenFileExtensions: SettingsData.FileExtensions = .default
@@ -119,7 +120,7 @@ final class ProjectNavigatorViewController: NSViewController {
             } else {
                 outlineView.expandItem(item)
             }
-        } else {
+        } else if Settings[\.navigation].navigationStyle == .openInTabs {
             workspace?.editorManager.activeEditor.openTab(file: item, asTemporary: false)
         }
     }
