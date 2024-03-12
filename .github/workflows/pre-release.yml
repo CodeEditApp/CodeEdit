@@ -76,11 +76,12 @@ jobs:
           echo "REV=$REV" >> $GITHUB_ENV
           security unlock-keychain -p "$RUNNER_PW"
           xcrun notarytool store-credentials CodeEdit --apple-id "$APPLE_ID" --team-id "$APPLE_TEAM_ID" --password "$APPLE_ID_PWD"
+          cp "$RUNNER_TEMP/../CodeEdit/CodeEdit/Resources/dmgBackground.png" "$RUNNER_TEMP/.background.png"
           create-dmg \
             --volname "CodeEdit" \
             --window-pos 200 120 \
             --window-size 699 518 \
-            --background "$RUNNER_TEMP/../CodeEdit/CodeEdit/Resources/dmgBackground.png" \
+            --background "$RUNNER_TEMP/.background.png" \
             --icon-size 128 \
             --icon "CodeEdit.app" 170 210 \
             --hide-extension "CodeEdit.app" \
