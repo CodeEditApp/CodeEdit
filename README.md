@@ -178,6 +178,7 @@ For issues we want to focus on that are most relevant at any given time, please 
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/ElvisWong213"><img src="https://avatars.githubusercontent.com/u/40566101?v=4?s=100" width="100px;" alt="Elvis Wong"/><br /><sub><b>Elvis Wong</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3AElvisWong213" title="Bug reports">🐛</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://ibrahimcetin.dev"><img src="https://avatars.githubusercontent.com/u/33904390?v=4?s=100" width="100px;" alt="İbrahim Çetin"/><br /><sub><b>İbrahim Çetin</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3Aibrahimcetin" title="Bug reports">🐛</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/phlpsong"><img src="https://avatars.githubusercontent.com/u/103433299?v=4?s=100" width="100px;" alt="phlpsong"/><br /><sub><b>phlpsong</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3Aphlpsong" title="Bug reports">🐛</a></td>
     </tr>
   </tbody>
 </table>
