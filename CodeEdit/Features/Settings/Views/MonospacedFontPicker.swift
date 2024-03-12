@@ -49,6 +49,7 @@ struct MonospacedFontPicker: View {
                 Menu {
                     ForEach(otherFontFamilyNames, id: \.self) { fontFamilyName in
                         Button {
+                            pushIntoRecentFonts(fontFamilyName)
                             selectedFontName = fontFamilyName
                         } label: {
                             Text(fontFamilyName)
