@@ -10,92 +10,112 @@ import SwiftUI
 struct RecentProjectsListView: View {
 
     @State private var selection: Set<URL>
+    @State var recentProjects: [URL]
 
     private let openDocument: (URL?, @escaping () -> Void) -> Void
     private let dismissWindow: () -> Void
 
-    @State var recentProjects: [URL]
-
     init(openDocument: @escaping (URL?, @escaping () -> Void) -> Void, dismissWindow: @escaping () -> Void) {
         self.openDocument = openDocument
         self.dismissWindow = dismissWindow
-        let projects = NSDocumentController.shared.recentDocumentURLs
-        self.recentProjects = projects
-        self._selection = .init(wrappedValue: Set(Array(projects.prefix(1))))
+
+        let recentProjectPaths: [String] = UserDefaults.standard.array(
+            forKey: "recentProjectPaths"
+        ) as? [String] ?? []
+        let projectsURL = recentProjectPaths.map { URL(filePath: $0) }
+        _selection = .init(initialValue: Set(projectsURL.prefix(1)))
+        _recentProjects = .init(initialValue: projectsURL)
+    }
+
+    var listEmptyView: some View {
+        VStack {
+            Spacer()
+            Text(NSLocalizedString("No Recent Projects", comment: ""))
+                .font(.body)
+                .foregroundColor(.secondary)
+            Spacer()
+        }
     }
 
     var body: some View {
-        if recentProjects.isEmpty {
-            VStack {
-                Spacer()
-                Text(NSLocalizedString("No Recent Projects", comment: ""))
-                    .font(.system(size: 20))
-                Spacer()
-            }
-        } else {
-            List(recentProjects, id: \.self, selection: $selection) { project in
-                RecentProjectItem(projectPath: project)
-            }
-            .listStyle(.sidebar)
-            .contextMenu(forSelectionType: URL.self) { items in
-                switch items.count {
-                case 0:
-                    EmptyView()
-                default:
-                    Button("Show in Finder") {
-                        NSWorkspace.shared.activateFileViewerSelecting(Array(items))
-                    }
-
-                    Button("Copy path\(items.count > 1 ? "s" : "")") {
-                        let pasteBoard = NSPasteboard.general
-                        pasteBoard.clearContents()
-                        pasteBoard.writeObjects(selection.map(\.relativePath) as [NSString])
-                    }
-
-                    Button("Remove from Recents") {
-                        let oldItems = NSDocumentController.shared.recentDocumentURLs
-                        NSDocumentController.shared.clearRecentDocuments(nil)
-                        oldItems.filter { !items.contains($0) }.reversed().forEach { url in
-                            NSDocumentController.shared.noteNewRecentDocumentURL(url)
-                        }
-
-                        recentProjects = NSDocumentController.shared.recentDocumentURLs
-                    }
+        List(recentProjects, id: \.self, selection: $selection) { project in
+            RecentProjectItem(projectPath: project)
+        }
+        .listStyle(.sidebar)
+        .contextMenu(forSelectionType: URL.self) { items in
+            switch items.count {
+            case 0:
+                EmptyView()
+            default:
+                Button("Show in Finder") {
+                    NSWorkspace.shared.activateFileViewerSelecting(Array(items))
                 }
-            } primaryAction: { items in
-                items.forEach {
+
+                Button("Copy path\(items.count > 1 ? "s" : "")") {
+                    let pasteBoard = NSPasteboard.general
+                    pasteBoard.clearContents()
+                    pasteBoard.writeObjects(selection.map(\.relativePath) as [NSString])
+                }
+
+                Button("Remove from Recents") {
+                    removeRecentProjects(items)
+                }
+            }
+        } primaryAction: { items in
+            items.forEach {
+                openDocument($0, dismissWindow)
+            }
+        }
+        .onCopyCommand {
+            selection.map {
+                NSItemProvider(object: $0.path(percentEncoded: false) as NSString)
+            }
+        }
+        .onDeleteCommand {
+            removeRecentProjects(selection)
+        }
+        .background(EffectView(.underWindowBackground, blendingMode: .behindWindow))
+        .onReceive(NSApp.publisher(for: \.keyWindow)) { _ in
+            // Update the list whenever the key window changes.
+            // Ideally, this should be 'whenever a doc opens/closes'.
+            updateRecentProjects()
+        }
+        .background {
+            Button("") {
+                selection.forEach {
                     openDocument($0, dismissWindow)
                 }
             }
-            .onCopyCommand {
-                selection.map {
-                    NSItemProvider(object: $0.path(percentEncoded: false) as NSString)
+            .keyboardShortcut(.defaultAction)
+            .hidden()
+        }
+        .overlay {
+            Group {
+                if recentProjects.isEmpty {
+                    listEmptyView
                 }
-            }
-            .onDeleteCommand {
-                let oldItems = NSDocumentController.shared.recentDocumentURLs
-                NSDocumentController.shared.clearRecentDocuments(nil)
-                oldItems.filter { !selection.contains($0) }.reversed().forEach { url in
-                    NSDocumentController.shared.noteNewRecentDocumentURL(url)
-                }
-
-                recentProjects = NSDocumentController.shared.recentDocumentURLs
-            }
-            .background(EffectView(.underWindowBackground, blendingMode: .behindWindow))
-            .onReceive(NSApp.publisher(for: \.keyWindow)) { _ in
-                // Update the list whenever the key window changes.
-                // Ideally, this should be 'whenever a doc opens/closes'.
-                recentProjects = NSDocumentController.shared.recentDocumentURLs
-            }
-            .background {
-                Button("") {
-                    selection.forEach {
-                        openDocument($0, dismissWindow)
-                    }
-                }
-                .keyboardShortcut(.defaultAction)
-                .hidden()
             }
         }
+    }
+
+    func removeRecentProjects(_ items: Set<URL>) {
+        var recentProjectPaths: [String] = UserDefaults.standard.array(
+            forKey: "recentProjectPaths"
+        ) as? [String] ?? []
+        items.forEach { url in
+            recentProjectPaths.removeAll { url == URL(filePath: $0) }
+            selection.remove(url)
+        }
+        UserDefaults.standard.set(recentProjectPaths, forKey: "recentProjectPaths")
+        let projectsURL = recentProjectPaths.map { URL(filePath: $0) }
+        recentProjects = projectsURL
+    }
+
+    func updateRecentProjects() {
+        let recentProjectPaths: [String] = UserDefaults.standard.array(
+            forKey: "recentProjectPaths"
+        ) as? [String] ?? []
+        let projectsURL = recentProjectPaths.map { URL(filePath: $0) }
+        recentProjects = projectsURL
     }
 }
