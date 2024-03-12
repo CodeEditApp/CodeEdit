@@ -5,7 +5,7 @@
 //  Created by Nanashi Li on 2022/04/08.
 //
 
-import AppKit.NSFont
+import AppKit
 import Foundation
 
 extension SettingsData {
