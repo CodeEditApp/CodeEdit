@@ -90,7 +90,7 @@ enum EditorLayout: Equatable {
     }
 
     /// Gets flattened splitviews.
-    mutating func getFlattened(parent: SplitViewData) -> [Editor] {
+    func getFlattened(parent: SplitViewData) -> [Editor] {
         switch self {
         case .one(let editor):
             return [editor]

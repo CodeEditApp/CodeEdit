@@ -32,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CodeEditApp/CodeEditSourceEditor",
       "state" : {
-        "revision" : "a72e6c9b5f38b00ea0b03da5e706e3c4d05c706e",
-        "version" : "0.7.1"
+        "revision" : "7360f00bf7ec8e93b4833357bd254bef7e5c943d",
+        "version" : "0.7.2"
       }
     },
     {
