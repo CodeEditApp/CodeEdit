@@ -77,7 +77,7 @@ jobs:
           security unlock-keychain -p "$RUNNER_PW"
           xcrun notarytool store-credentials CodeEdit --apple-id "$APPLE_ID" --team-id "$APPLE_TEAM_ID" --password "$APPLE_ID_PWD"
           cp "$RUNNER_TEMP/../CodeEdit/CodeEdit/Resources/dmgBackground.png" "$RUNNER_TEMP/.background.png"
-          create-dmg \
+          echo $RUNNER_PW | sudo -S create-dmg \
             --volname "CodeEdit" \
             --window-pos 200 120 \
             --window-size 699 518 \
