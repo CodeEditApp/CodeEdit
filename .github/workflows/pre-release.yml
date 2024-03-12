@@ -88,8 +88,7 @@ jobs:
             --app-drop-link 530 210 \
             --codesign "$CODESIGN_SIGN" \
             --notarize "CodeEdit" \
-            --skip-jenkins \
-            "$RUNNER_TEMP/CodeEdit-$REV.dmg" \
+            "$RUNNER_TEMP/CodeEdit.dmg" \
             "$RUNNER_TEMP/CodeEdit.xcarchive/Products/Applications/"
           security lock-keychain
           
@@ -141,7 +140,7 @@ jobs:
           files: |
             ${{ RUNNER.TEMP }}/Sparkle_Archive/CodeEdit-${{ env.REV }}.dmg
             ${{ RUNNER.TEMP }}/Sparkle_Archive/appcast.xml
-          automatic_release_tag: "${{ env.APP_VERSION }}-alpha.${{ env.APP_BUILD }}"
+          automatic_release_tag: "v${{ env.APP_VERSION }}"
           prerelease: false
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
 
