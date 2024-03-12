@@ -48,7 +48,7 @@ jobs:
       - name: Build CodeEdit
         env:
           APPLE_TEAM_ID:  ${{ secrets.APPLE_TEAM_ID }}
-        run: xcodebuild -scheme CodeEdit -configuration Alpha -derivedDataPath "$RUNNER_TEMP/DerivedData" -archivePath "$RUNNER_TEMP/CodeEdit.xcarchive" -skipPackagePluginValidation DEVELOPMENT_TEAM=$APPLE_TEAM_ID archive
+        run: xcodebuild -scheme CodeEdit -configuration Pre -derivedDataPath "$RUNNER_TEMP/DerivedData" -archivePath "$RUNNER_TEMP/CodeEdit.xcarchive" -skipPackagePluginValidation DEVELOPMENT_TEAM=$APPLE_TEAM_ID archive
       
       ############################
       # Sign
@@ -76,14 +76,16 @@ jobs:
           echo "REV=$REV" >> $GITHUB_ENV
           security unlock-keychain -p "$RUNNER_PW"
           xcrun notarytool store-credentials CodeEdit --apple-id "$APPLE_ID" --team-id "$APPLE_TEAM_ID" --password "$APPLE_ID_PWD"
+          cp "$RUNNER_TEMP/../CodeEdit/CodeEdit/Resources/dmgBackground.png" "$RUNNER_TEMP/.background.png"
           create-dmg \
             --volname "CodeEdit" \
             --window-pos 200 120 \
-            --window-size 800 400 \
-            --icon-size 100 \
-            --icon "CodeEdit.app" 200 190 \
+            --window-size 699 518 \
+            --background "$RUNNER_TEMP/.background.png" \
+            --icon-size 128 \
+            --icon "CodeEdit.app" 170 210 \
             --hide-extension "CodeEdit.app" \
-            --app-drop-link 600 185 \
+            --app-drop-link 530 210 \
             --codesign "$CODESIGN_SIGN" \
             --notarize "CodeEdit" \
             --skip-jenkins \

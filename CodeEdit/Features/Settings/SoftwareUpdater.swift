@@ -24,7 +24,7 @@ class SoftwareUpdater: NSObject, ObservableObject, SPUUpdaterDelegate {
 
     @Published var lastUpdateCheckDate: Date?
 
-    @Published var includePrereleaseVersions = false {
+    @Published var includePrereleaseVersions = true {
         didSet {
             UserDefaults.standard.setValue(includePrereleaseVersions, forKey: "includePrereleaseVersions")
         }
@@ -87,10 +87,11 @@ class SoftwareUpdater: NSObject, ObservableObject, SPUUpdaterDelegate {
     }
 
     func allowedChannels(for updater: SPUUpdater) -> Set<String> {
-        if includePrereleaseVersions {
-            return ["dev"]
-        }
-        return []
+        // TODO: Uncomment when production build is released. 
+        // if includePrereleaseVersions {
+        return ["dev"]
+        // }
+        // return []
     }
 
     func checkForUpdates() {

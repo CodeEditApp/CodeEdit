@@ -908,6 +908,7 @@
 		85773E1D2A3E0A1F00C5D926 /* SettingsSearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSearchResult.swift; sourceTree = "<group>"; };
 		85CD0C5E2A10CC3200E531FD /* URL+isImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+isImage.swift"; sourceTree = "<group>"; };
 		85E412292A46C8CA00183F2B /* LocationsSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsSettings.swift; sourceTree = "<group>"; };
+		8B9A0E162B9FE84B007E2DBF /* Pre.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Pre.xcconfig; sourceTree = "<group>"; };
 		9D36E1BE2B5E7D7500443C41 /* GitBranchesGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitBranchesGroup.swift; sourceTree = "<group>"; };
 		B6041F4C29D7A4E9000F3454 /* SettingsPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPageView.swift; sourceTree = "<group>"; };
 		B6041F5129D7D6D6000F3454 /* SettingsWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWindow.swift; sourceTree = "<group>"; };
@@ -1166,6 +1167,7 @@
 				28052DFC29730DF600F4F90A /* Alpha.xcconfig */,
 				28052DFD29730E0300F4F90A /* Beta.xcconfig */,
 				28052DFE29730E0B00F4F90A /* Release.xcconfig */,
+				8B9A0E162B9FE84B007E2DBF /* Pre.xcconfig */,
 			);
 			path = Configs;
 			sourceTree = "<group>";
@@ -4146,6 +4148,195 @@
 			};
 			name = Release;
 		};
+		8B9A0E112B9FE7D7007E2DBF /* Pre */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28052DFC29730DF600F4F90A /* Alpha.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 37;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = "";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "-D ALPHA";
+				RUN_DOCUMENTATION_COMPILER = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SYSTEM_FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_SDK_DIR)/MacOSX.sdk/System/Library/PrivateFrameworks";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Pre;
+		};
+		8B9A0E122B9FE7D7007E2DBF /* Pre */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28052DFC29730DF600F4F90A /* Alpha.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "${CE_APPICON_NAME}";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = CodeEdit/CodeEdit.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_ASSET_PATHS = "\"CodeEdit/Preview Content\"";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = CodeEdit/Info.plist;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022-2024 CodeEdit";
+				INFOPLIST_KEY_NSPrincipalClass = CodeEdit.CodeEditApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = "Change in Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = app.codeedit.CodeEdit;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				RUN_DOCUMENTATION_COMPILER = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_VERSION = 5.0;
+				SYSTEM_FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+			};
+			name = Pre;
+		};
+		8B9A0E132B9FE7D7007E2DBF /* Pre */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28052DFC29730DF600F4F90A /* Alpha.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 37;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.codeedit.CodeEditTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CodeEdit.app/Contents/MacOS/CodeEdit";
+			};
+			name = Pre;
+		};
+		8B9A0E142B9FE7D7007E2DBF /* Pre */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28052DFC29730DF600F4F90A /* Alpha.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 37;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.codeedit.CodeEditUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "CodeEditUITests/Features/CodeEditUI/CodeEditUITests-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = CodeEdit;
+			};
+			name = Pre;
+		};
+		8B9A0E152B9FE7D7007E2DBF /* Pre */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28052DFC29730DF600F4F90A /* Alpha.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = OpenWithCodeEdit/OpenWithCodeEdit.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 37;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = OpenWithCodeEdit/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = OpenWithCodeEdit;
+				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.codeedit.CodeEdit.OpenWithCodeEdit;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Pre;
+		};
 		B658FB4F27DA9E1000EA4DBD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 28052DFB29730DE300F4F90A /* Debug.xcconfig */;
@@ -4472,6 +4663,7 @@
 				2BE487F628245162003F3F64 /* Debug */,
 				2BE487F728245162003F3F64 /* Release */,
 				28052DEE2973045200F4F90A /* Alpha */,
+				8B9A0E152B9FE7D7007E2DBF /* Pre */,
 				28052DF32973045C00F4F90A /* Beta */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -4483,6 +4675,7 @@
 				B658FB4F27DA9E1000EA4DBD /* Debug */,
 				B658FB5027DA9E1000EA4DBD /* Release */,
 				28052DEA2973045200F4F90A /* Alpha */,
+				8B9A0E112B9FE7D7007E2DBF /* Pre */,
 				28052DEF2973045C00F4F90A /* Beta */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -4494,6 +4687,7 @@
 				B658FB5227DA9E1000EA4DBD /* Debug */,
 				B658FB5327DA9E1000EA4DBD /* Release */,
 				28052DEB2973045200F4F90A /* Alpha */,
+				8B9A0E122B9FE7D7007E2DBF /* Pre */,
 				28052DF02973045C00F4F90A /* Beta */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -4505,6 +4699,7 @@
 				B658FB5527DA9E1000EA4DBD /* Debug */,
 				B658FB5627DA9E1000EA4DBD /* Release */,
 				28052DEC2973045200F4F90A /* Alpha */,
+				8B9A0E132B9FE7D7007E2DBF /* Pre */,
 				28052DF12973045C00F4F90A /* Beta */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -4516,6 +4711,7 @@
 				B658FB5827DA9E1000EA4DBD /* Debug */,
 				B658FB5927DA9E1000EA4DBD /* Release */,
 				28052DED2973045200F4F90A /* Alpha */,
+				8B9A0E142B9FE7D7007E2DBF /* Pre */,
 				28052DF22973045C00F4F90A /* Beta */,
 			);
 			defaultConfigurationIsVisible = 0;
