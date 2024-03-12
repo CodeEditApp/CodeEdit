@@ -136,9 +136,9 @@ jobs:
           APP_VERSION: ${{ env.APP_VERSION }}
           APP_BUILD: ${{ env.APP_BUILD }}
         with:
-          title: "${{ env.APP_VERSION }}-alpha.${{ env.APP_BUILD }}"
+          title: "v${{ env.APP_VERSION }}"
           files: |
-            ${{ RUNNER.TEMP }}/Sparkle_Archive/CodeEdit-${{ env.REV }}.dmg
+            ${{ RUNNER.TEMP }}/Sparkle_Archive/CodeEdit.dmg
             ${{ RUNNER.TEMP }}/Sparkle_Archive/appcast.xml
           automatic_release_tag: "v${{ env.APP_VERSION }}"
           prerelease: false
