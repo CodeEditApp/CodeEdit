@@ -1276,6 +1276,8 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>38</string>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.developer-tools</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>${CE_COPYRIGHT}</string>
 	<key>SUEnableInstallerLauncherService</key>
