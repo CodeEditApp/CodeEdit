@@ -93,7 +93,7 @@ jobs:
             --notarize "CodeEdit" \
             "$RUNNER_TEMP/CodeEdit.dmg" \
             "$RUNNER_TEMP/CodeEdit.xcarchive/Products/Applications/"
-          security lock-keychain
+          echo $RUNNER_PW | sudo -S security lock-keychain
           
       ############################
       # Get Version and Build number
