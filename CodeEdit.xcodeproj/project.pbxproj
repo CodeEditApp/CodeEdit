@@ -3786,6 +3786,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = CodeEdit/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022-2024 CodeEdit";
 				INFOPLIST_KEY_NSPrincipalClass = CodeEdit.CodeEditApplication;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -3975,6 +3976,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = CodeEdit/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022-2024 CodeEdit";
 				INFOPLIST_KEY_NSPrincipalClass = CodeEdit.CodeEditApplication;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -4232,6 +4234,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = CodeEdit/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022-2024 CodeEdit";
 				INFOPLIST_KEY_NSPrincipalClass = CodeEdit.CodeEditApplication;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -4488,6 +4491,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = CodeEdit/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022-2024 CodeEdit";
 				INFOPLIST_KEY_NSPrincipalClass = CodeEdit.CodeEditApplication;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -4526,6 +4530,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = CodeEdit/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022-2024 CodeEdit";
 				INFOPLIST_KEY_NSPrincipalClass = CodeEdit.CodeEditApplication;
 				LD_RUNPATH_SEARCH_PATHS = (
