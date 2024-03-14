@@ -25,7 +25,7 @@ CodeEdit is a code editor built by the community, for the community, written ent
 [![Discord Badge](https://img.shields.io/discord/951544472238444645?color=5865F2&label=Discord&logo=discord&logoColor=white&style=flat-square)](https://discord.gg/vChUXVf9Em)
 
 > [!IMPORTANT]
-> CodeEdit is currently in development and not yet ready for production use. You are welcome to test the latest [alpha build](https://github.com/CodeEditApp/CodeEdit/releases/latest) at your own risk. Please leave any feedback [here](https://github.com/CodeEditApp/CodeEdit/issues). 
+> CodeEdit is currently in development and not yet recommended for production use, however you can take part in shaping CodeEdit by test-driving [pre-release versions](https://github.com/CodeEditApp/CodeEdit/releases) and [submit an issue](https://github.com/CodeEditApp/CodeEdit/issues) to let us know what you think.
 
 ## Table of Contents
 
