@@ -59,7 +59,7 @@ jobs:
         run: |
           REV=$(git rev-parse --short HEAD)
           echo "REV=$REV" >> $GITHUB_ENV
-          codesign --sign "$CODESIGN_SIGN" -vvv --verbose --strict --options=runtime --prefix app.codeedit.CodeEdit. --force --deep --timestamp "$RUNNER_TEMP/CodeEdit.xcarchive/Products/Applications/CodeEdit.app"
+          codesign --sign "$CODESIGN_SIGN" -vvv --verbose --strict --options=runtime --prefix app.codeedit.CodeEdit. --force --timestamp "$RUNNER_TEMP/CodeEdit.xcarchive/Products/Applications/CodeEdit.app"
 
       ############################
       # DMG & Notarize
@@ -146,6 +146,7 @@ jobs:
           automatic_release_tag: "v${{ env.APP_VERSION }}"
           prerelease: false
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          draft: true
 
       ############################
       # Cleanup Secrets
