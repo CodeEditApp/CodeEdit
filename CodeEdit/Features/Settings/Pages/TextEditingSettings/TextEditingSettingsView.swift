@@ -39,9 +39,6 @@ struct TextEditingSettingsView: View {
 private extension TextEditingSettingsView {
     @ViewBuilder private var fontSelector: some View {
         MonospacedFontPicker(title: "Font", selectedFontName: $textEditing.font.name)
-            .onChange(of: textEditing.font.name) { fontName in
-                textEditing.font.customFont = fontName != "SF Mono"
-            }
     }
 
     @ViewBuilder private var fontSizeSelector: some View {

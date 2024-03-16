@@ -52,8 +52,6 @@ struct CodeFileView: View {
 
     private let isEditable: Bool
 
-    private let systemFont: NSFont = .monospacedSystemFont(ofSize: 11, weight: .medium)
-
     private let undoManager = CEUndoManager()
 
     init(codeFile: CodeFileDocument, textViewCoordinators: [TextViewCoordinator] = [], isEditable: Bool = true) {
@@ -85,9 +83,7 @@ struct CodeFileView: View {
 
     @State private var selectedTheme = ThemeModel.shared.selectedTheme ?? ThemeModel.shared.themes.first!
 
-    @State private var font: NSFont = {
-        return Settings[\.textEditing].font.current()
-    }()
+    @State private var font: NSFont = Settings[\.textEditing].font.current
 
     @State private var bracketPairHighlight: BracketPairHighlight? = {
         let theme = ThemeModel.shared.selectedTheme ?? ThemeModel.shared.themes.first!
@@ -150,11 +146,8 @@ struct CodeFileView: View {
             guard let theme = newValue else { return }
             self.selectedTheme = theme
         }
-        .onChange(of: settingsFont) { newValue in
-            font = NSFont(
-                name: settingsFont.name,
-                size: CGFloat(newValue.size)
-            ) ?? systemFont.withSize(CGFloat(newValue.size))
+        .onChange(of: settingsFont) { newFontSetting in
+            font = newFontSetting.current
         }
         .onChange(of: bracketHighlight) { _ in
             bracketPairHighlight = getBracketPairHighlight()
