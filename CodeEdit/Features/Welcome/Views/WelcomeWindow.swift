@@ -46,7 +46,7 @@ struct WelcomeWindow: Scene {
                     dismiss()
                     CodeEditDocumentController.shared.openDocument(
                         onCompletion: { _, _ in opened() },
-                        onCancel: { openWindow(id: SceneID.welcome.rawValue) }
+                        onCancel: { openWindow(sceneID: .welcome) }
                     )
                 }
             } newDocument: {

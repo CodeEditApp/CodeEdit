@@ -37,7 +37,7 @@ struct CodeEditApp: App {
             NSDocumentGroup(for: WorkspaceDocument.self) { workspace in
                 WindowSplitView(workspace: workspace)
             } defaultAction: {
-                openWindow(id: SceneID.welcome.rawValue)
+                openWindow(sceneID: .welcome)
             }
             .register(.document(WorkspaceDocument.self)) // Required to make transition modifier work
             .transition(.documentWindow)
