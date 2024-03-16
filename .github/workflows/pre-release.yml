@@ -146,6 +146,7 @@ jobs:
           automatic_release_tag: "v${{ env.APP_VERSION }}"
           prerelease: false
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          draft: true
 
       ############################
       # Cleanup Secrets
