@@ -11,11 +11,11 @@ struct SettingsWindow: Scene {
     private let updater = SoftwareUpdater()
 
     var body: some Scene {
-        Window("Settings", id: "settings") {
+        Window("Settings", id: SceneID.settings.rawValue) {
             SettingsView(updater: updater)
                 .frame(minWidth: 715, maxWidth: 715)
                 .task {
-                    let window = NSApp.windows.first { $0.identifier?.rawValue == "settings" }!
+                    let window = NSApp.windows.first { $0.identifier?.rawValue == SceneID.settings.rawValue }!
                     window.titlebarAppearsTransparent = true
                 }
         }

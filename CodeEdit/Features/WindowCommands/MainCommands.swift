@@ -15,7 +15,7 @@ struct MainCommands: Commands {
     var body: some Commands {
         CommandGroup(replacing: .appInfo) {
             Button("About CodeEdit") {
-                openWindow(id: SceneID.about.rawValue)
+                openWindow(sceneID: .about)
             }
 
             Button("Check for updates...") {
@@ -25,7 +25,7 @@ struct MainCommands: Commands {
 
         CommandGroup(replacing: .appSettings) {
             Button("Settings...") {
-                openWindow(id: "settings")
+                openWindow(sceneID: .settings)
             }
             .keyboardShortcut(",")
         }

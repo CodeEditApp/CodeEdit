@@ -9,7 +9,7 @@ import SwiftUI
 
 extension NSWindow {
     var isSettingsWindow: Bool {
-        self.identifier?.rawValue == "settings"
+        self.identifier?.rawValue == SceneID.settings.rawValue
     }
 }
 
