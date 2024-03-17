@@ -31,7 +31,7 @@ struct SegmentedControl: View {
     }
 
     var body: some View {
-        HStack(spacing: 8) {
+        HStack(spacing: 4) {
             ForEach(options.indices, id: \.self) { index in
                 SegmentedControlItem(
                     label: options[index],

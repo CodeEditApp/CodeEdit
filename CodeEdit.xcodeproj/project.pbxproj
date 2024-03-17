@@ -422,6 +422,8 @@
 		B65B10FE2B08B07D002852CF /* SourceControlNavigatorChangesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65B10FD2B08B07D002852CF /* SourceControlNavigatorChangesList.swift */; };
 		B65B11012B09D5D4002852CF /* GitClient+Pull.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65B11002B09D5D4002852CF /* GitClient+Pull.swift */; };
 		B65B11042B09DB1C002852CF /* GitClient+Fetch.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65B11032B09DB1C002852CF /* GitClient+Fetch.swift */; };
+		B664C3B02B965F6C00816B4E /* NavigationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B664C3AF2B965F6C00816B4E /* NavigationSettings.swift */; };
+		B664C3B32B96634F00816B4E /* NavigationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B664C3B22B96634F00816B4E /* NavigationSettingsView.swift */; };
 		B66A4E4529C8E86D004573B4 /* CommandsFixes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66A4E4429C8E86D004573B4 /* CommandsFixes.swift */; };
 		B66A4E4C29C9179B004573B4 /* CodeEditApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66A4E4B29C9179B004573B4 /* CodeEditApp.swift */; };
 		B66A4E4F29C917B8004573B4 /* WelcomeWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66A4E4E29C917B8004573B4 /* WelcomeWindow.swift */; };
@@ -906,6 +908,7 @@
 		85773E1D2A3E0A1F00C5D926 /* SettingsSearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSearchResult.swift; sourceTree = "<group>"; };
 		85CD0C5E2A10CC3200E531FD /* URL+isImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+isImage.swift"; sourceTree = "<group>"; };
 		85E412292A46C8CA00183F2B /* LocationsSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsSettings.swift; sourceTree = "<group>"; };
+		8B9A0E162B9FE84B007E2DBF /* Pre.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Pre.xcconfig; sourceTree = "<group>"; };
 		9D36E1BE2B5E7D7500443C41 /* GitBranchesGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitBranchesGroup.swift; sourceTree = "<group>"; };
 		B6041F4C29D7A4E9000F3454 /* SettingsPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPageView.swift; sourceTree = "<group>"; };
 		B6041F5129D7D6D6000F3454 /* SettingsWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWindow.swift; sourceTree = "<group>"; };
@@ -953,6 +956,8 @@
 		B65B10FD2B08B07D002852CF /* SourceControlNavigatorChangesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlNavigatorChangesList.swift; sourceTree = "<group>"; };
 		B65B11002B09D5D4002852CF /* GitClient+Pull.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GitClient+Pull.swift"; sourceTree = "<group>"; };
 		B65B11032B09DB1C002852CF /* GitClient+Fetch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GitClient+Fetch.swift"; sourceTree = "<group>"; };
+		B664C3AF2B965F6C00816B4E /* NavigationSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationSettings.swift; sourceTree = "<group>"; };
+		B664C3B22B96634F00816B4E /* NavigationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationSettingsView.swift; sourceTree = "<group>"; };
 		B66A4E4429C8E86D004573B4 /* CommandsFixes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandsFixes.swift; sourceTree = "<group>"; };
 		B66A4E4B29C9179B004573B4 /* CodeEditApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeEditApp.swift; sourceTree = "<group>"; };
 		B66A4E4E29C917B8004573B4 /* WelcomeWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeWindow.swift; sourceTree = "<group>"; };
@@ -1162,6 +1167,7 @@
 				28052DFC29730DF600F4F90A /* Alpha.xcconfig */,
 				28052DFD29730E0300F4F90A /* Beta.xcconfig */,
 				28052DFE29730E0B00F4F90A /* Release.xcconfig */,
+				8B9A0E162B9FE84B007E2DBF /* Pre.xcconfig */,
 			);
 			path = Configs;
 			sourceTree = "<group>";
@@ -1218,13 +1224,13 @@
 		287776EA27E350A100D46668 /* NavigatorArea */ = {
 			isa = PBXGroup;
 			children = (
-				307AC4CB2ABABD9800163376 /* ViewModels */,
 				D7012EE627E757660001E1EF /* FindNavigator */,
 				581550CB29FBD30400684881 /* OutlineView */,
 				286471AC27ED52950039369D /* ProjectNavigator */,
 				201169D52837B29600F92B46 /* SourceControlNavigator */,
 				B67660682AA972D400CD56B0 /* Models */,
 				B67660692AA972DC00CD56B0 /* Views */,
+				307AC4CB2ABABD9800163376 /* ViewModels */,
 			);
 			path = NavigatorArea;
 			sourceTree = "<group>";
@@ -2494,16 +2500,17 @@
 		B61DA9DD29D929BF00BF4A43 /* Pages */ = {
 			isa = PBXGroup;
 			children = (
+				B664C3AD2B965F4500816B4E /* NavigationSettings */,
+				B61DA9E129D929F900BF4A43 /* GeneralSettings */,
+				B6E41C6E29DD15540088F9F4 /* AccountsSettings */,
+				58F2EAAE292FB2B0004A9BDE /* ThemeSettings */,
+				B6EA1FF329DA37D3001BF195 /* TextEditingSettings */,
 				5B698A082B262F8400DE9392 /* SearchSettings */,
 				6C5BE51A2A3D5419002DA0FC /* FeatureFlags */,
 				B6CF632629E5417C0085880A /* Keybindings */,
-				B6E41C6E29DD15540088F9F4 /* AccountsSettings */,
-				B6EA1FF329DA37D3001BF195 /* TextEditingSettings */,
 				B6F0516E29D9E35300D72287 /* LocationsSettings */,
 				B6F0516D29D9E34200D72287 /* SourceControlSettings */,
 				B6F0516C29D9E32700D72287 /* TerminalSettings */,
-				58F2EAAE292FB2B0004A9BDE /* ThemeSettings */,
-				B61DA9E129D929F900BF4A43 /* GeneralSettings */,
 			);
 			path = Pages;
 			sourceTree = "<group>";
@@ -2602,6 +2609,23 @@
 				B658FB3627DA9E1000EA4DBD /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		B664C3AD2B965F4500816B4E /* NavigationSettings */ = {
+			isa = PBXGroup;
+			children = (
+				B664C3AE2B965F5500816B4E /* Models */,
+				B664C3B22B96634F00816B4E /* NavigationSettingsView.swift */,
+			);
+			path = NavigationSettings;
+			sourceTree = "<group>";
+		};
+		B664C3AE2B965F5500816B4E /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B664C3AF2B965F6C00816B4E /* NavigationSettings.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		B66DD19E2B3C0E0C0004FFEC /* History */ = {
@@ -3215,6 +3239,7 @@
 				587B9E9229301D8F00AC7927 /* BitBucketAccount.swift in Sources */,
 				DE513F52281B672D002260B9 /* EditorTabBarAccessory.swift in Sources */,
 				2813F93927ECC4C300E305E4 /* NavigatorAreaView.swift in Sources */,
+				B664C3B02B965F6C00816B4E /* NavigationSettings.swift in Sources */,
 				5B698A0F2B2636A700DE9392 /* SearchSettingsIgnoreGlobPatternItemView.swift in Sources */,
 				587B9E8A29301D8F00AC7927 /* GitHubIssue.swift in Sources */,
 				EC0870F72A455F6400EB8692 /* ProjectNavigatorViewController+NSMenuDelegate.swift in Sources */,
@@ -3263,6 +3288,7 @@
 				611192042B08CCED00D4459B /* SearchIndexer+ProgressiveSearch.swift in Sources */,
 				611192022B08CCDC00D4459B /* SearchIndexer+Search.swift in Sources */,
 				04BA7C272AE2E9F100584E1C /* GitClient+Push.swift in Sources */,
+				B664C3B32B96634F00816B4E /* NavigationSettingsView.swift in Sources */,
 				2B7A583527E4BA0100D25D4E /* AppDelegate.swift in Sources */,
 				D7012EE827E757850001E1EF /* FindNavigatorView.swift in Sources */,
 				58A5DF8029325B5A00D1BD5D /* GitClient.swift in Sources */,
@@ -3714,7 +3740,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 37;
+				CURRENT_PROJECT_VERSION = 38;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -3760,6 +3786,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = CodeEdit/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022-2024 CodeEdit";
 				INFOPLIST_KEY_NSPrincipalClass = CodeEdit.CodeEditApplication;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -3787,7 +3814,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 37;
+				CURRENT_PROJECT_VERSION = 38;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -3814,7 +3841,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 37;
+				CURRENT_PROJECT_VERSION = 38;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -3843,7 +3870,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 37;
+				CURRENT_PROJECT_VERSION = 38;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -3903,7 +3930,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 37;
+				CURRENT_PROJECT_VERSION = 38;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -3949,6 +3976,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = CodeEdit/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022-2024 CodeEdit";
 				INFOPLIST_KEY_NSPrincipalClass = CodeEdit.CodeEditApplication;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -3976,7 +4004,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 37;
+				CURRENT_PROJECT_VERSION = 38;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -4003,7 +4031,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 37;
+				CURRENT_PROJECT_VERSION = 38;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -4032,7 +4060,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 37;
+				CURRENT_PROJECT_VERSION = 38;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -4065,7 +4093,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 37;
+				CURRENT_PROJECT_VERSION = 38;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -4098,7 +4126,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 37;
+				CURRENT_PROJECT_VERSION = 38;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -4121,6 +4149,198 @@
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
+		};
+		8B9A0E112B9FE7D7007E2DBF /* Pre */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28052DFC29730DF600F4F90A /* Alpha.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CE_APPICON_NAME = AppIconPre;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 38;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = "";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "-D ALPHA";
+				RUN_DOCUMENTATION_COMPILER = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SYSTEM_FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_SDK_DIR)/MacOSX.sdk/System/Library/PrivateFrameworks";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Pre;
+		};
+		8B9A0E122B9FE7D7007E2DBF /* Pre */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28052DFC29730DF600F4F90A /* Alpha.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "${CE_APPICON_NAME}";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CE_APPICON_NAME = AppIconPre;
+				CODE_SIGN_ENTITLEMENTS = CodeEdit/CodeEdit.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_ASSET_PATHS = "\"CodeEdit/Preview Content\"";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = CodeEdit/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022-2024 CodeEdit";
+				INFOPLIST_KEY_NSPrincipalClass = CodeEdit.CodeEditApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = "Change in Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = app.codeedit.CodeEdit;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				RUN_DOCUMENTATION_COMPILER = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_VERSION = 5.0;
+				SYSTEM_FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+			};
+			name = Pre;
+		};
+		8B9A0E132B9FE7D7007E2DBF /* Pre */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28052DFC29730DF600F4F90A /* Alpha.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 38;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.codeedit.CodeEditTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CodeEdit.app/Contents/MacOS/CodeEdit";
+			};
+			name = Pre;
+		};
+		8B9A0E142B9FE7D7007E2DBF /* Pre */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28052DFC29730DF600F4F90A /* Alpha.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 38;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.codeedit.CodeEditUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "CodeEditUITests/Features/CodeEditUI/CodeEditUITests-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = CodeEdit;
+			};
+			name = Pre;
+		};
+		8B9A0E152B9FE7D7007E2DBF /* Pre */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28052DFC29730DF600F4F90A /* Alpha.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = OpenWithCodeEdit/OpenWithCodeEdit.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 38;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = OpenWithCodeEdit/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = OpenWithCodeEdit;
+				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.codeedit.CodeEdit.OpenWithCodeEdit;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Pre;
 		};
 		B658FB4F27DA9E1000EA4DBD /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -4158,7 +4378,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 37;
+				CURRENT_PROJECT_VERSION = 38;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -4227,7 +4447,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 37;
+				CURRENT_PROJECT_VERSION = 38;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -4271,6 +4491,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = CodeEdit/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022-2024 CodeEdit";
 				INFOPLIST_KEY_NSPrincipalClass = CodeEdit.CodeEditApplication;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -4309,6 +4530,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = CodeEdit/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022-2024 CodeEdit";
 				INFOPLIST_KEY_NSPrincipalClass = CodeEdit.CodeEditApplication;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -4336,7 +4558,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 37;
+				CURRENT_PROJECT_VERSION = 38;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -4363,7 +4585,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 37;
+				CURRENT_PROJECT_VERSION = 38;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -4390,7 +4612,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 37;
+				CURRENT_PROJECT_VERSION = 38;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -4419,7 +4641,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 37;
+				CURRENT_PROJECT_VERSION = 38;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -4448,6 +4670,7 @@
 				2BE487F628245162003F3F64 /* Debug */,
 				2BE487F728245162003F3F64 /* Release */,
 				28052DEE2973045200F4F90A /* Alpha */,
+				8B9A0E152B9FE7D7007E2DBF /* Pre */,
 				28052DF32973045C00F4F90A /* Beta */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -4459,6 +4682,7 @@
 				B658FB4F27DA9E1000EA4DBD /* Debug */,
 				B658FB5027DA9E1000EA4DBD /* Release */,
 				28052DEA2973045200F4F90A /* Alpha */,
+				8B9A0E112B9FE7D7007E2DBF /* Pre */,
 				28052DEF2973045C00F4F90A /* Beta */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -4470,6 +4694,7 @@
 				B658FB5227DA9E1000EA4DBD /* Debug */,
 				B658FB5327DA9E1000EA4DBD /* Release */,
 				28052DEB2973045200F4F90A /* Alpha */,
+				8B9A0E122B9FE7D7007E2DBF /* Pre */,
 				28052DF02973045C00F4F90A /* Beta */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -4481,6 +4706,7 @@
 				B658FB5527DA9E1000EA4DBD /* Debug */,
 				B658FB5627DA9E1000EA4DBD /* Release */,
 				28052DEC2973045200F4F90A /* Alpha */,
+				8B9A0E132B9FE7D7007E2DBF /* Pre */,
 				28052DF12973045C00F4F90A /* Beta */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -4492,6 +4718,7 @@
 				B658FB5827DA9E1000EA4DBD /* Debug */,
 				B658FB5927DA9E1000EA4DBD /* Release */,
 				28052DED2973045200F4F90A /* Alpha */,
+				8B9A0E142B9FE7D7007E2DBF /* Pre */,
 				28052DF22973045C00F4F90A /* Beta */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -4593,7 +4820,7 @@
 			repositoryURL = "https://github.com/CodeEditApp/CodeEditSourceEditor";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.7.1;
+				minimumVersion = 0.7.2;
 			};
 		};
 		6CDEFC9429E22C2700B7C684 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {

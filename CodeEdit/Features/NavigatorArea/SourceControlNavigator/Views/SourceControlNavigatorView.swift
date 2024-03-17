@@ -46,7 +46,7 @@ struct SourceControlNavigatorTabs: View {
                 prominent: true
             )
             .frame(maxWidth: .infinity)
-            .frame(height: 26)
+            .frame(height: 27)
             .padding(.horizontal, 8)
             .task {
                 do {

@@ -6,30 +6,15 @@
 //
 
 import AppKit
+import SwiftUI
+
+extension OpenWindowAction {
+    func callAsFunction(sceneID: SceneID) {
+        callAsFunction(id: sceneID.rawValue)
+    }
+}
 
 extension NSApplication {
-    func openWindow(_ id: SceneID) {
-        NSMenuItem.openWindowAction = { (id, nil) }
-        openWindowPerform()
-    }
-
-    func openWindow(_ id: SceneID, value: any Codable & Hashable) {
-        NSMenuItem.openWindowAction = { (id, value) }
-        openWindowPerform()
-    }
-
-    func openWindow(value: any Codable & Hashable) {
-        NSMenuItem.openWindowAction = { (nil, value) }
-        openWindowPerform()
-    }
-
-    private func openWindowPerform() {
-        let item = NSApp.windowsMenu?.items.first { $0.title == "OpenWindowAction" }
-        if let item, let action = item.action {
-            NSApp.sendAction(action, to: item.representedObject, from: nil)
-        }
-    }
-
     func closeWindow(_ id: SceneID) {
         windows.first { $0.identifier?.rawValue == id.rawValue }?.close()
     }

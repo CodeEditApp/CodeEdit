@@ -25,7 +25,7 @@ CodeEdit is a code editor built by the community, for the community, written ent
 [![Discord Badge](https://img.shields.io/discord/951544472238444645?color=5865F2&label=Discord&logo=discord&logoColor=white&style=flat-square)](https://discord.gg/vChUXVf9Em)
 
 > [!IMPORTANT]
-> CodeEdit is currently in development and not yet ready for production use. You are welcome to test the latest [alpha build](https://github.com/CodeEditApp/CodeEdit/releases/latest) at your own risk. Please leave any feedback [here](https://github.com/CodeEditApp/CodeEdit/issues). 
+> CodeEdit is currently in development and not yet recommended for production use, however you can take part in shaping it's future by test-driving [pre-release versions](https://github.com/CodeEditApp/CodeEdit/releases) and [submitting an issue](https://github.com/CodeEditApp/CodeEdit/issues) to let us know what you think.
 
 ## Table of Contents
 
@@ -178,6 +178,8 @@ For issues we want to focus on that are most relevant at any given time, please 
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/ElvisWong213"><img src="https://avatars.githubusercontent.com/u/40566101?v=4?s=100" width="100px;" alt="Elvis Wong"/><br /><sub><b>Elvis Wong</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3AElvisWong213" title="Bug reports">🐛</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://ibrahimcetin.dev"><img src="https://avatars.githubusercontent.com/u/33904390?v=4?s=100" width="100px;" alt="İbrahim Çetin"/><br /><sub><b>İbrahim Çetin</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3Aibrahimcetin" title="Bug reports">🐛</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/phlpsong"><img src="https://avatars.githubusercontent.com/u/103433299?v=4?s=100" width="100px;" alt="phlpsong"/><br /><sub><b>phlpsong</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3Aphlpsong" title="Bug reports">🐛</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://ahnafmahmud.com"><img src="https://avatars.githubusercontent.com/u/44692189?v=4?s=100" width="100px;" alt="Ahnaf Mahmud"/><br /><sub><b>Ahnaf Mahmud</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=infinitepower18" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>

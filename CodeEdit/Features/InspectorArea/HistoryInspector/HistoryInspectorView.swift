@@ -41,6 +41,11 @@ struct HistoryInspectorView: View {
                 NoSelectionInspectorView()
             }
         }
+        .onReceive(editorManager.activeEditor.objectWillChange) { _ in
+            Task {
+                await model.setFile(url: editorManager.activeEditor.selectedTab?.file.url.path())
+            }
+        }
         .onChange(of: editorManager.activeEditor) { _ in
             Task {
                 await model.setFile(url: editorManager.activeEditor.selectedTab?.file.url.path())
