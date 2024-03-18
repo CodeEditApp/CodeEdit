@@ -83,6 +83,7 @@ struct ToolbarBranchPicker: View {
         }
         .task {
             await self.sourceControlManager?.refreshCurrentBranch()
+            await self.sourceControlManager?.refreshBranches()
         }
     }
 
@@ -160,9 +161,6 @@ struct ToolbarBranchPicker: View {
             .padding(.top, 10)
             .padding(5)
             .frame(width: 340)
-            .task {
-                await sourceControlManager.refreshBranches()
-            }
         }
 
         func headerLabel(_ title: String) -> some View {
@@ -194,9 +192,6 @@ struct ToolbarBranchPicker: View {
                 self.title = title
             }
 
-            @Environment(\.dismiss)
-            private var dismiss
-
             var body: some View {
                 Button {
                     switchBranch()
@@ -216,9 +211,6 @@ struct ToolbarBranchPicker: View {
                 Task {
                     do {
                         try await sourceControlManager.checkoutBranch(branch: branch)
-                        await MainActor.run {
-                            dismiss()
-                        }
                     } catch {
                         await sourceControlManager.showAlertForError(title: "Failed to checkout", error: error)
                     }
