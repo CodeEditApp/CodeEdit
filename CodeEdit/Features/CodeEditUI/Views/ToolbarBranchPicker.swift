@@ -31,19 +31,19 @@ struct ToolbarBranchPicker: View {
     }
 
     var body: some View {
-        HStack(alignment: .center, spacing: 5) {
-            if currentBranch != nil {
-                Image.branch
-                    .font(.title3)
-                    .imageScale(.medium)
-                    .foregroundColor(controlActive == .inactive ? inactiveColor : .gray)
-            } else {
-                Image(systemName: "folder.fill.badge.gearshape")
-                    .font(.title3)
-                    .imageScale(.medium)
-                    .foregroundColor(controlActive == .inactive ? inactiveColor : .accentColor)
+        HStack(alignment: .center, spacing: 7) {
+            Group {
+                if currentBranch != nil {
+                    Image(symbol: "branch")
+                } else {
+                    Image(systemName: "folder.fill.badge.gearshape")
+                }
             }
-            VStack(alignment: .leading, spacing: 2) {
+            .foregroundColor(controlActive == .inactive ? inactiveColor : .secondary)
+            .font(.system(size: 14))
+            .imageScale(.medium)
+            .frame(width: 17, height: 17)
+            VStack(alignment: .leading, spacing: 0) {
                 Text(title)
                     .font(.headline)
                     .foregroundColor(controlActive == .inactive ? inactiveColor : .primary)
@@ -63,6 +63,7 @@ struct ToolbarBranchPicker: View {
                     .menuIndicator(isHovering ? .visible : .hidden)
                     .buttonStyle(.borderless)
                     .padding(.leading, -3)
+                    .padding(.bottom, 2)
                 }
             }
         }
