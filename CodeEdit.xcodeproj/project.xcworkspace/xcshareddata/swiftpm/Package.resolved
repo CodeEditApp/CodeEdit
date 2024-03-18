@@ -1,4 +1,5 @@
 {
+  "originHash" : "3f6921a5ec30d1ecb6d6b205cf27a816c318246bb00f0ea367b997cc66527d32",
   "pins" : [
     {
       "identity" : "anycodable",
@@ -244,15 +245,6 @@
       }
     },
     {
-      "identity" : "swiftui-windowmanagement",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Wouter01/SwiftUI-WindowManagement",
-      "state" : {
-        "revision" : "adbebf5d7df325f3d7bf07dc832e5e162a9003f5",
-        "version" : "2.1.1"
-      }
-    },
-    {
       "identity" : "textformation",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/TextFormation",
@@ -271,5 +263,5 @@
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }
