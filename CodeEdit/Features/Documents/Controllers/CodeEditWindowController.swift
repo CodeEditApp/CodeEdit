@@ -143,6 +143,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
             .sidebarTrackingSeparator,
             .branchPicker,
             .flexibleSpace,
+            .itemListTrackingSeparator,
             .flexibleSpace,
             .toggleLastSidebarItem
         ]
