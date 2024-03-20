@@ -16,7 +16,7 @@ struct StatusBarBreakpointButton: View {
             model.isBreakpointEnabled.toggle()
         } label: {
             if model.isBreakpointEnabled {
-                Image.breakpoint_fill
+                Image.breakpointFill
                     .foregroundColor(.accentColor)
             } else {
                 Image.breakpoint
