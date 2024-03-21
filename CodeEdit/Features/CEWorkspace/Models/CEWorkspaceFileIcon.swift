@@ -79,11 +79,12 @@ enum FileIcon {
         case yml
         case zsh
     }
+
     // swiftlint:enable identifier_name
 
     /// Returns a string describing a SFSymbol for files
     /// If not specified otherwise this will return `"doc"`
-    static func fileIcon(fileType: FileType) -> String { // swiftlint:disable:this cyclomatic_complexity
+    static func fileIcon(fileType: FileType) -> String { // swiftlint:disable:this cyclomatic_complexity function_body_length line_length
         switch fileType {
         case .json, .yml, .resolved:
             return "doc.json"
