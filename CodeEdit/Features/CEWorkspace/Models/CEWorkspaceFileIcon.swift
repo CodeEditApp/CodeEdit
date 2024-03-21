@@ -65,6 +65,7 @@ enum FileIcon {
         case rs
         case rtf
         case scm
+        case scpt
         case sh
         case ss
         case strings
@@ -140,6 +141,8 @@ enum FileIcon {
             return "terminal"
         case .rs:
             return "r.square"
+        case .scpt:
+            return "applescript"
         case .xcconfig:
             return "gearshape.2"
         case .cetheme:
