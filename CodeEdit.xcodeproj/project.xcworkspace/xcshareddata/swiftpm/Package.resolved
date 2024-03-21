@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CodeEditApp/CodeEditKit",
       "state" : {
-        "revision" : "9ba3343ac53eb66a213a0a525604e297d8584a45",
-        "version" : "0.1.0"
+        "revision" : "bf76c0240589a38b504a703363ab85fcedfbc732",
+        "version" : "0.1.1"
       }
     },
     {
@@ -41,8 +41,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CodeEditApp/CodeEditSymbols",
       "state" : {
-        "revision" : "8262a5de7504cba4fc7da033b24b7f679c634800",
-        "version" : "0.2.1"
+        "branch" : "optional-nsimage-symbol",
+        "revision" : "919d697867cb05b4dba831b89eb00279ce3db099"
       }
     },
     {
@@ -73,57 +73,12 @@
       }
     },
     {
-      "identity" : "fseventswrapper",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Frizlab/FSEventsWrapper",
-      "state" : {
-        "revision" : "e0c59a2ce2775e5f6642da6d19207445f10112d0",
-        "version" : "1.0.2"
-      }
-    },
-    {
-      "identity" : "glob",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Bouke/Glob",
-      "state" : {
-        "revision" : "deda6e163d2ff2a8d7e138e2c3326dbd71157faf",
-        "version" : "1.0.5"
-      }
-    },
-    {
       "identity" : "grdb.swift",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/groue/GRDB.swift.git",
       "state" : {
         "revision" : "dd7e7f39e8e4d7a22d258d9809a882f914690b01",
         "version" : "5.26.1"
-      }
-    },
-    {
-      "identity" : "jsonrpc",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ChimeHQ/JSONRPC",
-      "state" : {
-        "revision" : "aa785ad404bdcf7ec692908b3905dd4c87e87141",
-        "version" : "0.7.1"
-      }
-    },
-    {
-      "identity" : "languageclient",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ChimeHQ/LanguageClient",
-      "state" : {
-        "revision" : "92beeecd0bb783da52227839ba6c55e43fc866ec",
-        "version" : "0.5.1"
-      }
-    },
-    {
-      "identity" : "languageserverprotocol",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ChimeHQ/LanguageServerProtocol",
-      "state" : {
-        "revision" : "cae01173f45b0518ae5533b083edd153633af984",
-        "version" : "0.9.2"
       }
     },
     {
@@ -142,24 +97,6 @@
       "state" : {
         "revision" : "8de872d9256ff7f9913cbc5dd560568ab164be45",
         "version" : "0.2.1"
-      }
-    },
-    {
-      "identity" : "processenv",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ChimeHQ/ProcessEnv",
-      "state" : {
-        "revision" : "29487b6581bb785c372c611c943541ef4309d051",
-        "version" : "0.3.1"
-      }
-    },
-    {
-      "identity" : "processservice",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ChimeHQ/ProcessService",
-      "state" : {
-        "revision" : "369fb0379983d3b43c7d7ad62c4e91ee020e347c",
-        "version" : "0.2.6"
       }
     },
     {

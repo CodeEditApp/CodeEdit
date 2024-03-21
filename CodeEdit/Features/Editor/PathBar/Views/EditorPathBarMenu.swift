@@ -79,10 +79,7 @@ final class PathBarMenuItem: NSMenuItem {
             submenu = subMenu
             color = NSColor(named: "FolderBlue") ?? NSColor(.secondary)
         }
-        let image = NSImage(
-            systemSymbolName: icon,
-            accessibilityDescription: icon
-        )?.withSymbolConfiguration(.init(paletteColors: [color]))
+        let image = fileItem.nsIcon.withSymbolConfiguration(.init(paletteColors: [color]))
         self.image = image
         representedObject = fileItem
         if fileItem.isFolder {

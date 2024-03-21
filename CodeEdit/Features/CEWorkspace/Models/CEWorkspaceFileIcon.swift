@@ -12,38 +12,72 @@ enum FileIcon {
 
     // swiftlint:disable identifier_name
     enum FileType: String {
-        case json
-        case js
+        case adb
+        case bash
+        case c
+        case cetheme
+        case clj
+        case cls
+        case cs
         case css
-        case jsx
-        case swift
-        case env
-        case example
-        case gitignore
-        case png
-        case jpg
-        case jpeg
-        case ico
-        case svg
+        case d
+        case dart
+        case elm
         case entitlements
-        case plist
-        case md
-        case txt = "text"
-        case rtf
-        case html
-        case py
-        case sh
-        case LICENSE
-        case java
-        case h
-        case m
-        case vue
+        case env
+        case ex
+        case example
+        case f95
+        case fs
+        case gitignore
         case go
-        case sum
-        case mod
+        case gs
+        case h
+        case hs
+        case html
+        case ico
+        case java
+        case jl
+        case jpeg
+        case jpg
+        case js
+        case json
+        case jsx
+        case kt
+        case l
+        case LICENSE
+        case lock
+        case lsp
+        case lua
+        case m
         case Makefile
-        case ts
+        case md
+        case mjs
+        case mk
+        case mod
+        case pas
+        case pl
+        case plist
+        case png
+        case py
+        case resolved
+        case rb
         case rs
+        case rtf
+        case scm
+        case sh
+        case ss
+        case strings
+        case sum
+        case svg
+        case swift
+        case ts
+        case tsx
+        case txt = "text"
+        case vue
+        case xcconfig
+        case yml
+        case zsh
     }
     // swiftlint:enable identifier_name
 
@@ -51,11 +85,15 @@ enum FileIcon {
     /// If not specified otherwise this will return `"doc"`
     static func fileIcon(fileType: FileType) -> String { // swiftlint:disable:this cyclomatic_complexity
         switch fileType {
-        case .json, .js:
-            return "curlybraces"
+        case .json, .yml, .resolved:
+            return "doc.json"
+        case .lock:
+            return "lock.doc"
         case .css:
-            return "number"
-        case .jsx:
+            return "curlybraces"
+        case .js, .mjs:
+            return "doc.javascript"
+        case .jsx, .tsx:
             return "atom"
         case .swift:
             return "swift"
@@ -73,12 +111,18 @@ enum FileIcon {
             return "tablecells"
         case .md, .txt, .rtf:
             return "doc.plaintext"
-        case .html, .py, .sh:
+        case .html:
             return "chevron.left.forwardslash.chevron.right"
         case .LICENSE:
             return "key.fill"
         case .java:
             return "cup.and.saucer"
+        case .py:
+            return "doc.python"
+        case .rb:
+            return "doc.ruby"
+        case .strings:
+            return "text.quote"
         case .h:
             return "h.square"
         case .m:
@@ -91,10 +135,17 @@ enum FileIcon {
             return "s.square"
         case .mod:
             return "m.square"
-        case .Makefile:
+        case .bash, .sh, .Makefile, .zsh:
             return "terminal"
         case .rs:
             return "r.square"
+        case .xcconfig:
+            return "gearshape.2"
+        case .cetheme:
+            return "paintbrush"
+        case .adb, .clj, .cls, .cs, .d, .dart, .elm, .ex, .f95, .fs, .gs, .hs,
+             .jl, .kt, .l, .lsp, .lua, .mk, .pas, .pl, .scm, .ss:
+            return "doc.plaintext"
         default:
             return "doc"
         }
@@ -106,14 +157,20 @@ enum FileIcon {
         switch fileType {
         case .swift, .html:
             return .orange
-        case .java:
-            return .red
-        case .js, .entitlements, .json, .LICENSE:
-            return Color("SidebarYellow")
-        case .css, .ts, .jsx, .md, .py:
+        case .java, .jpg, .png, .svg, .ts:
             return .blue
-        case .sh:
-            return .green
+        case .css:
+            return .teal
+        case .js, .mjs, .py, .entitlements, .LICENSE:
+            return Color("Amber")
+        case .json, .resolved, .rb, .strings, .yml:
+            return Color("Scarlet")
+        case .jsx, .tsx:
+            return .cyan
+        case .plist, .xcconfig, .sh:
+            return Color("Steel")
+        case .c, .cetheme:
+            return .purple
         case .vue:
             return Color(red: 0.255, green: 0.722, blue: 0.514, opacity: 1.0)
         case .h:
@@ -129,7 +186,7 @@ enum FileIcon {
         case .rs:
             return .orange
         default:
-            return .accentColor
+            return Color("Steel")
         }
     }
 }
