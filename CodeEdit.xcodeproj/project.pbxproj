@@ -4739,8 +4739,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/CodeEditApp/CodeEditKit";
 			requirement = {
-				kind = exactVersion;
-				version = 0.1.0;
+				kind = upToNextMinorVersion;
+				minimumVersion = 0.1.0;
 			};
 		};
 		6C147C4329A329350089B630 /* XCRemoteSwiftPackageReference "swift-collections" */ = {
