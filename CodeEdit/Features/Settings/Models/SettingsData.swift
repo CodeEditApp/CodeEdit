@@ -47,9 +47,6 @@ struct SettingsData: Codable, Hashable {
     /// The global settings for keybindings
     var keybindings: KeybindingsSettings = .init()
 
-    /// Feature Flags settings
-    var featureFlags: FeatureFlagsSettings = .init()
-
     /// Searh Settings
     var search: SearchSettings = .init()
 
@@ -74,7 +71,6 @@ struct SettingsData: Codable, Hashable {
             KeybindingsSettings.self,
             forKey: .keybindings
         ) ?? .init()
-        self.featureFlags = try container.decodeIfPresent(FeatureFlagsSettings.self, forKey: .featureFlags) ?? .init()
     }
 
     // swiftlint:disable cyclomatic_complexity
@@ -100,8 +96,6 @@ struct SettingsData: Codable, Hashable {
             sourceControl.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
         case .location:
             LocationsSettings().searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
-        case .featureFlags:
-            featureFlags.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
         case .behavior: return [.init(name, settingName: "Error")]
         case .components: return [.init(name, settingName: "Error")]
         case .keybindings: return [.init(name, settingName: "Error")]
