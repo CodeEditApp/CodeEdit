@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import WindowManagement
 
 @main
 struct CodeEditApp: App {
@@ -33,20 +32,9 @@ struct CodeEditApp: App {
             AboutWindow()
 
             SettingsWindow()
-
-            NSDocumentGroup(for: WorkspaceDocument.self) { workspace in
-                WindowSplitView(workspace: workspace)
-            } defaultAction: {
-                openWindow(sceneID: .welcome)
-            }
-            .register(.document(WorkspaceDocument.self)) // Required to make transition modifier work
-            .transition(.documentWindow)
-            .windowToolbarStyle(.unifiedCompact(showsTitle: false))
-            .enableOpenWindow() // Required for opening windows through NSApp
-            .handlesExternalEvents(matching: [])
-            .commands {
-                CodeEditCommands()
-            }
+                .commands {
+                    CodeEditCommands()
+                }
         }
         .environment(\.settings, settings.preferences) // Add settings to each window environment
     }

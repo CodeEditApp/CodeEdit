@@ -84,13 +84,6 @@ struct SettingsView: View {
                 baseColor: .green,
                 icon: .system("externaldrive.fill")
             )
-        ),
-        .init(
-            SettingsPage(
-                .featureFlags,
-                baseColor: .cyan,
-                icon: .system("flag.2.crossed.fill")
-            )
         )
     ]
 
@@ -173,8 +166,6 @@ struct SettingsView: View {
                     SourceControlSettingsView()
                 case .location:
                     LocationsSettingsView()
-                case .featureFlags:
-                    FeatureFlagsSettingsView()
                 default:
                     Text("Implementation Needed").frame(alignment: .center)
                 }

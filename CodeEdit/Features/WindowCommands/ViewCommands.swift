@@ -12,8 +12,6 @@ struct ViewCommands: Commands {
     var editorFontSize
     @AppSettings(\.terminal.font.size)
     var terminalFontSize
-    @AppSettings(\.featureFlags.useNewWindowingSystem)
-    var useNewWindowingSystem
     @AppSettings(\.general.showEditorPathBar)
     var showEditorPathBar
     @AppSettings(\.general.dimEditorsWithoutFocus)
@@ -83,56 +81,36 @@ struct ViewCommands: Commands {
 
             Divider()
 
-            if useNewWindowingSystem {
-                Button("\(navigationSplitViewVisibility == .detailOnly ? "Show" : "Hide") Navigator") {
-                    withAnimation(.linear(duration: .zero)) {
-                        if navigationSplitViewVisibility == .all {
-                            navigationSplitViewVisibility = .detailOnly
-                        } else {
-                            navigationSplitViewVisibility = .all
-                        }
-                    }
-                }
-                .disabled(navigationSplitViewVisibility == nil)
-                .keyboardShortcut("0", modifiers: [.command])
-
-                Button("\(inspectorVisibility == false ? "Show" : "Hide") Inspector") {
-                    inspectorVisibility?.toggle()
-                }
-                .disabled(inspectorVisibility == nil)
-                .keyboardShortcut("i", modifiers: [.control, .command])
-            } else {
-                Button("\(navigatorCollapsed ? "Show" : "Hide") Navigator") {
-                    windowController?.toggleFirstPanel()
-                }
-                .disabled(windowController == nil)
-                .keyboardShortcut("0", modifiers: [.command])
-                .onReceive(NSApp.publisher(for: \.keyWindow)) { window in
-                    windowController = window?.windowController as? CodeEditWindowController
-                }
-
-                Button("\(inspectorCollapsed ? "Show" : "Hide") Inspector") {
-                    windowController?.toggleLastPanel()
-                }
-                .disabled(windowController == nil)
-                .keyboardShortcut("i", modifiers: [.control, .command])
-
-                Button("\(inspectorCollapsed ? "Show" : "Hide") Utility Area") {
-                    CommandManager.shared.executeCommand("open.drawer")
-                }
-                .disabled(windowController == nil)
-                .keyboardShortcut("y", modifiers: [.shift, .command])
-
-                Divider()
-
-                Button("\(showEditorPathBar ? "Hide" : "Show") Path Bar") {
-                    showEditorPathBar.toggle()
-                }
-
-                Toggle("Dim editors without focus", isOn: $dimEditorsWithoutFocus)
-
-                Divider()
+            Button("\(navigatorCollapsed ? "Show" : "Hide") Navigator") {
+                windowController?.toggleFirstPanel()
             }
+            .disabled(windowController == nil)
+            .keyboardShortcut("0", modifiers: [.command])
+            .onReceive(NSApp.publisher(for: \.keyWindow)) { window in
+                windowController = window?.windowController as? CodeEditWindowController
+            }
+
+            Button("\(inspectorCollapsed ? "Show" : "Hide") Inspector") {
+                windowController?.toggleLastPanel()
+            }
+            .disabled(windowController == nil)
+            .keyboardShortcut("i", modifiers: [.control, .command])
+
+            Button("\(inspectorCollapsed ? "Show" : "Hide") Utility Area") {
+                CommandManager.shared.executeCommand("open.drawer")
+            }
+            .disabled(windowController == nil)
+            .keyboardShortcut("y", modifiers: [.shift, .command])
+
+            Divider()
+
+            Button("\(showEditorPathBar ? "Hide" : "Show") Path Bar") {
+                showEditorPathBar.toggle()
+            }
+
+            Toggle("Dim editors without focus", isOn: $dimEditorsWithoutFocus)
+
+            Divider()
 
             if let model = windowController?.navigatorSidebarViewModel {
                 Divider()
