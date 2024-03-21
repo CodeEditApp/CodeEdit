@@ -78,17 +78,17 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Frizlab/FSEventsWrapper",
       "state" : {
-        "revision" : "e0c59a2ce2775e5f6642da6d19207445f10112d0",
-        "version" : "1.0.2"
+        "revision" : "70bbea4b108221fcabfce8dbced8502831c0ae04",
+        "version" : "2.1.0"
       }
     },
     {
-      "identity" : "glob",
+      "identity" : "globpattern",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Bouke/Glob",
+      "location" : "https://github.com/ChimeHQ/GlobPattern",
       "state" : {
-        "revision" : "deda6e163d2ff2a8d7e138e2c3326dbd71157faf",
-        "version" : "1.0.5"
+        "revision" : "4ebb9e89e07cc475efa74f87dc6d21f4a9e060f8",
+        "version" : "0.1.1"
       }
     },
     {
@@ -105,8 +105,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/JSONRPC",
       "state" : {
-        "revision" : "aa785ad404bdcf7ec692908b3905dd4c87e87141",
-        "version" : "0.7.1"
+        "revision" : "c6ec759d41a76ac88fe7327c41a77d9033943374",
+        "version" : "0.9.0"
       }
     },
     {
@@ -114,8 +114,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/LanguageClient",
       "state" : {
-        "revision" : "92beeecd0bb783da52227839ba6c55e43fc866ec",
-        "version" : "0.5.1"
+        "revision" : "092fe0dac8183dff8feeb91f10f2e6a88a43852d",
+        "version" : "0.6.0"
       }
     },
     {
@@ -123,8 +123,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/LanguageServerProtocol",
       "state" : {
-        "revision" : "cae01173f45b0518ae5533b083edd153633af984",
-        "version" : "0.9.2"
+        "revision" : "f5a53e0386b34a0e06333ec9376f5972f7d20c28",
+        "version" : "0.13.0"
       }
     },
     {
@@ -164,12 +164,30 @@
       }
     },
     {
+      "identity" : "queue",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mattmassicotte/Queue",
+      "state" : {
+        "revision" : "8d6f936097888f97011610ced40313655dc5948d",
+        "version" : "0.1.4"
+      }
+    },
+    {
       "identity" : "rearrange",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/Rearrange",
       "state" : {
         "revision" : "5ff7f3363f7a08f77e0d761e38e6add31c2136e1",
         "version" : "1.8.1"
+      }
+    },
+    {
+      "identity" : "semaphore",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/groue/Semaphore",
+      "state" : {
+        "revision" : "f1c4a0acabeb591068dea6cffdd39660b86dec28",
+        "version" : "0.0.8"
       }
     },
     {
@@ -186,8 +204,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-collections.git",
       "state" : {
-        "revision" : "937e904258d22af6e447a0b72c0bc67583ef64a2",
-        "version" : "1.0.4"
+        "revision" : "94cf62b3ba8d4bed62680a282d4c25f9c63c2efb",
+        "version" : "1.1.0"
       }
     },
     {
@@ -204,8 +222,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-syntax.git",
       "state" : {
-        "revision" : "43c802fb7f96e090dde015344a94b5e85779eff1",
-        "version" : "509.1.0"
+        "revision" : "64889f0c732f210a935a0ad7cda38f77f876262d",
+        "version" : "509.1.1"
       }
     },
     {
@@ -213,8 +231,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/lukepistrol/SwiftLintPlugin",
       "state" : {
-        "revision" : "d3ec7fb242ebe1d8e23bf17e58a1e27d43125994",
-        "version" : "0.2.6"
+        "revision" : "ea6d3ca895b49910f790e98e4b4ca658e0fe490e",
+        "version" : "0.54.0"
       }
     },
     {
@@ -240,8 +258,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/siteline/SwiftUI-Introspect",
       "state" : {
-        "revision" : "6dce3c8f5bfa8bc20120c7497da27e984a8813aa",
-        "version" : "0.7.0"
+        "revision" : "121c146fe591b1320238d054ae35c81ffa45f45a",
+        "version" : "0.12.0"
       }
     },
     {
