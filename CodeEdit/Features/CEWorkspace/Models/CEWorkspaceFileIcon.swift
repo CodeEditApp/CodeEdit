@@ -13,6 +13,8 @@ enum FileIcon {
     // swiftlint:disable identifier_name
     enum FileType: String {
         case adb
+        case aif
+        case avi
         case bash
         case c
         case cetheme
@@ -52,10 +54,15 @@ enum FileIcon {
         case m
         case Makefile
         case md
+        case mid
         case mjs
         case mk
         case mod
+        case mov
+        case mp3
+        case mp4
         case pas
+        case pdf
         case pl
         case plist
         case png
@@ -76,6 +83,7 @@ enum FileIcon {
         case tsx
         case txt = "text"
         case vue
+        case wav
         case xcconfig
         case yml
         case zsh
@@ -103,7 +111,7 @@ enum FileIcon {
             return "gearshape.fill"
         case .gitignore:
             return "arrow.triangle.branch"
-        case .png, .jpg, .jpeg, .ico:
+        case .pdf, .png, .jpg, .jpeg, .ico:
             return "photo"
         case .svg:
             return "square.fill.on.circle.fill"
@@ -111,8 +119,10 @@ enum FileIcon {
             return "checkmark.seal"
         case .plist:
             return "tablecells"
-        case .md, .txt, .rtf:
+        case .md, .txt:
             return "doc.plaintext"
+        case .rtf:
+            return "doc.richtext"
         case .html:
             return "chevron.left.forwardslash.chevron.right"
         case .LICENSE:
@@ -141,6 +151,10 @@ enum FileIcon {
             return "terminal"
         case .rs:
             return "r.square"
+        case .wav, .mp3, .aif, .mid:
+            return "speaker.wave.2"
+        case .avi, .mp4, .mov:
+            return "film"
         case .scpt:
             return "applescript"
         case .xcconfig:
