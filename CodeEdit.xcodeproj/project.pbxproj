@@ -4699,8 +4699,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/CodeEditApp/CodeEditSymbols";
 			requirement = {
-				branch = "optional-nsimage-symbol";
-				kind = branch;
+				kind = exactVersion;
+				version = 0.2.2;
 			};
 		};
 		287136B1292A407E00E9F5F4 /* XCRemoteSwiftPackageReference "SwiftLintPlugin" */ = {
