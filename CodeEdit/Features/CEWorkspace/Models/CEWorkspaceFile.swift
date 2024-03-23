@@ -48,7 +48,23 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
     let url: URL
 
     /// Return the icon of the file as `Image`
-    var icon: Image { Image(systemName: systemImage) }
+    var icon: Image {
+        if let customImage = NSImage.symbol(named: systemImage) {
+            return Image(nsImage: customImage)
+        } else {
+            return Image(systemName: systemImage)
+        }
+    }
+
+    /// Return the icon of the file as `NSImage`
+    var nsIcon: NSImage {
+        if let customImage = NSImage.symbol(named: systemImage) {
+            return customImage
+        } else {
+            return NSImage(systemSymbolName: systemImage, accessibilityDescription: systemImage)
+                ?? NSImage(systemSymbolName: "doc", accessibilityDescription: "doc")!
+        }
+    }
 
     /// Returns a parent ``CEWorkspaceFile``.
     ///
