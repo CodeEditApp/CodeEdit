@@ -11,6 +11,8 @@ struct GitBranch: Hashable {
     let name: String
     let longName: String
     let upstream: String?
+    let ahead: Int
+    let behind: Int
 
     /// Is local branch
     var isLocal: Bool {

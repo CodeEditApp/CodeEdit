@@ -25,6 +25,25 @@ struct SourceControlNavigatorRepositoryItem: View {
                         .foregroundStyle(.secondary)
                         .font(.system(size: 11))
                 }
+                Spacer()
+                HStack(spacing: 5) {
+                    if let behind = item.branch?.behind, behind > 0 {
+                        HStack(spacing: 0) {
+                            Image(systemName: "arrow.down")
+                                .imageScale(.small)
+                            Text("\(behind)")
+                                .font(.system(size: 11))
+                        }
+                    }
+                    if let ahead = item.branch?.ahead, ahead > 0 {
+                        HStack(spacing: 0) {
+                            Image(systemName: "arrow.up")
+                                .imageScale(.small)
+                            Text("\(ahead)")
+                                .font(.system(size: 11))
+                        }
+                    }
+                }
             }, icon: {
                 if item.symbolImage != nil {
                     Image(symbol: item.symbolImage ?? "")
