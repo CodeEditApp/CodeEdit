@@ -11,6 +11,7 @@
  * open "console.app" to debug,
  */
 
+#if os(macOS)
 import Cocoa
 import FinderSync
 import os.log
@@ -97,3 +98,4 @@ class CEOpenWith: FIFinderSync {
         return menu
     }
 }
+#endif

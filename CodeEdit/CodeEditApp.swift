@@ -8,34 +8,21 @@
 import SwiftUI
 
 @main
-struct CodeEditApp: App {
-    @NSApplicationDelegateAdaptor var appdelegate: AppDelegate
-    @ObservedObject var settings = Settings.shared
-
-    @Environment(\.openWindow)
-    var openWindow
-
-    let updater: SoftwareUpdater = SoftwareUpdater()
-
+struct CodeEdit: App {
     init() {
-        _ = CodeEditDocumentController.shared
-        NSMenuItem.swizzle()
-        NSSplitViewItem.swizzle()
+        setupServiceContainer()
     }
 
     var body: some Scene {
-        Group {
-            WelcomeWindow()
+        WelcomeScene()
+    }
+}
 
-            ExtensionManagerWindow()
-
-            AboutWindow()
-
-            SettingsWindow()
-                .commands {
-                    CodeEditCommands()
-                }
-        }
-        .environment(\.settings, settings.preferences) // Add settings to each window environment
+private extension CodeEdit {
+    func setupServiceContainer() {
+        ServiceContainer.register(
+            type: PasteboardService.self,
+            PasteboardService()
+        )
     }
 }
