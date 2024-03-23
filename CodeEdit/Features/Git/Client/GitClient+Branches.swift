@@ -17,8 +17,6 @@ extension GitClient {
             .components(separatedBy: "\n")
             .filter { $0 != "" && !$0.contains("HEAD") }
             .compactMap { line in
-                let components = line.components(separatedBy: " ")
-                    .filter { !$0.isEmpty }
                 guard let branchPart = line.components(separatedBy: " ").first else { return nil }
                 let branchComponents = branchPart.components(separatedBy: "|")
                 let name = branchComponents[0]
