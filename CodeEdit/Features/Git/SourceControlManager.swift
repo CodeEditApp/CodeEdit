@@ -38,6 +38,18 @@ final class SourceControlManager: ObservableObject {
 
     @Published var isGitRepository: Bool = false
 
+    var orderedLocalBranches: [GitBranch] {
+        var orderedBranches: [GitBranch] = []
+        if let currentBranch {
+            orderedBranches.append(currentBranch)
+        }
+        let othersBranch = branches
+            .filter { $0.isLocal && $0.name != currentBranch?.name }
+            .sorted { $0.name < $1.name }
+        orderedBranches.append(contentsOf: othersBranch)
+        return orderedBranches
+    }
+
     init(
         workspaceURL: URL,
         editorManager: EditorManager
