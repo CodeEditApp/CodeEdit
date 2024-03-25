@@ -112,15 +112,15 @@ struct ToolbarBranchPicker: View {
                     }
                 }
 
-                let branches = sourceControlManager.branches
-                    .filter({ $0.isLocal && $0 != sourceControlManager.currentBranch })
+                let branches = sourceControlManager.orderedLocalBranches
+                    .filter({ $0 != sourceControlManager.currentBranch })
                 let branchesGroups = branches.reduce(into: [String: GitBranchesGroup]()) { result, branch in
                     guard let branchPrefix = branch.name.components(separatedBy: "/").first else {
                         return
                     }
 
                     result[
-                        branchPrefix,
+                        branchPrefix.lowercased(),
                         default: GitBranchesGroup(name: branchPrefix, branches: [])
                     ].branches.append(branch)
                 }
