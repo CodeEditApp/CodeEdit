@@ -38,6 +38,13 @@ struct SettingsView: View {
         ),
         .init(
             SettingsPage(
+                .navigation,
+                baseColor: .green,
+                icon: .system("arrow.triangle.turn.up.right.diamond.fill")
+            )
+        ),
+        .init(
+            SettingsPage(
                 .theme,
                 baseColor: .pink,
                 icon: .system("paintbrush.fill")
@@ -76,13 +83,6 @@ struct SettingsView: View {
                 .location,
                 baseColor: .green,
                 icon: .system("externaldrive.fill")
-            )
-        ),
-        .init(
-            SettingsPage(
-                .featureFlags,
-                baseColor: .cyan,
-                icon: .system("flag.2.crossed.fill")
             )
         )
     ]
@@ -152,6 +152,8 @@ struct SettingsView: View {
                     GeneralSettingsView().environmentObject(updater)
                 case .accounts:
                     AccountsSettingsView()
+                case .navigation:
+                    NavigationSettingsView()
                 case .theme:
                     ThemeSettingsView()
                 case .textEditing:
@@ -164,8 +166,6 @@ struct SettingsView: View {
                     SourceControlSettingsView()
                 case .location:
                     LocationsSettingsView()
-                case .featureFlags:
-                    FeatureFlagsSettingsView()
                 default:
                     Text("Implementation Needed").frame(alignment: .center)
                 }

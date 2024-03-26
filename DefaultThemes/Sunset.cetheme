@@ -1,0 +1,125 @@
+{
+  "name": "sunset",
+  "displayName": "Sunset",
+  "description": "CodeEdit bundled theme.",
+  "author": "CodeEdit",
+  "version": "0.0.1",
+  "license": "MIT",
+  "distributionURL": "https://github.com/CodeEditApp/CodeEdit",
+  "type": "light",
+  "editor": {
+    "background": {
+      "color": "#FFFCEA"
+    },
+    "selection": {
+      "color": "#FBE4AC"
+    },
+    "insertionPoint": {
+      "color": "#000000"
+    },
+    "lineHighlight": {
+      "color": "#FEF6DB"
+    },
+    "invisibles": {
+      "color": "#DACFB3"
+    },
+    "text": {
+      "color": "#000000"
+    },
+    "comments": {
+      "color": "#CF8724"
+    },
+    "strings": {
+      "color": "#E82300"
+    },
+    "characters": {
+      "color": "#35568A"
+    },
+    "numbers": {
+      "color": "#35568A"
+    },
+    "keywords": {
+      "color": "#35568A"
+    },
+    "attributes": {
+      "color": "#3A48AD"
+    },
+    "types": {
+      "color": "#02638C"
+    },
+    "variables": {
+      "color": "#057CB0"
+    },
+    "commands": {
+      "color": "#587EA8"
+    },
+    "values": {
+      "color": "#587EA8"
+    }
+  },
+  "terminal": {
+    "background": {
+      "color": "#FFFCEA"
+    },
+    "selection": {
+      "color": "#FBE4AC"
+    },
+    "cursor": {
+      "color": "#000000"
+    },
+    "text": {
+      "color": "#000000"
+    },
+    "boldText": {
+      "color": "#000000"
+    },
+    "black": {
+      "color": "#000000"
+    },
+    "red": {
+      "color": "#E82300"
+    },
+    "green": {
+      "color": "#02638C"
+    },
+    "yellow": {
+      "color": "#CF8724"
+    },
+    "blue": {
+      "color": "#35568A"
+    },
+    "magenta": {
+      "color": "#3A48AD"
+    },
+    "cyan": {
+      "color": "#587EA8"
+    },
+    "white": {
+      "color": "#FFFFFF"
+    },
+    "brightBlack": {
+      "color": "#000000"
+    },
+    "brightRed": {
+      "color": "#E82300"
+    },
+    "brightGreen": {
+      "color": "#02638C"
+    },
+    "brightYellow": {
+      "color": "#CF8724"
+    },
+    "brightBlue": {
+      "color": "#35568A"
+    },
+    "brightMagenta": {
+      "color": "#3A48AD"
+    },
+    "brightCyan": {
+      "color": "#587EA8"
+    },
+    "brightWhite": {
+      "color": "#FFFFFF"
+    }
+  }
+}

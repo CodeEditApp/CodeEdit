@@ -11,39 +11,55 @@ extension GitClient {
     /// Get branches
     /// - Returns: Array of branches
     func getBranches() async throws -> [GitBranch] {
-        let command = "branch --format \"%(refname:short)|%(refname)|%(upstream:short)\" -a"
+        let command = "branch --format \"%(refname:short)|%(refname)|%(upstream:short) %(upstream:track)\" -a"
 
         return try await run(command)
             .components(separatedBy: "\n")
             .filter { $0 != "" && !$0.contains("HEAD") }
             .compactMap { line in
-                let components = line.components(separatedBy: "|")
-                let name = components[0]
-                let upstream = components[safe: 2]
+                guard let branchPart = line.components(separatedBy: " ").first else { return nil }
+                let branchComponents = branchPart.components(separatedBy: "|")
+                let name = branchComponents[0]
+                let upstream = branchComponents[safe: 2]
+
+                let trackInfoString = line
+                    .dropFirst(branchPart.count)
+                    .trimmingCharacters(in: .whitespacesWithoutNewlines)
+                let trackInfo = parseBranchTrackInfo(from: trackInfoString)
 
                 return .init(
                     name: name,
-                    longName: components[safe: 1] ?? name,
-                    upstream: upstream?.isEmpty == true ? nil : upstream
+                    longName: branchComponents[safe: 1] ?? name,
+                    upstream: upstream?.isEmpty == true ? nil : upstream,
+                    ahead: trackInfo.ahead,
+                    behind: trackInfo.behind
                 )
             }
     }
 
     /// Get current branch
     func getCurrentBranch() async throws -> GitBranch? {
-        let branchName = try await run("rev-parse --abbrev-ref HEAD").trimmingCharacters(in: .whitespacesAndNewlines)
-        let components = try await run(
-            "for-each-ref --format=\"%(refname)|%(upstream:short)\" refs/heads/\(branchName)"
+        let branchName = try await run("branch --show-current").trimmingCharacters(in: .whitespacesAndNewlines)
+        let output = try await run(
+            "for-each-ref --format=\"%(refname)|%(upstream:short) %(upstream:track)\" refs/heads/\(branchName)"
         )
             .trimmingCharacters(in: .whitespacesAndNewlines)
-            .components(separatedBy: "|")
 
-        let upstream = components[safe: 1]
+        guard let branchPart = output.components(separatedBy: " ").first else { return nil }
+        let branchComponents = branchPart.components(separatedBy: "|")
+        let upstream = branchComponents[safe: 1]
+
+        let trackInfoString = output
+            .dropFirst(branchPart.count)
+            .trimmingCharacters(in: .whitespacesWithoutNewlines)
+        let trackInfo = parseBranchTrackInfo(from: trackInfoString)
 
         return .init(
             name: branchName,
-            longName: components[0],
-            upstream: upstream?.isEmpty == true ? nil : upstream
+            longName: branchComponents[0],
+            upstream: upstream?.isEmpty == true ? nil : upstream,
+            ahead: trackInfo.ahead,
+            behind: trackInfo.behind
         )
     }
 
@@ -99,5 +115,36 @@ extension GitClient {
                 try await checkoutBranch(branch, forceLocal: true)
             }
         }
+    }
+
+    private func parseBranchTrackInfo(from infoString: String) -> (ahead: Int, behind: Int) {
+        let pattern = "\\[ahead (\\d+)(?:, behind (\\d+))?\\]|\\[behind (\\d+)\\]"
+        // Create a regular expression object
+        guard let regex = try? NSRegularExpression(pattern: pattern, options: []) else {
+            fatalError("Invalid regular expression pattern")
+        }
+        var ahead = 0
+        var behind = 0
+        // Match the input string with the regular expression
+        if let match = regex.firstMatch(
+            in: infoString,
+            options: [],
+            range: NSRange(location: 0, length: infoString.utf16.count)
+        ) {
+            // Extract the captured groups
+            if let aheadRange = Range(match.range(at: 1), in: infoString),
+               let aheadValue = Int(infoString[aheadRange]) {
+                ahead = aheadValue
+            }
+            if let behindRange = Range(match.range(at: 2), in: infoString),
+               let behindValue = Int(infoString[behindRange]) {
+                behind = behindValue
+            }
+            if let behindRange = Range(match.range(at: 3), in: infoString),
+               let behindValue = Int(infoString[behindRange]) {
+                behind = behindValue
+            }
+        }
+        return (ahead, behind)
     }
 }

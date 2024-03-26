@@ -30,6 +30,9 @@ struct SettingsData: Codable, Hashable {
     var accounts: AccountsSettings = .init()
 
     /// The global settings for themes
+    var navigation: NavigationSettings = .init()
+
+    /// The global settings for themes
     var theme: ThemeSettings = .init()
 
     /// The global settings for text editing
@@ -44,9 +47,6 @@ struct SettingsData: Codable, Hashable {
     /// The global settings for keybindings
     var keybindings: KeybindingsSettings = .init()
 
-    /// Feature Flags settings
-    var featureFlags: FeatureFlagsSettings = .init()
-
     /// Searh Settings
     var search: SearchSettings = .init()
 
@@ -58,6 +58,7 @@ struct SettingsData: Codable, Hashable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.general = try container.decodeIfPresent(GeneralSettings.self, forKey: .general) ?? .init()
         self.accounts = try container.decodeIfPresent(AccountsSettings.self, forKey: .accounts) ?? .init()
+        self.navigation = try container.decodeIfPresent(NavigationSettings.self, forKey: .navigation) ?? .init()
         self.theme = try container.decodeIfPresent(ThemeSettings.self, forKey: .theme) ?? .init()
         self.terminal = try container.decodeIfPresent(TerminalSettings.self, forKey: .terminal) ?? .init()
         self.textEditing = try container.decodeIfPresent(TextEditingSettings.self, forKey: .textEditing) ?? .init()
@@ -70,7 +71,6 @@ struct SettingsData: Codable, Hashable {
             KeybindingsSettings.self,
             forKey: .keybindings
         ) ?? .init()
-        self.featureFlags = try container.decodeIfPresent(FeatureFlagsSettings.self, forKey: .featureFlags) ?? .init()
     }
 
     // swiftlint:disable cyclomatic_complexity
@@ -82,6 +82,8 @@ struct SettingsData: Codable, Hashable {
             general.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
         case .accounts:
             accounts.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
+        case .navigation:
+            navigation.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
         case .theme:
             theme.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
         case .textEditing:
@@ -94,10 +96,7 @@ struct SettingsData: Codable, Hashable {
             sourceControl.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
         case .location:
             LocationsSettings().searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
-        case .featureFlags:
-            featureFlags.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
         case .behavior: return [.init(name, settingName: "Error")]
-        case .navigation: return [.init(name, settingName: "Error")]
         case .components: return [.init(name, settingName: "Error")]
         case .keybindings: return [.init(name, settingName: "Error")]
         case .advanced: return [.init(name, settingName: "Error")]

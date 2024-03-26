@@ -45,7 +45,7 @@ struct EditorTabBarTrailingAccessories: View {
                 Button {
                     split(edge: .bottom)
                 } label: {
-                    Image(systemName: "square.split.1x2")
+                    Image(symbol: "square.split.horizontal.plus")
                 }
                 .help("Split Vertically")
 
@@ -53,7 +53,7 @@ struct EditorTabBarTrailingAccessories: View {
                 Button {
                     split(edge: .trailing)
                 } label: {
-                    Image(systemName: "square.split.2x1")
+                    Image(symbol: "square.split.vertical.plus")
                 }
                 .help("Split Horizontally")
 
@@ -69,11 +69,12 @@ struct EditorTabBarTrailingAccessories: View {
     func split(edge: Edge) {
         let newEditor: Editor
         if let tab = editor.selectedTab {
-            newEditor = .init(files: [tab])
+            newEditor = .init(files: [tab], temporaryTab: tab)
         } else {
             newEditor = .init()
         }
         splitEditor(edge, newEditor)
+        editorManager.updateCachedFlattenedEditors = true
         editorManager.activeEditor = newEditor
     }
 }
