@@ -18,8 +18,8 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
     var observers: [NSKeyValueObservation] = []
 
     var workspace: WorkspaceDocument?
-    var quickOpenPanel: OverlayPanel?
-    var commandPalettePanel: OverlayPanel?
+    var quickOpenPanel: SearchPanel?
+    var commandPalettePanel: SearchPanel?
     var navigatorSidebarViewModel: NavigatorSidebarViewModel?
 
     var splitViewController: NSSplitViewController!
@@ -242,7 +242,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
                     commandPalettePanel.makeKeyAndOrderFront(self)
                 }
             } else {
-                let panel = OverlayPanel()
+                let panel = SearchPanel()
                 self.commandPalettePanel = panel
                 let contentView = CommandPaletteView(state: state, closePalette: panel.close)
                 panel.contentView = NSHostingView(rootView: SettingsInjector { contentView })
@@ -263,7 +263,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
                     quickOpenPanel.makeKeyAndOrderFront(self)
                 }
             } else {
-                let panel = OverlayPanel()
+                let panel = SearchPanel()
                 self.quickOpenPanel = panel
 
                 let contentView = QuickOpenView(state: state) {
