@@ -43,7 +43,7 @@ struct CommandPaletteView: View {
     }
 
     var body: some View {
-        OverlayView<SearchResultLabel, EmptyView, Command>(
+        SearchPanelView<SearchResultLabel, EmptyView, Command>(
             title: "Commands",
             image: Image(systemName: "magnifyingglass"),
             options: $state.filteredCommands,

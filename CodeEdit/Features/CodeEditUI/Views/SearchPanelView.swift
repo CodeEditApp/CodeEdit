@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct OverlayView<RowView: View, PreviewView: View, Option: Identifiable & Hashable>: View {
+struct SearchPanelView<RowView: View, PreviewView: View, Option: Identifiable & Hashable>: View {
     @ViewBuilder let rowViewBuilder: ((Option) -> RowView)
     @ViewBuilder let previewViewBuilder: ((Option) -> PreviewView)?
 
