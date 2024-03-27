@@ -30,7 +30,7 @@
     {
       "identity" : "codeeditsourceeditor",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/CodeEditApp/CodeEditSourceEditor",
+      "location" : "https://github.com/CodeEditApp/CodeEditSourceEditor.git",
       "state" : {
         "revision" : "7360f00bf7ec8e93b4833357bd254bef7e5c943d",
         "version" : "0.7.2"
@@ -95,8 +95,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mattmassicotte/MainOffender",
       "state" : {
-        "revision" : "8de872d9256ff7f9913cbc5dd560568ab164be45",
-        "version" : "0.2.1"
+        "revision" : "750730d33acec0f79edc836221937389e7455bae",
+        "version" : "0.2.0"
       }
     },
     {
