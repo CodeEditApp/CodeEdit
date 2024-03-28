@@ -25,7 +25,7 @@ struct HistoryInspectorItemView: View {
     }
 
     var body: some View {
-        CommitListItemView(commit: commit)
+        CommitListItemView(commit: commit, showRef: false)
             .popover(isPresented: showPopup, arrowEdge: .leading) {
                 HistoryPopoverView(commit: commit)
             }
