@@ -8,6 +8,10 @@
 import SwiftUI
 
 struct FileCommands: Commands {
+    @Environment(\.openWindow)
+    private var openWindow
+
+    @State var windowController: CodeEditWindowController?
 
     @FocusedObject var utilityAreaViewModel: UtilityAreaViewModel?
 
@@ -77,6 +81,17 @@ struct FileCommands: Commands {
                 .keyboardShortcut(.delete)
             }
 
+            Divider()
+
+            Button("Workspace Settings") {
+                openWindow(sceneID: SceneID.workspaceSettings)
+            }
+            //.keyboardShortcut("w", modifiers: [.control, .option, .command])
+            .disabled(windowController?.workspace == nil)
+            .onReceive(NSApp.publisher(for: \.keyWindow)) { window in
+                windowController = window?.windowController as? CodeEditWindowController
+            }
+            
             Divider()
 
             Button("Save") {

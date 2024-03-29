@@ -35,6 +35,8 @@ struct CodeEditApp: App {
                 .commands {
                     CodeEditCommands()
                 }
+
+            CEWorkspaceSettingsWindow()
         }
         .environment(\.settings, settings.preferences) // Add settings to each window environment
     }

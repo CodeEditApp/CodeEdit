@@ -12,4 +12,5 @@ enum SceneID: String, CaseIterable {
     case about
     case extensions
     case settings
+    case workspaceSettings
 }
