@@ -33,7 +33,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var utilityAreaModel = UtilityAreaViewModel()
     var searchState: SearchState?
     var quickOpenViewModel: QuickOpenViewModel?
-    var commandsPaletteState: CommandPaletteViewModel?
+    var commandsPaletteState: QuickActionsViewModel?
     var listenerModel: WorkspaceNotificationModel = .init()
     var sourceControlManager: SourceControlManager?
 
