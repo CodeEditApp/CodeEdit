@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-/// Command palette view
+/// Quick actions view
 struct QuickActionsView: View {
 
     @Environment(\.colorScheme)
