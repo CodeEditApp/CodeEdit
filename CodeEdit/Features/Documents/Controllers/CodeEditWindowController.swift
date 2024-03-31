@@ -244,7 +244,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
             } else {
                 let panel = SearchPanel()
                 self.commandPalettePanel = panel
-                let contentView = CommandPaletteView(state: state, closePalette: panel.close)
+                let contentView = QuickActionsView(state: state, closePalette: panel.close)
                 panel.contentView = NSHostingView(rootView: SettingsInjector { contentView })
                 window?.addChildWindow(panel, ordered: .above)
                 panel.makeKeyAndOrderFront(self)

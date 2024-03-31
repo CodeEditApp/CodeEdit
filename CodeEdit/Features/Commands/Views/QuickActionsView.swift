@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-/// Command palette view
-struct CommandPaletteView: View {
+/// Quick actions view
+struct QuickActionsView: View {
 
     @Environment(\.colorScheme)
     private var colorScheme: ColorScheme
 
-    @ObservedObject private var state: CommandPaletteViewModel
+    @ObservedObject private var state: QuickActionsViewModel
 
     @ObservedObject private var commandManager: CommandManager = .shared
 
@@ -23,7 +23,7 @@ struct CommandPaletteView: View {
 
     private let closePalette: () -> Void
 
-    init(state: CommandPaletteViewModel, closePalette: @escaping () -> Void) {
+    init(state: QuickActionsViewModel, closePalette: @escaping () -> Void) {
         self.state = state
         self.closePalette = closePalette
         state.filteredCommands = commandManager.commands
