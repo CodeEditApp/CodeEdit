@@ -380,6 +380,7 @@
 		77A01E322BB4274B00F0EA38 /* TasksCEWorkspaceSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A01E312BB4274B00F0EA38 /* TasksCEWorkspaceSettingsView.swift */; };
 		77A01E342BB4282900F0EA38 /* CEWorkspaceSettingsSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A01E332BB4282900F0EA38 /* CEWorkspaceSettingsSearchResult.swift */; };
 		77A01E362BB428EE00F0EA38 /* CEWorkspaceSettingsPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A01E352BB428EE00F0EA38 /* CEWorkspaceSettingsPageView.swift */; };
+		77A88BE42BB70FD9008B1293 /* WorkspaceSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A88BE32BB70FD9008B1293 /* WorkspaceSettings.swift */; };
 		850C631029D6B01D00E1444C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850C630F29D6B01D00E1444C /* SettingsView.swift */; };
 		850C631229D6B03400E1444C /* SettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850C631129D6B03400E1444C /* SettingsPage.swift */; };
 		852C7E332A587279006BA599 /* SearchableSettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852C7E322A587279006BA599 /* SearchableSettingsPage.swift */; };
@@ -917,6 +918,7 @@
 		77A01E312BB4274B00F0EA38 /* TasksCEWorkspaceSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksCEWorkspaceSettingsView.swift; sourceTree = "<group>"; };
 		77A01E332BB4282900F0EA38 /* CEWorkspaceSettingsSearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CEWorkspaceSettingsSearchResult.swift; sourceTree = "<group>"; };
 		77A01E352BB428EE00F0EA38 /* CEWorkspaceSettingsPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CEWorkspaceSettingsPageView.swift; sourceTree = "<group>"; };
+		77A88BE32BB70FD9008B1293 /* WorkspaceSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceSettings.swift; sourceTree = "<group>"; };
 		850C630F29D6B01D00E1444C /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		850C631129D6B03400E1444C /* SettingsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPage.swift; sourceTree = "<group>"; };
 		852C7E322A587279006BA599 /* SearchableSettingsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchableSettingsPage.swift; sourceTree = "<group>"; };
@@ -2096,6 +2098,7 @@
 				77A01E332BB4282900F0EA38 /* CEWorkspaceSettingsSearchResult.swift */,
 				6C049A362A49E2DB00D42923 /* DirectoryEventStream.swift */,
 				77A01E242BB4245300F0EA38 /* PageAndCEWorkspaceSettings.swift */,
+				77A88BE32BB70FD9008B1293 /* WorkspaceSettings.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -3532,6 +3535,7 @@
 				587B9E7C29301D8F00AC7927 /* GitHubRepositoryRouter.swift in Sources */,
 				286471AB27ED51FD0039369D /* ProjectNavigatorView.swift in Sources */,
 				B6E41C7C29DE2B110088F9F4 /* AccountsSettingsProviderRow.swift in Sources */,
+				77A88BE42BB70FD9008B1293 /* WorkspaceSettings.swift in Sources */,
 				B62AEDB52A1FE295009A9F52 /* UtilityAreaDebugView.swift in Sources */,
 				6C049A372A49E2DB00D42923 /* DirectoryEventStream.swift in Sources */,
 				04BA7C0E2AE2A76E00584E1C /* SourceControlNavigatorChangesCommitView.swift in Sources */,

@@ -17,7 +17,7 @@ import Combine
 /// private var prefs: SettingsModel = .shared
 /// ```
 final class CEWorkspaceSettings: ObservableObject {
-	/// The publicly available singleton instance of ``SettingsModel``
+	/// The publicly available singleton instance of ``CEWorkspaceSettingsModel``
 	static let shared: CEWorkspaceSettings = .init()
 
 	private var storeTask: AnyCancellable!

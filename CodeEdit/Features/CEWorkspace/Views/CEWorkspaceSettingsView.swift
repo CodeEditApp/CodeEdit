@@ -11,10 +11,8 @@ import CodeEditSymbols
 /// A struct for settings
 struct CEWorkspaceSettingsView {
     @StateObject var model = SettingsViewModel()
-    @Environment(\.colorScheme)
-    private var colorScheme
 
-    /// Variables for the selected Page, the current search text and software updater
+    /// Variables for the selected Page and the current search text
     @State private var selectedPage: CEWorkspaceSettingsPage = Self.pages[0].page
     @State private var searchText: String = ""
 
@@ -24,7 +22,7 @@ struct CEWorkspaceSettingsView {
     static var pages: [PageAndCEWorkspaceSettings] = [
         .init(
             CEWorkspaceSettingsPage(
-                .general,
+                .project,
                 baseColor: .gray,
                 icon: .system("gear")
             )

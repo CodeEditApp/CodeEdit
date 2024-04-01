@@ -8,7 +8,7 @@
 import SwiftUI
 import Foundation
 
-/// # Settings
+/// # Workspace Settings
 ///
 /// The model structure of settings for `CodeEdit`
 ///
@@ -24,7 +24,7 @@ import Foundation
 struct CEWorkspaceSettingsData: Codable, Hashable {
     
     /// The general global settings
-    var general: GeneralSettings = .init()
+    var project: ProjectSettings = .init()
 
     /// The global settings for accounts
     var tasks: TasksSettings = .init()
@@ -35,7 +35,7 @@ struct CEWorkspaceSettingsData: Codable, Hashable {
     /// Explicit decoder init for setting default values when key is not present in `JSON`
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.general = try container.decodeIfPresent(GeneralSettings.self, forKey: .general) ?? .init()
+        self.project = try container.decodeIfPresent(ProjectSettings.self, forKey: .project) ?? .init()
         self.tasks = try container.decodeIfPresent(TasksSettings.self, forKey: .tasks) ?? .init()
     }
 
@@ -44,7 +44,7 @@ struct CEWorkspaceSettingsData: Codable, Hashable {
         var settings: [CEWorkspaceSettingsPage] = []
 
         switch name {
-        case .general:
+        case .project:
             general.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
         case .tasks:
             tasks.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }

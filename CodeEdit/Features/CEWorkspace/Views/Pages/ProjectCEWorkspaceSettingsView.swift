@@ -9,7 +9,7 @@ import SwiftUI
 
 /// A view that implements the `Project` worksppace settings page
 struct ProjectCEWorkspaceSettingsView: View {
-    @AppSettings(\.sourceControl.git)
+    @WorkspaceSettings(\.project)
     var settings
 
     var body: some View {
@@ -24,7 +24,7 @@ struct ProjectCEWorkspaceSettingsView: View {
 /// The extension of the view with all the preferences
 private extension ProjectCEWorkspaceSettingsView {
     private var projectName: some View {
-        TextField(text: $settings.projectedValue) {
+        TextField(text: $settings.projectName) {
             Text("Name")
         }
     }
