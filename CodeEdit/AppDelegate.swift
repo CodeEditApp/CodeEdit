@@ -233,7 +233,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 }
 
 /// Setup all the services into a ServiceContainer for the application to use.
-fileprivate func setupServiceContainer() {
+private func setupServiceContainer() {
     // Example for how services will be instantiated
 //    ServiceContainer.register(
 //        type: PasteboardService.self,
