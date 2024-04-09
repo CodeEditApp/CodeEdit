@@ -1370,7 +1370,6 @@
 				58798244292E78D80085B254 /* CodeFile */,
 				58FD7603291EA1CB0051D6E4 /* Commands */,
 				284DC84B2978B5EB00BF2770 /* Contributors */,
-				300051652BBD3A4400A98562 /* DependencyInjection */,
 				043C321227E31FE8006AE443 /* Documents */,
 				6C147C3C29A328020089B630 /* Editor */,
 				6C6BD6ED29CD123000235D17 /* Extensions */,
@@ -2138,6 +2137,7 @@
 		58D01C85293167DC00C5B6B4 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				300051652BBD3A4400A98562 /* DependencyInjection */,
 				6C48D8EF2972DAC300D6D205 /* Environment */,
 				58D01C87293167DC00C5B6B4 /* Extensions */,
 				58D01C8F293167DC00C5B6B4 /* KeyChain */,

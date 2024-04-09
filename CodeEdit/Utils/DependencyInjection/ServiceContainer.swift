@@ -5,40 +5,48 @@
 //  Created by Abe Malla on 4/3/24.
 //
 
-enum ServiceContainer {
-    private static var factories: [String: () -> Any] = [:]
-    private static var cache: [String: Any] = [:]
+import Foundation
 
-    static func register<Service>(type: Service.Type, _ factory: @autoclosure @escaping () -> Service) {
-        factories[String(describing: type.self)] = factory
+enum ServiceContainer {
+    private static var factories: [ObjectIdentifier: () -> Any] = [:]
+    private static var cache: [ObjectIdentifier: Any] = [:]
+    private static let queue = DispatchQueue(label: "ServiceContainerQueue")
+
+    static func register<Service>(_ factory: @autoclosure @escaping () -> Service) {
+        queue.sync {
+            let key = ObjectIdentifier(Service.Type.self)
+            factories[key] = factory
+        }
     }
 
     static func resolve<Service>(_ resolveType: ServiceType = .singleton, _ type: Service.Type) -> Service? {
-        let serviceName = String(describing: type.self)
+        let serviceId = ObjectIdentifier(Service.Type.self)
 
-        switch resolveType {
-        case .singleton:
-            if let service = cache[serviceName] as? Service {
-                return service
-            } else {
-                let service = factories[serviceName]?() as? Service
+        return queue.sync {
+            switch resolveType {
+            case .singleton:
+                if let service = cache[serviceId] as? Service {
+                    return service
+                } else {
+                    let service = factories[serviceId]?() as? Service
+
+                    if let service = service {
+                        cache[serviceId] = service
+                    }
+
+                    return service
+                }
+            case .newSingleton:
+                let service = factories[serviceId]?() as? Service
 
                 if let service = service {
-                    cache[serviceName] = service
+                    cache[serviceId] = service
                 }
 
                 return service
+            case .new:
+                return factories[serviceId]?() as? Service
             }
-        case .newSingleton:
-            let service = factories[serviceName]?() as? Service
-
-            if let service = service {
-                cache[serviceName] = service
-            }
-
-            return service
-        case .new:
-            return factories[serviceName]?() as? Service
         }
     }
 }

@@ -7,7 +7,6 @@
 
 @propertyWrapper
 struct Service<Service> {
-
     var service: Service
 
     init(_ type: ServiceType = .singleton) {

@@ -236,7 +236,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 private func setupServiceContainer() {
     // Example for how services will be instantiated
 //    ServiceContainer.register(
-//        type: PasteboardService.self,
 //        PasteboardService()
 //    )
 }
