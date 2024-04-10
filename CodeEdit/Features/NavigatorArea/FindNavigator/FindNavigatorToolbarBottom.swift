@@ -27,6 +27,7 @@ struct FindNavigatorToolbarBottom: View {
                         : Color(nsColor: .controlAccentColor)
                     )
                     .padding(.leading, 4)
+                    .help("Show results with mathing text")
                 },
                 clearable: true
             )
