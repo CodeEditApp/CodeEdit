@@ -5,6 +5,7 @@
 //  Created by Abe Malla on 4/3/24.
 //
 
+/// A property wrapper that provides access to a service instance.
 @propertyWrapper
 struct Service<Service> {
     var service: Service
