@@ -19,8 +19,8 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
 
     var workspace: WorkspaceDocument?
     var workspaceSettings: CEWorkspaceSettings?
-    var quickOpenPanel: OverlayPanel?
-    var commandPalettePanel: OverlayPanel?
+    var quickOpenPanel: SearchPanel?
+    var commandPalettePanel: SearchPanel?
     var navigatorSidebarViewModel: NavigatorSidebarViewModel?
 
     var splitViewController: NSSplitViewController!
