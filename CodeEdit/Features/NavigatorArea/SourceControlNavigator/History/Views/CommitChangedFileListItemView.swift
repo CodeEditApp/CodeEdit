@@ -33,7 +33,7 @@ struct CommitChangedFileListItemView: View {
                     .lineLimit(1)
                     .truncationMode(.middle)
             }, icon: {
-                Image(systemName: changedFile.systemImage)
+                Image(nsImage: changedFile.nsIcon)
                     .foregroundStyle(changedFile.iconColor)
             })
 
