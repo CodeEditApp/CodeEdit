@@ -9,86 +9,69 @@ import Foundation
 import SwiftUI
 import Combine
 
-/// The Preferences View Model. Accessible via the singleton "``SettingsModel/shared``".
-///
-/// **Usage:**
-/// ```swift
-/// @StateObject
-/// private var prefs: SettingsModel = .shared
-/// ```
 final class CEWorkspaceSettings: ObservableObject {
-	/// The publicly available singleton instance of ``CEWorkspaceSettingsModel``
-	static let shared: CEWorkspaceSettings = .init()
+    @ObservedObject private var workspace: WorkspaceDocument
+    @Published public var preferences: CEWorkspaceSettingsData = .init()
 
-	private var storeTask: AnyCancellable!
+    private var savedSettings = false
+    private var storeTask: AnyCancellable!
+    private let filemanager = FileManager.default
 
-	private init() {
-		self.preferences = .init()
-		self.preferences = loadSettings()
+    private var folderURL: URL? {
+        guard let workspaceURL = workspace.fileURL else {
+            return nil
+        }
 
-		self.storeTask = self.$preferences.throttle(for: 2, scheduler: RunLoop.main, latest: true).sink {
-			try? self.savePreferences($0)
-		}
-	}
+        return workspaceURL
+            .appendingPathComponent(".codeedit", isDirectory: true)
+    }
 
-	static subscript<T>(_ path: WritableKeyPath<SettingsData, T>, suite: Settings = .shared) -> T {
-		get {
-			suite.preferences[keyPath: path]
-		}
-		set {
-			suite.preferences[keyPath: path] = newValue
-		}
-	}
+    private var settingsURL: URL? {
+        folderURL?
+            .appendingPathComponent("settings")
+            .appendingPathExtension("json")
+    }
 
-	/// Published instance of the ``Settings`` model.
-	///
-	/// Changes are saved automatically.
-	@Published var preferences: CEWorkspaceSettingsData
+    init(workspaceDocument: WorkspaceDocument) {
+        self.workspace = workspaceDocument
 
-	/// Load and construct ``Settings`` model from
-	/// `~/Library/Application Support/CodeEdit/settings.json`
-	private func loadSettings() -> CEWorkspaceSettingsData {
-		if !filemanager.fileExists(atPath: settingsURL.path) {
-			try? filemanager.createDirectory(at: baseURL, withIntermediateDirectories: false)
-			return .init()
-		}
+        loadSettings()
 
-		guard let json = try? Data(contentsOf: settingsURL),
-			  let prefs = try? JSONDecoder().decode(CEWorkspaceSettingsData.self, from: json)
-		else {
-			return .init()
-		}
-		return prefs
-	}
+        self.storeTask = self.$preferences.throttle(for: 2, scheduler: RunLoop.main, latest: true).sink {
+            if !self.savedSettings, let folderURL = self.folderURL {
+                try? self.filemanager.createDirectory(at: folderURL, withIntermediateDirectories: false)
+                self.savedSettings = true
+            }
 
-	/// Save``Settings`` model to
-	/// `~/Library/Application Support/CodeEdit/settings.json`
-	private func savePreferences(_ data: CEWorkspaceSettingsData) throws {
-		print("Saving...")
-		let data = try JSONEncoder().encode(data)
-		let json = try JSONSerialization.jsonObject(with: data)
-		let prettyJSON = try JSONSerialization.data(withJSONObject: json, options: [.prettyPrinted])
-		try prettyJSON.write(to: settingsURL, options: .atomic)
-	}
+            try? self.savePreferences($0)
+        }
+    }
 
-	/// Default instance of the `FileManager`
-	private let filemanager = FileManager.default
+    /// Load and construct ``Settings`` model from
+    /// `.codeedit/settings.json`
+    private func loadSettings() {
+        if let settingsURL = settingsURL {
+            if filemanager.fileExists(atPath: settingsURL.path) {
+                guard let json = try? Data(contentsOf: settingsURL),
+                      let prefs = try? JSONDecoder().decode(CEWorkspaceSettingsData.self, from: json)
+                else {
+                    return
+                }
+                self.savedSettings = true
+                self.preferences = prefs
+            }
+        }
+        return
+    }
 
-	/// The base URL of settings.
-	///
-	/// Points to `~/Library/Application Support/CodeEdit/`
-	internal var baseURL: URL {
-		filemanager
-			.homeDirectoryForCurrentUser
-			.appendingPathComponent("Library/Application Support/CodeEdit", isDirectory: true)
-	}
+    /// Save``Settings`` model to
+    /// `.codeedit/settings.json`
+    private func savePreferences(_ data: CEWorkspaceSettingsData) throws {
+        guard let settingsURL = settingsURL else { return }
 
-	/// The URL of the `settings.json` settings file.
-	///
-	/// Points to `~/Library/Application Support/CodeEdit/settings.json`
-	private var settingsURL: URL {
-		baseURL
-			.appendingPathComponent("settings")
-			.appendingPathExtension("json")
-	}
+        let data = try JSONEncoder().encode(data)
+        let json = try JSONSerialization.jsonObject(with: data)
+        let prettyJSON = try JSONSerialization.data(withJSONObject: json, options: [.prettyPrinted])
+        try prettyJSON.write(to: settingsURL, options: .atomic)
+    }
 }

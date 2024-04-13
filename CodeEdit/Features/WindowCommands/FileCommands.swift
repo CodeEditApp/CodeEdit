@@ -84,7 +84,7 @@ struct FileCommands: Commands {
             Divider()
 
             Button("Workspace Settings") {
-                openWindow(sceneID: SceneID.workspaceSettings)
+                NSApp.sendAction(#selector(CodeEditWindowController.openWorkspaceSettings(_:)), to: nil, from: nil)
             }
             //.keyboardShortcut("w", modifiers: [.control, .option, .command])
             .disabled(windowController?.workspace == nil)

@@ -10,16 +10,16 @@ import SwiftUI
 
 // TODO: Extend this struct further to support setting "flashing"
 class CEWorkspaceSettingsSearchResult: Identifiable {
-	init(
-		pageFound: Bool,
-		pages: [CEWorkspaceSettingsPage]
-	) {
-		self.pageFound = pageFound
-		self.pages = pages
-	}
+    init(
+        pageFound: Bool,
+        pages: [CEWorkspaceSettingsPage]
+    ) {
+        self.pageFound = pageFound
+        self.pages = pages
+    }
 
-	let id: UUID = UUID()
+    let id: UUID = UUID()
 
-	let pageFound: Bool
-	let pages: [CEWorkspaceSettingsPage]
+    let pageFound: Bool
+    let pages: [CEWorkspaceSettingsPage]
 }

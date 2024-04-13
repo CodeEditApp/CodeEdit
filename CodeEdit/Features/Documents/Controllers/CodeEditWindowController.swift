@@ -18,6 +18,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
     var observers: [NSKeyValueObservation] = []
 
     var workspace: WorkspaceDocument?
+    var workspaceSettings: CEWorkspaceSettings?
     var quickOpenPanel: OverlayPanel?
     var commandPalettePanel: OverlayPanel?
     var navigatorSidebarViewModel: NavigatorSidebarViewModel?
@@ -29,6 +30,9 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
     init(window: NSWindow, workspace: WorkspaceDocument) {
         super.init(window: window)
         self.workspace = workspace
+        self.workspaceSettings = CEWorkspaceSettings(
+            workspaceDocument: workspace
+        )
         setupSplitView(with: workspace)
 
         let view = CodeEditSplitView(controller: splitViewController).ignoresSafeArea()

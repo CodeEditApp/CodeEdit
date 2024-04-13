@@ -9,15 +9,16 @@ import SwiftUI
 import CodeEditSymbols
 
 /// A struct for settings
-struct CEWorkspaceSettingsView {
-    @StateObject var model = SettingsViewModel()
+struct CEWorkspaceSettingsView: View {
+    let workspace: WorkspaceDocument
 
-    /// Variables for the selected Page and the current search text
+    @ObservedObject var settings: CEWorkspaceSettings
+
+    @StateObject var viewModel = SettingsViewModel()
     @State private var selectedPage: CEWorkspaceSettingsPage = Self.pages[0].page
     @State private var searchText: String = ""
 
-    @Environment(\.presentationMode)
-    var presentationMode
+    let window: NSWindow?
 
     static var pages: [PageAndCEWorkspaceSettings] = [
         .init(
@@ -33,17 +34,26 @@ struct CEWorkspaceSettingsView {
                 baseColor: .blue,
                 icon: .system("at")
             )
-        ),
+        )
     ]
 
-    @ObservedObject private var settings: CEWorkspaceSettings = .shared
-
     var body: some View {
-        ProjectCEWorkspaceSettingsView()
-        TasksCEWorkspaceSettingsView()
-            .environmentObject(model)
-            .onAppear {
-                selectedPage = Self.pages[0].page
+        VStack(spacing: 0) {
+            TasksCEWorkspaceSettingsView(
+                workspace: workspace,
+                projectSettings: $settings.preferences.project,
+                settings: $settings.preferences.tasks
+            )
+            Spacer()
+            Divider()
+            HStack {
+                Spacer()
+                Button("Done") {
+                    window?.close()
+                }
             }
+            .padding()
+        }
+        .environmentObject(viewModel)
     }
 }

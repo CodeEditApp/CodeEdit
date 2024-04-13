@@ -22,11 +22,10 @@ import Foundation
 ///  [`decodeIfPresent`](https://developer.apple.com/documentation/swift/keyeddecodingcontainer/2921389-decodeifpresent)
 ///  and providing a default value. Otherwise all settings get overridden.
 struct CEWorkspaceSettingsData: Codable, Hashable {
-    
-    /// The general global settings
+    /// The project global settings
     var project: ProjectSettings = .init()
 
-    /// The global settings for accounts
+    /// The tasks settings
     var tasks: TasksSettings = .init()
 
     /// Default initializer
@@ -39,19 +38,16 @@ struct CEWorkspaceSettingsData: Codable, Hashable {
         self.tasks = try container.decodeIfPresent(TasksSettings.self, forKey: .tasks) ?? .init()
     }
 
-    // swiftlint:disable cyclomatic_complexity
     func propertiesOf(_ name: CEWorkspaceSettingsPage.Name) -> [CEWorkspaceSettingsPage] {
         var settings: [CEWorkspaceSettingsPage] = []
 
         switch name {
         case .project:
-            general.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
+            project.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
         case .tasks:
             tasks.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
         }
 
         return settings
     }
-    // swiftlint:enable cyclomatic_complexity
 }
-

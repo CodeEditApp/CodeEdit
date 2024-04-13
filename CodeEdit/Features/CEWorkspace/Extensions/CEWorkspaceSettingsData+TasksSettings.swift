@@ -6,26 +6,37 @@
 //
 
 import Foundation
+import Collections
 
 extension CEWorkspaceSettingsData {
+    /// The tasks  setting
+    struct TasksSettings: Codable, Hashable, SearchableSettingsPage {
+        var items: [CETask] = []
 
-	/// The tasks  setting
-	struct TasksSettings: Codable, Hashable, SearchableSettingsPage {
-		/// The show live issues behavior of the app
-		var tasksEnabled: Bool = true
+        var searchKeys: [String] {
+            [
+                "Tasks"
+            ]
+                .map { NSLocalizedString($0, comment: "") }
+        }
 
-		/// Default initializer
-		init() {}
+        /// The show live issues behavior of the app
+        var enabled: Bool = true
 
-		// swiftlint:disable function_body_length
-		/// Explicit decoder init for setting default values when key is not present in `JSON`
-		init(from decoder: Decoder) throws {
-			let container = try decoder.container(keyedBy: CodingKeys.self
-			self.tasksEnabled = try container.decodeIfPresent(
-				Bool.self,
-				forKey: .tasksEnabled
-			) ?? true
-		}
-		// swiftlint:enable function_body_length
-	}
+        /// Default initializer
+        init() {}
+
+        /// Explicit decoder init for setting default values when key is not present in `JSON`
+        init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.items = try container.decodeIfPresent(
+                [CETask].self,
+                forKey: .items
+            ) ?? []
+            self.enabled = try container.decodeIfPresent(
+                Bool.self,
+                forKey: .enabled
+            ) ?? true
+        }
+    }
 }
