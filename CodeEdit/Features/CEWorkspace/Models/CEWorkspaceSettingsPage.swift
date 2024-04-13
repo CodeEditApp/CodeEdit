@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-/// A struct for a settings page
+/// A struct for a workspace settings page
 struct CEWorkspaceSettingsPage: Hashable, Equatable, Identifiable {
     /// A struct for a sidebar icon, with a base color and SF Symbol
     enum IconResource: Equatable, Hashable {

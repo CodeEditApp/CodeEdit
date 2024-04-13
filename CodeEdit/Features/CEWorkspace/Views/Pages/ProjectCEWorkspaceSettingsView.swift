@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-/// A view that implements the `Project` worksppace settings page
+/// A view that implements the `Project` workspace settings page
 struct ProjectCEWorkspaceSettingsView: View {
     @State var settings: CEWorkspaceSettingsData.ProjectSettings
 

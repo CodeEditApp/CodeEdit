@@ -2178,6 +2178,7 @@
 			children = (
 				85CD0C5D2A10CC2500E531FD /* URL */,
 				6C82D6C429C0129E00495C54 /* NSApplication */,
+				77A01E922BCA9C0400F0EA38 /* NSWindow */,
 				588847672992AAB800996D95 /* Array */,
 				6CBD1BC42978DE3E006639D5 /* Text */,
 				5831E3D02934036D00D5A6D2 /* NSTableView */,
@@ -2485,7 +2486,6 @@
 			children = (
 				77A01E292BB424EA00F0EA38 /* CEWorkspaceSettingsData+ProjectSettings.swift */,
 				77A01E2B2BB425B200F0EA38 /* CEWorkspaceSettingsData+TasksSettings.swift */,
-				77A01E6C2BC3EA2A00F0EA38 /* NSWindow+Child.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -2497,6 +2497,14 @@
 				77A01E312BB4274B00F0EA38 /* TasksCEWorkspaceSettingsView.swift */,
 			);
 			path = Pages;
+			sourceTree = "<group>";
+		};
+		77A01E922BCA9C0400F0EA38 /* NSWindow */ = {
+			isa = PBXGroup;
+			children = (
+				77A01E6C2BC3EA2A00F0EA38 /* NSWindow+Child.swift */,
+			);
+			path = NSWindow;
 			sourceTree = "<group>";
 		};
 		85CD0C5D2A10CC2500E531FD /* URL */ = {

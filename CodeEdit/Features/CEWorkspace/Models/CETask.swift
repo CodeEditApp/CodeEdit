@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+/// Represents a CodeEdit task that will be executed by the a
+/// task manager.
 struct CETask: Identifiable, Hashable, Codable {
     var id = UUID()
     var name: String = ""
@@ -29,41 +31,41 @@ struct CETask: Identifiable, Hashable, Codable {
         case command
         case env
     }
-}
 
-struct EnvironmentVariable: Identifiable, Hashable, Codable {
-    var id = UUID()
-    var name: String = ""
-    var value: String = ""
+    struct EnvironmentVariable: Identifiable, Hashable, Codable {
+        var id = UUID()
+        var name: String = ""
+        var value: String = ""
 
-    private struct CodingKeys: CodingKey {
-        var stringValue: String
-        var intValue: Int?
+        private struct CodingKeys: CodingKey {
+            var stringValue: String
+            var intValue: Int?
 
-        init?(stringValue: String) {
-            self.stringValue = stringValue
-            self.intValue = nil
+            init?(stringValue: String) {
+                self.stringValue = stringValue
+                self.intValue = nil
+            }
+
+            init?(intValue: Int) {
+                self.stringValue = "\(intValue)"
+                self.intValue = intValue
+            }
         }
 
-        init?(intValue: Int) {
-            self.stringValue = "\(intValue)"
-            self.intValue = intValue
+        init() {
         }
-    }
 
-    init() {
-    }
-
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        for key in container.allKeys {
-            name = key.stringValue
-            value = try container.decode(String.self, forKey: key)
+        init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            for key in container.allKeys {
+                name = key.stringValue
+                value = try container.decode(String.self, forKey: key)
+            }
         }
-    }
 
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(value, forKey: CodingKeys(stringValue: name)!)
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(value, forKey: CodingKeys(stringValue: name)!)
+        }
     }
 }

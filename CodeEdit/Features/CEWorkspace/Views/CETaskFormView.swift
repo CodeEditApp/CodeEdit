@@ -50,7 +50,7 @@ struct CETaskFormView: View {
                 }
                 .actionBar {
                     Button {
-                        self.task.env.append(EnvironmentVariable())
+                        self.task.env.append(CETask.EnvironmentVariable())
                     } label: {
                         Image(systemName: "plus")
                     }

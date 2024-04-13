@@ -11,7 +11,7 @@ struct PageAndCEWorkspaceSettings: Identifiable, Equatable {
     let id: UUID = UUID()
     let page: CEWorkspaceSettingsPage
     let settings: [CEWorkspaceSettingsPage]
-    
+
     init(_ page: CEWorkspaceSettingsPage) {
         self.page = page
         self.settings = CEWorkspaceSettingsData().propertiesOf(page.name)

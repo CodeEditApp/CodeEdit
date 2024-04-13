@@ -10,14 +10,11 @@ import Foundation
 
 /// # Workspace Settings
 ///
-/// The model structure of settings for `CodeEdit`
+/// The model structure of the workspace settings for `CodeEdit`
 ///
-/// A `JSON` representation is persisted in `~/Library/Application Support/CodeEdit/preference.json`.
-/// - Attention: Don't use `UserDefaults` for persisting user accessible settings.
-///  If a further setting is needed, extend the struct like ``GeneralSettings``,
-///  ``ThemeSettings``,  or ``TerminalSettings`` does.
+/// A `JSON` representation is persisted in the workspace's `./codeedit/settings.json`. file
 ///
-/// - Note: Also make sure to implement the ``init(from:)`` initializer, decoding
+/// - Note: Make sure to implement the ``init(from:)`` initializer, decoding
 ///  all properties with
 ///  [`decodeIfPresent`](https://developer.apple.com/documentation/swift/keyeddecodingcontainer/2921389-decodeifpresent)
 ///  and providing a default value. Otherwise all settings get overridden.

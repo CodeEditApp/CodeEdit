@@ -8,18 +8,20 @@
 import SwiftUI
 
 struct EnvironmentVariableListItem: View {
-    @Binding var item: EnvironmentVariable
+    @Binding var item: CETask.EnvironmentVariable
     @Binding var selectedItemId: UUID?
 
     var delete: (UUID) -> Void
 
+    /// State variables added to prevent an exception when deleting
+    /// the item in the onChange event
     @State var name: String
     @State var value: String
 
     @FocusState private var isKeyFocused: Bool
 
     init(
-        item: Binding<EnvironmentVariable>,
+        item: Binding<CETask.EnvironmentVariable>,
         selectedItemId: Binding<UUID?>,
         deleteHandler: @escaping (UUID) -> Void
     ) {

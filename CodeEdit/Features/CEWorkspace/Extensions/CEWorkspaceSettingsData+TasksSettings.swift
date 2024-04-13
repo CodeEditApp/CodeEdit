@@ -20,7 +20,7 @@ extension CEWorkspaceSettingsData {
                 .map { NSLocalizedString($0, comment: "") }
         }
 
-        /// The show live issues behavior of the app
+        /// The tasks behavior of the app
         var enabled: Bool = true
 
         /// Default initializer

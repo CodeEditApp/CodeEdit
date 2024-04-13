@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 import Combine
 
+/// The CodeEdit workspace settings model.
 final class CEWorkspaceSettings: ObservableObject {
     @ObservedObject private var workspace: WorkspaceDocument
     @Published public var preferences: CEWorkspaceSettingsData = .init()
