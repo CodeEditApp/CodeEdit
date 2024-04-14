@@ -86,12 +86,11 @@ struct FileCommands: Commands {
             Button("Workspace Settings") {
                 NSApp.sendAction(#selector(CodeEditWindowController.openWorkspaceSettings(_:)), to: nil, from: nil)
             }
-            //.keyboardShortcut("w", modifiers: [.control, .option, .command])
             .disabled(windowController?.workspace == nil)
             .onReceive(NSApp.publisher(for: \.keyWindow)) { window in
                 windowController = window?.windowController as? CodeEditWindowController
             }
-            
+
             Divider()
 
             Button("Save") {
