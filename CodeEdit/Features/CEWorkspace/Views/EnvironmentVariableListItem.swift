@@ -47,7 +47,6 @@ struct EnvironmentVariableListItem: View {
                 }
             Divider()
             TextField("", text: $value)
-                .focused($isKeyFocused)
                 .disableAutocorrection(true)
                 .autocorrectionDisabled()
                 .labelsHidden()

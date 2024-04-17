@@ -28,7 +28,7 @@ extension CEWorkspaceSettingsData {
         /// Explicit decoder init for setting default values when key is not present in `JSON`
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
-            self.items = try container.decodeIfPresent([CETask].self,  forKey: .items) ?? []
+            self.items = try container.decodeIfPresent([CETask].self, forKey: .items) ?? []
             self.enabled = try container.decodeIfPresent(Bool.self, forKey: .enabled) ?? true
         }
     }

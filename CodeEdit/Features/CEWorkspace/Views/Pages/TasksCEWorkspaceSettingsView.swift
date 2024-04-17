@@ -20,9 +20,7 @@ struct TasksCEWorkspaceSettingsView: View {
     var body: some View {
         SettingsForm {
             Section {
-                TextField(text: $projectSettings.projectName) {
-                    Text("Name")
-                }
+                TextField("Name", text: $projectSettings.projectName)
                 Toggle("Tasks", isOn: $settings.enabled)
             }
             Section(

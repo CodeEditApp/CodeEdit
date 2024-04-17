@@ -56,19 +56,26 @@ struct CETaskFormView: View {
                     }
                     Divider()
                     Button {
-                        if let selectedItemId = selectedItemId {
-                            removeEnv(id: selectedItemId)
-                        }
+                        removeSelectedEnv()
                     } label: {
                         Image(systemName: "minus")
                     }
                     .disabled(selectedItemId == nil)
+                }
+                .onDeleteCommand {
+                    removeSelectedEnv()
                 }
             }, header: {
                 Text("Environment Variables")
             })
         }
         .formStyle(.grouped)
+    }
+
+    func removeSelectedEnv() {
+        if let selectedItemId = selectedItemId {
+            removeEnv(id: selectedItemId)
+        }
     }
 
     func removeEnv(id: UUID) {
