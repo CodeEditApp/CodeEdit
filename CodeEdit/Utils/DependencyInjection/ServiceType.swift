@@ -5,6 +5,7 @@
 //  Created by Abe Malla on 4/3/24.
 //
 
+/// Defines the type of service instantiation strategy.
 enum ServiceType {
     /// Returns a new singleton on the first call, then returns a cached one every other time
     case singleton
