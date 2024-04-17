@@ -8,16 +8,16 @@
 import Foundation
 import SwiftUI
 
-/// A struct for a workspace settings page
+/// Represents a workspace settings tab.
 struct CEWorkspaceSettingsPage: Hashable, Equatable, Identifiable {
-    /// A struct for a sidebar icon, with a base color and SF Symbol
+    /// Sidebar icon, with a base color and SF Symbol
     enum IconResource: Equatable, Hashable {
         case system(_ name: String)
         case symbol(_ name: String)
         case asset(_ name: String)
     }
 
-    /// An enum of all the settings pages
+    /// All the workspace settings pages
     enum Name: String {
         case project = "Project"
         case tasks = "Tasks"
@@ -34,7 +34,6 @@ struct CEWorkspaceSettingsPage: Hashable, Equatable, Identifiable {
     }
     let icon: IconResource?
 
-    /// Default initializer
     init(
         _ name: Name,
         baseColor: Color? = nil,

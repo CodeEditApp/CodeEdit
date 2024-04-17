@@ -23,8 +23,6 @@ struct ProjectCEWorkspaceSettingsView: View {
 /// The extension of the view with all the preferences
 private extension ProjectCEWorkspaceSettingsView {
     private var projectName: some View {
-        TextField(text: $settings.projectName) {
-            Text("Name")
-        }
+        TextField("Name", text: $settings.projectName)
     }
 }

@@ -116,9 +116,9 @@ extension CodeEditWindowController {
         if let workspaceSettings, let window = window, let workspace = workspace {
             let workspaceSettingsWindow = NSWindow()
             let contentView = CEWorkspaceSettingsView(
-                workspace: workspace,
                 settings: workspaceSettings,
-                window: workspaceSettingsWindow
+                window: workspaceSettingsWindow,
+                workspace: workspace
             )
 
             workspaceSettingsWindow.contentView = NSHostingView(rootView: contentView)

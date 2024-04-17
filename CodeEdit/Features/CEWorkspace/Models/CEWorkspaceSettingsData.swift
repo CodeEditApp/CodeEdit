@@ -10,14 +10,9 @@ import Foundation
 
 /// # Workspace Settings
 ///
-/// The model structure of the workspace settings for `CodeEdit`
-///
-/// A `JSON` representation is persisted in the workspace's `./codeedit/settings.json`. file
-///
-/// - Note: Make sure to implement the ``init(from:)`` initializer, decoding
-///  all properties with
-///  [`decodeIfPresent`](https://developer.apple.com/documentation/swift/keyeddecodingcontainer/2921389-decodeifpresent)
-///  and providing a default value. Otherwise all settings get overridden.
+/// The model of the workspace settings for `CodeEdit` that control the behavior of some functionality at the workspace level
+/// like the workspace name or defining tasks.  A `JSON` representation is persisted in the workspace's
+/// `./codeedit/settings.json`. file
 struct CEWorkspaceSettingsData: Codable, Hashable {
     /// The project global settings
     var project: ProjectSettings = .init()
@@ -25,7 +20,6 @@ struct CEWorkspaceSettingsData: Codable, Hashable {
     /// The tasks settings
     var tasks: TasksSettings = .init()
 
-    /// Default initializer
     init() {}
 
     /// Explicit decoder init for setting default values when key is not present in `JSON`

@@ -10,8 +10,6 @@ import CodeEditSymbols
 
 /// A struct for settings
 struct CEWorkspaceSettingsView: View {
-    let workspace: WorkspaceDocument
-
     @ObservedObject var settings: CEWorkspaceSettings
 
     @StateObject var viewModel = SettingsViewModel()
@@ -19,6 +17,7 @@ struct CEWorkspaceSettingsView: View {
     @State private var searchText: String = ""
 
     let window: NSWindow?
+    let workspace: WorkspaceDocument
 
     static var pages: [PageAndCEWorkspaceSettings] = [
         .init(

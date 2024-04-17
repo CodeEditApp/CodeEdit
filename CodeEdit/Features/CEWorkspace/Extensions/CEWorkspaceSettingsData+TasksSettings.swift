@@ -9,7 +9,7 @@ import Foundation
 import Collections
 
 extension CEWorkspaceSettingsData {
-    /// The tasks  setting
+    /// Workspace settings for the tasks tab.
     struct TasksSettings: Codable, Hashable, SearchableSettingsPage {
         var items: [CETask] = []
 
@@ -20,23 +20,16 @@ extension CEWorkspaceSettingsData {
                 .map { NSLocalizedString($0, comment: "") }
         }
 
-        /// The tasks behavior of the app
+        /// The tasks functionality behavior of the app
         var enabled: Bool = true
 
-        /// Default initializer
         init() {}
 
         /// Explicit decoder init for setting default values when key is not present in `JSON`
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
-            self.items = try container.decodeIfPresent(
-                [CETask].self,
-                forKey: .items
-            ) ?? []
-            self.enabled = try container.decodeIfPresent(
-                Bool.self,
-                forKey: .enabled
-            ) ?? true
+            self.items = try container.decodeIfPresent([CETask].self,  forKey: .items) ?? []
+            self.enabled = try container.decodeIfPresent(Bool.self, forKey: .enabled) ?? true
         }
     }
 }

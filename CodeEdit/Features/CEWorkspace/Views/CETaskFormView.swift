@@ -33,7 +33,7 @@ struct CETaskFormView: View {
             }
             Section(content: {
                 List(selection: $selectedItemId) {
-                    ForEach($task.env) { env in
+                    ForEach($task.environmentVariables) { env in
                         EnvironmentVariableListItem(
                             item: env,
                             selectedItemId: $selectedItemId,
@@ -43,14 +43,14 @@ struct CETaskFormView: View {
                 }
                 .frame(minHeight: 56)
                 .overlay {
-                    if task.env.isEmpty {
+                    if task.environmentVariables.isEmpty {
                         Text("No environment variables")
                             .foregroundStyle(Color(.secondaryLabelColor))
                     }
                 }
                 .actionBar {
                     Button {
-                        self.task.env.append(CETask.EnvironmentVariable())
+                        self.task.environmentVariables.append(CETask.EnvironmentVariable())
                     } label: {
                         Image(systemName: "plus")
                     }
@@ -72,7 +72,7 @@ struct CETaskFormView: View {
     }
 
     func removeEnv(id: UUID) {
-        self.task.env.removeAll(where: {
+        self.task.environmentVariables.removeAll(where: {
             $0.id == id
         })
     }

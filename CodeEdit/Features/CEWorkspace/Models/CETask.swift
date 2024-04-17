@@ -7,15 +7,14 @@
 
 import SwiftUI
 
-/// Represents a CodeEdit task that will be executed by the a
-/// task manager.
+/// CodeEdit task that will be executed by the task manager.
 struct CETask: Identifiable, Hashable, Codable {
     var id = UUID()
     var name: String = ""
     var target: String = ""
     var workingDirectory: String = ""
     var command: String = ""
-    var env: [EnvironmentVariable]  = []
+    var environmentVariables: [EnvironmentVariable]  = []
 
     var isInvalid: Bool {
         name.isEmpty ||
@@ -29,7 +28,7 @@ struct CETask: Identifiable, Hashable, Codable {
         case target
         case workingDirectory
         case command
-        case env
+        case environmentVariables
     }
 
     struct EnvironmentVariable: Identifiable, Hashable, Codable {
@@ -37,6 +36,7 @@ struct CETask: Identifiable, Hashable, Codable {
         var name: String = ""
         var value: String = ""
 
+        /// Enables encoding the environment variables as a `name`:`value`pair.
         private struct CodingKeys: CodingKey {
             var stringValue: String
             var intValue: Int?
@@ -46,14 +46,14 @@ struct CETask: Identifiable, Hashable, Codable {
                 self.intValue = nil
             }
 
+            /// Required by the CodingKey protocol but not being currently used.
             init?(intValue: Int) {
                 self.stringValue = "\(intValue)"
                 self.intValue = intValue
             }
         }
 
-        init() {
-        }
+        init() {}
 
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)

@@ -8,7 +8,7 @@
 import SwiftUI
 
 extension CEWorkspaceSettingsData {
-    /// The project setting
+    /// Workspace settings for the project tab.
     struct ProjectSettings: Codable, Hashable, SearchableSettingsPage {
         var searchKeys: [String] {
             [
@@ -17,19 +17,14 @@ extension CEWorkspaceSettingsData {
             .map { NSLocalizedString($0, comment: "") }
         }
 
-        /// The project name
         var projectName: String = ""
 
-        /// Default initializer
         init() {}
 
         /// Explicit decoder init for setting default values when key is not present in `JSON`
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
-            self.projectName = try container.decodeIfPresent(
-                String.self,
-                forKey: .projectName
-            ) ?? ""
+            self.projectName = try container.decodeIfPresent(String.self,forKey: .projectName) ?? ""
         }
     }
 }

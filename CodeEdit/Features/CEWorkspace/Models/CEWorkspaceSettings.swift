@@ -5,7 +5,6 @@
 //  Created by Axel Martinez on 27/3/24.
 //
 
-import Foundation
 import SwiftUI
 import Combine
 
@@ -16,7 +15,7 @@ final class CEWorkspaceSettings: ObservableObject {
 
     private var savedSettings = false
     private var storeTask: AnyCancellable!
-    private let filemanager = FileManager.default
+    private let fileManager = FileManager.default
 
     private var folderURL: URL? {
         guard let workspaceURL = workspace.fileURL else {
@@ -40,7 +39,7 @@ final class CEWorkspaceSettings: ObservableObject {
 
         self.storeTask = self.$preferences.throttle(for: 2, scheduler: RunLoop.main, latest: true).sink {
             if !self.savedSettings, let folderURL = self.folderURL {
-                try? self.filemanager.createDirectory(at: folderURL, withIntermediateDirectories: false)
+                try? self.fileManager.createDirectory(at: folderURL, withIntermediateDirectories: false)
                 self.savedSettings = true
             }
 
@@ -48,25 +47,21 @@ final class CEWorkspaceSettings: ObservableObject {
         }
     }
 
-    /// Load and construct ``Settings`` model from
-    /// `.codeedit/settings.json`
+    /// Load and construct ``CEWorkspaceSettings`` model from `.codeedit/settings.json`
     private func loadSettings() {
         if let settingsURL = settingsURL {
-            if filemanager.fileExists(atPath: settingsURL.path) {
+            if fileManager.fileExists(atPath: settingsURL.path) {
                 guard let json = try? Data(contentsOf: settingsURL),
                       let prefs = try? JSONDecoder().decode(CEWorkspaceSettingsData.self, from: json)
-                else {
-                    return
-                }
+                else { return }
+
                 self.savedSettings = true
                 self.preferences = prefs
             }
         }
-        return
     }
 
-    /// Save``Settings`` model to
-    /// `.codeedit/settings.json`
+    /// Save``CEWorkspaceSettings`` model to `.codeedit/settings.json`
     private func savePreferences(_ data: CEWorkspaceSettingsData) throws {
         guard let settingsURL = settingsURL else { return }
 
