@@ -368,6 +368,23 @@
 		6CFF967829BEBCF600182D6F /* MainCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CFF967729BEBCF600182D6F /* MainCommands.swift */; };
 		6CFF967A29BEBD2400182D6F /* ViewCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CFF967929BEBD2400182D6F /* ViewCommands.swift */; };
 		6CFF967C29BEBD5200182D6F /* WindowCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CFF967B29BEBD5200182D6F /* WindowCommands.swift */; };
+		77A01E1F2BB33FB500F0EA38 /* CEWorkspaceSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A01E1E2BB33FB500F0EA38 /* CEWorkspaceSettingsView.swift */; };
+		77A01E232BB423A800F0EA38 /* CEWorkspaceSettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A01E222BB423A800F0EA38 /* CEWorkspaceSettingsPage.swift */; };
+		77A01E252BB4245300F0EA38 /* PageAndCEWorkspaceSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A01E242BB4245300F0EA38 /* PageAndCEWorkspaceSettings.swift */; };
+		77A01E272BB4249800F0EA38 /* CEWorkspaceSettingsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A01E262BB4249800F0EA38 /* CEWorkspaceSettingsData.swift */; };
+		77A01E2A2BB424EA00F0EA38 /* CEWorkspaceSettingsData+ProjectSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A01E292BB424EA00F0EA38 /* CEWorkspaceSettingsData+ProjectSettings.swift */; };
+		77A01E2C2BB425B200F0EA38 /* CEWorkspaceSettingsData+TasksSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A01E2B2BB425B200F0EA38 /* CEWorkspaceSettingsData+TasksSettings.swift */; };
+		77A01E2E2BB4261200F0EA38 /* CEWorkspaceSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A01E2D2BB4261200F0EA38 /* CEWorkspaceSettings.swift */; };
+		77A01E302BB4270F00F0EA38 /* ProjectCEWorkspaceSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A01E2F2BB4270F00F0EA38 /* ProjectCEWorkspaceSettingsView.swift */; };
+		77A01E322BB4274B00F0EA38 /* TasksCEWorkspaceSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A01E312BB4274B00F0EA38 /* TasksCEWorkspaceSettingsView.swift */; };
+		77A01E342BB4282900F0EA38 /* CEWorkspaceSettingsSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A01E332BB4282900F0EA38 /* CEWorkspaceSettingsSearchResult.swift */; };
+		77A01E362BB428EE00F0EA38 /* CEWorkspaceSettingsPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A01E352BB428EE00F0EA38 /* CEWorkspaceSettingsPageView.swift */; };
+		77A01E432BBC3A2800F0EA38 /* CETask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A01E422BBC3A2800F0EA38 /* CETask.swift */; };
+		77A01E582BBD7ECE00F0EA38 /* AddCETaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A01E572BBD7ECE00F0EA38 /* AddCETaskView.swift */; };
+		77A01E6D2BC3EA2A00F0EA38 /* NSWindow+Child.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A01E6C2BC3EA2A00F0EA38 /* NSWindow+Child.swift */; };
+		77A01E802BC5101200F0EA38 /* EnvironmentVariableListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A01E7F2BC5101200F0EA38 /* EnvironmentVariableListItem.swift */; };
+		77A01E8E2BC9A09C00F0EA38 /* EditCETaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A01E8D2BC9A09C00F0EA38 /* EditCETaskView.swift */; };
+		77A01E912BC9A33600F0EA38 /* CETaskFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A01E902BC9A33600F0EA38 /* CETaskFormView.swift */; };
 		850C631029D6B01D00E1444C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850C630F29D6B01D00E1444C /* SettingsView.swift */; };
 		850C631229D6B03400E1444C /* SettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850C631129D6B03400E1444C /* SettingsPage.swift */; };
 		852C7E332A587279006BA599 /* SearchableSettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852C7E322A587279006BA599 /* SearchableSettingsPage.swift */; };
@@ -893,6 +910,23 @@
 		6CFF967729BEBCF600182D6F /* MainCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCommands.swift; sourceTree = "<group>"; };
 		6CFF967929BEBD2400182D6F /* ViewCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewCommands.swift; sourceTree = "<group>"; };
 		6CFF967B29BEBD5200182D6F /* WindowCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowCommands.swift; sourceTree = "<group>"; };
+		77A01E1E2BB33FB500F0EA38 /* CEWorkspaceSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CEWorkspaceSettingsView.swift; sourceTree = "<group>"; };
+		77A01E222BB423A800F0EA38 /* CEWorkspaceSettingsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CEWorkspaceSettingsPage.swift; sourceTree = "<group>"; };
+		77A01E242BB4245300F0EA38 /* PageAndCEWorkspaceSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageAndCEWorkspaceSettings.swift; sourceTree = "<group>"; };
+		77A01E262BB4249800F0EA38 /* CEWorkspaceSettingsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CEWorkspaceSettingsData.swift; sourceTree = "<group>"; };
+		77A01E292BB424EA00F0EA38 /* CEWorkspaceSettingsData+ProjectSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CEWorkspaceSettingsData+ProjectSettings.swift"; sourceTree = "<group>"; };
+		77A01E2B2BB425B200F0EA38 /* CEWorkspaceSettingsData+TasksSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CEWorkspaceSettingsData+TasksSettings.swift"; sourceTree = "<group>"; };
+		77A01E2D2BB4261200F0EA38 /* CEWorkspaceSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CEWorkspaceSettings.swift; sourceTree = "<group>"; };
+		77A01E2F2BB4270F00F0EA38 /* ProjectCEWorkspaceSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectCEWorkspaceSettingsView.swift; sourceTree = "<group>"; };
+		77A01E312BB4274B00F0EA38 /* TasksCEWorkspaceSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksCEWorkspaceSettingsView.swift; sourceTree = "<group>"; };
+		77A01E332BB4282900F0EA38 /* CEWorkspaceSettingsSearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CEWorkspaceSettingsSearchResult.swift; sourceTree = "<group>"; };
+		77A01E352BB428EE00F0EA38 /* CEWorkspaceSettingsPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CEWorkspaceSettingsPageView.swift; sourceTree = "<group>"; };
+		77A01E422BBC3A2800F0EA38 /* CETask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CETask.swift; sourceTree = "<group>"; };
+		77A01E572BBD7ECE00F0EA38 /* AddCETaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCETaskView.swift; sourceTree = "<group>"; };
+		77A01E6C2BC3EA2A00F0EA38 /* NSWindow+Child.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSWindow+Child.swift"; sourceTree = "<group>"; };
+		77A01E7F2BC5101200F0EA38 /* EnvironmentVariableListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentVariableListItem.swift; sourceTree = "<group>"; };
+		77A01E8D2BC9A09C00F0EA38 /* EditCETaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCETaskView.swift; sourceTree = "<group>"; };
+		77A01E902BC9A33600F0EA38 /* CETaskFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CETaskFormView.swift; sourceTree = "<group>"; };
 		850C630F29D6B01D00E1444C /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		850C631129D6B03400E1444C /* SettingsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPage.swift; sourceTree = "<group>"; };
 		852C7E322A587279006BA599 /* SearchableSettingsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchableSettingsPage.swift; sourceTree = "<group>"; };
@@ -2051,6 +2085,8 @@
 			isa = PBXGroup;
 			children = (
 				588847652992A35800996D95 /* Models */,
+				77A01E1A2BB33F1E00F0EA38 /* Views */,
+				77A01E1B2BB33F3D00F0EA38 /* Extensions */,
 			);
 			path = CEWorkspace;
 			sourceTree = "<group>";
@@ -2058,12 +2094,18 @@
 		588847652992A35800996D95 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				77A01E422BBC3A2800F0EA38 /* CETask.swift */,
 				588847622992A2A200996D95 /* CEWorkspaceFile.swift */,
 				5894E59629FEF7740077E59C /* CEWorkspaceFile+Recursion.swift */,
 				58A2E40629C3975D005CB615 /* CEWorkspaceFileIcon.swift */,
 				58710158298EB80000951BA4 /* CEWorkspaceFileManager.swift */,
 				6CB52DC82AC8DC3E002E75B3 /* CEWorkspaceFileManager+FileManagement.swift */,
+				77A01E2D2BB4261200F0EA38 /* CEWorkspaceSettings.swift */,
+				77A01E262BB4249800F0EA38 /* CEWorkspaceSettingsData.swift */,
+				77A01E222BB423A800F0EA38 /* CEWorkspaceSettingsPage.swift */,
+				77A01E332BB4282900F0EA38 /* CEWorkspaceSettingsSearchResult.swift */,
 				6C049A362A49E2DB00D42923 /* DirectoryEventStream.swift */,
+				77A01E242BB4245300F0EA38 /* PageAndCEWorkspaceSettings.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2136,6 +2178,7 @@
 			children = (
 				85CD0C5D2A10CC2500E531FD /* URL */,
 				6C82D6C429C0129E00495C54 /* NSApplication */,
+				77A01E922BCA9C0400F0EA38 /* NSWindow */,
 				588847672992AAB800996D95 /* Array */,
 				6CBD1BC42978DE3E006639D5 /* Text */,
 				5831E3D02934036D00D5A6D2 /* NSTableView */,
@@ -2422,6 +2465,46 @@
 				6CBD1BC52978DE53006639D5 /* Font+Caption3.swift */,
 			);
 			path = Text;
+			sourceTree = "<group>";
+		};
+		77A01E1A2BB33F1E00F0EA38 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				77A01E372BB4291700F0EA38 /* Pages */,
+				77A01E572BBD7ECE00F0EA38 /* AddCETaskView.swift */,
+				77A01E902BC9A33600F0EA38 /* CETaskFormView.swift */,
+				77A01E1E2BB33FB500F0EA38 /* CEWorkspaceSettingsView.swift */,
+				77A01E352BB428EE00F0EA38 /* CEWorkspaceSettingsPageView.swift */,
+				77A01E8D2BC9A09C00F0EA38 /* EditCETaskView.swift */,
+				77A01E7F2BC5101200F0EA38 /* EnvironmentVariableListItem.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		77A01E1B2BB33F3D00F0EA38 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				77A01E292BB424EA00F0EA38 /* CEWorkspaceSettingsData+ProjectSettings.swift */,
+				77A01E2B2BB425B200F0EA38 /* CEWorkspaceSettingsData+TasksSettings.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		77A01E372BB4291700F0EA38 /* Pages */ = {
+			isa = PBXGroup;
+			children = (
+				77A01E2F2BB4270F00F0EA38 /* ProjectCEWorkspaceSettingsView.swift */,
+				77A01E312BB4274B00F0EA38 /* TasksCEWorkspaceSettingsView.swift */,
+			);
+			path = Pages;
+			sourceTree = "<group>";
+		};
+		77A01E922BCA9C0400F0EA38 /* NSWindow */ = {
+			isa = PBXGroup;
+			children = (
+				77A01E6C2BC3EA2A00F0EA38 /* NSWindow+Child.swift */,
+			);
+			path = NSWindow;
 			sourceTree = "<group>";
 		};
 		85CD0C5D2A10CC2500E531FD /* URL */ = {
@@ -3201,6 +3284,7 @@
 				B65B11012B09D5D4002852CF /* GitClient+Pull.swift in Sources */,
 				2072FA13280D74ED00C7F8D4 /* HistoryInspectorModel.swift in Sources */,
 				852E62012A5C17E500447138 /* PageAndSettings.swift in Sources */,
+				77A01E1F2BB33FB500F0EA38 /* CEWorkspaceSettingsView.swift in Sources */,
 				587B9DA029300ABD00AC7927 /* PanelDivider.swift in Sources */,
 				58822534292C280D00E83CDE /* CursorLocation.swift in Sources */,
 				201169E52837B40300F92B46 /* SourceControlNavigatorRepositoryView.swift in Sources */,
@@ -3231,11 +3315,13 @@
 				613899B92B6E704500A5CAF6 /* String+Normalise.swift in Sources */,
 				04BA7C192AE2D7C600584E1C /* GitClient+Branches.swift in Sources */,
 				587B9E8829301D8F00AC7927 /* GitHubFiles.swift in Sources */,
+				77A01E232BB423A800F0EA38 /* CEWorkspaceSettingsPage.swift in Sources */,
 				587B9DA729300ABD00AC7927 /* HelpButton.swift in Sources */,
 				6C5B63DE29C76213005454BA /* WindowCodeFileView.swift in Sources */,
 				58F2EB08292FB2B0004A9BDE /* TextEditingSettings.swift in Sources */,
 				201169DB2837B34000F92B46 /* SourceControlNavigatorChangedFileView.swift in Sources */,
 				5882252E292C280D00E83CDE /* StatusBarMaximizeButton.swift in Sources */,
+				77A01E2E2BB4261200F0EA38 /* CEWorkspaceSettings.swift in Sources */,
 				6C4104E9297C970F00F472BA /* AboutDefaultView.swift in Sources */,
 				587B9E6F29301D8F00AC7927 /* GitLabProjectAccess.swift in Sources */,
 				587B9E6929301D8F00AC7927 /* GitLabEvent.swift in Sources */,
@@ -3265,6 +3351,7 @@
 				D7E201AE27E8B3C000CB86D0 /* String+Ranges.swift in Sources */,
 				6CE6226E2A2A1CDE0013085C /* NavigatorTab.swift in Sources */,
 				041FC6AD2AE437CE00C1F65A /* SourceControlNavigatorNewBranchView.swift in Sources */,
+				77A01E432BBC3A2800F0EA38 /* CETask.swift in Sources */,
 				6C48D8F72972E5F300D6D205 /* WindowObserver.swift in Sources */,
 				6CED16E42A3E660D000EC962 /* String+Lines.swift in Sources */,
 				587B9E6B29301D8F00AC7927 /* GitLabAvatarURL.swift in Sources */,
@@ -3282,6 +3369,7 @@
 				B628B7B72B223BAD00F9775A /* FindModePicker.swift in Sources */,
 				587B9E6E29301D8F00AC7927 /* GitLabProject.swift in Sources */,
 				58798234292E30B90085B254 /* FeedbackIssueArea.swift in Sources */,
+				77A01E2A2BB424EA00F0EA38 /* CEWorkspaceSettingsData+ProjectSettings.swift in Sources */,
 				852C7E332A587279006BA599 /* SearchableSettingsPage.swift in Sources */,
 				587B9E5F29301D8F00AC7927 /* GitLabProjectRouter.swift in Sources */,
 				587B9E7329301D8F00AC7927 /* GitRouter.swift in Sources */,
@@ -3337,6 +3425,7 @@
 				B6EA1FE729DA341D001BF195 /* Theme.swift in Sources */,
 				587B9E7529301D8F00AC7927 /* String+QueryParameters.swift in Sources */,
 				B60718312B15A9A3009CDAB4 /* CEOutlineGroup.swift in Sources */,
+				77A01E252BB4245300F0EA38 /* PageAndCEWorkspaceSettings.swift in Sources */,
 				58798219292D92370085B254 /* SearchModeModel.swift in Sources */,
 				6C5C891B2A3F736500A94FE1 /* FocusedValues.swift in Sources */,
 				611192062B08CCF600D4459B /* SearchIndexer+Add.swift in Sources */,
@@ -3346,6 +3435,7 @@
 				58D01C9D293167DC00C5B6B4 /* KeychainSwiftAccessOptions.swift in Sources */,
 				B6E41C8B29DE7AE80088F9F4 /* AccountsSettingsSigninView.swift in Sources */,
 				6C2C155A29B4F4CC00EA60A5 /* Variadic.swift in Sources */,
+				77A01E322BB4274B00F0EA38 /* TasksCEWorkspaceSettingsView.swift in Sources */,
 				B6E41C8F29DE9CD80088F9F4 /* AccountsSettingsDetailsView.swift in Sources */,
 				5882252B292C280D00E83CDE /* StatusBarCursorLocationLabel.swift in Sources */,
 				58798252292E78D80085B254 /* ImageFileView.swift in Sources */,
@@ -3362,6 +3452,7 @@
 				587B9E7B29301D8F00AC7927 /* GitHubRouter.swift in Sources */,
 				201169E22837B3D800F92B46 /* SourceControlNavigatorChangesView.swift in Sources */,
 				850C631029D6B01D00E1444C /* SettingsView.swift in Sources */,
+				77A01E6D2BC3EA2A00F0EA38 /* NSWindow+Child.swift in Sources */,
 				DE6405A62817734700881FDF /* EditorTabBarNative.swift in Sources */,
 				581550CF29FBD30400684881 /* StandardTableViewCell.swift in Sources */,
 				B62AEDB82A1FE2DC009A9F52 /* UtilityAreaOutputView.swift in Sources */,
@@ -3402,8 +3493,10 @@
 				58D01C96293167DC00C5B6B4 /* Date+Formatted.swift in Sources */,
 				B66A4E5629C918A0004573B4 /* SceneID.swift in Sources */,
 				6C53AAD829A6C4FD00EE9ED6 /* SplitView.swift in Sources */,
+				77A01E912BC9A33600F0EA38 /* CETaskFormView.swift in Sources */,
 				B66A4E5329C91831004573B4 /* CodeEditCommands.swift in Sources */,
 				58822529292C280D00E83CDE /* StatusBarLineEndSelector.swift in Sources */,
+				77A01E342BB4282900F0EA38 /* CEWorkspaceSettingsSearchResult.swift in Sources */,
 				5C4BB1E128212B1E00A92FB2 /* World.swift in Sources */,
 				581550D029FBD30400684881 /* FileSystemTableViewCell.swift in Sources */,
 				B607183F2B17DB07009CDAB4 /* SourceControlNavigatorRepositoryView+contextMenu.swift in Sources */,
@@ -3416,6 +3509,7 @@
 				587B9E6329301D8F00AC7927 /* GitLabAccount.swift in Sources */,
 				6C1CC99B2B1E7CBC0002349B /* FindNavigatorIndexBar.swift in Sources */,
 				285FEC7027FE4B9800E57D53 /* ProjectNavigatorTableViewCell.swift in Sources */,
+				77A01E582BBD7ECE00F0EA38 /* AddCETaskView.swift in Sources */,
 				6CB9144B29BEC7F100BC47F2 /* (null) in Sources */,
 				587B9E7429301D8F00AC7927 /* URL+URLParameters.swift in Sources */,
 				61538B902B111FE800A88846 /* String+AppearancesOfSubstring.swift in Sources */,
@@ -3517,10 +3611,13 @@
 				B6041F4D29D7A4E9000F3454 /* SettingsPageView.swift in Sources */,
 				587B9E9A29301D8F00AC7927 /* GitType.swift in Sources */,
 				B65B10F82B081A34002852CF /* SourceControlNavigatorNoRemotesView.swift in Sources */,
+				77A01E8E2BC9A09C00F0EA38 /* EditCETaskView.swift in Sources */,
 				58D01C97293167DC00C5B6B4 /* String+SHA256.swift in Sources */,
 				B6EA1FFD29DB792C001BF195 /* ThemeSettingsColorPreview.swift in Sources */,
 				2806E904297958B9000040F4 /* ContributorRowView.swift in Sources */,
 				6C578D8C29CD372700DC73B2 /* ExtensionCommands.swift in Sources */,
+				77A01E272BB4249800F0EA38 /* CEWorkspaceSettingsData.swift in Sources */,
+				77A01E802BC5101200F0EA38 /* EnvironmentVariableListItem.swift in Sources */,
 				B6041F5229D7D6D6000F3454 /* SettingsWindow.swift in Sources */,
 				B6EA1FF829DB78DB001BF195 /* ThemeSettingThemeRow.swift in Sources */,
 				587B9E7629301D8F00AC7927 /* GitTime.swift in Sources */,
@@ -3557,6 +3654,7 @@
 				5878DAB2291D627C00DD95A3 /* EditorPathBarView.swift in Sources */,
 				04BC1CDE2AD9B4B000A83EA5 /* EditorFileTabCloseButton.swift in Sources */,
 				6C6BD70129CD172700235D17 /* ExtensionsListView.swift in Sources */,
+				77A01E362BB428EE00F0EA38 /* CEWorkspaceSettingsPageView.swift in Sources */,
 				043C321627E3201F006AE443 /* WorkspaceDocument.swift in Sources */,
 				58F2EAEC292FB2B0004A9BDE /* IgnoredFiles.swift in Sources */,
 				6CD03B6A29FC773F001BD1D0 /* SettingsInjector.swift in Sources */,
@@ -3590,6 +3688,8 @@
 				611192002B08CCD700D4459B /* SearchIndexer+Memory.swift in Sources */,
 				587B9E8129301D8F00AC7927 /* PublicKey.swift in Sources */,
 				611191FE2B08CCD200D4459B /* SearchIndexer+File.swift in Sources */,
+				77A01E302BB4270F00F0EA38 /* ProjectCEWorkspaceSettingsView.swift in Sources */,
+				77A01E2C2BB425B200F0EA38 /* CEWorkspaceSettingsData+TasksSettings.swift in Sources */,
 				5B241BF32B6DDBFF0016E616 /* IgnorePatternListItemView.swift in Sources */,
 				6CB52DC92AC8DC3E002E75B3 /* CEWorkspaceFileManager+FileManagement.swift in Sources */,
 				58F2EB0B292FB2B0004A9BDE /* AccountsSettings.swift in Sources */,
