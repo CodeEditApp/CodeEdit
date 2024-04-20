@@ -14,6 +14,7 @@ extension GitClient {
     ///   - maxCount: Maximum amount of entries to get
     ///   - fileLocalPath: Optional path of file to get history for
     /// - Returns: Array of git commits
+    // swiftlint:disable function_body_length
     func getCommitHistory(
         branchName: String? = nil,
         maxCount: Int? = nil,
@@ -51,7 +52,9 @@ extension GitClient {
                         refs = infoRef.split(separator: ",").compactMap {
                             var element = String($0)
                             if element.contains("origin/HEAD") { return nil }
-                            if element.contains("HEAD -> ") { element = element.replacingOccurrences(of: "HEAD -> ", with: "") }
+                            if element.contains("HEAD -> ") { 
+                                element = element.replacingOccurrences(of: "HEAD -> ", with: "") 
+                            }
                             return element.trimmingCharacters(in: .whitespaces)
                         }
                     }
