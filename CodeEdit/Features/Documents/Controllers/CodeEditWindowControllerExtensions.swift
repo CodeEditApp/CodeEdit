@@ -111,6 +111,31 @@ extension CodeEditWindowController {
             .isEmpty
         self.setDocumentEdited(hasEditedDocuments)
     }
+
+    @IBAction func openWorkspaceSettings(_ sender: Any) {
+        guard let workspaceSettings, let window = window, let workspace = workspace else {
+            return
+        }
+
+        if let workspaceSettingsWindow, workspaceSettingsWindow.isVisible {
+            workspaceSettingsWindow.makeKeyAndOrderFront(self)
+        } else {
+            let settingsWindow = NSWindow()
+            self.workspaceSettingsWindow = settingsWindow
+            let contentView = CEWorkspaceSettingsView(
+                settings: workspaceSettings,
+                window: settingsWindow,
+                workspace: workspace
+            )
+
+            settingsWindow.contentView = NSHostingView(rootView: contentView)
+            settingsWindow.titlebarAppearsTransparent = true
+            settingsWindow.setContentSize(NSSize(width: 515, height: 515))
+            settingsWindow.makeKeyAndOrderFront(self)
+
+            window.addCenteredChildWindow(settingsWindow, over: window)
+        }
+    }
 }
 
 extension NSToolbarItem.Identifier {

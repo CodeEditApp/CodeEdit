@@ -34,6 +34,7 @@ struct SourceControlNavigatorToolbarBottom: View {
                         : Color(nsColor: .controlAccentColor)
                     )
                     .padding(.leading, 4)
+                    .help("Filter Changes Navigator")
                 },
                 clearable: true
             )
