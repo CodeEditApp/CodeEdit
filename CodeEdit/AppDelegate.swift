@@ -16,6 +16,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     private var openWindow
 
     func applicationDidFinishLaunching(_ notification: Notification) {
+        setupServiceContainer()
         enableWindowSizeSaveOnQuit()
         Settings.shared.preferences.general.appAppearance.applyAppearance()
         checkForFilesToOpen()
@@ -229,6 +230,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     func documentController(_ docController: NSDocumentController, didCloseAll: Bool, contextInfo: Any) {
         NSApplication.shared.reply(toApplicationShouldTerminate: didCloseAll)
     }
+}
+
+/// Setup all the services into a ServiceContainer for the application to use.
+private func setupServiceContainer() {
+    // Example for how services will be instantiated
+//    ServiceContainer.register(
+//        PasteboardService()
+//    )
 }
 
 extension AppDelegate {

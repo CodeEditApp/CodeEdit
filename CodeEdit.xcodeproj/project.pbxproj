@@ -59,6 +59,9 @@
 		2B7AC06B282452FB0082A5B8 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B7AC06A282452FB0082A5B8 /* Media.xcassets */; };
 		2BE487EF28245162003F3F64 /* FinderSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE487EE28245162003F3F64 /* FinderSync.swift */; };
 		2BE487F428245162003F3F64 /* OpenWithCodeEdit.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 2BE487EC28245162003F3F64 /* OpenWithCodeEdit.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		300051672BBD3A5D00A98562 /* ServiceContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300051662BBD3A5D00A98562 /* ServiceContainer.swift */; };
+		3000516A2BBD3A8200A98562 /* ServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300051692BBD3A8200A98562 /* ServiceType.swift */; };
+		3000516C2BBD3A9500A98562 /* ServiceWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3000516B2BBD3A9500A98562 /* ServiceWrapper.swift */; };
 		3026F50F2AC006C80061227E /* InspectorAreaViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3026F50E2AC006C80061227E /* InspectorAreaViewModel.swift */; };
 		30E6D0012A6E505200A58B20 /* NavigatorSidebarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E6D0002A6E505200A58B20 /* NavigatorSidebarViewModel.swift */; };
 		3E0196732A3921AC002648D8 /* codeedit_shell_integration.zsh in Resources */ = {isa = PBXBuildFile; fileRef = 3E0196722A3921AC002648D8 /* codeedit_shell_integration.zsh */; };
@@ -618,6 +621,9 @@
 		2BE487EC28245162003F3F64 /* OpenWithCodeEdit.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OpenWithCodeEdit.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BE487EE28245162003F3F64 /* FinderSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderSync.swift; sourceTree = "<group>"; };
 		2BE487F028245162003F3F64 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		300051662BBD3A5D00A98562 /* ServiceContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceContainer.swift; sourceTree = "<group>"; };
+		300051692BBD3A8200A98562 /* ServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceType.swift; sourceTree = "<group>"; };
+		3000516B2BBD3A9500A98562 /* ServiceWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceWrapper.swift; sourceTree = "<group>"; };
 		3026F50E2AC006C80061227E /* InspectorAreaViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorAreaViewModel.swift; sourceTree = "<group>"; };
 		30E6D0002A6E505200A58B20 /* NavigatorSidebarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigatorSidebarViewModel.swift; sourceTree = "<group>"; };
 		3E0196722A3921AC002648D8 /* codeedit_shell_integration.zsh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = codeedit_shell_integration.zsh; sourceTree = "<group>"; };
@@ -1279,6 +1285,16 @@
 				2B15CA0028254139004E8F22 /* OpenWithCodeEdit.entitlements */,
 			);
 			path = OpenWithCodeEdit;
+			sourceTree = "<group>";
+		};
+		300051652BBD3A4400A98562 /* DependencyInjection */ = {
+			isa = PBXGroup;
+			children = (
+				300051662BBD3A5D00A98562 /* ServiceContainer.swift */,
+				300051692BBD3A8200A98562 /* ServiceType.swift */,
+				3000516B2BBD3A9500A98562 /* ServiceWrapper.swift */,
+			);
+			path = DependencyInjection;
 			sourceTree = "<group>";
 		};
 		3026F50B2AC006A10061227E /* ViewModels */ = {
@@ -2163,6 +2179,7 @@
 		58D01C85293167DC00C5B6B4 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				300051652BBD3A4400A98562 /* DependencyInjection */,
 				6C48D8EF2972DAC300D6D205 /* Environment */,
 				58D01C87293167DC00C5B6B4 /* Extensions */,
 				58D01C8F293167DC00C5B6B4 /* KeyChain */,
@@ -3284,6 +3301,7 @@
 				B65B11012B09D5D4002852CF /* GitClient+Pull.swift in Sources */,
 				2072FA13280D74ED00C7F8D4 /* HistoryInspectorModel.swift in Sources */,
 				852E62012A5C17E500447138 /* PageAndSettings.swift in Sources */,
+				3000516C2BBD3A9500A98562 /* ServiceWrapper.swift in Sources */,
 				77A01E1F2BB33FB500F0EA38 /* CEWorkspaceSettingsView.swift in Sources */,
 				587B9DA029300ABD00AC7927 /* PanelDivider.swift in Sources */,
 				58822534292C280D00E83CDE /* CursorLocation.swift in Sources */,
@@ -3509,6 +3527,7 @@
 				587B9E6329301D8F00AC7927 /* GitLabAccount.swift in Sources */,
 				6C1CC99B2B1E7CBC0002349B /* FindNavigatorIndexBar.swift in Sources */,
 				285FEC7027FE4B9800E57D53 /* ProjectNavigatorTableViewCell.swift in Sources */,
+				300051672BBD3A5D00A98562 /* ServiceContainer.swift in Sources */,
 				77A01E582BBD7ECE00F0EA38 /* AddCETaskView.swift in Sources */,
 				6CB9144B29BEC7F100BC47F2 /* (null) in Sources */,
 				587B9E7429301D8F00AC7927 /* URL+URLParameters.swift in Sources */,
@@ -3615,6 +3634,7 @@
 				58D01C97293167DC00C5B6B4 /* String+SHA256.swift in Sources */,
 				B6EA1FFD29DB792C001BF195 /* ThemeSettingsColorPreview.swift in Sources */,
 				2806E904297958B9000040F4 /* ContributorRowView.swift in Sources */,
+				3000516A2BBD3A8200A98562 /* ServiceType.swift in Sources */,
 				6C578D8C29CD372700DC73B2 /* ExtensionCommands.swift in Sources */,
 				77A01E272BB4249800F0EA38 /* CEWorkspaceSettingsData.swift in Sources */,
 				77A01E802BC5101200F0EA38 /* EnvironmentVariableListItem.swift in Sources */,
