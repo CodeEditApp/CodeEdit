@@ -114,7 +114,6 @@ struct EditorTabs: View {
             CGFloat(140)
         )
     }
-
     // Disable the rule because this function is implementing the drag gesture and its animations.
     // It is fairly complicated, so ignore the function body length limitation for now.
     // swiftlint:disable function_body_length cyclomatic_complexity
