@@ -704,6 +704,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "knotbin",
+      "name": "Roscoe Rubin-Rottenberg",
+      "avatar_url": "https://avatars.githubusercontent.com/u/118622417?v=4",
+      "profile": "http://knotbin.xyz",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
