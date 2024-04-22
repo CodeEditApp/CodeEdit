@@ -64,7 +64,6 @@ struct NavigateCommands: Commands {
                     editor?.goBackInHistory()
                 }
                 .disabled(!(editor?.canGoBackInHistory ?? false))
-                
             }
             .disabled(editor == nil)
         }
