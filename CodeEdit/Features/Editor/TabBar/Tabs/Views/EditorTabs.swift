@@ -273,17 +273,6 @@ struct EditorTabs: View {
             }
         }
     }
-    private func selectNextTab() {
-        guard let currentIndex = openedTabs.firstIndex(of: editor.selectedTab?.file.id ?? "") else { return }
-        let nextIndex = (currentIndex + 1) % openedTabs.count // Wraps around to the first tab if it's the last one
-        editor.selectedTab = editor.tabs.first { $0.file.id == openedTabs[nextIndex] }
-    }
-
-    private func selectPreviousTab() {
-        guard let currentIndex = openedTabs.firstIndex(of: editor.selectedTab?.file.id ?? ""), !openedTabs.isEmpty else { return }
-        let previousIndex = (currentIndex - 1 + openedTabs.count) % openedTabs.count // Wraps around to the last tab if it's the first one
-        editor.selectedTab = editor.tabs.first { $0.file.id == openedTabs[previousIndex] }
-    }
 
     // swiftlint:enable function_body_length cyclomatic_complexity
 
@@ -398,17 +387,6 @@ struct EditorTabs: View {
                         EditorTabBarNativeInactiveBackground()
                     }
                 }
-                // keyboard shortcuts to go to next and previous tabs
-                Button(action: selectNextTab) {
-                    EmptyView()
-                }
-                .hidden()
-                .keyboardShortcut("]", modifiers: [.command, .shift])
-                Button(action: selectPreviousTab) {
-                    EmptyView()
-                }
-                .hidden()
-                .keyboardShortcut("[", modifiers: [.command, .shift])
             }
             .background {
                 if tabBarStyle == .native {
@@ -436,7 +414,6 @@ struct EditorTabs: View {
                 }
             }
         }
-        
     }
 
     private struct EditorTabOnDropDelegate: DropDelegate {
