@@ -28,19 +28,6 @@ struct RecentProjectsListView: View {
         _recentProjects = .init(initialValue: projectsURL)
         donateSearchableItems()
     }
-    func donateSearchableItems() {
-        let searchableItems = recentProjects.map { entity -> CSSearchableItem in
-            let attributeSet = CSSearchableItemAttributeSet(contentType: .content)
-            attributeSet.title = String(entity.lastPathComponent)
-            attributeSet.relatedUniqueIdentifier = String(entity.path())
-            return CSSearchableItem(
-                uniqueIdentifier: String(entity.path()),
-                domainIdentifier: "app.codeedit.CodeEdit.ProjectItem",
-                attributeSet: attributeSet
-            )
-        }
-        CSSearchableIndex.default().indexSearchableItems(searchableItems)
-    }
 
     var listEmptyView: some View {
         VStack {
@@ -132,5 +119,19 @@ struct RecentProjectsListView: View {
         ) as? [String] ?? []
         let projectsURL = recentProjectPaths.map { URL(filePath: $0) }
         recentProjects = projectsURL
+    }
+    
+    func donateSearchableItems() {
+        let searchableItems = recentProjects.map { entity -> CSSearchableItem in
+            let attributeSet = CSSearchableItemAttributeSet(contentType: .content)
+            attributeSet.title = String(entity.lastPathComponent)
+            attributeSet.relatedUniqueIdentifier = String(entity.path())
+            return CSSearchableItem(
+                uniqueIdentifier: String(entity.path()),
+                domainIdentifier: "app.codeedit.CodeEdit.ProjectItem",
+                attributeSet: attributeSet
+            )
+        }
+        CSSearchableIndex.default().indexSearchableItems(searchableItems)
     }
 }
