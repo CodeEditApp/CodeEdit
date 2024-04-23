@@ -120,7 +120,7 @@ struct RecentProjectsListView: View {
         let projectsURL = recentProjectPaths.map { URL(filePath: $0) }
         recentProjects = projectsURL
     }
-    
+
     func donateSearchableItems() {
         let searchableItems = recentProjects.map { entity in
             let attributeSet = CSSearchableItemAttributeSet(contentType: .content)
