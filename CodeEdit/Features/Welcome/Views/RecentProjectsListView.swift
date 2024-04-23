@@ -120,9 +120,8 @@ struct RecentProjectsListView: View {
         let projectsURL = recentProjectPaths.map { URL(filePath: $0) }
         recentProjects = projectsURL
     }
-    
-    func donateSearchableItems() {
-        let searchableItems = recentProjects.map { entity -> CSSearchableItem in
+    public func donateSearchableItems() {
+        let searchableItems = recentProjects.map { entity in
             let attributeSet = CSSearchableItemAttributeSet(contentType: .content)
             attributeSet.title = entity.lastPathComponent
             attributeSet.relatedUniqueIdentifier = entity.path()
@@ -138,7 +137,6 @@ struct RecentProjectsListView: View {
             } else {
                 print("Successfully indexed")
             }
-            
         }
     }
 }
