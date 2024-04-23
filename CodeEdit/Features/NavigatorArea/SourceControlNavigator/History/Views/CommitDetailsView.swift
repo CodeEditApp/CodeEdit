@@ -41,7 +41,6 @@ struct CommitDetailsView: View {
 
             if let commit = commit {
                 CommitDetailsHeaderView(commit: commit)
-                    .padding(.horizontal, 16)
                     .padding(.vertical, 16)
                 Divider()
 
