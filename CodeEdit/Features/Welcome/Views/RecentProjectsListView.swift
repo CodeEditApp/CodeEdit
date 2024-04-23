@@ -124,14 +124,21 @@ struct RecentProjectsListView: View {
     func donateSearchableItems() {
         let searchableItems = recentProjects.map { entity -> CSSearchableItem in
             let attributeSet = CSSearchableItemAttributeSet(contentType: .content)
-            attributeSet.title = String(entity.lastPathComponent)
-            attributeSet.relatedUniqueIdentifier = String(entity.path())
+            attributeSet.title = entity.lastPathComponent
+            attributeSet.relatedUniqueIdentifier = entity.path()
             return CSSearchableItem(
-                uniqueIdentifier: String(entity.path()),
+                uniqueIdentifier: entity.path(),
                 domainIdentifier: "app.codeedit.CodeEdit.ProjectItem",
                 attributeSet: attributeSet
             )
         }
-        CSSearchableIndex.default().indexSearchableItems(searchableItems)
+        CSSearchableIndex.default().indexSearchableItems(searchableItems) { error in
+            if let error = error {
+                print(error)
+            } else {
+                print("Successfully indexed")
+            }
+            
+        }
     }
 }
