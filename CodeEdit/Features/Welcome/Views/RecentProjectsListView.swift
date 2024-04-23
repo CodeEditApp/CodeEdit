@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreSpotlight
 
 struct RecentProjectsListView: View {
 
@@ -25,6 +26,20 @@ struct RecentProjectsListView: View {
         let projectsURL = recentProjectPaths.map { URL(filePath: $0) }
         _selection = .init(initialValue: Set(projectsURL.prefix(1)))
         _recentProjects = .init(initialValue: projectsURL)
+        donateSearchableItems()
+    }
+    func donateSearchableItems() {
+        let searchableItems = recentProjects.map { entity -> CSSearchableItem in
+            let attributeSet = CSSearchableItemAttributeSet(contentType: .content)
+            attributeSet.title = String(entity.lastPathComponent)
+            attributeSet.relatedUniqueIdentifier = String(entity.path())
+            return CSSearchableItem(
+                uniqueIdentifier: String(entity.path()),
+                domainIdentifier: "app.codeedit.CodeEdit.ProjectItem",
+                attributeSet: attributeSet
+            )
+        }
+        CSSearchableIndex.default().indexSearchableItems(searchableItems)
     }
 
     var listEmptyView: some View {
