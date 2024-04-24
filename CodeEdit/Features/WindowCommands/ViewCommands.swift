@@ -41,6 +41,7 @@ struct ViewCommands: Commands {
     }
 
     var body: some Commands {
+
         CommandGroup(after: .toolbar) {
             Button("Show Command Palette") {
                 NSApp.sendAction(#selector(CodeEditWindowController.openCommandPalette(_:)), to: nil, from: nil)
@@ -94,6 +95,7 @@ struct ViewCommands: Commands {
                 windowController = window?.windowController as? CodeEditWindowController
             }
 
+
             Button("\(inspectorCollapsed ? "Show" : "Hide") Inspector") {
                 windowController?.toggleLastPanel()
             }
@@ -106,17 +108,17 @@ struct ViewCommands: Commands {
             .disabled(windowController == nil)
             .keyboardShortcut("y", modifiers: [.shift, .command])
 
+            Button("\(navigatorCollapsed ? "Show" : "Hide") Toolbar") {
+                windowController?.toggleToolbar()
+            }
+            .disabled(windowController == nil)
+            .keyboardShortcut("t", modifiers: [.option, .command])
+
             Divider()
 
             Button("\(showEditorPathBar ? "Hide" : "Show") Path Bar") {
                 showEditorPathBar.toggle()
             }
-
-            Button("\(toolbarCollapsed ? "Show" : "Hide") Toolbar") {
-                windowController?.toggleToolbar()
-                print(toolbarCollapsed)
-            }
-            .keyboardShortcut("t", modifiers: [.option, .command])
 
             Toggle("Dim editors without focus", isOn: $dimEditorsWithoutFocus)
 
