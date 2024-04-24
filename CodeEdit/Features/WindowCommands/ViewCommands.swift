@@ -36,6 +36,10 @@ struct ViewCommands: Commands {
         windowController?.navigatorCollapsed ?? false
     }
 
+    var toolbarCollapsed: Bool {
+        windowController?.toolbarCollapsed ?? false
+    }
+
     var body: some Commands {
         CommandGroup(after: .toolbar) {
             Button("Show Command Palette") {
@@ -107,6 +111,12 @@ struct ViewCommands: Commands {
             Button("\(showEditorPathBar ? "Hide" : "Show") Path Bar") {
                 showEditorPathBar.toggle()
             }
+
+            Button("\(toolbarCollapsed ? "Show" : "Hide") Toolbar") {
+                windowController?.toggleToolbar()
+                print(toolbarCollapsed)
+            }
+            .keyboardShortcut("t", modifiers: [.option, .command])
 
             Toggle("Dim editors without focus", isOn: $dimEditorsWithoutFocus)
 

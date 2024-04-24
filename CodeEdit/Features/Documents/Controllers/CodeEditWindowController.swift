@@ -14,6 +14,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
 
     @Published var navigatorCollapsed = false
     @Published var inspectorCollapsed = false
+    @Published var toolbarCollapsed = false
 
     var observers: [NSKeyValueObservation] = []
 
@@ -31,9 +32,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
     init(window: NSWindow, workspace: WorkspaceDocument) {
         super.init(window: window)
         self.workspace = workspace
-        self.workspaceSettings = CEWorkspaceSettings(
-            workspaceDocument: workspace
-        )
+        self.workspaceSettings = CEWorkspaceSettings(workspaceDocument: workspace)
         setupSplitView(with: workspace)
 
         let view = CodeEditSplitView(controller: splitViewController).ignoresSafeArea()
@@ -55,14 +54,10 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         registerCommands()
     }
 
-    deinit {
-        cancellables.forEach({ $0.cancel() })
-    }
+    deinit { cancellables.forEach({ $0.cancel() }) }
 
     @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
     private func setupSplitView(with workspace: WorkspaceDocument) {
         let feedbackPerformer = NSHapticFeedbackManager.defaultPerformer
@@ -126,24 +121,22 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         toolbar.delegate = self
         toolbar.displayMode = .labelOnly
         toolbar.showsBaselineSeparator = false
-        self.window?.titleVisibility = .hidden
+        self.window?.titleVisibility = toolbarCollapsed ? .visible : .hidden
         self.window?.toolbarStyle = .unifiedCompact
         if Settings[\.general].tabBarStyle == .native {
             // Set titlebar background as transparent by default in order to
             // style the toolbar background in native tab bar style.
             self.window?.titlebarSeparatorStyle = .none
-        } else {
-            // In Xcode tab bar style, we use default toolbar background with
-            // line separator.
-            self.window?.titlebarSeparatorStyle = .automatic
-        }
+        } else { self.window?.titlebarSeparatorStyle = .automatic }
+        // In Xcode tab bar style, we use default toolbar background with
+        // line separator.
         self.window?.toolbar = toolbar
     }
 
     // MARK: - Toolbar
 
     func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
-        [
+        return [
             .toggleFirstSidebarItem,
             .sidebarTrackingSeparator,
             .branchPicker,
@@ -165,6 +158,22 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         ]
     }
 
+    func toggleToolbar() {
+        toolbarCollapsed.toggle()
+        updateToolbarVisibility()
+    }
+
+    private func updateToolbarVisibility() {
+        if toolbarCollapsed {
+            window?.titleVisibility = .visible
+            window?.title = workspace?.workspaceFileManager?.folderUrl.lastPathComponent ?? "Empty"
+            window?.toolbar = nil
+        } else {
+            window?.titleVisibility = .hidden
+            setupToolbar()
+        }
+    }
+
     func toolbar(
         _ toolbar: NSToolbar,
         itemForItemIdentifier itemIdentifier: NSToolbarItem.Identifier,
@@ -172,9 +181,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
     ) -> NSToolbarItem? {
         switch itemIdentifier {
         case .itemListTrackingSeparator:
-            guard let splitViewController else {
-                return nil
-            }
+            guard let splitViewController else { return nil }
 
             return NSTrackingSeparatorToolbarItem(
                 identifier: .itemListTrackingSeparator,
@@ -212,13 +219,12 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         case .branchPicker:
             let toolbarItem = NSToolbarItem(itemIdentifier: .branchPicker)
             let view = NSHostingView(
-                rootView: ToolbarBranchPicker(
-                    workspaceFileManager: workspace?.workspaceFileManager
-                )
+                rootView: ToolbarBranchPicker(workspaceFileManager: workspace?.workspaceFileManager)
             )
             toolbarItem.view = view
 
             return toolbarItem
+
         default:
             return NSToolbarItem(itemIdentifier: itemIdentifier)
         }
