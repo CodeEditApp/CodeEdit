@@ -95,7 +95,6 @@ struct ViewCommands: Commands {
                 windowController = window?.windowController as? CodeEditWindowController
             }
 
-
             Button("\(inspectorCollapsed ? "Show" : "Hide") Inspector") {
                 windowController?.toggleLastPanel()
             }
