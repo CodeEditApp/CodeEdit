@@ -3854,7 +3854,7 @@
 				SDKROOT = macosx;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				SYSTEM_FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_SDK_DIR)/MacOSX.sdk/System/Library/PrivateFrameworks";
+				SYSTEM_FRAMEWORK_SEARCH_PATHS = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Alpha;
@@ -4044,7 +4044,7 @@
 				SDKROOT = macosx;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				SYSTEM_FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_SDK_DIR)/MacOSX.sdk/System/Library/PrivateFrameworks";
+				SYSTEM_FRAMEWORK_SEARCH_PATHS = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Beta;
@@ -4301,7 +4301,7 @@
 				SDKROOT = macosx;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				SYSTEM_FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_SDK_DIR)/MacOSX.sdk/System/Library/PrivateFrameworks";
+				SYSTEM_FRAMEWORK_SEARCH_PATHS = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Pre;
@@ -4498,7 +4498,7 @@
 				SDKROOT = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SYSTEM_FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_SDK_DIR)/MacOSX.sdk/System/Library/PrivateFrameworks";
+				SYSTEM_FRAMEWORK_SEARCH_PATHS = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -4560,7 +4560,7 @@
 				SDKROOT = macosx;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				SYSTEM_FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_SDK_DIR)/MacOSX.sdk/System/Library/PrivateFrameworks";
+				SYSTEM_FRAMEWORK_SEARCH_PATHS = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
@@ -4880,7 +4880,7 @@
 			repositoryURL = "https://github.com/CodeEditApp/LogStream";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
+				minimumVersion = 1.3.0;
 			};
 		};
 		6C66C31129D05CC800DE9ED2 /* XCRemoteSwiftPackageReference "GRDB.swift" */ = {

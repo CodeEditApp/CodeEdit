@@ -87,8 +87,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CodeEditApp/LogStream",
       "state" : {
-        "revision" : "afd2422c65c12822f26606408b4e39b9549c5e1a",
-        "version" : "1.2.1"
+        "revision" : "5378bafdbf5de66b69da8cca9df9d16e19bfcf89",
+        "version" : "1.3.0"
       }
     },
     {
