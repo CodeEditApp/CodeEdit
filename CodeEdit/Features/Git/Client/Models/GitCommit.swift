@@ -17,6 +17,9 @@ struct GitCommit: Equatable, Hashable, Identifiable {
     let authorEmail: String
     let committer: String
     let committerEmail: String
+    let body: String
+    let refs: [String]
+    let tag: String
     let remoteURL: URL?
     let date: Date
 
