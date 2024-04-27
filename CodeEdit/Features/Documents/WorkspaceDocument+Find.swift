@@ -15,7 +15,6 @@ extension WorkspaceDocument.SearchState {
     /// - Returns: A modified search term according to the specified search mode.
     func getSearchTerm(_ query: String) -> String {
         let newQuery = stripSpecialCharacters(from: (caseSensitive ? query : query.lowercased()))
-//        let newQuery = caseSensitive ? query : query.lowercased()
         guard let mode = selectedMode.third else {
             return newQuery
         }
@@ -53,7 +52,8 @@ extension WorkspaceDocument.SearchState {
     /// Except its using the word boundary anchor(\b) instead of the asterisk(\*).
     /// This is needed to highlight the search results correctly.
     func getRegexPattern(_ query: String) -> String {
-        let newQuery = query.trimmingCharacters(in: .whitespacesAndNewlines)
+        let newQuery = NSRegularExpression.escapedPattern(for: query.trimmingCharacters(in: .whitespacesAndNewlines))
+
         guard let mode = selectedMode.third else {
             return newQuery
         }
@@ -185,15 +185,10 @@ extension WorkspaceDocument.SearchState {
             return
         }
 
-        var options: NSRegularExpression.Options = [.ignoreMetacharacters]
-        if !caseSensitive {
-            options.insert(.caseInsensitive)
-        }
-
         // Attempt to create a regular expression from the provided query
         guard let regex = try? NSRegularExpression(
             pattern: query,
-            options: options
+            options: caseSensitive ? [] : .caseInsensitive
         ) else {
             await setStatus(.failed(errorMessage: "Invalid regular expression."))
             return
