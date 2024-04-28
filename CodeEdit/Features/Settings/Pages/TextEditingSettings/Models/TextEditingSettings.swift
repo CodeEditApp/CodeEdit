@@ -42,9 +42,6 @@ extension SettingsData {
         /// A flag indicating whether type-over completion is enabled
         var enableTypeOverCompletion: Bool = true
 
-        /// A flag indicating whether braces are automatically completed
-        var autocompleteBraces: Bool = true
-
         /// A flag indicating whether to wrap lines to editor width
         var wrapLinesToEditorWidth: Bool = true
 
@@ -76,10 +73,6 @@ extension SettingsData {
                 Bool.self,
                 forKey: .enableTypeOverCompletion
             ) ?? true
-            self.autocompleteBraces = try container.decodeIfPresent(
-                Bool.self,
-                forKey: .autocompleteBraces
-            ) ?? true
             self.wrapLinesToEditorWidth = try container.decodeIfPresent(
                 Bool.self,
                 forKey: .wrapLinesToEditorWidth
@@ -110,15 +103,6 @@ extension SettingsData {
                 id: "prefs.text_editing.type_over_completion",
                 command: CommandClosureWrapper {
                     Settings.shared.preferences.textEditing.enableTypeOverCompletion.toggle()
-                }
-            )
-
-            mgr.addCommand(
-                name: "Toggle Autocomplete Braces",
-                title: "Toggle Autocomplete Braces",
-                id: "prefs.text_editing.autocomplete_braces",
-                command: CommandClosureWrapper {
-                    Settings.shared.preferences.textEditing.autocompleteBraces.toggle()
                 }
             )
 

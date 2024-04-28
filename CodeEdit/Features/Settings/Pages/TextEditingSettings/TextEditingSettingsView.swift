@@ -26,7 +26,6 @@ struct TextEditingSettingsView: View {
                 letterSpacing
             }
             Section {
-                autocompleteBraces
                 enableTypeOverCompletion
             }
             Section {
@@ -49,13 +48,6 @@ private extension TextEditingSettingsView {
             step: 1,
             format: .number
         )
-    }
-
-    @ViewBuilder private var autocompleteBraces: some View {
-        Toggle(isOn: $textEditing.autocompleteBraces) {
-            Text("Autocomplete braces")
-            Text("Automatically insert closing braces (\"}\")")
-        }
     }
 
     @ViewBuilder private var enableTypeOverCompletion: some View {
