@@ -47,9 +47,9 @@ final class FindTests: XCTestCase {
 
         for index in 0..<fileURLs.count {
             if index % 2 == 0 {
-                try String("Loren Ipsum").write(to: fileURLs[index], atomically: true, encoding: .utf8)
+                try String("Loren Ipsum.").write(to: fileURLs[index], atomically: true, encoding: .utf8)
             } else {
-                try String("Aperiam asperiores").write(to: fileURLs[index], atomically: true, encoding: .utf8)
+                try String("Aperiam*asperiores").write(to: fileURLs[index], atomically: true, encoding: .utf8)
             }
         }
 
@@ -87,6 +87,52 @@ final class FindTests: XCTestCase {
     /// The mock directory along with the mock files will be removed
     override func tearDown() async throws {
         try? FileManager.default.removeItem(at: directory)
+    }
+
+    func testGetSearchTerm() {
+        let query = "test*/Quer@#y"
+
+        searchState.selectedMode[2] = .Containing
+        XCTAssertEqual(searchState.getSearchTerm(query), "*test*quer*y*")
+
+        searchState.selectedMode[2] = .StartingWith
+        XCTAssertEqual(searchState.getSearchTerm(query), "test*quer*y*")
+
+        searchState.selectedMode[2] = .EndingWith
+        XCTAssertEqual(searchState.getSearchTerm(query), "*test*quer*y")
+
+        searchState.selectedMode[2] = .MatchingWord
+        XCTAssertEqual(searchState.getSearchTerm(query), "test*quer*y")
+
+        searchState.caseSensitive = true
+        XCTAssertEqual(searchState.getSearchTerm(query), "test*Quer*y")
+    }
+
+    func testStripSpecialCharacters() {
+        let string = "test!@#Query"
+        let strippedString = searchState.stripSpecialCharacters(from: string)
+        XCTAssertEqual(strippedString, "test*Query")
+    }
+
+    func testGetRegexPattern() {
+        let query = "@(test. !*#Query"
+
+        searchState.selectedMode[2] = .Containing
+        XCTAssertEqual(searchState.getRegexPattern(query), "@\\(test\\. !\\*#Query")
+
+        searchState.selectedMode[2] = .StartingWith
+        XCTAssertEqual(searchState.getRegexPattern(query), "\\b@\\(test\\. !\\*#Query")
+
+        searchState.selectedMode[2] = .EndingWith
+        XCTAssertEqual(searchState.getRegexPattern(query), "@\\(test\\. !\\*#Query\\b")
+
+        searchState.selectedMode[2] = .MatchingWord
+        XCTAssertEqual(searchState.getRegexPattern(query), "\\b@\\(test\\. !\\*#Query\\b")
+
+        // Enabling case sensitivity shouldn't affect the regex pattern because if case sensitivity is enabled,
+        // `NSRegularExpression.Options.caseInsensitive` is passed to `NSRegularExpression`.
+        searchState.caseSensitive = true
+        XCTAssertEqual(searchState.getRegexPattern(query), "\\b@\\(test\\. !\\*#Query\\b")
     }
 
     /// Tests the search functionality of the `WorkspaceDocument.SearchState` and `SearchIndexer`.
