@@ -87,15 +87,8 @@ final class EditorLayoutViewTests: XCTestCase {
             .environmentObject(mockWorkspace)
             .environmentObject(EditorManager())
 
-        var hosting = NSHostingView(rootView: view.preferredColorScheme(.light))
-        hosting.appearance = .init(named: .aqua)
-        hosting.frame = CGRect(origin: .zero, size: .init(width: 600, height: 150))
-        assertSnapshot(of: hosting, as: .image(perceptualPrecision: 0.7), named: "Light")
-
-        hosting = NSHostingView(rootView: view.preferredColorScheme(.dark))
-        hosting.appearance = .init(named: .darkAqua)
-        hosting.frame = CGRect(origin: .zero, size: .init(width: 600, height: 150))
-        assertSnapshot(of: hosting, as: .image(perceptualPrecision: 0.7), named: "Dark")
+        snapshot(view: view, named: "Light", size: .init(width: 600, height: 150), appearance: .light)
+        snapshot(view: view, named: "Dark", size: .init(width: 600, height: 150), appearance: .dark)
     }
 
     func testSplitEditorVertical() {
@@ -109,15 +102,8 @@ final class EditorLayoutViewTests: XCTestCase {
             .environmentObject(mockWorkspace)
             .environmentObject(EditorManager())
 
-        var hosting = NSHostingView(rootView: view.preferredColorScheme(.light))
-        hosting.appearance = .init(named: .aqua)
-        hosting.frame = CGRect(origin: .zero, size: .init(width: 300, height: 400))
-        assertSnapshot(of: hosting, as: .image(perceptualPrecision: 0.7), named: "Light")
-
-        hosting = NSHostingView(rootView: view.preferredColorScheme(.dark))
-        hosting.appearance = .init(named: .darkAqua)
-        hosting.frame = CGRect(origin: .zero, size: .init(width: 300, height: 400))
-        assertSnapshot(of: hosting, as: .image(perceptualPrecision: 0.7), named: "Dark")
+        snapshot(view: view, named: "Light", size: .init(width: 300, height: 400), appearance: .light)
+        snapshot(view: view, named: "Dark", size: .init(width: 300, height: 400), appearance: .dark)
     }
 
     // MARK: - Split Editor Single Selection
@@ -133,15 +119,8 @@ final class EditorLayoutViewTests: XCTestCase {
             .environmentObject(mockWorkspace)
             .environmentObject(EditorManager())
 
-        var hosting = NSHostingView(rootView: view.preferredColorScheme(.light))
-        hosting.appearance = .init(named: .aqua)
-        hosting.frame = CGRect(origin: .zero, size: .init(width: 800, height: 800))
-        assertSnapshot(of: hosting, as: .image(perceptualPrecision: 0.7), named: "Light")
-
-        hosting = NSHostingView(rootView: view.preferredColorScheme(.dark))
-        hosting.appearance = .init(named: .darkAqua)
-        hosting.frame = CGRect(origin: .zero, size: .init(width: 800, height: 800))
-        assertSnapshot(of: hosting, as: .image(perceptualPrecision: 0.7), named: "Dark")
+        snapshot(view: view, named: "Light", size: .init(width: 800, height: 800), appearance: .light)
+        snapshot(view: view, named: "Dark", size: .init(width: 800, height: 800), appearance: .dark)
     }
 
     func testSplitEditorVerticalSingleTab() {
@@ -155,15 +134,8 @@ final class EditorLayoutViewTests: XCTestCase {
             .environmentObject(mockWorkspace)
             .environmentObject(EditorManager())
 
-        var hosting = NSHostingView(rootView: view.preferredColorScheme(.light))
-        hosting.appearance = .init(named: .aqua)
-        hosting.frame = CGRect(origin: .zero, size: .init(width: 800, height: 800))
-        assertSnapshot(of: hosting, as: .image(perceptualPrecision: 0.7), named: "Light")
-
-        hosting = NSHostingView(rootView: view.preferredColorScheme(.dark))
-        hosting.appearance = .init(named: .darkAqua)
-        hosting.frame = CGRect(origin: .zero, size: .init(width: 800, height: 800))
-        assertSnapshot(of: hosting, as: .image(perceptualPrecision: 0.7), named: "Dark")
+        snapshot(view: view, named: "Light", size: .init(width: 800, height: 800), appearance: .light)
+        snapshot(view: view, named: "Dark", size: .init(width: 800, height: 800), appearance: .dark)
     }
 
     // MARK: - Split Editor Multiple Tabs
@@ -179,15 +151,8 @@ final class EditorLayoutViewTests: XCTestCase {
             .environmentObject(mockWorkspace)
             .environmentObject(EditorManager())
 
-        var hosting = NSHostingView(rootView: view.preferredColorScheme(.light))
-        hosting.appearance = .init(named: .aqua)
-        hosting.frame = CGRect(origin: .zero, size: .init(width: 800, height: 800))
-        assertSnapshot(of: hosting, as: .image(perceptualPrecision: 0.7), named: "Light")
-
-        hosting = NSHostingView(rootView: view.preferredColorScheme(.dark))
-        hosting.appearance = .init(named: .darkAqua)
-        hosting.frame = CGRect(origin: .zero, size: .init(width: 800, height: 800))
-        assertSnapshot(of: hosting, as: .image(perceptualPrecision: 0.7), named: "Dark")
+        snapshot(view: view, named: "Light", size: .init(width: 800, height: 800), appearance: .light)
+        snapshot(view: view, named: "Dark", size: .init(width: 800, height: 800), appearance: .dark)
     }
 
     func testSplitEditorVerticalMultipleTab() {
@@ -201,15 +166,7 @@ final class EditorLayoutViewTests: XCTestCase {
             .environmentObject(mockWorkspace)
             .environmentObject(EditorManager())
 
-        var hosting = NSHostingView(rootView: view.preferredColorScheme(.light))
-        hosting.appearance = .init(named: .aqua)
-        hosting.frame = CGRect(origin: .zero, size: .init(width: 800, height: 800))
-        assertSnapshot(of: hosting, as: .image(perceptualPrecision: 0.7), named: "Light")
-
-        hosting = NSHostingView(rootView: view.preferredColorScheme(.dark))
-        hosting.appearance = .init(named: .darkAqua)
-        hosting.frame = CGRect(origin: .zero, size: .init(width: 800, height: 800))
-        assertSnapshot(of: hosting, as: .image(perceptualPrecision: 0.7), named: "Dark")
+        snapshot(view: view, named: "Light", size: .init(width: 800, height: 800), appearance: .light)
+        snapshot(view: view, named: "Dark", size: .init(width: 800, height: 800), appearance: .dark)
     }
-
 }

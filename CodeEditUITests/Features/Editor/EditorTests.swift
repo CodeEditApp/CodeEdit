@@ -50,7 +50,7 @@ final class EditorTests: XCTestCase {
         XCTAssertTrue(splitGroupsQuery.groups.containing(.button, identifier: "Split Horizontally").buttons["Close this Editor"].exists)
         assertSnapshot(
             of: editorAreaQuery.normalizedScreenshot(),
-            as: .image(perceptualPrecision: 0.98),
+            as: .image,
             named: "All Splits"
         )
 
@@ -60,7 +60,7 @@ final class EditorTests: XCTestCase {
         XCTAssertTrue(splitGroupsQuery.groups.splitGroups.groups.element(boundBy: 1).buttons["Close this Editor"].exists)
         assertSnapshot(
             of: editorAreaQuery.normalizedScreenshot(),
-            as: .image(perceptualPrecision: 0.98),
+            as: .image,
             named: "One Split"
         )
 
@@ -70,7 +70,7 @@ final class EditorTests: XCTestCase {
         // Assert that the editor is the same after closing all splits
         assertSnapshot(
             of: editorAreaQuery.normalizedScreenshot(),
-            as: .image(perceptualPrecision: 0.98),
+            as: .image,
             named: "No Splits"
         )
 
@@ -87,7 +87,7 @@ final class EditorTests: XCTestCase {
         XCTAssertTrue(window.buttons["Unfocus this Editor"].exists)
         assertSnapshot(
             of: editorAreaQuery.normalizedScreenshot(),
-            as: .image(perceptualPrecision: 0.98),
+            as: .image,
             named: "Focused Editor"
         )
 
@@ -97,7 +97,7 @@ final class EditorTests: XCTestCase {
 
         assertSnapshot(
             of: editorAreaQuery.normalizedScreenshot(),
-            as: .image(perceptualPrecision: 0.98),
+            as: .image,
             named: "No Splits"
         )
     }

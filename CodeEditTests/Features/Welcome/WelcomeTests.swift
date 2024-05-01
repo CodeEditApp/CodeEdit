@@ -19,7 +19,7 @@ final class WelcomeModuleUnitTests: XCTestCase {
         let hosting = NSHostingView(rootView: view)
         hosting.appearance = .init(named: .aqua)
         hosting.frame = CGRect(x: 0, y: 0, width: 300, height: 60)
-        assertSnapshot(matching: hosting, as: .image(perceptualPrecision: 0.7))
+        assertSnapshot(matching: hosting, as: .image)
     }
 
     func testRecentProjectItemDarkSnapshot() throws {
@@ -28,7 +28,7 @@ final class WelcomeModuleUnitTests: XCTestCase {
         let hosting = NSHostingView(rootView: view)
         hosting.appearance = .init(named: .darkAqua)
         hosting.frame = CGRect(x: 0, y: 0, width: 300, height: 60)
-        assertSnapshot(matching: hosting, as: .image(perceptualPrecision: 0.7))
+        assertSnapshot(matching: hosting, as: .image)
     }
 
     func testRecentJSFileLightSnapshot() throws {
@@ -37,7 +37,7 @@ final class WelcomeModuleUnitTests: XCTestCase {
         let hosting = NSHostingView(rootView: view)
         hosting.appearance = .init(named: .aqua)
         hosting.frame = CGRect(x: 0, y: 0, width: 300, height: 60)
-        assertSnapshot(matching: hosting, as: .image(perceptualPrecision: 0.7))
+        assertSnapshot(matching: hosting, as: .image)
     }
 
     func testRecentJSFileDarkSnapshot() throws {
@@ -46,7 +46,7 @@ final class WelcomeModuleUnitTests: XCTestCase {
         let hosting = NSHostingView(rootView: view)
         hosting.appearance = .init(named: .darkAqua)
         hosting.frame = CGRect(x: 0, y: 0, width: 300, height: 60)
-        assertSnapshot(matching: hosting, as: .image(perceptualPrecision: 0.7))
+        assertSnapshot(matching: hosting, as: .image)
     }
 
     func testWelcomeActionViewLightSnapshot() throws {
@@ -58,7 +58,7 @@ final class WelcomeModuleUnitTests: XCTestCase {
         let hosting = NSHostingView(rootView: view)
         hosting.appearance = .init(named: .aqua)
         hosting.frame = CGRect(x: 0, y: 0, width: 300, height: 60)
-        assertSnapshot(matching: hosting, as: .image(perceptualPrecision: 0.7))
+        assertSnapshot(matching: hosting, as: .image)
     }
 
     func testWelcomeActionViewDarkSnapshot() throws {
@@ -70,6 +70,6 @@ final class WelcomeModuleUnitTests: XCTestCase {
         let hosting = NSHostingView(rootView: view)
         hosting.appearance = .init(named: .darkAqua)
         hosting.frame = CGRect(x: 0, y: 0, width: 300, height: 60)
-        assertSnapshot(matching: hosting, as: .image(perceptualPrecision: 0.7))
+        assertSnapshot(matching: hosting, as: .image)
     }
 }
