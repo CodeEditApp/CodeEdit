@@ -50,7 +50,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
                 self?.navigatorCollapsed = item.isCollapsed
             }),
             splitViewController.splitViewItems.last!.observe(\.isCollapsed, changeHandler: { [weak self] item, _ in
-                self?.navigatorCollapsed = item.isCollapsed
+                self?.inspectorCollapsed = item.isCollapsed
             })
         ]
 

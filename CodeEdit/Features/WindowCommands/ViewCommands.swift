@@ -20,7 +20,6 @@ struct ViewCommands: Commands {
     @State private var windowController: CodeEditWindowController?
 
     private let documentController: CodeEditDocumentController = CodeEditDocumentController()
-    private let statusBarViewModel: UtilityAreaViewModel = UtilityAreaViewModel()
 
     @FocusedBinding(\.navigationSplitViewVisibility)
     var navigationSplitViewVisibility
@@ -107,6 +106,11 @@ struct HideCommands: View {
         windowController.inspectorCollapsed
     }
 
+    var utilityAreaCollapsed: Bool {
+        // TODO: compute the state of utility area independently of inspector
+        windowController.inspectorCollapsed
+    }
+
     var toolbarCollapsed: Bool {
         windowController.toolbarCollapsed
     }
@@ -124,7 +128,7 @@ struct HideCommands: View {
         .disabled(windowController.window == nil)
         .keyboardShortcut("i", modifiers: [.control, .command])
 
-        Button("\(inspectorCollapsed ? "Show" : "Hide") Utility Area") {
+        Button("\(utilityAreaCollapsed ? "Show" : "Hide") Utility Area") {
             CommandManager.shared.executeCommand("open.drawer")
         }
         .disabled(windowController.window == nil)
