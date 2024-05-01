@@ -25,14 +25,22 @@ extension GitClient {
         if let branchName { branchNameString = "--first-parent \(branchName)" }
         if let maxCount { maxCountString = "-n \(maxCount)" }
         let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale.current
+
+        // Can't use `Locale.current`, since it'd give a nil date outside the US
+        dateFormatter.locale = Locale(identifier: Locale.current.identifier)
         dateFormatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss Z"
+
         let output = try await run(
             "log --pretty=%h¦%H¦%s¦%aN¦%ae¦%cn¦%ce¦%aD¦ \(maxCountString) \(branchNameString) \(fileLocalPath)"
                 .trimmingCharacters(in: .whitespacesAndNewlines)
         )
-        let remote = try await run("ls-remote --get-url")
-        let remoteURL = URL(string: remote.trimmingCharacters(in: .whitespacesAndNewlines))
+
+        let remote = try? await run("ls-remote --get-url")
+        let remoteURL: URL? = if let remote {
+             URL(string: remote.trimmingCharacters(in: .whitespacesAndNewlines))
+        } else {
+            nil
+        }
 
         return output
             .split(separator: "\n")

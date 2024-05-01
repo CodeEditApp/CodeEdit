@@ -48,7 +48,7 @@ jobs:
       - name: Build CodeEdit
         env:
           APPLE_TEAM_ID:  ${{ secrets.APPLE_TEAM_ID }}
-        run: xcodebuild -scheme CodeEdit -configuration Alpha -derivedDataPath "$RUNNER_TEMP/DerivedData" -archivePath "$RUNNER_TEMP/CodeEdit.xcarchive" -skipPackagePluginValidation DEVELOPMENT_TEAM=$APPLE_TEAM_ID archive
+        run: xcodebuild -scheme CodeEdit -configuration Pre -derivedDataPath "$RUNNER_TEMP/DerivedData" -archivePath "$RUNNER_TEMP/CodeEdit.xcarchive" -skipPackagePluginValidation DEVELOPMENT_TEAM=$APPLE_TEAM_ID archive
       
       ############################
       # Sign
@@ -59,7 +59,10 @@ jobs:
         run: |
           REV=$(git rev-parse --short HEAD)
           echo "REV=$REV" >> $GITHUB_ENV
-          codesign --sign "$CODESIGN_SIGN" -vvv --verbose --strict --options=runtime --prefix app.codeedit.CodeEdit. --force --deep --timestamp "$RUNNER_TEMP/CodeEdit.xcarchive/Products/Applications/CodeEdit.app"
+          codesign --sign "$CODESIGN_SIGN" -vvv --verbose --strict --options=runtime --prefix app.codeedit.CodeEdit. --force --timestamp "$RUNNER_TEMP/CodeEdit.xcarchive/Products/Applications/CodeEdit.app/Contents/Frameworks/CodeEditKit.framework"
+          codesign --sign "$CODESIGN_SIGN" -vvv --verbose --strict --options=runtime --prefix app.codeedit.CodeEdit. --force --deep --timestamp "$RUNNER_TEMP/CodeEdit.xcarchive/Products/Applications/CodeEdit.app/Contents/Frameworks/Sparkle.framework"
+          codesign --sign "$CODESIGN_SIGN" -vvv --verbose --strict --options=runtime --prefix app.codeedit.CodeEdit. --force --timestamp --entitlements "$RUNNER_TEMP/../CodeEdit/CodeEdit/OpenWithCodeEdit/OpenWithCodeEdit.entitlements" "$RUNNER_TEMP/CodeEdit.xcarchive/Products/Applications/CodeEdit.app/Contents/PlugIns/OpenWithCodeEdit.appex"
+          codesign --sign "$CODESIGN_SIGN" -vvv --verbose --strict --options=runtime --prefix app.codeedit.CodeEdit. --force --timestamp "$RUNNER_TEMP/CodeEdit.xcarchive/Products/Applications/CodeEdit.app"
 
       ############################
       # DMG & Notarize
@@ -76,20 +79,24 @@ jobs:
           echo "REV=$REV" >> $GITHUB_ENV
           security unlock-keychain -p "$RUNNER_PW"
           xcrun notarytool store-credentials CodeEdit --apple-id "$APPLE_ID" --team-id "$APPLE_TEAM_ID" --password "$APPLE_ID_PWD"
+          cp "$RUNNER_TEMP/../CodeEdit/CodeEdit/Resources/dmgBackground.png" "$RUNNER_TEMP/.background.png"
+          epochdate=$(($(date +'%s * 1000 + %-N / 1000000')))
+          tcc_service_appleevents="replace into access (service,client,client_type,auth_value,auth_reason,auth_version,indirect_object_identifier_type,indirect_object_identifier,flags,last_modified) values (\"kTCCServiceAppleEvents\",\"/usr/sbin/sshd\",1,2,4,1,0,\"com.apple.finder\",0,$epochdate);"
+          echo $RUNNER_PW | sudo -S sqlite3 "/Users/administrator/Library/Application Support/com.apple.TCC/TCC.db" "$tcc_service_appleevents"
           create-dmg \
             --volname "CodeEdit" \
             --window-pos 200 120 \
-            --window-size 800 400 \
-            --icon-size 100 \
-            --icon "CodeEdit.app" 200 190 \
+            --window-size 699 518 \
+            --background "$RUNNER_TEMP/.background.png" \
+            --icon-size 128 \
+            --icon "CodeEdit.app" 170 210 \
             --hide-extension "CodeEdit.app" \
-            --app-drop-link 600 185 \
+            --app-drop-link 530 210 \
             --codesign "$CODESIGN_SIGN" \
             --notarize "CodeEdit" \
-            --skip-jenkins \
-            "$RUNNER_TEMP/CodeEdit-$REV.dmg" \
+            "$RUNNER_TEMP/CodeEdit.dmg" \
             "$RUNNER_TEMP/CodeEdit.xcarchive/Products/Applications/"
-          security lock-keychain
+          echo $RUNNER_PW | sudo -S security lock-keychain
           
       ############################
       # Get Version and Build number
@@ -122,9 +129,9 @@ jobs:
           SPARKLE_ARCHIVE="$RUNNER_TEMP/Sparkle_Archive"
           echo -n "$SPARKLE_KEY" | tee "$RUNNER_TEMP/sparkle_key"
           mkdir "$SPARKLE_ARCHIVE"
-          cp "$RUNNER_TEMP/CodeEdit-$REV.dmg" "$SPARKLE_ARCHIVE"
-          SPARKLE_SIG=$("$SPARKLE_BIN/sign_update" --ed-key-file "$RUNNER_TEMP/sparkle_key" "$SPARKLE_ARCHIVE/CodeEdit-$REV.dmg" | cut -d\" -f2)
-          "$SPARKLE_BIN/generate_appcast" --ed-key-file "$RUNNER_TEMP/sparkle_key" --download-url-prefix "${{ env.SPARKLE_DL_PREFIX }}/${{ env.APP_VERSION }}-alpha.${{ env.APP_BUILD }}/" --link "$SPARKLE_LINK" --channel "$SPARKLE_CHANNEL" --maximum-deltas 0 "$SPARKLE_ARCHIVE"
+          cp "$RUNNER_TEMP/CodeEdit.dmg" "$SPARKLE_ARCHIVE"
+          SPARKLE_SIG=$("$SPARKLE_BIN/sign_update" --ed-key-file "$RUNNER_TEMP/sparkle_key" "$SPARKLE_ARCHIVE/CodeEdit.dmg" | cut -d\" -f2)
+          "$SPARKLE_BIN/generate_appcast" --ed-key-file "$RUNNER_TEMP/sparkle_key" --download-url-prefix "${{ env.SPARKLE_DL_PREFIX }}/v${{ env.APP_VERSION }}/" --link "$SPARKLE_LINK" --channel "$SPARKLE_CHANNEL" --maximum-deltas 0 "$SPARKLE_ARCHIVE"
 
       ############################
       # Publish Pre Release
@@ -135,13 +142,14 @@ jobs:
           APP_VERSION: ${{ env.APP_VERSION }}
           APP_BUILD: ${{ env.APP_BUILD }}
         with:
-          title: "${{ env.APP_VERSION }}-alpha.${{ env.APP_BUILD }}"
+          title: "v${{ env.APP_VERSION }}"
           files: |
-            ${{ RUNNER.TEMP }}/Sparkle_Archive/CodeEdit-${{ env.REV }}.dmg
+            ${{ RUNNER.TEMP }}/Sparkle_Archive/CodeEdit.dmg
             ${{ RUNNER.TEMP }}/Sparkle_Archive/appcast.xml
-          automatic_release_tag: "${{ env.APP_VERSION }}-alpha.${{ env.APP_BUILD }}"
+          automatic_release_tag: "v${{ env.APP_VERSION }}"
           prerelease: false
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          draft: true
 
       ############################
       # Cleanup Secrets

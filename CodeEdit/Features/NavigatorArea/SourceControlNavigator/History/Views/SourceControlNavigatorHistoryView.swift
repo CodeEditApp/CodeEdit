@@ -89,6 +89,11 @@ struct SourceControlNavigatorHistoryView: View {
                 }
             }
         }
+        .onReceive(sourceControlManager.$currentBranch) { _ in
+            Task {
+                await updateCommitHistory()
+            }
+        }
         .task {
             await updateCommitHistory()
         }

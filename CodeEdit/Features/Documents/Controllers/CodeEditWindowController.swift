@@ -128,7 +128,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
             // style the toolbar background in native tab bar style.
             self.window?.titlebarSeparatorStyle = .none
         } else {
-            // In xcode tab bar style, we use default toolbar background with
+            // In Xcode tab bar style, we use default toolbar background with
             // line separator.
             self.window?.titlebarSeparatorStyle = .automatic
         }
@@ -143,6 +143,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
             .sidebarTrackingSeparator,
             .branchPicker,
             .flexibleSpace,
+            .itemListTrackingSeparator,
             .flexibleSpace,
             .toggleLastSidebarItem
         ]
@@ -219,7 +220,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
     }
 
     private func getSelectedCodeFile() -> CodeFileDocument? {
-        workspace?.editorManager.activeEditor.selectedTab?.fileDocument
+        workspace?.editorManager.activeEditor.selectedTab?.file.fileDocument
     }
 
     @IBAction func saveDocument(_ sender: Any) {

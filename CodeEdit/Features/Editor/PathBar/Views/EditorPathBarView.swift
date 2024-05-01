@@ -9,6 +9,7 @@ import SwiftUI
 
 struct EditorPathBarView: View {
     private let file: CEWorkspaceFile?
+    private let shouldShowTabBar: Bool
     private let tappedOpenFile: (CEWorkspaceFile) -> Void
 
     @Environment(\.colorScheme)
@@ -20,13 +21,15 @@ struct EditorPathBarView: View {
     @Environment(\.controlActiveState)
     private var activeState
 
-    static let height = 27.0
+    static let height = 28.0
 
     init(
         file: CEWorkspaceFile?,
+        shouldShowTabBar: Bool,
         tappedOpenFile: @escaping (CEWorkspaceFile) -> Void
     ) {
         self.file = file ?? nil
+        self.shouldShowTabBar = shouldShowTabBar
         self.tappedOpenFile = tappedOpenFile
     }
 
@@ -63,7 +66,17 @@ struct EditorPathBarView: View {
                     }
                 }
             }
-            .padding(.horizontal, 10)
+        }
+        .padding(.horizontal, shouldShowTabBar ? (file == nil ? 10 : 4) : 0)
+        .safeAreaInset(edge: .leading, spacing: 0) {
+            if !shouldShowTabBar {
+                EditorTabBarLeadingAccessories()
+            }
+        }
+        .safeAreaInset(edge: .trailing, spacing: 0) {
+            if !shouldShowTabBar {
+                EditorTabBarTrailingAccessories()
+            }
         }
         .frame(height: Self.height, alignment: .center)
         .opacity(activeState == .inactive ? 0.8 : 1.0)

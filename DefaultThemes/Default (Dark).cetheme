@@ -1,0 +1,125 @@
+{
+  "name": "default.dark",
+  "displayName": "Default (Dark)",
+  "description": "CodeEdit bundled theme.",
+  "author": "CodeEdit",
+  "version": "0.0.1",
+  "license": "MIT",
+  "distributionURL": "https://github.com/CodeEditApp/CodeEdit",
+  "type": "dark",
+  "editor": {
+    "background": {
+      "color": "#292A30"
+    },
+    "selection": {
+      "color": "#646F83"
+    },
+    "insertionPoint": {
+      "color": "#007AFF"
+    },
+    "lineHighlight": {
+      "color": "#2F3239"
+    },
+    "invisibles": {
+      "color": "#53606E"
+    },
+    "text": {
+      "color": "#FFFFFF"
+    },
+    "comments": {
+      "color": "#7F8C98"
+    },
+    "strings": {
+      "color": "#FF8170"
+    },
+    "characters": {
+      "color": "#D9C97C"
+    },
+    "numbers": {
+      "color": "#D9C97C"
+    },
+    "keywords": {
+      "color": "#FF7AB2"
+    },
+    "attributes": {
+      "color": "#CC9768"
+    },
+    "types": {
+      "color": "#6BDFFF"
+    },
+    "variables": {
+      "color": "#4EB0CC"
+    },
+    "commands": {
+      "color": "#78C2B3"
+    },
+    "values": {
+      "color": "#B281EB"
+    }
+  },
+  "terminal": {
+    "background": {
+      "color": "#292A30"
+    },
+    "selection": {
+      "color": "#646F83"
+    },
+    "cursor": {
+      "color": "#FFFFFF"
+    },
+    "text": {
+      "color": "#FFFFFF"
+    },
+    "boldText": {
+      "color": "#D9D9D9"
+    },
+    "black": {
+      "color": "#1F2024"
+    },
+    "red": {
+      "color": "#FF8170"
+    },
+    "green": {
+      "color": "#78C2B3"
+    },
+    "yellow": {
+      "color": "#D9C97C"
+    },
+    "blue": {
+      "color": "#B281EB"
+    },
+    "magenta": {
+      "color": "#FF7AB2"
+    },
+    "cyan": {
+      "color": "#4EB0CC"
+    },
+    "white": {
+      "color": "#D9D9D9"
+    },
+    "brightBlack": {
+      "color": "#8E8E93"
+    },
+    "brightRed": {
+      "color": "#FF8170"
+    },
+    "brightGreen": {
+      "color": "#78C2B3"
+    },
+    "brightYellow": {
+      "color": "#D9C97C"
+    },
+    "brightBlue": {
+      "color": "#B281EB"
+    },
+    "brightMagenta": {
+      "color": "#FF7AB2"
+    },
+    "brightCyan": {
+      "color": "#4EB0CC"
+    },
+    "brightWhite": {
+      "color": "#FFFFFF"
+    }
+  }
+}

@@ -29,6 +29,7 @@ final class ProjectNavigatorViewController: NSViewController {
     var workspace: WorkspaceDocument?
 
     var iconColor: SettingsData.FileIconStyle = .color
+
     var fileExtensionsVisibility: SettingsData.FileExtensionsVisibility = .showAll
     var shownFileExtensions: SettingsData.FileExtensions = .default
     var hiddenFileExtensions: SettingsData.FileExtensions = .default
@@ -92,7 +93,7 @@ final class ProjectNavigatorViewController: NSViewController {
     /// Forces to reveal the selected file through the command regardless of the auto reveal setting
     @objc
     func revealFile(_ sender: Any) {
-        updateSelection(itemID: workspace?.editorManager.activeEditor.selectedTab?.id, forcesReveal: true)
+        updateSelection(itemID: workspace?.editorManager.activeEditor.selectedTab?.file.id, forcesReveal: true)
     }
 
     /// Updates the selection of the ``outlineView`` whenever it changes.
@@ -119,8 +120,8 @@ final class ProjectNavigatorViewController: NSViewController {
             } else {
                 outlineView.expandItem(item)
             }
-        } else {
-            workspace?.editorManager.activeEditor.openTab(item: item, asTemporary: false)
+        } else if Settings[\.navigation].navigationStyle == .openInTabs {
+            workspace?.editorManager.activeEditor.openTab(file: item, asTemporary: false)
         }
     }
 
@@ -284,7 +285,7 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
 
         if !item.isFolder && shouldSendSelectionUpdate {
             DispatchQueue.main.async {
-                self.workspace?.editorManager.activeEditor.openTab(item: item, asTemporary: true)
+                self.workspace?.editorManager.activeEditor.openTab(file: item, asTemporary: true)
             }
         }
     }
@@ -295,7 +296,7 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
 
     func outlineViewItemDidExpand(_ notification: Notification) {
         guard
-            let id = workspace?.editorManager.activeEditor.selectedTab?.id,
+            let id = workspace?.editorManager.activeEditor.selectedTab?.file.id,
             let item = workspace?.workspaceFileManager?.getFile(id, createIfNotFound: true)
         else {
             return

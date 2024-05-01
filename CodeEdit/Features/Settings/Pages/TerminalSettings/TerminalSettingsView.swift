@@ -70,9 +70,6 @@ private extension TerminalSettingsView {
 
     @ViewBuilder private var fontSelector: some View {
         MonospacedFontPicker(title: "Font", selectedFontName: $settings.font.name)
-            .onChange(of: settings.font.name) { fontName in
-                settings.font.customFont = fontName != "SF Mono"
-            }
     }
 
     private var fontSizeSelector: some View {

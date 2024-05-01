@@ -50,10 +50,10 @@ extension SettingsData {
         }
 
         /// The name of the currently selected dark theme
-        var selectedDarkTheme: String = "codeedit-xcode-dark"
+        var selectedDarkTheme: String = "Default (Dark)"
 
         /// The name of the currently selected light theme
-        var selectedLightTheme: String = "codeedit-xcode-light"
+        var selectedLightTheme: String = "Default (Light)"
 
         /// The name of the currently selected theme
         var selectedTheme: String?

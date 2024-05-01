@@ -73,18 +73,16 @@ struct EditorTabBarLeadingAccessories: View {
                             editor.historyOffset += index + 1
                         } label: {
                             HStack {
-                                tab.icon
-                                Text(tab.name)
+                                tab.file.icon
+                                Text(tab.file.name)
                             }
                         }
                     }
                 } label: {
                     Image(systemName: "chevron.left")
-                        .controlSize(.regular)
-                        .opacity(
-                            editor.historyOffset == editor.history.count-1 || editor.history.isEmpty
-                            ? 0.5 : 1.0
-                        )
+                        .opacity(editor.historyOffset == editor.history.count-1 || editor.history.isEmpty ? 0.5 : 1)
+                        .frame(height: EditorTabBarView.height - 2)
+                        .padding(.horizontal, 4)
                 } primaryAction: {
                     editorManager.activeEditor = editor
                     editor.goBackInHistory()
@@ -103,15 +101,16 @@ struct EditorTabBarLeadingAccessories: View {
                             editor.historyOffset -= index + 1
                         } label: {
                             HStack {
-                                tab.icon
-                                Text(tab.name)
+                                tab.file.icon
+                                Text(tab.file.name)
                             }
                         }
                     }
                 } label: {
                     Image(systemName: "chevron.right")
-                        .controlSize(.regular)
-                        .opacity(editor.historyOffset == 0 ? 0.5 : 1.0)
+                        .opacity(editor.historyOffset == 0 ? 0.5 : 1)
+                        .frame(height: EditorTabBarView.height - 2)
+                        .padding(.horizontal, 4)
                 } primaryAction: {
                     editorManager.activeEditor = editor
                     editor.goForwardInHistory()
@@ -120,11 +119,9 @@ struct EditorTabBarLeadingAccessories: View {
                 .help("Navigate forward")
                 .accessibilityLabel("Navigate Forward")
             }
+            .buttonStyle(.icon)
             .controlSize(.small)
             .font(EditorTabBarAccessoryIcon.iconFont)
-            .frame(height: EditorTabBarView.height - 2)
-            .padding(.horizontal, 4)
-            .contentShape(Rectangle())
         }
         .foregroundColor(.secondary)
         .buttonStyle(.plain)
@@ -142,11 +139,5 @@ struct EditorTabBarLeadingAccessories: View {
         .onReceive(editorManager.objectWillChange) { _ in
             otherEditor = editorManager.editorLayout.findSomeEditor(except: editor)
         }
-    }
-}
-
-struct TabBarLeadingAccessories_Previews: PreviewProvider {
-    static var previews: some View {
-        EditorTabBarLeadingAccessories()
     }
 }

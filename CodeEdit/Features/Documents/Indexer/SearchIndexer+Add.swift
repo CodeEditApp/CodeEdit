@@ -21,7 +21,7 @@ extension SearchIndexer {
             return false
         }
 
-        return modifiyIndexQueue.sync {
+        return modifyIndexQueue.sync {
             SKIndexAddDocumentWithText(index, document.takeUnretainedValue(), text as CFString, canReplace)
         }
     }
@@ -65,7 +65,7 @@ extension SearchIndexer {
         // Try to detect the mime type if it wasn't specified
         let mime = mimeType ?? self.detectMimeType(fileURL)
 
-        return modifiyIndexQueue.sync {
+        return modifyIndexQueue.sync {
             SKIndexAddDocument(index, document.takeUnretainedValue(), mime as CFString?, canReplace)
         }
     }

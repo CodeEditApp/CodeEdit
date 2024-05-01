@@ -36,6 +36,17 @@ class EditorManager: ObservableObject {
     var tabBarTabIdSubject = PassthroughSubject<String?, Never>()
     var cancellable: AnyCancellable?
 
+    // This caching mechanism is a temporary solution and is not optimized
+    @Published var updateCachedFlattenedEditors: Bool = true
+    var cachedFlettenedEditors: [Editor] = []
+    var flattenedEditors: [Editor] {
+        if updateCachedFlattenedEditors {
+            cachedFlettenedEditors = self.getFlattened()
+            updateCachedFlattenedEditors = false
+        }
+        return cachedFlettenedEditors
+    }
+
     // MARK: - Init
 
     init() {
@@ -61,10 +72,21 @@ class EditorManager: ObservableObject {
 
     /// Flattens the splitviews.
     func flatten() {
-        if case .horizontal(let data) = editorLayout {
+        switch editorLayout {
+        case .horizontal(let data), .vertical(let data):
             data.flatten()
-        } else if case .vertical(let data) = editorLayout {
-            data.flatten()
+        default:
+            break
+        }
+    }
+
+    /// Returns and array of flattened splitviews.
+    func getFlattened() -> [Editor] {
+        switch editorLayout {
+        case .horizontal(let data), .vertical(let data):
+            return data.getFlattened()
+        default:
+            return []
         }
     }
 
@@ -74,7 +96,7 @@ class EditorManager: ObservableObject {
     ///   - editor: The editor to add the tab to. If nil, it is added to the active tab group.
     func openTab(item: CEWorkspaceFile, in editor: Editor? = nil) {
         let editor = editor ?? activeEditor
-        editor.openTab(item: item)
+        editor.openTab(file: item)
     }
 
     /// bind active tap group to listen to file selection changes.
@@ -83,7 +105,7 @@ class EditorManager: ObservableObject {
         cancellable = nil
         cancellable = activeEditor.$selectedTab
             .sink { [weak self] tab in
-                self?.tabBarTabIdSubject.send(tab?.id)
+                self?.tabBarTabIdSubject.send(tab?.file.id)
             }
     }
 
@@ -99,6 +121,7 @@ class EditorManager: ObservableObject {
 
         flatten()
         objectWillChange.send()
+        updateCachedFlattenedEditors = true
     }
 
     /// Set a new active editor.

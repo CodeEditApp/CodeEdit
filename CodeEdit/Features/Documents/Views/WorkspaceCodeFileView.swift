@@ -7,6 +7,7 @@
 
 import SwiftUI
 import UniformTypeIdentifiers
+import CodeEditSourceEditor
 
 struct WorkspaceCodeFileView: View {
 
@@ -15,6 +16,7 @@ struct WorkspaceCodeFileView: View {
     @EnvironmentObject private var editor: Editor
 
     var file: CEWorkspaceFile
+    var textViewCoordinators: [TextViewCoordinator] = []
 
     @State private var update: Bool = false
 
@@ -23,7 +25,7 @@ struct WorkspaceCodeFileView: View {
             Group {
                 switch document.typeOfFile {
                 case .some(.text), .some(.data):
-                    CodeFileView(codeFile: document)
+                    CodeFileView(codeFile: document, textViewCoordinators: textViewCoordinators)
                 default:
                     otherFileView(document, for: file)
                 }
@@ -63,7 +65,6 @@ struct WorkspaceCodeFileView: View {
         for item: CEWorkspaceFile
     ) -> some View {
         VStack(spacing: 0) {
-
             if let url = otherFile.previewItemURL,
                let image = NSImage(contentsOf: url),
                otherFile.typeOfFile == .image {

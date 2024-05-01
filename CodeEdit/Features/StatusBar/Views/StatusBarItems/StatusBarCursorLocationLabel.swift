@@ -11,35 +11,47 @@ import CodeEditSourceEditor
 struct StatusBarCursorLocationLabel: View {
     @Environment(\.controlActiveState)
     private var controlActive
+    @Environment(\.modifierKeys)
+    private var modifierKeys
 
     @EnvironmentObject private var model: UtilityAreaViewModel
     @EnvironmentObject private var editorManager: EditorManager
 
-    @State private var file: CEWorkspaceFile?
+    @State private var tab: EditorInstance?
     @State private var cursorPositions: [CursorPosition]?
 
+    /// Updates the source of cursor position notifications.
     func updateSource() {
-        file = editorManager.activeEditor.selectedTab
+        tab = editorManager.activeEditor.selectedTab
     }
 
+    /// Finds the lines contained by a range in the currently selected document.
+    /// - Parameter range: The range to query.
+    /// - Returns: The number of lines in the range.
     func getLines(_ range: NSRange) -> Int {
-        if let fileDocument = file?.fileDocument {
-            return fileDocument.rangeTranslator.linesInRange(range)
-        }
-
-        return 0
+        return tab?.rangeTranslator?.linesInRange(range) ?? 0
     }
 
+    /// Create a label string for cursor positions.
+    /// - Parameter cursorPositions: The cursor positions to create the label for.
+    /// - Returns: A string describing the user's location in a document.
     func getLabel(_ cursorPositions: [CursorPosition]) -> String {
         if cursorPositions.isEmpty {
             return ""
         }
 
+        // More than one selection, display the number of selections.
         if cursorPositions.count > 1 {
             return "\(cursorPositions.count) selected ranges"
         }
 
+        // If the selection is more than just a cursor, return the length.
         if cursorPositions[0].range.length > 0 {
+            // When the option key is pressed display the character range.
+            if modifierKeys.contains(.option) {
+                return "Char: \(cursorPositions[0].range.location) Len: \(cursorPositions[0].range.length)"
+            }
+
             let lineCount = getLines(cursorPositions[0].range)
 
             if lineCount > 1 {
@@ -49,12 +61,18 @@ struct StatusBarCursorLocationLabel: View {
             return "\(cursorPositions[0].range.length) characters"
         }
 
+        // When the option key is pressed display the character offset.
+        if modifierKeys.contains(.option) {
+            return "Char: \(cursorPositions[0].range.location) Len: 0"
+        }
+
+        // When there's a single cursor, display the line and column.
         return "Line: \(cursorPositions[0].line)  Col: \(cursorPositions[0].column)"
     }
 
     var body: some View {
         Group {
-            if let currentFile = file, let fileDocument = currentFile.fileDocument {
+            if let currentTab = tab {
                 Group {
                     if let cursorPositions = cursorPositions {
                         Text(getLabel(cursorPositions))
@@ -62,7 +80,7 @@ struct StatusBarCursorLocationLabel: View {
                         EmptyView()
                     }
                 }
-                .onReceive(fileDocument.$cursorPositions) { val in
+                .onReceive(currentTab.cursorPositions) { val in
                     cursorPositions = val
                 }
             } else {

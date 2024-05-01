@@ -1,0 +1,13 @@
+//
+//  Pre.xcconfig
+//  CodeEdit
+//
+//  Created by Johnathan Baird on 3/11/24.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+CE_APPICON_NAME = AppIconPre
+CE_VERSION_POSTFIX = -pre
+CE_COPYRIGHT = Copyright © 2022-2024 CodeEdit

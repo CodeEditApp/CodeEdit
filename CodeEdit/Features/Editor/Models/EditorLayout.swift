@@ -17,7 +17,7 @@ enum EditorLayout: Equatable {
     func closeAllTabs(of file: CEWorkspaceFile) {
         switch self {
         case .one(let editor):
-            editor.tabs.remove(file)
+            editor.removeTab(file)
         case .vertical(let data), .horizontal(let data):
             data.editorLayouts.forEach {
                 $0.closeAllTabs(of: file)
@@ -44,11 +44,28 @@ enum EditorLayout: Equatable {
         }
     }
 
+    func find(editor id: UUID) -> Editor? {
+        switch self {
+        case .one(let editor):
+            if editor.id == id {
+                return editor
+            }
+        case .vertical(let splitViewData), .horizontal(let splitViewData):
+            for layout in splitViewData.editorLayouts {
+                if let editor = layout.find(editor: id) {
+                    return editor
+                }
+            }
+        }
+
+        return nil
+    }
+
     /// Forms a set of all files currently represented by tabs.
     func gatherOpenFiles() -> Set<CEWorkspaceFile> {
         switch self {
         case .one(let editor):
-            return Set(editor.tabs)
+            return Set(editor.tabs.map { $0.file })
         case .vertical(let data), .horizontal(let data):
             return data.editorLayouts.map { $0.gatherOpenFiles() }.reduce(into: []) { $0.formUnion($1) }
         }
@@ -68,6 +85,24 @@ enum EditorLayout: Equatable {
                 self = one
             } else {
                 data.flatten()
+            }
+        }
+    }
+
+    /// Gets flattened splitviews.
+    func getFlattened(parent: SplitViewData) -> [Editor] {
+        switch self {
+        case .one(let editor):
+            return [editor]
+        case .horizontal(let data), .vertical(let data):
+            if data.editorLayouts.count == 1 {
+                let one = data.editorLayouts[0]
+                if case .one(let editor) = one {
+                    return [editor]
+                }
+                return []
+            } else {
+                return data.getFlattened()
             }
         }
     }

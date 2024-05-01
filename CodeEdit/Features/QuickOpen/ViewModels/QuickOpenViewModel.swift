@@ -7,17 +7,14 @@
 
 import Combine
 import Foundation
+import CollectionConcurrencyKit
 
 final class QuickOpenViewModel: ObservableObject {
-
     @Published var openQuicklyQuery: String = ""
-
     @Published var openQuicklyFiles: [URL] = []
-
     @Published var isShowingOpenQuicklyFiles: Bool = false
 
     let fileURL: URL
-
     var runningTask: Task<Void, Never>?
 
     init(fileURL: URL) {
@@ -25,6 +22,7 @@ final class QuickOpenViewModel: ObservableObject {
     }
 
     func fetchOpenQuickly() {
+        let startTime = Date()
         guard openQuicklyQuery != "" else {
             openQuicklyFiles = []
             self.isShowingOpenQuicklyFiles = !openQuicklyFiles.isEmpty
@@ -54,13 +52,15 @@ final class QuickOpenViewModel: ObservableObject {
                     }
                 }
 
-                /// sorts the filtered filePaths with the FuzzySearch
-                let orderedFiles = await FuzzySearch.search(query: self.openQuicklyQuery, in: filteredFiles)
+                let files = await filteredFiles.fuzzySearch(
+                    query: self.openQuicklyQuery.trimmingCharacters(in: .whitespaces)
+                ).concurrentMap { $0.item }
 
                 guard !Task.isCancelled else { return }
                 await MainActor.run {
-                    self.openQuicklyFiles = orderedFiles
+                    self.openQuicklyFiles = files
                     self.isShowingOpenQuicklyFiles = !self.openQuicklyFiles.isEmpty
+                    print("Duration: \(Date().timeIntervalSince(startTime))")
                 }
             }
         }

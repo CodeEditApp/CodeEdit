@@ -41,19 +41,24 @@ struct HistoryInspectorView: View {
                 NoSelectionInspectorView()
             }
         }
+        .onReceive(editorManager.activeEditor.objectWillChange) { _ in
+            Task {
+                await model.setFile(url: editorManager.activeEditor.selectedTab?.file.url.path())
+            }
+        }
         .onChange(of: editorManager.activeEditor) { _ in
             Task {
-                await model.setFile(url: editorManager.activeEditor.selectedTab?.url.path)
+                await model.setFile(url: editorManager.activeEditor.selectedTab?.file.url.path())
             }
         }
         .onChange(of: editorManager.activeEditor.selectedTab) { _ in
             Task {
-                await model.setFile(url: editorManager.activeEditor.selectedTab?.url.path)
+                await model.setFile(url: editorManager.activeEditor.selectedTab?.file.url.path())
             }
         }
         .task {
             await model.setWorkspace(sourceControlManager: workspace.sourceControlManager)
-            await model.setFile(url: editorManager.activeEditor.selectedTab?.url.path)
+            await model.setFile(url: editorManager.activeEditor.selectedTab?.file.url.path)
         }
     }
 }

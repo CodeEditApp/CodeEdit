@@ -68,7 +68,8 @@ struct GeneralSettingsView: View {
             Section {
                 updateChecker
                 autoUpdateToggle
-                prereleaseToggle
+                // TODO: Uncomment when production build is released.
+                // prereleaseToggle
             }
         }
     }

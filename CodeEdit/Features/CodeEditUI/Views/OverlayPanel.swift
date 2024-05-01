@@ -21,9 +21,9 @@ final class OverlayPanel: NSPanel, NSWindowDelegate {
     }
 
     override func standardWindowButton(_ button: NSWindow.ButtonType) -> NSButton? {
-        let btn = super.standardWindowButton(button)
-        btn?.isHidden = true
-        return btn
+        let button = super.standardWindowButton(button)
+        button?.isHidden = true
+        return button
     }
 
     func windowDidResignKey(_ notification: Notification) {

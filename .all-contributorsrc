@@ -640,6 +640,60 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "armartinez",
+      "name": "Axel Martinez",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1909987?v=4",
+      "profile": "https://github.com/armartinez",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "FezVrasta",
+      "name": "Federico Zivolo",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5382443?v=4",
+      "profile": "https://nivora.app",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "ElvisWong213",
+      "name": "Elvis Wong",
+      "avatar_url": "https://avatars.githubusercontent.com/u/40566101?v=4",
+      "profile": "https://github.com/ElvisWong213",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "ibrahimcetin",
+      "name": "İbrahim Çetin",
+      "avatar_url": "https://avatars.githubusercontent.com/u/33904390?v=4",
+      "profile": "http://ibrahimcetin.dev",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "phlpsong",
+      "name": "phlpsong",
+      "avatar_url": "https://avatars.githubusercontent.com/u/103433299?v=4",
+      "profile": "https://github.com/phlpsong",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "infinitepower18",
+      "name": "Ahnaf Mahmud",
+      "avatar_url": "https://avatars.githubusercontent.com/u/44692189?v=4",
+      "profile": "http://ahnafmahmud.com",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,

@@ -161,9 +161,6 @@ extension SettingsData {
     }
 
     struct EditorFont: Codable, Hashable {
-        /// Indicates whether or not to use a custom font
-        var customFont: Bool = false
-
         /// The font size for the font
         var size: Double = 12
 
@@ -176,21 +173,16 @@ extension SettingsData {
         /// Explicit decoder init for setting default values when key is not present in `JSON`
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
-            self.customFont = try container.decodeIfPresent(Bool.self, forKey: .customFont) ?? false
-            self.size = try container.decodeIfPresent(Double.self, forKey: .size) ?? 11
-            self.name = try container.decodeIfPresent(String.self, forKey: .name) ?? "SF Mono"
+            self.size = try container.decodeIfPresent(Double.self, forKey: .size) ?? size
+            self.name = try container.decodeIfPresent(String.self, forKey: .name) ?? name
         }
 
         /// Returns an NSFont representation of the current configuration.
         ///
         /// Returns the custom font, if enabled and able to be instantiated.
         /// Otherwise returns a default system font monospaced.
-        func current() -> NSFont {
-            guard customFont,
-                  let customFont = NSFont(name: name, size: size) else {
-                return NSFont.monospacedSystemFont(ofSize: size, weight: .medium)
-            }
-            return customFont
+        var current: NSFont {
+            return NSFont(name: name, size: size) ?? NSFont.monospacedSystemFont(ofSize: size, weight: .medium)
         }
     }
 }

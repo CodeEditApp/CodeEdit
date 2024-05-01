@@ -9,7 +9,6 @@ import Foundation
 import AppKit
 import SwiftUI
 import Combine
-import WindowManagement
 
 @objc(WorkspaceDocument)
 final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
@@ -72,45 +71,40 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     }
 
     override func makeWindowControllers() {
-        if Settings[\.featureFlags.useNewWindowingSystem] {
-            let window = NSApp.openDocument(self)
-            if let windowController = window?.windowController {
-                self.addWindowController(windowController)
-            }
+        let window = NSWindow(
+            contentRect: NSRect(x: 0, y: 0, width: 1400, height: 900),
+            styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
+            backing: .buffered,
+            defer: false
+        )
+        // Setting the "min size" like this is hacky, but SwiftUI overrides the contentRect and
+        // any of the built-in window size functions & autosave stuff. So we have to set it like this.
+        // SwiftUI also ignores this value, so it just manages to set the initial window size. *Hopefully* this
+        // is fixed in the future.
+        if let rectString = getFromWorkspaceState(.workspaceWindowSize) as? String {
+            window.minSize = NSRectFromString(rectString).size
         } else {
-            let window = NSWindow(
-                contentRect: NSRect(x: 0, y: 0, width: 1400, height: 900),
-                styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
-                backing: .buffered,
-                defer: false
-            )
-            // Setting the "min size" like this is hacky, but SwiftUI overrides the contentRect and
-            // any of the built-in window size functions & autosave stuff. So we have to set it like this.
-            // SwiftUI also ignores this value, so it just manages to set the initial window size. *Hopefully* this
-            // is fixed in the future.
-            if let rectString = getFromWorkspaceState(.workspaceWindowSize) as? String {
-                window.minSize = NSRectFromString(rectString).size
-            } else {
-                window.minSize = .init(width: 1400, height: 900)
-            }
-            let windowController = CodeEditWindowController(
-                window: window,
-                workspace: self
-            )
-
-            if let rectString = getFromWorkspaceState(.workspaceWindowSize) as? String {
-                window.setFrameOrigin(NSRectFromString(rectString).origin)
-            } else {
-                window.center()
-            }
-            self.addWindowController(windowController)
+            window.minSize = .init(width: 1400, height: 900)
         }
+        let windowController = CodeEditWindowController(
+            window: window,
+            workspace: self
+        )
+
+        if let rectString = getFromWorkspaceState(.workspaceWindowSize) as? String {
+            window.setFrameOrigin(NSRectFromString(rectString).origin)
+        } else {
+            window.center()
+        }
+        self.addWindowController(windowController)
     }
 
     // MARK: Set Up Workspace
 
     private func initWorkspaceState(_ url: URL) throws {
         self.fileURL = url
+        self.displayName = url.lastPathComponent
+
         let sourceControlManager = SourceControlManager(
             workspaceURL: url,
             editorManager: editorManager

@@ -11,7 +11,7 @@ import DequeModule
 import AppKit
 
 final class Editor: ObservableObject, Identifiable {
-    typealias Tab = CEWorkspaceFile
+    typealias Tab = EditorInstance
 
     /// Set of open tabs.
     @Published var tabs: OrderedSet<Tab> = [] {
@@ -40,11 +40,11 @@ final class Editor: ObservableObject, Identifiable {
             let tab = history[historyOffset]
 
             if !tabs.contains(tab) {
-                if let selectedTab {
-                    openTab(item: tab, at: tabs.firstIndex(of: selectedTab), fromHistory: true)
-                } else {
-                    openTab(item: tab, fromHistory: true)
+                if let temporaryTab, tabs.contains(temporaryTab) {
+                    closeTab(file: temporaryTab.file, fromHistory: true)
                 }
+                temporaryTab = tab
+                openTab(file: tab.file, fromHistory: true)
             }
             selectedTab = tab
         }
@@ -62,15 +62,36 @@ final class Editor: ObservableObject, Identifiable {
 
     weak var parent: SplitViewData?
 
+    init() {
+        self.tabs = []
+        self.temporaryTab = nil
+        self.parent = nil
+    }
+
     init(
-        files: OrderedSet<Tab> = [],
+        files: OrderedSet<CEWorkspaceFile> = [],
         selectedTab: Tab? = nil,
+        temporaryTab: Tab? = nil,
         parent: SplitViewData? = nil
     ) {
         self.tabs = []
         self.parent = parent
-        files.forEach { openTab(item: $0) }
-        self.selectedTab = selectedTab ?? files.first
+        files.forEach { openTab(file: $0) }
+        self.selectedTab = selectedTab ?? (files.isEmpty ? nil : Tab(file: files.first!))
+        self.temporaryTab = temporaryTab
+    }
+
+    init(
+        files: OrderedSet<Tab> = [],
+        selectedTab: Tab? = nil,
+        temporaryTab: Tab? = nil,
+        parent: SplitViewData? = nil
+    ) {
+        self.tabs = []
+        self.parent = parent
+        files.forEach { openTab(file: $0.file) }
+        self.selectedTab = selectedTab ?? tabs.first
+        self.temporaryTab = temporaryTab
     }
 
     /// Closes the editor.
@@ -86,43 +107,44 @@ final class Editor: ObservableObject, Identifiable {
     /// Closes a tab in the editor.
     /// This will also write any changes to the file on disk and will add the tab to the tab history.
     /// - Parameter item: the tab to close.
-    func closeTab(item: Tab) {
-        guard canCloseTab(item: item) else { return }
+    func closeTab(file: CEWorkspaceFile, fromHistory: Bool = false) {
+        guard canCloseTab(file: file) else { return }
 
-        if temporaryTab == item {
+        if temporaryTab?.file == file {
             temporaryTab = nil
-        } else {
-            // When tab actually closed (not changed from temporary to normal)
-            // we need to set fileDocument to nil, otherwise it will keep file in memory
-            // and not reload content on next openTabFile with same id
-            item.fileDocument = nil
         }
-
-        historyOffset = 0
-        if item != selectedTab {
-            history.prepend(item)
+        if !fromHistory {
+            historyOffset = 0
         }
-        tabs.remove(item)
+        if file != selectedTab?.file {
+            history.prepend(EditorInstance(file: file))
+        }
+        removeTab(file)
         if let selectedTab {
             history.prepend(selectedTab)
         }
+        // Reset change count to 0
+        file.fileDocument?.updateChangeCount(.changeCleared)
+        // remove file from memory
+        file.fileDocument = nil
     }
 
     /// Closes the currently opened tab in the tab group.
     func closeSelectedTab() {
-        guard let tab = selectedTab else {
+        guard let file = selectedTab?.file else {
             return
         }
 
-        closeTab(item: tab)
+        closeTab(file: file)
     }
 
     /// Opens a tab in the editor.
     /// If a tab for the item already exists, it is used instead.
     /// - Parameters:
-    ///   - item: the tab to open.
+    ///   - file: the file to open.
     ///   - asTemporary: indicates whether the tab should be opened as a temporary tab or a permanent tab.
-    func openTab(item: Tab, asTemporary: Bool) {
+    func openTab(file: CEWorkspaceFile, asTemporary: Bool) {
+        let item = EditorInstance(file: file)
         // Item is already opened in a tab.
         guard !tabs.contains(item) || !asTemporary else {
             selectedTab = item
@@ -133,7 +155,9 @@ final class Editor: ObservableObject, Identifiable {
         switch (temporaryTab, asTemporary) {
         case (.some(let tab), true):
             if let index = tabs.firstIndex(of: tab) {
+                history.removeFirst(historyOffset)
                 history.prepend(item)
+                historyOffset = 0
                 tabs.remove(tab)
                 tabs.insert(item, at: index)
                 self.selectedTab = item
@@ -144,11 +168,11 @@ final class Editor: ObservableObject, Identifiable {
             temporaryTab = nil
 
         case (.none, true):
-            openTab(item: item)
+            openTab(file: item.file)
             temporaryTab = item
 
         case (.none, false):
-            openTab(item: item)
+            openTab(file: item.file)
 
         default:
             break
@@ -163,10 +187,11 @@ final class Editor: ObservableObject, Identifiable {
 
     /// Opens a tab in the editor.
     /// - Parameters:
-    ///   - item: The tab to open.
+    ///   - file: The tab to open.
     ///   - index: Index where the tab needs to be added. If nil, it is added to the back.
     ///   - fromHistory: Indicates whether the tab has been opened from going back in history.
-    func openTab(item: Tab, at index: Int? = nil, fromHistory: Bool = false) {
+    func openTab(file: CEWorkspaceFile, at index: Int? = nil, fromHistory: Bool = false) {
+        let item = Tab(file: file)
         if let index {
             tabs.insert(item, at: index)
         } else {
@@ -186,17 +211,17 @@ final class Editor: ObservableObject, Identifiable {
     }
 
     private func openFile(item: Tab) throws {
-        guard item.fileDocument == nil else {
+        guard item.file.fileDocument == nil else {
             return
         }
 
-        let contentType = try item.url.resourceValues(forKeys: [.contentTypeKey]).contentType
+        let contentType = try item.file.url.resourceValues(forKeys: [.contentTypeKey]).contentType
         let codeFile = try CodeFileDocument(
-            for: item.url,
-            withContentsOf: item.url,
+            for: item.file.url,
+            withContentsOf: item.file.url,
             ofType: contentType?.identifier ?? ""
         )
-        item.fileDocument = codeFile
+        item.file.fileDocument = codeFile
         CodeEditDocumentController.shared.addDocument(codeFile)
     }
 
@@ -226,17 +251,17 @@ final class Editor: ObservableObject, Identifiable {
 
     /// Check if tab can be closed
     /// If document edited it will show dialog where user can save document before closing or cancel.
-    private func canCloseTab(item: Tab) -> Bool {
-        guard let file = item.fileDocument else { return true }
+    private func canCloseTab(file: CEWorkspaceFile) -> Bool {
+        guard let codeFile = file.fileDocument else { return true }
 
-        if file.isDocumentEdited {
+        if codeFile.isDocumentEdited {
             let shouldClose = UnsafeMutablePointer<Bool>.allocate(capacity: 1)
             shouldClose.initialize(to: true)
             defer {
                 _ = shouldClose.move()
                 shouldClose.deallocate()
             }
-            file.canClose(
+            codeFile.canClose(
                 withDelegate: self,
                 shouldClose: #selector(document(_:shouldClose:contextInfo:)),
                 contextInfo: shouldClose
@@ -265,6 +290,14 @@ final class Editor: ObservableObject, Identifiable {
         let opaquePtr = OpaquePointer(contextInfo)
         let mutablePointer = UnsafeMutablePointer<Bool>(opaquePtr)
         mutablePointer.pointee = shouldClose
+    }
+
+    /// Remove the given file from tabs.
+    /// - Parameter file: The file to remove.
+    func removeTab(_ file: CEWorkspaceFile) {
+        tabs.removeAll { tab in
+            tab.file == file
+        }
     }
 }
 

@@ -23,19 +23,22 @@ enum CodeFileError: Error {
 
 @objc(CodeFileDocument)
 final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
+    struct OpenOptions {
+        let cursorPositions: [CursorPosition]
+    }
 
     @Published var content = ""
 
     /// Used to override detected languages.
     @Published var language: CodeLanguage?
 
-    /// Document-specific overriden indent option.
+    /// Document-specific overridden indent option.
     @Published var indentOption: SettingsData.TextEditingSettings.IndentOption?
 
-    /// Document-specific overriden tab width.
+    /// Document-specific overridden tab width.
     @Published var defaultTabWidth: Int?
 
-    /// Document-specific overriden line wrap preference.
+    /// Document-specific overridden line wrap preference.
     @Published var wrapLines: Bool?
 
     /*
@@ -71,9 +74,9 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
         fileURL
     }
 
-    @Published var cursorPositions = [CursorPosition]()
-
-    var rangeTranslator: RangeTranslator = RangeTranslator()
+    /// Specify options for opening the file such as the initial cursor positions.
+    /// Nulled by ``CodeFileView`` on first load.
+    var openOptions: OpenOptions?
 
     private let isDocumentEditedSubject = PassthroughSubject<Bool, Never>()
 
@@ -130,7 +133,7 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
         self.content = content
     }
 
-    /// Triggered when change occured
+    /// Triggered when change occurred
     override func updateChangeCount(_ change: NSDocument.ChangeType) {
         super.updateChangeCount(change)
 
@@ -150,34 +153,5 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
         }
 
         self.isDocumentEditedSubject.send(self.isDocumentEdited)
-    }
-
-    class RangeTranslator: TextViewCoordinator {
-        private weak var textViewController: TextViewController?
-
-        /// Returns the lines contained in the given range.
-        /// - Parameter range: The range to use.
-        /// - Returns: The number of lines contained by the given range. Or `0` if the text view could not be found,
-        ///            or lines could not be found for the given range.
-        func linesInRange(_ range: NSRange) -> Int {
-            // TODO: textView should be public, workaround for now
-            guard let controller = textViewController,
-                  let scrollView = controller.view as? NSScrollView,
-                  let textView = scrollView.documentView as? TextView,
-                  // Find the lines at the beginning and end of the range
-                  let startTextLine = textView.layoutManager.textLineForOffset(range.location),
-                  let endTextLine = textView.layoutManager.textLineForOffset(range.upperBound) else {
-                return 0
-            }
-            return (endTextLine.index - startTextLine.index) + 1
-        }
-
-        func prepareCoordinator(controller: TextViewController) {
-            self.textViewController = controller
-        }
-
-        func destroy() {
-            self.textViewController = nil
-        }
     }
 }

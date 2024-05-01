@@ -26,11 +26,11 @@ struct SettingsPage: Hashable, Equatable, Identifiable {
         case theme = "Themes"
         case textEditing = "Text Editing"
         case terminal = "Terminal"
+        case search = "Search"
         case keybindings = "Key Bindings"
         case sourceControl = "Source Control"
         case components = "Components"
         case location = "Locations"
-        case featureFlags = "Feature Flags"
         case advanced = "Advanced"
     }
 

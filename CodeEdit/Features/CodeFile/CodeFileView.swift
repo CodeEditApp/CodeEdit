@@ -16,6 +16,12 @@ import Combine
 struct CodeFileView: View {
     @ObservedObject private var codeFile: CodeFileDocument
 
+    /// The current cursor positions in the view
+    @State private var cursorPositions: [CursorPosition] = []
+
+    /// Any coordinators passed to the view.
+    private var textViewCoordinators: [TextViewCoordinator]
+
     @AppSettings(\.textEditing.defaultTabWidth)
     var defaultTabWidth
     @AppSettings(\.textEditing.indentOption)
@@ -46,13 +52,17 @@ struct CodeFileView: View {
 
     private let isEditable: Bool
 
-    private let systemFont: NSFont = .monospacedSystemFont(ofSize: 11, weight: .medium)
-
     private let undoManager = CEUndoManager()
 
-    init(codeFile: CodeFileDocument, isEditable: Bool = true) {
+    init(codeFile: CodeFileDocument, textViewCoordinators: [TextViewCoordinator] = [], isEditable: Bool = true) {
         self.codeFile = codeFile
+        self.textViewCoordinators = textViewCoordinators
         self.isEditable = isEditable
+
+        if let openOptions = codeFile.openOptions {
+            codeFile.openOptions = nil
+            self.cursorPositions = openOptions.cursorPositions
+        }
 
         codeFile
             .$content
@@ -62,6 +72,7 @@ struct CodeFileView: View {
                 scheduler: DispatchQueue.main
             )
             .sink { _ in
+                codeFile.updateChangeCount(.changeDone)
                 codeFile.autosave(withImplicitCancellability: false) { _ in
                 }
             }
@@ -72,9 +83,7 @@ struct CodeFileView: View {
 
     @State private var selectedTheme = ThemeModel.shared.selectedTheme ?? ThemeModel.shared.themes.first!
 
-    @State private var font: NSFont = {
-        return Settings[\.textEditing].font.current()
-    }()
+    @State private var font: NSFont = Settings[\.textEditing].font.current
 
     @State private var bracketPairHighlight: BracketPairHighlight? = {
         let theme = ThemeModel.shared.selectedTheme ?? ThemeModel.shared.themes.first!
@@ -108,14 +117,14 @@ struct CodeFileView: View {
             indentOption: (codeFile.indentOption ?? indentOption).textViewOption(),
             lineHeight: lineHeightMultiple,
             wrapLines: codeFile.wrapLines ?? wrapLinesToEditorWidth,
-            cursorPositions: $codeFile.cursorPositions,
+            cursorPositions: $cursorPositions,
             useThemeBackground: useThemeBackground,
             contentInsets: edgeInsets.nsEdgeInsets,
             isEditable: isEditable,
             letterSpacing: letterSpacing,
             bracketPairHighlight: bracketPairHighlight,
             undoManager: undoManager,
-            coordinators: [codeFile.rangeTranslator]
+            coordinators: textViewCoordinators
         )
         .id(codeFile.fileURL)
         .background {
@@ -136,11 +145,8 @@ struct CodeFileView: View {
             guard let theme = newValue else { return }
             self.selectedTheme = theme
         }
-        .onChange(of: settingsFont) { newValue in
-            font = NSFont(
-                name: settingsFont.name,
-                size: CGFloat(newValue.size)
-            ) ?? systemFont.withSize(CGFloat(newValue.size))
+        .onChange(of: settingsFont) { newFontSetting in
+            font = newFontSetting.current
         }
         .onChange(of: bracketHighlight) { _ in
             bracketPairHighlight = getBracketPairHighlight()

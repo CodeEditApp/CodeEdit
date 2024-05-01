@@ -37,7 +37,7 @@ struct SourceControlNavigatorChangesList: View {
                     Group {
                         Button("Open in New Tab") {
                             DispatchQueue.main.async {
-                                workspace.editorManager.activeEditor.openTab(item: file, asTemporary: true)
+                                workspace.editorManager.activeEditor.openTab(file: file, asTemporary: true)
                             }
                         }
                         Button("Open in New Window") {}
@@ -62,7 +62,7 @@ struct SourceControlNavigatorChangesList: View {
                    selectedFiles.count == 1,
                    let file = selection.first {
                     DispatchQueue.main.async {
-                        workspace.editorManager.activeEditor.openTab(item: file, asTemporary: false)
+                        workspace.editorManager.activeEditor.openTab(file: file, asTemporary: false)
                     }
                 }
             }
@@ -72,7 +72,7 @@ struct SourceControlNavigatorChangesList: View {
                newSelection.count == 1,
                let file = newSelection.first {
                 DispatchQueue.main.async {
-                    workspace.editorManager.activeEditor.openTab(item: file, asTemporary: true)
+                    workspace.editorManager.activeEditor.openTab(file: file, asTemporary: true)
                 }
             }
         }

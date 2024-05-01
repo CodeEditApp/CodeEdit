@@ -68,12 +68,12 @@ struct EditorTabView: View {
     var index: Int
 
     private var isTemporary: Bool {
-        editor.temporaryTab == item
+        editor.temporaryTab?.file == item
     }
 
     /// Is the current tab the active tab.
     private var isActive: Bool {
-        item == editor.selectedTab
+        item == editor.selectedTab?.file
     }
 
     /// Is the current tab being dragged.
@@ -92,10 +92,11 @@ struct EditorTabView: View {
     private func switchAction() {
         // Only set the `selectedId` when they are not equal to avoid performance issue for now.
         editorManager.activeEditor = editor
-        if editor.selectedTab != item {
-            editor.selectedTab = item
+        if editor.selectedTab?.file != item {
+            let tabItem = EditorInstance(file: item)
+            editor.selectedTab = tabItem
             editor.history.removeFirst(editor.historyOffset)
-            editor.history.prepend(item)
+            editor.history.prepend(tabItem)
             editor.historyOffset = 0
         }
     }
@@ -103,7 +104,7 @@ struct EditorTabView: View {
     /// Close the current tab.
     func closeAction() {
         isAppeared = false
-        editor.closeTab(item: item)
+        editor.closeTab(file: item)
     }
 
     init(
@@ -131,8 +132,8 @@ struct EditorTabView: View {
                 )
                 .padding(.top, isActive && tabBarStyle == .native ? 1.22 : 0)
             // Tab content (icon and text).
-            HStack(alignment: .center, spacing: 5) {
-                Image(systemName: item.systemImage)
+            HStack(alignment: .center, spacing: 3) {
+                Image(nsImage: item.nsIcon)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .foregroundColor(
@@ -141,7 +142,7 @@ struct EditorTabView: View {
                         ? item.iconColor
                         : .secondary
                     )
-                    .frame(width: 12, height: 12)
+                    .frame(width: 16, height: 16)
                 Text(item.name)
                     .font(
                         isTemporary
@@ -156,7 +157,7 @@ struct EditorTabView: View {
                 // To max-out the parent (tab bar) area.
                 maxHeight: .infinity
             )
-            .padding(.horizontal, tabBarStyle == .native ? 28 : 23)
+            .padding(.horizontal, tabBarStyle == .native ? 28 : 20)
             .overlay {
                 ZStack {
                     // Close Button with is file changed indicator

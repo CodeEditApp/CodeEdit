@@ -12,6 +12,9 @@ import CodeEditSymbols
 final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     private let updater = SoftwareUpdater()
 
+    @Environment(\.openWindow)
+    private var openWindow
+
     func applicationDidFinishLaunching(_ notification: Notification) {
         enableWindowSizeSaveOnQuit()
         Settings.shared.preferences.general.appAppearance.applyAppearance()
@@ -60,7 +63,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         switch behavior {
         case .welcome:
             if !tryFocusWindow(id: .welcome) {
-                NSApp.openWindow(.welcome)
+                openWindow(sceneID: .welcome)
             }
         case .openPanel:
             CodeEditDocumentController.shared.openDocument(self)
@@ -84,7 +87,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                         return
                     }
                     if line > 0, let document = document as? CodeFileDocument {
-                        document.cursorPositions = [CursorPosition(line: line, column: column > 0 ? column : 1)]
+                        document.openOptions = CodeFileDocument.OpenOptions(
+                            cursorPositions: [CursorPosition(line: line, column: column > 0 ? column : 1)]
+                        )
                     }
                 }
         }
@@ -120,11 +125,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     // MARK: - Open windows
 
     @IBAction private func openWelcome(_ sender: Any) {
-        NSApp.openWindow(.welcome)
+        openWindow(sceneID: .welcome)
     }
 
     @IBAction private func openAbout(_ sender: Any) {
-        NSApp.openWindow(.about)
+        openWindow(sceneID: .about)
     }
 
     @IBAction func openFeedback(_ sender: Any) {

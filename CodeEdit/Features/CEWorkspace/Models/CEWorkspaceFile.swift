@@ -39,7 +39,7 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
     var id: String { url.relativePath }
 
     /// Returns the file name (e.g.: `Package.swift`)
-    var name: String { url.lastPathComponent }
+    var name: String { url.lastPathComponent.trimmingCharacters(in: .whitespacesAndNewlines) }
 
     /// Returns the extension of the file or an empty string if no extension is present.
     var type: FileIcon.FileType { .init(rawValue: url.pathExtension) ?? .txt }
@@ -48,7 +48,23 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
     let url: URL
 
     /// Return the icon of the file as `Image`
-    var icon: Image { Image(systemName: systemImage) }
+    var icon: Image {
+        if let customImage = NSImage.symbol(named: systemImage) {
+            return Image(nsImage: customImage)
+        } else {
+            return Image(systemName: systemImage)
+        }
+    }
+
+    /// Return the icon of the file as `NSImage`
+    var nsIcon: NSImage {
+        if let customImage = NSImage.symbol(named: systemImage) {
+            return customImage
+        } else {
+            return NSImage(systemSymbolName: systemImage, accessibilityDescription: systemImage)
+                ?? NSImage(systemSymbolName: "doc", accessibilityDescription: "doc")!
+        }
+    }
 
     /// Returns a parent ``CEWorkspaceFile``.
     ///
@@ -176,7 +192,9 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
 
     /// Returns the file name with optional extension (e.g.: `Package.swift`)
     func fileName(typeHidden: Bool = false) -> String {
-        typeHidden ? url.deletingPathExtension().lastPathComponent : name
+        typeHidden ? url.deletingPathExtension()
+            .lastPathComponent
+            .trimmingCharacters(in: .whitespacesAndNewlines) : name
     }
 
     /// Generates a string based on user's file name preferences.

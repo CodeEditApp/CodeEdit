@@ -24,7 +24,6 @@ struct FindNavigatorForm: View {
     @State private var excludesText: String = ""
     @State private var scoped: Bool = false
     @State private var caseSensitive: Bool = false
-    @State private var matchWholeWord: Bool = false
     @State private var preserveCase: Bool = false
     @State private var scopedToOpenEditors: Bool = false
     @State private var excludeSettings: Bool = true
@@ -145,27 +144,25 @@ struct FindNavigatorForm: View {
                         }
                     )
                     .help("Match Case")
-                    Divider()
-                    Toggle(
-                        isOn: $matchWholeWord,
-                        label: {
-                            Image(systemName: "textformat.abc.dottedunderline")
-                                .foregroundStyle(
-                                    matchWholeWord ? Color(.controlAccentColor) : Color(.secondaryLabelColor)
-                                )
-                        }
-                    )
-                    .help("Match Whole Word")
+                    .onChange(of: caseSensitive) { newValue in
+                        state.caseSensitive = newValue
+                    }
                 },
                 clearable: true,
                 onClear: {
                     state.clearResults()
                 },
-                hasValue: caseSensitive || matchWholeWord
+                hasValue: caseSensitive
             )
             .onSubmit {
-                Task {
-                    await state.search(searchText)
+                if !searchText.isEmpty {
+                    Task {
+                        await state.search(searchText)
+                    }
+                } else {
+                    // If a user performs a search with an empty string, the search results will be cleared.
+                    // This behavior aligns with Xcode's handling of empty search queries.
+                    state.clearResults()
                 }
             }
             if selectedMode[0] == SearchModeModel.Replace {
@@ -256,7 +253,11 @@ struct FindNavigatorForm: View {
             }
             if selectedMode[0] == SearchModeModel.Replace {
                 Button {
-                    // replace all
+                    Task {
+                        let startTime = Date()
+                        try? await state.findAndReplace(query: searchText, replacingTerm: replaceText)
+                        print(Date().timeIntervalSince(startTime))
+                    }
                 } label: {
                     Text("Replace All")
                         .frame(maxWidth: .infinity)

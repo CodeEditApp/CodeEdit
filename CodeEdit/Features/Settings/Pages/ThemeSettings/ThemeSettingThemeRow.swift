@@ -23,7 +23,7 @@ struct ThemeSettingsThemeRow: View {
                 .font(.system(size: 10.5, weight: .bold))
             VStack(alignment: .leading) {
                 Text(theme.displayName)
-                Text("CodeEdit")
+                Text(theme.author)
                     .foregroundColor(.secondary)
                     .font(.footnote)
             }

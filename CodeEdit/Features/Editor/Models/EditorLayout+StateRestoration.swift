@@ -13,22 +13,38 @@ extension EditorManager {
     /// Restores the tab manager from a captured state obtained using `saveRestorationState`
     /// - Parameter workspace: The workspace to retrieve state from.
     func restoreFromState(_ workspace: WorkspaceDocument) {
-        guard let fileManager = workspace.workspaceFileManager,
-              let data = workspace.getFromWorkspaceState(.openTabs) as? Data,
-              let state = try? JSONDecoder().decode(EditorRestorationState.self, from: data) else {
-            return
-        }
+        do {
+            guard let fileManager = workspace.workspaceFileManager,
+                  let data = workspace.getFromWorkspaceState(.openTabs) as? Data else {
+                return
+            }
 
-        guard !state.groups.isEmpty else {
-            logger.warning("Empty Editor State found, restoring to clean editor state.")
-            initCleanState()
-            return
-        }
+            let state = try JSONDecoder().decode(EditorRestorationState.self, from: data)
 
-        fixRestoredEditorLayout(state.groups, fileManager: fileManager)
-        self.editorLayout = state.groups
-        self.activeEditor = activeEditor
-        switchToActiveEditor()
+            guard !state.groups.isEmpty else {
+                logger.warning("Empty Editor State found, restoring to clean editor state.")
+                initCleanState()
+                return
+            }
+
+            guard let activeEditor = state.groups.find(
+                editor: state.activeEditor
+            ) ?? state.groups.findSomeEditor() else {
+                logger.warning("Editor state could not restore active editor.")
+                initCleanState()
+                return
+            }
+
+            fixRestoredEditorLayout(state.groups, fileManager: fileManager)
+
+            self.editorLayout = state.groups
+            self.activeEditor = activeEditor
+            switchToActiveEditor()
+        } catch {
+            logger.warning(
+                "Could not restore editor state from saved data: \(error.localizedDescription, privacy: .public)"
+            )
+        }
     }
 
     /// Fix any hanging files after restoring from saved state.
@@ -65,19 +81,31 @@ extension EditorManager {
     }
 
     /// Fixes any hanging files after restoring from saved state.
+    ///
+    /// Resolves all file references with the workspace's file manager to ensure any referenced files use their shared
+    /// object representation.
+    ///
     /// - Parameters:
     ///   - data: The tab group to fix.
     ///   - fileManager: The file manager to use to map files.a
     private func fixEditor(_ editor: Editor, fileManager: CEWorkspaceFileManager) {
-        editor.tabs = OrderedSet(editor.tabs.compactMap { fileManager.getFile($0.url.path, createIfNotFound: true) })
+        let resolvedTabs = editor
+            .tabs
+            .compactMap({ fileManager.getFile($0.file.url.path(), createIfNotFound: true) })
+            .map({ EditorInstance(file: $0) })
+        editor.tabs = OrderedSet(resolvedTabs)
         if let selectedTab = editor.selectedTab {
-            editor.selectedTab = fileManager.getFile(selectedTab.url.path, createIfNotFound: true)
+            if let resolvedFile = fileManager.getFile(selectedTab.file.url.path(), createIfNotFound: true) {
+                editor.selectedTab = EditorInstance(file: resolvedFile)
+            } else {
+                editor.selectedTab = nil
+            }
         }
     }
 
     func saveRestorationState(_ workspace: WorkspaceDocument) {
         if let data = try? JSONEncoder().encode(
-            EditorRestorationState(focus: activeEditor, groups: editorLayout)
+            EditorRestorationState(activeEditor: activeEditor.id, groups: editorLayout)
         ) {
             workspace.addToWorkspaceState(key: .openTabs, value: data)
         } else {
@@ -87,7 +115,7 @@ extension EditorManager {
 }
 
 struct EditorRestorationState: Codable {
-    var focus: Editor
+    var activeEditor: UUID
     var groups: EditorLayout
 }
 
@@ -187,7 +215,7 @@ extension Editor: Codable {
         let id = try container.decode(UUID.self, forKey: .id)
         self.init(
             files: OrderedSet(fileURLs.map { CEWorkspaceFile(url: $0) }),
-            selectedTab: selectedTab == nil ? nil : CEWorkspaceFile(url: selectedTab!),
+            selectedTab: selectedTab == nil ? nil : EditorInstance(file: CEWorkspaceFile(url: selectedTab!)),
             parent: nil
         )
         self.id = id
@@ -195,8 +223,8 @@ extension Editor: Codable {
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(tabs.map { $0.url }, forKey: .tabs)
-        try container.encode(selectedTab?.url, forKey: .selectedTab)
+        try container.encode(tabs.map { $0.file.url }, forKey: .tabs)
+        try container.encode(selectedTab?.file.url, forKey: .selectedTab)
         try container.encode(id, forKey: .id)
     }
 }
