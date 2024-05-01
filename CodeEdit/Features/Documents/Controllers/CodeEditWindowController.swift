@@ -29,6 +29,10 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
 
     internal var cancellables = [AnyCancellable]()
 
+    init() {
+        super.init(window: nil)
+    }
+
     init(window: NSWindow, workspace: WorkspaceDocument) {
         super.init(window: window)
         self.workspace = workspace
