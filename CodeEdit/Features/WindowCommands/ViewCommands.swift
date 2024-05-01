@@ -111,7 +111,6 @@ struct HideCommands: View {
     }
 
     var utilityAreaCollapsed: Bool {
-        // TODO: compute the state of utility area independently of inspector
         utilityAreaModel.isCollapsed
     }
 
