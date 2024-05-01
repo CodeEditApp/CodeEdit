@@ -29,11 +29,8 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <TestPlans>
          <TestPlanReference
-            reference = "container:TestPlans/Unit.xctestplan"
+            reference = "container:CodeEditTests.xctestplan"
             default = "YES">
-         </TestPlanReference>
-         <TestPlanReference
-            reference = "container:TestPlans/UI.xctestplan">
          </TestPlanReference>
       </TestPlans>
       <Testables>
