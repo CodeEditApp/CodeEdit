@@ -136,10 +136,7 @@ extension CEWorkspaceFileManager {
             messageText = "Are you sure you want to delete \"\(file.name)\"?"
             informativeText = "This item will be deleted immediately. You can't undo this action."
         } else {
-            let childrenCount = try? fileManager.contentsOfDirectory(
-                at: file.url,
-                includingPropertiesForKeys: nil
-            ).count
+            let childrenCount = fileManager.enumerator(atPath: file.url.path)?.allObjects.count
 
             if let childrenCount {
                 messageText = "Are you sure you want to delete the \((childrenCount) + 1) selected items?"
