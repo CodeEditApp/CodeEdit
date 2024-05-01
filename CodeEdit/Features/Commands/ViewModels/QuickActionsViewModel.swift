@@ -9,7 +9,7 @@ import Foundation
 
 /// Simple state class for command palette view. Contains currently selected command,
 /// query text and list of filtered commands
-final class CommandPaletteViewModel: ObservableObject {
+final class QuickActionsViewModel: ObservableObject {
 
     @Published var commandQuery: String = ""
 

@@ -34,7 +34,7 @@ struct QuickOpenView: View {
     }
 
     var body: some View {
-        OverlayView(
+        SearchPanelView(
             title: "Open Quickly",
             image: Image(systemName: "magnifyingglass"),
             options: $state.openQuicklyFiles,

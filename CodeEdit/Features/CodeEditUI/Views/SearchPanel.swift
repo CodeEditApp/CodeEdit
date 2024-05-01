@@ -7,7 +7,7 @@
 
 import Cocoa
 
-final class OverlayPanel: NSPanel, NSWindowDelegate {
+final class SearchPanel: NSPanel, NSWindowDelegate {
     init() {
         super.init(
             contentRect: NSRect(x: 0, y: 0, width: 500, height: 48),
@@ -27,7 +27,7 @@ final class OverlayPanel: NSPanel, NSWindowDelegate {
     }
 
     func windowDidResignKey(_ notification: Notification) {
-        if let panel = notification.object as? OverlayPanel {
+        if let panel = notification.object as? SearchPanel {
             panel.close()
         }
     }

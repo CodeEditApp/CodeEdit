@@ -14,12 +14,15 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
 
     @Published var navigatorCollapsed = false
     @Published var inspectorCollapsed = false
+    @Published var toolbarCollapsed = false
 
     var observers: [NSKeyValueObservation] = []
 
     var workspace: WorkspaceDocument?
-    var quickOpenPanel: OverlayPanel?
-    var commandPalettePanel: OverlayPanel?
+    var workspaceSettings: CEWorkspaceSettings?
+    var workspaceSettingsWindow: NSWindow?
+    var quickOpenPanel: SearchPanel?
+    var commandPalettePanel: SearchPanel?
     var navigatorSidebarViewModel: NavigatorSidebarViewModel?
 
     var splitViewController: NSSplitViewController!
@@ -29,6 +32,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
     init(window: NSWindow, workspace: WorkspaceDocument) {
         super.init(window: window)
         self.workspace = workspace
+        self.workspaceSettings = CEWorkspaceSettings(workspaceDocument: workspace)
         setupSplitView(with: workspace)
 
         let view = CodeEditSplitView(controller: splitViewController).ignoresSafeArea()
@@ -50,9 +54,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         registerCommands()
     }
 
-    deinit {
-        cancellables.forEach({ $0.cancel() })
-    }
+    deinit { cancellables.forEach({ $0.cancel() }) }
 
     @available(*, unavailable)
     required init?(coder: NSCoder) {
@@ -121,7 +123,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         toolbar.delegate = self
         toolbar.displayMode = .labelOnly
         toolbar.showsBaselineSeparator = false
-        self.window?.titleVisibility = .hidden
+        self.window?.titleVisibility = toolbarCollapsed ? .visible : .hidden
         self.window?.toolbarStyle = .unifiedCompact
         if Settings[\.general].tabBarStyle == .native {
             // Set titlebar background as transparent by default in order to
@@ -160,6 +162,22 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         ]
     }
 
+    func toggleToolbar() {
+        toolbarCollapsed.toggle()
+        updateToolbarVisibility()
+    }
+
+    private func updateToolbarVisibility() {
+        if toolbarCollapsed {
+            window?.titleVisibility = .visible
+            window?.title = workspace?.workspaceFileManager?.folderUrl.lastPathComponent ?? "Empty"
+            window?.toolbar = nil
+        } else {
+            window?.titleVisibility = .hidden
+            setupToolbar()
+        }
+    }
+
     func toolbar(
         _ toolbar: NSToolbar,
         itemForItemIdentifier itemIdentifier: NSToolbarItem.Identifier,
@@ -167,9 +185,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
     ) -> NSToolbarItem? {
         switch itemIdentifier {
         case .itemListTrackingSeparator:
-            guard let splitViewController else {
-                return nil
-            }
+            guard let splitViewController else { return nil }
 
             return NSTrackingSeparatorToolbarItem(
                 identifier: .itemListTrackingSeparator,
@@ -214,6 +230,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
             toolbarItem.view = view
 
             return toolbarItem
+
         default:
             return NSToolbarItem(itemIdentifier: itemIdentifier)
         }
@@ -242,9 +259,9 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
                     commandPalettePanel.makeKeyAndOrderFront(self)
                 }
             } else {
-                let panel = OverlayPanel()
+                let panel = SearchPanel()
                 self.commandPalettePanel = panel
-                let contentView = CommandPaletteView(state: state, closePalette: panel.close)
+                let contentView = QuickActionsView(state: state, closePalette: panel.close)
                 panel.contentView = NSHostingView(rootView: SettingsInjector { contentView })
                 window?.addChildWindow(panel, ordered: .above)
                 panel.makeKeyAndOrderFront(self)
@@ -263,7 +280,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
                     quickOpenPanel.makeKeyAndOrderFront(self)
                 }
             } else {
-                let panel = OverlayPanel()
+                let panel = SearchPanel()
                 self.quickOpenPanel = panel
 
                 let contentView = QuickOpenView(state: state) {

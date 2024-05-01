@@ -36,7 +36,12 @@ struct ViewCommands: Commands {
         windowController?.navigatorCollapsed ?? false
     }
 
+    var toolbarCollapsed: Bool {
+        windowController?.toolbarCollapsed ?? false
+    }
+
     var body: some Commands {
+
         CommandGroup(after: .toolbar) {
             Button("Show Command Palette") {
                 NSApp.sendAction(#selector(CodeEditWindowController.openCommandPalette(_:)), to: nil, from: nil)
@@ -101,6 +106,12 @@ struct ViewCommands: Commands {
             }
             .disabled(windowController == nil)
             .keyboardShortcut("y", modifiers: [.shift, .command])
+
+            Button("\(navigatorCollapsed ? "Show" : "Hide") Toolbar") {
+                windowController?.toggleToolbar()
+            }
+            .disabled(windowController == nil)
+            .keyboardShortcut("t", modifiers: [.option, .command])
 
             Divider()
 

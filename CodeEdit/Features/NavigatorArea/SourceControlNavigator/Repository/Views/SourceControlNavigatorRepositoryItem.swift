@@ -24,6 +24,7 @@ struct SourceControlNavigatorRepositoryItem: View {
                         .lineLimit(1)
                         .foregroundStyle(.secondary)
                         .font(.system(size: 11))
+                        .layoutPriority(-1)
                 }
                 Spacer()
                 HStack(spacing: 5) {
