@@ -840,7 +840,7 @@
 		6C186209298BF5A800C663EA /* RecentProjectsListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentProjectsListView.swift; sourceTree = "<group>"; };
 		6C1CC9972B1E770B0002349B /* AsyncFileIterator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncFileIterator.swift; sourceTree = "<group>"; };
 		6C1CC99A2B1E7CBC0002349B /* FindNavigatorIndexBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindNavigatorIndexBar.swift; sourceTree = "<group>"; };
-		6C1D32032BE1CEAD00549350 /* CodeEditTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = CodeEditTests.xctestplan; sourceTree = "<group>"; };
+		6C1D32032BE1CEAD00549350 /* CodeEditTestPlan.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = CodeEditTestPlan.xctestplan; sourceTree = "<group>"; };
 		6C206BD82B47E0FE00F1A16A /* EditorViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorViewTests.swift; sourceTree = "<group>"; };
 		6C206BE02B47EC1D00F1A16A /* EditorLayoutViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorLayoutViewTests.swift; sourceTree = "<group>"; };
 		6C2C155729B4F49100EA60A5 /* SplitViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitViewItem.swift; sourceTree = "<group>"; };
@@ -1683,7 +1683,7 @@
 		587B60F329340A8000D5CD8F /* CodeEditTests */ = {
 			isa = PBXGroup;
 			children = (
-				6C1D32032BE1CEAD00549350 /* CodeEditTests.xctestplan */,
+				6C1D32032BE1CEAD00549350 /* CodeEditTestPlan.xctestplan */,
 				587B60FE293416C900D5CD8F /* Features */,
 				587B60F42934122D00D5CD8F /* Utils */,
 			);
