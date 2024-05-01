@@ -115,7 +115,7 @@ extension CEWorkspaceFileManager {
                 do {
                     try fileManager.trashItem(at: file.url, resultingItemURL: nil)
                 } catch {
-                    fatalError(error.localizedDescription)
+                    print(error.localizedDescription)
                 }
             }
         }
