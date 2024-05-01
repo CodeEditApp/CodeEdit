@@ -23,7 +23,7 @@ final class EditorLayoutViewTests: XCTestCase {
 
     private var app: XCUIApplication!
     private var directory: URL!
-    private var files: [CEWorkspaceFile] = []
+    private var files: [EditorInstance] = []
     private var mockWorkspace: WorkspaceDocument!
 
     // MARK: - Setup
@@ -64,10 +64,10 @@ final class EditorLayoutViewTests: XCTestCase {
             try String("Loren Ipsum").write(to: url, atomically: true, encoding: .utf8)
         }
 
-        files = fileURLs.map { CEWorkspaceFile(url: $0) }
+        files = fileURLs.map { EditorInstance(file: CEWorkspaceFile(url: $0)) }
 
-        files[1].parent = CEWorkspaceFile(url: folder1)
-        files[2].parent = CEWorkspaceFile(url: folder2)
+        files[1].file.parent = CEWorkspaceFile(url: folder1)
+        files[2].file.parent = CEWorkspaceFile(url: folder2)
     }
 
     override func tearDown() async throws {
@@ -77,8 +77,8 @@ final class EditorLayoutViewTests: XCTestCase {
     // MARK: - Split Editor
 
     func testSplitEditorHorizontal() {
-        let editorLeft = Editor(files: [], selectedTab: nil)
-        let editorRight = Editor(files: [], selectedTab: nil)
+        let editorLeft = Editor()
+        let editorRight = Editor()
         let layout: EditorLayout = .horizontal(.init(.horizontal, editorLayouts: [.one(editorLeft), .one(editorRight)]))
 
         let view = FocusWrapper { focus in
@@ -92,8 +92,8 @@ final class EditorLayoutViewTests: XCTestCase {
     }
 
     func testSplitEditorVertical() {
-        let editorLeft = Editor(files: [], selectedTab: nil)
-        let editorRight = Editor(files: [], selectedTab: nil)
+        let editorLeft = Editor()
+        let editorRight = Editor()
         let layout: EditorLayout = .vertical(.init(.vertical, editorLayouts: [.one(editorLeft), .one(editorRight)]))
 
         let view = FocusWrapper { focus in

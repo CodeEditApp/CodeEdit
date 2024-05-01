@@ -9,11 +9,12 @@ import SnapshotTesting
 import XCTest
 import AppKit
 import SwiftUI
-@testable import CodeEdit
 
 /// A NSWindow which can be configured in a deterministic way.
 public final class GenericWindow: NSWindow {
-    public init(backingScaleFactor: CGFloat = 2.0, colorSpace: NSColorSpace? = nil) {
+    static let standard = GenericWindow(backingScaleFactor: 1.0, colorSpace: .displayP3)
+
+    public init(backingScaleFactor: CGFloat = 1.0, colorSpace: NSColorSpace? = nil) {
         self._backingScaleFactor = backingScaleFactor
         self._explicitlySpecifiedColorSpace = colorSpace
 
@@ -38,15 +39,26 @@ public final class GenericWindow: NSWindow {
     }
 }
 
-extension GenericWindow {
-    static let standard = GenericWindow(backingScaleFactor: 1.0, colorSpace: .displayP3)
-}
-
+/// Appearance of a snapshot
 enum Appearance {
     case light
     case dark
 }
 
+/// Assert a snapshot of a view.
+/// - Parameters:
+///   - view: The view to assert.
+///   - name: An optional name for the snapshot.
+///   - recording: Set to true to override any existing snapshots.
+///   - timeout: The timeout before failing.
+///   - file: The file the test is in.
+///   - testName: The name of the test.
+///   - line: The line of the caller.
+///   - precision: How precisely to compare snapshots.
+///   - perceptualPrecision: How precisely to compare snapshots, using a human perception algorithm.
+///   - size: The size of the view.
+///   - appearance: What appearance to use.
+///   - windowForDrawing: The window to use for drawing. In most cases this should be the standard one.
 func snapshot(
     view: NSView,
     named name: String? = nil,
@@ -61,6 +73,14 @@ func snapshot(
     appearance: Appearance = .light,
     windowForDrawing: GenericWindow = .standard
 ) {
+    // Code here based on:
+    // https://github.com/pointfreeco/swift-snapshot-testing/pull/533
+    //
+    // Once that PR is merged, this should be replaced with a simple wrapper around the built-in swift-snapshot
+    // method for snapshotting views.
+    // For now, this makes it so we have a consistent screen resolution across test machines whether that's the test
+    // runner mac mini or a maintainer's macbook pro.
+
     let initialSize = view.frame.size
     if let size = size {
         view.frame.size = size
@@ -108,6 +128,20 @@ func snapshot(
     view.appearance = initialAppearance
 }
 
+/// Assert a snapshot of a view.
+/// - Parameters:
+///   - view: The view to assert.
+///   - name: An optional name for the snapshot.
+///   - recording: Set to true to override any existing snapshots.
+///   - timeout: The timeout before failing.
+///   - file: The file the test is in.
+///   - testName: The name of the test.
+///   - line: The line of the caller.
+///   - precision: How precisely to compare snapshots.
+///   - perceptualPrecision: How precisely to compare snapshots, using a human perception algorithm.
+///   - size: The size of the view.
+///   - appearance: What appearance to use.
+///   - windowForDrawing: The window to use for drawing. In most cases this should be the standard one.
 func snapshot(
     view: some View,
     named name: String? = nil,

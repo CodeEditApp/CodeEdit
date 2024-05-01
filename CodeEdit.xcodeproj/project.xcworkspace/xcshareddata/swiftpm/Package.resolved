@@ -1,4 +1,5 @@
 {
+  "originHash" : "b1d16908e8244759de4a560cf716a4d76d73df6837da13170e37bedd405deccd",
   "pins" : [
     {
       "identity" : "anycodable",
@@ -30,7 +31,7 @@
     {
       "identity" : "codeeditsourceeditor",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/CodeEditApp/CodeEditSourceEditor",
+      "location" : "https://github.com/CodeEditApp/CodeEditSourceEditor.git",
       "state" : {
         "revision" : "7360f00bf7ec8e93b4833357bd254bef7e5c943d",
         "version" : "0.7.2"
@@ -129,19 +130,19 @@
     {
       "identity" : "swift-snapshot-testing",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/pointfreeco/swift-snapshot-testing.git",
+      "location" : "https://github.com/pointfreeco/swift-snapshot-testing",
       "state" : {
-        "revision" : "bb0ea08db8e73324fe6c3727f755ca41a23ff2f4",
-        "version" : "1.14.2"
+        "revision" : "625ccca8570773dd84a34ee51a81aa2bc5a4f97a",
+        "version" : "1.16.0"
       }
     },
     {
       "identity" : "swift-syntax",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-syntax.git",
+      "location" : "https://github.com/apple/swift-syntax",
       "state" : {
-        "revision" : "64889f0c732f210a935a0ad7cda38f77f876262d",
-        "version" : "509.1.1"
+        "revision" : "fa8f95c2d536d6620cc2f504ebe8a6167c9fc2dd",
+        "version" : "510.0.1"
       }
     },
     {
@@ -199,5 +200,5 @@
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }
