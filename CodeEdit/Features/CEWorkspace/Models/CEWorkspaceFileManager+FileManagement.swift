@@ -88,29 +88,73 @@ extension CEWorkspaceFileManager {
         )
     }
 
-    /// This function deletes the item or folder from the current project
+    /// This function deletes the item or folder from the current project by moving to Trash
+    /// - Parameters:
+    ///   - file: The file or folder to delete
+    /// - Authors: Paul Ebose
+    public func trash(file: CEWorkspaceFile) {
+        let message: String
+
+        if !file.isFolder || file.isEmptyFolder { // if its a file or an empty folder, call it by its name
+            message = file.name
+        } else {
+            let fileCount = fileManager.enumerator(atPath: file.url.path)?.allObjects.count
+            message = "the \((fileCount ?? 0) + 1) selected items"
+        }
+
+        let moveFileToTrashAlert = NSAlert()
+        moveFileToTrashAlert.messageText = "Do you want to move \(message) to Trash?"
+        moveFileToTrashAlert.informativeText = "This operation cannot be undone."
+        moveFileToTrashAlert.alertStyle = .critical
+        moveFileToTrashAlert.addButton(withTitle: "Move to Trash")
+        moveFileToTrashAlert.buttons.last?.hasDestructiveAction = true
+        moveFileToTrashAlert.addButton(withTitle: "Cancel")
+
+        if moveFileToTrashAlert.runModal() == .alertFirstButtonReturn { // "Move to Trash" button
+            if fileManager.fileExists(atPath: file.url.path) {
+                do {
+                    try fileManager.trashItem(at: file.url, resultingItemURL: nil)
+                } catch {
+                    print(error.localizedDescription)
+                }
+            }
+        }
+    }
+
+    /// This function deletes the item or folder from the current project by erasing immediately.
     /// - Parameters:
     ///   - file: The file to delete
     ///   - confirmDelete: True to present an alert to confirm the delete.
-    /// - Authors: Mattijs Eikelenboom, KaiTheRedNinja. *Moved from 7c27b1e*
+    /// - Authors: Mattijs Eikelenboom, KaiTheRedNinja., Paul Ebose *Moved from 7c27b1e*
     public func delete(file: CEWorkspaceFile, confirmDelete: Bool = true) {
         // This function also has to account for how the
         // - file system can change outside of the editor
-        let deleteConfirmation = NSAlert()
-        let message: String
+        let messageText: String
+        let informativeText: String
+
         if !file.isFolder || file.isEmptyFolder { // if its a file or an empty folder, call it by its name
-            message = file.name
+            messageText = "Are you sure you want to delete \"\(file.name)\"?"
+            informativeText = "This item will be deleted immediately. You can't undo this action."
         } else {
             let childrenCount = try? fileManager.contentsOfDirectory(
                 at: file.url,
                 includingPropertiesForKeys: nil
             ).count
-            message = "the \((childrenCount ?? 0) + 1) selected items"
+
+            if let childrenCount {
+                messageText = "Are you sure you want to delete the \((childrenCount) + 1) selected items?"
+                informativeText = "\(childrenCount) items will be deleted immediately. You can't undo this action."
+            } else {
+                messageText = "Are you sure you want to delete the selected items?"
+                informativeText = "Selected items will be deleted immediately. You can't undo this action."
+            }
         }
-        deleteConfirmation.messageText = "Do you want to move \(message) to the Trash?"
-        deleteConfirmation.informativeText = "This operation cannot be undone"
+
+        let deleteConfirmation = NSAlert()
+        deleteConfirmation.messageText = messageText
+        deleteConfirmation.informativeText = informativeText
         deleteConfirmation.alertStyle = .critical
-        deleteConfirmation.addButton(withTitle: "Move to Trash")
+        deleteConfirmation.addButton(withTitle: "Delete")
         deleteConfirmation.buttons.last?.hasDestructiveAction = true
         deleteConfirmation.addButton(withTitle: "Cancel")
         if !confirmDelete || deleteConfirmation.runModal() == .alertFirstButtonReturn { // "Delete" button
