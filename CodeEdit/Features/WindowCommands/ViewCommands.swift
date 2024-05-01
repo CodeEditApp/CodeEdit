@@ -72,7 +72,10 @@ struct ViewCommands: Commands {
 
             Divider()
 
-            HideCommands(windowController: windowController ?? CodeEditWindowController())
+            HideCommands(
+                windowController: windowController ?? CodeEditWindowController(),
+                utilityAreaModel: windowController?.workspace?.utilityAreaModel ?? UtilityAreaViewModel()
+            )
                 .onReceive(NSApp.publisher(for: \.keyWindow)) { window in
                     windowController = window?.windowController as? CodeEditWindowController
                 }
@@ -97,6 +100,7 @@ struct ViewCommands: Commands {
 
 struct HideCommands: View {
     @ObservedObject var windowController: CodeEditWindowController
+    @ObservedObject var utilityAreaModel: UtilityAreaViewModel
 
     var navigatorCollapsed: Bool {
         windowController.navigatorCollapsed
@@ -108,7 +112,7 @@ struct HideCommands: View {
 
     var utilityAreaCollapsed: Bool {
         // TODO: compute the state of utility area independently of inspector
-        windowController.inspectorCollapsed
+        utilityAreaModel.isCollapsed
     }
 
     var toolbarCollapsed: Bool {
