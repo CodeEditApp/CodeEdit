@@ -63,7 +63,7 @@ struct ViewCommands: Commands {
                 }
                 .keyboardShortcut("0", modifiers: [.command, .control])
             }
-            .disabled(windowController?.window == nil)
+            .disabled(windowController == nil)
 
             Button("Customize Toolbar...") {
 
