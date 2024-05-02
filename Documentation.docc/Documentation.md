@@ -83,6 +83,10 @@
 - ``SearchResultMatchModel``
 - ``SearchResultLabel``
 
+### Testing
+
+- <doc:Testing>
+
 ### Utils
 
 - ``CodeEditKeychain``

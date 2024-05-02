@@ -45,7 +45,6 @@
 		2813F93827ECC4AA00E305E4 /* FindNavigatorResultList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201B327E9989900CB86D0 /* FindNavigatorResultList.swift */; };
 		2813F93927ECC4C300E305E4 /* NavigatorAreaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287776E627E3413200D46668 /* NavigatorAreaView.swift */; };
 		2816F594280CF50500DD548B /* CodeEditSymbols in Frameworks */ = {isa = PBXBuildFile; productRef = 2816F593280CF50500DD548B /* CodeEditSymbols */; };
-		283BDCBD2972EEBD002AFF81 /* Package.resolved in Resources */ = {isa = PBXBuildFile; fileRef = 283BDCBC2972EEBD002AFF81 /* Package.resolved */; };
 		283BDCC52972F236002AFF81 /* AcknowledgementsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283BDCC42972F236002AFF81 /* AcknowledgementsTests.swift */; };
 		2847019E27FDDF7600F87B6B /* ProjectNavigatorOutlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2847019D27FDDF7600F87B6B /* ProjectNavigatorOutlineView.swift */; };
 		284DC84F2978B7B400BF2770 /* ContributorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284DC84E2978B7B400BF2770 /* ContributorsView.swift */; };
@@ -297,6 +296,7 @@
 		6C2C155D29B4F4E500EA60A5 /* SplitViewReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C2C155C29B4F4E500EA60A5 /* SplitViewReader.swift */; };
 		6C2C156129B4F52F00EA60A5 /* SplitViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C2C156029B4F52F00EA60A5 /* SplitViewModifiers.swift */; };
 		6C2C20172A4016FF0047EDF2 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
+		6C35C08F2BE3D77E0081BAD5 /* Package.resolved in Resources */ = {isa = PBXBuildFile; fileRef = 6C35C08D2BE3D7590081BAD5 /* Package.resolved */; };
 		6C4104E3297C87A000F472BA /* BlurButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C4104E2297C87A000F472BA /* BlurButtonStyle.swift */; };
 		6C4104E6297C884F00F472BA /* AboutDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C4104E5297C884F00F472BA /* AboutDetailView.swift */; };
 		6C4104E9297C970F00F472BA /* AboutDefaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C4104E8297C970F00F472BA /* AboutDefaultView.swift */; };
@@ -592,7 +592,6 @@
 		28052DFE29730E0B00F4F90A /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 		2806E9012979588B000040F4 /* Contributor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contributor.swift; sourceTree = "<group>"; };
 		2806E903297958B9000040F4 /* ContributorRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContributorRowView.swift; sourceTree = "<group>"; };
-		283BDCBC2972EEBD002AFF81 /* Package.resolved */ = {isa = PBXFileReference; lastKnownFileType = text; name = Package.resolved; path = CodeEdit.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved; sourceTree = "<group>"; };
 		283BDCC42972F236002AFF81 /* AcknowledgementsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcknowledgementsTests.swift; sourceTree = "<group>"; };
 		2847019D27FDDF7600F87B6B /* ProjectNavigatorOutlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectNavigatorOutlineView.swift; sourceTree = "<group>"; };
 		284DC84E2978B7B400BF2770 /* ContributorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContributorsView.swift; sourceTree = "<group>"; };
@@ -847,6 +846,7 @@
 		6C2C155929B4F4CC00EA60A5 /* Variadic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Variadic.swift; sourceTree = "<group>"; };
 		6C2C155C29B4F4E500EA60A5 /* SplitViewReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitViewReader.swift; sourceTree = "<group>"; };
 		6C2C156029B4F52F00EA60A5 /* SplitViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitViewModifiers.swift; sourceTree = "<group>"; };
+		6C35C08D2BE3D7590081BAD5 /* Package.resolved */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Package.resolved; path = CodeEdit.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved; sourceTree = "<group>"; };
 		6C4104E2297C87A000F472BA /* BlurButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurButtonStyle.swift; sourceTree = "<group>"; };
 		6C4104E5297C884F00F472BA /* AboutDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutDetailView.swift; sourceTree = "<group>"; };
 		6C4104E8297C970F00F472BA /* AboutDefaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutDefaultView.swift; sourceTree = "<group>"; };
@@ -1302,12 +1302,12 @@
 		4EE96EC82960562000FFBEA8 /* Documents */ = {
 			isa = PBXGroup;
 			children = (
+				613053582B23916D00D767E3 /* Indexer */,
 				4EE96ECC296059D200FFBEA8 /* Mocks */,
 				4EE96ECA2960565E00FFBEA8 /* DocumentsUnitTests.swift */,
 				6195E3102B640485007261CA /* WorkspaceDocument+SearchState+IndexTests.swift */,
 				6195E30C2B64044F007261CA /* WorkspaceDocument+SearchState+FindTests.swift */,
 				6195E30E2B640474007261CA /* WorkspaceDocument+SearchState+FindAndReplaceTests.swift */,
-				613053582B23916D00D767E3 /* Indexer */,
 			);
 			path = Documents;
 			sourceTree = "<group>";
@@ -1695,7 +1695,6 @@
 			children = (
 				587B61002934170A00D5CD8F /* UnitTests_Extensions.swift */,
 				6C0E2F822BE18B8B0083F212 /* Snapshotting.swift */,
-				587B60F52934124100D5CD8F /* CEWorkspaceFileManager */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1711,12 +1710,13 @@
 		587B60FE293416C900D5CD8F /* Features */ = {
 			isa = PBXGroup;
 			children = (
-				613899BD2B6E70E200A5CAF6 /* Search */,
 				283BDCC22972F211002AFF81 /* Acknowledgements */,
-				4EE96EC82960562000FFBEA8 /* Documents */,
+				587B60F52934124100D5CD8F /* CEWorkspaceFileManager */,
 				583E527429361B39001AB554 /* CodeEditUI */,
 				587B612C2934199800D5CD8F /* CodeFile */,
+				4EE96EC82960562000FFBEA8 /* Documents */,
 				6C769ECF2B49BA8C00ADF98B /* Editor */,
+				613899BD2B6E70E200A5CAF6 /* Search */,
 				6CC1EDD92B543E8100472EE0 /* Welcome */,
 			);
 			path = Features;
@@ -2615,7 +2615,7 @@
 				58F2EACE292FB2B0004A9BDE /* Documentation.docc */,
 				2BE487ED28245162003F3F64 /* OpenWithCodeEdit */,
 				284DC8502978BA2600BF2770 /* .all-contributorsrc */,
-				283BDCBC2972EEBD002AFF81 /* Package.resolved */,
+				6C35C08D2BE3D7590081BAD5 /* Package.resolved */,
 				B658FB2D27DA9E0F00EA4DBD /* Products */,
 				5C403B8D27E20F8000788241 /* Frameworks */,
 			);
@@ -3145,12 +3145,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				B6FF04782B6C08AC002C2C78 /* DefaultThemes in Resources */,
-				283BDCBD2972EEBD002AFF81 /* Package.resolved in Resources */,
 				B658FB3727DA9E1000EA4DBD /* Preview Assets.xcassets in Resources */,
 				3E0196732A3921AC002648D8 /* codeedit_shell_integration.zsh in Resources */,
 				58A5DFA529339F6400D1BD5D /* default_keybindings.json in Resources */,
 				3E01967A2A392B45002648D8 /* codeedit_shell_integration.bash in Resources */,
 				D7211D4727E06BFE008F2ED7 /* Localizable.strings in Resources */,
+				6C35C08F2BE3D77E0081BAD5 /* Package.resolved in Resources */,
 				284DC8512978BA2600BF2770 /* .all-contributorsrc in Resources */,
 				B658FB3427DA9E1000EA4DBD /* Assets.xcassets in Resources */,
 				6C6BD6FC29CD152400235D17 /* codeedit.extension.appextensionpoint in Resources */,
