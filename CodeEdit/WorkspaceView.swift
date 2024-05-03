@@ -46,7 +46,6 @@ struct WorkspaceView: View {
                         .collapsed($utilityAreaModel.isMaximized)
                         .frame(minHeight: 170 + 29 + 29)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .holdingPriority(.init(1))
                         .safeAreaInset(edge: .bottom, spacing: 0) {
                             StatusBarView(proxy: proxy)
                         }
