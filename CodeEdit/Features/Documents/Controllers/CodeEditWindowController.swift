@@ -31,7 +31,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
 
     init(window: NSWindow?, workspace: WorkspaceDocument?) {
         super.init(window: window)
-        guard let workspace = workspace else { return }
+        guard let workspace else { return }
         self.workspace = workspace
         self.workspaceSettings = CEWorkspaceSettings(workspaceDocument: workspace)
         setupSplitView(with: workspace)
