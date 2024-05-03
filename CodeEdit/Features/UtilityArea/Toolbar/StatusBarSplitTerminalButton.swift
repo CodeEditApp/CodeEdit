@@ -15,8 +15,6 @@ struct StatusBarSplitTerminalButton: View {
             // todo
         } label: {
             Image(systemName: "square.split.2x1")
-                .foregroundColor(.secondary)
         }
-        .buttonStyle(.plain)
     }
 }

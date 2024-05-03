@@ -17,6 +17,5 @@ struct StatusBarClearButton: View {
             Image(systemName: "trash")
                 .foregroundColor(.secondary)
         }
-        .buttonStyle(.plain)
     }
 }

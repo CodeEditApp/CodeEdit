@@ -43,12 +43,7 @@ struct UtilityAreaView: View {
             HStack(spacing: 5) {
                 Divider()
                 HStack(spacing: 0) {
-                    Button {
-                        model.isMaximized.toggle()
-                    } label: {
-                        Image(systemName: "arrowtriangle.up.square")
-                    }
-                    .buttonStyle(.icon(isActive: model.isMaximized, size: 24))
+                    StatusBarMaximizeButton()
                 }
             }
             .colorScheme(

@@ -155,16 +155,8 @@ struct UtilityAreaTerminalView: View {
                 }
                 Spacer()
                 PaneToolbarSection {
-                    Button {
-                        // clear logs
-                    } label: {
-                        Image(systemName: "trash")
-                    }
-                    Button {
-                        // split terminal
-                    } label: {
-                        Image(systemName: "square.split.2x1")
-                    }
+                    StatusBarClearButton()
+                    StatusBarSplitTerminalButton()
                 }
             }
             .background {
