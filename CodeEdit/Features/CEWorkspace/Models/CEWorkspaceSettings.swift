@@ -13,7 +13,6 @@ final class CEWorkspaceSettings: ObservableObject {
     @ObservedObject private var workspace: WorkspaceDocument
     @Published public var preferences: CEWorkspaceSettingsData = .init()
 
-    private var savedSettings = false
     private var storeTask: AnyCancellable!
     private let fileManager = FileManager.default
 
@@ -37,12 +36,7 @@ final class CEWorkspaceSettings: ObservableObject {
 
         loadSettings()
 
-        self.storeTask = self.$preferences.throttle(for: 2, scheduler: RunLoop.main, latest: true).sink {
-            if !self.savedSettings, let folderURL = self.folderURL {
-                try? self.fileManager.createDirectory(at: folderURL, withIntermediateDirectories: false)
-                self.savedSettings = true
-            }
-
+        self.storeTask = self.$preferences.throttle(for: 2.0, scheduler: RunLoop.main, latest: true).sink {
             try? self.savePreferences($0)
         }
     }
@@ -54,8 +48,6 @@ final class CEWorkspaceSettings: ObservableObject {
                 guard let json = try? Data(contentsOf: settingsURL),
                       let prefs = try? JSONDecoder().decode(CEWorkspaceSettingsData.self, from: json)
                 else { return }
-
-                self.savedSettings = true
                 self.preferences = prefs
             }
         }
@@ -63,7 +55,14 @@ final class CEWorkspaceSettings: ObservableObject {
 
     /// Save``CEWorkspaceSettings`` model to `.codeedit/settings.json`
     private func savePreferences(_ data: CEWorkspaceSettingsData) throws {
-        guard let settingsURL = settingsURL else { return }
+        // If the user doesn't have any settings to save, don't save them.
+        guard !data.isEmpty() else { return }
+
+        guard let folderURL, let settingsURL else { return }
+
+        if !fileManager.fileExists(atPath: folderURL.path()) {
+            try fileManager.createDirectory(at: folderURL, withIntermediateDirectories: true)
+        }
 
         let data = try JSONEncoder().encode(data)
         let json = try JSONSerialization.jsonObject(with: data)
