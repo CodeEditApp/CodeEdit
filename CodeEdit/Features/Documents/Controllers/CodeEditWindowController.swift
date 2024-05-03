@@ -29,12 +29,9 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
 
     internal var cancellables = [AnyCancellable]()
 
-    init() {
-        super.init(window: nil)
-    }
-
-    init(window: NSWindow, workspace: WorkspaceDocument) {
+    init(window: NSWindow?, workspace: WorkspaceDocument?) {
         super.init(window: window)
+        guard let workspace = workspace else { return }
         self.workspace = workspace
         self.workspaceSettings = CEWorkspaceSettings(workspaceDocument: workspace)
         setupSplitView(with: workspace)
