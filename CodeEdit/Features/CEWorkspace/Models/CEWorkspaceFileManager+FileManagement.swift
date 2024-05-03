@@ -98,8 +98,25 @@ extension CEWorkspaceFileManager {
         if !file.isFolder || file.isEmptyFolder { // if its a file or an empty folder, call it by its name
             message = file.name
         } else {
-            let fileCount = fileManager.enumerator(atPath: file.url.path)?.allObjects.count
-            message = "the \((fileCount ?? 0) + 1) selected items"
+            let enumerator = fileManager.enumerator(atPath: file.url.path)
+            let start = CACurrentMediaTime()
+            var childrenCount = 0
+
+            // max out at half a second of loading, a little lag but (hopefully) rare.
+            while enumerator?.nextObject() != nil {
+                childrenCount += 1
+
+                if CACurrentMediaTime() - start > 0.5 {
+                    childrenCount = 0
+                    break
+                }
+            }
+
+            if childrenCount != 0 {
+                message = "Are you sure you want to delete the \((childrenCount) + 1) selected items?"
+            } else {
+                message = "Are you sure you want to delete the selected items?"
+            }
         }
 
         let moveFileToTrashAlert = NSAlert()
@@ -136,9 +153,21 @@ extension CEWorkspaceFileManager {
             messageText = "Are you sure you want to delete \"\(file.name)\"?"
             informativeText = "This item will be deleted immediately. You can't undo this action."
         } else {
-            let childrenCount = fileManager.enumerator(atPath: file.url.path)?.allObjects.count
+            let enumerator = fileManager.enumerator(atPath: file.url.path)
+            let start = CACurrentMediaTime()
+            var childrenCount = 0
 
-            if let childrenCount {
+            // max out at half a second of loading, a little lag but (hopefully) rare.
+            while enumerator?.nextObject() != nil {
+                childrenCount += 1
+
+                if CACurrentMediaTime() - start > 0.5 {
+                    childrenCount = 0
+                    break
+                }
+            }
+
+            if childrenCount != 0 {
                 messageText = "Are you sure you want to delete the \((childrenCount) + 1) selected items?"
                 informativeText = "\(childrenCount) items will be deleted immediately. You can't undo this action."
             } else {
