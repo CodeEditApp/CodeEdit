@@ -1,5 +1,5 @@
 {
-  "originHash" : "3f6921a5ec30d1ecb6d6b205cf27a816c318246bb00f0ea367b997cc66527d32",
+  "originHash" : "029e3feb7277e502c419e04acfc23af6dd70755f3984e9902ec582890724706b",
   "pins" : [
     {
       "identity" : "anycodable",
@@ -85,10 +85,10 @@
     {
       "identity" : "logstream",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/CodeEditApp/LogStream",
+      "location" : "https://github.com/Wouter01/LogStream",
       "state" : {
-        "revision" : "afd2422c65c12822f26606408b4e39b9549c5e1a",
-        "version" : "1.2.1"
+        "revision" : "5378bafdbf5de66b69da8cca9df9d16e19bfcf89",
+        "version" : "1.3.0"
       }
     },
     {
