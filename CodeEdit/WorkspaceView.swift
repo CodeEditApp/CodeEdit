@@ -54,6 +54,7 @@ struct WorkspaceView: View {
                             .collapsed($utilityAreaModel.isCollapsed)
                             .frame(idealHeight: 260)
                             .frame(minHeight: 100)
+                            .holdingPriority(.init(1))
                     }
                     .edgesIgnoringSafeArea(.top)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
