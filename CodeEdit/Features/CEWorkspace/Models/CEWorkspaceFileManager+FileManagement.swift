@@ -93,31 +93,7 @@ extension CEWorkspaceFileManager {
     ///   - file: The file or folder to delete
     /// - Authors: Paul Ebose
     public func trash(file: CEWorkspaceFile) {
-        let message: String
-
-        if !file.isFolder || file.isEmptyFolder { // if its a file or an empty folder, call it by its name
-            message = file.name
-        } else {
-            let enumerator = fileManager.enumerator(atPath: file.url.path)
-            let start = CACurrentMediaTime()
-            var childrenCount = 0
-
-            // max out at half a second of loading, a little lag but (hopefully) rare.
-            while enumerator?.nextObject() != nil {
-                childrenCount += 1
-
-                if CACurrentMediaTime() - start > 0.5 {
-                    childrenCount = 0
-                    break
-                }
-            }
-
-            if childrenCount != 0 {
-                message = "Are you sure you want to delete the \((childrenCount) + 1) selected items?"
-            } else {
-                message = "Are you sure you want to delete the selected items?"
-            }
-        }
+        let message = file.name
 
         let moveFileToTrashAlert = NSAlert()
         moveFileToTrashAlert.messageText = "Do you want to move \(message) to Trash?"
@@ -146,39 +122,11 @@ extension CEWorkspaceFileManager {
     public func delete(file: CEWorkspaceFile, confirmDelete: Bool = true) {
         // This function also has to account for how the
         // - file system can change outside of the editor
-        let messageText: String
-        let informativeText: String
-
-        if !file.isFolder || file.isEmptyFolder { // if its a file or an empty folder, call it by its name
-            messageText = "Are you sure you want to delete \"\(file.name)\"?"
-            informativeText = "This item will be deleted immediately. You can't undo this action."
-        } else {
-            let enumerator = fileManager.enumerator(atPath: file.url.path)
-            let start = CACurrentMediaTime()
-            var childrenCount = 0
-
-            // max out at half a second of loading, a little lag but (hopefully) rare.
-            while enumerator?.nextObject() != nil {
-                childrenCount += 1
-
-                if CACurrentMediaTime() - start > 0.5 {
-                    childrenCount = 0
-                    break
-                }
-            }
-
-            if childrenCount != 0 {
-                messageText = "Are you sure you want to delete the \((childrenCount) + 1) selected items?"
-                informativeText = "\(childrenCount) items will be deleted immediately. You can't undo this action."
-            } else {
-                messageText = "Are you sure you want to delete the selected items?"
-                informativeText = "Selected items will be deleted immediately. You can't undo this action."
-            }
-        }
+        let message = file.name
 
         let deleteConfirmation = NSAlert()
-        deleteConfirmation.messageText = messageText
-        deleteConfirmation.informativeText = informativeText
+        deleteConfirmation.messageText = "Do you want to delete \(message)?"
+        deleteConfirmation.informativeText = "This item will be deleted immediately. You can't undo this action."
         deleteConfirmation.alertStyle = .critical
         deleteConfirmation.addButton(withTitle: "Delete")
         deleteConfirmation.buttons.last?.hasDestructiveAction = true
