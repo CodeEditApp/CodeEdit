@@ -93,23 +93,11 @@ extension CEWorkspaceFileManager {
     ///   - file: The file or folder to delete
     /// - Authors: Paul Ebose
     public func trash(file: CEWorkspaceFile) {
-        let message = file.name
-
-        let moveFileToTrashAlert = NSAlert()
-        moveFileToTrashAlert.messageText = "Do you want to move \(message) to Trash?"
-        moveFileToTrashAlert.informativeText = "This operation cannot be undone."
-        moveFileToTrashAlert.alertStyle = .critical
-        moveFileToTrashAlert.addButton(withTitle: "Move to Trash")
-        moveFileToTrashAlert.buttons.last?.hasDestructiveAction = true
-        moveFileToTrashAlert.addButton(withTitle: "Cancel")
-
-        if moveFileToTrashAlert.runModal() == .alertFirstButtonReturn { // "Move to Trash" button
-            if fileManager.fileExists(atPath: file.url.path) {
-                do {
-                    try fileManager.trashItem(at: file.url, resultingItemURL: nil)
-                } catch {
-                    print(error.localizedDescription)
-                }
+        if fileManager.fileExists(atPath: file.url.path) {
+            do {
+                try fileManager.trashItem(at: file.url, resultingItemURL: nil)
+            } catch {
+                print(error.localizedDescription)
             }
         }
     }
