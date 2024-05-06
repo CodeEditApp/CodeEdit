@@ -110,10 +110,10 @@ extension CEWorkspaceFileManager {
     public func delete(file: CEWorkspaceFile, confirmDelete: Bool = true) {
         // This function also has to account for how the
         // - file system can change outside of the editor
-        let message = file.name
+        let fileName = file.name
 
         let deleteConfirmation = NSAlert()
-        deleteConfirmation.messageText = "Do you want to delete \(message)?"
+        deleteConfirmation.messageText = "Do you want to delete “\(fileName)”?"
         deleteConfirmation.informativeText = "This item will be deleted immediately. You can't undo this action."
         deleteConfirmation.alertStyle = .critical
         deleteConfirmation.addButton(withTitle: "Delete")
