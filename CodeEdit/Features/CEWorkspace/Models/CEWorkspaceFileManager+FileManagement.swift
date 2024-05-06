@@ -93,30 +93,11 @@ extension CEWorkspaceFileManager {
     ///   - file: The file or folder to delete
     /// - Authors: Paul Ebose
     public func trash(file: CEWorkspaceFile) {
-        let message: String
-
-        if !file.isFolder || file.isEmptyFolder { // if its a file or an empty folder, call it by its name
-            message = file.name
-        } else {
-            let fileCount = fileManager.enumerator(atPath: file.url.path)?.allObjects.count
-            message = "the \((fileCount ?? 0) + 1) selected items"
-        }
-
-        let moveFileToTrashAlert = NSAlert()
-        moveFileToTrashAlert.messageText = "Do you want to move \(message) to Trash?"
-        moveFileToTrashAlert.informativeText = "This operation cannot be undone."
-        moveFileToTrashAlert.alertStyle = .critical
-        moveFileToTrashAlert.addButton(withTitle: "Move to Trash")
-        moveFileToTrashAlert.buttons.last?.hasDestructiveAction = true
-        moveFileToTrashAlert.addButton(withTitle: "Cancel")
-
-        if moveFileToTrashAlert.runModal() == .alertFirstButtonReturn { // "Move to Trash" button
-            if fileManager.fileExists(atPath: file.url.path) {
-                do {
-                    try fileManager.trashItem(at: file.url, resultingItemURL: nil)
-                } catch {
-                    print(error.localizedDescription)
-                }
+        if fileManager.fileExists(atPath: file.url.path) {
+            do {
+                try fileManager.trashItem(at: file.url, resultingItemURL: nil)
+            } catch {
+                print(error.localizedDescription)
             }
         }
     }
@@ -129,30 +110,11 @@ extension CEWorkspaceFileManager {
     public func delete(file: CEWorkspaceFile, confirmDelete: Bool = true) {
         // This function also has to account for how the
         // - file system can change outside of the editor
-        let messageText: String
-        let informativeText: String
-
-        if !file.isFolder || file.isEmptyFolder { // if its a file or an empty folder, call it by its name
-            messageText = "Are you sure you want to delete \"\(file.name)\"?"
-            informativeText = "This item will be deleted immediately. You can't undo this action."
-        } else {
-            let childrenCount = try? fileManager.contentsOfDirectory(
-                at: file.url,
-                includingPropertiesForKeys: nil
-            ).count
-
-            if let childrenCount {
-                messageText = "Are you sure you want to delete the \((childrenCount) + 1) selected items?"
-                informativeText = "\(childrenCount) items will be deleted immediately. You can't undo this action."
-            } else {
-                messageText = "Are you sure you want to delete the selected items?"
-                informativeText = "Selected items will be deleted immediately. You can't undo this action."
-            }
-        }
+        let fileName = file.name
 
         let deleteConfirmation = NSAlert()
-        deleteConfirmation.messageText = messageText
-        deleteConfirmation.informativeText = informativeText
+        deleteConfirmation.messageText = "Do you want to delete “\(fileName)”?"
+        deleteConfirmation.informativeText = "This item will be deleted immediately. You can't undo this action."
         deleteConfirmation.alertStyle = .critical
         deleteConfirmation.addButton(withTitle: "Delete")
         deleteConfirmation.buttons.last?.hasDestructiveAction = true
