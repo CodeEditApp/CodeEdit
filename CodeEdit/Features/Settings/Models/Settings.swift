@@ -65,7 +65,6 @@ final class Settings: ObservableObject {
     /// Save``Settings`` model to
     /// `~/Library/Application Support/CodeEdit/settings.json`
     private func savePreferences(_ data: SettingsData) throws {
-        print("Saving...")
         let data = try JSONEncoder().encode(data)
         let json = try JSONSerialization.jsonObject(with: data)
         let prettyJSON = try JSONSerialization.data(withJSONObject: json, options: [.prettyPrinted])

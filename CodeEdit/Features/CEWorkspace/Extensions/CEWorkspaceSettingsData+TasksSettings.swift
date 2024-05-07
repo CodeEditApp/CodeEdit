@@ -10,7 +10,7 @@ import Collections
 
 extension CEWorkspaceSettingsData {
     /// Workspace settings for the tasks tab.
-    struct TasksSettings: Codable, Hashable, SearchableSettingsPage {
+    struct TasksSettings: Codable, Hashable, SearchableSettingsPage, WorkspaceSettingsGroup {
         var items: [CETask] = []
 
         var searchKeys: [String] {
@@ -30,6 +30,10 @@ extension CEWorkspaceSettingsData {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.items = try container.decodeIfPresent([CETask].self, forKey: .items) ?? []
             self.enabled = try container.decodeIfPresent(Bool.self, forKey: .enabled) ?? true
+        }
+
+        func isEmpty() -> Bool {
+            items.isEmpty && enabled == true
         }
     }
 }
