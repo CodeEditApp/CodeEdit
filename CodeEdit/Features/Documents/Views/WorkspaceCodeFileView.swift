@@ -8,29 +8,76 @@
 import SwiftUI
 import UniformTypeIdentifiers
 import CodeEditSourceEditor
+import AVKit
+import PDFKit
 
 struct WorkspaceCodeFileView: View {
-
+    
     @EnvironmentObject private var editorManager: EditorManager
-
+    
     @EnvironmentObject private var editor: Editor
-
+    
+    @Environment(\.edgeInsets)
+    private var edgeInsets
+    
     var file: CEWorkspaceFile
     var textViewCoordinators: [TextViewCoordinator] = []
-
+    
+    var workspaceStatusBarHeight = CGFloat(13)
+    
     @State private var update: Bool = false
-
+    
     @ViewBuilder var codeView: some View {
         if let document = file.fileDocument {
             Group {
-                switch document.typeOfFile {
-                case .some(.text), .some(.data):
-                    CodeFileView(codeFile: document, textViewCoordinators: textViewCoordinators)
-                default:
-                    otherFileView(document, for: file)
-                }
+                
+                PdfFileView(document)
+                    .padding(.top, edgeInsets.top - 1)
+                    .padding(.bottom, StatusBarView.height - 11)
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            
+            //            Group {
+            //                switch document.typeOfFile {
+            //                case .some(.text):
+            //                        CodeFileView(codeFile: document, textViewCoordinators: textViewCoordinators)
+            //                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            
+            //                case .some(.image):
+            //                        OtherFileView(document)
+            .padding(.bottom, workspaceStatusBarHeight)
+            //                        GeometryReader { proxy in
+            //                            let nsImg = NSImage(contentsOf: document.fileURL!)!
+            //                            let pixelWidth = CGFloat(nsImg.representations.first!.pixelsWide)
+            //                            let pixelHeight = CGFloat(nsImg.representations.first!.pixelsHigh)
+            //
+            //                            var _ = print("proxy.size:", proxy.size.width, proxy.size.height)
+            //                            var _ = print("pixels:", pixelWidth, pixelHeight)
+            //
+            //                            if pixelWidth >= proxy.size.width || pixelHeight >= proxy.size.height {
+            //                                Image(nsImage: nsImg)
+            //                                    .resizable()
+            //                                    .scaledToFit()
+            //                                OtherFileView(document)
+            //                                    .padding(.bottom, 25)
+            //                                    //.containerRelativeFrame(<#T##Axis.Set#>, count: <#T##Int#>, span: <#T##Int#>, spacing: <#T##CGFloat#>, alignment: <#T##Alignment#>)
+            //                            } else {
+            //                                Image(nsImage: nsImg)
+            //                                    .resizable()
+            //                                    .frame(width: pixelWidth, height: pixelHeight)
+            //                            }
+            //                        }
+            
+            //                case .some(.audiovisualContent):
+            //                        VideoPlayer(player: AVPlayer(playerItem: AVPlayerItem(url: document.fileURL!)))
+            //                            .padding(.top, 80)
+            //                            .padding(.bottom, 30)
+            //
+            //                default:
+            //                        OtherFileView(document)
+            //                            .padding(.bottom, 25)
+            //                }
+            //            }
+            
         } else {
             if update {
                 Spacer()
@@ -58,7 +105,7 @@ struct WorkspaceCodeFileView: View {
                 }
         }
     }
-
+    
     @ViewBuilder
     private func otherFileView(
         _ otherFile: CodeFileDocument,
@@ -85,7 +132,7 @@ struct WorkspaceCodeFileView: View {
             }
         }
     }
-
+    
     var body: some View {
         codeView
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -98,5 +145,29 @@ struct WorkspaceCodeFileView: View {
                     }
                 }
             }
+    }
+}
+
+struct PdfFileView: NSViewRepresentable {
+    
+    private var fileDoc: CodeFileDocument
+    
+    init(_ fileDoc: CodeFileDocument) {
+        self.fileDoc = fileDoc
+    }
+    
+    func makeNSView(context: Context) -> PDFView {
+        let pdfView = PDFView()
+        if let fileDocURL = fileDoc.fileURL {
+            pdfView.document = PDFDocument(url: fileDocURL)
+        }
+        pdfView.backgroundColor = NSColor.windowBackgroundColor
+        return pdfView
+    }
+    
+    func updateNSView(_ pdfView: PDFView, context: Context) {
+        if let fileDocURL = fileDoc.fileURL {
+            pdfView.document = PDFDocument(url: fileDocURL)
+        }
     }
 }
