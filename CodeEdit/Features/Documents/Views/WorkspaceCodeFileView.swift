@@ -12,39 +12,36 @@ import AVKit
 import PDFKit
 
 struct WorkspaceCodeFileView: View {
-    
+
     @EnvironmentObject private var editorManager: EditorManager
-    
+
     @EnvironmentObject private var editor: Editor
-    
+
     @Environment(\.edgeInsets)
     private var edgeInsets
-    
+
     var file: CEWorkspaceFile
     var textViewCoordinators: [TextViewCoordinator] = []
-    
-    var workspaceStatusBarHeight = CGFloat(13)
-    
+
     @State private var update: Bool = false
-    
+
     @ViewBuilder var codeView: some View {
-        if let document = file.fileDocument {
+        if let documentURL = file.fileDocument?.fileURL {
             Group {
-                
-                PdfFileView(document)
-                    .padding(.top, edgeInsets.top - 1)
-                    .padding(.bottom, StatusBarView.height - 11)
+                WorkspacePdfFileView(documentURL)
+                    .padding(.top, edgeInsets.top - 1.5)
+                    .padding(.bottom, StatusBarView.height + 2)
             }
-            
+
             //            Group {
             //                switch document.typeOfFile {
             //                case .some(.text):
             //                        CodeFileView(codeFile: document, textViewCoordinators: textViewCoordinators)
             //                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            
+
             //                case .some(.image):
             //                        OtherFileView(document)
-            .padding(.bottom, workspaceStatusBarHeight)
+            //            .padding(.bottom, workspaceStatusBarHeight)
             //                        GeometryReader { proxy in
             //                            let nsImg = NSImage(contentsOf: document.fileURL!)!
             //                            let pixelWidth = CGFloat(nsImg.representations.first!.pixelsWide)
@@ -66,7 +63,7 @@ struct WorkspaceCodeFileView: View {
             //                                    .frame(width: pixelWidth, height: pixelHeight)
             //                            }
             //                        }
-            
+
             //                case .some(.audiovisualContent):
             //                        VideoPlayer(player: AVPlayer(playerItem: AVPlayerItem(url: document.fileURL!)))
             //                            .padding(.top, 80)
@@ -77,7 +74,7 @@ struct WorkspaceCodeFileView: View {
             //                            .padding(.bottom, 25)
             //                }
             //            }
-            
+
         } else {
             if update {
                 Spacer()
@@ -105,7 +102,7 @@ struct WorkspaceCodeFileView: View {
                 }
         }
     }
-    
+
     @ViewBuilder
     private func otherFileView(
         _ otherFile: CodeFileDocument,
@@ -132,7 +129,7 @@ struct WorkspaceCodeFileView: View {
             }
         }
     }
-    
+
     var body: some View {
         codeView
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -145,29 +142,5 @@ struct WorkspaceCodeFileView: View {
                     }
                 }
             }
-    }
-}
-
-struct PdfFileView: NSViewRepresentable {
-    
-    private var fileDoc: CodeFileDocument
-    
-    init(_ fileDoc: CodeFileDocument) {
-        self.fileDoc = fileDoc
-    }
-    
-    func makeNSView(context: Context) -> PDFView {
-        let pdfView = PDFView()
-        if let fileDocURL = fileDoc.fileURL {
-            pdfView.document = PDFDocument(url: fileDocURL)
-        }
-        pdfView.backgroundColor = NSColor.windowBackgroundColor
-        return pdfView
-    }
-    
-    func updateNSView(_ pdfView: PDFView, context: Context) {
-        if let fileDocURL = fileDoc.fileURL {
-            pdfView.document = PDFDocument(url: fileDocURL)
-        }
     }
 }
