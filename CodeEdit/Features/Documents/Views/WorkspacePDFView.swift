@@ -1,5 +1,5 @@
 //
-//  WorkspacePdfFileView.swift
+//  WorkspacePDFView.swift
 //  CodeEdit
 //
 //  Created by Paul Ebose on 2024/5/7.
@@ -14,13 +14,13 @@ import PDFKit.PDFView
 ///
 /// **Example Usage**:
 /// ```swift
-/// WorkspacePdfFileView(fileURL)
+/// WorkspacePDFView(fileURL)
 ///     .padding(.top, tabBarHeight)
 ///     .padding(.bottom, statusBarHeight)
 /// ```
 ///
 /// This view has the same context menu available in the native MacOS Preview application.
-struct WorkspacePdfFileView: NSViewRepresentable {
+struct WorkspacePDFView: NSViewRepresentable {
 
     let fileURL: URL
     @Binding var canPreviewFile: Bool
@@ -40,15 +40,15 @@ struct WorkspacePdfFileView: NSViewRepresentable {
         nsView.document = PDFDocument(url: fileURL)
     }
 
-    func makeCoordinator() -> WorkspacePdfFileView.Coordinator {
+    func makeCoordinator() -> WorkspacePDFView.Coordinator {
         // The coordinator object implements the mechanics of passing
         // data between the NS view representable and Swift UI.
         Coordinator(self)
     }
 
     final class Coordinator: NSObject {
-        let pdfView: WorkspacePdfFileView
-        init(_ pdfView: WorkspacePdfFileView) {
+        let pdfView: WorkspacePDFView
+        init(_ pdfView: WorkspacePDFView) {
             self.pdfView = pdfView
         }
     }

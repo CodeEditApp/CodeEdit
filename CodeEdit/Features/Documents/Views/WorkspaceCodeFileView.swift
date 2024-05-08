@@ -30,7 +30,7 @@ struct WorkspaceCodeFileView: View {
     @ViewBuilder var codeView: some View {
         if let documentURL = file.fileDocument?.fileURL {
             Group {
-                WorkspacePdfFileView(fileURL: documentURL, canPreviewFile: $canPreviewFile)
+                WorkspacePDFView(fileURL: documentURL, canPreviewFile: $canPreviewFile)
                     .padding(.top, edgeInsets.top - 1.5)
                     .padding(.bottom, StatusBarView.height + 2)
             }
