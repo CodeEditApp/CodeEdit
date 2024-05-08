@@ -32,17 +32,20 @@ struct WorkspacePDFView: NSViewRepresentable {
 
     func makeNSView(context: Context) -> PDFView {
         let pdfView = PDFView()
-        pdfView.document = PDFDocument(url: fileURL)
-        if pdfView.document != nil {
-            // use the coordinator to update the binding
-            context.coordinator.pdfView.canPreviewFile = true
+        // use the coordinator to update the state binding
+        guard let pdfDocument = PDFDocument(url: fileURL) else {
+            context.coordinator.pdfView.canPreviewFile = false
+            return pdfView
         }
+        context.coordinator.pdfView.canPreviewFile = true
+        pdfView.document = pdfDocument
         pdfView.backgroundColor = NSColor.windowBackgroundColor
         return pdfView
     }
 
-    func updateNSView(_ nsView: PDFView, context: Context) {
-        nsView.document = PDFDocument(url: fileURL)
+    func updateNSView(_ pdfView: PDFView, context: Context) {
+        guard let pdfDocument = PDFDocument(url: fileURL) else { return }
+        pdfView.document = pdfDocument
     }
 
     func makeCoordinator() -> WorkspacePDFView.Coordinator {
