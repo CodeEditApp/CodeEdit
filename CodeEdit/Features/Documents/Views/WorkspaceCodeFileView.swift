@@ -10,6 +10,8 @@ import UniformTypeIdentifiers
 import CodeEditSourceEditor
 import AVKit
 import PDFKit
+import QuickLookUI
+import QuickLook
 
 struct WorkspaceCodeFileView: View {
 
@@ -39,27 +41,30 @@ struct WorkspaceCodeFileView: View {
                 let pixelWidth = CGFloat(nsImage.representations.first!.pixelsWide)
                 let pixelHeight = CGFloat(nsImage.representations.first!.pixelsHigh)
 
-                //                    var _ = print("proxy.size:", proxy.size.width, proxy.size.height)
-                //                    var _ = print("pixels:", pixelWidth, pixelHeight)
-                //                    var _ = print("proxy.frame(in: .local).minX:", proxy.frame(in: .local).minX)
-                //                    var _ = print("proxy.frame(in: .local).midX:", proxy.frame(in: .local).midX)
-                //                    var _ = print("proxy.frame(in: .local).maxX:", proxy.frame(in: .local).maxX)
-                //                var _ = print("proxy.size.width:", proxy.size.width)
-                //                var _ = print("pixelWidth:", pixelWidth)
+                var _ = print("proxy.size:", proxy.size.width, proxy.size.height)
+                var _ = print("pixels:", pixelWidth, pixelHeight)
+                var _ = print("nsImage.size:", nsImage.size.width, nsImage.size.height)
+                var _ = print("::::::::")
 
-                Image(nsImage: nsImage)
-                    .resizable()
-                    .background(.red)
-                    .scaledToFit()
-                    .background(.blue)
-                    .frame(maxWidth: min(pixelWidth, .infinity), maxHeight: min(pixelHeight, .infinity))
-                    .border(.purple)
-                // .padding()
-                // .position(x: (pixelWidth / 2) + ((proxy.size.width - pixelWidth) / 2) - (proxy.size.width / 2), y: (pixelHeight / 2) + ((proxy.size.height - pixelHeight) / 2))
+                ZStack {
+                    Image(nsImage: nsImage)
+                        .resizable()
+                        .background(.red)
+                        .scaledToFit()
+                        .padding(.top, edgeInsets.top - 1.74)
+                        .padding(.bottom, StatusBarView.height + 1.26)
+                        .background(.blue)
+                        .frame(maxWidth: min(pixelWidth, proxy.size.width, nsImage.size.width), maxHeight: min(pixelHeight, proxy.size.width, nsImage.size.height))
+                        .clipped()
+                    //                        .position(x: proxy.frame(in: .local).midX / 2, y: proxy.frame(in: .local).midY)
+                        .background(.gray)
+                        .border(.purple)
+                }
+                //                .padding(.leading, (proxy.size.width - pixelWidth) / 2)
+                .frame(maxWidth: proxy.size.width / 2, maxHeight: proxy.size.height - 50)
+                .background(.black)
 
             }
-            .padding(.top, edgeInsets.top - 1.74)
-            .padding(.bottom, StatusBarView.height + 1.26)
             .background(.teal)
 
             //            Group {
