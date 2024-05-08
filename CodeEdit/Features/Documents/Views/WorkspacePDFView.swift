@@ -12,14 +12,19 @@ import PDFKit.PDFView
 ///
 /// It takes in a file URL and attempts to preview a PDF.
 ///
+/// When a valid PDF view is created, the `canPreviewFile` boolean updates to `true`.
+///
 /// **Example Usage**:
 /// ```swift
-/// WorkspacePDFView(fileURL)
+/// WorkspacePDFView(
+///     fileUrl: documentURL,
+///     canPreviewFile: $canPreviewFile
+/// )
 ///     .padding(.top, tabBarHeight)
 ///     .padding(.bottom, statusBarHeight)
 /// ```
 ///
-/// This view has the same context menu available in the native MacOS Preview application.
+/// This view provides a context menu that is the same as the one in the native MacOS Preview application, for PDF files.
 struct WorkspacePDFView: NSViewRepresentable {
 
     let fileURL: URL
