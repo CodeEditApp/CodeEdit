@@ -29,10 +29,35 @@ struct WorkspaceCodeFileView: View {
 
     @ViewBuilder var codeView: some View {
         if let documentURL = file.fileDocument?.fileURL {
+
+            //            WorkspacePDFView(fileUrl: documentURL, canPreviewFile: $canPreviewFile)
+            //                .padding(.top, edgeInsets.top - 1.5)
+            //                .padding(.bottom, StatusBarView.height + 2)
+
             Group {
-                WorkspacePDFView(fileURL: documentURL, canPreviewFile: $canPreviewFile)
-                    .padding(.top, edgeInsets.top - 1.5)
-                    .padding(.bottom, StatusBarView.height + 2)
+                GeometryReader { proxy in
+                    let nsImage = NSImage(contentsOf: documentURL)!
+                    let pixelWidth = CGFloat(nsImage.representations.first!.pixelsWide)
+                    let pixelHeight = CGFloat(nsImage.representations.first!.pixelsHigh)
+
+                    //                    var _ = print("proxy.size:", proxy.size.width, proxy.size.height)
+                    //                    var _ = print("pixels:", pixelWidth, pixelHeight)
+                    //                    var _ = print("proxy.frame(in: .local).minX:", proxy.frame(in: .local).minX)
+                    //                    var _ = print("proxy.frame(in: .local).midX:", proxy.frame(in: .local).midX)
+                    //                    var _ = print("proxy.frame(in: .local).maxX:", proxy.frame(in: .local).maxX)
+                    var _ = print("proxy.size.width:", proxy.size.width)
+                    var _ = print("pixelWidth:", pixelWidth)
+                    var _ = print("(proxy.size.width / 2) - (pixelWidth / 2):", ((proxy.size.width/2) - pixelWidth) / 2)
+
+                    Image(nsImage: nsImage)
+                        .resizable()
+                        .scaledToFit()
+                        .padding(.top, edgeInsets.top)
+                        .padding(.bottom, StatusBarView.height)
+                        .frame(maxWidth: min(proxy.size.width, pixelWidth), maxHeight: min(proxy.size.height, pixelHeight))
+                        .position(x: 457, y: 0) // 649
+                        .background(.bar)
+                }
             }
 
             //            Group {
