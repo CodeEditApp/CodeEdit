@@ -31,8 +31,8 @@ struct WorkspaceCodeFileView: View {
         if let documentURL = file.fileDocument?.fileURL {
 
             //            WorkspacePDFView(fileUrl: documentURL, canPreviewFile: $canPreviewFile)
-            //                .padding(.top, edgeInsets.top - 1.5)
-            //                .padding(.bottom, StatusBarView.height + 2)
+            //                .padding(.top, edgeInsets.top - 1.74)
+            //                .padding(.bottom, StatusBarView.height + 1.26)
 
             GeometryReader { proxy in
                 let nsImage = NSImage(contentsOf: documentURL)!
@@ -44,18 +44,23 @@ struct WorkspaceCodeFileView: View {
                 //                    var _ = print("proxy.frame(in: .local).minX:", proxy.frame(in: .local).minX)
                 //                    var _ = print("proxy.frame(in: .local).midX:", proxy.frame(in: .local).midX)
                 //                    var _ = print("proxy.frame(in: .local).maxX:", proxy.frame(in: .local).maxX)
-                var _ = print("proxy.size.width:", proxy.size.width)
-                var _ = print("pixelWidth:", pixelWidth)
+                //                var _ = print("proxy.size.width:", proxy.size.width)
+                //                var _ = print("pixelWidth:", pixelWidth)
 
                 Image(nsImage: nsImage)
                     .resizable()
+                    .background(.red)
                     .scaledToFit()
-                    .padding(.top, edgeInsets.top)
-                    .padding(.bottom, StatusBarView.height)
-                    .frame(width: min(proxy.size.width, pixelWidth), height: min(proxy.size.height, pixelHeight))
-                    .position(x: (pixelWidth / 2) + ((proxy.size.width - pixelWidth) / 2) - (proxy.size.width / 2), y: (pixelHeight / 2) + ((proxy.size.height - pixelHeight) / 2))
+                    .background(.blue)
+                    .frame(maxWidth: min(pixelWidth, .infinity), maxHeight: min(pixelHeight, .infinity))
+                    .border(.purple)
+                // .padding()
+                // .position(x: (pixelWidth / 2) + ((proxy.size.width - pixelWidth) / 2) - (proxy.size.width / 2), y: (pixelHeight / 2) + ((proxy.size.height - pixelHeight) / 2))
 
             }
+            .padding(.top, edgeInsets.top - 1.74)
+            .padding(.bottom, StatusBarView.height + 1.26)
+            .background(.teal)
 
             //            Group {
             //                switch document.typeOfFile {
