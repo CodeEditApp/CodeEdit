@@ -61,6 +61,12 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
         if type.conforms(to: UTType.text) {
             return UTType.text
         }
+        if type.conforms(to: .pdf) {
+            return .pdf
+        }
+        if type.conforms(to: .movie) {
+            return .movie
+        }
         if type.conforms(to: .data) {
             return .data
         }

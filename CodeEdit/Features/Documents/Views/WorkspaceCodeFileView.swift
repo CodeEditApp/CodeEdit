@@ -5,14 +5,10 @@
 //  Created by Pavel Kasila on 20.03.22.
 //
 
-import SwiftUI
-import UniformTypeIdentifiers
-import CodeEditSourceEditor
-import AVKit
-import PDFKit
-import QuickLookUI
-import QuickLook
 import AppKit
+import AVKit
+import CodeEditSourceEditor
+import SwiftUI
 
 struct WorkspaceCodeFileView: View {
 
@@ -29,65 +25,21 @@ struct WorkspaceCodeFileView: View {
     @State private var update: Bool = false
 
     @ViewBuilder var codeView: some View {
-        if let documentURL = file.fileDocument?.fileURL {
-
-            // WorkspacePDFView(documentURL)
-            // use the magic numbers to fine-tune its appearance
-            //     .padding(.top, edgeInsets.top - 1.74)
-            //     .padding(.bottom, StatusBarView.height + 1.26)
-
-            WorkspaceImageView(documentURL)
-            // use the magic numbers to fine-tune its appearance
-                .padding(.top, edgeInsets.top - 1.74)
-                .padding(.bottom, StatusBarView.height + 1.26)
-
-            // VideoPlayer(player: AVPlayer(playerItem: AVPlayerItem(url: documentURL)))
-            // use the magic numbers to fine-tune its appearance
-            //     .padding(.top, edgeInsets.top - 1.74)
-            //     .padding(.bottom, StatusBarView.height + 1.26)
-
-            //            Group {
-            //                switch document.typeOfFile {
-            //                case .some(.text):
-            //                        CodeFileView(codeFile: document, textViewCoordinators: textViewCoordinators)
-            //                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-
-            //                case .some(.image):
-            //                        OtherFileView(document)
-            //            .padding(.bottom, workspaceStatusBarHeight)
-            //                        GeometryReader { proxy in
-            //                            let nsImg = NSImage(contentsOf: document.fileURL!)!
-            //                            let pixelWidth = CGFloat(nsImg.representations.first!.pixelsWide)
-            //                            let pixelHeight = CGFloat(nsImg.representations.first!.pixelsHigh)
-            //
-            //                            var _ = print("proxy.size:", proxy.size.width, proxy.size.height)
-            //                            var _ = print("pixels:", pixelWidth, pixelHeight)
-            //
-            //                            if pixelWidth >= proxy.size.width || pixelHeight >= proxy.size.height {
-            //                                Image(nsImage: nsImg)
-            //                                    .resizable()
-            //                                    .scaledToFit()
-            //                                OtherFileView(document)
-            //                                    .padding(.bottom, 25)
-            //                                    //.containerRelativeFrame()
-            //                            } else {
-            //                                Image(nsImage: nsImg)
-            //                                    .resizable()
-            //                                    .frame(width: pixelWidth, height: pixelHeight)
-            //                            }
-            //                        }
-
-            //                case .some(.audiovisualContent):
-            //                        VideoPlayer(player: AVPlayer(playerItem: AVPlayerItem(url: document.fileURL!)))
-            //                            .padding(.top, 80)
-            //                            .padding(.bottom, 30)
-            //
-            //                default:
-            //                        OtherFileView(document)
-            //                            .padding(.bottom, 25)
-            //                }
-            //            }
-
+        if let document = file.fileDocument,
+           let documentURL = document.fileURL {
+            switch document.typeOfFile {
+            case .some(.text):
+                CodeFileView(codeFile: document, textViewCoordinators: textViewCoordinators)
+            case .some(.image):
+                WorkspaceImageView(documentURL)
+            case .some(.pdf):
+                WorkspacePDFView(documentURL)
+            case .some(.movie):
+                // Has more interaction options than WorkspaceOtherFileView
+                VideoPlayer(player: AVPlayer(playerItem: AVPlayerItem(url: documentURL)))
+            default:
+                WorkspaceAnyFileView(documentURL)
+            }
         } else {
             if update {
                 Spacer()
@@ -142,6 +94,8 @@ struct WorkspaceCodeFileView: View {
 
     var body: some View {
         codeView
+            .padding(.top, edgeInsets.top - 1.74) // Use the magic number to fine-tune its appearance
+            .padding(.bottom, StatusBarView.height + 1.26) // Use the magic number to fine-tune its appearance
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .onHover { hover in
                 DispatchQueue.main.async {
