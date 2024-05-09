@@ -52,10 +52,7 @@ struct WorkspaceCodeFileView: View {
                         .resizable()
                         .background(.red)
                         .scaledToFit()
-                    // use the magic numbers to fine-tune its appearance
-                    // .padding(.top, edgeInsets.top - 1.74)
-                    // .padding(.bottom, StatusBarView.height + 1.26)
-                    // .background(.blue)
+                        .background(.blue)
                         .frame(
                             maxWidth: min(pixelWidth, proxy.size.width, nsImage.size.width),
                             maxHeight: min(pixelHeight, proxy.size.height, nsImage.size.height)
@@ -64,11 +61,13 @@ struct WorkspaceCodeFileView: View {
                         .background(.gray)
                         .border(.purple)
                 }
-                //                .padding(.leading, (proxy.size.width - pixelWidth) / 2)
-                .frame(maxWidth: proxy.size.width / 2, maxHeight: proxy.size.height - 50)
+                // .padding(.leading, (proxy.size.width - pixelWidth) / 2)
+                // .frame(maxWidth: proxy.size.width / 2, maxHeight: proxy.size.height - 50)
                 .background(.black)
 
             }
+            .padding(.top, edgeInsets.top - 1.74)
+            .padding(.bottom, StatusBarView.height + 1.26)
             .background(.teal)
 
             //            Group {
