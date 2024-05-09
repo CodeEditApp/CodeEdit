@@ -15,12 +15,12 @@ import PDFKit.PDFView
 /// **Example Usage**:
 /// ```swift
 /// WorkspacePDFView(documentURL)
-///     .padding(.top, tabBarHeight)
-///     .padding(.bottom, statusBarHeight)
 /// ```
 ///
 /// This view provides a context menu that is the same as the one in the
 /// native MacOS Preview application, for PDF files.
+///
+/// - Note: If a PDF cannot be previewed, nothing happens, no redraw or anything.
 struct WorkspacePDFView: NSViewRepresentable {
 
     /// URL of the PDF file you want to preview.

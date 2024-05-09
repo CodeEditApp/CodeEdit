@@ -7,6 +7,14 @@
 
 import SwiftUI
 
+/// A SwiftUI view for previewing an image.
+///
+/// It receives a url to an image file and attempts to preview it.
+///
+/// ```swift
+/// WorkspaceImageView(imageUrl: imageURL)
+/// ```
+/// If the preview image cannot be created, it shows a  ``WorkspaceCannotPreviewFileView`` view.
 struct WorkspaceImageView: View {
 
     /// URL of the image you want to preview.
