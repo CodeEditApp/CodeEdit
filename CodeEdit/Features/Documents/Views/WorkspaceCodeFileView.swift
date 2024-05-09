@@ -28,29 +28,6 @@ struct WorkspaceCodeFileView: View {
 
     @State private var update: Bool = false
 
-    private func computeFrame (
-        pixelWidth: CGFloat,
-        proxyWidth: CGFloat,
-        pixelHeight: CGFloat,
-        proxyHeight: CGFloat
-    ) -> (CGFloat, CGFloat) {
-        let aspectRatio = pixelWidth / pixelHeight
-        var frameWidth = pixelWidth
-        var frameHeight = pixelHeight
-
-        if pixelWidth > proxyWidth {
-            frameWidth = proxyWidth
-            frameHeight = frameWidth / aspectRatio
-        }
-
-        if pixelHeight >= proxyHeight {
-            frameHeight = proxyHeight
-            frameWidth =  aspectRatio * frameHeight
-        }
-
-        return (frameWidth, frameHeight)
-    }
-
     @ViewBuilder var codeView: some View {
         if let documentURL = file.fileDocument?.fileURL {
 
