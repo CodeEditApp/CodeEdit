@@ -61,57 +61,10 @@ struct WorkspaceCodeFileView: View {
             //                .padding(.top, edgeInsets.top - 1.74)
             //                .padding(.bottom, StatusBarView.height + 1.26)
 
-            GeometryReader { proxy in
-                let nsImage = NSImage(contentsOf: documentURL)!
-                let pixelWidth = CGFloat(nsImage.representations.first!.pixelsWide)
-                let pixelHeight = CGFloat(nsImage.representations.first!.pixelsHigh)
-
-                var _ = print("proxy.size:", proxy.size.width, proxy.size.height)
-                var _ = print("pixels:", pixelWidth, pixelHeight)
-                var _ = print("nsImage.size:", nsImage.size.width, nsImage.size.height)
-                var _ = print("proxWidth rm:", proxy.size.width - 1680)
-                var _ = print("proxWidth:", proxy.size.width)
-
-                // let (frameWidth, frameHeight) = computeFrame(
-                // pixelWidth: pixelWidth,
-                // proxyWidth: proxy.size.width,
-                // pixelHeight: pixelHeight,
-                // proxyHeight: proxy.size.height
-                // )
-
-                // var _ = print("frame:", frameWidth, frameHeight)
-                var _ = print("----------")
-
-                ZStack {
-                    Image(nsImage: nsImage)
-                        .resizable()
-                        .background(.red)
-                        .scaledToFit()
-                        .background(.blue)
-                        .frame(
-                            // 3328 235 - 1352.97 901.98... w/h = aspect ratio; minH * aspectRatio = maxWidth
-                            // its width that is changing
-                            // w/h = aspect ratio; if minW > proxyW, newW = proxyW, newH = newW/aspectRatio
-                            // maxWidth: proxy.size.width,
-                            // maxHeight: proxy.size.height
-                            maxWidth: min(pixelWidth, proxy.size.width, nsImage.size.width),
-                            maxHeight: min(pixelHeight, proxy.size.height, nsImage.size.height)
-                        )
-                    // .position(x: proxy.frame(in: .local).midX / 2, y: proxy.frame(in: .local).midY)
-                        .background(.gray)
-                    // .scaleEffect(0.7891589506, anchor: .leading)
-                        .border(.purple)
-                        .border(.orange)
-                }
-                // .padding(.leading, (proxy.size.width - pixelWidth) / 2)
-                .frame(width: proxy.size.width, height: proxy.size.height)
-                .border(.yellow)
-                .background(.black)
-
-            }
-            .padding(.top, edgeInsets.top - 1.74)
-            .padding(.bottom, StatusBarView.height + 1.26)
-            .background(.teal)
+            WorkspaceImageView(imageUrl: documentURL)
+            // use the magic numbers to fine-tune its appearance
+                .padding(.top, edgeInsets.top - 1.74)
+                .padding(.bottom, StatusBarView.height + 1.26)
 
             //            Group {
             //                switch document.typeOfFile {
