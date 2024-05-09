@@ -56,8 +56,8 @@ struct WorkspaceCannotPreviewFileView: View {
                 WorkspaceLoadingView()
             }
         }
-        .onAppear(perform: {
-            if thumbnail == nil { generateThumbnailRepresentation() }
-        })
+        .onAppear {
+            generateThumbnailRepresentation()
+        }
     }
 }
