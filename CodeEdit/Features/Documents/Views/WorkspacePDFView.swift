@@ -31,7 +31,28 @@ struct WorkspacePDFView: NSViewRepresentable {
     @Binding var canPreviewFile: Bool
 
     func makeNSView(context: Context) -> PDFView {
-        let pdfView = PDFView()
+        let pdfView = attachPDFDocumentToView(PDFView(), context: context)
+        return pdfView
+    }
+
+    func updateNSView(_ pdfView: PDFView, context: Context) {
+        attachPDFDocumentToView(pdfView, context: context)
+    }
+
+    func makeCoordinator() -> WorkspacePDFView.Coordinator {
+        // The coordinator object implements the mechanics of passing
+        // data between the NS view representable and Swift UI.
+        Coordinator(self)
+    }
+
+    final class Coordinator {
+        let pdfView: WorkspacePDFView
+        init(_ pdfView: WorkspacePDFView) {
+            self.pdfView = pdfView
+        }
+    }
+
+    @discardableResult private func attachPDFDocumentToView (_ pdfView: PDFView, context: Context) -> PDFView {
         // use the coordinator to update the state binding
         guard let pdfDocument = PDFDocument(url: fileURL) else {
             context.coordinator.pdfView.canPreviewFile = false
@@ -41,23 +62,5 @@ struct WorkspacePDFView: NSViewRepresentable {
         pdfView.document = pdfDocument
         pdfView.backgroundColor = NSColor.windowBackgroundColor
         return pdfView
-    }
-
-    func updateNSView(_ pdfView: PDFView, context: Context) {
-        guard let pdfDocument = PDFDocument(url: fileURL) else { return }
-        pdfView.document = pdfDocument
-    }
-
-    func makeCoordinator() -> WorkspacePDFView.Coordinator {
-        // The coordinator object implements the mechanics of passing
-        // data between the NS view representable and Swift UI.
-        Coordinator(self)
-    }
-
-    final class Coordinator: NSObject {
-        let pdfView: WorkspacePDFView
-        init(_ pdfView: WorkspacePDFView) {
-            self.pdfView = pdfView
-        }
     }
 }
