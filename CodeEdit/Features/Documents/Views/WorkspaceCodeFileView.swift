@@ -88,15 +88,15 @@ struct WorkspaceCodeFileView: View {
                         .background(.red)
                         .scaledToFit()
                         .background(.blue)
-                    // .frame(
-                    // 3328 235 - 1352.97 901.98... w/h = aspect ratio; minH * aspectRatio = maxWidth
-                    // its width that is changing
-                    // w/h = aspect ratio; if minW > proxyW, newW = proxyW, newH = newW/aspectRatio
-                    // maxWidth: proxy.size.width,
-                    // maxHeight: proxy.size.height
-                    // maxWidth: min(pixelWidth, proxy.size.width, nsImage.size.width),
-                    // maxHeight: min(pixelHeight, proxy.size.height, nsImage.size.height)
-                    // )
+                        .frame(
+                            // 3328 235 - 1352.97 901.98... w/h = aspect ratio; minH * aspectRatio = maxWidth
+                            // its width that is changing
+                            // w/h = aspect ratio; if minW > proxyW, newW = proxyW, newH = newW/aspectRatio
+                            // maxWidth: proxy.size.width,
+                            // maxHeight: proxy.size.height
+                            maxWidth: min(pixelWidth, proxy.size.width, nsImage.size.width),
+                            maxHeight: min(pixelHeight, proxy.size.height, nsImage.size.height)
+                        )
                     // .position(x: proxy.frame(in: .local).midX / 2, y: proxy.frame(in: .local).midY)
                         .background(.gray)
                     // .scaleEffect(0.7891589506, anchor: .leading)
