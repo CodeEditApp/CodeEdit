@@ -44,7 +44,7 @@ struct WorkspaceImageView: View {
                 .frame(width: proxy.size.width, height: proxy.size.height)
             }
         } else {
-            WorkspaceCannotPreviewFileView()
+            WorkspaceCannotPreviewFileView(imageURL)
         }
     }
 
