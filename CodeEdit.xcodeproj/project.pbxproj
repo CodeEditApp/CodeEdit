@@ -1507,10 +1507,10 @@
 		5831E3CF2933F4E000D5A6D2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				0485EB1E27E7458B00138301 /* WorkspaceCodeFileView.swift */,
-				661EF7B72BEE215300C3E577 /* WorkspaceImageView.swift */,
-				661EF7BC2BEE215300C3E577 /* WorkspaceLoadingView.swift */,
 				669BC4072BED306400D1197C /* WorkspaceAnyFileView.swift */,
+				0485EB1E27E7458B00138301 /* WorkspaceCodeFileView.swift */,
+				661EF7BC2BEE215300C3E577 /* WorkspaceLoadingView.swift */,
+				661EF7B72BEE215300C3E577 /* WorkspaceImageView.swift */,
 				66F2C8C32BEAA939004674F7 /* WorkspacePDFView.swift */,
 			);
 			path = Views;
