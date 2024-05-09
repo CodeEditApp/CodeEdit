@@ -50,7 +50,7 @@ struct WorkspacePDFView: NSViewRepresentable {
             return pdfView
         }
         pdfView.document = pdfDocument
-        // pdfView.backgroundColor = NSColor.windowBackgroundColor
+        pdfView.backgroundColor = NSColor.controlBackgroundColor
         return pdfView
     }
 
