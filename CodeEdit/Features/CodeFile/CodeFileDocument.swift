@@ -41,13 +41,15 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
     /// Document-specific overridden line wrap preference.
     @Published var wrapLines: Bool?
 
-    /*
-     This is the main type of the document.
-     For example, if the file is end with '.png', it will be an image,
-     if the file is end with '.py', it will be a text file.
-     If text content is not empty, return text
-     If its neither image or text, this could be nil.
-    */
+    /// The type of data this document contains.
+    ///
+    /// If for example, the file ends with `.py`, its type is a text file.
+    /// Or if it ends with `.png`, then it is an image.
+    /// Same goes for PDF and video formats.
+    ///
+    /// Also, if the text content is not empty, it is a text file.
+    ///
+    /// If it is neither a text, image, PDF nor video format, it will be nil.
     var utType: UTType? {
         if !self.content.isEmpty {
             return UTType.text
