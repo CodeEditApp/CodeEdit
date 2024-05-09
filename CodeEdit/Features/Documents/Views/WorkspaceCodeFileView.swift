@@ -29,6 +29,29 @@ struct WorkspaceCodeFileView: View {
 
     @State private var canPreviewFile: Bool = false
 
+    private func computeFrame (
+        pixelWidth: CGFloat,
+        proxyWidth: CGFloat,
+        nsImageWidth: CGFloat,
+        pixelHeight: CGFloat,
+        proxyHeight: CGFloat,
+        nsImageHeight: CGFloat
+    ) -> (CGFloat, CGFloat) {
+        let aspectRatio = pixelWidth / pixelHeight
+        var frameWidth = min(pixelWidth, nsImageWidth)
+        var frameHeight = min(pixelHeight, nsImageHeight)
+
+        if frameWidth > proxyWidth {
+            frameHeight = min(pixelHeight, proxyHeight, nsImageHeight)
+            frameWidth =  frameHeight * aspectRatio
+        } else if frameHeight > proxyHeight {
+            frameWidth = min(pixelWidth, proxyWidth, nsImageWidth)
+            frameHeight = frameWidth / aspectRatio
+        }
+
+        return (frameWidth, frameHeight)
+    }
+
     @ViewBuilder var codeView: some View {
         if let documentURL = file.fileDocument?.fileURL {
 
@@ -45,25 +68,40 @@ struct WorkspaceCodeFileView: View {
                 var _ = print("proxy.size:", proxy.size.width, proxy.size.height)
                 var _ = print("pixels:", pixelWidth, pixelHeight)
                 var _ = print("nsImage.size:", nsImage.size.width, nsImage.size.height)
-                var _ = print("::::::::")
 
-                ZStack {
-                    Image(nsImage: nsImage)
-                        .resizable()
-                        .background(.red)
-                        .scaledToFit()
-                        .background(.blue)
-                        .frame(
-                            maxWidth: min(pixelWidth, proxy.size.width, nsImage.size.width),
-                            maxHeight: min(pixelHeight, proxy.size.height, nsImage.size.height)
-                        )
-                    // .position(x: proxy.frame(in: .local).midX / 2, y: proxy.frame(in: .local).midY)
-                        .background(.gray)
-                        .border(.purple)
-                }
+                let (frameWidth, frameHeight) = computeFrame(
+                    pixelWidth: pixelWidth,
+                    proxyWidth: proxy.size.width,
+                    nsImageWidth: nsImage.size.width,
+                    pixelHeight: pixelHeight,
+                    proxyHeight: proxy.size.height,
+                    nsImageHeight: nsImage.size.height
+                )
+
+                var _ = print("frame:", frameWidth, frameHeight)
+                var _ = print("----------")
+
+                //                ZStack(alignment: .bottomTrailing) {
+                Image(nsImage: nsImage)
+                    .resizable()
+                    .background(.red)
+                    .scaledToFit()
+                    .background(.blue)
+                    .frame( // 3328 235 - 1352.97 901.98... w/h = aspect ratio; minH * aspectRatio = maxWidth
+                        // its width that is changing
+                        // w/h = aspect ratio; if minW > proxyW, newW = proxyW, newH = newW/aspectRatio
+                        maxWidth: frameWidth,
+                        maxHeight: frameHeight
+                        // maxWidth: min(pixelWidth, proxy.size.width, nsImage.size.width),
+                        // maxHeight: min(pixelHeight, proxy.size.height, nsImage.size.height)
+                    )
+                // .position(x: proxy.frame(in: .local).midX / 2, y: proxy.frame(in: .local).midY)
+                    .background(.gray)
+                    .border(.purple)
+                // }
                 // .padding(.leading, (proxy.size.width - pixelWidth) / 2)
                 // .frame(maxWidth: proxy.size.width / 2, maxHeight: proxy.size.height - 50)
-                .background(.black)
+                // .background(.black)
 
             }
             .padding(.top, edgeInsets.top - 1.74)
