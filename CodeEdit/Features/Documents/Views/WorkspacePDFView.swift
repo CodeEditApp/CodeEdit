@@ -12,14 +12,9 @@ import PDFKit.PDFView
 ///
 /// It takes in a file URL and attempts to preview a PDF.
 ///
-/// When a valid PDF is created, the `canPreviewFile` boolean updates to `true`.
-///
 /// **Example Usage**:
 /// ```swift
-/// WorkspacePDFView(
-///     fileURL: documentURL,
-///     canPreviewFile: $canPreviewFile
-/// )
+/// WorkspacePDFView(documentURL)
 ///     .padding(.top, tabBarHeight)
 ///     .padding(.bottom, statusBarHeight)
 /// ```
@@ -30,49 +25,32 @@ struct WorkspacePDFView: NSViewRepresentable {
 
     /// URL of the PDF file you want to preview.
     let fileURL: URL
-    /// This value updates after attempting to create a valid PDF.
-    ///
-    /// `true` when created successfully, and `false` when failed to create.
-    @Binding var canPreviewFile: Bool
+
+    init(_ fileURL: URL) {
+        self.fileURL = fileURL
+    }
 
     func makeNSView(context: Context) -> PDFView {
-        let pdfView = attachPDFDocumentToView(PDFView(), context: context)
+        let pdfView = attachPDFDocumentToView(PDFView())
         return pdfView
     }
 
     func updateNSView(_ pdfView: PDFView, context: Context) {
-        attachPDFDocumentToView(pdfView, context: context)
-    }
-
-    func makeCoordinator() -> WorkspacePDFView.Coordinator {
-        // The coordinator object implements the mechanics of passing
-        // data between the NS view representable and Swift UI.
-        Coordinator(self)
-    }
-
-    final class Coordinator {
-        let pdfView: WorkspacePDFView
-        init(_ pdfView: WorkspacePDFView) {
-            self.pdfView = pdfView
-        }
+        attachPDFDocumentToView(pdfView)
     }
 
     /// Creates a PDF document using ``WorkspacePDFView/fileURL``, and attaches it to the passed in `pdfView`.
     /// - Parameters:
     ///   - pdfView: The [`PDFView`](https://developer.apple.com/documentation/pdfkit/pdfview) you wish to modify.
-    ///   - context: The NS view representable context for ``WorkspacePDFView``. This is used to access the coordinator.
     /// - Returns: A modified `pdfView` if a valid PDF was created, or an unmodified `pdfView` if it could not create a
     /// valid PDF.
     @discardableResult
-    private func attachPDFDocumentToView (_ pdfView: PDFView, context: Context) -> PDFView {
-        // use the coordinator to update the state binding
+    private func attachPDFDocumentToView (_ pdfView: PDFView) -> PDFView {
         guard let pdfDocument = PDFDocument(url: fileURL) else {
-            context.coordinator.pdfView.canPreviewFile = false
             return pdfView
         }
-        context.coordinator.pdfView.canPreviewFile = true
         pdfView.document = pdfDocument
-        pdfView.backgroundColor = NSColor.windowBackgroundColor
+        // pdfView.backgroundColor = NSColor.windowBackgroundColor
         return pdfView
     }
 

@@ -28,8 +28,6 @@ struct WorkspaceCodeFileView: View {
 
     @State private var update: Bool = false
 
-    @State private var canPreviewFile: Bool = false
-
     private func computeFrame (
         pixelWidth: CGFloat,
         proxyWidth: CGFloat,
@@ -56,15 +54,15 @@ struct WorkspaceCodeFileView: View {
     @ViewBuilder var codeView: some View {
         if let documentURL = file.fileDocument?.fileURL {
 
-            //            WorkspacePDFView(fileUrl: documentURL, canPreviewFile: $canPreviewFile)
-            // use the magic numbers to fine-tune its appearance
-            //                .padding(.top, edgeInsets.top - 1.74)
-            //                .padding(.bottom, StatusBarView.height + 1.26)
-
-            WorkspaceImageView(imageUrl: documentURL)
+            WorkspacePDFView(documentURL)
             // use the magic numbers to fine-tune its appearance
                 .padding(.top, edgeInsets.top - 1.74)
                 .padding(.bottom, StatusBarView.height + 1.26)
+
+            // WorkspaceImageView(imageUrl: documentURL)
+            // use the magic numbers to fine-tune its appearance
+            //     .padding(.top, edgeInsets.top - 1.74)
+            //     .padding(.bottom, StatusBarView.height + 1.26)
 
             //            Group {
             //                switch document.typeOfFile {
