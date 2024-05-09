@@ -47,6 +47,7 @@ struct WorkspacePDFView: NSViewRepresentable {
     @discardableResult
     private func attachPDFDocumentToView (_ pdfView: PDFView) -> PDFView {
         guard let pdfDocument = PDFDocument(url: fileURL) else {
+            // what can happen is the view doesn't redraw, so whatever was in the tab content view remains as is.
             return pdfView
         }
         pdfView.document = pdfDocument
