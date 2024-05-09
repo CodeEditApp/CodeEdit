@@ -14,13 +14,13 @@ import PDFKit.PDFView
 ///
 /// **Example Usage**:
 /// ```swift
-/// WorkspacePDFView(documentURL)
+/// WorkspacePDFView(fileURL)
 /// ```
 ///
-/// This view provides a context menu that is the same as the one in the
-/// native MacOS Preview application, for PDF files.
+/// This view provides a context menu that is the same as the one in the native MacOS Preview application, for PDF
+/// files. This view also allows for proper scaling of the PDF.
 ///
-/// - Note: If a PDF cannot be previewed, nothing happens, no redraw or anything.
+/// - Note: If the file located at the `fileUrl` cannot be previewed as a PDF, nothing happens, no redraw or anything.
 struct WorkspacePDFView: NSViewRepresentable {
 
     /// URL of the PDF file you want to preview.
@@ -47,7 +47,7 @@ struct WorkspacePDFView: NSViewRepresentable {
     @discardableResult
     private func attachPDFDocumentToView (_ pdfView: PDFView) -> PDFView {
         guard let pdfDocument = PDFDocument(url: fileURL) else {
-            // what can happen is the view doesn't redraw, so whatever was in the tab content view remains as is.
+            // What can happen is the view doesn't redraw, so whatever was in the tab content view remains as is.
             return pdfView
         }
         pdfView.document = pdfDocument

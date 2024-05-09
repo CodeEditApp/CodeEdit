@@ -15,6 +15,9 @@ import SwiftUI
 /// WorkspaceImageView(imageURL)
 /// ```
 /// If the preview image cannot be created, it shows a  ``WorkspaceCannotPreviewFileView`` view.
+///
+/// This implementation allows for proper image scaling, especially when the image dimensions are smaller than
+/// the size of the editor area.
 struct WorkspaceImageView: View {
 
     /// URL of the image you want to preview.
