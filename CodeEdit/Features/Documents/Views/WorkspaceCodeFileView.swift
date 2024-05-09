@@ -12,6 +12,7 @@ import AVKit
 import PDFKit
 import QuickLookUI
 import QuickLook
+import AppKit
 
 struct WorkspaceCodeFileView: View {
 
@@ -32,21 +33,21 @@ struct WorkspaceCodeFileView: View {
     private func computeFrame (
         pixelWidth: CGFloat,
         proxyWidth: CGFloat,
-        nsImageWidth: CGFloat,
         pixelHeight: CGFloat,
-        proxyHeight: CGFloat,
-        nsImageHeight: CGFloat
+        proxyHeight: CGFloat
     ) -> (CGFloat, CGFloat) {
         let aspectRatio = pixelWidth / pixelHeight
-        var frameWidth = min(pixelWidth, nsImageWidth)
-        var frameHeight = min(pixelHeight, nsImageHeight)
+        var frameWidth = pixelWidth
+        var frameHeight = pixelHeight
 
-        if frameWidth > proxyWidth {
-            frameHeight = min(pixelHeight, proxyHeight, nsImageHeight)
-            frameWidth =  frameHeight * aspectRatio
-        } else if frameHeight > proxyHeight {
-            frameWidth = min(pixelWidth, proxyWidth, nsImageWidth)
+        if pixelWidth > proxyWidth {
+            frameWidth = proxyWidth
             frameHeight = frameWidth / aspectRatio
+        }
+
+        if pixelHeight >= proxyHeight {
+            frameHeight = proxyHeight
+            frameWidth =  aspectRatio * frameHeight
         }
 
         return (frameWidth, frameHeight)
@@ -68,40 +69,44 @@ struct WorkspaceCodeFileView: View {
                 var _ = print("proxy.size:", proxy.size.width, proxy.size.height)
                 var _ = print("pixels:", pixelWidth, pixelHeight)
                 var _ = print("nsImage.size:", nsImage.size.width, nsImage.size.height)
+                var _ = print("proxWidth rm:", proxy.size.width - 1680)
+                var _ = print("proxWidth:", proxy.size.width)
 
-                let (frameWidth, frameHeight) = computeFrame(
-                    pixelWidth: pixelWidth,
-                    proxyWidth: proxy.size.width,
-                    nsImageWidth: nsImage.size.width,
-                    pixelHeight: pixelHeight,
-                    proxyHeight: proxy.size.height,
-                    nsImageHeight: nsImage.size.height
-                )
+                // let (frameWidth, frameHeight) = computeFrame(
+                // pixelWidth: pixelWidth,
+                // proxyWidth: proxy.size.width,
+                // pixelHeight: pixelHeight,
+                // proxyHeight: proxy.size.height
+                // )
 
-                var _ = print("frame:", frameWidth, frameHeight)
+                // var _ = print("frame:", frameWidth, frameHeight)
                 var _ = print("----------")
 
-                //                ZStack(alignment: .bottomTrailing) {
-                Image(nsImage: nsImage)
-                    .resizable()
-                    .background(.red)
-                    .scaledToFit()
-                    .background(.blue)
-                    .frame( // 3328 235 - 1352.97 901.98... w/h = aspect ratio; minH * aspectRatio = maxWidth
-                        // its width that is changing
-                        // w/h = aspect ratio; if minW > proxyW, newW = proxyW, newH = newW/aspectRatio
-                        maxWidth: frameWidth,
-                        maxHeight: frameHeight
-                        // maxWidth: min(pixelWidth, proxy.size.width, nsImage.size.width),
-                        // maxHeight: min(pixelHeight, proxy.size.height, nsImage.size.height)
-                    )
-                // .position(x: proxy.frame(in: .local).midX / 2, y: proxy.frame(in: .local).midY)
-                    .background(.gray)
-                    .border(.purple)
-                // }
+                ZStack {
+                    Image(nsImage: nsImage)
+                        .resizable()
+                        .background(.red)
+                        .scaledToFit()
+                        .background(.blue)
+                    // .frame(
+                    // 3328 235 - 1352.97 901.98... w/h = aspect ratio; minH * aspectRatio = maxWidth
+                    // its width that is changing
+                    // w/h = aspect ratio; if minW > proxyW, newW = proxyW, newH = newW/aspectRatio
+                    // maxWidth: proxy.size.width,
+                    // maxHeight: proxy.size.height
+                    // maxWidth: min(pixelWidth, proxy.size.width, nsImage.size.width),
+                    // maxHeight: min(pixelHeight, proxy.size.height, nsImage.size.height)
+                    // )
+                    // .position(x: proxy.frame(in: .local).midX / 2, y: proxy.frame(in: .local).midY)
+                        .background(.gray)
+                    // .scaleEffect(0.7891589506, anchor: .leading)
+                        .border(.purple)
+                        .border(.orange)
+                }
                 // .padding(.leading, (proxy.size.width - pixelWidth) / 2)
-                // .frame(maxWidth: proxy.size.width / 2, maxHeight: proxy.size.height - 50)
-                // .background(.black)
+                .frame(width: proxy.size.width, height: proxy.size.height)
+                .border(.yellow)
+                .background(.black)
 
             }
             .padding(.top, edgeInsets.top - 1.74)
