@@ -7,17 +7,17 @@
 
 import SwiftUI
 
-/// A SwiftUI view for previewing an image.
+/// A view for previewing an image in a constrained space, while respecting the image dimensions.
 ///
-/// It receives a url to an image file and attempts to preview it.
+/// It receives a URL to an image file and attempts to preview it.
 ///
 /// ```swift
 /// WorkspaceImageView(imageURL)
 /// ```
-/// If the preview image cannot be created, it shows a  ``WorkspaceCannotPreviewFileView`` view.
+/// This implementation allows for proper image scaling, especially when the image dimensions is smaller than
+/// the size of the image view area.
 ///
-/// This implementation allows for proper image scaling, especially when the image dimensions are smaller than
-/// the size of the editor area.
+/// If the preview image cannot be created, it shows a  *"Cannot preview image"* text.
 struct WorkspaceImageView: View {
 
     /// URL of the image you want to preview.

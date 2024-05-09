@@ -8,7 +8,7 @@
 import SwiftUI
 import QuickLookUI
 
-/// Previews the file located at passed in `fileURL`.
+/// A view for previewing any kind of file.
 ///
 /// ```swift
 /// WorkspaceAnyFileView(fileURL)

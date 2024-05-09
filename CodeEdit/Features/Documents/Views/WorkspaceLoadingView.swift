@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-/// A placeholder view that shows a spinner and label.
+/// A placeholder view that shows a spinner and text.
 ///
-/// Examples:
+/// It optionally receives a file name.
 /// ```swift
-/// WorkspaceLoadingView("ContentView.swift")
 /// WorkspaceLoadingView(filename)
+/// WorkspaceLoadingView()
 /// ```
 struct WorkspaceLoadingView: View {
 
