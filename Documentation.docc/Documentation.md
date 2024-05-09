@@ -42,6 +42,10 @@
 - ``CodeFileDocument``
 - ``CodeEditDocumentController``
 - ``WorkspaceCodeFileView``
+- ``WorkspaceAnyFileView``
+- ``WorkspaceLoadingView``
+- ``WorkspaceImageView``
+- ``WorkspacePDFView``
 - ``WorkspaceNotificationModel``
 
 ### Feedback
