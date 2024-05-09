@@ -34,7 +34,7 @@ struct WorkspaceCodeFileView: View {
                 WorkspaceImageView(documentURL)
             case .some(.pdf):
                 WorkspacePDFView(documentURL)
-            case .some(.movie):
+            case .some(.audiovisualContent):
                 // Has more interaction options than WorkspaceAnyFileView
                 VideoPlayer(player: AVPlayer(playerItem: AVPlayerItem(url: documentURL)))
             default:

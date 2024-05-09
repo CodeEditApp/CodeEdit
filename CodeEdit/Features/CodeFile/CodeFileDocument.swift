@@ -52,22 +52,22 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
     /// If it is neither a text, image, PDF nor video format, it will be nil.
     var utType: UTType? {
         if !self.content.isEmpty {
-            return UTType.text
+            return .text
         }
         guard let fileType, let type = UTType(fileType) else {
             return nil
         }
-        if type.conforms(to: UTType.text) {
-            return UTType.text
+        if type.conforms(to: .text) {
+            return .text
         }
-        if type.conforms(to: UTType.image) {
-            return UTType.image
+        if type.conforms(to: .image) {
+            return .image
         }
         if type.conforms(to: .pdf) {
             return .pdf
         }
-        if type.conforms(to: .movie) {
-            return .movie
+        if type.conforms(to: .audiovisualContent) {
+            return .audiovisualContent
         }
         return nil
     }
