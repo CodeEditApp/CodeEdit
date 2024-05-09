@@ -48,7 +48,7 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
      If text content is not empty, return text
      If its neither image or text, this could be nil.
     */
-    var typeOfFile: UTType? {
+    var utType: UTType? {
         if !self.content.isEmpty {
             return UTType.text
         }

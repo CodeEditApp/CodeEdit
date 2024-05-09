@@ -27,7 +27,7 @@ struct WorkspaceCodeFileView: View {
     @ViewBuilder var codeView: some View {
         if let document = file.fileDocument,
            let documentURL = document.fileURL {
-            switch document.typeOfFile {
+            switch document.utType {
             case .some(.text):
                 CodeFileView(codeFile: document, textViewCoordinators: textViewCoordinators)
             case .some(.image):
@@ -35,7 +35,7 @@ struct WorkspaceCodeFileView: View {
             case .some(.pdf):
                 WorkspacePDFView(documentURL)
             case .some(.movie):
-                // Has more interaction options than WorkspaceOtherFileView
+                // Has more interaction options than WorkspaceAnyFileView
                 VideoPlayer(player: AVPlayer(playerItem: AVPlayerItem(url: documentURL)))
             default:
                 WorkspaceAnyFileView(documentURL)
@@ -73,7 +73,7 @@ struct WorkspaceCodeFileView: View {
         VStack(spacing: 0) {
             if let url = otherFile.previewItemURL,
                let image = NSImage(contentsOf: url),
-               otherFile.typeOfFile == .image {
+               otherFile.utType == .image {
                 GeometryReader { proxy in
                     if image.size.width > proxy.size.width || image.size.height > proxy.size.height {
                         OtherFileView(otherFile)
