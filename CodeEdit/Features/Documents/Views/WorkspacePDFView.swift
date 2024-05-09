@@ -61,8 +61,8 @@ struct WorkspacePDFView: NSViewRepresentable {
     /// - Parameters:
     ///   - pdfView: The [`PDFView`](https://developer.apple.com/documentation/pdfkit/pdfview) you wish to modify.
     ///   - context: The NS view representable context for ``WorkspacePDFView``. This is used to access the coordinator.
-    /// - Returns: A modified `pdfView` if a valid document was created, or an unmodified `pdfView` if a valid
-    /// document could not be created.
+    /// - Returns: A modified `pdfView` if a valid PDF was created, or an unmodified `pdfView` if it could not create a
+    /// valid PDF.
     @discardableResult
     private func attachPDFDocumentToView (_ pdfView: PDFView, context: Context) -> PDFView {
         // use the coordinator to update the state binding
