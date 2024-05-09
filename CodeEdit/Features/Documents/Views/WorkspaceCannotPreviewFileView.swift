@@ -11,7 +11,7 @@ import QuickLookThumbnailing
 /// This displays a thumbnail for the inputted `fileURL`.
 ///
 /// The thumbnail displayed is a file icon.
-///```swift
+/// ```swift
 /// WorkspaceCannotPreviewFileView(fileURL)
 /// ```
 struct WorkspaceCannotPreviewFileView: View {
