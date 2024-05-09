@@ -12,16 +12,20 @@ import SwiftUI
 /// It receives a url to an image file and attempts to preview it.
 ///
 /// ```swift
-/// WorkspaceImageView(imageUrl: imageURL)
+/// WorkspaceImageView(imageURL)
 /// ```
 /// If the preview image cannot be created, it shows a  ``WorkspaceCannotPreviewFileView`` view.
 struct WorkspaceImageView: View {
 
     /// URL of the image you want to preview.
-    let imageUrl: URL
+    let imageURL: URL
+
+    init(_ imageURL: URL) {
+        self.imageURL = imageURL
+    }
 
     var body: some View {
-        if let nsImage = NSImage(contentsOf: imageUrl),
+        if let nsImage = NSImage(contentsOf: imageURL),
            let imageReps = nsImage.representations.first {
             // ---
             let pixelWidth = CGFloat(imageReps.pixelsWide)

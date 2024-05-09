@@ -36,7 +36,7 @@ struct WorkspaceCodeFileView: View {
                 .padding(.top, edgeInsets.top - 1.74)
                 .padding(.bottom, StatusBarView.height + 1.26)
 
-            // WorkspaceImageView(imageUrl: documentURL)
+            // WorkspaceImageView(documentURL)
             // use the magic numbers to fine-tune its appearance
             //     .padding(.top, edgeInsets.top - 1.74)
             //     .padding(.bottom, StatusBarView.height + 1.26)
