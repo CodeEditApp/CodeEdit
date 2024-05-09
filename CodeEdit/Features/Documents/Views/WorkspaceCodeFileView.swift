@@ -54,9 +54,12 @@ struct WorkspaceCodeFileView: View {
                         .padding(.top, edgeInsets.top - 1.74)
                         .padding(.bottom, StatusBarView.height + 1.26)
                         .background(.blue)
-                        .frame(maxWidth: min(pixelWidth, proxy.size.width, nsImage.size.width), maxHeight: min(pixelHeight, proxy.size.width, nsImage.size.height))
+                        .frame(
+                            maxWidth: min(pixelWidth, proxy.size.width, nsImage.size.width),
+                            maxHeight: min(pixelHeight, proxy.size.width, nsImage.size.height)
+                        )
                         .clipped()
-                    //                        .position(x: proxy.frame(in: .local).midX / 2, y: proxy.frame(in: .local).midY)
+                    // .position(x: proxy.frame(in: .local).midX / 2, y: proxy.frame(in: .local).midY)
                         .background(.gray)
                         .border(.purple)
                 }
@@ -90,7 +93,7 @@ struct WorkspaceCodeFileView: View {
             //                                    .scaledToFit()
             //                                OtherFileView(document)
             //                                    .padding(.bottom, 25)
-            //                                    //.containerRelativeFrame(<#T##Axis.Set#>, count: <#T##Int#>, span: <#T##Int#>, spacing: <#T##CGFloat#>, alignment: <#T##Alignment#>)
+            //                                    //.containerRelativeFrame()
             //                            } else {
             //                                Image(nsImage: nsImg)
             //                                    .resizable()
