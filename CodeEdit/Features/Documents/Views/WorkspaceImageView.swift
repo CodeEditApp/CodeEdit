@@ -18,7 +18,7 @@ import SwiftUI
 struct WorkspaceImageView: View {
 
     /// URL of the image you want to preview.
-    let imageURL: URL
+    private let imageURL: URL
 
     init(_ imageURL: URL) {
         self.imageURL = imageURL

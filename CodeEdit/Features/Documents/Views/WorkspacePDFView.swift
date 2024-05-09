@@ -24,7 +24,7 @@ import PDFKit.PDFView
 struct WorkspacePDFView: NSViewRepresentable {
 
     /// URL of the PDF file you want to preview.
-    let fileURL: URL
+    private let fileURL: URL
 
     init(_ fileURL: URL) {
         self.fileURL = fileURL
@@ -39,7 +39,7 @@ struct WorkspacePDFView: NSViewRepresentable {
         attachPDFDocumentToView(pdfView)
     }
 
-    /// Creates a PDF document using ``WorkspacePDFView/fileURL``, and attaches it to the passed in `pdfView`.
+    /// Creates a PDF document using `fileURL`, and attaches it to the passed in `pdfView`.
     /// - Parameters:
     ///   - pdfView: The [`PDFView`](https://developer.apple.com/documentation/pdfkit/pdfview) you wish to modify.
     /// - Returns: A modified `pdfView` if a valid PDF was created, or an unmodified `pdfView` if it could not create a

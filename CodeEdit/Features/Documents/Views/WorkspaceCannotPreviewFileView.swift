@@ -17,7 +17,7 @@ import QuickLookThumbnailing
 struct WorkspaceCannotPreviewFileView: View {
 
     /// URL of the file that cannot be previewed.
-    let fileURL: URL
+    private let fileURL: URL
 
     /// The icon that will be shown instead of the file contents, since the file cannot be previewed.
     @State private var thumbnail: NSImage?
