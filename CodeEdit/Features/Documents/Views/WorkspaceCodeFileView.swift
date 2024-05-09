@@ -31,9 +31,8 @@ struct WorkspaceCodeFileView: View {
             case .some(.text):
                 CodeFileView(codeFile: document, textViewCoordinators: textViewCoordinators)
             case .some(.gif):
-                // GIF conforms to image, so to differentiate, the GIF check has to be before the image check.
-                // Using WorkspaceAnyFileView allows the GIF to play.
-                WorkspaceAnyFileView(documentURL)
+                // GIF conforms to image, so to differentiate, the GIF check has to come before the image check.
+                WorkspaceImageView(documentURL, isGif: true)
             case .some(.image):
                 WorkspaceImageView(documentURL)
             case .some(.pdf):

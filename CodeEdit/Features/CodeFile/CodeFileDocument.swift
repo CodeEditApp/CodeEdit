@@ -62,7 +62,7 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
         if type.conforms(to: .text) {
             return .text
         }
-        // GIF conforms to image, so to differentiate, the GIF check has to be before the image check.
+        // GIF conforms to image, so to differentiate, the GIF check has to come before the image check.
         if type.conforms(to: .gif) {
             return .gif
         }
