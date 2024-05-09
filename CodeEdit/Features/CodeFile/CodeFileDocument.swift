@@ -55,20 +55,17 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
         guard let fileType, let type = UTType(fileType) else {
             return nil
         }
-        if type.conforms(to: UTType.image) {
-            return UTType.image
-        }
         if type.conforms(to: UTType.text) {
             return UTType.text
+        }
+        if type.conforms(to: UTType.image) {
+            return UTType.image
         }
         if type.conforms(to: .pdf) {
             return .pdf
         }
         if type.conforms(to: .movie) {
             return .movie
-        }
-        if type.conforms(to: .data) {
-            return .data
         }
         return nil
     }
