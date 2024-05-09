@@ -30,22 +30,22 @@ struct WorkspaceCodeFileView: View {
 
     @ViewBuilder var codeView: some View {
         if let documentURL = file.fileDocument?.fileURL {
-            
+
             // WorkspacePDFView(documentURL)
             // use the magic numbers to fine-tune its appearance
             //     .padding(.top, edgeInsets.top - 1.74)
             //     .padding(.bottom, StatusBarView.height + 1.26)
-            
+
             WorkspaceImageView(documentURL)
             // use the magic numbers to fine-tune its appearance
                 .padding(.top, edgeInsets.top - 1.74)
                 .padding(.bottom, StatusBarView.height + 1.26)
-            
+
             // VideoPlayer(player: AVPlayer(playerItem: AVPlayerItem(url: documentURL)))
             // use the magic numbers to fine-tune its appearance
             //     .padding(.top, edgeInsets.top - 1.74)
             //     .padding(.bottom, StatusBarView.height + 1.26)
-            
+
             //            Group {
             //                switch document.typeOfFile {
             //                case .some(.text):
@@ -93,10 +93,7 @@ struct WorkspaceCodeFileView: View {
                 Spacer()
             }
             Spacer()
-            VStack(spacing: 10) {
-                ProgressView()
-                Text("Opening \(file.name)...")
-            }
+            WorkspaceLoadingView(file.name)
             Spacer()
                 .onAppear {
                     Task.detached {

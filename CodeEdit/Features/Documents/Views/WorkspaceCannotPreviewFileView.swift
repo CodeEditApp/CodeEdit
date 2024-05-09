@@ -53,10 +53,7 @@ struct WorkspaceCannotPreviewFileView: View {
             if let thumbnail {
                 Image(nsImage: thumbnail)
             } else {
-                VStack(spacing: 10) {
-                    ProgressView()
-                    Text("Opening...")
-                }
+                WorkspaceLoadingView()
             }
         }
         .onAppear(perform: {

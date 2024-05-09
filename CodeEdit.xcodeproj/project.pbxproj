@@ -287,6 +287,7 @@
 		61A53A812B4449F00093BF8A /* WorkspaceDocument+Index.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A53A802B4449F00093BF8A /* WorkspaceDocument+Index.swift */; };
 		661EF7B82BEE215300C3E577 /* WorkspaceImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 661EF7B72BEE215300C3E577 /* WorkspaceImageView.swift */; };
 		661EF7BA2BEE215300C3E577 /* WorkspaceCannotPreviewFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 661EF7B92BEE215300C3E577 /* WorkspaceCannotPreviewFileView.swift */; };
+		661EF7BD2BEE215300C3E577 /* WorkspaceLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 661EF7BC2BEE215300C3E577 /* WorkspaceLoadingView.swift */; };
 		66F2C8C42BEAA939004674F7 /* WorkspacePDFView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F2C8C32BEAA939004674F7 /* WorkspacePDFView.swift */; };
 		6C049A372A49E2DB00D42923 /* DirectoryEventStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C049A362A49E2DB00D42923 /* DirectoryEventStream.swift */; };
 		6C05A8AF284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C05A8AE284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift */; };
@@ -853,6 +854,7 @@
 		61A53A802B4449F00093BF8A /* WorkspaceDocument+Index.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkspaceDocument+Index.swift"; sourceTree = "<group>"; };
 		661EF7B72BEE215300C3E577 /* WorkspaceImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceImageView.swift; sourceTree = "<group>"; };
 		661EF7B92BEE215300C3E577 /* WorkspaceCannotPreviewFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceCannotPreviewFileView.swift; sourceTree = "<group>"; };
+		661EF7BC2BEE215300C3E577 /* WorkspaceLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceLoadingView.swift; sourceTree = "<group>"; };
 		66F2C8C32BEAA939004674F7 /* WorkspacePDFView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspacePDFView.swift; sourceTree = "<group>"; };
 		6C049A362A49E2DB00D42923 /* DirectoryEventStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryEventStream.swift; sourceTree = "<group>"; };
 		6C05A8AE284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkspaceDocument+Listeners.swift"; sourceTree = "<group>"; };
@@ -1507,6 +1509,7 @@
 			children = (
 				0485EB1E27E7458B00138301 /* WorkspaceCodeFileView.swift */,
 				661EF7B72BEE215300C3E577 /* WorkspaceImageView.swift */,
+				661EF7BC2BEE215300C3E577 /* WorkspaceLoadingView.swift */,
 				66F2C8C32BEAA939004674F7 /* WorkspacePDFView.swift */,
 				661EF7B92BEE215300C3E577 /* WorkspaceCannotPreviewFileView.swift */,
 			);
@@ -3499,6 +3502,7 @@
 				B6E55C3B2A95368E003ECC7D /* EditorTabsOverflowShadow.swift in Sources */,
 				58A5DFA229339F6400D1BD5D /* KeybindingManager.swift in Sources */,
 				B62AEDB32A1FD95B009A9F52 /* UtilityAreaTerminalView.swift in Sources */,
+				661EF7BD2BEE215300C3E577 /* WorkspaceLoadingView.swift in Sources */,
 				58AFAA2E2933C69E00482B53 /* EditorTabRepresentable.swift in Sources */,
 				6C4104E6297C884F00F472BA /* AboutDetailView.swift in Sources */,
 				6C6BD6F129CD13FA00235D17 /* ExtensionDiscovery.swift in Sources */,
