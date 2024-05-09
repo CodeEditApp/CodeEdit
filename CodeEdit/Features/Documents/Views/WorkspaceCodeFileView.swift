@@ -33,6 +33,7 @@ struct WorkspaceCodeFileView: View {
         if let documentURL = file.fileDocument?.fileURL {
 
             //            WorkspacePDFView(fileUrl: documentURL, canPreviewFile: $canPreviewFile)
+            // use the magic numbers to fine-tune its appearance
             //                .padding(.top, edgeInsets.top - 1.74)
             //                .padding(.bottom, StatusBarView.height + 1.26)
 
@@ -51,6 +52,7 @@ struct WorkspaceCodeFileView: View {
                         .resizable()
                         .background(.red)
                         .scaledToFit()
+                    // use the magic numbers to fine-tune its appearance
                         .padding(.top, edgeInsets.top - 1.74)
                         .padding(.bottom, StatusBarView.height + 1.26)
                         .background(.blue)
