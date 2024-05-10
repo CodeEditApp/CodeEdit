@@ -25,37 +25,16 @@ struct WorkspaceCodeFileView: View {
     @State private var update: Bool = false
 
     @ViewBuilder var codeView: some View {
-        if let document = file.fileDocument,
-           let documentURL = document.fileURL {
+        if let document = file.fileDocument {
 
-            // `document.utType` should remain an Optional, or else, it skips this 'if' block.
-            // We should still display WorkspaceAnyFileView when there is a 'nil' utType.
-
-            switch document.utType {
-            case .some(.text):
+            if let utType = document.utType, utType.conforms(to: .text) {
                 CodeFileView(codeFile: document, textViewCoordinators: textViewCoordinators)
+            } else {
+                NonTextFileView(fileDocument: document)
+                    .padding(.top, edgeInsets.top - 1.74) // Use the magic number to fine-tune its appearance.
+                    .padding(.bottom, StatusBarView.height + 1.26) // Use the magic number to fine-tune its appearance.
+            }
 
-            // Group non-text files, so they inherit modifiers from the parent Group view.
-            default:
-                Group {
-                    switch document.utType {
-                    case .some(.gif):
-                        // GIF conforms to image, so to differentiate, the GIF check has to come before the image check
-                        WorkspaceImageView(documentURL, isGif: true)
-
-                    case .some(.image):
-                        WorkspaceImageView(documentURL)
-
-                    case .some(.pdf):
-                        WorkspacePDFView(documentURL)
-
-                    default:
-                        WorkspaceAnyFileView(documentURL)
-                    }
-                }
-                .padding(.top, edgeInsets.top - 1.74) // Use the magic number to fine-tune its appearance.
-                .padding(.bottom, StatusBarView.height + 1.26) // Use the magic number to fine-tune its appearance.
-        }
         } else {
             if update {
                 Spacer()
@@ -78,33 +57,6 @@ struct WorkspaceCodeFileView: View {
                         }
                     }
                 }
-        }
-    }
-
-    @ViewBuilder
-    private func otherFileView(
-        _ otherFile: CodeFileDocument,
-        for item: CEWorkspaceFile
-    ) -> some View {
-        VStack(spacing: 0) {
-            if let url = otherFile.previewItemURL,
-               let image = NSImage(contentsOf: url),
-               otherFile.utType == .image {
-                GeometryReader { proxy in
-                    if image.size.width > proxy.size.width || image.size.height > proxy.size.height {
-                        OtherFileView(otherFile)
-                    } else {
-                        OtherFileView(otherFile)
-                            .frame(
-                                width: proxy.size.width * (proxy.size.width / image.size.width),
-                                height: proxy.size.height
-                            )
-                            .position(x: proxy.frame(in: .local).midX, y: proxy.frame(in: .local).midY)
-                    }
-                }
-            } else {
-                OtherFileView(otherFile)
-            }
         }
     }
 

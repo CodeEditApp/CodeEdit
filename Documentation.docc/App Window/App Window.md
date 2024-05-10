@@ -12,8 +12,7 @@ A collection of all the views that make up the main app window.
 ### Main Content
 
 - ``CodeFileView``
-- ``ImageFileView``
-- ``OtherFileView``
+- ``NonTextFileView``
 
 ### PathBar
 
