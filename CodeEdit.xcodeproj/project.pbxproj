@@ -1112,9 +1112,7 @@
 		043C321227E31FE8006AE443 /* Documents */ = {
 			isa = PBXGroup;
 			children = (
-				66F370302BEE533A00D3B823 /* NonTextFile */,
 				5831E3CE2933F3DE00D5A6D2 /* Controllers */,
-				5831E3CF2933F4E000D5A6D2 /* Views */,
 				043C321527E3201F006AE443 /* WorkspaceDocument.swift */,
 				043BCF02281DA18A000AC47C /* WorkspaceDocument+SearchState.swift */,
 				61A53A802B4449F00093BF8A /* WorkspaceDocument+Index.swift */,
@@ -1501,18 +1499,6 @@
 			path = Controllers;
 			sourceTree = "<group>";
 		};
-		5831E3CF2933F4E000D5A6D2 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				0485EB1E27E7458B00138301 /* EditorAreaFileView.swift */,
-				669BC4072BED306400D1197C /* AnyFileView.swift */,
-				661EF7BC2BEE215300C3E577 /* LoadingFileView.swift */,
-				661EF7B72BEE215300C3E577 /* ImageFileView.swift */,
-				66F2C8C32BEAA939004674F7 /* PDFFileView.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
 		5831E3D02934036D00D5A6D2 /* NSTableView */ = {
 			isa = PBXGroup;
 			children = (
@@ -1710,7 +1696,6 @@
 			isa = PBXGroup;
 			children = (
 				58798249292E78D80085B254 /* CodeFileDocument.swift */,
-				58798248292E78D80085B254 /* CodeFileView.swift */,
 				6C5B63DD29C76213005454BA /* WindowCodeFileView.swift */,
 			);
 			path = CodeFile;
@@ -2355,14 +2340,6 @@
 			path = FuzzySearch;
 			sourceTree = "<group>";
 		};
-		66F370302BEE533A00D3B823 /* NonTextFile */ = {
-			isa = PBXGroup;
-			children = (
-				66F370332BEE537B00D3B823 /* NonTextFileView.swift */,
-			);
-			path = NonTextFile;
-			sourceTree = "<group>";
-		};
 		6C092EDC2A53A63E00489202 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -2729,8 +2706,15 @@
 		B67660632AA970E300CD56B0 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				669BC4072BED306400D1197C /* AnyFileView.swift */,
+				58798248292E78D80085B254 /* CodeFileView.swift */,
 				6C147C4C29A32AA30089B630 /* EditorAreaView.swift */,
+				0485EB1E27E7458B00138301 /* EditorAreaFileView.swift */,
 				6C147C4829A32A080089B630 /* EditorLayoutView.swift */,
+				661EF7BC2BEE215300C3E577 /* LoadingFileView.swift */,
+				661EF7B72BEE215300C3E577 /* ImageFileView.swift */,
+				66F370332BEE537B00D3B823 /* NonTextFileView.swift */,
+				66F2C8C32BEAA939004674F7 /* PDFFileView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
