@@ -1113,6 +1113,8 @@
 			isa = PBXGroup;
 			children = (
 				5831E3CE2933F3DE00D5A6D2 /* Controllers */,
+				611191F82B08CC8000D4459B /* Indexer */,
+				58798249292E78D80085B254 /* CodeFileDocument.swift */,
 				043C321527E3201F006AE443 /* WorkspaceDocument.swift */,
 				043BCF02281DA18A000AC47C /* WorkspaceDocument+SearchState.swift */,
 				61A53A802B4449F00093BF8A /* WorkspaceDocument+Index.swift */,
@@ -1123,7 +1125,6 @@
 				6C092EDF2A53BFCF00489202 /* WorkspaceStateKey.swift */,
 				61538B8F2B111FE800A88846 /* String+AppearancesOfSubstring.swift */,
 				61538B922B11201900A88846 /* String+Character.swift */,
-				611191F82B08CC8000D4459B /* Indexer */,
 			);
 			path = Documents;
 			sourceTree = "<group>";
@@ -1695,7 +1696,6 @@
 		58798244292E78D80085B254 /* CodeFile */ = {
 			isa = PBXGroup;
 			children = (
-				58798249292E78D80085B254 /* CodeFileDocument.swift */,
 				6C5B63DD29C76213005454BA /* WindowCodeFileView.swift */,
 			);
 			path = CodeFile;
