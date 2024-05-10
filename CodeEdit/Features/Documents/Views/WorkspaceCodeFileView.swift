@@ -30,21 +30,32 @@ struct WorkspaceCodeFileView: View {
             switch document.utType {
             case .some(.text):
                 CodeFileView(codeFile: document, textViewCoordinators: textViewCoordinators)
-                    .padding(.top, -edgeInsets.top + 1.74) // Undo the padding in the parent view
-                    .padding(.bottom, -StatusBarView.height - 1.26) // Undo the padding in the parent view
-            case .some(.gif):
-                // GIF conforms to image, so to differentiate, the GIF check has to come before the image check.
-                WorkspaceImageView(documentURL, isGif: true)
-            case .some(.image):
-                WorkspaceImageView(documentURL)
-            case .some(.pdf):
-                WorkspacePDFView(documentURL)
-            case .some(.audiovisualContent):
-                // Has more interaction options than WorkspaceAnyFileView
-                VideoPlayer(player: AVPlayer(playerItem: AVPlayerItem(url: documentURL)))
+
+            // Group non-text files, so they inherit modifiers from the parent Group view.
             default:
-                WorkspaceAnyFileView(documentURL)
-            }
+                Group {
+                    switch document.utType {
+                    case .some(.gif):
+                        // GIF conforms to image, so to differentiate, the GIF check has to come before the image check
+                        WorkspaceImageView(documentURL, isGif: true)
+
+                    case .some(.image):
+                        WorkspaceImageView(documentURL)
+
+                    case .some(.pdf):
+                        WorkspacePDFView(documentURL)
+
+                    case .some(.audiovisualContent):
+                        // Has more interaction options than WorkspaceAnyFileView.
+                        VideoPlayer(player: AVPlayer(playerItem: AVPlayerItem(url: documentURL)))
+
+                    default:
+                        WorkspaceAnyFileView(documentURL)
+                    }
+                }
+                .padding(.top, edgeInsets.top - 1.74) // Use the magic number to fine-tune its appearance.
+                .padding(.bottom, StatusBarView.height + 1.26) // Use the magic number to fine-tune its appearance.
+        }
         } else {
             if update {
                 Spacer()
@@ -99,8 +110,6 @@ struct WorkspaceCodeFileView: View {
 
     var body: some View {
         codeView
-            .padding(.top, edgeInsets.top - 1.74) // Use the magic number to fine-tune its appearance
-            .padding(.bottom, StatusBarView.height + 1.26) // Use the magic number to fine-tune its appearance
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .onHover { hover in
                 DispatchQueue.main.async {
