@@ -49,7 +49,6 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
     ///
     /// Also, if the text content is not empty, it is a text file.
     ///
-    /// If it is neither a text, image, PDF nor video format, it will be nil.
     /// - Note: The UTType doesn't necessarily mean the file extension, it can be the MIME
     /// type or any other form of data representation.
     var utType: UTType? {
@@ -75,7 +74,7 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
         if type.conforms(to: .audiovisualContent) {
             return .audiovisualContent
         }
-        return nil
+        return type
     }
 
     /*
