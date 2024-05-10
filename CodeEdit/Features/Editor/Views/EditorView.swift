@@ -40,7 +40,7 @@ struct EditorView: View {
 
         VStack {
             if let selected = editor.selectedTab {
-                WorkspaceCodeFileView(
+                EditorAreaFileView(
                     file: selected.file,
                     textViewCoordinators: [selected.rangeTranslator].compactMap({ $0 })
                 )

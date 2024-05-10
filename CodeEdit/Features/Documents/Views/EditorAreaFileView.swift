@@ -1,5 +1,5 @@
 //
-//  WorkspaceCodeFileView.swift
+//  EditorAreaFileView.swift
 //  CodeEdit
 //
 //  Created by Pavel Kasila on 20.03.22.
@@ -10,7 +10,7 @@ import AVKit
 import CodeEditSourceEditor
 import SwiftUI
 
-struct WorkspaceCodeFileView: View {
+struct EditorAreaFileView: View {
 
     @EnvironmentObject private var editorManager: EditorManager
 
@@ -24,7 +24,7 @@ struct WorkspaceCodeFileView: View {
 
     @State private var update: Bool = false
 
-    @ViewBuilder var codeView: some View {
+    @ViewBuilder var editorAreaFileView: some View {
         if let document = file.fileDocument {
 
             if let utType = document.utType, utType.conforms(to: .text) {
@@ -61,7 +61,7 @@ struct WorkspaceCodeFileView: View {
     }
 
     var body: some View {
-        codeView
+        editorAreaFileView
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .onHover { hover in
                 DispatchQueue.main.async {

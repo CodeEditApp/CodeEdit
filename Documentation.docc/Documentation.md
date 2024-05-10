@@ -41,7 +41,7 @@
 - ``CEWorkspaceFileManager``
 - ``CodeFileDocument``
 - ``CodeEditDocumentController``
-- ``WorkspaceCodeFileView``
+- ``EditorAreaFileView``
 - ``WorkspaceAnyFileView``
 - ``WorkspaceLoadingView``
 - ``WorkspaceImageView``
