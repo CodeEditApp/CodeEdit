@@ -9,7 +9,6 @@ import AppKit
 import Foundation
 import SwiftUI
 import UniformTypeIdentifiers
-import QuickLookUI
 import CodeEditSourceEditor
 import CodeEditTextView
 import CodeEditLanguages
@@ -22,7 +21,7 @@ enum CodeFileError: Error {
 }
 
 @objc(CodeFileDocument)
-final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
+final class CodeFileDocument: NSDocument, ObservableObject {
     struct OpenOptions {
         let cursorPositions: [CursorPosition]
     }
@@ -72,13 +71,6 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
             return .pdf
         }
         return type
-    }
-
-    /*
-     This is the QLPreviewItemURL
-     */
-    var previewItemURL: URL? {
-        fileURL
     }
 
     /// Specify options for opening the file such as the initial cursor positions.
