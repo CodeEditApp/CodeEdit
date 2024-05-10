@@ -71,9 +71,6 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
         if type.conforms(to: .pdf) {
             return .pdf
         }
-        if type.conforms(to: .audiovisualContent) {
-            return .audiovisualContent
-        }
         return type
     }
 
