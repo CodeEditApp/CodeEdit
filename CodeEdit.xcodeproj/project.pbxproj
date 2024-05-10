@@ -1407,7 +1407,6 @@
 				5878DA7D291862BC00DD95A3 /* Acknowledgements */,
 				588847642992A30900996D95 /* CEWorkspace */,
 				587B9D7529300ABD00AC7927 /* CodeEditUI */,
-				58798244292E78D80085B254 /* CodeFile */,
 				58FD7603291EA1CB0051D6E4 /* Commands */,
 				284DC84B2978B5EB00BF2770 /* Contributors */,
 				043C321227E31FE8006AE443 /* Documents */,
@@ -1691,14 +1690,6 @@
 				58798232292E30B90085B254 /* FeedbackWindowController.swift */,
 			);
 			path = Controllers;
-			sourceTree = "<group>";
-		};
-		58798244292E78D80085B254 /* CodeFile */ = {
-			isa = PBXGroup;
-			children = (
-				6C5B63DD29C76213005454BA /* WindowCodeFileView.swift */,
-			);
-			path = CodeFile;
 			sourceTree = "<group>";
 		};
 		5879827E292ED0FB0085B254 /* TerminalEmulator */ = {
@@ -2439,6 +2430,7 @@
 		6CAAF68F29BCC6F900A1F48A /* WindowCommands */ = {
 			isa = PBXGroup;
 			children = (
+				6C82D6BF29C00EE300495C54 /* Utils */,
 				B66A4E5229C91831004573B4 /* CodeEditCommands.swift */,
 				6CFF967729BEBCF600182D6F /* MainCommands.swift */,
 				6CFF967529BEBCD900182D6F /* FileCommands.swift */,
@@ -2448,7 +2440,6 @@
 				6CFF967B29BEBD5200182D6F /* WindowCommands.swift */,
 				6C82D6B829BFE34900495C54 /* HelpCommands.swift */,
 				6C578D8B29CD372700DC73B2 /* ExtensionCommands.swift */,
-				6C82D6BF29C00EE300495C54 /* Utils */,
 			);
 			path = WindowCommands;
 			sourceTree = "<group>";
@@ -2715,6 +2706,7 @@
 				661EF7B72BEE215300C3E577 /* ImageFileView.swift */,
 				66F370332BEE537B00D3B823 /* NonTextFileView.swift */,
 				66F2C8C32BEAA939004674F7 /* PDFFileView.swift */,
+				6C5B63DD29C76213005454BA /* WindowCodeFileView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
