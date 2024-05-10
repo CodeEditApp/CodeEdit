@@ -30,6 +30,8 @@ struct WorkspaceCodeFileView: View {
             switch document.utType {
             case .some(.text):
                 CodeFileView(codeFile: document, textViewCoordinators: textViewCoordinators)
+                    .padding(.top, -edgeInsets.top + 1.74) // Undo the padding in the parent view
+                    .padding(.bottom, -StatusBarView.height - 1.26) // Undo the padding in the parent view
             case .some(.gif):
                 // GIF conforms to image, so to differentiate, the GIF check has to come before the image check.
                 WorkspaceImageView(documentURL, isGif: true)
