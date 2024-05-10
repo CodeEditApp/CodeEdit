@@ -27,6 +27,10 @@ struct WorkspaceCodeFileView: View {
     @ViewBuilder var codeView: some View {
         if let document = file.fileDocument,
            let documentURL = document.fileURL {
+
+            // `document.utType` should remain an Optional, or else, it skips this 'if' block.
+            // We should still display WorkspaceAnyFileView when there is a 'nil' utType.
+
             switch document.utType {
             case .some(.text):
                 CodeFileView(codeFile: document, textViewCoordinators: textViewCoordinators)
