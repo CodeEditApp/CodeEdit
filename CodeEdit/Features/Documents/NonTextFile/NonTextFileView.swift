@@ -24,16 +24,16 @@ struct NonTextFileView: View {
             switch fileDocument.utType {
             case .some(.gif):
                 // GIF conforms to image, so to differentiate, the GIF check has to come before the image check.
-                WorkspaceImageView(fileURL, isGif: true)
+                ImageFileView(fileURL, isGif: true)
 
             case .some(.image):
-                WorkspaceImageView(fileURL)
+                ImageFileView(fileURL)
 
             case .some(.pdf):
-                WorkspacePDFView(fileURL)
+                PDFFileView(fileURL)
 
             default:
-                WorkspaceAnyFileView(fileURL)
+                AnyFileView(fileURL)
             }
 
         } else {

@@ -40,7 +40,7 @@ struct EditorAreaFileView: View {
                 Spacer()
             }
             Spacer()
-            WorkspaceLoadingView(file.name)
+            LoadingFileView(file.name)
             Spacer()
                 .onAppear {
                     Task.detached {

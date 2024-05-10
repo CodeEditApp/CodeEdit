@@ -1,5 +1,5 @@
 //
-//  WorkspaceLoadingView.swift
+//  LoadingFileView.swift
 //  CodeEdit
 //
 //  Created by Paul Ebose on 2024/5/9.
@@ -11,10 +11,10 @@ import SwiftUI
 ///
 /// It optionally receives a file name.
 /// ```swift
-/// WorkspaceLoadingView(filename)
-/// WorkspaceLoadingView()
+/// LoadingFileView(filename)
+/// LoadingFileView()
 /// ```
-struct WorkspaceLoadingView: View {
+struct LoadingFileView: View {
 
     /// Name of file that is about to open.
     private var filename = ""

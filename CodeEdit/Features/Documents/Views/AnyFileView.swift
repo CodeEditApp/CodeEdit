@@ -1,5 +1,5 @@
 //
-//  WorkspaceAnyFileView.swift
+//  AnyFileView.swift
 //  CodeEdit
 //
 //  Created by Paul Ebose on 2024/5/9.
@@ -11,10 +11,10 @@ import QuickLookUI
 /// A view for previewing any kind of file.
 ///
 /// ```swift
-/// WorkspaceAnyFileView(fileURL)
+/// AnyFileView(fileURL)
 /// ```
 /// If the file cannot be previewed, a file icon thumbnail is shown instead.
-struct WorkspaceAnyFileView: NSViewRepresentable {
+struct AnyFileView: NSViewRepresentable {
 
     /// URL of the file to preview. You can pass in any file type.
     private let fileURL: URL

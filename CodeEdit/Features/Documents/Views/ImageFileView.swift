@@ -1,5 +1,5 @@
 //
-//  WorkspaceImageView.swift
+//  ImageFileView.swift
 //  CodeEdit
 //
 //  Created by Paul Ebose on 2024/5/9.
@@ -12,7 +12,7 @@ import SwiftUI
 /// It receives a URL to an image file and attempts to preview it.
 ///
 /// ```swift
-/// WorkspaceImageView(imageURL)
+/// ImageFileView(imageURL)
 /// ```
 /// This implementation allows for proper image scaling, especially when the image dimensions is smaller than
 /// the size of the image view area.
@@ -21,7 +21,7 @@ import SwiftUI
 ///
 /// - Note: This view wraps around SwiftUI Image. Since SwiftUI Image view do not play GIFs, you should indicate
 /// when passing in a GIF file, so this view can handle the GIF file correctly.
-struct WorkspaceImageView: View {
+struct ImageFileView: View {
 
     /// URL of the image you want to preview.
     private let imageURL: URL
@@ -44,7 +44,7 @@ struct WorkspaceImageView: View {
             GeometryReader { proxy in
                 ZStack {
                     if isGif {
-                        WorkspaceAnyFileView(imageURL)
+                        AnyFileView(imageURL)
                             .frame(
                                 maxWidth: min(pixelWidth, proxy.size.width, nsImage.size.width),
                                 maxHeight: min(pixelHeight, proxy.size.height, nsImage.size.height)

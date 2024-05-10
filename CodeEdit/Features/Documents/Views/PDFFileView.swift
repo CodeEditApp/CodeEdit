@@ -1,5 +1,5 @@
 //
-//  WorkspacePDFView.swift
+//  PDFFileView.swift
 //  CodeEdit
 //
 //  Created by Paul Ebose on 2024/5/7.
@@ -13,7 +13,7 @@ import PDFKit.PDFView
 /// It takes in a file URL and attempts to preview a PDF.
 ///
 /// ```swift
-/// WorkspacePDFView(fileURL)
+/// PDFFileView(fileURL)
 /// ```
 ///
 /// This view provides a context menu that is the same as the one in the native MacOS Preview
@@ -22,7 +22,7 @@ import PDFKit.PDFView
 /// This view also allows for proper scaling of the PDF.
 ///
 /// - Note: If the file located at the `fileURL` cannot be previewed as a PDF, nothing happens, no redraw or anything.
-struct WorkspacePDFView: NSViewRepresentable {
+struct PDFFileView: NSViewRepresentable {
 
     /// URL of the PDF file you want to preview.
     private let fileURL: URL
@@ -40,7 +40,7 @@ struct WorkspacePDFView: NSViewRepresentable {
         attachPDFDocumentToView(pdfView)
     }
 
-    /// Creates a PDF document using ``WorkspacePDFView`` `.fileUrl`, and attaches it to the passed in `pdfView`.
+    /// Creates a PDF document using ``PDFFileView`` `.fileUrl`, and attaches it to the passed in `pdfView`.
     /// - Parameters:
     ///   - pdfView: The [`PDFView`](https://developer.apple.com/documentation/pdfkit/pdfview) you wish to modify.
     /// - Returns: A modified `pdfView` if a valid PDF was created, or an unmodified `pdfView` if it could not create a
