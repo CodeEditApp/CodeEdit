@@ -7,31 +7,24 @@
 
 import SwiftUI
 
-/// A view for previewing an image, while respecting its image dimensions.
+/// A view for previewing an image, while respecting its dimensions.
 ///
 /// It receives a URL to an image file and attempts to preview it.
 ///
 /// ```swift
 /// ImageFileView(imageURL)
 /// ```
-/// This implementation allows for proper image scaling, especially when the image dimensions is smaller than
+/// This implementation allows for proper image scaling, especially when the image dimensions are smaller than
 /// the size of the image view area.
 ///
 /// If the preview image cannot be created, it shows a  *"Cannot preview image"* text.
-///
-/// - Note: This view wraps around SwiftUI Image. Since SwiftUI Image view do not play GIFs, you should indicate
-/// when passing in a GIF file, so this view can handle the GIF file correctly.
 struct ImageFileView: View {
 
     /// URL of the image you want to preview.
     private let imageURL: URL
 
-    /// Indicates whether the image is a GIF.
-    private let isGif: Bool
-
-    init(_ imageURL: URL, isGif: Bool = false) {
+    init(_ imageURL: URL) {
         self.imageURL = imageURL
-        self.isGif = isGif
     }
 
     var body: some View {
@@ -43,21 +36,11 @@ struct ImageFileView: View {
 
             GeometryReader { proxy in
                 ZStack {
-                    if isGif {
-                        AnyFileView(imageURL)
-                            .frame(
-                                maxWidth: min(pixelWidth, proxy.size.width, nsImage.size.width),
-                                maxHeight: min(pixelHeight, proxy.size.height, nsImage.size.height)
-                            )
-                    } else {
-                        Image(nsImage: nsImage)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(
-                                maxWidth: min(pixelWidth, proxy.size.width, nsImage.size.width),
-                                maxHeight: min(pixelHeight, proxy.size.height, nsImage.size.height)
-                            )
-                    }
+                    AnyFileView(imageURL)
+                        .frame(
+                            maxWidth: min(pixelWidth, proxy.size.width, nsImage.size.width),
+                            maxHeight: min(pixelHeight, proxy.size.height, nsImage.size.height)
+                        )
                 }
                 .frame(width: proxy.size.width, height: proxy.size.height)
             }

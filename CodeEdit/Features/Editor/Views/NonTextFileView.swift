@@ -22,10 +22,6 @@ struct NonTextFileView: View {
         if let fileURL = fileDocument.fileURL {
 
             switch fileDocument.utType {
-            case .some(.gif):
-                // GIF conforms to image, so to differentiate, the GIF check has to come before the image check.
-                ImageFileView(fileURL, isGif: true)
-
             case .some(.image):
                 ImageFileView(fileURL)
 
