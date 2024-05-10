@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-/// A view for previewing an image in a constrained space, while respecting the image dimensions.
+/// A view for previewing an image, while respecting its image dimensions.
 ///
 /// It receives a URL to an image file and attempts to preview it.
 ///
@@ -19,8 +19,8 @@ import SwiftUI
 ///
 /// If the preview image cannot be created, it shows a  *"Cannot preview image"* text.
 ///
-/// - Note: Since SwiftUI Image view does not play GIFs, you should indicate when passing in a GIF
-/// file, so this view can handle the GIF file correctly.
+/// - Note: This view wraps around SwiftUI Image. Since SwiftUI Image view do not play GIFs, you should indicate
+/// when passing in a GIF file, so this view can handle the GIF file correctly.
 struct WorkspaceImageView: View {
 
     /// URL of the image you want to preview.
