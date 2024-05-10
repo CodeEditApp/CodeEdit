@@ -26,7 +26,7 @@ struct EditorLayoutView: View {
         VStack {
             switch layout {
             case .one(let detailEditor):
-                EditorView(editor: detailEditor, focus: $focus)
+                EditorAreaView(editor: detailEditor, focus: $focus)
                     .transformEnvironment(\.edgeInsets) { insets in
                         switch isAtEdge {
                         case .all:
