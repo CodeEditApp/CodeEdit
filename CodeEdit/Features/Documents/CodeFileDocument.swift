@@ -1,5 +1,5 @@
 //
-//  CodeFile.swift
+//  CodeFileDocument.swift
 //  CodeEditModules/CodeFile
 //
 //  Created by Rehatbir Singh on 12/03/2022.
@@ -9,7 +9,6 @@ import AppKit
 import Foundation
 import SwiftUI
 import UniformTypeIdentifiers
-import QuickLookUI
 import CodeEditSourceEditor
 import CodeEditTextView
 import CodeEditLanguages
@@ -22,7 +21,7 @@ enum CodeFileError: Error {
 }
 
 @objc(CodeFileDocument)
-final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
+final class CodeFileDocument: NSDocument, ObservableObject {
     struct OpenOptions {
         let cursorPositions: [CursorPosition]
     }
@@ -41,37 +40,33 @@ final class CodeFileDocument: NSDocument, ObservableObject, QLPreviewItem {
     /// Document-specific overridden line wrap preference.
     @Published var wrapLines: Bool?
 
-    /*
-     This is the main type of the document.
-     For example, if the file is end with '.png', it will be an image,
-     if the file is end with '.py', it will be a text file.
-     If text content is not empty, return text
-     If its neither image or text, this could be nil.
-    */
-    var typeOfFile: UTType? {
+    /// The type of data this document contains.
+    ///
+    /// If for example, the file ends with `.py`, its type is a text file.
+    /// Or if it ends with `.png`, then it is an image.
+    /// Same goes for PDF and video formats.
+    ///
+    /// Also, if the text content is not empty, it is a text file.
+    ///
+    /// - Note: The UTType doesn't necessarily mean the file extension, it can be the MIME
+    /// type or any other form of data representation.
+    var utType: UTType? {
         if !self.content.isEmpty {
-            return UTType.text
+            return .text
         }
         guard let fileType, let type = UTType(fileType) else {
             return nil
         }
-        if type.conforms(to: UTType.image) {
-            return UTType.image
+        if type.conforms(to: .text) {
+            return .text
         }
-        if type.conforms(to: UTType.text) {
-            return UTType.text
+        if type.conforms(to: .image) {
+            return .image
         }
-        if type.conforms(to: .data) {
-            return .data
+        if type.conforms(to: .pdf) {
+            return .pdf
         }
-        return nil
-    }
-
-    /*
-     This is the QLPreviewItemURL
-     */
-    var previewItemURL: URL? {
-        fileURL
+        return type
     }
 
     /// Specify options for opening the file such as the initial cursor positions.

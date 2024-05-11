@@ -1,5 +1,5 @@
 //
-//  NotList.swift
+//  NSTableViewWrapper.swift
 //  CodeEdit
 //
 //  Created by Wouter Hennen on 18/03/2023.

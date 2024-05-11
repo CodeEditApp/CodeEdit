@@ -41,8 +41,6 @@
 - ``CEWorkspaceFileManager``
 - ``CodeFileDocument``
 - ``CodeEditDocumentController``
-- ``WorkspaceCodeFileView``
-- ``WorkspaceNotificationModel``
 
 ### Feedback
 

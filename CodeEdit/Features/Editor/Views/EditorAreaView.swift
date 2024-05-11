@@ -1,5 +1,5 @@
 //
-//  EditorView.swift
+//  EditorAreaView.swift
 //  CodeEdit
 //
 //  Created by Wouter Hennen on 16/02/2023.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct EditorView: View {
+struct EditorAreaView: View {
     @AppSettings(\.general.showEditorPathBar)
     var showEditorPathBar
 
@@ -40,7 +40,7 @@ struct EditorView: View {
 
         VStack {
             if let selected = editor.selectedTab {
-                WorkspaceCodeFileView(
+                EditorAreaFileView(
                     file: selected.file,
                     textViewCoordinators: [selected.rangeTranslator].compactMap({ $0 })
                 )
