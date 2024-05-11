@@ -713,6 +713,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "plbstl",
+      "name": "Paul Ebose",
+      "avatar_url": "https://avatars.githubusercontent.com/u/49006567?v=4",
+      "profile": "https://github.com/plbstl",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
