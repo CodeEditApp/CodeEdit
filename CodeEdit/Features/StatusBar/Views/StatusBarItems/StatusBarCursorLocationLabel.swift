@@ -87,7 +87,7 @@ struct StatusBarCursorLocationLabel: View {
                 EmptyView()
             }
         }
-        .font(utilityAreaViewModel.toolbarFont)
+        .font(.system(size: 11, weight: .medium))
         .foregroundColor(foregroundColor)
         .fixedSize()
         .lineLimit(1)

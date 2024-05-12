@@ -9,8 +9,7 @@ import SwiftUI
 
 /// # UtilityAreaViewModel
 ///
-/// A model class to host and manage data for the ``StatusBarView``
-///
+/// A model class to host and manage data for the Utility area.
 class UtilityAreaViewModel: ObservableObject {
     /// Returns the current location of the cursor in an editing view
     @Published var cursorLocation: CursorLocation = .init(line: 1, column: 1) // Implementation needed!!
