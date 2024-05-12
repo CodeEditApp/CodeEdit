@@ -1,0 +1,125 @@
+{
+  "name": "dracula",
+  "displayName": "Dracula",
+  "description": "The famous, the one and only!",
+  "author": "Constantin Clerc",
+  "version": "0.0.1",
+  "license": "MIT",
+  "distributionURL": "https://github.com/CodeEditApp/CodeEdit",
+  "type": "dark",
+  "editor": {
+    "background": {
+      "color": "#282a36"
+    },
+    "invisibles": {
+      "color": "#6272A4"
+    },
+    "comments": {
+      "color": "#6A9955"
+    },
+    "numbers": {
+      "color": "#F1FA8C"
+    },
+    "commands": {
+      "color": "#8BE9FD"
+    },
+    "lineHighlight": {
+      "color": "#282A36"
+    },
+    "values": {
+      "color": "#BD93F9"
+    },
+    "keywords": {
+      "color": "#FF79C6"
+    },
+    "text": {
+      "color": "#F8F8F2"
+    },
+    "insertionPoint": {
+      "color": "#F8F8F2"
+    },
+    "strings": {
+      "color": "#FF5555"
+    },
+    "selection": {
+      "color": "#44475A"
+    },
+    "types": {
+      "color": "#8BE9FD"
+    },
+    "variables": {
+      "color": "#50FA7B"
+    },
+    "attributes": {
+      "color": "#BD93F9"
+    },
+    "characters": {
+      "color": "#F1FA8C"
+    }
+  },
+  "terminal": {
+    "white": {
+      "color": "#F8F8F2"
+    },
+    "brightMagenta": {
+      "color": "#BD93F9"
+    },
+    "brightRed": {
+      "color": "#FF5555"
+    },
+    "blue": {
+      "color": "#8BE9FD"
+    },
+    "red": {
+      "color": "#FF5555"
+    },
+    "green": {
+      "color": "#50FA7B"
+    },
+    "boldText": {
+      "color": "#F8F8F2"
+    },
+    "brightGreen": {
+      "color": "#50FA7B"
+    },
+    "background": {
+      "color": "#282A36"
+    },
+    "cursor": {
+      "color": "#F8F8F2"
+    },
+    "selection": {
+      "color": "#44475A"
+    },
+    "magenta": {
+      "color": "#BD93F9"
+    },
+    "black": {
+      "color": "#282A36"
+    },
+    "text": {
+      "color": "#F8F8F2"
+    },
+    "brightWhite": {
+      "color": "#FFFFFF"
+    },
+    "brightBlue": {
+      "color": "#8BE9FD"
+    },
+    "brightYellow": {
+      "color": "#FFFF00"
+    },
+    "cyan": {
+      "color": "#55B4D4"
+    },
+    "yellow": {
+      "color": "#FFCC00"
+    },
+    "brightCyan": {
+      "color": "#55BEF0"
+    },
+    "brightBlack": {
+      "color": "#8E8E93"
+    }
+  }
+}
