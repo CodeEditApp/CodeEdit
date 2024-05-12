@@ -27,16 +27,6 @@ struct ImageFileView: View {
         self.imageURL = imageURL
     }
 
-    @EnvironmentObject private var editorManager: EditorManager
-    @EnvironmentObject private var statusBarViewModel: StatusBarViewModel
-
-    private func updateStatusBarInfo(fileURL: URL, dimensions: (Int, Int)? = nil) {
-        statusBarViewModel.dimensions = dimensions
-        if let fileSize = try? fileURL.resourceValues(forKeys: [.fileSizeKey]).fileSize {
-            statusBarViewModel.fileSize = fileSize
-        }
-    }
-
     var body: some View {
         if let nsImage = NSImage(contentsOf: imageURL),
            let imageReps = nsImage.representations.first {
@@ -51,22 +41,9 @@ struct ImageFileView: View {
                             maxWidth: min(pixelWidth, proxy.size.width, nsImage.size.width),
                             maxHeight: min(pixelHeight, proxy.size.height, nsImage.size.height)
                         )
+
                 }
                 .frame(width: proxy.size.width, height: proxy.size.height)
-                .onAppear {
-                    updateStatusBarInfo(
-                        fileURL: imageURL,
-                        dimensions: (imageReps.pixelsWide, imageReps.pixelsHigh)
-                    )
-                }
-                .onChange(of: editorManager.activeEditor.selectedTab) { newTab in
-                    if let newTab, let newTabImageReps = NSImage(contentsOf: newTab.file.url)?.representations.first {
-                        updateStatusBarInfo(
-                            fileURL: newTab.file.url,
-                            dimensions: (newTabImageReps.pixelsWide, newTabImageReps.pixelsHigh)
-                        )
-                    }
-                }
             }
         } else {
             Text("Cannot preview image")

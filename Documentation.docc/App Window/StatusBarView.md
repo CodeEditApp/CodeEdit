@@ -6,6 +6,10 @@
 
 - ``StatusBarViewModel``
 
+### View Modifiers
+
+- ``UpdateStatusBarInfo``
+
 ### Items
 
 - ``StatusBarMenuStyle``

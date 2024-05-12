@@ -12,7 +12,7 @@ final class StatusBarViewModel: ObservableObject {
     /// The file size of the currently opened file.
     @Published var fileSize: Int?
 
-    /// The dimensions (width x height) of the currently opened media file.
+    /// The dimensions (width x height) of the currently opened image.
     @Published var dimensions: (Int, Int)?
 
     /// Indicates whether the breakpoint is enabled or not.
