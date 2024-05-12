@@ -2,10 +2,6 @@
 
 ## Topics
 
-### Model
-
-- ``CursorLocation``
-
 ### Items
 
 - ``StatusBarMenuStyle``

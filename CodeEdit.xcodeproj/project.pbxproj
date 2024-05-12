@@ -209,7 +209,6 @@
 		58822530292C280D00E83CDE /* UtilityAreaFilterTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822518292C280D00E83CDE /* UtilityAreaFilterTextField.swift */; };
 		58822531292C280D00E83CDE /* View+isHovering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882251A292C280D00E83CDE /* View+isHovering.swift */; };
 		58822532292C280D00E83CDE /* UtilityAreaViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882251C292C280D00E83CDE /* UtilityAreaViewModel.swift */; };
-		58822534292C280D00E83CDE /* CursorLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882251E292C280D00E83CDE /* CursorLocation.swift */; };
 		588847632992A2A200996D95 /* CEWorkspaceFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588847622992A2A200996D95 /* CEWorkspaceFile.swift */; };
 		588847692992ABCA00996D95 /* Array+SortURLs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588847682992ABCA00996D95 /* Array+SortURLs.swift */; };
 		5894E59729FEF7740077E59C /* CEWorkspaceFile+Recursion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5894E59629FEF7740077E59C /* CEWorkspaceFile+Recursion.swift */; };
@@ -774,7 +773,6 @@
 		58822518292C280D00E83CDE /* UtilityAreaFilterTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilityAreaFilterTextField.swift; sourceTree = "<group>"; };
 		5882251A292C280D00E83CDE /* View+isHovering.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+isHovering.swift"; sourceTree = "<group>"; };
 		5882251C292C280D00E83CDE /* UtilityAreaViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilityAreaViewModel.swift; sourceTree = "<group>"; };
-		5882251E292C280D00E83CDE /* CursorLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CursorLocation.swift; sourceTree = "<group>"; };
 		588847622992A2A200996D95 /* CEWorkspaceFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CEWorkspaceFile.swift; sourceTree = "<group>"; };
 		588847682992ABCA00996D95 /* Array+SortURLs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+SortURLs.swift"; sourceTree = "<group>"; };
 		5894E59629FEF7740077E59C /* CEWorkspaceFile+Recursion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CEWorkspaceFile+Recursion.swift"; sourceTree = "<group>"; };
@@ -1994,7 +1992,6 @@
 		588224FF292C280D00E83CDE /* StatusBar */ = {
 			isa = PBXGroup;
 			children = (
-				5882251B292C280D00E83CDE /* Models */,
 				58822508292C280D00E83CDE /* Views */,
 			);
 			path = StatusBar;
@@ -2047,14 +2044,6 @@
 				58822518292C280D00E83CDE /* UtilityAreaFilterTextField.swift */,
 			);
 			path = Toolbar;
-			sourceTree = "<group>";
-		};
-		5882251B292C280D00E83CDE /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				5882251E292C280D00E83CDE /* CursorLocation.swift */,
-			);
-			path = Models;
 			sourceTree = "<group>";
 		};
 		58822539292C333600E83CDE /* ViewModels */ = {
@@ -3273,7 +3262,6 @@
 				3000516C2BBD3A9500A98562 /* ServiceWrapper.swift in Sources */,
 				77A01E1F2BB33FB500F0EA38 /* CEWorkspaceSettingsView.swift in Sources */,
 				587B9DA029300ABD00AC7927 /* PanelDivider.swift in Sources */,
-				58822534292C280D00E83CDE /* CursorLocation.swift in Sources */,
 				201169E52837B40300F92B46 /* SourceControlNavigatorRepositoryView.swift in Sources */,
 				587B9E6A29301D8F00AC7927 /* GitLabPermissions.swift in Sources */,
 				B6EA1FF529DA380E001BF195 /* TextEditingSettingsView.swift in Sources */,
