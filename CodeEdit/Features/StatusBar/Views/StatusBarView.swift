@@ -11,7 +11,9 @@ import SwiftUI
 ///
 /// A View that lives on the bottom of the window and offers information
 /// about compilation errors/warnings, git,  cursor position in text,
-/// indentation width (in spaces), text encoding and linebreak
+/// indentation width (in spaces), text encoding and linebreak.
+///
+/// Also information about the file size and dimensions, if available.
 ///
 /// Additionally it offers a togglable/resizable drawer which can
 /// host a terminal or additional debug information
@@ -35,6 +37,7 @@ struct StatusBarView: View {
 //            StatusBarBreakpointButton()
 //            StatusBarDivider()
             Spacer()
+            StatusBarFileInfoView()
             HStack(alignment: .center, spacing: 10) {
                 StatusBarCursorPositionLabel()
             }

@@ -9,10 +9,19 @@ import SwiftUI
 
 final class StatusBarViewModel: ObservableObject {
 
+    /// The file size of the currently opened file.
+    @Published var fileSize: Int?
+
+    /// The dimensions (width x height) of the currently opened media file.
+    @Published var dimensions: (Int, Int)?
+
     /// Indicates whether the breakpoint is enabled or not.
     @Published var isBreakpointEnabled = true
 
     /// The font style of items shown in the status bar.
     private(set) var statusBarFont = Font.system(size: 11, weight: .medium)
+
+    /// The color of the text shown in the status bar.
+    private(set) var foregroundStyle = Color.secondary
 
 }
