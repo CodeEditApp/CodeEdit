@@ -9,17 +9,15 @@ import SwiftUI
 import CodeEditSymbols
 
 struct StatusBarBreakpointButton: View {
-    // @EnvironmentObject private var utilityAreaViewModel: UtilityAreaViewModel
+    @EnvironmentObject private var statusBarViewModel: StatusBarViewModel
 
     @State private var isBreakpointEnabled = false
 
     var body: some View {
         Button {
-            // utilityAreaViewModel.isBreakpointEnabled.toggle()
-            isBreakpointEnabled.toggle()
+            statusBarViewModel.isBreakpointEnabled.toggle()
         } label: {
-            // if utilityAreaViewModel.isBreakpointEnabled {
-            if isBreakpointEnabled {
+            if statusBarViewModel.isBreakpointEnabled {
                 Image.breakpointFill
                     .foregroundColor(.accentColor)
             } else {

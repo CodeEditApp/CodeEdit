@@ -2,6 +2,10 @@
 
 ## Topics
 
+### View Model
+
+- ``StatusBarViewModel``
+
 ### Items
 
 - ``StatusBarMenuStyle``

@@ -285,6 +285,7 @@
 		661EF7B82BEE215300C3E577 /* ImageFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 661EF7B72BEE215300C3E577 /* ImageFileView.swift */; };
 		661EF7BD2BEE215300C3E577 /* LoadingFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 661EF7BC2BEE215300C3E577 /* LoadingFileView.swift */; };
 		669BC4082BED306400D1197C /* AnyFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669BC4072BED306400D1197C /* AnyFileView.swift */; };
+		66AF6CE22BF17CC300D83C9D /* StatusBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66AF6CE12BF17CC300D83C9D /* StatusBarViewModel.swift */; };
 		66F2C8C42BEAA939004674F7 /* PDFFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F2C8C32BEAA939004674F7 /* PDFFileView.swift */; };
 		66F370342BEE537B00D3B823 /* NonTextFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F370332BEE537B00D3B823 /* NonTextFileView.swift */; };
 		6C049A372A49E2DB00D42923 /* DirectoryEventStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C049A362A49E2DB00D42923 /* DirectoryEventStream.swift */; };
@@ -849,6 +850,7 @@
 		661EF7B72BEE215300C3E577 /* ImageFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFileView.swift; sourceTree = "<group>"; };
 		661EF7BC2BEE215300C3E577 /* LoadingFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingFileView.swift; sourceTree = "<group>"; };
 		669BC4072BED306400D1197C /* AnyFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyFileView.swift; sourceTree = "<group>"; };
+		66AF6CE12BF17CC300D83C9D /* StatusBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarViewModel.swift; sourceTree = "<group>"; };
 		66F2C8C32BEAA939004674F7 /* PDFFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFFileView.swift; sourceTree = "<group>"; };
 		66F370332BEE537B00D3B823 /* NonTextFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonTextFileView.swift; sourceTree = "<group>"; };
 		6C049A362A49E2DB00D42923 /* DirectoryEventStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryEventStream.swift; sourceTree = "<group>"; };
@@ -1992,6 +1994,7 @@
 		588224FF292C280D00E83CDE /* StatusBar */ = {
 			isa = PBXGroup;
 			children = (
+				66AF6CE02BF17CB100D83C9D /* ViewModels */,
 				58822508292C280D00E83CDE /* Views */,
 			);
 			path = StatusBar;
@@ -2318,6 +2321,14 @@
 				613899BF2B6E70FE00A5CAF6 /* FuzzySearchTests.swift */,
 			);
 			path = FuzzySearch;
+			sourceTree = "<group>";
+		};
+		66AF6CE02BF17CB100D83C9D /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				66AF6CE12BF17CC300D83C9D /* StatusBarViewModel.swift */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		6C092EDC2A53A63E00489202 /* Views */ = {
@@ -3350,6 +3361,7 @@
 				587B9E7329301D8F00AC7927 /* GitRouter.swift in Sources */,
 				6C2C156129B4F52F00EA60A5 /* SplitViewModifiers.swift in Sources */,
 				61A53A812B4449F00093BF8A /* WorkspaceDocument+Index.swift in Sources */,
+				66AF6CE22BF17CC300D83C9D /* StatusBarViewModel.swift in Sources */,
 				201169DD2837B3AC00F92B46 /* SourceControlNavigatorToolbarBottom.swift in Sources */,
 				587B9E8B29301D8F00AC7927 /* GitHubAccount+deleteReference.swift in Sources */,
 				58798237292E30B90085B254 /* FeedbackView.swift in Sources */,

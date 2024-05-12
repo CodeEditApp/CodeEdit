@@ -14,6 +14,7 @@ struct StatusBarCursorPositionLabel: View {
     @Environment(\.modifierKeys)
     private var modifierKeys
 
+    @EnvironmentObject private var statusBarViewModel: StatusBarViewModel
     @EnvironmentObject private var utilityAreaViewModel: UtilityAreaViewModel
     @EnvironmentObject private var editorManager: EditorManager
 
@@ -87,7 +88,7 @@ struct StatusBarCursorPositionLabel: View {
                 EmptyView()
             }
         }
-        .font(.system(size: 11, weight: .medium))
+        .font(statusBarViewModel.statusBarFont)
         .foregroundColor(foregroundColor)
         .fixedSize()
         .lineLimit(1)
