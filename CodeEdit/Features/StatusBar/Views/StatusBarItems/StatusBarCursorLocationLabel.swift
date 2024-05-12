@@ -1,6 +1,6 @@
 //
 //  StatusBarCursorLocationLabel.swift
-//  CodeEditModules/StatusBar
+//  CodeEdit
 //
 //  Created by Lukas Pistrol on 22.03.22.
 //
@@ -14,7 +14,7 @@ struct StatusBarCursorLocationLabel: View {
     @Environment(\.modifierKeys)
     private var modifierKeys
 
-    @EnvironmentObject private var model: UtilityAreaViewModel
+    @EnvironmentObject private var utilityAreaViewModel: UtilityAreaViewModel
     @EnvironmentObject private var editorManager: EditorManager
 
     @State private var tab: EditorInstance?
@@ -87,7 +87,7 @@ struct StatusBarCursorLocationLabel: View {
                 EmptyView()
             }
         }
-        .font(model.toolbarFont)
+        .font(utilityAreaViewModel.toolbarFont)
         .foregroundColor(foregroundColor)
         .fixedSize()
         .lineLimit(1)

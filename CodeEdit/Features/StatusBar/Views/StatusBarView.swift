@@ -1,6 +1,6 @@
 //
 //  StatusBarView.swift
-//  CodeEditModules/StatusBar
+//  CodeEdit
 //
 //  Created by Lukas Pistrol on 19.03.22.
 //
@@ -19,8 +19,6 @@ import SwiftUI
 struct StatusBarView: View {
     @Environment(\.controlActiveState)
     private var controlActive
-
-    @EnvironmentObject private var model: UtilityAreaViewModel
 
     static let height = 28.0
 

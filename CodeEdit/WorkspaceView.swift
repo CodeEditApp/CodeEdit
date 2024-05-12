@@ -21,7 +21,7 @@ struct WorkspaceView: View {
 
     @EnvironmentObject private var workspace: WorkspaceDocument
     @EnvironmentObject private var editorManager: EditorManager
-    @EnvironmentObject private var utilityAreaModel: UtilityAreaViewModel
+    @EnvironmentObject private var utilityAreaViewModel: UtilityAreaViewModel
 
     @StateObject private var themeModel: ThemeModel = .shared
 
@@ -43,7 +43,7 @@ struct WorkspaceView: View {
                             focus: $focusedEditor
                         )
                         .collapsable()
-                        .collapsed($utilityAreaModel.isMaximized)
+                        .collapsed($utilityAreaViewModel.isMaximized)
                         .frame(minHeight: 170 + 29 + 29)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .holdingPriority(.init(1))
@@ -52,7 +52,7 @@ struct WorkspaceView: View {
                         }
                         UtilityAreaView()
                             .collapsable()
-                            .collapsed($utilityAreaModel.isCollapsed)
+                            .collapsed($utilityAreaViewModel.isCollapsed)
                             .frame(idealHeight: 260)
                             .frame(minHeight: 100)
                     }

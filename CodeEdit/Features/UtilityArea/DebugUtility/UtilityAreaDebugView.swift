@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct UtilityAreaDebugView: View {
-    @EnvironmentObject private var model: UtilityAreaViewModel
+    @EnvironmentObject private var utilityAreaViewModel: UtilityAreaViewModel
 
     @State var tabSelection = 0
 
     var body: some View {
-        UtilityAreaTabView(model: model.tabViewModel) { _ in
+        UtilityAreaTabView(model: utilityAreaViewModel.tabViewModel) { _ in
             Text("Nothing to debug")
                 .font(.system(size: 16))
                 .foregroundColor(.secondary)

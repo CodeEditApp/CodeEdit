@@ -1,6 +1,6 @@
 //
 //  StatusBarToggleUtilityAreaButton.swift
-//  CodeEditModules/StatusBar
+//  CodeEdit
 //
 //  Created by Lukas Pistrol on 22.03.22.
 //
@@ -11,17 +11,17 @@ internal struct StatusBarToggleUtilityAreaButton: View {
     @Environment(\.controlActiveState)
     var controlActiveState
 
-    @EnvironmentObject private var model: UtilityAreaViewModel
+    @EnvironmentObject private var utilityAreaViewModel: UtilityAreaViewModel
 
     internal var body: some View {
         Button {
-            model.togglePanel()
+            utilityAreaViewModel.togglePanel()
         } label: {
             Image(systemName: "square.bottomthird.inset.filled")
         }
         .buttonStyle(.icon)
         .keyboardShortcut("Y", modifiers: [.command, .shift])
-        .help(model.isCollapsed ? "Show the Utility area" : "Hide the Utility area")
+        .help(utilityAreaViewModel.isCollapsed ? "Show the Utility area" : "Hide the Utility area")
         .onHover { isHovering($0) }
         .onChange(of: controlActiveState) { newValue in
             if newValue == .key {
@@ -29,7 +29,7 @@ internal struct StatusBarToggleUtilityAreaButton: View {
                     name: "Toggle Utility Area",
                     title: "Toggle Utility Area",
                     id: "open.drawer",
-                    command: CommandClosureWrapper.init(closure: model.togglePanel)
+                    command: CommandClosureWrapper.init(closure: utilityAreaViewModel.togglePanel)
                 )
             }
         }
@@ -38,7 +38,7 @@ internal struct StatusBarToggleUtilityAreaButton: View {
                 name: "Toggle Utility Area",
                 title: "Toggle Utility Area",
                 id: "open.drawer",
-                command: CommandClosureWrapper.init(closure: model.togglePanel)
+                command: CommandClosureWrapper.init(closure: utilityAreaViewModel.togglePanel)
             )
         }
     }

@@ -1,5 +1,5 @@
 //
-//  DebuggerAreaTerminal.swift
+//  UtilityAreaTerminal.swift
 //  CodeEdit
 //
 //  Created by Austin Condiff on 5/25/23.
@@ -42,7 +42,7 @@ struct UtilityAreaTerminalView: View {
 
     @EnvironmentObject private var workspace: WorkspaceDocument
 
-    @EnvironmentObject private var model: UtilityAreaViewModel
+    @EnvironmentObject private var utilityAreaViewModel: UtilityAreaViewModel
 
     @State private var sidebarIsCollapsed = false
 
@@ -55,7 +55,7 @@ struct UtilityAreaTerminalView: View {
     private func initializeTerminals() {
         let id = UUID()
 
-        model.terminals = [
+        utilityAreaViewModel.terminals = [
             UtilityAreaTerminal(
                 id: id,
                 url: workspace.workspaceFileManager?.folderUrl ?? URL(filePath: "/"),
@@ -64,13 +64,13 @@ struct UtilityAreaTerminalView: View {
             )
         ]
 
-        model.selectedTerminals = [id]
+        utilityAreaViewModel.selectedTerminals = [id]
     }
 
     private func addTerminal(shell: String? = nil) {
         let id = UUID()
 
-        model.terminals.append(
+        utilityAreaViewModel.terminals.append(
             UtilityAreaTerminal(
                 id: id,
                 url: URL(filePath: "\(id)"),
@@ -79,17 +79,17 @@ struct UtilityAreaTerminalView: View {
             )
         )
 
-        model.selectedTerminals = [id]
+        utilityAreaViewModel.selectedTerminals = [id]
     }
 
     private func getTerminal(_ id: UUID) -> UtilityAreaTerminal? {
-        return model.terminals.first(where: { $0.id == id }) ?? nil
+        return utilityAreaViewModel.terminals.first(where: { $0.id == id }) ?? nil
     }
 
     private func updateTerminal(_ id: UUID, title: String? = nil) {
-        let terminalIndex = model.terminals.firstIndex(where: { $0.id == id })
+        let terminalIndex = utilityAreaViewModel.terminals.firstIndex(where: { $0.id == id })
         if terminalIndex != nil {
-            updateTerminalByReference(of: &model.terminals[terminalIndex!], title: title)
+            updateTerminalByReference(of: &utilityAreaViewModel.terminals[terminalIndex!], title: title)
         }
     }
 
@@ -121,16 +121,16 @@ struct UtilityAreaTerminalView: View {
     }
 
     func moveItems(from source: IndexSet, to destination: Int) {
-        model.terminals.move(fromOffsets: source, toOffset: destination)
+        utilityAreaViewModel.terminals.move(fromOffsets: source, toOffset: destination)
     }
 
     var body: some View {
-        UtilityAreaTabView(model: model.tabViewModel) { tabState in
+        UtilityAreaTabView(model: utilityAreaViewModel.tabViewModel) { tabState in
             ZStack {
-                if model.selectedTerminals.isEmpty {
+                if utilityAreaViewModel.selectedTerminals.isEmpty {
                     CEContentUnavailableView("No Selection")
                 }
-                ForEach(model.terminals) { terminal in
+                ForEach(utilityAreaViewModel.terminals) { terminal in
                     TerminalEmulatorView(
                         url: terminal.url!,
                         shellType: terminal.shell,
@@ -144,14 +144,17 @@ struct UtilityAreaTerminalView: View {
                     .padding(.top, 10)
                     .padding(.horizontal, 10)
                     .contentShape(Rectangle())
-                    .disabled(terminal.id != model.selectedTerminals.first)
-                    .opacity(terminal.id == model.selectedTerminals.first ? 1 : 0)
+                    .disabled(terminal.id != utilityAreaViewModel.selectedTerminals.first)
+                    .opacity(terminal.id == utilityAreaViewModel.selectedTerminals.first ? 1 : 0)
                 }
             }
             .paneToolbar {
                 PaneToolbarSection {
-                    UtilityAreaTerminalPicker(selectedIDs: $model.selectedTerminals, terminals: model.terminals)
-                        .opacity(tabState.leadingSidebarIsCollapsed ? 1 : 0)
+                    UtilityAreaTerminalPicker(
+                        selectedIDs: $utilityAreaViewModel.selectedTerminals,
+                        terminals: utilityAreaViewModel.terminals
+                    )
+                    .opacity(tabState.leadingSidebarIsCollapsed ? 1 : 0)
                 }
                 Spacer()
                 PaneToolbarSection {
@@ -168,7 +171,7 @@ struct UtilityAreaTerminalView: View {
                 }
             }
             .background {
-                if model.selectedTerminals.isEmpty {
+                if utilityAreaViewModel.selectedTerminals.isEmpty {
                     EffectView(.contentBackground)
                 } else if useThemeBackground {
                     Color(nsColor: backgroundColor)
@@ -181,27 +184,27 @@ struct UtilityAreaTerminalView: View {
                 }
             }
             .colorScheme(
-                model.selectedTerminals.isEmpty
+                utilityAreaViewModel.selectedTerminals.isEmpty
                     ? colorScheme
                     : matchAppearance && darkAppearance
                     ? themeModel.selectedDarkTheme?.appearance == .dark ? .dark : .light
                     : themeModel.selectedTheme?.appearance == .dark ? .dark : .light
             )
         } leadingSidebar: { _ in
-            List(selection: $model.selectedTerminals) {
-                ForEach(model.terminals, id: \.self.id) { terminal in
+            List(selection: $utilityAreaViewModel.selectedTerminals) {
+                ForEach(utilityAreaViewModel.terminals, id: \.self.id) { terminal in
                     UtilityAreaTerminalTab(
                         terminal: terminal,
-                        removeTerminals: model.removeTerminals,
-                        isSelected: model.selectedTerminals.contains(terminal.id),
-                        selectedIDs: model.selectedTerminals
+                        removeTerminals: utilityAreaViewModel.removeTerminals,
+                        isSelected: utilityAreaViewModel.selectedTerminals.contains(terminal.id),
+                        selectedIDs: utilityAreaViewModel.selectedTerminals
                     )
                     .tag(terminal.id)
                     .listRowSeparator(.hidden)
                 }
                 .onMove(perform: moveItems)
             }
-            .focusedObject(model)
+            .focusedObject(utilityAreaViewModel)
             .listStyle(.automatic)
             .accentColor(.secondary)
             .contextMenu {
@@ -221,7 +224,7 @@ struct UtilityAreaTerminalView: View {
                     }
                 }
             }
-            .onChange(of: model.terminals) { newValue in
+            .onChange(of: utilityAreaViewModel.terminals) { newValue in
                 if newValue.isEmpty {
                     addTerminal()
                 }
@@ -234,12 +237,12 @@ struct UtilityAreaTerminalView: View {
                         Image(systemName: "plus")
                     }
                     Button {
-                        model.removeTerminals(model.selectedTerminals)
+                        utilityAreaViewModel.removeTerminals(utilityAreaViewModel.selectedTerminals)
                     } label: {
                         Image(systemName: "minus")
                     }
-                    .disabled(model.terminals.count <= 1)
-                    .opacity(model.terminals.count <= 1 ? 0.5 : 1)
+                    .disabled(utilityAreaViewModel.terminals.count <= 1)
+                    .opacity(utilityAreaViewModel.terminals.count <= 1 ? 0.5 : 1)
                 }
                 Spacer()
             }
