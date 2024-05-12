@@ -60,10 +60,10 @@ struct ImageFileView: View {
                     )
                 }
                 .onChange(of: editorManager.activeEditor.selectedTab) { newTab in
-                    if let newTab {
+                    if let newTab, let newTabImageReps = NSImage(contentsOf: newTab.file.url)?.representations.first {
                         updateStatusBarInfo(
                             fileURL: newTab.file.url,
-                            dimensions: (imageReps.pixelsWide, imageReps.pixelsHigh)
+                            dimensions: (newTabImageReps.pixelsWide, newTabImageReps.pixelsHigh)
                         )
                     }
                 }
