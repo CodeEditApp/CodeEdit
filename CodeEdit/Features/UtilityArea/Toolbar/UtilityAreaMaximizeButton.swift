@@ -1,5 +1,5 @@
 //
-//  StatusBarMaximizeButton.swift
+//  UtilityAreaMaximizeButton.swift
 //  CodeEdit
 //
 //  Created by Stef Kors on 12/04/2022.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct StatusBarMaximizeButton: View {
+struct UtilityAreaMaximizeButton: View {
     @EnvironmentObject private var utilityAreaViewModel: UtilityAreaViewModel
 
     var body: some View {

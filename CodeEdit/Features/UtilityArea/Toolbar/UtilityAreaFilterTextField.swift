@@ -1,13 +1,13 @@
 //
-//  FilterTextField.swift
-//  CodeEditModules/StatusBar
+//  UtilityAreaFilterTextField.swift
+//  CodeEdit
 //
 //  Created by Stef Kors on 12/04/2022.
 //
 
 import SwiftUI
 
-struct FilterTextField: View {
+struct UtilityAreaFilterTextField: View {
     let title: String
 
     @Binding var text: String

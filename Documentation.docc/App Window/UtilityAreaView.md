@@ -21,7 +21,7 @@
 ### Toolbar
 
 - ``UtilityAreaView``
-- ``StatusBarSplitTerminalButton``
-- ``StatusBarMaximizeButton``
-- ``StatusBarClearButton``
-- ``FilterTextField``
+- ``UtilityAreaSplitTerminalButton``
+- ``UtilityAreaMaximizeButton``
+- ``UtilityAreaClearButton``
+- ``UtilityAreaFilterTextField``

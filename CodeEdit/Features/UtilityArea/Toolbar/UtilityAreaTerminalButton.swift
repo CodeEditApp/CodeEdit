@@ -1,18 +1,18 @@
 //
-//  StatusBarClearButton.swift
+//  UtilityAreaTerminalButton.swift
 //  CodeEdit
 //
-//  Created by Stef Kors on 12/04/2022.
+//  Created by Stef Kors on 14/04/2022.
 //
 
 import SwiftUI
 
-struct StatusBarClearButton: View {
+struct UtilityAreaTerminalButton: View {
     var body: some View {
         Button {
-            // Clear terminal
+            // todo
         } label: {
-            Image(systemName: "trash")
+            Image(systemName: "square.split.2x1")
                 .foregroundColor(.secondary)
         }
         .buttonStyle(.plain)

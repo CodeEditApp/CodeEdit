@@ -203,10 +203,10 @@
 		5882252A292C280D00E83CDE /* StatusBarToggleUtilityAreaButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822510292C280D00E83CDE /* StatusBarToggleUtilityAreaButton.swift */; };
 		5882252B292C280D00E83CDE /* StatusBarCursorLocationLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822511292C280D00E83CDE /* StatusBarCursorLocationLabel.swift */; };
 		5882252C292C280D00E83CDE /* UtilityAreaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822513292C280D00E83CDE /* UtilityAreaView.swift */; };
-		5882252D292C280D00E83CDE /* StatusBarSplitTerminalButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822515292C280D00E83CDE /* StatusBarSplitTerminalButton.swift */; };
-		5882252E292C280D00E83CDE /* StatusBarMaximizeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822516292C280D00E83CDE /* StatusBarMaximizeButton.swift */; };
-		5882252F292C280D00E83CDE /* StatusBarClearButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822517292C280D00E83CDE /* StatusBarClearButton.swift */; };
-		58822530292C280D00E83CDE /* FilterTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822518292C280D00E83CDE /* FilterTextField.swift */; };
+		5882252D292C280D00E83CDE /* UtilityAreaTerminalButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822515292C280D00E83CDE /* UtilityAreaTerminalButton.swift */; };
+		5882252E292C280D00E83CDE /* UtilityAreaMaximizeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822516292C280D00E83CDE /* UtilityAreaMaximizeButton.swift */; };
+		5882252F292C280D00E83CDE /* UtilityAreaClearButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822517292C280D00E83CDE /* UtilityAreaClearButton.swift */; };
+		58822530292C280D00E83CDE /* UtilityAreaFilterTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822518292C280D00E83CDE /* UtilityAreaFilterTextField.swift */; };
 		58822531292C280D00E83CDE /* View+isHovering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882251A292C280D00E83CDE /* View+isHovering.swift */; };
 		58822532292C280D00E83CDE /* UtilityAreaViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882251C292C280D00E83CDE /* UtilityAreaViewModel.swift */; };
 		58822534292C280D00E83CDE /* CursorLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882251E292C280D00E83CDE /* CursorLocation.swift */; };
@@ -768,10 +768,10 @@
 		58822510292C280D00E83CDE /* StatusBarToggleUtilityAreaButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarToggleUtilityAreaButton.swift; sourceTree = "<group>"; };
 		58822511292C280D00E83CDE /* StatusBarCursorLocationLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarCursorLocationLabel.swift; sourceTree = "<group>"; };
 		58822513292C280D00E83CDE /* UtilityAreaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilityAreaView.swift; sourceTree = "<group>"; };
-		58822515292C280D00E83CDE /* StatusBarSplitTerminalButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarSplitTerminalButton.swift; sourceTree = "<group>"; };
-		58822516292C280D00E83CDE /* StatusBarMaximizeButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarMaximizeButton.swift; sourceTree = "<group>"; };
-		58822517292C280D00E83CDE /* StatusBarClearButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarClearButton.swift; sourceTree = "<group>"; };
-		58822518292C280D00E83CDE /* FilterTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterTextField.swift; sourceTree = "<group>"; };
+		58822515292C280D00E83CDE /* UtilityAreaTerminalButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilityAreaTerminalButton.swift; sourceTree = "<group>"; };
+		58822516292C280D00E83CDE /* UtilityAreaMaximizeButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilityAreaMaximizeButton.swift; sourceTree = "<group>"; };
+		58822517292C280D00E83CDE /* UtilityAreaClearButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilityAreaClearButton.swift; sourceTree = "<group>"; };
+		58822518292C280D00E83CDE /* UtilityAreaFilterTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilityAreaFilterTextField.swift; sourceTree = "<group>"; };
 		5882251A292C280D00E83CDE /* View+isHovering.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+isHovering.swift"; sourceTree = "<group>"; };
 		5882251C292C280D00E83CDE /* UtilityAreaViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilityAreaViewModel.swift; sourceTree = "<group>"; };
 		5882251E292C280D00E83CDE /* CursorLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CursorLocation.swift; sourceTree = "<group>"; };
@@ -2041,10 +2041,10 @@
 		58822514292C280D00E83CDE /* Toolbar */ = {
 			isa = PBXGroup;
 			children = (
-				58822515292C280D00E83CDE /* StatusBarSplitTerminalButton.swift */,
-				58822516292C280D00E83CDE /* StatusBarMaximizeButton.swift */,
-				58822517292C280D00E83CDE /* StatusBarClearButton.swift */,
-				58822518292C280D00E83CDE /* FilterTextField.swift */,
+				58822515292C280D00E83CDE /* UtilityAreaTerminalButton.swift */,
+				58822516292C280D00E83CDE /* UtilityAreaMaximizeButton.swift */,
+				58822517292C280D00E83CDE /* UtilityAreaClearButton.swift */,
+				58822518292C280D00E83CDE /* UtilityAreaFilterTextField.swift */,
 			);
 			path = Toolbar;
 			sourceTree = "<group>";
@@ -3307,7 +3307,7 @@
 				6C5B63DE29C76213005454BA /* WindowCodeFileView.swift in Sources */,
 				58F2EB08292FB2B0004A9BDE /* TextEditingSettings.swift in Sources */,
 				201169DB2837B34000F92B46 /* SourceControlNavigatorChangedFileView.swift in Sources */,
-				5882252E292C280D00E83CDE /* StatusBarMaximizeButton.swift in Sources */,
+				5882252E292C280D00E83CDE /* UtilityAreaMaximizeButton.swift in Sources */,
 				77A01E2E2BB4261200F0EA38 /* CEWorkspaceSettings.swift in Sources */,
 				6C4104E9297C970F00F472BA /* AboutDefaultView.swift in Sources */,
 				587B9E6F29301D8F00AC7927 /* GitLabProjectAccess.swift in Sources */,
@@ -3426,7 +3426,7 @@
 				77A01E322BB4274B00F0EA38 /* TasksCEWorkspaceSettingsView.swift in Sources */,
 				B6E41C8F29DE9CD80088F9F4 /* AccountsSettingsDetailsView.swift in Sources */,
 				5882252B292C280D00E83CDE /* StatusBarCursorLocationLabel.swift in Sources */,
-				5882252D292C280D00E83CDE /* StatusBarSplitTerminalButton.swift in Sources */,
+				5882252D292C280D00E83CDE /* UtilityAreaTerminalButton.swift in Sources */,
 				58798238292E30B90085B254 /* FeedbackWindowController.swift in Sources */,
 				587B9E6C29301D8F00AC7927 /* GitLabNamespace.swift in Sources */,
 				6C48D8F22972DAFC00D6D205 /* Env+IsFullscreen.swift in Sources */,
@@ -3473,7 +3473,7 @@
 				850C631229D6B03400E1444C /* SettingsPage.swift in Sources */,
 				587B9E6729301D8F00AC7927 /* GitLabEventData.swift in Sources */,
 				B66A4E4529C8E86D004573B4 /* CommandsFixes.swift in Sources */,
-				5882252F292C280D00E83CDE /* StatusBarClearButton.swift in Sources */,
+				5882252F292C280D00E83CDE /* UtilityAreaClearButton.swift in Sources */,
 				6CE622692A2A174A0013085C /* InspectorTab.swift in Sources */,
 				58F2EB04292FB2B0004A9BDE /* SourceControlSettings.swift in Sources */,
 				58710159298EB80000951BA4 /* CEWorkspaceFileManager.swift in Sources */,
@@ -3615,7 +3615,7 @@
 				587B9E7629301D8F00AC7927 /* GitTime.swift in Sources */,
 				587B9E5D29301D8F00AC7927 /* GitLabUserRouter.swift in Sources */,
 				588847692992ABCA00996D95 /* Array+SortURLs.swift in Sources */,
-				58822530292C280D00E83CDE /* FilterTextField.swift in Sources */,
+				58822530292C280D00E83CDE /* UtilityAreaFilterTextField.swift in Sources */,
 				6C82D6B929BFE34900495C54 /* HelpCommands.swift in Sources */,
 				6C147C4929A32A080089B630 /* EditorLayoutView.swift in Sources */,
 				6C147C4129A328BF0089B630 /* EditorLayout.swift in Sources */,

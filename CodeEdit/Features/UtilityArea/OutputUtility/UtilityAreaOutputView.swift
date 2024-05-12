@@ -77,7 +77,7 @@ struct UtilityAreaOutputView: View {
                 .labelsHidden()
                 .controlSize(.small)
                 Spacer()
-                FilterTextField(title: "Filter", text: $filterText)
+                UtilityAreaFilterTextField(title: "Filter", text: $filterText)
                     .frame(maxWidth: 175)
                 Button {
                     output = []

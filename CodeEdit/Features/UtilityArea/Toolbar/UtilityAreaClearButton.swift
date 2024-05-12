@@ -1,18 +1,18 @@
 //
-//  StatusBarSplitTerminalButton.swift
+//  UtilityAreaClearButton.swift
 //  CodeEdit
 //
-//  Created by Stef Kors on 14/04/2022.
+//  Created by Stef Kors on 12/04/2022.
 //
 
 import SwiftUI
 
-struct StatusBarSplitTerminalButton: View {
+struct UtilityAreaClearButton: View {
     var body: some View {
         Button {
-            // todo
+            // Clear terminal
         } label: {
-            Image(systemName: "square.split.2x1")
+            Image(systemName: "trash")
                 .foregroundColor(.secondary)
         }
         .buttonStyle(.plain)
